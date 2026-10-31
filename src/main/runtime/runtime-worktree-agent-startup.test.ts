@@ -170,7 +170,7 @@ describe('buildWorktreeStartupForAgent prompt carry', () => {
   })
 
   it('keeps folding the prompt for a caller that delivers nothing afterwards', () => {
-    // `orca worktree create --prompt` has no post-start paste of its own for an argv agent.
+    // `occ worktree create --prompt` has no post-start paste of its own for an argv agent.
     expect(build().startup.command).toContain('summarize the diff')
   })
 })

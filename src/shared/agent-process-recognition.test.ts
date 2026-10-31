@@ -530,7 +530,7 @@ describe('agent process recognition', () => {
       agent: 'claude-agent-teams',
       processName: 'orca'
     })
-    expect(recognizeAgentProcessFromCommandLine('orca status')).toBeNull()
+    expect(recognizeAgentProcessFromCommandLine('occ status')).toBeNull()
     expect(recognizeAgentProcessFromCommandLine('occ-dev terminal list')).toBeNull()
     expect(recognizeAgentProcessFromCommandLine('node /usr/local/bin/occ claude-teams')).toEqual({
       agent: 'claude-agent-teams',

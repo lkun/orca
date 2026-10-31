@@ -139,7 +139,7 @@ function showMessageBoxOnMainWindow(options: MessageBoxOptions): Promise<Message
  * retires the tabs, so nothing reopens or resumes them on next launch.
  */
 export function quitAndStopAllSessionsFromUserCommand(): void {
-  // Why: under orca serve a user Quit only closes the windows (#15537), so this would never quit.
+  // Why: under occ serve a user Quit only closes the windows (#15537), so this would never quit.
   if (state.isServeMode || quitAndStopAllSessionsConfirming) {
     return
   }

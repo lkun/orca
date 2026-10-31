@@ -354,7 +354,7 @@ describe('moving onto a server another desktop already added the same project to
   })
 })
 
-// #29560: `orca environment stop` unlinks the server but leaves its profile on the host.
+// #29560: `occ environment stop` unlinks the server but leaves its profile on the host.
 describe('moving the host again after its server was stopped', () => {
   // The local half of stop (unlinkEnvironmentLocally); the server keeps its profile.
   function stopServer(): void {

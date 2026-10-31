@@ -94,7 +94,7 @@ function profile(): string {
   return root
 }
 
-describe.skipIf(skip)('orca serve on orcad', () => {
+describe.skipIf(skip)('occ serve on orcad', () => {
   it('answers the launcher native preflight with one report line', async () => {
     const result = await runProcess({
       program: runtime!,

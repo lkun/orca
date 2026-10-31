@@ -5,7 +5,7 @@ export const REMOTE_SERVER_PAIRING_FAILURE_COPY = {
   selfPairingCode:
     'This pairing code is for this OCC itself. Generate the code on the other computer instead.',
   managedDeployment:
-    'OCC runs this server on an SSH host for you; its pairing cannot be replaced or removed here. To decommission it, run `orca environment stop --environment <name> --yes` or use Settings > OCC on your SSH hosts; for a host that is gone, run `orca environment forget --environment <name> --yes`.',
+    'OCC runs this server on an SSH host for you; its pairing cannot be replaced or removed here. To decommission it, run `occ environment stop --environment <name> --yes` or use Settings > OCC on your SSH hosts; for a host that is gone, run `occ environment forget --environment <name> --yes`.',
   sshAccessChangePending:
     "This server's SSH access change didn't finish. Retry or cancel it under Settings > Remote OCC Servers > SSH access for paired servers before replacing its pairing or removing it.",
   sshAccessLinked:
@@ -17,7 +17,7 @@ export const REMOTE_SERVER_PAIRING_FAILURE_COPY = {
   alreadyPairedWslHost:
     'This server is already paired as "{{name}}". OCC manages it as a WSL host, so its pairing cannot be replaced here.',
   alreadyPairedManagedDeployment:
-    'This server is already paired as "{{name}}". OCC runs this server on an SSH host for you; its pairing cannot be replaced or removed here. To decommission it, run `orca environment stop --environment <name> --yes` or use Settings > OCC on your SSH hosts; for a host that is gone, run `orca environment forget --environment <name> --yes`.',
+    'This server is already paired as "{{name}}". OCC runs this server on an SSH host for you; its pairing cannot be replaced or removed here. To decommission it, run `occ environment stop --environment <name> --yes` or use Settings > OCC on your SSH hosts; for a host that is gone, run `occ environment forget --environment <name> --yes`.',
   alreadyPairedSshAccessChangePending:
     'This server is already paired as "{{name}}". This server\'s SSH access change didn\'t finish. Retry or cancel it under Settings > Remote OCC Servers > SSH access for paired servers before replacing its pairing or removing it.',
   alreadyPairedSshAccessLinked:

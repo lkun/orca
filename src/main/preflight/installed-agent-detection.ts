@@ -1,4 +1,4 @@
-// orca skills loads detection outside Electron; exclude integration-client dependencies.
+// occ skills loads detection outside Electron; exclude integration-client dependencies.
 import {
   getTuiAgentDetectionProbeCommands,
   KNOWN_TUI_AGENT_DETECTION_COMMANDS,

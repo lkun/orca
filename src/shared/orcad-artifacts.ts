@@ -236,7 +236,7 @@ export const ORCAD_ARTIFACTS: readonly OrcadArtifact[] = [
   // Account worker threads keep CLI probes and Claude setup off the event loop.
   { filename: 'worker-thread-child-process-entry.js' },
   { filename: 'claude-profile-setup-worker-entry.js' },
-  // Dictation loads the recognizer named by orca serve (#31174).
+  // Dictation loads the recognizer named by occ serve (#31174).
   { filename: 'stt-worker.js' },
   // The forked computer sidecar finds platform runtimes beside itself (#31777).
   { filename: ORCAD_COMPUTER_SIDECAR_ENTRY },

@@ -106,7 +106,7 @@ it('carries the native idle boundary through replay and push dispatch', async ()
   )
 })
 
-it('decides headless away from attached desktops, so the away-only filter holds on orca serve', async () => {
+it('decides headless away from attached desktops, so the away-only filter holds on occ serve', async () => {
   const now = 1_800_000_000_000
   const clock = vi.spyOn(Date, 'now').mockReturnValue(now)
   setRuntimeDesktopSurface(null)

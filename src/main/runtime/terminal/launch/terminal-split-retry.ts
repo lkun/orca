@@ -45,7 +45,7 @@ export class RendererSplitLedger {
 }
 
 const LIST_BEFORE_SPLITTING =
-  'Before splitting again, check `orca terminal list --json` for a pane with this leafId: its command may already be running.'
+  'Before splitting again, check `occ terminal list --json` for a pane with this leafId: its command may already be running.'
 
 export function splitPanePendingError(tabId: string, leafId: string): TerminalSplitOutcomeError {
   return new TerminalSplitOutcomeError(

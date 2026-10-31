@@ -29,11 +29,11 @@ export function WorktreeCardCliDetailSection({
           {provenance.callerTerminalHandle
             ? translate(
                 'auto.components.sidebar.WorktreeCardMeta.cliCreatedFromAgent',
-                'Created by an agent via `orca worktree create`'
+                'Created by an agent via `occ worktree create`'
               )
             : translate(
                 'auto.components.sidebar.WorktreeCardMeta.cliCreatedFromShell',
-                'Created via `orca worktree create`'
+                'Created via `occ worktree create`'
               )}
         </div>
         {agentLabel ? (

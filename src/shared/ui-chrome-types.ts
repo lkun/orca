@@ -41,7 +41,7 @@ export type WorktreeCardProperty =
   | 'jira-issue'
   | 'pr'
   | 'automation'
-  // Badge marking workspaces created through `orca worktree create`.
+  // Badge marking workspaces created through `occ worktree create`.
   | 'cli'
   | 'comment'
   | 'ports'

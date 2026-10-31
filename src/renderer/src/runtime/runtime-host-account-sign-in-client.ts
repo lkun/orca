@@ -116,7 +116,7 @@ async function follow(attempt: Attempt): Promise<HostAccountSignInStatus> {
   await assertRuntimeEnvironmentCapability(
     attempt.owner.environmentId,
     HOST_ACCOUNT_SIGN_IN_RUNTIME_CAPABILITY,
-    'This server runs an older OCC that cannot add accounts from here. Update OCC on that server, or run `orca account add` in a terminal there.'
+    'This server runs an older OCC that cannot add accounts from here. Update OCC on that server, or run `occ account add` in a terminal there.'
   )
   if (attempt.cancelRequested) {
     throw new Error(CANCELLED_MESSAGE[attempt.provider])

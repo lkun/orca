@@ -71,7 +71,7 @@ function createRuntime(
 }
 
 describe('workspace commands on a project-group folder workspace', () => {
-  it('shows it (orca worktree show)', async () => {
+  it('shows it (occ worktree show)', async () => {
     const shown = await createRuntime().showManagedWorktree(`id:${WORKSPACE_ID}`)
 
     expect(shown.id).toBe(WORKSPACE_ID)

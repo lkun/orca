@@ -11,7 +11,7 @@ type ServeReady = {
 }
 
 const STARTUP_DIAGNOSTIC_LIMIT = 8_000
-const PAIRING_URL_PATTERN = /orca:\/\/[^\s"\\]+/g
+const PAIRING_URL_PATTERN = /occ:\/\/[^\s"\\]+/g
 const WEB_CLIENT_PAIRING_PATTERN = /([#&]pairing=)[^&\s"\\]+/g
 
 export class HeadlessPairedRuntimeStartupDiagnosticBuffer {

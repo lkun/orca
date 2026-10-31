@@ -37,7 +37,7 @@ export function registerHostAccountLaunchEnvTests(): void {
       expect(() => accounts.setHostLaunchEnv(LAUNCH_ENV)).toThrow(/its own provider accounts/)
     })
 
-    it('points `orca account` at the desktop that owns the accounts', () => {
+    it('points `occ account` at the desktop that owns the accounts', () => {
       const accounts = new RuntimeAccountController()
       expect(() => accounts.getSnapshot()).toThrow('Account services are not configured')
       accounts.setHostLaunchEnv(LAUNCH_ENV)

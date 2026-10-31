@@ -3,7 +3,7 @@ import { createDesktopConnectorCloud } from '../connector-cloud/connector-cloud-
 import { getProfileUserDataPath } from '../orca-profiles/profile-storage-paths'
 import { mainProcessState as state } from './main-process-state'
 
-// Desktop only: the connector acts as the signed-in OCC account, which `orca serve` does not have yet.
+// Desktop only: the connector acts as the signed-in OCC account, which `occ serve` does not have yet.
 // Created before the window exists, so its sign-in and sign-out hooks always find it.
 export function installDesktopConnectorCloud(): void {
   if (!state.runtime || !state.store) {

@@ -73,7 +73,7 @@ export type PersistedUIState = {
   hideDefaultBranchWorkspace: boolean
   /** Hide workspaces created by automation new-per-run dispatches. */
   hideAutomationGeneratedWorkspaces?: boolean
-  /** Hide workspaces created through `orca worktree create`. */
+  /** Hide workspaces created through `occ worktree create`. */
   hideCliCreatedWorkspaces?: boolean
   /** Hide workspaces sitting on a detached HEAD; folder workspaces (no head at all) are unaffected. */
   hideDetachedHeadWorkspaces?: boolean

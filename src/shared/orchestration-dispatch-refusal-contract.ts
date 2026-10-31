@@ -101,7 +101,7 @@ export function injectRejectedRefusal(
       reason,
       nextSteps: [
         'Start a recognized agent CLI in that terminal and wait for it to finish launching, or pick a terminal that already runs one.',
-        'Alternatively dispatch without --inject and deliver the prompt with orca terminal send --terminal <handle> --text <prompt> --enter --json.'
+        'Alternatively dispatch without --inject and deliver the prompt with occ terminal send --terminal <handle> --text <prompt> --enter --json.'
       ]
     }
   }

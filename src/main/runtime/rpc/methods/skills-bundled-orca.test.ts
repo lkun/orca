@@ -130,7 +130,7 @@ describe('skills.planBundledOrca / skills.executeBundledOrca', () => {
     expect(await readFile(join(home.claude, 'SKILL.md'), 'utf8')).toBe('edited meanwhile\n')
   })
 
-  it('installs named skills for the host’s agents, as `orca skills install` does', async () => {
+  it('installs named skills for the host’s agents, as `occ skills install` does', async () => {
     const home = await makeSkillHome()
     const context = hostContext(home)
     const request = { names: [NAME] }

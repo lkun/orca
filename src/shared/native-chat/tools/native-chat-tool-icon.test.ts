@@ -188,7 +188,7 @@ describe('native chat tool icons', () => {
       expect(
         nativeChatToolRunCategory([
           ...run,
-          { name: 'Bash', input: { command: 'orca worktree ls' } }
+          { name: 'Bash', input: { command: 'occ worktree ls' } }
         ])
       ).toBeNull()
     })

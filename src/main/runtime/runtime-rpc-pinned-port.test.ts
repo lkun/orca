@@ -40,7 +40,7 @@ function serveServer(wsPort: number, requirePinnedWsPort: boolean): OrcaRuntimeR
   })
 }
 
-describe('orca serve --port', () => {
+describe('occ serve --port', () => {
   it('fails startup when the requested port is taken instead of serving on another port', async () => {
     const port = await holdPort()
     const server = serveServer(port, true)

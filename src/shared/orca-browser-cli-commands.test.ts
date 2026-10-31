@@ -11,7 +11,7 @@ describe('parseOrcaBrowserCommand', () => {
     ['C:\\Users\\me\\orca\\occ.cmd tab create', null],
     ['occ-ide mouse move --x 1 --y 2', null],
     ['cd app && orca click --element e3 --page p4', 'p4'],
-    ['git status; ORCA_DEBUG=1 orca tab list', null],
+    ['git status; ORCA_DEBUG=1 occ tab list', null],
     ['orca snapshot | head -20', null],
     ['orca browser identity get', null]
   ])('matches %s', (command, pageId) => {
@@ -19,8 +19,8 @@ describe('parseOrcaBrowserCommand', () => {
   })
 
   it.each([
-    'orca worktree ls',
-    'orca terminal send --text "orca click"',
+    'occ worktree ls',
+    'occ terminal send --text "orca click"',
     'orcastra click',
     'orca',
     'echo orca click',

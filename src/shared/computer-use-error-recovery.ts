@@ -105,7 +105,7 @@ export function computerUseErrorRecoveryData(
       // Why: an OCC server installed before it bundled computer use reports only this exit (#31777).
       if (message?.startsWith('computer sidecar exited with code')) {
         return recoverWith(
-          'If this targets an OCC server (`orca serve`, SSH or WSL), its install may not include computer use: update or reprovision the server, then retry.',
+          'If this targets an OCC server (`occ serve`, SSH or WSL), its install may not include computer use: update or reprovision the server, then retry.',
           'Run `orca computer capabilities --json` to confirm the provider is available before retrying.'
         )
       }

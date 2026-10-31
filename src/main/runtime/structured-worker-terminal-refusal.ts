@@ -16,7 +16,7 @@ export function structuredWorkerTerminalRefusal(
   }
   const error = new Error(
     `${handle} is an agent session, not a terminal, so terminal commands cannot address it. ` +
-      'Read its output with `orca terminal read` or `orca orchestration worker-read --source transcript`, ' +
+      'Read its output with `occ terminal read` or `orca orchestration worker-read --source transcript`, ' +
       'send it work with `orca orchestration send`, and open it from its chat tab.'
   )
   Object.assign(error, { code: AGENT_SESSION_HAS_NO_TERMINAL })

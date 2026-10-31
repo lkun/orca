@@ -18,7 +18,7 @@ import {
 } from './RuntimeHostAccessFailureAlert'
 
 // Why untranslated: a literal shell command.
-const HEADLESS_SERVE_COMMAND = 'orca serve --pairing-address <address>'
+const HEADLESS_SERVE_COMMAND = 'occ serve --pairing-address <address>'
 
 const NO_TAKEN_NAMES: readonly { name: string }[] = []
 

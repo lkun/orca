@@ -242,7 +242,7 @@ describe('host rewind', () => {
 
   it('resolves accepted codex user submissions to provider targets', async () => {
     const target = await seed(true)
-    expect(target.startsWith('orca:')).toBe(true)
+    expect(target.startsWith('occ:')).toBe(true)
     expect(await host.rewind(caller, await params(target))).toMatchObject({ ok: true })
     expect((await host.journalSnapshot(HOST_TEST_SESSION)).items).toHaveLength(1)
     expect(rewind).toHaveBeenCalledWith(expect.objectContaining({ beforeTurnId: 'drop' }))

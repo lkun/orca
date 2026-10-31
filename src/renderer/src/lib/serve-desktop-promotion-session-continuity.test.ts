@@ -222,7 +222,7 @@ describe('#8457 headless serve promotion preserves surviving agent sessions', ()
     expect(serve.blockedReasons).toEqual([])
   })
 
-  it('ignores a duplicate `orca serve` launch instead of promoting the headless owner', () => {
+  it('ignores a duplicate `occ serve` launch instead of promoting the headless owner', () => {
     const serve = bootHeadlessServeOwner()
 
     serve.secondInstance(DUPLICATE_SERVE_ARGV)

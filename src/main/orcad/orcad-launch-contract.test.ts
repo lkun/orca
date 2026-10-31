@@ -47,7 +47,7 @@ describe('parseArgs', () => {
     }
   })
 
-  it('accepts the browser client directory orca serve hands it', () => {
+  it('accepts the browser client directory occ serve hands it', () => {
     expect(parseArgs(['--web-client-root', '/app/out/web'])).toEqual({
       webClientRoot: '/app/out/web'
     })
@@ -64,7 +64,7 @@ describe('parseArgs', () => {
     })
   })
 
-  it('takes the desktop serve flags orca serve forwards', () => {
+  it('takes the desktop serve flags occ serve forwards', () => {
     expect(parseArgs(['--recipe-json', '--project-root', '/work/app'])).toEqual({
       recipeJson: true,
       projectRoot: '/work/app'

@@ -37,6 +37,6 @@ export function orcadStaleLockReclaimCommand(
 ): string {
   const program = runtime?.entry
     ? `${quotePosixShellUnlessPlain(runtime.execPath)} ${quotePosixShellUnlessPlain(runtime.entry)}`
-    : 'orca serve'
+    : 'occ serve'
   return `${program} ${ORCAD_RECLAIM_STALE_LOCK_FLAG} ${ORCAD_STALE_LOCK_DATA_ROOT_FLAG} ${quotePosixShellUnlessPlain(dataRoot)}`
 }

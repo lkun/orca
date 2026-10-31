@@ -75,7 +75,7 @@ async function startRealAgentPane(
   return { runtime, transcript, handle: terminals[0].handle }
 }
 
-/** Exactly what `orca terminal wait --terminal <h> --for tui-idle` reaches over RPC. */
+/** Exactly what `occ terminal wait --terminal <h> --for tui-idle` reaches over RPC. */
 async function terminalWait(
   runtime: OrcaRuntimeService,
   terminal: string,

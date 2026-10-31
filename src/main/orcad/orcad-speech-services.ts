@@ -4,7 +4,7 @@ import { canReadOpenAiSpeechApiKey } from '../speech/openai-api-key-store'
 import type { SpeechServiceFactories } from '../speech/speech-runtime-service'
 import { SttService } from '../speech/stt-service'
 
-// Local speech needs the installed app recognizer supplied by orca serve.
+// Local speech needs the installed app recognizer supplied by occ serve.
 export const orcadSpeechServiceFactories: SpeechServiceFactories = {
   createModelManager: (customModelsDir) =>
     // Headless key reads cannot open keychain prompts, so readiness may verify decryption.

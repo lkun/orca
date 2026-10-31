@@ -276,7 +276,7 @@ describe.skipIf(process.platform === 'win32')('reclaimStaleOrcadInstanceLock (#3
     expect(readOrcadInstanceLockRecord(lockPath)?.nonce).toBe('newer-holder')
     expect(result.message).not.toContain(process.execPath)
     if (process.platform === 'linux') {
-      expect(result.message).toContain(`orca serve --reclaim-stale-lock --data-root ${root}`)
+      expect(result.message).toContain(`occ serve --reclaim-stale-lock --data-root ${root}`)
     }
   })
 

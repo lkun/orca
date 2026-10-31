@@ -1,6 +1,6 @@
 /** The CLI runs the packaged selection entry under ELECTRON_RUN_AS_NODE and reads one line, avoiding app-side imports. */
 export const SERVE_RUNTIME_ENV = 'ORCA_SERVE_RUNTIME'
-/** `ORCA_SERVE_RUNTIME=electron` keeps `orca serve` on Electron; orcad is the default. */
+/** `ORCA_SERVE_RUNTIME=electron` keeps `occ serve` on Electron; orcad is the default. */
 export const SERVE_RUNTIME_ELECTRON = 'electron'
 export const ORCAD_LOCAL_SERVE_SELECTION_ENTRY = 'orcad/orcad-local-serve-selection-entry'
 export const ORCAD_LOCAL_SERVE_SELECTION_FLAGS = {

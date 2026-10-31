@@ -1,4 +1,4 @@
-/** orca serve probes node-pty separately to choose Electron before handing off to an orcad that cannot start.
+/** occ serve probes node-pty separately to choose Electron before handing off to an orcad that cannot start.
  * Print one JSON line and exit 0 for every verdict. */
 export const ORCAD_NATIVE_PREFLIGHT_FLAG = '--orcad-native-preflight'
 const REPORT_TYPE = 'orcad_native_preflight'

@@ -84,7 +84,7 @@ export function ManagedDataAccountsSection({
     }
   }
 
-  const command = `orca account add --agent ${provider}`
+  const command = `occ account add --agent ${provider}`
   return (
     <section className="space-y-3">
       <h3 className="text-sm font-semibold">

@@ -84,7 +84,7 @@ describe('POSIX secure files', () => {
     expect(statMode(userDataPath)).toBe(0o700)
   })
 
-  /** Claude Code's Bash sandbox denies chmod on userData; `orca worktree list` failed reading it (#20937). */
+  /** Claude Code's Bash sandbox denies chmod on userData; `occ worktree list` failed reading it (#20937). */
   posixModeIt(
     'lets readers proceed when a sandbox denies hardening, but not on other errors',
     () => {

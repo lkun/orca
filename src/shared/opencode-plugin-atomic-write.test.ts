@@ -211,11 +211,11 @@ describe('opencode-plugin-atomic-write', () => {
     realWrite(userPlugin, 'user original source', 'utf8')
     symlinkSync(userPlugin, overlayPlugin)
 
-    writeOverlayOpenCodePluginAtomically(overlayPlugin, 'orca status source')
+    writeOverlayOpenCodePluginAtomically(overlayPlugin, 'occ status source')
 
     expect(lstatSync(overlayPlugin).isSymbolicLink()).toBe(false)
     expect(lstatSync(overlayPlugin).isFile()).toBe(true)
-    expect(readFileSync(overlayPlugin, 'utf8')).toBe('orca status source')
+    expect(readFileSync(overlayPlugin, 'utf8')).toBe('occ status source')
     expect(readFileSync(userPlugin, 'utf8')).toBe('user original source')
 
     rmSync(testDir, { recursive: true, force: true })

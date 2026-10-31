@@ -16,9 +16,9 @@ describe('decodeOffer', () => {
   })
 
   it.each([
-    [undefined, /orca:\/\/pair/],
-    ['', /orca:\/\/pair/],
-    ['https://example.com/?code=abc', /orca:\/\/pair/],
+    [undefined, /occ:\/\/pair/],
+    ['', /occ:\/\/pair/],
+    ['https://example.com/?code=abc', /occ:\/\/pair/],
     ['occ://pair', /no code= parameter/],
     ['occ://pair?code=', /not base64url/],
     ['occ://pair?code=not base64', /not base64url/],

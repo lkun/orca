@@ -1,5 +1,5 @@
 /** Host-resolved OCC session identity comes from the injected environment, never flags. Terminal agents lack it;
- * orca status --json publishes it as caller. */
+ * occ status --json publishes it as caller. */
 export type OrchestrationCallerSession = {
   orcaSessionId: string
   live: boolean

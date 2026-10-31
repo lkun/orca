@@ -10,7 +10,7 @@ import { browserSessionRegistry } from './browser-session-registry'
 import { installBrowserJavaScriptDialogs } from './browser-javascript-dialogs'
 import type { ServeBrowserPageState } from '../runtime/serve-browser-tab-layout'
 
-// orca serve has no renderer for webviews; hidden BrowserWindows host its pages.
+// occ serve has no renderer for webviews; hidden BrowserWindows host its pages.
 // Headless Linux requires Xvfb; Electron --headless segfaults.
 
 const DEFAULT_VIEWPORT_WIDTH = 1280

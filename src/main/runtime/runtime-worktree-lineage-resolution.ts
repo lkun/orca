@@ -56,7 +56,7 @@ export class WorktreeIdRequiresFullPathError extends Error {
 
   constructor() {
     super(
-      'Worktree id selectors must use the full <repo-id>::<path> value. Use the id from `orca worktree list --json`, or target by path:<path>, branch:<branch>, or issue:<number>.'
+      'Worktree id selectors must use the full <repo-id>::<path> value. Use the id from `occ worktree list --json`, or target by path:<path>, branch:<branch>, or issue:<number>.'
     )
   }
 }

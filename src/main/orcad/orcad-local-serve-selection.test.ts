@@ -106,7 +106,7 @@ function input(overrides: Partial<ServeRuntimeSelectionInput> = {}): ServeRuntim
   }
 }
 
-describe('orca serve runtime selection', () => {
+describe('occ serve runtime selection', () => {
   it('stays on Electron, silently, when Electron is asked for', async () => {
     const options = input({ env: { [SERVE_RUNTIME_ENV]: 'electron' } })
     expect(await selectServeRuntime(options)).toEqual({ kind: 'electron', reason: null })

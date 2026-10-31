@@ -18,7 +18,7 @@ export class ElectronSecretStore implements SecretStore {
   describeProtectionGap(): string | null {
     const withheld = safeStorageWithheldReason()
     if (withheld !== null) {
-      return `The OS keychain is unavailable for this run (${withheld}), so secrets are stored unencrypted. Start orca serve from a logged-in desktop session, or unlock the login keychain, to seal them.`
+      return `The OS keychain is unavailable for this run (${withheld}), so secrets are stored unencrypted. Start occ serve from a logged-in desktop session, or unlock the login keychain, to seal them.`
     }
     // Availability probes the keyring; backend reads below do not.
     if (!safeStorage.isEncryptionAvailable()) {

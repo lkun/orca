@@ -41,7 +41,7 @@ type ActivationPolicyOptions = {
   app?: ActivationPolicyApp
   env?: PolicyEnv
   platform?: NodeJS.Platform
-  /** `orca serve` with no desktop window open: a server, not an app to switch to or quit (#16061). */
+  /** `occ serve` with no desktop window open: a server, not an app to switch to or quit (#16061). */
   serveWithoutDesktopWindow?: boolean
   warn?: (message: string, error: unknown) => void
 }

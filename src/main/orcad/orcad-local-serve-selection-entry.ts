@@ -39,7 +39,7 @@ async function run(argv: readonly string[]): Promise<void> {
 }
 
 run(process.argv.slice(2)).catch((error: unknown) => {
-  // Selection failure falls back to Electron rather than failing orca serve.
+  // Selection failure falls back to Electron rather than failing occ serve.
   const reason = `orcad selection failed: ${error instanceof Error ? error.message : String(error)}`
   process.stdout.write(`${formatServeRuntimeSelection({ kind: 'electron', reason })}\n`, () =>
     process.exit(0)

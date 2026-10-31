@@ -201,7 +201,7 @@ export function createTerminalRevealWarning(handle: string, error?: unknown): st
       : ''
   return [
     `Terminal ${handle} is running, but OCC could not make it discoverable.${reason}`,
-    `Run \`orca terminal focus --terminal ${handle}\` to reveal and focus it.`
+    `Run \`occ terminal focus --terminal ${handle}\` to reveal and focus it.`
   ].join(' ')
 }
 

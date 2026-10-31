@@ -16,13 +16,13 @@ afterEach(() => {
 
 // orcad: a packaged host with no Electron resources tree.
 describe('speech worker paths on orcad (#31174)', () => {
-  it('has no on-device recognizer unless orca serve names one', () => {
+  it('has no on-device recognizer unless occ serve names one', () => {
     installFakeAppEnvironment({ isPackaged: () => true })
     expect(getSherpaModulePath()).toBeNull()
     expect(hasLocalSpeechRecognizer()).toBe(false)
   })
 
-  it("uses the installed app's recognizer that orca serve names", () => {
+  it("uses the installed app's recognizer that occ serve names", () => {
     installFakeAppEnvironment({ isPackaged: () => true })
     const dir = mkdtempSync(join(tmpdir(), 'orca-recognizer-'))
     roots.push(dir)

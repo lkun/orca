@@ -45,7 +45,7 @@ function extractPairingCodeFromUrl(url: string): string | null {
     return null
   }
   // Exact pairing host prevents prefix matches such as occ://pairing from carrying runtime credentials.
-  if (parsed.protocol !== 'orca:' || parsed.hostname !== 'pair') {
+  if (parsed.protocol !== 'occ:' || parsed.hostname !== 'pair') {
     return null
   }
   if (parsed.pathname !== '' && parsed.pathname !== '/') {

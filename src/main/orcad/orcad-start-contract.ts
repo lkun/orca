@@ -13,7 +13,7 @@ export type OrcadOptions = {
   recipeJson?: boolean
   projectRoot?: string
   bind?: string
-  /** Slots have no browser client; orca serve supplies the installed app client. */
+  /** Slots have no browser client; occ serve supplies the installed app client. */
   webClientRoot?: string
 }
 
