@@ -9,8 +9,8 @@ export const LOCAL_HOST_LABEL = getExecutionHostLabel('local')
 
 export const repo: Repo = {
   id: 'repo-1',
-  path: '/tmp/orca',
-  displayName: 'orca',
+  path: '/tmp/occ',
+  displayName: 'occ',
   badgeColor: '#000000',
   addedAt: 0
 }
@@ -18,7 +18,7 @@ export const repo: Repo = {
 export const worktree: Worktree = {
   id: 'wt-1',
   repoId: repo.id,
-  path: '/tmp/orca-feature',
+  path: '/tmp/occ-feature',
   branch: 'refs/heads/feature/super-critical',
   head: 'abc123',
   isBare: false,
@@ -39,8 +39,8 @@ export const repoMap = new Map([[repo.id, repo]])
 
 export const remoteRepo: Repo = {
   id: 'repo-remote',
-  path: '/home/alice/orca',
-  displayName: 'orca',
+  path: '/home/alice/occ',
+  displayName: 'occ',
   badgeColor: '#111111',
   addedAt: 1,
   connectionId: 'gpu-vm'
@@ -50,12 +50,12 @@ export const remoteWorktree: Worktree = {
   ...worktree,
   id: 'wt-remote',
   repoId: remoteRepo.id,
-  path: '/home/alice/orca-feature',
+  path: '/home/alice/occ-feature',
   displayName: 'remote feature'
 }
 
 export const project: Project = {
-  id: 'github:stablyai/orca',
+  id: 'github:stablyai/occ',
   displayName: 'OCC',
   badgeColor: '#737373',
   sourceRepoIds: [repo.id, remoteRepo.id],

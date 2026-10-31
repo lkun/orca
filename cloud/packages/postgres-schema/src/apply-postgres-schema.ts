@@ -10,7 +10,7 @@ const LOCK_NOT_AVAILABLE = '55P03'
 const DEFAULT_RETRY_DEADLINE_MS = 30_000
 const RETRY_BASE_DELAY_MS = 250
 const RETRY_MAX_DELAY_MS = 2_000
-const DEFAULT_EVENT_PREFIX = 'orca_relay_postgres_schema'
+const DEFAULT_EVENT_PREFIX = 'occ_relay_postgres_schema'
 
 export type SchemaStartupOptions = {
   // Enables the catalog pre-check. Without it every lock-taking statement is sent as before.

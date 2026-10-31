@@ -46,7 +46,7 @@ export type WslCodexSessionBridgeSummary = {
 // cannot diff bridged threads against the guest's Codex index the way the
 // native bridge does. A marker per linked rollout records the work instead,
 // and dies when `thread/read` settles that thread.
-const WSL_INDEX_PENDING_DIR_NAME = '.orca-index-pending'
+const WSL_INDEX_PENDING_DIR_NAME = '.occ-index-pending'
 
 // Why: app-server answers `initialize` only once Codex's startup backfill is
 // complete; on a home an older OCC filled before Codex ever opened it, that

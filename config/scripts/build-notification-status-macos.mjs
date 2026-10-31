@@ -13,7 +13,7 @@ const defaultOutputPath = path.join(
   'notification-status-macos',
   '.build',
   'release',
-  'orca-notification-status'
+  'occ-notification-status'
 )
 
 if (process.platform !== 'darwin') {
@@ -27,7 +27,7 @@ const outputPath = readArg('--output') ?? defaultOutputPath
 // universal binary matching the app's x64 + arm64 targets.
 const singleArch = args.includes('--single-arch')
 
-const workDir = path.join(tmpdir(), `orca-notification-status-${process.pid}`)
+const workDir = path.join(tmpdir(), `occ-notification-status-${process.pid}`)
 mkdirSync(workDir, { recursive: true })
 try {
   const plistPath = path.join(workDir, 'Info.plist')
@@ -36,7 +36,7 @@ try {
     ? [process.arch === 'arm64' ? 'arm64-apple-macosx' : 'x86_64-apple-macosx']
     : ['arm64-apple-macosx', 'x86_64-apple-macosx']
   const builtBinaries = triples.map((triple) => {
-    const output = path.join(workDir, `orca-notification-status-${triple}`)
+    const output = path.join(workDir, `occ-notification-status-${triple}`)
     execFileSync(
       'swiftc',
       [
@@ -83,7 +83,7 @@ function embeddedInfoPlist(identifier) {
   <key>CFBundleIdentifier</key>
   <string>${identifier}</string>
   <key>CFBundleName</key>
-  <string>orca-notification-status</string>
+  <string>occ-notification-status</string>
 </dict>
 </plist>
 `

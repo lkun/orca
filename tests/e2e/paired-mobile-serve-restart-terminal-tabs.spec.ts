@@ -1,5 +1,5 @@
 // #26022: after serve restart, retain CLI/agent daemon PTYs beside serve-minted terminals in both the phone’s first stream snapshot and tab list.
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchPhoneMirrorTopology } from './helpers/phone-mirror-topology'
 import type { PairedMobileClient } from './helpers/paired-mobile-client'
 import type { RuntimeWorktreePsSummary } from '../../src/shared/runtime-worktree-contracts'
@@ -20,7 +20,7 @@ async function listedPtyIds(phone: PairedMobileClient, worktreeId: string): Prom
   return listed.ok ? terminalPtyIds(listed.result) : [`refused:${listed.error.code}`]
 }
 
-test('phone paired with orca serve keeps a terminal.create terminal across a serve restart', async ({
+test('phone paired with occ serve keeps a terminal.create terminal across a serve restart', async ({
   testRepoPath
 }, testInfo) => {
   test.setTimeout(120_000)

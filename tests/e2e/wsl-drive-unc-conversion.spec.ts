@@ -9,8 +9,8 @@
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { z } from 'zod'
-import { expect, test } from './helpers/orca-app'
-import { createRestartSession } from './helpers/orca-restart'
+import { expect, test } from './helpers/occ-app'
+import { createRestartSession } from './helpers/occ-restart'
 import {
   mutateStoppedProfileState,
   readPersistedProfileState

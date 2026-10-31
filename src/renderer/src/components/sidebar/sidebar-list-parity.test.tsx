@@ -39,7 +39,7 @@ import {
 } from './sidebar-list-parity.test-fixture'
 
 const SWITCH = '../../../../shared/sidebar-inputs-switch'
-vi.mock('../../../../shared/sidebar-inputs-switch', () => ({ ORCA_SIDEBAR_INPUTS_IS_MAIN: true }))
+vi.mock('../../../../shared/sidebar-inputs-switch', () => ({ OCC_SIDEBAR_INPUTS_IS_MAIN: true }))
 vi.mock('@/lib/sidebar-list-session', () => ({ useSidebarListSession: () => {} }))
 let windowFeed: DesktopSidebarFeed | null = null
 vi.mock('@/lib/desktop-sidebar-feed', () => ({
@@ -57,7 +57,7 @@ beforeAll(async () => {
   vi.resetModules()
   vi.doUnmock(SWITCH)
   expect(
-    (await import('../../../../shared/sidebar-inputs-switch')).ORCA_SIDEBAR_INPUTS_IS_MAIN
+    (await import('../../../../shared/sidebar-inputs-switch')).OCC_SIDEBAR_INPUTS_IS_MAIN
   ).toBe(false)
   phoneAdapter = {
     ...(await import('../../../../shared/sidebar-list/sidebar-feed-domains')),
@@ -200,7 +200,7 @@ describe('sidebar list parity: desktop window and feed reader', () => {
               pinnedInGroups,
               collapsedGroups: new Set()
             }
-            const active = parityActiveState(GOLDEN_WORKTREE_IDS.orcaFeatA, null)
+            const active = parityActiveState(GOLDEN_WORKTREE_IDS.occFeatA, null)
             const expanded = await expectAdaptersAgree(worldState(view, active))
             expect(expanded.filter((line) => line.endsWith(' ACTIVE')).length).toBe(
               pinnedInGroups ? 2 : 1
@@ -222,10 +222,10 @@ describe('sidebar list parity: desktop window and feed reader', () => {
     ],
     'single host scope': [{ workspaceHostScope: 'ssh:gpu-vm' }, /^ITEM .*ssh:gpu-vm\|/],
     'paired server scope': [{ workspaceHostScope: 'runtime:env-1' }, /^ITEM .*runtime:env-1\|/],
-    'repo filter': [{ filterRepoIds: ['orca', 'lab'] }, /^ITEM .*\|lab::/],
+    'repo filter': [{ filterRepoIds: ['occ', 'lab'] }, /^ITEM .*\|lab::/],
     'hide sleeping': [
       { showSleepingWorkspaces: false, ...goldenLiveTerminalState() },
-      /^ITEM .*\|orca::\/w\/feat-a /
+      /^ITEM .*\|occ::\/w\/feat-a /
     ],
     'hide sleeping with a paired server terminal': [
       { showSleepingWorkspaces: false, ...parityServerTerminalState() },

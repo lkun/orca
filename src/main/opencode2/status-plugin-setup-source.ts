@@ -4,8 +4,8 @@ import { getLegacyOpenCodeTuiSource } from '../opencode/status-plugin-legacy-tui
 
 export function getOpenCode2ModuleSource(pluginID: string, expectedAgent: string): string[] {
   return [
-    `const ORCA_TUI_PLUGIN_ENTRY = new URL("./${openCodeTuiPluginDirName(`${pluginID}.js`)}/tui.js", import.meta.url);`,
-    `const ORCA_STATUS_AGENT = "${expectedAgent}";`,
+    `const OCC_TUI_PLUGIN_ENTRY = new URL("./${openCodeTuiPluginDirName(`${pluginID}.js`)}/tui.js", import.meta.url);`,
+    `const OCC_STATUS_AGENT = "${expectedAgent}";`,
     ...getLegacyOpenCodeTuiSource(),
     ...getOpenCode2SetupSource()
   ]
@@ -64,7 +64,7 @@ async function tuiReportsPaneLifecycle() {
   try {
     const { statSync } = await import("node:fs");
     // Older SSH installers may omit the TUI copy; retain server reporting as fallback.
-    return statSync(ORCA_TUI_PLUGIN_ENTRY).isFile();
+    return statSync(OCC_TUI_PLUGIN_ENTRY).isFile();
   } catch {
     return false;
   }
@@ -86,7 +86,7 @@ async function setupOpenCode2Status(ctx) {
     // Wrap bare OpenCode 2 session records for shared lineage lookup's data.id contract.
     const client = { session: { get: async (input, options) => { const result = await ctx.session.get(input, options); return result && typeof result.id === "string" ? { data: result } : result; } } };
     // Hot reload disposes plugins while turns continue.
-    hooks = await OrcaOpenCodeStatusPlugin({ client, sessionsOutliveDispose: true });
+    hooks = await OCCOpenCodeStatusPlugin({ client, sessionsOutliveDispose: true });
     if (!hooks || typeof hooks.event !== "function") return noop;
     const promptRegistration = await ctx.session.hook("prompt", async (properties) => {
       await hooks.event({ event: { type: "session.next.prompt.admitted", properties } });
@@ -100,7 +100,7 @@ async function setupOpenCode2Status(ctx) {
       }
     };
     const consuming = consume().catch((error) => {
-      if (!controller.signal.aborted) console.warn("[orca-hook] event subscription failed:", error.message);
+      if (!controller.signal.aborted) console.warn("[occ-hook] event subscription failed:", error.message);
     });
     return async () => {
       try {

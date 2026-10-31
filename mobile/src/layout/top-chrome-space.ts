@@ -1,4 +1,4 @@
-import type { ReservedRect } from '../../modules/orca-reserved-regions/src'
+import type { ReservedRect } from '../../modules/occ-reserved-regions/src'
 
 /** A header can share a top strip only when the system reports its full edge obstruction. */
 export function topChromeSpace(

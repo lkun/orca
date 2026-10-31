@@ -7,7 +7,7 @@ import { destroyWorkspaceWebviews } from '../browser-webview-cleanup'
 import { projectHydratedBrowserSession } from './browser-hydration-state'
 import { ensureBrowserClientHostsForRestoredPages } from '@/runtime/restored-client-hosted-browser-host-attach'
 import { findWorkspace } from '../browser-page-records'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import { sendBrowserLayoutCommand } from './browser-layout-owner-commands'
 import { selectFolderWorkspaces } from '../../workspace-record-selectors'
 import { runtimeEnvironmentIdUnlessTwin } from '@/lib/resolve-owner'
@@ -61,7 +61,7 @@ export function createBrowserHydrationActions(
       void ensureBrowserClientHostsForRestoredPages(state)
       for (const [worktreeId, browserTabs] of Object.entries(state.browserTabsByWorktree)) {
         // Switch point: main's layout load gives a tabless record its tab; its frame draws it.
-        if (ORCA_LAYOUT_OWNER_IS_MAIN && !runtimeEnvironmentIdUnlessTwin(state, worktreeId)) {
+        if (OCC_LAYOUT_OWNER_IS_MAIN && !runtimeEnvironmentIdUnlessTwin(state, worktreeId)) {
           continue
         }
         for (const bt of browserTabs) {
@@ -102,7 +102,7 @@ export function createBrowserHydrationActions(
           return s
         })
       // Switch point: main switches the tab's profile; its frame shows the change.
-      const tab = ORCA_LAYOUT_OWNER_IS_MAIN
+      const tab = OCC_LAYOUT_OWNER_IS_MAIN
         ? findWorkspace(get().browserTabsByWorktree, workspaceId)
         : null
       if (

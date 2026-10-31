@@ -8,7 +8,7 @@ import { codexProviderHandle } from '../../shared/agent-session-provider-handle-
 import { listResult } from '../ai-vault/structured-session-ownership.test-support'
 import * as scanner from '../ai-vault/session-scanner-background'
 import { resetAiVaultSessionListCacheForTests } from '../ai-vault/cached-session-list'
-import { OrcaRuntimeService } from '../runtime/orca-runtime'
+import { OCCRuntimeService } from '../runtime/occ-runtime'
 import { RpcDispatcher } from '../runtime/rpc/dispatcher'
 import { AI_VAULT_METHODS } from '../runtime/rpc/methods/ai-vault'
 import { structuredChatNamingDeps } from '../runtime/structured-chat-naming-runtime'
@@ -37,7 +37,7 @@ it.each(['J', 'R', 'P', 'L', 'T', 'U', 'C'] as const)(
       const { host, store, log } = hostTestState()
       await attach()
       setStructuredAgentSessionHost(host)
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       vi.spyOn(runtime, 'ensureStructuredAgentSessionHost').mockResolvedValue()
       const source = Promise.withResolvers<string>()
       const naming = createStructuredChatNamingHandler({

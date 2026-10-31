@@ -2,7 +2,7 @@ import { Loader2 } from 'lucide-react'
 import { translate } from '@/i18n/i18n'
 import { Button } from '../../ui/button'
 import { StatusWord } from '../list/PluginStatusWord'
-import { needsNewerOrca, type PluginListEntry } from '../list/plugin-list-entries'
+import { needsNewerOCC, type PluginListEntry } from '../list/plugin-list-entries'
 import { installedPluginControls, type InstalledRowHandlers } from '../list/PluginManagerRows'
 import type { PluginInstallPhase } from '../state/use-plugin-install-action'
 import { usePluginInUse } from '../state/use-plugin-in-use'
@@ -26,7 +26,7 @@ function installsInOneClick(entry: PluginListEntry): boolean {
 export function PluginCardAction({
   entry,
   phase,
-  orcaVersion,
+  occVersion,
   onInstall,
   onOpen,
   installedHandlers,
@@ -36,7 +36,7 @@ export function PluginCardAction({
   entry: PluginListEntry
   refreshing?: boolean
   phase: PluginInstallPhase | null
-  orcaVersion: string | null
+  occVersion: string | null
   onInstall: () => void
   onOpen: () => void
   installedHandlers: InstalledRowHandlers
@@ -75,15 +75,15 @@ export function PluginCardAction({
   if (entry.listing?.blockedByKillList) {
     return <StatusWord kind="blocked" />
   }
-  const needsOrca = needsNewerOrca(entry.minimumOrca, orcaVersion)
-  if (needsOrca) {
+  const needsOCC = needsNewerOCC(entry.minimumOCC, occVersion)
+  if (needsOCC) {
     return (
       <span className="text-xs whitespace-nowrap text-status-warning-text">
         {translate(
-          'auto.components.settings.PluginManagerRows.needsOrca',
+          'auto.components.settings.PluginManagerRows.needsOCC',
           'Needs OCC {{value0}}',
           {
-            value0: needsOrca
+            value0: needsOCC
           }
         )}
       </span>

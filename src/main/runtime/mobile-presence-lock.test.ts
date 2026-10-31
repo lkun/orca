@@ -3,7 +3,7 @@ import './mobile-subscribe-integration.spec'
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { listWorktrees } from '../git/worktree'
 import type * as GitUsernameModule from '../git/git-username'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import type { RuntimePtyController } from './runtime-pty-controller-contract'
 
 vi.mock('../git/worktree', () => ({
@@ -74,7 +74,7 @@ function createRuntime(mobileAutoRestoreFitMs: number | null = 5_000) {
     ...store,
     getSettings: () => ({ ...store.getSettings(), mobileAutoRestoreFitMs })
   }
-  const runtime = new OrcaRuntimeService(effectiveStore)
+  const runtime = new OCCRuntimeService(effectiveStore)
   const ptySizes = new Map<string, { cols: number; rows: number }>([
     ['pty-1', { cols: 150, rows: 40 }]
   ])
@@ -150,7 +150,7 @@ describe('mobile presence lock — driver state machine', () => {
     expect(runtime.getDriver('pty-1')).toEqual({ kind: 'idle' })
     expect(writes).toHaveLength(0)
 
-    const floorClaim: { current: ReturnType<OrcaRuntimeService['beginMobileInputFloor']> } = {
+    const floorClaim: { current: ReturnType<OCCRuntimeService['beginMobileInputFloor']> } = {
       current: null
     }
     const originalWrite = controller.write
@@ -692,7 +692,7 @@ describe('mobile presence lock — multi-mobile semantics', () => {
 
 // #7588: null-viewport re-subscribe leaves an active subscriber under the held fit override.
 async function reachHeldModalWithNullViewportResubscribe(
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
 ): Promise<void> {
   await runtime.handleMobileSubscribe('pty-1', 'phone-A', { cols: 45, rows: 20 })
   runtime.handleMobileUnsubscribe('pty-1', 'phone-A')

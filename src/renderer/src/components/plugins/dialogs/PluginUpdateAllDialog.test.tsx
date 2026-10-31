@@ -54,7 +54,7 @@ function entry(pluginKey: string, kinds: string[]): PluginListEntry {
     official: false,
     categories: [],
     types: [],
-    minimumOrca: null,
+    minimumOCC: null,
     catalogIds: [],
     autoUpdate: { updatedTo: null, needsReview: false },
     updatable: true,
@@ -69,12 +69,12 @@ function entry(pluginKey: string, kinds: string[]): PluginListEntry {
 function preview(
   pluginKey: string,
   kinds: PluginCapabilityKind[],
-  orca?: string
+  occ?: string
 ): PluginMarketplaceHostInstallPreview {
   return {
     marketplaceSourceId: 'official',
     marketplaceName: 'Official',
-    marketplaceOwner: 'orca',
+    marketplaceOwner: 'occ',
     marketplaceCommit: 'c',
     pluginKey,
     source: { kind: 'git', url: 'https://example.com/plugin.git', ref: 'main' },
@@ -92,7 +92,7 @@ function preview(
       version: '1.1.0',
       capabilities: kinds.map((kind) => ({ kind })),
       pluginApi: 1,
-      engines: { orca: orca ?? '>=1.0.0' }
+      engines: { occ: occ ?? '>=1.0.0' }
     })
   }
 }
@@ -133,7 +133,7 @@ function workerUpdate(pluginKey: string, official: boolean): PluginMarketplaceHo
 
 async function renderDialog(
   entries: PluginListEntry[],
-  props: { onUpdated?: (keys: string[]) => Promise<void>; orcaVersion?: string } = {}
+  props: { onUpdated?: (keys: string[]) => Promise<void>; occVersion?: string } = {}
 ): Promise<HTMLDivElement> {
   const container = document.createElement('div')
   document.body.appendChild(container)
@@ -143,7 +143,7 @@ async function renderDialog(
       <PluginUpdateAllDialog
         open
         entries={entries}
-        orcaVersion={props.orcaVersion}
+        occVersion={props.occVersion}
         onClose={vi.fn()}
         onUpdated={props.onUpdated ?? vi.fn().mockResolvedValue(undefined)}
       />
@@ -356,7 +356,7 @@ describe('PluginUpdateAllDialog', () => {
       installMarketplacePlugin: vi.fn()
     })
     const container = await renderDialog([entry('a', []), entry('b', [])], {
-      orcaVersion: '1.4.0'
+      occVersion: '1.4.0'
     })
 
     expect(container.textContent).toContain('Needs OCC 9.0.0 or later')

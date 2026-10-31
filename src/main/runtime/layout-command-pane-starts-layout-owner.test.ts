@@ -8,11 +8,11 @@ import type { RuntimeMobileSessionTerminalTab } from '../../shared/runtime-types
 import type { RuntimeMobileSessionCreateTerminalResult } from '../../shared/runtime-session-contracts'
 import type { RestoredPaneTrigger } from './terminal/recovery/restored-pane-start'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 // Preserve side-effect order: mocks, lifecycle, fixtures.
-const { OrcaRuntimeService, electronMocks } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService, electronMocks } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const {
   HEADLESS_LEAF_ID,
   TEST_WINDOW_ID,
@@ -20,12 +20,12 @@ const {
   deferred,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('./orca-runtime-test-fixtures.spec')
+} = await import('./occ-runtime-test-fixtures.spec')
 
 const PANE_KEY = `host-tab:${HEADLESS_LEAF_ID}`
 const PANE = { worktreeId: TEST_WORKTREE_ID, tabId: 'host-tab', leafId: HEADLESS_LEAF_ID }
 
-class StatusRuntime extends OrcaRuntimeService {
+class StatusRuntime extends OCCRuntimeService {
   startsNoTerminal = false
   protected override materializePendingMobileSessionTerminal(
     worktreeId: string,

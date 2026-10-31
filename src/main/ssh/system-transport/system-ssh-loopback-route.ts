@@ -1,9 +1,9 @@
 /** On Windows, hold a proxied ssh -N -L once; route later execs through loopback to avoid repeated proxy handshakes without ControlMaster. */
-import type { ChildProcessHandle as ChildProcess } from '@orca/process-host/process-spec'
+import type { ChildProcessHandle as ChildProcess } from '@occ/process-host/process-spec'
 import {
   childProcessHasExited,
   signalProcessTree
-} from '@orca/process-host/process-tree-termination'
+} from '@occ/process-host/process-tree-termination'
 import { createSshOperationAbortError } from '../connection/ssh-exec-options'
 import type { SshTarget } from '../../../shared/ssh-types'
 import type { SshResolvedConfig } from '../config/ssh-g-config-resolution'
@@ -22,7 +22,7 @@ import {
 // Allow the full proxy handshake: avoiding repeats is the route's purpose.
 export const SYSTEM_SSH_LOOPBACK_ROUTE_LISTEN_TIMEOUT_MS = 60_000
 export const SYSTEM_SSH_LOOPBACK_ROUTE_PROBE_TIMEOUT_MS = 15_000
-const LOOPBACK_ROUTE_PROBE_MARKER = 'ORCA-SYSTEM-SSH-LOOPBACK-OK'
+const LOOPBACK_ROUTE_PROBE_MARKER = 'OCC-SYSTEM-SSH-LOOPBACK-OK'
 
 export type SystemSshLoopbackRoute = {
   args: SystemSshLoopbackRouteArgs

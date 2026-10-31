@@ -38,7 +38,7 @@ type ApplySelectorInput = {
   expectedGeneration: number
   expectedMembershipSha256?: string
   membership: CellAdmissionMembership
-  // migration-only also parks evacuation/Asia rollback/failed-wave/new cells (orca-relay-operations.md); only same-cap isolate writes stamps, cleared on every exit from that state.
+  // migration-only also parks evacuation/Asia rollback/failed-wave/new cells (occ-relay-operations.md); only same-cap isolate writes stamps, cleared on every exit from that state.
   rollIsolatedCells?: string[]
 }
 

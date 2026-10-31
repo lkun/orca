@@ -13,7 +13,7 @@ import {
 describe('WSL host early wake', () => {
   let userDataPath: string
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-wake-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-wake-'))
     writeWslHostDeployment(userDataPath, 'wsl:ubuntu', {
       kind: 'wsl',
       distro: 'Ubuntu',
@@ -43,7 +43,7 @@ describe('WSL host early wake', () => {
   it('wakes nothing without a list, or from an unreadable one', () => {
     const spawn = vi.fn()
     expect(wakeRememberedWslHosts(userDataPath, spawn)).toEqual([])
-    writeFileSync(join(userDataPath, 'orca-wsl-host-wake.json'), '{"version":1,"distros":["a b"]}')
+    writeFileSync(join(userDataPath, 'occ-wsl-host-wake.json'), '{"version":1,"distros":["a b"]}')
     expect(wakeRememberedWslHosts(userDataPath, spawn)).toEqual([])
     expect(spawn).not.toHaveBeenCalled()
   })
@@ -51,7 +51,7 @@ describe('WSL host early wake', () => {
   it('deletes the list when WSL hosts are turned off, so the next launch wakes nothing', () => {
     rememberWslHostsToWake(userDataPath, ['Ubuntu'])
     forgetWslHostsToWake(userDataPath)
-    expect(existsSync(join(userDataPath, 'orca-wsl-host-wake.json'))).toBe(false)
+    expect(existsSync(join(userDataPath, 'occ-wsl-host-wake.json'))).toBe(false)
     const spawn = vi.fn()
     expect(wakeRememberedWslHosts(userDataPath, spawn)).toEqual([])
     // Nothing to delete is fine too.

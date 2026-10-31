@@ -30,8 +30,8 @@ function run(windows, macStart = 20, macEnd = 100) {
     conclusion: 'success',
     createdAt: at(0),
     jobs: [
-      job('orcad-template-support', 2, 3),
-      job('orcad-template / desktop_template', 3, 10),
+      job('occd-template-support', 2, 3),
+      job('occd-template / desktop_template', 3, 10),
       job('build-adhoc-mac', macStart, macEnd),
       ...windows
     ]
@@ -108,7 +108,7 @@ describe('release desktop timing evidence', () => {
 
   it('includes parallel Mac packaging before the final publication job', () => {
     const input = run([job('build-adhoc-win / build-win', 20, 80)], 90, 100)
-    input.jobs[1].name = 'orcad-template / qualify / desktop_template'
+    input.jobs[1].name = 'occd-template / qualify / desktop_template'
     input.jobs.push(job('build-adhoc-mac-arch (x64)', 15, 85, 25))
     input.jobs.push(job('build-adhoc-mac-arch (arm64)', 15, 90, 30))
     const report = summarizeReleaseDesktopTiming(input)

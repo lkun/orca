@@ -11,7 +11,7 @@ import {
 } from '../native-chat/agent-session-wire/structured-agent-session-host-test-data'
 import { createStructuredAgentSessionLogger } from '../native-chat/agent-session-wire/structured-agent-session-logger'
 import { structuredAgentSessionResumeParams } from '../native-chat/agent-session-wire/structured-agent-session-resume-eligibility'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import { prepareStructuredAgentSessionCreateForWorktree } from './rpc/methods/structured-agent-session-create'
 import type { AgentSessionModelOption } from '../../shared/agent-session-wire'
 import { structuredAgentSessionSeedCatalog } from '../../shared/structured-agent-session-seed-catalog'
@@ -56,7 +56,7 @@ async function setup(
     initialCatalogListing?: AgentModelCatalogLiveListing
   } = {}
 ) {
-  directory = await mkdtemp(join(tmpdir(), 'orca-pi-startup-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-pi-startup-'))
   const root = directory
   const script = piScriptedChild(options.native)
   const host = await ensureStructuredAgentSessionHost({
@@ -117,7 +117,7 @@ async function setup(
     const runtime = {
       resolveStructuredAgentSessionCreateIntent: async () => params,
       resolveStructuredAgentSessionLocalWorkspacePath: async () => root
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const prepared = await prepareStructuredAgentSessionCreateForWorktree({
       runtime,
       ensureHost: async () => host,

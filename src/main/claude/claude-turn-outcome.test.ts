@@ -36,7 +36,7 @@ function sinkState() {
 function userTurn(uuid: string) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     startsTurn: true as const,
     message: {
       type: 'user',
@@ -53,7 +53,7 @@ function result(fields: Record<string, unknown>) {
 }
 
 const TURN = {
-  sessionId: 'orca-session',
+  sessionId: 'occ-session',
   turnId: 'user-1',
   startedAt: 1_000,
   userItemId: 'claude:user-1'
@@ -168,7 +168,7 @@ describe('a turn end the host inferred', () => {
     const translator = createClaudeJournalTranslator({ sink: state.sink })
 
     translator.handle(userTurn('user-1'))
-    translator.handle({ type: 'ended', sessionId: 'orca-session', reason: 'closed' })
+    translator.handle({ type: 'ended', sessionId: 'occ-session', reason: 'closed' })
 
     const settled = state.items.find(
       (item) =>
@@ -230,7 +230,7 @@ describe("a person's Stop inside a live turn", () => {
 
   function sinkWithStop(stop: JournalLatestStop | null) {
     const state = sinkState()
-    const journal = createJournalReducerState('orca-session', 'epoch-1')
+    const journal = createJournalReducerState('occ-session', 'epoch-1')
     journal.queuePauseMarks.latestStop = stop
     return {
       ...state,
@@ -258,7 +258,7 @@ describe("a person's Stop inside a live turn", () => {
   function providerRows(items: ReturnType<typeof sinkState>['items']): number {
     return items.filter(
       (item) =>
-        item.identity.provider === 'orca' &&
+        item.identity.provider === 'occ' &&
         item.identity.clientMessageId.startsWith('provider-frame:')
     ).length
   }
@@ -268,7 +268,7 @@ describe("a person's Stop inside a live turn", () => {
     const translator = createClaudeJournalTranslator({ sink: state.sink })
     translator.handle(userTurn('user-1'))
 
-    translator.handle({ type: 'message', sessionId: 'orca-session', message: cutShort })
+    translator.handle({ type: 'message', sessionId: 'occ-session', message: cutShort })
 
     const turn = settledTurn(state.items, 'user-1')
     expect(turn).toMatchObject({ state: 'interrupted' })
@@ -287,7 +287,7 @@ describe("a person's Stop inside a live turn", () => {
     const translator = createClaudeJournalTranslator({ sink: state.sink })
     translator.handle(userTurn('user-1'))
 
-    translator.handle({ type: 'message', sessionId: 'orca-session', message: frame })
+    translator.handle({ type: 'message', sessionId: 'occ-session', message: frame })
 
     expect(settledTurn(state.items, 'user-1')).toMatchObject({
       state: 'completed',
@@ -303,7 +303,7 @@ describe("a person's Stop inside a live turn", () => {
 
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: { type: 'result', subtype: 'success', is_error: false }
     })
 
@@ -315,9 +315,9 @@ describe("a person's Stop inside a live turn", () => {
     const translator = createClaudeJournalTranslator({ sink: state.sink })
     translator.handle(userTurn('user-1'))
     translator.handle(userTurn('user-2'))
-    translator.handle({ type: 'message', sessionId: 'orca-session', message: cutShort })
+    translator.handle({ type: 'message', sessionId: 'occ-session', message: cutShort })
     translator.handle(userTurn('user-3'))
-    translator.handle({ type: 'message', sessionId: 'orca-session', message: cutShort })
+    translator.handle({ type: 'message', sessionId: 'occ-session', message: cutShort })
 
     expect(settledTurn(state.items, 'user-2')).toMatchObject({ outcome: 'failure' })
     expect(settledTurn(state.items, 'user-3')).toMatchObject({ outcome: 'failure' })
@@ -329,11 +329,11 @@ describe("a person's Stop inside a live turn", () => {
     translator.handle(userTurn('user-1'))
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: { type: 'system', subtype: 'session_state_changed', state: 'idle' }
     })
 
-    translator.handle({ type: 'message', sessionId: 'orca-session', message: cutShort })
+    translator.handle({ type: 'message', sessionId: 'occ-session', message: cutShort })
 
     expect(providerRows(state.items)).toBe(1)
   })
@@ -343,7 +343,7 @@ describe("a person's Stop inside a live turn", () => {
     const translator = createClaudeJournalTranslator({ sink: state.sink })
     translator.handle(userTurn('user-1'))
 
-    translator.handle({ type: 'message', sessionId: 'orca-session', message: cutShort })
+    translator.handle({ type: 'message', sessionId: 'occ-session', message: cutShort })
 
     expect(settledTurn(state.items, 'user-1')).toMatchObject({ outcome: 'failure' })
   })

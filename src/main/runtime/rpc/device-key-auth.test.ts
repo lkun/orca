@@ -88,7 +88,7 @@ function harness(registry: DeviceRegistry, metadata?: MobileSocketTransportMetad
 }
 
 function freshRegistry(): DeviceRegistry {
-  return new DeviceRegistry(mkdtempSync(join(tmpdir(), 'orca-device-key-')))
+  return new DeviceRegistry(mkdtempSync(join(tmpdir(), 'occ-device-key-')))
 }
 
 describe('device-key authentication (host)', () => {
@@ -207,7 +207,7 @@ describe('device-key authentication (host)', () => {
   })
 
   it('answers registry_unavailable, never device_revoked, after loading a corrupt registry', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-device-key-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-device-key-'))
     writeFileSync(join(userDataPath, DEVICE_REGISTRY_FILENAME), '[{"deviceId":')
     const key = nacl.sign.keyPair()
     const attempt = harness(new DeviceRegistry(userDataPath)).connect((hash) => ({
@@ -229,7 +229,7 @@ describe('device-key authentication (host)', () => {
   })
 
   it('answers device_revoked only when the registry is readable', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-device-key-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-device-key-'))
     const key = nacl.sign.keyPair()
     const revoked = harness(new DeviceRegistry(userDataPath)).connect((hash) => ({
       deviceId: 'gone',
@@ -272,7 +272,7 @@ describe('device-key authentication (host)', () => {
   })
 
   it('keeps keyed rows out of pairing offers and rotation, and inert for token lookups', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-device-key-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-device-key-'))
     const keyB64 = Buffer.from(nacl.sign.keyPair().publicKey).toString('base64')
     writeFileSync(
       join(userDataPath, DEVICE_REGISTRY_FILENAME),

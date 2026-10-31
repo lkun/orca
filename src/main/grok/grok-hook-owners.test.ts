@@ -10,7 +10,7 @@ describe('Grok hook owners', () => {
   const directories: string[] = []
 
   async function makeDirectory(): Promise<string> {
-    const directory = await mkdtemp(join(tmpdir(), 'orca-grok-owners-'))
+    const directory = await mkdtemp(join(tmpdir(), 'occ-grok-owners-'))
     directories.push(directory)
     return directory
   }

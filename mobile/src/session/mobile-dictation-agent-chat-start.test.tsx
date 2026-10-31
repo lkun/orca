@@ -18,7 +18,7 @@ vi.mock('react-native', () => ({
   AppState: { addEventListener: () => ({ remove: () => {} }) },
   Platform: { OS: 'ios' }
 }))
-vi.mock('@orca/expo-two-way-audio', () => ({
+vi.mock('@occ/expo-two-way-audio', () => ({
   addExpoTwoWayAudioEventListener: () => ({ remove: () => {} }),
   initialize: async () => {
     device.opens += 1

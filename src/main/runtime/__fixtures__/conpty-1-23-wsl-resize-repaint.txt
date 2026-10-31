@@ -1,4 +1,4 @@
-[?9001h[?1004h[?2004h[?25l[2J[m[32m[1m[Horca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[1C]0;orca@xxxx: /mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[?25h[?2004lseq 1 80
+[?9001h[?1004h[?2004h[?25l[2J[m[32m[1m[Hocc@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[1C]0;occ@xxxx: /mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[?25h[?2004lseq 1 80
 1
 2
 3
@@ -79,11 +79,11 @@
 78
 79
 80[?2004h
-[32m[1morca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1Cecho $(seq 1000 1060)[?2004l
+[32m[1mocc@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1Cecho $(seq 1000 1060)[?2004l
 1000 1001 1002 1003 1004 1005 1006 1007 1008 1009 1010 1011 1012 1013 1014 1015 1016 1017 1018 1019 1020 1021 1022 1023 
 [39;120H 1024 1025 1026 1027 1028 1029 1030 1031 1032 1033 1034 1035 1036 1037 1038 1039 1040 1041 1042 1043 1044 1045 1046 1047 
 [39;120H 1048 1049 1050 1051 1052 1053 1054 1055 1056 1057 1058 1059 1060[?2004h
-[32m[1morca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1C[8;24;80t[?25l[8;24;80t[H64[K
+[32m[1mocc@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1C[8;24;80t[?25l[8;24;80t[H64[K
 65[K
 66[K
 67[K
@@ -100,9 +100,9 @@
 78[K
 79[K
 80[K[32m[1m
-orca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$ echo $(seq 1000 1060)[K
+occ@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$ echo $(seq 1000 1060)[K
 1000 1001 1002 1003 1004 1005 1006 1007 1008 1009 1010 1011 1012 1013 1014 1015 1016 1017 1018 1019 1020 1021 1022 1023 1024 1025 1026 1027 1028 1029 1030 1031 1032 1033 1034 1035 1036 1037 1038 1039 1040 1041 1042 1043 1044 1045 1046 1047 1048 1049 1050 1051 1052 1053 1054 1055 1056 1057 1058 1059 1060[K[32m[1m
-orca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1C[?25h[32m[1morca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1C[8;48;160t[?25l[H64[K
+occ@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1C[?25h[32m[1mocc@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1C[8;48;160t[?25l[H64[K
 65[K
 66[K
 67[K
@@ -119,9 +119,9 @@ orca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K
 78[K
 79[K
 80[K[32m[1m
-orca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$ echo $(seq 1000 1060)[K
+occ@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$ echo $(seq 1000 1060)[K
 1000 1001 1002 1003 1004 1005 1006 1007 1008 1009 1010 1011 1012 1013 1014 1015 1016 1017 1018 1019 1020 1021 1022 1023 1024 1025 1026 1027 1028 1029 1030 1031 1032 1033 1034 1035 1036 1037 1038 1039 1040 1041 1042 1043 1044 1045 1046 1047 1048 1049 1050 1051 1052 1053 1054 1055 1056 1057 1058 1059 1060[K[32m[1m
-orca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K
+occ@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K
 [K
 [K
 [K
@@ -148,7 +148,7 @@ orca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K
 [K
 [K
 [K
-[K[21;64H[?25h[32m[1morca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1C[8;40;120t[?25l[H64[K
+[K[21;64H[?25h[32m[1mocc@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1C[8;40;120t[?25l[H64[K
 65[K
 66[K
 67[K
@@ -165,9 +165,9 @@ orca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K
 78[K
 79[K
 80[K[32m[1m
-orca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$ echo $(seq 1000 1060)[K
+occ@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$ echo $(seq 1000 1060)[K
 1000 1001 1002 1003 1004 1005 1006 1007 1008 1009 1010 1011 1012 1013 1014 1015 1016 1017 1018 1019 1020 1021 1022 1023 1024 1025 1026 1027 1028 1029 1030 1031 1032 1033 1034 1035 1036 1037 1038 1039 1040 1041 1042 1043 1044 1045 1046 1047 1048 1049 1050 1051 1052 1053 1054 1055 1056 1057 1058 1059 1060[K[32m[1m
-orca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K
+occ@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K
 [K
 [K
 [K
@@ -185,4 +185,4 @@ orca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K
 [K
 [K
 [K
-[K[22;64H[?25h[32m[1morca@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1C
+[K[22;64H[?25h[32m[1mocc@xxxx[m:[34m[1m/mnt/c/Users/xxxx/AppData/Local/Temp/d1b10-pty/tool[m$[K[1C

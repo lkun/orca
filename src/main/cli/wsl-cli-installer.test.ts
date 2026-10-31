@@ -14,11 +14,11 @@ vi.mock('../wsl/wsl-runner', () => ({
 import { WslCliInstaller, _internals } from './wsl-cli-installer'
 
 function makeHostStatus(
-  launcherPath = 'C:\\Users\\me\\AppData\\Local\\Programs\\OCC\\resources\\bin\\orca.exe'
+  launcherPath = 'C:\\Users\\me\\AppData\\Local\\Programs\\OCC\\resources\\bin\\occ.exe'
 ) {
   return {
     platform: 'win32',
-    commandName: 'orca',
+    commandName: 'occ',
     commandPath: launcherPath,
     pathDirectory: 'C:\\Users\\me\\AppData\\Local\\Programs\\OCC\\resources\\bin',
     pathConfigured: true,
@@ -37,19 +37,19 @@ function makeHostStatus(
 const PRE_RC4_MANAGED_WSL_LAUNCHER = `#!/usr/bin/env bash
 set -euo pipefail
 # OCC managed WSL CLI launcher
-# ORCA_WIN_LAUNCHER_B64=QzpcUHJvZ3JhbSBGaWxlc1xPcmNhXHJlc291cmNlc1xiaW5cb3JjYS5jbWQ=
-ORCA_WIN_LAUNCHER='C:\\Program Files\\OCC\\resources\\bin\\occ.cmd'
-ORCA_BRIDGE_PS1='/home/alice/.local/share/orca/orca-wsl-bridge.ps1'
+# OCC_WIN_LAUNCHER_B64=QzpcUHJvZ3JhbSBGaWxlc1xPcmNhXHJlc291cmNlc1xiaW5cb3JjYS5jbWQ=
+OCC_WIN_LAUNCHER='C:\\Program Files\\OCC\\resources\\bin\\occ.cmd'
+OCC_BRIDGE_PS1='/home/alice/.local/share/occ/occ-wsl-bridge.ps1'
 if command -v powershell.exe >/dev/null 2>&1; then
-  ORCA_POWERSHELL=powershell.exe
+  OCC_POWERSHELL=powershell.exe
 elif [ -x /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe ]; then
-  ORCA_POWERSHELL=/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
+  OCC_POWERSHELL=/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
 else
   echo "OCC WSL CLI requires Windows interop and could not find powershell.exe." >&2
   exit 1
 fi
-ORCA_BRIDGE_PS1_WIN=$(wslpath -w "$ORCA_BRIDGE_PS1")
-exec "$ORCA_POWERSHELL" -NoProfile -ExecutionPolicy Bypass -File "$ORCA_BRIDGE_PS1_WIN" "$ORCA_WIN_LAUNCHER" "$@"
+OCC_BRIDGE_PS1_WIN=$(wslpath -w "$OCC_BRIDGE_PS1")
+exec "$OCC_POWERSHELL" -NoProfile -ExecutionPolicy Bypass -File "$OCC_BRIDGE_PS1_WIN" "$OCC_WIN_LAUNCHER" "$@"
 `
 
 function createWslRunner(
@@ -64,7 +64,7 @@ function createWslRunner(
 ) {
   const commandPath = '/home/alice/.local/bin/occ-ide'
   const legacyCommandPath = '/home/alice/.local/bin/occ'
-  const bridgePath = '/home/alice/.local/share/orca/orca-wsl-bridge.ps1'
+  const bridgePath = '/home/alice/.local/share/occ/occ-wsl-bridge.ps1'
   const files = new Map<string, string>()
   if (initialFile !== null) {
     files.set(commandPath, initialFile)
@@ -95,13 +95,13 @@ function createWslRunner(
         files.has(bridgePath) &&
         !files.get(bridgePath)?.includes('# OCC managed WSL CLI PowerShell bridge')
       ) {
-        throw new Error('__ORCA_CONFLICT__')
+        throw new Error('__OCC_CONFLICT__')
       }
       const launcher =
-        command.match(/cat > "\$command_tmp" <<'ORCA_WSL_CLI'\n([\s\S]*)\nORCA_WSL_CLI/)?.[1] ?? ''
+        command.match(/cat > "\$command_tmp" <<'OCC_WSL_CLI'\n([\s\S]*)\nOCC_WSL_CLI/)?.[1] ?? ''
       const bridge =
         command.match(
-          /cat > "\$bridge_tmp" <<'ORCA_WSL_BRIDGE'\n([\s\S]*)\nORCA_WSL_BRIDGE/
+          /cat > "\$bridge_tmp" <<'OCC_WSL_BRIDGE'\n([\s\S]*)\nOCC_WSL_BRIDGE/
         )?.[1] ?? ''
       files.set(commandPath, launcher)
       files.set(bridgePath, bridge)
@@ -119,7 +119,7 @@ function createWslRunner(
           files.has(bridgePath) &&
           !files.get(bridgePath)?.includes('# OCC managed WSL CLI PowerShell bridge')
         ) {
-          throw new Error('__ORCA_CONFLICT__')
+          throw new Error('__OCC_CONFLICT__')
         }
         files.delete(commandPath)
         files.delete(bridgePath)
@@ -134,13 +134,13 @@ function createWslRunner(
     }
     if (command.includes('cat ')) {
       if (command.includes(commandPath)) {
-        return files.get(commandPath) ?? '__ORCA_MISSING__'
+        return files.get(commandPath) ?? '__OCC_MISSING__'
       }
       if (command.includes(bridgePath)) {
-        return files.get(bridgePath) ?? '__ORCA_MISSING__'
+        return files.get(bridgePath) ?? '__OCC_MISSING__'
       }
       if (command.includes(legacyCommandPath)) {
-        return files.get(legacyCommandPath) ?? '__ORCA_MISSING__'
+        return files.get(legacyCommandPath) ?? '__OCC_MISSING__'
       }
     }
     throw new Error(`Unexpected WSL command: ${command}`)
@@ -187,7 +187,7 @@ describe('WslCliInstaller', () => {
   it('reports installed WSL launchers whose bin directory is missing from PATH', async () => {
     const launcher = _internals.buildWslLauncher(
       'C:\\OCC\\occ.cmd',
-      '/home/alice/.local/share/orca/orca-wsl-bridge.ps1'
+      '/home/alice/.local/share/occ/occ-wsl-bridge.ps1'
     )
     const wsl = createWslRunner(launcher, false)
     const installer = new WslCliInstaller({
@@ -207,7 +207,7 @@ describe('WslCliInstaller', () => {
   it('accepts current managed WSL scripts with an extra heredoc trailing newline', async () => {
     const launcher = `${_internals.buildWslLauncher(
       'C:\\OCC\\occ.cmd',
-      '/home/alice/.local/share/orca/orca-wsl-bridge.ps1'
+      '/home/alice/.local/share/occ/occ-wsl-bridge.ps1'
     )}\n`
     const wsl = createWslRunner(launcher)
     const installer = new WslCliInstaller({
@@ -215,7 +215,7 @@ describe('WslCliInstaller', () => {
       distro: 'Ubuntu',
       hostInstaller: { getStatus: async () => makeHostStatus('C:\\OCC\\occ.cmd') },
       wslRunner: async (distro, command) => {
-        if (command.includes('cat /home/alice/.local/share/orca/orca-wsl-bridge.ps1')) {
+        if (command.includes('cat /home/alice/.local/share/occ/occ-wsl-bridge.ps1')) {
           return `${_internals.buildWslBridgeScript()}\n`
         }
         return wsl.runner(distro, command)
@@ -260,7 +260,7 @@ describe('WslCliInstaller', () => {
   })
 
   it('repairs a managed launcher whose bridge is missing, but preserves a conflicting bridge', async () => {
-    const nativeLauncher = 'C:\\OCC\\resources\\bin\\orca.exe'
+    const nativeLauncher = 'C:\\OCC\\resources\\bin\\occ.exe'
     const missingBridge = createWslRunner(PRE_RC4_MANAGED_WSL_LAUNCHER, true, {
       initialBridge: null
     })
@@ -315,10 +315,10 @@ describe('WslCliInstaller', () => {
   })
 
   it('retains command ownership when only the bridge conflicts', async () => {
-    const nativeLauncher = 'C:\\OCC\\resources\\bin\\orca.exe'
+    const nativeLauncher = 'C:\\OCC\\resources\\bin\\occ.exe'
     const currentLauncher = _internals.buildWslLauncher(
       nativeLauncher,
-      '/home/alice/.local/share/orca/orca-wsl-bridge.ps1'
+      '/home/alice/.local/share/occ/occ-wsl-bridge.ps1'
     )
     const wsl = createWslRunner(currentLauncher, true, {
       initialBridge: 'Write-Output "user-owned bridge"\n'
@@ -340,7 +340,7 @@ describe('WslCliInstaller', () => {
   })
 
   it('moves a legacy-only managed registration to occ-ide without touching unmanaged names', async () => {
-    const nativeLauncher = 'C:\\OCC\\resources\\bin\\orca.exe'
+    const nativeLauncher = 'C:\\OCC\\resources\\bin\\occ.exe'
     const managedLegacy = createWslRunner(null, true, {
       initialBridge: _internals.buildWslBridgeScript(),
       initialLegacyFile: PRE_RC4_MANAGED_WSL_LAUNCHER
@@ -398,13 +398,13 @@ describe('WslCliInstaller', () => {
   it.skipIf(process.platform === 'win32')(
     'rolls both files back when the command replacement fails after the bridge move',
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-wsl-cli-rollback-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-wsl-cli-rollback-'))
       const home = join(root, 'home with spaces')
       const commandPath = join(home, '.local', 'bin', 'occ-ide')
-      const bridgePath = join(home, '.local', 'share', 'orca', 'orca-wsl-bridge.ps1')
+      const bridgePath = join(home, '.local', 'share', 'occ', 'occ-wsl-bridge.ps1')
       const bridge = _internals.buildWslBridgeScript()
       await mkdir(join(home, '.local', 'bin'), { recursive: true })
-      await mkdir(join(home, '.local', 'share', 'orca'), { recursive: true })
+      await mkdir(join(home, '.local', 'share', 'occ'), { recursive: true })
       await writeFile(commandPath, PRE_RC4_MANAGED_WSL_LAUNCHER, 'utf8')
       await writeFile(bridgePath, bridge, 'utf8')
 
@@ -431,7 +431,7 @@ describe('WslCliInstaller', () => {
         platform: 'win32',
         distro: 'Ubuntu',
         hostInstaller: {
-          getStatus: async () => makeHostStatus('C:\\Program Files\\OCC\\resources\\bin\\orca.exe')
+          getStatus: async () => makeHostStatus('C:\\Program Files\\OCC\\resources\\bin\\occ.exe')
         },
         wslRunner: runner
       })

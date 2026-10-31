@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaCloudAuthConfig } from '../../orca-profiles/profile-cloud-auth-config'
-import type { OrcaRuntimeRpcServer } from '../runtime-rpc'
+import type { OCCCloudAuthConfig } from '../../occ-profiles/profile-cloud-auth-config'
+import type { OCCRuntimeRpcServer } from '../runtime-rpc'
 
 const fakes = vi.hoisted(() => ({
   readRelayAuthContext: vi.fn(),
@@ -58,13 +58,13 @@ function service(): DesktopRelayService {
       getDevice: () => ({ deviceId: 'device-1', scope: 'mobile' }),
       getMobilePairingConnectionMode: () => 'automatic'
     })
-  } as unknown as OrcaRuntimeRpcServer
+  } as unknown as OCCRuntimeRpcServer
   return new DesktopRelayService({
     authConfig: {
       relayDirectorUrl: 'https://relay.example.test',
       relayTokenEndpoint: 'https://login.example.test/relay-token'
-    } as OrcaCloudAuthConfig,
-    userDataPath: '/tmp/orca-relay-liveness-test',
+    } as OCCCloudAuthConfig,
+    userDataPath: '/tmp/occ-relay-liveness-test',
     appVersion: '1.4.188',
     runtimeRpc,
     onStatus: () => {}

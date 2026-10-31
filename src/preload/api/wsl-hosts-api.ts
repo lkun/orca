@@ -58,5 +58,5 @@ export function getWslHostsApi(
   if (!isWslHostsServingForWindow(env, argv)) {
     return undefined
   }
-  return platform === 'win32' || env.ORCA_E2E_FAKE_WSL_HOSTS ? wslHostsApi : undefined
+  return platform === 'win32' || env.OCC_E2E_FAKE_WSL_HOSTS ? wslHostsApi : undefined
 }

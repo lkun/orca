@@ -151,10 +151,10 @@ try {
   function Test-Path([string]$LiteralPath){if($LiteralPath -ne 'HKLM:\SOFTWARE\OpenSSH'){throw 'Unexpected filesystem query'};return $false}
   function Get-ItemProperty([string]$LiteralPath,[object]$ErrorAction){if($LiteralPath -ne 'HKLM:\SOFTWARE\OpenSSH'){throw 'Unexpected registry query'};return $null}
   function Remove-ItemProperty {throw 'Unexpected registry mutation'}
-  function Stop-Service([string]$Name,[switch]$Force,[object]$ErrorAction){if($Name -ne 'orca-sshd-control'){throw 'Foreign service stop'};if($control.case.Fault -ne 'server-exit'){$control.serverLive=$false}}
-  function Invoke-Bounded([string]$Program,[string[]]$Arguments){if($Program -ne 'sc.exe' -or ($Arguments -join '|') -ne 'delete|orca-sshd-control'){throw 'Unexpected native command'};if($control.case.Fault -ne 'service-absence'){$control.servicePresent=$false}}
+  function Stop-Service([string]$Name,[switch]$Force,[object]$ErrorAction){if($Name -ne 'occ-sshd-control'){throw 'Foreign service stop'};if($control.case.Fault -ne 'server-exit'){$control.serverLive=$false}}
+  function Invoke-Bounded([string]$Program,[string[]]$Arguments){if($Program -ne 'sc.exe' -or ($Arguments -join '|') -ne 'delete|occ-sshd-control'){throw 'Unexpected native command'};if($control.case.Fault -ne 'service-absence'){$control.servicePresent=$false}}
   function Get-Process([int]$Id,[object]$ErrorAction){if($Id -ne 100){throw 'Foreign process query'};if($control.serverLive){@{Id=100}}}
-  function Get-Service([string]$Name,[object]$ErrorAction){if($Name -ne 'orca-sshd-control'){throw 'Foreign service query'};if($control.servicePresent){@{Name=$Name}}}
+  function Get-Service([string]$Name,[object]$ErrorAction){if($Name -ne 'occ-sshd-control'){throw 'Foreign service query'};if($control.servicePresent){@{Name=$Name}}}
   function Get-ProfileControlLoaded([string]$Sid){
     $state=$control.profiles[$Sid]
     if($state.Mode -eq 'late'){return $control.clockMs -lt $state.UnloadAtMs}
@@ -163,7 +163,7 @@ try {
   }
   function Get-CimInstance([Parameter(Position=0)][string]$ClassName,[string]$Filter){
     if($ClassName -eq 'Win32_Service'){
-      if($Filter -ne "Name='orca-sshd-control'"){throw 'Foreign service query'}
+      if($Filter -ne "Name='occ-sshd-control'"){throw 'Foreign service query'}
       if($control.servicePresent){@{PathName=$(if($control.case.Fault -eq 'service-identity'){'C:\foreign\sshd.exe'}else{'C:\fake\ossh-control\sshd.exe'});ProcessId=$(if($control.case.Fault -eq 'service-pid'){200}else{100})}};return
     }
     if($ClassName -eq 'Win32_Process'){
@@ -198,9 +198,9 @@ try {
     $ownedAccounts=@(for($index=0;$index -lt $ownedSids.Count;$index++){
       $sid=$ownedSids[$index];$control.profileQueries[$sid]=0
       $control.profiles[$sid]=@{Mode=$Case.Modes[$index];UnloadAtMs=$Case.UnloadAtMs[$index];CurrentLoaded=$true;Deleted=$false}
-      $name="orca-control-$index";$control.users[$name]=$true;@{name=$name;sid=$(if($Case.MissingSid -and $index -eq 2){$null}else{$sid})}
+      $name="occ-control-$index";$control.users[$name]=$true;@{name=$name;sid=$(if($Case.MissingSid -and $index -eq 2){$null}else{$sid})}
     })
-    $report=@{status='proof-passed-cleanup-pending'};$openSshKey='HKLM:\SOFTWARE\OpenSSH';$serviceName='orca-sshd-control'
+    $report=@{status='proof-passed-cleanup-pending'};$openSshKey='HKLM:\SOFTWARE\OpenSSH';$serviceName='occ-sshd-control'
     $root='C:\fake\ossh-control';$createdService=$true;$ownedServerPid=100;$sshDir='C:\fake\OpenSSH';$preexisting=@();$deniedToolDirs=@()
     & $cleanupBlock
     if($Case.Fault){

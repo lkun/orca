@@ -15,7 +15,7 @@ import { canSelectAddRepoHost } from './add-repo-host-availability'
 import {
   indexExecutionHostsById,
   pickerExecutionHosts
-} from '../../../../shared/managed-orcad-execution-host'
+} from '../../../../shared/managed-occd-execution-host'
 import { translate } from '@/i18n/i18n'
 import { extractIpcErrorMessage } from '@/lib/ipc-error'
 import { toastSshConnectFailure } from '@/ssh/ssh-connect-failure-toast'

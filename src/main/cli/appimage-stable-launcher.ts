@@ -21,7 +21,7 @@ import { quotePosixShellDoubleQuotedApostrophe } from '../../shared/shell-argume
 const LAUNCHER_DIRECTORY_NAME = 'launcher'
 const LIVE_ENDPOINT_NAME = 'live'
 const INSTALLED_ENDPOINT_NAME = 'installed'
-const LAUNCHER_MARKER = '# orca-appimage-stable-launcher'
+const LAUNCHER_MARKER = '# occ-appimage-stable-launcher'
 const LAUNCHER_WAIT_SECONDS = 5
 const LAUNCHER_MAX_BYTES = 16 * 1024
 
@@ -129,7 +129,7 @@ function replaceOwnedLauncher(
 ): boolean {
   const displacedPath = join(
     dirname(launcherPath),
-    `.orca-preserved-launcher-${process.pid}-${randomUUID()}`
+    `.occ-preserved-launcher-${process.pid}-${randomUUID()}`
   )
   try {
     renameSync(launcherPath, displacedPath)

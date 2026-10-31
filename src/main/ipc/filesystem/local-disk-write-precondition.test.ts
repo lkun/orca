@@ -116,7 +116,7 @@ function pauseFileRead(path: string) {
 }
 
 beforeEach(async () => {
-  base = await mkdtemp(join(await realpath(tmpdir()), 'orca-disk-write-precondition-'))
+  base = await mkdtemp(join(await realpath(tmpdir()), 'occ-disk-write-precondition-'))
 })
 
 afterEach(async () => {

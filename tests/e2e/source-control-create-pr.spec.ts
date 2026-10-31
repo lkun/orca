@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import type { CreateHostedReviewResult } from '../../src/shared/hosted-review'
 
@@ -126,7 +126,7 @@ async function seedCreatePREligibleBranch(
       number: 73,
       title: 'Create PR from E2E',
       state: 'open' as const,
-      url: 'https://github.com/acme/orca/pull/73',
+      url: 'https://github.com/acme/occ/pull/73',
       checksStatus: 'pending' as const,
       updatedAt: '2026-05-15T00:00:00.000Z',
       mergeable: 'UNKNOWN' as const
@@ -193,7 +193,7 @@ async function seedCreatePREligibleBranch(
         return {
           ok: true as const,
           number: 73,
-          url: 'https://github.com/acme/orca/pull/73'
+          url: 'https://github.com/acme/occ/pull/73'
         }
       }
     }))
@@ -205,25 +205,25 @@ async function seedCreatePREligibleBranch(
 }
 
 test.describe('Source Control create pull request', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
   })
 
-  test('creates the pull request from the Source Control primary action', async ({ orcaPage }) => {
-    const { branch, worktreeId } = await seedCreatePREligibleBranch(orcaPage)
-    await openSourceControl(orcaPage, worktreeId)
-    await forceCreatePREligibleStatus(orcaPage, worktreeId, branch)
+  test('creates the pull request from the Source Control primary action', async ({ occPage }) => {
+    const { branch, worktreeId } = await seedCreatePREligibleBranch(occPage)
+    await openSourceControl(occPage, worktreeId)
+    await forceCreatePREligibleStatus(occPage, worktreeId, branch)
 
-    const titleInput = orcaPage.getByRole('textbox', { name: 'Pull request title' })
-    const descriptionInput = orcaPage.getByRole('textbox', {
+    const titleInput = occPage.getByRole('textbox', { name: 'Pull request title' })
+    const descriptionInput = occPage.getByRole('textbox', {
       name: 'Pull request description'
     })
-    const createButton = getCreatePRComposerSubmitButton(orcaPage)
+    const createButton = getCreatePRComposerSubmitButton(occPage)
     await expect(createButton).toBeVisible({ timeout: 10_000 })
     await expect(createButton).toBeEnabled()
     await expect(titleInput).toHaveValue('E2e secondary')
-    await expect(orcaPage.getByRole('combobox', { name: 'Pull request base branch' })).toHaveValue(
+    await expect(occPage.getByRole('combobox', { name: 'Pull request base branch' })).toHaveValue(
       'main'
     )
     await expect(descriptionInput).toHaveValue('')
@@ -234,7 +234,7 @@ test.describe('Source Control create pull request', () => {
     await expect
       .poll(
         () =>
-          orcaPage.evaluate(
+          occPage.evaluate(
             () =>
               (window as unknown as { __createPRPayloads: CreatePRPayload[] }).__createPRPayloads
                 .length
@@ -243,7 +243,7 @@ test.describe('Source Control create pull request', () => {
       )
       .toBe(1)
 
-    const payloads = await orcaPage.evaluate(
+    const payloads = await occPage.evaluate(
       () => (window as unknown as { __createPRPayloads: CreatePRPayload[] }).__createPRPayloads
     )
     expect(payloads).toHaveLength(1)
@@ -258,34 +258,34 @@ test.describe('Source Control create pull request', () => {
   })
 
   test('surfaces create failures without clearing the pull request composer', async ({
-    orcaPage
+    occPage
   }) => {
     const failureMessage = 'Create PR failed: GitHub API rate limit exceeded'
-    const { branch, worktreeId } = await seedCreatePREligibleBranch(orcaPage, {
+    const { branch, worktreeId } = await seedCreatePREligibleBranch(occPage, {
       createResult: {
         ok: false,
         code: 'unknown',
         error: failureMessage
       }
     })
-    await openSourceControl(orcaPage, worktreeId)
-    await forceCreatePREligibleStatus(orcaPage, worktreeId, branch)
+    await openSourceControl(occPage, worktreeId)
+    await forceCreatePREligibleStatus(occPage, worktreeId, branch)
 
-    const titleInput = orcaPage.getByRole('textbox', { name: 'Pull request title' })
-    const descriptionInput = orcaPage.getByRole('textbox', {
+    const titleInput = occPage.getByRole('textbox', { name: 'Pull request title' })
+    const descriptionInput = occPage.getByRole('textbox', {
       name: 'Pull request description'
     })
-    const createButton = getCreatePRComposerSubmitButton(orcaPage)
+    const createButton = getCreatePRComposerSubmitButton(occPage)
     await expect(createButton).toBeVisible({ timeout: 10_000 })
     await titleInput.fill('Failing PR from E2E')
     await descriptionInput.fill('This draft should survive a failed create attempt.')
     await expect(createButton).toBeEnabled()
     await createButton.click()
 
-    await expect(orcaPage.getByText(failureMessage)).toBeVisible()
+    await expect(occPage.getByText(failureMessage)).toBeVisible()
     await expect(titleInput).toHaveValue('Failing PR from E2E')
     await expect(descriptionInput).toHaveValue('This draft should survive a failed create attempt.')
-    await expect(orcaPage.getByRole('combobox', { name: 'Pull request base branch' })).toHaveValue(
+    await expect(occPage.getByRole('combobox', { name: 'Pull request base branch' })).toHaveValue(
       'main'
     )
     await expect(createButton).toBeEnabled()

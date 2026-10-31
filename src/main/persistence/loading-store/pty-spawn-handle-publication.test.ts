@@ -1,6 +1,6 @@
 import { expect, it, vi } from 'vitest'
 import { fixture, admitRuntimeSpawnPane } from './profile-state-delayed-authority-fixture'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { commitPtyIpcSpawn } from '../../ipc/pty/ipc/spawn-commit'
 import { createPtyIpcSpawnState } from '../../ipc/pty/ipc/spawn-state'
 import { commitRuntimePtySpawn } from '../../ipc/pty/runtime/spawn-commit'
@@ -23,7 +23,7 @@ const binding = {
   ptyId: 'mobile-pending-spawn',
   incarnationId: 'cccccccc-cccc-4ccc-8ccc-cccccccccccc'
 }
-class MobileCreateRuntime extends OrcaRuntimeService {
+class MobileCreateRuntime extends OCCRuntimeService {
   waitForCreatedSurface() {
     this.pendingMobileTerminalCreatesByKey.set(`${binding.worktreeId}::${binding.tabId}`, {
       activate: true,

@@ -97,7 +97,7 @@ vi.mock('expo-file-system', () => {
 vi.mock('expo-clipboard', () => ({}))
 vi.mock('expo-document-picker', () => ({}))
 vi.mock('expo-image-picker', () => ({}))
-vi.mock('../../modules/orca-mobile-web-shell/src', () => ({
+vi.mock('../../modules/occ-mobile-web-shell/src', () => ({
   presentPdf: async (uri: string) => {
     device.presentations.push(uri)
   }

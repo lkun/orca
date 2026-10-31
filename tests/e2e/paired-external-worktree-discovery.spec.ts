@@ -4,7 +4,7 @@ import type { Page } from '@stablyai/playwright-test'
 import { gitExecFileAsync } from '../../src/main/git/runner'
 import { listWorktreesStrict } from '../../src/main/git/worktree'
 import { areWorktreePathsEqual } from '../../src/main/git/worktree-path-comparison'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   createRuntimeDesktopPairingOffer,
   launchPairedElectronClient,
@@ -29,7 +29,7 @@ function pathsMatch(left: string, right: string): boolean {
   return equivalentTestPaths(left).some((candidate) => areWorktreePathsEqual(candidate, right))
 }
 
-function waitForCatalogWorktree(page: Page, repoId: string, worktreePath: string): Promise<string> {
+function waitFocctalogWorktree(page: Page, repoId: string, worktreePath: string): Promise<string> {
   return page.evaluate(
     ({ expectedPaths, expectedRepoId, windows }) => {
       const comparablePath = (value: string): string =>
@@ -142,8 +142,8 @@ test('shows an externally created worktree on a paired client without reconnect'
       client.page,
       client.environmentId
     )
-    const hostCatalogUpdate = waitForCatalogWorktree(sharedPage, repoId, externalPath)
-    const clientCatalogUpdate = waitForCatalogWorktree(client.page, repoId, externalPath)
+    const hostCatalogUpdate = waitFocctalogWorktree(sharedPage, repoId, externalPath)
+    const clientCatalogUpdate = waitFocctalogWorktree(client.page, repoId, externalPath)
     await gitExecFileAsync(['worktree', 'add', '--quiet', '-b', branch, externalPath], {
       cwd: testRepoPath
     })

@@ -25,16 +25,16 @@ vi.mock(import('node:os'), async (importOriginal) => {
   return { ...actual, homedir: () => fixture.home }
 })
 
-const APP_ENVIRONMENT_SLOT = Symbol.for('orca.host.appEnvironment')
+const APP_ENVIRONMENT_SLOT = Symbol.for('occ.host.appEnvironment')
 
 beforeEach(() => {
-  fixture.home = mkdtempSync(join(tmpdir(), 'orca-uninstall-hooks-home-'))
-  fixture.userData = mkdtempSync(join(tmpdir(), 'orca-uninstall-hooks-data-'))
+  fixture.home = mkdtempSync(join(tmpdir(), 'occ-uninstall-hooks-home-'))
+  fixture.userData = mkdtempSync(join(tmpdir(), 'occ-uninstall-hooks-data-'))
   fixture.exit.mockClear()
   // Every path the removers resolve from the environment stays in the fixture, on any runner.
   vi.stubEnv('HOME', fixture.home)
   vi.stubEnv('USERPROFILE', fixture.home)
-  vi.stubEnv('ORCA_USER_DATA_PATH', fixture.userData)
+  vi.stubEnv('OCC_USER_DATA_PATH', fixture.userData)
   vi.stubEnv('XDG_CONFIG_HOME', join(fixture.home, '.config'))
   vi.stubEnv('APPDATA', join(fixture.home, 'AppData', 'Roaming'))
   vi.stubEnv('CODEX_HOME', join(fixture.home, '.codex'))

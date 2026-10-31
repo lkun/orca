@@ -33,7 +33,7 @@ afterEach(() => {
 })
 
 function sourcesFrom(files) {
-  const root = mkdtempSync(path.join(tmpdir(), 'orca-protected-copy-'))
+  const root = mkdtempSync(path.join(tmpdir(), 'occ-protected-copy-'))
   dirs.push(root)
   const sources = new Map()
   for (const [name, text] of Object.entries(files)) {

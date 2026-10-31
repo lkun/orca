@@ -14,7 +14,7 @@ import type { ClaudeStructuredLaunch } from '../claude-structured-launch-resolut
 import type { StructuredLaunchRequest } from '../../runtime/structured-agent-launch-composition'
 import type { ClaudeJournalTranslator } from '../claude-journal-translator-contract'
 import type { ClaudePendingPrompt, ClaudePromptRegistry } from '../claude-prompt-registry'
-import { cancelProcessAcquisition } from '@orca/process-host/cancel-process-acquisition'
+import { cancelProcessAcquisition } from '@occ/process-host/cancel-process-acquisition'
 import { randomUUID } from 'node:crypto'
 import type { AgentSessionFastModeState } from '../../../shared/agent-session-wire'
 import type { AgentChildWorkEvidence } from '../../../shared/agent-status-child-work-evidence'

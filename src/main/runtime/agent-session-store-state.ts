@@ -5,7 +5,7 @@ import {
 import { agentSessionRefusalError } from '../../shared/agent-session-wire-refusals'
 import type { AgentSessionOperationRow } from '../../shared/agent-session-operation-ledger'
 import type { AgentSessionRecord } from '../../shared/agent-session-record'
-import type { AgentSessionOrcaStopCause } from '../../shared/agent-session-orca-stop'
+import type { AgentSessionOCCStopCause } from '../../shared/agent-session-occ-stop'
 import type { AgentSessionTabTable } from './agent-session/agent-session-tab-table'
 
 export type RetiredAgentSessionClaimKey = { keyId: string; retiredAt: number }
@@ -22,7 +22,7 @@ export type AgentSessionStoreState = {
   /** Chat tab id → the conversation it shows; null until this store first records a tab. */
   sessionTabs: AgentSessionTabTable | null
   /** Prior runtime endings, read at load; missing/null evidence attributes no death to OCC. */
-  runtimeEnds?: ReadonlyMap<string, AgentSessionOrcaStopCause> | null
+  runtimeEnds?: ReadonlyMap<string, AgentSessionOCCStopCause> | null
 }
 
 export function heldAgentSessionIds(state: AgentSessionStoreState): string[] {

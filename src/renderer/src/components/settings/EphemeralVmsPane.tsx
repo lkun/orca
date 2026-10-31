@@ -21,7 +21,7 @@ type RecipeCatalogEntry = Awaited<
 
 // Keep the nudge short; the skill owns provider choice, setup, authentication and validation.
 const AGENT_PROMPT =
-  'Use the orca-per-workspace-env skill to set up a per-workspace environment for this repo.'
+  'Use the occ-per-workspace-env skill to set up a per-workspace environment for this repo.'
 
 export function EphemeralVmsPane(): React.JSX.Element {
   const openModal = useAppStore((state) => state.openModal)
@@ -220,7 +220,7 @@ export function EphemeralVmsPane(): React.JSX.Element {
             <p className="text-xs text-muted-foreground">
               {translate(
                 'auto.components.settings.EphemeralVmsPane.recipesHelp',
-                'Recipes from orca.yaml and enabled plugins show up here, ready to launch a workspace on.'
+                'Recipes from occ.yaml and enabled plugins show up here, ready to launch a workspace on.'
               )}
             </p>
           </div>

@@ -1,5 +1,5 @@
 // L80: emulate the PTY host's binding commit before registration in layout-owner builds; switch-off writes nothing.
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import type { RuntimePtyController } from './runtime-pty-controller-contract'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
 import { getConnectionExecutionHostId } from '../../shared/execution-host'
@@ -7,7 +7,7 @@ import { getPtyExecutionHost } from '../../shared/terminal-execution-host'
 import { asProfileSessionStore, storeOf } from './profile-session-store.test-fixture'
 import { reusedTerminalIdUnbinding } from '../persistence/loading-store/reused-terminal-id-unbind'
 import { layoutContainsLeafId } from '../persistence/restoring-sessions/terminal-layout-normalization'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 
 export { boundSessionOf, forgetInstalledPaneSession } from './profile-session-store.test-fixture'
 
@@ -85,11 +85,11 @@ export function withBoundPane(
 
 /** Bind before registration, creating an in-memory session when absent; no-op with the switch off. */
 export function bindPaneFirst(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   pane: BoundPane,
   hostId = 'local'
 ): void {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     return
   }
   const store = storeOf(runtime)
@@ -102,12 +102,12 @@ export function bindPaneFirst(
 }
 
 export function movePaneFirst(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   fromTabId: string,
   pane: BoundPane,
   hostId = 'local'
 ): void {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     return
   }
   const store = storeOf(runtime)
@@ -133,7 +133,7 @@ export function movePaneFirst(
 }
 
 export function registerBoundPty(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   ptyId: string,
   worktreeId: string,
   connectionId: string | null,
@@ -158,7 +158,7 @@ export function registerLivePty(
   connectionId: string | null,
   binding: { tabId: string; leafId: string } & Record<string, unknown>
 ): void {
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     registerBoundPty(runtime, ptyId, worktreeId, connectionId, binding)
   }
 }
@@ -167,7 +167,7 @@ export function committingSpawn<
   Args extends { worktreeId?: string; tabId?: string; leafId?: string },
   Result extends { id: string }
 >(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   spawn: (args: Args) => Promise<Result>,
   hostId = 'local'
 ): (args: Args) => Promise<Result> {
@@ -191,7 +191,7 @@ export function committingSpawn<
 
 /** Bind the pre-spawn pane, refusing one closed since; emulate it for stores without pane writes. */
 function commitIntoWrittenPane(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   args: SpawnArgs,
   result: unknown
 ): void {
@@ -225,7 +225,7 @@ function commitIntoWrittenPane(
 type SpawnArgs = Parameters<NonNullable<RuntimePtyController['spawn']>>[0]
 
 type PtyControllerRuntimePrototype = {
-  setPtyController: (this: OrcaRuntimeService, controller: RuntimePtyController | null) => void
+  setPtyController: (this: OCCRuntimeService, controller: RuntimePtyController | null) => void
 }
 
 const uncommittedControllers = new WeakSet<RuntimePtyController>()
@@ -277,10 +277,10 @@ export function commitFakeSpawnsInRuntimeTests(prototype: PtyControllerRuntimePr
 /** Inventory loss without an exit disconnects and retains recoverable panes.
  * Switch-off builds retain their existing code-0 exit behavior. */
 export async function dropFromHostInventory(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   ptyId: string
 ): Promise<void> {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     runtime.onPtyExit(ptyId, 0)
     return
   }

@@ -13,7 +13,7 @@ import type { Tab } from '../../../shared/tab-types'
 import { useRunningTerminalCloseConfirmStore } from '@/store/running-terminal-close-confirm'
 import { FLOATING_TERMINAL_WORKTREE_ID, getDefaultSettings } from '../../../shared/constants'
 import {
-  ORCA_EDITOR_REQUEST_CMD_SAVE_EVENT,
+  OCC_EDITOR_REQUEST_CMD_SAVE_EVENT,
   type EditorRequestCmdSaveDetail
 } from './editor/editor-autosave'
 import { createTestStore, makeWorktree, TEST_REPO } from '@/store/slices/store-test-helpers'
@@ -109,7 +109,7 @@ const controller = {
   handleNewTab: vi.fn(),
   keybindings: undefined,
   mobileEmulatorEnabled: false,
-  terminalShortcutPolicy: 'orca-first'
+  terminalShortcutPolicy: 'occ-first'
 } as unknown as TerminalActivationController
 
 function pressCmdS(): (EditorRequestCmdSaveDetail | undefined)[] {
@@ -117,7 +117,7 @@ function pressCmdS(): (EditorRequestCmdSaveDetail | undefined)[] {
   const listener = (event: Event): void => {
     details.push((event as CustomEvent<EditorRequestCmdSaveDetail>).detail ?? undefined)
   }
-  window.addEventListener(ORCA_EDITOR_REQUEST_CMD_SAVE_EVENT, listener)
+  window.addEventListener(OCC_EDITOR_REQUEST_CMD_SAVE_EVENT, listener)
   const target = document.createElement('div')
   document.body.appendChild(target)
   const event = new KeyboardEvent('keydown', { key: 's', metaKey: true, cancelable: true })
@@ -125,7 +125,7 @@ function pressCmdS(): (EditorRequestCmdSaveDetail | undefined)[] {
   try {
     handleTerminalWorkspaceKeyDown(event, controller, 'darwin')
   } finally {
-    window.removeEventListener(ORCA_EDITOR_REQUEST_CMD_SAVE_EVENT, listener)
+    window.removeEventListener(OCC_EDITOR_REQUEST_CMD_SAVE_EVENT, listener)
     target.remove()
   }
   return details

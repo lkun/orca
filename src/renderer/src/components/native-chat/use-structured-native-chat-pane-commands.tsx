@@ -2,8 +2,8 @@ import { useCallback, useMemo, type KeyboardEventHandler, type RefObject } from 
 import { useAppStore } from '@/store'
 import { formatShortcutLabel } from '@/hooks/useShortcutLabel'
 import { getShortcutPlatform } from '@/lib/shortcut-platform'
-import { isOrcaSessionId } from '../../../../shared/orca-session-address'
-import { resolveStructuredSessionOrcaSessionId } from '../../runtime/structured-session-orca-session-id'
+import { isOCCSessionId } from '../../../../shared/occ-session-address'
+import { resolveStructuredSessionOCCSessionId } from '../../runtime/structured-session-occ-session-id'
 import type { NativeChatStructuredViewProps } from './native-chat-view-types'
 import type { NativeChatHandOff } from './use-native-chat-hand-off'
 import type { NativeChatComposerHandle } from './NativeChatComposer'
@@ -35,10 +35,10 @@ export function useStructuredNativeChatPaneCommands({
   const { tabId, groupId, isVisible, sessionId, target } = pane
   const terminalPaneActions = pane.contextMenuActions
   const keybindings = useAppStore((state) => state.keybindings)
-  const resolveOrcaSessionId = useMemo(
+  const resolveOCCSessionId = useMemo(
     () =>
-      isOrcaSessionId(sessionId)
-        ? () => resolveStructuredSessionOrcaSessionId(target, sessionId)
+      isOCCSessionId(sessionId)
+        ? () => resolveStructuredSessionOCCSessionId(target, sessionId)
         : undefined,
     [sessionId, target]
   )
@@ -59,7 +59,7 @@ export function useStructuredNativeChatPaneCommands({
       onPaste: pasteClipboardIntoComposer
     },
     enabled: isVisible,
-    resolveOrcaSessionId,
+    resolveOCCSessionId,
     composerRef,
     showTerminalPaneActions: terminalPaneActions !== undefined,
     splitShortcutLabels: {

@@ -11,8 +11,8 @@ import {
 } from './LinearAgentSkillSetupPrompt'
 import type { LinearAgentSkillPromptSettings } from './linear-agent-skill-runtime'
 
-const HOST_DISMISS_STORAGE_KEY = 'orca.linearTicketsSkill.setupDismissed.host'
-const FEDORA_DISMISS_STORAGE_KEY = 'orca.linearTicketsSkill.setupDismissed.wsl.Fedora'
+const HOST_DISMISS_STORAGE_KEY = 'occ.linearTicketsSkill.setupDismissed.host'
+const FEDORA_DISMISS_STORAGE_KEY = 'occ.linearTicketsSkill.setupDismissed.wsl.Fedora'
 
 const projectHostRuntime: ProjectExecutionRuntimeResolution = {
   status: 'resolved',
@@ -342,11 +342,11 @@ describe('LinearAgentSkillSetupPrompt', () => {
     })
     await settleRender()
 
-    expect(document.body.textContent).toContain('orca-linear')
+    expect(document.body.textContent).toContain('occ-linear')
     expect(mocks.panelProps.at(-1)).toEqual(
       expect.objectContaining({
-        skillNames: ['orca-linear'],
-        installedSkillNames: ['orca-linear']
+        skillNames: ['occ-linear'],
+        installedSkillNames: ['occ-linear']
       })
     )
     expect(mocks.panelProps.at(-1)?.getPrerequisiteStatus).toBeUndefined()
@@ -423,7 +423,7 @@ describe('LinearAgentSkillSetupPrompt', () => {
     await settleRender()
 
     expect(document.body.querySelector('[data-testid="linear-skill-inline-panel"]')).not.toBeNull()
-    expect(document.body.textContent).toContain('orca-linear')
+    expect(document.body.textContent).toContain('occ-linear')
 
     const installButton = Array.from(document.body.querySelectorAll('button')).find(
       (button) => button.textContent === 'Mock install'
@@ -706,7 +706,7 @@ describe('LinearAgentSkillSetupPrompt', () => {
         ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
     await settleRender()
-    expect(mocks.panelProps.at(-1)?.skillNames).toEqual(['orca-linear'])
+    expect(mocks.panelProps.at(-1)?.skillNames).toEqual(['occ-linear'])
   })
 
   it('uses remote-safe success copy for remote workspaces', async () => {

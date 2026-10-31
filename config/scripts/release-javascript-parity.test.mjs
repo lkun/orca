@@ -28,7 +28,7 @@ afterEach(() =>
 )
 
 function inventory(entries) {
-  const root = mkdtempSync(join(tmpdir(), 'orca-release-parity-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-release-parity-'))
   directories.push(root)
   const files = Object.entries(entries).map(([path, content]) => {
     mkdirSync(dirname(join(root, path)), { recursive: true })
@@ -211,7 +211,7 @@ it('compares web file membership after asset aliases change their sort order', (
   const before = inventory({
     'renderer/assets/App-AAAAAAAA.js': 'desktop()',
     'renderer/assets/App-BBBBBBBB.js': 'web()',
-    'renderer/.orca-web-client-files.json': '["assets/App-AAAAAAAA.js","assets/App-BBBBBBBB.js"]'
+    'renderer/.occ-web-client-files.json': '["assets/App-AAAAAAAA.js","assets/App-BBBBBBBB.js"]'
   })
   const files = {
     'renderer/assets/App-CCCCCCCC.js': 'web()',
@@ -219,14 +219,14 @@ it('compares web file membership after asset aliases change their sort order', (
   }
   const after = inventory({
     ...files,
-    'renderer/.orca-web-client-files.json': '["assets/App-CCCCCCCC.js","assets/App-DDDDDDDD.js"]'
+    'renderer/.occ-web-client-files.json': '["assets/App-CCCCCCCC.js","assets/App-DDDDDDDD.js"]'
   })
   expect(compareJavascriptParityFiles(before, after)).toEqual([])
   const changed = inventory({
     ...files,
-    'renderer/.orca-web-client-files.json': '["assets/App-CCCCCCCC.js"]'
+    'renderer/.occ-web-client-files.json': '["assets/App-CCCCCCCC.js"]'
   })
   expect(compareJavascriptParityFiles(before, changed)).toEqual([
-    'renderer/.orca-web-client-files.json'
+    'renderer/.occ-web-client-files.json'
   ])
 })

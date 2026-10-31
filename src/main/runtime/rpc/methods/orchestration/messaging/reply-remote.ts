@@ -1,12 +1,12 @@
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import type { MessageRow } from '../../../../orchestration/types'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { remoteRunHomeUnreachable } from '../routing'
 import { sendRemoteMessage } from './send-remote'
 
 /** Reply to mirrored remote-Run mail only at its home, through this pane's own Dispatch link. */
 export async function replyToRemoteRunHome(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   original: MessageRow
   params: { body: string; from?: string; run?: string }

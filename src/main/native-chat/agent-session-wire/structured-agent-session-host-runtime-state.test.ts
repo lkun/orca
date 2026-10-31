@@ -18,7 +18,7 @@ import { createStructuredAgentSessionLogger } from './structured-agent-session-l
 
 const NOW = 1_800_000_000_000
 
-const stateDirectory = mkdtempSync(join(tmpdir(), 'orca-host-runtime-state-'))
+const stateDirectory = mkdtempSync(join(tmpdir(), 'occ-host-runtime-state-'))
 afterAll(async () => {
   await closeTestJournalHostDatabases()
   rmSync(stateDirectory, { recursive: true, force: true })

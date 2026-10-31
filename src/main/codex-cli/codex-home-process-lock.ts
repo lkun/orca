@@ -22,7 +22,7 @@ export function resolveCodexHomeProcessLockKeyForSpawnEnv(
       (env?.CODEX_HOME !== process.env.CODEX_HOME ? (env?.CODEX_HOME ?? null) : null)
     // Normalize Linux homes like probes' UNC paths; the sentinel serializes unknown distro defaults.
     return normalizeRuntimePathForComparison(
-      `//wsl$/${wslDistro}${codexHome ?? '/.orca-default-codex-home'}`
+      `//wsl$/${wslDistro}${codexHome ?? '/.occ-default-codex-home'}`
     )
   }
   // Explicit child envs can strip CODEX_HOME; do not restore it from the host environment.

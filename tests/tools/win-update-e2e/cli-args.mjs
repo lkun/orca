@@ -115,7 +115,7 @@ export function validateInstallDir(installDir) {
     errors.push(
       `--install-dir must not contain spaces (got "${installDir}"). The NSIS installer's ` +
         `/D path override must be the last, UNQUOTED argument, so a path with spaces cannot ` +
-        `be passed. Choose a spaces-free location (e.g. C:\\OrcaE2E).`
+        `be passed. Choose a spaces-free location (e.g. C:\\OCCE2E).`
     )
   }
   if (pathsOverlap(installDir, defaultInstallDir())) {

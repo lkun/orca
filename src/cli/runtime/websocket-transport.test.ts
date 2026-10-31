@@ -19,7 +19,7 @@ import { sendWebSocketRequestWithStatusPreflight } from './websocket-transport'
 import { getRemoteRuntimeRequestAdmissionEvidence } from '../../shared/remote-runtime/requests/remote-runtime-prepared-request-admission'
 import { RuntimeClient } from './client'
 import { requestWorktreeRemoval } from '../handlers/worktree-removal-request'
-import { launchOrcaApp } from './launch'
+import { launchOCCApp } from './launch'
 import { addEnvironmentFromPairingCode } from './environments'
 import { RuntimeClientError } from './types'
 import {
@@ -44,7 +44,7 @@ import {
 import { AGENT_SESSION_BACKGROUND_TASK_CHILD_VIEWS_CAPABILITY } from '../../shared/agent-session-background-task-child-views-capability'
 
 vi.mock('./launch', () => ({
-  launchOrcaApp: vi.fn()
+  launchOCCApp: vi.fn()
 }))
 
 type TestRuntime = {
@@ -62,7 +62,7 @@ describe('CLI remote WebSocket transport', () => {
   const servers: TestRuntime[] = []
 
   afterEach(async () => {
-    vi.mocked(launchOrcaApp).mockClear()
+    vi.mocked(launchOCCApp).mockClear()
     await Promise.all(servers.splice(0).map((server) => server.close()))
   })
 
@@ -116,7 +116,7 @@ describe('CLI remote WebSocket transport', () => {
     )
   })
 
-  it('accepts a bare pairing payload as well as the orca URL wrapper', async () => {
+  it('accepts a bare pairing payload as well as the occ URL wrapper', async () => {
     const runtime = await startTestRuntime('runtime-ws-2', {
       appVersion: '1.5.0',
       remoteUpdateSupport: {
@@ -175,16 +175,16 @@ describe('CLI remote WebSocket transport', () => {
       })
     )
 
-    const status = await client.openOrca()
+    const status = await client.openOCC()
 
     expect(status.result.app.desktopWindowStatus).toBe('initializing')
-    expect(launchOrcaApp).not.toHaveBeenCalled()
+    expect(launchOCCApp).not.toHaveBeenCalled()
   })
 
   it('connects through a saved environment selector', async () => {
     const runtime = await startTestRuntime('runtime-env-1')
     servers.push(runtime)
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-cli-env-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-cli-env-'))
     addEnvironmentFromPairingCode(userDataPath, {
       name: 'remote-dev',
       pairingCode: encodePairingOffer({

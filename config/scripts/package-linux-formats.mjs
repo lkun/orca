@@ -13,7 +13,7 @@ import {
 } from 'node:fs'
 import { join, resolve } from 'node:path'
 import { copyPrivateTree } from './space-sharing-copy.mjs'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { preparePrAppImageTools } from './package-linux-formats-appimage.mjs'
 
 const require = createRequire(import.meta.url)
@@ -45,7 +45,7 @@ function runElectronBuilder(args, environment) {
     const child = spawnProcess({
       program: process.execPath,
       args: [require.resolve('electron-builder/cli.js'), ...args],
-      env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1', ...environment },
+      env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1', ...environment },
       stdio: 'inherit'
     })
     child.once('error', reject)

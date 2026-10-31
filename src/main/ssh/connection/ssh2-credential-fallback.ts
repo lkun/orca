@@ -46,7 +46,7 @@ export type Ssh2CredentialFallbackHost = {
   killProxyIfCurrent: () => void
   probeSystemSsh: (resolved: SshResolvedConfig | null, gssapiOnly?: boolean) => Promise<void>
   /** System OpenSSH ignores OCC's store, so a host pinned only there must stay on ssh2. */
-  isPinnedByOrcaHostKeyStore: () => boolean
+  isPinnedByOCCHostKeyStore: () => boolean
   resetSystemTransportIfCurrent: () => void
   requestCredential: (kind: SshCredentialKind, detail: string) => Promise<string | null | undefined>
 }
@@ -115,7 +115,7 @@ export async function recoverFailedSsh2Attempt(
   }
 
   // A pinned host that suddenly shares no algorithm could be an impostor steering OCC away from its pin.
-  if (isSsh2AlgorithmNegotiationError(err) && !host.isPinnedByOrcaHostKeyStore()) {
+  if (isSsh2AlgorithmNegotiationError(err) && !host.isPinnedByOCCHostKeyStore()) {
     host.killProxyIfCurrent()
     try {
       await host.probeSystemSsh(resolved)

@@ -18,16 +18,16 @@ const SESSION_A = fishHistorySessionName(HASH_A)
 describe('fish history session naming', () => {
   it('mints a session name that is a valid fish variable value', () => {
     // Invalid fish variable names silently select shared history.
-    expect(SESSION_A).toBe('orca_a1b2c3d4e5f60718')
+    expect(SESSION_A).toBe('occ_a1b2c3d4e5f60718')
     expect(SESSION_A).toMatch(/^[A-Za-z_][A-Za-z0-9_]*$/)
   })
 
   it.each([
-    ['orca_deadbeef', true],
-    ['orca_', false],
+    ['occ_deadbeef', true],
+    ['occ_', false],
     ['fish_history', false],
-    ['orca_../../etc/passwd', false],
-    ['orca_DEADBEEF', false],
+    ['occ_../../etc/passwd', false],
+    ['occ_DEADBEEF', false],
     ['', false],
     [undefined, false],
     [42, false]
@@ -61,7 +61,7 @@ describe('fish history deletion', () => {
   let fishDir: string
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-fish-history-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-fish-history-'))
     fishDir = join(root, 'fish')
     mkdirSync(fishDir, { recursive: true })
   })
@@ -119,7 +119,7 @@ describe('orphaned fish history sweep', () => {
   let fishDir: string
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-fish-sweep-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-fish-sweep-'))
     fishDir = join(root, 'fish')
     mkdirSync(fishDir, { recursive: true })
   })
@@ -138,7 +138,7 @@ describe('orphaned fish history sweep', () => {
   })
 
   it("never touches the user's own history files", () => {
-    const untouched = ['fish_history', 'work_history', 'orca_history', 'orca_nothex_history']
+    const untouched = ['fish_history', 'work_history', 'occ_history', 'occ_nothex_history']
     for (const name of untouched) {
       writeFileSync(join(fishDir, name), 'mine\n')
     }
@@ -196,7 +196,7 @@ describe('relay fish history naming', () => {
   let relayRoot: string
 
   beforeEach(() => {
-    relayRoot = mkdtempSync(join(tmpdir(), 'orca-fish-relay-'))
+    relayRoot = mkdtempSync(join(tmpdir(), 'occ-fish-relay-'))
   })
 
   afterEach(() => {

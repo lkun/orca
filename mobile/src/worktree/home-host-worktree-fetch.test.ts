@@ -55,7 +55,7 @@ const flush = () => vi.advanceTimersByTimeAsync(0)
 function catalogResponse(count: number, active: number): RpcResponse {
   const worktrees = Array.from({ length: count }, (_, index) => ({
     worktreeId: `wt-${index}`,
-    repo: 'orca',
+    repo: 'occ',
     branch: `branch-${index}`,
     displayName: `Workspace ${index}`,
     liveTerminalCount: 0,
@@ -112,7 +112,7 @@ describe('fetchHomeHostWorktreeInfo', () => {
   it('counts only the rows the list shows, with its activity rule', async () => {
     const store = infoStore()
     const host = fakeSession()
-    const row = { repo: 'orca', branch: 'b', displayName: 'w', liveTerminalCount: 0 }
+    const row = { repo: 'occ', branch: 'b', displayName: 'w', liveTerminalCount: 0 }
     const worktrees = [
       { ...row, worktreeId: 'archived', isArchived: true, status: 'working' },
       { ...row, worktreeId: 'tab-only', status: 'inactive', hasHostSidebarActivity: true },

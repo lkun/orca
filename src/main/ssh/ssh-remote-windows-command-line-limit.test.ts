@@ -15,30 +15,30 @@ describe('Windows remote command line limit', () => {
   it.each([
     [
       'steal stale install lock',
-      tryStealInstallLockCommand(windows, 'C:\\Users\\orca\\.orca-remote\\relay', 1_200)
+      tryStealInstallLockCommand(windows, 'C:\\Users\\occ\\.occ-remote\\relay', 1_200)
     ],
     [
       'steal an exited holder\u2019s install lock',
       tryStealInstallLockCommand(
         windows,
-        'C:\\Users\\orca\\.orca-remote\\orcad-1.4.214+0123456789abcdef\\.install-lock',
+        'C:\\Users\\occ\\.occ-remote\\occd-1.4.214+0123456789abcdef\\.install-lock',
         1_200,
-        { fileName: '.orca-fence-owner', token: '123e4567-e89b-12d3-a456-426614174000' },
+        { fileName: '.occ-fence-owner', token: '123e4567-e89b-12d3-a456-426614174000' },
         {
-          fileName: '.orca-fence-owner',
+          fileName: '.occ-fence-owner',
           token: '123e4567-e89b-12d3-a456-426614174001',
           quietSeconds: 180,
-          mutationLock: 'C:\\Users\\orca\\.orca-remote\\orcad-state-mutation.lock'
+          mutationLock: 'C:\\Users\\occ\\.occ-remote\\occd-state-mutation.lock'
         }
       )
     ],
     // These file commands carry caller-controlled path literals and must stay within the same budget.
-    ['write file', makeWindowsWriteFileCommand('C:\\Users\\orca\\.orca-remote\\relay.js')],
+    ['write file', makeWindowsWriteFileCommand('C:\\Users\\occ\\.occ-remote\\relay.js')],
     [
       'publish staged file',
       makeWindowsPublishStagedFileCommand(
-        'C:\\Users\\orca\\.orca-remote\\relay.js.orca-partial-0123456789ab',
-        'C:\\Users\\orca\\.orca-remote\\relay.js',
+        'C:\\Users\\occ\\.occ-remote\\relay.js.occ-partial-0123456789ab',
+        'C:\\Users\\occ\\.occ-remote\\relay.js',
         'create'
       )
     ]
@@ -54,7 +54,7 @@ describe('Windows remote command line limit', () => {
   it('carries an oversized script through gzip without altering it', () => {
     const script = Array.from(
       { length: 200 },
-      (_unused, index) => `Write-Output ${index}; $slot = 'C:\\Users\\orca\\stage-${index}'`
+      (_unused, index) => `Write-Output ${index}; $slot = 'C:\\Users\\occ\\stage-${index}'`
     ).join('\n')
     const command = powerShellCommand(script)
     expect(command.length).toBeLessThanOrEqual(CMD_EXE_COMMAND_LINE_MAX_CHARS)
@@ -65,7 +65,7 @@ describe('Windows remote command line limit', () => {
     ).toString('utf16le')
     const payload = bootstrap.match(/FromBase64String\('([A-Za-z0-9+/=]+)'\)/u)?.[1] ?? ''
     expect(gunzipSync(Buffer.from(payload, 'base64')).toString('utf-8')).toBe(script)
-    expect(bootstrap).toContain('Invoke-Expression $OrcaScriptText')
+    expect(bootstrap).toContain('Invoke-Expression $OCCScriptText')
   })
 
   it('refuses a script no encoding can fit instead of letting cmd.exe reject it', () => {
@@ -83,7 +83,7 @@ describe('Windows remote command line limit', () => {
 /** Check headroom with compressible paths and pre-spawn refusal with high-entropy paths that exceed the budget. */
 describe('Windows file command budget headroom', () => {
   it('absorbs a path far longer than Windows will accept', () => {
-    const deep = `C:\\Users\\orca\\${'segment\\'.repeat(30)}relay.js`
+    const deep = `C:\\Users\\occ\\${'segment\\'.repeat(30)}relay.js`
 
     expect(deep.length).toBeGreaterThan(260)
     expect(makeWindowsWriteFileCommand(deep).length).toBeLessThanOrEqual(

@@ -10,28 +10,28 @@ import {
   type BrowserRouteElectronSession
 } from './browser-route-session-registry'
 
-const orcaProfileId = 'orca/profile:alpha'
+const occProfileId = 'occ/profile:alpha'
 const browserProfileId = 'default'
 const storageScope = 'e'.repeat(64)
 const identity = {
-  orcaProfileId,
+  occProfileId,
   browserProfileId,
   authorityConnectionIdentity: 'paired-runtime:durable-authority',
-  executionHostIdentity: '["orca-browser-execution-host-storage",1,"authority","env-a"]'
+  executionHostIdentity: '["occ-browser-execution-host-storage",1,"authority","env-a"]'
 }
 
 function legacyIdentityFor(runtimeId: string): typeof identity {
   return {
-    orcaProfileId,
+    occProfileId,
     browserProfileId,
     authorityConnectionIdentity: `paired-runtime:authority-with-${runtimeId}`,
-    executionHostIdentity: `["orca-browser-execution-host-storage",1,"native","${runtimeId}"]`
+    executionHostIdentity: `["occ-browser-execution-host-storage",1,"native","${runtimeId}"]`
   }
 }
 
 function createStorePath(): string {
   return join(
-    realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'orca-browser-partition-migration-'))),
+    realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'occ-browser-partition-migration-'))),
     'bindings.json'
   )
 }

@@ -28,7 +28,7 @@ describe('WslHostService Remove as a user action', () => {
   }
 
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-host-user-actions-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-host-user-actions-'))
     removed.mockReset()
     vi.spyOn(console, 'warn').mockImplementation(() => {})
   })

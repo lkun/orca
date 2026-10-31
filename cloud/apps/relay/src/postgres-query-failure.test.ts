@@ -58,7 +58,7 @@ describe('PostgreSQL query failure diagnostics', () => {
     expect(fakes.query).not.toHaveBeenCalled()
     expect(fakes.release).not.toHaveBeenCalled()
     expect(JSON.parse(vi.mocked(console.warn).mock.calls[0]![0] as string)).toEqual({
-      event: 'orca_relay_postgres_query_failed',
+      event: 'occ_relay_postgres_query_failed',
       phase: 'acquire',
       operation: 'control-renewal',
       code: 'unknown',

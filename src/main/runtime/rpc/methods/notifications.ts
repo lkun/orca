@@ -1,6 +1,6 @@
 import { createNotificationStreamFilter } from './notification-stream-policy'
 import { defineStreamingMethod, defineMethod, type RpcContext } from '../core'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import {
   NotificationGetMissedSinceParams,
   NotificationRegisterPushParams,
@@ -13,7 +13,7 @@ import {
 let notificationsSubscriptionSeq = 0
 
 type DesktopPresenceReportContext = Pick<RpcContext, 'clientKind' | 'connectionId' | 'signal'> & {
-  runtime: Pick<OrcaRuntimeService, 'reportDesktopClientPresence' | 'registerSubscriptionCleanup'>
+  runtime: Pick<OCCRuntimeService, 'reportDesktopClientPresence' | 'registerSubscriptionCleanup'>
 }
 
 /** Only a paired desktop's own socket speaks for a desktop; the report lives as long as it. */

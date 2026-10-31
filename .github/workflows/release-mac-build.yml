@@ -25,7 +25,7 @@ on:
         type: string
 
 permissions:
-  # actions: read downloads the orcad template the parent release-cut run built.
+  # actions: read downloads the occd template the parent release-cut run built.
   actions: read
   contents: write
 
@@ -40,13 +40,13 @@ jobs:
     permissions:
       contents: read
       actions: read
-    uses: ./.github/workflows/qualified-orcad-template.yml
+    uses: ./.github/workflows/qualified-occd-template.yml
     with:
       ref: ${{ github.sha }}
 
   build-mac:
     needs: qualification-template
-    if: ${{ !cancelled() && (!inputs.qualification_only || needs.qualification-template.result == 'success') && github.repository == 'stablyai/orca' }}
+    if: ${{ !cancelled() && (!inputs.qualification_only || needs.qualification-template.result == 'success') && github.repository == 'stablyai/occ' }}
     # Keep Blacksmith mac notarization outside SignPath’s GitHub-hosted Windows provenance.
     runs-on: blacksmith-6vcpu-macos-15
     timeout-minutes: 60
@@ -55,7 +55,7 @@ jobs:
       actions: read
       contents: write
     env:
-      ORCA_BACKGROUND_LAUNCH: '1'
+      OCC_BACKGROUND_LAUNCH: '1'
       NODE_OPTIONS: --max-old-space-size=4096
     steps:
       - name: Checkout
@@ -98,13 +98,13 @@ jobs:
       # Cache bundled host Node by exact pin, without restore keys.
       - name: Locate the pinned Node runtime cache
         shell: bash
-        run: echo "ORCA_NODE_RUNTIME_CACHE_DIR=$HOME/Library/Caches/orca-node-runtime" >>"$GITHUB_ENV"
+        run: echo "OCC_NODE_RUNTIME_CACHE_DIR=$HOME/Library/Caches/occ-node-runtime" >>"$GITHUB_ENV"
 
       - name: Cache the pinned Node runtime
         uses: actions/cache@v5
         with:
-          path: ~/Library/Caches/orca-node-runtime
-          key: orca-node-runtime-mac-${{ hashFiles('src/shared/node-runtime-pin.ts') }}
+          path: ~/Library/Caches/occ-node-runtime
+          key: occ-node-runtime-mac-${{ hashFiles('src/shared/node-runtime-pin.ts') }}
 
       # Cache Electron/builder tool downloads to save ~30–90s.
       - name: Cache electron-builder downloads
@@ -173,7 +173,7 @@ jobs:
 
       - name: Build app
         run: |
-          if [ -n "$ORCA_RELEASE_JAVASCRIPT_SOURCE_SHA" ]; then
+          if [ -n "$OCC_RELEASE_JAVASCRIPT_SOURCE_SHA" ]; then
             node config/scripts/release-javascript-artifact.mjs restore
             pnpm run build:release:host
           else
@@ -183,19 +183,19 @@ jobs:
           # Why: Vite's web build crossed Node's default old-space ceiling on
           # the macOS release runner, leaving v1.4.2-rc.8 as an incomplete draft.
           NODE_OPTIONS: --max-old-space-size=4096
-          ORCA_BUILD_IDENTITY: ${{ steps.tag-classify.outputs.identity }}
-          ORCA_RELEASE_JAVASCRIPT_SOURCE_SHA: ${{ inputs.javascript_source_sha }}
-          ORCA_DIAGNOSTICS_TOKEN_URL: https://www.onorca.dev/diagnostics/token
-          ORCA_POSTHOG_WRITE_KEY: ${{ secrets.ORCA_POSTHOG_WRITE_KEY }}
+          OCC_BUILD_IDENTITY: ${{ steps.tag-classify.outputs.identity }}
+          OCC_RELEASE_JAVASCRIPT_SOURCE_SHA: ${{ inputs.javascript_source_sha }}
+          OCC_DIAGNOSTICS_TOKEN_URL: https://www.onocc.dev/diagnostics/token
+          OCC_POSTHOG_WRITE_KEY: ${{ secrets.OCC_POSTHOG_WRITE_KEY }}
 
       # Design D2: the parent release-cut run merged it from every node-server lane at this tag.
-      - name: Download the orcad deployment template from the release run
+      - name: Download the occd deployment template from the release run
         # Why: release-cut skips the template for a tag that predates it.
-        if: hashFiles('config/scripts/packaged-orcad-template.cjs') != ''
+        if: hashFiles('config/scripts/packaged-occd-template.cjs') != ''
         uses: actions/download-artifact@v8
         with:
-          name: orcad-template
-          path: out/orcad-template
+          name: occd-template
+          path: out/occd-template
           run-id: ${{ inputs.qualification_only && github.run_id || inputs.release_run_id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -225,11 +225,11 @@ jobs:
           timeout_minutes: 45
           max_attempts: 3
           retry_wait_seconds: 30
-          command: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON config/scripts/pinned-node-downloads.mjs darwin-arm64 darwin-x64 && node config/scripts/ensure-native-runtime.mjs --runtime=electron && if [ -f config/scripts/build-mac-notarization-overlap.mjs ]; then ORCA_MAC_RELEASE=1 node config/scripts/build-mac-notarization-overlap.mjs --publish "$ORCA_MAC_PUBLISH" --draft; else ORCA_MAC_RELEASE=1 pnpm exec electron-builder --config config/electron-builder.config.cjs --mac --publish "$ORCA_MAC_PUBLISH" -c.publish.releaseType=draft; fi
+          command: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON config/scripts/pinned-node-downloads.mjs darwin-arm64 darwin-x64 && node config/scripts/ensure-native-runtime.mjs --runtime=electron && if [ -f config/scripts/build-mac-notarization-overlap.mjs ]; then OCC_MAC_RELEASE=1 node config/scripts/build-mac-notarization-overlap.mjs --publish "$OCC_MAC_PUBLISH" --draft; else OCC_MAC_RELEASE=1 pnpm exec electron-builder --config config/electron-builder.config.cjs --mac --publish "$OCC_MAC_PUBLISH" -c.publish.releaseType=draft; fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ORCA_REQUIRE_ORCAD_TEMPLATE: '1'
-          ORCA_MAC_PUBLISH: ${{ inputs.qualification_only && 'never' || 'always' }}
+          OCC_REQUIRE_OCCD_TEMPLATE: '1'
+          OCC_MAC_PUBLISH: ${{ inputs.qualification_only && 'never' || 'always' }}
           CSC_LINK: ${{ secrets.MAC_CERTS }}
           CSC_KEY_PASSWORD: ${{ secrets.MAC_CERTS_PASSWORD }}
           APPLE_ID: ${{ secrets.APPLE_ID }}

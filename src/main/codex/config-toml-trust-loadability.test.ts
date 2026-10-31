@@ -69,7 +69,7 @@ function stopEntry(groupIndex = 0): CodexTrustEntry {
     eventLabel: 'stop',
     groupIndex,
     handlerIndex: 0,
-    command: 'orca-hook.sh'
+    command: 'occ-hook.sh'
   }
 }
 
@@ -88,7 +88,7 @@ function expectRefusal(write: () => void): void {
 }
 
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'orca-codex-toml-loadability-'))
+  dir = mkdtempSync(join(tmpdir(), 'occ-codex-toml-loadability-'))
   tomlPath = join(dir, 'config.toml')
   hooksPath = join(dir, 'hooks.json')
   mocks.rejectParse = null

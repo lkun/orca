@@ -20,7 +20,7 @@ import { openWorkspaceBrowserTabForLink } from './workspace-browser-tab-open'
 import { openFileInBrowserTab } from './file-preview'
 import type { BrowserOpenOutcome } from './browser-link-destination'
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 const mocks = vi.hoisted(() => ({ getState: vi.fn(), subscribe: vi.fn() }))
 vi.mock('@/store', () => ({
   useAppStore: { getState: () => mocks.getState(), subscribe: mocks.subscribe }

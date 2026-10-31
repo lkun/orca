@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { encodePairingOffer, parsePairingCode } from '../../shared/pairing'
 import { getPreferredPairingOffer } from '../../shared/runtime-environments'
 import { resolveEnvironment } from '../../shared/runtime-environment-store'
-import { sendSupportedMigrationRequest } from '../ssh/orcad-migration-catalog-client'
+import { sendSupportedMigrationRequest } from '../ssh/occd-migration-catalog-client'
 import { getWslHostService } from '../wsl/wsl-host-service-instance'
 import type { WslMoveMovedAutomation } from '../persistence/moving-wsl-projects/wsl-move-host-automations-rewrite'
 
@@ -32,7 +32,7 @@ export async function openWslHostAutomationApi(
   const environment = resolveEnvironment(userDataPath, environmentId)
   const pairing = parsePairingCode(encodePairingOffer(getPreferredPairingOffer(environment)))
   if (!pairing) {
-    throw new Error('orcad_migration_pairing_code_invalid')
+    throw new Error('occd_migration_pairing_code_invalid')
   }
   const options = environment.runtimeId ? { expectedRuntimeId: environment.runtimeId } : {}
   return (method, params) => sendSupportedMigrationRequest(pairing, method, params, options)

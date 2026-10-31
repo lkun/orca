@@ -25,8 +25,8 @@ it.each([
     // Inside mobile so the project resolves mobile's TypeScript, as the real test project does.
     const scratch = join(mobileRoot, 'node_modules', '.cache')
     mkdirSync(scratch, { recursive: true })
-    const root = mkdtempSync(join(scratch, 'orca-mobile-typecheck-'))
-    vi.stubEnv('ORCA_MOBILE_TYPECHECK_COMPILER', compiler)
+    const root = mkdtempSync(join(scratch, 'occ-mobile-typecheck-'))
+    vi.stubEnv('OCC_MOBILE_TYPECHECK_COMPILER', compiler)
     const buildInfo = resolveMobileTypecheckCommand('tsconfig.test.json', root).args.find((arg) =>
       arg.endsWith('.tsbuildinfo')
     )

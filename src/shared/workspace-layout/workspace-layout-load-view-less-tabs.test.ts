@@ -10,7 +10,7 @@ import { loadWorkspaceLayout } from './workspace-layout-load'
 import { nameBasedLoadContext } from './workspace-layout-minted-ids'
 import { saveWorkspaceLayout } from './workspace-layout-save'
 
-vi.mock('../layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const KEY = 'repo-1::/w'
 

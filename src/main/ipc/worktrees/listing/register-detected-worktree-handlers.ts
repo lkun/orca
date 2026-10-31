@@ -14,12 +14,12 @@ import {
 import type { DetectedWorktreeRequestArgs } from '../ipc-context-schemas'
 import {
   hasValidDirectSshAuthority,
-  listDetectedWorktreesForCapturedRepo
+  listDetectedWorktreesFoccpturedRepo
 } from './detected-provider-listing'
 import { listHostQualifiedDetectedWorktrees } from './host-qualified-worktree-listing'
 import { findExactRepoOwner, isCapturedRepoCurrent } from './worktree-host-ownership'
 import type { WorktreeIpcContext } from '../worktree-ipc-context'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { dropWorkspacesTheListingInvalidates } from '../../../persistence/restoring-sessions/invalid-workspace-layout-purge'
 import { notifyWatchedWorktreeCatalogChanged } from '../../watched-worktree-catalog-notification'
 import { setWslStoppedWorktreeRescanNotifier } from './wsl-stopped-worktree-listing'
@@ -110,14 +110,14 @@ export function registerDetectedWorktreeHandlers(context: WorktreeIpcContext): v
       }
       const connectionId = getRepoDialableSshTargetId(repo)
       const authority = connectionId ? { ...getSshProviderAuthority(connectionId) } : undefined
-      const result = await listDetectedWorktreesForCapturedRepo(
+      const result = await listDetectedWorktreesFoccpturedRepo(
         store,
         repo,
         () =>
           isCapturedRepoCurrent(store, repo) &&
           (!connectionId || (authority !== undefined && isCurrentSshProviderAuthority(authority)))
       )
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         dropWorkspacesTheListingInvalidates(store, result)
       }
       return result && !('providerAbortStatus' in result)

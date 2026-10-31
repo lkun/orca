@@ -7,14 +7,14 @@ import {
   readAgentJournalTurn,
   readAgentJournalTurnOutcome
 } from '../../shared/agent-session-turn-record'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { getStructuredAgentSessionHost } from '../native-chat/agent-session-wire/structured-agent-session-registry'
 import { readAutomationRunReceipt } from './automation-run-receipt'
 import type { AutomationRunCompletionObservation } from './run-completion-watcher'
 import { tuiAgentDisplayName } from '../../shared/tui-agent-display-names'
 
 export async function observeAutomationChatRun(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   run: AutomationRun,
   signal: AbortSignal
 ): Promise<AutomationRunCompletionObservation> {

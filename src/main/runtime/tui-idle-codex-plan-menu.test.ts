@@ -3,7 +3,7 @@ import type { AgentStatusIpcPayload } from '../../shared/agent-status-types'
 import { makePaneKey } from '../../shared/stable-pane-id'
 import { createTranscriptPane, TRANSCRIPT_PANE_PTY_ID } from './agent-transcript-pane-test-harness'
 import { readRuntimeFixture } from './agent-transcript-replay-test-harness'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 
 vi.mock('electron', () => ({
   BrowserWindow: { fromId: vi.fn(() => null) },
@@ -42,14 +42,14 @@ function doneRow(receivedAt: number): AgentStatusIpcPayload {
 }
 
 /** Feeds bytes as PTY reads that arrive together, so the blocked scan runs on its trailing edge. */
-function paint(runtime: OrcaRuntimeService, data: string): void {
+function paint(runtime: OCCRuntimeService, data: string): void {
   const at = Date.now()
   for (let i = 0; i < data.length; i += 64) {
     runtime.onPtyData(TRANSCRIPT_PANE_PTY_ID, data.slice(i, i + 64), at)
   }
 }
 
-async function waitOutcome(runtime: OrcaRuntimeService, handle: string, timeoutMs: number) {
+async function waitOutcome(runtime: OCCRuntimeService, handle: string, timeoutMs: number) {
   const waiting = runtime.waitForTerminal(handle, { condition: 'tui-idle', timeoutMs })
   void waiting.catch(() => {})
   await vi.advanceTimersByTimeAsync(timeoutMs)

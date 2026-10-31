@@ -3,7 +3,7 @@ import { mkdirSync, realpathSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
 import type { WorktreeMeta } from '../../../src/shared/worktree/meta-types'
-import { expect } from './orca-app'
+import { expect } from './occ-app'
 import { evaluatePolled } from './page-evaluate-polled'
 import { loadWorktreesUntilPathsPresent } from './worktree-registration'
 

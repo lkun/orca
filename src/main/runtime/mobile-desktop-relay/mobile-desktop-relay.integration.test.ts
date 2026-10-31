@@ -23,10 +23,10 @@ import {
 import { decodeTerminalStreamFrame } from '../../../shared/terminal-stream-protocol'
 import { sendRemoteRuntimeRequest } from '../../../shared/remote-runtime/remote-runtime-client'
 import { mintBrowserScreencastSubscriptionId } from '../browser-screencast-subscription-id'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import { setRuntimeBrowserCommandsFactory } from '../runtime-browser-commands-factory'
 import { readRuntimeMetadata } from '../runtime-metadata'
-import { OrcaRuntimeRpcServer } from '../runtime-rpc'
+import { OCCRuntimeRpcServer } from '../runtime-rpc'
 import { STATUS_METHODS } from '../rpc/methods/status'
 import { TERMINAL_METHODS } from '../rpc/methods/terminal'
 import { BROWSER_CORE_METHODS } from '../rpc/methods/browser-core'
@@ -89,7 +89,7 @@ vi.mock('../../git/worktree', () => {
   }
 })
 
-class SeatObservableRuntime extends OrcaRuntimeService {
+class SeatObservableRuntime extends OCCRuntimeService {
   seatClientIds(ptyId: string): string[] {
     return [...(this.mobileSubscribers.get(ptyId)?.keys() ?? [])]
   }
@@ -125,8 +125,8 @@ describe('mobile desktop relay: phone -> desktop -> server', () => {
       resize: () => true,
       getSize: () => ({ cols: 80, rows: 24 })
     })
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-relay-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-relay-'))
+    const server = new OCCRuntimeRpcServer({
       runtime,
       userDataPath,
       methods: [
@@ -148,7 +148,7 @@ describe('mobile desktop relay: phone -> desktop -> server', () => {
   }
 
   function pair(
-    server: OrcaRuntimeRpcServer,
+    server: OCCRuntimeRpcServer,
     scope: 'mobile' | 'runtime',
     name: string
   ): PairingOffer {
@@ -231,7 +231,7 @@ describe('mobile desktop relay: phone -> desktop -> server', () => {
     return { host, desktop, desktopSpawns, children, syncedNames, state, handle }
   }
 
-  async function connectPhone(desktop: OrcaRuntimeRpcServer, name: string) {
+  async function connectPhone(desktop: OCCRuntimeRpcServer, name: string) {
     const pairing = pair(desktop, 'mobile', name)
     const keys = generateKeyPair()
     const sharedKey = deriveSharedKey(keys.secretKey, publicKeyFromBase64(pairing.publicKeyB64))

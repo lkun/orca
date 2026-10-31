@@ -16,7 +16,7 @@ async function fixture(): Promise<{
   root: string
   input: SkillInstallServiceInput
 }> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-skill-service-test-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-skill-service-test-'))
   temporaryDirectories.push(root)
   const source = join(root, 'source')
   await mkdir(source)
@@ -37,7 +37,7 @@ async function fixture(): Promise<{
       archivePath: archive.archivePath,
       scope: 'global',
       homeDirectory: join(root, 'home'),
-      orcaStateDirectory: join(root, 'orca-state'),
+      occStateDirectory: join(root, 'occ-state'),
       detectedProviders: ['codex', 'claude'],
       destinationIdentity: 'global:test-host',
       hostIdentity: 'test-host',
@@ -100,7 +100,7 @@ describe('skill install service', () => {
     expect(result.placements.at(-1)).toMatchObject({
       provider: 'claude',
       status: 'skipped',
-      errorCategory: 'skill-placement-unowned'
+      errocctegory: 'skill-placement-unowned'
     })
     expect(await readFile(join(claude, 'SKILL.md'), 'utf8')).toBe('unowned')
   })
@@ -121,7 +121,7 @@ describe('skill install service', () => {
       skillName: 'test-skill',
       scope: 'global',
       homeDirectory: input.homeDirectory,
-      orcaStateDirectory: input.orcaStateDirectory,
+      occStateDirectory: input.occStateDirectory,
       detectedProviders: input.detectedProviders
     })
 
@@ -144,7 +144,7 @@ describe('skill install service', () => {
         expect.objectContaining({
           provider: 'claude',
           status: 'skipped',
-          errorCategory: 'skill-placement-unowned'
+          errocctegory: 'skill-placement-unowned'
         })
       ])
     })
@@ -160,7 +160,7 @@ describe('skill install service', () => {
 
     expect(result).toMatchObject({
       status: 'failed',
-      errorCategory: 'skill-discovery-canonical-missing',
+      errocctegory: 'skill-discovery-canonical-missing',
       failure: { category: 'provider-placement', retryable: true }
     })
     expect(
@@ -177,7 +177,7 @@ describe('skill install service', () => {
       skillName: 'test-skill',
       scope: 'global',
       homeDirectory: input.homeDirectory,
-      orcaStateDirectory: input.orcaStateDirectory,
+      occStateDirectory: input.occStateDirectory,
       detectedProviders: []
     })
 
@@ -224,7 +224,7 @@ describe('skill install service', () => {
       skillName: 'test-skill',
       scope: 'global',
       homeDirectory: input.homeDirectory,
-      orcaStateDirectory: input.orcaStateDirectory,
+      occStateDirectory: input.occStateDirectory,
       detectedProviders: input.detectedProviders
     })
     expect(conflict.conflict?.kind).toBe('modified')
@@ -238,7 +238,7 @@ describe('skill install service', () => {
       skillName: 'test-skill',
       scope: 'global',
       homeDirectory: input.homeDirectory,
-      orcaStateDirectory: input.orcaStateDirectory,
+      occStateDirectory: input.occStateDirectory,
       detectedProviders: input.detectedProviders,
       conflictResolution: 'replace-and-discard-local'
     })
@@ -269,7 +269,7 @@ describe('skill install service', () => {
         skillName: 'test-skill',
         scope: 'global',
         homeDirectory: input.homeDirectory,
-        orcaStateDirectory: input.orcaStateDirectory,
+        occStateDirectory: input.occStateDirectory,
         detectedProviders: input.detectedProviders,
         filesystem: interruptedFilesystem
       })
@@ -281,7 +281,7 @@ describe('skill install service', () => {
       skillName: 'test-skill',
       scope: 'global',
       homeDirectory: input.homeDirectory,
-      orcaStateDirectory: input.orcaStateDirectory,
+      occStateDirectory: input.occStateDirectory,
       detectedProviders: input.detectedProviders
     })
     expect(retried.status).toBe('removed')
@@ -314,7 +314,7 @@ describe('skill install service', () => {
         expect.objectContaining({
           provider: 'claude',
           status: 'skipped',
-          errorCategory: 'skill-placement-cancelled'
+          errocctegory: 'skill-placement-cancelled'
         })
       ])
     )
@@ -353,7 +353,7 @@ describe('skill install service', () => {
         expect.objectContaining({
           provider: 'claude',
           status: 'failed',
-          errorCategory: 'skill-placement-create-failed'
+          errocctegory: 'skill-placement-create-failed'
         })
       ])
     })

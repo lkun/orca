@@ -159,7 +159,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('reads Antigravity user requests from the transcript', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-antigravity-prompt-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-antigravity-prompt-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     try {
       writeFileSync(
@@ -195,7 +195,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('reads a bounded preview from newline-heavy Antigravity user requests', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-antigravity-large-prompt-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-antigravity-large-prompt-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     const requestText = 'Fix the failing test\n'.repeat(300)
     try {
@@ -228,7 +228,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('keeps the cached Antigravity prompt instead of rescanning the transcript', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-antigravity-cached-prompt-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-antigravity-cached-prompt-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     try {
       writeFileSync(
@@ -360,7 +360,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('normalizes Antigravity Stop hooks and reads final text from the transcript', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-antigravity-transcript-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-antigravity-transcript-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     try {
       writeFileSync(
@@ -485,7 +485,7 @@ describe('shared agent-hook-listener', () => {
 
   // Event order captured from agy 1.4.7 (#17650); transcript contents below are synthetic, not origin evidence.
   it('keeps an Antigravity parent working until its own idle Stop when a subagent finishes', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-antigravity-subagent-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-antigravity-subagent-'))
     const writeTranscript = (name: string, request: string, reply: string): string => {
       const path = join(tmpDir, `${name}.jsonl`)
       writeFileSync(

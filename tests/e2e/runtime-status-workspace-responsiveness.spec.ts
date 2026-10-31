@@ -1,4 +1,4 @@
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   seedAccumulatedWorkspaceFixture,
   cleanupAccumulatedWorkspaceFixture
@@ -13,19 +13,19 @@ import {
 import { waitForActiveTerminalManager, waitForTerminalOutput } from './helpers/terminal'
 
 test('runtime probe evidence preserves palette switching and terminal output at workspace scale', async ({
-  orcaPage,
+  occPage,
   electronApp
 }, testInfo) => {
-  await waitForSessionReady(orcaPage)
-  const source = await waitForActiveWorktree(orcaPage)
-  const target = (await getAllWorktreeIds(orcaPage)).find((id) => id !== source)
+  await waitForSessionReady(occPage)
+  const source = await waitForActiveWorktree(occPage)
+  const target = (await getAllWorktreeIds(occPage)).find((id) => id !== source)
   if (!target) {
     throw new Error('Expected a second seeded workspace')
   }
-  await switchToWorktree(orcaPage, target)
-  await ensureTerminalVisible(orcaPage)
-  await waitForActiveTerminalManager(orcaPage)
-  const targetName = await orcaPage.evaluate(
+  await switchToWorktree(occPage, target)
+  await ensureTerminalVisible(occPage)
+  await waitForActiveTerminalManager(occPage)
+  const targetName = await occPage.evaluate(
     (id) =>
       window
         .__store!.getState()
@@ -36,14 +36,14 @@ test('runtime probe evidence preserves palette switching and terminal output at 
   if (!targetName) {
     throw new Error('Missing workspace name')
   }
-  await switchToWorktree(orcaPage, source)
-  const fixture = await seedAccumulatedWorkspaceFixture(orcaPage)
-  const cdp = await orcaPage.context().newCDPSession(orcaPage)
+  await switchToWorktree(occPage, source)
+  const fixture = await seedAccumulatedWorkspaceFixture(occPage)
+  const cdp = await occPage.context().newCDPSession(occPage)
   await cdp.send('Performance.enable')
   const beforeMetrics = await cdp.send('Performance.getMetrics')
   const publications: number[] = []
   const gaps: number[] = []
-  const traffic = orcaPage.evaluate(async () => {
+  const traffic = occPage.evaluate(async () => {
     const store = window.__store!
     const durations: number[] = []
     const gaps: number[] = []
@@ -77,26 +77,26 @@ test('runtime probe evidence preserves palette switching and terminal output at 
     return { durations, gaps }
   })
   try {
-    await orcaPage.evaluate(() => window.__store!.getState().openModal('worktree-palette'))
-    const palette = orcaPage.getByRole('dialog', { name: 'Jump to...' })
+    await occPage.evaluate(() => window.__store!.getState().openModal('worktree-palette'))
+    const palette = occPage.getByRole('dialog', { name: 'Jump to...' })
     await expect(palette).toBeVisible()
     await palette.getByRole('combobox').fill(targetName)
     await expect(palette.locator('[cmdk-item][data-selected="true"]')).toContainText(targetName)
     await palette.screenshot({ path: testInfo.outputPath('palette-during-probes.png') })
     await palette.getByRole('combobox').press('Enter')
     await expect(palette).toBeHidden()
-    const row = orcaPage.locator(
+    const row = occPage.locator(
       `[data-worktree-sidebar] [role="option"][data-worktree-id=${JSON.stringify(target)}]`
     )
     await expect(row).toHaveAttribute('aria-current', 'page')
-    await waitForActiveTerminalManager(orcaPage)
-    const terminal = orcaPage
+    await waitForActiveTerminalManager(occPage)
+    const terminal = occPage
       .locator('[data-terminal-tab-id]:visible .xterm-helper-textarea')
       .first()
     await terminal.fill('echo RUNTIME_PROBE_TYPING_OK')
     await terminal.press('Enter')
-    await waitForTerminalOutput(orcaPage, 'RUNTIME_PROBE_TYPING_OK')
-    await orcaPage.screenshot({ path: testInfo.outputPath('terminal-after-switch.png') })
+    await waitForTerminalOutput(occPage, 'RUNTIME_PROBE_TYPING_OK')
+    await occPage.screenshot({ path: testInfo.outputPath('terminal-after-switch.png') })
     const measured = await traffic
     publications.push(...measured.durations)
     gaps.push(...measured.gaps)
@@ -131,6 +131,6 @@ test('runtime probe evidence preserves palette switching and terminal output at 
   } finally {
     await traffic
     await cdp.detach()
-    await cleanupAccumulatedWorkspaceFixture(orcaPage)
+    await cleanupAccumulatedWorkspaceFixture(occPage)
   }
 })

@@ -167,7 +167,7 @@ describe('Codex quiet ready screen', () => {
         '• • Working (0s • esc to interrupt)',
         '  11:15 PM',
         '› Ask Codex to do anything',
-        '  GPT-6-Sol medium · ~/orca-lanes/sta8834/live3/scratch · Report task outcome',
+        '  GPT-6-Sol medium · ~/occ-lanes/sta8834/live3/scratch · Report task outcome',
         '  ? for shortcuts'
       ]
       expect(isQuietReadyScreenBody('', 'codex', () => screenLines)).toBe(true)

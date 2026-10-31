@@ -1,5 +1,5 @@
 // #10142: keyboard and X close must both confirm for the same live sleep 300 child, preserving the tab until approval.
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import type { Page } from '@stablyai/playwright-test'
 import {
   waitForSessionReady,
@@ -29,51 +29,51 @@ function closeDialogTitle(page: Page) {
 test.describe.configure({ mode: 'serial' })
 
 test('the tab X button applies the same running-process confirmation as Cmd+W', async ({
-  orcaPage
+  occPage
 }) => {
   test.setTimeout(120_000)
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
-  const hasPaneManager = await waitForActiveTerminalManager(orcaPage, 30_000)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
+  const hasPaneManager = await waitForActiveTerminalManager(occPage, 30_000)
     .then(() => true)
     .catch(() => false)
   test.skip(!hasPaneManager, 'Electron automation never mounted the live TerminalPane manager.')
-  await waitForPaneCount(orcaPage, 1, 30_000)
+  await waitForPaneCount(occPage, 1, 30_000)
 
-  const ptyId = await waitForActivePanePtyId(orcaPage)
-  await execInTerminal(orcaPage, ptyId, 'echo repro-10142-ready')
-  await waitForTerminalOutput(orcaPage, 'repro-10142-ready', 20_000)
-  await execInTerminal(orcaPage, ptyId, 'sleep 300')
+  const ptyId = await waitForActivePanePtyId(occPage)
+  await execInTerminal(occPage, ptyId, 'echo repro-10142-ready')
+  await waitForTerminalOutput(occPage, 'repro-10142-ready', 20_000)
+  await execInTerminal(occPage, ptyId, 'sleep 300')
   // Wait for sleep as foreground process; macOS login makes hasChildProcesses true before the command starts.
   await expect
     .poll(
       async () =>
-        (await orcaPage.evaluate((id) => window.api.pty.inspectProcess(id), ptyId))
+        (await occPage.evaluate((id) => window.api.pty.inspectProcess(id), ptyId))
           .foregroundProcess,
       { timeout: 20_000, message: 'sleep 300 never became the foreground process' }
     )
     .toBe('sleep')
 
-  const busyTabId = (await getActiveTabId(orcaPage))!
-  const busyTab = orcaPage.locator(`${SORTABLE_TAB}[data-tab-id="${busyTabId}"]`).first()
+  const busyTabId = (await getActiveTabId(occPage))!
+  const busyTab = occPage.locator(`${SORTABLE_TAB}[data-tab-id="${busyTabId}"]`).first()
 
-  await focusActiveTerminalInput(orcaPage)
-  await orcaPage.keyboard.press(process.platform === 'darwin' ? 'Meta+w' : 'Control+w')
-  await expect(closeDialogTitle(orcaPage)).toBeVisible({ timeout: 15_000 })
-  await orcaPage.getByRole('button', { name: /^Cancel$/ }).click()
-  await expect(closeDialogTitle(orcaPage)).toBeHidden()
+  await focusActiveTerminalInput(occPage)
+  await occPage.keyboard.press(process.platform === 'darwin' ? 'Meta+w' : 'Control+w')
+  await expect(closeDialogTitle(occPage)).toBeVisible({ timeout: 15_000 })
+  await occPage.getByRole('button', { name: /^Cancel$/ }).click()
+  await expect(closeDialogTitle(occPage)).toBeHidden()
   await expect(busyTab).toBeVisible()
-  const tabsBefore = await countRenderedTabs(orcaPage)
+  const tabsBefore = await countRenderedTabs(occPage)
 
   await busyTab.hover()
   await busyTab.getByRole('button', { name: /^Close tab /i }).click()
-  await orcaPage.waitForTimeout(1_500)
+  await occPage.waitForTimeout(1_500)
 
   expect(
     {
-      confirmDialogVisible: await closeDialogTitle(orcaPage).isVisible(),
-      tabStillPresent: (await countRenderedTabs(orcaPage)) === tabsBefore
+      confirmDialogVisible: await closeDialogTitle(occPage).isVisible(),
+      tabStillPresent: (await countRenderedTabs(occPage)) === tabsBefore
     },
     'X-button close must apply the same running-process confirmation as Cmd+W'
   ).toEqual({ confirmDialogVisible: true, tabStillPresent: true })

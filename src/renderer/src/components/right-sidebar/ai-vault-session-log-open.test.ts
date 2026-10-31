@@ -19,7 +19,7 @@ vi.mock('@/i18n/i18n', () => ({
   translate: (_key: string, fallback: string) => fallback
 }))
 
-import { openAiVaultSessionLogInOrca } from './ai-vault-session-log-open'
+import { openAiVaultSessionLogInOCC } from './ai-vault-session-log-open'
 
 const LOG_PATH = '/home/user/.claude/sessions/log.jsonl'
 
@@ -53,12 +53,12 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 
-describe('openAiVaultSessionLogInOrca', () => {
+describe('openAiVaultSessionLogInOCC', () => {
   it('opens the exact path as a permanent read-only local tab', async () => {
     const state = makeState()
     getStateMock.mockReturnValue(state)
 
-    await openAiVaultSessionLogInOrca({
+    await openAiVaultSessionLogInOCC({
       agent: 'claude',
       filePath: LOG_PATH,
       executionHostId: 'local'
@@ -92,7 +92,7 @@ describe('openAiVaultSessionLogInOrca', () => {
     const state = makeState()
     getStateMock.mockReturnValue(state)
 
-    await openAiVaultSessionLogInOrca({ agent, filePath, executionHostId: 'local' })
+    await openAiVaultSessionLogInOCC({ agent, filePath, executionHostId: 'local' })
 
     expect(state.openFile).toHaveBeenCalledExactlyOnceWith(
       expect.objectContaining({ filePath, relativePath: filePath, readOnly: true, liveTail: true }),
@@ -104,17 +104,17 @@ describe('openAiVaultSessionLogInOrca', () => {
     const state = makeState()
     getStateMock.mockReturnValue(state)
 
-    await openAiVaultSessionLogInOrca({
+    await openAiVaultSessionLogInOCC({
       agent: 'claude',
       filePath: '   ',
       executionHostId: 'local'
     })
-    await openAiVaultSessionLogInOrca({
+    await openAiVaultSessionLogInOCC({
       agent: 'claude',
       filePath: LOG_PATH,
       executionHostId: 'ssh:dev-box'
     })
-    await openAiVaultSessionLogInOrca({
+    await openAiVaultSessionLogInOCC({
       agent: 'opencode',
       filePath: '/home/user/.opencode/db.sqlite#sess_1',
       executionHostId: 'local'
@@ -131,7 +131,7 @@ describe('openAiVaultSessionLogInOrca', () => {
       filePath: '/home/user/.local/share/opencode/opencode.db',
       executionHostId: 'local'
     }
-    await openAiVaultSessionLogInOrca(session)
+    await openAiVaultSessionLogInOCC(session)
     expect(state.openFile).not.toHaveBeenCalled()
   })
 
@@ -170,7 +170,7 @@ describe('openAiVaultSessionLogInOrca', () => {
         executionHostId: 'local',
         messageCount: 0
       }
-    await openAiVaultSessionLogInOrca(session)
+    await openAiVaultSessionLogInOCC(session)
     expect(state.openFile).toHaveBeenCalledExactlyOnceWith(
       expect.objectContaining({
         filePath: conversationPath,
@@ -187,7 +187,7 @@ describe('openAiVaultSessionLogInOrca', () => {
     const state = makeState({ worktreesByRepo: {}, folderWorkspaces: [] })
     getStateMock.mockReturnValue(state)
 
-    await openAiVaultSessionLogInOrca({
+    await openAiVaultSessionLogInOCC({
       agent: 'claude',
       filePath: LOG_PATH,
       executionHostId: 'local'
@@ -213,7 +213,7 @@ describe('openAiVaultSessionLogInOrca', () => {
     })
     getStateMock.mockReturnValue(state)
 
-    await openAiVaultSessionLogInOrca({
+    await openAiVaultSessionLogInOCC({
       agent: 'claude',
       filePath: LOG_PATH,
       executionHostId: 'local'

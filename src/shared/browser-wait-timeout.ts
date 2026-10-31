@@ -1,4 +1,4 @@
-/** How long `orca wait` waits for a condition when no --timeout is given. */
+/** How long `occ wait` waits for a condition when no --timeout is given. */
 export const BROWSER_WAIT_DEFAULT_TIMEOUT_MS = 25_000
 
 /** Deadline for a hop that forwards `browser.wait`; it outlives the wait so the host reports the timeout. */

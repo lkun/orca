@@ -34,7 +34,7 @@ vi.mock('../telemetry/client', () =>
 vi.mock('../telemetry/classify-error', () =>
   import('./pty/pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty/pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../memory/pty-registry', () =>
@@ -61,14 +61,14 @@ describe.each(['local', 'daemon'] as const)('%s PTY navigation readiness', (prov
       const gate = new Promise<void>((resolve) => {
         release = resolve
       })
-      const config = join(tmpdir(), 'orca-spawn-pending-agent-view-config')
+      const config = join(tmpdir(), 'occ-spawn-pending-agent-view-config')
       vi.stubEnv('CLAUDE_CONFIG_DIR', config)
       const reconcileConfig = vi.fn(() => gate)
       const service = new agentView.ClaudeAgentViewService(
-        join(tmpdir(), 'orca-spawn-pending-agent-view'),
+        join(tmpdir(), 'occ-spawn-pending-agent-view'),
         {
           reconcileConfig,
-          ensurePlugin: async () => join(tmpdir(), 'orca-spawn-agent-view-plugin'),
+          ensurePlugin: async () => join(tmpdir(), 'occ-spawn-agent-view-plugin'),
           loginEnv: async () => ({ CLAUDE_CONFIG_DIR: config }),
           listProfiles: async () => []
         }
@@ -91,7 +91,7 @@ describe.each(['local', 'daemon'] as const)('%s PTY navigation readiness', (prov
       try {
         await vi.waitFor(() => expect(env).toBeDefined())
         expect(reconciled).toBe(false)
-        expect(env).not.toHaveProperty('ORCA_CLAUDE_AGENT_VIEW_PLUGIN_DIR')
+        expect(env).not.toHaveProperty('OCC_CLAUDE_AGENT_VIEW_PLUGIN_DIR')
       } finally {
         release()
         await Promise.all([reconcile, spawn])

@@ -37,9 +37,9 @@ describe('RelayAgentHookServer', () => {
   })
 
   it('keeps named-pipe endpoint files on a real filesystem path', () => {
-    const endpointDir = endpointDirForRelaySocket('\\\\.\\pipe\\orca-relay-abc123')
+    const endpointDir = endpointDirForRelaySocket('\\\\.\\pipe\\occ-relay-abc123')
 
-    expect(endpointDir).toBe(join(homedir(), '.orca-relay', 'agent-hooks', 'orca-relay-abc123'))
+    expect(endpointDir).toBe(join(homedir(), '.occ-relay', 'agent-hooks', 'occ-relay-abc123'))
     expect(endpointDir).not.toContain('\\\\.\\pipe')
   })
 
@@ -495,18 +495,18 @@ describe('RelayAgentHookServer', () => {
     }
   })
 
-  it('exposes ORCA_AGENT_HOOK_* env vars after start', async () => {
+  it('exposes OCC_AGENT_HOOK_* env vars after start', async () => {
     const forward = vi.fn()
     const server = new RelayAgentHookServer({ endpointDir: dir, forward })
     await server.start()
     try {
       const env = server.buildPtyEnv()
-      expect(env.ORCA_AGENT_HOOK_PORT).toMatch(/^\d+$/)
-      expect(env.ORCA_AGENT_HOOK_TOKEN).toBeTruthy()
-      expect(env.ORCA_AGENT_HOOK_ENV).toBe('remote')
-      expect(env.ORCA_AGENT_HOOK_VERSION).toBe('1')
-      expect(env.ORCA_AGENT_HOOK_TRANSPORT).toBe('raw-json-v1')
-      expect(env.ORCA_AGENT_HOOK_ENDPOINT).toBeTruthy()
+      expect(env.OCC_AGENT_HOOK_PORT).toMatch(/^\d+$/)
+      expect(env.OCC_AGENT_HOOK_TOKEN).toBeTruthy()
+      expect(env.OCC_AGENT_HOOK_ENV).toBe('remote')
+      expect(env.OCC_AGENT_HOOK_VERSION).toBe('1')
+      expect(env.OCC_AGENT_HOOK_TRANSPORT).toBe('raw-json-v1')
+      expect(env.OCC_AGENT_HOOK_ENDPOINT).toBeTruthy()
     } finally {
       server.stop()
     }
@@ -517,9 +517,9 @@ describe('RelayAgentHookServer', () => {
     const server = new RelayAgentHookServer({ endpointDir: dir, forward })
     await server.start({ publishEndpoint: false })
     try {
-      expect(server.buildPtyEnv().ORCA_AGENT_HOOK_ENDPOINT).toBeUndefined()
+      expect(server.buildPtyEnv().OCC_AGENT_HOOK_ENDPOINT).toBeUndefined()
       expect(server.publishEndpointFile()).toBe(true)
-      expect(server.buildPtyEnv().ORCA_AGENT_HOOK_ENDPOINT).toBeTruthy()
+      expect(server.buildPtyEnv().OCC_AGENT_HOOK_ENDPOINT).toBeTruthy()
     } finally {
       server.stop()
     }

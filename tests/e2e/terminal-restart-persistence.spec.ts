@@ -3,7 +3,7 @@
 // Short idle sampling catches frequent writers, not the original 3-minute cadence; crash recovery and machine-dependent input lag have separate coverage.
 
 import type { ElectronApplication } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   execInTerminal,
   waitForTerminalOutput,
@@ -12,7 +12,7 @@ import {
   splitActiveTerminalPane
 } from './helpers/terminal'
 import { getActiveTabId, getWorktreeTabs } from './helpers/store'
-import { createRestartSession } from './helpers/orca-restart'
+import { createRestartSession } from './helpers/occ-restart'
 import { PTY_SESSION_ID_SEPARATOR } from '../../src/shared/pty-session-id-format'
 import {
   seededRepoPathOrSkip,
@@ -89,8 +89,8 @@ test.describe('Terminal restart persistence', () => {
       const { worktreeId, ptyId } = await bootstrapFirstLaunch(firstLaunch.page, repoPath)
       expect(ptyId).toContain(PTY_SESSION_ID_SEPARATOR)
 
-      const prompt = `ORCA_RESTART_PROMPT_${Date.now()}_GT `
-      const marker = `ORCA_CURSOR_RESTART_${Date.now()}`
+      const prompt = `OCC_RESTART_PROMPT_${Date.now()}_GT `
+      const marker = `OCC_CURSOR_RESTART_${Date.now()}`
       const promptCommand =
         process.platform === 'win32'
           ? `function global:prompt { '${prompt}' }`

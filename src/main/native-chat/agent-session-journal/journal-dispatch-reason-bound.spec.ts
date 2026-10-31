@@ -58,7 +58,7 @@ export function registerJournalDispatchReasonBoundTests(): void {
   }
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-dispatch-reason-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-dispatch-reason-'))
     clock = 1_000
   })
 

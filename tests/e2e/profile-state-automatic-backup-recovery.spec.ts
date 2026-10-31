@@ -1,20 +1,20 @@
 import { existsSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { ElectronApplication } from '@stablyai/playwright-test'
-import { DEFAULT_LOCAL_ORCA_PROFILE_ID } from '../../src/shared/orca-profiles'
-import { runProcess } from '@orca/process-host'
+import { DEFAULT_LOCAL_OCC_PROFILE_ID } from '../../src/shared/occ-profiles'
+import { runProcess } from '@occ/process-host'
 import { openProfileStateDatabaseReadOnly } from '../../src/main/persistence/profile-state/profile-state-database'
 import { readProfileStateSnapshot } from '../../src/main/persistence/profile-state/profile-state-documents'
 import { profileStateDatabaseBackups } from '../../src/main/persistence/profile-state/profile-state-backup-path'
-import { test, expect } from './helpers/orca-app'
-import { createRestartSession } from './helpers/orca-restart'
+import { test, expect } from './helpers/occ-app'
+import { createRestartSession } from './helpers/occ-restart'
 import { getE2ECompletedOnboardingProfile } from './helpers/e2e-completed-onboarding-profile'
 import { createElectronHomeIsolation } from './helpers/electron-home-isolation'
 import { cleanupE2EDaemons } from './helpers/electron-process-shutdown'
 import { waitForSessionReady } from './helpers/store'
 
 function readSnapshot(databasePath: string) {
-  const opened = openProfileStateDatabaseReadOnly(databasePath, DEFAULT_LOCAL_ORCA_PROFILE_ID)
+  const opened = openProfileStateDatabaseReadOnly(databasePath, DEFAULT_LOCAL_OCC_PROFILE_ID)
   try {
     return readProfileStateSnapshot(opened.db)
   } finally {
@@ -25,10 +25,10 @@ function readSnapshot(databasePath: string) {
 function rollbackProfileBackup(userDataDir: string, backupId: string, executable?: string) {
   const cliIsolation = createElectronHomeIsolation({
     inheritedEnv: process.env,
-    launchEnv: { ORCA_USER_DATA_PATH: userDataDir, ORCA_BACKGROUND_LAUNCH: '1' },
+    launchEnv: { OCC_USER_DATA_PATH: userDataDir, OCC_BACKGROUND_LAUNCH: '1' },
     extraEnv: {
       ...(executable
-        ? { ORCA_APP_EXECUTABLE: executable, ORCA_APP_EXECUTABLE_NEEDS_APP_ROOT: '1' }
+        ? { OCC_APP_EXECUTABLE: executable, OCC_APP_EXECUTABLE_NEEDS_APP_ROOT: '1' }
         : {}),
       // Raw development Electron needs the same sandbox opt-out as Playwright.
       ...(process.platform === 'linux' ? { ELECTRON_DISABLE_SANDBOX: '1' } : {})
@@ -56,15 +56,15 @@ for (const recoveryRuntime of ['node', 'electron'] as const) {
   // oxlint-disable-next-line no-empty-pattern -- This test owns both hidden Electron launches.
   test(`restores an automatic SQLite backup through the ${recoveryRuntime} CLI after primary corruption`, async ({}, testInfo) => {
     test.setTimeout(180_000)
-    const session = createRestartSession(testInfo, { ORCA_BACKGROUND_LAUNCH: '1' })
-    const rootJson = path.join(session.userDataDir, 'orca-data.json')
+    const session = createRestartSession(testInfo, { OCC_BACKGROUND_LAUNCH: '1' })
+    const rootJson = path.join(session.userDataDir, 'occ-data.json')
     const profileDirectory = path.join(
       session.userDataDir,
       'profiles',
-      DEFAULT_LOCAL_ORCA_PROFILE_ID
+      DEFAULT_LOCAL_OCC_PROFILE_ID
     )
     const databasePath = path.join(profileDirectory, 'profile-state.db')
-    const dataFile = path.join(profileDirectory, 'orca-data.json')
+    const dataFile = path.join(profileDirectory, 'occ-data.json')
     const marker = `automatic-backup-${Date.now()}`
     const recoveryMarker = {
       marker,
@@ -168,7 +168,7 @@ for (const recoveryRuntime of ['node', 'electron'] as const) {
           storage: 'sqlite',
           backupId: backup.id,
           revision: chosen.revision,
-          profileId: DEFAULT_LOCAL_ORCA_PROFILE_ID,
+          profileId: DEFAULT_LOCAL_OCC_PROFILE_ID,
           restoredPath: recoveryRuntime === 'electron' ? realpathSync(databasePath) : databasePath
         }
       })

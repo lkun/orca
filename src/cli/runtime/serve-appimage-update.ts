@@ -1,7 +1,7 @@
 /** AppImage swaps leave running copies stale; re-exec at the same PID to preserve service tracking. */
 import { readFileSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   readAppImageSourceOfNamespace,
   resolveAppImageCacheKey,
@@ -135,16 +135,16 @@ function appImageEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
     'APPDIR',
     'ARGV0',
     'OWD',
-    'ORCA_CLI_LAUNCH_REDIRECTED'
+    'OCC_CLI_LAUNCH_REDIRECTED'
   ]) {
     delete next[name]
   }
   // Restore NODE_OPTIONS before the new launcher moves it aside again.
-  if (env.ORCA_NODE_OPTIONS) {
-    next.NODE_OPTIONS = env.ORCA_NODE_OPTIONS
+  if (env.OCC_NODE_OPTIONS) {
+    next.NODE_OPTIONS = env.OCC_NODE_OPTIONS
   }
-  if (env.ORCA_NODE_REPL_EXTERNAL_MODULE) {
-    next.NODE_REPL_EXTERNAL_MODULE = env.ORCA_NODE_REPL_EXTERNAL_MODULE
+  if (env.OCC_NODE_REPL_EXTERNAL_MODULE) {
+    next.NODE_REPL_EXTERNAL_MODULE = env.OCC_NODE_REPL_EXTERNAL_MODULE
   }
   return next
 }

@@ -12,8 +12,8 @@ describe('resolveHostEndpointEdit', () => {
     ['implicit LAN websocket', 'ws://desk.local'],
     ['explicit websocket default', 'ws://desk.local:80'],
     ['explicit websocket custom', 'ws://desk.local:6768'],
-    ['secure path-routed proxy', 'wss://desk.example.com/orca'],
-    ['secure query-routed proxy', 'wss://desk.example.com/orca?route=runtime'],
+    ['secure path-routed proxy', 'wss://desk.example.com/occ'],
+    ['secure query-routed proxy', 'wss://desk.example.com/occ?route=runtime'],
     ['legacy bare hostname', 'desk.local'],
     ['legacy bare host and port', 'desk.local:7777'],
     ['legacy unparsable endpoint', 'not-a-url']
@@ -42,9 +42,9 @@ describe('resolveHostEndpointEdit', () => {
     ['ws://192.168.1.10:6768', 'wss://tunnel.example.com:9443', 'wss://tunnel.example.com:9443'],
     ['ws://192.168.1.10:6768', 'tunnel.example.com', 'ws://tunnel.example.com:6768'],
     [
-      'wss://old.example.com:8443/orca?route=runtime',
+      'wss://old.example.com:8443/occ?route=runtime',
       'wss://tunnel.example.com',
-      'wss://tunnel.example.com:443/orca?route=runtime'
+      'wss://tunnel.example.com:443/occ?route=runtime'
     ]
   ])(
     'resolves explicit secure URLs independently of the saved port (%s → %s)',
@@ -81,7 +81,7 @@ describe('resolveHostEndpointEdit', () => {
 
   it('discriminates invalid input without a candidate endpoint', () => {
     expect(
-      resolveHostEndpointEdit('wss://desk.example.com/orca', 'https://desk.example.com')
+      resolveHostEndpointEdit('wss://desk.example.com/occ', 'https://desk.example.com')
     ).toEqual({
       kind: 'invalid',
       error: 'Use ws:// or wss:// (or host:port).'

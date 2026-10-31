@@ -1,9 +1,9 @@
-import type { PersistedTrustedOrcaHooks } from '../../../src/shared/orca-yaml-hook-types'
+import type { PersistedTrustedOCCHooks } from '../../../src/shared/occ-yaml-hook-types'
 import {
   canUseRepoWideTrust,
-  withOrcaHookRepoAlwaysTrusted,
-  withOrcaHookScriptConfirmed
-} from '../../../src/shared/orca-hook-trust-entries'
+  withOCCHookRepoAlwaysTrusted,
+  withOCCHookScriptConfirmed
+} from '../../../src/shared/occ-hook-trust-entries'
 import type { RpcClient } from '../transport/rpc-client'
 import { taskUiStateWrite } from './mobile-task-runtime-operations'
 
@@ -13,7 +13,7 @@ export type SetupHookTrust = {
 }
 
 export function isSetupHookTrusted(
-  trust: PersistedTrustedOrcaHooks,
+  trust: PersistedTrustedOCCHooks,
   repos: readonly { id: string }[],
   repoId: string,
   contentHash: string
@@ -24,7 +24,7 @@ export function isSetupHookTrusted(
 }
 
 export function wasSetupHookPreviouslyApproved(
-  trust: PersistedTrustedOrcaHooks,
+  trust: PersistedTrustedOCCHooks,
   repoId: string
 ): boolean {
   return Boolean(trust[repoId]?.setup?.contentHash)
@@ -32,16 +32,16 @@ export function wasSetupHookPreviouslyApproved(
 
 export async function persistSetupHookTrustApproval(args: {
   client: RpcClient
-  trust: PersistedTrustedOrcaHooks
+  trust: PersistedTrustedOCCHooks
   repoId: string
   contentHash: string
   alwaysTrust: boolean
-}): Promise<PersistedTrustedOrcaHooks> {
+}): Promise<PersistedTrustedOCCHooks> {
   const next = args.alwaysTrust
-    ? withOrcaHookRepoAlwaysTrusted(args.trust, args.repoId)
-    : withOrcaHookScriptConfirmed(args.trust, args.repoId, 'setup', args.contentHash)
+    ? withOCCHookRepoAlwaysTrusted(args.trust, args.repoId)
+    : withOCCHookScriptConfirmed(args.trust, args.repoId, 'setup', args.contentHash)
   taskUiStateWrite.interpret(
-    await taskUiStateWrite.request(args.client, { trustedOrcaHooks: next })
+    await taskUiStateWrite.request(args.client, { trustedOCCHooks: next })
   )
   return next
 }
@@ -58,7 +58,7 @@ export function normalizeSetupHookTrust(
   return { ...setupTrust, contentHash, scriptContent }
 }
 
-// New hosts send setupConfig (orca.yaml setup plus defaultTabs commands); older ones only the effective setup script.
+// New hosts send setupConfig (occ.yaml setup plus defaultTabs commands); older ones only the effective setup script.
 export function readRepoHooksSetupCommand(reply: {
   hooks?: { scripts?: { setup?: string } } | null
   setupConfig?: { command: string } | null

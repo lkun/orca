@@ -19,7 +19,7 @@ afterEach(async () => {
 })
 
 async function makeCache(): Promise<{ cacheRootPath: string; rootPath: string; execPath: string }> {
-  const base = await mkdtemp(join(tmpdir(), 'orca-appimage-lease-'))
+  const base = await mkdtemp(join(tmpdir(), 'occ-appimage-lease-'))
   created.push(base)
   const cacheRootPath = join(base, 'cache')
   const rootPath = join(cacheRootPath, NAMESPACE, GENERATION)

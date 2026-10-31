@@ -77,7 +77,7 @@ describe('terminal keyboard pane ownership', () => {
       searchOpenRef: { current: false },
       searchStateRef: { current: { query: '', caseSensitive: false, regex: false } },
       keybindings: undefined,
-      terminalShortcutPolicy: 'orca-first',
+      terminalShortcutPolicy: 'occ-first',
       getKeyboardSplitTelemetrySource: () => 'keyboard'
     } as never)
 

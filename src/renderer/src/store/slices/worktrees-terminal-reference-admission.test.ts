@@ -29,8 +29,8 @@ function context(tabId = 'tab-1') {
 function link(number: number) {
   return {
     number,
-    url: `https://github.com/acme/orca/pull/${number}`,
-    slug: { owner: 'acme', repo: 'orca' }
+    url: `https://github.com/acme/occ/pull/${number}`,
+    slug: { owner: 'acme', repo: 'occ' }
   }
 }
 function review(number: number): GitHubWorkItem {

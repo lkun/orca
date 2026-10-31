@@ -11,13 +11,13 @@ import {
   type KnownRuntimeEnvironment
 } from './runtime-environments'
 import { hardenExistingSecureFile } from './secure-file'
-import { OrcadWslDeploymentLinkSchema } from './wsl-host-deployment-link'
+import { OCCdWslDeploymentLinkSchema } from './wsl-host-deployment-link'
 
 // Isolate WSL records so older builds cannot reject the entire pairing store.
-const WSL_HOST_DEPLOYMENTS_FILE = 'orca-wsl-host-deployments.json'
+const WSL_HOST_DEPLOYMENTS_FILE = 'occ-wsl-host-deployments.json'
 const MAX_WSL_HOST_DEPLOYMENTS_FILE_BYTES = 256 * 1024
 
-/** A managed orcad in a WSL distro. The environment's name is its label; runtime state lives elsewhere. */
+/** A managed occd in a WSL distro. The environment's name is its label; runtime state lives elsewhere. */
 /** A Remove that could not prove the host's server stopped (E11); the host stays until one does. */
 export const WslHostPendingStopSchema = z.object({
   since: z.number().finite(),
@@ -30,11 +30,11 @@ export const WslHostPendingStopSchema = z.object({
 
 export type WslHostPendingStop = z.infer<typeof WslHostPendingStopSchema>
 
-export const WslHostDeploymentRecordSchema = OrcadWslDeploymentLinkSchema.extend({
+export const WslHostDeploymentRecordSchema = OCCdWslDeploymentLinkSchema.extend({
   environmentId: z.string().min(1),
   createdAt: z.number().finite(),
   /**
-   * The paired orcad's host key, so a stale record cannot claim a server re-paired under the same
+   * The paired occd's host key, so a stale record cannot claim a server re-paired under the same
    * id and bridge port. Optional: records written before it are bound by port only until refreshed.
    */
   pairingPublicKeyB64: z.string().min(1).optional(),
@@ -171,7 +171,7 @@ export function writeWslHostDeployment(
 
 export function hasNonWslOwner(environment: KnownRuntimeEnvironment): boolean {
   return Boolean(
-    environment.orcadDeployment ||
+    environment.occdDeployment ||
     environment.sshAccess ||
     environment.pendingSshAccessOperation ||
     environment.connectionDependency
@@ -225,7 +225,7 @@ export function overlayWslHostDeployments(
       }
       const overlaid = hasNonWslOwner(environment)
         ? null
-        : KnownRuntimeEnvironmentSchema.safeParse({ ...environment, orcadDeployment: link })
+        : KnownRuntimeEnvironmentSchema.safeParse({ ...environment, occdDeployment: link })
       if (!overlaid?.success) {
         warnUnreadableEnvironmentState(
           `Ignoring the WSL deployment for server ${environment.id}; it conflicts with the server's pairing or SSH link.`

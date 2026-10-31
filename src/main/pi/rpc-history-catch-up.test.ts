@@ -55,7 +55,7 @@ afterEach(async () => {
 })
 
 async function chat() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-pi-catch-up-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-pi-catch-up-'))
   const file = join(root, 'session.jsonl')
   const journal = await journals.open({
     identity: {
@@ -108,7 +108,7 @@ async function chat() {
     turn: async (text: string, entries: Entry[], anchor: string | null) => {
       ordinal += 1
       deferred.sink.appendItem(
-        { provider: 'orca', clientMessageId: `m${ordinal}` },
+        { provider: 'occ', clientMessageId: `m${ordinal}` },
         { kind: 'message', role: 'user', blocks: [{ type: 'text', text }] },
         { turnScope: AGENT_JOURNAL_THREAD_SCOPE }
       )
@@ -144,7 +144,7 @@ async function chat() {
     crashedPrompt: async (text: string) => {
       ordinal += 1
       deferred.sink.appendItem(
-        { provider: 'orca', clientMessageId: `m${ordinal}` },
+        { provider: 'occ', clientMessageId: `m${ordinal}` },
         { kind: 'message', role: 'user', blocks: [{ type: 'text', text }] },
         { turnScope: AGENT_JOURNAL_THREAD_SCOPE }
       )

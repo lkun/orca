@@ -45,7 +45,7 @@ describe('readSshHostProxyEnvironment', () => {
         Object.assign(new Error("'exec' is not recognized"), { exitCode: 1, stdout: '' })
       )
       .mockResolvedValueOnce(
-        `Welcome HTTPS_PROXY=http://wrong\r\n__ORCA_HOST_PROXY_ENV__ HTTP_PROXY=${Buffer.from('http://usér@corp:8080').toString('hex')}\r\n`
+        `Welcome HTTPS_PROXY=http://wrong\r\n__OCC_HOST_PROXY_ENV__ HTTP_PROXY=${Buffer.from('http://usér@corp:8080').toString('hex')}\r\n`
       )
 
     await expect(readSshHostProxyEnvironment(conn)).resolves.toEqual({

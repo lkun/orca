@@ -394,7 +394,7 @@ describe('crash-reporting shared helpers', () => {
   })
 
   it.each([
-    ['POSIX', '/home/alice/orca/app.log then recovered.'],
+    ['POSIX', '/home/alice/occ/app.log then recovered.'],
     ['Windows', 'C:\\Users\\alice\\OCC\\app.log then recovered.'],
     ['UNC', '\\\\server\\share\\OCC\\app.log then recovered.']
   ])('stops unquoted %s paths at prose boundaries', (_platform, value) => {

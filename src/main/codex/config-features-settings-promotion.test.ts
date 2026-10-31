@@ -26,10 +26,10 @@ let userDataDir: string
 let previousUserDataPath: string | undefined
 
 beforeEach(() => {
-  tmpHome = mkdtempSync(join(tmpdir(), 'orca-codex-features-home-'))
-  userDataDir = mkdtempSync(join(tmpdir(), 'orca-codex-features-user-data-'))
-  previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-  process.env.ORCA_USER_DATA_PATH = userDataDir
+  tmpHome = mkdtempSync(join(tmpdir(), 'occ-codex-features-home-'))
+  userDataDir = mkdtempSync(join(tmpdir(), 'occ-codex-features-user-data-'))
+  previousUserDataPath = process.env.OCC_USER_DATA_PATH
+  process.env.OCC_USER_DATA_PATH = userDataDir
   homedirMock.mockReturnValue(tmpHome)
   if (homedir() !== tmpHome) {
     throw new Error('node:os homedir mock is not active; refusing to touch the real ~/.codex')
@@ -40,9 +40,9 @@ afterEach(() => {
   rmSync(tmpHome, { recursive: true, force: true })
   rmSync(userDataDir, { recursive: true, force: true })
   if (previousUserDataPath === undefined) {
-    delete process.env.ORCA_USER_DATA_PATH
+    delete process.env.OCC_USER_DATA_PATH
   } else {
-    process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+    process.env.OCC_USER_DATA_PATH = previousUserDataPath
   }
   vi.clearAllMocks()
 })
@@ -50,7 +50,7 @@ afterEach(() => {
 const systemConfigPath = (): string => join(tmpHome, '.codex', 'config.toml')
 const runtimeHomeDir = (): string => join(userDataDir, 'codex-runtime-home', 'home')
 const runtimeConfigPath = (): string => join(runtimeHomeDir(), 'config.toml')
-const baselinePath = (): string => join(runtimeHomeDir(), '.orca-config-settings-baseline.json')
+const baselinePath = (): string => join(runtimeHomeDir(), '.occ-config-settings-baseline.json')
 const readSystemConfig = (): string => readFileSync(systemConfigPath(), 'utf-8')
 const readRuntimeConfig = (): string => readFileSync(runtimeConfigPath(), 'utf-8')
 

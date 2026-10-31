@@ -1,6 +1,6 @@
 /**
- * The WSL host changing under a move, against a real orcad profile store.
- * R41: orcad updated mid-move, by this desktop's next connect or by another desktop on the distro.
+ * The WSL host changing under a move, against a real occd profile store.
+ * R41: occd updated mid-move, by this desktop's next connect or by another desktop on the distro.
  * R38: the distro unregistered (or renamed: by name the two look the same) mid-move or after it.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -70,11 +70,11 @@ function at(point: string, change: () => void): void {
   }
 }
 
-/** The stage is in a format this orcad cannot read, as when versions differ: it is dropped on load. */
-function replaceOrcadWithNewerStagingFormat(): void {
+/** The stage is in a format this occd cannot read, as when versions differ: it is dropped on load. */
+function replaceOCCdWithNewerStagingFormat(): void {
   const persisted: unknown = JSON.parse(readPersistedStateJson())
   const state = isRecord(persisted) ? persisted : {}
-  const staged = state.orcadMigrationStagedCatalogs
+  const staged = state.occdMigrationStagedCatalogs
   for (const entry of Array.isArray(staged) ? staged : []) {
     if (isRecord(entry)) {
       entry.version = 2
@@ -84,7 +84,7 @@ function replaceOrcadWithNewerStagingFormat(): void {
   rig.host = createStore()
 }
 
-describe('R41: orcad updated during a move', () => {
+describe('R41: occd updated during a move', () => {
   it('between staging and the commit, with the same staging format: the move finishes', async () => {
     at('blob:terminal-history:before', () => {
       rig.host = createStore()
@@ -97,11 +97,11 @@ describe('R41: orcad updated during a move', () => {
   })
 
   it('between staging and the commit, by a build that cannot read the stage: back to zero, then a retry moves', async () => {
-    at('blob:terminal-history:before', replaceOrcadWithNewerStagingFormat)
+    at('blob:terminal-history:before', replaceOCCdWithNewerStagingFormat)
     expect(await moveProjectsToWslHost(rig.world.deps, request)).toMatchObject({
       outcome: 'reset'
     })
-    // The new orcad answered "absent", so nothing is owed to it.
+    // The new occd answered "absent", so nothing is owed to it.
     expect(outcomeOf(rig)).toBe('back-at-zero')
 
     expect(await moveProjectsToWslHost(rig.world.deps, request)).toMatchObject({
@@ -115,16 +115,16 @@ describe('R41: orcad updated during a move', () => {
       rig.kill.killAt = killAt
       await moveProjectsToWslHost(rig.world.deps, request).catch(() => {})
       expect(rig.kill.dead).toBe(true)
-      // App update = restart; orcad updated on the next connect. The receipt survives it.
-      await restartWslMoveRig(rig, { hostUp: false, orcadRestarted: true })
-      await restartWslMoveRig(rig, { hostUp: true, orcadRestarted: true })
+      // App update = restart; occd updated on the next connect. The receipt survives it.
+      await restartWslMoveRig(rig, { hostUp: false, occdRestarted: true })
+      await restartWslMoveRig(rig, { hostUp: true, occdRestarted: true })
       expect(outcomeOf(rig)).toBe('fully-moved')
     }
   )
 })
 
 describe('R38: the distro unregistered or renamed', () => {
-  /** A fresh distro registered under the same name: a new, empty orcad. */
+  /** A fresh distro registered under the same name: a new, empty occd. */
   function registerFreshDistro(): void {
     testState.dir = wslMoveRigTempDir('wsl-move-fresh-host-')
     rig.host = createStore()
@@ -214,7 +214,7 @@ describe('R38: the distro unregistered or renamed', () => {
     rig.kill.killAt = 'commit:before'
     await moveProjectsToWslHost(rig.world.deps, request).catch(() => {})
     rig.hostPresent = false
-    await restartWslMoveRig(rig, { hostUp: false, orcadRestarted: false })
+    await restartWslMoveRig(rig, { hostUp: false, occdRestarted: false })
 
     expect(listWslMoveCutovers(rig.userDataPath)).toEqual([])
     expect(resolveWslMoveFence(rig.userDataPath).fenced.repoIds.size).toBe(0)
@@ -226,7 +226,7 @@ describe('R38: the distro unregistered or renamed', () => {
     })
     await retain()
     rig.hostPresent = false
-    await restartWslMoveRig(rig, { hostUp: false, orcadRestarted: false })
+    await restartWslMoveRig(rig, { hostUp: false, occdRestarted: false })
 
     // A committed move is never reset by a lost distro: the host may only be renamed.
     const [cutover] = listWslMoveCutovers(rig.userDataPath)

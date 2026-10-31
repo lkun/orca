@@ -95,7 +95,7 @@ describe('an SSH host its managed server does not serve', () => {
       status: 'error',
       error: 'This SSH host isn’t supported by this version of OCC.',
       reconnectAttempt: 0,
-      managedServer: { kind: 'relay', reason: 'orcad_unavailable', detail: 'unsupported_host' }
+      managedServer: { kind: 'relay', reason: 'occd_unavailable', detail: 'unsupported_host' }
     })
 
     expect(container.textContent).not.toContain('This SSH host isn’t supported')
@@ -129,7 +129,7 @@ describe('the compact SSH host row', () => {
   it('marks a host held by a managed server with a chip', async () => {
     const container = await renderCard(undefined, {
       ...target,
-      orcadFence: { environmentId: 'env-1' }
+      occdFence: { environmentId: 'env-1' }
     })
 
     expect(container.textContent).toContain('OCC server')

@@ -1,4 +1,4 @@
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { notifyLocalPtyProviderRebound } from './local-provider-rebound'
 import type { PtyRendererDelivery } from '../session'
 
@@ -37,7 +37,7 @@ export let rebindProviderListeners: (() => void) | null = null
 
 export function rebindLocalProviderListeners(): void {
   rebindProviderListeners?.()
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     notifyLocalPtyProviderRebound()
   }
 }

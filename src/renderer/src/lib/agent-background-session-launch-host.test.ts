@@ -228,7 +228,7 @@ describe('resolveAgentBackgroundLaunchHost', () => {
       worktreePath: '/srv/repo'
     })
 
-    // Why isRemote: the SSH target runs the relay shim as `orca`, not the Linux desktop `occ-ide`.
+    // Why isRemote: the SSH target runs the relay shim as `occ`, not the Linux desktop `occ-ide`.
     expect(host).toMatchObject({ platform: 'linux', isLocalHost: false, isRemote: true })
   })
 
@@ -256,7 +256,7 @@ describe('resolveAgentBackgroundLaunchHost', () => {
         isRemote: host.isRemote,
         allowEmptyPromptLaunch: true
       })?.launchCommand
-    ).toBe('orca claude-teams')
+    ).toBe('occ claude-teams')
   })
 
   it('refuses a launch whose SSH host never reported its OS', () => {

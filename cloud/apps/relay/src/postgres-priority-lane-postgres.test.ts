@@ -3,7 +3,7 @@ import type { PostgresDatabase } from './database.js'
 import { isPostgresPoolConnectTimeout } from './postgres-pool-pressure.js'
 import { openDelayedPostgresDatabase } from './test-fixtures/delayed-postgres-database.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 // The 2026-10-06 asia-east2 shape at test scale: a reconnect herd far wider

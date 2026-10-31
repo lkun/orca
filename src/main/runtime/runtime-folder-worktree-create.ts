@@ -1,7 +1,7 @@
 import { formatTerminalStartFailure } from '../../shared/terminal-start-failure'
 import { readableWslDistroHoldText } from '../../shared/wsl-distro-stopped-hold'
 import { paneIdentity } from './runtime-terminal-pane-identity'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { shouldSeedWorktreePrimaryTerminal } from '../../shared/worktree-first-surface'
 import { randomUUID } from 'node:crypto'
 import { getProjectHostSetupWorktreeMeta } from '../../shared/project-host-setup-lookup'
@@ -91,9 +91,9 @@ export async function createRuntimeFolderWorktree(args: {
       : {}),
     lastActivityAt: now,
     createdAt: now,
-    orcaCreatedAt: now,
-    orcaCreationSource: 'runtime',
-    orcaCreationWorkspaceLayout: {
+    occCreatedAt: now,
+    occCreationSource: 'runtime',
+    occCreationWorkspaceLayout: {
       path: settings.workspaceDir,
       nestWorkspaces: settings.nestWorkspaces
     },
@@ -147,10 +147,10 @@ export async function createRuntimeFolderWorktree(args: {
   let didSpawnStartup = false
   let startupTerminal: CreateWorktreeResult['startupTerminal']
   // Main owns failed agent startup too, so its pane can show the reason without a terminal service.
-  if (args.startup && (deps.ptySpawnAvailable || ORCA_LAYOUT_OWNER_IS_MAIN)) {
+  if (args.startup && (deps.ptySpawnAvailable || OCC_LAYOUT_OWNER_IS_MAIN)) {
     try {
       const launchRuntime = args.startupLaunchRuntime
-      if (launchRuntime instanceof Error && !ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (launchRuntime instanceof Error && !OCC_LAYOUT_OWNER_IS_MAIN) {
         throw launchRuntime
       }
       const terminal = await deps.createTerminal(`id:${worktree.id}`, {
@@ -169,7 +169,7 @@ export async function createRuntimeFolderWorktree(args: {
         startupCommandDelivery: args.startup.startupCommandDelivery,
         telemetry: args.startup.telemetry,
         // Keep failed main-owned starts visible in their panes.
-        ...(ORCA_LAYOUT_OWNER_IS_MAIN ? { keepPaneOnStartFailure: true as const } : {}),
+        ...(OCC_LAYOUT_OWNER_IS_MAIN ? { keepPaneOnStartFailure: true as const } : {}),
         ...(shouldActivate ? {} : { surfaceOwner: false })
       })
       request.onStartupTerminalCreated?.(terminal)
@@ -203,7 +203,7 @@ export async function createRuntimeFolderWorktree(args: {
       worktree.id,
       undefined,
       // Main retains failed startup presentation; the window must not take it over.
-      ORCA_LAYOUT_OWNER_IS_MAIN
+      OCC_LAYOUT_OWNER_IS_MAIN
         ? undefined
         : args.startup && !didSpawnStartup
           ? args.startup
@@ -216,7 +216,7 @@ export async function createRuntimeFolderWorktree(args: {
     deps.ptySpawnAvailable &&
     shouldSeedWorktreePrimaryTerminal({
       // Failed agents retain their panes; do not seed a shell beside them.
-      hasPrimarySurface: didSpawnStartup || (ORCA_LAYOUT_OWNER_IS_MAIN && Boolean(args.startup)),
+      hasPrimarySurface: didSpawnStartup || (OCC_LAYOUT_OWNER_IS_MAIN && Boolean(args.startup)),
       // Background attribution-only creates have historically omitted the shell.
       callerProvidesSurface: args.promisedAgentChat === true || args.createdWithAgent !== undefined
     })

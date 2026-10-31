@@ -242,9 +242,9 @@ function ActivityThreadHoverCardContent({
           onIssueMenuOpenChange={detailsHoverControl.handleIssueMenuOpenChange}
           onCopyIssueLink={secondary.hoverIssue?.url ? handleCopyIssueLink : undefined}
           onEditIssue={foundation.handleEditIssue}
-          onOpenGitHubIssueInOrca={
-            secondary.handleOpenGitHubIssueInOrca
-              ? dismissAndRun(secondary.handleOpenGitHubIssueInOrca)
+          onOpenGitHubIssueInOCC={
+            secondary.handleOpenGitHubIssueInOCC
+              ? dismissAndRun(secondary.handleOpenGitHubIssueInOCC)
               : undefined
           }
           onOpenIssueInBrowser={
@@ -269,13 +269,13 @@ function ActivityThreadHoverCardContent({
               )}
               actions={
                 <>
-                  {secondary.hoverLinearIssue.url && secondary.handleOpenLinearIssueInOrca && (
+                  {secondary.hoverLinearIssue.url && secondary.handleOpenLinearIssueInOCC && (
                     <MetadataActionIcon
                       label={translate(
                         'auto.components.sidebar.WorktreeCardMeta.2c67730e07',
                         'Open in OCC'
                       )}
-                      onClick={dismissAndRun(secondary.handleOpenLinearIssueInOrca)}
+                      onClick={dismissAndRun(secondary.handleOpenLinearIssueInOCC)}
                     >
                       <MonitorUp className="size-3" />
                     </MetadataActionIcon>
@@ -354,7 +354,7 @@ function ActivityThreadHoverCardContent({
           onManageLinks={dismissAndRun(foundation.handleManageLinks)}
           reviewMenuOpen={detailsHoverControl.reviewMenuOpen}
           onReviewMenuOpenChange={detailsHoverControl.handleReviewMenuOpenChange}
-          onOpenReviewInOrca={secondary.handleOpenReviewInOrca}
+          onOpenReviewInOCC={secondary.handleOpenReviewInOCC}
           onOpenLink={onOpenLink}
           onUnlinkReview={secondary.canUnlinkReview ? secondary.handleUnlinkReview : undefined}
           closeHover={detailsHoverControl.closeHover}

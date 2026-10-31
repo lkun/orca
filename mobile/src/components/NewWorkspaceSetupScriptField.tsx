@@ -34,8 +34,8 @@ export function NewWorkspaceSetupScriptField({
         {source ? (
           <View style={styles.sourceBadge}>
             <Text style={styles.sourceBadgeText}>
-              {source === 'orca.yaml'
-                ? 'ORCA.YAML'
+              {source === 'occ.yaml'
+                ? 'OCC.YAML'
                 : t('components.newWorkspaceSetupScriptField.hooks', 'HOOKS')}
             </Text>
           </View>

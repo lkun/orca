@@ -77,7 +77,7 @@ export async function prepareRuntimeLocalWorktreeSetup(args: {
       })
     }
   } else if (hooks?.scripts.setup && effectiveDecision !== 'skip') {
-    const skipped = `orca.yaml setup hook skipped for ${worktreePath}; pass --setup run to run it.`
+    const skipped = `occ.yaml setup hook skipped for ${worktreePath}; pass --setup run to run it.`
     warning = warning ? `${warning} Also ${skipped}` : skipped
     console.warn(`[hooks] ${skipped}`)
   }

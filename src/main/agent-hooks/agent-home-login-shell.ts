@@ -1,6 +1,6 @@
 import { basename } from 'node:path'
 import { userInfo } from 'node:os'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 
 const AGENT_HOME_MAX_LENGTH = 4096
 const AGENT_HOME_PROBE_TIMEOUT_MS = 8_000

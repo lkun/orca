@@ -64,7 +64,7 @@ export function registerJournalCrashBoundaryTests(): void {
   }
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-journal-crash-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-journal-crash-'))
     clock = 1_000
   })
 

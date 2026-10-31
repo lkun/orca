@@ -61,7 +61,7 @@ afterEach(() => {
 describe('opencode-plugin-atomic-write', () => {
   it('writes atomically via sibling temp file and never writes directly in place', () => {
     const testDir = mkdtempSync(join(tmpdir(), 'opencode-atomic-write-'))
-    const pluginPath = join(testDir, 'plugins', 'orca-opencode-status.js')
+    const pluginPath = join(testDir, 'plugins', 'occ-opencode-status.js')
     const writtenPaths: string[] = []
 
     const realWrite = fsMock.getRealWrite()
@@ -86,7 +86,7 @@ describe('opencode-plugin-atomic-write', () => {
       expect(readFileSync(pluginPath, 'utf8')).toBe('console.log("hello")')
       expect(writtenPaths).toHaveLength(1)
       expect(writtenPaths[0]).not.toBe(pluginPath)
-      expect(writtenPaths[0]).toContain('.orca-opencode-status.js.')
+      expect(writtenPaths[0]).toContain('.occ-opencode-status.js.')
       expect(writtenPaths[0]).toContain('.tmp')
     } finally {
       rmSync(testDir, { recursive: true, force: true })
@@ -107,7 +107,7 @@ describe('opencode-plugin-atomic-write', () => {
     const pluginsDir = join(testDir, 'plugins')
     mkdirSync(pluginsDir, { recursive: true })
     const realFile = join(testDir, 'dotfiles-plugin.js')
-    const linkFile = join(pluginsDir, 'orca-opencode-status.js')
+    const linkFile = join(pluginsDir, 'occ-opencode-status.js')
 
     realWrite(realFile, 'initial content', 'utf8')
     symlinkSync(realFile, linkFile)
@@ -131,7 +131,7 @@ describe('opencode-plugin-atomic-write', () => {
     const pluginsDir = join(testDir, 'plugins')
     mkdirSync(pluginsDir, { recursive: true })
     const missingTarget = join(testDir, 'dotfiles-plugin.js')
-    const linkFile = join(pluginsDir, 'orca-opencode-status.js')
+    const linkFile = join(pluginsDir, 'occ-opencode-status.js')
 
     symlinkSync(missingTarget, linkFile)
     expect(existsSync(missingTarget)).toBe(false)
@@ -206,7 +206,7 @@ describe('opencode-plugin-atomic-write', () => {
     const pluginsDir = join(testDir, 'overlay', 'plugins')
     mkdirSync(pluginsDir, { recursive: true })
     const userPlugin = join(testDir, 'user-plugin.js')
-    const overlayPlugin = join(pluginsDir, 'orca-opencode-status.js')
+    const overlayPlugin = join(pluginsDir, 'occ-opencode-status.js')
 
     realWrite(userPlugin, 'user original source', 'utf8')
     symlinkSync(userPlugin, overlayPlugin)

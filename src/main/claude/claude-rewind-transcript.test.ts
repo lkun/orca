@@ -30,7 +30,7 @@ async function recordedTranscript(kind: 'hook' | 'informational') {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-rewind-transcript-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-rewind-transcript-'))
   home = join(root, 'account')
   project = join(home, 'projects', 'workspace')
   await mkdir(project, { recursive: true })
@@ -47,7 +47,7 @@ afterEach(async () => {
 
 function forkBefore(uuid: string, rewindOperationId = randomUUID()) {
   return resolveClaudeRewindFork({
-    orcaSessionId: 'orca-chat',
+    occSessionId: 'occ-chat',
     rewindOperationId,
     head: claudeProviderHandle(source, sourceRows.at(-1)?.uuid),
     prompt: { sessionId: source, uuid },
@@ -107,7 +107,7 @@ describe('durable Claude rewind transcripts', () => {
       const operationId = randomUUID()
       const fork = await forkBefore(prompt.uuid, operationId)
       expect(fork).toStrictEqual({
-        sessionId: claudeSessionIdForRewind('orca-chat', operationId),
+        sessionId: claudeSessionIdForRewind('occ-chat', operationId),
         sourceSessionId: source,
         replacesSessionId: source,
         materialized: true
@@ -122,7 +122,7 @@ describe('durable Claude rewind transcripts', () => {
           prepared ? prompt.uuid : null
         )
         const record = agentSessionRecordFixture({
-          sessionId: 'orca-chat',
+          sessionId: 'occ-chat',
           accountHome: { variable: 'CLAUDE_CONFIG_DIR', path: home },
           providerHandleChain: [
             { linkId: 'head', origin: 'created', mintedAtFence: 1, observedAt: 1, handle }

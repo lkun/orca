@@ -3,8 +3,8 @@ import {
   recordSelfInitiatedTreeKill,
   type SelfInitiatedTreeKillScope
 } from './crash-reporting/self-initiated-tree-kill-log'
-import { readOrcaChromiumProcessPids } from './orca-chromium-process-pids'
-import { setProcessTreeKillGate } from '@orca/process-host/process-tree-kill-gate'
+import { readOCCChromiumProcessPids } from './occ-chromium-process-pids'
+import { setProcessTreeKillGate } from '@occ/process-host/process-tree-kill-gate'
 
 /** Refusal forbids only the PID-based tree walk; callers must still kill the root through its handle. */
 export function admitSelfInitiatedTreeKill(target: {
@@ -14,7 +14,7 @@ export function admitSelfInitiatedTreeKill(target: {
 }): boolean {
   // Windows PID reuse can target Chromium; POSIX groups contain only processes assigned to them (#10680).
   const isOwnChromiumPid =
-    target.scope === 'win-taskkill-tree' && readOrcaChromiumProcessPids().has(target.pid)
+    target.scope === 'win-taskkill-tree' && readOCCChromiumProcessPids().has(target.pid)
   try {
     if (isOwnChromiumPid) {
       recordRefusedOwnChromiumTreeKill(target)

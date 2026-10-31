@@ -60,11 +60,11 @@ async function createStore() {
   const { initDataPath } = await import('./loading-store/user-data-path')
   installFakeAppEnvironment({ getPath: () => testState.dir })
   initDataPath()
-  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
 }
 
 function dataFile(): string {
-  return join(testState.dir, 'orca-data.json')
+  return join(testState.dir, 'occ-data.json')
 }
 
 function persistedRevision(): number {
@@ -88,7 +88,7 @@ const KAGI_LINK = 'https://kagi.com/session?token=abc123'
 
 describe('persistence single-serialize save guard', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
     cipherState.encryptionAvailable = true
     cipherState.deterministic = false
     vi.useFakeTimers()

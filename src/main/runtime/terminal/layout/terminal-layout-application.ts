@@ -1,18 +1,18 @@
-import { OrcaRuntimeWithPickMostRecentActor } from './terminal-layout-queue'
-import type { ApplyLayoutResult, PtyLayoutState, PtyLayoutTarget } from '../../orca-runtime-core'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCCRuntimeWithPickMostRecentActor } from './terminal-layout-queue'
+import type { ApplyLayoutResult, PtyLayoutState, PtyLayoutTarget } from '../../occ-runtime-core'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import type { LayoutApplyReply } from '../../../../shared/workspace-layout/workspace-layout-command-types'
 import type { WindowLayoutCommand } from '../../runtime-layout-apply'
 import { PaneGridRecorder } from './pane-grid-recording'
 
-export abstract class OrcaRuntimeWithApplyLayout extends OrcaRuntimeWithPickMostRecentActor {
+export abstract class OCCRuntimeWithApplyLayout extends OCCRuntimeWithPickMostRecentActor {
   protected abstract suppressResizesForMs(ms: number): void
   abstract applyLayoutCommand(command: WindowLayoutCommand): Promise<LayoutApplyReply>
   private paneGrids: PaneGridRecorder | null = null
 
   /** Layout-owner build: remembers a resized terminal's grid on the pane showing it. */
   protected notePaneGrid(ptyId: string, cols: number, rows: number): void {
-    if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (!OCC_LAYOUT_OWNER_IS_MAIN) {
       return
     }
     this.paneGrids ??= new PaneGridRecorder({

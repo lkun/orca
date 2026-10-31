@@ -20,7 +20,7 @@ describe('nativeChatMessageCopyText', () => {
   })
 
   it('drops agent visual lines but keeps them in the user’s own words', () => {
-    const text = 'Chart:\n::orca-visual{file="usage.html"}\nDone.'
+    const text = 'Chart:\n::occ-visual{file="usage.html"}\nDone.'
     expect(nativeChatMessageCopyText({ role: 'assistant', blocks: [{ type: 'text', text }] })).toBe(
       'Chart:\nDone.'
     )

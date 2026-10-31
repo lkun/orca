@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs'
 import { z } from 'zod'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { computeAgentSessionPayloadFingerprint } from '../../shared/agent-session-mutation-envelope'
-import { claudeSessionIdForOrcaSession } from '../claude/structured/claude-structured-session-id'
+import { claudeSessionIdForOCCSession } from '../claude/structured/claude-structured-session-id'
 import type { StructuredAgentSessionHost } from '../native-chat/agent-session-wire/structured-agent-session-host'
 import { hostTestMessage } from '../native-chat/agent-session-wire/structured-agent-session-host-test-data'
 import { createScriptedClaudeRuntime } from './structured-claude-scripted-runtime-test-support'
@@ -26,7 +26,7 @@ function modelNotFoundReply(uuid: string, parentToolUseId: string | null = null)
   return {
     type: 'assistant',
     uuid,
-    session_id: claudeSessionIdForOrcaSession(SESSION),
+    session_id: claudeSessionIdForOCCSession(SESSION),
     parent_tool_use_id: parentToolUseId,
     error: 'model_not_found',
     is_api_error_message: true,
@@ -87,7 +87,7 @@ describe("a Claude chat whose saved model the CLI says doesn't exist", () => {
       const written = writes.mock.calls.at(-1)![0]
       claude
         .child(SESSION)
-        .handlers.onMessage?.({ ...written, session_id: claudeSessionIdForOrcaSession(SESSION) })
+        .handlers.onMessage?.({ ...written, session_id: claudeSessionIdForOCCSession(SESSION) })
       return written.uuid
     }
     const capturedResult = readFileSync(
@@ -107,7 +107,7 @@ describe("a Claude chat whose saved model the CLI says doesn't exist", () => {
       type: 'result',
       subtype: 'success',
       uuid: `result-${id}`,
-      session_id: claudeSessionIdForOrcaSession(SESSION),
+      session_id: claudeSessionIdForOCCSession(SESSION),
       user_message_uuid: userMessageUuid,
       user_message_uuids: [userMessageUuid],
       is_error: isError,
@@ -239,7 +239,7 @@ describe("a Claude chat whose saved model the CLI says doesn't exist", () => {
     claude.child(SESSION).handlers.onMessage?.({
       type: 'system',
       subtype: 'init',
-      session_id: claudeSessionIdForOrcaSession(SESSION),
+      session_id: claudeSessionIdForOCCSession(SESSION),
       model: RETIRED
     })
     claude.child(SESSION).handlers.onMessage?.(modelNotFoundReply('reply-1'))

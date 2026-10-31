@@ -1,11 +1,11 @@
 import { existsSync, readFileSync } from 'node:fs'
 import type { Page } from '@stablyai/playwright-test'
-import { expect } from './helpers/orca-app'
+import { expect } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import { buildFakeAgentCommandOverride } from './helpers/fake-agent-command-override'
 import { SUPPORTED, createChatOnHost, test } from './helpers/structured-claude-stub'
 import { resolveCliCommand } from '../../src/shared/node-cli-command-resolution'
-import { claudeSessionIdForOrcaSession } from '../../src/main/claude/structured/claude-structured-session-id'
+import { claudeSessionIdForOCCSession } from '../../src/main/claude/structured/claude-structured-session-id'
 import { buildClaudeModelListArgs } from '../../src/shared/claude-model-list-probe'
 
 type ChatTab = { id: string; entityId: string }
@@ -89,7 +89,7 @@ test.describe('structured chat tabs', () => {
   test.skip(!SUPPORTED, 'the Claude stub wrapper is POSIX-only')
 
   test('open from the host and the New tab menu, show in the tab bar, and close', async ({
-    orcaPage: page,
+    occPage: page,
     electronApp,
     claudeStub
   }) => {
@@ -156,7 +156,7 @@ test.describe('structured chat tabs', () => {
     expect(resolveCliCommand('claude', mainEnv)).toBe(claudeStub.command)
     // Only this stub's version/catalog probes or one of these exact conversations may start.
     const providerIds = [first, second, opened!.entityId].map((id) =>
-      claudeSessionIdForOrcaSession(id)
+      claudeSessionIdForOCCSession(id)
     )
     await expect.poll(() => readStubLaunches(claudeStub.launchLog).length).toBeGreaterThan(0)
     for (const { pid, args } of readStubLaunches(claudeStub.launchLog)) {

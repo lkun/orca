@@ -25,7 +25,7 @@ describe('keyboard-interactive over a real SSH socket', () => {
   const sockets = new Set<Connection>()
 
   beforeEach(() => {
-    profile = mkdtempSync(join(tmpdir(), 'orca-keyboard-wire-'))
+    profile = mkdtempSync(join(tmpdir(), 'occ-keyboard-wire-'))
     initSshHostKeyStoreFile(join(profile, 'host-keys.json'))
     vi.stubEnv('SSH_AUTH_SOCK', '')
     vi.mocked(resolveWithSshG).mockResolvedValue(

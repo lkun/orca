@@ -60,7 +60,7 @@ import {
 import {
   CODEX_EVENTS,
   CODEX_EVENT_LABEL,
-  computeOrcaCodexHookHashes,
+  computeOCCCodexHookHashes,
   getManagedCommand,
   getManagedScriptPath
 } from './codex-hook-definition'
@@ -539,7 +539,7 @@ describe('managed-home Codex hook approval', () => {
   })
 
   describe("OCC's own hash until Codex answers, as main wrote it", () => {
-    const orcaStop = (): string | undefined => computeOrcaCodexHookHashes().stop ?? undefined
+    const occStop = (): string | undefined => computeOCCCodexHookHashes().stop ?? undefined
 
     function stopApproval(): string | undefined {
       return readHookTrustEntries(join(managedHome(), 'config.toml')).get(managedKey('stop', 0))
@@ -558,7 +558,7 @@ describe('managed-home Codex hook approval', () => {
       expect(
         readHookTrustEntries(join(managedHome(), 'config.toml')).get(managedKey('stop', 0))
       ).toEqual({
-        trustedHash: orcaStop(),
+        trustedHash: occStop(),
         enabled: true
       })
       expect(status).toMatchObject({
@@ -625,7 +625,7 @@ describe('managed-home Codex hook approval', () => {
 
       expect((await new CodexHookService().install()).state).toBe('installed')
 
-      expect(stopApproval()).toBe(orcaStop())
+      expect(stopApproval()).toBe(occStop())
     })
 
     it('reports an entry left without any approval while Codex has not answered', async () => {
@@ -659,7 +659,7 @@ describe('managed-home Codex hook approval', () => {
       const trust = readHookTrustEntries(join(managedHome(), 'config.toml'))
       expect(trust.get(managedKey('stop', 0))?.trustedHash).toBe('sha256:codex-stop')
       expect(trust.get(managedKey('session_start', 0))?.trustedHash).toBe(
-        computeOrcaCodexHookHashes().session_start
+        computeOCCCodexHookHashes().session_start
       )
     })
 
@@ -681,14 +681,14 @@ describe('managed-home Codex hook approval', () => {
 
       await service.install()
 
-      expect(stopApproval()).toBe(orcaStop())
+      expect(stopApproval()).toBe(occStop())
     })
 
     it("replaces OCC's hash with Codex's once Codex answers", async () => {
       useAnswer(timedOut)
       const service = new CodexHookService()
       await service.install()
-      expect(stopApproval()).toBe(orcaStop())
+      expect(stopApproval()).toBe(occStop())
 
       useCodexHashes()
       expect((await service.install()).state).toBe('installed')
@@ -718,7 +718,7 @@ describe('managed-home Codex hook approval', () => {
 
       expect((await new CodexHookService().install()).state).toBe('installed')
 
-      expect(stopApproval()).toBe(orcaStop())
+      expect(stopApproval()).toBe(occStop())
     })
   })
 })

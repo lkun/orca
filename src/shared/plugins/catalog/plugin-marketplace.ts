@@ -13,15 +13,15 @@ import { isReservedPluginPublisher } from './plugin-publisher-reservation'
 const NEXT = PLUGIN_MANIFEST_V2_SINCE
 
 // Why frozen: v1 entries are strict, so shipped clients reject any new field. New catalogs live
-// in orca-catalog.json (plugin-catalog.ts); this file is generated from it for old clients.
-export const PLUGIN_MARKETPLACE_FILENAME = 'orca-marketplace.json'
+// in occ-catalog.json (plugin-catalog.ts); this file is generated from it for old clients.
+export const PLUGIN_MARKETPLACE_FILENAME = 'occ-marketplace.json'
 export const PLUGIN_MARKETPLACE_ENTRY_LIMIT = 2_048
 export const PLUGIN_MARKETPLACE_CATEGORY_LIMIT = 16
 
 export const OFFICIAL_PLUGIN_PUBLISHER = 'stablyai'
-export const OFFICIAL_PLUGIN_ID_PREFIX = 'orca-'
+export const OFFICIAL_PLUGIN_ID_PREFIX = 'occ-'
 export const OFFICIAL_MARKETPLACE_OWNER = 'stablyai'
-export const OFFICIAL_MARKETPLACE_REPOSITORY = 'orca-plugins'
+export const OFFICIAL_MARKETPLACE_REPOSITORY = 'occ-plugins'
 
 // Why: skill contributions are not supported, so a plugin declaring one fails to install.
 // Shared catalogs this build does not control still list such packs; hide them so users never
@@ -54,7 +54,7 @@ const gitSourceFields = {
     .refine(isAllowedPluginGitUrl, 'git URL must use HTTPS or SSH')
     .meta(
       pluginFieldDoc('HTTPS or SSH URL of the plugin repository.', NEXT, [
-        'https://github.com/acme/orca-gleam-syntax.git'
+        'https://github.com/acme/occ-gleam-syntax.git'
       ])
     ),
   // Why: marketplace installs must first resolve a named ref to an exact
@@ -89,7 +89,7 @@ const catalogGitSourceFields = {
     .optional()
     .meta(
       pluginFieldDoc(
-        'Directory inside the repository that holds `orca-plugin.json`, so one repository can publish many plugins. Use `/` separators, with no leading `/`, `.` or `..`. Omit when the plugin is the repository root.',
+        'Directory inside the repository that holds `occ-plugin.json`, so one repository can publish many plugins. Use `/` separators, with no leading `/`, `.` or `..`. Omit when the plugin is the repository root.',
         NEXT,
         ['plugins/gleam-syntax']
       )
@@ -225,7 +225,7 @@ export type PluginCatalogGitSource = z.infer<typeof catalogV2GitSourceSchema>
 
 export const OFFICIAL_MARKETPLACE_GIT_SOURCE: PluginMarketplaceGitSource = {
   kind: 'git',
-  url: 'https://github.com/stablyai/orca-plugins.git',
+  url: 'https://github.com/stablyai/occ-plugins.git',
   ref: 'main'
 }
 

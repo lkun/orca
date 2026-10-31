@@ -3,9 +3,9 @@ import { Linking, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useNavigation, useNavigationContainerRef, useRouter } from 'expo-router'
 import {
-  OrcaMobileWebShellView,
+  OCCMobileWebShellView,
   parseMobileWebShellLoadState
-} from '../../modules/orca-mobile-web-shell/src'
+} from '../../modules/occ-mobile-web-shell/src'
 import { HostRouteNoticeBanner } from '../components/HostRouteNoticeBanner'
 import { colors } from '../theme/mobile-theme'
 import { themedStyleSheet } from '../theme/themed-styles'
@@ -309,7 +309,7 @@ export function MobileWebShellScreen({
           onDismiss={() => setNoticeDismissedFor(state.sessionId)}
         />
       )}
-      <OrcaMobileWebShellView
+      <OCCMobileWebShellView
         key={state.sessionId}
         ref={bridge.viewRef}
         // Overlays cannot cover the screen beneath; hide their opaque WebView until first paint.

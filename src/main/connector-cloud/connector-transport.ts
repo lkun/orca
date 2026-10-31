@@ -13,7 +13,7 @@ export type ConnectorToken = { connectorToken: string; expiresAt: number }
 /** Asks OCC's auth service for a short-lived connector token as this machine's signed-in account. */
 export type ConnectorTokenMint = () => Promise<ConnectorResult<ConnectorToken>>
 
-export type ConnectorCallOptions = Pick<ConnectorRequest, 'method' | 'timeoutMs' | 'signal'>
+export type ConnectoccllOptions = Pick<ConnectorRequest, 'method' | 'timeoutMs' | 'signal'>
 
 /** Calls to the connector with a connector token, the way the relay is reached with relay tokens. */
 export class ConnectorAccountTransport {
@@ -32,7 +32,7 @@ export class ConnectorAccountTransport {
     path: string,
     body: unknown,
     schema: TSchema,
-    options: ConnectorCallOptions = {}
+    options: ConnectoccllOptions = {}
   ): Promise<ConnectorResult<z.infer<TSchema>>> {
     const token = await this.ensure()
     if (!token.ok) {
@@ -55,7 +55,7 @@ export class ConnectorAccountTransport {
     path: string,
     body: unknown,
     schema: TSchema,
-    options: ConnectorCallOptions
+    options: ConnectoccllOptions
   ): Promise<ConnectorResult<z.infer<TSchema>>> {
     const url = `${this.origin}${path}`
     return requestConnector(

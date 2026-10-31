@@ -239,7 +239,7 @@ describe('result', () => {
     )
     expect(new Set(messages).size).toBe(codes.length)
     for (const message of messages) {
-      expect(message).not.toMatch(/wsl_move|manifest|orcad|UNC/i)
+      expect(message).not.toMatch(/wsl_move|manifest|occd|UNC/i)
     }
     expect(
       wslMoveRefusalMessage(
@@ -271,7 +271,7 @@ describe('entry points with the gate closed', () => {
             {
               id: 'wsl:ubuntu',
               name: 'Ubuntu (WSL)',
-              orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 1, remotePort: 2 }
+              occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 1, remotePort: 2 }
             }
           ]
         })

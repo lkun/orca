@@ -8,7 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 
 import type { RuntimeMobileSessionTabsResult } from '../../src/shared/runtime-types'
 import type * as RuntimeRpcClient from '../../src/renderer/src/runtime/runtime-rpc-client'
 import type * as RuntimeLayoutClient from '../../src/renderer/src/runtime/runtime-layout-client'
-import { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import { setStructuredAgentSessionHost } from '../../src/main/native-chat/agent-session-wire/structured-agent-session-registry'
 import { useAppStore } from '../../src/renderer/src/store'
 import { applyStructuredSessionTabSnapshots } from '../../src/renderer/src/runtime/local-structured-session-tabs-sync/snapshot-apply'
@@ -29,7 +29,7 @@ import {
   isWebSessionCloseIntentPending,
   resetWebSessionCloseIntentForTests
 } from '../../src/renderer/src/runtime/web-session-close-intent'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../src/shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../src/shared/layout-owner-switch'
 import { toRuntimeExecutionHostId } from '../../src/shared/execution-host'
 import { makeWorktree } from '../../src/renderer/src/store/slices/worktrees-slice-test-fixtures'
 import { layoutApplyTestTransport } from '../../src/renderer/src/runtime/layout-apply-test-transport.test-fixture'
@@ -42,7 +42,7 @@ type CloseRequest = { requestId: string; tabId: string; worktreeId: string; expi
 
 type ProcessBoundary = {
   scenario: 'reopened' | 'stale-frame'
-  runtime: Pick<OrcaRuntimeService, 'closeMobileSessionTab' | 'listMobileSessionTabs'> | null
+  runtime: Pick<OCCRuntimeService, 'closeMobileSessionTab' | 'listMobileSessionTabs'> | null
   rendererSessionCloses: string[]
   closeHeld: Promise<void> | null
   pairedClose: Promise<void> | null
@@ -120,10 +120,10 @@ vi.mock('../../src/renderer/src/runtime/runtime-layout-client', async (importOri
 let main: TabsDrawnFromMain | undefined
 
 /** Main takes the window's current layout and answers its own layout commands from that model too. */
-async function mainHoldsWindowLayout(runtime: OrcaRuntimeService): Promise<void> {
+async function mainHoldsWindowLayout(runtime: OCCRuntimeService): Promise<void> {
   main?.close()
   main = await drawTabsFromMain(useAppStore)
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     Object.assign(runtime, {
       applyLayoutCommand: (command: unknown) => layoutApplyTestTransport.call({ command })
     })
@@ -187,7 +187,7 @@ describe('reopened structured session close', () => {
 
     const hostSessionCloses: string[] = []
     const closeResponses: (string | undefined)[] = []
-    const runtime = new OrcaRuntimeService(partialRuntimeStore())
+    const runtime = new OCCRuntimeService(partialRuntimeStore())
     bridge.runtime = runtime
     let nextRequest = 0
     runtime.setNotifier(
@@ -366,7 +366,7 @@ describe('in-flight structured session close', () => {
     const pendingResponses = new Map<string, (error?: string) => void>()
     // A failing close answers when the test says, so its frame can be read first.
     const failingCloses: (() => void)[] = []
-    const runtime = new OrcaRuntimeService(partialRuntimeStore())
+    const runtime = new OCCRuntimeService(partialRuntimeStore())
     bridge.runtime = runtime
     vi.stubGlobal('api', {
       ui: {

@@ -1,4 +1,4 @@
-import { ORCA_HOOK_PROTOCOL_VERSION } from '../agent-hook-types'
+import { OCC_HOOK_PROTOCOL_VERSION } from '../agent-hook-types'
 import { REMOTE_AGENT_HOOK_ENV } from '../agent-hook-relay'
 import type { HookListenerState } from './listener-state'
 
@@ -58,13 +58,13 @@ export function warnOnHookEnvOrVersionMismatch(
   const { version, env, expectedEnv } = fields
   if (
     version &&
-    version !== ORCA_HOOK_PROTOCOL_VERSION &&
+    version !== OCC_HOOK_PROTOCOL_VERSION &&
     !state.warnedVersions.has(version) &&
     state.warnedVersions.size < MAX_WARNED_KEYS
   ) {
     state.warnedVersions.add(version)
     console.warn(
-      `[agent-hooks] received hook v${version}; server expects v${ORCA_HOOK_PROTOCOL_VERSION}. ` +
+      `[agent-hooks] received hook v${version}; server expects v${OCC_HOOK_PROTOCOL_VERSION}. ` +
         'Reinstall agent hooks from Settings to upgrade the managed script.'
     )
   }

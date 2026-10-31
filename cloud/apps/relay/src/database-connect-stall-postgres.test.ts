@@ -8,7 +8,7 @@ import {
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { isRelayDatabaseTransientError, openRelayDatabase, type RelayDatabase } from './database.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 // Cloud SQL startup may accept TCP without replying; pin fast failure/event-loop progress. The 2026-10-11 blocking connect() transport stall itself cannot be reproduced here.

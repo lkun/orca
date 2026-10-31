@@ -38,7 +38,7 @@ afterEach(async () => {
 })
 
 async function tempDatabasePath(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-session-search-schema-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-session-search-schema-'))
   roots.push(root)
   return join(root, 'index.sqlite')
 }
@@ -259,7 +259,7 @@ it('surfaces the unlink failure itself when a stale index cannot be removed', as
 })
 
 it('creates the directory the index lives in', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'orca-session-search-mkdir-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-session-search-mkdir-'))
   roots.push(root)
   const db = openSessionSearchDatabase(join(root, 'ai-vault-search', 'index.sqlite'))
   try {

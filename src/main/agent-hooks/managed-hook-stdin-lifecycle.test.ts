@@ -1,7 +1,7 @@
 // POSIX hooks drain before exit; Windows missing-context hooks may exit without owning stdin.
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as CodexHookHashLookup from '../codex/codex-hook-hash-lookup'
-import { runProcess, spawnProcess } from '@orca/process-host'
+import { runProcess, spawnProcess } from '@occ/process-host'
 import { mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -18,17 +18,17 @@ beforeEach(() => {
   vi.stubEnv('COPILOT_HOME', undefined)
   vi.stubEnv('KIRO_HOME', undefined)
   vi.stubEnv('XDG_CONFIG_HOME', undefined)
-  previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-  isolatedUserDataDir = mkdtempSync(join(tmpdir(), 'orca-hook-stdin-user-data-'))
+  previousUserDataPath = process.env.OCC_USER_DATA_PATH
+  isolatedUserDataDir = mkdtempSync(join(tmpdir(), 'occ-hook-stdin-user-data-'))
   // Isolate managed-script resolution so inherited user-data paths cannot target live hooks.
-  process.env.ORCA_USER_DATA_PATH = isolatedUserDataDir
+  process.env.OCC_USER_DATA_PATH = isolatedUserDataDir
 })
 
 afterEach(() => {
   if (previousUserDataPath === undefined) {
-    delete process.env.ORCA_USER_DATA_PATH
+    delete process.env.OCC_USER_DATA_PATH
   } else {
-    process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+    process.env.OCC_USER_DATA_PATH = previousUserDataPath
   }
   rmSync(isolatedUserDataDir, { recursive: true, force: true })
   vi.unstubAllEnvs()
@@ -53,7 +53,7 @@ vi.mock('../codex/codex-hook-hash-lookup', async (importOriginal) => ({
 
 vi.mock('electron', () => ({
   app: {
-    getPath: () => '/tmp/orca-user-data'
+    getPath: () => '/tmp/occ-user-data'
   }
 }))
 
@@ -232,12 +232,12 @@ function runHookProcess(
 
 function hookEnvironment(extraEnv: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
   const env = Object.fromEntries(
-    Object.entries(process.env).filter(([key]) => !key.startsWith('ORCA_'))
+    Object.entries(process.env).filter(([key]) => !key.startsWith('OCC_'))
   )
   return {
     ...env,
     HOME: REMOTE_HOME,
-    ORCA_AGENT_HOOK_ENDPOINT: '',
+    OCC_AGENT_HOOK_ENDPOINT: '',
     ...extraEnv
   }
 }
@@ -256,7 +256,7 @@ async function generatePosixScripts(onlyAgent?: string): Promise<Map<string, str
     const status = await entry.install(memory.sftp)
     expect(status.state, `${entry.agent} install status`).toBe('installed')
     const generated = [...memory.fs.files.entries()].filter(
-      ([path]) => path.includes('/.orca/agent-hooks/') && path.endsWith('.sh')
+      ([path]) => path.includes('/.occ/agent-hooks/') && path.endsWith('.sh')
     )
     expect(generated.length, `${entry.agent} generated scripts`).toBeGreaterThan(0)
     for (const [path, script] of generated) {
@@ -287,7 +287,7 @@ describe('Windows managed hook stdin structure', () => {
     }
     const warm = await runProcess({
       program: 'cmd.exe',
-      args: ['/d', '/c', wrapWindowsHookCommand('C:\\missing\\orca-hook.cmd')],
+      args: ['/d', '/c', wrapWindowsHookCommand('C:\\missing\\occ-hook.cmd')],
       env: hookEnvironment(),
       timeoutMs: 55_000
     })
@@ -295,7 +295,7 @@ describe('Windows managed hook stdin structure', () => {
   }, 60_000)
 
   it('places missing-context guards before Windows stdin readers', async () => {
-    const home = mkdtempSync(join(tmpdir(), 'orca-hook-stdin-windows-'))
+    const home = mkdtempSync(join(tmpdir(), 'occ-hook-stdin-windows-'))
     homedirMock.mockReturnValue(home)
     seedCmdAutoRunTarget(home)
     const previousGrokHome = process.env.GROK_HOME
@@ -308,7 +308,7 @@ describe('Windows managed hook stdin structure', () => {
           expect((await entry.install()).state, `${entry.agent} install status`).toBe('installed')
         }
       })
-      const hooksDir = join(home, '.orca', 'agent-hooks')
+      const hooksDir = join(home, '.occ', 'agent-hooks')
       const fileNames = readdirSync(hooksDir)
       const mainBatchScripts = fileNames.filter(
         (name) => name.endsWith('-hook.cmd') && !name.startsWith('antigravity-')
@@ -318,15 +318,15 @@ describe('Windows managed hook stdin structure', () => {
       for (const fileName of mainBatchScripts) {
         const script = readFileSync(join(hooksDir, fileName), 'utf8')
         expect(script, `${fileName} port guard`).toContain(
-          'if "%ORCA_AGENT_HOOK_PORT%"=="" exit /b 0'
+          'if "%OCC_AGENT_HOOK_PORT%"=="" exit /b 0'
         )
         expect(script, `${fileName} token guard`).toContain(
-          'if "%ORCA_AGENT_HOOK_TOKEN%"=="" exit /b 0'
+          'if "%OCC_AGENT_HOOK_TOKEN%"=="" exit /b 0'
         )
-        expect(script, `${fileName} pane guard`).toContain('if "%ORCA_PANE_KEY%"=="" exit /b 0')
+        expect(script, `${fileName} pane guard`).toContain('if "%OCC_PANE_KEY%"=="" exit /b 0')
         // A caller may hold stdin open, so no guard or skip may park in the more.com drain (#24907).
         expect(script, `${fileName} no guard may route to the more.com drain`).not.toMatch(
-          /goto :?orca_agent_hook_drain_stdin/
+          /goto :?occ_agent_hook_drain_stdin/
         )
         if (fileName === 'antigravity-hook.cmd') {
           expect(script).not.toContain('more.com')
@@ -338,11 +338,11 @@ describe('Windows managed hook stdin structure', () => {
       for (const [name, command] of [
         [
           'wrapWindowsHookCommand',
-          wrapWindowsHookCommand('C:\\missing\\orca-hook.cmd', {}, { fallbackStdout: '{}' })
+          wrapWindowsHookCommand('C:\\missing\\occ-hook.cmd', {}, { fallbackStdout: '{}' })
         ],
         [
           'wrapRuntimeHomeHookCommand',
-          wrapRuntimeHomeHookCommand('missing-orca-hook', { neutralJsonWhenMissing: true })
+          wrapRuntimeHomeHookCommand('missing-occ-hook', { neutralJsonWhenMissing: true })
         ]
       ] as const) {
         const decoded = decodeEncodedPowerShellCommand(command)
@@ -378,7 +378,7 @@ describe('Windows managed hook stdin structure', () => {
   it.skipIf(process.platform !== 'win32')(
     'exits 0 for every local script and missing-script launcher, dropping stdin only without OCC env',
     async () => {
-      const home = mkdtempSync(join(tmpdir(), 'orca-hook-stdin-windows-live-'))
+      const home = mkdtempSync(join(tmpdir(), 'occ-hook-stdin-windows-live-'))
       homedirMock.mockReturnValue(home)
       seedCmdAutoRunTarget(home)
       try {
@@ -386,7 +386,7 @@ describe('Windows managed hook stdin structure', () => {
         for (const entry of LOCAL_INSTALLERS) {
           expect((await entry.install()).state, `${entry.agent} install status`).toBe('installed')
         }
-        const hooksDir = join(home, '.orca', 'agent-hooks')
+        const hooksDir = join(home, '.occ', 'agent-hooks')
         const mainScripts = readdirSync(hooksDir).filter(
           (name) =>
             name === 'antigravity-hook.cmd' ||
@@ -423,9 +423,9 @@ describe('Windows managed hook stdin structure', () => {
 
         // In-pane skips must not wait for stdin EOF from a caller that holds it open (#24907).
         const paneEnv = {
-          ORCA_AGENT_HOOK_PORT: '59999',
-          ORCA_AGENT_HOOK_TOKEN: 'token',
-          ORCA_PANE_KEY: 'tab:leaf'
+          OCC_AGENT_HOOK_PORT: '59999',
+          OCC_AGENT_HOOK_TOKEN: 'token',
+          OCC_PANE_KEY: 'tab:leaf'
         }
         for (const [fileName, skipEnv] of [
           ['claude-hook-impl.cmd', { DEVIN_PROJECT_DIR: home }],
@@ -443,7 +443,7 @@ describe('Windows managed hook stdin structure', () => {
           expect(skipped.exitCode, `${fileName} ${Object.keys(skipEnv)[0]} skip`).toBe(0)
         }
 
-        const missingScript = 'C:\\missing\\orca-hook.cmd'
+        const missingScript = 'C:\\missing\\occ-hook.cmd'
         // Bare .cmd launchers must remain directly spawnable; only interpreter launchers can drain a missing script.
         const launcherCases = [
           {
@@ -454,7 +454,7 @@ describe('Windows managed hook stdin structure', () => {
           {
             name: 'portable Git Bash launcher',
             executable: gitBash,
-            args: ['-lc', wrapRuntimeHomeHookCommand('missing-orca-hook')]
+            args: ['-lc', wrapRuntimeHomeHookCommand('missing-occ-hook')]
           }
         ]
         for (const launcher of launcherCases) {
@@ -473,9 +473,9 @@ describe('Windows managed hook stdin structure', () => {
             launcher.executable,
             launcher.args,
             hookEnvironment({
-              ORCA_AGENT_HOOK_PORT: '59999',
-              ORCA_AGENT_HOOK_TOKEN: 'token',
-              ORCA_PANE_KEY: 'tab:leaf'
+              OCC_AGENT_HOOK_PORT: '59999',
+              OCC_AGENT_HOOK_TOKEN: 'token',
+              OCC_PANE_KEY: 'tab:leaf'
             })
           )
           expect(insideAPane.exitCode, `${launcher.name} in-pane exit code`).toBe(0)
@@ -499,11 +499,11 @@ describe('Windows managed hook stdin structure', () => {
   // Command-shape assertions missed conhost discarding the consumer's JSON output.
   it.skipIf(process.platform !== 'win32').each([
     { form: 'claude-hook.cmd', bundled: false },
-    { form: 'orca-agent-hook.exe claude', bundled: true }
+    { form: 'occ-agent-hook.exe claude', bundled: true }
   ])(
     'emits parseable JSON on stdout from the registered Claude hook command ($form), through cmd.exe and Git Bash',
     async ({ form, bundled }) => {
-      const home = mkdtempSync(join(tmpdir(), 'orca-hook-stdout-json-'))
+      const home = mkdtempSync(join(tmpdir(), 'occ-hook-stdout-json-'))
       homedirMock.mockReturnValue(home)
       const absentProfile = join(home, 'absent')
       seedCmdAutoRunTarget(home)
@@ -530,9 +530,9 @@ describe('Windows managed hook stdin structure', () => {
             name: 'OCC env with dead listener',
             env: hookEnvironment({
               USERPROFILE: home,
-              ORCA_AGENT_HOOK_PORT: '59999',
-              ORCA_AGENT_HOOK_TOKEN: 'token',
-              ORCA_PANE_KEY: 'tab:leaf'
+              OCC_AGENT_HOOK_PORT: '59999',
+              OCC_AGENT_HOOK_TOKEN: 'token',
+              OCC_PANE_KEY: 'tab:leaf'
             })
           },
           {
@@ -573,7 +573,7 @@ describe('Windows managed hook stdin structure', () => {
 
 describe.skipIf(process.platform === 'win32')('managed hook stdin lifecycle', () => {
   it('emits neutral JSON when the Claude lifecycle script is missing', async () => {
-    const command = getRemoteManagedCommand('/home/dev/.orca/agent-hooks/claude-hook.sh')
+    const command = getRemoteManagedCommand('/home/dev/.occ/agent-hooks/claude-hook.sh')
     const result = await runPosixHook(command)
 
     expect(result.exitCode).toBe(0)
@@ -608,9 +608,9 @@ describe.skipIf(process.platform === 'win32')('managed hook stdin lifecycle', ()
     for (const [agent, script] of scripts) {
       const extraEnv = agent.startsWith('command-code')
         ? {
-            ORCA_AGENT_HOOK_PORT: '1',
-            ORCA_AGENT_HOOK_TOKEN: 'test-token',
-            ORCA_PANE_KEY: 'test-pane'
+            OCC_AGENT_HOOK_PORT: '1',
+            OCC_AGENT_HOOK_TOKEN: 'test-token',
+            OCC_PANE_KEY: 'test-pane'
           }
         : {}
       const result = await runPosixHook(script, extraEnv)
@@ -627,7 +627,7 @@ describe.skipIf(process.platform === 'win32')('managed hook stdin lifecycle', ()
       expect(result.stdinErrors, `${agent} stdin errors`).toHaveLength(0)
     }
 
-    const missing = await runPosixHook(wrapPosixHookCommand('/missing/orca-hook.sh'), { PATH: '' })
+    const missing = await runPosixHook(wrapPosixHookCommand('/missing/occ-hook.sh'), { PATH: '' })
     expect(missing.exitCode, 'missing script launcher exit code').toBe(0)
     expect(missing.stdinErrors, 'missing script launcher stdin errors').toHaveLength(0)
   })
@@ -639,7 +639,7 @@ describe.skipIf(process.platform === 'win32')('managed hook stdin lifecycle', ()
     ['PATH without coreutils', '/nonexistent'],
     ['PATH whose first cat is a decoy', '']
   ])('captures the whole payload with %s', async (label, pathValue) => {
-    const decoyDir = mkdtempSync(join(tmpdir(), 'orca-hook-stdin-decoy-'))
+    const decoyDir = mkdtempSync(join(tmpdir(), 'occ-hook-stdin-decoy-'))
     try {
       let effectivePath = pathValue
       if (label === 'PATH whose first cat is a decoy') {
@@ -677,7 +677,7 @@ describe.skipIf(process.platform === 'win32')('managed hook stdin lifecycle', ()
   })
 
   it('drains a large payload when the configured script is missing', async () => {
-    const result = await runPosixHook(wrapPosixHookCommand('/missing/orca-hook.sh'))
+    const result = await runPosixHook(wrapPosixHookCommand('/missing/occ-hook.sh'))
     expect(result.exitCode).toBe(0)
     expect(result.stdinErrors).toHaveLength(0)
   })

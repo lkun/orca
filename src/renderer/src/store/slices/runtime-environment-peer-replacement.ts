@@ -1,11 +1,11 @@
 import {
-  getOrcadSshDeployment,
+  getOCCdSshDeployment,
   type PublicKnownRuntimeEnvironment
 } from '../../../../shared/runtime-environments'
 
 type CatalogEnvironment = Pick<
   PublicKnownRuntimeEnvironment,
-  'id' | 'createdAt' | 'pairingRevision' | 'orcadDeployment' | 'hostKeyFingerprint'
+  'id' | 'createdAt' | 'pairingRevision' | 'occdDeployment' | 'hostKeyFingerprint'
 >
 
 /** Ids whose pairing rotated since the previous catalog. */
@@ -34,12 +34,12 @@ function sameRegistration(
   after: CatalogEnvironment | undefined
 ): boolean {
   // Hand-paired replacement requires both saved keys; without them identity cannot be proven.
-  if (before && after && !before.orcadDeployment && !after.orcadDeployment) {
+  if (before && after && !before.occdDeployment && !after.occdDeployment) {
     return Boolean(before.hostKeyFingerprint && after.hostKeyFingerprint)
   }
   // Why SSH only: a WSL deployment takes the stricter re-pair path until its host identity lands.
-  const left = before && getOrcadSshDeployment(before)
-  const right = after && getOrcadSshDeployment(after)
+  const left = before && getOCCdSshDeployment(before)
+  const right = after && getOCCdSshDeployment(after)
   return Boolean(
     left &&
     right &&

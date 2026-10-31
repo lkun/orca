@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import type { Page, TestInfo } from '@playwright/test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   execInTerminal,
   sendToTerminal,
@@ -28,27 +28,27 @@ type LinkTarget = { x: number; y: number; mouseTrackingMode: string }
 type LinkMode = 'http' | 'osc'
 
 async function startMouseAwareLinkFixture(
-  orcaPage: Page,
+  occPage: Page,
   testInfo: TestInfo,
   linkMode: LinkMode = 'http'
 ): Promise<{ mouseLogPath: string; ptyId: string; target: LinkTarget }> {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
-  await waitForActiveTerminalManager(orcaPage)
-  await waitForPaneCount(orcaPage, 1)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
+  await waitForActiveTerminalManager(occPage)
+  await waitForPaneCount(occPage, 1)
 
-  const ptyId = await waitForActivePanePtyId(orcaPage)
+  const ptyId = await waitForActivePanePtyId(occPage)
   const mouseLogPath = testInfo.outputPath('child-mouse-reports.log')
   await execInTerminal(
-    orcaPage,
+    occPage,
     ptyId,
     `node ${JSON.stringify(FIXTURE_PATH)} ${JSON.stringify(mouseLogPath)} ${linkMode}`
   )
   const renderedLinkText = linkMode === 'osc' ? OSC_LINK_TEXT : LINK
-  await waitForTerminalOutput(orcaPage, 'LINK_MOUSE_READY')
+  await waitForTerminalOutput(occPage, 'LINK_MOUSE_READY')
 
-  const target = await orcaPage.evaluate((linkText) => {
+  const target = await occPage.evaluate((linkText) => {
     const state = window.__store?.getState()
     const worktreeId = state?.activeWorktreeId
     const tabId = worktreeId ? state?.activeTabIdByWorktree?.[worktreeId] : null
@@ -97,7 +97,7 @@ async function expectChildMouseReports(mouseLogPath: string): Promise<void> {
     .toBeGreaterThan(0)
 }
 
-async function expectOrcaOwnedMouseOutcome(
+async function expectOCCOwnedMouseOutcome(
   mouseLogPath: string,
   reportsBeforeClick = 0
 ): Promise<void> {
@@ -105,16 +105,16 @@ async function expectOrcaOwnedMouseOutcome(
   expect(childMouseReportCount(mouseLogPath)).toBe(reportsBeforeClick)
 }
 
-async function openLegacyDisabledLinkSettings(orcaPage: Page): Promise<void> {
-  await orcaPage.evaluate(() => {
+async function openLegacyDisabledLinkSettings(occPage: Page): Promise<void> {
+  await occPage.evaluate(() => {
     void window.__store?.getState().updateSettings({ terminalLinkActionPopoverEnabled: false })
   })
   await expect
     .poll(() =>
-      orcaPage.evaluate(() => window.__store?.getState().settings?.terminalLinkActionPopoverEnabled)
+      occPage.evaluate(() => window.__store?.getState().settings?.terminalLinkActionPopoverEnabled)
     )
     .toBe(false)
-  await orcaPage.evaluate(() => {
+  await occPage.evaluate(() => {
     const state = window.__store?.getState()
     state?.openSettingsPage()
     state?.openSettingsTarget({ pane: 'browser', repoId: null })
@@ -123,12 +123,12 @@ async function openLegacyDisabledLinkSettings(orcaPage: Page): Promise<void> {
 
 test.describe('terminal link click ownership', () => {
   test('selecting Actions reenables a legacy-disabled popover and survives renderer reload', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(orcaPage, testInfo)
-    await openLegacyDisabledLinkSettings(orcaPage)
+    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(occPage, testInfo)
+    await openLegacyDisabledLinkSettings(occPage)
 
-    const choices = orcaPage.getByRole('radiogroup', { name: 'Plain click URL behavior' })
+    const choices = occPage.getByRole('radiogroup', { name: 'Plain click URL behavior' })
     await expect(choices.getByRole('radio', { name: 'Leave to terminal' })).toHaveAttribute(
       'aria-checked',
       'true'
@@ -139,9 +139,9 @@ test.describe('terminal link click ownership', () => {
       'true'
     )
 
-    await orcaPage.reload()
-    await waitForSessionReady(orcaPage)
-    await orcaPage.evaluate(() => {
+    await occPage.reload()
+    await waitForSessionReady(occPage)
+    await occPage.evaluate(() => {
       const state = window.__store?.getState()
       state?.openSettingsPage()
       state?.openSettingsTarget({ pane: 'browser', repoId: null })
@@ -150,38 +150,38 @@ test.describe('terminal link click ownership', () => {
       'aria-checked',
       'true'
     )
-    await orcaPage.screenshot({ path: testInfo.outputPath('actions-selected-after.png') })
-    await orcaPage.evaluate(() => window.__store?.getState().closeSettingsPage())
-    await waitForActiveTerminalManager(orcaPage)
-    await orcaPage.mouse.click(target.x, target.y)
-    await expect(orcaPage.locator('[data-terminal-link-action-popover]')).toBeVisible()
-    await expect(orcaPage.locator('[data-terminal-link-destination]')).toHaveText(LINK)
-    await expectOrcaOwnedMouseOutcome(mouseLogPath)
-    await orcaPage.screenshot({ path: testInfo.outputPath('actions-after.png') })
-    await sendToTerminal(orcaPage, ptyId, 'q')
+    await occPage.screenshot({ path: testInfo.outputPath('actions-selected-after.png') })
+    await occPage.evaluate(() => window.__store?.getState().closeSettingsPage())
+    await waitForActiveTerminalManager(occPage)
+    await occPage.mouse.click(target.x, target.y)
+    await expect(occPage.locator('[data-terminal-link-action-popover]')).toBeVisible()
+    await expect(occPage.locator('[data-terminal-link-destination]')).toHaveText(LINK)
+    await expectOCCOwnedMouseOutcome(mouseLogPath)
+    await occPage.screenshot({ path: testInfo.outputPath('actions-after.png') })
+    await sendToTerminal(occPage, ptyId, 'q')
   })
 
   test('explicit Open URL and Leave to terminal choices preserve direct-open modifiers', async ({
-    orcaPage,
+    occPage,
     electronApp
   }, testInfo) => {
-    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(orcaPage, testInfo)
-    await startPanelNavigationObserver(electronApp, orcaPage.url())
-    await openLegacyDisabledLinkSettings(orcaPage)
-    const choices = orcaPage.getByRole('radiogroup', { name: 'Plain click URL behavior' })
+    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(occPage, testInfo)
+    await startPanelNavigationObserver(electronApp, occPage.url())
+    await openLegacyDisabledLinkSettings(occPage)
+    const choices = occPage.getByRole('radiogroup', { name: 'Plain click URL behavior' })
     await choices.getByRole('radio', { name: 'Open URL', exact: true }).click()
     await expect(choices.getByRole('radio', { name: 'Open URL', exact: true })).toHaveAttribute(
       'aria-checked',
       'true'
     )
-    await orcaPage.evaluate(() => window.__store?.getState().closeSettingsPage())
-    await orcaPage.mouse.click(target.x, target.y)
+    await occPage.evaluate(() => window.__store?.getState().closeSettingsPage())
+    await occPage.mouse.click(target.x, target.y)
     await expect
       .poll(async () => (await readPanelNavigationObserver(electronApp)).externalUrls)
       .toEqual([LINK])
-    await expectOrcaOwnedMouseOutcome(mouseLogPath)
+    await expectOCCOwnedMouseOutcome(mouseLogPath)
 
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       const state = window.__store?.getState()
       state?.openSettingsPage()
       state?.openSettingsTarget({ pane: 'browser', repoId: null })
@@ -190,82 +190,82 @@ test.describe('terminal link click ownership', () => {
     await expect(
       choices.getByRole('radio', { name: 'Leave to terminal', exact: true })
     ).toHaveAttribute('aria-checked', 'true')
-    await orcaPage.evaluate(() => window.__store?.getState().closeSettingsPage())
-    await orcaPage.mouse.click(target.x, target.y)
+    await occPage.evaluate(() => window.__store?.getState().closeSettingsPage())
+    await occPage.mouse.click(target.x, target.y)
     await expectChildMouseReports(mouseLogPath)
     expect((await readPanelNavigationObserver(electronApp)).externalUrls).toEqual([LINK])
 
     const reportsBeforeModifiedClick = childMouseReportCount(mouseLogPath)
     const modifier = process.platform === 'darwin' ? 'Meta' : 'Control'
-    await orcaPage.keyboard.down(modifier)
-    await orcaPage.mouse.click(target.x, target.y)
-    await orcaPage.keyboard.up(modifier)
+    await occPage.keyboard.down(modifier)
+    await occPage.mouse.click(target.x, target.y)
+    await occPage.keyboard.up(modifier)
     await expect
       .poll(async () => (await readPanelNavigationObserver(electronApp)).externalUrls)
       .toEqual([LINK, LINK])
-    await expectOrcaOwnedMouseOutcome(mouseLogPath, reportsBeforeModifiedClick)
-    await expect(orcaPage.locator('[data-terminal-link-action-popover]')).toHaveCount(0)
-    await sendToTerminal(orcaPage, ptyId, 'q')
+    await expectOCCOwnedMouseOutcome(mouseLogPath, reportsBeforeModifiedClick)
+    await expect(occPage.locator('[data-terminal-link-action-popover]')).toHaveCount(0)
+    await sendToTerminal(occPage, ptyId, 'q')
   })
 
   test('an OCC-owned plain link click emits no child PTY mouse frames', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(orcaPage, testInfo)
-    await orcaPage.mouse.click(target.x, target.y)
+    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(occPage, testInfo)
+    await occPage.mouse.click(target.x, target.y)
 
-    await expect(orcaPage.locator('[data-terminal-link-action-popover]')).toBeVisible()
-    await expect(orcaPage.locator('[data-terminal-link-destination]')).toHaveText(LINK)
+    await expect(occPage.locator('[data-terminal-link-action-popover]')).toBeVisible()
+    await expect(occPage.locator('[data-terminal-link-destination]')).toHaveText(LINK)
 
-    await expectOrcaOwnedMouseOutcome(mouseLogPath)
+    await expectOCCOwnedMouseOutcome(mouseLogPath)
 
-    await sendToTerminal(orcaPage, ptyId, 'q')
+    await sendToTerminal(occPage, ptyId, 'q')
   })
 
   test('an OCC-owned OSC link click emits no child PTY mouse frames', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(
-      orcaPage,
+      occPage,
       testInfo,
       'osc'
     )
-    await orcaPage.mouse.move(target.x, target.y)
-    await expect(orcaPage.locator('.xterm-hover')).toHaveCount(1)
-    await orcaPage.mouse.click(target.x, target.y)
+    await occPage.mouse.move(target.x, target.y)
+    await expect(occPage.locator('.xterm-hover')).toHaveCount(1)
+    await occPage.mouse.click(target.x, target.y)
 
-    await expect(orcaPage.locator('[data-terminal-link-action-popover]')).toBeVisible()
-    await expect(orcaPage.locator('[data-terminal-link-destination]')).toHaveText(LINK)
-    await expectOrcaOwnedMouseOutcome(mouseLogPath)
+    await expect(occPage.locator('[data-terminal-link-action-popover]')).toBeVisible()
+    await expect(occPage.locator('[data-terminal-link-destination]')).toHaveText(LINK)
+    await expectOCCOwnedMouseOutcome(mouseLogPath)
 
-    await sendToTerminal(orcaPage, ptyId, 'q')
+    await sendToTerminal(occPage, ptyId, 'q')
   })
 
   test('a plain click stays child-owned when link actions are disabled', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(orcaPage, testInfo)
-    await orcaPage.evaluate(async () => {
+    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(occPage, testInfo)
+    await occPage.evaluate(async () => {
       await window.__store?.getState().updateSettings({ terminalLinkActionPopoverEnabled: false })
     })
 
-    await orcaPage.mouse.click(target.x, target.y)
+    await occPage.mouse.click(target.x, target.y)
 
-    await expect(orcaPage.locator('[data-terminal-link-action-popover]')).toHaveCount(0)
+    await expect(occPage.locator('[data-terminal-link-action-popover]')).toHaveCount(0)
     await expectChildMouseReports(mouseLogPath)
-    await sendToTerminal(orcaPage, ptyId, 'q')
+    await sendToTerminal(occPage, ptyId, 'q')
   })
 
-  test('a drag across a link stays child-owned', async ({ orcaPage }, testInfo) => {
-    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(orcaPage, testInfo)
+  test('a drag across a link stays child-owned', async ({ occPage }, testInfo) => {
+    const { mouseLogPath, ptyId, target } = await startMouseAwareLinkFixture(occPage, testInfo)
 
-    await orcaPage.mouse.move(target.x, target.y)
-    await orcaPage.mouse.down()
-    await orcaPage.mouse.move(target.x + 12, target.y + 12, { steps: 3 })
-    await orcaPage.mouse.up()
+    await occPage.mouse.move(target.x, target.y)
+    await occPage.mouse.down()
+    await occPage.mouse.move(target.x + 12, target.y + 12, { steps: 3 })
+    await occPage.mouse.up()
 
-    await expect(orcaPage.locator('[data-terminal-link-action-popover]')).toHaveCount(0)
+    await expect(occPage.locator('[data-terminal-link-action-popover]')).toHaveCount(0)
     await expectChildMouseReports(mouseLogPath)
-    await sendToTerminal(orcaPage, ptyId, 'q')
+    await sendToTerminal(occPage, ptyId, 'q')
   })
 })

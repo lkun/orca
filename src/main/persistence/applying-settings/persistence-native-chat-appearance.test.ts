@@ -11,7 +11,7 @@ vi.mock('electron', () => ({
 vi.mock('../../telemetry/client', () => ({ track: vi.fn() }))
 
 beforeEach(() => {
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-chat-appearance-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-chat-appearance-'))
 })
 afterEach(async () => {
   await closeTestStores()

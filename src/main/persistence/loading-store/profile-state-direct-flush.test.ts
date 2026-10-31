@@ -12,7 +12,7 @@ import { hostWorktreeTarget } from '../../../shared/worktree/host-qualified-iden
 vi.mock('electron', () => ({
   app: {
     getPath: () => tmpdir(),
-    getName: () => 'orca-test',
+    getName: () => 'occ-test',
     getVersion: () => '0.0.0-test',
     isPackaged: false,
     on: () => {},
@@ -48,7 +48,7 @@ afterEach(async () => {
 })
 
 function fixture(seedState?: unknown) {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-direct-flush-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-direct-flush-'))
   const databasePath = join(directory, 'profile-state.db')
   const authority = new ProfileStateSqliteAuthority(databasePath, PROFILE_ID)
   vi.spyOn(authority, 'scheduleBackup').mockImplementation(() => {})
@@ -56,7 +56,7 @@ function fixture(seedState?: unknown) {
     authority.writeSerializedState(Buffer.from(JSON.stringify(seedState)))
   }
   const store = new Store({
-    dataFile: join(directory, 'orca-data.json'),
+    dataFile: join(directory, 'occ-data.json'),
     profileStateAuthority: authority
   })
   fixtures.push({ directory, store })

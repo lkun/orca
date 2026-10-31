@@ -29,7 +29,7 @@ import {
   type EphemeralVmRuntimeStore
 } from './ephemeral-vm-runtimes'
 
-const EPHEMERAL_VM_RUNTIMES_FILE = 'orca-ephemeral-vm-runtimes.json'
+const EPHEMERAL_VM_RUNTIMES_FILE = 'occ-ephemeral-vm-runtimes.json'
 export const MAX_EPHEMERAL_VM_RUNTIME_STORE_FILE_BYTES = 1024 * 1024
 
 export type EphemeralVmRuntimeStoreErrorCode = 'invalid_argument' | 'runtime_error'

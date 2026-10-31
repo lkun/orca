@@ -71,14 +71,14 @@ const SENTENCES: Record<AgentSessionWriteNoticeSentence, () => string> = {
       'session.writeNotice.historyUnavailable',
       "OCC couldn't open this chat's history right now."
     ),
-  savedByNewerOrca: () =>
-    translate('session.writeNotice.savedByNewerOrca', 'Chats were saved by a newer OCC.'),
-  updateOrcaToKeepUsing: () =>
-    translate('session.writeNotice.updateOrcaToKeepUsing', 'Update OCC to keep using them.'),
-  chatSavedByNewerOrca: () =>
-    translate('session.writeNotice.chatSavedByNewerOrca', 'This chat was saved by a newer OCC.'),
-  updateOrcaToOpenChat: () =>
-    translate('session.writeNotice.updateOrcaToOpenChat', 'Update OCC to open it.'),
+  savedByNewerOCC: () =>
+    translate('session.writeNotice.savedByNewerOCC', 'Chats were saved by a newer OCC.'),
+  updateOCCToKeepUsing: () =>
+    translate('session.writeNotice.updateOCCToKeepUsing', 'Update OCC to keep using them.'),
+  chatSavedByNewerOCC: () =>
+    translate('session.writeNotice.chatSavedByNewerOCC', 'This chat was saved by a newer OCC.'),
+  updateOCCToOpenChat: () =>
+    translate('session.writeNotice.updateOCCToOpenChat', 'Update OCC to open it.'),
   unsupported: () =>
     translate(
       'session.writeNotice.unsupported',

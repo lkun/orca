@@ -1,40 +1,40 @@
 import type { UISlice, UISliceGet, UISliceSet } from './ui-slice-contract'
 import { getSetupScriptPromptDismissalKey } from '../../../lib/setup-script-prompt'
 import {
-  withOrcaHookRepoAlwaysTrusted,
-  withOrcaHookScriptConfirmed
-} from '../../../../../shared/orca-hook-trust-entries'
+  withOCCHookRepoAlwaysTrusted,
+  withOCCHookScriptConfirmed
+} from '../../../../../shared/occ-hook-trust-entries'
 
 export function createUiTrustActions(set: UISliceSet, _get: UISliceGet): Partial<UISlice> {
   return {
-    trustedOrcaHooks: {},
-    markOrcaHookScriptConfirmed: (repoId, kind, contentHash) =>
+    trustedOCCHooks: {},
+    markOCCHookScriptConfirmed: (repoId, kind, contentHash) =>
       set((s) => {
-        const next = withOrcaHookScriptConfirmed(s.trustedOrcaHooks, repoId, kind, contentHash)
-        if (next === s.trustedOrcaHooks) {
+        const next = withOCCHookScriptConfirmed(s.trustedOCCHooks, repoId, kind, contentHash)
+        if (next === s.trustedOCCHooks) {
           return s
         }
-        window.api.ui.set({ trustedOrcaHooks: next }).catch(console.error)
-        return { trustedOrcaHooks: next }
+        window.api.ui.set({ trustedOCCHooks: next }).catch(console.error)
+        return { trustedOCCHooks: next }
       }),
-    markOrcaHookRepoAlwaysTrusted: (repoId) =>
+    markOCCHookRepoAlwaysTrusted: (repoId) =>
       set((s) => {
-        const next = withOrcaHookRepoAlwaysTrusted(s.trustedOrcaHooks, repoId)
-        if (next === s.trustedOrcaHooks) {
+        const next = withOCCHookRepoAlwaysTrusted(s.trustedOCCHooks, repoId)
+        if (next === s.trustedOCCHooks) {
           return s
         }
-        window.api.ui.set({ trustedOrcaHooks: next }).catch(console.error)
-        return { trustedOrcaHooks: next }
+        window.api.ui.set({ trustedOCCHooks: next }).catch(console.error)
+        return { trustedOCCHooks: next }
       }),
-    clearOrcaHookTrustForRepo: (repoId) =>
+    clearOCCHookTrustForRepo: (repoId) =>
       set((s) => {
-        if (!(repoId in s.trustedOrcaHooks)) {
+        if (!(repoId in s.trustedOCCHooks)) {
           return s
         }
-        const next = { ...s.trustedOrcaHooks }
+        const next = { ...s.trustedOCCHooks }
         delete next[repoId]
-        window.api.ui.set({ trustedOrcaHooks: next }).catch(console.error)
-        return { trustedOrcaHooks: next }
+        window.api.ui.set({ trustedOCCHooks: next }).catch(console.error)
+        return { trustedOCCHooks: next }
       }),
     setupScriptPromptDismissedRepoIds: [],
     dismissSetupScriptPrompt: (repoHostIdentity) =>

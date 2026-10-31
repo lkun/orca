@@ -7,7 +7,7 @@ This discovery stub loads the version-matched guide from the OCC executable used
 ## Load the version-matched guide before running OCC commands
 
 ```text
-ORCA skills get computer-use
+OCC skills get computer-use
 ```
 
 <!-- shared: no-guessing -->

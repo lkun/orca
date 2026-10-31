@@ -38,7 +38,7 @@ vi.mock('../wsl/wsl-unc-access-gate', () => ({
       : { distro: 'Ubuntu', state: 'stopped' }
   }
 }))
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   spawnProcess: () => {
     throw new Error('Usage must not launch a process')
   },
@@ -293,7 +293,7 @@ it('reads an inactive WSL account where the WSL router says its launches would r
     id: 'acct',
     managedAuthRuntime: 'wsl',
     wslDistro: 'Ubuntu',
-    wslLinuxAuthPath: '/home/u/.local/share/orca/claude-accounts/acct/auth'
+    wslLinuxAuthPath: '/home/u/.local/share/occ/claude-accounts/acct/auth'
   })
   expect(wslRouter.accountUsagePreparation).toHaveBeenCalledWith('Ubuntu', 'acct')
 })
@@ -305,7 +305,7 @@ it('does not read an inactive WSL account a running list still names while it st
     id: 'acct',
     managedAuthRuntime: 'wsl',
     wslDistro: 'Ubuntu',
-    wslLinuxAuthPath: '/home/u/.local/share/orca/claude-profiles/acct/home'
+    wslLinuxAuthPath: '/home/u/.local/share/occ/claude-profiles/acct/home'
   })
   expect(result).toMatchObject({ usageMetadata: { failureKind: 'usage-unavailable' } })
   expect(wslRouter.accountUsagePreparation).not.toHaveBeenCalled()
@@ -318,7 +318,7 @@ it('does not read an inactive WSL account through a stopped distro', async () =>
     id: 'acct',
     managedAuthRuntime: 'wsl',
     wslDistro: 'Ubuntu',
-    wslLinuxAuthPath: '/home/u/.local/share/orca/claude-profiles/acct/home'
+    wslLinuxAuthPath: '/home/u/.local/share/occ/claude-profiles/acct/home'
   })
   expect(runningDistros.filter).toHaveBeenCalledWith(['\\\\wsl.localhost\\Ubuntu\\'], {
     requireConfirmed: true

@@ -2,7 +2,7 @@ import { spawnSync } from 'node:child_process'
 import { createHash } from 'node:crypto'
 import { mkdtempSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import path from 'node:path'
 import process from 'node:process'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -56,7 +56,7 @@ function git(root, ...args) {
     args,
     cwd: root,
     timeoutMs: null,
-    env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' }
+    env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' }
   })
   if (result.code !== 0) {
     throw new Error(result.stderr)
@@ -65,7 +65,7 @@ function git(root, ...args) {
 }
 
 function createRepository() {
-  const root = mkdtempSync(path.join(tmpdir(), 'orca-react-doctor-gate-'))
+  const root = mkdtempSync(path.join(tmpdir(), 'occ-react-doctor-gate-'))
   temporaryRoots.push(root)
   git(root, 'init', '--quiet')
   git(root, 'config', 'user.email', 'test@example.com')

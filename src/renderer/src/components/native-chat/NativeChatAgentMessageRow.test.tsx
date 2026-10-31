@@ -16,13 +16,13 @@ afterEach(() => {
   openAgentMessageSender.mockClear()
 })
 
-const CODER = { address: 'term_coder', terminalHandle: 'term_coder', orcaSessionId: null }
+const CODER = { address: 'term_coder', terminalHandle: 'term_coder', occSessionId: null }
 
 function from(senders: { address: string; name: string | null }[]): AgentMessageSource {
   return {
     kind: 'agent',
     senders: senders.map(({ address, name }) => ({
-      party: { address, terminalHandle: address, orcaSessionId: null },
+      party: { address, terminalHandle: address, occSessionId: null },
       name
     })),
     orchestration: null

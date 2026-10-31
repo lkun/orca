@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import type { ConnectorSource, Notice, NoticeTarget, ThreadPlace } from './connector-adapter.js'
 import { lockConnectorHost } from './connector-hosts.js'
 import { applyOwnerAction, type AnswerablePrompt, type OwnerAction } from './owner-controls.js'

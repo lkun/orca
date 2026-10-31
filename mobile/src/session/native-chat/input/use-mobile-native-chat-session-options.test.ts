@@ -85,7 +85,7 @@ describe('useMobileNativeChatSessionOptions', () => {
         agent,
         scopeKey: 'owner\0worktree\0tab',
         reportedModel: 'retired',
-        modelSwitchCommand: 'orca-model',
+        modelSwitchCommand: 'occ-model',
         writeSettings: writeOwner,
         discoveredModels: cached ? discoveredModels : null
       })
@@ -150,18 +150,18 @@ describe('useMobileNativeChatSessionOptions', () => {
     }
   )
 
-  it('switches an OMP session with /orca-model <selector>', async () => {
+  it('switches an OMP session with /occ-model <selector>', async () => {
     mount({
       agent: 'omp',
       reportedModel: 'deepseek/deepseek-v4-pro',
-      modelSwitchCommand: 'orca-model'
+      modelSwitchCommand: 'occ-model'
     })
     let applied: boolean | undefined
     await act(async () => {
       applied = await api!.setOption('model', 'minimax-cn/MiniMax-M3')
     })
     expect(applied).toBe(true)
-    expect(dispatchCommand).toHaveBeenCalledWith('/orca-model minimax-cn/MiniMax-M3')
+    expect(dispatchCommand).toHaveBeenCalledWith('/occ-model minimax-cn/MiniMax-M3')
     const model = api!.snapshot[0]!
     expect(model).toMatchObject({ valueSource: 'dispatched' })
     expect(model.kind).toMatchObject({ currentValue: 'minimax-cn/MiniMax-M3' })

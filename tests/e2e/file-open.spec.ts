@@ -1,4 +1,4 @@
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   waitForSessionReady,
   waitForActiveWorktree,
@@ -47,26 +47,26 @@ async function switchToEditor(
 }
 
 test.describe('File Open & Markdown Preview', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
   })
 
-  test('opening the right sidebar shows file explorer', async ({ orcaPage }) => {
-    await openFileExplorer(orcaPage)
+  test('opening the right sidebar shows file explorer', async ({ occPage }) => {
+    await openFileExplorer(occPage)
 
     // Assert the rendered explorer shell; store selection alone cannot detect mount failure.
-    await expect(orcaPage.locator('[data-orca-explorer-shell]')).toBeVisible({ timeout: 5_000 })
+    await expect(occPage.locator('[data-occ-explorer-shell]')).toBeVisible({ timeout: 5_000 })
   })
 
-  test('clicking a file in the file explorer opens it in an editor tab', async ({ orcaPage }) => {
-    const worktreeId = (await getActiveWorktreeId(orcaPage))!
-    await openFileExplorer(orcaPage)
+  test('clicking a file in the file explorer opens it in an editor tab', async ({ occPage }) => {
+    const worktreeId = (await getActiveWorktreeId(occPage))!
+    await openFileExplorer(occPage)
 
-    const filesBefore = await getOpenFiles(orcaPage, worktreeId)
+    const filesBefore = await getOpenFiles(occPage, worktreeId)
 
-    const clickedFile = await clickFileInExplorer(orcaPage, [
+    const clickedFile = await clickFileInExplorer(occPage, [
       'package.json',
       'tsconfig.json',
       '.gitignore',
@@ -74,60 +74,60 @@ test.describe('File Open & Markdown Preview', () => {
     ])
     expect(clickedFile).not.toBeNull()
 
-    await expect.poll(async () => getActiveTabType(orcaPage), { timeout: 5_000 }).toBe('editor')
+    await expect.poll(async () => getActiveTabType(occPage), { timeout: 5_000 }).toBe('editor')
 
     await expect
-      .poll(async () => (await getOpenFiles(orcaPage, worktreeId)).length, { timeout: 5_000 })
+      .poll(async () => (await getOpenFiles(occPage, worktreeId)).length, { timeout: 5_000 })
       .toBeGreaterThan(filesBefore.length)
 
     // Assert the rendered path; allow first-open lazy EditorPanel/Monaco/Markdown chunks to mount.
-    await expect(orcaPage.locator('.editor-header-path').first()).toContainText(clickedFile!, {
+    await expect(occPage.locator('.editor-header-path').first()).toContainText(clickedFile!, {
       timeout: 20_000
     })
   })
 
-  test('opening a .md file shows markdown content', async ({ orcaPage }) => {
-    await openFileExplorer(orcaPage)
-    const clickedFile = await clickFileInExplorer(orcaPage, ['README.md', 'CLAUDE.md'])
+  test('opening a .md file shows markdown content', async ({ occPage }) => {
+    await openFileExplorer(occPage)
+    const clickedFile = await clickFileInExplorer(occPage, ['README.md', 'CLAUDE.md'])
     expect(clickedFile).not.toBeNull()
 
-    await expect.poll(async () => getActiveTabType(orcaPage), { timeout: 5_000 }).toBe('editor')
+    await expect.poll(async () => getActiveTabType(occPage), { timeout: 5_000 }).toBe('editor')
 
     // Assert the file’s real heading so a blank editor cannot pass via store state.
     const expectedHeading = clickedFile?.endsWith('README.md')
       ? /OCC E2E Test Repo/i
       : /CLAUDE\.md/i
     // Allow cold EditorPanel → Markdown chunk loading and ProseMirror boot before the heading paints.
-    await expect(orcaPage.getByRole('heading', { name: expectedHeading, level: 1 })).toBeVisible({
+    await expect(occPage.getByRole('heading', { name: expectedHeading, level: 1 })).toBeVisible({
       timeout: 25_000
     })
   })
 
-  test('editor tab retains state when switching to terminal and back', async ({ orcaPage }) => {
-    const worktreeId = (await getActiveWorktreeId(orcaPage))!
-    await openFileExplorer(orcaPage)
+  test('editor tab retains state when switching to terminal and back', async ({ occPage }) => {
+    const worktreeId = (await getActiveWorktreeId(occPage))!
+    await openFileExplorer(occPage)
 
-    const clickedFile = await clickFileInExplorer(orcaPage, [
+    const clickedFile = await clickFileInExplorer(occPage, [
       'package.json',
       'tsconfig.json',
       '.gitignore'
     ])
     expect(clickedFile).not.toBeNull()
 
-    await expect.poll(async () => getActiveTabType(orcaPage), { timeout: 5_000 }).toBe('editor')
+    await expect.poll(async () => getActiveTabType(occPage), { timeout: 5_000 }).toBe('editor')
 
-    const openFilesBefore = await getOpenFiles(orcaPage, worktreeId)
+    const openFilesBefore = await getOpenFiles(occPage, worktreeId)
     expect(openFilesBefore.length).toBeGreaterThan(0)
 
     const editorFileId = openFilesBefore[0].id
 
-    await switchToTerminal(orcaPage, worktreeId)
-    await expect.poll(async () => getActiveTabType(orcaPage), { timeout: 3_000 }).not.toBe('editor')
+    await switchToTerminal(occPage, worktreeId)
+    await expect.poll(async () => getActiveTabType(occPage), { timeout: 3_000 }).not.toBe('editor')
 
-    await switchToEditor(orcaPage, editorFileId)
-    await expect.poll(async () => getActiveTabType(orcaPage), { timeout: 3_000 }).toBe('editor')
+    await switchToEditor(occPage, editorFileId)
+    await expect.poll(async () => getActiveTabType(occPage), { timeout: 3_000 }).toBe('editor')
 
-    const openFilesAfter = await getOpenFiles(orcaPage, worktreeId)
+    const openFilesAfter = await getOpenFiles(occPage, worktreeId)
     expect(openFilesAfter.length).toBe(openFilesBefore.length)
     expect(openFilesAfter[0].filePath).toBe(openFilesBefore[0].filePath)
   })

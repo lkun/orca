@@ -57,7 +57,7 @@ function frame(
 ) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     ...(type === 'user' && parentToolUseId === null ? { startsTurn: true as const } : {}),
     message: {
       type,
@@ -73,7 +73,7 @@ function frame(
 function taskNotification(uuid: string) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     message: {
       type: 'user',
       uuid,
@@ -90,7 +90,7 @@ function taskNotification(uuid: string) {
 function textDelta(uuid: string, messageId: string, text: string) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     message: {
       type: 'stream_event',
       uuid,
@@ -105,7 +105,7 @@ function textDelta(uuid: string, messageId: string, text: string) {
 function streamMessageStart(uuid: string, parentToolUseId: string | null = null) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     message: {
       type: 'stream_event',
       uuid,
@@ -119,7 +119,7 @@ function streamMessageStart(uuid: string, parentToolUseId: string | null = null)
 function result(uuid: string, parentToolUseId: string | null = null, durationMs = 322_937) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     message: {
       type: 'result',
       subtype: 'success',
@@ -272,7 +272,7 @@ describe('a Claude turn the provider resumed on its own', () => {
     const { translator, items } = harness()
     translator.handle(frame('user', 'u1', [{ type: 'text', text: 'go' }]))
     translator.handle(frame('assistant', 'a0', [{ type: 'text', text: 'on it' }]))
-    translator.handle({ type: 'ended', sessionId: 'orca-session', reason: 'exit', observedAt: 1 })
+    translator.handle({ type: 'ended', sessionId: 'occ-session', reason: 'exit', observedAt: 1 })
     expect(projected(items())).toBe('idle')
 
     translator.handle(streamMessageStart('late-start'))
@@ -285,7 +285,7 @@ describe('a Claude turn the provider resumed on its own', () => {
     translator.handle(frame('assistant', 'a0', [{ type: 'text', text: 'on it' }]))
     translator.handle({
       type: 'message' as const,
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: {
         type: 'result',
         subtype: 'error',
@@ -367,7 +367,7 @@ describe('a Claude turn the provider resumed on its own', () => {
     const before = appended.length
     translator.handle({
       type: 'message' as const,
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: {
         type: 'result',
         subtype: 'error',
@@ -388,7 +388,7 @@ describe('a Claude turn the provider resumed on its own', () => {
     translator.handle(frame('assistant', 'a0', [{ type: 'text', text: 'on it' }]))
     translator.handle({
       type: 'message' as const,
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: {
         type: 'result',
         subtype: 'error',

@@ -61,12 +61,12 @@ describe('session view preference', () => {
   it('defaults to terminal and persists the chat default', async () => {
     vi.mocked(AsyncStorage.getItem).mockResolvedValue(null)
     await expect(loadDefaultSessionView()).resolves.toBe('terminal')
-    expect(AsyncStorage.getItem).toHaveBeenCalledWith('orca:defaultSessionView')
+    expect(AsyncStorage.getItem).toHaveBeenCalledWith('occ:defaultSessionView')
 
     vi.mocked(AsyncStorage.getItem).mockImplementation(async (key) => stored.get(key) ?? null)
     await saveDefaultSessionView('chat')
     await expect(loadDefaultSessionView()).resolves.toBe('chat')
-    expect(AsyncStorage.setItem).toHaveBeenCalledWith('orca:defaultSessionView', 'chat')
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith('occ:defaultSessionView', 'chat')
 
     vi.mocked(AsyncStorage.getItem).mockResolvedValue('bogus')
     await expect(loadDefaultSessionView()).resolves.toBe('terminal')
@@ -116,12 +116,12 @@ describe('session view preference', () => {
       ['tab-2', 'terminal']
     ])
     expect(AsyncStorage.getItem).toHaveBeenCalledWith(
-      'orca:nativeChatTabs:host%2Fone:folder%3AC%3A%5Crepo'
+      'occ:nativeChatTabs:host%2Fone:folder%3AC%3A%5Crepo'
     )
 
     await updateSessionViewOverride('host/one', 'folder:C:\\repo', 'tab-2', 'chat')
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-      'orca:nativeChatTabs:host%2Fone:folder%3AC%3A%5Crepo',
+      'occ:nativeChatTabs:host%2Fone:folder%3AC%3A%5Crepo',
       JSON.stringify({ 'tab-1': 'chat', 'tab-2': 'chat' })
     )
   })
@@ -160,8 +160,8 @@ describe('session view preference', () => {
     await Promise.all([older, newer])
 
     await expect(reloaded).resolves.toBe('terminal')
-    expect(AsyncStorage.setItem).toHaveBeenNthCalledWith(1, 'orca:defaultSessionView', 'chat')
-    expect(AsyncStorage.setItem).toHaveBeenNthCalledWith(2, 'orca:defaultSessionView', 'terminal')
+    expect(AsyncStorage.setItem).toHaveBeenNthCalledWith(1, 'occ:defaultSessionView', 'chat')
+    expect(AsyncStorage.setItem).toHaveBeenNthCalledWith(2, 'occ:defaultSessionView', 'terminal')
   })
 
   it('continues the shared default queue after a failed write', async () => {
@@ -230,7 +230,7 @@ describe('session view preference', () => {
     await updateSessionViewOverride('other-host', 'worktree', 'tab', 'terminal')
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-      'orca:nativeChatTabs:other-host:worktree',
+      'occ:nativeChatTabs:other-host:worktree',
       JSON.stringify({ tab: 'terminal' })
     )
     blockedWrite.resolve()
@@ -277,7 +277,7 @@ describe('session view preference', () => {
     await updateSessionViewOverride('host', 'worktree', 'tab', 'chat')
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-      'orca:nativeChatTabs:host:worktree',
+      'occ:nativeChatTabs:host:worktree',
       JSON.stringify({ tab: 'chat' })
     )
   })
@@ -298,7 +298,7 @@ describe('push notification preference', () => {
 
   it.each(['true', 'false'])('requires fresh consent for legacy choice %s', async (legacy) => {
     vi.mocked(AsyncStorage.getItem).mockImplementation(async (key) =>
-      key === 'orca:pushNotificationsEnabled' ? legacy : null
+      key === 'occ:pushNotificationsEnabled' ? legacy : null
     )
     await expect(readPushNotificationsPreference()).resolves.toEqual({ value: null, loaded: true })
     await expect(loadPushNotificationsEnabled()).resolves.toBe(false)
@@ -306,7 +306,7 @@ describe('push notification preference', () => {
 
   it('distinguishes an unset preference from an explicit disabled choice', async () => {
     vi.mocked(AsyncStorage.getItem).mockImplementation(async (key) =>
-      key === 'orca:remotePushEnabled' ? 'true' : null
+      key === 'occ:remotePushEnabled' ? 'true' : null
     )
     await expect(readPushNotificationsPreference()).resolves.toEqual({
       value: null,
@@ -341,7 +341,7 @@ describe('push notification preference', () => {
       await savePushNotificationsEnabled(enabled)
       await expect(loadPushNotificationsEnabled()).resolves.toBe(enabled)
     }
-    expect([...storage]).toEqual([['orca:pushServiceNotificationsEnabled', 'false']])
+    expect([...storage]).toEqual([['occ:pushServiceNotificationsEnabled', 'false']])
   })
 })
 
@@ -362,7 +362,7 @@ describe('terminal autocomplete preference', () => {
     vi.mocked(AsyncStorage.getItem).mockResolvedValue(null)
 
     await expect(loadTerminalAutocompleteEnabled()).resolves.toBe(false)
-    expect(AsyncStorage.getItem).toHaveBeenCalledWith('orca:terminalAutocompleteEnabled')
+    expect(AsyncStorage.getItem).toHaveBeenCalledWith('occ:terminalAutocompleteEnabled')
   })
 
   it('loads enabled only from the persisted true value', async () => {
@@ -385,12 +385,12 @@ describe('terminal autocomplete preference', () => {
     await saveTerminalAutocompleteEnabled(true)
 
     await expect(loadTerminalAutocompleteEnabled()).resolves.toBe(true)
-    expect(AsyncStorage.setItem).toHaveBeenCalledWith('orca:terminalAutocompleteEnabled', 'true')
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith('occ:terminalAutocompleteEnabled', 'true')
 
     await saveTerminalAutocompleteEnabled(false)
 
     await expect(loadTerminalAutocompleteEnabled()).resolves.toBe(false)
-    expect(AsyncStorage.setItem).toHaveBeenCalledWith('orca:terminalAutocompleteEnabled', 'false')
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith('occ:terminalAutocompleteEnabled', 'false')
   })
 })
 
@@ -454,7 +454,7 @@ describe('terminal live input disabled handles preference', () => {
     ).resolves.toEqual(new Set(['pty-2', 'pty-1']))
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-      'orca:terminalLiveInputDisabled:host%2Fone:folder%3AC%3A%5Crepo',
+      'occ:terminalLiveInputDisabled:host%2Fone:folder%3AC%3A%5Crepo',
       JSON.stringify(['pty-2', 'pty-1'])
     )
   })
@@ -501,7 +501,7 @@ describe('host sidebar width preference', () => {
     await saveHostSidebarWidth(HOST_SIDEBAR_MIN_WIDTH - 20)
 
     expect(AsyncStorage.setItem).toHaveBeenCalledWith(
-      'orca:hostSidebarWidth',
+      'occ:hostSidebarWidth',
       String(HOST_SIDEBAR_MIN_WIDTH)
     )
   })
@@ -531,8 +531,8 @@ describe('terminal link open mode preference', () => {
   it('defaults to OCC browser when unset', async () => {
     vi.mocked(AsyncStorage.getItem).mockResolvedValue(null)
 
-    await expect(loadTerminalLinkOpenMode()).resolves.toBe('orca-browser')
-    expect(AsyncStorage.getItem).toHaveBeenCalledWith('orca:terminalLinkOpenMode')
+    await expect(loadTerminalLinkOpenMode()).resolves.toBe('occ-browser')
+    expect(AsyncStorage.getItem).toHaveBeenCalledWith('occ:terminalLinkOpenMode')
   })
 
   it('loads only known modes', async () => {
@@ -540,18 +540,18 @@ describe('terminal link open mode preference', () => {
     await expect(loadTerminalLinkOpenMode()).resolves.toBe('phone-browser')
 
     vi.mocked(AsyncStorage.getItem).mockResolvedValue('external')
-    await expect(loadTerminalLinkOpenMode()).resolves.toBe('orca-browser')
+    await expect(loadTerminalLinkOpenMode()).resolves.toBe('occ-browser')
   })
 
   it('falls back to OCC browser when storage cannot be read', async () => {
     vi.mocked(AsyncStorage.getItem).mockRejectedValue(new Error('storage unavailable'))
 
-    await expect(loadTerminalLinkOpenMode()).resolves.toBe('orca-browser')
+    await expect(loadTerminalLinkOpenMode()).resolves.toBe('occ-browser')
   })
 
   it('orders writes across settings mounts and makes readers wait for the latest choice', async () => {
     const firstWrite = deferred<void>()
-    let stored: string | null = 'orca-browser'
+    let stored: string | null = 'occ-browser'
     vi.mocked(AsyncStorage.getItem).mockImplementation(async () => stored)
     vi.mocked(AsyncStorage.setItem).mockImplementation(async (_key, value) => {
       if (value === 'phone-browser') {
@@ -560,20 +560,20 @@ describe('terminal link open mode preference', () => {
       stored = value
     })
     const firstMount = saveTerminalLinkOpenMode('phone-browser')
-    const secondMount = saveTerminalLinkOpenMode('orca-browser')
+    const secondMount = saveTerminalLinkOpenMode('occ-browser')
     const reader = loadTerminalLinkOpenMode()
     await Promise.resolve()
-    expect(stored).toBe('orca-browser')
+    expect(stored).toBe('occ-browser')
     firstWrite.resolve()
     await Promise.all([firstMount, secondMount])
-    await expect(reader).resolves.toBe('orca-browser')
-    expect(stored).toBe('orca-browser')
+    await expect(reader).resolves.toBe('occ-browser')
+    expect(stored).toBe('occ-browser')
   })
 
   it('persists the selected mode', async () => {
     await saveTerminalLinkOpenMode('phone-browser')
 
     await expect(loadTerminalLinkOpenMode()).resolves.toBe('phone-browser')
-    expect(AsyncStorage.setItem).toHaveBeenCalledWith('orca:terminalLinkOpenMode', 'phone-browser')
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith('occ:terminalLinkOpenMode', 'phone-browser')
   })
 })

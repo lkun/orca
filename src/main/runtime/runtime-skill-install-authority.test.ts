@@ -7,7 +7,7 @@ const WORKTREE_ID = 'repo-1::/workspace/app'
 function createHost(overrides: Partial<RuntimeSkillCommandHost> = {}): RuntimeSkillCommandHost {
   return {
     getRuntimeId: () => 'runtime-1',
-    getUserDataPath: () => '/tmp/orca-skill-authority-test',
+    getUserDataPath: () => '/tmp/occ-skill-authority-test',
     isPackaged: () => true,
     getSettings: () => ({}),
     listRepos: () => [{ id: 'repo-1', path: '/workspace/app' }],

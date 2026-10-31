@@ -19,7 +19,7 @@ import {
   assertWslMoveRepoWritable
 } from '../../persistence/moving-wsl-projects/wsl-move-scope-guard'
 import { activeNestedRepoScans, runNestedRepoScanForIpc } from './nested-repo-scan-ipc'
-import { visibleProjectGroups } from '../../ssh/orcad-retained-source'
+import { visibleProjectGroups } from '../../ssh/occd-retained-source'
 
 export function registerProjectGroupHandlers(mainWindow: BrowserWindow, store: Store): void {
   ipcMain.handle('projectGroups:list', () => visibleProjectGroups(store))

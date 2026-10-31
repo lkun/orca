@@ -21,7 +21,7 @@ const CELL_INCARNATION = '11111111-1111-4111-8111-111111111111'
 const IDENTITY = { userId: USER_ID, relayHostId: RELAY_HOST_ID }
 const CONTROL_ACTIVITY_ID = `control:${CELL.id}:1`
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const backends: { name: string; open: () => Promise<RelayDatabase> }[] = [
   { name: 'sqlite', open: openInMemoryRelayDatabase },
   ...(databaseUrl

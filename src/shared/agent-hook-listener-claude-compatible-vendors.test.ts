@@ -320,7 +320,7 @@ describe('shared agent-hook-listener', () => {
       model_provider: 'meta'
     }
     // Keep this captured session ID away from developer Muse transcripts.
-    vi.stubEnv('XDG_DATA_HOME', '/tmp/orca-muse-vendors-test-no-data')
+    vi.stubEnv('XDG_DATA_HOME', '/tmp/occ-muse-vendors-test-no-data')
     const bash = { command: 'ls -la' }
     const submitted = normalizeAndAccept(state, 'muse', {
       ...base,

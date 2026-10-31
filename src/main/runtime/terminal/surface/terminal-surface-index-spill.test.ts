@@ -8,7 +8,7 @@ import type { WorkspaceSessionState } from '../../../../shared/workspace-session
 import { composeMainTerminalSurfaces, TerminalSurfaceIndex } from './terminal-surface-index'
 import { toRemoteRuntimePtyId } from '../../../../shared/remote-runtime/remote-runtime-pty-id'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const GIT = 'repo::/worktree'
 const FOLDER = 'folder:notes'

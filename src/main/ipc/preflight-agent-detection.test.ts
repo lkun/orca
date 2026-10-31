@@ -192,7 +192,7 @@ describe('preflight', () => {
       code: 0,
       timedOut: false,
       stdout:
-        '__ORCA_AGENT_PATH__claude\t/home/me/bin/claude\n__ORCA_AGENT_PATH__kiro-cli\t/home/me/bin/kiro-cli\n',
+        '__OCC_AGENT_PATH__claude\t/home/me/bin/claude\n__OCC_AGENT_PATH__kiro-cli\t/home/me/bin/kiro-cli\n',
       stderr: ''
     })
     await expect(
@@ -252,11 +252,11 @@ describe('preflight', () => {
       if (command !== 'which') {
         throw new Error(`unexpected command ${String(command)}`)
       }
-      if (String(args[0]) === 'orca') {
+      if (String(args[0]) === 'occ') {
         return {
           environmentResolved: true,
           code: 0,
-          stdout: '/Applications/OCC.app/Contents/MacOS/orca\n',
+          stdout: '/Applications/OCC.app/Contents/MacOS/occ\n',
           stderr: '',
           timedOut: false
         }
@@ -281,11 +281,11 @@ describe('preflight', () => {
           timedOut: false
         }
       }
-      if (String(args[0]) === 'orca') {
+      if (String(args[0]) === 'occ') {
         return {
           environmentResolved: true,
           code: 0,
-          stdout: '/Applications/OCC.app/Contents/MacOS/orca\n',
+          stdout: '/Applications/OCC.app/Contents/MacOS/occ\n',
           stderr: '',
           timedOut: false
         }
@@ -314,7 +314,7 @@ describe('preflight', () => {
           timedOut: false
         }
       }
-      if (String(args[0]) === 'orca') {
+      if (String(args[0]) === 'occ') {
         return {
           environmentResolved: true,
           code: 0,
@@ -482,7 +482,7 @@ describe('preflight', () => {
         return {
           environmentResolved: true,
           code: 0,
-          stdout: '__ORCA_AGENT_PATH__claude\t/home/test/.local/bin/claude\n',
+          stdout: '__OCC_AGENT_PATH__claude\t/home/test/.local/bin/claude\n',
           stderr: '',
           timedOut: false
         }
@@ -502,14 +502,14 @@ describe('preflight', () => {
       value: 'win32'
     })
     runWslProcessMock.mockImplementation(async ({ script }: { script: string }) => {
-      expect(script).not.toContain("'orca'")
+      expect(script).not.toContain("'occ'")
       expect(script).not.toContain("'occ-dev'")
       expect(script).not.toContain("'occ-ide'")
       if (script.includes("'claude'")) {
         return {
           environmentResolved: true,
           code: 0,
-          stdout: '__ORCA_AGENT_PATH__claude\t/home/test/.local/bin/claude\n',
+          stdout: '__OCC_AGENT_PATH__claude\t/home/test/.local/bin/claude\n',
           stderr: '',
           timedOut: false
         }
@@ -564,7 +564,7 @@ describe('preflight', () => {
         return {
           environmentResolved: true,
           code: 0,
-          stdout: '__ORCA_AGENT_PATH__claude\t/home/test/.local/bin/claude\n',
+          stdout: '__OCC_AGENT_PATH__claude\t/home/test/.local/bin/claude\n',
           stderr: '',
           timedOut: false
         }
@@ -592,7 +592,7 @@ describe('preflight', () => {
         return {
           environmentResolved: true,
           code: 0,
-          stdout: '__ORCA_AGENT_PATH__codex\t/home/test/.local/bin/codex\n',
+          stdout: '__OCC_AGENT_PATH__codex\t/home/test/.local/bin/codex\n',
           stderr: '',
           timedOut: false
         }

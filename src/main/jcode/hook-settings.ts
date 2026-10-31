@@ -37,7 +37,7 @@ export function getJcodeManagedScriptPath(): string {
 }
 
 export function getSharedJcodeScriptPath(scriptFileName: string): string {
-  return join(homedir(), '.orca', 'agent-hooks', scriptFileName)
+  return join(homedir(), '.occ', 'agent-hooks', scriptFileName)
 }
 
 // jcode tokenizes commands before direct execution; quote paths to preserve Windows separators and spaces.

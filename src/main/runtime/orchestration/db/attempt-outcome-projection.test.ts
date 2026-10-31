@@ -157,7 +157,7 @@ describe('durable Attempt observation and outcome projection', () => {
   })
 
   it('retains facts and the same projection after a database reopen', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-attempt-observation-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-attempt-observation-'))
     const path = join(dir, 'orchestration.sqlite')
     try {
       db = new OrchestrationDb(path)

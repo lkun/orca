@@ -4,7 +4,7 @@ import { worktreeRemovalReplyTimeoutMs } from '../shared/worktree/archive-hook-r
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -12,8 +12,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -24,7 +24,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -155,7 +155,7 @@ describe('command aliases dispatch to the canonical handler', () => {
     await main(['worktree', 'rm', '--worktree', 'id:wt-1'], '/tmp/repo')
 
     expect(logSpy).toHaveBeenCalledWith(
-      'removed: false\nOrca is still deleting the checkout in the background.'
+      'removed: false\nOCC is still deleting the checkout in the background.'
     )
   })
 
@@ -316,8 +316,8 @@ describe('command aliases dispatch to the canonical handler', () => {
   })
 
   it('keeps `agent-context` local when remote environment variables are set', async () => {
-    vi.stubEnv('ORCA_PAIRING_CODE', 'pairing-code')
-    vi.stubEnv('ORCA_ENVIRONMENT', 'stale-environment')
+    vi.stubEnv('OCC_PAIRING_CODE', 'pairing-code')
+    vi.stubEnv('OCC_ENVIRONMENT', 'stale-environment')
     try {
       await main(['agent-context', '--json'], '/tmp/repo')
 
@@ -337,8 +337,8 @@ describe('artifact runtime routing', () => {
   })
 
   it('uses the desktop runtime despite remote-selection environment fallbacks', async () => {
-    vi.stubEnv('ORCA_ENVIRONMENT', 'remote-environment')
-    vi.stubEnv('ORCA_PAIRING_CODE', 'remote-pairing-code')
+    vi.stubEnv('OCC_ENVIRONMENT', 'remote-environment')
+    vi.stubEnv('OCC_PAIRING_CODE', 'remote-pairing-code')
     vi.spyOn(console, 'log').mockImplementation(() => undefined)
     callMock.mockResolvedValue(
       okFixture('artifact-list', { status: 'ok', value: { artifacts: [] } })
@@ -372,7 +372,7 @@ describe('unknown command surfaces a suggestion', () => {
     expect(process.exitCode).toBe(1)
     const stderr = errorSpy.mock.calls.map((call) => String(call[0])).join('\n')
     expect(stderr).toContain('Unknown command: worktree remov')
-    expect(stderr).toContain('orca worktree')
+    expect(stderr).toContain('occ worktree')
   })
 
   it.each([
@@ -394,7 +394,7 @@ describe('unknown command surfaces a suggestion', () => {
       const output = logSpy.mock.calls.flat().join('\n')
       expect(output).toContain('invalid_argument')
       expect(output).toContain('"runtimeId": null')
-      expect(output).not.toContain(`orca ${forbidden}`)
+      expect(output).not.toContain(`occ ${forbidden}`)
       expect(output).not.toContain(`"${forbidden}"`)
       expect(runtimeClientConstructorMock).not.toHaveBeenCalled()
       expect(callMock).not.toHaveBeenCalled()
@@ -403,7 +403,7 @@ describe('unknown command surfaces a suggestion', () => {
     }
 
     await main(input.split(' '), '/tmp/repo')
-    expect(errorSpy.mock.calls.flat().join('\n')).not.toContain(`orca ${forbidden}`)
+    expect(errorSpy.mock.calls.flat().join('\n')).not.toContain(`occ ${forbidden}`)
     expect(runtimeClientConstructorMock).not.toHaveBeenCalled()
     expect(callMock).not.toHaveBeenCalled()
   })
@@ -502,7 +502,7 @@ describe('unknown help command surfaces a suggestion', () => {
     await main(argv, '/tmp/repo')
 
     expect(process.exitCode).toBe(1)
-    expect(logSpy.mock.calls.flat().join('\n')).toContain('Did you mean: orca worktree')
+    expect(logSpy.mock.calls.flat().join('\n')).toContain('Did you mean: occ worktree')
     logSpy.mockRestore()
     process.exitCode = 0
   })
@@ -528,7 +528,7 @@ describe('nested command group help', () => {
 
         expect(process.exitCode).toBe(0)
         const output = logSpy.mock.calls.flat().join('\n')
-        expect(output).toContain(`orca ${path}`)
+        expect(output).toContain(`occ ${path}`)
         for (const command of commands) {
           expect(output).toContain(command)
         }
@@ -553,8 +553,8 @@ describe('nested command group help', () => {
 
       expect(process.exitCode).toBe(1)
       const stderr = errorSpy.mock.calls.flat().join('\n')
-      expect(stderr).toContain('Missing subcommand for: orca skills')
-      expect(stderr).toContain('orca skills --help')
+      expect(stderr).toContain('Missing subcommand for: occ skills')
+      expect(stderr).toContain('occ skills --help')
       expect(stderr).not.toContain('Did you mean')
       expect(runtimeClientConstructorMock).not.toHaveBeenCalled()
     } finally {
@@ -566,23 +566,23 @@ describe('nested command group help', () => {
   it('keeps an executable leaf ahead of its child groups', async () => {
     const previousExitCode = process.exitCode
     process.exitCode = 0
-    serveOrcaAppMock.mockClear().mockResolvedValue(0)
+    serveOCCAppMock.mockClear().mockResolvedValue(0)
 
     try {
       await main(['serve'], '/tmp/repo')
 
       expect(process.exitCode).toBe(0)
-      expect(serveOrcaAppMock).toHaveBeenCalledExactlyOnceWith(
+      expect(serveOCCAppMock).toHaveBeenCalledExactlyOnceWith(
         expect.objectContaining({ json: false })
       )
     } finally {
       process.exitCode = previousExitCode
-      serveOrcaAppMock.mockReset()
+      serveOCCAppMock.mockReset()
     }
   })
 })
 
-describe('orca help', () => {
+describe('occ help', () => {
   it('progressively discloses Linear commands', async () => {
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
 
@@ -596,7 +596,7 @@ describe('orca help', () => {
     await main(['linear', '--help'], '/tmp/repo')
 
     const groupHelp = String(logSpy.mock.calls[0][0])
-    expect(groupHelp).toContain('orca linear')
+    expect(groupHelp).toContain('occ linear')
     expect(groupHelp).toContain('issue')
     expect(groupHelp).not.toContain('--comments')
 
@@ -604,7 +604,7 @@ describe('orca help', () => {
     await main(['linear', 'issue', '--help'], '/tmp/repo')
 
     const issueHelp = String(logSpy.mock.calls[0][0])
-    expect(issueHelp).toContain('orca linear issue')
+    expect(issueHelp).toContain('occ linear issue')
     expect(issueHelp).toContain('--comments')
     expect(callMock).not.toHaveBeenCalled()
     logSpy.mockRestore()

@@ -1,9 +1,9 @@
 export function getPiTitlebarLifetimeSourceLines(): string[] {
   return [
     '  // Factories share the process realm; retire old ownership before painting.',
-    "  const ownersKey = Symbol.for('orca.pi.titlebar.owners')",
+    "  const ownersKey = Symbol.for('occ.pi.titlebar.owners')",
     '  const owners = globalThis[ownersKey] ??= new Map()',
-    '  const paneKey = process.env.ORCA_PANE_KEY',
+    '  const paneKey = process.env.OCC_PANE_KEY',
     '  let disposed = false',
     '  function clearOwnedTimers() {',
     '    clearPendingAgentEndCheck()',

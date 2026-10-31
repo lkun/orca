@@ -80,7 +80,7 @@ export function registerJournalUnsentSendHoldTests(): void {
     kind: 'agent',
     senders: [
       {
-        party: { address: 'agent:coordinator', terminalHandle: null, orcaSessionId: null },
+        party: { address: 'agent:coordinator', terminalHandle: null, occSessionId: null },
         name: null
       }
     ],
@@ -151,7 +151,7 @@ export function registerJournalUnsentSendHoldTests(): void {
 
   beforeEach(async () => {
     epochs = 0
-    root = await mkdtemp(join(tmpdir(), 'orca-unsent-hold-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-unsent-hold-'))
   })
 
   afterEach(async () => {
@@ -282,7 +282,7 @@ export function registerJournalUnsentSendHoldTests(): void {
       expect(unsentSendKeptAsCard({ source: USER_MESSAGE_SOURCE }, body)).toBe(body)
       expect(unsentSendKeptAsCard({ origin: 'client', source: { kind: 'agent' } }, body)).toBeNull()
       expect(unsentSendKeptAsCard({ origin: 'client', source: { kind: '' } }, body)).toBeNull()
-      expect(unsentSendKeptAsCard({ origin: 'client', source: { kind: 'orca' } }, body)).toBeNull()
+      expect(unsentSendKeptAsCard({ origin: 'client', source: { kind: 'occ' } }, body)).toBeNull()
       expect(unsentSendKeptAsCard({ origin: 'client', queuedMessageId: 'card' }, body)).toBeNull()
       expect(unsentSendKeptAsCard({ origin: 'client' }, null)).toBeNull()
     })

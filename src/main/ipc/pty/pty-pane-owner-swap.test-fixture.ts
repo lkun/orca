@@ -254,7 +254,7 @@ export function restartSpawnArgs(extra: { replacesPtyId?: string } = {}) {
     worktreeId,
     tabId,
     leafId,
-    env: { ORCA_PANE_KEY: paneKey, ORCA_TAB_ID: tabId, ORCA_WORKTREE_ID: worktreeId },
+    env: { OCC_PANE_KEY: paneKey, OCC_TAB_ID: tabId, OCC_WORKTREE_ID: worktreeId },
     ...extra
   }
 }

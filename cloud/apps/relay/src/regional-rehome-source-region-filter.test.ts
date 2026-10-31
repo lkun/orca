@@ -180,7 +180,7 @@ describe('rehome source-region filter', () => {
     await context.store.selectIdleRegionalRehomeCandidates(context.safety())
     const summary = lines
       .map((line) => JSON.parse(line) as Record<string, unknown>)
-      .find(({ event }) => event === 'orca_relay_regional_rehome_poll_summary')
+      .find(({ event }) => event === 'occ_relay_regional_rehome_poll_summary')
     expect(summary).toMatchObject({ open: 2, skippedOffRegionSourceCells: 2 })
     await context.database.close()
   })

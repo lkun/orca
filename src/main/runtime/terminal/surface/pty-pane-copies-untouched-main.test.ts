@@ -3,7 +3,7 @@ import {
   HEADLESS_LEAF_ID,
   HEADLESS_SECOND_LEAF_ID,
   TEST_WORKTREE_ID
-} from '../../orca-runtime-test-fixtures.spec'
+} from '../../occ-runtime-test-fixtures.spec'
 import type { RuntimePtyWorktreeRecord } from '../../runtime-terminal-state-records'
 import {
   SURFACE_PTYS,
@@ -11,7 +11,7 @@ import {
   surfaceRuntime
 } from './terminal-surface-replies.test-fixture'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const COPIES = ['tabId', 'paneKey', 'surfaceRecordedAtGraphSequence'] as const
 

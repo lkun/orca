@@ -8,7 +8,7 @@ import {
   parseNativeChatVisualDirectiveLine
 } from '../../shared/native-chat/native-chat-visual-directive'
 import { NATIVE_CHAT_VISUAL_THEME_TOKENS } from '../../shared/native-chat/native-chat-visual-shell'
-import { ORCAD_NATIVE_CHAT_VISUALS_ARTIFACTS } from '../../shared/orcad-artifacts'
+import { OCCD_NATIVE_CHAT_VISUALS_ARTIFACTS } from '../../shared/occd-artifacts'
 import {
   createNativeChatVisualsDelivery,
   NATIVE_CHAT_SCRATCH_DIR_ENV,
@@ -42,7 +42,7 @@ afterEach(() => {
 })
 
 function tempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-visuals-delivery-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-visuals-delivery-'))
   scratch.push(dir)
   return dir
 }
@@ -169,7 +169,7 @@ describe('the bundled skill', () => {
   })
 
   it('ships every file in the headless server build too', () => {
-    const shipped = ORCAD_NATIVE_CHAT_VISUALS_ARTIFACTS.map((file) =>
+    const shipped = OCCD_NATIVE_CHAT_VISUALS_ARTIFACTS.map((file) =>
       file.slice('native-chat-visuals/'.length)
     )
     expect(shipped).toEqual([
@@ -181,7 +181,7 @@ describe('the bundled skill', () => {
   })
 
   it('teaches the reply line the renderer parses, with its limits', () => {
-    const example = SKILL_TEXT.split('\n').find((line) => line.startsWith('::orca-visual{'))
+    const example = SKILL_TEXT.split('\n').find((line) => line.startsWith('::occ-visual{'))
     expect(example && parseNativeChatVisualDirectiveLine(example)).toEqual({
       file: 'latency-by-region-7c1e.html',
       title: 'Latency by region'

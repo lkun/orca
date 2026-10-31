@@ -18,7 +18,7 @@ afterEach(() => {
 })
 
 function createDatabase(): OrchestrationDb {
-  directory = mkdtempSync(join(tmpdir(), 'orca-lifecycle-edges-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-lifecycle-edges-'))
   db = new OrchestrationDb(join(directory, 'orchestration.db'))
   return db
 }

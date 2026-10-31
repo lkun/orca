@@ -13,8 +13,8 @@ const { persistMirrored, readMirroredStorage, retainMirroredStorage } =
 
 const HOST_ID = 'host-1'
 const ROUTE = '/h/host-1/session/wt-1'
-const DOCK_WIDTH = 'orca:hostDockWidth'
-const OTHER_HOST_PIN = 'orca:pins:host-2'
+const DOCK_WIDTH = 'occ:hostDockWidth'
+const OTHER_HOST_PIN = 'occ:pins:host-2'
 let releaseStorage = () => {}
 
 afterEach(() => releaseStorage())

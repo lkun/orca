@@ -7,9 +7,9 @@ import { UsageCacheSnapshotWriter } from './usage-cache-snapshot-writer'
 it.skipIf(process.platform === 'win32')(
   'replaces a world-readable usage cache with an owner-only snapshot',
   async () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-usage-cache-mode-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-usage-cache-mode-'))
     try {
-      const file = join(directory, 'orca-claude-usage.json')
+      const file = join(directory, 'occ-claude-usage.json')
       writeFileSync(file, '{}')
       chmodSync(file, 0o644)
       const writer = new UsageCacheSnapshotWriter('[test]', () => file)

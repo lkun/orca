@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import { lockConnectorHost, type ConnectorHosts } from './connector-hosts.js'
 import type { ConnectorInbox, DeliveryBody, EnqueueResult } from './connector-inbox.js'
 import type { ConnectorThreads, NewThread } from './connector-threads.js'

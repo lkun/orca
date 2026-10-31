@@ -6,7 +6,7 @@ import {
 } from './pty-ipc-mock-registry'
 import { setupPtyIpcSuite } from './pty-ipc-test-harness'
 import type { AgentSessionOwnerBinding } from '../../../shared/agent-session-host-authority'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { registerPtyHandlers } from './register-handlers'
 import { clearProviderPtyState } from './provider/state-cleanup'
 import { setLocalPtyProvider } from './provider/registry'
@@ -42,7 +42,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -73,7 +73,7 @@ describe('registerPtyHandlers', () => {
     async (context) => {
       const ptyId = 'pty-renderer-early-exit'
       const incarnationId = 'incarnation-renderer-early-exit'
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       const registerRuntimePty = vi.spyOn(runtime, 'registerPty')
       const provider = createAgentClaimProvider({
         spawn: vi.fn(async () => {
@@ -162,7 +162,7 @@ describe('registerPtyHandlers', () => {
       const providerEntered = Promise.withResolvers<void>()
       const releaseProvider = Promise.withResolvers<void>()
       const joinReached = Promise.withResolvers<void>()
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       const begin = vi.spyOn(runtime, 'beginPtyRegistration')
       const cancel = vi.spyOn(runtime, 'cancelPendingPtyRegistration')
       const registerPty = vi.fn()
@@ -502,7 +502,7 @@ describe('registerPtyHandlers', () => {
       ptyId: 'pty-adopted-exit',
       surface: recoveredAgentSurface
     }
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const provider = createAgentClaimProvider({
       sessions: [
         {

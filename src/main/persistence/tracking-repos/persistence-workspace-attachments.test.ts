@@ -26,7 +26,7 @@ const pr = (number: number): WorkspaceAttachment => ({ provider: 'github', type:
 
 describe('workspace attachment persistence', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-attachments-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-attachments-'))
   })
   afterEach(async () => {
     await closeTestStores()

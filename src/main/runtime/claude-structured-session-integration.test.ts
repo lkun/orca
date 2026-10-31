@@ -12,13 +12,13 @@ import {
   STRUCTURED_AGENT_SESSION_RUNTIME_CAPABILITY
 } from '../../shared/protocol-version'
 import { fakeClaude } from './claude-structured-fake-connection-test-fixture'
-import { claudeSessionIdForOrcaSession } from '../claude/structured/claude-structured-session-id'
-import { ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV } from '../../shared/agent-session-caller-env'
+import { claudeSessionIdForOCCSession } from '../claude/structured/claude-structured-session-id'
+import { OCC_AGENT_SESSION_SPAWN_TOKEN_ENV } from '../../shared/agent-session-caller-env'
 import { attachFingerprintFields } from '../native-chat/agent-session-wire/structured-agent-session-attach'
 import { getStructuredAgentSessionHost } from '../native-chat/agent-session-wire/structured-agent-session-registry'
 import type { StructuredAgentSessionStatusSink } from '../native-chat/agent-session-wire/structured-agent-session-status-feed'
 import { AgentHookServer, _internals } from '../agent-hooks/server'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import type { RpcRequest, RpcResponse } from './rpc/core'
 import type { ClaudeStructuredAuthPolicy } from '../claude-accounts/claude-structured-auth-policy'
 import { RpcDispatcher } from './rpc/dispatcher'
@@ -33,7 +33,7 @@ import { createStructuredAgentSessionLogger } from '../native-chat/agent-session
 import { claudeProviderHandle } from '../../shared/agent-session-provider-handle-encoding'
 
 const SESSION = 'claude-integration-1'
-const PROVIDER_SESSION = claudeSessionIdForOrcaSession(SESSION)
+const PROVIDER_SESSION = claudeSessionIdForOCCSession(SESSION)
 const WORKSPACE = 'workspace-claude'
 // Use runtime scope: mobile's experimental-chat gate is covered by structured-agent-session.test.ts.
 const CLIENT = {
@@ -212,7 +212,7 @@ beforeEach(async () => {
     ANTHROPIC_AUTH_TOKEN: 'configured-token',
     ANTHROPIC_BASE_URL: 'https://gateway.example.test'
   }
-  root = await mkdtemp(join(tmpdir(), 'orca-claude-structured-integration-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-claude-structured-integration-'))
   recordAccountHomePath = join(root, 'claude-home')
   transcriptPath = join(root, 'claude-home', 'projects', 'workspace', `${PROVIDER_SESSION}.jsonl`)
   await mkdir(join(root, 'claude-home', 'projects', 'workspace'), { recursive: true })
@@ -271,7 +271,7 @@ beforeEach(async () => {
     cleanupSubscriptionsByPrefix: () => {}
   }
   dispatcher = new RpcDispatcher({
-    runtime: runtime as unknown as OrcaRuntimeService,
+    runtime: runtime as unknown as OCCRuntimeService,
     methods: STRUCTURED_AGENT_SESSION_METHODS
   })
 })
@@ -596,7 +596,7 @@ describe('a structured Claude session over agentSession.*', () => {
       ANTHROPIC_AUTH_TOKEN: 'configured-token',
       ANTHROPIC_BASE_URL: 'https://gateway.example.test',
       CLAUDE_CONFIG_DIR: join(root, 'claude-home'),
-      [ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV]: expect.any(String)
+      [OCC_AGENT_SESSION_SPAWN_TOKEN_ENV]: expect.any(String)
     })
     // System auth retains shell credentials; the configured overlay still wins.
     expect(claude.live().launch.env).toMatchObject({ ANTHROPIC_API_KEY: 'sk-ant-SHELL-LEAK' })

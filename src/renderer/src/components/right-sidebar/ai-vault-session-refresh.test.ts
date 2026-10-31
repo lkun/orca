@@ -789,7 +789,7 @@ describe('useAiVaultSessionRefresh in-app agent session behavior', () => {
   // Startup/reconnect relay failures need readiness-triggered recovery; mount/refocus/new-session events may never recur.
   it('retries after a not-ready failure once the SSH connection lands', async () => {
     listSessionsMock.mockRejectedValueOnce(new Error('SSH relay is not ready'))
-    await renderHook(['/home/neil/projects/orca'])
+    await renderHook(['/home/neil/projects/occ'])
     await flushMicrotasks()
 
     expect(latest?.error).toBe('SSH relay is not ready')
@@ -811,7 +811,7 @@ describe('useAiVaultSessionRefresh in-app agent session behavior', () => {
   it('does not rescan on a connection bump when the last listing succeeded', async () => {
     // Successful listings must not rescan when unrelated hosts connect.
     listSessionsMock.mockResolvedValue(EMPTY_RESULT)
-    await renderHook(['/home/neil/projects/orca'])
+    await renderHook(['/home/neil/projects/occ'])
     await flushMicrotasks()
 
     expect(latest?.error).toBeNull()

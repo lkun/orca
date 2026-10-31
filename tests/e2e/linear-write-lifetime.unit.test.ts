@@ -10,8 +10,8 @@ import * as mutations from '../../src/main/linear/linear-issue-mutations'
 import * as comments from '../../src/main/linear/linear-issue-comments'
 import * as relations from '../../src/main/linear/issue-relation-write'
 import { LinearWriteFailure } from '../../src/main/linear/linear-issue-write-support'
-import { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
-import { OrcaRuntimeRpcServer } from '../../src/main/runtime/runtime-rpc'
+import { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
+import { OCCRuntimeRpcServer } from '../../src/main/runtime/runtime-rpc'
 import { LINEAR_AGENT_ACCESS_METHODS } from '../../src/main/runtime/rpc/methods/linear-agent-access'
 
 const writeId = '11111111-1111-4111-8111-111111111111'
@@ -41,8 +41,8 @@ const comment = {
   parentId: null,
   threadRootId: writeId
 }
-let runtime: OrcaRuntimeService
-let server: OrcaRuntimeRpcServer
+let runtime: OCCRuntimeService
+let server: OCCRuntimeRpcServer
 let userDataPath: string
 let failure: LinearWriteFailure
 
@@ -62,21 +62,21 @@ async function observe<T>(pending: Promise<T>, phase: string): Promise<T> {
 
 beforeEach(async () => {
   userDataPath = mkdtempSync(join(tmpdir(), 'linear-write-cli-'))
-  vi.stubEnv('ORCA_USER_DATA_PATH', userDataPath)
+  vi.stubEnv('OCC_USER_DATA_PATH', userDataPath)
   for (const name of [
-    'ORCA_PAIRING_CODE',
-    'ORCA_REMOTE_PAIRING',
-    'ORCA_ENVIRONMENT',
-    'ORCA_WORKTREE_ID',
-    'ORCA_TERMINAL_HANDLE',
-    'ORCA_RUNTIME_SOURCE_ID'
+    'OCC_PAIRING_CODE',
+    'OCC_REMOTE_PAIRING',
+    'OCC_ENVIRONMENT',
+    'OCC_WORKTREE_ID',
+    'OCC_TERMINAL_HANDLE',
+    'OCC_RUNTIME_SOURCE_ID'
   ]) {
     vi.stubEnv(name, '')
   }
   process.exitCode = 0
   vi.spyOn(console, 'log').mockImplementation(() => {})
   vi.spyOn(console, 'error').mockImplementation(() => {})
-  runtime = new OrcaRuntimeService()
+  runtime = new OCCRuntimeService()
   vi.spyOn(runtime, 'resolveLinearAgentWriteTarget').mockImplementation(async (params) =>
     params.input === 'ENG-2'
       ? { ...target, issue: { ...issue, id: 'issue-2', identifier: 'ENG-2' } }
@@ -143,7 +143,7 @@ beforeEach(async () => {
     params.beforeInvoke?.()
     return lost()
   })
-  server = new OrcaRuntimeRpcServer({ runtime, userDataPath, methods: LINEAR_AGENT_ACCESS_METHODS })
+  server = new OCCRuntimeRpcServer({ runtime, userDataPath, methods: LINEAR_AGENT_ACCESS_METHODS })
   await server.start()
 })
 
@@ -202,7 +202,7 @@ it.each(verbs)(
       error: { code: 'linear_write_unconfirmed', data: { nextSteps: [expect.any(String)] } }
     })
     const nextSteps: string[] = envelope.error.data.nextSteps
-    expect(nextSteps[0]).toContain('orca linear')
+    expect(nextSteps[0]).toContain('occ linear')
     if (argv.includes('--write-id')) {
       expect(nextSteps[0]).toContain(`--write-id=${writeId}`)
     }
@@ -371,7 +371,7 @@ it.each(['status', 'duplicate comment'] as const)(
       })
       if (verb === 'status') {
         expect(envelope.error.data.nextSteps).toEqual([
-          expect.stringContaining('orca linear issue ENG-1')
+          expect.stringContaining('occ linear issue ENG-1')
         ])
       } else {
         expect(envelope.error.data).toMatchObject({

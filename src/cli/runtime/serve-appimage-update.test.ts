@@ -28,7 +28,7 @@ async function backdate(path: string): Promise<void> {
 }
 
 async function makeRunningGeneration() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-serve-appimage-update-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-serve-appimage-update-'))
   created.push(root)
   const appImagePath = join(root, 'OCC.AppImage')
   await writeFile(appImagePath, 'build B', { mode: 0o755 })
@@ -54,9 +54,9 @@ function restartDeps(overrides: Partial<AppImageRestartDeps> = {}): AppImageRest
     argv: ['/c/occ-ide', '/u/serve-supervisor/id/out/cli/index.js', 'serve', '--supervise'],
     env: {
       ELECTRON_RUN_AS_NODE: '1',
-      ORCA_SERVE_SUPERVISOR_APP_ROOT: '/old/app.asar.unpacked',
-      ORCA_NODE_OPTIONS: '--max-old-space-size=4096',
-      ORCA_USER_DATA_PATH: '/profiles/b1',
+      OCC_SERVE_SUPERVISOR_APP_ROOT: '/old/app.asar.unpacked',
+      OCC_NODE_OPTIONS: '--max-old-space-size=4096',
+      OCC_USER_DATA_PATH: '/profiles/b1',
       APPIMAGE: '/old/OCC.AppImage',
       APPDIR: '/tmp/.mount_old'
     },
@@ -85,7 +85,7 @@ describe('supervised serve and a replaced AppImage', () => {
 
   it('watches the AppImage a mounted supervisor runs from', async () => {
     const { appImagePath, root } = await makeRunningGeneration()
-    const mount = join(root, '.mount_Orca')
+    const mount = join(root, '.mount_OCC')
     const watch = resolveAppImageBuildWatch(
       join(mount, 'occ-ide'),
       { APPIMAGE: appImagePath, APPDIR: mount },
@@ -124,14 +124,14 @@ describe('supervised serve and a replaced AppImage', () => {
       appImagePath,
       [appImagePath, 'serve', '--supervise'],
       expect.objectContaining({
-        ORCA_USER_DATA_PATH: '/profiles/b1',
+        OCC_USER_DATA_PATH: '/profiles/b1',
         NODE_OPTIONS: '--max-old-space-size=4096'
       })
     )
     const env = vi.mocked(deps.execve).mock.calls[0]?.[2]
     for (const name of [
       'ELECTRON_RUN_AS_NODE',
-      'ORCA_SERVE_SUPERVISOR_APP_ROOT',
+      'OCC_SERVE_SUPERVISOR_APP_ROOT',
       'APPIMAGE',
       'APPDIR'
     ]) {

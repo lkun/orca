@@ -4,7 +4,7 @@ import {
   recoverableOrchestrationArgs,
   resolveOrchestrationCliExecutable
 } from './runtime/orchestration-recovery-command'
-import { quoteWindowsCmdArgument } from '@orca/process-host/windows-command-line'
+import { quoteWindowsCmdArgument } from '@occ/process-host/windows-command-line'
 import { quotePowerShellNativeArgument } from '../shared/powershell-native-argument'
 import { resolveWindowsShellStartupFamily } from '../shared/windows-terminal-shell'
 import type { AgentStartupShell } from '../shared/tui-agent-startup-shell'
@@ -187,7 +187,7 @@ function resolveRecoveryShell(
     return 'posix'
   }
   return resolveWindowsShellStartupFamily(
-    env.ORCA_TERMINAL_WINDOWS_SHELL ?? env.ORCA_WINDOWS_SHELL ?? env.ComSpec ?? env.COMSPEC
+    env.OCC_TERMINAL_WINDOWS_SHELL ?? env.OCC_WINDOWS_SHELL ?? env.ComSpec ?? env.COMSPEC
   )
 }
 

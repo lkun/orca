@@ -35,7 +35,7 @@ async function storeWithOneTab(
   hostId?: string,
   worktreeId = WORKTREE
 ): Promise<{ store: Store; directory: string }> {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-layout-apply-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-layout-apply-'))
   directories.push(directory)
   const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   const window = new WindowSession(getDefaultWorkspaceSession())
@@ -136,7 +136,7 @@ describe('Store.applyLayoutCommand (layout.apply)', () => {
   })
 
   it('keeps records the split did not touch exactly as stored', async () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-layout-apply-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-layout-apply-'))
     directories.push(directory)
     const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
     const window = new WindowSession(getDefaultWorkspaceSession())

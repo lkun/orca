@@ -34,7 +34,7 @@ try {
 
   for (const kind of ['select', 'confirm', 'input', 'editor', 'custom']) {
     for (const ending of kind === 'select' ? ['answer', 'cancel'] : ['cancel']) {
-      await input.pressSequentially(`/orca-modal ${kind}`, { delay: 10 })
+      await input.pressSequentially(`/occ-modal ${kind}`, { delay: 10 })
       await input.press('Enter')
       await waitForState('waiting')
       await expect(attention).toBeVisible()

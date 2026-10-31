@@ -10,10 +10,10 @@ import {
   writeDataFile
 } from '../persistence-test-harness'
 
-const plugin = 'plugin:stablyai.orca-portuguese/pt-BR'
+const plugin = 'plugin:stablyai.occ-portuguese/pt-BR'
 
 beforeEach(() => {
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-portuguese-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-portuguese-'))
 })
 afterEach(async () => {
   vi.useRealTimers()

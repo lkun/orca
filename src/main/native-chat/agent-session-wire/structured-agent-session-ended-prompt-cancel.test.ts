@@ -42,7 +42,7 @@ afterEach(async () => {
 })
 
 async function endedCardAndLiveTurn(): Promise<{ journal: AgentSessionJournal; itemId: string }> {
-  root = await mkdtemp(join(tmpdir(), 'orca-ended-prompt-cancel-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-ended-prompt-cancel-'))
   const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
   const turn = (turnId: string, fence: number) =>
     journal.appendItem(

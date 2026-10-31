@@ -226,13 +226,13 @@ describe('useWorktreeCardSecondaryDetails store subscriptions', () => {
       provider: 'github',
       type: 'pr',
       number: 42,
-      url: 'https://github.com/acme/orca/pull/42'
+      url: 'https://github.com/acme/occ/pull/42'
     }
     const sibling: WorkspaceAttachment = {
       provider: 'github',
       type: 'pr',
       number: 42,
-      url: 'https://github.com/other/orca/pull/42'
+      url: 'https://github.com/other/occ/pull/42'
     }
     const updateWorktreeMeta = vi.fn().mockResolvedValue({ ok: true })
     let unlink: ((item?: WorkspaceAttachment) => Promise<void>) | null = null

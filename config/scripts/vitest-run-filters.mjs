@@ -21,7 +21,7 @@ const VALUE_OPTIONS = new Set([
 // Modes where Vitest can select files beyond the command-line filters.
 const UNSCOPED_OPTIONS = new Set(['-w', '--watch', '--dir', '-r', '--root', '--related'])
 
-export const RUN_ARGS_ENV = 'ORCA_VITEST_RUN_ARGS'
+export const RUN_ARGS_ENV = 'OCC_VITEST_RUN_ARGS'
 
 /** Positional filters of a one-shot `vitest run`, or undefined when it may select any file. */
 export function parseRunFilters(args) {

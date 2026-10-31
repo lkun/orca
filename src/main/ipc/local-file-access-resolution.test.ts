@@ -73,7 +73,7 @@ beforeEach(async () => {
   // Floating paths use AppEnvironment in desktop and headless runtimes.
   installFakeAppEnvironment({ getPath: () => userData.path })
   invalidateAuthorizedRootsCache()
-  base = await mkdtemp(join(await realpath(tmpdir()), 'orca-file-access-'))
+  base = await mkdtemp(join(await realpath(tmpdir()), 'occ-file-access-'))
   project = join(base, 'project')
   outside = join(base, 'outside')
   userData.path = join(base, 'user-data')

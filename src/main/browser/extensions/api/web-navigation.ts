@@ -97,7 +97,7 @@ const getFrameSchema = z
 const getAllFramesSchema = z.object({ tabId: z.number().int() }).loose()
 
 // Preload-only (see browser-extension-document-targets.ts): OCC's ids for native scripting targets.
-const DOCUMENT_TARGETS_NAMESPACE = 'orcaDocumentTargets'
+const DOCUMENT_TARGETS_NAMESPACE = 'occDocumentTargets'
 
 function tabFrames(caller: BrowserExtensionCaller, tabId: number): Electron.WebFrameMain[] | null {
   const entry = resolveBrowserExtensionTab(tabId)

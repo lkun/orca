@@ -1,15 +1,15 @@
 import type { AgentMessageSender } from '../../../shared/agent-session/agent-session-message-source'
 import { readWorkerTerminalHostScope } from '../../../shared/worker-terminal-host-scope'
 import type { OrchestrationDb, DispatchContextRow } from './db'
-import { canonicalOrcaSessionId } from './canonical-orca-session-id'
+import { canonicalOCCSessionId } from './canonical-occ-session-id'
 import { resolveOrchestrationParty } from './orchestration-party'
 import { runCoordinatorKey } from './orchestration-caller-identity'
 
-type Party = Pick<AgentMessageSender['party'], 'terminalHandle' | 'orcaSessionId'>
+type Party = Pick<AgentMessageSender['party'], 'terminalHandle' | 'occSessionId'>
 
 function sameParty(a: Party, b: Party): boolean {
-  if (a.orcaSessionId && b.orcaSessionId) {
-    return canonicalOrcaSessionId(a.orcaSessionId) === canonicalOrcaSessionId(b.orcaSessionId)
+  if (a.occSessionId && b.occSessionId) {
+    return canonicalOCCSessionId(a.occSessionId) === canonicalOCCSessionId(b.occSessionId)
   }
   return Boolean(a.terminalHandle && a.terminalHandle === b.terminalHandle)
 }
@@ -47,7 +47,7 @@ export function agentMessageRelation(args: {
         ? [db.getDispatchContextById(id)]
         : db.getActiveDispatchMailboxOwners(
             party.terminalHandle ??
-              (party.orcaSessionId ? `orca_session_id:${party.orcaSessionId}` : '')
+              (party.occSessionId ? `occ_session_id:${party.occSessionId}` : '')
           )
       const matches = candidates.filter((row): row is DispatchContextRow =>
         Boolean(
@@ -56,7 +56,7 @@ export function agentMessageRelation(args: {
           localDispatch(row) &&
           sameParty(party, {
             terminalHandle: row.assignee_handle,
-            orcaSessionId: row.assignee_orca_session_id
+            occSessionId: row.assignee_occ_session_id
           })
         )
       )
@@ -66,10 +66,10 @@ export function agentMessageRelation(args: {
       if (!dispatch) {
         return undefined
       }
-      if (dispatch.creator_handle || dispatch.creator_orca_session_id) {
+      if (dispatch.creator_handle || dispatch.creator_occ_session_id) {
         return {
           terminalHandle: dispatch.creator_handle,
-          orcaSessionId: dispatch.creator_orca_session_id
+          occSessionId: dispatch.creator_occ_session_id
         }
       }
       if (dispatch.creator_dispatch_id) {
@@ -77,7 +77,7 @@ export function agentMessageRelation(args: {
         return creator && creator.run_id === runId && localDispatch(creator)
           ? {
               terminalHandle: creator.assignee_handle,
-              orcaSessionId: creator.assignee_orca_session_id
+              occSessionId: creator.assignee_occ_session_id
             }
           : undefined
       }

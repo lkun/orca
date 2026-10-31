@@ -183,11 +183,11 @@ describe('paneOwnsQueuedStartup', () => {
 
     observeConnect()
     deps.startup = null
-    splitPaneWithOneShotStartup(deps, { command: 'orca setup' }, () => {
+    splitPaneWithOneShotStartup(deps, { command: 'occ setup' }, () => {
       observeConnect()
       return { id: 2 }
     })
-    splitPaneWithOneShotStartup(deps, { command: 'orca issue' }, () => {
+    splitPaneWithOneShotStartup(deps, { command: 'occ issue' }, () => {
       observeConnect()
       return { id: 3 }
     })
@@ -197,16 +197,16 @@ describe('paneOwnsQueuedStartup', () => {
 
   // An identical payload distinguishes ownership checks from a startup truthiness check.
   it('denies ownership to a split payload structurally identical to the queued command', () => {
-    const queuedStartup = { command: 'orca setup' }
+    const queuedStartup = { command: 'occ setup' }
 
-    expect(paneOwnsQueuedStartup({ command: 'orca setup' }, queuedStartup)).toBe(false)
+    expect(paneOwnsQueuedStartup({ command: 'occ setup' }, queuedStartup)).toBe(false)
     expect(paneOwnsQueuedStartup(queuedStartup, queuedStartup)).toBe(true)
   })
 
   it('denies ownership when the tab queued nothing, so an unrelated pane cannot spend a slot', () => {
     expect(paneOwnsQueuedStartup(null, null)).toBe(false)
     expect(paneOwnsQueuedStartup(undefined, undefined)).toBe(false)
-    expect(paneOwnsQueuedStartup({ command: 'orca setup' }, null)).toBe(false)
+    expect(paneOwnsQueuedStartup({ command: 'occ setup' }, null)).toBe(false)
   })
 })
 
@@ -290,7 +290,7 @@ describe('splitPaneWithOneShotStartup', () => {
 
     const createdPane = splitPaneWithOneShotStartup(
       deps,
-      { command: 'orca setup', env: { ORCA_ROLE: 'setup' } },
+      { command: 'occ setup', env: { OCC_ROLE: 'setup' } },
       () => {
         seenStartupValues.push(deps.startup ?? null)
         return { id: 2 }
@@ -298,7 +298,7 @@ describe('splitPaneWithOneShotStartup', () => {
     )
 
     expect(createdPane).toEqual({ id: 2 })
-    expect(seenStartupValues).toEqual([{ command: 'orca setup', env: { ORCA_ROLE: 'setup' } }])
+    expect(seenStartupValues).toEqual([{ command: 'occ setup', env: { OCC_ROLE: 'setup' } }])
     expect(deps.startup).toBeNull()
   })
 
@@ -310,7 +310,7 @@ describe('splitPaneWithOneShotStartup', () => {
 
     splitPaneWithOneShotStartup(
       deps,
-      { command: 'orca setup', env: { ORCA_ROLE: 'setup' } },
+      { command: 'occ setup', env: { OCC_ROLE: 'setup' } },
       () => {
         seenStartupValues.push(deps.startup ?? null)
         return { id: 2 }
@@ -319,14 +319,14 @@ describe('splitPaneWithOneShotStartup', () => {
 
     expect(deps.startup).toBeNull()
 
-    splitPaneWithOneShotStartup(deps, { command: 'orca issue' }, () => {
+    splitPaneWithOneShotStartup(deps, { command: 'occ issue' }, () => {
       seenStartupValues.push(deps.startup ?? null)
       return { id: 3 }
     })
 
     expect(seenStartupValues).toEqual([
-      { command: 'orca setup', env: { ORCA_ROLE: 'setup' } },
-      { command: 'orca issue' }
+      { command: 'occ setup', env: { OCC_ROLE: 'setup' } },
+      { command: 'occ issue' }
     ])
     expect(deps.startup).toBeNull()
 
@@ -345,7 +345,7 @@ describe('splitPaneWithOneShotStartup', () => {
       throw new Error('split failed')
     })
 
-    expect(() => splitPaneWithOneShotStartup(deps, { command: 'orca setup' }, splitPane)).toThrow(
+    expect(() => splitPaneWithOneShotStartup(deps, { command: 'occ setup' }, splitPane)).toThrow(
       'split failed'
     )
 

@@ -1,5 +1,5 @@
 import { dirname } from 'node:path'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { assignHostProcessToStrictKillOnCloseJob } from '../../windows/windows-pty-job'
 
 // The supervisor joins its job before the native host can create descendants.

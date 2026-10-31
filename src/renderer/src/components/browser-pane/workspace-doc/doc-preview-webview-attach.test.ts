@@ -8,7 +8,7 @@ function attach(previewId: string, container: HTMLDivElement) {
   return attachDocPreviewWebview({
     previewId,
     container,
-    url: 'orca-preview://grant/index.html',
+    url: 'occ-preview://grant/index.html',
     ariaLabel: 'HTML preview',
     onLoadStarted: vi.fn(),
     onLoadStopped: vi.fn(),

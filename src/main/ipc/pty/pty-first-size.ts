@@ -1,4 +1,4 @@
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
 
 export type PtyGridSize = { cols: number; rows: number }
@@ -35,7 +35,7 @@ export function paneSize(
   session: WorkspaceSessionState | null | undefined,
   pane: { tabId?: string; leafId?: string; initialSize?: PtyGridSize }
 ): PtyGridSize | undefined {
-  if (pane.initialSize || !ORCA_LAYOUT_OWNER_IS_MAIN || !pane.tabId || !pane.leafId) {
+  if (pane.initialSize || !OCC_LAYOUT_OWNER_IS_MAIN || !pane.tabId || !pane.leafId) {
     return pane.initialSize
   }
   return session?.terminalLayoutsByTabId?.[pane.tabId]?.lastGridsByLeafId?.[pane.leafId]

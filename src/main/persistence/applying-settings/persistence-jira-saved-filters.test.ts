@@ -7,7 +7,7 @@ import { normalizeJiraSavedFilterState } from '../../../shared/jira/jira-saved-f
 vi.mock('electron', () => ({ app: { getPath: () => testState.dir } }))
 vi.mock('../../telemetry/client', () => ({ track: vi.fn() }))
 beforeEach(() => {
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-jira-saved-filters-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-jira-saved-filters-'))
 })
 afterEach(async () => {
   await closeTestStores()

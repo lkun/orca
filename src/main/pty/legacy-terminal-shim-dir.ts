@@ -10,21 +10,21 @@ import {
   renderLegacyTerminalWindowsPowerShellTombstone
 } from './legacy-terminal-windows-tombstone'
 
-const LEGACY_TERMINAL_ATTRIBUTION_ENABLE_ENV_KEY = 'ORCA_ENABLE_GIT_ATTRIBUTION'
-const LEGACY_TERMINAL_ATTRIBUTION_BYPASS_ENV_KEY = 'ORCA_ATTRIBUTION_BYPASS'
+const LEGACY_TERMINAL_ATTRIBUTION_ENABLE_ENV_KEY = 'OCC_ENABLE_GIT_ATTRIBUTION'
+const LEGACY_TERMINAL_ATTRIBUTION_BYPASS_ENV_KEY = 'OCC_ATTRIBUTION_BYPASS'
 
-const LEGACY_SHIM_ROOT_DIR = 'orca-terminal-attribution'
+const LEGACY_SHIM_ROOT_DIR = 'occ-terminal-attribution'
 // Distinguish retired version 7 so rollback rewrites tombstones instead of treating them as active wrappers.
 const LEGACY_SHIM_VERSION = '7-neutralized'
 const NEUTRALIZATION_RETRY_DELAYS_MS = [1_000, 5_000, 15_000, 30_000]
 export const LEGACY_TERMINAL_SHIM_ENV_KEYS = [
-  'ORCA_ENABLE_GIT_ATTRIBUTION',
-  'ORCA_GIT_COMMIT_TRAILER',
-  'ORCA_GH_PR_FOOTER',
-  'ORCA_GH_ISSUE_FOOTER',
-  'ORCA_ATTRIBUTION_SHIM_DIR',
-  'ORCA_REAL_GIT',
-  'ORCA_REAL_GH',
+  'OCC_ENABLE_GIT_ATTRIBUTION',
+  'OCC_GIT_COMMIT_TRAILER',
+  'OCC_GH_PR_FOOTER',
+  'OCC_GH_ISSUE_FOOTER',
+  'OCC_ATTRIBUTION_SHIM_DIR',
+  'OCC_REAL_GIT',
+  'OCC_REAL_GH',
   LEGACY_TERMINAL_ATTRIBUTION_BYPASS_ENV_KEY
 ] as const
 export const LEGACY_TERMINAL_SHIM_REMOTE_ENV_KEYS = [
@@ -118,7 +118,7 @@ function writeNeutralWrappers(rootDir: string): void {
 }
 
 function writeFileAtomically(filePath: string, contents: string, mode: number): void {
-  const temporaryPath = `${filePath}.orca-neutralizing-${process.pid}`
+  const temporaryPath = `${filePath}.occ-neutralizing-${process.pid}`
   try {
     rmSync(temporaryPath, { force: true, recursive: true })
     writeFileSync(temporaryPath, contents, { encoding: 'utf8', flag: 'wx', mode })
@@ -182,10 +182,10 @@ export function stripLegacyTerminalShimEnv(
   const legacyKeySet = new Set(
     LEGACY_TERMINAL_SHIM_ENV_KEYS.map((key) => (windows ? key.toLowerCase() : key))
   )
-  const shimDirKey = 'ORCA_ATTRIBUTION_SHIM_DIR'.toLowerCase()
+  const shimDirKey = 'OCC_ATTRIBUTION_SHIM_DIR'.toLowerCase()
   const explicitShimDirs = Object.entries(env)
     .filter(([key]) =>
-      windows ? key.toLowerCase() === shimDirKey : key === 'ORCA_ATTRIBUTION_SHIM_DIR'
+      windows ? key.toLowerCase() === shimDirKey : key === 'OCC_ATTRIBUTION_SHIM_DIR'
     )
     .map(([, value]) => value)
     .filter(Boolean)

@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 import { Animated, BackHandler, Text, View, type LayoutChangeEvent } from 'react-native'
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { OrcaLogo } from '../src/components/OrcaLogo'
+import { OCCLogo } from '../src/components/OCCLogo'
 import { ensureNotificationPermissions } from '../src/notifications/mobile-notifications'
 import {
   MobileOnboardingPage,
@@ -155,7 +155,7 @@ function MobileOnboardingFlow({
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.brandRow}>
-        <OrcaLogo size={22} />
+        <OCCLogo size={22} />
         <Text style={styles.brandName}>OCC</Text>
         {steps.length > 1 ? (
           <View

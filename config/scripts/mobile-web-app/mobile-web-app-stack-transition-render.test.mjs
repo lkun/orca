@@ -34,7 +34,7 @@ const ENGINES = [
   {
     name: 'chromium',
     launch: () => {
-      const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+      const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
       return chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
     }
   },
@@ -53,7 +53,7 @@ const layoutSource = (
   hostStackModule
 ) => `import { HostStack } from ${JSON.stringify(hostStackModule)}
 export default function ProbeHostLayout() {
-  return <HostStack animation={globalThis.__orcaStackProbeAnimation ?? 'default'} />
+  return <HostStack animation={globalThis.__occStackProbeAnimation ?? 'default'} />
 }
 `
 
@@ -64,11 +64,11 @@ import { useRouteHandoff } from ${JSON.stringify(handoffModule)}
 export default function ProbeList() {
   const router = useRouteHandoff()
   useEffect(() => {
-    globalThis.__orcaStackProbe = {
+    globalThis.__occStackProbe = {
       push: () => router.push(${JSON.stringify(SESSION_HREF)}),
       pushOther: () => router.push(${JSON.stringify(`${LIST_ROUTE}/session/wt-2`)}),
       back: () => router.back(),
-      hardwareBack: () => globalThis.__orcaRenderCheckSendBack()
+      hardwareBack: () => globalThis.__occRenderCheckSendBack()
     }
   }, [router])
   return <View testID="stack-probe-list" style={{ flex: 1, backgroundColor: '#204060' }} />
@@ -82,7 +82,7 @@ import { useRouteHandoff } from ${JSON.stringify(handoffModule)}
 export default function ProbeSession() {
   useRouteHandoff()
   useEffect(() => {
-    globalThis.__orcaSessionMounts = (globalThis.__orcaSessionMounts ?? 0) + 1
+    globalThis.__occSessionMounts = (globalThis.__occSessionMounts ?? 0) + 1
   }, [])
   return <View testID="stack-probe-session" style={{ flex: 1, backgroundColor: '#602040' }} />
 }
@@ -96,7 +96,7 @@ beforeAll(async () => {
   const cspHeader = await readShellCsp()
   bridgeVersion = await readBridgeProtocolVersion()
   faultGrant = await readBridgeFaultGrant()
-  scratch = await mkdtemp(join(tmpdir(), 'orca-mobile-web-stack-transition-'))
+  scratch = await mkdtemp(join(tmpdir(), 'occ-mobile-web-stack-transition-'))
   const routeDir = join(scratch, 'app', MOBILE_WEB_APP_ROUTE_ROOT)
   await mkdir(join(routeDir, '[hostId]', 'session'), { recursive: true })
   const navigationDir = join(projectDir, 'mobile', 'src', 'navigation')
@@ -137,7 +137,7 @@ afterAll(async () => {
 async function openList(browser, { animation = 'default', reducedMotion = 'no-preference' } = {}) {
   const page = await browser.newPage({ viewport: VIEWPORT, reducedMotion })
   await page.addInitScript((value) => {
-    globalThis.__orcaStackProbeAnimation = value
+    globalThis.__occStackProbeAnimation = value
   }, animation)
   await page.addInitScript(installShellDouble, {
     version: bridgeVersion,
@@ -157,7 +157,7 @@ async function openList(browser, { animation = 'default', reducedMotion = 'no-pr
   const errors = []
   page.on('pageerror', (error) => errors.push(`${error.name}: ${error.message}`))
   await page.goto(`${origin}/`, { waitUntil: 'load' })
-  await page.waitForFunction(() => globalThis.__orcaStackProbe !== undefined, null, {
+  await page.waitForFunction(() => globalThis.__occStackProbe !== undefined, null, {
     timeout: 60_000,
     polling: 100
   })
@@ -189,10 +189,10 @@ function sampleFrames(
         let settledAt = null
         const destination = nextAction ?? name
         const pushing = destination === 'push' || destination === 'pushOther'
-        globalThis.__orcaStackProbe[name]()
+        globalThis.__occStackProbe[name]()
         const tick = () => {
           if (nextAction !== null && frames.length === followAt) {
-            globalThis.__orcaStackProbe[nextAction]()
+            globalThis.__occStackProbe[nextAction]()
           }
           frames.push({
             list: leftOf('stack-probe-list'),
@@ -226,7 +226,7 @@ const nodeCount = (page) => page.evaluate(() => document.querySelectorAll('*').l
 async function waitForBackClaim(page) {
   await page.waitForFunction(
     (name) =>
-      globalThis.__orcaRenderCheckNotifies.some(
+      globalThis.__occRenderCheckNotifies.some(
         (frame) => frame.name === name && frame.claimed === true
       ),
     backNames.claim,
@@ -238,7 +238,7 @@ const between = (left) => left !== null && left > 0 && left < VIEWPORT.width
 const sliding = (frames) => frames.filter((frame) => between(frame.session))
 const SESSION_SETTLED = { list: null, session: 0, hit: 'session', from: null }
 const LIST_SETTLED = { list: 0, session: null, hit: 'list', from: null }
-const sessionMounts = (page) => page.evaluate(() => globalThis.__orcaSessionMounts ?? 0)
+const sessionMounts = (page) => page.evaluate(() => globalThis.__occSessionMounts ?? 0)
 
 describeRender('the host stack transition on the page', () => {
   for (const engine of ENGINES) {

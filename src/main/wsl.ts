@@ -1,4 +1,4 @@
-import { runProcess, runProcessSync } from '@orca/process-host'
+import { runProcess, runProcessSync } from '@occ/process-host'
 import { buildWslExecArgs } from '../shared/wsl-login-shell-command'
 import { parseWslUncPath, toWindowsWslPath } from '../shared/wsl-paths'
 import { filterUserWslDistros, parseWslDistros } from './wsl-distro-list-output'

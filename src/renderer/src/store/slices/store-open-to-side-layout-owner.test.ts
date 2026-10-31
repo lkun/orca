@@ -8,7 +8,7 @@ import { openContentTabThroughLayoutOwner } from '@/runtime/layout-owner-content
 import { contentTabOpenPlacement } from './tabs/content-tab-open-placement'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 import type { TabGroupLayoutNode } from '../../../../shared/tab-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import type { LayoutCommand } from '../../../../shared/workspace-layout/workspace-layout-command-types'
 import { drawTabsFromMain, type TabsDrawnFromMain } from './tabs-drawn-from-main.test-fixture'
 
@@ -108,7 +108,7 @@ function onlyTabOf(groupId: string): string {
   return group.tabOrder[0]!
 }
 
-describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('open to the side in a layout-owner build', () => {
+describe.runIf(OCC_LAYOUT_OWNER_IS_MAIN)('open to the side in a layout-owner build', () => {
   it('makes each new split in main with its tab, so main and the window agree after every step', async () => {
     openFile('/a.ts')
     await settledSent()
@@ -261,7 +261,7 @@ describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('open to the side in a layout-owner bu
   })
 })
 
-describe.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)('open to the side with the switch off', () => {
+describe.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)('open to the side with the switch off', () => {
   it('sends nothing', () => {
     openFile('/a.ts')
     const side = store.getState().createEmptySplitGroup(WT, ROOT, 'right')!

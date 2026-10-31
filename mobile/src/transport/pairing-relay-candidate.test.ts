@@ -25,8 +25,8 @@ const journal = {
     },
     relay: {
       v: 1,
-      directorUrl: 'https://relay.onorca.dev',
-      cellUrl: 'https://relay-c1.onorca.dev',
+      directorUrl: 'https://relay.onocc.dev',
+      cellUrl: 'https://relay-c1.onocc.dev',
       assignmentEpoch: 7,
       relayHostId: 'AbCdEf0123_-xyZ9',
       inviteExpiresAt: 10_000,
@@ -74,7 +74,7 @@ describe('recovering pairing relay candidate', () => {
       },
       resolveDirector: async (relay) => ({
         ...relay,
-        cellUrl: 'https://relay-c2.onorca.dev',
+        cellUrl: 'https://relay-c2.onocc.dev',
         assignmentEpoch: 8
       }),
       persistMove: async (relay) => {
@@ -171,7 +171,7 @@ describe('recovering pairing relay candidate', () => {
     const sleep = vi.fn(async (_delayMs: number) => {})
     const resolveDirector = vi.fn(async (relay) => {
       throw new RelayDirectorMoveNotNewerError({
-        cellUrl: 'https://relay-c2.onorca.dev',
+        cellUrl: 'https://relay-c2.onocc.dev',
         assignmentEpoch: relay.assignmentEpoch,
         currentCellUrl: relay.cellUrl,
         currentAssignmentEpoch: relay.assignmentEpoch
@@ -202,7 +202,7 @@ describe('recovering pairing relay candidate', () => {
     const stale = client(Promise.reject(new RelayOuterError(1006)))
     const resolveDirector = vi.fn(async (relay) => {
       throw new RelayDirectorMoveNotNewerError({
-        cellUrl: 'https://relay-c2.onorca.dev',
+        cellUrl: 'https://relay-c2.onocc.dev',
         assignmentEpoch: relay.assignmentEpoch - 1,
         currentCellUrl: relay.cellUrl,
         currentAssignmentEpoch: relay.assignmentEpoch
@@ -276,7 +276,7 @@ describe('recovering pairing relay candidate', () => {
     const target = client(Promise.resolve(success()))
     const resolveDirector = vi.fn(async (relay) => ({
       ...relay,
-      cellUrl: 'https://relay-c2.onorca.dev',
+      cellUrl: 'https://relay-c2.onocc.dev',
       assignmentEpoch: 8
     }))
     let connects = 0
@@ -306,7 +306,7 @@ describe('recovering pairing relay candidate', () => {
       .mockRejectedValueOnce(new RelayOuterError(1006))
       .mockImplementationOnce(async (relay) => ({
         ...relay,
-        cellUrl: 'https://relay-c2.onorca.dev',
+        cellUrl: 'https://relay-c2.onocc.dev',
         assignmentEpoch: 8
       }))
     const sleep = vi.fn(async (_delayMs: number) => {})
@@ -336,7 +336,7 @@ describe('recovering pairing relay candidate', () => {
       .mockRejectedValueOnce(new Error('HTTP 504'))
       .mockImplementationOnce(async (relay) => ({
         ...relay,
-        cellUrl: 'https://relay-c2.onorca.dev',
+        cellUrl: 'https://relay-c2.onocc.dev',
         assignmentEpoch: 8
       }))
     let connects = 0
@@ -362,9 +362,9 @@ describe('recovering pairing relay candidate', () => {
       'info|Relay: backing off 100ms'
     ])
     expect(entries[0]!.detail).toBe('Error: HTTP 503')
-    expect(entries[1]!.detail).toBe('relay.onorca.dev')
+    expect(entries[1]!.detail).toBe('relay.onocc.dev')
     expect(entries[2]!.detail).toBe('Error: HTTP 504')
-    expect(entries[5]!.detail).toBe('relay-c1.onorca.dev → relay-c2.onorca.dev')
+    expect(entries[5]!.detail).toBe('relay-c1.onocc.dev → relay-c2.onocc.dev')
     expect(new Set(entries.map((entry) => entry.id)).size).toBe(entries.length)
   })
 

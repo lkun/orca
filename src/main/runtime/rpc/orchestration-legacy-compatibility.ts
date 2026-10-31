@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import type { LegacyCoordinatorAuthorityProof, RpcRequest } from './core'
-import type { OrcaRuntimeService, OrchestrationCompatibilityCallerAuthority } from '../orca-runtime'
+import type { OCCRuntimeService, OrchestrationCompatibilityCallerAuthority } from '../occ-runtime'
 import { CURRENT_CONTRACT_VERSION } from '../orchestration/db'
 import { LegacyCompatibilityAuthority } from './orchestration-legacy-authority'
 import { handleLegacyLifecycleSend } from './orchestration-legacy-lifecycle'
@@ -52,7 +52,7 @@ export class OrchestrationLegacyCompatibility {
   private readonly authority: LegacyCompatibilityAuthority
   private readonly coordinatorAuthority: LegacyCoordinatorAuthority
 
-  constructor(private readonly runtime: OrcaRuntimeService) {
+  constructor(private readonly runtime: OCCRuntimeService) {
     this.authority = new LegacyCompatibilityAuthority(runtime)
     this.coordinatorAuthority = new LegacyCoordinatorAuthority(runtime)
   }
@@ -173,7 +173,7 @@ export class OrchestrationLegacyCompatibility {
     }
     const legacyCandidate =
       boundRun.id === adoption.adopted_run_id
-        ? db.resolveLegacyCoordinatorCandidate({
+        ? db.resolveLegacyCoordinatoccndidate({
             runId: adoption.adopted_run_id,
             terminalHandle: evidence.terminalHandle,
             paneKey: evidence.paneKey
@@ -193,7 +193,7 @@ export class OrchestrationLegacyCompatibility {
     if (boundRun.id !== adoption.adopted_run_id) {
       return caller
     }
-    return !db.resolveLegacyCoordinatorCandidate({
+    return !db.resolveLegacyCoordinatoccndidate({
       runId: adoption.adopted_run_id,
       terminalHandle: caller.terminalHandle,
       paneKey: caller.paneKey

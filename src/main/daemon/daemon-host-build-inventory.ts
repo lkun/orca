@@ -64,7 +64,7 @@ function processHostExportsExist(packageDir: string): boolean {
   const manifest: unknown = JSON.parse(readFileSync(join(packageDir, 'package.json'), 'utf8'))
   if (
     !isRecord(manifest) ||
-    manifest.name !== '@orca/process-host' ||
+    manifest.name !== '@occ/process-host' ||
     !isRecord(manifest.exports)
   ) {
     return false

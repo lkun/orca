@@ -36,8 +36,8 @@ vi.mock('../runtime-client', async () => {
     RuntimeClient,
     RuntimeClientError,
     RuntimeRpcFailureError,
-    serveOrcaApp: vi.fn(),
-    getDefaultUserDataPath: vi.fn(() => '/tmp/orca-user-data')
+    serveOCCApp: vi.fn(),
+    getDefaultUserDataPath: vi.fn(() => '/tmp/occ-user-data')
   }
 })
 
@@ -58,7 +58,7 @@ async function skillsGet(args: string[], host: Host): Promise<{ stdout: string; 
   vi.spyOn(console, 'error').mockImplementation((message) => {
     stderr += String(message)
   })
-  await main(['skills', 'get', 'orca-cli', ...args], '/tmp/repo')
+  await main(['skills', 'get', 'occ-cli', ...args], '/tmp/repo')
   vi.restoreAllMocks()
   return { stdout, stderr }
 }
@@ -125,8 +125,8 @@ describe('skills get host-capability gating', () => {
     const listed = await skillsGet(['--references'], host)
 
     expect(full.stdout).toContain('## Artifacts')
-    expect(full.stdout).toContain('ORCA artifacts share <file> --json')
-    expect(full.stdout).toContain('ORCA skills share --skill')
+    expect(full.stdout).toContain('OCC artifacts share <file> --json')
+    expect(full.stdout).toContain('OCC skills share --skill')
     expect(full.stdout).not.toContain('host-capability')
     expect(listed.stdout.trim().split('\n')).toEqual([
       'artifacts',
@@ -149,7 +149,7 @@ describe('skills get host-capability gating', () => {
     [
       'a forwarded invocation',
       { settings: { artifactSharingEnabled: true, agentSkillSharingEnabled: true } },
-      { ORCA_CLI_CWD: '/remote/repo' }
+      { OCC_CLI_CWD: '/remote/repo' }
     ]
   ])('withholds skill sharing from %s, where skills share refuses', async (_label, host, env) => {
     for (const [name, value] of Object.entries(env)) {

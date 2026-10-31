@@ -183,7 +183,7 @@ try {
   renameSync(stagingOutput, webOutput)
   // The installed browser client shares renderer bytes; only its selected files may be served.
   writeFileSync(
-    join(rendererOutput, '.orca-web-client-files.json'),
+    join(rendererOutput, '.occ-web-client-files.json'),
     JSON.stringify([...selectedFiles].sort())
   )
 } finally {

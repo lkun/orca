@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Provision stablyai/orca-daily for daily-mac-build.yml. Keep daily cuts out of hourly’s 72-entry retention window.
+# Provision stablyai/occ-daily for daily-mac-build.yml. Keep daily cuts out of hourly’s 72-entry retention window.
 # Reuse hourly’s App credentials; this only widens its installation.
 # Run once after setup-hourly-release-token.sh: bash config/scripts/setup-daily-release-repo.sh
 #
 set -euo pipefail
 
 ORG="stablyai"
-DAILY_REPO="$ORG/orca-daily"
-MAIN_REPO="$ORG/orca"
-APP_SLUG="orca-hourly-release"
+DAILY_REPO="$ORG/occ-daily"
+MAIN_REPO="$ORG/occ"
+APP_SLUG="occ-hourly-release"
 
 fail() {
   echo "error: $*" >&2
@@ -63,7 +63,7 @@ Could not do it from here${INSTALL_ID:+ (needs an Organization Owner)}. Do it in
   1. Open:  https://github.com/organizations/$ORG/settings/installations
   2. Configure  ->  $APP_SLUG
   3. Repository access  ->  Only select repositories  ->  add $DAILY_REPO
-     (keep orca-hourly and orca-adhoc selected; all dev channels use this one App)
+     (keep occ-hourly and occ-adhoc selected; all dev channels use this one App)
   4. Save.
 EOF
 fi

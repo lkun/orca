@@ -47,7 +47,7 @@ jobs:
         run: node config/scripts/install-electron-package-binary.mjs
       - name: Exercise native application registry and update shutdown
         env:
-          ORCA_BACKGROUND_LAUNCH: '1'
+          OCC_BACKGROUND_LAUNCH: '1'
         run: >-
           pnpm exec vitest run --config config/vitest.config.ts
           config/scripts/macos-shipit-scheduling.test.mjs
@@ -61,6 +61,6 @@ jobs:
           src/main/window/dashboard-popout-window.test.ts
       - name: Prove login-backed terminal writer census on the disposable runner
         env:
-          ORCA_MACOS_LOGIN_CENSUS_CI: '1'
-          ORCA_BACKGROUND_LAUNCH: '1'
+          OCC_MACOS_LOGIN_CENSUS_CI: '1'
+          OCC_BACKGROUND_LAUNCH: '1'
         run: pnpm exec vitest run --config config/vitest.config.ts src/main/runtime/structured-agent-cli-writers.test.ts

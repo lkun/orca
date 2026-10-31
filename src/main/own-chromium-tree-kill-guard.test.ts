@@ -10,7 +10,7 @@ import {
   setAppEnvironment,
   type AppEnvironment
 } from '../shared/app-environment'
-import { readOrcaChromiumProcessPids } from './orca-chromium-process-pids'
+import { readOCCChromiumProcessPids } from './occ-chromium-process-pids'
 import { classifyWindowsTreeKillTarget } from './windows-pty-root-identity'
 import { terminateWindowsProcessTree } from './windows-process-tree-kill'
 import {
@@ -18,7 +18,7 @@ import {
   installMainProcessTreeKillGate
 } from './own-chromium-tree-kill-guard'
 import { killCodexAppServerProcessTree } from './codex/codex-app-server-process-tree-kill'
-import { setProcessTreeKillGate } from '@orca/process-host/process-tree-kill-gate'
+import { setProcessTreeKillGate } from '@occ/process-host/process-tree-kill-gate'
 import { resetSelfInitiatedTreeKillLogForTest } from './crash-reporting/self-initiated-tree-kill-log'
 import {
   clearCrashBreadcrumbsForTest,
@@ -26,13 +26,13 @@ import {
 } from './crash-reporting/crash-breadcrumb-store'
 import { _resetTracerForTests, setActiveSink } from './observability/tracer'
 
-const ORCA_MAIN_PID = 1000
+const OCC_MAIN_PID = 1000
 const RENDERER_PID = 1001
 const DAEMON_PID = 1500
 
 const PROCESS_ROWS = [
-  { pid: RENDERER_PID, ppid: ORCA_MAIN_PID },
-  { pid: ORCA_MAIN_PID, ppid: 900 }
+  { pid: RENDERER_PID, ppid: OCC_MAIN_PID },
+  { pid: OCC_MAIN_PID, ppid: 900 }
 ]
 
 function appEnvironment(): AppEnvironment {
@@ -53,7 +53,7 @@ beforeEach(() => {
   previousEnvironment = hasAppEnvironment() ? getAppEnvironment() : null
   setAppEnvironment(appEnvironment())
   appMetricsMock.mockReturnValue([
-    { pid: ORCA_MAIN_PID, type: 'Browser' },
+    { pid: OCC_MAIN_PID, type: 'Browser' },
     { pid: RENDERER_PID, type: 'Tab' },
     { pid: 1002, type: 'GPU' }
   ])
@@ -75,11 +75,11 @@ afterEach(() => {
 
 describe('refusing to tree-kill our own Chromium processes', () => {
   it('reads the live Chromium pid set from the app environment', () => {
-    expect([...readOrcaChromiumProcessPids()]).toEqual([ORCA_MAIN_PID, RENDERER_PID, 1002])
+    expect([...readOCCChromiumProcessPids()]).toEqual([OCC_MAIN_PID, RENDERER_PID, 1002])
   })
 
   it('classifies a live renderer as foreign even though its ancestry reaches us', () => {
-    expect(classifyWindowsTreeKillTarget(RENDERER_PID, PROCESS_ROWS, ORCA_MAIN_PID)).toBe('foreign')
+    expect(classifyWindowsTreeKillTarget(RENDERER_PID, PROCESS_ROWS, OCC_MAIN_PID)).toBe('foreign')
   })
 
   it.each([
@@ -89,7 +89,7 @@ describe('refusing to tree-kill our own Chromium processes', () => {
     'refuses an OCC renderer from a daemon host with %s, because no Chromium descends from it',
     (_case, ownChromiumPids) => {
       // Daemon ancestry stops at the daemon PID; Chromium siblings fail that check without metrics.
-      const rows = [...PROCESS_ROWS, { pid: DAEMON_PID, ppid: ORCA_MAIN_PID }]
+      const rows = [...PROCESS_ROWS, { pid: DAEMON_PID, ppid: OCC_MAIN_PID }]
 
       expect(classifyWindowsTreeKillTarget(RENDERER_PID, rows, DAEMON_PID, ownChromiumPids)).toBe(
         'foreign'
@@ -100,14 +100,14 @@ describe('refusing to tree-kill our own Chromium processes', () => {
   it('is the only thing standing between Electron main and its own renderer', () => {
     // In main, renderer ancestry passes; Chromium metrics provide the refusal.
     expect(
-      classifyWindowsTreeKillTarget(RENDERER_PID, PROCESS_ROWS, ORCA_MAIN_PID, new Set())
+      classifyWindowsTreeKillTarget(RENDERER_PID, PROCESS_ROWS, OCC_MAIN_PID, new Set())
     ).toBe('own')
   })
 
   it('still classifies a real PTY child of ours as own', () => {
-    const rows = [...PROCESS_ROWS, { pid: 7777, ppid: ORCA_MAIN_PID }]
+    const rows = [...PROCESS_ROWS, { pid: 7777, ppid: OCC_MAIN_PID }]
 
-    expect(classifyWindowsTreeKillTarget(7777, rows, ORCA_MAIN_PID)).toBe('own')
+    expect(classifyWindowsTreeKillTarget(7777, rows, OCC_MAIN_PID)).toBe('own')
   })
 
   it('never spawns taskkill against one of our own Chromium pids', async () => {
@@ -181,9 +181,9 @@ describe('refusing to tree-kill our own Chromium processes', () => {
       throw new Error('getAppMetrics unavailable')
     })
 
-    expect([...readOrcaChromiumProcessPids()]).toEqual([])
+    expect([...readOCCChromiumProcessPids()]).toEqual([])
     // Coalesce repeated failures so they cannot evict refusal evidence from the shared ring.
-    expect([...readOrcaChromiumProcessPids()]).toEqual([])
+    expect([...readOCCChromiumProcessPids()]).toEqual([])
     expect(
       admitSelfInitiatedTreeKill({
         pid: RENDERER_PID,

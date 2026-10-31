@@ -4,7 +4,7 @@ import { startCodexAccountSessionBridgeInBackground } from '../codex/codex-accou
 import { isCodexHistorySharedAcrossAccounts } from './codex-history-sharing'
 import {
   getSystemCodexHomePath,
-  resolveOrcaManagedCodexHomePath,
+  resolveOCCManagedCodexHomePath,
   syncSystemCodexResourcesIntoManagedHome
 } from '../codex/codex-home-paths'
 import { syncSystemConfigIntoManagedCodexHome } from '../codex/codex-config-mirror'
@@ -119,12 +119,12 @@ export abstract class CodexRuntimeHomeLaunch extends CodexRuntimeHomeRouting {
       // Predict launch's route after deselection while leaving the selection untouched.
       return !hasCustomCodexHomeOverrideForLaunch(launchEnv)
         ? null
-        : resolveOrcaManagedCodexHomePath()
+        : resolveOCCManagedCodexHomePath()
     }
     // Avoid getRuntimeHomePath(), which creates the mirror directory.
     return this.isHostSystemDefaultRealHomeSelected(launchEnv)
       ? null
-      : resolveOrcaManagedCodexHomePath()
+      : resolveOCCManagedCodexHomePath()
   }
 
   async prepareForCodexLaunchAsync(

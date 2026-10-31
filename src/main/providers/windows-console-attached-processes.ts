@@ -1,5 +1,5 @@
-import { forkProcess } from '@orca/process-host/fork-process'
-import type { SpawnedProcess } from '@orca/process-host/process-spec'
+import { forkProcess } from '@occ/process-host/fork-process'
+import type { SpawnedProcess } from '@occ/process-host/process-spec'
 
 const CONPTY_PROCESS_LIST_TIMEOUT_MS = 3_000
 

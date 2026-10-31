@@ -99,8 +99,8 @@ import {
   planBrowserPartitionCookieCopy
 } from './browser-partition-cookie-copy'
 
-const SOURCE = 'persist:orca-browser-local'
-const DESTINATION = `persist:orca-browser-v1-${'a'.repeat(64)}`
+const SOURCE = 'persist:occ-browser-local'
+const DESTINATION = `persist:occ-browser-v1-${'a'.repeat(64)}`
 
 function cookie(overrides: Partial<CdpCookie> & { name: string }): CdpCookie {
   return {

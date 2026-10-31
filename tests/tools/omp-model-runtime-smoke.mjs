@@ -22,7 +22,7 @@ const { AuthStorage } = await import(
 const { SessionManager } = await import(
   pathToFileURL(resolve(reference, 'packages/coding-agent/src/session/session-manager.ts')).href
 )
-const root = await mkdtemp(join(tmpdir(), 'orca-omp-model-'))
+const root = await mkdtemp(join(tmpdir(), 'occ-omp-model-'))
 const posts = []
 const server = Bun.serve({
   port: 0,
@@ -33,15 +33,15 @@ const server = Bun.serve({
   }
 })
 Object.assign(process.env, {
-  ORCA_PANE_KEY: 'model-proof',
-  ORCA_AGENT_LAUNCH_TOKEN: 'model-proof',
-  ORCA_TAB_ID: 'model-proof',
-  ORCA_WORKTREE_ID: 'model-proof',
-  ORCA_AGENT_HOOK_PORT: String(server.port),
-  ORCA_AGENT_HOOK_TOKEN: 'model-proof',
-  ORCA_AGENT_HOOK_ENV: 'model-proof'
+  OCC_PANE_KEY: 'model-proof',
+  OCC_AGENT_LAUNCH_TOKEN: 'model-proof',
+  OCC_TAB_ID: 'model-proof',
+  OCC_WORKTREE_ID: 'model-proof',
+  OCC_AGENT_HOOK_PORT: String(server.port),
+  OCC_AGENT_HOOK_TOKEN: 'model-proof',
+  OCC_AGENT_HOOK_ENV: 'model-proof'
 })
-delete process.env.ORCA_PI_STATUS_OWNED
+delete process.env.OCC_PI_STATUS_OWNED
 const authStorage = await AuthStorage.create(join(root, 'auth.db'))
 authStorage.setRuntimeApiKey('anthropic', 'fake-no-network-proof-key')
 const registry = new ModelRegistry(authStorage, join(root, 'models.yml'))
@@ -52,7 +52,7 @@ try {
   if (!from || !to) {
     throw new Error('missing bundled models')
   }
-  const extensionPath = join(root, 'orca-agent-status.ts')
+  const extensionPath = join(root, 'occ-agent-status.ts')
   await writeFile(extensionPath, getPiAgentStatusExtensionSource('omp'))
   const result = await createAgentSession({
     cwd: root,
@@ -69,7 +69,7 @@ try {
   session = result.session
   const command = result.extensionsResult.extensions
     .flatMap((extension) => [...extension.commands.entries()])
-    .find(([name]) => name === 'orca-model')?.[1]
+    .find(([name]) => name === 'occ-model')?.[1]
   const runner = session.extensionRunner
   if (!command || !runner) {
     throw new Error('generated command was not loaded')
@@ -104,7 +104,7 @@ try {
       (post) =>
         post.payload?.hook_event_name === 'model_select' &&
         post.payload?.model === after &&
-        post.payload?.model_switch_command === 'orca-model'
+        post.payload?.model_switch_command === 'occ-model'
     )
   ) {
     throw new Error('Missing model and capability HTTP report')

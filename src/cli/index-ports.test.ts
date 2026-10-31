@@ -4,7 +4,7 @@ import type { WorkspacePort } from '../shared/workspace-ports'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -12,8 +12,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -24,7 +24,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -123,10 +123,10 @@ function captureOutput(): () => string {
   return () => [...logSpy.mock.calls, ...errSpy.mock.calls].flat().join('\n')
 }
 
-describe('orca ports', () => {
+describe('occ ports', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,

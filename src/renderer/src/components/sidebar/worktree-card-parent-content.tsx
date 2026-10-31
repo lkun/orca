@@ -48,11 +48,11 @@ export function WorktreeCardParentContent({
     handleEditIssue,
     handleManageLinks,
     handleEditComment,
-    handleOpenGitHubIssueInOrca,
+    handleOpenGitHubIssueInOCC,
     handleOpenIssueInBrowser,
     linearIssue,
-    handleOpenLinearIssueInOrca,
-    handleOpenReviewInOrca,
+    handleOpenLinearIssueInOCC,
+    handleOpenReviewInOCC,
     handleOpenReviewInBrowser,
     handleOpenAutomation,
     handleOpenAutomationRun,
@@ -104,16 +104,16 @@ export function WorktreeCardParentContent({
         onRenameWorkspaceTitle={affiliateListMode ? undefined : handleRenameTitle}
         onEditIssue={affiliateListMode ? undefined : handleEditIssue}
         onEditComment={affiliateListMode ? undefined : handleEditComment}
-        onOpenGitHubIssueInOrca={
+        onOpenGitHubIssueInOCC={
           hoverIssue && 'url' in hoverIssue && hoverIssue.url
-            ? handleOpenGitHubIssueInOrca
+            ? handleOpenGitHubIssueInOCC
             : undefined
         }
         onOpenIssueInBrowser={
           hoverIssue && 'url' in hoverIssue && hoverIssue.url ? handleOpenIssueInBrowser : undefined
         }
-        onOpenLinearIssueInOrca={linearIssue?.url ? handleOpenLinearIssueInOrca : undefined}
-        onOpenReviewInOrca={repo ? handleOpenReviewInOrca : undefined}
+        onOpenLinearIssueInOCC={linearIssue?.url ? handleOpenLinearIssueInOCC : undefined}
+        onOpenReviewInOCC={repo ? handleOpenReviewInOCC : undefined}
         onOpenReviewInBrowser={hoverReview?.url ? handleOpenReviewInBrowser : undefined}
         onOpenAutomation={affiliateListMode ? undefined : handleOpenAutomation}
         onOpenAutomationRun={affiliateListMode ? undefined : handleOpenAutomationRun}

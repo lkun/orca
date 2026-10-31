@@ -3,7 +3,7 @@ import type { AppState } from '../types'
 import { GRAB_BUDGET, type BrowserPageAnnotation } from '../../../../shared/browser-grab-types'
 import { makeAnnotation } from './browser-annotation-test-fixture'
 import { FLOATING_TERMINAL_WORKTREE_ID, getDefaultSettings } from '../../../../shared/constants'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import type { BrowserSessionProfile } from '../../../../shared/browser-workspace-types'
 import type { ManagedBrowserProfileOwner } from '../../../../shared/browser-profile-scope'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
@@ -212,7 +212,7 @@ describe('createBrowserSlice annotations', () => {
     })
     await main.settle()
 
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // Main opens the tab and its frame draws it; the window leaves it unselected.
       expect(layoutApplyTestTransport.sentOfType('openBrowserTab')).toEqual([
         expect.objectContaining({ browserTabId: tab.id, groupId: 'group-1' })
@@ -248,7 +248,7 @@ describe('createBrowserSlice annotations', () => {
 
     // A layout-owner build's main adds the page and its frame draws it.
     expect(layoutApplyTestTransport.sentOfType('openBrowserPage')).toEqual(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? [expect.objectContaining({ pageId: second?.id })] : []
+      OCC_LAYOUT_OWNER_IS_MAIN ? [expect.objectContaining({ pageId: second?.id })] : []
     )
     // Why: only a live guest reports loading; a background page has none until first shown.
     expect(store.getState().browserPagesByWorkspace[tab.id]?.map((page) => page.loading)).toEqual([
@@ -314,14 +314,14 @@ describe('createBrowserSlice annotations', () => {
     ])
     expect(store.getState().managedBrowserProfileStatusById[placeholderId]).toBe('pending')
     // A placeholder that outlives this run must load nowhere, never on the shared Default jar.
-    expect(first.sessionPartition).toBe(`persist:orca-browser-unminted-${placeholderId}`)
+    expect(first.sessionPartition).toBe(`persist:occ-browser-unminted-${placeholderId}`)
     store.getState().closeBrowserTab(sibling.id)
     await main.settle()
 
     const profile: BrowserSessionProfile = {
       id: 'minted-by-main',
       scope: 'isolated',
-      partition: 'persist:orca-browser-session-minted-by-main',
+      partition: 'persist:occ-browser-session-minted-by-main',
       label: 'Repo: repo-a',
       source: null,
       owner: { kind: 'repo', id: 'repo-a' }
@@ -585,7 +585,7 @@ describe('createBrowserSlice annotations', () => {
       throw new Error('Expected inactive browser page')
     }
     expect(layoutApplyTestTransport.sentOfType('openBrowserPage')).toEqual(
-      ORCA_LAYOUT_OWNER_IS_MAIN
+      OCC_LAYOUT_OWNER_IS_MAIN
         ? [expect.objectContaining({ browserTabId: tab.id, pageId: inactivePage.id })]
         : []
     )
@@ -780,7 +780,7 @@ describe('createBrowserSlice closed browser workspaces', () => {
     expect(activePage?.title).toBe('Second copy')
     // A layout-owner build's main closed the tab, then reopened it with both pages.
     expect(layoutApplyTestTransport.sent.map((command) => command.type)).toEqual(
-      ORCA_LAYOUT_OWNER_IS_MAIN
+      OCC_LAYOUT_OWNER_IS_MAIN
         ? ['openBrowserTab', 'openBrowserPage', 'closeTabs', 'openBrowserTab', 'openBrowserPage']
         : []
     )

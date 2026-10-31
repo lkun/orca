@@ -8,9 +8,9 @@ import { mkdirSync, mkdtempSync, realpathSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
-import { createRestartSession } from './helpers/orca-restart'
+import { createRestartSession } from './helpers/occ-restart'
 import {
   mutateStoppedProfileState,
   readPersistedProfileState
@@ -34,7 +34,7 @@ const CHAT_SESSION = 'moved-chat-0001'
 const CHAT = structuredAgentSessionTabId(CHAT_SESSION)
 const CHAT_LABEL = 'Plan the parser rewrite'
 // Visual proof for the PR; outside the repo on purpose.
-const PROOF_DIR = process.env.ORCA_D1B7A_PROOF_DIR ?? process.env.ORCA_WSL_USE_HERE_PROOF_DIR
+const PROOF_DIR = process.env.OCC_D1B7A_PROOF_DIR ?? process.env.OCC_WSL_USE_HERE_PROOF_DIR
 
 type SessionTabs = {
   tabsByWorktree?: Record<string, unknown[]>
@@ -139,7 +139,7 @@ async function movedTabs(page: Page, worktreeId: string) {
 
 test("a moved project's existing chats stay listed and openable on this computer", async (// oxlint-disable-next-line no-empty-pattern -- Playwright requires destructuring to request no fixtures.
 {}, testInfo) => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-wsl-moved-chats-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-wsl-moved-chats-'))
   const repoPath = join(root, 'moved-repo')
   mkdirSync(repoPath)
   const gitIdentity = ['-c', 'user.name=e2e', '-c', 'user.email=e2e@example.invalid']
@@ -216,7 +216,7 @@ test("a moved project's existing chats stay listed and openable on this computer
 
 test('"Use on this computer again" brings a moved project back as it was before the move', async (// oxlint-disable-next-line no-empty-pattern -- Playwright requires destructuring to request no fixtures.
 {}, testInfo) => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-wsl-use-here-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-wsl-use-here-'))
   const repoPath = join(root, 'moved-repo')
   mkdirSync(repoPath)
   const gitIdentity = ['-c', 'user.name=e2e', '-c', 'user.email=e2e@example.invalid']

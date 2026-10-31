@@ -7,7 +7,7 @@ import {
 } from '../../shared/cross-platform-path'
 import { isFolderRepo } from '../../shared/repo-kind'
 import { resolveConfiguredWorktreeBasePaths } from '../../shared/worktree/configured-worktree-base-path'
-import { buildKnownOrcaWorkspaceLayouts } from '../../shared/worktree/ownership'
+import { buildKnownOCCWorkspaceLayouts } from '../../shared/worktree/ownership'
 import type { SessionSearchScopeCatalog } from './session-search-scope-catalog'
 
 type ScopeRepo = SessionSearchScopeCatalog['repos'][number]
@@ -51,7 +51,7 @@ export function managedWorktreeDirectories(
   )
   const repoName = getRuntimePathBasename(repo.path).replace(/\.git$/, '')
   const directories: string[] = []
-  for (const layout of buildKnownOrcaWorkspaceLayouts(settings, repo)) {
+  for (const layout of buildKnownOCCWorkspaceLayouts(settings, repo)) {
     if (configured.has(normalizeRuntimePathForComparison(layout.path))) {
       directories.push(layout.path)
     } else if (layout.nestWorkspaces && repoName) {

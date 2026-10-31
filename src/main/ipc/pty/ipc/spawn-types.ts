@@ -10,7 +10,7 @@ import type { ProjectExecutionRuntimeResolution } from '../../../../shared/proje
 import type { StartupCommandDelivery } from '../../../../shared/codex-startup-delivery'
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
 import type { TerminalStartupCwdMissingDirFallback } from '../../../../shared/terminal-startup-cwd'
-import type { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import type { Store } from '../../../persistence'
 import type { PtySpawnResult } from '../../../providers/pty-provider-contract'
 import type {
@@ -106,7 +106,7 @@ export type AdoptStablePaneResult = {
 }
 
 export type PtySpawnIpcDeps = PtySpawnCodexResumeDeps & {
-  runtime?: OrcaRuntimeService
+  runtime?: OCCRuntimeService
   store?: Store
   getSettings?: () => GlobalSettings
   getSelectedCodexHomePath?: GetSelectedCodexHomePath

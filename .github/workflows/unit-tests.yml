@@ -105,9 +105,9 @@ jobs:
         id: module-cache
         if: inputs.module_cache == 'cold' || inputs.module_cache == 'warm'
         env:
-          ORCA_UNIT_SHARD_INDEX: ${{ matrix.shard.index }}
-          ORCA_UNIT_SHARD_COUNT: ${{ matrix.shard.count }}
-          ORCA_UNIT_CACHE_NAMESPACE: ${{ inputs.module_cache_namespace }}
+          OCC_UNIT_SHARD_INDEX: ${{ matrix.shard.index }}
+          OCC_UNIT_SHARD_COUNT: ${{ matrix.shard.count }}
+          OCC_UNIT_CACHE_NAMESPACE: ${{ inputs.module_cache_namespace }}
         run: node config/scripts/ci-unit-module-cache.mjs identity
 
       # The key pins config, plugins, lockfile and runtimes; the newest producer for it wins.
@@ -125,7 +125,7 @@ jobs:
       - name: Validate restored unit module cache or use cold transforms
         if: steps.module-cache.outputs.key != ''
         env:
-          ORCA_UNIT_CACHE_RESTORE_HIT: ${{ steps.module-cache-restore.outputs.cache-matched-key != '' }}
+          OCC_UNIT_CACHE_RESTORE_HIT: ${{ steps.module-cache-restore.outputs.cache-matched-key != '' }}
         run: node config/scripts/ci-unit-module-cache.mjs prepare
 
       - uses: actions/download-artifact@v8
@@ -145,13 +145,13 @@ jobs:
 
       - name: Test shard
         env:
-          NODE_COMPILE_CACHE: ${{ runner.temp }}/orca-node-compile-cache-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.node }}-${{ matrix.shard.index }}
-          ORCA_BALANCE_UNIT_SHARDS: '1'
-          ORCA_BACKGROUND_LAUNCH: '1'
-          ORCA_UNIT_PHASE_REPORT: ${{ inputs.phase_diagnostics && 'ci-shards/unit-phases.json' || '' }}
+          NODE_COMPILE_CACHE: ${{ runner.temp }}/occ-node-compile-cache-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.node }}-${{ matrix.shard.index }}
+          OCC_BALANCE_UNIT_SHARDS: '1'
+          OCC_BACKGROUND_LAUNCH: '1'
+          OCC_UNIT_PHASE_REPORT: ${{ inputs.phase_diagnostics && 'ci-shards/unit-phases.json' || '' }}
         run: |
-          ORCA_SHARD_SOURCE_SHA="$(git rev-parse HEAD)"
-          export ORCA_SHARD_SOURCE_SHA
+          OCC_SHARD_SOURCE_SHA="$(git rev-parse HEAD)"
+          export OCC_SHARD_SOURCE_SHA
           node config/scripts/run-vitest.mjs run --config config/vitest.config.ts \
             --shard=${{ matrix.shard.index }}/${{ matrix.shard.count }} \
             ${{ inputs.runner == 'blacksmith-8vcpu-ubuntu-2404' && '--maxWorkers=8' || (runner.arch == 'ARM64' || inputs.runner == 'blacksmith-4vcpu-ubuntu-2404' || inputs.runner == 'ubuntu-24.04') && '--maxWorkers=4' || '' }}
@@ -227,11 +227,11 @@ jobs:
       - name: Test external Chromium browser provider
         if: inputs.browser_contract && success()
         env:
-          ORCA_BACKGROUND_LAUNCH: '1'
-          ORCA_BROWSER_EXECUTABLE: ${{ steps.browser_executable.outputs.executable }}
+          OCC_BACKGROUND_LAUNCH: '1'
+          OCC_BROWSER_EXECUTABLE: ${{ steps.browser_executable.outputs.executable }}
         run: |
           pnpm exec vitest run --config config/vitest.config.ts \
-            src/main/orcad/external-chromium-browser-process.integration.test.ts
+            src/main/occd/external-chromium-browser-process.integration.test.ts
 
       # These two tests import the cloud relay workspace directly. Keeping them in one job
       # avoids installing and building the same workspace once per unit-test shard.
@@ -240,13 +240,13 @@ jobs:
         if: ${{ !cancelled() && steps.root_dependencies.outcome == 'success' }}
         working-directory: cloud
         run: |
-          pnpm --filter '@orca-cloud/relay...' install --frozen-lockfile --ignore-scripts
-          pnpm --filter '@orca-cloud/relay^...' build
+          pnpm --filter '@occ-cloud/relay...' install --frozen-lockfile --ignore-scripts
+          pnpm --filter '@occ-cloud/relay^...' build
 
       - name: Test relay integration contracts
         if: ${{ !cancelled() && steps.relay_dependencies.outcome == 'success' }}
         env:
-          ORCA_BACKGROUND_LAUNCH: '1'
+          OCC_BACKGROUND_LAUNCH: '1'
         run: >-
           pnpm exec vitest run --config config/vitest.config.ts
           tests/e2e/relay-region-compatibility.unit.test.ts

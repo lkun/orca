@@ -31,7 +31,7 @@ export const WORKTREE_CREATE_IDEMPOTENCY_RUNTIME_CAPABILITY =
   'worktree.create-idempotency.v1' as const
 export const WORKTREE_REMOVE_BRANCH_POLICY_RUNTIME_CAPABILITY =
   'worktree.remove-branch-policy.v1' as const
-// A failed running archive hook blocks deletion. This does not prove a hook was found: unreadable SSH orca.yaml is indistinguishable from absence (#20196).
+// A failed running archive hook blocks deletion. This does not prove a hook was found: unreadable SSH occ.yaml is indistinguishable from absence (#20196).
 // Advertise the gate so callers need not risk their checkout by probing a failure (#19334).
 export const WORKTREE_ARCHIVE_FAILURE_BLOCKING_RUNTIME_CAPABILITY =
   'worktree.archive-failure-blocking.v1' as const

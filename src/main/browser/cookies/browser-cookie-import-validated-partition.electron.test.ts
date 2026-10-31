@@ -165,7 +165,7 @@ run().catch((error) => {
 }
 
 async function runFixture(): Promise<FixtureResult> {
-  const root = mkdtempSync(join(tmpdir(), 'orca-validated-partition-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-validated-partition-'))
   fixtureRoots.push(root)
   const bundlePath = join(root, 'cookie-import-validated.cjs')
   const bundleEntryPath = join(root, 'cookie-import-validated.ts')
@@ -198,7 +198,7 @@ async function runFixture(): Promise<FixtureResult> {
   mkdirSync(home, { recursive: true })
   const isolatedEnv = {
     ...env,
-    ORCA_BACKGROUND_LAUNCH: '1',
+    OCC_BACKGROUND_LAUNCH: '1',
     HOME: home,
     USERPROFILE: home,
     XDG_CONFIG_HOME: join(home, 'config'),
@@ -207,9 +207,9 @@ async function runFixture(): Promise<FixtureResult> {
     XDG_STATE_HOME: join(home, 'state'),
     CLAUDE_CONFIG_DIR: join(home, 'claude'),
     CODEX_HOME: join(home, 'codex'),
-    ORCA_E2E_HOME_DIR: home,
-    ORCA_E2E_USER_DATA_DIR: join(root, 'profile'),
-    ORCA_DISABLE_MACOS_LOGIN_SHELL: '1'
+    OCC_E2E_HOME_DIR: home,
+    OCC_E2E_USER_DATA_DIR: join(root, 'profile'),
+    OCC_DISABLE_MACOS_LOGIN_SHELL: '1'
   }
   const electronArgs = [
     fixturePath,

@@ -144,19 +144,19 @@ export function bindRoutePartition(
   const derived = resolveBrowserRoutePartitionBinding({
     bindings,
     identity: {
-      orcaProfileId: routeIdentity.orcaProfileId,
+      occProfileId: routeIdentity.occProfileId,
       browserProfileId,
       authorityConnectionIdentity: routeIdentity.authorityConnectionIdentity,
       executionHostIdentity: routeIdentity.executionHostIdentity
     },
     compatibleIdentity: {
-      orcaProfileId: routeIdentity.orcaProfileId,
+      occProfileId: routeIdentity.occProfileId,
       browserProfileId,
       authorityConnectionIdentity: routeIdentity.pairingAuthorityConnectionIdentity,
       executionHostIdentity: routeIdentity.executionHostIdentity
     },
     legacyIdentity: {
-      orcaProfileId: routeIdentity.orcaProfileId,
+      occProfileId: routeIdentity.occProfileId,
       browserProfileId,
       authorityConnectionIdentity: routeIdentity.legacyAuthorityConnectionIdentity,
       executionHostIdentity: routeIdentity.legacyExecutionHostIdentity

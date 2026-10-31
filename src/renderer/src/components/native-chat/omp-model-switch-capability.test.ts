@@ -28,7 +28,7 @@ describe('OMP model command capability', () => {
       expect(surface.getSnapshot()[0].settable).toBe(canSwitchOmpModel === true)
       if (canSwitchOmpModel) {
         await surface.setOption('model', 'openai/b')
-        expect(dispatchCommand).toHaveBeenCalledWith('/orca-model openai/b')
+        expect(dispatchCommand).toHaveBeenCalledWith('/occ-model openai/b')
       } else {
         await expect(surface.setOption('model', 'openai/b')).rejects.toThrow()
         expect(dispatchCommand).not.toHaveBeenCalled()

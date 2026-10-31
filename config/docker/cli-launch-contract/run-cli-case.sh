@@ -3,13 +3,13 @@
 set -uo pipefail
 
 case_name=${1:?launch case is required}
-extracted_root=${ORCA_TEST_EXTRACTED_ROOT:-/artifacts/squashfs-root}
+extracted_root=${OCC_TEST_EXTRACTED_ROOT:-/artifacts/squashfs-root}
 launcher="$extracted_root/resources/bin/occ-ide"
-command_timeout_seconds=${ORCA_TEST_COMMAND_TIMEOUT_SECONDS:-60}
+command_timeout_seconds=${OCC_TEST_COMMAND_TIMEOUT_SECONDS:-60}
 
 if ((EUID == 0)); then
   # Reproduce extracted AppImage sandbox ownership as an unprivileged user.
-  exec runuser --user orca --preserve-environment -- "$0" "$@"
+  exec runuser --user occ --preserve-environment -- "$0" "$@"
 fi
 
 # Guard the restricted-userns precondition instead of accepting a false pass.

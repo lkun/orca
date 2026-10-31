@@ -8,10 +8,10 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { build } from 'esbuild'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 const piCli = process.argv[2] && resolve(process.argv[2])
 assert.ok(piCli, 'Pass the installed Pi CLI entrypoint')
-const scratch = await mkdtemp(join(tmpdir(), 'orca-pi-provider-'))
+const scratch = await mkdtemp(join(tmpdir(), 'occ-pi-provider-'))
 const requests = []
 const server = createServer(async (req, res) => {
   let body = ''
@@ -48,7 +48,7 @@ try {
   await mkdir(bundleDir)
   // The bundle keeps packages external, so it must resolve them from the repo's node_modules.
   await symlink(resolve('node_modules'), join(bundleDir, 'node_modules'), 'junction')
-  const bundle = join(bundleDir, 'orca.cjs')
+  const bundle = join(bundleDir, 'occ.cjs')
   await build({
     stdin: {
       contents: "export {planCommitMessageGeneration} from './src/shared/commit-message-plan';",
@@ -67,14 +67,14 @@ try {
   await mkdir(join(dir, 'extensions'), { recursive: true })
   await writeFile(
     join(dir, 'extensions', 'provider.ts'),
-    `export default function(pi){pi.registerProvider('orca-proof',{name:'Proof',baseUrl:'http://127.0.0.1:${server.address().port}/v1',apiKey:'fixture-only',api:'openai-completions',models:[{id:'local',name:'Proof',reasoning:false,input:['text'],cost:{input:0,output:0,cacheRead:0,cacheWrite:0},contextWindow:8192,maxTokens:256}]})}`
+    `export default function(pi){pi.registerProvider('occ-proof',{name:'Proof',baseUrl:'http://127.0.0.1:${server.address().port}/v1',apiKey:'fixture-only',api:'openai-completions',models:[{id:'local',name:'Proof',reasoning:false,input:['text'],cost:{input:0,output:0,cacheRead:0,cacheWrite:0},contextWindow:8192,maxTokens:256}]})}`
   )
   await writeFile(
     join(dir, 'settings.json'),
-    JSON.stringify({ defaultProvider: 'orca-proof', defaultModel: 'local' })
+    JSON.stringify({ defaultProvider: 'occ-proof', defaultModel: 'local' })
   )
   const planned = planCommitMessageGeneration(
-    { agentId: 'pi', model: 'orca-proof/local' },
+    { agentId: 'pi', model: 'occ-proof/local' },
     'Generate one short commit message.'
   )
   assert.equal(planned.ok, true)
@@ -97,7 +97,7 @@ try {
         WINDIR: process.env.WINDIR,
         HOME: scratch,
         USERPROFILE: scratch,
-        ORCA_BACKGROUND_LAUNCH: '1',
+        OCC_BACKGROUND_LAUNCH: '1',
         PI_CODING_AGENT_DIR: dir
       },
       input: planned.plan.stdinPayload,
@@ -127,7 +127,7 @@ try {
       WINDIR: process.env.WINDIR,
       HOME: scratch,
       USERPROFILE: scratch,
-      ORCA_BACKGROUND_LAUNCH: '1',
+      OCC_BACKGROUND_LAUNCH: '1',
       PI_CODING_AGENT_DIR: dir
     },
     stdio: ['pipe', 'pipe', 'inherit']
@@ -166,8 +166,8 @@ try {
   const ask = (type, params = {}, id = `smoke-${++next}`) =>
     new Promise((resolve) => {
       replies.set(id, (record, line) => {
-        if (id === 'orca-optional-1') {
-          assert.ok(line.startsWith('{"id":"orca-optional-1","type":"response",'))
+        if (id === 'occ-optional-1') {
+          assert.ok(line.startsWith('{"id":"occ-optional-1","type":"response",'))
           assert.equal(record.id, id)
         }
         resolve(record)
@@ -180,7 +180,7 @@ try {
       (async () => {
         assert.equal((await ask('prompt', { message: 'hello' })).success, true)
         await settledOnce
-        const all = await ask('get_entries', {}, 'orca-optional-1')
+        const all = await ask('get_entries', {}, 'occ-optional-1')
         assert.equal((await ask('get_state')).success, true)
         assert.equal(all.success, true, all.error)
         const ids = all.data.entries.map((entry) => entry.id)

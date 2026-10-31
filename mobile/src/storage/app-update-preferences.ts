@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { z } from 'zod'
 
-const LAST_CHECKED_AT_KEY = 'orca:appUpdate:lastCheckedAt'
-const LATEST_KEY = 'orca:appUpdate:latest'
-const DISMISSED_VERSION_KEY = 'orca:appUpdate:dismissedVersion'
+const LAST_CHECKED_AT_KEY = 'occ:appUpdate:lastCheckedAt'
+const LATEST_KEY = 'occ:appUpdate:latest'
+const DISMISSED_VERSION_KEY = 'occ:appUpdate:dismissedVersion'
 
 export type KnownAppUpdate = { readonly version: string; readonly url: string }
 

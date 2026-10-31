@@ -15,7 +15,7 @@ function refusingClient(code: string) {
   }
 }
 
-describe('orca connector', () => {
+describe('occ connector', () => {
   it('passes the host’s connectors_disabled refusal through, with no local flag check', async () => {
     await expect(
       callConnector(refusingClient('connectors_disabled'), 'connector.send', {})

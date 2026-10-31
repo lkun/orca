@@ -40,13 +40,13 @@ function makeSettings(
 function makeCliStatus(overrides: Partial<CliInstallStatus> = {}): CliInstallStatus {
   return {
     platform: 'darwin',
-    commandName: 'orca',
+    commandName: 'occ',
     supported: true,
     state: 'installed',
     commandPath: '/usr/local/bin/occ',
     pathDirectory: '/usr/local/bin',
     pathConfigured: true,
-    launcherPath: '/Applications/OCC.app/Contents/MacOS/orca',
+    launcherPath: '/Applications/OCC.app/Contents/MacOS/occ',
     installMethod: 'symlink',
     currentTarget: null,
     unsupportedReason: null,
@@ -71,7 +71,7 @@ describe('feature tip startup gate', () => {
         suppressedByOnboardingThisSession: false,
         webClient: false
       })
-    ).toEqual({ kind: 'open', tipId: 'orca-cli' })
+    ).toEqual({ kind: 'open', tipId: 'occ-cli' })
   })
 
   it('suppresses feature tips for first-time users while onboarding is showing', () => {
@@ -115,7 +115,7 @@ describe('feature tip startup gate', () => {
       getFeatureTipsAppOpenDecision({
         activeModal: 'none',
         cliInstalled: true,
-        featureTipsSeenIds: ['orca-cli'],
+        featureTipsSeenIds: ['occ-cli'],
         featureInteractions: {},
         chatUiLaunchTipVariant: 'none',
         onboarding: existingUserOnboarding,
@@ -133,7 +133,7 @@ describe('feature tip startup gate', () => {
       getFeatureTipsAppOpenDecision({
         activeModal: 'none',
         cliInstalled: false,
-        featureTipsSeenIds: ['voice-dictation', 'orca-cli', 'cmd-j-palette'],
+        featureTipsSeenIds: ['voice-dictation', 'occ-cli', 'cmd-j-palette'],
         featureInteractions: {},
         chatUiLaunchTipVariant: 'none',
         onboarding: existingUserOnboarding,
@@ -240,7 +240,7 @@ describe('feature tip startup gate', () => {
   function decideForExistingUser(args: {
     sessionSearchEnabled: boolean
     webClient: boolean
-    featureTipsSeenIds?: ('agent-session-search' | 'orca-cli')[]
+    featureTipsSeenIds?: ('agent-session-search' | 'occ-cli')[]
     chatUiLaunchTipVariant?: ChatUiLaunchTipVariant | null
   }): ReturnType<typeof getFeatureTipsAppOpenDecision> {
     return getFeatureTipsAppOpenDecision({
@@ -273,17 +273,17 @@ describe('feature tip startup gate', () => {
         webClient: false,
         featureTipsSeenIds: ['agent-session-search']
       })
-    ).toEqual({ kind: 'open', tipId: 'orca-cli' })
+    ).toEqual({ kind: 'open', tipId: 'occ-cli' })
   })
 
   it('skips the session search tip when search is already on or on a web client', () => {
     expect(decideForExistingUser({ sessionSearchEnabled: true, webClient: false })).toEqual({
       kind: 'open',
-      tipId: 'orca-cli'
+      tipId: 'occ-cli'
     })
     expect(decideForExistingUser({ sessionSearchEnabled: false, webClient: true })).toEqual({
       kind: 'open',
-      tipId: 'orca-cli'
+      tipId: 'occ-cli'
     })
   })
 
@@ -296,8 +296,8 @@ describe('feature tip startup gate', () => {
       })
     expect(decide('chat-ui-off')).toEqual({ kind: 'open', tipId: 'chat-ui-here' })
     expect(decide('chat-ui-on')).toEqual({ kind: 'open', tipId: 'chat-ui-here' })
-    expect(decide('none')).toEqual({ kind: 'open', tipId: 'orca-cli' })
-    expect(decide('chat-ui-on', true)).toEqual({ kind: 'open', tipId: 'orca-cli' })
+    expect(decide('none')).toEqual({ kind: 'open', tipId: 'occ-cli' })
+    expect(decide('chat-ui-on', true)).toEqual({ kind: 'open', tipId: 'occ-cli' })
     // Waits for main's answer rather than showing a later tip first.
     expect(decide(null)).toEqual({ kind: 'skip' })
   })

@@ -4,7 +4,7 @@ import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 
 const projectDir = resolve(import.meta.dirname, '../..')
 
@@ -14,7 +14,7 @@ describe('ref-mirroring vet steps', () => {
   it.each(['daily', 'hourly', 'adhoc'])('%s builds only need the current commit', (channel) => {
     const { jobs } = readWorkflow(`.github/workflows/${channel}-mac-build.yml`)
     const job = jobs[channel === 'adhoc' ? 'build-adhoc-mac-arch' : `build-${channel}-mac`]
-    const identity = channel === 'adhoc' ? jobs['orcad-template-support'] : job
+    const identity = channel === 'adhoc' ? jobs['occd-template-support'] : job
     const checkout = job.steps.find((step) => step.uses === 'actions/checkout@v6')
     expect(checkout.with['fetch-depth']).toBe(1)
     expect(
@@ -23,7 +23,7 @@ describe('ref-mirroring vet steps', () => {
       )
     ).toBe(true)
     expect(
-      identity.steps.some((step) => step.run?.includes('ORCA_PUBLISHED_VERSIONS="$published"'))
+      identity.steps.some((step) => step.run?.includes('OCC_PUBLISHED_VERSIONS="$published"'))
     ).toBe(true)
   })
 
@@ -34,7 +34,7 @@ describe('ref-mirroring vet steps', () => {
       const { jobs } = readWorkflow(`.github/workflows/${channel}-mac-build.yml`)
       const identity =
         channel === 'adhoc'
-          ? jobs['orcad-template-support']
+          ? jobs['occd-template-support']
           : jobs[channel === 'adhoc' ? 'build-adhoc-mac-arch' : `build-${channel}-mac`]
       const step = identity.steps.find(
         (candidate) => candidate.name === `Compute ${channel} version`
@@ -57,7 +57,7 @@ describe('ref-mirroring vet steps', () => {
   })
 
   it('resolves identical dev identities in full and depth-one checkouts without local tags', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-checkout-identity-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-checkout-identity-'))
     const source = join(directory, 'source')
     const shallow = join(directory, 'shallow')
     const run = (program, args, cwd) => {

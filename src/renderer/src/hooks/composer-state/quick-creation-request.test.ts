@@ -90,7 +90,7 @@ describe('quick composer creation request', () => {
         pushTarget: { remoteName: 'origin', branchName: 'feature' },
         linkedLinearIssue: 'ENG-42',
         linkedLinearIssueWorkspaceId: 'workspace-1',
-        linkedLinearIssueOrganizationUrlKey: 'orca',
+        linkedLinearIssueOrganizationUrlKey: 'occ',
         branchNameOverride: 'feature',
         parentWorktreeId: 'repo-1::/worktrees/parent',
         workspaceStatus: 'in-progress',

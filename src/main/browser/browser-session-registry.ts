@@ -1,12 +1,12 @@
 import { app, session } from 'electron'
 import { randomUUID } from 'node:crypto'
 import { join } from 'node:path'
-import { ORCA_BROWSER_PARTITION } from '../../shared/constants'
+import { OCC_BROWSER_PARTITION } from '../../shared/constants'
 import {
-  DEFAULT_LOCAL_ORCA_PROFILE_ID,
-  getOrcaProfileBrowserDefaultPartition,
-  getOrcaProfileBrowserSessionPartition
-} from '../../shared/orca-profiles'
+  DEFAULT_LOCAL_OCC_PROFILE_ID,
+  getOCCProfileBrowserDefaultPartition,
+  getOCCProfileBrowserSessionPartition
+} from '../../shared/occ-profiles'
 import type {
   BrowserSessionProfile,
   BrowserSessionProfileScope
@@ -45,7 +45,7 @@ type ExtensionIdListKey = 'enabledExtensionIdsByProfileId' | 'pinnedExtensionIds
 type ExtensionIdListUpdate = (byProfile: Record<string, string[]>) => Record<string, string[]>
 
 export type BrowserSessionRegistryProfileOptions = {
-  orcaProfileId: string
+  occProfileId: string
   profileDirectory: string
 }
 
@@ -53,9 +53,9 @@ export type BrowserSessionRegistryProfileOptions = {
 
 class BrowserSessionRegistry {
   private readonly profiles = new Map<string, BrowserSessionProfile>()
-  private activeOrcaProfileId = DEFAULT_LOCAL_ORCA_PROFILE_ID
+  private activeOCCProfileId = DEFAULT_LOCAL_OCC_PROFILE_ID
   private metadataPathOverride: string | null = null
-  private defaultPartition = ORCA_BROWSER_PARTITION
+  private defaultPartition = OCC_BROWSER_PARTITION
   // Why: profiles change from IPC, the CLI and managed-profile owners; open windows and paired clients only learn of it here.
   onProfilesChanged: (() => void) | null = null
   onProfileDeleted: ((profileId: string) => Promise<void>) | null = null
@@ -64,10 +64,10 @@ class BrowserSessionRegistry {
     this.resetDefaultProfile()
   }
 
-  configureForOrcaProfile(options: BrowserSessionRegistryProfileOptions): void {
-    this.activeOrcaProfileId = options.orcaProfileId
+  configureForOCCProfile(options: BrowserSessionRegistryProfileOptions): void {
+    this.activeOCCProfileId = options.occProfileId
     this.metadataPathOverride = join(options.profileDirectory, BROWSER_SESSION_META_FILE_NAME)
-    this.defaultPartition = getOrcaProfileBrowserDefaultPartition(options.orcaProfileId)
+    this.defaultPartition = getOCCProfileBrowserDefaultPartition(options.occProfileId)
     this.profiles.clear()
     this.resetDefaultProfile()
   }
@@ -115,7 +115,7 @@ class BrowserSessionRegistry {
     const meta = this.loadPersistedMeta()
     const migration = inspectRetiredBrowserSessionProfileUserAgentModes(
       meta.profiles,
-      this.activeOrcaProfileId
+      this.activeOCCProfileId
     )
     if (migration.noticePending) {
       // Migration bookkeeping must not block session startup.
@@ -175,7 +175,7 @@ class BrowserSessionRegistry {
     applyPendingBrowserCookieImports({
       resolveMetadataPath: () => this.metadataPath,
       defaultPartition: this.defaultPartition,
-      activeOrcaProfileId: this.activeOrcaProfileId
+      activeOCCProfileId: this.activeOCCProfileId
     })
   }
 
@@ -248,7 +248,7 @@ class BrowserSessionRegistry {
       return null
     }
     const id = randomUUID()
-    const partition = getOrcaProfileBrowserSessionPartition(this.activeOrcaProfileId, id)
+    const partition = getOCCProfileBrowserSessionPartition(this.activeOCCProfileId, id)
     const profile: BrowserSessionProfile = { id, scope, partition, label, source: null, owner }
     try {
       await installBrowserSessionPartitionPolicies(profile)
@@ -329,7 +329,7 @@ class BrowserSessionRegistry {
     enabledExtensionIdsByProfileId = this.loadPersistedMeta().enabledExtensionIdsByProfileId
   ): void {
     for (const profile of profiles) {
-      if (!isValidPersistedBrowserSessionProfile(profile, this.activeOrcaProfileId)) {
+      if (!isValidPersistedBrowserSessionProfile(profile, this.activeOCCProfileId)) {
         continue
       }
       this.profiles.set(profile.id, profile)

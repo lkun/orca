@@ -57,7 +57,7 @@ export async function createPluginFromTemplate(input: {
   const publisher = input.publisher ?? 'your-github-user'
   const name = input.name ?? (titleFromId(id) || id)
   const template = renderPluginTemplate(input.template, { publisher, id, name })
-  const manifest = parsePluginManifest(JSON.parse(template.files['orca-plugin.json']))
+  const manifest = parsePluginManifest(JSON.parse(template.files['occ-plugin.json']))
   if (!manifest.ok) {
     throw new PluginCreateError(
       `cannot create ${publisher}.${id}: ${manifest.error}. Pass --id and --publisher using lowercase letters, numbers and dashes.`

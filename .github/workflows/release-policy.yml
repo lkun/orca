@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   enforce:
-    if: github.repository == 'stablyai/orca'
+    if: github.repository == 'stablyai/occ'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

@@ -3,7 +3,7 @@
 // Earlier runs lost all close retractions on both clients for 90s while creates still propagated; host retirement publication fixed that shape.
 // Treat recurrence as a publish-after-close regression, not an exclusion.
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   createRuntimeDesktopPairingOffer,
   launchPairedElectronClient,
@@ -121,12 +121,12 @@ async function waitForClientWorkspace(page: Page, worktreeId: string): Promise<v
 }
 
 test('two paired clients stay in step with the host across an emptied workspace', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(600_000)
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  const worktreeId = await orcaPage.evaluate(() => {
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  const worktreeId = await occPage.evaluate(() => {
     const id = window.__store?.getState().activeWorktreeId
     if (!id) {
       throw new Error('host has no active worktree')
@@ -139,12 +139,12 @@ test('two paired clients stay in step with the host across an emptied workspace'
   const failures: string[] = []
   try {
     clientA = await launchPairedElectronClient(
-      await createRuntimeDesktopPairingOffer(orcaPage),
+      await createRuntimeDesktopPairingOffer(occPage),
       testInfo,
       'emptied-workspace-client-a'
     )
     clientB = await launchPairedElectronClient(
-      await createRuntimeDesktopPairingOffer(orcaPage),
+      await createRuntimeDesktopPairingOffer(occPage),
       testInfo,
       'emptied-workspace-client-b'
     )
@@ -231,7 +231,7 @@ test('two paired clients stay in step with the host across an emptied workspace'
     // Wait generously for any retraction; a never-removed mirror is still a dead pane.
     const emptyA = await waitForClientToMatchHost(clientA, 0, worktreeId, RETRACTION_BUDGET_MS)
     const emptyB = await waitForClientToMatchHost(clientB, 0, worktreeId, RETRACTION_BUDGET_MS)
-    const hostOwnView = await readMirroredTabCount(orcaPage, worktreeId)
+    const hostOwnView = await readMirroredTabCount(occPage, worktreeId)
     console.error(
       `[two-client] phase1b host=0 hostOwnView=${hostOwnView}` +
         ` A=${emptyA}ms(${await readWorkspaceRowState(clientA.page, worktreeId)})` +
@@ -244,7 +244,7 @@ test('two paired clients stay in step with the host across an emptied workspace'
     }
 
     // Both clients hold explicit empty rows and must not automatically seed replacements.
-    await orcaPage.waitForTimeout(10_000)
+    await occPage.waitForTimeout(10_000)
     const hostAfterSettle = (await readHostTerminalTabIds(clientA, worktreeId)).length
     console.error(`[two-client] phase1b-settled host=${hostAfterSettle}`)
     if (hostAfterSettle !== 0) {
@@ -288,12 +288,12 @@ test('two paired clients stay in step with the host across an emptied workspace'
 
 // Exercise immediate post-pairing close separately: it is a startup race, unlike the settled two-client journey.
 test('a client that works immediately after pairing stays in step with the host', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(600_000)
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  const worktreeId = await orcaPage.evaluate(() => {
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  const worktreeId = await occPage.evaluate(() => {
     const id = window.__store?.getState().activeWorktreeId
     if (!id) {
       throw new Error('host has no active worktree')
@@ -305,7 +305,7 @@ test('a client that works immediately after pairing stays in step with the host'
   const failures: string[] = []
   try {
     client = await launchPairedElectronClient(
-      await createRuntimeDesktopPairingOffer(orcaPage),
+      await createRuntimeDesktopPairingOffer(occPage),
       testInfo,
       'fresh-pairing-immediate-work'
     )

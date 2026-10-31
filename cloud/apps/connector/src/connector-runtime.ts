@@ -1,4 +1,4 @@
-import type { CloudDatabase, CloudNotifications } from '@orca-cloud/cloud-database'
+import type { CloudDatabase, CloudNotifications } from '@occ-cloud/cloud-database'
 import type { ConnectorConfig } from './config.js'
 import { createConnectorCore } from './connector-core.js'
 import { ConnectorHosts } from './connector-hosts.js'

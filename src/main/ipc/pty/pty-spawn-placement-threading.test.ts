@@ -33,7 +33,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -113,7 +113,7 @@ describe('pty spawn placement threading', () => {
       worktreeId: WORKTREE,
       tabId: 'tab-placement',
       leafId: LEAF,
-      env: { ORCA_TAB_ID: 'tab-placement', ORCA_WORKTREE_ID: WORKTREE },
+      env: { OCC_TAB_ID: 'tab-placement', OCC_WORKTREE_ID: WORKTREE },
       ...extra
     })
   }
@@ -178,7 +178,7 @@ describe('pty spawn placement threading', () => {
       worktreeId: WORKTREE,
       tabId: 'tab-runtime',
       leafId: LEAF,
-      env: { ORCA_PANE_KEY: makePaneKey('tab-runtime', LEAF) },
+      env: { OCC_PANE_KEY: makePaneKey('tab-runtime', LEAF) },
       persistHostSessionBinding: true,
       placement: SPLIT
     })

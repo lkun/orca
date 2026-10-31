@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { runProcess } from '@orca/process-host'
-import type { ProcessResult, ProcessSpec } from '@orca/process-host/process-spec'
+import { runProcess } from '@occ/process-host'
+import type { ProcessResult, ProcessSpec } from '@occ/process-host/process-spec'
 import { _resetWslAvailabilityCacheForTests, isWslAvailableAsync } from './wsl-availability'
 
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: vi.fn()
 }))
 vi.mock('./wsl-interop-spawn-directory', () => ({

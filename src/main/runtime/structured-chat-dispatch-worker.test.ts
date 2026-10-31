@@ -1,8 +1,8 @@
 import './rpc/unused-default-rpc-methods.test-fixture'
 
 import { describe, expect, it, vi } from 'vitest'
-import { formatOrcaSessionAddress } from '../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../shared/occ-session-address'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import { idOf } from './rpc/orchestration-session-caller-test-fixture'
 import { sendChatTask } from './rpc/methods/orchestration/chat-task-delivery'
 import {
@@ -27,7 +27,7 @@ import {
   turnText
 } from './structured-chat-coordinator-mail-rig.test-fixture'
 
-const WORKER = formatOrcaSessionAddress(testOrcaSessionId(PEER_CHAT))
+const WORKER = formatOCCSessionAddress(testOCCSessionId(PEER_CHAT))
 
 /** A person's turn in `sessionId`, started and still running; resolves to its end. */
 async function runningUserTurn(
@@ -99,7 +99,7 @@ describe('a chat as the assignee of orchestration dispatch', () => {
     expect(db.getDispatchContextById(dispatchId)).toMatchObject({
       run_id: runId,
       assignee_handle: WORKER,
-      assignee_orca_session_id: PEER_CHAT,
+      assignee_occ_session_id: PEER_CHAT,
       assignee_pane_key: null,
       process_incarnation: null,
       status: 'dispatched'
@@ -138,9 +138,9 @@ describe('a chat as the assignee of orchestration dispatch', () => {
       senders: [
         {
           party: {
-            address: formatOrcaSessionAddress(testOrcaSessionId(COORDINATOR)),
+            address: formatOCCSessionAddress(testOCCSessionId(COORDINATOR)),
             terminalHandle: null,
-            orcaSessionId: COORDINATOR
+            occSessionId: COORDINATOR
           }
         }
       ],
@@ -203,7 +203,7 @@ describe('a chat as the assignee of orchestration dispatch', () => {
 
     const error = await refusal(
       'orchestration.dispatch',
-      { task: taskId, to: formatOrcaSessionAddress(testOrcaSessionId(COORDINATOR)), inject: true },
+      { task: taskId, to: formatOCCSessionAddress(testOCCSessionId(COORDINATOR)), inject: true },
       COORDINATOR
     )
 
@@ -253,7 +253,7 @@ describe('a chat as the assignee of orchestration dispatch', () => {
 
     await vi.waitFor(() => expect(worker.turns).toHaveLength(1), WAIT)
     expect(turnText(worker.turns[0]!)).toMatch(
-      /^You have 1 orchestration message\. Run `orca(-dev)? orchestration check`\.$/
+      /^You have 1 orchestration message\. Run `occ(-dev)? orchestration check`\.$/
     )
     expect(await queuedCardTexts(PEER_CHAT)).toEqual([])
     await settleTurn(PEER_CHAT, 0)

@@ -30,10 +30,10 @@ type RecordedPost = {
 }
 
 const ENV_KEYS = [
-  'ORCA_PANE_KEY',
-  'ORCA_AGENT_HOOK_PORT',
-  'ORCA_AGENT_HOOK_TOKEN',
-  'ORCA_AGENT_HOOK_ENDPOINT'
+  'OCC_PANE_KEY',
+  'OCC_AGENT_HOOK_PORT',
+  'OCC_AGENT_HOOK_TOKEN',
+  'OCC_AGENT_HOOK_ENDPOINT'
 ] as const
 
 describe('OpenCode plugin child attention', () => {
@@ -44,16 +44,16 @@ describe('OpenCode plugin child attention', () => {
   let pluginFactory: PluginFactory | undefined
 
   beforeEach(() => {
-    tempDir = mkdtempSync(join(tmpdir(), 'orca-opencode-child-attention-'))
+    tempDir = mkdtempSync(join(tmpdir(), 'occ-opencode-child-attention-'))
     posts = []
     savedEnv = {}
     for (const key of ENV_KEYS) {
       savedEnv[key] = process.env[key]
     }
-    process.env.ORCA_PANE_KEY = 'tab-1:leaf-1'
-    process.env.ORCA_AGENT_HOOK_PORT = '45678'
-    process.env.ORCA_AGENT_HOOK_TOKEN = 'test-token'
-    delete process.env.ORCA_AGENT_HOOK_ENDPOINT
+    process.env.OCC_PANE_KEY = 'tab-1:leaf-1'
+    process.env.OCC_AGENT_HOOK_PORT = '45678'
+    process.env.OCC_AGENT_HOOK_TOKEN = 'test-token'
+    delete process.env.OCC_AGENT_HOOK_ENDPOINT
     pluginFactory = undefined
     savedFetch = globalThis.fetch
     globalThis.fetch = vi.fn(async (_url: RequestInfo | URL, init?: RequestInit) => {
@@ -83,12 +83,12 @@ describe('OpenCode plugin child attention', () => {
     })
   ): Promise<PluginHooks> {
     if (!pluginFactory) {
-      const pluginPath = join(tempDir, 'orca-opencode-status.mjs')
+      const pluginPath = join(tempDir, 'occ-opencode-status.mjs')
       writeFileSync(pluginPath, _internals.getOpenCodePluginSource())
       const module = (await import(pathToFileURL(pluginPath).href)) as {
-        OrcaOpenCodeStatusPlugin: PluginFactory
+        OCCOpenCodeStatusPlugin: PluginFactory
       }
-      pluginFactory = module.OrcaOpenCodeStatusPlugin
+      pluginFactory = module.OCCOpenCodeStatusPlugin
     }
     return pluginFactory({
       client: {

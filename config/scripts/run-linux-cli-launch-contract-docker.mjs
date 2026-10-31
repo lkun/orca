@@ -11,9 +11,9 @@ const platform = valueAfter('--platform')
 const dockerPlatformArgs = platform ? ['--platform', platform] : []
 
 const suffix = `${process.pid}-${Date.now()}`
-const artifactVolume = `orca-cli-contract-artifact-${suffix}`
+const artifactVolume = `occ-cli-contract-artifact-${suffix}`
 const tagArchitecture = platform?.split('/')[1] ?? process.arch
-const tag = `orca-cli-launch-contract:ubuntu-24.04-${tagArchitecture}-${suffix}`
+const tag = `occ-cli-launch-contract:ubuntu-24.04-${tagArchitecture}-${suffix}`
 const containers = new Set()
 let artifactVolumeCreated = false
 const CASE_TIMEOUT_MS = 90_000
@@ -27,7 +27,7 @@ const CASES = [
   {
     name: 'nofuse-userns-bundled-help',
     expectStatus: 0,
-    expectOutput: 'Usage: orca <command>',
+    expectOutput: 'Usage: occ <command>',
     why: 'The bundled launcher must run with no FUSE, no display, and userns restricted (#11609, #12530).'
   },
   {
@@ -47,19 +47,19 @@ const CASES = [
     name: 'nofuse-userns-bundled-skills',
     expectStatus: 0,
     // Why: the rendered help header, not a bare 'skills' — the case name contains that word.
-    expectOutput: 'Usage: orca skills',
+    expectOutput: 'Usage: occ skills',
     why: 'skills is a pure-text command that must never need Chromium (#14229).'
   },
   {
     name: 'nofuse-userns-bundled-worktree',
     expectStatus: 1,
-    expectOutput: "OCC is not running. Run 'orca open' first.",
+    expectOutput: "OCC is not running. Run 'occ open' first.",
     why: 'A runtime-dependent command must report the missing runtime, not abort.'
   },
   {
     name: 'nofuse-nosandbox-direct-binary-skills',
     expectStatus: 0,
-    expectOutput: 'Usage: orca skills',
+    expectOutput: 'Usage: occ skills',
     why: 'A direct binary launch that reaches JavaScript must run the command, not boot a GUI (#14229).'
   },
   {
@@ -150,7 +150,7 @@ function runContract() {
 }
 
 function runCase(caseName) {
-  const container = `orca-cli-contract-${caseName}-${suffix}`
+  const container = `occ-cli-contract-${caseName}-${suffix}`
   containers.add(container)
   // FUSE and extra capabilities would invalidate the test conditions.
   return docker(
@@ -174,8 +174,8 @@ function buildImage() {
   const buildArgs = [
     'build',
     ...dockerPlatformArgs,
-    ...(process.env.ORCA_CLI_FIXTURE_CACHE_IMAGE
-      ? ['--cache-from', process.env.ORCA_CLI_FIXTURE_CACHE_IMAGE]
+    ...(process.env.OCC_CLI_FIXTURE_CACHE_IMAGE
+      ? ['--cache-from', process.env.OCC_CLI_FIXTURE_CACHE_IMAGE]
       : []),
     '-f',
     'config/docker/cli-launch-contract/Dockerfile',
@@ -197,7 +197,7 @@ function buildImage() {
 // Extract unprivileged so chrome-sandbox is not root-owned setuid.
 function stageArtifacts() {
   console.log('Staging the AppImage payload…')
-  const container = `orca-cli-contract-stage-${suffix}`
+  const container = `occ-cli-contract-stage-${suffix}`
   containers.add(container)
   docker(
     [
@@ -218,9 +218,9 @@ function stageArtifacts() {
         'set -euo pipefail',
         'cp /input/occ-linux.AppImage /artifacts/occ-linux.AppImage',
         'chmod +x /artifacts/occ-linux.AppImage',
-        'chown -R orca:orca /artifacts',
+        'chown -R occ:occ /artifacts',
         // Use the AppImage runtime's no-FUSE extraction path.
-        'cd /artifacts && runuser --user orca -- ./occ-linux.AppImage --appimage-extract >/dev/null',
+        'cd /artifacts && runuser --user occ -- ./occ-linux.AppImage --appimage-extract >/dev/null',
         'test -x /artifacts/squashfs-root/resources/bin/occ-ide'
       ].join(' && ')
     ],

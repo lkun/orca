@@ -52,7 +52,7 @@ function withWin32<T>(run: () => T): T {
 
 function readInstalledConfig(home: string): InstalledConfig {
   return JSON.parse(
-    readFileSync(join(home, '.grok', 'hooks', 'orca-status.json'), 'utf8')
+    readFileSync(join(home, '.grok', 'hooks', 'occ-status.json'), 'utf8')
   ) as InstalledConfig
 }
 
@@ -67,13 +67,13 @@ function registeredCommands(config: InstalledConfig): string[] {
 describe('Windows Grok managed hook launch shape', () => {
   // POSIX path.join cannot produce a real cmd-safe install path; synthetic Windows paths cover that branch everywhere.
   describe('registered command, from a synthetic Windows path', () => {
-    const scriptPath = 'C:\\Users\\dev\\.orca\\agent-hooks\\grok-hook.cmd'
+    const scriptPath = 'C:\\Users\\dev\\.occ\\agent-hooks\\grok-hook.cmd'
 
     it('registers a cmd-safe script path as the command itself (#14828)', () => {
       const command = withWin32(() => getManagedCommandForTests(scriptPath))
 
       // Grok needs one spawnable token; forward slashes survive Git Bash's backslash stripping.
-      expect(command).toBe('C:/Users/dev/.orca/agent-hooks/grok-hook.cmd')
+      expect(command).toBe('C:/Users/dev/.occ/agent-hooks/grok-hook.cmd')
       // Any whitespace reintroduces Grok's pwsh wrapper.
       expect(command, 'a space would reintroduce the pwsh wrapper').not.toMatch(/\s/)
       expect(command).not.toMatch(/powershell|pwsh/i)
@@ -81,7 +81,7 @@ describe('Windows Grok managed hook launch shape', () => {
     })
 
     it('still wraps a path cmd.exe would split or expand (#6078)', () => {
-      const spaced = 'C:\\Users\\Jane Doe\\.orca\\agent-hooks\\grok-hook.cmd'
+      const spaced = 'C:\\Users\\Jane Doe\\.occ\\agent-hooks\\grok-hook.cmd'
       const command = withWin32(() => getManagedCommandForTests(spaced))
 
       expect(command).toMatch(/-EncodedCommand \S+$/)
@@ -107,7 +107,7 @@ describe('Windows Grok managed hook launch shape', () => {
       )
       expect(stop).toEqual([
         'C:\\tools\\user-hook.cmd',
-        'C:/Users/dev/.orca/agent-hooks/grok-hook.cmd'
+        'C:/Users/dev/.occ/agent-hooks/grok-hook.cmd'
       ])
     })
   })
@@ -116,7 +116,7 @@ describe('Windows Grok managed hook launch shape', () => {
     let home = ''
 
     beforeEach(() => {
-      home = mkdtempSync(join(tmpdir(), 'orca-grok-launcher-'))
+      home = mkdtempSync(join(tmpdir(), 'occ-grok-launcher-'))
       homedirMock.mockReturnValue(home)
     })
 
@@ -129,7 +129,7 @@ describe('Windows Grok managed hook launch shape', () => {
     it.skipIf(process.platform !== 'win32')(
       'writes the generated script path itself to every managed event',
       () => {
-        const scriptPath = join(home, '.orca', 'agent-hooks', 'grok-hook.cmd')
+        const scriptPath = join(home, '.occ', 'agent-hooks', 'grok-hook.cmd')
         const commands = withWin32(() => {
           expect(new GrokHookService().install().state).toBe('installed')
           return registeredCommands(readInstalledConfig(home))
@@ -146,9 +146,9 @@ describe('Windows Grok managed hook launch shape', () => {
     it.skipIf(process.platform !== 'win32')(
       'replaces a previously installed encoded-PowerShell entry on reinstall',
       () => {
-        const scriptPath = join(home, '.orca', 'agent-hooks', 'grok-hook.cmd')
+        const scriptPath = join(home, '.occ', 'agent-hooks', 'grok-hook.cmd')
         const staleCommand = wrapWindowsHookCommand(scriptPath)
-        const configPath = join(home, '.grok', 'hooks', 'orca-status.json')
+        const configPath = join(home, '.grok', 'hooks', 'occ-status.json')
         mkdirSync(dirname(configPath), { recursive: true })
         writeFileSync(
           configPath,
@@ -181,7 +181,7 @@ describe('Windows Grok managed hook launch shape', () => {
     )
 
     it('falls back to the encoded launcher when the profile path is not cmd-safe (#6078)', () => {
-      const spaceHome = mkdtempSync(join(tmpdir(), 'orca grok spaced '))
+      const spaceHome = mkdtempSync(join(tmpdir(), 'occ grok spaced '))
       homedirMock.mockReturnValue(spaceHome)
       try {
         const commands = withWin32(() => {

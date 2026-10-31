@@ -197,7 +197,7 @@ function files(dir: string): string[] {
 }
 
 it('excludes test constants without hiding credential mutations in neighboring production files', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-credential-scan-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-credential-scan-'))
   const productionFiles = [
     'credential-refresh.ts',
     'pty-ipc-test-constants-reader.ts',
@@ -249,7 +249,7 @@ it('confines filesystem persistence in accounts and usage to named profile surfa
   })
   expect(violations).toEqual([])
   const cli = readFileSync(join(main, '../cli/handlers/account.ts'), 'utf8')
-  expect(cli).not.toMatch(/Keychain|orca-account-add-claude|addClaudeFromConfigDir/)
+  expect(cli).not.toMatch(/Keychain|occ-account-add-claude|addClaudeFromConfigDir/)
   const auth = readFileSync(join(__dirname, 'runtime-auth-service.ts'), 'utf8')
   expect(auth).not.toMatch(/extends ClaudeRuntimeAuth|snapshot|credentialsJson|readBack/i)
 })

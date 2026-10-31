@@ -4,13 +4,13 @@ import { describe, expect, it, vi } from 'vitest'
 import { HEADLESS_RUNTIME_WINDOW_ID } from '../../../../shared/runtime-types'
 import type { RuntimeStore } from '../../runtime-store-contract'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 // Fragments stay side-effect ordered: mocks, then lifecycle, then fixtures.
-await import('../../orca-runtime-test-mocks.spec')
-await import('../../orca-runtime-test-lifecycle.spec')
+await import('../../occ-runtime-test-mocks.spec')
+await import('../../occ-runtime-test-lifecycle.spec')
 const { TEST_WORKTREE_ID, TEST_WORKTREE_PATH } =
-  await import('../../orca-runtime-test-fixtures.spec')
+  await import('../../occ-runtime-test-fixtures.spec')
 const { surfaceRuntime } = await import('../surface/terminal-surface-replies.test-fixture')
 const { spawnInAdmittedPane } = await import('../../runtime-pane-admission')
 const { leaveSpawnsUncommitted } = await import('../../bind-first-pane.test-fixture')

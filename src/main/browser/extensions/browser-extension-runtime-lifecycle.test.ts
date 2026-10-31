@@ -10,7 +10,7 @@ vi.mock('./browser-extension-api-host', () => ({
   emitBrowserExtensionWorkerStartEvent: mocks.emit
 }))
 
-mocks.userData = mkdtempSync(join(tmpdir(), 'orca-extension-lifecycle-'))
+mocks.userData = mkdtempSync(join(tmpdir(), 'occ-extension-lifecycle-'))
 
 const { decideRuntimeLifecycleEvents, fireRuntimeLifecycleEvents } =
   await import('./browser-extension-runtime-lifecycle')

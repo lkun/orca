@@ -1,11 +1,11 @@
 import { randomUUID } from 'node:crypto'
 import pg from 'pg'
-import type { PushNotification } from '@orca-cloud/push-contract'
+import type { PushNotification } from '@occ-cloud/push-contract'
 import { openInMemoryPushDatabase, openPushDatabase, type PushDatabase } from './push-database.js'
 import { DurablePushStore } from './durable-push-store.js'
 
 export const durablePushTestDatabaseUrl =
-  process.env.ORCA_PUSH_DURABLE_TEST_POSTGRES_URL ?? process.env.ORCA_PUSH_TEST_DATABASE_URL
+  process.env.OCC_PUSH_DURABLE_TEST_POSTGRES_URL ?? process.env.OCC_PUSH_TEST_DATABASE_URL
 
 const cleanups: (() => Promise<void>)[] = []
 export async function cleanupDurablePushFixtures(): Promise<void> {

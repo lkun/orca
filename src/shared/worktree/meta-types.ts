@@ -1,6 +1,6 @@
 import type { ExecutionHostId } from '../execution-host'
 import type { TaskSourceContext } from '../task-source-context'
-import type { EphemeralVmCheckoutMode } from '../orca-yaml-hook-types'
+import type { EphemeralVmCheckoutMode } from '../occ-yaml-hook-types'
 import type {
   AutomationWorkspaceProvenance,
   CliWorkspaceProvenance,
@@ -11,7 +11,7 @@ import type {
   WorkspaceStatus
 } from './types'
 import type { TuiAgent } from '../tui-agent'
-import type { OrcaWorkspaceLayout } from '../global-settings-types'
+import type { OCCWorkspaceLayout } from '../global-settings-types'
 import type { DiffComment, MobileDiffReviewState } from '../diff-comment-types'
 import type { SmartTier } from '../sidebar-list/sort-stamps'
 import type { ExternalConversationLink } from '../external-conversation-link'
@@ -66,9 +66,9 @@ export type WorktreeMeta = {
   smartAt?: number
   /** See {@link Worktree.lastTerminalUseAt}. */
   lastTerminalUseAt?: number
-  /** See {@link Worktree.createdAt}. Persisted to orca-data.json. */
+  /** See {@link Worktree.createdAt}. Persisted to occ-data.json. */
   createdAt?: number
-  /** See {@link Worktree.createdWithAgent}. Persisted to orca-data.json. */
+  /** See {@link Worktree.createdWithAgent}. Persisted to occ-data.json. */
   createdWithAgent?: TuiAgent
   /** See {@link Worktree.pendingFirstAgentMessageRename}. */
   pendingFirstAgentMessageRename?: boolean
@@ -84,10 +84,10 @@ export type WorktreeMeta = {
   /** See {@link Worktree.pushTarget}. Persisted so refreshed worktree lists keep the target. */
   pushTarget?: GitPushTarget
   /** Explicit marker stamped when OCC creates the worktree. */
-  orcaCreatedAt?: number
-  orcaCreationSource?: 'desktop' | 'runtime' | 'cli' | 'ssh'
+  occCreatedAt?: number
+  occCreationSource?: 'desktop' | 'runtime' | 'cli' | 'ssh'
   /** Workspace layout active when OCC created the worktree. */
-  orcaCreationWorkspaceLayout?: OrcaWorkspaceLayout
+  occCreationWorkspaceLayout?: OCCWorkspaceLayout
   /** User-assigned workspace board status for manual sidebar organization. */
   workspaceStatus?: WorkspaceStatus
   diffComments?: DiffComment[]

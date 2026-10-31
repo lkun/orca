@@ -20,7 +20,7 @@ afterEach(() => {
 })
 
 function temporaryProfile(): string {
-  const root = mkdtempSync(join(tmpdir(), 'orca-env-store-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-env-store-'))
   roots.push(root)
   return root
 }

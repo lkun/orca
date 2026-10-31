@@ -47,7 +47,7 @@ vi.mock('./daemon-tcc-attribution', async (importOriginal) => {
   }
 })
 
-// verify-15b: a WSL host's pane (orcad on Linux, bash, no OSC 7) woke in the project root after `cd deep`.
+// verify-15b: a WSL host's pane (occd on Linux, bash, no OSC 7) woke in the project root after `cd deep`.
 describe('a native shell slept and woken', () => {
   let dir: string
   let socketPath: string

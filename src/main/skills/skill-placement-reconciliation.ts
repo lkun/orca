@@ -23,7 +23,7 @@ function normalizedPath(path: string): string {
 
 function placementFailure(code: string, retryable = false) {
   return {
-    errorCategory: code,
+    errocctegory: code,
     failure: { category: 'provider-placement' as const, code, retryable }
   }
 }
@@ -275,7 +275,7 @@ export async function reconcileSkillProviderPlacement(input: {
         : await createMissingPlacement({ ...input, destinationPath, filesystem, observation })
     operation.complete({
       status: result.status,
-      errorCategory: result.errorCategory ?? 'none',
+      errocctegory: result.errocctegory ?? 'none',
       topology: result.topology,
       aliasMechanism:
         result.topology !== 'provider-alias'
@@ -298,7 +298,7 @@ export async function reconcileSkillProviderPlacement(input: {
     }
     operation.complete({
       status: result.status,
-      errorCategory: result.errorCategory,
+      errocctegory: result.errocctegory,
       topology: result.topology,
       aliasMechanism: 'none',
       copyFallbackCount: observation.copyFallback ? 1 : 0

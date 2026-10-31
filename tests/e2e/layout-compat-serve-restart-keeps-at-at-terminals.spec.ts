@@ -1,6 +1,6 @@
 // P3/#23429 (fixed by #26022): retain desktop/CLI daemon @@ PTYs beside a serve-minted PTY across serve restart.
 // Compare host inventory/layout and the reconnected desktop against the baseline.
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { launchPairedElectronClient } from './helpers/paired-electron-client'
 import {

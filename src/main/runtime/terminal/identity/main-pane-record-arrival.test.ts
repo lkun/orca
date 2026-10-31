@@ -1,18 +1,18 @@
 // Late terminal records and incarnation changes must recompose main-owned panes, listing each bound terminal once.
 import { describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-await import('../../orca-runtime-test-mocks.spec')
-await import('../../orca-runtime-test-lifecycle.spec')
-const { OrcaRuntimeService } = await import('../../orca-runtime-test-mocks.spec')
+await import('../../occ-runtime-test-mocks.spec')
+await import('../../occ-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('../../occ-runtime-test-mocks.spec')
 const {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   TEST_WORKTREE_PATH,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('../../orca-runtime-test-fixtures.spec')
+} = await import('../../occ-runtime-test-fixtures.spec')
 
 type Listed = { id: string; incarnationId: string; connected: boolean }
 
@@ -23,7 +23,7 @@ function restartedHost(stamp: string, listedByHost: () => Listed[]) {
       terminalPtyIncarnationsByPaneKey: { [`host-tab:${HEADLESS_LEAF_ID}`]: stamp }
     })
   )
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   runtime.setPtyController({
     write: () => true,
     kill: () => true,

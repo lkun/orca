@@ -22,7 +22,7 @@ const mocks = vi.hoisted(() => ({
 }))
 
 function updatePlan(): BundledSkillPlan {
-  return planOf([sharedEntry('orca-cli', 'update')])
+  return planOf([sharedEntry('occ-cli', 'update')])
 }
 
 vi.mock('@/hooks/useSkillFreshness', () => ({
@@ -121,7 +121,7 @@ describe('SkillFreshnessNudge', () => {
 
   it('counts only skills the plan would update', async () => {
     mocks.plan = planOf([
-      sharedEntry('orca-cli', 'update'),
+      sharedEntry('occ-cli', 'update'),
       sharedEntry('computer-use', 'keep'),
       planEntry('orchestration', [
         planOp('keep', '/home/u/.agents/skills/orchestration'),
@@ -132,14 +132,14 @@ describe('SkillFreshnessNudge', () => {
 
     expect(mocks.toastInfo).toHaveBeenCalledTimes(1)
     expect(mocks.toastInfo.mock.calls[0]?.[0]).toBe('An installed OCC skill is out of date')
-    expect(mocks.toastInfo.mock.calls[0]?.[1].description).toContain('Update orca-cli so')
+    expect(mocks.toastInfo.mock.calls[0]?.[1].description).toContain('Update occ-cli so')
   })
 
   it('raises no nudge when the plan only links a newly detected agent', async () => {
     mocks.plan = planOf([
-      planEntry('orca-cli', [
-        planOp('keep', '/home/u/.agents/skills/orca-cli'),
-        planOp('link', '/home/u/.claude/skills/orca-cli')
+      planEntry('occ-cli', [
+        planOp('keep', '/home/u/.agents/skills/occ-cli'),
+        planOp('link', '/home/u/.claude/skills/occ-cli')
       ])
     ])
     await renderNudge()
@@ -162,7 +162,7 @@ describe('SkillFreshnessNudge', () => {
     await renderNudge()
     const options = mocks.toastInfo.mock.calls[0]?.[1]
 
-    mocks.plan = planOf([sharedEntry('orca-cli', 'keep')])
+    mocks.plan = planOf([sharedEntry('occ-cli', 'keep')])
     await rerenderNudge()
     // Sonner invokes onDismiss for programmatic dismissals on its next render.
     options.onDismiss()
@@ -229,7 +229,7 @@ describe('SkillFreshnessNudge', () => {
 
   it('nudges again when this build ships different bytes', async () => {
     mocks.dismissed = [DISMISSAL_KEY]
-    mocks.plan = planOf([{ ...sharedEntry('orca-cli', 'update'), digest: 'c'.repeat(64) }])
+    mocks.plan = planOf([{ ...sharedEntry('occ-cli', 'update'), digest: 'c'.repeat(64) }])
 
     await renderNudge()
 

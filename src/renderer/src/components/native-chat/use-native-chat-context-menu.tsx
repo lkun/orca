@@ -28,7 +28,7 @@ import { formatOptionalPrimaryShortcutLabel } from '@/hooks/useShortcutLabel'
 import { useAppStore } from '@/store'
 import { isEditableTarget } from '@/lib/editable-target'
 import { findEditablePrimarySelectionPasteTarget } from '@/lib/primary-selection-paste'
-import { NativeChatCopyOrcaSessionIdMenuItem } from './NativeChatCopyOrcaSessionIdMenuItem'
+import { NativeChatCopyOCCSessionIdMenuItem } from './NativeChatCopyOCCSessionIdMenuItem'
 import { NativeChatSelectionQuote } from './NativeChatSelectionQuote'
 import { readNativeChatTranscriptSelection } from './native-chat-quote-selection'
 import { NativeChatPaneMenuItems } from './NativeChatPaneMenuItems'
@@ -73,7 +73,7 @@ type UseNativeChatContextMenuArgs = {
   splitShortcutLabels?: { right: string; down: string }
   chatPane?: { tabId: string; worktreeId: string; groupId: string }
   /** A structured chat tab's OCC session ID; a chat in a terminal pane is that terminal's agent. */
-  resolveOrcaSessionId?: () => Promise<string | null>
+  resolveOCCSessionId?: () => Promise<string | null>
 } & NativeChatContextMenuTargetArgs
 
 export type NativeChatContextMenuTargetArgs = {
@@ -141,7 +141,7 @@ export function useNativeChatContextMenu({
   showTerminalPaneActions = true,
   splitShortcutLabels,
   chatPane,
-  resolveOrcaSessionId,
+  resolveOCCSessionId,
   messageListRef,
   fileLinkContext = null,
   rewind,
@@ -172,7 +172,7 @@ export function useNativeChatContextMenu({
     (target.rewindItemId !== null && rewind !== undefined)
   const hasSessionItems = onFind !== undefined || onHandOff !== undefined || showTerminalPaneActions
   const hasItems =
-    hasEditItems || hasSessionItems || chatPane !== undefined || resolveOrcaSessionId !== undefined
+    hasEditItems || hasSessionItems || chatPane !== undefined || resolveOCCSessionId !== undefined
 
   useEffect(() => {
     if (!enabled) {
@@ -334,15 +334,15 @@ export function useNativeChatContextMenu({
               pane={chatPane}
               leadingSeparator={hasEditItems || hasSessionItems}
               splitShortcutLabels={splitShortcutLabels}
-              resolveOrcaSessionId={resolveOrcaSessionId}
+              resolveOCCSessionId={resolveOCCSessionId}
             />
           ) : null}
           {showTerminalPaneActions ? (
             <NativeChatPaneMenuItems actions={actions} splitShortcutLabels={splitShortcutLabels} />
-          ) : !chatPane && resolveOrcaSessionId ? (
+          ) : !chatPane && resolveOCCSessionId ? (
             <>
               {hasEditItems || hasSessionItems ? <DropdownMenuSeparator /> : null}
-              <NativeChatCopyOrcaSessionIdMenuItem resolveOrcaSessionId={resolveOrcaSessionId} />
+              <NativeChatCopyOCCSessionIdMenuItem resolveOCCSessionId={resolveOCCSessionId} />
             </>
           ) : null}
         </DropdownMenuContent>

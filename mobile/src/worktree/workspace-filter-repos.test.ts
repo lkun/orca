@@ -8,7 +8,7 @@ function row(worktreeId: string, repoId: string, hostId: Worktree['hostId']): Wo
     worktreeId,
     repoId,
     hostId,
-    repo: 'orca',
+    repo: 'occ',
     branch: 'feature',
     displayName: worktreeId,
     path: `/tmp/${worktreeId}`,
@@ -24,18 +24,18 @@ describe('the repo filter', () => {
   it("lists each host's same-named repo separately, by id, as the desktop's filter does", () => {
     const repos = buildFilterRepos(
       [
-        { id: 'local-orca', displayName: 'orca', path: '/Users/me/orca', badgeColor: '#111111' },
+        { id: 'local-occ', displayName: 'occ', path: '/Users/me/occ', badgeColor: '#111111' },
         {
-          id: 'm4-orca',
-          displayName: 'orca',
-          path: '/Users/m4air/orca/orca',
+          id: 'm4-occ',
+          displayName: 'occ',
+          path: '/Users/m4air/occ/occ',
           executionHostId: 'runtime:m4air'
         },
         { id: 'assets', displayName: 'design-assets', path: '/Users/me/design-assets' },
         {
-          id: 'local-orca',
-          displayName: 'orca',
-          path: '/srv/orca',
+          id: 'local-occ',
+          displayName: 'occ',
+          path: '/srv/occ',
           executionHostId: 'runtime:other'
         }
       ],
@@ -43,10 +43,10 @@ describe('the repo filter', () => {
     )
 
     expect(repos.map(({ key, id, name }) => ({ key, id, name }))).toEqual([
-      { key: 'local|local-orca', id: 'local-orca', name: 'orca' },
-      { key: 'runtime:m4air|m4-orca', id: 'm4-orca', name: 'orca' },
+      { key: 'local|local-occ', id: 'local-occ', name: 'occ' },
+      { key: 'runtime:m4air|m4-occ', id: 'm4-occ', name: 'occ' },
       { key: 'local|assets', id: 'assets', name: 'design-assets' },
-      { key: 'runtime:other|local-orca', id: 'local-orca', name: 'orca' }
+      { key: 'runtime:other|local-occ', id: 'local-occ', name: 'occ' }
     ])
     expect(repos[0]?.color).toBe('#111111')
   })
@@ -54,17 +54,17 @@ describe('the repo filter', () => {
   it('lists the repos the rows name until a catalog answers, still one per repo id', () => {
     const repos = buildFilterRepos(
       [],
-      [row('a', 'local-orca', 'local'), row('b', 'm4-orca', 'runtime:m4air')]
+      [row('a', 'local-occ', 'local'), row('b', 'm4-occ', 'runtime:m4air')]
     )
 
-    expect(repos.map((repo) => repo.id)).toEqual(['local-orca', 'm4-orca'])
+    expect(repos.map((repo) => repo.id)).toEqual(['local-occ', 'm4-occ'])
   })
 
   it('filters by the picked repo id, leaving the same-named repo on another host out', () => {
-    const rows = [row('a', 'local-orca', 'local'), row('b', 'm4-orca', 'runtime:m4air')]
+    const rows = [row('a', 'local-occ', 'local'), row('b', 'm4-occ', 'runtime:m4air')]
 
     expect(
-      filterWorktrees(rows, { ...NO_WORKSPACE_ROW_FILTERS, filterRepoIds: ['m4-orca'] }, '').map(
+      filterWorktrees(rows, { ...NO_WORKSPACE_ROW_FILTERS, filterRepoIds: ['m4-occ'] }, '').map(
         (w) => w.worktreeId
       )
     ).toEqual(['b'])

@@ -265,11 +265,11 @@ describe('effective connection cap = min(configured, reported)', () => {
 
     const events = warn.mock.calls
       .map((call) => String(call[0]))
-      .filter((line) => line.includes('orca_relay_cell_reported_cap_below_configured'))
+      .filter((line) => line.includes('occ_relay_cell_reported_cap_below_configured'))
       .map((line) => JSON.parse(line) as unknown)
     expect(events).toEqual([
       {
-        event: 'orca_relay_cell_reported_cap_below_configured',
+        event: 'occ_relay_cell_reported_cap_below_configured',
         cellId: configured.id,
         reportedHardCap: 1_000,
         configuredHardCap: 3_000

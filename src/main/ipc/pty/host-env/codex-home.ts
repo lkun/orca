@@ -26,7 +26,7 @@ export function shouldSkipCodexHomeEnvForWindowsShell(
 }
 
 // System-default real-home launches must remove inherited OCC overrides when no managed home is selected.
-export function shouldStripInheritedOrcaCodexHome(args: {
+export function shouldStripInheritedOCCCodexHome(args: {
   target: CodexAccountSelectionTarget
   selectedCodexHomePath: string | null
   skipCodexHomeEnv: boolean
@@ -37,21 +37,21 @@ export function shouldStripInheritedOrcaCodexHome(args: {
   )
 }
 
-export const CODEX_HOME_ENV_KEYS = ['CODEX_HOME', 'ORCA_CODEX_HOME'] as const
+export const CODEX_HOME_ENV_KEYS = ['CODEX_HOME', 'OCC_CODEX_HOME'] as const
 
 // Remove only overrides matching OCC's private marker, then drop the marker so wrappers cannot restore them; preserve user CODEX_HOME (#8606).
-export function stripInheritedOrcaCodexHomeOverride(baseEnv: Record<string, string>): void {
-  for (const key of getLocalOrcaCodexHomeEnvKeysToDelete(baseEnv)) {
+export function stripInheritedOCCCodexHomeOverride(baseEnv: Record<string, string>): void {
+  for (const key of getLocalOCCCodexHomeEnvKeysToDelete(baseEnv)) {
     delete baseEnv[key]
   }
 }
 
 // Local spawns share this environment; persistent daemons must compare their own inherited values.
-export function getLocalOrcaCodexHomeEnvKeysToDelete(env: Record<string, string>): string[] {
-  const inheritedOrcaOverride = env.ORCA_CODEX_HOME ?? process.env.ORCA_CODEX_HOME
+export function getLocalOCCCodexHomeEnvKeysToDelete(env: Record<string, string>): string[] {
+  const inheritedOCCOverride = env.OCC_CODEX_HOME ?? process.env.OCC_CODEX_HOME
   const inheritedCodexHome = env.CODEX_HOME ?? process.env.CODEX_HOME
-  const keysToDelete = ['ORCA_CODEX_HOME']
-  if (inheritedOrcaOverride && inheritedCodexHome === inheritedOrcaOverride) {
+  const keysToDelete = ['OCC_CODEX_HOME']
+  if (inheritedOCCOverride && inheritedCodexHome === inheritedOCCOverride) {
     keysToDelete.push('CODEX_HOME')
   }
   return keysToDelete

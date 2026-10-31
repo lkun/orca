@@ -1,12 +1,12 @@
 import type { OrchestrationCompatibilityEvidence } from '../../../../../../shared/orchestration-compatibility-evidence'
 import type { OrchestrationSessionCaller } from '../../../../orchestration/orchestration-caller-identity'
 import type { MessageRow } from '../../../../orchestration/types'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { assertCallerHandleMatchesEvidence, orchestrationCallerIdentity } from '../runs/run-scope'
 
 /** The caller's Dispatch when a helper asked this question of it; the Run answers otherwise. */
 export function helperQuestionAnswerer(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   args: {
     question: MessageRow
     from: string | undefined

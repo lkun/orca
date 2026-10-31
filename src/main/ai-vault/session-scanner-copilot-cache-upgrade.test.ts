@@ -45,7 +45,7 @@ function markPreviousVersion(path: string, version: number): void {
 }
 
 it('repairs unchanged Copilot metadata and search messages cached before the parser fix', async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-copilot-cache-upgrade-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-copilot-cache-upgrade-'))
   const path = join(root, 'events.jsonl')
   const prompt = 'fix the login bug'
   const transformed = '<current_datetime>2026-10-19</current_datetime> injected context'

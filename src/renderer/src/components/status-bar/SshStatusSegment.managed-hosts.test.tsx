@@ -122,7 +122,7 @@ beforeEach(() => {
     runtimeEnvironments: [
       {
         ...environment('server-openclaw', 'openclaw'),
-        orcadDeployment: {
+        occdDeployment: {
           sshTargetId: 'ssh-openclaw',
           sshTargetGeneration: 1,
           localPort: 7001,
@@ -267,10 +267,10 @@ describe('the status menu for a managed SSH host', () => {
   })
 
   it('names the managed row after its SSH host, honouring a rename saved on the SSH id', () => {
-    state.runtimeEnvironments[0] = { ...state.runtimeEnvironments[0], name: 'orcad-ssh-openclaw' }
+    state.runtimeEnvironments[0] = { ...state.runtimeEnvironments[0], name: 'occd-ssh-openclaw' }
     render(<SshStatusSegment compact={false} iconOnly={false} />)
     expect(screen.getAllByText('openclaw')).toHaveLength(1)
-    expect(screen.queryByText('orcad-ssh-openclaw')).toBeNull()
+    expect(screen.queryByText('occd-ssh-openclaw')).toBeNull()
     cleanup()
     state.settings = {
       ...getDefaultSettings('/home/test'),

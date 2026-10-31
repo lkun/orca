@@ -12,7 +12,7 @@ const OTHER = 'b'.repeat(32)
 let root: string
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-extension-sync-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-extension-sync-'))
 })
 afterEach(() => {
   rmSync(root, { recursive: true, force: true })

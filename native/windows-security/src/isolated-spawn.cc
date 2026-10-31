@@ -124,7 +124,7 @@ Napi::Value SpawnDetachedIsolated(const Napi::CallbackInfo& info) {
   result.Set("breakawayDenied", Napi::Boolean::New(env, breakawayDenied));
   auto* watch = new ExitWatch{created.hProcess};
   watch->onExit = Napi::ThreadSafeFunction::New(env, info[4].As<Napi::Function>(),
-                                                "orcaIsolatedSpawnExit", 0, 1);
+                                                "occIsolatedSpawnExit", 0, 1);
   watch->onExit.Unref(env);
   if (!RegisterWaitForSingleObject(&watch->wait, created.hProcess, OnProcessExited, watch, INFINITE,
                                    WT_EXECUTEONLYONCE)) {

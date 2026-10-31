@@ -5,8 +5,8 @@ import { join } from 'node:path'
 /** launchd label prefix `occ serve service install` writes; only those supervisors register. */
 export const SERVE_LAUNCHD_LABEL_PREFIX = 'com.lkun.occ.serve'
 export const SERVE_COORDINATION_PROTOCOL = 1
-/** orcad restarts its own browser helper; under the serve prefix so older installers park it too. */
-export const ORCAD_BROWSER_PARK_LABEL = `${SERVE_LAUNCHD_LABEL_PREFIX}.orcad-browser`
+/** occd restarts its own browser helper; under the serve prefix so older installers park it too. */
+export const OCCD_BROWSER_PARK_LABEL = `${SERVE_LAUNCHD_LABEL_PREFIX}.occd-browser`
 /** A registration this stale belongs to a supervisor that is gone or wedged. */
 export const SERVE_SUPERVISOR_HEARTBEAT_STALE_MS = 15_000
 export const SERVE_SUPERVISOR_HEARTBEAT_MS = 3_000
@@ -40,7 +40,7 @@ export type ServeParkRecord = {
 
 /** Electron's default macOS userData base, shared by every profile of one user. */
 export function macCoordinationRoot(homeDir: string): string {
-  return join(homeDir, 'Library', 'Application Support', 'orca')
+  return join(homeDir, 'Library', 'Application Support', 'occ')
 }
 
 export function bundleCoordinationDir(realBundlePath: string, macUserDataRoot: string): string {

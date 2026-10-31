@@ -1,7 +1,7 @@
 import { createHash, createHmac } from 'node:crypto'
 import { createServer, type Server } from 'node:http'
 import { createServer as createNetServer } from 'node:net'
-import { buildHostProofMacInput, HOST_CHALLENGE_PLAINTEXT_DOMAIN } from '@orca-cloud/relay-contract'
+import { buildHostProofMacInput, HOST_CHALLENGE_PLAINTEXT_DOMAIN } from '@occ-cloud/relay-contract'
 import { exportJWK, generateKeyPair, SignJWT } from 'jose'
 import nacl from 'tweetnacl'
 import WebSocket from 'ws'
@@ -81,7 +81,7 @@ export async function startReserveModeCell(input: {
     publicUrl: relayUrl,
     cellUrl: relayUrl,
     authIssuer: issuer,
-    authAudience: 'orca-relay',
+    authAudience: 'occ-relay',
     jwksUrl: issuer,
     assignmentSigningKey: new Uint8Array(32),
     role: 'cell',
@@ -121,7 +121,7 @@ export async function startReserveModeCell(input: {
     const token = await new SignJWT({ prof: 'profile-1', org: 'org-1', purpose: 'host-control', relayHostId: hostId })
       .setProtectedHeader({ alg: 'ES256', kid: 'test-key' })
       .setIssuer(issuer)
-      .setAudience('orca-relay')
+      .setAudience('occ-relay')
       .setSubject('user-1')
       .setIssuedAt()
       .setExpirationTime('30m')

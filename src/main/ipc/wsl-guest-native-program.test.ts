@@ -6,8 +6,8 @@ import { resolveCliCommand } from '../../shared/node-cli-command-resolution'
 import {
   _resetWindowsCopyVerdictsForTests,
   guestNativeSpawnEnv,
-  isWslHostOrcadProcess,
-  ORCAD_WSL_HOST_ENV,
+  isWslHostOCCdProcess,
+  OCCD_WSL_HOST_ENV,
   resolveGuestNativeProgram
 } from './wsl-guest-windows-drive-path'
 
@@ -24,7 +24,7 @@ function install(dir: string): string {
 }
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-guest-native-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-guest-native-'))
   native = join(root, 'home', '.local', 'bin')
   // Stands in for a Windows drive mount such as /mnt/c.
   drive = join(root, 'c')
@@ -113,17 +113,17 @@ describe('guestNativeSpawnEnv', () => {
 })
 
 describe('the WSL-host gate', () => {
-  const marked = { [ORCAD_WSL_HOST_ENV]: '1', WSL_DISTRO_NAME: 'Ubuntu' }
+  const marked = { [OCCD_WSL_HOST_ENV]: '1', WSL_DISTRO_NAME: 'Ubuntu' }
 
-  it('stays off on macOS, the Windows desktop, native Linux and SSH-host orcad', () => {
-    expect(isWslHostOrcadProcess(marked, 'darwin', () => true)).toBe(false)
-    expect(isWslHostOrcadProcess(marked, 'win32', () => true)).toBe(false)
-    expect(isWslHostOrcadProcess({}, 'linux', () => false)).toBe(false)
-    // An SSH host's orcad is launched with nohup and never gets the WSL-host marker.
-    expect(isWslHostOrcadProcess({ ORCA_USER_DATA: '/srv/orca' }, 'linux', () => false)).toBe(false)
+  it('stays off on macOS, the Windows desktop, native Linux and SSH-host occd', () => {
+    expect(isWslHostOCCdProcess(marked, 'darwin', () => true)).toBe(false)
+    expect(isWslHostOCCdProcess(marked, 'win32', () => true)).toBe(false)
+    expect(isWslHostOCCdProcess({}, 'linux', () => false)).toBe(false)
+    // An SSH host's occd is launched with nohup and never gets the WSL-host marker.
+    expect(isWslHostOCCdProcess({ OCC_USER_DATA: '/srv/occ' }, 'linux', () => false)).toBe(false)
   })
 
-  it('turns on only for orcad launched as a WSL host inside the guest', () => {
-    expect(isWslHostOrcadProcess(marked, 'linux', () => false)).toBe(true)
+  it('turns on only for occd launched as a WSL host inside the guest', () => {
+    expect(isWslHostOCCdProcess(marked, 'linux', () => false)).toBe(true)
   })
 })

@@ -1,6 +1,6 @@
-// Pair a WSL-host orcad and the desktop across builds: the account env a newer desktop adds for a
-// WSL host must reach an older orcad as params it accepts, and the Windows-drive refusal must read
-// as a plain error to an older desktop while a newer desktop reads an older orcad's errors as before.
+// Pair a WSL-host occd and the desktop across builds: the account env a newer desktop adds for a
+// WSL host must reach an older occd as params it accepts, and the Windows-drive refusal must read
+// as a plain error to an older desktop while a newer desktop reads an older occd's errors as before.
 // Remove the capability from the released list so rolling releases cannot erase the downgrade case.
 
 import { beforeAll, describe, expect, it } from 'vitest'
@@ -13,9 +13,9 @@ import {
 import type { RpcAnyMethodDeclaration, RpcRequest } from '../../../src/main/runtime/rpc/core'
 import { mapRuntimeError } from '../../../src/main/runtime/rpc/errors'
 import {
-  withWslOrcadAccountEnv,
-  type WslOrcadAccountEnvDependencies
-} from '../../../src/main/wsl/wsl-orcad-account-env'
+  withWslOCCdAccountEnv,
+  type WslOCCdAccountEnvDependencies
+} from '../../../src/main/wsl/wsl-occd-account-env'
 import {
   RuntimeRpcCallError,
   unwrapRuntimeRpcResult
@@ -30,7 +30,7 @@ import {
 const SUITE_TIMEOUT_MS = 180_000
 const WSL_ENVIRONMENT = 'wsl:ubuntu'
 const OPERATION_ID = `1793000000000-${'a'.repeat(32)}`
-const CODEX_HOME = '/home/u/.orca/codex-b'
+const CODEX_HOME = '/home/u/.occ/codex-b'
 
 type ParseParams = (
   request: RpcRequest,
@@ -79,7 +79,7 @@ beforeAll(async () => {
   olderDesktopUnwrap = releaseModuleExport<Unwrap>(result, 'unwrapRuntimeRpcResult')
 }, SUITE_TIMEOUT_MS)
 
-function accountDependencies(): WslOrcadAccountEnvDependencies {
+function accountDependencies(): WslOCCdAccountEnvDependencies {
   return {
     // A Codex launch never prepares a Claude account.
     prepareClaudeLaunch: async () => {
@@ -98,7 +98,7 @@ async function sentByNewerDesktop(
   params: Record<string, unknown>,
   capabilities: readonly string[]
 ): Promise<unknown> {
-  const routed = await withWslOrcadAccountEnv(
+  const routed = await withWslOCCdAccountEnv(
     {
       environmentId: WSL_ENVIRONMENT,
       method,
@@ -115,8 +115,8 @@ async function sentByNewerDesktop(
   return routed.params
 }
 
-describe('a newer desktop and an older WSL-host orcad', () => {
-  it('withholds the agent session account env the older orcad never advertised', async () => {
+describe('a newer desktop and an older WSL-host occd', () => {
+  it('withholds the agent session account env the older occd never advertised', async () => {
     const params = {
       clientOperationId: OPERATION_ID,
       worktree: 'path:/home/u/app',
@@ -135,7 +135,7 @@ describe('a newer desktop and an older WSL-host orcad', () => {
     ).toEqual({ ...params, accountEnv: { CODEX_HOME } })
   })
 
-  it('sends a terminal agent launch the older orcad accepts with its account home', async () => {
+  it('sends a terminal agent launch the older occd accepts with its account home', async () => {
     const params = {
       agent: 'codex',
       target: { kind: 'existing', worktree: 'path:/home/u/app' }
@@ -147,7 +147,7 @@ describe('a newer desktop and an older WSL-host orcad', () => {
     })
   })
 
-  it("reads the older orcad's failures as plain errors, with no drive refusal to act on", () => {
+  it("reads the older occd's failures as plain errors, with no drive refusal to act on", () => {
     const response = olderHost.mapError('req-1', { runtimeId: 'wsl-runtime' }, new Error('denied'))
     let thrown: unknown
     try {
@@ -163,7 +163,7 @@ describe('a newer desktop and an older WSL-host orcad', () => {
   })
 })
 
-describe('an older desktop and a newer WSL-host orcad', () => {
+describe('an older desktop and a newer WSL-host occd', () => {
   it('shows the Windows-drive refusal as the readable runtime error it already handles', () => {
     const response = mapRuntimeError(
       'req-1',

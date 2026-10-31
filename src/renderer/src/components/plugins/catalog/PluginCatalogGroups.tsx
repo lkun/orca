@@ -62,7 +62,7 @@ export type CatalogCardHandlers = {
   openEntry: (pluginKey: string) => void
   installedHandlers: InstalledRowHandlers
   busyPluginKeys: ReadonlySet<string>
-  orcaVersion: string | null
+  occVersion: string | null
   /** A catalog refresh is in flight; installs wait for it. */
   refreshing: boolean
 }
@@ -132,7 +132,7 @@ export function CatalogCard({
         <PluginCardAction
           entry={entry}
           phase={phase}
-          orcaVersion={handlers.orcaVersion}
+          occVersion={handlers.occVersion}
           refreshing={handlers.refreshing}
           onInstall={() => {
             if (listing) {

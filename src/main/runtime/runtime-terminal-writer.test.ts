@@ -165,8 +165,8 @@ describe('requested terminal write settlement', () => {
 
 it.each([
   ['desktop', { kind: 'desktop' }, { id: 'desktop', type: 'desktop' }],
-  ['local CLI', { kind: 'local-cli' }, { id: 'orca-cli', type: 'desktop' }],
-  ['paired CLI', { kind: 'paired-device', deviceId: 'cli' }, { id: 'orca-cli', type: 'desktop' }],
+  ['local CLI', { kind: 'local-cli' }, { id: 'occ-cli', type: 'desktop' }],
+  ['paired CLI', { kind: 'paired-device', deviceId: 'cli' }, { id: 'occ-cli', type: 'desktop' }],
   ['orchestration', undefined, undefined],
   ['mobile', { kind: 'paired-device', deviceId: 'phone' }, { id: 'phone', type: 'mobile' }],
   ['legacy', { kind: 'paired-device', deviceId: 'old' }, undefined],

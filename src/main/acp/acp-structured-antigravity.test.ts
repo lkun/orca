@@ -87,7 +87,7 @@ it('signs a first chat in, asks in default mode, and answers a question with one
 })
 
 it('launches on its own private folder with file sign-in and no other Google credentials', async () => {
-  const stateDirectory = await mkdtemp(join(tmpdir(), 'orca-antigravity-'))
+  const stateDirectory = await mkdtemp(join(tmpdir(), 'occ-antigravity-'))
   onTestFinished(() => rm(stateDirectory, { recursive: true, force: true }))
   const folder = join(stateDirectory, 'antigravity-chat')
   const user = {

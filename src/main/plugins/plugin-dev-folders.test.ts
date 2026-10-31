@@ -21,7 +21,7 @@ function devPlugin(rootDir: string, raw: Record<string, unknown>): ValidDiscover
     publisher: 'acme',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: '>=1.4.245' },
+    engines: { occ: '>=1.4.245' },
     ...raw
   })
   if (!parsed.ok) {

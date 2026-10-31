@@ -3,17 +3,17 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { expect, it } from 'vitest'
 import { build } from 'vite'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { electronViteConfig } from '../../electron.vite.config'
 
 it('keeps main code and asset paths working after a CLI build replaces its public entry', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'orca-main-entry-facade-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-main-entry-facade-'))
   try {
     await writeFile(join(root, 'package.json'), '{"type":"commonjs"}')
     await writeFile(join(root, 'tracker.ts'), 'export const createTracker = () => ({ count: 0 })')
     await writeFile(
       join(root, 'boot-label.ts'),
-      'export const getBootLabel = () => process.env.ORCA_FIXTURE_BOOT_LABEL || "boot"'
+      'export const getBootLabel = () => process.env.OCC_FIXTURE_BOOT_LABEL || "boot"'
     )
     await writeFile(
       join(root, 'late.ts'),
@@ -52,7 +52,7 @@ it('keeps main code and asset paths working after a CLI build replaces its publi
     const result = await runProcess({
       program: process.execPath,
       args: [join(root, 'dist', 'index.js')],
-      env: { ...process.env, ORCA_FIXTURE_BOOT_LABEL: 'fixture-boot' }
+      env: { ...process.env, OCC_FIXTURE_BOOT_LABEL: 'fixture-boot' }
     })
     expect(result.code, result.stderr).toBe(0)
     expect(JSON.parse(await readFile(join(root, 'dist', 'result.json'), 'utf8'))).toEqual({

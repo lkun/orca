@@ -27,7 +27,7 @@ const validSignature = {
 }
 
 function withTempFile(callback) {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-inner-signature-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-inner-signature-'))
   const filePath = join(dir, 'OCC.exe')
   writeFileSync(filePath, 'placeholder executable')
 
@@ -39,25 +39,25 @@ function withTempFile(callback) {
 }
 
 describe('verify-windows-inner-signature', () => {
-  const originalExpectedSigners = process.env.ORCA_WINDOWS_EXPECTED_SIGNERS
-  const originalExpectedThumbprints = process.env.ORCA_WINDOWS_EXPECTED_THUMBPRINTS
+  const originalExpectedSigners = process.env.OCC_WINDOWS_EXPECTED_SIGNERS
+  const originalExpectedThumbprints = process.env.OCC_WINDOWS_EXPECTED_THUMBPRINTS
 
   beforeEach(() => {
-    delete process.env.ORCA_WINDOWS_EXPECTED_SIGNERS
-    delete process.env.ORCA_WINDOWS_EXPECTED_THUMBPRINTS
+    delete process.env.OCC_WINDOWS_EXPECTED_SIGNERS
+    delete process.env.OCC_WINDOWS_EXPECTED_THUMBPRINTS
   })
 
   afterEach(() => {
     if (originalExpectedSigners === undefined) {
-      delete process.env.ORCA_WINDOWS_EXPECTED_SIGNERS
+      delete process.env.OCC_WINDOWS_EXPECTED_SIGNERS
     } else {
-      process.env.ORCA_WINDOWS_EXPECTED_SIGNERS = originalExpectedSigners
+      process.env.OCC_WINDOWS_EXPECTED_SIGNERS = originalExpectedSigners
     }
 
     if (originalExpectedThumbprints === undefined) {
-      delete process.env.ORCA_WINDOWS_EXPECTED_THUMBPRINTS
+      delete process.env.OCC_WINDOWS_EXPECTED_THUMBPRINTS
     } else {
-      process.env.ORCA_WINDOWS_EXPECTED_THUMBPRINTS = originalExpectedThumbprints
+      process.env.OCC_WINDOWS_EXPECTED_THUMBPRINTS = originalExpectedThumbprints
     }
   })
 
@@ -184,7 +184,7 @@ describe('verify-windows-inner-signature', () => {
       expect.objectContaining({
         encoding: 'utf8',
         env: expect.objectContaining({
-          ORCA_WINDOWS_INNER_EXECUTABLE: 'C:\\Path With Spaces\\OCC.exe'
+          OCC_WINDOWS_INNER_EXECUTABLE: 'C:\\Path With Spaces\\OCC.exe'
         })
       })
     )

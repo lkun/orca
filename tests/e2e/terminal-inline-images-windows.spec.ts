@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForSessionReady } from './helpers/store'
 import {
   execInTerminal,
@@ -24,29 +24,29 @@ test.skip(process.platform !== 'win32', 'Native Windows and WSL PTY coverage')
 for (const runtime of ['native', 'wsl'] as const) {
   for (const acceleration of ['off', 'on'] as const) {
     test(`@headful ${runtime}, ${acceleration}: PTY images and Kitty placeholders render on Windows`, async ({
-      orcaPage,
+      occPage,
       testRepoPath
     }, testInfo) => {
-      await waitForSessionReady(orcaPage)
-      await ensureTerminalVisible(orcaPage)
-      await orcaPage.evaluate(async (policy) => {
+      await waitForSessionReady(occPage)
+      await ensureTerminalVisible(occPage)
+      await occPage.evaluate(async (policy) => {
         await window.__store!.getState().updateSettings({ terminalGpuAcceleration: policy })
       }, acceleration)
       if (runtime === 'wsl') {
-        const distro = await getFirstWslDistro(orcaPage)
+        const distro = await getFirstWslDistro(occPage)
         expect(distro, 'This Windows verification requires an installed WSL distro').not.toBeNull()
         if (!distro) {
           throw new Error('No WSL distro available')
         }
-        await useWslRuntimeForActiveProject(orcaPage, distro)
+        await useWslRuntimeForActiveProject(occPage, distro)
       } else {
-        await orcaPage.evaluate(async () => {
+        await occPage.evaluate(async () => {
           await window
             .__store!.getState()
             .updateSettings({ terminalWindowsShell: 'powershell.exe' })
         })
       }
-      const tabId = await orcaPage.evaluate(() => {
+      const tabId = await occPage.evaluate(() => {
         const state = window.__store!.getState()
         const worktreeId = state.activeWorktreeId
         if (!worktreeId) {
@@ -58,13 +58,13 @@ for (const runtime of ['native', 'wsl'] as const) {
         return tab.id
       })
       await expect(
-        orcaPage.locator(`[data-tab-id="${tabId}"] [data-shell-icon]`).first()
+        occPage.locator(`[data-tab-id="${tabId}"] [data-shell-icon]`).first()
       ).toHaveAttribute('data-shell-icon', runtime === 'wsl' ? 'wsl.exe' : 'powershell.exe')
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      await enableInlineImages(orcaPage)
+      await waitForActiveTerminalManager(occPage, 30_000)
+      await enableInlineImages(occPage)
       await expect
         .poll(() =>
-          orcaPage.evaluate(() => {
+          occPage.evaluate(() => {
             const tab = window.__store!.getState().activeTabId
             const manager = tab && window.__paneManagers?.get(tab)
             const pane = manager && manager.getActivePane()
@@ -72,31 +72,31 @@ for (const runtime of ['native', 'wsl'] as const) {
           })
         )
         .toBe(acceleration === 'on')
-      const ptyId = await waitForActivePanePtyId(orcaPage)
+      const ptyId = await waitForActivePanePtyId(occPage)
       const marker = 'WINDOWS_INLINE_IMAGES_DONE'
       const rawPayload = `${inlineImagePayload(true)}${marker}\r\n`
       const payload = Buffer.from(rawPayload).toString('base64')
       // Stage a file: the command is typed before WSL bash reaches readline, where cooked TTY input truncates ~25KB lines at 4095 bytes.
-      const payloadFile = `.orca-inline-images-${randomUUID()}.bin`
+      const payloadFile = `.occ-inline-images-${randomUUID()}.bin`
       if (runtime === 'wsl') {
         writeFileSync(path.join(testRepoPath, payloadFile), rawPayload)
       }
       const command =
         runtime === 'wsl'
-          ? `cat ${payloadFile}; rm -f ${payloadFile}; printf 'WSL_IMAGE_PROTOCOL=%s\\n' "$ORCA_IMAGE_PROTOCOL"`
+          ? `cat ${payloadFile}; rm -f ${payloadFile}; printf 'WSL_IMAGE_PROTOCOL=%s\\n' "$OCC_IMAGE_PROTOCOL"`
           : nodeTerminalCommand(['-e', `process.stdout.write(Buffer.from('${payload}', 'base64'))`])
-      await execInTerminal(orcaPage, ptyId, command)
-      await waitForTerminalOutput(orcaPage, marker, 30_000)
+      await execInTerminal(occPage, ptyId, command)
+      await waitForTerminalOutput(occPage, marker, 30_000)
       if (runtime === 'wsl') {
-        await waitForTerminalOutput(orcaPage, 'WSL_IMAGE_PROTOCOL=kitty', 30_000)
+        await waitForTerminalOutput(occPage, 'WSL_IMAGE_PROTOCOL=kitty', 30_000)
       }
-      await assertInlineImagePixels(orcaPage, testInfo.outputPath('windows-inline-protocols.png'))
+      await assertInlineImagePixels(occPage, testInfo.outputPath('windows-inline-protocols.png'))
       await assertKittyPlaceholderPixels(
-        orcaPage,
+        occPage,
         testInfo.outputPath('windows-inline-placeholders.png')
       )
       await proveWindowsKittyFileImage(
-        orcaPage,
+        occPage,
         ptyId,
         runtime,
         testInfo.outputPath('windows-file-placeholders.png')

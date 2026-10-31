@@ -55,7 +55,7 @@ afterEach(async () => {
 async function scanInChild(
   limit = 20
 ): Promise<{ reports: AiVaultScanWork[]; final: AiVaultScanWork }> {
-  tempRoot = await mkdtemp(join(tmpdir(), 'orca-scan-strip-'))
+  tempRoot = await mkdtemp(join(tmpdir(), 'occ-scan-strip-'))
   const roots = isolatedScanRoots(tempRoot)
   for (const [index, name] of ['a', 'b', 'c'].entries()) {
     const path = join(roots.claudeProjectsDir, 'project', `${name}.jsonl`)
@@ -232,7 +232,7 @@ describe('Session History scanner totals and service-client progress state', () 
 it.each(['cutoff', 'bucket', 'filtered'] as const)(
   'freezes %s work without changing cold/warm execution',
   async (flow) => {
-    tempRoot = await mkdtemp(join(tmpdir(), 'orca-scan-frozen-'))
+    tempRoot = await mkdtemp(join(tmpdir(), 'occ-scan-frozen-'))
     const roots = isolatedScanRoots(tempRoot)
     for (let index = 0; index < (flow === 'filtered' ? 27 : 6); index++) {
       const timestamp = new Date(Date.UTC(2026, 9, 19) - index * 60_000).toISOString()
@@ -350,7 +350,7 @@ it.each(['cutoff', 'bucket', 'filtered'] as const)(
 it.each([false, true])(
   'counts repeated global visits and database sessions once (scoped=%s)',
   async (scoped) => {
-    tempRoot = await mkdtemp(join(tmpdir(), 'orca-scan-repeat-'))
+    tempRoot = await mkdtemp(join(tmpdir(), 'occ-scan-repeat-'))
     const roots = isolatedScanRoots(tempRoot)
     await writeJsonlFile(join(roots.droidSessionsDir, 'same.jsonl'), [
       { type: 'session_start', id: 'same', cwd: '/repo', timestamp: '2026-10-19T00:00:00Z' },
@@ -406,7 +406,7 @@ it.each([false, true])(
 )
 
 it('does not settle a batch interrupted during its real parser invocation', async () => {
-  tempRoot = await mkdtemp(join(tmpdir(), 'orca-scan-abort-'))
+  tempRoot = await mkdtemp(join(tmpdir(), 'occ-scan-abort-'))
   const roots = isolatedScanRoots(tempRoot)
   await writeJsonlFile(join(roots.claudeProjectsDir, 'project', 'a.jsonl'), [
     { type: 'user', sessionId: 'a', message: { role: 'user', content: 'Generated' } }

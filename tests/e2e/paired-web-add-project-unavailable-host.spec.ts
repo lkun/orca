@@ -1,6 +1,6 @@
 import { openSidebarProjectDialog } from './helpers/sidebar-project-dialog'
 import type { ElectronApplication, Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   launchHeadlessPairedRuntimeHost,
   type HeadlessPairedRuntimeHost
@@ -14,8 +14,8 @@ import {
 import { waitForSessionReady } from './helpers/store'
 
 test.skip(
-  process.env.ORCA_E2E_WEB_CLIENT !== '1',
-  'Run with ORCA_E2E_WEB_CLIENT=1 so the paired web client is built'
+  process.env.OCC_E2E_WEB_CLIENT !== '1',
+  'Run with OCC_E2E_WEB_CLIENT=1 so the paired web client is built'
 )
 
 type HostHealth = 'blocked' | 'disconnected'
@@ -141,11 +141,11 @@ async function runUnavailableHostJourney(args: {
 
 test('disables paired-web Add Project for a blocked or unavailable headed host @headful', async ({
   electronApp,
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(240_000)
-  await waitForSessionReady(orcaPage)
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  await waitForSessionReady(occPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   await runUnavailableHostJourney({
     app: electronApp,
     offer,

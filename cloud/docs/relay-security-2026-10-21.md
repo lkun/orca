@@ -129,12 +129,12 @@ pnpm --dir cloud audit --prod
 osv-scanner scan --lockfile cloud/pnpm-lock.yaml
 gitleaks dir cloud --config cloud/.gitleaks.toml --redact
 semgrep scan --config p/security-audit --config p/javascript --config p/typescript --metrics off --jobs 2 --timeout 60 --timeout-threshold 0 cloud
-docker build --platform linux/amd64 -f cloud/apps/relay/Dockerfile -t orca-relay-security cloud
-trivy image --scanners vuln --ignorefile '' orca-relay-security
+docker build --platform linux/amd64 -f cloud/apps/relay/Dockerfile -t occ-relay-security cloud
+trivy image --scanners vuln --ignorefile '' occ-relay-security
 ```
 
 Cloud Verify additionally builds push and broker (supplying the exact checkout
-SHA as `ORCA_RELAY_FENCE_IMAGE_COMMIT`), resolves the proxy from Terraform, tests
+SHA as `OCC_RELAY_FENCE_IMAGE_COMMIT`), resolves the proxy from Terraform, tests
 nonroot runtime imports and broker tools, and scans installed provider binaries
 after backend-free initialization. It needs no GCP credentials and publishes no
 images. The existing full-history Gitleaks and snapshot TruffleHog checks remain.

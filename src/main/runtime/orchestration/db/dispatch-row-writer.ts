@@ -1,13 +1,13 @@
 import type Database from '../../../sqlite/sync-database'
 import { DISPATCH_PANE_KEY_MATCH_SUFFIX_SQL } from './pane-key-match'
-import type { OrcaSessionId } from '../../../../shared/orca-session-address'
+import type { OCCSessionId } from '../../../../shared/occ-session-address'
 
 /** Centralize live-worker inserts to enforce depth; callers retain transactions, receipts and companion writes. */
 
 export const DISPATCH_CONTEXT_CLAIM_SQL = `INSERT INTO dispatch_contexts (
   id, run_id, task_id, contract_version, launch_token_hash,
-  assignee_handle, assignee_pane_key, assignee_orca_session_id, process_incarnation,
-  creator_dispatch_id, creator_handle, creator_pane_key, creator_orca_session_id,
+  assignee_handle, assignee_pane_key, assignee_occ_session_id, process_incarnation,
+  creator_dispatch_id, creator_handle, creator_pane_key, creator_occ_session_id,
   status, failure_count, depth, dispatched_at
 )
 SELECT ?, run_id, id, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'dispatched', ?, ?, datetime('now')
@@ -37,7 +37,7 @@ WHERE id = ? AND status = 'ready'
 
 const STARTING_DISPATCH_CONTEXT_SQL = `INSERT INTO dispatch_contexts (
    id, run_id, task_id, contract_version, launch_token_hash, retry_of_dispatch_id,
-   creator_dispatch_id, creator_handle, creator_pane_key, creator_orca_session_id, depth, status,
+   creator_dispatch_id, creator_handle, creator_pane_key, creator_occ_session_id, depth, status,
    failure_count, dispatched_at
  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, datetime('now'))`
 
@@ -63,12 +63,12 @@ export function claimDispatchContextRow(
     launchTokenHash: string | null
     assigneeHandle: string
     assigneePaneKey: string | null
-    assigneeOrcaSessionId?: OrcaSessionId | null
+    assigneeOCCSessionId?: OCCSessionId | null
     processIncarnation: string | null
     creatorDispatchId?: string | null
     creatorHandle?: string | null
     creatorPaneKey?: string | null
-    creatorOrcaSessionId?: OrcaSessionId | null
+    creatorOCCSessionId?: OCCSessionId | null
     priorFailures: number
     depth: number
     taskId: string
@@ -84,12 +84,12 @@ export function claimDispatchContextRow(
       params.launchTokenHash,
       params.assigneeHandle,
       params.assigneePaneKey,
-      params.assigneeOrcaSessionId ?? null,
+      params.assigneeOCCSessionId ?? null,
       params.processIncarnation,
       params.creatorDispatchId ?? null,
       params.creatorHandle ?? null,
       params.creatorPaneKey ?? null,
-      params.creatorOrcaSessionId ?? null,
+      params.creatorOCCSessionId ?? null,
       params.priorFailures,
       params.depth,
       params.taskId,
@@ -115,7 +115,7 @@ export function insertStartingDispatchContextRow(
     creatorDispatchId?: string | null
     creatorHandle?: string | null
     creatorPaneKey?: string | null
-    creatorOrcaSessionId?: OrcaSessionId | null
+    creatorOCCSessionId?: OCCSessionId | null
     priorFailures: number
   }
 ): void {
@@ -130,7 +130,7 @@ export function insertStartingDispatchContextRow(
     params.creatorDispatchId ?? null,
     params.creatorHandle ?? null,
     params.creatorPaneKey ?? null,
-    params.creatorOrcaSessionId ?? null,
+    params.creatorOCCSessionId ?? null,
     params.depth,
     params.priorFailures
   )

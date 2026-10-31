@@ -5,8 +5,8 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { HeadlessEmulator } from './headless-emulator'
 
-// Enable with ORCA_TERMINAL_PERF_BENCH=1 to compare full snapshots against incremental checkpoint work.
-const benchEnabled = process.env.ORCA_TERMINAL_PERF_BENCH === '1'
+// Enable with OCC_TERMINAL_PERF_BENCH=1 to compare full snapshots against incremental checkpoint work.
+const benchEnabled = process.env.OCC_TERMINAL_PERF_BENCH === '1'
 
 const COLS = 200
 const ROWS = 50
@@ -180,7 +180,7 @@ describe.skipIf(!benchEnabled)('headless emulator snapshot cost (issue #5096 har
       runScenario('renderer-scale (50k rows)', RENDERER_SCALE_SCROLLBACK, RENDERER_SCALE_SCROLLBACK)
     ]
 
-    writeBenchReport('orca-headless-snapshot-bench.json', {
+    writeBenchReport('occ-headless-snapshot-bench.json', {
       interpretation:
         'snapshotMedianMs stalls the daemon PTY pump per 5s checkpoint; ' +
         'checkpointStringifyMs stalls Electron main (input IPC); ' +
@@ -200,7 +200,7 @@ describe.skipIf(!benchEnabled)('headless emulator snapshot cost (issue #5096 har
     const baseline = await measureStreamInterference(null)
     const withFullSnapshot = await measureStreamInterference(100, 'snapshot')
     const withIncrementalTake = await measureStreamInterference(100, 'incremental-take')
-    writeBenchReport('orca-checkpoint-interference-bench.json', {
+    writeBenchReport('occ-checkpoint-interference-bench.json', {
       interpretation:
         'maxGapMs is the worst chunk-to-chunk forwarding delay on the simulated daemon loop. ' +
         'withFullSnapshot models the old per-5s full serialize; withIncrementalTake models ' +

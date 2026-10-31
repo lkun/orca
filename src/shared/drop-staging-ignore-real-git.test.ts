@@ -21,7 +21,7 @@ async function dropFile(): Promise<void> {
 }
 
 beforeAll(async () => {
-  root = await realpath(await mkdtemp(join(tmpdir(), 'orca-drop-staging-')))
+  root = await realpath(await mkdtemp(join(tmpdir(), 'occ-drop-staging-')))
   fixture = new GitBinaryTestFixture(root)
   await fixture.start()
 })
@@ -50,10 +50,10 @@ describe('drop staging ignore file with the real Git binary', () => {
     expect(await gitStatus()).toBe('')
   })
 
-  // Older SSH builds wrote `.orca/.gitignore` with `!.gitignore`, which matches at any depth.
-  it('keeps drops hidden under the legacy `.orca/.gitignore`', async () => {
+  // Older SSH builds wrote `.occ/.gitignore` with `!.gitignore`, which matches at any depth.
+  it('keeps drops hidden under the legacy `.occ/.gitignore`', async () => {
     await dropFile()
-    await writeFile(join(repo, '.orca', '.gitignore'), '*\n!.gitignore\n')
+    await writeFile(join(repo, '.occ', '.gitignore'), '*\n!.gitignore\n')
 
     expect(await gitStatus()).not.toContain(DROP_STAGING_RELATIVE_DIR)
   })

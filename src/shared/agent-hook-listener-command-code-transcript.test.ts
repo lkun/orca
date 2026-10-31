@@ -25,7 +25,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('normalizes Command Code hooks and reads turn text from the transcript', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-command-code-transcript-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-command-code-transcript-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     try {
       writeFileSync(
@@ -164,7 +164,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('reads newline-heavy Command Code transcripts without line-array splitting', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-command-code-large-transcript-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-command-code-large-transcript-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     try {
       const filler = Array.from({ length: 6_000 }, (_value, index) =>
@@ -228,7 +228,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('reads the last assistant message behind an oversized line without quadratic copying', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-assistant-huge-line-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-assistant-huge-line-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     const originalConcat = Buffer.concat
     let concatenatedBytes = 0
@@ -277,7 +277,7 @@ describe('shared agent-hook-listener', () => {
 
   // Backward scanning must preserve boundary-spanning prompts, latest-user selection and absolute interaction offsets.
   it('reads a Command Code prompt that straddles the backward-scan chunk boundary', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-command-code-chunk-straddle-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-command-code-chunk-straddle-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     try {
       const promptLine = JSON.stringify({
@@ -331,7 +331,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('reads a prompt behind one oversized line without quadratic carry copying', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-command-code-huge-line-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-command-code-huge-line-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     const originalConcat = Buffer.concat
     let concatenatedBytes = 0
@@ -383,7 +383,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('reads a Command Code prompt line that spans several read blocks', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-command-code-long-line-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-command-code-long-line-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     try {
       // Prompts exceeding 64KiB require stitching blocks with no newline.
@@ -424,7 +424,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('ignores a Command Code prompt older than the transcript scan cap', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-command-code-over-cap-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-command-code-over-cap-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     try {
       // Put the only user line beyond 4MB so removing the read cap fails.
@@ -484,7 +484,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('resolves the last Command Code prompt, not an earlier one', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-command-code-last-prompt-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-command-code-last-prompt-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     try {
       writeFileSync(
@@ -522,7 +522,7 @@ describe('shared agent-hook-listener', () => {
   })
 
   it('keys the Command Code interaction by the absolute prompt line offset', () => {
-    const tmpDir = mkdtempSync(join(tmpdir(), 'orca-command-code-offset-'))
+    const tmpDir = mkdtempSync(join(tmpdir(), 'occ-command-code-offset-'))
     const transcriptPath = join(tmpDir, 'transcript.jsonl')
     try {
       const prompt = JSON.stringify({

@@ -163,7 +163,7 @@ describe('terminal.sendText panel surface', () => {
   it('refuses a sandboxed panel even with terminal:send granted', async () => {
     const { delegate, services } = createTerminalHarness(['term-1'])
     const outcome = await executePluginHostCall({
-      pluginId: 'orca-samples.demo',
+      pluginId: 'occ-samples.demo',
       method: 'terminal.sendText',
       params: { terminalId: 'term-1', text: 'echo hi', enter: true },
       surface: 'panel',

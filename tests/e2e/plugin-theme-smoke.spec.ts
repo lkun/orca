@@ -7,7 +7,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   disablePluginSystem,
   editorTokenColor,
@@ -21,14 +21,14 @@ const THEME_KEYWORD = 'rgb(255, 122, 217)'
 async function writeThemePlugin(root: string): Promise<void> {
   await mkdir(join(root, 'icons'), { recursive: true })
   await writeFile(
-    join(root, 'orca-plugin.json'),
+    join(root, 'occ-plugin.json'),
     JSON.stringify({
       manifestVersion: 1,
       id: 'theme-smoke',
       publisher: 'samples',
       name: 'Theme Smoke',
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       contributes: {
         themes: [{ id: 'dusk', title: 'Smoke Dusk', path: 'app.json' }],
@@ -76,62 +76,62 @@ const background = (page: Page): Promise<string> =>
   page.evaluate(() => document.documentElement.style.getPropertyValue('--background'))
 
 test('plugin themes apply live and fall back when the plugin goes away', async ({
-  orcaPage,
+  occPage,
   seededRepoPath
 }) => {
-  const pluginRoot = await mkdtemp(join(tmpdir(), 'orca-theme-smoke-'))
-  const themeBefore = await orcaPage.evaluate(() => window.__store?.getState().settings?.theme)
+  const pluginRoot = await mkdtemp(join(tmpdir(), 'occ-theme-smoke-'))
+  const themeBefore = await occPage.evaluate(() => window.__store?.getState().settings?.theme)
   try {
     await writeThemePlugin(pluginRoot)
-    await enableDevPlugins(orcaPage, [pluginRoot])
-    await openAppearance(orcaPage)
+    await enableDevPlugins(occPage, [pluginRoot])
+    await openAppearance(occPage)
 
-    await orcaPage
+    await occPage
       .getByRole('radiogroup', { name: 'Theme', exact: true })
       .getByRole('radio', { name: 'Dark', exact: true })
       .click()
-    await choose(orcaPage, 'Dark theme', 'Smoke Dusk')
-    await expect.poll(() => background(orcaPage)).toBe('#1b1430')
+    await choose(occPage, 'Dark theme', 'Smoke Dusk')
+    await expect.poll(() => background(occPage)).toBe('#1b1430')
     // The left sidebar's surface, its only edge against the canvas, follows the theme.
     await expect
       .poll(() =>
-        orcaPage.evaluate(() =>
+        occPage.evaluate(() =>
           document.documentElement.style.getPropertyValue('--worktree-sidebar')
         )
       )
       .toBe('#271d45')
     await expect
-      .poll(() => orcaPage.evaluate(() => window.__store?.getState().settings?.pluginAppThemeDark))
+      .poll(() => occPage.evaluate(() => window.__store?.getState().settings?.pluginAppThemeDark))
       .toBe('plugin:samples.theme-smoke/dusk')
 
     // The theme's tokenColors color code in the editor.
     await writeFile(join(seededRepoPath, CODE_FILE), 'export const answer = 42\n')
-    await orcaPage.evaluate(() => window.__store?.getState().closeSettingsPage())
-    await openRepoFile(orcaPage, seededRepoPath, CODE_FILE)
+    await occPage.evaluate(() => window.__store?.getState().closeSettingsPage())
+    await openRepoFile(occPage, seededRepoPath, CODE_FILE)
     await expect
-      .poll(() => editorTokenColor(orcaPage, 'export'), { timeout: 15_000 })
+      .poll(() => editorTokenColor(occPage, 'export'), { timeout: 15_000 })
       .toBe(THEME_KEYWORD)
-    await openAppearance(orcaPage)
+    await openAppearance(occPage)
 
-    await choose(orcaPage, 'Icon theme', 'Smoke Blocks')
-    await orcaPage.evaluate(() => {
+    await choose(occPage, 'Icon theme', 'Smoke Blocks')
+    await occPage.evaluate(() => {
       const state = window.__store?.getState()
       state?.closeSettingsPage()
       state?.showRightSidebarFiles()
       state?.setRightSidebarOpen(true)
     })
-    await expect.poll(() => orcaPage.locator('[data-plugin-icon]').count()).toBeGreaterThan(0)
+    await expect.poll(() => occPage.locator('[data-plugin-icon]').count()).toBeGreaterThan(0)
 
-    await disablePluginSystem(orcaPage)
-    await expect.poll(() => background(orcaPage)).toBe('')
-    await expect.poll(() => orcaPage.locator('[data-plugin-icon]').count()).toBe(0)
-    await openRepoFile(orcaPage, seededRepoPath, CODE_FILE)
+    await disablePluginSystem(occPage)
+    await expect.poll(() => background(occPage)).toBe('')
+    await expect.poll(() => occPage.locator('[data-plugin-icon]').count()).toBe(0)
+    await openRepoFile(occPage, seededRepoPath, CODE_FILE)
     await expect
-      .poll(() => editorTokenColor(orcaPage, 'export'), { timeout: 15_000 })
+      .poll(() => editorTokenColor(occPage, 'export'), { timeout: 15_000 })
       .not.toBe(THEME_KEYWORD)
   } finally {
-    await disablePluginSystem(orcaPage).catch(() => undefined)
-    await orcaPage.evaluate(
+    await disablePluginSystem(occPage).catch(() => undefined)
+    await occPage.evaluate(
       (theme) =>
         window.api.settings.set({
           theme: theme ?? 'system',

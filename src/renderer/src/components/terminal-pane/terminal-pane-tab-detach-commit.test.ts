@@ -14,10 +14,10 @@ import {
   unboundSplitLayout,
   WORKTREE_ID
 } from './terminal-pane-tab-detach-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
 // Window-side IPC coverage; main-command/frame equivalents live in terminal-pane-tab-detach-main-commit.test.ts.
-const itSwitchOff = it.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)
+const itSwitchOff = it.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)
 
 const toastErrorMock = vi.hoisted(() => vi.fn())
 vi.mock('sonner', () => ({ toast: { error: toastErrorMock } }))

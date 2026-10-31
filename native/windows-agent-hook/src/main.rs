@@ -1,4 +1,4 @@
-//! OCC's native Windows agent hook, registered as `orca-agent-hook.exe <agent>`: answers
+//! OCC's native Windows agent hook, registered as `occ-agent-hook.exe <agent>`: answers
 //! `{}`, then posts the hook payload to OCC's loopback listener and waits for the reply,
 //! so status events arrive in the order the agent emitted them.
 //!
@@ -54,11 +54,11 @@ fn run(agent: &Agent) {
     // Why: refresh the listener coordinates for terminals that survived an OCC restart.
     let endpoint = read_endpoint_file();
     let coordinate = |key: &str| endpoint_value(&endpoint, key).unwrap_or_else(|| var(key));
-    let port = coordinate("ORCA_AGENT_HOOK_PORT");
-    let token = coordinate("ORCA_AGENT_HOOK_TOKEN");
+    let port = coordinate("OCC_AGENT_HOOK_PORT");
+    let token = coordinate("OCC_AGENT_HOOK_TOKEN");
     // Why (#11549): without OCC's env the hook ran outside an OCC pane, where the caller
     // may abandon stdin; exit before reading it.
-    if port.is_empty() || token.is_empty() || var("ORCA_PANE_KEY").is_empty() {
+    if port.is_empty() || token.is_empty() || var("OCC_PANE_KEY").is_empty() {
         return;
     }
     let is_set = |name: &&str| !var(name).is_empty();
@@ -68,12 +68,12 @@ fn run(agent: &Agent) {
     let mut payload = Vec::new();
     let _ = io::stdin().lock().read_to_end(&mut payload);
     let form = [
-        ("paneKey", var("ORCA_PANE_KEY")),
-        ("tabId", var("ORCA_TAB_ID")),
-        ("launchToken", var("ORCA_AGENT_LAUNCH_TOKEN")),
-        ("worktreeId", var("ORCA_WORKTREE_ID")),
-        ("env", coordinate("ORCA_AGENT_HOOK_ENV")),
-        ("version", coordinate("ORCA_AGENT_HOOK_VERSION")),
+        ("paneKey", var("OCC_PANE_KEY")),
+        ("tabId", var("OCC_TAB_ID")),
+        ("launchToken", var("OCC_AGENT_LAUNCH_TOKEN")),
+        ("worktreeId", var("OCC_WORKTREE_ID")),
+        ("env", coordinate("OCC_AGENT_HOOK_ENV")),
+        ("version", coordinate("OCC_AGENT_HOOK_VERSION")),
     ];
     post(agent.source, &port, &token, &form, &payload);
 }
@@ -87,7 +87,7 @@ fn var(name: &str) -> String {
 /// The file src/shared/agent-hook-listener/endpoint-publication.ts writes, or "" if unreadable.
 fn read_endpoint_file() -> String {
     let mut text = String::new();
-    let read = File::open(var("ORCA_AGENT_HOOK_ENDPOINT")).and_then(|file| {
+    let read = File::open(var("OCC_AGENT_HOOK_ENDPOINT")).and_then(|file| {
         file.take(ENDPOINT_FILE_BYTE_LIMIT)
             .read_to_string(&mut text)
     });

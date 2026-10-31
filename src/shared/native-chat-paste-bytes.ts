@@ -20,7 +20,7 @@ export const NATIVE_CHAT_SUBMIT = SUBMIT
 
 /** Build sanitized body bytes, bracket-framed for multiline or long input, without submit.
  * Agent TUIs treat CR in the same PTY write as pasted body, leaving text unsent. Write NATIVE_CHAT_SUBMIT separately after a short delay,
- * matching orca-runtime writeTerminalAction Enter handling. */
+ * matching occ-runtime writeTerminalAction Enter handling. */
 export function buildNativeChatPasteBytes(text: string): string {
   // Sanitize unframed text too so pasted scrollback cannot inject terminal escapes.
   const sanitized = sanitizeBracketedPasteText(text)

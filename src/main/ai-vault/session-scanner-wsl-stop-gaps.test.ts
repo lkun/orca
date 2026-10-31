@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 import type { OpenCodeSqliteProcessOptions } from './session-scanner-opencode-sqlite-process-client'
 
 const mocks = vi.hoisted(() => ({
@@ -9,7 +9,7 @@ const mocks = vi.hoisted(() => ({
   readDb: vi.fn(() => new Map())
 }))
 
-vi.mock('@orca/process-host', () => ({ runProcess: mocks.runProcess }))
+vi.mock('@occ/process-host', () => ({ runProcess: mocks.runProcess }))
 vi.mock('./session-scanner-opencode-sqlite-process-client', () => ({
   createOpenCodeSqliteProcessClient: mocks.create
 }))

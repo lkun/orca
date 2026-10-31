@@ -37,7 +37,7 @@ vi.mock('../wsl', () => ({
 }))
 
 function accountsRoot(): string {
-  return join(wslHome, '.local', 'share', 'orca', 'codex-accounts')
+  return join(wslHome, '.local', 'share', 'occ', 'codex-accounts')
 }
 
 function wslAccount(id: string, distro: string) {

@@ -1,8 +1,8 @@
 import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import os from 'node:os'
-import { runProcess } from '@orca/process-host'
-import { test as base, expect } from './helpers/orca-app'
+import { runProcess } from '@occ/process-host'
+import { test as base, expect } from './helpers/occ-app'
 import { openFileExplorer } from './helpers/file-explorer'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
@@ -16,7 +16,7 @@ async function git(cwd: string, args: string[]): Promise<void> {
 const test = base.extend({
   minimumSeededWorktreeCount: 1,
   seededRepoPath: async ({ testRepoPath }, provideFixture) => {
-    const fixtureRoot = mkdtempSync(path.join(os.tmpdir(), 'orca-sparse-proof-'))
+    const fixtureRoot = mkdtempSync(path.join(os.tmpdir(), 'occ-sparse-proof-'))
     const sparseRepo = path.join(fixtureRoot, 'repo')
     await git(fixtureRoot, ['clone', '--local', testRepoPath, sparseRepo])
     await git(sparseRepo, ['config', 'user.email', 'sparse-proof@example.invalid'])
@@ -44,10 +44,10 @@ const test = base.extend({
   }
 })
 
-test('sparse explorer defaults and outside reveal', async ({ orcaPage }, testInfo) => {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  const activeWorkspace = await orcaPage.evaluate(() => {
+test('sparse explorer defaults and outside reveal', async ({ occPage }, testInfo) => {
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  const activeWorkspace = await occPage.evaluate(() => {
     const s = window.__store!.getState()
     const w = Object.values(s.worktreesByRepo)
       .flat()
@@ -60,8 +60,8 @@ test('sparse explorer defaults and outside reveal', async ({ orcaPage }, testInf
     packagesPath: path.join(activeWorkspace.path, 'packages'),
     readmePath: path.join(activeWorkspace.path, 'README.md')
   }
-  await orcaPage.setViewportSize({ width: 1440, height: 960 })
-  await orcaPage.evaluate(
+  await occPage.setViewportSize({ width: 1440, height: 960 })
+  await occPage.evaluate(
     ({ workspace }) => {
       const store = window.__store!
       const s = store.getState()
@@ -81,30 +81,30 @@ test('sparse explorer defaults and outside reveal', async ({ orcaPage }, testInf
     },
     { workspace }
   )
-  const board = orcaPage.getByRole('button', { name: 'Workspace board', exact: true })
+  const board = occPage.getByRole('button', { name: 'Workspace board', exact: true })
   await board.click()
   await board.click()
-  await openFileExplorer(orcaPage)
-  const picker = orcaPage.getByRole('button', { name: 'Explorer root', exact: true })
+  await openFileExplorer(occPage)
+  const picker = occPage.getByRole('button', { name: 'Explorer root', exact: true })
   await expect(picker).toContainText('apps/web')
-  const rows = orcaPage.locator('[data-file-explorer-row]')
+  const rows = occPage.locator('[data-file-explorer-row]')
   await expect(rows.filter({ hasText: 'package.json' })).toBeVisible()
-  const proofDir = process.env.ORCA_SPARSE_PROOF_DIR
+  const proofDir = process.env.OCC_SPARSE_PROOF_DIR
   const capture = async (name: string) => {
     const file = proofDir
       ? path.resolve(proofDir, `${name}.png`)
       : testInfo.outputPath(`${name}.png`)
     mkdirSync(path.dirname(file), { recursive: true })
-    await orcaPage.mouse.move(700, 500)
+    await occPage.mouse.move(700, 500)
     await expect(
-      orcaPage.getByRole('tooltip').filter({ hasText: 'Workspace board moved to the bottom bar' })
+      occPage.getByRole('tooltip').filter({ hasText: 'Workspace board moved to the bottom bar' })
     ).toBeHidden({ timeout: 20000 })
-    await orcaPage.screenshot({ path: file, animations: 'disabled' })
+    await occPage.screenshot({ path: file, animations: 'disabled' })
     await testInfo.attach(name, { path: file, contentType: 'image/png' })
   }
   await capture('single-folder')
   await git(workspace.path, ['sparse-checkout', 'set', '--', 'apps/web', 'packages/ui'])
-  await orcaPage.evaluate(
+  await occPage.evaluate(
     ({ workspace }) => {
       const store = window.__store!
       const s = store.getState()
@@ -122,7 +122,7 @@ test('sparse explorer defaults and outside reveal', async ({ orcaPage }, testInf
     },
     { workspace }
   )
-  const baseline = process.env.ORCA_SPARSE_PROOF_BASELINE === '1'
+  const baseline = process.env.OCC_SPARSE_PROOF_BASELINE === '1'
   await expect(picker).toContainText(baseline ? 'apps/web' : 'Repository root')
   if (!baseline) {
     await expect(rows.filter({ hasText: 'README.md' })).toBeVisible()
@@ -131,9 +131,9 @@ test('sparse explorer defaults and outside reveal', async ({ orcaPage }, testInf
   }
   await capture('multiple-folders')
   await picker.click()
-  await orcaPage.getByRole('menuitemradio', { name: 'apps/web', exact: true }).click()
+  await occPage.getByRole('menuitemradio', { name: 'apps/web', exact: true }).click()
   await expect(picker).toContainText('apps/web')
-  await orcaPage.evaluate(
+  await occPage.evaluate(
     ({ workspace }) => {
       window.__store!.getState().revealInExplorer(workspace.id, workspace.readmePath)
     },
@@ -141,58 +141,58 @@ test('sparse explorer defaults and outside reveal', async ({ orcaPage }, testInf
   )
   await expect(picker).toContainText(baseline ? 'Full repo root' : 'Repository root')
   await expect(rows.filter({ hasText: 'README.md' })).toBeVisible()
-  await orcaPage.keyboard.press('Escape')
+  await occPage.keyboard.press('Escape')
   await capture('outside-reveal')
   if (!baseline) {
-    await orcaPage.getByRole('button', { name: 'Back to apps/web', exact: true }).click()
+    await occPage.getByRole('button', { name: 'Back to apps/web', exact: true }).click()
     await expect(picker).toContainText('apps/web')
     await expect(rows.filter({ hasText: 'README.md' })).toHaveCount(0)
     await capture('returned-to-folder')
-    await orcaPage.getByRole('button', { name: 'Repository root', exact: true }).click()
+    await occPage.getByRole('button', { name: 'Repository root', exact: true }).click()
     await expect(picker).toContainText('Repository root')
     await picker.click()
-    await orcaPage.getByRole('menuitemradio', { name: 'apps/web', exact: true }).click()
+    await occPage.getByRole('menuitemradio', { name: 'apps/web', exact: true }).click()
     await expect(picker).toContainText('apps/web')
-    await orcaPage.getByLabel('Search file contents', { exact: true }).click()
-    await expect(orcaPage.getByText('Search scope: workspace files', { exact: true })).toBeVisible()
-    await expect(orcaPage.getByLabel('Search file contents', { exact: true })).toHaveAttribute(
+    await occPage.getByLabel('Search file contents', { exact: true }).click()
+    await expect(occPage.getByText('Search scope: workspace files', { exact: true })).toBeVisible()
+    await expect(occPage.getByLabel('Search file contents', { exact: true })).toHaveAttribute(
       'data-state',
       'on'
     )
-    await orcaPage
+    await occPage
       .getByRole('textbox', { name: 'Search files', exact: true })
       .fill('sparse-proof-marker')
-    await expect(orcaPage.getByText('App.tsx', { exact: true })).toBeVisible()
-    await expect(orcaPage.getByText('Button.tsx', { exact: true })).toBeVisible()
-    await expect(orcaPage.getByText('private.txt', { exact: true })).toHaveCount(0)
+    await expect(occPage.getByText('App.tsx', { exact: true })).toBeVisible()
+    await expect(occPage.getByText('Button.tsx', { exact: true })).toBeVisible()
+    await expect(occPage.getByText('private.txt', { exact: true })).toHaveCount(0)
     await capture('content-search')
-    await orcaPage.getByRole('textbox', { name: 'Search files', exact: true }).fill('')
-    await orcaPage.getByLabel('Filter files by name', { exact: true }).click()
+    await occPage.getByRole('textbox', { name: 'Search files', exact: true }).fill('')
+    await occPage.getByLabel('Filter files by name', { exact: true }).click()
     await expect(picker).toContainText('apps/web')
     await picker.click()
-    await orcaPage.getByRole('menuitemradio', { name: 'packages/ui', exact: true }).click()
+    await occPage.getByRole('menuitemradio', { name: 'packages/ui', exact: true }).click()
     await expect(picker).toContainText('packages/ui')
     await expect(
-      orcaPage.getByRole('button', { name: 'Back to apps/web', exact: true })
+      occPage.getByRole('button', { name: 'Back to apps/web', exact: true })
     ).toHaveCount(0)
-    await orcaPage.evaluate(async () => {
+    await occPage.evaluate(async () => {
       await window.__store!.getState().updateSettingsOrThrow({ theme: 'dark' })
     })
-    await expect(orcaPage.locator('html')).toHaveClass(/dark/)
-    await orcaPage.keyboard.press('Escape')
+    await expect(occPage.locator('html')).toHaveClass(/dark/)
+    await occPage.keyboard.press('Escape')
     await capture('saved-choice-dark')
-    await orcaPage.getByRole('button', { name: 'About sparse checkout scope' }).click()
+    await occPage.getByRole('button', { name: 'About sparse checkout scope' }).click()
     await capture('scope-details')
-    await orcaPage.keyboard.press('Escape')
-    await orcaPage.evaluate(() => window.__store!.setState({ rightSidebarWidth: 220 }))
+    await occPage.keyboard.press('Escape')
+    await occPage.evaluate(() => window.__store!.setState({ rightSidebarWidth: 220 }))
     await capture('narrow-explorer')
     await picker.click()
     await capture('root-menu')
-    await orcaPage.keyboard.press('Escape')
-    await orcaPage.evaluate(() => window.__store!.setState({ rightSidebarWidth: 430 }))
+    await occPage.keyboard.press('Escape')
+    await occPage.evaluate(() => window.__store!.setState({ rightSidebarWidth: 430 }))
     await git(workspace.path, ['sparse-checkout', 'disable'])
     expect(existsSync(path.join(workspace.path, 'omitted', 'private.txt'))).toBe(true)
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ workspace }) => {
         const store = window.__store!
         const s = store.getState()

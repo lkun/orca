@@ -68,7 +68,7 @@ export async function acquireLeadership(input: {
       if (input.signal.aborted) {
         throw error
       }
-      console.warn(JSON.stringify({ event: 'orca_leader_lock_connection_failed', key: input.key }))
+      console.warn(JSON.stringify({ event: 'occ_leader_lock_connection_failed', key: input.key }))
       await sleep(input.pollMs ?? LEADER_POLL_MS, undefined, { signal: input.signal })
     }
   }
@@ -88,7 +88,7 @@ function holdLeadership(client: pg.Client, checkMs: number): Leadership {
     timer = setTimeout(() => {
       client.query('SELECT 1').then(check, () => {
         if (!released) {
-          console.warn(JSON.stringify({ event: 'orca_leader_lock_lost' }))
+          console.warn(JSON.stringify({ event: 'occ_leader_lock_lost' }))
         }
         end()
       })

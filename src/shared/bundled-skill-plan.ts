@@ -124,7 +124,7 @@ export type BundledSkillInstallResult = {
 
 const BundledSkillForceSchema = z.array(z.string().min(1).max(4096)).max(256)
 
-/** Frozen strict skills.bundled-orca.v1 request for the host’s own global homes; adding fields requires a new capability because older hosts reject them. */
+/** Frozen strict skills.bundled-occ.v1 request for the host’s own global homes; adding fields requires a new capability because older hosts reject them. */
 export const BundledSkillPlanRequestSchema = z.strictObject({
   force: BundledSkillForceSchema.optional(),
   /** Install named host-shipped skills; absent means update installed skills only. Reject names the host does not ship. */

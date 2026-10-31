@@ -16,7 +16,7 @@ import {
 } from '../../shared/structured-native-chat-launch-route'
 import type { TuiAgent } from '../../shared/tui-agent'
 import type { WorkspaceLaunchKind } from '../../shared/workspace-launch-kind'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import type { AgentLaunchSurface } from '../../shared/agent-launch-surface'
 import { formatAgentTypeLabel } from '../../shared/agent-type-label'
 import { AgentLaunchSurfaceUnavailableError } from './agent-launch-surface-refusal'
@@ -166,7 +166,7 @@ export function decideAgentLaunchMode(args: {
 
 /** Refuse explicit chat only before effects; a created workspace keeps its terminal fallback. */
 export async function resolveAgentLaunchModeOnHost(
-  runtime: Pick<OrcaRuntimeService, 'getStructuredAgentSessionCreateSupport'>,
+  runtime: Pick<OCCRuntimeService, 'getStructuredAgentSessionCreateSupport'>,
   receipt: AgentLaunchModeReceipt,
   worktreeId: string | undefined,
   agent: TuiAgent | undefined,
@@ -198,7 +198,7 @@ export async function resolveAgentLaunchModeOnHost(
 
 /** Unknown host support must fall back to a terminal. */
 async function readStructuredCreateSupport(
-  runtime: Pick<OrcaRuntimeService, 'getStructuredAgentSessionCreateSupport'>,
+  runtime: Pick<OCCRuntimeService, 'getStructuredAgentSessionCreateSupport'>,
   worktreeId: string,
   agent: TuiAgent | undefined
 ): Promise<HostLaunchSupport | null> {

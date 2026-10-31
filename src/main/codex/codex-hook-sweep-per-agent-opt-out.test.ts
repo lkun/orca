@@ -28,7 +28,7 @@ import { CodexHookService } from './hook-service'
 
 const homes = setupCodexHookHomes(homedirMock, getPathMock)
 
-function orcaEntryCommand(): string {
+function occEntryCommand(): string {
   const scriptPath = join(
     homes.userDataDir,
     'agent-hooks',
@@ -47,7 +47,7 @@ function seedRealHomeHooks(): string {
       hooks: {
         Stop: [
           { hooks: [{ type: 'command', command: 'user-hook' }] },
-          { hooks: [{ type: 'command', command: orcaEntryCommand() }] }
+          { hooks: [{ type: 'command', command: occEntryCommand() }] }
         ]
       }
     })}\n`,

@@ -33,7 +33,7 @@ export function agentBrowserScreenshotArgs(
   // agent-browser's default name is per millisecond, so two pages could share (and delete) one file.
   const outputPath = join(
     capture.outputDir,
-    `orca-screenshot-${randomUUID()}.${format === 'jpeg' ? 'jpg' : 'png'}`
+    `occ-screenshot-${randomUUID()}.${format === 'jpeg' ? 'jpg' : 'png'}`
   )
   const args = ['screenshot', outputPath]
   if (capture.fullPage) {

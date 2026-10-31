@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -11,8 +11,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -23,7 +23,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -44,24 +44,24 @@ import { main } from './index'
 import { okFixture, queueFixtures } from './test-fixtures'
 import { useWorktreeAwarenessEnvironment } from './index-test-harness'
 
-const ORCA_PROJECT = {
-  id: 'github:stablyai/orca',
+const OCC_PROJECT = {
+  id: 'github:stablyai/occ',
   displayName: 'OCC',
   badgeColor: '#7c3aed',
   sourceRepoIds: ['repo-1'],
   createdAt: 1,
   updatedAt: 1
 }
-const PROJECT_LIST_FIXTURE = okFixture('req_project_list', { projects: [ORCA_PROJECT] })
+const PROJECT_LIST_FIXTURE = okFixture('req_project_list', { projects: [OCC_PROJECT] })
 
-describe('orca cli project and host names', () => {
+describe('occ cli project and host names', () => {
   const priorExitCode = process.exitCode
   afterEach(() => {
     process.exitCode = priorExitCode
   })
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -90,11 +90,11 @@ describe('orca cli project and host names', () => {
           },
           {
             id: 'setup-other',
-            projectId: 'github:stablyai/orca',
+            projectId: 'github:stablyai/occ',
             hostId: 'ssh:ssh-1789189705224-tq82n1',
             repoId: 'repo-other',
-            path: '/home/young/git/orca',
-            displayName: 'orca',
+            path: '/home/young/git/occ',
+            displayName: 'occ',
             setupState: 'ready',
             setupMethod: 'legacy-repo',
             createdAt: 1,
@@ -104,8 +104,8 @@ describe('orca cli project and host names', () => {
       }),
       okFixture('req_project_list', {
         projects: [
-          { ...ORCA_PROJECT, id: 'github:younghwan91/scalp-it', displayName: 'Scalp It' },
-          ORCA_PROJECT
+          { ...OCC_PROJECT, id: 'github:younghwan91/scalp-it', displayName: 'Scalp It' },
+          OCC_PROJECT
         ]
       })
     )
@@ -126,21 +126,21 @@ describe('orca cli project and host names', () => {
       callMock,
       okFixture('req_project_setups', { setups: [] }),
       okFixture('req_project_list', {
-        projects: [ORCA_PROJECT, { ...ORCA_PROJECT, id: 'repo:second-orca' }]
+        projects: [OCC_PROJECT, { ...OCC_PROJECT, id: 'repo:second-occ' }]
       })
     )
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
     const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
-    await main(['project', 'setups', '--project', 'orca', '--json'], '/tmp/repo')
+    await main(['project', 'setups', '--project', 'occ', '--json'], '/tmp/repo')
 
     expect(JSON.parse(String(logSpy.mock.calls[0]?.[0]))).toMatchObject({
       ok: false,
       error: {
         code: 'invalid_argument',
-        message: expect.stringContaining('Ambiguous --project orca'),
+        message: expect.stringContaining('Ambiguous --project occ'),
         data: {
-          nextSteps: expect.arrayContaining([expect.stringContaining('--project repo:second-orca')])
+          nextSteps: expect.arrayContaining([expect.stringContaining('--project repo:second-occ')])
         }
       }
     })
@@ -164,7 +164,7 @@ describe('orca cli project and host names', () => {
 
     expect(callMock).toHaveBeenCalledWith(
       'projectHostSetup.create',
-      expect.objectContaining({ projectId: 'github:stablyai/orca', hostId: 'local' })
+      expect.objectContaining({ projectId: 'github:stablyai/occ', hostId: 'local' })
     )
   })
 
@@ -201,8 +201,8 @@ describe('orca cli project and host names', () => {
       }),
       okFixture('req_project_list', {
         projects: [
-          { ...ORCA_PROJECT, id: 'repo:alpha', displayName: 'alpha' },
-          { ...ORCA_PROJECT, id: 'repo:beta', displayName: 'repo:alpha' }
+          { ...OCC_PROJECT, id: 'repo:alpha', displayName: 'alpha' },
+          { ...OCC_PROJECT, id: 'repo:beta', displayName: 'repo:alpha' }
         ]
       })
     )

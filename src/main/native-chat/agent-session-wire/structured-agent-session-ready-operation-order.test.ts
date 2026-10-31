@@ -137,7 +137,7 @@ it('persists unknown Set objective and receipt across reopen, without replay ove
       acquire.mock.calls
         .at(-1)![0]
         .events!.appendItem(
-          { provider: 'orca', clientMessageId: 'reported-newer-goal' },
+          { provider: 'occ', clientMessageId: 'reported-newer-goal' },
           { kind: 'status', text: 'Goal', threadGoal: { state: 'set', goal: latestGoal } },
           { turnScope: AGENT_JOURNAL_THREAD_SCOPE }
         )
@@ -258,7 +258,7 @@ it.each(['append', 'wait'] as const)(
     expect(changeThreadGoal).not.toHaveBeenCalled()
     if (phase === 'append') {
       expect(withdraw).toHaveBeenCalledWith(
-        { provider: 'orca', clientMessageId: `thread-goal:${goalEnvelope.clientOperationId}` },
+        { provider: 'occ', clientMessageId: `thread-goal:${goalEnvelope.clientOperationId}` },
         expect.anything()
       )
       expect(append.mock.calls.filter(([, body]) => body.kind === 'status')).toEqual([

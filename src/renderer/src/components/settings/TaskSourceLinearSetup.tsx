@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { LinearApiKeyDialog } from '@/components/linear-api-key-dialog'
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/store'
-import { ORCA_LINEAR_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { OCC_LINEAR_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import { AgentSkillSetupPanel } from './AgentSkillSetupPanel'
 import { TaskSourceShowInTasksStep } from './TaskSourceShowInTasksStep'
 import { TaskSourceStepRow } from './TaskSourceStepRow'
@@ -105,7 +105,7 @@ export function TaskSourceLinearSetup({
           )}
           description={translate(
             'auto.components.settings.TaskSourceLinearSetup.skillDescription',
-            'Gives agents /orca-linear to read tickets, post updates, move states, and attach pull or merge requests.'
+            'Gives agents /occ-linear to read tickets, post updates, move states, and attach pull or merge requests.'
           )}
           className={skillInstallBlocked ? 'opacity-60' : undefined}
         >
@@ -125,7 +125,7 @@ export function TaskSourceLinearSetup({
                 'Linear skill'
               )}
               description={null}
-              skillNames={[ORCA_LINEAR_SKILL_NAME]}
+              skillNames={[OCC_LINEAR_SKILL_NAME]}
               installedSkillNames={[skillSetup.updateSkillName]}
               installed={skillSetup.skillInstalled}
               loading={skillSetup.skillLoading}

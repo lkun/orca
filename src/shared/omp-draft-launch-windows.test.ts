@@ -2,19 +2,19 @@ import { mkdtemp, writeFile, readFile, rm, mkdir } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { buildAgentDraftLaunchPlan } from './tui-agent-startup'
 
 it.skipIf(process.platform !== 'win32').each(['cmd', 'powershell'] as const)(
   'clears the draft and preserves status in native %s',
   async (shell) => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-omp-draft-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-omp-draft-'))
     try {
-      const config = join(root, 'fresh (%ORCA_EXPANSION_PROBE%) & settings!.yml')
+      const config = join(root, 'fresh (%OCC_EXPANSION_PROBE%) & settings!.yml')
       const calls = join(root, 'calls')
       await writeFile(
         join(root, 'omp.cmd'),
-        '@echo off\r\necho %ORCA_OMP_PREFILL%>>"%CAPTURE%"\r\nexit /b 17\r\n'
+        '@echo off\r\necho %OCC_OMP_PREFILL%>>"%CAPTURE%"\r\nexit /b 17\r\n'
       )
       const plan = buildAgentDraftLaunchPlan({
         agent: 'omp',
@@ -38,9 +38,9 @@ it.skipIf(process.platform !== 'win32').each(['cmd', 'powershell'] as const)(
         const env = {
           ...process.env,
           ...plan.env,
-          ORCA_OMP_FRESH_CONFIG: state === 'unset' ? undefined : config,
+          OCC_OMP_FRESH_CONFIG: state === 'unset' ? undefined : config,
           CAPTURE: calls,
-          ORCA_EXPANSION_PROBE: 'unexpected'
+          OCC_EXPANSION_PROBE: 'unexpected'
         }
         const result =
           shell === 'cmd'
@@ -49,7 +49,7 @@ it.skipIf(process.platform !== 'win32').each(['cmd', 'powershell'] as const)(
                 args: ['/d', '/q'],
                 cwd: root,
                 env,
-                input: `${plan.launchCommand}\r\nset "orca_result=%errorlevel%"\r\nif defined ORCA_OMP_PREFILL exit 91\r\nexit %orca_result%\r\n`
+                input: `${plan.launchCommand}\r\nset "occ_result=%errorlevel%"\r\nif defined OCC_OMP_PREFILL exit 91\r\nexit %occ_result%\r\n`
               })
             : await runProcess({
                 program: 'powershell.exe',
@@ -57,7 +57,7 @@ it.skipIf(process.platform !== 'win32').each(['cmd', 'powershell'] as const)(
                   '-NoProfile',
                   '-NonInteractive',
                   '-Command',
-                  `function omp { Add-Content -LiteralPath $env:CAPTURE -Value $env:ORCA_OMP_PREFILL; $global:LASTEXITCODE = 17 }; ${plan.launchCommand}; $result = $LASTEXITCODE; if (Test-Path Env:ORCA_OMP_PREFILL) { exit 91 }; exit $result`
+                  `function omp { Add-Content -LiteralPath $env:CAPTURE -Value $env:OCC_OMP_PREFILL; $global:LASTEXITCODE = 17 }; ${plan.launchCommand}; $result = $LASTEXITCODE; if (Test-Path Env:OCC_OMP_PREFILL) { exit 91 }; exit $result`
                 ],
                 cwd: root,
                 env

@@ -1,7 +1,7 @@
 import { OMP_DRAFT_LAUNCH_PREFIX } from './omp-draft-launch'
 import { tokenizeStartupCommand, type AgentStartupShell } from './tui-agent-startup-shell'
 
-export const ORCA_OMP_FRESH_CONFIG_ENV = 'ORCA_OMP_FRESH_CONFIG'
+export const OCC_OMP_FRESH_CONFIG_ENV = 'OCC_OMP_FRESH_CONFIG'
 export const OMP_FRESH_CONFIG_FILENAME = 'fresh-session.yml'
 export const OMP_FRESH_CONFIG_SOURCE = 'autoResume: false\n'
 
@@ -50,10 +50,10 @@ export function withFreshOmpLaunch(command: string, shell: AgentStartupShell, su
   }
   const path =
     shell === 'cmd'
-      ? `"%~$${ORCA_OMP_FRESH_CONFIG_ENV}:!"`
+      ? `"%~$${OCC_OMP_FRESH_CONFIG_ENV}:!"`
       : shell === 'powershell'
-        ? `"$env:${ORCA_OMP_FRESH_CONFIG_ENV}"`
-        : `"$${ORCA_OMP_FRESH_CONFIG_ENV}"`
+        ? `"$env:${OCC_OMP_FRESH_CONFIG_ENV}"`
+        : `"$${OCC_OMP_FRESH_CONFIG_ENV}"`
   const launch = `${command} --config ${path}${suffix}`
   const error =
     'OCC: fresh OMP settings are unavailable on this host. Restart the terminal after updating OCC.'
@@ -65,7 +65,7 @@ export function withFreshOmpLaunch(command: string, shell: AgentStartupShell, su
     // The FOR variable substitutes only %!/%~…! across the body; quoted prompt ! is escaped, although raw overrides could form it.
     return `${CMD_FRESH_CONFIG_FOR}if exist ${path} (if not exist "${path.slice(1, -1)}\\*" (${launch}) else (echo ${error} 1>&2 & verify invalid 2>nul)) else (echo ${error} 1>&2 & verify invalid 2>nul)`
   }
-  const available = `printenv ${ORCA_OMP_FRESH_CONFIG_ENV} >/dev/null && test -f ${path}`
+  const available = `printenv ${OCC_OMP_FRESH_CONFIG_ENV} >/dev/null && test -f ${path}`
   // && is supported by bash, zsh, and fish; invoking directly preserves shell aliases/functions.
   return `${available} || printf '%s\\n' '${error}' >&2; ${available} && ${launch}`
 }
@@ -79,11 +79,11 @@ export function isFreshOmpLaunchCommand(command: string | undefined): boolean {
   return Boolean(
     guarded &&
     [
-      `printenv ${ORCA_OMP_FRESH_CONFIG_ENV} >/dev/null && test -f "$${ORCA_OMP_FRESH_CONFIG_ENV}"`,
-      `if ("$env:${ORCA_OMP_FRESH_CONFIG_ENV}" -and (Test-Path -LiteralPath "$env:${ORCA_OMP_FRESH_CONFIG_ENV}" -PathType Leaf))`,
-      `${CMD_FRESH_CONFIG_FOR}if exist "%~$${ORCA_OMP_FRESH_CONFIG_ENV}:!" (if not exist "%~$${ORCA_OMP_FRESH_CONFIG_ENV}:!\\*"`,
+      `printenv ${OCC_OMP_FRESH_CONFIG_ENV} >/dev/null && test -f "$${OCC_OMP_FRESH_CONFIG_ENV}"`,
+      `if ("$env:${OCC_OMP_FRESH_CONFIG_ENV}" -and (Test-Path -LiteralPath "$env:${OCC_OMP_FRESH_CONFIG_ENV}" -PathType Leaf))`,
+      `${CMD_FRESH_CONFIG_FOR}if exist "%~$${OCC_OMP_FRESH_CONFIG_ENV}:!" (if not exist "%~$${OCC_OMP_FRESH_CONFIG_ENV}:!\\*"`,
       // Lines built before the by-name guard can still be persisted or come from an older host.
-      `if exist "%${ORCA_OMP_FRESH_CONFIG_ENV}%" (if not exist "%${ORCA_OMP_FRESH_CONFIG_ENV}%\\*"`
+      `if exist "%${OCC_OMP_FRESH_CONFIG_ENV}%" (if not exist "%${OCC_OMP_FRESH_CONFIG_ENV}%\\*"`
     ].some((prefix) => guarded.startsWith(prefix))
   )
 }

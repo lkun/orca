@@ -19,7 +19,7 @@ type Fixture = { id: number; cwd: string; filePath: string; text: string }
 const SESSIONS: Fixture[] = [
   {
     id: 1,
-    cwd: '/Users/Ada/orca/session-search',
+    cwd: '/Users/Ada/occ/session-search',
     filePath: '/Users/Ada/.claude/projects/a/one.jsonl',
     text: 'harbor pilot manifest'
   },
@@ -51,9 +51,9 @@ const SESSIONS: Fixture[] = [
 
 const QUERIES = [
   'harbor path:jsonl',
-  'harbor repo:orca/session-search',
+  'harbor repo:occ/session-search',
   'harbor path:CAFÉ',
-  'harbor path:/Users/Ada/orca',
+  'harbor path:/Users/Ada/occ',
   'harbor repo:app',
   'harbor repo:OCC/App',
   'harbor path:.codex',

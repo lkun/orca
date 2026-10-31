@@ -6,7 +6,7 @@ vi.mock('sonner', () => ({ toast: vi.fn() }))
 
 function stubWindow(webClient: boolean, snapshots: unknown[]): void {
   vi.stubGlobal('window', {
-    __ORCA_WEB_CLIENT__: webClient,
+    __OCC_WEB_CLIENT__: webClient,
     api: { runtimeEnvironments: { getStatusSnapshots: vi.fn(async () => snapshots) } }
   })
 }

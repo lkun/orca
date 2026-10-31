@@ -15,8 +15,8 @@ import time
 
 def main():
     if (sys.platform != "linux" or os.environ.get("GITHUB_ACTIONS") != "true"
-            or os.environ.get("ORCA_COMPUTER_BENCH_ISOLATED") != "1"
-            or os.environ.get("ORCA_BACKGROUND_LAUNCH") != "1"):
+            or os.environ.get("OCC_COMPUTER_BENCH_ISOLATED") != "1"
+            or os.environ.get("OCC_BACKGROUND_LAUNCH") != "1"):
         raise SystemExit("typing probe requires isolated Linux CI")
     import bench
     import obs_x11 as obs
@@ -87,7 +87,7 @@ def main():
                 subprocess.run(["setxkbmap", "ru"], check=True)
             before = keymap()
             try:
-                with (open(Path(os.environ["XDG_RUNTIME_DIR"]) / "orca-computer-keyboard.lock", "a")
+                with (open(Path(os.environ["XDG_RUNTIME_DIR"]) / "occ-computer-keyboard.lock", "a")
                       if name == "busy" else nullcontext()) as lock:
                     if lock is not None:
                         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)

@@ -17,7 +17,7 @@ afterEach(removeSkillHomes)
 describe.skipIf(process.platform === 'win32')('bundled skill backup permissions', () => {
   it.each([false, true])('keeps backups private (existing root: %s)', async (existing) => {
     const home = await makeSkillHome()
-    const backups = join(home.home, '.agents', '.orca-skill-backups')
+    const backups = join(home.home, '.agents', '.occ-skill-backups')
     await writeCopy(home.shared, 'my private skill\n')
     await chmod(home.shared, 0o755)
     if (existing) {

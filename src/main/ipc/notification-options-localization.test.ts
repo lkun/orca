@@ -10,7 +10,7 @@ const BELL: NotificationDispatchRequest = {
   source: 'terminal-bell',
   worktreeId: 'wt-1',
   worktreeLabel: 'feature-x',
-  repoLabel: 'orca'
+  repoLabel: 'occ'
 }
 const TOOL: NotificationDispatchRequest = {
   source: 'agent-task-complete',
@@ -32,7 +32,7 @@ describe('buildNotificationOptions localization', () => {
 
     expect(buildNotificationOptions(BELL, translateMain)).toEqual({
       title: 'Campana en feature-x',
-      body: 'orca · Se solicita atención'
+      body: 'occ · Se solicita atención'
     })
     expect(buildNotificationOptions(TOOL, translateMain)).toEqual({
       title: 'espacio de trabajo - Claude trabajando',

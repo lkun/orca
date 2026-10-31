@@ -7,7 +7,7 @@ import type { TmuxManagedPty } from '../shared/tmux-agent-hook-owner'
 export type RelayHookForward = (envelope: AgentHookRelayEnvelope) => void
 
 export type RelayHookServerOptions = {
-  /** Where to put endpoint.env / endpoint.cmd. Defaults to `$HOME/.orca-relay/agent-hooks`. */
+  /** Where to put endpoint.env / endpoint.cmd. Defaults to `$HOME/.occ-relay/agent-hooks`. */
   endpointDir?: string
   // Default remote tag avoids main’s dev/prod mismatch warnings.
   env?: string

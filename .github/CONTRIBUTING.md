@@ -72,16 +72,16 @@ free port when taken: renderer ports start at 15200 and CDP ports at 9333.
 On startup the runner prints one stdout line and writes the same JSON to `out/dev-instance.json`:
 
 ```text
-ORCA_DEV_INSTANCE {"userData":".../occ-dev-wt/1d3830d4d3","profile":"worktree","rendererPort":15339,"rendererUrl":"http://localhost:15339","cdpPort":9513,"cdpUrl":"http://127.0.0.1:9513","repoRoot":"...","runnerPid":4242}
+OCC_DEV_INSTANCE {"userData":".../occ-dev-wt/1d3830d4d3","profile":"worktree","rendererPort":15339,"rendererUrl":"http://localhost:15339","cdpPort":9513,"cdpUrl":"http://127.0.0.1:9513","repoRoot":"...","runnerPid":4242}
 ```
 
 | Option                                                                  | Effect                                                     |
 | ----------------------------------------------------------------------- | ---------------------------------------------------------- |
-| `pnpm dev --shared-profile` or `ORCA_DEV_PROFILE=shared`                | Use the shared `occ-dev` profile                          |
-| `pnpm dev --worktree-profile` or `ORCA_DEV_PROFILE=worktree`            | Use a per-worktree profile, including in the main checkout |
-| `ORCA_DEV_USER_DATA_PATH=<dir>`                                         | Use an explicit profile directory                          |
-| `REMOTE_DEBUGGING_PORT=<port>`, `ORCA_DEV_RENDERER_PORT=<port>`         | Pin a port                                                 |
-| `pnpm dev --seed-profile[=<dir>]` or `ORCA_DEV_SEED_PROFILE=<dir or 1>` | Seed an empty profile on first launch                      |
+| `pnpm dev --shared-profile` or `OCC_DEV_PROFILE=shared`                | Use the shared `occ-dev` profile                          |
+| `pnpm dev --worktree-profile` or `OCC_DEV_PROFILE=worktree`            | Use a per-worktree profile, including in the main checkout |
+| `OCC_DEV_USER_DATA_PATH=<dir>`                                         | Use an explicit profile directory                          |
+| `REMOTE_DEBUGGING_PORT=<port>`, `OCC_DEV_RENDERER_PORT=<port>`         | Pin a port                                                 |
+| `pnpm dev --seed-profile[=<dir>]` or `OCC_DEV_SEED_PROFILE=<dir or 1>` | Seed an empty profile on first launch                      |
 
 Per-worktree profiles live in `occ-dev-wt/<hash>` next to `occ-dev` (`~/Library/Application
 Support` on macOS, `%APPDATA%` on Windows, `$XDG_CONFIG_HOME` or `~/.config` on Linux). The
@@ -121,20 +121,20 @@ dynamic imports, fixture files, subprocess inputs, or other dependencies outside
 graph. Local affected tests do not replace CI.
 
 To reduce main-process rebuild CPU and memory when you do not need its source maps,
-set `ORCA_DEV_MAIN_SOURCEMAPS=0` before `pnpm dev`. In Bash/zsh:
+set `OCC_DEV_MAIN_SOURCEMAPS=0` before `pnpm dev`. In Bash/zsh:
 
 ```bash
-ORCA_DEV_MAIN_SOURCEMAPS=0 pnpm dev
+OCC_DEV_MAIN_SOURCEMAPS=0 pnpm dev
 ```
 
-In PowerShell, use `$env:ORCA_DEV_MAIN_SOURCEMAPS='0'` before `pnpm dev`.
+In PowerShell, use `$env:OCC_DEV_MAIN_SOURCEMAPS='0'` before `pnpm dev`.
 Remove the variable when debugging the main process with source maps. Renderer and
 preload settings are unaffected; production builds always keep their hidden main maps.
 
 `pnpm dev` serves the renderer with Vite's bundled dev mode: a few bundled chunks instead of
 thousands of module requests, so the first render and full reloads are faster. While a rebuild is
 pending, a newly opened pop-out, space, or web window may briefly get placeholder HTML. If the
-renderer misbehaves, set `ORCA_DEV_BUNDLED=0` (PowerShell: `$env:ORCA_DEV_BUNDLED='0'`) and report it.
+renderer misbehaves, set `OCC_DEV_BUNDLED=0` (PowerShell: `$env:OCC_DEV_BUNDLED='0'`) and report it.
 
 Local installs use pnpm's global virtual store: each package version is one slot
 under `~/pnpm/store` that every worktree links to, instead of a full `node_modules` per worktree.
@@ -150,7 +150,7 @@ needed. Things to know:
 - Native addons are never rebuilt in place in a shared slot: each CPU gets its own build
   beside it (see [`native-build-entry.cjs`](../config/scripts/native-build-entry.cjs)), so
   cross-arch packaging is safe for other worktrees.
-- `ORCA_PNPM_GLOBAL_VIRTUAL_STORE=0` opts out. Keep it set
+- `OCC_PNPM_GLOBAL_VIRTUAL_STORE=0` opts out. Keep it set
   in your shell: `pnpm run` re-checks the install and relinks a worktree whose layout no longer
   matches.
 
@@ -224,7 +224,7 @@ Each pull request should follow [`.github/pull_request_template.md`](./pull_requ
 - include high-quality tests when behavior changes or bug fixes warrant them
 - include a brief code review summary from your AI coding agent that explicitly checks cross-platform compatibility, SSH/remote/local compatibility, supported agent and integration compatibility, performance risk, UI quality when applicable, and basic security risk
 - mention any platform-specific, remote/SSH-specific, agent-specific, integration-specific, or git-provider-specific behavior and testing notes
-- **Include your X (Twitter) handle** in the PR template Author section — we shout out contributors when we merge features on [@orca_build](https://x.com/orca_build).
+- **Include your X (Twitter) handle** in the PR template Author section — we shout out contributors when we merge features on [@occ_build](https://x.com/occ_build).
 
 ## Release Process
 
@@ -275,13 +275,13 @@ All stable kinds (`patch`, `minor`, `major`) are computed off the latest _stable
 The public Homebrew cask tracks stable desktop releases:
 
 ```bash
-brew install --cask stablyai/orca/orca
+brew install --cask stablyai/occ/occ
 ```
 
 Release candidates use a separate cask token:
 
 ```bash
-brew install --cask stablyai/orca/orca@rc
+brew install --cask stablyai/occ/occ@rc
 ```
 
 The two casks conflict because both install `OCC.app`. Switch channels with a

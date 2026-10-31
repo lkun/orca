@@ -12,7 +12,7 @@ afterEach(async () => {
 
 describe('plugin release first-seen store', () => {
   it('keeps the first sighting across restarts and restarts the clock for a new release', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-plugin-first-seen-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-plugin-first-seen-'))
     roots.push(root)
     expect(await new PluginReleaseFirstSeenStore(root).firstSeen('a.b', '1.1.0@c', 100)).toBe(100)
     const reopened = new PluginReleaseFirstSeenStore(root)
@@ -21,7 +21,7 @@ describe('plugin release first-seen store', () => {
   })
 
   it('treats a damaged file as nothing seen yet', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-plugin-first-seen-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-plugin-first-seen-'))
     roots.push(root)
     await writeFile(join(root, 'plugin-release-first-seen.json'), '{not json')
     expect(await new PluginReleaseFirstSeenStore(root).firstSeen('a.b', '1.0.0@c', 7)).toBe(7)

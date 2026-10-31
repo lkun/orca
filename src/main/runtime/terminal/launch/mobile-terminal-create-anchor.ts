@@ -1,4 +1,4 @@
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import type { RuntimeMobileSessionSnapshotTab } from '../../../../shared/runtime-mobile-session-tab-contracts'
 
 /** Reject unknown named anchors; absent anchors and clients without split-group placement append. */
@@ -26,7 +26,7 @@ export function mainPlacedAfter(
   afterDesktopTabId: string | undefined
 ): { afterDesktopTabId?: string } {
   // Read main's layout only when its answer is used: never switch-off, nor for an appending phone.
-  return ORCA_LAYOUT_OWNER_IS_MAIN && afterDesktopTabId
+  return OCC_LAYOUT_OWNER_IS_MAIN && afterDesktopTabId
     ? { afterDesktopTabId: heldTabId() ?? afterDesktopTabId }
     : {}
 }

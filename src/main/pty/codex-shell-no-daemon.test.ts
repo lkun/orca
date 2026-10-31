@@ -93,7 +93,7 @@ type Sandbox = { bin: string; codex: string; helpFile: string; helpLog: string }
 
 /** Fake codex: `--help` prints the help file and logs the probe; any other call prints its argv. */
 function makeSandbox(help: string): Sandbox {
-  const root = mkdtempSync(join(tmpdir(), 'orca-codex-no-daemon-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-codex-no-daemon-'))
   roots.push(root)
   const bin = join(root, 'bin')
   mkdirSync(bin)
@@ -224,7 +224,7 @@ const shells: [Shell, boolean][] = [
 
 describe('codex wrapper --no-daemon rule', () => {
   it('has pwsh when CI demanded it', () => {
-    expect(process.env.ORCA_REQUIRE_PWSH !== '1' || pwshAvailable).toBe(true)
+    expect(process.env.OCC_REQUIRE_PWSH !== '1' || pwshAvailable).toBe(true)
   })
 
   for (const [shell, available] of shells) {
@@ -243,7 +243,7 @@ describe('codex wrapper --no-daemon rule', () => {
         (remote, inherited, inheritedTty, expected, exitCode) => {
           const sandbox = makeSandbox(HELP_WITH_FLAG)
           const bareCall = isPowerShell(shell)
-            ? '$orcaClipboardExit = $LASTEXITCODE\n& (Get-Command codex -CommandType Application | Select-Object -First 1).Source shell\nexit $orcaClipboardExit'
+            ? '$occClipboardExit = $LASTEXITCODE\n& (Get-Command codex -CommandType Application | Select-Object -First 1).Source shell\nexit $occClipboardExit'
             : 'command codex shell'
           const result = run(shell, `codex clipboard\n${bareCall}`, sandbox, {
             FAKE_CODEX_READ_CLIPBOARD_ENV: '1',
@@ -280,19 +280,19 @@ describe('codex wrapper --no-daemon rule', () => {
         expect(lines(result.stdout)).toEqual(ADDED.map((argv) => expectedLine(argv, false)))
       })
 
-      it('adds nothing with ORCA_CODEX_ISOLATE=0, read on every call', () => {
+      it('adds nothing with OCC_CODEX_ISOLATE=0, read on every call', () => {
         const sandbox = makeSandbox(HELP_WITH_FLAG)
         const setIsolate = (value: string): string =>
           isPowerShell(shell)
-            ? `$env:ORCA_CODEX_ISOLATE = '${value}'`
+            ? `$env:OCC_CODEX_ISOLATE = '${value}'`
             : shell === 'fish'
-              ? `set -gx ORCA_CODEX_ISOLATE ${value}`
-              : `export ORCA_CODEX_ISOLATE=${value}`
+              ? `set -gx OCC_CODEX_ISOLATE ${value}`
+              : `export OCC_CODEX_ISOLATE=${value}`
         const result = run(
           shell,
           ['codex a', setIsolate('1'), 'codex b', setIsolate('0'), 'codex c'].join('\n'),
           sandbox,
-          { ORCA_CODEX_ISOLATE: '0' }
+          { OCC_CODEX_ISOLATE: '0' }
         )
 
         expect(lines(result.stdout)).toEqual(['ARGV|a', 'ARGV|--no-daemon|b', 'ARGV|c'])
@@ -334,12 +334,12 @@ describe('codex wrapper --no-daemon rule', () => {
 
   describe('caller identity for commands Codex runs', () => {
     const identity = {
-      ORCA_TERMINAL_HANDLE: 'term_abc',
-      ORCA_USER_DATA_PATH: '/Users/a b/Library/Application Support/orca $HOME \\x "q"'
+      OCC_TERMINAL_HANDLE: 'term_abc',
+      OCC_USER_DATA_PATH: '/Users/a b/Library/Application Support/occ $HOME \\x "q"'
     }
     const identityOverrides = [
-      "shell_environment_policy.set.ORCA_TERMINAL_HANDLE='term_abc'",
-      `shell_environment_policy.set.ORCA_USER_DATA_PATH='${identity.ORCA_USER_DATA_PATH}'`
+      "shell_environment_policy.set.OCC_TERMINAL_HANDLE='term_abc'",
+      `shell_environment_policy.set.OCC_USER_DATA_PATH='${identity.OCC_USER_DATA_PATH}'`
     ]
     const splitOverrides = (line: string): { overrides: string[]; rest: string[] } => {
       const [, ...words] = line.split('|')
@@ -394,8 +394,8 @@ describe('codex wrapper --no-daemon rule', () => {
       it.skipIf(!available)(`${shell} skips a value holding an apostrophe`, () => {
         const sandbox = makeSandbox(HELP_WITHOUT_FLAG)
         const result = run(shell, codexCall(shell, ['x']), sandbox, {
-          ORCA_TERMINAL_HANDLE: 'term_abc',
-          ORCA_USER_DATA_PATH: "/Users/o'brien/orca'"
+          OCC_TERMINAL_HANDLE: 'term_abc',
+          OCC_USER_DATA_PATH: "/Users/o'brien/occ'"
         })
 
         expect(lines(result.stdout).map(splitOverrides)).toEqual([
@@ -403,11 +403,11 @@ describe('codex wrapper --no-daemon rule', () => {
         ])
       })
 
-      it.skipIf(!available)(`${shell} forwards nothing with ORCA_CODEX_ISOLATE=0`, () => {
+      it.skipIf(!available)(`${shell} forwards nothing with OCC_CODEX_ISOLATE=0`, () => {
         const sandbox = makeSandbox(HELP_WITH_FLAG)
         const result = run(shell, codexCall(shell, ['x']), sandbox, {
           ...identity,
-          ORCA_CODEX_ISOLATE: '0'
+          OCC_CODEX_ISOLATE: '0'
         })
 
         expect(lines(result.stdout)).toEqual(['ARGV|x'])
@@ -453,7 +453,7 @@ describe('codex wrapper --no-daemon rule', () => {
       `${shell} runs under StrictMode and Stop with a failing, noisy hook prep`,
       () => {
         const sandbox = makeSandbox(HELP_WITH_FLAG)
-        const prep = join(sandbox.bin, isWindows ? 'orca-prep.cmd' : 'orca-prep')
+        const prep = join(sandbox.bin, isWindows ? 'occ-prep.cmd' : 'occ-prep')
         writeExecutable(
           prep,
           isWindows
@@ -464,7 +464,7 @@ describe('codex wrapper --no-daemon rule', () => {
           shell,
           'codex x\n"status=$LASTEXITCODE"',
           sandbox,
-          { ORCA_CODEX_LAUNCH_PREFLIGHT: prep },
+          { OCC_CODEX_LAUNCH_PREFLIGHT: prep },
           [
             'Set-StrictMode -Version Latest',
             '$ErrorActionPreference = "Stop"',

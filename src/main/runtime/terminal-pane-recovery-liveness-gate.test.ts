@@ -5,16 +5,16 @@ import {
   createRuntimeWithSshLease,
   deferred,
   store
-} from './orca-runtime-test-fixtures.spec'
-import { makePaneKey } from './orca-runtime-test-mocks.spec'
-import { OrcaRuntimeService } from './orca-runtime'
+} from './occ-runtime-test-fixtures.spec'
+import { makePaneKey } from './occ-runtime-test-mocks.spec'
+import { OCCRuntimeService } from './occ-runtime'
 import { registerBoundPty } from './bind-first-pane.test-fixture'
 import type {
   RuntimeTerminalCreate,
   RuntimeTerminalResolvePane
 } from '../../shared/runtime-terminal-contracts'
 
-// Keep these gates in the CI-discovered .test.ts lane; sibling orca-runtime-tests/*.spec.ts fragments are not standalone tests.
+// Keep these gates in the CI-discovered .test.ts lane; sibling occ-runtime-tests/*.spec.ts fragments are not standalone tests.
 
 describe('terminal.recoverPane liveness gate', () => {
   it('recreates a shell for an SSH pane the relay disowned, the only evidence this gate ever gets', async () => {
@@ -131,7 +131,7 @@ describe('terminal.recoverPane liveness gate', () => {
   })
 })
 
-class PaneRecoveryRuntime extends OrcaRuntimeService {
+class PaneRecoveryRuntime extends OCCRuntimeService {
   usePendingRecoveries(pending: Map<string, Promise<RuntimeTerminalResolvePane>>): void {
     this.terminalPaneRecoveryByIdentity = pending
   }

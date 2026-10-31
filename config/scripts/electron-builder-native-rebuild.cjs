@@ -37,7 +37,7 @@ function buildNativeRebuildArgs(
   const platform = readPlatformName(context?.platform)
   const arch = readArchName(context?.arch)
   const canReusePreparedRuntime =
-    environment.ORCA_REUSE_PREPARED_NATIVE_RUNTIME === '1' &&
+    environment.OCC_REUSE_PREPARED_NATIVE_RUNTIME === '1' &&
     platform === hostPlatform &&
     arch === hostArch
 

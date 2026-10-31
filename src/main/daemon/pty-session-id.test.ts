@@ -6,7 +6,7 @@ import {
 } from './pty-session-id'
 import { parsePtySessionId } from '../../shared/pty-session-id-format'
 
-const USER_DATA = '/tmp/orca-userdata'
+const USER_DATA = '/tmp/occ-userdata'
 
 describe('mintPtySessionId', () => {
   it('preserves path-shaped worktreeIds verbatim in the prefix', () => {

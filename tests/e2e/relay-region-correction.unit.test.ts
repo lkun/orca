@@ -93,7 +93,7 @@ async function topology() {
         cells,
         dataDir: '',
         authIssuer: 'https://auth.example.test',
-        authAudience: 'orca-relay',
+        authAudience: 'occ-relay',
         adminJwksUrl: 'https://auth.example.test/jwks',
         jwksUrl: 'https://auth.example.test/jwks',
         assignmentSigningKey: new Uint8Array(32),
@@ -242,7 +242,7 @@ async function topology() {
         authorization: `Bearer ${token}`,
         ...RELAY_HOST_CAPABILITY_HEADERS
       })
-      if (process.env.ORCA_RELAY_TRANSPORT_DIAGNOSTICS === '1') {
+      if (process.env.OCC_RELAY_TRANSPORT_DIAGNOSTICS === '1') {
         const cell = new URL(url).host
         console.info('transport-control-created', {
           cell,

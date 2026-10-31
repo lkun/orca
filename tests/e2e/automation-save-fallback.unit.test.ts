@@ -31,7 +31,7 @@ vi.mock('../../src/main/telemetry/cohort-classifier', () => ({
 installAutomationsPageHarness()
 
 it('settles the actual implicit late-false save with real final-store refusal of invalid Terminal extras', async () => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-34332-save-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-34332-save-'))
   testState.dir = root
   const disk = createStore()
   disk.addRepo(makeRepo({ id: RUNTIME_REPO_ID }))

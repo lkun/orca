@@ -9,7 +9,7 @@ import {
   type ClaudeAgentTeamsMode
 } from '../../shared/claude-agent-teams-tmux-compat'
 import { getAppEnvironment, hasAppEnvironment } from '../../shared/app-environment'
-import { getOrcaCliCommandNameForPlatform } from '../../shared/orca-cli-command-name'
+import { getOCCCliCommandNameForPlatform } from '../../shared/occ-cli-command-name'
 import { getBundledLauncherPath } from '../cli/bundled-cli-launcher-path'
 import { resolvePathEnvKey } from '../pty/windows-path-segment-merge'
 
@@ -66,7 +66,7 @@ export function resolveClaudeAgentTeamsShimBin(
 ): string | null {
   // Windows environments may spell this key Path.
   const pathValue = env[resolvePathEnvKey(env, process.platform)]
-  const rawOverride = env.ORCA_AGENT_TEAMS_SHIM_BIN
+  const rawOverride = env.OCC_AGENT_TEAMS_SHIM_BIN
   // Qualify bare overrides before the shim shell can resolve them against its cwd.
   const override = rawOverride
     ? isAbsolute(rawOverride)
@@ -74,7 +74,7 @@ export function resolveClaudeAgentTeamsShimBin(
       : findExecutableOnPath(rawOverride, pathValue)
     : null
   // Inherited team overrides may point at an older leader’s stale GUI binary.
-  const inheritedFromTeam = Boolean(env.ORCA_AGENT_TEAMS_TEAM_ID)
+  const inheritedFromTeam = Boolean(env.OCC_AGENT_TEAMS_TEAM_ID)
   if (override && !inheritedFromTeam) {
     return override
   }
@@ -94,12 +94,12 @@ export function resolveClaudeAgentTeamsShimBin(
   }
   return (
     findExecutableOnPath(process.platform === 'win32' ? 'occ-dev.cmd' : 'occ-dev', pathValue) ??
-    findExecutableOnPath(getOrcaCliCommandNameForPlatform(process.platform), pathValue)
+    findExecutableOnPath(getOCCCliCommandNameForPlatform(process.platform), pathValue)
   )
 }
 
 function defaultShimRoot(): string {
-  return join(homedir(), '.orca', 'claude-agent-teams-bin')
+  return join(homedir(), '.occ', 'claude-agent-teams-bin')
 }
 
 function findExecutableOnPath(command: string, pathValue: string | undefined): string | null {
@@ -128,20 +128,20 @@ function isExecutableFile(candidate: string): boolean {
   }
 }
 
-// Require an absolute CLI: cmd.exe and POSIX dot/empty PATH entries can execute a cwd-planted orca with the team token.
+// Require an absolute CLI: cmd.exe and POSIX dot/empty PATH entries can execute a cwd-planted occ with the team token.
 function unixShimScript(): string {
   return [
     '#!/usr/bin/env sh',
     'set -eu',
-    'orca_bin=${ORCA_AGENT_TEAMS_SHIM_BIN:-}',
-    'case $orca_bin in',
+    'occ_bin=${OCC_AGENT_TEAMS_SHIM_BIN:-}',
+    'case $occ_bin in',
     '  /*|[A-Za-z]:[\\\\/]*) ;;',
     '  *)',
-    '    echo "orca agent-teams tmux shim: ORCA_AGENT_TEAMS_SHIM_BIN must be an absolute path" >&2',
+    '    echo "occ agent-teams tmux shim: OCC_AGENT_TEAMS_SHIM_BIN must be an absolute path" >&2',
     '    exit 127',
     '    ;;',
     'esac',
-    'exec "$orca_bin" agent-teams-tmux "$@"',
+    'exec "$occ_bin" agent-teams-tmux "$@"',
     ''
   ].join('\n')
 }
@@ -150,17 +150,17 @@ export function windowsClaudeAgentTeamsShimScript(): string {
   return [
     '@echo off',
     'setlocal',
-    'set "ORCA_SHIM_BIN=%ORCA_AGENT_TEAMS_SHIM_BIN%"',
-    'if not defined ORCA_SHIM_BIN goto :unqualified',
-    'if "%ORCA_SHIM_BIN:~1,1%"==":" goto :run',
-    'if "%ORCA_SHIM_BIN:~0,2%"=="\\\\" goto :run',
+    'set "OCC_SHIM_BIN=%OCC_AGENT_TEAMS_SHIM_BIN%"',
+    'if not defined OCC_SHIM_BIN goto :unqualified',
+    'if "%OCC_SHIM_BIN:~1,1%"==":" goto :run',
+    'if "%OCC_SHIM_BIN:~0,2%"=="\\\\" goto :run',
     'goto :unqualified',
     ':run',
     // call would percent-expand tmux pane ids such as %2 again.
-    '"%ORCA_SHIM_BIN%" agent-teams-tmux %*',
+    '"%OCC_SHIM_BIN%" agent-teams-tmux %*',
     'exit /b %ERRORLEVEL%',
     ':unqualified',
-    'echo orca agent-teams tmux shim: ORCA_AGENT_TEAMS_SHIM_BIN must be an absolute path 1>&2',
+    'echo occ agent-teams tmux shim: OCC_AGENT_TEAMS_SHIM_BIN must be an absolute path 1>&2',
     'exit /b 127',
     ''
   ].join('\r\n')

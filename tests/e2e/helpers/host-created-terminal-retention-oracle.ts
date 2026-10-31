@@ -46,7 +46,7 @@ function isDaemonPtyIdForm(ptyId: string, worktreeId: string): boolean {
 }
 
 export function createRetentionFixtureDirectory(): string {
-  return mkdtempSync(path.join(os.tmpdir(), 'orca-host-terminal-retention-'))
+  return mkdtempSync(path.join(os.tmpdir(), 'occ-host-terminal-retention-'))
 }
 
 // Keep the agent alive so PTY death cannot explain a pruned tab.

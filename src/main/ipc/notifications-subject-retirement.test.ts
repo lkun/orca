@@ -169,7 +169,7 @@ describe('notifications:dismiss by acknowledged subject', () => {
   })
   // Positioned alerts survive reads before their journal boundary; pane-wide views cannot retire them.
   it('pane dismissal retires older-host structured alerts but not positioned ones past the read', async () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-pane-boundary-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-pane-boundary-'))
     const controller = new RuntimeMobileNotificationController()
     try {
       controller.configureDismissalStore(directory)
@@ -236,7 +236,7 @@ describe('notifications:dismiss by acknowledged subject', () => {
     }
   })
   it('the click-time read a Mark read sends closes and retires every alert it covers', async () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-explicit-read-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-explicit-read-'))
     const controller = new RuntimeMobileNotificationController()
     try {
       controller.configureDismissalStore(directory)
@@ -294,7 +294,7 @@ describe('notifications:dismiss by acknowledged subject', () => {
   })
 
   it('settles only the relayed prompt alerts of a session its host reports none pending for', async () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-relay-settle-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-relay-settle-'))
     const controller = new RuntimeMobileNotificationController()
     try {
       controller.configureDismissalStore(directory)

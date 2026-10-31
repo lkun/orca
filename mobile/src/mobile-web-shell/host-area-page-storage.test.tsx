@@ -43,11 +43,11 @@ import {
   writeMirroredStorage
 } from '../storage/mirrored-storage-keys'
 
-const CHAT_TABS = 'orca:nativeChatTabs:host-a:wt-1'
-const LIVE_INPUT = 'orca:terminalLiveInputDisabled:host-a:wt-1'
-const NEVER_STORED = 'orca:nativeChatTabs:host-a:wt-2'
-const OTHER_HOST = 'orca:nativeChatTabs:host-b:wt-1'
-const FRESH = 'orca:terminalLiveInputDisabled:host-a:wt-2'
+const CHAT_TABS = 'occ:nativeChatTabs:host-a:wt-1'
+const LIVE_INPUT = 'occ:terminalLiveInputDisabled:host-a:wt-1'
+const NEVER_STORED = 'occ:nativeChatTabs:host-a:wt-2'
+const OTHER_HOST = 'occ:nativeChatTabs:host-b:wt-1'
+const FRESH = 'occ:terminalLiveInputDisabled:host-a:wt-2'
 
 function persisted(): void {
   for (const land of queued.splice(0)) {
@@ -186,18 +186,18 @@ describe('the per-workspace keys of a host-area page', () => {
   })
 
   it('reads a stored key the mirror never held, though another mirrored write lands meanwhile', async () => {
-    const relaunched = 'orca:terminalLiveInputDisabled:host-a:alpha'
+    const relaunched = 'occ:terminalLiveInputDisabled:host-a:alpha'
     store.set(relaunched, '["handle-1"]')
     const view = await snapshotFor('/h/host-a', true)
     const read = view.readWorkspaceKey(relaunched)
-    writeMirroredStorage('orca:pins:host-a', '[]')
+    writeMirroredStorage('occ:pins:host-a', '[]')
     expect(await read).toBe('["handle-1"]')
   })
 
   it('rejects, rather than reading as unset, when the store cannot be read', async () => {
     vi.spyOn(AsyncStorage, 'getItem').mockRejectedValueOnce(new Error('store unavailable'))
     const view = await snapshotFor('/h/host-a', true)
-    await expect(view.readWorkspaceKey('orca:nativeChatTabs:host-a:beta')).rejects.toThrow()
+    await expect(view.readWorkspaceKey('occ:nativeChatTabs:host-a:beta')).rejects.toThrow()
   })
 
   it("refuses another host's key, to read or to write", async () => {

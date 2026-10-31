@@ -11,7 +11,7 @@ import {
   BROWSER_EXTENSION_WORKER_TOKEN_FILE
 } from '../../../shared/browser-extension-worker-api'
 import { buildBrowserExtensionBackgroundWrapper } from './browser-extension-background-wrapper'
-import { withOrcaContentScript } from './browser-extension-content-script-manifest'
+import { withOCCContentScript } from './browser-extension-content-script-manifest'
 import {
   withPrivateFilesHiddenFromWebAccessibleResources,
   withStaticWebAccessibleResources
@@ -54,7 +54,7 @@ export function chromeExtensionIdFromKey(base64Key: string): string {
  */
 function unpackedManifestKey(sourceDirectory: string): string {
   return createHash('sha256')
-    .update(`orca-unpacked:${resolve(sourceDirectory)}`)
+    .update(`occ-unpacked:${resolve(sourceDirectory)}`)
     .digest('base64')
 }
 
@@ -73,8 +73,8 @@ async function writeIfChanged(path: string, content: string): Promise<void> {
     return
   }
   await mkdir(dirname(path), { recursive: true })
-  await writeFile(`${path}.orca-tmp`, content)
-  await rename(`${path}.orca-tmp`, path)
+  await writeFile(`${path}.occ-tmp`, content)
+  await rename(`${path}.occ-tmp`, path)
 }
 
 function requireInside(directory: string, relativePath: string): string {
@@ -123,17 +123,17 @@ export async function browserExtensionIdForUnpackedFolder(directory: string): Pr
 }
 
 // Why: OCC writes these into the package; none of them is meant for web pages.
-const ORCA_PRIVATE_FILES = [
+const OCC_PRIVATE_FILES = [
   BROWSER_EXTENSION_WORKER_TOKEN_FILE,
   BROWSER_EXTENSION_ORIGINAL_MANIFEST_FILE
 ]
-const ORCA_ROOT_FILES = [
-  ...ORCA_PRIVATE_FILES,
+const OCC_ROOT_FILES = [
+  ...OCC_PRIVATE_FILES,
   BROWSER_EXTENSION_WORKER_SHIM_FILE,
   BROWSER_EXTENSION_CONTENT_SCRIPT_FILE
 ]
-const ORCA_GENERATED_FILE_NAMES = new Set([
-  ...ORCA_ROOT_FILES,
+const OCC_GENERATED_FILE_NAMES = new Set([
+  ...OCC_ROOT_FILES,
   BROWSER_EXTENSION_WORKER_WRAPPER_FILE
 ])
 
@@ -141,12 +141,12 @@ const ORCA_GENERATED_FILE_NAMES = new Set([
  * Refuses a package that already has a file where OCC writes its own, which would overwrite it.
  * Asks the file system rather than comparing names, so every spelling that aliases one counts.
  */
-export async function refuseOrcaFileCollisions(
+export async function refuseOCCFileCollisions(
   directory: string,
   manifest: Record<string, unknown>
 ): Promise<void> {
   const wrapperPath = buildBrowserExtensionBackgroundWrapper(manifest)?.wrapperPath
-  for (const path of wrapperPath ? [...ORCA_ROOT_FILES, wrapperPath] : ORCA_ROOT_FILES) {
+  for (const path of wrapperPath ? [...OCC_ROOT_FILES, wrapperPath] : OCC_ROOT_FILES) {
     const target = resolveInsideExtensionDirectory(directory, path)
     if (target && (await stat(target).catch(() => null))) {
       throw new Error(`OCC can't load this extension: its file ${path} uses a name OCC reserves`)
@@ -165,7 +165,7 @@ function fileIdentity(path: string): string | null {
 
 /** True for a resource that is one of OCC's private files on disk, whatever its spelling. */
 function isPrivateFileOnDisk(directory: string): (resource: string) => boolean {
-  const privateIds = new Set(ORCA_PRIVATE_FILES.map((file) => fileIdentity(join(directory, file))))
+  const privateIds = new Set(OCC_PRIVATE_FILES.map((file) => fileIdentity(join(directory, file))))
   privateIds.delete(null)
   return (resource) => {
     const target = resolveInsideExtensionDirectory(directory, resource)
@@ -178,7 +178,7 @@ function isPrivateFileOnDisk(directory: string): (resource: string) => boolean {
 async function listPackageFiles(directory: string): Promise<string[]> {
   const entries = await readdir(directory, { recursive: true, withFileTypes: true })
   return entries
-    .filter((entry) => entry.isFile() && !ORCA_GENERATED_FILE_NAMES.has(entry.name))
+    .filter((entry) => entry.isFile() && !OCC_GENERATED_FILE_NAMES.has(entry.name))
     .map((entry) => relative(directory, join(entry.parentPath, entry.name)).split(sep).join('/'))
 }
 
@@ -200,14 +200,14 @@ async function prepare(
   const originalPath = join(directory, BROWSER_EXTENSION_ORIGINAL_MANIFEST_FILE)
   const { originalText, original } = await readOriginalManifest(directory, extension.source)
   if (unpacked) {
-    await refuseOrcaFileCollisions(directory, original)
+    await refuseOCCFileCollisions(directory, original)
   }
   const key = manifestKey(original, extension)
   const extensionId = chromeExtensionIdFromKey(key)
   const packageFiles = await listPackageFiles(directory)
   const staticResources = withStaticWebAccessibleResources({ ...original, key })
   const wrapper = buildBrowserExtensionBackgroundWrapper(staticResources)
-  const withContentScript = withOrcaContentScript(wrapper?.manifest ?? staticResources)
+  const withContentScript = withOCCContentScript(wrapper?.manifest ?? staticResources)
   await writeIfChanged(originalPath, originalText)
   let workerScripts = ''
   if (wrapper) {

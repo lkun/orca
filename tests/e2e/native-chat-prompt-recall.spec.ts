@@ -6,7 +6,7 @@ import { mkdtempSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Locator } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   waitForActivePaneHookDescriptor,
@@ -53,31 +53,31 @@ function draft(composer: Locator): Promise<string> {
   )
 }
 
-test('Up and Down walk the prompts already in the chat', async ({ orcaPage }, testInfo) => {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
-  await waitForActiveTerminalManager(orcaPage, 30_000)
-  const boundPane = await waitForPaneIdentitySnapshot(orcaPage, 1)
-  const ptyId = await waitForActivePanePtyId(orcaPage)
-  await waitForPtyShellEcho(orcaPage, ptyId, 15_000)
-  const descriptor = await waitForActivePaneHookDescriptor(orcaPage)
+test('Up and Down walk the prompts already in the chat', async ({ occPage }, testInfo) => {
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
+  await waitForActiveTerminalManager(occPage, 30_000)
+  const boundPane = await waitForPaneIdentitySnapshot(occPage, 1)
+  const ptyId = await waitForActivePanePtyId(occPage)
+  await waitForPtyShellEcho(occPage, ptyId, 15_000)
+  const descriptor = await waitForActivePaneHookDescriptor(occPage)
   expect(descriptor.paneKey).toBe(`${boundPane.tabId}:${boundPane.activeLeafId}`)
   const [tabId] = descriptor.paneKey.split(':')
   const sessionId = `e2e-prompt-recall-${randomUUID()}`
   const transcriptPath = path.join(
-    mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-prompt-recall-')),
+    mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-prompt-recall-')),
     `${sessionId}.jsonl`
   )
   writeFileSync(transcriptPath, claudeTranscript(sessionId))
 
-  const finishLifetime = await observeTranscriptPaneLifetime(orcaPage, {
+  const finishLifetime = await observeTranscriptPaneLifetime(occPage, {
     tabId,
     worktreeId: descriptor.worktreeId,
     paneKey: descriptor.paneKey
   })
   try {
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       async ({ paneKey, worktreeId, tabId, sessionId, transcriptPath }) => {
         const settings = await window.api.settings.set({
           nativeChatProviders: { claude: true, codex: true }
@@ -107,12 +107,12 @@ test('Up and Down walk the prompts already in the chat', async ({ orcaPage }, te
       { ...descriptor, tabId, sessionId, transcriptPath }
     )
 
-    const chat = orcaPage.locator('[data-native-chat-root="true"]')
+    const chat = occPage.locator('[data-native-chat-root="true"]')
     await expect(chat.getByText('Answer 4.')).toBeVisible()
     const composer = chat.getByRole('textbox')
     await composer.click()
     const press = async (key: 'ArrowUp' | 'ArrowDown'): Promise<string> => {
-      await orcaPage.keyboard.press(key)
+      await occPage.keyboard.press(key)
       // Why: the editor learns of a caret the browser moved a task later; a person never out-types that.
       await expect
         .poll(() =>
@@ -160,7 +160,7 @@ test('Up and Down walk the prompts already in the chat', async ({ orcaPage }, te
     expect(await press('ArrowDown')).toBe(WRAPPED)
     expect(await press('ArrowDown')).toBe(COMMAND)
     expect(await press('ArrowDown')).toBe('')
-    const finalPane = await waitForPaneIdentitySnapshot(orcaPage, 1)
+    const finalPane = await waitForPaneIdentitySnapshot(occPage, 1)
     expect(finalPane.tabId).toBe(boundPane.tabId)
     expect(finalPane.activeLeafId).toBe(boundPane.activeLeafId)
     expect(finalPane.ptyIdsByLeafId).toEqual(boundPane.ptyIdsByLeafId)

@@ -10,8 +10,8 @@ import {
   getAllWorktreesFromState,
   getProjectHostSetupProjectionFromState,
   getWorktreeMapFromState,
-  resetFloatingVisibleTabCountSelectorCacheForTest,
-  resetFloatingWorkspaceUnreadSelectorCacheForTest,
+  resetFloatingVisibleTabCountSelectocccheForTest,
+  resetFloatingWorkspaceUnreadSelectocccheForTest,
   selectKnownWorktreeById,
   selectRepoByIdForActiveWorkspace,
   selectFloatingVisibleTabCount,
@@ -65,7 +65,7 @@ function makeTerminalTab(args: { id: string; worktreeId: string; title: string }
 
 describe('store selectors', () => {
   beforeEach(() => {
-    resetFloatingVisibleTabCountSelectorCacheForTest()
+    resetFloatingVisibleTabCountSelectocccheForTest()
   })
 
   it('deduplicates cached worktree snapshots without changing reference reuse', () => {
@@ -260,8 +260,8 @@ describe('store selectors', () => {
     const repos = [
       makeRepo({
         id: 'repo-1',
-        path: '/Users/alice/orca',
-        displayName: 'orca'
+        path: '/Users/alice/occ',
+        displayName: 'occ'
       })
     ]
     const state = { repos }
@@ -459,8 +459,8 @@ describe('store selectors', () => {
     const repos = [
       makeRepo({
         id: 'repo-1',
-        path: '/Users/alice/orca',
-        displayName: 'orca'
+        path: '/Users/alice/occ',
+        displayName: 'occ'
       })
     ]
     const projects = [
@@ -479,8 +479,8 @@ describe('store selectors', () => {
         projectId: 'project-1',
         hostId: 'local' as const,
         repoId: 'repo-1',
-        path: '/Users/alice/orca',
-        displayName: 'orca',
+        path: '/Users/alice/occ',
+        displayName: 'occ',
         setupState: 'ready' as const,
         setupMethod: 'legacy-repo' as const,
         createdAt: 1,
@@ -497,33 +497,33 @@ describe('store selectors', () => {
   it('groups hydrated VM project setups under the repo-derived project identity', () => {
     const repos = [
       makeRepo({
-        id: 'local-orca',
-        path: '/Users/alice/stably/orca',
-        displayName: 'orca',
-        upstream: { owner: 'stablyai', repo: 'orca' }
+        id: 'local-occ',
+        path: '/Users/alice/stably/occ',
+        displayName: 'occ',
+        upstream: { owner: 'stablyai', repo: 'occ' }
       }),
       makeRepo({
-        id: 'vm-orca',
-        path: '/vercel/sandbox/orca',
-        displayName: 'orca',
-        upstream: { owner: 'stablyai', repo: 'orca' },
+        id: 'vm-occ',
+        path: '/vercel/sandbox/occ',
+        displayName: 'occ',
+        upstream: { owner: 'stablyai', repo: 'occ' },
         executionHostId: toRuntimeExecutionHostId('vm-env')
       })
     ]
     const projects = [
       {
-        id: 'github:stablyai/orca',
-        displayName: 'orca',
+        id: 'github:stablyai/occ',
+        displayName: 'occ',
         badgeColor: '#737373',
-        sourceRepoIds: ['local-orca'],
+        sourceRepoIds: ['local-occ'],
         createdAt: 1,
         updatedAt: 1
       },
       {
-        id: 'repo:vm-orca',
-        displayName: 'vercel/sandbox/orca',
+        id: 'repo:vm-occ',
+        displayName: 'vercel/sandbox/occ',
         badgeColor: '#737373',
-        sourceRepoIds: ['vm-orca'],
+        sourceRepoIds: ['vm-occ'],
         createdAt: 1,
         updatedAt: 1
       }
@@ -531,11 +531,11 @@ describe('store selectors', () => {
     const projectHostSetups = [
       {
         id: 'local-setup',
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         hostId: 'local' as const,
-        repoId: 'local-orca',
-        path: '/Users/alice/stably/orca',
-        displayName: 'orca',
+        repoId: 'local-occ',
+        path: '/Users/alice/stably/occ',
+        displayName: 'occ',
         setupState: 'ready' as const,
         setupMethod: 'legacy-repo' as const,
         createdAt: 1,
@@ -543,11 +543,11 @@ describe('store selectors', () => {
       },
       {
         id: 'vm-setup',
-        projectId: 'repo:vm-orca',
+        projectId: 'repo:vm-occ',
         hostId: toRuntimeExecutionHostId('vm-env'),
-        repoId: 'vm-orca',
-        path: '/vercel/sandbox/orca',
-        displayName: 'orca',
+        repoId: 'vm-occ',
+        path: '/vercel/sandbox/occ',
+        displayName: 'occ',
         setupState: 'ready' as const,
         setupMethod: 'provisioned' as const,
         createdAt: 1,
@@ -561,11 +561,11 @@ describe('store selectors', () => {
       projectHostSetups
     })
 
-    expect(projection.projects.map((project) => project.id)).toEqual(['github:stablyai/orca'])
+    expect(projection.projects.map((project) => project.id)).toEqual(['github:stablyai/occ'])
     expect(projection.setups).toEqual(
       expect.arrayContaining([
-        expect.objectContaining({ id: 'local-setup', projectId: 'github:stablyai/orca' }),
-        expect.objectContaining({ id: 'vm-setup', projectId: 'github:stablyai/orca' })
+        expect.objectContaining({ id: 'local-setup', projectId: 'github:stablyai/occ' }),
+        expect.objectContaining({ id: 'vm-setup', projectId: 'github:stablyai/occ' })
       ])
     )
   })
@@ -574,9 +574,9 @@ describe('store selectors', () => {
     const repos = [
       makeRepo({
         id: 'repo-1',
-        path: '/Users/alice/orca',
-        displayName: 'orca',
-        upstream: { owner: 'stablyai', repo: 'orca' }
+        path: '/Users/alice/occ',
+        displayName: 'occ',
+        upstream: { owner: 'stablyai', repo: 'occ' }
       })
     ]
 
@@ -588,17 +588,17 @@ describe('store selectors', () => {
 
     expect(projection.projects).toEqual([
       expect.objectContaining({
-        id: 'github:stablyai/orca',
+        id: 'github:stablyai/occ',
         sourceRepoIds: ['repo-1']
       })
     ])
     expect(projection.setups).toEqual([
       expect.objectContaining({
         id: 'repo-1',
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         repoId: 'repo-1',
         hostId: 'local',
-        path: '/Users/alice/orca'
+        path: '/Users/alice/occ'
       })
     ])
   })
@@ -607,8 +607,8 @@ describe('store selectors', () => {
     const repos = [
       makeRepo({
         id: 'repo-1',
-        path: '/Users/alice/orca',
-        displayName: 'orca'
+        path: '/Users/alice/occ',
+        displayName: 'occ'
       })
     ]
     const projects = [
@@ -659,7 +659,7 @@ describe('selectFloatingWorkspaceHasUnread', () => {
   type UnreadState = Parameters<typeof selectFloatingWorkspaceHasUnread>[0]
 
   beforeEach(() => {
-    resetFloatingWorkspaceUnreadSelectorCacheForTest()
+    resetFloatingWorkspaceUnreadSelectocccheForTest()
   })
 
   function makeState(overrides: Partial<UnreadState>): UnreadState {

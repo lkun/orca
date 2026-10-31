@@ -8,7 +8,7 @@ import {
 } from './hook-config'
 
 const EVENTS = ['turn_end', 'session_start', 'session_end', 'post_tool'] as const
-const MANAGED_COMMAND = '/Users/tester/.orca/agent-hooks/jcode-hook.sh'
+const MANAGED_COMMAND = '/Users/tester/.occ/agent-hooks/jcode-hook.sh'
 
 describe('jcode hook-config', () => {
   it('appends a [hooks] table when the config has none', () => {
@@ -130,7 +130,7 @@ turn_end = "~/bin/mine" # replaces agent-hooks/jcode-hook.sh
   })
 
   it('repoints a managed entry left behind by a copied home or a platform switch', () => {
-    const stale = '/Users/old/.orca/agent-hooks/jcode-hook.sh'
+    const stale = '/Users/old/.occ/agent-hooks/jcode-hook.sh'
     const source = `[hooks]\nturn_end = ${tomlQuoteString(stale)}\n`
     const result = applyJcodeManagedHooks(source, EVENTS, MANAGED_COMMAND, 'jcode-hook.sh')
     expect(result.userOwnedEvents).toEqual([])
@@ -178,7 +178,7 @@ turn_end = "~/bin/mine" # replaces agent-hooks/jcode-hook.sh
   })
 
   it('repoints a stale managed array element in place and drops managed duplicates', () => {
-    const stale = tomlQuoteString('/Users/old/.orca/agent-hooks/jcode-hook.cmd')
+    const stale = tomlQuoteString('/Users/old/.occ/agent-hooks/jcode-hook.cmd')
     const current = tomlQuoteString(MANAGED_COMMAND)
     const source = `[hooks]\npre_tool = ["a.sh", ${stale}, "b.sh", ${current}]\nturn_end = [${stale}, ${stale}]\n`
     const applied = applyJcodeManagedHooks(

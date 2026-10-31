@@ -1,8 +1,8 @@
 import { getAppEnvironment } from '../../../shared/app-environment'
-import { getManagedOrcadFenceEnvironmentId } from '../../../shared/managed-orcad-ssh-owner'
+import { getManagedOCCdFenceEnvironmentId } from '../../../shared/managed-occd-ssh-owner'
 import { listEnvironments } from '../../../shared/runtime-environment-store'
 import {
-  getOrcadSshDeployment,
+  getOCCdSshDeployment,
   getRuntimeSshAccess,
   type KnownRuntimeEnvironment
 } from '../../../shared/runtime-environments'
@@ -81,10 +81,10 @@ export async function disconnectSshHostForUser(
 
 /** The status bar's Disconnect of a managed server is a Disconnect of the machine it runs on. */
 export async function disconnectManagedHostOfEnvironmentForUser(
-  environment: Pick<KnownRuntimeEnvironment, 'orcadDeployment'>,
+  environment: Pick<KnownRuntimeEnvironment, 'occdDeployment'>,
   runtimeLayer: RuntimeLayer
 ): Promise<void> {
-  const targetId = getOrcadSshDeployment(environment)?.sshTargetId
+  const targetId = getOCCdSshDeployment(environment)?.sshTargetId
   if (targetId) {
     await disconnectSshHostForUser(targetId, runtimeLayer)
   }
@@ -92,9 +92,9 @@ export async function disconnectManagedHostOfEnvironmentForUser(
 
 /** The status bar's Connect of a server lifts the Disconnect of the SSH host it is reached through. */
 export async function liftSshUserDisconnectForEnvironment(
-  environment: Pick<KnownRuntimeEnvironment, 'orcadDeployment' | 'sshAccess'>
+  environment: Pick<KnownRuntimeEnvironment, 'occdDeployment' | 'sshAccess'>
 ): Promise<void> {
-  const managedHostId = getOrcadSshDeployment(environment)?.sshTargetId
+  const managedHostId = getOCCdSshDeployment(environment)?.sshTargetId
   if (managedHostId && isSshUserDisconnected(managedHostId)) {
     // Host Connect republishes managed status and restores forwards removed by Disconnect.
     await connectRegisteredSshTarget(managedHostId)
@@ -131,13 +131,13 @@ export function resetLaunchReconnectOptOutsForTests(): void {
 
 /** Stop and remove persists across reloads and restarts: automatic dials must not deploy a new server. */
 export function isManagedServerRemovalHeld(
-  target: Pick<SshTarget, 'managedServerRemoved' | 'orcadFence'> | undefined
+  target: Pick<SshTarget, 'managedServerRemoved' | 'occdFence'> | undefined
 ): boolean {
   if (!target?.managedServerRemoved) {
     return false
   }
   // An older desktop ignores the hold and may redeploy; its registered server stays reachable.
-  const environmentId = getManagedOrcadFenceEnvironmentId(target)
+  const environmentId = getManagedOCCdFenceEnvironmentId(target)
   return (
     !environmentId ||
     !listEnvironments(appUserDataPath()).some((environment) => environment.id === environmentId)

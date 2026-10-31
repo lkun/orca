@@ -38,7 +38,7 @@ describe('runWithGitFetchHeadLock', () => {
         'fetch',
         '--no-write-fetch-head',
         'origin',
-        '+refs/heads/main:refs/orca/rebase/one',
+        '+refs/heads/main:refs/occ/rebase/one',
         '+refs/heads/main:refs/remotes/origin/main'
       ],
       expected: true

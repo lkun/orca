@@ -2,13 +2,13 @@ import { agentPromptObservationSignal } from './agent-prompt-signals'
 import type { RuntimeAgentPromptWriteOptions } from '../../runtime-terminal-contracts'
 import type { RuntimeTerminalSend } from '../../../../shared/runtime-types'
 import type { AgentTransitionDetector } from '../../../agent-hooks/agent-transition-detector'
-import { OrcaRuntimeWithWriteTerminalAgentPrompt } from './terminal-agent-prompt'
+import { OCCRuntimeWithWriteTerminalAgentPrompt } from './terminal-agent-prompt'
 import {
   AgentPromptPermissionReturnedError,
   waitWhileAgentPromptBlocked
 } from './agent-prompt-permission-hold'
 
-export abstract class OrcaRuntimeWithSubmitTerminalAgentPrompt extends OrcaRuntimeWithWriteTerminalAgentPrompt {
+export abstract class OCCRuntimeWithSubmitTerminalAgentPrompt extends OCCRuntimeWithWriteTerminalAgentPrompt {
   abstract readonly agentTransitions: Pick<AgentTransitionDetector, 'subscribe'>
 
   protected async submitTerminalAgentPrompt(

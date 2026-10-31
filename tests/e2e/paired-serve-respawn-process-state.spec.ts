@@ -1,7 +1,7 @@
 // #35559: a serve host restarted without its daemon restores each pane with a new shell; the dead agent's title, status and input modes must not survive.
 import type { JSHandle, Page } from '@stablyai/playwright-test'
 import { toWebTerminalSurfaceTabId } from '../../src/shared/terminal-surface-id'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import {
   launchPairedElectronClient,

@@ -22,7 +22,7 @@ export type AccumulatedWorkspaceFixtureSummary = {
 
 type FixtureWindow = Window & {
   __accumulatedFixtureCleanup?: () => void
-  __orcaBenchmarkInstrumentation?: {
+  __occBenchmarkInstrumentation?: {
     reset: () => void
     start: () => void
     stop: () => void
@@ -173,14 +173,14 @@ export async function seedAccumulatedWorkspaceFixture(
         serializedBytes
       }
     },
-    { config, seed, fullAgentRows: process.env.ORCA_TYPING_BENCH_AGENT_ROWS === 'full' }
+    { config, seed, fullAgentRows: process.env.OCC_TYPING_BENCH_AGENT_ROWS === 'full' }
   )
 }
 
 export async function startAccumulatedBenchmarkInstrumentation(page: Page): Promise<boolean> {
   return page.evaluate(() => {
     const target: FixtureWindow = window
-    const instrumentation = target.__orcaBenchmarkInstrumentation
+    const instrumentation = target.__occBenchmarkInstrumentation
     if (!instrumentation) {
       return false
     }
@@ -198,7 +198,7 @@ export async function stopAccumulatedBenchmarkInstrumentation(
 > {
   return page.evaluate(() => {
     const target: FixtureWindow = window
-    const instrumentation = target.__orcaBenchmarkInstrumentation
+    const instrumentation = target.__occBenchmarkInstrumentation
     if (!instrumentation) {
       return { available: false as const, reason: 'not-installed' as const, snapshot: null }
     }

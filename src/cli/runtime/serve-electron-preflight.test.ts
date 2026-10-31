@@ -22,7 +22,7 @@ beforeAll(async () => {
 const METADATA: RuntimeMetadata = {
   runtimeId: 'runtime-1',
   pid: 4242,
-  transports: [{ kind: 'unix', endpoint: '/tmp/orca-test.sock' }],
+  transports: [{ kind: 'unix', endpoint: '/tmp/occ-test.sock' }],
   authToken: 'token',
   startedAt: 1
 }
@@ -37,7 +37,7 @@ describe('preflightElectronServe', () => {
   let stdout: ReturnType<typeof vi.spyOn>
 
   beforeEach(() => {
-    userData = mkdtempSync(join(tmpdir(), 'orca-serve-preflight-'))
+    userData = mkdtempSync(join(tmpdir(), 'occ-serve-preflight-'))
     stderr = vi.spyOn(process.stderr, 'write').mockImplementation(() => true)
     stdout = vi.spyOn(process.stdout, 'write').mockImplementation(() => true)
   })
@@ -186,7 +186,7 @@ describe.skipIf(process.platform === 'win32')('serve private admission snapshots
   let server: ReturnType<typeof createServer> | undefined
   const sockets = new Set<Socket>()
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-serve-admission-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-serve-admission-'))
     vi.spyOn(process.stderr, 'write').mockImplementation(() => true)
   })
   afterEach(async () => {
@@ -206,7 +206,7 @@ describe.skipIf(process.platform === 'win32')('serve private admission snapshots
   })
   function publish(pid = 2147483647, endpoint = join(root, 'runtime.sock')) {
     const metadata = { ...METADATA, pid, transports: [{ kind: 'unix', endpoint }] }
-    writeFileSync(join(root, 'orca-runtime.json'), JSON.stringify(metadata))
+    writeFileSync(join(root, 'occ-runtime.json'), JSON.stringify(metadata))
     return metadata
   }
   it('keeps the missing-M0 default path synchronous without a second read', () => {
@@ -235,12 +235,12 @@ describe.skipIf(process.platform === 'win32')('serve private admission snapshots
       vi.mocked(metadataReader.tryReadMetadata).mockImplementationOnce((path) => {
         const m0 = actualMetadata.tryReadMetadata(path)
         if (change === 'disappeared') {
-          unlinkSync(join(root, 'orca-runtime.json'))
+          unlinkSync(join(root, 'occ-runtime.json'))
         } else {
           publish(process.pid, join(root, 'new.sock'))
           if (change === 'incomplete') {
             writeFileSync(
-              join(root, 'orca-runtime.json'),
+              join(root, 'occ-runtime.json'),
               JSON.stringify({ ...first, authToken: null })
             )
           }

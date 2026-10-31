@@ -2,7 +2,7 @@ import { chmodSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { delimiter, join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { SAMPLE_SCRIPT } from './wsl-windows-checkout-git-probe'
 import { LINE_ENDING_SAMPLE_LIMIT, LINE_ENDING_SCAN_LIMIT } from './wsl-windows-checkout-git-config'
 
@@ -15,7 +15,7 @@ describe.skipIf(process.platform === 'win32')('line-ending sample pipeline', () 
   let binDir: string
 
   beforeEach(() => {
-    binDir = mkdtempSync(join(tmpdir(), 'orca-eol-sample-'))
+    binDir = mkdtempSync(join(tmpdir(), 'occ-eol-sample-'))
   })
 
   afterEach(() => {

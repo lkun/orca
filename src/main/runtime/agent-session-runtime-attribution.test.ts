@@ -34,7 +34,7 @@ const OWNER = {
 let directory: string
 
 beforeEach(async () => {
-  directory = await mkdtemp(join(tmpdir(), 'orca-runtime-attribution-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-runtime-attribution-'))
 })
 
 afterEach(async () => {

@@ -2,17 +2,17 @@
 // Keep launch probes synchronous so readiness listeners attach in the spawn tick.
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { join } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import { runProcessSync } from '@occ/process-host'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 import { removeChromiumDisabledSessionBus } from '../pty/chromium-session-bus-env'
 import { cgroupPathFromProcLine, userManagerOutlivesCaller } from './daemon-user-manager-lifetime'
 
 const SYSTEMD_RUN_BINARY = 'systemd-run'
-const UNIT_NAME_PREFIX = 'orca-daemon-'
+const UNIT_NAME_PREFIX = 'occ-daemon-'
 const SYSTEMD_BOOT_PATH = '/run/systemd/system'
 const SYSTEMD_RUN_PROBE_TIMEOUT_MS = 2_000
 const SYSTEMD_SCOPE_MIGRATION_TIMEOUT_MS = 5_000
-const LEGACY_SCOPE_PREFIX = 'app-orca-'
+const LEGACY_SCOPE_PREFIX = 'app-occ-'
 
 // Resolve the per-UID runtime directory independently of service-hardened environment overrides.
 const CANONICAL_USER_RUNTIME_DIR =

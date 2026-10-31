@@ -8,16 +8,16 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MobileRelayStatusDetail } from '../../../../shared/mobile-relay-status'
 import type {
-  OrcaCloudSignInProgress,
-  OrcaProfileAuthStatus
-} from '../../../../shared/orca-profiles'
+  OCCCloudSignInProgress,
+  OCCProfileAuthStatus
+} from '../../../../shared/occ-profiles'
 import { MobilePairingConnectionOptions } from './MobilePairingConnectionOptions'
 
 type MobileRelayStoreState = {
-  orcaProfileAuthStatus: OrcaProfileAuthStatus | null
-  orcaProfileSignInProgress?: OrcaCloudSignInProgress | null
-  connectCurrentOrcaProfile: () => Promise<null>
-  fetchOrcaProfileAuthStatus: () => Promise<OrcaProfileAuthStatus | null>
+  occProfileAuthStatus: OCCProfileAuthStatus | null
+  occProfileSignInProgress?: OCCCloudSignInProgress | null
+  connectCurrentOCCProfile: () => Promise<null>
+  fetchOCCProfileAuthStatus: () => Promise<OCCProfileAuthStatus | null>
 }
 
 const mocks = vi.hoisted(() => ({
@@ -65,14 +65,14 @@ describe('MobilePairingConnectionOptions', () => {
       }
     })
     mocks.state = {
-      orcaProfileAuthStatus: {
+      occProfileAuthStatus: {
         activeProfileId: 'profile-1',
         configured: true,
         state: 'local',
         persistence: 'none'
       },
-      connectCurrentOrcaProfile: connect,
-      fetchOrcaProfileAuthStatus: fetchAuthStatus
+      connectCurrentOCCProfile: connect,
+      fetchOCCProfileAuthStatus: fetchAuthStatus
     }
   })
 
@@ -111,10 +111,10 @@ describe('MobilePairingConnectionOptions', () => {
     const link = 'https://login.example/authorize?state=abc'
     const writeClipboardText = vi.fn().mockResolvedValue(undefined)
     const cancelSignIn = vi.fn().mockResolvedValue(undefined)
-    Object.assign(window.api, { ui: { writeClipboardText }, orcaProfiles: { cancelSignIn } })
+    Object.assign(window.api, { ui: { writeClipboardText }, occProfiles: { cancelSignIn } })
     render(<MobilePairingConnectionOptions value="automatic" onChange={vi.fn()} />)
 
-    publishStoreState({ ...mocks.state, orcaProfileSignInProgress: { link } })
+    publishStoreState({ ...mocks.state, occProfileSignInProgress: { link } })
     expect(await screen.findByRole('status')).toHaveTextContent(
       'Waiting for sign-in in your browser'
     )
@@ -135,7 +135,7 @@ describe('MobilePairingConnectionOptions', () => {
   it('shows Unavailable instead of a dead Sign in on unconfigured builds', () => {
     mocks.state = {
       ...mocks.state,
-      orcaProfileAuthStatus: {
+      occProfileAuthStatus: {
         activeProfileId: 'profile-1',
         configured: false,
         state: 'unconfigured',
@@ -154,7 +154,7 @@ describe('MobilePairingConnectionOptions', () => {
   it('keeps Relay unavailable and unselectable while LAN is selected', async () => {
     mocks.state = {
       ...mocks.state,
-      orcaProfileAuthStatus: {
+      occProfileAuthStatus: {
         activeProfileId: 'profile-1',
         configured: false,
         state: 'unconfigured',
@@ -220,7 +220,7 @@ describe('MobilePairingConnectionOptions', () => {
   it('refreshes auth status when it is missing on mount', () => {
     mocks.state = {
       ...mocks.state,
-      orcaProfileAuthStatus: null
+      occProfileAuthStatus: null
     }
     render(<MobilePairingConnectionOptions value="automatic" onChange={vi.fn()} />)
     expect(fetchAuthStatus).toHaveBeenCalledOnce()
@@ -229,14 +229,14 @@ describe('MobilePairingConnectionOptions', () => {
 
   it('shows relay status when signed in on OCC Relay', async () => {
     mocks.state = {
-      orcaProfileAuthStatus: {
+      occProfileAuthStatus: {
         activeProfileId: 'profile-1',
         configured: true,
         state: 'connected',
         persistence: 'encrypted'
       },
-      connectCurrentOrcaProfile: connect,
-      fetchOrcaProfileAuthStatus: fetchAuthStatus
+      connectCurrentOCCProfile: connect,
+      fetchOCCProfileAuthStatus: fetchAuthStatus
     }
     const onChange = vi.fn()
     const user = userEvent.setup()
@@ -253,7 +253,7 @@ describe('MobilePairingConnectionOptions', () => {
   it('names the assigned relay cell by host once the status carries one', async () => {
     mocks.state = {
       ...mocks.state,
-      orcaProfileAuthStatus: {
+      occProfileAuthStatus: {
         activeProfileId: 'profile-1',
         configured: true,
         state: 'connected',
@@ -281,7 +281,7 @@ describe('MobilePairingConnectionOptions', () => {
   it('shows clock guidance from status and clears it when Relay recovers', async () => {
     mocks.state = {
       ...mocks.state,
-      orcaProfileAuthStatus: {
+      occProfileAuthStatus: {
         activeProfileId: 'profile-1',
         configured: true,
         state: 'connected',
@@ -303,7 +303,7 @@ describe('MobilePairingConnectionOptions', () => {
   it('keeps LAN available while Relay is retrying', async () => {
     mocks.state = {
       ...mocks.state,
-      orcaProfileAuthStatus: {
+      occProfileAuthStatus: {
         activeProfileId: 'profile-1',
         configured: true,
         state: 'connected',
@@ -334,7 +334,7 @@ describe('MobilePairingConnectionOptions', () => {
     // A cached connected state must not hide sessions revoked since startup.
     const connectedState: MobileRelayStoreState = {
       ...mocks.state,
-      orcaProfileAuthStatus: {
+      occProfileAuthStatus: {
         activeProfileId: 'profile-1',
         configured: true,
         state: 'connected',
@@ -343,13 +343,13 @@ describe('MobilePairingConnectionOptions', () => {
     }
     mocks.state = connectedState
     fetchAuthStatus.mockImplementation(async () => {
-      const revoked: OrcaProfileAuthStatus = {
+      const revoked: OCCProfileAuthStatus = {
         activeProfileId: 'profile-1',
         configured: true,
         state: 'reconnect-required',
         persistence: 'encrypted'
       }
-      publishStoreState({ ...connectedState, orcaProfileAuthStatus: revoked })
+      publishStoreState({ ...connectedState, occProfileAuthStatus: revoked })
       return revoked
     })
 

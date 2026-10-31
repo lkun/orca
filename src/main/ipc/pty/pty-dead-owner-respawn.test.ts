@@ -3,7 +3,7 @@ import { withDurableRuntimeStore } from '../../runtime/runtime-durable-store-fix
 import { setupPtyIpcSuite } from './pty-ipc-test-harness'
 import { SessionNotFoundError } from '../../daemon/daemon-errors'
 import { makePaneKey } from '../../../shared/stable-pane-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { registerPtyHandlers } from './register-handlers'
 import { setLocalPtyProvider } from './provider/registry'
 import { isHiddenRendererPty } from './delivery/pty-hidden-delivery-gate'
@@ -36,7 +36,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -159,9 +159,9 @@ describe('registerPtyHandlers', () => {
       tabId,
       leafId,
       env: {
-        ORCA_PANE_KEY: paneKey,
-        ORCA_TAB_ID: tabId,
-        ORCA_WORKTREE_ID: worktreeId
+        OCC_PANE_KEY: paneKey,
+        OCC_TAB_ID: tabId,
+        OCC_WORKTREE_ID: worktreeId
       }
     })
 
@@ -177,7 +177,7 @@ describe('registerPtyHandlers', () => {
       'inc-proven-absent-owner',
       { hostExitConfirmed: true }
     )
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // The dead binding stays until the fresh spawn's one bind swaps it.
       expect(store.setWorkspaceSession).not.toHaveBeenCalled()
       const [swap] = vi.mocked(store.persistPtyBinding).mock.calls[0] ?? []
@@ -291,9 +291,9 @@ describe('registerPtyHandlers', () => {
       tabId,
       leafId,
       env: {
-        ORCA_PANE_KEY: paneKey,
-        ORCA_TAB_ID: tabId,
-        ORCA_WORKTREE_ID: worktreeId
+        OCC_PANE_KEY: paneKey,
+        OCC_TAB_ID: tabId,
+        OCC_WORKTREE_ID: worktreeId
       }
     })
 
@@ -424,9 +424,9 @@ describe('registerPtyHandlers', () => {
       tabId,
       leafId,
       env: {
-        ORCA_PANE_KEY: paneKey,
-        ORCA_TAB_ID: tabId,
-        ORCA_WORKTREE_ID: worktreeId
+        OCC_PANE_KEY: paneKey,
+        OCC_TAB_ID: tabId,
+        OCC_WORKTREE_ID: worktreeId
       }
     })
 

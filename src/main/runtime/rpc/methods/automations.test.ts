@@ -2,7 +2,7 @@ import '../unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
 import { RpcDispatcher } from '../dispatcher'
 import type { RpcRequest } from '../core'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { AUTOMATION_METHODS } from './automations'
 
 function makeRequest(method: string, params?: unknown): RpcRequest {
@@ -24,7 +24,7 @@ describe('automation RPC methods', () => {
       deleteAutomation: vi.fn().mockReturnValue({ removed: true, id: 'auto-1' }),
       runAutomationNow: vi.fn().mockResolvedValue({ id: 'run-1', automationId: 'auto-1' }),
       listAutomationRuns: vi.fn().mockReturnValue([{ id: 'run-1', automationId: 'auto-1' }])
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: AUTOMATION_METHODS })
 
     await dispatcher.dispatch(makeRequest('automation.list'))
@@ -37,20 +37,20 @@ describe('automation RPC methods', () => {
         agentId: 'codex',
         runContext: {
           kind: 'workspace-run',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           hostId: 'runtime:gpu',
           projectHostSetupId: 'setup-gpu',
           repoId: 'repo-gpu',
-          path: '/srv/orca'
+          path: '/srv/occ'
         },
         sourceContext: {
           kind: 'task-source',
           provider: 'github',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           hostId: 'local',
           projectHostSetupId: 'setup-local',
           repoId: 'repo-local',
-          providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' }
+          providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' }
         },
         repo: 'repo-1',
         setupDecision: 'skip',
@@ -113,7 +113,7 @@ describe('automation RPC methods', () => {
         runs: [{ id: 'run-100', automationId: 'auto-1' }],
         nextCursor: '100'
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: AUTOMATION_METHODS })
 
     await expect(
@@ -129,7 +129,7 @@ describe('automation RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       createAutomation: vi.fn()
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: AUTOMATION_METHODS })
 
     await expect(
@@ -163,7 +163,7 @@ describe('automation RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       updateAutomation: vi.fn().mockResolvedValue({ id: 'auto-1', baseBranch: null })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: AUTOMATION_METHODS })
 
     await dispatcher.dispatch(

@@ -132,8 +132,8 @@
       },
       "statusDetails": {
         "runningListUnavailable": "Windows hat nicht gemeldet, ob die Distribution läuft.",
-        "guestUnanswered": "Die Distribution läuft, hat aber nicht auf Orcas Prüfanfrage geantwortet.",
-        "orcadUnanswered": "Der OCC-Server in der Distribution hat nicht geantwortet.",
+        "guestUnanswered": "Die Distribution läuft, hat aber nicht auf OCCs Prüfanfrage geantwortet.",
+        "occdUnanswered": "Der OCC-Server in der Distribution hat nicht geantwortet.",
         "restartGaveUp_one": "Der OCC-Server in {{distro}} konnte nach {{count}} Versuch nicht neu gestartet werden",
         "restartGaveUp_other": "Der OCC-Server in {{distro}} konnte nach {{count}} Versuchen nicht neu gestartet werden",
         "serviceUnconfirmed": "Der WSL-Dienst hat nicht bestätigt, ob die Distribution läuft.",
@@ -968,7 +968,7 @@
   "menu": {
     "checkForUpdates": "Nach Updates suchen…",
     "settings": "Einstellungen",
-    "exploreOrca": "OCC erkunden",
+    "exploreOCC": "OCC erkunden",
     "gettingStarted": "Erste Schritte mit OCC",
     "reportCrash": "Absturz melden…",
     "file": "Datei",
@@ -1000,7 +1000,7 @@
     "quitAndStopAllSessionsTooltip": "Beendet auch alle Terminal-Sitzungen einschließlich laufender Agenten. Beim einfachen Beenden laufen sie weiter, sodass OCC beim nächsten Start die Verbindung wiederherstellt."
   },
   "tray": {
-    "openOrca": "OCC öffnen",
+    "openOCC": "OCC öffnen",
     "quit": "Beenden",
     "minimizeNotice": {
       "body": "OCC läuft weiterhin im Infobereich"
@@ -1153,7 +1153,7 @@
         "sessionNoEd25519": "Diese Kopplung gilt nur, solange dieser Tab geöffnet ist, da dieser Browser keine sicheren Anmeldeschlüssel (Ed25519) erstellen kann. Für eine dauerhaft gespeicherte Kopplung einen aktuellen Browser verwenden."
       },
       "runtimeAuth": {
-        "insecureOrigin": "OCC hat die Kopplung von dieser Seite abgelehnt: Die Seite wird über unverschlüsseltes http auf einem anderen Computer bereitgestellt. Dadurch könnte jeder auf dem Netzwerkpfad die Seite ersetzen und den Kopplungscode abfangen. Den Web-Client über https, über localhost auf diesem Computer oder über einen SSH-Tunnel öffnen. Um dies dennoch zuzulassen, kann der Serverbetreiber OCC mit ORCA_ALLOW_INSECURE_WEB_PAIRING=1 neu starten.",
+        "insecureOrigin": "OCC hat die Kopplung von dieser Seite abgelehnt: Die Seite wird über unverschlüsseltes http auf einem anderen Computer bereitgestellt. Dadurch könnte jeder auf dem Netzwerkpfad die Seite ersetzen und den Kopplungscode abfangen. Den Web-Client über https, über localhost auf diesem Computer oder über einen SSH-Tunnel öffnen. Um dies dennoch zuzulassen, kann der Serverbetreiber OCC mit OCC_ALLOW_INSECURE_WEB_PAIRING=1 neu starten.",
         "deviceDowngraded": "Dieser OCC-Server unterstützt den Anmeldeschlüssel dieses Browsers nicht mehr (möglicherweise wurde eine ältere Serverversion installiert). Den Server aktualisieren oder diesen Browser erneut koppeln.",
         "unauthorized": "Nicht autorisiert. Diesen Web-Client erneut koppeln."
       }
@@ -1299,7 +1299,7 @@
           "856083302c": "Die Jira-Verbindung wurde durch eine neuere Anfrage ersetzt."
         },
         "linear": {},
-        "orca": {
+        "occ": {
           "profiles": {
             "612f7f6861": "Profil konnte nicht erstellt werden",
             "319d7cf39b": "Cloud-Profil erstellt",
@@ -1839,7 +1839,7 @@
         }
       },
       "claudeAgentRowView": {
-        "subagentNavigationSetup": "Die Navigation zwischen Claude-Subagenten unter Einstellungen → Agenten aktivieren, dann Claude 2.1.300+ in OCC starten. Prüfen, ob keybindings.json Ctrl+Alt+G, H oder V weiterhin command:orca-agent-view zuweist.",
+        "subagentNavigationSetup": "Die Navigation zwischen Claude-Subagenten unter Einstellungen → Agenten aktivieren, dann Claude 2.1.300+ in OCC starten. Prüfen, ob keybindings.json Ctrl+Alt+G, H oder V weiterhin command:occ-agent-view zuweist.",
         "permissionPrompt": "Vor dem Wechseln zwischen Agenten Claudes Berechtigungsabfrage beantworten."
       },
       "wslHostWindowsDriveRefusal": {
@@ -1996,7 +1996,7 @@
       },
       "useMacTccAttributionSeveredNotice": {
         "title": "macOS-Berechtigungen gelten möglicherweise nicht für OCC-Terminals",
-        "description": "Die laufenden OCC-Terminals werden von einem Daemon bereitgestellt, der von einer früheren OCC-Installation gestartet wurde. macOS wendet Orcas Berechtigungen für Accessibility, Automation oder geschützte Dateien möglicherweise nicht auf diese Terminals an. Den Daemon unter „Sitzungen verwalten“ neu starten, um den Zugriff wiederherzustellen. Dadurch werden alle laufenden OCC-Terminals geschlossen.",
+        "description": "Die laufenden OCC-Terminals werden von einem Daemon bereitgestellt, der von einer früheren OCC-Installation gestartet wurde. macOS wendet OCCs Berechtigungen für Accessibility, Automation oder geschützte Dateien möglicherweise nicht auf diese Terminals an. Den Daemon unter „Sitzungen verwalten“ neu starten, um den Zugriff wiederherzustellen. Dadurch werden alle laufenden OCC-Terminals geschlossen.",
         "openManageSessions": "„Sitzungen verwalten“ öffnen",
         "dismiss": "Ausblenden",
         "folderAccessTitle": "Terminals können {{folder}} nicht lesen",
@@ -2328,7 +2328,7 @@
       },
       "Landing": {
         "f9eaa9e12d": "Projekt hinzufügen",
-        "6ca6ff404e": "ORCA",
+        "6ca6ff404e": "OCC",
         "520304a067": "OCC-Logo",
         "c1cf168479": "Ausblenden",
         "00cee697c1": "\"gh auth login\" in einem Terminal ausführen, um das GitHub-Konto zu verbinden.",
@@ -2472,12 +2472,12 @@
         "dccd26d4e4": "Projekt auswählen",
         "d6b0a96f32": "Projekt hinzufügen",
         "969a8bff66": "Projekt",
-        "23bb365554": "orca.yaml",
+        "23bb365554": "occ.yaml",
         "a239038146": "SSH-Verbindungsfehler",
         "9a70e4859e": "Auswählen, ob die Einrichtung vor dem Erstellen dieses Arbeitsbereichs ausgeführt werden soll.",
         "803b7fe72f": "Einrichtungskonfiguration wird geprüft…",
         "92e34f0311": "Lokale Einstellungen",
-        "326a578923": "orca.yaml + lokal",
+        "326a578923": "occ.yaml + lokal",
         "ac3748dcda": "Erstellen aus",
         "f660aa1454": "Verbindung wird hergestellt",
         "runOn": "Ausführen auf",
@@ -2512,8 +2512,8 @@
         "addHost": "Host hinzufügen",
         "addSshHost": "SSH-Host hinzufügen",
         "addSshHostHint": "Einen vorhandenen Rechner über SSH verwenden",
-        "addRemoteOrcaServer": "Entfernten OCC-Server hinzufügen",
-        "addRemoteOrcaServerHint": "Eine weitere OCC-Laufzeitumgebung koppeln",
+        "addRemoteOCCServer": "Entfernten OCC-Server hinzufügen",
+        "addRemoteOCCServerHint": "Eine weitere OCC-Laufzeitumgebung koppeln",
         "hostConnectionFailed": "Verbindung fehlgeschlagen",
         "connect": "Verbinden",
         "reconnect": "Erneut verbinden",
@@ -3957,7 +3957,7 @@
             "switchTerminal": "Terminal wechseln",
             "openTaskTerminal": "Aufgaben-Terminal öffnen",
             "systemBrowser": "System-Browser",
-            "orcaBrowser": "OCC-Browser",
+            "occBrowser": "OCC-Browser",
             "terminalLinkSettings": "Einstellungen für Terminal-Links",
             "copyLink": "Link kopieren",
             "copyFilePath": "Dateipfad kopieren",
@@ -5189,7 +5189,7 @@
         "share": {
           "card": {
             "utils": {
-              "19f4b4dc75": "github.com/stablyai/orca",
+              "19f4b4dc75": "github.com/stablyai/occ",
               "d864fc5f98": "Ausgabe",
               "5d66fdd7c2": "Eingabe",
               "7080aeaebb": "Denkprozess",
@@ -5382,7 +5382,7 @@
           "updateAction_other": "{{count}} Skills aktualisieren"
         },
         "SkillUpdateRow": {
-          "replaceWithOrca": "Durch die Kopie von OCC ersetzen (Sicherungskopie wird beibehalten)"
+          "replaceWithOCC": "Durch die Kopie von OCC ersetzen (Sicherungskopie wird beibehalten)"
         },
         "SkillFreshnessStatusPill": {
           "updateAvailable": "Aktualisierung verfügbar",
@@ -5448,7 +5448,7 @@
           "66270286ac": "· Ein erneuter Versuch ist sicher möglich.",
           "157de228b4": "Skill prüfen",
           "69236de8d6": "Wird geprüft…",
-          "66cff7a804": "https://app.orca.dev/skills/share/…",
+          "66cff7a804": "https://app.occ.dev/skills/share/…",
           "93eb0fe8c7": "OCC-Skill-Link",
           "releaseNotes": "Versionshinweise:",
           "targetHeader": "Installationsziel",
@@ -6013,7 +6013,7 @@
           "8851b77327": "Dieser Pfad wurde lokal geprüft.",
           "sshConnectionUnavailable": "SSH-Verbindung „{{connection}}“ wurde nicht gefunden oder ist nicht verbunden"
         },
-        "OrcaYamlTrustDialog": {
+        "OCCYamlTrustDialog": {
           "f3e2b868fb": "Hooks ausführen",
           "43b7bec4cd": "Nicht ausführen",
           "setupChangedTitle": "{{repo}}: Einrichtungsskript geändert — neue Version ausführen?",
@@ -6024,14 +6024,14 @@
           "archiveRunTitle": "Archivierungsskript aus {{repo}} ausführen?",
           "issueCommandRunTitle": "Issue-Befehl aus {{repo}} ausführen?",
           "vmRecipeRunTitle": "VM-Rezept aus {{repo}} ausführen?",
-          "setupChangedBody": "<code>orca.yaml</code> wurde seit der letzten Genehmigung geändert. Vor der Ausführung beim Erstellen dieses Arbeitsbereichs erneut prüfen.",
-          "archiveChangedBody": "<code>orca.yaml</code> wurde seit der letzten Genehmigung geändert. Vor der Ausführung beim Entfernen dieses Arbeitsbereichs erneut prüfen.",
-          "issueCommandChangedBody": "<code>orca.yaml</code> wurde seit der letzten Genehmigung geändert. Vor der Ausführung beim Start dieses Arbeitsbereichs mit einem verknüpften Issue erneut prüfen.",
-          "vmRecipeChangedBody": "<code>orca.yaml</code> wurde seit der letzten Genehmigung geändert. Vor der Ausführung vor der VM-Bereitstellung erneut prüfen.",
-          "setupRunBody": "Die <code>orca.yaml</code> dieses Repositorys wird beim Erstellen dieses Arbeitsbereichs auf deinem Rechner ausgeführt. Nur ausführen, wenn du <repo/> vertraust.",
-          "archiveRunBody": "Die <code>orca.yaml</code> dieses Repositorys wird beim Entfernen dieses Arbeitsbereichs auf deinem Rechner ausgeführt. Nur ausführen, wenn du <repo/> vertraust.",
-          "issueCommandRunBody": "Die <code>orca.yaml</code> dieses Repositorys wird beim Start dieses Arbeitsbereichs mit einem verknüpften Issue auf deinem Rechner ausgeführt. Nur ausführen, wenn du <repo/> vertraust.",
-          "vmRecipeRunBody": "Die <code>orca.yaml</code> dieses Repositorys wird vor der VM-Bereitstellung auf deinem Rechner ausgeführt. Nur ausführen, wenn du <repo/> vertraust.",
+          "setupChangedBody": "<code>occ.yaml</code> wurde seit der letzten Genehmigung geändert. Vor der Ausführung beim Erstellen dieses Arbeitsbereichs erneut prüfen.",
+          "archiveChangedBody": "<code>occ.yaml</code> wurde seit der letzten Genehmigung geändert. Vor der Ausführung beim Entfernen dieses Arbeitsbereichs erneut prüfen.",
+          "issueCommandChangedBody": "<code>occ.yaml</code> wurde seit der letzten Genehmigung geändert. Vor der Ausführung beim Start dieses Arbeitsbereichs mit einem verknüpften Issue erneut prüfen.",
+          "vmRecipeChangedBody": "<code>occ.yaml</code> wurde seit der letzten Genehmigung geändert. Vor der Ausführung vor der VM-Bereitstellung erneut prüfen.",
+          "setupRunBody": "Die <code>occ.yaml</code> dieses Repositorys wird beim Erstellen dieses Arbeitsbereichs auf deinem Rechner ausgeführt. Nur ausführen, wenn du <repo/> vertraust.",
+          "archiveRunBody": "Die <code>occ.yaml</code> dieses Repositorys wird beim Entfernen dieses Arbeitsbereichs auf deinem Rechner ausgeführt. Nur ausführen, wenn du <repo/> vertraust.",
+          "issueCommandRunBody": "Die <code>occ.yaml</code> dieses Repositorys wird beim Start dieses Arbeitsbereichs mit einem verknüpften Issue auf deinem Rechner ausgeführt. Nur ausführen, wenn du <repo/> vertraust.",
+          "vmRecipeRunBody": "Die <code>occ.yaml</code> dieses Repositorys wird vor der VM-Bereitstellung auf deinem Rechner ausgeführt. Nur ausführen, wenn du <repo/> vertraust.",
           "newSetupScript": "Neues Einrichtungsskript",
           "setupScript": "Einrichtungsskript",
           "newArchiveScript": "Neues Archivierungsskript",
@@ -6041,7 +6041,7 @@
           "newVmRecipe": "Neues VM-Rezept",
           "vmRecipe": "VM-Rezept",
           "thisRepository": "dieses Repository",
-          "alwaysTrustRepo": "<code>orca.yaml</code> in <repo/> immer vertrauen"
+          "alwaysTrustRepo": "<code>occ.yaml</code> in <repo/> immer vertrauen"
         },
         "PendingWorktreeRow": {
           "af21e953d1": "Worktree-Erstellung abbrechen",
@@ -6132,7 +6132,7 @@
           "822ff300ad": "Ausblenden",
           "5bfd5c8779": "Setup-Skripte ausblenden",
           "detectedFromSource": "In <source>{{source}}</source> erkannt",
-          "ignoresSharedSetup": "Dieses Repo ignoriert gemeinsame Einrichtungsskripte aus <yaml>orca.yaml</yaml>. Einen lokalen Befehl hinzufügen oder die Quelle in den Einstellungen ändern.",
+          "ignoresSharedSetup": "Dieses Repo ignoriert gemeinsame Einrichtungsskripte aus <yaml>occ.yaml</yaml>. Einen lokalen Befehl hinzufügen oder die Quelle in den Einstellungen ändern.",
           "foundSetupCommandIn": "Ein Einrichtungsbefehl wurde in <source>{{source}}</source> gefunden. Speichern, um ihn für neue Worktrees auszuführen."
         },
         "SidebarFeedbackDialog": {
@@ -6385,7 +6385,7 @@
           "c7fa72ead0": "Notizen bearbeiten",
           "93cbea12c2": "Notizen",
           "dbe2d18972": "Weitere Aktionen für {{value0}}",
-          "openInOrcaBrowser": "Im OCC-Browser öffnen",
+          "openInOCCBrowser": "Im OCC-Browser öffnen",
           "2c67730e07": "In OCC öffnen",
           "e42941631a": "In Linear anzeigen",
           "5e982e6128": "Linear {{value0}}",
@@ -6939,7 +6939,7 @@
           "port": "Port",
           "identityFile": "Identitätsdatei",
           "identityFilePlaceholder": "~/.ssh/id_ed25519 (optional)",
-          "nameInOrca": "Name in OCC",
+          "nameInOCC": "Name in OCC",
           "serverNamePlaceholder": "Entwicklungsrechner",
           "accessLink": "Zugriffslink",
           "pairingCodePlaceholder": "occ://pair?code=...",
@@ -6965,7 +6965,7 @@
           "sshConfigPickerEmptyHint": "Dort einen Host-Eintrag hinzufügen oder zurückgehen und die Details manuell eingeben.",
           "sshConfigPickerNoMatchHint": "Einen anderen Filter versuchen oder zurückgehen und manuell eingeben.",
           "sshConfigPickerMoreResults": "Die ersten {{value0}} Treffer werden angezeigt. Den Filter eingrenzen, um weitere zu finden.",
-          "sshConfigPickerInOrca": "In OCC",
+          "sshConfigPickerInOCC": "In OCC",
           "sshConfigPickerPreviouslyRemoved": "Aus OCC entfernt",
           "sshConfigPickerBack": "Zurück",
           "fillFromSshConfig": "Aus ~/.ssh/config ausfüllen…",
@@ -7170,7 +7170,7 @@
           "showError": "Entdeckte Worktrees konnten nicht angezeigt werden. Erneut versuchen."
         },
         "repoHeaderProjectActions": {
-          "hideNonOrcaWorktrees": "Nicht von OCC erstellte Worktrees ausblenden",
+          "hideNonOCCWorktrees": "Nicht von OCC erstellte Worktrees ausblenden",
           "showHiddenWorktrees": "Ausgeblendete Worktrees anzeigen"
         },
         "useWorktreeCardLinkedDetails": {
@@ -7261,13 +7261,13 @@
         "MacFolderAccessFixDialog": {
           "stepAllow": "OCC unter „Files and Folders“ zulassen",
           "openSystemSettings": "System Settings öffnen",
-          "stepRestart": "Orcas Terminaldienst neu starten",
+          "stepRestart": "OCCs Terminaldienst neu starten",
           "restartConsequence": "Offene Terminals und Agenten werden neu gestartet.",
           "restarting": "Wird neu gestartet…",
           "restart": "Neu starten",
           "restartFailed": "Neustart fehlgeschlagen. Unter Einstellungen → Terminal → Sitzungen verwalten erneut versuchen.",
           "title": "Zugriff auf {{folder}} wiederherstellen",
-          "lead": "macOS blockiert den Zugriff von Orcas Terminaldienst auf diesen Ordner.",
+          "lead": "macOS blockiert den Zugriff von OCCs Terminaldienst auf diesen Ordner.",
           "done": "Abschließen",
           "cancel": "Abbrechen",
           "stepAllowUnknown": "Überprüfung nicht möglich. Überspringen, falls bereits erlaubt.",
@@ -7483,7 +7483,7 @@
           "retrySetup": "Erneut versuchen",
           "installing": "Wird installiert…",
           "hostUnavailable": "OCC kann auf dem Rechner dieses Arbeitsbereichs noch keine Skills installieren.",
-          "replaceWithOrcaCopy": "Durch Orcas Kopie ersetzen",
+          "replaceWithOCCCopy": "Durch OCCs Kopie ersetzen",
           "copyCommandAria": "Befehl kopieren",
           "ed197f59a2": "Befehl kopieren",
           "failedToCopyCommand": "Der Befehl konnte nicht kopiert werden.",
@@ -7596,7 +7596,7 @@
           "cfd82406dd": "Wird gespeichert…",
           "40e7be7850": "Gespeichert",
           "7c7e34a66d": "Ungespeicherte Änderungen",
-          "commandTemplateDescription": "<basePrompt>{basePrompt}</basePrompt> verwenden, um Orcas <promptLink>integrierten Prompt für Branch-Namen</promptLink> einzubinden. Auch <firstPrompt>{firstPrompt}</firstPrompt> und <assistantMessage>{assistantMessage}</assistantMessage> können referenziert werden. OCC generiert nur das letzte Segment, etwa <example>fix-login-flow</example>; die Einstellung für das Branch-Präfix gilt weiterhin."
+          "commandTemplateDescription": "<basePrompt>{basePrompt}</basePrompt> verwenden, um OCCs <promptLink>integrierten Prompt für Branch-Namen</promptLink> einzubinden. Auch <firstPrompt>{firstPrompt}</firstPrompt> und <assistantMessage>{assistantMessage}</assistantMessage> können referenziert werden. OCC generiert nur das letzte Segment, etwa <example>fix-login-flow</example>; die Einstellung für das Branch-Präfix gilt weiterhin."
         },
         "BaseRefPicker": {
           "1b8e54151f": "Keine passenden Branches gefunden.",
@@ -7714,7 +7714,7 @@
           "5dae812f50": "Aktualisieren",
           "52e640f3a0": "CLI-Status aktualisieren",
           "38edbb5721": "Shell-Befehl",
-          "outsideOrcaDescription": "In OCC-Terminals ist `occ` bereits verfügbar. Diese Option aktivieren, um `occ` auch in Terminals außerhalb von OCC zu verwenden.",
+          "outsideOCCDescription": "In OCC-Terminals ist `occ` bereits verfügbar. Diese Option aktivieren, um `occ` auch in Terminals außerhalb von OCC zu verwenden.",
           "c5c0f2641d": "OCC CLI",
           "d77352f2df": "`{{value0}}` konnte nicht aus PATH entfernt werden.",
           "af5540930c": "`{{value0}}` aus PATH entfernt.",
@@ -7927,7 +7927,7 @@
           "3c900e26e5": "Das Tastenkürzel funktioniert unabhängig davon, wo die Umschaltfläche angezeigt wird.",
           "5e5a8da236": "Position der Umschaltfläche",
           "505001823e": "Verzeichnis für den schwebenden Arbeitsbereich auswählen",
-          "81afb79785": "Neue Terminal-Tabs im schwebenden Arbeitsbereich starten hier. Markdown-Notizen werden in Orcas eigenem schwebenden Arbeitsbereich gespeichert.",
+          "81afb79785": "Neue Terminal-Tabs im schwebenden Arbeitsbereich starten hier. Markdown-Notizen werden in OCCs eigenem schwebenden Arbeitsbereich gespeichert.",
           "12aa09f10c": "Terminal-Verzeichnis",
           "41eb95f7f0": "Zeigt die Schaltfläche und das Panel des schwebenden Arbeitsbereichs an.",
           "5136813663": "Schwebenden Arbeitsbereich aktivieren",
@@ -8347,7 +8347,7 @@
         "OpenAiTranscriptionKeyDialog": {
           "fa83512e48": "Schlüssel speichern",
           "07b26f2742": "Schlüssel löschen",
-          "d246b2bdb3": "Schlüssel der lokalen Laufzeitumgebung werden in ~/.orca gespeichert, sofern verfügbar mit der verschlüsselten Speicherung von Electron.",
+          "d246b2bdb3": "Schlüssel der lokalen Laufzeitumgebung werden in ~/.occ gespeichert, sofern verfügbar mit der verschlüsselten Speicherung von Electron.",
           "c3380e4ca5": "sk-...",
           "2f797018f0": "API-Schlüssel konfiguriert",
           "16015322f9": "API-Schlüssel",
@@ -8485,11 +8485,11 @@
         },
         "RepositoryHooksSection": {
           "af49e2a19e": "Die Datei ist vorhanden, aber OCC konnte keine gültigen Definitionen für `scripts` oder `issueCommand` finden.",
-          "39da2ae12f": "orca.yaml",
+          "39da2ae12f": "occ.yaml",
           "32fec28f5b": "Befehlsquelle",
-          "bbbd6e0bc4": "Befehlsquelle & orca.yaml",
+          "bbbd6e0bc4": "Befehlsquelle & occ.yaml",
           "c9bc1bfd8f": "Erweitert",
-          "610d90fdbd": "Details zur Befehlsquelle und zu orca.yaml.",
+          "610d90fdbd": "Details zur Befehlsquelle und zu occ.yaml.",
           "4084720f47": "{{artifact_url}} abschließen",
           "13394103bd": "Benutzerdefinierter Befehl für GitHub-Issues",
           "2cc27dc12b": "Optionale benutzerspezifische Überschreibung für den Befehl zum verknüpften Issue.",
@@ -8501,7 +8501,7 @@
           "fb6bebcf7e": "Zeitpunkt der Einrichtung",
           "30d555acd2": "Lokale und gemeinsame Skripte, die nach dem Erstellen eines neuen Worktrees ausgeführt werden.",
           "52b31baf02": "Einrichtungsskript",
-          "8567127a40": "Skripte, die beim Erstellen oder Archivieren von Worktrees ausgeführt werden. Lokale Skripte werden auf diesem Computer gespeichert; Skripte in `orca.yaml` werden mit dem Team geteilt.",
+          "8567127a40": "Skripte, die beim Erstellen oder Archivieren von Worktrees ausgeführt werden. Lokale Skripte werden auf diesem Computer gespeichert; Skripte in `occ.yaml` werden mit dem Team geteilt.",
           "ff082fe7c6": "Worktree-Hooks",
           "5d940bde5c": "Lokales Skript hinzufügen",
           "8c2893fae0": "Wird als einzelnes Shell-Skript ausgeführt. Auf diesem Computer gespeichert.",
@@ -8515,10 +8515,10 @@
           "b2b06c7ce8": "Verfügbare Umgebungsvariablen (für Details mit der Maus darüberfahren):",
           "95a0411b3e": "Vorlage",
           "175daba180": "Beispiel",
-          "b20c5df6ca": "Eine Datei `orca.yaml` hinzufügen, um gemeinsame Standardwerte für Einrichtung, Archivierung oder Issue-Automatisierung in diesem Repository zu aktivieren. Beispielvorlage:",
-          "56f9a4a1d0": "`orca.yaml` wird verwendet",
-          "623e0c9f31": "`orca.yaml` konnte nicht geparst werden",
-          "5a67e4793d": "Keine `orca.yaml` erkannt",
+          "b20c5df6ca": "Eine Datei `occ.yaml` hinzufügen, um gemeinsame Standardwerte für Einrichtung, Archivierung oder Issue-Automatisierung in diesem Repository zu aktivieren. Beispielvorlage:",
+          "56f9a4a1d0": "`occ.yaml` wird verwendet",
+          "623e0c9f31": "`occ.yaml` konnte nicht geparst werden",
+          "5a67e4793d": "Keine `occ.yaml` erkannt",
           "07ba35bc68": "Die Einrückung unter `scripts:` prüfen. Hook-Schlüssel sollten mit zwei Leerzeichen und Befehlszeilen mit vier Leerzeichen eingerückt sein.",
           "787ca433ef": "Nur die unterstützten Schlüssel definieren: `scripts`, `setup`, `archive` und `issueCommand`.",
           "ecc73d9125": "Die Datei mit der funktionierenden Vorlage unten vergleichen und bei Bedarf deren Struktur übernehmen.",
@@ -8530,15 +8530,15 @@
           "0fa21e19ec": "Name des Arbeitsbereichs, in der Regel vom Branch-Namen abgeleitet.",
           "54c73d88d0": "Pfad zum Worktree, der erstellt wird. Einrichtungsbefehle werden in diesem Verzeichnis ausgeführt.",
           "30952c4aa4": "Pfad zum Haupt-Checkout des Repositorys. Nützlich zum Kopieren gemeinsamer Dateien wie .env in einen Worktree.",
-          "9b821fa19d": "# z. B. echo \"Cleaning up $ORCA_WORKSPACE_NAME\"",
+          "9b821fa19d": "# z. B. echo \"Cleaning up $OCC_WORKSPACE_NAME\"",
           "6f90ebe3fd": "Wird ausgeführt, bevor ein Worktree archiviert oder entfernt wird.",
-          "a3fc966677": "# z. B. pnpm install cp \"$ORCA_ROOT_PATH/.env\" \"$ORCA_WORKTREE_PATH/.env\"",
+          "a3fc966677": "# z. B. pnpm install cp \"$OCC_ROOT_PATH/.env\" \"$OCC_WORKTREE_PATH/.env\"",
           "f0710e1c83": "Wird nach dem Erstellen eines neuen Worktrees ausgeführt; Abhängigkeiten installieren, Umgebungsdateien kopieren, Migrationen ausführen.",
-          "8561b0665f": "Zuerst orca.yaml, dann die lokalen Befehle.",
-          "0e8b2a520d": "orca.yaml ignorieren; nur die lokalen Befehle ausführen.",
+          "8561b0665f": "Zuerst occ.yaml, dann die lokalen Befehle.",
+          "0e8b2a520d": "occ.yaml ignorieren; nur die lokalen Befehle ausführen.",
           "83dc78202a": "Nur lokal",
           "29397e8bbc": "Nur im Repository committete Befehle ausführen; lokale Befehle ignorieren.",
-          "d88b6ff88f": "Nur orca.yaml",
+          "d88b6ff88f": "Nur occ.yaml",
           "99e3264a49": "Einrichtung nur bei Auswahl ausführen.",
           "15debc1fd9": "Standardmäßig überspringen",
           "022ba10cf2": "Einrichtung automatisch ausführen.",
@@ -8550,17 +8550,17 @@
           "d2b3016c20": "Gemeinsam",
           "4611b78617": "Befehlsquelle",
           "c5a55a2d2e": "Erweitert",
-          "0ce113fd7b": "Lokale Skripte sind gespeichert, aber als Skriptquelle ist „Nur orca.yaml“ festgelegt.",
-          "7f78e5eea6": "Lokale Skripte sind gespeichert. OCC prüft noch orca.yaml, bevor eine Skriptquelle empfohlen werden kann.",
+          "0ce113fd7b": "Lokale Skripte sind gespeichert, aber als Skriptquelle ist „Nur occ.yaml“ festgelegt.",
+          "7f78e5eea6": "Lokale Skripte sind gespeichert. OCC prüft noch occ.yaml, bevor eine Skriptquelle empfohlen werden kann.",
           "2b6356e744": "Gespeichert",
           "81057d5f71": "Wird gespeichert…",
           "da37d6f10e": "Kopieren",
           "3149964b66": "Kopiert",
           "waitForSetupBeforeAgent": "Vor dem Start des Agenten auf den Abschluss der Einrichtung warten",
           "issueCommandDescription": "Optionale Überschreibung. <artifactUrl>{{artifact_url}}</artifactUrl> für die URL des verknüpften Issues oder PRs verwenden.",
-          "issueCommandSharedDefault": "Leer lassen, um den Repository-Standard aus <yaml>orca.yaml</yaml> zu verwenden.",
-          "issueCommandOptionalDefault": "Leer lassen, um den Repository-Standard aus <yaml>orca.yaml</yaml> zu verwenden, sofern vorhanden.",
-          "commandSourceDescription": "Wenn sowohl <yaml>orca.yaml</yaml> als auch lokale Befehle vorhanden sind, auswählen, welche ausgeführt werden.",
+          "issueCommandSharedDefault": "Leer lassen, um den Repository-Standard aus <yaml>occ.yaml</yaml> zu verwenden.",
+          "issueCommandOptionalDefault": "Leer lassen, um den Repository-Standard aus <yaml>occ.yaml</yaml> zu verwenden, sofern vorhanden.",
+          "commandSourceDescription": "Wenn sowohl <yaml>occ.yaml</yaml> als auch lokale Befehle vorhanden sind, auswählen, welche ausgeführt werden.",
           "issueCommandWslStopped": "Die WSL-Distribution {{distro}} ist gestoppt. Öffne darin ein Terminal, um diesen Befehl anzuzeigen oder zu bearbeiten."
         },
         "RepositoryIconPicker": {
@@ -8953,7 +8953,7 @@
           "25b0004fbf": "Terminal aktiv",
           "781cb74d22": "Wird aus Terminalbereichen ausgeführt.",
           "cb02e00202": "Terminal",
-          "d8c988dab4": "~/.orca/keybindings.json",
+          "d8c988dab4": "~/.occ/keybindings.json",
           "shortcutUnavailable": "Das Tastenkürzel ist nicht mehr verfügbar."
         },
         "SourceControlAiActionRecipeDefaults": {
@@ -9052,7 +9052,7 @@
           "removing": "Wird entfernt…",
           "testing": "Wird getestet…",
           "select": "{{label}} auswählen",
-          "orcaServer": "OCC-Server",
+          "occServer": "OCC-Server",
           "moreActions": "Weitere Aktionen für {{label}}",
           "testConnection": "Verbindung testen",
           "edit": "Bearbeiten…",
@@ -9094,8 +9094,8 @@
           "proxyConnectionReuseHelp": "Schnellere Verbindungen über langsame ProxyCommand- oder ProxyJump-Hosts. Nur aktivieren, wenn ssh_config keine hostspezifischen Match- oder %h-Regeln verwendet.",
           "reconnectOnLaunch": "Beim Start erneut verbinden",
           "reconnectOnLaunchHelp": "Wenn deaktiviert, bleiben dieser Host und alle darüber erreichbaren OCC-Server beim Start getrennt, bis eine Verbindung hergestellt wird.",
-          "allowRemoteCliControl": "Steuerung von OCC über die orca-CLI dieses Hosts zulassen",
-          "allowRemoteCliControlHelp": "Für neue Hosts standardmäßig aktiviert. Ermöglicht orca-Befehlen auf diesem Host, OCC-Browser-Tabs auf diesem Desktop zu öffnen und zu steuern – nur in den Arbeitsbereichen dieses Hosts und nur bei bestehender Verbindung. Außerdem können Terminals, die von einer älteren OCC-Version auf diesem Host gestartet wurden, Orchestrierungsbefehle (check, inbox, send, ask, reply) für ihre eigenen betreuten Aufgaben ausführen. Sie können weder Dateien noch Zwischenablage oder Cookies lesen. Wenn deaktiviert, erreichen sie nur den OCC-Server dieses Hosts.",
+          "allowRemoteCliControl": "Steuerung von OCC über die occ-CLI dieses Hosts zulassen",
+          "allowRemoteCliControlHelp": "Für neue Hosts standardmäßig aktiviert. Ermöglicht occ-Befehlen auf diesem Host, OCC-Browser-Tabs auf diesem Desktop zu öffnen und zu steuern – nur in den Arbeitsbereichen dieses Hosts und nur bei bestehender Verbindung. Außerdem können Terminals, die von einer älteren OCC-Version auf diesem Host gestartet wurden, Orchestrierungsbefehle (check, inbox, send, ask, reply) für ihre eigenen betreuten Aufgaben ausführen. Sie können weder Dateien noch Zwischenablage oder Cookies lesen. Wenn deaktiviert, erreichen sie nur den OCC-Server dieses Hosts.",
           "editTitle": "SSH-Host bearbeiten",
           "addTitle": "SSH-Host hinzufügen",
           "editDescription": "Verbindungsdaten für diesen Rechner aktualisieren. Änderungen gelten ab der nächsten Verbindung.",
@@ -9952,7 +9952,7 @@
               "614c756ab1": "Browser-Cookies importieren",
               "cee44fb442": "Automatisierung",
               "a57c2172dc": "agent-browser",
-              "f5b8fdddf5": "orca-cli",
+              "f5b8fdddf5": "occ-cli",
               "e5a784bc54": "Installieren",
               "9d97446873": "Agent",
               "a2d489263e": "Skill",
@@ -10644,7 +10644,7 @@
             "94e04427f6": "env",
             "664f1a8984": "Kontinuierliche Integration",
             "5854a5c752": "CI",
-            "69637f4dc4": "orca_telemetry_disabled",
+            "69637f4dc4": "occ_telemetry_disabled",
             "058550f6bc": "do_not_track",
             "83a6cd79b3": "Nicht verfolgen",
             "f7a2d9f137": "Umgebungsvariablen, die die Übertragung von Telemetriedaten deaktivieren.",
@@ -10693,13 +10693,13 @@
         },
         "repository": {
           "search": {
-            "bc7e504b8e": ".orca/issue-command",
-            "603c68b68c": "orca.yaml",
+            "bc7e504b8e": ".occ/issue-command",
+            "603c68b68c": "occ.yaml",
             "9dc60d7f6d": "github",
             "ec70364df2": "Arbeitsablauf",
             "66b584bd6c": "Issue-Befehl",
             "2011a6a4f2": "GitHub-Issue-Befehl",
-            "d42d1e49c0": "Dateibasierter Befehl für verknüpfte Issues, konfiguriert über orca.yaml und eine optionale lokale Überschreibung.",
+            "d42d1e49c0": "Dateibasierter Befehl für verknüpfte Issues, konfiguriert über occ.yaml und eine optionale lokale Überschreibung.",
             "d86ea12d16": "Benutzerdefinierter Befehl für GitHub-Issues",
             "c5e8bdbcbb": "Standardmäßig überspringen",
             "a69c5cbe90": "Standardmäßig ausführen",
@@ -10714,10 +10714,10 @@
             "0432d2fb7c": "Lokal",
             "ed269fad69": "Befehlsquelle",
             "19f58d6d89": "Erweitert",
-            "d141897c90": "Details zur Befehlsquelle und zu orca.yaml.",
+            "d141897c90": "Details zur Befehlsquelle und zu occ.yaml.",
             "cc11699c3d": "Erweitert",
             "bf460fded8": "yaml",
-            "9cad92fe77": "orca.yaml-Hooks",
+            "9cad92fe77": "occ.yaml-Hooks",
             "6b80f7d3c8": "Skripte aus lokalen Einstellungen",
             "a1a4c51d58": "Archivierungsbefehl",
             "fbfd2386e8": "Archivierungsskript",
@@ -11260,7 +11260,7 @@
           "3c4d5e6f7a": "Überschreibt den Client-Standard",
           "4d5e6f7a8b": "Übernimmt den Client-Standard",
           "5e6f7a8b9c": "Zurücksetzen",
-          "6f7a8b9cad": "Einen relativen Pfad (z. B. .orca/worktrees) für einen projektspezifischen Speicherort oder einen absoluten Pfad für einen gemeinsamen Ordner verwenden."
+          "6f7a8b9cad": "Einen relativen Pfad (z. B. .occ/worktrees) für einen projektspezifischen Speicherort oder einen absoluten Pfad für einen gemeinsamen Ordner verwenden."
         },
         "agent-awake-copy": {
           "modeTitle": "Computer wach halten",
@@ -11360,9 +11360,9 @@
                   "1a9475dace": "Mehr erfahren",
                   "19fb419c12": "Die Gitea-Zugangsdaten sind konfiguriert, die Authentifizierung ist jedoch fehlgeschlagen. Token, API-Basis-URL und Repository-Berechtigungen prüfen und OCC anschließend neu starten, falls Umgebungsvariablen geändert wurden.",
                   "60708f23da": "nur, wenn OCC die API-URL nicht aus dem Remote ableiten kann.",
-                  "709057ad91": "ORCA_GITEA_API_BASE_URL",
+                  "709057ad91": "OCC_GITEA_API_BASE_URL",
                   "6da9dfa5de": "für private Repositorys und",
-                  "6d5c2a3005": "ORCA_GITEA_TOKEN",
+                  "6d5c2a3005": "OCC_GITEA_TOKEN",
                   "fcbe0469fd": "Öffentliche Repositorys werden anhand ihres Git-Remotes erkannt. Zu setzen sind",
                   "0613928cb3": "Der Gitea-Status ist in dieser Laufzeitumgebung noch nicht verfügbar.",
                   "05863d2599": "Pull Requests und Commit-Status über die Gitea REST API.",
@@ -11370,11 +11370,11 @@
                   "0b5242f8a2": "{{value0}} · Pull Requests und Commit-Status",
                   "40f678df73": "Die Zugangsdaten für Azure DevOps sind konfiguriert, die Authentifizierung ist jedoch fehlgeschlagen. Token, API-Basis-URL und Repository-Berechtigungen prüfen und OCC anschließend neu starten, falls Umgebungsvariablen geändert wurden.",
                   "7bd345e3f6": "nur, wenn OCC die API-Basis-URL nicht aus dem Git-Remote ableiten kann.",
-                  "186a6689df": "ORCA_AZURE_DEVOPS_API_BASE_URL",
+                  "186a6689df": "OCC_AZURE_DEVOPS_API_BASE_URL",
                   "b8a10b07c1": ". Zu setzen ist",
-                  "fbfd237f5e": "ORCA_AZURE_DEVOPS_ACCESS_TOKEN",
+                  "fbfd237f5e": "OCC_AZURE_DEVOPS_ACCESS_TOKEN",
                   "087feb92f1": ", oder",
-                  "48842720d2": "ORCA_AZURE_DEVOPS_TOKEN",
+                  "48842720d2": "OCC_AZURE_DEVOPS_TOKEN",
                   "7bbc9c64f0": "Zu setzen ist",
                   "f3f47dc7de": "Der Status von Azure DevOps ist in dieser Laufzeitumgebung noch nicht verfügbar.",
                   "0eb50d5593": "Pull Requests und Build-Status über Token für die Azure DevOps REST API.",
@@ -11492,8 +11492,8 @@
         },
         "PrivacyDiagnosticsRows": {
           "5a7cbe069a": "DO_NOT_TRACK=1 ist gesetzt – das Erstellen und Senden von Diagnosedateien ist deaktiviert.",
-          "63d03261d1": "ORCA_TELEMETRY_DISABLED=1 ist gesetzt – das Erstellen und Senden von Diagnosedateien ist deaktiviert.",
-          "d37e92a06b": "ORCA_DIAGNOSTICS_DISABLED=1 ist gesetzt – die App-Diagnose ist ausgeschaltet.",
+          "63d03261d1": "OCC_TELEMETRY_DISABLED=1 ist gesetzt – das Erstellen und Senden von Diagnosedateien ist deaktiviert.",
+          "d37e92a06b": "OCC_DIAGNOSTICS_DISABLED=1 ist gesetzt – die App-Diagnose ist ausgeschaltet.",
           "5ebb31e1fb": "Ausführung in CI – die Diagnose ist ausgeschaltet.",
           "e27c8d45bf": "Die Diagnose ist durch eine Umgebungsvariable deaktiviert."
         },
@@ -11586,13 +11586,13 @@
           "notificationPlayground": "Testbereich für Benachrichtigungen",
           "notificationPlaygroundDescription": "Auslöser nur für die Entwicklung, um das Meldungslayout, Aktionen zur Fehlerbehebung und den Zeilenumbruch langer Texte zu prüfen.",
           "devOnly": "Nur für die Entwicklung",
-          "orcaCloud": "OCC Cloud",
-          "orcaCloudDescription": "Vorschau der Anmeldung beim eigenen Cloud-Dienst nur für die Entwicklung. In der Produktionsversion ausgeblendet; in der Entwicklung erscheint sie auch in der Kontoauswahl der Seitenleiste, sobald ORCA_CLOUD_API_URL und ORCA_CLOUD_CLIENT_ID gesetzt sind.",
-          "orcaCloudStatus": "Status",
-          "orcaCloudSignOut": "Abmelden",
-          "orcaCloudConnect": "Profil verbinden",
-          "orcaCloudRefresh": "Status aktualisieren",
-          "orcaCloudNotConfigured": "ORCA_CLOUD_API_URL und ORCA_CLOUD_CLIENT_ID setzen, um die Anmeldung bei OCC Cloud in dieser Entwicklungsversion als Vorschau zu testen.",
+          "occCloud": "OCC Cloud",
+          "occCloudDescription": "Vorschau der Anmeldung beim eigenen Cloud-Dienst nur für die Entwicklung. In der Produktionsversion ausgeblendet; in der Entwicklung erscheint sie auch in der Kontoauswahl der Seitenleiste, sobald OCC_CLOUD_API_URL und OCC_CLOUD_CLIENT_ID gesetzt sind.",
+          "occCloudStatus": "Status",
+          "occCloudSignOut": "Abmelden",
+          "occCloudConnect": "Profil verbinden",
+          "occCloudRefresh": "Status aktualisieren",
+          "occCloudNotConfigured": "OCC_CLOUD_API_URL und OCC_CLOUD_CLIENT_ID setzen, um die Anmeldung bei OCC Cloud in dieser Entwicklungsversion als Vorschau zu testen.",
           "deleteAnywayClicked": "„Trotzdem löschen“ angeklickt"
         },
         "EphemeralVmRecipeRow": {
@@ -11644,7 +11644,7 @@
           "copy": "Kopieren",
           "copied": "Kopiert",
           "recipes": "Rezepte",
-          "recipesHelp": "Hier erscheinen Rezepte aus orca.yaml und aktivierten Plugins, mit denen sich direkt ein Arbeitsbereich starten lässt.",
+          "recipesHelp": "Hier erscheinen Rezepte aus occ.yaml und aktivierten Plugins, mit denen sich direkt ein Arbeitsbereich starten lässt.",
           "checking": "Rezepte werden geprüft…",
           "none": "Noch keine Rezepte gefunden.",
           "cloudVmSkillTitle": "Skill zur Cloud-VM-Einrichtung",
@@ -11691,7 +11691,7 @@
                 "tickets": "Tickets",
                 "issues": "Issues",
                 "skill": "Skill",
-                "orcaLinear": "orca-linear"
+                "occLinear": "occ-linear"
               }
             }
           }
@@ -11768,7 +11768,7 @@
         },
         "LinearAgentSkillPane": {
           "title": "Linear",
-          "description": "So funktioniert Linear in OCC: Issues durchsuchen, verknüpfte Arbeitsbereiche starten und Tickets durch Agenten mit /orca-linear aktualisieren lassen.",
+          "description": "So funktioniert Linear in OCC: Issues durchsuchen, verknüpfte Arbeitsbereiche starten und Tickets durch Agenten mit /occ-linear aktualisieren lassen.",
           "skillTitle": "Linear-Skill",
           "howToUse": "Beispiel-Prompts",
           "howToUseDescription": "Auf eine Karte klicken, um einen Prompt zu kopieren. Diese Prompts nach der Installation des Skills in einem mit Linear verknüpften Worktree verwenden.",
@@ -11836,9 +11836,9 @@
         },
         "BrowserLinkRoutingModifierSetting": {
           "titleSystem": "Shift gedrückt halten, um im Webbrowser zu öffnen",
-          "titleOrca": "Shift gedrückt halten, um in OCC zu öffnen",
+          "titleOCC": "Shift gedrückt halten, um in OCC zu öffnen",
           "descriptionSystem": "Links werden in OCC geöffnet. Mit {{chord}}+Klick wird ein Link stattdessen im Systembrowser geöffnet.",
-          "descriptionOrca": "Links werden im Systembrowser geöffnet. Wenn aktiviert, öffnet {{chord}}+Klick einen Link stattdessen im integrierten Browser von OCC."
+          "descriptionOCC": "Links werden im Systembrowser geöffnet. Wenn aktiviert, öffnet {{chord}}+Klick einen Link stattdessen im integrierten Browser von OCC."
         },
         "BrowserLinkRoutingBackgroundSetting": {
           "title": "Links im Hintergrund öffnen",
@@ -11904,9 +11904,9 @@
           "gitTab": "Git-URL",
           "localLabel": "Plugin-Ordnerpfad",
           "localPlaceholder": "/Users/you/plugins/my-plugin oder C:\\Users\\you\\plugins\\my-plugin",
-          "localHelp": "Vollständiger Pfad zu einem Ordner auf diesem Computer, der orca-plugin.json enthält. Der Pfad wird genau wie eingegeben verwendet.",
+          "localHelp": "Vollständiger Pfad zu einem Ordner auf diesem Computer, der occ-plugin.json enthält. Der Pfad wird genau wie eingegeben verwendet.",
           "gitLabel": "Repository-URL mit #ref",
-          "gitPlaceholder": "https://github.com/acme/orca-notes",
+          "gitPlaceholder": "https://github.com/acme/occ-notes",
           "gitHelp": "Einen Repository-, Release- oder Tag-Link einfügen. Ohne #tag oder #commit verwendet OCC den neuesten Versions-Tag.",
           "cancel": "Abbrechen",
           "installing": "Wird installiert…",
@@ -11956,7 +11956,7 @@
           "title": "Marktplatzquellen",
           "description": "Marktplätze sind auf eine Referenz fixierte Git-Repositorys. Für private Repositorys verwendet OCC die vorhandenen Git-Zugangsdaten des Systems.",
           "urlLabel": "Git-URL",
-          "urlDescription": "Eine HTTPS- oder SSH-URL zu einem Repository verwenden, das orca-marketplace.json enthält.",
+          "urlDescription": "Eine HTTPS- oder SSH-URL zu einem Repository verwenden, das occ-marketplace.json enthält.",
           "urlPlaceholder": "https://git.example.com/team/plugins.git",
           "refLabel": "Git-Referenz",
           "refDescription": "Einen Branch, Tag oder Commit auswählen. Jeder abgerufene Index wird mit einem genauen Commit erfasst.",
@@ -12016,14 +12016,14 @@
           "commandLabel": "{{value0}} · Befehl für {{value1}}"
         },
         "pluginError": {
-          "installManifestMissing": "Keine lesbare orca-plugin.json gefunden. Den Stammordner des Plugins auswählen.",
-          "installManifestInvalid": "orca-plugin.json ist ungültig. Den Plugin-Autor bitten, das Manifest zu korrigieren.",
+          "installManifestMissing": "Keine lesbare occ-plugin.json gefunden. Den Stammordner des Plugins auswählen.",
+          "installManifestInvalid": "occ-plugin.json ist ungültig. Den Plugin-Autor bitten, das Manifest zu korrigieren.",
           "incompatible": "Dieses Plugin erfordert eine andere OCC-Version.",
           "installUnsafePath": "Das Plugin enthält einen unsicheren Dateipfad oder symbolischen Link und wurde nicht installiert.",
           "installLimit": "Das Plugin überschreitet die von OCC vorgegebenen Grenzen für Installationsgröße oder Dateianzahl.",
           "installGit": "OCC konnte die fixierte Git-Revision nicht abrufen. URL, #ref, Zugriffsrechte und die Git-Konfiguration des Systems prüfen.",
-          "invalidManifestMissing": "Im Stammordner des Plugins fehlt orca-plugin.json. Die Datei hinzufügen und anschließend die Plugins aktualisieren.",
-          "invalidManifest": "orca-plugin.json ist ungültig. Die Datei korrigieren und anschließend die Plugins aktualisieren.",
+          "invalidManifestMissing": "Im Stammordner des Plugins fehlt occ-plugin.json. Die Datei hinzufügen und anschließend die Plugins aktualisieren.",
+          "invalidManifest": "occ-plugin.json ist ungültig. Die Datei korrigieren und anschließend die Plugins aktualisieren.",
           "installedManifestUnloadable": "Diese Version kann in dieser OCC-Version nicht geladen werden. Aktualisieren oder neu installieren.",
           "invalidArtifact": "Eine deklarierte Datei für einen Hintergrundprozess oder ein Panel fehlt oder ist unsicher. Die Plugin-Dateien korrigieren und anschließend aktualisieren.",
           "consentChanged": "Das Plugin wurde während der Prüfung geändert. Diesen Dialog schließen und die aktualisierten Berechtigungen prüfen.",
@@ -12045,7 +12045,7 @@
           "manageKeys": "Schlüssel verwalten",
           "addAccess": "Zugang hinzufügen",
           "setupSkillTitle": "2. Den Agenten-Skill installieren",
-          "setupSkillBody": "Stellt Coding-Agenten /orca-linear zum Lesen, Aktualisieren und Einordnen von Tickets sowie zum Verknüpfen von Pull Requests oder Merge Requests bereit.",
+          "setupSkillBody": "Stellt Coding-Agenten /occ-linear zum Lesen, Aktualisieren und Einordnen von Tickets sowie zum Verknüpfen von Pull Requests oder Merge Requests bereit.",
           "setupVisibleTitle": "3. Linear in Aufgaben anzeigen",
           "setupVisibleBody": "Hält Linear in der Quellenauswahl unter Aufgaben und in den Verknüpfungen der Seitenleiste sichtbar.",
           "openTaskSources": "Aufgabenquellen",
@@ -12057,8 +12057,8 @@
           "notesIntro": "Kurze Hinweise für die Zeit nach der Verbindung mit Linear und der Installation des Skills.",
           "noteLinkedTitle": "Von einem Linear-Issue aus starten",
           "noteLinkedBody": "Ticket-Aktionen funktionieren am besten in einem über Aufgaben erstellten Worktree, damit das Issue als Kontext verknüpft bleibt.",
-          "noteSlashTitle": "/orca-linear erwähnen",
-          "noteSlashBody": "Im Chat /orca-linear verwenden oder die Aufgabe in Alltagssprache beschreiben, damit der Agent den Skill für die jeweilige Anfrage lädt.",
+          "noteSlashTitle": "/occ-linear erwähnen",
+          "noteSlashBody": "Im Chat /occ-linear verwenden oder die Aufgabe in Alltagssprache beschreiben, damit der Agent den Skill für die jeweilige Anfrage lädt.",
           "noteKeysTitle": "Schlüssel sind an die Laufzeitumgebung gebunden",
           "noteKeysBody": "API-Schlüssel und Arbeitsbereiche werden für die aktive Laufzeitumgebung gespeichert.",
           "noteVisibilityTitle": "Ausblenden ≠ Verbindung trennen",
@@ -12074,7 +12074,7 @@
           "connectedHint": "Arbeitsbereiche und Schlüssel werden für die aktive Laufzeitumgebung gespeichert. Weitere Zugänge können jederzeit hinzugefügt werden.",
           "recheck": "Verbindung erneut prüfen",
           "skillTitle": "Linear-Agenten-Skill installieren",
-          "skillDescription": "Stellt Agenten /orca-linear bereit, um Tickets zu lesen, Aktualisierungen zu veröffentlichen, Status zu ändern und Pull Requests oder Merge Requests zu verknüpfen.",
+          "skillDescription": "Stellt Agenten /occ-linear bereit, um Tickets zu lesen, Aktualisierungen zu veröffentlichen, Status zu ändern und Pull Requests oder Merge Requests zu verknüpfen.",
           "skillBlocked": "Zuerst Linear verbinden und anschließend den Skill für Agenten installieren.",
           "skillPanelTitle": "Linear-Skill",
           "showDescription": "Linear in die Quellenauswahl auf der Seite Aufgaben und die Verknüpfungen der Seitenleiste aufnehmen."
@@ -12221,7 +12221,7 @@
           "keywordMarkdown": "Markdown",
           "keywordUpload": "hochladen"
         },
-        "orcaAccount": {
+        "occAccount": {
           "connected": "Verbunden",
           "reconnectRequired": "Die Sitzung ist abgelaufen. Erneut anmelden, um Cloud-Funktionen zu nutzen.",
           "unavailable": "Die OCC-Anmeldung ist in diesem Build nicht verfügbar.",
@@ -12345,8 +12345,8 @@
               "connectFailed": "Verbindung fehlgeschlagen",
               "title": "Bitbucket verbinden",
               "description": "Zugangsdaten für Bitbucket Cloud verwenden, um Pull Requests und Build-Status anzuzeigen. OCC prüft sie vor dem Speichern.",
-              "remoteRuntime": "Auf diesem Computer gespeichert, nicht in der aktiven entfernten Laufzeitumgebung – dort stattdessen ORCA_BITBUCKET_* setzen. Umgebungsvariablen haben immer Vorrang vor den hier gespeicherten Zugangsdaten.",
-              "environmentManaged": "Bitbucket ist bereits über ORCA_BITBUCKET_*-Umgebungsvariablen konfiguriert, die Vorrang haben. Diese Variablen entfernen, um Zugangsdaten in OCC zu speichern.",
+              "remoteRuntime": "Auf diesem Computer gespeichert, nicht in der aktiven entfernten Laufzeitumgebung – dort stattdessen OCC_BITBUCKET_* setzen. Umgebungsvariablen haben immer Vorrang vor den hier gespeicherten Zugangsdaten.",
+              "environmentManaged": "Bitbucket ist bereits über OCC_BITBUCKET_*-Umgebungsvariablen konfiguriert, die Vorrang haben. Diese Variablen entfernen, um Zugangsdaten in OCC zu speichern.",
               "authModeLabel": "Bitbucket-Authentifizierungsmethode",
               "modeBasic": "E-Mail & API-Token",
               "modeToken": "Zugriffstoken",
@@ -12361,7 +12361,7 @@
               "tokenHint": "Zugriffstoken für Repositorys, Projekte und Arbeitsbereiche werden auf der jeweiligen Bitbucket-Einstellungsseite erstellt und benötigen Lesezugriff auf Pull Requests.",
               "basicHint": "Einen Atlassian-API-Token für das Konto erstellen und mit der zugehörigen E-Mail-Adresse kombinieren.",
               "docsLink": "Dokumentation zu Bitbucket-API-Token",
-              "storageNote": "Auf diesem Computer gespeichert, mit Verschlüsselung, wenn der Betriebssystem-Schlüsselbund verfügbar ist. ORCA_BITBUCKET_*-Umgebungsvariablen haben immer Vorrang vor den hier gespeicherten Zugangsdaten.",
+              "storageNote": "Auf diesem Computer gespeichert, mit Verschlüsselung, wenn der Betriebssystem-Schlüsselbund verfügbar ist. OCC_BITBUCKET_*-Umgebungsvariablen haben immer Vorrang vor den hier gespeicherten Zugangsdaten.",
               "cancel": "Abbrechen",
               "verifying": "Wird überprüft…",
               "connect": "Verbinden"
@@ -12376,10 +12376,10 @@
               "authModeToken": "Zugriffstoken",
               "authModeBasic": "E-Mail & API-Token",
               "disconnect": "Bitbucket-Verbindung trennen",
-              "envManaged": "Über Umgebungsvariablen konfiguriert. Die ORCA_BITBUCKET_*-Variablen entfernen, um diese Zugangsdaten in OCC zu verwalten.",
+              "envManaged": "Über Umgebungsvariablen konfiguriert. Die OCC_BITBUCKET_*-Variablen entfernen, um diese Zugangsdaten in OCC zu verwalten.",
               "storedAuthFailed": "Die Authentifizierung mit den gespeicherten Bitbucket-Zugangsdaten ist fehlgeschlagen. Die Zugangsdaten bearbeiten oder prüfen, ob der Token weiterhin Zugriff auf Pull Requests hat.",
-              "storedCredential": "In OCC auf diesem Computer gespeichert. ORCA_BITBUCKET_*-Umgebungsvariablen haben Vorrang, wenn sie gesetzt sind.",
-              "notConfigured": "Ein Bitbucket-Cloud-Konto mit einem Atlassian-API-Token oder einem Zugriffstoken verbinden. ORCA_BITBUCKET_*-Umgebungsvariablen funktionieren ebenfalls und haben Vorrang.",
+              "storedCredential": "In OCC auf diesem Computer gespeichert. OCC_BITBUCKET_*-Umgebungsvariablen haben Vorrang, wenn sie gesetzt sind.",
+              "notConfigured": "Ein Bitbucket-Cloud-Konto mit einem Atlassian-API-Token oder einem Zugriffstoken verbinden. OCC_BITBUCKET_*-Umgebungsvariablen funktionieren ebenfalls und haben Vorrang.",
               "disconnectFailed": "Die gespeicherten Bitbucket-Zugangsdaten konnten nicht entfernt werden.",
               "statusLoadFailed": "Es konnte nicht geprüft werden, ob Bitbucket-Zugangsdaten gespeichert sind.",
               "replaceCredentials": "Zugangsdaten hinzufügen oder ersetzen",
@@ -12474,9 +12474,9 @@
             "confirmForget": "Auf diesem Desktop vergessen",
             "keepLinked": "Verknüpfung beibehalten",
             "forgetDescription": "Hebt die Verknüpfung zu diesem Server hier auf, ohne seinen Host zu kontaktieren. Falls der Host wieder erreichbar wird, läuft der Server dort möglicherweise noch.",
-            "orcaVersion": "OCC auf diesem Host: {{version}}",
-            "stopOrcaDescription": "Stoppt OCC auf dem SSH-Host und entfernt es aus dieser Liste.",
-            "updateOrcaOnHost": "OCC auf diesem Host aktualisieren",
+            "occVersion": "OCC auf diesem Host: {{version}}",
+            "stopOCCDescription": "Stoppt OCC auf dem SSH-Host und entfernt es aus dieser Liste.",
+            "updateOCCOnHost": "OCC auf diesem Host aktualisieren",
             "updateAnyway": "Trotzdem aktualisieren",
             "notNow": "Jetzt nicht",
             "forceUpdate": "Auf diesem Host laufen Terminals. Sie laufen während des Updates weiter, und ihre Bereiche verbinden sich erneut, wenn der OCC-Server neu startet."
@@ -12598,7 +12598,7 @@
           "behindNoTemplate": "Führt eine Version des OCC-Servers aus, die diese App nicht aktualisieren kann; dieser Build enthält keinen Server für diesen Host.",
           "behindMigrating": "Führt den OCC-Server aus, der nach Abschluss der Projektverschiebung aktualisiert wird.",
           "behindCheckFailed": "Führt den OCC-Server aus; OCC konnte nicht prüfen, ob seine Version älter als die dieser App ist.",
-          "runtimeNoexec": "Dieser Host erlaubt das Ausführen von Programmen aus ~/.orca-remote nicht. Deshalb kann OCC seinen Server dort nicht starten. Meist ist das Home-Verzeichnis mit noexec eingehängt. Die Administration des Hosts bitten, das Ausführen von Programmen dort zu erlauben, und anschließend erneut verbinden.",
+          "runtimeNoexec": "Dieser Host erlaubt das Ausführen von Programmen aus ~/.occ-remote nicht. Deshalb kann OCC seinen Server dort nicht starten. Meist ist das Home-Verzeichnis mit noexec eingehängt. Die Administration des Hosts bitten, das Ausführen von Programmen dort zu erlauben, und anschließend erneut verbinden.",
           "setupContactLost": "OCC hat während der Einrichtung seines Servers den Kontakt zu diesem Host verloren. Auf dem Host wurde nichts gestoppt. Zum Fortsetzen erneut verbinden.",
           "nodeDownloadBlocked": "Weder dieser Computer noch dieser Host konnten Node.js herunterladen, das der OCC-Server benötigt. Einen Node.js-Mirror verwenden oder das Netzwerk auf beiden Computern prüfen.",
           "nodeDownloadBlockedNoMirror": "Weder dieser Computer noch dieser Host konnten Node.js herunterladen, das der OCC-Server benötigt. Netzwerk oder Proxy auf beiden Computern prüfen und anschließend erneut verbinden.",
@@ -12802,7 +12802,7 @@
           "confirm": "Wiederherstellen"
         },
         "SshTargetList": {
-          "addedInOrca": "In OCC hinzugefügt",
+          "addedInOCC": "In OCC hinzugefügt",
           "fromConfig": "Aus ~/.ssh/config",
           "filteredCount": "{{count}} von {{total}}",
           "selectManualGroup": "Alle in OCC hinzugefügten Hosts auswählen",
@@ -13112,12 +13112,12 @@
           "viewError": "Fehler anzeigen",
           "copyId": "Plugin-ID kopieren",
           "checkUpdate": "Nach Update suchen",
-          "bundledWithOrca": "Mit OCC mitgeliefert",
+          "bundledWithOCC": "Mit OCC mitgeliefert",
           "installName": "{{value0}} installieren",
           "crashedOnce": "Einmal abgestürzt",
           "updateLabel": "{{value0}} auf {{value1}} aktualisieren",
           "update": "Auf {{value0}} aktualisieren",
-          "needsOrca": "Benötigt OCC {{value0}}",
+          "needsOCC": "Benötigt OCC {{value0}}",
           "rollbackTo": "Auf {{value0}} zurücksetzen…",
           "copyContentHash": "Inhalts-Hash kopieren",
           "reviewUpdate": "Update prüfen",
@@ -15136,7 +15136,7 @@
             "a6e7cdc688": "pnpm test --filter mobile",
             "21b67dfc92": "Bash",
             "d6d1041a1c": "⎿ Folie zum Scannen des Kopplungscodes durch eine Terminal-Sitzung ersetzt",
-            "336c0e070e": "mobile/orca-mobile-sidebar-mock-v3.html",
+            "336c0e070e": "mobile/occ-mobile-sidebar-mock-v3.html",
             "6d4ebd5833": "Edit",
             "fc83e0d5ef": "⎿ 2103 Zeilen gelesen",
             "80cc356591": "Read",
@@ -15165,7 +15165,7 @@
           "title": "Benutzerdefinierte Netzwerkadresse",
           "description": "Eine vom Smartphone erreichbare Adresse bekannt geben – zum Beispiel einen Tailscale-Hostnamen, eine IP-Adresse oder eine Reverse-Proxy-URL.",
           "label": "Adresse",
-          "placeholder": "home.example.com:8443 oder https://example.com/orca",
+          "placeholder": "home.example.com:8443 oder https://example.com/occ",
           "hint": "IPv4-/IPv6-Adresse, Hostnamen oder vollständige HTTP(S)-/WebSocket-URL eingeben. Ports sind optional.",
           "cancel": "Abbrechen",
           "use": "Adresse verwenden",
@@ -15287,7 +15287,7 @@
             "b8dc9dd8a2": "Installiert",
             "1b51644c2d": "Agenten die Steuerung des Desktops ermöglichen: den Cursor bewegen, klicken und in beliebigen Apps tippen.",
             "362a07517d": "Computersteuerung",
-            "5e8fe5a72d": "Agenten direkten Zugriff auf Orcas Browser geben, damit sie Seiten testen, Screenshots erstellen und anhand der angezeigten Inhalte handeln können.",
+            "5e8fe5a72d": "Agenten direkten Zugriff auf OCCs Browser geben, damit sie Seiten testen, Screenshots erstellen und anhand der angezeigten Inhalte handeln können.",
             "e638da007a": "Browsersteuerung durch Agenten",
             "c61c91e642": "Agenten die Koordination über OCC ermöglichen, um große Aufgaben mit mehreren Schritten bis zum Abschluss voranzubringen.",
             "ac07f8887f": "Agenten-Orchestrierung",
@@ -15490,7 +15490,7 @@
                   "6d2b0a84e1": "In dieser Version nicht verfügbar",
                   "notInstalled": "Nicht installiert",
                   "needsMacAccess": "macOS-Zugriff erforderlich",
-                  "requiresOrcaDesktop": "OCC Desktop erforderlich"
+                  "requiresOCCDesktop": "OCC Desktop erforderlich"
                 }
               }
             }
@@ -15503,7 +15503,7 @@
                     "copy": {
                       "workOnTwoTasks": "Zwei Aufgaben gleichzeitig bearbeiten",
                       "62bac8f43c": "Gleichzeitig in 2 verschiedenen Worktrees arbeiten. Jeder ist isoliert (auch innerhalb desselben Projekts). Ideal, um 2 Funktionen gleichzeitig zu entwickeln.",
-                      "908898c3ee": "Orcas Browser verwenden",
+                      "908898c3ee": "OCCs Browser verwenden",
                       "43781563c3": "Die Web-App direkt in OCC nutzen. Ein beliebiges Element auswählen und dessen exakten Quellcode und Stile mit einem Klick an einen Agenten senden.",
                       "29aa2c2077": "Benachrichtigungen aktivieren",
                       "71bd9a8c95": "Sofort erfahren, wenn ein Agent fertig ist, Aufmerksamkeit benötigt oder blockiert wird.",
@@ -15516,7 +15516,7 @@
                       "2cf795433b": "Arbeit in mehreren Repos starten",
                       "42525ba8a4": "Wichtige Repos in OCC einbinden, um die Arbeit mit Agenten ohne Ordnersuche zu starten.",
                       "agentSkillsName": "Agenten mit OCC-Skills ausstatten",
-                      "agentSkillsDescription": "Die Skills installieren, mit denen Agenten Orcas Browser steuern, den Computer bedienen und Aufgaben mit mehreren Schritten koordinieren."
+                      "agentSkillsDescription": "Die Skills installieren, mit denen Agenten OCCs Browser steuern, den Computer bedienen und Aufgaben mit mehreren Schritten koordinieren."
                     }
                   }
                 }
@@ -17115,7 +17115,7 @@
             "zoomIn": "Vergrößern",
             "resetZoom": "Zoom zurücksetzen",
             "appearance": "Darstellung",
-            "appearanceMatchOrca": "An OCC anpassen",
+            "appearanceMatchOCC": "An OCC anpassen",
             "appearanceLight": "Hell",
             "appearanceDark": "Dunkel",
             "zoomPercent": "Zoom {{value0}}%"
@@ -18004,7 +18004,7 @@
               "keep": {
                 "title": "Terminal-Links weiterhin im OCC-Browser öffnen?",
                 "description": "Alternativ standardmäßig den Systembrowser verwenden.",
-                "orca": {
+                "occ": {
                   "button": "OCC beibehalten"
                 }
               },
@@ -18013,7 +18013,7 @@
               "link": {
                 "label": "Link"
               },
-              "orca": {
+              "occ": {
                 "note": "OCC kann importierte Cookies für Websites mit bestehender Anmeldung verwenden.",
                 "button": "In OCC öffnen"
               },
@@ -18134,7 +18134,7 @@
           "copy": "Kopieren"
         }
       },
-      "orca": {
+      "occ": {
         "profiles": {
           "signout": {
             "confirm": {
@@ -18189,7 +18189,7 @@
           "drawHintDismiss": "Verstanden",
           "drawHintTry": "Ausprobieren",
           "errorAttach": "Der Screenshot mit Markierungen konnte nicht angehängt werden.",
-          "errorCapture": "Die Seite konnte nicht zum Zeichnen aufgenommen werden.",
+          "erroccpture": "Die Seite konnte nicht zum Zeichnen aufgenommen werden.",
           "errorUnavailable": "Screenshot-Markierungen sind auf dieser Seite nicht verfügbar.",
           "fontSize": "Schriftgröße",
           "hint": "Auf der Seite zeichnen, dann die Markierungen kopieren und beim Agenten einfügen.",
@@ -18565,7 +18565,7 @@
         "c77189bc0c": "Filter aktualisieren",
         "19af906d12": "Filter speichern"
       },
-      "OrcaSignInProgress": {
+      "OCCSignInProgress": {
         "waiting": "Warten auf die Anmeldung im Browser",
         "copyLink": "Anmeldelink kopieren",
         "copied": "Anmeldelink kopiert",
@@ -18979,10 +18979,10 @@
         "historyUnreadable": "OCC konnte den gespeicherten Verlauf dieses Chats nicht lesen.",
         "historyUnusable": "Dieser Chat konnte nicht geladen werden.",
         "historyUnavailable": "OCC konnte den Verlauf dieses Chats gerade nicht öffnen.",
-        "savedByNewerOrca": "Die Chats wurden mit einer neueren OCC-Version gespeichert.",
-        "updateOrcaToKeepUsing": "OCC aktualisieren, um sie weiter zu verwenden.",
-        "chatSavedByNewerOrca": "Dieser Chat wurde mit einer neueren OCC-Version gespeichert.",
-        "updateOrcaToOpenChat": "OCC aktualisieren, um ihn zu öffnen.",
+        "savedByNewerOCC": "Die Chats wurden mit einer neueren OCC-Version gespeichert.",
+        "updateOCCToKeepUsing": "OCC aktualisieren, um sie weiter zu verwenden.",
+        "chatSavedByNewerOCC": "Dieser Chat wurde mit einer neueren OCC-Version gespeichert.",
+        "updateOCCToOpenChat": "OCC aktualisieren, um ihn zu öffnen.",
         "unsupported": "Hierfür ist eine neuere OCC-Version auf dem Computer erforderlich, auf dem dieser Chat läuft. OCC dort aktualisieren und anschließend erneut versuchen.",
         "notAvailable": "Dies ist in diesem Chat nicht verfügbar.",
         "cannotRunHere": "OCC kann diesen Agenten hier nicht in einem Chat ausführen.",
@@ -19077,12 +19077,12 @@
         "stoppedBeforeStart": "Manuell gestoppt",
         "dismiss": "Ausblenden",
         "copyError": "Fehler kopieren",
-        "orcaStopUpdate": "OCC auf {{machine}} wurde während dieser Antwort für ein Update neu gestartet.",
-        "orcaStopQuit": "OCC auf {{machine}} wurde während dieser Antwort geschlossen.",
-        "orcaStopCrash": "OCC auf {{machine}} wurde während dieser Antwort unerwartet beendet.",
-        "orcaStopRemote": "OCC auf {{machine}} wurde während dieser Antwort gestoppt.",
-        "orcaStopCanContinue": "Die Unterhaltung kann fortgesetzt werden.",
-        "orcaStopUnnamedServer": "dem entfernten Server"
+        "occStopUpdate": "OCC auf {{machine}} wurde während dieser Antwort für ein Update neu gestartet.",
+        "occStopQuit": "OCC auf {{machine}} wurde während dieser Antwort geschlossen.",
+        "occStopCrash": "OCC auf {{machine}} wurde während dieser Antwort unerwartet beendet.",
+        "occStopRemote": "OCC auf {{machine}} wurde während dieser Antwort gestoppt.",
+        "occStopCanContinue": "Die Unterhaltung kann fortgesetzt werden.",
+        "occStopUnnamedServer": "dem entfernten Server"
       },
       "composer": {
         "send": "Senden",
@@ -19445,7 +19445,7 @@
         "cancel": "Abbrechen",
         "reason": "Grund",
         "needsAccess": "Benötigt Zugriff auf",
-        "needsNewerOrca": "Diese Anfrage erfordert eine neuere Version von OCC.",
+        "needsNewerOCC": "Diese Anfrage erfordert eine neuere Version von OCC.",
         "plan": {
           "file": "Plandatei",
           "reviewTitle": "Vorgeschlagenen Plan prüfen",
@@ -19550,10 +19550,10 @@
         "estimated": "Anhand der letzten Antwort geschätzt."
       },
       "contextMenu": {
-        "copyOrcaSessionId": "OCC-Sitzungs-ID kopieren",
-        "orcaSessionIdCopied": "OCC-Sitzungs-ID kopiert",
-        "orcaSessionIdCopyFailed": "OCC-Sitzungs-ID konnte nicht kopiert werden",
-        "orcaSessionIdTooltip": "Die ID von OCC für diesen Chat, unabhängig von der Sitzungs-ID der Agenten-CLI. Agenten verwenden sie, um über OCC aufeinander Bezug zu nehmen."
+        "copyOCCSessionId": "OCC-Sitzungs-ID kopieren",
+        "occSessionIdCopied": "OCC-Sitzungs-ID kopiert",
+        "occSessionIdCopyFailed": "OCC-Sitzungs-ID konnte nicht kopiert werden",
+        "occSessionIdTooltip": "Die ID von OCC für diesen Chat, unabhängig von der Sitzungs-ID der Agenten-CLI. Agenten verwenden sie, um über OCC aufeinander Bezug zu nehmen."
       },
       "dismissDeliveryNotice": "Ausblenden",
       "addSelectionToChat": "Zum Chat hinzufügen",
@@ -20248,7 +20248,7 @@
       "failed": "Installation fehlgeschlagen. Erneut versuchen.",
       "cancelFailed": "Die Installation konnte nicht abgebrochen werden. Erneut versuchen.",
       "install": "{{agent}} installieren",
-      "installManaged": "Orcas Version installieren",
+      "installManaged": "OCCs Version installieren",
       "installed": "Installiert",
       "notInstalled": "Nicht installiert.",
       "progress": "Download von {{agent}}",
@@ -20396,9 +20396,9 @@
       "message": "OCC konnte seine lokale Befehlsübertragung nicht starten.",
       "detail": "OCC funktioniert weiterhin, aber Befehle wie occ status, occ terminal und orchestration sind in dieser Sitzung nicht verfügbar.\n\n{{guidance}}\n\nUrsache: {{cause}}",
       "guidance": {
-        "permissionDenied": "OCC konnte seine Laufzeitdatei nicht schreiben. Die Berechtigungen für Orcas Datenordner prüfen und anschließend neu starten.",
+        "permissionDenied": "OCC konnte seine Laufzeitdatei nicht schreiben. Die Berechtigungen für OCCs Datenordner prüfen und anschließend neu starten.",
         "storageUnavailable": "Der Datenträger ist möglicherweise voll oder schreibgeschützt. Speicherplatz freigeben und OCC anschließend neu starten.",
-        "invalidPath": "Orcas Datenordner fehlt möglicherweise, wurde verschoben oder sein Pfad ist zu lang. Den Ordner wiederherstellen oder einen kürzeren Pfad verwenden und OCC anschließend neu starten.",
+        "invalidPath": "OCCs Datenordner fehlt möglicherweise, wurde verschoben oder sein Pfad ist zu lang. Den Ordner wiederherstellen oder einen kürzeren Pfad verwenden und OCC anschließend neu starten.",
         "addressInUse": "Ein anderer Prozess belegt möglicherweise den Port. OCC neu starten, um es erneut zu versuchen.",
         "unknown": "OCC neu starten, um es erneut zu versuchen."
       }
@@ -20467,7 +20467,7 @@
     },
     "eyebrowNew": "Neu",
     "eyebrowTip": "Tipp",
-    "orcaCli": {
+    "occCli": {
       "title": "Agenten OCC mit der OCC CLI steuern lassen",
       "description": "Agenten ermöglichen, untergeordnete Worktrees zu koordinieren und zwischen Worktrees zu kommunizieren.",
       "cta": "CLI & Skills installieren"
@@ -20535,7 +20535,7 @@
     "createReviewFailure": {
       "authRequiredCommand": "{{providerName}} ist nicht authentifiziert. Nächster Schritt: {{command}} in dieser Umgebung ausführen.",
       "authRequiredVariable": "{{providerName}} ist nicht authentifiziert. Nächster Schritt: {{variable}} in dieser Umgebung setzen.",
-      "authRequiredBitbucket": "Bitbucket ist nicht authentifiziert. Nächster Schritt: Bitbucket unter Einstellungen > Integrationen verbinden oder ORCA_BITBUCKET_* in dieser Umgebung setzen.",
+      "authRequiredBitbucket": "Bitbucket ist nicht authentifiziert. Nächster Schritt: Bitbucket unter Einstellungen > Integrationen verbinden oder OCC_BITBUCKET_* in dieser Umgebung setzen.",
       "signInHintCommand": "{{command}} in dieser Umgebung ausführen",
       "signInHintVariable": "{{variable}} in dieser Umgebung setzen",
       "signInHintBitbucket": "Bitbucket unter Einstellungen > Integrationen verbinden",
@@ -20597,7 +20597,7 @@
     "variables": {
       "assistantMessage": "Die erste Antwort des Agenten, sofern sie OCC vorliegt.",
       "baseBranch": "Der im Editor „PR erstellen“ ausgewählte Ziel-Branch.",
-      "basePrompt": "Orcas integrierter Prompt für diese Aktion, einschließlich des Kontexts, den OCC sicher erfassen kann.",
+      "basePrompt": "OCCs integrierter Prompt für diese Aktion, einschließlich des Kontexts, den OCC sicher erfassen kann.",
       "branch": "Der aktuelle Branch-Name in der Quellcodeverwaltung.",
       "changedFiles": "Eine Zusammenfassung der zwischen dem Branch und dem Basis-Branch geänderten Dateien.",
       "commitSummary": "Eine durch Zeilenumbrüche getrennte Liste der Commits auf dem Branch im Vergleich zum Basis-Branch.",
@@ -21029,7 +21029,7 @@
       "failed": "Der Bereich konnte nicht in einen neuen Tab verschoben werden."
     },
     "claudeOldTerminalBanner": {
-      "title": "Dieses Terminal wurde vor Orcas Update für Claude-Konten geöffnet. Daher verwendet claude hier die Anmeldung von „Systemstandard“.",
+      "title": "Dieses Terminal wurde vor OCCs Update für Claude-Konten geöffnet. Daher verwendet claude hier die Anmeldung von „Systemstandard“.",
       "dialogTitle": "Warum claude hier nicht das ausgewählte Konto verwendet",
       "dialogDescription": "OCC speichert jedes Claude-Konto jetzt in einem eigenen Ordner. In einem neuen Terminal verwendet claude das ausgewählte Konto.",
       "dialogCause": "Bei Terminals, die vor diesem Update geöffnet wurden, gilt das nicht. Daher meldet sich claude hier mit den Anmeldedaten von „Systemstandard“ an. Ein neues Terminal öffnen, um das ausgewählte Konto zu verwenden."
@@ -21981,7 +21981,7 @@
       "failed": "Nicht überprüfbar: Lokale Terminals konnten nicht aktualisiert werden. Die zuletzt beobachteten Terminals werden angezeigt.",
       "retry": "Erneut versuchen",
       "loading": "Terminals werden geladen…",
-      "noLocalOrcaPtys": "Keine lokalen OCC-PTYs",
+      "noLocalOCCPtys": "Keine lokalen OCC-PTYs",
       "openNamed": "{{terminal}} öffnen",
       "endNamed": "{{terminal}} beenden",
       "endShort": "Beenden",
@@ -22295,7 +22295,7 @@
       "writerUnavailable": "OCC konnte die Profilspeicherung nicht starten. OCC neu starten; falls das Problem weiterhin besteht, diesen Build reparieren oder neu installieren.",
       "publicationUnavailable": "OCC konnte den Profilzustand nicht sicher in {{directory}} speichern.",
       "publicationNeedsHardLinks": "Dieser Speicherort muss Hardlinks unterstützen, und OCC benötigt die Berechtigung, sie zu erstellen.",
-      "publicationMoveData": "OCC und orcad schließen, bevor die Ordnerberechtigungen geprüft werden oder das gesamte OCC-Datenverzeichnis auf ein beschreibbares lokales Dateisystem mit Hardlink-Unterstützung wie APFS, NTFS oder ext4 verschoben wird.",
+      "publicationMoveData": "OCC und occd schließen, bevor die Ordnerberechtigungen geprüft werden oder das gesamte OCC-Datenverzeichnis auf ein beschreibbares lokales Dateisystem mit Hardlink-Unterstützung wie APFS, NTFS oder ext4 verschoben wird.",
       "publicationKeepFiles": "Das ursprüngliche Verzeichnis und alle Wiederherstellungsdateien aufbewahren."
     }
   },
@@ -22364,7 +22364,7 @@
       "alreadyPairedAddAgain": "Dieser Server ist bereits als „{{name}}“ gekoppelt. Zum Aktualisieren seiner Verbindung unter Einstellungen > Entfernte OCC-Server erneut hinzufügen.",
       "alreadyPairedUnreadable": "Dieser Server ist bereits als „{{name}}“ gekoppelt, dessen gespeicherte Einstellungen diese OCC-Version nicht lesen kann.",
       "nameTaken": "Ein Server namens „{{name}}“ ist bereits vorhanden.",
-      "idNeedsNewerOrca": "Ein Server mit dieser ID ist bereits in einem Format vorhanden, das eine neuere OCC-Version erfordert.",
+      "idNeedsNewerOCC": "Ein Server mit dieser ID ist bereits in einem Format vorhanden, das eine neuere OCC-Version erfordert.",
       "hostSaveFailed": "OCC hat den Host überprüft, konnte ihn aber nicht speichern. Den lokalen Einstellungsspeicher prüfen und erneut versuchen.",
       "repairSaveFailed": "OCC hat den Server überprüft, konnte die neue Kopplung aber nicht speichern. Den lokalen Einstellungsspeicher prüfen und erneut versuchen.",
       "repairCloudWorkspace": "Dieser Server gehört zu einem Cloud-Arbeitsbereich, der ihn beim Fortsetzen erneut koppelt."

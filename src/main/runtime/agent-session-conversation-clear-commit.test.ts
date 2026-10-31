@@ -24,7 +24,7 @@ const INDETERMINATE: AgentSessionOwnerProbe = { outcome: 'indeterminate', reason
 let directory: string
 
 beforeEach(async () => {
-  directory = await mkdtemp(join(tmpdir(), 'orca-agent-session-clear-commit-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-agent-session-clear-commit-'))
 })
 
 afterEach(async () => {

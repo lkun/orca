@@ -1,6 +1,6 @@
 import { randomBytes, randomUUID } from 'node:crypto'
-import { openCloudNotifications, type CloudDatabase } from '@orca-cloud/cloud-database'
-import { CONNECTOR_PATHS, ConnectorHelloResponseSchema } from '@orca-cloud/connector-contract'
+import { openCloudNotifications, type CloudDatabase } from '@occ-cloud/cloud-database'
+import { CONNECTOR_PATHS, ConnectorHelloResponseSchema } from '@occ-cloud/connector-contract'
 import { createLocalJWKSet, exportJWK, generateKeyPair, SignJWT } from 'jose'
 import pg from 'pg'
 import type { ConnectorConfig } from './config.js'
@@ -9,12 +9,12 @@ import { createConnectorServer } from './connector-server.js'
 import { connectorHostId } from './connector-token-verifier.js'
 import type { DiscordRestApi } from './discord-rest.js'
 
-export const PUBLIC_URL = 'https://connector.onorca.dev'
-export const AUTH_ISSUER = 'https://login.onorca.dev'
+export const PUBLIC_URL = 'https://connector.onocc.dev'
+export const AUTH_ISSUER = 'https://login.onocc.dev'
 export const HOST_IP = '203.0.113.7'
 
 // Real Postgres when the CI service is present; each harness gets its own schema.
-const testDatabaseUrl = process.env.ORCA_CONNECTOR_TEST_DATABASE_URL
+const testDatabaseUrl = process.env.OCC_CONNECTOR_TEST_DATABASE_URL
 
 export function testConnectorConfig(): ConnectorConfig {
   return {
@@ -89,7 +89,7 @@ async function testTokenIssuer() {
       })
         .setProtectedHeader({ alg: 'ES256', kid: 'test-key' })
         .setIssuer(AUTH_ISSUER)
-        .setAudience('orca-connector')
+        .setAudience('occ-connector')
         .setSubject(claims.sub)
         .setIssuedAt()
         .setExpirationTime(expiresAtSeconds)
@@ -190,7 +190,7 @@ export async function createConnectorHarness(
             hostName: 'build-box',
             platform: 'linux',
             runtime: 'serve',
-            orcaVersion: '1.4.230',
+            occVersion: '1.4.230',
             agents: ['claude'],
             promptKinds: ['approval'],
             features: ['answer', 'cancel'],

@@ -5,7 +5,7 @@ import { ElectronAppEnvironment } from '../host/electron-app-environment'
 import { ensureWindowsAppDataPath } from './windows-app-data-path'
 
 /** The NSIS uninstaller's flag (config/nsis/occ-installer-hooks.nsh); keep the two in sync. */
-export const AGENT_HOOKS_UNINSTALL_FLAG = '--orca-uninstall-remove-agent-hooks'
+export const AGENT_HOOKS_UNINSTALL_FLAG = '--occ-uninstall-remove-agent-hooks'
 
 // Uninstall must finish even if an agent's config never answers.
 const UNINSTALL_HOOK_REMOVAL_TIMEOUT_MS = 30_000
@@ -30,7 +30,7 @@ export async function removeAgentHooksForUninstall(
 }
 
 /**
- * Uninstall only: Windows hook entries call the ~/.orca scripts by bare path, so once that folder
+ * Uninstall only: Windows hook entries call the ~/.occ scripts by bare path, so once that folder
  * is removed every agent would fail a hook per event; the last install takes them out. File edits
  * only; no window or shell.
  */
@@ -41,7 +41,7 @@ export function runAgentHooksUninstallPreflight(argv: readonly string[] = proces
   // Armed first: nothing below may leave the uninstaller waiting on an error box.
   const timeout = setTimeout(() => app.exit(1), UNINSTALL_HOOK_REMOVAL_TIMEOUT_MS)
   try {
-    process.env.ORCA_BACKGROUND_LAUNCH = '1'
+    process.env.OCC_BACKGROUND_LAUNCH = '1'
     // The same userData the app's managed runtime homes live under.
     ensureWindowsAppDataPath(app)
     // Removers read userData through this port (Claude's profile homes); the app's own preflight is skipped.

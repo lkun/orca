@@ -27,7 +27,7 @@ function turn(sessionId: string, at: string, role: 'user' | 'assistant', content
 // Claude saves naming runs beside the chat; listing them can resume the naming prompt instead (#29973).
 describe('scanAiVaultSessions chat-naming requests', () => {
   it('lists the chat but not the request OCC ran to name it', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-name-request-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-name-request-'))
     tempRoots.push(root)
     const roots = isolatedScanRoots(root)
     const projectDir = join(roots.claudeProjectsDir, '-tmp-worktree')
@@ -53,7 +53,7 @@ describe('scanAiVaultSessions chat-naming requests', () => {
   })
 
   it('keeps a real conversation that only quotes the naming prompt later', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-name-request-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-name-request-'))
     tempRoots.push(root)
     const roots = isolatedScanRoots(root)
     const projectDir = join(roots.claudeProjectsDir, '-tmp-worktree')
@@ -74,7 +74,7 @@ describe('scanAiVaultSessions chat-naming requests', () => {
   })
 
   it('keeps a naming request someone opened and kept chatting in', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-name-request-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-name-request-'))
     tempRoots.push(root)
     const roots = isolatedScanRoots(root)
     const projectDir = join(roots.claudeProjectsDir, '-tmp-worktree')

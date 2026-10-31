@@ -5,7 +5,7 @@ import { expect, it, vi } from 'vitest'
 import type { WorkerThreadChildEvent } from './worker-thread-child-process-protocol'
 
 const { spawn } = vi.hoisted(() => ({ spawn: vi.fn() }))
-vi.mock('@orca/process-host', () => ({ spawnProcess: spawn }))
+vi.mock('@occ/process-host', () => ({ spawnProcess: spawn }))
 
 import { serveWorkerThreadChildProcesses } from './worker-thread-child-process-server'
 

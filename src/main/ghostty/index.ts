@@ -4,7 +4,7 @@ import type { GhosttyImportPreview, GlobalSettings } from '../../shared/global-s
 import type { Store } from '../persistence'
 import { findGhosttyConfigPaths } from './discovery'
 import { parseGhosttyConfig } from './parser'
-import { mapGhosttyToOrca } from './mapper'
+import { mapGhosttyToOCC } from './mapper'
 import { resolveGhosttyThemeColors } from './theme-resolution'
 
 // Bound config reads to avoid loading arbitrarily large files into main.
@@ -131,7 +131,7 @@ export async function previewGhosttyImport(store: Store): Promise<GhosttyImportP
 
   const themeUnsupportedKeys = await applyThemeReference(parsed)
 
-  const { diff: rawDiff, unsupportedKeys: mappedUnsupportedKeys } = mapGhosttyToOrca(
+  const { diff: rawDiff, unsupportedKeys: mappedUnsupportedKeys } = mapGhosttyToOCC(
     parsed,
     platform() === 'darwin'
   )

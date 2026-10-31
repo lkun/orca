@@ -10,7 +10,7 @@ import {
   type StoredNativeChatComposerDraft
 } from './native-chat-composer-draft-storage'
 
-const JOURNAL_KEY = 'orca:nativeChatComposerDraftJournal:v1'
+const JOURNAL_KEY = 'occ:nativeChatComposerDraftJournal:v1'
 // Cap whole drafts and additions separately to protect localStorage quota; always retain tiny removal entries to prevent sent drafts returning.
 export const MAX_JOURNAL_CHARS = 256_000
 export const MAX_JOURNAL_ADDITIONS_CHARS = 800_000

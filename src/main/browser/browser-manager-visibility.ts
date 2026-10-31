@@ -54,7 +54,7 @@ export abstract class BrowserManagerVisibility extends BrowserManagerState {
   }
 
   // Do not await the renderer: minimized or throttled windows must not stall frame capture.
-  holdPaintForCapture(guestWebContentsId: number): () => void {
+  holdPaintFoccpture(guestWebContentsId: number): () => void {
     const releaseGuestThrottle = this.holdGuestActive(guestWebContentsId)
     const browserPageId = this.resolveBrowserTabIdForGuestWebContentsId(guestWebContentsId)
     const renderer = browserPageId ? this.resolveRendererForBrowserTab(browserPageId) : null

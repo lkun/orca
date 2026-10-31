@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -11,8 +11,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -23,7 +23,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -77,7 +77,7 @@ const SENDER_VERBS: {
 describe('a structured worker running orchestration commands as itself', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -111,7 +111,7 @@ describe('a structured worker running orchestration commands as itself', () => {
   it.each(SENDER_VERBS)(
     'resolves its own identity for $method with no --from',
     async ({ argv, method, senderField }) => {
-      process.env.ORCA_TERMINAL_HANDLE = STRUCTURED_HANDLE
+      process.env.OCC_TERMINAL_HANDLE = STRUCTURED_HANDLE
       answerCalls()
       vi.spyOn(console, 'log').mockImplementation(() => {})
       const priorExitCode = process.exitCode
@@ -131,7 +131,7 @@ describe('a structured worker running orchestration commands as itself', () => {
   )
 
   it('still refuses a handle the runtime reports dead, with no pane key to remint from', async () => {
-    process.env.ORCA_TERMINAL_HANDLE = 'term_stale'
+    process.env.OCC_TERMINAL_HANDLE = 'term_stale'
     callMock.mockImplementation(async (method: string) => {
       if (method === 'terminal.resolveIdentity') {
         return {

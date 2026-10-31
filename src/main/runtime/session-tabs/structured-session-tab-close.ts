@@ -1,8 +1,8 @@
 import { LOCAL_EXECUTION_HOST_ID } from '../../../shared/execution-host'
-import type { OrcaRuntimeWithStoredMobileSnapshotHasStalePreservedTab as BrowserOwnership } from './mobile-session-publication-preservation'
-import type { OrcaRuntimeWithPruneMobileSessionTabGroupLayout as PruneMobileSessionTabGroupLayoutMethods } from '../session-lifecycle/projection/prune-mobile-session-tab-group-layout'
+import type { OCCRuntimeWithStoredMobileSnapshotHasStalePreservedTab as BrowserOwnership } from './mobile-session-publication-preservation'
+import type { OCCRuntimeWithPruneMobileSessionTabGroupLayout as PruneMobileSessionTabGroupLayoutMethods } from '../session-lifecycle/projection/prune-mobile-session-tab-group-layout'
 import type { RuntimeHeadlessTabGroups as HeadlessTabGroupsMethods } from './headless-tab-group-moves'
-import { OrcaRuntimeWithStructuredSessionTabProjection } from './restored-chat-tab-changes'
+import { OCCRuntimeWithStructuredSessionTabProjection } from './restored-chat-tab-changes'
 import type {
   BrowserTabInfo,
   RuntimeMobileSessionAgentTab,
@@ -25,13 +25,13 @@ import {
 } from '../agent-session/agent-session-tab-layout'
 import { createChatTabLayoutQueue } from '../agent-session-tab-layout-queue'
 import type { WindowLayoutCommand } from '../runtime-layout-apply'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type { LayoutApplyReply } from '../../../shared/workspace-layout/workspace-layout-command-types'
 import { savedSessionId } from '../saved-structured-agent-session-restoration'
 import { structuredSessionTabRetired } from '../structured-worker-custody'
 import type { StructuredAgentId } from '../../../shared/agent-session-provider-handle'
 
-export abstract class OrcaRuntimeWithCloseStructuredAgentSessionTab extends OrcaRuntimeWithStructuredSessionTabProjection {
+export abstract class OCCRuntimeWithCloseStructuredAgentSessionTab extends OCCRuntimeWithStructuredSessionTabProjection {
   protected abstract isHeadlessOwnedMobileBrowserTab(
     ...args: Parameters<BrowserOwnership['isHeadlessOwnedMobileBrowserTab']>
   ): ReturnType<BrowserOwnership['isHeadlessOwnedMobileBrowserTab']>
@@ -262,7 +262,7 @@ export abstract class OrcaRuntimeWithCloseStructuredAgentSessionTab extends Orca
     this.retireStructuredAgentSessionTabFromSnapshot(sessionId)
     const eligible = () => this.passiveStructuredSessionTabChangeEligible({ close: sessionId })
     // Resolve chat workspaces when the close queue runs, including opens queued before it.
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       this.queueChatTabChanges(() =>
         this.worktreesShowingSavedChat(sessionId).map((worktreeId) => ({
           worktreeId,
@@ -291,7 +291,7 @@ export abstract class OrcaRuntimeWithCloseStructuredAgentSessionTab extends Orca
     eligible?: (change: ChatTabChange) => boolean
   ): void {
     // Main-owned layouts place chat tabs with or without a window.
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       this.queueChatTabChanges(() =>
         changes.map((change) => ({
           worktreeId,

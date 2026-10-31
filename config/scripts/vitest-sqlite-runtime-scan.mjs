@@ -11,7 +11,7 @@ const CACHE_FILE = join(
   root,
   'node_modules',
   '.cache',
-  `orca-vitest-sqlite-runtime-${createHash('sha256').update(root).digest('hex').slice(0, 16)}.json`
+  `occ-vitest-sqlite-runtime-${createHash('sha256').update(root).digest('hex').slice(0, 16)}.json`
 )
 const SOURCE_EXTENSION = /\.[cm]?[jt]sx?$/
 const SQLITE_HARNESSES = new Set([

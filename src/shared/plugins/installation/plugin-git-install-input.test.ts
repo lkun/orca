@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import { isSafePluginGitRef, parsePluginGitInstallInput } from './plugin-git-install-input'
 
-const REPO = 'https://github.com/kolebayev/orca-md-layout'
+const REPO = 'https://github.com/kolebayev/occ-md-layout'
 
 describe('parsePluginGitInstallInput', () => {
   it.each([
     [REPO, REPO, ''],
     [`${REPO}/`, REPO, ''],
     [`${REPO}.git`, `${REPO}.git`, ''],
-    ['kolebayev/orca-md-layout', REPO, ''],
-    ['github.com/kolebayev/orca-md-layout', REPO, ''],
+    ['kolebayev/occ-md-layout', REPO, ''],
+    ['github.com/kolebayev/occ-md-layout', REPO, ''],
     [`${REPO}#v0.1.0`, REPO, 'v0.1.0'],
     [`${REPO}/releases/tag/v0.1.0`, REPO, 'v0.1.0'],
     [`${REPO}/releases/latest`, REPO, ''],
@@ -31,8 +31,8 @@ describe('parsePluginGitInstallInput', () => {
     ['https://gitlab.com/acme/notes/-/releases/v1.2.0', 'https://gitlab.com/acme/notes', 'v1.2.0'],
     ['https://gitlab.com/acme/tools/notes', 'https://gitlab.com/acme/tools/notes', ''],
     [
-      'git@github.com:kolebayev/orca-md-layout.git',
-      'git@github.com:kolebayev/orca-md-layout.git',
+      'git@github.com:kolebayev/occ-md-layout.git',
+      'git@github.com:kolebayev/occ-md-layout.git',
       ''
     ],
     ['git@github.com:acme/notes.git#v1', 'git@github.com:acme/notes.git', 'v1'],

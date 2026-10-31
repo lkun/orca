@@ -3,11 +3,11 @@
  * repo and folder, and every worktree the move carried meta, lineage or a session for. A store
  * keyed by a bare file path uses them to tell a moved project's file from another in the distro.
  */
-import type { OrcadMigrationManifest } from '../../../shared/orcad-migration/orcad-migration-manifest'
+import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
 import { normalizeWorkspaceSessionKeyToWorkspaceId } from '../../../shared/workspace-scope'
 import { splitWorktreeIdForFilesystem } from '../../../shared/worktree/id'
 
-export function wslMoveScopeRootPaths(manifest: Pick<OrcadMigrationManifest, 'payload'>): string[] {
+export function wslMoveScopeRootPaths(manifest: Pick<OCCdMigrationManifest, 'payload'>): string[] {
   const { payload } = manifest
   const dormant = payload.dormantState
   const worktreeIds = [

@@ -46,7 +46,7 @@ type CodexAccountRegistrationDependencies = {
   login: (managedHomePath: string) => Promise<void>
 }
 
-const REAUTH_STAGING_DIR_NAME = '.orca-reauth-login'
+const REAUTH_STAGING_DIR_NAME = '.occ-reauth-login'
 
 function removeStagingHome(stagingHomePath: string): void {
   rmSync(stagingHomePath, {

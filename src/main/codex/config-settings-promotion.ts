@@ -4,7 +4,7 @@ import { observeAgentStateFile } from './codex-path-observation'
 import { resolvePromotionWriteTarget } from './config-settings-promotion-write-target'
 import { writeFileAtomically } from '../codex-accounts/fs-utils'
 import { parseWslUncPath } from '../../shared/wsl-paths'
-import { getOrcaManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
+import { getOCCManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
 import { upsertPromotedSettingsInContent } from './codex-config-settings-upsert'
 import {
   PROMOTED_STRUCTURED_KEYS,
@@ -38,7 +38,7 @@ export type CodexSettingsBaselineSnapshotOptions = {
 
 /** Snapshot only after a successful mirror so pending runtime changes remain promotable. */
 export function snapshotCodexRuntimeSettingsBaseline(
-  runtimeHomePath = getOrcaManagedCodexHomePath(),
+  runtimeHomePath = getOCCManagedCodexHomePath(),
   options: CodexSettingsBaselineSnapshotOptions = {}
 ): void {
   try {
@@ -90,7 +90,7 @@ export type CodexSettingsPromotionPlan = {
 
 function getHostPromotionHomes(): CodexSettingsPromotionHomes {
   return {
-    runtimeHomePath: getOrcaManagedCodexHomePath(),
+    runtimeHomePath: getOCCManagedCodexHomePath(),
     systemHomePath: getSystemCodexHomePath()
   }
 }

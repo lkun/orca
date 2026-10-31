@@ -1,9 +1,9 @@
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 
 export type TerminalInputSource = 'desktop' | 'programmatic' | 'mobile' | 'legacy'
 export class TerminalInputPausedError extends Error {}
 
-type InputDriver = Pick<OrcaRuntimeService, 'getDriver'>
+type InputDriver = Pick<OCCRuntimeService, 'getDriver'>
 
 export function isTerminalInputPaused(
   runtime: InputDriver,

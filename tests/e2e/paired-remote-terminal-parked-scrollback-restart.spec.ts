@@ -6,7 +6,7 @@ import { randomUUID } from 'node:crypto'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { resolveLeafScrollbackBuffers } from '../../src/renderer/src/components/terminal-pane/leaf-scrollback-resolution'
 import {
   createRuntimeDesktopPairingOffer,
@@ -30,7 +30,7 @@ const PARK_DELAY_MS = 2_000
 const PAINT_BUDGET_MS = 30_000
 /** Renderer debounce (150 ms) + main's save debounce (1 s, 5 s max wait), with slack. */
 const DEBOUNCED_WRITE_BUDGET_MS = 20_000
-const scratch = mkdtempSync(path.join(os.tmpdir(), 'orca-parked-restart-'))
+const scratch = mkdtempSync(path.join(os.tmpdir(), 'occ-parked-restart-'))
 const fixturePath = path.join(scratch, 'echo-terminal.mjs')
 writeFileSync(
   fixturePath,
@@ -181,11 +181,11 @@ type ParkedRemoteTerminal = {
 
 // Create/mirror/mark/park the remote PTY behind two decoys; register terminals immediately so partial failure still cleans up.
 async function parkRemoteTerminalWithToken(
-  orcaPage: Page,
+  occPage: Page,
   client: PairedElectronClient,
   createdTerminals: string[]
 ): Promise<ParkedRemoteTerminal> {
-  const worktreeId = await orcaPage.evaluate(() => {
+  const worktreeId = await occPage.evaluate(() => {
     const id = window.__store?.getState().activeWorktreeId
     if (!id) {
       throw new Error('headed host has no active worktree')
@@ -287,21 +287,21 @@ async function closeCreatedTerminals(
 
 test.describe('host retains nothing', () => {
   test.use({
-    orcaAppExtraEnv: { ORCA_E2E_FORCE_REMOTE_TERMINAL_SNAPSHOT_UNAVAILABLE: '1' }
+    occAppExtraEnv: { OCC_E2E_FORCE_REMOTE_TERMINAL_SNAPSHOT_UNAVAILABLE: '1' }
   })
 
   test('the debounced write alone lands the parked scrollback in the remote host’s partition, so a hard kill loses nothing', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.setTimeout(600_000)
-    const offer = await createRuntimeDesktopPairingOffer(orcaPage)
-    const extraEnv = { ORCA_E2E_TERMINAL_PARKING_DELAY_MS: String(PARK_DELAY_MS) }
+    const offer = await createRuntimeDesktopPairingOffer(occPage)
+    const extraEnv = { OCC_E2E_TERMINAL_PARKING_DELAY_MS: String(PARK_DELAY_MS) }
     const first = await launchPairedElectronClient(offer, testInfo, 'parked-kill', { extraEnv })
     const userDataDir = first.userDataDir
     const createdTerminals: string[] = []
     let relaunched: PairedElectronClient | null = null
     try {
-      const parked = await parkRemoteTerminalWithToken(orcaPage, first, createdTerminals)
+      const parked = await parkRemoteTerminalWithToken(occPage, first, createdTerminals)
 
       // SIGKILL skips beforeunload/full checkpoints, isolating the debounced writer’s partition routing.
       const onDiskAfterPark = await waitForRuntimePartitionCapture(userDataDir, parked.webTabId)
@@ -345,17 +345,17 @@ test.describe('host retains nothing', () => {
   })
 
   test('a clean quit also lands the parked scrollback in the remote host’s partition (control)', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.setTimeout(600_000)
-    const offer = await createRuntimeDesktopPairingOffer(orcaPage)
-    const extraEnv = { ORCA_E2E_TERMINAL_PARKING_DELAY_MS: String(PARK_DELAY_MS) }
+    const offer = await createRuntimeDesktopPairingOffer(occPage)
+    const extraEnv = { OCC_E2E_TERMINAL_PARKING_DELAY_MS: String(PARK_DELAY_MS) }
     const first = await launchPairedElectronClient(offer, testInfo, 'parked-restart', { extraEnv })
     const userDataDir = first.userDataDir
     const createdTerminals: string[] = []
     let relaunched: PairedElectronClient | null = null
     try {
-      const parked = await parkRemoteTerminalWithToken(orcaPage, first, createdTerminals)
+      const parked = await parkRemoteTerminalWithToken(occPage, first, createdTerminals)
 
       await first.page.evaluate(() => window.dispatchEvent(new Event('beforeunload')))
       await first.quitPreservingProfile()

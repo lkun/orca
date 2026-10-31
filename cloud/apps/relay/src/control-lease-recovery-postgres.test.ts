@@ -1,5 +1,5 @@
 import { EventEmitter } from 'node:events'
-import { ASSIGNMENT_LIMITS, RELAY_CLOSE_CODE } from '@orca-cloud/relay-contract'
+import { ASSIGNMENT_LIMITS, RELAY_CLOSE_CODE } from '@occ-cloud/relay-contract'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import type WebSocket from 'ws'
 import { RelayAssignmentStore } from './assignment-store.js'
@@ -12,7 +12,7 @@ import type { RelayRuntimeObserver } from './relay-observability.js'
 import type { RelayTokenClaims } from './relay-token-verifier.js'
 import { ProcessQueuedByteBudget } from './splice-forwarder.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 const sourceCell = {

@@ -24,7 +24,7 @@ Before merging, verify that the required checks and aggregate gate in the full P
 
 ## Retrying GitHub Actions
 
-Inspect a failed run with `gh run view <run-id> --log-failed --repo stablyai/orca`, then retry failed jobs with `gh run rerun <run-id> --failed --repo stablyai/orca`. GitHub also reruns jobs that depend on the failed jobs. In GitHub's UI, choose **Re-run failed jobs**; OCC offers **Rerun failed checks**.
+Inspect a failed run with `gh run view <run-id> --log-failed --repo stablyai/occ`, then retry failed jobs with `gh run rerun <run-id> --failed --repo stablyai/occ`. GitHub also reruns jobs that depend on the failed jobs. In GitHub's UI, choose **Re-run failed jobs**; OCC offers **Rerun failed checks**.
 
 Keep successful jobs unless there is a concrete reason to revalidate them, such as investigating runner-dependent flakiness. A full rerun restarts passing unit shards, packages, and platform checks too. If fixing the failure changes code, push the fix and validate the new commit; rerunning an older run still tests its original commit.
 

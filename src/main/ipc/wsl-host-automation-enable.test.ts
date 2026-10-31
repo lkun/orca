@@ -24,7 +24,7 @@ vi.mock('../../shared/pairing', () => ({
   encodePairingOffer: () => 'code',
   parsePairingCode: () => ({ code: 'code' })
 }))
-vi.mock('../ssh/orcad-migration-catalog-client', () => ({
+vi.mock('../ssh/occd-migration-catalog-client', () => ({
   sendSupportedMigrationRequest: async (
     _pairing: unknown,
     method: string,

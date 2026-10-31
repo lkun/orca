@@ -42,10 +42,10 @@ export const AGENT_SESSION_WRITE_NOTICE_COPY = {
   historyUnreadable: "OCC couldn't read this chat's saved history.",
   historyUnusable: 'Unable to load this chat.',
   historyUnavailable: "OCC couldn't open this chat's history right now.",
-  savedByNewerOrca: 'Chats were saved by a newer OCC.',
-  updateOrcaToKeepUsing: 'Update OCC to keep using them.',
-  chatSavedByNewerOrca: 'This chat was saved by a newer OCC.',
-  updateOrcaToOpenChat: 'Update OCC to open it.',
+  savedByNewerOCC: 'Chats were saved by a newer OCC.',
+  updateOCCToKeepUsing: 'Update OCC to keep using them.',
+  chatSavedByNewerOCC: 'This chat was saved by a newer OCC.',
+  updateOCCToOpenChat: 'Update OCC to open it.',
   unsupported:
     'This needs a newer OCC on the computer running this chat. Update OCC there, then try again.',
   notAvailable: "This isn't available in this chat.",
@@ -118,6 +118,6 @@ export const AGENT_SESSION_HISTORY_UNREAD_CAUSES: ReadonlySet<AgentSessionWriteN
     'historyUnusable',
     'historyUnavailable',
     'historyUnreadable',
-    'savedByNewerOrca',
-    'chatSavedByNewerOrca'
+    'savedByNewerOCC',
+    'chatSavedByNewerOCC'
   ])

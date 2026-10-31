@@ -118,7 +118,7 @@ function completedSkillResult(input: {
         status: placement.status === 'removed' ? 'skipped' : placement.status
       })),
     ...(input.result.conflict ? { conflict: input.result.conflict } : {}),
-    ...(input.result.errorCategory ? { errorCategory: input.result.errorCategory } : {}),
+    ...(input.result.errocctegory ? { errocctegory: input.result.errocctegory } : {}),
     ...(input.result.failure ? { failure: input.result.failure } : {})
   }
 }
@@ -153,7 +153,7 @@ export async function installSkillBundle(
     expectedVersionId: input.versionId
   }).destinationRoot
   await mkdir(destinationRoot, { recursive: true })
-  const stateDirectory = join(input.orcaStateDirectory, 'skill-installs')
+  const stateDirectory = join(input.occStateDirectory, 'skill-installs')
   const recovery = await beginSkillExtractionRecovery(
     stateDirectory,
     destinationRoot,
@@ -246,7 +246,7 @@ export async function installSkillBundle(
           digest: skill.digest,
           status: failure?.category === 'cancelled' ? 'cancelled' : 'failed',
           placements: [],
-          ...(failure ? { errorCategory: failure.code, failure } : {})
+          ...(failure ? { errocctegory: failure.code, failure } : {})
         })
       }
     }

@@ -10,14 +10,14 @@ vi.mock('electron', () => ({ app: { getPath: appGetPathMock } }))
 import { applyPendingBrowserCookieImports } from './browser-session-cookie-staging'
 import { loadBrowserSessionMeta, persistBrowserSessionMeta } from './browser-session-meta-store'
 
-const defaultPartition = 'persist:orca-browser-default'
-const routePartition = `persist:orca-browser-v1-${'c'.repeat(64)}`
+const defaultPartition = 'persist:occ-browser-default'
+const routePartition = `persist:occ-browser-v1-${'c'.repeat(64)}`
 let userData = ''
 const metadataPath = (): string => join(userData, 'browser-session-meta.json')
 
 beforeEach(() => {
   // Resolve macOS /var symlinks before comparing paths.
-  userData = realpathSync(mkdtempSync(join(tmpdir(), 'orca-cookie-staging-')))
+  userData = realpathSync(mkdtempSync(join(tmpdir(), 'occ-cookie-staging-')))
   appGetPathMock.mockReturnValue(userData)
 })
 
@@ -39,7 +39,7 @@ describe('applyPendingBrowserCookieImports', () => {
     applyPendingBrowserCookieImports({
       resolveMetadataPath: metadataPath,
       defaultPartition,
-      activeOrcaProfileId: 'profile-a'
+      activeOCCProfileId: 'profile-a'
     })
 
     for (const suffix of ['', '-wal', '-shm']) {

@@ -37,7 +37,7 @@ vi.mock('node:fs', async () => {
 
 it('publishes a new file durably and cannot replace an existing destination', async () => {
   const { publishFileDurableSync } = await import('./durable-file-write')
-  const dir = mkdtempSync(join(tmpdir(), 'orca-publish-fsync-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-publish-fsync-'))
   try {
     const supported = directoryFsyncSupported(dir)
     const staged = join(dir, 'staged')
@@ -85,7 +85,7 @@ function directoryFsyncSupported(directory: string): boolean {
 
 it('fsyncs the file before rename, and the directory after where supported', async () => {
   const { writeFileDurableSync } = await import('./durable-file-write')
-  const dir = mkdtempSync(join(tmpdir(), 'orca-fsync-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-fsync-'))
   try {
     const supported = directoryFsyncSupported(dir)
     syscalls.length = 0 // Discard the probe's own fsync.

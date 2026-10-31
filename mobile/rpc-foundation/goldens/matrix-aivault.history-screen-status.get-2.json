@@ -50,7 +50,7 @@
       "labels": ["Back", "Refresh agent sessions"],
       "text": [
         "Agent Session History",
-        "orca-history",
+        "occ-history",
         "Agent Session History Unavailable",
         "Update OCC on this host to browse agent session history."
       ]
@@ -99,7 +99,7 @@
         "View": 4
       },
       "labels": ["Back", "Refresh agent sessions"],
-      "text": ["Agent Session History", "orca-history", "Unable to Load", "Retry"]
+      "text": ["Agent Session History", "occ-history", "Unable to Load", "Retry"]
     },
     "22141179786a": {
       "crash": {
@@ -114,7 +114,7 @@
         "View": 4
       },
       "labels": ["Back", "Refresh agent sessions"],
-      "text": ["Agent Session History", "orca-history", "Unable to Load", "Unknown method", "Retry"]
+      "text": ["Agent Session History", "occ-history", "Unable to Load", "Unknown method", "Retry"]
     },
     "222a3ba1d974": {
       "name": "worktree.ps#1",
@@ -220,7 +220,7 @@
         "View": 4
       },
       "labels": ["Back", "Refresh agent sessions"],
-      "text": ["Agent Session History", "orca-history", "Unable to Load", "outer refused", "Retry"]
+      "text": ["Agent Session History", "occ-history", "Unable to Load", "outer refused", "Retry"]
     },
     "4d68bff46cff": {
       "name": "status.get#1",
@@ -455,7 +455,7 @@
       "labels": ["Back", "Refresh agent sessions"],
       "text": [
         "Agent Session History",
-        "orca-history",
+        "occ-history",
         "Unable to Load",
         "transport failure",
         "Retry"
@@ -511,7 +511,7 @@
       "labels": ["Back", "Refresh agent sessions"],
       "text": [
         "Agent Session History",
-        "orca-history",
+        "occ-history",
         "Unable to Load",
         "The host sent a reply this app could not read (status.get)",
         "Retry"
@@ -634,7 +634,7 @@
       "labels": ["Back", "Refresh agent sessions"],
       "text": [
         "Agent Session History",
-        "orca-history",
+        "occ-history",
         "Unable to Load",
         "Unable to reach host",
         "Retry"
@@ -787,7 +787,7 @@
         "View": 4
       },
       "labels": ["Back", "Refresh agent sessions"],
-      "text": ["Agent Session History", "orca-history"]
+      "text": ["Agent Session History", "occ-history"]
     },
     "e28c488ce6b2": {
       "name": "agentSession.subscribeStatus#1",

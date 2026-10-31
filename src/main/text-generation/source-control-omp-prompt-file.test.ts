@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import * as agentSpecs from '../../shared/commit-message-agent-spec'
 import type { ResolvedSourceControlAiGenerationParams } from '../../shared/source-control-ai'
 import type { SpawnSourceControlAgent } from './source-control-text-generation-types'
@@ -233,7 +233,7 @@ async function withReader<T>(
   fail: boolean,
   run: (spawnAgent: SpawnSourceControlAgent) => Promise<T>
 ) {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-omp-contract-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-omp-contract-'))
   const receiptPath = join(directory, 'receipt.json')
   try {
     const result = await run((input) => {

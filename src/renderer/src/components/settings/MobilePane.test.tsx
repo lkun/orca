@@ -22,7 +22,7 @@ type PairedDevicesProps = {
 }
 
 type StoreState = {
-  orcaProfileAuthStatus: { state: 'connected' | 'local' }
+  occProfileAuthStatus: { state: 'connected' | 'local' }
   settingsSearchQuery: string
   settings: {
     mobileAutoRestoreFitMs: number | null
@@ -32,7 +32,7 @@ type StoreState = {
   }
   updateSettings: (patch: Record<string, unknown>) => Promise<void>
   recordFeatureInteraction: (feature: string) => void
-  fetchOrcaProfileAuthStatus: () => Promise<unknown>
+  fetchOCCProfileAuthStatus: () => Promise<unknown>
 }
 
 const mocks = vi.hoisted(() => {
@@ -183,12 +183,12 @@ describe('MobilePane pairing connection mode', () => {
     mocks.revokeDevice.mockReset().mockResolvedValue({ revoked: true })
     updateSettings.mockReset().mockResolvedValue(undefined)
     mocks.holder.state = {
-      orcaProfileAuthStatus: { state: 'connected' },
+      occProfileAuthStatus: { state: 'connected' },
       settingsSearchQuery: '',
       settings: { mobileAutoRestoreFitMs: null },
       updateSettings,
       recordFeatureInteraction: vi.fn(),
-      fetchOrcaProfileAuthStatus: vi.fn().mockResolvedValue(null)
+      fetchOCCProfileAuthStatus: vi.fn().mockResolvedValue(null)
     }
     Object.defineProperty(window, 'api', {
       configurable: true,
@@ -221,7 +221,7 @@ describe('MobilePane pairing connection mode', () => {
   })
 
   it('preselects LAN on a signed-out desktop and gates Generate once Relay is chosen', async () => {
-    mocks.holder.state.orcaProfileAuthStatus = { state: 'local' }
+    mocks.holder.state.occProfileAuthStatus = { state: 'local' }
     const user = userEvent.setup()
     render(<MobilePane />)
     expect(screen.getByTestId('mode')).toHaveTextContent('local-only')
@@ -624,7 +624,7 @@ describe('MobilePane pairing connection mode', () => {
     await user.click(screen.getByRole('button', { name: 'Generate' }))
     await waitFor(() => expect(getPairingQR).toHaveBeenCalledWith({ connectionMode: 'automatic' }))
 
-    mocks.holder.state.orcaProfileAuthStatus = { state: 'local' }
+    mocks.holder.state.occProfileAuthStatus = { state: 'local' }
     rerender(<MobilePane />)
 
     // Late superseded responses must not show Relay codes after sign-out.
@@ -653,7 +653,7 @@ describe('MobilePane pairing connection mode', () => {
     expect(screen.getByTestId('loading')).toHaveTextContent('true')
 
     // Sign-out must release hung generation so its loading flag cannot wedge Generate.
-    mocks.holder.state.orcaProfileAuthStatus = { state: 'local' }
+    mocks.holder.state.occProfileAuthStatus = { state: 'local' }
     rerender(<MobilePane />)
     await waitFor(() => expect(screen.getByTestId('loading')).toHaveTextContent('false'))
 
@@ -783,12 +783,12 @@ describe('MobilePane', () => {
     mocks.revokeDevice.mockReset()
     mocks.updateSettings.mockReset().mockResolvedValue(undefined)
     mocks.holder.state = {
-      orcaProfileAuthStatus: { state: 'connected' },
+      occProfileAuthStatus: { state: 'connected' },
       settingsSearchQuery: '',
       settings: { mobileAutoRestoreFitMs: null },
       updateSettings: mocks.updateSettings,
       recordFeatureInteraction: vi.fn(),
-      fetchOrcaProfileAuthStatus: vi.fn().mockResolvedValue(null)
+      fetchOCCProfileAuthStatus: vi.fn().mockResolvedValue(null)
     }
     Object.defineProperty(window, 'api', {
       configurable: true,

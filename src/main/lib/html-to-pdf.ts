@@ -30,7 +30,7 @@ new Promise((resolve) => {
 export async function htmlToPdf(html: string, signal?: AbortSignal): Promise<Buffer> {
   signal?.throwIfAborted()
   const tempDir = app.getPath('temp')
-  const tempPath = path.join(tempDir, `orca-export-${randomUUID()}.html`)
+  const tempPath = path.join(tempDir, `occ-export-${randomUUID()}.html`)
 
   // Exclusive creation prevents writing through pre-seated symlinks; EEXIST paths belong to someone else.
   try {

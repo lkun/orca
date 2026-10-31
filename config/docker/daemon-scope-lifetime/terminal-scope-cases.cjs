@@ -38,27 +38,27 @@ async function startDaemon(bundlePath, nonce, terminals, env = {}, mode = 'candi
     [fixture, 'runtime', resultPath, bundlePath, nonce, 'terminals'],
     {
       stdio: 'inherit',
-      env: { ...process.env, ...env, ORCA_FIXTURE_TERMINALS: JSON.stringify(terminals) }
+      env: { ...process.env, ...env, OCC_FIXTURE_TERMINALS: JSON.stringify(terminals) }
     }
   )
   await new Promise((resolve) => runtime.on('exit', resolve))
   await until(() => fs.existsSync(`${resultPath}.daemon`), 'terminal daemon did not start')
   const daemon = JSON.parse(fs.readFileSync(`${resultPath}.daemon`, 'utf8'))
-  const unit = `orca-daemon-${nonce}.scope`
+  const unit = `occ-daemon-${nonce}.scope`
   assert.ok(cgroupOf(daemon.pid).endsWith(`/${unit}`), 'daemon is not in its own scope')
   if (mode === 'baseline') {
     return { ...daemon, unit }
   }
   // systemd-run moves itself into the scope before it execs the shell.
   await until(
-    () => daemon.terminals.every((pid) => /\/orca_pty_[^/]+\.scope$/.test(cgroupOf(pid))),
+    () => daemon.terminals.every((pid) => /\/occ_pty_[^/]+\.scope$/.test(cgroupOf(pid))),
     `terminals never entered their scopes: ${JSON.stringify(daemon.events)}`
   )
   const scopes = daemon.terminals.map(cgroupOf)
   const slice = scopes[0].split('/').slice(0, -1).join('/')
   assert.equal(new Set(scopes).size, scopes.length, 'two terminals share a scope')
   for (const scope of scopes) {
-    assert.match(scope, /\/orca_ptys_[^/]+\.slice\/orca_pty_[^/]+\.scope$/)
+    assert.match(scope, /\/occ_ptys_[^/]+\.slice\/occ_pty_[^/]+\.scope$/)
     assert.ok(scope.startsWith(`${slice}/`), 'terminal scopes are not siblings in one slice')
   }
   assert.ok(!slice.includes(unit), 'terminal slice is nested in the daemon scope')
@@ -151,7 +151,7 @@ async function ceilingCase(bundlePath, prefix) {
       `while [ ! -f ${r}.go ]; do sleep 0.05; done; for i in 1 2 3 4 5; do sleep 600 & done; ` +
         `echo ok > ${r}.forked; wait`
     ],
-    { ORCA_TERMINAL_PROCESS_CEILING: '64' }
+    { OCC_TERMINAL_PROCESS_CEILING: '64' }
   )
   assert.equal(daemon.ceiling.state, 'on', JSON.stringify(daemon.ceiling))
   const [forkBomb, neighbour] = daemon.scopes

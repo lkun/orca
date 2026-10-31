@@ -4,7 +4,7 @@ import {
   serializeBudgetedMobileSnapshot
 } from './terminal-snapshot-publication'
 import { getOutputAfterSnapshotSeq } from './terminal-stream-replay'
-import { isMovedPaneHistorySessionId } from '../../../../../shared/orcad-migration/orcad-migration-terminal-history'
+import { isMovedPaneHistorySessionId } from '../../../../../shared/occd-migration/occd-migration-terminal-history'
 import {
   MOBILE_SUBSCRIBE_SCROLLBACK_ROWS,
   MOVED_PANE_SUBSCRIBE_SCROLLBACK_ROWS
@@ -37,7 +37,7 @@ export async function publishMultiplexInitialSnapshot(
   const { ptyId } = stream
   const isMobile = stream.isMobile
   const forcedInitialSnapshotTruncated =
-    process.env.ORCA_E2E_FORCE_REMOTE_TERMINAL_INITIAL_SNAPSHOT_TRUNCATED === '1'
+    process.env.OCC_E2E_FORCE_REMOTE_TERMINAL_INITIAL_SNAPSHOT_TRUNCATED === '1'
   // A WSL-moved pane replays its whole carried history once; the first view must hold all of it.
   const firstRows = isMovedPaneHistorySessionId(ptyId)
     ? MOVED_PANE_SUBSCRIBE_SCROLLBACK_ROWS

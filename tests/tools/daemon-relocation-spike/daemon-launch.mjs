@@ -23,11 +23,11 @@ export function launchDaemonHost(options) {
   const env = {
     ...process.env,
     ELECTRON_RUN_AS_NODE: '1',
-    ORCA_USER_DATA_PATH: workDir
+    OCC_USER_DATA_PATH: workDir
   }
-  // Set ORCA_NODE_PTY_NATIVE_DIR for older patched builds; current native resolution is relative to node-pty itself.
+  // Set OCC_NODE_PTY_NATIVE_DIR for older patched builds; current native resolution is relative to node-pty itself.
   if (nodePtyNativeDir) {
-    env.ORCA_NODE_PTY_NATIVE_DIR = nodePtyNativeDir
+    env.OCC_NODE_PTY_NATIVE_DIR = nodePtyNativeDir
   }
 
   // Capture --log-file session/crash events because some ConPTY spawn failures never reach stdio.

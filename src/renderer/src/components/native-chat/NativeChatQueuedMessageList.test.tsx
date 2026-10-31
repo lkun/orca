@@ -728,7 +728,7 @@ describe('NativeChatQueuedMessageList', () => {
     const width = vi.spyOn(HTMLElement.prototype, 'scrollWidth', 'get').mockReturnValue(900)
     const box = vi.spyOn(HTMLElement.prototype, 'clientWidth', 'get').mockReturnValue(300)
     try {
-      const text = 'You have 1 orchestration message.\nRun `orca orchestration check --run run_e99`'
+      const text = 'You have 1 orchestration message.\nRun `occ orchestration check --run run_e99`'
       renderList(controller([card({ messageId: 'mail', text })]))
       const open = screen.getByRole('button', { name: 'Show full message' })
       expect(open.getAttribute('aria-expanded')).toBe('false')

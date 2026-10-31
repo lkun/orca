@@ -2,9 +2,9 @@ import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { readRuntimeMetadata } from './runtime-metadata'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import { sendRequest } from './runtime-rpc-test-harness'
 import { makeStore } from './runtime-rpc-worktree-store-fixtures'
 
@@ -24,11 +24,11 @@ vi.mock('../git/worktree', () => {
   }
 })
 
-describe('OrcaRuntimeRpcServer', () => {
+describe('OCCRuntimeRpcServer', () => {
   it('serves worktree.ps from the runtime summary builder', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService(makeStore({ isUnread: true }) as never)
-    const server = new OrcaRuntimeRpcServer({ runtime, userDataPath })
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService(makeStore({ isUnread: true }) as never)
+    const server = new OCCRuntimeRpcServer({ runtime, userDataPath })
 
     runtime.attachWindow(1)
     runtime.syncWindowGraph(1, {

@@ -286,7 +286,7 @@ const runWslSetup: WslSetup = async (distro, home, accountId) => {
   const run = (spec: WslSpec, timeoutMs?: number) => runGuest(distro, spec, timeoutMs)
   const node = await ensureWslPinnedRuntime(
     run,
-    join(getAppEnvironment().getPath('userData'), 'orcad-artifacts'),
+    join(getAppEnvironment().getPath('userData'), 'occd-artifacts'),
     AbortSignal.timeout(180_000)
   )
   const guestHelper = await run({

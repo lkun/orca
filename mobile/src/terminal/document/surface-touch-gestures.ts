@@ -25,7 +25,7 @@ import { attachSurfaceWheelHandler } from './wheel-scroll'
 
 const RELEASE_VELOCITY_MAX_AGE_MS = 100
 
-type TerminalGestureSurface = HTMLElement & { __orcaSurfaceHandlersAttached?: boolean }
+type TerminalGestureSurface = HTMLElement & { __occSurfaceHandlersAttached?: boolean }
 
 export type TerminalTouchState = {
   active: boolean
@@ -71,10 +71,10 @@ export function attachSurfaceEventHandlers(
   scope: TerminalDocumentScope,
   targetSurface: TerminalGestureSurface
 ) {
-  if (!targetSurface || targetSurface.__orcaSurfaceHandlersAttached) {
+  if (!targetSurface || targetSurface.__occSurfaceHandlersAttached) {
     return
   }
-  targetSurface.__orcaSurfaceHandlersAttached = true
+  targetSurface.__occSurfaceHandlersAttached = true
   // Each hidden replay replacement needs handlers; wiring only the first surface breaks scrolling after tab switches.
   targetSurface.addEventListener(
     'mousedown',

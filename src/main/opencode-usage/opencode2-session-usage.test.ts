@@ -25,7 +25,7 @@ afterEach(() => {
 })
 
 function createFixture(spec: OpenCodeUsageFixtureSpec): string {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-opencode2-usage-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-opencode2-usage-'))
   tempDirs.push(dir)
   const path = join(dir, 'opencode.db')
   writeOpenCodeUsageDatabase(path, spec)

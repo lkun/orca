@@ -97,13 +97,13 @@ describe('agent process recognition', () => {
 
   it('recognizes cmd fresh OMP lines built before the by-name guard', () => {
     const legacy =
-      'if exist "%ORCA_OMP_FRESH_CONFIG%" (if not exist "%ORCA_OMP_FRESH_CONFIG%\\*" (omp --config "%ORCA_OMP_FRESH_CONFIG%") else (x)) else (x)'
+      'if exist "%OCC_OMP_FRESH_CONFIG%" (if not exist "%OCC_OMP_FRESH_CONFIG%\\*" (omp --config "%OCC_OMP_FRESH_CONFIG%") else (x)) else (x)'
     expect(recognizeAgentProcessFromCommandLine(legacy)?.agent).toBe('omp')
   })
 
   it('does not classify embedded fresh-launch text as an agent command', () => {
     for (const command of [
-      `echo 'omp --config "$ORCA_OMP_FRESH_CONFIG"'`,
+      `echo 'omp --config "$OCC_OMP_FRESH_CONFIG"'`,
       `echo '${withFreshOmpLaunch('omp', 'posix')}'`
     ]) {
       expect(recognizeAgentProcessFromCommandLine(command)).toBeNull()
@@ -526,15 +526,15 @@ describe('agent process recognition', () => {
   })
 
   it('recognizes only the agent subcommand of the generic OCC CLI', () => {
-    expect(recognizeAgentProcessFromCommandLine('orca claude-teams')).toEqual({
+    expect(recognizeAgentProcessFromCommandLine('occ claude-teams')).toEqual({
       agent: 'claude-agent-teams',
-      processName: 'orca'
+      processName: 'occ'
     })
     expect(recognizeAgentProcessFromCommandLine('occ status')).toBeNull()
     expect(recognizeAgentProcessFromCommandLine('occ-dev terminal list')).toBeNull()
     expect(recognizeAgentProcessFromCommandLine('node /usr/local/bin/occ claude-teams')).toEqual({
       agent: 'claude-agent-teams',
-      processName: 'orca'
+      processName: 'occ'
     })
     expect(recognizeAgentProcessFromCommandLine('node /usr/local/bin/occ status')).toBeNull()
   })
@@ -560,7 +560,7 @@ describe('agent process recognition', () => {
   it('does not classify prompt text as a wrapped agent command', () => {
     expect(
       recognizeAgentProcessFromCommandLine(
-        'node /tmp/not-an-agent.js "compare opencode vs orca in Gemini CLI"'
+        'node /tmp/not-an-agent.js "compare opencode vs occ in Gemini CLI"'
       )
     ).toBeNull()
     expect(recognizeAgentProcessFromCommandLine(String.raw`node C:\tmp\not-an-agent.js`)).toBeNull()

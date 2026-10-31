@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import {
   ptyHoldsRecordedSurface as holdsPane,
   recordPtySurface,
@@ -106,7 +106,7 @@ describe('ptyHoldsRecordedSurface', () => {
     expect(ptyHoldsRecordedSurface(record, graph)).toBe(false)
 
     recordPtySurface(record, TAB, `${TAB}:${LEAF}`, graph.graphSequence)
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       expect(record.surfaceRecordedAtGraphSequence).toBe(1)
       return
     }

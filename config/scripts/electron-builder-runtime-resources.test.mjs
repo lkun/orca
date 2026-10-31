@@ -19,7 +19,7 @@ const {
 
 describe('packaged runtime resources', () => {
   it('verifies packaged main runtime deps from Windows-style asar entries', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-runtime-deps-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-runtime-deps-'))
     try {
       await writeFile(join(resourcesDir, 'app.asar'), '', 'utf8')
       await mkdir(join(resourcesDir, 'node_modules', 'yaml'), { recursive: true })
@@ -41,7 +41,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('verifies literal dynamic imports from the packaged main bundle', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-runtime-dynamic-imports-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-runtime-dynamic-imports-'))
     try {
       await writeFile(join(resourcesDir, 'app.asar'), '', 'utf8')
 
@@ -75,7 +75,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('still fails when a required packaged main entry is missing entirely', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-runtime-missing-entry-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-runtime-missing-entry-'))
     try {
       await writeFile(join(resourcesDir, 'app.asar'), '', 'utf8')
 
@@ -93,7 +93,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('verifies bare imports that rolldown hoisted into a shared main chunk', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-runtime-chunk-imports-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-runtime-chunk-imports-'))
     try {
       await writeFile(join(resourcesDir, 'app.asar'), '', 'utf8')
 
@@ -126,7 +126,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('reads a spread require, whose leading dots are not member access', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-runtime-spread-require-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-runtime-spread-require-'))
     try {
       await writeFile(join(resourcesDir, 'app.asar'), '', 'utf8')
 
@@ -146,7 +146,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('ignores member calls onto OCC methods that are themselves named require', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-runtime-member-require-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-runtime-member-require-'))
     try {
       await writeFile(join(resourcesDir, 'app.asar'), '', 'utf8')
 
@@ -167,7 +167,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('prunes non-target node-pty architecture outputs from packaged runtime resources', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-node-pty-prune-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-node-pty-prune-'))
     try {
       const nodePtyDir = join(resourcesDir, 'node_modules', 'node-pty')
       const prebuildsDir = join(nodePtyDir, 'prebuilds')
@@ -202,7 +202,7 @@ describe('packaged runtime resources', () => {
       ['x64', 1],
       ['arm64', 3]
     ]) {
-      const resourcesDir = await mkdtemp(join(tmpdir(), `orca-node-pty-conpty-${arch}-`))
+      const resourcesDir = await mkdtemp(join(tmpdir(), `occ-node-pty-conpty-${arch}-`))
       try {
         const nodePtyDir = join(resourcesDir, 'node_modules', 'node-pty')
         const releaseDir = join(nodePtyDir, 'build', 'Release')
@@ -235,7 +235,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('prunes non-target @parcel/watcher architecture subpackages', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-parcel-watcher-prune-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-parcel-watcher-prune-'))
     try {
       const parcelDir = join(resourcesDir, 'node_modules', '@parcel')
       await mkdir(join(parcelDir, 'watcher'), { recursive: true })
@@ -260,7 +260,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('leaves unrelated @parcel/* runtime deps untouched when pruning the watcher', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-parcel-watcher-prune-unrelated-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-parcel-watcher-prune-unrelated-'))
     try {
       const parcelDir = join(resourcesDir, 'node_modules', '@parcel')
       await mkdir(join(parcelDir, 'watcher'), { recursive: true })
@@ -282,7 +282,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('prunes type declaration artifacts from packaged runtime node_modules', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-runtime-type-prune-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-runtime-type-prune-'))
     try {
       const packageDir = join(resourcesDir, 'node_modules', 'example-package')
       await mkdir(join(packageDir, 'dist'), { recursive: true })
@@ -300,7 +300,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('prunes duplicate darwin sherpa-onnx runtime dylib aliases', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-sherpa-prune-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-sherpa-prune-'))
     try {
       const packageDir = join(resourcesDir, 'node_modules', 'sherpa-onnx-darwin-arm64')
       await mkdir(packageDir, { recursive: true })
@@ -320,7 +320,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('prunes zod TypeScript sources from packaged runtime resources', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-zod-prune-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-zod-prune-'))
     try {
       const packageDir = join(resourcesDir, 'node_modules', 'zod')
       await mkdir(join(packageDir, 'src'), { recursive: true })
@@ -336,7 +336,7 @@ describe('packaged runtime resources', () => {
   })
 
   it('fails when the packaged resources directory is missing', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-electron-builder-config-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-electron-builder-config-'))
     try {
       await expect(
         electronBuilderConfig.afterPack({
@@ -352,7 +352,7 @@ describe('packaged runtime resources', () => {
   it.skipIf(process.platform === 'win32')(
     'prunes non-target native packages before the Linux glibc gate',
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-after-pack-prune-order-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-after-pack-prune-order-'))
       const previousPath = process.env.PATH
       try {
         const appOutDir = join(root, 'linux-unpacked')
@@ -370,7 +370,7 @@ describe('packaged runtime resources', () => {
         await writeFile(join(unpackedMainDir, 'daemon-entry.js'), '', 'utf8')
         await writeFile(
           join(resourcesDir, 'app.asar.unpacked', 'out', 'package.json'),
-          `${JSON.stringify({ name: 'orca-compiled-output', type: 'commonjs', private: true })}\n`,
+          `${JSON.stringify({ name: 'occ-compiled-output', type: 'commonjs', private: true })}\n`,
           'utf8'
         )
 
@@ -418,7 +418,7 @@ describe('packaged runtime resources', () => {
   it.skipIf(process.platform === 'win32')(
     'marks packaged Unix CLI launchers executable',
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-electron-builder-config-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-electron-builder-config-'))
       const previousPath = process.env.PATH
       try {
         const resourcesDir = join(root, 'linux-unpacked', 'resources')
@@ -449,7 +449,7 @@ describe('packaged runtime resources', () => {
         )
         await writeFile(
           join(resourcesDir, 'app.asar.unpacked', 'out', 'package.json'),
-          `${JSON.stringify({ name: 'orca-compiled-output', type: 'commonjs', private: true })}\n`,
+          `${JSON.stringify({ name: 'occ-compiled-output', type: 'commonjs', private: true })}\n`,
           'utf8'
         )
         const unpackedCliDir = join(resourcesDir, 'app.asar.unpacked', 'out', 'cli')
@@ -459,7 +459,7 @@ describe('packaged runtime resources', () => {
           join(unpackedCliDir, 'index.js'),
           [
             'const args = process.argv.slice(2)',
-            "if (args[1] === 'list') console.log(JSON.stringify({ topics: [{ name: 'orca-cli' }, { name: 'computer-use' }] }))",
+            "if (args[1] === 'list') console.log(JSON.stringify({ topics: [{ name: 'occ-cli' }, { name: 'computer-use' }] }))",
             "else if (args[1] === 'get') console.log(`---\\nname: ${args[2]}\\n---`)",
             'else console.log(JSON.stringify({ executed: false }))'
           ].join('\n'),
@@ -497,7 +497,7 @@ async function seedClipboardPublisher(resourcesDir, machine) {
   elf.writeUInt16LE(machine, 18)
   elf.writeUInt32LE(1, 20)
   elf.writeUInt16LE(64, 52)
-  await writeFile(join(binDir, 'orca-wayland-clipboard'), elf)
+  await writeFile(join(binDir, 'occ-wayland-clipboard'), elf)
 }
 
 async function stubObjdump(root) {
@@ -518,7 +518,7 @@ async function seedPackagedServePayload(resourcesDir) {
   await writeFile(join(webDir, 'web-index.html'), '<script src="./assets/web.js"></script>')
   await writeFile(join(webDir, 'assets', 'web.js'), '')
   await writeFile(
-    join(webDir, '.orca-web-client-files.json'),
+    join(webDir, '.occ-web-client-files.json'),
     JSON.stringify(['web-index.html', 'assets/web.js'])
   )
 }
@@ -534,7 +534,7 @@ async function seedBundledRipgrep(resourcesDir) {
 
 describe('lazily required packages reach Resources/node_modules', () => {
   it('resolves the copied emoji dataset the way the packaged main bundle does', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-lazy-require-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-lazy-require-'))
     try {
       const datasetPath = 'node_modules/emojibase-data/en/shortcodes/emojibase.json'
       const entry = electronBuilderConfig.mac.extraResources.find(

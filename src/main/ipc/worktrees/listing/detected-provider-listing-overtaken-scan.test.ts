@@ -6,7 +6,7 @@ const { listRepoWorktreesMock } = vi.hoisted(() => ({ listRepoWorktreesMock: vi.
 
 vi.mock('electron', () => ({
   ipcMain: { handle: vi.fn(), removeHandler: vi.fn() },
-  app: { getPath: () => '/tmp/orca-test' }
+  app: { getPath: () => '/tmp/occ-test' }
 }))
 vi.mock('../../../repo-worktrees', () => ({
   listRepoWorktreesForDetectedScan: listRepoWorktreesMock
@@ -27,7 +27,7 @@ vi.mock('./authoritative-local-worktree-metadata-pruning', () => ({
     .mockResolvedValue({ scanGenerationCurrent: true, preservedMetadataCandidateIds: new Set() })
 }))
 
-const { listDetectedWorktreesForCapturedRepo } = await import('./detected-provider-listing')
+const { listDetectedWorktreesFoccpturedRepo } = await import('./detected-provider-listing')
 const { __resetDetectedWorktreeScanCacheForTests, invalidateDetectedWorktreeScanCache } =
   await import('./detected-worktree-scan-cache')
 
@@ -75,7 +75,7 @@ function deferredListing(): {
 type ListingBranch = {
   repo: Repo
   listMock: ReturnType<typeof vi.fn>
-  list: () => ReturnType<typeof listDetectedWorktreesForCapturedRepo>
+  list: () => ReturnType<typeof listDetectedWorktreesFoccpturedRepo>
 }
 
 const branches: [string, () => ListingBranch][] = [
@@ -85,7 +85,7 @@ const branches: [string, () => ListingBranch][] = [
       repo: localRepo,
       listMock: listRepoWorktreesMock,
       list: () =>
-        listDetectedWorktreesForCapturedRepo(createStore(localRepo), localRepo, () => true)
+        listDetectedWorktreesFoccpturedRepo(createStore(localRepo), localRepo, () => true)
     })
   ]
 ]

@@ -4,7 +4,7 @@ import { runInNewContext } from 'node:vm'
 import { delimiter, join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { classifyPrJobs } from './pr-code-change-scope.mjs'
 
 const action = parse(
@@ -27,7 +27,7 @@ function exercise({
   inspectFails = false,
   fixture = 'cli-launch-contract'
 } = {}) {
-  directory = mkdtempSync(join(tmpdir(), 'orca-package-cache-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-package-cache-'))
   const bin = join(directory, 'bin')
   mkdirSync(bin)
   const commandLog = join(directory, 'commands')
@@ -51,7 +51,7 @@ function exercise({
     args: ['-c', load.run],
     env: {
       ...process.env,
-      ORCA_BACKGROUND_LAUNCH: '1',
+      OCC_BACKGROUND_LAUNCH: '1',
       PATH: `${bin}${delimiter}${process.env.PATH ?? ''}`,
       GITHUB_ACTION_PATH: join(process.cwd(), '.github/actions/prepare-linux-package-fixture'),
       RUNNER_TEMP: directory,
@@ -86,13 +86,13 @@ describe.runIf(process.platform !== 'win32')('fixture cache fallbacks', () => {
 
   it('returns the local image tag after a successful load', () => {
     const result = exercise({ hit: true })
-    expect(result.output).toBe('image=orca-package-fixture-cli-launch-contract:cache\n')
+    expect(result.output).toBe('image=occ-package-fixture-cli-launch-contract:cache\n')
     expect(result.commands).not.toMatch(/(?:build|save) /)
   })
 
   it('loads the daemon shutdown fixture without running package or source tests in the cache action', () => {
     const result = exercise({ hit: true, fixture: 'daemon-shutdown-descendants' })
-    expect(result.output).toBe('image=orca-package-fixture-daemon-shutdown-descendants:cache\n')
+    expect(result.output).toBe('image=occ-package-fixture-daemon-shutdown-descendants:cache\n')
     expect(result.commands).not.toMatch(/(?:build|save|run) /)
   })
 
@@ -105,7 +105,7 @@ describe.runIf(process.platform !== 'win32')('fixture cache fallbacks', () => {
       '--file config/docker/cli-launch-contract/Dockerfile config/docker/cli-launch-contract'
     )
     expect(result.commands).toContain('save --output')
-    expect(result.output).toBe('image=orca-package-fixture-cli-launch-contract:cache\nbuilt=true\n')
+    expect(result.output).toBe('image=occ-package-fixture-cli-launch-contract:cache\nbuilt=true\n')
   })
 })
 

@@ -8,7 +8,7 @@ import {
 import { resolveHooksJsonWritePath } from '../agent-hooks/hook-config-write-path'
 import { assertHooksJsonGeneration } from './codex-real-home-hooks-json'
 import { getCodexManagedScriptFileName } from './codex-hook-identity'
-import { getRealHomeCodexHookHome, type CodexHookHome } from './codex-hook-orca-approvals'
+import { getRealHomeCodexHookHome, type CodexHookHome } from './codex-hook-occ-approvals'
 import { mutateRealHomeHooksPreservingUserTrust } from './codex-user-hook-trust-moves'
 
 /** Move shifted user approvals; the caller removes OCC's own approvals. */

@@ -32,7 +32,7 @@ async function bundleScript(entry: string, fileName: string): Promise<BundledScr
       lib: {
         entry: resolve(entry),
         formats: ['iife'],
-        name: 'orcaBrowserExtensionScript',
+        name: 'occBrowserExtensionScript',
         fileName: () => fileName
       }
     }
@@ -61,7 +61,7 @@ export function bundleBrowserExtensionContentScript(): Promise<BundledScript> {
 /** Emits the worker shim and content script next to the main bundle, where the loader copies them from. */
 export function createBrowserExtensionWorkerShimPlugin(): Plugin {
   return {
-    name: 'orca-browser-extension-worker-shim',
+    name: 'occ-browser-extension-worker-shim',
     async buildStart() {
       for (const { entry, fileName } of [WORKER_SHIM, CONTENT_SCRIPT]) {
         const { code, moduleIds } = await bundleScript(entry, fileName)

@@ -1,7 +1,7 @@
 import { resolve as resolvePath } from 'node:path'
 import type { ComputerAppQuery, RuntimeWorktreeListResult } from '../shared/runtime-types'
 import {
-  isWslUncPathForCallerLinuxPath,
+  isWslUncPathFoccllerLinuxPath,
   isWslUncPathForLinuxMountedPath
 } from '../shared/cross-platform-path'
 import { parseWslUncPath } from '../shared/wsl-paths'
@@ -63,13 +63,13 @@ export async function resolveCallerDistroPathSelector(
   const match = worktrees.result.worktrees.find((worktree) =>
     isLinuxMountedPath
       ? isWslUncPathForLinuxMountedPath(worktree.path, linuxPath)
-      : isWslUncPathForCallerLinuxPath(worktree.path, linuxPath, callerDistro!)
+      : isWslUncPathFoccllerLinuxPath(worktree.path, linuxPath, callerDistro!)
   )
   // Preserve unmatched input verbatim; synthesizing a UNC path could guess the wrong distro.
   return match ? `path:${match.path}` : selector
 }
 
-export async function normalizeWorktreeSelectorForCaller(
+export async function normalizeWorktreeSelectorFoccller(
   selector: string,
   cwd: string,
   client: RuntimeClient
@@ -113,7 +113,7 @@ export async function resolveCurrentWorktreeSelection(
     worktrees.result.worktrees,
     cwd,
     getCallerExecutionHostId(),
-    process.env.ORCA_WORKTREE_ID
+    process.env.OCC_WORKTREE_ID
   )
   if (!selection) {
     throw new RuntimeClientError(
@@ -138,7 +138,7 @@ export async function getOptionalWorktreeSelector(
     assertLocalCwdWorktreeSelector(value, client)
     return await resolveCurrentWorktreeSelector(cwd, client)
   }
-  return await normalizeWorktreeSelectorForCaller(value, cwd, client)
+  return await normalizeWorktreeSelectorFoccller(value, cwd, client)
 }
 
 export async function getRequiredWorktreeSelector(
@@ -152,7 +152,7 @@ export async function getRequiredWorktreeSelector(
     assertLocalCwdWorktreeSelector(value, client)
     return await resolveCurrentWorktreeSelector(cwd, client)
   }
-  return await normalizeWorktreeSelectorForCaller(value, cwd, client)
+  return await normalizeWorktreeSelectorFoccller(value, cwd, client)
 }
 
 // Remote commands leave worktree unset to use server-side focus.
@@ -170,7 +170,7 @@ export async function getBrowserWorktreeSelector(
       assertLocalCwdWorktreeSelector(value, client)
       return await resolveCurrentWorktreeSelector(cwd, client)
     }
-    return await normalizeWorktreeSelectorForCaller(value, cwd, client)
+    return await normalizeWorktreeSelectorFoccller(value, cwd, client)
   }
   if (client.isRemote) {
     return undefined
@@ -225,7 +225,7 @@ export async function getBrowserCommandTarget(
   }
   return {
     page,
-    worktree: await normalizeWorktreeSelectorForCaller(explicitWorktree, cwd, client)
+    worktree: await normalizeWorktreeSelectorFoccller(explicitWorktree, cwd, client)
   }
 }
 
@@ -277,14 +277,14 @@ export async function getEmulatorWorktreeSelector(
   if (client.isRemote) {
     return undefined
   }
-  const terminalWorktreeId = process.env.ORCA_WORKTREE_ID
+  const terminalWorktreeId = process.env.OCC_WORKTREE_ID
   if (terminalWorktreeId?.trim()) {
     const scoped = await resolveCallerPaneWorktreeSelector(terminalWorktreeId, client)
     if (scoped) {
       return scoped
     }
   }
-  const folderWorkspaceId = process.env.ORCA_WORKSPACE_ID?.trim()
+  const folderWorkspaceId = process.env.OCC_WORKSPACE_ID?.trim()
   if (folderWorkspaceId?.startsWith('folder:')) {
     return folderWorkspaceId
   }

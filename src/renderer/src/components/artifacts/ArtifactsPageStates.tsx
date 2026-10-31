@@ -1,7 +1,7 @@
 import { ArrowRight, Files, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { translate } from '@/i18n/i18n'
-import { OrcaSignInButton, OrcaSignInWaitNotice } from '../OrcaSignInProgress'
+import { OCCSignInButton, OCCSignInWaitNotice } from '../OCCSignInProgress'
 
 export function ArtifactsPageErrorBanner({
   error,
@@ -60,15 +60,15 @@ export function ArtifactsPageAuthState({
       </div>
       {configured ? (
         <>
-          <OrcaSignInButton size="sm">
+          <OCCSignInButton size="sm">
             {needsReconnect
               ? translate(
                   'auto.components.artifacts.ArtifactsPage.signInAgainAction',
                   'Sign in again'
                 )
               : translate('auto.components.artifacts.ArtifactsPage.signIn', 'Sign in to OCC')}
-          </OrcaSignInButton>
-          <OrcaSignInWaitNotice className="justify-center" />
+          </OCCSignInButton>
+          <OCCSignInWaitNotice className="justify-center" />
         </>
       ) : (
         <div className="flex flex-col items-center gap-2">

@@ -1,11 +1,11 @@
 import { dirname } from 'node:path'
-import { spawnProcess } from '@orca/process-host'
-import type { PipedChildProcess, PipedProcessSpec } from '@orca/process-host/process-spec'
+import { spawnProcess } from '@occ/process-host'
+import type { PipedChildProcess, PipedProcessSpec } from '@occ/process-host/process-spec'
 import {
   childProcessHasExited,
   forceTerminateProcessTree,
   signalProcessTree
-} from '@orca/process-host/process-tree-termination'
+} from '@occ/process-host/process-tree-termination'
 import { getForkedChildEntryPath } from '../../forked-child-entry-path'
 import { NATIVE_HOST_ERRORS } from './browser-extension-native-host-errors'
 import {

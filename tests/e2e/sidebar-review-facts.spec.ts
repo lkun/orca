@@ -1,5 +1,5 @@
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { SIDEBAR_INPUTS_BUILD } from './helpers/sidebar-inputs-build'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import { WorkspaceReviewFactsSnapshotSchema } from '../../src/shared/sidebar-list/workspace-review-facts'
@@ -7,7 +7,7 @@ import { getWorktreeIdFromHostIdentity } from '../../src/shared/worktree/host-qu
 
 test.skip(
   !SIDEBAR_INPUTS_BUILD,
-  'main publishes sidebar inputs only in an ORCA_SIDEBAR_INPUTS=main build'
+  'main publishes sidebar inputs only in an OCC_SIDEBAR_INPUTS=main build'
 )
 
 /** Writes a PR into the window's cache the way a fetch result lands; returns the row's id. */
@@ -29,7 +29,7 @@ async function setWindowPRState(page: Page, state: 'open' | 'merged' | null): Pr
       number: 81,
       title: 'Review facts from E2E',
       state,
-      url: 'https://github.com/acme/orca/pull/81',
+      url: 'https://github.com/acme/occ/pull/81',
       checksStatus: 'pending' as const,
       updatedAt: '2026-10-17T00:00:00.000Z',
       mergeable: 'UNKNOWN' as const
@@ -51,21 +51,21 @@ async function readMainReviewFact(page: Page, worktreeId: string): Promise<unkno
   return facts.find(([key]) => getWorktreeIdFromHostIdentity(key) === worktreeId)?.[1] ?? null
 }
 
-test('main follows the window PR cache for each workspace', async ({ orcaPage }) => {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
+test('main follows the window PR cache for each workspace', async ({ occPage }) => {
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
 
-  const worktreeId = await setWindowPRState(orcaPage, 'open')
+  const worktreeId = await setWindowPRState(occPage, 'open')
   // The window mirrors its cache to main within a second of a change.
   await expect
-    .poll(() => readMainReviewFact(orcaPage, worktreeId), { timeout: 5_000 })
+    .poll(() => readMainReviewFact(occPage, worktreeId), { timeout: 5_000 })
     .toEqual({ provider: 'github', reviewState: 'open' })
 
-  await setWindowPRState(orcaPage, 'merged')
+  await setWindowPRState(occPage, 'merged')
   await expect
-    .poll(() => readMainReviewFact(orcaPage, worktreeId), { timeout: 5_000 })
+    .poll(() => readMainReviewFact(occPage, worktreeId), { timeout: 5_000 })
     .toEqual({ provider: 'github', reviewState: 'merged' })
 
-  await setWindowPRState(orcaPage, null)
-  await expect.poll(() => readMainReviewFact(orcaPage, worktreeId), { timeout: 5_000 }).toBeNull()
+  await setWindowPRState(occPage, null)
+  await expect.poll(() => readMainReviewFact(occPage, worktreeId), { timeout: 5_000 }).toBeNull()
 })

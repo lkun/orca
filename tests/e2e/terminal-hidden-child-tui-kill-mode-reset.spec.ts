@@ -1,5 +1,5 @@
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   ensureTerminalVisible,
   getActiveTabId,
@@ -36,15 +36,15 @@ async function activateTerminalTab(page: Page, tabId: string): Promise<void> {
 for (const exitMode of ['normal', 'sigkill'] as const) {
   test(`clears modes when a child TUI exits via ${exitMode} while its shell survives hidden`, async ({
     electronApp,
-    orcaPage
+    occPage
   }) => {
     await installTerminalPtyWriteSpy(electronApp)
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
-    const shellTabId = (await getActiveTabId(orcaPage))!
+    const shellTabId = (await getActiveTabId(occPage))!
     const child = [
       "process.stdin.setRawMode?.(true); process.stdin.resume(); process.stdout.write('\\x1b[?1049h\\x1b[?1003h\\x1b[?1006h\\x1b[?25lCHILD_TUI_STARTED\\r\\n')",
       ...(exitMode === 'normal'
@@ -59,8 +59,8 @@ for (const exitMode of ['normal', 'sigkill'] as const) {
       "process.stdout.write('CHILD_TUI_PID_' + child.pid + '\\r\\n');",
       "child.on('exit', () => process.stdout.write('\\r\\nCHILD_TUI_KILLED\\r\\n'))"
     ].join(' ')
-    const command = stageNodeScriptForTerminal(parent, { prefix: 'orca-child-tui-kill' }).command
-    const tuiTabId = await orcaPage.evaluate(
+    const command = stageNodeScriptForTerminal(parent, { prefix: 'occ-child-tui-kill' }).command
+    const tuiTabId = await occPage.evaluate(
       ({ command }) => {
         const state = window.__store?.getState()
         const worktreeId = state?.activeWorktreeId
@@ -76,39 +76,39 @@ for (const exitMode of ['normal', 'sigkill'] as const) {
       { command }
     )
 
-    await expect.poll(() => getActiveTabId(orcaPage), { timeout: 5_000 }).toBe(tuiTabId)
-    const tuiPtyId = await waitForActivePanePtyId(orcaPage, 30_000)
-    const tuiIdentity = await readPaneIdentitySnapshot(orcaPage)
+    await expect.poll(() => getActiveTabId(occPage), { timeout: 5_000 }).toBe(tuiTabId)
+    const tuiPtyId = await waitForActivePanePtyId(occPage, 30_000)
+    const tuiIdentity = await readPaneIdentitySnapshot(occPage)
     expect(tuiIdentity?.activeLeafId).not.toBeNull()
     await expect
-      .poll(() => getTerminalContent(orcaPage, 6_000), { timeout: 20_000 })
+      .poll(() => getTerminalContent(occPage, 6_000), { timeout: 20_000 })
       .toContain('CHILD_TUI_FRAME')
     await expect
       .poll(async () => {
-        const match = (await getTerminalContent(orcaPage, 6_000)).match(/CHILD_TUI_PID_(\d+)/)
+        const match = (await getTerminalContent(occPage, 6_000)).match(/CHILD_TUI_PID_(\d+)/)
         return match?.[1] ?? null
       })
       .not.toBeNull()
-    const childPid = (await getTerminalContent(orcaPage, 6_000)).match(/CHILD_TUI_PID_(\d+)/)?.[1]
+    const childPid = (await getTerminalContent(occPage, 6_000)).match(/CHILD_TUI_PID_(\d+)/)?.[1]
     expect(childPid).toBeDefined()
-    await activateTerminalTab(orcaPage, shellTabId)
-    const shellPtyId = await waitForActivePanePtyId(orcaPage, 30_000)
+    await activateTerminalTab(occPage, shellTabId)
+    const shellPtyId = await waitForActivePanePtyId(occPage, 30_000)
     const exitSignal = exitMode === 'normal' ? 'SIGTERM' : 'SIGKILL'
     const killCommand = stageNodeScriptForTerminal(`process.kill(${childPid!}, '${exitSignal}')`, {
-      prefix: 'orca-child-tui-external-kill'
+      prefix: 'occ-child-tui-external-kill'
     }).command
-    await execInTerminal(orcaPage, shellPtyId, killCommand)
+    await execInTerminal(occPage, shellPtyId, killCommand)
     await expect
       .poll(
         () =>
-          orcaPage.evaluate(async (ptyId) => {
+          occPage.evaluate(async (ptyId) => {
             const processName = await window.api.pty.getForegroundProcess(ptyId)
             return processName?.toLowerCase() ?? null
           }, tuiPtyId),
         { timeout: 8_000 }
       )
       .toMatch(/^(bash|zsh|sh|fish)(\.exe)?$/)
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ paneKey, tabId }) => {
         const state = window.__store?.getState()
         const worktreeId = state?.activeWorktreeId
@@ -126,16 +126,16 @@ for (const exitMode of ['normal', 'sigkill'] as const) {
       { paneKey: `${tuiTabId}:${tuiIdentity!.activeLeafId!}`, tabId: tuiTabId }
     )
     await clearTerminalPtyWriteLog(electronApp)
-    await activateTerminalTab(orcaPage, tuiTabId)
+    await activateTerminalTab(occPage, tuiTabId)
 
-    const revealedPtyId = await orcaPage.evaluate((tabId) => {
+    const revealedPtyId = await occPage.evaluate((tabId) => {
       const manager = window.__paneManagers?.get(tabId)
       return manager?.getActivePane?.()?.container?.dataset?.ptyId ?? null
     }, tuiTabId)
     expect(revealedPtyId).not.toBeNull()
     await expect
       .poll(async () => {
-        const snapshot = await orcaPage.evaluate(
+        const snapshot = await occPage.evaluate(
           (ptyId) => window.api.pty.getMainBufferSnapshot(ptyId, { scrollbackRows: 5000 }),
           revealedPtyId!
         )
@@ -144,7 +144,7 @@ for (const exitMode of ['normal', 'sigkill'] as const) {
       .toBe(true)
     await expect
       .poll(() =>
-        orcaPage.evaluate((tabId) => {
+        occPage.evaluate((tabId) => {
           const manager = window.__paneManagers?.get(tabId)
           const pane = manager?.getActivePane?.() ?? manager?.getPanes?.()[0]
           return {
@@ -159,12 +159,12 @@ for (const exitMode of ['normal', 'sigkill'] as const) {
     // normal exit sends ?1049l first, preserving the line in the normal buffer.
     if (exitMode === 'normal') {
       await expect
-        .poll(() => getTerminalContent(orcaPage, 6_000), { timeout: 8_000 })
+        .poll(() => getTerminalContent(occPage, 6_000), { timeout: 8_000 })
         .toContain('CHILD_TUI_KILLED')
     }
 
     const shellInputMarker = 'SHELL_INPUT_AFTER_TUI_KILL'
-    await execInTerminal(orcaPage, revealedPtyId!, `printf ${shellInputMarker}`)
+    await execInTerminal(occPage, revealedPtyId!, `printf ${shellInputMarker}`)
     await expect
       .poll(async () => {
         const writes = await readTerminalPtyWriteEntries(electronApp)
@@ -174,13 +174,13 @@ for (const exitMode of ['normal', 'sigkill'] as const) {
       })
       .toBe(true)
     await expect
-      .poll(() => getTerminalContent(orcaPage, 6_000), { timeout: 8_000 })
+      .poll(() => getTerminalContent(occPage, 6_000), { timeout: 8_000 })
       .toContain(shellInputMarker)
 
-    const terminalScreen = orcaPage.locator(`[data-pty-id="${revealedPtyId}"] .xterm-screen`)
+    const terminalScreen = occPage.locator(`[data-pty-id="${revealedPtyId}"] .xterm-screen`)
     await terminalScreen.hover({ position: { x: 20, y: 20 } })
-    await orcaPage.mouse.wheel(0, 120)
-    await orcaPage.evaluate(
+    await occPage.mouse.wheel(0, 120)
+    await occPage.evaluate(
       () =>
         new Promise<void>((resolve) =>
           requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
@@ -194,7 +194,7 @@ for (const exitMode of ['normal', 'sigkill'] as const) {
     expect(ptyWrites.some((data) => data.includes(`${escape}[<`))).toBe(false)
     expect(ptyWrites.some((data) => data.includes(`${escape}[M`))).toBe(false)
 
-    const terminalState = await orcaPage.evaluate((tabId) => {
+    const terminalState = await occPage.evaluate((tabId) => {
       const manager = window.__paneManagers?.get(tabId)
       const pane = manager?.getActivePane?.() ?? manager?.getPanes?.()[0]
       return {
@@ -203,14 +203,14 @@ for (const exitMode of ['normal', 'sigkill'] as const) {
       }
     }, tuiTabId)
     expect(terminalState).toEqual({ buffer: 'normal', mouse: 'none' })
-    expect(await getTerminalContent(orcaPage, 6_000)).not.toMatch(/\[<\d+;\d+;\d+[Mm]/)
+    expect(await getTerminalContent(occPage, 6_000)).not.toMatch(/\[<\d+;\d+;\d+[Mm]/)
 
-    await activateTerminalTab(orcaPage, shellTabId)
-    expect(await waitForActivePanePtyId(orcaPage, 30_000)).toBe(shellPtyId)
+    await activateTerminalTab(occPage, shellTabId)
+    expect(await waitForActivePanePtyId(occPage, 30_000)).toBe(shellPtyId)
     const unrelatedMarker = 'UNRELATED_SHELL_STILL_LIVE'
-    await execInTerminal(orcaPage, shellPtyId, `printf ${unrelatedMarker}`)
+    await execInTerminal(occPage, shellPtyId, `printf ${unrelatedMarker}`)
     await expect
-      .poll(() => getTerminalContent(orcaPage, 6_000), { timeout: 8_000 })
+      .poll(() => getTerminalContent(occPage, 6_000), { timeout: 8_000 })
       .toContain(unrelatedMarker)
   })
 }

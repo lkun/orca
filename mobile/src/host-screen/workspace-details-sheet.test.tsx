@@ -41,7 +41,7 @@ function render(overrides: Partial<Worktree>) {
   const row: Worktree = {
     worktreeId: 'repo::/src/app',
     repoId: 'repo',
-    repo: 'orca',
+    repo: 'occ',
     branch: 'refs/heads/feat/x',
     displayName: 'jira-sync',
     path: '/src/app',

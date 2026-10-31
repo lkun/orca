@@ -68,7 +68,7 @@ export function resolveComputerUseHelperUnavailableReason(): string | null {
     return 'OCC Computer Use.app was not found'
   }
   if (!resolveMacOSComputerUseExecutablePath()) {
-    return `${helperAppPath}/Contents/MacOS/orca-computer-use-macos was not found`
+    return `${helperAppPath}/Contents/MacOS/occ-computer-use-macos was not found`
   }
   return null
 }
@@ -92,7 +92,7 @@ async function readPermissionStatusFromHelperApp(
   helperAppPath: string,
   onHelperSpawn: () => void
 ): Promise<Partial<Record<ComputerUsePermissionId, ComputerUsePermissionStatus>>> {
-  const tempDir = await mkdtemp(join(tmpdir(), 'orca-computer-use-permissions-'))
+  const tempDir = await mkdtemp(join(tmpdir(), 'occ-computer-use-permissions-'))
   const statusPath = join(tempDir, 'status.json')
   try {
     // Launch the helper app so TCC checks its identity instead of inheriting the parent's grants.

@@ -89,7 +89,7 @@ describe('default tabs beside the agent a create started', () => {
   })
 })
 
-const setup = { runnerScriptPath: '/repo/.orca/setup.sh', envVars: {} }
+const setup = { runnerScriptPath: '/repo/.occ/setup.sh', envVars: {} }
 
 function createHost(): {
   host: WorktreeTerminalProvisioningHost

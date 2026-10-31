@@ -10,10 +10,10 @@ import {
 import { advanceTerminalTopologyRevision } from '../persistence/terminal-topology/terminal-topology-membership'
 import { delegatedMobileSessionTabClose } from './mobile-session-tab-close-outcome'
 import { hostWorktreeTarget } from '../../shared/worktree/host-qualified-identity'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 
 // Main-owned closes have no window ack; their counterparts live in acknowledged-terminal-tab-retirement-main-close.test.ts.
-const itSwitchOff = it.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)
+const itSwitchOff = it.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)
 
 const fixtures: ReturnType<typeof createAcknowledgedTabRetirementFixture>[] = []
 afterEach(async () => {

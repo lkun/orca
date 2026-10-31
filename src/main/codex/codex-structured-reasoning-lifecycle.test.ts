@@ -13,7 +13,7 @@ import { createCodexJournalTranslator } from './codex-structured-journal-transla
 const SESSION_ID = 'session-1'
 const THREAD_ID = 'thread-abc'
 const TURN_ID = 'turn-1'
-const ROW = 'orca:codex-item%3Athread-abc%3Ar-1'
+const ROW = 'occ:codex-item%3Athread-abc%3Ar-1'
 
 function recorder() {
   const rows = new Map<string, AgentJournalItemBody>()
@@ -246,7 +246,7 @@ describe('a Codex reasoning row', () => {
     for (let index = 2; index <= MAX_CODEX_ACTIVE_ITEMS + 1; index += 1) {
       items.handle({ threadId: THREAD_ID, method: 'item/started', params: reasoning(`r-${index}`) })
     }
-    expect(rows.get('orca:codex-item%3Athread-abc%3Apatch-1')).toEqual({
+    expect(rows.get('occ:codex-item%3Athread-abc%3Apatch-1')).toEqual({
       kind: 'status',
       text: 'File changes were interrupted before completion.'
     })

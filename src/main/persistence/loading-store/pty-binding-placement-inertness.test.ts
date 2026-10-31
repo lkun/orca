@@ -14,7 +14,7 @@ import type { PersistPtyBindingArgs } from './pty-binding-persistence'
 
 vi.mock('node:fs/promises', { spy: true })
 // Retain switch-off coverage until layout ownership is permanently enabled.
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: false }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: false }))
 
 const agreementCheck = vi.hoisted(() => ({ throws: false }))
 vi.mock('../terminal-topology/terminal-pane-placement-agreement', async (importOriginal) => {

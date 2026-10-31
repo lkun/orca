@@ -5,7 +5,7 @@ import { Button } from './ui/button'
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { translate } from '@/i18n/i18n'
 
-const ORCA_REPO_URL = 'https://github.com/stablyai/orca'
+const OCC_REPO_URL = 'https://github.com/stablyai/occ'
 type StarNagMode = 'gh' | 'web'
 
 /** Main owns visibility thresholds and GitHub checks. Keep the card until explicit action; nonterminal exits persist a cooldown. */
@@ -78,7 +78,7 @@ export function StarNagCard(): React.JSX.Element | null {
     }
     const openGithubFallback = async (): Promise<boolean> => {
       try {
-        await window.api.shell.openUrl(ORCA_REPO_URL)
+        await window.api.shell.openUrl(OCC_REPO_URL)
         await window.api.starNag.openWeb()
         if (mountedRef.current) {
           setVisible(false)
@@ -103,7 +103,7 @@ export function StarNagCard(): React.JSX.Element | null {
     setBusy(true)
     let ok = false
     try {
-      ok = await window.api.starNag.starOrca()
+      ok = await window.api.starNag.starOCC()
     } catch {
       ok = false
     }

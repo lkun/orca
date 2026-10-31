@@ -19,7 +19,7 @@ import {
  * does); onChanged goes to the extension's other pages and its worker in the session.
  * The preload installs it as chrome.storage.sync (src/preload/browser-extension-storage-sync.ts).
  */
-const STORAGE_SYNC_NAMESPACE = 'orcaStorageSync'
+const STORAGE_SYNC_NAMESPACE = 'occStorageSync'
 
 /** Chrome's sync limits OCC enforces; the preload exposes them (and the write rates) to extensions. */
 export const STORAGE_SYNC_QUOTAS = {

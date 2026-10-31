@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { runtimeLayoutLoadContext } from './workspace-layout-projection'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 describe('runtimeLayoutLoadContext', () => {
   // L286: a partition with no views still has known-empty views, so saved view-less diff tabs must drop.

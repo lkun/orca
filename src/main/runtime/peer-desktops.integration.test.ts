@@ -6,14 +6,14 @@ import { pairedRuntimeConnectionFromOffer } from '../../shared/paired-runtime-co
 import { encodePairingOffer, parsePairingCode, type PairingOffer } from '../../shared/pairing'
 import { sendRemoteRuntimeRequest } from '../../shared/remote-runtime/remote-runtime-client'
 import {
-  ORCAD_DECLARE_CLIENT_METHOD,
-  ORCAD_PEER_DESKTOPS_METHOD,
-  type OrcadPeerDesktopsResult
-} from '../../shared/orcad-peer-desktops-contract'
-import { ORCAD_PEER_DESKTOPS_RUNTIME_CAPABILITY } from '../../shared/orcad-runtime-capabilities'
+  OCCD_DECLARE_CLIENT_METHOD,
+  OCCD_PEER_DESKTOPS_METHOD,
+  type OCCdPeerDesktopsResult
+} from '../../shared/occd-peer-desktops-contract'
+import { OCCD_PEER_DESKTOPS_RUNTIME_CAPABILITY } from '../../shared/occd-runtime-capabilities'
 import type { RuntimeStatus } from '../../shared/runtime-types'
-import { OrcaRuntimeService } from './orca-runtime'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeService } from './occ-runtime'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import {
   authenticateMobileWsSession,
   createEncryptedWsResponseReader,
@@ -33,7 +33,7 @@ vi.mock('../git/worktree', () => ({
 const STABLE = 'stable-installation-id'
 const DEV = 'dev-installation-id-01'
 
-describe(ORCAD_PEER_DESKTOPS_METHOD, () => {
+describe(OCCD_PEER_DESKTOPS_METHOD, () => {
   const cleanups: (() => Promise<void> | void)[] = []
   afterEach(async () => {
     for (const cleanup of cleanups.splice(0).toReversed()) {
@@ -41,10 +41,10 @@ describe(ORCAD_PEER_DESKTOPS_METHOD, () => {
     }
   })
 
-  async function startServer(): Promise<OrcaRuntimeRpcServer> {
-    const server = new OrcaRuntimeRpcServer({
-      runtime: new OrcaRuntimeService(partialRuntimeStore(makeStore())),
-      userDataPath: mkdtempSync(join(tmpdir(), 'orca-peer-desktops-')),
+  async function startServer(): Promise<OCCRuntimeRpcServer> {
+    const server = new OCCRuntimeRpcServer({
+      runtime: new OCCRuntimeService(partialRuntimeStore(makeStore())),
+      userDataPath: mkdtempSync(join(tmpdir(), 'occ-peer-desktops-')),
       enableWebSocket: true,
       wsPort: 0
     })
@@ -53,7 +53,7 @@ describe(ORCAD_PEER_DESKTOPS_METHOD, () => {
     return server
   }
 
-  function pair(server: OrcaRuntimeRpcServer, name: string, scope: 'runtime' | 'mobile') {
+  function pair(server: OCCRuntimeRpcServer, name: string, scope: 'runtime' | 'mobile') {
     const offer = server.createPairingOffer({ address: '127.0.0.1', name, scope })
     if (!offer.available) {
       throw new Error('pairing unavailable')
@@ -91,7 +91,7 @@ describe(ORCAD_PEER_DESKTOPS_METHOD, () => {
   }
 
   async function peerNames(offer: PairingOffer, clientInstanceId: string): Promise<string[]> {
-    const answer = await oneShot<OrcadPeerDesktopsResult>(offer, ORCAD_PEER_DESKTOPS_METHOD, {
+    const answer = await oneShot<OCCdPeerDesktopsResult>(offer, OCCD_PEER_DESKTOPS_METHOD, {
       clientInstanceId
     })
     if (!answer.ok) {
@@ -105,11 +105,11 @@ describe(ORCAD_PEER_DESKTOPS_METHOD, () => {
     const startup = pair(server, 'CLI 10/28/2026', 'runtime')
     const status = await oneShot<RuntimeStatus>(startup, 'status.get')
     expect(status.ok && status.result.capabilities).toContain(
-      ORCAD_PEER_DESKTOPS_RUNTIME_CAPABILITY
+      OCCD_PEER_DESKTOPS_RUNTIME_CAPABILITY
     )
     const control = await socket(startup)
     expect(
-      await control.request(ORCAD_DECLARE_CLIENT_METHOD, { clientInstanceId: STABLE })
+      await control.request(OCCD_DECLARE_CLIENT_METHOD, { clientInstanceId: STABLE })
     ).toMatchObject({ ok: true })
     // An undeclared second socket (as a terminal multiplex) and one-shot calls are this same desktop.
     await (await socket(startup)).request('status.get')
@@ -120,9 +120,9 @@ describe(ORCAD_PEER_DESKTOPS_METHOD, () => {
     const server = await startServer()
     const startup = pair(server, 'CLI 10/28/2026', 'runtime')
     const stable = await socket(startup)
-    await stable.request(ORCAD_DECLARE_CLIENT_METHOD, { clientInstanceId: STABLE })
+    await stable.request(OCCD_DECLARE_CLIENT_METHOD, { clientInstanceId: STABLE })
     const dev = await socket(startup)
-    await dev.request(ORCAD_DECLARE_CLIENT_METHOD, { clientInstanceId: DEV })
+    await dev.request(OCCD_DECLARE_CLIENT_METHOD, { clientInstanceId: DEV })
     // The startup row's "CLI <date>" name says nothing to a person.
     expect(await peerNames(startup, STABLE)).toEqual(['another OCC'])
     expect(await peerNames(startup, DEV)).toEqual(['another OCC'])
@@ -140,24 +140,24 @@ describe(ORCAD_PEER_DESKTOPS_METHOD, () => {
 
     // A reconnect declares again.
     const devAgain = await socket(startup)
-    await devAgain.request(ORCAD_DECLARE_CLIENT_METHOD, { clientInstanceId: DEV })
+    await devAgain.request(OCCD_DECLARE_CLIENT_METHOD, { clientInstanceId: DEV })
     expect(await peerNames(startup, STABLE)).toEqual(['another OCC'])
   })
 
   it('sanitizes a peer name and ignores phones', async () => {
     const server = await startServer()
     const stable = pair(server, 'OCC', 'runtime')
-    await (await socket(stable)).request(ORCAD_DECLARE_CLIENT_METHOD, { clientInstanceId: STABLE })
+    await (await socket(stable)).request(OCCD_DECLARE_CLIENT_METHOD, { clientInstanceId: STABLE })
     const dev = pair(server, 'OCC‮\nDev​', 'runtime')
-    await (await socket(dev)).request(ORCAD_DECLARE_CLIENT_METHOD, { clientInstanceId: DEV })
-    expect(await peerNames(stable, STABLE)).toEqual(['OrcaDev'])
+    await (await socket(dev)).request(OCCD_DECLARE_CLIENT_METHOD, { clientInstanceId: DEV })
+    expect(await peerNames(stable, STABLE)).toEqual(['OCCDev'])
 
     const phone = await socket(pair(server, 'Phone', 'mobile'))
-    const refused = await phone.request(ORCAD_DECLARE_CLIENT_METHOD, {
+    const refused = await phone.request(OCCD_DECLARE_CLIENT_METHOD, {
       clientInstanceId: 'phone-installation'
     })
     expect(refused.ok).not.toBe(true)
-    expect(await peerNames(stable, STABLE)).toEqual(['OrcaDev'])
+    expect(await peerNames(stable, STABLE)).toEqual(['OCCDev'])
   })
 
   // R39 follow-up: Stable removed the host while Dev used it, so the server was kept. Once Stable
@@ -166,9 +166,9 @@ describe(ORCAD_PEER_DESKTOPS_METHOD, () => {
     const server = await startServer()
     const startup = pair(server, 'CLI 10/28/2026', 'runtime')
     const stable = await socket(startup)
-    await stable.request(ORCAD_DECLARE_CLIENT_METHOD, { clientInstanceId: STABLE })
+    await stable.request(OCCD_DECLARE_CLIENT_METHOD, { clientInstanceId: STABLE })
     const dev = await socket(startup)
-    await dev.request(ORCAD_DECLARE_CLIENT_METHOD, { clientInstanceId: DEV })
+    await dev.request(OCCD_DECLARE_CLIENT_METHOD, { clientInstanceId: DEV })
     // Stable's Remove: Dev is connected, so the server is kept.
     expect(await peerNames(startup, STABLE)).toEqual(['another OCC'])
 

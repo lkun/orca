@@ -40,7 +40,7 @@ export function acpNativeTurns(
     const identity = parseAgentJournalItemKey(item.itemId)
     if (
       turn?.userItemId &&
-      parseAgentJournalItemKey(turn.userItemId)?.provider === 'orca' &&
+      parseAgentJournalItemKey(turn.userItemId)?.provider === 'occ' &&
       identity?.provider === 'legacy' &&
       identity.agent === scope.agent &&
       identity.sessionId === scope.sessionId &&

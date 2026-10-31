@@ -7,7 +7,7 @@ const FROM: AgentMessageSource = {
   kind: 'agent',
   senders: [
     {
-      party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: null },
+      party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: null },
       name: 'Coder'
     }
   ],
@@ -21,7 +21,7 @@ function message(role: 'user' | 'assistant', from?: unknown): AgentJournalRender
     blocks: [{ type: 'text', text: 'hi' }]
   }
   return {
-    itemId: `orca:submission:${role}`,
+    itemId: `occ:submission:${role}`,
     sequence: 1,
     revision: 0,
     observedAt: 1,

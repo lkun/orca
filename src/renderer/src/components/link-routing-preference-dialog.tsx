@@ -23,10 +23,10 @@ import {
 type LinkRoutingPreferenceDialogRequest = {
   id: number
   options: LinkRoutingPreferenceDialogOptions
-  resolve: (openInOrca: boolean) => void
+  resolve: (openInOCC: boolean) => void
 }
 
-const PREVIEW_STORAGE_KEY = 'orca.previewLinkRoutingPreferenceDialog'
+const PREVIEW_STORAGE_KEY = 'occ.previewLinkRoutingPreferenceDialog'
 const PREVIEW_DEFAULT_STORAGE_KEY = `${PREVIEW_STORAGE_KEY}.default`
 
 function displayHostForUrl(url: string | undefined): string | null {
@@ -92,18 +92,18 @@ export function LinkRoutingPreferenceDialogProvider({
     window.sessionStorage.removeItem(PREVIEW_STORAGE_KEY)
     window.sessionStorage.removeItem(PREVIEW_DEFAULT_STORAGE_KEY)
     void requestPreference({
-      openLinksInAppDefault: previewDefault === 'orca',
+      openLinksInAppDefault: previewDefault === 'occ',
       preview: true,
-      url: 'https://github.com/stablyai/orca/pull/1234'
+      url: 'https://github.com/stablyai/occ/pull/1234'
     })
   }, [requestPreference])
 
-  const settleActiveRequest = useCallback((openInOrca: boolean) => {
+  const settleActiveRequest = useCallback((openInOCC: boolean) => {
     const request = activeRequestRef.current
     if (!request) {
       return
     }
-    request.resolve(openInOrca)
+    request.resolve(openInOCC)
     setQueue((currentQueue) => {
       if (currentQueue[0]?.id === request.id) {
         return currentQueue.slice(1)
@@ -183,7 +183,7 @@ export function LinkRoutingPreferenceDialogProvider({
               <div className="space-y-1">
                 <p>
                   {translate(
-                    'auto.components.link.routing.preference.dialog.orca.note',
+                    'auto.components.link.routing.preference.dialog.occ.note',
                     'OCC can use imported cookies for logged-in sites.'
                   )}
                 </p>
@@ -227,11 +227,11 @@ export function LinkRoutingPreferenceDialogProvider({
             <Button autoFocus onClick={() => settleActiveRequest(true)}>
               {openLinksInAppDefault
                 ? translate(
-                    'auto.components.link.routing.preference.dialog.keep.orca.button',
+                    'auto.components.link.routing.preference.dialog.keep.occ.button',
                     'Keep OCC'
                   )
                 : translate(
-                    'auto.components.link.routing.preference.dialog.orca.button',
+                    'auto.components.link.routing.preference.dialog.occ.button',
                     'Open in OCC'
                   )}
             </Button>

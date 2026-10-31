@@ -2,16 +2,16 @@ import { mkdtempSync, existsSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { afterEach, expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
-import { E2E_SPAWN_LOG_ENV } from '@orca/process-host/spawn-observer'
+import { runProcess } from '@occ/process-host'
+import { E2E_SPAWN_LOG_ENV } from '@occ/process-host/spawn-observer'
 import { dropE2eSpawnLogOutsideE2e } from './e2e-spawn-log-env'
 
-const saved = { log: process.env[E2E_SPAWN_LOG_ENV], userData: process.env.ORCA_E2E_USER_DATA_DIR }
+const saved = { log: process.env[E2E_SPAWN_LOG_ENV], userData: process.env.OCC_E2E_USER_DATA_DIR }
 
 afterEach(() => {
   for (const [key, value] of [
     [E2E_SPAWN_LOG_ENV, saved.log],
-    ['ORCA_E2E_USER_DATA_DIR', saved.userData]
+    ['OCC_E2E_USER_DATA_DIR', saved.userData]
   ] as const) {
     if (value === undefined) {
       delete process.env[key]
@@ -22,10 +22,10 @@ afterEach(() => {
 })
 
 it('drops the spawn log outside e2e mode, so a spawn writes nothing', async () => {
-  const dir = mkdtempSync(path.join(tmpdir(), 'orca-spawn-log-drop-'))
+  const dir = mkdtempSync(path.join(tmpdir(), 'occ-spawn-log-drop-'))
   const log = path.join(dir, 'spawns.jsonl')
   try {
-    delete process.env.ORCA_E2E_USER_DATA_DIR
+    delete process.env.OCC_E2E_USER_DATA_DIR
     process.env[E2E_SPAWN_LOG_ENV] = log
     dropE2eSpawnLogOutsideE2e()
     expect(process.env[E2E_SPAWN_LOG_ENV]).toBeUndefined()
@@ -37,7 +37,7 @@ it('drops the spawn log outside e2e mode, so a spawn writes nothing', async () =
 })
 
 it('keeps it in e2e mode', () => {
-  process.env.ORCA_E2E_USER_DATA_DIR = '/tmp/orca-e2e-user-data'
+  process.env.OCC_E2E_USER_DATA_DIR = '/tmp/occ-e2e-user-data'
   process.env[E2E_SPAWN_LOG_ENV] = '/tmp/spawns.jsonl'
   dropE2eSpawnLogOutsideE2e()
   expect(process.env[E2E_SPAWN_LOG_ENV]).toBe('/tmp/spawns.jsonl')

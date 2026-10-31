@@ -2,13 +2,13 @@
 # Reproduce iOS 0.0.39(2)’s foreground “Connecting…” stall. Simulator does not suspend JS:
 # SIGSTOP the app to freeze timers/leave its socket dangling; SIGSTOP desktop to accept TCP
 # without WebSocket upgrades, like a wedged tunnel/relay. Use simctl because OCC’s runtime is frozen.
-# Setup: node scripts/start-emulator.mjs --device "iPhone 17 Pro" --wait-for-ready > /tmp/orca-emulator-boot.log 2>&1 &
+# Setup: node scripts/start-emulator.mjs --device "iPhone 17 Pro" --wait-for-ready > /tmp/occ-emulator-boot.log 2>&1 &
 # Usage: repro-mobile-foreground-stall.sh <udid> <paired-host-port> [log]
 set -euo pipefail
 
 UDID="${1:?simulator udid}"
 PORT="${2:?port of the paired host, from the [net] logs}"
-LOG="${3:-/tmp/orca-emulator-boot.log}"
+LOG="${3:-/tmp/occ-emulator-boot.log}"
 BUNDLE_ID=com.lkun.occ.mobile
 # Long enough for the tiered backoff to reach its 30s/60s tail.
 ESCALATE_SECONDS=200

@@ -73,7 +73,7 @@ function managedServer(pairingRevision: number, hostKey: string) {
       { id: 'ws', kind: 'websocket' as const, label: 'Box', endpoint: 'ws://127.0.0.1:46768/' }
     ],
     preferredEndpointId: 'ws',
-    orcadDeployment: {
+    occdDeployment: {
       sshTargetId: 'box',
       sshTargetGeneration: 1,
       localPort: 46768,

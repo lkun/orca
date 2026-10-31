@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithSplitTerminal } from './terminal-split'
+import { OCCRuntimeWithSplitTerminal } from './terminal-split'
 import type { RuntimePtyWorktreeRecord } from '../../runtime-terminal-state-records'
 import type { TerminalPaneSplitSource } from '../../../../shared/feature-education-telemetry'
 import type { RuntimeTerminalSplit } from '../../../../shared/runtime-types'
@@ -6,7 +6,7 @@ import { makePaneKey, parsePaneKey } from '../../../../shared/stable-pane-id'
 import { recordPtySurface, spawnSurfaceClaimSequence } from '../../pty-recorded-surface-topology'
 import { randomUUID } from 'node:crypto'
 import { runtimeSplitPlacement } from '../../runtime-terminal-spawn-placement'
-import { REJECTED_SPLIT_PTY_STOP_TIMEOUT_MS, ownerSurfacing } from '../../orca-runtime-core'
+import { REJECTED_SPLIT_PTY_STOP_TIMEOUT_MS, ownerSurfacing } from '../../occ-runtime-core'
 import type { Worktree } from '../../../../shared/worktree/types'
 import { spawnInAdmittedPane, withdrawRuntimePane } from '../../runtime-pane-admission'
 import { UNMEASURED_PTY_SIZE } from '../../../ipc/pty/pty-first-size'
@@ -26,7 +26,7 @@ export type TerminalSplitOptions = {
   wslUserAct?: true
 }
 
-export abstract class OrcaRuntimeWithSplitPtyBackedTerminal extends OrcaRuntimeWithSplitTerminal {
+export abstract class OCCRuntimeWithSplitPtyBackedTerminal extends OCCRuntimeWithSplitTerminal {
   protected async splitPtyBackedTerminal(
     pty: RuntimePtyWorktreeRecord,
     opts: TerminalSplitOptions = {},

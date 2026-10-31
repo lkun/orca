@@ -1,6 +1,6 @@
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 
-export const ORCA_TAB_SESSION_PREFIX = 'orca-tab-'
+export const OCC_TAB_SESSION_PREFIX = 'occ-tab-'
 
 const SWEEP_TIMEOUT_MS = 5_000
 const SWEEP_MAX_OUTPUT_BYTES = 256 * 1024
@@ -30,7 +30,7 @@ export async function sweepOrphanedAgentBrowserSessions(options: {
   ownsSocketDirectory: boolean
   isSessionLive?: (sessionName: string) => boolean
 }): Promise<string[]> {
-  if (!options.ownsSocketDirectory || process.env.ORCA_DISABLE_AGENT_BROWSER_SWEEP === '1') {
+  if (!options.ownsSocketDirectory || process.env.OCC_DISABLE_AGENT_BROWSER_SWEEP === '1') {
     return []
   }
   let listed: string[]
@@ -49,7 +49,7 @@ export async function sweepOrphanedAgentBrowserSessions(options: {
 
   const closed: string[] = []
   for (const sessionName of listed) {
-    if (!sessionName.startsWith(ORCA_TAB_SESSION_PREFIX) || options.isSessionLive?.(sessionName)) {
+    if (!sessionName.startsWith(OCC_TAB_SESSION_PREFIX) || options.isSessionLive?.(sessionName)) {
       continue
     }
     try {

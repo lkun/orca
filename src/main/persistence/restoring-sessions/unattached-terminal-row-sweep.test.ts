@@ -13,7 +13,7 @@ import {
 } from '../../../shared/workspace-layout/workspace-layout-session.test-fixture'
 import { sweepPersistedUnattachedTerminalRows } from './tab-terminal-pane-binding-repair'
 
-const CLI_KEY = 'repo-1::/Users/dev/orca-cli'
+const CLI_KEY = 'repo-1::/Users/dev/occ-cli'
 
 function unattachedRow(): WorkspaceSessionState {
   const session = addWorkspace(emptySession(), GIT_KEY, [
@@ -137,8 +137,8 @@ describe('load sweep: a terminal row outside the tab bar', () => {
     state.repos = [
       {
         id: 'repo-1',
-        path: '/Users/dev/orca',
-        displayName: 'orca',
+        path: '/Users/dev/occ',
+        displayName: 'occ',
         badgeColor: '#000',
         addedAt: 0,
         connectionId: 'box'

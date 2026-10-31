@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import {
   ACCESS_ALLOWED_ACE_TYPE,
@@ -81,7 +81,7 @@ describeOnWindows('native windows-security addon against a real filesystem', () 
 
   // Covers two cold Python starts, each allowed 30s on a fresh hosted Windows runner.
   it('preserves disposable-item metadata, counted UTF-8/subarrays, and the native cap', () => {
-    const target = `orca-sta11846-test:${randomUUID()}`
+    const target = `occ-sta11846-test:${randomUUID()}`
     expect(target).not.toBe('gemini:antigravity')
     expect(addon.readGenericCredential(target), 'initial disposable-target absence').toBeNull()
     const fixture = readFileSync(
@@ -168,7 +168,7 @@ describeOnWindows('native windows-security addon against a real filesystem', () 
   }, 90_000)
 
   it('marks a native read failure with its syscall origin', () => {
-    const invalidTarget = `orca-sta11846-invalid:${'x'.repeat(32768)}`
+    const invalidTarget = `occ-sta11846-invalid:${'x'.repeat(32768)}`
     expect(() => addon.readGenericCredential(invalidTarget)).toThrow(
       expect.objectContaining({ syscall: 'CredReadW', win32Code: expect.any(Number) })
     )

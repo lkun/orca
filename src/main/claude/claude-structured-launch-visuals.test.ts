@@ -15,7 +15,7 @@ import {
   type ClaudeCliFlagFact
 } from './claude-cli-flag-support'
 
-const SESSION_ID = 'orca-session-visuals'
+const SESSION_ID = 'occ-session-visuals'
 const VISUALS: NativeChatVisualsLaunch = {
   folder: '/state/chat-scratch/abc',
   skill: { pluginDir: '/app/native-chat-visuals', skillsRoot: '/app/native-chat-visuals/skills' }

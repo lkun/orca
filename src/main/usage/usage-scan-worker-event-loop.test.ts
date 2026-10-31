@@ -21,7 +21,7 @@ const WORKTREES: UsageScanWorktreeRef[] = [
   {
     repoId: 'repo-1',
     worktreeId: 'wt-1',
-    path: '/tmp/orca-usage-oracle-project',
+    path: '/tmp/occ-usage-oracle-project',
     displayName: 'demo'
   }
 ]
@@ -34,12 +34,12 @@ function buildRolloutLines(sessionId: string, seed: number): string {
     JSON.stringify({
       timestamp: '2026-01-01T00:00:00.000Z',
       type: 'session_meta',
-      payload: { id: sessionId, cwd: '/tmp/orca-usage-oracle-project' }
+      payload: { id: sessionId, cwd: '/tmp/occ-usage-oracle-project' }
     }),
     JSON.stringify({
       timestamp: '2026-01-01T00:00:01.000Z',
       type: 'turn_context',
-      payload: { cwd: '/tmp/orca-usage-oracle-project', model: 'gpt-5.6-sol' }
+      payload: { cwd: '/tmp/occ-usage-oracle-project', model: 'gpt-5.6-sol' }
     })
   ]
   // Unique event keys per file prevent fork-copy deduplication from shrinking the measured corpus.
@@ -123,11 +123,11 @@ function createWorkerClient(): UsageScanWorkerClient {
 /** Set the real process environment: Worker env changes process.env but os.homedir reads the shared OS environment and would scan the developer's real history. */
 async function withCorpusEnv<T>(fn: () => Promise<T>): Promise<T> {
   const previous = {
-    ORCA_USER_DATA_PATH: process.env.ORCA_USER_DATA_PATH,
+    OCC_USER_DATA_PATH: process.env.OCC_USER_DATA_PATH,
     HOME: process.env.HOME,
     USERPROFILE: process.env.USERPROFILE
   }
-  process.env.ORCA_USER_DATA_PATH = corpusRoot
+  process.env.OCC_USER_DATA_PATH = corpusRoot
   process.env.HOME = corpusRoot
   process.env.USERPROFILE = corpusRoot
   try {
@@ -140,7 +140,7 @@ async function withCorpusEnv<T>(fn: () => Promise<T>): Promise<T> {
 }
 
 beforeAll(async () => {
-  corpusRoot = mkdtempSync(join(tmpdir(), 'orca-usage-scan-oracle-'))
+  corpusRoot = mkdtempSync(join(tmpdir(), 'occ-usage-scan-oracle-'))
   writeCorpus(corpusRoot)
   workerEntryPath = join(corpusRoot, 'usage-scan-worker-entry.cjs')
   // Bundle the production source because Worker needs JavaScript; keep the oracle on the real scanner.
@@ -170,7 +170,7 @@ describe('usage scan worker event-loop occupancy', () => {
 
     const client = createWorkerClient()
     const sourceCache: UsageSourceCacheRef = {
-      path: join(corpusRoot, 'orca-codex-usage-sources.json'),
+      path: join(corpusRoot, 'occ-codex-usage-sources.json'),
       schemaVersion: 1,
       worktreeFingerprint: '[]',
       reuse: true

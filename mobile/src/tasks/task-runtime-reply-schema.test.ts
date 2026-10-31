@@ -40,11 +40,11 @@ describe('the runtime status', () => {
 describe('the persisted UI state', () => {
   it('answers the `ui` member, which is what the member reader it replaces did', () => {
     const parsed = taskUiStateSchema.safeParse({
-      ui: { sortBy: 'name', trustedOrcaHooks: { 'repo-1': { all: { approvedAt: 1 } } } }
+      ui: { sortBy: 'name', trustedOCCHooks: { 'repo-1': { all: { approvedAt: 1 } } } }
     })
     expect(parsed.success && parsed.data).toMatchObject({
       sortBy: 'name',
-      trustedOrcaHooks: { 'repo-1': { all: { approvedAt: 1 } } }
+      trustedOCCHooks: { 'repo-1': { all: { approvedAt: 1 } } }
     })
   })
 

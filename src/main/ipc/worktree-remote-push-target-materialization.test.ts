@@ -10,8 +10,8 @@ import { hostWorktreeTarget } from '../../shared/worktree/host-qualified-identit
 import { mergeWorktreeMetaForWrite } from '../persistence/loading-store/worktree-meta-write-normalization'
 
 const REPO_PATH = '/repo-root'
-const FORK_URL = 'git@github.com:contributor/orca.git'
-const FORK_REMOTE = 'pr-contributor-orca'
+const FORK_URL = 'git@github.com:contributor/occ.git'
+const FORK_REMOTE = 'pr-contributor-occ'
 
 function forkTarget(overrides: Partial<GitPushTarget> = {}): GitPushTarget {
   return {
@@ -160,7 +160,7 @@ describe('materializeWorktreePushTargetRemote', () => {
       FORK_REMOTE,
       FORK_URL
     ])
-    expect(calls).toContainEqual(['config', `remote.${FORK_REMOTE}.orca-created`, 'true'])
+    expect(calls).toContainEqual(['config', `remote.${FORK_REMOTE}.occ-created`, 'true'])
     expect(calls).toContainEqual([
       'fetch',
       FORK_REMOTE,

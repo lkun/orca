@@ -31,7 +31,7 @@ function message(...blocks: AgentJournalMessageItem['blocks']): AgentJournalMess
 }
 
 describe('agentSessionAttachmentReferences', () => {
-  const root = '/srv/orca/agent-session-attachments'
+  const root = '/srv/occ/agent-session-attachments'
 
   it('finds image paths and file references in text, however the reference is quoted', () => {
     const quoted = formatNativeChatFileReference(`${root}/${UPLOAD_B}/my "notes" and 'more'.txt`)
@@ -61,13 +61,13 @@ describe('agentSessionAttachmentReferences', () => {
   })
 
   it('matches a Windows store with either separator and in any case', () => {
-    const windowsRoot = 'C:\\Users\\me\\AppData\\Roaming\\orca\\agent-session-attachments'
+    const windowsRoot = 'C:\\Users\\me\\AppData\\Roaming\\occ\\agent-session-attachments'
     const references = agentSessionAttachmentReferences(
       windowsRoot,
       message(
         {
           type: 'image-ref',
-          path: `c:/users/ME/appdata/roaming/orca/agent-session-attachments/${UPLOAD_A}/s.png`
+          path: `c:/users/ME/appdata/roaming/occ/agent-session-attachments/${UPLOAD_A}/s.png`
         },
         { type: 'text', text: `@"${windowsRoot}\\${UPLOAD_B.toUpperCase()}\\a b.txt"` }
       ),
@@ -134,7 +134,7 @@ describe('claims written with the message', () => {
   }
 
   beforeEach(async () => {
-    stateDirectory = await mkdtemp(join(tmpdir(), 'orca-attachment-claims-'))
+    stateDirectory = await mkdtemp(join(tmpdir(), 'occ-attachment-claims-'))
     storeRoot = agentSessionAttachmentStoreRoot(stateDirectory)
     clock = 1_000
   })

@@ -10,19 +10,19 @@ import { NewWorkspaceComposerProjectSection } from './NewWorkspaceComposerProjec
 const projects: NewWorkspaceProjectOption[] = [
   {
     kind: 'project',
-    id: 'orca',
-    projectId: 'orca',
-    displayName: 'orca',
+    id: 'occ',
+    projectId: 'occ',
+    displayName: 'occ',
     badgeColor: 'var(--muted-foreground)',
-    detail: 'stablyai/orca'
+    detail: 'stablyai/occ'
   },
   {
     kind: 'project',
-    id: 'personal-orca',
-    projectId: 'personal-orca',
-    displayName: 'orca',
+    id: 'personal-occ',
+    projectId: 'personal-occ',
+    displayName: 'occ',
     badgeColor: 'var(--muted-foreground)',
-    detail: 'personal/orca'
+    detail: 'personal/occ'
   },
   {
     kind: 'project',
@@ -47,27 +47,27 @@ const hosts: ProjectHostSetupOption[] = [
   {
     kind: 'ready',
     id: 'local',
-    projectId: 'orca',
-    repoId: 'orca-local',
+    projectId: 'occ',
+    repoId: 'occ-local',
     hostId: 'local',
     label: 'MacBook Pro',
     detail: 'Local',
-    path: '/Users/alice/Projects/orca'
+    path: '/Users/alice/Projects/occ'
   },
   {
     kind: 'ready',
     id: 'remote',
-    projectId: 'orca',
-    repoId: 'orca-remote',
+    projectId: 'occ',
+    repoId: 'occ-remote',
     hostId: 'ssh:devbox',
     label: 'Dev server',
     detail: 'SSH',
-    path: '/home/alice/projects/orca'
+    path: '/home/alice/projects/occ'
   },
   {
     kind: 'needs-setup',
     id: 'windows',
-    projectId: 'orca',
+    projectId: 'occ',
     hostId: 'runtime:windows',
     label: 'Windows workstation',
     detail: 'Project location not set',
@@ -82,7 +82,7 @@ function ProjectAndHostPreview({
 }: {
   folderOnly?: boolean
 }): React.JSX.Element {
-  const [project, setProject] = useState(folderOnly ? 'folder' : 'orca')
+  const [project, setProject] = useState(folderOnly ? 'folder' : 'occ')
   const [host, setHost] = useState('local')
   return (
     <div className="space-y-4 rounded-xl border border-border bg-background p-4">
@@ -117,7 +117,7 @@ function ProjectAndHostPreview({
         onConnectSelectedRepo={async () => {}}
         sshStatusLabel="Connected"
         connectButtonLabel="Connect"
-        selectedProjectName="orca"
+        selectedProjectName="occ"
       />
     </div>
   )

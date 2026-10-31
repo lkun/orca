@@ -3,8 +3,8 @@
 
 const JA_SENTENCE_CHAR = '[぀-ヿ一-龯、。・「」（）]'
 
-// Two-word commands (`git commit`, `orca terminal`) must keep their second word in Latin.
-const COMMAND_HEAD = '(?<!\\b(?:git|gh|glab|orca|npm|pnpm|npx|yarn|docker|kubectl) )'
+// Two-word commands (`git commit`, `occ terminal`) must keep their second word in Latin.
+const COMMAND_HEAD = '(?<!\\b(?:git|gh|glab|occ|npm|pnpm|npx|yarn|docker|kubectl) )'
 
 // #12113 stopped new damage; ~700 values still read "terminal を閉じる" and are healed here.
 // Anchored on adjacent Japanese, so `--agent`, agents.md and "Agent SDK" keep their spelling.

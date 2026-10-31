@@ -523,7 +523,7 @@
   "menu": {
     "checkForUpdates": "检查更新...",
     "settings": "设置",
-    "exploreOrca": "探索 OCC",
+    "exploreOCC": "探索 OCC",
     "gettingStarted": "OCC 入门",
     "reportCrash": "发送崩溃报告...",
     "file": "文件",
@@ -555,7 +555,7 @@
     "quitAndStopAllSessionsTooltip": "同时停止所有终端会话，包括正在运行的智能体。普通退出会保留这些会话，以便 OCC 下次启动时重新连接。"
   },
   "tray": {
-    "openOrca": "打开 OCC",
+    "openOCC": "打开 OCC",
     "quit": "退出",
     "minimizeNotice": {
       "body": "OCC 仍在系统托盘中运行"
@@ -707,7 +707,7 @@
         "sessionNoEd25519": "此配对仅在此标签页打开期间有效，因为此浏览器无法创建安全的登录密钥（Ed25519）。请使用最新版浏览器以获得此浏览器能记住的配对。"
       },
       "runtimeAuth": {
-        "insecureOrigin": "OCC 拒绝从此页面配对：它是另一台机器上的纯 http 页面，因此网络路径上的任何人都可以替换它并取走配对码。请通过 https、本机的 localhost 或 SSH 隧道打开 Web 客户端。如需仍然允许，服务器操作员可以使用 ORCA_ALLOW_INSECURE_WEB_PAIRING=1 重新启动 OCC。",
+        "insecureOrigin": "OCC 拒绝从此页面配对：它是另一台机器上的纯 http 页面，因此网络路径上的任何人都可以替换它并取走配对码。请通过 https、本机的 localhost 或 SSH 隧道打开 Web 客户端。如需仍然允许，服务器操作员可以使用 OCC_ALLOW_INSECURE_WEB_PAIRING=1 重新启动 OCC。",
         "deviceDowngraded": "此 OCC 服务器不再支持此浏览器的登录密钥（可能已被降级）。请更新服务器，或重新配对此浏览器。",
         "unauthorized": "未授权。请重新配对此 Web 客户端。"
       }
@@ -853,7 +853,7 @@
           "856083302c": "Jira 连接已被新的请求取代。"
         },
         "linear": {},
-        "orca": {
+        "occ": {
           "profiles": {
             "612f7f6861": "创建配置文件失败",
             "319d7cf39b": "已创建云配置文件",
@@ -1393,7 +1393,7 @@
         }
       },
       "claudeAgentRowView": {
-        "subagentNavigationSetup": "请在“设置 → 智能体”中启用 Claude 子智能体导航，然后在 OCC 中启动 Claude 2.1.300+。检查 keybindings.json 是否仍将 Ctrl+Alt+G、H 或 V 绑定到 command:orca-agent-view。",
+        "subagentNavigationSetup": "请在“设置 → 智能体”中启用 Claude 子智能体导航，然后在 OCC 中启动 Claude 2.1.300+。检查 keybindings.json 是否仍将 Ctrl+Alt+G、H 或 V 绑定到 command:occ-agent-view。",
         "permissionPrompt": "请先回应 Claude 的权限提示，再切换智能体。"
       },
       "wslHostWindowsDriveRefusal": {
@@ -1874,7 +1874,7 @@
       },
       "Landing": {
         "f9eaa9e12d": "添加项目",
-        "6ca6ff404e": "ORCA",
+        "6ca6ff404e": "OCC",
         "520304a067": "OCC 标志",
         "c1cf168479": "隐藏",
         "00cee697c1": "在终端中运行“gh auth login”以连接您的 GitHub 账户。",
@@ -2017,12 +2017,12 @@
         "dccd26d4e4": "选择项目",
         "d6b0a96f32": "添加项目",
         "969a8bff66": "项目",
-        "23bb365554": "orca.yaml",
+        "23bb365554": "occ.yaml",
         "a239038146": "SSH 连接错误",
         "9a70e4859e": "选择是否在创建此工作区前运行设置。",
         "803b7fe72f": "正在检查设置配置...",
         "92e34f0311": "本地设置",
-        "326a578923": "orca.yaml + 本地",
+        "326a578923": "occ.yaml + 本地",
         "ac3748dcda": "创建来源",
         "f660aa1454": "连接中",
         "addProjectBeforeWorkspace": "在创建工作区之前添加项目。",
@@ -2054,8 +2054,8 @@
         "addHost": "Add host",
         "addSshHost": "添加 SSH 主机",
         "addSshHostHint": "通过 SSH 使用现有机器",
-        "addRemoteOrcaServer": "添加远程 OCC 服务器",
-        "addRemoteOrcaServerHint": "配对另一个 OCC 运行时",
+        "addRemoteOCCServer": "添加远程 OCC 服务器",
+        "addRemoteOCCServerHint": "配对另一个 OCC 运行时",
         "hostConnectionFailed": "Connection failed",
         "defaultBranchUpdateFailed": "无法更新项目默认分支。再试一次。",
         "setLocation": "设置项目位置",
@@ -3592,7 +3592,7 @@
             "switchTerminal": "切换终端",
             "openTaskTerminal": "打开任务终端",
             "systemBrowser": "系统浏览器",
-            "orcaBrowser": "OCC 浏览器",
+            "occBrowser": "OCC 浏览器",
             "terminalLinkSettings": "终端链接设置",
             "copyLink": "复制链接",
             "copied": "已复制",
@@ -4630,7 +4630,7 @@
         "share": {
           "card": {
             "utils": {
-              "19f4b4dc75": "github.com/stablyai/orca",
+              "19f4b4dc75": "github.com/stablyai/occ",
               "d864fc5f98": "输出",
               "5d66fdd7c2": "输入",
               "7080aeaebb": "推理",
@@ -4892,7 +4892,7 @@
           "connectHost": "请连接 SSH 主机"
         },
         "SkillUpdateRow": {
-          "replaceWithOrca": "替换为 OCC 的副本（保留备份）"
+          "replaceWithOCC": "替换为 OCC 的副本（保留备份）"
         },
         "host": {
           "local": "此机器",
@@ -4977,7 +4977,7 @@
           "66270286ac": "· 您可以安全地重试。",
           "157de228b4": "检验技能",
           "69236de8d6": "检查…",
-          "66cff7a804": "https://app.orca.dev/skills/share/…",
+          "66cff7a804": "https://app.occ.dev/skills/share/…",
           "93eb0fe8c7": "OCC 技能链接",
           "releaseNotes": "发行说明：",
           "targetHeader": "安装目标",
@@ -5383,7 +5383,7 @@
           "8851b77327": "已在本机检查此路径。",
           "sshConnectionUnavailable": "未找到 SSH 连接“{{connection}}”或该连接未连接"
         },
-        "OrcaYamlTrustDialog": {
+        "OCCYamlTrustDialog": {
           "f3e2b868fb": "运行钩子",
           "43b7bec4cd": "不运行",
           "setupChangedTitle": "{{repo}} 的设置脚本已更改 — 运行新版本？",
@@ -5394,14 +5394,14 @@
           "archiveRunTitle": "运行 {{repo}} 的存档脚本？",
           "issueCommandRunTitle": "运行 {{repo}} 的议题命令？",
           "vmRecipeRunTitle": "运行 {{repo}} 的 VM 配方？",
-          "setupChangedBody": "<code>orca.yaml</code> 自您上次批准后已更改。它会在创建此工作区时运行，请在运行前重新审查。",
-          "archiveChangedBody": "<code>orca.yaml</code> 自您上次批准后已更改。它会在移除此工作区时运行，请在运行前重新审查。",
-          "issueCommandChangedBody": "<code>orca.yaml</code> 自您上次批准后已更改。它会在启动带有关联议题的此工作区时运行，请在运行前重新审查。",
-          "vmRecipeChangedBody": "<code>orca.yaml</code> 自您上次批准后已更改。它会在预配 VM 前运行，请在运行前重新审查。",
-          "setupRunBody": "此仓库的 <code>orca.yaml</code> 会在创建此工作区时在您的计算机上运行。仅在信任 <repo/> 时运行。",
-          "archiveRunBody": "此仓库的 <code>orca.yaml</code> 会在移除此工作区时在您的计算机上运行。仅在信任 <repo/> 时运行。",
-          "issueCommandRunBody": "此仓库的 <code>orca.yaml</code> 会在启动带有关联议题的此工作区时在您的计算机上运行。仅在信任 <repo/> 时运行。",
-          "vmRecipeRunBody": "此仓库的 <code>orca.yaml</code> 会在预配 VM 前在您的计算机上运行。仅在信任 <repo/> 时运行。",
+          "setupChangedBody": "<code>occ.yaml</code> 自您上次批准后已更改。它会在创建此工作区时运行，请在运行前重新审查。",
+          "archiveChangedBody": "<code>occ.yaml</code> 自您上次批准后已更改。它会在移除此工作区时运行，请在运行前重新审查。",
+          "issueCommandChangedBody": "<code>occ.yaml</code> 自您上次批准后已更改。它会在启动带有关联议题的此工作区时运行，请在运行前重新审查。",
+          "vmRecipeChangedBody": "<code>occ.yaml</code> 自您上次批准后已更改。它会在预配 VM 前运行，请在运行前重新审查。",
+          "setupRunBody": "此仓库的 <code>occ.yaml</code> 会在创建此工作区时在您的计算机上运行。仅在信任 <repo/> 时运行。",
+          "archiveRunBody": "此仓库的 <code>occ.yaml</code> 会在移除此工作区时在您的计算机上运行。仅在信任 <repo/> 时运行。",
+          "issueCommandRunBody": "此仓库的 <code>occ.yaml</code> 会在启动带有关联议题的此工作区时在您的计算机上运行。仅在信任 <repo/> 时运行。",
+          "vmRecipeRunBody": "此仓库的 <code>occ.yaml</code> 会在预配 VM 前在您的计算机上运行。仅在信任 <repo/> 时运行。",
           "newSetupScript": "新的设置脚本",
           "setupScript": "设置脚本",
           "newArchiveScript": "新的存档脚本",
@@ -5411,7 +5411,7 @@
           "newVmRecipe": "新的 VM 配方",
           "vmRecipe": "VM 配方",
           "thisRepository": "此仓库",
-          "alwaysTrustRepo": "始终信任 <repo/> 中的 <code>orca.yaml</code>"
+          "alwaysTrustRepo": "始终信任 <repo/> 中的 <code>occ.yaml</code>"
         },
         "PendingWorktreeRow": {
           "af21e953d1": "取消工作树创建",
@@ -5499,7 +5499,7 @@
           "822ff300ad": "关闭",
           "5bfd5c8779": "关闭安装脚本",
           "detectedFromSource": "从 <source>{{source}}</source> 已检测",
-          "ignoresSharedSetup": "此仓库会忽略共享的 <yaml>orca.yaml</yaml> 设置脚本。请添加本地命令，或在“设置”中更改来源。",
+          "ignoresSharedSetup": "此仓库会忽略共享的 <yaml>occ.yaml</yaml> 设置脚本。请添加本地命令，或在“设置”中更改来源。",
           "foundSetupCommandIn": "在 <source>{{source}}</source> 中找到设置命令。保存后即可在新工作树中运行。"
         },
         "SidebarFeedbackDialog": {
@@ -5773,7 +5773,7 @@
           "jiraIssue": "Jira {{value0}}",
           "viewOnJira": "在 Jira 中查看",
           "linkedJira": "已关联 Jira {{value0}}",
-          "openInOrcaBrowser": "在 OCC 浏览器中打开"
+          "openInOCCBrowser": "在 OCC 浏览器中打开"
         },
         "WorktreeCardMetadataStatusBadges": {
           "fe188062a1": "状态：开放",
@@ -6348,7 +6348,7 @@
           "port": "端口",
           "identityFile": "身份文件",
           "identityFilePlaceholder": "~/.ssh/id_ed25519（可选）",
-          "nameInOrca": "在 OCC 中的名称",
+          "nameInOCC": "在 OCC 中的名称",
           "serverNamePlaceholder": "开发机",
           "accessLink": "访问链接",
           "pairingCodePlaceholder": "occ://pair?code=...",
@@ -6374,7 +6374,7 @@
           "sshConfigPickerEmptyHint": "在那里添加一个主机条目，或者返回并手动输入详细信息。",
           "sshConfigPickerNoMatchHint": "尝试其他过滤器，或者返回并手动输入。",
           "sshConfigPickerMoreResults": "显示第一个 {{value0}} 匹配项。缩小过滤范围以找到更多。",
-          "sshConfigPickerInOrca": "在 OCC",
+          "sshConfigPickerInOCC": "在 OCC",
           "sshConfigPickerPreviouslyRemoved": "从 OCC 中移除",
           "sshConfigPickerBack": "返回",
           "fillFromSshConfig": "从 ~/.ssh/config 填写...",
@@ -6550,7 +6550,7 @@
           "showError": "无法显示检测到的工作树。请重试。"
         },
         "repoHeaderProjectActions": {
-          "hideNonOrcaWorktrees": "隐藏非 OCC 工作树",
+          "hideNonOCCWorktrees": "隐藏非 OCC 工作树",
           "showHiddenWorktrees": "显示隐藏的工作树"
         },
         "useWorktreeCardLinkedDetails": {
@@ -6846,7 +6846,7 @@
           "retrySetup": "重试",
           "installing": "正在安装...",
           "hostUnavailable": "OCC 暂时无法在此工作区所在的机器上安装技能。",
-          "replaceWithOrcaCopy": "替换为 OCC 的副本",
+          "replaceWithOCCCopy": "替换为 OCC 的副本",
           "copyCommandAria": "复制命令",
           "ed197f59a2": "复制命令",
           "failedToCopyCommand": "复制命令失败。",
@@ -7097,7 +7097,7 @@
           "9fd4023db0": "在文件管理器中显示",
           "installFailureUnknownReason": "OCC 无法完成 CLI 注册，且未报告任何原因。",
           "installFailureConflictRemedy": "删除 {{value0}} 并在不再需要时重新注册。",
-          "outsideOrcaDescription": "OCC 终端已内置 `occ`。开启后可在 OCC 以外的其他终端中使用 `occ`。"
+          "outsideOCCDescription": "OCC 终端已内置 `occ`。开启后可在 OCC 以外的其他终端中使用 `occ`。"
         },
         "CliSkillRuntimeSetup": {
           "c47127f222": "WSL 默认值"
@@ -7673,7 +7673,7 @@
         "OpenAiTranscriptionKeyDialog": {
           "fa83512e48": "保存密钥",
           "07b26f2742": "清除键",
-          "d246b2bdb3": "本地运行时密钥使用 Electron 加密存储（如果可用）存储在 ~/.orca 中。",
+          "d246b2bdb3": "本地运行时密钥使用 Electron 加密存储（如果可用）存储在 ~/.occ 中。",
           "c3380e4ca5": "sk-...",
           "2f797018f0": "API 密钥已配置",
           "16015322f9": "API密钥",
@@ -7805,11 +7805,11 @@
         },
         "RepositoryHooksSection": {
           "af49e2a19e": "该文件存在，但 OCC 找不到有效的“scripts”或“issueCommand”定义。",
-          "39da2ae12f": "orca.yaml",
+          "39da2ae12f": "occ.yaml",
           "32fec28f5b": "命令源",
-          "bbbd6e0bc4": "命令源 & orca.yaml",
+          "bbbd6e0bc4": "命令源 & occ.yaml",
           "c9bc1bfd8f": "高级",
-          "610d90fdbd": "命令源和 orca.yaml 详细信息。",
+          "610d90fdbd": "命令源和 occ.yaml 详细信息。",
           "4084720f47": "完成 {{artifact_url}}",
           "13394103bd": "自定义 GitHub 议题命令",
           "2cc27dc12b": "关联议题命令的可选每用户覆盖。",
@@ -7821,7 +7821,7 @@
           "fb6bebcf7e": "何时运行安装程序",
           "30d555acd2": "创建新工作树后运行的本地和共享脚本。",
           "52b31baf02": "设置脚本",
-          "8567127a40": "创建或归档工作树时运行的脚本。本地脚本存储在本机上； `orca.yaml` 脚本与您的团队共享。",
+          "8567127a40": "创建或归档工作树时运行的脚本。本地脚本存储在本机上； `occ.yaml` 脚本与您的团队共享。",
           "ff082fe7c6": "工作树挂钩",
           "5d940bde5c": "添加本地脚本",
           "8c2893fae0": "作为单个 shell 脚本运行。保存在本机上。",
@@ -7835,10 +7835,10 @@
           "b2b06c7ce8": "可用的环境变量（将鼠标悬停以查看详细信息）：",
           "95a0411b3e": "模板",
           "175daba180": "例子",
-          "b20c5df6ca": "添加“orca.yaml”文件以启用此仓库的共享设置、存档或议题自动化默认值。示例模板：",
-          "56f9a4a1d0": "正在使用 `orca.yaml`",
-          "623e0c9f31": "无法解析 `orca.yaml`",
-          "5a67e4793d": "未检测到 `orca.yaml`",
+          "b20c5df6ca": "添加“occ.yaml”文件以启用此仓库的共享设置、存档或议题自动化默认值。示例模板：",
+          "56f9a4a1d0": "正在使用 `occ.yaml`",
+          "623e0c9f31": "无法解析 `occ.yaml`",
+          "5a67e4793d": "未检测到 `occ.yaml`",
           "07ba35bc68": "检查 `scripts:` 下的缩进。钩子键应使用两个空格，命令行应使用四个空格。",
           "787ca433ef": "仅定义支持的键：`scripts`、`setup`、`archive` 和 `issueCommand`。",
           "ecc73d9125": "将你的文件与下面可用的模板进行比较，并在需要时复制该结构。",
@@ -7850,12 +7850,12 @@
           "0fa21e19ec": "工作区的名称，通常基于分支名称。",
           "54c73d88d0": "正在创建的工作树的路径。安装命令从此目录运行。",
           "30952c4aa4": "主仓库检出目录的路径。对于将共享文件（例如 .env）复制到工作树中非常有用。",
-          "9b821fa19d": "# e.g. echo \"Cleaning up $ORCA_WORKSPACE_NAME\"",
+          "9b821fa19d": "# e.g. echo \"Cleaning up $OCC_WORKSPACE_NAME\"",
           "6f90ebe3fd": "在归档或删除工作树之前运行。",
-          "a3fc966677": "# e.g. pnpm install cp \"$ORCA_ROOT_PATH/.env\" \"$ORCA_WORKTREE_PATH/.env\"",
+          "a3fc966677": "# e.g. pnpm install cp \"$OCC_ROOT_PATH/.env\" \"$OCC_WORKTREE_PATH/.env\"",
           "f0710e1c83": "创建新工作树后运行；安装 deps，复制 env 文件，运行迁移。",
-          "8561b0665f": "首先是 orca.yaml，然后是本地命令。",
-          "0e8b2a520d": "忽略 orca.yaml；仅运行本地命令。",
+          "8561b0665f": "首先是 occ.yaml，然后是本地命令。",
+          "0e8b2a520d": "忽略 occ.yaml；仅运行本地命令。",
           "83dc78202a": "仅限本地",
           "29397e8bbc": "仅运行已 commit 的仓库命令；忽略本地命令。",
           "d88b6ff88f": "仅 OCC.yaml",
@@ -7870,17 +7870,17 @@
           "d2b3016c20": "共享",
           "4611b78617": "命令源",
           "c5a55a2d2e": "高级",
-          "0ce113fd7b": "保存本地脚本，但脚本源仅设置为 orca.yaml。",
-          "7f78e5eea6": "保存本地脚本。 OCC 仍在检查 orca.yaml，然后才能建议使用哪个脚本源。",
+          "0ce113fd7b": "保存本地脚本，但脚本源仅设置为 occ.yaml。",
+          "7f78e5eea6": "保存本地脚本。 OCC 仍在检查 occ.yaml，然后才能建议使用哪个脚本源。",
           "2b6356e744": "已保存",
           "81057d5f71": "保存中...",
           "da37d6f10e": "复制",
           "3149964b66": "已复制",
           "waitForSetupBeforeAgent": "等待设置完成后再启动智能体",
           "issueCommandDescription": "可选覆盖。使用 <artifactUrl>{{artifact_url}}</artifactUrl> 表示关联议题或 PR 的 URL。",
-          "issueCommandSharedDefault": "留空则使用 <yaml>orca.yaml</yaml> 中的仓库默认值。",
-          "issueCommandOptionalDefault": "留空则使用 <yaml>orca.yaml</yaml> 中的仓库默认值（如果有）。",
-          "commandSourceDescription": "当 <yaml>orca.yaml</yaml> 和本地命令同时存在时，选择要运行哪些命令。",
+          "issueCommandSharedDefault": "留空则使用 <yaml>occ.yaml</yaml> 中的仓库默认值。",
+          "issueCommandOptionalDefault": "留空则使用 <yaml>occ.yaml</yaml> 中的仓库默认值（如果有）。",
+          "commandSourceDescription": "当 <yaml>occ.yaml</yaml> 和本地命令同时存在时，选择要运行哪些命令。",
           "issueCommandWslStopped": "WSL 发行版 {{distro}} 已停止。请在其中打开终端以查看或编辑此命令。"
         },
         "RepositoryIconPicker": {
@@ -8275,7 +8275,7 @@
           "25b0004fbf": "终端活跃",
           "781cb74d22": "从终端窗格运行。",
           "cb02e00202": "终端",
-          "d8c988dab4": "~/.orca/keybindings.json",
+          "d8c988dab4": "~/.occ/keybindings.json",
           "shortcutUnavailable": "此快捷键已不再可用。"
         },
         "SourceControlAiActionRecipeDefaults": {
@@ -8374,7 +8374,7 @@
           "removing": "正在移除…",
           "testing": "正在测试…",
           "select": "选择 {{label}}",
-          "orcaServer": "OCC 服务器",
+          "occServer": "OCC 服务器",
           "moreActions": "{{label}} 的更多操作",
           "testConnection": "测试连接",
           "edit": "编辑…",
@@ -9270,7 +9270,7 @@
               "614c756ab1": "导入浏览器 Cookie",
               "cee44fb442": "自动化",
               "a57c2172dc": "智能体浏览器",
-              "f5b8fdddf5": "orca-cli",
+              "f5b8fdddf5": "occ-cli",
               "e5a784bc54": "安装",
               "9d97446873": "智能体",
               "a2d489263e": "技能",
@@ -9962,7 +9962,7 @@
             "94e04427f6": "环境",
             "664f1a8984": "持续集成",
             "5854a5c752": "ci",
-            "69637f4dc4": "orca_telemetry_disabled",
+            "69637f4dc4": "occ_telemetry_disabled",
             "058550f6bc": "不跟踪",
             "83a6cd79b3": "不跟踪",
             "f7a2d9f137": "禁用遥测传输的环境变量。",
@@ -10011,13 +10011,13 @@
         },
         "repository": {
           "search": {
-            "bc7e504b8e": ".orca/issue-command",
-            "603c68b68c": "orca.yaml",
+            "bc7e504b8e": ".occ/issue-command",
+            "603c68b68c": "occ.yaml",
             "9dc60d7f6d": "GitHub",
             "ec70364df2": "工作流程",
             "66b584bd6c": "issue 命令",
             "2011a6a4f2": "GitHub issue 命令",
-            "d42d1e49c0": "通过 orca.yaml 和可选本地覆盖配置的基于文件的关联议题命令。",
+            "d42d1e49c0": "通过 occ.yaml 和可选本地覆盖配置的基于文件的关联议题命令。",
             "d86ea12d16": "自定义 GitHub 议题命令",
             "c5e8bdbcbb": "默认跳过",
             "a69c5cbe90": "默认运行",
@@ -10032,7 +10032,7 @@
             "0432d2fb7c": "当地的",
             "ed269fad69": "命令源",
             "19f58d6d89": "高级",
-            "d141897c90": "命令源和 orca.yaml 详细信息。",
+            "d141897c90": "命令源和 occ.yaml 详细信息。",
             "cc11699c3d": "高级",
             "bf460fded8": "yaml",
             "9cad92fe77": "OCC.yaml 挂钩",
@@ -10749,9 +10749,9 @@
                   "1a9475dace": "了解更多",
                   "19fb419c12": "Gitea 凭据已配置但无法通过身份验证。请检查 token、API 基础 URL 和仓库权限；如果环境变量已更改，请重启 OCC。",
                   "60708f23da": "仅当 OCC 无法从 remote 推导出 API URL 时。",
-                  "709057ad91": "ORCA_GITEA_API_BASE_URL",
+                  "709057ad91": "OCC_GITEA_API_BASE_URL",
                   "6da9dfa5de": "用于私有仓库，并设置",
-                  "6d5c2a3005": "ORCA_GITEA_TOKEN",
+                  "6d5c2a3005": "OCC_GITEA_TOKEN",
                   "fcbe0469fd": "公开仓库会从其 git remote 检测。设置",
                   "0613928cb3": "此运行时暂不支持 Gitea 状态。",
                   "05863d2599": "通过 Gitea REST API 获取 pull request 和 commit 状态。",
@@ -10759,11 +10759,11 @@
                   "0b5242f8a2": "{{value0}} · 拉取请求和提交状态",
                   "40f678df73": "Azure DevOps 凭据已配置但无法通过身份验证。请检查 token、API 基础 URL 和仓库权限；如果环境变量已更改，请重启 OCC。",
                   "7bd345e3f6": "仅当 OCC 无法从 git remote 推导出 API 基础 URL 时。",
-                  "186a6689df": "ORCA_AZURE_DEVOPS_API_BASE_URL",
+                  "186a6689df": "OCC_AZURE_DEVOPS_API_BASE_URL",
                   "b8a10b07c1": "。设置",
-                  "fbfd237f5e": "ORCA_AZURE_DEVOPS_ACCESS_TOKEN",
+                  "fbfd237f5e": "OCC_AZURE_DEVOPS_ACCESS_TOKEN",
                   "087feb92f1": "，或设置",
-                  "48842720d2": "ORCA_AZURE_DEVOPS_TOKEN",
+                  "48842720d2": "OCC_AZURE_DEVOPS_TOKEN",
                   "7bbc9c64f0": "设置",
                   "f3f47dc7de": "此运行时暂不支持 Azure DevOps 状态。",
                   "0eb50d5593": "通过 Azure DevOps REST API token 获取 pull request 和构建状态。",
@@ -10800,7 +10800,7 @@
           "3c4d5e6f7a": "覆盖客户端默认值",
           "4d5e6f7a8b": "继承客户端默认值",
           "5e6f7a8b9c": "重置",
-          "6f7a8b9cad": "使用相对路径（例如 .orca/worktrees）可让每个项目使用各自的位置，使用绝对路径则所有项目共用一个文件夹。"
+          "6f7a8b9cad": "使用相对路径（例如 .occ/worktrees）可让每个项目使用各自的位置，使用绝对路径则所有项目共用一个文件夹。"
         },
         "ProviderHostScopeControl": {
           "scope_label": "{{value0}}：{{value1}}",
@@ -10889,8 +10889,8 @@
         },
         "PrivacyDiagnosticsRows": {
           "5a7cbe069a": "已设置 DO_NOT_TRACK=1，创建和发送诊断文件已停用。",
-          "63d03261d1": "已设置 ORCA_TELEMETRY_DISABLED=1，创建和发送诊断文件已停用。",
-          "d37e92a06b": "已设置 ORCA_DIAGNOSTICS_DISABLED=1，应用诊断已关闭。",
+          "63d03261d1": "已设置 OCC_TELEMETRY_DISABLED=1，创建和发送诊断文件已停用。",
+          "d37e92a06b": "已设置 OCC_DIAGNOSTICS_DISABLED=1，应用诊断已关闭。",
           "5ebb31e1fb": "正在 CI 中运行，诊断已关闭。",
           "e27c8d45bf": "诊断已被环境变量停用。"
         },
@@ -10983,13 +10983,13 @@
           "notificationPlayground": "通知测试面板",
           "notificationPlaygroundDescription": "用于检查提示布局、恢复操作和长文案换行的开发触发器。",
           "devOnly": "仅开发",
-          "orcaCloud": "OCC Cloud",
-          "orcaCloudDescription": "仅限开发环境的第一方云登录预览。在生产环境中隐藏；在开发环境中，设置 ORCA_CLOUD_API_URL 和 ORCA_CLOUD_CLIENT_ID 后也会出现在侧边栏账户切换器中。",
-          "orcaCloudStatus": "状态",
-          "orcaCloudSignOut": "退出登录",
-          "orcaCloudConnect": "连接配置文件",
-          "orcaCloudRefresh": "刷新状态",
-          "orcaCloudNotConfigured": "设置 ORCA_CLOUD_API_URL 和 ORCA_CLOUD_CLIENT_ID 以在此开发版本中预览 OCC Cloud 登录。",
+          "occCloud": "OCC Cloud",
+          "occCloudDescription": "仅限开发环境的第一方云登录预览。在生产环境中隐藏；在开发环境中，设置 OCC_CLOUD_API_URL 和 OCC_CLOUD_CLIENT_ID 后也会出现在侧边栏账户切换器中。",
+          "occCloudStatus": "状态",
+          "occCloudSignOut": "退出登录",
+          "occCloudConnect": "连接配置文件",
+          "occCloudRefresh": "刷新状态",
+          "occCloudNotConfigured": "设置 OCC_CLOUD_API_URL 和 OCC_CLOUD_CLIENT_ID 以在此开发版本中预览 OCC Cloud 登录。",
           "deleteAnywayClicked": "仍然删除点击"
         },
         "EphemeralVmRecipeRow": {
@@ -11041,7 +11041,7 @@
           "copy": "复制",
           "copied": "已复制",
           "recipes": "环境模板",
-          "recipesHelp": "orca.yaml 和已启用插件中的配方会显示在这里，可用于启动工作区。",
+          "recipesHelp": "occ.yaml 和已启用插件中的配方会显示在这里，可用于启动工作区。",
           "checking": "正在检查环境模板...",
           "none": "还没有找到环境模板。",
           "cloudVmSkillTitle": "云虚拟机设置技能",
@@ -11088,7 +11088,7 @@
                 "tickets": "门票",
                 "issues": "议题",
                 "skill": "技能",
-                "orcaLinear": "OCC-线性"
+                "occLinear": "OCC-线性"
               }
             }
           }
@@ -11165,7 +11165,7 @@
         },
         "LinearAgentSkillPane": {
           "title": "Linear",
-          "description": "在 OCC 中浏览 Linear 议题、启动关联工作区，并让智能体通过 /orca-linear 更新议题。",
+          "description": "在 OCC 中浏览 Linear 议题、启动关联工作区，并让智能体通过 /occ-linear 更新议题。",
           "skillTitle": "Linear 技能",
           "howToUse": "提示词示例",
           "howToUseDescription": "点击卡片即可复制提示词。安装技能后，请在关联 Linear 的工作区中使用。",
@@ -11233,9 +11233,9 @@
         },
         "BrowserLinkRoutingModifierSetting": {
           "titleSystem": "按住 Shift 在系统浏览器中打开",
-          "titleOrca": "按住 Shift 在 OCC 中打开",
+          "titleOCC": "按住 Shift 在 OCC 中打开",
           "descriptionSystem": "链接在 OCC 中打开，因此 {{chord}}+点击会将其发送到系统浏览器。",
-          "descriptionOrca": "链接在系统浏览器中打开。启用后，{{chord}}+点击会改在 OCC 内置浏览器中打开。"
+          "descriptionOCC": "链接在系统浏览器中打开。启用后，{{chord}}+点击会改在 OCC 内置浏览器中打开。"
         },
         "BrowserLinkRoutingBackgroundSetting": {
           "title": "在后台打开链接",
@@ -11291,9 +11291,9 @@
           "gitTab": "Git URL",
           "localLabel": "插件文件夹路径",
           "localPlaceholder": "插件文件夹路径",
-          "localHelp": "包含 orca-plugin.json 的文件夹",
+          "localHelp": "包含 occ-plugin.json 的文件夹",
           "gitLabel": "仓库 URL",
-          "gitPlaceholder": "https://github.com/acme/orca-notes",
+          "gitPlaceholder": "https://github.com/acme/occ-notes",
           "gitHelp": "粘贴仓库、发行版或标签链接。未指定 #tag 或 #commit 时，OCC 使用最新的版本标签。",
           "cancel": "取消",
           "installing": "正在安装…",
@@ -11343,7 +11343,7 @@
           "title": "目录来源",
           "description": "列出插件的 Git 仓库",
           "urlLabel": "Git URL",
-          "urlDescription": "HTTPS 或 SSH，需包含 orca-catalog.json",
+          "urlDescription": "HTTPS 或 SSH，需包含 occ-catalog.json",
           "urlPlaceholder": "https://git.example.com/team/plugins.git",
           "refLabel": "Git 引用",
           "refDescription": "分支、标签或提交",
@@ -11469,14 +11469,14 @@
           "switchBack": "切换回去"
         },
         "pluginError": {
-          "installManifestMissing": "未找到可读的 orca-plugin.json。请选择插件的根文件夹。",
-          "installManifestInvalid": "orca-plugin.json 无效。请要求插件作者修复清单。",
+          "installManifestMissing": "未找到可读的 occ-plugin.json。请选择插件的根文件夹。",
+          "installManifestInvalid": "occ-plugin.json 无效。请要求插件作者修复清单。",
           "incompatible": "此插件需要不同版本的 OCC。",
           "installUnsafePath": "插件包含不安全的文件路径或符号链接，未安装。",
           "installLimit": "插件超过 OCC 的安装大小或文件数量限制。",
           "installGit": "无法获取此 Git 版本。请检查 URL、#ref 和访问权限。",
-          "invalidManifestMissing": "插件根目录缺少 orca-plugin.json。请添加它，然后刷新插件。",
-          "invalidManifest": "orca-plugin.json 无效。请修复它，然后刷新插件。",
+          "invalidManifestMissing": "插件根目录缺少 occ-plugin.json。请添加它，然后刷新插件。",
+          "invalidManifest": "occ-plugin.json 无效。请修复它，然后刷新插件。",
           "installedManifestUnloadable": "此版本无法在当前 OCC 中加载。请更新或重新安装。",
           "invalidArtifact": "工作进程或面板文件缺失或不安全。修复后请刷新。",
           "consentChanged": "你审查期间此插件发生了变化。请重新审查。",
@@ -11499,7 +11499,7 @@
           "manageKeys": "管理密钥",
           "addAccess": "添加访问权限",
           "setupSkillTitle": "2. 安装智能体技能",
-          "setupSkillBody": "让智能体使用 /orca-linear 读取、更新、分类议题并附加拉取或合并请求。",
+          "setupSkillBody": "让智能体使用 /occ-linear 读取、更新、分类议题并附加拉取或合并请求。",
           "setupVisibleTitle": "3. 在任务中显示 Linear",
           "setupVisibleBody": "在任务来源选择器和侧边栏快捷方式中保留 Linear。",
           "openTaskSources": "任务来源",
@@ -11511,8 +11511,8 @@
           "notesIntro": "连接 Linear 并安装技能后的一些快速提示。",
           "noteLinkedTitle": "从 Linear 议题开始",
           "noteLinkedBody": "从任务创建的工作区会将议题保留为关联上下文，因此议题操作最顺畅。",
-          "noteSlashTitle": "提及 /orca-linear",
-          "noteSlashBody": "在聊天中使用 /orca-linear（或用自然语言提出请求），智能体会在该轮加载此技能。",
+          "noteSlashTitle": "提及 /occ-linear",
+          "noteSlashBody": "在聊天中使用 /occ-linear（或用自然语言提出请求），智能体会在该轮加载此技能。",
           "noteKeysTitle": "密钥按运行环境保存",
           "noteKeysBody": "API 密钥和工作区存储在当前运行环境中。",
           "noteVisibilityTitle": "隐藏不等于断开连接",
@@ -11528,7 +11528,7 @@
           "connectedHint": "工作区和密钥存储在当前运行环境中。你可以随时添加更多访问权限。",
           "recheck": "重新检查连接",
           "skillTitle": "安装 Linear 智能体技能",
-          "skillDescription": "让智能体使用 /orca-linear 读取议题、发布更新、更改状态并附加拉取或合并请求。",
+          "skillDescription": "让智能体使用 /occ-linear 读取议题、发布更新、更改状态并附加拉取或合并请求。",
           "skillBlocked": "请先连接 Linear，然后为智能体安装技能。",
           "skillPanelTitle": "Linear 技能",
           "showDescription": "在任务来源选择器和侧边栏快捷方式中显示 Linear。"
@@ -11697,7 +11697,7 @@
           "keywordMarkdown": "Markdown",
           "keywordUpload": "上传"
         },
-        "orcaAccount": {
+        "occAccount": {
           "connected": "已连接",
           "reconnectRequired": "您的会话已过期。重新登录即可使用云功能。",
           "unavailable": "OCC 登录在此版本中不可用。",
@@ -11798,8 +11798,8 @@
               "connectFailed": "连接失败",
               "title": "连接 Bitbucket",
               "description": "使用 Bitbucket Cloud 凭证浏览拉取请求和构建状态。 OCC 在保存之前会对其进行验证。",
-              "remoteRuntime": "存储在此计算机上，而不是当前的远程运行时中——请改为在远程运行时上设置 ORCA_BITBUCKET_*。环境变量始终优先于此处保存的内容。",
-              "environmentManaged": "Bitbucket 已通过 ORCA_BITBUCKET_* 环境变量进行配置，该环境变量优先。取消设置以在 OCC 中保存凭证。",
+              "remoteRuntime": "存储在此计算机上，而不是当前的远程运行时中——请改为在远程运行时上设置 OCC_BITBUCKET_*。环境变量始终优先于此处保存的内容。",
+              "environmentManaged": "Bitbucket 已通过 OCC_BITBUCKET_* 环境变量进行配置，该环境变量优先。取消设置以在 OCC 中保存凭证。",
               "authModeLabel": "Bitbucket 认证方法",
               "modeBasic": "电子邮件和 API 令牌",
               "modeToken": "访问令牌",
@@ -11814,7 +11814,7 @@
               "tokenHint": "仓库、项目和工作区访问令牌是从匹配的 Bitbucket 设置页面创建的，并且需要读取访问拉取请求的权限。",
               "basicHint": "为您的帐户创建 Atlassian API 令牌，然后将其与拥有它的电子邮件地址配对。",
               "docsLink": "Bitbucket API 令牌文档",
-              "storageNote": "当操作系统钥匙串可用时，通过加密存储存储在本计算机上。 ORCA_BITBUCKET_* 环境变量始终优先于您在此处保存的内容。",
+              "storageNote": "当操作系统钥匙串可用时，通过加密存储存储在本计算机上。 OCC_BITBUCKET_* 环境变量始终优先于您在此处保存的内容。",
               "cancel": "取消",
               "verifying": "正在验证...",
               "connect": "连接"
@@ -11829,10 +11829,10 @@
               "authModeToken": "访问令牌",
               "authModeBasic": "电子邮件和 API 令牌",
               "disconnect": "断开 Bitbucket 连接",
-              "envManaged": "通过环境变量配置。取消设置 ORCA_BITBUCKET_* 变量以在 OCC 中管理此凭证。",
+              "envManaged": "通过环境变量配置。取消设置 OCC_BITBUCKET_* 变量以在 OCC 中管理此凭证。",
               "storedAuthFailed": "保存的 Bitbucket 凭据无法进行身份验证。编辑它，或检查令牌是否仍然具有拉取请求访问权限。",
-              "storedCredential": "保存在本机上的 OCC 中。 ORCA_BITBUCKET_* 环境变量在设置时优先。",
-              "notConfigured": "将 Bitbucket Cloud 帐户与 Atlassian API 令牌或访问令牌连接。 ORCA_BITBUCKET_* 环境变量也起作用并且优先。",
+              "storedCredential": "保存在本机上的 OCC 中。 OCC_BITBUCKET_* 环境变量在设置时优先。",
+              "notConfigured": "将 Bitbucket Cloud 帐户与 Atlassian API 令牌或访问令牌连接。 OCC_BITBUCKET_* 环境变量也起作用并且优先。",
               "disconnectFailed": "无法删除保存的 Bitbucket 凭据。",
               "statusLoadFailed": "无法检查已保存的 Bitbucket 凭据。",
               "replaceCredentials": "添加或替换凭据",
@@ -11982,9 +11982,9 @@
             "confirmForget": "在此桌面上忘记",
             "keepLinked": "保持关联",
             "forgetDescription": "在此处取消关联此服务器，而不联系其主机。如果主机恢复，服务器可能仍在那里运行。",
-            "orcaVersion": "此主机上的 OCC：{{version}}",
-            "stopOrcaDescription": "停止 SSH 主机上的 OCC，并将其从此列表中移除。",
-            "updateOrcaOnHost": "更新此主机上的 OCC",
+            "occVersion": "此主机上的 OCC：{{version}}",
+            "stopOCCDescription": "停止 SSH 主机上的 OCC，并将其从此列表中移除。",
+            "updateOCCOnHost": "更新此主机上的 OCC",
             "updateAnyway": "仍然更新",
             "notNow": "暂不",
             "forceUpdate": "此主机上有终端正在运行。更新期间它们会继续运行，OCC 服务器重启后其窗格会重新连接。"
@@ -12115,7 +12115,7 @@
           "refusedLeaveBehindUnnamed": "此主机的部分已保存项目无法移到其 OCC 服务器。“仍要迁移”会连接此主机，并将这些项目保留在这台电脑上。",
           "windowsBuildUnsupported": "此主机运行的 Windows 版本低于 Windows 10 和 Windows Server 2016，无法运行 OCC 的服务器。请使用 Windows 版本较新的主机，或 Linux、macOS 主机。",
           "windowsNoExtractor": "此 Windows 主机上既没有 tar.exe 也没有 PowerShell 的 Expand-Archive，OCC 无法在其中解包服务器。请先在主机上安装 Windows PowerShell 5.1，然后重新连接。",
-          "runtimeNoexec": "此主机不允许执行 ~/.orca-remote 中的程序，因此 OCC 无法在那里启动服务器。这通常是因为主目录以 noexec 选项挂载。请联系主机管理员，允许在该目录中执行程序，然后重新连接。",
+          "runtimeNoexec": "此主机不允许执行 ~/.occ-remote 中的程序，因此 OCC 无法在那里启动服务器。这通常是因为主目录以 noexec 选项挂载。请联系主机管理员，允许在该目录中执行程序，然后重新连接。",
           "setupContactLost": "OCC 在设置服务器时失去了与此主机的联系。主机上没有任何进程被停止。请重新连接以继续。"
         },
         "deltaMove": {
@@ -12246,7 +12246,7 @@
           "confirm": "恢复"
         },
         "SshTargetList": {
-          "addedInOrca": "在 OCC 中添加",
+          "addedInOCC": "在 OCC 中添加",
           "fromConfig": "来自 ~/.ssh/config",
           "filteredCount": "{{count}} / {{total}}",
           "selectManualGroup": "选择所有在 OCC 中添加的主机",
@@ -12470,8 +12470,8 @@
           "stoppedTitle": "因错误而停止",
           "stoppedBody": "它一直崩溃。重新启动以重试。",
           "invalidTitle": "OCC 无法加载此插件",
-          "needsOrcaTitle": "需要 OCC {{value0}} 或更高版本",
-          "needsOrcaBody": "你的 OCC 版本为 {{value0}}。",
+          "needsOCCTitle": "需要 OCC {{value0}} 或更高版本",
+          "needsOCCBody": "你的 OCC 版本为 {{value0}}。",
           "back": "插件",
           "info": "信息",
           "version": "版本",
@@ -12519,7 +12519,7 @@
           "viewError": "查看错误",
           "copyId": "复制插件 ID",
           "checkUpdate": "检查更新",
-          "bundledWithOrca": "随 OCC 附带",
+          "bundledWithOCC": "随 OCC 附带",
           "installName": "安装 {{value0}}",
           "copied": "已复制插件 ID",
           "copyFailed": "无法复制插件 ID。",
@@ -12529,7 +12529,7 @@
           "updateAvailable": "有可用更新 {{value0}}",
           "updateLabel": "将 {{value0}} 更新到 {{value1}}",
           "update": "更新到 {{value0}}",
-          "needsOrca": "需要 OCC {{value0}}",
+          "needsOCC": "需要 OCC {{value0}}",
           "rollbackTo": "回滚到 {{value0}}…",
           "copyContentHash": "复制内容哈希",
           "reviewUpdate": "审核更新",
@@ -12564,7 +12564,7 @@
           "close": "关闭",
           "retry": "重试",
           "updated": "已更新",
-          "needsOrca": "需要 OCC {{value0}} 或更高版本",
+          "needsOCC": "需要 OCC {{value0}} 或更高版本",
           "current": "已安装",
           "allAccess": "查看全部访问权限",
           "newCommands": "命令",
@@ -14619,7 +14619,7 @@
             "a6e7cdc688": "pnpm 测试 -- 搜索手机设备",
             "21b67dfc92": "Bash",
             "d6d1041a1c": "⎿ 用终端会话替换配对扫描幻灯片",
-            "336c0e070e": "手机/orca-mobile-sidebar-mock-v3.html",
+            "336c0e070e": "手机/occ-mobile-sidebar-mock-v3.html",
             "6d4ebd5833": "编辑",
             "fc83e0d5ef": "⎿ 阅读2103行",
             "80cc356591": "读",
@@ -14648,7 +14648,7 @@
           "title": "自定义网络地址",
           "description": "公布一个手机可访问的地址，例如 Tailscale 主机名、IP 地址或反向代理 URL。",
           "label": "地址",
-          "placeholder": "home.example.com:8443 或 https://example.com/orca",
+          "placeholder": "home.example.com:8443 或 https://example.com/occ",
           "hint": "请输入 IPv4/IPv6 地址、主机名或完整的 HTTP(S)/WebSocket URL。端口可选。",
           "cancel": "取消",
           "use": "使用地址",
@@ -14973,7 +14973,7 @@
                   "6d2b0a84e1": "此版本不可用",
                   "needsMacAccess": "需要 macOS 访问权限",
                   "notInstalled": "未安装",
-                  "requiresOrcaDesktop": "需要 OCC Desktop"
+                  "requiresOCCDesktop": "需要 OCC Desktop"
                 }
               }
             }
@@ -16588,7 +16588,7 @@
             "zoomIn": "放大",
             "resetZoom": "重置缩放",
             "appearance": "外观",
-            "appearanceMatchOrca": "与 OCC 一致",
+            "appearanceMatchOCC": "与 OCC 一致",
             "appearanceLight": "浅色",
             "appearanceDark": "深色",
             "zoomPercent": "缩放 {{value0}}%"
@@ -17456,7 +17456,7 @@
               "preview": "预览",
               "title": "在 OCC 浏览器中打开终端链接？",
               "description": "用 OCC 浏览器打开终端链接，或继续使用系统浏览器。",
-              "orca": {
+              "occ": {
                 "button": "在 OCC 中打开",
                 "note": "OCC 可以使用已导入的 Cookie 打开已登录的网站。"
               },
@@ -17478,7 +17478,7 @@
               "keep": {
                 "title": "继续在 OCC 浏览器中打开终端链接？",
                 "description": "或默认使用系统浏览器。",
-                "orca": {
+                "occ": {
                   "button": "继续使用 OCC"
                 }
               }
@@ -17582,7 +17582,7 @@
           "copy": "复制"
         }
       },
-      "orca": {
+      "occ": {
         "profiles": {
           "signout": {
             "confirm": {
@@ -17631,7 +17631,7 @@
           "drawHintDismiss": "知道了",
           "drawHintTry": "试一试",
           "errorAttach": "无法附加标注后的截图。",
-          "errorCapture": "无法捕获页面进行绘制。",
+          "erroccpture": "无法捕获页面进行绘制。",
           "errorUnavailable": "此页面无法使用截图标注。",
           "fontSize": "字号",
           "hint": "在页面上绘制，然后复制标注以粘贴到你的智能体。",
@@ -18063,7 +18063,7 @@
         "c77189bc0c": "Update filter",
         "19af906d12": "Save filter"
       },
-      "OrcaSignInProgress": {
+      "OCCSignInProgress": {
         "waiting": "正在等待在浏览器中登录",
         "copyLink": "复制登录链接",
         "copied": "已复制登录链接",
@@ -18296,10 +18296,10 @@
       },
       "reasoning": "推理",
       "contextMenu": {
-        "copyOrcaSessionId": "复制 OCC 会话 ID",
-        "orcaSessionIdCopied": "已复制 OCC 会话 ID",
-        "orcaSessionIdCopyFailed": "无法复制 OCC 会话 ID",
-        "orcaSessionIdTooltip": "OCC 为此聊天分配的 ID，独立于智能体 CLI 自身的会话 ID。智能体通过 OCC 用它来相互指代。"
+        "copyOCCSessionId": "复制 OCC 会话 ID",
+        "occSessionIdCopied": "已复制 OCC 会话 ID",
+        "occSessionIdCopyFailed": "无法复制 OCC 会话 ID",
+        "occSessionIdTooltip": "OCC 为此聊天分配的 ID，独立于智能体 CLI 自身的会话 ID。智能体通过 OCC 用它来相互指代。"
       },
       "failureWords": {
         "theAgent": "智能体",
@@ -18435,10 +18435,10 @@
         "historyUnreadable": "OCC 无法读取此聊天的已保存历史记录。",
         "historyUnusable": "无法加载此聊天。",
         "historyUnavailable": "OCC 目前无法打开此聊天的历史记录。",
-        "savedByNewerOrca": "这些聊天由更新版本的 OCC 保存。",
-        "updateOrcaToKeepUsing": "请更新 OCC 以继续使用这些聊天。",
-        "chatSavedByNewerOrca": "此聊天由更新版本的 OCC 保存。",
-        "updateOrcaToOpenChat": "请更新 OCC 以打开它。",
+        "savedByNewerOCC": "这些聊天由更新版本的 OCC 保存。",
+        "updateOCCToKeepUsing": "请更新 OCC 以继续使用这些聊天。",
+        "chatSavedByNewerOCC": "此聊天由更新版本的 OCC 保存。",
+        "updateOCCToOpenChat": "请更新 OCC 以打开它。",
         "unsupported": "运行此聊天的计算机需要更新版本的 OCC。请在该计算机上更新 OCC 后重试。",
         "notAvailable": "此聊天中无法使用此功能。",
         "cannotRunHere": "OCC 无法在此处以聊天方式运行此智能体。",
@@ -18753,7 +18753,7 @@
         "openTerminal": "在终端中回答"
       },
       "approval": {
-        "needsNewerOrca": "此请求需要更新版本的 OCC。",
+        "needsNewerOCC": "此请求需要更新版本的 OCC。",
         "title": "允许 {{value0}}？",
         "allow": "允许",
         "deny": "拒绝",
@@ -18813,12 +18813,12 @@
         "stoppedBeforeStart": "已手动停止",
         "dismiss": "关闭",
         "copyError": "复制错误",
-        "orcaStopUpdate": "此回复进行期间，{{machine}} 上的 OCC 为更新而重新启动。",
-        "orcaStopQuit": "此回复进行期间，{{machine}} 上的 OCC 已关闭。",
-        "orcaStopCrash": "此回复进行期间，{{machine}} 上的 OCC 意外停止。",
-        "orcaStopRemote": "此回复进行期间，{{machine}} 上的 OCC 已停止。",
-        "orcaStopCanContinue": "你可以在此对话中继续。",
-        "orcaStopUnnamedServer": "远程服务器"
+        "occStopUpdate": "此回复进行期间，{{machine}} 上的 OCC 为更新而重新启动。",
+        "occStopQuit": "此回复进行期间，{{machine}} 上的 OCC 已关闭。",
+        "occStopCrash": "此回复进行期间，{{machine}} 上的 OCC 意外停止。",
+        "occStopRemote": "此回复进行期间，{{machine}} 上的 OCC 已停止。",
+        "occStopCanContinue": "你可以在此对话中继续。",
+        "occStopUnnamedServer": "远程服务器"
       },
       "providerFrame": {
         "byteCount_other": "{{count}} 字节"
@@ -20161,7 +20161,7 @@
       "statusDetails": {
         "runningListUnavailable": "Windows 未报告该发行版是否正在运行。",
         "guestUnanswered": "发行版正在运行，但未响应 OCC 的检查。",
-        "orcadUnanswered": "发行版中的 OCC 服务器未响应。",
+        "occdUnanswered": "发行版中的 OCC 服务器未响应。",
         "restartGaveUp_other": "尝试 {{count}} 次后仍无法重启 {{distro}} 中的 OCC 服务器",
         "serviceUnconfirmed": "WSL 服务未确认该发行版是否正在运行。",
         "peerCheckFailed": "OCC 无法向 WSL 主机询问此电脑上的另一个 OCC 是否仍在使用该主机：{{detail}}",
@@ -20306,7 +20306,7 @@
     },
     "eyebrowNew": "新功能",
     "eyebrowTip": "提示",
-    "orcaCli": {
+    "occCli": {
       "title": "让智能体通过 OCC CLI 操控 OCC",
       "description": "让智能体协调子工作树，并在工作树之间通信。",
       "cta": "安装 CLI 与技能"
@@ -20372,7 +20372,7 @@
     "createReviewFailure": {
       "authRequiredCommand": "{{providerName}} 未通过身份验证。下一步：在此环境中运行 {{command}}。",
       "authRequiredVariable": "{{providerName}} 未通过身份验证。下一步：在此环境中设置 {{variable}}。",
-      "authRequiredBitbucket": "Bitbucket 未通过身份验证。下一步：在“设置 > 集成”中连接 Bitbucket，或在此环境中设置 ORCA_BITBUCKET_*。",
+      "authRequiredBitbucket": "Bitbucket 未通过身份验证。下一步：在“设置 > 集成”中连接 Bitbucket，或在此环境中设置 OCC_BITBUCKET_*。",
       "signInHintCommand": "在此环境中运行 {{command}}",
       "signInHintVariable": "在此环境中设置 {{variable}}",
       "signInHintBitbucket": "在“设置 > 集成”中连接 Bitbucket",
@@ -21609,7 +21609,7 @@
       "failed": "无法验证：无法刷新本地终端。正在显示上次观察到的终端。",
       "retry": "重试",
       "loading": "正在加载终端…",
-      "noLocalOrcaPtys": "没有本地 OCC PTY",
+      "noLocalOCCPtys": "没有本地 OCC PTY",
       "openNamed": "打开 {{terminal}}",
       "endNamed": "结束 {{terminal}}",
       "endShort": "结束",
@@ -21967,7 +21967,7 @@
       "writerUnavailable": "OCC 无法启动配置文件保存功能。请重新启动 OCC；如果问题仍然存在，请修复或重新安装此版本。",
       "publicationUnavailable": "OCC 无法将配置文件状态安全地保存到 {{directory}}。",
       "publicationNeedsHardLinks": "此位置必须支持硬链接，且 OCC 需要创建硬链接的权限。",
-      "publicationMoveData": "在检查文件夹权限，或将整个 OCC 数据目录移动到支持硬链接的可写本地文件系统（如 APFS、NTFS 或 ext4）之前，请关闭 OCC 和 orcad。",
+      "publicationMoveData": "在检查文件夹权限，或将整个 OCC 数据目录移动到支持硬链接的可写本地文件系统（如 APFS、NTFS 或 ext4）之前，请关闭 OCC 和 occd。",
       "publicationKeepFiles": "请保留原始目录和所有恢复文件。"
     }
   },
@@ -22020,7 +22020,7 @@
       "alreadyPairedAddAgain": "此服务器已作为“{{name}}”配对。要更新其连接，请在设置 > 远程 OCC 服务器下重新添加。",
       "alreadyPairedUnreadable": "此服务器已作为“{{name}}”配对，但此版本的 OCC 无法读取其已保存的设置。",
       "nameTaken": "名为“{{name}}”的服务器已存在。",
-      "idNeedsNewerOrca": "具有此 ID 的服务器已存在，其格式需要更新版本的 OCC。",
+      "idNeedsNewerOCC": "具有此 ID 的服务器已存在，其格式需要更新版本的 OCC。",
       "hostSaveFailed": "OCC 已验证主机，但无法保存。请检查本地设置存储并重试。",
       "repairSaveFailed": "OCC 已验证服务器，但无法保存新的配对。请检查本地设置存储并重试。",
       "repairCloudWorkspace": "此服务器属于一个云工作区，该工作区恢复运行时会再次与其配对。"

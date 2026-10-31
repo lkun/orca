@@ -1,5 +1,5 @@
-import type { ChildProcessHandle, ProcessSpec } from '@orca/process-host/process-spec'
-import { spawnProcess } from '@orca/process-host'
+import type { ChildProcessHandle, ProcessSpec } from '@occ/process-host/process-spec'
+import { spawnProcess } from '@occ/process-host'
 import { normalizeHookTrustKeyForLookup } from './config-toml-trust'
 import { runCodexAppServerSession, type CodexAppServerInvocation } from './codex-app-server-session'
 

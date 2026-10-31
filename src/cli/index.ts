@@ -8,7 +8,7 @@ import {
   specPaths,
   validateCommandAndFlags
 } from './args'
-import { readOrcaCliVersion } from './cli-version'
+import { readOCCCliVersion } from './cli-version'
 import { dispatch } from './dispatch'
 import {
   resolveEnvironmentSelectorForStore,
@@ -34,9 +34,9 @@ async function loadRuntimeClientClass(): Promise<typeof RuntimeClient> {
   return (await import('./runtime-client.js')).RuntimeClient
 }
 
-// The SSH bridge runs here, but ORCA_CLI_CWD carries the remote caller's directory.
+// The SSH bridge runs here, but OCC_CLI_CWD carries the remote caller's directory.
 function resolveInvocationCwd(): string {
-  const override = process.env.ORCA_CLI_CWD
+  const override = process.env.OCC_CLI_CWD
   return typeof override === 'string' && override.length > 0 ? override : process.cwd()
 }
 
@@ -46,7 +46,7 @@ export async function main(
 ): Promise<void> {
   // Why: version audits use the bundled launcher; Electron intercepts direct binary version flags.
   if (argv.length === 1 && (argv[0] === '--version' || argv[0] === '-v')) {
-    const version = readOrcaCliVersion()
+    const version = readOCCCliVersion()
     if (!version) {
       process.stderr.write('Could not determine the OCC version for this build.\n')
       process.exitCode = 1
@@ -125,15 +125,15 @@ export async function main(
           environmentSelector:
             typeof environmentSelector === 'string'
               ? { value: environmentSelector, label: '--environment' }
-              : process.env.ORCA_ENVIRONMENT
-                ? { value: process.env.ORCA_ENVIRONMENT, label: 'ORCA_ENVIRONMENT' }
+              : process.env.OCC_ENVIRONMENT
+                ? { value: process.env.OCC_ENVIRONMENT, label: 'OCC_ENVIRONMENT' }
                 : null
         })
     // Stored host identities use ids, so canonicalize names before any downstream comparison.
     if (hostEnvironmentId !== null) {
       parsed.flags.set('host', `runtime:${hostEnvironmentId}`)
     }
-    // null suppresses RuntimeClient's ORCA_PAIRING_CODE / ORCA_ENVIRONMENT default parameters.
+    // null suppresses RuntimeClient's OCC_PAIRING_CODE / OCC_ENVIRONMENT default parameters.
     const suppressed = ignoreRemoteSelection ? null : undefined
     // An explicit runtime host overrides an ambient pairing code.
     const remotePairingCode =
@@ -170,7 +170,7 @@ export async function main(
         parsed.flags.has('environment') ||
         parsed.flags.has('pairing-code') ||
         (typeof hostFlag === 'string' && hostFlag.startsWith('runtime:')) ||
-        Boolean(process.env.ORCA_ENVIRONMENT?.trim() || process.env.ORCA_PAIRING_CODE?.trim())
+        Boolean(process.env.OCC_ENVIRONMENT?.trim() || process.env.OCC_PAIRING_CODE?.trim())
     })
     process.exitCode = cliErrorExitCode(error, parsed.commandPath)
   }
@@ -201,8 +201,8 @@ async function runAgentTeamsTmuxShim(argv: string[]): Promise<void> {
     }>(
       'agentTeams.tmuxCompat',
       {
-        teamId: process.env.ORCA_AGENT_TEAMS_TEAM_ID,
-        token: process.env.ORCA_AGENT_TEAMS_TOKEN,
+        teamId: process.env.OCC_AGENT_TEAMS_TEAM_ID,
+        token: process.env.OCC_AGENT_TEAMS_TOKEN,
         envPane: process.env.TMUX_PANE,
         cwd: process.cwd(),
         argv

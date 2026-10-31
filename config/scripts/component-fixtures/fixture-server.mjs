@@ -18,7 +18,7 @@ const fixtureRegistryPath = path
   .join(repoRoot, 'src/renderer/src/component-fixtures/component-fixture-registry.ts')
   .replaceAll('\\', '/')
 const codeStamp = fixtureServerCodeStamp()
-const IDLE_SHUTDOWN_MS = Number(process.env.ORCA_FIXTURES_IDLE_MS) || 20 * 60 * 1000
+const IDLE_SHUTDOWN_MS = Number(process.env.OCC_FIXTURES_IDLE_MS) || 20 * 60 * 1000
 
 process.chdir(repoRoot)
 
@@ -36,7 +36,7 @@ function findFreePort() {
 // Prefers an explicit binary, then the Playwright-managed headless shell, then an
 // installed Chrome/Edge. Every option runs headless, so no window or focus change.
 async function launchHeadlessBrowser() {
-  const override = process.env.ORCA_FIXTURES_BROWSER
+  const override = process.env.OCC_FIXTURES_BROWSER
   const attempts = [
     ...(override ? [{ label: override, options: { executablePath: override } }] : []),
     { label: 'playwright chromium-headless-shell', options: {} },
@@ -54,7 +54,7 @@ async function launchHeadlessBrowser() {
     }
   }
   throw new Error(
-    `No headless Chromium found. Set ORCA_FIXTURES_BROWSER or run \`pnpm exec playwright install chromium-headless-shell\`.\n${failures.join('\n')}`
+    `No headless Chromium found. Set OCC_FIXTURES_BROWSER or run \`pnpm exec playwright install chromium-headless-shell\`.\n${failures.join('\n')}`
   )
 }
 
@@ -130,7 +130,7 @@ function invalidateFixtureRegistry(server) {
 
 function createFixtureApiPlugin(session) {
   return {
-    name: 'orca-component-fixture-api',
+    name: 'occ-component-fixture-api',
     configureServer(server) {
       // Any watched source change makes the warm page reload before its next shot.
       server.watcher.on('all', (event, file) => {

@@ -565,7 +565,7 @@ describe('hydrateLocalPtyRegistryAtBoot', () => {
     )
     listLocalRepoWorktreesStrictMock.mockResolvedValue([
       {
-        path: 'c:\\users\\neil\\orca',
+        path: 'c:\\users\\neil\\occ',
         head: '',
         branch: '',
         isBare: false,
@@ -595,7 +595,7 @@ describe('hydrateLocalPtyRegistryAtBoot', () => {
         isMainWorktree: true
       },
       {
-        path: 'c:\\users\\neil\\orca',
+        path: 'c:\\users\\neil\\occ',
         head: '',
         branch: '',
         isBare: false,
@@ -610,20 +610,20 @@ describe('hydrateLocalPtyRegistryAtBoot', () => {
 
   it('matches local WSL UNC aliases without treating WSL as a remote host', async () => {
     const { hydrate, listRegisteredPtys } = await loadFresh()
-    const worktreeId = 'repo-a::\\\\wsl$\\Ubuntu\\home\\neil\\orca'
+    const worktreeId = 'repo-a::\\\\wsl$\\Ubuntu\\home\\neil\\occ'
     const ptyId = `${worktreeId}@@cafebabe`
     getDaemonProviderMock.mockReturnValue(
       makeProvider([
         {
           sessionId: ptyId,
           pid: 4242,
-          cwd: '\\\\wsl$\\Ubuntu\\home\\neil\\orca'
+          cwd: '\\\\wsl$\\Ubuntu\\home\\neil\\occ'
         } as unknown as SessionInfo
       ])
     )
     listLocalRepoWorktreesStrictMock.mockResolvedValue([
       {
-        path: '\\\\wsl.localhost\\ubuntu\\home\\neil\\orca',
+        path: '\\\\wsl.localhost\\ubuntu\\home\\neil\\occ',
         head: '',
         branch: '',
         isBare: false,
@@ -631,7 +631,7 @@ describe('hydrateLocalPtyRegistryAtBoot', () => {
       }
     ])
 
-    await hydrate(makeStore([{ id: 'repo-a', path: '\\\\wsl$\\Ubuntu\\home\\neil\\orca' }]))
+    await hydrate(makeStore([{ id: 'repo-a', path: '\\\\wsl$\\Ubuntu\\home\\neil\\occ' }]))
 
     expect(listRegisteredPtys()).toEqual([expect.objectContaining({ ptyId, worktreeId })])
   })

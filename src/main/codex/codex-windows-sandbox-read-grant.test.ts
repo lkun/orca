@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const { runProcessMock } = vi.hoisted(() => ({ runProcessMock: vi.fn() }))
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 
 import { grantCodexSandboxReadOnManagedHome } from './codex-windows-sandbox-read-grant'
 

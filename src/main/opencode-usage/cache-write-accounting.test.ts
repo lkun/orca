@@ -42,7 +42,7 @@ it.each([
 it.each(['v1', 'v2-only'] as const)(
   'preserves separate cache read and write telemetry after %s aggregation and reload',
   async (generation) => {
-    const directory = realpathSync(mkdtempSync(join(tmpdir(), 'orca-cache-buckets-')))
+    const directory = realpathSync(mkdtempSync(join(tmpdir(), 'occ-cache-buckets-')))
     try {
       const path = join(directory, 'opencode.db')
       const sessions = [

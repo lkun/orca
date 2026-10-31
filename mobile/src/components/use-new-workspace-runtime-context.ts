@@ -1,6 +1,6 @@
 import { optionalSettingsRead } from '../transport/settings-read-operations'
 import { useCallback, useEffect, useState } from 'react'
-import type { PersistedTrustedOrcaHooks } from '../../../src/shared/orca-yaml-hook-types'
+import type { PersistedTrustedOCCHooks } from '../../../src/shared/occ-yaml-hook-types'
 import type { RpcAcceptedResult } from '../transport/rpc-accepted-result'
 import type { RpcClient } from '../transport/rpc-client'
 import type { RpcResponse } from '../transport/types'
@@ -37,7 +37,7 @@ function settledValue(
 type OwnedRuntimeContext = {
   owner: { hostId: string | undefined; serverId: string | undefined }
   runtimeSettings: NewWorktreeRuntimeSettings | null
-  trustedOrcaHooks: PersistedTrustedOrcaHooks
+  trustedOCCHooks: PersistedTrustedOCCHooks
   availableProviders: TaskProvider[]
 }
 
@@ -49,8 +49,8 @@ export function useNewWorkspaceRuntimeContext(
 ): {
   runtimeSettings: NewWorktreeRuntimeSettings | null
   setRuntimeSettings: (settings: NewWorktreeRuntimeSettings) => void
-  trustedOrcaHooks: PersistedTrustedOrcaHooks
-  setTrustedOrcaHooks: (trust: PersistedTrustedOrcaHooks) => void
+  trustedOCCHooks: PersistedTrustedOCCHooks
+  setTrustedOCCHooks: (trust: PersistedTrustedOCCHooks) => void
   availableProviders: TaskProvider[]
   jiraConnection: MobileJiraConnection
 } {
@@ -59,7 +59,7 @@ export function useNewWorkspaceRuntimeContext(
   const [context, setContext] = useState<OwnedRuntimeContext>(() => ({
     owner: { hostId, serverId },
     runtimeSettings: null,
-    trustedOrcaHooks: {},
+    trustedOCCHooks: {},
     availableProviders: []
   }))
   const { owner } = context
@@ -68,12 +68,12 @@ export function useNewWorkspaceRuntimeContext(
     setContext({
       owner: { hostId, serverId },
       runtimeSettings: null,
-      trustedOrcaHooks: {},
+      trustedOCCHooks: {},
       availableProviders: []
     })
   }
   const runtimeSettings = matchesOwner ? context.runtimeSettings : null
-  const trustedOrcaHooks = matchesOwner ? context.trustedOrcaHooks : {}
+  const trustedOCCHooks = matchesOwner ? context.trustedOCCHooks : {}
   const availableProviders = matchesOwner ? context.availableProviders : []
   const publish = useCallback(
     (patch: Partial<Omit<OwnedRuntimeContext, 'owner'>>) => {
@@ -85,8 +85,8 @@ export function useNewWorkspaceRuntimeContext(
     (settings: NewWorktreeRuntimeSettings) => publish({ runtimeSettings: settings }),
     [publish]
   )
-  const setTrustedOrcaHooks = useCallback(
-    (trust: PersistedTrustedOrcaHooks) => publish({ trustedOrcaHooks: trust }),
+  const setTrustedOCCHooks = useCallback(
+    (trust: PersistedTrustedOCCHooks) => publish({ trustedOCCHooks: trust }),
     [publish]
   )
   // Tasks can offer Jira setup; the composer requires a connected site.
@@ -128,7 +128,7 @@ export function useNewWorkspaceRuntimeContext(
       if (uiRes.status === 'fulfilled') {
         const ui = newWorkspaceUiStateRead.interpret(uiRes.value)
         if (ui.accepted) {
-          setTrustedOrcaHooks(ui.value?.trustedOrcaHooks ?? {})
+          setTrustedOCCHooks(ui.value?.trustedOCCHooks ?? {})
         }
       }
 
@@ -160,13 +160,13 @@ export function useNewWorkspaceRuntimeContext(
     return () => {
       stale = true
     }
-  }, [visible, client, hostId, publish, setRuntimeSettings, setTrustedOrcaHooks])
+  }, [visible, client, hostId, publish, setRuntimeSettings, setTrustedOCCHooks])
 
   return {
     runtimeSettings,
     setRuntimeSettings,
-    trustedOrcaHooks,
-    setTrustedOrcaHooks,
+    trustedOCCHooks,
+    setTrustedOCCHooks,
     availableProviders,
     jiraConnection
   }

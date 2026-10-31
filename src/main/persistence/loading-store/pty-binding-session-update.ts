@@ -6,7 +6,7 @@ import {
   layoutContainsLeafId
 } from '../restoring-sessions/terminal-layout-normalization'
 import { createMinimalPersistedTerminalTab } from '../restoring-sessions/session-owner-fields'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { placedSplitRoot } from '../terminal-topology/terminal-pane-placement-graft'
 import { tabRowPtyIdAfterLeafBinding } from './terminal-tab-pty-ownership'
 import type { PersistPtyBindingArgs } from './pty-binding-persistence'
@@ -40,7 +40,7 @@ export function applyPtyBinding(
   }
   // Unbind reused local IDs in the same commit that publishes the new incarnation.
   const unbound =
-    ORCA_LAYOUT_OWNER_IS_MAIN && args.incarnationId
+    OCC_LAYOUT_OWNER_IS_MAIN && args.incarnationId
       ? reusedTerminalIdUnbinding(session, { ...args, incarnationId: args.incarnationId })
       : null
   const stamps =
@@ -119,7 +119,7 @@ export function applyPtyBinding(
       terminalMembershipChanged = true
       // Persist minimal split membership before renderer saves so crashes cannot strand the new binding.
       // With main-owned layout, preserve the split position supplied by the window.
-      layout.root = (ORCA_LAYOUT_OWNER_IS_MAIN &&
+      layout.root = (OCC_LAYOUT_OWNER_IS_MAIN &&
         placedSplitRoot(layout.root, args.leafId, args.placement)) || {
         type: 'split',
         direction: 'vertical',

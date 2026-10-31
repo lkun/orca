@@ -2,7 +2,7 @@ import { isEventTargetInsideFloatingWorkspacePanel } from '@/lib/floating-worksp
 
 export type ViewerZoomDirection = 'in' | 'out' | 'reset'
 
-const VIEWER_ZOOM_REQUEST_EVENT = 'orca:viewer-zoom-request'
+const VIEWER_ZOOM_REQUEST_EVENT = 'occ:viewer-zoom-request'
 
 /** Offers an app zoom command to the focused pane's PDF or image; true when a viewer took it. */
 export function requestViewerZoom(direction: ViewerZoomDirection): boolean {

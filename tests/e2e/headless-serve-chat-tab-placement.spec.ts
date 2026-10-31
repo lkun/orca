@@ -9,16 +9,16 @@ import {
 } from '../../src/shared/structured-agent-session-create'
 import { structuredAgentSessionTabId } from '../../src/shared/structured-agent-session-projection'
 import { HOST_TERMINAL_SURFACE_SEPARATOR } from '../../src/shared/terminal-surface-id'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { readServerLayout } from './helpers/paired-desktop-server-layout'
 
 const LAYOUT_OWNER_BUILD = existsSync(
-  path.join(process.cwd(), 'out', 'main', 'ORCA_LAYOUT_OWNER_MAIN')
+  path.join(process.cwd(), 'out', 'main', 'OCC_LAYOUT_OWNER_MAIN')
 )
 
 test.describe('a chat a paired client creates lands where it asked', () => {
-  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (ORCA_LAYOUT_OWNER=main)')
+  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (OCC_LAYOUT_OWNER=main)')
 
   test('between two terminals, after the one the client named', async ({ testRepoPath }) => {
     test.setTimeout(180_000)

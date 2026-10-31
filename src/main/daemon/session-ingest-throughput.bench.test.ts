@@ -3,8 +3,8 @@ import { performance } from 'node:perf_hooks'
 import { Session } from './session'
 import type { SubprocessHandle } from './session-subprocess-handle'
 
-// Enable ORCA_TERMINAL_PERF_BENCH=1 to isolate daemon ingest cost with terminal-pipeline-bench workloads.
-const benchEnabled = process.env.ORCA_TERMINAL_PERF_BENCH === '1'
+// Enable OCC_TERMINAL_PERF_BENCH=1 to isolate daemon ingest cost with terminal-pipeline-bench workloads.
+const benchEnabled = process.env.OCC_TERMINAL_PERF_BENCH === '1'
 
 const COLS = 114
 const ROWS = 85

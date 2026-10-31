@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { fixture, admitRuntimeSpawnPane } from './profile-state-delayed-authority-fixture'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { commitPtyIpcSpawn } from '../../ipc/pty/ipc/spawn-commit'
 import { createPtyIpcSpawnState } from '../../ipc/pty/ipc/spawn-state'
 import type { PtySpawnResult } from '../../providers/pty-provider-contract'
@@ -40,7 +40,7 @@ describe.each(['ipc', 'runtime'])('%s restored scrollback', (controller) => {
     'keeps restored history before output during the binding save: %j',
     async (restore) => {
       const { store, authority } = await fixture()
-      const runtime = new OrcaRuntimeService(store)
+      const runtime = new OCCRuntimeService(store)
       runtime.onPtySpawned(binding.ptyId, binding.incarnationId)
       const deps = createPtySpawnCommitDependencies(runtime, store)
       let commit: () => Promise<unknown>

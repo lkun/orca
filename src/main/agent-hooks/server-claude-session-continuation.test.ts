@@ -19,7 +19,7 @@ let projectDir: string
 const servers: AgentHookServer[] = []
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-claude-continuation-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-claude-continuation-'))
   projectDir = join(root, 'claude', 'projects', '-work-repo')
   mkdirSync(projectDir, { recursive: true })
 })
@@ -53,7 +53,7 @@ function forkOldIntoJob(): { oldPath: string; forkPath: string } {
 async function createServer(): Promise<AgentHookServer> {
   const server = new AgentHookServer()
   servers.push(server)
-  await server.start({ env: 'production', userDataPath: join(root, 'orca') })
+  await server.start({ env: 'production', userDataPath: join(root, 'occ') })
   return server
 }
 
@@ -102,7 +102,7 @@ describe('Claude session continued into a daemon job', () => {
     expect(after?.prompt).toBe(before?.prompt)
     server.flushStatusPersistSync()
     const persisted = JSON.parse(
-      readFileSync(join(root, 'orca', 'agent-hooks', 'last-status.json'), 'utf8')
+      readFileSync(join(root, 'occ', 'agent-hooks', 'last-status.json'), 'utf8')
     )
     expect(persisted.entries[PANE].providerSession.id).toBe(FORK)
   })

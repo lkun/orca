@@ -10,7 +10,7 @@ import {
 } from '../../shared/browser-download-filename'
 
 // Remote downloads need an in-workspace home reachable through containment-checked transfers.
-export const BROWSER_CLIENT_DOWNLOAD_WORKSPACE_DIRECTORY = '.orca/browser-downloads'
+export const BROWSER_CLIENT_DOWNLOAD_WORKSPACE_DIRECTORY = '.occ/browser-downloads'
 
 export type BrowserClientDownloadTransferDependencies = {
   writeChunk(input: {

@@ -16,14 +16,14 @@ const getFeatureTipCopyById = createLocalizedCatalog(
       ),
       ctaLabel: translate('featureTips.sessionSearch.cta', 'Turn on session search')
     },
-    'orca-cli': {
+    'occ-cli': {
       eyebrow: translate('featureTips.eyebrowTip', 'Tip'),
-      title: translate('featureTips.orcaCli.title', 'Let agents drive OCC with the OCC CLI'),
+      title: translate('featureTips.occCli.title', 'Let agents drive OCC with the OCC CLI'),
       description: translate(
-        'featureTips.orcaCli.description',
+        'featureTips.occCli.description',
         'Enable agents to coordinate child worktrees and communicate between worktrees.'
       ),
-      ctaLabel: translate('featureTips.orcaCli.cta', 'Install CLI & Skills')
+      ctaLabel: translate('featureTips.occCli.cta', 'Install CLI & Skills')
     },
     'cmd-j-palette': {
       eyebrow: translate('featureTips.eyebrowTip', 'Tip'),

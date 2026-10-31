@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import type { Context, Hono, MiddlewareHandler } from 'hono'
 import { bodyLimit } from 'hono/body-limit'
 import { every } from './connector-background.js'

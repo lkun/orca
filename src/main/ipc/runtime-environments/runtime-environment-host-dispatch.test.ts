@@ -54,8 +54,8 @@ vi.mock('../../wsl/wsl-host-e2e-fake-connector', () => ({
   createFakeWslHostConnector: vi.fn(),
   readFakeWslHostsConfig: () => null
 }))
-vi.mock('../../orcad/orcad-artifact-materializer', () => ({ hasOrcadTemplate: () => true }))
-vi.mock('../../ssh/orcad-terminal-census-client', () => ({ requestOrcadTerminalCensus: vi.fn() }))
+vi.mock('../../occd/occd-artifact-materializer', () => ({ hasOCCdTemplate: () => true }))
+vi.mock('../../ssh/occd-terminal-census-client', () => ({ requestOCCdTerminalCensus: vi.fn() }))
 
 import { registerWslHostHandlers } from '../wsl-host-handlers'
 import { registerRuntimeEnvironmentConnectivityHandlers } from './runtime-environment-connectivity-handlers'
@@ -90,7 +90,7 @@ const HOSTS = {
     name: 'Legacy',
     runtimeId: 'r',
     endpoints,
-    orcadDeployment: {
+    occdDeployment: {
       sshTargetId: 't1',
       sshTargetGeneration: 1,
       localPort: 4100,
@@ -102,7 +102,7 @@ const HOSTS = {
     name: 'Managed',
     runtimeId: 'r',
     endpoints,
-    orcadDeployment: {
+    occdDeployment: {
       kind: 'ssh',
       sshTargetId: 't1',
       sshTargetGeneration: 1,
@@ -129,7 +129,7 @@ const HOSTS = {
     name: 'Ubuntu (WSL)',
     runtimeId: 'r',
     endpoints,
-    orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
+    occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
   }
 } as const
 type HostName = keyof typeof HOSTS
@@ -295,7 +295,7 @@ describe('stopped WSL Start admission through direct and generic IPC', () => {
   let connector: ReturnType<typeof makeConnector>
 
   beforeEach(async () => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-start-admission-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-start-admission-'))
     connector = makeConnector([UBUNTU])
     const service = new WslHostService({
       userDataPath: () => userDataPath,

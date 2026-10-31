@@ -49,21 +49,21 @@ export async function readWslCliCommandFile(
     distro,
     [
       `if [ -L ${quotePosixShellDoubleQuotedApostrophe(commandPath)} ]; then`,
-      '  printf __ORCA_NOT_FILE__',
+      '  printf __OCC_NOT_FILE__',
       `elif [ ! -e ${quotePosixShellDoubleQuotedApostrophe(commandPath)} ]; then`,
-      '  printf __ORCA_MISSING__',
+      '  printf __OCC_MISSING__',
       `elif [ ! -f ${quotePosixShellDoubleQuotedApostrophe(commandPath)} ]; then`,
-      '  printf __ORCA_NOT_FILE__',
+      '  printf __OCC_NOT_FILE__',
       'else',
       `  cat ${quotePosixShellDoubleQuotedApostrophe(commandPath)}`,
       'fi'
     ].join('\n'),
     { loginPath: 'none' }
   )
-  if (output === '__ORCA_MISSING__') {
+  if (output === '__OCC_MISSING__') {
     return null
   }
-  if (output === '__ORCA_NOT_FILE__') {
+  if (output === '__OCC_NOT_FILE__') {
     return 'not_file'
   }
   return output

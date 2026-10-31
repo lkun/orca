@@ -284,7 +284,7 @@ it('settles captured command text without publishing obsolete notices', async ()
 it('checks both the picked command and its draft, and projects completed paths', async () => {
   const { send, structuredTransport } = harness('claude')
   const id = '00000000-0000-4000-8000-000000000000'
-  const token = `[Pasted text](orca-paste:${id})`
+  const token = `[Pasted text](occ-paste:${id})`
   await send(token, [])
   updateNativeChatComposerDraft('tab-1:pane', { text: token }, 'immediate')
   await send('/review', [])

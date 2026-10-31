@@ -15,7 +15,7 @@ const systemZshrcClobbersHistfile = (() => {
   if (!hasZsh) {
     return false
   }
-  const home = mkdtempSync(join(tmpdir(), 'orca-histfile-probe-'))
+  const home = mkdtempSync(join(tmpdir(), 'occ-histfile-probe-'))
   try {
     const output = execFileSync(ZSH_PATH, ['-l', '-i', '-c', 'echo "RESULT=$HISTFILE"'], {
       encoding: 'utf8',
@@ -39,7 +39,7 @@ function launchPane(
 ) {
   const env: Record<string, string> = {
     HOME: home,
-    ...(scopedHistfile ? { HISTFILE: scopedHistfile, ORCA_HISTFILE: scopedHistfile } : {})
+    ...(scopedHistfile ? { HISTFILE: scopedHistfile, OCC_HISTFILE: scopedHistfile } : {})
   }
   const features = selectShellStartupFeatures({
     shellPath: ZSH_PATH,
@@ -54,14 +54,14 @@ function launchPane(
     features,
     launch,
     // Resolve config against the sandbox home instead of the real launch environment.
-    env: { PATH: '/usr/bin:/bin', ...env, ...launch.env, ORCA_ORIG_ZDOTDIR: home }
+    env: { PATH: '/usr/bin:/bin', ...env, ...launch.env, OCC_ORIG_ZDOTDIR: home }
   }
 }
 
 const USER_FILES = {
-  '.zshenv': 'export ORCA_TEST_USER_ZSHENV=1\n',
-  '.zprofile': 'export ORCA_TEST_USER_ZPROFILE=1\n',
-  '.zshrc': 'export ORCA_TEST_USER_ZSHRC=1\n'
+  '.zshenv': 'export OCC_TEST_USER_ZSHENV=1\n',
+  '.zprofile': 'export OCC_TEST_USER_ZPROFILE=1\n',
+  '.zshrc': 'export OCC_TEST_USER_ZSHRC=1\n'
 }
 
 function withHome(files: Record<string, string>, run: (home: string) => Promise<void>) {
@@ -85,14 +85,14 @@ describe.skipIf(process.platform === 'win32')(
 
         expect(features).toEqual(['history'])
         expect(launch.env.ZDOTDIR).toBeTruthy()
-        expect(launch.env.ORCA_SHELL_FEATURES).toBe('history')
+        expect(launch.env.OCC_SHELL_FEATURES).toBe('history')
       })
     )
 
     itWithClobber(
       'keeps the injected path that the system zshrc would otherwise clobber',
       withHome(USER_FILES, async (home) => {
-        const scoped = join(home, 'orca-history', 'zsh_history')
+        const scoped = join(home, 'occ-history', 'zsh_history')
         const { env } = launchPane(home, scoped)
 
         const { values } = await runZshPty({ env, report: ['HISTFILE'] })
@@ -104,21 +104,21 @@ describe.skipIf(process.platform === 'win32')(
     itWithZsh(
       'hands ZDOTDIR back before the user’s own startup files load',
       withHome(USER_FILES, async (home) => {
-        const { env, launch } = launchPane(home, join(home, 'orca-history', 'zsh_history'))
+        const { env, launch } = launchPane(home, join(home, 'occ-history', 'zsh_history'))
 
         const { values } = await runZshPty({
           env,
           report: [
             'ZDOTDIR',
-            'ORCA_TEST_USER_ZSHENV',
-            'ORCA_TEST_USER_ZPROFILE',
-            'ORCA_TEST_USER_ZSHRC'
+            'OCC_TEST_USER_ZSHENV',
+            'OCC_TEST_USER_ZPROFILE',
+            'OCC_TEST_USER_ZSHRC'
           ]
         })
 
-        expect(values.ORCA_TEST_USER_ZSHENV).toBe('1')
-        expect(values.ORCA_TEST_USER_ZPROFILE).toBe('1')
-        expect(values.ORCA_TEST_USER_ZSHRC).toBe('1')
+        expect(values.OCC_TEST_USER_ZSHENV).toBe('1')
+        expect(values.OCC_TEST_USER_ZPROFILE).toBe('1')
+        expect(values.OCC_TEST_USER_ZSHRC).toBe('1')
         expect(values.ZDOTDIR).toBe(home)
         expect(values.ZDOTDIR).not.toBe(launch.env.ZDOTDIR)
       })
@@ -127,7 +127,7 @@ describe.skipIf(process.platform === 'win32')(
     itWithZsh(
       'never leaves history inside OCC’s own wrapper directory',
       withHome(USER_FILES, async (home) => {
-        const { env, launch } = launchPane(home, join(home, 'orca-history', 'zsh_history'))
+        const { env, launch } = launchPane(home, join(home, 'occ-history', 'zsh_history'))
 
         const { values } = await runZshPty({ env, report: ['HISTFILE'] })
 
@@ -136,18 +136,18 @@ describe.skipIf(process.platform === 'win32')(
     )
 
     itWithZsh(
-      'consumes ORCA_HISTFILE so nothing the shell spawns can inherit it',
+      'consumes OCC_HISTFILE so nothing the shell spawns can inherit it',
       withHome(USER_FILES, async (home) => {
-        const scoped = join(home, 'orca-history', 'zsh_history')
+        const scoped = join(home, 'occ-history', 'zsh_history')
         const { env } = launchPane(home, scoped)
 
         const { values } = await runZshPty({
           env,
-          report: ['ORCA_HISTFILE', 'ORCA_SHELL_FEATURES', 'HISTFILE']
+          report: ['OCC_HISTFILE', 'OCC_SHELL_FEATURES', 'HISTFILE']
         })
 
-        expect(values.ORCA_HISTFILE).toBe('UNSET')
-        expect(values.ORCA_SHELL_FEATURES).toBe('UNSET')
+        expect(values.OCC_HISTFILE).toBe('UNSET')
+        expect(values.OCC_SHELL_FEATURES).toBe('UNSET')
         expect(values.HISTFILE).toBe(scoped)
       })
     )
@@ -156,7 +156,7 @@ describe.skipIf(process.platform === 'win32')(
       'leaves HISTFILE exactly as an unwrapped zsh would when OCC injects nothing',
       withHome(USER_FILES, async (home) => {
         // Defaults vary by host; compare with its unwrapped shell rather than a hardcoded HISTFILE.
-        const overlayEnv = { ORCA_CODEX_HOME: join(home, 'codex') }
+        const overlayEnv = { OCC_CODEX_HOME: join(home, 'codex') }
         const features = selectShellStartupFeatures({
           shellPath: ZSH_PATH,
           env: { HOME: home, ...overlayEnv },
@@ -172,7 +172,7 @@ describe.skipIf(process.platform === 'win32')(
             HOME: home,
             ...overlayEnv,
             ...launch.env,
-            ORCA_ORIG_ZDOTDIR: home
+            OCC_ORIG_ZDOTDIR: home
           },
           report: ['HISTFILE']
         })
@@ -191,7 +191,7 @@ describe.skipIf(process.platform === 'win32')('the deferred hook delivers every 
   itWithZsh(
     'emits the identity, readiness and OSC 133 markers a startup command waits on',
     withHome(USER_FILES, async (home) => {
-      const scoped = join(home, 'orca-history', 'zsh_history')
+      const scoped = join(home, 'occ-history', 'zsh_history')
       const { env, features } = launchPane(home, scoped, {
         hasStartupCommand: true,
         waitsForShellReady: true,
@@ -223,8 +223,8 @@ describe.skipIf(process.platform === 'win32')('the deferred hook delivers every 
       },
       async (home) => {
         const overlayEnv = {
-          ORCA_CODEX_HOME: '/orca/codex',
-          ORCA_AGENT_TEAMS_SHIM_DIR: '/orca/shim'
+          OCC_CODEX_HOME: '/occ/codex',
+          OCC_AGENT_TEAMS_SHIM_DIR: '/occ/shim'
         }
         const features = selectShellStartupFeatures({
           shellPath: ZSH_PATH,
@@ -241,13 +241,13 @@ describe.skipIf(process.platform === 'win32')('the deferred hook delivers every 
             HOME: home,
             ...overlayEnv,
             ...launch.env,
-            ORCA_ORIG_ZDOTDIR: home
+            OCC_ORIG_ZDOTDIR: home
           },
           report: ['CODEX_HOME', 'PATH']
         })
 
-        expect(values.CODEX_HOME).toBe('/orca/codex')
-        expect(values.PATH.startsWith('/orca/shim:')).toBe(true)
+        expect(values.CODEX_HOME).toBe('/occ/codex')
+        expect(values.PATH.startsWith('/occ/shim:')).toBe(true)
       }
     )
   )
@@ -272,13 +272,13 @@ describe.skipIf(process.platform === 'win32')(
         [file]: `${USER_FILES[file as keyof typeof USER_FILES]}${statement}\n`
       })
       try {
-        const scoped = join(home, 'orca-history', 'zsh_history')
+        const scoped = join(home, 'occ-history', 'zsh_history')
         const { env } = launchPane(home, scoped)
 
-        const { values } = await runZshPty({ env, report: ['HISTFILE', 'ORCA_HISTFILE'] })
+        const { values } = await runZshPty({ env, report: ['HISTFILE', 'OCC_HISTFILE'] })
 
         expect(values.HISTFILE).toBe(scoped)
-        expect(values.ORCA_HISTFILE).toBe('UNSET')
+        expect(values.OCC_HISTFILE).toBe('UNSET')
       } finally {
         rmSync(home, { recursive: true, force: true })
       }
@@ -287,14 +287,14 @@ describe.skipIf(process.platform === 'win32')(
     itWithZsh(
       'still scopes history without leaking it when a config drops precmd_functions',
       withHome({ ...USER_FILES, '.zshrc': 'precmd_functions=()\n' }, async (home) => {
-        const scoped = join(home, 'orca-history', 'zsh_history')
+        const scoped = join(home, 'occ-history', 'zsh_history')
         const { env, launch } = launchPane(home, scoped)
 
-        const report = ['HISTFILE', 'ORCA_HISTFILE', 'ZDOTDIR']
+        const report = ['HISTFILE', 'OCC_HISTFILE', 'ZDOTDIR']
         const { values } = await runZshPty({ env, report })
         expect(values.HISTFILE).toBe(scoped)
         expect(values.HISTFILE).not.toContain(launch.env.ZDOTDIR)
-        expect(values.ORCA_HISTFILE).toBe('UNSET')
+        expect(values.OCC_HISTFILE).toBe('UNSET')
         expect(values.ZDOTDIR).toBe(home)
       })
     )
@@ -304,15 +304,15 @@ describe.skipIf(process.platform === 'win32')(
       withHome(
         { ...USER_FILES, '.zshenv': `${USER_FILES['.zshenv']}export ZDOTDIR="$HOME"\n` },
         async (home) => {
-          const { env } = launchPane(home, join(home, 'orca-history', 'zsh_history'))
+          const { env } = launchPane(home, join(home, 'occ-history', 'zsh_history'))
 
           const { values } = await runZshPty({
             env,
-            report: ['ZDOTDIR', 'ORCA_TEST_USER_ZSHRC']
+            report: ['ZDOTDIR', 'OCC_TEST_USER_ZSHRC']
           })
 
           expect(values.ZDOTDIR).toBe(home)
-          expect(values.ORCA_TEST_USER_ZSHRC).toBe('1')
+          expect(values.OCC_TEST_USER_ZSHRC).toBe('1')
         }
       )
     )
@@ -332,28 +332,28 @@ describe.skipIf(process.platform === 'win32')('the real-zsh harness', () => {
           '  autoload -Uz compinit\n' +
           '  compinit -D\n' +
           'fi\n' +
-          'export ORCA_TEST_COMPINIT_READY=$+_comps\n'
+          'export OCC_TEST_COMPINIT_READY=$+_comps\n'
       },
       async (home) => {
         const completions = join(home, 'insecure-completions')
         mkdirSync(completions)
         chmodSync(completions, 0o777)
         writeFileSync(
-          join(completions, '_orca_compinit_fixture'),
-          '#compdef orca_compinit_fixture\n'
+          join(completions, '_occ_compinit_fixture'),
+          '#compdef occ_compinit_fixture\n'
         )
         const scoped = join(home, 'scoped_history')
         const { env } = launchPane(home, scoped)
 
         const { output, values } = await runZshPty({
           env,
-          report: ['HISTFILE', 'ORCA_TEST_COMPINIT_READY']
+          report: ['HISTFILE', 'OCC_TEST_COMPINIT_READY']
         })
 
         expect(output).toContain('Ignore insecure directories')
         expect(output).not.toContain('initialization aborted')
         expect(output).not.toContain('command not found: y')
-        expect(values.ORCA_TEST_COMPINIT_READY).toBe('1')
+        expect(values.OCC_TEST_COMPINIT_READY).toBe('1')
         expect(values.HISTFILE).toBe(scoped)
       }
     )

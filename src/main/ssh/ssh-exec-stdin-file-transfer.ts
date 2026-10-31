@@ -12,7 +12,7 @@ import type { RemoteHostPlatform } from './ssh-remote-platform'
 import { makePosixWriteFileCommand } from './system-transport/system-ssh-file-binary-transfer'
 import { collectLocalUploadPlan } from './system-transport/system-ssh-file-transfer'
 
-export const EXEC_STDIN_WRITE_DONE = 'ORCA_EXEC_STDIN_WRITE_DONE'
+export const EXEC_STDIN_WRITE_DONE = 'OCC_EXEC_STDIN_WRITE_DONE'
 
 type ExecStdinOptions = { signal?: AbortSignal }
 
@@ -24,7 +24,7 @@ export function makeExecStdinWriteFileCommand(
   if (!Number.isSafeInteger(byteLength) || byteLength < 0) {
     throw new Error(`Invalid upload size: ${byteLength}`)
   }
-  const part = `${remotePath}.orca-part-${options.token}`
+  const part = `${remotePath}.occ-part-${options.token}`
   const escapedPart = quotePosixShell(part)
   const steps = [
     `mkdir -p ${quotePosixShell(posix.dirname(remotePath))}`,

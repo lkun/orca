@@ -5,8 +5,8 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import WebSocket from 'ws'
-import { OrcaRuntimeService } from './orca-runtime'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeService } from './occ-runtime'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import { WebSocketTransport } from './rpc/ws-transport'
 import { DeviceRegistry } from './device-registry'
 import { DEVICE_REGISTRY_FILENAME } from './mobile-pairing-files'
@@ -27,17 +27,17 @@ vi.mock('../git/worktree', () => {
   }
 })
 
-describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
-  const wsTransportOf = (server: OrcaRuntimeRpcServer): WebSocketTransport | undefined =>
+describe('OCCRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
+  const wsTransportOf = (server: OCCRuntimeRpcServer): WebSocketTransport | undefined =>
     (server['activeTransports'] as unknown[]).find(
       (transport): transport is WebSocketTransport => transport instanceof WebSocketTransport
     )
 
   it('binds the listener to loopback on a fresh desktop with no paired device', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -55,10 +55,10 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('widens the listener to all interfaces when a mobile pairing offer is created', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -85,10 +85,10 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('binds all interfaces at startup when exposeNetworkByDefault is set (occ serve)', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0,
@@ -105,15 +105,15 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('binds all interfaces at startup when a previously-connected device can reconnect', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     // Previously connected devices may reconnect without another pairing action.
     const registry = new DeviceRegistry(userDataPath)
     const device = registry.getOrCreatePendingDevice('Paired phone', 'mobile')
     registry.updateLastSeen(device.deviceId)
 
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -134,14 +134,14 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('stays on loopback at startup for a pending device that has never connected', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     // Unscanned pending offers are not reconnects and must leave the listener loopback.
     const registry = new DeviceRegistry(userDataPath)
     registry.getOrCreatePendingDevice('Pending phone', 'mobile')
 
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -163,15 +163,15 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('stays on loopback at startup after a "This computer only" grant has connected', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     // Local-only browser grants also get lastSeenAt; counting them would expose every interface on next launch against the chosen policy.
     const registry = new DeviceRegistry(userDataPath)
     const device = registry.getOrCreatePendingDevice('Runtime local', 'runtime', 'this-computer')
     registry.updateLastSeen(device.deviceId)
 
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -186,7 +186,7 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('binds all interfaces at startup for a connected device paired before pairingReach existed', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     // Older grants imply network reach; retain reconnect exposure when the field is absent.
     const legacyDevice = {
       deviceId: 'legacy-device',
@@ -202,9 +202,9 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
       'utf-8'
     )
 
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -219,10 +219,10 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('upgrades a reused pending grant to network reach so its link survives a relaunch', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -251,9 +251,9 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
       await server.stop()
     }
 
-    const relaunched = new OrcaRuntimeRpcServer({
+    const relaunched = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -267,10 +267,10 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('keeps the pinned port when a later widen tears down a live loopback client', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -305,10 +305,10 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('keeps the same MobileSocketWiring instance across a pairing widen (relay capture stays valid)', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -342,10 +342,10 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('coalesces concurrent pairing widens into a single rebind', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -370,11 +370,11 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('reports pairing unavailable but keeps a serving loopback listener when the widen bind fails', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -417,11 +417,11 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('keeps the widened listener tracked when persisting pairing metadata fails', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -461,11 +461,11 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('does not strand a wide listener when stop() races an in-flight widen', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
@@ -512,11 +512,11 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
     }
   })
 
-  it('honours a pinned bind host over exposeNetworkByDefault (orcad --bind)', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+  it('honours a pinned bind host over exposeNetworkByDefault (occd --bind)', async () => {
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0,
@@ -535,15 +535,15 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('stays pinned to loopback even after a device has connected once', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     // A loopback pin must survive first network pairing and restart; reconnect defaults cannot widen it silently.
     const registry = new DeviceRegistry(userDataPath)
     const device = registry.getOrCreatePendingDevice('CLI', 'runtime', 'network')
     registry.updateLastSeen(device.deviceId)
 
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0,
@@ -565,11 +565,11 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('refuses a runtime-widening pairing offer while the bind is pinned to loopback', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0,
@@ -595,10 +595,10 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('still widens on request when the operator pinned the wide address', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0,
@@ -616,10 +616,10 @@ describe('OrcaRuntimeRpcServer WebSocket bind host (STA-2370)', () => {
   })
 
   it('refuses to widen a pairing offer that arrives after the server has stopped', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: true,
       wsPort: 0

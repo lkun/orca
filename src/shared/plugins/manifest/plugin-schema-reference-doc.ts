@@ -66,7 +66,7 @@ function describe(schema: JsonSchema, defs: Record<string, JsonSchema>): string 
 }
 
 function since(schema: JsonSchema): string {
-  const value = schema['x-orca-since']
+  const value = schema['x-occ-since']
   return typeof value === 'string' ? value : ''
 }
 

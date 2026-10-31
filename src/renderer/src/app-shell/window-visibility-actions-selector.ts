@@ -32,6 +32,6 @@ export function selectWindowVisibilityActions(
   return cachedActions
 }
 
-export function resetWindowVisibilityActionsSelectorCacheForTest(): void {
+export function resetWindowVisibilityActionsSelectocccheForTest(): void {
   cachedActions = null
 }

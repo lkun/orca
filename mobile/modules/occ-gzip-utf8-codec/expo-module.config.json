@@ -1,0 +1,9 @@
+{
+  "platforms": ["ios", "android"],
+  "ios": {
+    "modules": ["OCCGzipUtf8CodecModule"]
+  },
+  "android": {
+    "modules": ["expo.modules.occgziputf8codec.OCCGzipUtf8CodecModule"]
+  }
+}

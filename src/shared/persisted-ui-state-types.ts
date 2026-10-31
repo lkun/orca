@@ -8,7 +8,7 @@ import type { ContextualTourId } from './contextual-tours'
 import type { FeatureInteractionState } from './feature-interactions'
 import type { UsagePercentageDisplay } from './usage-percentage-display'
 import type { StatusBarUsageMode } from './status-bar-usage-mode'
-import type { PersistedTrustedOrcaHooks } from './orca-yaml-hook-types'
+import type { PersistedTrustedOCCHooks } from './occ-yaml-hook-types'
 import type { CustomPet } from './pet-types'
 import type {
   ActivityGroupBy,
@@ -235,7 +235,7 @@ export type PersistedUIState = {
   starNagDeferredUntil?: number | null
   /** Version that consumed the one-time value-moment ask; any saved version suppresses future attempts. Main-owned. */
   starNagAgentValueMomentAppVersion?: string | null
-  trustedOrcaHooks?: PersistedTrustedOrcaHooks
+  trustedOCCHooks?: PersistedTrustedOCCHooks
   setupScriptPromptDismissedRepoIds?: string[]
   /** Pet overlay visibility, separate from the experimentalPet settings flag so "Hide pet" is a reversible dismiss; absent = true. */
   petVisible?: boolean

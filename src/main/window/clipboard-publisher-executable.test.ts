@@ -6,7 +6,7 @@ import { stageClipboardPublisher } from './clipboard-publisher-executable'
 
 let directory: string
 beforeEach(async () => {
-  directory = await mkdtemp(join(tmpdir(), 'orca-clipboard-publisher-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-clipboard-publisher-'))
 })
 afterEach(async () => {
   await rm(directory, { recursive: true, force: true })

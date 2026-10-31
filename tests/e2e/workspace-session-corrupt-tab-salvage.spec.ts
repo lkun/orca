@@ -4,8 +4,8 @@ import {
 } from './helpers/persisted-profile-state'
 import { existsSync, readFileSync } from 'node:fs'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { test, expect } from './helpers/occ-app'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 import { ensureTerminalVisible, getActiveWorktreeId, waitForSessionReady } from './helpers/store'
 import { TEST_REPO_PATH_FILE } from './global-setup'
 

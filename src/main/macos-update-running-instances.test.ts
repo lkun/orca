@@ -5,7 +5,7 @@ import {
 } from './macos-update-running-instances'
 
 const { runProcessMock } = vi.hoisted(() => ({ runProcessMock: vi.fn() }))
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 
 const executable = '/Applications/OCC Test.app/Contents/MacOS/OCC Test'
 

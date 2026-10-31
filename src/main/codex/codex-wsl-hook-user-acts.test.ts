@@ -25,7 +25,7 @@ import { isWslUserActFor } from '../wsl/wsl-user-act-scope'
 import { prepareManagedWslCodexHomeBeforeShellLaunch } from './managed-wsl-home-shell-preflight'
 import { createCodexRuntimeHomeLaunchPreparation } from './codex-runtime-home-launch-preparation'
 
-const HOME = '/home/alice/.local/share/orca/codex-runtime-home/home'
+const HOME = '/home/alice/.local/share/occ/codex-runtime-home/home'
 const originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform')
 
 beforeEach(() => {
@@ -44,7 +44,7 @@ describe('Codex WSL hook installs that are user acts', () => {
   it('the guest shell preflight installs as a user act on its distro', async () => {
     const inAct: boolean[] = []
     await prepareManagedWslCodexHomeBeforeShellLaunch({
-      env: { CODEX_HOME: HOME, ORCA_CODEX_HOME: HOME, WSL_DISTRO_NAME: 'Ubuntu' },
+      env: { CODEX_HOME: HOME, OCC_CODEX_HOME: HOME, WSL_DISTRO_NAME: 'Ubuntu' },
       hooksEnabled: true,
       install: async () => {
         inAct.push(isWslUserActFor('Ubuntu'), isWslUserActFor('Debian'))

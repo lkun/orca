@@ -11,7 +11,7 @@ import {
   getKnownGitHead
 } from '../git/branch-compare-state'
 import { closeDroppedEditorFileTabsThroughLayoutOwner } from '../tabs/editor-tab-close-through-layout-owner'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
 
 export function createGitStatusActions(
   set: EditorSet,
@@ -71,7 +71,7 @@ export function createGitStatusActions(
         get().setConflictOperation(worktreeId, status.conflictOperation)
         return
       }
-      const filesBefore = ORCA_LAYOUT_OWNER_IS_MAIN ? get().openFiles : null
+      const filesBefore = OCC_LAYOUT_OWNER_IS_MAIN ? get().openFiles : null
       set((s) => {
         const hadStatusEntry = Object.hasOwn(s.gitStatusByWorktree, worktreeId)
         const prevEntries = s.gitStatusByWorktree[worktreeId] ?? []
@@ -280,7 +280,7 @@ export function createGitStatusActions(
         }
       })
       // A resolved deleted-side conflict drops its placeholder record; main closes its tab, and its frame drops it.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN && filesBefore && filesBefore !== get().openFiles) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN && filesBefore && filesBefore !== get().openFiles) {
         closeDroppedEditorFileTabsThroughLayoutOwner(get(), filesBefore, worktreeId)
       }
     },

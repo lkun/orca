@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithScheduleWaitBlockedCheck } from '../wait/terminal-wait-blocked-checks'
+import { OCCRuntimeWithScheduleWaitBlockedCheck } from '../wait/terminal-wait-blocked-checks'
 import type { PtyTransientFact } from '../../../providers/pty-provider-contract'
 import type {
   TerminalSideEffectBatch,
@@ -20,7 +20,7 @@ import type {
 } from '../../runtime-terminal-state-records'
 import type { TerminalTitleFactMeta } from '../../../../shared/terminal-output-side-effects'
 
-export abstract class OrcaRuntimeWithEmitDaemonPtyTransientFact extends OrcaRuntimeWithScheduleWaitBlockedCheck {
+export abstract class OCCRuntimeWithEmitDaemonPtyTransientFact extends OCCRuntimeWithScheduleWaitBlockedCheck {
   protected abstract retirePtyAgentLaunchAuthority(ptyId: string): void
 
   /** A transient fact the daemon detected while it held scan authority —

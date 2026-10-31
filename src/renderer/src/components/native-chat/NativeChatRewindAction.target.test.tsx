@@ -73,9 +73,9 @@ describe('rewind target after send acceptance', () => {
   })
 
   it.each([
-    ['codex', 'orca'],
+    ['codex', 'occ'],
     ['codex', 'provider'],
-    ['claude', 'orca'],
+    ['claude', 'occ'],
     ['claude', 'provider']
   ] as const)('uses the accepted %s row with a %s journal key', async (agent, keySource) => {
     const hook = renderHook(() =>
@@ -110,7 +110,7 @@ describe('rewind target after send acceptance', () => {
         ? { provider: 'codex', threadId: 'thread', turnId: 'turn', ordinal: 0 }
         : { provider: 'claude', sessionId: 'provider-session', uuid: 'message-uuid' }
     )
-    const itemId = keySource === 'orca' ? optimisticId : providerItemId
+    const itemId = keySource === 'occ' ? optimisticId : providerItemId
     state = {
       ...state,
       cursor: { epoch: 'epoch-1', sequence: 1 },

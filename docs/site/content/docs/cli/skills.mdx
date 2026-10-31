@@ -1,48 +1,48 @@
 ---
 title: OCC skills registry & MCP
-description: Install OCC agent skills with npx skills add. Hybrid stubs stay thin; orca skills get serves the version-matched guide. OCC updates its own skills without npx.
+description: Install OCC agent skills with npx skills add. Hybrid stubs stay thin; occ skills get serves the version-matched guide. OCC updates its own skills without npx.
 keywords:
   - OCC skills
   - npx skills add
-  - orca-cli skill
+  - occ-cli skill
   - orchestration skill
   - computer-use skill
-  - orca-linear skill
-  - orca-emulator skill
-  - orca-emulator-android skill
+  - occ-linear skill
+  - occ-emulator skill
+  - occ-emulator-android skill
 ---
 
 OCC ships **skills** that agents install into their skill directories. Public install packages are **hybrid discovery stubs**: short `SKILL.md` files that tell the agent _when_ to engage OCC and how to load the full guide from the running CLI. Command flags live in the binary so they cannot drift from the app version.
 
 ## Installable OCC skills
 
-Use `npx skills add` with the public OCC repo and the skill name. Default agent setup usually installs `orca-cli`, `computer-use`, and `orchestration`.
+Use `npx skills add` with the public OCC repo and the skill name. Default agent setup usually installs `occ-cli`, `computer-use`, and `orchestration`.
 
 | Skill                                               | Install                                                                                   | Use it for                                                    |
 | --------------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| [`orca-cli`](#orca-cli)                             | `npx skills add https://github.com/stablyai/orca --skill orca-cli --global`               | Worktrees, terminals, files, automations, embedded browser.   |
-| [`orchestration`](#orchestration)                   | `npx skills add https://github.com/stablyai/orca --skill orchestration --global`          | Multi-agent Runs, tasks, supervised workers, messages, gates. |
-| [`computer-use`](#computer-use)                     | `npx skills add https://github.com/stablyai/orca --skill computer-use --global`           | Desktop apps via accessibility trees and safe UI actions.     |
-| [`orca-linear`](#orca-linear)                       | `npx skills add https://github.com/stablyai/orca --skill orca-linear --global`            | Linear ticket read/write through `orca linear`.               |
-| [`orca-emulator`](#orca-emulator)                   | `npx skills add https://github.com/stablyai/orca --skill orca-emulator --global`          | iOS Simulator control.                                        |
-| [`orca-emulator-android`](#orca-emulator-android)   | `npx skills add https://github.com/stablyai/orca --skill orca-emulator-android --global`  | Android emulator/device via adb.                              |
-| [`orca-per-workspace-env`](#orca-per-workspace-env) | `npx skills add https://github.com/stablyai/orca --skill orca-per-workspace-env --global` | Per-workspace environment recipes (`orca.yaml`).              |
+| [`occ-cli`](#occ-cli)                             | `npx skills add https://github.com/stablyai/occ --skill occ-cli --global`               | Worktrees, terminals, files, automations, embedded browser.   |
+| [`orchestration`](#orchestration)                   | `npx skills add https://github.com/stablyai/occ --skill orchestration --global`          | Multi-agent Runs, tasks, supervised workers, messages, gates. |
+| [`computer-use`](#computer-use)                     | `npx skills add https://github.com/stablyai/occ --skill computer-use --global`           | Desktop apps via accessibility trees and safe UI actions.     |
+| [`occ-linear`](#occ-linear)                       | `npx skills add https://github.com/stablyai/occ --skill occ-linear --global`            | Linear ticket read/write through `occ linear`.               |
+| [`occ-emulator`](#occ-emulator)                   | `npx skills add https://github.com/stablyai/occ --skill occ-emulator --global`          | iOS Simulator control.                                        |
+| [`occ-emulator-android`](#occ-emulator-android)   | `npx skills add https://github.com/stablyai/occ --skill occ-emulator-android --global`  | Android emulator/device via adb.                              |
+| [`occ-per-workspace-env`](#occ-per-workspace-env) | `npx skills add https://github.com/stablyai/occ --skill occ-per-workspace-env --global` | Per-workspace environment recipes (`occ.yaml`).              |
 
 ## Hybrid stubs vs the live guide
 
 After `npx skills add`, agents see a short stub that says:
 
-1. Resolve the CLI executable for this session (`ORCA_CLI_COMMAND`, `occ-dev`, Linux `occ-ide`, else `orca`).
-2. Load the full guide: `orca skills get <topic>` (or `--full` for the long guide).
+1. Resolve the CLI executable for this session (`OCC_CLI_COMMAND`, `occ-dev`, Linux `occ-ide`, else `occ`).
+2. Load the full guide: `occ skills get <topic>` (or `--full` for the long guide).
 3. Prefer `--json` and do not invent flags from memory.
 
 ```bash
-orca skills list
-orca skills get orca-cli
-orca skills get orchestration --references
-orca skills get orchestration --reference recovery-and-cleanup
-orca skills get orchestration --full
-orca skills get orca-linear --json
+occ skills list
+occ skills get occ-cli
+occ skills get orchestration --references
+occ skills get orchestration --reference recovery-and-cleanup
+occ skills get orchestration --full
+occ skills get occ-linear --json
 ```
 
 A guide's action gates name conditional references. `--reference <name>` prints one of them alone, so an agent pays for the kernel plus that document instead of the whole package; `--references` lists the names. The name may be bare (`recovery-and-cleanup`) or spelled as the guide writes it (`references/recovery-and-cleanup.md`). `--full` still prints the kernel plus every reference.
@@ -56,21 +56,21 @@ OCC updates its own skills itself, with no `npx`, Git, Node or network. A copy c
 When this OCC build ships a newer version of a skill you installed, the app:
 
 - Shows an **update available** nudge and badge. Update only touches locations that already hold the skill; it never adds the skill for another agent.
-- Opens **Update skills**, which lists every location and what Update does there: **No change**, **Will update**, **Will link**, or **Left alone** with the reason. A copy left alone has a **Replace** choice (off by default); Replace first moves that copy to `~/.agents/.orca-skill-backups/`, then puts OCC's copy in its place.
+- Opens **Update skills**, which lists every location and what Update does there: **No change**, **Will update**, **Will link**, or **Left alone** with the reason. A copy left alone has a **Replace** choice (off by default); Replace first moves that copy to `~/.agents/.occ-skill-backups/`, then puts OCC's copy in its place.
 - Runs exactly the plan you reviewed: if a folder changed after you opened the dialog, that skill reports **Changed since you reviewed it** and nothing is written there.
 - Shows the result per skill, for example `Updated · 1 left alone: You've changed this copy`, and a status-bar segment while it runs.
 
-This covers skills installed on this computer. The app does not check WSL projects, SSH hosts or paired OCC servers yet; run `orca skills update` there.
+This covers skills installed on this computer. The app does not check WSL projects, SSH hosts or paired OCC servers yet; run `occ skills update` there.
 
-On headless hosts (SSH, containers, CI, `orca serve`) use the CLI. It runs the same planner on the machine that runs it and does **not** need a running OCC app:
+On headless hosts (SSH, containers, CI, `occ serve`) use the CLI. It runs the same planner on the machine that runs it and does **not** need a running OCC app:
 
 ```bash
-orca skills install                                      # list installable names
-orca skills install --skill orca-cli --skill orchestration
-orca skills install --skill orca-cli --agent claude,codex
-orca skills update --all --dry-run                       # what would change, and the plan digest
-orca skills update --all
-orca skills update --all --force                         # also replace copies left alone (backup kept)
+occ skills install                                      # list installable names
+occ skills install --skill occ-cli --skill orchestration
+occ skills install --skill occ-cli --agent claude,codex
+occ skills update --all --dry-run                       # what would change, and the plan digest
+occ skills update --all
+occ skills update --all --force                         # also replace copies left alone (backup kept)
 ```
 
 - Default scope is **global**; pass `--local` for the current project only (OCC links only into agent folders the project already has).
@@ -94,67 +94,67 @@ Anyone with an active link can inspect and install the shared skills without sig
 Agents can publish an explicitly named set from the CLI after you enable the separate, default-off **Settings → Share Skills → Allow agents and the OCC CLI to publish skill links** permission:
 
 ```bash
-orca skills installed --json
-orca skills share --skill frontend --skill testing --bundle-name "Team Toolkit" --json
+occ skills installed --json
+occ skills share --skill frontend --skill testing --bundle-name "Team Toolkit" --json
 ```
 
 `skills installed` returns safe selectors without exposing local paths. `skills share` accepts exact discovery IDs or unambiguous names; it does not accept arbitrary paths or `--all`.
 
-## orca-cli
+## occ-cli
 
 ```bash
-npx skills add https://github.com/stablyai/orca --skill orca-cli --global
+npx skills add https://github.com/stablyai/occ --skill occ-cli --global
 ```
 
-After install, load the version-matched command guide with `orca skills get orca-cli`. See [OCC CLI](/docs/cli/overview).
+After install, load the version-matched command guide with `occ skills get occ-cli`. See [OCC CLI](/docs/cli/overview).
 
 ## orchestration
 
 ```bash
-npx skills add https://github.com/stablyai/orca --skill orchestration --global
+npx skills add https://github.com/stablyai/occ --skill orchestration --global
 ```
 
-Use this when an agent should coordinate other agents through Runs, tasks, supervised workers, and decision gates. See [Orchestration](/docs/cli/orchestration). Always load `orca skills get orchestration --full` before mutating orchestration state — the legacy `orchestration run` command is retired.
+Use this when an agent should coordinate other agents through Runs, tasks, supervised workers, and decision gates. See [Orchestration](/docs/cli/orchestration). Always load `occ skills get orchestration --full` before mutating orchestration state — the legacy `orchestration run` command is retired.
 
 ## computer-use
 
 ```bash
-npx skills add https://github.com/stablyai/orca --skill computer-use --global
+npx skills add https://github.com/stablyai/occ --skill computer-use --global
 ```
 
 Use this when an agent needs to inspect and operate local desktop app windows. See [Computer use](/docs/cli/computer-use).
 
-## orca-linear
+## occ-linear
 
 ```bash
-npx skills add https://github.com/stablyai/orca --skill orca-linear --global
+npx skills add https://github.com/stablyai/occ --skill occ-linear --global
 ```
 
-Agents should load `orca skills get orca-linear` before mutating tickets. Covers `issue --full`, `save-issue`, `list-issues`, relations, completion attach+comment flow, and untrusted-ticket rules. Existing `linear-tickets` installs still resolve. See [CLI reference → Linear](/docs/cli/reference#linear).
+Agents should load `occ skills get occ-linear` before mutating tickets. Covers `issue --full`, `save-issue`, `list-issues`, relations, completion attach+comment flow, and untrusted-ticket rules. Existing `linear-tickets` installs still resolve. See [CLI reference → Linear](/docs/cli/reference#linear).
 
-## orca-emulator
+## occ-emulator
 
 ```bash
-npx skills add https://github.com/stablyai/orca --skill orca-emulator --global
+npx skills add https://github.com/stablyai/occ --skill occ-emulator --global
 ```
 
-Use this when an agent should control an iOS Simulator from inside OCC through `orca emulator` commands.
+Use this when an agent should control an iOS Simulator from inside OCC through `occ emulator` commands.
 
-## orca-emulator-android
+## occ-emulator-android
 
 ```bash
-npx skills add https://github.com/stablyai/orca --skill orca-emulator-android --global
+npx skills add https://github.com/stablyai/occ --skill occ-emulator-android --global
 ```
 
-Use for adb-connected Android AVDs/devices: list/boot, tap/swipe/type, hardware buttons, install/launch, permissions, accessibility tree, logcat. Load details with `orca skills get orca-emulator-android`.
+Use for adb-connected Android AVDs/devices: list/boot, tap/swipe/type, hardware buttons, install/launch, permissions, accessibility tree, logcat. Load details with `occ skills get occ-emulator-android`.
 
-## orca-per-workspace-env
+## occ-per-workspace-env
 
 ```bash
-npx skills add https://github.com/stablyai/orca --skill orca-per-workspace-env --global
+npx skills add https://github.com/stablyai/occ --skill occ-per-workspace-env --global
 ```
 
-Use when setting up or debugging per-workspace environment recipes in `orca.yaml`. See [Ways to run OCC](/docs/ways-to-run#4-cloud-vms-per-workspace-environments).
+Use when setting up or debugging per-workspace environment recipes in `occ.yaml`. See [Ways to run OCC](/docs/ways-to-run#4-cloud-vms-per-workspace-environments).
 
 ## Discovery sources
 

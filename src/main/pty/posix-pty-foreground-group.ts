@@ -1,4 +1,4 @@
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { inProcessSliceMs, runPsInProcess } from '../../shared/libproc-process-table'
 
 const PROCESS_TABLE_LOOKUP_TIMEOUT_MS = 250

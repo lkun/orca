@@ -1,6 +1,6 @@
 import type { WorkspaceSparseActionsModel } from './use-mobile-tasks-workspace-sparse-actions'
 import { taskRepoClient } from './task-repo-host-routing'
-import { getDefaultSetupDecision } from '../../../src/shared/orca-hook-setup-config'
+import { getDefaultSetupDecision } from '../../../src/shared/occ-hook-setup-config'
 import {
   normalizeSetupHookTrust,
   pickWorkspaceAgent,

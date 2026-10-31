@@ -62,7 +62,7 @@ vi.mock('./notification-delivery-preferences', () => ({
 }))
 vi.mock('./desktop-notification-channel', () => ({
   ensureDesktopNotificationChannel: async () => {},
-  DESKTOP_NOTIFICATION_CHANNEL_ID: 'orca-desktop'
+  DESKTOP_NOTIFICATION_CHANNEL_ID: 'occ-desktop'
 }))
 
 function deferred<T>() {

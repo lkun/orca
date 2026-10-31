@@ -4,8 +4,8 @@ import type { RunRow } from '../../../../orchestration/types'
 const INTERNAL_RUN_COLUMNS = [
   'home_database',
   'coordinator_pane_key',
-  'coordinator_orca_session_id',
-  'coordinator_orca_session_id_generation'
+  'coordinator_occ_session_id',
+  'coordinator_occ_session_id_generation'
 ] as const
 
 export type RunReceipt = Omit<RunRow, (typeof INTERNAL_RUN_COLUMNS)[number]>

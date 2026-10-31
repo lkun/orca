@@ -1,4 +1,4 @@
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import type { TerminalCreateOptions } from '../../runtime/runtime-terminal-contracts'
 import { makePaneKey } from '../../../shared/stable-pane-id'
 import { createPaneBindingStore, launchRacePane } from './pty-launch-race-test-fixture'
@@ -44,7 +44,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -63,7 +63,7 @@ vi.mock('../../agent-hooks/wsl-agent-plugin-readiness', () => ({
   awaitExplicitAgentPluginGuestReadiness: vi.fn(async () => true)
 }))
 
-class ProducerRuntime extends OrcaRuntimeService {
+class ProducerRuntime extends OCCRuntimeService {
   publishedTabs(worktreeId: string) {
     return this.mobileSessionTabsByWorktree.get(worktreeId)?.tabs
   }
@@ -375,8 +375,8 @@ describe('registerPtyHandlers', () => {
           { materializeDefaultHome: false }
         )
         expect(env.PI_CODING_AGENT_DIR).toBeUndefined()
-        expect(env.ORCA_PI_CODING_AGENT_DIR).toBeUndefined()
-        expect(env.ORCA_PI_SOURCE_AGENT_DIR).toBe('/ambient/pi/agent')
+        expect(env.OCC_PI_CODING_AGENT_DIR).toBeUndefined()
+        expect(env.OCC_PI_SOURCE_AGENT_DIR).toBe('/ambient/pi/agent')
       })
       it('does not mutate the caller-provided args.env on the daemon path', async () => {
         // Host injection must not mutate a renderer's reusable environment object.
@@ -391,7 +391,7 @@ describe('registerPtyHandlers', () => {
         })
         expect(argsEnv).toEqual({ FOO: 'bar' })
         const spawnEnv = daemonSpawn.mock.calls.at(-1)![0].env
-        expect(spawnEnv.ORCA_AGENT_HOOK_PORT).toBe('5678')
+        expect(spawnEnv.OCC_AGENT_HOOK_PORT).toBe('5678')
         expect(spawnEnv).not.toBe(argsEnv)
       })
       it('rejects a caller-supplied sessionId that escapes userData via ..', async () => {
@@ -548,7 +548,7 @@ describe('registerPtyHandlers', () => {
         for (const lane of ['window', 'host'] as const) {
           await lanes.spawn(lane, { env: {}, sessionId })
           expect(lanes.daemonSpawn.mock.calls.at(-1)![0].sessionId).toBeTruthy()
-          expect(lanes.daemonSpawn.mock.calls.at(-1)![0].env.ORCA_AGENT_HOOK_PORT).toBeDefined()
+          expect(lanes.daemonSpawn.mock.calls.at(-1)![0].env.OCC_AGENT_HOOK_PORT).toBeDefined()
         }
         expect(piBuildPtyEnvMock).toHaveBeenCalled()
       }
@@ -572,14 +572,14 @@ describe('registerPtyHandlers', () => {
         : undefined
       for (const lane of ['window', 'host'] as const) {
         await lanes.spawn(lane, {
-          env: { ORCA_PANE_KEY: 'stale-tab:stale-leaf' },
+          env: { OCC_PANE_KEY: 'stale-tab:stale-leaf' },
           tabId: 'tab-1',
           leafId,
           launchAgent: 'jcode'
         })
         const env = lanes.daemonSpawn.mock.calls.at(-1)![0].env
-        expect(env.ORCA_PANE_KEY).toBe(paneKey)
-        expect(env.ORCA_TAB_ID).toBe('tab-1')
+        expect(env.OCC_PANE_KEY).toBe(paneKey)
+        expect(env.OCC_TAB_ID).toBe('tab-1')
         expect(env[JCODE_RUNTIME_DIR_ENV_KEY]).toBe(jcodeDir)
       }
     })

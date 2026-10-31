@@ -1,5 +1,5 @@
-import type { OrcaRuntimeWithStoredMobileSnapshotHasStalePreservedTab as StoredMobileSnapshotHasStalePreservedTabMethods } from './mobile-session-publication-preservation'
-import { OrcaRuntimeWithSyncMobileSessionTabs } from './mobile-session-reconciliation'
+import type { OCCRuntimeWithStoredMobileSnapshotHasStalePreservedTab as StoredMobileSnapshotHasStalePreservedTabMethods } from './mobile-session-publication-preservation'
+import { OCCRuntimeWithSyncMobileSessionTabs } from './mobile-session-reconciliation'
 import type {
   RuntimeMobileSessionTabsSnapshot,
   RuntimeMobileSessionTerminalTab
@@ -11,7 +11,7 @@ import {
   mergeMobileSessionTabGroups
 } from '../mobile-session-tab-merge'
 import { terminalLayoutContainsLeaf } from '../../../shared/workspace-session-pane-ownership'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { terminalIsOfTab } from '../session-lifecycle/close/closed-tab-terminal'
 import { getHeadlessMobileSessionGroupId } from '../mobile-session-layout-projection'
 import {
@@ -19,7 +19,7 @@ import {
   collectBrowserGroupAssignment
 } from '../mobile-session-browser-group-projection'
 
-export abstract class OrcaRuntimeWithMergePreservedHeadlessMobileSessionTabs extends OrcaRuntimeWithSyncMobileSessionTabs {
+export abstract class OCCRuntimeWithMergePreservedHeadlessMobileSessionTabs extends OCCRuntimeWithSyncMobileSessionTabs {
   protected abstract collectPreservedHeadlessMobileSessionTabs(
     ...args: Parameters<
       StoredMobileSnapshotHasStalePreservedTabMethods['collectPreservedHeadlessMobileSessionTabs']
@@ -178,7 +178,7 @@ export abstract class OrcaRuntimeWithMergePreservedHeadlessMobileSessionTabs ext
     tab: RuntimeMobileSessionTerminalTab
   ): boolean {
     return (
-      ORCA_LAYOUT_OWNER_IS_MAIN &&
+      OCC_LAYOUT_OWNER_IS_MAIN &&
       getMobileTerminalLeafPtyIds(tab).some((ptyId) => {
         const pty = this.ptysById.get(ptyId)
         return (

@@ -86,12 +86,12 @@ export function stopJournal(
   const stopEvent = (turnId?: string): number =>
     add({
       kind: 'tombstone',
-      itemId: 'orca:stop-event',
+      itemId: 'occ:stop-event',
       revision: 1,
       stopEvent: { reason: 'user-stop', at: 1, ...(turnId ? { turnId } : {}) }
     })
   const turnBody = (id: string, turnId: string, state: 'running' | 'completed' | 'interrupted') =>
-    ({ kind: 'turn', turnId, state, userItemId: `orca:${id}`, startedAt: 1 }) as const
+    ({ kind: 'turn', turnId, state, userItemId: `occ:${id}`, startedAt: 1 }) as const
   const openTurn = (id: string, turnId: string): void => {
     const record = turnItem(turnId)
     const providerKey = `codex:${THREAD}:${turnId}:0`
@@ -158,7 +158,7 @@ export function stopJournal(
     if (state === 'interrupted') {
       add({
         kind: 'item',
-        itemId: `orca:stop%3A${turnId}`,
+        itemId: `occ:stop%3A${turnId}`,
         revision: 1,
         body: { kind: 'status', text: 'Cancellation requested.' },
         turnScope: inTurn(turnId)

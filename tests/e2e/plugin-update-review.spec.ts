@@ -7,7 +7,7 @@ import { pluginManifestSchema } from '../../src/shared/plugins/manifest/plugin-m
 import { pluginContributionSummary } from '../../src/shared/plugins/contributions/plugin-contribution-summary'
 import { pluginCatalogTypes } from '../../src/shared/plugins/catalog/plugin-catalog-release'
 import { PLUGIN_MANIFEST_V2_SINCE } from '../../src/shared/plugins/manifest/plugin-schema-field-docs'
-import { createRestartSession } from './helpers/orca-restart'
+import { createRestartSession } from './helpers/occ-restart'
 import {
   commitRepository,
   configureFixtureGit,
@@ -15,7 +15,7 @@ import {
   runGit
 } from './helpers/plugin-git-fixture'
 
-const PLUGINS = ['orca-review-notes', 'orca-review-tasks'] as const
+const PLUGINS = ['occ-review-notes', 'occ-review-tasks'] as const
 // Why: install and update review fetch Git; on a loaded runner that alone outlasts the 10s default.
 const GIT_STEP = { timeout: 60_000 }
 const FULL_ACCESS =
@@ -38,7 +38,7 @@ async function installedState(page: Page): Promise<{ version: string; review: bo
 async function writePlugin(repository: string, id: string, version: string): Promise<void> {
   await mkdir(repository, { recursive: true })
   await writeFile(
-    join(repository, 'orca-plugin.json'),
+    join(repository, 'occ-plugin.json'),
     JSON.stringify({
       manifestVersion: 2,
       id,
@@ -46,7 +46,7 @@ async function writePlugin(repository: string, id: string, version: string): Pro
       name: id === PLUGINS[0] ? 'Review Notes' : 'Review Tasks',
       version,
       execution: version === '1.0.0' ? 'data' : 'trusted-worker',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
       ...(version === '1.0.0' ? {} : { main: 'worker.mjs' }),
       contributes:
         id === PLUGINS[0]
@@ -85,7 +85,7 @@ async function publishCatalog(
     PLUGINS.map(async (id) => {
       const repository = join(repositories, `${id}.git`)
       const manifest = pluginManifestSchema.parse(
-        JSON.parse(await readFile(join(repository, 'orca-plugin.json'), 'utf8'))
+        JSON.parse(await readFile(join(repository, 'occ-plugin.json'), 'utf8'))
       )
       const tree = await hashPluginTree(repository)
       if (!tree.ok) {
@@ -102,7 +102,7 @@ async function publishCatalog(
             commit: await headCommit(repository, gitEnvironment),
             contentHash: tree.hash,
             execution: manifest.manifestVersion === 2 ? manifest.execution : 'data',
-            minimumOrca: PLUGIN_MANIFEST_V2_SINCE,
+            minimumOCC: PLUGIN_MANIFEST_V2_SINCE,
             types: pluginCatalogTypes(manifest),
             contributes: pluginContributionSummary(manifest),
             capabilities: []
@@ -112,7 +112,7 @@ async function publishCatalog(
     })
   )
   await writeFile(
-    join(repositories, 'orca-plugins.git', 'orca-catalog.json'),
+    join(repositories, 'occ-plugins.git', 'occ-catalog.json'),
     JSON.stringify({ catalogVersion: 2, name: 'OCC Plugins', owner: 'stablyai', plugins })
   )
 }
@@ -121,22 +121,22 @@ async function publishCatalog(
 test('confirms card removal, reviews a lone access-growing update directly, and approves each of several from the list', async ({}, testInfo) => {
   // Why: one Electron launch drives two Git-backed installs and an update review.
   test.setTimeout(240_000)
-  const root = await mkdtemp(join(tmpdir(), 'orca-update-review-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-update-review-'))
   const repositories = join(root, 'repositories')
   const home = join(root, 'home')
   await mkdir(repositories, { recursive: true })
   await mkdir(home, { recursive: true })
-  const gitEnvironment = await configureFixtureGit(home, repositories, ['orca-plugins', ...PLUGINS])
+  const gitEnvironment = await configureFixtureGit(home, repositories, ['occ-plugins', ...PLUGINS])
   for (const id of PLUGINS) {
     const repository = join(repositories, `${id}.git`)
     await writePlugin(repository, id, '1.0.0')
     await commitRepository(repository, gitEnvironment)
   }
-  const marketplace = join(repositories, 'orca-plugins.git')
+  const marketplace = join(repositories, 'occ-plugins.git')
   await mkdir(marketplace, { recursive: true })
   await publishCatalog(repositories, gitEnvironment, '1.0.0')
   await commitRepository(marketplace, gitEnvironment)
-  const session = createRestartSession(testInfo, { ...gitEnvironment, ORCA_BACKGROUND_LAUNCH: '1' })
+  const session = createRestartSession(testInfo, { ...gitEnvironment, OCC_BACKGROUND_LAUNCH: '1' })
   let launched: Awaited<ReturnType<typeof session.launch>> | null = null
   try {
     launched = await session.launch()
@@ -164,7 +164,7 @@ test('confirms card removal, reviews a lone access-growing update directly, and 
       const chosen = (key: string) =>
         page.evaluate((pluginId) => {
           const settings = window.__store?.getState().settings
-          return pluginId === 'orca-review-notes'
+          return pluginId === 'occ-review-notes'
             ? settings?.pluginIconTheme
             : settings?.terminalThemeLight
         }, key)
@@ -231,7 +231,7 @@ test('confirms card removal, reviews a lone access-growing update directly, and 
           '-c',
           'user.name=OCC Test',
           '-c',
-          'user.email=orca-test@example.invalid',
+          'user.email=occ-test@example.invalid',
           'commit',
           '--quiet',
           '-m',
@@ -248,7 +248,7 @@ test('confirms card removal, reviews a lone access-growing update directly, and 
         '-c',
         'user.name=OCC Test',
         '-c',
-        'user.email=orca-test@example.invalid',
+        'user.email=occ-test@example.invalid',
         'commit',
         '--quiet',
         '-m',
@@ -326,7 +326,7 @@ test('confirms card removal, reviews a lone access-growing update directly, and 
     )
     await expect(page.locator('#plugin-detail-heading')).toBeHidden()
     await expect(
-      page.locator('[data-plugin-key^="stablyai.orca-review-"]').getByRole('button', {
+      page.locator('[data-plugin-key^="stablyai.occ-review-"]').getByRole('button', {
         name: 'Review',
         exact: true
       })

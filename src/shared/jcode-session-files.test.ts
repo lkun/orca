@@ -19,7 +19,7 @@ describe('shared jcode-session-files', () => {
   let sessionsDir: string
 
   beforeEach(() => {
-    homeDir = mkdtempSync(join(tmpdir(), 'orca-jcode-sessions-'))
+    homeDir = mkdtempSync(join(tmpdir(), 'occ-jcode-sessions-'))
     homedirMock.mockReturnValue(homeDir)
     sessionsDir = join(homeDir, '.jcode', 'sessions')
     mkdirSync(sessionsDir, { recursive: true })

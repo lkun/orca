@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -12,8 +12,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -24,7 +24,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -45,10 +45,10 @@ import { main } from './index'
 import { buildWorktree, okFixture, queueFixtures, worktreeListFixture } from './test-fixtures'
 import { useWorktreeAwarenessEnvironment } from './index-test-harness'
 
-describe('orca cli worktree awareness', () => {
+describe('occ cli worktree awareness', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -382,7 +382,7 @@ describe('orca cli worktree awareness', () => {
       okFixture('req_terminal_create', {
         terminal: {
           handle: 'term_1',
-          worktreeId: 'repo-1::/srv/orca/feature',
+          worktreeId: 'repo-1::/srv/occ/feature',
           title: 'Server terminal'
         }
       })
@@ -394,7 +394,7 @@ describe('orca cli worktree awareness', () => {
         'terminal',
         'create',
         '--worktree',
-        'id:repo-1::/srv/orca/feature',
+        'id:repo-1::/srv/occ/feature',
         '--pairing-code',
         'remote-runtime',
         '--json'
@@ -403,7 +403,7 @@ describe('orca cli worktree awareness', () => {
     )
 
     expect(callMock).toHaveBeenCalledWith('terminal.create', {
-      worktree: 'id:repo-1::/srv/orca/feature',
+      worktree: 'id:repo-1::/srv/occ/feature',
       command: undefined,
       title: undefined,
       focus: false
@@ -411,7 +411,7 @@ describe('orca cli worktree awareness', () => {
   })
 
   it('exits nonzero when terminal wait returns an unsatisfied blocked result', async () => {
-    process.env.ORCA_TERMINAL_HANDLE = 'term_worker'
+    process.env.OCC_TERMINAL_HANDLE = 'term_worker'
     callMock.mockResolvedValueOnce({
       id: 'req_terminal_wait',
       ok: true,
@@ -454,7 +454,7 @@ describe('orca cli worktree awareness', () => {
       okFixture('req_terminal_create', {
         terminal: {
           handle: 'term_1',
-          worktreeId: 'repo-1::/srv/orca/feature',
+          worktreeId: 'repo-1::/srv/occ/feature',
           title: 'Codex'
         }
       })
@@ -466,7 +466,7 @@ describe('orca cli worktree awareness', () => {
         'terminal',
         'create',
         '--worktree',
-        'id:repo-1::/srv/orca/feature',
+        'id:repo-1::/srv/occ/feature',
         '--command',
         'codex',
         '--title',
@@ -479,7 +479,7 @@ describe('orca cli worktree awareness', () => {
     )
 
     expect(callMock).toHaveBeenCalledWith('terminal.create', {
-      worktree: 'id:repo-1::/srv/orca/feature',
+      worktree: 'id:repo-1::/srv/occ/feature',
       command: 'codex',
       title: 'Codex',
       focus: false

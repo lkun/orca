@@ -6,9 +6,9 @@ import {
   AGENT_JOURNAL_THREAD_SCOPE,
   type AgentJournalTurnLifecycle
 } from '../../../shared/agent-session-journal-types'
-import { readAgentSessionOrcaStop } from '../../../shared/agent-session-orca-stop'
+import { readAgentSessionOCCStop } from '../../../shared/agent-session-occ-stop'
 import { withNativeChatCutTurnNotices } from '../../../shared/native-chat/transcript/native-chat-cut-turn-notice'
-import { latestNativeChatOrcaStopCut } from '../../../shared/native-chat/native-chat-orca-stop-cut'
+import { latestNativeChatOCCStopCut } from '../../../shared/native-chat/native-chat-occ-stop-cut'
 import { AgentSessionRecoveryCapsule } from '../../runtime/agent-session-recovery-capsule'
 import { openTestAgentSessionRecordStore } from '../../runtime/agent-session-record-store-test-harness'
 import {
@@ -126,7 +126,7 @@ async function reread() {
   const turnItemId = items.find((item) => item.body.kind === 'turn')?.itemId
   const stopRows = items.filter(
     (item) =>
-      item.body.kind === 'status' && readAgentSessionOrcaStop(item.body.orcaStop) !== undefined
+      item.body.kind === 'status' && readAgentSessionOCCStop(item.body.occStop) !== undefined
   )
   const readerErrors = withNativeChatCutTurnNotices(items, { agentName: 'Codex' }).flatMap(
     (item) => (item.body.kind === 'status' && item.body.tone === 'error' ? [item.body.text] : [])
@@ -148,12 +148,12 @@ describe('the row a quit writes for the reply it cut', () => {
       text: LEGACY_TEXT,
       tone: 'error',
       failure: { kind: 'providerExited' },
-      presentation: 'orca-stop',
-      orcaStop: { cause: trigger }
+      presentation: 'occ-stop',
+      occStop: { cause: trigger }
     })
     expect(row?.turnScope).toEqual({ kind: 'turn', turnItemId })
     expect(readerErrors).toEqual([LEGACY_TEXT])
-    expect(latestNativeChatOrcaStopCut(items, [])).toEqual({ turnItemId, cause: trigger })
+    expect(latestNativeChatOCCStopCut(items, [])).toEqual({ turnItemId, cause: trigger })
     expect(host.readStatusSummary(SESSION)?.turnOutcome).toBe('cancellation')
   })
 
@@ -186,7 +186,7 @@ describe('the row a quit writes for the reply it cut', () => {
     const { items, stopRows, readerErrors } = await reread()
     expect(stopRows).toEqual([])
     expect(readerErrors).toEqual([LEGACY_TEXT])
-    expect(latestNativeChatOrcaStopCut(items, [])).toBeNull()
+    expect(latestNativeChatOCCStopCut(items, [])).toBeNull()
   })
 })
 
@@ -200,10 +200,10 @@ describe('the row a restart writes for a reply its OCC died in', () => {
     expect(stopRows).toHaveLength(1)
     expect(stopRows[0]?.body).toMatchObject({
       text: LEGACY_TEXT,
-      orcaStop: { cause: 'crash' }
+      occStop: { cause: 'crash' }
     })
     expect(readerErrors).toEqual([LEGACY_TEXT])
-    expect(latestNativeChatOrcaStopCut(items, [])).toEqual({ turnItemId, cause: 'crash' })
+    expect(latestNativeChatOCCStopCut(items, [])).toEqual({ turnItemId, cause: 'crash' })
     expect(host.readStatusSummary(SESSION)?.turnOutcome).toBe('interruption')
   })
 
@@ -215,7 +215,7 @@ describe('the row a restart writes for a reply its OCC died in', () => {
     await restartAfterDeath()
 
     const { stopRows } = await reread()
-    expect(stopRows.map((row) => row.body)).toMatchObject([{ orcaStop: { cause: 'update' } }])
+    expect(stopRows.map((row) => row.body)).toMatchObject([{ occStop: { cause: 'update' } }])
   })
 
   it('names no cause when the OCC before left no record of itself', async () => {

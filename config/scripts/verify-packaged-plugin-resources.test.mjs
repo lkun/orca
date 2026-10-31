@@ -10,7 +10,7 @@ const {
   verifyPackagedPluginResources
 } = require('./verify-packaged-plugin-resources.cjs')
 
-const FIXTURE_KEY = 'stablyai.orca-multipass-recipes'
+const FIXTURE_KEY = 'stablyai.occ-multipass-recipes'
 
 /** Copies the launch tree and indexes one shipped pack so byte checks have something to verify. */
 async function copyIndexedLaunchTree(resourcesDir) {
@@ -34,7 +34,7 @@ async function copyIndexedLaunchTree(resourcesDir) {
 
 describe('verify packaged plugin resources', () => {
   it('accepts exact launch bytes copied into a packaged resources directory', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-packaged-plugins-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-packaged-plugins-'))
     try {
       await cp(
         join(process.cwd(), 'resources', 'plugins', 'launch'),
@@ -49,7 +49,7 @@ describe('verify packaged plugin resources', () => {
   })
 
   it('rejects mutated bytes in the packaged output', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-packaged-plugins-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-packaged-plugins-'))
     try {
       const launchRoot = await copyIndexedLaunchTree(resourcesDir)
       expect(() => verifyPackagedPluginResources(resourcesDir)).not.toThrow()
@@ -64,7 +64,7 @@ describe('verify packaged plugin resources', () => {
   })
 
   it('rejects a CRLF checkout of the launch tree', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-packaged-plugins-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-packaged-plugins-'))
     try {
       const launchRoot = await copyIndexedLaunchTree(resourcesDir)
       for (const entry of await readdir(launchRoot, { recursive: true })) {

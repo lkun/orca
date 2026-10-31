@@ -19,7 +19,7 @@ describe('browser animated visual sequence', () => {
     const targets: [BrowserVisualTarget, number | undefined, number | undefined][] = []
     let clickRings = 0
     let menuCaptures = 0
-    let anchorCaptures = 0
+    let anchoccptures = 0
     let flashes = 0
     let completions = 0
 
@@ -40,7 +40,7 @@ describe('browser animated visual sequence', () => {
         menuCaptures += 1
       },
       captureAnnotateAnchor: () => {
-        anchorCaptures += 1
+        anchoccptures += 1
       },
       flashScreenshot: () => {
         flashes += 1
@@ -86,10 +86,10 @@ describe('browser animated visual sequence', () => {
       ['cta', undefined, undefined]
     ])
     expect(waits.reduce((total, wait) => total + wait, 0)).toBe(18_666)
-    expect({ clickRings, menuCaptures, anchorCaptures, flashes, completions }).toEqual({
+    expect({ clickRings, menuCaptures, anchoccptures, flashes, completions }).toEqual({
       clickRings: 5,
       menuCaptures: 1,
-      anchorCaptures: 1,
+      anchoccptures: 1,
       flashes: 1,
       completions: 1
     })

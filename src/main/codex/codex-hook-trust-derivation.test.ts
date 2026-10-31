@@ -19,7 +19,7 @@ vi.mock('./codex-app-server-session', async (importOriginal) => ({
   ...(await importOriginal<typeof AppServerSession>()),
   runCodexAppServerSession: mocks.runCodexAppServerSession
 }))
-vi.mock('@orca/process-host', () => ({ runProcess: mocks.runProcess }))
+vi.mock('@occ/process-host', () => ({ runProcess: mocks.runProcess }))
 
 import {
   CodexAppServerTimeoutError,
@@ -34,7 +34,7 @@ import {
 } from './codex-hook-trust-derivation'
 import { CODEX_EVENTS, CODEX_EVENT_LABEL } from './codex-hook-definition'
 
-const COMMAND = '/home/u/.orca/agent-hooks/codex-hook.sh'
+const COMMAND = '/home/u/.occ/agent-hooks/codex-hook.sh'
 const LABELS = CODEX_EVENTS.map((eventName) => CODEX_EVENT_LABEL[eventName])
 const hashesOf = (answer: CodexHookAnswer) => (answer.kind === 'hashes' ? answer.hashes : null)
 
@@ -331,7 +331,7 @@ describe('readCodexHookHashes', () => {
 
 describe('sweepStaleCodexScratchHomes', () => {
   it('removes scratch homes older than an hour that a quit left, and nothing else', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-sweep-test-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-sweep-test-'))
     vi.stubEnv('TMPDIR', root)
     vi.stubEnv('TEMP', root)
     vi.stubEnv('TMP', root)
@@ -342,9 +342,9 @@ describe('sweepStaleCodexScratchHomes', () => {
       return join(root, name)
     }
     try {
-      const staleTrust = dir('orca-codex-hook-trust-old', hoursAgo(2))
-      const staleVersion = dir('orca-codex-version-old', hoursAgo(2))
-      const live = dir('orca-codex-hook-trust-live', new Date())
+      const staleTrust = dir('occ-codex-hook-trust-old', hoursAgo(2))
+      const staleVersion = dir('occ-codex-version-old', hoursAgo(2))
+      const live = dir('occ-codex-hook-trust-live', new Date())
       const unrelated = dir('someone-else-old', hoursAgo(2))
 
       await sweepStaleCodexScratchHomes()

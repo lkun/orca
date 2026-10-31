@@ -7,7 +7,7 @@ import type { BrowserAddressBarSuggestion } from './browser-address-bar-suggesti
 import BrowserHistoryRowRemoveButton from '../history/BrowserHistoryRowRemoveButton'
 import { isRemovableHistoryRow } from '../history/browser-history-row-removal'
 
-const NO_SELECTED_ROW = 'orca:no-selected-row'
+const NO_SELECTED_ROW = 'occ:no-selected-row'
 
 type BrowserAddressBarSuggestionListProps = {
   suggestions: BrowserAddressBarSuggestion[]

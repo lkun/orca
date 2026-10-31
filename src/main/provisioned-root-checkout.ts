@@ -103,7 +103,7 @@ export function buildProvisionedRootMeta(
     now: number
     /** Omitted on the host that runs the checkout, whose own rows carry no host id. */
     hostId?: ExecutionHostId
-    source: NonNullable<WorktreeMeta['orcaCreationSource']>
+    source: NonNullable<WorktreeMeta['occCreationSource']>
   }
 ): Partial<WorktreeMeta> {
   const { branchName, now } = options
@@ -131,10 +131,10 @@ export function buildProvisionedRootMeta(
     ...displayNameMeta,
     lastActivityAt: now,
     createdAt: now,
-    orcaCreatedAt: now,
-    orcaCreationSource: options.source,
+    occCreatedAt: now,
+    occCreationSource: options.source,
     creatorProvenance: { kind: 'host' },
-    orcaCreationWorkspaceLayout: getWorktreeCreationLayout(repo, store.getSettings()),
+    occCreationWorkspaceLayout: getWorktreeCreationLayout(repo, store.getSettings()),
     ...(args.automationProvenance ? { automationProvenance: args.automationProvenance } : {}),
     ...(args.compareBaseRef || args.baseBranch
       ? { baseRef: args.compareBaseRef ?? args.baseBranch }

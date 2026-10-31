@@ -218,7 +218,7 @@ export async function openProviderTimelineRig(
   overrides: Partial<ProviderTimelineAssemblerDeps> = {},
   journalIdentity: Partial<Pick<TestJournalOptions['identity'], 'agent' | 'providerHandle'>> = {}
 ): Promise<ProviderTimelineRig> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-provider-timeline-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-provider-timeline-'))
   roots.push(root)
   const journalOptions: TestJournalOptions = {
     identity: {

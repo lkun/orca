@@ -27,7 +27,7 @@ import {
 } from '../../agent-session-record-store-test-harness'
 import type { RpcContext } from '../core'
 import { terminalStartError } from '../../../../shared/terminal-start-failure'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { RpcDispatcher } from '../dispatcher'
 import {
   methodNamed,
@@ -116,7 +116,7 @@ beforeEach(async () => {
   attachOperationIds.length = 0
   attachCallerKeys.length = 0
   createStructuredSession.mockClear()
-  directory = await mkdtemp(join(tmpdir(), 'orca-agent-launch-replay-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-agent-launch-replay-'))
   store = await openTestAgentSessionRecordStore(directory)
   // The ledger alone, as admission opens it: no chat host is installed.
   setAgentLaunchRecordStore(store)
@@ -346,7 +346,7 @@ describe('an uncertain launch stays uncertain', () => {
     const runtime = { ...runtimeStub(), getRuntimeId: () => 'runtime-1' }
     const dispatcher = new RpcDispatcher({
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the fixture implements every runtime method reached by agent.launch and dispatcher metadata.
-      runtime: runtime as unknown as OrcaRuntimeService,
+      runtime: runtime as unknown as OCCRuntimeService,
       methods: AGENT_LAUNCH_METHODS
     })
 

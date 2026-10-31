@@ -29,7 +29,7 @@ import {
   submitFolderWorkspaceCreate
 } from './folder-workspace-composer-submit'
 
-const ISSUE_URL = 'https://github.com/stablyai/orca/issues/42'
+const ISSUE_URL = 'https://github.com/stablyai/occ/issues/42'
 const linkedIssue = {
   provider: 'github' as const,
   type: 'issue' as const,
@@ -132,7 +132,7 @@ describe('submitFolderWorkspaceCreate', () => {
       autoRenameBranchFromWork: true,
       agentCmdOverrides: {},
       agentArgs: '--model gpt-5.4',
-      agentEnv: { ORCA_AGENT_PROFILE: 'review' },
+      agentEnv: { OCC_AGENT_PROFILE: 'review' },
       launchSource: 'new_workspace_composer',
       runtimeEnvironmentId: 'env-1',
       createFolderWorkspace,
@@ -153,7 +153,7 @@ describe('submitFolderWorkspaceCreate', () => {
         runtimeEnvironmentId: 'env-1',
         startup: expect.objectContaining({
           command: expect.stringContaining('codex'),
-          env: { ORCA_AGENT_PROFILE: 'review' },
+          env: { OCC_AGENT_PROFILE: 'review' },
           telemetry: expect.objectContaining({
             launch_source: 'new_workspace_composer'
           })
@@ -198,7 +198,7 @@ describe('submitFolderWorkspaceCreate', () => {
       type: 'issue' as const,
       number: 42,
       title: 'Restore checkout polish',
-      url: 'https://github.com/stablyai/orca/issues/42',
+      url: 'https://github.com/stablyai/occ/issues/42',
       repoId: 'repo-1'
     }
 
@@ -230,9 +230,9 @@ describe('submitFolderWorkspaceCreate', () => {
       provider: 'jira' as const,
       type: 'issue' as const,
       number: 0,
-      title: 'ORCA-123 Link Jira',
-      url: 'https://company.atlassian.net/browse/ORCA-123',
-      jiraIdentifier: 'ORCA-123'
+      title: 'OCC-123 Link Jira',
+      url: 'https://company.atlassian.net/browse/OCC-123',
+      jiraIdentifier: 'OCC-123'
     }
     const linkedTaskSourceContext = {
       kind: 'task-source' as const,
@@ -243,7 +243,7 @@ describe('submitFolderWorkspaceCreate', () => {
         provider: 'jira' as const,
         siteId: 'site-1',
         siteUrl: 'https://company.atlassian.net',
-        projectKey: 'ORCA'
+        projectKey: 'OCC'
       }
     }
 
@@ -263,7 +263,7 @@ describe('submitFolderWorkspaceCreate', () => {
 
     expect(createFolderWorkspace).toHaveBeenCalledWith({
       projectGroupId: 'group-1',
-      name: 'ORCA-123 Link Jira',
+      name: 'OCC-123 Link Jira',
       connectionId: null,
       linkedTask: linkedWorkItem,
       linkedTaskSourceContext
@@ -277,7 +277,7 @@ describe('submitFolderWorkspaceCreate', () => {
       type: 'pr' as const,
       number: 91,
       title: 'Restore linked quick-create',
-      url: 'https://github.com/stablyai/orca/pull/91',
+      url: 'https://github.com/stablyai/occ/pull/91',
       repoId: 'repo-1'
     }
 
@@ -330,7 +330,7 @@ describe('submitFolderWorkspaceCreate', () => {
       type: 'pr' as const,
       number: 92,
       title: 'Trust remote folder draft',
-      url: 'https://github.com/stablyai/orca/pull/92',
+      url: 'https://github.com/stablyai/occ/pull/92',
       repoId: 'repo-1'
     }
     const projectGroup = {
@@ -496,7 +496,7 @@ describe('submitFolderWorkspaceCreate', () => {
     )
     expect(startup?.command).not.toContain('Distinctive folder Linear body.')
     expect(startup?.command).not.toContain('--- BEGIN LINKED WORK ITEM CONTEXT ---')
-    expect(startup?.command).not.toContain('orca linear')
+    expect(startup?.command).not.toContain('occ linear')
     expect(mocks.ensureAgentStartupInTerminal).not.toHaveBeenCalled()
   })
 
@@ -507,7 +507,7 @@ describe('submitFolderWorkspaceCreate', () => {
       type: 'issue' as const,
       number: 42,
       title: 'Restore checkout polish',
-      url: 'https://github.com/stablyai/orca/issues/42',
+      url: 'https://github.com/stablyai/occ/issues/42',
       repoId: 'repo-1'
     }
 

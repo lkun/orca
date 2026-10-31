@@ -72,7 +72,7 @@ app.whenReady().then(async () => {
 describe('plugin panel WebRTC under Electron', () => {
   // Why the 60s timeout: a real Electron window negotiates WebRTC against two local TURN relays.
   it('blocks the panel window but not a nested srcdoc frame', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-panel-webrtc-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-panel-webrtc-'))
     roots.push(root)
     const panelTurn = await turnListener()
     const nestedTurn = await turnListener()

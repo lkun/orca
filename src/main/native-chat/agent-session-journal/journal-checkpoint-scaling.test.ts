@@ -107,7 +107,7 @@ async function fixture(history: number) {
     return post.call(this, message)
   })
   const deadline = vi.spyOn(timers, 'setTimeout')
-  root = await mkdtemp(join(tmpdir(), 'orca-checkpoint-scaling-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-checkpoint-scaling-'))
   const database = JournalHostDatabase.open(root)
   host = database
   database.transaction((db) => {

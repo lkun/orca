@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithRefreshPtyWorktreeRecordsFromController } from './pty-worktree-refresh'
+import { OCCRuntimeWithRefreshPtyWorktreeRecordsFromController } from './pty-worktree-refresh'
 import type * as PtyControllerContract from '../../runtime-pty-controller-contract'
 import type { PtyProcessInfo } from '../../../providers/pty-process-info'
 import {
@@ -8,7 +8,7 @@ import {
 import {
   PTY_CONTROLLER_LIST_PROVIDER_MARGIN_MS,
   PTY_CONTROLLER_LIST_TIMEOUT_MS
-} from '../../orca-runtime-postlude'
+} from '../../occ-runtime-postlude'
 import { pruneOldestMapEntry } from '../../prune-oldest-map-entry'
 import { withTimeoutResult } from '../../runtime-async-boundaries'
 
@@ -16,7 +16,7 @@ type HostScopedPtyProcesses = { processes: PtyProcessInfo[]; hostIds: ExecutionH
 
 export type PtyInventoryListing = HostScopedPtyProcesses & { stale: boolean }
 
-export abstract class OrcaRuntimeWithPtyControllerInventoryListing extends OrcaRuntimeWithRefreshPtyWorktreeRecordsFromController {
+export abstract class OCCRuntimeWithPtyControllerInventoryListing extends OCCRuntimeWithRefreshPtyWorktreeRecordsFromController {
   /** The newest aggregate listing, which a superseded targeted read joins instead of re-listing. */
   private latestAggregatePtyInventoryListing: {
     generation: number

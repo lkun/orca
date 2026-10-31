@@ -218,7 +218,7 @@ export async function stopServeElectronAppForE2E(app: ElectronApplication): Prom
     proc.kill('SIGTERM')
   }
   if (!(await waitForExit(proc, GRACEFUL_CLOSE_TIMEOUT_MS))) {
-    throw new Error(`orca serve ${proc.pid} did not exit after SIGTERM`)
+    throw new Error(`occ serve ${proc.pid} did not exit after SIGTERM`)
   }
   releaseExitedProcessPipes(proc)
   // Playwright close can remain pending after the process exits on its own.

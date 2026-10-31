@@ -16,17 +16,17 @@ vi.mock('./rpc/methods/structured-agent-session-create', () => ({
 }))
 
 const {
-  OrcaRuntimeService,
+  OCCRuntimeService,
   computeWorktreePathMock,
   ensurePathWithinWorkspaceMock,
   getEffectiveHooks,
   getDefaultTabsLaunch,
   createSetupRunnerScript,
   listWorktrees
-} = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+} = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const { makeRuntimeStoreWithWorkspaceSession, store } =
-  await import('./orca-runtime-test-fixtures.spec')
+  await import('./occ-runtime-test-fixtures.spec')
 const { committingSpawn } = await import('./bind-first-pane.test-fixture')
 
 const DEFAULTS = {
@@ -60,7 +60,7 @@ function chatCreateRuntime(args: {
     }
   }
   const { runtimeStore } = makeRuntimeStoreWithWorkspaceSession(getDefaultWorkspaceSession())
-  const runtime = new OrcaRuntimeService({
+  const runtime = new OCCRuntimeService({
     ...runtimeStore,
     getRepo: (id) => (id === repo.id ? repo : undefined),
     getRepos: () => [repo],

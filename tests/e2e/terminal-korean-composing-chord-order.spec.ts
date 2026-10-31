@@ -1,6 +1,6 @@
 // #12871: Cmd+Left overtook composing 다, turning 가나다 into 다가다.
 // Units pin the synthetic handler; assert merged PTY ordering across composition-end and chord-transport routes.
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { closeTerminalImePaneArena, openTerminalImePaneArena } from './terminal-ime-pane-arena'
 import {
   commitImeText,
@@ -32,20 +32,20 @@ const CMD_LEFT_BYTE = '\x01'
 
 test.describe('Terminal 2-Set Korean composing-chord order', () => {
   test('sends the composing syllable before a Cmd+Left pressed during it', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
     // Pin macOS policy so Cmd+Left emits Ctrl+A even on Linux; otherwise the missing chord byte makes this arm vacuous.
-    await applyImePlatformPolicy(orcaPage, 'mac')
-    await expectImePlatformPolicy(orcaPage, 'mac')
+    await applyImePlatformPolicy(occPage, 'mac')
+    await expectImePlatformPolicy(occPage, 'mac')
 
-    const arena = await openTerminalImePaneArena(orcaPage)
+    const arena = await openTerminalImePaneArena(occPage)
     const reader = createTerminalImeByteReader(testRepoPath, 1)
     let completed = false
     try {
-      await startTerminalImeByteReader(orcaPage, arena.ptyId, reader)
+      await startTerminalImeByteReader(occPage, arena.ptyId, reader)
 
-      await composeHangulSyllable(arena.session, orcaPage, DA_FRAMES)
+      await composeHangulSyllable(arena.session, occPage, DA_FRAMES)
 
       // Press during preedit; before the fix the chord overtook the earlier-typed 다.
       await arena.session.send('Input.dispatchKeyEvent', {
@@ -59,10 +59,10 @@ test.describe('Terminal 2-Set Korean composing-chord order', () => {
 
       await commitImeText(arena.session, '다')
       // Let the held chord’s post-composition macrotask land before Enter terminates the reader line, preserving the measured pair.
-      await orcaPage.waitForTimeout(250)
+      await occPage.waitForTimeout(250)
       await dispatchPlainEnter(arena.session)
 
-      const received = await waitForTerminalImeBytes(orcaPage, reader)
+      const received = await waitForTerminalImeBytes(occPage, reader)
       expect(received).toEqual([Buffer.from(`다${CMD_LEFT_BYTE}\n`).toString('hex')])
       completed = true
     } finally {

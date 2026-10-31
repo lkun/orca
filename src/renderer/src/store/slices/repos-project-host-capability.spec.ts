@@ -110,7 +110,7 @@ export function registerReposProjectHostCapabilityTests(): void {
         store.getState().setupProjectClone({
           projectId: 'project-1',
           hostId: 'runtime:env-1',
-          url: 'https://github.com/stablyai/orca.git',
+          url: 'https://github.com/stablyai/occ.git',
           destination: '/srv'
         })
       ).resolves.toBeNull()
@@ -135,7 +135,7 @@ export function registerReposProjectHostCapabilityTests(): void {
         store.getState().setupProjectClone({
           projectId: 'project-1',
           hostId: 'runtime:env-1',
-          url: 'https://github.com/stablyai/orca.git',
+          url: 'https://github.com/stablyai/occ.git',
           destination: '/srv'
         })
       ).resolves.toBeNull()

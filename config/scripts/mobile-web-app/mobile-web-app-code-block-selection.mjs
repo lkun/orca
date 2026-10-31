@@ -124,7 +124,7 @@ async function verifyCodeBlockSelections({
       await press(page, 'Code block')
       const saved = sample.saved ?? `\`\`\`${sample.language ?? ''}\n${sample.literal}\n\`\`\``
       await expect
-        .poll(() => page.evaluate(() => globalThis.__orcaEditor.changes.at(-1)))
+        .poll(() => page.evaluate(() => globalThis.__occEditor.changes.at(-1)))
         .toBe(saved)
       if (sample.cleanBefore) {
         // No blank line may appear above a code block inserted at an empty line or a block start.
@@ -140,16 +140,16 @@ async function verifyCodeBlockSelections({
       expect(await page.evaluate(() => window.getSelection().toString())).toBe(selected)
       await page.keyboard.press(`${historyModifier}+Shift+z`)
       await expect
-        .poll(() => page.evaluate(() => globalThis.__orcaEditor.changes.at(-1)))
+        .poll(() => page.evaluate(() => globalThis.__occEditor.changes.at(-1)))
         .toBe(saved)
       await page.evaluate(
-        (content) => globalThis.__orcaEditor.set({ content, generation: 1 }),
+        (content) => globalThis.__occEditor.set({ content, generation: 1 }),
         saved
       )
       await expect
         .poll(() => page.locator('#first-surface #editor pre code').textContent())
         .toBe(sample.literal)
-      expect(await page.evaluate(() => globalThis.__orcaCspViolations)).toEqual([])
+      expect(await page.evaluate(() => globalThis.__occCspViolations)).toEqual([])
       expect(consoleErrors).toEqual([])
     } finally {
       await page.close()
@@ -179,20 +179,20 @@ async function verifyStructuredSelections({
       if (sample.html) {
         await setContent(page, sample.markdown, sample.html)
       } else {
-        await page.evaluate((content) => globalThis.__orcaEditor.set({ content }), sample.markdown)
+        await page.evaluate((content) => globalThis.__occEditor.set({ content }), sample.markdown)
         await page.waitForSelector(`#first-surface #editor ${sample.selector}`)
       }
       await select(page, 'all')
       const before = await readSurface(page)
       const selected = await page.evaluate(() => window.getSelection().toString())
       await page.evaluate(() => {
-        globalThis.__orcaEditor.changes.length = 0
+        globalThis.__occEditor.changes.length = 0
       })
       await press(page, 'Code block')
       expect(await readSurface(page)).toBe(before)
       expect(await page.evaluate(() => window.getSelection().toString())).toBe(selected)
-      expect(await page.evaluate(() => globalThis.__orcaEditor.changes)).toEqual([])
-      expect(await page.evaluate(() => globalThis.__orcaCspViolations)).toEqual([])
+      expect(await page.evaluate(() => globalThis.__occEditor.changes)).toEqual([])
+      expect(await page.evaluate(() => globalThis.__occCspViolations)).toEqual([])
       expect(consoleErrors).toEqual([])
     } finally {
       await page.close()

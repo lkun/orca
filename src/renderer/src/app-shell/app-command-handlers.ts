@@ -96,7 +96,7 @@ export function createAppCommandHandlers(
     if (
       input &&
       keybindingContext === 'terminal' &&
-      (terminalShortcutPolicy ?? 'orca-first') === 'orca-first'
+      (terminalShortcutPolicy ?? 'occ-first') === 'occ-first'
     ) {
       showTerminalShortcutCaptureNotification({
         actionId,

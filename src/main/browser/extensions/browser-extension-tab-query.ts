@@ -2,7 +2,7 @@
 import { matchesExtensionMatchPattern } from './browser-extension-match-pattern'
 
 /** Query keys OCC answers; the preload strips them before Electron's native query runs. */
-export type OrcaTabQuery = {
+export type OCCTabQuery = {
   active?: boolean
   highlighted?: boolean
   currentWindow?: boolean
@@ -17,7 +17,7 @@ export type OrcaTabQuery = {
   groupId?: number
 }
 
-export type OrcaTabQueryContext = {
+export type OCCTabQueryContext = {
   callerWindowId: number | null
   lastFocusedWindowId: number | null
   windowTypeById: ReadonlyMap<number, string>
@@ -34,10 +34,10 @@ function windowMatches(
 }
 
 /** chrome.tabs.query semantics for the fields Electron cannot know (window, activation, status). */
-export function matchesOrcaTabQuery(
+export function matchesOCCTabQuery(
   tab: chrome.tabs.Tab,
-  query: OrcaTabQuery,
-  context: OrcaTabQueryContext
+  query: OCCTabQuery,
+  context: OCCTabQueryContext
 ): boolean {
   if (query.active !== undefined && tab.active !== query.active) {
     return false

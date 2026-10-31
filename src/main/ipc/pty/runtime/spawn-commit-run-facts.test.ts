@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
-import { OrcaRuntimeWithRuntimeId } from '../../../runtime/construction/runtime-identity-state'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCCRuntimeWithRuntimeId } from '../../../runtime/construction/runtime-identity-state'
 import { TerminalIntentionalStops } from '../../../runtime/terminal-intentional-stops'
 import { TerminalRunFactsRegister } from '../../../runtime/terminal-run-facts'
 import { ptySizes } from '../delivery/visibility-state'
@@ -15,7 +15,7 @@ import {
 import { requireAcceptedSpawn } from '../spawn-outcome'
 import type { AgentSessionClaimedSpawnResult } from '../../../../shared/agent-session-host-authority'
 
-const PTY_ID = 'orca-pty-run-facts'
+const PTY_ID = 'occ-pty-run-facts'
 const INCARNATION_ID = 'inc-run-facts'
 
 const ADOPTED = {
@@ -45,7 +45,7 @@ async function commit(
     terminalRunFacts: facts,
     intentionalPtyStops,
     // Exercise real runtime commit handling through the fixture ports.
-    noteTerminalSpawnCommit: OrcaRuntimeWithRuntimeId.prototype.noteTerminalSpawnCommit,
+    noteTerminalSpawnCommit: OCCRuntimeWithRuntimeId.prototype.noteTerminalSpawnCommit,
     registerPreAllocatedHandleForPty: vi.fn(),
     registerPty: vi.fn(),
     cancelPendingPtyRegistration: vi.fn(),
@@ -130,7 +130,7 @@ describe('runtime spawn commit: run facts', () => {
       const onResumeOutcome = vi.fn()
       const persistPtyBinding = vi.fn(async () => {
         expect(onResumeOutcome.mock.calls).toEqual(
-          ORCA_LAYOUT_OWNER_IS_MAIN ? [[PTY_ID, 'resume-unavailable']] : []
+          OCC_LAYOUT_OWNER_IS_MAIN ? [[PTY_ID, 'resume-unavailable']] : []
         )
         return true
       })

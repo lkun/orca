@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import { resolveAgentStartupPlanInputs } from '../../src/shared/agent-startup-plan-inputs'
 import { buildAgentStartupPlan } from '../../src/shared/tui-agent-startup'
 import { createRuntimeAgentBackgroundTerminal } from '../../src/renderer/src/lib/runtime-agent-background-create'
@@ -25,7 +25,7 @@ describe('background creation owning-host boundary', () => {
   it.each([undefined, { model: 'picked', effort: 'low' }])(
     'keeps capable-host defaults separate from requested choices (%j) through actual host creation',
     async (sessionOptions) => {
-      const runtime = new OrcaRuntimeService(
+      const runtime = new OCCRuntimeService(
         // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: this creation contract only reads the settings store.
         {
           getSettings: () => ({

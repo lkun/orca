@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 const { runProcessMock } = vi.hoisted(() => ({ runProcessMock: vi.fn() }))
 
 // Mock OCC’s process-host seam to retain windowsHide, argv encoding and tree-termination policy.
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 
 import {
   getCheapProcessTableSnapshot,

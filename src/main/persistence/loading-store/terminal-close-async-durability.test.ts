@@ -1,7 +1,7 @@
 import { beforeEach, expect, it, vi } from 'vitest'
 import { _resetClosedPaneFencesForTests } from '../terminal-topology/closed-pane-binding-fence'
 import { fixture } from './profile-state-delayed-authority-fixture'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import type { RuntimeMobileSessionTabsSnapshot } from '../../../shared/runtime-types'
 
 vi.mock('../../telemetry/client', () => ({ track: vi.fn() }))
@@ -25,7 +25,7 @@ const binding = {
 }
 const siblingLeafId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd'
 
-class CloseRuntime extends OrcaRuntimeService {
+class CloseRuntime extends OCCRuntimeService {
   async closeHeadlessTab(): Promise<void> {
     const snapshot = this.mobileSessionTabsByWorktree.get(binding.worktreeId)
     const tab = snapshot?.tabs[0]

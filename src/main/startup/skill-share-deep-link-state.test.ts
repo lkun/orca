@@ -5,7 +5,7 @@ describe('SkillShareDeepLinkState', () => {
   it('queues a startup share until the renderer consumes it once', () => {
     const state = new SkillShareDeepLinkState()
 
-    expect(state.capture(['occ', 'https://app.orca.dev/skills/share/share_startup'])).toBe(true)
+    expect(state.capture(['occ', 'https://app.occ.dev/skills/share/share_startup'])).toBe(true)
     expect(state.consume()).toBe('share_startup')
     expect(state.consume()).toBeNull()
   })
@@ -14,7 +14,7 @@ describe('SkillShareDeepLinkState', () => {
     const state = new SkillShareDeepLinkState()
     const publish = vi.fn()
 
-    state.capture(['occ', 'https://app.orca.dev/skills/share/share_first'])
+    state.capture(['occ', 'https://app.occ.dev/skills/share/share_first'])
     expect(state.capture(['occ', 'occ://skills/share/share_second'], publish)).toBe(true)
 
     expect(publish).toHaveBeenCalledWith('share_second')
@@ -23,7 +23,7 @@ describe('SkillShareDeepLinkState', () => {
 
   it('ignores untrusted URLs without replacing a pending intent', () => {
     const state = new SkillShareDeepLinkState()
-    state.capture(['occ', 'https://app.orca.dev/skills/share/share_safe'])
+    state.capture(['occ', 'https://app.occ.dev/skills/share/share_safe'])
 
     expect(state.capture(['occ', 'https://attacker.test/skills/share/share_bad'])).toBe(false)
     expect(state.consume()).toBe('share_safe')

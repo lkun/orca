@@ -5,8 +5,8 @@ import type { ParsedDaemonPid } from './daemon-pid-file-parse'
 const PID = 4288
 const STAT = `${PID} (occ-ide) S 1 4288 4288 0 -1 4194560 0 0 0 0 0 0 0 0 20 0 1 0 777 0 0`
 const BOOT = 'boot-1'
-const OLD_MOUNT = '/tmp/.mount_orcaAb12'
-const OWN_MOUNT = '/tmp/.mount_orcaZz99'
+const OLD_MOUNT = '/tmp/.mount_occAb12'
+const OWN_MOUNT = '/tmp/.mount_occZz99'
 
 function fuseLine(point: string): string {
   return `1 2 0:50 / ${point} ro,nosuid,nodev relatime - fuse.occ-linux.AppImage occ-linux.AppImage ro`
@@ -63,7 +63,7 @@ function verdict(r: ParsedDaemonPid | null, p: DaemonHostImageProc) {
 
 describe('inspectDaemonHostImage', () => {
   it('leaves a daemon on the extracted copy alone after the window that started it unmounts', () => {
-    const node = '/home/me/.cache/orca/appimage/aaa/bbb/resources/node-runtime/bin/node'
+    const node = '/home/me/.cache/occ/appimage/aaa/bbb/resources/node-runtime/bin/node'
     const copyDaemon = record({
       entryPath: '/apps/OCC.AppImage/resources/app.asar.unpacked/out/main/daemon-entry.js'
     })

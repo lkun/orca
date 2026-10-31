@@ -2,13 +2,13 @@
 import { expect, it, vi } from 'vitest'
 import { HEADLESS_RUNTIME_WINDOW_ID } from '../../../../shared/runtime-types'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-await import('../../orca-runtime-test-mocks.spec')
-await import('../../orca-runtime-test-lifecycle.spec')
+await import('../../occ-runtime-test-mocks.spec')
+await import('../../occ-runtime-test-lifecycle.spec')
 const { HEADLESS_LEAF_ID, HEADLESS_SECOND_LEAF_ID, TEST_WORKTREE_ID } =
-  await import('../../orca-runtime-test-fixtures.spec')
-const { OrcaRuntimeService } = await import('../../orca-runtime-test-mocks.spec')
+  await import('../../occ-runtime-test-fixtures.spec')
+const { OCCRuntimeService } = await import('../../occ-runtime-test-mocks.spec')
 const { SURFACE_TAB_ID, SURFACE_PTYS, surfaceRuntime } =
   await import('./terminal-surface-replies.test-fixture')
 
@@ -133,7 +133,7 @@ for (const host of ['no window', 'a window'] as const) {
       await close(harness.runtime)
 
       // The relaunch reattaches the closed pane's live terminal; no pane holds it any more.
-      const relaunched = new OrcaRuntimeService(harness.runtime['store'])
+      const relaunched = new OCCRuntimeService(harness.runtime['store'])
       relaunched.setPtyController({
         write: () => true,
         kill: () => true,

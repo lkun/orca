@@ -116,7 +116,7 @@ export function useMobileSessionTerminalRuntime(scope: MobileSessionScreenStateM
     activeHandleRef,
     storageKey:
       hostId && worktreeId
-        ? `orca:terminalDrafts:${encodeURIComponent(hostId)}:${encodeURIComponent(worktreeId)}`
+        ? `occ:terminalDrafts:${encodeURIComponent(hostId)}:${encodeURIComponent(worktreeId)}`
         : undefined,
     storageScope: executionHost,
     onStorageError: () =>

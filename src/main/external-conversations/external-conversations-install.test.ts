@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { AgentStatusIpcPayload } from '../../shared/agent-status-ipc-payload'
 import type { GlobalSettings } from '../../shared/global-settings-types'
-import type { RuntimeWorktreeLifecycleEvent } from '../runtime/orca-runtime-core'
+import type { RuntimeWorktreeLifecycleEvent } from '../runtime/occ-runtime-core'
 import { OrchestrationDb } from '../runtime/orchestration/db/orchestration-db'
 import { installExternalConversations } from './external-conversations-install'
 import {

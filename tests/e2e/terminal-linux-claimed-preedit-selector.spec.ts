@@ -1,5 +1,5 @@
 import type { CDPSession } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   createTerminalImeByteReader,
   removeTerminalImeByteReader,
@@ -57,15 +57,15 @@ async function dispatchKeyCommitting(
 
 // CDP exercises Linux renderer policy and PTY bytes; it does not run native fcitx4/Sogou.
 test('Linux Sogou candidate picks send the candidate, not the selector, to the PTY', async ({
-  orcaPage,
+  occPage,
   testRepoPath
 }, testInfo) => {
-  await applyImePlatformPolicy(orcaPage, 'linux')
-  const arena = await openTerminalImePaneArena(orcaPage)
+  await applyImePlatformPolicy(occPage, 'linux')
+  const arena = await openTerminalImePaneArena(occPage)
   const reader = createTerminalImeByteReader(testRepoPath, 1)
   let completed = false
   try {
-    await startTerminalImeByteReader(orcaPage, arena.ptyId, reader)
+    await startTerminalImeByteReader(occPage, arena.ptyId, reader)
 
     // Space picks the first candidate.
     await dispatchLetterKeyupOnly(arena.session, 'n', 'KeyN', 78)
@@ -89,7 +89,7 @@ test('Linux Sogou candidate picks send the candidate, not the selector, to the P
     }
 
     await dispatchPlainEnter(arena.session)
-    expect(await waitForTerminalImeBytes(orcaPage, reader)).toEqual([
+    expect(await waitForTerminalImeBytes(occPage, reader)).toEqual([
       Buffer.from('你浩 ls7\n').toString('hex')
     ])
     completed = true

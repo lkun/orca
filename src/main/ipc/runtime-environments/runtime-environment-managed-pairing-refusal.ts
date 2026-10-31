@@ -1,21 +1,21 @@
 import { errorMessage } from '../../../shared/error-message'
 import { resolveEnvironment } from '../../../shared/runtime-environment-store'
-import { getOrcadSshDeployment } from '../../../shared/runtime-environments'
-import { OrcadManagedPairingRepairFailedError } from '../../managed-server/lifecycle/orcad-managed-pairing-repair-failure'
+import { getOCCdSshDeployment } from '../../../shared/runtime-environments'
+import { OCCdManagedPairingRepairFailedError } from '../../managed-server/lifecycle/occd-managed-pairing-repair-failure'
 import {
-  managedOrcadPairingFailureStands,
-  recoverRefusedManagedOrcadPairing
-} from '../../managed-server/lifecycle/orcad-managed-tunnel'
+  managedOCCdPairingFailureStands,
+  recoverRefusedManagedOCCdPairing
+} from '../../managed-server/lifecycle/occd-managed-tunnel'
 import { getRuntimeEnvironmentStatusOwner } from './runtime-environment-request-connections'
 
 /** Null leaves user-managed pairing recovery to the caller. */
 export function recoverRefusedManagedPairing(
   userDataPath: string,
   environmentId: string,
-  recover: typeof recoverRefusedManagedOrcadPairing = recoverRefusedManagedOrcadPairing
+  recover: typeof recoverRefusedManagedOCCdPairing = recoverRefusedManagedOCCdPairing
 ): Promise<'built' | 'repaired'> | null {
   try {
-    if (!getOrcadSshDeployment(resolveEnvironment(userDataPath, environmentId))) {
+    if (!getOCCdSshDeployment(resolveEnvironment(userDataPath, environmentId))) {
       return null
     }
   } catch {
@@ -28,8 +28,8 @@ export function recoverRefusedManagedPairing(
 export function handleManagedSharedControlRefusal(
   userDataPath: string,
   environmentId: string,
-  recover: typeof recoverRefusedManagedOrcadPairing = recoverRefusedManagedOrcadPairing,
-  failureStands: typeof managedOrcadPairingFailureStands = managedOrcadPairingFailureStands
+  recover: typeof recoverRefusedManagedOCCdPairing = recoverRefusedManagedOCCdPairing,
+  failureStands: typeof managedOCCdPairingFailureStands = managedOCCdPairingFailureStands
 ): Promise<'retry' | 'stop'> | null {
   const recovery = recoverRefusedManagedPairing(userDataPath, environmentId, recover)
   if (!recovery) {
@@ -41,7 +41,7 @@ export function handleManagedSharedControlRefusal(
     (error: unknown) => {
       // A concurrent pairing has a successor owner this failure never judged.
       if (
-        error instanceof OrcadManagedPairingRepairFailedError &&
+        error instanceof OCCdManagedPairingRepairFailedError &&
         failureStands(userDataPath, environmentId)
       ) {
         // Authentication refusal blocks retries until an explicit user connect.

@@ -15,7 +15,7 @@ import { isAgentLaunchResult, type AgentLaunchResult } from '../../../../shared/
 import type { AgentSessionOperationRow } from '../../../../shared/agent-session-operation-ledger'
 import type { AgentSessionRecordStore } from '../../agent-session-record-store'
 import { openTestAgentSessionRecordStore } from '../../agent-session-record-store-test-harness'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import type { RpcContext } from '../core'
 import { RpcDispatcher } from '../dispatcher'
 import { DESKTOP_RPC_CALLER } from '../rpc-caller-identity'
@@ -184,7 +184,7 @@ function promptOutcome(outcome: AgentSessionOperationRow['outcome'] | undefined)
 function dispatcherFor(runtime: AgentLaunchRuntimeStub): RpcDispatcher {
   return new RpcDispatcher({
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the fixture implements every runtime method agent.launch reaches, plus the id the dispatcher stamps on replies.
-    runtime: { ...runtime, getRuntimeId: () => 'runtime-1' } as unknown as OrcaRuntimeService,
+    runtime: { ...runtime, getRuntimeId: () => 'runtime-1' } as unknown as OCCRuntimeService,
     methods: AGENT_LAUNCH_METHODS
   })
 }
@@ -192,7 +192,7 @@ function dispatcherFor(runtime: AgentLaunchRuntimeStub): RpcDispatcher {
 beforeEach(async () => {
   deliverTerminalPrompt.mockReset()
   deliverTerminalPrompt.mockResolvedValue(true)
-  directory = await mkdtemp(join(tmpdir(), 'orca-agent-launch-restart-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-agent-launch-restart-'))
   store = await openTestAgentSessionRecordStore(directory)
   setAgentLaunchRecordStore(store)
 })

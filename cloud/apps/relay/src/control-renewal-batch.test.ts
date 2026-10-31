@@ -219,7 +219,7 @@ describe('control renewal batch', () => {
 
       expect(warn).toHaveBeenCalledOnce()
       expect(JSON.parse(String(warn.mock.calls[0]![0]))).toMatchObject({
-        event: 'orca_relay_control_renewal_flush',
+        event: 'occ_relay_control_renewal_flush',
         cellId: 'cell-a',
         rows: 2,
         outcomes: { renewed: 1, control_activity_not_found: 1 }

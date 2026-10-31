@@ -20,7 +20,7 @@ export const UNIT_SETUP_FILES = [
   'config/scripts/vitest-host-ports-setup.ts',
   'config/scripts/vitest-caller-identity-env-setup.ts',
   'config/scripts/vitest-inherited-git-env-setup.ts',
-  'config/scripts/vitest-orcad-feature-readiness-reset.ts'
+  'config/scripts/vitest-occd-feature-readiness-reset.ts'
 ]
 
 export const UNIT_EXCLUDE = [

@@ -211,7 +211,7 @@ function tabStatus(contents: Electron.WebContents): 'loading' | 'complete' {
 }
 
 /** The fields OCC owns; url/title come from Electron's native result or describeBrowserExtensionTab. */
-function orcaTabFields(entry: BrowserExtensionTabEntry): chrome.tabs.Tab {
+function occTabFields(entry: BrowserExtensionTabEntry): chrome.tabs.Tab {
   const { contents } = entry
   return {
     id: contents.id,
@@ -237,7 +237,7 @@ export function describeBrowserExtensionTab(
 ): chrome.tabs.Tab {
   const url = entry.contents.getURL()
   return {
-    ...orcaTabFields(entry),
+    ...occTabFields(entry),
     ...(canExtensionSeeTabUrl(extension, entry.contents.session, url, entry.contents.id)
       ? { url, title: entry.contents.getTitle() }
       : {})
@@ -262,7 +262,7 @@ export function mergeNativeTab(
       Object.assign(native, { [key]: nativeTab[key] })
     }
   }
-  return { ...orcaTabFields(entry), ...native }
+  return { ...occTabFields(entry), ...native }
 }
 
 /**

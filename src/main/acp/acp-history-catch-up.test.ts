@@ -763,7 +763,7 @@ describe('ACP history catch-up', () => {
               parseAgentJournalItemKey(turn.itemId)!,
               agentJournalTurnBody({
                 ...readAgentJournalTurn(turn.body)!,
-                userItemId: 'orca:concurrent-owner'
+                userItemId: 'occ:concurrent-owner'
               }),
               { fence: 1, turnScope: { kind: 'thread' } }
             )

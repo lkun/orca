@@ -1,6 +1,6 @@
 import { writeFile } from 'node:fs/promises'
 import { buildShellCommandFromArgv } from '../../src/shared/tui-agent-startup-shell'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   execInTerminal,
@@ -10,17 +10,17 @@ import {
 } from './helpers/terminal'
 
 test('OMP spaced-colon title renders working and clears on idle', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.skip(
     process.platform === 'win32',
     'POSIX title replay; Windows formatter bytes have separate coverage'
   )
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
-  await waitForActiveTerminalManager(orcaPage)
-  const ptyId = await waitForActivePanePtyId(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
+  await waitForActiveTerminalManager(occPage)
+  const ptyId = await waitForActivePanePtyId(occPage)
   const script = testInfo.outputPath('title-replay.cjs')
   await writeFile(
     script,
@@ -30,14 +30,14 @@ process.stdin.on('data', () => process.stdout.write('\\x1b]0;OMP > Image review\
 `
   )
   await execInTerminal(
-    orcaPage,
+    occPage,
     ptyId,
     buildShellCommandFromArgv([process.execPath, script], 'posix')
   )
-  const working = orcaPage.locator('[aria-label="Working"]')
+  const working = occPage.locator('[aria-label="Working"]')
   await expect(working.first()).toBeVisible({ timeout: 15000 })
-  await orcaPage.screenshot({ path: testInfo.outputPath('omp-title-working.png') })
-  await sendToTerminal(orcaPage, ptyId, '\r')
+  await occPage.screenshot({ path: testInfo.outputPath('omp-title-working.png') })
+  await sendToTerminal(occPage, ptyId, '\r')
   await expect(working).toHaveCount(0)
-  await orcaPage.screenshot({ path: testInfo.outputPath('omp-title-idle.png') })
+  await occPage.screenshot({ path: testInfo.outputPath('omp-title-idle.png') })
 })

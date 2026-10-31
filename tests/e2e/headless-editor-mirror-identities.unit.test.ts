@@ -13,7 +13,7 @@ import {
 
 const host = vi.hoisted(() => ({ layoutOwnerIsMain: true }))
 vi.mock('../../src/shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return host.layoutOwnerIsMain
   }
 }))

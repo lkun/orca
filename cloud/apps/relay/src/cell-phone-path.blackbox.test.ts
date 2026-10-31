@@ -12,7 +12,7 @@ import { StatementRecordingDatabase } from './test-fixtures/statement-recording-
 // Phone credentials are 32 random bytes.
 const token = (fill: number) => Buffer.alloc(32, fill).toString('base64url')
 const TOKEN = token(1)
-const OTHER_CELL = { id: 'production-gce-c4', url: 'https://c4.relay.onorca.dev', capacityRequests: 900 }
+const OTHER_CELL = { id: 'production-gce-c4', url: 'https://c4.relay.onocc.dev', capacityRequests: 900 }
 
 const RESUME_DEVICE_READ = expect.stringMatching(/^SELECT .* FROM relay_devices\b/)
 const HOST_ASSIGNMENT_READ = expect.stringMatching(/^SELECT assignment\.\*.* FROM relay_assignments\b/)
@@ -37,7 +37,7 @@ describe('the memory phone path', () => {
     vi.spyOn(console, 'log').mockImplementation(() => undefined)
     vi.spyOn(console, 'warn').mockImplementation(() => undefined)
     vi.spyOn(console, 'error').mockImplementation(() => undefined)
-    const dataDir = mkdtempSync(join(tmpdir(), 'orca-relay-phone-path-'))
+    const dataDir = mkdtempSync(join(tmpdir(), 'occ-relay-phone-path-'))
     cleanup.push(() => rmSync(dataDir, { recursive: true, force: true }))
     const inner = await openRelayDatabase({ dataDir })
     cleanup.push(() => inner.close())
@@ -173,8 +173,8 @@ describe('the memory phone path', () => {
     expect(invite).not.toHaveBeenCalled()
     expect(reserve.phoneStatements()).toEqual([])
     // One line opens the window; the repeat waits for its closing line.
-    expect(warnings('orca_relay_client_accept_db_error')).toEqual([
-      { event: 'orca_relay_client_accept_db_error', cause: 'error', cellId: reserve.config.cellId }
+    expect(warnings('occ_relay_client_accept_db_error')).toEqual([
+      { event: 'occ_relay_client_accept_db_error', cause: 'error', cellId: reserve.config.cellId }
     ])
   })
 
@@ -206,17 +206,17 @@ describe('the memory phone path', () => {
     }
     expect(await dial('elsewhere')).toBe(4409)
     expect(await dial('none')).toBe(4404)
-    expect(warnings('orca_relay_client_miss_row_names_here')).toEqual([])
+    expect(warnings('occ_relay_client_miss_row_names_here')).toEqual([])
     expect(await dial('here')).toBe(4404)
-    expect(warnings('orca_relay_client_miss_row_names_here')).toEqual([
+    expect(warnings('occ_relay_client_miss_row_names_here')).toEqual([
       expect.objectContaining({ cellId: reserve.config.cellId, relayHostIdDigest: expect.any(String) })
     ])
     vi.spyOn(reserve.relay.assignments, 'resolve').mockRejectedValueOnce(new Error('connection terminated'))
     const host = await reserve.host()
     await reserve.installDevice(host.hostId, TOKEN)
     expect((await (await reserve.dialPhone(host.hostId, TOKEN)).closed).code).toBe(4409)
-    expect(warnings('orca_relay_client_miss_read_error')).toEqual([
-      { event: 'orca_relay_client_miss_read_error', cause: 'error', cellId: reserve.config.cellId }
+    expect(warnings('occ_relay_client_miss_read_error')).toEqual([
+      { event: 'occ_relay_client_miss_read_error', cause: 'error', cellId: reserve.config.cellId }
     ])
   })
 
@@ -277,8 +277,8 @@ describe('the memory phone path', () => {
     expect(await failing.confirm('confirm-1')).toMatchObject({ renewed: true, resumeExpiresAt: due })
     expect(Number((await deviceRow(failing.reserve))?.current_expires_at)).toBe(due)
     // Never silent: a renewal left failing ages phones toward re-pairing.
-    expect(warnings('orca_relay_resume_renewal_failed')).toEqual([
-      { event: 'orca_relay_resume_renewal_failed', cause: 'error', cellId: failing.reserve.config.cellId }
+    expect(warnings('occ_relay_resume_renewal_failed')).toEqual([
+      { event: 'occ_relay_resume_renewal_failed', cause: 'error', cellId: failing.reserve.config.cellId }
     ])
   })
 
@@ -350,9 +350,9 @@ describe('the memory phone path', () => {
     await new Promise((resolve) => setTimeout(resolve, 50))
     expect(await confirm('confirm-1')).toMatchObject({ type: 'control-error', code: 'confirmation_not_active' })
     expect(reserve.phoneStatements()[0]).toBe('BEGIN')
-    expect(warnings('orca_relay_resume_confirm_failed')).toEqual([
+    expect(warnings('occ_relay_resume_confirm_failed')).toEqual([
       {
-        event: 'orca_relay_resume_confirm_failed',
+        event: 'occ_relay_resume_confirm_failed',
         code: 'confirmation_not_active',
         phonePath: 'db',
         cellId: reserve.config.cellId
@@ -365,7 +365,7 @@ describe('the memory phone path', () => {
     vi.spyOn(reserve.relay.assignments, 'releaseActivity').mockRejectedValueOnce(new Error('connection terminated'))
     // As today, the desktop still hears the release failure.
     expect(await confirm('confirm-1')).toMatchObject({ type: 'control-error' })
-    expect(warnings('orca_relay_resume_confirm_failed')).toEqual([])
+    expect(warnings('occ_relay_resume_confirm_failed')).toEqual([])
   })
 
   it('durably confirms and renews a database-path resume, releasing only its confirmation lease', async () => {

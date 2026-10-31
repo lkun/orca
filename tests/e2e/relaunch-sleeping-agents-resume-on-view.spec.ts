@@ -2,7 +2,7 @@
 import { chmodSync, existsSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { TEST_REPO_PATH_FILE } from './global-setup'
 import { mutateStoppedProfileState } from './helpers/persisted-profile-state'
 import {
@@ -11,7 +11,7 @@ import {
   waitForPaneCount
 } from './helpers/terminal'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 import { createHostRendererTerminalTab } from './helpers/host-created-terminal-retention-oracle'
 import { PROTOCOL_VERSION } from '../../src/main/daemon/types'
 
@@ -40,7 +40,7 @@ function writeFakeAgent(dir: string): { command: string; log: string } {
   writeFileSync(log, '')
   writeFileSync(
     command,
-    `#!/bin/sh\nprintf '%s\\n' "$ORCA_PANE_KEY" >> '${log}'\nexec sleep 3600\n`
+    `#!/bin/sh\nprintf '%s\\n' "$OCC_PANE_KEY" >> '${log}'\nexec sleep 3600\n`
   )
   chmodSync(command, 0o755)
   return { command, log }

@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import { HEADLESS_RUNTIME_WINDOW_ID } from '../../shared/runtime-types'
 import { makePaneKey } from '../../shared/stable-pane-id'
 import { SURFACE_CLAIM_WITHOUT_STANDING } from './pty-recorded-surface-topology'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
 import { bindPaneFirst } from './bind-first-pane.test-fixture'
 import { partialRuntimeStore } from './runtime-store-partial-fixture'
@@ -42,8 +42,8 @@ export function registerHeadlessPlaceholderGraphSurfaceStandingTests(): void {
     }
   }
 
-  function makeHeadlessRuntime(): OrcaRuntimeService {
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
+  function makeHeadlessRuntime(): OCCRuntimeService {
+    const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the stub carries the members this suite drives; the PTY stays live throughout.
     runtime.setPtyController({
       spawn: vi.fn(async () => ({ id: 'never' })),
@@ -54,13 +54,13 @@ export function registerHeadlessPlaceholderGraphSurfaceStandingTests(): void {
     return runtime
   }
 
-  function recordSurfaceWithoutStanding(runtime: OrcaRuntimeService): void {
+  function recordSurfaceWithoutStanding(runtime: OCCRuntimeService): void {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: recordPtyWorktree is protected; the replay paths this stands in for all reach it.
     const internals = runtime as unknown as {
       recordPtyWorktree: (ptyId: string, worktreeId: string, state: Record<string, unknown>) => void
     }
     internals.recordPtyWorktree(PTY, WORKTREE_ID, { connected: true })
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       bindPaneFirst(runtime, {
         worktreeId: WORKTREE_ID,
         tabId: 'tab-restored',
@@ -108,7 +108,7 @@ export function registerHeadlessPlaceholderGraphSurfaceStandingTests(): void {
       // A real renderer retracts claims in switch-off builds; main-owned builds retain them until layout removal.
       runtime.attachWindow(1)
       runtime.syncWindowGraph(1, { tabs: [], leaves: [] })
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         const attached = await runtime.listTerminals(`id:${WORKTREE_ID}`)
         const kept = attached.terminals.find((terminal) => terminal.ptyId === PTY)
         expect(kept?.orphaned).toBe(false)

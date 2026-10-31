@@ -1,7 +1,7 @@
 // Swap the page placeholder for the socket’s authenticated identity; terminal.send rejects query replies naming a different client.id.
 
 // Keep the placeholder stable so resent messages fingerprint the same caller.
-export const BRIDGE_PAGE_CLIENT_ID = 'orca-page-client'
+export const BRIDGE_PAGE_CLIENT_ID = 'occ-page-client'
 
 const IDENTITY_FIELDS = ['client', 'mobileClient'] as const
 

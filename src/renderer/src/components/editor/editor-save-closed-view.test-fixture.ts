@@ -5,7 +5,7 @@ import { getDiskBaselineSignature } from '../../../../shared/disk-baseline-signa
 import type { ExecutionHostId } from '../../../../shared/execution-host'
 import { createEditorSaveQueue, type EditorSaveQueue } from './editor-save-queue'
 import { __clearSelfWriteRegistryForTests } from './editor-self-write-registry'
-import { ORCA_EDITOR_FILE_SAVED_EVENT, type EditorFileSavedDetail } from './editor-autosave'
+import { OCC_EDITOR_FILE_SAVED_EVENT, type EditorFileSavedDetail } from './editor-autosave'
 import { withRecordDiskText } from './editor-buffer-adapter'
 import { isEditorContentUnchanged } from './editor-content-dirty-state'
 import {
@@ -103,7 +103,7 @@ export function createClosedViewHarness(): ClosedViewHarness {
       store.setState((s) => ({ openFiles: s.openFiles.filter((file) => file.id !== id) }))
     },
     dispose: () => {
-      window.removeEventListener(ORCA_EDITOR_FILE_SAVED_EVENT, onSaved)
+      window.removeEventListener(OCC_EDITOR_FILE_SAVED_EVENT, onSaved)
       h.queue.dispose()
       __clearSelfWriteRegistryForTests()
       vi.useRealTimers()
@@ -127,6 +127,6 @@ export function createClosedViewHarness(): ClosedViewHarness {
       h.loaded = { ...h.loaded, [detail.fileId]: { content: detail.content, isBinary: false } }
     }
   }
-  window.addEventListener(ORCA_EDITOR_FILE_SAVED_EVENT, onSaved)
+  window.addEventListener(OCC_EDITOR_FILE_SAVED_EVENT, onSaved)
   return h
 }

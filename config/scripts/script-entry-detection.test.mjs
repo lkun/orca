@@ -1,4 +1,4 @@
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { mkdtemp, rm, symlink, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -35,8 +35,8 @@ describe('isDirectInvocation', () => {
   const toWin32FileUrl = (windowsPath) => new URL(`file:///${windowsPath.replaceAll('\\', '/')}`)
 
   it('matches a Windows entry path, which the file:// template form never does', () => {
-    const scriptPath = 'C:\\orca\\config\\scripts\\build-mobile-web-app-bundle.mjs'
-    const moduleUrl = 'file:///C:/orca/config/scripts/build-mobile-web-app-bundle.mjs'
+    const scriptPath = 'C:\\occ\\config\\scripts\\build-mobile-web-app-bundle.mjs'
+    const moduleUrl = 'file:///C:/occ/config/scripts/build-mobile-web-app-bundle.mjs'
     const keepAsIs = (path) => path
     expect(
       isDirectInvocation(moduleUrl, scriptPath, {
@@ -50,7 +50,7 @@ describe('isDirectInvocation', () => {
 describe('running a builder through a symlink', () => {
   // Canonicalize argv symlink: /tmp versus /private/tmp otherwise exits 0 without producing bundle.
   it('still recognises the entry module', async () => {
-    const scratch = await mkdtemp(join(tmpdir(), 'orca-script-entry-link-'))
+    const scratch = await mkdtemp(join(tmpdir(), 'occ-script-entry-link-'))
     try {
       const moduleUrl = new URL('./script-entry-detection.mjs', import.meta.url).href
       const real = join(scratch, 'entry.mjs')

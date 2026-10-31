@@ -5,8 +5,8 @@ import { FIRST_HOST_LAUNCH_ENV_WAIT_MS } from './first-host-launch-env-gate'
 
 const PUSHED: HostAccountLaunchEnv = {
   wslDistro: 'Ubuntu',
-  claude: { CLAUDE_CONFIG_DIR: '/home/u/.local/share/orca/claude-accounts/a/config' },
-  terminal: { CODEX_HOME: '/home/u/.local/share/orca/codex-accounts/b/home' }
+  claude: { CLAUDE_CONFIG_DIR: '/home/u/.local/share/occ/claude-accounts/a/config' },
+  terminal: { CODEX_HOME: '/home/u/.local/share/occ/codex-accounts/b/home' }
 }
 
 function freshWslHost(): RuntimeAccountController {

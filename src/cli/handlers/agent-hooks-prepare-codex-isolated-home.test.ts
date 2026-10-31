@@ -24,14 +24,14 @@ vi.mock('node:os', async () => {
   return { ...actual, homedir: () => homes.current }
 })
 vi.mock('electron', () => ({
-  app: { getPath: () => process.env.ORCA_USER_DATA_PATH }
+  app: { getPath: () => process.env.OCC_USER_DATA_PATH }
 }))
 vi.mock('../runtime-client', () => ({
   RuntimeClient: class {
     call = call
   },
   RuntimeClientError: Error,
-  getDefaultUserDataPath: () => process.env.ORCA_USER_DATA_PATH
+  getDefaultUserDataPath: () => process.env.OCC_USER_DATA_PATH
 }))
 
 import { main } from '../index'
@@ -66,28 +66,28 @@ function listTree(dir: string): Map<string, { bytes: string; mtimeMs: number }> 
 }
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-prepare-codex-isolated-home-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-prepare-codex-isolated-home-'))
   appHome = join(root, 'app-home')
   const appUserData = join(root, 'app-user-data')
   realHome = join(root, 'real-home')
   managedHome = join(appUserData, 'codex-runtime-home', 'home')
   mkdirSync(managedHome, { recursive: true })
   // Simulate an app that installed the pane home under a different HOME at spawn.
-  const appCommand = getManagedCommand(join(appHome, '.orca', 'agent-hooks', SCRIPT_NAME))
+  const appCommand = getManagedCommand(join(appHome, '.occ', 'agent-hooks', SCRIPT_NAME))
   writeFileSync(
     join(managedHome, 'hooks.json'),
     `${JSON.stringify({ hooks: { Stop: [{ hooks: [{ type: 'command', command: appCommand }] }] } }, null, 2)}\n`
   )
   for (const home of [appHome, realHome]) {
     mkdirSync(join(home, '.codex'), { recursive: true })
-    mkdirSync(join(home, '.orca', 'agent-hooks'), { recursive: true })
+    mkdirSync(join(home, '.occ', 'agent-hooks'), { recursive: true })
     writeFileSync(join(home, '.codex', 'hooks.json'), '{\n  "hooks": {}\n}\n')
     writeFileSync(join(home, '.codex', 'config.toml'), 'model = "user-model"\n')
-    writeFileSync(join(home, '.orca', 'agent-hooks', SCRIPT_NAME), '# another OCC wrote this\n')
+    writeFileSync(join(home, '.occ', 'agent-hooks', SCRIPT_NAME), '# another OCC wrote this\n')
   }
-  vi.stubEnv('ORCA_USER_DATA_PATH', appUserData)
+  vi.stubEnv('OCC_USER_DATA_PATH', appUserData)
   vi.stubEnv('CODEX_HOME', managedHome)
-  vi.stubEnv('ORCA_CODEX_HOME', managedHome)
+  vi.stubEnv('OCC_CODEX_HOME', managedHome)
   vi.stubEnv('WSL_DISTRO_NAME', '')
   grantInternals.setGrantSessionRunner(stubMissingCodexBinary)
 })

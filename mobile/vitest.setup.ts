@@ -12,6 +12,6 @@ vi.mock('react-native-svg', () => ({
 }))
 
 // The reserved-regions module is iOS-only native code; tests run as a platform without it.
-vi.mock('./modules/orca-reserved-regions/src', () => ({ OrcaReservedRegions: null }))
+vi.mock('./modules/occ-reserved-regions/src', () => ({ OCCReservedRegions: null }))
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })

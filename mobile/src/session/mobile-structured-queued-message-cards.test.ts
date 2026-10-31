@@ -105,7 +105,7 @@ describe('mobileQueuedMessageCards', () => {
         }
       })
     const cards = mobileQueuedMessageCards(
-      [images('/tmp/shot.png'), images('/tmp/orca-paste-1.png'), images('/a.png', '/b.png')],
+      [images('/tmp/shot.png'), images('/tmp/occ-paste-1.png'), images('/a.png', '/b.png')],
       []
     )
     expect(cards.map((card) => card.line)).toEqual(['shot.png', 'Pasted image', '2 images'])

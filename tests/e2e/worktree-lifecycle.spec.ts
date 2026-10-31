@@ -2,7 +2,7 @@
 // #598/#628/#726: preserve per-worktree/sidebar state across switching; this model arm cannot prove a responsive render loop.
 // #542/#554: reject terminal tab ids shared across worktrees.
 
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   waitForSessionReady,
   waitForActiveWorktree,
@@ -68,19 +68,19 @@ test.describe('Worktree Lifecycle', () => {
   // Track isolated worktrees for afterEach cleanup so aborted tests cannot leak branches/directories into the shared worker.
   let createdWorktreeId: string | null = null
 
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
   })
 
-  test.afterEach(async ({ orcaPage }) => {
+  test.afterEach(async ({ occPage }) => {
     if (!createdWorktreeId) {
       return
     }
     const idToClean = createdWorktreeId
     createdWorktreeId = null
-    await orcaPage
+    await occPage
       .evaluate(async (id) => {
         try {
           const state = window.__store?.getState()
@@ -97,20 +97,20 @@ test.describe('Worktree Lifecycle', () => {
 
   // #532: removing a worktree must drop all owned surface state.
   test('removing a worktree clears its tabs, open files, and browser tabs', async ({
-    orcaPage
+    occPage
   }) => {
-    const originalWorktreeId = await waitForActiveWorktree(orcaPage)
+    const originalWorktreeId = await waitForActiveWorktree(occPage)
 
-    createdWorktreeId = await createIsolatedWorktree(orcaPage)
+    createdWorktreeId = await createIsolatedWorktree(occPage)
     const newWorktreeId = createdWorktreeId
-    await switchToWorktree(orcaPage, newWorktreeId)
+    await switchToWorktree(occPage, newWorktreeId)
     await expect
-      .poll(async () => getActiveWorktreeId(orcaPage), { timeout: 10_000 })
+      .poll(async () => getActiveWorktreeId(occPage), { timeout: 10_000 })
       .toBe(newWorktreeId)
-    await ensureTerminalVisible(orcaPage)
+    await ensureTerminalVisible(occPage)
 
     // Seed all three surface types to require atomic cleanup.
-    await orcaPage.evaluate((worktreeId) => {
+    await occPage.evaluate((worktreeId) => {
       const store = window.__store
       if (!store) {
         return
@@ -124,59 +124,59 @@ test.describe('Worktree Lifecycle', () => {
       })
     }, newWorktreeId)
 
-    await openFileExplorer(orcaPage)
-    await clickFileInExplorer(orcaPage, ['README.md', 'package.json'])
+    await openFileExplorer(occPage)
+    await clickFileInExplorer(occPage, ['README.md', 'package.json'])
 
-    expect((await getWorktreeTabs(orcaPage, newWorktreeId)).length).toBeGreaterThan(0)
-    expect((await getBrowserTabs(orcaPage, newWorktreeId)).length).toBeGreaterThan(0)
-    expect((await getOpenFiles(orcaPage, newWorktreeId)).length).toBeGreaterThan(0)
+    expect((await getWorktreeTabs(occPage, newWorktreeId)).length).toBeGreaterThan(0)
+    expect((await getBrowserTabs(occPage, newWorktreeId)).length).toBeGreaterThan(0)
+    expect((await getOpenFiles(occPage, newWorktreeId)).length).toBeGreaterThan(0)
 
     // Remove an inactive worktree; deleting the active one follows an easier path that misses this cleanup regression.
-    await switchToWorktree(orcaPage, originalWorktreeId)
+    await switchToWorktree(occPage, originalWorktreeId)
     await expect
-      .poll(async () => getActiveWorktreeId(orcaPage), { timeout: 10_000 })
+      .poll(async () => getActiveWorktreeId(occPage), { timeout: 10_000 })
       .toBe(originalWorktreeId)
 
-    const result = await removeWorktreeViaStore(orcaPage, newWorktreeId)
+    const result = await removeWorktreeViaStore(occPage, newWorktreeId)
     expect(result.ok).toBe(true)
     createdWorktreeId = null
 
     // Require all removed-worktree keyed surfaces gone to prevent a worktree-less tab strip.
     await expect
-      .poll(async () => (await getWorktreeTabs(orcaPage, newWorktreeId)).length, {
+      .poll(async () => (await getWorktreeTabs(occPage, newWorktreeId)).length, {
         timeout: 10_000,
         message: 'tabsByWorktree still holds entries for the removed worktree'
       })
       .toBe(0)
     await expect
-      .poll(async () => (await getBrowserTabs(orcaPage, newWorktreeId)).length, { timeout: 5_000 })
+      .poll(async () => (await getBrowserTabs(occPage, newWorktreeId)).length, { timeout: 5_000 })
       .toBe(0)
     await expect
-      .poll(async () => (await getOpenFiles(orcaPage, newWorktreeId)).length, { timeout: 5_000 })
+      .poll(async () => (await getOpenFiles(occPage, newWorktreeId)).length, { timeout: 5_000 })
       .toBe(0)
 
-    const allIds = await getAllWorktreeIds(orcaPage)
+    const allIds = await getAllWorktreeIds(occPage)
     expect(allIds).not.toContain(newWorktreeId)
   })
 
   // Assert layout/openFiles/sidebar state preservation, a narrower claim than renderer responsiveness.
   // A hanging page.evaluate cannot distinguish a frozen React loop; #726’s mounted-layout invariant has separate unit coverage.
   test('switching worktrees preserves per-worktree state across a round-trip', async ({
-    orcaPage
+    occPage
   }) => {
-    const allIds = await getAllWorktreeIds(orcaPage)
+    const allIds = await getAllWorktreeIds(occPage)
     expect(
       allIds.length,
       'fixture should provide primary + e2e-secondary worktrees'
     ).toBeGreaterThanOrEqual(2)
 
-    const originalWorktreeId = await waitForActiveWorktree(orcaPage)
+    const originalWorktreeId = await waitForActiveWorktree(occPage)
 
-    await openFileExplorer(orcaPage)
-    await clickFileInExplorer(orcaPage, ['README.md', 'package.json'])
+    await openFileExplorer(occPage)
+    await clickFileInExplorer(occPage, ['README.md', 'package.json'])
 
     // Require nonempty openFiles before capturing state so preservation cannot be tautological.
-    const originalState = await orcaPage.evaluate((wId) => {
+    const originalState = await occPage.evaluate((wId) => {
       const store = window.__store
       if (!store) {
         // Fail a missing store explicitly rather than null-dereference.
@@ -194,16 +194,16 @@ test.describe('Worktree Lifecycle', () => {
     ).toBeGreaterThan(0)
 
     const otherWorktreeId = allIds.find((id) => id !== originalWorktreeId)!
-    await switchToWorktree(orcaPage, otherWorktreeId)
+    await switchToWorktree(occPage, otherWorktreeId)
     await expect
-      .poll(async () => getActiveWorktreeId(orcaPage), { timeout: 10_000 })
+      .poll(async () => getActiveWorktreeId(occPage), { timeout: 10_000 })
       .toBe(otherWorktreeId)
 
     // Require sidebar UI state after the switch.
     await expect
       .poll(
         async () =>
-          orcaPage.evaluate(() => {
+          occPage.evaluate(() => {
             const state = window.__store?.getState()
             return Boolean(state?.rightSidebarOpen && state?.rightSidebarTab === 'explorer')
           }),
@@ -211,13 +211,13 @@ test.describe('Worktree Lifecycle', () => {
       )
       .toBe(true)
 
-    await switchToWorktree(orcaPage, originalWorktreeId)
+    await switchToWorktree(occPage, originalWorktreeId)
     await expect
-      .poll(async () => getActiveWorktreeId(orcaPage), { timeout: 10_000 })
+      .poll(async () => getActiveWorktreeId(occPage), { timeout: 10_000 })
       .toBe(originalWorktreeId)
 
     // Require original openFiles/layout after return, beyond activeWorktreeId round-trip.
-    const afterRoundTrip = await orcaPage.evaluate((wId) => {
+    const afterRoundTrip = await occPage.evaluate((wId) => {
       const store = window.__store
       if (!store) {
         // Match the initial store guard for useful failure diagnostics.
@@ -234,17 +234,17 @@ test.describe('Worktree Lifecycle', () => {
   })
 
   // #542/#554: terminal membership must not share ids between worktrees, the model invariant behind wrong-worktree shortcuts.
-  test('terminal tabs stay scoped to the worktree that created them', async ({ orcaPage }) => {
-    const allIds = await getAllWorktreeIds(orcaPage)
+  test('terminal tabs stay scoped to the worktree that created them', async ({ occPage }) => {
+    const allIds = await getAllWorktreeIds(occPage)
     expect(
       allIds.length,
       'fixture should provide primary + e2e-secondary worktrees'
     ).toBeGreaterThanOrEqual(2)
 
-    const worktreeA = await waitForActiveWorktree(orcaPage)
+    const worktreeA = await waitForActiveWorktree(occPage)
     const worktreeB = allIds.find((id) => id !== worktreeA)!
 
-    await orcaPage.evaluate((worktreeId) => {
+    await occPage.evaluate((worktreeId) => {
       const store = window.__store
       if (!store) {
         return
@@ -253,15 +253,15 @@ test.describe('Worktree Lifecycle', () => {
       store.getState().createTab(worktreeId)
     }, worktreeA)
     await expect
-      .poll(async () => (await getWorktreeTabs(orcaPage, worktreeA)).length, { timeout: 5_000 })
+      .poll(async () => (await getWorktreeTabs(occPage, worktreeA)).length, { timeout: 5_000 })
       .toBeGreaterThanOrEqual(2)
 
-    await switchToWorktree(orcaPage, worktreeB)
+    await switchToWorktree(occPage, worktreeB)
     await expect
-      .poll(async () => getActiveWorktreeId(orcaPage), { timeout: 10_000 })
+      .poll(async () => getActiveWorktreeId(occPage), { timeout: 10_000 })
       .toBe(worktreeB)
-    await ensureTerminalVisible(orcaPage)
-    await orcaPage.evaluate((worktreeId) => {
+    await ensureTerminalVisible(occPage)
+    await occPage.evaluate((worktreeId) => {
       const store = window.__store
       if (!store) {
         return
@@ -270,11 +270,11 @@ test.describe('Worktree Lifecycle', () => {
       store.getState().createTab(worktreeId)
     }, worktreeB)
     await expect
-      .poll(async () => (await getWorktreeTabs(orcaPage, worktreeB)).length, { timeout: 5_000 })
+      .poll(async () => (await getWorktreeTabs(occPage, worktreeB)).length, { timeout: 5_000 })
       .toBeGreaterThanOrEqual(2)
 
-    const tabsA = await getWorktreeTabs(orcaPage, worktreeA)
-    const tabsB = await getWorktreeTabs(orcaPage, worktreeB)
+    const tabsA = await getWorktreeTabs(occPage, worktreeA)
+    const tabsB = await getWorktreeTabs(occPage, worktreeB)
     const idsA = new Set(tabsA.map((tab) => tab.id))
     const idsB = new Set(tabsB.map((tab) => tab.id))
 

@@ -11,7 +11,7 @@ vi.mock('electron', () => ({
     setActivationPolicy: vi.fn()
   }
 }))
-vi.mock('@orca/process-host', () => ({ spawnProcess: spawnProcessMock }))
+vi.mock('@occ/process-host', () => ({ spawnProcess: spawnProcessMock }))
 
 const { createDesktopHandoff, desktopHandoffArguments, handOffToDesktopApp } =
   await import('./macos-desktop-handoff')
@@ -96,7 +96,7 @@ describe('handOffToDesktopApp', () => {
     expect(warn).toHaveBeenCalledOnce()
   })
 
-  it.each([{ ORCA_BACKGROUND_LAUNCH: '1' }, { ORCA_E2E_USER_DATA_DIR: '/tmp/e2e' }])(
+  it.each([{ OCC_BACKGROUND_LAUNCH: '1' }, { OCC_E2E_USER_DATA_DIR: '/tmp/e2e' }])(
     'never launches the real desktop app from an automated sidecar (%o)',
     (env) => {
       const reapplyActivationPolicy = vi.fn()

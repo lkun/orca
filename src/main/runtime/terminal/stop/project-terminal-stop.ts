@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithStopExactTerminalsForWorktree } from './worktree-terminal-stop-targets'
+import { OCCRuntimeWithStopExactTerminalsForWorktree } from './worktree-terminal-stop-targets'
 import {
   getConnectionExecutionHostId,
   getRepoExecutionHostId,
@@ -66,7 +66,7 @@ export function listProjectTerminalWorktreeIds(
   return [...worktreeIds]
 }
 
-export abstract class OrcaRuntimeWithStopTerminalsForProject extends OrcaRuntimeWithStopExactTerminalsForWorktree {
+export abstract class OCCRuntimeWithStopTerminalsForProject extends OCCRuntimeWithStopExactTerminalsForWorktree {
   /** Removed projects' spawn hosts by id; ids are UUIDs, so a remaining row means a same-id sibling. */
   private readonly removedProjectHosts = new Map<string, Set<ExecutionHostId>>()
   /** Closed by an update's last census until the stop; every spawn lease passes it. */

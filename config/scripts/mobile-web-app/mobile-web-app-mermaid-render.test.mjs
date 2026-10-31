@@ -37,7 +37,7 @@ const ENGINES = [
     name: 'chromium',
     // Use runner Chrome override to avoid CI browser downloads.
     launch: () => {
-      const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+      const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
       return chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
     }
   },
@@ -53,7 +53,7 @@ import { MermaidDiagram } from './MermaidDiagram'
 function Harness() {
   const [state, setState] = useState({ mounted: false, source: '' })
   useEffect(() => {
-    globalThis.__orcaMermaidSet = setState
+    globalThis.__occMermaidSet = setState
     document.body.setAttribute('data-ready', 'yes')
   }, [])
   return state.mounted ? createElement(MermaidDiagram, { source: state.source, base: 15 }) : null
@@ -125,11 +125,11 @@ afterAll(async () => {
 // Record eval/Function stacks to attribute JIT attempts: a library may swallow EvalError under CSP.
 // Playwright also evaluates harness functions, so only bundle-script callers count as page JIT.
 function installJitRecorder() {
-  globalThis.__orcaJit = []
+  globalThis.__occJit = []
   const record = (kind, source) => {
     // Skip error header and recorder frame to identify caller.
     const stack = (new Error('jit').stack ?? '').split('\n').slice(2).join(' | ')
-    globalThis.__orcaJit.push({ kind, source: String(source).slice(0, 60), stack })
+    globalThis.__occJit.push({ kind, source: String(source).slice(0, 60), stack })
   }
   // oxlint-disable-next-line eslint/no-eval -- SAFETY: the recorder holds the real eval so it can count and forward calls; naming it is this function's whole purpose.
   const realEval = globalThis.eval
@@ -149,7 +149,7 @@ function installJitRecorder() {
 
 // Require a nonempty recorder before filtering bundle JIT; an uninstalled recorder must not pass as no page calls.
 async function pageJitCalls(page) {
-  const all = await page.evaluate(() => globalThis.__orcaJit)
+  const all = await page.evaluate(() => globalThis.__occJit)
   expect(all.length).toBeGreaterThan(0)
   return all.filter((one) => /mermaid-check\.js|\/chunk-/.test(one.stack))
 }
@@ -189,7 +189,7 @@ async function openPage(browser) {
 // On source change, wait for a label unique to replacement; existing SVG already satisfies presence.
 async function show(page, source, contains = null) {
   await page.evaluate(
-    (next) => globalThis.__orcaMermaidSet({ mounted: true, source: next }),
+    (next) => globalThis.__occMermaidSet({ mounted: true, source: next }),
     source
   )
   await page.waitForFunction((needle) => {
@@ -206,7 +206,7 @@ async function show(page, source, contains = null) {
 }
 
 async function unmount(page) {
-  await page.evaluate(() => globalThis.__orcaMermaidSet({ mounted: false, source: '' }))
+  await page.evaluate(() => globalThis.__occMermaidSet({ mounted: false, source: '' }))
   await page.waitForFunction(
     () => document.querySelector('[data-testid="mermaid-diagram"]') === null
   )
@@ -246,7 +246,7 @@ describeMermaid(
             // Require a rendered Mermaid diagram before absence checks.
             expect(shown.html).toContain('aria-roledescription="flowchart-v2"')
             expect(await pageJitCalls(page)).toEqual([])
-            expect(await page.evaluate(() => globalThis.__orcaCspViolations)).toEqual([])
+            expect(await page.evaluate(() => globalThis.__occCspViolations)).toEqual([])
             expect(consoleErrors).toEqual([])
             // Use CSS-valid ID: Mermaid writes #<id> stylesheet selectors, which «r0» would break.
             expect(shown.id).toMatch(/^[A-Za-z_][\w-]*$/)
@@ -260,7 +260,7 @@ describeMermaid(
 
         it('leaves one SVG across a source change, an unmount and a remount', async () => {
           const { page, consoleErrors } = await openPage(browser)
-          const listeners = () => page.evaluate(() => globalThis.__orcaListeners.snapshot())
+          const listeners = () => page.evaluate(() => globalThis.__occListeners.snapshot())
           try {
             const beforeAnyMount = await listeners()
             await show(page, FIXTURE)
@@ -293,7 +293,7 @@ describeMermaid(
             expect(again.inFrame).toBe(1)
             expect(again.inDocument).toBe(1)
             expect(normaliseSvg(again.html, again.id)).toBe(normaliseSvg(first.html, first.id))
-            expect(await page.evaluate(() => globalThis.__orcaCspViolations)).toEqual([])
+            expect(await page.evaluate(() => globalThis.__occCspViolations)).toEqual([])
             expect(consoleErrors).toEqual([])
           } finally {
             await page.close()

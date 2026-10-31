@@ -5,7 +5,7 @@ import type {
   UpdateStatus
 } from '../../../../../shared/update-status-types'
 import { getReleaseNotesUrlForVersion } from '../../../../../shared/release-channel'
-import { UpdateErrorCardContent, type UpdateErrorCardModel } from '../../UpdateErrorCardContent'
+import { UpdateErroccrdContent, type UpdateErroccrdModel } from '../../UpdateErroccrdContent'
 import { LinuxPackageInstallRecoveryCard } from '../../LinuxPackageInstallRecoveryCard'
 import { translate } from '@/i18n/i18n'
 import { UpdateCheckFeedback } from './UpdateCheckFeedback'
@@ -18,7 +18,7 @@ import { UpdateDownloadingContent, UpdateReadyToInstallContent } from './UpdateD
 export function UpdateCardStateContent({
   status,
   changelog,
-  errorCard,
+  erroccrd,
   linuxPackageRecovery,
   isLocalBuild,
   hasStartedDownload,
@@ -34,7 +34,7 @@ export function UpdateCardStateContent({
 }: {
   status: UpdateStatus
   changelog: ChangelogData | null
-  errorCard: UpdateErrorCardModel | null
+  erroccrd: UpdateErroccrdModel | null
   linuxPackageRecovery: {
     recovery: LinuxPackageInstallRecovery
     diagnostic: string
@@ -82,8 +82,8 @@ export function UpdateCardStateContent({
       />
     )
   }
-  if (errorCard) {
-    return <UpdateErrorCardContent {...errorCard} onClose={onCollapse} />
+  if (erroccrd) {
+    return <UpdateErroccrdContent {...erroccrd} onClose={onCollapse} />
   }
   if (status.state === 'downloaded') {
     if (status.installing) {

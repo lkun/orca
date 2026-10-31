@@ -1,7 +1,7 @@
 import { app, BaseWindow, BrowserWindow, protocol, session, webContents } from 'electron'
 import { renameSync, writeFileSync } from 'node:fs'
 import { createServer } from 'node:http'
-import { ORCA_BROWSER_PARTITION } from '../../../shared/constants'
+import { OCC_BROWSER_PARTITION } from '../../../shared/constants'
 import { applyBackgroundActivationPolicy } from '../../window/foreground-activation-policy'
 import { browserManager } from '../browser-manager'
 import { browserSessionRegistry } from '../browser-session-registry'
@@ -12,9 +12,9 @@ import { addUnpackedBrowserExtension } from './browser-extension-management'
 import { recordActiveBrowserPage } from './browser-extension-tab-model'
 import { trackBrowserExtensionMainWindow } from './browser-extension-window-model'
 
-const statusPath = process.env.ORCA_EXTENSION_FIXTURE_STATUS
-const extensionDirectory = process.env.ORCA_EXTENSION_FIXTURE_DIR
-if (!statusPath || !extensionDirectory || process.env.ORCA_BACKGROUND_LAUNCH !== '1') {
+const statusPath = process.env.OCC_EXTENSION_FIXTURE_STATUS
+const extensionDirectory = process.env.OCC_EXTENSION_FIXTURE_DIR
+if (!statusPath || !extensionDirectory || process.env.OCC_BACKGROUND_LAUNCH !== '1') {
   throw new Error(
     'Extension fixture requires a status path, an extension folder and background launch'
   )
@@ -50,16 +50,16 @@ function writeStatus(): void {
 
 function captureResult(message: string): void {
   for (const [prefix, key] of [
-    ['ORCA_EXT_WORKER ', 'worker'],
-    ['ORCA_EXT_PAGE ', 'page'],
-    ['ORCA_EXT_STORAGE ', 'storage'],
-    ['ORCA_EXT_SYNC_WORKER ', 'syncWorker'],
-    ['ORCA_EXT_SYNC_PAGE ', 'syncPage'],
-    ['ORCA_EXT_SYNC_CONTENT ', 'syncContent'],
-    ['ORCA_EXT_CONTENT_APIS ', 'contentApis'],
-    ['ORCA_EXT_FRAME ', 'frame'],
-    ['ORCA_EXT_WEB_FRAME ', 'webFrame'],
-    ['ORCA_EXT_SANDBOX ', 'sandbox']
+    ['OCC_EXT_WORKER ', 'worker'],
+    ['OCC_EXT_PAGE ', 'page'],
+    ['OCC_EXT_STORAGE ', 'storage'],
+    ['OCC_EXT_SYNC_WORKER ', 'syncWorker'],
+    ['OCC_EXT_SYNC_PAGE ', 'syncPage'],
+    ['OCC_EXT_SYNC_CONTENT ', 'syncContent'],
+    ['OCC_EXT_CONTENT_APIS ', 'contentApis'],
+    ['OCC_EXT_FRAME ', 'frame'],
+    ['OCC_EXT_WEB_FRAME ', 'webFrame'],
+    ['OCC_EXT_SANDBOX ', 'sandbox']
   ] as const) {
     if (message.startsWith(prefix)) {
       const result: unknown = JSON.parse(message.slice(prefix.length))
@@ -93,7 +93,7 @@ async function run(): Promise<void> {
   initializeBrowserExtensionSupport({ enabled: true })
   const profile = browserSessionRegistry.getDefaultProfile()
   attachBrowserExtensionsToProfileSession(profile, [])
-  const extensionSession = session.fromPartition(ORCA_BROWSER_PARTITION)
+  const extensionSession = session.fromPartition(OCC_BROWSER_PARTITION)
   extensionSession.serviceWorkers.on('console-message', (_event, details) =>
     captureResult(details.message)
   )
@@ -123,7 +123,7 @@ async function run(): Promise<void> {
   })
   await host.loadURL(
     `data:text/html,${encodeURIComponent(
-      `<webview partition="${ORCA_BROWSER_PARTITION}" src="data:text/html,<title>tab</title>"></webview>`
+      `<webview partition="${OCC_BROWSER_PARTITION}" src="data:text/html,<title>tab</title>"></webview>`
     )}`
   )
   await attached
@@ -137,11 +137,11 @@ async function run(): Promise<void> {
   const extensionId = extensionSession.extensions.getAllExtensions()[0]?.id
   const sandboxPage = new BrowserWindow({
     show: false,
-    webPreferences: { partition: ORCA_BROWSER_PARTITION, sandbox: true }
+    webPreferences: { partition: OCC_BROWSER_PARTITION, sandbox: true }
   })
   void sandboxPage.loadURL(`chrome-extension://${extensionId}/sandboxed.html`)
   status.webPageCall = await guest?.executeJavaScript(
-    `fetch('orca-extension-api://api/call', { method: 'POST', body: JSON.stringify({ token: 'guess', request: { type: 'call', namespace: 'windows', method: 'getAll', args: [] } }) }).then((r) => r.status, () => 'failed')`
+    `fetch('occ-extension-api://api/call', { method: 'POST', body: JSON.stringify({ token: 'guess', request: { type: 'call', namespace: 'windows', method: 'getAll', args: [] } }) }).then((r) => r.status, () => 'failed')`
   )
   writeStatus()
 
@@ -160,7 +160,7 @@ async function run(): Promise<void> {
   const webPage = new BrowserWindow({
     show: false,
     webPreferences: {
-      partition: ORCA_BROWSER_PARTITION,
+      partition: OCC_BROWSER_PARTITION,
       sandbox: true,
       nodeIntegrationInSubFrames: true
     }

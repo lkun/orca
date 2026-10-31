@@ -77,7 +77,7 @@ function makeLinearIssue(overrides: Partial<LinearIssue> = {}): LinearIssue {
     id: 'lin-1',
     identifier: 'ORC-1',
     title: 'Fix task flow',
-    url: 'https://linear.app/orca/issue/ORC-1/fix-task-flow',
+    url: 'https://linear.app/occ/issue/ORC-1/fix-task-flow',
     state: { name: 'Todo', type: 'unstarted', color: '#999' },
     priority: 0,
     estimate: null,
@@ -392,7 +392,7 @@ describe('createUISlice page navigation history', () => {
       hostId: 'ssh:devbox',
       projectHostSetupId: 'setup-1',
       repoId: 'repo-remote',
-      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' }
+      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' }
     }
 
     store.getState().openTaskPage({

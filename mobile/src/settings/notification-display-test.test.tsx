@@ -36,7 +36,7 @@ vi.mock('../notifications/notification-delivery-preferences', () => ({
 }))
 vi.mock('../notifications/desktop-notification-channel', () => ({
   ensureDesktopNotificationChannel: vi.fn(),
-  DESKTOP_NOTIFICATION_CHANNEL_ID: 'orca-desktop'
+  DESKTOP_NOTIFICATION_CHANNEL_ID: 'occ-desktop'
 }))
 vi.mock('expo-notifications', () => ({ scheduleNotificationAsync: mocks.schedule }))
 

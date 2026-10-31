@@ -125,11 +125,11 @@ describe('readWslGuestPaneShellCwd', () => {
 
 const table = (stats: string[], tagged: string[]) =>
   [
-    'ORCA_PROCESS_TABLE_BEGIN',
+    'OCC_PROCESS_TABLE_BEGIN',
     ...stats,
-    'ORCA_PROCESS_TABLE_TAGGED',
+    'OCC_PROCESS_TABLE_TAGGED',
     ...tagged,
-    'ORCA_PROCESS_TABLE_END',
+    'OCC_PROCESS_TABLE_END',
     ''
   ].join('\n')
 
@@ -153,7 +153,7 @@ describe('parseWslGuestPaneProcesses', () => {
     expect(parseWslGuestPaneProcesses(table(['bad line', '10 (bash) S 1 10 10'], []))).toEqual([
       { pid: 10, ppid: 1, sid: 10, argc: null, comm: 'bash', paneKey: null }
     ])
-    expect(parseWslGuestPaneProcesses('ORCA_PROCESS_TABLE_BEGIN\n10 (bash) S 1 10 10\n')).toBeNull()
+    expect(parseWslGuestPaneProcesses('OCC_PROCESS_TABLE_BEGIN\n10 (bash) S 1 10 10\n')).toBeNull()
   })
 
   // Review of #33398: a job started without the pane key must still keep its pane busy.

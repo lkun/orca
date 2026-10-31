@@ -420,7 +420,7 @@ describe('WorktreeOpenInMenu', () => {
         runtimeEnvironments: [
           {
             id: 'managed-owner',
-            orcadDeployment: {
+            occdDeployment: {
               sshTargetId: 'ssh-1',
               sshTargetGeneration: 1,
               localPort: 41000,

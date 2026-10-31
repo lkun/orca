@@ -15,7 +15,7 @@ function postgresTestDatabaseUrl(value: string | undefined): string | undefined 
   return url.toString()
 }
 
-const databaseUrl = postgresTestDatabaseUrl(process.env.ORCA_RELAY_TEST_POSTGRES_URL)
+const databaseUrl = postgresTestDatabaseUrl(process.env.OCC_RELAY_TEST_POSTGRES_URL)
 const describePostgres = databaseUrl ? describe : describe.skip
 
 type QueryLockHook = (phase: 'before' | 'after', sql: string) => Promise<void>
@@ -336,11 +336,11 @@ describePostgres('PostgreSQL transaction recovery', () => {
       { scope_key: keys[1], count: '1' }
     ])
     expect(warn).toHaveBeenCalledWith(
-      expect.stringContaining('"event":"orca_relay_postgres_transaction_retry"')
+      expect.stringContaining('"event":"occ_relay_postgres_transaction_retry"')
     )
     expect(warn).toHaveBeenCalledWith(expect.stringContaining('"phase":"rate-limit"'))
     expect(warn).not.toHaveBeenCalledWith(
-      expect.stringContaining('"event":"orca_relay_postgres_transaction_exhausted"')
+      expect.stringContaining('"event":"occ_relay_postgres_transaction_exhausted"')
     )
     warn.mockRestore()
   }, 10_000)
@@ -418,10 +418,10 @@ describePostgres('PostgreSQL transaction recovery', () => {
     expect(directorDatabase.attempts).toBe(2)
     expect(legacyAttempts).toBe(1)
     expect(warn).not.toHaveBeenCalledWith(
-      expect.stringContaining('orca_relay_postgres_transaction_retry')
+      expect.stringContaining('occ_relay_postgres_transaction_retry')
     )
     expect(warn).not.toHaveBeenCalledWith(
-      expect.stringContaining('orca_relay_postgres_transaction_exhausted')
+      expect.stringContaining('occ_relay_postgres_transaction_exhausted')
     )
     await expect(seedStore.resolve(identity)).resolves.toMatchObject({
       cellId,
@@ -480,7 +480,7 @@ describePostgres('PostgreSQL transaction recovery', () => {
     await expect(legacyTransaction).resolves.toBeUndefined()
     expect(inventoryAttempts).toBe(0)
     expect(warn).not.toHaveBeenCalledWith(
-      expect.stringContaining('orca_relay_postgres_transaction_retry')
+      expect.stringContaining('occ_relay_postgres_transaction_retry')
     )
     warn.mockRestore()
   }, 15_000)
@@ -1037,7 +1037,7 @@ describePostgres('PostgreSQL transaction recovery', () => {
     await expect(completionStore.completeReadyEvacuations()).resolves.toBe(0)
     await expect(legacyTransaction).resolves.toBeUndefined()
     expect(warn).not.toHaveBeenCalledWith(
-      expect.stringContaining('orca_relay_postgres_transaction_retry')
+      expect.stringContaining('occ_relay_postgres_transaction_retry')
     )
     await expect(store.completeReadyEvacuations()).resolves.toBe(1)
   }, 15_000)
@@ -1258,7 +1258,7 @@ describePostgres('PostgreSQL transaction recovery', () => {
     await expect(legacyTransaction).resolves.toBeUndefined()
     expect(cleanupDatabase.attempts).toBe(1)
     expect(warn).not.toHaveBeenCalledWith(
-      expect.stringContaining('orca_relay_postgres_transaction_retry')
+      expect.stringContaining('occ_relay_postgres_transaction_retry')
     )
     await expect(store.releaseExpiredActivityLeases()).resolves.toBe(1)
   }, 15_000)
@@ -1302,7 +1302,7 @@ describePostgres('PostgreSQL transaction recovery', () => {
     await expect(cleanupStore.releaseExpiredActivityLeases()).resolves.toBe(0)
     expect(cleanupDatabase.attempts).toBe(1)
     expect(warn).not.toHaveBeenCalledWith(
-      expect.stringContaining('orca_relay_postgres_transaction_retry')
+      expect.stringContaining('occ_relay_postgres_transaction_retry')
     )
     warn.mockRestore()
 
@@ -1367,7 +1367,7 @@ describePostgres('PostgreSQL transaction recovery', () => {
     await expect(legacyTransaction).resolves.toBeUndefined()
     expect(cleanupDatabase.attempts).toBe(1)
     expect(warn).not.toHaveBeenCalledWith(
-      expect.stringContaining('orca_relay_postgres_transaction_retry')
+      expect.stringContaining('occ_relay_postgres_transaction_retry')
     )
     await expect(store.releaseExpiredActivity()).resolves.toBe(1)
   }, 15_000)

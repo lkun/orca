@@ -31,7 +31,7 @@ const roots: string[] = []
 const savedHome = { HOME: process.env.HOME, USERPROFILE: process.env.USERPROFILE }
 
 async function createRoot(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-known-hosts-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-known-hosts-'))
   roots.push(root)
   return root
 }
@@ -340,13 +340,13 @@ describe('resolveKnownHostsLookupHost', () => {
 
   // ssh -G can echo a manual label as hostname; use the dialed host so existing trust cannot be missed.
   it('uses the dialed host, because a resolved hostname can just echo the label', async () => {
-    const resolved = resolvedConfig({ hostname: 'my-orca-label' })
+    const resolved = resolvedConfig({ hostname: 'my-occ-label' })
 
     expect(resolveKnownHostsLookupHost(resolved, '10.0.0.5').host).toBe('10.0.0.5')
   })
 
   it('still prefers an explicit HostKeyAlias over the dialed host', async () => {
-    const resolved = resolvedConfig({ hostname: 'my-orca-label', hostKeyAlias: 'bastion' })
+    const resolved = resolvedConfig({ hostname: 'my-occ-label', hostKeyAlias: 'bastion' })
 
     expect(resolveKnownHostsLookupHost(resolved, '10.0.0.5').host).toBe('bastion')
   })
@@ -364,7 +364,7 @@ describe('a known_hosts path containing a space', () => {
   let dir: string
 
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'orca known hosts '))
+    dir = await mkdtemp(join(tmpdir(), 'occ known hosts '))
   })
 
   afterEach(async () => {
@@ -405,20 +405,20 @@ describe('a known_hosts path containing a space', () => {
     await writeFile(real, '', 'utf-8')
 
     const resolved = await resolveKnownHostsFiles({
-      userKnownHostsFiles: [real, '/tmp/orca-does-not-exist-known-hosts'],
+      userKnownHostsFiles: [real, '/tmp/occ-does-not-exist-known-hosts'],
       globalKnownHostsFiles: []
     } as never)
 
-    expect(resolved).toEqual([real, '/tmp/orca-does-not-exist-known-hosts'])
+    expect(resolved).toEqual([real, '/tmp/occ-does-not-exist-known-hosts'])
   })
 
   it('leaves a single unresolvable path alone rather than inventing one', async () => {
     const resolved = await resolveKnownHostsFiles({
-      userKnownHostsFiles: ['/tmp/orca-absent-known-hosts'],
+      userKnownHostsFiles: ['/tmp/occ-absent-known-hosts'],
       globalKnownHostsFiles: []
     } as never)
 
-    expect(resolved).toEqual(['/tmp/orca-absent-known-hosts'])
+    expect(resolved).toEqual(['/tmp/occ-absent-known-hosts'])
   })
 })
 

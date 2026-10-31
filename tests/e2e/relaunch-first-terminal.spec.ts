@@ -4,8 +4,8 @@
 import path from 'node:path'
 import { writeFileSync } from 'node:fs'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { expect, test } from './helpers/occ-app'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 import { switchToWorktree, waitForSessionReady } from './helpers/store'
 
 type WorkspaceTabs = { terminals: number; editors: number }

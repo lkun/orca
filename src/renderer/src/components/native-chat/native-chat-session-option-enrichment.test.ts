@@ -150,7 +150,7 @@ describe('native chat session option enrichment', () => {
       resolveNativeChatModelDiscoveryHostKey(
         {} as never,
         null,
-        '\\\\wsl.localhost\\Ubuntu\\home\\orca',
+        '\\\\wsl.localhost\\Ubuntu\\home\\occ',
         null
       )
     ).toBe('wsl:Ubuntu')
@@ -158,7 +158,7 @@ describe('native chat session option enrichment', () => {
       resolveNativeChatModelDiscoveryHostKey(
         {} as never,
         null,
-        '\\\\wsl.localhost\\Debian\\home\\orca',
+        '\\\\wsl.localhost\\Debian\\home\\occ',
         null
       )
     ).toBe('wsl:Debian')

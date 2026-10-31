@@ -31,7 +31,7 @@ export class RelayClaudeAgentViewPlugin {
     const id = createHash('sha256').update(instance).digest('hex').slice(0, 32)
     return {
       pluginDir: ensureClaudeAgentViewPlugin(
-        join(this.homeDir, '.orca-relay', 'claude-plugins', id),
+        join(this.homeDir, '.occ-relay', 'claude-plugins', id),
         this.source
       ),
       configDir

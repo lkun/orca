@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promis
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 
 const { filePublicationFailures } = vi.hoisted(() => ({
   filePublicationFailures: { copy: 0, link: 0, replaceBeforeRename: '' }
@@ -53,7 +53,7 @@ afterEach(async () => {
 })
 
 async function makeFixture(): Promise<string> {
-  const cacheRootPath = await mkdtemp(join(tmpdir(), 'orca-stable-appimage-launcher-'))
+  const cacheRootPath = await mkdtemp(join(tmpdir(), 'occ-stable-appimage-launcher-'))
   created.push(cacheRootPath)
   return cacheRootPath
 }
@@ -154,7 +154,7 @@ describe.skipIf(process.platform === 'win32')('AppImage stable launcher', () => 
   it('preserves an oversized foreign launcher without treating its marker as ownership', async () => {
     const cacheRootPath = await makeFixture()
     const launcherPath = resolveAppImageStableLauncherPath(cacheRootPath)
-    const content = `#!/usr/bin/env bash\n# orca-appimage-stable-launcher\n${'x'.repeat(20_000)}`
+    const content = `#!/usr/bin/env bash\n# occ-appimage-stable-launcher\n${'x'.repeat(20_000)}`
     await mkdir(dirname(launcherPath), { recursive: true })
     await writeFile(launcherPath, content, { mode: 0o755 })
 

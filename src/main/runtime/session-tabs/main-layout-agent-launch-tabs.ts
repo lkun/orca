@@ -1,5 +1,5 @@
 // Main-owned early launch tabs are written before launch and withdrawn through main close; paired-runtime workspaces retain window relay.
-import { OrcaRuntimeWithCloseStructuredAgentSessionTab } from './structured-session-tab-close'
+import { OCCRuntimeWithCloseStructuredAgentSessionTab } from './structured-session-tab-close'
 import type {
   AgentLaunchTabPublished,
   AgentLaunchTabPublishRequest
@@ -7,7 +7,7 @@ import type {
 import type { AgentLaunchPlacementReceipt } from '../../../shared/agent-launch-intent'
 import type { AgentLaunchPaneAddress } from '../../../shared/agent-launch-pane-verdict'
 import { parseExecutionHostId } from '../../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type { RuntimePtyWorktreeRecord } from '../runtime-terminal-state-records'
 
 /** Where the tab landed against where the launch asked for it, as the window reports it. */
@@ -22,14 +22,14 @@ function placementFallback(
   return asked?.afterTabId !== undefined && !anchored ? 'active-group' : undefined
 }
 
-export abstract class OrcaRuntimeWithMainLayoutAgentLaunchTabs extends OrcaRuntimeWithCloseStructuredAgentSessionTab {
+export abstract class OCCRuntimeWithMainLayoutAgentLaunchTabs extends OCCRuntimeWithCloseStructuredAgentSessionTab {
   protected abstract getPtyRecordForPaneKey(paneKey: string): RuntimePtyWorktreeRecord | null
 
   /** Whether a running process holds this pane now: such a pane is attached to, never launched into. */
   hasLiveTerminalForPaneKey(paneKey: string): boolean {
     const pty = this.getPtyRecordForPaneKey(paneKey)
     // Main's bound terminal may survive listing gaps; only certified exit frees its pane.
-    return ORCA_LAYOUT_OWNER_IS_MAIN
+    return OCC_LAYOUT_OWNER_IS_MAIN
       ? !!pty && this.getPtyLivenessVerdict(pty.ptyId)?.status !== 'exited'
       : pty?.connected === true
   }

@@ -14,7 +14,7 @@ import {
   type SshRouteResolvers,
   type SshRouteSnapshot
 } from '../targets/ssh-target-route-resolution'
-import { SshTargetOrcadClaims } from '../targets/ssh-target-orcad-claims'
+import { SshTargetOCCdClaims } from '../targets/ssh-target-occd-claims'
 import {
   buildRemovedSshTargetTombstone,
   readoptOrphanedWorkspacesForTarget
@@ -100,13 +100,13 @@ export class SshConnectionStore {
     return next
   }
 
-  /** Exclusive managed-orcad ownership of a target; see ssh-target-orcad-claims. */
-  getOrcadRuntimeClaims(): SshTargetOrcadClaims {
-    return new SshTargetOrcadClaims(this.store)
+  /** Exclusive managed-occd ownership of a target; see ssh-target-occd-claims. */
+  getOCCdRuntimeClaims(): SshTargetOCCdClaims {
+    return new SshTargetOCCdClaims(this.store)
   }
 
   /** The profile reads and scrollback reservations a migration exports from. */
-  getOrcadMigrationSource(): Store {
+  getOCCdMigrationSource(): Store {
     return this.store
   }
 
@@ -257,7 +257,7 @@ export class SshConnectionStore {
       if (
         existing.source === 'manual' ||
         isRuntimeOwnedSshTarget(existing) ||
-        isManagedOrcadSshTarget(existing) ||
+        isManagedOCCdSshTarget(existing) ||
         (existing.source === undefined && !isLegacyConfigImportTarget(existing))
       ) {
         manualAliases.add(alias)
@@ -352,14 +352,14 @@ export function isRuntimeOwnedSshTarget(target: SshTarget): boolean {
 }
 
 /** A host serving (or being set up for) a managed OCC server: visible, but never a direct relay. */
-export function isManagedOrcadSshTarget(target: SshTarget): boolean {
-  return target.orcadFence !== undefined || target.orcadProvisioning !== undefined
+export function isManagedOCCdSshTarget(target: SshTarget): boolean {
+  return target.occdFence !== undefined || target.occdProvisioning !== undefined
 }
 
 /** Managed hosts cannot serve direct relays unless older retained projects still require their previous relay. */
 export function allowsDirectSshRelay(target: SshTarget): boolean {
-  if (target.orcadProvisioning) {
+  if (target.occdProvisioning) {
     return false
   }
-  return !target.orcadFence || target.orcadFence.sourceChangedAt !== undefined
+  return !target.occdFence || target.occdFence.sourceChangedAt !== undefined
 }

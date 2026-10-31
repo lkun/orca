@@ -1,4 +1,4 @@
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { getStoreState, waitForSessionReady } from './helpers/store'
 import type { ElectronApplication } from '@stablyai/playwright-test'
 
@@ -24,34 +24,34 @@ async function openFeatureTourFromMenu(electronApp: ElectronApplication): Promis
 }
 
 test.describe('Feature tour modal', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
   })
 
   test('opens from the Help menu and renders the workflow rail', async ({
     electronApp,
-    orcaPage
+    occPage
   }) => {
     await openFeatureTourFromMenu(electronApp)
 
-    await expect(orcaPage.getByRole('dialog', { name: 'Get to know OCC' })).toBeVisible({
+    await expect(occPage.getByRole('dialog', { name: 'Get to know OCC' })).toBeVisible({
       timeout: 10_000
     })
-    await expect(orcaPage.getByText('Reopen any time from Help > Explore OCC.')).toBeVisible()
+    await expect(occPage.getByText('Reopen any time from Help > Explore OCC.')).toBeVisible()
 
-    const rail = orcaPage.getByRole('navigation', { name: 'Workflows' })
+    const rail = occPage.getByRole('navigation', { name: 'Workflows' })
     await expect(rail.getByRole('tab')).toHaveCount(5)
     await expect(rail.getByRole('tab', { name: /Workspaces/i })).toHaveAttribute(
       'aria-selected',
       'true'
     )
 
-    await expect(orcaPage.locator('[data-ws-id]')).toHaveCount(3)
+    await expect(occPage.locator('[data-ws-id]')).toHaveCount(3)
 
     await rail.getByRole('tab', { name: /Workspaces/i }).focus()
-    await orcaPage.keyboard.press('ArrowDown')
+    await occPage.keyboard.press('ArrowDown')
     await expect(rail.getByRole('tab', { name: /Tasks/i })).toHaveAttribute('aria-selected', 'true')
-    await orcaPage.keyboard.press('ArrowDown')
+    await occPage.keyboard.press('ArrowDown')
     await expect(rail.getByRole('tab', { name: /Agents/i })).toHaveAttribute(
       'aria-selected',
       'true'
@@ -60,20 +60,20 @@ test.describe('Feature tour modal', () => {
     await rail.getByRole('tab', { name: /Workbench/i }).click()
     await rail.getByRole('button', { name: /Browser/i }).click()
     await expect(
-      orcaPage.getByText(
+      occPage.getByText(
         "Run your app in OCC's browser, send selected UI elements to agents, and let your agents interact with your webpage."
       )
     ).toBeVisible()
-    await expect(orcaPage.getByRole('heading', { name: 'Browser Use skill' })).toBeVisible()
+    await expect(occPage.getByRole('heading', { name: 'Browser Use skill' })).toBeVisible()
     await expect(
-      orcaPage.getByText("Enables agents to navigate and verify pages in OCC's browser.")
+      occPage.getByText("Enables agents to navigate and verify pages in OCC's browser.")
     ).toBeVisible()
-    await expect(orcaPage.getByRole('heading', { name: 'CLI skill' })).toHaveCount(0)
-    await expect(orcaPage.getByText('With the OCC CLI skill', { exact: false })).toHaveCount(0)
+    await expect(occPage.getByRole('heading', { name: 'CLI skill' })).toHaveCount(0)
+    await expect(occPage.getByText('With the OCC CLI skill', { exact: false })).toHaveCount(0)
   })
 
-  test('shows unified task copy without leaving the walkthrough', async ({ orcaPage }) => {
-    await orcaPage.evaluate(() => {
+  test('shows unified task copy without leaving the walkthrough', async ({ occPage }) => {
+    await occPage.evaluate(() => {
       const store = window.__store
       if (!store) {
         throw new Error('window.__store is not available')
@@ -107,25 +107,25 @@ test.describe('Feature tour modal', () => {
       store.getState().openModal('feature-wall', { source: 'help_menu' })
     })
 
-    await expect(orcaPage.getByRole('dialog', { name: 'Get to know OCC' })).toBeVisible({
+    await expect(occPage.getByRole('dialog', { name: 'Get to know OCC' })).toBeVisible({
       timeout: 10_000
     })
-    await orcaPage
+    await occPage
       .getByRole('navigation', { name: 'Workflows' })
       .getByRole('tab', { name: /Tasks/i })
       .click()
-    await expect(orcaPage.getByText('Start work directly from GitHub or Linear.')).toBeVisible()
-    await expect(orcaPage.getByText('Connect GitHub or Linear once')).toHaveCount(0)
-    await expect(orcaPage.getByRole('dialog', { name: 'Get to know OCC' })).toBeVisible()
+    await expect(occPage.getByText('Start work directly from GitHub or Linear.')).toBeVisible()
+    await expect(occPage.getByText('Connect GitHub or Linear once')).toHaveCount(0)
+    await expect(occPage.getByRole('dialog', { name: 'Get to know OCC' })).toBeVisible()
     await expect
-      .poll(async () => getStoreState<string>(orcaPage, 'activeView'))
+      .poll(async () => getStoreState<string>(occPage, 'activeView'))
       .not.toBe('settings')
   })
 
   test('continue advances through workflow substeps before the next workflow', async ({
-    orcaPage
+    occPage
   }) => {
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       const store = window.__store
       if (!store) {
         throw new Error('window.__store is not available')
@@ -133,8 +133,8 @@ test.describe('Feature tour modal', () => {
       store.getState().openModal('feature-wall', { source: 'help_menu' })
     })
 
-    const rail = orcaPage.getByRole('navigation', { name: 'Workflows' })
-    const continueButton = orcaPage.getByRole('button', { name: /^Continue/ })
+    const rail = occPage.getByRole('navigation', { name: 'Workflows' })
+    const continueButton = occPage.getByRole('button', { name: /^Continue/ })
 
     await continueButton.click()
     await expect(rail.getByRole('tab', { name: /Tasks/i })).toHaveAttribute('aria-selected', 'true')
@@ -177,7 +177,7 @@ test.describe('Feature tour modal', () => {
   })
 
   test('does not pre-check configured workflows until the user visits them', async ({
-    orcaPage,
+    occPage,
     electronApp
   }) => {
     await electronApp.evaluate(
@@ -210,16 +210,16 @@ test.describe('Feature tour modal', () => {
         }
       }
     )
-    await orcaPage.evaluate(async () => {
+    await occPage.evaluate(async () => {
       for (const key of [
-        'orca.featureWall.visitedWorkflows.v1',
-        'orca.featureWall.visitedAgentSteps.v1',
-        'orca.featureWall.visitedWorkbenchSteps.v1',
-        'orca.featureWall.visitedReviewSteps.v1',
-        'orca.featureWall.completedWorkflows.v1',
-        'orca.featureWall.completedAgentSteps.v1',
-        'orca.featureWall.completedWorkbenchSteps.v1',
-        'orca.featureWall.completedReviewSteps.v1'
+        'occ.featureWall.visitedWorkflows.v1',
+        'occ.featureWall.visitedAgentSteps.v1',
+        'occ.featureWall.visitedWorkbenchSteps.v1',
+        'occ.featureWall.visitedReviewSteps.v1',
+        'occ.featureWall.completedWorkflows.v1',
+        'occ.featureWall.completedAgentSteps.v1',
+        'occ.featureWall.completedWorkbenchSteps.v1',
+        'occ.featureWall.completedReviewSteps.v1'
       ]) {
         localStorage.removeItem(key)
       }
@@ -236,7 +236,7 @@ test.describe('Feature tour modal', () => {
       store.getState().openModal('feature-wall', { source: 'help_menu' })
     })
 
-    const rail = orcaPage.getByRole('navigation', { name: 'Workflows' })
+    const rail = occPage.getByRole('navigation', { name: 'Workflows' })
     const workspacesTab = rail.locator('[data-feature-wall-workflow-id="workspaces"]')
     const tasksTab = rail.locator('[data-feature-wall-workflow-id="tasks"]')
     await expect(workspacesTab.locator('[aria-label="Completed"]')).toHaveCount(1)
@@ -247,15 +247,15 @@ test.describe('Feature tour modal', () => {
   })
 
   test('keeps persisted completed setup-backed substeps checked when reopened', async ({
-    orcaPage
+    occPage
   }) => {
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       localStorage.setItem(
-        'orca.featureWall.completedAgentSteps.v1',
+        'occ.featureWall.completedAgentSteps.v1',
         JSON.stringify(['orchestration'])
       )
       localStorage.setItem(
-        'orca.featureWall.completedWorkbenchSteps.v1',
+        'occ.featureWall.completedWorkbenchSteps.v1',
         JSON.stringify(['browser'])
       )
       const store = window.__store
@@ -265,7 +265,7 @@ test.describe('Feature tour modal', () => {
       store.getState().openModal('feature-wall', { source: 'help_menu' })
     })
 
-    const rail = orcaPage.getByRole('navigation', { name: 'Workflows' })
+    const rail = occPage.getByRole('navigation', { name: 'Workflows' })
 
     await rail.getByRole('tab', { name: /Agents/i }).click()
     await expect(

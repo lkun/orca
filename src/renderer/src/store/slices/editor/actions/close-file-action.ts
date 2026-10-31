@@ -17,7 +17,7 @@ import { mayShareEditorBackingFile } from '../file-ids/editor-file-ids'
 import { isSameOwnedDocument } from '../file-ids/same-owned-editor-document'
 import { isEditorTabContentType } from '../tabs/editor-tab-content-type'
 import { closeFileTabsThroughLayoutOwner } from '../tabs/editor-tab-close-through-layout-owner'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
 
 function findAdjacentOpenFileId(
   files: readonly OpenFile[],
@@ -95,7 +95,7 @@ export function createCloseFileAction(
 
       // Switch point: the tab's place is read before main's frame drops the tab.
       const closedPosition =
-        ORCA_LAYOUT_OWNER_IS_MAIN && preClose
+        OCC_LAYOUT_OWNER_IS_MAIN && preClose
           ? getRecentlyClosedTabPosition(get(), preClose.worktreeId, fileId)
           : undefined
       const cleanUp = (): void => {
@@ -103,7 +103,7 @@ export function createCloseFileAction(
           // Switch point: the frame that dropped the tab may have dropped its record already.
           const closedFile =
             s.openFiles.find((f) => f.id === fileId) ??
-            (ORCA_LAYOUT_OWNER_IS_MAIN ? preClose : undefined)
+            (OCC_LAYOUT_OWNER_IS_MAIN ? preClose : undefined)
           const newFiles = s.openFiles.filter((f) => !fileIdsToClose.has(f.id))
           const newEditorDrafts = { ...s.editorDrafts }
           const newMarkdownViewMode = { ...s.markdownViewMode }
@@ -243,7 +243,7 @@ export function createCloseFileAction(
               ...snap
             } = closedFile
             const stack = s.recentlyClosedEditorTabsByWorktree[wtRecent] ?? []
-            const position = ORCA_LAYOUT_OWNER_IS_MAIN
+            const position = OCC_LAYOUT_OWNER_IS_MAIN
               ? closedPosition
               : getRecentlyClosedTabPosition(s, wtRecent, fileId)
             nextRecentlyClosed = {
@@ -303,7 +303,7 @@ export function createCloseFileAction(
       }
 
       // Switch point: the file's content goes once main's frame dropped its tabs; a refusal keeps both.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN && unifiedTabIdsToClose.length > 0) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN && unifiedTabIdsToClose.length > 0) {
         closeFileTabsThroughLayoutOwner(
           get,
           unifiedTabIdsToClose,

@@ -70,7 +70,7 @@ describe('a structured codex session over agentSession.*', () => {
       'agentSession.create',
       harness.createIntentParams()
     )
-    const path = '/tmp/orca-paste-image.png'
+    const path = '/tmp/occ-paste-image.png'
     const body = {
       kind: 'message' as const,
       role: 'user' as const,

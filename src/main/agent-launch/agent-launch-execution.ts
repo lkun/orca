@@ -3,7 +3,7 @@ import type {
   AgentLaunchResult,
   AgentLaunchTarget
 } from '../../shared/agent-launch-intent'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import type {
   readAgentLaunchModeSettings,
   AgentLaunchModeReceipt,
@@ -18,7 +18,7 @@ import type {
 export type AgentLaunchPublishedSurface = AgentLaunchResult
 
 type AgentLaunchExecutionBase = {
-  runtime: Pick<OrcaRuntimeService, 'getStructuredAgentSessionCreateSupport'> &
+  runtime: Pick<OCCRuntimeService, 'getStructuredAgentSessionCreateSupport'> &
     Parameters<typeof readAgentLaunchModeSettings>[0]
   vocabulary?: AgentLaunchModeVocabulary
   /** False if the client cannot display this chat; host callers may omit it. */

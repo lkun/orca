@@ -1,5 +1,5 @@
 import { parseArgs } from 'node:util'
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import { z } from 'zod'
 import { describeAccountHosts } from './connector-hosts.js'
 import { LINK_OPTIONS, linkIdentity, required } from './operator-link.js'
@@ -21,10 +21,10 @@ export const SLACK_OPERATOR_USAGE = `Usage:
        stdin: {"clientSecret": "…", "signingSecret": "…"}
   install --team <T…> --bot-user <U…> --app-id <A…>     bot token is read from stdin
   pause --team <T…> | resume --team <T…>
-  link --team <T…> --user <U…> --account <orca account id>
+  link --team <T…> --user <U…> --account <occ account id>
        [--default-host <host id>] [--default-project <name or owner/name>]
        [--channel-project <C…>=<name or owner/name>]…
-  hosts --account <orca account id>`
+  hosts --account <occ account id>`
 
 function slackId(value: string | undefined, flag: string): string {
   if (!value || !SLACK_ID.test(value)) {
@@ -57,7 +57,7 @@ export async function runSlackOperator(
   })
   const tokenKey = () => {
     if (!deps.tokenKey) {
-      throw new Error('ORCA_CONNECTOR_SLACK_TOKEN_KEY is required')
+      throw new Error('OCC_CONNECTOR_SLACK_TOKEN_KEY is required')
     }
     return deps.tokenKey
   }

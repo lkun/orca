@@ -4,7 +4,7 @@ import {
   RELAY_PROTOCOL_LIMITS,
   type DeviceCredentialInstalled,
   type DeviceResumeConfirmed
-} from '@orca-cloud/relay-contract'
+} from '@occ-cloud/relay-contract'
 import type { RelayDatabase, SqlRow } from './database.js'
 import { changes, HeapWindowReaper } from './heap-window-reaper.js'
 import { ResumeConfirmedAuditBuffer } from './resume-confirmed-audit-buffer.js'

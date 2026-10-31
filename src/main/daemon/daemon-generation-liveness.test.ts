@@ -24,7 +24,7 @@ afterEach(async () => {
 
 describe('live daemon generations', () => {
   it('names every answering generation, including one newer than this build knows', async () => {
-    runtimeDir = mkdtempSync(join(tmpdir(), 'orca-generations-'))
+    runtimeDir = mkdtempSync(join(tmpdir(), 'occ-generations-'))
     await serveGeneration(50)
     await serveGeneration(51)
     await serveGeneration(99)
@@ -38,7 +38,7 @@ describe('live daemon generations', () => {
   })
 
   it('cannot vouch for a runtime dir it cannot list', async () => {
-    runtimeDir = mkdtempSync(join(tmpdir(), 'orca-generations-'))
+    runtimeDir = mkdtempSync(join(tmpdir(), 'occ-generations-'))
     // A file where the dir belongs fails the listing without depending on permissions.
     const notADir = join(runtimeDir, 'daemon')
     writeFileSync(notADir, '')

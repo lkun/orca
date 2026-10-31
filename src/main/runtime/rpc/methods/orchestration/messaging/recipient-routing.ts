@@ -1,7 +1,7 @@
 import type { LegacyAdoptedMailboxOwner, OrchestrationDb } from '../../../../orchestration/db'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import type { DispatchContextRow, DispatchStatus } from '../../../../orchestration/types'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { resolveOrchestrationParty } from '../../../../orchestration/orchestration-party'
 import { isEquivalentPaneKey } from '../../../../orchestration/db/pane-key-match'
 import { CURRENT_CONTRACT_VERSION } from '../../../../orchestration/db/contract-constants'
@@ -16,7 +16,7 @@ const ACTIVE_DISPATCH_STATUSES: readonly DispatchStatus[] = ['pending', 'dispatc
 
 /** Reject settled Dispatch mailboxes: no active reader remains and check never reroutes their mail. Federation checks its own liveness. */
 export function assertDispatchMailboxDeliverable(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   db: OrchestrationDb,
   dispatchId: string
 ): void {
@@ -33,7 +33,7 @@ export function assertDispatchMailboxDeliverable(
 
 // A saved pane alone cannot identify its occupant after reuse.
 export function currentDispatchAssigneeRun(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   db: OrchestrationDb,
   dispatch: DispatchContextRow
 ) {
@@ -43,11 +43,11 @@ export function currentDispatchAssigneeRun(
   ) {
     return undefined
   }
-  if (dispatch.assignee_orca_session_id !== null) {
+  if (dispatch.assignee_occ_session_id !== null) {
     return db.getCurrentRunForCoordinator({
       terminalHandle: dispatch.assignee_handle,
       paneKey: null,
-      orcaSessionId: dispatch.assignee_orca_session_id
+      occSessionId: dispatch.assignee_occ_session_id
     })
   }
   if (dispatch.assignee_handle === null) {
@@ -68,7 +68,7 @@ export function currentDispatchAssigneeRun(
 
 // Nested coordinators receive new mail where their current Run check waits.
 export function resolveRunBoundDispatchRecipient(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   db: OrchestrationDb,
   dispatchId: string,
   explicitRunId?: string
@@ -103,7 +103,7 @@ export function resolveRunBoundDispatchRecipient(
 
 // Replies share send routing; unresolved historical senders keep their original address.
 export function resolveReplyRecipient(params: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   originalFrom: string
   originalRunId: string | undefined
@@ -162,7 +162,7 @@ export type BareRecipientResolution =
     }
 
 export function resolveBareOrchestrationRecipient(params: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   handle: string
   senderRunId?: string
@@ -183,7 +183,7 @@ export function resolveBareOrchestrationRecipient(params: {
       : (runtime.getLiveTerminalPaneKey(party.terminalHandle) ?? undefined)
   // A session party's durable Run binding outranks pane liveness.
   const boundRuns =
-    party.orcaSessionId !== null
+    party.occSessionId !== null
       ? db.runsBoundToCoordinator(party)
       : paneKey
         ? db.runsBoundToPane(paneKey)

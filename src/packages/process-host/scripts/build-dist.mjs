@@ -11,7 +11,7 @@ import {
 } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, join, relative, resolve } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import lockfile from 'proper-lockfile'
 
 const STAGING_PREFIX = '.dist-staging-'

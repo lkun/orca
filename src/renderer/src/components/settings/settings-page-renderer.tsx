@@ -19,7 +19,7 @@ import {
   renderGeneralSettingsSection,
   renderIntegrationsSettingsSection,
   renderMobileSettingsSection,
-  renderOrcaAccountSettingsSection,
+  renderOCCAccountSettingsSection,
   renderSetupGuideSettingsSection,
   renderShareSkillsSettingsSection
 } from './settings-setup-workflow-section-renderers'
@@ -137,7 +137,7 @@ export function renderSettingsPage(context: SettingsRenderContext): React.JSX.El
                   {renderOrchestrationSettingsSection(context)}
                   {renderLinearSettingsSection(context)}
                   {renderDesktopCapabilitySettingsSections(context)}
-                  {renderOrcaAccountSettingsSection(context)}
+                  {renderOCCAccountSettingsSection(context)}
                   {renderSetupGuideSettingsSection(context)}
                   {renderGeneralSettingsSection(context)}
                   {renderIntegrationsSettingsSection(context)}

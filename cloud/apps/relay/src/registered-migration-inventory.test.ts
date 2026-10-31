@@ -38,8 +38,8 @@ describe('registered migration inventory', () => {
       ]
     })
     expect(formatRegisteredMigrationInventory(fresh)).toEqual([
-      '[orca-relay] migration inventory open=1 expiredRegisteredInactive=1 abandonedRegistered=1',
-      '[orca-relay] migration pair sourceCellId=cell-a targetCellId=cell-b open=1 expiredRegisteredInactive=1 abandoned=1'
+      '[occ-relay] migration inventory open=1 expiredRegisteredInactive=1 abandonedRegistered=1',
+      '[occ-relay] migration pair sourceCellId=cell-a targetCellId=cell-b open=1 expiredRegisteredInactive=1 abandoned=1'
     ])
     await database.query(`UPDATE relay_assignment_migrations SET expires_at = ?, updated_at = ?`, [
       now + 1,

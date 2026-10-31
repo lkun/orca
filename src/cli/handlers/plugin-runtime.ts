@@ -91,7 +91,7 @@ async function callPlugins<T>(ctx: HandlerContext, method: string, params?: unkn
 
 /** Development folders are paths on the OCC host, which may not be this machine. */
 function resolveHostPluginPath(ctx: HandlerContext, value: string): string {
-  if (process.env.ORCA_CLI_CWD) {
+  if (process.env.OCC_CLI_CWD) {
     throw new RuntimeClientError(
       'invalid_environment',
       'This shell forwards occ to an OCC host on another machine, which cannot read this folder. Run the command on the machine that runs OCC, or pass --environment for an OCC server that has the folder.'

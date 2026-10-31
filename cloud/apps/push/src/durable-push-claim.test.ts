@@ -6,7 +6,7 @@ import {
   PRUNE_BATCH_ROWS,
   PRUNE_MAX_BATCHES
 } from './durable-push-store.js'
-import { PUSH_LIMITS } from '@orca-cloud/push-contract'
+import { PUSH_LIMITS } from '@occ-cloud/push-contract'
 import { reserveRequestConnection } from './push-background-database.js'
 import {
   CANDIDATE_SQL,

@@ -29,11 +29,11 @@ describe('JSON-lines RPC peer', () => {
     const onRecord = vi.fn()
     const { peer, output, reply } = fixture({ onRecord })
     const pending = peer.request('get_state')
-    expect(JSON.parse(output.read().toString())).toEqual({ type: 'get_state', id: 'orca-1' })
+    expect(JSON.parse(output.read().toString())).toEqual({ type: 'get_state', id: 'occ-1' })
     reply({ type: 'agent_start', future: { enabled: true } })
     reply({
       type: 'response',
-      id: 'orca-1',
+      id: 'occ-1',
       command: 'get_state',
       success: true,
       data: { isStreaming: false }
@@ -110,7 +110,7 @@ describe('JSON-lines RPC peer', () => {
     const control = expect(peer.request('get_state')).rejects.toThrow('get_state in time')
     await vi.advanceTimersByTimeAsync(1_000)
     await control
-    reply({ type: 'response', id: 'orca-1', command: 'prompt', success: true })
+    reply({ type: 'response', id: 'occ-1', command: 'prompt', success: true })
     await expect(prompt).resolves.toBeUndefined()
     const bounded = expect(peer.request('prompt', {}, { timeoutMs: 10 })).rejects.toThrow('in time')
     await vi.advanceTimersByTimeAsync(10)
@@ -126,7 +126,7 @@ describe('JSON-lines RPC peer', () => {
   ])('rejects malformed identified replies without stranding a prompt: %j', async (record) => {
     const { peer, reply } = fixture()
     const pending = expect(peer.request('prompt')).rejects.toThrow('Invalid agent RPC response')
-    reply({ ...record, id: 'orca-1' })
+    reply({ ...record, id: 'occ-1' })
     await pending
   })
 
@@ -139,7 +139,7 @@ describe('JSON-lines RPC peer', () => {
     reply({ type: 'response', id: 'other', command: 'get_state', success: true })
     reply({
       type: 'response',
-      id: 'orca-1',
+      id: 'occ-1',
       command: 'get_state',
       success: false,
       error: 'No API key found for provider'
@@ -156,7 +156,7 @@ describe('JSON-lines RPC peer', () => {
     input.write(`{"type":"tool_execution_end","result":"${'x'.repeat(200)}`)
     input.write(`${'x'.repeat(200)}"}\n`)
     reply({ type: 'agent_settled' })
-    reply({ type: 'response', id: 'orca-1', command: 'get_state', success: true, data: {} })
+    reply({ type: 'response', id: 'occ-1', command: 'get_state', success: true, data: {} })
     await expect(pending).resolves.toEqual({})
     expect(onOversizedEvent).toHaveBeenCalledExactlyOnceWith(
       'tool_execution_end',
@@ -169,18 +169,18 @@ describe('JSON-lines RPC peer', () => {
   it('fails only an opted-in read whose reply is oversized, then keeps the stream', async () => {
     const onRecord = vi.fn()
     const { peer, input, reply } = fixture({ onRecord }, { maxLineBytes: 128 })
-    const big = { id: 'orca-optional-1', type: 'response', command: 'get_entries', success: true }
+    const big = { id: 'occ-optional-1', type: 'response', command: 'get_entries', success: true }
     const entries = peer.request('get_entries', {}, { oversizedReply: 'reject' })
     input.write(`${JSON.stringify({ ...big, data: { entries: ['x'.repeat(300)] } })}\n`)
     await expect(entries).rejects.toThrow('exceeded 128 bytes')
     reply({ type: 'agent_settled' })
     const state = peer.request('get_state')
-    reply({ type: 'response', id: 'orca-1', command: 'get_state', success: true, data: {} })
+    reply({ type: 'response', id: 'occ-1', command: 'get_state', success: true, data: {} })
     expect(await state).toEqual({})
     expect(onRecord).toHaveBeenCalledExactlyOnceWith({ type: 'agent_settled' })
     // A read that did not opt in still ends the stream.
     const plain = expect(peer.request('get_entries')).rejects.toThrow('size limit')
-    input.write(`${JSON.stringify({ ...big, id: 'orca-2', data: 'y'.repeat(300) })}\n`)
+    input.write(`${JSON.stringify({ ...big, id: 'occ-2', data: 'y'.repeat(300) })}\n`)
     await plain
     expect(peer.closed).toBe(true)
   })
@@ -192,21 +192,21 @@ describe('JSON-lines RPC peer', () => {
     const expired = expect(
       peer.request('get_entries', {}, { oversizedReply: 'reject', timeoutMs: 10 })
     ).rejects.toThrow('in time')
-    expect(JSON.parse(output.read().toString()).id).toBe('orca-optional-1')
+    expect(JSON.parse(output.read().toString()).id).toBe('occ-optional-1')
     await vi.advanceTimersByTimeAsync(10)
     await expired
     const state = peer.request('get_state')
     input.write(
-      '{"id":"orca-optional-1","type":"response","command":"get_entries","success":true,"data":"'
+      '{"id":"occ-optional-1","type":"response","command":"get_entries","success":true,"data":"'
     )
     input.write('x'.repeat(300))
     input.write('"}\n')
-    reply({ id: 'orca-1', type: 'response', command: 'get_state', success: true, data: {} })
+    reply({ id: 'occ-1', type: 'response', command: 'get_state', success: true, data: {} })
     reply({ type: 'agent_settled' })
     await expect(state).resolves.toEqual({})
     const next = peer.request('get_entries', {}, { oversizedReply: 'reject' })
     reply({
-      id: 'orca-optional-2',
+      id: 'occ-optional-2',
       type: 'response',
       command: 'get_entries',
       success: true,
@@ -225,7 +225,7 @@ describe('JSON-lines RPC peer', () => {
         peer.request('get_entries', {}, { oversizedReply: 'reject' })
       ).rejects.toThrow('reply to get_entries exceeded 128 bytes')
       input.write(
-        `${JSON.stringify({ id: 'orca-optional-1', type: 'response', command, data: 'x'.repeat(300) })}\n`
+        `${JSON.stringify({ id: 'occ-optional-1', type: 'response', command, data: 'x'.repeat(300) })}\n`
       )
       await pending
       expect(peer.closed).toBe(false)
@@ -233,13 +233,13 @@ describe('JSON-lines RPC peer', () => {
   )
 
   it.each([
-    ['orca-optional-2', 'response'],
-    ['orca-optional-0', 'response'],
-    ['orca-optional-01', 'response'],
-    ['orca-optional-9007199254740992', 'response'],
-    ['orca-1', 'response'],
+    ['occ-optional-2', 'response'],
+    ['occ-optional-0', 'response'],
+    ['occ-optional-01', 'response'],
+    ['occ-optional-9007199254740992', 'response'],
+    ['occ-1', 'response'],
     ['foreign', 'response'],
-    ['orca-optional-1', 'agent_end'],
+    ['occ-optional-1', 'agent_end'],
     [undefined, 'response'],
     [undefined, 'extension_ui_request']
   ])('closes on an oversized record without issued optional ownership: %s %s', async (id, type) => {
@@ -257,7 +257,7 @@ describe('JSON-lines RPC peer', () => {
     const pending = expect(
       peer.request('get_entries', {}, { oversizedReply: 'reject' })
     ).rejects.toThrow('size limit')
-    input.write(`{"id":"orca-optional-1","type":"response"garbage${'x'.repeat(300)}`)
+    input.write(`{"id":"occ-optional-1","type":"response"garbage${'x'.repeat(300)}`)
     await pending
     expect(peer.closed).toBe(true)
   })
@@ -282,7 +282,7 @@ describe('JSON-lines RPC peer', () => {
     // Already-read bytes can arrive within a burst after the consumer pauses.
     input.emit(
       'data',
-      '{"type":"first"}\n{"type":"second"}\n{"id":"orca-1","type":"response","command":"get_state","success":true,"data":{}}\n{"id":"orca-optional-1","type":"response","data":"'
+      '{"type":"first"}\n{"type":"second"}\n{"id":"occ-1","type":"response","command":"get_state","success":true,"data":{}}\n{"id":"occ-optional-1","type":"response","data":"'
     )
     input.emit('data', 'x'.repeat(70_000))
     await optional
@@ -302,7 +302,7 @@ describe('JSON-lines RPC peer', () => {
       peer.request('get_entries', {}, { oversizedReply: 'reject' })
     ).rejects.toThrow('size limit')
     input.emit('data', '{"type":"first"}\n{"type":"queued"}\n')
-    const optional = '{"id":"orca-optional-1","type":"response","data":"'
+    const optional = '{"id":"occ-optional-1","type":"response","data":"'
     input.emit(
       'data',
       `${optional}${'x'.repeat(64 * 1024 * 1024)}"}\n{"type":"tool_execution_end"}\n`
@@ -319,7 +319,7 @@ describe('JSON-lines RPC peer', () => {
     await vi.advanceTimersByTimeAsync(10)
     await first
     const second = peer.request('get_state')
-    reply({ type: 'response', id: 'orca-2', command: 'get_state', success: true })
+    reply({ type: 'response', id: 'occ-2', command: 'get_state', success: true })
     await second
     expect(vi.getTimerCount()).toBe(0)
   })

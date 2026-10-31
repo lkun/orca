@@ -3,8 +3,8 @@ import type { WorktreeOperationRouteState } from '@/lib/worktree-operation-route
 import { hostRouteForAuthority, type HostRoute } from '@/runtime/runtime-client-target'
 import type { RuntimeClientTarget } from '../../../../shared/runtime-client-target'
 import {
-  getOrcadSshDeployment,
-  type OrcadDeploymentLink
+  getOCCdSshDeployment,
+  type OCCdDeploymentLink
 } from '../../../../shared/runtime-environments'
 import { isRuntimeOwnedSshTargetId, parseExecutionHostId } from '../../../../shared/execution-host'
 import {
@@ -60,7 +60,7 @@ export function portsPanelHostForOwnerKey(key: HostAuthorityKey | null): PortsPa
 /** The Ports tab shows for a workspace on an SSH host, dialed directly or through its managed server. */
 export function portsPanelReachesSshHost(
   host: PortsPanelHost,
-  environments: readonly { id: string; orcadDeployment?: unknown }[]
+  environments: readonly { id: string; occdDeployment?: unknown }[]
 ): boolean {
   switch (host.kind) {
     case 'direct-ssh':
@@ -72,7 +72,7 @@ export function portsPanelReachesSshHost(
         target.kind === 'environment' &&
         environments.some(
           (environment) =>
-            environment.id === target.environmentId && environment.orcadDeployment !== undefined
+            environment.id === target.environmentId && environment.occdDeployment !== undefined
         )
       )
     }
@@ -84,12 +84,12 @@ export function portsPanelReachesSshHost(
 /** Managed servers scan their ports, but client forwards still ride the SSH tunnel to their host (#29153). */
 export function portsPanelForwardTargetId(
   host: PortsPanelHost,
-  environments: readonly { id: string; orcadDeployment?: OrcadDeploymentLink }[]
+  environments: readonly { id: string; occdDeployment?: OCCdDeploymentLink }[]
 ): string | null {
   if (host.kind !== 'endpoint' || host.target.kind !== 'environment') {
     return null
   }
   const { environmentId } = host.target
   const environment = environments.find((candidate) => candidate.id === environmentId)
-  return (environment && getOrcadSshDeployment(environment)?.sshTargetId) || null
+  return (environment && getOCCdSshDeployment(environment)?.sshTargetId) || null
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { eraseRpcMethods, isStreamingMethod, type RpcContext } from '../core'
 import { ACCOUNT_METHODS } from './accounts'
 import { createEmptyRateLimitState } from '../../../../shared/rate-limit-state-factory'
@@ -29,7 +29,7 @@ describe('account RPC methods', () => {
     }
   ])('allows local-socket $methodName calls', async (testCase) => {
     const add = vi.fn().mockResolvedValue({ accounts: [] })
-    const runtime = { [testCase.runtimeMethod]: add } as unknown as OrcaRuntimeService
+    const runtime = { [testCase.runtimeMethod]: add } as unknown as OCCRuntimeService
     const addMethod = method(testCase.methodName)
     if (isStreamingMethod(addMethod)) {
       throw new Error(`${testCase.methodName} must be a request method`)
@@ -57,7 +57,7 @@ describe('account RPC methods', () => {
       finishClaudeSignIn: vi.fn()
     }
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: refused calls never reach the runtime; only these stubs are asserted.
-    const runtimeService = runtime as unknown as OrcaRuntimeService
+    const runtimeService = runtime as unknown as OCCRuntimeService
     const addMethod = method(methodName)
     if (isStreamingMethod(addMethod)) {
       throw new Error(`${methodName} must be a request method`)
@@ -93,7 +93,7 @@ describe('account RPC methods', () => {
         }
       )
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the sign-in methods call only this runtime member.
-      const runtime = { runHostAccountSignIn } as unknown as OrcaRuntimeService
+      const runtime = { runHostAccountSignIn } as unknown as OCCRuntimeService
       const device = {
         runtime,
         clientKind: 'runtime' as const,
@@ -144,7 +144,7 @@ describe('account RPC methods', () => {
       throw new Error('accounts.hostSignInStart must be a request method')
     }
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the refusal happens before any runtime member is read.
-    const runtime = {} as unknown as OrcaRuntimeService
+    const runtime = {} as unknown as OCCRuntimeService
     await expect(
       start.handler({ provider: 'codex' }, { runtime, clientKind: 'runtime' })
     ).rejects.toThrow('cannot add accounts')
@@ -155,7 +155,7 @@ describe('account RPC methods', () => {
     const runtime = {
       refreshAccountsForMobile: vi.fn().mockResolvedValue(undefined),
       getAccountsSnapshot: vi.fn(() => snapshot)
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const list = method('accounts.list')
     if (isStreamingMethod(list)) {
       throw new Error('accounts.list must be a request method')
@@ -171,7 +171,7 @@ describe('account RPC methods', () => {
     const runtime = {
       refreshAccountsForMobile: vi.fn().mockResolvedValue(undefined),
       getAccountsSnapshot: vi.fn(() => snapshot)
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const list = method('accounts.list')
     if (isStreamingMethod(list)) {
       throw new Error('accounts.list must be a request method')
@@ -197,7 +197,7 @@ describe('account RPC methods', () => {
       snapshot: { claude: null, codex: null }
     }
     const consumeCodexRateLimitResetCredit = vi.fn().mockResolvedValue(result)
-    const runtime = { consumeCodexRateLimitResetCredit } as unknown as OrcaRuntimeService
+    const runtime = { consumeCodexRateLimitResetCredit } as unknown as OCCRuntimeService
     const reset = method('accounts.consumeCodexResetCredit')
     if (isStreamingMethod(reset)) {
       throw new Error('accounts.consumeCodexResetCredit must be a request method')
@@ -237,7 +237,7 @@ describe('account RPC methods', () => {
     const selectCodexAccountForTarget = vi
       .fn()
       .mockResolvedValue({ accounts: [], activeAccountId: null })
-    const runtime = { selectCodexAccountForTarget } as unknown as OrcaRuntimeService
+    const runtime = { selectCodexAccountForTarget } as unknown as OCCRuntimeService
     const select = method('accounts.selectCodexForTarget')
     if (isStreamingMethod(select)) {
       throw new Error('accounts.selectCodexForTarget must be a request method')
@@ -276,7 +276,7 @@ describe('account RPC methods', () => {
   it('uses a stale-aware refresh when a connection replays the subscription', async () => {
     type AccountStreamContext = {
       runtime: Pick<
-        OrcaRuntimeService,
+        OCCRuntimeService,
         | 'getAccountsStreamSnapshot'
         | 'onAccountsChanged'
         | 'registerSubscriptionCleanup'
@@ -353,7 +353,7 @@ it('takes a host launch env from the owning desktop and refuses a phone', async 
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the handler calls only this stub.
   const runtime = {
     setHostAccountLaunchEnv: set
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
   const setMethod = method('accounts.setHostLaunchEnv')
   if (isStreamingMethod(setMethod)) {
     throw new Error('accounts.setHostLaunchEnv must be a request method')

@@ -3,7 +3,7 @@ import type {
   TerminalLayoutSnapshot,
   TerminalPaneLayoutNode
 } from '../../src/shared/terminal-tab-types'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   callPairedRuntime,
   waitForPairedClientWorktree
@@ -28,10 +28,10 @@ import {
 const LEGACY_LEAF_ID = 'pane:9'
 
 const PARK_DELAY_MS = 2_000
-const PARK_DELAY_ENV = { ORCA_E2E_TERMINAL_PARKING_DELAY_MS: String(PARK_DELAY_MS) }
+const PARK_DELAY_ENV = { OCC_E2E_TERMINAL_PARKING_DELAY_MS: String(PARK_DELAY_MS) }
 
 // Scope parking overrides to this fixture; module-level process.env would leak into later specs in the same worker.
-test.use({ orcaAppExtraEnv: PARK_DELAY_ENV })
+test.use({ occAppExtraEnv: PARK_DELAY_ENV })
 
 function collectLeafIds(node: TerminalPaneLayoutNode | null | undefined): string[] {
   if (!node) {
@@ -91,25 +91,25 @@ async function readPublishedTerminalSurfaces(
 }
 
 test('publishes an unmounted split with its real orientation when a legacy leaf lingers in the saved tree', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(360_000)
-  const worktreeId = await orcaPage.evaluate(() => window.__store?.getState().activeWorktreeId)
+  const worktreeId = await occPage.evaluate(() => window.__store?.getState().activeWorktreeId)
   if (!worktreeId) {
     throw new Error('Headed host has no active seeded workspace')
   }
   let client: PairedElectronClient | null = null
 
   try {
-    await waitForActiveTerminalManager(orcaPage, 60_000)
-    const hostTabId = await resolveActiveTabId(orcaPage)
+    await waitForActiveTerminalManager(occPage, 60_000)
+    const hostTabId = await resolveActiveTabId(occPage)
     if (!hostTabId) {
       throw new Error('Headed host has no active terminal tab')
     }
 
-    await splitActiveTerminalPane(orcaPage, 'vertical')
-    await waitForPaneCount(orcaPage, 2, 60_000)
-    const panes = await readPaneIdentitySnapshot(orcaPage)
+    await splitActiveTerminalPane(occPage, 'vertical')
+    await waitForPaneCount(occPage, 2, 60_000)
+    const panes = await readPaneIdentitySnapshot(occPage)
     const leafIds = (panes?.panes ?? []).map((pane) => pane.leafId)
     const [firstLeafId, secondLeafId] = leafIds
     if (leafIds.length !== 2 || !firstLeafId || !secondLeafId) {
@@ -120,7 +120,7 @@ test('publishes an unmounted split with its real orientation when a legacy leaf 
       .poll(
         async () =>
           splitDirectionSeparating(
-            (await readSavedLayout(orcaPage, hostTabId))?.root,
+            (await readSavedLayout(occPage, hostTabId))?.root,
             firstLeafId,
             secondLeafId
           ),
@@ -129,12 +129,12 @@ test('publishes an unmounted split with its real orientation when a legacy leaf 
       .toBe('vertical')
 
     // Park to exercise publication from the saved tree rather than live DOM.
-    await parkHiddenTabBehindDecoy(orcaPage, worktreeId, hostTabId, {
+    await parkHiddenTabBehindDecoy(occPage, worktreeId, hostTabId, {
       parkDelayMs: PARK_DELAY_MS
     })
 
     // The drift under test: the saved tree keeps a leaf the stable-id leaf set cannot carry.
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ tabId, firstLeafId, secondLeafId, legacyLeafId }) => {
         const state = window.__store?.getState()
         const saved = state?.terminalLayoutsByTabId[tabId]
@@ -159,11 +159,11 @@ test('publishes an unmounted split with its real orientation when a legacy leaf 
       { tabId: hostTabId, firstLeafId, secondLeafId, legacyLeafId: LEGACY_LEAF_ID }
     )
     // Require a lingering leaf or the publisher never reaches the mismatch fallback.
-    expect(collectLeafIds((await readSavedLayout(orcaPage, hostTabId))?.root)).toContain(
+    expect(collectLeafIds((await readSavedLayout(occPage, hostTabId))?.root)).toContain(
       LEGACY_LEAF_ID
     )
 
-    const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+    const offer = await createRuntimeDesktopPairingOffer(occPage)
     // Give the observer the same parking override to preserve its original lifecycle behavior.
     client = await launchPairedElectronClient(offer, testInfo, 'legacy-leaf-orientation-observer', {
       extraEnv: PARK_DELAY_ENV

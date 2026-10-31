@@ -14,7 +14,7 @@ afterEach(async () => {
 })
 
 async function iconPlugin(svgs: Record<string, string>): Promise<ValidDiscoveredPlugin> {
-  const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-icon-theme-'))
+  const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-icon-theme-'))
   roots.push(rootDir)
   await mkdir(join(rootDir, 'icons'))
   for (const [name, svg] of Object.entries(svgs)) {
@@ -34,7 +34,7 @@ async function iconPlugin(svgs: Record<string, string>): Promise<ValidDiscovered
     publisher: 'samples',
     name: 'Minimal icons',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     contributes: { iconThemes: [{ id: 'minimal', title: 'Minimal', path: 'theme.json' }] }
   })

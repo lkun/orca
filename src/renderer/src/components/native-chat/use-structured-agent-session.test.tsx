@@ -129,7 +129,7 @@ describe('useStructuredAgentSession working state', () => {
           dispatchId: 'dispatch',
           task: 'Full task',
           worker: {
-            party: { address: 'term_worker', terminalHandle: 'term_worker', orcaSessionId: null },
+            party: { address: 'term_worker', terminalHandle: 'term_worker', occSessionId: null },
             name: 'Worker'
           }
         }

@@ -34,7 +34,7 @@ vi.mock('./extensions/browser-extension-session-loader', () => ({
 import { browserRoutePartitionStorageDependencies } from './browser-route-partition-storage-dependencies'
 import { browserRoutePartitionPendingDeletesPath } from './browser-route-partition-pending-deletes'
 import {
-  configureBrowserRoutePartitionBindingsForOrcaProfile,
+  configureBrowserRoutePartitionBindingsForOCCProfile,
   currentBrowserRoutePartitionBindingFilePath,
   currentBrowserRoutePartitionBindingStore
 } from './browser-route-partition-binding-runtime'
@@ -42,16 +42,16 @@ import { collectOrphanedBrowserRoutePartitionStorage } from './browser-route-par
 import { deriveLocalSshBrowserRoutePartitionStorageScope } from './browser-route-identity'
 import { registerBrowserRoutePartitionRetentionProbe } from './browser-route-partition-retention'
 
-const PARTITION = `persist:orca-browser-v1-${'a'.repeat(64)}`
+const PARTITION = `persist:occ-browser-v1-${'a'.repeat(64)}`
 
 let folder: string
 
 beforeEach(() => {
-  mocks.userData = mkdtempSync(join(tmpdir(), 'orca-partition-deps-'))
+  mocks.userData = mkdtempSync(join(tmpdir(), 'occ-partition-deps-'))
   folder = join(mocks.userData, 'Partitions', PARTITION.slice('persist:'.length))
   mkdirSync(folder, { recursive: true })
-  configureBrowserRoutePartitionBindingsForOrcaProfile({
-    orcaProfileId: 'profile-a',
+  configureBrowserRoutePartitionBindingsForOCCProfile({
+    occProfileId: 'profile-a',
     profileDirectory: mocks.userData
   })
   mocks.clearPolicies.mockClear()
@@ -100,18 +100,18 @@ it('deletes the folder at startup without loading its session', async () => {
 it('collects cold orphan folders without opening sessions, preserving retained and listed scopes', async () => {
   const store = currentBrowserRoutePartitionBindingStore()
   const removedScope = deriveLocalSshBrowserRoutePartitionStorageScope({
-    orcaProfileId: 'profile-a',
+    occProfileId: 'profile-a',
     targetId: 'removed'
   })
   const listedScope = deriveLocalSshBrowserRoutePartitionStorageScope({
-    orcaProfileId: 'profile-a',
+    occProfileId: 'profile-a',
     targetId: 'listed'
   })
-  const retained = `persist:orca-browser-v1-${'e'.repeat(64)}`
-  const listed = `persist:orca-browser-v1-${'f'.repeat(64)}`
+  const retained = `persist:occ-browser-v1-${'e'.repeat(64)}`
+  const listed = `persist:occ-browser-v1-${'f'.repeat(64)}`
   const orphans = Array.from(
     { length: 2 },
-    (_, index) => `persist:orca-browser-v1-${(index + 1).toString(16).padStart(64, '0')}`
+    (_, index) => `persist:occ-browser-v1-${(index + 1).toString(16).padStart(64, '0')}`
   )
   const partitionFolder = (partition: string): string =>
     join(mocks.userData, 'Partitions', partition.slice('persist:'.length))
@@ -145,15 +145,15 @@ it('leaves a folder queued by one OCC profile for that profile to delete', async
     mkdirSync(directory, { recursive: true })
     return directory
   }
-  configureBrowserRoutePartitionBindingsForOrcaProfile({
-    orcaProfileId: 'a',
+  configureBrowserRoutePartitionBindingsForOCCProfile({
+    occProfileId: 'a',
     profileDirectory: profileDirectory('a')
   })
   await browserRoutePartitionStorageDependencies(() => false).removePartitionDirectory(folder)
 
   // Profile B has no binding for the folder, but profile A may have bound it again since.
-  configureBrowserRoutePartitionBindingsForOrcaProfile({
-    orcaProfileId: 'b',
+  configureBrowserRoutePartitionBindingsForOCCProfile({
+    occProfileId: 'b',
     profileDirectory: profileDirectory('b')
   })
   await collectOrphanedBrowserRoutePartitionStorage(() => [])

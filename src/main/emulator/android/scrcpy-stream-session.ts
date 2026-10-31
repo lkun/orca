@@ -1,5 +1,5 @@
 import type { ChildProcess } from 'node:child_process'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { connect, type Socket } from 'node:net'
 import { randomBytes } from 'node:crypto'
 import { RelayFrameBuffer } from '../../../shared/relay-frame-buffer'

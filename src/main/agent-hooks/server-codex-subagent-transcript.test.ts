@@ -67,12 +67,12 @@ describe('AgentHookServer Codex subagent transcript polling', () => {
     await server.start({ env: 'production' })
     try {
       const env = server.buildPtyEnv()
-      const response = await fetch(`http://127.0.0.1:${env.ORCA_AGENT_HOOK_PORT}/hook/codex`, {
+      const response = await fetch(`http://127.0.0.1:${env.OCC_AGENT_HOOK_PORT}/hook/codex`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Connection: 'close',
-          'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+          'X-OCC-Agent-Hook-Token': env.OCC_AGENT_HOOK_TOKEN
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -115,12 +115,12 @@ describe('AgentHookServer Codex subagent transcript polling', () => {
     await server.start({ env: 'production' })
     try {
       const env = server.buildPtyEnv()
-      await fetch(`http://127.0.0.1:${env.ORCA_AGENT_HOOK_PORT}/hook/codex`, {
+      await fetch(`http://127.0.0.1:${env.OCC_AGENT_HOOK_PORT}/hook/codex`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Connection: 'close',
-          'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+          'X-OCC-Agent-Hook-Token': env.OCC_AGENT_HOOK_TOKEN
         },
         body: JSON.stringify({
           paneKey: PANE_KEY,
@@ -163,12 +163,12 @@ describe('AgentHookServer Codex subagent transcript polling', () => {
     try {
       const env = server.buildPtyEnv()
       const post = (path: string, payload: unknown): Promise<Response> =>
-        fetch(`http://127.0.0.1:${env.ORCA_AGENT_HOOK_PORT}${path}`, {
+        fetch(`http://127.0.0.1:${env.OCC_AGENT_HOOK_PORT}${path}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             Connection: 'close',
-            'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+            'X-OCC-Agent-Hook-Token': env.OCC_AGENT_HOOK_TOKEN
           },
           body: JSON.stringify({ paneKey: PANE_KEY, tabId: 'tab-1', worktreeId: 'wt-1', payload })
         })

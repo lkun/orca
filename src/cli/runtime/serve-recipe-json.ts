@@ -1,4 +1,4 @@
-import type { ChildProcessHandle } from '@orca/process-host/process-spec'
+import type { ChildProcessHandle } from '@occ/process-host/process-spec'
 import { StringDecoder } from 'node:string_decoder'
 import {
   getEphemeralVmRecipeResultConnection,
@@ -47,7 +47,7 @@ export function waitForRecipeJson(child: ChildProcessHandle): Promise<number> {
         writeIgnoredRecipeStdout()
         return
       }
-      if (getEphemeralVmRecipeResultConnection(parsed.result).type !== 'orca-server') {
+      if (getEphemeralVmRecipeResultConnection(parsed.result).type !== 'occ-server') {
         writeIgnoredRecipeStdout()
         return
       }

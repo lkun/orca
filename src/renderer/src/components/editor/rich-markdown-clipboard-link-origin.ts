@@ -12,7 +12,7 @@ import {
   resolveRelativeClipboardLink
 } from './rich-markdown-clipboard-link-target'
 
-const LINK_ORIGIN_ATTRIBUTE = 'data-orca-link-clipboard-origin'
+const LINK_ORIGIN_ATTRIBUTE = 'data-occ-link-clipboard-origin'
 const MAX_ORIGINS = 16
 const MAX_LINKS_PER_ORIGIN = 256
 

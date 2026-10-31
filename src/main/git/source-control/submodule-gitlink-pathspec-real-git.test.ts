@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { afterEach, describe, expect, it } from 'vitest'
 import { getDiff } from './file-diff'
 import { getSubmoduleStatus } from './submodule-status'
@@ -15,7 +15,7 @@ afterEach(async () => {
 describe('literal submodule gitlinks with real Git', () => {
   it('reads a glob-like submodule path without selecting a matching neighbor', async () => {
     const submodulePath = 'module[12]'
-    const root = await mkdtemp(join(tmpdir(), 'orca-gitlink-pathspec-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-gitlink-pathspec-'))
     directories.push(root)
     const source = join(root, 'source')
     const neighborSource = join(root, 'neighbor-source')

@@ -6,12 +6,12 @@ import { NO_PROJECT_SECTION_CATALOG, buildSections } from './workspace-list-sect
 import { DEFAULT_WORKSPACE_STATUSES } from '../../../src/shared/workspace-statuses'
 
 function worktree(overrides: Partial<Worktree> = {}): Worktree {
-  const worktreePath = join('/tmp', 'orca', 'worktrees', 'feature')
+  const worktreePath = join('/tmp', 'occ', 'worktrees', 'feature')
   return {
     workspaceKind: 'git',
     worktreeId: `repo-1::${worktreePath}`,
     repoId: 'repo-1',
-    repo: 'orca',
+    repo: 'occ',
     branch: 'feature/mobile-parity',
     displayName: 'feature',
     path: worktreePath,

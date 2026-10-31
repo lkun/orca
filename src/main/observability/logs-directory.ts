@@ -26,8 +26,8 @@ export function getTraceFilePath(): string {
   return join(getLogsDirectory(), 'main.trace.ndjson')
 }
 
-export function getOrcadTraceFilePath(): string {
-  return join(getLogsDirectory(), 'orcad.trace.ndjson')
+export function getOCCdTraceFilePath(): string {
+  return join(getLogsDirectory(), 'occd.trace.ndjson')
 }
 
 export function getDaemonLogFilePath(): string {

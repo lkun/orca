@@ -20,11 +20,11 @@ async function loadNodePty(): Promise<typeof pty> {
 }
 
 function daemonEnvironmentDiagSuffix(): string {
-  const orca = process.env.ORCA_APP_VERSION?.trim() || '0.0.0-dev'
+  const occ = process.env.OCC_APP_VERSION?.trim() || '0.0.0-dev'
   const systemVersion =
     (process as NodeJS.Process & { getSystemVersion?: () => string }).getSystemVersion?.() ||
     release()
-  return ` (orca: ${orca}, arch: ${process.arch}, platform: ${process.platform} ${systemVersion})`
+  return ` (occ: ${occ}, arch: ${process.arch}, platform: ${process.platform} ${systemVersion})`
 }
 
 function formatMissingDaemonPathError(kind: 'helper' | 'cwd', path: string): DaemonProtocolError {
@@ -48,7 +48,7 @@ function isExistingDirectory(path: string | undefined): path is string {
 }
 
 function repairDaemonCwd(): string | null {
-  const candidates = [process.env.ORCA_USER_DATA_PATH]
+  const candidates = [process.env.OCC_USER_DATA_PATH]
   try {
     candidates.push(resolveSafePtyDefaultCwd())
   } catch {
@@ -171,8 +171,8 @@ export async function runPtySpawnHealthProbe(
       'Terminal daemon asynchronous I/O is stalled; restart the terminal daemon.'
     )
   }
-  const cwd = isExistingDirectory(process.env.ORCA_USER_DATA_PATH)
-    ? process.env.ORCA_USER_DATA_PATH
+  const cwd = isExistingDirectory(process.env.OCC_USER_DATA_PATH)
+    ? process.env.OCC_USER_DATA_PATH
     : resolveSafePtyDefaultCwd()
   const command =
     process.platform === 'win32'

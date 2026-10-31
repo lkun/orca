@@ -78,7 +78,7 @@ export async function settleWithin<T>(request: Promise<T>, fallback: T): Promise
 }
 
 /** Hide OCC-owned session traffic that the agent's client did not request. */
-export function isOrcaFrameSessionTraffic(
+export function isOCCFrameSessionTraffic(
   webContents: WebContents,
   method: string,
   params: Record<string, unknown> | undefined,

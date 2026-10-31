@@ -1,7 +1,7 @@
 import { app, BaseWindow, BrowserWindow, protocol, session } from 'electron'
 import { existsSync, mkdirSync, renameSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { ORCA_BROWSER_PARTITION } from '../../../shared/constants'
+import { OCC_BROWSER_PARTITION } from '../../../shared/constants'
 import { applyBackgroundActivationPolicy } from '../../window/foreground-activation-policy'
 import { browserSessionRegistry } from '../browser-session-registry'
 import { initializeBrowserExtensionSupport } from './browser-extension-startup'
@@ -10,20 +10,20 @@ import { attachBrowserExtensionsToProfileSession } from './browser-extension-ses
 import { addUnpackedBrowserExtension } from './browser-extension-management'
 import { trackBrowserExtensionMainWindow } from './browser-extension-window-model'
 import { browserExtensionIdForUnpackedFolder } from './browser-extension-load-directory'
-import { ORCA_NATIVE_MESSAGING_HOSTS_FOLDER } from './browser-extension-native-host-locations'
+import { OCC_NATIVE_MESSAGING_HOSTS_FOLDER } from './browser-extension-native-host-locations'
 
-const statusPath = process.env.ORCA_EXTENSION_FIXTURE_STATUS
-const extensionDirectory = process.env.ORCA_EXTENSION_FIXTURE_DIR
-const userData = process.env.ORCA_NATIVE_FIXTURE_USER_DATA
-const echoHost = process.env.ORCA_NATIVE_FIXTURE_ECHO_HOST
-const exitHost = process.env.ORCA_NATIVE_FIXTURE_EXIT_HOST
+const statusPath = process.env.OCC_EXTENSION_FIXTURE_STATUS
+const extensionDirectory = process.env.OCC_EXTENSION_FIXTURE_DIR
+const userData = process.env.OCC_NATIVE_FIXTURE_USER_DATA
+const echoHost = process.env.OCC_NATIVE_FIXTURE_ECHO_HOST
+const exitHost = process.env.OCC_NATIVE_FIXTURE_EXIT_HOST
 if (
   !statusPath ||
   !extensionDirectory ||
   !userData ||
   !echoHost ||
   !exitHost ||
-  process.env.ORCA_BACKGROUND_LAUNCH !== '1'
+  process.env.OCC_BACKGROUND_LAUNCH !== '1'
 ) {
   throw new Error('Native messaging fixture requires its paths and background launch')
 }
@@ -61,9 +61,9 @@ function fail(error: unknown): void {
 process.on('uncaughtException', fail)
 process.on('unhandledRejection', fail)
 
-// Extension contexts report `ORCA_NM {"key":…,"value":…}` lines on the console.
+// Extension contexts report `OCC_NM {"key":…,"value":…}` lines on the console.
 function capture(message: string): void {
-  if (!message.startsWith('ORCA_NM ')) {
+  if (!message.startsWith('OCC_NM ')) {
     return
   }
   const { key, value }: { key: string; value: unknown } = JSON.parse(message.slice(8))
@@ -76,7 +76,7 @@ function capture(message: string): void {
 }
 
 function writeManifest(name: string, path: string, extensionId: string): void {
-  const folder = join(app.getPath('userData'), ORCA_NATIVE_MESSAGING_HOSTS_FOLDER)
+  const folder = join(app.getPath('userData'), OCC_NATIVE_MESSAGING_HOSTS_FOLDER)
   mkdirSync(folder, { recursive: true })
   writeFileSync(
     join(folder, `${name}.json`),
@@ -95,7 +95,7 @@ async function run(): Promise<void> {
   initializeBrowserExtensionSupport({ enabled: true })
   const profile = browserSessionRegistry.getDefaultProfile()
   attachBrowserExtensionsToProfileSession(profile, [])
-  const extensionSession = session.fromPartition(ORCA_BROWSER_PARTITION)
+  const extensionSession = session.fromPartition(OCC_BROWSER_PARTITION)
   extensionSession.serviceWorkers.on('console-message', (_event, details) =>
     capture(details.message)
   )
@@ -105,12 +105,12 @@ async function run(): Promise<void> {
   // OCC's main window, hidden; the worker opens the extension page as a popout of it.
   const host = new BrowserWindow({ show: false })
   trackBrowserExtensionMainWindow(host)
-  await host.loadURL('data:text/html,<title>orca</title>')
+  await host.loadURL('data:text/html,<title>occ</title>')
 
   const extensionId = await browserExtensionIdForUnpackedFolder(fixtureExtensionDirectory)
-  writeManifest('com.orca.echo', hosts.echo, extensionId)
-  writeManifest('com.orca.exit', hosts.exit, extensionId)
-  writeManifest('com.orca.forbidden', hosts.echo, 'a'.repeat(32))
+  writeManifest('com.occ.echo', hosts.echo, extensionId)
+  writeManifest('com.occ.exit', hosts.exit, extensionId)
+  writeManifest('com.occ.forbidden', hosts.echo, 'a'.repeat(32))
 
   status.added = await addUnpackedBrowserExtension(profile.id, fixtureExtensionDirectory)
   writeStatus()

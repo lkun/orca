@@ -77,8 +77,8 @@ describe('dictation setup reply schema', () => {
   })
 
   it('passes a newer host member through', () => {
-    expect(dictationSetupSchema.parse(setup({ hotword: 'orca' }))).toMatchObject({
-      hotword: 'orca'
+    expect(dictationSetupSchema.parse(setup({ hotword: 'occ' }))).toMatchObject({
+      hotword: 'occ'
     })
   })
 })

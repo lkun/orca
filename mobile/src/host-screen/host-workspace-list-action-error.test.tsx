@@ -57,7 +57,7 @@ function unmountRenderers(): void {
 
 // Render the real list banner: the screen suite mocks it away and cannot catch missing error copy or dismissal.
 function listWith(fields: { actionError: string; setActionError: (value: string) => void }) {
-  const rows = [{ worktreeId: 'wt-1', repo: 'orca' }]
+  const rows = [{ worktreeId: 'wt-1', repo: 'occ' }]
   const sections = [{ key: 'all', title: '', data: rows }]
   const controller = {
     actions: { openWorktreeSession: () => {}, openNewWorktreeModal: () => {} },
@@ -150,7 +150,7 @@ describe('an action that did not happen', () => {
     )[0]
     expect(banner?.props.style).toContainEqual({ borderBottomColor: colors.statusRed })
     const list = tree.root.find((node) => String(node.type) === 'SectionList')
-    expect(list.props.sections[0].data).toEqual([{ worktreeId: 'wt-1', repo: 'orca' }])
+    expect(list.props.sections[0].data).toEqual([{ worktreeId: 'wt-1', repo: 'occ' }])
     expect(tree.root.findAll((node) => node === banner || node === list)).toEqual([banner, list])
   })
 
@@ -167,7 +167,7 @@ describe('an action that did not happen', () => {
     expect(texts(tree)).not.toContain('Could not delete workspace.')
     expect(
       tree.root.find((node) => String(node.type) === 'SectionList').props.sections[0].data
-    ).toEqual([{ worktreeId: 'wt-1', repo: 'orca' }])
+    ).toEqual([{ worktreeId: 'wt-1', repo: 'occ' }])
   })
 
   it('paints nothing at all while there is none', () => {

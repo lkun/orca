@@ -1,7 +1,7 @@
 import { _resetPendingWorktreeRemovalsForTests } from '../worktree-background-removal'
 import { vi } from 'vitest'
 import { WorkspaceLifecycleQueue } from '../runtime/workspaces/workspace-lifecycle-queue'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../shared/sidebar-inputs-switch'
 
 export type WorktreeRuntimeStub = {
   resolveRemoteTrackingBase: ReturnType<typeof vi.fn>
@@ -34,7 +34,7 @@ export function createWorktreeRuntimeStub(mainWindow?: {
   // Reset removals whenever the harness builds a runtime to prevent cross-test leaks.
   _resetPendingWorktreeRemovalsForTests()
   const runtimeStub: WorktreeRuntimeStub = {
-    workspaceLifecycle: ORCA_SIDEBAR_INPUTS_IS_MAIN ? new WorkspaceLifecycleQueue() : null,
+    workspaceLifecycle: OCC_SIDEBAR_INPUTS_IS_MAIN ? new WorkspaceLifecycleQueue() : null,
     resolveRemoteTrackingBase: vi.fn().mockResolvedValue(null),
     hasRemoteTrackingRef: vi.fn().mockResolvedValue(false),
     getOrStartRemoteTrackingBaseRefresh: vi.fn().mockResolvedValue({ ok: true }),

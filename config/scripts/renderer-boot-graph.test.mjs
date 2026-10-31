@@ -10,7 +10,7 @@ it.each([
   [false, true],
   [true, true]
 ])('reports both boot guards independently (two-byte=%s, payload=%s)', (twoByte, payload) => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-boot-guards-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-boot-guards-'))
   const errors = vi.spyOn(console, 'error').mockImplementation(() => {})
   const log = vi.spyOn(console, 'log').mockImplementation(() => {})
   try {

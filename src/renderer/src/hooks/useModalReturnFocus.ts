@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { useAppStore } from '../store'
 import { focusTerminalTabSurface } from '../lib/focus-terminal-tab-surface'
 import {
-  ORCA_BROWSER_FOCUS_REQUEST_EVENT,
+  OCC_BROWSER_FOCUS_REQUEST_EVENT,
   queueBrowserFocusRequest,
   type BrowserFocusRequestDetail
 } from '../components/browser-pane/host-guest/browser-focus'
@@ -89,7 +89,7 @@ export function useModalReturnFocus(visible: boolean): {
     if (focusCapturedElement()) {
       return
     }
-    focusFirstMatchingSurface(['[data-orca-emulator-frame="true"] [tabindex]'])
+    focusFirstMatchingSurface(['[data-occ-emulator-frame="true"] [tabindex]'])
   }, [focusCapturedElement, focusFirstMatchingSurface])
 
   const focusFallbackSurface = useCallback((): void => {
@@ -98,7 +98,7 @@ export function useModalReturnFocus(visible: boolean): {
 
   const requestBrowserFocus = useCallback((detail: BrowserFocusRequestDetail): void => {
     queueBrowserFocusRequest(detail)
-    window.dispatchEvent(new CustomEvent(ORCA_BROWSER_FOCUS_REQUEST_EVENT, { detail }))
+    window.dispatchEvent(new CustomEvent(OCC_BROWSER_FOCUS_REQUEST_EVENT, { detail }))
   }, [])
 
   const captureReturnFocus = useCallback((): void => {
@@ -122,7 +122,7 @@ export function useModalReturnFocus(visible: boolean): {
       : null
     // Capture from onOpenAutoFocus before Radix changes focus, preserving address-bar/editor/simulator identity.
     const browserTarget =
-      tabType === 'browser' && activeElement?.closest('[data-orca-browser-address-bar="true"]')
+      tabType === 'browser' && activeElement?.closest('[data-occ-browser-address-bar="true"]')
         ? 'address-bar'
         : 'webview'
     capturedElementRef.current = isRestorableFocusedElement(activeElement) ? activeElement : null

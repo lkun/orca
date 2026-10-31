@@ -8,7 +8,7 @@ import type { GitAvailability } from './create-project-defaults'
 function renderCreateStep({
   createName = '',
   gitAvailability = 'available',
-  createParent = '/Users/alice/orca/projects',
+  createParent = '/Users/alice/occ/projects',
   parentDefaultPending = false
 }: {
   createName?: string
@@ -24,7 +24,7 @@ function renderCreateStep({
           createParent={createParent}
           createError={null}
           isCreating={false}
-          defaultParent="/Users/alice/orca/projects"
+          defaultParent="/Users/alice/occ/projects"
           gitAvailability={gitAvailability}
           runtimeParentStatus="idle"
           parentDefaultPending={parentDefaultPending}
@@ -45,7 +45,7 @@ describe('CreateStep', () => {
       gitAvailability: 'unavailable'
     })
 
-    expect(html).toContain('Git repository in ~/orca/projects')
+    expect(html).toContain('Git repository in ~/occ/projects')
     expect(html).toContain('Git is required to create a project.')
     expect(html).toContain('disabled=""')
   })

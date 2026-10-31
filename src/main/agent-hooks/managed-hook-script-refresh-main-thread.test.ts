@@ -34,7 +34,7 @@ vi.mock('node:os', async (importOriginal) => {
   return { ...actual, default: actual, homedir: () => state.home }
 })
 
-vi.mock('electron', () => ({ app: { getPath: () => '/tmp/orca-user-data' } }))
+vi.mock('electron', () => ({ app: { getPath: () => '/tmp/occ-user-data' } }))
 
 import { MANAGED_AGENT_HOOK_SCRIPT_REFRESHERS } from './managed-agent-hook-registry'
 import { ClaudeAgentViewService } from '../claude/agent-view-service'
@@ -50,10 +50,10 @@ function syncCallsUnderHome(): string[] {
 
 describe('managed hook script refresh stays off the main thread', () => {
   beforeEach(async () => {
-    state.home = await mkdtemp(join(tmpdir(), 'orca-hook-refresh-main-thread-'))
+    state.home = await mkdtemp(join(tmpdir(), 'occ-hook-refresh-main-thread-'))
     vi.stubEnv('CLAUDE_CONFIG_DIR', join(state.home, '.claude'))
     installFakeAppEnvironment({ getPath: () => join(state.home, 'user-data') })
-    vi.stubEnv('ORCA_USER_DATA_PATH', join(state.home, 'user-data'))
+    vi.stubEnv('OCC_USER_DATA_PATH', join(state.home, 'user-data'))
     vi.stubEnv('GROK_HOME', undefined)
     vi.stubEnv('KIMI_CODE_HOME', undefined)
     vi.stubEnv('XDG_CONFIG_HOME', undefined)
@@ -66,25 +66,25 @@ describe('managed hook script refresh stays off the main thread', () => {
   })
 
   it('uses no synchronous HOME filesystem calls for missing or stale scripts', async () => {
-    const hooksDir = join(state.home, '.orca', 'agent-hooks')
+    const hooksDir = join(state.home, '.occ', 'agent-hooks')
     const claudeScript = join(
       hooksDir,
       process.platform === 'win32' ? 'claude-hook.cmd' : 'claude-hook.sh'
     )
     await mkdir(hooksDir, { recursive: true })
     await writeFile(claudeScript, 'stale', 'utf-8')
-    const legacyRoot = join(state.home, '.claude', 'skills', 'orca-agent-view')
+    const legacyRoot = join(state.home, '.claude', 'skills', 'occ-agent-view')
     await mkdir(join(legacyRoot, '.claude-plugin'), { recursive: true })
     await mkdir(join(legacyRoot, 'hooks'))
     await writeFile(
-      join(legacyRoot, '.claude-plugin', 'orca-managed.json'),
-      '{"owner":"stablyai/orca/claude-agent-view"}'
+      join(legacyRoot, '.claude-plugin', 'occ-managed.json'),
+      '{"owner":"stablyai/occ/claude-agent-view"}'
     )
     const modScript = join(
       state.home,
       '.claude',
       'skills',
-      'orca-agent-view',
+      'occ-agent-view',
       'hooks',
       'register.js'
     )
@@ -93,23 +93,23 @@ describe('managed hook script refresh stays off the main thread', () => {
     const profileMods: string[] = []
     for (const id of ['first', 'second']) {
       const home = join(profileRoot, id, 'home')
-      const legacyRoot = join(home, 'skills', 'orca-agent-view')
+      const legacyRoot = join(home, 'skills', 'occ-agent-view')
       await mkdir(join(legacyRoot, '.claude-plugin'), { recursive: true })
       await mkdir(join(legacyRoot, 'hooks'))
       await writeFile(
-        join(legacyRoot, '.claude-plugin', 'orca-managed.json'),
-        '{"owner":"stablyai/orca/claude-agent-view"}'
+        join(legacyRoot, '.claude-plugin', 'occ-managed.json'),
+        '{"owner":"stablyai/occ/claude-agent-view"}'
       )
-      const mod = join(home, 'skills', 'orca-agent-view', 'hooks', 'register.js')
+      const mod = join(home, 'skills', 'occ-agent-view', 'hooks', 'register.js')
       await writeFile(mod, 'stale', 'utf8')
       profileMods.push(mod)
     }
     const absent = join(profileRoot, 'absent', 'home')
     await mkdir(absent, { recursive: true })
-    const unowned = join(profileRoot, 'unowned', 'home', 'skills', 'orca-agent-view')
+    const unowned = join(profileRoot, 'unowned', 'home', 'skills', 'occ-agent-view')
     await mkdir(join(unowned, '.claude-plugin'), { recursive: true })
     await mkdir(join(unowned, 'hooks'))
-    await writeFile(join(unowned, '.claude-plugin', 'orca-managed.json'), '{"owner":"someone"}')
+    await writeFile(join(unowned, '.claude-plugin', 'occ-managed.json'), '{"owner":"someone"}')
     await writeFile(join(unowned, 'hooks', 'register.js'), 'user-owned')
     state.syncCalls = []
 
@@ -127,7 +127,7 @@ describe('managed hook script refresh stays off the main thread', () => {
     }
     expect(await readFile(join(unowned, 'hooks', 'register.js'), 'utf8')).toBe('user-owned')
     await expect(
-      readFile(join(absent, 'skills', 'orca-agent-view', 'hooks', 'register.js'))
+      readFile(join(absent, 'skills', 'occ-agent-view', 'hooks', 'register.js'))
     ).rejects.toMatchObject({ code: 'ENOENT' })
   })
 
@@ -135,7 +135,7 @@ describe('managed hook script refresh stays off the main thread', () => {
     const platform = Object.getOwnPropertyDescriptor(process, 'platform')!
     Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
     try {
-      const hooksDir = join(state.home, '.orca', 'agent-hooks')
+      const hooksDir = join(state.home, '.occ', 'agent-hooks')
       await mkdir(hooksDir, { recursive: true })
       await writeFile(join(hooksDir, 'claude-hook.cmd'), 'stale', 'utf-8')
       state.syncCalls = []
@@ -145,9 +145,9 @@ describe('managed hook script refresh stays off the main thread', () => {
       expect(syncCallsUnderHome()).toEqual([])
       const entry = await readFile(join(hooksDir, 'claude-hook.cmd'), 'utf8')
       const payload = await readFile(join(hooksDir, 'claude-hook-impl.cmd'), 'utf8')
-      expect(entry).toContain('set "ORCA_CLAUDE_HOOK_IMPL=%~dp0claude-hook-impl.cmd"')
+      expect(entry).toContain('set "OCC_CLAUDE_HOOK_IMPL=%~dp0claude-hook-impl.cmd"')
       expect(payload).toContain('echo {}')
-      expect(payload).toContain('if "%ORCA_AGENT_HOOK_PORT%"=="" exit /b 0')
+      expect(payload).toContain('if "%OCC_AGENT_HOOK_PORT%"=="" exit /b 0')
     } finally {
       Object.defineProperty(process, 'platform', platform)
     }

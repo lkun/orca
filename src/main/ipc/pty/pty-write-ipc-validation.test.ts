@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { spawnMock, recordCodexPaneAccountMock } from './pty-ipc-mock-registry'
 import { setupPtyIpcSuite } from './pty-ipc-test-harness'
 import {
@@ -41,7 +41,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -338,7 +338,7 @@ describe('registerPtyHandlers', () => {
     'constructs an image response from real runtime sequence evidence: %s',
     async (proof) => {
       const id = `image-${proof}`
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       const boundary = proof === 'zero' ? 0 : 900
       runtime.synchronizePtyOutputSequenceFromProvider(id, {
         value: boundary,
@@ -402,7 +402,7 @@ describe('registerPtyHandlers', () => {
     const getSettings = vi.fn().mockReturnValue({ activeCodexManagedAccountId: 'account-a' })
     registerPtyHandlers(mainWindow as never, undefined, undefined, getSettings as never)
 
-    const nativeCodexEnv = { CODEX_HOME: '', ORCA_CODEX_HOME: '' }
+    const nativeCodexEnv = { CODEX_HOME: '', OCC_CODEX_HOME: '' }
     await handlers.get('pty:spawn')!(null, { cols: 80, rows: 24, env: nativeCodexEnv })
     await handlers.get('pty:spawn')!(null, {
       cols: 80,

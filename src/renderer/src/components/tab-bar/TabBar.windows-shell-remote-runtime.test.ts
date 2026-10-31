@@ -56,7 +56,7 @@ describe('TabBar PowerShell launch wiring', () => {
 
   it('uses the paired host platform to show Windows shell rows in a Mac browser', async () => {
     vi.stubGlobal('navigator', { userAgent: 'Macintosh' })
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     vi.stubGlobal('window', {
       api: {
         wsl: {
@@ -124,7 +124,7 @@ describe('TabBar PowerShell launch wiring', () => {
 
   it('uses the active remote host platform to show Windows shell rows in a Mac desktop client', async () => {
     vi.stubGlobal('navigator', { userAgent: 'Macintosh' })
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', false)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', false)
     vi.stubGlobal('window', {
       api: {
         wsl: {
@@ -193,7 +193,7 @@ describe('TabBar PowerShell launch wiring', () => {
   it('hides local Windows shell rows for a non-Windows serve runtime', async () => {
     // Show Windows shell choices for Windows execution hosts only, independent of the client platform.
     vi.stubGlobal('navigator', { userAgent: 'Windows' })
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', false)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', false)
     vi.stubGlobal('window', {
       api: {
         wsl: {

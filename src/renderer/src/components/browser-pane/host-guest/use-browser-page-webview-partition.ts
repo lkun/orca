@@ -1,6 +1,6 @@
 import { useAppStore } from '@/store'
-import { ORCA_BROWSER_PARTITION } from '../../../../../shared/constants'
-import { getOrcaProfileBrowserDefaultPartition } from '../../../../../shared/orca-profiles'
+import { OCC_BROWSER_PARTITION } from '../../../../../shared/constants'
+import { getOCCProfileBrowserDefaultPartition } from '../../../../../shared/occ-profiles'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../../../shared/execution-host'
 import { unadmittedBrowserPartition } from '../../../../../shared/browser-profile-scope'
 
@@ -17,9 +17,9 @@ export function useBrowserPageWebviewPartition({
   )
   const mirroredProfiles = useAppStore((s) => s.browserSessionProfiles)
   const browserSessionProfiles = localProfiles ?? mirroredProfiles
-  const activeOrcaProfileId = useAppStore((s) => s.activeOrcaProfileId)
-  const fallbackBrowserPartition = activeOrcaProfileId
-    ? getOrcaProfileBrowserDefaultPartition(activeOrcaProfileId)
+  const activeOCCProfileId = useAppStore((s) => s.activeOCCProfileId)
+  const fallbackBrowserPartition = activeOCCProfileId
+    ? getOCCProfileBrowserDefaultPartition(activeOCCProfileId)
     : null
   const defaultSessionProfile = browserSessionProfiles.find((p) => p.id === 'default') ?? null
   const sessionProfile = sessionProfileId
@@ -36,6 +36,6 @@ export function useBrowserPageWebviewPartition({
     sessionProfile?.partition ??
     defaultSessionProfile?.partition ??
     fallbackBrowserPartition ??
-    ORCA_BROWSER_PARTITION
+    OCC_BROWSER_PARTITION
   )
 }

@@ -1,13 +1,13 @@
 // Benchmark sustained paced real-PTY agent load while typing at fixed cadence without waiting for echoes.
 // Split latency into CDP keydown→PTY receipt and receipt→xterm-buffer detection on one machine’s epoch clock; neither proves pixel paint.
-// ORCA_TYPING_BENCH=1 gates benchmarks, not CI regressions; ORCA_TYPING_BENCH_INSTRUMENTATION=0 supplies a probe-off observer control.
+// OCC_TYPING_BENCH=1 gates benchmarks, not CI regressions; OCC_TYPING_BENCH_INSTRUMENTATION=0 supplies a probe-off observer control.
 // Run pnpm bench:multi-workspace-typing (runner documents knobs); JSON results go to tests/tools/benchmarks/results/.
 import type { Page } from '@stablyai/playwright-test'
 import { randomUUID } from 'node:crypto'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import path from 'node:path'
 import { tmpdir } from 'node:os'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { createTypingLoadWorkspaces, removeTypingLoadWorkspaces } from './typing-load-workspaces'
 import { readTypingScaleCensus } from './typing-scale-census'
 import {
@@ -114,7 +114,7 @@ async function startSustainedLoadInPanes(
     await sendToTerminal(
       page,
       pane.ptyId,
-      `node ${JSON.stringify(scriptPath)} ${index} ${LOAD_RATE_KBPS} ${LOAD_DURATION_S} ${PTY_METADATA ? 1 : 0} ${readPositiveInt('ORCA_TYPING_BENCH_TITLE_CHANGE_MS', 0)} ${readPositiveInt('ORCA_TYPING_BENCH_LIFECYCLE_MS', 0)}\r`
+      `node ${JSON.stringify(scriptPath)} ${index} ${LOAD_RATE_KBPS} ${LOAD_DURATION_S} ${PTY_METADATA ? 1 : 0} ${readPositiveInt('OCC_TYPING_BENCH_TITLE_CHANGE_MS', 0)} ${readPositiveInt('OCC_TYPING_BENCH_LIFECYCLE_MS', 0)}\r`
     )
   }
   // Signal readiness through files: concurrent streaming panes can scroll READY out before sequential buffer checks.
@@ -133,7 +133,7 @@ async function startSustainedLoadInPanes(
 function removeLoadReadyFiles(directory: string, runId: string, paneCount: number): void {
   for (let index = 0; index < paneCount; index++) {
     rmSync(sustainedLoadReadyFilePath(directory, runId, index), { force: true })
-    rmSync(path.join(directory, `.orca-mwt-load-stats-${runId}-${index}`), { force: true })
+    rmSync(path.join(directory, `.occ-mwt-load-stats-${runId}-${index}`), { force: true })
   }
 }
 
@@ -144,37 +144,37 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
   test.skip(!BENCH_ENABLED, 'Bench-only: run via pnpm bench:multi-workspace-typing')
 
   test('baseline: paced typing with no agent load', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
-    const typingPtyId = await waitForActivePanePtyId(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
+    const typingPtyId = await waitForActivePanePtyId(occPage)
 
     const runId = randomUUID()
-    const probePath = path.join(testRepoPath, `.orca-mwt-probe-${runId}.mjs`)
-    const sidecarPath = path.join(testRepoPath, `.orca-mwt-arrivals-${runId}.jsonl`)
+    const probePath = path.join(testRepoPath, `.occ-mwt-probe-${runId}.mjs`)
+    const sidecarPath = path.join(testRepoPath, `.occ-mwt-arrivals-${runId}.jsonl`)
     writeTypingEchoProbeScript(probePath, runId, sidecarPath)
     try {
-      await resetDeliveryDebug(orcaPage)
-      await startTypingProbe(orcaPage, typingPtyId, probePath, runId)
-      const measured = await measureTypingWindow(orcaPage, runId, sidecarPath)
+      await resetDeliveryDebug(occPage)
+      await startTypingProbe(occPage, typingPtyId, probePath, runId)
+      const measured = await measureTypingWindow(occPage, runId, sidecarPath)
       const { measurement } = measured
       writeBenchReport(
         testInfo,
         'baseline',
         measured,
         { cpuWorkers: 0, ptyMetadata: false, statusTrafficModel: null },
-        await readSchedulerDebug(orcaPage),
-        await readMainDeliveryDebug(orcaPage)
+        await readSchedulerDebug(occPage),
+        await readMainDeliveryDebug(occPage)
       )
       expect(measurement.inputHalfMs?.count).toBe(KEY_COUNT)
       expect(measurement.totalMs?.count).toBe(KEY_COUNT)
       expect(measurement.totalMs?.p50 ?? Number.POSITIVE_INFINITY).toBeLessThan(250)
     } finally {
-      await stopPtysQuietly(orcaPage, [typingPtyId])
+      await stopPtysQuietly(occPage, [typingPtyId])
       rmSync(probePath, { force: true })
       rmSync(sidecarPath, { force: true })
     }
@@ -182,21 +182,21 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
 
   test('typing under sustained hidden multi-workspace agent load', async ({
     electronApp,
-    orcaPage
+    occPage
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    const typingWorktreeId = await waitForActiveWorktree(orcaPage)
-    const loadWorktreeId = (await getAllWorktreeIds(orcaPage)).find((id) => id !== typingWorktreeId)
+    await waitForSessionReady(occPage)
+    const typingWorktreeId = await waitForActiveWorktree(occPage)
+    const loadWorktreeId = (await getAllWorktreeIds(occPage)).find((id) => id !== typingWorktreeId)
     expect(Boolean(loadWorktreeId), 'bench needs the seeded secondary worktree').toBe(true)
     if (!loadWorktreeId) {
       return
     }
 
-    const scratch = mkdtempSync(path.join(tmpdir(), 'orca-typing-load-'))
+    const scratch = mkdtempSync(path.join(tmpdir(), 'occ-typing-load-'))
     const runId = randomUUID()
-    const loadPath = path.join(scratch, `.orca-mwt-load-${runId}.mjs`)
-    const probePath = path.join(scratch, `.orca-mwt-probe-${runId}.mjs`)
-    const sidecarPath = path.join(scratch, `.orca-mwt-arrivals-${runId}.jsonl`)
+    const loadPath = path.join(scratch, `.occ-mwt-load-${runId}.mjs`)
+    const probePath = path.join(scratch, `.occ-mwt-probe-${runId}.mjs`)
+    const sidecarPath = path.join(scratch, `.occ-mwt-arrivals-${runId}.jsonl`)
     writeSustainedAgentLoadScript(loadPath, runId, scratch)
     writeTypingEchoProbeScript(probePath, runId, sidecarPath)
 
@@ -211,40 +211,40 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
     let graphProbeSelfTest: RendererLongTaskSelfTestWindow | null = null
     let statusIngressValidation: AccumulatedStatusIngressValidation | null = null
     try {
-      await switchToWorktree(orcaPage, loadWorktreeId)
+      await switchToWorktree(occPage, loadWorktreeId)
       loadPanes = await createTypingLoadWorkspaces(
-        orcaPage,
+        occPage,
         loadWorktreeId,
         LOAD_PANES,
         LOAD_WORKSPACES,
-        readPositiveInt('ORCA_TYPING_BENCH_VISITED_WORKSPACES', LOAD_WORKSPACES),
+        readPositiveInt('OCC_TYPING_BENCH_VISITED_WORKSPACES', LOAD_WORKSPACES),
         createdWorktreeIds
       )
-      await startSustainedLoadInPanes(orcaPage, loadPanes, loadPath, runId, scratch)
+      await startSustainedLoadInPanes(occPage, loadPanes, loadPath, runId, scratch)
 
-      await switchToWorktree(orcaPage, typingWorktreeId)
+      await switchToWorktree(occPage, typingWorktreeId)
       await expect
-        .poll(() => getActiveWorktreeId(orcaPage), { timeout: 10_000 })
+        .poll(() => getActiveWorktreeId(occPage), { timeout: 10_000 })
         .toBe(typingWorktreeId)
-      await ensureTerminalVisible(orcaPage)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      const typingPtyId = await waitForActivePanePtyId(orcaPage)
+      await ensureTerminalVisible(occPage)
+      await waitForActiveTerminalManager(occPage, 30_000)
+      const typingPtyId = await waitForActivePanePtyId(occPage)
 
-      const fixtureSummary = await seedAccumulatedWorkspaceFixture(orcaPage, {
-        worktrees: readPositiveInt('ORCA_TYPING_BENCH_METADATA_WORKTREES', 870),
-        repositories: readPositiveInt('ORCA_TYPING_BENCH_METADATA_REPOSITORIES', 27),
-        terminalTabs: readPositiveInt('ORCA_TYPING_BENCH_METADATA_TERMINAL_TABS', 1410),
-        unifiedTabs: readPositiveInt('ORCA_TYPING_BENCH_METADATA_UNIFIED_TABS', 2000),
-        panesPerTab: readPositiveInt('ORCA_TYPING_BENCH_METADATA_PANES', 1),
-        sleepingRecords: readPositiveInt('ORCA_TYPING_BENCH_METADATA_SLEEPERS', 857),
-        liveStatuses: readPositiveInt('ORCA_TYPING_BENCH_METADATA_LIVE_STATUSES', 177),
-        statusHistoryEntries: readPositiveInt('ORCA_TYPING_BENCH_METADATA_STATUS_HISTORY', 3)
+      const fixtureSummary = await seedAccumulatedWorkspaceFixture(occPage, {
+        worktrees: readPositiveInt('OCC_TYPING_BENCH_METADATA_WORKTREES', 870),
+        repositories: readPositiveInt('OCC_TYPING_BENCH_METADATA_REPOSITORIES', 27),
+        terminalTabs: readPositiveInt('OCC_TYPING_BENCH_METADATA_TERMINAL_TABS', 1410),
+        unifiedTabs: readPositiveInt('OCC_TYPING_BENCH_METADATA_UNIFIED_TABS', 2000),
+        panesPerTab: readPositiveInt('OCC_TYPING_BENCH_METADATA_PANES', 1),
+        sleepingRecords: readPositiveInt('OCC_TYPING_BENCH_METADATA_SLEEPERS', 857),
+        liveStatuses: readPositiveInt('OCC_TYPING_BENCH_METADATA_LIVE_STATUSES', 177),
+        statusHistoryEntries: readPositiveInt('OCC_TYPING_BENCH_METADATA_STATUS_HISTORY', 3)
       })
       console.log(`[multi-workspace-typing] accumulated fixture: ${JSON.stringify(fixtureSummary)}`)
       const statusTrafficEnabled =
-        !PTY_METADATA && process.env.ORCA_TYPING_BENCH_METADATA_STATUS !== '0'
+        !PTY_METADATA && process.env.OCC_TYPING_BENCH_METADATA_STATUS !== '0'
       if (statusTrafficEnabled) {
-        statusIngressValidation = await validateAccumulatedStatusIpcIngress(electronApp, orcaPage)
+        statusIngressValidation = await validateAccumulatedStatusIpcIngress(electronApp, occPage)
         const validationPaneCount = Math.min(3, fixtureSummary.liveStatuses)
         expect(statusIngressValidation).toEqual({
           burstEvents: validationPaneCount,
@@ -252,13 +252,13 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
         })
       }
       if (BENCH_INSTRUMENTATION_REQUESTED) {
-        instrumentationAvailable = await startAccumulatedBenchmarkInstrumentation(orcaPage)
+        instrumentationAvailable = await startAccumulatedBenchmarkInstrumentation(occPage)
       }
       if (GRAPH_PROBE_REQUESTED) {
-        graphProbeStart = await startRuntimeGraphPublicationProbe(electronApp, orcaPage)
+        graphProbeStart = await startRuntimeGraphPublicationProbe(electronApp, occPage)
         if (GRAPH_PROBE_SELF_TEST_MS > 0) {
           graphProbeSelfTest = await injectRendererLongTaskSelfTest(
-            orcaPage,
+            occPage,
             GRAPH_PROBE_SELF_TEST_MS
           )
         }
@@ -267,30 +267,30 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
       if (statusTrafficEnabled) {
         const statusTraffic = await startAccumulatedStatusTraffic(
           electronApp,
-          orcaPage,
-          readPositiveInt('ORCA_TYPING_BENCH_METADATA_STATUS_INTERVAL_MS', 100)
+          occPage,
+          readPositiveInt('OCC_TYPING_BENCH_METADATA_STATUS_INTERVAL_MS', 100)
         )
         expect(statusTraffic.trackedStatuses).toBe(fixtureSummary.liveStatuses)
         statusTrafficStarted = true
       }
-      if (!PTY_METADATA && process.env.ORCA_TYPING_BENCH_METADATA_TITLES === '1') {
-        titleWorkload = await startAccumulatedTitleTraffic(orcaPage, 100)
+      if (!PTY_METADATA && process.env.OCC_TYPING_BENCH_METADATA_TITLES === '1') {
+        titleWorkload = await startAccumulatedTitleTraffic(occPage, 100)
         console.log(
           `[multi-workspace-typing] registered title workload: ${JSON.stringify(titleWorkload)}`
         )
       }
 
       if (ORDER_CHURN_MS > 0) {
-        const orderedRepos = await startAccumulatedOrderTraffic(orcaPage, ORDER_CHURN_MS)
+        const orderedRepos = await startAccumulatedOrderTraffic(occPage, ORDER_CHURN_MS)
         expect(orderedRepos).toBe(fixtureSummary.repositories)
         orderTrafficStarted = true
       }
 
-      await resetDeliveryDebug(orcaPage)
+      await resetDeliveryDebug(occPage)
       // Hidden-byte drops prove load flows through the background-worktree delivery gate.
       await expect
         .poll(
-          async () => (await readMainDeliveryDebug(orcaPage))?.hiddenDeliveryDroppedChars ?? 0,
+          async () => (await readMainDeliveryDebug(occPage))?.hiddenDeliveryDroppedChars ?? 0,
           { timeout: 30_000, message: 'hidden load never started flowing' }
         )
         .toBeGreaterThan(0)
@@ -299,7 +299,7 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
         await expect
           .poll(
             () =>
-              orcaPage.evaluate(
+              occPage.evaluate(
                 () =>
                   Object.values(window.__store?.getState().agentStatusByPaneKey ?? {}).filter(
                     (row) => row.prompt === 'Synthetic production-path typing workload'
@@ -309,16 +309,16 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
           )
           .toBe(LOAD_PANES)
       }
-      await startTypingProbe(orcaPage, typingPtyId, probePath, runId)
-      const measured = await measureTypingWindow(orcaPage, runId, sidecarPath)
+      await startTypingProbe(occPage, typingPtyId, probePath, runId)
+      const measured = await measureTypingWindow(occPage, runId, sidecarPath)
       const { measurement } = measured
-      const orderWorkload = orderTrafficStarted ? await stopAccumulatedOrderTraffic(orcaPage) : null
+      const orderWorkload = orderTrafficStarted ? await stopAccumulatedOrderTraffic(occPage) : null
       orderTrafficStarted = false
       if (orderWorkload) {
         expect(orderWorkload.publications).toBeGreaterThan(0)
       }
       const statusWorkload = statusTrafficStarted
-        ? await stopAccumulatedStatusTraffic(electronApp, orcaPage)
+        ? await stopAccumulatedStatusTraffic(electronApp, occPage)
         : null
       statusTrafficStarted = false
       if (statusWorkload) {
@@ -329,13 +329,13 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
         expect(statusWorkload.latestReceipts).toBe(statusWorkload.trackedStatuses)
       }
       const instrumentation = BENCH_INSTRUMENTATION_REQUESTED
-        ? await stopAccumulatedBenchmarkInstrumentation(orcaPage)
+        ? await stopAccumulatedBenchmarkInstrumentation(occPage)
         : { available: false as const, reason: 'disabled' as const, snapshot: null }
       instrumentationAvailable = false
       const graphProbe = graphProbeStart
         ? await stopRuntimeGraphPublicationProbe(
             electronApp,
-            orcaPage,
+            occPage,
             graphProbeStart,
             graphProbeSelfTest
           )
@@ -354,21 +354,21 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
               ? 'electron-ipc-burst-through-production-bridge'
               : null
         },
-        await readSchedulerDebug(orcaPage),
-        await readMainDeliveryDebug(orcaPage),
+        await readSchedulerDebug(occPage),
+        await readMainDeliveryDebug(occPage),
         instrumentation,
         titleWorkload,
         statusWorkload,
         statusIngressValidation,
-        await readTypingScaleCensus(orcaPage),
+        await readTypingScaleCensus(occPage),
         fixtureSummary,
         {
           producers: loadPanes.map((_, index) =>
             JSON.parse(
-              readFileSync(path.join(scratch, `.orca-mwt-load-stats-${runId}-${index}`), 'utf8')
+              readFileSync(path.join(scratch, `.occ-mwt-load-stats-${runId}-${index}`), 'utf8')
             )
           ),
-          receipts: await orcaPage.evaluate(() => {
+          receipts: await occPage.evaluate(() => {
             const state = window.__store?.getState()
             return {
               statuses: Object.values(state?.agentStatusByPaneKey ?? {})
@@ -394,63 +394,63 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
       )
       const screenDirectory = path.resolve('.tmp', 'typing-reproduction')
       mkdirSync(screenDirectory, { recursive: true })
-      await orcaPage.screenshot({ path: path.join(screenDirectory, `${BENCH_LABEL}-screen.png`) })
+      await occPage.screenshot({ path: path.join(screenDirectory, `${BENCH_LABEL}-screen.png`) })
       // Timeout catches hangs only; report regressions through JSON percentiles.
       expect(measurement.inputHalfMs?.count).toBe(KEY_COUNT)
       expect(measurement.totalMs?.count).toBe(KEY_COUNT)
 
-      await stopPtysQuietly(orcaPage, [typingPtyId])
+      await stopPtysQuietly(occPage, [typingPtyId])
     } finally {
       if (orderTrafficStarted) {
-        await stopAccumulatedOrderTraffic(orcaPage).catch(() => null)
+        await stopAccumulatedOrderTraffic(occPage).catch(() => null)
       }
       if (instrumentationAvailable) {
-        await stopAccumulatedBenchmarkInstrumentation(orcaPage).catch(() => undefined)
+        await stopAccumulatedBenchmarkInstrumentation(occPage).catch(() => undefined)
       }
       if (graphProbeStart) {
         await stopRuntimeGraphPublicationProbe(
           electronApp,
-          orcaPage,
+          occPage,
           graphProbeStart,
           graphProbeSelfTest
         ).catch(() => undefined)
       }
       if (statusTrafficStarted) {
-        await stopAccumulatedStatusTraffic(electronApp, orcaPage)
+        await stopAccumulatedStatusTraffic(electronApp, occPage)
       }
-      await stopAccumulatedTitleTraffic(orcaPage)
-      await cleanupAccumulatedWorkspaceFixture(orcaPage)
+      await stopAccumulatedTitleTraffic(occPage)
+      await cleanupAccumulatedWorkspaceFixture(occPage)
       for (const worker of cpuWorkers) {
         worker.kill('SIGKILL')
       }
-      await switchToWorktree(orcaPage, loadWorktreeId).catch(() => undefined)
+      await switchToWorktree(occPage, loadWorktreeId).catch(() => undefined)
       await stopPtysQuietly(
-        orcaPage,
+        occPage,
         loadPanes.map((pane) => pane.ptyId)
       )
-      await switchToWorktree(orcaPage, typingWorktreeId).catch(() => undefined)
+      await switchToWorktree(occPage, typingWorktreeId).catch(() => undefined)
       rmSync(loadPath, { force: true })
       rmSync(probePath, { force: true })
       rmSync(sidecarPath, { force: true })
       removeLoadReadyFiles(scratch, runId, LOAD_PANES)
-      await removeTypingLoadWorkspaces(orcaPage, createdWorktreeIds)
+      await removeTypingLoadWorkspaces(occPage, createdWorktreeIds)
       rmSync(scratch, { recursive: true, force: true })
     }
   })
 
   test('typing under sustained visible split agent load', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
     const runId = randomUUID()
-    const loadPath = path.join(testRepoPath, `.orca-mwt-load-${runId}.mjs`)
-    const probePath = path.join(testRepoPath, `.orca-mwt-probe-${runId}.mjs`)
-    const sidecarPath = path.join(testRepoPath, `.orca-mwt-arrivals-${runId}.jsonl`)
+    const loadPath = path.join(testRepoPath, `.occ-mwt-load-${runId}.mjs`)
+    const probePath = path.join(testRepoPath, `.occ-mwt-probe-${runId}.mjs`)
+    const sidecarPath = path.join(testRepoPath, `.occ-mwt-arrivals-${runId}.jsonl`)
     writeSustainedAgentLoadScript(loadPath, runId, testRepoPath)
     writeTypingEchoProbeScript(probePath, runId, sidecarPath)
 
@@ -458,14 +458,14 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
     let panes: TerminalLoadPane[] = []
     try {
       // Type in pane 0 while adjacent panes stream, matching a visible agent split.
-      panes = await ensureActiveWorktreePaneLoad(orcaPage, 2)
+      panes = await ensureActiveWorktreePaneLoad(occPage, 2)
       const [typingPane, ...loadPanes] = panes
-      await startSustainedLoadInPanes(orcaPage, loadPanes, loadPath, runId, testRepoPath)
-      await focusPane(orcaPage, typingPane.paneKey)
+      await startSustainedLoadInPanes(occPage, loadPanes, loadPath, runId, testRepoPath)
+      await focusPane(occPage, typingPane.paneKey)
 
-      await resetDeliveryDebug(orcaPage)
-      await startTypingProbe(orcaPage, typingPane.ptyId, probePath, runId)
-      const measured = await measureTypingWindow(orcaPage, runId, sidecarPath)
+      await resetDeliveryDebug(occPage)
+      await startTypingProbe(occPage, typingPane.ptyId, probePath, runId)
+      const measured = await measureTypingWindow(occPage, runId, sidecarPath)
       const { measurement } = measured
       writeBenchReport(
         testInfo,
@@ -476,8 +476,8 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
           ptyMetadata: PTY_METADATA,
           statusTrafficModel: PTY_METADATA ? 'pty-osc-through-runtime-and-ipc-bridge' : null
         },
-        await readSchedulerDebug(orcaPage),
-        await readMainDeliveryDebug(orcaPage)
+        await readSchedulerDebug(occPage),
+        await readMainDeliveryDebug(occPage)
       )
       expect(measurement.inputHalfMs?.count).toBe(KEY_COUNT)
       expect(measurement.totalMs?.count).toBe(KEY_COUNT)
@@ -486,7 +486,7 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
         worker.kill('SIGKILL')
       }
       await stopPtysQuietly(
-        orcaPage,
+        occPage,
         panes.map((pane) => pane.ptyId)
       )
       rmSync(loadPath, { force: true })
@@ -499,23 +499,23 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
   // Require --git-churn-repos: main’s git subprocess polling competes with PTY relay on the same event loop.
   // Without it this would duplicate the visible-split scenario.
   test('typing under sustained git-subprocess churn', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
     test.skip(
       GIT_CHURN_REPOS === 0,
       'Set --git-churn-repos to run: this scenario measures git-spawn churn, not PTY bytes'
     )
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
     const runId = randomUUID()
-    const loadPath = path.join(testRepoPath, `.orca-mwt-load-${runId}.mjs`)
-    const probePath = path.join(testRepoPath, `.orca-mwt-probe-${runId}.mjs`)
-    const sidecarPath = path.join(testRepoPath, `.orca-mwt-arrivals-${runId}.jsonl`)
-    const churnRoot = mkdtempSync(path.join(tmpdir(), 'orca-git-churn-'))
+    const loadPath = path.join(testRepoPath, `.occ-mwt-load-${runId}.mjs`)
+    const probePath = path.join(testRepoPath, `.occ-mwt-probe-${runId}.mjs`)
+    const sidecarPath = path.join(testRepoPath, `.occ-mwt-arrivals-${runId}.jsonl`)
+    const churnRoot = mkdtempSync(path.join(tmpdir(), 'occ-git-churn-'))
     writeSustainedAgentLoadScript(loadPath, runId, testRepoPath)
     writeTypingEchoProbeScript(probePath, runId, sidecarPath)
 
@@ -525,27 +525,27 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
     try {
       const repos = createGitChurnRepos(churnRoot, GIT_CHURN_REPOS, GIT_CHURN_FILES)
       const registration = await registerGitChurnRepos(
-        orcaPage,
+        occPage,
         repos.map((repo) => repo.path)
       )
       expect(
         registration,
         `churn repos were not registered with OCC: ${registration.failures.join('; ')}`
       ).toMatchObject({ registered: repos.length })
-      panes = await ensureActiveWorktreePaneLoad(orcaPage, 2)
+      panes = await ensureActiveWorktreePaneLoad(occPage, 2)
       const [typingPane, ...loadPanes] = panes
-      await startSustainedLoadInPanes(orcaPage, loadPanes, loadPath, runId, testRepoPath)
-      await focusPane(orcaPage, typingPane.paneKey)
+      await startSustainedLoadInPanes(occPage, loadPanes, loadPath, runId, testRepoPath)
+      await focusPane(occPage, typingPane.paneKey)
 
-      await resetDeliveryDebug(orcaPage)
-      await startTypingProbe(orcaPage, typingPane.ptyId, probePath, runId)
+      await resetDeliveryDebug(occPage)
+      await startTypingProbe(occPage, typingPane.ptyId, probePath, runId)
       await startGitChurnLoad(
-        orcaPage,
+        occPage,
         repos.map((repo) => repo.path),
         { concurrency: GIT_CHURN_CONCURRENCY, admissionTier: 'status' }
       )
-      const measured = await measureTypingWindow(orcaPage, runId, sidecarPath)
-      gitChurn = await stopGitChurnLoad(orcaPage)
+      const measured = await measureTypingWindow(occPage, runId, sidecarPath)
+      gitChurn = await stopGitChurnLoad(occPage)
       const { measurement } = measured
       writeBenchReport(
         testInfo,
@@ -556,8 +556,8 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
           ptyMetadata: PTY_METADATA,
           statusTrafficModel: PTY_METADATA ? 'pty-osc-through-runtime-and-ipc-bridge' : null
         },
-        await readSchedulerDebug(orcaPage),
-        await readMainDeliveryDebug(orcaPage),
+        await readSchedulerDebug(occPage),
+        await readMainDeliveryDebug(occPage),
         undefined,
         null,
         null,
@@ -577,12 +577,12 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
       expect(measurement.inputHalfMs?.count).toBe(KEY_COUNT)
       expect(measurement.totalMs?.count).toBe(KEY_COUNT)
     } finally {
-      await stopGitChurnLoad(orcaPage).catch(() => null)
+      await stopGitChurnLoad(occPage).catch(() => null)
       for (const worker of cpuWorkers) {
         worker.kill('SIGKILL')
       }
       await stopPtysQuietly(
-        orcaPage,
+        occPage,
         panes.map((pane) => pane.ptyId)
       )
       rmSync(loadPath, { force: true })
@@ -596,18 +596,18 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
   // Measure render gaps for synchronized-output foreground repaint under background load.
   // A delayed closing ?2026l can suppress rows until xterm’s 1000ms force-flush while buffer-only observations report fast echo.
   test('typing a DEC 2026 foreground TUI under agent load, measured at the render', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
     const runId = randomUUID()
-    const loadPath = path.join(testRepoPath, `.orca-mwt-load-${runId}.mjs`)
-    const probePath = path.join(testRepoPath, `.orca-mwt-probe-${runId}.mjs`)
-    const sidecarPath = path.join(testRepoPath, `.orca-mwt-arrivals-${runId}.jsonl`)
+    const loadPath = path.join(testRepoPath, `.occ-mwt-load-${runId}.mjs`)
+    const probePath = path.join(testRepoPath, `.occ-mwt-probe-${runId}.mjs`)
+    const sidecarPath = path.join(testRepoPath, `.occ-mwt-arrivals-${runId}.jsonl`)
     writeSustainedAgentLoadScript(loadPath, runId, testRepoPath)
     writeCodexEchoProbeScript(probePath, runId, sidecarPath, {
       frameRows: CODEX_FRAME_ROWS,
@@ -618,22 +618,22 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
     let panes: TerminalLoadPane[] = []
     let blackout: SynchronizedOutputBlackoutSnapshot | null = null
     try {
-      panes = await ensureActiveWorktreePaneLoad(orcaPage, Math.max(2, LOAD_PANES + 1))
+      panes = await ensureActiveWorktreePaneLoad(occPage, Math.max(2, LOAD_PANES + 1))
       const [typingPane, ...loadPanes] = panes
-      await startSustainedLoadInPanes(orcaPage, loadPanes, loadPath, runId, testRepoPath)
-      await focusPane(orcaPage, typingPane.paneKey)
+      await startSustainedLoadInPanes(occPage, loadPanes, loadPath, runId, testRepoPath)
+      await focusPane(occPage, typingPane.paneKey)
 
-      await resetDeliveryDebug(orcaPage)
-      await startTypingProbe(orcaPage, typingPane.ptyId, probePath, runId)
-      const activeTabId = await getActiveTabId(orcaPage)
-      const probeInstall = await startSynchronizedOutputBlackoutProbe(orcaPage, activeTabId ?? '')
+      await resetDeliveryDebug(occPage)
+      await startTypingProbe(occPage, typingPane.ptyId, probePath, runId)
+      const activeTabId = await getActiveTabId(occPage)
+      const probeInstall = await startSynchronizedOutputBlackoutProbe(occPage, activeTabId ?? '')
       // Require probe installation so missing instrumentation cannot report a false zero-blackout success.
       expect(probeInstall, `blackout probe not installed: ${probeInstall.reason}`).toMatchObject({
         installed: true
       })
 
-      const measured = await measureTypingWindow(orcaPage, runId, sidecarPath)
-      blackout = await stopSynchronizedOutputBlackoutProbe(orcaPage)
+      const measured = await measureTypingWindow(occPage, runId, sidecarPath)
+      blackout = await stopSynchronizedOutputBlackoutProbe(occPage)
       const { measurement } = measured
       writeBenchReport(
         testInfo,
@@ -644,13 +644,13 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
           ptyMetadata: PTY_METADATA,
           statusTrafficModel: PTY_METADATA ? 'pty-osc-through-runtime-and-ipc-bridge' : null
         },
-        await readSchedulerDebug(orcaPage),
-        await readMainDeliveryDebug(orcaPage),
+        await readSchedulerDebug(occPage),
+        await readMainDeliveryDebug(occPage),
         undefined,
         null,
         null,
         null,
-        await readTypingScaleCensus(orcaPage).catch(() => null),
+        await readTypingScaleCensus(occPage).catch(() => null),
         undefined,
         undefined,
         null,
@@ -660,12 +660,12 @@ test.describe('Multi-workspace sustained typing latency bench', () => {
       expect(measurement.totalMs?.count).toBe(KEY_COUNT)
       expect(blackout?.renderCount ?? 0).toBeGreaterThan(0)
     } finally {
-      await stopSynchronizedOutputBlackoutProbe(orcaPage).catch(() => null)
+      await stopSynchronizedOutputBlackoutProbe(occPage).catch(() => null)
       for (const worker of cpuWorkers) {
         worker.kill('SIGKILL')
       }
       await stopPtysQuietly(
-        orcaPage,
+        occPage,
         panes.map((pane) => pane.ptyId)
       )
       rmSync(loadPath, { force: true })

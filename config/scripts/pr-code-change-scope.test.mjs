@@ -22,7 +22,7 @@ const expensiveJobs = [
   'xterm_patch_sync',
   'shell_contracts',
   'test',
-  'orcad_browser',
+  'occd_browser',
   'cross-version-wire',
   'managed_hook_node18',
   'package',
@@ -73,7 +73,7 @@ describe('docs-only path classification', () => {
 
   it('still runs PR Checks for product markdown and CI', () => {
     expect(isDocsOnlyPath('skills/computer-use/SKILL.md')).toBe(false)
-    expect(isDocsOnlyPath('skill-guides/orca-cli.md')).toBe(false)
+    expect(isDocsOnlyPath('skill-guides/occ-cli.md')).toBe(false)
     expect(isDocsOnlyPath('.github/workflows/pr.yml')).toBe(false)
     expect(isDocsOnlyPath('src/main/index.ts')).toBe(false)
     expect(isDocsOnlyPath('config/scripts/pr-code-change-scope.mjs')).toBe(false)
@@ -166,7 +166,7 @@ describe('per-job path classification', () => {
       'src/main/codex/config-toml-trust.ts',
       'src/main/codex/codex-hook-trust-derivation.ts',
       'src/main/codex/codex-hook-local-install.ts',
-      'src/main/codex/codex-hook-orca-approvals.ts',
+      'src/main/codex/codex-hook-occ-approvals.ts',
       'src/main/codex/codex-hook-reconcile.ts',
       'src/main/codex/config-toml-hook-trust-edit.ts',
       'src/main/codex-cli/codex-read-only-app-server-args.ts',
@@ -315,20 +315,20 @@ describe('per-job path classification', () => {
     }
   })
 
-  it('runs orcad browser when Chrome launch, session, or tab modules change', () => {
+  it('runs occd browser when Chrome launch, session, or tab modules change', () => {
     for (const file of [
-      'src/main/orcad/external-chromium-browser-session.ts',
-      'src/main/orcad/external-chromium-command-arguments.ts',
-      'src/main/orcad/external-chromium-tab-registry.ts',
-      'src/main/orcad/external-chromium-tab-projection.ts'
+      'src/main/occd/external-chromium-browser-session.ts',
+      'src/main/occd/external-chromium-command-arguments.ts',
+      'src/main/occd/external-chromium-tab-registry.ts',
+      'src/main/occd/external-chromium-tab-projection.ts'
     ]) {
       expectClassification([file], {
-        orcad_browser: true,
+        occd_browser: true,
         package: true,
         package_windows: true
       })
     }
-    expectClassification(['src/main/orcad/orcad-native-preflight.ts'], {
+    expectClassification(['src/main/occd/occd-native-preflight.ts'], {
       package: true,
       package_windows: true
     })
@@ -345,7 +345,7 @@ describe('per-job path classification', () => {
       'mobile/web-entry/index.tsx',
       'mobile/app/h/[hostId]/index.tsx',
       'mobile/src/transport/client-context.web.tsx',
-      'mobile/modules/orca-mobile-web-shell/ios/MobileWebShellCsp.swift',
+      'mobile/modules/occ-mobile-web-shell/ios/MobileWebShellCsp.swift',
       'src/shared/native-chat/native-chat-visual-shell.ts',
       // The vendored Expo module the page resolves a .web.ts out of.
       'mobile/packages/expo-two-way-audio/src/ExpoTwoWayAudioModule.web.ts'
@@ -365,7 +365,7 @@ describe('per-job path classification', () => {
   })
 
   it('leaves it off for changes that cannot reach the page', () => {
-    for (const file of ['docs/reference/x.md', 'src/main/orcad/orcad-native-preflight.ts']) {
+    for (const file of ['docs/reference/x.md', 'src/main/occd/occd-native-preflight.ts']) {
       expect(classifyPrJobs([file]).mobile_web_app, file).toBe(false)
     }
   })
@@ -564,7 +564,7 @@ describe('PR Checks skip wiring', () => {
     expect(install).toBeGreaterThan(-1)
     expect(oracle).toBeGreaterThan(install)
     expect(steps[oracle].run).toBe('node config/scripts/run-daemon-shutdown-descendants-docker.mjs')
-    expect(steps[oracle].env.ORCA_BACKGROUND_LAUNCH).toBe('1')
+    expect(steps[oracle].env.OCC_BACKGROUND_LAUNCH).toBe('1')
   })
 
   it('classifies the PR range with a tested script and expands renames', () => {
@@ -617,7 +617,7 @@ describe('PR Checks skip wiring', () => {
 
   it('gates each expensive job on its classifier and cache prerequisite', () => {
     for (const jobName of expensiveJobs.filter(
-      (jobName) => !['test', 'static_analysis', 'typecheck', 'orcad_browser'].includes(jobName)
+      (jobName) => !['test', 'static_analysis', 'typecheck', 'occd_browser'].includes(jobName)
     )) {
       expect(prWorkflow.jobs[jobName].needs, jobName).toEqual(
         jobName.startsWith('package') ? ['code_paths'] : ['code_paths', 'preflight']

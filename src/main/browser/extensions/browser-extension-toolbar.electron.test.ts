@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
@@ -19,7 +19,7 @@ const report = (prefix, run) => run().then(
 );
 `
 const WORKER_SCRIPT = `${REPORT}
-report('ORCA_EXT_WORKER ', async () => {
+report('OCC_EXT_WORKER ', async () => {
   const [page1] = await chrome.tabs.query({ active: true });
   const created = new Promise((resolve) =>
     chrome.tabs.onCreated.addListener((tab) => resolve({ id: tab.id, windowId: tab.windowId })));
@@ -48,7 +48,7 @@ report('ORCA_EXT_WORKER ', async () => {
 });
 `
 const POPUP_SCRIPT = `${REPORT}
-report('ORCA_EXT_POPUP ', async () => ({
+report('OCC_EXT_POPUP ', async () => ({
   active: (await chrome.tabs.query({ active: true, currentWindow: true })).map((tab) => tab.id),
   currentTab: await new Promise((resolve) => chrome.tabs.getCurrent((tab) => resolve(tab ? tab.id : null))),
   hasActionApi: typeof chrome.action.setBadgeText
@@ -89,7 +89,7 @@ async function buildBundle(entry: string, fileName: string): Promise<void> {
 }
 
 beforeAll(async () => {
-  root = mkdtempSync(join(tmpdir(), 'orca-browser-extension-toolbar-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-browser-extension-toolbar-'))
   const extensionDir = join(root, 'extension')
   mkdirSync(extensionDir)
   writeFileSync(
@@ -122,7 +122,7 @@ beforeAll(async () => {
   writeFileSync(join(extensionDir, 'veto.html'), '<!doctype html><script src="veto.js"></script>')
   writeFileSync(
     join(extensionDir, 'veto.js'),
-    "onbeforeunload = (event) => { event.preventDefault(); event.returnValue = '' }; console.log('ORCA_EXT_VETO true')"
+    "onbeforeunload = (event) => { event.preventDefault(); event.returnValue = '' }; console.log('OCC_EXT_VETO true')"
   )
   writeFileSync(
     join(extensionDir, 'late.js'),
@@ -162,9 +162,9 @@ beforeAll(async () => {
     args,
     env: {
       ...env,
-      ORCA_BACKGROUND_LAUNCH: '1',
-      ORCA_EXTENSION_FIXTURE_STATUS: join(root, 'status.json'),
-      ORCA_EXTENSION_FIXTURE_DIR: extensionDir
+      OCC_BACKGROUND_LAUNCH: '1',
+      OCC_EXTENSION_FIXTURE_STATUS: join(root, 'status.json'),
+      OCC_EXTENSION_FIXTURE_DIR: extensionDir
     },
     stdio: ['ignore', 'pipe', 'pipe']
   })

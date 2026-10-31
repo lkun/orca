@@ -1,13 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
 import { getDefaultSettings } from '../../../../shared/constants'
 import { SettingsUpdate } from '../../../../shared/rpc-contract/client-settings-params'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import type { RuntimeStore } from '../../runtime-store-contract'
 import { partialRuntimeStore } from '../../runtime-store-partial-fixture'
 import { SharingUnavailableOnHostError } from '../../../../shared/sharing-unavailable-on-host'
 
 vi.mock('electron', () => ({
-  app: { getPath: () => '/orca-state', isPackaged: true }
+  app: { getPath: () => '/occ-state', isPackaged: true }
 }))
 
 const CAPABILITIES = ['artifactSharingEnabled', 'agentSkillSharingEnabled'] as const
@@ -15,7 +15,7 @@ const CAPABILITIES = ['artifactSharingEnabled', 'agentSkillSharingEnabled'] as c
 function runtimeWithSharing(
   capability: (typeof CAPABILITIES)[number],
   value: unknown
-): OrcaRuntimeService {
+): OCCRuntimeService {
   const store: Pick<RuntimeStore, 'getSettings'> = {
     getSettings: () => {
       const settings = getDefaultSettings('/tmp')
@@ -24,7 +24,7 @@ function runtimeWithSharing(
       return settings
     }
   }
-  const runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+  const runtime = new OCCRuntimeService(partialRuntimeStore(store))
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: settings.get only checks that a service is registered, never calls it.
   runtime.setArtifactService({} as never)
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: as above, presence only.
@@ -51,7 +51,7 @@ describe.each(CAPABILITIES)('%s cannot be granted over RPC', (capability) => {
 
 // #33593: a headless host registers no cloud service, so its unset toggle must not read as "off".
 it('omits the toggles on a host with no sharing service so clients reach its named refusal', () => {
-  const runtime = new OrcaRuntimeService(
+  const runtime = new OCCRuntimeService(
     partialRuntimeStore({ getSettings: () => getDefaultSettings('/tmp') })
   )
 

@@ -3,8 +3,8 @@ import { persistMirrored } from './mirrored-storage-keys'
 
 export type MobileSessionView = 'terminal' | 'chat'
 
-const DEFAULT_SESSION_VIEW_KEY = 'orca:defaultSessionView'
-const NATIVE_CHAT_TABS_PREFIX = 'orca:nativeChatTabs:'
+const DEFAULT_SESSION_VIEW_KEY = 'occ:defaultSessionView'
+const NATIVE_CHAT_TABS_PREFIX = 'occ:nativeChatTabs:'
 
 // Default to terminal; native chat is opt-in.
 export const DEFAULT_SESSION_VIEW: MobileSessionView = 'terminal'

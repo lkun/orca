@@ -175,7 +175,7 @@ export function createSkillMutationHandler(verb: SkillMutationVerb): CommandHand
     }
 
     // Local agent detection would target the wrong machine for a bridged invocation.
-    if (process.env.ORCA_CLI_CWD) {
+    if (process.env.OCC_CLI_CWD) {
       throw new RuntimeClientError(
         'invalid_environment',
         `occ skills ${verb} writes to the machine that runs it, but this shell forwards ` +

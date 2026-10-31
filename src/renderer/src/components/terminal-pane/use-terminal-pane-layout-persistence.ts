@@ -12,7 +12,7 @@ import {
   sanitizeTerminalLayoutPaneTitles
 } from '../../../../shared/terminal-pane-title-sanitization'
 import type { TerminalPaneStartupController } from './use-terminal-pane-startup-actions'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { sendLayoutCommandToOwner } from '@/runtime/layout-owner-command'
 import { notePendingPaneTitleRename } from '@/runtime/pending-pane-title-renames'
 import {
@@ -212,7 +212,7 @@ export function useTerminalPaneLayoutPersistence(controller: TerminalPaneStartup
         showPaneTitle(paneId, title)
       }
       if (
-        ORCA_LAYOUT_OWNER_IS_MAIN &&
+        OCC_LAYOUT_OWNER_IS_MAIN &&
         leafId &&
         sendLayoutCommandToOwner(
           worktreeId,

@@ -11,7 +11,7 @@ import {
 } from './preflight-command-exec'
 import { quotePosixShell } from '../../shared/shell-argument-quoting'
 
-const COMMAND = 'orca-22975-gh'
+const COMMAND = 'occ-22975-gh'
 const BROKEN_SHIM = 'echo broken-shim >&2\nexit 126\n'
 let root = ''
 
@@ -41,7 +41,7 @@ describe.skipIf(process.platform === 'win32')(
   'local CLI version probes with real processes',
   () => {
     beforeEach(async () => {
-      root = await mkdtemp(path.join(tmpdir(), 'orca-22975-case-'))
+      root = await mkdtemp(path.join(tmpdir(), 'occ-22975-case-'))
       vi.stubEnv('HOME', root)
     })
 
@@ -105,7 +105,7 @@ describe.skipIf(process.platform === 'win32')(
         status: 'exec_failed',
         binary: path.join(second, COMMAND)
       })
-      await expect(findRunnableLocalCommand('orca-22975-absent-cli')).resolves.toEqual({
+      await expect(findRunnableLocalCommand('occ-22975-absent-cli')).resolves.toEqual({
         status: 'absent'
       })
       expect(await probedArgs(first)).toEqual(['--version'])
@@ -220,7 +220,7 @@ describe.skipIf(process.platform === 'win32')(
 
 describe.runIf(process.platform === 'win32')('Windows preflight batch shims', () => {
   beforeEach(async () => {
-    root = await mkdtemp(path.join(tmpdir(), 'orca-22975-cmd-'))
+    root = await mkdtemp(path.join(tmpdir(), 'occ-22975-cmd-'))
   })
 
   afterEach(async () => {

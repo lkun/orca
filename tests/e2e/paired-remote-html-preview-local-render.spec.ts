@@ -1,7 +1,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { Locator, Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { openFileExplorer } from './helpers/file-explorer'
 import {
   createRuntimeDesktopPairingOffer,
@@ -121,10 +121,10 @@ async function focusBrowserWorkspace(
   )
 }
 
-// STA-5557: render workspace-document previews client-side over orca-preview://.
+// STA-5557: render workspace-document previews client-side over occ-preview://.
 // Require exactly one named, blank-URL document workspace on the client and no page or grant in host inventory.
 test('renders a paired HTML doc as a document browser tab while the host gains no browser page', async ({
-  orcaPage,
+  occPage,
   testRepoPath
 }, testInfo) => {
   test.setTimeout(300_000)
@@ -165,11 +165,11 @@ test('renders a paired HTML doc as a document browser tab while the host gains n
       `location.href='${SCRIPTED_EGRESS_URL}'</script>` +
       `</body></html>\n`
   )
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
 
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   const marker = await startClientHostedMarkerFixture()
   let prepared: PreparedPairedClient | null = null
   try {
@@ -222,7 +222,7 @@ test('renders a paired HTML doc as a document browser tab while the host gains n
       })
       .toBe(FIXTURE_HEADING)
     const firstGuestUrl = await readDocPreviewGuestUrl(page)
-    expect(firstGuestUrl).toMatch(/^orca-preview:\/\//)
+    expect(firstGuestUrl).toMatch(/^occ-preview:\/\//)
     // Check live ICE gathering because the main-process guest fence is absent from document headers.
     await expect
       .poll(() => readDocPreviewRenderedText(page, '#webrtc-probe'), {
@@ -387,7 +387,7 @@ test('renders a paired HTML doc as a document browser tab while the host gains n
     expect(
       withMarker.hostBrowserPages.filter(
         (hostPage) =>
-          hostPage.url.includes('orca-preview:') ||
+          hostPage.url.includes('occ-preview:') ||
           hostPage.url.includes(FIXTURE_NAME) ||
           hostPage.title === FIXTURE_TITLE
       )
@@ -523,7 +523,7 @@ test('renders a paired HTML doc as a document browser tab while the host gains n
     })
     const guestFocus = await page.evaluate(() => {
       const active = document.activeElement
-      const guest = document.querySelector('webview[src^="orca-preview://"]') as HTMLElement | null
+      const guest = document.querySelector('webview[src^="occ-preview://"]') as HTMLElement | null
       const before = active?.tagName ?? null
       guest?.focus()
       return { before, after: document.activeElement?.tagName ?? null }
@@ -608,7 +608,7 @@ test('renders a paired HTML doc as a document browser tab while the host gains n
 })
 
 test('asks before a paired preview reads a sibling directory', async ({
-  orcaPage,
+  occPage,
   testRepoPath
 }, testInfo) => {
   test.setTimeout(300_000)
@@ -626,11 +626,11 @@ test('asks before a paired preview reads a sibling directory', async ({
     path.join(assetsDirectory, 'scoped-preview.js'),
     `document.getElementById('asset-result').textContent=${JSON.stringify(SCOPED_ASSET_TEXT)}\n`
   )
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
 
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   let prepared: PreparedPairedClient | null = null
   try {
     prepared = await preparePairedClient(offer, testInfo, 'Scoped HTML preview', testRepoPath)
@@ -703,7 +703,7 @@ test('asks before a paired preview reads a sibling directory', async ({
 
 // Restore the same document tab with a newly minted client grant; yesterday’s served URL must never return.
 test('restores the document tab, on a fresh grant, after the client quits and relaunches', async ({
-  orcaPage,
+  occPage,
   testRepoPath
 }, testInfo) => {
   test.setTimeout(300_000)
@@ -712,11 +712,11 @@ test('restores the document tab, on a fresh grant, after the client quits and re
     `<!doctype html><html><head><title>${RESTORE_FIXTURE_TITLE}</title></head>` +
       `<body><h1>${RESTORE_FIXTURE_HEADING}</h1></body></html>\n`
   )
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
 
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   let prepared: PreparedPairedClient | null = null
   let abandonedProfile: string | null = null
   try {
@@ -741,7 +741,7 @@ test('restores the document tab, on a fresh grant, after the client quits and re
     const beforeQuit = await readPairedHtmlPreviewInventory(prepared.client.page, inventoryArgs)
     const quitRow = requireSingleDocWorkspace(beforeQuit)
     const guestUrlBeforeQuit = await readDocPreviewGuestUrl(prepared.client.page)
-    expect(guestUrlBeforeQuit).toMatch(/^orca-preview:\/\//)
+    expect(guestUrlBeforeQuit).toMatch(/^occ-preview:\/\//)
 
     // Quit without disposing: the profile has to outlive the app, as it does for a real Cmd+Q.
     const quitting = prepared.client.app
@@ -789,7 +789,7 @@ test('restores the document tab, on a fresh grant, after the client quits and re
       })
       .toBe(RESTORE_FIXTURE_HEADING)
     const guestUrlAfterRestore = await readDocPreviewGuestUrl(relaunched)
-    expect(guestUrlAfterRestore).toMatch(/^orca-preview:\/\//)
+    expect(guestUrlAfterRestore).toMatch(/^occ-preview:\/\//)
     // Require a new grant URL so neither disk nor host can restore the expired one.
     expect(guestUrlAfterRestore).not.toBe(guestUrlBeforeQuit)
     const afterRestore = await readPairedHtmlPreviewInventory(relaunched, relaunchedArgs)
@@ -797,7 +797,7 @@ test('restores the document tab, on a fresh grant, after the client quits and re
     expect(
       afterRestore.hostBrowserPages.filter(
         (hostPage) =>
-          hostPage.url.includes('orca-preview:') || hostPage.url.includes(RESTORE_FIXTURE_NAME)
+          hostPage.url.includes('occ-preview:') || hostPage.url.includes(RESTORE_FIXTURE_NAME)
       )
     ).toEqual([])
   } finally {

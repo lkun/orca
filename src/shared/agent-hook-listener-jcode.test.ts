@@ -23,7 +23,7 @@ describe('shared agent-hook-listener: jcode', () => {
   let jcodeHome: string
 
   beforeEach(() => {
-    jcodeHome = mkdtempSync(join(tmpdir(), 'orca-jcode-hooks-'))
+    jcodeHome = mkdtempSync(join(tmpdir(), 'occ-jcode-hooks-'))
     vi.stubEnv('JCODE_HOME', jcodeHome)
     state = createHookListenerState()
   })

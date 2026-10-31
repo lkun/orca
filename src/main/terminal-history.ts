@@ -2,12 +2,12 @@ import { join, basename } from 'node:path'
 import { mkdirSync, existsSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { readFile, stat } from 'node:fs/promises'
 import {
-  dropInheritedOrcaFishHistory,
+  dropInheritedOCCFishHistory,
   fishHistorySessionName,
   isSafeFishHistorySession,
   resolveFishHistoryDir
 } from './fish-history-session'
-import { dropInheritedOrcaHistFile } from './worktree-history-file-path'
+import { dropInheritedOCCHistFile } from './worktree-history-file-path'
 import { parseWslPath, toLinuxPath } from './wsl'
 import { getHistoryRoot, getHistoryRootWsl } from './terminal-history-paths'
 import { hashWorktreeId } from './terminal-history-id'
@@ -205,9 +205,9 @@ export function injectHistoryEnv(
   options: { wslDistro?: string | null } = {}
 ): HistoryInjectionResult {
   // Nested OCC launches inherit this value; clear it before any early return to prevent history leaks.
-  delete spawnEnv.ORCA_HISTFILE
-  dropInheritedOrcaFishHistory(spawnEnv)
-  dropInheritedOrcaHistFile(spawnEnv)
+  delete spawnEnv.OCC_HISTFILE
+  dropInheritedOCCFishHistory(spawnEnv)
+  dropInheritedOCCHistFile(spawnEnv)
 
   const shell = resolveShellKind(shellPath)
   const result: HistoryInjectionResult = {
@@ -253,7 +253,7 @@ export function injectHistoryEnv(
 
   spawnEnv.HISTFILE = wslDistro ? toLinuxPath(histFilePath) : histFilePath
   // Preserve the injected path across system zshrc's unconditional HISTFILE assignment.
-  spawnEnv.ORCA_HISTFILE = spawnEnv.HISTFILE
+  spawnEnv.OCC_HISTFILE = spawnEnv.HISTFILE
 
   result.histFile = spawnEnv.HISTFILE
   result.historyDir = spawnEnv.HISTFILE.replace(/[/\\][^/\\]+$/, '')
@@ -267,7 +267,7 @@ export function injectWslFishHistoryEnv(
   wslDistro: string
 ): string | null {
   // Drop inherited OCC sessions even when the caller did not run injectHistoryEnv first.
-  dropInheritedOrcaFishHistory(spawnEnv)
+  dropInheritedOCCFishHistory(spawnEnv)
   if (spawnEnv.fish_history) {
     return null
   }
@@ -298,11 +298,11 @@ export function updateHistoryEnvForFallback(
   const newFilename = historyFilename(resolveShellKind(fallbackShellPath))
   if (!newFilename) {
     delete spawnEnv.HISTFILE
-    delete spawnEnv.ORCA_HISTFILE
+    delete spawnEnv.OCC_HISTFILE
     return
   }
   spawnEnv.HISTFILE = `${injected.historyDir}/${newFilename}`
-  spawnEnv.ORCA_HISTFILE = spawnEnv.HISTFILE
+  spawnEnv.OCC_HISTFILE = spawnEnv.HISTFILE
 }
 
 export function logHistoryInjection(worktreeId: string, result: HistoryInjectionResult): void {

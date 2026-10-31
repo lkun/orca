@@ -67,7 +67,7 @@ export abstract class AgentHookServerLifecycle extends AgentHookServerStatusHook
         res.end()
         return
       }
-      if (req.headers['x-orca-agent-hook-token'] !== this.token) {
+      if (req.headers['x-occ-agent-hook-token'] !== this.token) {
         res.writeHead(403)
         res.end()
         return

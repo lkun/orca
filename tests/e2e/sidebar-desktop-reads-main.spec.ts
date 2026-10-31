@@ -1,12 +1,12 @@
-// With ORCA_SIDEBAR_INPUTS=main, follow main’s feed while window drag/create/open/collapse changes still commit immediately.
+// With OCC_SIDEBAR_INPUTS=main, follow main’s feed while window drag/create/open/collapse changes still commit immediately.
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { removeWorktreeViaStore } from './helpers/dead-terminal'
 import { SIDEBAR_INPUTS_BUILD } from './helpers/sidebar-inputs-build'
 import { openSidebarWorkspaceComposer } from './helpers/sidebar-project-dialog'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
-test.skip(!SIDEBAR_INPUTS_BUILD, 'the window reads main only in an ORCA_SIDEBAR_INPUTS=main build')
+test.skip(!SIDEBAR_INPUTS_BUILD, 'the window reads main only in an OCC_SIDEBAR_INPUTS=main build')
 
 const ROWS = '[data-worktree-sidebar] [role="option"][data-worktree-id]'
 
@@ -123,12 +123,12 @@ async function dragBefore(page: Page, sourceId: string, targetId: string): Promi
 }
 
 test('the sidebar lists main’s inputs and keeps drag, create, open and collapse instant', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(180_000)
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  const created = await orcaPage.evaluate(async () => {
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  const created = await occPage.evaluate(async () => {
     const state = window.__store!.getState()
     state.setGroupBy('none')
     state.setSortBy('manual')
@@ -142,28 +142,28 @@ test('the sidebar lists main’s inputs and keeps drag, create, open and collaps
   })
   try {
     const ours = async (): Promise<string[]> =>
-      (await renderedOrder(orcaPage)).filter((id) => created.includes(id))
+      (await renderedOrder(occPage)).filter((id) => created.includes(id))
     await expect.poll(async () => (await ours()).length, { timeout: 30_000 }).toBe(3)
-    await orcaPage.screenshot({ path: testInfo.outputPath(`list.png`) })
+    await occPage.screenshot({ path: testInfo.outputPath(`list.png`) })
 
     // Empty local catalog for one task; main-owned rows must remain before any refetch reply.
-    const listedWhileEmptied = await orcaPage.evaluate(async (selector) => {
+    const listedWhileEmptied = await occPage.evaluate(async (selector) => {
       window.__store!.setState({ worktreesByRepo: {} })
       await new Promise((resolve) => setTimeout(resolve, 0))
       return document.querySelectorAll(selector).length
     }, ROWS)
     expect(listedWhileEmptied).toBeGreaterThan(0)
-    await orcaPage.evaluate(() => window.__store!.getState().fetchAllWorktrees())
+    await occPage.evaluate(() => window.__store!.getState().fetchAllWorktrees())
     await expect.poll(async () => (await ours()).length).toBe(3)
 
     // Drag: the new order shows in the drop's own task, and no later state snaps back.
     const before = await ours()
     const source = before[2]!
-    const dragLog = await startDomLog(orcaPage)
-    await dragBefore(orcaPage, source, before[0]!)
+    const dragLog = await startDomLog(occPage)
+    await dragBefore(occPage, source, before[0]!)
     const expected = [source, before[0]!, before[1]!]
     await expect.poll(ours).toEqual(expected)
-    await orcaPage.waitForTimeout(400)
+    await occPage.waitForTimeout(400)
     const drag = await dragLog.stop()
     const oursIn = (state: DomState): string =>
       state.ids.filter((id) => created.includes(id)).join()
@@ -176,17 +176,17 @@ test('the sidebar lists main’s inputs and keeps drag, create, open and collaps
         .map(oursIn)
         .filter((order) => order !== expected.join())
     ).toEqual([])
-    await orcaPage.screenshot({ path: testInfo.outputPath(`after-drag.png`) })
+    await occPage.screenshot({ path: testInfo.outputPath(`after-drag.png`) })
 
     // Open: the clicked row is highlighted in the click's own task.
     const openId = expected[1]!
-    const openLog = await startDomLog(orcaPage)
-    await orcaPage
+    const openLog = await startDomLog(occPage)
+    await occPage
       .locator(`${ROWS}[data-worktree-id=${JSON.stringify(openId)}]`)
       .first()
       .click()
     await expect(
-      orcaPage.locator(`${ROWS}[data-worktree-id=${JSON.stringify(openId)}][aria-current="page"]`)
+      occPage.locator(`${ROWS}[data-worktree-id=${JSON.stringify(openId)}][aria-current="page"]`)
     ).toHaveCount(1)
     const openStates = (await openLog.stop()).states
     const opened = firstAfterInput(openStates, (state) => state.current === openId)
@@ -194,18 +194,18 @@ test('the sidebar lists main’s inputs and keeps drag, create, open and collaps
     expect(openStates[opened]!.inInputTask).toBe(true)
 
     // Cmd/Ctrl+1–9 number the rendered rows.
-    const rendered = await renderedOrder(orcaPage)
+    const rendered = await renderedOrder(occPage)
     const modifier = process.platform === 'darwin' ? 'Meta' : 'Control'
-    await orcaPage.keyboard.press(`${modifier}+2`)
+    await occPage.keyboard.press(`${modifier}+2`)
     await expect
-      .poll(() => orcaPage.evaluate(() => window.__store!.getState().activeWorktreeId))
+      .poll(() => occPage.evaluate(() => window.__store!.getState().activeWorktreeId))
       .toBe(rendered[1])
 
     // Collapse: the section's rows leave in the click's own task, without waiting for main.
-    await orcaPage.evaluate(() => window.__store!.getState().setGroupBy('repo'))
+    await occPage.evaluate(() => window.__store!.getState().setGroupBy('repo'))
     await expect.poll(async () => (await ours()).length).toBe(3)
-    const header = orcaPage.locator('[data-worktree-sidebar] [data-repo-header-id][aria-expanded]')
-    const collapseLog = await startDomLog(orcaPage)
+    const header = occPage.locator('[data-worktree-sidebar] [data-repo-header-id][aria-expanded]')
+    const collapseLog = await startDomLog(occPage)
     await header.first().click()
     await expect.poll(async () => (await ours()).length).toBe(0)
     const collapseStates = (await collapseLog.stop()).states
@@ -219,15 +219,15 @@ test('the sidebar lists main’s inputs and keeps drag, create, open and collaps
     await expect.poll(async () => (await ours()).length).toBe(3)
 
     // Create: the pending row hands over to the new row with no state showing neither.
-    await orcaPage.evaluate(() => window.__store!.getState().setGroupBy('none'))
+    await occPage.evaluate(() => window.__store!.getState().setGroupBy('none'))
     const name = `reads-main-new-${Date.now()}`
-    const createLog = await startDomLog(orcaPage, name)
-    await openSidebarWorkspaceComposer(orcaPage)
-    const dialog = orcaPage.getByRole('dialog', { name: /Create (Workspace|Worktree)/i })
+    const createLog = await startDomLog(occPage, name)
+    await openSidebarWorkspaceComposer(occPage)
+    const dialog = occPage.getByRole('dialog', { name: /Create (Workspace|Worktree)/i })
     await dialog.getByPlaceholder(/Type a name/i).fill(name)
     await dialog.getByRole('button', { name: /Create (Workspace|Worktree)/i }).click()
     const idOf = (wanted: string): Promise<string | null> =>
-      orcaPage.evaluate(
+      occPage.evaluate(
         (suffix) =>
           window
             .__store!.getState()
@@ -238,8 +238,8 @@ test('the sidebar lists main’s inputs and keeps drag, create, open and collaps
     await expect.poll(() => idOf(name), { timeout: 30_000 }).not.toBeNull()
     const newId = (await idOf(name))!
     created.push(newId)
-    await expect.poll(async () => (await renderedOrder(orcaPage)).includes(newId)).toBe(true)
-    await orcaPage.waitForTimeout(300)
+    await expect.poll(async () => (await renderedOrder(occPage)).includes(newId)).toBe(true)
+    await occPage.waitForTimeout(300)
     const createStates = (await createLog.stop()).states
     const pendingShown = createStates.findIndex(({ shows }) => shows)
     expect(pendingShown).toBeGreaterThanOrEqual(0)
@@ -251,10 +251,10 @@ test('the sidebar lists main’s inputs and keeps drag, create, open and collaps
     expect(handover.filter(({ ids, shows }) => !shows && !ids.includes(newId))).toEqual([])
     const appeared = handover.findIndex(({ ids }) => ids.includes(newId))
     expect(handover.slice(appeared).every(({ ids }) => ids.includes(newId))).toBe(true)
-    await orcaPage.screenshot({ path: testInfo.outputPath(`after-create.png`) })
+    await occPage.screenshot({ path: testInfo.outputPath(`after-create.png`) })
 
     // Virtualized scroll and reveal over a list taller than the sidebar.
-    const many = await orcaPage.evaluate(async () => {
+    const many = await occPage.evaluate(async () => {
       const state = window.__store!.getState()
       const repoId = state.allWorktrees()[0]!.repoId
       const ids: string[] = []
@@ -267,7 +267,7 @@ test('the sidebar lists main’s inputs and keeps drag, create, open and collaps
       return ids
     })
     created.push(...many)
-    const scroller = orcaPage.locator('[data-worktree-sidebar]')
+    const scroller = occPage.locator('[data-worktree-sidebar]')
     await expect
       .poll(async () => many.every((id) => created.includes(id)) && (await ours()).length, {
         timeout: 30_000
@@ -303,19 +303,19 @@ test('the sidebar lists main’s inputs and keeps drag, create, open and collaps
       }, ROWS)
     await expect.poll(lastRowAtBottom).not.toBe('')
     const bottomId = await lastRowAtBottom()
-    const bottomRow = orcaPage.locator(`${ROWS}[data-worktree-id=${JSON.stringify(bottomId)}]`)
+    const bottomRow = occPage.locator(`${ROWS}[data-worktree-id=${JSON.stringify(bottomId)}]`)
     await expect(bottomRow).toBeInViewport()
     await scroller.evaluate((element) => element.scrollTo({ top: 0 }))
     await expect(bottomRow).toHaveCount(0)
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       (id) => window.__store!.getState().revealWorktreeInSidebar(id),
       bottomId
     )
     await expect(bottomRow).toBeInViewport()
-    await orcaPage.screenshot({ path: testInfo.outputPath(`after-reveal.png`) })
+    await occPage.screenshot({ path: testInfo.outputPath(`after-reveal.png`) })
   } finally {
     for (const id of created) {
-      await removeWorktreeViaStore(orcaPage, id).catch(() => {})
+      await removeWorktreeViaStore(occPage, id).catch(() => {})
     }
   }
 })

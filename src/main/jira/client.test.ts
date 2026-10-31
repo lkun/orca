@@ -31,14 +31,14 @@ function mkdtempLike(prefix: string): string {
 }
 
 function tokenPathForSite(siteId: string): string {
-  return join(tempHome, '.orca', 'jira-tokens', `${Buffer.from(siteId).toString('base64url')}.enc`)
+  return join(tempHome, '.occ', 'jira-tokens', `${Buffer.from(siteId).toString('base64url')}.enc`)
 }
 
 function writeJiraFiles(siteId: string, token: string | Buffer): void {
-  const orcaDir = join(tempHome, '.orca')
-  mkdirSync(join(orcaDir, 'jira-tokens'), { recursive: true })
+  const occDir = join(tempHome, '.occ')
+  mkdirSync(join(occDir, 'jira-tokens'), { recursive: true })
   writeFileSync(
-    join(orcaDir, 'jira-sites.json'),
+    join(occDir, 'jira-sites.json'),
     JSON.stringify(
       {
         version: 1,
@@ -66,10 +66,10 @@ function writeMultiSiteFiles(
   sites: { id: string; token: string | Buffer }[],
   selectedSiteId: string
 ): void {
-  const orcaDir = join(tempHome, '.orca')
-  mkdirSync(join(orcaDir, 'jira-tokens'), { recursive: true })
+  const occDir = join(tempHome, '.occ')
+  mkdirSync(join(occDir, 'jira-tokens'), { recursive: true })
   writeFileSync(
-    join(orcaDir, 'jira-sites.json'),
+    join(occDir, 'jira-sites.json'),
     JSON.stringify(
       {
         version: 1,
@@ -102,7 +102,7 @@ function loadClientModule(options: SafeStorageMockOptions = {}) {
 }
 
 beforeEach(() => {
-  tempHome = mkdtempLike('orca-jira-client-')
+  tempHome = mkdtempLike('occ-jira-client-')
   fetchMock = vi.fn(async () => {
     throw new Error('fetch should not be called')
   })
@@ -508,10 +508,10 @@ describe('Jira client credential storage', () => {
 
   it('uses Basic auth for stored self-hosted sites that carry a username', async () => {
     const siteId = 'site-server-basic'
-    const orcaDir = join(tempHome, '.orca')
-    mkdirSync(join(orcaDir, 'jira-tokens'), { recursive: true })
+    const occDir = join(tempHome, '.occ')
+    mkdirSync(join(occDir, 'jira-tokens'), { recursive: true })
     writeFileSync(
-      join(orcaDir, 'jira-sites.json'),
+      join(occDir, 'jira-sites.json'),
       JSON.stringify({
         version: 1,
         activeSiteId: siteId,
@@ -613,7 +613,7 @@ describe('Jira client credential storage', () => {
 
     // Same-host PAT accounts need verified viewer identity to avoid overwriting each other.
     const stored = JSON.parse(
-      readFileSync(join(tempHome, '.orca', 'jira-sites.json'), 'utf-8')
+      readFileSync(join(tempHome, '.occ', 'jira-sites.json'), 'utf-8')
     ) as {
       sites: { accountId: string }[]
     }
@@ -623,10 +623,10 @@ describe('Jira client credential storage', () => {
 
   it('uses Bearer auth and REST v2 for stored self-hosted sites', async () => {
     const siteId = 'site-server'
-    const orcaDir = join(tempHome, '.orca')
-    mkdirSync(join(orcaDir, 'jira-tokens'), { recursive: true })
+    const occDir = join(tempHome, '.occ')
+    mkdirSync(join(occDir, 'jira-tokens'), { recursive: true })
     writeFileSync(
-      join(orcaDir, 'jira-sites.json'),
+      join(occDir, 'jira-sites.json'),
       JSON.stringify({
         version: 1,
         activeSiteId: siteId,
@@ -787,7 +787,7 @@ describe('Jira site file cross-process visibility', () => {
   })
 
   it('picks up a site connected by another OCC process', async () => {
-    // Processes share ~/.orca; an initially empty read must observe later connections.
+    // Processes share ~/.occ; an initially empty read must observe later connections.
     const jira = await loadClientModule()
     expect(jira.getStatus()).toMatchObject({ connected: false, sites: [] })
 
@@ -806,7 +806,7 @@ describe('Jira site file cross-process visibility', () => {
     expect(jira.getStatus()).toMatchObject({ connected: true })
 
     writeFileSync(
-      join(tempHome, '.orca', 'jira-sites.json'),
+      join(tempHome, '.occ', 'jira-sites.json'),
       JSON.stringify({ version: 1, activeSiteId: null, selectedSiteId: null, sites: [] }, null, 2),
       { encoding: 'utf-8' }
     )

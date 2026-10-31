@@ -2,7 +2,7 @@ import { once } from 'node:events'
 import { mkdir, mkdtemp, realpath, rm, symlink } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { basename, dirname, join } from 'node:path'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { describe, expect, it } from 'vitest'
 import {
   readShellProcessReadiness,
@@ -40,7 +40,7 @@ describe('shell process readiness', () => {
   it.skipIf(process.platform === 'win32')(
     'resolves bare shell commands through the spawn PATH',
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-shell-path-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-shell-path-'))
       const link = join(root, 'shell-name')
       await symlink(process.execPath, link)
       try {
@@ -65,7 +65,7 @@ describe('shell process readiness', () => {
   it.skipIf(process.platform === 'win32')(
     'resolves relative shell paths against the PTY cwd',
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-relative-shell-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-relative-shell-'))
       const bin = join(root, 'bin')
       await symlink(dirname(process.execPath), bin)
       try {
@@ -81,7 +81,7 @@ describe('shell process readiness', () => {
   it.skipIf(process.platform === 'win32')(
     'skips searchable directories that shadow a later PATH executable',
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-shadowed-shell-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-shadowed-shell-'))
       const first = join(root, 'first')
       const second = join(root, 'second')
       await mkdir(join(first, 'shell-name'), { recursive: true })
@@ -100,7 +100,7 @@ describe('shell process readiness', () => {
   it.skipIf(process.platform === 'win32')(
     'lists every PATH installation of a shell name, deduplicated and canonical',
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-installed-shells-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-installed-shells-'))
       const first = join(root, 'first')
       const second = join(root, 'second')
       const missing = join(root, 'missing')

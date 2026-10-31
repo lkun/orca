@@ -1,4 +1,4 @@
-/** Route eligible SSH hosts through their paired orcad connection to this desktop's browser bridge. */
+/** Route eligible SSH hosts through their paired occd connection to this desktop's browser bridge. */
 import { randomUUID } from 'node:crypto'
 import { webContents, type BrowserWindow } from 'electron'
 import {
@@ -10,10 +10,10 @@ import { ELECTRON_REMOTE_RUNTIME_CLIENT_CAPABILITIES } from '../../shared/electr
 import { subscribeRemoteRuntimeRequest } from '../../shared/remote-runtime/remote-runtime-client'
 import { resolveEnvironment } from '../../shared/runtime-environment-store'
 import {
-  getOrcadSshDeployment,
+  getOCCdSshDeployment,
   getPreferredPairedRuntimeConnection
 } from '../../shared/runtime-environments'
-import { getManagedOrcadFenceEnvironmentId } from '../../shared/managed-orcad-ssh-owner'
+import { getManagedOCCdFenceEnvironmentId } from '../../shared/managed-occd-ssh-owner'
 import { isRemoteCliControlAllowed } from '../../shared/ssh-remote-cli-control'
 import { browserManager } from '../browser/browser-manager'
 import {
@@ -25,10 +25,10 @@ import {
   isHostReachableDocument
 } from '../browser/desktop-browser-bridge/desktop-browser-bridge-executor'
 import { rendererResolveRemoteCliWorkspace } from '../browser/desktop-browser-bridge/desktop-browser-bridge-renderer-scope'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { RpcDispatcher } from '../runtime/rpc/dispatcher'
 import { ALL_RPC_METHODS } from '../runtime/rpc/methods'
-import { ensureOrcadManagedTunnel } from '../managed-server/lifecycle/orcad-managed-tunnel'
+import { ensureOCCdManagedTunnel } from '../managed-server/lifecycle/occd-managed-tunnel'
 import { getSshTargetRegistryStore } from '../ssh/targets/ssh-target-registry'
 import type { SshConnectionManager } from '../ssh/connection/ssh-connection-manager'
 import { getRuntimeEnvironmentStatus } from './runtime-environments/runtime-environment-status-probe'
@@ -61,7 +61,7 @@ export function listDesktopBrowserBridgeCandidates(
       continue
     }
     // Only managed hosts qualify even when the global switch defaults on.
-    const environmentId = getManagedOrcadFenceEnvironmentId(target)
+    const environmentId = getManagedOCCdFenceEnvironmentId(target)
     if (!environmentId || isRuntimeEnvironmentManuallyDisconnected(environmentId)) {
       continue
     }
@@ -71,7 +71,7 @@ export function listDesktopBrowserBridgeCandidates(
     }
     try {
       const environment = resolveEnvironment(userDataPath, environmentId)
-      if (getOrcadSshDeployment(environment)?.sshTargetId !== target.id) {
+      if (getOCCdSshDeployment(environment)?.sshTargetId !== target.id) {
         continue
       }
     } catch {
@@ -84,7 +84,7 @@ export function listDesktopBrowserBridgeCandidates(
 
 export function installDesktopBrowserBridge(options: {
   userDataPath: string
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   getMainWindow: () => BrowserWindow | null
   getConnectionManager: () => Pick<SshConnectionManager, 'getState'> | null
 }): void {
@@ -116,7 +116,7 @@ export function installDesktopBrowserBridge(options: {
       return (status.result.capabilities ?? []).includes(DESKTOP_BROWSER_BRIDGE_RUNTIME_CAPABILITY)
     },
     subscribe: (environmentId) => async (callbacks) => {
-      await ensureOrcadManagedTunnel(userDataPath, environmentId)
+      await ensureOCCdManagedTunnel(userDataPath, environmentId)
       const connection = getPreferredPairedRuntimeConnection(
         resolveEnvironment(userDataPath, environmentId)
       )
@@ -166,7 +166,7 @@ export function installDesktopBrowserBridge(options: {
           worktreeIdForPage: (browserPageId) =>
             browserManager.getWorktreeIdForTab(browserPageId) ?? null,
           dispatch: (method, params) =>
-            // Why: the SSH host's orca CLI is an agent caller; the cursor and tab badge key off it.
+            // Why: the SSH host's occ CLI is an agent caller; the cursor and tab badge key off it.
             getDispatcher().dispatch(
               { id: randomUUID(), authToken: '', method, params },
               { caller: { kind: 'local-cli' } }

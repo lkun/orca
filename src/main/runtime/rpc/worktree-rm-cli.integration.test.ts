@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { promisify } from 'node:util'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import { partialRuntimeStore, storeRepo, storeWorktreeMeta } from '../runtime-store-partial-fixture'
 import type { WorktreeMeta } from '../../../shared/worktree/meta-types'
 import type { Repo } from '../../../shared/repo-types'
@@ -16,11 +16,11 @@ import type { CliStatusResult, RuntimeWorktreeRemoveResult } from '../../../shar
 import type { RuntimeRpcSuccess } from '../../../shared/runtime-rpc-envelope'
 import * as appEnvironment from '../../../shared/app-environment'
 import type { SshTarget } from '../../../shared/ssh-types'
-import { orcadMigrationCutoverFixture } from '../../ssh/orcad-migration-cutover-fixture'
-import { writeOrcadMigrationSourceCutover } from '../../ssh/orcad-migration-cutover-journal'
+import { occdMigrationCutoverFixture } from '../../ssh/occd-migration-cutover-fixture'
+import { writeOCCdMigrationSourceCutover } from '../../ssh/occd-migration-cutover-journal'
 import { removalPtyProvider } from './worktree-rm-pty.test-fixture'
 import { pairedRemovalReceiver } from './worktree-rm-paired.test-fixture'
-import { addManagedOrcadEnvironment } from '../../../shared/runtime-environment-managed-orcad-store'
+import { addManagedOCCdEnvironment } from '../../../shared/runtime-environment-managed-occd-store'
 import { getRuntimeMetadataPath } from '../../../shared/runtime-bootstrap'
 import { WorktreeRemove } from '../../../shared/rpc-contract/worktree-params'
 import { UnixSocketTransport } from './unix-socket-transport'
@@ -94,7 +94,7 @@ let afterShow: () => void | Promise<void> = () => {}
 let beforeStatus: () => void | Promise<void> = () => {}
 const stopped = vi.fn(async () => {})
 const git = async (...args: string[]) => (await exec('git', args, { cwd: repoPath })).stdout.trim()
-class RemovalRuntime extends OrcaRuntimeService {
+class RemovalRuntime extends OCCRuntimeService {
   override readonly workspaceLifecycle = new WorkspaceLifecycleQueue()
   override async showManagedWorktree(selector: string) {
     const shown = await super.showManagedWorktree(selector)
@@ -134,7 +134,7 @@ async function dispatch(request: RpcRequest, legacy = !supported) {
 beforeEach(async () => {
   vi.spyOn(console, 'log').mockImplementation(() => {})
   vi.spyOn(console, 'error').mockImplementation(() => {})
-  directory = await realpath(await mkdtemp(join(tmpdir(), 'orca-cli-rm-')))
+  directory = await realpath(await mkdtemp(join(tmpdir(), 'occ-cli-rm-')))
   repoPath = join(directory, 'repo')
   checkout = join(directory, 'checkout')
   id = `repo::${checkout}`
@@ -143,10 +143,10 @@ beforeEach(async () => {
   stopped.mockClear()
   afterShow = () => {}
   beforeStatus = () => {}
-  vi.stubEnv('ORCA_USER_DATA_PATH', directory)
-  vi.stubEnv('ORCA_PAIRING_CODE', '')
-  vi.stubEnv('ORCA_REMOTE_PAIRING', '')
-  vi.stubEnv('ORCA_ENVIRONMENT', '')
+  vi.stubEnv('OCC_USER_DATA_PATH', directory)
+  vi.stubEnv('OCC_PAIRING_CODE', '')
+  vi.stubEnv('OCC_REMOTE_PAIRING', '')
+  vi.stubEnv('OCC_ENVIRONMENT', '')
   await mkdir(repoPath)
   await git('init', '-q')
   await git('checkout', '-qb', 'main')
@@ -206,7 +206,7 @@ beforeEach(async () => {
   const kind = process.platform === 'win32' ? 'named-pipe' : 'unix'
   const endpoint =
     process.platform === 'win32'
-      ? String.raw`\\.\pipe\orca-rm-${process.pid}`
+      ? String.raw`\\.\pipe\occ-rm-${process.pid}`
       : join(directory, 'rpc.sock')
   socket = new UnixSocketTransport({ kind, endpoint })
   socket.onMessage((message, reply) => {
@@ -478,7 +478,7 @@ it('selects legacy on B after lookup on A and cannot rediscover C during B statu
   const kind = process.platform === 'win32' ? 'named-pipe' : 'unix'
   const endpoint =
     process.platform === 'win32'
-      ? String.raw`\\.\pipe\orca-rm-${process.pid}-B`
+      ? String.raw`\\.\pipe\occ-rm-${process.pid}-B`
       : join(directory, 'B.sock')
   const legacy = new UnixSocketTransport({ kind, endpoint })
   const methods: string[] = []
@@ -541,11 +541,11 @@ it.each([true, false])(
       ])
       const localHead = (await exec('git', ['-C', clientRepo, 'rev-parse', 'HEAD'])).stdout
       const head = await git('rev-parse', 'task')
-      const environment = addManagedOrcadEnvironment(directory, {
+      const environment = addManagedOCCdEnvironment(directory, {
         id: 'served-ssh',
         name: 'served-ssh',
         pairingCode: receiver.pairingCode,
-        orcadDeployment: {
+        occdDeployment: {
           sshTargetId: 'fixture-ssh',
           sshTargetGeneration: 1,
           localPort: receiver.port,
@@ -605,11 +605,11 @@ it('retains legacy hidden SSH folder removal with a raw-ID local twin', async ()
       port: 22,
       username: 'test',
       generation: 2,
-      orcadFence: { environmentId: 'env-1' }
+      occdFence: { environmentId: 'env-1' }
     }
   ]
-  writeOrcadMigrationSourceCutover(directory, {
-    ...orcadMigrationCutoverFixture('move', 'source'),
+  writeOCCdMigrationSourceCutover(directory, {
+    ...occdMigrationCutoverFixture('move', 'source'),
     phase: 'destination-committed'
   })
   const hidden = storeRepo({ ...folderRepo, connectionId: 'source' })

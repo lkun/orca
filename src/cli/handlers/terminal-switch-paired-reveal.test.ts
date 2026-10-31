@@ -20,7 +20,7 @@ function focusResponse(navigated: boolean) {
 
 async function runSwitch(options: { call: RuntimeClient['call']; isRemote: boolean }) {
   const log = vi.spyOn(console, 'log').mockImplementation(() => {})
-  const client = new RuntimeClient('/tmp/orca-switch-test', 60_000, null, null)
+  const client = new RuntimeClient('/tmp/occ-switch-test', 60_000, null, null)
   vi.spyOn(client, 'call').mockImplementation(options.call)
   vi.spyOn(client, 'isRemote', 'get').mockReturnValue(options.isRemote)
   await TERMINAL_HANDLERS['terminal switch']({

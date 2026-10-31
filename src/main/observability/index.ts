@@ -1,6 +1,6 @@
 // Keep diagnostics isolated from product telemetry, including duplicated CI detection.
-// DNT/ORCA_TELEMETRY_DISABLED disable uploads but retain local logs;
-// ORCA_DIAGNOSTICS_DISABLED and CI disable both.
+// DNT/OCC_TELEMETRY_DISABLED disable uploads but retain local logs;
+// OCC_DIAGNOSTICS_DISABLED and CI disable both.
 
 import {
   createLocalFileSink,
@@ -42,8 +42,8 @@ export type ObservabilityConsent = {
   readonly bundleEnabled: boolean
   readonly disabledReason?:
     | 'do_not_track'
-    | 'orca_telemetry_disabled'
-    | 'orca_diagnostics_disabled'
+    | 'occ_telemetry_disabled'
+    | 'occ_diagnostics_disabled'
     | 'ci'
 }
 
@@ -62,8 +62,8 @@ function inCI(): boolean {
 
 export function resolveObservabilityConsent(): ObservabilityConsent {
   const dnt = envOn('DO_NOT_TRACK')
-  const orcaDisabled = envOn('ORCA_TELEMETRY_DISABLED')
-  const diagnosticsDisabled = envOn('ORCA_DIAGNOSTICS_DISABLED')
+  const occDisabled = envOn('OCC_TELEMETRY_DISABLED')
+  const diagnosticsDisabled = envOn('OCC_DIAGNOSTICS_DISABLED')
   const ci = inCI()
 
   if (ci) {
@@ -77,15 +77,15 @@ export function resolveObservabilityConsent(): ObservabilityConsent {
     return {
       localFileEnabled: false,
       bundleEnabled: false,
-      disabledReason: 'orca_diagnostics_disabled'
+      disabledReason: 'occ_diagnostics_disabled'
     }
   }
-  if (dnt || orcaDisabled) {
+  if (dnt || occDisabled) {
     // DNT gates network traffic; local files remain on this machine.
     return {
       localFileEnabled: true,
       bundleEnabled: false,
-      disabledReason: dnt ? 'do_not_track' : 'orca_telemetry_disabled'
+      disabledReason: dnt ? 'do_not_track' : 'occ_telemetry_disabled'
     }
   }
 
@@ -185,7 +185,7 @@ export function getDiagnosticsStatus(): DiagnosticsStatus {
 export async function collectDiagnosticBundle(
   meta: Pick<
     CollectBundleOptions,
-    'appVersion' | 'platform' | 'arch' | 'osRelease' | 'orcaChannel' | 'lookbackMinutes'
+    'appVersion' | 'platform' | 'arch' | 'osRelease' | 'occChannel' | 'lookbackMinutes'
   >
 ): Promise<CollectedBundle> {
   // Flush before collection so the bundle includes the user’s latest action.

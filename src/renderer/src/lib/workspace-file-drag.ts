@@ -11,9 +11,9 @@ import {
   type ExecutionHostId
 } from '../../../shared/execution-host'
 
-export const WORKSPACE_FILE_PATH_MIME = 'text/x-orca-file-path'
-export const WORKSPACE_FILE_PATHS_MIME = 'text/x-orca-file-paths'
-export const WORKSPACE_FILE_DRAG_SOURCE_MIME = 'application/x-orca-workspace-file-source'
+export const WORKSPACE_FILE_PATH_MIME = 'text/x-occ-file-path'
+export const WORKSPACE_FILE_PATHS_MIME = 'text/x-occ-file-paths'
+export const WORKSPACE_FILE_DRAG_SOURCE_MIME = 'application/x-occ-workspace-file-source'
 
 const WORKSPACE_FILE_DRAG_SOURCE_MAX_BYTES = 4096
 

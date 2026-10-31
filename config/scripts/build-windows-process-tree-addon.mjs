@@ -19,7 +19,7 @@ import { tmpdir } from 'node:os'
 import { join, relative, resolve } from 'node:path'
 import { isSharedPackageDir } from './native-build-entry.cjs'
 import { canReusePreparedAddon } from './windows-process-tree-prepared-addon.mjs'
-import { ORCAD_WINDOWS_PROCESS_TREE_FILENAME } from '../../src/shared/orcad-artifacts.ts'
+import { OCCD_WINDOWS_PROCESS_TREE_FILENAME } from '../../src/shared/occd-artifacts.ts'
 import {
   ensureWindowsProcessTreeCommandLinePatch,
   inspectWindowsProcessTreeAddon,
@@ -478,7 +478,7 @@ function main() {
   }
 
   mkdirSync(outDir, { recursive: true })
-  const staged = join(outDir, ORCAD_WINDOWS_PROCESS_TREE_FILENAME)
+  const staged = join(outDir, OCCD_WINDOWS_PROCESS_TREE_FILENAME)
   copyFileSync(built, staged)
   console.log(`[windows-process-tree] ${arch} -> ${staged}`)
 }

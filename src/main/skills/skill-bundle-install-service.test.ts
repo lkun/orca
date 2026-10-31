@@ -11,7 +11,7 @@ import { listManagedSkillInstalls } from './skill-install-provenance'
 const temporaryDirectories: string[] = []
 
 async function temporaryDirectory(): Promise<string> {
-  const directory = await mkdtemp(join(tmpdir(), 'orca-skill-bundle-install-test-'))
+  const directory = await mkdtemp(join(tmpdir(), 'occ-skill-bundle-install-test-'))
   temporaryDirectories.push(directory)
   return directory
 }
@@ -57,7 +57,7 @@ describe('skill bundle installation', () => {
         expectedArchiveSha256: bundle.archiveSha256,
         scope: 'global',
         homeDirectory: join(root, 'home'),
-        orcaStateDirectory: join(root, 'state'),
+        occStateDirectory: join(root, 'state'),
         detectedProviders: [],
         destinationIdentity: 'local-global',
         hostIdentity: 'host_1',
@@ -86,7 +86,7 @@ describe('skill bundle installation', () => {
       get(target, property) {
         if (property === 'aborted' && !target.aborted) {
           const extraction = readdirSync(destinationRoot, { withFileTypes: true }).find(
-            (entry) => entry.isDirectory() && entry.name.startsWith('.orca-skill-extract-')
+            (entry) => entry.isDirectory() && entry.name.startsWith('.occ-skill-extract-')
           )
           if (extraction) {
             const size = (() => {
@@ -121,7 +121,7 @@ describe('skill bundle installation', () => {
         expectedArchiveSha256: bundle.archiveSha256,
         scope: 'global',
         homeDirectory: join(root, 'home'),
-        orcaStateDirectory: join(root, 'state'),
+        occStateDirectory: join(root, 'state'),
         detectedProviders: [],
         destinationIdentity: 'local-global',
         hostIdentity: 'host_1',
@@ -174,7 +174,7 @@ describe('skill bundle installation', () => {
       expectedArchiveSha256: bundle.archiveSha256,
       scope: 'global',
       homeDirectory,
-      orcaStateDirectory: join(root, 'state'),
+      occStateDirectory: join(root, 'state'),
       detectedProviders: [],
       destinationIdentity: 'local-global',
       hostIdentity: 'host_1',
@@ -241,7 +241,7 @@ describe('skill bundle installation', () => {
       expectedArchiveSha256: bundle.archiveSha256,
       scope: 'global',
       homeDirectory,
-      orcaStateDirectory: join(root, 'state'),
+      occStateDirectory: join(root, 'state'),
       detectedProviders: ['claude'],
       destinationIdentity: 'local-global',
       hostIdentity: 'host_1'
@@ -271,7 +271,7 @@ describe('skill bundle installation', () => {
       expectedArchiveSha256: bundle.archiveSha256,
       scope: 'global',
       homeDirectory,
-      orcaStateDirectory: join(root, 'state'),
+      occStateDirectory: join(root, 'state'),
       detectedProviders: ['claude'],
       destinationIdentity: 'local-global',
       hostIdentity: 'host_1'

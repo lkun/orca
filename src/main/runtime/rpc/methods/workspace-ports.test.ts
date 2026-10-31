@@ -2,15 +2,15 @@ import '../unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
 import { RpcDispatcher } from '../dispatcher'
 import type { RpcRequest } from '../core'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { WORKSPACE_PORT_METHODS } from './workspace-ports'
 import type { WorkspacePortScanResult } from '../../../../shared/workspace-ports'
 
 function hostScopedRuntime(
-  methods: Partial<Pick<OrcaRuntimeService, 'scanWorkspacePortsOnHost' | 'killWorkspacePortOnHost'>>
-): OrcaRuntimeService {
+  methods: Partial<Pick<OCCRuntimeService, 'scanWorkspacePortsOnHost' | 'killWorkspacePortOnHost'>>
+): OCCRuntimeService {
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: dispatch reaches only the runtime id and the one host-scoped method each test stubs.
-  return { getRuntimeId: () => 'test-runtime', ...methods } as unknown as OrcaRuntimeService
+  return { getRuntimeId: () => 'test-runtime', ...methods } as unknown as OCCRuntimeService
 }
 
 function makeRequest(method: string, params?: unknown): RpcRequest {
@@ -27,7 +27,7 @@ describe('workspace port RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       scanWorkspacePorts: vi.fn().mockResolvedValue(scan)
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: WORKSPACE_PORT_METHODS })
 
     const response = await dispatcher.dispatch(
@@ -42,7 +42,7 @@ describe('workspace port RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       killWorkspacePort: vi.fn().mockResolvedValue({ ok: true })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: WORKSPACE_PORT_METHODS })
 
     const response = await dispatcher.dispatch(

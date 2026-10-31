@@ -4,16 +4,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   MacosTccPromptWatch,
   type LogStreamChild,
-  isOrcaAttributedPrompt,
+  isOCCAttributedPrompt,
   parseTccPromptEvent
 } from './macos-tcc-prompt-watch'
 
 // Captured from log stream on macOS 26.5 while displaying and denying a real consent dialog.
 const REAL_PROMPT_LINE =
-  '2026-07-27 15:35:26.136 Df tccd[79149:c81551c] [com.apple.TCC:access] AUTHREQ_PROMPTING: msgID=80871.81, service=kTCCServiceSystemPolicyDocumentsFolder, subject=Sub:{com.orca.tccprobe.shapecapture}Resp:{TCCDProcess: identifier=com.orca.tccprobe.shapecapture, pid=74171, auid=501, euid=501, binary_path=/private/tmp/tccprobe/TccProbe.app/Contents/MacOS/TccProbe},'
+  '2026-07-27 15:35:26.136 Df tccd[79149:c81551c] [com.apple.TCC:access] AUTHREQ_PROMPTING: msgID=80871.81, service=kTCCServiceSystemPolicyDocumentsFolder, subject=Sub:{com.occ.tccprobe.shapecapture}Resp:{TCCDProcess: identifier=com.occ.tccprobe.shapecapture, pid=74171, auid=501, euid=501, binary_path=/private/tmp/tccprobe/TccProbe.app/Contents/MacOS/TccProbe},'
 
 // Derived fixture: an agent accesses files while OCC is held responsible (#9756).
-const ORCA_APPDATA_LINE =
+const OCC_APPDATA_LINE =
   '2026-07-27 15:40:02.001 Df tccd[79149:c81551c] [com.apple.TCC:access] AUTHREQ_PROMPTING: msgID=80871.99, service=kTCCServiceSystemPolicyAppData, subject=Sub:{node-5555494487fbc7467d473fd8b0a397018cbf954b}Resp:{TCCDProcess: identifier=com.lkun.occ, pid=47548, auid=501, euid=501, binary_path=/opt/homebrew/Cellar/node/26.5.0/bin/node},'
 
 // Preflight checks dominate the TCC subsystem and must never count as a dialog.
@@ -24,14 +24,14 @@ describe('parseTccPromptEvent', () => {
   it('parses a real captured AUTHREQ_PROMPTING line', () => {
     expect(parseTccPromptEvent(REAL_PROMPT_LINE)).toEqual({
       service: 'kTCCServiceSystemPolicyDocumentsFolder',
-      accessingIdentifier: 'com.orca.tccprobe.shapecapture',
-      responsibleIdentifier: 'com.orca.tccprobe.shapecapture',
+      accessingIdentifier: 'com.occ.tccprobe.shapecapture',
+      responsibleIdentifier: 'com.occ.tccprobe.shapecapture',
       binaryPath: '/private/tmp/tccprobe/TccProbe.app/Contents/MacOS/TccProbe'
     })
   })
 
   it('separates the accessing binary from the responsible app', () => {
-    const event = parseTccPromptEvent(ORCA_APPDATA_LINE)
+    const event = parseTccPromptEvent(OCC_APPDATA_LINE)
     expect(event?.responsibleIdentifier).toBe('com.lkun.occ')
     expect(event?.accessingIdentifier).toBe('node-5555494487fbc7467d473fd8b0a397018cbf954b')
     expect(event?.binaryPath).toBe('/opt/homebrew/Cellar/node/26.5.0/bin/node')
@@ -45,7 +45,7 @@ describe('parseTccPromptEvent', () => {
   })
 })
 
-describe('isOrcaAttributedPrompt', () => {
+describe('isOCCAttributedPrompt', () => {
   it('accepts the app and detached terminal helper across OCC build identities', () => {
     for (const id of [
       'com.lkun.occ',
@@ -56,7 +56,7 @@ describe('isOrcaAttributedPrompt', () => {
       'com.lkun.occ.local.helper'
     ]) {
       expect(
-        isOrcaAttributedPrompt({
+        isOCCAttributedPrompt({
           service: 'kTCCServiceSystemPolicyAppData',
           accessingIdentifier: 'find',
           responsibleIdentifier: id
@@ -67,7 +67,7 @@ describe('isOrcaAttributedPrompt', () => {
 
   it('rejects dialogs another app is responsible for', () => {
     expect(
-      isOrcaAttributedPrompt({
+      isOCCAttributedPrompt({
         service: 'kTCCServiceSystemPolicyAppData',
         accessingIdentifier: 'find',
         responsibleIdentifier: 'com.apple.Terminal'
@@ -77,9 +77,9 @@ describe('isOrcaAttributedPrompt', () => {
 
   it('rejects unrelated services even when OCC is responsible', () => {
     expect(
-      isOrcaAttributedPrompt({
+      isOCCAttributedPrompt({
         service: 'kTCCServiceMicrophone',
-        accessingIdentifier: 'orca',
+        accessingIdentifier: 'occ',
         responsibleIdentifier: 'com.lkun.occ'
       })
     ).toBe(false)
@@ -143,7 +143,7 @@ describe('MacosTccPromptWatch', () => {
     stdout.write('Filtering the log data using "subsystem == ..."\n')
     stdout.write(`${PREFLIGHT_LINE}\n`)
     stdout.write(`${REAL_PROMPT_LINE}\n`) // another app is responsible
-    stdout.write(`${ORCA_APPDATA_LINE}\n`)
+    stdout.write(`${OCC_APPDATA_LINE}\n`)
     await new Promise((resolve) => {
       setImmediate(resolve)
     })

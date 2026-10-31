@@ -7,7 +7,7 @@ import type { AgentLaunchPreferences } from '../../../../../../shared/agent-sess
 import type { TuiAgent } from '../../../../../../shared/tui-agent'
 import { executeAgentLaunch } from '../../../../../agent-launch/agent-launch-executor'
 import type { AgentLaunchSurfaceFactory } from '../../../../../agent-launch/agent-launch-surface-factories'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import {
   WORKER_START_VOCABULARY,
@@ -39,7 +39,7 @@ export type WorkerAgentPlacement = {
 }
 
 type WorkerAgentPlacementArgs = {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   dispatchId: string
   taskId: string

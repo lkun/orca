@@ -78,7 +78,7 @@ describe.each([
   { name: 'workspace space', open: () => createOrFocusWorkspaceSpaceWindow(store) }
 ])('$name renderer recovery', ({ open }) => {
   it('preserves a healthy document and reloads a crashed renderer on manual reopen', () => {
-    vi.stubEnv('ORCA_BACKGROUND_LAUNCH', '1')
+    vi.stubEnv('OCC_BACKGROUND_LAUNCH', '1')
     const first = open()
     const window = windows[0]
 

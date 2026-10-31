@@ -47,7 +47,7 @@ function record(leafId: string, id: string): SleepingAgentSessionRecord {
 }
 
 async function storeWithSplitTab(hostId?: string): Promise<{ store: Store; directory: string }> {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-layout-sleep-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-layout-sleep-'))
   directories.push(directory)
   const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   const window = new WindowSession(getDefaultWorkspaceSession())

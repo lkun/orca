@@ -12,7 +12,7 @@ import {
   writeFileSync
 } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { describeProcessFailure } from './process-failure-message.mjs'
 import { isDirectInvocation } from './script-entry-detection.mjs'
 import { DESKTOP_RC_TAG, DESKTOP_STABLE_TAG } from './release-tag-patterns.mjs'
@@ -24,7 +24,7 @@ const REQUIRED_FILES = [
   'preload/index.js',
   'renderer/index.html',
   'renderer/.vite/manifest.json',
-  'renderer/.orca-web-client-files.json',
+  'renderer/.occ-web-client-files.json',
   'web/web-index.html',
   'mobile-web/manifest.json',
   'package.json'
@@ -55,34 +55,34 @@ export function releaseBuildIdentity(tag) {
 export function releaseJavascriptConfiguration(root, env = process.env) {
   const sourceSha = command('git', ['rev-parse', 'HEAD'], root)
   assert.match(sourceSha, /^[a-f0-9]{40}$/)
-  if (env.ORCA_RELEASE_JAVASCRIPT_SOURCE_SHA) {
+  if (env.OCC_RELEASE_JAVASCRIPT_SOURCE_SHA) {
     assert.equal(
       sourceSha,
-      env.ORCA_RELEASE_JAVASCRIPT_SOURCE_SHA,
+      env.OCC_RELEASE_JAVASCRIPT_SOURCE_SHA,
       'Release checkout differs from bundle source'
     )
   }
   const { version, packageManager } = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
-  const requestedIdentity = env.ORCA_RELEASE_JAVASCRIPT_BUILD_IDENTITY
+  const requestedIdentity = env.OCC_RELEASE_JAVASCRIPT_BUILD_IDENTITY
   const identity = requestedIdentity === 'dev' ? 'dev' : releaseBuildIdentity(`v${version}`)
   if (requestedIdentity) {
     assert.equal(requestedIdentity, identity, 'Invalid JavaScript build identity')
   }
   if (identity === 'dev') {
-    assert(!env.ORCA_BUILD_IDENTITY, 'Development bundle must not set an official build identity')
-    assert(!env.ORCA_POSTHOG_WRITE_KEY, 'Development bundle must not set a release telemetry key')
+    assert(!env.OCC_BUILD_IDENTITY, 'Development bundle must not set an official build identity')
+    assert(!env.OCC_POSTHOG_WRITE_KEY, 'Development bundle must not set a release telemetry key')
   } else {
-    assert.equal(env.ORCA_BUILD_IDENTITY, identity, 'Release build identity differs from version')
-    assert(env.ORCA_POSTHOG_WRITE_KEY, 'Missing release telemetry key')
+    assert.equal(env.OCC_BUILD_IDENTITY, identity, 'Release build identity differs from version')
+    assert(env.OCC_POSTHOG_WRITE_KEY, 'Missing release telemetry key')
   }
-  assert(env.ORCA_DIAGNOSTICS_TOKEN_URL, 'Missing release diagnostics URL')
+  assert(env.OCC_DIAGNOSTICS_TOKEN_URL, 'Missing release diagnostics URL')
   return {
     sourceSha,
     version,
     packageManager,
     identity,
-    diagnosticsTokenUrl: env.ORCA_DIAGNOSTICS_TOKEN_URL,
-    telemetryKeySha256: identity === 'dev' ? null : sha256(env.ORCA_POSTHOG_WRITE_KEY)
+    diagnosticsTokenUrl: env.OCC_DIAGNOSTICS_TOKEN_URL,
+    telemetryKeySha256: identity === 'dev' ? null : sha256(env.OCC_POSTHOG_WRITE_KEY)
   }
 }
 
@@ -91,7 +91,7 @@ export function javascriptInventory(directory, prefix = '', { excludeHostOutput 
     .sort((left, right) => (left.name < right.name ? -1 : left.name > right.name ? 1 : 0))
     .flatMap((entry) => {
       const name = prefix ? `${prefix}/${entry.name}` : entry.name
-      const hostOutput = ['relay', 'orcad-template', 'orcad-prebuilds'].includes(name.split('/')[0])
+      const hostOutput = ['relay', 'occd-template', 'occd-prebuilds'].includes(name.split('/')[0])
       if (excludeHostOutput && hostOutput) {
         return []
       }

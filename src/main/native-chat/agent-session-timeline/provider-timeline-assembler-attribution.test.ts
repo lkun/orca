@@ -137,7 +137,7 @@ describe('a send that names its turn', () => {
       join: { turn: 't1' }
     })
     rig.assembler.apply({ type: 'turn.open', turn: 't1', at: 1_000 })
-    expect(await rig.turn('t1')).toMatchObject({ userItemId: 'orca:send1', requestedAt: 900 })
+    expect(await rig.turn('t1')).toMatchObject({ userItemId: 'occ:send1', requestedAt: 900 })
   })
 
   it('never replaces an opener another writer gave the running turn', async () => {
@@ -149,11 +149,11 @@ describe('a send that names its turn', () => {
     }
     await rig.journal.appendItem(
       identityOf(providerTurnItemId('t1')),
-      agentJournalTurnBody({ ...running, userItemId: 'orca:first', requestedAt: 800 }),
+      agentJournalTurnBody({ ...running, userItemId: 'occ:first', requestedAt: 800 }),
       { fence: 1, turnScope: { kind: 'thread' } }
     )
     rig.assembler.apply({ type: 'input.accepted', clientMessageId: 'later', requestedAt: 900 })
-    expect(await rig.turn('t1')).toMatchObject({ userItemId: 'orca:first', requestedAt: 800 })
+    expect(await rig.turn('t1')).toMatchObject({ userItemId: 'occ:first', requestedAt: 800 })
   })
 
   it('waits for its own turn rather than the next one to open', async () => {
@@ -174,9 +174,9 @@ describe('a send that names its turn', () => {
     rig.assembler.apply({ type: 'turn.open', turn: 't3', at: 3_000 })
     rig.assembler.apply({ type: 'turn.end', at: 4_000, state: 'completed' })
     rig.assembler.apply({ type: 'turn.open', turn: 't2', at: 5_000 })
-    expect((await rig.turn('t1'))?.userItemId).toBe('orca:send-a')
+    expect((await rig.turn('t1'))?.userItemId).toBe('occ:send-a')
     expect((await rig.turn('t3'))?.userItemId).toBe(providerTurnItemId('t3'))
-    expect((await rig.turn('t2'))?.userItemId).toBe('orca:send-b')
+    expect((await rig.turn('t2'))?.userItemId).toBe('occ:send-b')
   })
 })
 

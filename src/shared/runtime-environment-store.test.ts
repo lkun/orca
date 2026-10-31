@@ -19,7 +19,7 @@ import {
   markEnvironmentUsed,
   updateEnvironmentFromPairingCode
 } from './runtime-environment-store'
-import { addManagedOrcadEnvironment } from './runtime-environment-managed-orcad-store'
+import { addManagedOCCdEnvironment } from './runtime-environment-managed-occd-store'
 
 function pairingCode(
   endpoint = 'ws://127.0.0.1:6768',
@@ -56,13 +56,13 @@ describe('runtime environment store', () => {
   function writeProfileKeypair(userDataPath: string, fill: number): void {
     const publicKeyB64 = Buffer.from(new Uint8Array(32).fill(fill)).toString('base64')
     writeFileSync(
-      join(userDataPath, 'orca-e2ee-keypair.json'),
+      join(userDataPath, 'occ-e2ee-keypair.json'),
       JSON.stringify({ v: 1, publicKeyB64, secretKeyB64: publicKeyB64 })
     )
   }
 
   it('refuses a pairing code that this same OCC profile issued', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-'))
     tempDirs.push(userDataPath)
     writeProfileKeypair(userDataPath, 1)
 
@@ -76,7 +76,7 @@ describe('runtime environment store', () => {
   })
 
   it('refuses re-pairing a saved server with a code this same OCC profile issued', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-'))
     tempDirs.push(userDataPath)
     const environment = addEnvironmentFromPairingCode(userDataPath, {
       name: 'dev box',
@@ -93,7 +93,7 @@ describe('runtime environment store', () => {
   })
 
   it('pairs a server with a different key even at a loopback address', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-'))
     tempDirs.push(userDataPath)
     writeProfileKeypair(userDataPath, 2)
 
@@ -105,7 +105,7 @@ describe('runtime environment store', () => {
   })
 
   it('rejects duplicate server names instead of silently replacing the saved server', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-'))
     tempDirs.push(userDataPath)
 
     const first = addEnvironmentFromPairingCode(userDataPath, {
@@ -123,7 +123,7 @@ describe('runtime environment store', () => {
   })
 
   it('rejects a name that differs only in case or surrounding spaces, as --environment resolves it', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-'))
     tempDirs.push(userDataPath)
 
     const first = addEnvironmentFromPairingCode(userDataPath, {
@@ -143,7 +143,7 @@ describe('runtime environment store', () => {
   })
 
   it('advances pairing revisions across equal and backward clock readings', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-'))
     tempDirs.push(userDataPath)
     const environment = addEnvironmentFromPairingCode(userDataPath, {
       name: 'dev box',
@@ -172,7 +172,7 @@ describe('runtime environment store', () => {
   })
 
   it('keeps SSH-tunnel metadata only while the pairing endpoint is loopback', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-'))
     tempDirs.push(userDataPath)
     const environment = addEnvironmentFromPairingCode(userDataPath, {
       name: 'tunneled box',
@@ -195,7 +195,7 @@ describe('runtime environment store', () => {
   })
 
   it('throttles lastUsedAt writes so it does not rewrite the store on every runtime call', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-'))
     tempDirs.push(userDataPath)
     const env = addEnvironmentFromPairingCode(userDataPath, {
       name: 'dev box',
@@ -216,7 +216,7 @@ describe('runtime environment store', () => {
   })
 
   it('persists immediately when the runtimeId changes within the throttle window', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-'))
     tempDirs.push(userDataPath)
     const env = addEnvironmentFromPairingCode(userDataPath, {
       name: 'dev box',
@@ -233,7 +233,7 @@ describe('runtime environment store', () => {
   })
 
   it('persists paired device identity from pairing and status backfill', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-'))
     tempDirs.push(userDataPath)
     const paired = addEnvironmentFromPairingCode(userDataPath, {
       name: 'paired box',
@@ -259,7 +259,7 @@ describe('runtime environment store', () => {
   })
 
   it('rejects an oversized sparse environment store before parsing it', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-bound-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-bound-'))
     tempDirs.push(userDataPath)
     const path = getEnvironmentStorePath(userDataPath)
     writeFileSync(path, '{"version":1,"environments":[]}')
@@ -271,7 +271,7 @@ describe('runtime environment store', () => {
   it('backs up a NUL-filled store when a server is saved over it', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     onTestFinished(() => warn.mockRestore())
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-nul-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-nul-'))
     tempDirs.push(userDataPath)
     writeFileSync(getEnvironmentStorePath(userDataPath), Buffer.alloc(640))
 
@@ -292,7 +292,7 @@ describe('runtime environment store', () => {
 
     expect(listEnvironments(userDataPath)).toEqual([added])
     const backups = readdirSync(userDataPath).filter((name) =>
-      name.startsWith('orca-environments.json.corrupt-')
+      name.startsWith('occ-environments.json.corrupt-')
     )
     // The rejected save above left no copy; only the save that replaced the file did.
     expect(backups).toHaveLength(1)
@@ -302,15 +302,15 @@ describe('runtime environment store', () => {
   it('registers a managed SSH server over a NUL-filled store', () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     onTestFinished(() => warn.mockRestore())
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-nul-managed-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-nul-managed-'))
     tempDirs.push(userDataPath)
     writeFileSync(getEnvironmentStorePath(userDataPath), Buffer.alloc(640))
 
-    const added = addManagedOrcadEnvironment(userDataPath, {
+    const added = addManagedOCCdEnvironment(userDataPath, {
       id: 'managed',
       name: 'ssh box',
       pairingCode: pairingCode('ws://127.0.0.1:41000'),
-      orcadDeployment: {
+      occdDeployment: {
         sshTargetId: 'target',
         sshTargetGeneration: 1,
         localPort: 41000,
@@ -325,19 +325,19 @@ describe('runtime environment store', () => {
     ['a newer format', '{"version":2,"environments":[]}'],
     ['truncated JSON that may still hold servers', '{"version":1,"environments":[{"id":"a"']
   ])('does not overwrite %s when a server is saved', (_label, contents) => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-invalid-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-invalid-'))
     tempDirs.push(userDataPath)
     writeFileSync(getEnvironmentStorePath(userDataPath), contents)
 
     expect(() =>
       addEnvironmentFromPairingCode(userDataPath, { name: 'dev box', pairingCode: pairingCode() })
     ).toThrow(RuntimeEnvironmentStoreError)
-    expect(readdirSync(userDataPath)).toEqual(['orca-environments.json'])
+    expect(readdirSync(userDataPath)).toEqual(['occ-environments.json'])
     expect(readFileSync(getEnvironmentStorePath(userDataPath), 'utf8')).toBe(contents)
   })
 
   it('rejects an oversized write without replacing the durable environment list', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-store-write-bound-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-store-write-bound-'))
     tempDirs.push(userDataPath)
     const first = addEnvironmentFromPairingCode(userDataPath, {
       name: 'dev box',

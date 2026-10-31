@@ -9,7 +9,7 @@ import { buildLinearIssueWorkspaceAttachmentIndex } from '@/lib/linear-issue-wor
 import {
   collectLinkedLinearIssueRefsFromWorktrees,
   linkedLinearIssueRefsSignature
-} from '@/components/task-page/linear/task-page-linear-in-orca-issues'
+} from '@/components/task-page/linear/task-page-linear-in-occ-issues'
 import type { LinearMode } from '@/components/task-page/task-page-localized-options'
 import {
   type LinearViewMode,
@@ -73,7 +73,7 @@ export function useTaskPageLinearViewStatePrelude(model: TaskPageDetailRoutingMo
     () => buildLinearIssueWorkspaceAttachmentIndex(linearAttachmentWorkspaces),
     [linearAttachmentWorkspaces]
   )
-  const inOrcaLinkedLinearRefs = useMemo(
+  const inOCCLinkedLinearRefs = useMemo(
     () =>
       collectLinkedLinearIssueRefsFromWorktrees(linearAttachmentWorkspaces, {
         workspaceId: selectedLinearWorkspaceId,
@@ -81,15 +81,15 @@ export function useTaskPageLinearViewStatePrelude(model: TaskPageDetailRoutingMo
       }),
     [linearAttachmentWorkspaces, linearStatus.workspaces, selectedLinearWorkspaceId]
   )
-  const inOrcaLinkedLinearRefsSignature = useMemo(
-    () => linkedLinearIssueRefsSignature(inOrcaLinkedLinearRefs),
-    [inOrcaLinkedLinearRefs]
+  const inOCCLinkedLinearRefsSignature = useMemo(
+    () => linkedLinearIssueRefsSignature(inOCCLinkedLinearRefs),
+    [inOCCLinkedLinearRefs]
   )
-  const inOrcaLinkedLinearRefsRef = useRef(inOrcaLinkedLinearRefs)
-  // Keep latest linked refs for the in-orca loader without re-running it on identity churn.
+  const inOCCLinkedLinearRefsRef = useRef(inOCCLinkedLinearRefs)
+  // Keep latest linked refs for the in-occ loader without re-running it on identity churn.
   useEffect(() => {
-    inOrcaLinkedLinearRefsRef.current = inOrcaLinkedLinearRefs
-  }, [inOrcaLinkedLinearRefs])
+    inOCCLinkedLinearRefsRef.current = inOCCLinkedLinearRefs
+  }, [inOCCLinkedLinearRefs])
 
   const source = model.linearTaskSourceContext ?? defaultScopeSource(model.settings)
   const scopeKey = useAppStore(() => getLinearSourceScope(source).contextKey)
@@ -102,7 +102,7 @@ export function useTaskPageLinearViewStatePrelude(model: TaskPageDetailRoutingMo
       appliedLinearSearch,
       linearIssueLimit,
       linearAttributeFilter,
-      linearMode === 'in-orca' ? inOrcaLinkedLinearRefsSignature : null
+      linearMode === 'in-occ' ? inOCCLinkedLinearRefsSignature : null
     ]),
     [],
     scope
@@ -171,9 +171,9 @@ export function useTaskPageLinearViewStatePrelude(model: TaskPageDetailRoutingMo
   const nextModel = Object.assign(model, {
     linearAttachmentWorkspaces,
     linearIssueAttachmentIndex,
-    inOrcaLinkedLinearRefs,
-    inOrcaLinkedLinearRefsSignature,
-    inOrcaLinkedLinearRefsRef,
+    inOCCLinkedLinearRefs,
+    inOCCLinkedLinearRefsSignature,
+    inOCCLinkedLinearRefsRef,
 
     linearMode: linearMode,
     setLinearMode: setLinearMode,

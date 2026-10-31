@@ -15,8 +15,8 @@ if (process.argv[2] === 'models') {
   process.exit(0)
 }
 
-const reportPath = process.env.ORCA_ACP_CONTRACT_REPORT_PATH
-const ackPath = process.env.ORCA_ACP_CONTRACT_ACK_PATH
+const reportPath = process.env.OCC_ACP_CONTRACT_REPORT_PATH
+const ackPath = process.env.OCC_ACP_CONTRACT_ACK_PATH
 const sessionId = 'ses_wsl_lane_opencode'
 const messageId = 'msg_wsl_lane_opencode_reply'
 const report = {
@@ -25,7 +25,7 @@ const report = {
   cwd: process.cwd(),
   env: Object.fromEntries(
     Object.entries(process.env).filter(
-      ([key]) => key.startsWith('ORCA_') || key.startsWith('OPENCODE_') || key === 'XDG_DATA_HOME'
+      ([key]) => key.startsWith('OCC_') || key.startsWith('OPENCODE_') || key === 'XDG_DATA_HOME'
     )
   ),
   methods: [],
@@ -34,7 +34,7 @@ const report = {
 }
 // The model-catalog probe runs without a chat session; only the chat's child owns the report.
 const writeReport = () => {
-  if (reportPath && process.env.ORCA_AGENT_SESSION_ID) {
+  if (reportPath && process.env.OCC_AGENT_SESSION_ID) {
     writeFileSync(reportPath, JSON.stringify(report))
   }
 }
@@ -155,5 +155,5 @@ createInterface({ input: process.stdin }).on('line', (line) => {
 process.stdin.on('end', () => process.exit(0))
 setTimeout(
   () => process.exit(3),
-  Number(process.env.ORCA_ACP_CONTRACT_TIMEOUT_MS ?? 120_000)
+  Number(process.env.OCC_ACP_CONTRACT_TIMEOUT_MS ?? 120_000)
 ).unref()

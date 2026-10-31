@@ -89,8 +89,8 @@ it('recognizes an older daemon without replacement and preserves real transport 
     .spyOn(DaemonClient.prototype, 'request')
     .mockRejectedValue(new Error('Unknown request type: terminalLimitStatus'))
   const adapter = new DaemonPtyAdapter({
-    socketPath: '/tmp/orca-limit-old.sock',
-    tokenPath: '/tmp/orca-limit-old.token'
+    socketPath: '/tmp/occ-limit-old.sock',
+    tokenPath: '/tmp/occ-limit-old.token'
   })
   try {
     await expect(adapter.terminalLimit()).resolves.toBeNull()

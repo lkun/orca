@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-appimage=${1:-/input/orca.AppImage}
+appimage=${1:-/input/occ.AppImage}
 startup_timeout_seconds=90
 if [[ $# -gt 1 ]]; then
   echo "usage: run-appimage-desktop-startup-case.sh [appimage]" >&2
@@ -10,11 +10,11 @@ fi
 
 ((EUID == 0)) || { echo 'FAIL: PID namespace assertion requires container root' >&2; exit 1; }
 
-remove_state_dir_on_exit=${ORCA_STARTUP_STATE_DIR_CLEANUP:-0}
-if [[ -n "${ORCA_STARTUP_STATE_DIR:-}" ]]; then
-  state_dir=$ORCA_STARTUP_STATE_DIR
+remove_state_dir_on_exit=${OCC_STARTUP_STATE_DIR_CLEANUP:-0}
+if [[ -n "${OCC_STARTUP_STATE_DIR:-}" ]]; then
+  state_dir=$OCC_STARTUP_STATE_DIR
 else
-  if ! state_dir=$(mktemp -d /tmp/orca-appimage-startup.XXXXXX); then
+  if ! state_dir=$(mktemp -d /tmp/occ-appimage-startup.XXXXXX); then
     echo 'FAIL: unable to create the AppImage startup state directory' >&2
     exit 1
   fi
@@ -133,7 +133,7 @@ dump_logs() {
 
 cleanup_state_dir() {
   [[ "$remove_state_dir_on_exit" == 1 ]] || return 0
-  [[ "$state_dir" =~ ^/tmp/orca-appimage-startup\.[^/]+$ ]] || return 0
+  [[ "$state_dir" =~ ^/tmp/occ-appimage-startup\.[^/]+$ ]] || return 0
   [[ -d "$state_dir" && ! -L "$state_dir" && -O "$state_dir" ]] || return 0
   rm -rf -- "$state_dir"
 }
@@ -167,7 +167,7 @@ cleanup() {
   local status=$?
   trap - EXIT
   if [[ -n "$terminal_handle" && -x "$bundled_cli" ]]; then
-    ORCA_USER_DATA_PATH="$profile" timeout 15s "$bundled_cli" terminal close \
+    OCC_USER_DATA_PATH="$profile" timeout 15s "$bundled_cli" terminal close \
       --terminal "$terminal_handle" --json >/dev/null 2>&1 || true
   fi
   if identity_alive "$launcher_pid" "$launcher_start_ticks"; then
@@ -202,24 +202,24 @@ export XDG_DATA_HOME="$state_dir/data"
 export XDG_STATE_HOME="$state_dir/state"
 export CODEX_HOME="$HOME/.codex"
 export CLAUDE_CONFIG_DIR="$HOME/.claude"
-export ORCA_E2E_HOME_DIR="$HOME"
-export ORCA_E2E_USER_DATA_DIR="$profile"
-export ORCA_BACKGROUND_LAUNCH=1
-export ORCA_DISABLE_MACOS_LOGIN_SHELL=1
+export OCC_E2E_HOME_DIR="$HOME"
+export OCC_E2E_USER_DATA_DIR="$profile"
+export OCC_BACKGROUND_LAUNCH=1
+export OCC_DISABLE_MACOS_LOGIN_SHELL=1
 # The desktop must produce these values itself for its packaged PTY.
-unset ORCA_CLI_COMMAND ORCA_USER_DATA_PATH
+unset OCC_CLI_COMMAND OCC_USER_DATA_PATH
 export XDG_CONFIG_HOME="$state_dir/config"
 export XDG_CACHE_HOME="$state_dir/cache"
 export XDG_RUNTIME_DIR="$state_dir/runtime"
 export LIBGL_ALWAYS_SOFTWARE=1
-export ORCA_STARTUP_DIAGNOSTICS=1
+export OCC_STARTUP_DIAGNOSTICS=1
 ulimit -c 0
 
 [[ -r "$appimage" ]] || { echo "FAIL: AppImage is not readable: $appimage" >&2; exit 1; }
 [[ -x "$appimage" ]] || { echo "FAIL: AppImage is not executable: $appimage" >&2; exit 1; }
 
 appimage_args=(--appimage-extract-and-run)
-if [[ -c /dev/fuse && ${ORCA_STARTUP_APPIMAGE_EXTRACT_AND_RUN:-0} != 1 ]]; then
+if [[ -c /dev/fuse && ${OCC_STARTUP_APPIMAGE_EXTRACT_AND_RUN:-0} != 1 ]]; then
   appimage_args=()
 fi
 printf 'AppImage desktop launch mode: %s\n' "${appimage_args[*]:-fuse}"
@@ -258,7 +258,7 @@ if ! identity_alive "$launcher_pid" "$launcher_start_ticks"; then
 fi
 
 collect_process_tree
-shim="$profile/linux-orca-cli-shim/orca"
+shim="$profile/linux-occ-cli-shim/occ"
 [[ -x "$shim" ]] || { echo 'FAIL: first-use desktop shim was not written' >&2; exit 1; }
 # A cached dispatcher would miss the first-use live-launcher boundary.
 grep -q '^expected_runtime_identity=' "$shim"
@@ -275,9 +275,9 @@ while ((SECONDS < deadline)); do
     report_launcher_exit 'runtime transport readiness'
   fi
   if read -r runtime_pid runtime_id < <(jq -er '[.pid, .runtimeId] | @tsv' \
-      "$profile/orca-runtime.json" 2>/dev/null) &&
+      "$profile/occ-runtime.json" 2>/dev/null) &&
     [[ "$runtime_pid" =~ ^[1-9][0-9]*$ && -n "$runtime_id" ]] &&
-    ORCA_USER_DATA_PATH="$profile" timeout --kill-after=1s 2s "$bundled_cli" status --json \
+    OCC_USER_DATA_PATH="$profile" timeout --kill-after=1s 2s "$bundled_cli" status --json \
       > "$state_dir/readiness-status.json" 2> "$state_dir/readiness-status.stderr" &&
     jq -e --arg id "$runtime_id" \
       '.ok == true and .result.runtime.reachable == true and .result.runtime.runtimeId == $id' \
@@ -306,7 +306,7 @@ if ! timeout --kill-after=5s 10s "${namespace_command[@]}" true 2> "$state_dir/p
   fi
   namespace_command=("$bwrap_path" --unshare-pid --bind / / --proc /proc --die-with-parent --)
 fi
-ORCA_USER_DATA_PATH="$profile" timeout --kill-after=5s 30s "${namespace_command[@]}" \
+OCC_USER_DATA_PATH="$profile" timeout --kill-after=5s 30s "${namespace_command[@]}" \
   bash -euc '
     [[ $(readlink /proc/self/ns/pid) != "$4" ]]
     [[ ! -e "/proc/$1" ]]
@@ -326,13 +326,13 @@ git init --quiet "$repo"
 git -C "$repo" -c user.name=DesktopOracle -c user.email=desktop-oracle@example.invalid \
   commit --quiet --allow-empty -m 'Initialize scratch repository'
 cli() {
-  ORCA_USER_DATA_PATH="$profile" timeout 30s "$bundled_cli" "$@" --json
+  OCC_USER_DATA_PATH="$profile" timeout 30s "$bundled_cli" "$@" --json
 }
 cli repo add --path "$repo" > "$state_dir/repo-add.json"
 # Only the real terminal shell expands the two public path variables; no inherited override.
 cat > "$HOME/desktop-oracle-env.sh" <<'TERMINAL_SCRIPT'
 #!/usr/bin/env bash
-printf '%s\n' "$ORCA_CLI_COMMAND" "$ORCA_USER_DATA_PATH" > "$HOME/desktop-oracle-env.txt"
+printf '%s\n' "$OCC_CLI_COMMAND" "$OCC_USER_DATA_PATH" > "$HOME/desktop-oracle-env.txt"
 exec bash --noprofile --norc
 TERMINAL_SCRIPT
 if ! cli terminal create --worktree "path:$repo" \
@@ -361,7 +361,7 @@ if [[ ${#terminal_env[@]} != 2 || ${terminal_env[0]} != "$shim" || ${terminal_en
 fi
 jq -cn --slurpfile created "$state_dir/terminal-create.json" \
   --arg command "${terminal_env[0]}" --arg profile "${terminal_env[1]}" \
-  '{assertion:"packaged-terminal-owning-cli", terminal:$created[0].result.terminal.handle, ptyId:$created[0].result.terminal.ptyId, ORCA_CLI_COMMAND:$command, ORCA_USER_DATA_PATH:$profile}'
+  '{assertion:"packaged-terminal-owning-cli", terminal:$created[0].result.terminal.handle, ptyId:$created[0].result.terminal.ptyId, OCC_CLI_COMMAND:$command, OCC_USER_DATA_PATH:$profile}'
 
 collect_process_tree
 xvfb_pids=()

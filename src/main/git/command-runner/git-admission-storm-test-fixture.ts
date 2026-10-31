@@ -31,20 +31,20 @@ export type InteractiveQueueSnapshot = {
 }
 
 const tempRoots: string[] = []
-const originalAdmissionDisabled = process.env.ORCA_GIT_ADMISSION_DISABLED
+const originalAdmissionDisabled = process.env.OCC_GIT_ADMISSION_DISABLED
 
 afterEach(async () => {
   if (originalAdmissionDisabled === undefined) {
-    delete process.env.ORCA_GIT_ADMISSION_DISABLED
+    delete process.env.OCC_GIT_ADMISSION_DISABLED
   } else {
-    process.env.ORCA_GIT_ADMISSION_DISABLED = originalAdmissionDisabled
+    process.env.OCC_GIT_ADMISSION_DISABLED = originalAdmissionDisabled
   }
   _resetGitAdmissionForTests()
   await Promise.all(tempRoots.splice(0).map((root) => rm(root, { recursive: true, force: true })))
 })
 
 export async function createStormRoot(label: string): Promise<string> {
-  const root = await mkdtemp(path.join(tmpdir(), `orca-git-storm-${label}-`))
+  const root = await mkdtemp(path.join(tmpdir(), `occ-git-storm-${label}-`))
   tempRoots.push(root)
   return root
 }
@@ -69,10 +69,10 @@ async function createStubGit(root: string): Promise<string> {
     stubPath,
     `#!/bin/sh
 set -eu
-live="$ORCA_STUB_STATE_DIR/$ORCA_STUB_ID.live"
+live="$OCC_STUB_STATE_DIR/$OCC_STUB_ID.live"
 : > "$live"
 trap 'rm -f "$live"' EXIT HUP INT TERM
-sleep "$(awk "BEGIN { print $ORCA_STUB_SLEEP_MS / 1000 }")"
+sleep "$(awk "BEGIN { print $OCC_STUB_SLEEP_MS / 1000 }")"
 printf 'stub:%s\\n' "$*"
 `
   )
@@ -82,9 +82,9 @@ printf 'stub:%s\\n' "$*"
 
 function setAdmissionMode(mode: StormMeasurement['mode']): void {
   if (mode === 'disabled') {
-    process.env.ORCA_GIT_ADMISSION_DISABLED = '1'
+    process.env.OCC_GIT_ADMISSION_DISABLED = '1'
   } else {
-    delete process.env.ORCA_GIT_ADMISSION_DISABLED
+    delete process.env.OCC_GIT_ADMISSION_DISABLED
   }
 }
 
@@ -130,9 +130,9 @@ export async function measureStorm(mode: StormMeasurement['mode']): Promise<Stor
       cwd: repoDirs[index % repoDirs.length],
       env: {
         ...baseEnv,
-        ORCA_STUB_ID: `background-${index}`,
-        ORCA_STUB_SLEEP_MS: index % 10 === 0 ? '5000' : '200',
-        ORCA_STUB_STATE_DIR: stateDir
+        OCC_STUB_ID: `background-${index}`,
+        OCC_STUB_SLEEP_MS: index % 10 === 0 ? '5000' : '200',
+        OCC_STUB_STATE_DIR: stateDir
       },
       admissionTier: 'background'
     })
@@ -159,9 +159,9 @@ export async function measureStorm(mode: StormMeasurement['mode']): Promise<Stor
                   cwd: repoDirs[index % repoDirs.length],
                   env: {
                     ...baseEnv,
-                    ORCA_STUB_ID: `interactive-${index}`,
-                    ORCA_STUB_SLEEP_MS: String(Math.max(10, concurrentAtInjection * 12)),
-                    ORCA_STUB_STATE_DIR: stateDir
+                    OCC_STUB_ID: `interactive-${index}`,
+                    OCC_STUB_SLEEP_MS: String(Math.max(10, concurrentAtInjection * 12)),
+                    OCC_STUB_STATE_DIR: stateDir
                   },
                   admissionTier: 'interactive'
                 })

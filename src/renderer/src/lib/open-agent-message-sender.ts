@@ -158,7 +158,7 @@ async function lookUpSender(
 
 /** Older hosts allow root-ID chats and terminal-handle opens; other identities require updating that host. */
 function lookUpOnOlderHost(party: Sender['party'], host: RuntimeClientTarget): Lookup {
-  const sessionId = party.orcaSessionId
+  const sessionId = party.occSessionId
   if (sessionId) {
     const state = useAppStore.getState()
     const tabsByWorktree = state.unifiedTabsByWorktree
@@ -193,7 +193,7 @@ function showLookupFailure(failure: LookupFailure): void {
       failure === 'older-host'
         ? ['unsupported']
         : failure === 'update'
-          ? ['updateOrcaToOpenChat']
+          ? ['updateOCCToOpenChat']
           : ['unreachable', 'tryAgain']
     )
   )

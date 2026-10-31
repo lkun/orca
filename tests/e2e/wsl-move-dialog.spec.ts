@@ -14,10 +14,10 @@ import {
   type Page
 } from '@stablyai/playwright-test'
 import { getE2ECompletedOnboardingProfile } from './helpers/e2e-completed-onboarding-profile'
-import { getOrcaElectronLaunchArgs } from './helpers/electron-launch-args'
+import { getOCCElectronLaunchArgs } from './helpers/electron-launch-args'
 import { cleanupE2EDaemons, closeElectronAppForE2E } from './helpers/electron-process-shutdown'
 import { createElectronHomeIsolation } from './helpers/electron-home-isolation'
-import { expect, forwardElectronProcessLogs, test } from './helpers/orca-app'
+import { expect, forwardElectronProcessLogs, test } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForSessionReady } from './helpers/store'
 import { encodePairingOffer } from '../../src/shared/pairing'
 import { addWslHostEnvironment } from '../../src/shared/runtime-environment-wsl-host-store'
@@ -33,12 +33,12 @@ test.use({ seedTestRepo: false })
 const DISTRO = 'Ubuntu'
 const LEAF = '6f1c1d2e-3a4b-4c5d-8e9f-0a1b2c3d4e5f'
 // Visual proof for the PR; outside the repo on purpose.
-const PROOF_DIR = process.env.ORCA_D1B9_PROOF_DIR
+const PROOF_DIR = process.env.OCC_D1B9_PROOF_DIR
 
 type Desktop = { app: ElectronApplication; page: Page; dispose: () => Promise<void> }
 
 function createGitProject(name: string): string {
-  const dir = path.join(mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-move-')), name)
+  const dir = path.join(mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-move-')), name)
   execFileSync('git', ['init', '-q', '-b', 'main', dir])
   writeFileSync(path.join(dir, 'README.md'), `# ${name}\n`)
   execFileSync('git', ['-C', dir, 'add', '.'])
@@ -54,9 +54,9 @@ async function launch(
   testInfo: Parameters<typeof forwardElectronProcessLogs>[1],
   internalGate: boolean
 ): Promise<Desktop> {
-  const userDataDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-move-ui-'))
+  const userDataDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-move-ui-'))
   writeFileSync(
-    path.join(userDataDir, 'orca-data.json'),
+    path.join(userDataDir, 'occ-data.json'),
     `${JSON.stringify(getE2ECompletedOnboardingProfile(), null, 2)}\n`
   )
   // A saved host for the distro; it never connects here, which the dialog does not need.
@@ -84,7 +84,7 @@ async function launch(
     launchEnv: {},
     extraEnv: {
       ...(internalGate ? { [WSL_HOSTS_INTERNAL_GATE_ENV]: '1' } : {}),
-      ORCA_E2E_FAKE_WSL_HOSTS: JSON.stringify({
+      OCC_E2E_FAKE_WSL_HOSTS: JSON.stringify({
         distros: [{ name: DISTRO, state: 'stopped', version: 2 }],
         pairingCode: 'unused'
       })
@@ -92,8 +92,8 @@ async function launch(
     userDataDir
   })
   const app = await electron.launch({
-    args: getOrcaElectronLaunchArgs(path.join(process.cwd(), 'out', 'main', 'index.js'), false),
-    env: { ...isolation.env, NODE_ENV: 'development', ORCA_E2E_HEADLESS: '1' }
+    args: getOCCElectronLaunchArgs(path.join(process.cwd(), 'out', 'main', 'index.js'), false),
+    env: { ...isolation.env, NODE_ENV: 'development', OCC_E2E_HEADLESS: '1' }
   })
   forwardElectronProcessLogs(app, testInfo)
   const dispose = async (): Promise<void> => {

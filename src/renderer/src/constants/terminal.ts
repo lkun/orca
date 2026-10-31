@@ -1,20 +1,20 @@
 import type { TerminalPaneSplitSource } from '../../../shared/feature-education-telemetry'
 
-export const TOGGLE_TERMINAL_PANE_EXPAND_EVENT = 'orca-toggle-terminal-pane-expand'
-export const FOCUS_TERMINAL_PANE_EVENT = 'orca-focus-terminal-pane'
-export const PASTE_TERMINAL_TEXT_EVENT = 'orca-paste-terminal-text'
-export const SPLIT_TERMINAL_PANE_EVENT = 'orca-split-terminal-pane'
-export const REQUEST_ACTIVE_TERMINAL_PANE_SPLIT_EVENT = 'orca-request-active-terminal-pane-split'
-export const CLOSE_TERMINAL_PANE_EVENT = 'orca-close-terminal-pane'
-export const SET_TERMINAL_PANE_TITLE_EVENT = 'orca-set-terminal-pane-title'
-export const REQUEST_ACTIVE_TERMINAL_PANE_CLOSE_EVENT = 'orca-request-active-terminal-pane-close'
-export const BACKGROUND_MOUNT_TERMINAL_WORKTREE_EVENT = 'orca-background-mount-terminal-worktree'
+export const TOGGLE_TERMINAL_PANE_EXPAND_EVENT = 'occ-toggle-terminal-pane-expand'
+export const FOCUS_TERMINAL_PANE_EVENT = 'occ-focus-terminal-pane'
+export const PASTE_TERMINAL_TEXT_EVENT = 'occ-paste-terminal-text'
+export const SPLIT_TERMINAL_PANE_EVENT = 'occ-split-terminal-pane'
+export const REQUEST_ACTIVE_TERMINAL_PANE_SPLIT_EVENT = 'occ-request-active-terminal-pane-split'
+export const CLOSE_TERMINAL_PANE_EVENT = 'occ-close-terminal-pane'
+export const SET_TERMINAL_PANE_TITLE_EVENT = 'occ-set-terminal-pane-title'
+export const REQUEST_ACTIVE_TERMINAL_PANE_CLOSE_EVENT = 'occ-request-active-terminal-pane-close'
+export const BACKGROUND_MOUNT_TERMINAL_WORKTREE_EVENT = 'occ-background-mount-terminal-worktree'
 
 // Mobile wake must fan out by worktree to mounted hidden panes, whose instance-owned bindings can resume without a desktop reveal.
-export const WAKE_HIBERNATED_AGENTS_WORKTREE_EVENT = 'orca-wake-hibernated-agents-worktree'
+export const WAKE_HIBERNATED_AGENTS_WORKTREE_EVENT = 'occ-wake-hibernated-agents-worktree'
 
 // Fit synchronous sidebar toggles before paint to avoid a wrong-width frame; continuous drags use per-pane ResizeObserver instead.
-export const SYNC_FIT_PANES_EVENT = 'orca-sync-fit-panes'
+export const SYNC_FIT_PANES_EVENT = 'occ-sync-fit-panes'
 
 export type FocusTerminalPaneDetail = {
   tabId: string

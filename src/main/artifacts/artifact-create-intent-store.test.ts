@@ -15,7 +15,7 @@ import {
   getOrCreateArtifactCreateIntent,
   removeArtifactCreateIntent
 } from './artifact-create-intent-store'
-import { runProcess, runProcessSync } from '@orca/process-host'
+import { runProcess, runProcessSync } from '@occ/process-host'
 import {
   resetWindowsSecurityLoadForTests,
   setWindowsSecurityForTests
@@ -26,7 +26,7 @@ import {
 } from '../../shared/windows-security-addon.test-fixture'
 import type { ArtifactShareScope } from './artifact-share-record-store'
 
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: vi.fn(),
   runProcessSync: vi.fn()
 }))
@@ -36,7 +36,7 @@ const scope: ArtifactShareScope = {
   cloudUserId: 'user-a',
   cloudProfileId: 'cloud-a',
   cloudOrganizationId: 'org-a',
-  apiOrigin: 'https://share.onorca.dev'
+  apiOrigin: 'https://share.onocc.dev'
 }
 const body = {
   content: '<h1>Original</h1>',
@@ -374,7 +374,7 @@ describe('artifact create intent store', () => {
 })
 
 async function createUserDataPath(): Promise<string> {
-  const path = await mkdtemp(join(tmpdir(), 'orca-artifact-create-intents-'))
+  const path = await mkdtemp(join(tmpdir(), 'occ-artifact-create-intents-'))
   createdPaths.push(path)
   return path
 }

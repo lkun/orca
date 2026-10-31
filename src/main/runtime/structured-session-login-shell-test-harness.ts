@@ -4,7 +4,7 @@ import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:f
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { installFakeAppEnvironment } from '../../../config/scripts/vitest-host-ports-setup'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { sealedChildEnv } from './structured-session-child-env.test-support'
 
 const SESSION_ID = 'f7a1c0de-1111-4222-8333-444455556666'
@@ -21,7 +21,7 @@ function writeStub(path: string, says: string): void {
 }
 
 export function createLoginShellHarness(): LoginShellHarness {
-  const root = mkdtempSync(join(tmpdir(), 'orca-login-shell-cli-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-login-shell-cli-'))
   const home = join(root, 'home')
   const globalBin = join(root, 'global-bin')
   const userData = join(root, 'user-data')
@@ -29,8 +29,8 @@ export function createLoginShellHarness(): LoginShellHarness {
   for (const dir of [home, globalBin, appCliBin]) {
     mkdirSync(dir, { recursive: true })
   }
-  writeStub(join(globalBin, 'orca'), 'global')
-  writeStub(join(appCliBin, 'orca'), 'app')
+  writeStub(join(globalBin, 'occ'), 'global')
+  writeStub(join(appCliBin, 'occ'), 'app')
   writeStub(join(appCliBin, 'occ-dev'), 'app')
   const prependGlobal = `export PATH="${globalBin}:$PATH"\n`
   writeFileSync(join(home, '.zprofile'), prependGlobal)

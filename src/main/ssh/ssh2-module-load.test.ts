@@ -18,7 +18,7 @@ describe('ssh2 deferred load', () => {
     const { observeAgentSigning } = await import('./ssh-agent-sign-observer')
     expect(isSsh2Loaded()).toBe(false)
 
-    const agent = observeAgentSigning('/tmp/orca-test-agent.sock', vi.fn())
+    const agent = observeAgentSigning('/tmp/occ-test-agent.sock', vi.fn())
 
     expect(agent).toBeInstanceOf(nodeRequire('ssh2').BaseAgent)
   })

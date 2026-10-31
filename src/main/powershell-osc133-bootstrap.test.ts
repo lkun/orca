@@ -16,7 +16,7 @@ describe('PowerShell OSC 133 bootstrap', () => {
       cwd,
       cwd,
       undefined,
-      `orca ${'x'.repeat(1000)}`
+      `occ ${'x'.repeat(1000)}`
     )
 
     expect(result.startupCommandDeliveredInShellArgs).toBe(true)
@@ -26,17 +26,17 @@ describe('PowerShell OSC 133 bootstrap', () => {
     const script = getPowerShellOsc133Bootstrap()
 
     expect(script).toContain('[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()')
-    expect(script).toContain('ORCA_OPENCODE_CONFIG_DIR')
-    expect(script).toContain('ORCA_MIMOCODE_CONFIG_DIR')
-    expect(script).not.toContain('ORCA_PI_CODING_AGENT_DIR')
-    expect(script).not.toContain('ORCA_OMP_CODING_AGENT_DIR')
-    expect(script).toContain('ORCA_OMP_STATUS_EXTENSION')
+    expect(script).toContain('OCC_OPENCODE_CONFIG_DIR')
+    expect(script).toContain('OCC_MIMOCODE_CONFIG_DIR')
+    expect(script).not.toContain('OCC_PI_CODING_AGENT_DIR')
+    expect(script).not.toContain('OCC_OMP_CODING_AGENT_DIR')
+    expect(script).toContain('OCC_OMP_STATUS_EXTENSION')
     expect(script).toContain('function Global:omp')
-    expect(script).toContain('--extension $env:ORCA_OMP_STATUS_EXTENSION')
-    expect(script).toContain('ORCA_CODEX_HOME')
-    expect(script).toContain('ORCA_CODEX_LAUNCH_PREFLIGHT')
+    expect(script).toContain('--extension $env:OCC_OMP_STATUS_EXTENSION')
+    expect(script).toContain('OCC_CODEX_HOME')
+    expect(script).toContain('OCC_CODEX_LAUNCH_PREFLIGHT')
     expect(script).toContain('function Global:codex')
-    expect(script).not.toContain('$Global:__OrcaCodexExecutable')
+    expect(script).not.toContain('$Global:__OCCCodexExecutable')
     expect(script).toContain('function Global:prompt')
     expect(script).toContain('function Global:PSConsoleHostReadLine')
     expect(script).toContain('Esc = [char]27')
@@ -50,7 +50,7 @@ describe('PowerShell OSC 133 bootstrap', () => {
     expect(script).not.toContain('ExecutionPolicy')
     expect(script).not.toContain('NoProfile')
 
-    const codexHomeRestore = script.indexOf('if ($env:ORCA_CODEX_HOME)')
+    const codexHomeRestore = script.indexOf('if ($env:OCC_CODEX_HOME)')
     expect(codexHomeRestore).toBeGreaterThan(-1)
     expect(codexHomeRestore).toBeLessThan(script.indexOf('Test-Path variable:global:'))
     expect(codexHomeRestore).toBeLessThan(script.indexOf('LanguageMode -eq "FullLanguage"'))

@@ -10,7 +10,7 @@ describe('restored agent status', () => {
 
   beforeEach(() => {
     _internals.resetCachesForTests()
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-restored-status-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-restored-status-'))
   })
 
   afterEach(() => {

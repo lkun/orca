@@ -20,7 +20,7 @@ it('routes generated-artifact inputs to their verifiers', () => {
     expect.arrayContaining(['localization catalogs', 'localization coverage'])
   )
   expect(checkNames(['src/main/runtime/rpc/methods/worktree.ts'])).toContain('rpc params catalog')
-  expect(checkNames(['skills/orca-cli/SKILL.md'])).toEqual([
+  expect(checkNames(['skills/occ-cli/SKILL.md'])).toEqual([
     'bundled skill guides',
     'skill bundle manifest'
   ])

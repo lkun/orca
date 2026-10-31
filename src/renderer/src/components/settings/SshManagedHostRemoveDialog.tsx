@@ -13,9 +13,9 @@ import {
 
 /** Main refuses to remove a host its managed server still holds; only Stop or Forget frees it. */
 export function isManagedServerSshHost(
-  target: Pick<SshTarget, 'orcadFence' | 'orcadProvisioning'>
+  target: Pick<SshTarget, 'occdFence' | 'occdProvisioning'>
 ): boolean {
-  return target.orcadFence !== undefined || target.orcadProvisioning !== undefined
+  return target.occdFence !== undefined || target.occdProvisioning !== undefined
 }
 
 export function SshManagedHostRemoveDialog({

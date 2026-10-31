@@ -30,7 +30,7 @@ function jsonLines(records: unknown[]): string {
 }
 
 async function seedSession(sessionId: string, turns: number): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-native-chat-cache-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-native-chat-cache-'))
   tempRoots.push(root)
   const projectDir = join(root, '.claude', 'projects', '-repo')
   await mkdir(projectDir, { recursive: true })
@@ -48,7 +48,7 @@ async function seedSession(sessionId: string, turns: number): Promise<string> {
 
 /** Seed explicit-path transcripts to keep resolution independent of the real user home. */
 async function seedBigFile(name: string, bytes: number): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-native-chat-cache-bytes-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-native-chat-cache-bytes-'))
   tempRoots.push(root)
   const filePath = join(root, `${name}.jsonl`)
   const record = {
@@ -115,7 +115,7 @@ describe('readNativeChatTranscriptCached', () => {
   })
 
   it('never serves one file’s parse for a different file that shares a sessionId', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-native-chat-cache-xwt-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-native-chat-cache-xwt-'))
     tempRoots.push(root)
     const fileA = join(root, 'worktree-a.jsonl')
     const fileC = join(root, 'worktree-c.jsonl')

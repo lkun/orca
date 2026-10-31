@@ -52,7 +52,7 @@ export type UseNativeChatExternalAttachmentsArgs = {
   setNotice: (notice: string | null) => void
 }
 
-/** Upload client-local files to the owning agent’s store or SSH .orca/drops before referencing them. */
+/** Upload client-local files to the owning agent’s store or SSH .occ/drops before referencing them. */
 export function useNativeChatExternalAttachments({
   terminalTabId,
   draftScopeKey,

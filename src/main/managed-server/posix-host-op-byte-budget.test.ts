@@ -3,12 +3,12 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { buildPosixStdoutFence } from '../../shared/posix-stdout-fence'
 import type { NodeRuntimeTarget } from '../../shared/node-runtime-pin'
-import { initialOrcadActivationAdmissionCommand } from '../ssh/orcad-initial-activation-admission'
+import { initialOCCdActivationAdmissionCommand } from '../ssh/occd-initial-activation-admission'
 import {
-  captureOrcadLaunchSshSessionCommand,
-  orcadLaunchSshSessionProbeCommand,
-  writeOrcadLaunchSshSessionCommand
-} from '../ssh/orcad-launch-ssh-session'
+  captureOCCdLaunchSshSessionCommand,
+  occdLaunchSshSessionProbeCommand,
+  writeOCCdLaunchSshSessionCommand
+} from '../ssh/occd-launch-ssh-session'
 import { makeExecStdinWriteFileCommand } from '../ssh/ssh-exec-stdin-file-transfer'
 import { wrapRemoteCommandForPosixShell } from '../ssh/ssh-posix-command-wrapper'
 import {
@@ -25,35 +25,35 @@ import {
 import { getRemoteHostPlatform, type RemoteHostPlatform } from '../ssh/ssh-remote-platform'
 import { makePosixWriteFileCommand } from '../ssh/system-transport/system-ssh-file-binary-transfer'
 import {
-  posixOrcadFenceGuard,
-  runWithOrcadFence,
-  type OrcadFence
-} from './activation/orcad-activation-fence-scope'
-import { posixReleaseFenceCommand } from './activation/orcad-activation-lock'
+  posixOCCdFenceGuard,
+  runWithOCCdFence,
+  type OCCdFence
+} from './activation/occd-activation-fence-scope'
+import { posixReleaseFenceCommand } from './activation/occd-activation-lock'
 import {
-  captureOrcadStateSnapshotCommand,
-  clearOrcadStateSnapshotMembersCommand,
-  compareOrcadStateSnapshotCommand,
-  probeOrcadStateSnapshotCommand,
-  restoreOrcadStateSnapshotCommand,
+  captureOCCdStateSnapshotCommand,
+  clearOCCdStateSnapshotMembersCommand,
+  compareOCCdStateSnapshotCommand,
+  probeOCCdStateSnapshotCommand,
+  restoreOCCdStateSnapshotCommand,
   serializedStateMutationCommand
-} from './host-state/orcad-state-snapshot'
-import { newestStateMtimeCommand } from './host-state/orcad-state-newest-mtime'
-import { orcadSnapshotSpaceCommand } from './host-state/orcad-state-snapshot-space'
-import { posixProcessGroupCommand } from './host-state/orcad-state-mutation-owner-record'
-import { orcadMachineClaimCommand } from './host-state/orcad-machine-claim-command'
-import { orcadMachineHomeProbeCommand } from './host-state/orcad-machine-home'
-import { executablePermissionsCommand } from './install/orcad-remote-install'
+} from './host-state/occd-state-snapshot'
+import { newestStateMtimeCommand } from './host-state/occd-state-newest-mtime'
+import { occdSnapshotSpaceCommand } from './host-state/occd-state-snapshot-space'
+import { posixProcessGroupCommand } from './host-state/occd-state-mutation-owner-record'
+import { occdMachineClaimCommand } from './host-state/occd-machine-claim-command'
+import { occdMachineHomeProbeCommand } from './host-state/occd-machine-home'
+import { executablePermissionsCommand } from './install/occd-remote-install'
 import {
-  orcadNodeSlotRuntimeCommand,
-  selectOrcadSlotEntryCommand,
-  selectOrcadSlotRuntimeCommand
-} from './install/orcad-remote-runtime'
+  occdNodeSlotRuntimeCommand,
+  selectOCCdSlotEntryCommand,
+  selectOCCdSlotRuntimeCommand
+} from './install/occd-remote-runtime'
 import {
-  orcadLaunchCommand,
-  orcadLivenessProbeCommand,
-  readOrcadReadinessCommand
-} from './install/orcad-remote-launch'
+  occdLaunchCommand,
+  occdLivenessProbeCommand,
+  readOCCdReadinessCommand
+} from './install/occd-remote-launch'
 import {
   createExecProbedStageCommand,
   installNodeRuntimeFromHostArchiveCommand,
@@ -61,22 +61,22 @@ import {
   promoteRemoteNodeRuntimeCommand,
   recheckAndPromoteRemoteNodeRuntimeCommand,
   remoteNodeRuntimePresentCommand
-} from './install/orcad-remote-node-runtime'
+} from './install/occd-remote-node-runtime'
 import { remoteSha256Command } from './install/remote-sha256-command'
 import { hostDownloadNodeRuntimeCommand } from './install/remote-node-runtime-host-download'
-import { remoteOrcadBuildHashCommand } from './install/orcad-remote-build-hash'
+import { remoteOCCdBuildHashCommand } from './install/occd-remote-build-hash'
 import { remoteFreeSpaceProbeCommand } from './install/remote-install-out-of-space'
 import { sweepStaleRuntimeStagesCommand } from './install/remote-node-runtime-store-gc'
-import { orcadProfilePreflightCommand } from './install/orcad-remote-preflight'
+import { occdProfilePreflightCommand } from './install/occd-remote-preflight'
 import {
   recordedNodeRuntimeProbeCommand,
   recordedRemoteNodeRuntimeProbeCommand
-} from './install/orcad-remote-node-runtime-recorded-probe'
+} from './install/occd-remote-node-runtime-recorded-probe'
 import { runtimeStoreInventoryCommand } from './install/remote-node-runtime-store-inventory'
-import { cachedOrcadSlotProbeCommand } from './install/orcad-remote-install-cached-probe'
+import { cachedOCCdSlotProbeCommand } from './install/occd-remote-install-cached-probe'
 import { posixReleaseOwnedLockCommand } from './install/remote-node-runtime-store-lock'
-import { ORCAD_INSTALL_MODEL } from './install/remote-install-model'
-import { stopOrcadCommand } from './install/orcad-remote-process-control'
+import { OCCD_INSTALL_MODEL } from './install/remote-install-model'
+import { stopOCCdCommand } from './install/occd-remote-process-control'
 import {
   acquireInstallLockParentCommand,
   lockAgeSecondsCommand,
@@ -85,38 +85,38 @@ import {
   tryCreateInstallLockCommand,
   tryStealInstallLockCommand
 } from './install/remote-install-lock-commands'
-import { orcadLogTailCommand } from './install/orcad-remote-log-tail'
+import { occdLogTailCommand } from './install/occd-remote-log-tail'
 import {
-  orcadReadinessWaitCommand,
-  readOrcadReadinessNowCommand
-} from './install/orcad-remote-readiness-wait'
+  occdReadinessWaitCommand,
+  readOCCdReadinessNowCommand
+} from './install/occd-remote-readiness-wait'
 import {
-  orcadBashStdioBridgeCommand,
-  orcadPosixStdioBridgeCommand
-} from './lifecycle/orcad-stdio-bridge-script'
+  occdBashStdioBridgeCommand,
+  occdPosixStdioBridgeCommand
+} from './lifecycle/occd-stdio-bridge-script'
 
 // Gateways truncate near 10 KB (#30491); bound uncompressed, fenced commands to 6 KB.
 const POSIX_HOST_OP_BYTE_BUDGET = 6 * 1024
 
 const OVER_BUDGET_CEILINGS: Readonly<Record<string, number>> = {
   tryStealInstallLockCommand: 9_022,
-  orcadLaunchCommand: 6_896,
+  occdLaunchCommand: 6_896,
   // WSL-only: wsl.exe argv, never SSH-framed; carries the Node bridge as its fallback.
-  orcadBashStdioBridgeCommand: 6_300,
+  occdBashStdioBridgeCommand: 6_300,
   // WSL-only (sent only under recordedNodeRuntimeProbe): wsl.exe argv, never SSH-framed.
-  cachedOrcadSlotProbeCommand: 7_069
+  cachedOCCdSlotProbeCommand: 7_069
 }
 
 type HostCase = { host: RemoteHostPlatform; target: NodeRuntimeTarget; nodePath: string }
 
 const home = `/net/nfs-home-cluster-03/users/engineering/${'a'.repeat(48)}.longname`
-const baseDir = `${home}/.orca-remote`
-const slotDir = `${baseDir}/orcad-1.4.299-rc.12+${'f'.repeat(40)}`
-const userDataDir = `${baseDir}/orcad-data`
-const snapshotDir = `${baseDir}/orcad-snapshots/pre-1.4.299-rc.12-1760000000000`
+const baseDir = `${home}/.occ-remote`
+const slotDir = `${baseDir}/occd-1.4.299-rc.12+${'f'.repeat(40)}`
+const userDataDir = `${baseDir}/occd-data`
+const snapshotDir = `${baseDir}/occd-snapshots/pre-1.4.299-rc.12-1760000000000`
 const installLock = `${slotDir}.install-lock`
 const token = 'f'.repeat(64)
-const fence: OrcadFence = { lockDir: `${baseDir}/orcad-activation.lock`, token }
+const fence: OCCdFence = { lockDir: `${baseDir}/occd-activation.lock`, token }
 const owner = { fileName: 'owner', token }
 
 function hostCase(platform: 'linux-x64' | 'darwin-arm64', target: NodeRuntimeTarget): HostCase {
@@ -129,7 +129,7 @@ const HOST_CASES: readonly HostCase[] = [
   hostCase('darwin-arm64', 'darwin-arm64')
 ]
 
-function launchSpec(nodePath: string): Parameters<typeof orcadLaunchCommand>[1] {
+function launchSpec(nodePath: string): Parameters<typeof occdLaunchCommand>[1] {
   return {
     remoteInstallDir: slotDir,
     nodePath,
@@ -137,7 +137,7 @@ function launchSpec(nodePath: string): Parameters<typeof orcadLaunchCommand>[1] 
     userDataDir,
     bindHost: '127.0.0.1',
     port: 65535,
-    activationRoot: `${baseDir}/orcad-activation`
+    activationRoot: `${baseDir}/occd-activation`
   }
 }
 
@@ -156,38 +156,38 @@ function promoteArgs({
 
 const BUILDERS: Readonly<Record<string, (c: HostCase) => string>> = {
   serializedStateMutationCommand: () => serializedStateMutationCommand(baseDir, ':', 20, fence),
-  captureOrcadStateSnapshotCommand: ({ host }) =>
-    captureOrcadStateSnapshotCommand(host, userDataDir, snapshotDir, baseDir, {
-      snapshotsRoot: `${baseDir}/orcad-snapshots`,
+  captureOCCdStateSnapshotCommand: ({ host }) =>
+    captureOCCdStateSnapshotCommand(host, userDataDir, snapshotDir, baseDir, {
+      snapshotsRoot: `${baseDir}/occd-snapshots`,
       keep: [snapshotDir.slice(snapshotDir.lastIndexOf('/') + 1), 'pre-1.4.298-rc.3-1750000000000']
     }),
-  probeOrcadStateSnapshotCommand: ({ host }) =>
-    probeOrcadStateSnapshotCommand(host, snapshotDir, baseDir),
-  restoreOrcadStateSnapshotCommand: ({ host }) =>
-    restoreOrcadStateSnapshotCommand(host, userDataDir, snapshotDir, baseDir),
-  clearOrcadStateSnapshotMembersCommand: ({ host }) =>
-    clearOrcadStateSnapshotMembersCommand(host, userDataDir, baseDir),
-  compareOrcadStateSnapshotCommand: ({ host }) =>
-    compareOrcadStateSnapshotCommand(host, userDataDir, snapshotDir, baseDir),
+  probeOCCdStateSnapshotCommand: ({ host }) =>
+    probeOCCdStateSnapshotCommand(host, snapshotDir, baseDir),
+  restoreOCCdStateSnapshotCommand: ({ host }) =>
+    restoreOCCdStateSnapshotCommand(host, userDataDir, snapshotDir, baseDir),
+  clearOCCdStateSnapshotMembersCommand: ({ host }) =>
+    clearOCCdStateSnapshotMembersCommand(host, userDataDir, baseDir),
+  compareOCCdStateSnapshotCommand: ({ host }) =>
+    compareOCCdStateSnapshotCommand(host, userDataDir, snapshotDir, baseDir),
   newestStateMtimeCommand: ({ host }) => newestStateMtimeCommand(host, userDataDir, baseDir),
-  orcadSnapshotSpaceCommand: ({ host }) =>
-    orcadSnapshotSpaceCommand(host, userDataDir, snapshotDir, baseDir, ['keep-a', 'keep-b']) ?? '',
+  occdSnapshotSpaceCommand: ({ host }) =>
+    occdSnapshotSpaceCommand(host, userDataDir, snapshotDir, baseDir, ['keep-a', 'keep-b']) ?? '',
   posixProcessGroupCommand: () => posixProcessGroupCommand('"$pid"'),
-  orcadMachineClaimCommand: ({ host }) => orcadMachineClaimCommand(host, home, 'k'.repeat(64)),
-  orcadMachineHomeProbeCommand: ({ host }) => orcadMachineHomeProbeCommand(host),
-  selectOrcadSlotEntryCommand: ({ host }) => selectOrcadSlotEntryCommand(host, slotDir),
-  orcadNodeSlotRuntimeCommand: ({ host }) => orcadNodeSlotRuntimeCommand(host, slotDir),
-  selectOrcadSlotRuntimeCommand: ({ host, nodePath }) =>
-    selectOrcadSlotRuntimeCommand(host, slotDir, nodePath),
+  occdMachineClaimCommand: ({ host }) => occdMachineClaimCommand(host, home, 'k'.repeat(64)),
+  occdMachineHomeProbeCommand: ({ host }) => occdMachineHomeProbeCommand(host),
+  selectOCCdSlotEntryCommand: ({ host }) => selectOCCdSlotEntryCommand(host, slotDir),
+  occdNodeSlotRuntimeCommand: ({ host }) => occdNodeSlotRuntimeCommand(host, slotDir),
+  selectOCCdSlotRuntimeCommand: ({ host, nodePath }) =>
+    selectOCCdSlotRuntimeCommand(host, slotDir, nodePath),
   // macOS launch embeds SSH-session capture and attribution records.
-  orcadLaunchCommand: ({ host, nodePath }) =>
-    orcadLaunchCommand(host, launchSpec(nodePath), 'nohup', []),
-  'orcadLaunchCommand (WSL setsid)': ({ host, nodePath }) =>
-    orcadLaunchCommand(host, launchSpec(nodePath), 'setsid', [
-      ['ORCA_EXAMPLE_HOST_ENV', 'x'.repeat(200)]
+  occdLaunchCommand: ({ host, nodePath }) =>
+    occdLaunchCommand(host, launchSpec(nodePath), 'nohup', []),
+  'occdLaunchCommand (WSL setsid)': ({ host, nodePath }) =>
+    occdLaunchCommand(host, launchSpec(nodePath), 'setsid', [
+      ['OCC_EXAMPLE_HOST_ENV', 'x'.repeat(200)]
     ]),
-  readOrcadReadinessCommand: ({ host }) => readOrcadReadinessCommand(host, slotDir),
-  orcadLivenessProbeCommand: ({ host }) => orcadLivenessProbeCommand(host, slotDir),
+  readOCCdReadinessCommand: ({ host }) => readOCCdReadinessCommand(host, slotDir),
+  occdLivenessProbeCommand: ({ host }) => occdLivenessProbeCommand(host, slotDir),
   remoteSha256Command: ({ nodePath }) => remoteSha256Command(`'${nodePath}'`),
   remoteFreeSpaceProbeCommand: ({ nodePath }) => remoteFreeSpaceProbeCommand(nodePath),
   hostDownloadNodeRuntimeCommand: ({ host, nodePath, target }) =>
@@ -208,18 +208,18 @@ const BUILDERS: Readonly<Record<string, (c: HostCase) => string>> = {
       target,
       token
     }),
-  remoteOrcadBuildHashCommand: ({ host }) => remoteOrcadBuildHashCommand(host, slotDir),
+  remoteOCCdBuildHashCommand: ({ host }) => remoteOCCdBuildHashCommand(host, slotDir),
   sweepStaleRuntimeStagesCommand: ({ host }) =>
     sweepStaleRuntimeStagesCommand(`${baseDir}/node-runtimes`, host),
-  orcadProfilePreflightCommand: ({ host }) =>
-    orcadProfilePreflightCommand(host, slotDir, token, userDataDir),
+  occdProfilePreflightCommand: ({ host }) =>
+    occdProfilePreflightCommand(host, slotDir, token, userDataDir),
   recordedNodeRuntimeProbeCommand: ({ host, nodePath }) =>
     recordedNodeRuntimeProbeCommand(host, nodePath, token),
   recordedRemoteNodeRuntimeProbeCommand: ({ host, nodePath, target }) =>
     recordedRemoteNodeRuntimeProbeCommand(host, nodePath, target),
   runtimeStoreInventoryCommand: ({ host }) => runtimeStoreInventoryCommand(host, home),
-  stopOrcadCommand: ({ host, nodePath }) =>
-    stopOrcadCommand(host, slotDir, { waitSeconds: 30, nodePath }),
+  stopOCCdCommand: ({ host, nodePath }) =>
+    stopOCCdCommand(host, slotDir, { waitSeconds: 30, nodePath }),
   acquireInstallLockParentCommand: ({ host }) => acquireInstallLockParentCommand(host, baseDir),
   tryCreateInstallLockCommand: ({ host }) => tryCreateInstallLockCommand(host, installLock, owner),
   probeInstallLockExistsCommand: ({ host }) => probeInstallLockExistsCommand(host, installLock),
@@ -229,25 +229,25 @@ const BUILDERS: Readonly<Record<string, (c: HostCase) => string>> = {
     tryStealInstallLockCommand(host, installLock, 120, owner, {
       ...owner,
       quietSeconds: 60,
-      mutationLock: `${baseDir}/orcad-state-mutation.lock`
+      mutationLock: `${baseDir}/occd-state-mutation.lock`
     }),
-  orcadLogTailCommand: ({ host }) => orcadLogTailCommand(host, slotDir),
-  orcadReadinessWaitCommand: ({ host }) => orcadReadinessWaitCommand(host, slotDir, 120),
-  readOrcadReadinessNowCommand: ({ host }) => readOrcadReadinessNowCommand(host, slotDir),
-  orcadPosixStdioBridgeCommand: () => orcadPosixStdioBridgeCommand(65535),
-  orcadBashStdioBridgeCommand: () => orcadBashStdioBridgeCommand(65535),
+  occdLogTailCommand: ({ host }) => occdLogTailCommand(host, slotDir),
+  occdReadinessWaitCommand: ({ host }) => occdReadinessWaitCommand(host, slotDir, 120),
+  readOCCdReadinessNowCommand: ({ host }) => readOCCdReadinessNowCommand(host, slotDir),
+  occdPosixStdioBridgeCommand: () => occdPosixStdioBridgeCommand(65535),
+  occdBashStdioBridgeCommand: () => occdBashStdioBridgeCommand(65535),
   posixReleaseFenceCommand: () =>
     posixReleaseFenceCommand(
       fence,
-      `${baseDir}/orcad-activation/journal.json`,
-      `${baseDir}/orcad-activation`
+      `${baseDir}/occd-activation/journal.json`,
+      `${baseDir}/occd-activation`
     ),
   posixReleaseOwnedLockCommand: ({ host }) =>
     `${posixReleaseOwnedLockCommand(host, `${baseDir}/node-runtimes/.store-lock`, owner)} || true`,
   executablePermissionsCommand: ({ host, target }) =>
     executablePermissionsCommand(host, slotDir, target),
   readRemoteHomeCommand: ({ host }) => readRemoteHomeCommand(host),
-  removeRemoteFileCommand: ({ host }) => removeRemoteFileCommand(host, `${slotDir}/.orcad-pid`),
+  removeRemoteFileCommand: ({ host }) => removeRemoteFileCommand(host, `${slotDir}/.occd-pid`),
   removeRemoteTreeCommand: ({ host }) => removeRemoteTreeCommand(host, slotDir),
   moveRemoteTreeCommand: ({ host }) =>
     moveRemoteTreeCommand(host, slotDir, `${slotDir}.trash-${token}`),
@@ -257,28 +257,28 @@ const BUILDERS: Readonly<Record<string, (c: HostCase) => string>> = {
     writeRemoteEmptyFileCommand(host, `${slotDir}/.complete`),
   probeRemoteInstallCompleteCommand: ({ host }) =>
     probeRemoteInstallCompleteCommand(host, slotDir, [
-      ...ORCAD_INSTALL_MODEL.requiredArtifacts(host),
-      ORCAD_INSTALL_MODEL.installCompleteFilename
+      ...OCCD_INSTALL_MODEL.requiredArtifacts(host),
+      OCCD_INSTALL_MODEL.installCompleteFilename
     ]),
-  cachedOrcadSlotProbeCommand: ({ host, target }) =>
-    cachedOrcadSlotProbeCommand(host, slotDir, target),
+  cachedOCCdSlotProbeCommand: ({ host, target }) =>
+    cachedOCCdSlotProbeCommand(host, slotDir, target),
   listRemoteInstallBaseDirsCommand: ({ host }) =>
-    listRemoteInstallBaseDirsCommand(host, baseDir, ORCAD_INSTALL_MODEL),
+    listRemoteInstallBaseDirsCommand(host, baseDir, OCCD_INSTALL_MODEL),
   probeFileExistsCommand: ({ host }) => probeFileExistsCommand(host, `${slotDir}/.complete`),
-  captureOrcadLaunchSshSessionCommand: () => captureOrcadLaunchSshSessionCommand(),
-  writeOrcadLaunchSshSessionCommand: ({ host }) =>
-    writeOrcadLaunchSshSessionCommand(host, userDataDir),
-  orcadLaunchSshSessionProbeCommand: ({ host }) =>
-    orcadLaunchSshSessionProbeCommand(host, slotDir, userDataDir),
-  initialOrcadActivationAdmissionCommand: ({ host, nodePath }) =>
-    initialOrcadActivationAdmissionCommand(host, userDataDir, slotDir, nodePath),
+  captureOCCdLaunchSshSessionCommand: () => captureOCCdLaunchSshSessionCommand(),
+  writeOCCdLaunchSshSessionCommand: ({ host }) =>
+    writeOCCdLaunchSshSessionCommand(host, userDataDir),
+  occdLaunchSshSessionProbeCommand: ({ host }) =>
+    occdLaunchSshSessionProbeCommand(host, slotDir, userDataDir),
+  initialOCCdActivationAdmissionCommand: ({ host, nodePath }) =>
+    initialOCCdActivationAdmissionCommand(host, userDataDir, slotDir, nodePath),
   makeExecStdinWriteFileCommand: () =>
-    makeExecStdinWriteFileCommand(`${slotDir}/orcad.js`, Number.MAX_SAFE_INTEGER, {
+    makeExecStdinWriteFileCommand(`${slotDir}/occd.js`, Number.MAX_SAFE_INTEGER, {
       token,
       executable: true
     }),
   makePosixWriteFileCommand: () =>
-    makePosixWriteFileCommand(`${slotDir}/orcad.js`, { exclusive: true })
+    makePosixWriteFileCommand(`${slotDir}/occd.js`, { exclusive: true })
 }
 
 const NOT_POSIX_HOST_OPS: Readonly<Record<string, string>> = {
@@ -327,10 +327,10 @@ function exportedCommandBuilders(): string[] {
 async function sentBytes(build: (c: HostCase) => string): Promise<number> {
   let max = 0
   for (const c of HOST_CASES) {
-    const command = await runWithOrcadFence(fence, async () => build(c))
+    const command = await runWithOCCdFence(fence, async () => build(c))
     // Match exec stdout framing; real nonces are at most 16 characters.
     const framed = buildPosixStdoutFence(
-      `${posixOrcadFenceGuard(fence)} ${command}`,
+      `${posixOCCdFenceGuard(fence)} ${command}`,
       'SSH',
       'z'.repeat(16)
     ).command

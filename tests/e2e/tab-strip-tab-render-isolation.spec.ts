@@ -1,7 +1,7 @@
 // Require one-tab changes to rerender only that tab across the whole app’s store/projection/drag-context commits.
 
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady, waitForActiveWorktree, ensureTerminalVisible } from './helpers/store'
 import { waitForActivePanePtyId } from './helpers/terminal'
 import { runNodeScriptInTerminal } from './helpers/run-node-script-in-terminal'
@@ -24,16 +24,16 @@ async function waitForQuietStrip(page: Page): Promise<void> {
 }
 
 test.describe('Tab strip tab render isolation', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
   })
 
-  test('a title change or a tab switch re-renders only the tabs involved', async ({ orcaPage }) => {
-    const worktreeId = await waitForActiveWorktree(orcaPage)
-    const ptyId = await waitForActivePanePtyId(orcaPage)
-    const tabIds = await orcaPage.evaluate(
+  test('a title change or a tab switch re-renders only the tabs involved', async ({ occPage }) => {
+    const worktreeId = await waitForActiveWorktree(occPage)
+    const ptyId = await waitForActivePanePtyId(occPage)
+    const tabIds = await occPage.evaluate(
       ({ wId, count }) => {
         const ids: string[] = []
         for (let i = 0; i < count; i++) {
@@ -46,44 +46,44 @@ test.describe('Tab strip tab render isolation', () => {
       { wId: worktreeId, count: BACKGROUND_TABS }
     )
     const tab = (tabId: string) =>
-      orcaPage.locator(`[data-testid="sortable-tab"][data-tab-id="${tabId}"]`)
+      occPage.locator(`[data-testid="sortable-tab"][data-tab-id="${tabId}"]`)
     await expect(tab(tabIds[BACKGROUND_TABS - 1])).toBeAttached()
-    await startRecordingTabRenders(orcaPage)
+    await startRecordingTabRenders(occPage)
 
-    await waitForQuietStrip(orcaPage)
-    await orcaPage.evaluate(
+    await waitForQuietStrip(occPage)
+    await occPage.evaluate(
       (tabId) => window.__store!.getState().updateTabTitle(tabId, 'retitled in background'),
       tabIds[5]
     )
     await expect(tab(tabIds[5])).toHaveAttribute('data-tab-title', 'retitled in background')
-    const backgroundRetitle = await takeTabRenders(orcaPage)
+    const backgroundRetitle = await takeTabRenders(occPage)
     // Control: the recorder sees the one tab that did change.
     expect(backgroundRetitle.length).toBeGreaterThan(0)
     expect(Math.max(...backgroundRetitle)).toBe(1)
 
-    await waitForQuietStrip(orcaPage)
+    await waitForQuietStrip(occPage)
     // Use a cross-shell Node emitter and keep it alive until the title is read, before the prompt overwrites it.
     const retitle = await runNodeScriptInTerminal(
-      orcaPage,
+      occPage,
       ptyId,
       `process.stdout.write('\\x1b]0;retitled by its terminal\\x07'); setTimeout(() => {}, 3000)`
     )
     try {
       await expect(
-        orcaPage.locator('[data-testid="sortable-tab"][data-active="true"]')
+        occPage.locator('[data-testid="sortable-tab"][data-active="true"]')
       ).toHaveAttribute('data-tab-title', 'retitled by its terminal')
-      const terminalRetitle = await takeTabRenders(orcaPage)
+      const terminalRetitle = await takeTabRenders(occPage)
       expect(terminalRetitle.length).toBeGreaterThan(0)
       expect(Math.max(...terminalRetitle)).toBe(1)
     } finally {
       retitle.cleanup()
     }
 
-    await waitForQuietStrip(orcaPage)
+    await waitForQuietStrip(occPage)
     await tab(tabIds[1]).click()
     await expect(tab(tabIds[1])).toHaveAttribute('data-active', 'true')
-    await orcaPage.waitForTimeout(500)
-    const tabSwitch = await takeTabRenders(orcaPage)
+    await occPage.waitForTimeout(500)
+    const tabSwitch = await takeTabRenders(occPage)
     expect(tabSwitch.length).toBeGreaterThan(0)
     // The tab that lost the active state and the one that gained it.
     expect(Math.max(...tabSwitch)).toBeLessThanOrEqual(2)

@@ -5,15 +5,15 @@ import { readPowerShellProfileEnvValues } from '../pty/powershell-profile-env'
 
 export function hasCustomCodexHomeOverride(env: NodeJS.ProcessEnv = process.env): boolean {
   const codexHome = env.CODEX_HOME?.trim()
-  const orcaCodexHome = env.ORCA_CODEX_HOME?.trim()
+  const occCodexHome = env.OCC_CODEX_HOME?.trim()
   const normalizedCodexHome = codexHome ? normalizePathForComparison(codexHome) : undefined
-  const normalizedOrcaCodexHome = orcaCodexHome
-    ? normalizePathForComparison(orcaCodexHome)
+  const normalizedOCCCodexHome = occCodexHome
+    ? normalizePathForComparison(occCodexHome)
     : undefined
   // Custom native homes need ownership tracking before OCC can safely mutate and clean them.
   return Boolean(
     normalizedCodexHome &&
-    normalizedCodexHome !== normalizedOrcaCodexHome &&
+    normalizedCodexHome !== normalizedOCCCodexHome &&
     normalizedCodexHome !== normalizePathForComparison(getSystemCodexHomePath())
   )
 }
@@ -22,7 +22,7 @@ export function hasCustomCodexHomeOverrideForLaunch(launchEnv?: NodeJS.ProcessEn
   if (
     hasCustomCodexHomeOverride({
       CODEX_HOME: getLaunchEnvValue(launchEnv, 'CODEX_HOME'),
-      ORCA_CODEX_HOME: getLaunchEnvValue(launchEnv, 'ORCA_CODEX_HOME')
+      OCC_CODEX_HOME: getLaunchEnvValue(launchEnv, 'OCC_CODEX_HOME')
     })
   ) {
     return true
@@ -54,7 +54,7 @@ export function hasCustomCodexHomeOverrideForLaunch(launchEnv?: NodeJS.ProcessEn
 
 type LaunchEnvKey =
   | 'CODEX_HOME'
-  | 'ORCA_CODEX_HOME'
+  | 'OCC_CODEX_HOME'
   | 'HOME'
   | 'USERPROFILE'
   | 'SHELL'

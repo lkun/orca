@@ -1,4 +1,4 @@
-// With ORCA_LAYOUT_OWNER=main, show the server’s newer-build held-pane banner on its paired desktop; Reopen must stop the server service and rebind its pane.
+// With OCC_LAYOUT_OWNER=main, show the server’s newer-build held-pane banner on its paired desktop; Reopen must stop the server service and rebind its pane.
 import { spawn, type ChildProcess } from 'node:child_process'
 import { existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
@@ -13,7 +13,7 @@ import {
   toWebTerminalSurfaceTabId
 } from '../../src/shared/terminal-surface-id'
 import { LAYOUT_REOPEN_HELD_PANES_CAPABILITY } from '../../src/shared/workspace-layout/layout-intents-capability'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import {
   createHostCliTerminal,
@@ -32,7 +32,7 @@ import {
 } from './helpers/paired-desktop-server-terminal-tab'
 
 const LAYOUT_OWNER_BUILD = existsSync(
-  path.join(process.cwd(), 'out', 'main', 'ORCA_LAYOUT_OWNER_MAIN')
+  path.join(process.cwd(), 'out', 'main', 'OCC_LAYOUT_OWNER_MAIN')
 )
 const NEWER_PROTOCOL = PROTOCOL_VERSION + 1
 const BANNER_TITLE = 'This terminal was opened in a newer version of OCC'
@@ -118,7 +118,7 @@ async function paneBannerText(
 }
 
 test.describe("paired desktop reopens a switch-on server's held pane", () => {
-  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (ORCA_LAYOUT_OWNER=main)')
+  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (OCC_LAYOUT_OWNER=main)')
   test.skip(process.platform === 'win32', 'The fake terminal service is a Unix socket')
 
   test('the server pane shows the banner, Reopen goes to the server, and the pane binds', async ({

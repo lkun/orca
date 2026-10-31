@@ -1,5 +1,5 @@
 import type { PublicKnownRuntimeEnvironment } from '../../../../shared/runtime-environments'
-import { getOrcadSshDeployment } from '../../../../shared/runtime-environments'
+import { getOCCdSshDeployment } from '../../../../shared/runtime-environments'
 import type { SshTarget } from '../../../../shared/ssh-types'
 import { translate } from '@/i18n/i18n'
 import { formatUiRelativeTime } from '@/i18n/relative-time-format'
@@ -14,7 +14,7 @@ export function getRuntimeServerRoute(
 ): string | null {
   const targetLabel = (targetId: string): string =>
     targets.find((target) => target.id === targetId)?.label ?? targetId
-  const deployment = getOrcadSshDeployment(environment)
+  const deployment = getOCCdSshDeployment(environment)
   if (deployment) {
     // Why not the host: the row's title already names it.
     return translate('auto.components.settings.serverList.overYourSsh', 'Over your SSH connection')

@@ -6,8 +6,8 @@ import { getGeneralPaneSearchEntries } from '@/components/settings/general-searc
 import { getIntegrationsPaneSearchEntries } from '@/components/settings/integrations-search'
 import { getLinearAgentSkillPaneSearchEntries } from '@/components/settings/linear-agent-skill-search'
 import { getMobileSettingsPaneSearchEntries } from '@/components/settings/mobile-settings-search'
-import { getOrcaAccountSettingsSearchEntries } from '@/components/settings/orca-account-settings-search'
-import { OrcaLogoSettingsIcon } from '@/components/settings/orca-logo-settings-icon'
+import { getOCCAccountSettingsSearchEntries } from '@/components/settings/occ-account-settings-search'
+import { OCCLogoSettingsIcon } from '@/components/settings/occ-logo-settings-icon'
 import { getOrchestrationPaneSearchEntries } from '@/components/settings/orchestration-search'
 import { getVoicePaneSearchEntries } from '@/components/settings/voice-pane-search'
 import { translate } from '@/i18n/i18n'
@@ -131,14 +131,14 @@ export function buildSetupSettingsSections({
     ...(showDesktopOnlySettings
       ? [
           {
-            id: 'orca-account',
-            title: translate('auto.components.settings.orcaAccount.title', 'OCC Account'),
+            id: 'occ-account',
+            title: translate('auto.components.settings.occAccount.title', 'OCC Account'),
             description: translate(
-              'auto.components.settings.orcaAccount.description',
+              'auto.components.settings.occAccount.description',
               'Share work instantly and reach your desktop from OCC Mobile wherever you are.'
             ),
             icon: CircleUserRound,
-            searchEntries: getOrcaAccountSettingsSearchEntries(),
+            searchEntries: getOCCAccountSettingsSearchEntries(),
             group: 'setup'
           }
         ]
@@ -153,7 +153,7 @@ export function buildSetupSettingsSections({
         'auto.hooks.useSettingsNavigationMetadata.5f32ac08f3',
         'Finish the onboarding checklist for core OCC workflows.'
       ),
-      icon: OrcaLogoSettingsIcon,
+      icon: OCCLogoSettingsIcon,
       searchEntries: [
         {
           title: translate(

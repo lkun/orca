@@ -2,14 +2,14 @@
 #import <objc/runtime.h>
 #import <dlfcn.h>
 
-@interface OrcaSchedulingProbeSignal : NSObject
+@interface OCCSchedulingProbeSignal : NSObject
 @property id payload;
 @property BOOL throwsOnMap;
 @property BOOL throwsObject;
 - (id)map:(id (^)(id))transform;
 @end
 
-@implementation OrcaSchedulingProbeSignal
+@implementation OCCSchedulingProbeSignal
 - (id)map:(id (^)(id))transform {
   if (self.throwsObject) @throw @"Unsupported map contract";
   if (self.throwsOnMap) {
@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
     if ([mode isEqual:@"object"]) {
       expected = originalResult = @{@"Label": @"unchanged"};
     } else {
-      OrcaSchedulingProbeSignal *signal = [OrcaSchedulingProbeSignal new];
+      OCCSchedulingProbeSignal *signal = [OCCSchedulingProbeSignal new];
       signal.payload = [mode isEqual:@"payload"] ? @"unsupported" : @{@"Label": @"unchanged"};
       signal.throwsOnMap = [mode isEqual:@"exception"];
       signal.throwsObject = [mode isEqual:@"thrown-object"];
@@ -54,9 +54,9 @@ int main(int argc, char **argv) {
     id (*invoke)(id, SEL) = (id (*)(id, SEL))[launcher methodForSelector:selector];
     id actual = invoke(launcher, selector);
     if (![actual isEqual:expected]) return 6;
-    if ([originalResult isKindOfClass:OrcaSchedulingProbeSignal.class] &&
+    if ([originalResult isKindOfClass:OCCSchedulingProbeSignal.class] &&
         ![mode isEqual:@"payload"] &&
-        ![((OrcaSchedulingProbeSignal *)originalResult).payload isEqual:@{@"Label": @"unchanged"}]) {
+        ![((OCCSchedulingProbeSignal *)originalResult).payload isEqual:@{@"Label": @"unchanged"}]) {
       return 7;
     }
   }

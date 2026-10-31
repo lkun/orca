@@ -281,7 +281,7 @@
       "plan": "計畫",
       "stoppedManually": "已手動停止"
     },
-    "orcaStop": {
+    "occStop": {
       "canContinue": "您可以在此對話中繼續。",
       "crash": "此回覆進行期間，{{machine}} 上的 OCC 意外停止。",
       "quit": "此回覆進行期間，{{machine}} 上的 OCC 已關閉。",
@@ -904,7 +904,7 @@
     },
     "setupHookTrustDrawer": {
       "alwaysTrustAndRun": "一律信任並執行",
-      "description": "此存放庫的 orca.yaml 會在工作區啟動前執行。請僅在信任此存放庫時執行。",
+      "description": "此存放庫的 occ.yaml 會在工作區啟動前執行。請僅在信任此存放庫時執行。",
       "dontRun": "不執行",
       "newScriptLabel": "新的設定指令碼",
       "runHooks": "執行鉤子",
@@ -2560,7 +2560,7 @@
       "cannotRunHere": "OCC 無法在此處以聊天方式執行此代理程式。",
       "capacity": "執行此聊天的電腦上的 OCC 已達到請求上限。請在那臺電腦上更新 OCC，然後重試。",
       "chatNotFound": "OCC 找不到此聊天。",
-      "chatSavedByNewerOrca": "此聊天由更新版本的 OCC 儲存。",
+      "chatSavedByNewerOCC": "此聊天由更新版本的 OCC 儲存。",
       "clearAfterAnswer": "請先回答代理程式的問題或回應核准要求，然後再執行 /clear。",
       "clearAfterRetry": "請先重試您之前的訊息，然後再執行 /clear。",
       "clearAfterSending": "您之前的訊息仍在傳送中。傳送完成後再執行 /clear。",
@@ -2606,7 +2606,7 @@
       "restartFailed": "代理程式無法重新啟動。",
       "runClearWhenDone": "完成後再執行 /clear。",
       "runCompactWhenDone": "完成後再執行 /compact。",
-      "savedByNewerOrca": "這些聊天由更新版本的 OCC 儲存。",
+      "savedByNewerOCC": "這些聊天由更新版本的 OCC 儲存。",
       "sendOutcomeLost": "OCC 無法確認你的訊息已送達代理程式。請檢視聊天，如有需要請重新傳送。",
       "settleEarlierMessage": "請等待之前的訊息送達，或重試該訊息。",
       "shortenMessage": "請縮短或分割內容後再重新傳送。",
@@ -2618,8 +2618,8 @@
       "turnActive": "代理程式仍在回覆。",
       "unreachable": "OCC 無法連線到代理程式。",
       "unsupported": "執行此聊天的電腦需要更新版本的 OCC。請在該電腦上更新 OCC 後重試。",
-      "updateOrcaToKeepUsing": "請更新 OCC 以繼續使用這些聊天。",
-      "updateOrcaToOpenChat": "請更新 OCC 以開啟它。",
+      "updateOCCToKeepUsing": "請更新 OCC 以繼續使用這些聊天。",
+      "updateOCCToOpenChat": "請更新 OCC 以開啟它。",
       "waitForBackgroundTasks": "請等待背景任務完成。",
       "waitForCommand": "請等待 /compact 或 /clear 完成。",
       "waitForStart": "請等待代理程式完成啟動。",
@@ -3624,7 +3624,7 @@
       "projectSubtitle": "GitHub 專案 · {{repository}}{{itemNumber}}",
       "pullRequest": "PR",
       "reopenItem": "重新開啟項目",
-      "repositoryNotInOrca": "存放庫不在 OCC 中",
+      "repositoryNotInOCC": "存放庫不在 OCC 中",
       "status": "狀態",
       "type": "類型",
       "workspaceCreationRequirement": "僅能從 GitHub 議題和 PR 建立工作區。"
@@ -3869,7 +3869,7 @@
       "setupTitle": "要執行設定指令碼嗎？",
       "skipSetupAndCreate": "略過設定並建立",
       "trustFailed": "無法將設定指令碼設為信任。",
-      "trustSubtitle": "此存放庫的 orca.yaml 會在工作區啟動前於您的電腦上執行。請僅在信任此存放庫時執行。"
+      "trustSubtitle": "此存放庫的 occ.yaml 會在工作區啟動前於您的電腦上執行。請僅在信任此存放庫時執行。"
     },
     "worktreeCreateRetry": {
       "createFailed": "建立工作區失敗"

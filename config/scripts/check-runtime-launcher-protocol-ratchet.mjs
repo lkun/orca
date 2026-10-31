@@ -6,23 +6,23 @@ import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { DAEMON_PROTOCOL_SOURCE_PATH, parseDaemonProtocolFacts } from './daemon-protocol-facts.mjs'
 
-/** Files that decide which runtime executable launches orcad or the terminal daemon. */
+/** Files that decide which runtime executable launches occd or the terminal daemon. */
 export const RUNTIME_LAUNCHER_PATHS = [
-  // orcad handoff to its bundled runtime, and the pinned runtimes it can hand off to.
-  'src/main/orcad/orcad-bundled-runtime.ts',
-  'src/main/orcad/launcher.ts',
-  'config/scripts/orcad-entry-build.mjs',
+  // occd handoff to its bundled runtime, and the pinned runtimes it can hand off to.
+  'src/main/occd/occd-bundled-runtime.ts',
+  'src/main/occd/launcher.ts',
+  'config/scripts/occd-entry-build.mjs',
   'src/shared/node-runtime-pin.ts',
   'src/main/node-runtime/pinned-runtime-materializer.ts',
   'src/main/node-runtime/runtime-archive-download.ts',
-  'src/main/managed-server/install/orcad-remote-node-runtime.ts',
-  // orcad slot layout: which runtime file a packaged slot carries.
-  'src/shared/orcad-artifacts.ts',
-  'config/scripts/build-orcad.mjs',
-  'config/scripts/build-orcad-node.mjs',
-  'config/scripts/build-orcad-template.mjs',
+  'src/main/managed-server/install/occd-remote-node-runtime.ts',
+  // occd slot layout: which runtime file a packaged slot carries.
+  'src/shared/occd-artifacts.ts',
+  'config/scripts/build-occd.mjs',
+  'config/scripts/build-occd-node.mjs',
+  'config/scripts/build-occd-template.mjs',
   // Remote slot runtime selection.
-  'src/main/managed-server/install/orcad-remote-runtime.ts',
+  'src/main/managed-server/install/occd-remote-runtime.ts',
   // Terminal daemon host launch: which executable the daemon child is forked from.
   'src/main/daemon/daemon-launched-child.ts',
   'src/main/daemon/daemon-launched-child-spawn.ts',
@@ -31,7 +31,7 @@ export const RUNTIME_LAUNCHER_PATHS = [
   'src/main/daemon/daemon-host-manifest.ts'
 ]
 
-export const RUNTIME_PROTOCOL_OVERRIDE_ENV = 'ORCA_ALLOW_RUNTIME_LAUNCHER_PROTOCOL_BUMP'
+export const RUNTIME_PROTOCOL_OVERRIDE_ENV = 'OCC_ALLOW_RUNTIME_LAUNCHER_PROTOCOL_BUMP'
 export const RUNTIME_PROTOCOL_OVERRIDE_LABEL = 'allow-runtime-launcher-protocol-bump'
 
 function git(repoRoot, args) {

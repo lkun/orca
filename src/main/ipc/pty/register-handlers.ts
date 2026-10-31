@@ -1,6 +1,6 @@
 import { settledDaemonRestart } from '../../daemon/daemon-restart-state'
 import { getAppEnvironment } from '../../../shared/app-environment'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import type { Store } from '../../persistence'
 import type { GlobalSettings } from '../../../shared/global-settings-types'
 import { LocalPtyProvider } from '../../providers/local-pty-provider'
@@ -66,12 +66,12 @@ import {
   resolveCodexResumeLaunch,
   stripSequencedStartupResumeArgv
 } from './host-env/codex-resume'
-import { ensureLinuxTerminalOrcaCliShimDir } from '../../cli/linux-terminal-orca-cli-shim'
+import { ensureLinuxTerminalOCCCliShimDir } from '../../cli/linux-terminal-occ-cli-shim'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../shared/execution-host'
 
 export function registerPtyHandlers(
   mainWindow?: PtyRendererDelivery,
-  runtime?: OrcaRuntimeService,
+  runtime?: OCCRuntimeService,
   getSelectedCodexHomePath?: GetSelectedCodexHomePath,
   getSettings?: () => GlobalSettings,
   prepareClaudeAuth?: PrepareClaudeAuth,
@@ -81,7 +81,7 @@ export function registerPtyHandlers(
   if (process.platform === 'linux') {
     const appEnvironment = getAppEnvironment()
     if (appEnvironment.isPackaged()) {
-      ensureLinuxTerminalOrcaCliShimDir({ userDataPath: appEnvironment.getPath('userData') })
+      ensureLinuxTerminalOCCCliShimDir({ userDataPath: appEnvironment.getPath('userData') })
     }
   }
   const ipcMain = getPtyIpc()

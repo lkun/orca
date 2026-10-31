@@ -5,8 +5,8 @@ import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { OpenFile } from '@/store/slices/editor'
 import {
-  ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT,
-  ORCA_EDITOR_FILE_SAVED_EVENT,
+  OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT,
+  OCC_EDITOR_FILE_SAVED_EVENT,
   notifyEditorFileCacheStale,
   type EditorFileSavedDetail
 } from './editor-autosave'
@@ -97,7 +97,7 @@ function makeCalls(): ProbeCalls {
 function dispatchExternalChange(relativePath: string): void {
   act(() => {
     window.dispatchEvent(
-      new CustomEvent(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, {
+      new CustomEvent(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, {
         detail: {
           worktreeId: 'ssh-worktree',
           worktreePath: '/remote/repo',
@@ -444,7 +444,7 @@ describe('useEditorPanelExternalContentEvents', () => {
     })
     act(() => {
       window.dispatchEvent(
-        new CustomEvent<EditorFileSavedDetail>(ORCA_EDITOR_FILE_SAVED_EVENT, {
+        new CustomEvent<EditorFileSavedDetail>(OCC_EDITOR_FILE_SAVED_EVENT, {
           detail: {
             fileId: 'closed-saver',
             content: 'saved',

@@ -1,4 +1,4 @@
-import type { ChildProcessHandle } from '@orca/process-host/process-spec'
+import type { ChildProcessHandle } from '@occ/process-host/process-spec'
 import {
   watcherChildPhysicalExit,
   requireWatcherChildTermination

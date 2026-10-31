@@ -2,7 +2,7 @@ import { createElement } from 'react'
 import { act, create, type ReactTestRenderer } from 'react-test-renderer'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../../src/shared/sidebar-inputs-switch', () => ({ ORCA_SIDEBAR_INPUTS_IS_MAIN: true }))
+vi.mock('../../../src/shared/sidebar-inputs-switch', () => ({ OCC_SIDEBAR_INPUTS_IS_MAIN: true }))
 vi.mock('react-native', () => ({
   AppState: { currentState: 'active', addEventListener: () => ({ remove: () => {} }) }
 }))
@@ -107,7 +107,7 @@ describe('Workspace options changed while the connection drops', () => {
     const screen = await mountScreen(client)
     await act(async () => {
       screen.view().handleSortChange('name')
-      screen.view().toggleCollapsed('repo:orca')
+      screen.view().toggleCollapsed('repo:occ')
     })
     expect(screen.view().pendingViewChanges.pending).toHaveLength(2)
 
@@ -118,15 +118,15 @@ describe('Workspace options changed while the connection drops', () => {
       { method: 'ui.set', params: expect.objectContaining({ sortBy: 'name' }) },
       {
         method: 'ui.setCollapsed',
-        params: expect.objectContaining({ key: 'repo:orca', collapsed: true })
+        params: expect.objectContaining({ key: 'repo:occ', collapsed: true })
       },
       { method: 'ui.set', params: expect.objectContaining({ sortBy: 'name' }) },
       {
         method: 'ui.setCollapsed',
-        params: expect.objectContaining({ key: 'repo:orca', collapsed: true })
+        params: expect.objectContaining({ key: 'repo:occ', collapsed: true })
       }
     ])
-    expect(screen.state().view).toMatchObject({ sortBy: 'name', collapsedGroups: ['repo:orca'] })
+    expect(screen.state().view).toMatchObject({ sortBy: 'name', collapsedGroups: ['repo:occ'] })
     expect(screen.view().pendingViewChanges.pending).toEqual([])
   })
 })

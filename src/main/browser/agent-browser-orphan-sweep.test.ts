@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const runProcessMock = vi.fn()
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: (spec: unknown) => runProcessMock(spec)
 }))
 
@@ -11,7 +11,7 @@ type Spec = { args?: readonly string[] }
 
 const BIN = '/opt/occ/agent-browser'
 const SCOPED = {
-  env: { AGENT_BROWSER_SOCKET_DIR: '/tmp/orca-ab-0123456789abcdef' },
+  env: { AGENT_BROWSER_SOCKET_DIR: '/tmp/occ-ab-0123456789abcdef' },
   ownsSocketDirectory: true
 }
 
@@ -42,30 +42,30 @@ describe('agent-browser orphan sweep', () => {
   })
 
   it('never closes a daemon outside OCC tab naming', async () => {
-    respond(['default', 'agent1', 'orca-orcad-deadbeef', 'orca-tab-aaa'])
+    respond(['default', 'agent1', 'occ-occd-deadbeef', 'occ-tab-aaa'])
 
     await sweepOrphanedAgentBrowserSessions({ binaryPath: BIN, ...SCOPED })
 
-    expect(closedArgs()).toEqual([['--session', 'orca-tab-aaa', 'close']])
+    expect(closedArgs()).toEqual([['--session', 'occ-tab-aaa', 'close']])
   })
 
   it('leaves sessions this run already owns alone', async () => {
-    respond(['orca-tab-live', 'orca-tab-orphan'])
+    respond(['occ-tab-live', 'occ-tab-orphan'])
 
     await sweepOrphanedAgentBrowserSessions({
       binaryPath: BIN,
       ...SCOPED,
-      isSessionLive: (name) => name === 'orca-tab-live'
+      isSessionLive: (name) => name === 'occ-tab-live'
     })
 
-    expect(closedArgs()).toEqual([['--session', 'orca-tab-orphan', 'close']])
+    expect(closedArgs()).toEqual([['--session', 'occ-tab-orphan', 'close']])
   })
 
   it.each([
     ['no socket directory at all', { PATH: 'C:\\Windows' }],
     ['a socket directory OCC inherited', { AGENT_BROWSER_SOCKET_DIR: '/tmp/shared-ab' }]
   ])('does not enumerate with %s', async (_label, env) => {
-    respond(['orca-tab-aaa'])
+    respond(['occ-tab-aaa'])
 
     const closed = await sweepOrphanedAgentBrowserSessions({
       binaryPath: BIN,
@@ -98,12 +98,12 @@ describe('agent-browser orphan sweep', () => {
         return Promise.resolve({
           code: 0,
           signal: null,
-          stdout: JSON.stringify({ data: { sessions: ['orca-tab-aaa', 'orca-tab-bbb'] } }),
+          stdout: JSON.stringify({ data: { sessions: ['occ-tab-aaa', 'occ-tab-bbb'] } }),
           stderr: '',
           timedOut: false
         })
       }
-      if (spec.args?.[1] === 'orca-tab-aaa') {
+      if (spec.args?.[1] === 'occ-tab-aaa') {
         return Promise.reject(new Error('spawn failed'))
       }
       return Promise.resolve({ code: 0, signal: null, stdout: '', stderr: '', timedOut: false })
@@ -111,23 +111,23 @@ describe('agent-browser orphan sweep', () => {
 
     const closed = await sweepOrphanedAgentBrowserSessions({ binaryPath: BIN, ...SCOPED })
 
-    expect(closed).toEqual(['orca-tab-bbb'])
+    expect(closed).toEqual(['occ-tab-bbb'])
   })
 })
 
 describe('sweep kill switch', () => {
-  const previous = process.env.ORCA_DISABLE_AGENT_BROWSER_SWEEP
+  const previous = process.env.OCC_DISABLE_AGENT_BROWSER_SWEEP
 
   afterEach(() => {
     if (previous === undefined) {
-      delete process.env.ORCA_DISABLE_AGENT_BROWSER_SWEEP
+      delete process.env.OCC_DISABLE_AGENT_BROWSER_SWEEP
     } else {
-      process.env.ORCA_DISABLE_AGENT_BROWSER_SWEEP = previous
+      process.env.OCC_DISABLE_AGENT_BROWSER_SWEEP = previous
     }
   })
 
   it('enumerates nothing when disabled, even when OCC owns the socket directory', async () => {
-    process.env.ORCA_DISABLE_AGENT_BROWSER_SWEEP = '1'
+    process.env.OCC_DISABLE_AGENT_BROWSER_SWEEP = '1'
     runProcessMock.mockClear()
 
     const closed = await sweepOrphanedAgentBrowserSessions({

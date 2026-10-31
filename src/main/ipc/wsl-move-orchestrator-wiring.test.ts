@@ -45,14 +45,14 @@ const hostFile = vi.hoisted(() => ({ unreadable: false }))
 vi.mock('../../shared/wsl-host-deployment-store', () => ({
   readWslHostDeployments: () => {
     if (hostFile.unreadable) {
-      throw new Error('orca-wsl-host-deployments.json is not valid')
+      throw new Error('occ-wsl-host-deployments.json is not valid')
     }
     return { deployments: [], unreadableEnvironmentIds: new Set() }
   }
 }))
 vi.mock('../wsl/wsl-distro-registry-id', () => ({ readWslDistroRegistrations: async () => null }))
-vi.mock('../wsl/wsl-orcad-deploy', () => ({
-  defaultWslOrcadEnvironmentId: (distro: string) => `wsl:${distro}`
+vi.mock('../wsl/wsl-occd-deploy', () => ({
+  defaultWslOCCdEnvironmentId: (distro: string) => `wsl:${distro}`
 }))
 vi.mock('../wsl-background-distro-gate', () => ({
   readConfirmedRunningWslDistros: async () => host.running,
@@ -250,9 +250,9 @@ describe('WSL move orchestrator wiring', () => {
     expect(driver.moveProjectsToWslHost).toHaveBeenCalledTimes(1)
   })
 
-  it('makes no automatic start with ORCA_WSL_MOVE_AUTO=0', async () => {
+  it('makes no automatic start with OCC_WSL_MOVE_AUTO=0', async () => {
     vi.stubEnv(WSL_HOSTS_INTERNAL_GATE_ENV, '1')
-    vi.stubEnv('ORCA_WSL_MOVE_AUTO', '0')
+    vi.stubEnv('OCC_WSL_MOVE_AUTO', '0')
     host.statuses = [
       { distro: 'Ubuntu', state: 'ready', environmentId: 'wsl:Ubuntu', detail: null }
     ]

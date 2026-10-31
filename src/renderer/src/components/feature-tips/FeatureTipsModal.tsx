@@ -14,11 +14,11 @@ import { CmdJPaletteTipDialog } from './CmdJPaletteTipDialog'
 import { installCliFromFeatureTip } from './feature-tip-cli-install-action'
 import { getFeatureTipForModal } from './feature-tip-modal-state'
 import {
-  getOrcaCliFeatureTipTelemetrySource,
+  getOCCCliFeatureTipTelemetrySource,
   trackChatUiFeatureTipAction,
   trackCmdJPaletteFeatureTipAcknowledged,
-  trackOrcaCliFeatureTipSetupClicked,
-  trackOrcaCliFeatureTipSetupResult
+  trackOCCCliFeatureTipSetupClicked,
+  trackOCCCliFeatureTipSetupResult
 } from './feature-tip-telemetry'
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { isWebClientLocation } from '@/lib/web-client-location'
@@ -171,7 +171,7 @@ export default function FeatureTipsModal(): JSX.Element | null {
       }
       case 'learn-cmd-j-palette': {
         trackCmdJPaletteFeatureTipAcknowledged(
-          getOrcaCliFeatureTipTelemetrySource(modalData.source)
+          getOCCCliFeatureTipTelemetrySource(modalData.source)
         )
         closeModal()
         break
@@ -211,13 +211,13 @@ export default function FeatureTipsModal(): JSX.Element | null {
           mountedRef.current &&
           activeModalRef.current === 'feature-tips' &&
           setupRequestIdRef.current === setupRequestId
-        const telemetrySource = getOrcaCliFeatureTipTelemetrySource(modalData.source)
-        trackOrcaCliFeatureTipSetupClicked(telemetrySource)
+        const telemetrySource = getOCCCliFeatureTipTelemetrySource(modalData.source)
+        trackOCCCliFeatureTipSetupClicked(telemetrySource)
         setPrimaryBusy(true)
         try {
           const result = await installCliFromFeatureTip(() => window.api.cli.install())
           if (result.kind === 'installed') {
-            trackOrcaCliFeatureTipSetupResult(telemetrySource, 'installed')
+            trackOCCCliFeatureTipSetupResult(telemetrySource, 'installed')
             if (!canApplySetupResult()) {
               return
             }
@@ -225,14 +225,14 @@ export default function FeatureTipsModal(): JSX.Element | null {
             toast.success(
               translate(
                 'auto.components.feature.tips.FeatureTipsModal.ce13a742d0',
-                'Registered `orca` in PATH.'
+                'Registered `occ` in PATH.'
               )
             )
             setSkillTerminalOpen(true)
             return
           }
 
-          trackOrcaCliFeatureTipSetupResult(telemetrySource, 'needs_attention')
+          trackOCCCliFeatureTipSetupResult(telemetrySource, 'needs_attention')
           if (!canApplySetupResult()) {
             return
           }
@@ -264,7 +264,7 @@ export default function FeatureTipsModal(): JSX.Element | null {
             import.meta.env.DEV &&
             message.includes('Development mode uses a generated launcher for validation only')
           ) {
-            trackOrcaCliFeatureTipSetupResult(telemetrySource, 'dev_preview')
+            trackOCCCliFeatureTipSetupResult(telemetrySource, 'dev_preview')
             if (!canApplySetupResult()) {
               return
             }
@@ -279,7 +279,7 @@ export default function FeatureTipsModal(): JSX.Element | null {
             return
           }
 
-          trackOrcaCliFeatureTipSetupResult(telemetrySource, 'failed')
+          trackOCCCliFeatureTipSetupResult(telemetrySource, 'failed')
           if (canApplySetupResult()) {
             toast.error(message)
           }

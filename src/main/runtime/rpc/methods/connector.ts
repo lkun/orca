@@ -4,7 +4,7 @@ import { delayUnlessAborted } from '../../../../shared/abort-aware-delay'
 import { cloudConversation } from '../../../../shared/connector-cloud-contract'
 import {
   ConnectorAnswer,
-  ConnectorCancel,
+  Connectoccncel,
   ConnectorPendingPrompt,
   ConnectorReply,
   ConnectorSend,
@@ -19,12 +19,12 @@ import {
   runtimeConversationHost,
   type ExternalConversationSeam
 } from '../../../external-conversations/external-conversation-seam'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { defineMethod } from '../core'
 import { assertAgentLaunchTargetAuthorized } from './agent-launch-target-authorization'
 
 export function requireSeam(
-  runtime: Pick<OrcaRuntimeService, 'getExternalConversationSeam'>
+  runtime: Pick<OCCRuntimeService, 'getExternalConversationSeam'>
 ): ExternalConversationSeam {
   const seam = runtime.getExternalConversationSeam()
   if (!seam) {
@@ -87,7 +87,7 @@ export const CONNECTOR_METHODS = [
   defineMethod({
     name: 'connector.cancel',
     permission: 'workspace',
-    params: ConnectorCancel,
+    params: Connectoccncel,
     handler: async ({ source, externalId, deliveryId }, context) =>
       requireSeam(context.runtime).cancel(
         runtimeConversationHost(context.runtime),
@@ -95,7 +95,7 @@ export const CONNECTOR_METHODS = [
         deliveryId
       )
   }),
-  // `orca connector reply`: the calling pane names its cloud conversation and turn; OCC Cloud posts it.
+  // `occ connector reply`: the calling pane names its cloud conversation and turn; OCC Cloud posts it.
   defineMethod({
     name: 'connector.reply',
     permission: 'workspace',

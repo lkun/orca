@@ -95,7 +95,7 @@ async function armGuest(previousMarker?: string, inShadowRoot = false) {
     host: { dispatchEvent: (event: unknown) => void }
     freezeHighlight: (selectionId: string) => void
     cleanup: () => void
-  } = Object.getOwnPropertyDescriptor(window, '__orcaGrab')?.value
+  } = Object.getOwnPropertyDescriptor(window, '__occGrab')?.value
   const flushFrames = (): void => {
     for (const frame of frames.splice(0)) {
       frame()

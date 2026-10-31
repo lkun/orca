@@ -15,7 +15,7 @@ describe('usage source cache file', () => {
   let ref: UsageSourceCacheRef
 
   beforeEach(() => {
-    directory = mkdtempSync(join(tmpdir(), 'orca-usage-source-cache-'))
+    directory = mkdtempSync(join(tmpdir(), 'occ-usage-source-cache-'))
     ref = {
       path: join(directory, 'usage-sources.json'),
       schemaVersion: 6,
@@ -29,8 +29,8 @@ describe('usage source cache file', () => {
   })
 
   it('names the sidecar after the report it belongs to', () => {
-    expect(usageSourceCachePath(join(directory, 'orca-claude-usage.json'))).toBe(
-      join(directory, 'orca-claude-usage-sources.json')
+    expect(usageSourceCachePath(join(directory, 'occ-claude-usage.json'))).toBe(
+      join(directory, 'occ-claude-usage-sources.json')
     )
   })
 
@@ -72,7 +72,7 @@ describe('usage source cache file', () => {
   })
 
   it('moves inline records of a legacy cache into the sidecar and returns only the report', async () => {
-    const cacheFile = join(directory, 'orca-claude-usage.json')
+    const cacheFile = join(directory, 'occ-claude-usage.json')
     const legacy = {
       schemaVersion: 6,
       worktreeFingerprint: '[]',
@@ -97,7 +97,7 @@ describe('usage source cache file', () => {
   })
 
   it('returns a report that is already split unchanged and leaves the sidecar alone', async () => {
-    const cacheFile = join(directory, 'orca-claude-usage.json')
+    const cacheFile = join(directory, 'occ-claude-usage.json')
     const text = JSON.stringify({ schemaVersion: 6, sessions: [] })
     writeFileSync(cacheFile, text)
 

@@ -83,7 +83,7 @@ async function evaluateAt(store: Store, service: AutomationService, id: string, 
 }
 
 beforeEach(() => {
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-automation-wsl-stopped-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-automation-wsl-stopped-'))
   blocked.mockReset()
   blocked.mockResolvedValue({ distro: 'Ubuntu', state: 'stopped' })
   projectGit.wslDistro = undefined

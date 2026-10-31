@@ -16,12 +16,12 @@ const CANONICAL_GUIDE_NAMES = [
   'computer-use',
   'jira-tickets',
   'linear-tickets',
-  'orca-cli',
-  'orca-emulator',
-  'orca-emulator-android',
-  'orca-jira',
-  'orca-linear',
-  'orca-per-workspace-env',
+  'occ-cli',
+  'occ-emulator',
+  'occ-emulator-android',
+  'occ-jira',
+  'occ-linear',
+  'occ-per-workspace-env',
   'orchestration'
 ]
 
@@ -30,12 +30,12 @@ const GUIDE_ALIASES = {
   'computer-use': [],
   'jira-tickets': [],
   'linear-tickets': [],
-  'orca-cli': [],
-  'orca-emulator': [],
-  'orca-emulator-android': [],
-  'orca-jira': [],
-  'orca-linear': [],
-  'orca-per-workspace-env': [],
+  'occ-cli': [],
+  'occ-emulator': [],
+  'occ-emulator-android': [],
+  'occ-jira': [],
+  'occ-linear': [],
+  'occ-per-workspace-env': [],
   orchestration: []
 }
 
@@ -45,12 +45,12 @@ const STUB_TOPICS = [
   'computer-use',
   'jira-tickets',
   'linear-tickets',
-  'orca-cli',
-  'orca-emulator',
-  'orca-emulator-android',
-  'orca-jira',
-  'orca-linear',
-  'orca-per-workspace-env',
+  'occ-cli',
+  'occ-emulator',
+  'occ-emulator-android',
+  'occ-jira',
+  'occ-linear',
+  'occ-per-workspace-env',
   'orchestration'
 ]
 

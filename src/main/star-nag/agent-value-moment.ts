@@ -1,5 +1,5 @@
 import { app } from 'electron'
-import { checkOrcaStarred } from '../github/client'
+import { checkOCCStarred } from '../github/client'
 import type { Store } from '../persistence'
 import type { StarNagPromptMode } from '../../shared/star-nag-telemetry'
 
@@ -42,7 +42,7 @@ export class StarNagAgentValueMoment {
     }
     this.deps.setEvaluating(true)
     try {
-      const starred = await checkOrcaStarred()
+      const starred = await checkOCCStarred()
       if (this.deps.store.getUI().starNagCompleted) {
         return { status: 'skipped' }
       }

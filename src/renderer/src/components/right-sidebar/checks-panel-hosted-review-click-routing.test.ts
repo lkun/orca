@@ -102,7 +102,7 @@ describe('checks panel hosted review modifier hint destination', () => {
         { openLinksInApp: false, openLinksInAppModifierInverts: true },
         true
       )
-    ).toBe('orca')
+    ).toBe('occ')
   })
 
   it('stays silent while inverting is off and links open externally', () => {
@@ -124,7 +124,7 @@ describe('checks panel hosted review modifier hint destination', () => {
         { openLinksInAppModifierInverts: true, activeRuntimeEnvironmentId: 'remote-1' },
         true
       )
-    ).toBe('orca')
+    ).toBe('occ')
   })
 
   it('ignores a blank runtime id', () => {
@@ -137,7 +137,7 @@ describe('checks panel hosted review modifier hint destination', () => {
         },
         true
       )
-    ).toBe('orca')
+    ).toBe('occ')
   })
 
   // Without a worktree, openHttpLink always sends modifier clicks to the system browser.

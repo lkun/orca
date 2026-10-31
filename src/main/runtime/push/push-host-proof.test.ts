@@ -7,7 +7,7 @@ import {
 } from './push-host-challenge-fixtures'
 import { answerPushHostChallenge, type PushHostProofContext } from './push-host-proof'
 
-const GATEWAY_ORIGIN = 'https://push.onorca.dev'
+const GATEWAY_ORIGIN = 'https://push.onocc.dev'
 const HOST_FINGERPRINT = 'abcdef0123456789'
 const ISSUED_AT = 1_770_000_000_000
 

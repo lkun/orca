@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import {
   chmodSync,
   existsSync,
@@ -49,7 +49,7 @@ setInterval(() => {}, 1000);
 const EXIT_HOST = 'process.exit(0)'
 
 const SHARED = `
-const log = (key, value) => console.log('ORCA_NM ' + JSON.stringify({ key, value }));
+const log = (key, value) => console.log('OCC_NM ' + JSON.stringify({ key, value }));
 const lastError = () => (chrome.runtime.lastError ? chrome.runtime.lastError.message : null);
 const firstEvent = (port) => new Promise((resolve) => {
   port.onMessage.addListener((message) => resolve({ message }));
@@ -59,27 +59,27 @@ const firstEvent = (port) => new Promise((resolve) => {
 const WORKER_SCRIPT = `${SHARED}
 (async () => {
   log('popout', (await chrome.windows.create({ url: 'page.html', type: 'popup', focused: false })).id);
-  const port = chrome.runtime.connectNative('com.orca.echo');
+  const port = chrome.runtime.connectNative('com.occ.echo');
   const echoed = firstEvent(port);
   port.postMessage({ text: 'héllo 🦈', from: 'worker' });
   log('workerEcho', await echoed);
   port.disconnect();
   log('workerDisconnected', true);
-  log('oneShot', await chrome.runtime.sendNativeMessage('com.orca.echo', { once: true }));
-  log('missing', await firstEvent(chrome.runtime.connectNative('com.orca.missing')));
-  log('forbidden', await chrome.runtime.sendNativeMessage('com.orca.forbidden', {}).then(() => 'replied', (error) => error.message));
-  log('exit', await firstEvent(chrome.runtime.connectNative('com.orca.exit')));
+  log('oneShot', await chrome.runtime.sendNativeMessage('com.occ.echo', { once: true }));
+  log('missing', await firstEvent(chrome.runtime.connectNative('com.occ.missing')));
+  log('forbidden', await chrome.runtime.sendNativeMessage('com.occ.forbidden', {}).then(() => 'replied', (error) => error.message));
+  log('exit', await firstEvent(chrome.runtime.connectNative('com.occ.exit')));
   log('oneShotExit', await new Promise((resolve) =>
-    chrome.runtime.sendNativeMessage('com.orca.exit', {}, (response) => resolve({ response, error: lastError() }))
+    chrome.runtime.sendNativeMessage('com.occ.exit', {}, (response) => resolve({ response, error: lastError() }))
   ));
-  const lingering = chrome.runtime.connectNative('com.orca.echo');
+  const lingering = chrome.runtime.connectNative('com.occ.echo');
   const pong = firstEvent(lingering);
   lingering.postMessage('ping');
   log('lingering', await pong);
 })().catch((error) => log('workerError', String((error && error.stack) || error)));
 `
 const PAGE_SCRIPT = `${SHARED}
-const port = chrome.runtime.connectNative('com.orca.echo');
+const port = chrome.runtime.connectNative('com.occ.echo');
 firstEvent(port).then((event) => log('pageEcho', event));
 port.postMessage({ from: 'page' });
 `
@@ -150,7 +150,7 @@ async function buildBundle(entry: string, fileName: string): Promise<void> {
 }
 
 beforeAll(async () => {
-  root = mkdtempSync(join(tmpdir(), 'orca-native-messaging-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-native-messaging-'))
   const extensionDir = join(root, 'extension')
   mkdirSync(extensionDir)
   writeFileSync(
@@ -203,12 +203,12 @@ beforeAll(async () => {
     args,
     env: {
       ...env,
-      ORCA_BACKGROUND_LAUNCH: '1',
-      ORCA_EXTENSION_FIXTURE_STATUS: join(root, 'status.json'),
-      ORCA_EXTENSION_FIXTURE_DIR: extensionDir,
-      ORCA_NATIVE_FIXTURE_USER_DATA: join(root, 'profile'),
-      ORCA_NATIVE_FIXTURE_ECHO_HOST: writeHost('echo-host', ECHO_HOST),
-      ORCA_NATIVE_FIXTURE_EXIT_HOST: writeHost('exit-host', EXIT_HOST)
+      OCC_BACKGROUND_LAUNCH: '1',
+      OCC_EXTENSION_FIXTURE_STATUS: join(root, 'status.json'),
+      OCC_EXTENSION_FIXTURE_DIR: extensionDir,
+      OCC_NATIVE_FIXTURE_USER_DATA: join(root, 'profile'),
+      OCC_NATIVE_FIXTURE_ECHO_HOST: writeHost('echo-host', ECHO_HOST),
+      OCC_NATIVE_FIXTURE_EXIT_HOST: writeHost('exit-host', EXIT_HOST)
     },
     stdio: ['ignore', 'pipe', 'pipe']
   })

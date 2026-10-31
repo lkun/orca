@@ -57,17 +57,17 @@ describe('content script relay', () => {
     receiver.chrome.runtime.onMessage.addListener(second)
 
     await expect(
-      receiver.dispatch({ orcaDocumentTargetProbe: { token: 'private-probe' } }, { id: 'ext' })
+      receiver.dispatch({ occDocumentTargetProbe: { token: 'private-probe' } }, { id: 'ext' })
     ).resolves.toBe(true)
 
     expect(receiver.sendMessage).toHaveBeenCalledExactlyOnceWith({
-      orcaDocumentTargetProbe: { token: 'private-probe', response: true }
+      occDocumentTargetProbe: { token: 'private-probe', response: true }
     })
     expect(seen).not.toHaveBeenCalled()
     expect(second).not.toHaveBeenCalled()
     expect(receiver.listeners.size).toBe(2)
     await receiver.dispatch(
-      { orcaDocumentTargetProbe: { token: 'private-probe', response: true } },
+      { occDocumentTargetProbe: { token: 'private-probe', response: true } },
       fromContentScript
     )
     expect(seen).not.toHaveBeenCalled()
@@ -131,7 +131,7 @@ describe('content script relay', () => {
   it('sends a content script’s call to the worker and reports a missing worker as an error', async () => {
     const sendMessage = vi.fn(async () => ({ ok: true, value: 3 }))
     const bridge = createContentScriptRelayBridge(sendMessage, { id: 'ext' })
-    await expect(bridge.call('orcaStorageSync', 'getBytesInUse', [null])).resolves.toEqual({
+    await expect(bridge.call('occStorageSync', 'getBytesInUse', [null])).resolves.toEqual({
       ok: true,
       value: 3
     })
@@ -149,7 +149,7 @@ describe('content script relay', () => {
       },
       { id: 'ext' }
     )
-    await expect(unanswered.call('orcaStorageSync', 'get', [])).resolves.toEqual({
+    await expect(unanswered.call('occStorageSync', 'get', [])).resolves.toEqual({
       ok: false,
       error: 'Could not establish connection. Receiving end does not exist.'
     })
@@ -174,9 +174,9 @@ describe('content script relay', () => {
       [CONTENT_SCRIPT_RELAY_KEY]: { changes: { theme: { newValue: 'dark' } }, from }
     })
     expect(native.size).toBe(0)
-    bridge.listen('orcaStorageSync', 'onChanged', true)
+    bridge.listen('occStorageSync', 'onChanged', true)
 
-    await bridge.call('orcaStorageSync', 'set', [{ theme: 'light' }])
+    await bridge.call('occStorageSync', 'set', [{ theme: 'light' }])
     const [sent] = sendMessage.mock.calls[0]
     const ownId =
       isRecord(sent) && isRecord(sent[CONTENT_SCRIPT_RELAY_KEY])
@@ -186,9 +186,9 @@ describe('content script relay', () => {
     deliver(change(String(ownId)), { id: 'ext' })
     deliver(change(), { id: 'other-extension' })
     deliver(change('another-frame'), { id: 'ext' })
-    expect(events).toEqual([['orcaStorageSync', 'onChanged', [{ theme: { newValue: 'dark' } }]]])
+    expect(events).toEqual([['occStorageSync', 'onChanged', [{ theme: { newValue: 'dark' } }]]])
 
-    bridge.listen('orcaStorageSync', 'onChanged', false)
+    bridge.listen('occStorageSync', 'onChanged', false)
     expect(native.size).toBe(0)
   })
 

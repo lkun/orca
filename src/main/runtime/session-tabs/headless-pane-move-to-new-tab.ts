@@ -1,5 +1,5 @@
 import type { RuntimeHeadlessTabGroups as HeadlessTabGroupsMethods } from './headless-tab-group-moves'
-import { OrcaRuntimeWithCloseHeadlessMobileTerminalTab } from './headless-terminal-tab-close'
+import { OCCRuntimeWithCloseHeadlessMobileTerminalTab } from './headless-terminal-tab-close'
 import { recordPtySurface, spawnSurfaceClaimSequence } from '../pty-recorded-surface-topology'
 import { withSelectedTabs } from '../headless-tab-group-selection'
 import type { RuntimeMobileSessionTabGroup } from '../../../shared/runtime-session-contracts'
@@ -14,7 +14,7 @@ import {
 /** Where the client dropped the new tab, in the host's group ids. */
 export type MovedPanePlacement = { targetGroupId: string; index?: number }
 
-export abstract class OrcaRuntimeWithHeadlessPaneMoveToNewTab extends OrcaRuntimeWithCloseHeadlessMobileTerminalTab {
+export abstract class OCCRuntimeWithHeadlessPaneMoveToNewTab extends OCCRuntimeWithCloseHeadlessMobileTerminalTab {
   protected abstract persistHeadlessTabGroups(
     ...args: Parameters<HeadlessTabGroupsMethods['persistHeadlessTabGroups']>
   ): ReturnType<HeadlessTabGroupsMethods['persistHeadlessTabGroups']>

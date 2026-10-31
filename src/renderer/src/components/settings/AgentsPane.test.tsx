@@ -288,19 +288,19 @@ describe('AgentsPane', () => {
   })
 
   it('hides desktop-only awake modes in paired web clients', () => {
-    ;(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ = true
+    ;(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ = true
     try {
       expect(renderPane(getDefaultSettings('/tmp'))).not.toContain('Keep computer awake')
       expect(
         matchesSettingsSearch('awake', getAgentsPaneSearchEntries({ includeAgentAwake: false }))
       ).toBe(false)
     } finally {
-      delete (globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__
+      delete (globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__
     }
   })
 
   it('keeps the host-only folder trust row out of paired web clients and their search', () => {
-    Reflect.set(globalThis, '__ORCA_WEB_CLIENT__', true)
+    Reflect.set(globalThis, '__OCC_WEB_CLIENT__', true)
     try {
       expect(renderPane(getDefaultSettings('/tmp'))).not.toContain(getAgentWorkspaceTrustTitle())
       expect(
@@ -310,18 +310,18 @@ describe('AgentsPane', () => {
         )
       ).toBe(false)
     } finally {
-      Reflect.deleteProperty(globalThis, '__ORCA_WEB_CLIENT__')
+      Reflect.deleteProperty(globalThis, '__OCC_WEB_CLIENT__')
     }
   })
 
   it('keeps the host-only Codex server row out of paired web clients', () => {
-    Reflect.set(globalThis, '__ORCA_WEB_CLIENT__', true)
+    Reflect.set(globalThis, '__OCC_WEB_CLIENT__', true)
     try {
       expect(renderPane(getDefaultSettings('/tmp'))).not.toContain(
         getCodexTerminalServerIsolationTitle()
       )
     } finally {
-      Reflect.deleteProperty(globalThis, '__ORCA_WEB_CLIENT__')
+      Reflect.deleteProperty(globalThis, '__OCC_WEB_CLIENT__')
     }
   })
 

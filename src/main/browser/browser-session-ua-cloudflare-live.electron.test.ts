@@ -14,9 +14,9 @@ import {
 
 const electronBinary = createRequire(import.meta.url)('electron') as string
 const fixtureRoots: string[] = []
-const enabled = process.env.ORCA_UA_CLOUDFLARE_LIVE === '1'
+const enabled = process.env.OCC_UA_CLOUDFLARE_LIVE === '1'
 let liveTargetUrl = 'https://dash.cloudflare.com/login'
-const repetitions = Number(process.env.ORCA_UA_CLOUDFLARE_REPETITIONS ?? 5)
+const repetitions = Number(process.env.OCC_UA_CLOUDFLARE_REPETITIONS ?? 5)
 const failureText = 'There was a problem with verification. Please reload and try again.'
 
 // Use native mode as a per-site control; discard results if that control fails.
@@ -87,8 +87,8 @@ describe.skipIf(!enabled)('Cloudflare live user-agent compatibility', () => {
       }
     }
     const report = results.map(summarizeLiveRun)
-    console.info(`ORCA_UA_CLOUDFLARE_REPORT=${JSON.stringify(report)}`)
-    const reportPath = process.env.ORCA_UA_CLOUDFLARE_REPORT_PATH
+    console.info(`OCC_UA_CLOUDFLARE_REPORT=${JSON.stringify(report)}`)
+    const reportPath = process.env.OCC_UA_CLOUDFLARE_REPORT_PATH
     if (reportPath) {
       writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`)
     }
@@ -108,8 +108,8 @@ describe.skipIf(!enabled)('Cloudflare live user-agent compatibility', () => {
       runLiveProbe('branch', 1, 'google-auth')
     ])
     const report = results.map(summarizeGoogleAuthRun)
-    console.info(`ORCA_UA_GOOGLE_AUTH_REPORT=${JSON.stringify(report)}`)
-    const reportPath = process.env.ORCA_UA_GOOGLE_AUTH_REPORT_PATH
+    console.info(`OCC_UA_GOOGLE_AUTH_REPORT=${JSON.stringify(report)}`)
+    const reportPath = process.env.OCC_UA_GOOGLE_AUTH_REPORT_PATH
     if (reportPath) {
       writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`)
     }
@@ -124,7 +124,7 @@ describe.skipIf(!enabled)('Cloudflare live user-agent compatibility', () => {
 })
 
 async function runLiveProbe(arm: LiveArm, repetition: number, site: LiveSite): Promise<LiveRun> {
-  const root = mkdtempSync(join(tmpdir(), `orca-cloudflare-${arm}-${repetition}-`))
+  const root = mkdtempSync(join(tmpdir(), `occ-cloudflare-${arm}-${repetition}-`))
   fixtureRoots.push(root)
   const processIdentityModulePath = join(root, 'browser-process-user-agent.cjs')
   const exceptionModulePath = join(root, 'browser-session-ua.cjs')
@@ -227,7 +227,7 @@ const processIdentity = require(${JSON.stringify(options.processIdentityModulePa
 const { installBrowserSessionUserAgentPolicy } = require(${JSON.stringify(options.exceptionModulePath)})
 const arm = ${JSON.stringify(options.arm)}
 const site = ${JSON.stringify(options.site)}
-app.setName('OrcaCloudflareLiveProbe')
+app.setName('OCCCloudflareLiveProbe')
 const nativeUserAgent = app.userAgentFallback
 const clean = userAgent => userAgent.replace(/\s+Electron\/\S+/, '').replace(/(\)\s+)\S+\s+(Chrome\/)/, '$1$2')
 let identity
@@ -368,7 +368,7 @@ function launchFixture(fixturePath: string, root: string, cdpPort: number): Chil
           `--user-data-dir=${join(root, 'profile')}`,
           `--remote-debugging-port=${cdpPort}`
         ],
-    { env: { ...env, ORCA_BACKGROUND_LAUNCH: '1' }, stdio: ['ignore', 'pipe', 'pipe'] }
+    { env: { ...env, OCC_BACKGROUND_LAUNCH: '1' }, stdio: ['ignore', 'pipe', 'pipe'] }
   )
 }
 

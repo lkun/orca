@@ -1,5 +1,5 @@
 import { AGENT_LAUNCH_RUNTIME_CAPABILITY } from '../../../shared/agent-launch-runtime-capability'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { placeUnshownLiveTerminalsBestEffort } from '../terminal/adoption/unshown-live-terminal-placement'
 import type { RuntimeTransportMetadata } from '../../../shared/runtime-bootstrap'
 import { watchRuntimeMetadataOwnership } from '../runtime-metadata-ownership-watch'
@@ -151,7 +151,7 @@ export class RuntimeRpcLifecycle extends RuntimeRpcWebSocketDispatch {
       },
       onReclaim: (previous) => {
         console.warn(
-          `[runtime] Reclaimed orca-runtime.json from a dead runtime (pid ${previous?.pid ?? 'none'}); republished pid ${this.pid}.`
+          `[runtime] Reclaimed occ-runtime.json from a dead runtime (pid ${previous?.pid ?? 'none'}); republished pid ${this.pid}.`
         )
       }
     })
@@ -250,7 +250,7 @@ export class RuntimeRpcLifecycle extends RuntimeRpcWebSocketDispatch {
           this.runtime.noteAgentLaunchClientReady?.()
         }
         // Publish every live host terminal as a tab on attach.
-        if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+        if (OCC_LAYOUT_OWNER_IS_MAIN) {
           void placeUnshownLiveTerminalsBestEffort(this.runtime)
         }
         // Update capabilities once per socket; only phones send their own later update.

@@ -1,7 +1,7 @@
 import { join } from 'node:path'
 import { existsSync } from 'node:fs'
 import { realpath, readdir, stat } from 'node:fs/promises'
-import { getOrcaManagedCodexHomePath, getSystemCodexHomePath } from '../codex/codex-home-paths'
+import { getOCCManagedCodexHomePath, getSystemCodexHomePath } from '../codex/codex-home-paths'
 import { getCodexAccountHomeSessionDirectories } from '../codex/codex-account-home-discovery'
 import { getLegacyCopiedCodexSessionBridgeScanPreference } from '../codex/codex-session-bridge'
 import { normalizeFsPath } from '../usage/usage-path-comparison'
@@ -61,7 +61,7 @@ function appendDiscoveredFiles(target: string[], source: readonly string[]): voi
 
 export function getCodexSessionsDirectory(): string {
   // The primary runtime uses an OCC-owned home regardless of ambient CODEX_HOME.
-  return join(getOrcaManagedCodexHomePath(), 'sessions')
+  return join(getOCCManagedCodexHomePath(), 'sessions')
 }
 
 export function getCodexSessionDirectories(): string[] {
@@ -74,7 +74,7 @@ export function getCodexSessionDirectories(): string[] {
 }
 
 function hasLegacyCopiedSessionBridgeMarkers(): boolean {
-  return existsSync(join(getOrcaManagedCodexHomePath(), '.orca-session-copies'))
+  return existsSync(join(getOCCManagedCodexHomePath(), '.occ-session-copies'))
 }
 
 export async function listCodexSessionFiles(): Promise<string[]> {

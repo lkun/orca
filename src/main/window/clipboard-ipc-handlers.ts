@@ -8,7 +8,7 @@ import {
 } from 'electron'
 import { randomUUID } from 'node:crypto'
 import { open, stat } from 'node:fs/promises'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import type { Store } from '../persistence'
 import { PATH_ACCESS_DENIED_MESSAGE } from '../ipc/filesystem/filesystem-auth'
 import { resolveDesktopAuthorizedPath } from '../ipc/local-file-access-resolution'

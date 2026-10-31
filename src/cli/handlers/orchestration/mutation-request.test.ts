@@ -56,7 +56,7 @@ function unavailable(options?: CallOptions): RuntimeClientError {
     'Could not connect to the running OCC app.',
     {
       orchestrationRequestId: options?.orchestrationRequestId,
-      originalCommand: ['orca', 'orchestration', 'send', '--type', 'worker_done']
+      originalCommand: ['occ', 'orchestration', 'send', '--type', 'worker_done']
     }
   )
 }
@@ -174,7 +174,7 @@ describe('callOrchestrationMutation runtime_unavailable retry', () => {
       data: {
         recovery: {
           retryCommand: [
-            'orca',
+            'occ',
             'orchestration',
             'send',
             '--type',
@@ -191,7 +191,7 @@ describe('callOrchestrationMutation runtime_unavailable retry', () => {
   it.skipIf(process.platform === 'win32')(
     'reaches a runtime that comes back after the first attempt found it down',
     async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-worker-done-retry-'))
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-worker-done-retry-'))
       tempDirs.add(userDataPath)
       const endpoint = join(userDataPath, 'runtime.sock')
       const sendRequestIds: string[] = []
@@ -221,7 +221,7 @@ describe('callOrchestrationMutation runtime_unavailable retry', () => {
         })
       })
       servers.add(server)
-      const client = new RuntimeClient(userDataPath, 5_000, null, null, 'orca')
+      const client = new RuntimeClient(userDataPath, 5_000, null, null, 'occ')
       const call = callOrchestrationMutation(
         client,
         new Map(),
@@ -233,7 +233,7 @@ describe('callOrchestrationMutation runtime_unavailable retry', () => {
       // Initial attempts have no metadata, so the contract probe fails until this runtime starts.
       await new Promise<void>((resolve) => server.listen(endpoint, resolve))
       writeFileSync(
-        join(userDataPath, 'orca-runtime.json'),
+        join(userDataPath, 'occ-runtime.json'),
         JSON.stringify({
           runtimeId: 'runtime-1',
           pid: 1,

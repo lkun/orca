@@ -70,7 +70,7 @@ const workspace = vi.fn(async () => '/repo/worktree')
 
 beforeEach(async () => {
   asked.length = 0
-  bin = await mkdtemp(join(tmpdir(), 'orca-opencode-bin-'))
+  bin = await mkdtemp(join(tmpdir(), 'occ-opencode-bin-'))
   const opencode = join(bin, 'opencode')
   await writeFile(opencode, '#!/bin/sh\n')
   await chmod(opencode, 0o755)

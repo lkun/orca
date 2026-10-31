@@ -165,7 +165,7 @@ async function extractToTemporaryCatalog(root, tempDir) {
   // Treat extraction as check evidence, not another committed catalog feature authors must synchronize.
   const [{ runProcessSync }, { describeProcessFailure }, { resolvePinnedBunExecutable }] =
     await Promise.all([
-      import('@orca/process-host'),
+      import('@occ/process-host'),
       import('./process-failure-message.mjs'),
       import('./pinned-bun-executable.mjs')
     ])
@@ -177,7 +177,7 @@ async function extractToTemporaryCatalog(root, tempDir) {
     cwd: root,
     env: {
       ...process.env,
-      ORCA_I18N_EXTRACTION_OUTPUT: outputPattern.split(path.sep).join('/')
+      OCC_I18N_EXTRACTION_OUTPUT: outputPattern.split(path.sep).join('/')
     },
     timeoutMs: null,
     maxOutputBytes: 1024 * 1024
@@ -189,7 +189,7 @@ async function extractToTemporaryCatalog(root, tempDir) {
 }
 
 export async function main(root = process.cwd()) {
-  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'orca-i18next-extraction-'))
+  const tempDir = await fs.mkdtemp(path.join(os.tmpdir(), 'occ-i18next-extraction-'))
 
   try {
     const [extractedCatalog, englishCatalog, keyEvidence] = await Promise.all([

@@ -381,13 +381,13 @@ describe('ShadowDirectoryCompare', () => {
       compare.compare('resolve', IDENTITY, null)
     }
     compare.compare('sticky-verify', IDENTITY, assignment('cell-a'))
-    const samples = lines.filter((line) => line.event === 'orca_relay_shadow_compare_unexplained')
+    const samples = lines.filter((line) => line.event === 'occ_relay_shadow_compare_unexplained')
     expect(samples).toHaveLength(SHADOW_COMPARE_SAMPLES_PER_CLASS)
     now = SHADOW_COMPARE_FLUSH_MS
     compare.compare('sticky-verify', IDENTITY, assignment('cell-a'))
-    expect(lines.filter((line) => line.event === 'orca_relay_shadow_compare')).toEqual([
+    expect(lines.filter((line) => line.event === 'occ_relay_shadow_compare')).toEqual([
       {
-        event: 'orca_relay_shadow_compare',
+        event: 'occ_relay_shadow_compare',
         route: 'resolve',
         class: 'map-only',
         explained: false,
@@ -396,7 +396,7 @@ describe('ShadowDirectoryCompare', () => {
         countByCell: { 'cell-a': SHADOW_COMPARE_SAMPLES_PER_CLASS + 5 }
       },
       {
-        event: 'orca_relay_shadow_compare',
+        event: 'occ_relay_shadow_compare',
         route: 'sticky-verify',
         class: 'agree',
         explained: true,
@@ -436,7 +436,7 @@ describe('ShadowDirectoryCompare', () => {
     const mapOnly = compareOn({ 'cell-a': [seat(3)], 'cell-b': [seat(3)] })
     mapOnly.compare('resolve', IDENTITY, null)
     mapOnly.flush(0)
-    const counts = lines.filter((line) => line.event === 'orca_relay_shadow_compare')
+    const counts = lines.filter((line) => line.event === 'occ_relay_shadow_compare')
     expect(counts.map((line) => [line.class, line.explained, line.count, line.countByCell])).toEqual([
       ['db-only-unseen', true, 3, { 'cell-a': 2, 'cell-b': 1 }],
       ['agree-absent', true, 1, {}],
@@ -460,7 +460,7 @@ describe('unexplained samples', () => {
     )
     compare.compare('sticky-verify', IDENTITY, { ...assignment('cell-a'), assignmentEpoch: 2 })
     compare.flush(20)
-    const sample = lines.find((line) => line.event === 'orca_relay_shadow_compare_unexplained')
+    const sample = lines.find((line) => line.event === 'occ_relay_shadow_compare_unexplained')
     expect(sample).toMatchObject({
       class: 'epoch-mismatch',
       db: { cellId: 'cell-a', assignmentEpoch: 2 }
@@ -545,7 +545,7 @@ function config(): RelayConfig {
     publicUrl: 'https://relay.example.test',
     cellUrl: 'https://relay.example.test',
     authIssuer: 'https://auth.example.test',
-    authAudience: 'orca-relay',
+    authAudience: 'occ-relay',
     jwksUrl: 'https://auth.example.test/jwks',
     assignmentSigningKey: new TextEncoder().encode('assignment-key-with-at-least-32-bytes'),
     role: 'director',

@@ -58,7 +58,7 @@ vi.mock('./editor-runtime-file-watch', () => ({
 }))
 
 import { useEditorExternalWatch } from './useEditorExternalWatch'
-import { ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT } from '@/components/editor/editor-autosave'
+import { OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT } from '@/components/editor/editor-autosave'
 
 function WatchProbe(): null {
   useEditorExternalWatch()
@@ -113,14 +113,14 @@ describe('useEditorExternalWatch resync through the real reconciliation path', (
         })
       }
     }
-    window.addEventListener(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, onReload)
+    window.addEventListener(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, onReload)
     container = document.body.appendChild(document.createElement('div'))
     root = createRoot(container)
   })
 
   afterEach(async () => {
     await act(async () => root.unmount())
-    window.removeEventListener(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, onReload)
+    window.removeEventListener(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, onReload)
     container.remove()
     ;(window as unknown as { api?: unknown }).api = previousApi
     vi.useRealTimers()

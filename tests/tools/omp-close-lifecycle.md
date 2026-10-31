@@ -9,13 +9,13 @@ to represent OMP typed into a shell. This isolates termination policy; it does n
 exercise Agent button delivery or terminal-tab/handle routing.
 
 ```sh
-ORCA_BACKGROUND_LAUNCH=1 ORCA_OMP_PROBE_BINARY=/absolute/path/to/omp \
+OCC_BACKGROUND_LAUNCH=1 OCC_OMP_PROBE_BINARY=/absolute/path/to/omp \
   node node_modules/vitest/vitest.mjs run --config config/vitest.config.ts \
   tests/tools/omp-close-lifecycle.test.mjs
 ```
 
 The probe defaults to zsh on macOS and bash on other POSIX hosts. Set
-`ORCA_OMP_PROBE_SHELL` to the absolute path of either shell to override. Windows
+`OCC_OMP_PROBE_SHELL` to the absolute path of either shell to override. Windows
 is skipped. It requires the existing node-pty native dependency for the current
 Node runtime. The normal unit suite skips the test unless a binary is supplied.
 
@@ -46,8 +46,8 @@ No stale foreground OMP was reproduced in these local termination-policy cases.
 
 ## Detached external tool reproduction and correction
 
-Set `ORCA_OMP_PROBE_EXTERNAL_TOOL=1` to run `! /bin/sleep 120` in OMP before
-explicit immediate close. Add `ORCA_OMP_PROBE_BACKEND=daemon` to exercise the daemon
+Set `OCC_OMP_PROBE_EXTERNAL_TOOL=1` to run `! /bin/sleep 120` in OMP before
+explicit immediate close. Add `OCC_OMP_PROBE_BACKEND=daemon` to exercise the daemon
 backend. Each mode tests both recognized and typed launches; these modes do not
 run the local-quit cases. The probe makes no model requests. Both OMP/PI profiles
 are cleared, and XDG data/cache/state roots are isolated alongside configuration.

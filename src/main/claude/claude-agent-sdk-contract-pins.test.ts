@@ -12,7 +12,7 @@ import {
   type SpawnOptions as SdkSpawnOptions
 } from '@anthropic-ai/claude-agent-sdk'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import type { AgentSessionRecord } from '../../shared/agent-session-record'
 import type { AgentChatPermissionChoice } from '../../shared/agent-chat-permission-mode'
 import { LOCAL_EXECUTION_HOST_ID } from '../../shared/execution-host'
@@ -102,8 +102,8 @@ function scriptScenario(
 function scenarioEnv(scenario: { scenarioPath: string; reportPath: string }) {
   return {
     PATH: process.env.PATH,
-    ORCA_SDK_CONTRACT_SCENARIO_PATH: scenario.scenarioPath,
-    ORCA_SDK_CONTRACT_REPORT_PATH: scenario.reportPath
+    OCC_SDK_CONTRACT_SCENARIO_PATH: scenario.scenarioPath,
+    OCC_SDK_CONTRACT_REPORT_PATH: scenario.reportPath
   }
 }
 
@@ -264,7 +264,7 @@ describe('Claude Agent SDK contract pins', () => {
       env: {
         ...scenarioEnv(scenario),
         CLAUDE_CONFIG_DIR: '/pinned/claude-config',
-        ORCA_AGENT_SESSION_SPAWN_TOKEN: 'spawn-token-1',
+        OCC_AGENT_SESSION_SPAWN_TOKEN: 'spawn-token-1',
         NODE_OPTIONS: '--max-old-space-size=64'
       },
       spawnClaudeCodeProcess: recordingSpawner(spawns)
@@ -272,7 +272,7 @@ describe('Claude Agent SDK contract pins', () => {
 
     const env = spawns[0]!.env
     expect(env.CLAUDE_CONFIG_DIR).toBe('/pinned/claude-config')
-    expect(env.ORCA_AGENT_SESSION_SPAWN_TOKEN).toBe('spawn-token-1')
+    expect(env.OCC_AGENT_SESSION_SPAWN_TOKEN).toBe('spawn-token-1')
     expect(env.ANTHROPIC_API_KEY).toBeUndefined()
     expect(env.CLAUDE_CODE_ENTRYPOINT).toBe('sdk-ts')
     expect('NODE_OPTIONS' in env).toBe(false)
@@ -280,9 +280,9 @@ describe('Claude Agent SDK contract pins', () => {
 
   it('inherits process.env into the child when env is omitted — the ambient-auth sharp edge', async () => {
     const scenario = scriptScenario([{ awaitUserMessage: true }, { emit: RESULT_FRAME }])
-    vi.stubEnv('ORCA_SDK_CONTRACT_SCENARIO_PATH', scenario.scenarioPath)
-    vi.stubEnv('ORCA_SDK_CONTRACT_REPORT_PATH', scenario.reportPath)
-    vi.stubEnv('ORCA_SDK_CONTRACT_AMBIENT_CANARY', 'inherited-from-process-env')
+    vi.stubEnv('OCC_SDK_CONTRACT_SCENARIO_PATH', scenario.scenarioPath)
+    vi.stubEnv('OCC_SDK_CONTRACT_REPORT_PATH', scenario.reportPath)
+    vi.stubEnv('OCC_SDK_CONTRACT_AMBIENT_CANARY', 'inherited-from-process-env')
     const spawns: SpawnSeen[] = []
     await drainQuery({
       pathToClaudeCodeExecutable: FAKE_CLI,
@@ -290,7 +290,7 @@ describe('Claude Agent SDK contract pins', () => {
       spawnClaudeCodeProcess: recordingSpawner(spawns)
     })
 
-    expect(spawns[0]!.env.ORCA_SDK_CONTRACT_AMBIENT_CANARY).toBe('inherited-from-process-env')
+    expect(spawns[0]!.env.OCC_SDK_CONTRACT_AMBIENT_CANARY).toBe('inherited-from-process-env')
   })
 
   it('emits --replay-user-messages only through extraArgs, never on its own', async () => {

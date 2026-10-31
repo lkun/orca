@@ -20,14 +20,14 @@ async function tempRoot(prefix: string): Promise<string> {
 
 async function writePlugin(root: string, publisher: string, id: string): Promise<void> {
   await writeFile(
-    join(root, 'orca-plugin.json'),
+    join(root, 'occ-plugin.json'),
     JSON.stringify({
       manifestVersion: 1,
       id,
       publisher,
       name: 'Plugin',
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       capabilities: []
     })
@@ -39,7 +39,7 @@ afterEach(async () => {
 })
 
 describe('plugin install trust', () => {
-  const official = 'https://github.com/stablyai/orca-plugins.git'
+  const official = 'https://github.com/stablyai/occ-plugins.git'
   const marketplace = (url: string, plugin: string): PluginInstallSource => ({
     kind: 'marketplace',
     marketplace: { url, ref: 'main', resolvedCommit: 'a'.repeat(40) },
@@ -50,17 +50,17 @@ describe('plugin install trust', () => {
 
   it.each<[string, PluginInstallSource, boolean]>([
     [
-      'stablyai.orca-secrets',
-      marketplace(official, 'git@github.com:stablyai/orca-secrets.git'),
+      'stablyai.occ-secrets',
+      marketplace(official, 'git@github.com:stablyai/occ-secrets.git'),
       true
     ],
     ['openai.tools', marketplace(official, 'https://github.com/stablyai/tools.git'), true],
-    ['stablyai.orca-secrets', marketplace(official, 'https://github.com/attacker/x.git'), false],
+    ['stablyai.occ-secrets', marketplace(official, 'https://github.com/attacker/x.git'), false],
     [
-      'stablyai.orca-secrets',
+      'stablyai.occ-secrets',
       marketplace(
         'https://github.com/acme/plugins.git',
-        'https://github.com/stablyai/orca-secrets.git'
+        'https://github.com/stablyai/occ-secrets.git'
       ),
       false
     ],
@@ -70,7 +70,7 @@ describe('plugin install trust', () => {
       false
     ],
     [
-      'orca-team.tools',
+      'occ-team.tools',
       marketplace('https://gitlab.com/acme/plugins.git', 'https://gitlab.com/acme/t.git'),
       false
     ],
@@ -81,42 +81,42 @@ describe('plugin install trust', () => {
   })
 
   it('rejects locally installed reserved identities before publication', async () => {
-    const sourcePath = await tempRoot('orca-reserved-plugin-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
-    await writePlugin(sourcePath, 'stablyai', 'orca-skills')
+    const sourcePath = await tempRoot('occ-reserved-plugin-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
+    await writePlugin(sourcePath, 'stablyai', 'occ-skills')
 
     await expect(
       installPluginFromLocalPath({ pluginsDir, sourcePath, hostVersion: '1.4.0' })
     ).resolves.toEqual({
       ok: false,
-      error: refused('stablyai.orca-skills')
+      error: refused('stablyai.occ-skills')
     })
     await expect(readPluginLockfile(pluginsDir)).resolves.toEqual({ version: 1, plugins: {} })
   })
 
   it('allows the app-bundled path only for the complete official identity', async () => {
-    const sourcePath = await tempRoot('orca-bundled-plugin-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
-    await writePlugin(sourcePath, 'stablyai', 'orca-skills')
+    const sourcePath = await tempRoot('occ-bundled-plugin-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
+    await writePlugin(sourcePath, 'stablyai', 'occ-skills')
 
     const result = await installBundledPlugin({
       pluginsDir,
       sourcePath,
       hostVersion: '1.4.0',
-      expectedPluginKey: 'stablyai.orca-skills'
+      expectedPluginKey: 'stablyai.occ-skills'
     })
 
-    expect(result).toMatchObject({ ok: true, pluginKey: 'stablyai.orca-skills' })
+    expect(result).toMatchObject({ ok: true, pluginKey: 'stablyai.occ-skills' })
     const lock = await readPluginLockfile(pluginsDir)
-    expect(lock.plugins['stablyai.orca-skills']?.source).toEqual({
+    expect(lock.plugins['stablyai.occ-skills']?.source).toEqual({
       kind: 'bundled',
-      bundleId: 'stablyai.orca-skills'
+      bundleId: 'stablyai.occ-skills'
     })
   })
 
   it('blocks a killed plugin even when the caller bypasses marketplace UI', async () => {
-    const sourcePath = await tempRoot('orca-killed-plugin-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-killed-plugin-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePlugin(sourcePath, 'community', 'unsafe')
 
     await expect(

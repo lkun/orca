@@ -74,14 +74,14 @@ export function summarizeReleaseDesktopTiming(run) {
   const macJobs = jobs.filter((job) => /^build-adhoc-mac(?:-arch)?(?: \(|$)/.test(job.name))
   const windows = jobs.filter((job) => /^(?:build|stage|publish)-adhoc-win(?:\b|\/)/.test(job.name))
   const template = jobs.find(
-    (job) => job.name.startsWith('orcad-template / ') && job.name.endsWith('/ desktop_template')
+    (job) => job.name.startsWith('occd-template / ') && job.name.endsWith('/ desktop_template')
   )
   assert(mac && windows.length > 0 && template, 'Missing Mac, Windows, or qualified template job')
   assert(
     [...macJobs, ...windows, template].every((job) => job.conclusion === 'success'),
     'Desktop or template job failed'
   )
-  const qualification = jobs.filter((job) => job.name.startsWith('orcad-template / '))
+  const qualification = jobs.filter((job) => job.name.startsWith('occd-template / '))
   const macIntervals = macJobs.map(interval)
   const macInterval = {
     start: Math.min(...macIntervals.map(({ start }) => start)),

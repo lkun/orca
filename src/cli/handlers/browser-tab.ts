@@ -72,7 +72,7 @@ export const BROWSER_TAB_HANDLERS: Record<string, CommandHandler> = {
     const worktree = await getBrowserWorktreeSelector(flags, cwd, client)
     // Why the caller's tab: the split should sit beside the terminal that ran the command, not
     // wherever the user last clicked. Spread conditionally so a plain create keeps its old payload.
-    const callerTabId = process.env.ORCA_TAB_ID
+    const callerTabId = process.env.OCC_TAB_ID
     const result = await client.call<{ browserPageId: string }>(
       'browser.tabCreate',
       {

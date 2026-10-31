@@ -68,7 +68,7 @@ describe('Agent Dashboard daily visible use', () => {
     expect(track('app_opened', {})).toBe(true)
   })
 
-  it.each(['opt_out', 'pending_banner', 'do_not_track', 'orca_disabled', 'ci', 'dashboard_off'])(
+  it.each(['opt_out', 'pending_banner', 'do_not_track', 'occ_disabled', 'ci', 'dashboard_off'])(
     'does not send or consume the daily allowance while blocked by %s',
     (block) => {
       if (block === 'opt_out') {
@@ -79,8 +79,8 @@ describe('Agent Dashboard daily visible use', () => {
         state.settings.experimentalAgentDashboardPopout = false
       } else if (block === 'do_not_track') {
         process.env.DO_NOT_TRACK = '1'
-      } else if (block === 'orca_disabled') {
-        process.env.ORCA_TELEMETRY_DISABLED = '1'
+      } else if (block === 'occ_disabled') {
+        process.env.OCC_TELEMETRY_DISABLED = '1'
       } else {
         process.env.CI = '1'
       }
@@ -92,7 +92,7 @@ describe('Agent Dashboard daily visible use', () => {
       state.settings.telemetry!.optedIn = true
       state.settings.experimentalAgentDashboardPopout = true
       delete process.env.DO_NOT_TRACK
-      delete process.env.ORCA_TELEMETRY_DISABLED
+      delete process.env.OCC_TELEMETRY_DISABLED
       delete process.env.CI
       expect(track('agent_dashboard_active', { surface: 'popout' })).toBe(true)
     }

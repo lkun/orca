@@ -49,7 +49,7 @@ function deps(
     deps: {
       worktreeId: 'wt-1',
       sourceOwner: { kind: 'local' } as const,
-      destinations: overrides.destinations ?? { primary: 'system', alternate: 'orca' },
+      destinations: overrides.destinations ?? { primary: 'system', alternate: 'occ' },
       actionsEnabled: overrides.actionsEnabled ?? true,
       restoreFocus: vi.fn(),
       request: (request: LinkActionRequest) => requests.push(request)
@@ -109,7 +109,7 @@ describe('handleNativeChatWebLink', () => {
       worktreeId: 'wt-1',
       sourceOwner: { kind: 'local' },
       modifierHeld: false,
-      forceDestination: 'orca'
+      forceDestination: 'occ'
     })
   })
 
@@ -135,7 +135,7 @@ describe('handleNativeChatWebLink', () => {
     )
     expect(mocks.openRoutedHttpLink).toHaveBeenCalledWith(
       'https://a/',
-      expect.objectContaining({ forceDestination: 'orca' })
+      expect.objectContaining({ forceDestination: 'occ' })
     )
   })
 

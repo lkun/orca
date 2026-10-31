@@ -25,7 +25,7 @@ import {
 // Use legacy window boot as the oracle for main-owned layout loading.
 const layoutOwner = vi.hoisted(() => ({ isMain: false }))
 vi.mock('../../../shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return layoutOwner.isMain
   }
 }))
@@ -120,7 +120,7 @@ describe('the window shows the same session before and after the shared Loader r
       ])
     )
     expect(view[`${GIT} group 0 tabs`]).toEqual(['tab-a', 'tab-b'])
-    expect(view).not.toHaveProperty([`${GIT} tab /Users/dev/orca/src/app.ts`])
+    expect(view).not.toHaveProperty([`${GIT} tab /Users/dev/occ/src/app.ts`])
   })
 
   it('lists differences only for fixtures that exist', () => {

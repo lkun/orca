@@ -1,6 +1,6 @@
 import type { ExecutionHostId } from '../../../../shared/execution-host'
 import type { RuntimePtyWorktreeRecord } from '../../runtime-terminal-state-records'
-import { OrcaRuntimeWithRestoredTerminalPlacement } from './restored-terminal-placement'
+import { OCCRuntimeWithRestoredTerminalPlacement } from './restored-terminal-placement'
 import type {
   RuntimeTerminalOrphanAdoptionRequest,
   RuntimeTerminalOrphanAdoptionResult
@@ -34,7 +34,7 @@ import type {
 import { worktreeIdsEqual } from '../../../../shared/worktree/id'
 import { forgetPtySurface } from '../../pty-recorded-surface-topology'
 
-export abstract class OrcaRuntimeWithHasExactPersistedTerminalSurfaceIdentity extends OrcaRuntimeWithRestoredTerminalPlacement {
+export abstract class OCCRuntimeWithHasExactPersistedTerminalSurfaceIdentity extends OCCRuntimeWithRestoredTerminalPlacement {
   protected abstract getOwnWorkspaceSessionForWorktree(
     worktreeId: string
   ): WorkspaceSessionState | null

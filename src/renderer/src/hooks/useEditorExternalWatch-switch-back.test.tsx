@@ -51,9 +51,9 @@ import { attachRestoredTabConflictScan } from '@/components/editor/editor-restor
 import { getDiskBaselineSignature } from '../../../shared/disk-baseline-signature'
 import {
   isAutosaveSuspendedForFile,
-  ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT
+  OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT
 } from '@/components/editor/editor-autosave'
-import { ORCA_WORKTREE_FILE_CHANGE_EVENT } from './worktree-file-change-event'
+import { OCC_WORKTREE_FILE_CHANGE_EVENT } from './worktree-file-change-event'
 import {
   claimCombinedDiffView,
   clearCombinedDiffViewMemory,
@@ -153,16 +153,16 @@ describe('switching back to a workspace that was not watched', () => {
     }
     reloads = []
     fileChangeEvents = 0
-    window.addEventListener(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, onReload)
-    window.addEventListener(ORCA_WORKTREE_FILE_CHANGE_EVENT, onFileChange)
+    window.addEventListener(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, onReload)
+    window.addEventListener(OCC_WORKTREE_FILE_CHANGE_EVENT, onFileChange)
     container = document.body.appendChild(document.createElement('div'))
     root = createRoot(container)
   })
 
   afterEach(async () => {
     await act(async () => root.unmount())
-    window.removeEventListener(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, onReload)
-    window.removeEventListener(ORCA_WORKTREE_FILE_CHANGE_EVENT, onFileChange)
+    window.removeEventListener(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, onReload)
+    window.removeEventListener(OCC_WORKTREE_FILE_CHANGE_EVENT, onFileChange)
     detachScan()
     clearCombinedDiffViewMemory()
     container.remove()

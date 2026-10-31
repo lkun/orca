@@ -42,20 +42,20 @@ describe('resolveWatcherProcessEntryPath', () => {
   })
 
   it('uses the adjacent entry for a packaged host whose app root is not an asar', () => {
-    // orcad ships this child beside orcad.js without Electron isPackaged or an out/main directory.
-    const orcadRoot = path.join(path.sep, 'opt', 'orca')
-    const adjacentEntry = path.join(orcadRoot, 'parcel-watcher-process-entry.js')
+    // occd ships this child beside occd.js without Electron isPackaged or an out/main directory.
+    const occdRoot = path.join(path.sep, 'opt', 'occ')
+    const adjacentEntry = path.join(occdRoot, 'parcel-watcher-process-entry.js')
 
     expect(
-      resolveWatcherProcessEntryPath(orcadRoot, true, (candidate) => candidate === adjacentEntry)
+      resolveWatcherProcessEntryPath(occdRoot, true, (candidate) => candidate === adjacentEntry)
     ).toBe(adjacentEntry)
   })
 
   it('falls back to the nested entry when a non-asar packaged host ships no adjacent child', () => {
-    const orcadRoot = path.join(path.sep, 'opt', 'orca')
+    const occdRoot = path.join(path.sep, 'opt', 'occ')
 
-    expect(resolveWatcherProcessEntryPath(orcadRoot, true, () => false)).toBe(
-      path.join(orcadRoot, 'out', 'main', 'parcel-watcher-process-entry.js')
+    expect(resolveWatcherProcessEntryPath(occdRoot, true, () => false)).toBe(
+      path.join(occdRoot, 'out', 'main', 'parcel-watcher-process-entry.js')
     )
   })
 
@@ -79,7 +79,7 @@ describe('resolveWatcherProcessEntryPath', () => {
   })
 
   it('keeps the cwd build fallback when resourcesPath has no packaged entry', () => {
-    const appRoot = path.join('workspace', 'orca')
+    const appRoot = path.join('workspace', 'occ')
 
     expect(
       resolveWatcherProcessEntryPathWithoutApp(

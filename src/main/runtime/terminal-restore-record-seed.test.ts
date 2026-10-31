@@ -1,9 +1,9 @@
 import { describe, expect, it, vi, afterEach } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
 import { makePaneKey } from '../../shared/stable-pane-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { bindPaneFirst } from './bind-first-pane.test-fixture'
 import type {
   RuntimePtyTabCloseAuthority,
@@ -42,8 +42,8 @@ function makeStore() {
   }
 }
 
-function makeRuntimeWithLeaf(): OrcaRuntimeService {
-  const runtime = new OrcaRuntimeService(makeStore() as never)
+function makeRuntimeWithLeaf(): OCCRuntimeService {
+  const runtime = new OCCRuntimeService(makeStore() as never)
   runtime.setPtyController({
     spawn: vi.fn(async () => ({ id: 'never' })),
     write: () => true,
@@ -176,7 +176,7 @@ describe('seedTerminalRestoreTail', () => {
   it('republishes session tabs when a seeded title lands', () => {
     const runtime = makeRuntimeWithLeaf()
     const touch = vi.spyOn(
-      // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: OrcaRuntimeService defines this protected method; the spy only observes it.
+      // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: OCCRuntimeService defines this protected method; the spy only observes it.
       runtime as unknown as { touchMobileSessionSnapshotsForPty: (ptyId: string) => void },
       'touchMobileSessionSnapshotsForPty'
     )
@@ -236,7 +236,7 @@ describe('seedTerminalRestoreTail', () => {
 })
 
 describe('terminal query dispatch characterization', () => {
-  class QueryDispatchRuntime extends OrcaRuntimeService {
+  class QueryDispatchRuntime extends OCCRuntimeService {
     prepareMobileCreate() {
       this.registerPty('pty-query', 'workspace')
       const pty = this.ptysById.get('pty-query')
@@ -245,7 +245,7 @@ describe('terminal query dispatch characterization', () => {
       }
       pty.tabId = 'tab'
       pty.paneKey = makePaneKey('tab', '00000000-0000-4000-8000-000000000001')
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         // Main's layout is the only answer to which pane holds the terminal; it needs a session.
         Reflect.set(this, 'store', {})
         bindPaneFirst(this, {
@@ -432,7 +432,7 @@ describe('terminal query dispatch characterization', () => {
 })
 
 describe('terminal query reentry characterization', () => {
-  class QueryRuntime extends OrcaRuntimeService {
+  class QueryRuntime extends OCCRuntimeService {
     readonly calls: string[] = []
     surfaceReads = 0
 
@@ -557,12 +557,12 @@ describe('terminal query reentry characterization', () => {
 describe('terminal view promise characterization', () => {
   const snapshot: RuntimeTerminalBufferSnapshot = { data: 'screen', cols: 80, rows: 24 }
   it('returns the current available-state promise with the runtime receiver and original arity', () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const expected = Promise.resolve(snapshot)
-    const receivers: OrcaRuntimeService[] = []
+    const receivers: OCCRuntimeService[] = []
     const arities: number[] = []
     runtime['serializeTerminalBufferFromAvailableState'] = function (
-      this: OrcaRuntimeService,
+      this: OCCRuntimeService,
       ...args
     ) {
       receivers.push(this)
@@ -575,11 +575,11 @@ describe('terminal view promise characterization', () => {
     expect(arities).toEqual([2])
   })
   it('reads the current fallback after provider completion and keeps provider-first options', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const provider = Promise.withResolvers<PtyProviderBufferSnapshot | null>()
-    const receivers: OrcaRuntimeService[] = []
+    const receivers: OCCRuntimeService[] = []
     const opts = { scrollbackRows: 12 }
-    runtime['serializeProviderTerminalBuffer'] = function (this: OrcaRuntimeService, ...args) {
+    runtime['serializeProviderTerminalBuffer'] = function (this: OCCRuntimeService, ...args) {
       receivers.push(this)
       expect(args).toEqual(['view-pty', opts, { timeoutMs: 8000, retireOnTimeout: true }])
       return provider.promise
@@ -588,7 +588,7 @@ describe('terminal view promise characterization', () => {
     runtime['serializeTerminalBufferFromAvailableState'] = firstFallback
     const pending = runtime.serializeAuthoritativeTerminalBuffer('view-pty', opts)
     runtime['serializeTerminalBufferFromAvailableState'] = function (
-      this: OrcaRuntimeService,
+      this: OCCRuntimeService,
       ...args
     ) {
       receivers.push(this)
@@ -601,19 +601,19 @@ describe('terminal view promise characterization', () => {
     expect(receivers).toEqual([runtime, runtime])
   })
   it('skips driver reads for empty input and rechecks the current driver before a write', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const initialDriver = vi.fn(() => ({ kind: 'desktop' as const }))
     runtime.getDriver = initialDriver
     await expect(runtime.writeTerminalPreviewInput('view-pty', '')).resolves.toBe(false)
     expect(initialDriver).not.toHaveBeenCalled()
-    const receivers: OrcaRuntimeService[] = []
+    const receivers: OCCRuntimeService[] = []
     const writeChunks = runtime['writeTerminalInputChunks']
-    const currentDriver = vi.fn(function (this: OrcaRuntimeService, _ptyId: string) {
+    const currentDriver = vi.fn(function (this: OCCRuntimeService, _ptyId: string) {
       receivers.push(this)
       return { kind: 'mobile' as const, clientId: 'phone' }
     })
     runtime['writeTerminalInputChunks'] = vi.fn(function (
-      this: OrcaRuntimeService,
+      this: OCCRuntimeService,
       ...args: Parameters<typeof writeChunks>
     ) {
       receivers.push(this)

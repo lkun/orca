@@ -26,7 +26,7 @@ import {
   automationRunFailure,
   type AutomationRunFailure
 } from '../../shared/automation-run-failure-copy'
-import { isOrcadFencedAutomation, ORCAD_FENCED_AUTOMATION } from './orcad-fenced-automation'
+import { isOCCdFencedAutomation, OCCD_FENCED_AUTOMATION } from './occd-fenced-automation'
 import { AutomationDispatchCancelledError } from './automation-dispatch-cancelled-error'
 
 export type AutomationRendererChannel = Pick<WebContents, 'isDestroyed' | 'send'>
@@ -83,8 +83,8 @@ export async function requestAutomationDispatch(
       )
     }
     // A refusal row would change the fenced export; restart strands the run instead.
-    if (isOrcadFencedAutomation(ctx.store, automation)) {
-      throw new AutomationDispatchCancelledError(ORCAD_FENCED_AUTOMATION)
+    if (isOCCdFencedAutomation(ctx.store, automation)) {
+      throw new AutomationDispatchCancelledError(OCCD_FENCED_AUTOMATION)
     }
     return current
   }

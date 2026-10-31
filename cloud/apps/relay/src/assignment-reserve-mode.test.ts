@@ -1,4 +1,4 @@
-import { ASSIGNMENT_LIMITS } from '@orca-cloud/relay-contract'
+import { ASSIGNMENT_LIMITS } from '@occ-cloud/relay-contract'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { RelayAssignmentStore, RelayCellInReserveModeError } from './assignment-store.js'
 import type { RelayCellConfig } from './config.js'
@@ -76,7 +76,7 @@ describe('assignment reserve-mode behavior', () => {
       }
       at += 60_000
       expect(await unknown.reserveModeCells()).toBeNull()
-      const lines = warn.mock.calls.filter(([line]) => String(line).includes('orca_relay_reserve_mode_read_failed'))
+      const lines = warn.mock.calls.filter(([line]) => String(line).includes('occ_relay_reserve_mode_read_failed'))
       expect(lines).toHaveLength(2)
     } finally {
       await restore()

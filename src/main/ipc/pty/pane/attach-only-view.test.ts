@@ -187,9 +187,9 @@ describe("a view's attach to a pane main started hidden", () => {
 
 describe('attachOnlyViewOf', () => {
   it('takes the flag only in a layout-owner build', async () => {
-    const { ORCA_LAYOUT_OWNER_IS_MAIN } = await import('../../../../shared/layout-owner-switch')
+    const { OCC_LAYOUT_OWNER_IS_MAIN } = await import('../../../../shared/layout-owner-switch')
     expect(attachOnlyViewOf({ attachOnlyView: true })).toBe(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? true : undefined
+      OCC_LAYOUT_OWNER_IS_MAIN ? true : undefined
     )
     expect(attachOnlyViewOf({ attachOnlyView: 'yes' })).toBeUndefined()
   })

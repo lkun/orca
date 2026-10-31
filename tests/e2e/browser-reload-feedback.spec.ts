@@ -1,7 +1,7 @@
 import { createServer, type Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   ensureTerminalVisible,
   getBrowserTabs,
@@ -28,7 +28,7 @@ function readTabLoading(page: Page, worktreeId: string, tabId: string): Promise<
 }
 
 test('shows Stop and the loading line during a held reload, then returns to Reload', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   let requestCount = 0
   const reloadResolvers: (() => void)[] = []
@@ -62,10 +62,10 @@ test('shows Stop and the loading line during a held reload, then returns to Relo
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
   const url = `http://127.0.0.1:${(server.address() as AddressInfo).port}/held`
   try {
-    await waitForSessionReady(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    const worktreeId = await waitForActiveWorktree(orcaPage)
-    const tab = await orcaPage.evaluate(
+    await waitForSessionReady(occPage)
+    await ensureTerminalVisible(occPage)
+    const worktreeId = await waitForActiveWorktree(occPage)
+    const tab = await occPage.evaluate(
       ({ worktreeId, url }) => {
         const created = window.__store?.getState().createBrowserTab(worktreeId, url, {
           title: 'Held reload',
@@ -78,22 +78,22 @@ test('shows Stop and the loading line during a held reload, then returns to Relo
     if (!tab) {
       throw new Error('browser tab was not created')
     }
-    const pane = orcaPage.locator(`[data-browser-overlay-tab-id="${tab.id}"]`)
+    const pane = occPage.locator(`[data-browser-overlay-tab-id="${tab.id}"]`)
     const reload = pane.getByRole('button', { name: 'Reload' })
     await expect(reload).toBeVisible({ timeout: 20_000 })
     await reload.click()
     await secondRequest
     await expect
-      .poll(async () => (await getBrowserTabs(orcaPage, worktreeId)).at(-1)?.url, {
+      .poll(async () => (await getBrowserTabs(occPage, worktreeId)).at(-1)?.url, {
         timeout: 20_000
       })
       .toBe(url)
-    const getLoading = (): Promise<boolean | null> => readTabLoading(orcaPage, worktreeId, tab.id)
+    const getLoading = (): Promise<boolean | null> => readTabLoading(occPage, worktreeId, tab.id)
     await expect.poll(getLoading, { timeout: 10_000 }).toBe(true)
     const stop = pane.getByRole('button', { name: 'Stop' })
     await expect(stop).toBeVisible({ timeout: 10_000 })
     await expect(pane.locator('[data-browser-load-progress="loading"]')).toHaveCount(1)
-    await orcaPage.screenshot({ path: testInfo.outputPath('reload-held.png') })
+    await occPage.screenshot({ path: testInfo.outputPath('reload-held.png') })
     reloadReleased = true
     reloadResolvers.splice(0).forEach((resolve) => resolve())
     await expect(pane.getByRole('button', { name: 'Reload' })).toBeVisible({ timeout: 20_000 })
@@ -111,7 +111,7 @@ test('shows Stop and the loading line during a held reload, then returns to Relo
   }
 })
 
-test('shows loading while a link inside the page waits on the server', async ({ orcaPage }) => {
+test('shows loading while a link inside the page waits on the server', async ({ occPage }) => {
   let releaseHeld: (() => void) | undefined
   const server = createServer((request, response) => {
     const pathname = new URL(request.url ?? '/', 'http://127.0.0.1').pathname
@@ -129,10 +129,10 @@ test('shows loading while a link inside the page waits on the server', async ({ 
   }
   const origin = `http://127.0.0.1:${address.port}`
   try {
-    await waitForSessionReady(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    const worktreeId = await waitForActiveWorktree(orcaPage)
-    const tabId = await orcaPage.evaluate(
+    await waitForSessionReady(occPage)
+    await ensureTerminalVisible(occPage)
+    const worktreeId = await waitForActiveWorktree(occPage)
+    const tabId = await occPage.evaluate(
       ({ worktreeId, url }) =>
         window.__store?.getState().createBrowserTab(worktreeId, url, { activate: true })?.id ??
         null,
@@ -141,8 +141,8 @@ test('shows loading while a link inside the page waits on the server', async ({ 
     if (!tabId) {
       throw new Error('browser tab was not created')
     }
-    const pane = orcaPage.locator(`[data-browser-overlay-tab-id="${tabId}"]`)
-    const getLoading = (): Promise<boolean | null> => readTabLoading(orcaPage, worktreeId, tabId)
+    const pane = occPage.locator(`[data-browser-overlay-tab-id="${tabId}"]`)
+    const getLoading = (): Promise<boolean | null> => readTabLoading(occPage, worktreeId, tabId)
     await expect(pane.getByRole('button', { name: 'Reload' })).toBeVisible({ timeout: 20_000 })
     await expect.poll(getLoading, { timeout: 10_000 }).toBe(false)
 

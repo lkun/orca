@@ -6,7 +6,7 @@ import {
   restoreTerminalTestGlobals
 } from '../pty-connection-test-environment'
 import { createReattachPayloadHandlers } from './apply-reattach-payload'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import { mainStartsPane } from './main-starts-pane'
 import type { ColdRestoreAgentResumeStartup } from './fresh-spawn-types'
 import type { ReattachPayloadContext } from './reattach-payload-context'
@@ -108,7 +108,7 @@ describe('reattach payload context', () => {
 
     await createReattachPayloadHandlers(session, context).applyReattachPayload()
 
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // Main started the pane and resumed its agent; the window's paint applies no resume.
       expect(applyColdRestoreAgentResumeStartup).toHaveBeenCalledExactlyOnceWith(null)
       expect(session.clearSleepingRecordAfterColdRestoreSpawn).not.toHaveBeenCalled()
@@ -241,7 +241,7 @@ it.each(['missing', 'admitted', 'prepared'] as const)(
         expect.stringContaining('cached history')
       )
       expect(window.api.pty.ackColdRestore).toHaveBeenCalledOnce()
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         expect(window.api.pty.ackColdRestore).toHaveBeenCalledWith('pty-1', {
           worktreeId: 'wt-1',
           tabId: 'tab-1',

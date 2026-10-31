@@ -76,12 +76,12 @@ describe('createTerminalTitleTracker pr-link facts', () => {
   it('waits for a boundary when a URL splits across chunks and dedupes repeats', () => {
     const { events, tracker } = createRecordingTracker()
 
-    tracker.handleChunk('PR: https://github.com/acme/orca/pull/4')
+    tracker.handleChunk('PR: https://github.com/acme/occ/pull/4')
     expect(events).toEqual([])
     tracker.handleChunk('2\r\n')
-    tracker.handleChunk('again https://github.com/acme/orca/pull/42\r\n')
+    tracker.handleChunk('again https://github.com/acme/occ/pull/42\r\n')
 
-    expect(events).toEqual([['pr', 'https://github.com/acme/orca/pull/42', 42]])
+    expect(events).toEqual([['pr', 'https://github.com/acme/occ/pull/42', 42]])
   })
 })
 
@@ -110,7 +110,7 @@ describe('createTerminalTitleTracker synthetic-frame isolation', () => {
     const { events, tracker } = createRecordingTracker()
 
     tracker.applySyntheticTitleFrame(
-      `${ESC}]0;⠋ Cursor Agent${BEL}${ESC}]133;D;0${BEL}https://github.com/acme/orca/pull/42\r\n`
+      `${ESC}]0;⠋ Cursor Agent${BEL}${ESC}]133;D;0${BEL}https://github.com/acme/occ/pull/42\r\n`
     )
 
     expect(events).toEqual([['title', '⠋ Cursor Agent']])
@@ -137,7 +137,7 @@ describe('createTerminalTitleTracker transient-fact scanning suppression', () =>
 
     tracker.setTransientFactScanningSuppressed(true)
     tracker.handleChunk(
-      `${ESC}]0;zsh${BEL}${ESC}]133;D;0${BEL}ding${BEL}https://github.com/acme/orca/pull/42\r\n${ESC}[?2031h`
+      `${ESC}]0;zsh${BEL}${ESC}]133;D;0${BEL}ding${BEL}https://github.com/acme/occ/pull/42\r\n${ESC}[?2031h`
     )
 
     expect(events).toEqual([['title', 'zsh']])

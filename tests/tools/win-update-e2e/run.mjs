@@ -52,8 +52,8 @@ async function main() {
   const isolated = Boolean(installDir)
 
   const runId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
-  const canary = `ORCA-E2E-CANARY-${runId}`
-  const runDir = mkdtempSync(path.join(tmpdir(), `orca-win-update-e2e-${runId}-`))
+  const canary = `OCC-E2E-CANARY-${runId}`
+  const runDir = mkdtempSync(path.join(tmpdir(), `occ-win-update-e2e-${runId}-`))
   const userDataDir = path.join(runDir, 'userData')
   const baselinePath = path.join(runDir, 'baseline.json')
   const watchOut = path.join(runDir, 'window-watch.jsonl')
@@ -105,7 +105,7 @@ async function main() {
 
   // Always teardown owned app/marker/watch/install and restore isolated shared state; capture driving diagnostics before surfacing FATAL.
   const ctx = { session: null }
-  const diagDir = process.env.ORCA_E2E_DIAG_DIR || path.join(runDir, 'diag')
+  const diagDir = process.env.OCC_E2E_DIAG_DIR || path.join(runDir, 'diag')
   let passed = false
   try {
     passed = await runProof(ctx, runArgs)

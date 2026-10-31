@@ -96,7 +96,7 @@ describe('macOS DNS probe admission', () => {
     'EAI_FAIL',
     'ENODATA',
     'getaddrinfo failed',
-    'could not resolve host orca.example',
+    'could not resolve host occ.example',
     'Name or service not known',
     'ERR_NAME_RESOLUTION_FAILED',
     'Temporary failure in name resolution'
@@ -116,7 +116,7 @@ describe('macOS DNS probe admission', () => {
       'EAI_AGAIN',
       'EAI_NONAME',
       'getaddrinfo failed',
-      'could not resolve host orca.example',
+      'could not resolve host occ.example',
       'connection refused',
       'websocket closed'
     ]

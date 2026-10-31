@@ -99,10 +99,10 @@ export function readEvents(outPath) {
 
 async function selftest() {
   assertWin32('window-watch --selftest')
-  const dir = mkdtempSync(path.join(tmpdir(), 'orca-winwatch-selftest-'))
+  const dir = mkdtempSync(path.join(tmpdir(), 'occ-winwatch-selftest-'))
   const baselinePath = path.join(dir, 'baseline.json')
   const outPath = path.join(dir, 'events.jsonl')
-  const canary = `ORCA-E2E-SELFTEST-${Date.now()}`
+  const canary = `OCC-E2E-SELFTEST-${Date.now()}`
 
   console.log(`[selftest] baseline snapshot -> ${baselinePath}`)
   const baseline = captureBaseline(baselinePath)

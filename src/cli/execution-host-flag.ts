@@ -28,7 +28,7 @@ export type HostFlagRoutingSelection = {
   // Fail on unreadable targets: routing a bare name requires ruling out SSH collisions.
   verifySshTargets: () => Promise<SshTargetSummary[]>
   pairingCode: string | null
-  // Preserve the selection source, including ORCA_ENVIRONMENT, for conflict messages.
+  // Preserve the selection source, including OCC_ENVIRONMENT, for conflict messages.
   environmentSelector: { value: string; label: string } | null
 }
 

@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-// Compile N-API privacy addon for pinned-Node orcad; missing addon fails startup closed.
+// Compile N-API privacy addon for pinned-Node occd; missing addon fails startup closed.
 // Build a private copy to preserve desktop host addon; Windows x64 cross-compiles arm64. Usage: --arch=arm64.
 import { copyFileSync, cpSync, existsSync, mkdirSync, rmSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { isAbsolute, join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { NODE_RUNTIME_ASSETS } from '../../src/shared/node-runtime-pin.ts'
-import { sha256Of } from './orcad-prebuild-slot-contents.mjs'
-import { ORCAD_WINDOWS_SECURITY_FILENAME } from '../../src/shared/orcad-artifacts.ts'
+import { sha256Of } from './occd-prebuild-slot-contents.mjs'
+import { OCCD_WINDOWS_SECURITY_FILENAME } from '../../src/shared/occd-artifacts.ts'
 
 const { PE_MACHINE, describePeMachine, readPeMachine } = createRequire(import.meta.url)(
   './windows-pe-machine.cjs'
@@ -18,7 +18,7 @@ const ROOT = resolve(import.meta.dirname, '..', '..')
 const SUPPORTED_ARCHES = ['x64', 'arm64']
 
 export function windowsSecurityAddonOutput(root, arch) {
-  return join(root, '.build', 'windows-security', arch, ORCAD_WINDOWS_SECURITY_FILENAME)
+  return join(root, '.build', 'windows-security', arch, OCCD_WINDOWS_SECURITY_FILENAME)
 }
 
 export function probeWindowsSecurityAddon(
@@ -60,7 +60,7 @@ export function reusePreparedWindowsSecurityAddon(
   }
   const candidate = resolve(
     root,
-    'native/windows-security/build/Release/orca_windows_security.node'
+    'native/windows-security/build/Release/occ_windows_security.node'
   )
   try {
     if (
@@ -137,7 +137,7 @@ export function buildWindowsSecurityAddon(
   if (result.code !== 0) {
     throw new Error(`node-gyp failed for ${arch} with exit ${result.code}`)
   }
-  const built = join(workDir, 'build', 'Release', 'orca_windows_security.node')
+  const built = join(workDir, 'build', 'Release', 'occ_windows_security.node')
   if (!existsSync(built)) {
     throw new Error(`node-gyp reported success but ${built} is missing.`)
   }

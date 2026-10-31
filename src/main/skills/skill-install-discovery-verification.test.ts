@@ -112,21 +112,21 @@ describe('WSL install discovery verification', () => {
   })
 
   it('scans a managed WSL Claude config root used by the target session', async () => {
-    const managedRoot = '/home/alice/.local/share/orca/claude-accounts/account-1/auth/skills'
+    const managedRoot = '/home/alice/.local/share/occ/claude-accounts/account-1/auth/skills'
     discoverSkillsInWslMock.mockResolvedValue(
       discovery(['/home/alice/.agents/skills', managedRoot])
     )
     const result = await verifySkillInstallDiscovery({
       result: installResult([
         '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.agents\\skills\\review',
-        '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\orca\\claude-accounts\\account-1\\auth\\skills\\review'
+        '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\occ\\claude-accounts\\account-1\\auth\\skills\\review'
       ]),
       scope: 'global',
       homeDirectory: '\\\\wsl.localhost\\Ubuntu\\home\\alice',
       wslDistro: 'Ubuntu',
       providerRootOverrides: {
         claude:
-          '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\orca\\claude-accounts\\account-1\\auth\\skills'
+          '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\occ\\claude-accounts\\account-1\\auth\\skills'
       }
     })
 
@@ -150,7 +150,7 @@ describe('WSL install discovery verification', () => {
 
     expect(result).toMatchObject({
       status: 'failed',
-      errorCategory: 'skill-discovery-canonical-missing'
+      errocctegory: 'skill-discovery-canonical-missing'
     })
     expect(result.placements[0].failure?.retryable).toBe(true)
   })
@@ -182,7 +182,7 @@ describe('WSL install discovery verification', () => {
 
     expect(result).toMatchObject({
       status: 'failed',
-      errorCategory: 'skill-discovery-verification-failed'
+      errocctegory: 'skill-discovery-verification-failed'
     })
     expect(discoverSkillsInWslMock).not.toHaveBeenCalled()
   })

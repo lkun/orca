@@ -73,7 +73,7 @@ describe('destructive teardown when a PTY stop cannot be proven', () => {
 
   // Stale registry entry plus slow inventory must still let verification prove absence.
   it('removes the reported wedged automation workspace without --force', async () => {
-    const worktreeId = 'repo-1::C:/Users/admin/orca/workspaces/repo/auto-review-run-28'
+    const worktreeId = 'repo-1::C:/Users/admin/occ/workspaces/repo/auto-review-run-28'
     // Keep list completion away from the timeout tick; a 100ms margin raced under parallel load.
     const listDelayMs = WORKTREE_PROCESS_SWEEP_TIMEOUT_MS / 2
     vi.useFakeTimers()

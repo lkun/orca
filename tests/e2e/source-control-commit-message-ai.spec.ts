@@ -2,7 +2,7 @@ import { execFileSync } from 'node:child_process'
 import { rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { writeLinkedIssueEchoGenerator } from './helpers/source-control-ai-generators'
 import { waitForSessionReady } from './helpers/store'
 import { openSourceControlForWorktree } from './helpers/worktree-registration'
@@ -51,16 +51,16 @@ test.describe('Source Control AI commit messages', () => {
       expected: 'empty'
     }
   ]) {
-    test(`${label} the commit-message recipe`, async ({ orcaPage, testRepoPath }) => {
+    test(`${label} the commit-message recipe`, async ({ occPage, testRepoPath }) => {
       const { branchName, worktreePath } = createWorktreeWithStagedChange(testRepoPath)
       const generatorPath = path.join(os.tmpdir(), `${branchName}-linked-issue-generator.cjs`)
       writeLinkedIssueEchoGenerator(generatorPath, ['  process.stdout.write(`saw-issue:${issue}`)'])
 
       try {
-        await waitForSessionReady(orcaPage)
-        await openSourceControlForWorktree(orcaPage, testRepoPath, worktreePath)
+        await waitForSessionReady(occPage)
+        await openSourceControlForWorktree(occPage, testRepoPath, worktreePath)
 
-        await orcaPage.evaluate(
+        await occPage.evaluate(
           async ({ generatorPath, linkedIssue }) => {
             const store = window.__store
             if (!store) {
@@ -84,7 +84,7 @@ test.describe('Source Control AI commit messages', () => {
                 actions: {
                   commitMessage: {
                     agentId: 'custom' as const,
-                    commandInputTemplate: 'ORCA_E2E_ISSUE={linkedIssue}\n\n{basePrompt}'
+                    commandInputTemplate: 'OCC_E2E_ISSUE={linkedIssue}\n\n{basePrompt}'
                   }
                 }
               }
@@ -93,10 +93,10 @@ test.describe('Source Control AI commit messages', () => {
           { generatorPath, linkedIssue }
         )
 
-        const textarea = orcaPage.getByRole('textbox', { name: 'Commit message' })
+        const textarea = occPage.getByRole('textbox', { name: 'Commit message' })
         await expect(textarea).toBeVisible({ timeout: 10_000 })
 
-        const generate = orcaPage.getByRole('button', { name: 'Generate commit message with AI' })
+        const generate = occPage.getByRole('button', { name: 'Generate commit message with AI' })
         await expect(generate).toBeEnabled()
         await generate.click()
 
@@ -109,7 +109,7 @@ test.describe('Source Control AI commit messages', () => {
   }
 
   test('generates a commit message from staged changes through the Source Control UI', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
     const { branchName, worktreePath } = createWorktreeWithStagedChange(testRepoPath)
@@ -117,8 +117,8 @@ test.describe('Source Control AI commit messages', () => {
       'node -e "setTimeout(() => process.stdout.write(\'Add generated E2E message\'), 250)"'
 
     try {
-      await waitForSessionReady(orcaPage)
-      await openSourceControlForWorktree(orcaPage, testRepoPath, worktreePath, {
+      await waitForSessionReady(occPage)
+      await openSourceControlForWorktree(occPage, testRepoPath, worktreePath, {
         commitMessageAi: {
           enabled: true,
           agentId: 'custom',
@@ -129,17 +129,17 @@ test.describe('Source Control AI commit messages', () => {
         }
       })
 
-      const textarea = orcaPage.getByRole('textbox', { name: 'Commit message' })
+      const textarea = occPage.getByRole('textbox', { name: 'Commit message' })
       await expect(textarea).toBeVisible({ timeout: 10_000 })
       await expect(textarea).toHaveValue('')
 
-      const generate = orcaPage.getByRole('button', { name: 'Generate commit message with AI' })
+      const generate = occPage.getByRole('button', { name: 'Generate commit message with AI' })
       await expect(generate).toBeVisible()
       await expect(generate).toBeEnabled()
       await generate.click()
 
       await expect(
-        orcaPage.getByRole('button', { name: 'Stop generating commit message' })
+        occPage.getByRole('button', { name: 'Stop generating commit message' })
       ).toBeVisible()
       await expect(textarea).toHaveValue('Add generated E2E message', { timeout: 10_000 })
     } finally {

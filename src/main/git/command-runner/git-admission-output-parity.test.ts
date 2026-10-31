@@ -8,13 +8,13 @@ import { gitExecFileAsync, gitExecFileAsyncBuffer } from './git-exec-file'
 import { _resetGitAdmissionForTests } from './git-subprocess-admission'
 
 const tempRoots: string[] = []
-const originalAdmissionDisabled = process.env.ORCA_GIT_ADMISSION_DISABLED
+const originalAdmissionDisabled = process.env.OCC_GIT_ADMISSION_DISABLED
 
 afterEach(async () => {
   if (originalAdmissionDisabled === undefined) {
-    delete process.env.ORCA_GIT_ADMISSION_DISABLED
+    delete process.env.OCC_GIT_ADMISSION_DISABLED
   } else {
-    process.env.ORCA_GIT_ADMISSION_DISABLED = originalAdmissionDisabled
+    process.env.OCC_GIT_ADMISSION_DISABLED = originalAdmissionDisabled
   }
   _resetGitAdmissionForTests()
   await Promise.all(tempRoots.splice(0).map((root) => rm(root, { recursive: true, force: true })))
@@ -22,14 +22,14 @@ afterEach(async () => {
 
 function setAdmissionDisabled(disabled: boolean): void {
   if (disabled) {
-    process.env.ORCA_GIT_ADMISSION_DISABLED = '1'
+    process.env.OCC_GIT_ADMISSION_DISABLED = '1'
   } else {
-    delete process.env.ORCA_GIT_ADMISSION_DISABLED
+    delete process.env.OCC_GIT_ADMISSION_DISABLED
   }
 }
 
 it('keeps real git output byte-identical with admission on and bypassed', async () => {
-  const root = await mkdtemp(path.join(tmpdir(), 'orca-git-output-parity-'))
+  const root = await mkdtemp(path.join(tmpdir(), 'occ-git-output-parity-'))
   tempRoots.push(root)
   execFileSync('git', ['init', '-q'], { cwd: root })
   execFileSync('git', ['config', 'user.email', 'test@example.com'], { cwd: root })

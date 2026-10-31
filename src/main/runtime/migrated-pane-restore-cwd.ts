@@ -4,7 +4,7 @@ import type { RuntimeStore } from './runtime-store-contract'
 
 type RestoreHintSource = Pick<
   RuntimeStore,
-  'peekOrcadMigrationTerminalRestoreHint' | 'consumeOrcadMigrationTerminalRestoreHint'
+  'peekOCCdMigrationTerminalRestoreHint' | 'consumeOCCdMigrationTerminalRestoreHint'
 >
 
 type RestoreHintWorkspace = { id: string; connectionId?: string | null }
@@ -45,7 +45,7 @@ export async function peekMigratedPaneRestoreCwd(
   }
   let cwd: string | null
   try {
-    cwd = store?.peekOrcadMigrationTerminalRestoreHint?.(paneKey, workspace.id) ?? null
+    cwd = store?.peekOCCdMigrationTerminalRestoreHint?.(paneKey, workspace.id) ?? null
   } catch (error) {
     console.warn('[terminal-create] restore hint unavailable:', error)
     return null
@@ -61,7 +61,7 @@ export function consumeMigratedPaneRestoreHint(
   paneKey: string
 ): void {
   try {
-    store?.consumeOrcadMigrationTerminalRestoreHint?.(paneKey)
+    store?.consumeOCCdMigrationTerminalRestoreHint?.(paneKey)
   } catch (error) {
     console.warn('[terminal-create] restore hint not consumed:', error)
   }

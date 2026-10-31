@@ -58,12 +58,12 @@ export type ScenarioPort = {
   runtimeStub: () => unknown
 }
 export const turnIdentity = {
-  provider: 'orca',
+  provider: 'occ',
   clientMessageId: 'turn-stop-test'
 } as const
 export const turnItemId = agentJournalItemKey(turnIdentity)
 export const noteIdentity = {
-  provider: 'orca',
+  provider: 'occ',
   clientMessageId: 'stop:turn-stop-test'
 } as const
 export const noteId = agentJournalItemKey(noteIdentity)
@@ -88,7 +88,7 @@ export function createReleasedStopNoteRig(port: ScenarioPort, ref: string) {
   }, 180_000)
   beforeEach(async () => {
     resetOperationIds()
-    root = await mkdtemp(join(tmpdir(), 'orca-released-stop-note-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-released-stop-note-'))
     const store = await openTestAgentSessionRecordStore(root)
     host = new StructuredAgentSessionHost({
       agents: NO_STRUCTURED_AGENTS,

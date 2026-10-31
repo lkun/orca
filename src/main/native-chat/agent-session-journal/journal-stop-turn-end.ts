@@ -42,7 +42,7 @@ function openingSubmission(
     return undefined
   }
   const identity = parseAgentJournalItemKey(state.aliases.get(userItemId) ?? userItemId)
-  return identity?.provider === 'orca' && 'clientMessageId' in identity
+  return identity?.provider === 'occ' && 'clientMessageId' in identity
     ? state.submissions.get(identity.clientMessageId)
     : undefined
 }

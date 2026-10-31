@@ -55,7 +55,7 @@ export function useNativeChatSessionOptions(args: {
     paneKey ? (state.agentStatusByPaneKey[paneKey]?.model ?? null) : null
   )
   const canSwitchOmpModel = useAppStore((state) =>
-    paneKey ? state.agentStatusByPaneKey[paneKey]?.modelSwitchCommand === 'orca-model' : false
+    paneKey ? state.agentStatusByPaneKey[paneKey]?.modelSwitchCommand === 'occ-model' : false
   )
   // Only changed hook models are new evidence; repeated status pings must not undo newer user picks.
   const appliedReportedModelRef = useRef<string | null>(null)

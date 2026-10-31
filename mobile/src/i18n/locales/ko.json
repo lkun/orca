@@ -281,7 +281,7 @@
       "plan": "계획",
       "stoppedManually": "수동으로 중지됨"
     },
-    "orcaStop": {
+    "occStop": {
       "canContinue": "이 대화에서 계속할 수 있습니다.",
       "crash": "이 응답이 진행되는 동안 {{machine}}의 OCC가 예기치 않게 중지되었습니다.",
       "quit": "이 응답이 진행되는 동안 {{machine}}의 OCC가 종료되었습니다.",
@@ -904,7 +904,7 @@
     },
     "setupHookTrustDrawer": {
       "alwaysTrustAndRun": "항상 신뢰하고 실행",
-      "description": "워크스페이스가 시작되기 전에 이 저장소의 orca.yaml이 실행됩니다. 이 저장소를 신뢰하는 경우에만 실행하세요.",
+      "description": "워크스페이스가 시작되기 전에 이 저장소의 occ.yaml이 실행됩니다. 이 저장소를 신뢰하는 경우에만 실행하세요.",
       "dontRun": "실행 안 함",
       "newScriptLabel": "새 설정 스크립트",
       "runHooks": "후크 실행",
@@ -2560,7 +2560,7 @@
       "cannotRunHere": "OCC는 여기에서 이 에이전트를 채팅으로 실행할 수 없습니다.",
       "capacity": "이 채팅을 실행하는 컴퓨터의 OCC가 요청 한도에 도달했습니다. 해당 컴퓨터에서 OCC를 업데이트한 다음 다시 시도하세요.",
       "chatNotFound": "OCC에서 이 채팅을 찾을 수 없습니다.",
-      "chatSavedByNewerOrca": "이 채팅은 최신 버전의 OCC에서 저장되었습니다.",
+      "chatSavedByNewerOCC": "이 채팅은 최신 버전의 OCC에서 저장되었습니다.",
       "clearAfterAnswer": "에이전트의 질문 또는 승인 요청에 응답한 다음 /clear를 실행하세요.",
       "clearAfterRetry": "이전 메시지 전송을 다시 시도한 다음 /clear를 실행하세요.",
       "clearAfterSending": "이전 메시지를 아직 보내는 중입니다. 전송이 끝나면 /clear를 실행하세요.",
@@ -2606,7 +2606,7 @@
       "restartFailed": "에이전트를 다시 시작하지 못했습니다.",
       "runClearWhenDone": "작업이 끝나면 /clear를 실행하세요.",
       "runCompactWhenDone": "작업이 끝나면 /compact를 실행하세요.",
-      "savedByNewerOrca": "채팅이 최신 버전의 OCC에서 저장되었습니다.",
+      "savedByNewerOCC": "채팅이 최신 버전의 OCC에서 저장되었습니다.",
       "sendOutcomeLost": "OCC가 메시지가 에이전트에 전달되었는지 확인하지 못했습니다. 채팅을 확인하고 필요하면 다시 보내세요.",
       "settleEarlierMessage": "앞서 보낸 메시지가 전달될 때까지 기다리거나 다시 시도하세요.",
       "shortenMessage": "줄이거나 나눈 다음 다시 보내세요.",
@@ -2618,8 +2618,8 @@
       "turnActive": "에이전트가 아직 응답 중입니다.",
       "unreachable": "OCC가 에이전트에 연결하지 못했습니다.",
       "unsupported": "이 채팅을 실행 중인 컴퓨터에 최신 버전의 OCC가 필요합니다. 해당 컴퓨터에서 OCC를 업데이트한 후 다시 시도하세요.",
-      "updateOrcaToKeepUsing": "계속 사용하려면 OCC를 업데이트하세요.",
-      "updateOrcaToOpenChat": "열려면 OCC를 업데이트하세요.",
+      "updateOCCToKeepUsing": "계속 사용하려면 OCC를 업데이트하세요.",
+      "updateOCCToOpenChat": "열려면 OCC를 업데이트하세요.",
       "waitForBackgroundTasks": "백그라운드 작업이 끝날 때까지 기다리세요.",
       "waitForCommand": "/compact 또는 /clear가 끝날 때까지 기다리세요.",
       "waitForStart": "에이전트가 시작을 마칠 때까지 기다리세요.",
@@ -3624,7 +3624,7 @@
       "projectSubtitle": "GitHub 프로젝트 · {{repository}}{{itemNumber}}",
       "pullRequest": "PR",
       "reopenItem": "항목 다시 열기",
-      "repositoryNotInOrca": "OCC에 없는 저장소",
+      "repositoryNotInOCC": "OCC에 없는 저장소",
       "status": "상태",
       "type": "유형",
       "workspaceCreationRequirement": "워크스페이스는 GitHub 이슈와 PR에서만 생성할 수 있습니다."
@@ -3869,7 +3869,7 @@
       "setupTitle": "설정 스크립트를 실행하시겠습니까?",
       "skipSetupAndCreate": "설정 건너뛰고 만들기",
       "trustFailed": "설정 스크립트 신뢰 설정에 실패했습니다.",
-      "trustSubtitle": "워크스페이스가 시작되기 전에 이 저장소의 orca.yaml이 컴퓨터에서 실행됩니다. 이 저장소를 신뢰하는 경우에만 실행하세요."
+      "trustSubtitle": "워크스페이스가 시작되기 전에 이 저장소의 occ.yaml이 컴퓨터에서 실행됩니다. 이 저장소를 신뢰하는 경우에만 실행하세요."
     },
     "worktreeCreateRetry": {
       "createFailed": "워크스페이스를 생성하지 못했습니다."

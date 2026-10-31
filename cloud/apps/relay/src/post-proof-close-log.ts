@@ -54,7 +54,7 @@ export function postProofCloseCause(
 
 function formatLine(close: PostProofClose, suppressed: number): string {
   return (
-    `[orca-relay] control refused after proof host=${relayHostLogDigest(close.relayHostId)}` +
+    `[occ-relay] control refused after proof host=${relayHostLogDigest(close.relayHostId)}` +
     ` gen=${close.generation}` +
     ` app=${JSON.stringify(printableCloseReason(close.appVersion))}` +
     ` code=${close.code ?? 'none'} reason=${JSON.stringify(close.reason)}` +

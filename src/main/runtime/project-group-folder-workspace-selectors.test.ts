@@ -3,7 +3,7 @@ import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { withDurableRuntimeStore } from './runtime-durable-store-fixture'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import { folderWorkspaceKey } from '../../shared/workspace-scope'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { setRuntimeBrowserCommandsFactory } from './runtime-browser-commands-factory'
 
 // STA-12562: project-group folder workspaces have no repo row, so a Git-only selector never finds them.
@@ -58,7 +58,7 @@ function createRuntime(
     statTerminalScrollbackSnapshotSize: async () => null,
     flushOrThrow: () => {}
   }) as never
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the fake implements only the controller calls these commands make.
   runtime.setPtyController({
     write: () => true,

@@ -1,8 +1,8 @@
 import {
   clearShutdownCheckpointFailureReason,
   formatShutdownCheckpointFailureReason,
-  ORCA_RENDERER_SHUTDOWN_CHECKPOINT_FAILED_EVENT,
-  ORCA_RENDERER_UNLOAD_PREVENTED_EVENT,
+  OCC_RENDERER_SHUTDOWN_CHECKPOINT_FAILED_EVENT,
+  OCC_RENDERER_UNLOAD_PREVENTED_EVENT,
   publishShutdownCheckpointFailureReason
 } from '../../../shared/renderer-shutdown-events'
 import { recordRendererCrashBreadcrumb } from './crash-breadcrumb-recorder'
@@ -58,7 +58,7 @@ export function createShutdownCheckpointBeforeUnloadHandler(
 ): (event: Event) => void {
   return (event): void => {
     if (!guard.persistOnce()) {
-      event.currentTarget?.dispatchEvent(new Event(ORCA_RENDERER_SHUTDOWN_CHECKPOINT_FAILED_EVENT))
+      event.currentTarget?.dispatchEvent(new Event(OCC_RENDERER_SHUTDOWN_CHECKPOINT_FAILED_EVENT))
       event.preventDefault()
       // Synthetic close/restart dispatchers report their own veto; browser reloads have no caller to tell the user.
       if (event.isTrusted) {
@@ -75,6 +75,6 @@ export function preventUnloadAndScheduleShutdownCheckpointReset(
   event.preventDefault()
   // Paired web lacks will-prevent-unload; reset successful checkpoints after all beforeunload listeners finish.
   queueMicrotask(() => {
-    eventTarget.dispatchEvent(new Event(ORCA_RENDERER_UNLOAD_PREVENTED_EVENT))
+    eventTarget.dispatchEvent(new Event(OCC_RENDERER_UNLOAD_PREVENTED_EVENT))
   })
 }

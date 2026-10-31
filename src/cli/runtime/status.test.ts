@@ -30,7 +30,7 @@ afterEach(async () => {
 // This legacy fixture uses Unix sockets; Windows runtimes use named pipes.
 describe.skipIf(process.platform === 'win32')('CLI runtime status', () => {
   it('uses the legacy singular runtime transport when reporting status', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-status-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-status-'))
     const endpoint = join(userDataPath, 'runtime.sock')
     const server = createServer((socket) => {
       sockets.add(socket)
@@ -90,7 +90,7 @@ describe.skipIf(process.platform === 'win32')('CLI status connection authority',
   it.each(['EPERM', 'ESRCH'])(
     'reports an unavailable endpoint without using a PID probe (%s)',
     async (code) => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-status-probe-'))
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-status-probe-'))
       writeFileSync(
         getRuntimeMetadataPath(userDataPath),
         JSON.stringify({
@@ -116,7 +116,7 @@ describe.skipIf(process.platform === 'win32')('CLI status connection authority',
   )
 
   it('reports a status timeout from a live listener without declaring its hidden PID dead', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-status-timeout-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-status-timeout-'))
     const endpoint = join(userDataPath, 'runtime.sock')
     const server = createServer((socket) => {
       sockets.add(socket)

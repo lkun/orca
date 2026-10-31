@@ -53,7 +53,7 @@ describe('Windows-only runtime files', () => {
       expect(existsSync(join(resource.from, file)), file).toBe(true)
     }
     expect(nonWindows).toContain('util/pagent.exe')
-    await withTempDir('orca-ssh2-copy-', async (dir) => {
+    await withTempDir('occ-ssh2-copy-', async (dir) => {
       expect(await copiedSsh2ExcludedFiles(resource, dir)).toEqual([])
       expect(existsSync(join(dir, ssh2Target, 'lib', 'agent.js'))).toBe(true)
     })
@@ -65,7 +65,7 @@ describe('Windows-only runtime files', () => {
       (entry) => entry.to === ssh2Target
     )
     const resource = { from, to: ssh2Target, filter: runtimePackageExcludeFilter('ssh2', 'win32') }
-    await withTempDir('orca-ssh2-copy-win-', async (dir) => {
+    await withTempDir('occ-ssh2-copy-win-', async (dir) => {
       expect(await copiedSsh2ExcludedFiles(resource, dir)).toEqual(nonWindows)
     })
   })

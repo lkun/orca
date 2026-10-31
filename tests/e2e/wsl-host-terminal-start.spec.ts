@@ -1,13 +1,13 @@
 /**
  * Terminals on a WSL host whose distro stopped, with a fake WSL transport: the HUB stands in for
- * the distro's orcad. Automatic retries never boot the distro (E9); the pane's Start and a New
+ * the distro's occd. Automatic retries never boot the distro (E9); the pane's Start and a New
  * Terminal are the user acting on it, so each boots it.
  */
 import { mkdtempSync, rmSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { createRuntimeDesktopPairingOffer } from './helpers/paired-electron-client'
 import { callEnvironment } from './helpers/paired-host-terminal'
 import { waitForSessionReady } from './helpers/store'
@@ -32,13 +32,13 @@ async function openNewTerminal(page: Page): Promise<void> {
 }
 
 test('a stopped WSL distro boots only for Start or New Terminal, never for a terminal retrying', async ({
-  orcaPage: hub
+  occPage: hub
 }, testInfo) => {
   // Two Electron apps, a host add, two distro stops and their boots.
   test.setTimeout(300_000)
   await waitForSessionReady(hub)
   const offer = await createRuntimeDesktopPairingOffer(hub)
-  const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-terminal-fake-'))
+  const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-terminal-fake-'))
   const distrosFile = path.join(fakeDir, 'distros.json')
   const connectLogFile = path.join(fakeDir, 'connects.log')
   writeDistros(distrosFile, RUNNING)

@@ -42,7 +42,7 @@ function scratchDirectoriesIn(objectsDir: string): string[] {
 }
 
 export function createDivergentRepoFixture(): DivergentRepoFixture {
-  const root = realpathSync(mkdtempSync(join(tmpdir(), 'orca-merge-tree-quarantine-')))
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'occ-merge-tree-quarantine-')))
   const repoPath = join(root, 'repo')
   const git = (cwd: string, ...args: string[]): string =>
     execFileSync('git', args, { cwd, encoding: 'utf8' })
@@ -56,7 +56,7 @@ export function createDivergentRepoFixture(): DivergentRepoFixture {
 
   execFileSync('git', ['init', '--quiet', repoPath])
   git(repoPath, 'config', 'user.name', 'OCC Test')
-  git(repoPath, 'config', 'user.email', 'orca@example.test')
+  git(repoPath, 'config', 'user.email', 'occ@example.test')
   git(repoPath, 'config', 'commit.gpgSign', 'false')
   git(repoPath, 'config', 'core.hooksPath', '.git/no-hooks')
   git(repoPath, 'config', 'gc.auto', '0')

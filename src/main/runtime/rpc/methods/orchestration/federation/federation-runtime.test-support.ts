@@ -1,9 +1,9 @@
 import { vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { RuntimeTerminalShow } from '../../../../../../shared/runtime-terminal-contracts'
 
 export function configureFederationWorkerRuntime(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   handle = 'term_windows_worker'
 ): void {
   const terminal: RuntimeTerminalShow = {
@@ -84,7 +84,7 @@ export function configureFederationWorkerRuntime(
     'tab_worker:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'
   )
   vi.spyOn(runtime, 'getTerminalProcessIncarnation').mockReturnValue('windows_runtime:pty:1')
-  vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('orca')
+  vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('occ')
   vi.spyOn(runtime, 'sendTerminalAgentPrompt').mockResolvedValue({
     handle,
     accepted: true,

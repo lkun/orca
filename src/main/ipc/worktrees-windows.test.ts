@@ -463,11 +463,11 @@ describe('registerWorktreeHandlers – Windows path handling', () => {
     getEffectiveHooksFromConfigMock.mockReturnValue({ scripts: { setup: 'pnpm install' } })
     shouldRunSetupForCreateMock.mockReturnValue(true)
     createSetupRunnerScriptMock.mockReturnValue({
-      runnerScriptPath: 'C:\\repo\\.git\\orca\\setup-runner.sh',
+      runnerScriptPath: 'C:\\repo\\.git\\occ\\setup-runner.sh',
       shell: setupShell,
       envVars: {
-        ORCA_ROOT_PATH: 'C:\\repo',
-        ORCA_WORKTREE_PATH: 'C:\\workspaces\\improve-dashboard'
+        OCC_ROOT_PATH: 'C:\\repo',
+        OCC_WORKTREE_PATH: 'C:\\workspaces\\improve-dashboard'
       }
     })
 
@@ -490,7 +490,7 @@ describe('registerWorktreeHandlers – Windows path handling', () => {
     )
     expect(result).toMatchObject({
       setup: {
-        runnerScriptPath: 'C:\\repo\\.git\\orca\\setup-runner.sh',
+        runnerScriptPath: 'C:\\repo\\.git\\occ\\setup-runner.sh',
         shell: setupShell
       }
     })

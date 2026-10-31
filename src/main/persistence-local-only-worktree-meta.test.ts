@@ -18,7 +18,7 @@ import { canonicalWorktreeIdentity } from '../shared/worktree/identity'
 import { resolveWorktreeMetaOwner } from './persistence/host-qualified-worktree-meta'
 import { hydrateWorktreeMetaAliasProjection } from './persistence/loading-store/worktree-meta-alias-projection'
 import { normalizeWorktreeLinkedItemMetadata } from './persistence/tracking-repos/worktree-metadata-normalization'
-import { collectDependentStateBlockers } from './ssh/targets/ssh-target-orcad-dependents'
+import { collectDependentStateBlockers } from './ssh/targets/ssh-target-occd-dependents'
 
 vi.mock('electron', () => ({
   app: { getPath: () => testState.dir },
@@ -43,7 +43,7 @@ const floatingRow = {
 function createUpgradedStore(metadata: Record<string, unknown> = {}) {
   mkdirSync(testState.dir, { recursive: true })
   writeFileSync(
-    join(testState.dir, 'orca-data.json'),
+    join(testState.dir, 'occ-data.json'),
     JSON.stringify({
       ...getDefaultPersistedState(testState.dir),
       worktreeMeta: { [FLOATING_TERMINAL_WORKTREE_ID]: floatingRow },
@@ -55,7 +55,7 @@ function createUpgradedStore(metadata: Record<string, unknown> = {}) {
 }
 
 beforeEach(() => {
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-local-only-worktree-meta-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-local-only-worktree-meta-'))
 })
 
 afterEach(async () => {

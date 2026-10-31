@@ -12,8 +12,8 @@ afterEach(async () => {
   await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })))
 })
 
-it('reads only the catalog index, prefers orca-catalog.json, and ignores plugin size limits', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'orca-marketplace-fetch-'))
+it('reads only the catalog index, prefers occ-catalog.json, and ignores plugin size limits', async () => {
+  const root = await mkdtemp(join(tmpdir(), 'occ-marketplace-fetch-'))
   roots.push(root)
   const repository = join(root, 'catalog')
   const git = async (args: string[]) => (await gitExecFileAsync(args, { cwd: repository })).stdout
@@ -29,9 +29,9 @@ it('reads only the catalog index, prefers orca-catalog.json, and ignores plugin 
   for (let index = 0; index <= 2_000; index += 1) {
     await writeFile(join(repository, 'packs', `${index}.txt`), String(index))
   }
-  await writeFile(join(repository, 'orca-marketplace.json'), catalog('Old', [entry]))
+  await writeFile(join(repository, 'occ-marketplace.json'), catalog('Old', [entry]))
   await writeFile(
-    join(repository, 'orca-catalog.json'),
+    join(repository, 'occ-catalog.json'),
     JSON.stringify({ catalogVersion: 2, name: 'New', owner: 'samples', plugins: [] })
   )
   await git(['init', '--quiet'])

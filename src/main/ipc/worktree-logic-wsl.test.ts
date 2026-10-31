@@ -21,7 +21,7 @@ import {
   getWorktreePathSettings
 } from './worktree-logic'
 import {
-  buildKnownOrcaWorkspaceLayouts,
+  buildKnownOCCWorkspaceLayouts,
   classifyWorktreeOwnership
 } from '../../shared/worktree/ownership'
 import { relativePathInsideRoot } from '../../shared/cross-platform-path'
@@ -47,7 +47,7 @@ describe('computeWorktreePath WSL layout', () => {
     const root = await pendingRoot
     for (const name of ['feature', 'feature-2', 'feature-3']) {
       expect(computeWorktreePath(name, repoPath, settings, root)).toBe(
-        win32.join(home, 'orca', 'workspaces', 'repo', name)
+        win32.join(home, 'occ', 'workspaces', 'repo', name)
       )
     }
     expect(getWslHomeAsyncMock).toHaveBeenCalledExactlyOnceWith('Ubuntu')
@@ -64,12 +64,12 @@ describe('computeWorktreePath WSL layout', () => {
       const pending = computeWorkspaceRootWithin(repoPath, settings, 5_000)
       await vi.advanceTimersByTimeAsync(5_000)
       const fallback = await pending
-      expect(fallback).not.toContain('orca')
+      expect(fallback).not.toContain('occ')
       expect(getWslHomeMock).not.toHaveBeenCalled()
 
       getWslHomeAsyncMock.mockResolvedValue(String.raw`\\wsl.localhost\Ubuntu\home\jin`)
       expect(await computeWorkspaceRootWithin(repoPath, settings, 5_000)).toBe(
-        win32.join(String.raw`\\wsl.localhost\Ubuntu\home\jin`, 'orca', 'workspaces')
+        win32.join(String.raw`\\wsl.localhost\Ubuntu\home\jin`, 'occ', 'workspaces')
       )
     } finally {
       vi.useRealTimers()
@@ -85,7 +85,7 @@ describe('computeWorktreePath WSL layout', () => {
       5_000,
       readHome
     )
-    expect(root).not.toContain('orca')
+    expect(root).not.toContain('occ')
     expect(readHome).toHaveBeenCalledExactlyOnceWith('Ubuntu')
     expect(getWslHomeAsyncMock).not.toHaveBeenCalled()
   })
@@ -102,7 +102,7 @@ describe('computeWorktreePath WSL layout', () => {
         nestWorkspaces: true,
         workspaceDir: 'C:\\workspaces'
       })
-    ).toBe('\\\\wsl.localhost\\Ubuntu\\home\\jin\\orca\\workspaces\\repo\\feature')
+    ).toBe('\\\\wsl.localhost\\Ubuntu\\home\\jin\\occ\\workspaces\\repo\\feature')
   })
 
   it('falls back to the configured Windows workspace when WSL home lookup fails', () => {
@@ -128,15 +128,15 @@ describe('computeWorktreePath WSL layout', () => {
     getWslHomeMock.mockReturnValue('\\\\wsl.localhost\\Ubuntu\\home\\jin')
     const repo = {
       path: '\\\\wsl.localhost\\Ubuntu\\home\\jin\\src\\repo',
-      worktreeBasePath: '/home/jin/src/.orca-worktrees'
+      worktreeBasePath: '/home/jin/src/.occ-worktrees'
     }
     const settings = { nestWorkspaces: false, workspaceDir: 'C:\\workspaces' }
 
     expect(computeWorktreePath('feature', repo.path, getWorktreePathSettings(repo, settings))).toBe(
-      '\\\\wsl.localhost\\Ubuntu\\home\\jin\\src\\.orca-worktrees\\feature'
+      '\\\\wsl.localhost\\Ubuntu\\home\\jin\\src\\.occ-worktrees\\feature'
     )
     expect(computeWorktreePath('feature', repo.path, getWorktreePathSettings(repo, settings))).toBe(
-      '\\\\wsl.localhost\\Ubuntu\\home\\jin\\src\\.orca-worktrees\\feature'
+      '\\\\wsl.localhost\\Ubuntu\\home\\jin\\src\\.occ-worktrees\\feature'
     )
     expect(getWslHomeMock).not.toHaveBeenCalled()
   })
@@ -198,7 +198,7 @@ describe('computeWorktreePath WSL layout', () => {
         repo.path,
         getWorktreePathSettings(repo, { nestWorkspaces: false, workspaceDir: 'C:\\workspaces' })
       )
-    ).toBe('\\\\wsl.localhost\\Ubuntu\\home\\jin\\orca\\workspaces\\feature')
+    ).toBe('\\\\wsl.localhost\\Ubuntu\\home\\jin\\occ\\workspaces\\feature')
   })
 
   it('classifies whatever creation produces for Linux bases, dotted or not', () => {
@@ -224,7 +224,7 @@ describe('computeWorktreePath WSL layout', () => {
         repo.path,
         getWorktreePathSettings(repo, settings)
       )
-      const layouts = buildKnownOrcaWorkspaceLayouts({ ...settings, workspaceDirHistory: [] }, repo)
+      const layouts = buildKnownOCCWorkspaceLayouts({ ...settings, workspaceDirHistory: [] }, repo)
       // Ownership alone also accepts mirror layout; require containment in the selected repo-base layout.
       expect(relativePathInsideRoot(layouts[0].path, createdPath)).not.toBeNull()
       expect(
@@ -232,7 +232,7 @@ describe('computeWorktreePath WSL layout', () => {
           repo,
           settings: { ...settings, workspaceDirHistory: [] },
           worktree: { path: createdPath, isMainWorktree: false },
-          knownOrcaLayouts: layouts
+          knownOCCLayouts: layouts
         })
       ).toBe('external')
     }
@@ -247,7 +247,7 @@ describe('computeWorktreePath WSL layout', () => {
     getWslHomeAsyncMock.mockResolvedValue('\\\\wsl.localhost\\Ubuntu\\home\\jin')
     const repo = {
       path: '\\\\wsl.localhost\\Ubuntu\\home\\jin\\src\\repo',
-      worktreeBasePath: '/home/jin/src/.orca-worktrees'
+      worktreeBasePath: '/home/jin/src/.occ-worktrees'
     }
     const pathSettings = getWorktreePathSettings(repo, {
       nestWorkspaces: false,
@@ -326,7 +326,7 @@ describe('computeWorktreePath WSL layout', () => {
           workspaceDir: 'C:\\workspaces',
           wslMirrorDistro: 'Ubuntu'
         })
-      ).toBe('\\\\wsl.localhost\\Ubuntu\\home\\jin\\orca\\workspaces\\feature')
+      ).toBe('\\\\wsl.localhost\\Ubuntu\\home\\jin\\occ\\workspaces\\feature')
     })
 
     it('keeps Windows placement when the project has no WSL runtime', () => {
@@ -390,7 +390,7 @@ describe('computeWorktreePath WSL layout', () => {
           workspaceDir: 'C:\\workspaces',
           wslMirrorDistro: 'Ubuntu'
         })
-      ).resolves.toBe('\\\\wsl.localhost\\Ubuntu\\home\\jin\\orca\\workspaces\\feature')
+      ).resolves.toBe('\\\\wsl.localhost\\Ubuntu\\home\\jin\\occ\\workspaces\\feature')
     })
   })
 })

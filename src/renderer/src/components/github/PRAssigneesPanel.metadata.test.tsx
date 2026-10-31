@@ -72,11 +72,11 @@ describe('assignee panel metadata source selection', () => {
   })
 
   it('loads only the slug source even when a registered repo and path are available', async () => {
-    await render('registered-with-url', 'https://github.com/acme/orca/pull/42', '/repo')
+    await render('registered-with-url', 'https://github.com/acme/occ/pull/42', '/repo')
 
     expect(bySlug).toHaveBeenCalledExactlyOnceWith({
       owner: 'acme',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.com'
     })
     expect(byPath).not.toHaveBeenCalled()

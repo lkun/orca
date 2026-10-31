@@ -29,7 +29,7 @@ const MAIL_SOURCE: AgentMessageSource = {
   kind: 'agent',
   senders: [
     {
-      party: { address: 'agent:coordinator', terminalHandle: null, orcaSessionId: null },
+      party: { address: 'agent:coordinator', terminalHandle: null, occSessionId: null },
       name: null
     }
   ],

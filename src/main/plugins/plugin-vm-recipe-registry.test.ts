@@ -18,7 +18,7 @@ async function recipePlugin(
   id: string,
   artifacts: { path: string; recipe: unknown }[]
 ): Promise<ValidDiscoveredPlugin> {
-  const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-vm-recipe-'))
+  const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-vm-recipe-'))
   roots.push(rootDir)
   await mkdir(join(rootDir, 'recipes'))
   await Promise.all(
@@ -32,7 +32,7 @@ async function recipePlugin(
     publisher: 'samples',
     name: id,
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     contributes: { vmRecipes: artifacts.map((artifact) => ({ path: artifact.path })) },
     capabilities: []

@@ -38,7 +38,7 @@ afterEach(async () => {
 })
 
 async function makeFixture() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-appimage-namespace-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-appimage-namespace-'))
   created.push(root)
   const appImagePath = join(root, 'OCC.AppImage')
   await writeFile(appImagePath, '#!/usr/bin/env bash\n', { mode: 0o755 })

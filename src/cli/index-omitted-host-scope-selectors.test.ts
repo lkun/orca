@@ -4,7 +4,7 @@ import type * as ChildProcess from 'node:child_process'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -12,8 +12,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -24,7 +24,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -87,7 +87,7 @@ const TERMINAL_ROW = {
 describe('omittedHostIds selector annotation', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -139,7 +139,7 @@ describe('omittedHostIds selector annotation', () => {
         })
         f.db.db
           .prepare(
-            'UPDATE runs SET coordinator_orca_session_id = NULL, coordinator_orca_session_id_generation = NULL WHERE id = ?'
+            'UPDATE runs SET coordinator_occ_session_id = NULL, coordinator_occ_session_id_generation = NULL WHERE id = ?'
           )
           .run(f.run.id)
         expect(resultOf(await request({ afterSnapshotId: first.snapshotId })).snapshotId).not.toBe(
@@ -320,7 +320,7 @@ describe('omittedHostIds selector annotation', () => {
 describe('worktree listings report their host coverage', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,

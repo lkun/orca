@@ -54,7 +54,7 @@ export abstract class BrowserManagerGuestPopupPolicy extends BrowserManagerNavig
           return { action: 'deny' }
         }
         if (
-          this.openLinkInOrcaTab(
+          this.openLinkInOCCTab(
             ownerContext.browserTabId,
             newTabUrl,
             disposition !== 'background-tab'
@@ -62,7 +62,7 @@ export abstract class BrowserManagerGuestPopupPolicy extends BrowserManagerNavig
         ) {
           this.forwardOrQueuePopupEvent(guest.id, {
             origin: safeOrigin(newTabUrl),
-            action: 'opened-in-orca'
+            action: 'opened-in-occ'
           })
         }
         // A vanished renderer must not turn new-tab intent into a native popup.
@@ -162,10 +162,10 @@ export abstract class BrowserManagerGuestPopupPolicy extends BrowserManagerNavig
     const opened =
       owner !== null &&
       (tab.clicked || this.tryConsumePageInitiatedTab(owner.rootGuestWebContentsId)) &&
-      this.openLinkInOrcaTab(owner.browserTabId, url, tab.activate)
+      this.openLinkInOCCTab(owner.browserTabId, url, tab.activate)
     this.forwardOrQueuePopupEvent(opener.id, {
       origin: safeOrigin(url),
-      action: opened ? 'opened-in-orca' : 'blocked'
+      action: opened ? 'opened-in-occ' : 'blocked'
     })
     if (options.webContents && !options.nativeWindow) {
       // Discard directly to avoid flashing a window that would immediately close.

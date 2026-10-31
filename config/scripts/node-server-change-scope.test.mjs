@@ -9,9 +9,9 @@ import {
   discoverNodeServerTests
 } from './node-server-change-scope.mjs'
 import { nodeServerTestPaths } from './node-server-test-paths.mjs'
-import { ORCAD_CHILD_ENTRY_POINTS } from './orcad-entry-build.mjs'
+import { OCCD_CHILD_ENTRY_POINTS } from './occd-entry-build.mjs'
 import { NODE_RUNTIME_PIN } from '../../src/shared/node-runtime-pin.ts'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { NODE_SERVER_RUNNERS, nodeServerQualification } from './node-server-qualification.mjs'
 
 const temporaryDirs = []
@@ -63,26 +63,26 @@ it('runs the matrix when a dependency is deleted or graph analysis fails', async
   expect((await classifyNodeServerChanges([])).shouldRun).toBe(true)
 })
 
-function workspaceTree(imported = '@orca/process-host') {
+function workspaceTree(imported = '@occ/process-host') {
   const manifest = (name, source) =>
     JSON.stringify({
       name,
-      exports: { '.': { 'orca-source': source, default: './dist/index.js' } }
+      exports: { '.': { 'occ-source': source, default: './dist/index.js' } }
     })
   return moduleTree({
     'entry.ts': `export * from '${imported}'`,
     'pnpm-workspace.yaml': 'packages:\n  - src/packages/*\n',
     'src/packages/process-host/package.json': manifest(
-      '@orca/process-host',
+      '@occ/process-host',
       './src/run-process.ts'
     ),
     'src/packages/process-host/src/run-process.ts':
-      "import('@orca/byte-buffer'); require('./private'); export const value = 1",
+      "import('@occ/byte-buffer'); require('./private'); export const value = 1",
     'src/packages/process-host/src/private.ts': 'module.exports = 2',
     'src/packages/process-host/dist/index.js': "require('./missing-stale-output')",
-    'src/packages/byte-buffer/package.json': manifest('@orca/byte-buffer', './src/byte-buffer.ts'),
+    'src/packages/byte-buffer/package.json': manifest('@occ/byte-buffer', './src/byte-buffer.ts'),
     'src/packages/byte-buffer/src/byte-buffer.ts': 'export const value = 3',
-    'src/packages/unrelated/package.json': manifest('@orca/unrelated', './src/unrelated.ts'),
+    'src/packages/unrelated/package.json': manifest('@occ/unrelated', './src/unrelated.ts'),
     'src/packages/unrelated/src/unrelated.ts': 'throw Error("unrelated")'
   })
 }
@@ -125,7 +125,7 @@ it.each([
   expect(result.reason).toBe(`Build or CI input changed: ${file}`)
 })
 
-it.each(['@orca/unknown', '@orca/process-host/private'])(
+it.each(['@occ/unknown', '@occ/process-host/private'])(
   'retains qualification for an unresolved internal package export: %s',
   async (specifier) => {
     const root = workspaceTree(specifier)
@@ -135,7 +135,7 @@ it.each(['@orca/unknown', '@orca/process-host/private'])(
     )
     expect(result.shouldRun).toBe(true)
     expect(result.graphUnavailable).toBe(true)
-    expect(result.reason).toContain('No public orca-source export')
+    expect(result.reason).toContain('No public occ-source export')
   }
 )
 
@@ -168,7 +168,7 @@ it.each([
   'config/scripts/workspace-source-exports.mjs',
   'config/scripts/workspace-source-exports.test.mjs',
   '.github/actions/prepare-native-runtime/action.yml',
-  '.github/actions/prepare-orcad-prebuilds/action.yml',
+  '.github/actions/prepare-occd-prebuilds/action.yml',
   '.github/workflows/node-server-tests.yml',
   'src/main/persistence/profile-state/new-worker.ts'
 ])('always selects build, native and dynamically opened inputs: %s', async (file) => {
@@ -219,7 +219,7 @@ it('requests the graph for an ordinary source unit edit before dependencies are 
 it.each([
   'src/main/persistence/profile-state/removed.test.ts',
   'src/main/sqlite/removed.test.ts',
-  'src/main/orcad/orcad-entry.test.ts',
+  'src/main/occd/occd-entry.test.ts',
   'src/main/daemon/pty-subprocess/removed.test.ts',
   'src/main/providers/agent-foreground-process-git-bash.win32.test.ts',
   'config/scripts/node-server-change-scope.test.mjs'
@@ -515,17 +515,17 @@ describe('the actual Bun build and profile-test dependency graph', () => {
   })
 
   it.each([
-    ...Object.values(ORCAD_CHILD_ENTRY_POINTS),
+    ...Object.values(OCCD_CHILD_ENTRY_POINTS),
     'src/shared/keybindings/definitions-core-1.ts',
     'src/shared/pty-running-work-probe.ts',
     'src/shared/pty-running-work-probe.test.ts',
-    'src/main/runtime/orca-runtime.ts',
+    'src/main/runtime/occ-runtime.ts',
     'src/main/windows/windows-process-table.ts',
     'src/main/worker-thread-entry-path.ts',
     'config/scripts/zip-extractor-command.mjs',
     'config/scripts/windows-process-tree-gyp-rebuild.mjs',
     'config/scripts/windows-process-tree-prepared-addon.mjs',
-    'config/scripts/orcad-windows-prebuild-cache.mjs',
+    'config/scripts/occd-windows-prebuild-cache.mjs',
     'config/scripts/profile-state-worker-smoke.mjs',
     'config/scripts/vitest-host-ports-setup.ts',
     'tests/e2e/daemon-running-work-probe.unit.test.ts'
@@ -572,8 +572,8 @@ it('keeps every platform job and runs them when detection is skipped or fails', 
   for (const jobName of ['linux_glibc_floor', 'linux_musl']) {
     const job = workflow.jobs[jobName]
     expect(job.needs).toEqual(['changes', 'mobile_web_bundle'])
-    // The containers never install mobile/, and orcad refuses to build without the page.
-    expect(job.steps.some((step) => step.with?.name === 'orcad-mobile-web-bundle')).toBe(true)
+    // The containers never install mobile/, and occd refuses to build without the page.
+    expect(job.steps.some((step) => step.with?.name === 'occd-mobile-web-bundle')).toBe(true)
     expect(job.steps.some((step) => step.name === 'Wait for the qualified mobile bundle')).toBe(
       false
     )
@@ -592,19 +592,19 @@ it('runs the Bun and Node cross-runtime tests on Linux against pinned inputs', (
   const setupBun = steps.find((step) => String(step.uses).startsWith('oven-sh/setup-bun@'))
   expect(setupBun.uses).toMatch(/^oven-sh\/setup-bun@[0-9a-f]{40}$/)
   expect(setupBun.with['bun-version-file']).toBe('config/.bun-version')
-  const build = steps.find((step) => String(step.run).includes('build-orcad-bun.mjs'))
-  expect(build.env.BUN_ORCAD_COMMIT).toMatch(/^[0-9a-f]{40}$/)
+  const build = steps.find((step) => String(step.run).includes('build-occd-bun.mjs'))
+  expect(build.env.BUN_OCCD_COMMIT).toMatch(/^[0-9a-f]{40}$/)
   expect(setupBun.if).toBe("runner.os == 'Linux'")
-  expect(build.id).toBe('bun-orcad')
+  expect(build.id).toBe('bun-occd')
   expect(build.background).toBe(true)
   expect(build.if).toBeUndefined()
   expect(build['continue-on-error']).toBeUndefined()
   expect(build.run).toMatch(/^if \[ "\$RUNNER_OS" != Linux \]; then exit 0; fi\n/)
   expect(build.run).toContain(
-    'pnpm --dir "$RUNNER_TEMP/bun-orcad-source" install --frozen-lockfile --ignore-scripts'
+    'pnpm --dir "$RUNNER_TEMP/bun-occd-source" install --frozen-lockfile --ignore-scripts'
   )
   expect(build.run).not.toContain('"$GITHUB_WORKSPACE/node_modules"')
-  expect(build.run).toContain('echo "slot=$RUNNER_TEMP/bun-orcad" >> "$GITHUB_OUTPUT"')
+  expect(build.run).toContain('echo "slot=$RUNNER_TEMP/bun-occd" >> "$GITHUB_OUTPUT"')
   expect(build.run).toContain('echo "executable=$(command -v bun)" >> "$GITHUB_OUTPUT"')
   expect(build.run).not.toContain('GITHUB_ENV')
   const join = steps.findIndex((step) => step.wait === build.id)
@@ -618,8 +618,8 @@ it('runs the Bun and Node cross-runtime tests on Linux against pinned inputs', (
   )
   expect(consumer.if).toBeUndefined()
   expect(consumer.env).toEqual({
-    ORCA_BUN_ORCAD_SLOT: '${{ steps.bun-orcad.outputs.slot }}',
-    BUN_EXECUTABLE: '${{ steps.bun-orcad.outputs.executable }}'
+    OCC_BUN_OCCD_SLOT: '${{ steps.bun-occd.outputs.slot }}',
+    BUN_EXECUTABLE: '${{ steps.bun-occd.outputs.executable }}'
   })
   const alpine = workflow.jobs.linux_musl.steps.find((step) =>
     String(step.run).includes('docker run')

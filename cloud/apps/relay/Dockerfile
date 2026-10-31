@@ -11,7 +11,7 @@ RUN pnpm install --frozen-lockfile
 COPY packages/relay-contract packages/relay-contract
 COPY apps/relay apps/relay
 COPY packages/postgres-schema packages/postgres-schema
-RUN pnpm --filter @orca-cloud/postgres-schema build && pnpm --filter @orca-cloud/relay-contract build && pnpm --filter @orca-cloud/relay build
+RUN pnpm --filter @occ-cloud/postgres-schema build && pnpm --filter @occ-cloud/relay-contract build && pnpm --filter @occ-cloud/relay build
 
 FROM node:24.22.1-alpine@sha256:feb76650b7195319268c59cb2d419c732d6c499b13bf5296f16ab59eb1f0a4f3 AS runtime
 ENV NODE_ENV=production
@@ -26,7 +26,7 @@ COPY apps/relay/package.json apps/relay/package.json
 COPY --from=build /app/packages/relay-contract/dist packages/relay-contract/dist
 COPY --from=build /app/packages/postgres-schema/dist packages/postgres-schema/dist
 COPY --from=build /app/apps/relay/dist apps/relay/dist
-RUN pnpm install --prod --frozen-lockfile --filter @orca-cloud/relay... \
+RUN pnpm install --prod --frozen-lockfile --filter @occ-cloud/relay... \
   && rm -rf /opt/pnpm /usr/local/lib/node_modules /opt/yarn-* /root/.cache /root/.local \
   && rm -f /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
     /usr/local/bin/pnpm /usr/local/bin/pnpx /usr/local/bin/yarn /usr/local/bin/yarnpkg

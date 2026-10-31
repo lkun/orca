@@ -2,7 +2,7 @@
 // CDP cannot prove physical held-key repeat: AppKit needs relaunch; real defaults-domain tests pin preference semantics.
 // Unpackaged Electron must refuse its foreign domain because defaults uses real HOME despite fixture isolation.
 import type { ElectronApplication } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 
 test.use({ seedTestRepo: false })
 

@@ -120,10 +120,10 @@ describe('upsertHookTrustEntries', () => {
   })
 
   it('collapses duplicate blocks for the same hook key while preserving unrelated hook state', () => {
-    const sourcePath = 'C:\\Users\\me\\AppData\\Roaming\\orca\\codex-runtime-home\\home\\hooks.json'
+    const sourcePath = 'C:\\Users\\me\\AppData\\Roaming\\occ\\codex-runtime-home\\home\\hooks.json'
     const key = `${sourcePath}:session_start:0:0`
     const unrelatedSourcePath =
-      'C:\\Users\\me\\AppData\\Roaming\\orca\\codex-runtime-home\\home\\hooks.json'
+      'C:\\Users\\me\\AppData\\Roaming\\occ\\codex-runtime-home\\home\\hooks.json'
     const unrelatedKey = `${unrelatedSourcePath}:stop:0:0`
     const original = [
       `[hooks.state."${escapeTomlString(key)}"]`,
@@ -164,7 +164,7 @@ describe('upsertHookTrustEntries', () => {
   })
 
   it('collapses a literal-string hook table before writing the canonical Codex literal table', () => {
-    const sourcePath = 'C:\\Users\\me\\AppData\\Roaming\\orca\\codex-runtime-home\\home\\hooks.json'
+    const sourcePath = 'C:\\Users\\me\\AppData\\Roaming\\occ\\codex-runtime-home\\home\\hooks.json'
     const key = `${sourcePath}:session_start:0:0`
     const original = [
       `[hooks.state.'${key}']`,
@@ -602,7 +602,7 @@ describe('upsertHookTrustEntries', () => {
   })
 
   it('finds and replaces a legacy forward-slash block when OCC upserts with native backslash key', () => {
-    const backslashPath = 'C:\\Users\\Rod\\AppData\\Roaming\\orca\\hooks.json'
+    const backslashPath = 'C:\\Users\\Rod\\AppData\\Roaming\\occ\\hooks.json'
     const legacyKey = `${backslashPath.replace(/\\/g, '/')}:session_start:0:0`
     const original = [
       `[hooks.state."${legacyKey}"]`,
@@ -631,7 +631,7 @@ describe('upsertHookTrustEntries', () => {
 
   it('produces exactly one Windows separator pair after two consecutive upserts', () => {
     const entry: CodexTrustEntry = {
-      sourcePath: 'C:\\Users\\Rod\\AppData\\Roaming\\orca\\hooks.json',
+      sourcePath: 'C:\\Users\\Rod\\AppData\\Roaming\\occ\\hooks.json',
       eventLabel: 'session_start',
       groupIndex: 0,
       handlerIndex: 0,
@@ -647,7 +647,7 @@ describe('upsertHookTrustEntries', () => {
 
   it('falls back to TOML basic-string headers when a Windows path contains an apostrophe', () => {
     const entry: CodexTrustEntry = {
-      sourcePath: "C:\\Users\\O'Connor\\AppData\\Roaming\\orca\\hooks.json",
+      sourcePath: "C:\\Users\\O'Connor\\AppData\\Roaming\\occ\\hooks.json",
       eventLabel: 'session_start',
       groupIndex: 0,
       handlerIndex: 0,
@@ -658,17 +658,17 @@ describe('upsertHookTrustEntries', () => {
     const written = readFileSync(configPath, 'utf-8')
     expect((written.match(/\[hooks\.state\."/g) ?? []).length).toBe(2)
     expect(written).toContain(
-      `[hooks.state."C:\\\\Users\\\\O'Connor\\\\AppData\\\\Roaming\\\\orca\\\\hooks.json:session_start:0:0"]`
+      `[hooks.state."C:\\\\Users\\\\O'Connor\\\\AppData\\\\Roaming\\\\occ\\\\hooks.json:session_start:0:0"]`
     )
     expect(written).toContain(
-      `[hooks.state."C:/Users/O'Connor/AppData/Roaming/orca/hooks.json:session_start:0:0"]`
+      `[hooks.state."C:/Users/O'Connor/AppData/Roaming/occ/hooks.json:session_start:0:0"]`
     )
     expect(written).not.toContain(`[hooks.state.'C:\\Users\\O'Connor`)
   })
 
   it('finds a Codex-written block with lowercased username when OCC key has mixed-case username', () => {
-    const lowercasePath = 'C:\\Users\\rod\\AppData\\Roaming\\orca\\hooks.json'
-    const mixedCasePath = 'C:\\Users\\Rod\\AppData\\Roaming\\orca\\hooks.json'
+    const lowercasePath = 'C:\\Users\\rod\\AppData\\Roaming\\occ\\hooks.json'
+    const mixedCasePath = 'C:\\Users\\Rod\\AppData\\Roaming\\occ\\hooks.json'
     const literalKey = `${lowercasePath}:session_start:0:0`
     const original = [
       `[hooks.state.'${literalKey}']`,

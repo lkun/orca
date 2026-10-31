@@ -54,7 +54,7 @@ type SshPane = {
 }
 
 async function startSshPane(): Promise<SshPane> {
-  const endpointDir = mkdtempSync(join(tmpdir(), 'orca-relayed-permission-'))
+  const endpointDir = mkdtempSync(join(tmpdir(), 'occ-relayed-permission-'))
   temporaryPaths.push(endpointDir)
   const pane: SshPane = {
     desktop: new AgentHookServer(),

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { OrcadManagedRestartResult } from '../../../../shared/orcad-managed-runtime'
+import type { OCCdManagedRestartResult } from '../../../../shared/occd-managed-runtime'
 import type { SshManagedServerStatus } from '../../../../shared/ssh-types'
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { translate } from '@/i18n/i18n'
@@ -12,11 +12,11 @@ import {
   DialogHeader,
   DialogTitle
 } from '../ui/dialog'
-import { getManagedOrcadApi } from './use-managed-server-catalog'
+import { getManagedOCCdApi } from './use-managed-server-catalog'
 
 /** Offered only when the launching SSH session proved ended. */
 export function canRestartSshHostServer(status: SshManagedServerStatus | undefined): boolean {
-  return Boolean(getManagedOrcadApi() && status?.kind === 'managed' && status.launchSessionEnded)
+  return Boolean(getManagedOCCdApi() && status?.kind === 'managed' && status.launchSessionEnded)
 }
 
 /** Restart macOS managed servers to restore local-network access (#25934); main refuses running terminals and never ends them. */
@@ -31,7 +31,7 @@ export function SshHostRestartServerDialog({
   onOpenChange: (open: boolean) => void
   onChanged: () => void
 }): React.JSX.Element | null {
-  const api = getManagedOrcadApi()
+  const api = getManagedOCCdApi()
   const mountedRef = useMountedRef()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -94,7 +94,7 @@ export function SshHostRestartServerDialog({
   )
 }
 
-function refusalText(result: Exclude<OrcadManagedRestartResult, { outcome: 'restarted' }>): string {
+function refusalText(result: Exclude<OCCdManagedRestartResult, { outcome: 'restarted' }>): string {
   if (result.outcome === 'not-restarted') {
     return result.reason
   }

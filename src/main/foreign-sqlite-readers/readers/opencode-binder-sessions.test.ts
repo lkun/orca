@@ -12,7 +12,7 @@ let dir = ''
 let dbPath = ''
 
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'orca-opencode-binder-reader-'))
+  dir = mkdtempSync(join(tmpdir(), 'occ-opencode-binder-reader-'))
   dbPath = join(dir, 'opencode.db')
 })
 

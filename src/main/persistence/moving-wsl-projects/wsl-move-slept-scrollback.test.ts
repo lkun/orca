@@ -7,14 +7,14 @@ import type { WorkspaceSessionState } from '../../../shared/workspace-session-st
 import { getHistorySessionDirName } from '../../daemon/history-paths'
 import { HistoryReader } from '../../daemon/history-reader'
 import type { TerminalModes } from '../../daemon/terminal-modes'
-import { projectOrcadMigrationSessionScrollback } from '../migrating-orcad-catalog/orcad-source-scrollback-state'
-import { parseOrcadMigrationTerminalHistoryText } from '../../../shared/orcad-migration/orcad-migration-terminal-history'
+import { projectOCCdMigrationSessionScrollback } from '../migrating-occd-catalog/occd-source-scrollback-state'
+import { parseOCCdMigrationTerminalHistoryText } from '../../../shared/occd-migration/occd-migration-terminal-history'
 import {
-  installOrcadMigrationTerminalHistory,
+  installOCCdMigrationTerminalHistory,
   movedPaneHistorySessionId,
-  orcadMigrationTerminalHistoryKey
-} from '../migrating-orcad-catalog/orcad-terminal-history-installer'
-import { getOrcadMigrationReceivedBlobPath } from '../migrating-orcad-catalog/orcad-migration-blob-staging'
+  occdMigrationTerminalHistoryKey
+} from '../migrating-occd-catalog/occd-terminal-history-installer'
+import { getOCCdMigrationReceivedBlobPath } from '../migrating-occd-catalog/occd-migration-blob-staging'
 import {
   daemonHistoryLeafOf,
   listWslMoveSleptSessionPanes,
@@ -99,7 +99,7 @@ function withModes<T extends ReturnType<typeof restored>>(
 
 describe("a paused pane's daemon history", () => {
   it('leaves the pane out of the snapshot channel: the host restores it, nothing else paints it', () => {
-    const projected = projectOrcadMigrationSessionScrollback(
+    const projected = projectOCCdMigrationSessionScrollback(
       sleptSession({ buffersByLeafId: { [LEAF]: 'older' } }),
       undefined,
       false,
@@ -187,13 +187,13 @@ describe("a paused pane's daemon history", () => {
     expect(blobs.descriptors).toEqual([
       expect.objectContaining({
         blobKind: 'terminal-history',
-        key: orcadMigrationTerminalHistoryKey(PANE_KEY)
+        key: occdMigrationTerminalHistoryKey(PANE_KEY)
       })
     ])
     const migration = { migrationId: 'move-1', manifestSha256: 'a'.repeat(64) }
     const received = historyRoot()
     const descriptor = blobs.descriptors[0]!
-    const path = getOrcadMigrationReceivedBlobPath(received, migration, descriptor)
+    const path = getOCCdMigrationReceivedBlobPath(received, migration, descriptor)
     mkdirSync(join(path, '..'), { recursive: true })
     writeFileSync(path, await blobs.source.readChunk(descriptor, 0, descriptor.byteLength))
     slept.dispose()
@@ -208,7 +208,7 @@ describe("a paused pane's daemon history", () => {
       workspacePath: () => '/home/me',
       now: Date.parse('2026-10-23T00:00:00.000Z')
     }
-    installOrcadMigrationTerminalHistory(install)
+    installOCCdMigrationTerminalHistory(install)
     const sessionId = movedPaneHistorySessionId(worktreeId, PANE_KEY)
     const reader = new HistoryReader(host)
     expect(reader.probeRestorableHistory(sessionId)).toEqual({ status: 'restorable', sessionId })
@@ -226,7 +226,7 @@ describe("a paused pane's daemon history", () => {
       JSON.stringify({ ...readMeta(host, sessionId), endedAt: '2026-10-23T00:01:00.000Z' })
     )
     writeFileSync(path, 'stale retry')
-    installOrcadMigrationTerminalHistory(install)
+    installOCCdMigrationTerminalHistory(install)
     expect(reader.probeRestorableHistory(sessionId)).toEqual({ status: 'none' })
   })
 })
@@ -236,7 +236,7 @@ function documentOf(slept: Awaited<ReturnType<typeof readWslMoveSleptScrollbackF
   if (!entry) {
     throw new Error('expected a history document')
   }
-  const document = parseOrcadMigrationTerminalHistoryText(readFileSync(entry.path, 'utf8'))
+  const document = parseOCCdMigrationTerminalHistoryText(readFileSync(entry.path, 'utf8'))
   return {
     ...document,
     checkpoint: {

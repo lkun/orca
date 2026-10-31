@@ -33,15 +33,15 @@ describe('getAgentSkillNavInstallStatus', () => {
   it('keeps loading and missing states ahead of the plan', () => {
     expect(
       getAgentSkillNavInstallStatus({
-        name: 'orca-linear',
+        name: 'occ-linear',
         installed: true,
         loading: true,
-        plan: plan(['orca-linear', 'keep'])
+        plan: plan(['occ-linear', 'keep'])
       })
     ).toBe('checking')
     expect(
       getAgentSkillNavInstallStatus({
-        name: 'orca-linear',
+        name: 'occ-linear',
         installed: false,
         loading: false,
         plan: null
@@ -51,15 +51,15 @@ describe('getAgentSkillNavInstallStatus', () => {
 })
 
 describe('getLinearAgentSkillNavInstallStatus', () => {
-  it('reports canonical installs under orca-linear', () => {
-    const skills = [skill('orca-linear')]
+  it('reports canonical installs under occ-linear', () => {
+    const skills = [skill('occ-linear')]
 
     expect(
       getLinearAgentSkillNavInstallStatus({
         skills,
         installed: true,
         loading: false,
-        plan: plan(['orca-linear', 'keep'])
+        plan: plan(['occ-linear', 'keep'])
       })
     ).toBe('up-to-date')
     expect(
@@ -67,7 +67,7 @@ describe('getLinearAgentSkillNavInstallStatus', () => {
         skills,
         installed: true,
         loading: false,
-        plan: plan(['orca-linear', 'update'])
+        plan: plan(['occ-linear', 'update'])
       })
     ).toBe('update-available')
   })
@@ -86,10 +86,10 @@ describe('getLinearAgentSkillNavInstallStatus', () => {
   it('prefers the plan for the canonical name when both names are installed', () => {
     expect(
       getLinearAgentSkillNavInstallStatus({
-        skills: [skill('orca-linear'), skill('linear-tickets')],
+        skills: [skill('occ-linear'), skill('linear-tickets')],
         installed: true,
         loading: false,
-        plan: plan(['orca-linear', 'keep'], ['linear-tickets', 'update'])
+        plan: plan(['occ-linear', 'keep'], ['linear-tickets', 'update'])
       })
     ).toBe('up-to-date')
   })
@@ -97,7 +97,7 @@ describe('getLinearAgentSkillNavInstallStatus', () => {
   it('falls back to presence-only status when no plan applies', () => {
     expect(
       getLinearAgentSkillNavInstallStatus({
-        skills: [skill('orca-linear')],
+        skills: [skill('occ-linear')],
         installed: true,
         loading: false,
         plan: null

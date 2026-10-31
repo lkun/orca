@@ -68,7 +68,7 @@ vi.mock('../onboarding/OnboardingInlineCommandTerminal', () => ({
   )
 }))
 
-const WRITE_PLAN = planOf([sharedEntry('orca-cli', 'write')])
+const WRITE_PLAN = planOf([sharedEntry('occ-cli', 'write')])
 
 function panelProps(
   overrides: Partial<ComponentProps<typeof AgentSkillSetupPanel>> = {}
@@ -76,7 +76,7 @@ function panelProps(
   return {
     title: 'CLI skill',
     description: 'Enables agents to use OCC workflows.',
-    skillNames: ['orca-cli'],
+    skillNames: ['occ-cli'],
     installed: false,
     loading: false,
     error: null,
@@ -169,7 +169,7 @@ describe('AgentSkillSetupPanel', () => {
   it('offers Update once installed only when the plan would change something', async () => {
     mocks.plan.mockResolvedValue({
       kind: 'plan',
-      plan: planOf([sharedEntry('orca-cli', 'update')])
+      plan: planOf([sharedEntry('occ-cli', 'update')])
     })
     await renderInteractivePanel({ installed: true })
 
@@ -179,7 +179,7 @@ describe('AgentSkillSetupPanel', () => {
   })
 
   it('shows only Re-check when the installed copy is already current', async () => {
-    mocks.plan.mockResolvedValue({ kind: 'plan', plan: planOf([sharedEntry('orca-cli', 'keep')]) })
+    mocks.plan.mockResolvedValue({ kind: 'plan', plan: planOf([sharedEntry('occ-cli', 'keep')]) })
     await renderInteractivePanel({ installed: true })
 
     const labels = Array.from(container?.querySelectorAll('button') ?? [], (button) =>
@@ -193,7 +193,7 @@ describe('AgentSkillSetupPanel', () => {
       installed: true,
       hideHeader: true,
       description: null,
-      freshnessSkillName: 'orca-linear'
+      freshnessSkillName: 'occ-linear'
     })
 
     expect(html).toContain('Checking...')
@@ -256,13 +256,13 @@ describe('AgentSkillSetupPanel', () => {
 
   it('plans the named skills on the active host, runs that plan, and rechecks', async () => {
     const onRecheck = vi.fn(async () => {})
-    await renderInteractivePanel({ onRecheck, freshnessSkillName: 'orca-cli' })
+    await renderInteractivePanel({ onRecheck, freshnessSkillName: 'occ-cli' })
 
     await clickButton('Install')
 
-    expect(mocks.plan).toHaveBeenCalledWith({ kind: 'local' }, { names: ['orca-cli'] })
+    expect(mocks.plan).toHaveBeenCalledWith({ kind: 'local' }, { names: ['occ-cli'] })
     expect(mocks.execute).toHaveBeenCalledWith({ kind: 'local' }, WRITE_PLAN.planDigest, {
-      names: ['orca-cli']
+      names: ['occ-cli']
     })
     expect(container?.textContent).toContain('Installed')
     expect(mocks.skillsChanged).toHaveBeenCalledOnce()
@@ -278,7 +278,7 @@ describe('AgentSkillSetupPanel', () => {
 
     expect(mocks.plan).toHaveBeenCalledWith(
       { kind: 'environment', environmentId: 'env-1' },
-      { names: ['orca-cli'] }
+      { names: ['occ-cli'] }
     )
   })
 
@@ -306,7 +306,7 @@ describe('AgentSkillSetupPanel', () => {
     mocks.execute.mockResolvedValue(doneResult(plan))
     await renderInteractivePanel({
       installed: true,
-      skillNames: ['orca-linear'],
+      skillNames: ['occ-linear'],
       installedSkillNames: ['linear-tickets']
     })
 
@@ -317,9 +317,9 @@ describe('AgentSkillSetupPanel', () => {
 
   it('offers Replace for an edited copy and replaces only that path', async () => {
     const edited = planOf([
-      sharedEntry('orca-cli', 'leave', { reason: 'edited', replaceable: true })
+      sharedEntry('occ-cli', 'leave', { reason: 'edited', replaceable: true })
     ])
-    const replaced = planOf([sharedEntry('orca-cli', 'replace')])
+    const replaced = planOf([sharedEntry('occ-cli', 'replace')])
     mocks.plan.mockResolvedValue({ kind: 'plan', plan: edited })
     await renderInteractivePanel({ installed: true })
     expect(container?.textContent).not.toContain('Update')
@@ -328,20 +328,20 @@ describe('AgentSkillSetupPanel', () => {
     mocks.execute.mockResolvedValueOnce(doneResult(replaced))
     await clickButton("Replace with OCC's copy")
 
-    const path = '/home/u/.agents/skills/orca-cli'
+    const path = '/home/u/.agents/skills/occ-cli'
     expect(mocks.plan).toHaveBeenCalledWith(
       { kind: 'local' },
-      { names: ['orca-cli'], force: [path] }
+      { names: ['occ-cli'], force: [path] }
     )
     expect(mocks.execute).toHaveBeenCalledWith({ kind: 'local' }, replaced.planDigest, {
-      names: ['orca-cli'],
+      names: ['occ-cli'],
       force: [path]
     })
     expect(container?.textContent).toContain('Replaced · Your copy was saved as a backup')
   })
 
   it('says why an edited copy was left alone, without calling it a failure', async () => {
-    const plan = planOf([sharedEntry('orca-cli', 'leave', { reason: 'edited', replaceable: true })])
+    const plan = planOf([sharedEntry('occ-cli', 'leave', { reason: 'edited', replaceable: true })])
     mocks.plan.mockResolvedValue({ kind: 'plan', plan })
     mocks.execute.mockResolvedValueOnce(doneResult(plan))
     await renderInteractivePanel()
@@ -357,7 +357,7 @@ describe('AgentSkillSetupPanel', () => {
   it('reports a run that found the disk changed as needing attention, and retries it', async () => {
     mocks.execute.mockResolvedValueOnce({
       scope: 'global',
-      skills: [{ name: 'orca-cli', status: 'changed', ops: [] }]
+      skills: [{ name: 'occ-cli', status: 'changed', ops: [] }]
     })
     await renderInteractivePanel()
 
@@ -475,10 +475,10 @@ describe('AgentSkillSetupPanel', () => {
     mocks.agentRuntime = { runtime: 'wsl', wslDistro: 'Debian', label: 'WSL Debian' }
     const target = { kind: 'environment', environmentId: 'selected-host' } as const
     await renderInteractivePanel({ target, installed: true })
-    expect(mocks.plan).toHaveBeenCalledWith(target, { names: ['orca-cli'] })
+    expect(mocks.plan).toHaveBeenCalledWith(target, { names: ['occ-cli'] })
     await clickButton('Install')
     expect(mocks.execute).toHaveBeenCalledWith(target, WRITE_PLAN.planDigest, {
-      names: ['orca-cli']
+      names: ['occ-cli']
     })
     expect(container?.querySelector('[data-testid="wsl-terminal"]')).toBeNull()
   })
@@ -496,7 +496,7 @@ describe('AgentSkillSetupPanel', () => {
     await renderInteractivePanel()
     await clickButton('Install')
     expect(container?.querySelector('[data-testid="wsl-terminal"]')?.textContent).toBe(
-      `env LC_ALL=C npx skills@1.7.2 add https://github.com/stablyai/orca/tree/${'0'.repeat(40)} --skill orca-cli --global`
+      `env LC_ALL=C npx skills@1.7.2 add https://github.com/stablyai/occ/tree/${'0'.repeat(40)} --skill occ-cli --global`
     )
     expect(mocks.plan).not.toHaveBeenCalled()
     expect(mocks.execute).not.toHaveBeenCalled()

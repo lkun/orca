@@ -12,11 +12,11 @@ import { findWslHostDeployment } from '../../shared/runtime-environment-wsl-host
 import { getWslHostDeploymentStorePath } from '../../shared/wsl-host-deployment-store'
 import { getPreferredPairingOffer } from '../../shared/runtime-environments'
 import type { WslHostStatus } from '../../shared/wsl-host-types'
-import { OrcadHostUnsupportedError } from '../orcad/orcad-host-unavailable'
-import { RemoteNodeRuntimeSelfTestError } from '../ssh/orcad-remote-node-runtime-report'
+import { OCCdHostUnsupportedError } from '../occd/occd-host-unavailable'
+import { RemoteNodeRuntimeSelfTestError } from '../ssh/occd-remote-node-runtime-report'
 import { WslHostService, type WslHostConnector } from './wsl-host-service'
 import { wakeRememberedWslHosts } from './wsl-host-early-wake'
-import { WslOrcadLaunchDeferredError } from './wsl-orcad-connection-errors'
+import { WslOCCdLaunchDeferredError } from './wsl-occd-connection-errors'
 import { RemoteRuntimeClientError } from '../../shared/remote-runtime/remote-runtime-client-error'
 import { isRecoverableRemoteRuntimeConnectionError } from '../../shared/remote-runtime/remote-runtime-client-error-classification'
 import {
@@ -52,7 +52,7 @@ describe('WslHostService', () => {
   }
 
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-host-service-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-host-service-'))
     published = []
     enabled = true
     serverFiles = true
@@ -75,7 +75,7 @@ describe('WslHostService', () => {
 
     expect(connector.connect).toHaveBeenCalledWith('Ubuntu')
     expect(listEnvironments(userDataPath)).toMatchObject([
-      { id: 'wsl:ubuntu', name: 'Ubuntu (WSL)', orcadDeployment: { kind: 'wsl', distro: 'Ubuntu' } }
+      { id: 'wsl:ubuntu', name: 'Ubuntu (WSL)', occdDeployment: { kind: 'wsl', distro: 'Ubuntu' } }
     ])
     expect(findWslHostDeployment(userDataPath, 'wsl:ubuntu')?.distroId).toBe(UBUNTU_ID)
     expect(ready).toHaveBeenCalledWith('wsl:ubuntu')
@@ -109,7 +109,7 @@ describe('WslHostService', () => {
 
     expect(findWslHostDeployment(userDataPath, 'wsl:ubuntu')?.localPort).toBe(42001)
     expect(listEnvironments(userDataPath)).toMatchObject([
-      { id: 'wsl:ubuntu', orcadDeployment: { kind: 'wsl', localPort: 42001 } }
+      { id: 'wsl:ubuntu', occdDeployment: { kind: 'wsl', localPort: 42001 } }
     ])
     expect(pairingChanged).toHaveBeenCalledExactlyOnceWith('wsl:ubuntu')
   })
@@ -137,20 +137,20 @@ describe('WslHostService', () => {
       kind: 'already-added'
     })
     expect(connector.connect).toHaveBeenCalledTimes(1)
-    expect(connector.readOrcadPublicKey).not.toHaveBeenCalledWith('Debian')
+    expect(connector.readOCCdPublicKey).not.toHaveBeenCalledWith('Debian')
 
     await expect(service.add({ distro: 'Debian', startIfStopped: true })).resolves.toMatchObject({
       ok: true
     })
   })
 
-  it('refuses a distro whose orcad this desktop already reaches as another server (R25)', async () => {
+  it('refuses a distro whose occd this desktop already reaches as another server (R25)', async () => {
     addEnvironmentFromPairingCode(userDataPath, {
       name: 'wsl over ssh',
       pairingCode: pairing(41000, 'other-token')
     })
     const connector = makeConnector([UBUNTU])
-    connector.readOrcadPublicKey.mockResolvedValue(KEY)
+    connector.readOCCdPublicKey.mockResolvedValue(KEY)
     const service = makeService(connector)
 
     await expect(service.add({ distro: 'Ubuntu' })).resolves.toMatchObject({
@@ -164,7 +164,7 @@ describe('WslHostService', () => {
   it('reports a deferred activation and stays off when the experiment is off', async () => {
     const connector = makeConnector([UBUNTU])
     connector.connect.mockRejectedValueOnce(
-      new WslOrcadLaunchDeferredError({
+      new WslOCCdLaunchDeferredError({
         outcome: 'deferred',
         distro: 'Ubuntu',
         candidateVersion: '2.0.0',
@@ -213,7 +213,7 @@ describe('WslHostService', () => {
     await service.add({ distro: 'Ubuntu' })
     const deferredUpdate = {
       candidateVersion: '2.0.0+ff',
-      code: 'orcad_update_terminals_running',
+      code: 'occd_update_terminals_running',
       reason: '1 terminal is running on this host.',
       forceable: true
     }
@@ -229,7 +229,7 @@ describe('WslHostService', () => {
       { ...connection('Ubuntu'), deferredUpdate },
       {
         state: 'reconnecting',
-        reason: 'orcad-exited',
+        reason: 'occd-exited',
         attempt: 1,
         retryInMs: null,
         terminals: 'unverifiable'
@@ -462,7 +462,7 @@ describe('WslHostService', () => {
     await service.add({ distro: 'Ubuntu' })
     service.setVisibleWork(['wsl:ubuntu'])
     await connector.disconnect('Ubuntu')
-    connector.connect.mockRejectedValueOnce(new Error('orcad exited'))
+    connector.connect.mockRejectedValueOnce(new Error('occd exited'))
     await expect(service.ensureForRuntimeCall('wsl:ubuntu')).rejects.toBeInstanceOf(
       RemoteRuntimeClientError
     )
@@ -660,7 +660,7 @@ describe('WslHostService', () => {
 
     vi.clearAllMocks()
     connector.connect.mockRejectedValueOnce(
-      new WslOrcadLaunchDeferredError({
+      new WslOCCdLaunchDeferredError({
         outcome: 'deferred',
         distro: 'Ubuntu',
         candidateVersion: '2.0.0',
@@ -777,7 +777,7 @@ describe('WslHostService', () => {
   it.each([
     [
       'unsupported-distro',
-      () => new OrcadHostUnsupportedError('No OCC runtime supports linux-arm64-glibc.'),
+      () => new OCCdHostUnsupportedError('No OCC runtime supports linux-arm64-glibc.'),
       'No OCC runtime supports linux-arm64-glibc.'
     ],
     [
@@ -848,21 +848,21 @@ describe('WslHostService', () => {
     expect(connector.listDistros).toHaveBeenCalledTimes(2)
   })
 
-  it('checks admission, then shared orcad, then connects; publishes ready before announcing it', async () => {
+  it('checks admission, then shared occd, then connects; publishes ready before announcing it', async () => {
     const connector = makeConnector([UBUNTU])
     const order: string[] = []
     connector.listDistros.mockImplementation(async () => {
       order.push('list')
       return [UBUNTU]
     })
-    connector.readOrcadPublicKey.mockImplementation(async (distro: string) => {
+    connector.readOCCdPublicKey.mockImplementation(async (distro: string) => {
       order.push(`key:${distro}`)
       return null
     })
     // A new-connection deferral proves status was republished from that connection.
     const deferredUpdate = {
       candidateVersion: '2.0.0+ff',
-      code: 'orcad_update_terminals_running',
+      code: 'occd_update_terminals_running',
       reason: '1 terminal is running on this host.',
       forceable: true
     }

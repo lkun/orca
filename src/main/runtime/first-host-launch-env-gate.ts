@@ -1,6 +1,6 @@
 /**
  * A fresh WSL host has no account env until its desktop's first push, which can land a fraction of
- * a second after orcad starts. Agent launches in that window wait for it, once and briefly, rather
+ * a second after occd starts. Agent launches in that window wait for it, once and briefly, rather
  * than start on the distro's own login.
  */
 

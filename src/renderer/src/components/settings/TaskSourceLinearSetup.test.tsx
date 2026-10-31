@@ -21,7 +21,7 @@ vi.mock('./AgentSkillSetupPanel', () => ({
 
 vi.mock('@/lib/linear-agent-skill-update-target', () => ({
   getLinearAgentSkillUpdateTarget: () => ({
-    skillName: 'orca-linear'
+    skillName: 'occ-linear'
   })
 }))
 

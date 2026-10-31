@@ -1,21 +1,21 @@
 import path from 'node:path'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { BROWSER_SIDECAR_OWNER_ENV } from '../../../src/shared/browser-sidecar-lifetime'
 import { resolveElectronExecutable } from './daemon-generation-runtime-fixture'
-import { getOrcaElectronLaunchArgs } from './electron-launch-args'
-import { isolatedServeProfile } from './orca-serve-cli-host'
+import { getOCCElectronLaunchArgs } from './electron-launch-args'
+import { isolatedServeProfile } from './occ-serve-cli-host'
 
 // An IPC owner must be disconnectable independently of Playwright's app connection.
 export function launchOwnedBrowserForE2E(profile: string): ReturnType<typeof spawnProcess> {
   const isolation = isolatedServeProfile(profile, {
     NODE_ENV: 'development',
-    ORCA_BACKGROUND_LAUNCH: '1',
-    ORCA_E2E_HEADLESS: '1'
+    OCC_BACKGROUND_LAUNCH: '1',
+    OCC_E2E_HEADLESS: '1'
   })
   return spawnProcess({
     program: resolveElectronExecutable(process.cwd()),
     args: [
-      ...getOrcaElectronLaunchArgs(path.join(process.cwd(), 'out', 'main', 'index.js'), false),
+      ...getOCCElectronLaunchArgs(path.join(process.cwd(), 'out', 'main', 'index.js'), false),
       '--serve',
       '--serve-port',
       '0',

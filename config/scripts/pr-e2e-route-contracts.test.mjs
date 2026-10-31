@@ -6,7 +6,7 @@ import {
   classifyE2eJobs,
   DEDICATED_E2E_SPECS,
   MANAGED_SSH_E2E_SPEC_PREFIX,
-  ORCAD_SERVE_MODE_SWITCH_E2E_SPEC,
+  OCCD_SERVE_MODE_SWITCH_E2E_SPEC,
   WINDOWS_COPY_FILE_E2E_SPEC,
   WINDOWS_MISSING_APPDATA_E2E_SPEC,
   selectGeneralE2eSpecs
@@ -212,7 +212,7 @@ describe('pr-e2e-layout-oracle-routing', () => {
       for (const file of [
         'src/main/persistence/terminal-topology/terminal-topology-commit.test.ts',
         'src/main/persistence/terminal-topology/terminal-leaf-move-fixture.ts',
-        'src/main/runtime/orca-runtime-tests/mobile-session-tabs-part-03.spec.ts',
+        'src/main/runtime/occ-runtime-tests/mobile-session-tabs-part-03.spec.ts',
         'src/main/runtime/session-tabs/headless-tab-group-moves.test.ts',
         'src/main/runtime/session-tabs/headless-tab-group-moves-fixture.ts',
         'src/main/runtime/session-tabs/session-tabs-inventory-test-fixture.ts',
@@ -224,7 +224,7 @@ describe('pr-e2e-layout-oracle-routing', () => {
         'src/main/runtime/orchestration/db/worker-terminal/worker-terminal-store.ts',
         'src/main/runtime/rpc/methods/terminal/terminal-create.ts',
         'src/main/runtime/runtime-rpc-database.ts',
-        'src/main/runtime/orca-runtime-files.ts',
+        'src/main/runtime/occ-runtime-files.ts',
         'src/main/runtime/workspaces/persisted-surfaces/automation-operations.ts',
         'src/main/runtime/workspaces/persisted-surfaces/has-exact-persisted-terminal-surface-identity.test.ts',
         'src/renderer/src/runtime/remote-runtime-terminal-multiplexer.ts',
@@ -235,7 +235,7 @@ describe('pr-e2e-layout-oracle-routing', () => {
       ]) {
         expect(isLayoutOracleSource(file), file).toBe(false)
       }
-      expect(classifyPrJobs(['src/main/runtime/orca-runtime-files.ts']).layout_oracle).toBe(false)
+      expect(classifyPrJobs(['src/main/runtime/occ-runtime-files.ts']).layout_oracle).toBe(false)
     })
 
     it('keeps the oracle specs out of the advisory e2e job', () => {
@@ -250,7 +250,7 @@ describe('pr-e2e-layout-oracle-routing', () => {
       expect(job.with.ref).toBe('${{ github.sha }}')
       const specs = JSON.parse(job.with.test_files)
       expect(specs.toSorted()).toEqual(LAYOUT_ORACLE_E2E_SPECS.toSorted())
-      // Window spec runs in the changed-spec lane; headless runs in the orcad lane.
+      // Window spec runs in the changed-spec lane; headless runs in the occd lane.
       expect(selectGeneralE2eSpecs(specs)).toEqual(['tests/e2e/workspace-layout-oracle.spec.ts'])
       expect(classifyE2eJobs(job.with.test_files)).toEqual({
         e2e_run_changed: true,
@@ -293,7 +293,7 @@ describe('ssh-browser-e2e-routing', () => {
     expect(job.if).toContain("inputs.test_files == ''")
     expect(job.if).toContain(spec)
     expect(install.with['native-runtime']).toBe('node')
-    expect(run.env.ORCA_RUN_DOCKER_SSH_BROWSER_E2E).toBe('1')
+    expect(run.env.OCC_RUN_DOCKER_SSH_BROWSER_E2E).toBe('1')
     expect(run.run).toContain(`vitest run --config config/vitest.config.ts ${spec}`)
     expect(run['continue-on-error']).toBeUndefined()
     expect(DEDICATED_E2E_SPECS).toContain(spec)
@@ -316,16 +316,16 @@ describe('ssh-browser-e2e-routing', () => {
   })
 })
 
-describe('orcad-e2e-routing', () => {
+describe('occd-e2e-routing', () => {
   const root = projectDir
   const jobs = e2eWorkflow.jobs
-  const ORCAD_AUTO_CONVERT_E2E_SPEC = 'tests/e2e/ssh-orcad-auto-convert.spec.ts'
-  const ORCAD_IDLE_EXIT_E2E_SPEC = 'tests/e2e/ssh-orcad-idle-exit.spec.ts'
-  const ORCAD_OPEN_IN_OWNER_E2E_SPEC = 'tests/e2e/ssh-orcad-open-in-owner.spec.ts'
-  const ORCAD_JOURNEY_E2E_SPECS = [
-    'tests/e2e/ssh-orcad-terminal-journeys.spec.ts',
-    'tests/e2e/ssh-orcad-workspace-tools.spec.ts',
-    'tests/e2e/ssh-orcad-vm-provisioned-root.spec.ts'
+  const OCCD_AUTO_CONVERT_E2E_SPEC = 'tests/e2e/ssh-occd-auto-convert.spec.ts'
+  const OCCD_IDLE_EXIT_E2E_SPEC = 'tests/e2e/ssh-occd-idle-exit.spec.ts'
+  const OCCD_OPEN_IN_OWNER_E2E_SPEC = 'tests/e2e/ssh-occd-open-in-owner.spec.ts'
+  const OCCD_JOURNEY_E2E_SPECS = [
+    'tests/e2e/ssh-occd-terminal-journeys.spec.ts',
+    'tests/e2e/ssh-occd-workspace-tools.spec.ts',
+    'tests/e2e/ssh-occd-vm-provisioned-root.spec.ts'
   ]
 
   function expectRouted(files, spec) {
@@ -339,18 +339,18 @@ describe('orcad-e2e-routing', () => {
   it('routes the mode-switch spec from its serve sources and harness', () => {
     expectRouted(
       [
-        'src/main/orcad/orcad-lifecycle.ts',
+        'src/main/occd/occd-lifecycle.ts',
         'src/main/daemon/daemon-spawner.ts',
-        'tests/e2e/helpers/orca-serve-cli-host.ts',
+        'tests/e2e/helpers/occ-serve-cli-host.ts',
         'tests/e2e/helpers/headless-paired-runtime-host.ts'
       ],
-      ORCAD_SERVE_MODE_SWITCH_E2E_SPEC
+      OCCD_SERVE_MODE_SWITCH_E2E_SPEC
     )
   })
 
   it('routes the missing-AppData spec from its startup sources and harness', () => {
     expectRouted(
-      ['src/main/startup/windows-app-data-path.ts', 'tests/e2e/helpers/orca-serve-cli-host.ts'],
+      ['src/main/startup/windows-app-data-path.ts', 'tests/e2e/helpers/occ-serve-cli-host.ts'],
       WINDOWS_MISSING_APPDATA_E2E_SPEC
     )
   })
@@ -369,63 +369,63 @@ describe('orcad-e2e-routing', () => {
   it('routes the auto-convert spec from its conversion sources and harness', () => {
     expectRouted(
       [
-        'src/main/managed-server/lifecycle/orcad-runtime-conversion.ts',
-        'tests/e2e/helpers/orcad-convert-flow.ts',
-        'tests/e2e/helpers/orcad-convert-host.ts',
-        'tests/e2e/helpers/orcad-template-variant.ts',
-        'tests/e2e/helpers/orcad-upgrade-profile.ts'
+        'src/main/managed-server/lifecycle/occd-runtime-conversion.ts',
+        'tests/e2e/helpers/occd-convert-flow.ts',
+        'tests/e2e/helpers/occd-convert-host.ts',
+        'tests/e2e/helpers/occd-template-variant.ts',
+        'tests/e2e/helpers/occd-upgrade-profile.ts'
       ],
-      ORCAD_AUTO_CONVERT_E2E_SPEC
+      OCCD_AUTO_CONVERT_E2E_SPEC
     )
     expect(
-      selectPrE2eSpecs(['src/main/managed-server/lifecycle/orcad-runtime-conversion.test.ts'])
-    ).not.toContain(ORCAD_AUTO_CONVERT_E2E_SPEC)
+      selectPrE2eSpecs(['src/main/managed-server/lifecycle/occd-runtime-conversion.test.ts'])
+    ).not.toContain(OCCD_AUTO_CONVERT_E2E_SPEC)
   })
 
   it('routes the idle-exit spec from its idle sources and the shared convert harness', () => {
     expectRouted(
       [
-        'src/shared/orcad-idle-exit.ts',
-        'src/main/managed-server/install/orcad-remote-runtime-control.ts',
-        'src/main/managed-server/lifecycle/orcad-managed-serving.ts',
-        'tests/e2e/helpers/orcad-convert-flow.ts',
-        'tests/e2e/helpers/orcad-convert-host.ts'
+        'src/shared/occd-idle-exit.ts',
+        'src/main/managed-server/install/occd-remote-runtime-control.ts',
+        'src/main/managed-server/lifecycle/occd-managed-serving.ts',
+        'tests/e2e/helpers/occd-convert-flow.ts',
+        'tests/e2e/helpers/occd-convert-host.ts'
       ],
-      ORCAD_IDLE_EXIT_E2E_SPEC
+      OCCD_IDLE_EXIT_E2E_SPEC
     )
   })
 
-  it('builds the e2e app when only a build-dependent orcad spec is requested', () => {
+  it('builds the e2e app when only a build-dependent occd spec is requested', () => {
     for (const spec of [
-      ORCAD_SERVE_MODE_SWITCH_E2E_SPEC,
-      ORCAD_AUTO_CONVERT_E2E_SPEC,
-      ORCAD_IDLE_EXIT_E2E_SPEC,
-      ORCAD_OPEN_IN_OWNER_E2E_SPEC
+      OCCD_SERVE_MODE_SWITCH_E2E_SPEC,
+      OCCD_AUTO_CONVERT_E2E_SPEC,
+      OCCD_IDLE_EXIT_E2E_SPEC,
+      OCCD_OPEN_IN_OWNER_E2E_SPEC
     ]) {
       expect(classifyE2eJobs(JSON.stringify([spec])), spec).toEqual({
         e2e_run_changed: false,
         e2e_needs_build: true
       })
     }
-    expect(jobs['orcad-ssh-docker'].needs).toEqual(['build'])
+    expect(jobs['occd-ssh-docker'].needs).toEqual(['build'])
   })
 
   it('passes the requested managed-SSH specs to the sharded lane', () => {
-    const lane = jobs['orcad-ssh-docker']
+    const lane = jobs['occd-ssh-docker']
     expect(lane.if).toBe(
       `inputs.test_files == '' || contains(inputs.test_files, '${MANAGED_SSH_E2E_SPEC_PREFIX}')`
     )
     expect(lane.strategy.matrix.shard).toBe(
       `\${{ fromJSON(inputs.managed_ssh_shards || '["1/2","2/2"]') }}`
     )
-    const run = lane.steps.find((step) => step.env?.ORCA_E2E_SSH_DOCKER === '1').run
+    const run = lane.steps.find((step) => step.env?.OCC_E2E_SSH_DOCKER === '1').run
     expect(run).toContain('"${TEST_FILES[@]}"')
     expect(run).toContain('--shard="$SHARD"')
     for (const spec of [
-      ORCAD_AUTO_CONVERT_E2E_SPEC,
-      ORCAD_IDLE_EXIT_E2E_SPEC,
-      ORCAD_OPEN_IN_OWNER_E2E_SPEC,
-      ...ORCAD_JOURNEY_E2E_SPECS
+      OCCD_AUTO_CONVERT_E2E_SPEC,
+      OCCD_IDLE_EXIT_E2E_SPEC,
+      OCCD_OPEN_IN_OWNER_E2E_SPEC,
+      ...OCCD_JOURNEY_E2E_SPECS
     ]) {
       expect(existsSync(resolve(root, spec)), spec).toBe(true)
       expect(spec.startsWith(MANAGED_SSH_E2E_SPEC_PREFIX), spec).toBe(true)
@@ -434,16 +434,16 @@ describe('orcad-e2e-routing', () => {
 
   it('runs the Windows-only specs on one runner, each only when requested', () => {
     expect(jobs['windows-missing-appdata-startup']).toBeUndefined()
-    const job = jobs['orcad-serve-mode-switch-windows']
+    const job = jobs['occd-serve-mode-switch-windows']
     for (const spec of [
-      ORCAD_SERVE_MODE_SWITCH_E2E_SPEC,
+      OCCD_SERVE_MODE_SWITCH_E2E_SPEC,
       WINDOWS_MISSING_APPDATA_E2E_SPEC,
       WINDOWS_COPY_FILE_E2E_SPEC
     ]) {
       expect(job.if, spec).toContain(`contains(inputs.test_files, '${spec}')`)
       const step = job.steps.find((candidate) => candidate.run?.includes(spec))
       expect(step.if, spec).toContain(`contains(inputs.test_files, '${spec}')`)
-      expect(step.env.ORCA_STARTUP_DIAGNOSTICS, spec).toBeUndefined()
+      expect(step.env.OCC_STARTUP_DIAGNOSTICS, spec).toBeUndefined()
     }
   })
 
@@ -458,23 +458,23 @@ describe('orcad-e2e-routing', () => {
         'src/renderer/src/components/right-sidebar/FileExplorer.tsx',
         'src/renderer/src/components/right-sidebar/FileExplorerToolbar.tsx',
         'src/renderer/src/components/right-sidebar/source-control/listing/entry-context-menu.tsx',
-        'tests/e2e/helpers/orcad-convert-flow.ts',
-        'tests/e2e/helpers/orcad-convert-host.ts',
-        'tests/e2e/helpers/orcad-upgrade-profile.ts',
+        'tests/e2e/helpers/occd-convert-flow.ts',
+        'tests/e2e/helpers/occd-convert-host.ts',
+        'tests/e2e/helpers/occd-upgrade-profile.ts',
         'tests/e2e/helpers/docker-ssh-host-target.ts'
       ],
-      ORCAD_OPEN_IN_OWNER_E2E_SPEC
+      OCCD_OPEN_IN_OWNER_E2E_SPEC
     )
     expect(selectPrE2eSpecs(['src/renderer/src/lib/local-path-open-guard.test.ts'])).not.toContain(
-      ORCAD_OPEN_IN_OWNER_E2E_SPEC
+      OCCD_OPEN_IN_OWNER_E2E_SPEC
     )
   })
 
   it('routes the managed-host journey specs from their harness and sources', () => {
-    for (const spec of ORCAD_JOURNEY_E2E_SPECS) {
+    for (const spec of OCCD_JOURNEY_E2E_SPECS) {
       expectRouted(
         [
-          'tests/e2e/helpers/orcad-managed-workspace.ts',
+          'tests/e2e/helpers/occd-managed-workspace.ts',
           'src/renderer/src/components/terminal-pane/terminal-host-workspace-file.ts',
           'src/renderer/src/components/terminal-pane/terminal-host-file-link-existence.ts',
           'src/renderer/src/runtime/runtime-terminal-artifact-read.ts',
@@ -538,7 +538,7 @@ describe('managed-SSH remote sources routing', () => {
   it('gives every managed-SSH spec a source route', () => {
     const routed = new Set(PR_E2E_SOURCE_ROUTES.flatMap((route) => route.specs))
     const specs = readdirSync(join(projectDir, 'tests/e2e'))
-      .filter((name) => /^ssh-orcad-.*\.spec\.ts$/.test(name))
+      .filter((name) => /^ssh-occd-.*\.spec\.ts$/.test(name))
       .map((name) => `tests/e2e/${name}`)
     expect(specs.length).toBeGreaterThan(0)
     expect(
@@ -550,11 +550,11 @@ describe('managed-SSH remote sources routing', () => {
     for (const file of [
       // #30130 and #30120 merged with the lane skipped.
       'src/main/ipc/ssh/ssh.ts',
-      'src/cli/runtime/serve-orcad-launch.ts',
-      'src/main/orcad/orcad-entry.ts',
+      'src/cli/runtime/serve-occd-launch.ts',
+      'src/main/occd/occd-entry.ts',
       'src/main/ssh/connection/ssh-connection.ts',
       'src/main/ipc/runtime-environments/runtime-environment-status-probe.ts',
-      'src/main/ipc/runtime-environments/orcad-runtime-lifecycle-handlers.ts',
+      'src/main/ipc/runtime-environments/occd-runtime-lifecycle-handlers.ts',
       'src/shared/protocol-version.ts',
       'src/shared/remote-runtime/remote-runtime-client-error-classification.ts',
       // #30047 and #30060: sidebar sleep and project removal.

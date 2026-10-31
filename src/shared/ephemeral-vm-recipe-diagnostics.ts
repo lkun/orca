@@ -17,7 +17,7 @@ export function getEphemeralVmRecipeResultWarnings(
   result: EphemeralVmRecipeResult
 ): EphemeralVmRecipeResultWarning[] {
   const connection = getEphemeralVmRecipeResultConnection(result)
-  if (connection.type !== 'orca-server') {
+  if (connection.type !== 'occ-server') {
     return []
   }
   const pairing = parsePairingCode(connection.pairingCode)
@@ -66,7 +66,7 @@ export function redactEphemeralVmRecipeResultForDiagnostics(
 }
 
 function redactConnection(connection: EphemeralVmRecipeConnection): EphemeralVmRecipeConnection {
-  if (connection.type === 'orca-server') {
+  if (connection.type === 'occ-server') {
     return { ...connection, pairingCode: 'occ://pair?code=[redacted]' }
   }
   return {

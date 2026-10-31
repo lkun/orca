@@ -36,7 +36,7 @@ async function startListener(reply: 'now' | 'never' | number = 'now'): Promise<L
       const form = new URLSearchParams(Buffer.concat(chunks).toString('utf8'))
       posts.push({
         path: req.url ?? '',
-        token: req.headers['x-orca-agent-hook-token']?.toString(),
+        token: req.headers['x-occ-agent-hook-token']?.toString(),
         type: req.headers['content-type'],
         form: JSON.stringify([...form.entries()])
       })
@@ -88,22 +88,22 @@ function run(
 function hookEnv(extra: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
   const base = Object.fromEntries(
     Object.entries(process.env).filter(
-      ([key]) => !/^(ORCA_|CLAUDE_|GROK_|DEVIN_)/i.test(key) && key.toUpperCase() !== 'USERPROFILE'
+      ([key]) => !/^(OCC_|CLAUDE_|GROK_|DEVIN_)/i.test(key) && key.toUpperCase() !== 'USERPROFILE'
     )
   )
-  return { ...base, USERPROFILE: dir, ORCA_BACKGROUND_LAUNCH: '1', ...extra }
+  return { ...base, USERPROFILE: dir, OCC_BACKGROUND_LAUNCH: '1', ...extra }
 }
 
 function paneEnv(listener: Listener, extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv {
   return hookEnv({
-    ORCA_AGENT_HOOK_PORT: String(listener.port),
-    ORCA_AGENT_HOOK_TOKEN: 'native-token',
-    ORCA_PANE_KEY: 'tab-1:leaf-1',
-    ORCA_TAB_ID: 'tab-1',
-    ORCA_AGENT_LAUNCH_TOKEN: 'launch-1',
-    ORCA_WORKTREE_ID: 'repo::C:/src/repo',
-    ORCA_AGENT_HOOK_ENV: 'production',
-    ORCA_AGENT_HOOK_VERSION: '1',
+    OCC_AGENT_HOOK_PORT: String(listener.port),
+    OCC_AGENT_HOOK_TOKEN: 'native-token',
+    OCC_PANE_KEY: 'tab-1:leaf-1',
+    OCC_TAB_ID: 'tab-1',
+    OCC_AGENT_LAUNCH_TOKEN: 'launch-1',
+    OCC_WORKTREE_ID: 'repo::C:/src/repo',
+    OCC_AGENT_HOOK_ENV: 'production',
+    OCC_AGENT_HOOK_VERSION: '1',
     ...extra
   })
 }
@@ -112,14 +112,14 @@ let dir = ''
 let exePath = ''
 let command = ''
 const listeners: Server[] = []
-const tempIsCmdSafe = WINDOWS_CMD_SAFE_PATH.test(join(tmpdir(), 'orca-native-hook-x', 'x.exe'))
+const tempIsCmdSafe = WINDOWS_CMD_SAFE_PATH.test(join(tmpdir(), 'occ-native-hook-x', 'x.exe'))
 
 describe.skipIf(process.platform !== 'win32' || !tempIsCmdSafe)('native agent hook hosts', () => {
   beforeAll(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-native-hook-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-native-hook-'))
     // A dev box's AutoRun target under the redirected profile; the .cmd parity leg starts cmd.exe.
     writeFileSync(join(dir, '.cmd_aliases.cmd'), '@echo off\r\n')
-    exePath = join(dir, 'orca-agent-hook.exe')
+    exePath = join(dir, 'occ-agent-hook.exe')
     copyFileSync(buildWindowsNativeHookExecutable(), exePath)
     writeFileSync(join(dir, 'claude-hook.cmd'), getWindowsClaudeHookEntry())
     writeFileSync(join(dir, 'claude-hook-impl.cmd'), getManagedScript())
@@ -184,7 +184,7 @@ describe.skipIf(process.platform !== 'win32' || !tempIsCmdSafe)('native agent ho
     const listener = await listen()
     for (const env of [
       hookEnv({}),
-      paneEnv(listener, { ORCA_PANE_KEY: '' }),
+      paneEnv(listener, { OCC_PANE_KEY: '' }),
       paneEnv(listener, { CLAUDE_JOB_DIR: join(dir, 'job') })
     ]) {
       const result = await run(exePath, ['claude'], env, 'abandon')
@@ -220,18 +220,18 @@ describe.skipIf(process.platform !== 'win32' || !tempIsCmdSafe)('native agent ho
     writeFileSync(
       endpoint,
       [
-        `set ORCA_AGENT_HOOK_PORT=${listener.port}`,
-        'set ORCA_AGENT_HOOK_TOKEN=fresh-token',
-        'set ORCA_AGENT_HOOK_ENV=development',
-        'set ORCA_AGENT_HOOK_VERSION=2',
-        'set ORCA_AGENT_HOOK_TRANSPORT=raw-json-v1',
+        `set OCC_AGENT_HOOK_PORT=${listener.port}`,
+        'set OCC_AGENT_HOOK_TOKEN=fresh-token',
+        'set OCC_AGENT_HOOK_ENV=development',
+        'set OCC_AGENT_HOOK_VERSION=2',
+        'set OCC_AGENT_HOOK_TRANSPORT=raw-json-v1',
         ''
       ].join('\r\n')
     )
     const stale = paneEnv(listener, {
-      ORCA_AGENT_HOOK_PORT: '1',
-      ORCA_AGENT_HOOK_TOKEN: 'stale-token',
-      ORCA_AGENT_HOOK_ENDPOINT: endpoint
+      OCC_AGENT_HOOK_PORT: '1',
+      OCC_AGENT_HOOK_TOKEN: 'stale-token',
+      OCC_AGENT_HOOK_ENDPOINT: endpoint
     })
     expect((await run(exePath, ['claude'], stale)).code).toBe(0)
     expect(listener.posts).toHaveLength(1)
@@ -260,7 +260,7 @@ describe.skipIf(process.platform !== 'win32' || !tempIsCmdSafe)('native agent ho
     expect(result.ms).toBeGreaterThanOrEqual(1400)
     expect(result.ms).toBeLessThan(5000)
 
-    const refused = await run(exePath, ['claude'], paneEnv(listener, { ORCA_AGENT_HOOK_PORT: '1' }))
+    const refused = await run(exePath, ['claude'], paneEnv(listener, { OCC_AGENT_HOOK_PORT: '1' }))
     expect(refused.code).toBe(0)
     expect(refused.stdout.trim()).toBe('{}')
   })

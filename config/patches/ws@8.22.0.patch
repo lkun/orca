@@ -10,7 +10,7 @@ index 2c767e2c62a7fb50a987454f0c148ec5b4a0a523..48549a5c0fde4347a3fde83a32e56c2b
 +    //
 +    // Never write an empty payload on its own: `socket.write()` of a
 +    // zero-length buffer fails with EFAULT under Electron on arm64 kernels with
-+    // 39-bit virtual addresses, which kills the connection (stablyai/orca#23398).
++    // 39-bit virtual addresses, which kills the connection (stablyai/occ#23398).
 +    // The header already encodes the zero length, so the wire bytes are unchanged.
 +    //
 +    if (list.length === 2 && list[1].length !== 0) {

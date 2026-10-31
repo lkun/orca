@@ -44,7 +44,7 @@ describe('SshRoutedBrowserPageGate', () => {
         ]
       ])
     })
-    mocks.prepare.mockReset().mockResolvedValue({ partition: 'persist:orca-browser-v1-routed' })
+    mocks.prepare.mockReset().mockResolvedValue({ partition: 'persist:occ-browser-v1-routed' })
     mocks.destroyPersistentWebview.mockReset()
     mocks.webviewRegistry.clear()
     Object.defineProperty(window, 'api', {
@@ -68,7 +68,7 @@ describe('SshRoutedBrowserPageGate', () => {
 
   it('mounts the page only on the prepared partition for SSH workspaces', async () => {
     mocks.executionHostId = 'ssh:target-a'
-    mocks.prepare.mockResolvedValue({ partition: 'persist:orca-browser-v1-routed' })
+    mocks.prepare.mockResolvedValue({ partition: 'persist:occ-browser-v1-routed' })
     render(
       <SshRoutedBrowserPageGate worktreeId="wt-1" sessionProfileId="session-x" pageIds={PAGE_IDS}>
         {(partition) => <div data-testid="page">{String(partition)}</div>}
@@ -77,7 +77,7 @@ describe('SshRoutedBrowserPageGate', () => {
     // Why: fail closed — no webview may exist before the proxy-verified partition arrives.
     expect(screen.queryByTestId('page')).toBeNull()
     await settle()
-    expect(screen.getByTestId('page').textContent).toBe('persist:orca-browser-v1-routed')
+    expect(screen.getByTestId('page').textContent).toBe('persist:occ-browser-v1-routed')
     expect(mocks.prepare).toHaveBeenCalledWith({
       targetId: 'target-a',
       browserProfileId: 'session-x'
@@ -103,19 +103,19 @@ describe('SshRoutedBrowserPageGate', () => {
     }
 
     it('keeps guests already on the routed partition instead of reloading them', async () => {
-      parkGuest('page-1', 'persist:orca-browser-v1-routed')
-      parkGuest('page-2', 'orca-doc-preview')
+      parkGuest('page-1', 'persist:occ-browser-v1-routed')
+      parkGuest('page-2', 'occ-doc-preview')
       // Worktree switches and paint mounts remount the chrome; a preparing pass would destroy and reload the guest.
       render(gate())
-      expect(screen.getByTestId('page').textContent).toBe('persist:orca-browser-v1-routed')
+      expect(screen.getByTestId('page').textContent).toBe('persist:occ-browser-v1-routed')
       await settle()
-      expect(screen.getByTestId('page').textContent).toBe('persist:orca-browser-v1-routed')
+      expect(screen.getByTestId('page').textContent).toBe('persist:occ-browser-v1-routed')
       expect(mocks.destroyPersistentWebview).not.toHaveBeenCalled()
     })
 
     it('destroys a parked guest that browsed with local egress meanwhile', () => {
       // Routing was off when this page opened; another gate on the target has since re-verified the route.
-      parkGuest('page-1', 'persist:orca-browser-v1-routed')
+      parkGuest('page-1', 'persist:occ-browser-v1-routed')
       parkGuest('page-2', 'persist:local-default')
       render(gate())
       expect(mocks.destroyPersistentWebview.mock.calls).toEqual([['page-2']])
@@ -133,7 +133,7 @@ describe('SshRoutedBrowserPageGate', () => {
   it('never renders the page on failure and retries on demand', async () => {
     mocks.executionHostId = 'ssh:target-a'
     mocks.prepare.mockRejectedValueOnce(new Error('browser_tunnel_execution_host_unavailable'))
-    mocks.prepare.mockResolvedValueOnce({ partition: 'persist:orca-browser-v1-routed' })
+    mocks.prepare.mockResolvedValueOnce({ partition: 'persist:occ-browser-v1-routed' })
     render(
       <SshRoutedBrowserPageGate worktreeId="wt-1" sessionProfileId={null} pageIds={PAGE_IDS}>
         {(partition) => <div data-testid="page">{String(partition)}</div>}
@@ -143,7 +143,7 @@ describe('SshRoutedBrowserPageGate', () => {
     expect(screen.queryByTestId('page')).toBeNull()
     screen.getByRole('button', { name: 'Retry' }).click()
     await settle()
-    expect(screen.getByTestId('page').textContent).toBe('persist:orca-browser-v1-routed')
+    expect(screen.getByTestId('page').textContent).toBe('persist:occ-browser-v1-routed')
   })
 
   it('stays unrouted when the setting is off', async () => {
@@ -171,7 +171,7 @@ describe('SshRoutedBrowserPageGate', () => {
   it('offers Try anyway for a blocked-forwarding verdict and skips the probe on it', async () => {
     mocks.executionHostId = 'ssh:target-a'
     mocks.prepare.mockRejectedValueOnce(new Error('browser_local_route_forwarding_blocked'))
-    mocks.prepare.mockResolvedValueOnce({ partition: 'persist:orca-browser-v1-routed' })
+    mocks.prepare.mockResolvedValueOnce({ partition: 'persist:occ-browser-v1-routed' })
     render(
       <SshRoutedBrowserPageGate worktreeId="wt-1" sessionProfileId={null} pageIds={PAGE_IDS}>
         {(partition) => <div data-testid="page">{String(partition)}</div>}
@@ -186,7 +186,7 @@ describe('SshRoutedBrowserPageGate', () => {
       browserProfileId: 'default',
       skipProbe: true
     })
-    expect(screen.getByTestId('page').textContent).toBe('persist:orca-browser-v1-routed')
+    expect(screen.getByTestId('page').textContent).toBe('persist:occ-browser-v1-routed')
   })
 
   it('records the per-target opt-out from Browse from this device instead', async () => {
@@ -240,7 +240,7 @@ describe('SshRoutedBrowserPageGate', () => {
   it('unmounts unrouted pages in the SAME render a target appears, and destroys their guests', async () => {
     // A stale unrouted render could create a local-egress guest behind the card; unmounting only parks it.
     mocks.executionHostId = 'local'
-    mocks.prepare.mockResolvedValue({ partition: 'persist:orca-browser-v1-routed' })
+    mocks.prepare.mockResolvedValue({ partition: 'persist:occ-browser-v1-routed' })
     const view = render(
       <SshRoutedBrowserPageGate worktreeId="wt-1" sessionProfileId={null} pageIds={PAGE_IDS}>
         {(partition) => <div data-testid="page">{String(partition)}</div>}
@@ -262,7 +262,7 @@ describe('SshRoutedBrowserPageGate', () => {
     expect(mocks.destroyPersistentWebview).toHaveBeenCalledWith('page-1')
     expect(mocks.destroyPersistentWebview).toHaveBeenCalledWith('page-2')
     await settle()
-    expect(screen.getByTestId('page').textContent).toBe('persist:orca-browser-v1-routed')
+    expect(screen.getByTestId('page').textContent).toBe('persist:occ-browser-v1-routed')
   })
 
   it('leaves runtime-owned ephemeral SSH targets to the paired machinery', async () => {

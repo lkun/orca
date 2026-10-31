@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 import { open, rm } from 'node:fs/promises'
-import { runProcess } from '@orca/process-host'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import { runProcess } from '@occ/process-host'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 import { waitForPromiseWithSignal } from '../../shared/abort-signal-reason'
 import { isDefinitiveAbsence } from '../../shared/definitive-filesystem-absence'
 import { getZipExtractorCommand } from '../../shared/zip-extractor-command'
@@ -37,7 +37,7 @@ export async function extractRuntimeArchive(
   } catch (error) {
     if (isDefinitiveAbsence(error)) {
       const override = archivePath.endsWith('.zip')
-        ? ', or set ORCA_UNZIP_BIN to an unzip-compatible extractor.'
+        ? ', or set OCC_UNZIP_BIN to an unzip-compatible extractor.'
         : '.'
       throw new Error(
         `${label} archive extraction could not run ${command.file}: install ${command.label}${override}`,

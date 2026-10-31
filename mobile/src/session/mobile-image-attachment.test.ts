@@ -102,7 +102,7 @@ describe('attachMobileImageToTerminal', () => {
         error: { code: 'method_not_found', message: 'no' },
         _meta: { runtimeId: 'r' }
       },
-      ok('save', '/tmp/orca-attach.png'),
+      ok('save', '/tmp/occ-attach.png'),
       ok('send', { send: { accepted: true } })
     ])
 
@@ -120,7 +120,7 @@ describe('attachMobileImageToTerminal', () => {
     expect(sendCall?.params).toEqual({
       terminal: 'term-1',
       // A separator prevents the next keystroke gluing to the pasted image path.
-      text: '\x1b[200~/tmp/orca-attach.png\x1b[201~ ',
+      text: '\x1b[200~/tmp/occ-attach.png\x1b[201~ ',
       enter: false,
       client: { id: 'device-9', type: 'mobile' }
     })
@@ -155,7 +155,7 @@ describe('attachMobileImageToTerminal', () => {
     const client = clientWithResponses([
       ok('start', { uploadId: 'upload-file-1' }),
       ok('append', { received: 4 }),
-      ok('commit', '/tmp/orca-paste-1/柴静-看见.txt'),
+      ok('commit', '/tmp/occ-paste-1/柴静-看见.txt'),
       ok('send', { send: { accepted: true } })
     ])
 

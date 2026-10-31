@@ -4,7 +4,7 @@ import type {
   LinuxPackageInstallInstructions,
   LinuxPackageInstallRecovery
 } from '../../../shared/update-status-types'
-import { UpdateErrorCardContent } from './UpdateErrorCardContent'
+import { UpdateErroccrdContent } from './UpdateErroccrdContent'
 import { translate } from '@/i18n/i18n'
 import { linuxPackageCommandUnavailableText } from '@/lib/updater-message-copy'
 import { useMountedRef } from '@/hooks/useMountedRef'
@@ -178,7 +178,7 @@ export function LinuxPackageInstallRecoveryCard({
     .join(' ')
 
   return (
-    <UpdateErrorCardContent
+    <UpdateErroccrdContent
       title={TITLE}
       summary={SUMMARY}
       explainer={commandUnavailable ? undefined : EXPLAINER}

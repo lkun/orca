@@ -23,9 +23,9 @@ describe('getUntitledFileRoot', () => {
   it('handles nested untitled relative paths', () => {
     expect(
       getUntitledFileRoot({
-        filePath: '/tmp/orca/floating-workspace/notes/untitled.md',
+        filePath: '/tmp/occ/floating-workspace/notes/untitled.md',
         relativePath: 'notes/untitled.md'
       })
-    ).toBe('/tmp/orca/floating-workspace')
+    ).toBe('/tmp/occ/floating-workspace')
   })
 })

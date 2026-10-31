@@ -3,8 +3,8 @@
 import { deriveGeneratedTabTitle } from './agent-tab-title'
 import {
   getAgentRowGeneratedTitleText,
-  getOrcaDispatchTaskId,
-  isOrcaDispatchPrompt,
+  getOCCDispatchTaskId,
+  isOCCDispatchPrompt,
   orchestrationLabelsMatchLiveDispatch
 } from './agent-row-primary-text'
 import type { AgentStatusEntry } from './agent-status-types'
@@ -29,8 +29,8 @@ export function generatedTitleReplacesExisting(entry: TitleStatus): boolean {
     (entry.orchestration?.displayName?.trim() || entry.orchestration?.taskTitle?.trim()) &&
     orchestrationLabelsMatchLiveDispatch(entry)
   )
-  const liveDispatchTaskId = isOrcaDispatchPrompt(entry.prompt)
-    ? getOrcaDispatchTaskId(entry.prompt)
+  const liveDispatchTaskId = isOCCDispatchPrompt(entry.prompt)
+    ? getOCCDispatchTaskId(entry.prompt)
     : null
   const stickyOrchestrationTaskId = entry.orchestration?.taskId?.trim() || null
   return (
@@ -45,7 +45,7 @@ export function generatedTitleReplacesExisting(entry: TitleStatus): boolean {
 
 /** The text a status's title is derived from: a dispatch's task, not its preamble. */
 export function generatedTitleSourceText(entry: TitleStatus): string {
-  return isOrcaDispatchPrompt(entry.prompt) ? getAgentRowGeneratedTitleText(entry) : entry.prompt
+  return isOCCDispatchPrompt(entry.prompt) ? getAgentRowGeneratedTitleText(entry) : entry.prompt
 }
 
 export function generatedTabTitleForStatus(

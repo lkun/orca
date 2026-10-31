@@ -43,6 +43,6 @@ describe('feature tip modal state', () => {
       webClient: false
     })
 
-    expect(tip?.id).toBe('orca-cli')
+    expect(tip?.id).toBe('occ-cli')
   })
 })

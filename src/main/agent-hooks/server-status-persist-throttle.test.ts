@@ -49,7 +49,7 @@ describe('last-status persist throttle', () => {
       shouldAdvanceTime: true,
       toFake: ['setTimeout', 'clearTimeout', 'Date']
     })
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-persist-throttle-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-persist-throttle-'))
     server = new ProbeServer()
     await server.start({ env: 'production', userDataPath })
   })

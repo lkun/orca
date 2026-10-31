@@ -58,7 +58,7 @@ export const SKILL_COMMAND_SPECS: CommandSpec[] = [
       'Use --json for a deterministic object containing canonical topic metadata and content.'
     ],
     examples: [
-      'occ skills get orca-cli',
+      'occ skills get occ-cli',
       'occ skills get orchestration --full',
       'occ skills get orchestration --references',
       'occ skills get orchestration --reference recovery-and-cleanup'
@@ -79,7 +79,7 @@ export const SKILL_COMMAND_SPECS: CommandSpec[] = [
         'Update skills does.',
       'Only copies OCC wrote and nobody changed are updated. A copy you changed, or a ' +
         'different skill with the same name, is skipped and is reported; --force replaces ' +
-        'it after moving it to a backup under ~/.agents/.orca-skill-backups.',
+        'it after moving it to a backup under ~/.agents/.occ-skill-backups.',
       'Installs globally (all projects) by default. Use --local to install into the ' +
         'current project; it links only into agent folders the project already has.',
       'Targets the coding agents OCC detects on this host. Use --agent <name>[,<name>...] ' +
@@ -90,9 +90,9 @@ export const SKILL_COMMAND_SPECS: CommandSpec[] = [
       'Omit --skill and --all to list installable skill names.'
     ],
     examples: [
-      'occ skills install --skill orca-cli --skill orchestration',
-      'occ skills install --skill orca-cli --local',
-      'occ skills install --skill orca-cli --agent claude,codex',
+      'occ skills install --skill occ-cli --skill orchestration',
+      'occ skills install --skill occ-cli --local',
+      'occ skills install --skill occ-cli --agent claude,codex',
       'occ skills install --all --dry-run'
     ]
   },
@@ -115,7 +115,7 @@ export const SKILL_COMMAND_SPECS: CommandSpec[] = [
     ],
     examples: [
       'occ skills update --all',
-      'occ skills update --skill orca-cli --dry-run',
+      'occ skills update --skill occ-cli --dry-run',
       'occ skills update --all --force'
     ]
   }

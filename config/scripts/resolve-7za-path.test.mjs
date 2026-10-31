@@ -12,7 +12,7 @@ describe('7za path resolution for the Windows signing gates (#6487)', () => {
   // Match upstream mac/win/linux architecture dirs; darwin/ or collapsed-arch guesses silently fail to resolve.
 
   it('prefers an existing legacy file over the downloaded toolset', async () => {
-    const scratch = mkdtempSync(join(tmpdir(), 'orca 7za legacy '))
+    const scratch = mkdtempSync(join(tmpdir(), 'occ 7za legacy '))
     const previous = process.env.ELECTRON_BUILDER_7ZIP_PATH
     try {
       delete process.env.ELECTRON_BUILDER_7ZIP_PATH
@@ -34,7 +34,7 @@ describe('7za path resolution for the Windows signing gates (#6487)', () => {
     const path7za = await resolve7zaPath(projectRoot)
     expect(existsSync(path7za)).toBe(true)
 
-    const scratch = mkdtempSync(join(tmpdir(), 'orca 7za resolve '))
+    const scratch = mkdtempSync(join(tmpdir(), 'occ 7za resolve '))
     try {
       const payloadDir = join(scratch, 'payload')
       mkdirSync(payloadDir, { recursive: true })
@@ -56,7 +56,7 @@ describe('7za path resolution for the Windows signing gates (#6487)', () => {
   }, 120_000)
 
   it('prefers an explicit ELECTRON_BUILDER_7ZIP_PATH override', async () => {
-    const scratch = mkdtempSync(join(tmpdir(), 'orca 7za override '))
+    const scratch = mkdtempSync(join(tmpdir(), 'occ 7za override '))
     const previous = process.env.ELECTRON_BUILDER_7ZIP_PATH
     try {
       const fake = join(scratch, 'my7za')
@@ -75,7 +75,7 @@ describe('7za path resolution for the Windows signing gates (#6487)', () => {
 
   // Use directory override: Test-Path accepts it, masking bad resolver validation until extraction fails.
   it('ignores an override that points at a directory', async () => {
-    const scratch = mkdtempSync(join(tmpdir(), 'orca 7za dir override '))
+    const scratch = mkdtempSync(join(tmpdir(), 'occ 7za dir override '))
     const previous = process.env.ELECTRON_BUILDER_7ZIP_PATH
     try {
       process.env.ELECTRON_BUILDER_7ZIP_PATH = scratch
@@ -105,7 +105,7 @@ describe('7za path resolution for the Windows signing gates (#6487)', () => {
 
   // Use fresh subprocess: app-builder-lib memoizes toolset, hiding dangling-override failures in warm process.
   it('ignores an override that points at a missing file, in a cold process', () => {
-    const dangling = join(tmpdir(), 'orca-7za-does-not-exist')
+    const dangling = join(tmpdir(), 'occ-7za-does-not-exist')
     const result = spawnSync(process.execPath, ['config/scripts/resolve-7za-path.mjs'], {
       cwd: projectRoot,
       encoding: 'utf8',
@@ -134,7 +134,7 @@ describe('7za path resolution for the Windows signing gates (#6487)', () => {
 
   // Unset VITEST with cold cache: builder-util suppresses download logs in tests, hiding multiline stdout that breaks PowerShell path capture.
   it('keeps stdout to one path even when the toolset cache is cold', () => {
-    const cache = mkdtempSync(join(tmpdir(), 'orca 7za cold cache '))
+    const cache = mkdtempSync(join(tmpdir(), 'occ 7za cold cache '))
     try {
       const { VITEST: _vitest, ...envWithoutVitest } = process.env
       const result = spawnSync(process.execPath, ['config/scripts/resolve-7za-path.mjs'], {

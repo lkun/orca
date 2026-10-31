@@ -23,7 +23,7 @@ afterEach(async () => {
 })
 
 async function downloadRoot(): Promise<string> {
-  const root = await fs.mkdtemp(join(tmpdir(), 'orca-skill-response-lifetime-'))
+  const root = await fs.mkdtemp(join(tmpdir(), 'occ-skill-response-lifetime-'))
   roots.push(root)
   return root
 }

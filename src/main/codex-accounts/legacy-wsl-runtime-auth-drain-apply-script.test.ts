@@ -442,7 +442,7 @@ describe.skipIf(isWindows)('legacy WSL auth drain apply script', () => {
 
   it('refuses to retire the source when the destination is atomically replaced after the inode pin', () => {
     // A pinned inode's matching hash cannot detect path replacement; -ef must guard source retirement.
-    const outcome = runApplyScript({ replaceTargetOnHashOf: '.orca-drain-destination-' })
+    const outcome = runApplyScript({ replaceTargetOnHashOf: '.occ-drain-destination-' })
 
     expect(outcome.status).not.toBe(0)
     expect(outcome.legacyAuth).toBe(SOURCE_AUTH)

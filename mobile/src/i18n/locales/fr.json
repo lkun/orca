@@ -285,7 +285,7 @@
       "plan": "Plan",
       "stoppedManually": "Arrêté manuellement"
     },
-    "orcaStop": {
+    "occStop": {
       "canContinue": "Vous pouvez continuer dans cette conversation.",
       "crash": "OCC sur {{machine}} s'est arrêté de manière inattendue pendant que cette réponse était en cours.",
       "quit": "OCC sur {{machine}} a été fermé pendant que cette réponse était en cours.",
@@ -950,7 +950,7 @@
     },
     "setupHookTrustDrawer": {
       "alwaysTrustAndRun": "Toujours faire confiance et exécuter",
-      "description": "Le fichier orca.yaml de ce dépôt s'exécute avant le démarrage de l'espace de travail. Ne l'exécutez que si vous faites confiance à ce dépôt.",
+      "description": "Le fichier occ.yaml de ce dépôt s'exécute avant le démarrage de l'espace de travail. Ne l'exécutez que si vous faites confiance à ce dépôt.",
       "dontRun": "Ne pas exécuter",
       "newScriptLabel": "Nouveau script de setup",
       "runHooks": "Exécuter les hooks",
@@ -2640,7 +2640,7 @@
       "cannotRunHere": "OCC ne peut pas exécuter cet agent dans un chat ici.",
       "capacity": "OCC sur l'ordinateur qui exécute ce chat a atteint une limite de requêtes. Mettez à jour OCC sur cet ordinateur, puis réessayez.",
       "chatNotFound": "OCC ne trouve pas ce chat.",
-      "chatSavedByNewerOrca": "Ce chat a été enregistré par une version plus récente d'OCC.",
+      "chatSavedByNewerOCC": "Ce chat a été enregistré par une version plus récente d'OCC.",
       "clearAfterAnswer": "Répondez à la question ou à la demande d'approbation de l'agent, puis lancez /clear.",
       "clearAfterRetry": "Réessayez votre message précédent, puis lancez /clear.",
       "clearAfterSending": "Votre message précédent est encore en cours d'envoi. Lancez /clear une fois qu'il est parti.",
@@ -2686,7 +2686,7 @@
       "restartFailed": "L'agent n'a pas pu redémarrer.",
       "runClearWhenDone": "Lancez /clear quand il aura terminé.",
       "runCompactWhenDone": "Lancez /compact quand il aura terminé.",
-      "savedByNewerOrca": "Les chats ont été enregistrés par une version plus récente d'OCC.",
+      "savedByNewerOCC": "Les chats ont été enregistrés par une version plus récente d'OCC.",
       "sendOutcomeLost": "OCC n'a pas pu confirmer que votre message est parvenu à l'agent. Vérifiez le chat, puis renvoyez-le si nécessaire.",
       "settleEarlierMessage": "Attendez que votre message précédent soit transmis, ou renvoyez-le.",
       "shortenMessage": "Raccourcissez-le ou divisez-le, puis renvoyez-le.",
@@ -2698,8 +2698,8 @@
       "turnActive": "L'agent est encore en train de répondre.",
       "unreachable": "OCC n'a pas pu joindre l'agent.",
       "unsupported": "Cela nécessite une version plus récente d'OCC sur l'ordinateur qui exécute ce chat. Mettez OCC à jour sur cet ordinateur, puis réessayez.",
-      "updateOrcaToKeepUsing": "Mettez à jour OCC pour continuer à les utiliser.",
-      "updateOrcaToOpenChat": "Mettez à jour OCC pour l'ouvrir.",
+      "updateOCCToKeepUsing": "Mettez à jour OCC pour continuer à les utiliser.",
+      "updateOCCToOpenChat": "Mettez à jour OCC pour l'ouvrir.",
       "waitForBackgroundTasks": "Attendez la fin des tâches en arrière-plan.",
       "waitForCommand": "Attendez la fin du /compact ou /clear.",
       "waitForStart": "Attendez que l'agent ait fini de démarrer.",
@@ -3732,7 +3732,7 @@
       "projectSubtitle": "Projet GitHub · {{repository}}{{itemNumber}}",
       "pullRequest": "Pull request",
       "reopenItem": "Rouvrir l'élément",
-      "repositoryNotInOrca": "Dépôt absent d'OCC",
+      "repositoryNotInOCC": "Dépôt absent d'OCC",
       "status": "Statut",
       "type": "Type",
       "workspaceCreationRequirement": "Les espaces de travail ne peuvent être créés qu'à partir d'issues et de pull requests GitHub."
@@ -3979,7 +3979,7 @@
       "setupTitle": "Exécuter le script de setup ?",
       "skipSetupAndCreate": "Ignorer le setup et créer",
       "trustFailed": "Échec de l'approbation du script de setup.",
-      "trustSubtitle": "Le fichier orca.yaml de ce dépôt s'exécute sur votre machine avant le démarrage de l'espace de travail. Ne l'exécutez que si vous faites confiance à ce dépôt."
+      "trustSubtitle": "Le fichier occ.yaml de ce dépôt s'exécute sur votre machine avant le démarrage de l'espace de travail. Ne l'exécutez que si vous faites confiance à ce dépôt."
     },
     "worktreeCreateRetry": {
       "createFailed": "Échec de la création de l'espace de travail"

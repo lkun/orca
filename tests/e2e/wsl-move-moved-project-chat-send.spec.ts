@@ -17,9 +17,9 @@ import {
 import { tmpdir } from 'node:os'
 import { delimiter, dirname, join } from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
-import { createRestartSession } from './helpers/orca-restart'
+import { createRestartSession } from './helpers/occ-restart'
 import { buildFakeAgentCommandOverride } from './helpers/fake-agent-command-override'
 import { SUPPORTED, createChatOnHost } from './helpers/structured-claude-stub'
 import { wslMoveCutoverFixture } from '../../src/main/persistence/__fixtures__/wsl-mover/wsl-move-cutover-fixture'
@@ -65,7 +65,7 @@ async function addRepo(page: Page, repoPath: string): Promise<string> {
 test("a moved project's existing chat still answers here after the move", async (// oxlint-disable-next-line no-empty-pattern -- Playwright requires destructuring to request no fixtures.
 {}, testInfo) => {
   test.skip(!SUPPORTED, 'the Claude stub wrapper is POSIX-only')
-  const root = mkdtempSync(join(tmpdir(), 'orca-wsl-moved-chat-send-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-wsl-moved-chat-send-'))
   const repoPath = join(root, 'moved-repo')
   mkdirSync(repoPath)
   const gitIdentity = ['-c', 'user.name=e2e', '-c', 'user.email=e2e@example.invalid']

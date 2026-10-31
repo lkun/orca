@@ -11,7 +11,7 @@ import {
 
 // Cross-site frames need their own CDP session; widget input only reaches the guest renderer.
 
-export { isOrcaFrameSessionTraffic, settleWithin } from './guest-frame-input-sessions'
+export { isOCCFrameSessionTraffic, settleWithin } from './guest-frame-input-sessions'
 export type { GuestSessionCdpSender } from './guest-frame-input-sessions'
 
 export type FocusedFrameRoute =
@@ -21,8 +21,8 @@ export type FocusedFrameRoute =
 
 // Deeper nesting uses the focus-borrowing fallback.
 const MAX_FRAME_DEPTH = 6
-const PROBE_OBJECT_GROUP = 'orca-focused-frame-probe'
-const PROBE_WORLD_NAME = 'orca-focused-frame-probe'
+const PROBE_OBJECT_GROUP = 'occ-focused-frame-probe'
+const PROBE_WORLD_NAME = 'occ-focused-frame-probe'
 
 const FOCUSED_FRAME_ELEMENT_EXPRESSION = `(() => {
   let element = document.activeElement

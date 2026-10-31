@@ -41,7 +41,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -435,7 +435,7 @@ describe('registerPtyHandlers', () => {
       const spawnOptions = spawnMock.mock.calls.at(-1)?.[2] as { env: Record<string, string> }
       expect(spawnMock).toHaveBeenCalledWith('wsl.exe', expect.any(Array), expect.any(Object))
       expect(spawnOptions.env.CODEX_HOME).toBeUndefined()
-      expect(spawnOptions.env.ORCA_CODEX_HOME).toBeUndefined()
+      expect(spawnOptions.env.OCC_CODEX_HOME).toBeUndefined()
     })
     it('keeps shellOverride priority for one-off tabs', async () => {
       process.env.COMSPEC = 'C:\\Windows\\system32\\cmd.exe'
@@ -460,7 +460,7 @@ describe('registerPtyHandlers', () => {
       const spawnOptions = spawnMock.mock.calls.at(-1)?.[2] as { env: Record<string, string> }
       expect(spawnMock).toHaveBeenCalledWith('wsl.exe', expect.any(Array), expect.any(Object))
       expect(spawnOptions.env.CODEX_HOME).toBeUndefined()
-      expect(spawnOptions.env.ORCA_CODEX_HOME).toBeUndefined()
+      expect(spawnOptions.env.OCC_CODEX_HOME).toBeUndefined()
     })
   })
 })

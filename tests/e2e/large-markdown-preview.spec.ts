@@ -1,6 +1,6 @@
 import { mkdir, writeFile, rm } from 'node:fs/promises'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   cleanupMarkdownFixture,
   createMarkdownFixture,
@@ -9,7 +9,7 @@ import {
 } from './helpers/markdown-editor-fixture'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
-const baseline = process.env.ORCA_MARKDOWN_CAPTURE_BASELINE === '1'
+const baseline = process.env.OCC_MARKDOWN_CAPTURE_BASELINE === '1'
 const proofDirectory = path.join(process.cwd(), 'validation-screenshots', 'large-markdown')
 
 function largeDocument(): string {
@@ -28,19 +28,19 @@ function largeDocument(): string {
 
 for (const width of [1920, 1280]) {
   test(`large preview renders bounded rows with global navigation and Find (${width}px)`, async ({
-    orcaPage,
+    occPage,
     electronApp,
     registerPostElectronShutdownCleanup
   }, testInfo) => {
-    await orcaPage.setViewportSize({ width, height: width === 1920 ? 1200 : 720 })
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    const context = await getActiveWorktreeContext(orcaPage)
+    await occPage.setViewportSize({ width, height: width === 1920 ? 1200 : 720 })
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    const context = await getActiveWorktreeContext(occPage)
     const content = largeDocument()
     expect(Buffer.byteLength(content)).toBeGreaterThan(1024 * 1024)
     const filePath = await createMarkdownFixture(
       context,
-      '.orca-e2e-large-preview',
+      '.occ-e2e-large-preview',
       'large',
       testInfo.workerIndex,
       content
@@ -55,12 +55,12 @@ for (const width of [1920, 1280]) {
       await rm(imagePath, { force: true })
     })
     await mkdir(proofDirectory, { recursive: true })
-    orcaPage.on('console', (message) => {
+    occPage.on('console', (message) => {
       if (message.text().includes('PREVIEW_DIAGNOSTIC')) {
         console.log(message.text())
       }
     })
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       const OriginalWorker = window.Worker
       window.Worker = class extends OriginalWorker {
         constructor(...args: ConstructorParameters<typeof Worker>) {
@@ -77,8 +77,8 @@ for (const width of [1920, 1280]) {
       }
     })
     const errors: string[] = []
-    orcaPage.on('pageerror', (error) => errors.push(error.message))
-    await orcaPage.evaluate(() => {
+    occPage.on('pageerror', (error) => errors.push(error.message))
+    await occPage.evaluate(() => {
       document.documentElement.dataset.previewMaxTask = '0'
       new PerformanceObserver((list) => {
         const max = Math.max(
@@ -89,7 +89,7 @@ for (const width of [1920, 1280]) {
       }).observe({ type: 'longtask', buffered: false })
     })
     const started = Date.now()
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ filePath, relativePath, worktreeId }) => {
         window
           .__store!.getState()
@@ -102,11 +102,11 @@ for (const width of [1920, 1280]) {
       }
     )
     if (baseline) {
-      await expect(orcaPage.getByText(/File is larger than the .* preview limit/)).toBeVisible()
-      await orcaPage.screenshot({ path: path.join(proofDirectory, 'before.png') })
+      await expect(occPage.getByText(/File is larger than the .* preview limit/)).toBeVisible()
+      await occPage.screenshot({ path: path.join(proofDirectory, 'before.png') })
       return
     }
-    const preview = orcaPage.locator('.markdown-preview')
+    const preview = occPage.locator('.markdown-preview')
     await expect(preview.getByRole('heading', { name: 'Large document', exact: true })).toBeVisible(
       {
         timeout: 25_000
@@ -130,7 +130,7 @@ for (const width of [1920, 1280]) {
     const boundedCount = await preview.locator('*').count()
     expect(boundedCount).toBeLessThan(4000)
     expect(await preview.getByRole('heading', { name: 'Destination', exact: true }).count()).toBe(0)
-    await orcaPage.screenshot({ path: path.join(proofDirectory, 'after.png') })
+    await occPage.screenshot({ path: path.join(proofDirectory, 'after.png') })
     const annotatedHeading = preview.locator('[data-annotation-block-key="h1:1-1"]')
     await expect(annotatedHeading).toBeVisible()
     await annotatedHeading.hover()
@@ -145,7 +145,7 @@ for (const width of [1920, 1280]) {
     await expect(preview.getByRole('heading', { name: 'Destination', exact: true })).toBeVisible()
     await expect(preview.getByText('UniqueEndMarker', { exact: true })).toBeVisible()
     await expect(annotatedHeading).toHaveCount(0)
-    await orcaPage.getByRole('button', { name: 'Jump to first review note', exact: true }).click()
+    await occPage.getByRole('button', { name: 'Jump to first review note', exact: true }).click()
     await expect(annotatedHeading).toBeVisible()
     await expect(
       preview.getByText('Review the large document heading', { exact: true })
@@ -153,34 +153,34 @@ for (const width of [1920, 1280]) {
     await preview.getByRole('link', { name: 'Jump to end', exact: true }).click()
     await expect(preview.getByText('UniqueEndMarker', { exact: true })).toBeVisible()
     await preview.focus()
-    await orcaPage.keyboard.press(process.platform === 'darwin' ? 'Meta+f' : 'Control+f')
-    const input = orcaPage.getByRole('textbox', { name: 'Find in markdown preview' })
+    await occPage.keyboard.press(process.platform === 'darwin' ? 'Meta+f' : 'Control+f')
+    const input = occPage.getByRole('textbox', { name: 'Find in markdown preview' })
     await input.fill('UniqueEndMarker')
-    await expect(orcaPage.locator('.markdown-preview-search-status')).toHaveText('1/1', {
+    await expect(occPage.locator('.markdown-preview-search-status')).toHaveText('1/1', {
       timeout: 25_000
     })
     await expect(preview.getByText('UniqueEndMarker', { exact: true })).toBeVisible()
-    await orcaPage.getByRole('button', { name: 'Next match', exact: true }).click()
-    await expect(orcaPage.locator('.markdown-preview-search-status')).toHaveText('1/1')
+    await occPage.getByRole('button', { name: 'Next match', exact: true }).click()
+    await expect(occPage.locator('.markdown-preview-search-status')).toHaveText('1/1')
     await input.fill('Section 1500')
-    await expect(orcaPage.locator('.markdown-preview-search-status')).toHaveText('1/1', {
+    await expect(occPage.locator('.markdown-preview-search-status')).toHaveText('1/1', {
       timeout: 25_000
     })
     await expect(preview.getByRole('heading', { name: 'Section 1500', exact: true })).toBeVisible()
-    await orcaPage.screenshot({ path: path.join(proofDirectory, 'find-offscreen.png') })
+    await occPage.screenshot({ path: path.join(proofDirectory, 'find-offscreen.png') })
     await preview.evaluate((element) => {
       element.scrollTop += 1000
     })
     const manualScroll = await preview.evaluate((element) => element.scrollTop)
-    await orcaPage.waitForTimeout(500)
+    await occPage.waitForTimeout(500)
     expect(await preview.evaluate((element) => element.scrollTop)).toBe(manualScroll)
     await expect(
       preview.getByRole('heading', { name: 'Section 1500', exact: true })
     ).not.toBeInViewport()
-    await orcaPage.getByRole('button', { name: 'Close search', exact: true }).click()
+    await occPage.getByRole('button', { name: 'Close search', exact: true }).click()
     expect(await preview.locator('*').count()).toBeLessThan(4000)
-    await orcaPage.getByRole('button', { name: 'Table of Contents', exact: true }).click()
-    const toc = orcaPage.getByRole('complementary', { name: 'Table of contents', exact: true })
+    await occPage.getByRole('button', { name: 'Table of Contents', exact: true }).click()
+    const toc = occPage.getByRole('complementary', { name: 'Table of contents', exact: true })
     await expect(toc.getByRole('button', { name: 'Section 0', exact: true })).toBeVisible()
     expect(await toc.locator('.markdown-toc-row').count()).toBeLessThan(100)
     await toc.getByRole('button', { name: 'Collapse Large document', exact: true }).click()
@@ -194,19 +194,19 @@ for (const width of [1920, 1280]) {
     await expect(toc.getByRole('button', { name: 'Section 1999', exact: true })).toBeVisible()
     await toc.getByRole('button', { name: 'Section 1999', exact: true }).click()
     await expect(preview.getByRole('heading', { name: 'Section 1999', exact: true })).toBeVisible()
-    await orcaPage.evaluate(async () => {
+    await occPage.evaluate(async () => {
       await window.__store!.getState().updateSettings({ theme: 'dark' })
     })
     await expect(preview).toHaveClass(/markdown-dark/)
-    await orcaPage.screenshot({ path: path.join(proofDirectory, 'toc-dark.png') })
-    await orcaPage.getByRole('button', { name: 'File actions', exact: true }).click()
+    await occPage.screenshot({ path: path.join(proofDirectory, 'toc-dark.png') })
+    await occPage.getByRole('button', { name: 'File actions', exact: true }).click()
     await expect(
-      orcaPage.getByRole('menuitem', { name: 'Export as PDF', exact: true })
+      occPage.getByRole('menuitem', { name: 'Export as PDF', exact: true })
     ).toHaveAttribute('aria-disabled', 'true')
-    await orcaPage.keyboard.press('Escape')
+    await occPage.keyboard.press('Escape')
     const smallPath = await createMarkdownFixture(
       context,
-      '.orca-e2e-large-preview',
+      '.occ-e2e-large-preview',
       'small',
       testInfo.workerIndex,
       '# Ordinary preview'
@@ -217,7 +217,7 @@ for (const width of [1920, 1280]) {
     const originalTop = await restoredHeading.evaluate(
       (element) => element.getBoundingClientRect().top
     )
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ filePath, relativePath, worktreeId }) => {
         window
           .__store!.getState()
@@ -230,10 +230,10 @@ for (const width of [1920, 1280]) {
       }
     )
     await expect(
-      orcaPage.getByRole('heading', { name: 'Ordinary preview', exact: true })
+      occPage.getByRole('heading', { name: 'Ordinary preview', exact: true })
     ).toBeVisible()
-    await expect(orcaPage.locator('[data-markdown-virtual-preview]')).toHaveCount(0)
-    await orcaPage
+    await expect(occPage.locator('[data-markdown-virtual-preview]')).toHaveCount(0)
+    await occPage
       .locator('[data-tab-id]')
       .filter({ hasText: path.basename(filePath) })
       .click()
@@ -248,7 +248,7 @@ for (const width of [1920, 1280]) {
         )
       )
       .toBeLessThanOrEqual(2)
-    await orcaPage.setViewportSize({ width, height: 1800 })
+    await occPage.setViewportSize({ width, height: 1800 })
     await expect
       .poll(() =>
         preview
@@ -273,11 +273,11 @@ for (const width of [1920, 1280]) {
           )
       )
       .toBe(false)
-    await orcaPage.screenshot({ path: path.join(proofDirectory, `resized-${width}.png`) })
+    await occPage.screenshot({ path: path.join(proofDirectory, `resized-${width}.png`) })
     const beforeRefresh = await restoredHeading.evaluate(
       (element) => element.getBoundingClientRect().top
     )
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ content }) => {
         const preview = document.querySelector('.markdown-preview')
         if (!preview) {
@@ -312,17 +312,17 @@ for (const width of [1920, 1280]) {
         )
       )
       .toBeLessThanOrEqual(2)
-    expect(await orcaPage.evaluate(() => document.documentElement.dataset.previewCollapsed)).toBe(
+    expect(await occPage.evaluate(() => document.documentElement.dataset.previewCollapsed)).toBe(
       'false'
     )
-    await orcaPage.screenshot({ path: path.join(proofDirectory, `refreshed-${width}.png`) })
+    await occPage.screenshot({ path: path.join(proofDirectory, `refreshed-${width}.png`) })
     const memory = await electronApp.evaluate(({ app }) =>
       app
         .getAppMetrics()
         .filter((entry) => entry.type === 'Tab')
         .map((entry) => entry.memory)
     )
-    const maxTask = await orcaPage.evaluate(() =>
+    const maxTask = await occPage.evaluate(() =>
       Number(document.documentElement.dataset.previewMaxTask)
     )
     await writeFile(
@@ -338,13 +338,13 @@ for (const width of [1920, 1280]) {
 }
 
 test('oversized atomic blocks and files keep a usable fallback', async ({
-  orcaPage,
+  occPage,
   registerPostElectronShutdownCleanup
 }, testInfo) => {
   test.skip(baseline)
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  const context = await getActiveWorktreeContext(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  const context = await getActiveWorktreeContext(occPage)
   const paths: string[] = []
   registerPostElectronShutdownCleanup(async () => {
     for (const file of paths) {
@@ -357,13 +357,13 @@ test('oversized atomic blocks and files keep a usable fallback', async ({
   ]) {
     const filePath = await createMarkdownFixture(
       context,
-      '.orca-e2e-large-preview',
+      '.occ-e2e-large-preview',
       slug,
       testInfo.workerIndex,
       content
     )
     paths.push(filePath)
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ filePath, relativePath, worktreeId }) => {
         window
           .__store!.getState()
@@ -377,14 +377,14 @@ test('oversized atomic blocks and files keep a usable fallback', async ({
     )
     if (slug === 'atomic') {
       await expect(
-        orcaPage.getByText('This block is too large to render. Open source view to read it.')
+        occPage.getByText('This block is too large to render. Open source view to read it.')
       ).toBeVisible({ timeout: 25_000 })
       await expect(
-        orcaPage.getByRole('heading', { name: 'Still usable', exact: true })
+        occPage.getByRole('heading', { name: 'Still usable', exact: true })
       ).toBeVisible()
     } else {
-      await expect(orcaPage.getByText(/File is larger than the .* preview limit/)).toBeVisible()
-      await expect(orcaPage.locator('[data-markdown-virtual-preview]')).toHaveCount(0)
+      await expect(occPage.getByText(/File is larger than the .* preview limit/)).toBeVisible()
+      await expect(occPage.locator('[data-markdown-virtual-preview]')).toHaveCount(0)
     }
   }
 })

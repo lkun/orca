@@ -1,5 +1,5 @@
 import { writeFileSync } from 'node:fs'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
 
 // A long tone makes the second request unambiguously arrive during playback.
@@ -32,12 +32,12 @@ function notificationTone(): Buffer {
 }
 
 test('completion sound restarts during playback without overlapping players', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
-  await waitForSessionReady(orcaPage)
+  await waitForSessionReady(occPage)
   const soundPath = testInfo.outputPath('notification-tone.wav')
   writeFileSync(soundPath, notificationTone())
-  await orcaPage.evaluate(async (soundPath) => {
+  await occPage.evaluate(async (soundPath) => {
     const settings = await window.api.settings.get()
     const next = await window.api.settings.set({
       notifications: {
@@ -51,7 +51,7 @@ test('completion sound restarts during playback without overlapping players', as
     window.__store?.getState().openSettingsTarget({ pane: 'notifications', repoId: null })
     window.__store?.getState().openSettingsPage()
   }, soundPath)
-  const cdp = await orcaPage.context().newCDPSession(orcaPage)
+  const cdp = await occPage.context().newCDPSession(occPage)
   let isolatedContextId: number | undefined
   cdp.on('Runtime.executionContextCreated', ({ context }) => {
     if (context.name === 'Electron Isolated Context') {
@@ -84,17 +84,17 @@ test('completion sound restarts during playback without overlapping players', as
     awaitPromise: true
   })
   const started = Date.now()
-  const first = await orcaPage.evaluate(() => window.api.notifications.playSound())
+  const first = await occPage.evaluate(() => window.api.notifications.playSound())
   expect(first).toEqual({ played: true })
-  await orcaPage.waitForTimeout(600)
+  await occPage.waitForTimeout(600)
   const beforeSeek = await cdp.send('Runtime.evaluate', {
     contextId: isolatedContextId,
     expression: 'notificationAudioProbe.audios[0].currentTime',
     returnByValue: true
   })
   expect(beforeSeek.result.value).toBeGreaterThan(0.3)
-  const second = await orcaPage.evaluate(() => window.api.notifications.playSound())
-  const baseline = process.env.ORCA_NOTIFICATION_SOUND_BASELINE === '1'
+  const second = await occPage.evaluate(() => window.api.notifications.playSound())
+  const baseline = process.env.OCC_NOTIFICATION_SOUND_BASELINE === '1'
   expect(second).toEqual(baseline ? { played: false, reason: 'deduped' } : { played: true })
   const afterSeek = await cdp.send('Runtime.evaluate', {
     contextId: isolatedContextId,
@@ -104,11 +104,11 @@ test('completion sound restarts during playback without overlapping players', as
   if (!baseline) {
     expect(afterSeek.result.value).toBeLessThan(0.2)
   }
-  await orcaPage.waitForTimeout(2400)
-  expect(await orcaPage.evaluate(() => window.api.notifications.playSound())).toEqual({
+  await occPage.waitForTimeout(2400)
+  expect(await occPage.evaluate(() => window.api.notifications.playSound())).toEqual({
     played: true
   })
-  await orcaPage.waitForTimeout(2200)
+  await occPage.waitForTimeout(2200)
   const count = await cdp.send('Runtime.evaluate', {
     contextId: isolatedContextId,
     expression: 'notificationAudioProbe.audios.length',
@@ -144,7 +144,7 @@ test('completion sound restarts during playback without overlapping players', as
       2
     )
   )
-  await orcaPage.screenshot({ path: testInfo.outputPath('notification-settings.png') })
+  await occPage.screenshot({ path: testInfo.outputPath('notification-settings.png') })
   await testInfo.attach('decoded notification audio', {
     path: testInfo.outputPath('decoded-audio.webm'),
     contentType: 'audio/webm'

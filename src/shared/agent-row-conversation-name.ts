@@ -66,7 +66,7 @@ function isCwdLikeTitle(title: string): boolean {
   if (/^(?:~|[\\/]|[A-Za-z]:[\\/])/.test(title)) {
     return true
   }
-  // A single path-ish token ("orca/workspaces") is still a cwd, not a name.
+  // A single path-ish token ("occ/workspaces") is still a cwd, not a name.
   return !/\s/.test(title) && /[\\/]/.test(title)
 }
 

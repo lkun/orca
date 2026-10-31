@@ -14,7 +14,7 @@ const session: NativeChatLiveSession = {
     {
       id: 'user-image',
       role: 'user',
-      blocks: [{ type: 'image-ref', path: '/repo/0/orca-paste-shot.png' }],
+      blocks: [{ type: 'image-ref', path: '/repo/0/occ-paste-shot.png' }],
       timestamp: 1,
       source: 'transcript'
     }
@@ -85,7 +85,7 @@ it('previews a terminal transcript image from the terminal tab’s workspace own
     expect(preview.querySelector('img')?.getAttribute('src')).toBe('blob:terminal-image')
   )
   expect(readFile).toHaveBeenCalledExactlyOnceWith({
-    filePath: '/repo/0/orca-paste-shot.png',
+    filePath: '/repo/0/occ-paste-shot.png',
     connectionId: undefined,
     access: { kind: 'chat-image' }
   })

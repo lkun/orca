@@ -7,7 +7,7 @@ Retry a failed or stopped attempt on the same Task; `--spec` would create a new
 one. Placement is not inherited:
 
 ```text
-ORCA orchestration worker-start --task <task_id> --retry-of <dispatch_id> --worktree <placement> --agent <agent> --json
+OCC orchestration worker-start --task <task_id> --retry-of <dispatch_id> --worktree <placement> --agent <agent> --json
 ```
 
 `worker-stop` exits 1 with `stop_unknown` when it cannot prove the agent
@@ -28,15 +28,15 @@ current coordinator reopen the **same Task**. Use `worker-list` above to find
 every retained attempt, then inspect each:
 
 ```text
-ORCA orchestration worker-show --dispatch <dispatch_id> --json
-ORCA orchestration worker-read --dispatch <dispatch_id> --json
+OCC orchestration worker-show --dispatch <dispatch_id> --json
+OCC orchestration worker-read --dispatch <dispatch_id> --json
 ```
 
 Silence, a startup timeout, or `unverifiable` liveness alone never proves exit or
 authorizes autonomous stop, abandon, retry, or release.
 
 For explicit user cancellation of an unsettled attempt, including an unknown
-start, request `ORCA orchestration worker-stop --dispatch <dispatch_id> --json`.
+start, request `OCC orchestration worker-stop --dispatch <dispatch_id> --json`.
 Prior exit is not required: guarded stop can attempt cancellation of an exact
 owned live agent or one with exact identity but unverifiable liveness. Respect
 identity, custody, and Keep open refusals; never close or reuse an unknown or
@@ -45,7 +45,7 @@ user-owned process. Claim cancellation only on a confirmed stopped result. On
 blocker; do not blindly repeat stop, retry, or start fresh.
 
 For explicit intentional abandonment, use
-`ORCA orchestration worker-abandon --dispatch <dispatch_id> --json` to fence and
+`OCC orchestration worker-abandon --dispatch <dispatch_id> --json` to fence and
 settle the assignment while retaining possibly-live resources. This does not
 cancel physical work or prove exit; never silently substitute it for cancellation.
 A same-runtime in-flight stop must finish first. Reopen only after the Dispatch
@@ -53,7 +53,7 @@ is settled; never reuse an unproven or still-busy predecessor.
 
 An already-failed start can still own a live terminal; stop/abandon does not close
 it. For reclaimable failed-start terminals you are replacing, use
-`ORCA orchestration worker-release --dispatch <dispatch_id> --json`; follow the
+`OCC orchestration worker-release --dispatch <dispatch_id> --json`; follow the
 receipt's exact recovery action for `release_pending` or `release_unknown`, never
 `terminal close`. Preserve the selected proven reusable agent with `worker-retain`
 by its Dispatch ID; preserve user-taken-over and unproven terminals. A fresh start
@@ -62,8 +62,8 @@ without `--retry-of` does not clean up its predecessor's terminal.
 Reopen and start the same Task in its owning Run:
 
 ```text
-ORCA orchestration task-update --id <task_id> --status ready --run <owning_run_id> --json
-ORCA orchestration worker-start --task <task_id> --run <owning_run_id> --worktree <placement> --agent <agent> --json
+OCC orchestration task-update --id <task_id> --status ready --run <owning_run_id> --json
+OCC orchestration worker-start --task <task_id> --run <owning_run_id> --worktree <placement> --agent <agent> --json
 ```
 
 This fresh series starts at zero. The broken Dispatch and its failure count stay
@@ -73,7 +73,7 @@ To reuse a proven existing agent whose previous work is settled, replace the
 start command with:
 
 ```text
-ORCA orchestration worker-start --task <task_id> --run <owning_run_id> --worktree <exact_existing_workspace> --terminal <agent_terminal_handle> --json
+OCC orchestration worker-start --task <task_id> --run <owning_run_id> --worktree <exact_existing_workspace> --terminal <agent_terminal_handle> --json
 ```
 
 Use that terminal's workspace; omit `--agent`, `--model`, `--effort`, and

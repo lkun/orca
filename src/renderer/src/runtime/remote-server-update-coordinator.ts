@@ -12,7 +12,7 @@ import type {
   RemoteServerUpdateSupport
 } from '../../../shared/remote-server-update'
 import {
-  getOrcadSshDeployment,
+  getOCCdSshDeployment,
   type PublicKnownRuntimeEnvironment
 } from '../../../shared/runtime-environments'
 import type { RuntimeStatus } from '../../../shared/runtime-types'
@@ -98,7 +98,7 @@ export function checkingRemoteServerUpdateEntry(
     liveLeafCount: 0,
     support: null,
     error: null,
-    managedOverSsh: Boolean(getOrcadSshDeployment(environment))
+    managedOverSsh: Boolean(getOCCdSshDeployment(environment))
   }
 }
 

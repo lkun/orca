@@ -6,7 +6,7 @@ import {
 } from '../../structured-worker-identity'
 import { OrchestrationDb } from '../db'
 import { AmbiguousDispatchParentError } from './dispatch-depth'
-import { backfillStructuredWorkerOrcaSessionIds } from './schema/structured-worker-orca-session-backfill'
+import { backfillStructuredWorkerOCCSessionIds } from './schema/structured-worker-occ-session-backfill'
 
 /** Enforce nesting depth even when a worker creates its own Run. */
 describe('nested worker depth', () => {
@@ -305,15 +305,15 @@ describe('nested worker depth', () => {
       creator: self,
       maxDepth: UNCAPPED
     })
-    backfillStructuredWorkerOrcaSessionIds(db.db)
+    backfillStructuredWorkerOCCSessionIds(db.db)
 
     const ownRow = db.getDispatchContextById(own.id)
-    expect(ownRow?.creator_orca_session_id).toBe(sessionId)
-    expect(ownRow?.assignee_orca_session_id).toBe(ownRow?.creator_orca_session_id)
+    expect(ownRow?.creator_occ_session_id).toBe(sessionId)
+    expect(ownRow?.assignee_occ_session_id).toBe(ownRow?.creator_occ_session_id)
     expect(db.resolveCreatorDepth(self)).toBe(0)
     const delegatedRow = db.getDispatchContextById(delegated.id)
-    expect(delegatedRow?.creator_orca_session_id).toBe(sessionId)
-    expect(delegatedRow?.assignee_orca_session_id).toBeNull()
+    expect(delegatedRow?.creator_occ_session_id).toBe(sessionId)
+    expect(delegatedRow?.assignee_occ_session_id).toBeNull()
     expect(
       db.resolveCreatorDepth({
         kind: 'terminal',

@@ -1,4 +1,4 @@
-import { SequenceSchema } from '@orca-cloud/push-contract'
+import { SequenceSchema } from '@occ-cloud/push-contract'
 import { z } from 'zod'
 import { CONNECTOR_LIMITS } from './connector-limits.js'
 import { ConnectorHostDescription, PlaceIdSchema } from './connector-wire-scalars.js'

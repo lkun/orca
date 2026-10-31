@@ -4,7 +4,7 @@ import { act, useRef } from 'react'
 import { createRoot } from 'react-dom/client'
 import { expect, it, vi } from 'vitest'
 import { flushClosingEditorBuffers } from '../editor-pending-flush'
-import { ORCA_EDITOR_FILE_SAVED_EVENT } from '../editor-autosave'
+import { OCC_EDITOR_FILE_SAVED_EVENT } from '../editor-autosave'
 import { EMPTY_EDITOR_BUFFER_VIEW_INDEX as NO_SHARING } from '@/store/slices/editor/buffers/editor-buffer-views'
 import { CSV_RECORD_BYTES } from './csv-byte-index'
 import type { CsvCellEditSession } from './csv-grid-interaction'
@@ -69,7 +69,7 @@ it("marks a pending cell's session clean when a sibling view of its record saved
   try {
     // The saving view closed mid-write; the event lists the record's views.
     window.dispatchEvent(
-      new CustomEvent(ORCA_EDITOR_FILE_SAVED_EVENT, {
+      new CustomEvent(OCC_EDITOR_FILE_SAVED_EVENT, {
         detail: {
           fileId: 'closed',
           content: document.source,

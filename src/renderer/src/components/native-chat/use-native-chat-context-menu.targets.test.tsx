@@ -122,7 +122,7 @@ describe('native chat right-click targets', () => {
       worktreeId: 'wt-1',
       sourceOwner: { kind: 'local' },
       modifierHeld: false,
-      forceDestination: 'orca'
+      forceDestination: 'occ'
     })
   })
 

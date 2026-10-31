@@ -1,7 +1,7 @@
 import './unused-default-rpc-methods.test-fixture'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { formatOrcaSessionAddress } from '../../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../../shared/occ-session-address'
+import { testOCCSessionId } from '../../../shared/occ-session-address-test-fixture'
 import { ORCHESTRATION_SESSION_CALLER_ERROR_CODES as CODES } from '../../../shared/orchestration-session-caller-codes'
 import {
   mintStructuredWorkerHandle,
@@ -32,8 +32,8 @@ vi.mock('../../native-chat/agent-session-wire/structured-agent-session-registry'
 
 type Row = Record<string, unknown>
 
-const SESSION_Z = testOrcaSessionId('3f9a1c7e-6b2d-4e85-a0c4-9d1e7b3f5a26')
-const ADDRESS_Z = formatOrcaSessionAddress(SESSION_Z)
+const SESSION_Z = testOCCSessionId('3f9a1c7e-6b2d-4e85-a0c4-9d1e7b3f5a26')
+const ADDRESS_Z = formatOCCSessionAddress(SESSION_Z)
 
 /** Worker Y's two spellings; a chat has only its session address. */
 const handle = mintStructuredWorkerHandle()
@@ -83,7 +83,7 @@ function assignWorker(runId: string): string {
     assigneeHandle: handle,
     assigneePaneKey: paneKey,
     processIncarnation: structuredWorkerProcessIncarnation(SESSION_Y),
-    creator: { kind: 'session', orcaSessionId: SESSION_X },
+    creator: { kind: 'session', occSessionId: SESSION_X },
     maxDepth: Number.MAX_SAFE_INTEGER
   }).id
 }
@@ -155,7 +155,7 @@ describe('every target param resolves both spellings of a party to one canonical
 
       expect(dispatch).toMatchObject({
         assignee_handle: handle,
-        assignee_orca_session_id: SESSION_Y
+        assignee_occ_session_id: SESSION_Y
       })
       expect(await as(SESSION_Y, 'orchestration.check', { peek: true })).toMatchObject({
         dispatchId: idOf(dispatch)
@@ -174,7 +174,7 @@ describe('every target param resolves both spellings of a party to one canonical
 
     expect(dispatch).toMatchObject({
       assignee_handle: ADDRESS_Z,
-      assignee_orca_session_id: SESSION_Z,
+      assignee_occ_session_id: SESSION_Z,
       assignee_pane_key: null,
       process_incarnation: null
     })
@@ -218,10 +218,10 @@ describe('every target param resolves both spellings of a party to one canonical
 
   it('sessionAddress: any session, a worker too, is its OCC session ID', async () => {
     expect(await as(undefined, 'orchestration.sessionAddress', { sessionId: SESSION_Z })).toEqual({
-      orcaSessionId: ADDRESS_Z
+      occSessionId: ADDRESS_Z
     })
     expect(await as(undefined, 'orchestration.sessionAddress', { sessionId: SESSION_Y })).toEqual({
-      orcaSessionId: ADDRESS_Y
+      occSessionId: ADDRESS_Y
     })
   })
 
@@ -422,8 +422,8 @@ describe('no writer stores a structured worker under its session address', () =>
     const stored = h.db.db
       .prepare(
         `SELECT m.id FROM messages AS m JOIN dispatch_contexts AS d
-           ON d.assignee_orca_session_id IS NOT NULL
-          AND 'orca_session_id:' || d.assignee_orca_session_id IN (m.to_handle, m.from_handle)`
+           ON d.assignee_occ_session_id IS NOT NULL
+          AND 'occ_session_id:' || d.assignee_occ_session_id IN (m.to_handle, m.from_handle)`
       )
       .all()
     expect(h.db.getInbox(100).length).toBeGreaterThanOrEqual(7)

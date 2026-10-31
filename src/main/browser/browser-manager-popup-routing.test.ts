@@ -299,11 +299,11 @@ describe('browserManager', () => {
       ).toEqual({ action: 'deny' })
     }
 
-    expect(rendererSendMock).toHaveBeenCalledWith('browser:open-link-in-orca-tab', {
+    expect(rendererSendMock).toHaveBeenCalledWith('browser:open-link-in-occ-tab', {
       browserPageId: 'browser-1',
       url: 'https://docs.example.com/guide'
     })
-    expect(rendererSendMock).toHaveBeenCalledWith('browser:open-link-in-orca-tab', {
+    expect(rendererSendMock).toHaveBeenCalledWith('browser:open-link-in-occ-tab', {
       browserPageId: 'browser-1',
       url: 'https://docs.example.com/guide',
       activate: false
@@ -311,7 +311,7 @@ describe('browserManager', () => {
     expect(rendererSendMock).toHaveBeenCalledWith('browser:popup', {
       browserPageId: 'browser-1',
       origin: 'https://docs.example.com',
-      action: 'opened-in-orca'
+      action: 'opened-in-occ'
     })
     expect(openPopupWithOriginBarMock).not.toHaveBeenCalled()
     expect(shellOpenExternalMock).not.toHaveBeenCalled()
@@ -377,9 +377,9 @@ describe('browserManager', () => {
       ).toEqual({ action: 'deny' })
     }
     expect(
-      rendererSendMock.mock.calls.filter(([channel]) => channel === 'browser:open-link-in-orca-tab')
+      rendererSendMock.mock.calls.filter(([channel]) => channel === 'browser:open-link-in-occ-tab')
     ).toHaveLength(openerlessOpens.length)
-    expect(rendererSendMock).toHaveBeenCalledWith('browser:open-link-in-orca-tab', {
+    expect(rendererSendMock).toHaveBeenCalledWith('browser:open-link-in-occ-tab', {
       browserPageId: 'browser-1',
       url: 'https://docs.example.com/guide'
     })
@@ -435,7 +435,7 @@ describe('browserManager', () => {
       })
     }
     const routedTabCount = (): number =>
-      rendererSendMock.mock.calls.filter(([channel]) => channel === 'browser:open-link-in-orca-tab')
+      rendererSendMock.mock.calls.filter(([channel]) => channel === 'browser:open-link-in-occ-tab')
         .length
 
     const clicks = MAX_PAGE_INITIATED_TABS_PER_WINDOW * 2
@@ -563,7 +563,7 @@ describe('browserManager', () => {
     }
 
     const routedTabs = rendererSendMock.mock.calls.filter(
-      ([channel]) => channel === 'browser:open-link-in-orca-tab'
+      ([channel]) => channel === 'browser:open-link-in-occ-tab'
     )
     expect(routedTabs).toHaveLength(MAX_PAGE_INITIATED_TABS_PER_WINDOW)
     expect(rendererSendMock).toHaveBeenCalledWith('browser:popup', {
@@ -657,7 +657,7 @@ describe('browserManager', () => {
     expect(rendererSendMock).toHaveBeenCalledWith('browser:popup', {
       browserPageId: 'browser-1',
       origin: 'https://sso.example.com',
-      action: 'opened-in-orca'
+      action: 'opened-in-occ'
     })
 
     const destroyedCall = guestOnceMock.mock.calls.find(([event]) => event === 'destroyed')
@@ -720,7 +720,7 @@ describe('browserManager', () => {
 
     expect(shellOpenExternalMock).not.toHaveBeenCalled()
     expect(rendererSendMock).not.toHaveBeenCalledWith(
-      'browser:open-link-in-orca-tab',
+      'browser:open-link-in-occ-tab',
       expect.anything()
     )
     expect(rendererSendMock).toHaveBeenCalledWith('browser:popup', {

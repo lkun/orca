@@ -1,12 +1,12 @@
 import type { AgentStatusOrchestrationContext } from './agent-status-types'
-import type { OrcaSessionId } from './orca-session-address'
+import type { OCCSessionId } from './occ-session-address'
 import type { RuntimeRpcResponse } from './runtime-rpc-envelope'
 import type { RuntimeWorktreePsSummary } from './runtime-types'
 
 // Keep desktop-only imports in the native fixture; its export checks this consumer contract.
 export type RuntimeAgentLineageTestModule = {
-  LINEAGE_PARENT: OrcaSessionId
-  LINEAGE_CHILD: OrcaSessionId
+  LINEAGE_PARENT: OCCSessionId
+  LINEAGE_CHILD: OCCSessionId
   canonicalChatRow(id: string): string
   publicLineageFixture(worktreeId?: string): {
     db: {

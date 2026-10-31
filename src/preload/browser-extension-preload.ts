@@ -137,7 +137,7 @@ if (process.contextIsolated) {
   if (href.startsWith('chrome-extension://')) {
     // A document marker survives Chromium reusing an existing extension renderer process.
     // Why origin: a manifest sandbox page keeps its extension URL but runs with an opaque origin.
-    if (!href.endsWith('/manifest.json?orca-native-page=1') && globalThis.origin !== 'null') {
+    if (!href.endsWith('/manifest.json?occ-native-page=1') && globalThis.origin !== 'null') {
       installExtensionContextApis()
     }
   } else if (process.isMainFrame && readOrigin(href) === CHROME_WEB_STORE_ORIGIN) {

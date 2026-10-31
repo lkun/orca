@@ -42,7 +42,7 @@ import {
 } from './codex-trust-grant-cooldown'
 
 // Operational escape hatch, separate from settings, to force computed-trust fallback.
-const DISABLE_ENV_FLAG = 'ORCA_DISABLE_CODEX_TRUST_RPC'
+const DISABLE_ENV_FLAG = 'OCC_DISABLE_CODEX_TRUST_RPC'
 
 export type { CodexManagedTrustGrantPlan }
 export type { CodexTrustGrantFallbackReason }

@@ -166,21 +166,21 @@ describe('partition download policy', () => {
 
   it('cancels a download on a partition that asked for the deny, routing nothing', async () => {
     const install = await loadInstaller()
-    install(profileFor('orca-doc-preview'), { downloads: 'deny' })
+    install(profileFor('occ-doc-preview'), { downloads: 'deny' })
 
-    expect(fireWillDownload('orca-doc-preview').cancelled).toBe(true)
+    expect(fireWillDownload('occ-doc-preview').cancelled).toBe(true)
     expect(mocks.handleGuestWillDownload).not.toHaveBeenCalled()
   })
 
   it('tells the reader about the refusal, and only on the partition that refused', async () => {
     const install = await loadInstaller()
-    install(profileFor('orca-doc-preview'), { downloads: 'deny' })
+    install(profileFor('occ-doc-preview'), { downloads: 'deny' })
     install(profileFor('persist:browsing-1'))
 
     fireWillDownload('persist:browsing-1')
     expect(mocks.noticeDocPreviewDownloadBlocked).not.toHaveBeenCalled()
 
-    fireWillDownload('orca-doc-preview')
+    fireWillDownload('occ-doc-preview')
     expect(mocks.noticeDocPreviewDownloadBlocked).toHaveBeenCalledWith(
       expect.objectContaining({ id: 42 })
     )
@@ -188,10 +188,10 @@ describe('partition download policy', () => {
 
   it('keeps each partition on its own decision', async () => {
     const install = await loadInstaller()
-    install(profileFor('orca-doc-preview'), { downloads: 'deny' })
+    install(profileFor('occ-doc-preview'), { downloads: 'deny' })
     install(profileFor('persist:browsing-1'))
 
-    expect(fireWillDownload('orca-doc-preview').cancelled).toBe(true)
+    expect(fireWillDownload('occ-doc-preview').cancelled).toBe(true)
     expect(fireWillDownload('persist:browsing-1').cancelled).toBe(false)
     expect(mocks.handleGuestWillDownload).toHaveBeenCalledTimes(1)
   })
@@ -202,7 +202,7 @@ describe('partition permission policy', () => {
     mocks.isRemoteCliDrivenGuest.mockImplementation((id?: number) => id === 7)
     const install = await loadInstaller()
     const store = await import('./browser-site-permission-store')
-    store.configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'orca-site-permissions-')))
+    store.configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'occ-site-permissions-')))
     store.setBrowserSitePermissionDecisions(
       'persist:browsing-2',
       'https://a.test',
@@ -285,7 +285,7 @@ describe('partition permission policy', () => {
   it("answers a notification from a frame with an inherited origin as the frame's real site", async () => {
     const install = await loadInstaller()
     const store = await import('./browser-site-permission-store')
-    store.configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'orca-site-permissions-')))
+    store.configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'occ-site-permissions-')))
     store.setBrowserSitePermissionDecisions(
       'persist:browsing-frames',
       'https://a.test',
@@ -345,7 +345,7 @@ describe('partition permission policy', () => {
   it('asks when a page checks local network access, since Electron never requests it', async () => {
     const install = await loadInstaller()
     const store = await import('./browser-site-permission-store')
-    store.configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'orca-site-permissions-')))
+    store.configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'occ-site-permissions-')))
     const { respondToBrowserPagePrompt } = await import('./browser-page-prompts')
     const send = vi.fn()
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: prompts only read id, isDestroyed, send and subscribe to the window's lifecycle events.
@@ -396,7 +396,7 @@ describe('partition permission policy', () => {
   it("keeps a paired server's pages off this computer's saved answers for the same profile id", async () => {
     const install = await loadInstaller()
     const store = await import('./browser-site-permission-store')
-    store.configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'orca-site-permissions-')))
+    store.configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'occ-site-permissions-')))
     store.setBrowserSitePermissionDecisions('default', 'https://a.test', ['clipboard'], 'allow')
     const desktop = { ...profileFor('persist:desktop-default'), id: 'default' }
     const paired = { ...profileFor('persist:paired-default'), id: 'default' }
@@ -453,7 +453,7 @@ describe('partition permission policy', () => {
     const install = await loadInstaller()
     const { installBrowserRoutePartitionPolicies } =
       await import('./browser-session-route-policies')
-    const routed = `persist:orca-browser-v1-${'a'.repeat(64)}`
+    const routed = `persist:occ-browser-v1-${'a'.repeat(64)}`
     install(profileFor('persist:browsing-5'))
     void installBrowserRoutePartitionPolicies(profileFor('persist:browsing-5'), routed)
     const decide = (partition: string) => {
@@ -501,7 +501,7 @@ describe('partition permission policy', () => {
   it('refuses a blocklisted system folder at once instead of leaving the page waiting', async () => {
     const install = await loadInstaller()
     install(profileFor('persist:browsing-6'))
-    install(profileFor('orca-doc-preview'), { permissions: 'deny' })
+    install(profileFor('occ-doc-preview'), { permissions: 'deny' })
     const answer = (partition: string) => {
       const sess = sessionsByPartition.get(partition)
       const listener = sess?.on.mock.calls.find(
@@ -521,7 +521,7 @@ describe('partition permission policy', () => {
       return actions
     }
 
-    expect(answer('orca-doc-preview')).toEqual(['deny'])
+    expect(answer('occ-doc-preview')).toEqual(['deny'])
     expect(mocks.notifyPermissionDenied).not.toHaveBeenCalled()
     expect(answer('persist:browsing-6')).toEqual(['deny'])
     expect(mocks.notifyPermissionDenied).toHaveBeenCalledWith({
@@ -579,8 +579,8 @@ describe('partition permission policy', () => {
 
   it('denies every request and check on a strict partition without WebAuthn handlers', async () => {
     const install = await loadInstaller()
-    install(profileFor('orca-doc-preview'), { permissions: 'deny' })
-    const sess = sessionsByPartition.get('orca-doc-preview')
+    install(profileFor('occ-doc-preview'), { permissions: 'deny' })
+    const sess = sessionsByPartition.get('occ-doc-preview')
     if (!sess) {
       throw new Error('Expected the preview session')
     }

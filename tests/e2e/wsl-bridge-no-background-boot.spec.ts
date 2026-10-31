@@ -2,7 +2,7 @@
  * E9 guard on a real WSL distro: background work never starts a stopped distro. A project inside
  * the lane's distro is opened, the distro is terminated, and a window of ordinary background work
  * elsewhere must start nothing in it; the user then opening a terminal there starts it. Runs only
- * where ORCA_E2E_WSL_TERMINATE_DISTRO names a distro this run owns, since it terminates it.
+ * where OCC_E2E_WSL_TERMINATE_DISTRO names a distro this run owns, since it terminates it.
  *
  * The running-list watcher is the authoritative assertion: `wsl --list --running`, polled through
  * the window, sees every boot, including a plain UNC read or git.exe with a UNC cwd. The spawn log
@@ -15,7 +15,7 @@ import { rmSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { ElectronApplication, Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import { waitForActivePanePtyId } from './helpers/terminal'
 import { visitSettingsPanes } from './helpers/settings-pane-visits'
@@ -36,7 +36,7 @@ import {
   wsl
 } from './helpers/wsl-boot-guard'
 
-const DISTRO = process.env.ORCA_E2E_WSL_TERMINATE_DISTRO?.trim() ?? ''
+const DISTRO = process.env.OCC_E2E_WSL_TERMINATE_DISTRO?.trim() ?? ''
 
 /** Settings panes whose mount reads host, account, CLI or integration state. */
 const SETTINGS_PANES = [
@@ -50,9 +50,9 @@ const SETTINGS_PANES = [
   'automations'
 ] as const
 
-const SPAWN_LOG = path.join(os.tmpdir(), `orca-e2e-wsl-spawns-${process.pid}-${Date.now()}.jsonl`)
+const SPAWN_LOG = path.join(os.tmpdir(), `occ-e2e-wsl-spawns-${process.pid}-${Date.now()}.jsonl`)
 // Every process-host spawn in the app (main, worker threads, inheriting children) lands here.
-test.use({ launchEnv: { ORCA_E2E_SPAWN_LOG: SPAWN_LOG } })
+test.use({ launchEnv: { OCC_E2E_SPAWN_LOG: SPAWN_LOG } })
 
 type WslWorkspace = { linuxRoot: string; worktreeId: string; repoId: string }
 
@@ -61,7 +61,7 @@ async function openWslWorkspace(
   electronApp: ElectronApplication,
   page: Page
 ): Promise<WslWorkspace> {
-  const linuxRoot = `/tmp/orca-e9-${Date.now()}`
+  const linuxRoot = `/tmp/occ-e9-${Date.now()}`
   const repoLinuxPath = `${linuxRoot}/repo`
   await runInDistro(
     DISTRO,
@@ -167,12 +167,12 @@ async function removeWslWorkspace(workspace: WslWorkspace | undefined): Promise<
 test.describe('E9: background work on a stopped real WSL distro', () => {
   test.skip(
     process.platform !== 'win32' || !DISTRO,
-    'Needs a Windows run that owns a WSL distro it may terminate (ORCA_E2E_WSL_TERMINATE_DISTRO)'
+    'Needs a Windows run that owns a WSL distro it may terminate (OCC_E2E_WSL_TERMINATE_DISTRO)'
   )
 
   test('starts nothing in the stopped distro until the user opens a terminal there', async ({
     electronApp,
-    orcaPage: page
+    occPage: page
   }, testInfo) => {
     // Distro setup, a terminate, a 20 s background window and a boot.
     test.setTimeout(300_000)
@@ -209,7 +209,7 @@ test.describe('E9: background work on a stopped real WSL distro', () => {
 
   test('a focused WSL workspace left idle through the stop never starts it again', async ({
     electronApp,
-    orcaPage: page
+    occPage: page
   }, testInfo) => {
     // Distro setup, an Explorer and Source Control load, a terminate, a 22.5 s idle and a boot.
     test.setTimeout(300_000)

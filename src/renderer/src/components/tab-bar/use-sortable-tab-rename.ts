@@ -20,27 +20,27 @@ export function useSortableTabRename({
   const [renameValue, setRenameValue] = useState('')
   const renameFocusFrameRef = useRef<number | null>(null)
   // Why: onBlur fires during Input unmount; mark rename resolved so it can't re-commit and overwrite discarded edits.
-  const committedOrCancelledRef = useRef(false)
+  const committedoccncelledRef = useRef(false)
 
   const handleRenameOpen = useCallback(() => {
-    committedOrCancelledRef.current = false
+    committedoccncelledRef.current = false
     // Why: snapshot title once; don't refresh if tab.title changes mid-edit (e.g. OSC) so the user's edits aren't overwritten.
     setRenameValue(customTitle ?? title)
     setIsEditing(true)
   }, [customTitle, title])
 
   const commitRename = useCallback(() => {
-    if (committedOrCancelledRef.current) {
+    if (committedoccncelledRef.current) {
       return
     }
-    committedOrCancelledRef.current = true
+    committedoccncelledRef.current = true
     const trimmed = renameValue.trim()
     onSetCustomTitle(tabId, trimmed.length > 0 ? trimmed : null)
     setIsEditing(false)
   }, [renameValue, onSetCustomTitle, tabId])
 
   const cancelRename = useCallback(() => {
-    committedOrCancelledRef.current = true
+    committedoccncelledRef.current = true
     setIsEditing(false)
   }, [])
 

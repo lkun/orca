@@ -1,5 +1,5 @@
 import { expect, type Mock } from 'vitest'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { collectLeafIds } from '../../../shared/terminal-pane-layout-tree'
 import type {
   LayoutApplyOutcome,
@@ -73,7 +73,7 @@ export function expectDesktopDropsPane(
   tabId: string,
   leafId: string
 ): void {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     expect(harness.closeTerminalPane).toHaveBeenCalledExactlyOnceWith(tabId, leafId)
     return
   }
@@ -94,7 +94,7 @@ export function expectDesktopDropsTab(
   },
   tabId: string
 ): void {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     expect(harness.closeTerminal).toHaveBeenCalledWith(tabId)
     return
   }

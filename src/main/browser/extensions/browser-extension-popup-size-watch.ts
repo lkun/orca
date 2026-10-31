@@ -16,7 +16,7 @@ const POPUP_SIZE_WORLD_ID = 1_999
  */
 const WATCH_SIZE_SCRIPT = `(() => {
   const MAX_WIDTH = ${BROWSER_EXTENSION_POPUP_MAX.width}
-  let state = window.__orcaPopupSize
+  let state = window.__occPopupSize
   const deliver = () => {
     if (!state.resolve || !state.pending) return
     const resolve = state.resolve
@@ -27,7 +27,7 @@ const WATCH_SIZE_SCRIPT = `(() => {
     resolve(size)
   }
   if (!state) {
-    state = window.__orcaPopupSize = { reported: '', pending: null, resolve: null, timer: 0 }
+    state = window.__occPopupSize = { reported: '', pending: null, resolve: null, timer: 0 }
     const measureAt = (width) => {
       const sheet = new CSSStyleSheet()
       const quirks = document.compatMode === 'BackCompat'

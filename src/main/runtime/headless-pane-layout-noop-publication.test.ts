@@ -1,12 +1,12 @@
 // #26785: identical remote remount layouts must not persist and fan out to every paired client.
 import { describe, expect, it } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime-test-mocks.spec'
+import { OCCRuntimeService } from './occ-runtime-test-mocks.spec'
 import {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} from './orca-runtime-test-fixtures.spec'
+} from './occ-runtime-test-fixtures.spec'
 import type { TerminalPaneLayoutNode } from '../../shared/terminal-tab-types'
 
 const REMOUNTS = 20
@@ -15,7 +15,7 @@ async function setup() {
   const { runtimeStore, getSession } = makeRuntimeStoreWithWorkspaceSession(
     makeWorkspaceSessionWithHeadlessTerminal()
   )
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   await runtime.listMobileSessionTabs(`id:${TEST_WORKTREE_ID}`)
   const published: unknown[] = []
   runtime.onMobileSessionTabsChanged((snapshot) => published.push(snapshot))

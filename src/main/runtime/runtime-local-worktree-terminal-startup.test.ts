@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { Repo } from '../../shared/repo-types'
 import type { Worktree } from '../../shared/worktree/types'
 import { startRuntimeLocalWorktreeTerminals } from './runtime-local-worktree-terminal-startup'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 
 const repo: Repo = {
   id: 'repo-1',
@@ -211,7 +211,7 @@ describe('startRuntimeLocalWorktreeTerminals default shell seeding', () => {
       ports
     })
     expect(createTerminal).toHaveBeenCalledTimes(1)
-    if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (!OCC_LAYOUT_OWNER_IS_MAIN) {
       expect(ports.provision).not.toHaveBeenCalled()
       expect(ports.activate).toHaveBeenCalledWith(repo.id, worktree.id, startup, setup, defaultTabs)
       return

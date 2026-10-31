@@ -1,4 +1,4 @@
-import { setIsolatedSpawner } from '@orca/process-host/isolated-detached-spawn'
+import { setIsolatedSpawner } from '@occ/process-host/isolated-detached-spawn'
 import { loadWindowsSecurity } from '../../shared/windows-security-addon'
 
 /** Long-lived detached children (the WSL holder) then inherit none of main's handles, e.g. a

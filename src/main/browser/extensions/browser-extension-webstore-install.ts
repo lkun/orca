@@ -10,7 +10,7 @@ import {
 } from './browser-extension-archive'
 import type { VerifiedCrx } from './browser-extension-crx'
 import { getBrowserExtensionInstallStore } from './browser-extension-install-store'
-import { refuseOrcaFileCollisions } from './browser-extension-load-directory'
+import { refuseOCCFileCollisions } from './browser-extension-load-directory'
 import {
   readBrowserExtensionManifest,
   type BrowserExtensionManifestSummary
@@ -113,7 +113,7 @@ export async function stageWebStoreExtension(crx: VerifiedCrx): Promise<StagedWe
       directory
     )
     // Why here: once OCC's own files are written, a package file at their paths can't be told apart.
-    await refuseOrcaFileCollisions(directory, manifest)
+    await refuseOCCFileCollisions(directory, manifest)
     const manifestText = JSON.stringify(manifest, null, 2)
     await writeFile(join(directory, 'manifest.json'), manifestText)
     // Why written here: the manifest OCC later loads is always the one this prompt shows.

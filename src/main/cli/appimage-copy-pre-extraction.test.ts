@@ -23,7 +23,7 @@ afterEach(async () => {
 })
 
 async function makeFixture() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-appimage-pre-extract-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-appimage-pre-extract-'))
   created.push(root)
   const appImagePath = join(root, 'apps', 'OCC.AppImage')
   await mkdir(join(root, 'apps'), { recursive: true })

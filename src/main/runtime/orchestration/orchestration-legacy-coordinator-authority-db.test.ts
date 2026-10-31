@@ -100,7 +100,7 @@ describe('OrchestrationDb legacy coordinator authority', () => {
       scheduler_lost_at: null
     })
     expect(
-      db.resolveLegacyCoordinatorCandidate({
+      db.resolveLegacyCoordinatoccndidate({
         runId: adoptedRunId,
         terminalHandle: 'term_manual_coord',
         paneKey: 'tab_manual:44444444-4444-4444-8444-444444444444'
@@ -113,7 +113,7 @@ describe('OrchestrationDb legacy coordinator authority', () => {
     expect(db.getLegacyAdoption()).toEqual(adoption)
     expect(db.getCoordinatorRun('coordinator_manual')).toEqual(migratedCoordinator)
     expect(
-      db.resolveLegacyCoordinatorCandidate({
+      db.resolveLegacyCoordinatoccndidate({
         runId: adoptedRunId,
         terminalHandle: 'term_manual_coord',
         paneKey: 'tab_manual:44444444-4444-4444-8444-444444444444'
@@ -146,7 +146,7 @@ describe('OrchestrationDb legacy coordinator authority', () => {
       scheduler_lost_at: adoption.adopted_at
     })
     expect(
-      db.resolveLegacyCoordinatorCandidate({
+      db.resolveLegacyCoordinatoccndidate({
         runId: adoptedRunId,
         terminalHandle: 'term_legacy_coord',
         paneKey: 'tab_manual:44444444-4444-4444-8444-444444444444'

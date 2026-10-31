@@ -19,7 +19,7 @@ export function DocsFooter() {
                 aria-hidden="true"
                 className="font-sans text-xl font-bold tracking-tight text-foreground"
               >
-                ORCA
+                OCC
               </span>
             </Link>
             <p className="text-muted-foreground max-w-sm text-sm">
@@ -42,7 +42,7 @@ export function DocsFooter() {
               </li>
               <li>
                 <a
-                  href="https://www.onorca.dev"
+                  href="https://www.onocc.dev"
                   className="rounded-md px-1 py-0.5 transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                 >
                   Home
@@ -50,7 +50,7 @@ export function DocsFooter() {
               </li>
               <li>
                 <a
-                  href="https://github.com/stablyai/orca"
+                  href="https://github.com/stablyai/occ"
                   className="rounded-md px-1 py-0.5 transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
                 >
                   GitHub
@@ -66,7 +66,7 @@ export function DocsFooter() {
               </li>
               <li>
                 <a
-                  href="https://x.com/orca_build"
+                  href="https://x.com/occ_build"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="rounded-md px-1 py-0.5 transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
@@ -82,17 +82,17 @@ export function DocsFooter() {
           <p>
             © {currentYear} Lovecast Inc. ·{' '}
             <a
-              href="https://github.com/stablyai/orca/blob/main/LICENSE"
+              href="https://github.com/stablyai/occ/blob/main/LICENSE"
               className="rounded-sm underline decoration-border underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
             >
               MIT licensed
             </a>
           </p>
           <a
-            href="https://github.com/stablyai/orca/tree/main/docs/site"
+            href="https://github.com/stablyai/occ/tree/main/docs/site"
             className="rounded-sm text-xs underline decoration-border underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
           >
-            Docs source: docs/site in stablyai/orca
+            Docs source: docs/site in stablyai/occ
           </a>
         </div>
       </div>

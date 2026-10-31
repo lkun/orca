@@ -18,7 +18,7 @@ function v2(overrides: Record<string, unknown> = {}): Record<string, unknown> {
     publisher: 'acme',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+    engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
     ...overrides
   }
 }
@@ -28,12 +28,12 @@ describe('manifest format 2 rules', () => {
     const { publisher: _publisher, ...withoutPublisher } = v2()
     expect(parsePluginManifest(withoutPublisher)).toEqual({
       ok: false,
-      error: `engines.orca: must be at least >=${PLUGIN_DERIVED_PUBLISHER_SINCE} when publisher is left out, because older OCC requires publisher`
+      error: `engines.occ: must be at least >=${PLUGIN_DERIVED_PUBLISHER_SINCE} when publisher is left out, because older OCC requires publisher`
     })
     expect(
       parsePluginManifest({
         ...withoutPublisher,
-        engines: { orca: `>=${PLUGIN_DERIVED_PUBLISHER_SINCE}` }
+        engines: { occ: `>=${PLUGIN_DERIVED_PUBLISHER_SINCE}` }
       })
     ).toMatchObject({ ok: true })
     // Why the host still reads it: the floor only exists for older hosts.
@@ -105,19 +105,19 @@ describe('manifest format 2 rules', () => {
     }
   )
 
-  it('requires engines.orca to cover every field the manifest uses', () => {
-    expect(parsePluginManifest(v2({ engines: { orca: '>=1.4.160' } }))).toEqual({
+  it('requires engines.occ to cover every field the manifest uses', () => {
+    expect(parsePluginManifest(v2({ engines: { occ: '>=1.4.160' } }))).toEqual({
       ok: false,
-      error: `engines.orca: must be at least >=${PLUGIN_MANIFEST_V2_SINCE}, because manifestVersion needs OCC ${PLUGIN_MANIFEST_V2_SINCE}`
+      error: `engines.occ: must be at least >=${PLUGIN_MANIFEST_V2_SINCE}, because manifestVersion needs OCC ${PLUGIN_MANIFEST_V2_SINCE}`
     })
   })
 
   it('skips only the engines floor when reading a manifest at runtime', () => {
-    const underDeclared = v2({ engines: { orca: '>=1.4.160' } })
+    const underDeclared = v2({ engines: { occ: '>=1.4.160' } })
     expect(parseHostPluginManifest(underDeclared)).toMatchObject({ ok: true })
     expect(parsePluginManifest(underDeclared)).toMatchObject({ ok: false })
     // Every other rule still applies.
-    expect(parseHostPluginManifest(v2({ engines: { orca: '>=1.4.160' }, pluginApi: 1 }))).toEqual({
+    expect(parseHostPluginManifest(v2({ engines: { occ: '>=1.4.160' }, pluginApi: 1 }))).toEqual({
       ok: false,
       error: 'pluginApi: data plugins never call the host API; remove pluginApi'
     })
@@ -126,11 +126,11 @@ describe('manifest format 2 rules', () => {
   it('counts enum values and only fields that are present', () => {
     const schema = z.object({
       kind: z.enum(['old', 'new']).meta({
-        'x-orca-since': '1.0.0',
+        'x-occ-since': '1.0.0',
         [PLUGIN_ENUM_SINCE_KEY]: { old: '1.0.0', new: '3.0.0' }
       }),
-      extra: z.string().optional().meta({ 'x-orca-since': '5.0.0' }),
-      list: z.array(z.object({ x: z.string().meta({ 'x-orca-since': '4.0.0' }) })).default([])
+      extra: z.string().optional().meta({ 'x-occ-since': '5.0.0' }),
+      list: z.array(z.object({ x: z.string().meta({ 'x-occ-since': '4.0.0' }) })).default([])
     })
     expect(pluginEngineFloor(schema, { kind: 'old', list: [] })).toEqual({
       version: '1.0.0',

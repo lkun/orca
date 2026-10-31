@@ -185,9 +185,9 @@ const RENDERER_URL = 'http://localhost:5173'
 
 // These cases exercise foreground behavior against Electron mocks.
 beforeEach(() => {
-  vi.stubEnv('ORCA_BACKGROUND_LAUNCH', undefined)
-  vi.stubEnv('ORCA_E2E_HEADLESS', undefined)
-  vi.stubEnv('ORCA_E2E_HEADFUL', undefined)
+  vi.stubEnv('OCC_BACKGROUND_LAUNCH', undefined)
+  vi.stubEnv('OCC_E2E_HEADLESS', undefined)
+  vi.stubEnv('OCC_E2E_HEADFUL', undefined)
 })
 afterEach(() => vi.unstubAllEnvs())
 
@@ -223,7 +223,7 @@ describe('createOrFocusDashboardPopout', () => {
   })
 
   it('lets its preload expose saved WSL hosts in serve-only, and passes nothing otherwise', () => {
-    vi.stubEnv('ORCA_INTERNAL_WSL_HOSTS', undefined)
+    vi.stubEnv('OCC_INTERNAL_WSL_HOSTS', undefined)
     createOrFocusDashboardPopout(makeStore() as never)
     expect(instances[0].options.webPreferences?.additionalArguments).toBeUndefined()
     closeDashboardPopout()
@@ -252,7 +252,7 @@ describe('createOrFocusDashboardPopout', () => {
     expect(opts.frame).toBeUndefined()
     expect(opts.backgroundColor).toBe('#0a0a0a')
     expect(opts.webPreferences?.sandbox).toBe(true)
-    expect(opts.webPreferences?.partition).toBe('orca-dashboard-popout')
+    expect(opts.webPreferences?.partition).toBe('occ-dashboard-popout')
     expect(opts.webPreferences?.webviewTag).toBe(false)
     expect(opts.webPreferences?.preload).toMatch(/preload[\\/]index\.js$/)
     // No guests run here; omit host identity so every client-placed page stays mirrored.

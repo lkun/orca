@@ -160,7 +160,7 @@ export function registerCodexCatchUpEchoTests(input: {
     })
     await c.journal.markPendingSubmissionsUnknown(1)
     await c.open([turn(1), turn(2), turn(3)])
-    const key = agentJournalItemKey({ provider: 'orca', clientMessageId })
+    const key = agentJournalItemKey({ provider: 'occ', clientMessageId })
     const cut = structuredRewindCut(c.journal, {
       itemId: agentJournalItemKey({
         provider: 'codex',

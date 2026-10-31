@@ -211,9 +211,9 @@ describe('registerWorktreeHandlers', () => {
       updates: {
         comment: 'keep me',
         isPinned: true,
-        orcaCreatedAt: 123,
-        orcaCreationSource: 'desktop',
-        orcaCreationWorkspaceLayout: {
+        occCreatedAt: 123,
+        occCreationSource: 'desktop',
+        occCreationWorkspaceLayout: {
           path: '/workspace',
           nestWorkspaces: false
         }
@@ -567,9 +567,9 @@ describe('registerWorktreeHandlers', () => {
       repoId: 'repo-1',
       name: 'improve-dashboard',
       pushTarget: {
-        remoteName: 'pr-prateek-orca',
+        remoteName: 'pr-prateek-occ',
         branchName: 'prateek/fix-sidebar-agents-toggle',
-        remoteUrl: 'git@github.com:prateek/orca.git'
+        remoteUrl: 'git@github.com:prateek/occ.git'
       }
     })
 
@@ -580,16 +580,16 @@ describe('registerWorktreeHandlers', () => {
         '-t',
         'prateek/fix-sidebar-agents-toggle',
         '--no-tags',
-        'pr-prateek-orca',
-        'git@github.com:prateek/orca.git'
+        'pr-prateek-occ',
+        'git@github.com:prateek/occ.git'
       ],
       { cwd: '/workspace/repo' }
     )
     expect(gitExecFileAsyncMock).not.toHaveBeenCalledWith(
       [
         'fetch',
-        'pr-prateek-orca',
-        '+refs/heads/prateek/fix-sidebar-agents-toggle*:refs/remotes/pr-prateek-orca/prateek/fix-sidebar-agents-toggle*'
+        'pr-prateek-occ',
+        '+refs/heads/prateek/fix-sidebar-agents-toggle*:refs/remotes/pr-prateek-occ/prateek/fix-sidebar-agents-toggle*'
       ],
       { cwd: '/workspace/repo', timeout: REVIEW_HEAD_FETCH_TIMEOUT_MS }
     )
@@ -597,7 +597,7 @@ describe('registerWorktreeHandlers', () => {
       [
         'branch',
         '--set-upstream-to',
-        'pr-prateek-orca/prateek/fix-sidebar-agents-toggle',
+        'pr-prateek-occ/prateek/fix-sidebar-agents-toggle',
         'improve-dashboard'
       ],
       { cwd: '/workspace/improve-dashboard' }
@@ -610,9 +610,9 @@ describe('registerWorktreeHandlers', () => {
       }),
       expect.objectContaining({
         pushTarget: {
-          remoteName: 'pr-prateek-orca',
+          remoteName: 'pr-prateek-occ',
           branchName: 'prateek/fix-sidebar-agents-toggle',
-          remoteUrl: 'git@github.com:prateek/orca.git'
+          remoteUrl: 'git@github.com:prateek/occ.git'
         }
       })
     )
@@ -629,9 +629,9 @@ describe('registerWorktreeHandlers', () => {
       }
     ])
     const existingPushTarget = {
-      remoteName: 'pr-contributor-orca',
+      remoteName: 'pr-contributor-occ',
       branchName: 'contributor/previous-fix',
-      remoteUrl: 'https://github.com/contributor/orca.git',
+      remoteUrl: 'https://github.com/contributor/occ.git',
       remoteCreated: true
     }
     store.getAllWorktreeMeta.mockReturnValue({
@@ -642,11 +642,11 @@ describe('registerWorktreeHandlers', () => {
     store.setWorktreeMeta.mockImplementation((_target: HostWorktreeTarget, meta) => meta)
     gitExecFileAsyncMock.mockImplementation(async (args: string[]) => {
       if (args[0] === 'remote' && args.length === 1) {
-        return { stdout: 'pr-contributor-orca\n', stderr: '' }
+        return { stdout: 'pr-contributor-occ\n', stderr: '' }
       }
       if (args[0] === 'remote' && args[1] === 'get-url') {
         return {
-          stdout: 'https://github.com/contributor/orca.git\n',
+          stdout: 'https://github.com/contributor/occ.git\n',
           stderr: ''
         }
       }
@@ -657,9 +657,9 @@ describe('registerWorktreeHandlers', () => {
       repoId: 'repo-1',
       name: 'improve-dashboard',
       pushTarget: {
-        remoteName: 'pr-contributor-orca',
+        remoteName: 'pr-contributor-occ',
         branchName: 'contributor/new-fix',
-        remoteUrl: 'https://github.com/contributor/orca.git'
+        remoteUrl: 'https://github.com/contributor/occ.git'
       }
     })
 
@@ -674,9 +674,9 @@ describe('registerWorktreeHandlers', () => {
       }),
       expect.objectContaining({
         pushTarget: {
-          remoteName: 'pr-contributor-orca',
+          remoteName: 'pr-contributor-occ',
           branchName: 'contributor/new-fix',
-          remoteUrl: 'https://github.com/contributor/orca.git'
+          remoteUrl: 'https://github.com/contributor/occ.git'
         }
       })
     )
@@ -694,9 +694,9 @@ describe('registerWorktreeHandlers', () => {
     })
     getPullRequestPushTargetMock.mockResolvedValue({
       pushTarget: {
-        remoteName: 'pr-prateek-orca',
+        remoteName: 'pr-prateek-occ',
         branchName: 'prateek/fix-sidebar-agents-toggle',
-        remoteUrl: 'git@github.com:prateek/orca.git'
+        remoteUrl: 'git@github.com:prateek/occ.git'
       }
     })
     gitExecFileAsyncMock.mockImplementation(async (args: string[]) => {
@@ -726,7 +726,7 @@ describe('registerWorktreeHandlers', () => {
         'fetch',
         '--no-tags',
         'origin',
-        `+refs/pull/1738/head:refs/orca/pull/${ORIGIN_HEAD_COMPONENT}/1738`
+        `+refs/pull/1738/head:refs/occ/pull/${ORIGIN_HEAD_COMPONENT}/1738`
       ],
       { cwd: '/workspace/repo', timeout: REVIEW_HEAD_FETCH_TIMEOUT_MS }
     )
@@ -746,9 +746,9 @@ describe('registerWorktreeHandlers', () => {
       headSha: 'abc123',
       branchNameOverride: 'prateek/fix-sidebar-agents-toggle',
       pushTarget: {
-        remoteName: 'pr-prateek-orca',
+        remoteName: 'pr-prateek-occ',
         branchName: 'prateek/fix-sidebar-agents-toggle',
-        remoteUrl: 'git@github.com:prateek/orca.git'
+        remoteUrl: 'git@github.com:prateek/occ.git'
       }
     })
   })

@@ -14,7 +14,7 @@ import {
   getDraftExtraAgentArgsError,
   parseDraftTime
 } from './automation-draft-model'
-import { saveOrcaAutomation } from './automation-orca-save'
+import { saveOCCAutomation } from './automation-occ-save'
 import type { AutomationSaveContext } from './automation-save-context'
 
 /** Validates editor input then runs the OCC save transaction. */
@@ -119,7 +119,7 @@ export function createAutomationSaveAction(context: AutomationSaveContext) {
           return
         }
       }
-      await saveOrcaAutomation(context, { hour, minute, now, surface })
+      await saveOCCAutomation(context, { hour, minute, now, surface })
     } catch (error) {
       toast.error(
         error instanceof Error

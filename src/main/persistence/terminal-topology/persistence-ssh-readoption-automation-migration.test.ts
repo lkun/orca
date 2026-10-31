@@ -136,7 +136,7 @@ function removedHostState(overrides: Record<string, unknown> = {}) {
 async function createStoreFromState(state: Record<string, unknown>) {
   mkdirSync(testState.dir, { recursive: true })
   writeFileSync(
-    join(testState.dir, 'orca-data.json'),
+    join(testState.dir, 'occ-data.json'),
     JSON.stringify({ ...getDefaultPersistedState(testState.dir), ...state }),
     'utf-8'
   )
@@ -149,7 +149,7 @@ async function createStoreFromState(state: Record<string, unknown>) {
   const { Store } = await import('../loading-store/store')
   const { initDataPath } = await import('../loading-store/user-data-path')
   initDataPath()
-  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
 }
 
 async function reloadStore() {
@@ -158,7 +158,7 @@ async function reloadStore() {
   const { Store } = await import('../loading-store/store')
   const { initDataPath } = await import('../loading-store/user-data-path')
   initDataPath()
-  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
 }
 
 async function createSshStore(state: Record<string, unknown>) {
@@ -174,7 +174,7 @@ function readdDevBox(ssh: SshConnectionStore) {
 beforeEach(() => {
   hasCreatedStoreInCase = false
   resetRetirementCollisionKeyCacheForTests()
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-readopt-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-readopt-'))
 })
 
 afterEach(async () => {

@@ -56,7 +56,7 @@ function createGuest(name: string, beforeInstall?: (index: number) => Promise<vo
   const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
     HOME: home,
     XDG_CONFIG_HOME: join(home, '.config'),
-    ORCA_WSL_HOOK_INSTANCE: name
+    OCC_WSL_HOOK_INSTANCE: name
   })
   const requests: Record<string, unknown>[] = []
   dispatcher.onRequest('preflight.detectAgents', async () => ({ agents: [] }))
@@ -76,7 +76,7 @@ function connect(guest: ReturnType<typeof createGuest>) {
 }
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-wsl-install-race-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-wsl-install-race-'))
   guests = []
   settings = { disabledTuiAgents: [] }
   deps.installHooks.mockReset().mockResolvedValue([])
@@ -129,10 +129,10 @@ it.each([true, false])('coalesces waiters through a held %s enablement toggle', 
     expect(state.opencode2OverlayDir).toBeUndefined()
   } else {
     expect(
-      readFileSync(join(state.opencodeOverlayDir!, 'plugins', 'orca-opencode-status.js'), 'utf8')
+      readFileSync(join(state.opencodeOverlayDir!, 'plugins', 'occ-opencode-status.js'), 'utf8')
     ).toBe('// v1')
     expect(
-      readFileSync(join(state.opencode2OverlayDir!, 'plugins', 'orca-opencode2-status.js'), 'utf8')
+      readFileSync(join(state.opencode2OverlayDir!, 'plugins', 'occ-opencode2-status.js'), 'utf8')
     ).toBe('// v2')
   }
   await maybeRerunWslRelayGuestInstall(deps, state)

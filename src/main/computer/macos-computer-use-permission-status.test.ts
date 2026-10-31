@@ -16,10 +16,10 @@ const permissionStatusDelayMock = vi.hoisted(() =>
       })
   )
 )
-const permissionStatusTempDir = '/tmp/orca-computer-use-permissions-test'
+const permissionStatusTempDir = '/tmp/occ-computer-use-permissions-test'
 const permissionStatusPath = join(permissionStatusTempDir, 'status.json')
 
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 
 // The status poll's promise delay must use the fake clock this suite controls.
 vi.mock('node:timers/promises', async (importOriginal) => ({
@@ -83,7 +83,7 @@ describe('getComputerUsePermissionStatus', () => {
     resolveHelperExecutablePathMock.mockReset()
     resolveHelperAppPathMock.mockReturnValue('/Applications/OCC Computer Use.app')
     resolveHelperExecutablePathMock.mockReturnValue(
-      '/Applications/OCC Computer Use.app/Contents/MacOS/orca-computer-use-macos'
+      '/Applications/OCC Computer Use.app/Contents/MacOS/occ-computer-use-macos'
     )
     vi.mocked(mkdtemp).mockResolvedValue(permissionStatusTempDir)
     vi.mocked(stat).mockResolvedValue({} as Awaited<ReturnType<typeof stat>>)
@@ -338,7 +338,7 @@ describe('getComputerUsePermissionStatus', () => {
         program: '/usr/bin/pkill',
         args: [
           '-f',
-          `(^|[[:space:]/])orca-computer-use-macos[[:space:]]+--permission-status-file[[:space:]]+${escapeRegex(join(directory, 'status.json'))}$`
+          `(^|[[:space:]/])occ-computer-use-macos[[:space:]]+--permission-status-file[[:space:]]+${escapeRegex(join(directory, 'status.json'))}$`
         ],
         timeoutMs: 2000,
         stdio: 'ignore'
@@ -353,7 +353,7 @@ function expectOnlyOwnStatusHelperStopped(): void {
     program: '/usr/bin/pkill',
     args: [
       '-f',
-      `(^|[[:space:]/])orca-computer-use-macos[[:space:]]+--permission-status-file[[:space:]]+${escapeRegex(permissionStatusPath)}$`
+      `(^|[[:space:]/])occ-computer-use-macos[[:space:]]+--permission-status-file[[:space:]]+${escapeRegex(permissionStatusPath)}$`
     ],
     timeoutMs: 2000,
     stdio: 'ignore'

@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeWithRuntimeId } from '../../../runtime/construction/runtime-identity-state'
+import { OCCRuntimeWithRuntimeId } from '../../../runtime/construction/runtime-identity-state'
 import { TerminalIntentionalStops } from '../../../runtime/terminal-intentional-stops'
 import { TerminalRunFactsRegister } from '../../../runtime/terminal-run-facts'
 import { ptySizes } from '../delivery/visibility-state'
@@ -8,9 +8,9 @@ import { commitPtyIpcSpawn } from './spawn-commit'
 import { createPtyIpcSpawnState } from './spawn-state'
 import type { PtySpawnIpcDeps } from './spawn-types'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-const PTY_ID = 'orca-ipc-pty-run-facts'
+const PTY_ID = 'occ-ipc-pty-run-facts'
 const INCARNATION_ID = 'inc-ipc-run-facts'
 
 async function commit(
@@ -24,7 +24,7 @@ async function commit(
     terminalRunFacts: facts,
     intentionalPtyStops: stops,
     // Exercise real runtime commit handling through the fixture ports.
-    noteTerminalSpawnCommit: OrcaRuntimeWithRuntimeId.prototype.noteTerminalSpawnCommit,
+    noteTerminalSpawnCommit: OCCRuntimeWithRuntimeId.prototype.noteTerminalSpawnCommit,
     registerPreAllocatedHandleForPty: vi.fn(),
     registerPty: vi.fn(),
     cancelPendingPtyRegistration: vi.fn(),

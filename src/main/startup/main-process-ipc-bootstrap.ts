@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { placeUnshownLiveTerminalsBestEffort } from '../runtime/terminal/adoption/unshown-live-terminal-placement'
 import { recoverLegacyWorkerTerminalsForRendererStartup } from './legacy-worker-renderer-recovery'
 import { logStartupMilestone } from './startup-diagnostics'
@@ -59,7 +59,7 @@ export function registerMainProcessIpcHandlers(): void {
           return await state.runtime?.reconcileLegacyWorkerTerminals({ materializeRenderer: true })
         } finally {
           // Main adopts unshown terminals after worker recovery attempts, even failures; the window no longer does.
-          if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+          if (OCC_LAYOUT_OWNER_IS_MAIN) {
             await placeUnshownLiveTerminalsBestEffort(state.runtime)
           }
         }

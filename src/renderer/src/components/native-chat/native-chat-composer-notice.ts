@@ -18,18 +18,18 @@ export type NativeChatComposerNotice = NativeChatComposerNoticeContent & {
   onDismiss?: () => void
 } & ({ kind: 'error' | 'attachment' | 'device' } | { kind: 'host'; tone: 'warning' | 'muted' })
 
-/** Keep external errors apart from headline; localErrorIsOrcaWords identifies already-worded renderer errors. */
+/** Keep external errors apart from headline; localErrorIsOCCWords identifies already-worded renderer errors. */
 export function nativeChatNoticeFromError(
   error: unknown,
   headline: string,
-  options: { localErrorIsOrcaWords?: boolean } = {}
+  options: { localErrorIsOCCWords?: boolean } = {}
 ): NativeChatComposerNoticeContent {
   const detail = error instanceof Error ? readIpcErrorDetail(error) : String(error ?? '').trim()
   if (!detail) {
     return { text: headline }
   }
   const wrapped = error instanceof Error && detail !== error.message.trim()
-  return options.localErrorIsOrcaWords && error instanceof Error && !wrapped
+  return options.localErrorIsOCCWords && error instanceof Error && !wrapped
     ? { text: detail }
     : { text: headline, errorText: detail }
 }
@@ -39,7 +39,7 @@ export function setNativeChatNoticeFromError(
   setNotice: (text: string | null, errorText?: string) => void,
   error: unknown,
   headline: string,
-  options: { localErrorIsOrcaWords?: boolean } = {}
+  options: { localErrorIsOCCWords?: boolean } = {}
 ): void {
   const notice = nativeChatNoticeFromError(error, headline, options)
   if (notice.errorText) {
@@ -59,5 +59,5 @@ export function setNativeChatPasteFailure(
     setNotice(readIpcErrorDetail(error) ?? headline)
     return
   }
-  setNativeChatNoticeFromError(setNotice, error, headline, { localErrorIsOrcaWords: true })
+  setNativeChatNoticeFromError(setNotice, error, headline, { localErrorIsOCCWords: true })
 }

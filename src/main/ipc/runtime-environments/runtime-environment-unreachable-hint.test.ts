@@ -7,7 +7,7 @@ const UNREACHABLE = 'Could not connect to the remote OCC runtime at ws://127.0.0
 describe('withRuntimeUnreachableHint', () => {
   it('points a WSL host at its own reconnect, never at Tailscale', () => {
     const message = withRuntimeUnreachableHint(
-      { orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 } },
+      { occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 } },
       UNREACHABLE,
       'ws://127.0.0.1:42000'
     )
@@ -23,7 +23,7 @@ describe('withRuntimeUnreachableHint', () => {
 
   it('leaves other failures alone', () => {
     const wsl = {
-      orcadDeployment: { kind: 'wsl' as const, distro: 'Ubuntu', localPort: 1, remotePort: 2 }
+      occdDeployment: { kind: 'wsl' as const, distro: 'Ubuntu', localPort: 1, remotePort: 2 }
     }
     expect(withRuntimeUnreachableHint(wsl, 'Unauthorized', null)).toBe('Unauthorized')
   })
@@ -32,12 +32,12 @@ describe('withRuntimeUnreachableHint', () => {
     ['a paired server', {}],
     [
       'a legacy SSH-managed server',
-      { orcadDeployment: { sshTargetId: 't', sshTargetGeneration: 1, localPort: 1, remotePort: 2 } }
+      { occdDeployment: { sshTargetId: 't', sshTargetGeneration: 1, localPort: 1, remotePort: 2 } }
     ],
     [
       'an SSH-managed server',
       {
-        orcadDeployment: {
+        occdDeployment: {
           kind: 'ssh' as const,
           sshTargetId: 't',
           sshTargetGeneration: 1,
@@ -55,7 +55,7 @@ describe('withRuntimeUnreachableHint', () => {
   it('pins the full WSL hint text', () => {
     expect(
       withRuntimeUnreachableHint(
-        { orcadDeployment: { kind: 'wsl', distro: 'Debian', localPort: 1, remotePort: 2 } },
+        { occdDeployment: { kind: 'wsl', distro: 'Debian', localPort: 1, remotePort: 2 } },
         'Timed out waiting for the remote OCC runtime.',
         null
       )

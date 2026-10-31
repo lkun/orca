@@ -34,7 +34,7 @@ describe('registerNotificationHandlers', () => {
   beforeEach(() => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-03-28T16:00:00Z'))
-    tempDir = mkdtempSync(join(tmpdir(), 'orca-notification-test-'))
+    tempDir = mkdtempSync(join(tmpdir(), 'occ-notification-test-'))
     resetNotificationDispatchMocks()
   })
 

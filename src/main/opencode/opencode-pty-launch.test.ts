@@ -85,7 +85,7 @@ afterEach(() => vi.unstubAllEnvs())
 
 describe('execution-host OpenCode launch preparation', () => {
   it('gives OpenCode 2 a private server only while another data dir holds the one-port service', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-opencode-service-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-opencode-service-'))
     try {
       const [user, a, b] = ['user', 'a', 'b'].map((name) => join(root, name))
       const register = (home: string) => {
@@ -121,8 +121,8 @@ describe('execution-host OpenCode launch preparation', () => {
       // Daemon spawns arrive with the resumed account already applied and the request consumed.
       const resumedB = {
         XDG_STATE_HOME: b,
-        ORCA_DATA_ACCOUNT_PROVIDER: 'opencode',
-        ORCA_DATA_ACCOUNT_STATE_HOME: b
+        OCC_DATA_ACCOUNT_PROVIDER: 'opencode',
+        OCC_DATA_ACCOUNT_STATE_HOME: b
       }
       expect(await launch('2.0.16', 'opencode --session ses_b', resumedB)).toBe(
         'opencode --standalone --session ses_b'
@@ -139,19 +139,19 @@ describe('execution-host OpenCode launch preparation', () => {
     probe.mockResolvedValue(getOpenCodeCliCapabilities('2.0.16'))
     install.mockImplementation((env) => {
       env.OPENCODE_CONFIG_DIR = '/private/owned-overlay'
-      env.ORCA_OPENCODE_SOURCE_CONFIG_DIR = '/private/real-source'
+      env.OCC_OPENCODE_SOURCE_CONFIG_DIR = '/private/real-source'
       return true
     })
-    const envToDelete = ['OPENCODE_CONFIG_DIR', 'ORCA_OPENCODE_SOURCE_CONFIG_DIR']
+    const envToDelete = ['OPENCODE_CONFIG_DIR', 'OCC_OPENCODE_SOURCE_CONFIG_DIR']
     const env = await prepare({
       command: 'opencode --prompt task',
       isFreshLaunch: true,
       envToDelete,
       env: {
-        ORCA_AGENT_LAUNCH_TOKEN: 'admitted-launch',
-        ORCA_OPENCODE_STARTUP_PROMPT_SHA256: createHash('sha256').update('task').digest('hex'),
-        ORCA_OPENCODE_STARTUP_PROMPT_BODY: 'task',
-        ORCA_OPENCODE_STARTUP_PROMPT_SHELL: 'posix'
+        OCC_AGENT_LAUNCH_TOKEN: 'admitted-launch',
+        OCC_OPENCODE_STARTUP_PROMPT_SHA256: createHash('sha256').update('task').digest('hex'),
+        OCC_OPENCODE_STARTUP_PROMPT_BODY: 'task',
+        OCC_OPENCODE_STARTUP_PROMPT_SHELL: 'posix'
       }
     })
     const finalEnv = await buildLocalPtySpawnEnvironment({
@@ -162,14 +162,14 @@ describe('execution-host OpenCode launch preparation', () => {
     })
     enforceLocalPtySpawnEnvironmentOverrides({ cols: 80, rows: 24, env, envToDelete }, finalEnv)
     expect(finalEnv.OPENCODE_CONFIG_DIR).toBe('/private/owned-overlay')
-    expect(finalEnv.ORCA_OPENCODE_SOURCE_CONFIG_DIR).toBe('/private/real-source')
+    expect(finalEnv.OCC_OPENCODE_SOURCE_CONFIG_DIR).toBe('/private/real-source')
   })
   it.each(['2.0.12', '2.0.16'])(
     'removes only the automatic %s prompt argument, retaining explicit run and manual flags',
     async (version) => {
       probe.mockResolvedValue(getOpenCodeCliCapabilities(version))
       const env = {
-        ORCA_AGENT_LAUNCH_TOKEN: 'admitted-launch',
+        OCC_AGENT_LAUNCH_TOKEN: 'admitted-launch',
         [OPENCODE_STARTUP_PROMPT_SHA256_ENV]: createHash('sha256').update('task').digest('hex'),
         [OPENCODE_STARTUP_PROMPT_BODY_ENV]: 'task',
         [OPENCODE_STARTUP_PROMPT_SHELL_ENV]: 'posix'
@@ -208,7 +208,7 @@ describe('execution-host OpenCode launch preparation', () => {
         envToDelete: selection === 'deleted' ? ['XDG_CONFIG_HOME'] : [],
         isFreshLaunch: true,
         env: {
-          ORCA_AGENT_LAUNCH_TOKEN: 'admitted-launch',
+          OCC_AGENT_LAUNCH_TOKEN: 'admitted-launch',
           [OPENCODE_STARTUP_PROMPT_SHA256_ENV]: createHash('sha256').update('task').digest('hex'),
           [OPENCODE_STARTUP_PROMPT_BODY_ENV]: 'task',
           [OPENCODE_STARTUP_PROMPT_SHELL_ENV]: 'posix',
@@ -237,7 +237,7 @@ describe('execution-host OpenCode launch preparation', () => {
       }
       if (failure === 'installer') {
         install.mockImplementation((env) => {
-          delete env.ORCA_OPENCODE_STARTUP_PROMPT_NONCE
+          delete env.OCC_OPENCODE_STARTUP_PROMPT_NONCE
         })
       }
       if (failure === 'capacity') {
@@ -249,14 +249,14 @@ describe('execution-host OpenCode launch preparation', () => {
         envToDelete: [],
         isFreshLaunch: true,
         env: {
-          ...(failure === 'identity' ? {} : { ORCA_AGENT_LAUNCH_TOKEN: 'admitted-launch' }),
+          ...(failure === 'identity' ? {} : { OCC_AGENT_LAUNCH_TOKEN: 'admitted-launch' }),
           [OPENCODE_STARTUP_PROMPT_SHA256_ENV]: createHash('sha256').update('task').digest('hex'),
           [OPENCODE_STARTUP_PROMPT_BODY_ENV]: 'task',
           [OPENCODE_STARTUP_PROMPT_SHELL_ENV]: 'posix'
         }
       })
       expect(result.command).toBe(original)
-      expect(result.env).not.toHaveProperty('ORCA_OPENCODE_STARTUP_PROMPT_NONCE')
+      expect(result.env).not.toHaveProperty('OCC_OPENCODE_STARTUP_PROMPT_NONCE')
     }
   )
   it.each([
@@ -275,7 +275,7 @@ describe('execution-host OpenCode launch preparation', () => {
       const env = await prepare({
         command: 'opencode --prompt task',
         env: {
-          ORCA_AGENT_LAUNCH_TOKEN: 'admitted-launch',
+          OCC_AGENT_LAUNCH_TOKEN: 'admitted-launch',
           [OPENCODE_STARTUP_PROMPT_SHA256_ENV]: fingerprint,
           [OPENCODE_STARTUP_PROMPT_BODY_ENV]: 'task',
           [OPENCODE_STARTUP_PROMPT_SHELL_ENV]: 'posix'
@@ -305,7 +305,7 @@ describe('execution-host OpenCode launch preparation', () => {
   it('keeps deleted credentials and config absent from the probe and final provider environment', async () => {
     vi.stubEnv('ANTHROPIC_API_KEY', 'dummy-deleted-key')
     vi.stubEnv('OPENCODE_CONFIG_DIR', '/dummy/deleted-config')
-    vi.stubEnv('ORCA_OPENCODE_PLUGIN_API', 'v1')
+    vi.stubEnv('OCC_OPENCODE_PLUGIN_API', 'v1')
     probe.mockResolvedValue(getOpenCodeCliCapabilities(null))
     const envToDelete = ['ANTHROPIC_API_KEY', 'OPENCODE_CONFIG_DIR']
     const env = await prepare({
@@ -317,7 +317,7 @@ describe('execution-host OpenCode launch preparation', () => {
     const probeEnv = probe.mock.calls[0]?.[0].env
     expect(probeEnv).not.toHaveProperty('ANTHROPIC_API_KEY')
     expect(probeEnv).not.toHaveProperty('OPENCODE_CONFIG_DIR')
-    expect(probeEnv).not.toHaveProperty('ORCA_OPENCODE_PLUGIN_API')
+    expect(probeEnv).not.toHaveProperty('OCC_OPENCODE_PLUGIN_API')
     const finalEnv = await buildLocalPtySpawnEnvironment({
       id: 'probe',
       spawn: { cols: 80, rows: 24, env, envToDelete },
@@ -327,13 +327,13 @@ describe('execution-host OpenCode launch preparation', () => {
     enforceLocalPtySpawnEnvironmentOverrides({ cols: 80, rows: 24, env, envToDelete }, finalEnv)
     expect(finalEnv).not.toHaveProperty('ANTHROPIC_API_KEY')
     expect(finalEnv).not.toHaveProperty('OPENCODE_CONFIG_DIR')
-    expect(finalEnv).not.toHaveProperty('ORCA_OPENCODE_PLUGIN_API')
+    expect(finalEnv).not.toHaveProperty('OCC_OPENCODE_PLUGIN_API')
   })
 
   it('retains a verified selection through the final provider deletion pass', async () => {
-    vi.stubEnv('ORCA_OPENCODE_PLUGIN_API', 'v1')
+    vi.stubEnv('OCC_OPENCODE_PLUGIN_API', 'v1')
     probe.mockResolvedValue(getOpenCodeCliCapabilities('2.0.16'))
-    const envToDelete = ['KEEP_DELETED', 'ORCA_OPENCODE_PLUGIN_API']
+    const envToDelete = ['KEEP_DELETED', 'OCC_OPENCODE_PLUGIN_API']
     const env = await prepare({
       command: 'opencode',
       env: {},
@@ -348,7 +348,7 @@ describe('execution-host OpenCode launch preparation', () => {
     })
     finalEnv.KEEP_DELETED = 'dummy'
     enforceLocalPtySpawnEnvironmentOverrides({ cols: 80, rows: 24, env, envToDelete }, finalEnv)
-    expect(finalEnv.ORCA_OPENCODE_PLUGIN_API).toBe('v2')
+    expect(finalEnv.OCC_OPENCODE_PLUGIN_API).toBe('v2')
     expect(finalEnv).not.toHaveProperty('KEEP_DELETED')
   })
 
@@ -359,7 +359,7 @@ describe('execution-host OpenCode launch preparation', () => {
       probe.mockResolvedValue(capabilities)
       const env = {
         KEEP: '1',
-        ORCA_OPENCODE_PLUGIN_API: 'stale'
+        OCC_OPENCODE_PLUGIN_API: 'stale'
       }
       const result = await prepare({
         command: 'opencode --prompt test',
@@ -369,8 +369,8 @@ describe('execution-host OpenCode launch preparation', () => {
         cwd: '/repo',
         isFreshLaunch: true
       })
-      expect(result).toEqual({ KEEP: '1', ORCA_OPENCODE_PLUGIN_API: capabilities.pluginApi })
-      expect(env).toEqual({ KEEP: '1', ORCA_OPENCODE_PLUGIN_API: 'stale' })
+      expect(result).toEqual({ KEEP: '1', OCC_OPENCODE_PLUGIN_API: capabilities.pluginApi })
+      expect(env).toEqual({ KEEP: '1', OCC_OPENCODE_PLUGIN_API: 'stale' })
       expect(probe).toHaveBeenCalledWith(
         expect.objectContaining({
           command: 'opencode --prompt test',
@@ -390,7 +390,7 @@ describe('execution-host OpenCode launch preparation', () => {
         envToDelete: [],
         isFreshLaunch: true
       })
-    ).toEqual({ ORCA_OPENCODE_PLUGIN_API: 'v2' })
+    ).toEqual({ OCC_OPENCODE_PLUGIN_API: 'v2' })
   })
 
   it('forwards WSL plugin selection through WSLENV after a guest probe', async () => {
@@ -405,8 +405,8 @@ describe('execution-host OpenCode launch preparation', () => {
       wsl: { distro: 'Ubuntu' }
     })
     expect(result).toMatchObject({
-      ORCA_OPENCODE_PLUGIN_API: 'v1',
-      WSLENV: 'ORCA_OPENCODE_PLUGIN_API'
+      OCC_OPENCODE_PLUGIN_API: 'v1',
+      WSLENV: 'OCC_OPENCODE_PLUGIN_API'
     })
     expect(probe).toHaveBeenCalledWith(expect.objectContaining({ wsl: { distro: 'Ubuntu' } }))
   })
@@ -414,10 +414,10 @@ describe('execution-host OpenCode launch preparation', () => {
   it.each([{ connectionId: 'remote', isFreshLaunch: true }, { isFreshLaunch: false }])(
     'never probes the client for an attach or SSH launch',
     async (route) => {
-      const env = { ORCA_OPENCODE_PLUGIN_API: 'v1' }
+      const env = { OCC_OPENCODE_PLUGIN_API: 'v1' }
       expect(await prepare({ command: 'opencode', env, envToDelete: [], ...route })).toEqual({})
       expect(probe).not.toHaveBeenCalled()
-      expect(env).toEqual({ ORCA_OPENCODE_PLUGIN_API: 'v1' })
+      expect(env).toEqual({ OCC_OPENCODE_PLUGIN_API: 'v1' })
     }
   )
 })

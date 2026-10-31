@@ -5,11 +5,11 @@ import { Badge } from '../ui/badge'
 import { SettingsSubsectionHeader } from './SettingsFormControls'
 import { showDeleteWorktreeFailureToast } from '../sidebar/delete-worktree-failure-toast'
 import { showLocalBaseRefUpdateSuggestionToast } from '../sidebar/local-base-ref-suggestion-toast'
-import { useOrcaProfileAuthStatusRefresh } from '@/hooks/use-orca-profile-auth-status-refresh'
+import { useOCCProfileAuthStatusRefresh } from '@/hooks/use-occ-profile-auth-status-refresh'
 import { translate } from '@/i18n/i18n'
 import { useAppStore } from '@/store'
 import type { AppState } from '@/store/types'
-import { OrcaSignInButton, OrcaSignInWaitNotice } from '../OrcaSignInProgress'
+import { OCCSignInButton, OCCSignInWaitNotice } from '../OCCSignInProgress'
 
 const LONG_WORKSPACE_NAME = 'feature/dev-toast-layout-with-a-long-workspace-name'
 const DEV_TOAST_DESCRIPTION =
@@ -136,22 +136,22 @@ function showDeleteFailureToast(): void {
 }
 
 // Preview Cloud auth under dev environment flags while packaged account switchers remain hidden.
-function OrcaCloudDevSubsection(): React.JSX.Element {
-  const authStatus = useAppStore((s) => s.orcaProfileAuthStatus)
-  const signOut = useAppStore((s) => s.signOutCurrentOrcaProfile)
-  const refresh = useAppStore((s) => s.fetchOrcaProfileAuthStatus)
+function OCCCloudDevSubsection(): React.JSX.Element {
+  const authStatus = useAppStore((s) => s.occProfileAuthStatus)
+  const signOut = useAppStore((s) => s.signOutCurrentOCCProfile)
+  const refresh = useAppStore((s) => s.fetchOCCProfileAuthStatus)
   const configured = authStatus?.configured === true
   const connected = authStatus?.state === 'connected'
-  useOrcaProfileAuthStatusRefresh()
+  useOCCProfileAuthStatusRefresh()
 
   return (
     <section className="space-y-3">
       <div className="flex items-start justify-between gap-3">
         <SettingsSubsectionHeader
-          title={translate('auto.components.settings.DevToolsPane.orcaCloud', 'OCC Cloud')}
+          title={translate('auto.components.settings.DevToolsPane.occCloud', 'OCC Cloud')}
           description={translate(
-            'auto.components.settings.DevToolsPane.orcaCloudDescription',
-            'Dev-only preview of first-party cloud sign-in. Hidden in production; in dev it also appears in the sidebar account switcher once ORCA_CLOUD_API_URL and ORCA_CLOUD_CLIENT_ID are set.'
+            'auto.components.settings.DevToolsPane.occCloudDescription',
+            'Dev-only preview of first-party cloud sign-in. Hidden in production; in dev it also appears in the sidebar account switcher once OCC_CLOUD_API_URL and OCC_CLOUD_CLIENT_ID are set.'
           )}
         />
         <Badge variant="outline" className="mt-0.5">
@@ -162,26 +162,26 @@ function OrcaCloudDevSubsection(): React.JSX.Element {
       {configured ? (
         <div className="space-y-2">
           <p className="text-xs text-muted-foreground">
-            {translate('auto.components.settings.DevToolsPane.orcaCloudStatus', 'Status')}:{' '}
+            {translate('auto.components.settings.DevToolsPane.occCloudStatus', 'Status')}:{' '}
             <span className="font-medium text-foreground">{authStatus?.state}</span>
           </p>
           <div className="flex flex-wrap gap-2">
             {connected ? (
               <Button type="button" variant="outline" size="sm" onClick={() => void signOut()}>
-                {translate('auto.components.settings.DevToolsPane.orcaCloudSignOut', 'Sign out')}
+                {translate('auto.components.settings.DevToolsPane.occCloudSignOut', 'Sign out')}
               </Button>
             ) : (
-              <OrcaSignInButton variant="outline" size="sm">
+              <OCCSignInButton variant="outline" size="sm">
                 {translate(
-                  'auto.components.settings.DevToolsPane.orcaCloudConnect',
+                  'auto.components.settings.DevToolsPane.occCloudConnect',
                   'Connect profile'
                 )}
-              </OrcaSignInButton>
+              </OCCSignInButton>
             )}
-            {connected ? null : <OrcaSignInWaitNotice className="basis-full" />}
+            {connected ? null : <OCCSignInWaitNotice className="basis-full" />}
             <Button type="button" variant="ghost" size="sm" onClick={() => void refresh()}>
               {translate(
-                'auto.components.settings.DevToolsPane.orcaCloudRefresh',
+                'auto.components.settings.DevToolsPane.occCloudRefresh',
                 'Refresh status'
               )}
             </Button>
@@ -191,8 +191,8 @@ function OrcaCloudDevSubsection(): React.JSX.Element {
         <p className="text-xs text-muted-foreground">
           {authStatus?.setupMessage ??
             translate(
-              'auto.components.settings.DevToolsPane.orcaCloudNotConfigured',
-              'Set ORCA_CLOUD_API_URL and ORCA_CLOUD_CLIENT_ID to preview OCC Cloud sign-in in this dev build.'
+              'auto.components.settings.DevToolsPane.occCloudNotConfigured',
+              'Set OCC_CLOUD_API_URL and OCC_CLOUD_CLIENT_ID to preview OCC Cloud sign-in in this dev build.'
             )}
         </p>
       )}
@@ -322,7 +322,7 @@ export function DevToolsPane(): React.JSX.Element {
         </div>
       </section>
 
-      <OrcaCloudDevSubsection />
+      <OCCCloudDevSubsection />
     </div>
   )
 }

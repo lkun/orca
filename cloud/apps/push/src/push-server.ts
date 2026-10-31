@@ -7,7 +7,7 @@ import {
   PushHostSessionRequestSchema,
   PushSendRequestSchema,
   type PushSendResult
-} from '@orca-cloud/push-contract'
+} from '@occ-cloud/push-contract'
 import { Hono, type MiddlewareHandler } from 'hono'
 import { bodyLimit } from 'hono/body-limit'
 import { ApnsClient } from './apns-client.js'
@@ -123,7 +123,7 @@ export function createPushServer(
     observability.record('request_error')
     console.warn(
       JSON.stringify({
-        event: 'orca_push_request_failed',
+        event: 'occ_push_request_failed',
         error: error instanceof Error ? error.name : 'unknown'
       })
     )

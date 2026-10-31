@@ -39,7 +39,7 @@ vi.mock('./runtime-client', () => {
   class RuntimeClient {
     call = callMock
     getOfflineRuntimeAdmission = getOfflineRuntimeAdmissionMock
-    openOrca = vi.fn()
+    openOCC = vi.fn()
 
     constructor(...args: unknown[]) {
       constructorArgsMock(...args)
@@ -58,7 +58,7 @@ describe('RuntimeClient module-graph deferral', () => {
   let errorSpy: ReturnType<typeof vi.spyOn>
 
   beforeEach(() => {
-    testUserDataPathRef.current = mkdtempSync(join(tmpdir(), 'orca-runtime-deferral-userdata-'))
+    testUserDataPathRef.current = mkdtempSync(join(tmpdir(), 'occ-runtime-deferral-userdata-'))
     applyAgentStatusHooksEnabledMock.mockClear()
     constructorArgsMock.mockClear()
     callMock.mockReset()
@@ -102,8 +102,8 @@ describe('RuntimeClient module-graph deferral', () => {
   it.each(SUPPRESSED_GROUPS)(
     'suppresses ambient remote selection for %s with the expected client count',
     async (_name, argv, constructs) => {
-      vi.stubEnv('ORCA_PAIRING_CODE', 'pairing-code')
-      vi.stubEnv('ORCA_ENVIRONMENT', 'some-environment')
+      vi.stubEnv('OCC_PAIRING_CODE', 'pairing-code')
+      vi.stubEnv('OCC_ENVIRONMENT', 'some-environment')
       getOfflineRuntimeAdmissionMock.mockResolvedValue({
         reachable: false,
         legacyPidRunning: false,
@@ -139,8 +139,8 @@ describe('RuntimeClient module-graph deferral', () => {
   it.each(SUPPRESSED_GROUPS.map(([name, argv]) => [name, argv] as const))(
     'forwards null remote selection to the client %s would build',
     async (_name, argv) => {
-      vi.stubEnv('ORCA_PAIRING_CODE', 'pairing-code')
-      vi.stubEnv('ORCA_ENVIRONMENT', 'some-environment')
+      vi.stubEnv('OCC_PAIRING_CODE', 'pairing-code')
+      vi.stubEnv('OCC_ENVIRONMENT', 'some-environment')
       const dispatchSpy = vi.spyOn(dispatchModule, 'dispatch').mockResolvedValue(undefined)
       try {
         await main(argv, '/tmp/repo')
@@ -159,7 +159,7 @@ describe('RuntimeClient module-graph deferral', () => {
   )
 
   it('forwards undefined remote selection for a non-suppressed group', async () => {
-    vi.stubEnv('ORCA_PAIRING_CODE', 'pairing-code')
+    vi.stubEnv('OCC_PAIRING_CODE', 'pairing-code')
     const dispatchSpy = vi.spyOn(dispatchModule, 'dispatch').mockResolvedValue(undefined)
     try {
       await main(['worktree', 'list'], '/tmp/repo')

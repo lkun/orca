@@ -91,7 +91,7 @@ describe('source-scoped workspace reference status reads', () => {
     for (const review of [
       referenceReview(9),
       referenceReview(7, { provider: 'gitlab' }),
-      referenceReview(7, { url: 'https://github.com/other/orca/pull/7' })
+      referenceReview(7, { url: 'https://github.com/other/occ/pull/7' })
     ]) {
       mocks.review.mockResolvedValue(review)
       expect(await readWorkspaceReferenceDetails(request)).toBeNull()
@@ -109,7 +109,7 @@ describe('source-scoped workspace reference status reads', () => {
     expect(
       await readWorkspaceReferenceDetails(
         getWorkspaceReferenceRequest(
-          { ...referenceAttachment(), url: 'https://github.com/other/orca/pull/7' },
+          { ...referenceAttachment(), url: 'https://github.com/other/occ/pull/7' },
           referenceWorkspace,
           referenceRepo
         )
@@ -206,7 +206,7 @@ describe('source-scoped workspace reference status reads', () => {
     for (const fields of [
       { accountLabel: 'other-account' },
       { repoId: 'foreign-repo' },
-      { providerIdentity: { provider: 'github' as const, owner: 'other', repo: 'orca' } }
+      { providerIdentity: { provider: 'github' as const, owner: 'other', repo: 'occ' } }
     ]) {
       const context = normalizeTaskSourceContext({
         provider: 'github',

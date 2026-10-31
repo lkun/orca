@@ -56,7 +56,7 @@ function addLedgerRecognizedHashes(
 }
 
 /** Read Codex's recorded hashes only for matching OCC hook signatures. */
-export function readLedgerOrcaHashes(
+export function readLedgerOCCHashes(
   runtimeHomePath: string,
   command: string,
   timeoutSec: number

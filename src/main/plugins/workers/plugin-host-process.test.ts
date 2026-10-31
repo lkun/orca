@@ -30,7 +30,7 @@ function start(child: FakeChild, options: { eventTimeoutMs?: number } = {}) {
 }
 
 const ready = (commands: string[]) => ({
-  orca: 1,
+  occ: 1,
   kind: 'evt',
   event: 'ready',
   payload: { commands }
@@ -100,7 +100,7 @@ describe('startPluginWorker', () => {
     })
 
     expect(handle.inFlightCount()).toBe(1)
-    child.emit('message', { orca: 1, kind: 'res', id: 0, result: null })
+    child.emit('message', { occ: 1, kind: 'res', id: 0, result: null })
     expect(handle.inFlightCount()).toBe(0)
   })
 
@@ -161,20 +161,20 @@ describe('startPluginWorker', () => {
     child.emit('message', ready([]))
     await pending
 
-    child.emit('message', { orca: 1, kind: 'req', id: 3, method: 'storage.keys', params: {} })
+    child.emit('message', { occ: 1, kind: 'req', id: 3, method: 'storage.keys', params: {} })
     expect(executeHostCall).toHaveBeenCalledWith('storage.keys', {})
     finish({ ok: true, value: { keys: [] } })
     await vi.waitFor(() =>
       expect(child.send).toHaveBeenLastCalledWith({
-        orca: 1,
+        occ: 1,
         kind: 'res',
         id: 3,
         result: { keys: [] }
       })
     )
 
-    child.emit('message', { orca: 1, kind: 'req', id: 4, method: 'storage.keys', params: {} })
-    child.emit('message', { orca: 1, kind: 'cancel', id: 4 })
+    child.emit('message', { occ: 1, kind: 'req', id: 4, method: 'storage.keys', params: {} })
+    child.emit('message', { occ: 1, kind: 'cancel', id: 4 })
     const sends = child.send.mock.calls.length
     finish({ ok: true, value: { keys: [] } })
     await new Promise((resolve) => setTimeout(resolve, 0))
@@ -201,6 +201,6 @@ describe('startPluginWorker', () => {
     const rejected = expect(command).rejects.toThrow('timed out')
     await vi.advanceTimersByTimeAsync(25)
     await rejected
-    expect(child.send).toHaveBeenLastCalledWith({ orca: 1, kind: 'cancel', id: 0 })
+    expect(child.send).toHaveBeenLastCalledWith({ occ: 1, kind: 'cancel', id: 0 })
   })
 })

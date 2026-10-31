@@ -15,7 +15,7 @@ import {
   relayCellAdmissionBounds,
   type RelayCellConnectionHardCap,
   type RelayRegion
-} from '@orca-cloud/relay-contract'
+} from '@occ-cloud/relay-contract'
 import { Hono, type Context } from 'hono'
 import { SignJWT } from 'jose'
 import { z } from 'zod'
@@ -250,7 +250,7 @@ export function createRelayApp(
     } catch (error) {
       console.warn(
         JSON.stringify({
-          event: 'orca_relay_shadow_compare_failed',
+          event: 'occ_relay_shadow_compare_failed',
           route,
           reason: error instanceof Error ? error.message : 'unknown'
         })
@@ -627,7 +627,7 @@ export function createRelayApp(
         } catch (error) {
           if (body.data.regionCorrection.action === 'report') throw error
           // Optional measurement setup must not discard an otherwise valid placement.
-          console.warn(JSON.stringify({ event: 'orca_relay_region_window_unavailable' }))
+          console.warn(JSON.stringify({ event: 'occ_relay_region_window_unavailable' }))
         }
       }
     } catch (error) {
@@ -682,7 +682,7 @@ export function createRelayApp(
     // Reconnect grant logs locate hosts; placement-lane grants prove where failed sticky verifications eventually landed.
     if (body.data.reconnect) {
       console.warn(
-        `[orca-relay] assignment granted lane=${lane} hinted=true` +
+        `[occ-relay] assignment granted lane=${lane} hinted=true` +
           ` host=${relayHostLogDigest(claims.relayHostId)} cell=${assignment.cellId}`
       )
     }
@@ -1270,7 +1270,7 @@ export function createRelayApp(
         // The sweeps' switch: every write is on the record, the break-glass flip included.
         console.warn(
           JSON.stringify({
-            event: 'orca_relay_cell_admit_mode_recorded',
+            event: 'occ_relay_cell_admit_mode_recorded',
             cellId: body.data.cellId,
             from: before.admitMode,
             to: body.data.admitMode
@@ -2221,7 +2221,7 @@ const CellFenceAttemptBaseShape = {
   terraformStateObjectSha256: z.string().regex(/^[a-f0-9]{64}$/),
   requestReason: z
     .string()
-    .regex(/^orca-relay-fence\/[0-9a-f]{8}-[0-9a-f-]{27}$/)
+    .regex(/^occ-relay-fence\/[0-9a-f]{8}-[0-9a-f-]{27}$/)
 } as const
 const CellFenceAttemptEvidenceShape = {
   ...CellFenceAttemptBaseShape,
@@ -2408,7 +2408,7 @@ function logAssignmentRejection(input: {
   retryAfterSeconds?: number
 }): void {
   console.warn(
-    `[orca-relay] assignment rejected route=${input.route} lane=${input.lane}` +
+    `[occ-relay] assignment rejected route=${input.route} lane=${input.lane}` +
       ` hinted=${input.hinted} reason=${input.reason}` +
       ` host=${relayHostLogDigest(input.relayHostId)}` +
       (input.retryAfterSeconds === undefined ? '' : ` retryAfter=${input.retryAfterSeconds}`) +

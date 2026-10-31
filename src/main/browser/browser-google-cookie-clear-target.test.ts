@@ -117,7 +117,7 @@ const profile: BrowserSessionProfile = {
   source: null
 }
 const route = {
-  orcaProfileId: 'orca',
+  occProfileId: 'occ',
   authorityConnectionIdentity: 'new',
   pairingAuthorityConnectionIdentity: 'old',
   legacyAuthorityConnectionIdentity: 'legacy',
@@ -374,8 +374,8 @@ it('retains actual local/file/client import destinations, source-only replacemen
   vi.mocked(browserSessionRegistry.getProfile).mockRestore()
   vi.mocked(browserSessionRegistry.updateProfileSource).mockRestore()
   vi.mocked(browserSessionRegistry.requireRouteBrowserProfile).mockRestore()
-  browserSessionRegistry.configureForOrcaProfile({
-    orcaProfileId: 'orca',
+  browserSessionRegistry.configureForOCCProfile({
+    occProfileId: 'occ',
     profileDirectory: mocks.root
   })
   const selected = browserSessionRegistry.getDefaultProfile()
@@ -389,7 +389,7 @@ it('retains actual local/file/client import destinations, source-only replacemen
   }
   const changed = vi.fn()
   browserSessionRegistry.onProfilesChanged = changed
-  runtime.configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: 'orca' })
+  runtime.configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: 'occ' })
   await runtime.startPairedRuntimeBrowserClientHost({
     authorityRuntimeId: 'D',
     environment: {

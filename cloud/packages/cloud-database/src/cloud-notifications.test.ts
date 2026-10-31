@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { openCloudDatabase, openInMemoryCloudDatabase } from './cloud-database.js'
 import { openCloudNotifications } from './cloud-notifications.js'
 
-const postgresUrl = process.env.ORCA_CLOUD_DATABASE_TEST_URL
+const postgresUrl = process.env.OCC_CLOUD_DATABASE_TEST_URL
 
 function collector() {
   const payloads: string[] = []

@@ -1,6 +1,6 @@
 import type { Page } from '@stablyai/playwright-test'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   execInTerminal,
@@ -236,50 +236,50 @@ async function startStreamingFixturePhase1(page: Page): Promise<string> {
 
 test.describe('terminal scroll intent keeps following output', () => {
   test('a sub-row wheel-up that never moves the viewport must not stop follow-output', async ({
-    orcaPage
+    occPage
   }) => {
-    const ptyId = await startStreamingFixturePhase1(orcaPage)
+    const ptyId = await startStreamingFixturePhase1(occPage)
 
     // Use -2px trackpad jitter: zero xterm rows, but still an observed intent event.
-    await dispatchSubRowWheelUp(orcaPage)
-    await orcaPage.waitForTimeout(INTENT_SETTLE_WAIT_MS)
+    await dispatchSubRowWheelUp(occPage)
+    await occPage.waitForTimeout(INTENT_SETTLE_WAIT_MS)
 
     // Any byte releases the fixture's phase-2 stream.
-    await sendToTerminal(orcaPage, ptyId, 'g')
-    await waitForMarkerAtBottom(orcaPage, 'STREAM_PHASE2_DONE')
+    await sendToTerminal(occPage, ptyId, 'g')
+    await waitForMarkerAtBottom(occPage, 'STREAM_PHASE2_DONE')
   })
 
   test('a plain Home keypress delivered to the app must not stop follow-output', async ({
-    orcaPage
+    occPage
   }) => {
-    await startStreamingFixturePhase1(orcaPage)
+    await startStreamingFixturePhase1(occPage)
 
     // The Home escape sequence reaching the fixture's stdin doubles as the
     // phase-2 release, exactly like a user pressing Home mid-generation.
-    await dispatchPlainHomeKeydown(orcaPage)
-    await waitForMarkerAtBottom(orcaPage, 'STREAM_PHASE2_DONE')
+    await dispatchPlainHomeKeydown(occPage)
+    await waitForMarkerAtBottom(occPage, 'STREAM_PHASE2_DONE')
   })
 
-  test('a real wheel pin stays fixed while visible output streams', async ({ orcaPage }) => {
-    const ptyId = await startStreamingFixturePhase1(orcaPage)
+  test('a real wheel pin stays fixed while visible output streams', async ({ occPage }) => {
+    const ptyId = await startStreamingFixturePhase1(occPage)
 
-    await dispatchRealWheel(orcaPage, -240)
+    await dispatchRealWheel(occPage, -240)
     await expect
       .poll(async () => {
-        const probe = await probeActiveViewport(orcaPage, 'STREAM_PHASE1_DONE')
+        const probe = await probeActiveViewport(occPage, 'STREAM_PHASE1_DONE')
         return probe ? probe.baseY - probe.viewportY : 0
       })
       .toBeGreaterThan(1)
-    const pinned = await probeActiveViewport(orcaPage, 'STREAM_PHASE1_DONE')
+    const pinned = await probeActiveViewport(occPage, 'STREAM_PHASE1_DONE')
     if (!pinned) {
       throw new Error('terminal viewport unavailable after wheel pin')
     }
 
-    await sendToTerminal(orcaPage, ptyId, 'g')
+    await sendToTerminal(occPage, ptyId, 'g')
     await expect
       .poll(
         async () => {
-          const probe = await probeActiveViewport(orcaPage, 'STREAM_PHASE2_DONE')
+          const probe = await probeActiveViewport(occPage, 'STREAM_PHASE2_DONE')
           return Boolean(probe && probe.containsMarker && probe.viewportY === pinned.viewportY)
         },
         { timeout: 30_000, message: 'visible streaming output moved the wheel-pinned viewport' }
@@ -287,30 +287,30 @@ test.describe('terminal scroll intent keeps following output', () => {
       .toBe(true)
   })
 
-  test('typing after a pinned write is queued resumes follow-output', async ({ orcaPage }) => {
-    await startStreamingFixturePhase1(orcaPage)
-    const { paneKey } = await waitForActivePaneHookDescriptor(orcaPage)
-    await waitForTerminalPtyDataInjector(orcaPage, paneKey)
+  test('typing after a pinned write is queued resumes follow-output', async ({ occPage }) => {
+    await startStreamingFixturePhase1(occPage)
+    const { paneKey } = await waitForActivePaneHookDescriptor(occPage)
+    await waitForTerminalPtyDataInjector(occPage, paneKey)
 
-    await dispatchRealWheel(orcaPage, -320)
+    await dispatchRealWheel(occPage, -320)
     await expect
       .poll(async () => {
-        const probe = await probeActiveViewport(orcaPage, 'STREAM_PHASE1_DONE')
+        const probe = await probeActiveViewport(occPage, 'STREAM_PHASE1_DONE')
         return probe ? probe.baseY - probe.viewportY : 0
       })
       .toBeGreaterThan(2)
 
     // Hold write completion so typing falls between #8625’s old intent capture and completion-time enforcement.
-    await injectQueuedWriteThenType(orcaPage, paneKey)
+    await injectQueuedWriteThenType(occPage, paneKey)
     await expect
       .poll(
         async () => {
-          const probe = await probeActiveViewport(orcaPage, 'STREAM_PHASE1_DONE')
+          const probe = await probeActiveViewport(occPage, 'STREAM_PHASE1_DONE')
           return probe ? probe.baseY - probe.viewportY : Number.NaN
         },
         { timeout: 5_000, intervals: [25] }
       )
       .toBe(0)
-    await waitForMarkerAtBottom(orcaPage, 'STREAM_PHASE2_DONE')
+    await waitForMarkerAtBottom(occPage, 'STREAM_PHASE2_DONE')
   })
 })

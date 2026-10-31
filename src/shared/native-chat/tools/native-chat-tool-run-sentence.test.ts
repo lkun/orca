@@ -47,9 +47,9 @@ describe('nativeChatToolRunSentence in English', () => {
 
   it('counts OCC browser CLI calls as browser use, settled and live', () => {
     const browser = [
-      { name: 'Bash', input: { command: 'orca goto --url https://example.com' } },
-      { name: 'Bash', input: { command: 'orca snapshot --page p1' } },
-      { name: 'Bash', input: { command: 'cd app && orca click --element e3' } }
+      { name: 'Bash', input: { command: 'occ goto --url https://example.com' } },
+      { name: 'Bash', input: { command: 'occ snapshot --page p1' } },
+      { name: 'Bash', input: { command: 'cd app && occ click --element e3' } }
     ]
     expect(english(browser)).toBe('Used the browser 3 times')
     expect(english(browser, true)).toBe('Using the browser 3 times')

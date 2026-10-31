@@ -1,8 +1,8 @@
 import { mkdirSync, realpathSync } from 'node:fs'
 import path from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { evaluatePolled } from './helpers/page-evaluate-polled'
 import {
   addRepoWithWorkspaces,
@@ -31,17 +31,17 @@ async function prepareSidebarForScrollTest(page: Page): Promise<void> {
 }
 
 test.describe('Reveal active workspace button', () => {
-  test.beforeEach(async ({ orcaPage }) => {
+  test.beforeEach(async ({ occPage }) => {
     // Reduced motion jumps reveal deterministically because hidden xvfb Electron never advances smooth-scroll animations.
-    await orcaPage.emulateMedia({ reducedMotion: 'reduce' })
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
+    await occPage.emulateMedia({ reducedMotion: 'reduce' })
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
   })
 
   // Use outside-virtual-window reveal coverage; a removed ~44px synthetic viewport/±1px containment test was unstable under saturated CI.
 
   test('adjusts sidebar filters before revealing a hidden current workspace', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
     const filterRepoPath = testInfo.outputPath('filter-repo')
@@ -64,7 +64,7 @@ test.describe('Reveal active workspace button', () => {
       const result = await runProcess({ program: 'git', args })
       expect(result.code, result.stderr).toBe(0)
     }
-    const filterRepoId = await orcaPage.evaluate(async (repoPath) => {
+    const filterRepoId = await occPage.evaluate(async (repoPath) => {
       const result = await window.api.repos.add({ path: repoPath })
       if ('error' in result) {
         throw new Error(result.error)
@@ -73,7 +73,7 @@ test.describe('Reveal active workspace button', () => {
     }, filterRepoPath)
     await expect
       .poll(() =>
-        orcaPage.evaluate(async (id) => {
+        occPage.evaluate(async (id) => {
           await window
             .__store!.getState()
             .fetchRepos({ runtimeEnvironmentId: null, throwOnError: true })
@@ -81,10 +81,10 @@ test.describe('Reveal active workspace button', () => {
         }, filterRepoId)
       )
       .toBe(true)
-    await prepareSidebarForScrollTest(orcaPage)
+    await prepareSidebarForScrollTest(occPage)
 
     // Other specs can add worktrees to the shared repository before this test runs.
-    const targetId = await orcaPage.evaluate((repoPath) => {
+    const targetId = await occPage.evaluate((repoPath) => {
       const state = window.__store!.getState()
       const repo = state.repos.find((candidate) => candidate.path === repoPath)
       return repo
@@ -96,7 +96,7 @@ test.describe('Reveal active workspace button', () => {
     if (!targetId) {
       throw new Error('Seeded secondary worktree is missing')
     }
-    const targetRepoId = await orcaPage.evaluate(
+    const targetRepoId = await occPage.evaluate(
       (repoPath) => window.__store!.getState().repos.find((repo) => repo.path === repoPath)?.id,
       testRepoPath
     )
@@ -104,14 +104,14 @@ test.describe('Reveal active workspace button', () => {
       throw new Error('Seeded repository is missing')
     }
 
-    const targetRows = orcaPage.locator(
+    const targetRows = occPage.locator(
       `[data-worktree-sidebar] [data-worktree-id=${JSON.stringify(targetId)}]`
     )
     const targetRow = targetRows.first()
-    await expect(targetRows.and(orcaPage.getByRole('option'))).toHaveCount(1)
-    const revealButton = orcaPage.getByRole('button', { name: 'Reveal active workspace' })
+    await expect(targetRows.and(occPage.getByRole('option'))).toHaveCount(1)
+    const revealButton = occPage.getByRole('button', { name: 'Reveal active workspace' })
 
-    await orcaPage.evaluate((targetId) => {
+    await occPage.evaluate((targetId) => {
       const store = window.__store
       if (!store) {
         throw new Error('window.__store is not available')
@@ -133,13 +133,13 @@ test.describe('Reveal active workspace button', () => {
     await expect(targetRow).toHaveAttribute('aria-current', 'page')
 
     // Catalog refreshes prune nonexistent IDs, so use a real repo to keep the filter applied.
-    await orcaPage.evaluate((repoId) => {
+    await occPage.evaluate((repoId) => {
       window.__store!.getState().setFilterRepoIds([repoId])
     }, filterRepoId)
     await expect(targetRows).toHaveCount(0)
 
     await revealButton.click()
-    await orcaPage
+    await occPage
       .getByRole('dialog', { name: 'Reveal hidden workspace?' })
       .getByRole('button', { name: 'Adjust filters and reveal' })
       .click()
@@ -149,7 +149,7 @@ test.describe('Reveal active workspace button', () => {
     await expect
       .poll(
         () =>
-          orcaPage.evaluate(() => {
+          occPage.evaluate(() => {
             const store = window.__store
             if (!store) {
               throw new Error('window.__store is not available')
@@ -166,13 +166,13 @@ test.describe('Reveal active workspace button', () => {
   })
 
   test('reveals the current workspace when it starts outside the virtualized window', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    await prepareSidebarForScrollTest(orcaPage)
+    await prepareSidebarForScrollTest(occPage)
 
-    const repo = await addRepoWithWorkspaces(orcaPage, testInfo, 60)
+    const repo = await addRepoWithWorkspaces(occPage, testInfo, 60)
     await writeWorkspaceMeta(
-      orcaPage,
+      occPage,
       repo.ids.map((worktreeId, index) => ({
         worktreeId,
         updates: {
@@ -183,7 +183,7 @@ test.describe('Reveal active workspace button', () => {
       }))
     )
     const targetId = repo.ids.at(-1)!
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ repoId, targetId }) => {
         window.__store!.setState({
           activeRepoId: repoId,
@@ -196,11 +196,11 @@ test.describe('Reveal active workspace button', () => {
       { repoId: repo.repoId, targetId }
     )
 
-    const scroller = orcaPage.locator('[data-worktree-sidebar]')
+    const scroller = occPage.locator('[data-worktree-sidebar]')
     await expect
       .poll(
         () =>
-          orcaPage.evaluate(() => {
+          occPage.evaluate(() => {
             const scroller = document.querySelector<HTMLElement>('[data-worktree-sidebar]')
             return scroller?.scrollTop ?? null
           }),
@@ -215,7 +215,7 @@ test.describe('Reveal active workspace button', () => {
     await expect
       .poll(
         () =>
-          orcaPage.evaluate((targetId) => {
+          occPage.evaluate((targetId) => {
             const scroller = document.querySelector<HTMLElement>('[data-worktree-sidebar]')
             const target = [...document.querySelectorAll<HTMLElement>('[data-worktree-id]')].find(
               (candidate) => candidate.dataset.worktreeId === targetId
@@ -234,12 +234,12 @@ test.describe('Reveal active workspace button', () => {
       )
       .toBe(false)
 
-    const revealButton = orcaPage.getByRole('button', { name: 'Reveal active workspace' })
+    const revealButton = occPage.getByRole('button', { name: 'Reveal active workspace' })
     await expect(revealButton).toBeVisible()
     await expect(revealButton).toBeEnabled()
 
     await revealButton.click()
-    const targetRow = orcaPage
+    const targetRow = occPage
       .locator(`[data-worktree-sidebar] [data-worktree-id=${JSON.stringify(targetId)}]`)
       .first()
     await expect(targetRow).toBeVisible()
@@ -247,9 +247,9 @@ test.describe('Reveal active workspace button', () => {
   })
 
   test('uses the active workspace key when the legacy active worktree id is not set', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    await prepareSidebarForScrollTest(orcaPage)
+    await prepareSidebarForScrollTest(occPage)
 
     // The oldest of 36 folder workspaces sorts last under Recent.
     const groupPath = testInfo.outputPath('reveal-folder-group')
@@ -259,7 +259,7 @@ test.describe('Reveal active workspace button', () => {
       return realpathSync(folderPath)
     })
     const folderWorktreeId = await evaluatePolled(
-      orcaPage,
+      occPage,
       async ({ parentPath, folderPaths }) => {
         const store = window.__store!
         const group = await window.api.projectGroups.create({
@@ -298,7 +298,7 @@ test.describe('Reveal active workspace button', () => {
       { timeout: bulkWriteTimeout(folderPaths.length) }
     )
 
-    const scroller = orcaPage.locator('[data-worktree-sidebar]')
+    const scroller = occPage.locator('[data-worktree-sidebar]')
     await scroller.evaluate((element) => {
       element.scrollTop = 0
       element.dispatchEvent(new Event('scroll', { bubbles: true }))
@@ -306,7 +306,7 @@ test.describe('Reveal active workspace button', () => {
     await expect
       .poll(
         () =>
-          orcaPage.evaluate((targetId) => {
+          occPage.evaluate((targetId) => {
             const scroller = document.querySelector<HTMLElement>('[data-worktree-sidebar]')
             const target = [...document.querySelectorAll<HTMLElement>('[data-worktree-id]')].find(
               (candidate) => candidate.dataset.worktreeId === targetId
@@ -325,7 +325,7 @@ test.describe('Reveal active workspace button', () => {
       )
       .toBe(false)
 
-    const revealButton = orcaPage.getByRole('button', { name: 'Reveal active workspace' })
+    const revealButton = occPage.getByRole('button', { name: 'Reveal active workspace' })
     await expect(revealButton).toBeVisible()
     await expect(revealButton).toBeEnabled()
     await revealButton.click()
@@ -333,7 +333,7 @@ test.describe('Reveal active workspace button', () => {
     await expect
       .poll(
         () =>
-          orcaPage.evaluate((targetId) => {
+          occPage.evaluate((targetId) => {
             const scroller = document.querySelector<HTMLElement>('[data-worktree-sidebar]')
             const target = [...document.querySelectorAll<HTMLElement>('[data-worktree-id]')].find(
               (candidate) => candidate.dataset.worktreeId === targetId

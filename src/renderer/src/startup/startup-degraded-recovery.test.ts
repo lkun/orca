@@ -116,7 +116,7 @@ describe('recoverFromDegradedStartup', () => {
       relaunch.mockClear()
       statusListener = null
       currentTransport = 'disconnected'
-      Reflect.set(window, '__ORCA_WEB_CLIENT__', true)
+      Reflect.set(window, '__OCC_WEB_CLIENT__', true)
       Object.defineProperty(window, 'api', {
         configurable: true,
         value: {
@@ -139,7 +139,7 @@ describe('recoverFromDegradedStartup', () => {
     })
 
     afterEach(() => {
-      Reflect.deleteProperty(window, '__ORCA_WEB_CLIENT__')
+      Reflect.deleteProperty(window, '__OCC_WEB_CLIENT__')
     })
 
     it('says the host is unreachable and reloads once it answers', async () => {
@@ -209,7 +209,7 @@ describe('recoverFromDegradedStartup', () => {
       const [title, options] = vi.mocked(toast.error).mock.calls[0] ?? []
       expect(title).toBe('OCC refused this browser')
       expect(options?.description).toBe(refusal.message)
-      expect(refusal.message).toContain('ORCA_ALLOW_INSECURE_WEB_PAIRING=1')
+      expect(refusal.message).toContain('OCC_ALLOW_INSECURE_WEB_PAIRING=1')
       expect(statusListener).toBeNull()
     })
   })

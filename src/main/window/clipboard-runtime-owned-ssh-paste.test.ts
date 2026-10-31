@@ -65,7 +65,7 @@ const rendererEvent = {
   sender: {
     id: 1,
     getType: () => 'window',
-    getURL: () => 'file:///orca/index.html',
+    getURL: () => 'file:///occ/index.html',
     isDestroyed: () => false
   }
 }
@@ -192,7 +192,7 @@ describe('clipboard image paste for a runtime-owned SSH workspace', () => {
     fsWriteFileMock.mockResolvedValue(undefined)
 
     await expect(saveImageHandler()(rendererEvent, undefined)).resolves.toMatch(
-      /orca-paste-.*\.png$/
+      /occ-paste-.*\.png$/
     )
 
     expect(fsWriteFileMock).toHaveBeenCalledTimes(1)

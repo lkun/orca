@@ -33,7 +33,7 @@ const env = {
   GITHUB_SHA: identity.sourceSha,
   PR_CHECK_WORKFLOW_SHA: identity.workflowSha,
   GITHUB_RUN_ID: identity.runId,
-  GITHUB_REPOSITORY: 'stablyai/orca',
+  GITHUB_REPOSITORY: 'stablyai/occ',
   GH_TOKEN: 'read-only-test-token'
 }
 const response = (runs) => ({ ok: true, json: async () => ({ workflow_runs: runs }) })
@@ -80,7 +80,7 @@ describe('ready-for-review required check reuse', () => {
     expect(request).toHaveBeenCalledTimes(1)
     const [url, options] = request.mock.calls[0]
     expect(url.origin).toBe('https://api.github.com')
-    expect(url.pathname).toBe('/repos/stablyai/orca/actions/workflows/pr.yml/runs')
+    expect(url.pathname).toBe('/repos/stablyai/occ/actions/workflows/pr.yml/runs')
     expect(Object.fromEntries(url.searchParams)).toEqual({
       event: 'pull_request',
       head_sha: identity.headSha,
@@ -127,7 +127,7 @@ describe('ready-for-review required check reuse', () => {
 
   it('keeps required skips conditional on proof and leaves advisory routing eligible', () => {
     expect(workflow['run-name']).toBe(
-      "PR ${{ github.event.pull_request.number }} | source ${{ github.sha }} | workflow ${{ github.workflow_sha }} | unit ${{ github.event.pull_request.draft && vars.ORCA_UNIT_SELECTION_MODE == 'selected' && 'selected' || 'full' }}"
+      "PR ${{ github.event.pull_request.number }} | source ${{ github.sha }} | workflow ${{ github.workflow_sha }} | unit ${{ github.event.pull_request.draft && vars.OCC_UNIT_SELECTION_MODE == 'selected' && 'selected' || 'full' }}"
     )
     expect(workflow.on.pull_request.types).toContain('ready_for_review')
     const detector = workflow.jobs.code_paths
@@ -156,7 +156,7 @@ describe('ready-for-review required check reuse', () => {
       'preflight',
       ...new Set(
         PR_CHECK_JOBS.filter((job) => job !== 'static_analysis' && job !== 'typecheck').map(
-          (job) => (job === 'orcad_browser' ? 'test' : job)
+          (job) => (job === 'occd_browser' ? 'test' : job)
         )
       )
     ])

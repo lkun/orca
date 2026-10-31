@@ -1,7 +1,7 @@
 import { mkdirSync, symlinkSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, join, resolve } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { describeProcessFailure } from './process-failure-message.mjs'
 
 const require = createRequire(import.meta.url)
@@ -55,11 +55,11 @@ export async function preparePrAppImageTools({
   symlinkSync(dirname(tools.runtimeLibraries), join(directory, 'lib'))
   writeFileSync(
     join(directory, 'mksquashfs'),
-    '#!/usr/bin/env bash\nset -euo pipefail\nexec "$ORCA_PR_APPIMAGE_MKSQUASHFS" "$@" -Xcompression-level 3\n',
+    '#!/usr/bin/env bash\nset -euo pipefail\nexec "$OCC_PR_APPIMAGE_MKSQUASHFS" "$@" -Xcompression-level 3\n',
     { mode: 0o755 }
   )
   return {
     APPIMAGE_TOOLS_PATH: directory,
-    ORCA_PR_APPIMAGE_MKSQUASHFS: tools.mksquashfs
+    OCC_PR_APPIMAGE_MKSQUASHFS: tools.mksquashfs
   }
 }

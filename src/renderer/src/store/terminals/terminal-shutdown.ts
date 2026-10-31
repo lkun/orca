@@ -14,7 +14,7 @@ import { resolveTerminalPtyOwner } from '@/lib/terminal-worktree-route'
 import { resolveTerminalTeardownOwner } from './terminal-teardown-owner'
 import { createTerminalShutdownGuardController } from './terminal-shutdown-guards'
 import { commitTerminalShutdownState } from './terminal-shutdown-state'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { recordPaneSleepThroughLayoutOwner } from './terminal-sleep-layout-owner'
 
 type ExactTerminalStopResult = {
@@ -190,7 +190,7 @@ export function createTerminalShutdownActions(
 
       guards.commitHandlerSnapshots()
       // Switch point: main records a sleep's resumes once the terminals stopped (none on removal).
-      if (ORCA_LAYOUT_OWNER_IS_MAIN && !hostStop) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN && !hostStop) {
         recordPaneSleepThroughLayoutOwner(get(), worktreeId, sleepingAgentSessionRecords)
       }
       commitTerminalShutdownState({

@@ -7,7 +7,7 @@ import { toAppSshPtyId } from '../../../shared/ssh-pty-id'
 import type { SshRemotePtyLease } from '../../../shared/ssh-types'
 import { getRemoteHostPlatform } from '../ssh-remote-platform'
 import type { PtyRuntimeControllerDeps } from '../../ipc/pty/runtime/controller-deps'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { LEGACY_RELAY_BRIDGE_CHANNELS } from '../../../shared/legacy-relay-bridge-contract'
 import { unusedSshConnection } from '../unused-host-transport.test-fixture'
 
@@ -40,7 +40,7 @@ vi.mock('./legacy-relay-endpoints', () => ({
     exhaustive: true,
     endpoints: [
       {
-        endpoint: '/home/me/.orca-remote/relay-x.sock',
+        endpoint: '/home/me/.occ-remote/relay-x.sock',
         connectCommand: 'node relay.js --connect',
         wrapCommand: true,
         host: getRemoteHostPlatform('linux-x64'),
@@ -106,7 +106,7 @@ async function startBridge(): Promise<void> {
     getMainWindow: () => null,
     connection: () => connection,
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the bridge reads only these runtime methods.
-    runtime: () => runtime as unknown as OrcaRuntimeService
+    runtime: () => runtime as unknown as OCCRuntimeService
   })
   await registry.startLegacyRelayBridge(TARGET)
 }

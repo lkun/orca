@@ -8,7 +8,7 @@ import {
   rmSync
 } from 'node:fs'
 import { dirname, isAbsolute, join, relative, sep } from 'node:path'
-import { getOrcaManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
+import { getOCCManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
 import {
   listCodexSessionJsonlFiles,
   listCodexSessionJsonlFilesIncrementally
@@ -46,7 +46,7 @@ export function syncSystemCodexSessionsIntoManagedHome(sourceCodexHomePath?: str
     return
   }
 
-  const managedSessionsRoot = join(getOrcaManagedCodexHomePath(), 'sessions')
+  const managedSessionsRoot = join(getOCCManagedCodexHomePath(), 'sessions')
   for (const systemSessionFilePath of listCodexSessionJsonlFiles(systemSessionsRoot)) {
     bridgeSystemCodexSessionFile(systemSessionsRoot, managedSessionsRoot, systemSessionFilePath)
   }
@@ -82,7 +82,7 @@ export async function syncSystemCodexSessionsIntoManagedHomeIncrementally(
     return { scannedFiles: 0, linkedFiles: 0 }
   }
 
-  const managedSessionsRoot = join(getOrcaManagedCodexHomePath(), 'sessions')
+  const managedSessionsRoot = join(getOCCManagedCodexHomePath(), 'sessions')
   const summary: CodexSessionBridgeSummary = { scannedFiles: 0, linkedFiles: 0 }
   for await (const systemSessionFilePath of listCodexSessionJsonlFilesIncrementally(
     systemSessionsRoot,
@@ -153,7 +153,7 @@ function replaceSymlinkSessionBridgeWithHardlink(
       return false
     }
 
-    replacementPath = `${targetPath}.orca-link-${process.pid}-${Date.now()}`
+    replacementPath = `${targetPath}.occ-link-${process.pid}-${Date.now()}`
     if (!tryHardlinkCodexSessionFile(sourcePath, replacementPath)) {
       return false
     }
@@ -193,7 +193,7 @@ function migrateLegacyCopiedSessionBridge(
     if (!fileStatsMatchMarker(targetStat, marker, 'target')) {
       return
     }
-    replacementPath = `${targetPath}.orca-link-${process.pid}-${Date.now()}`
+    replacementPath = `${targetPath}.occ-link-${process.pid}-${Date.now()}`
     if (!linkCodexSessionFile(sourcePath, replacementPath)) {
       return
     }
@@ -216,7 +216,7 @@ function migrateLegacyCopiedSessionBridge(
 export function getLegacyCopiedCodexSessionBridgeScanPreference(
   sessionFilePath: string
 ): LegacyCopiedCodexSessionBridgeScanPreference | null {
-  const managedSessionsRoot = join(getOrcaManagedCodexHomePath(), 'sessions')
+  const managedSessionsRoot = join(getOCCManagedCodexHomePath(), 'sessions')
   const relativePath = relative(managedSessionsRoot, sessionFilePath)
   if (
     relativePath === '' ||
@@ -249,7 +249,7 @@ export function getLegacyCopiedCodexSessionBridgeScanPreference(
 }
 
 function getLegacySessionCopyMarkerPath(relativePath: string): string {
-  return join(getOrcaManagedCodexHomePath(), '.orca-session-copies', `${relativePath}.json`)
+  return join(getOCCManagedCodexHomePath(), '.occ-session-copies', `${relativePath}.json`)
 }
 
 function readLegacyCopiedSessionMarker(relativePath: string): LegacyCopiedSessionMarker | null {

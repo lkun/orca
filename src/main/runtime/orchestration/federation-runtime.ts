@@ -1,7 +1,7 @@
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 
 export type FederationRuntime = Pick<
-  OrcaRuntimeService,
+  OCCRuntimeService,
   | 'syncOrchestrationFederatedDispatch'
   | 'getOrchestrationDb'
   | 'resolveOrchestrationWorkerServer'

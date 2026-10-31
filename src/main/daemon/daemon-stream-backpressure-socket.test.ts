@@ -21,7 +21,7 @@ describe('daemon stream backpressure with a stalled Socket reader', () => {
     'bounds $chunkSize-character writes (hidden=$hidden) and resumes',
     async ({ chunkSize, hidden }) => {
       // A fixed POSIX root keeps the full Unix socket path below the kernel's byte limit.
-      const dir = mkdtempSync(join(process.platform === 'win32' ? tmpdir() : '/tmp', 'orca-dsbp-'))
+      const dir = mkdtempSync(join(process.platform === 'win32' ? tmpdir() : '/tmp', 'occ-dsbp-'))
       const socketPath =
         process.platform === 'win32'
           ? `\\\\.\\pipe\\${basename(dir)}.sock`

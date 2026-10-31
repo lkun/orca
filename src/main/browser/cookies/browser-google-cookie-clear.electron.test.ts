@@ -29,7 +29,7 @@ const fixtureResult = z.object({
 
 // Two Electron startups, graceful shutdown and partition seeding need a process-level CI budget.
 it('clears Google paths/partitions and preserves other sites across a graceful Electron restart', async () => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-google-cookie-clear-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-google-cookie-clear-'))
   try {
     const mainPath = join(root, 'main.cjs')
     const resultPath = join(root, 'result.json')
@@ -46,7 +46,7 @@ it('clears Google paths/partitions and preserves other sites across a graceful E
       const deadline = setTimeout(() => app.exit(2), 30000)
       async function run() {
         await app.whenReady()
-        registry.configureForOrcaProfile({ orcaProfileId: 'fixture', profileDirectory: ${JSON.stringify(root)} })
+        registry.configureForOCCProfile({ occProfileId: 'fixture', profileDirectory: ${JSON.stringify(root)} })
         const partition = registry.getDefaultProfile().partition
         const metadataPath = ${JSON.stringify(join(root, 'browser-session-meta.json'))}
         const meta = () => loadBrowserSessionMeta(() => metadataPath, partition)
@@ -173,7 +173,7 @@ it('clears Google paths/partitions and preserves other sites across a graceful E
     const { ELECTRON_RUN_AS_NODE: _runAsNode, ...inherited } = process.env
     const env = {
       ...inherited,
-      ORCA_BACKGROUND_LAUNCH: '1',
+      OCC_BACKGROUND_LAUNCH: '1',
       HOME: root,
       USERPROFILE: root,
       XDG_CONFIG_HOME: root,
@@ -182,9 +182,9 @@ it('clears Google paths/partitions and preserves other sites across a graceful E
       XDG_STATE_HOME: root,
       CLAUDE_CONFIG_DIR: join(root, 'claude'),
       CODEX_HOME: join(root, 'codex'),
-      ORCA_E2E_USER_DATA_DIR: join(root, 'user-data'),
-      ORCA_E2E_HOME_DIR: root,
-      ORCA_DISABLE_MACOS_LOGIN_SHELL: '1'
+      OCC_E2E_USER_DATA_DIR: join(root, 'user-data'),
+      OCC_E2E_HOME_DIR: root,
+      OCC_DISABLE_MACOS_LOGIN_SHELL: '1'
     }
     const args = [mainPath, '--password-store=basic', '--use-mock-keychain']
     const run = spawnSync(

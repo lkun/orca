@@ -45,6 +45,6 @@ export async function assemblePtyIpcSpawnCodexEnv(ctx: PtyIpcSpawnState): Promis
   ctx.selectedCodexHomePath = hostEnv.selectedCodexHomePath
   ctx.codexResumeHomeSelected = hostEnv.codexResumeHomeSelected
   ctx.skipCodexHomeEnv = hostEnv.skipCodexHomeEnv
-  ctx.stripInheritedOrcaCodexHome = hostEnv.stripInheritedOrcaCodexHome
+  ctx.stripInheritedOCCCodexHome = hostEnv.stripInheritedOCCCodexHome
   ctx.spawnTiming.mark('host_env')
 }

@@ -1,6 +1,6 @@
 import { RpcDispatcher } from '../../src/main/runtime/rpc/dispatcher'
 import { TERMINAL_MULTIPLEX_METHODS } from '../../src/main/runtime/rpc/methods/terminal/terminal-multiplex-method'
-import type { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import {
   TerminalStreamOpcode,
   decodeTerminalStreamFrame,
@@ -149,7 +149,7 @@ export function createModelLink(writeInput: (text: string) => Promise<unknown>) 
     live = connection
     void new RpcDispatcher({
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the stub implements every runtime method the terminal multiplex calls and records any it lacks.
-      runtime: host.runtime as OrcaRuntimeService,
+      runtime: host.runtime as OCCRuntimeService,
       methods: TERMINAL_MULTIPLEX_METHODS
     })
       .dispatchStreaming(

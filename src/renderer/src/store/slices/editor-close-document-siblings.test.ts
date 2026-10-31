@@ -348,7 +348,7 @@ describe('closing duplicate document records', () => {
   ] as const)(
     'keeps an untouched placeholder backing a surviving sibling draft: %s',
     async (view) => {
-      const directory = await mkdtemp(join(tmpdir(), 'orca-close-draft-'))
+      const directory = await mkdtemp(join(tmpdir(), 'occ-close-draft-'))
       const targetPath = join(directory, 'untitled.md')
       const deletions: Promise<void>[] = []
       const deletePath = vi.fn(({ targetPath: path }: { targetPath: string }) => {

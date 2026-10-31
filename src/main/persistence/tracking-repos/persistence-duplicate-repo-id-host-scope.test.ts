@@ -50,7 +50,7 @@ function duplicateIdRepos(): Repo[] {
 async function createStoreFromState(state: Record<string, unknown>) {
   mkdirSync(testState.dir, { recursive: true })
   writeFileSync(
-    join(testState.dir, 'orca-data.json'),
+    join(testState.dir, 'occ-data.json'),
     JSON.stringify({ ...getDefaultPersistedState(testState.dir), ...state }),
     'utf-8'
   )
@@ -64,7 +64,7 @@ async function createStoreFromState(state: Record<string, unknown>) {
   // resetModules replaces AppEnvironment; reinstall this test’s userData path before initializing.
   installFakeAppEnvironment({ getPath: () => testState.dir })
   initDataPath()
-  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
 }
 
 function createStoreWithDuplicateRepoId() {
@@ -103,7 +103,7 @@ function staleLocalSetupState() {
 beforeEach(() => {
   hasCreatedStoreInCase = false
   resetRetirementCollisionKeyCacheForTests()
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-dup-repo-id-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-dup-repo-id-'))
 })
 
 afterEach(async () => {

@@ -10,7 +10,7 @@ import {
 
 // Keep original terminal catalog keys: their shipped translations are now shared with native chat.
 
-export type HttpLinkDestination = 'orca' | 'system'
+export type HttpLinkDestination = 'occ' | 'system'
 
 export type HttpLinkActionDestinations = {
   primary: HttpLinkDestination
@@ -23,7 +23,7 @@ export type HttpLinkAction = {
   run: () => void | Promise<void>
 }
 
-export function canSourceOwnerOpenInOrca(
+export function canSourceOwnerOpenInOCC(
   sourceOwner: HttpLinkSourceOwner,
   canOpenOwnedBrowser: boolean
 ): boolean {
@@ -40,12 +40,12 @@ export function httpLinkActionDestinationsFor(
   sourceOwner: HttpLinkSourceOwner,
   canOpenOwnedBrowser: boolean
 ): HttpLinkActionDestinations {
-  if (!canSourceOwnerOpenInOrca(sourceOwner, canOpenOwnedBrowser)) {
+  if (!canSourceOwnerOpenInOCC(sourceOwner, canOpenOwnedBrowser)) {
     return { primary: 'system' }
   }
   return settings?.openLinksInApp === true
-    ? { primary: 'orca', alternate: 'system' }
-    : { primary: 'system', alternate: 'orca' }
+    ? { primary: 'occ', alternate: 'system' }
+    : { primary: 'system', alternate: 'occ' }
 }
 
 export function httpLinkDirectClickDestination(
@@ -56,9 +56,9 @@ export function httpLinkDirectClickDestination(
 }
 
 export function httpLinkDestinationLabel(destination: HttpLinkDestination): string {
-  return destination === 'orca'
+  return destination === 'occ'
     ? translate(
-        'auto.components.terminal.pane.TerminalLinkActionPopover.orcaBrowser',
+        'auto.components.terminal.pane.TerminalLinkActionPopover.occBrowser',
         'OCC Browser'
       )
     : translate(
@@ -88,7 +88,7 @@ export function buildHttpLinkActions(
   }
   const secondaryActions =
     source &&
-    (destinations?.primary === 'orca' || destinations?.alternate === 'orca') &&
+    (destinations?.primary === 'occ' || destinations?.alternate === 'occ') &&
     canHttpLinkOpenInSourceGroup(
       source.worktreeId,
       source.sourceTabId,
@@ -153,7 +153,7 @@ export function openRoutedHttpLink(url: string, deps: RoutedHttpLinkOptions): vo
       ...(linkContext ? { linkContext } : {}),
       allowRemoteInApp: true,
       worktreeId: deps.worktreeId,
-      forceInApp: deps.forceDestination === 'orca',
+      forceInApp: deps.forceDestination === 'occ',
       forceSystemBrowser: deps.forceDestination === 'system',
       sourceOwner
     })
@@ -186,12 +186,12 @@ export function openRoutedHttpLink(url: string, deps: RoutedHttpLinkOptions): vo
 
   // Prevent native navigation before awaiting the initial routing-preference dialog.
   void Promise.resolve(preferenceDecision)
-    .then((openInOrca) => {
+    .then((openInOCC) => {
       openHttpLink(url, {
         ...(linkContext ? { linkContext } : {}),
         allowRemoteInApp: true,
         worktreeId: deps.worktreeId,
-        forceSystemBrowser: !openInOrca,
+        forceSystemBrowser: !openInOCC,
         sourceOwner
       })
     })

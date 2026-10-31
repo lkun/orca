@@ -22,7 +22,7 @@ import {
   type BridgeInitRoute
 } from './bridge/bridge-envelope'
 import type { TerminalBacklogTimers } from './bridge-terminal-output-backlog'
-import type { BridgeErrorCapture } from './bridge/bridge-error-capture'
+import type { BridgeErroccpture } from './bridge/bridge-error-capture'
 import type { PageStorageForInit } from './page-storage-keys'
 
 const hosts = new Set<BridgeHost>()
@@ -55,7 +55,7 @@ export type Harness = {
   /** Every clear the page asked for, in order. */
   routeParamClears: () => readonly { param: string; value: string }[]
   routeRefusals: string[]
-  pageFaults: BridgeErrorCapture[]
+  pageFaults: BridgeErroccpture[]
   frames: () => BridgeHostMessage[]
   last: () => BridgeHostMessage
 }
@@ -77,7 +77,7 @@ export function harness(
     onNavigateBack?: () => BridgeNavigateBackOutcome
     storage?: Readonly<Record<string, string>>
     readStorage?: () => PageStorageForInit
-    onPageFault?: (error: BridgeErrorCapture) => void
+    onPageFault?: (error: BridgeErroccpture) => void
     /** What the mounted route declared; everything this shell implements unless a case narrows it. */
     routeGrants?: readonly string[]
     pageRouteGrants?: readonly { pathname: string; grants: readonly string[] }[]
@@ -106,7 +106,7 @@ export function harness(
   let pagePaints = 0
   const routeParamClears: { param: string; value: string }[] = []
   const routeRefusals: string[] = []
-  const pageFaults: BridgeErrorCapture[] = []
+  const pageFaults: BridgeErroccpture[] = []
   const droppedBinaryFrames: number[] = []
   const host = createBridgeHost({
     client,

@@ -24,7 +24,7 @@ const targets = ['AppImage', 'deb', 'rpm']
 const valueAfter = (args, flag) => args[args.indexOf(flag) + 1]
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca formats with spaces-'))
+  root = mkdtempSync(join(tmpdir(), 'occ formats with spaces-'))
   preparedDirectory = join(root, 'prepared app')
   outputDirectory = join(root, 'output packages')
   mkdirSync(join(preparedDirectory, 'resources'), { recursive: true })
@@ -43,7 +43,7 @@ function emitPackage(args) {
   const output = valueAfter(args, '--config.directories.output')
   writeFileSync(join(app, 'resources/package-type'), format)
   mkdirSync(output, { recursive: true })
-  writeFileSync(join(output, `orca.${format}`), format)
+  writeFileSync(join(output, `occ.${format}`), format)
   writeFileSync(join(output, 'latest-linux.yml'), format)
   return { format, app, output }
 }
@@ -115,7 +115,7 @@ describe('independent Linux package formats', () => {
       'verified application'
     )
     for (const format of targets) {
-      expect(readFileSync(join(outputDirectory, `orca.${format}`), 'utf8')).toBe(format)
+      expect(readFileSync(join(outputDirectory, `occ.${format}`), 'utf8')).toBe(format)
       expect(
         readFileSync(
           join(outputDirectory, 'linux-package-formats', format, 'latest-linux.yml'),
@@ -148,14 +148,14 @@ describe('independent Linux package formats', () => {
             if (failurePhase === 'tool preparation') {
               throw new Error('compression failed')
             }
-            return { APPIMAGE_TOOLS_PATH: directory, ORCA_PR_APPIMAGE_MKSQUASHFS: 'original tool' }
+            return { APPIMAGE_TOOLS_PATH: directory, OCC_PR_APPIMAGE_MKSQUASHFS: 'original tool' }
           },
           runBuilder: async (args, environment) => {
             const format = valueAfter(args, '--linux')
             if (format === 'AppImage') {
               expect(environment).toEqual({
                 APPIMAGE_TOOLS_PATH: overlay,
-                ORCA_PR_APPIMAGE_MKSQUASHFS: 'original tool'
+                OCC_PR_APPIMAGE_MKSQUASHFS: 'original tool'
               })
               throw new Error('compression failed')
             }
@@ -198,14 +198,14 @@ describe('independent Linux package formats', () => {
       prepareAppImageTools: async ({ directory }) => {
         overlay = directory
         mkdirSync(directory)
-        return { APPIMAGE_TOOLS_PATH: directory, ORCA_PR_APPIMAGE_MKSQUASHFS: 'original tool' }
+        return { APPIMAGE_TOOLS_PATH: directory, OCC_PR_APPIMAGE_MKSQUASHFS: 'original tool' }
       },
       runBuilder: async (args, environment) => {
         const format = valueAfter(args, '--linux')
         calls.push(format)
         expect(environment).toEqual(
           format === 'AppImage'
-            ? { APPIMAGE_TOOLS_PATH: overlay, ORCA_PR_APPIMAGE_MKSQUASHFS: 'original tool' }
+            ? { APPIMAGE_TOOLS_PATH: overlay, OCC_PR_APPIMAGE_MKSQUASHFS: 'original tool' }
             : {}
         )
         expect(process.env.APPIMAGE_TOOLS_PATH).toBe(originalToolsPath)
@@ -226,7 +226,7 @@ describe('independent Linux package formats', () => {
         runBuilder: async (args) => {
           const result = emitPackage(args)
           if (result.format === 'rpm') {
-            writeFileSync(join(result.output, 'orca.rpm'), '')
+            writeFileSync(join(result.output, 'occ.rpm'), '')
           }
         }
       })
@@ -235,7 +235,7 @@ describe('independent Linux package formats', () => {
   })
 
   it('does not replace existing output packages', async () => {
-    writeFileSync(join(outputDirectory, 'orca.deb'), 'previous package')
+    writeFileSync(join(outputDirectory, 'occ.deb'), 'previous package')
     await expect(
       packageLinuxFormats({
         preparedDirectory,
@@ -246,8 +246,8 @@ describe('independent Linux package formats', () => {
         }
       })
     ).rejects.toThrow('Refusing to replace existing package output')
-    expect(readdirSync(outputDirectory)).toEqual(['orca.deb'])
-    expect(readFileSync(join(outputDirectory, 'orca.deb'), 'utf8')).toBe('previous package')
+    expect(readdirSync(outputDirectory)).toEqual(['occ.deb'])
+    expect(readFileSync(join(outputDirectory, 'occ.deb'), 'utf8')).toBe('previous package')
   })
 
   it('rejects a tree already mutated by a previous root-package build', async () => {

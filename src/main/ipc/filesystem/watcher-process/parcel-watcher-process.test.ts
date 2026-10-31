@@ -16,7 +16,7 @@ const { forkMock, existsSyncMock, mkdtempSyncMock, parcelSubscribeMock, rmSyncMo
   () => ({
     forkMock: vi.fn(),
     existsSyncMock: vi.fn(),
-    mkdtempSyncMock: vi.fn(() => '/tmp/orca-watcher-canary-supervisor-test'),
+    mkdtempSyncMock: vi.fn(() => '/tmp/occ-watcher-canary-supervisor-test'),
     parcelSubscribeMock: vi.fn(),
     rmSyncMock: vi.fn()
   })
@@ -686,7 +686,7 @@ describe('subscribeViaWatcherProcess', () => {
     expect(first.kill).toHaveBeenCalledTimes(1)
     await new Promise<void>((resolve) => setImmediate(resolve))
     expect(isSettled()).toBe(false)
-    expect(rmSyncMock).toHaveBeenCalledWith('/tmp/orca-watcher-canary-supervisor-test', {
+    expect(rmSyncMock).toHaveBeenCalledWith('/tmp/occ-watcher-canary-supervisor-test', {
       recursive: true,
       force: true
     })
@@ -865,7 +865,7 @@ describe('subscribeViaWatcherProcess', () => {
     const pending = subscribeViaWatcherProcess('/repo', vi.fn(), {})
     const child = currentChild()
     const forkOptions = forkMock.mock.calls.at(-1)?.[2] as { env?: NodeJS.ProcessEnv } | undefined
-    expect(forkOptions?.env?.ORCA_WATCHER_CANARY_DIR).toBeUndefined()
+    expect(forkOptions?.env?.OCC_WATCHER_CANARY_DIR).toBeUndefined()
     ackSubscribe(child)
     await expect(pending).resolves.toMatchObject({ unsubscribe: expect.any(Function) })
   })

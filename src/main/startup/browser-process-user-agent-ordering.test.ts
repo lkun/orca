@@ -66,7 +66,7 @@ vi.mock('./serve-mode-argv', () => ({
 vi.mock('./configure-process', () => ({
   configureDevUserDataPath: vi.fn(),
   configureElectronNetworkCompatibility: vi.fn(),
-  configureOrcaUserDataPathEnv: vi.fn(),
+  configureOCCUserDataPathEnv: vi.fn(),
   disableUnsupportedChromiumFeatures: vi.fn(),
   enableMainProcessGpuFeatures: vi.fn(),
   installDevParentDisconnectQuit: vi.fn(),
@@ -93,7 +93,7 @@ vi.mock('./dev-instance-identity', () => ({
   getDevInstanceIdentity: () => ({
     isDev: true,
     appName: 'OCC Development',
-    appUserModelId: 'com.orca.development'
+    appUserModelId: 'com.occ.development'
   }),
   shouldApplyPreReadyAppName: () => true
 }))
@@ -165,11 +165,11 @@ vi.mock('../persistence/profile-state/profile-state-access', () => ({
 }))
 vi.mock('../macos-press-and-hold-default')
 vi.mock('../ai-vault/session-parse-cache-persistence')
-vi.mock('../orca-profiles/profile-index-store', () => ({ initOrcaProfilePaths: vi.fn() }))
-vi.mock('../orca-profiles/profile-storage-paths', () => ({
+vi.mock('../occ-profiles/profile-index-store', () => ({ initOCCProfilePaths: vi.fn() }))
+vi.mock('../occ-profiles/profile-storage-paths', () => ({
   getProfileUserDataPath: () => '/canonical-user-data'
 }))
-vi.mock('../orca-profiles/profile-project-move-intent', () => ({
+vi.mock('../occ-profiles/profile-project-move-intent', () => ({
   recoverPendingProfileProjectMoves: mocks.recoverMoves
 }))
 vi.mock('../persistence/profile-state/profile-state-active-location', () => ({
@@ -212,7 +212,7 @@ describe('browser process user-agent startup ordering', () => {
     const platform = vi.spyOn(process, 'platform', 'get').mockReturnValue('darwin')
     mocks.backgroundLaunch.mockReturnValueOnce(false)
     mocks.admission.mockImplementationOnce(() => {
-      throw new Error('Stop OCC and orcad before retrying profile recovery')
+      throw new Error('Stop OCC and occd before retrying profile recovery')
     })
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
     try {
@@ -221,7 +221,7 @@ describe('browser process user-agent startup ordering', () => {
       ).toBe(false)
       expect(mocks.showErrorBox).toHaveBeenCalledWith(
         'OCC could not start',
-        expect.stringContaining('Stop OCC and orcad before retrying profile recovery')
+        expect.stringContaining('Stop OCC and occd before retrying profile recovery')
       )
       expect(mocks.app.isReady).not.toHaveBeenCalled()
     } finally {
@@ -232,10 +232,10 @@ describe('browser process user-agent startup ordering', () => {
     }
   })
 
-  it('explains an orcad holding the profile instead of exiting silently', async () => {
+  it('explains an occd holding the profile instead of exiting silently', async () => {
     const platform = vi.spyOn(process, 'platform', 'get').mockReturnValue('darwin')
     mocks.backgroundLaunch.mockReturnValueOnce(false)
-    mocks.profileLock.mockReturnValueOnce({ state: 'held', message: 'Another orcad (pid 7)' })
+    mocks.profileLock.mockReturnValueOnce({ state: 'held', message: 'Another occd (pid 7)' })
     mocks.app.exit.mockClear()
     mocks.events.length = 0
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
@@ -245,7 +245,7 @@ describe('browser process user-agent startup ordering', () => {
       ).toBe(false)
       expect(mocks.showErrorBox).toHaveBeenCalledWith(
         'OCC could not start',
-        'Another orcad (pid 7)'
+        'Another occd (pid 7)'
       )
       expect(mocks.app.exit.mock.calls).toEqual([[3]])
       expect(mocks.events).not.toContain('admission:/canonical-user-data')

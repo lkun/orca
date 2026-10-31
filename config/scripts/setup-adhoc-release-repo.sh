@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-# Provision stablyai/orca-adhoc for adhoc-mac-build.yml. Keep unlanded branch builds out of main’s hourly feed.
+# Provision stablyai/occ-adhoc for adhoc-mac-build.yml. Keep unlanded branch builds out of main’s hourly feed.
 # Reuse hourly’s App credentials; this only widens its installation.
 # Run once after setup-hourly-release-token.sh: bash config/scripts/setup-adhoc-release-repo.sh
 set -euo pipefail
 
 ORG="stablyai"
-ADHOC_REPO="$ORG/orca-adhoc"
-MAIN_REPO="$ORG/orca"
-APP_SLUG="orca-hourly-release"
+ADHOC_REPO="$ORG/occ-adhoc"
+MAIN_REPO="$ORG/occ"
+APP_SLUG="occ-hourly-release"
 
 fail() {
   echo "error: $*" >&2
@@ -62,7 +62,7 @@ Could not do it from here${INSTALL_ID:+ (needs an Organization Owner)}. Do it in
   1. Open:  https://github.com/organizations/$ORG/settings/installations
   2. Configure  ->  $APP_SLUG
   3. Repository access  ->  Only select repositories  ->  add $ADHOC_REPO
-     (keep orca-hourly/orca-daily selected; all dev channels use this one App)
+     (keep occ-hourly/occ-daily selected; all dev channels use this one App)
   4. Save.
 EOF
 fi

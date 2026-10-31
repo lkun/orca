@@ -1,6 +1,6 @@
 import type * as ExecCommandModule from '../remote-exec/remote-exec-command'
 import { describe, expect, it, vi } from 'vitest'
-import { RELAY_LSOF_PROBE_JS } from '@orca/process-host/posix-lsof-probe'
+import { RELAY_LSOF_PROBE_JS } from '@occ/process-host/posix-lsof-probe'
 
 const execCommand = vi.fn()
 vi.mock('../remote-exec/remote-exec-command', async (importOriginal) => ({
@@ -21,12 +21,12 @@ import { unusedSshConnection } from '../unused-host-transport.test-fixture'
 
 const connection = unusedSshConnection()
 
-const SOCK = '/home/u/.orca-remote/relay-0.1.0+aaaa/relay-deadbeef.sock'
+const SOCK = '/home/u/.occ-remote/relay-0.1.0+aaaa/relay-deadbeef.sock'
 const POSIX_HOST = getRemoteHostPlatform('linux-x64')
 const WINDOWS_HOST = getRemoteHostPlatform('win32-x64')
 
 function probeOutput(lines: string[]): string {
-  return ['ORCA-INCUMBENT-BEGIN', ...lines, 'ORCA-INCUMBENT-END'].join('\n')
+  return ['OCC-INCUMBENT-BEGIN', ...lines, 'OCC-INCUMBENT-END'].join('\n')
 }
 
 describe('parseRelayEndpointIncumbentProbe', () => {

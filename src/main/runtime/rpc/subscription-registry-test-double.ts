@@ -1,4 +1,4 @@
-import type { SubscriptionRegistration } from '../orca-runtime'
+import type { SubscriptionRegistration } from '../occ-runtime'
 
 type Cleanup = () => void | Promise<void>
 type Entry = {
@@ -30,7 +30,7 @@ export type SubscriptionRegistryDouble = {
   requestAddressCount: () => number
 }
 
-/** Keep generation eviction, connection/request indexes and cleanup behavior aligned with OrcaRuntimeService; orca-runtime.test.ts pins production, these doubles pin routing.
+/** Keep generation eviction, connection/request indexes and cleanup behavior aligned with OCCRuntimeService; occ-runtime.test.ts pins production, these doubles pin routing.
  * Use this for subscribe/teardown tests: bare Maps missed cross-generation teardown (STA-4510). */
 export function createSubscriptionRegistryDouble(): SubscriptionRegistryDouble {
   const cleanups = new Map<string, Entry>()

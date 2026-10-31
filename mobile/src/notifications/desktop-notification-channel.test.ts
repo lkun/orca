@@ -25,10 +25,10 @@ describe('ensureDesktopNotificationChannel', () => {
 
     expect(vi.mocked(Notifications.setNotificationChannelAsync).mock.calls).toEqual([
       [
-        'orca-desktop-silent',
+        'occ-desktop-silent',
         expect.objectContaining({ importance: 'high', sound: null, enableVibrate: false })
       ],
-      ['orca-desktop', expect.objectContaining({ importance: 'high' })]
+      ['occ-desktop', expect.objectContaining({ importance: 'high' })]
     ])
   })
 

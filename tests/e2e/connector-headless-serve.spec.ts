@@ -1,10 +1,10 @@
-// Drives the hidden `orca connector` CLI end to end against a real headless serve host and a scripted Claude.
+// Drives the hidden `occ connector` CLI end to end against a real headless serve host and a scripted Claude.
 import { mkdtempSync, rmSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { z } from 'zod'
-import { expect, test } from './helpers/orca-app'
-import { orcaCliResult, runCompiledOrcaCli } from './helpers/compiled-orca-cli'
+import { expect, test } from './helpers/occ-app'
+import { occCliResult, runCompiledOCCCli } from './helpers/compiled-occ-cli'
 import {
   launchHeadlessPairedRuntimeHost,
   type HeadlessPairedRuntimeHost
@@ -42,11 +42,11 @@ const WatchRead = z.object({
 })
 
 const connectorCli = (userDataDir: string, args: string[], timeoutMs?: number) =>
-  orcaCliResult<unknown>(userDataDir, ['connector', ...args], timeoutMs)
+  occCliResult<unknown>(userDataDir, ['connector', ...args], timeoutMs)
 
 /** A command the host refuses; returns its error code. */
 async function refusedCode(userDataDir: string, args: string[]): Promise<string | undefined> {
-  const run = await runCompiledOrcaCli(userDataDir, ['connector', ...args, '--json'])
+  const run = await runCompiledOCCCli(userDataDir, ['connector', ...args, '--json'])
   return run.json?.error?.code
 }
 
@@ -145,7 +145,7 @@ test('a connector conversation runs end to end on a headless serve host', async 
 }) => {
   // Two serve launches (the restart) plus about thirty CLI round trips.
   test.setTimeout(240_000)
-  const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-connector-'))
+  const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-connector-'))
   const claude = writeFakeClaude(fakeDir)
   const host = await launchHeadlessPairedRuntimeHost({ pinnedServePort: true })
   const { userDataDir } = host
@@ -172,7 +172,7 @@ test('a connector conversation runs end to end on a headless serve host', async 
     await host.client.call('settings.update', { experimentalConnectors: true })
     // Disabling connectors ends the window, so the watch returns everything seen until then.
     // A plain run, not an asserting one: it stays outstanding while later steps may fail first.
-    const watching = runCompiledOrcaCli(
+    const watching = runCompiledOCCCli(
       userDataDir,
       ['connector', 'watch', '--for-ms', '600000', '--json'],
       660_000
@@ -294,7 +294,7 @@ test('a connector conversation runs end to end on a headless serve host', async 
     })
     await waitForApproval(c1)
     // The CLI's own call dies with the host; only the host's receipt matters here.
-    const interrupted = runCompiledOrcaCli(userDataDir, [
+    const interrupted = runCompiledOCCCli(userDataDir, [
       'connector',
       'send',
       '--conversation',

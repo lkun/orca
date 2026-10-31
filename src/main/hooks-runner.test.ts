@@ -40,7 +40,7 @@ describe('createSetupRunnerScript', () => {
     const fs = await import('node:fs')
     const originalPlatform = process.platform
 
-    execFileSyncMock.mockReturnValue('C:\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.cmd')
+    execFileSyncMock.mockReturnValue('C:\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.cmd')
     Object.defineProperty(process, 'platform', {
       configurable: true,
       value: 'win32'
@@ -55,16 +55,16 @@ describe('createSetupRunnerScript', () => {
       )
 
       expect(result).toEqual({
-        runnerScriptPath: 'C:\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.cmd',
+        runnerScriptPath: 'C:\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.cmd',
         envVars: expect.objectContaining({
-          ORCA_ROOT_PATH: '/test/repo',
-          ORCA_WORKTREE_PATH: 'C:\\repo\\feature\\',
-          ORCA_WORKSPACE_NAME: 'feature'
+          OCC_ROOT_PATH: '/test/repo',
+          OCC_WORKTREE_PATH: 'C:\\repo\\feature\\',
+          OCC_WORKSPACE_NAME: 'feature'
         }),
         shell: { family: 'cmd' }
       })
       expect(vi.mocked(fs.writeFileSync)).toHaveBeenCalledWith(
-        'C:\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.cmd',
+        'C:\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.cmd',
         [
           '@echo off',
           'setlocal EnableExtensions DisableDelayedExpansion',
@@ -88,13 +88,13 @@ describe('createSetupRunnerScript', () => {
     const fs = await import('node:fs')
     const originalPlatform = process.platform
 
-    execFileSyncMock.mockReturnValue('C:\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.sh')
+    execFileSyncMock.mockReturnValue('C:\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.sh')
     Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
 
     try {
       const { createSetupRunnerScript } = await import('./worktree-runner-script')
       const result = createSetupRunnerScript(
-        { ...makeRepo(), path: 'C:\\Users\\jinwo\\git\\orca' },
+        { ...makeRepo(), path: 'C:\\Users\\jinwo\\git\\occ' },
         'C:\\repo\\feature',
         '#!/usr/bin/env bash\npnpm install',
         undefined,
@@ -102,25 +102,25 @@ describe('createSetupRunnerScript', () => {
       )
 
       expect(result).toEqual({
-        runnerScriptPath: 'C:\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.sh',
+        runnerScriptPath: 'C:\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.sh',
         envVars: expect.objectContaining({
-          ORCA_ROOT_PATH: '/c/Users/jinwo/git/orca',
-          ORCA_WORKTREE_PATH: '/c/repo/feature',
-          CONDUCTOR_ROOT_PATH: '/c/Users/jinwo/git/orca',
-          GHOSTX_ROOT_PATH: '/c/Users/jinwo/git/orca',
+          OCC_ROOT_PATH: '/c/Users/jinwo/git/occ',
+          OCC_WORKTREE_PATH: '/c/repo/feature',
+          CONDUCTOR_ROOT_PATH: '/c/Users/jinwo/git/occ',
+          GHOSTX_ROOT_PATH: '/c/Users/jinwo/git/occ',
           // Workspace names are labels and must not undergo path conversion.
-          ORCA_WORKSPACE_NAME: 'feature'
+          OCC_WORKSPACE_NAME: 'feature'
         }),
         shell: { family: 'posix' }
       })
       expect(vi.mocked(fs.writeFileSync)).toHaveBeenCalledWith(
-        'C:\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.sh',
+        'C:\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.sh',
         '#!/usr/bin/env bash\nset -e\npnpm install\n',
         'utf-8'
       )
       // Only guest Linux paths need chmod; native Windows paths do not.
       expect(vi.mocked(fs.chmodSync)).not.toHaveBeenCalledWith(
-        'C:\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.sh',
+        'C:\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.sh',
         0o755
       )
     } finally {
@@ -131,7 +131,7 @@ describe('createSetupRunnerScript', () => {
   it('leaves non-path setup env values alone under a Git Bash runner', async () => {
     const originalPlatform = process.platform
 
-    execFileSyncMock.mockReturnValue('C:\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.sh')
+    execFileSyncMock.mockReturnValue('C:\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.sh')
     Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
 
     try {
@@ -155,21 +155,21 @@ describe('createSetupRunnerScript', () => {
   it('keeps native Windows env vars in Windows form for the default cmd runner', async () => {
     const originalPlatform = process.platform
 
-    execFileSyncMock.mockReturnValue('C:\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.cmd')
+    execFileSyncMock.mockReturnValue('C:\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.cmd')
     Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
 
     try {
       const { createSetupRunnerScript } = await import('./worktree-runner-script')
       const result = createSetupRunnerScript(
-        { ...makeRepo(), path: 'C:\\Users\\jinwo\\git\\orca' },
+        { ...makeRepo(), path: 'C:\\Users\\jinwo\\git\\occ' },
         'C:\\repo\\feature',
         'pnpm install'
       )
 
       expect(result.envVars).toEqual(
         expect.objectContaining({
-          ORCA_ROOT_PATH: 'C:\\Users\\jinwo\\git\\orca',
-          ORCA_WORKTREE_PATH: 'C:\\repo\\feature'
+          OCC_ROOT_PATH: 'C:\\Users\\jinwo\\git\\occ',
+          OCC_WORKTREE_PATH: 'C:\\repo\\feature'
         })
       )
     } finally {
@@ -216,7 +216,7 @@ describe('createSetupRunnerScript', () => {
       const { mkdtempSync, rmSync, writeFileSync } = await vi.importActual<typeof NodeFs>('node:fs')
       const { execFileSync } = await vi.importActual<typeof NodeChildProcess>('node:child_process')
 
-      const dir = mkdtempSync(join(tmpdir(), 'orca-posix-runner-'))
+      const dir = mkdtempSync(join(tmpdir(), 'occ-posix-runner-'))
       try {
         const runnerPath = join(dir, 'setup-runner.sh')
         writeFileSync(
@@ -232,10 +232,10 @@ describe('createSetupRunnerScript', () => {
     }
   )
 
-  it('derives ORCA_WORKSPACE_NAME from a POSIX worktree path', async () => {
+  it('derives OCC_WORKSPACE_NAME from a POSIX worktree path', async () => {
     const originalPlatform = process.platform
 
-    execFileSyncMock.mockReturnValue('/test/repo/.git/worktrees/feature/orca/setup-runner.sh')
+    execFileSyncMock.mockReturnValue('/test/repo/.git/worktrees/feature/occ/setup-runner.sh')
     Object.defineProperty(process, 'platform', {
       configurable: true,
       value: 'linux'
@@ -247,8 +247,8 @@ describe('createSetupRunnerScript', () => {
 
       expect(result.envVars).toEqual(
         expect.objectContaining({
-          ORCA_WORKTREE_PATH: '/test/repo-feature',
-          ORCA_WORKSPACE_NAME: 'repo-feature'
+          OCC_WORKTREE_PATH: '/test/repo-feature',
+          OCC_WORKSPACE_NAME: 'repo-feature'
         })
       )
     } finally {
@@ -263,7 +263,7 @@ describe('createSetupRunnerScript', () => {
     const fs = await import('node:fs')
     const originalPlatform = process.platform
 
-    execFileSyncMock.mockReturnValue('/home/jin/.git/worktrees/feature/orca/setup-runner.sh')
+    execFileSyncMock.mockReturnValue('/home/jin/.git/worktrees/feature/occ/setup-runner.sh')
     Object.defineProperty(process, 'platform', {
       configurable: true,
       value: 'win32'
@@ -274,7 +274,7 @@ describe('createSetupRunnerScript', () => {
       const result = createSetupRunnerScript(
         {
           ...makeRepo(),
-          path: 'C:\\Users\\jinwo\\git\\orca'
+          path: 'C:\\Users\\jinwo\\git\\occ'
         },
         '\\\\wsl.localhost\\Ubuntu\\home\\jin\\feature',
         'pnpm install'
@@ -282,22 +282,22 @@ describe('createSetupRunnerScript', () => {
 
       expect(result).toEqual({
         runnerScriptPath:
-          '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.git\\worktrees\\feature\\orca\\setup-runner.sh',
+          '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.git\\worktrees\\feature\\occ\\setup-runner.sh',
         envVars: expect.objectContaining({
-          ORCA_ROOT_PATH: '/mnt/c/Users/jinwo/git/orca',
-          ORCA_WORKTREE_PATH: '/home/jin/feature',
-          ORCA_WORKSPACE_NAME: 'feature',
-          CONDUCTOR_ROOT_PATH: '/mnt/c/Users/jinwo/git/orca',
-          GHOSTX_ROOT_PATH: '/mnt/c/Users/jinwo/git/orca'
+          OCC_ROOT_PATH: '/mnt/c/Users/jinwo/git/occ',
+          OCC_WORKTREE_PATH: '/home/jin/feature',
+          OCC_WORKSPACE_NAME: 'feature',
+          CONDUCTOR_ROOT_PATH: '/mnt/c/Users/jinwo/git/occ',
+          GHOSTX_ROOT_PATH: '/mnt/c/Users/jinwo/git/occ'
         })
       })
       expect(vi.mocked(fs.writeFileSync)).toHaveBeenCalledWith(
-        '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.git\\worktrees\\feature\\orca\\setup-runner.sh',
+        '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.git\\worktrees\\feature\\occ\\setup-runner.sh',
         '#!/usr/bin/env bash\nset -e\npnpm install\n',
         'utf-8'
       )
       expect(vi.mocked(fs.chmodSync)).toHaveBeenCalledWith(
-        '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.git\\worktrees\\feature\\orca\\setup-runner.sh',
+        '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.git\\worktrees\\feature\\occ\\setup-runner.sh',
         0o755
       )
     } finally {
@@ -312,7 +312,7 @@ describe('createSetupRunnerScript', () => {
     const fs = await import('node:fs')
     const originalPlatform = process.platform
 
-    execFileSyncMock.mockReturnValue('/home/jin/repo/.git/worktrees/feature/orca/setup-runner.sh')
+    execFileSyncMock.mockReturnValue('/home/jin/repo/.git/worktrees/feature/occ/setup-runner.sh')
     Object.defineProperty(process, 'platform', {
       configurable: true,
       value: 'win32'
@@ -328,22 +328,22 @@ describe('createSetupRunnerScript', () => {
 
       expect(result).toEqual({
         runnerScriptPath:
-          '\\\\wsl.localhost\\Ubuntu\\home\\jin\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.sh',
+          '\\\\wsl.localhost\\Ubuntu\\home\\jin\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.sh',
         envVars: expect.objectContaining({
-          ORCA_ROOT_PATH: '/test/repo',
-          ORCA_WORKTREE_PATH: '/home/jin/repo/feature',
-          ORCA_WORKSPACE_NAME: 'feature',
+          OCC_ROOT_PATH: '/test/repo',
+          OCC_WORKTREE_PATH: '/home/jin/repo/feature',
+          OCC_WORKSPACE_NAME: 'feature',
           CONDUCTOR_ROOT_PATH: '/test/repo',
           GHOSTX_ROOT_PATH: '/test/repo'
         })
       })
       expect(vi.mocked(fs.writeFileSync)).toHaveBeenCalledWith(
-        '\\\\wsl.localhost\\Ubuntu\\home\\jin\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.sh',
+        '\\\\wsl.localhost\\Ubuntu\\home\\jin\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.sh',
         '#!/usr/bin/env bash\nset -e\npnpm install\n',
         'utf-8'
       )
       expect(vi.mocked(fs.chmodSync)).toHaveBeenCalledWith(
-        '\\\\wsl.localhost\\Ubuntu\\home\\jin\\repo\\.git\\worktrees\\feature\\orca\\setup-runner.sh',
+        '\\\\wsl.localhost\\Ubuntu\\home\\jin\\repo\\.git\\worktrees\\feature\\occ\\setup-runner.sh',
         0o755
       )
     } finally {

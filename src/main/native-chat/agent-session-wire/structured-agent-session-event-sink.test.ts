@@ -453,7 +453,7 @@ describe('deferred structured agent-session event sink', () => {
   })
 
   it('applies the first lifecycle batch for a settlement once, in the journal', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-event-sink-settlement-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-event-sink-settlement-'))
     const journal = await openAgentSessionJournal({
       identity: JOURNAL_IDENTITY,
       database: openTestJournalHostDatabase(root),

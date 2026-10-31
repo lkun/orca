@@ -10,7 +10,7 @@ import {
   writeManagedScript
 } from '../agent-hooks/installer-utils'
 import { refreshManagedScriptIfPresent } from '../agent-hooks/managed-hook-script-refresh'
-import { isOrcaOwnedRemnant, removeManagedGrokHookEntries } from './grok-hook-config-cleanup'
+import { isOCCOwnedRemnant, removeManagedGrokHookEntries } from './grok-hook-config-cleanup'
 import { buildInstalledGrokConfig, GROK_EVENTS, GROK_TOOL_EVENT_MATCHER } from './grok-hook-config'
 import { installRemoteGrokHook } from './grok-hook-remote-install'
 import {
@@ -43,7 +43,7 @@ export function getGrokToolEventMatcherForTests(): string {
 
 function getConfigPath(): string {
   // Use Grok's selected home and a dedicated managed file so unrelated user hook files stay untouched.
-  return join(resolveGrokHomeDir(), 'hooks', 'orca-status.json')
+  return join(resolveGrokHomeDir(), 'hooks', 'occ-status.json')
 }
 
 export function getManagedCommandForTests(scriptPath: string): string {
@@ -227,7 +227,7 @@ export class GrokHookService {
       return notInstalledStatus(configPath, 'Grok hook config changed during cleanup')
     }
     // Preserve user-owned symlinks: strip entries through their target instead of unlinking the link.
-    if (isOrcaOwnedRemnant(cleanup.config) && !isSymbolicLinkSync(configPath)) {
+    if (isOCCOwnedRemnant(cleanup.config) && !isSymbolicLinkSync(configPath)) {
       rmSync(configPath, { force: true })
     } else {
       writeHooksJson(configPath, cleanup.config)
@@ -270,7 +270,7 @@ export class GrokHookService {
       return notInstalledStatus(configPath)
     }
     const configIsSymlink = await isGrokHookConfigSymlink(configPath)
-    const unlinkable = isOrcaOwnedRemnant(cleanup.config) && !configIsSymlink
+    const unlinkable = isOCCOwnedRemnant(cleanup.config) && !configIsSymlink
     const serialized = `${JSON.stringify(cleanup.config, null, 2)}\n`
     const updated = unlinkable
       ? await removeGrokHookConfigIfUnchanged(configPath, snapshot.raw, mutationOptions)

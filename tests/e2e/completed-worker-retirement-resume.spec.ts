@@ -1,4 +1,4 @@
-import { test as base, expect } from './helpers/orca-app'
+import { test as base, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   waitForActivePaneHookDescriptor,
@@ -15,7 +15,7 @@ import {
   hasCompletedWorkerReceivedPreamble,
   readCompletedWorkerLedger,
   readPersistedWorkerRecoveryRecord,
-  runBuiltOrcaCli,
+  runBuiltOCCCli,
   seedCurrentCodexTranscript,
   terminalIdentity
 } from './helpers/completed-worker-retirement-fixture'
@@ -37,17 +37,17 @@ test.afterAll(() => {
 
 for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
   test(`completed background worker ${closeMode} retires resume authority before first activation`, async ({
-    orcaPage,
+    occPage,
     electronApp
   }) => {
     test.setTimeout(180_000)
     clearCompletedWorkerLedger()
-    await waitForSessionReady(orcaPage)
-    const coordinatorWorktreeId = await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage)
-    await waitForActivePanePtyId(orcaPage)
-    await orcaPage.evaluate(
+    await waitForSessionReady(occPage)
+    const coordinatorWorktreeId = await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage)
+    await waitForActivePanePtyId(occPage)
+    await occPage.evaluate(
       async ({ agentCommand, terminalWindowsShell }) => {
         await window.__store?.getState().updateSettings({
           agentCmdOverrides: { codex: agentCommand },
@@ -65,7 +65,7 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
     const userDataDir = await electronApp.evaluate(({ app }) => app.getPath('userData'))
     const isolatedHome = await electronApp.evaluate(({ app }) => app.getPath('home'))
     const client = new RuntimeClient(userDataDir, 30_000, null, null)
-    const coordinatorPane = await waitForActivePaneHookDescriptor(orcaPage)
+    const coordinatorPane = await waitForActivePaneHookDescriptor(occPage)
     const coordinatorResolved = await client.call<{ terminal: { handle: string } }>(
       'terminal.resolvePane',
       { paneKey: coordinatorPane.paneKey }
@@ -84,7 +84,7 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
       .poll(
         async () => {
           const listed = await client.call<{ worktrees: { id: string }[] }>('worktree.list', {})
-          const rendererWorktreeIds = await orcaPage.evaluate(() =>
+          const rendererWorktreeIds = await occPage.evaluate(() =>
             Object.values(window.__store?.getState().worktreesByRepo ?? {})
               .flat()
               .map((worktree) => worktree.id)
@@ -109,7 +109,7 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
     }
 
     expect(
-      await orcaPage.evaluate(
+      await occPage.evaluate(
         (worktreeId) => window.__store?.getState().everActivatedWorktreeIds.has(worktreeId),
         targetWorktreeId
       )
@@ -163,13 +163,13 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
     expect(worker.worktreeId).toBe(targetWorktreeId)
     // Keep the never-opened worker dormant so foreground-shell cleanup cannot retire it first.
     expect(
-      await orcaPage.evaluate(
+      await occPage.evaluate(
         (tabId) => Boolean(window.__paneManagers?.get(tabId)),
         workerBefore.tabId
       )
     ).toBe(false)
     expect(
-      await orcaPage.evaluate(
+      await occPage.evaluate(
         (worktreeId) => window.__store?.getState().everActivatedWorktreeIds.has(worktreeId),
         targetWorktreeId
       )
@@ -190,7 +190,7 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
 
     await client.call('terminal.send', {
       terminal: workerHandle,
-      text: 'ORCA_E2E_PUBLISH_DONE',
+      text: 'OCC_E2E_PUBLISH_DONE',
       enter: true
     })
 
@@ -201,7 +201,7 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
     }
     await expect
       .poll(() =>
-        orcaPage.evaluate((paneKey) => {
+        occPage.evaluate((paneKey) => {
           const record = window.__store?.getState().sleepingAgentSessionsByPaneKey[paneKey]
           return record
             ? {
@@ -265,7 +265,7 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
 
     await client.call('terminal.send', {
       terminal: workerHandle,
-      text: 'ORCA_E2E_EXIT_AFTER_DONE',
+      text: 'OCC_E2E_EXIT_AFTER_DONE',
       enter: true
     })
     await expect
@@ -274,7 +274,7 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
     // The exit marker precedes the asynchronous renderer recovery update.
     await expect
       .poll(() =>
-        orcaPage.evaluate(
+        occPage.evaluate(
           ({ paneKey, tabId, worktreeId }) => {
             const state = window.__store?.getState()
             return {
@@ -289,7 +289,7 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
       )
       .toEqual({ tabPresent: true, recoveryPresent: true })
 
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ paneKey, tabId, worktreeId }) => {
         const store = window.__store
         if (!store) {
@@ -297,8 +297,8 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
         }
         type Transition = { tabPresent: boolean; recoveryPresent: boolean }
         const e2eWindow = window as typeof window & {
-          __orcaRetiredWorkerTransitions?: Transition[]
-          __orcaRetiredWorkerUnsubscribe?: () => void
+          __occRetiredWorkerTransitions?: Transition[]
+          __occRetiredWorkerUnsubscribe?: () => void
         }
         const transitions: Transition[] = [
           {
@@ -308,8 +308,8 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
             recoveryPresent: Boolean(store.getState().sleepingAgentSessionsByPaneKey[paneKey])
           }
         ]
-        e2eWindow.__orcaRetiredWorkerTransitions = transitions
-        e2eWindow.__orcaRetiredWorkerUnsubscribe = store.subscribe((state) => {
+        e2eWindow.__occRetiredWorkerTransitions = transitions
+        e2eWindow.__occRetiredWorkerUnsubscribe = store.subscribe((state) => {
           const next = {
             tabPresent: Boolean(state.tabsByWorktree[worktreeId]?.some((tab) => tab.id === tabId)),
             recoveryPresent: Boolean(state.sleepingAgentSessionsByPaneKey[paneKey])
@@ -328,7 +328,7 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
     )
 
     if (closeMode === 'terminal-close-cli') {
-      const closed = runBuiltOrcaCli(['terminal', 'close', '--terminal', workerHandle, '--json'], {
+      const closed = runBuiltOCCCli(['terminal', 'close', '--terminal', workerHandle, '--json'], {
         userDataDir,
         cwd: process.cwd()
       })
@@ -356,10 +356,10 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
     }
     await expect
       .poll(() =>
-        orcaPage.evaluate(() => {
+        occPage.evaluate(() => {
           type Transition = { tabPresent: boolean; recoveryPresent: boolean }
-          return (window as typeof window & { __orcaRetiredWorkerTransitions?: Transition[] })
-            .__orcaRetiredWorkerTransitions
+          return (window as typeof window & { __occRetiredWorkerTransitions?: Transition[] })
+            .__occRetiredWorkerTransitions
         })
       )
       .toEqual(
@@ -368,36 +368,36 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
           { tabPresent: false, recoveryPresent: false }
         ])
       )
-    await orcaPage.evaluate(() => {
-      const e2eWindow = window as typeof window & { __orcaRetiredWorkerUnsubscribe?: () => void }
-      e2eWindow.__orcaRetiredWorkerUnsubscribe?.()
-      delete e2eWindow.__orcaRetiredWorkerUnsubscribe
+    await occPage.evaluate(() => {
+      const e2eWindow = window as typeof window & { __occRetiredWorkerUnsubscribe?: () => void }
+      e2eWindow.__occRetiredWorkerUnsubscribe?.()
+      delete e2eWindow.__occRetiredWorkerUnsubscribe
     })
     await expect
       .poll(() =>
-        orcaPage.evaluate(
+        occPage.evaluate(
           (paneKey) => window.__store?.getState().sleepingAgentSessionsByPaneKey[paneKey] ?? null,
           workerPaneKey
         )
       )
       .toBeNull()
 
-    await orcaPage.evaluate(() => window.dispatchEvent(new Event('beforeunload')))
+    await occPage.evaluate(() => window.dispatchEvent(new Event('beforeunload')))
     await expect
       .poll(() =>
-        orcaPage.evaluate(async (paneKey) => {
+        occPage.evaluate(async (paneKey) => {
           const session = await window.api.session.get()
           return session.sleepingAgentSessionsByPaneKey?.[paneKey] ?? null
         }, workerPaneKey)
       )
       .toBeNull()
-    await orcaPage.evaluate(() => window.api.session.flush())
+    await occPage.evaluate(() => window.api.session.flush())
     expect(readPersistedWorkerRecoveryRecord(userDataDir, workerPaneKey)).toBeNull()
 
-    await orcaPage.reload()
-    await waitForSessionReady(orcaPage)
+    await occPage.reload()
+    await waitForSessionReady(occPage)
 
-    const beforeActivation = await orcaPage.evaluate((worktreeId) => {
+    const beforeActivation = await occPage.evaluate((worktreeId) => {
       const state = window.__store?.getState()
       return {
         everActivated: state?.everActivatedWorktreeIds.has(worktreeId) ?? false,
@@ -407,17 +407,17 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
     }, targetWorktreeId)
     expect(beforeActivation).toEqual({ everActivated: false, tabCount: 0, pendingStartupCount: 0 })
 
-    const targetCard = orcaPage
+    const targetCard = occPage
       .locator(`[data-worktree-id="${String(targetWorktreeId)}"]`)
       .first()
       .locator('[data-worktree-card-surface]')
     await targetCard.evaluate((element: HTMLElement) => element.click())
     await expect
-      .poll(() => orcaPage.evaluate(() => window.__store?.getState().activeWorktreeId))
+      .poll(() => occPage.evaluate(() => window.__store?.getState().activeWorktreeId))
       .toBe(targetWorktreeId)
-    await waitForActiveTerminalManager(orcaPage)
-    await waitForActivePanePtyId(orcaPage)
-    const activatedPane = await waitForActivePaneHookDescriptor(orcaPage)
+    await waitForActiveTerminalManager(occPage)
+    await waitForActivePanePtyId(occPage)
+    const activatedPane = await waitForActivePaneHookDescriptor(occPage)
     expect(activatedPane.worktreeId).toBe(targetWorktreeId)
     const activatedResolved = await client.call<{ terminal: { handle: string } }>(
       'terminal.resolvePane',
@@ -443,9 +443,9 @@ for (const closeMode of ['terminal-close-cli', 'worker-release'] as const) {
         (event) => event.args?.includes('resume') && event.args?.includes(PROVIDER_SESSION_ID)
       )
     ).toEqual([])
-    await expect(orcaPage.locator('.session-restored-banner')).toHaveCount(0)
+    await expect(occPage.locator('.session-restored-banner')).toHaveCount(0)
 
-    const afterActivation = await orcaPage.evaluate(
+    const afterActivation = await occPage.evaluate(
       ({ originalTabId, worktreeId }) => {
         const state = window.__store?.getState()
         const tabs = state?.tabsByWorktree[worktreeId] ?? []

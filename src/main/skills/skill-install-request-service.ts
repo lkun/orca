@@ -120,7 +120,7 @@ async function executeParsedSkillInstallRequest(
       scope: destination.scope,
       homeDirectory: destination.homeDirectory,
       workspaceDirectory: destination.workspaceDirectory,
-      orcaStateDirectory: dependencies.stateDirectory,
+      occStateDirectory: dependencies.stateDirectory,
       detectedProviders,
       providerRootOverrides,
       destinationIdentity: destination.destinationIdentity,
@@ -145,7 +145,7 @@ async function executeParsedSkillInstallRequest(
       name: request.package.packageId,
       packageDigest: request.package.packageDigest,
       placements: [],
-      errorCategory: failure.code,
+      errocctegory: failure.code,
       failure
     }
   } finally {

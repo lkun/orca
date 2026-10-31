@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import type { OrcaRuntimeService } from '../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../occ-runtime'
 
 // Bound per-PTY/client-session entries; evicted idle sessions have no pending acknowledgements.
 export const TERMINAL_INPUT_SEQUENCE_LEDGER_MAX_SESSIONS = 4096
@@ -92,10 +92,10 @@ function rememberUnknown(session: Session, seq: number): void {
   }
 }
 
-const ledgers = new WeakMap<OrcaRuntimeService, TerminalInputSequenceLedger>()
+const ledgers = new WeakMap<OCCRuntimeService, TerminalInputSequenceLedger>()
 
 export function getTerminalInputSequenceLedger(
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
 ): TerminalInputSequenceLedger {
   let ledger = ledgers.get(runtime)
   if (!ledger) {

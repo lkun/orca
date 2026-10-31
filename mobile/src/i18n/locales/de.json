@@ -281,7 +281,7 @@
       "plan": "Plan",
       "stoppedManually": "Manuell gestoppt"
     },
-    "orcaStop": {
+    "occStop": {
       "canContinue": "Die Unterhaltung kann fortgesetzt werden.",
       "crash": "OCC auf {{machine}} wurde während dieser Antwort unerwartet beendet.",
       "quit": "OCC auf {{machine}} wurde während dieser Antwort geschlossen.",
@@ -908,7 +908,7 @@
     },
     "setupHookTrustDrawer": {
       "alwaysTrustAndRun": "Immer vertrauen und ausführen",
-      "description": "Die orca.yaml dieses Repositorys wird vor dem Start des Arbeitsbereichs ausgeführt. Nur ausführen, wenn das Repository vertrauenswürdig ist.",
+      "description": "Die occ.yaml dieses Repositorys wird vor dem Start des Arbeitsbereichs ausgeführt. Nur ausführen, wenn das Repository vertrauenswürdig ist.",
       "dontRun": "Nicht ausführen",
       "newScriptLabel": "Neues Einrichtungsskript",
       "runHooks": "Hooks ausführen",
@@ -2564,7 +2564,7 @@
       "cannotRunHere": "OCC kann diesen Agenten hier nicht in einem Chat ausführen.",
       "capacity": "OCC hat auf dem Computer, auf dem dieser Chat läuft, ein Anfragelimit erreicht. OCC dort aktualisieren und anschließend erneut versuchen.",
       "chatNotFound": "OCC kann diesen Chat nicht finden.",
-      "chatSavedByNewerOrca": "Dieser Chat wurde mit einer neueren OCC-Version gespeichert.",
+      "chatSavedByNewerOCC": "Dieser Chat wurde mit einer neueren OCC-Version gespeichert.",
       "clearAfterAnswer": "Die Frage oder Genehmigungsanfrage des Agenten beantworten und anschließend /clear ausführen.",
       "clearAfterRetry": "Die vorherige Nachricht erneut senden und anschließend /clear ausführen.",
       "clearAfterSending": "Die vorherige Nachricht wird noch gesendet. Nach dem Senden /clear ausführen.",
@@ -2610,7 +2610,7 @@
       "restartFailed": "Der Agent konnte nicht neu gestartet werden.",
       "runClearWhenDone": "Nach Abschluss /clear ausführen.",
       "runCompactWhenDone": "Nach Abschluss /compact ausführen.",
-      "savedByNewerOrca": "Die Chats wurden mit einer neueren OCC-Version gespeichert.",
+      "savedByNewerOCC": "Die Chats wurden mit einer neueren OCC-Version gespeichert.",
       "sendOutcomeLost": "OCC konnte nicht bestätigen, dass die Nachricht den Agenten erreicht hat. Den Chat prüfen und die Nachricht bei Bedarf erneut senden.",
       "settleEarlierMessage": "Warten, bis die vorherige Nachricht übermittelt wurde, oder sie erneut senden.",
       "shortenMessage": "Die Nachricht kürzen oder aufteilen und anschließend erneut senden.",
@@ -2622,8 +2622,8 @@
       "turnActive": "Der Agent antwortet noch.",
       "unreachable": "OCC konnte den Agenten nicht erreichen.",
       "unsupported": "Hierfür ist eine neuere OCC-Version auf dem Computer erforderlich, auf dem dieser Chat läuft. OCC dort aktualisieren und anschließend erneut versuchen.",
-      "updateOrcaToKeepUsing": "OCC aktualisieren, um sie weiter zu verwenden.",
-      "updateOrcaToOpenChat": "OCC aktualisieren, um ihn zu öffnen.",
+      "updateOCCToKeepUsing": "OCC aktualisieren, um sie weiter zu verwenden.",
+      "updateOCCToOpenChat": "OCC aktualisieren, um ihn zu öffnen.",
       "waitForBackgroundTasks": "Warten, bis die Hintergrundaufgaben abgeschlossen sind.",
       "waitForCommand": "Warten, bis /compact oder /clear abgeschlossen ist.",
       "waitForStart": "Warten, bis der Agent vollständig gestartet ist.",
@@ -3628,7 +3628,7 @@
       "projectSubtitle": "GitHub-Projekt · {{repository}}{{itemNumber}}",
       "pullRequest": "Pull Request",
       "reopenItem": "Eintrag erneut öffnen",
-      "repositoryNotInOrca": "Repository nicht in OCC",
+      "repositoryNotInOCC": "Repository nicht in OCC",
       "status": "Status",
       "type": "Typ",
       "workspaceCreationRequirement": "Arbeitsbereiche können nur aus GitHub-Issues und Pull Requests erstellt werden."
@@ -3873,7 +3873,7 @@
       "setupTitle": "Einrichtungsskript ausführen?",
       "skipSetupAndCreate": "Ohne Einrichtung erstellen",
       "trustFailed": "Das Einrichtungsskript konnte nicht als vertrauenswürdig markiert werden.",
-      "trustSubtitle": "Die orca.yaml dieses Repositorys wird vor dem Start des Arbeitsbereichs auf deinem Rechner ausgeführt. Nur ausführen, wenn du diesem Repository vertraust."
+      "trustSubtitle": "Die occ.yaml dieses Repositorys wird vor dem Start des Arbeitsbereichs auf deinem Rechner ausgeführt. Nur ausführen, wenn du diesem Repository vertraust."
     },
     "worktreeCreateRetry": {
       "createFailed": "Arbeitsbereich konnte nicht erstellt werden."

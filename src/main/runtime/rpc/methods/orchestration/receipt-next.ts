@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import type { OrcaRuntimeService } from '../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../occ-runtime'
 import { projectWorkerListFleet } from './worker/worker-list-projection'
 
 // Only an empty check sees the whole mailbox, so only it says to stop.
@@ -37,13 +37,13 @@ export function withWorkerStartNext(
     return receipt
   }
   const next = silentHost
-    ? `${AWAIT_WAKE} ${silentHost.name} cannot report a worker that stops without worker_done, so if no report arrives, run \`orca orchestration worker-show --dispatch ${silentHost.dispatchId}\`.`
+    ? `${AWAIT_WAKE} ${silentHost.name} cannot report a worker that stops without worker_done, so if no report arrives, run \`occ orchestration worker-show --dispatch ${silentHost.dispatchId}\`.`
     : AWAIT_WAKE
   return { ...ready.data, next }
 }
 
 export async function withRunCheckNext(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   result: unknown
 ): Promise<unknown> {
   // A batch is capped, so a take that leaves unread mail behind is the one case that needs another check.
@@ -64,7 +64,7 @@ export function withAnswerNext<T extends object>(receipt: T): T & { next: string
 }
 
 /** A worker still runs and worker-list owes no action: each running worker's stop or exit sends mail. */
-async function awaitsWorkerReports(runtime: OrcaRuntimeService, runId: string): Promise<boolean> {
+async function awaitsWorkerReports(runtime: OCCRuntimeService, runId: string): Promise<boolean> {
   const db = runtime.getOrchestrationDb()
   const rows = db.listWorkerTerminalResources({ runId })
   const { workers } = await projectWorkerListFleet(runtime, rows, {

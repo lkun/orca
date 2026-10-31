@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { WSL_HOSTS_INTERNAL_GATE_ENV } from '../../../shared/wsl-host-internal-gate'
-import { computeOrcadMigrationManifestSha256 } from '../../orcad/orcad-migration-manifest-digest'
+import { computeOCCdMigrationManifestSha256 } from '../../occd/occd-migration-manifest-digest'
 import {
   createWslMoveWorld,
   WSL_MOVE_WORLD_PANE,
@@ -221,7 +221,7 @@ describe('moveProjectsToWslHost', () => {
       }
       return {
         ...exported,
-        manifest: { ...grown, manifestSha256: computeOrcadMigrationManifestSha256(grown) }
+        manifest: { ...grown, manifestSha256: computeOCCdMigrationManifestSha256(grown) }
       }
     }
     const result = await moveProjectsToWslHost(world.deps, request)

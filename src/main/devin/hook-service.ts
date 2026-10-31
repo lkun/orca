@@ -32,7 +32,7 @@ import {
 import {
   mergeHookInstallDetail,
   parseDevinHooksConfigText,
-  readConfigFromOrcaOverlapDetail,
+  readConfigFromOCCOverlapDetail,
   readDevinHooksConfig,
   readDevinHooksSource,
   serializeDevinHooksConfig
@@ -44,7 +44,7 @@ function getManagedScript(target: 'local' | 'posix' = 'local'): string {
       '@echo off',
       'setlocal',
       // Refresh endpoint credentials for PTYs that outlive an OCC restart.
-      'if defined ORCA_AGENT_HOOK_ENDPOINT if exist "%ORCA_AGENT_HOOK_ENDPOINT%" call "%ORCA_AGENT_HOOK_ENDPOINT%" 2>nul',
+      'if defined OCC_AGENT_HOOK_ENDPOINT if exist "%OCC_AGENT_HOOK_ENDPOINT%" call "%OCC_AGENT_HOOK_ENDPOINT%" 2>nul',
       ...buildWindowsHookEnvironmentGuardLines(),
       buildWindowsAgentHookPostCommand('devin'),
       'exit /b 0',
@@ -58,25 +58,25 @@ function getManagedScript(target: 'local' | 'posix' = 'local'): string {
     ...buildPosixHookSpoolLines('devin'),
     // Refresh endpoint credentials for PTYs that outlive an OCC restart.
     // Keep endpoint-file races and parse errors out of agent transcripts.
-    'if [ -n "$ORCA_AGENT_HOOK_ENDPOINT" ] && [ -r "$ORCA_AGENT_HOOK_ENDPOINT" ]; then',
-    '  . "$ORCA_AGENT_HOOK_ENDPOINT" 2>/dev/null || :',
+    'if [ -n "$OCC_AGENT_HOOK_ENDPOINT" ] && [ -r "$OCC_AGENT_HOOK_ENDPOINT" ]; then',
+    '  . "$OCC_AGENT_HOOK_ENDPOINT" 2>/dev/null || :',
     'fi',
-    'if [ -z "$ORCA_AGENT_HOOK_PORT" ] || [ -z "$ORCA_AGENT_HOOK_TOKEN" ] || [ -z "$ORCA_PANE_KEY" ]; then',
+    'if [ -z "$OCC_AGENT_HOOK_PORT" ] || [ -z "$OCC_AGENT_HOOK_TOKEN" ] || [ -z "$OCC_PANE_KEY" ]; then',
     '  spool_hook_event',
     '  exit 0',
     'fi',
     // Form encoding handles filesystem paths containing quotes or newlines.
     // stdin keeps large payloads off the command line to avoid EDR false positives.
-    `printf '%s' "$payload" | ${posixCurlCommand()} -sS -X POST "http://127.0.0.1:\${ORCA_AGENT_HOOK_PORT}/hook/devin" \\`,
+    `printf '%s' "$payload" | ${posixCurlCommand()} -sS -X POST "http://127.0.0.1:\${OCC_AGENT_HOOK_PORT}/hook/devin" \\`,
     '  --connect-timeout 0.5 --max-time 1.5 \\',
     '  -H "Content-Type: application/x-www-form-urlencoded" \\',
-    '  -H "X-OCC-Agent-Hook-Token: ${ORCA_AGENT_HOOK_TOKEN}" \\',
-    '  --data-urlencode "paneKey=${ORCA_PANE_KEY}" \\',
-    '  --data-urlencode "tabId=${ORCA_TAB_ID}" \\',
-    '  --data-urlencode "launchToken=${ORCA_AGENT_LAUNCH_TOKEN}" \\',
-    '  --data-urlencode "worktreeId=${ORCA_WORKTREE_ID}" \\',
-    '  --data-urlencode "env=${ORCA_AGENT_HOOK_ENV}" \\',
-    '  --data-urlencode "version=${ORCA_AGENT_HOOK_VERSION}" \\',
+    '  -H "X-OCC-Agent-Hook-Token: ${OCC_AGENT_HOOK_TOKEN}" \\',
+    '  --data-urlencode "paneKey=${OCC_PANE_KEY}" \\',
+    '  --data-urlencode "tabId=${OCC_TAB_ID}" \\',
+    '  --data-urlencode "launchToken=${OCC_AGENT_LAUNCH_TOKEN}" \\',
+    '  --data-urlencode "worktreeId=${OCC_WORKTREE_ID}" \\',
+    '  --data-urlencode "env=${OCC_AGENT_HOOK_ENV}" \\',
+    '  --data-urlencode "version=${OCC_AGENT_HOOK_VERSION}" \\',
     '  --data-urlencode "payload@-" >/dev/null 2>&1 || spool_hook_event',
     'exit 0',
     ''
@@ -136,7 +136,7 @@ export class DevinHookService {
       state,
       configPath,
       managedHooksPresent,
-      detail: mergeHookInstallDetail(detail, readConfigFromOrcaOverlapDetail(config))
+      detail: mergeHookInstallDetail(detail, readConfigFromOCCOverlapDetail(config))
     }
   }
 
@@ -171,7 +171,7 @@ export class DevinHookService {
     // Remote hook scripts use POSIX syntax regardless of the local platform.
     const remoteConfigPath = getDevinRemoteConfigPath(remoteHome)
     const remoteScriptFileName = getDevinPosixManagedScriptFileName()
-    const remoteScriptPath = `${remoteHome.replace(/\/$/, '')}/.orca/agent-hooks/${remoteScriptFileName}`
+    const remoteScriptPath = `${remoteHome.replace(/\/$/, '')}/.occ/agent-hooks/${remoteScriptFileName}`
     try {
       const body = await readTextFileRemote(sftp, remoteConfigPath)
       const config =

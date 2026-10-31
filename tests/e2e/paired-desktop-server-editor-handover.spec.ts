@@ -1,4 +1,4 @@
-// H5d: with ORCA_LAYOUT_OWNER=main, hand a mirror-created editor tab to server authority before its layout frames draw.
+// H5d: with OCC_LAYOUT_OWNER=main, hand a mirror-created editor tab to server authority before its layout frames draw.
 // Keep the desktop’s tab id, file and unsaved draft in the server layout.
 import { existsSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
@@ -7,7 +7,7 @@ import {
   toWebTerminalSurfaceTabId
 } from '../../src/shared/terminal-surface-id'
 import { LAYOUT_INTENTS_RUNTIME_CAPABILITY } from '../../src/shared/workspace-layout/layout-intents-capability'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import {
   launchPairedElectronClient,
@@ -20,7 +20,7 @@ import {
 import { waitForWorktree } from './helpers/paired-desktop-server-terminal-tab'
 
 const LAYOUT_OWNER_BUILD = existsSync(
-  path.join(process.cwd(), 'out', 'main', 'ORCA_LAYOUT_OWNER_MAIN')
+  path.join(process.cwd(), 'out', 'main', 'OCC_LAYOUT_OWNER_MAIN')
 )
 const FILE_NAME = 'handover-note.md'
 const DRAFT = 'unsaved desktop draft'
@@ -91,7 +91,7 @@ async function openWhileMirrorDrawn(
 }
 
 test.describe('paired desktop hands its editor tabs to a switch-on server', () => {
-  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (ORCA_LAYOUT_OWNER=main)')
+  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (OCC_LAYOUT_OWNER=main)')
 
   test('a tab opened while mirror-drawn survives the server’s frames and is the server’s', async ({
     testRepoPath

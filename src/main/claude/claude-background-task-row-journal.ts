@@ -24,7 +24,7 @@ export function claudeBackgroundTaskIdentity(
     generation > 1
       ? `claude-background-task:${taskId}#${generation}`
       : `claude-background-task:${taskId}`
-  return { provider: 'orca', clientMessageId: key }
+  return { provider: 'occ', clientMessageId: key }
 }
 
 export const claudeBackgroundTaskBody = backgroundTaskJournalBody
@@ -39,7 +39,7 @@ export function resolveClaudeBackgroundTaskIdentity(
   let parentlessGeneration: number | undefined
   journal.visitItems((itemId, _sequence, body) => {
     const identity = parseAgentJournalItemKey(itemId)
-    if (!identity || identity.provider !== 'orca') {
+    if (!identity || identity.provider !== 'occ') {
       return
     }
     const taskBlock = body.kind === 'message' ? body.blocks.find(isBackgroundTaskBlock) : undefined

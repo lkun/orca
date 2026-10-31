@@ -103,7 +103,7 @@ export const MOBILE_WEB_APP_ROOT_RESET =
 // Use zero-specificity native parity: remove text-field focus rings only; keyboard buttons keep browser rings.
 // Disable body text selection/callout to prevent WebKit/Android long-press interference, including portaled modals; fields opt back in.
 export const MOBILE_WEB_APP_NATIVE_PARITY_STYLE =
-  '<style id="orca-native-parity">:where(input:focus,textarea:focus){outline:none}' +
+  '<style id="occ-native-parity">:where(input:focus,textarea:focus){outline:none}' +
   ':where(body){-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}' +
   ':where(input,textarea,[contenteditable]){-webkit-user-select:text;user-select:text;' +
   '-webkit-touch-callout:default}</style>'
@@ -123,9 +123,9 @@ const MOBILE_ZOD_PACKAGE = join(mobileDir, 'node_modules', 'zod')
 const ZOD_JITLESS_BANNER =
   'globalThis.__zod_globalConfig ??= {}; globalThis.__zod_globalConfig.jitless = true;'
 
-const ROUTE_MANIFEST_PLUGIN_NAME = 'orca-route-manifest'
-const LUCIDE_PLUGIN_NAME = 'orca-lucide-barrel-provider'
-const HAIRLINE_PLUGIN_NAME = 'orca-hairline-device-pixel'
+const ROUTE_MANIFEST_PLUGIN_NAME = 'occ-route-manifest'
+const LUCIDE_PLUGIN_NAME = 'occ-lucide-barrel-provider'
+const HAIRLINE_PLUGIN_NAME = 'occ-hairline-device-pixel'
 
 const ENTRY_CHUNK_NAME = 'entry'
 
@@ -484,12 +484,12 @@ export async function buildMobileWebAppBundle({
 
   // Root-absolute URLs survive nested routes; CSP allows only about: base. ESM entry/chunks load under existing self policy.
   const html =
-    '<!doctype html>\n<html lang="en" data-orca-scrollbars="sleek">\n<head>\n<meta charset="utf-8" />\n' +
+    '<!doctype html>\n<html lang="en" data-occ-scrollbars="sleek">\n<head>\n<meta charset="utf-8" />\n' +
     // Shell owns safe-area padding/insets; viewport-fit=cover would invite page-side double padding.
     '<meta name="viewport" content="width=device-width, initial-scale=1" />\n' +
     // Empty favicon prevents repeated unmanifested /favicon.ico requests/403s; WebView needs no tab icon asset.
     '<link rel="icon" href="data:," />\n' +
-    `<title>OCC</title>\n${MOBILE_WEB_APP_ROOT_RESET}\n${MOBILE_WEB_APP_NATIVE_PARITY_STYLE}\n<style id="orca-scrollbars">${scrollbarStyle}</style>\n</head>\n<body>\n<div id="root"></div>\n` +
+    `<title>OCC</title>\n${MOBILE_WEB_APP_ROOT_RESET}\n${MOBILE_WEB_APP_NATIVE_PARITY_STYLE}\n<style id="occ-scrollbars">${scrollbarStyle}</style>\n</head>\n<body>\n<div id="root"></div>\n` +
     `<script type="module" src="/${scriptAsset.path}"></script>\n</body>\n</html>\n`
   const indexBytes = Buffer.from(html, 'utf8')
   const indexAsset = {

@@ -14,7 +14,7 @@ import { resolveDraftPasteReadyTimeoutMs } from '../../shared/draft-paste-ready-
 import { TUI_AGENT_CONFIG } from '../../shared/tui-agent-config'
 import { draftPasteReadySignalHasMarker } from '../../shared/draft-paste-ready-scanner'
 import { nameOnlyIdleNeedsCorroboration } from './tui-idle-evidence'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import { showsHoldAnchor } from './agent-state-rules/agent-state-text-anchors'
 import { detectTerminalWaitBlockedReason } from './terminal-wait-detection'
 
@@ -25,10 +25,10 @@ export function getLaunchedAgentReadinessLane(agent: TuiAgent): LaunchedAgentRea
 }
 
 export type LaunchedAgentReadinessRuntime = Pick<
-  OrcaRuntimeService,
+  OCCRuntimeService,
   'waitForTerminal' | 'waitForFreshWorkerComposer'
 > &
-  Partial<Pick<OrcaRuntimeService, 'getPtyLivenessVerdict'>>
+  Partial<Pick<OCCRuntimeService, 'getPtyLivenessVerdict'>>
 
 export type TerminalReadinessCreation = Pick<
   RuntimeTerminalCreate,

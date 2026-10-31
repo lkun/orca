@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import {
   getStructuredAgentSessionHost,
   setStructuredAgentSessionHost
@@ -25,7 +25,7 @@ type InstallEffects = {
 }
 
 /** Model installation effects so a redundant install fails even if supportsCreate still answers correctly. */
-function stubStructuredHostInstall(runtime: OrcaRuntimeService): {
+function stubStructuredHostInstall(runtime: OCCRuntimeService): {
   effects: InstallEffects
   ensure: ReturnType<typeof vi.fn>
 } {
@@ -56,8 +56,8 @@ type SupportResult = {
   reason?: 'agent' | 'remote' | 'wsl' | 'chat-program'
 }
 
-function createRuntime(location: TestLocation): OrcaRuntimeService {
-  const runtime = new OrcaRuntimeService({ getSettings: () => ({}) } as never)
+function createRuntime(location: TestLocation): OCCRuntimeService {
+  const runtime = new OCCRuntimeService({ getSettings: () => ({}) } as never)
   const internal = runtime as unknown as {
     resolveStructuredAgentSessionLocation: () => Promise<unknown>
   }

@@ -15,14 +15,14 @@ describe('cloud database', () => {
   })
 
   it('names the SQLite file after the service and applies the given schema', async () => {
-    const dataDir = mkdtempSync(join(tmpdir(), 'orca-cloud-database-'))
+    const dataDir = mkdtempSync(join(tmpdir(), 'occ-cloud-database-'))
     dirs.push(dataDir)
     const database = await openCloudDatabase({ service: 'sample', schemaStatements: SCHEMA, dataDir })
     await database.transaction(async (tx) => {
       await tx.query('INSERT INTO items (id, value) VALUES (?, ?)', ['a', 1])
     })
     await database.close()
-    expect(existsSync(join(dataDir, 'orca-sample.sqlite'))).toBe(true)
+    expect(existsSync(join(dataDir, 'occ-sample.sqlite'))).toBe(true)
 
     const reader = await openCloudDatabase({
       service: 'sample',
@@ -35,7 +35,7 @@ describe('cloud database', () => {
   })
 
   it('adds a column on SQLite only while it is missing, so every boot can repeat it', async () => {
-    const dataDir = mkdtempSync(join(tmpdir(), 'orca-cloud-database-'))
+    const dataDir = mkdtempSync(join(tmpdir(), 'occ-cloud-database-'))
     dirs.push(dataDir)
     const schema = [
       ...SCHEMA,

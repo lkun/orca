@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { spawnProcess } from '@orca/process-host'
-import { windowsPowerShellPath } from '@orca/process-host/windows-system-binary'
+import { spawnProcess } from '@occ/process-host'
+import { windowsPowerShellPath } from '@occ/process-host/windows-system-binary'
 import { DesktopScriptRuntimeHost } from './desktop-script-runtime-host'
 import { startServeChannel } from './desktop-script-serve-channel'
 import {
@@ -40,7 +40,7 @@ describeOnWindows('runtime.ps1 serve mode', () => {
 
     await expect(runtime.request({ tool: 'handshake' })).resolves.toMatchObject({
       ok: true,
-      capabilities: { protocolVersion: 1, provider: 'orca-computer-use-windows' }
+      capabilities: { protocolVersion: 1, provider: 'occ-computer-use-windows' }
     })
 
     const apps = await runtime.request({ tool: 'list_apps' })

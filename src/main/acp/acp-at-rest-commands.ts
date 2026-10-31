@@ -9,8 +9,8 @@ import { resolveNativeChatVisualsSkillLocation } from '../native-chat/native-cha
 import type { StructuredAgentSessionLogger } from '../native-chat/agent-session-wire/structured-agent-session-logger'
 import type { AgentCliVersionReader } from '../agent-cli-version-probe'
 import type { ProviderProcessLaunch } from '../provider-process/provider-process-launch'
-import { ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV } from '../../shared/agent-session-caller-env'
-import { ORCA_AGENT_SESSION_CALLER_ENV_KEYS } from '../ipc/pty/host-env/spawn-env-keys'
+import { OCC_AGENT_SESSION_SPAWN_TOKEN_ENV } from '../../shared/agent-session-caller-env'
+import { OCC_AGENT_SESSION_CALLER_ENV_KEYS } from '../ipc/pty/host-env/spawn-env-keys'
 import { STRUCTURED_CHILD_ENV_TO_DELETE } from '../runtime/structured-session-child-env'
 import {
   LEGACY_NATIVE_CHAT_VISUALS_DIR_ENV,
@@ -128,9 +128,9 @@ export class AcpAtRestCommandCatalog extends AtRestCommandCatalog {
               envToDelete: [
                 ...invocation.envToDelete,
                 ...STRUCTURED_CHILD_ENV_TO_DELETE,
-                ...ORCA_AGENT_SESSION_CALLER_ENV_KEYS,
-                ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV,
-                'ORCA_TERMINAL_HANDLE',
+                ...OCC_AGENT_SESSION_CALLER_ENV_KEYS,
+                OCC_AGENT_SESSION_SPAWN_TOKEN_ENV,
+                'OCC_TERMINAL_HANDLE',
                 NATIVE_CHAT_SCRATCH_DIR_ENV,
                 LEGACY_NATIVE_CHAT_VISUALS_DIR_ENV
               ]

@@ -56,7 +56,7 @@ export const tryDeleteWslUncPathMock: IpcMock = vi.fn()
 export const recordCrashBreadcrumbMock: IpcMock = vi.fn()
 
 export const electronMock = {
-  app: { getPath: () => '/orca-test-user-data' },
+  app: { getPath: () => '/occ-test-user-data' },
   BrowserWindow: { fromWebContents: fromWebContentsMock },
   dialog: { showSaveDialog: showSaveDialogMock, showOpenDialog: showOpenDialogMock },
   ipcMain: { handle: handleMock },

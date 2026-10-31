@@ -241,10 +241,10 @@ describe('recoverPartialLocalWorktreeRemoval', () => {
       const result = await recoverPartialLocalWorktreeRemoval({
         error: Object.assign(new Error('git worktree remove failed'), {
           stderr:
-            "error: failed to delete '/Users/dev/orca/workspaces/feature': Directory not empty"
+            "error: failed to delete '/Users/dev/occ/workspaces/feature': Directory not empty"
         }),
         force: true,
-        canonicalWorktreePath: '/Users/dev/orca/workspaces/feature',
+        canonicalWorktreePath: '/Users/dev/occ/workspaces/feature',
         repoPath: '/Users/dev/repo',
         localWorktreeGitOptions: {},
         registeredWorktree: { branch: 'refs/heads/feature', head: 'abc123' },
@@ -252,9 +252,9 @@ describe('recoverPartialLocalWorktreeRemoval', () => {
         closeWatcher
       })
 
-      expect(closeWatcher).toHaveBeenCalledWith('/Users/dev/orca/workspaces/feature')
+      expect(closeWatcher).toHaveBeenCalledWith('/Users/dev/occ/workspaces/feature')
       expect(removeLocalWorktreePathMock).toHaveBeenCalledWith(
-        '/Users/dev/orca/workspaces/feature',
+        '/Users/dev/occ/workspaces/feature',
         {},
         undefined
       )
@@ -273,10 +273,10 @@ describe('recoverPartialLocalWorktreeRemoval', () => {
       await expect(
         recoverPartialLocalWorktreeRemoval({
           error: Object.assign(new Error('git worktree remove failed'), {
-            stderr: "fatal: '/Users/dev/orca/workspaces/feature' is not a working tree"
+            stderr: "fatal: '/Users/dev/occ/workspaces/feature' is not a working tree"
           }),
           force: true,
-          canonicalWorktreePath: '/Users/dev/orca/workspaces/feature',
+          canonicalWorktreePath: '/Users/dev/occ/workspaces/feature',
           repoPath: '/Users/dev/repo',
           localWorktreeGitOptions: {},
           registeredWorktree: { branch: 'refs/heads/feature', head: 'abc123' },
@@ -293,7 +293,7 @@ describe('recoverPartialLocalWorktreeRemoval', () => {
     await withPlatform('darwin', async () => {
       listWorktreesStrictMock.mockResolvedValue([
         {
-          path: '/Users/dev/orca/workspaces/feature/nested',
+          path: '/Users/dev/occ/workspaces/feature/nested',
           head: 'def456',
           branch: 'refs/heads/nested',
           isBare: false,
@@ -306,10 +306,10 @@ describe('recoverPartialLocalWorktreeRemoval', () => {
         recoverPartialLocalWorktreeRemoval({
           error: Object.assign(new Error('git worktree remove failed'), {
             stderr:
-              "error: failed to delete '/Users/dev/orca/workspaces/feature': Directory not empty"
+              "error: failed to delete '/Users/dev/occ/workspaces/feature': Directory not empty"
           }),
           force: true,
-          canonicalWorktreePath: '/Users/dev/orca/workspaces/feature',
+          canonicalWorktreePath: '/Users/dev/occ/workspaces/feature',
           repoPath: '/Users/dev/repo',
           localWorktreeGitOptions: {},
           registeredWorktree: { branch: 'refs/heads/feature', head: 'abc123' },

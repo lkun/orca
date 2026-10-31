@@ -3,7 +3,7 @@ import { Platform } from 'react-native'
 import { translate } from '../i18n/mobile-i18n'
 
 // Create the shared FCM channel before socket subscription: a background push can arrive first, and Android drops notifications for missing channels.
-export const DESKTOP_NOTIFICATION_CHANNEL_ID = 'orca-desktop'
+export const DESKTOP_NOTIFICATION_CHANNEL_ID = 'occ-desktop'
 
 // Android updates existing channels, so calling again after a language change renames them; other platforms do nothing.
 export async function ensureDesktopNotificationChannel(): Promise<void> {

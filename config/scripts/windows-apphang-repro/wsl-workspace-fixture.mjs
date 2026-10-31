@@ -38,7 +38,7 @@ function linuxPathToWslUnc(distro, linuxPath) {
 export function createWslFixture(distro) {
   const script = String.raw`
 set -euo pipefail
-base="$(mktemp -d /tmp/orca-apphang-repro.XXXXXX)"
+base="$(mktemp -d /tmp/occ-apphang-repro.XXXXXX)"
 repo="$base/repo"
 mkdir -p "$repo"
 cd "$repo"
@@ -121,7 +121,7 @@ export function createCompletedOnboardingProfile(userDataDir) {
       projectOrderManualDefaultNoticeDismissed: true
     }
   }
-  writeFileSync(path.join(userDataDir, 'orca-data.json'), `${JSON.stringify(profile, null, 2)}\n`)
+  writeFileSync(path.join(userDataDir, 'occ-data.json'), `${JSON.stringify(profile, null, 2)}\n`)
 }
 
 export function safeRemoveLocalDirectory(dir, cleanupErrors) {

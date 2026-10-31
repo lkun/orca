@@ -7,7 +7,7 @@ function row(worktreeId: string, overrides: Partial<Worktree> = {}): Worktree {
     workspaceKind: 'git',
     worktreeId,
     repoId: 'repo-1',
-    repo: 'orca',
+    repo: 'occ',
     branch: '',
     displayName: worktreeId,
     path: `/tmp/${worktreeId}`,

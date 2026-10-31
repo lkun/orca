@@ -43,14 +43,14 @@ describe('createSequencedSetupAgentCommands', () => {
 
   it('keeps remote POSIX runners in bash even from a Windows client', () => {
     const result = createSequencedSetupAgentCommands({
-      runnerScriptPath: '/remote/repo/.git/worktrees/feature/orca/setup-runner.sh',
+      runnerScriptPath: '/remote/repo/.git/worktrees/feature/occ/setup-runner.sh',
       startupCommand: 'claude',
       platform: 'windows',
       nonce: 'nonce-remote'
     })
 
     expect(setupScript(result)).toContain(
-      'bash /remote/repo/.git/worktrees/feature/orca/setup-runner.sh'
+      'bash /remote/repo/.git/worktrees/feature/occ/setup-runner.sh'
     )
     expect(result.startupEnv?.[SETUP_AGENT_SEQUENCE_STARTUP_SCRIPT_ENV]).toContain(
       '[ "$seen" = nonce-remote ]'
@@ -59,26 +59,26 @@ describe('createSequencedSetupAgentCommands', () => {
 
   it('preserves WSL shell metadata when sequencing native Windows runners', () => {
     const result = createSequencedSetupAgentCommands({
-      runnerScriptPath: 'C:\\repo\\.git\\orca\\setup-runner.sh',
+      runnerScriptPath: 'C:\\repo\\.git\\occ\\setup-runner.sh',
       startupCommand: 'claude',
       platform: 'windows',
       shell: { family: 'posix', executable: 'wsl.exe' },
       nonce: 'nonce-wsl-shell'
     })
 
-    expect(setupScript(result)).toContain('bash /mnt/c/repo/.git/orca/setup-runner.sh')
+    expect(setupScript(result)).toContain('bash /mnt/c/repo/.git/occ/setup-runner.sh')
     expect(setupScript(result)).toContain(
-      '/mnt/c/repo/.git/orca/setup-runner.sh.nonce-wsl-shell.done'
+      '/mnt/c/repo/.git/occ/setup-runner.sh.nonce-wsl-shell.done'
     )
     expect(result.startupEnv?.[SETUP_AGENT_SEQUENCE_STARTUP_SCRIPT_ENV]).toContain(
-      '/mnt/c/repo/.git/orca/setup-runner.sh.nonce-wsl-shell.done'
+      '/mnt/c/repo/.git/occ/setup-runner.sh.nonce-wsl-shell.done'
     )
   })
 
   it('launches a batch runner through the cmd launcher inside a Git Bash gate', () => {
     // Batch setup stays a cmd runner inside Git Bash; the gate remains bash to parse the already-POSIX-quoted startup command (#6896).
     const result = createSequencedSetupAgentCommands({
-      runnerScriptPath: 'C:\\repo\\.git\\orca\\setup-runner.cmd',
+      runnerScriptPath: 'C:\\repo\\.git\\occ\\setup-runner.cmd',
       startupCommand: "claude 'fix the user'\\''s login'",
       platform: 'windows',
       shell: { family: 'posix' },
@@ -90,21 +90,21 @@ describe('createSequencedSetupAgentCommands', () => {
     )
     expect(result.setupCommand).not.toMatch(/bash\s+\S*setup-runner/)
     expect(decodePowerShellScript(setupScript(result))).toContain(
-      "$runner = 'C:\\repo\\.git\\orca\\setup-runner.cmd'"
+      "$runner = 'C:\\repo\\.git\\occ\\setup-runner.cmd'"
     )
     // PowerShell Invoke-Expression cannot parse POSIX apostrophe escaping; bash must evaluate startup.
     expect(result.setupCommand).toMatch(/^bash -lc /)
     expect(result.startupCommand).toMatch(/^bash -lc /)
     expect(result.startupCommand).not.toContain('Invoke-Expression')
     expect(result.startupEnv?.[SETUP_AGENT_SEQUENCE_STARTUP_SCRIPT_ENV]).toContain(
-      'eval "$ORCA_SEQUENCED_STARTUP_COMMAND"'
+      'eval "$OCC_SEQUENCED_STARTUP_COMMAND"'
     )
     // Why: bash writes and reads the marker here, so it needs the /c/... form of the path.
     expect(setupScript(result)).toContain(
-      '/c/repo/.git/orca/setup-runner.cmd.nonce-gitbash-cmd.done'
+      '/c/repo/.git/occ/setup-runner.cmd.nonce-gitbash-cmd.done'
     )
     expect(result.startupEnv?.[SETUP_AGENT_SEQUENCE_STARTUP_SCRIPT_ENV]).toContain(
-      '/c/repo/.git/orca/setup-runner.cmd.nonce-gitbash-cmd.done'
+      '/c/repo/.git/occ/setup-runner.cmd.nonce-gitbash-cmd.done'
     )
   })
 
@@ -350,7 +350,7 @@ function setupScript(commands: SequencedSetupAgentCommands): string {
 }
 
 function makeTempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-setup-sequencing-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-setup-sequencing-'))
   TEMP_DIRS.push(dir)
   return dir
 }

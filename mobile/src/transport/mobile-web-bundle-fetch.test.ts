@@ -141,7 +141,7 @@ function chunkCallCount(calls: readonly HostCall[]): number {
 
 describe('fetchMobileWebBundle', () => {
   it('pages every asset to eof and returns the verified bytes', async () => {
-    const host = bundleHost({ 'index.html': '<h1>orca</h1>', 'assets/app.js': 'x=1' })
+    const host = bundleHost({ 'index.html': '<h1>occ</h1>', 'assets/app.js': 'x=1' })
     const progress: number[] = []
 
     const fetched = await fetchMobileWebBundle({
@@ -150,7 +150,7 @@ describe('fetchMobileWebBundle', () => {
     })
 
     expect([...fetched.assets.keys()].sort()).toEqual(['assets/app.js', 'index.html'])
-    expect(new TextDecoder().decode(fetched.assets.get('index.html'))).toBe('<h1>orca</h1>')
+    expect(new TextDecoder().decode(fetched.assets.get('index.html'))).toBe('<h1>occ</h1>')
     expect(new TextDecoder().decode(fetched.assets.get('assets/app.js'))).toBe('x=1')
     expect(fetched.totalBytes).toBe(16)
     expect(fetched.manifest.buildId).toBe(host.manifest.buildId)
@@ -582,7 +582,7 @@ describe('fetchMobileWebBundle', () => {
     }
 
     it('reads only the changed assets over the wire, and counts only those', async () => {
-      const host = bundleHost({ 'index.html': '<h1>orca</h1>', 'assets/app.js': 'x=1' })
+      const host = bundleHost({ 'index.html': '<h1>occ</h1>', 'assets/app.js': 'x=1' })
       const progress: MobileWebBundleFetchProgress[] = []
       const checked: string[] = []
 
@@ -612,7 +612,7 @@ describe('fetchMobileWebBundle', () => {
     })
 
     it('downloads a cached asset that is no longer whole on disk', async () => {
-      const host = bundleHost({ 'index.html': '<h1>orca</h1>', 'assets/app.js': 'x=1' })
+      const host = bundleHost({ 'index.html': '<h1>occ</h1>', 'assets/app.js': 'x=1' })
       const progress: MobileWebBundleFetchProgress[] = []
 
       const fetched = await fetchMobileWebBundle({

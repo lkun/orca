@@ -1,12 +1,12 @@
-import { getOrcaPushGatewayUrl } from '../orca-profiles/profile-cloud-auth-config'
+import { getOCCPushGatewayUrl } from '../occ-profiles/profile-cloud-auth-config'
 import { DesktopPushService } from '../runtime/push/desktop-push-service'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
-import type { OrcaRuntimeRpcServer } from '../runtime/runtime-rpc'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
+import type { OCCRuntimeRpcServer } from '../runtime/runtime-rpc'
 import { mainProcessState as state } from './main-process-state'
 
 // Push authenticates by host keypair, so accountless hosts must register phones too; shared startup state supplies the runtime in both modes.
-export function startDesktopPushService(runtimeRpc: OrcaRuntimeRpcServer): void {
-  const runtime: OrcaRuntimeService | null = state.runtime
+export function startDesktopPushService(runtimeRpc: OCCRuntimeRpcServer): void {
+  const runtime: OCCRuntimeService | null = state.runtime
   if (!runtime) {
     console.warn('[push] Background push startup skipped: runtime not started')
     return
@@ -15,7 +15,7 @@ export function startDesktopPushService(runtimeRpc: OrcaRuntimeRpcServer): void 
     const pushService = DesktopPushService.create({
       runtime,
       runtimeRpc,
-      gatewayUrl: getOrcaPushGatewayUrl()
+      gatewayUrl: getOCCPushGatewayUrl()
     })
     pushService?.start()
     state.desktopPushService = pushService

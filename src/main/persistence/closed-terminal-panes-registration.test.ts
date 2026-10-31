@@ -4,7 +4,7 @@ import { getDefaultWorkspaceSession } from '../../shared/constants'
 import { parseWorkspaceSession } from '../../shared/workspace-session-schema'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const FIELD = 'closedTerminalPanesByPaneKey'
 const session: WorkspaceSessionState = {

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { RelayRegion } from '@orca-cloud/relay-contract'
+import type { RelayRegion } from '@occ-cloud/relay-contract'
 import type { CellReserveClient } from './cell-reserve-client.js'
 import {
   ReserveAssignment,
@@ -527,14 +527,14 @@ describe('reserve assignment on a director', () => {
         await (await spillOf(harness))?.({ skipOwnRegion: false, rowEpoch: 0 })
         harness.now.value += 60_000
         await harness.assignment.plan(HOST, { reconnect: true, region: ASIA })
-        expect(lines.find((line) => line.event === 'orca_relay_reserve_placement_summary'), label).toMatchObject({
+        expect(lines.find((line) => line.event === 'occ_relay_reserve_placement_summary'), label).toMatchObject({
           spill: 1,
           placed: 1,
           database: 0,
           retries: { paced: 0 }
         })
-        expect(lines.filter((line) => line.event === 'orca_relay_reserve_spill'), label).toEqual([
-          { event: 'orca_relay_reserve_spill', fromRegion: ASIA, toRegion: US, count: 1 }
+        expect(lines.filter((line) => line.event === 'occ_relay_reserve_spill'), label).toEqual([
+          { event: 'occ_relay_reserve_spill', fromRegion: ASIA, toRegion: US, count: 1 }
         ])
       }
     })
@@ -725,9 +725,9 @@ describe('reserve assignment on a director', () => {
       expect(await assignment.plan(OTHER, ask)).toMatchObject({ lane: 'sticky' })
       now.value += 60_000
       await assignment.plan({ ...HOST, relayHostId: 'flushflushflush1' }, ask)
-      expect(lines.filter((line) => line.event === 'orca_relay_reserve_rehome')).toEqual([
-        { event: 'orca_relay_reserve_rehome', fromRegion: US, toRegion: ASIA, count: 0, skippedByRule: { 'source-budget': 1 } },
-        { event: 'orca_relay_reserve_rehome', fromRegion: US, toRegion: ASIA, count: 1, skippedByRule: { 'source-budget': 1 } }
+      expect(lines.filter((line) => line.event === 'occ_relay_reserve_rehome')).toEqual([
+        { event: 'occ_relay_reserve_rehome', fromRegion: US, toRegion: ASIA, count: 0, skippedByRule: { 'source-budget': 1 } },
+        { event: 'occ_relay_reserve_rehome', fromRegion: US, toRegion: ASIA, count: 1, skippedByRule: { 'source-budget': 1 } }
       ])
     })
   })
@@ -829,7 +829,7 @@ describe('reserve assignment on a director', () => {
     const outcomes = (lines: string[]) =>
       lines
         .map((line) => JSON.parse(line))
-        .filter((entry) => entry.event === 'orca_relay_reserve_demote_outcome')
+        .filter((entry) => entry.event === 'occ_relay_reserve_demote_outcome')
 
     it('logs the answer by host digest and leaves the seat to the feed', async () => {
       const lines: string[] = []
@@ -839,7 +839,7 @@ describe('reserve assignment on a director', () => {
         demote: () => 'not-seated',
         log: (line) => {
           lines.push(line)
-          if (JSON.parse(line).event === 'orca_relay_reserve_demote_outcome') {
+          if (JSON.parse(line).event === 'occ_relay_reserve_demote_outcome') {
             logged.resolve()
           }
         }
@@ -862,7 +862,7 @@ describe('reserve assignment on a director', () => {
         demote: () => null,
         log: (line) => {
           lines.push(line)
-          if (JSON.parse(line).event === 'orca_relay_reserve_demote_outcome') {
+          if (JSON.parse(line).event === 'occ_relay_reserve_demote_outcome') {
             logged.resolve()
           }
         }
@@ -879,7 +879,7 @@ describe('reserve assignment on a director', () => {
     const flushedSummary = async (assignment: ReserveAssignment, now: { value: number }, lines: string[]) => {
       now.value += 60_001
       await assignment.plan({ ...HOST, relayHostId: 'zzzzzzzzzzzzzzzz' }, { reconnect: false, region: US })
-      return events(lines, 'orca_relay_reserve_placement_summary')[0]
+      return events(lines, 'occ_relay_reserve_placement_summary')[0]
     }
 
     // graceMs 0: the host re-asks while its seat still shows, but the cell's feed already says draining.
@@ -894,8 +894,8 @@ describe('reserve assignment on a director', () => {
         lane: 'placement',
         assignment: { cellId: 'c2', assignmentEpoch: 8 }
       })
-      expect(events(lines, 'orca_relay_reserve_drain_replaced')).toEqual([
-        { event: 'orca_relay_reserve_drain_replaced', fromCellId: 'c1', toCellId: 'c2', region: US }
+      expect(events(lines, 'occ_relay_reserve_drain_replaced')).toEqual([
+        { event: 'occ_relay_reserve_drain_replaced', fromCellId: 'c1', toCellId: 'c2', region: US }
       ])
       expect((await flushedSummary(assignment, now, lines)).drainReplaced).toEqual({ c1: 1 })
     })
@@ -923,7 +923,7 @@ describe('reserve assignment on a director', () => {
         left.now.value
       )
       await left.assignment.plan(HOST, { reconnect: true, region: US })
-      expect(events(lines, 'orca_relay_reserve_drain_replaced').map((entry) => entry.fromCellId)).toEqual([
+      expect(events(lines, 'occ_relay_reserve_drain_replaced').map((entry) => entry.fromCellId)).toEqual([
         'c1',
         'c1'
       ])
@@ -949,7 +949,7 @@ describe('reserve assignment on a director', () => {
       )
       expect(directory.bookingOf(HOST.userId, HOST.relayHostId)).toMatchObject({ cellId: 'c2', epoch: 8 })
       await assignment.plan(HOST, { reconnect: false, region: US })
-      expect(events(lines, 'orca_relay_reserve_drain_replaced')).toHaveLength(1)
+      expect(events(lines, 'occ_relay_reserve_drain_replaced')).toHaveLength(1)
     })
 
     it('counts a host once when it asks again before the new cell reports the booking', async () => {
@@ -960,7 +960,7 @@ describe('reserve assignment on a director', () => {
       })
       await assignment.plan(HOST, { reconnect: true, region: US })
       await assignment.plan(HOST, { reconnect: false, region: US })
-      expect(events(lines, 'orca_relay_reserve_drain_replaced')).toHaveLength(1)
+      expect(events(lines, 'occ_relay_reserve_drain_replaced')).toHaveLength(1)
     })
 
     // Placement memories are clock-free: a host that never reached c2 is not counted again later.
@@ -976,7 +976,7 @@ describe('reserve assignment on a director', () => {
         directory.apply(cellId, feed(cellId, { draining: cellId === 'c1', full: undefined, seq: 1, changes: [] }), now.value, now.value)
       }
       await assignment.plan(HOST, { reconnect: true, region: US })
-      expect(events(lines, 'orca_relay_reserve_drain_replaced')).toHaveLength(1)
+      expect(events(lines, 'occ_relay_reserve_drain_replaced')).toHaveLength(1)
     })
 
     it('counts afresh once the drained cell restarts', async () => {
@@ -993,7 +993,7 @@ describe('reserve assignment on a director', () => {
         now.value
       )
       await assignment.plan(HOST, { reconnect: true, region: US })
-      expect(events(lines, 'orca_relay_reserve_drain_replaced')).toHaveLength(2)
+      expect(events(lines, 'occ_relay_reserve_drain_replaced')).toHaveLength(2)
     })
 
     it('marks its pace as the drain’s, on the reserve lane, in the region fallback and in the spill', async () => {
@@ -1023,10 +1023,10 @@ describe('reserve assignment on a director', () => {
       await expect(
         paced.assignment.plan(HOST, { reconnect: false, region: US })
       ).rejects.toMatchObject({ drained: false })
-      expect(events(lines, 'orca_relay_reserve_drain_replaced')).toEqual([])
+      expect(events(lines, 'occ_relay_reserve_drain_replaced')).toEqual([])
     })
 
-    // The database lane logs orca_relay_sticky_replaced_off_isolated_cell for these; counting both would double the canary's sum.
+    // The database lane logs occ_relay_sticky_replaced_off_isolated_cell for these; counting both would double the canary's sum.
     it('does not count a placement the database lane makes through its region fallback', async () => {
       const lines: string[] = []
       const { assignment } = setup({
@@ -1035,7 +1035,7 @@ describe('reserve assignment on a director', () => {
       })
       const plan = await assignment.plan(HOST, { reconnect: true, region: US, regionCorrection: true })
       await expect(plan.kind === 'database' ? plan.regionReserve?.() : null).resolves.toMatchObject({ cellId: 'c2' })
-      expect(events(lines, 'orca_relay_reserve_drain_replaced')).toEqual([])
+      expect(events(lines, 'occ_relay_reserve_drain_replaced')).toEqual([])
     })
   })
 })

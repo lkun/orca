@@ -1,6 +1,6 @@
 # Plugin syntax highlighting
 
-A plugin adds highlighting for a language through `contributes.syntaxes` in `orca-plugin.json`:
+A plugin adds highlighting for a language through `contributes.syntaxes` in `occ-plugin.json`:
 
 ```json
 {

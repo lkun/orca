@@ -183,7 +183,7 @@ describe('worktree base directory watch target resolution', () => {
   // Real host (win-lowspec): the synchronous probe blocked main 5 s on a cold distro and killed its boot.
   it('never probes a distro home for a WSL repo or a Windows repo', async () => {
     const wsl = makeRepo(0, { path: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\project' })
-    const mirrored = makeRepo(1, { path: 'C:\\Users\\alice\\orca' })
+    const mirrored = makeRepo(1, { path: 'C:\\Users\\alice\\occ' })
 
     const platform = process.platform
     // A WSL path is only recognized on Windows.
@@ -203,14 +203,14 @@ describe('worktree base directory watch target resolution', () => {
   // WSL-mirrored worktrees can have Windows Git metadata; UNC root refusal must preserve that watcher.
   it('keeps the Windows-side git-common watcher when only the workspace root is a WSL UNC path', async () => {
     const repo = makeRepo(0, {
-      path: 'C:\\Users\\alice\\orca',
+      path: 'C:\\Users\\alice\\occ',
       worktreeBasePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\workspaces'
     })
 
     const targets = await buildWorktreeBaseDirectoryWatchTargets(makeStore([repo]) as never)
 
     expect([...targets.values()].map((target) => target.kind)).toEqual(['git-common'])
-    expect([...targets.values()][0]?.path).toBe('C:/Users/alice/orca/.git')
+    expect([...targets.values()][0]?.path).toBe('C:/Users/alice/occ/.git')
   })
 
   it('does not publish ordered partial targets when a repo resolver rejects unexpectedly', async () => {

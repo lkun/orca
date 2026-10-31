@@ -60,7 +60,7 @@ function fakeHosts(
     id: string
     name: string
     snapshot: RuntimeHostStatusSnapshot
-    orcadDeployment?: { sshTargetId: string }
+    occdDeployment?: { sshTargetId: string }
     runtimeId?: string | null
     pairedDeviceId?: string
   }[]
@@ -76,10 +76,10 @@ function fakeHosts(
   const hosts: MobileDesktopRelayHosts = {
     list: () => ({
       environments: state.environments.map(
-        ({ id, name, orcadDeployment, runtimeId, pairedDeviceId }) => ({
+        ({ id, name, occdDeployment, runtimeId, pairedDeviceId }) => ({
           id,
           name,
-          orcadDeployment,
+          occdDeployment,
           pairingRevision: state.pairingRevision,
           runtimeId: runtimeId === undefined ? 'runtime-a' : runtimeId,
           pairedDeviceId
@@ -159,9 +159,9 @@ describe('mobile relay host catalog, fetching on demand', () => {
     const { hosts, state } = fakeHosts([
       {
         id: 'managed',
-        name: 'orcad on devbox',
+        name: 'occd on devbox',
         snapshot: snapshot('managed', 'live'),
-        orcadDeployment: { sshTargetId: 'devbox' }
+        occdDeployment: { sshTargetId: 'devbox' }
       }
     ])
     state.sshTargetLabels.set('devbox', 'Dev Box')
@@ -176,9 +176,9 @@ describe('mobile relay host catalog, fetching on demand', () => {
     const { hosts, state } = fakeHosts([
       {
         id: 'managed',
-        name: 'orcad on devbox',
+        name: 'occd on devbox',
         snapshot: snapshot('managed', 'live'),
-        orcadDeployment: { sshTargetId: 'devbox' }
+        occdDeployment: { sshTargetId: 'devbox' }
       },
       { id: 'other', name: 'Box', snapshot: snapshot('other', 'live') }
     ])

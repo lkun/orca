@@ -13,7 +13,7 @@ export function resolveForkedChildEntryPath(
   const usesAsarArchive = isPackaged && appPath.includes('app.asar')
   const basePath = usesAsarArchive ? appPath.replace('app.asar', 'app.asar.unpacked') : appPath
   const adjacentBuildEntry = join(basePath, entryFileName)
-  // orcad and dev builds place children beside the entry; only asar layouts nest them under out/main.
+  // occd and dev builds place children beside the entry; only asar layouts nest them under out/main.
   if (!usesAsarArchive && pathExists(adjacentBuildEntry)) {
     return adjacentBuildEntry
   }

@@ -43,7 +43,7 @@ const MOBILE_DYNAMIC_RPC_METHODS = [
   'agentSession.release'
 ]
 
-// These methods require both client and host built with ORCA_SIDEBAR_INPUTS=main.
+// These methods require both client and host built with OCC_SIDEBAR_INPUTS=main.
 const MOBILE_SIDEBAR_INPUTS_RPC_METHODS = [
   'sidebarInputs.read',
   'sidebarInputs.repoIcons',
@@ -160,7 +160,7 @@ describe('mobile RPC allowlist', () => {
       expect(mobileRpcAllowlist().has(method)).toBe(false)
     }
     vi.resetModules()
-    vi.doMock('../../shared/sidebar-inputs-switch', () => ({ ORCA_SIDEBAR_INPUTS_IS_MAIN: true }))
+    vi.doMock('../../shared/sidebar-inputs-switch', () => ({ OCC_SIDEBAR_INPUTS_IS_MAIN: true }))
     try {
       const { MOBILE_RPC_METHOD_ALLOWLIST: switchedOn } =
         await import('./runtime-rpc/runtime-rpc-mobile-method-allowlist')

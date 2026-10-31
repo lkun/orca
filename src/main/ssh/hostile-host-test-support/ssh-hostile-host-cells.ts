@@ -1,9 +1,9 @@
-/** Run real managed-orcad deployment against container/loopback host constraints in ssh-hostile-hosts.yml. */
+/** Run real managed-occd deployment against container/loopback host constraints in ssh-hostile-hosts.yml. */
 import type { NodeRuntimeTarget } from '../../../shared/node-runtime-pin'
-import type { OrcadHostUnavailableReason } from '../../orcad/orcad-host-unavailable'
+import type { OCCdHostUnavailableReason } from '../../occd/occd-host-unavailable'
 
 /** Every shimmed toolchain command appends its name here; a managed deploy must leave it empty. */
-export const FORBIDDEN_TOOL_LOG = '/tmp/orca-forbidden-tool-calls.log'
+export const FORBIDDEN_TOOL_LOG = '/tmp/occ-forbidden-tool-calls.log'
 export const FORBIDDEN_TOOLS = ['npm', 'npx', 'node-gyp', 'gcc', 'g++', 'cc', 'c++', 'make']
 
 /** The shim every forbidden tool name links to: it records the call and fails like a missing tool. */
@@ -15,14 +15,14 @@ export function forbiddenToolShimScript(logPath: string): string {
 
 export type HostileHostCellCore = {
   id: string
-  managed: ManagedOrcadExpectation
+  managed: ManagedOCCdExpectation
   /** This computer's Node download is refused and its cache is empty, so only the host can fetch it. */
   desktopNoEgress?: boolean
 }
 
-export type ManagedOrcadExpectation =
+export type ManagedOCCdExpectation =
   | { outcome: 'activated'; runtime: NodeRuntimeTarget }
-  | { outcome: 'unavailable'; runtime: NodeRuntimeTarget; reason: OrcadHostUnavailableReason }
+  | { outcome: 'unavailable'; runtime: NodeRuntimeTarget; reason: OCCdHostUnavailableReason }
 
 export type DockerHostileHostCell = HostileHostCellCore & {
   host?: 'docker'
@@ -96,7 +96,7 @@ export const HOSTILE_HOST_CELLS: readonly HostileHostCell[] = [
     managed: { outcome: 'activated', runtime: 'linux-x64-musl' }
   },
   {
-    // The musl Node links libstdc++, so its self-test fails before orcad can start.
+    // The musl Node links libstdc++, so its self-test fails before occd can start.
     id: 'alpine-musl-no-libstdcxx',
     dockerfile: [`FROM ${ALPINE_3_20}`, ALPINE_SSHD],
     managed: { outcome: 'unavailable', runtime: 'linux-x64-musl', reason: 'runtime_self_test' }
@@ -114,7 +114,7 @@ export const HOSTILE_HOST_CELLS: readonly HostileHostCell[] = [
     managed: { outcome: 'unavailable', runtime: 'linux-x64-glibc', reason: 'runtime_noexec' }
   },
   {
-    // glibc 2.17 is below the pinned Node's floor, so orcad runs on the glibc 2.17 compat runtime.
+    // glibc 2.17 is below the pinned Node's floor, so occd runs on the glibc 2.17 compat runtime.
     id: 'centos7-glibc217',
     dockerfile: [
       `FROM ${CENTOS_7}`,
@@ -125,7 +125,7 @@ export const HOSTILE_HOST_CELLS: readonly HostileHostCell[] = [
     managed: { outcome: 'activated', runtime: 'linux-x64-glibc217' }
   },
   {
-    // The client uploads the runtime over SSH, so a host that cannot reach nodejs.org still runs orcad.
+    // The client uploads the runtime over SSH, so a host that cannot reach nodejs.org still runs occd.
     id: 'debian10-no-egress',
     dockerfile: DEBIAN_10_LINES,
     noEgress: true,

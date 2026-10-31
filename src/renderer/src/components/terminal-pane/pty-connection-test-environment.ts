@@ -119,7 +119,7 @@ export async function restoreTerminalTestGlobals(): Promise<void> {
   // Drain deferred confirmation work before the next test replaces its store mock.
   await drainFakeTimerWork()
   vi.useRealTimers()
-  // Flush real-promise settle continuations while window still exists; fake timers postpone them beyond teardown (orca#14728).
+  // Flush real-promise settle continuations while window still exists; fake timers postpone them beyond teardown (occ#14728).
   await flushAsyncTicks(20)
   const { cancelPendingSafeFitContinuations } =
     await import('@/lib/pane-manager/pane-fit-continuation-registry')
@@ -150,7 +150,7 @@ export async function restoreTerminalTestGlobals(): Promise<void> {
   } else {
     delete (globalThis as { document?: Document }).document
   }
-  // Late reattach continuations can outlive teardown; keep an inert window like a real renderer until the next test installs its replacement (orca#14728).
+  // Late reattach continuations can outlive teardown; keep an inert window like a real renderer until the next test installs its replacement (occ#14728).
   ;(globalThis as unknown as { window?: unknown }).window = { api: createInertApi() }
   delete (globalThis as Record<string, unknown>).__ptyConnectDiag
   resetAgentStartupDelayedDeliveryForTests()

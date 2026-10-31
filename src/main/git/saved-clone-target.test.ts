@@ -7,7 +7,7 @@ import { LOCAL_EXECUTION_HOST_ID } from '../../shared/execution-host'
 import type { Repo } from '../../shared/repo-types'
 import { reuseSavedCloneTarget } from './saved-clone-target'
 
-const url = 'https://github.com/stablyai/orca.git'
+const url = 'https://github.com/stablyai/occ.git'
 const roots: string[] = []
 
 function git(cwd: string, ...args: string[]): void {
@@ -16,9 +16,9 @@ function git(cwd: string, ...args: string[]): void {
 
 // finished=false models interrupted checkout; commits=false models a finished empty clone.
 function checkout(originUrl: string, { finished = true, commits = true } = {}): string {
-  const root = mkdtempSync(join(tmpdir(), 'orca-saved-clone-target-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-saved-clone-target-'))
   roots.push(root)
-  const path = join(root, 'orca')
+  const path = join(root, 'occ')
   if (finished && !commits) {
     const source = join(root, 'empty-source')
     execFileSync('git', ['init', '-q', source])
@@ -40,7 +40,7 @@ function saved(path: string, extra: Partial<Repo> = {}): Repo {
   return {
     id: 'saved',
     path,
-    displayName: 'orca',
+    displayName: 'occ',
     badgeColor: '#fff',
     addedAt: 1,
     kind: 'git',
@@ -64,8 +64,8 @@ describe('reuseSavedCloneTarget', () => {
   })
 
   it('reuses a finished clone of the same repo spelled differently', async () => {
-    const project = saved(checkout('git@github.com:stablyai/orca.git'))
-    await expect(decide(project, 'https://github.com/stablyai/orca')).resolves.toBe(project)
+    const project = saved(checkout('git@github.com:stablyai/occ.git'))
+    await expect(decide(project, 'https://github.com/stablyai/occ')).resolves.toBe(project)
   })
 
   it('reuses a finished clone of an empty repository, whose HEAD is unborn', async () => {
@@ -111,22 +111,22 @@ describe('reuseSavedCloneTarget', () => {
   })
 
   it('does not reuse a folder nested inside a clone of an empty repository', async () => {
-    const nested = join(checkout(url, { commits: false }), 'orca')
+    const nested = join(checkout(url, { commits: false }), 'occ')
     mkdirSync(nested)
     await expect(decide(saved(nested))).rejects.toThrow('already an OCC project')
   })
 
   it('refuses a finished clone of a different URL with the same folder name', async () => {
-    const project = saved(checkout('https://github.com/me/orca.git'))
-    await expect(decide(project)).rejects.toThrow('"orca" is already an OCC project')
+    const project = saved(checkout('https://github.com/me/occ.git'))
+    await expect(decide(project)).rejects.toThrow('"occ" is already an OCC project')
   })
 
   it('says the recorded repository differs without disclosing its credential-bearing URL', async () => {
-    const project = saved(join(tmpdir(), 'orca-saved-clone-target-absent'), {
+    const project = saved(join(tmpdir(), 'occ-saved-clone-target-absent'), {
       gitRemoteIdentity: {
-        canonicalKey: 'github.com/someone/orca',
+        canonicalKey: 'github.com/someone/occ',
         remoteName: 'origin',
-        remoteUrl: 'https://synthetic-user:synthetic-secret@github.com/someone/orca.git'
+        remoteUrl: 'https://synthetic-user:synthetic-secret@github.com/someone/occ.git'
       }
     })
     const result = decide(project)
@@ -136,18 +136,18 @@ describe('reuseSavedCloneTarget', () => {
   })
 
   it('says it has no record of the repository when the project never stored an origin', async () => {
-    const project = saved(join(tmpdir(), 'orca-saved-clone-target-absent'))
+    const project = saved(join(tmpdir(), 'occ-saved-clone-target-absent'))
     await expect(decide(project)).rejects.toThrow('no record of which repository')
   })
 
   it('refuses a finished clone of a different local path, which does not normalize', async () => {
-    const project = saved(checkout('/srv/other/orca'))
-    await expect(decide(project, '/srv/mine/orca')).rejects.toThrow('already an OCC project')
+    const project = saved(checkout('/srv/other/occ'))
+    await expect(decide(project, '/srv/mine/occ')).rejects.toThrow('already an OCC project')
   })
 
   it('does not reuse a clone that was killed before it finished', async () => {
     const identity = {
-      canonicalKey: 'github.com/stablyai/orca',
+      canonicalKey: 'github.com/stablyai/occ',
       remoteName: 'origin',
       remoteUrl: url
     }
@@ -157,15 +157,15 @@ describe('reuseSavedCloneTarget', () => {
   })
 
   it('does not reuse a clone whose origin also lists another URL', async () => {
-    const path = checkout('https://github.com/me/orca.git')
+    const path = checkout('https://github.com/me/occ.git')
     git(path, 'remote', 'set-url', '--add', 'origin', url)
     await expect(decide(saved(path))).rejects.toThrow('already an OCC project')
   })
 
   it('refuses to re-clone into a fork project whose stored identity is its upstream', async () => {
-    const path = join(tmpdir(), 'orca-saved-clone-target-deleted-fork')
+    const path = join(tmpdir(), 'occ-saved-clone-target-deleted-fork')
     const upstream = {
-      canonicalKey: 'github.com/stablyai/orca',
+      canonicalKey: 'github.com/stablyai/occ',
       remoteName: 'upstream',
       remoteUrl: url
     }
@@ -175,7 +175,7 @@ describe('reuseSavedCloneTarget', () => {
   })
 
   it('does not reuse a folder that only sits inside a clone of the URL', async () => {
-    const nested = join(checkout(url), 'orca')
+    const nested = join(checkout(url), 'occ')
     mkdirSync(nested)
     await expect(decide(saved(nested))).rejects.toThrow('already an OCC project')
   })

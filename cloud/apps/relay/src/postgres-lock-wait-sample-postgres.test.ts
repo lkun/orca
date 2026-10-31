@@ -3,7 +3,7 @@ import { RelayAssignmentStore } from './assignment-store.js'
 import { openRelayDatabase, type RelayDatabase } from './database.js'
 import { readPostgresLockWaitSample } from './postgres-lock-wait-sample.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 const cell = {
@@ -22,12 +22,12 @@ describePostgres('PostgreSQL lock-wait sample', () => {
     cellDatabase = await openRelayDatabase({
       databaseUrl,
       dataDir: '',
-      applicationName: `orca-relay/cell/${cell.id}`
+      applicationName: `occ-relay/cell/${cell.id}`
     })
     directorDatabase = await openRelayDatabase({
       databaseUrl,
       dataDir: '',
-      applicationName: 'orca-relay/director/director'
+      applicationName: 'occ-relay/director/director'
     })
     await new RelayAssignmentStore(directorDatabase).reconcileCells([cell])
   })

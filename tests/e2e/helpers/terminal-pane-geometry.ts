@@ -1,5 +1,5 @@
 import type { Page } from '@stablyai/playwright-test'
-import { expect } from './orca-app'
+import { expect } from './occ-app'
 import { waitForPaneIdentitySnapshot } from './terminal'
 
 export async function readVisibleXtermContainerBox(

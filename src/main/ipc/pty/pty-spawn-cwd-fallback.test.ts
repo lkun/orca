@@ -44,7 +44,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -156,7 +156,7 @@ describe('registerPtyHandlers', () => {
   it('falls back to the worktree root when a saved local cwd no longer exists', async () => {
     registerPtyHandlers(mainWindow as never)
     // Preserve Unicode worktree paths verbatim when falling back (#7239).
-    const worktreePath = '/Users/motoki/orca/workspaces/nakamuramotoki/Fableと議論'
+    const worktreePath = '/Users/motoki/occ/workspaces/nakamuramotoki/Fableと議論'
     const missingCwd = `${worktreePath}/deleted-folder`
     statSyncMock.mockImplementation((target: string) => {
       if (target === missingCwd) {
@@ -570,7 +570,7 @@ describe('PTY WSL working-directory validation', () => {
   it('spawns a plain POSIX login shell and queues startup commands for the live session', async () => {
     const originalPlatform = process.platform
     const originalHome = process.env.HOME
-    const originalOrcaOrigZdotdir = process.env.ORCA_ORIG_ZDOTDIR
+    const originalOCCOrigZdotdir = process.env.OCC_ORIG_ZDOTDIR
     const originalShell = process.env.SHELL
     const originalZdotdir = process.env.ZDOTDIR
 
@@ -580,7 +580,7 @@ describe('PTY WSL working-directory validation', () => {
     })
     // The fixture forces macOS even on Windows test hosts.
     process.env.HOME = '/Users/test'
-    delete process.env.ORCA_ORIG_ZDOTDIR
+    delete process.env.OCC_ORIG_ZDOTDIR
     process.env.SHELL = '/bin/zsh'
     delete process.env.ZDOTDIR
 
@@ -593,7 +593,7 @@ describe('PTY WSL working-directory validation', () => {
       expect(args).toEqual(['-l'])
       expect(options.env.ZDOTDIR).toBe(join(getShellReadyWrapperRoot(), 'zsh'))
       // Without user zsh startup files, leave ZDOTDIR unset as an ordinary login shell would.
-      expect(options.env.ORCA_ORIG_ZDOTDIR).toBeUndefined()
+      expect(options.env.OCC_ORIG_ZDOTDIR).toBeUndefined()
     } finally {
       Object.defineProperty(process, 'platform', {
         configurable: true,
@@ -604,10 +604,10 @@ describe('PTY WSL working-directory validation', () => {
       } else {
         process.env.HOME = originalHome
       }
-      if (originalOrcaOrigZdotdir === undefined) {
-        delete process.env.ORCA_ORIG_ZDOTDIR
+      if (originalOCCOrigZdotdir === undefined) {
+        delete process.env.OCC_ORIG_ZDOTDIR
       } else {
-        process.env.ORCA_ORIG_ZDOTDIR = originalOrcaOrigZdotdir
+        process.env.OCC_ORIG_ZDOTDIR = originalOCCOrigZdotdir
       }
       if (originalShell === undefined) {
         delete process.env.SHELL

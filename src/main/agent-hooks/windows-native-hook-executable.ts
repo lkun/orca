@@ -1,6 +1,6 @@
 import { join, win32 } from 'node:path'
 
-export const WINDOWS_NATIVE_HOOK_EXECUTABLE_NAME = 'orca-agent-hook.exe'
+export const WINDOWS_NATIVE_HOOK_EXECUTABLE_NAME = 'occ-agent-hook.exe'
 
 export function getWindowsNativeHookAgent(scriptPath: string): string {
   // win32: these are Windows paths even when the code runs (or is tested) on another host.

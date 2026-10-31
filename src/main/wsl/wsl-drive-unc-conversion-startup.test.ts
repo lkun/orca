@@ -11,8 +11,8 @@ import { encodeAgentSessionRecord } from '../../shared/agent-session-record-stor
 import type { PersistedState } from '../../shared/persisted-state-types'
 import { WSL_HOSTS_INTERNAL_GATE_ENV } from '../../shared/wsl-host-internal-gate'
 import { getHistorySessionDirName } from '../daemon/history-paths'
-import { readProfileProjectTransferState } from '../orca-profiles/profile-project-domain-state'
-import { getOrcaProfileStateDatabaseFile } from '../orca-profiles/profile-storage-paths'
+import { readProfileProjectTransferState } from '../occ-profiles/profile-project-domain-state'
+import { getOCCProfileStateDatabaseFile } from '../occ-profiles/profile-storage-paths'
 import { openProfileStateDatabase } from '../persistence/profile-state/profile-state-database'
 import { importProfileStateJson } from '../persistence/profile-state/profile-state-documents'
 import Database from '../sqlite/sync-database'
@@ -58,7 +58,7 @@ const OLD_SESSION = `${OLD_ID}@@s1`
 let root: string
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-drive-unc-startup-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-drive-unc-startup-'))
 })
 
 afterEach(() => {
@@ -112,7 +112,7 @@ function profileState(): PersistedState {
 }
 
 function seedProfile(state: PersistedState): void {
-  const file = getOrcaProfileStateDatabaseFile(PROFILE, root)
+  const file = getOCCProfileStateDatabaseFile(PROFILE, root)
   mkdirSync(join(file, '..'), { recursive: true })
   const opened = openProfileStateDatabase(file, PROFILE)
   try {

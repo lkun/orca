@@ -1,7 +1,7 @@
 // #693/#532: editor/diff close must select the exact surviving visual neighbor.
 // #677: closing the final visible surface must deselect the workspace and return to Landing.
 
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   waitForSessionReady,
   waitForActiveWorktree,
@@ -92,17 +92,17 @@ async function getActiveFileId(
 }
 
 test.describe('Tab Close Navigation', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
   })
 
   // #693: choose the next visual neighbor after a middle editor close.
-  test('closing the active editor tab activates its visual neighbor', async ({ orcaPage }) => {
-    const worktreeId = await waitForActiveWorktree(orcaPage)
+  test('closing the active editor tab activates its visual neighbor', async ({ occPage }) => {
+    const worktreeId = await waitForActiveWorktree(occPage)
 
-    const fileIds = await openSeededEditorTabs(orcaPage, worktreeId, [
+    const fileIds = await openSeededEditorTabs(occPage, worktreeId, [
       'package.json',
       'README.md',
       'tsconfig.json'
@@ -110,38 +110,38 @@ test.describe('Tab Close Navigation', () => {
     expect(fileIds.length).toBe(3)
 
     // Close the middle of package/README/tsconfig so tsconfig is the required successor.
-    await setActiveFile(orcaPage, fileIds[1])
-    await expect.poll(async () => getActiveFileId(orcaPage), { timeout: 3_000 }).toBe(fileIds[1])
+    await setActiveFile(occPage, fileIds[1])
+    await expect.poll(async () => getActiveFileId(occPage), { timeout: 3_000 }).toBe(fileIds[1])
 
-    await closeFile(orcaPage, fileIds[1])
+    await closeFile(occPage, fileIds[1])
 
-    const openFilesAfter = await getOpenFiles(orcaPage, worktreeId)
+    const openFilesAfter = await getOpenFiles(occPage, worktreeId)
     const remainingIds = new Set(openFilesAfter.map((f) => f.id))
     expect(remainingIds.has(fileIds[1])).toBe(false)
 
     // Require tsconfig’s exact id; any-open-file assertions miss stale or arbitrarily chosen selection (#693).
     await expect
-      .poll(async () => getActiveFileId(orcaPage), {
+      .poll(async () => getActiveFileId(occPage), {
         timeout: 5_000,
         message: 'expected the visual neighbor (tsconfig.json) to become active after close'
       })
       .toBe(fileIds[2])
 
     // Keep editor view while other files remain.
-    await expect.poll(async () => getActiveTabType(orcaPage), { timeout: 3_000 }).toBe('editor')
+    await expect.poll(async () => getActiveTabType(occPage), { timeout: 3_000 }).toBe('editor')
   })
 
   // Diffs share closeFile/openFiles ordering and must select the same visual neighbor (#693).
-  test('closing the active diff tab activates a still-open neighbor', async ({ orcaPage }) => {
-    const worktreeId = await waitForActiveWorktree(orcaPage)
+  test('closing the active diff tab activates a still-open neighbor', async ({ occPage }) => {
+    const worktreeId = await waitForActiveWorktree(occPage)
 
-    const editorIds = await openSeededEditorTabs(orcaPage, worktreeId, [
+    const editorIds = await openSeededEditorTabs(occPage, worktreeId, [
       'package.json',
       'README.md'
     ])
     expect(editorIds.length).toBe(2)
 
-    const diffId = await orcaPage.evaluate((wId) => {
+    const diffId = await occPage.evaluate((wId) => {
       const store = window.__store
       if (!store) {
         return null
@@ -167,18 +167,18 @@ test.describe('Tab Close Navigation', () => {
     }, worktreeId)
 
     expect(diffId).not.toBeNull()
-    await expect.poll(async () => getActiveFileId(orcaPage), { timeout: 3_000 }).toBe(diffId)
+    await expect.poll(async () => getActiveFileId(occPage), { timeout: 3_000 }).toBe(diffId)
 
-    await closeFile(orcaPage, diffId!)
+    await closeFile(occPage, diffId!)
 
-    const openFilesAfter = await getOpenFiles(orcaPage, worktreeId)
+    const openFilesAfter = await getOpenFiles(occPage, worktreeId)
     const remainingIds = new Set(openFilesAfter.map((f) => f.id))
     expect(remainingIds.has(diffId!)).toBe(false)
     expect(remainingIds.size).toBe(2)
 
     // The final diff closes at index 2, so require the exact preceding README id (#693).
     await expect
-      .poll(async () => getActiveFileId(orcaPage), {
+      .poll(async () => getActiveFileId(occPage), {
         timeout: 5_000,
         message: 'expected README.md (last remaining) to become active after closing the diff tab'
       })
@@ -186,11 +186,11 @@ test.describe('Tab Close Navigation', () => {
   })
 
   // #677: no terminal/browser/editor surface means activeWorktreeId must clear.
-  test('closing the last visible surface returns the app to Landing', async ({ orcaPage }) => {
-    const worktreeId = await waitForActiveWorktree(orcaPage)
+  test('closing the last visible surface returns the app to Landing', async ({ occPage }) => {
+    const worktreeId = await waitForActiveWorktree(occPage)
 
     // Drain terminal/browser surfaces, then reactivate to seed the final editor; last-surface cleanup can deselect during setup.
-    await orcaPage.evaluate((wId) => {
+    await occPage.evaluate((wId) => {
       const store = window.__store
       if (!store) {
         return
@@ -211,17 +211,17 @@ test.describe('Tab Close Navigation', () => {
       }
     }, worktreeId)
 
-    const editorIds = await openSeededEditorTabs(orcaPage, worktreeId, ['package.json'])
+    const editorIds = await openSeededEditorTabs(occPage, worktreeId, ['package.json'])
     expect(editorIds.length).toBe(1)
 
-    await setActiveFile(orcaPage, editorIds[0])
-    await expect.poll(async () => getActiveFileId(orcaPage), { timeout: 3_000 }).toBe(editorIds[0])
+    await setActiveFile(occPage, editorIds[0])
+    await expect.poll(async () => getActiveFileId(occPage), { timeout: 3_000 }).toBe(editorIds[0])
 
     // Re-close late startup terminals inside the poll, then require no backing surfaces before testing editor-only deactivation.
     await expect
       .poll(
         () =>
-          orcaPage.evaluate((wId) => {
+          occPage.evaluate((wId) => {
             const store = window.__store
             if (!store) {
               throw new Error('window.__store is not available')
@@ -246,10 +246,10 @@ test.describe('Tab Close Navigation', () => {
       )
       .toEqual({ terminals: 0, browserTabs: 0 })
 
-    await closeFile(orcaPage, editorIds[0])
+    await closeFile(occPage, editorIds[0])
 
     await expect
-      .poll(async () => getActiveWorktreeId(orcaPage), {
+      .poll(async () => getActiveWorktreeId(occPage), {
         timeout: 5_000,
         message: 'activeWorktreeId was not cleared after closing the last visible surface'
       })

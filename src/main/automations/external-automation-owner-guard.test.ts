@@ -15,7 +15,7 @@ function sshTarget(overrides: Partial<SshTarget> = {}): SshTarget {
     label: 'Build box',
     host: 'build.example',
     port: 22,
-    username: 'orca',
+    username: 'occ',
     generation: 3,
     ...overrides
   }

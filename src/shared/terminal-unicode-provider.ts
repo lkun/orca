@@ -11,7 +11,7 @@ type XtermTerminalWithUnicodeCore = {
   _core?: XtermUnicodeServiceCore
 }
 
-const ORCA_UNICODE_VERSION = 'orca-11-zwj'
+const OCC_UNICODE_VERSION = 'occ-11-zwj'
 const UNICODE11_VERSION = '11'
 const ZERO_WIDTH_JOINER = 0x200d
 
@@ -27,8 +27,8 @@ function createProperties(charKind: number, width: 0 | 1 | 2, shouldJoin: boolea
   return ((charKind & 0xffffff) << 3) | ((width & 3) << 1) | (shouldJoin ? 1 : 0)
 }
 
-class OrcaUnicodeProvider implements IUnicodeVersionProvider {
-  public readonly version = ORCA_UNICODE_VERSION
+class OCCUnicodeProvider implements IUnicodeVersionProvider {
+  public readonly version = OCC_UNICODE_VERSION
 
   public constructor(private readonly baseProvider: IUnicodeVersionProvider) {}
 
@@ -53,9 +53,9 @@ class OrcaUnicodeProvider implements IUnicodeVersionProvider {
   }
 }
 
-export function activateOrcaTerminalUnicodeProvider(terminal: XtermTerminalWithUnicodeCore): void {
+export function activateOCCTerminalUnicodeProvider(terminal: XtermTerminalWithUnicodeCore): void {
   const { unicode } = terminal
-  if (unicode.activeVersion === ORCA_UNICODE_VERSION) {
+  if (unicode.activeVersion === OCC_UNICODE_VERSION) {
     return
   }
 
@@ -65,8 +65,8 @@ export function activateOrcaTerminalUnicodeProvider(terminal: XtermTerminalWithU
     return
   }
 
-  if (!unicode.versions.includes(ORCA_UNICODE_VERSION)) {
-    unicode.register(new OrcaUnicodeProvider(baseProvider))
+  if (!unicode.versions.includes(OCC_UNICODE_VERSION)) {
+    unicode.register(new OCCUnicodeProvider(baseProvider))
   }
-  unicode.activeVersion = ORCA_UNICODE_VERSION
+  unicode.activeVersion = OCC_UNICODE_VERSION
 }

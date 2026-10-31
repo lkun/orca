@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { setupPtyIpcSuite } from './pty/pty-ipc-test-harness'
 import { registerPtyHandlers } from './pty/register-handlers'
 import { setLocalPtyProvider } from './pty/provider/registry'
-import { OrcaRuntimeService } from '../runtime/orca-runtime'
+import { OCCRuntimeService } from '../runtime/occ-runtime'
 import type { RuntimeStore } from '../runtime/runtime-store-contract'
 import { TerminalSurfaceIndex } from '../runtime/terminal/surface/terminal-surface-index'
 import { createPaneBindingStore } from './pty/pty-launch-race-test-fixture'
@@ -23,7 +23,7 @@ import { forgetRefusedPaneResumeMock } from './pty/pty-ipc-mock-registry'
 import { agentSessionOwners } from './pty/pane/agent-session-owners'
 import type { TerminalCreateOptions } from '../runtime/runtime-terminal-contracts'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('electron', () => import('./pty/pty-ipc-mock-registry').then((m) => m.electronModuleMock()))
 vi.mock('fs', () => import('./pty/pty-ipc-mock-registry').then((m) => m.fsModuleMock()))
 vi.mock('node-pty', () => import('./pty/pty-ipc-mock-registry').then((m) => m.nodePtyModuleMock()))
@@ -52,7 +52,7 @@ vi.mock('../telemetry/client', () =>
 vi.mock('../telemetry/classify-error', () =>
   import('./pty/pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty/pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../memory/pty-registry', () =>
@@ -103,8 +103,8 @@ describe('a window view of a pane main is starting', () => {
         expect(opts).not.toHaveProperty('launchToken')
         const env = testDouble<{ env?: Record<string, string> }>(opts).env
         expect(env?.AGENT_ONLY).toBeUndefined()
-        expect(env?.ORCA_AGENT_LAUNCH_TOKEN).toBeUndefined()
-        expect(env?.ORCA_SEQUENCED_STARTUP_COMMAND).toBeUndefined()
+        expect(env?.OCC_AGENT_LAUNCH_TOKEN).toBeUndefined()
+        expect(env?.OCC_SEQUENCED_STARTUP_COMMAND).toBeUndefined()
       }
       await gate
       return {
@@ -169,7 +169,7 @@ describe('a window view of a pane main is starting', () => {
         return () => written.delete(listener)
       }
     }
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     Object.assign(runtime, {
       store,
       resolveTerminalWorkspaceLaunchScope: async () => ({
@@ -268,8 +268,8 @@ describe('a window view of a pane main is starting', () => {
             resumeOrigin: 'saved',
             env: {
               AGENT_ONLY: 'yes',
-              ORCA_AGENT_LAUNCH_TOKEN: 'composition-token',
-              ORCA_SEQUENCED_STARTUP_COMMAND: 'claude --resume provider-session-alpha-1'
+              OCC_AGENT_LAUNCH_TOKEN: 'composition-token',
+              OCC_SEQUENCED_STARTUP_COMMAND: 'claude --resume provider-session-alpha-1'
             },
             agentSessionClaim: claim
           }

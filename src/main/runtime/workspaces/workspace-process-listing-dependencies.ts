@@ -2,17 +2,17 @@ import { resolveTuiAgentLaunchEnv } from '../../../shared/tui-agent-launch-defau
 import type { GlobalSettings } from '../../../shared/global-settings-types'
 import type { StructuredAgentId } from '../../../shared/agent-session-provider-handle'
 import type { RuntimeWorkspaceCatalog } from './workspace-catalog'
-import type { OrcaRuntimeWithRefreshPtyWorktreeRecordsFromController } from '../terminal/lifecycle/pty-worktree-refresh'
+import type { OCCRuntimeWithRefreshPtyWorktreeRecordsFromController } from '../terminal/lifecycle/pty-worktree-refresh'
 import type { RuntimeAccountController } from '../runtime-account-controller'
-import type { OrcaRuntimeWithPruneMobileSessionTabGroupLayout } from '../session-lifecycle/projection/prune-mobile-session-tab-group-layout'
-import type { OrcaRuntimeWithGetStructuredAgentSessionCreateSupport } from '../session-tabs/structured-session-create-support'
-import type { OrcaRuntimeWithGetPtyRecordForPaneKey } from '../orchestration/terminal-pane-mail-routing'
-import { OrcaRuntimeWithStartTuiIdleVisibleReadProbe } from '../terminal/wait/terminal-wait-visible-probe'
+import type { OCCRuntimeWithPruneMobileSessionTabGroupLayout } from '../session-lifecycle/projection/prune-mobile-session-tab-group-layout'
+import type { OCCRuntimeWithGetStructuredAgentSessionCreateSupport } from '../session-tabs/structured-session-create-support'
+import type { OCCRuntimeWithGetPtyRecordForPaneKey } from '../orchestration/terminal-pane-mail-routing'
+import { OCCRuntimeWithStartTuiIdleVisibleReadProbe } from '../terminal/wait/terminal-wait-visible-probe'
 import type { AgentSessionRecord } from '../../../shared/agent-session-record'
 import { escalateChatWorkerError } from '../orchestration/chat-worker-error-escalation'
 import type { StructuredAgentSessionRequestFailure } from '../../native-chat/agent-session-wire/structured-agent-session-request-failures'
 
-export abstract class OrcaRuntimeWithWorktreePsDependencies extends OrcaRuntimeWithStartTuiIdleVisibleReadProbe {
+export abstract class OCCRuntimeWithWorktreePsDependencies extends OCCRuntimeWithStartTuiIdleVisibleReadProbe {
   /** Apply the host-owning desktop's account overlay to configured agent environment. */
   protected structuredAgentLaunchEnv(
     agent: StructuredAgentId,
@@ -29,10 +29,10 @@ export abstract class OrcaRuntimeWithWorktreePsDependencies extends OrcaRuntimeW
   ): ReturnType<RuntimeWorkspaceCatalog['listResolvedWorktreeSnapshot']>
   protected abstract refreshPtyWorktreeRecordsFromController(
     ...args: Parameters<
-      OrcaRuntimeWithRefreshPtyWorktreeRecordsFromController['refreshPtyWorktreeRecordsFromController']
+      OCCRuntimeWithRefreshPtyWorktreeRecordsFromController['refreshPtyWorktreeRecordsFromController']
     >
   ): ReturnType<
-    OrcaRuntimeWithRefreshPtyWorktreeRecordsFromController['refreshPtyWorktreeRecordsFromController']
+    OCCRuntimeWithRefreshPtyWorktreeRecordsFromController['refreshPtyWorktreeRecordsFromController']
   >
   abstract notifyFolderWorkspaceChanged(): void
   abstract notifyBranchRenamed(repoId: string): void
@@ -44,27 +44,27 @@ export abstract class OrcaRuntimeWithWorktreePsDependencies extends OrcaRuntimeW
   declare getCommitMessageAgentEnvironmentResolvers: RuntimeAccountController['getCommitMessageAgentEnvironment']
   abstract refreshStructuredConversationTabTitle(
     ...args: Parameters<
-      OrcaRuntimeWithPruneMobileSessionTabGroupLayout['refreshStructuredConversationTabTitle']
+      OCCRuntimeWithPruneMobileSessionTabGroupLayout['refreshStructuredConversationTabTitle']
     >
   ): ReturnType<
-    OrcaRuntimeWithPruneMobileSessionTabGroupLayout['refreshStructuredConversationTabTitle']
+    OCCRuntimeWithPruneMobileSessionTabGroupLayout['refreshStructuredConversationTabTitle']
   >
   abstract resolveStructuredAgentAccountHome(
     ...args: Parameters<
-      OrcaRuntimeWithGetStructuredAgentSessionCreateSupport['resolveStructuredAgentAccountHome']
+      OCCRuntimeWithGetStructuredAgentSessionCreateSupport['resolveStructuredAgentAccountHome']
     >
   ): ReturnType<
-    OrcaRuntimeWithGetStructuredAgentSessionCreateSupport['resolveStructuredAgentAccountHome']
+    OCCRuntimeWithGetStructuredAgentSessionCreateSupport['resolveStructuredAgentAccountHome']
   >
   abstract onStructuredSessionStatusForMail(
-    ...args: Parameters<OrcaRuntimeWithGetPtyRecordForPaneKey['onStructuredSessionStatusForMail']>
-  ): ReturnType<OrcaRuntimeWithGetPtyRecordForPaneKey['onStructuredSessionStatusForMail']>
+    ...args: Parameters<OCCRuntimeWithGetPtyRecordForPaneKey['onStructuredSessionStatusForMail']>
+  ): ReturnType<OCCRuntimeWithGetPtyRecordForPaneKey['onStructuredSessionStatusForMail']>
   protected abstract assertStructuredChatAcquireAdmissible(
     record: AgentSessionRecord
   ): Promise<void>
   abstract onStructuredSessionTabHidden(
-    ...args: Parameters<OrcaRuntimeWithGetPtyRecordForPaneKey['onStructuredSessionTabHidden']>
-  ): ReturnType<OrcaRuntimeWithGetPtyRecordForPaneKey['onStructuredSessionTabHidden']>
+    ...args: Parameters<OCCRuntimeWithGetPtyRecordForPaneKey['onStructuredSessionTabHidden']>
+  ): ReturnType<OCCRuntimeWithGetPtyRecordForPaneKey['onStructuredSessionTabHidden']>
 
   /** A chat worker whose request settled failed tells the Run that dispatched it. */
   onStructuredRequestFailureForErrorMail(failure: StructuredAgentSessionRequestFailure): void {

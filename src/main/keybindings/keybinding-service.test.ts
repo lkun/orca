@@ -57,7 +57,7 @@ describe('KeybindingService tab-switch cohort seeding', () => {
   let home: string
 
   beforeEach(() => {
-    home = mkdtempSync(join(tmpdir(), 'orca-kb-service-'))
+    home = mkdtempSync(join(tmpdir(), 'occ-kb-service-'))
   })
 
   afterEach(() => {

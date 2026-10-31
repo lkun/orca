@@ -1,4 +1,4 @@
-import type { CloudNotifications, ListenHandlers } from '@orca-cloud/cloud-database'
+import type { CloudNotifications, ListenHandlers } from '@occ-cloud/cloud-database'
 import { describe, expect, it } from 'vitest'
 import { InboxWaker } from './inbox-waker.js'
 

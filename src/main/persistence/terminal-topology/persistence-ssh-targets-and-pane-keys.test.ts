@@ -58,7 +58,7 @@ vi.mock('../../telemetry/cohort-classifier', () => ({
 
 describe('Store', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
     trackMock.mockReset()
     getCohortAtEmitMock.mockReset()
     getCohortAtEmitMock.mockReturnValue({ nth_repo_added: 2 })
@@ -334,7 +334,7 @@ describe('Store', () => {
       pinnedRefusal: 'illegal_instruction',
       glibc: '2.28',
       runtimeSha256: 'a'.repeat(64),
-      orcaMajor: 1
+      occMajor: 1
     }
     store.addSshTarget({
       id: 'ssh-ladder-ok',

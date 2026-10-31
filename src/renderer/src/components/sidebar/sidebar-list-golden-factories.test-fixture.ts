@@ -126,7 +126,7 @@ export function prEntry(number: number, state: PRState): AppState['prCache'][str
       number,
       state,
       title: `PR ${number}`,
-      url: `https://github.com/stablyai/orca/pull/${number}`,
+      url: `https://github.com/stablyai/occ/pull/${number}`,
       checksStatus: 'success',
       updatedAt: '2026-10-01T00:00:00Z',
       mergeable: 'MERGEABLE'

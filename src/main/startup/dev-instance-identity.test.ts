@@ -14,8 +14,8 @@ describe('dev-instance-identity', () => {
   })
 
   it('pins a stable dev appName across branches so the safeStorage key does not churn', () => {
-    const a = getDevInstanceIdentity(true, { ORCA_DEV_BRANCH: 'feature/a' })
-    const b = getDevInstanceIdentity(true, { ORCA_DEV_BRANCH: 'feature/b' })
+    const a = getDevInstanceIdentity(true, { OCC_DEV_BRANCH: 'feature/a' })
+    const b = getDevInstanceIdentity(true, { OCC_DEV_BRANCH: 'feature/b' })
 
     expect(a.name).not.toBe(b.name)
     expect(a.appName).toBe('OCC Dev')
@@ -35,9 +35,9 @@ describe('dev-instance-identity', () => {
 
   it('derives a readable dev label from worktree and branch env', () => {
     const identity = getDevInstanceIdentity(true, {
-      ORCA_DEV_REPO_ROOT: '/repo/worktrees/dev-indicator',
-      ORCA_DEV_WORKTREE_NAME: 'dev-indicator',
-      ORCA_DEV_BRANCH: 'nwparker/dev-indicator'
+      OCC_DEV_REPO_ROOT: '/repo/worktrees/dev-indicator',
+      OCC_DEV_WORKTREE_NAME: 'dev-indicator',
+      OCC_DEV_BRANCH: 'nwparker/dev-indicator'
     })
 
     expect(identity).toMatchObject({
@@ -49,14 +49,14 @@ describe('dev-instance-identity', () => {
     })
     expect(identity.name).toBe('OCC: nwparker/dev-indicator')
     expect(identity.dockBadgeLabel).toBeNull()
-    expect(identity.appUserModelId).toMatch(/^com\.stablyai\.orca\.dev\.[a-f0-9]{10}$/)
+    expect(identity.appUserModelId).toMatch(/^com\.stablyai\.occ\.dev\.[a-f0-9]{10}$/)
   })
 
   it('includes the branch when it differs from the worktree basename', () => {
     const identity = getDevInstanceIdentity(true, {
-      ORCA_DEV_REPO_ROOT: '/repo/worktrees/payment-ui',
-      ORCA_DEV_WORKTREE_NAME: 'payment-ui',
-      ORCA_DEV_BRANCH: 'feature/billing-shell'
+      OCC_DEV_REPO_ROOT: '/repo/worktrees/payment-ui',
+      OCC_DEV_WORKTREE_NAME: 'payment-ui',
+      OCC_DEV_BRANCH: 'feature/billing-shell'
     })
 
     expect(identity.devLabel).toBe('payment-ui @ feature/billing-shell')
@@ -66,9 +66,9 @@ describe('dev-instance-identity', () => {
 
   it('allows an explicit label override', () => {
     const identity = getDevInstanceIdentity(true, {
-      ORCA_DEV_INSTANCE_LABEL: 'manual label',
-      ORCA_DEV_WORKTREE_NAME: 'dev-indicator',
-      ORCA_DEV_BRANCH: 'feature/other'
+      OCC_DEV_INSTANCE_LABEL: 'manual label',
+      OCC_DEV_WORKTREE_NAME: 'dev-indicator',
+      OCC_DEV_BRANCH: 'feature/other'
     })
 
     expect(identity.devLabel).toBe('manual label')

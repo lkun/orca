@@ -9,16 +9,16 @@ import { CODEX_NO_DAEMON_SKIP_ARGS } from '../../shared/codex-shell-function'
 // Fake binaries cannot detect renamed flags or subcommands rejecting the wrapper's --no-daemon rule.
 
 const execFileAsync = promisify(execFile)
-const binary = process.env.ORCA_CODEX_NO_DAEMON_CONTRACT_BINARY
-const expectedVersion = process.env.ORCA_CODEX_NO_DAEMON_CONTRACT_VERSION
+const binary = process.env.OCC_CODEX_NO_DAEMON_CONTRACT_BINARY
+const expectedVersion = process.env.OCC_CODEX_NO_DAEMON_CONTRACT_VERSION
 const WRAPPER_SKIPPED_SUBCOMMANDS: ReadonlySet<string> = new Set(CODEX_NO_DAEMON_SKIP_ARGS)
 const TIMEOUT_MS = 30_000
 
-describe.runIf(process.env.ORCA_CODEX_NO_DAEMON_CONTRACT_REQUIRED === '1' && !binary)(
+describe.runIf(process.env.OCC_CODEX_NO_DAEMON_CONTRACT_REQUIRED === '1' && !binary)(
   'codex --no-daemon contract prerequisites',
   () => {
     it('was given a Codex binary to run against', () => {
-      expect.fail('ORCA_CODEX_NO_DAEMON_CONTRACT_REQUIRED=1 but no binary was given')
+      expect.fail('OCC_CODEX_NO_DAEMON_CONTRACT_REQUIRED=1 but no binary was given')
     })
   }
 )
@@ -29,7 +29,7 @@ describe.runIf(binary)('codex --no-daemon binary contract', { timeout: 120_000 }
 
   beforeAll(async () => {
     // Keep probes away from the user's real ~/.codex.
-    home = mkdtempSync(join(tmpdir(), 'orca-codex-no-daemon-contract-'))
+    home = mkdtempSync(join(tmpdir(), 'occ-codex-no-daemon-contract-'))
     const version = await run(['--version'])
     expect(version.stdout.trim()).toBe(`codex-cli ${expectedVersion}`)
     help = (await run(['--help'])).stdout

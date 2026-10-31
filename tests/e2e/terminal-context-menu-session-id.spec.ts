@@ -1,6 +1,6 @@
 /** E2E coverage for copying provider identity from the exact terminal pane. */
 
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   ensureTerminalVisible,
   getActiveTabId,
@@ -12,16 +12,16 @@ import { openTerminalContextMenu } from './helpers/terminal-pane-title-actions'
 
 const SESSION_ID = 'e2e-terminal-pane-session'
 
-test('terminal pane context menu copies its agent session ID', async ({ orcaPage }) => {
-  await waitForSessionReady(orcaPage)
-  const worktreeId = await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
+test('terminal pane context menu copies its agent session ID', async ({ occPage }) => {
+  await waitForSessionReady(occPage)
+  const worktreeId = await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
 
-  const tabId = await getActiveTabId(orcaPage)
+  const tabId = await getActiveTabId(occPage)
   if (!tabId) {
     throw new Error('No active terminal tab')
   }
-  const snapshot = await waitForPaneIdentitySnapshot(orcaPage, 1)
+  const snapshot = await waitForPaneIdentitySnapshot(occPage, 1)
   const leafId = snapshot.panes[0]?.leafId
   if (!leafId) {
     throw new Error('No active terminal pane')
@@ -29,7 +29,7 @@ test('terminal pane context menu copies its agent session ID', async ({ orcaPage
   const paneKey = `${tabId}:${leafId}`
 
   // Avoid installed CLIs while exercising durable pane identity after transient status clears.
-  await orcaPage.evaluate(
+  await occPage.evaluate(
     ({ paneKey, tabId, worktreeId, sessionId }) => {
       const state = window.__store?.getState()
       if (!state) {
@@ -49,7 +49,7 @@ test('terminal pane context menu copies its agent session ID', async ({ orcaPage
   await expect
     .poll(
       () =>
-        orcaPage.evaluate(
+        occPage.evaluate(
           ({ paneKey }) =>
             window.__store?.getState().sleepingAgentSessionsByPaneKey[paneKey]?.providerSession.id,
           { paneKey }
@@ -58,9 +58,9 @@ test('terminal pane context menu copies its agent session ID', async ({ orcaPage
     )
     .toBe(SESSION_ID)
 
-  await openTerminalContextMenu(orcaPage)
+  await openTerminalContextMenu(occPage)
 
-  const identityItems = await orcaPage.getByRole('menuitem').allInnerTexts()
+  const identityItems = await occPage.getByRole('menuitem').allInnerTexts()
   const sessionIdIndex = identityItems.indexOf('Copy Session ID')
   expect(identityItems.slice(sessionIdIndex, sessionIdIndex + 3)).toEqual([
     'Copy Session ID',
@@ -68,11 +68,11 @@ test('terminal pane context menu copies its agent session ID', async ({ orcaPage
     'Copy Pane ID'
   ])
 
-  const copyItem = orcaPage.getByRole('menuitem', { name: 'Copy Session ID', exact: true })
+  const copyItem = occPage.getByRole('menuitem', { name: 'Copy Session ID', exact: true })
   await expect(copyItem).toBeVisible()
   await copyItem.click()
 
   await expect
-    .poll(() => orcaPage.evaluate(() => window.api.ui.readClipboardText()), { timeout: 3_000 })
+    .poll(() => occPage.evaluate(() => window.api.ui.readClipboardText()), { timeout: 3_000 })
     .toBe(SESSION_ID)
 })

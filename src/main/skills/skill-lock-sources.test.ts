@@ -7,7 +7,7 @@ import { readSkillLockSources } from './skill-lock-sources'
 const temporaryDirectories: string[] = []
 
 async function temporaryRoot(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-sources-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-sources-'))
   temporaryDirectories.push(root)
   return root
 }
@@ -25,20 +25,20 @@ describe('skills.sh lock sources', () => {
       JSON.stringify({
         version: 3,
         skills: {
-          orchestration: { skillFolderHash: 'a'.repeat(64), source: 'stablyai/orca' },
+          orchestration: { skillFolderHash: 'a'.repeat(64), source: 'stablyai/occ' },
           'computer-use': { source: 'acme/agent-skills' },
           copied: {},
           emptySource: { source: '' },
-          constructor: { source: 'stablyai/orca' }
+          constructor: { source: 'stablyai/occ' }
         }
       })
     )
 
     await expect(readSkillLockSources({ homeDir, stateHome: null })).resolves.toEqual(
       new Map([
-        ['orchestration', 'stablyai/orca'],
+        ['orchestration', 'stablyai/occ'],
         ['computer-use', 'acme/agent-skills'],
-        ['constructor', 'stablyai/orca']
+        ['constructor', 'stablyai/occ']
       ])
     )
   })
@@ -49,11 +49,11 @@ describe('skills.sh lock sources', () => {
     await mkdir(join(stateHome, 'skills'), { recursive: true })
     await writeFile(
       join(stateHome, 'skills', '.skill-lock.json'),
-      JSON.stringify({ version: 3, skills: { 'orca-cli': { source: 'stablyai/orca' } } })
+      JSON.stringify({ version: 3, skills: { 'occ-cli': { source: 'stablyai/occ' } } })
     )
 
     await expect(readSkillLockSources({ homeDir: root, stateHome })).resolves.toEqual(
-      new Map([['orca-cli', 'stablyai/orca']])
+      new Map([['occ-cli', 'stablyai/occ']])
     )
   })
 

@@ -6,7 +6,7 @@ import { TEXT_CONTROL_PASTE_MAX_BYTES, pasteTextIntoTextControl } from './text-c
 import { createTextControlRejectedResult } from './text-control-paste-diagnostics'
 import { findOwnedTextControlPasteTarget } from './text-control-paste-ownership'
 
-export const APP_MENU_PASTE_EVENT = 'orca-app-menu-paste'
+export const APP_MENU_PASTE_EVENT = 'occ-app-menu-paste'
 
 export type AppMenuPasteRequestResult =
   | { status: 'handled'; target: 'terminal' | 'text-control' }

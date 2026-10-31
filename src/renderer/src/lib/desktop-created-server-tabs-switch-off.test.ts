@@ -6,7 +6,7 @@ import {
   pruneDesktopCreatedServerTabs
 } from './desktop-created-server-tabs'
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: false }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: false }))
 
 describe('the desktop-created server tab record in a switch-off build', () => {
   it('never reads nor keeps the record', () => {

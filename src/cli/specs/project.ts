@@ -22,7 +22,7 @@ export const PROJECT_COMMAND_SPECS: CommandSpec[] = [
     ],
     examples: [
       'occ project setups',
-      'occ project setups --project github:stablyai/orca',
+      'occ project setups --project github:stablyai/occ',
       'occ project setups --host local',
       'occ project setups --host runtime:03ef704c-b180-4b10-998d-e28fbd5de9a3'
     ]
@@ -40,8 +40,8 @@ export const PROJECT_COMMAND_SPECS: CommandSpec[] = [
       "--project takes a project id or an existing project's name. A remote-backed Git folder's project id usually comes from its remote: github:owner/repo, github:<host>/owner/repo for GitHub Enterprise, or git:<host>/<path> for other remotes."
     ],
     examples: [
-      'occ project setup-existing-folder --project github:stablyai/orca --host local --path ~/orca',
-      'occ project setup-existing-folder --project github:stablyai/orca --host runtime:03ef704c-b180-4b10-998d-e28fbd5de9a3 --path /home/me/orca --kind git --json'
+      'occ project setup-existing-folder --project github:stablyai/occ --host local --path ~/occ',
+      'occ project setup-existing-folder --project github:stablyai/occ --host runtime:03ef704c-b180-4b10-998d-e28fbd5de9a3 --path /home/me/occ --kind git --json'
     ]
   },
   {
@@ -56,8 +56,8 @@ export const PROJECT_COMMAND_SPECS: CommandSpec[] = [
       'SSH targets are cloned through the desktop UI because the desktop client owns SSH connections.'
     ],
     examples: [
-      'occ project setup-clone --project github:stablyai/orca --host local --url https://github.com/stablyai/orca.git --destination ~/src',
-      'occ project setup-clone --project github:stablyai/orca --host runtime:03ef704c-b180-4b10-998d-e28fbd5de9a3 --url https://github.com/stablyai/orca.git --destination /srv --json'
+      'occ project setup-clone --project github:stablyai/occ --host local --url https://github.com/stablyai/occ.git --destination ~/src',
+      'occ project setup-clone --project github:stablyai/occ --host runtime:03ef704c-b180-4b10-998d-e28fbd5de9a3 --url https://github.com/stablyai/occ.git --destination /srv --json'
     ]
   },
   {
@@ -84,7 +84,7 @@ export const PROJECT_COMMAND_SPECS: CommandSpec[] = [
       'Use setup-existing-folder when OCC should import and manage an actual checkout path now.'
     ],
     examples: [
-      'occ project setup-create --project github:stablyai/orca --host runtime:03ef704c-b180-4b10-998d-e28fbd5de9a3 --state setting-up --method provisioned --json'
+      'occ project setup-create --project github:stablyai/occ --host runtime:03ef704c-b180-4b10-998d-e28fbd5de9a3 --state setting-up --method provisioned --json'
     ]
   },
   {
@@ -110,8 +110,8 @@ export const PROJECT_COMMAND_SPECS: CommandSpec[] = [
       'Path and availability state changes are only supported for independent setup records.'
     ],
     examples: [
-      'occ project setup-update --setup github:stablyai/orca::gpu --display-name "GPU VM"',
-      'occ project setup-update --setup github:stablyai/orca::gpu --path /srv/orca --state ready --json'
+      'occ project setup-update --setup github:stablyai/occ::gpu --display-name "GPU VM"',
+      'occ project setup-update --setup github:stablyai/occ::gpu --path /srv/occ --state ready --json'
     ]
   },
   {
@@ -125,6 +125,6 @@ export const PROJECT_COMMAND_SPECS: CommandSpec[] = [
       'Repo-backed setups remove the registered repo compatibility record.',
       'Refuses while the project has open terminals or saved workspace details; --force removes it anyway.'
     ],
-    examples: ['occ project setup-delete --setup github:stablyai/orca::gpu --json']
+    examples: ['occ project setup-delete --setup github:stablyai/occ::gpu --json']
   }
 ]

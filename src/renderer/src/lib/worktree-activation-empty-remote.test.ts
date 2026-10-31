@@ -16,14 +16,14 @@ vi.mock('sonner', () => ({ toast: { error: vi.fn() } }))
 const initialAppStoreState = useAppStore.getState()
 const WORKTREE_PATH = path.join('workspace', 'feature')
 const REPO_PATH = path.join('workspace', 'repo')
-const ORCA_WORKSPACES_PATH = path.join('workspace', '.orca-workspaces')
+const OCC_WORKSPACES_PATH = path.join('workspace', '.occ-workspaces')
 
 // The post-create refresh lazy-loads real session-tabs modules; load them before vi.waitFor's 1s budget starts.
 beforeAll(loadWebRuntimeSessionTabsApplyModulesForTests)
 
 afterEach(() => {
   vi.clearAllMocks()
-  delete (globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__
+  delete (globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__
   vi.unstubAllGlobals()
   resetWebSessionTabsSnapshotFreshnessForTests()
   resetWebRuntimeWakeTerminalRespawnForTests()
@@ -75,7 +75,7 @@ describe('empty remote worktree activation', () => {
         snapshotVersion: 1
       }
     })
-    ;(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ = true
+    ;(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ = true
     stubRuntimeEnvironmentBridge({
       call: callRuntimeEnvironment,
       subscribe: vi.fn()
@@ -95,7 +95,7 @@ describe('empty remote worktree activation', () => {
       tabsByWorktree: {},
       ptyIdsByTabId: {},
       settings: {
-        ...getDefaultSettings(ORCA_WORKSPACES_PATH),
+        ...getDefaultSettings(OCC_WORKSPACES_PATH),
         activeRuntimeEnvironmentId: 'web-runtime-1'
       },
       reconcileWorktreeTabModel: vi.fn(() => ({
@@ -137,7 +137,7 @@ describe('empty remote worktree activation', () => {
       ok: false,
       error: { code: 'terminal_create_failed', message: 'Host refused the terminal' }
     })
-    ;(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ = true
+    ;(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ = true
     stubRuntimeEnvironmentBridge({
       call: callRuntimeEnvironment,
       subscribe: vi.fn()
@@ -157,7 +157,7 @@ describe('empty remote worktree activation', () => {
       tabsByWorktree: {},
       ptyIdsByTabId: {},
       settings: {
-        ...getDefaultSettings(ORCA_WORKSPACES_PATH),
+        ...getDefaultSettings(OCC_WORKSPACES_PATH),
         activeRuntimeEnvironmentId: 'web-runtime-1'
       },
       reconcileWorktreeTabModel: vi.fn(() => ({
@@ -181,7 +181,7 @@ describe('empty remote worktree activation', () => {
     // Empty mirror workspaces use this activation door without stream rows. Honor explicit empty tombstones here too or every focus reseeds terminals.
     const worktree = makeWorktree()
     const callRuntimeEnvironment = vi.fn()
-    ;(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ = true
+    ;(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ = true
     stubRuntimeEnvironmentBridge({ call: callRuntimeEnvironment, subscribe: vi.fn() })
 
     useAppStore.setState({
@@ -198,7 +198,7 @@ describe('empty remote worktree activation', () => {
       tabsByWorktree: { [worktree.id]: [] },
       ptyIdsByTabId: {},
       settings: {
-        ...getDefaultSettings(ORCA_WORKSPACES_PATH),
+        ...getDefaultSettings(OCC_WORKSPACES_PATH),
         activeRuntimeEnvironmentId: 'web-runtime-1'
       },
       reconcileWorktreeTabModel: vi.fn(() => ({
@@ -218,7 +218,7 @@ describe('empty remote worktree activation', () => {
     // Present-but-unrenderable rows indicate mid-reconcile; seed must not duplicate their pending panes.
     const worktree = makeWorktree()
     const callRuntimeEnvironment = vi.fn()
-    ;(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ = true
+    ;(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ = true
     stubRuntimeEnvironmentBridge({ call: callRuntimeEnvironment, subscribe: vi.fn() })
 
     useAppStore.setState({
@@ -248,7 +248,7 @@ describe('empty remote worktree activation', () => {
       },
       ptyIdsByTabId: {},
       settings: {
-        ...getDefaultSettings(ORCA_WORKSPACES_PATH),
+        ...getDefaultSettings(OCC_WORKSPACES_PATH),
         activeRuntimeEnvironmentId: 'web-runtime-1'
       },
       reconcileWorktreeTabModel: vi.fn(() => ({
@@ -268,7 +268,7 @@ describe('empty remote worktree activation', () => {
     // Renderable rows with gone host PTYs need separate recovery; tombstone guards must not swallow it.
     const worktree = makeWorktree()
     const callRuntimeEnvironment = vi.fn().mockResolvedValueOnce({ ok: true, result: {} })
-    ;(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ = true
+    ;(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ = true
     stubRuntimeEnvironmentBridge({ call: callRuntimeEnvironment, subscribe: vi.fn() })
 
     useAppStore.setState({
@@ -298,7 +298,7 @@ describe('empty remote worktree activation', () => {
       },
       ptyIdsByTabId: {},
       settings: {
-        ...getDefaultSettings(ORCA_WORKSPACES_PATH),
+        ...getDefaultSettings(OCC_WORKSPACES_PATH),
         activeRuntimeEnvironmentId: 'web-runtime-1'
       },
       reconcileWorktreeTabModel: vi.fn(() => ({

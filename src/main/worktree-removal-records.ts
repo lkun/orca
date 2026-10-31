@@ -6,7 +6,7 @@ import {
   writeSidecarSnapshot
 } from './sidecar-snapshot-file'
 
-const RECORDS_FILE_NAME = 'orca-worktree-removals.json'
+const RECORDS_FILE_NAME = 'occ-worktree-removals.json'
 const RECORDS_VERSION = 1
 
 /** Accepted choices needed to resume this host's removal after a restart. */

@@ -2,8 +2,8 @@ import './rpc/unused-default-rpc-methods.test-fixture'
 // Dispatched chats retain their mailbox while starting nested helpers; unhandled mail returns to the Run coordinator on settlement.
 
 import { describe, expect, it, vi } from 'vitest'
-import { formatOrcaSessionAddress } from '../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../shared/occ-session-address'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import { idOf, resultOf } from './rpc/orchestration-session-caller-test-fixture'
 import type { DispatchCreator } from './orchestration/db/dispatch-depth'
 import {
@@ -23,7 +23,7 @@ import {
   turnText
 } from './structured-chat-coordinator-mail-rig.test-fixture'
 
-const WORKER = formatOrcaSessionAddress(testOrcaSessionId(PEER_CHAT))
+const WORKER = formatOCCSessionAddress(testOCCSessionId(PEER_CHAT))
 const HELPER = 'term_worker'
 /** A helper's own helper, two levels below the Run's coordinator. */
 const LEAF = 'term_worker_2'
@@ -39,7 +39,7 @@ async function refusal(method: string, params: Record<string, unknown>, sessionI
 /** The helper row worker-start reserves once the worker's authority resolved, in a live terminal. */
 function reserveHelper(
   creatorDispatchId: string,
-  creator: DispatchCreator = { kind: 'session', orcaSessionId: testOrcaSessionId(PEER_CHAT) },
+  creator: DispatchCreator = { kind: 'session', occSessionId: testOCCSessionId(PEER_CHAT) },
   handle = HELPER,
   paneKey = WORKER_PANE
 ): { dispatchId: string; taskId: string } {

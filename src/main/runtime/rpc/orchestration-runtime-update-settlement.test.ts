@@ -6,14 +6,14 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ORCHESTRATION_CONTRACT_VERSION } from '../../../shared/protocol-version'
 import Database from '../../sqlite/sync-database'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import { OrchestrationDb } from '../orchestration/db'
 import type { RpcRequest, RpcResponse } from './core'
 import { RpcDispatcher } from './dispatcher'
 import { ORCHESTRATION_METHODS } from './methods/orchestration'
 import { createRootDispatch } from '../orchestration/db/root-dispatch-test-fixture'
 import type { RuntimeStore } from '../runtime-store-contract'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { parsePaneKey } from '../../../shared/stable-pane-id'
 import { bindPaneFirst } from '../bind-first-pane.test-fixture'
 
@@ -80,7 +80,7 @@ function updateLayoutStore(): RuntimeStore {
 }
 
 function createUpdateHarness(): Harness {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-update-settlement-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-update-settlement-'))
   tempDirs.push(dir)
   const markerPath = join(dir, 'worker-result.txt')
   const dbPath = join(dir, 'orchestration.db')
@@ -137,8 +137,8 @@ function createUpdateHarness(): Harness {
         launchToken: 'current-coordinator-launch-token'
       }
     ]
-    const runtime = new OrcaRuntimeService(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? updateLayoutStore() : null,
+    const runtime = new OCCRuntimeService(
+      OCC_LAYOUT_OWNER_IS_MAIN ? updateLayoutStore() : null,
       undefined,
       {
         attestAgentHookCompatibilityAuthority: ({ paneKey, launchTokenHash }) => {

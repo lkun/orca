@@ -1,6 +1,6 @@
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 
-export function getSessionTabsInventoryPublication(runtime: OrcaRuntimeService) {
+export function getSessionTabsInventoryPublication(runtime: OCCRuntimeService) {
   return {
     get epoch(): number | null {
       const epoch: unknown = Object.getOwnPropertyDescriptor(

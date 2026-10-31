@@ -13,7 +13,7 @@ const REGISTRATION: MobilePushRegistration = {
 }
 
 function userDataDir(): string {
-  return mkdtempSync(join(tmpdir(), 'orca-push-registry-'))
+  return mkdtempSync(join(tmpdir(), 'occ-push-registry-'))
 }
 
 function rewriteRegistry(dir: string, mutate: (devices: Record<string, unknown>[]) => void): void {

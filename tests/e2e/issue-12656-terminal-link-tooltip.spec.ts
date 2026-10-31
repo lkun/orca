@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForSessionReady } from './helpers/store'
 import {
   getTerminalContent,
@@ -113,28 +113,28 @@ async function captureProof(page: Page, testInfo: TestInfo, name: string): Promi
 
 test.describe('Issue #12656 terminal link tooltip', () => {
   test('clears hover state without permanently shrinking the terminal', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage)
+    await waitForSessionReady(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
-    await waitForPtyShellEcho(orcaPage, ptyId, 15_000)
+    const ptyId = await waitForActivePanePtyId(occPage)
+    await waitForPtyShellEcho(occPage, ptyId, 15_000)
 
-    const url = `https://example.com/orca-issue-12656-${randomUUID().slice(0, 8)}`
+    const url = `https://example.com/occ-issue-12656-${randomUUID().slice(0, 8)}`
     await sendToTerminal(
-      orcaPage,
+      occPage,
       ptyId,
       `printf 'issue-12656-output-%02d\\n' $(seq 1 64); printf '${url}\\n'\r`
     )
-    await waitForTerminalOutput(orcaPage, url)
+    await waitForTerminalOutput(occPage, url)
 
     const located: { probe: LinkProbe | null } = { probe: null }
     await expect
       .poll(
         async () => {
-          located.probe = await locateUrl(orcaPage, url)
+          located.probe = await locateUrl(occPage, url)
           return located.probe
         },
         { timeout: 5_000, message: 'URL did not become visible in the terminal viewport' }
@@ -144,36 +144,36 @@ test.describe('Issue #12656 terminal link tooltip', () => {
       throw new Error('URL probe disappeared before hover')
     }
     let probe: LinkProbe = located.probe
-    const idle = await readTooltipState(orcaPage, probe.tabId)
+    const idle = await readTooltipState(occPage, probe.tabId)
     expect(Math.abs(idle.paneBottom - idle.terminalBottom)).toBeLessThanOrEqual(1)
     await expect
       .poll(async () => {
-        const currentProbe = await locateUrl(orcaPage, url)
+        const currentProbe = await locateUrl(occPage, url)
         if (!currentProbe) {
           return { display: 'none', text: '' }
         }
         probe = currentProbe
-        await moveToLink(orcaPage, currentProbe)
-        return readTooltipState(orcaPage, currentProbe.tabId)
+        await moveToLink(occPage, currentProbe)
+        return readTooltipState(occPage, currentProbe.tabId)
       })
       .toMatchObject({ display: '', text: expect.stringContaining(url) })
 
-    const hovered = await readTooltipState(orcaPage, probe.tabId)
+    const hovered = await readTooltipState(occPage, probe.tabId)
     expect(hovered.text).toContain(url)
     expect(hovered.tooltipHeight).toBeGreaterThan(0)
     expect(Math.abs(hovered.paneBottom - hovered.terminalBottom)).toBeLessThanOrEqual(1)
     expect(Math.abs(hovered.paneBottom - hovered.tooltipBottom)).toBeLessThanOrEqual(1)
     expect(hovered.tooltipTop).toBeLessThan(hovered.terminalBottom)
-    await captureProof(orcaPage, testInfo, 'issue-12656-fixed-hover.png')
+    await captureProof(occPage, testInfo, 'issue-12656-fixed-hover.png')
 
-    await orcaPage.evaluate(() => window.dispatchEvent(new Event('blur')))
+    await occPage.evaluate(() => window.dispatchEvent(new Event('blur')))
     await expect
-      .poll(() => readTooltipState(orcaPage, probe.tabId))
+      .poll(() => readTooltipState(occPage, probe.tabId))
       .toMatchObject({ display: 'none', cursor: 'text' })
-    const cleared = await readTooltipState(orcaPage, probe.tabId)
+    const cleared = await readTooltipState(occPage, probe.tabId)
     expect(Math.abs(cleared.paneBottom - cleared.terminalBottom)).toBeLessThanOrEqual(1)
-    await captureProof(orcaPage, testInfo, 'issue-12656-fixed-after-blur.png')
+    await captureProof(occPage, testInfo, 'issue-12656-fixed-after-blur.png')
 
-    await expect.poll(() => getTerminalContent(orcaPage)).toContain(url)
+    await expect.poll(() => getTerminalContent(occPage)).toContain(url)
   })
 })

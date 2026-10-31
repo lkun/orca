@@ -7,7 +7,7 @@ import {
 export type FeatureTipId =
   | 'chat-ui-here'
   | 'voice-dictation'
-  | 'orca-cli'
+  | 'occ-cli'
   | 'cmd-j-palette'
   | 'agent-session-search'
 
@@ -65,7 +65,7 @@ export const FEATURE_TIPS = [
     completedByFeatureInteractions: []
   },
   {
-    id: 'orca-cli',
+    id: 'occ-cli',
     priority: 'new',
     eyebrow: 'Tip',
     title: 'Let agents drive OCC with the OCC CLI',
@@ -121,7 +121,7 @@ export function normalizeFeatureTipIds(value: unknown): FeatureTipId[] {
 export function getCompletedFeatureTipIds(state: CompletedFeatureTipState): Set<FeatureTipId> {
   const completedIds = new Set<FeatureTipId>()
   if (state.cliInstalled) {
-    completedIds.add('orca-cli')
+    completedIds.add('occ-cli')
   }
   if (state.voiceDictationEnabled) {
     completedIds.add('voice-dictation')

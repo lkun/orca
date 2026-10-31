@@ -1,5 +1,5 @@
 import { readFileSync } from 'node:fs'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   cleanupMarkdownFixture,
   closeActiveEditorTab,
@@ -21,13 +21,13 @@ import {
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
 test.describe('Markdown nested toggle regression', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
   })
 
-  test('a plain details block opens as an editable toggle', async ({ orcaPage }, testInfo) => {
-    const context = await getActiveWorktreeContext(orcaPage)
+  test('a plain details block opens as an editable toggle', async ({ occPage }, testInfo) => {
+    const context = await getActiveWorktreeContext(occPage)
     let filePath: string | null = null
 
     try {
@@ -38,15 +38,15 @@ test.describe('Markdown nested toggle regression', () => {
         testInfo.workerIndex,
         '<details>\n<summary>Toggle</summary>\n\nBody\n\n</details>\n'
       )
-      await openMarkdownFixture(orcaPage, context, filePath)
-      const editor = await waitForRichMarkdownEditor(orcaPage)
+      await openMarkdownFixture(occPage, context, filePath)
+      const editor = await waitForRichMarkdownEditor(occPage)
       const toggle = editor.locator('[data-type="details"]')
 
       await expect(toggle).toHaveCount(1)
       await expect(toggle.locator('summary')).toHaveText('Toggle')
       await expect(editor.locator('[data-raw-markdown-html-block]')).toHaveCount(0)
       const screenshotPath = testInfo.outputPath('plain-details-rich-editor.png')
-      await orcaPage.screenshot({ path: screenshotPath })
+      await occPage.screenshot({ path: screenshotPath })
       await testInfo.attach('plain-details-rich-editor', {
         path: screenshotPath,
         contentType: 'image/png'
@@ -56,8 +56,8 @@ test.describe('Markdown nested toggle regression', () => {
     }
   })
 
-  test('a nested toggle on disk reopens as editable toggles', async ({ orcaPage }, testInfo) => {
-    const context = await getActiveWorktreeContext(orcaPage)
+  test('a nested toggle on disk reopens as editable toggles', async ({ occPage }, testInfo) => {
+    const context = await getActiveWorktreeContext(occPage)
     let filePath: string | null = null
 
     try {
@@ -68,17 +68,17 @@ test.describe('Markdown nested toggle regression', () => {
         testInfo.workerIndex,
         NESTED_TOGGLE_MARKDOWN
       )
-      await openMarkdownFixture(orcaPage, context, filePath)
-      await waitForRichMarkdownEditor(orcaPage)
+      await openMarkdownFixture(occPage, context, filePath)
+      await waitForRichMarkdownEditor(occPage)
 
-      await expectEditableNestedToggles(orcaPage)
+      await expectEditableNestedToggles(occPage)
     } finally {
       await cleanupMarkdownFixture(filePath)
     }
   })
 
-  test('editing a nested toggle survives save and reopen', async ({ orcaPage }, testInfo) => {
-    const context = await getActiveWorktreeContext(orcaPage)
+  test('editing a nested toggle survives save and reopen', async ({ occPage }, testInfo) => {
+    const context = await getActiveWorktreeContext(occPage)
     const sentinel = `editedInsideNestedToggle${Date.now()}`
     let filePath: string | null = null
 
@@ -90,16 +90,16 @@ test.describe('Markdown nested toggle regression', () => {
         testInfo.workerIndex,
         NESTED_TOGGLE_MARKDOWN
       )
-      await openMarkdownFixture(orcaPage, context, filePath)
-      await waitForRichMarkdownEditor(orcaPage)
-      await expectEditableNestedToggles(orcaPage)
+      await openMarkdownFixture(occPage, context, filePath)
+      await waitForRichMarkdownEditor(occPage)
+      await expectEditableNestedToggles(occPage)
 
-      await placeCaretInNestedToggleBody(orcaPage)
-      await orcaPage.keyboard.type(` ${sentinel}`)
-      await expectSentinelInsideNestedToggle(orcaPage, sentinel)
+      await placeCaretInNestedToggleBody(occPage)
+      await occPage.keyboard.type(` ${sentinel}`)
+      await expectSentinelInsideNestedToggle(occPage, sentinel)
 
       // Save through the real shortcut and assert the bytes that landed on disk.
-      await orcaPage.keyboard.press('ControlOrMeta+S')
+      await occPage.keyboard.press('ControlOrMeta+S')
       const savedPath = filePath
       await expect
         .poll(() => readFileSync(savedPath, 'utf8'), { timeout: 10_000 })
@@ -107,20 +107,20 @@ test.describe('Markdown nested toggle regression', () => {
       expectFileKeepsNesting(readFileSync(savedPath, 'utf8'), sentinel)
 
       // Reopen the saved bytes from scratch; the reported bug appeared only after reparsing.
-      await closeActiveEditorTab(orcaPage, savedPath)
-      await openMarkdownFixture(orcaPage, context, savedPath)
-      await waitForRichMarkdownEditor(orcaPage)
-      await expectEditableNestedToggles(orcaPage)
-      await expectSentinelInsideNestedToggle(orcaPage, sentinel)
+      await closeActiveEditorTab(occPage, savedPath)
+      await openMarkdownFixture(occPage, context, savedPath)
+      await waitForRichMarkdownEditor(occPage)
+      await expectEditableNestedToggles(occPage)
+      await expectSentinelInsideNestedToggle(occPage, sentinel)
     } finally {
       await cleanupMarkdownFixture(filePath)
     }
   })
 
   test('a nested toggle that cannot be represented stays raw passthrough', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    const context = await getActiveWorktreeContext(orcaPage)
+    const context = await getActiveWorktreeContext(occPage)
     let filePath: string | null = null
 
     try {
@@ -131,10 +131,10 @@ test.describe('Markdown nested toggle regression', () => {
         testInfo.workerIndex,
         UNSUPPORTED_NESTED_TOGGLE_MARKDOWN
       )
-      await openMarkdownFixture(orcaPage, context, filePath)
-      await waitForRichMarkdownEditor(orcaPage)
+      await openMarkdownFixture(occPage, context, filePath)
+      await waitForRichMarkdownEditor(occPage)
 
-      await expectPassthroughFallback(orcaPage)
+      await expectPassthroughFallback(occPage)
     } finally {
       await cleanupMarkdownFixture(filePath)
     }

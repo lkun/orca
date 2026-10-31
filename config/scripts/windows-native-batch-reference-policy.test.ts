@@ -9,21 +9,21 @@ const observer = 'config/scripts/windows-native-benchmark-observer.mjs'
 const metadataCallers = [
   'config/scripts/node-server-change-scope.mjs',
   'config/scripts/pr-code-change-scope.mjs',
-  'config/scripts/orcad-windows-prebuild-cache.mjs',
+  'config/scripts/occd-windows-prebuild-cache.mjs',
   'config/scripts/windows-native-toolchain-routing.test.mjs'
 ]
 const capture = 'capture-windows-native-environment.cmd'
 const initializerSource = `
-  import { runProcessSync as captureEnvironment } from '@orca/process-host'
+  import { runProcessSync as captureEnvironment } from '@occ/process-host'
   const devcmd = join(installation, 'Common7', 'Tools', 'VsDevCmd.bat')
   existsSync(devcmd)
   captureEnvironment({
     program: join(import.meta.dirname, '${capture}'),
-    env: { ORCA_WINDOWS_VSDEVCMD: devcmd }
+    env: { OCC_WINDOWS_VSDEVCMD: devcmd }
   })
 `
 const benchmarkSource = `
-  import { runProcess } from '@orca/process-host'
+  import { runProcess } from '@occ/process-host'
   const source = 'config/scripts/${capture}'
   await runProcess({ program: process.execPath, args: [source] })
 `
@@ -86,9 +86,9 @@ describe('reviewed Windows native batch references', () => {
   it.each([
     [initializer, initializerSource],
     [benchmark, benchmarkSource],
-    [observer, `require('@orca/process-host'); const capture = '${capture}'`]
+    [observer, `require('@occ/process-host'); const capture = '${capture}'`]
   ])('rejects a missing process-host load in %s', (relativePath, contents) => {
-    expect(hasViolation(relativePath, contents.replace('@orca/process-host', 'other-runner'))).toBe(
+    expect(hasViolation(relativePath, contents.replace('@occ/process-host', 'other-runner'))).toBe(
       true
     )
   })
@@ -151,7 +151,7 @@ describe('reviewed Windows native batch references', () => {
     expect(
       hasViolation(
         relativePath,
-        `import { runProcess as execute } from '@orca/process-host'; const capture = 'config/scripts/${capture}'; execute({ program: capture })`
+        `import { runProcess as execute } from '@occ/process-host'; const capture = 'config/scripts/${capture}'; execute({ program: capture })`
       )
     ).toBe(true)
   })

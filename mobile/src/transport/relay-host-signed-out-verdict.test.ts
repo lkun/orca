@@ -45,7 +45,7 @@ function linkOver(
   onError: (error: Error) => void
 ): MobileRelayE2eeLink {
   return new MobileRelayE2eeLink({
-    endpoint: { cellUrl: 'https://relay-c1.onorca.dev', relayHostId: 'AbCdEf0123_-xyZ9' },
+    endpoint: { cellUrl: 'https://relay-c1.onocc.dev', relayHostId: 'AbCdEf0123_-xyZ9' },
     credential: 'credential',
     expectedCredentialKind: 'resume',
     deviceToken: 'device-token',

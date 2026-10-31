@@ -8,7 +8,7 @@ process.on('uncaughtException', (error) => {
   console.error(error)
   app.exit(1)
 })
-if (process.env.ORCA_COMPUTER_BENCH_ISOLATED !== '1') {
+if (process.env.OCC_COMPUTER_BENCH_ISOLATED !== '1') {
   process.exit(1)
 }
 app.whenReady().then(() => {

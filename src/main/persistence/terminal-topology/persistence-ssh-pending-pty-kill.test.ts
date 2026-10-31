@@ -26,7 +26,7 @@ const NOW = 1_800_000_000_000
 // Only legacy relay paths create pending stops; preserve them for downgrade replay elsewhere.
 describe('persisted SSH pending PTY kills', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
   })
 
   afterEach(async () => {

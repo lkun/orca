@@ -10,7 +10,7 @@
 import { mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchPairedElectronClient } from './helpers/paired-electron-client'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { mutateStoppedProfileState } from './helpers/persisted-profile-state'
@@ -30,7 +30,7 @@ test("a moved project's browser tab and draft come back on the desktop from a br
   test.skip(process.platform === 'win32', 'POSIX paths')
   // A host and two client launches, with a profile edit between them.
   test.setTimeout(600_000)
-  const root = mkdtempSync(path.join(os.tmpdir(), 'orca-moved-browser-drafts-'))
+  const root = mkdtempSync(path.join(os.tmpdir(), 'occ-moved-browser-drafts-'))
   const repoPath = realpathSync(createMovedRepo(root))
   const notesPath = path.join(repoPath, 'notes.md')
   writeFileSync(notesPath, 'saved words\n')
@@ -38,8 +38,8 @@ test("a moved project's browser tab and draft come back on the desktop from a br
   const host = await launchHeadlessPairedRuntimeHost({
     pinnedServePort: true,
     withoutBrowser: true,
-    // Stands in for the distro's orcad, the only host that serves moved panes' history.
-    extraEnv: { ORCA_E2E_WSL_MOVE_DESTINATION: '1' }
+    // Stands in for the distro's occd, the only host that serves moved panes' history.
+    extraEnv: { OCC_E2E_WSL_MOVE_DESTINATION: '1' }
   })
   try {
     const added = await host.client.call<{ repo: { id: string } }>('repo.add', {

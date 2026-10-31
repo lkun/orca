@@ -38,7 +38,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -233,7 +233,7 @@ describe('pty:spawn replacing a pane owner', () => {
     registerWithFakes(mainWindow, runtime, store)
     await expect(
       handlers.get('pty:spawn')!(null, restartSpawnArgs({ replacesPtyId: 'pty-old' }))
-    ).rejects.toThrow('ORCA_TERMINAL_SESSION_STATE_SAVE_FAILED')
+    ).rejects.toThrow('OCC_TERMINAL_SESSION_STATE_SAVE_FAILED')
     expect(provider.shutdown).toHaveBeenCalledWith(
       'pty-new',
       expect.objectContaining({ immediate: true })

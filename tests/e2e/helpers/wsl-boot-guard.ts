@@ -4,7 +4,7 @@
  */
 import { execFile } from 'node:child_process'
 import type { Page } from '@stablyai/playwright-test'
-import { expect } from './orca-app'
+import { expect } from './occ-app'
 import { buildWslExecArgs } from '../../../src/shared/wsl-login-shell-command'
 import {
   PTY_SPAWN,
@@ -12,7 +12,7 @@ import {
   UNC_TOUCH,
   type DiagnosticRecord
 } from './wsl-boot-diagnostics-log'
-import { orcaWslLaunches, shouldRetryTerminate, WSL_EXE } from './wsl-terminate-retry'
+import { occWslLaunches, shouldRetryTerminate, WSL_EXE } from './wsl-terminate-retry'
 
 /** Async with a timeout: a hung wsl.exe must fail the test, never block the worker past its timeout. */
 export function wsl(args: readonly string[], timeoutMs = 60_000): Promise<string> {
@@ -125,7 +125,7 @@ export function watchDistroRunning(
   let spawnsSeen = readDiagnosticLog(spawnLog).length
   const logNewWslSpawns = (): void => {
     const spawns = readDiagnosticLog(spawnLog)
-    for (const spawn of orcaWslLaunches(spawns.slice(spawnsSeen))) {
+    for (const spawn of occWslLaunches(spawns.slice(spawnsSeen))) {
       const kind = spawn.file === UNC_TOUCH ? 'unc' : spawn.file === PTY_SPAWN ? 'pty' : 'spawn'
       // `at` is when it happened; the line prints at this poll, up to a second later.
       timeline(`${kind} ${spawn.file} ${spawn.args.join(' ')}`, spawn.at)

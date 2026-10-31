@@ -82,7 +82,7 @@ function unreadableRecord(rand: () => number, id: string): unknown {
 describe('runtime environment store under interleaved writers and unreadable records', () => {
   let userDataPath: string
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-environment-interleaving-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-environment-interleaving-'))
     vi.spyOn(console, 'warn').mockImplementation(() => {})
   })
   afterEach(() => {
@@ -214,7 +214,7 @@ describe('runtime environment store under interleaved writers and unreadable rec
           expect(readFileSync(storePath(), 'utf8'), label).toBe(before)
         } else if (target) {
           writeRuntimeEnvironmentSidecarEntry(userDataPath, environments, target, {
-            orcadMigratedAt: new Date(clock).toISOString()
+            occdMigratedAt: new Date(clock).toISOString()
           })
         }
       }

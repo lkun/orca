@@ -210,7 +210,7 @@ export async function submitFeedback(
     if (res.ok) {
       return { ok: true }
     }
-    // Retry the owning endpoint; api.onorca.dev serves a different product.
+    // Retry the owning endpoint; api.onocc.dev serves a different product.
     if (res.status >= 500) {
       return retryFeedbackOnPrimary(body, new Error(`status ${res.status}`))
     }

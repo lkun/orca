@@ -79,7 +79,7 @@ export function parseHeadlessPairedRuntimePairingOffer(
   const readiness = parsed as ServeReady
   const pairing = readiness.pairing
   if (
-    readiness.type !== 'orca_server_ready' ||
+    readiness.type !== 'occ_server_ready' ||
     pairing?.available !== true ||
     typeof pairing.url !== 'string'
   ) {
@@ -91,10 +91,10 @@ export function parseHeadlessPairedRuntimePairingOffer(
   }
 }
 
-/** True for the `orca_server_ready` line, whether or not it carries a pairing offer. */
+/** True for the `occ_server_ready` line, whether or not it carries a pairing offer. */
 export function isHeadlessPairedRuntimeServeReadyLine(line: string): boolean {
   try {
-    return (JSON.parse(line) as ServeReady | null)?.type === 'orca_server_ready'
+    return (JSON.parse(line) as ServeReady | null)?.type === 'occ_server_ready'
   } catch {
     return false
   }

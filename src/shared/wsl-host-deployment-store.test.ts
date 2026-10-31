@@ -4,9 +4,9 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { encodePairingOffer } from './pairing'
 import {
-  addManagedOrcadEnvironment,
-  recordManagedOrcadMigration
-} from './runtime-environment-managed-orcad-store'
+  addManagedOCCdEnvironment,
+  recordManagedOCCdMigration
+} from './runtime-environment-managed-occd-store'
 import {
   getRuntimeEnvironmentSidecarPath,
   overlayRuntimeEnvironmentSidecar,
@@ -62,7 +62,7 @@ function wslRecord(overrides: Partial<WslHostDeploymentRecord> = {}): WslHostDep
 describe('WSL host deployment store', () => {
   let userDataPath: string
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-host-deployments-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-host-deployments-'))
     vi.spyOn(console, 'warn').mockImplementation(() => {})
   })
   afterEach(() => {
@@ -72,11 +72,11 @@ describe('WSL host deployment store', () => {
   })
 
   function addSshManaged() {
-    return addManagedOrcadEnvironment(userDataPath, {
+    return addManagedOCCdEnvironment(userDataPath, {
       id: 'ssh-managed',
       name: 'Build box',
       pairingCode: encodePairingOffer({ ...pairing, endpoint: 'ws://127.0.0.1:41000/runtime' }),
-      orcadDeployment: sshTunnel,
+      occdDeployment: sshTunnel,
       now: 100
     })
   }
@@ -106,15 +106,15 @@ describe('WSL host deployment store', () => {
 
   it('leaves an SSH-only profile byte-for-byte unchanged across a read and rewrite', () => {
     addSshManaged()
-    recordManagedOrcadMigration(userDataPath, 'ssh-managed', '2026-10-01T00:00:00.000Z')
+    recordManagedOCCdMigration(userDataPath, 'ssh-managed', '2026-10-01T00:00:00.000Z')
     const storePath = getEnvironmentStorePath(userDataPath)
     const sidecarPath = getRuntimeEnvironmentSidecarPath(userDataPath)
     const before = { store: bytes(storePath), sidecar: bytes(sidecarPath) }
 
     const [environment] = listEnvironments(userDataPath)
-    expect(environment?.orcadDeployment).toEqual(sshTunnel)
+    expect(environment?.occdDeployment).toEqual(sshTunnel)
     writeEnvironmentStore(userDataPath, readPersistedEnvironmentStore(userDataPath))
-    recordManagedOrcadMigration(userDataPath, 'ssh-managed', '2026-10-01T00:00:00.000Z')
+    recordManagedOCCdMigration(userDataPath, 'ssh-managed', '2026-10-01T00:00:00.000Z')
 
     expect({ store: bytes(storePath), sidecar: bytes(sidecarPath) }).toEqual(before)
     expect(before.sidecar).not.toContain('"kind"')
@@ -128,9 +128,9 @@ describe('WSL host deployment store', () => {
     const wslId = addWslManaged()
 
     const byId = new Map(listEnvironments(userDataPath).map((entry) => [entry.id, entry]))
-    expect(byId.get('ssh-managed')?.orcadDeployment).toEqual(sshTunnel)
+    expect(byId.get('ssh-managed')?.occdDeployment).toEqual(sshTunnel)
     const { environmentId: _id, createdAt: _at, ...link } = wslRecord()
-    expect(byId.get(wslId)).toMatchObject({ orcadDeployment: link })
+    expect(byId.get(wslId)).toMatchObject({ occdDeployment: link })
     expect(byId.get(wslId)?.connectionDependency).toBeUndefined()
     expect(bytes(getRuntimeEnvironmentSidecarPath(userDataPath))).toBe(sidecarBefore)
     expect(bytes(getEnvironmentStorePath(userDataPath))).not.toContain('wsl')
@@ -142,7 +142,7 @@ describe('WSL host deployment store', () => {
       addSshManaged()
       const wslId = addWslManaged()
 
-      // Builds before the per-record store parsed orca-environments.json whole.
+      // Builds before the per-record store parsed occ-environments.json whole.
       const strict = RuntimeEnvironmentStoreSchema.parse(
         JSON.parse(bytes(getEnvironmentStorePath(userDataPath)))
       )
@@ -161,8 +161,8 @@ describe('WSL host deployment store', () => {
         overlayRuntimeEnvironmentSidecar(entry, sidecar.entries[entry.id])
       )
       const byId = new Map(mainView.map((entry) => [entry.id, entry]))
-      expect(byId.get('ssh-managed')?.orcadDeployment).toEqual(sshTunnel)
-      expect(byId.get(wslId)?.orcadDeployment).toBeUndefined()
+      expect(byId.get('ssh-managed')?.occdDeployment).toEqual(sshTunnel)
+      expect(byId.get(wslId)?.occdDeployment).toBeUndefined()
     })
 
     it('keeps the WSL deployment after an older build rewrites the store', () => {
@@ -177,7 +177,7 @@ describe('WSL host deployment store', () => {
       markEnvironmentUsed(userDataPath, wslId, { now: 10_000 })
 
       expect(listEnvironments(userDataPath).find((entry) => entry.id === wslId)).toMatchObject({
-        orcadDeployment: { kind: 'wsl', distro: 'Ubuntu-24.04' }
+        occdDeployment: { kind: 'wsl', distro: 'Ubuntu-24.04' }
       })
     })
   })
@@ -300,7 +300,7 @@ describe('WSL host deployment store', () => {
     it('never hides an SSH-managed server behind an unreadable WSL record', () => {
       addSshManaged()
       seed({ ...futureKind, environmentId: 'ssh-managed' })
-      expect(listEnvironments(userDataPath)[0]?.orcadDeployment).toEqual(sshTunnel)
+      expect(listEnvironments(userDataPath)[0]?.occdDeployment).toEqual(sshTunnel)
     })
   })
 
@@ -313,7 +313,7 @@ describe('WSL host deployment store', () => {
     )
     const [environment] = listEnvironments(userDataPath)
     expect(environment?.id).toBe(wslId)
-    expect(environment?.orcadDeployment).toBeUndefined()
+    expect(environment?.occdDeployment).toBeUndefined()
   })
 
   it('ignores a record written for another server re-paired under the same id and port', () => {
@@ -322,12 +322,12 @@ describe('WSL host deployment store', () => {
     )
     const [environment] = listEnvironments(userDataPath)
     expect(environment?.id).toBe(wslId)
-    expect(environment?.orcadDeployment).toBeUndefined()
+    expect(environment?.occdDeployment).toBeUndefined()
   })
 
   it('overlays a record bound to the pairing key (keyless records keep port-only binding)', () => {
     addWslManaged(wslRecord({ pairingPublicKeyB64: WSL_PAIRING_KEY }))
-    expect(listEnvironments(userDataPath)[0]?.orcadDeployment).toEqual({
+    expect(listEnvironments(userDataPath)[0]?.occdDeployment).toEqual({
       kind: 'wsl',
       distro: 'Ubuntu-24.04',
       distroId: '0e3a7f2c-1b4d-4c5e-9f60-7a8b9c0d1e2f',
@@ -343,7 +343,7 @@ describe('WSL host deployment store', () => {
       'ssh-managed',
       wslRecord({ environmentId: 'ssh-managed', localPort: 41000 })
     )
-    expect(listEnvironments(userDataPath)[0]?.orcadDeployment).toEqual(sshTunnel)
+    expect(listEnvironments(userDataPath)[0]?.occdDeployment).toEqual(sshTunnel)
   })
 
   it('rejects a record written under another environment id or with an invalid distro', () => {

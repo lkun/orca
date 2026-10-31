@@ -1,13 +1,13 @@
 import type {
-  OrcadManagedPendingMigrationRow,
-  OrcadManagedRuntimeStatus
-} from '../../../../shared/orcad-managed-runtime'
-import type { OrcadMigrationBlocker } from '../../../../shared/orcad-migration/orcad-migration-preflight'
+  OCCdManagedPendingMigrationRow,
+  OCCdManagedRuntimeStatus
+} from '../../../../shared/occd-managed-runtime'
+import type { OCCdMigrationBlocker } from '../../../../shared/occd-migration/occd-migration-preflight'
 import { translate } from '@/i18n/i18n'
-import { ORCAD_UPDATE_WSL_MOVE_RUNNING_CODE } from '../../../../shared/wsl-host-types'
+import { OCCD_UPDATE_WSL_MOVE_RUNNING_CODE } from '../../../../shared/wsl-host-types'
 import { dependencyKindLabel } from './managed-server-dependency-kinds'
 
-export function migrationPhaseLabel(phase: OrcadManagedPendingMigrationRow['phase']): string {
+export function migrationPhaseLabel(phase: OCCdManagedPendingMigrationRow['phase']): string {
   switch (phase) {
     case 'source-fenced':
       return translate('auto.components.settings.managedServers.phase.fenced', 'Host locked')
@@ -21,7 +21,7 @@ export function migrationPhaseLabel(phase: OrcadManagedPendingMigrationRow['phas
 }
 
 export function recoveryLabel(
-  recovery: NonNullable<OrcadManagedRuntimeStatus['recovery']>
+  recovery: NonNullable<OCCdManagedRuntimeStatus['recovery']>
 ): string {
   switch (recovery.operation) {
     case 'activate':
@@ -43,7 +43,7 @@ export function recoveryLabel(
 }
 
 /** `null` counts are unknown, never zero: the server did not answer. */
-export function terminalCensusLabel(terminals: OrcadManagedRuntimeStatus['terminals']): string {
+export function terminalCensusLabel(terminals: OCCdManagedRuntimeStatus['terminals']): string {
   if (terminals.liveSessions === null) {
     return translate(
       'auto.components.settings.managedServers.terminals.unknown',
@@ -65,37 +65,37 @@ export function forceUpdateMessage(): string {
   )
 }
 
-export function conversionBlockerLabel(blocker: OrcadMigrationBlocker): string {
+export function conversionBlockerLabel(blocker: OCCdMigrationBlocker): string {
   switch (blocker.code) {
-    case 'orcad_migration_target_not_found':
+    case 'occd_migration_target_not_found':
       return translate(
         'auto.components.settings.managedServers.blocker.notFound',
         'The SSH host is gone.'
       )
-    case 'orcad_migration_target_owned':
-    case 'orcad_migration_owner_unrecorded':
+    case 'occd_migration_target_owned':
+    case 'occd_migration_owner_unrecorded':
       return translate(
         'auto.components.settings.managedServers.blocker.owned',
         'OCC already runs on this SSH host.'
       )
-    case 'orcad_migration_direct_ssh_repositories':
-    case 'orcad_migration_direct_ssh_folder_workspaces':
+    case 'occd_migration_direct_ssh_repositories':
+    case 'occd_migration_direct_ssh_folder_workspaces':
       return translate(
         'auto.components.settings.managedServers.blocker.catalog',
         'Projects on this host cannot move yet.'
       )
-    case 'orcad_migration_direct_ssh_terminal_leases':
+    case 'occd_migration_direct_ssh_terminal_leases':
       return translate(
         'auto.components.settings.managedServers.blocker.terminals',
         'Terminals on this host are still running ({{count}}). Close them first.',
         { count: blocker.terminalLeases.length }
       )
-    case 'orcad_migration_saved_port_forwards':
+    case 'occd_migration_saved_port_forwards':
       return translate(
         'auto.components.settings.managedServers.blocker.portForwards',
         'Saved port forwards stay with the SSH host.'
       )
-    case 'orcad_migration_dependent_state':
+    case 'occd_migration_dependent_state':
       return translate(
         'auto.components.settings.managedServers.blocker.dependents',
         'State that cannot move yet: {{kinds}}.',
@@ -105,7 +105,7 @@ export function conversionBlockerLabel(blocker: OrcadMigrationBlocker): string {
             .join(', ')
         }
       )
-    case 'orcad_migration_dependency_unverifiable':
+    case 'occd_migration_dependency_unverifiable':
       return translate(
         'auto.components.settings.managedServers.blocker.unverifiable',
         'OCC could not read its saved {{sources}}, so it cannot tell what would move.',
@@ -116,30 +116,30 @@ export function conversionBlockerLabel(blocker: OrcadMigrationBlocker): string {
 
 // Main's refusal codes, grouped by what the user does next; its English `reason` never reaches UI.
 const LIVE_TERMINAL_CODES = new Set([
-  'orcad_initial_runtime_live',
-  'orcad_update_strands_live_terminals',
-  'orcad_update_terminals_running',
-  'orcad_update_ends_in_process_terminals',
-  'orcad_rollback_orphans_live_terminals',
-  'orcad_rollback_strands_live_terminals',
-  'orcad_recovery_orphans_live_terminals',
-  'orcad_stop_still_running'
+  'occd_initial_runtime_live',
+  'occd_update_strands_live_terminals',
+  'occd_update_terminals_running',
+  'occd_update_ends_in_process_terminals',
+  'occd_rollback_orphans_live_terminals',
+  'occd_rollback_strands_live_terminals',
+  'occd_recovery_orphans_live_terminals',
+  'occd_stop_still_running'
 ])
 const UNVERIFIABLE_CODES = new Set([
-  'orcad_initial_runtime_unverifiable',
-  'orcad_update_terminal_census_unavailable',
-  'orcad_update_daemon_protocol_unverifiable',
-  'orcad_rollback_active_identity_unverifiable',
-  'orcad_rollback_census_unavailable',
-  'orcad_rollback_daemon_protocol_unverifiable',
-  'orcad_rollback_snapshot_unverifiable',
-  'orcad_recovery_census_required',
-  'orcad_recovery_unverifiable',
-  'orcad_stop_cancel_unverifiable'
+  'occd_initial_runtime_unverifiable',
+  'occd_update_terminal_census_unavailable',
+  'occd_update_daemon_protocol_unverifiable',
+  'occd_rollback_active_identity_unverifiable',
+  'occd_rollback_census_unavailable',
+  'occd_rollback_daemon_protocol_unverifiable',
+  'occd_rollback_snapshot_unverifiable',
+  'occd_recovery_census_required',
+  'occd_recovery_unverifiable',
+  'occd_stop_cancel_unverifiable'
 ])
 const MIGRATION_CODES = new Set([
-  'orcad_rollback_migration_in_progress',
-  'orcad_rollback_crosses_migration'
+  'occd_rollback_migration_in_progress',
+  'occd_rollback_crosses_migration'
 ])
 
 export function managedServerOutcomeLabel(result: {
@@ -148,7 +148,7 @@ export function managedServerOutcomeLabel(result: {
   verdict?: string
 }): string {
   const code = result.code ?? ''
-  if (code === 'orcad_stop_active_environment') {
+  if (code === 'occd_stop_active_environment') {
     return translate(
       'auto.components.settings.managedServers.outcome.defaultServer',
       'Not done: this server is the default host for new projects. Choose another one under New projects open on before stopping it.'
@@ -166,7 +166,7 @@ export function managedServerOutcomeLabel(result: {
       'Not done: OCC couldn’t confirm what is running on this server. Try again when the host is reachable.'
     )
   }
-  if (code === ORCAD_UPDATE_WSL_MOVE_RUNNING_CODE) {
+  if (code === OCCD_UPDATE_WSL_MOVE_RUNNING_CODE) {
     return translate(
       'auto.components.settings.managedServers.outcome.wslMoveRunning',
       'Not done: a project is moving onto this server. OCC updates it once the move finishes.'

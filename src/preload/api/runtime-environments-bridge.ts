@@ -14,15 +14,15 @@ import type { RemoteRuntimeSharedConnectionDiagnostics } from '../../shared/remo
 import { RUNTIME_ENVIRONMENT_DIAGNOSTICS_CHANNEL } from '../../shared/runtime-environment-diagnostics'
 import { RUNTIME_ENVIRONMENT_CATALOG_CHANGED_CHANNEL } from '../../shared/runtime-environment-catalog-channel'
 import {
-  WSL_ORCAD_ACCOUNT_NOT_APPLIED_CHANNEL,
-  type WslOrcadAccountNotAppliedEvent
-} from '../../shared/wsl-orcad-account-notice'
+  WSL_OCCD_ACCOUNT_NOT_APPLIED_CHANNEL,
+  type WslOCCdAccountNotAppliedEvent
+} from '../../shared/wsl-occd-account-notice'
 import {
   subscribeRuntimeEnvironmentFromPreload,
   type RuntimeEnvironmentSubscriptionHandle
 } from '../runtime-environment-subscriptions'
 import type { PreloadApi } from '../api-types'
-import { managedOrcadApi } from './managed-orcad-api'
+import { managedOCCdApi } from './managed-occd-api'
 import { getWslHostsApi } from './wsl-hosts-api'
 
 export const runtimeEnvironmentsApi = {
@@ -99,14 +99,14 @@ export const runtimeEnvironmentsApi = {
     return () => ipcRenderer.removeListener(RUNTIME_ENVIRONMENT_DIAGNOSTICS_CHANNEL, listener)
   },
   onWslAccountNotApplied: (
-    callback: (event: WslOrcadAccountNotAppliedEvent) => void
+    callback: (event: WslOCCdAccountNotAppliedEvent) => void
   ): (() => void) => {
     const listener = (
       _event: Electron.IpcRendererEvent,
-      data: WslOrcadAccountNotAppliedEvent
+      data: WslOCCdAccountNotAppliedEvent
     ): void => callback(data)
-    ipcRenderer.on(WSL_ORCAD_ACCOUNT_NOT_APPLIED_CHANNEL, listener)
-    return () => ipcRenderer.removeListener(WSL_ORCAD_ACCOUNT_NOT_APPLIED_CHANNEL, listener)
+    ipcRenderer.on(WSL_OCCD_ACCOUNT_NOT_APPLIED_CHANNEL, listener)
+    return () => ipcRenderer.removeListener(WSL_OCCD_ACCOUNT_NOT_APPLIED_CHANNEL, listener)
   },
   prepareBrowserClientHostPlacement: (args) =>
     ipcRenderer.invoke('runtimeEnvironments:prepareBrowserClientHostPlacement', args),
@@ -140,6 +140,6 @@ export const runtimeEnvironmentsApi = {
     }
   ): Promise<RuntimeEnvironmentSubscriptionHandle> =>
     subscribeRuntimeEnvironmentFromPreload(ipcRenderer, args, callbacks),
-  managedOrcad: managedOrcadApi,
+  managedOCCd: managedOCCdApi,
   wslHosts: getWslHostsApi()
 } satisfies PreloadApi['runtimeEnvironments']

@@ -17,7 +17,7 @@ export function buildPanelDesignTokenCss(): string {
     const value = styles.getPropertyValue(token).trim()
     if (value.length > 0) {
       // Why prefixed: bare names collide with a panel's own shadcn/Tailwind variables.
-      declarations.push(`--orca-${token.slice(2)}:${value.replaceAll(/[{}<>;]/g, '')}`)
+      declarations.push(`--occ-${token.slice(2)}:${value.replaceAll(/[{}<>;]/g, '')}`)
     }
   }
   return declarations.join(';')

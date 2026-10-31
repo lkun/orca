@@ -1,7 +1,7 @@
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { afterEach, expect, it } from 'vitest'
 import { gitPush } from './remote'
 import { installRealWorkerThreadChildProcesses } from '../worker-thread-child-process/worker-thread-child-process-real.test-fixtures'
@@ -16,7 +16,7 @@ afterEach(async () => {
 })
 
 it('pushes to the configured branch target when a tag shares the branch name', async () => {
-  const repo = await mkdtemp(join(tmpdir(), 'orca-current-branch-'))
+  const repo = await mkdtemp(join(tmpdir(), 'occ-current-branch-'))
   directory = repo
   const git = async (args: string[], cwd = repo) => {
     const result = await runProcess({ program: 'git', args, cwd })

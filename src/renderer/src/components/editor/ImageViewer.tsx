@@ -28,7 +28,7 @@ const FALLBACK_IMAGE_MIME_TYPE = 'image/png'
 type ImageViewerProps = {
   /** Base64 bytes, for git blobs, diffs and the web client. */
   content?: string
-  /** An orca-media URL the image or PDF is read from by range; wins over `content`. */
+  /** An occ-media URL the image or PDF is read from by range; wins over `content`. */
   src?: string
   /** The file's size when `src` hides the bytes. */
   byteSize?: number

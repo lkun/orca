@@ -1,5 +1,5 @@
 import type { WaitBlockedCheckState } from '../../wait-blocked-check-state'
-import { OrcaRuntimeWithStopRequestedPtyIds } from '../../construction/runtime-service-state'
+import { OCCRuntimeWithStopRequestedPtyIds } from '../../construction/runtime-service-state'
 import { RuntimeSubscriptionRegistry } from '../../runtime-subscription-registry'
 import { RuntimeMobileNotificationController } from '../../runtime-mobile-notification-controller'
 import type {
@@ -16,7 +16,7 @@ import { RuntimeTerminalViewSubscribers } from '../../runtime-terminal-view-subs
 import { MainDaemonAttachments } from './main-daemon-attachments'
 import { parseAppSshPtyId } from '../../../../shared/ssh-pty-id'
 
-export abstract class OrcaRuntimeWithFitOverrideListeners extends OrcaRuntimeWithStopRequestedPtyIds {
+export abstract class OCCRuntimeWithFitOverrideListeners extends OCCRuntimeWithStopRequestedPtyIds {
   protected abstract notifyRemoteTerminalViewPresenceChanged(ptyId: string): void
 
   // Notify mobile when desktop restores fit, including disconnect and exit paths.

@@ -31,7 +31,7 @@ export const PROFILE_STATE_COMMAND_SPECS: CommandSpec[] = [
       '--repair replaces only the damaged sections of the SQLite profile, each from the newest backup with a readable copy, and keeps everything else. A copy of the damaged database is archived first.',
       '--backup restores SQLite authority; --revision restores a JSON export for an older compatible runtime.',
       '--latest-json exports the latest SQLite state and restores it as JSON before launching an older JSON-only build. The current database and recovery artifacts are archived.',
-      '--current-json keeps the current orca-data.json, including edits from an older build. It replaces SQLite state without merging; both copies are archived. The next SQLite-capable start imports the selected JSON.',
+      '--current-json keeps the current occ-data.json, including edits from an older build. It replaces SQLite state without merging; both copies are archived. The next SQLite-capable start imports the selected JSON.',
       '--current-sqlite keeps the current SQLite state and discards JSON edits from an older build. The JSON is archived, then rewritten from SQLite.'
     ],
     examples: [

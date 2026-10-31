@@ -10,7 +10,7 @@ import {
   selectWorktreesByRepo
 } from './workspace-record-selectors'
 
-const SHARED_ID = 'repo-1::/work/orca'
+const SHARED_ID = 'repo-1::/work/occ'
 const localRow = makeWorktree({ id: SHARED_ID, repoId: 'repo-1', hostId: 'local' })
 const sshRow = makeWorktree({ id: SHARED_ID, repoId: 'repo-1', hostId: 'ssh:build-box' })
 const otherRepoRow = makeWorktree({ id: 'repo-2::/work/api', repoId: 'repo-2', hostId: 'local' })

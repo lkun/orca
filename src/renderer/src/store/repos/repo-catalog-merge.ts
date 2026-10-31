@@ -145,11 +145,11 @@ export function reconcileFetchedCatalogWorktreeState(
   return dropWorktreeRowsOfDroppedRepos(readopted, previous, nextRepos)
 }
 
-export function filterTrustedOrcaHooksToValidRepos(
-  trust: AppState['trustedOrcaHooks'],
+export function filterTrustedOCCHooksToValidRepos(
+  trust: AppState['trustedOCCHooks'],
   validRepoIds: Set<string>
-): AppState['trustedOrcaHooks'] {
-  const next: AppState['trustedOrcaHooks'] = {}
+): AppState['trustedOCCHooks'] {
+  const next: AppState['trustedOCCHooks'] = {}
   for (const [repoId, entry] of Object.entries(trust)) {
     if (validRepoIds.has(repoId)) {
       next[repoId] = entry

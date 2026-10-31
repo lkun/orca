@@ -13,7 +13,7 @@ import {
 } from './agent-browser-batch-command'
 import { AgentBrowserBridgeTabs } from './agent-browser-bridge-tabs'
 import { assertRemoteCliBrowserAccess } from '../runtime/desktop-browser-bridge/remote-cli-browser-scope'
-import { ORCA_TAB_SESSION_PREFIX } from './agent-browser-orphan-sweep'
+import { OCC_TAB_SESSION_PREFIX } from './agent-browser-orphan-sweep'
 import { canSkipAgentBrowserSessionReset } from './agent-browser-session-reset'
 import {
   STALE_SESSION_CLOSE_TIMEOUT_MS,
@@ -40,7 +40,7 @@ export abstract class AgentBrowserBridgeExecution extends AgentBrowserBridgeTabs
   protected requireTargetWebContents(target: ResolvedBrowserCommandTarget): WebContents {
     const wc = this.getWebContents(target.webContentsId)
     if (!wc || wc.isDestroyed()) {
-      throw this.createPageUnavailableError(`${ORCA_TAB_SESSION_PREFIX}${target.browserPageId}`)
+      throw this.createPageUnavailableError(`${OCC_TAB_SESSION_PREFIX}${target.browserPageId}`)
     }
     return wc
   }

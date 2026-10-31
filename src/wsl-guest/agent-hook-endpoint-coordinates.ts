@@ -3,12 +3,12 @@ import { basename, dirname, join } from 'node:path'
 import { homedir } from 'node:os'
 
 import {
-  ORCA_HOOK_PROTOCOL_VERSION,
-  ORCA_HOOK_RAW_JSON_TRANSPORT
+  OCC_HOOK_PROTOCOL_VERSION,
+  OCC_HOOK_RAW_JSON_TRANSPORT
 } from '../shared/agent-hook-types'
 
 // Use a per-user relay directory so shared hosts isolate endpoint files with mode 0700.
-const RELAY_HOOKS_DIR_NAME = '.orca-relay'
+const RELAY_HOOKS_DIR_NAME = '.occ-relay'
 const RELAY_HOOKS_SUBDIR = 'agent-hooks'
 
 export function defaultEndpointDir(): string {
@@ -47,15 +47,15 @@ export function buildRelayHookPtyEnv(coordinates: {
     return {}
   }
   const env: Record<string, string> = {
-    ORCA_AGENT_HOOK_PORT: String(coordinates.port),
-    ORCA_AGENT_HOOK_TOKEN: coordinates.token,
-    ORCA_AGENT_HOOK_ENV: coordinates.env,
-    ORCA_AGENT_HOOK_VERSION: ORCA_HOOK_PROTOCOL_VERSION,
-    ORCA_AGENT_HOOK_OPENCODE_TUI: '1',
-    ORCA_AGENT_HOOK_TRANSPORT: ORCA_HOOK_RAW_JSON_TRANSPORT
+    OCC_AGENT_HOOK_PORT: String(coordinates.port),
+    OCC_AGENT_HOOK_TOKEN: coordinates.token,
+    OCC_AGENT_HOOK_ENV: coordinates.env,
+    OCC_AGENT_HOOK_VERSION: OCC_HOOK_PROTOCOL_VERSION,
+    OCC_AGENT_HOOK_OPENCODE_TUI: '1',
+    OCC_AGENT_HOOK_TRANSPORT: OCC_HOOK_RAW_JSON_TRANSPORT
   }
   if (coordinates.endpointFileWritten) {
-    env.ORCA_AGENT_HOOK_ENDPOINT = coordinates.endpointFilePath
+    env.OCC_AGENT_HOOK_ENDPOINT = coordinates.endpointFilePath
   }
   return env
 }

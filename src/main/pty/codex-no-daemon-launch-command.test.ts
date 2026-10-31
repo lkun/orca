@@ -13,7 +13,7 @@ describe.skipIf(hostPlatform === 'win32')('planCodexNoDaemonLaunch', () => {
   let codex: string
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-codex-no-daemon-launch-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-codex-no-daemon-launch-'))
     codex = writeCodex('codex', HELP_WITH_FLAG)
   })
 
@@ -64,15 +64,15 @@ describe.skipIf(hostPlatform === 'win32')('planCodexNoDaemonLaunch', () => {
   })
 
   it('ignores an inherited opt-out the pane deletes', async () => {
-    vi.stubEnv('ORCA_CODEX_ISOLATE', '0')
+    vi.stubEnv('OCC_CODEX_ISOLATE', '0')
 
-    await expect(plan(`${codex} --yolo`, { envToDelete: ['ORCA_CODEX_ISOLATE'] })).resolves.toBe(
+    await expect(plan(`${codex} --yolo`, { envToDelete: ['OCC_CODEX_ISOLATE'] })).resolves.toBe(
       `${codex} --no-daemon --yolo`
     )
   })
 
-  it('honours ORCA_CODEX_ISOLATE=0 from the pane env', () => {
-    expect(plan(`${codex} --yolo`, { env: { ORCA_CODEX_ISOLATE: '0' } })).toBeNull()
+  it('honours OCC_CODEX_ISOLATE=0 from the pane env', () => {
+    expect(plan(`${codex} --yolo`, { env: { OCC_CODEX_ISOLATE: '0' } })).toBeNull()
   })
 
   it('keeps the command when the binary predates --no-daemon', async () => {

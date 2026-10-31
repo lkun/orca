@@ -100,7 +100,7 @@ const RESUME: CommandItem = {
   name: 'resume',
   token: '/resume',
   skillCollision: false,
-  orcaOwned: true
+  occOwned: true
 }
 
 function renderStructuredChat(editSession?: QueuedMessageInlineEditor) {

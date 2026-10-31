@@ -82,7 +82,7 @@ function uiStore(initial: Partial<PersistedUIState> = {}): {
 const percent = (guest: FakeGuest): number => browserPageZoomLevelToPercent(guest.level)
 
 beforeEach(() => {
-  configureBrowserSiteDisplayStore(mkdtempSync(join(tmpdir(), 'orca-site-display-')))
+  configureBrowserSiteDisplayStore(mkdtempSync(join(tmpdir(), 'occ-site-display-')))
 })
 
 describe('BrowserSiteDisplayController zoom', () => {

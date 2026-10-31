@@ -7,7 +7,7 @@ import { createRunTempDirectory, sweepStaleRunDirectories } from './vitest-run-t
 const bases = []
 
 function makeBase() {
-  const base = mkdtempSync(join(tmpdir(), 'orca-run-temp-'))
+  const base = mkdtempSync(join(tmpdir(), 'occ-run-temp-'))
   bases.push(base)
   return base
 }
@@ -16,7 +16,7 @@ function runDirectory(base, pid, marked) {
   const path = join(base, `ov${pid.toString(36)}`)
   mkdirSync(path)
   if (marked) {
-    writeFileSync(join(path, '.orca-vitest-run'), '')
+    writeFileSync(join(path, '.occ-vitest-run'), '')
   }
   return path
 }

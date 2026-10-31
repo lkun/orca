@@ -1,5 +1,5 @@
 import type { SshConnection } from './connection/ssh-connection'
-import type { OrcadHostTransport } from './orcad-host-transport'
+import type { OCCdHostTransport } from './occd-host-transport'
 
 // Placeholders for tests that mock every reader of the connection, so it is only forwarded.
 
@@ -8,7 +8,7 @@ export function unusedSshConnection(): SshConnection {
   return {} as SshConnection
 }
 
-export function unusedOrcadHostTransport(): OrcadHostTransport {
+export function unusedOCCdHostTransport(): OCCdHostTransport {
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: callers mock all code that would read the transport; it is only passed through.
-  return {} as OrcadHostTransport
+  return {} as OCCdHostTransport
 }

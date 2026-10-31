@@ -15,7 +15,7 @@ export function encodeClaudeProjectPath(pathValue: string): string {
   return trimmed.replace(/[^a-zA-Z0-9]/g, '-')
 }
 
-/** Require an encoded separator boundary so orca cannot match its sibling orcadyne. */
+/** Require an encoded separator boundary so occ cannot match its sibling occdyne. */
 export function isClaudeProjectDirInScope(
   projectDirName: string,
   scopePrefixes: ReadonlySet<string> | readonly string[]

@@ -70,7 +70,7 @@ describe('dispatchTerminalNotification', () => {
         }),
         worktreeId: 'wt-primary',
         paneKey,
-        repoLabel: 'orca',
+        repoLabel: 'occ',
         worktreeLabel: 'master',
         terminalTitle: 'codex',
         isActiveWorktree: false,
@@ -768,7 +768,7 @@ describe('dispatchTerminalNotification', () => {
 
     dispatchTerminalNotification('wt-primary', {
       source: 'agent-task-complete',
-      terminalTitle: '/workspace/orca',
+      terminalTitle: '/workspace/occ',
       paneKey
     })
 

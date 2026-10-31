@@ -41,7 +41,7 @@ const REVIEW_CHUNK_KEY = './h/[hostId]/review/[worktreeId].tsx'
 const C4_GRANTS = ['navigate', 'storage', 'externalLink', 'haptics', 'native.clipboard.write']
 
 // Answer only GitHub remote to expose PR triggers; scripting downstream domain RPC chain would make transport double decide behavior.
-const REPLIES = { 'github.repoSlug': { owner: 'orca', repo: 'orca' } }
+const REPLIES = { 'github.repoSlug': { owner: 'occ', repo: 'occ' } }
 
 const bundles = mobileWebAppDependenciesPresent()
 const describeRender = bundles ? describe : describe.skip
@@ -62,13 +62,13 @@ beforeAll(async () => {
   cspHeader = await readShellCsp()
   bridgeVersion = await readBridgeProtocolVersion()
   faultGrant = await readBridgeFaultGrant()
-  scratch = await mkdtemp(join(tmpdir(), 'orca-mobile-web-app-source-control-'))
+  scratch = await mkdtemp(join(tmpdir(), 'occ-mobile-web-app-source-control-'))
   const built = await buildMobileWebAppBundle({ outDir: join(scratch, 'bundle') })
   routeChunks = built.routeChunks
   const served = await createBundleServer({ outDir: built.outDir, cspHeader })
   server = served.server
   origin = served.origin
-  const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+  const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
   browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
 }, 240_000)
 
@@ -120,7 +120,7 @@ async function waitForRoute({ page, errors }, route, awaitText) {
   const named = (what) =>
     new Error(`${route} ${what}: ${errors.join(' | ') || 'no page or console error'}`)
   try {
-    await page.waitForFunction(() => document.documentElement.dataset.orcaWebEntry === 'mounted', {
+    await page.waitForFunction(() => document.documentElement.dataset.occWebEntry === 'mounted', {
       timeout: 60_000,
       polling: 250
     })
@@ -136,7 +136,7 @@ async function waitForRoute({ page, errors }, route, awaitText) {
     throw named(`mounted but never painted ${JSON.stringify(awaitText)}`)
   }
   // Report boundary-caught route error directly instead of mount timeout.
-  for (const fault of await page.evaluate(() => globalThis.__orcaRenderCheckFaults ?? [])) {
+  for (const fault of await page.evaluate(() => globalThis.__occRenderCheckFaults ?? [])) {
     errors.push(`page fault: ${fault}`)
   }
 }
@@ -206,7 +206,7 @@ describeRender(
       // Read shipped Kotlin CSP instead of duplicating a header fixture.
       expect(cspHeader).toContain("img-src 'self' data: blob: https:")
       const swift = await readFile(
-        join(projectDir, 'mobile/modules/orca-mobile-web-shell/ios/MobileWebShellCsp.swift'),
+        join(projectDir, 'mobile/modules/occ-mobile-web-shell/ios/MobileWebShellCsp.swift'),
         'utf8'
       )
       // Check iOS source too; served Android header cannot prove other shell agrees.

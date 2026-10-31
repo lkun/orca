@@ -87,7 +87,7 @@ describe('slow connection retirement', () => {
     expect(slow.destroyed).toEqual(['slow'])
     expect(warnings.map((line) => JSON.parse(line))).toEqual([
       {
-        event: 'orca_relay_postgres_slow_connection_retired',
+        event: 'occ_relay_postgres_slow_connection_retired',
         connectionId: 3,
         shape: 'median',
         medianMs: 55,

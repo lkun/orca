@@ -25,7 +25,7 @@ import { getBrowserExtensionContextSignal } from './browser-extension-context-li
 import { handleBrowserExtensionApiRequest } from './browser-extension-api-request'
 
 /**
- * Serves the worker shim's fetch calls on each extension session's `orca-extension-api:` handler.
+ * Serves the worker shim's fetch calls on each extension session's `occ-extension-api:` handler.
  * The handler's session is the caller's session. Any page in the session can reach the scheme, so
  * Electron's browser-set initiator origin must name an extension loaded there, and the token,
  * readable only from that extension's own files, must match it.

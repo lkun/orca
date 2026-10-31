@@ -43,7 +43,7 @@ describe('PostgreSQL push gateway startup', () => {
   })
 
   const socketPassword = `${randomUUID()}@/`
-  const socketUrl = `postgresql://push:${encodeURIComponent(socketPassword)}@/orca_push?host=/cloudsql/test:region:instance`
+  const socketUrl = `postgresql://push:${encodeURIComponent(socketPassword)}@/occ_push?host=/cloudsql/test:region:instance`
 
   it('passes the Terraform socket URL unchanged to both active pools', async () => {
     const database = await openPushDatabase({ databaseUrl: socketUrl, dataDir: '/unused' })
@@ -63,7 +63,7 @@ describe('PostgreSQL push gateway startup', () => {
       host: '/cloudsql/test:region:instance',
       user: 'push',
       password: socketPassword,
-      database: 'orca_push',
+      database: 'occ_push',
       port: 5433,
       ssl: false,
       options: `${options} -c default_transaction_read_only=on`
@@ -76,10 +76,10 @@ describe('PostgreSQL push gateway startup', () => {
   // Growing-table CREATE INDEX can exceed request deadlines; inheriting them makes startup fail forever at the same DDL.
   it('applies the schema on an untimed pool that is gone before the serving pool opens', async () => {
     const database = await openPushDatabase({
-      databaseUrl: 'postgresql://push@localhost:55440/orca_push',
+      databaseUrl: 'postgresql://push@localhost:55440/occ_push',
       dataDir: '/unused',
       poolMax: 2,
-      applicationName: 'orca-push'
+      applicationName: 'occ-push'
     })
     expect(fakes.lifecycle).toEqual([
       'open max=1 statement_timeout=0',
@@ -87,7 +87,7 @@ describe('PostgreSQL push gateway startup', () => {
       'open max=2 statement_timeout=5000'
     ])
     expect(fakes.configs[0]).toMatchObject({
-      application_name: 'orca-push/schema',
+      application_name: 'occ-push/schema',
       lock_timeout: 1_000,
       idle_in_transaction_session_timeout: 5_000
     })
@@ -99,7 +99,7 @@ describe('PostgreSQL push gateway startup', () => {
 
   it('retries a transaction the pool statement_timeout aborted', async () => {
     const database = await openPushDatabase({
-      databaseUrl: 'postgresql://push@localhost:55440/orca_push',
+      databaseUrl: 'postgresql://push@localhost:55440/occ_push',
       dataDir: '/unused'
     })
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined)

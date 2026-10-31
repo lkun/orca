@@ -15,7 +15,7 @@ export default function HoldDictationProbeRoute() {
   const [terminalHeld, setTerminalHeld] = useState(false)
   const [chatHeld, setChatHeld] = useState(false)
   const pressOutsRef = useRef({ terminal: 0, chat: 0 })
-  globalThis.__orcaHeldPressProbe = { pressOuts: () => ({ ...pressOutsRef.current }) }
+  globalThis.__occHeldPressProbe = { pressOuts: () => ({ ...pressOutsRef.current }) }
   return (
     <View style={{ padding: 24, gap: 24 }}>
       <Text>Model</Text>
@@ -115,7 +115,7 @@ export default function CommandDockProbeRoute() {
   const dockKeys = useTerminalDockKeys({ activeHandle, sendInput: send })
   const liveInputRef = useRef(null)
   const commandInputRef = useRef(null)
-  globalThis.__orcaHeldPressProbe = {
+  globalThis.__occHeldPressProbe = {
     sent: () => [...sentRef.current],
     deliveries: () => [...deliveriesRef.current],
     repeats: () => [...repeatRef.current],
@@ -257,7 +257,7 @@ export default function BrowserPaneProbeRoute() {
     setZoom: noop,
     zoomRef: { current: zoom }
   })
-  globalThis.__orcaHeldPressProbe = {
+  globalThis.__occHeldPressProbe = {
     toasts: () => [...toastsRef.current],
     requests: () => [...requestsRef.current]
   }

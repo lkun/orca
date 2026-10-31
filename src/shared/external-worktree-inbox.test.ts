@@ -8,12 +8,12 @@ import {
   getHiddenImportableExternalWorktrees,
   getNewExternalWorktreeInboxWorktrees,
   getVisibleExternalWorktrees,
-  getVisibleNonOrcaWorktrees,
+  getVisibleNonOCCWorktrees,
   mergeExternalWorktreeInboxPaths,
   shouldOfferNewExternalWorktreeInbox
 } from './external-worktree-inbox'
 import {
-  buildKnownOrcaWorkspaceLayouts,
+  buildKnownOCCWorkspaceLayouts,
   EXTERNAL_WORKTREE_VISIBILITY_ROLLOUT_AT,
   toDetectedWorktree
 } from './worktree/ownership'
@@ -21,7 +21,7 @@ import {
 const repo: Repo = {
   id: 'repo-1',
   path: '/repo',
-  displayName: 'orca',
+  displayName: 'occ',
   badgeColor: '#000000',
   addedAt: Date.UTC(2026, 4, 24),
   externalWorktreeVisibility: 'hide',
@@ -65,7 +65,7 @@ function detectedResult(worktrees: DetectedWorktree[]): DetectedWorktreeListResu
 
 function makeSettings(): GlobalSettings {
   return {
-    workspaceDir: '/orca/workspaces',
+    workspaceDir: '/occ/workspaces',
     nestWorkspaces: true,
     workspaceDirHistory: [],
     refreshLocalBaseRefOnWorktreeCreate: false,
@@ -148,7 +148,7 @@ describe('external worktree inbox', () => {
       hidden,
       baselined,
       detectedWorktree({ id: 'visible', visible: true }),
-      detectedWorktree({ id: 'orca-managed', ownership: 'orca-managed' })
+      detectedWorktree({ id: 'occ-managed', ownership: 'occ-managed' })
     ])
 
     expect(getHiddenExternalWorktrees(detected)).toEqual([hidden, baselined])
@@ -169,7 +169,7 @@ describe('external worktree inbox', () => {
     })
 
     expect(getVisibleExternalWorktrees(detectedResult([visible, scratch]))).toEqual([visible])
-    expect(getVisibleNonOrcaWorktrees(detectedResult([visible, scratch]))).toEqual([
+    expect(getVisibleNonOCCWorktrees(detectedResult([visible, scratch]))).toEqual([
       visible,
       scratch
     ])
@@ -187,7 +187,7 @@ describe('external worktree inbox', () => {
       hiddenScratch,
       hiddenExternal,
       detectedWorktree({ id: 'visible-scratch', ownership: 'agent-scratch', visible: true }),
-      detectedWorktree({ id: 'orca-managed', ownership: 'orca-managed' }),
+      detectedWorktree({ id: 'occ-managed', ownership: 'occ-managed' }),
       detectedWorktree({ id: 'checked-out', selectedCheckout: true })
     ])
 
@@ -211,12 +211,12 @@ describe('external worktree inbox', () => {
       repo,
       settings,
       worktree: makeGitWorktree({
-        path: '/orca/workspaces/orca/manual-from-git',
+        path: '/occ/workspaces/occ/manual-from-git',
         displayName: 'manual-from-git',
         branch: 'refs/heads/manual-from-git',
         isMainWorktree: false
       }),
-      knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+      knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
     })
 
     expect(manual.ownership).toBe('external')

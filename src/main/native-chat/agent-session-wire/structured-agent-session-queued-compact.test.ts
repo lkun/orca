@@ -72,7 +72,7 @@ async function queuedCompact(): Promise<string> {
 function prompt(state: 'pending' | 'resolved') {
   const journal = rig.host.collaboratorsForTests().sessions.get(SESSION)!.journal
   return journal.appendItem(
-    { provider: 'orca', clientMessageId: 'prompt-1' },
+    { provider: 'occ', clientMessageId: 'prompt-1' },
     {
       kind: 'approval',
       title: 'Allow the tool?',

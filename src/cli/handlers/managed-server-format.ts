@@ -1,10 +1,10 @@
-import type { OrcadManagedRuntimeStatus } from '../../shared/orcad-managed-runtime'
+import type { OCCdManagedRuntimeStatus } from '../../shared/occd-managed-runtime'
 
 function count(value: number | null): string {
   return value === null ? 'unverifiable' : String(value)
 }
 
-export function formatManagedServerStatus(status: OrcadManagedRuntimeStatus): string {
+export function formatManagedServerStatus(status: OCCdManagedRuntimeStatus): string {
   const lines = [
     `Active version: ${status.activeVersion ?? 'none'}${status.activeAppVersion ? ` (OCC ${status.activeAppVersion})` : ''}`,
     `Previous version: ${status.previousVersion ?? 'none'}${status.rollbackAvailable ? ' (rollback available)' : ''}`,

@@ -80,6 +80,6 @@ describe('MjpegFrameStream', () => {
     })
 
     await expect(framePromise).resolves.toEqual(JPEG)
-    expect(requestUrl).toBe('/stream.mjpeg?raw=1&_orca=test-key')
+    expect(requestUrl).toBe('/stream.mjpeg?raw=1&_occ=test-key')
   })
 })

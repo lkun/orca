@@ -2,7 +2,7 @@ import { createRemoteJWKSet, jwtVerify, type JWTVerifyGetKey } from 'jose'
 import { z } from 'zod'
 import type { ConnectorConfig } from './config.js'
 
-export const CONNECTOR_TOKEN_AUDIENCE = 'orca-connector'
+export const CONNECTOR_TOKEN_AUDIENCE = 'occ-connector'
 
 // Minted by the auth service's connector token route, as relay tokens are by its relay route.
 const ClaimsSchema = z.object({

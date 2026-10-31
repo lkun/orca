@@ -1,10 +1,10 @@
-// Require visible consent before the hello-orca panel, worker command or event subscription runs.
+// Require visible consent before the hello-occ panel, worker command or event subscription runs.
 
 import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { removeWorktreeViaStore } from './helpers/dead-terminal'
 
 async function openPluginSettings(page: Page): Promise<void> {
@@ -68,16 +68,16 @@ async function createWorktree(page: Page, name: string): Promise<string> {
   }, name)
 }
 
-test('runs hello-orca panel, command, and event behind visible consent', async ({ orcaPage }) => {
-  const tempRoot = await mkdtemp(join(tmpdir(), 'orca-hello-plugin-e2e-'))
-  const pluginRoot = join(tempRoot, 'hello-orca')
+test('runs hello-occ panel, command, and event behind visible consent', async ({ occPage }) => {
+  const tempRoot = await mkdtemp(join(tmpdir(), 'occ-hello-plugin-e2e-'))
+  const pluginRoot = join(tempRoot, 'hello-occ')
   let createdWorktreeId: string | null = null
-  await cp(join(process.cwd(), 'examples', 'plugins', 'hello-orca'), pluginRoot, {
+  await cp(join(process.cwd(), 'examples', 'plugins', 'hello-occ'), pluginRoot, {
     recursive: true
   })
 
   try {
-    const installed = await orcaPage.evaluate(async (sourcePath) => {
+    const installed = await occPage.evaluate(async (sourcePath) => {
       const settings = await window.api.settings.set({ pluginSystemEnabled: true })
       window.__store?.setState({ settings })
       const result = await window.api.plugins.install({ kind: 'local-path', path: sourcePath })
@@ -106,31 +106,31 @@ test('runs hello-orca panel, command, and event behind visible consent', async (
     expect(installed.status).toBe('pending')
     expect(installed.blocked).toBe(true)
 
-    await openPluginSettings(orcaPage)
-    await orcaPage.getByRole('tab', { name: /^Installed/ }).click()
-    const row = orcaPage.locator(`[data-plugin-key="${installed.pluginKey}"]`)
+    await openPluginSettings(occPage)
+    await occPage.getByRole('tab', { name: /^Installed/ }).click()
+    const row = occPage.locator(`[data-plugin-key="${installed.pluginKey}"]`)
     // Why on the page: review sits above its one button there, not in a dialog over the list.
     await row.getByRole('button', { name: 'Review', exact: true }).click()
-    const consent = orcaPage.locator('[data-plugin-consent]')
+    const consent = occPage.locator('[data-plugin-consent]')
     await expect(consent).toBeVisible()
-    await expect(orcaPage.getByRole('article')).toContainText('Local folder')
+    await expect(occPage.getByRole('article')).toContainText('Local folder')
     await expect(consent).toContainText(
       'Full access: runs as a normal program and can read your files, use the network and run other programs.'
     )
-    await expect(orcaPage.getByRole('dialog')).toHaveCount(0)
-    await orcaPage
+    await expect(occPage.getByRole('dialog')).toHaveCount(0)
+    await occPage
       .getByRole('article')
       .getByRole('button', { name: /^Enable plugin/ })
       .click()
     await expect(consent).toBeHidden()
-    await orcaPage
+    await occPage
       .getByRole('article')
       .getByRole('button', { name: 'Plugins', exact: true })
       .click()
-    await orcaPage.getByRole('tab', { name: /^Installed/ }).click()
+    await occPage.getByRole('tab', { name: /^Installed/ }).click()
     await expect(row).toContainText('Installed')
 
-    const commandResults = await orcaPage.evaluate(async (pluginKey) => {
+    const commandResults = await occPage.evaluate(async (pluginKey) => {
       const first = await window.api.plugins.invokeCommand({
         pluginKey,
         commandId: 'hello-ping',
@@ -146,13 +146,13 @@ test('runs hello-orca panel, command, and event behind visible consent', async (
     expect(commandResults.first).toBe('Pong! First ping.')
     expect(commandResults.second).toBe('Pong! 2 pings so far.')
 
-    await orcaPage.evaluate(async (sourcePath) => {
+    await occPage.evaluate(async (sourcePath) => {
       const settings = await window.api.settings.set({ devPluginPaths: [sourcePath] })
       window.__store?.setState({ settings })
       await window.api.plugins.refresh()
     }, pluginRoot)
     // A dev folder taking over the approved install is different code, so it needs its own review.
-    await orcaPage.evaluate(async (pluginKey) => {
+    await occPage.evaluate(async (pluginKey) => {
       const plugin = (await window.api.plugins.list()).find(
         (entry) => entry.pluginKey === pluginKey
       )
@@ -166,22 +166,22 @@ test('runs hello-orca panel, command, and event behind visible consent', async (
       })
     }, installed.pluginKey)
 
-    await openDemoPanel(orcaPage)
+    await openDemoPanel(occPage)
 
     const panelPath = join(pluginRoot, 'panel.html')
     const panelHtml = await readFile(panelPath, 'utf8')
     await writeFile(panelPath, panelHtml.replace('Hello OCC 👋', 'Hello OCC reloaded'))
     await expect(
-      orcaPage.frameLocator('iframe[title="Hello OCC"]').getByRole('heading', {
+      occPage.frameLocator('iframe[title="Hello OCC"]').getByRole('heading', {
         name: 'Hello OCC reloaded'
       })
     ).toBeVisible({ timeout: 15_000 })
 
-    createdWorktreeId = await createWorktree(orcaPage, `plugin-event-${Date.now()}`)
+    createdWorktreeId = await createWorktree(occPage, `plugin-event-${Date.now()}`)
     await expect
       .poll(
         () =>
-          orcaPage.evaluate(
+          occPage.evaluate(
             async ({ pluginKey, worktreeId }) =>
               (await window.api.plugins.getLogs({ pluginKey })).some(
                 (entry) =>
@@ -195,7 +195,7 @@ test('runs hello-orca panel, command, and event behind visible consent', async (
   } finally {
     try {
       if (createdWorktreeId) {
-        await removeWorktreeViaStore(orcaPage, createdWorktreeId)
+        await removeWorktreeViaStore(occPage, createdWorktreeId)
       }
     } finally {
       await rm(tempRoot, { recursive: true, force: true })

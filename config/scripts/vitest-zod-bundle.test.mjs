@@ -8,7 +8,7 @@ let root
 afterEach(() => rmSync(root, { recursive: true, force: true }))
 
 it('reuses one bundle across runs and removes directories leaked by killed runs', () => {
-  root = mkdtempSync(join(tmpdir(), 'orca-zod-bundle-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-zod-bundle-'))
   const leaked = join(root, '.tmp', 'vitest-zod-leaked')
   const active = join(root, '.tmp', 'vitest-zod-active')
   mkdirSync(leaked, { recursive: true })

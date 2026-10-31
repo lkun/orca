@@ -13,7 +13,7 @@ describeOnPosix('PTY process-table reads with a ps that never exits', () => {
   let originalPath: string | undefined
 
   beforeAll(() => {
-    stubDir = mkdtempSync(join(tmpdir(), 'orca-hung-ps-'))
+    stubDir = mkdtempSync(join(tmpdir(), 'occ-hung-ps-'))
     writeFileSync(join(stubDir, 'ps'), '#!/bin/sh\nexec sleep 30\n')
     chmodSync(join(stubDir, 'ps'), 0o755)
     originalPath = process.env.PATH

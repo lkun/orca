@@ -43,7 +43,7 @@ import {
 import { _internals, startCodexHooks } from './codex-hook-reconcile'
 import { _internals as lookupInternals } from './codex-hook-hash-lookup'
 import { CODEX_EVENT_LABEL, getCodexManagedHookInstallMaterial } from './codex-hook-definition'
-import { getOrcaManagedCodexHomePath } from './codex-home-paths'
+import { getOCCManagedCodexHomePath } from './codex-home-paths'
 import type { CodexHookHashes } from './codex-hook-trust-derivation'
 import { readHookTrustEntries } from './config-toml-trust'
 
@@ -58,7 +58,7 @@ const CODEX_HASHES: CodexHookHashes = Object.fromEntries(
 const installCodex = MANAGED_AGENT_HOOK_INSTALLERS.find(([agent]) => agent === 'codex')![1]
 const removeCodex = MANAGED_AGENT_HOOK_REMOVERS.find(([agent]) => agent === 'codex')![1]
 
-function expectNoOrcaHook(codexHome: string): void {
+function expectNoOCCHook(codexHome: string): void {
   const hooksPath = join(codexHome, 'hooks.json')
   if (existsSync(hooksPath)) {
     expect(readFileSync(hooksPath, 'utf-8')).not.toContain(
@@ -70,12 +70,12 @@ function expectNoOrcaHook(codexHome: string): void {
 
 beforeEach(() => {
   // Resolve macOS /var symlinks to avoid a second trust-key spelling.
-  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'orca-codex-toggle-')))
+  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'occ-codex-toggle-')))
   home = join(root, 'home')
   const userData = join(root, 'user-data')
   mkdirSync(home)
   mkdirSync(userData)
-  vi.stubEnv('ORCA_USER_DATA_PATH', userData)
+  vi.stubEnv('OCC_USER_DATA_PATH', userData)
   vi.stubEnv('CODEX_HOME', '')
   mocks.homedir.mockReturnValue(home)
   mocks.codexPath = join(userData, 'codex')
@@ -127,7 +127,7 @@ describe('turning hooks off while turning them on still waits for Codex', () => 
     await on
     await _internals.settledForTesting()
 
-    expectNoOrcaHook(join(home, '.codex'))
-    expectNoOrcaHook(getOrcaManagedCodexHomePath())
+    expectNoOCCHook(join(home, '.codex'))
+    expectNoOCCHook(getOCCManagedCodexHomePath())
   })
 })

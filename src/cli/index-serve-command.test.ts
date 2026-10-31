@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -11,8 +11,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -23,7 +23,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -43,7 +43,7 @@ vi.mock('child_process', async () => {
 import { main } from './index'
 import { useWorktreeAwarenessEnvironment } from './index-test-harness'
 
-describe('orca cli worktree awareness', () => {
+describe('occ cli worktree awareness', () => {
   const priorExitCode = process.exitCode
   beforeEach(() => {
     process.exitCode = undefined
@@ -53,7 +53,7 @@ describe('orca cli worktree awareness', () => {
   })
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -61,15 +61,15 @@ describe('orca cli worktree awareness', () => {
   })
 
   it('starts a foreground headless server through `serve`', async () => {
-    serveOrcaAppMock.mockResolvedValue(17)
-    process.env.ORCA_ENVIRONMENT = 'stale-env'
+    serveOCCAppMock.mockResolvedValue(17)
+    process.env.OCC_ENVIRONMENT = 'stale-env'
 
     await main(
       ['serve', '--json', '--port', '6768', '--pairing-address', '100.64.1.20', '--no-pairing'],
       '/tmp/repo'
     )
 
-    expect(serveOrcaAppMock).toHaveBeenCalledExactlyOnceWith({
+    expect(serveOCCAppMock).toHaveBeenCalledExactlyOnceWith({
       json: true,
       port: '6768',
       pairingAddress: '100.64.1.20',
@@ -86,23 +86,23 @@ describe('orca cli worktree awareness', () => {
   it.skipIf(process.platform === 'win32')(
     'turns on supervision only for an explicit --supervise, and never with --recipe-json',
     async () => {
-      serveOrcaAppMock.mockResolvedValue(0)
+      serveOCCAppMock.mockResolvedValue(0)
 
       await main(['serve', '--supervise', '--no-pairing'], '/tmp/repo')
-      expect(serveOrcaAppMock).toHaveBeenLastCalledWith(
+      expect(serveOCCAppMock).toHaveBeenLastCalledWith(
         expect.objectContaining({ supervise: true, noPairing: true })
       )
 
       await main(['serve', '--no-pairing'], '/tmp/repo')
-      expect(serveOrcaAppMock.mock.lastCall?.[0]).not.toHaveProperty('supervise')
+      expect(serveOCCAppMock.mock.lastCall?.[0]).not.toHaveProperty('supervise')
 
-      serveOrcaAppMock.mockClear()
+      serveOCCAppMock.mockClear()
       const error = vi.spyOn(console, 'error').mockImplementation(() => {})
       await main(
         ['serve', '--supervise', '--recipe-json', '--project-root', '/workspace/repo'],
         '/tmp/repo'
       )
-      expect(serveOrcaAppMock).not.toHaveBeenCalled()
+      expect(serveOCCAppMock).not.toHaveBeenCalled()
       expect(error).toHaveBeenCalledExactlyOnceWith(
         '--recipe-json starts a detached server and returns; it cannot be combined with --supervise.'
       )
@@ -111,24 +111,24 @@ describe('orca cli worktree awareness', () => {
   )
 
   it('forwards the pairing-time desktop-control grant', async () => {
-    serveOrcaAppMock.mockResolvedValue(0)
+    serveOCCAppMock.mockResolvedValue(0)
 
     await main(['serve', '--grant-desktop-control'], '/tmp/repo')
 
-    expect(serveOrcaAppMock).toHaveBeenCalledWith(
+    expect(serveOCCAppMock).toHaveBeenCalledWith(
       expect.objectContaining({ grantDesktopControl: true, mobilePairing: false })
     )
   })
 
   it('starts a foreground headless server with mobile pairing enabled', async () => {
-    serveOrcaAppMock.mockResolvedValue(0)
+    serveOCCAppMock.mockResolvedValue(0)
 
     await main(
       ['serve', '--pairing-address', '100.64.1.20', '--mobile-pairing', '--json'],
       '/tmp/repo'
     )
 
-    expect(serveOrcaAppMock).toHaveBeenCalledExactlyOnceWith({
+    expect(serveOCCAppMock).toHaveBeenCalledExactlyOnceWith({
       json: true,
       port: null,
       pairingAddress: '100.64.1.20',
@@ -141,7 +141,7 @@ describe('orca cli worktree awareness', () => {
   })
 
   it('starts a recipe JSON headless server for VM recipes', async () => {
-    serveOrcaAppMock.mockResolvedValue(0)
+    serveOCCAppMock.mockResolvedValue(0)
 
     await main(
       [
@@ -155,7 +155,7 @@ describe('orca cli worktree awareness', () => {
       '/tmp/repo'
     )
 
-    expect(serveOrcaAppMock).toHaveBeenCalledExactlyOnceWith({
+    expect(serveOCCAppMock).toHaveBeenCalledExactlyOnceWith({
       json: false,
       port: null,
       pairingAddress: 'wss://sandbox.example.com',
@@ -199,7 +199,7 @@ describe('orca cli worktree awareness', () => {
 
     await main([...args, '--json'], '/tmp/repo')
 
-    expect(serveOrcaAppMock).not.toHaveBeenCalled()
+    expect(serveOCCAppMock).not.toHaveBeenCalled()
     expect(logSpy).toHaveBeenCalledTimes(1)
     expect(JSON.parse(logSpy.mock.calls[0][0])).toEqual({
       id: 'local',

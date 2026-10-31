@@ -1,5 +1,5 @@
 {
-  "name": "@orca-cloud/connector-contract",
+  "name": "@occ-cloud/connector-contract",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -9,12 +9,12 @@
     "build": "pnpm clean && tsc -p tsconfig.build.json",
     "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
     "lint": "tsc -p tsconfig.json --noEmit",
-    "pretest": "pnpm --filter @orca-cloud/push-contract build",
+    "pretest": "pnpm --filter @occ-cloud/push-contract build",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@orca-cloud/push-contract": "workspace:*",
+    "@occ-cloud/push-contract": "workspace:*",
     "zod": "^4.6.7"
   },
   "devDependencies": {

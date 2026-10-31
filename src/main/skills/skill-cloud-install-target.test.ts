@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { classifySkillCloudInstallTarget } from './skill-cloud-install-target'
 
-function runtime(usesSsh: boolean): OrcaRuntimeService {
+function runtime(usesSsh: boolean): OCCRuntimeService {
   return {
     skillInstallDestinationUsesSsh: vi.fn().mockResolvedValue(usesSsh)
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
 }
 
 describe('classifySkillCloudInstallTarget', () => {

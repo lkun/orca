@@ -13,7 +13,7 @@ async function fixture(): Promise<{
   canonicalPath: string
   packageDigest: string
 }> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-skill-alias-repair-test-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-skill-alias-repair-test-'))
   roots.push(root)
   const canonicalRoot = join(root, 'canonical')
   const canonicalPath = join(canonicalRoot, 'private-skill')
@@ -125,7 +125,7 @@ describe('skill provider alias reconciliation', () => {
     expect(result).toMatchObject({
       topology: 'provider-alias',
       status: 'skipped',
-      errorCategory: 'skill-placement-unowned-link'
+      errocctegory: 'skill-placement-unowned-link'
     })
     expect((await lstat(placementPath)).isSymbolicLink()).toBe(true)
   })

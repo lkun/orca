@@ -1,16 +1,16 @@
 import { readFileSync, rmSync, statSync } from 'node:fs'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 
 test.use({ seedTestRepo: false })
 test.skip(process.platform === 'win32', 'Restrictive-umask fsync regression is POSIX-only')
 
 test('recreates a fresh profile index on disk with a restrictive umask @posix-profile-index-golden', async ({
   electronApp,
-  orcaPage
+  occPage
 }) => {
   const userDataDir = await electronApp.evaluate(({ app }) => app.getPath('userData'))
-  const indexPath = path.join(userDataDir, 'orca-profile-index.json')
+  const indexPath = path.join(userDataDir, 'occ-profile-index.json')
   // Clear owner-write in the umask to reproduce r+ fsync failing with EACCES.
   const originalUmask = await electronApp.evaluate(() => process.umask(0o200))
 
@@ -18,8 +18,8 @@ test('recreates a fresh profile index on disk with a restrictive umask @posix-pr
     rmSync(indexPath, { force: true })
     rmSync(`${indexPath}.bak`, { force: true })
     // Listing a missing index drives the real create/fsync/rename path.
-    const listed = await orcaPage.evaluate(async () => {
-      const result = await window.api.orcaProfiles.list()
+    const listed = await occPage.evaluate(async () => {
+      const result = await window.api.occProfiles.list()
       window.__store!.getState().openSettingsPage()
       return result
     })
@@ -37,5 +37,5 @@ test('recreates a fresh profile index on disk with a restrictive umask @posix-pr
     await electronApp.evaluate((_electron, umask) => process.umask(umask), originalUmask)
   }
 
-  await expect(orcaPage.getByPlaceholder('Search settings')).toBeVisible()
+  await expect(occPage.getByPlaceholder('Search settings')).toBeVisible()
 })

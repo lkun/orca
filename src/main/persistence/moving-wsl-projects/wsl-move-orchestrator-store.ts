@@ -1,5 +1,5 @@
 /**
- * The orchestrator's per-distro records, in their own sidecar: older builds rewrite orca-data.json
+ * The orchestrator's per-distro records, in their own sidecar: older builds rewrite occ-data.json
  * without fields they do not know, and an unreadable file only costs the orchestrator its memory
  * (the move journal stays the source of truth for any move itself).
  */

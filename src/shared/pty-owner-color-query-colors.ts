@@ -5,7 +5,7 @@ import {
 import { resolveConfiguredTerminalColors } from './terminal-theme-selection'
 
 // Last resort before this process is told anything: OCC's default dark terminal theme.
-export const ORCA_DEFAULT_COLOR_QUERY_REPLY_COLORS: TerminalOscColorQueryReplyColors =
+export const OCC_DEFAULT_COLOR_QUERY_REPLY_COLORS: TerminalOscColorQueryReplyColors =
   resolveConfiguredTerminalColors(
     {
       theme: 'dark',
@@ -68,5 +68,5 @@ export function resolvePtyOwnerColorQueryColors(
   spawn: TerminalOscColorQueryReplyColors | null | undefined,
   launcher?: TerminalOscColorQueryReplyColors | null
 ): TerminalOscColorQueryReplyColors {
-  return [launcher, host, spawn].find(answersBothSlots) ?? ORCA_DEFAULT_COLOR_QUERY_REPLY_COLORS
+  return [launcher, host, spawn].find(answersBothSlots) ?? OCC_DEFAULT_COLOR_QUERY_REPLY_COLORS
 }

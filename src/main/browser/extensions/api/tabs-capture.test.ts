@@ -17,7 +17,7 @@ const mocks = vi.hoisted(() => {
 vi.mock('electron', () => ({ webFrameMain: { fromId: vi.fn() } }))
 
 vi.mock('../../browser-manager', () => ({
-  browserManager: { holdPaintForCapture: mocks.holdPaint }
+  browserManager: { holdPaintFoccpture: mocks.holdPaint }
 }))
 
 vi.mock('../browser-extension-tab-model', () => ({

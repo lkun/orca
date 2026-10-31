@@ -21,13 +21,13 @@ const HOST_LABELS = new Map([
 const sshTwin: Repo = {
   ...repo,
   id: 'repo-ssh-twin',
-  path: '/home/brennan/orca',
+  path: '/home/brennan/occ',
   connectionId: 'openclaw-target'
 }
 const envTwin: Repo = {
   ...repo,
   id: 'repo-env-twin',
-  path: '/home/brennan/orca',
+  path: '/home/brennan/occ',
   connectionId: null,
   executionHostId: ENV_HOST_ID
 }
@@ -156,7 +156,7 @@ describe('discovery notice rows on a multi-host project', () => {
   })
 
   it('leaves a single-host project unlabelled even with several records on it', () => {
-    const secondLocal: Repo = { ...repo, id: 'repo-local-2', path: '/tmp/orca-second' }
+    const secondLocal: Repo = { ...repo, id: 'repo-local-2', path: '/tmp/occ-second' }
     const rows = noticeRows({
       eligibleRepoIds: [repo.id],
       repoMap: new Map([

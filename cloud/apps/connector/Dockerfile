@@ -15,9 +15,9 @@ COPY packages/connector-contract packages/connector-contract
 COPY packages/postgres-schema packages/postgres-schema
 COPY packages/cloud-database packages/cloud-database
 COPY apps/connector apps/connector
-RUN pnpm --filter @orca-cloud/postgres-schema build && pnpm --filter @orca-cloud/push-contract build \
-  && pnpm --filter @orca-cloud/connector-contract build && pnpm --filter @orca-cloud/cloud-database build \
-  && pnpm --filter @orca-cloud/connector build
+RUN pnpm --filter @occ-cloud/postgres-schema build && pnpm --filter @occ-cloud/push-contract build \
+  && pnpm --filter @occ-cloud/connector-contract build && pnpm --filter @occ-cloud/cloud-database build \
+  && pnpm --filter @occ-cloud/connector build
 
 FROM node:24.22.1-alpine@sha256:feb76650b7195319268c59cb2d419c732d6c499b13bf5296f16ab59eb1f0a4f3 AS runtime
 ENV NODE_ENV=production
@@ -36,7 +36,7 @@ COPY --from=build /app/packages/connector-contract/dist packages/connector-contr
 COPY --from=build /app/packages/postgres-schema/dist packages/postgres-schema/dist
 COPY --from=build /app/packages/cloud-database/dist packages/cloud-database/dist
 COPY --from=build /app/apps/connector/dist apps/connector/dist
-RUN pnpm install --prod --frozen-lockfile --filter @orca-cloud/connector... \
+RUN pnpm install --prod --frozen-lockfile --filter @occ-cloud/connector... \
   && rm -rf /opt/pnpm /usr/local/lib/node_modules /opt/yarn-* /root/.cache /root/.local \
   && rm -f /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack \
     /usr/local/bin/pnpm /usr/local/bin/pnpx /usr/local/bin/yarn /usr/local/bin/yarnpkg

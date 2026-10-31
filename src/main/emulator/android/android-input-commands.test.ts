@@ -10,7 +10,7 @@ describe.runIf(process.platform !== 'win32')('Android text shell boundary', () =
     "it's fine",
     'hello&world',
     'say "hello"',
-    '$ORCA_ANDROID_TEXT_VALUE',
+    '$OCC_ANDROID_TEXT_VALUE',
     '$(printf changed)',
     'semi;printf changed',
     '`printf changed`',
@@ -25,7 +25,7 @@ describe.runIf(process.platform !== 'win32')('Android text shell boundary', () =
         ['-c', `input() { printf '%s\\n' "$#" "$@"; }; ${args.slice(3).join(' ')}`],
         {
           encoding: 'utf8',
-          env: { ...process.env, ORCA_ANDROID_TEXT_VALUE: 'expanded' }
+          env: { ...process.env, OCC_ANDROID_TEXT_VALUE: 'expanded' }
         }
       )
       if (result.error) {

@@ -83,7 +83,7 @@ describe('shouldSuppressDevEducation', () => {
     expect(
       shouldSuppressDevEducation({
         isDev: true,
-        env: { ORCA_E2E_USER_DATA_DIR: '/tmp/orca-e2e' }
+        env: { OCC_E2E_USER_DATA_DIR: '/tmp/occ-e2e' }
       })
     ).toBe(false)
   })
@@ -137,7 +137,7 @@ describe('suppressDevEducationForStore', () => {
       'voice-dictation',
       'chat-ui-here',
       'agent-session-search',
-      'orca-cli',
+      'occ-cli',
       'cmd-j-palette'
     ])
     expect(state.ui.contextualToursSeenIds).toEqual([

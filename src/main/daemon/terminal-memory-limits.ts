@@ -1,6 +1,6 @@
 /** Memory limits are opt-in and applied only after a probe confirms kernel enforcement. */
-export const TERMINAL_MEMORY_MAX_ENV = 'ORCA_TERMINAL_MEMORY_MAX'
-export const TERMINAL_MEMORY_SWAP_MAX_ENV = 'ORCA_TERMINAL_MEMORY_SWAP_MAX'
+export const TERMINAL_MEMORY_MAX_ENV = 'OCC_TERMINAL_MEMORY_MAX'
+export const TERMINAL_MEMORY_SWAP_MAX_ENV = 'OCC_TERMINAL_MEMORY_SWAP_MAX'
 
 /** Reserve headroom for shell and agent startup. */
 const MIN_MEMORY_MAX_BYTES = 256 * 1024 ** 2

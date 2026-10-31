@@ -12,7 +12,7 @@ export function ownsStagedMediaUri(uri: string): boolean {
 }
 
 function stagedMediaFile(extension: string): FsFile {
-  return new FsFile(Paths.cache, `orca-media-${Date.now()}-${Math.random()}.${extension}`)
+  return new FsFile(Paths.cache, `occ-media-${Date.now()}-${Math.random()}.${extension}`)
 }
 
 export function discardUnreturnedMediaFile(file: FsFile): void {

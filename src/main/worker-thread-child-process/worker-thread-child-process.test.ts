@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { MessageChannel, Worker, type MessagePort } from 'node:worker_threads'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import {
   IDLE_TEARDOWN_MS,
@@ -154,9 +154,9 @@ describe('WorkerThreadChildProcessHost over a message channel', () => {
   it('passes env and cwd through to the child', async () => {
     const child = makeConnectedHost().spawn({
       program: process.execPath,
-      args: ['-e', 'process.stdout.write(process.env.ORCA_PROBE_MARKER + "|" + process.cwd())'],
+      args: ['-e', 'process.stdout.write(process.env.OCC_PROBE_MARKER + "|" + process.cwd())'],
       cwd: process.cwd(),
-      env: { ...process.env, ORCA_PROBE_MARKER: 'marker' }
+      env: { ...process.env, OCC_PROBE_MARKER: 'marker' }
     })
     const stdout: string[] = []
     child.stdout.on('data', (chunk: Buffer) => stdout.push(chunk.toString()))
@@ -167,7 +167,7 @@ describe('WorkerThreadChildProcessHost over a message channel', () => {
 
   it('reports a missing program as ENOENT so callers can say the CLI is not installed', async () => {
     const child = makeConnectedHost().spawn({
-      program: 'orca-definitely-missing-program',
+      program: 'occ-definitely-missing-program',
       args: []
     })
     const error = new Promise<NodeJS.ErrnoException>((resolve) => child.once('error', resolve))
@@ -177,7 +177,7 @@ describe('WorkerThreadChildProcessHost over a message channel', () => {
 
   it('drops an error nobody listens for instead of throwing on the main loop', async () => {
     const child = makeConnectedHost().spawn({
-      program: 'orca-definitely-missing-program',
+      program: 'occ-definitely-missing-program',
       args: []
     })
 

@@ -40,7 +40,7 @@ vi.mock('electron', () => ({
   }
 }))
 
-mocks.userData = mkdtempSync(join(tmpdir(), 'orca-extension-data-user-'))
+mocks.userData = mkdtempSync(join(tmpdir(), 'occ-extension-data-user-'))
 
 const {
   clearBrowserExtensionSessionData,
@@ -82,7 +82,7 @@ describe('clearBrowserExtensionSessionData', () => {
     expect(mocks.windows).toHaveLength(1)
     expect(mocks.windows[0]).toMatchObject({
       options: { show: false, webPreferences: { session: sess } },
-      url: `chrome-extension://${ID}/manifest.json?orca-native-page=1`,
+      url: `chrome-extension://${ID}/manifest.json?occ-native-page=1`,
       destroyed: true
     })
     expect(mocks.windows[0].script).toContain('storage?.local?.clear()')
@@ -93,7 +93,7 @@ describe('clearBrowserExtensionSessionData', () => {
   })
 
   it('deletes chrome.storage.local of an unloaded extension unless this run opened it', async () => {
-    const partition = mkdtempSync(join(tmpdir(), 'orca-extension-data-'))
+    const partition = mkdtempSync(join(tmpdir(), 'occ-extension-data-'))
     const folder = join(partition, 'Local Extension Settings', ID)
     mkdirSync(folder, { recursive: true })
     const opened = fakeSession(false, partition)
@@ -111,7 +111,7 @@ describe('clearBrowserExtensionSessionData', () => {
   })
 
   it('blocks a same-run reinstall even when native data was cleared before a late write', async () => {
-    const partition = mkdtempSync(join(tmpdir(), 'orca-extension-data-rewrite-'))
+    const partition = mkdtempSync(join(tmpdir(), 'occ-extension-data-rewrite-'))
     const folder = join(partition, 'Local Extension Settings', ID)
     mkdirSync(folder, { recursive: true })
     let loaded = true
@@ -124,7 +124,7 @@ describe('clearBrowserExtensionSessionData', () => {
     // Another profile is still clearing, so the original extension has not unloaded yet.
     loaded = false
     await removeUninstalledBrowserExtensionData(sess, 'rewritten', new Set())
-    expect(existsSync(join(folder, 'orca-uninstalled'))).toBe(true)
+    expect(existsSync(join(folder, 'occ-uninstalled'))).toBe(true)
     expect(() => throwIfBrowserExtensionStorageAwaitingRestart(sess, ID)).toThrow('Restart OCC')
     const nextLaunch = fakeSession(false, partition)
     await removeUninstalledBrowserExtensionData(nextLaunch, 'rewritten', new Set([ID]))
@@ -142,7 +142,7 @@ describe('clearBrowserExtensionSessionData', () => {
 
 describe('removeUninstalledBrowserExtensionData', () => {
   it('deletes only the storage folders of extensions that are no longer installed', async () => {
-    const partition = mkdtempSync(join(tmpdir(), 'orca-extension-data-'))
+    const partition = mkdtempSync(join(tmpdir(), 'occ-extension-data-'))
     const settings = join(partition, 'Local Extension Settings')
     for (const folder of [join(settings, ID), join(settings, OTHER), join(settings, 'notes')]) {
       mkdirSync(folder, { recursive: true })
@@ -163,14 +163,14 @@ describe('removeUninstalledBrowserExtensionData', () => {
     await expect(
       removeUninstalledBrowserExtensionData(fakeSession(false), 'default', new Set())
     ).resolves.toEqual(new Set())
-    const empty = mkdtempSync(join(tmpdir(), 'orca-extension-data-'))
+    const empty = mkdtempSync(join(tmpdir(), 'occ-extension-data-'))
     await expect(
       removeUninstalledBrowserExtensionData(fakeSession(false, empty), 'default', new Set())
     ).resolves.toEqual(new Set())
   })
 
   it('deletes storage left open at uninstall at the next launch, even if reinstalled since', async () => {
-    const partition = mkdtempSync(join(tmpdir(), 'orca-extension-data-'))
+    const partition = mkdtempSync(join(tmpdir(), 'occ-extension-data-'))
     const folder = join(partition, 'Local Extension Settings', ID)
     mkdirSync(folder, { recursive: true })
     const thisRun = fakeSession(false, partition)
@@ -213,9 +213,9 @@ describe('removeUninstalledBrowserExtensionData', () => {
 
 describe('uninstall while another OCC profile is inactive', () => {
   it('clears native and origin data and grants after uninstall and reinstall in another OCC profile', async () => {
-    const personalDirectory = mkdtempSync(join(tmpdir(), 'orca-extension-personal-'))
-    const workDirectory = mkdtempSync(join(tmpdir(), 'orca-extension-work-'))
-    async function openOrcaProfile(directory: string) {
+    const personalDirectory = mkdtempSync(join(tmpdir(), 'occ-extension-personal-'))
+    const workDirectory = mkdtempSync(join(tmpdir(), 'occ-extension-work-'))
+    async function openOCCProfile(directory: string) {
       vi.resetModules()
       const { configureBrowserExtensionProfileDataDirectory } =
         await import('./browser-extension-profile-data-directory')
@@ -234,7 +234,7 @@ describe('uninstall while another OCC profile is inactive', () => {
         sweep: removeUninstalledBrowserExtensionData
       }
     }
-    const personal = await openOrcaProfile(personalDirectory)
+    const personal = await openOCCProfile(personalDirectory)
     const record = {
       id: ID,
       name: 'Vault',
@@ -246,7 +246,7 @@ describe('uninstall while another OCC profile is inactive', () => {
       hostPermissions: [],
       optionsPage: null
     }
-    const partition = mkdtempSync(join(tmpdir(), 'orca-extension-inactive-'))
+    const partition = mkdtempSync(join(tmpdir(), 'occ-extension-inactive-'))
     const nativeSettings = join(partition, 'Local Extension Settings', ID)
     mkdirSync(nativeSettings, { recursive: true })
     personal.states.update('default', ID, (state) => ({
@@ -258,11 +258,11 @@ describe('uninstall while another OCC profile is inactive', () => {
     personal.sync.flush()
     personal.installed.save(record)
 
-    const work = await openOrcaProfile(workDirectory)
+    const work = await openOCCProfile(workDirectory)
     await work.installed.remove(ID)
     work.installed.save({ ...record, version: '2' })
 
-    const reopened = await openOrcaProfile(personalDirectory)
+    const reopened = await openOCCProfile(personalDirectory)
     const sess = fakeSession(false, partition)
     await reopened.sweep(sess, 'default', new Set([ID]))
     expect(reopened.sync.read('default', ID)).toEqual({})
@@ -290,7 +290,7 @@ describe('uninstall while another OCC profile is inactive', () => {
       optionsPage: null
     })
     await store.remove(OTHER)
-    const sess = fakeSession(false, mkdtempSync(join(tmpdir(), 'orca-extension-origin-')))
+    const sess = fakeSession(false, mkdtempSync(join(tmpdir(), 'occ-extension-origin-')))
     await removeUninstalledBrowserExtensionData(sess, 'inactive-origin', new Set())
     expect(sess.clearStorageData).toHaveBeenCalledWith({ origin: `chrome-extension://${OTHER}` })
   })
@@ -314,7 +314,7 @@ it('preserves newly opened native settings while another extension finishes rein
     await store.remove(id)
     store.save({ ...record, id })
   }
-  const partition = mkdtempSync(join(tmpdir(), 'orca-extension-concurrent-cleanup-'))
+  const partition = mkdtempSync(join(tmpdir(), 'occ-extension-concurrent-cleanup-'))
   const settings = join(partition, 'Local Extension Settings')
   mkdirSync(join(settings, ID), { recursive: true })
   mkdirSync(join(settings, OTHER), { recursive: true })
@@ -368,7 +368,7 @@ it("preserves another pending unpacked reinstall's data when reconciling one ext
     })
     await store.remove(id)
   }
-  const partition = mkdtempSync(join(tmpdir(), 'orca-extension-pending-reinstall-'))
+  const partition = mkdtempSync(join(tmpdir(), 'occ-extension-pending-reinstall-'))
   const sess = fakeSession(false, partition)
   const profileId = 'pending-reinstalls'
   await removeReinstalledBrowserExtensionData(sess, profileId, ID)
@@ -385,7 +385,7 @@ it("preserves another pending unpacked reinstall's data when reconciling one ext
 
   expect(sync.read(profileId, ID)).toEqual({ token: 'fresh secret' })
   expect(states.read(profileId, ID).grantedPermissions).toEqual(['tabs'])
-  expect(existsSync(join(nativeSettings, 'orca-uninstalled'))).toBe(false)
+  expect(existsSync(join(nativeSettings, 'occ-uninstalled'))).toBe(false)
   expect(sess.clearStorageData).toHaveBeenCalledExactlyOnceWith({
     origin: `chrome-extension://${OTHER}`
   })

@@ -160,7 +160,7 @@ export function assertAssetCeilingFitsShell(
 }
 
 async function buildIntoScratch() {
-  const scratch = await mkdtemp(join(tmpdir(), 'orca-mobile-web-app-verify-'))
+  const scratch = await mkdtemp(join(tmpdir(), 'occ-mobile-web-app-verify-'))
   try {
     return await buildMobileWebAppBundle({ outDir: join(scratch, 'mobile-web') })
   } finally {

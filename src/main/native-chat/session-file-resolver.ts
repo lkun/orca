@@ -14,7 +14,7 @@ import {
   codexHomeSessionsDir,
   uniqueDirs
 } from '../ai-vault/session-scanner-roots'
-import { resolveOrcaManagedCodexHomePath } from '../codex/codex-home-paths'
+import { resolveOCCManagedCodexHomePath } from '../codex/codex-home-paths'
 import {
   findGrokChatHistoryBySessionId,
   resolveGrokSessionsDir
@@ -37,7 +37,7 @@ function claudeProjectsDirs(): string[] {
 
 // Search managed Codex before user homes; use the path-only getter to avoid launch-time mkdirSync on polls.
 function codexSessionsDirs(): string[] {
-  return uniqueDirs([join(resolveOrcaManagedCodexHomePath(), 'sessions'), codexHomeSessionsDir()])
+  return uniqueDirs([join(resolveOCCManagedCodexHomePath(), 'sessions'), codexHomeSessionsDir()])
 }
 
 // Enumerate account homes only after common roots miss to avoid unnecessary disk work.

@@ -29,7 +29,7 @@ import {
 } from './structured-agent-shell-environment'
 import type { AgentSessionAccountHome } from '../../shared/agent-session-account-home'
 import { nativeChatShellEnvironmentPolicy } from '../../shared/native-chat/native-chat-shell-environment'
-import { getProfileUserDataPath } from '../orca-profiles/profile-storage-paths'
+import { getProfileUserDataPath } from '../occ-profiles/profile-storage-paths'
 
 type LaunchEnvironmentSettings = Pick<
   GlobalSettings,

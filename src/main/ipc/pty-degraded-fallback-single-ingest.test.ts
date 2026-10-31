@@ -7,7 +7,7 @@ import { rebindLocalProviderListeners } from './pty/provider/listener-lifecycle'
 import { DegradedDaemonPtyProvider } from '../daemon/degraded-daemon-pty-provider'
 import type { DaemonPtyAdapter } from '../daemon/daemon-pty-adapter'
 import type { PtyDataEvent } from '../providers/pty-provider-events'
-import { OrcaRuntimeService } from '../runtime/orca-runtime'
+import { OCCRuntimeService } from '../runtime/occ-runtime'
 
 vi.mock('electron', () => import('./pty/pty-ipc-mock-registry').then((m) => m.electronModuleMock()))
 vi.mock('fs', () => import('./pty/pty-ipc-mock-registry').then((m) => m.fsModuleMock()))
@@ -37,7 +37,7 @@ vi.mock('../telemetry/client', () =>
 vi.mock('../telemetry/classify-error', () =>
   import('./pty/pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty/pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../memory/pty-registry', () =>
@@ -77,7 +77,7 @@ describe('degraded daemon with in-process fallback', () => {
     vi.useFakeTimers()
     const mockProc = createMockProc()
     spawnMock.mockReturnValue(mockProc.proc)
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const onPtyData = vi.spyOn(runtime, 'onPtyData')
     const onPtyExit = vi.spyOn(runtime, 'onPtyExit')
     const daemonData: ((payload: PtyDataEvent) => void)[] = []

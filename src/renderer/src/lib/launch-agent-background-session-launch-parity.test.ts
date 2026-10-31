@@ -71,7 +71,7 @@ async function runAutomation(c: AutomationLaunchCase) {
     title: c.title
   })
   const phone = modules.phone.buildMobileSessionTabSnapshots(store.getState(), false)
-  if (modules.switch.ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (modules.switch.OCC_LAYOUT_OWNER_IS_MAIN) {
     const tabBarId = store.getState().unifiedTabsByWorktree[launchWorkspaceId(c.workspace)]![0]!.id
     expect(main.transport?.sentOfType('renameTab').at(-1)).toEqual(
       expect.objectContaining({ tabId: tabBarId, kind: 'custom', title: c.title })

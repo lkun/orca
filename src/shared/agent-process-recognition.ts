@@ -188,7 +188,7 @@ export function isExpectedAgentProcess(
   )
 }
 
-/** Agents whose process names (orca, acli, cn, vibe) also belong to ordinary tools. */
+/** Agents whose process names (occ, acli, cn, vibe) also belong to ordinary tools. */
 export const GENERIC_PROCESS_NAME_AGENTS: ReadonlySet<TerminalAgent> = new Set([
   'claude-agent-teams',
   'rovo',

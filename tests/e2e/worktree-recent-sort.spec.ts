@@ -5,7 +5,7 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady, waitForActiveWorktree } from './helpers/store'
 
 async function addFolderRepo(page: Page, folderPath: string): Promise<string> {
@@ -42,16 +42,16 @@ test.describe('Worktree Recent Sort', () => {
   const createdFolderFixtures: string[] = []
 
   function createFolderFixture(): string {
-    const dir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-folder-'))
+    const dir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-folder-'))
     createdFolderFixtures.push(dir)
     mkdirSync(path.join(dir, 'src'), { recursive: true })
     writeFileSync(path.join(dir, 'README.md'), '# folder fixture\n')
     return dir
   }
 
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
   })
 
   test.afterEach(() => {
@@ -65,30 +65,30 @@ test.describe('Worktree Recent Sort', () => {
   })
 
   test('stamps lastActivityAt on a newly-added folder repo so it sorts to the top of Recent', async ({
-    orcaPage
+    occPage
   }) => {
     const folderPath = createFolderFixture()
 
-    const repoId = await addFolderRepo(orcaPage, folderPath)
-    const lastActivityAt = await readFolderWorktreeLastActivity(orcaPage, repoId)
+    const repoId = await addFolderRepo(occPage, folderPath)
+    const lastActivityAt = await readFolderWorktreeLastActivity(occPage, repoId)
 
     // Require >0 to catch the original zero fallback without cross-process clock-skew comparisons.
     expect(lastActivityAt).toBeGreaterThan(0)
   })
 
-  test('leaves lastActivityAt stable across repeated list refreshes', async ({ orcaPage }) => {
+  test('leaves lastActivityAt stable across repeated list refreshes', async ({ occPage }) => {
     // Refetch must retain the first-discovery stamp or sidebar refresh reshuffles Recent.
     const folderPath = createFolderFixture()
-    const repoId = await addFolderRepo(orcaPage, folderPath)
+    const repoId = await addFolderRepo(occPage, folderPath)
 
-    const first = await readFolderWorktreeLastActivity(orcaPage, repoId)
+    const first = await readFolderWorktreeLastActivity(occPage, repoId)
 
-    await orcaPage.evaluate(async (id) => {
+    await occPage.evaluate(async (id) => {
       await window.__store?.getState().fetchWorktrees(id)
       await window.__store?.getState().fetchWorktrees(id)
     }, repoId)
 
-    const second = await readFolderWorktreeLastActivity(orcaPage, repoId)
+    const second = await readFolderWorktreeLastActivity(occPage, repoId)
     expect(second).toBe(first)
   })
 })

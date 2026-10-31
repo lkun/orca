@@ -155,7 +155,7 @@ describe('function-initialized export let ban', () => {
     expect(
       files.some(({ relativePath }) => relativePath === 'main/ipc/pty/delivery/debug.ts')
     ).toBe(true)
-    const root = mkdtempSync(join(tmpdir(), 'orca-export-let-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-export-let-'))
     try {
       writeFileSync(join(root, 'bridge.ts'), 'export let bridge = () => {}')
       writeFileSync(join(root, 'bridge.test.ts'), 'export let fixture = () => {}')

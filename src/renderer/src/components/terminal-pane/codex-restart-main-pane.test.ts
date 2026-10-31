@@ -6,7 +6,7 @@ import { awaitsCodexRestartAnswer } from '../codex-restart-notice-state'
 import { sweepUnclaimedCodexPaneRestarts } from './codex-detached-pane-restart'
 import { resetCodexDetachedPaneRestartExecutorForTests } from './codex-detached-pane-restart-scheduler'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const LEAF_ID = '11111111-1111-4111-8111-111111111111'
 const OLD_PTY = 'wt1@@old'
@@ -39,7 +39,7 @@ function seedQueuedRestart(mainLeafIds: string[]): void {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the restart reads only this setting.
     settings: { activeRuntimeEnvironmentId: null } as never,
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the restart reads only the worktree's id and path.
-    worktreesByRepo: { repo1: [{ id: 'wt1', path: '/Users/dev/code/orca' }] } as never,
+    worktreesByRepo: { repo1: [{ id: 'wt1', path: '/Users/dev/code/occ' }] } as never,
     tabsByWorktree: {
       wt1: [
         {

@@ -359,8 +359,8 @@ describe('buildAgentDraftLaunchPlan', () => {
     ).toBeNull()
   })
 
-  it('uses ORCA_PI_PREFILL env var for pi (no CLI flag exists)', () => {
-    // Pi has no --prefill and paste-after-ready races startup output. Its orca-prefill extension seeds from ORCA_PI_PREFILL on session_start; pass env separately from typed shell commands.
+  it('uses OCC_PI_PREFILL env var for pi (no CLI flag exists)', () => {
+    // Pi has no --prefill and paste-after-ready races startup output. Its occ-prefill extension seeds from OCC_PI_PREFILL on session_start; pass env separately from typed shell commands.
     expect(
       buildAgentDraftLaunchPlan({
         agent: 'pi',
@@ -370,9 +370,9 @@ describe('buildAgentDraftLaunchPlan', () => {
       })
     ).toEqual({
       agent: 'pi',
-      launchCommand: `pi; command test -n "$fish_pid" && set --erase -g ORCA_PI_PREFILL; command test -z "$fish_pid" && unset ORCA_PI_PREFILL; true`,
+      launchCommand: `pi; command test -n "$fish_pid" && set --erase -g OCC_PI_PREFILL; command test -z "$fish_pid" && unset OCC_PI_PREFILL; true`,
       expectedProcess: 'pi',
-      env: { ORCA_PI_PREFILL: 'https://github.com/acme/repo/issues/42' },
+      env: { OCC_PI_PREFILL: 'https://github.com/acme/repo/issues/42' },
       launchConfig: emptyLaunchConfig('pi')
     })
   })

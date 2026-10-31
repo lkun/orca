@@ -11,7 +11,7 @@ import {
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 
 const APPIMAGE_HEADER_LENGTH = 11
-const ORCA_PACKAGE_MARKER_MAX_BYTES = 1_024
+const OCC_PACKAGE_MARKER_MAX_BYTES = 1_024
 const PACKAGE_TYPE_MARKER_MAX_BYTES = 32
 
 export type AppImageRuntimeIdentity = {
@@ -126,7 +126,7 @@ function hasAppImagePackageEvidence(runtimeRoot: string, resourcesPath: string):
   const content = readPayloadMarker(
     runtimeRoot,
     join(resourcesPath, 'app.asar.unpacked', 'out', 'package.json'),
-    ORCA_PACKAGE_MARKER_MAX_BYTES
+    OCC_PACKAGE_MARKER_MAX_BYTES
   )
   try {
     const marker: unknown = JSON.parse(content ?? '')
@@ -134,7 +134,7 @@ function hasAppImagePackageEvidence(runtimeRoot: string, resourcesPath: string):
       typeof marker === 'object' &&
       marker !== null &&
       'name' in marker &&
-      marker.name === 'orca-compiled-output' &&
+      marker.name === 'occ-compiled-output' &&
       'type' in marker &&
       marker.type === 'commonjs'
     )

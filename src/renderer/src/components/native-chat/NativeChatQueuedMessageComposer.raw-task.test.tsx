@@ -11,7 +11,7 @@ import {
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { afterEach, expect, it, vi } from 'vitest'
 import type { AgentSessionQueuedMessage } from '../../../../shared/agent-session-wire'
-import { ORCA_DISPATCH_STATUS_PREAMBLE_PREFIX } from '../../../../shared/orca-dispatch-status-prompt'
+import { OCC_DISPATCH_STATUS_PREAMBLE_PREFIX } from '../../../../shared/occ-dispatch-status-prompt'
 import { agentSessionSendBodyFingerprint } from '../../../../shared/structured-agent-session-send-mutation'
 import { projectQueuedMessageCards } from '../../../../shared/structured-agent-session-queued-cards'
 import { NativeChatQueuedMessageCard } from './NativeChatQueuedMessageCard'
@@ -103,7 +103,7 @@ function QueuedTask({ message }: { message: AgentSessionQueuedMessage }) {
 afterEach(() => vi.restoreAllMocks())
 
 it('shows the queued task and edits, saves and reopens its full raw input in the chat composer', async () => {
-  const prefix = `${ORCA_DISPATCH_STATUS_PREAMBLE_PREFIX} You are a dispatched worker.\n=== TASK ===\n`
+  const prefix = `${OCC_DISPATCH_STATUS_PREAMBLE_PREFIX} You are a dispatched worker.\n=== TASK ===\n`
   const task = 'Inspect the queued task'
   const changedTask = 'Inspect the edited task'
   const message: AgentSessionQueuedMessage = {

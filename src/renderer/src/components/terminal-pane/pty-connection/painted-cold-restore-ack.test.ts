@@ -9,7 +9,7 @@ const session = {
 
 async function ackWithSwitch(on: boolean, ptyId: string): Promise<void> {
   vi.resetModules()
-  vi.doMock('../../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: on }))
+  vi.doMock('../../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: on }))
   const { ackPaintedColdRestore } = await import('./painted-cold-restore-ack')
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the ack reads only the session members this fixture supplies.
   ackPaintedColdRestore(session as never, ptyId)

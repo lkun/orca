@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as DistroGateModule from '../wsl-background-distro-gate'
 import type { Repo } from '../../shared/repo-types'
 import type { RpcRequest } from './rpc/core'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 
 const mocks = vi.hoisted(() => {
   const state: { distro: 'running' | 'stopped' } = { distro: 'stopped' }
@@ -81,7 +81,7 @@ describe('GitLab MR start point for a stopped WSL distro (E9)', () => {
     }
     const dispatcher = new RpcDispatcher({
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: worktree.resolveMrBase reads only resolveManagedMrBase.
-      runtime: runtime as unknown as OrcaRuntimeService,
+      runtime: runtime as unknown as OCCRuntimeService,
       methods: WORKTREE_METHODS
     })
     for (const wakeWslDistro of [undefined, true, 'yes']) {

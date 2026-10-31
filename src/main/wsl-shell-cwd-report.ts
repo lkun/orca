@@ -5,40 +5,40 @@
  * prompt so a foreign report (an ssh session that set its own) cannot stick. Bytes outside the
  * URI's unreserved set are percent-encoded as UTF-8, masked for bash 3.2's signed chars.
  */
-export const BASH_WSL_CWD_REPORT_BLOCK = `__orca_wsl_cwd_report() {
+export const BASH_WSL_CWD_REPORT_BLOCK = `__occ_wsl_cwd_report() {
   [[ -n "\${WSL_DISTRO_NAME:-}" ]] || return 0
-  if [[ "$PWD" != "\${__orca_wsl_cwd_reported-}" ]]; then
-    __orca_wsl_cwd_reported=$PWD
-    local LC_ALL=C __orca_e= __orca_c __orca_i
-    for (( __orca_i = 0; __orca_i < \${#PWD}; __orca_i++ )); do
-      __orca_c=\${PWD:__orca_i:1}
-      case $__orca_c in
-        [A-Za-z0-9/._~-]) __orca_e+=$__orca_c ;;
-        *) printf -v __orca_c '%d' "'$__orca_c"; printf -v __orca_c '%%%02X' $(( __orca_c & 255 )); __orca_e+=$__orca_c ;;
+  if [[ "$PWD" != "\${__occ_wsl_cwd_reported-}" ]]; then
+    __occ_wsl_cwd_reported=$PWD
+    local LC_ALL=C __occ_e= __occ_c __occ_i
+    for (( __occ_i = 0; __occ_i < \${#PWD}; __occ_i++ )); do
+      __occ_c=\${PWD:__occ_i:1}
+      case $__occ_c in
+        [A-Za-z0-9/._~-]) __occ_e+=$__occ_c ;;
+        *) printf -v __occ_c '%d' "'$__occ_c"; printf -v __occ_c '%%%02X' $(( __occ_c & 255 )); __occ_e+=$__occ_c ;;
       esac
     done
-    __orca_wsl_cwd_encoded=$__orca_e
+    __occ_wsl_cwd_encoded=$__occ_e
   fi
-  printf '\\033]7;file://%s\\007' "\${__orca_wsl_cwd_encoded-}"
+  printf '\\033]7;file://%s\\007' "\${__occ_wsl_cwd_encoded-}"
 }`
 
-export const ZSH_WSL_CWD_REPORT_BLOCK = `__orca_wsl_cwd_report() {
+export const ZSH_WSL_CWD_REPORT_BLOCK = `__occ_wsl_cwd_report() {
   builtin emulate -L zsh
   builtin setopt no_multibyte
   [[ -n \${WSL_DISTRO_NAME:-} ]] || return 0
-  if [[ $PWD != \${__orca_wsl_cwd_reported-} ]]; then
-    builtin typeset -g __orca_wsl_cwd_reported=$PWD
-    local __orca_e= __orca_c __orca_i
-    for (( __orca_i = 1; __orca_i <= $#PWD; __orca_i++ )); do
-      __orca_c=$PWD[__orca_i]
-      case $__orca_c in
-        ([A-Za-z0-9/._~-]) __orca_e+=$__orca_c ;;
-        (*) builtin printf -v __orca_c '%d' "'$__orca_c"; builtin printf -v __orca_c '%%%02X' $(( __orca_c & 255 )); __orca_e+=$__orca_c ;;
+  if [[ $PWD != \${__occ_wsl_cwd_reported-} ]]; then
+    builtin typeset -g __occ_wsl_cwd_reported=$PWD
+    local __occ_e= __occ_c __occ_i
+    for (( __occ_i = 1; __occ_i <= $#PWD; __occ_i++ )); do
+      __occ_c=$PWD[__occ_i]
+      case $__occ_c in
+        ([A-Za-z0-9/._~-]) __occ_e+=$__occ_c ;;
+        (*) builtin printf -v __occ_c '%d' "'$__occ_c"; builtin printf -v __occ_c '%%%02X' $(( __occ_c & 255 )); __occ_e+=$__occ_c ;;
       esac
     done
-    builtin typeset -g __orca_wsl_cwd_encoded=$__orca_e
+    builtin typeset -g __occ_wsl_cwd_encoded=$__occ_e
   fi
-  builtin printf '\\033]7;file://%s\\007' "\${__orca_wsl_cwd_encoded-}"
+  builtin printf '\\033]7;file://%s\\007' "\${__occ_wsl_cwd_encoded-}"
 }`
 
 /**
@@ -50,45 +50,45 @@ export const ZSH_WSL_CWD_REPORT_BLOCK = `__orca_wsl_cwd_report() {
  * do not count toward the prompt's width; dash has no line editor to miscount, and would print \\[.
  */
 export const SH_WSL_ENV_FILE = `# OCC WSL bridge sh ENV: restore the user's ENV, then report the folder (OSC 7) at each prompt.
-if [ -n "\${ORCA_WSL_USER_ENV:-}" ]; then
-  ENV=$ORCA_WSL_USER_ENV
-  unset ORCA_WSL_USER_ENV
+if [ -n "\${OCC_WSL_USER_ENV:-}" ]; then
+  ENV=$OCC_WSL_USER_ENV
+  unset OCC_WSL_USER_ENV
   # The shell expands ENV's value before reading it; a here-document does the same without
   # parsing the user's quotes as shell syntax.
-  eval "IFS= read -r __orca_user_env <<__ORCA_USER_ENV_EOF
+  eval "IFS= read -r __occ_user_env <<__OCC_USER_ENV_EOF
 $ENV
-__ORCA_USER_ENV_EOF
+__OCC_USER_ENV_EOF
 "
-  if [ -r "$__orca_user_env" ]; then
-    . "$__orca_user_env"
+  if [ -r "$__occ_user_env" ]; then
+    . "$__occ_user_env"
   fi
-  unset __orca_user_env
+  unset __occ_user_env
 else
-  unset ENV ORCA_WSL_USER_ENV
+  unset ENV OCC_WSL_USER_ENV
 fi
 if [ -n "\${WSL_DISTRO_NAME:-}" ]; then
-  __orca_wsl_cwd_report() {
+  __occ_wsl_cwd_report() {
     LC_ALL=C
-    __orca_p=$PWD
-    __orca_e=
-    while [ -n "$__orca_p" ]; do
-      __orca_r=\${__orca_p#?}
-      __orca_c=\${__orca_p%"$__orca_r"}
-      __orca_p=$__orca_r
-      case $__orca_c in
-        [A-Za-z0-9/._~-]) __orca_e=$__orca_e$__orca_c ;;
-        *) __orca_e=$__orca_e$(printf '%%%02X' $(( $(printf '%d' "'$__orca_c") & 255 ))) ;;
+    __occ_p=$PWD
+    __occ_e=
+    while [ -n "$__occ_p" ]; do
+      __occ_r=\${__occ_p#?}
+      __occ_c=\${__occ_p%"$__occ_r"}
+      __occ_p=$__occ_r
+      case $__occ_c in
+        [A-Za-z0-9/._~-]) __occ_e=$__occ_e$__occ_c ;;
+        *) __occ_e=$__occ_e$(printf '%%%02X' $(( $(printf '%d' "'$__occ_c") & 255 ))) ;;
       esac
     done
-    printf '\\033]7;file://%s\\007' "$__orca_e"
+    printf '\\033]7;file://%s\\007' "$__occ_e"
   }
   case $PS1 in
-    *__orca_wsl_cwd_report*) ;;
+    *__occ_wsl_cwd_report*) ;;
     *)
       if [ -n "\${BASH_VERSION:-}" ] || [ -n "\${BB_ASH_VERSION:-}" ]; then
-        PS1='\\[$(__orca_wsl_cwd_report)\\]'"$PS1"
+        PS1='\\[$(__occ_wsl_cwd_report)\\]'"$PS1"
       else
-        PS1='$(__orca_wsl_cwd_report)'"$PS1"
+        PS1='$(__occ_wsl_cwd_report)'"$PS1"
       fi
       ;;
   esac

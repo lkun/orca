@@ -3,13 +3,13 @@ import type { RuntimeRpcResponse } from '../../../../../../shared/runtime-rpc-en
 import { ORCHESTRATION_CONTRACT_VERSION } from '../../../../../../shared/protocol-version'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { reconcileRequestedWorkerTerminalReleases } from '../../../../orchestration/worker-terminal-release-reconciliation'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { RpcRequest } from '../../../core'
 
 type RecoveryScenarioHarness = {
   startSettledRemoteWorker: () => Promise<string>
   dispatch: (request: RpcRequest) => Promise<RuntimeRpcResponse<unknown>>
-  runtime: () => OrcaRuntimeService
+  runtime: () => OCCRuntimeService
   homeDb: () => OrchestrationDb
   workerDb: () => OrchestrationDb
   setWorkerTerminalAvailable: (available: boolean) => void

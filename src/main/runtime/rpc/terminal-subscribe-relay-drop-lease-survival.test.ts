@@ -1,7 +1,7 @@
 import './unused-default-rpc-methods.test-fixture'
 // Use the real runtime exit predicate: stale-handle wiring doubles it and cannot prove a relay drop preserves the lease.
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import type { RpcRequest } from './core'
 import { RpcDispatcher } from './dispatcher'
 import { TERMINAL_METHODS } from './methods/terminal'
@@ -38,8 +38,8 @@ type PtyInternals = {
 }
 
 /** A PTY whose relay dropped: connection lost, no exit code, process possibly still running. */
-function makeRelayDroppedRuntime(): OrcaRuntimeService {
-  const real = new OrcaRuntimeService()
+function makeRelayDroppedRuntime(): OCCRuntimeService {
+  const real = new OCCRuntimeService()
   const internals = real as unknown as PtyInternals
   internals.recordPtyWorktree(PTY_ID, 'wt-1', { connected: true })
   const pty = internals.ptysById.get(PTY_ID)!
@@ -48,9 +48,9 @@ function makeRelayDroppedRuntime(): OrcaRuntimeService {
   return real
 }
 
-function createRuntime(real: OrcaRuntimeService): {
+function createRuntime(real: OCCRuntimeService): {
   registry: ReturnType<typeof createSubscriptionRegistryDouble>
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
 } {
   const registry = createSubscriptionRegistryDouble()
   const runtime = {
@@ -78,7 +78,7 @@ function createRuntime(real: OrcaRuntimeService): {
     // The one call under test: the real exit predicate, not a double's opinion of it.
     subscribeToPtyExit: (ptyId: string, listener: () => void) =>
       real.subscribeToPtyExit(ptyId, listener)
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
   return { registry, runtime }
 }
 

@@ -33,9 +33,9 @@ function renderEnabled({
         <UsageFilterRadioGroup
           key="scope"
           label="Scope"
-          value="orca"
+          value="occ"
           options={[
-            { value: 'orca', label: 'OCC worktrees only' },
+            { value: 'occ', label: 'OCC worktrees only' },
             { value: 'all', label: 'All local usage' }
           ]}
           onValueChange={onScopeChange}

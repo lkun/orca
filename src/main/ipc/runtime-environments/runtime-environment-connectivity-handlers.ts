@@ -38,7 +38,7 @@ import { callRuntimeEnvironment } from './runtime-environment-transport-routing'
 import { getRuntimeEnvironmentStatus } from './runtime-environment-status-probe'
 import { noteRuntimeEnvironmentConnectRequested } from './runtime-environment-pairing-refusal-registry'
 import { publicRuntimeEnvironmentWithHostKey } from './runtime-environment-host-key'
-import { withWslOrcadAccountEnv } from '../../wsl/wsl-orcad-account-env'
+import { withWslOCCdAccountEnv } from '../../wsl/wsl-occd-account-env'
 import { clearSshCredentialDeclinedForEnvironment } from '../../ssh/ssh-credential-decline'
 import {
   disconnectManagedHostOfEnvironmentForUser,
@@ -46,9 +46,9 @@ import {
   liftSshUserDisconnectForEnvironment
 } from '../ssh/ssh-host-user-disconnect'
 import {
-  observeWslOrcadHostResponse,
-  wslOrcadHostSupports
-} from '../../wsl/wsl-orcad-host-environments'
+  observeWslOCCdHostResponse,
+  wslOCCdHostSupports
+} from '../../wsl/wsl-occd-host-environments'
 import { assertWslHostReachable, isGatedOffWslHost } from '../../wsl/wsl-host-gate'
 import {
   isHostSpawnFencedForWslMoveUndo,
@@ -207,7 +207,7 @@ function registerPassiveStatusHandler(getUserDataPath: () => string): void {
         args.timeoutMs,
         args.observeOnly ? { observeOnly: true } : undefined
       )
-      observeWslOrcadHostResponse(environment.id, 'status.get', response)
+      observeWslOCCdHostResponse(environment.id, 'status.get', response)
       return isRuntimeEnvironmentManuallyDisconnected(environment.id)
         ? manuallyDisconnectedResponse(environment)
         : response
@@ -242,12 +242,12 @@ function registerPassiveCallHandler(getUserDataPath: () => string): void {
         args.params
       )
       // Every renderer request to a paired host passes this account environment boundary.
-      const accounts = await withWslOrcadAccountEnv({
+      const accounts = await withWslOCCdAccountEnv({
         environmentId: environment.id,
         method: args.method,
         params: args.params,
         hostSupports: (capability) =>
-          wslOrcadHostSupports(environment.id, capability, () =>
+          wslOCCdHostSupports(environment.id, capability, () =>
             callRuntimeEnvironment(getUserDataPath(), environment.id, 'status.get', undefined)
           )
       })
@@ -278,7 +278,7 @@ function registerPassiveCallHandler(getUserDataPath: () => string): void {
         }
         throw error
       }
-      observeWslOrcadHostResponse(environment.id, args.method, response)
+      observeWslOCCdHostResponse(environment.id, args.method, response)
       return isRuntimeEnvironmentManuallyDisconnected(environment.id)
         ? manuallyDisconnectedResponse(environment)
         : response

@@ -34,7 +34,7 @@ describe('workspace file drag payloads', () => {
   it('rejects missing and malformed workspace ownership', () => {
     const transfer = new FakeDataTransfer()
     expect(readWorkspaceFileDragSource(transfer)).toBeNull()
-    transfer.setData('application/x-orca-workspace-file-source', '{"workspaceId":"worktree-1"}')
+    transfer.setData('application/x-occ-workspace-file-source', '{"workspaceId":"worktree-1"}')
     expect(readWorkspaceFileDragSource(transfer)).toBeNull()
   })
 
@@ -52,7 +52,7 @@ describe('workspace file drag payloads', () => {
   it.each([null, 123, '', ' '])('rejects a malformed server namespace %s', (value) => {
     const transfer = new FakeDataTransfer()
     transfer.setData(
-      'application/x-orca-workspace-file-source',
+      'application/x-occ-workspace-file-source',
       JSON.stringify({
         version: 1,
         executionHostId: 'ssh:remote-1',

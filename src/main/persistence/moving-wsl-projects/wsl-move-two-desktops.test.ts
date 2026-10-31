@@ -1,5 +1,5 @@
 /**
- * R39: two OCC desktops (say a stable and a dev profile) moving into the one orcad of a distro.
+ * R39: two OCC desktops (say a stable and a dev profile) moving into the one occd of a distro.
  * Each desktop is its own process with its own profile and journal, so desktop B runs on a second
  * copy of the mover modules. The host's staging claims serialize overlapping moves: one wins, the
  * other is refused and back at zero; neither corrupts the other.
@@ -139,7 +139,7 @@ describe('R39: two desktops moving into one distro', () => {
 
     const bResult = await b.move()
     expect(bResult).toMatchObject({ outcome: 'reset' })
-    expect(JSON.stringify(bResult)).toContain('orcad_migration_staged_claim_conflict')
+    expect(JSON.stringify(bResult)).toContain('occd_migration_staged_claim_conflict')
     expect(b.journalPhases()).toEqual([])
 
     a.release()
@@ -172,7 +172,7 @@ describe('R39: two desktops moving into one distro', () => {
 
     expect(await b.move()).toMatchObject({
       outcome: 'reset',
-      detail: 'orcad_migration_repository_path_conflict:/home/dev/app'
+      detail: 'occd_migration_repository_path_conflict:/home/dev/app'
     })
     expect(b.journalPhases()).toEqual([])
     expect(JSON.stringify(rig.host.getRepos())).toBe(hostBefore)
@@ -186,7 +186,7 @@ describe('R39: two desktops moving into one distro', () => {
     const bResult = await b.move()
     expect(bResult).toMatchObject({ outcome: 'reset' })
     expect(JSON.stringify(bResult)).toContain(
-      'orcad_migration_staged_claim_conflict:repository-path'
+      'occd_migration_staged_claim_conflict:repository-path'
     )
     a.release()
     expect(await a.done).toMatchObject({ outcome: 'moved' })

@@ -28,7 +28,7 @@ export function skillInstallConflictResult(
       kind,
       ...('digest' in state && state.digest ? { existingDigest: state.digest } : {})
     },
-    errorCategory: code,
+    errocctegory: code,
     failure: { category: 'conflict', code, retryable: false }
   }
 }
@@ -50,7 +50,7 @@ export function skillInstallFailureResult(
     packageDigest: manifest.packageDigest,
     canonicalPath,
     placements: [],
-    errorCategory: failure.code,
+    errocctegory: failure.code,
     failure
   }
 }

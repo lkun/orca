@@ -141,7 +141,7 @@ describe('discoverCommitMessageModelsLocal on the Windows direct-child path', ()
           type: 'control_response',
           response: {
             subtype: 'success',
-            request_id: 'orca-model-discovery',
+            request_id: 'occ-model-discovery',
             response: {
               models: [
                 { value: 'default', displayName: 'Default (recommended)' },
@@ -211,7 +211,7 @@ describe('discoverCommitMessageModelsLocal on the Windows direct-child path', ()
     // Real Claude 2.1.100 output: unsupported subtype still exits zero.
     listeners.get('stdout:data')?.(
       Buffer.from(
-        '{"type":"control_response","response":{"subtype":"error","request_id":"orca-model-discovery","error":"Unsupported control request subtype: list_models"}}\n'
+        '{"type":"control_response","response":{"subtype":"error","request_id":"occ-model-discovery","error":"Unsupported control request subtype: list_models"}}\n'
       )
     )
     listeners.get('close')?.(0)

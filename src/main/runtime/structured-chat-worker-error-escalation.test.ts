@@ -4,8 +4,8 @@ import './rpc/unused-default-rpc-methods.test-fixture'
 
 import { describe, expect, it, vi } from 'vitest'
 import { agentSessionFailureWords } from '../../shared/agent-session-failure-words'
-import { formatOrcaSessionAddress } from '../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../shared/occ-session-address'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import { idOf } from './rpc/orchestration-session-caller-test-fixture'
 import {
   COORDINATOR,
@@ -22,7 +22,7 @@ import {
   settleTurn
 } from './structured-chat-coordinator-mail-rig.test-fixture'
 
-const WORKER = formatOrcaSessionAddress(testOrcaSessionId(PEER_CHAT))
+const WORKER = formatOCCSessionAddress(testOCCSessionId(PEER_CHAT))
 const CAPACITY = 'Selected model is at capacity.'
 
 /** Dispatch the coordinator's task to the worker chat, whose first turn then fails as Codex fails. */

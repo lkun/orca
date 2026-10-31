@@ -82,9 +82,9 @@ describe('DECSET 2031 replies follow the chunk-final state (#9993)', () => {
  * Chunks 1–4 span 0.57ms, less than a renderer IPC hop. */
 const FISH_PROMPT_ACCEPT_CHUNKS: readonly string[] = [
   // 1. Prompt setup: capability probes plus the 2031 arm. Ends SUBSCRIBED.
-  `${ESC}]0;~/orca${BEL}${ESC}[m${ESC}]11;?${ESC}\\${ESC}[6n${ESC}[0c${ESC}[?2004h${ESC}[?2031h${ESC}[>4;1m${ESC}=`,
+  `${ESC}]0;~/occ${BEL}${ESC}[m${ESC}]11;?${ESC}\\${ESC}[6n${ESC}[0c${ESC}[?2004h${ESC}[?2031h${ESC}[>4;1m${ESC}=`,
   // 2. The prompt itself.
-  `${ESC}]133;A;click_events=1${BEL}~/orca ❯ ${ESC}]133;B${BEL}${ESC}[K\r${ESC}[9C`,
+  `${ESC}]133;A;click_events=1${BEL}~/occ ❯ ${ESC}]133;B${BEL}${ESC}[K\r${ESC}[9C`,
   // 3. Echo of the typed command.
   `npx${ESC}[12C -y${ESC}[15C`,
   // 4. Accept: fish withdraws 2031 before handing the tty over. Ends UNSUBSCRIBED.

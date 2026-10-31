@@ -14,7 +14,7 @@ vi.mock('node:fs', async () => {
     existsSync: (p: string) => existingPaths.has(p.replaceAll('\\', '/'))
   }
 })
-vi.mock('@orca/process-host', () => ({ runProcessSync: runProcessSyncMock }))
+vi.mock('@occ/process-host', () => ({ runProcessSync: runProcessSyncMock }))
 
 import { detectInstalledBrowsers } from './sources/browser-cookie-detection'
 import { getEncryptionKey } from './sources/browser-cookie-key'

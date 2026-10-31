@@ -29,7 +29,7 @@ function worker(): PluginWorkerHandle & { exit: (code: number) => void } {
 }
 
 it('refuses a crash restart when reviewed bytes changed after the first start', async () => {
-  const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-reviewed-'))
+  const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-reviewed-'))
   roots.push(rootDir)
   await writeFile(join(rootDir, 'main.mjs'), 'export default () => {}')
   const reviewed = await hashPluginTree(rootDir)

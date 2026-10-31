@@ -1,7 +1,7 @@
 import '../../src/main/runtime/rpc/unused-default-rpc-methods.test-fixture'
 import type * as childProcess from 'node:child_process'
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import { RpcDispatcher } from '../../src/main/runtime/rpc/dispatcher'
 import { WORKTREE_METHODS } from '../../src/main/runtime/rpc/methods/worktree'
 import type { WorkspaceStatusDefinition } from '../../src/shared/worktree/types'
@@ -10,8 +10,8 @@ import { DEFAULT_WORKSPACE_STATUSES, getWorkspaceStatus } from '../../src/shared
 const mocks = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -71,7 +71,7 @@ function fixture(
     getRuntimeId: () => 'owner-runtime',
     getUIState,
     updateManagedWorktreeMeta
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
   const dispatcher = new RpcDispatcher({ runtime, methods: WORKTREE_METHODS })
   mocks.callMock.mockImplementation(async (method, params) => {
     expect(method).toBe('worktree.set')

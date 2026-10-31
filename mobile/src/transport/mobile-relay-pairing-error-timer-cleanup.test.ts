@@ -44,8 +44,8 @@ function fixture() {
   const client = connectMobileRelayForPairing({
     relay: {
       v: 1,
-      directorUrl: 'https://relay.onorca.dev',
-      cellUrl: 'https://relay-c1.onorca.dev',
+      directorUrl: 'https://relay.onocc.dev',
+      cellUrl: 'https://relay-c1.onocc.dev',
       assignmentEpoch: 7,
       relayHostId: 'AbCdEf0123_-xyZ9',
       inviteToken: 'abcdefghijklmnopqrstuvwxyzABCDEFGH012345678',
@@ -106,7 +106,7 @@ describe('closed relay pairing client error timer ownership', () => {
     target.socket.onerror?.()
     expect(vi.getTimerCount()).toBe(0)
     expect(closedLogs(target.logs)).toEqual([
-      expect.objectContaining({ level: 'info', detail: 'relay-c1.onorca.dev' })
+      expect.objectContaining({ level: 'info', detail: 'relay-c1.onocc.dev' })
     ])
     expect(target.channel.dispose).toHaveBeenCalledOnce()
     expect(target.socket.close).toHaveBeenCalledOnce()

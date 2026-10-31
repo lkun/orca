@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 
 const workflow = parse(
   readFileSync(new URL('../../.github/workflows/hourly-mac-build.yml', import.meta.url), 'utf8')
@@ -33,9 +33,9 @@ async function checkFreshness(overrides = {}) {
       env: {
         ...process.env,
         GITHUB_OUTPUT: output,
-        GITHUB_REPOSITORY: 'stablyai/orca',
+        GITHUB_REPOSITORY: 'stablyai/occ',
         MAIN_REPO_TOKEN: 'main-token',
-        HOURLY_REPO: 'stablyai/orca-hourly',
+        HOURLY_REPO: 'stablyai/occ-hourly',
         HEAD_SHA: head,
         LAST_TAG: 'previous-hourly',
         LAST_SHA: head.slice(0, 12),
@@ -62,7 +62,7 @@ describe('hourly build preflight', () => {
     expect(
       preflight.steps.find((step) => step.id === 'app_token').with['permission-contents']
     ).toBe('read')
-    expect(build.needs).toEqual(['preflight', 'orcad-template'])
+    expect(build.needs).toEqual(['preflight', 'occd-template'])
     expect(build.if).toBe("needs.preflight.outputs.should_build == 'true'")
     expect(build.steps.find((step) => step.name === 'Checkout').with.ref).toBe(
       build.outputs.head_sha

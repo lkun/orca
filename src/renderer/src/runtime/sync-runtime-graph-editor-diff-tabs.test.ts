@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { buildMobileSessionTabSnapshots } from './sync-runtime-graph/mobile-session-snapshots'
 import { makeState } from './sync-runtime-graph-test-harness'
 import type { AppState } from '../store/types'
@@ -491,7 +491,7 @@ describe('buildMobileSessionTabSnapshots', () => {
 
     // Layout-owner build (L280): a row goes out under its tab id only, so a diff no group shows
     // gets no row; the same-path edit tab keeps its own.
-    const diffRows = ORCA_LAYOUT_OWNER_IS_MAIN
+    const diffRows = OCC_LAYOUT_OWNER_IS_MAIN
       ? []
       : [
           {
@@ -510,7 +510,7 @@ describe('buildMobileSessionTabSnapshots', () => {
       {
         id: 'group-1',
         activeTabId: 'editor-tab-1',
-        tabOrder: ['editor-tab-1', ...(ORCA_LAYOUT_OWNER_IS_MAIN ? [] : [diffId])],
+        tabOrder: ['editor-tab-1', ...(OCC_LAYOUT_OWNER_IS_MAIN ? [] : [diffId])],
         recentTabIds: ['editor-tab-1']
       }
     ])
@@ -755,7 +755,7 @@ describe('buildMobileSessionTabSnapshots', () => {
       })
     )[0]
 
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // Layout-owner build (L280): a file no group shows as a tab gets no row.
       expect(terminalSnapshot?.tabs ?? []).toEqual([])
       expect(editorSnapshot?.tabs ?? []).toEqual([])

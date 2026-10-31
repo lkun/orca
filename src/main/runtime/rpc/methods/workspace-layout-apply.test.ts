@@ -6,14 +6,14 @@ import type { Tab } from '../../../../shared/tab-types'
 import type { RuntimeStore } from '../../runtime-store-contract'
 import { RUNTIME_CAPABILITIES } from '../../../../shared/protocol-version'
 import { MOBILE_RPC_METHOD_ALLOWLIST } from '../../runtime-rpc/runtime-rpc-mobile-method-allowlist'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import { eraseRpcMethods, isStreamingMethod, type RpcContext } from '../core'
 import { LAYOUT_APPLY_METHODS } from './workspace-layout'
 import { ALL_RPC_METHODS } from './index'
 import { partialRuntimeStore, type PartialRuntimeStore } from '../../runtime-store-partial-fixture'
 
-// Pin a window-owned build even under `ORCA_LAYOUT_OWNER=main`, so the default registry omits layout commands.
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: false }))
+// Pin a window-owned build even under `OCC_LAYOUT_OWNER=main`, so the default registry omits layout commands.
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: false }))
 
 const frozen = vi.hoisted(() => ({ workspaces: new Set<string>() }))
 vi.mock(
@@ -71,7 +71,7 @@ function runtimeHolding(hostId: ExecutionHostId) {
     applyTabRenames
   }
   return {
-    runtime: new OrcaRuntimeService(partialRuntimeStore(store)),
+    runtime: new OCCRuntimeService(partialRuntimeStore(store)),
     applyLayoutCommand,
     applyTabRenames
   }
@@ -100,7 +100,7 @@ describe('layout.apply', () => {
     }
     const applyLayoutCommand = vi.fn(async () => ({ ok: true, result: {} }))
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the handler calls only applyLayoutCommand.
-    const runtime = { applyLayoutCommand } as unknown as OrcaRuntimeService
+    const runtime = { applyLayoutCommand } as unknown as OCCRuntimeService
     const newLeafId = '33333333-3333-4333-8333-333333333333'
 
     const params = apply.params?.parse({ command: { ...SPLIT, newLeafId, groupId: 'window-g' } })
@@ -697,7 +697,7 @@ describe('layout.apply', () => {
       }),
       applyTabRenames
     }
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+    const runtime = new OCCRuntimeService(partialRuntimeStore(store))
     const titled = (tabId: string) => ({ workspace: WORKTREE, tabId, title: `Title ${tabId}` })
 
     const reply = await runtime.applyLayoutCommand({
@@ -787,7 +787,7 @@ describe('layout.apply', () => {
         return { ok: true, result: { leafId: 'minted' } }
       })
     }
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+    const runtime = new OCCRuntimeService(partialRuntimeStore(store))
     const sent: number[] = []
     const { seq } = runtime.subscribeWorkspaceLayouts((event) => {
       order.push('frame')

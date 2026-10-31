@@ -77,10 +77,10 @@ export function WorktreeCardDetailsHover({
   onWorkspaceTitleEditingChange,
   onEditIssue,
   onEditComment,
-  onOpenGitHubIssueInOrca,
+  onOpenGitHubIssueInOCC,
   onOpenIssueInBrowser,
-  onOpenLinearIssueInOrca,
-  onOpenReviewInOrca,
+  onOpenLinearIssueInOCC,
+  onOpenReviewInOCC,
   onUnlinkReview,
   onOpenAutomation,
   onOpenAutomationRun,
@@ -227,8 +227,8 @@ export function WorktreeCardDetailsHover({
                 onIssueMenuOpenChange={handleIssueMenuOpenChange}
                 onCopyIssueLink={issue?.url ? handleCopyIssueLink : undefined}
                 onEditIssue={onEditIssue}
-                onOpenGitHubIssueInOrca={
-                  onOpenGitHubIssueInOrca ? dismissAndRun(onOpenGitHubIssueInOrca) : undefined
+                onOpenGitHubIssueInOCC={
+                  onOpenGitHubIssueInOCC ? dismissAndRun(onOpenGitHubIssueInOCC) : undefined
                 }
                 onOpenIssueInBrowser={
                   onOpenIssueInBrowser && issue?.url
@@ -252,13 +252,13 @@ export function WorktreeCardDetailsHover({
                     )}
                     actions={
                       <>
-                        {linearIssue.url && onOpenLinearIssueInOrca && (
+                        {linearIssue.url && onOpenLinearIssueInOCC && (
                           <MetadataActionIcon
                             label={translate(
                               'auto.components.sidebar.WorktreeCardMeta.2c67730e07',
                               'Open in OCC'
                             )}
-                            onClick={dismissAndRun(onOpenLinearIssueInOrca)}
+                            onClick={dismissAndRun(onOpenLinearIssueInOCC)}
                           >
                             <MonitorUp className="size-3" />
                           </MetadataActionIcon>
@@ -338,7 +338,7 @@ export function WorktreeCardDetailsHover({
                 onManageLinks={onManageLinks ? dismissAndRun(onManageLinks) : undefined}
                 reviewMenuOpen={reviewMenuOpen}
                 onReviewMenuOpenChange={handleReviewMenuOpenChange}
-                onOpenReviewInOrca={onOpenReviewInOrca}
+                onOpenReviewInOCC={onOpenReviewInOCC}
                 onOpenLink={onOpenLink}
                 onUnlinkReview={onUnlinkReview}
                 closeHover={closeHover}
@@ -360,7 +360,7 @@ export function WorktreeCardDetailsHover({
                 item={item}
                 review={live}
                 onOpenChange={handleReviewMenuOpenChange}
-                onOpenInOrca={onOpenReviewInOrca}
+                onOpenInOCC={onOpenReviewInOCC}
                 onUnlink={onUnlinkReview}
                 closeHover={closeHover}
               />

@@ -13,7 +13,7 @@ export type MobileNativeChatVisualHostMode = 'inline' | 'fullscreen'
 
 export const MOBILE_NATIVE_CHAT_VISUAL_INITIAL_HEIGHT = 160
 
-export const MOBILE_NATIVE_CHAT_VISUAL_APPLY_HEIGHT = '__orcaVisualApplyHeight'
+export const MOBILE_NATIVE_CHAT_VISUAL_APPLY_HEIGHT = '__occVisualApplyHeight'
 
 const SIZE_FORWARD_INTERVAL_MS = 100
 const LINK_WINDOW_MS = 5_000

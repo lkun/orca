@@ -140,7 +140,7 @@ describe.runIf(process.platform === 'win32')('windows-process-tree command line 
   })
 
   it('recovers command lines byte-for-byte, quoting and trailing spaces included', async () => {
-    const marker = `orca-cmdline-${Date.now()}`
+    const marker = `occ-cmdline-${Date.now()}`
     // Quotes and trailing whitespace are exactly what a re-quoting bug eats.
     const child = spawn(process.execPath, ['-e', 'setTimeout(() => {}, 20000)', `"${marker}"  `], {
       windowsHide: true,

@@ -4,23 +4,23 @@
  * terminals that pause on request. The journal is the real one, in a temp directory.
  */
 import type {
-  OrcadMigrationBlobDescriptor,
-  OrcadMigrationBlobUploadState
-} from '../../../../shared/orcad-migration/orcad-migration-blob-transfer'
-import { ORCAD_MIGRATION_BLOB_KIND_CONTRACTS } from '../../../../shared/orcad-migration/orcad-migration-blob-transfer'
+  OCCdMigrationBlobDescriptor,
+  OCCdMigrationBlobUploadState
+} from '../../../../shared/occd-migration/occd-migration-blob-transfer'
+import { OCCD_MIGRATION_BLOB_KIND_CONTRACTS } from '../../../../shared/occd-migration/occd-migration-blob-transfer'
 import type {
-  OrcadMigrationCatalogState,
-  OrcadMigrationManifest
-} from '../../../../shared/orcad-migration/orcad-migration-manifest'
+  OCCdMigrationCatalogState,
+  OCCdMigrationManifest
+} from '../../../../shared/occd-migration/occd-migration-manifest'
 import {
-  ORCAD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
-  ORCAD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY
-} from '../../../../shared/orcad-runtime-capabilities'
+  OCCD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
+  OCCD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY
+} from '../../../../shared/occd-runtime-capabilities'
 import { getDefaultPersistedState } from '../../../../shared/constants'
 import { terminalTab } from './wsl-mover-profile-rows'
 import type { Repo } from '../../../../shared/repo-types'
 import type { WslMoveProgressEvent } from '../../../../shared/wsl-move/wsl-move-driver-types'
-import { collectOrcadMigrationSourceDormantState } from '../../migrating-orcad-catalog/orcad-source-dormant-state'
+import { collectOCCdMigrationSourceDormantState } from '../../migrating-occd-catalog/occd-source-dormant-state'
 import { exportWslMoveManifest } from '../../moving-wsl-projects/wsl-move-manifest-export'
 import { runWslMoveDesktopRewritePass } from '../../moving-wsl-projects/wsl-move-desktop-rewrite'
 import {
@@ -43,8 +43,8 @@ export type WslMoveWorldState = {
   failAt: Set<string>
   points: string[]
   catalog: Map<string, 'staged' | 'committed'>
-  blobUploads: Map<string, OrcadMigrationBlobUploadState>
-  committedWithBlobs: OrcadMigrationBlobDescriptor[] | null
+  blobUploads: Map<string, OCCdMigrationBlobUploadState>
+  committedWithBlobs: OCCdMigrationBlobDescriptor[] | null
   progress: WslMoveProgressEvent[]
   slept: string[][]
   gate: WslMoveGateInputs
@@ -84,7 +84,7 @@ export function createWslMoveWorld(userDataPath: string): WslMoveWorld {
       throw new WslMoveWorldCrash(name)
     }
   }
-  const state = (manifest: OrcadMigrationManifest): OrcadMigrationCatalogState => {
+  const state = (manifest: OCCdMigrationManifest): OCCdMigrationCatalogState => {
     const ids = { migrationId: manifest.migrationId, manifestSha256: manifest.manifestSha256 }
     const held = world.catalog.get(manifest.migrationId)
     if (held === 'committed') {
@@ -112,10 +112,10 @@ export function createWslMoveWorld(userDataPath: string): WslMoveWorld {
     }
     return { state: 'absent', ...ids }
   }
-  const commit = async (manifest: OrcadMigrationManifest): Promise<OrcadMigrationCatalogState> => {
+  const commit = async (manifest: OCCdMigrationManifest): Promise<OCCdMigrationCatalogState> => {
     point('commit:before')
     if (!world.catalog.has(manifest.migrationId)) {
-      throw new Error('orcad_migration_catalog_not_staged')
+      throw new Error('occd_migration_catalog_not_staged')
     }
     world.catalog.set(manifest.migrationId, 'committed')
     point('commit:lost-reply')
@@ -126,9 +126,9 @@ export function createWslMoveWorld(userDataPath: string): WslMoveWorld {
     environmentId: 'wsl:Ubuntu',
     name: 'Ubuntu',
     capabilities: [
-      ORCAD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY,
-      ORCAD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
-      ...Object.values(ORCAD_MIGRATION_BLOB_KIND_CONTRACTS).map((contract) => contract.capability)
+      OCCD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY,
+      OCCD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
+      ...Object.values(OCCD_MIGRATION_BLOB_KIND_CONTRACTS).map((contract) => contract.capability)
     ],
     catalog: {
       readState: async (manifest) => state(manifest),
@@ -203,8 +203,8 @@ export function createWslMoveWorld(userDataPath: string): WslMoveWorld {
           getRepos: () => world.repos,
           getFolderWorkspaces: () => [],
           getProjectGroups: () => [],
-          inspectOrcadMigrationSourceDormantState: (source, catalog, destination) =>
-            collectOrcadMigrationSourceDormantState(state, source, catalog, undefined, destination)
+          inspectOCCdMigrationSourceDormantState: (source, catalog, destination) =>
+            collectOCCdMigrationSourceDormantState(state, source, catalog, undefined, destination)
         },
         request
       )
@@ -261,7 +261,7 @@ export function createWslMoveWorld(userDataPath: string): WslMoveWorld {
         () => new Date('2026-10-20T00:00:00.000Z')
       ),
     snapshots: {
-      readOrcadMigrationSourceSnapshotChunk: () => {
+      readOCCdMigrationSourceSnapshotChunk: () => {
         throw new Error('unused')
       }
     },

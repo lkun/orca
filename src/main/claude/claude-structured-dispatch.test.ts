@@ -692,7 +692,7 @@ describe('Claude structured dispatch image limits', () => {
   })
 
   it('allocates local image reads from the file size, not the maximum cap', async () => {
-    const directory = await mkdtemp(join(tmpdir(), 'orca-claude-image-'))
+    const directory = await mkdtemp(join(tmpdir(), 'occ-claude-image-'))
     const allocUnsafe = vi.spyOn(Buffer, 'allocUnsafe')
     try {
       const path = join(directory, 'small.png')
@@ -724,7 +724,7 @@ describe('Claude structured dispatch image limits', () => {
   })
 
   it('bounds retained waiter identity bytes when image dispatches are retired', async () => {
-    const directory = await mkdtemp(join(tmpdir(), 'orca-claude-image-'))
+    const directory = await mkdtemp(join(tmpdir(), 'occ-claude-image-'))
     try {
       const path = join(directory, 'large.png')
       await writeFile(path, Buffer.alloc(64 * 1024))

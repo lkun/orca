@@ -14,22 +14,22 @@ import {
   prepareRuntimeEnvironmentSshAccessLink,
   prepareRuntimeEnvironmentSshAccessUnlink
 } from '../../shared/runtime-environment-ssh-access-store'
-import { getManagedOrcadFenceEnvironmentId } from '../../shared/managed-orcad-ssh-owner'
+import { getManagedOCCdFenceEnvironmentId } from '../../shared/managed-occd-ssh-owner'
 import type { SshTarget } from '../../shared/ssh-types'
 import { runTargetLifecycle } from '../ipc/ssh/ssh-target-lifecycle-queue'
-import { requireManagedOrcadInfrastructure } from '../managed-server/lifecycle/orcad-managed-runtime-context'
+import { requireManagedOCCdInfrastructure } from '../managed-server/lifecycle/occd-managed-runtime-context'
 import {
-  closeOrcadManagedTunnel,
-  ensureOrcadManagedTunnel,
-  startOrcadManagedTunnel
-} from '../managed-server/lifecycle/orcad-managed-tunnel'
+  closeOCCdManagedTunnel,
+  ensureOCCdManagedTunnel,
+  startOCCdManagedTunnel
+} from '../managed-server/lifecycle/occd-managed-tunnel'
 import { verifyRuntimeEnvironmentSshTunnel } from './runtime-ssh-access-verification'
 import { fingerprintRuntimeSshTarget } from './runtime-ssh-target-fingerprint'
-import { orcadTargetBlockerMessage } from './targets/ssh-target-orcad-claims'
-import { dependentStateSummary } from './targets/ssh-target-orcad-dependents'
-import type { OrcadMigrationBlocker } from '../../shared/orcad-migration/orcad-migration-preflight'
+import { occdTargetBlockerMessage } from './targets/ssh-target-occd-claims'
+import { dependentStateSummary } from './targets/ssh-target-occd-dependents'
+import type { OCCdMigrationBlocker } from '../../shared/occd-migration/occd-migration-preflight'
 
-type TargetClaims = ReturnType<typeof requireManagedOrcadInfrastructure>['claims']
+type TargetClaims = ReturnType<typeof requireManagedOCCdInfrastructure>['claims']
 
 function requireTarget(claims: TargetClaims, targetId: string): SshTarget & { generation: number } {
   const target = claims.listTargets().find((entry) => entry.id === targetId)
@@ -37,29 +37,29 @@ function requireTarget(claims: TargetClaims, targetId: string): SshTarget & { ge
   if (!target || generation === undefined || !Number.isSafeInteger(generation) || generation <= 0) {
     throw new Error('SSH access requires an existing durable SSH target generation.')
   }
-  if (target.orcadProvisioning) {
+  if (target.occdProvisioning) {
     throw new Error('This SSH target has pending server provisioning.')
   }
   return { ...target, generation }
 }
 
 // Give link-specific recovery steps; bare codes and host-conversion wording are unhelpful here.
-function sshAccessBlockerMessage(targetId: string, blocker: OrcadMigrationBlocker): string {
+function sshAccessBlockerMessage(targetId: string, blocker: OCCdMigrationBlocker): string {
   switch (blocker.code) {
-    case 'orcad_migration_dependent_state':
+    case 'occd_migration_dependent_state':
       return `This SSH target is still used by saved OCC state: ${dependentStateSummary(blocker.dependencies)}. Remove it, or link SSH access through an SSH target with nothing saved.`
-    case 'orcad_migration_direct_ssh_repositories':
-    case 'orcad_migration_direct_ssh_folder_workspaces':
+    case 'occd_migration_direct_ssh_repositories':
+    case 'occd_migration_direct_ssh_folder_workspaces':
       return 'This SSH target already has direct SSH projects. Remove them, or link SSH access through another SSH target.'
-    case 'orcad_migration_direct_ssh_terminal_leases':
+    case 'occd_migration_direct_ssh_terminal_leases':
       return 'This SSH target still owns terminal sessions. Close them before linking SSH access.'
-    case 'orcad_migration_saved_port_forwards':
+    case 'occd_migration_saved_port_forwards':
       return 'This SSH target has saved port forwards. Remove them, or link SSH access through another SSH target.'
-    case 'orcad_migration_target_not_found':
-    case 'orcad_migration_target_owned':
-    case 'orcad_migration_owner_unrecorded':
-    case 'orcad_migration_dependency_unverifiable':
-      return orcadTargetBlockerMessage(targetId, blocker)
+    case 'occd_migration_target_not_found':
+    case 'occd_migration_target_owned':
+    case 'occd_migration_owner_unrecorded':
+    case 'occd_migration_dependency_unverifiable':
+      return occdTargetBlockerMessage(targetId, blocker)
   }
 }
 
@@ -71,8 +71,8 @@ function requireAccessOnlyTarget(claims: TargetClaims, targetId: string, environ
     .blockers.filter(
       (entry) =>
         !(
-          entry.code === 'orcad_migration_target_owned' &&
-          getManagedOrcadFenceEnvironmentId(target) === environmentId
+          entry.code === 'occd_migration_target_owned' &&
+          getManagedOCCdFenceEnvironmentId(target) === environmentId
         )
     )
   if (blockers.length) {
@@ -94,12 +94,12 @@ function requireFence(
   allowUnowned = false
 ): SshTarget {
   const target = requireTarget(claims, fence.sshTargetId)
-  const owner = getManagedOrcadFenceEnvironmentId(target)
+  const owner = getManagedOCCdFenceEnvironmentId(target)
   if (
     target.generation !== fence.sshTargetGeneration ||
     !fence.targetFingerprint ||
     fingerprintRuntimeSshTarget(target) !== fence.targetFingerprint ||
-    (owner !== environmentId && !(allowUnowned && !target.orcadFence))
+    (owner !== environmentId && !(allowUnowned && !target.occdFence))
   ) {
     throw new Error('The SSH target registration, connection configuration, or owner changed.')
   }
@@ -118,10 +118,10 @@ export function linkRuntimeSshAccess(
   const environmentId = resolveEnvironment(userDataPath, args.selector).id
   return runTargetLifecycle(`runtime-ssh-access:${userDataPath}:${environmentId}`, () =>
     runTargetLifecycle(args.sshTargetId, async () => {
-      const { claims, connectionManager } = requireManagedOrcadInfrastructure()
+      const { claims, connectionManager } = requireManagedOCCdInfrastructure()
       const environment = resolveEnvironment(userDataPath, environmentId)
       assertRuntimeEnvironmentNotReconciling(environment)
-      if (environment.orcadDeployment) {
+      if (environment.occdDeployment) {
         throw new Error('Managed deployments cannot use independent SSH access.')
       }
       const target = requireAccessOnlyTarget(claims, args.sshTargetId, environmentId)
@@ -141,7 +141,7 @@ export function linkRuntimeSshAccess(
           throw new Error('This server already has a different SSH access request.')
         }
         requireFence(claims, environmentId, access)
-        await ensureOrcadManagedTunnel(userDataPath, environmentId)
+        await ensureOCCdManagedTunnel(userDataPath, environmentId)
         requireFence(claims, environmentId, access)
         await options.invalidateTransport?.(environmentId)
         return redactRuntimeEnvironment(resolveEnvironment(userDataPath, environmentId))
@@ -173,7 +173,7 @@ export function linkRuntimeSshAccess(
         options.signal?.throwIfAborted()
         requireFence(claims, environmentId, fence)
         tunnelStarted = true
-        const localPort = await startOrcadManagedTunnel(
+        const localPort = await startOCCdManagedTunnel(
           environmentId,
           claimed,
           connection,
@@ -201,7 +201,7 @@ export function linkRuntimeSshAccess(
         return linked
       } catch (error) {
         if (tunnelStarted && !linkCommitted) {
-          await closeOrcadManagedTunnel(environmentId)
+          await closeOCCdManagedTunnel(environmentId)
         }
         throw error
       }
@@ -219,7 +219,7 @@ export function unlinkRuntimeSshAccess(
   return runTargetLifecycle(`runtime-ssh-access:${userDataPath}:${environmentId}`, async () => {
     const environment = resolveEnvironment(userDataPath, environmentId)
     assertRuntimeEnvironmentNotReconciling(environment)
-    if (environment.orcadDeployment) {
+    if (environment.occdDeployment) {
       throw new Error('Managed deployments cannot unlink independent SSH access.')
     }
     const access = environment.pendingSshAccessOperation ?? environment.sshAccess
@@ -227,7 +227,7 @@ export function unlinkRuntimeSshAccess(
       return redactRuntimeEnvironment(environment)
     }
     return runTargetLifecycle(access.sshTargetId, async () => {
-      const { claims } = requireManagedOrcadInfrastructure()
+      const { claims } = requireManagedOCCdInfrastructure()
       requireFence(claims, environmentId, access, !!environment.pendingSshAccessOperation)
       const prepared =
         environment.pendingSshAccessOperation?.operation === 'link'
@@ -240,9 +240,9 @@ export function unlinkRuntimeSshAccess(
               requestId: args.requestId
             })
       await options.invalidateTransport(environmentId)
-      await closeOrcadManagedTunnel(environmentId)
+      await closeOCCdManagedTunnel(environmentId)
       const target = requireFence(claims, environmentId, access, true)
-      if (target.orcadFence && !claims.release(target.id, environmentId)) {
+      if (target.occdFence && !claims.release(target.id, environmentId)) {
         throw new Error('The SSH target owner changed before access could be released.')
       }
       await claims.flush()

@@ -25,11 +25,11 @@ import type { RetiredNameRegistry } from './worktree/retired-name-registry'
 import type { WorkspaceLineage, WorktreeLineage } from './worktree/lineage-types'
 import type { WorktreeMeta } from './worktree/meta-types'
 import type { WorkspaceSessionState } from './workspace-session-state-types'
-import type { OrcadMigrationEvictedReceipt } from './orcad-migration/orcad-migration-evicted-receipts'
+import type { OCCdMigrationEvictedReceipt } from './occd-migration/occd-migration-evicted-receipts'
 import type {
-  OrcadMigrationImportReceipt,
-  OrcadMigrationStagedCatalog
-} from './orcad-migration/orcad-migration-manifest'
+  OCCdMigrationImportReceipt,
+  OCCdMigrationStagedCatalog
+} from './occd-migration/occd-migration-manifest'
 
 export type LegacyPaneKeyAliasEntry = {
   ptyId: string
@@ -109,12 +109,12 @@ export type PersistedState = {
   legacyPaneKeyAliasEntries: LegacyPaneKeyAliasEntry[]
   automations: Automation[]
   automationRuns: AutomationRun[]
-  /** Catalogs an orcad imported, so a retried commit returns the same receipt. */
-  orcadMigrationImportReceipts?: OrcadMigrationImportReceipt[]
+  /** Catalogs an occd imported, so a retried commit returns the same receipt. */
+  occdMigrationImportReceipts?: OCCdMigrationImportReceipt[]
   /** Commits whose full receipt aged out of the list above; still answered as committed. */
-  orcadMigrationEvictedReceipts?: OrcadMigrationEvictedReceipt[]
-  /** Catalogs staged on an orcad and not yet committed or aborted. */
-  orcadMigrationStagedCatalogs?: OrcadMigrationStagedCatalog[]
+  occdMigrationEvictedReceipts?: OCCdMigrationEvictedReceipt[]
+  /** Catalogs staged on an occd and not yet committed or aborted. */
+  occdMigrationStagedCatalogs?: OCCdMigrationStagedCatalog[]
   onboarding: OnboardingState
   /** Main-owned telemetry de-dupe marker; never exposed through PersistedUIState. */
   featureInteractionTelemetryBuckets?: FeatureInteractionTelemetryBucketState

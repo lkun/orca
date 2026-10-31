@@ -127,16 +127,16 @@ describe('pluginMarketplaceSchema', () => {
 
 describe('marketplace provenance contracts', () => {
   it.each([
-    ['stablyai.orca-skills', true, true],
+    ['stablyai.occ-skills', true, true],
     ['stablyai.skills', true, true],
-    ['community.orca-skills', true, false],
+    ['community.occ-skills', true, false],
     ['community.skills', false, false],
-    ['orca.skills', true, false],
-    ['orca-labs.skills', true, false],
+    ['occ.skills', true, false],
+    ['occ-labs.skills', true, false],
     ['openai.skills', true, false],
     ['github.skills', true, false],
-    ['orcas.skills', true, false],
-    ['orcalike.skills', true, false],
+    ['occs.skills', true, false],
+    ['occlike.skills', true, false],
     ['acme.skills', false, false],
     ['invalid', false, false]
   ])('classifies %s', (pluginKey, reserved, officialPublisher) => {
@@ -145,19 +145,19 @@ describe('marketplace provenance contracts', () => {
   })
 
   it.each([
-    'https://github.com/stablyai/orca-skills.git',
-    'ssh://git@github.com/stablyai/orca-skills.git',
-    'git@github.com:stablyai/orca-skills.git'
+    'https://github.com/stablyai/occ-skills.git',
+    'ssh://git@github.com/stablyai/occ-skills.git',
+    'git@github.com:stablyai/occ-skills.git'
   ])('accepts official organization source %s', (source) => {
     expect(isOfficialOrganizationGitSource(source)).toBe(true)
   })
 
   it('does not trust lookalike organizations or hosts', () => {
-    expect(isOfficialOrganizationGitSource('https://github.com/stablyai-fakes/orca-skills')).toBe(
+    expect(isOfficialOrganizationGitSource('https://github.com/stablyai-fakes/occ-skills')).toBe(
       false
     )
-    expect(isOfficialOrganizationGitSource('https://gitlab.com/stablyai/orca-skills')).toBe(false)
-    expect(isOfficialOrganizationGitSource('git@github.com:stablyai/../evil/orca-skills.git')).toBe(
+    expect(isOfficialOrganizationGitSource('https://gitlab.com/stablyai/occ-skills')).toBe(false)
+    expect(isOfficialOrganizationGitSource('git@github.com:stablyai/../evil/occ-skills.git')).toBe(
       false
     )
   })

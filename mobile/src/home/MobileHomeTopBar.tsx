@@ -1,7 +1,7 @@
 import { Settings } from 'lucide-react-native'
 import { Pressable, Text, View } from 'react-native'
 import { useMobileTranslation } from '../i18n/use-mobile-translation'
-import { OrcaLogo } from '../components/OrcaLogo'
+import { OCCLogo } from '../components/OCCLogo'
 import { colors, radii, spacing } from '../theme/mobile-theme'
 import { themedStyleSheet } from '../theme/themed-styles'
 import { useMobileColorScheme } from '../theme/use-mobile-color-scheme'
@@ -13,7 +13,7 @@ export function MobileHomeTopBar({ onOpenSettings }: { onOpenSettings: () => voi
     <View style={styles.topBar}>
       <View style={styles.brandLockup}>
         <View style={styles.logoMark}>
-          <OrcaLogo size={18} />
+          <OCCLogo size={18} />
         </View>
         <Text style={styles.brandName}>OCC</Text>
       </View>

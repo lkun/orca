@@ -3,7 +3,7 @@
 import path from 'node:path'
 import { randomUUID } from 'node:crypto'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { DaemonClient } from '../../src/main/daemon/client'
 import { PROTOCOL_VERSION } from '../../src/main/daemon/types'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
@@ -44,7 +44,7 @@ async function waitForStableSessionIds(page: Page, expected: number): Promise<vo
 
 test.describe('Status bar CLI session count', () => {
   test('keeps an unobserved count unknown after Manage Sessions kills a foreign daemon session', async ({
-    orcaPage: page,
+    occPage: page,
     electronApp
   }) => {
     test.skip(

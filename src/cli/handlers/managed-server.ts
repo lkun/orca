@@ -1,13 +1,13 @@
 import type {
-  OrcadManagedCancelStopResult,
-  OrcadManagedDeployResult,
-  OrcadManagedForgetResult,
-  OrcadManagedRecoveryResult,
-  OrcadManagedRollbackResult,
-  OrcadManagedRuntimeStatus,
-  OrcadManagedStopResult
-} from '../../shared/orcad-managed-runtime'
-import { ORCAD_RECOVERY_CHANGED_STATE_CODE } from '../../shared/orcad-managed-runtime'
+  OCCdManagedCancelStopResult,
+  OCCdManagedDeployResult,
+  OCCdManagedForgetResult,
+  OCCdManagedRecoveryResult,
+  OCCdManagedRollbackResult,
+  OCCdManagedRuntimeStatus,
+  OCCdManagedStopResult
+} from '../../shared/occd-managed-runtime'
+import { OCCD_RECOVERY_CHANGED_STATE_CODE } from '../../shared/occd-managed-runtime'
 import { MANAGED_SERVER_RUNTIME_CAPABILITY } from '../../shared/protocol-version'
 import type { RuntimeStatus } from '../../shared/runtime-types'
 import type { CommandHandler, HandlerContext } from '../dispatch'
@@ -112,7 +112,7 @@ function isSettled<TResult extends Outcome, TSettled extends TResult['outcome']>
 
 export const MANAGED_SERVER_HANDLERS: Record<string, CommandHandler> = {
   'environment status': async (context) => {
-    const response = await callManagedServer<OrcadManagedRuntimeStatus>(
+    const response = await callManagedServer<OCCdManagedRuntimeStatus>(
       context,
       'managedServer.status',
       selectorOf(context)
@@ -121,7 +121,7 @@ export const MANAGED_SERVER_HANDLERS: Record<string, CommandHandler> = {
   },
   'environment update': async (context) => {
     const params = { ...selectorOf(context), force: context.flags.get('force') === true }
-    const response = await callExpectingRestart<OrcadManagedDeployResult>(
+    const response = await callExpectingRestart<OCCdManagedDeployResult>(
       context,
       'managedServer.update',
       params
@@ -136,7 +136,7 @@ export const MANAGED_SERVER_HANDLERS: Record<string, CommandHandler> = {
     )
   },
   'environment rollback': async (context) => {
-    const response = await callExpectingRestart<OrcadManagedRollbackResult>(
+    const response = await callExpectingRestart<OCCdManagedRollbackResult>(
       context,
       'managedServer.rollback',
       selectorOf(context)
@@ -160,7 +160,7 @@ export const MANAGED_SERVER_HANDLERS: Record<string, CommandHandler> = {
         `Restoring ${params.selector}'s prelaunch snapshot discards what the rejected build changed. Re-run with --yes to confirm.`
       )
     }
-    const response = await callManagedServer<OrcadManagedRecoveryResult>(
+    const response = await callManagedServer<OCCdManagedRecoveryResult>(
       context,
       'managedServer.recover',
       acceptChangedState ? { ...params, acceptChangedState } : params
@@ -174,7 +174,7 @@ export const MANAGED_SERVER_HANDLERS: Record<string, CommandHandler> = {
           ? `Recovered ${result.environment.name} (${result.resolution}); active version ${result.activeVersion ?? 'none'}.`
           : 'Nothing to recover.',
       (result) =>
-        !acceptChangedState && 'code' in result && result.code === ORCAD_RECOVERY_CHANGED_STATE_CODE
+        !acceptChangedState && 'code' in result && result.code === OCCD_RECOVERY_CHANGED_STATE_CODE
           ? 'To restore it from the CLI, re-run with --accept-changed-state --yes.'
           : null
     )
@@ -187,7 +187,7 @@ export const MANAGED_SERVER_HANDLERS: Record<string, CommandHandler> = {
         `Stopping ${params.selector} ends its terminals and unlinks it from this machine. Re-run with --yes to confirm.`
       )
     }
-    const response = await callManagedServer<OrcadManagedStopResult>(
+    const response = await callManagedServer<OCCdManagedStopResult>(
       context,
       'managedServer.stop',
       params
@@ -207,7 +207,7 @@ export const MANAGED_SERVER_HANDLERS: Record<string, CommandHandler> = {
         `Forgetting ${params.selector} unlinks it from this machine without stopping it on its host. Re-run with --yes to confirm.`
       )
     }
-    const response = await callManagedServer<OrcadManagedForgetResult>(
+    const response = await callManagedServer<OCCdManagedForgetResult>(
       context,
       'managedServer.forget',
       params
@@ -217,11 +217,11 @@ export const MANAGED_SERVER_HANDLERS: Record<string, CommandHandler> = {
       context.json,
       ['forgotten'],
       () =>
-        `Unlinked ${params.selector} from this machine. Its host was not contacted, so orcad may still be running there.`
+        `Unlinked ${params.selector} from this machine. Its host was not contacted, so occd may still be running there.`
     )
   },
   'environment cancel-stop': async (context) => {
-    const response = await callManagedServer<OrcadManagedCancelStopResult>(
+    const response = await callManagedServer<OCCdManagedCancelStopResult>(
       context,
       'managedServer.cancelStop',
       selectorOf(context)
@@ -231,7 +231,7 @@ export const MANAGED_SERVER_HANDLERS: Record<string, CommandHandler> = {
         case 'canceled':
           return `Stop withdrawn; the server keeps serving ${result.activeVersion}.`
         case 'already-stopped':
-          return 'orcad had already exited. Run `occ environment stop --yes` to unlink it.'
+          return 'occd had already exited. Run `occ environment stop --yes` to unlink it.'
         case 'none':
           return 'No stop is pending.'
       }

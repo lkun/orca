@@ -11,7 +11,7 @@ const CHILD = '01a17c81-30d1-72f0-b84e-002ddfe6fd47'
 const MIDDLE = '01a17c80-30d1-72f0-b84e-002ddfe6fd47'
 let root: string
 beforeEach(async () => {
-  const account = await mkdtemp(join(tmpdir(), 'orca-codex-lineage-'))
+  const account = await mkdtemp(join(tmpdir(), 'occ-codex-lineage-'))
   root = join(account, 'sessions')
   await mkdir(root)
   await mkdir(join(account, 'archived_sessions'))

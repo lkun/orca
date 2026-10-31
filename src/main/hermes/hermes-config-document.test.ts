@@ -3,7 +3,7 @@ import { parse } from 'yaml'
 import {
   disablePlugin,
   enablePlugin,
-  installOrcaStatusConfig,
+  installOCCStatusConfig,
   updateConfigContent
 } from './hermes-config-yaml'
 
@@ -22,7 +22,7 @@ const fixture = [
   '    - "zeta" # last alphabetically',
   '    - alpha # first occurrence',
   '    - alpha # duplicate belongs to user',
-  '  disabled: [orca-status, blocked] # disabled choices',
+  '  disabled: [occ-status, blocked] # disabled choices',
   '  custom: "off" # unrelated plugin setting',
   '# End documentation',
   ''
@@ -38,7 +38,7 @@ describe('Hermes YAML document edits', () => {
     expect(parse(enabled)).toEqual({
       ...parse(initial),
       plugins: {
-        enabled: ['zeta', 'alpha', 'alpha', 'orca-status'],
+        enabled: ['zeta', 'alpha', 'alpha', 'occ-status'],
         disabled: ['blocked'],
         custom: 'off'
       }
@@ -63,8 +63,8 @@ describe('Hermes YAML document edits', () => {
   })
 
   it.each([
-    '# existing\r\nplugins:\r\n  enabled: [zeta, orca-status, alpha, alpha]\r\n',
-    'plugins: &plugins\n  enabled: [orca-status]\nother: *plugins\n'
+    '# existing\r\nplugins:\r\n  enabled: [zeta, occ-status, alpha, alpha]\r\n',
+    'plugins: &plugins\n  enabled: [occ-status]\nother: *plugins\n'
   ])('returns exact bytes for a semantic no-op', (input) => {
     expect(updateConfigContent(input, enablePlugin)).toEqual({ content: input })
   })
@@ -76,7 +76,7 @@ describe('Hermes YAML document edits', () => {
 
   it('retains comments attached to removed OCC entries', () => {
     const input =
-      'plugins:\n  enabled:\n    # keep this note\n    - orca-status # managed entry\n    - other\n'
+      'plugins:\n  enabled:\n    # keep this note\n    - occ-status # managed entry\n    - other\n'
     const output = updateConfigContent(input, disablePlugin).content ?? ''
     expect(parse(output).plugins.enabled).toEqual(['other'])
     expect(output).toContain('# keep this note')
@@ -108,12 +108,12 @@ describe('Hermes YAML document edits', () => {
   it('adds the passthrough beside an anchored terminal setting', () => {
     const input =
       'terminal:\n  docker_env: &env {A: "1"}\n  backend: local\nshared_env: *env\nplugins:\n  enabled: [other]\n'
-    const output = updateConfigContent(input, installOrcaStatusConfig).content ?? ''
+    const output = updateConfigContent(input, installOCCStatusConfig).content ?? ''
     expect(parse(output)).toMatchObject({
       terminal: { docker_env: { A: '1' }, backend: 'local' },
       shared_env: { A: '1' }
     })
-    expect(parse(output).terminal.client_env_passthrough).toContain('ORCA_AGENT_PANE')
+    expect(parse(output).terminal.client_env_passthrough).toContain('OCC_AGENT_PANE')
     expect(output).toContain('docker_env: &env {A: "1"}')
     expect(output).toContain('shared_env: *env')
   })
@@ -128,7 +128,7 @@ describe('Hermes YAML document edits', () => {
     expect(output).toContain(`long: ${'word '.repeat(30).trimEnd()}\n`)
     expect(parse(output)).toEqual({
       ...parse(input),
-      plugins: { enabled: ['other', 'orca-status'] }
+      plugins: { enabled: ['other', 'occ-status'] }
     })
   })
 
@@ -164,7 +164,7 @@ describe('Hermes YAML document edits', () => {
     const parsed = parse(input)
     expect(parse(output)).toEqual({
       ...parsed,
-      plugins: { ...parsed.plugins, enabled: ['orca-status'] }
+      plugins: { ...parsed.plugins, enabled: ['occ-status'] }
     })
     for (const comment of input.match(/#[^\r\n]*/g) ?? []) {
       expect(output).toContain(comment)
@@ -176,7 +176,7 @@ describe('Hermes YAML document edits', () => {
 
   it.each(['', '# empty document\n', 'null\n'])('enables a plugin in an empty config', (input) => {
     const output = updateConfigContent(input, enablePlugin).content ?? ''
-    expect(parse(output)).toEqual({ plugins: { enabled: ['orca-status'] } })
+    expect(parse(output)).toEqual({ plugins: { enabled: ['occ-status'] } })
     if (input.includes('#')) {
       expect(output).toContain('# empty document')
     }

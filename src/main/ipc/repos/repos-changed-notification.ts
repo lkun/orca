@@ -1,9 +1,9 @@
 import type { BrowserWindow } from 'electron'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { wakeFolderRepoGitUpgradeWatch } from '../folder-repo-git-upgrade-wake'
 import { scheduleCurrentWorktreeBaseDirectoryWatcherSync } from '../worktree-base-directory-watcher'
 
-type RepoRemoteClientNotifier = Pick<OrcaRuntimeService, 'notifyReposChangedForRemoteClients'>
+type RepoRemoteClientNotifier = Pick<OCCRuntimeService, 'notifyReposChangedForRemoteClients'>
 
 let repoRemoteClientNotifier: RepoRemoteClientNotifier | null = null
 

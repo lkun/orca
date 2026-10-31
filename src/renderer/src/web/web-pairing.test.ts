@@ -72,9 +72,9 @@ describe('web pairing input', () => {
   })
 
   it.each([
-    ['wss://proxy.example:443/orca/runtime', 'wss://proxy.example:443/orca/runtime'],
-    ['https://proxy.example/orca/runtime', 'wss://proxy.example/orca/runtime'],
-    ['http://proxy.example:8080/orca/runtime', 'ws://proxy.example:8080/orca/runtime']
+    ['wss://proxy.example:443/occ/runtime', 'wss://proxy.example:443/occ/runtime'],
+    ['https://proxy.example/occ/runtime', 'wss://proxy.example/occ/runtime'],
+    ['http://proxy.example:8080/occ/runtime', 'ws://proxy.example:8080/occ/runtime']
   ])('preserves reverse-proxy endpoint routing for %s', (endpoint, expected) => {
     expect(parseWebPairingInput(encodeOffer({ endpoint }))).toMatchObject({ endpoint: expected })
   })
@@ -96,7 +96,7 @@ describe('web pairing input', () => {
     )
   })
 
-  it('rejects orca URLs outside the exact pairing route', () => {
+  it('rejects occ URLs outside the exact pairing route', () => {
     expect(parseWebPairingInput(`occ://pairing?code=${encodeOffer()}`)).toBeNull()
     expect(parseWebPairingInput(`occ://pair-extra?code=${encodeOffer()}`)).toBeNull()
   })

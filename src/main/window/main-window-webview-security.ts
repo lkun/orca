@@ -1,6 +1,6 @@
 import type { BrowserWindow } from 'electron'
 import { join } from 'node:path'
-import { ORCA_BROWSER_GUEST_WEB_PREFERENCES } from '../../shared/browser-guest-web-preferences'
+import { OCC_BROWSER_GUEST_WEB_PREFERENCES } from '../../shared/browser-guest-web-preferences'
 import { normalizeBrowserNavigationUrl } from '../../shared/browser-url'
 import { browserManager } from '../browser/browser-manager'
 import { browserSessionRegistry } from '../browser/browser-session-registry'
@@ -12,7 +12,7 @@ import {
   browserRouteSessionRegistry,
   browserRouteWebContentsRegistry
 } from '../browser/browser-route-session-runtime'
-import { ORCA_BROWSER_BLANK_URL } from '../../shared/constants'
+import { OCC_BROWSER_BLANK_URL } from '../../shared/constants'
 import { DOC_PREVIEW_PARTITION, parseDocPreviewUrl } from '../../shared/doc-preview-scheme'
 import { setDocPreviewFailureSink } from '../browser/doc-preview-failure-notice'
 import {
@@ -26,7 +26,7 @@ import { parseChromeExtensionUrl } from '../../shared/browser-extension-url'
 import { getBrowserExtensionSessionForProfile } from '../browser/extensions/browser-extension-session-loader'
 import { installBrowserJavaScriptDialogs } from '../browser/browser-javascript-dialogs'
 
-/** orca-preview is outside normal browser URL admission; require the doc partition and a main-minted user-preview grant. */
+/** occ-preview is outside normal browser URL admission; require the doc partition and a main-minted user-preview grant. */
 function isAdmissibleDocPreviewAttach(partition: string, src: string): boolean {
   if (partition !== DOC_PREVIEW_PARTITION) {
     return false
@@ -91,7 +91,7 @@ export function installMainWindowWebviewSecurity(mainWindow: BrowserWindow): voi
       !isExtensionPageAttach &&
       (!normalizedSrc ||
         (!isProfilePartition && !isRoutePartition && !isLocalSshPartition) ||
-        (isRoutePartition && normalizedSrc !== ORCA_BROWSER_BLANK_URL))
+        (isRoutePartition && normalizedSrc !== OCC_BROWSER_BLANK_URL))
     ) {
       event.preventDefault()
       return
@@ -117,7 +117,7 @@ export function installMainWindowWebviewSecurity(mainWindow: BrowserWindow): voi
     webPreferences.contextIsolation = true
     webPreferences.sandbox = true
     // Force hardened guest preferences even if host markup omits/misspells them.
-    Object.assign(webPreferences, ORCA_BROWSER_GUEST_WEB_PREFERENCES)
+    Object.assign(webPreferences, OCC_BROWSER_GUEST_WEB_PREFERENCES)
     // Preserve only the registry-validated partition so isolated profiles keep their storage.
     webPreferences.partition = partition
   })

@@ -27,7 +27,7 @@ const MAC_DOCK_ICON_PATHS = {
 type ExecFile = (
   file: string,
   args: string[],
-  optionsOrCallback: ExecFileOptions | ((error: Error | null) => void),
+  optionsoccllback: ExecFileOptions | ((error: Error | null) => void),
   callback?: (error: Error | null) => void
 ) => unknown
 
@@ -43,8 +43,8 @@ type PersistMacDockIconOptions = {
 const MAC_DOCK_ICON_SCRIPT = [
   'use framework "AppKit"',
   'use scripting additions',
-  'set appPath to system attribute "ORCA_APP_BUNDLE_PATH"',
-  'set iconPath to system attribute "ORCA_APP_ICON_PATH"',
+  'set appPath to system attribute "OCC_APP_BUNDLE_PATH"',
+  'set iconPath to system attribute "OCC_APP_ICON_PATH"',
   "set image to current application's NSImage's alloc()'s initWithContentsOfFile:iconPath",
   'if image is missing value then error "OCC app icon image could not be loaded"',
   "set ok to current application's NSWorkspace's sharedWorkspace()'s setIcon:image forFile:appPath options:0",
@@ -54,7 +54,7 @@ const MAC_DOCK_ICON_SCRIPT = [
 const MAC_DOCK_ICON_CLEAR_SCRIPT = [
   'use framework "AppKit"',
   'use scripting additions',
-  'set appPath to system attribute "ORCA_APP_BUNDLE_PATH"',
+  'set appPath to system attribute "OCC_APP_BUNDLE_PATH"',
   "set ok to current application's NSWorkspace's sharedWorkspace()'s setIcon:(missing value) forFile:appPath options:0",
   'if ok is false then error "OCC app icon could not be cleared"'
 ]
@@ -62,11 +62,11 @@ const MAC_DOCK_ICON_CLEAR_SCRIPT = [
 const MAC_DOCK_ICON_COMMAND_TIMEOUT_MS = 10_000
 const MAC_DOCK_ICON_COMMAND_FALLBACK_MS = 1_000
 
-const defaultExecFile: ExecFile = (file, args, optionsOrCallback, callback) => {
-  if (typeof optionsOrCallback === 'function') {
-    return execFileChildProcess(file, args, optionsOrCallback)
+const defaultExecFile: ExecFile = (file, args, optionsoccllback, callback) => {
+  if (typeof optionsoccllback === 'function') {
+    return execFileChildProcess(file, args, optionsoccllback)
   }
-  return execFileChildProcess(file, args, optionsOrCallback, callback ?? (() => {}))
+  return execFileChildProcess(file, args, optionsoccllback, callback ?? (() => {}))
 }
 
 let macDockIconPersistenceGeneration = 0
@@ -100,8 +100,8 @@ function runMacCustomIconCommand(
     options: {
       env: {
         ...process.env,
-        ORCA_APP_BUNDLE_PATH: appBundlePath,
-        ORCA_APP_ICON_PATH: iconPath
+        OCC_APP_BUNDLE_PATH: appBundlePath,
+        OCC_APP_ICON_PATH: iconPath
       }
     },
     timeoutWarning: '[app-icon] timed out persisting macOS dock icon'
@@ -229,7 +229,7 @@ function clearMacCustomIconMetadata(execFile: ExecFile, appBundlePath: string): 
       options: {
         env: {
           ...process.env,
-          ORCA_APP_BUNDLE_PATH: appBundlePath
+          OCC_APP_BUNDLE_PATH: appBundlePath
         }
       },
       timeoutWarning: '[app-icon] timed out clearing macOS dock icon'

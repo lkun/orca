@@ -61,7 +61,7 @@ vi.mock('electron', () => ({
   app: { on: vi.fn(), getPath: () => mocks.userData },
   session: {
     fromPartition: (partition: string) =>
-      partition === 'persist:orca-browser-retired'
+      partition === 'persist:occ-browser-retired'
         ? {
             ...mocks.session,
             extensions: {
@@ -89,7 +89,7 @@ vi.mock('./browser-extension-load-directory', () => ({
     mocks.prepareCalls++
     await mocks.prepareGate.held
     return {
-      directory: '/orca/copy',
+      directory: '/occ/copy',
       extensionId: 'a'.repeat(32),
       workerSignature: mocks.prepared.signature,
       hasWorker: mocks.prepared.hasWorker
@@ -97,7 +97,7 @@ vi.mock('./browser-extension-load-directory', () => ({
   }
 }))
 
-mocks.userData = mkdtempSync(join(tmpdir(), 'orca-extension-loader-'))
+mocks.userData = mkdtempSync(join(tmpdir(), 'occ-extension-loader-'))
 
 const { setBrowserExtensionSupportEnabled } = await import('./browser-extension-support')
 const loader = await import('./browser-extension-session-loader')
@@ -133,7 +133,7 @@ describe('browser extension session loader', () => {
       {
         id: 'default',
         scope: 'default',
-        partition: 'persist:orca-browser',
+        partition: 'persist:occ-browser',
         label: 'Default',
         source: null
       },
@@ -149,7 +149,7 @@ describe('browser extension session loader', () => {
       origin: `chrome-extension://${ID}`,
       storages: ['serviceworkers']
     })
-    expect(mocks.session.extensions.loadExtension).toHaveBeenCalledWith('/orca/copy', {
+    expect(mocks.session.extensions.loadExtension).toHaveBeenCalledWith('/occ/copy', {
       allowFileAccess: false
     })
 
@@ -236,7 +236,7 @@ describe('browser extension session loader', () => {
     loader.unloadBrowserExtensionFromProfile('default', ID)
     mocks.session.extensions.loadExtension.mockRejectedValueOnce(
       new Error(
-        "Loading extension at /orca/copy failed with: Could not load javascript 'cs.js' for script."
+        "Loading extension at /occ/copy failed with: Could not load javascript 'cs.js' for script."
       )
     )
     await expect(loader.loadBrowserExtensionIntoProfile('default', installed)).rejects.toThrow()
@@ -253,7 +253,7 @@ describe('switching the experimental setting while OCC runs', () => {
   const profile = {
     id: 'default',
     scope: 'default' as const,
-    partition: 'persist:orca-browser',
+    partition: 'persist:occ-browser',
     label: 'Default',
     source: null
   }
@@ -268,7 +268,7 @@ describe('switching the experimental setting while OCC runs', () => {
     await loader.detachBrowserExtensionsFromAllProfileSessions()
     expect(mocks.loaded.size).toBe(0)
     expect(mocks.session.unregisterPreloadScript).toHaveBeenCalledWith(
-      'orca-browser-extension-frame'
+      'occ-browser-extension-frame'
     )
     expect(loader.getBrowserExtensionSessionForProfile('default')).toBeNull()
 
@@ -284,7 +284,7 @@ describe('profile changes while startup loads are in flight', () => {
   const profile = {
     id: 'default',
     scope: 'default' as const,
-    partition: 'persist:orca-browser',
+    partition: 'persist:occ-browser',
     label: 'Default',
     source: null
   }
@@ -349,7 +349,7 @@ describe('profile changes while startup loads are in flight', () => {
   it('profile delete clears native extension settings even when extensions never attached', async () => {
     setBrowserExtensionSupportEnabled(false)
     await loader.detachBrowserExtensionsFromAllProfileSessions()
-    const partition = mkdtempSync(join(tmpdir(), 'orca-extension-deleted-profile-'))
+    const partition = mkdtempSync(join(tmpdir(), 'occ-extension-deleted-profile-'))
     const folder = join(partition, 'Local Extension Settings', ID)
     mkdirSync(folder, { recursive: true })
     mocks.storage.path = partition
@@ -357,7 +357,7 @@ describe('profile changes while startup loads are in flight', () => {
       await loader.detachBrowserExtensionsFromProfileSession({
         ...profile,
         id: 'retired',
-        partition: 'persist:orca-browser-retired'
+        partition: 'persist:occ-browser-retired'
       })
       expect(realFs.existsSync(folder)).toBe(false)
     } finally {
@@ -384,7 +384,7 @@ describe('deleted profile action state', () => {
     const profile = {
       id: profileId,
       scope: 'isolated' as const,
-      partition: `persist:orca-${profileId}`,
+      partition: `persist:occ-${profileId}`,
       label: 'Retired',
       source: null
     }
@@ -453,7 +453,7 @@ it('does not restore stale enablement after uninstall and reinstall in another O
     {
       id: 'inactive-profile',
       scope: 'isolated',
-      partition: 'persist:orca-browser-inactive',
+      partition: 'persist:occ-browser-inactive',
       label: 'Inactive',
       source: null
     },

@@ -73,7 +73,7 @@ describe('mobile in-place queued Edit', () => {
           kind: 'agent',
           senders: [
             {
-              party: { address: 'term_coord', terminalHandle: 'term_coord', orcaSessionId: null },
+              party: { address: 'term_coord', terminalHandle: 'term_coord', occSessionId: null },
               name: 'Coordinator',
               relation: 'coordinator'
             }

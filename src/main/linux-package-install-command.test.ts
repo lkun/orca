@@ -36,7 +36,7 @@ afterEach(() => {
 
 describe('quotePosixShellDoubleQuotedApostrophe', () => {
   it('wraps plain values in single quotes', () => {
-    expect(quotePosixShellDoubleQuotedApostrophe('/tmp/orca.deb')).toBe("'/tmp/orca.deb'")
+    expect(quotePosixShellDoubleQuotedApostrophe('/tmp/occ.deb')).toBe("'/tmp/occ.deb'")
   })
 
   it('quotes spaces', () => {
@@ -125,7 +125,7 @@ describe('buildLinuxPackageInstallCommand', () => {
     install('/usr/bin/sudo')
     install('/usr/bin/apt')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    for (const packagePath of ['orca.deb', './orca.deb', '--force-all', '-i']) {
+    for (const packagePath of ['occ.deb', './occ.deb', '--force-all', '-i']) {
       expect(buildLinuxPackageInstallCommand('deb', packagePath)).toEqual({
         ok: false,
         reason: 'invalid-package-path'
@@ -136,7 +136,7 @@ describe('buildLinuxPackageInstallCommand', () => {
   it('reports no-sudo when sudo is absent', async () => {
     install('/usr/bin/apt')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    expect(buildLinuxPackageInstallCommand('deb', '/tmp/orca.deb')).toEqual({
+    expect(buildLinuxPackageInstallCommand('deb', '/tmp/occ.deb')).toEqual({
       ok: false,
       reason: 'no-sudo'
     })
@@ -145,7 +145,7 @@ describe('buildLinuxPackageInstallCommand', () => {
   it('reports no-package-manager when no manager is installed', async () => {
     install('/usr/bin/sudo')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    expect(buildLinuxPackageInstallCommand('deb', '/tmp/orca.deb')).toEqual({
+    expect(buildLinuxPackageInstallCommand('deb', '/tmp/occ.deb')).toEqual({
       ok: false,
       reason: 'no-package-manager'
     })
@@ -155,7 +155,7 @@ describe('buildLinuxPackageInstallCommand', () => {
     install('/usr/bin/sudo')
     install('/usr/bin/dnf')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    expect(buildLinuxPackageInstallCommand('deb', '/tmp/orca.deb')).toEqual({
+    expect(buildLinuxPackageInstallCommand('deb', '/tmp/occ.deb')).toEqual({
       ok: false,
       reason: 'no-package-manager'
     })
@@ -166,9 +166,9 @@ describe('buildLinuxPackageInstallCommand', () => {
     install('/usr/bin/apt')
     install('/usr/bin/dpkg')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    expect(buildLinuxPackageInstallCommand('deb', '/tmp/orca.deb')).toEqual({
+    expect(buildLinuxPackageInstallCommand('deb', '/tmp/occ.deb')).toEqual({
       ok: true,
-      command: "/usr/bin/sudo /usr/bin/apt install -- '/tmp/orca.deb'"
+      command: "/usr/bin/sudo /usr/bin/apt install -- '/tmp/occ.deb'"
     })
   })
 
@@ -176,9 +176,9 @@ describe('buildLinuxPackageInstallCommand', () => {
     install('/usr/bin/sudo')
     install('/usr/bin/dpkg')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    expect(buildLinuxPackageInstallCommand('deb', '/tmp/orca.deb')).toEqual({
+    expect(buildLinuxPackageInstallCommand('deb', '/tmp/occ.deb')).toEqual({
       ok: true,
-      command: "/usr/bin/sudo /usr/bin/dpkg -i -- '/tmp/orca.deb'"
+      command: "/usr/bin/sudo /usr/bin/dpkg -i -- '/tmp/occ.deb'"
     })
   })
 
@@ -189,10 +189,10 @@ describe('buildLinuxPackageInstallCommand', () => {
     install('/usr/bin/yum')
     install('/usr/bin/rpm')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    expect(buildLinuxPackageInstallCommand('rpm', '/tmp/orca.rpm')).toEqual({
+    expect(buildLinuxPackageInstallCommand('rpm', '/tmp/occ.rpm')).toEqual({
       ok: true,
       command:
-        "/usr/bin/sudo /usr/bin/zypper --no-refresh install --allow-unsigned-rpm -f '/tmp/orca.rpm'"
+        "/usr/bin/sudo /usr/bin/zypper --no-refresh install --allow-unsigned-rpm -f '/tmp/occ.rpm'"
     })
   })
 
@@ -202,9 +202,9 @@ describe('buildLinuxPackageInstallCommand', () => {
     install('/usr/bin/yum')
     install('/usr/bin/rpm')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    expect(buildLinuxPackageInstallCommand('rpm', '/tmp/orca.rpm')).toEqual({
+    expect(buildLinuxPackageInstallCommand('rpm', '/tmp/occ.rpm')).toEqual({
       ok: true,
-      command: "/usr/bin/sudo /usr/bin/dnf install --nogpgcheck '/tmp/orca.rpm'"
+      command: "/usr/bin/sudo /usr/bin/dnf install --nogpgcheck '/tmp/occ.rpm'"
     })
   })
 
@@ -213,9 +213,9 @@ describe('buildLinuxPackageInstallCommand', () => {
     install('/usr/bin/yum')
     install('/usr/bin/rpm')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    expect(buildLinuxPackageInstallCommand('rpm', '/tmp/orca.rpm')).toEqual({
+    expect(buildLinuxPackageInstallCommand('rpm', '/tmp/occ.rpm')).toEqual({
       ok: true,
-      command: "/usr/bin/sudo /usr/bin/yum install --nogpgcheck '/tmp/orca.rpm'"
+      command: "/usr/bin/sudo /usr/bin/yum install --nogpgcheck '/tmp/occ.rpm'"
     })
   })
 
@@ -223,9 +223,9 @@ describe('buildLinuxPackageInstallCommand', () => {
     install('/usr/bin/sudo')
     install('/sbin/rpm')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    expect(buildLinuxPackageInstallCommand('rpm', '/tmp/orca.rpm')).toEqual({
+    expect(buildLinuxPackageInstallCommand('rpm', '/tmp/occ.rpm')).toEqual({
       ok: true,
-      command: "/usr/bin/sudo /sbin/rpm -Uvh '/tmp/orca.rpm'"
+      command: "/usr/bin/sudo /sbin/rpm -Uvh '/tmp/occ.rpm'"
     })
   })
 
@@ -233,7 +233,7 @@ describe('buildLinuxPackageInstallCommand', () => {
     install('/usr/bin/sudo')
     install('/usr/bin/apt')
     const { buildLinuxPackageInstallCommand } = await loadCommandModule()
-    const result = buildLinuxPackageInstallCommand('deb', '/tmp/orca.deb')
+    const result = buildLinuxPackageInstallCommand('deb', '/tmp/occ.deb')
     expect(result.ok).toBe(true)
     expect(result.ok ? result.command : '').not.toMatch(
       /(^|\s)(-y|--yes|--noconfirm|--assumeyes)(\s|$)/

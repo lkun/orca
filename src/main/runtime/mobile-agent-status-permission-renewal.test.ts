@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { AGENT_STATUS_STALE_AFTER_MS, type AgentStatusEntry } from '../../shared/agent-status-types'
 
 // Captured Claude 2.1.234 permission prompt: title settles 39ms before PermissionRequest, then repaints 123ms after.
@@ -14,7 +14,7 @@ type TitleRenewal = (
 ) => AgentStatusEntry | null
 
 function renewFromPtyTitle(): TitleRenewal {
-  const runtime = new OrcaRuntimeService()
+  const runtime = new OCCRuntimeService()
   const renew = (runtime as unknown as { renewMobileAgentStatusFromPtyTitle: TitleRenewal })
     .renewMobileAgentStatusFromPtyTitle
   return (status, pty, options) => renew.call(runtime, status, pty, options ?? {})

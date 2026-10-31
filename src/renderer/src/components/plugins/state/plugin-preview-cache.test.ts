@@ -24,7 +24,7 @@ const manifest = pluginManifestSchema.parse({
   publisher: 'acme',
   name: 'Dusk',
   version: '1.0.0',
-  engines: { orca: '>=1.0.0' },
+  engines: { occ: '>=1.0.0' },
   pluginApi: 1,
   contributes: { themes: [{ id: 'dusk', title: 'Dusk', path: 'themes/dusk.json' }] }
 })

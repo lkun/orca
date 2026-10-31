@@ -11,7 +11,7 @@ import { getOrchestrationPeerCapabilityCache } from '../../../../orchestration/o
 import { liveFederatedHomeAutoReleaseAt } from '../../../../orchestration/worker-terminal-ownership'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { resolvePinnedFederatedServer } from '../worker/worker-observation'
 import { applyConfirmedFederatedReleaseHomeProjection } from './federated-worker-release'
 
@@ -36,7 +36,7 @@ export type FederatedFleetHostError = {
 }
 
 export async function readFederatedFleetSnapshots(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   dispatchIds: readonly string[]
 }): Promise<{

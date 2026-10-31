@@ -4,7 +4,7 @@ import type {
   ExternalAutomationJob,
   ExternalAutomationManager
 } from '../../../../shared/automations-types'
-import type { OrcaHooks } from '../../../../shared/orca-yaml-hook-types'
+import type { OCCHooks } from '../../../../shared/occ-yaml-hook-types'
 import { useContextualTour } from '@/components/contextual-tours/use-contextual-tour'
 import type { AutomationDraft } from './AutomationEditorDialog'
 import { AUTOMATION_DEFAULT_TIME } from './automation-draft-model'
@@ -117,10 +117,10 @@ export function useAutomationsPageLocalState(store: AutomationsPageStoreState) {
   const setupDecisionDefaultSignatureRef = useRef<string | null>(null)
   const setupDecisionTouchedRef = useRef(false)
   const automationHookCheckPromisesRef = useRef<
-    Map<string, Promise<{ hooks: OrcaHooks | null; ok: boolean }>>
+    Map<string, Promise<{ hooks: OCCHooks | null; ok: boolean }>>
   >(new Map())
   const [automationYamlHooksByRepoKey, setAutomationYamlHooksByRepoKey] = useState<
-    Record<string, OrcaHooks | null>
+    Record<string, OCCHooks | null>
   >({})
   const [draft, setDraft] = useState<AutomationDraft>({
     name: '',

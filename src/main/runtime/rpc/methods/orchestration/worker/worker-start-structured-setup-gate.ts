@@ -1,7 +1,7 @@
 /** Structured chats have no startup command to sequence after setup, so wait explicitly within the start deadline.
  * Missing evidence never fails start: unavailable waits need no receipt; attempted waits that throw record wait_unevaluated. */
 
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { WorkerEffect, WorkerSetupReceipt } from './worker-topology'
 
 export type StructuredWorkerSetupGate = {
@@ -12,7 +12,7 @@ export type StructuredWorkerSetupGate = {
 }
 
 export async function awaitStructuredWorkerSetupGate(args: {
-  runtime: Pick<OrcaRuntimeService, 'waitForSetupTerminalCompletion'>
+  runtime: Pick<OCCRuntimeService, 'waitForSetupTerminalCompletion'>
   setup: WorkerSetupReceipt
   effects: WorkerEffect[]
   timeoutMs: number

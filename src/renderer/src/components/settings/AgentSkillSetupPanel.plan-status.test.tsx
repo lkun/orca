@@ -94,8 +94,8 @@ it.each([
     mocks.plan.mockResolvedValue({
       kind: 'plan',
       plan: planOf([
-        planEntry('orca-cli', [
-          planOp(kind, '/home/u/.claude/skills/orca-cli', {
+        planEntry('occ-cli', [
+          planOp(kind, '/home/u/.claude/skills/occ-cli', {
             observed: { kind: 'folder', entries: ['SKILL.md:file'], skillDigest: 'c'.repeat(64) },
             ...(kind === 'leave' ? { reason: 'edited', replaceable: true } : {})
           })
@@ -106,7 +106,7 @@ it.each([
       <AgentSkillSetupPanel
         title="Browser Use"
         description={null}
-        skillNames={['orca-cli']}
+        skillNames={['occ-cli']}
         installed
         loading={false}
         error={null}
@@ -126,22 +126,22 @@ it.each([
 ] as const)(
   'reviews a skipped $reason copy before and after installing for other agents (hideHeader=$hideHeader)',
   async ({ reason, hideHeader }) => {
-    const keptCopy = planOp('leave', '/home/u/.claude/skills/orca-cli', {
+    const keptCopy = planOp('leave', '/home/u/.claude/skills/occ-cli', {
       reason,
       replaceable: true,
       observed: { kind: 'folder', entries: ['SKILL.md:file'], skillDigest: 'c'.repeat(64) }
     })
     const pending = planOf([
-      planEntry('orca-cli', [
-        planOp('write', '/home/u/.agents/skills/orca-cli'),
+      planEntry('occ-cli', [
+        planOp('write', '/home/u/.agents/skills/occ-cli'),
         keptCopy,
-        planOp('link', '/home/u/.cursor/skills/orca-cli', { agents: ['cursor'] }),
-        planOp('link', '/home/u/.codex/skills/orca-cli', { agents: ['codex'] })
+        planOp('link', '/home/u/.cursor/skills/occ-cli', { agents: ['cursor'] }),
+        planOp('link', '/home/u/.codex/skills/occ-cli', { agents: ['codex'] })
       ])
     ])
     const installed = planOf([
       planEntry(
-        'orca-cli',
+        'occ-cli',
         pending.skills[0].ops.map((op) =>
           op.kind === 'leave' ? op : { ...op, kind: 'keep' as const }
         )
@@ -156,7 +156,7 @@ it.each([
       <AgentSkillSetupPanel
         title="Browser Use"
         description={null}
-        skillNames={['orca-cli']}
+        skillNames={['occ-cli']}
         installed
         loading={false}
         error={null}

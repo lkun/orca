@@ -12,7 +12,7 @@
     "src/main/runtime/__fixtures__/*.timing.json",
     "resources/skills/released-digests.json",
     "docs/schemas/plugins/**/*.schema.json",
-    "examples/plugins/*/orca-plugin.v2.schema.json",
+    "examples/plugins/*/occ-plugin.v2.schema.json",
     "docs/reference/plugin-manifest.md",
     "docs/reference/plugin-catalog.md",
     "docs/reference/plugin-host-api.md",

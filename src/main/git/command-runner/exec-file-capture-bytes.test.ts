@@ -50,7 +50,7 @@ describe('termination-barrier binary output', () => {
     const marker = termination
       .wrapGuestArgs(['git'])
       .join(' ')
-      .match(/__ORCA_WSL_PROCESS_GROUP_[0-9a-f-]+__=/)?.[0]
+      .match(/__OCC_WSL_PROCESS_GROUP_[0-9a-f-]+__=/)?.[0]
     expect(marker).toBeDefined()
     const script = `${writeBytes}process.stderr.write(${JSON.stringify(`${marker}4321\r\n`)});process.stderr.write(Buffer.from([255,128]));`
     await expect(

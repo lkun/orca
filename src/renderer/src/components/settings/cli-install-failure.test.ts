@@ -7,7 +7,7 @@ const FALLBACK = 'OCC could not finish CLI registration and reported no reason.'
 function cliStatus(overrides: Partial<CliInstallStatus> = {}): CliInstallStatus {
   return {
     platform: 'darwin',
-    commandName: 'orca',
+    commandName: 'occ',
     commandPath: '/usr/local/bin/occ',
     pathDirectory: '/usr/local/bin',
     pathConfigured: true,
@@ -73,13 +73,13 @@ describe('readCliInstallRejection', () => {
       readCliInstallRejection(
         new Error(
           "Error invoking remote method 'cli:install': Error: Refusing to replace non-OCC " +
-            'command at /usr/local/bin/orca. Remove it and register again if it is no longer needed.'
+            'command at /usr/local/bin/occ. Remove it and register again if it is no longer needed.'
         ),
         FALLBACK
       )
     ).toEqual({
       reason:
-        'Refusing to replace non-OCC command at /usr/local/bin/orca. ' +
+        'Refusing to replace non-OCC command at /usr/local/bin/occ. ' +
         'Remove it and register again if it is no longer needed.',
       conflictCommandPath: null
     })
@@ -90,7 +90,7 @@ describe('readCliInstallRejection', () => {
       new Error(
         "Error invoking remote method 'cli:install': Error: Timed out waiting for another OCC " +
           'process to finish CLI registration (waited 330s). If no other OCC is running, remove ' +
-          '/home/u/.cache/orca/appimage/.cli-registration.lock and retry.'
+          '/home/u/.cache/occ/appimage/.cli-registration.lock and retry.'
       ),
       FALLBACK
     )

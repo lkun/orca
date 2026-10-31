@@ -6,12 +6,12 @@ import {
 
 describe('orchestration recovery command identity', () => {
   it.each([
-    ['configured dev', { ORCA_CLI_COMMAND: 'occ-dev' }, 'darwin', 'occ-dev'],
-    ['configured WSL', { ORCA_CLI_COMMAND: 'occ-ide' }, 'linux', 'occ-ide'],
-    ['dev checkout', { ORCA_DEV_REPO_ROOT: '/repo' }, 'darwin', 'occ-dev'],
+    ['configured dev', { OCC_CLI_COMMAND: 'occ-dev' }, 'darwin', 'occ-dev'],
+    ['configured WSL', { OCC_CLI_COMMAND: 'occ-ide' }, 'linux', 'occ-ide'],
+    ['dev checkout', { OCC_DEV_REPO_ROOT: '/repo' }, 'darwin', 'occ-dev'],
     ['packaged Linux', {}, 'linux', 'occ-ide'],
-    ['local macOS', {}, 'darwin', 'orca'],
-    ['local Windows', {}, 'win32', 'orca']
+    ['local macOS', {}, 'darwin', 'occ'],
+    ['local Windows', {}, 'win32', 'occ']
   ] as const)('resolves the %s CLI identity', (_name, env, platform, expected) => {
     expect(resolveOrchestrationCliExecutable(env, platform)).toBe(expected)
   })
@@ -27,10 +27,10 @@ describe('orchestration recovery command identity', () => {
           timeoutMs: 90_000,
           devMode: false
         },
-        'orca'
+        'occ'
       )
     ).toEqual([
-      'orca',
+      'occ',
       'orchestration',
       'worker-start',
       '--task',
@@ -84,7 +84,7 @@ describe('orchestration recovery command identity', () => {
       ['orchestration', 'worker-retain', '--dispatch', 'dispatch_1', '--json']
     ]
   ] as const)('preserves exact raw argv for %s recovery', (_name, method, args) => {
-    expect(buildOrchestrationRecoveryCommand(method, {}, 'orca', args)).toEqual(['orca', ...args])
+    expect(buildOrchestrationRecoveryCommand(method, {}, 'occ', args)).toEqual(['occ', ...args])
   })
 
   it.each([
@@ -100,7 +100,7 @@ describe('orchestration recovery command identity', () => {
     ]
   ])('blocks %s credential argv instead of exposing it', (_name, args) => {
     expect(
-      buildOrchestrationRecoveryCommand('orchestration.send', {}, 'orca', args)
+      buildOrchestrationRecoveryCommand('orchestration.send', {}, 'occ', args)
     ).toBeUndefined()
   })
 

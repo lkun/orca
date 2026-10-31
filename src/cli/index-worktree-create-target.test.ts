@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -11,8 +11,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -23,7 +23,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -54,8 +54,8 @@ function buildSetup(overrides: {
   displayName?: string
 }) {
   return {
-    projectId: 'github:stablyai/orca',
-    path: '/tmp/orca',
+    projectId: 'github:stablyai/occ',
+    path: '/tmp/occ',
     displayName: 'OCC',
     setupState: 'ready',
     setupMethod: 'legacy-repo',
@@ -65,10 +65,10 @@ function buildSetup(overrides: {
   }
 }
 
-describe('orca cli worktree awareness', () => {
+describe('occ cli worktree awareness', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -153,10 +153,10 @@ describe('orca cli worktree awareness', () => {
         setups: [
           {
             id: 'setup-local',
-            projectId: 'github:stablyai/orca',
+            projectId: 'github:stablyai/occ',
             hostId: 'local',
             repoId: 'repo-local',
-            path: '/tmp/orca',
+            path: '/tmp/occ',
             displayName: 'OCC',
             setupState: 'ready',
             setupMethod: 'legacy-repo',
@@ -165,10 +165,10 @@ describe('orca cli worktree awareness', () => {
           },
           {
             id: 'setup-gpu',
-            projectId: 'github:stablyai/orca',
+            projectId: 'github:stablyai/occ',
             hostId: 'runtime:gpu',
             repoId: 'repo-gpu',
-            path: '/srv/orca',
+            path: '/srv/occ',
             displayName: 'OCC',
             setupState: 'ready',
             setupMethod: 'legacy-repo',
@@ -178,7 +178,7 @@ describe('orca cli worktree awareness', () => {
         ]
       }),
       okFixture('req_create', {
-        worktree: buildWorktree('/srv/orca/feature', 'feature', 'abc', 'repo-gpu'),
+        worktree: buildWorktree('/srv/occ/feature', 'feature', 'abc', 'repo-gpu'),
         lineage: null,
         warnings: []
       })
@@ -190,7 +190,7 @@ describe('orca cli worktree awareness', () => {
         'worktree',
         'create',
         '--project',
-        'github:stablyai/orca',
+        'github:stablyai/occ',
         '--host',
         'runtime:gpu',
         '--name',
@@ -228,10 +228,10 @@ describe('orca cli worktree awareness', () => {
         setups: [
           {
             id: 'setup-gpu',
-            projectId: 'github:stablyai/orca',
+            projectId: 'github:stablyai/occ',
             hostId: 'runtime:gpu',
             repoId: 'repo-gpu',
-            path: '/srv/orca',
+            path: '/srv/occ',
             displayName: 'OCC',
             setupState: 'ready',
             setupMethod: 'legacy-repo',
@@ -241,7 +241,7 @@ describe('orca cli worktree awareness', () => {
         ]
       }),
       okFixture('req_create', {
-        worktree: buildWorktree('/srv/orca/feature', 'feature', 'abc', 'repo-gpu'),
+        worktree: buildWorktree('/srv/occ/feature', 'feature', 'abc', 'repo-gpu'),
         lineage: null,
         warnings: []
       })
@@ -458,13 +458,13 @@ describe('orca cli worktree awareness', () => {
             id: 'setup-local',
             hostId: 'local',
             repoId: 'repo-local',
-            path: '/tmp/orca'
+            path: '/tmp/occ'
           }),
           buildSetup({
             id: 'setup-gpu',
             hostId: 'runtime:gpu',
             repoId: 'repo-gpu',
-            path: '/srv/orca'
+            path: '/srv/occ'
           })
         ]
       })
@@ -475,7 +475,7 @@ describe('orca cli worktree awareness', () => {
         'worktree',
         'create',
         '--project',
-        'github:stablyai/orca',
+        'github:stablyai/occ',
         '--name',
         'feature',
         '--no-parent',
@@ -494,7 +494,7 @@ describe('orca cli worktree awareness', () => {
     process.exitCode = priorExitCode
   })
 
-  it('accepts the host alias that `orca host list` prints', async () => {
+  it('accepts the host alias that `occ host list` prints', async () => {
     queueFixtures(
       callMock,
       okFixture('req_ssh_targets', {
@@ -507,12 +507,12 @@ describe('orca cli worktree awareness', () => {
             id: 'setup-trader',
             hostId: 'ssh:ssh-1783599077486-fyasux',
             repoId: 'repo-trader',
-            path: '/home/trader/orca'
+            path: '/home/trader/occ'
           })
         ]
       }),
       okFixture('req_create', {
-        worktree: buildWorktree('/home/trader/orca/feature', 'feature', 'abc', 'repo-trader'),
+        worktree: buildWorktree('/home/trader/occ/feature', 'feature', 'abc', 'repo-trader'),
         lineage: null,
         warnings: []
       })
@@ -524,7 +524,7 @@ describe('orca cli worktree awareness', () => {
         'worktree',
         'create',
         '--project',
-        'github:stablyai/orca',
+        'github:stablyai/occ',
         '--host',
         'trader-local',
         '--name',
@@ -555,7 +555,7 @@ describe('orca cli worktree awareness', () => {
         '--repo',
         'id:repo-local',
         '--project',
-        'github:stablyai/orca',
+        'github:stablyai/occ',
         '--name',
         'feature',
         '--json'
@@ -573,7 +573,7 @@ describe('orca cli worktree awareness', () => {
   })
 
   it('passes caller terminal handle through worktree.create with cwd fallback', async () => {
-    process.env.ORCA_TERMINAL_HANDLE = 'term_parent'
+    process.env.OCC_TERMINAL_HANDLE = 'term_parent'
     queueFixtures(
       callMock,
       worktreeListFixture([buildWorktree('/tmp/repo', 'main', 'abc', 'repo-1')]),
@@ -611,7 +611,7 @@ describe('orca cli worktree awareness', () => {
   })
 
   it('marks every worktree.create as CLI-created even from an external shell', async () => {
-    delete process.env.ORCA_TERMINAL_HANDLE
+    delete process.env.OCC_TERMINAL_HANDLE
     queueFixtures(
       callMock,
       okFixture('req_create_external', {

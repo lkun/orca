@@ -17,7 +17,7 @@ describe('Claude agent view delivery', () => {
       action: 'register',
       view: { agentId: 'previous', revision: 1 },
       keybindings: JSON.stringify({
-        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
       })
     })
     const trigger = vi.fn(async (_input: string, isCurrent: () => boolean) => {
@@ -28,7 +28,7 @@ describe('Claude agent view delivery', () => {
         action: 'register',
         view: { agentId: 'previous', revision: 1 },
         keybindings: JSON.stringify({
-          bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+          bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
         })
       })
       expect(isCurrent()).toBe(false)
@@ -45,7 +45,7 @@ describe('Claude agent view delivery', () => {
         action: 'register',
         view,
         keybindings: JSON.stringify({
-          bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+          bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
         })
       })
       const trigger = vi.fn(async () => true)
@@ -64,7 +64,7 @@ describe('Claude agent view delivery', () => {
       action: 'register',
       view: { revision: 1 },
       keybindings: JSON.stringify({
-        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
       })
     })
     const trigger = vi.fn(async (_input: string, isCurrent: () => boolean) => {
@@ -90,7 +90,7 @@ describe('Claude agent view delivery', () => {
       action: 'register',
       view: { agentId: 'previous', revision: 1 },
       keybindings: JSON.stringify({
-        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
       })
     })
     expect(await bridge.view({ ...identity, sessionId: 'another-session', trigger })).toEqual({
@@ -118,7 +118,7 @@ describe('Claude agent view delivery', () => {
       action: 'register',
       view: { agentId: 'previous', revision: 1 },
       keybindings: JSON.stringify({
-        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
       })
     })
     const child = bridge.view({ ...identity, agentId: 'child', trigger: async () => true })
@@ -143,7 +143,7 @@ describe('Claude agent view delivery', () => {
       action: 'register',
       view: { agentId: 'previous', revision: 1 },
       keybindings: JSON.stringify({
-        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
       })
     }
     bridge.receive({ ...registration, view: { revision: 1 } })
@@ -181,7 +181,7 @@ describe('Claude agent view delivery', () => {
       action: 'register',
       view: { agentId: 'previous', revision: 1 },
       keybindings: JSON.stringify({
-        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
       })
     })
     const result = bridge.view({ ...identity, agentId: 'child', trigger: async () => true })
@@ -200,7 +200,7 @@ describe('Claude agent view delivery', () => {
       action: 'register',
       view: { agentId: 'previous', revision: 1 },
       keybindings: JSON.stringify({
-        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
       })
     })
     const first = bridge.view({ ...identity, trigger: async () => true })
@@ -211,7 +211,7 @@ describe('Claude agent view delivery', () => {
       action: 'register',
       view: { agentId: 'previous', revision: 1 },
       keybindings: JSON.stringify({
-        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+h': 'command:orca-agent-view' } }]
+        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+h': 'command:occ-agent-view' } }]
       })
     })
     expect(await first).toEqual({ status: 'unavailable' })
@@ -224,7 +224,7 @@ describe('Claude agent view delivery', () => {
       action: 'register',
       view: { agentId: 'previous', revision: 1 },
       keybindings: JSON.stringify({
-        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+h': 'command:orca-agent-view' } }]
+        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+h': 'command:occ-agent-view' } }]
       })
     })
     await vi.advanceTimersByTimeAsync(15001)

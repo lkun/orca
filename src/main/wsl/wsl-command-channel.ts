@@ -1,5 +1,5 @@
 import { Duplex } from 'node:stream'
-import type { PipedChildProcess } from '@orca/process-host/process-spec'
+import type { PipedChildProcess } from '@occ/process-host/process-spec'
 import type { RemoteCommandChannel } from '../managed-server/install/remote-install-transport'
 
 /** How long a closed channel's guest gets to exit on stdin EOF before wsl.exe is killed. */

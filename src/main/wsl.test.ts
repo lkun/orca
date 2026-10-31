@@ -1,13 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { ProcessResult } from '@orca/process-host/process-spec'
-import { assertWslDistroAllowed } from '@orca/process-host/wsl-distro-allowlist'
+import type { ProcessResult } from '@occ/process-host/process-spec'
+import { assertWslDistroAllowed } from '@occ/process-host/wsl-distro-allowlist'
 
 const { runProcessMock, runProcessSyncMock } = vi.hoisted(() => ({
   runProcessMock: vi.fn(),
   runProcessSyncMock: vi.fn()
 }))
 
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: runProcessMock,
   runProcessSync: runProcessSyncMock
 }))
@@ -319,18 +319,18 @@ describe('WSL probes under the internal distro allowlist', () => {
   })
 
   it('still lists distros, and an excluded distro home probe fails like any other probe', async () => {
-    vi.stubEnv('ORCA_INTERNAL_WSL_DISTRO_ALLOWLIST', 'orca-test-a')
+    vi.stubEnv('OCC_INTERNAL_WSL_DISTRO_ALLOWLIST', 'occ-test-a')
     // Stands in for process-host: the real check runs before a child would start.
     runProcessMock.mockImplementation(async (spec: { program: string; args: string[] }) => {
       assertWslDistroAllowed(spec.program, spec.args)
       return spec.args.includes('--list')
-        ? exited('Ubuntu\norca-test-a\n')
+        ? exited('Ubuntu\nocc-test-a\n')
         : exited('/home/alice\n')
     })
     await withPlatformAsync('win32', async () => {
-      await expect(listWslDistrosAsync()).resolves.toEqual(['Ubuntu', 'orca-test-a'])
+      await expect(listWslDistrosAsync()).resolves.toEqual(['Ubuntu', 'occ-test-a'])
       await expect(getWslHomeAsync('Ubuntu')).resolves.toBeNull()
-      await expect(getWslHomeAsync('orca-test-a')).resolves.toContain('alice')
+      await expect(getWslHomeAsync('occ-test-a')).resolves.toContain('alice')
     })
   })
 })
@@ -603,12 +603,12 @@ describe('wsl path helpers', () => {
   })
 
   it('converts Windows drive paths to /mnt paths for WSL commands', () => {
-    expect(toLinuxPath('C:\\Users\\jinwo\\git\\orca')).toBe('/mnt/c/Users/jinwo/git/orca')
+    expect(toLinuxPath('C:\\Users\\jinwo\\git\\occ')).toBe('/mnt/c/Users/jinwo/git/occ')
   })
 
   it('converts /mnt drive paths back to native Windows form', () => {
-    expect(toWindowsWslPath('/mnt/c/Users/jinwo/git/orca', 'Ubuntu')).toBe(
-      'C:\\Users\\jinwo\\git\\orca'
+    expect(toWindowsWslPath('/mnt/c/Users/jinwo/git/occ', 'Ubuntu')).toBe(
+      'C:\\Users\\jinwo\\git\\occ'
     )
   })
 })
@@ -619,7 +619,7 @@ describe('wslUncDirectoryExistsAsync', () => {
   })
 
   it('returns true when the distro reports the directory exists', async () => {
-    runProcessMock.mockResolvedValue(exited('__ORCA_DIRECTORY_EXISTS__'))
+    runProcessMock.mockResolvedValue(exited('__OCC_DIRECTORY_EXISTS__'))
 
     await expect(
       withPlatformAsync('win32', () =>
@@ -636,7 +636,7 @@ describe('wslUncDirectoryExistsAsync', () => {
           '--exec',
           'sh',
           '-c',
-          expect.stringContaining('__ORCA_DIRECTORY_EXISTS__'),
+          expect.stringContaining('__OCC_DIRECTORY_EXISTS__'),
           'sh',
           '/home/jin/repo'
         ]
@@ -646,7 +646,7 @@ describe('wslUncDirectoryExistsAsync', () => {
 
   it('distinguishes a missing directory from an inconclusive probe', async () => {
     runProcessMock
-      .mockResolvedValueOnce(exited('__ORCA_DIRECTORY_MISSING__'))
+      .mockResolvedValueOnce(exited('__OCC_DIRECTORY_MISSING__'))
       .mockResolvedValueOnce(exited('', 4294967295))
 
     await withPlatformAsync('win32', async () => {

@@ -23,7 +23,7 @@ function writeAgent(home: string, folder: string, output: string): void {
 
 describe.runIf(process.platform !== 'win32')('chat naming CLI discovery', () => {
   it('finds an nvm Codex when a GUI process PATH omits its bin directory', async () => {
-    const home = mkdtempSync(join(tmpdir(), 'orca-naming-nvm-'))
+    const home = mkdtempSync(join(tmpdir(), 'occ-naming-nvm-'))
     homes.push(home)
     mkdirSync(join(home, 'empty-path'))
     const bin = join(home, '.nvm', 'versions', 'node', 'v24.1.0', 'bin')
@@ -47,7 +47,7 @@ describe.runIf(process.platform !== 'win32')('chat naming CLI discovery', () => 
     [':EMPTY', '.'],
     ['EMPTY:', '.']
   ])('resolves recipe PATH %s from the workspace before global installs', async (path, folder) => {
-    const home = mkdtempSync(join(tmpdir(), 'orca-naming-recipe-path-'))
+    const home = mkdtempSync(join(tmpdir(), 'occ-naming-recipe-path-'))
     homes.push(home)
     mkdirSync(join(home, 'empty-path'))
     writeAgent(home, folder, 'Project CLI')

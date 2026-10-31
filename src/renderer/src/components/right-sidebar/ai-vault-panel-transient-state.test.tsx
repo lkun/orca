@@ -12,7 +12,7 @@ type AiVaultPanelContext = {
 }
 
 const AVAILABLE_CONTEXT: AiVaultPanelContext = {
-  activeProjectKey: 'project:orca',
+  activeProjectKey: 'project:occ',
   activeWorktreePath: '/repo'
 }
 
@@ -22,7 +22,7 @@ const UNAVAILABLE_PROJECT_CONTEXT: AiVaultPanelContext = {
 }
 
 const UNAVAILABLE_WORKSPACE_CONTEXT: AiVaultPanelContext = {
-  activeProjectKey: 'project:orca',
+  activeProjectKey: 'project:occ',
   activeWorktreePath: null
 }
 
@@ -38,13 +38,13 @@ describe('useAiVaultPanelScope', () => {
 
     act(() => {
       first.result.current.selectScope('project')
-      first.result.current.toggleGroup('project:orca')
+      first.result.current.toggleGroup('project:occ')
     })
     first.unmount()
 
     const restored = renderHook(() => useAiVaultPanelScope(AVAILABLE_CONTEXT))
     expect(restored.result.current.scope).toBe('project')
-    expect(restored.result.current.collapsedGroups).toEqual(new Set(['project:orca']))
+    expect(restored.result.current.collapsedGroups).toEqual(new Set(['project:occ']))
   })
 
   it('falls back to all without forgetting a preferred project scope', () => {
@@ -123,7 +123,7 @@ describe('useAiVaultPanelScope', () => {
     const sidebar = renderHook(() => useAiVaultPanelScope(AVAILABLE_CONTEXT))
     act(() => {
       sidebar.result.current.handleScopeChange('project')
-      sidebar.result.current.toggleGroup('project:orca')
+      sidebar.result.current.toggleGroup('project:occ')
     })
     const dialog = renderHook(() => useAiVaultPanelScope({ ...AVAILABLE_CONTEXT, local: true }))
     expect(dialog.result.current.scope).toBe('workspace')
@@ -133,7 +133,7 @@ describe('useAiVaultPanelScope', () => {
       dialog.result.current.toggleGroup('project:dialog')
     })
     expect(sidebar.result.current.scope).toBe('project')
-    expect(sidebar.result.current.collapsedGroups).toEqual(new Set(['project:orca']))
+    expect(sidebar.result.current.collapsedGroups).toEqual(new Set(['project:occ']))
     dialog.unmount()
     const reopened = renderHook(() => useAiVaultPanelScope({ ...AVAILABLE_CONTEXT, local: true }))
     expect(reopened.result.current.scope).toBe('workspace')
@@ -141,6 +141,6 @@ describe('useAiVaultPanelScope', () => {
     sidebar.unmount()
     const returned = renderHook(() => useAiVaultPanelScope(AVAILABLE_CONTEXT))
     expect(returned.result.current.scope).toBe('project')
-    expect(returned.result.current.collapsedGroups).toEqual(new Set(['project:orca']))
+    expect(returned.result.current.collapsedGroups).toEqual(new Set(['project:occ']))
   })
 })

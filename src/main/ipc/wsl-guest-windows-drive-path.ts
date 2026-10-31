@@ -1,4 +1,4 @@
-// WSL-host orcad must ignore Windows CLI shims; identify mounts by type because the automount root is configurable.
+// WSL-host occd must ignore Windows CLI shims; identify mounts by type because the automount root is configurable.
 import { existsSync, readFileSync } from 'node:fs'
 import { isAbsolute } from 'node:path'
 import { resolveCliCommand } from '../../shared/node-cli-command-resolution'
@@ -6,7 +6,7 @@ import { resolveCliCommand } from '../../shared/node-cli-command-resolution'
 const WINDOWS_DRIVE_MOUNT_TYPES = new Set(['drvfs', '9p', 'virtiofs'])
 
 /** WSL-host launch marker; SSH guests and WSLg retain their original PATH. */
-export const ORCAD_WSL_HOST_ENV = 'ORCA_WSL_ORCAD_HOST'
+export const OCCD_WSL_HOST_ENV = 'OCC_WSL_OCCD_HOST'
 
 let cachedGuestMounts: readonly string[] | null = null
 
@@ -28,12 +28,12 @@ export function isWslGuestProcess(
   return Boolean(env.WSL_DISTRO_NAME?.trim() || env.WSL_INTEROP?.trim()) || interopRegistered()
 }
 
-export function isWslHostOrcadProcess(
+export function isWslHostOCCdProcess(
   env: NodeJS.ProcessEnv = process.env,
   platform: NodeJS.Platform = process.platform,
   interopRegistered?: () => boolean
 ): boolean {
-  return env[ORCAD_WSL_HOST_ENV] === '1' && isWslGuestProcess(env, platform, interopRegistered)
+  return env[OCCD_WSL_HOST_ENV] === '1' && isWslGuestProcess(env, platform, interopRegistered)
 }
 
 /** Decode /proc/mounts octal escapes, including whitespace and backslashes. */
@@ -75,7 +75,7 @@ export function readGuestWindowsDriveMounts(): readonly string[] {
     return cachedGuestMounts
   }
   let mounts: string[] = []
-  if (isWslHostOrcadProcess()) {
+  if (isWslHostOCCdProcess()) {
     try {
       mounts = parseWindowsDriveMountPoints(readFileSync('/proc/mounts', 'utf8'))
     } catch {
@@ -91,7 +91,7 @@ export function _setGuestWindowsDriveMountsForTests(mounts: readonly string[] | 
   cachedGuestMounts = mounts
 }
 
-/** Keep CLI launches consistent with detection by removing Windows drive PATH entries only in WSL-host orcad. */
+/** Keep CLI launches consistent with detection by removing Windows drive PATH entries only in WSL-host occd. */
 export function guestNativePathEnv(
   pathEnv: string | null | undefined,
   mounts: readonly string[] = readGuestWindowsDriveMounts()
@@ -103,7 +103,7 @@ export function guestNativePathEnv(
   return value === null ? null : withoutWindowsDriveMountDirs(value, mounts)
 }
 
-/** A one-shot agent child's env on a WSL-host orcad: its PATH lookup can't reach a Windows shim. */
+/** A one-shot agent child's env on a WSL-host occd: its PATH lookup can't reach a Windows shim. */
 export function guestNativeSpawnEnv(
   env: NodeJS.ProcessEnv,
   mounts: readonly string[] = readGuestWindowsDriveMounts()
@@ -116,7 +116,7 @@ export function guestNativeSpawnEnv(
 }
 
 /**
- * Resolve an agent program as a WSL-host orcad must: never a Windows-drive copy. `null` means only a
+ * Resolve an agent program as a WSL-host occd must: never a Windows-drive copy. `null` means only a
  * Windows copy exists; a bare name would reach it through the spawn's own PATH lookup.
  */
 export function resolveGuestNativeProgram(

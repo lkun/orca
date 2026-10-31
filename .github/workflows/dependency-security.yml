@@ -33,7 +33,7 @@ on:
         default: ubuntu-24.04
     secrets:
       SLACK_WEBHOOK_URL:
-        description: Existing orca-releases incoming webhook
+        description: Existing occ-releases incoming webhook
         required: false
   workflow_dispatch:
 
@@ -45,7 +45,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  ORCA_BACKGROUND_LAUNCH: '1'
+  OCC_BACKGROUND_LAUNCH: '1'
 
 jobs:
   javascript:
@@ -130,14 +130,14 @@ jobs:
   notify:
     needs: [javascript, rust]
     if: >-
-      !cancelled() && github.repository == 'stablyai/orca' &&
+      !cancelled() && github.repository == 'stablyai/occ' &&
       (needs.javascript.outputs.audit_result == 'failure' ||
       needs.rust.outputs.audit_result == 'failure' ||
       needs.javascript.result == 'failure' || needs.rust.result == 'failure')
     runs-on: ${{ inputs.runner || 'ubuntu-24.04' }}
     timeout-minutes: 5
     steps:
-      - name: Send dependency review to orca-releases
+      - name: Send dependency review to occ-releases
         uses: actions/github-script@v8
         continue-on-error: true
         env:

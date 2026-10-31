@@ -8,19 +8,19 @@
  * must match it, so a page that forges its initiator still lacks the token.
  */
 
-export const BROWSER_EXTENSION_API_SCHEME = 'orca-extension-api'
+export const BROWSER_EXTENSION_API_SCHEME = 'occ-extension-api'
 export const BROWSER_EXTENSION_API_CALL_URL = `${BROWSER_EXTENSION_API_SCHEME}://api/call`
 /** Long-lived NDJSON response carrying the worker's events; one per running worker. */
 export const BROWSER_EXTENSION_API_EVENTS_URL = `${BROWSER_EXTENSION_API_SCHEME}://api/events`
 
 // Files OCC writes into its own copy of an extension. Chromium reserves names starting with "_".
-export const BROWSER_EXTENSION_WORKER_SHIM_FILE = 'orca-extension-api.js'
-export const BROWSER_EXTENSION_WORKER_WRAPPER_FILE = 'orca-background.js'
-export const BROWSER_EXTENSION_WORKER_TOKEN_FILE = 'orca-extension-api-token.json'
+export const BROWSER_EXTENSION_WORKER_SHIM_FILE = 'occ-extension-api.js'
+export const BROWSER_EXTENSION_WORKER_WRAPPER_FILE = 'occ-background.js'
+export const BROWSER_EXTENSION_WORKER_TOKEN_FILE = 'occ-extension-api-token.json'
 /** OCC's content script, listed first in each of the extension's isolated-world content scripts. */
-export const BROWSER_EXTENSION_CONTENT_SCRIPT_FILE = 'orca-content-script-api.js'
+export const BROWSER_EXTENSION_CONTENT_SCRIPT_FILE = 'occ-content-script-api.js'
 /** The extension's own manifest, kept so a later shim or OCC update can rewrite from it. */
-export const BROWSER_EXTENSION_ORIGINAL_MANIFEST_FILE = 'orca-original-manifest.json'
+export const BROWSER_EXTENSION_ORIGINAL_MANIFEST_FILE = 'occ-original-manifest.json'
 
 /** Body of every POST; `request` is a BrowserExtensionInvokeRequest for calls, absent for events. */
 export type BrowserExtensionWorkerRequestBody = { token: string; request?: unknown }

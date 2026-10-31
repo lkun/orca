@@ -313,7 +313,7 @@ describe('terminal accessory layout', () => {
     })
 
     expect(asyncStorageMock.setItem).toHaveBeenCalledWith(
-      'orca:terminal-accessory-layout',
+      'occ:terminal-accessory-layout',
       JSON.stringify({
         version: 2,
         directionPadEnabled: true,

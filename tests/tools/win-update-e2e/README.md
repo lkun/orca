@@ -140,7 +140,7 @@ successful teardown removes it.
 ```
 pnpm win-update-e2e \
   --from-release v1.4.124-rc.9 --to-release v1.4.125-rc.1 \
-  --expect cold-restore --install-dir C:\OrcaE2E
+  --expect cold-restore --install-dir C:\OCCE2E
 ```
 
 Read-only, touches nothing — print what isolated mode would snapshot on this machine:
@@ -217,5 +217,5 @@ powershell -File tests/tools/win-update-e2e/window-enum.ps1
 - **Daemon file log** does not exist yet in packaged builds (the fork's stdio is
   suppressed). The "daemon log free of ERROR lines" assertion is `INFO` until
   Phase 0 daemon logging lands, then it reads `<userData>/logs/daemon.log`.
-- The harness assumes the packaged main honors `ORCA_E2E_USER_DATA_DIR` to
+- The harness assumes the packaged main honors `OCC_E2E_USER_DATA_DIR` to
   relocate userData; verify this against a real packaged build.

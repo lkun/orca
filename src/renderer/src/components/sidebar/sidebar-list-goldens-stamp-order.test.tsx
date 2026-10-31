@@ -16,7 +16,7 @@ import {
   initialState
 } from './sidebar-list-golden-suite.test-fixture'
 
-vi.mock('../../../../shared/sidebar-inputs-switch', () => ({ ORCA_SIDEBAR_INPUTS_IS_MAIN: true }))
+vi.mock('../../../../shared/sidebar-inputs-switch', () => ({ OCC_SIDEBAR_INPUTS_IS_MAIN: true }))
 // Main's list session is a runtime call with no bearing on the rows.
 vi.mock('@/lib/sidebar-list-session', () => ({ useSidebarListSession: () => {} }))
 

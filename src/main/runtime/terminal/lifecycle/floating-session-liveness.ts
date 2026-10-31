@@ -1,14 +1,14 @@
-import { OrcaRuntimeWithRefreshPtyWorktreeRecordsWithControllerInventory } from './pty-controller-inventory-refresh'
+import { OCCRuntimeWithRefreshPtyWorktreeRecordsWithControllerInventory } from './pty-controller-inventory-refresh'
 import { FLOATING_TERMINAL_WORKTREE_ID } from '../../../../shared/constants'
 import { indexFloatingSnapshotPtyBindings } from '../../floating-snapshot-pty-bindings'
 import type {
   RuntimeLeafRecord,
   RuntimePtyWorktreeRecord
 } from '../../runtime-terminal-state-records'
-import { DISCONNECTED_PTY_RECORD_MAX } from '../../orca-runtime-postlude'
+import { DISCONNECTED_PTY_RECORD_MAX } from '../../occ-runtime-postlude'
 import { questionAnswerWaitPrefix } from '../../orchestration/question-answer-delivery'
 
-export abstract class OrcaRuntimeWithRefreshFloatingWorkspacePtyLiveness extends OrcaRuntimeWithRefreshPtyWorktreeRecordsWithControllerInventory {
+export abstract class OCCRuntimeWithRefreshFloatingWorkspacePtyLiveness extends OCCRuntimeWithRefreshPtyWorktreeRecordsWithControllerInventory {
   protected refreshFloatingWorkspacePtyLiveness(): Set<string> | null {
     const controller = this.ptyController
     if (!controller?.hasPty) {

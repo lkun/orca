@@ -6,7 +6,7 @@ import {
   RELEASE_SYNCHRONIZED_OUTPUT
 } from '../../../../shared/terminal-mode-reset-profiles'
 import { Terminal } from '@xterm/headless'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { buildFreshShellViewportBlankingSequence } from '../../../../shared/terminal-fresh-shell-viewport'
 import {
   flushAsyncTicks,
@@ -144,7 +144,7 @@ export function registerPtyConnectionColdRestoreRepaintTests(): void {
       // Replay still owes a cold-restore ack to prevent redelivery; identify the painted pane so main releases only its current terminal.
       expect(window.api.pty.ackColdRestore).toHaveBeenCalledWith(
         'tab-pty',
-        ...(ORCA_LAYOUT_OWNER_IS_MAIN
+        ...(OCC_LAYOUT_OWNER_IS_MAIN
           ? [{ worktreeId: deps.worktreeId, tabId: deps.tabId, leafId: LEAF_1 }]
           : [])
       )

@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
@@ -14,13 +14,13 @@ vi.setConfig({ expect: { poll: { timeout: 45_000, interval: 200 } } })
 // Creates its menus and script only on the first run, as extensions that use onInstalled do.
 const WORKER_SCRIPT = `
 chrome.commands.onCommand.addListener((name, tab) =>
-  console.log('ORCA_EXT_COMMAND ' + JSON.stringify({ name, hasTab: Boolean(tab && tab.id) }))
+  console.log('OCC_EXT_COMMAND ' + JSON.stringify({ name, hasTab: Boolean(tab && tab.id) }))
 );
 chrome.webRequest.onCompleted.addListener(
-  (d) => console.log('ORCA_EXT_WEBREQUEST ' + JSON.stringify({ path: new URL(d.url).pathname, type: d.type, tabId: d.tabId, statusCode: d.statusCode })),
+  (d) => console.log('OCC_EXT_WEBREQUEST ' + JSON.stringify({ path: new URL(d.url).pathname, type: d.type, tabId: d.tabId, statusCode: d.statusCode })),
   { urls: ['http://127.0.0.1/*'], types: ['main_frame'] }
 );
-chrome.storage.sync.get(null).then((items) => console.log('ORCA_EXT_SYNC ' + JSON.stringify(items)));
+chrome.storage.sync.get(null).then((items) => console.log('OCC_EXT_SYNC ' + JSON.stringify(items)));
 chrome.storage.local.get('setup').then(async ({ setup }) => {
   if (setup) return;
   await chrome.storage.sync.set({ remembered: { dark: true } });
@@ -31,8 +31,8 @@ chrome.storage.local.get('setup').then(async ({ setup }) => {
   ]);
   await chrome.storage.local.set({ setup: true });
   const registered = (await chrome.scripting.getRegisteredContentScripts()).map((s) => s.id);
-  console.log('ORCA_EXT_SETUP ' + JSON.stringify({ registered }));
-}).catch((error) => console.log('ORCA_EXT_ERROR ' + String(error)));
+  console.log('OCC_EXT_SETUP ' + JSON.stringify({ registered }));
+}).catch((error) => console.log('OCC_EXT_ERROR ' + String(error)));
 `
 
 type FixtureStatus = {
@@ -90,10 +90,10 @@ function launch(phase: 'first' | 'second'): ReturnType<typeof spawnProcess> {
     args,
     env: {
       ...env,
-      ORCA_BACKGROUND_LAUNCH: '1',
-      ORCA_EXTENSION_FIXTURE_STATUS: join(root, `status-${phase}.json`),
-      ORCA_EXTENSION_FIXTURE_DIR: extensionDir,
-      ORCA_EXTENSION_FIXTURE_PHASE: phase
+      OCC_BACKGROUND_LAUNCH: '1',
+      OCC_EXTENSION_FIXTURE_STATUS: join(root, `status-${phase}.json`),
+      OCC_EXTENSION_FIXTURE_DIR: extensionDir,
+      OCC_EXTENSION_FIXTURE_PHASE: phase
     },
     stdio: ['ignore', 'pipe', 'pipe']
   })
@@ -117,7 +117,7 @@ function pollStatus(phase: string, ready: (status: FixtureStatus) => boolean) {
 }
 
 beforeAll(async () => {
-  root = mkdtempSync(join(tmpdir(), 'orca-browser-extension-persistence-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-browser-extension-persistence-'))
   extensionDir = join(root, 'extension')
   mkdirSync(extensionDir)
   writeFileSync(
@@ -131,14 +131,14 @@ beforeAll(async () => {
       background: { service_worker: 'worker.js' },
       commands: {
         fill_login: { suggested_key: { default: 'Ctrl+Shift+L' }, description: 'Fill' },
-        orca_owned: { suggested_key: { default: 'Ctrl+Shift+F' }, description: 'Taken by OCC' }
+        occ_owned: { suggested_key: { default: 'Ctrl+Shift+F' }, description: 'Taken by OCC' }
       }
     })
   )
   writeFileSync(join(extensionDir, 'worker.js'), WORKER_SCRIPT)
   writeFileSync(
     join(extensionDir, 'cs.js'),
-    "console.log('ORCA_EXT_CONTENT_SCRIPT ' + JSON.stringify({ path: location.pathname }))"
+    "console.log('OCC_EXT_CONTENT_SCRIPT ' + JSON.stringify({ path: location.pathname }))"
   )
   await buildBundle(
     join(

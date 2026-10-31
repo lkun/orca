@@ -1,7 +1,7 @@
 // Probe from a fresh child of the current app: its TCC access may differ from the existing daemon.
 
 import { isAbsolute } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import type { DirectoryEnumerationOutcome } from './directory-enumeration-probe'
 
 export type FreshDaemonFolderAccess = DirectoryEnumerationOutcome | 'unknown'

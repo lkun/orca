@@ -25,7 +25,7 @@ let directory: string
 
 beforeEach(() => {
   _internals.resetCachesForTests()
-  directory = mkdtempSync(join(tmpdir(), 'orca-remote-codex-child-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-remote-codex-child-'))
 })
 
 afterEach(() => {

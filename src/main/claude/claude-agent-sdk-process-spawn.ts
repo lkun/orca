@@ -1,6 +1,6 @@
-import type { PipedChildProcess, PipedProcessSpawner } from '@orca/process-host/process-spec'
+import type { PipedChildProcess, PipedProcessSpawner } from '@occ/process-host/process-spec'
 import type { SpawnOptions as ClaudeAgentSdkSpawnOptions } from '@anthropic-ai/claude-agent-sdk'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import {
   spawnManagedProviderProcess,
   type ManagedProviderProcess

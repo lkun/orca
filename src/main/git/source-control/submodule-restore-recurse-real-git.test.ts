@@ -1,7 +1,7 @@
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { canDiscardStatusEntry } from '../../../shared/source-control-entry-actions'
 import { discardChanges } from './discard-changes'
@@ -16,7 +16,7 @@ afterEach(async () => {
 
 describe('submodule discard eligibility with real Git', () => {
   it('offers discard for a dirty submodule only when submodule.recurse makes restore work', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-submodule-recurse-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-submodule-recurse-'))
     directories.push(root)
     vi.stubEnv('GIT_CONFIG_NOSYSTEM', '1')
     vi.stubEnv('GIT_CONFIG_GLOBAL', join(root, 'missing-config'))

@@ -24,7 +24,7 @@ export function hostTerminalPolicyPath(home: string, machine: string | null): st
     .update(`${process.platform}:${machine}`)
     .digest('hex')
     .slice(0, 16)
-  return join(home, '.orca', 'host-settings', key, 'terminals.json')
+  return join(home, '.occ', 'host-settings', key, 'terminals.json')
 }
 
 async function readSavedMaximum(path: string): Promise<number | null> {
@@ -112,7 +112,7 @@ export class HostTerminalPolicy {
     private readonly system = new SystemPtyLimit(),
     private readonly readSaved: (path: string) => Promise<number | null> = readSavedMaximum
   ) {
-    const raw = env.ORCA_DAEMON_MAX_HOST_TERMINALS?.trim()
+    const raw = env.OCC_DAEMON_MAX_HOST_TERMINALS?.trim()
     this.environment =
       raw && /^\d+$/.test(raw) && isConfiguredTerminalLimit(Number(raw))
         ? resolveMaxHostTerminals(env)

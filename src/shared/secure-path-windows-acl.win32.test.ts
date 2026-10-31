@@ -37,14 +37,14 @@ describeOnWindows('Windows secure paths against a real filesystem', () => {
   let addon: WindowsSecurity['addon']
   let sid: string
   let root: string
-  /** A relocated data root: `C:\orca-…` inherits BUILTIN\Users and Authenticated Users from C:\. */
+  /** A relocated data root: `C:\occ-…` inherits BUILTIN\Users and Authenticated Users from C:\. */
   let relocatedRoot: string
 
   const daclOf = (path: string) => addon.getDaclAces(path)
   const sidsOf = (path: string) => (daclOf(path)?.aces ?? []).map((ace) => ace.sid).sort()
   const INHERITABLE = OBJECT_INHERIT_ACE | CONTAINER_INHERIT_ACE
   const INHERITED_ACE = 0x10
-  const ORCA_PRINCIPALS = () => ['S-1-5-18', 'S-1-5-32-544', sid].sort()
+  const OCC_PRINCIPALS = () => ['S-1-5-18', 'S-1-5-32-544', sid].sort()
 
   beforeAll(() => {
     const loaded = loadWindowsSecurity()
@@ -53,8 +53,8 @@ describeOnWindows('Windows secure paths against a real filesystem', () => {
     }
     addon = loaded.addon
     sid = loaded.userSid
-    root = mkdtempSync(join(tmpdir(), 'orca-acl-win32-'))
-    relocatedRoot = join('C:\\', `orca-acl-test-${randomBytes(4).toString('hex')}`)
+    root = mkdtempSync(join(tmpdir(), 'occ-acl-win32-'))
+    relocatedRoot = join('C:\\', `occ-acl-test-${randomBytes(4).toString('hex')}`)
     mkdirSync(relocatedRoot)
   })
 
@@ -99,7 +99,7 @@ describeOnWindows('Windows secure paths against a real filesystem', () => {
     expect(restrictWindowsPathSync(file, false)).toBe(true)
 
     expect(daclOf(file)?.protected).toBe(true)
-    expect(sidsOf(file)).toEqual(ORCA_PRINCIPALS())
+    expect(sidsOf(file)).toEqual(OCC_PRINCIPALS())
   })
 
   it('gives a directory inheritable rules so files created inside start restricted', () => {
@@ -111,7 +111,7 @@ describeOnWindows('Windows secure paths against a real filesystem', () => {
     expect(daclOf(dir)?.aces.every((ace) => ace.flags === INHERITABLE)).toBe(true)
     const child = join(dir, 'plain.json')
     writeFileSync(child, '{}')
-    expect(sidsOf(child)).toEqual(ORCA_PRINCIPALS())
+    expect(sidsOf(child)).toEqual(OCC_PRINCIPALS())
     expect(daclOf(child)?.aces.every((ace) => (ace.flags & INHERITED_ACE) !== 0)).toBe(true)
   })
 
@@ -136,7 +136,7 @@ describeOnWindows('Windows secure paths against a real filesystem', () => {
 
     expect(restrictWindowsPathSync(file, false)).toBe(true)
 
-    expect(sidsOf(file)).toEqual(ORCA_PRINCIPALS())
+    expect(sidsOf(file)).toEqual(OCC_PRINCIPALS())
   })
 
   it('never rewrites a path the icacls-era hardening already locked', () => {
@@ -166,7 +166,7 @@ describeOnWindows('Windows secure paths against a real filesystem', () => {
     writeFileSync(file, '{}')
 
     expect(restrictWindowsPathSync(file, false)).toBe(true)
-    expect(sidsOf(file)).toEqual(ORCA_PRINCIPALS())
+    expect(sidsOf(file)).toEqual(OCC_PRINCIPALS())
   })
 
   it('hardens a path longer than MAX_PATH', () => {
@@ -179,7 +179,7 @@ describeOnWindows('Windows secure paths against a real filesystem', () => {
     writeFileSync(file, '{}')
 
     expect(restrictWindowsPathSync(file, false)).toBe(true)
-    expect(sidsOf(`\\\\?\\${file}`)).toEqual(ORCA_PRINCIPALS())
+    expect(sidsOf(`\\\\?\\${file}`)).toEqual(OCC_PRINCIPALS())
   })
 
   it('reports failure, not success, for a path that does not exist', () => {
@@ -201,7 +201,7 @@ describeOnWindows('Windows secure paths against a real filesystem', () => {
   it('never exposes a staged or published credential under the relocated root', async () => {
     const dir = join(relocatedRoot, 'race')
     mkdirSync(dir)
-    const target = join(dir, 'orca-e2ee-keypair.json')
+    const target = join(dir, 'occ-e2ee-keypair.json')
     const observer = observeDacls(dir, 1500)
     await observer.ready
 
@@ -249,8 +249,8 @@ describeOnWindows('Windows secure paths against a real filesystem', () => {
     await vi.waitFor(
       () => {
         expect(daclOf(dir)?.protected).toBe(true)
-        expect(sidsOf(join(dir, 'cache-0'))).toEqual(ORCA_PRINCIPALS())
-        expect(sidsOf(join(dir, 'cache-3999'))).toEqual(ORCA_PRINCIPALS())
+        expect(sidsOf(join(dir, 'cache-0'))).toEqual(OCC_PRINCIPALS())
+        expect(sidsOf(join(dir, 'cache-3999'))).toEqual(OCC_PRINCIPALS())
       },
       { timeout: 60_000, interval: 20 }
     )
@@ -320,7 +320,7 @@ function observeDacls(
     `,
     {
       eval: true,
-      workerData: { dir, durationMs, addonPath: require.resolve('@orca/windows-security') }
+      workerData: { dir, durationMs, addonPath: require.resolve('@occ/windows-security') }
     }
   )
   let markReady: () => void = () => undefined

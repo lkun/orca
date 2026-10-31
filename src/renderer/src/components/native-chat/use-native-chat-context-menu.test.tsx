@@ -88,11 +88,11 @@ function childrenText(children: ReactNode): string {
 function Harness({
   onSwitchToTerminal,
   structured = false,
-  orcaSessionId
+  occSessionId
 }: {
   onSwitchToTerminal?: () => void
   structured?: boolean
-  orcaSessionId?: string
+  occSessionId?: string
 }) {
   const rootRef = createRef<HTMLDivElement>()
   const { menu } = useNativeChatContextMenu({
@@ -100,7 +100,7 @@ function Harness({
     composerRef: createRef(),
     onSwitchToTerminal,
     showTerminalPaneActions: !structured,
-    resolveOrcaSessionId: orcaSessionId === undefined ? undefined : async () => orcaSessionId,
+    resolveOCCSessionId: occSessionId === undefined ? undefined : async () => occSessionId,
     actions: {
       ...emptyNativeChatContextMenuActions,
       onPaste: vi.fn()
@@ -517,7 +517,7 @@ describe('useNativeChatContextMenu', () => {
   })
 
   describe('Copy OCC Session ID', () => {
-    const orcaSessionId = 'orca_session_id:4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37'
+    const occSessionId = 'occ_session_id:4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37'
     const writeClipboardText = vi.fn()
 
     beforeEach(() => {
@@ -539,12 +539,12 @@ describe('useNativeChatContextMenu', () => {
     }
 
     it('copies the OCC session ID in a chat tab, explaining what it is', async () => {
-      renderToStaticMarkup(<Harness structured orcaSessionId={orcaSessionId} />)
+      renderToStaticMarkup(<Harness structured occSessionId={occSessionId} />)
 
       copyItem()?.onSelect?.()
 
       await vi.waitFor(() => expect(toasts.success).toHaveBeenCalledWith('OCC session ID copied'))
-      expect(writeClipboardText).toHaveBeenCalledWith(orcaSessionId)
+      expect(writeClipboardText).toHaveBeenCalledWith(occSessionId)
       expect(tooltips.list.map(childrenText)).toContain(
         "OCC's ID for this chat, separate from the agent CLI's own session ID. Agents use it to refer to each other through OCC."
       )
@@ -558,7 +558,7 @@ describe('useNativeChatContextMenu', () => {
 
     it('reports a failed copy instead of claiming success', async () => {
       writeClipboardText.mockRejectedValue(new Error('denied'))
-      renderToStaticMarkup(<Harness structured orcaSessionId={orcaSessionId} />)
+      renderToStaticMarkup(<Harness structured occSessionId={occSessionId} />)
 
       copyItem()?.onSelect?.()
 

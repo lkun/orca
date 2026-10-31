@@ -7,12 +7,12 @@ describe('createTerminalGitHubPRLinkDetector', () => {
   it('skips nested schemes and continues through mixed HTTP and HTTPS candidates', () => {
     const observe = createTerminalGitHubPRLinkDetector()
     const urls = [
-      'https://github.com/acme/orca/pull/1',
-      'http://github.internal/acme/orca/pull/2',
-      'https://github.com/acme/orca/pull/3'
+      'https://github.com/acme/occ/pull/1',
+      'http://github.internal/acme/occ/pull/2',
+      'https://github.com/acme/occ/pull/3'
     ]
     const output = [
-      'https://example.com/redirect?to=http://github.com/acme/orca/pull/99',
+      'https://example.com/redirect?to=http://github.com/acme/occ/pull/99',
       ...urls,
       ''
     ].join('\n')
@@ -56,11 +56,11 @@ describe('createTerminalGitHubPRLinkDetector', () => {
   it('waits for a boundary when the URL is split across PTY chunks', () => {
     const observe = createTerminalGitHubPRLinkDetector()
 
-    expect(observe('https://github.com/acme/orca/pull/4')).toEqual([])
+    expect(observe('https://github.com/acme/occ/pull/4')).toEqual([])
     expect(observe('2\r\n')).toEqual([
       {
-        url: 'https://github.com/acme/orca/pull/42',
-        slug: { owner: 'acme', repo: 'orca', host: 'github.com' },
+        url: 'https://github.com/acme/occ/pull/42',
+        slug: { owner: 'acme', repo: 'occ', host: 'github.com' },
         number: 42
       }
     ])
@@ -70,10 +70,10 @@ describe('createTerminalGitHubPRLinkDetector', () => {
     const observe = createTerminalGitHubPRLinkDetector()
 
     expect(observe('created https://gith')).toEqual([])
-    expect(observe('ub.com/acme/orca/pull/42\n')).toEqual([
+    expect(observe('ub.com/acme/occ/pull/42\n')).toEqual([
       {
-        url: 'https://github.com/acme/orca/pull/42',
-        slug: { owner: 'acme', repo: 'orca', host: 'github.com' },
+        url: 'https://github.com/acme/occ/pull/42',
+        slug: { owner: 'acme', repo: 'occ', host: 'github.com' },
         number: 42
       }
     ])
@@ -96,13 +96,13 @@ describe('createTerminalGitHubPRLinkDetector', () => {
   it('still joins a PR URL split across chunks after a large scheme-free chunk', () => {
     const observe = createTerminalGitHubPRLinkDetector()
 
-    expect(observe(`${'filler output\n'.repeat(5_000)}https://github.com/acme/orca/pull/`)).toEqual(
+    expect(observe(`${'filler output\n'.repeat(5_000)}https://github.com/acme/occ/pull/`)).toEqual(
       []
     )
     expect(observe('7\r\n')).toEqual([
       {
-        url: 'https://github.com/acme/orca/pull/7',
-        slug: { owner: 'acme', repo: 'orca', host: 'github.com' },
+        url: 'https://github.com/acme/occ/pull/7',
+        slug: { owner: 'acme', repo: 'occ', host: 'github.com' },
         number: 7
       }
     ])
@@ -139,8 +139,8 @@ describe('createTerminalGitHubPRLinkDetector', () => {
 
     // The earlier scheme already overran the cap, so the trailing 'https'
     // fragment must not restart a carry and revive the abandoned URL.
-    expect(observe(`https://github.com/acme/orca/pull/1${'x'.repeat(600)}https`)).toEqual([])
-    expect(observe('://github.com/acme/orca/pull/12\n')).toEqual([])
+    expect(observe(`https://github.com/acme/occ/pull/1${'x'.repeat(600)}https`)).toEqual([])
+    expect(observe('://github.com/acme/occ/pull/12\n')).toEqual([])
   })
 
   it('joins a plain http:// PR URL split across chunks', () => {
@@ -160,10 +160,10 @@ describe('createTerminalGitHubPRLinkDetector', () => {
     const observe = createTerminalGitHubPRLinkDetector()
 
     expect(observe(`${'x'.repeat(1_000)}https`)).toEqual([])
-    expect(observe('://github.com/acme/orca/pull/12\n')).toEqual([
+    expect(observe('://github.com/acme/occ/pull/12\n')).toEqual([
       {
-        url: 'https://github.com/acme/orca/pull/12',
-        slug: { owner: 'acme', repo: 'orca', host: 'github.com' },
+        url: 'https://github.com/acme/occ/pull/12',
+        slug: { owner: 'acme', repo: 'occ', host: 'github.com' },
         number: 12
       }
     ])

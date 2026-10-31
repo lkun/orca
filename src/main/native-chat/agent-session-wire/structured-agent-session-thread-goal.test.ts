@@ -51,7 +51,7 @@ afterEach(async () => {
 })
 
 async function openJournal(onCommitted?: () => void): Promise<AgentSessionJournal> {
-  root ??= await mkdtemp(join(tmpdir(), 'orca-thread-goal-'))
+  root ??= await mkdtemp(join(tmpdir(), 'occ-thread-goal-'))
   const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
   if (onCommitted) {
     journal.observeCommits(onCommitted)
@@ -74,7 +74,7 @@ function appendGoalRow(
   overrides: Partial<AgentJournalThreadGoal>
 ): Promise<unknown> {
   return journal.appendItem(
-    { provider: 'orca', clientMessageId: `goal-row:${journal.snapshot().items.length}` },
+    { provider: 'occ', clientMessageId: `goal-row:${journal.snapshot().items.length}` },
     { kind: 'status', text: 'Goal', threadGoal: { state: 'set', goal: { ...GOAL, ...overrides } } },
     { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
   )
@@ -180,7 +180,7 @@ describe('performThreadGoalChange', () => {
   it('keeps a pasted file its objective names for the chat, and refuses one already swept', async () => {
     const journal = await openJournal()
     const storeRoot = agentSessionAttachmentStoreRoot(root ?? '')
-    const kept = join(storeRoot, '0b6f8a52-4a3e-4c4e-9a59-1d5d1f2b8c01', 'orca-paste-1-a.txt')
+    const kept = join(storeRoot, '0b6f8a52-4a3e-4c4e-9a59-1d5d1f2b8c01', 'occ-paste-1-a.txt')
     await mkdir(dirname(kept), { recursive: true })
     await writeFile(kept, 'the spec')
     const changeThreadGoal = vi.fn(async () => ({ ok: true as const }))
@@ -193,7 +193,7 @@ describe('performThreadGoalChange', () => {
     const db = openTestJournalHostDatabase(root ?? '').db
     expect(markUnclaimedUploadForSweep(db, '0b6f8a52-4a3e-4c4e-9a59-1d5d1f2b8c01', 1)).toBe(false)
 
-    const gone = join(storeRoot, '7c2d9e10-3f4a-4b5c-8d6e-2f1a0b9c8d02', 'orca-paste-2-b.txt')
+    const gone = join(storeRoot, '7c2d9e10-3f4a-4b5c-8d6e-2f1a0b9c8d02', 'occ-paste-2-b.txt')
     const result = await performThreadGoalChange(ctx, {
       clientOperationId: 'op-7',
       change: { kind: 'set', objective: `Do ${formatNativeChatFileReference(gone)}` }
@@ -429,7 +429,7 @@ it.each([
   const journal = await openJournal()
   const file = await storedGoalFile()
   const identity: AgentJournalItemIdentity = {
-    provider: 'orca',
+    provider: 'occ',
     clientMessageId: 'thread-goal:first'
   }
   const append = () =>
@@ -439,7 +439,7 @@ it.each([
       { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
     )
   if (kind === 'prior') {
-    await journal.appendItem({ provider: 'orca', clientMessageId: 'prior' }, file.body, {
+    await journal.appendItem({ provider: 'occ', clientMessageId: 'prior' }, file.body, {
       fence: 1,
       turnScope: AGENT_JOURNAL_THREAD_SCOPE
     })
@@ -456,7 +456,7 @@ it.each([
   }
   if (kind === 'resolved') {
     await journal.appendResolvedItem(
-      () => ({ identity: { provider: 'orca', clientMessageId: 'resolved' }, body: file.body }),
+      () => ({ identity: { provider: 'occ', clientMessageId: 'resolved' }, body: file.body }),
       { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
     )
   }
@@ -465,7 +465,7 @@ it.each([
       {
         kind: 'item',
         resolve: () => ({
-          identity: { provider: 'orca', clientMessageId: 'transition' },
+          identity: { provider: 'occ', clientMessageId: 'transition' },
           body: file.body
         }),
         options: { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
@@ -479,7 +479,7 @@ it.each([
       mutations: [
         {
           kind: 'item',
-          identity: { provider: 'orca', clientMessageId: 'batch' },
+          identity: { provider: 'occ', clientMessageId: 'batch' },
           body: file.body,
           turnScope: AGENT_JOURNAL_THREAD_SCOPE
         }
@@ -505,7 +505,7 @@ it.each([
     })
   }
   if (kind === 'host') {
-    await journal.appendItem({ provider: 'orca', clientMessageId: 'ordinary' }, file.body, {
+    await journal.appendItem({ provider: 'occ', clientMessageId: 'ordinary' }, file.body, {
       fence: 1,
       turnScope: AGENT_JOURNAL_THREAD_SCOPE
     })
@@ -513,7 +513,7 @@ it.each([
   if (kind === 'epoch' || kind === 'accepted-goal-import') {
     await journal.replaceEpochItems('legacy_import', 1, [
       {
-        identity: { provider: 'orca', clientMessageId: 'imported' },
+        identity: { provider: 'occ', clientMessageId: 'imported' },
         body: kind === 'accepted-goal-import' ? { ...file.body, sentAs: 'goal' } : file.body,
         ownerFence: 1
       }
@@ -525,14 +525,14 @@ it.each([
       stateDirectory: root ?? ''
     })
     await other.appendClaimingAttachments(
-      { provider: 'orca', clientMessageId: 'ordinary' },
+      { provider: 'occ', clientMessageId: 'ordinary' },
       file.body,
       { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
     )
   }
   if (kind === 'shared-refusal') {
     const second: AgentJournalItemIdentity = {
-      provider: 'orca',
+      provider: 'occ',
       clientMessageId: 'thread-goal:second'
     }
     await journal.appendClaimingAttachments(
@@ -577,7 +577,7 @@ it('keeps inverse and SQL synchronized across failed COMMIT and failed post-COMM
   })
   const file = await storedGoalFile()
   const identity: AgentJournalItemIdentity = {
-    provider: 'orca',
+    provider: 'occ',
     clientMessageId: 'thread-goal:rollback'
   }
   await journal.appendClaimingAttachments(
@@ -614,7 +614,7 @@ it('keeps inverse and SQL synchronized across failed COMMIT and failed post-COMM
   )
   failPublication = true
   await expect(
-    journal.appendItem({ provider: 'orca', clientMessageId: 'accepted' }, file.body, {
+    journal.appendItem({ provider: 'occ', clientMessageId: 'accepted' }, file.body, {
       fence: 1,
       turnScope: AGENT_JOURNAL_THREAD_SCOPE
     })
@@ -665,7 +665,7 @@ it.each(['step', 'batch'] as const)(
         .prepare('SELECT upload_id FROM agent_session_attachment_claims WHERE upload_id = ?')
         .all(file.uploadId)
     const identity: AgentJournalItemIdentity = {
-      provider: 'orca',
+      provider: 'occ',
       clientMessageId: `independent-${kind}`
     }
     expect(claims()).toHaveLength(0)
@@ -711,7 +711,7 @@ it.each(['step', 'batch'] as const)(
     for (const phase of ['self', 'rollback', 'accepted'] as const) {
       const file = await storedGoalFile()
       const identity: AgentJournalItemIdentity = {
-        provider: 'orca',
+        provider: 'occ',
         clientMessageId: `thread-goal:${phase}`
       }
       const body = { ...file.body, sentAs: 'goal' as const }
@@ -720,7 +720,7 @@ it.each(['step', 'batch'] as const)(
         turnScope: AGENT_JOURNAL_THREAD_SCOPE
       })
       const other: AgentJournalItemIdentity = {
-        provider: 'orca',
+        provider: 'occ',
         clientMessageId: `independent:${phase}`
       }
       const append = () =>

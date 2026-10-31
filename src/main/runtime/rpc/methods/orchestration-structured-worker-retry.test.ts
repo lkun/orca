@@ -67,7 +67,7 @@ async function createWorker() {
     }),
     publishStructuredAgentSessionTab: async () => {},
     getNestedWorkerMaxDepth: () => 2,
-    getTerminalOrchestrationCliCommand: () => 'orca',
+    getTerminalOrchestrationCliCommand: () => 'occ',
     orchestrationSenderNames: { nameOf: () => 'Coordinator' },
     forgetStructuredSessionMail: vi.fn(),
     retireStructuredAgentSessionTabFromSnapshot: vi.fn(() => true)

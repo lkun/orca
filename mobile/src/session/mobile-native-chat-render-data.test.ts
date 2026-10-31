@@ -276,7 +276,7 @@ describe('foldMobileNativeChatMessages', () => {
   // Read windows may begin after tool_use; leading orphan results must not become raw-output bubbles.
   it('drops a leading tool result whose call is older than the read window', () => {
     const folded = fold([
-      toolResult('orphan', 'Exit code 1\norca-ide not found'),
+      toolResult('orphan', 'Exit code 1\nocc-ide not found'),
       assistant('a1', 'Falling back to the installed binary.')
     ])
 

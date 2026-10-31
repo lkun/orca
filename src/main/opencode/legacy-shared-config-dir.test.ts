@@ -13,6 +13,6 @@ describe('retired config directory recognition', () => {
     expect(isOpenCodeLegacySharedConfigDir(undefined, root)).toBe(false)
   })
   it.skipIf(process.platform !== 'win32')('handles Windows casing and separators', () => {
-    expect(isOpenCodeLegacySharedConfigDir('C:/ORCA/opencode-hooks/shared/', 'c:\\orca')).toBe(true)
+    expect(isOpenCodeLegacySharedConfigDir('C:/OCC/opencode-hooks/shared/', 'c:\\occ')).toBe(true)
   })
 })

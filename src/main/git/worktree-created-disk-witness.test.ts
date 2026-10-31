@@ -37,7 +37,7 @@ let worktreePath = ''
 
 // Canonicalize macOS /var-to-/private/var temp paths just as the witness does.
 beforeEach(() => {
-  scratchDir = realpathSync(mkdtempSync(join(tmpdir(), 'orca-created-witness-')))
+  scratchDir = realpathSync(mkdtempSync(join(tmpdir(), 'occ-created-witness-')))
   repoPath = join(scratchDir, 'repo')
   worktreePath = join(scratchDir, 'workspaces', 'feature')
   mkdirSync(repoPath, { recursive: true })

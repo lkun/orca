@@ -38,7 +38,7 @@ afterEach(() => vi.useRealTimers())
 
 async function host(remote: boolean, launchToken?: string) {
   const desktop = new AgentHookServer()
-  const dir = mkdtempSync(join(tmpdir(), 'orca-task-wakeup-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-task-wakeup-'))
   const relay = remote
     ? new RelayAgentHookServer({
         endpointDir: dir,

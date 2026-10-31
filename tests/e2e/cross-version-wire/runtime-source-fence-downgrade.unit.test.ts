@@ -60,10 +60,10 @@ function hostBuildOf(
 const servers: Server[] = []
 
 async function serve(host: Dispatcher): Promise<RuntimeMetadata> {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-source-fence-wire-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-source-fence-wire-'))
   const isWindows = process.platform === 'win32'
   const endpoint = isWindows
-    ? `\\\\.\\pipe\\orca-source-fence-wire-${randomUUID()}`
+    ? `\\\\.\\pipe\\occ-source-fence-wire-${randomUUID()}`
     : join(dir, 'runtime.sock')
   const server = createServer((socket) => {
     let buffer = ''

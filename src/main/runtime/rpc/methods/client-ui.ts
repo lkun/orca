@@ -10,7 +10,7 @@ import {
   type PairedUiState
 } from '../../../../shared/pairing-local-ui-fields'
 import type { PersistedUIState } from '../../../../shared/persisted-ui-state-types'
-import { isWorkspaceHostScope } from '../../../../shared/orcad-migration/orcad-migration-client-state-value-validation'
+import { isWorkspaceHostScope } from '../../../../shared/occd-migration/occd-migration-client-state-value-validation'
 import { defineMethod, type RpcContext } from '../core'
 import { isHostOwnPhone } from '../host-own-phone'
 import {
@@ -31,7 +31,7 @@ import {
   projectTerminalQuickCommandsForClient
 } from './terminal-quick-command-client-capabilities'
 
-function uiForCaller(
+function uiFoccller(
   state: PersistedUIState,
   context: Pick<RpcContext, 'clientKind' | 'pairedDeviceParentId'>
 ): PairedUiState & Pick<PersistedUIState, 'hideWorkspacesFromOtherDevices'> {
@@ -156,7 +156,7 @@ export const CLIENT_UI_METHODS = [
     name: 'ui.get',
     permission: 'workspace',
     params: null,
-    handler: (_params, context) => ({ ui: uiForCaller(context.runtime.getUIState(), context) })
+    handler: (_params, context) => ({ ui: uiFoccller(context.runtime.getUIState(), context) })
   }),
   defineMethod({
     name: 'ui.set',
@@ -176,7 +176,7 @@ export const CLIENT_UI_METHODS = [
         ...(isWorkspaceHostScope(workspaceHostScope) ? { workspaceHostScope } : {}),
         ...ownPhoneFilter
       } as Partial<PersistedUIState>
-      return { ui: uiForCaller(context.runtime.updateUIState(updates), context) }
+      return { ui: uiFoccller(context.runtime.updateUIState(updates), context) }
     }
   }),
   defineMethod({
@@ -184,7 +184,7 @@ export const CLIENT_UI_METHODS = [
     permission: 'workspace',
     params: FeatureInteractionIdParam,
     handler: (params, context) => ({
-      ui: uiForCaller(context.runtime.recordFeatureInteraction(params), context)
+      ui: uiFoccller(context.runtime.recordFeatureInteraction(params), context)
     })
   })
 ]

@@ -7,9 +7,9 @@ import path from 'node:path'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
 import { RuntimeClient } from '../../src/cli/runtime-client'
 import { makePaneKey } from '../../src/shared/stable-pane-id'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { TEST_REPO_PATH_FILE } from './global-setup'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 import { mutateStoppedProfileState } from './helpers/persisted-profile-state'
 import { waitForSessionReady } from './helpers/store'
 import {
@@ -255,19 +255,19 @@ test('keeps a locally created CLI terminal, and never resumes it as a ghost', as
 
     const secondLaunch = await session.launch()
     app = secondLaunch.app
-    const orcaPage = secondLaunch.page
-    orcaPage.on('pageerror', (error) => pageErrors.push(String(error)))
+    const occPage = secondLaunch.page
+    occPage.on('pageerror', (error) => pageErrors.push(String(error)))
     call = runtimeCall(session.userDataDir)
-    await waitForSessionReady(orcaPage)
+    await waitForSessionReady(occPage)
     await expect
-      .poll(() => orcaPage.evaluate(() => window.__store?.getState().activeWorktreeId), {
+      .poll(() => occPage.evaluate(() => window.__store?.getState().activeWorktreeId), {
         timeout: 60_000,
         message: 'relaunched renderer never reactivated the measured worktree'
       })
       .toBe(worktreeId)
 
     const readWorktreeTabs = async (): Promise<WorktreeTabSnapshot> =>
-      orcaPage.evaluate((worktreeId) => {
+      occPage.evaluate((worktreeId) => {
         const tabs = window.__store?.getState().tabsByWorktree[worktreeId] ?? []
         return {
           tabIds: tabs.map((tab) => tab.id),
@@ -297,7 +297,7 @@ test('keeps a locally created CLI terminal, and never resumes it as a ghost', as
     ).toBe(cli.ptyId)
     await proveSameLivePty(call, cli, 'after-relaunch')
     expect(
-      await orcaPage.evaluate(
+      await occPage.evaluate(
         (paneKey) =>
           window.__store?.getState().sleepingAgentSessionsByPaneKey[paneKey] !== undefined,
         cliPaneKey

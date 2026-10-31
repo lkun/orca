@@ -259,7 +259,7 @@ export async function waitForBrowserCdpEndpoint(port: number): Promise<void> {
   while (Date.now() < deadline) {
     try {
       const targets = await fetch(`http://127.0.0.1:${port}/json/version`)
-      // Cancel the unused body to avoid Electron crashes (orca#8695).
+      // Cancel the unused body to avoid Electron crashes (occ#8695).
       await cancelUnreadResponseBody(targets)
       if (targets.ok) {
         return

@@ -1,17 +1,17 @@
 import { copyFileSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { openFileExplorer } from './helpers/file-explorer'
 import { waitForSessionReady } from './helpers/store'
 
 test.use({ seedTestRepo: false })
 
 test('restores media playback after switching editor tabs without retaining the player', async ({
-  orcaPage,
+  occPage,
   registerPostElectronShutdownCleanup
 }) => {
-  const folder = realpathSync(mkdtempSync(path.join(tmpdir(), 'orca-media-position-')))
+  const folder = realpathSync(mkdtempSync(path.join(tmpdir(), 'occ-media-position-')))
   registerPostElectronShutdownCleanup(async () => rmSync(folder, { recursive: true, force: true }))
   copyFileSync(
     path.resolve('docs/site/public/docs/videos/tab-split.mp4'),
@@ -19,21 +19,21 @@ test('restores media playback after switching editor tabs without retaining the 
   )
   writeFileSync(path.join(folder, 'other.txt'), 'Switch back to the media tab.\n')
 
-  await waitForSessionReady(orcaPage)
-  await orcaPage.evaluate(async (folder) => {
+  await waitForSessionReady(occPage)
+  await occPage.evaluate(async (folder) => {
     await window.__store?.getState().addRepoPath(folder, 'folder')
   }, folder)
-  await orcaPage
+  await occPage
     .getByRole('option')
     .filter({ hasText: path.basename(folder) })
     .click()
-  await openFileExplorer(orcaPage)
+  await openFileExplorer(occPage)
   const row = (name: string) =>
-    orcaPage.locator('[data-file-explorer-row]').filter({
-      has: orcaPage.locator('[data-file-explorer-row-name]').getByText(name, { exact: true })
+    occPage.locator('[data-file-explorer-row]').filter({
+      has: occPage.locator('[data-file-explorer-row-name]').getByText(name, { exact: true })
     })
   await row('playback.mp4').dblclick()
-  const video = orcaPage.locator('video')
+  const video = occPage.locator('video')
   await expect
     .poll(() => video.evaluate((media: HTMLVideoElement) => media.readyState))
     .toBeGreaterThanOrEqual(2)
@@ -64,7 +64,7 @@ test('restores media playback after switching editor tabs without retaining the 
     }))
   ).toEqual({ connected: false, paused: true, source: null })
 
-  await orcaPage.locator('[data-tab-id]').filter({ hasText: 'playback.mp4' }).click()
+  await occPage.locator('[data-tab-id]').filter({ hasText: 'playback.mp4' }).click()
   await expect
     .poll(() => video.evaluate((media: HTMLVideoElement) => media.readyState))
     .toBeGreaterThanOrEqual(2)

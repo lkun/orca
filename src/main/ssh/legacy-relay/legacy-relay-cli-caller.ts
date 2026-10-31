@@ -1,5 +1,5 @@
 /**
- * Who a relay-era terminal's `orca` command speaks as, and what it may reach.
+ * Who a relay-era terminal's `occ` command speaks as, and what it may reach.
  * COMPAT(legacy-relay-bridge): revisit 2027-01-15.
  *
  * Everything the host sends is a claim. The caller is accepted only as a pane this desktop leased
@@ -8,7 +8,7 @@
  * mailboxes, its own Dispatch or Run, and the other party of that same orchestration.
  */
 import { parsePaneKey } from '../../../shared/stable-pane-id'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import type { OrchestrationDb } from '../../runtime/orchestration/db'
 import { isEquivalentPaneKey } from '../../runtime/orchestration/db/pane-key-match'
 import type { DispatchContextRow, RunRow } from '../../runtime/orchestration/types'
@@ -18,7 +18,7 @@ const MAX_IDENTITY_LENGTH = 512
 
 export const LEGACY_RELAY_CLI_UNVERIFIED =
   "OCC could not confirm this terminal is one of this host's supervised OCC terminals, so its " +
-  'orca command was refused. Run it in a new terminal on this host.'
+  'occ command was refused. Run it in a new terminal on this host.'
 
 export type LegacyRelayCliCaller = {
   handle: string
@@ -45,15 +45,15 @@ function samePane(recorded: string | null | undefined, paneKey: string): boolean
 }
 
 export function resolveLegacyRelayCliCaller(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   env: Readonly<Record<string, string>>,
   livePane: (paneKey: string) => LegacyRelayLivePane | null,
   targetId: string,
   /** A retry of a mutation this caller already completed, which may outlive its Dispatch. */
   replay?: { fingerprint: string; requestId: string }
 ): LegacyRelayCliCaller {
-  const handle = bounded(env.ORCA_TERMINAL_HANDLE)
-  const paneKey = bounded(env.ORCA_PANE_KEY)
+  const handle = bounded(env.OCC_TERMINAL_HANDLE)
+  const paneKey = bounded(env.OCC_PANE_KEY)
   const pane = handle && paneKey && parsePaneKey(paneKey) ? livePane(paneKey) : null
   if (!handle || !paneKey || !pane) {
     throw new Error(LEGACY_RELAY_CLI_UNVERIFIED)
@@ -134,7 +134,7 @@ function resolveCoordinatedRun(
     principal.terminal_handle === handle &&
     samePane(principal.pane_key, paneKey) &&
     principalHostTargetId(principal.host_scope) === targetId &&
-    db.resolveLegacyCoordinatorCandidate({ runId: adopted, terminalHandle: handle, paneKey })
+    db.resolveLegacyCoordinatoccndidate({ runId: adopted, terminalHandle: handle, paneKey })
     ? db.getRun(adopted)
     : undefined
 }

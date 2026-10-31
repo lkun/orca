@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../../../orca-runtime'
+import { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationDb } from '../../../../orchestration/db'
 import { ORCHESTRATION_METHODS } from '../../orchestration'
 
@@ -14,7 +14,7 @@ describe('federated worker agent launch', () => {
 
   it('creates an exact folder worker terminal from the agent id, never as a command', async () => {
     db = new OrchestrationDb(':memory:')
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     vi.spyOn(runtime, 'validateOrchestrationAgentLauncher').mockImplementation(() => {})
     vi.spyOn(runtime, 'showManagedTerminalWorkspace').mockResolvedValue({
@@ -37,7 +37,7 @@ describe('federated worker agent launch', () => {
     vi.spyOn(runtime, 'getTerminalProcessIncarnation').mockReturnValue(
       'runtime_test:term_remote_worker:1'
     )
-    vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('orca')
+    vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('occ')
     vi.spyOn(runtime, 'sendTerminalAgentPrompt').mockResolvedValue({
       handle: 'term_remote_worker',
       accepted: true,

@@ -124,7 +124,7 @@ describe('Linear issue queries', () => {
     })
 
     expect(rawRequest).toHaveBeenCalledTimes(1)
-    expect(rawRequest.mock.calls[0][0]).toContain('query OrcaLinearIssues')
+    expect(rawRequest.mock.calls[0][0]).toContain('query OCCLinearIssues')
     expect(rawRequest.mock.calls[0][0]).toContain('pageInfo')
     expect(rawRequest.mock.calls[0][0]).toContain('estimate')
   })
@@ -188,7 +188,7 @@ describe('Linear issue queries', () => {
     ])
 
     expect(signedRawRequest).toHaveBeenCalledTimes(1)
-    expect(signedRawRequest.mock.calls[0][0]).toContain('query OrcaLinearIssueComments')
+    expect(signedRawRequest.mock.calls[0][0]).toContain('query OCCLinearIssueComments')
     expect(signedRawRequest.mock.calls[0][0]).toContain('user {')
     expect(signedRawRequest.mock.calls[0][1]).toEqual({ id: 'issue-uuid' })
     expect(rawRequest).not.toHaveBeenCalled()
@@ -285,7 +285,7 @@ describe('Linear issue queries', () => {
     ])
 
     expect(rawRequest).toHaveBeenCalledTimes(1)
-    expect(rawRequest.mock.calls[0][0]).toContain('query OrcaLinearIssueSearch')
+    expect(rawRequest.mock.calls[0][0]).toContain('query OCCLinearIssueSearch')
     expect(rawRequest.mock.calls[0][0]).toContain('searchIssues(term: $term')
     expect(rawRequest.mock.calls[0][1]).toEqual({ term: 'bug', first: 36 })
   })
@@ -574,7 +574,7 @@ describe('Linear issue queries', () => {
     ).resolves.toMatchObject({ state: { id: 'state-review' } })
 
     expect(updateIssue).toHaveBeenCalledWith('issue-1', { stateId: 'state-review' })
-    expect(rawRequest.mock.calls[0][0]).toContain('query OrcaLinearIssueByUuid')
+    expect(rawRequest.mock.calls[0][0]).toContain('query OCCLinearIssueByUuid')
   })
 
   it('reads back agent task field updates before confirming success', async () => {
@@ -869,7 +869,7 @@ describe('Linear issue queries', () => {
       parentId: 'root-1'
     })
 
-    expect(rawRequest.mock.calls[0][0]).toContain('query OrcaLinearCommentByUuid')
+    expect(rawRequest.mock.calls[0][0]).toContain('query OCCLinearCommentByUuid')
     expect(rawRequest.mock.calls[0][0]).toContain('body')
   })
 })

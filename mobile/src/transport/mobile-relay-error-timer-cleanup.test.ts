@@ -40,7 +40,7 @@ function linkFixture(): {
   const onHostCloseReason = vi.fn()
   const link = new MobileRelayE2eeLink({
     endpoint: {
-      cellUrl: 'https://relay-c1.onorca.dev',
+      cellUrl: 'https://relay-c1.onocc.dev',
       relayHostId: 'AbCdEf0123_-xyZ9'
     },
     credential: 'credential',

@@ -5,7 +5,7 @@ import { EDIT_TOOL_NAMES } from './native-chat-diff'
 import { isCommandToolName } from './native-chat-tool-activity'
 import { toolInputCommand } from './native-chat-tool-summary'
 import { nativeChatFullCommand } from './native-chat-tool-input-text'
-import { parseOrcaBrowserCommand } from '../../orca-browser-cli-commands'
+import { parseOCCBrowserCommand } from '../../occ-browser-cli-commands'
 
 export type NativeChatToolCategory =
   | 'read'
@@ -97,14 +97,14 @@ export type NativeChatToolCategoryCall = {
 // A run's header, icon and rows all classify the same call on every render; parse it once.
 const browserCommandByInput = new WeakMap<object, boolean>()
 
-function runsOrcaBrowserCommand(input: unknown): boolean {
+function runsOCCBrowserCommand(input: unknown): boolean {
   const cached =
     input !== null && typeof input === 'object' ? browserCommandByInput.get(input) : undefined
   if (cached !== undefined) {
     return cached
   }
   const command = nativeChatFullCommand(input)
-  const runs = command !== null && parseOrcaBrowserCommand(command) !== null
+  const runs = command !== null && parseOCCBrowserCommand(command) !== null
   if (input !== null && typeof input === 'object') {
     browserCommandByInput.set(input, runs)
   }
@@ -124,7 +124,7 @@ export function nativeChatToolCategory(
   }
   // Commands can carry patches without applying them; command identity takes precedence over edit vocabulary.
   if (isCommandToolName(word)) {
-    return runsOrcaBrowserCommand(input) ? 'browser' : 'unknown'
+    return runsOCCBrowserCommand(input) ? 'browser' : 'unknown'
   }
   return CATEGORY_BY_ROW_WORD.get(word) ?? (EDIT_ROW_WORDS.has(word) ? 'fileChange' : null)
 }

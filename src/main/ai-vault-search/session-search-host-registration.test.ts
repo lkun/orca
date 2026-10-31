@@ -148,15 +148,15 @@ it('disables immediately without root discovery', async () => {
   expect(localAiVaultScanRoots).not.toHaveBeenCalled()
 })
 
-it('orcad resolves no roots while disabled and discovers late roots when enabled', async () => {
-  const { installOrcadSessionSearchService } = await import('../orcad/orcad-session-search')
-  installed = await installOrcadSessionSearchService({
+it('occd resolves no roots while disabled and discovers late roots when enabled', async () => {
+  const { installOCCdSessionSearchService } = await import('../occd/occd-session-search')
+  installed = await installOCCdSessionSearchService({
     userDataPath: harness.root,
     getSettings: () => ({ aiVaultSearch: { enabled: false, historyDays: null } })
   })
   expect(localAiVaultScanRoots).not.toHaveBeenCalled()
   installed?.dispose()
-  installed = await installOrcadSessionSearchService({
+  installed = await installOCCdSessionSearchService({
     userDataPath: harness.root,
     getSettings: () => ({ aiVaultSearch: { enabled: true, historyDays: null } })
   })

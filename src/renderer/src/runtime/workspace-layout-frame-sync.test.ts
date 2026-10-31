@@ -383,7 +383,7 @@ describe('the window drawn from layout frames', () => {
   it('gives a moved editor tab an older build saved under its old workspace the right id', async () => {
     // Before #29930 a tab OCC moved to its file's workspace kept the source's worktree id.
     const session = localDesktopSession()
-    const ownedId = buildOwnedEditorFileId('/Users/dev/orca/src/app.ts', GIT_KEY, null)
+    const ownedId = buildOwnedEditorFileId('/Users/dev/occ/src/app.ts', GIT_KEY, null)
     const entry = session.unifiedTabs![GIT_KEY]!.find((tab) => tab.contentType === 'editor')!
     entry.entityId = ownedId
     entry.worktreeId = 'repo-2::/Users/dev/other'

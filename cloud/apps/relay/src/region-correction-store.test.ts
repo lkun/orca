@@ -63,10 +63,10 @@ async function cleanupPostgres(database: RelayDatabase) {
 
 async function setup() {
   const database =
-    process.env.ORCA_REGION_CORRECTION_POSTGRES === '1'
+    process.env.OCC_REGION_CORRECTION_POSTGRES === '1'
       ? await openRelayDatabase({
           databaseUrl: requiredPostgresUrl(),
-          dataDir: '/tmp/orca-region-correction-unused'
+          dataDir: '/tmp/occ-region-correction-unused'
         })
       : await openInMemoryRelayDatabase()
   opened.push(database)
@@ -109,7 +109,7 @@ async function setup() {
 }
 
 function requiredPostgresUrl(): string {
-  const url = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+  const url = process.env.OCC_RELAY_TEST_POSTGRES_URL
   if (!url || new URL(url).port !== '55440')
     throw new Error('PostgreSQL tests require configured port 55440')
   return url

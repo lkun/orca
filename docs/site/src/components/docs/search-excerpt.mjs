@@ -1,13 +1,13 @@
 const HIGHLIGHT_TAG_PATTERN = /<\/?mark>/gi
-const HIGHLIGHT_TOKEN_PATTERN = /\0orca-search-highlight-(\d+)\0/g
-const CODE_TOKEN_PATTERN = /\0orca-search-code-(\d+)\0/g
+const HIGHLIGHT_TOKEN_PATTERN = /\0occ-search-highlight-(\d+)\0/g
+const CODE_TOKEN_PATTERN = /\0occ-search-code-(\d+)\0/g
 
 function highlightToken(index) {
-  return `\0orca-search-highlight-${index}\0`
+  return `\0occ-search-highlight-${index}\0`
 }
 
 function codeToken(index) {
-  return `\0orca-search-code-${index}\0`
+  return `\0occ-search-code-${index}\0`
 }
 
 /**

@@ -19,8 +19,8 @@ describe('assertSafeRemotePathSegment', () => {
   })
 
   it.each([
-    '..\\..\\.ssh\\orca_drop',
-    'report.txt:orca',
+    '..\\..\\.ssh\\occ_drop',
+    'report.txt:occ',
     'question?.txt',
     'trailing.',
     'trailing ',

@@ -27,7 +27,7 @@ async function makeFixture(): Promise<{
   appImagePath: string
   cacheRootPath: string
 }> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-appimage-extract-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-appimage-extract-'))
   created.push(root)
   const appImagePath = join(root, 'OCC.AppImage')
   await writeFile(appImagePath, '#!/usr/bin/env bash\n', { encoding: 'utf8', mode: 0o755 })

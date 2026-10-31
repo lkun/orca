@@ -1,5 +1,5 @@
 {
-  "name": "@orca-cloud/relay-fence-broker",
+  "name": "@occ-cloud/relay-fence-broker",
   "private": true,
   "version": "0.0.0",
   "type": "module",

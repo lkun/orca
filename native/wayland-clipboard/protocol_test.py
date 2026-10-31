@@ -24,7 +24,7 @@ class DataControlServer:
     def __init__(self, protocol, selection_event=None):
         self.protocol = protocol
         self.selection_event = selection_event
-        self.directory = tempfile.TemporaryDirectory(prefix="orca-clipboard-protocol-")
+        self.directory = tempfile.TemporaryDirectory(prefix="occ-clipboard-protocol-")
         self.socket = socket.socket(socket.AF_UNIX)
         self.socket.bind(os.path.join(self.directory.name, "wayland-test"))
         self.socket.listen(1)
@@ -59,7 +59,7 @@ class DataControlServer:
             raise self.errors[0]
 
     def environment(self):
-        return {**os.environ, "ORCA_BACKGROUND_LAUNCH": "1", "XDG_RUNTIME_DIR": self.directory.name,
+        return {**os.environ, "OCC_BACKGROUND_LAUNCH": "1", "XDG_RUNTIME_DIR": self.directory.name,
                 "WAYLAND_DISPLAY": "wayland-test"}
 
     def send(self, object_id, opcode, body=b"", fd=None):

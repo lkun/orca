@@ -4,8 +4,8 @@ import type { AgentStatusIpcPayload } from '../../../shared/agent-status-ipc-pay
 import type { AgentSessionTurnCompletionEvent } from '../../../shared/agent-session-wire'
 import { makePaneKey } from '../../../shared/stable-pane-id'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../shared/execution-host'
-import { formatOrcaSessionAddress } from '../../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../../shared/occ-session-address'
+import { testOCCSessionId } from '../../../shared/occ-session-address-test-fixture'
 import { chatWorkerTurnStopReporter } from './chat-worker-turn-stops'
 import { OrchestrationDb } from './db'
 import { createRootDispatch } from './db/root-dispatch-test-fixture'
@@ -15,7 +15,7 @@ import { reportWorkerTurnStop } from './worker-turn-stop-report'
 const PANE = makePaneKey('tab-worker', '11111111-1111-4111-8111-111111111111')
 const HANDLE = 'term_worker'
 
-const CHAT_SESSION = testOrcaSessionId('9a4e7c1b-3d2f-4b6a-8e5c-7f1d0b2a6c93')
+const CHAT_SESSION = testOCCSessionId('9a4e7c1b-3d2f-4b6a-8e5c-7f1d0b2a6c93')
 
 function setup(assignee = HANDLE) {
   const db = new OrchestrationDb(':memory:')
@@ -294,7 +294,7 @@ describe('chat worker turn stops', () => {
   })
 
   it('reports a finished turn and leaves failures to the chat error escalation', () => {
-    const ctx = setup(formatOrcaSessionAddress(CHAT_SESSION))
+    const ctx = setup(formatOCCSessionAddress(CHAT_SESSION))
     const report = chatWorkerTurnStopReporter(ctx.deps)
     const status = () => ({ status: 'idle' as const, lastAssistantMessage: 'Read the files.' })
     report(completion('failure'), status)

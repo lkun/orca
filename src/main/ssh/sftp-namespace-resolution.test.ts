@@ -10,7 +10,7 @@ import {
 import { getRemoteHostPlatform } from './ssh-remote-platform'
 
 const SHELL_HOME = '/var/services/homes/alice'
-const RELAY_DIR = '.orca-remote/relay-0.1.0+hash'
+const RELAY_DIR = '.occ-remote/relay-0.1.0+hash'
 const MARKER = '.install-lock/.sftp-namespace-deadbeef'
 
 const mapping: SftpNamespacePathMapping = {

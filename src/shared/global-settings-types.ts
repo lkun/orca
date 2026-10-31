@@ -3,7 +3,7 @@ import type { TelemetrySettings } from './telemetry-settings-types'
 import type { BrowserProfileScope } from './browser-profile-scope'
 import type { GlobalSettingsBase } from './global-settings-base'
 import type { ExecutionHostId } from './execution-host'
-import type { OrcaWorkspaceLayout } from './orca-workspace-layout'
+import type { OCCWorkspaceLayout } from './occ-workspace-layout'
 import type { GitHubProjectSettings } from './github/project-types'
 import type { VoiceSettings } from './speech-types'
 import type { AiVaultSearchSettings } from './ai-vault-search-settings'
@@ -58,7 +58,7 @@ export type GlobalSettings = GlobalSettingsBase & {
   /** Per-host value is host override ?? client default, keyed by ExecutionHostId. */
   hostSettingOverrides?: Partial<Record<ExecutionHostId, HostSettingOverrides>>
   nestWorkspaces: boolean
-  workspaceDirHistory?: OrcaWorkspaceLayout[]
+  workspaceDirHistory?: OCCWorkspaceLayout[]
   refreshLocalBaseRefOnWorktreeCreate: boolean
   /** Permanently dismisses the suggestion to enable local base refresh. */
   localBaseRefSuggestionDismissed: boolean
@@ -287,7 +287,7 @@ export type GlobalSettings = GlobalSettingsBase & {
   floatingTerminalCwdMigratedToAppWorkspace?: boolean
   /** Where the Floating Workspace toggle is shown; defaults to the floating button for discoverability. */
   floatingTerminalTriggerLocation: FloatingTerminalTriggerLocation
-  /** Legacy keyboard-shortcut overrides; new writes go to ~/.orca/keybindings.json, migrated once when present. */
+  /** Legacy keyboard-shortcut overrides; new writes go to ~/.occ/keybindings.json, migrated once when present. */
   keybindings?: KeybindingOverrides
   diffDefaultView: 'inline' | 'side-by-side'
   diffWordWrap: boolean
@@ -497,4 +497,4 @@ export type GlobalSettings = GlobalSettingsBase & {
 
 // Retain one import entry point while keeping feature shapes separate from the max-lines-limited settings module.
 export type { GhosttyImportPreview } from './ghostty-import-preview'
-export type { OrcaWorkspaceLayout } from './orca-workspace-layout'
+export type { OCCWorkspaceLayout } from './occ-workspace-layout'

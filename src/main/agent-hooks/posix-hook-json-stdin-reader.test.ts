@@ -103,7 +103,7 @@ describe.skipIf(process.platform === 'win32')('POSIX hook JSON stdin reader', ()
   const itWithPython = it.skipIf(!hasPython)
 
   it('clears invalid HOME for the interpreter and preserves the caller environment', async () => {
-    for (const homeDir of ['/nonexistent/orca-hook-home', tmpdir()]) {
+    for (const homeDir of ['/nonexistent/occ-hook-home', tmpdir()]) {
       const { stdout } = await execFileAsync(
         '/bin/sh',
         [
@@ -225,7 +225,7 @@ describe.skipIf(process.platform === 'win32')('POSIX hook JSON stdin reader', ()
       const payload = '{"hook_event_name":"session_start"}'
 
       const result = await runReader([Buffer.from(`${payload}\n`, 'utf8')], {
-        env: { ...process.env, HOME: '/nonexistent/orca-hook-home' }
+        env: { ...process.env, HOME: '/nonexistent/occ-hook-home' }
       })
 
       expect(result.timedOut, 'reader returned').toBe(false)

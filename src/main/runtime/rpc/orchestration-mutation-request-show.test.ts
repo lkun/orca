@@ -3,7 +3,7 @@ import './unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
 import { z } from 'zod'
 import { ORCHESTRATION_CONTRACT_VERSION } from '../../../shared/protocol-version'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import { OrchestrationDb } from '../orchestration/db'
 import { defineMethod, type RpcRequest } from './core'
 import { RpcDispatcher } from './dispatcher'
@@ -18,7 +18,7 @@ const Params = z.object({ subject: z.string() })
 
 function createHarness() {
   const db = new OrchestrationDb(':memory:')
-  const runtime = new OrcaRuntimeService()
+  const runtime = new OCCRuntimeService()
   runtime.setOrchestrationDb(db)
   const effect = vi.fn((subject: string) =>
     db.insertMessage({ runId: 'run_legacy_local', from: 'caller', to: 'recipient', subject })
@@ -102,7 +102,7 @@ describe('orchestration.requestShow', () => {
 
   it('does not claim a concurrently running mutation was interrupted by a restart', async () => {
     const db = new OrchestrationDb(':memory:')
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     let finishMutation: (() => void) | undefined
     let reportStarted: (() => void) | undefined

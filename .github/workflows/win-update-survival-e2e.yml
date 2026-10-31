@@ -114,11 +114,11 @@ jobs:
         id: harness
         shell: pwsh
         env:
-          ORCA_E2E_DIAG_DIR: artifacts/diag
-          ORCA_BACKGROUND_LAUNCH: '1'
+          OCC_E2E_DIAG_DIR: artifacts/diag
+          OCC_BACKGROUND_LAUNCH: '1'
           DEBUG: 'pw:browser'
-          ORCA_E2E_NSIS_TRACE: ${{ github.workspace }}\artifacts\nsis-process-trace.log
-          ORCA_E2E_PROCESS_POLICY: ${{ inputs.policy || 'inherited' }}
+          OCC_E2E_NSIS_TRACE: ${{ github.workspace }}\artifacts\nsis-process-trace.log
+          OCC_E2E_PROCESS_POLICY: ${{ inputs.policy || 'inherited' }}
           FROM_RELEASE: ${{ inputs.from_release }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -134,7 +134,7 @@ jobs:
           }
           # Only the harness and its children inherit the test policy.
           $launch = @'
-          if (process.env.ORCA_E2E_PROCESS_POLICY === 'Restricted') {
+          if (process.env.OCC_E2E_PROCESS_POLICY === 'Restricted') {
             process.env.PSExecutionPolicyPreference = 'Restricted'
           }
           console.log('Harness child process policy: ' + (process.env.PSExecutionPolicyPreference || 'inherited'))

@@ -1,10 +1,10 @@
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { resolveCommand } from './wsl-command-resolution'
 
 const originalPlatform = process.platform
 const QUARANTINE = {
-  GIT_OBJECT_DIRECTORY: '/home/me/repo/.git/objects/tmp_objdir-orca-merge-tree-x',
+  GIT_OBJECT_DIRECTORY: '/home/me/repo/.git/objects/tmp_objdir-occ-merge-tree-x',
   GIT_ALTERNATE_OBJECT_DIRECTORIES: '/home/me/repo/.git/objects'
 }
 

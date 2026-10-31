@@ -4,20 +4,20 @@ import { randomUUID } from 'node:crypto'
 import { globSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import {
-  ORCAD_CLI_ENTRY_FILENAME,
-  ORCAD_SERVER_ENTRY_FILENAME,
-  ORCAD_VERSION_FILENAME
-} from '../../src/shared/orcad-artifacts.ts'
+  OCCD_CLI_ENTRY_FILENAME,
+  OCCD_SERVER_ENTRY_FILENAME,
+  OCCD_VERSION_FILENAME
+} from '../../src/shared/occd-artifacts.ts'
 import { NODE_RUNTIME_PIN } from '../../src/shared/node-runtime-pin.ts'
 import {
-  ORCAD_PROFILE_PREFLIGHT_FLAG,
-  parseOrcadProfilePreflight
-} from '../../src/shared/orcad-profile-preflight.ts'
-import { packagedNodeRuntimePath } from './build-orcad-node.mjs'
+  OCCD_PROFILE_PREFLIGHT_FLAG,
+  parseOCCdProfilePreflight
+} from '../../src/shared/occd-profile-preflight.ts'
+import { packagedNodeRuntimePath } from './build-occd-node.mjs'
 import { ensurePinnedNodeExecutable } from './pinned-node-downloads.mjs'
 import { currentTarget } from './server-build-target.mjs'
 import { UNIT_INCLUDE } from './ci-unit-files.mjs'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { describeProcessFailure } from './process-failure-message.mjs'
 import {
   CROSS_RUNTIME_TEST_PATHS,
@@ -28,20 +28,20 @@ import {
 const root = resolve(import.meta.dirname, '../..')
 const target = currentTarget()
 const artifact = process.argv.includes('--artifact')
-// Lanes that provide the pinned Bun and the last Bun orcad slot (design D7 upgrade and rollback).
+// Lanes that provide the pinned Bun and the last Bun occd slot (design D7 upgrade and rollback).
 const crossRuntime = process.argv.includes('--cross-runtime')
 const testArgs = process.argv
   .slice(2)
   .filter((arg) => arg !== '--artifact' && arg !== '--cross-runtime')
-const packageDir = join(root, 'out', 'orcad')
+const packageDir = join(root, 'out', 'occd')
 const runtimePath = artifact
   ? packagedNodeRuntimePath(packageDir, target)
   : await ensurePinnedNodeExecutable({ target })
 // Require lane-declared packaged runtime inputs; their tests must fail on absence instead of silently skipping.
 const env = {
   ...process.env,
-  ORCA_BACKGROUND_LAUNCH: '1',
-  ORCA_PINNED_NODE: runtimePath,
+  OCC_BACKGROUND_LAUNCH: '1',
+  OCC_PINNED_NODE: runtimePath,
   [REQUIRED_TEST_INPUTS_ENV]: [artifact && 'artifact', crossRuntime && 'cross-runtime']
     .filter(Boolean)
     .join(',')
@@ -65,7 +65,7 @@ if (artifact) {
   const nonce = randomUUID()
   const result = runProcessSync({
     program: runtimePath,
-    args: [join(packageDir, ORCAD_SERVER_ENTRY_FILENAME), ORCAD_PROFILE_PREFLIGHT_FLAG, nonce],
+    args: [join(packageDir, OCCD_SERVER_ENTRY_FILENAME), OCCD_PROFILE_PREFLIGHT_FLAG, nonce],
     cwd: root,
     env,
     timeoutMs: 90_000
@@ -73,11 +73,11 @@ if (artifact) {
   if (result.code !== 0 || result.timedOut || result.outputTruncated) {
     throw new Error(`Bundled runtime readiness failed: ${describeProcessFailure(result)}`)
   }
-  const response = parseOrcadProfilePreflight(
+  const response = parseOCCdProfilePreflight(
     result.stdout,
     nonce,
     { runtime: 'node', runtimeVersion: NODE_RUNTIME_PIN.version },
-    readFileSync(join(packageDir, ORCAD_VERSION_FILENAME), 'utf8').trim()
+    readFileSync(join(packageDir, OCCD_VERSION_FILENAME), 'utf8').trim()
   )
   process.stdout.write(`${JSON.stringify({ target, ...response })}\n`)
 
@@ -105,17 +105,17 @@ function defaultTestArgs() {
 /** The server's own CLI must plan an install of OCC's bundled skills, offline and npx-free. */
 function assertBundledCliPlansSkillInstall() {
   // Why the real path: the planner reports real paths, and macOS tmpdir is a /var symlink.
-  const home = realpathSync(mkdtempSync(join(tmpdir(), 'orcad-skills-home-')))
-  const { ORCA_CLI_CWD: _forwarded, ...hostEnv } = env
+  const home = realpathSync(mkdtempSync(join(tmpdir(), 'occd-skills-home-')))
+  const { OCC_CLI_CWD: _forwarded, ...hostEnv } = env
   try {
     const cli = runProcessSync({
       program: runtimePath,
       args: [
-        join(packageDir, ORCAD_CLI_ENTRY_FILENAME),
+        join(packageDir, OCCD_CLI_ENTRY_FILENAME),
         'skills',
         'install',
         '--skill',
-        'orca-cli',
+        'occ-cli',
         '--agent',
         'universal',
         '--dry-run',
@@ -130,14 +130,14 @@ function assertBundledCliPlansSkillInstall() {
       throw new Error(`Bundled CLI skills dry-run failed: ${failure}`)
     }
     const result = JSON.parse(cli.stdout)
-    const ops = result.plan?.skills?.find((skill) => skill.name === 'orca-cli')?.ops ?? []
+    const ops = result.plan?.skills?.find((skill) => skill.name === 'occ-cli')?.ops ?? []
     if (
       result.executed !== false ||
       !/^[0-9a-f]{64}$/.test(result.planDigest) ||
       ops.length === 0 ||
       !ops.every((op) => op.path.startsWith(home))
     ) {
-      throw new Error(`Bundled CLI did not plan orca-cli into ${home}: ${cli.stdout}`)
+      throw new Error(`Bundled CLI did not plan occ-cli into ${home}: ${cli.stdout}`)
     }
     if (readdirSync(home).length > 0) {
       throw new Error(

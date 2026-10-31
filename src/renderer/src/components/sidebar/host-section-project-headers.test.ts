@@ -221,7 +221,7 @@ describe('a lineage child from another project on another host', () => {
 
     expect(
       getProjectHeaderHostRepos({
-        group: { label: 'orca', items: [worktree, child], repo, repoIds: new Set([repo.id]) },
+        group: { label: 'occ', items: [worktree, child], repo, repoIds: new Set([repo.id]) },
         repoMap: new Map([repo, childProject].map((entry) => [entry.id, entry])),
         repoOf: (row) => (row.id === child.id ? childProject : repo),
         noticeRepoOf: () => [],

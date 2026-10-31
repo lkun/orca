@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs'
 import { mkdir, mkdtemp, realpath, rename } from 'node:fs/promises'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { cloneMacTree } from '../macos-tree-clone'
 import { rm } from '../asar-transparent-fs'
 import { ensurePrivateDir } from './daemon-private-file-modes'
@@ -9,7 +9,7 @@ import { inspectMacProcessCodeIdentity } from './daemon-mac-code-identity'
 
 /** Plain Node helper packaged by config/scripts/macos-terminal-host-bundle.cjs. */
 export const MAC_TERMINAL_HOST_BUNDLE = 'OCC Terminal Host.app'
-export const MAC_TERMINAL_HOST_EXECUTABLE = 'orca-terminal-host'
+export const MAC_TERMINAL_HOST_EXECUTABLE = 'occ-terminal-host'
 export const MAC_DAEMON_COPY_PREFIX = 'terminal-host-'
 
 export type MacDaemonBundle = {

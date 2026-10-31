@@ -284,7 +284,7 @@ describe('terminal file link reveals target the opened view', () => {
     await flushAsyncWork()
     await flushDoubleRaf()
     const reveal = lastReveal()
-    openRoutedHttpLink('https://example.com/', { worktreeId: 'wt-1', forceDestination: 'orca' })
+    openRoutedHttpLink('https://example.com/', { worktreeId: 'wt-1', forceDestination: 'occ' })
     expect(reveal.canApply?.()).toBe(false)
   })
 

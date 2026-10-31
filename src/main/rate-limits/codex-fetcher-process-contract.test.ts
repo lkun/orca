@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type * as RunProcess from '@orca/process-host'
+import type * as RunProcess from '@occ/process-host'
 
 const { ptySpawnMock, resolveCodexCommandMock, stubScript } = vi.hoisted(() => ({
   stubScript: { path: '' },
@@ -16,7 +16,7 @@ vi.mock(
   () =>
     import('../worker-thread-child-process/worker-thread-child-process-in-process.test-fixtures')
 )
-vi.mock('@orca/process-host', async (importOriginal) => {
+vi.mock('@occ/process-host', async (importOriginal) => {
   const actual = await importOriginal<typeof RunProcess>()
   return {
     ...actual,
@@ -70,12 +70,12 @@ if (JSON.stringify(process.argv.slice(2)) !== JSON.stringify(expectedArgs)) {
   )
   process.exit(2)
 }
-if (process.env.CODEX_HOME !== process.env.ORCA_EXPECTED_CODEX_HOME) {
+if (process.env.CODEX_HOME !== process.env.OCC_EXPECTED_CODEX_HOME) {
   process.stderr.write('managed CODEX_HOME was not preserved\\n')
   process.exit(3)
 }
-if (process.env.ORCA_EXPECTED_PROXY_ENV) {
-  for (const [key, value] of Object.entries(JSON.parse(process.env.ORCA_EXPECTED_PROXY_ENV))) {
+if (process.env.OCC_EXPECTED_PROXY_ENV) {
+  for (const [key, value] of Object.entries(JSON.parse(process.env.OCC_EXPECTED_PROXY_ENV))) {
     if (process.env[key] !== value) {
       process.stderr.write('probe proxy environment mismatch: ' + key + '\\n')
       process.exit(4)
@@ -121,11 +121,11 @@ let previousExpectedHome: string | undefined
 
 describe('Codex rate-limit process contract', () => {
   beforeEach(() => {
-    tempRoot = mkdtempSync(join(tmpdir(), 'orca-codex-rate-limit-contract-'))
+    tempRoot = mkdtempSync(join(tmpdir(), 'occ-codex-rate-limit-contract-'))
     stubPath = join(tempRoot, 'codex-contract.cjs')
     writeFileSync(stubPath, STUB_CODEX_SOURCE)
-    previousExpectedHome = process.env.ORCA_EXPECTED_CODEX_HOME
-    process.env.ORCA_EXPECTED_CODEX_HOME = join(tempRoot, 'managed-codex-home')
+    previousExpectedHome = process.env.OCC_EXPECTED_CODEX_HOME
+    process.env.OCC_EXPECTED_CODEX_HOME = join(tempRoot, 'managed-codex-home')
     resolveCodexCommandMock.mockReturnValue('codex')
     stubScript.path = stubPath
   })
@@ -133,9 +133,9 @@ describe('Codex rate-limit process contract', () => {
   afterEach(() => {
     vi.unstubAllEnvs()
     if (previousExpectedHome === undefined) {
-      delete process.env.ORCA_EXPECTED_CODEX_HOME
+      delete process.env.OCC_EXPECTED_CODEX_HOME
     } else {
-      process.env.ORCA_EXPECTED_CODEX_HOME = previousExpectedHome
+      process.env.OCC_EXPECTED_CODEX_HOME = previousExpectedHome
     }
     rmSync(tempRoot, { recursive: true, force: true })
     vi.clearAllMocks()
@@ -144,7 +144,7 @@ describe('Codex rate-limit process contract', () => {
   it('starts a read-only non-interactive app-server with the managed home', async () => {
     await expect(
       fetchCodexRateLimits({
-        codexHomePath: process.env.ORCA_EXPECTED_CODEX_HOME
+        codexHomePath: process.env.OCC_EXPECTED_CODEX_HOME
       })
     ).resolves.toMatchObject({
       provider: 'codex',
@@ -172,11 +172,11 @@ describe('Codex rate-limit process contract', () => {
       }
       vi.stubEnv('NO_PROXY', 'inherited.invalid')
       vi.stubEnv('no_proxy', 'inherited.invalid')
-      vi.stubEnv('ORCA_EXPECTED_PROXY_ENV', JSON.stringify(expected))
+      vi.stubEnv('OCC_EXPECTED_PROXY_ENV', JSON.stringify(expected))
 
       await expect(
         fetchCodexRateLimits({
-          codexHomePath: process.env.ORCA_EXPECTED_CODEX_HOME,
+          codexHomePath: process.env.OCC_EXPECTED_CODEX_HOME,
           networkProxySettings: { httpProxyUrl: proxy, httpProxyBypassRules: bypassRules }
         })
       ).resolves.toMatchObject({ status: 'ok', session: { usedPercent: 17 } })
@@ -194,10 +194,10 @@ describe('Codex rate-limit process contract', () => {
       for (const [key, value] of Object.entries(inherited)) {
         vi.stubEnv(key, value)
       }
-      vi.stubEnv('ORCA_EXPECTED_PROXY_ENV', JSON.stringify(inherited))
+      vi.stubEnv('OCC_EXPECTED_PROXY_ENV', JSON.stringify(inherited))
       await expect(
         fetchCodexRateLimits({
-          codexHomePath: process.env.ORCA_EXPECTED_CODEX_HOME,
+          codexHomePath: process.env.OCC_EXPECTED_CODEX_HOME,
           networkProxySettings
         })
       ).resolves.toMatchObject({ status: 'ok', session: { usedPercent: 17 } })

@@ -39,7 +39,7 @@ describe('bridge client handshake', () => {
   it('asks for a session immediately and declares the storage keys it can read', () => {
     const page = createPageClient()
     expect(page.frames()).toEqual([
-      { v: BRIDGE_PROTOCOL_VERSION, type: 'ready', storageKeys: ['orca:terminalSplitLayout'] }
+      { v: BRIDGE_PROTOCOL_VERSION, type: 'ready', storageKeys: ['occ:terminalSplitLayout'] }
     ])
   })
 

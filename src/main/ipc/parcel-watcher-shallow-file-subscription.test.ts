@@ -14,7 +14,7 @@ let subscription: ShallowWatcherSubscription | null
 let paths: string[]
 
 beforeEach(() => {
-  commonDir = mkdtempSync(join(tmpdir(), 'orca-shallow-file-watch-'))
+  commonDir = mkdtempSync(join(tmpdir(), 'occ-shallow-file-watch-'))
   for (const directory of ['logs', 'objects/ab', 'refs/heads', 'worktrees/feature', 'lfs']) {
     mkdirSync(join(commonDir, directory), { recursive: true })
   }

@@ -32,7 +32,7 @@ vi.mock('./provider-group-orphan-guard', async (importOriginal) => {
   }
 })
 
-const dir = mkdtempSync(join(tmpdir(), 'orca-guard-launch-paths-'))
+const dir = mkdtempSync(join(tmpdir(), 'occ-guard-launch-paths-'))
 afterAll(() => rmSync(dir, { recursive: true, force: true }))
 // Exit promptly so supervisors relay the outcome and stop without test cleanup.
 const QUICK_EXIT = ['-e', 'setTimeout(() => {}, 50)']

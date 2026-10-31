@@ -1,7 +1,7 @@
-// Poll orca status --json during load storms to distinguish continuous host freeze from recovered stalls.
+// Poll occ status --json during load storms to distinguish continuous host freeze from recovered stalls.
 import { spawn } from 'node:child_process'
 import { BoundedLiveFreezeHistory } from './live-freeze-bounded-history.mjs'
-import { resolveOrcaCliInvocation } from './live-remote-freeze-rpc.mjs'
+import { resolveOCCCliInvocation } from './live-remote-freeze-rpc.mjs'
 
 /**
  * @param {{ intervalMs?: number, timeoutMs?: number, cliCommand?: string, sampleHistoryLimit?: number, statusSlowMs?: number }} opts
@@ -11,7 +11,7 @@ export function startStatusWatchdog(opts = {}) {
   const timeoutMs = opts.timeoutMs ?? 30_000
   const cliInvocation = opts.cliCommand
     ? { command: opts.cliCommand, prefixArgs: [] }
-    : resolveOrcaCliInvocation()
+    : resolveOCCCliInvocation()
   const samples = new BoundedLiveFreezeHistory(opts.sampleHistoryLimit ?? 240)
   const statusSlowMs = opts.statusSlowMs ?? 15_000
   let stopped = false

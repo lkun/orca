@@ -1,4 +1,4 @@
-import { getOrcaProfileBrowserSessionPartition } from '../../shared/orca-profiles'
+import { getOCCProfileBrowserSessionPartition } from '../../shared/occ-profiles'
 import type { BrowserSessionProfile } from '../../shared/browser-workspace-types'
 
 const BROWSER_SESSION_PROFILE_ID_RE =
@@ -11,7 +11,7 @@ type PersistedProfileWithUserAgentMode = Record<string, unknown> & {
 // Persisted metadata must not add arbitrary partitions to the webview allowlist.
 export function isValidPersistedBrowserSessionProfile(
   profile: unknown,
-  activeOrcaProfileId: string
+  activeOCCProfileId: string
 ): profile is BrowserSessionProfile {
   if (!profile || typeof profile !== 'object') {
     return false
@@ -23,13 +23,13 @@ export function isValidPersistedBrowserSessionProfile(
     typeof candidate.id === 'string' &&
     typeof candidate.partition === 'string' &&
     typeof candidate.label === 'string' &&
-    isProfileOwnedSessionPartition(candidate.id, candidate.partition, activeOrcaProfileId)
+    isProfileOwnedSessionPartition(candidate.id, candidate.partition, activeOCCProfileId)
   )
 }
 
 export function inspectRetiredBrowserSessionProfileUserAgentModes(
   profiles: readonly unknown[],
-  activeOrcaProfileId: string
+  activeOCCProfileId: string
 ): { noticePending: boolean; degraded: boolean } {
   let noticePending = false
   let degraded = false
@@ -43,7 +43,7 @@ export function inspectRetiredBrowserSessionProfileUserAgentModes(
     // Unknown modes and unhydratable profiles make the retired choice uninspectable.
     if (
       (mode !== 'clean' && mode !== 'native') ||
-      !isValidPersistedBrowserSessionProfile(profile, activeOrcaProfileId)
+      !isValidPersistedBrowserSessionProfile(profile, activeOCCProfileId)
     ) {
       degraded = true
     }
@@ -64,10 +64,10 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 function isProfileOwnedSessionPartition(
   profileId: string,
   partition: string,
-  activeOrcaProfileId: string
+  activeOCCProfileId: string
 ): boolean {
   return (
     BROWSER_SESSION_PROFILE_ID_RE.test(profileId) &&
-    partition === getOrcaProfileBrowserSessionPartition(activeOrcaProfileId, profileId)
+    partition === getOCCProfileBrowserSessionPartition(activeOCCProfileId, profileId)
   )
 }

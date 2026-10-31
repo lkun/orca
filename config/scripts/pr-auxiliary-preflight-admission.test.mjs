@@ -11,7 +11,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { runInNewContext } from 'node:vm'
 import { afterEach, describe, expect, it } from 'vitest'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { parse } from 'yaml'
 import { classifyPrJobs } from './pr-code-change-scope.mjs'
 import { collectNodeServerInputs } from './node-server-change-scope.mjs'
@@ -26,7 +26,7 @@ const routes = [
   ['codex_index_heal_contract', 'src/main/codex/codex-session-index-heal.ts'],
   ['xterm_patch_sync', 'config/patches/xterm-upstream.json'],
   ['shell_contracts', 'src/main/pty/pty-manager.ts'],
-  ['orcad_browser', 'src/main/orcad/orcad-browser-provider.ts'],
+  ['occd_browser', 'src/main/occd/occd-browser-provider.ts'],
   ['cross-version-wire', 'src/shared/orchestration-rpc-contract.ts'],
   ['managed_hook_node18', 'src/shared/agent-hook-status.ts']
 ]
@@ -65,11 +65,11 @@ function routedOutputs(files, reused, options) {
 }
 
 describe.each(routes)('%s preflight admission', (jobName, changedFile) => {
-  const job = workflow.jobs[jobName === 'orcad_browser' ? 'test' : jobName]
+  const job = workflow.jobs[jobName === 'occd_browser' ? 'test' : jobName]
   const condition =
-    jobName === 'orcad_browser' ? `(${job.if}) && (${chrome.if}) && (${browser.if})` : job.if
+    jobName === 'occd_browser' ? `(${job.if}) && (${chrome.if}) && (${browser.if})` : job.if
   // Unit shards wait for their plan rather than preflight.
-  const gate = jobName === 'orcad_browser' ? 'unit_plan' : 'preflight'
+  const gate = jobName === 'occd_browser' ? 'unit_plan' : 'preflight'
 
   it('waits for the detector and its prerequisite job', () => {
     expect(job.needs).toEqual(['code_paths', gate])
@@ -112,7 +112,7 @@ describe.each(routes)('%s preflight admission', (jobName, changedFile) => {
         }
       }
     }
-    if (jobName === 'orcad_browser') {
+    if (jobName === 'occd_browser') {
       context.inputs.browser_contract = evaluate(job.with.browser_contract, context)
     }
     expect(evaluate(condition, context)).toBe(scenario.admitted)
@@ -146,7 +146,7 @@ describe.each(routes)('%s preflight admission', (jobName, changedFile) => {
         inputs: {},
         needs: { code_paths: { result: 'success', outputs }, [gate]: { result: 'success' } }
       }
-      if (jobName === 'orcad_browser') {
+      if (jobName === 'occd_browser') {
         context.inputs.browser_contract = evaluate(job.with.browser_contract, context)
       }
       expect(evaluate(condition, context)).toBe(reused !== 'true')
@@ -276,7 +276,7 @@ describe('Mobile CI tool preflight routing', () => {
     expect(classifyPrJobs([tool]).mobile_ci_tools).toBe(false)
     for (const files of [
       [],
-      [tool, 'src/main/runtime/orca-runtime.ts'],
+      [tool, 'src/main/runtime/occ-runtime.ts'],
       [tool, 'pnpm-lock.yaml'],
       [tool, 'package.json'],
       [tool, 'config/vitest.config.ts'],
@@ -328,7 +328,7 @@ describe('Renderer-only relay admission', () => {
     ['src/main/runtime/mobile-cloud-relay/relay-http-client.ts'],
     ['src/shared/relay-region-preference.ts'],
     ['tests/e2e/relay-region-compatibility.unit.test.ts'],
-    ['src/main/orcad/orcad-browser-provider.ts'],
+    ['src/main/occd/occd-browser-provider.ts'],
     ['package.json'],
     ['pnpm-lock.yaml'],
     ['config/vitest.config.ts'],
@@ -346,7 +346,7 @@ describe('Renderer-only relay admission', () => {
     {},
     { relay_integration: '' },
     { relay_integration: 'unknown' },
-    { relay_integration: 'false', orcad_browser: 'true' }
+    { relay_integration: 'false', occd_browser: 'true' }
   ])(
     'retains relay/browser execution for missing routes or a selected browser contract: %j',
     (outputs) => {
@@ -379,7 +379,7 @@ function createMobileCiScopeRepository(
   toolPath = 'config/scripts/run-mobile-ci-tests.mjs',
   companionPaths = []
 ) {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-mobile-ci-scope-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-mobile-ci-scope-'))
   mobileCiScopeDirectories.push(directory)
   const root = resolve(import.meta.dirname, '../..')
   for (const file of [
@@ -449,7 +449,7 @@ function createMobileCiScopeRepository(
         BASE_SHA: base,
         GITHUB_EVENT_NAME: 'pull_request',
         GITHUB_OUTPUT: output,
-        ORCA_BACKGROUND_LAUNCH: '1'
+        OCC_BACKGROUND_LAUNCH: '1'
       }
     })
     return { result, output }

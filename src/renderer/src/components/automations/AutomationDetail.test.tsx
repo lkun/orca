@@ -23,7 +23,7 @@ async function render(overrides: Partial<Automation>): Promise<HTMLDivElement> {
         <AutomationDetail
           automation={makeAutomation(overrides)}
           runs={[]}
-          projectName="orca"
+          projectName="occ"
           workspaceName="main"
           projectDefaultBaseRef="main"
           runNowAvailability={null}

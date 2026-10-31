@@ -231,7 +231,7 @@ describe('hydrateShellPath', () => {
   })
 
   it('sets a probe marker so rc files can take a fast path', async () => {
-    expect((await captureProbeEnv()).ORCA_SHELL_PATH_PROBE).toBe('1')
+    expect((await captureProbeEnv()).OCC_SHELL_PATH_PROBE).toBe('1')
   })
 
   it.skipIf(process.platform === 'win32').each(['/bin/bash', '/bin/zsh'])(
@@ -241,7 +241,7 @@ describe('hydrateShellPath', () => {
 
       expect(spawnMock.mock.calls[0][1]).toEqual([
         '-ilc',
-        `printf '%s' '__ORCA_SHELL_PATH__'; printf '%s' "$PATH"; printf '%s' '__ORCA_SHELL_PATH__'`
+        `printf '%s' '__OCC_SHELL_PATH__'; printf '%s' "$PATH"; printf '%s' '__OCC_SHELL_PATH__'`
       ])
     }
   )
@@ -260,14 +260,14 @@ describe('hydrateShellPath', () => {
       expect(spawnMock.mock.calls[0][1]).toEqual([
         '-ilc',
         [
-          "print -n '__ORCA_SHELL_PATH__';",
+          "print -n '__OCC_SHELL_PATH__';",
           'print -n ($env.PATH | str join (char esep));',
-          "print -n '__ORCA_SHELL_PATH__'"
+          "print -n '__OCC_SHELL_PATH__'"
         ].join(' ')
       ])
       proc.stdout.emit(
         'data',
-        Buffer.from('__ORCA_SHELL_PATH__/etc/profiles/per-user/me/bin:/usr/bin__ORCA_SHELL_PATH__')
+        Buffer.from('__OCC_SHELL_PATH__/etc/profiles/per-user/me/bin:/usr/bin__OCC_SHELL_PATH__')
       )
       proc.emit('close', 0)
 

@@ -10,7 +10,7 @@ The OCC mobile companion is an iOS/Android app that pairs with your desktop OCC 
 <Callout title="Beta">
   The mobile companion is in beta. Install iOS from the [App
   Store](https://apps.apple.com/us/app/occ-ide/id6766130217), or install Android from the [current
-  APK](https://www.onorca.dev/download/android).
+  APK](https://www.onocc.dev/download/android).
 </Callout>
 
 ## What you can do from mobile
@@ -110,12 +110,12 @@ For OCC Relay and sign-in, allow outbound TCP port `443` from the desktop and ph
 
 | Host                                                                             | Purpose                                       | Protocol                          |
 | -------------------------------------------------------------------------------- | --------------------------------------------- | --------------------------------- |
-| `login.onorca.dev`                                                               | OCC sign-in and Relay credentials            | HTTPS                             |
-| `auth.onorca.dev`                                                                | Hosted sign-in pages                          | HTTPS                             |
-| `relay.onorca.dev`                                                               | Relay director, which assigns a regional cell | HTTPS and secure WebSockets (WSS) |
-| `*.relay.onorca.dev`, including `c1.relay.onorca.dev` and `c27.relay.onorca.dev` | Regional Relay cells                          | HTTPS and secure WebSockets (WSS) |
+| `login.onocc.dev`                                                               | OCC sign-in and Relay credentials            | HTTPS                             |
+| `auth.onocc.dev`                                                                | Hosted sign-in pages                          | HTTPS                             |
+| `relay.onocc.dev`                                                               | Relay director, which assigns a regional cell | HTTPS and secure WebSockets (WSS) |
+| `*.relay.onocc.dev`, including `c1.relay.onocc.dev` and `c27.relay.onocc.dev` | Regional Relay cells                          | HTTPS and secure WebSockets (WSS) |
 
-Allow WebSocket upgrades and long-lived connections to both `relay.onorca.dev` and the Relay cells. Cell assignments can change, so allow the cell hostname pattern as well as the director. Relay uses outbound connections; it does not need an inbound port or router port forwarding.
+Allow WebSocket upgrades and long-lived connections to both `relay.onocc.dev` and the Relay cells. Cell assignments can change, so allow the cell hostname pattern as well as the director. Relay uses outbound connections; it does not need an inbound port or router port forwarding.
 
 For a direct LAN or Tailscale connection, allow the paired desktop's listening port instead. The default is `6768`, but a desktop using another port needs that port allowed. **Settings → Troubleshooting** shows the paired endpoint's port in its firewall advice.
 
@@ -124,7 +124,7 @@ For a direct LAN or Tailscale connection, allow the paired desktop's listening p
 - **Stuck spinner on a worktree** — the phone tracks a heartbeat from the desktop agent process. If the desktop says idle but the phone shows working, force-refresh the worktree row to sync state.
 - **Pairing fails** — make sure your desktop and phone are signed into the same OCC account. Pairing codes expire after a few minutes; generate a fresh one if it's been sitting on the screen.
 - **Authentication failed / pairing invalid** — the desktop no longer accepts this device token (for example after desktop cleared paired devices). Try **Retry** on the banner first (transient rejections can recover without re-pairing). If it keeps failing, use **Re-pair** from desktop, or **Remove** the host and pair again.
-- **Update OCC Mobile / Update OCC on your computer** — the phone and desktop speak a versioned mobile protocol. If either side is too old, mobile blocks that host and points you at the App Store (iOS), [GitHub Releases](https://github.com/stablyai/orca/releases) (Android APK or desktop), then back to hosts. After updating, refresh the connection; if the message stays, remove the host and pair again.
+- **Update OCC Mobile / Update OCC on your computer** — the phone and desktop speak a versioned mobile protocol. If either side is too old, mobile blocks that host and points you at the App Store (iOS), [GitHub Releases](https://github.com/stablyai/occ/releases) (Android APK or desktop), then back to hosts. After updating, refresh the connection; if the message stays, remove the host and pair again.
 - **Quick Commands unavailable** — update the paired desktop so it advertises the quick-commands capability.
 - **Can't reach desktop** — phone and desktop must share a network path (LAN, Tailscale, or the pairing path you used). Closing the desktop app drops the connection; reopen desktop and the phone reconnects automatically.
 

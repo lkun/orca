@@ -9,12 +9,12 @@ vi.mock('../right-sidebar/plugin-panel-design-token-css', () => ({
   currentPluginFrameTheme: () => ({ colorScheme: 'light', tokens: '' })
 }))
 
-/** Drives the editor host through the frame host, exactly as the frame's `window.orca` would. */
+/** Drives the editor host through the frame host, exactly as the frame's `window.occ` would. */
 
-const READY = { orca: 1, kind: 'evt', event: 'ready', payload: { protocol: 1 } }
+const READY = { occ: 1, kind: 'evt', event: 'ready', payload: { protocol: 1 } }
 let nextId = 100
 const applyEdit = (content: unknown, baseVersion = 1, id = nextId++) => ({
-  orca: 1,
+  occ: 1,
   kind: 'req',
   id,
   method: 'editor.applyEdit',
@@ -23,7 +23,7 @@ const applyEdit = (content: unknown, baseVersion = 1, id = nextId++) => ({
 const edit = (text: string, baseVersion = 1, id?: number) =>
   applyEdit({ kind: 'text', text }, baseVersion, id)
 const keydown = (payload: Record<string, unknown>) => ({
-  orca: 1,
+  occ: 1,
   kind: 'evt',
   event: 'editor.keydown',
   payload
@@ -66,7 +66,7 @@ function harness(
   const answerFlushes = () => {
     for (const message of messages()) {
       if (isPluginJsonObject(message) && message.method === 'editor.flush') {
-        send({ orca: 1, kind: 'res', id: message.id, result: null })
+        send({ occ: 1, kind: 'res', id: message.id, result: null })
       }
     }
   }
@@ -140,7 +140,7 @@ describe('custom editor bytes documents', () => {
     expect(documents()).toHaveLength(1)
     const { message, transfer } = posted.at(-1)!
     expect(message).toMatchObject({
-      orca: 1,
+      occ: 1,
       kind: 'evt',
       event: 'editor.document',
       payload: { version: 1, readOnly: true, fileType: 'xlsx', content: { kind: 'bytes' } }
@@ -176,7 +176,7 @@ describe('custom editor bytes documents', () => {
     send(bytesEdit([7, 8], 1, 2))
     expect(onEdit).not.toHaveBeenCalled()
     expect(answers(1)).toMatchObject([{ error: { code: 'invalid_params' } }])
-    expect(answers(2)).toEqual([{ orca: 1, kind: 'res', id: 2, result: null }])
+    expect(answers(2)).toEqual([{ occ: 1, kind: 'res', id: 2, result: null }])
     expect(onBytesEdit).toHaveBeenCalledOnce()
     expect([...onBytesEdit.mock.calls[0][0].bytes]).toEqual([7, 8])
     expect(onBytesEdit.mock.calls[0][0].fileType).toBe('xlsx')
@@ -224,7 +224,7 @@ describe('custom editor document versions', () => {
     send(READY)
     send(edit('b', 1, 6))
     expect(onEdit).toHaveBeenCalledWith('b')
-    expect(answers(6)).toEqual([{ orca: 1, kind: 'res', id: 6, result: null }])
+    expect(answers(6)).toEqual([{ occ: 1, kind: 'res', id: 6, result: null }])
   })
 
   it('refuses a stale edit with a conflict instead of overwriting the outside change', () => {
@@ -236,7 +236,7 @@ describe('custom editor document versions', () => {
     expect(onEdit).not.toHaveBeenCalled()
     expect(answers(7)).toEqual([
       {
-        orca: 1,
+        occ: 1,
         kind: 'res',
         id: 7,
         error: { code: 'conflict', message: expect.any(String), retryable: true }
@@ -248,14 +248,14 @@ describe('custom editor document versions', () => {
     const { onEdit, send, answers } = setup({ text: 'a' })
     send(READY)
     send({
-      orca: 1,
+      occ: 1,
       kind: 'req',
       id: 8,
       method: 'editor.applyEdit',
       params: { content: { kind: 'text', text: 'x' } }
     })
     send({
-      orca: 1,
+      occ: 1,
       kind: 'req',
       id: 9,
       method: 'editor.applyEdit',
@@ -276,7 +276,7 @@ describe('custom editor document channel', () => {
     expect(messages()).toEqual([
       expect.objectContaining({ kind: 'evt', event: 'hello' }),
       {
-        orca: 1,
+        occ: 1,
         kind: 'evt',
         event: 'editor.document',
         payload: {
@@ -365,13 +365,13 @@ describe('custom editor document channel', () => {
     expect(onEdit).toHaveBeenCalledTimes(1)
     expect(onUnappliedEdit).toHaveBeenLastCalledWith('held')
     // `c` is superseded by the full-document `d`, so it succeeded.
-    expect(answers(14)).toEqual([{ orca: 1, kind: 'res', id: 14, result: null }])
+    expect(answers(14)).toEqual([{ occ: 1, kind: 'res', id: 14, result: null }])
     expect(answers(15)).toEqual([])
     const flushed = host.flush()
     answerFlushes()
     await expect(flushed).resolves.toBe(true)
     expect(onEdit).toHaveBeenLastCalledWith('d')
-    expect(answers(15)).toEqual([{ orca: 1, kind: 'res', id: 15, result: null }])
+    expect(answers(15)).toEqual([{ occ: 1, kind: 'res', id: 15, result: null }])
     expect(onUnappliedEdit).toHaveBeenLastCalledWith(null)
   })
 
@@ -380,7 +380,7 @@ describe('custom editor document channel', () => {
     send(READY)
     for (let index = 0; index < 5; index += 1) {
       send(keydown({ key: 's', code: 'KeyS', metaKey: true }))
-      send({ orca: 1, kind: 'res', id: index, result: null })
+      send({ occ: 1, kind: 'res', id: index, result: null })
     }
     send(edit('b'))
     expect(onEdit).toHaveBeenCalledWith('b')
@@ -390,9 +390,9 @@ describe('custom editor document channel', () => {
     const { host, send, messages } = setup({ text: 'a' })
     send(READY)
     const flushed = host.flush()
-    expect(messages().at(-1)).toEqual({ orca: 1, kind: 'req', id: 0, method: 'editor.flush' })
+    expect(messages().at(-1)).toEqual({ occ: 1, kind: 'req', id: 0, method: 'editor.flush' })
     send(edit('pending'))
-    send({ orca: 1, kind: 'res', id: 0, result: null })
+    send({ occ: 1, kind: 'res', id: 0, result: null })
     await expect(flushed).resolves.toBe(true)
     // A frame that never answers holds edits OCC can't see.
     await expect(host.flush()).resolves.toBe(false)

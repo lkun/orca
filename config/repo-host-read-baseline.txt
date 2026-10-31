@@ -25,10 +25,10 @@
 2 src/main/ipc/worktrees/removal/register-worktree-forget-handlers.ts
 1 src/main/ipc/worktrees/removal/register-worktree-removal-handlers.ts
 1 src/main/ipc/worktrees/repo-host-ownership.ts
-2 src/main/orca-profiles/profile-project-transfer-payload.ts
-1 src/main/orca-profiles/profile-project-worktree-identity.ts
+2 src/main/occ-profiles/profile-project-transfer-payload.ts
+1 src/main/occ-profiles/profile-project-worktree-identity.ts
 1 src/main/persistence/leasing-ssh-ptys/ssh-target-reassignment.ts
-1 src/main/persistence/migrating-orcad-catalog/orcad-source-ownership.ts
+1 src/main/persistence/migrating-occd-catalog/occd-source-ownership.ts
 2 src/main/persistence/restoring-sessions/folder-scope-migration.ts
 1 src/main/persistence/restoring-sessions/tab-terminal-pane-binding-repair.ts
 2 src/main/persistence/scheduling-automations/automation-definition-operations.ts
@@ -44,7 +44,7 @@
 1 src/main/runtime/runtime-managed-worktree-queries.ts
 3 src/main/runtime/runtime-reference-agents.ts
 1 src/main/runtime/runtime-worktree-selection.ts
-1 src/main/ssh/targets/ssh-target-orcad-claims.ts
+1 src/main/ssh/targets/ssh-target-occd-claims.ts
 1 src/main/workspace-space-worktree-row.ts
 1 src/main/worktree-create-base-prefetch.ts
 2 src/main/worktree-name-retirement.ts

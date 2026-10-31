@@ -88,21 +88,21 @@ two resolutions from the relocated path:
    and spawns `OpenConsole.exe` from beside it. Copying the tree verbatim keeps
    all three side-by-side.
 
-### `ORCA_NODE_PTY_NATIVE_DIR`
+### `OCC_NODE_PTY_NATIVE_DIR`
 
 The reverted #7421 added a `node-pty` patch that reads
-`ORCA_NODE_PTY_NATIVE_DIR` to override the native dir. **The current branch's
+`OCC_NODE_PTY_NATIVE_DIR` to override the native dir. **The current branch's
 `config/patches/node-pty@1.1.0.patch` does NOT contain that override** — it was
 reverted. The spike therefore relies on **layout preservation** (copying the
 node-pty tree at its default relative path) rather than the env override. The
-spike still _sets_ `ORCA_NODE_PTY_NATIVE_DIR` to the relocated native dir so it
+spike still _sets_ `OCC_NODE_PTY_NATIVE_DIR` to the relocated native dir so it
 keeps working if pointed at a build that carries the patch, but on this branch
 the var is inert.
 
 **Implication for the real Phase 1 implementation:** if the production copy does
 NOT preserve node-pty at the path its loader resolves by default (e.g. if the
 daemon-entry is relocated without the sibling `node_modules/node-pty`), the impl
-will need to **re-add the `ORCA_NODE_PTY_NATIVE_DIR` patch** from #7421. If it
+will need to **re-add the `OCC_NODE_PTY_NATIVE_DIR` patch** from #7421. If it
 mirrors the layout as this spike does, the patch is not strictly required —
 though re-adding it is the more robust choice.
 

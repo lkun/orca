@@ -176,10 +176,10 @@ it('keeps denied access retryable if a foreground permission read fails', async 
 it.each([
   'https://apps.apple.com/app/occ-ide/id6766130217',
   ' HTTPS://APPS.APPLE.COM/us/app/occ-ide/id6766130217?mt=8\n',
-  'https://www.onorca.dev/download/android',
-  'https://onorca.dev/download/android/',
+  'https://www.onocc.dev/download/android',
+  'https://onocc.dev/download/android/',
   'https://testflight.apple.com/join/YjeGMQBA',
-  'https://github.com/stablyai/orca/releases/download/mobile-android-v0.0.52/app-release.apk'
+  'https://github.com/stablyai/occ/releases/download/mobile-android-v0.0.52/app-release.apk'
 ])('explains the download QR and retries scanning: %s', async (data) => {
   mocks.permission = { granted: true, canAskAgain: true }
   await render()
@@ -200,11 +200,11 @@ it.each([
 
 it.each([
   'https://example.com',
-  'https://www.onorca.dev.evil.example/download/android',
+  'https://www.onocc.dev.evil.example/download/android',
   'https://apps.apple.com@evil.example/app/occ-ide/id6766130217',
   'https://apps.apple.com/app/another-app/id123',
   'https://testflight.apple.com/join/another-app',
-  'https://github.com/another/orca/releases/download/mobile-android-v0.0.52/app-release.apk',
+  'https://github.com/another/occ/releases/download/mobile-android-v0.0.52/app-release.apk',
   'occ://pair?code=broken'
 ])('keeps unrelated and malformed QR codes invalid: %s', async (data) => {
   mocks.permission = { granted: true, canAskAgain: true }
@@ -220,7 +220,7 @@ it('localizes the download QR guidance', async () => {
   await render()
   await act(async () =>
     findByHostType(root(), 'CameraView').props.onBarcodeScanned({
-      data: 'https://www.onorca.dev/download/android'
+      data: 'https://www.onocc.dev/download/android'
     })
   )
   expect(screen()).toContain(

@@ -17,7 +17,7 @@ function commandPlugin(
     publisher: 'samples',
     name: id,
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     ...(contributes.commands.some((command) => command.action === undefined)
       ? { main: 'worker.js' }

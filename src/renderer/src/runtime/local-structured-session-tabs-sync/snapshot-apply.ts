@@ -33,7 +33,7 @@ import {
 import { suppressCancelledStructuredSessionTabs } from '../structured-agent-session-tab-retirement'
 import { LOCAL_STRUCTURED_SESSION_OWNER } from '../local-structured-session-owner'
 import { closeStructuredAgentSession } from '../structured-agent-session-close'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { useAppStore } from '../../store'
 import { framesDrawWorkspace } from '../workspace-layout-frame-drawn-workspaces'
 import { drawnChatLabelChanges, type DrawnChatLabel } from './frame-drawn-chat-tabs'
@@ -83,7 +83,7 @@ export function applyStructuredSessionTabSnapshots(
             options.onAcceptedAgentSession?.(worktreeId, sessionId)
           },
           // Switch point: main places the listed chats' tabs; its frames draw them.
-          framesDraw: ORCA_LAYOUT_OWNER_IS_MAIN ? framesDrawWorkspace(state) : undefined,
+          framesDraw: OCC_LAYOUT_OWNER_IS_MAIN ? framesDrawWorkspace(state) : undefined,
           onDrawnChatLabel: (change) => drawnChatLabels.push(change)
         },
         changedAgentPaneKeys

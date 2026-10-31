@@ -25,7 +25,7 @@ describe('MimoCodeHookService buildPtyEnv', () => {
   let userConfigDir: string
 
   beforeEach(() => {
-    userDataDir = mkdtempSync(join(tmpdir(), 'orca-mimocode-userdata-'))
+    userDataDir = mkdtempSync(join(tmpdir(), 'occ-mimocode-userdata-'))
     getPathMock.mockImplementation((name) => {
       if (name === 'userData') {
         return userDataDir
@@ -42,11 +42,11 @@ describe('MimoCodeHookService buildPtyEnv', () => {
       getAppMetrics: () => []
     })
 
-    userConfigDir = mkdtempSync(join(tmpdir(), 'orca-mimocode-config-'))
+    userConfigDir = mkdtempSync(join(tmpdir(), 'occ-mimocode-config-'))
     mkdirSync(join(userConfigDir, 'plugins'), { recursive: true })
     writeFileSync(join(userConfigDir, 'mimocode.json'), '{"theme":"dark"}')
     writeFileSync(join(userConfigDir, 'plugins', 'user-plugin.js'), 'export default () => {}')
-    writeFileSync(join(userConfigDir, 'plugins', 'orca-mimocode-status.js'), 'USER PLUGIN')
+    writeFileSync(join(userConfigDir, 'plugins', 'occ-mimocode-status.js'), 'USER PLUGIN')
   })
 
   afterEach(() => {
@@ -61,7 +61,7 @@ describe('MimoCodeHookService buildPtyEnv', () => {
     const overlay = join(userDataDir, 'mimocode-hooks', 'config')
     expect(env).toEqual({ MIMOCODE_CONFIG_DIR: overlay })
     expect(readdirSync(overlay)).toEqual(['plugins'])
-    const pluginSource = readFileSync(join(overlay, 'plugins', 'orca-mimocode-status.js'), 'utf8')
+    const pluginSource = readFileSync(join(overlay, 'plugins', 'occ-mimocode-status.js'), 'utf8')
     expect(pluginSource).toContain('/hook/mimo-code')
     expect(pluginSource).not.toContain('post("SessionStart"')
   })
@@ -75,10 +75,10 @@ describe('MimoCodeHookService buildPtyEnv', () => {
     expect(readFileSync(join(overlay, 'plugins', 'user-plugin.js'), 'utf8')).toBe(
       'export default () => {}'
     )
-    expect(readFileSync(join(overlay, 'plugins', 'orca-mimocode-status.js'), 'utf8')).toContain(
+    expect(readFileSync(join(overlay, 'plugins', 'occ-mimocode-status.js'), 'utf8')).toContain(
       '/hook/mimo-code'
     )
-    expect(readFileSync(join(userConfigDir, 'plugins', 'orca-mimocode-status.js'), 'utf8')).toBe(
+    expect(readFileSync(join(userConfigDir, 'plugins', 'occ-mimocode-status.js'), 'utf8')).toBe(
       'USER PLUGIN'
     )
   })
@@ -86,7 +86,7 @@ describe('MimoCodeHookService buildPtyEnv', () => {
   it.skipIf(process.platform === 'win32')(
     "never writes the OCC plugin through a user's linked plugins folder",
     () => {
-      const linkedPlugins = mkdtempSync(join(tmpdir(), 'orca-mimocode-linked-plugins-'))
+      const linkedPlugins = mkdtempSync(join(tmpdir(), 'occ-mimocode-linked-plugins-'))
       writeFileSync(join(linkedPlugins, 'user-plugin.js'), 'export default () => {}')
       rmSync(join(userConfigDir, 'plugins'), { recursive: true })
       symlinkSync(linkedPlugins, join(userConfigDir, 'plugins'))

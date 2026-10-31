@@ -19,7 +19,7 @@ export type JsonlRpcRequestOptions = {
 }
 
 // Pi echoes opaque ids before the response payload; the category survives its waiter's timeout.
-const OVERSIZED_REPLY_HEAD = /^\{"id":"(orca-optional-([1-9]\d*))","type":"response"(?=[,}])/
+const OVERSIZED_REPLY_HEAD = /^\{"id":"(occ-optional-([1-9]\d*))","type":"response"(?=[,}])/
 
 /**
  * Only an issued optional reply can be dropped alone. Complete-queue loss may also omit

@@ -83,12 +83,12 @@ describe('getEnterpriseGitHubRepoSlug', () => {
   })
 
   it('resolves a GHES remote whose host the user is gh-authenticated to (#8312)', async () => {
-    mockOriginRemote('https://github.acme-corp.com/team/orca.git')
+    mockOriginRemote('https://github.acme-corp.com/team/occ.git')
     mockHostAuthenticated()
 
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toEqual({
       owner: 'team',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.acme-corp.com'
     })
     // Inventory configured hosts without sending ambient credentials to an untrusted remote.
@@ -96,24 +96,24 @@ describe('getEnterpriseGitHubRepoSlug', () => {
   })
 
   it('resolves a GHES SCP-style SSH remote', async () => {
-    mockOriginRemote('git@github.acme-corp.com:team/orca.git')
+    mockOriginRemote('git@github.acme-corp.com:team/occ.git')
     mockHostAuthenticated()
 
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toEqual({
       owner: 'team',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.acme-corp.com'
     })
   })
 
   it('expands an SSH Host alias to the authenticated GHES HostName (#10284)', async () => {
-    mockOriginRemote('git@ghe-work:team/orca.git')
+    mockOriginRemote('git@ghe-work:team/occ.git')
     resolveWithSshGMock.mockResolvedValueOnce(sshConfig('github.acme-corp.com'))
     mockHostAuthenticated('github.acme-corp.com')
 
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toEqual({
       owner: 'team',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.acme-corp.com'
     })
     expect(resolveWithSshGMock).toHaveBeenCalledWith('ghe-work')
@@ -121,7 +121,7 @@ describe('getEnterpriseGitHubRepoSlug', () => {
 
   it('keeps a failed GHES alias probe indeterminate and recovers on retry', async () => {
     vi.useFakeTimers()
-    mockOriginRemote('git@ghe-work:team/orca.git')
+    mockOriginRemote('git@ghe-work:team/occ.git')
     resolveWithSshGMock
       .mockResolvedValueOnce(null)
       .mockResolvedValueOnce(sshConfig('github.acme-corp.com'))
@@ -134,13 +134,13 @@ describe('getEnterpriseGitHubRepoSlug', () => {
     mockHostAuthenticated('github.acme-corp.com')
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toEqual({
       owner: 'team',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.acme-corp.com'
     })
   })
 
   it('returns null for a Host alias that resolves to github.com (dotcom path owns it)', async () => {
-    mockOriginRemote('git@github-work:team/orca.git')
+    mockOriginRemote('git@github-work:team/occ.git')
     resolveWithSshGMock.mockResolvedValueOnce(sshConfig('ssh.github.com', 443))
 
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toBeNull()
@@ -148,7 +148,7 @@ describe('getEnterpriseGitHubRepoSlug', () => {
   })
 
   it('expands aliases in the repository WSL runtime', async () => {
-    mockOriginRemote('git@github-work:team/orca.git')
+    mockOriginRemote('git@github-work:team/occ.git')
     commandExecFileAsyncMock.mockResolvedValueOnce({
       stdout: 'hostname github.com\nport 22\n',
       stderr: ''
@@ -168,12 +168,12 @@ describe('getEnterpriseGitHubRepoSlug', () => {
   })
 
   it('uses the unique ported auth host for a hostname-only SSH remote', async () => {
-    mockOriginRemote('git@ghe.acme.com:team/orca.git')
+    mockOriginRemote('git@ghe.acme.com:team/occ.git')
     mockHostAuthenticated('ghe.acme.com:8443')
 
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toEqual({
       owner: 'team',
-      repo: 'orca',
+      repo: 'occ',
       host: 'ghe.acme.com:8443'
     })
   })
@@ -184,21 +184,21 @@ describe('getEnterpriseGitHubRepoSlug', () => {
   ])(
     'requires exact host:port authentication regardless of auth inventory order: %j',
     async (authenticatedHosts) => {
-      mockOriginRemote('https://ghe.acme.com:8443/team/orca.git')
+      mockOriginRemote('https://ghe.acme.com:8443/team/occ.git')
       mockAuthenticatedHosts(authenticatedHosts)
 
       await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toEqual({
         owner: 'team',
-        repo: 'orca',
+        repo: 'occ',
         host: 'ghe.acme.com:8443'
       })
     }
   )
 
   it.each([
-    'https://ghe.acme.com:8443/team/orca.git',
-    'https://ghe.acme.com:80/team/orca.git',
-    'http://ghe.acme.com:443/team/orca.git'
+    'https://ghe.acme.com:8443/team/occ.git',
+    'https://ghe.acme.com:80/team/occ.git',
+    'http://ghe.acme.com:443/team/occ.git'
   ])('rejects portless authentication for a non-default web endpoint: %s', async (remoteUrl) => {
     mockOriginRemote(remoteUrl)
     mockHostAuthenticated('ghe.acme.com')
@@ -206,7 +206,7 @@ describe('getEnterpriseGitHubRepoSlug', () => {
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toBeNull()
   })
 
-  it.each(['http://ghe.acme.com:80/team/orca.git', 'https://ghe.acme.com:443/team/orca.git'])(
+  it.each(['http://ghe.acme.com:80/team/occ.git', 'https://ghe.acme.com:443/team/occ.git'])(
     'matches a protocol-default port to the portless auth host: %s',
     async (remoteUrl) => {
       mockOriginRemote(remoteUrl)
@@ -214,36 +214,36 @@ describe('getEnterpriseGitHubRepoSlug', () => {
 
       await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toEqual({
         owner: 'team',
-        repo: 'orca',
+        repo: 'occ',
         host: 'ghe.acme.com'
       })
     }
   )
 
   it('preserves exact authentication for an HTTP endpoint on port 443', async () => {
-    mockOriginRemote('http://ghe.acme.com:443/team/orca.git')
+    mockOriginRemote('http://ghe.acme.com:443/team/occ.git')
     mockHostAuthenticated('ghe.acme.com:443')
 
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toEqual({
       owner: 'team',
-      repo: 'orca',
+      repo: 'occ',
       host: 'ghe.acme.com:443'
     })
   })
 
   it('preserves exact authentication for an HTTPS endpoint on port 80', async () => {
-    mockOriginRemote('https://ghe.acme.com:80/team/orca.git')
+    mockOriginRemote('https://ghe.acme.com:80/team/occ.git')
     mockHostAuthenticated('ghe.acme.com:80')
 
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toEqual({
       owner: 'team',
-      repo: 'orca',
+      repo: 'occ',
       host: 'ghe.acme.com:80'
     })
   })
 
   it('probes gh in the repository WSL runtime, not the host/default distro', async () => {
-    mockOriginRemote('https://github.acme-corp.com/team/orca.git')
+    mockOriginRemote('https://github.acme-corp.com/team/occ.git')
     mockHostAuthenticated()
 
     await getEnterpriseGitHubRepoSlug('/repo', null, {
@@ -257,14 +257,14 @@ describe('getEnterpriseGitHubRepoSlug', () => {
   })
 
   it('leaves github.com to getOwnerRepo without probing gh auth', async () => {
-    mockOriginRemote('https://github.com/team/orca.git')
+    mockOriginRemote('https://github.com/team/occ.git')
 
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toBeNull()
     expect(ghExecFileAsyncMock).not.toHaveBeenCalled()
   })
 
   it('declines a custom host the user is not gh-authenticated to (leaves it for Gitea)', async () => {
-    mockOriginRemote('https://gitea.example.com/team/orca.git')
+    mockOriginRemote('https://gitea.example.com/team/occ.git')
     mockHostNotAuthenticated()
 
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toBeNull()
@@ -285,7 +285,7 @@ describe('getEnterpriseGitHubRepoSlug', () => {
   })
 
   it('preserves an indeterminate auth inventory failure so a later probe can recover', async () => {
-    mockOriginRemote('git@ghe.acme.com:team/orca.git')
+    mockOriginRemote('git@ghe.acme.com:team/occ.git')
     ghExecFileAsyncMock.mockRejectedValueOnce(
       Object.assign(new Error('not installed'), { stdout: '', stderr: '' })
     )
@@ -295,7 +295,7 @@ describe('getEnterpriseGitHubRepoSlug', () => {
     mockHostAuthenticated('ghe.acme.com:8443')
     await expect(getEnterpriseGitHubRepoSlug('/repo')).resolves.toEqual({
       owner: 'team',
-      repo: 'orca',
+      repo: 'occ',
       host: 'ghe.acme.com:8443'
     })
   })

@@ -12,7 +12,7 @@ import {
 import { HeapWindowReaper } from './heap-window-reaper.js'
 
 // Unpruned released rows reached 13.7M/9GB and were locked on every host placement.
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 const schema = 'relay_released_reservation_prune_test'
 const NOW = 100 * 24 * 60 * 60 * 1_000

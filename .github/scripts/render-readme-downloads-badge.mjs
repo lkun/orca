@@ -3,13 +3,13 @@ import { dirname } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { isAgentStateRulesTag } from '../../config/scripts/release-tag-patterns.mjs'
 
-const repository = process.env.GITHUB_REPOSITORY ?? 'stablyai/orca'
+const repository = process.env.GITHUB_REPOSITORY ?? 'stablyai/occ'
 const token = process.env.GITHUB_TOKEN
 const outputPath = process.env.DOWNLOADS_BADGE_PATH ?? 'docs/assets/readme-downloads.svg'
 
 const headers = {
   Accept: 'application/vnd.github+json',
-  'User-Agent': 'orca-readme-downloads-badge',
+  'User-Agent': 'occ-readme-downloads-badge',
   'X-GitHub-Api-Version': '2022-11-28'
 }
 

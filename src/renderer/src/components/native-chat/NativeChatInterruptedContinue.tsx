@@ -21,13 +21,13 @@ import type {
   AgentJournalRenderItem,
   AgentJournalSubmission
 } from '../../../../shared/agent-session-journal-types'
-import { latestNativeChatOrcaStopCut } from '../../../../shared/native-chat/native-chat-orca-stop-cut'
+import { latestNativeChatOCCStopCut } from '../../../../shared/native-chat/native-chat-occ-stop-cut'
 import {
   latestNativeChatUsageLimitCut,
   NATIVE_CHAT_USAGE_LIMIT_CONTINUE_MESSAGE
 } from '../../../../shared/native-chat/native-chat-usage-limit-cut'
 import { AGENT_SESSION_CONTINUE_INTERRUPTED_RUNTIME_CAPABILITY } from '../../../../shared/agent-session-continue-interrupted-capability'
-import type { NativeChatOrcaStopView } from './native-chat-orca-stop-context'
+import type { NativeChatOCCStopView } from './native-chat-occ-stop-context'
 import { useStructuredAgentSessionHostLabel } from './use-structured-agent-session-host-label'
 import { useNativeChatTargetRestartResuming } from '../native-chat-restart-runtimes'
 import { useNativeChatLaunchResumePending } from '../native-chat-launch-resume-decision'
@@ -38,7 +38,7 @@ type ContinueAnswer = { outcome?: string }
 
 export type NativeChatInterruptedContinuation = {
   /** Host identity and continuation availability for the cut’s transcript row. */
-  view: NativeChatOrcaStopView
+  view: NativeChatOCCStopView
   /** Show a failed Continue until retry, dismissal or continuation from any client. */
   continueError: (NativeChatComposerNoticeContent & { onDismiss: () => void }) | null
 }
@@ -79,7 +79,7 @@ export function useNativeChatInterruptedContinuation(input: {
   const launchPending = useNativeChatLaunchResumePending() && target.kind === 'local'
   const resuming = useNativeChatTargetRestartResuming(target).includes(sessionId) || launchPending
   const cut = useMemo(
-    () => latestNativeChatOrcaStopCut(input.journalItems, input.submissions),
+    () => latestNativeChatOCCStopCut(input.journalItems, input.submissions),
     [input.journalItems, input.submissions]
   )
   // Any host: Continue past a usage limit is the person's own message, which every host takes.

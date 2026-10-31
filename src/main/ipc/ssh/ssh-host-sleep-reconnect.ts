@@ -1,5 +1,5 @@
 import { powerMonitor } from 'electron'
-import { recoverOrcadManagedTunnelsAfterHostResume } from '../../managed-server/lifecycle/orcad-managed-tunnel'
+import { recoverOCCdManagedTunnelsAfterHostResume } from '../../managed-server/lifecycle/occd-managed-tunnel'
 import { getSshConnectionManager } from '../../ssh/targets/ssh-target-registry'
 import { errorMessage } from '../../../shared/error-message'
 
@@ -21,7 +21,7 @@ export function retrySshConnectionsAfterNetworkReturn(): void {
     return
   }
   // Probe transports that still appear connected after wake; keepalive may not detect them yet.
-  void recoverOrcadManagedTunnelsAfterHostResume(getUserDataPath(), {
+  void recoverOCCdManagedTunnelsAfterHostResume(getUserDataPath(), {
     attempts: RESUME_PROBE_ATTEMPTS,
     timeoutMs: RESUME_PROBE_TIMEOUT_MS
   }).catch((err) => {

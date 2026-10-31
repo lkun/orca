@@ -106,5 +106,5 @@ export class DurablePushWorker {
 }
 
 function warnWorkerFailed(): void {
-  console.warn(JSON.stringify({ event: 'orca_push_worker_failed' }))
+  console.warn(JSON.stringify({ event: 'occ_push_worker_failed' }))
 }

@@ -24,7 +24,7 @@ function probe(overrides: Partial<PreparationOwnerProbe> = {}): PreparationOwner
 }
 
 const reasonFrom = (machine: string | null): string =>
-  `orca-create-preparation:v1:4242:4242-11111111-1111-4111-8111-111111111111${
+  `occ-create-preparation:v1:4242:4242-11111111-1111-4111-8111-111111111111${
     machine ? `:machine=${machine}` : ''
   }`
 
@@ -35,14 +35,14 @@ describe('preparation lock reasons', () => {
     expect(parseWorktreePreparationOwnerMachine(reason)).toBe(`win32-machine-guid:${MACHINE_A}`)
     expect(isWorktreeCreatePreparation({ path: '/w', lockReason: reason })).toBe(true)
     // Older builds parse the PID immediately after the version prefix.
-    expect(Number(reason.slice('orca-create-preparation:v1:'.length).split(':')[0])).toBe(
+    expect(Number(reason.slice('occ-create-preparation:v1:'.length).split(':')[0])).toBe(
       process.pid
     )
   })
 
   it('omits the machine when the writer cannot identify it', () => {
     const reason = createWorktreePreparationLockReason('session', null)
-    expect(reason).toBe(`orca-create-preparation:v1:${process.pid}:session`)
+    expect(reason).toBe(`occ-create-preparation:v1:${process.pid}:session`)
     expect(parseWorktreePreparationOwnerMachine(reason)).toBeNull()
   })
 })

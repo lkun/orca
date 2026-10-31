@@ -42,7 +42,7 @@ describe('persisted connection log store', () => {
         message: 'Relay: active relay session failed'
       }
     ]
-    const key = 'orca.mobile.connection-log.v1.host-a'
+    const key = 'occ.mobile.connection-log.v1.host-a'
     const storage = new Map([[key, JSON.stringify(stored)]])
     vi.mocked(AsyncStorage.getItem).mockImplementation(
       async (requestedKey) => storage.get(requestedKey) ?? null

@@ -12,7 +12,7 @@ import {
 } from '../ui/dropdown-menu'
 import { useRuntimeServersPage } from './runtime-servers-page-context'
 import { RuntimeShareComputerButton } from './runtime-share-computer-button'
-import { getManagedOrcadApi } from './use-managed-server-catalog'
+import { getManagedOCCdApi } from './use-managed-server-catalog'
 
 function AddServerMenuItem({
   icon,
@@ -54,7 +54,7 @@ export function RuntimeServersHeaderActions({
   const setRemoteServerUpdateDialogOpen = useAppStore(
     (state) => state.setRemoteServerUpdateDialogOpen
   )
-  const canInstall = getManagedOrcadApi() !== undefined
+  const canInstall = getManagedOCCdApi() !== undefined
   let availableCount = 0
   for (const entry of remoteServerUpdates.values()) {
     if (entry.phase === 'available') {

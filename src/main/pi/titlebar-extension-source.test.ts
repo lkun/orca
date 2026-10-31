@@ -22,10 +22,10 @@ type Harness = {
   callHook: (name: string, event?: unknown) => Promise<void>
 }
 
-const CWD = '/repo/orca-app'
+const CWD = '/repo/occ-app'
 const SESSION = 'omp-session'
-const IDLE_TITLE = `π - ${SESSION} - orca-app`
-const PROMPT_TITLE = `π ! ${SESSION} - orca-app`
+const IDLE_TITLE = `π - ${SESSION} - occ-app`
+const PROMPT_TITLE = `π ! ${SESSION} - occ-app`
 
 function createHarness(
   options: {
@@ -64,8 +64,8 @@ function createHarness(
     module,
     exports: module.exports,
     process: {
-      env: { ORCA_PANE_KEY: options.paneKey ?? 'pane-1', ...options.env },
-      pid: options.env?.ORCA_PI_TITLE_MARKER_OWNED === undefined ? 111 : 222,
+      env: { OCC_PANE_KEY: options.paneKey ?? 'pane-1', ...options.env },
+      pid: options.env?.OCC_PI_TITLE_MARKER_OWNED === undefined ? 111 : 222,
       title: options.processTitle ?? 'pi',
       argv: ['node', 'pi'],
       cwd: options.cwdImpl ?? (() => CWD)
@@ -497,7 +497,7 @@ describe('getPiTitlebarExtensionSource', () => {
     expect(harness.lastTitle()).toBe(PROMPT_TITLE)
 
     // Pi rewrites titles on session_info_changed/rebindCurrentSession without an event visible here.
-    harness.titles.push('π - other - orca-app')
+    harness.titles.push('π - other - occ-app')
     await vi.advanceTimersByTimeAsync(80)
     expect(harness.lastTitle()).toBe(PROMPT_TITLE)
   })
@@ -509,7 +509,7 @@ describe('getPiTitlebarExtensionSource', () => {
     expect(harness.lastTitle()).toBe(PROMPT_TITLE)
 
     // Idle has no renderFrame; only slow reassertion can repair Pi's independent title writes.
-    harness.titles.push('\u03c0 - other - orca-app')
+    harness.titles.push('\u03c0 - other - occ-app')
     await vi.advanceTimersByTimeAsync(1000)
     expect(harness.lastTitle()).toBe(PROMPT_TITLE)
 
@@ -567,7 +567,7 @@ describe('getPiTitlebarExtensionSource', () => {
 
   it('leaves the needs-input marker to the process that owns the pane', async () => {
     // Child agents inherit pane identity; only its owning process may assert needs-input.
-    const harness = createHarness({ env: { ORCA_PI_TITLE_MARKER_OWNED: '111' } })
+    const harness = createHarness({ env: { OCC_PI_TITLE_MARKER_OWNED: '111' } })
 
     await harness.callHook('agent_start')
     await harness.callHook('ui_prompt_start')

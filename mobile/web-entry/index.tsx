@@ -103,7 +103,7 @@ function renderShellTooOldPanel(container: HTMLElement): void {
 
 const container = document.getElementById('root')
 if (!container) {
-  throw new Error('[orca-mobile-web-app] #root missing')
+  throw new Error('[occ-mobile-web-app] #root missing')
 }
 const target = document.documentElement
 // Keep <html> transparent: overlay routes show the native screen through it, and the shell paints bgBase behind the rest.

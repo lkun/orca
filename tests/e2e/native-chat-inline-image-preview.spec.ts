@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { copyFileSync, existsSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   waitForActivePaneHookDescriptor,
@@ -17,7 +17,7 @@ import {
   toggleTerminalTabToChatView
 } from './helpers/native-chat-transcript-fixture'
 
-test.use({ orcaAppExtraEnv: { ORCA_BACKGROUND_LAUNCH: '1' } })
+test.use({ occAppExtraEnv: { OCC_BACKGROUND_LAUNCH: '1' } })
 
 const sourceImage = path.resolve(
   __dirname,
@@ -46,40 +46,40 @@ function transcript(sessionId: string, imagePath: string): string {
 
 test('opens a native-chat Markdown table image in the image dialog without a file popup', async ({
   electronApp,
-  orcaPage,
+  occPage,
   testRepoPath
 }, testInfo) => {
   expect(existsSync(sourceImage)).toBe(true)
   const imagePath = path.join(testRepoPath, `inline-chat-preview-${randomUUID()}.png`)
   const sessionId = `e2e-inline-image-${randomUUID()}`
-  const scratchDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-inline-image-'))
+  const scratchDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-inline-image-'))
   const transcriptPath = path.join(scratchDir, `${sessionId}.jsonl`)
   copyFileSync(sourceImage, imagePath)
 
   try {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage)
-    const boundPane = await waitForPaneIdentitySnapshot(orcaPage, 1)
-    const ptyId = await waitForActivePanePtyId(orcaPage)
-    await waitForPtyShellEcho(orcaPage, ptyId, 15_000)
-    const descriptor = await waitForActivePaneHookDescriptor(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage)
+    const boundPane = await waitForPaneIdentitySnapshot(occPage, 1)
+    const ptyId = await waitForActivePanePtyId(occPage)
+    await waitForPtyShellEcho(occPage, ptyId, 15_000)
+    const descriptor = await waitForActivePaneHookDescriptor(occPage)
     expect(descriptor.paneKey).toBe(`${boundPane.tabId}:${boundPane.activeLeafId}`)
     const [tabId] = descriptor.paneKey.split(':')
     writeFileSync(transcriptPath, transcript(sessionId, imagePath))
-    await orcaPage.evaluate(async () => {
+    await occPage.evaluate(async () => {
       await window.__store?.getState().updateSettings({ terminalLinkClickBehavior: 'actions' })
     })
-    await seedClaudeProviderSession(orcaPage, {
+    await seedClaudeProviderSession(occPage, {
       paneKey: descriptor.paneKey,
       worktreeId: descriptor.worktreeId,
       sessionId,
       transcriptPath
     })
-    await toggleTerminalTabToChatView(orcaPage, { tabId, worktreeId: descriptor.worktreeId })
+    await toggleTerminalTabToChatView(occPage, { tabId, worktreeId: descriptor.worktreeId })
 
-    const chat = orcaPage.locator('[data-native-chat-root="true"]')
+    const chat = occPage.locator('[data-native-chat-root="true"]')
     const image = chat.getByRole('button', { name: 'View image: Inline chat screenshot' })
     await expect(image).toBeVisible({ timeout: 30_000 })
     const ordinaryFileLink = chat.getByRole('link', { name: 'Ordinary file link' })
@@ -89,23 +89,23 @@ test('opens a native-chat Markdown table image in the image dialog without a fil
       .screenshot({ path: testInfo.outputPath('01-table-image-light.png') })
 
     await ordinaryFileLink.click()
-    const ordinaryFilePopup = orcaPage.locator('[data-link-action-popover]')
+    const ordinaryFilePopup = occPage.locator('[data-link-action-popover]')
     await expect(ordinaryFilePopup).toBeVisible()
     await expect(ordinaryFilePopup).toContainText(imagePath)
     await expect(ordinaryFilePopup.getByRole('button', { name: 'Open file' })).toBeVisible()
     await ordinaryFilePopup.screenshot({
       path: testInfo.outputPath('02-ordinary-file-popup-light.png')
     })
-    await orcaPage.keyboard.press('Escape')
+    await occPage.keyboard.press('Escape')
     await expect(ordinaryFilePopup).toHaveCount(0)
     await expect(ordinaryFileLink).toBeFocused()
 
     await image.click()
-    const dialog = orcaPage.getByRole('dialog', { name: 'Inline chat screenshot' })
+    const dialog = occPage.getByRole('dialog', { name: 'Inline chat screenshot' })
     await expect(dialog).toBeVisible()
     await expect(dialog.getByRole('img', { name: 'Inline chat screenshot' })).toBeVisible()
     await expect(ordinaryFilePopup).toHaveCount(0)
-    await expect(orcaPage.getByRole('menu')).toHaveCount(0)
+    await expect(occPage.getByRole('menu')).toHaveCount(0)
     await dialog.screenshot({ path: testInfo.outputPath('03-image-dialog-light.png') })
 
     const zoomIn = dialog.getByRole('button', { name: 'Zoom in' })
@@ -115,37 +115,37 @@ test('opens a native-chat Markdown table image in the image dialog without a fil
     const actions = dialog.getByRole('button', { name: 'File actions' })
     await expect(actions).toBeVisible()
     await actions.click()
-    await expect(orcaPage.getByRole('menu')).toBeVisible()
+    await expect(occPage.getByRole('menu')).toBeVisible()
     await dialog.screenshot({ path: testInfo.outputPath('04-image-dialog-actions-light.png') })
-    await orcaPage.keyboard.press('Escape')
-    await expect(orcaPage.getByRole('menu')).toHaveCount(0)
+    await occPage.keyboard.press('Escape')
+    await expect(occPage.getByRole('menu')).toHaveCount(0)
     await expect(dialog).toBeVisible()
     await dialog.getByRole('button', { name: 'Close', exact: true }).click()
     await expect(dialog).toHaveCount(0)
     await expect(image).toBeFocused()
 
     await image.focus()
-    await orcaPage.keyboard.press('Enter')
+    await occPage.keyboard.press('Enter')
     await expect(dialog).toBeVisible()
     await dialog.getByRole('button', { name: 'Close', exact: true }).click()
     await expect(dialog).toHaveCount(0)
     await expect(image).toBeFocused()
 
     await image.focus()
-    await orcaPage.keyboard.press('Space')
+    await occPage.keyboard.press('Space')
     await expect(dialog).toBeVisible()
     await dialog.getByRole('button', { name: 'Close', exact: true }).click()
     await expect(dialog).toHaveCount(0)
     await expect(image).toBeFocused()
 
-    await orcaPage.evaluate(() => document.documentElement.classList.add('dark'))
+    await occPage.evaluate(() => document.documentElement.classList.add('dark'))
     await image.click()
     await expect(dialog).toBeVisible()
     await dialog.screenshot({ path: testInfo.outputPath('05-image-dialog-dark.png') })
-    await orcaPage.setViewportSize({ width: 480, height: 560 })
+    await occPage.setViewportSize({ width: 480, height: 560 })
     await expect(dialog).toBeVisible()
     await dialog.screenshot({ path: testInfo.outputPath('06-image-dialog-dark-narrow.png') })
-    await orcaPage.keyboard.press('Escape')
+    await occPage.keyboard.press('Escape')
     await expect(dialog).toHaveCount(0)
 
     const windows = await electronApp.evaluate(({ BrowserWindow }) =>
@@ -156,12 +156,12 @@ test('opens a native-chat Markdown table image in the image dialog without a fil
     )
     expect(windows.length).toBeGreaterThan(0)
     expect(windows.every((window) => !window.visible && !window.focused)).toBe(true)
-    const finalPane = await waitForPaneIdentitySnapshot(orcaPage, 1)
+    const finalPane = await waitForPaneIdentitySnapshot(occPage, 1)
     expect(finalPane.tabId).toBe(boundPane.tabId)
     expect(finalPane.activeLeafId).toBe(boundPane.activeLeafId)
     expect(finalPane.ptyIdsByLeafId).toEqual(boundPane.ptyIdsByLeafId)
     expect(
-      await orcaPage.evaluate(
+      await occPage.evaluate(
         ({ worktreeId, tabId, leafId }) => {
           const state = window.__store?.getState()
           const tab = state?.unifiedTabsByWorktree[worktreeId]?.find(

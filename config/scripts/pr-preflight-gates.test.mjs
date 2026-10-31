@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { runInNewContext } from 'node:vm'
 import { expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { parse } from 'yaml'
 import { classifyPrJobs } from './pr-code-change-scope.mjs'
 
@@ -80,8 +80,8 @@ it('plans shards apart from preflight while verify still requires preflight', ()
   expect(steps.some((step) => step.id === 'unit-plan')).toBe(false)
   expect(preflight.outputs.shards).toBeUndefined()
   expect(workflow.jobs.unit_plan.uses).toBe('./.github/workflows/unit-plan.yml')
-  expect(workflow.jobs.unit_plan.with.selection_mode).toContain('vars.ORCA_UNIT_SELECTION_MODE')
-  expect(plan.env.ORCA_UNIT_FULL_SHARD_COUNT).toBe("${{ vars.ORCA_UNIT_FULL_SHARD_COUNT || '12' }}")
+  expect(workflow.jobs.unit_plan.with.selection_mode).toContain('vars.OCC_UNIT_SELECTION_MODE')
+  expect(plan.env.OCC_UNIT_FULL_SHARD_COUNT).toBe("${{ vars.OCC_UNIT_FULL_SHARD_COUNT || '12' }}")
   expect(workflow.jobs.test.with.shards).toBe('${{ needs.unit_plan.outputs.shards }}')
   expect(workflow.jobs.test.needs).toEqual(['code_paths', 'unit_plan'])
   for (const job of ['package', 'package_windows', 'layout_oracle']) {
@@ -181,7 +181,7 @@ it.each([
 it.each(['true', 'false'])(
   'preserves advisory E2E on ready-for-review only with proven required-check reuse: %s',
   (reused) => {
-    const scope = classifyPrJobs(['src/main/runtime/orca-runtime.ts'])
+    const scope = classifyPrJobs(['src/main/runtime/occ-runtime.ts'])
     const context = {
       steps: {
         readiness: { outputs: { reused } },
@@ -277,7 +277,7 @@ it.skipIf(process.platform === 'win32')(
           args: ['-e', '-c', `${guard}\nexit 23`],
           env: {
             ...process.env,
-            ORCA_BACKGROUND_LAUNCH: '1',
+            OCC_BACKGROUND_LAUNCH: '1',
             PREFLIGHT_PHASE_SELECTED: selected,
             PREFLIGHT_PRIOR_SUCCESS: priorSuccess
           },
@@ -337,7 +337,7 @@ it('runs the unchanged Node 18 smoke after every Node 24 step and preserves its 
   expect(smoke.id).toBe('managed_hook_node18')
   expect(smoke.if).toBe("success() && needs.code_paths.outputs.managed_hook_node18 == 'true'")
   expect(smoke.env.NODE18_EXECUTABLE).toBe('${{ steps.node18_executable.outputs.executable }}')
-  expect(smoke.env.ORCA_BACKGROUND_LAUNCH).toBe('1')
+  expect(smoke.env.OCC_BACKGROUND_LAUNCH).toBe('1')
   expect(smoke.run.trim().split('\n')).toEqual([
     'test -n "$NODE18_EXECUTABLE"',
     '"$NODE18_EXECUTABLE" config/scripts/smoke-process-host-node18.mjs'
@@ -381,7 +381,7 @@ it.skipIf(process.platform === 'win32')(
       const result = await runProcess({
         program: 'bash',
         args: ['-e', '-c', script],
-        env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1', [variable]: value },
+        env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1', [variable]: value },
         timeoutMs: 10_000
       })
       expect(result.code, `${variable}=${value}: ${result.stderr}`).toBe(expected)

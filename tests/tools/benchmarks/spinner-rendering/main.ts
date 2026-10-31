@@ -2,8 +2,8 @@ import { app, BrowserWindow } from 'electron'
 import path from 'node:path'
 import { applyBackgroundActivationPolicy } from '../../../../src/main/window/foreground-activation-policy'
 
-if (process.env.ORCA_BACKGROUND_LAUNCH !== '1') {
-  throw new Error('Spinner measurements require ORCA_BACKGROUND_LAUNCH=1')
+if (process.env.OCC_BACKGROUND_LAUNCH !== '1') {
+  throw new Error('Spinner measurements require OCC_BACKGROUND_LAUNCH=1')
 }
 app.setPath('userData', path.join(__dirname, 'profile'))
 applyBackgroundActivationPolicy()

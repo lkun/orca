@@ -2,9 +2,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const { runProcess, environment } = vi.hoisted(() => ({
   runProcess: vi.fn(),
-  environment: { isPackaged: () => false, getAppPath: () => '/orca' }
+  environment: { isPackaged: () => false, getAppPath: () => '/occ' }
 }))
-vi.mock('@orca/process-host', () => ({ runProcess }))
+vi.mock('@occ/process-host', () => ({ runProcess }))
 vi.mock('../../shared/app-environment', () => ({ getAppEnvironment: () => environment }))
 
 describe('Windows desktop administrator status', () => {

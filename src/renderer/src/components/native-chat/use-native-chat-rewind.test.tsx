@@ -524,7 +524,7 @@ describe('which rows offer rewind', () => {
           kind: 'agent',
           senders: [
             {
-              party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: null },
+              party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: null },
               name: 'Coder'
             }
           ],

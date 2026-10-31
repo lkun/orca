@@ -126,7 +126,7 @@ describe('PluginPanel', () => {
     expect(initialIframe?.getAttribute('srcdoc')).toContain('<h1>Hello plugin</h1>')
     expect(initialIframe?.getAttribute('title')).toBe('Dashboard')
     expect(initialIframe?.getAttribute('name')).toBe(
-      'orca-plugin-panel:plugin:samples.my-plugin/dashboard'
+      'occ-plugin-panel:plugin:samples.my-plugin/dashboard'
     )
     // allow-same-origin would expose app DOM/storage; keep the sandbox scripts-only.
     expect(initialIframe?.getAttribute('sandbox')).toBe('allow-scripts')
@@ -162,7 +162,7 @@ describe('PluginPanel', () => {
 
   it('restyles in place with fresh host theme tokens when the app theme changes', async () => {
     readPanelEntryMock.mockResolvedValue({
-      html: '<html class="__ORCA_COLOR_SCHEME__"><head><style>:root{/*__ORCA_PANEL_TOKENS__*/}</style></head>',
+      html: '<html class="__OCC_COLOR_SCHEME__"><head><style>:root{/*__OCC_PANEL_TOKENS__*/}</style></head>',
       sessionToken: SESSION_TOKEN
     })
     await renderPanel('plugin:samples.my-plugin/dashboard')
@@ -183,7 +183,7 @@ describe('PluginPanel', () => {
     expect(container.querySelector('iframe')).toBe(lightFrame)
     expect(posted).toHaveBeenCalledWith(
       {
-        orca: 1,
+        occ: 1,
         kind: 'evt',
         event: 'theme',
         payload: { colorScheme: 'dark', tokens: expect.any(String) }
@@ -217,7 +217,7 @@ describe('PluginPanel', () => {
 
     const event = new MessageEvent('message', {
       data: {
-        orca: 1,
+        occ: 1,
         kind: 'req',
         id: 1,
         method: 'notifications.show',

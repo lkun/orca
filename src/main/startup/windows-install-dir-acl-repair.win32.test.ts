@@ -58,8 +58,8 @@ describeOnWindows('install-dir package ACL repair against real DACLs', () => {
 
   beforeAll(() => {
     ;({ addon, userSid } = requireSecurity())
-    installDir = mkdtempSync(join(tmpdir(), 'orca-acl-live-'))
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-acl-live-ud-'))
+    installDir = mkdtempSync(join(tmpdir(), 'occ-acl-live-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-acl-live-ud-'))
     mkdirSync(join(installDir, 'resources'), { recursive: true })
     moduleFile = join(installDir, 'ffmpeg.dll')
     nestedFile = join(installDir, 'resources', 'nested.dll')

@@ -1,5 +1,5 @@
 import { EventEmitter } from 'node:events'
-import { RELAY_CLOSE_CODE } from '@orca-cloud/relay-contract'
+import { RELAY_CLOSE_CODE } from '@occ-cloud/relay-contract'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type WebSocket from 'ws'
 import { z } from 'zod'
@@ -101,7 +101,7 @@ function config(overrides: Partial<RelayConfig> = {}): RelayConfig {
     publicUrl: 'https://c7.relay.example.test',
     cellUrl: 'https://c7.relay.example.test',
     authIssuer: 'https://auth.example.test',
-    authAudience: 'orca-relay',
+    authAudience: 'occ-relay',
     jwksUrl: 'https://auth.example.test/jwks',
     assignmentSigningKey: new Uint8Array(32),
     role: 'cell',

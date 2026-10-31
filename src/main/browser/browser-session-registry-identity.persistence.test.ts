@@ -15,7 +15,7 @@ describe('BrowserSessionRegistry retired identity data', () => {
   })
 
   it('ignores legacy persisted UAs, valid or broken, and applies the engine UA', async () => {
-    const importedPartition = 'persist:orca-browser-session-11111111-1111-4111-8111-111111111111'
+    const importedPartition = 'persist:occ-browser-session-11111111-1111-4111-8111-111111111111'
     const brokenUa =
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/1.158.1 Safari/537.36'
     const validUa = 'Mozilla/5.0 Chrome/120.0.0.0 Safari/537.36'
@@ -24,7 +24,7 @@ describe('BrowserSessionRegistry retired identity data', () => {
       defaultSource: { browserFamily: 'arc', importedAt: 1 },
       userAgent: brokenUa,
       userAgentByPartition: {
-        'persist:orca-browser': brokenUa,
+        'persist:occ-browser': brokenUa,
         [importedPartition]: validUa
       },
       pendingCookieDbPath: null,
@@ -57,7 +57,7 @@ describe('BrowserSessionRegistry retired identity data', () => {
   })
 
   it('flags the retired per-profile choice without rewriting its persisted bytes', async () => {
-    const importedPartition = 'persist:orca-browser-session-11111111-1111-4111-8111-111111111111'
+    const importedPartition = 'persist:occ-browser-session-11111111-1111-4111-8111-111111111111'
     const fsState = createFsState()
     seedMeta(fsState, {
       defaultSource: null,
@@ -101,7 +101,7 @@ describe('BrowserSessionRegistry retired identity data', () => {
         {
           id: profileId,
           scope: 'isolated',
-          partition: `persist:orca-browser-session-${profileId}`,
+          partition: `persist:occ-browser-session-${profileId}`,
           label: 'Existing',
           source: null,
           userAgentMode: 'native'
@@ -134,7 +134,7 @@ describe('BrowserSessionRegistry retired identity data', () => {
     { scenario: 'a read-only notice', malformed: [], failWrite: true }
   ])('hydrates the valid profile despite $scenario', async ({ malformed, failWrite }) => {
     const profileId = '11111111-1111-4111-8111-111111111111'
-    const partition = `persist:orca-browser-session-${profileId}`
+    const partition = `persist:occ-browser-session-${profileId}`
     const fsState = createFsState()
     seedMeta(fsState, {
       defaultSource: null,
@@ -167,7 +167,7 @@ describe('BrowserSessionRegistry retired identity data', () => {
   })
 
   it('hydrates a retired native profile under the process identity', async () => {
-    const importedPartition = 'persist:orca-browser-session-12121212-1212-4121-8121-121212121212'
+    const importedPartition = 'persist:occ-browser-session-12121212-1212-4121-8121-121212121212'
     const fsState = createFsState()
     seedMeta(fsState, {
       defaultSource: null,

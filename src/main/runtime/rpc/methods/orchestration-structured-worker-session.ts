@@ -20,7 +20,7 @@ import type {
 import type { StructuredAgentSessionHost } from '../../../native-chat/agent-session-wire/structured-agent-session-host'
 import { getStructuredAgentSessionHost } from '../../../native-chat/agent-session-wire/structured-agent-session-registry'
 import type { TuiAgent } from '../../../../shared/tui-agent'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { OrchestrationError } from '../../orchestration/orchestration-error'
 import { mintAgentSessionOperationId } from '../../orchestration/structured-pointer-operation-id'
 import { structuredPointerCallerKey } from '../../orchestration/structured-mailbox-pointer-host'
@@ -53,7 +53,7 @@ const bindingsBySessionId = new Map<string, StructuredWorkerBinding>()
 /** Every stop/release/abandon must drop redrive, identity and parked mail across the worker's /clear lineage, even after restart lost its binding. */
 export function releaseStructuredWorkerSession(
   workerSessionId: string | null | undefined,
-  runtime?: Pick<OrcaRuntimeService, 'forgetStructuredSessionMail'>
+  runtime?: Pick<OCCRuntimeService, 'forgetStructuredSessionMail'>
 ): void {
   if (!workerSessionId) {
     return
@@ -88,7 +88,7 @@ export function ensureStructuredWorkerSessionBinding(
 
 /** A reused worker's chat may have outlived its binding (abandon releases it); bind it again. */
 export function rebindReusedStructuredWorker(
-  runtime: Pick<OrcaRuntimeService, 'notifyStructuredSessionJournalActivity'>,
+  runtime: Pick<OCCRuntimeService, 'notifyStructuredSessionJournalActivity'>,
   handle: string,
   db: OrchestrationDb
 ): void {
@@ -102,7 +102,7 @@ export function rebindReusedStructuredWorker(
 }
 
 export async function createStructuredWorkerSession(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   worktreeId: string
   agent: TuiAgent
   dispatchId: string
@@ -117,7 +117,7 @@ export async function createStructuredWorkerSession(args: {
   fence: number
 }> {
   const sessionId = randomUUID()
-  // Register before attach builds child env or missing ORCA_TERMINAL_HANDLE can misroute orchestration to the coordinator.
+  // Register before attach builds child env or missing OCC_TERMINAL_HANDLE can misroute orchestration to the coordinator.
   // Assert the provisional local scope against the created record; discard non-local sessions.
   const identity = structuredWorkerIdentities.register({
     handle: mintStructuredWorkerHandle(),

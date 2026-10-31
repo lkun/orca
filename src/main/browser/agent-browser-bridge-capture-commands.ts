@@ -12,7 +12,7 @@ import { readRasterImageDimensions } from '../../shared/raster-image-dimensions'
 import { acquireElectronDebugger } from './electron-debugger-lease'
 import { sendGuestCdpCommand } from './guest-cdp-command'
 import { AgentBrowserBridgeUtilityCommands } from './agent-browser-bridge-utility-commands'
-import { ORCA_TAB_SESSION_PREFIX } from './agent-browser-orphan-sweep'
+import { OCC_TAB_SESSION_PREFIX } from './agent-browser-orphan-sweep'
 import { captureRemoteCliBrowserWorkBound } from '../runtime/desktop-browser-bridge/remote-cli-browser-scope'
 import { throwIfSignalAborted, waitForPromiseWithSignal } from '../../shared/abort-signal-reason'
 
@@ -45,7 +45,7 @@ export abstract class AgentBrowserBridgeCaptureCommands extends AgentBrowserBrid
       const wc = this.requireTargetWebContents(target)
       try {
         return await captureFullPageScreenshot(wc, format === 'jpeg' ? 'jpeg' : 'png', () =>
-          this.browserManager.holdPaintForCapture(target.webContentsId)
+          this.browserManager.holdPaintFoccpture(target.webContentsId)
         )
       } catch (error) {
         throw new BrowserError('browser_error', (error as Error).message)
@@ -115,7 +115,7 @@ export abstract class AgentBrowserBridgeCaptureCommands extends AgentBrowserBrid
           }
           if (!this.getWebContents(target.webContentsId)) {
             throw this.createPageUnavailableError(
-              `${ORCA_TAB_SESSION_PREFIX}${target.browserPageId}`
+              `${OCC_TAB_SESSION_PREFIX}${target.browserPageId}`
             )
           }
           throw new BrowserError(

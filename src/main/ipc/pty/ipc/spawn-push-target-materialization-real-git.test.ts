@@ -15,7 +15,7 @@ import { triggerPtySpawnPushTargetMaterialization } from './spawn-push-target-ma
 const execFileAsync = promisify(execFile)
 
 const REPO_ID = 'repo-1'
-const FORK_REMOTE = 'pr-contributor-orca'
+const FORK_REMOTE = 'pr-contributor-occ'
 const TRACKED_BRANCH = 'contributor/fix'
 
 let scratchDir = ''
@@ -31,13 +31,13 @@ async function git(args: string[], cwd: string): Promise<string> {
 
 async function setIdentity(cwd: string): Promise<void> {
   await git(['config', 'user.name', 'OCC Test'], cwd)
-  await git(['config', 'user.email', 'orca@example.test'], cwd)
+  await git(['config', 'user.email', 'occ@example.test'], cwd)
   await git(['config', 'commit.gpgSign', 'false'], cwd)
 }
 
 beforeEach(async () => {
   // Canonicalize macOS /var temp paths to match Git's /private/var paths.
-  scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'orca-pty-spawn-push-target-')))
+  scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'occ-pty-spawn-push-target-')))
   repoPath = join(scratchDir, 'repo')
   forkPath = join(scratchDir, 'fork')
   worktreeId = `${REPO_ID}::${repoPath}`

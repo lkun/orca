@@ -5,7 +5,7 @@ type RunProcessStub = (spec: { program: string; args: string[] }) => Promise<Pro
 
 // Mock shell probes so CI scheduling and profile failures cannot silently exercise the fallback.
 const probe = vi.hoisted(() => ({ runProcess: vi.fn<RunProcessStub>() }))
-vi.mock('@orca/process-host', async (importOriginal) => ({
+vi.mock('@occ/process-host', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   runProcess: probe.runProcess
 }))
@@ -44,7 +44,7 @@ describe.runIf(process.platform !== 'win32')('resolveLoginShellGrokHome', () => 
     vi.stubEnv('SHELL', '/bin/sh')
     stubProbeOutput('/srv/grok///\n')
 
-    await expect(resolveLoginShellGrokHome('/home/orca')).resolves.toBe('/srv/grok')
+    await expect(resolveLoginShellGrokHome('/home/occ')).resolves.toBe('/srv/grok')
 
     const { program: shell, args } = probeMock.mock.calls[0]?.[0] ?? {}
     expect(shell).toBe('/bin/sh')
@@ -56,7 +56,7 @@ describe.runIf(process.platform !== 'win32')('resolveLoginShellGrokHome', () => 
     vi.stubEnv('SHELL', '/bin/zsh')
     stubProbeOutput('/srv/grok\n')
 
-    await expect(resolveLoginShellGrokHome('/home/orca')).resolves.toBe('/srv/grok')
+    await expect(resolveLoginShellGrokHome('/home/occ')).resolves.toBe('/srv/grok')
 
     const { program: shell, args } = probeMock.mock.calls[0]?.[0] ?? {}
     expect(shell).toBe('/bin/zsh')
@@ -67,7 +67,7 @@ describe.runIf(process.platform !== 'win32')('resolveLoginShellGrokHome', () => 
     vi.stubEnv('SHELL', '/bin/sh')
     stubProbeOutput('../relative\n')
 
-    await expect(resolveLoginShellGrokHome('/home/orca')).resolves.toBe('/home/orca/.grok')
+    await expect(resolveLoginShellGrokHome('/home/occ')).resolves.toBe('/home/occ/.grok')
   })
 
   it.each([
@@ -77,7 +77,7 @@ describe.runIf(process.platform !== 'win32')('resolveLoginShellGrokHome', () => 
     vi.stubEnv('SHELL', '/bin/sh')
     stubProbeFailure(error)
 
-    await expect(resolveLoginShellGrokHome('/home/orca')).resolves.toBe('/home/orca/.grok')
+    await expect(resolveLoginShellGrokHome('/home/occ')).resolves.toBe('/home/occ/.grok')
   })
 })
 
@@ -86,17 +86,17 @@ describe.runIf(process.platform !== 'win32')('resolveLoginShellKiroHome', () => 
     vi.stubEnv('SHELL', '/bin/sh')
     stubProbeOutput('/srv/kiro/\n')
 
-    await expect(resolveLoginShellKiroHome('/home/orca')).resolves.toBe('/srv/kiro')
+    await expect(resolveLoginShellKiroHome('/home/occ')).resolves.toBe('/srv/kiro')
     expect(probeMock.mock.calls[0]?.[0].args[1]).toContain('printenv KIRO_HOME')
   })
 
   it('falls back to ~/.kiro when KIRO_HOME is unset or the probe fails', async () => {
     vi.stubEnv('SHELL', '/bin/sh')
     stubProbeOutput('\n')
-    await expect(resolveLoginShellKiroHome('/home/orca')).resolves.toBe('/home/orca/.kiro')
+    await expect(resolveLoginShellKiroHome('/home/occ')).resolves.toBe('/home/occ/.kiro')
 
     stubProbeFailure(new Error('spawn failed'))
-    await expect(resolveLoginShellKiroHome('/home/orca')).resolves.toBe('/home/orca/.kiro')
+    await expect(resolveLoginShellKiroHome('/home/occ')).resolves.toBe('/home/occ/.kiro')
   })
 })
 

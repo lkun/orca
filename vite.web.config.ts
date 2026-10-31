@@ -10,7 +10,7 @@ import { resolveBuildSourceCommit } from './config/scripts/build-source-commit.m
 export default defineConfig({
   root: resolve('src/renderer'),
   cacheDir: resolve('.cache/vite/web'),
-  // Resolve assets relatively for reverse-proxy pairing prefixes such as /orca/web-index.html.
+  // Resolve assets relatively for reverse-proxy pairing prefixes such as /occ/web-index.html.
   base: './',
   plugins: [
     react(),
@@ -19,8 +19,8 @@ export default defineConfig({
     createViteCacheRetentionPlugin()
   ],
   define: {
-    ORCA_FEATURE_WALL_ENABLED: 'true',
-    ORCA_BUILD_COMMIT: JSON.stringify(resolveBuildSourceCommit())
+    OCC_FEATURE_WALL_ENABLED: 'true',
+    OCC_BUILD_COMMIT: JSON.stringify(resolveBuildSourceCommit())
   },
   resolve: {
     alias: {

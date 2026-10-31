@@ -96,23 +96,23 @@ describe('computer sidecar client', () => {
     vi.useRealTimers()
   })
 
-  it('forks the sidecar orcad ships beside orcad.js, not a desktop out/main path', async () => {
-    appEnvironment.current = { getAppPath: () => '/srv/orcad', isPackaged: () => true }
-    existsSyncMock.mockImplementation((path) => path === join('/srv/orcad', 'computer-sidecar.js'))
+  it('forks the sidecar occd ships beside occd.js, not a desktop out/main path', async () => {
+    appEnvironment.current = { getAppPath: () => '/srv/occd', isPackaged: () => true }
+    existsSyncMock.mockImplementation((path) => path === join('/srv/occd', 'computer-sidecar.js'))
 
     const call = callComputerSidecarCapabilities()
     children[0]!.emit('message', { id: children[0]!.sent[0]!.id, ok: true, result: {} })
 
     await expect(call).resolves.toEqual({})
     expect(forkMock).toHaveBeenCalledWith(
-      join('/srv/orcad', 'computer-sidecar.js'),
+      join('/srv/occd', 'computer-sidecar.js'),
       [],
       expect.anything()
     )
   })
 
   it('says computer use is unavailable when an older server install has no sidecar', async () => {
-    appEnvironment.current = { getAppPath: () => '/srv/orcad', isPackaged: () => true }
+    appEnvironment.current = { getAppPath: () => '/srv/occd', isPackaged: () => true }
     existsSyncMock.mockImplementation(() => false)
 
     await expect(callComputerSidecarCapabilities()).rejects.toMatchObject({

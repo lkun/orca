@@ -31,11 +31,11 @@ function done(
 }
 
 function worktree(overrides: Partial<Worktree> = {}): Worktree {
-  const worktreePath = join('/tmp', 'orca', 'worktrees', 'manta')
+  const worktreePath = join('/tmp', 'occ', 'worktrees', 'manta')
   return {
     worktreeId: `repo-1::${worktreePath}`,
     repoId: 'repo-1',
-    repo: 'orca',
+    repo: 'occ',
     branch: 'feature/mobile-lag',
     displayName: 'manta',
     workspaceStatus: 'in-progress',

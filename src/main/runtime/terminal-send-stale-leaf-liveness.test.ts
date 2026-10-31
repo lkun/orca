@@ -1,6 +1,6 @@
 import { settledWriteStub } from '../providers/settled-pty-write-stub'
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
 
@@ -38,11 +38,11 @@ async function makeRuntimeWithLeafHandle(options: {
   probePtyLiveness?: (ptyId: string) => Promise<boolean | null>
   hasPty?: (ptyId: string) => boolean | null
 }): Promise<{
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   handle: string
   write: ReturnType<typeof vi.fn>
 }> {
-  const runtime = new OrcaRuntimeService(makeStore() as never)
+  const runtime = new OCCRuntimeService(makeStore() as never)
   const write = vi.fn(() => true)
   runtime.setPtyController({
     spawn: vi.fn(async () => ({ id: 'never' })),
@@ -61,7 +61,7 @@ async function makeRuntimeWithLeafHandle(options: {
 }
 
 // Re-invocable: every graph resync replaces leaf records with fresh objects.
-function publishLeafGraph(runtime: OrcaRuntimeService, leafPtyId: string): void {
+function publishLeafGraph(runtime: OCCRuntimeService, leafPtyId: string): void {
   runtime.syncWindowGraph(1, {
     tabs: [
       {

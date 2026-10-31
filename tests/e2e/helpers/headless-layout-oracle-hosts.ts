@@ -1,18 +1,18 @@
-// Keep profile and pairing port stable across Node-orcad/Electron-serve restarts so existing client streams reconnect.
+// Keep profile and pairing port stable across Node-occd/Electron-serve restarts so existing client streams reconnect.
 
 import { existsSync, mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
 import { createServer, type AddressInfo } from 'node:net'
 import os from 'node:os'
 import path from 'node:path'
 import { RuntimeClient } from '../../../src/cli/runtime/client'
-import { resolveBundledOrcadRuntime } from '../../../src/main/orcad/orcad-bundled-runtime'
-import { runProcess } from '@orca/process-host'
+import { resolveBundledOCCdRuntime } from '../../../src/main/occd/occd-bundled-runtime'
+import { runProcess } from '@occ/process-host'
 import { NODE_RUNTIME_PIN } from '../../../src/shared/node-runtime-pin'
 import { cleanupE2EDaemons } from './electron-process-shutdown'
 import { launchHeadlessPairedRuntimeHost } from './headless-paired-runtime-host'
-import { cliServeProfile, spawnUntilReady, type ReadyProcess } from './orca-serve-cli-host'
+import { cliServeProfile, spawnUntilReady, type ReadyProcess } from './occ-serve-cli-host'
 
-export type HeadlessHostKind = 'orcad' | 'electron'
+export type HeadlessHostKind = 'occd' | 'electron'
 
 type RestartOptions = { cold?: boolean; whileStopped?: () => void | Promise<void> }
 
@@ -32,15 +32,15 @@ export type HeadlessOracleHost = {
   dispose: () => Promise<void>
 }
 
-const ORCAD_SLOT = path.resolve('out/orcad')
+const OCCD_SLOT = path.resolve('out/occd')
 const PROFILE_REMOVAL = { recursive: true, force: true, maxRetries: 50, retryDelay: 100 }
 
-/** The pinned Node an unpackaged `out/orcad` runs on (its natives are built for it). */
-export function orcadNodeExecutable(): string | null {
-  if (!existsSync(path.join(ORCAD_SLOT, 'orcad.js'))) {
+/** The pinned Node an unpackaged `out/occd` runs on (its natives are built for it). */
+export function occdNodeExecutable(): string | null {
+  if (!existsSync(path.join(OCCD_SLOT, 'occd.js'))) {
     return null
   }
-  const packaged = resolveBundledOrcadRuntime(ORCAD_SLOT)
+  const packaged = resolveBundledOCCdRuntime(OCCD_SLOT)
   if (packaged) {
     return packaged
   }
@@ -64,7 +64,7 @@ async function reserveLoopbackPort(): Promise<number> {
   return port
 }
 
-function parseOrcadReadiness(stdout: string): { pairingUrl: string; daemon: string } | null {
+function parseOCCdReadiness(stdout: string): { pairingUrl: string; daemon: string } | null {
   const newline = stdout.indexOf('\n')
   if (newline === -1) {
     return null
@@ -82,16 +82,16 @@ function parseOrcadReadiness(stdout: string): { pairingUrl: string; daemon: stri
 
 type StartedHost = Omit<HeadlessOracleHost, 'cleanups'>
 
-async function startOrcadHost(scratch: string, node: string): Promise<StartedHost> {
+async function startOCCdHost(scratch: string, node: string): Promise<StartedHost> {
   const profile = cliServeProfile(scratch)
   const port = await reserveLoopbackPort()
-  const env = { ...profile.env, ORCA_USER_DATA: profile.userDataDir }
+  const env = { ...profile.env, OCC_USER_DATA: profile.userDataDir }
   const launch = (): Promise<ReadyProcess<{ pairingUrl: string; daemon: string }>> =>
     spawnUntilReady({
-      label: 'orcad serve',
+      label: 'occd serve',
       program: node,
       args: [
-        path.join(ORCAD_SLOT, 'orcad.js'),
+        path.join(OCCD_SLOT, 'occd.js'),
         '--bind',
         '127.0.0.1',
         '--port',
@@ -100,21 +100,21 @@ async function startOrcadHost(scratch: string, node: string): Promise<StartedHos
       ],
       env,
       timeoutMs: 120_000,
-      parseReady: parseOrcadReadiness
+      parseReady: parseOCCdReadiness
     })
   let serve: ReadyProcess<{ pairingUrl: string; daemon: string }> | null = await launch()
   if (!serve.ready.pairingUrl || !serve.ready.daemon.includes('"live"')) {
     await serve.stop()
     await cleanupE2EDaemons(profile.userDataDir)
-    throw new Error(`orcad serve is not usable: ${serve.ready.daemon}\n${serve.stderr()}`)
+    throw new Error(`occd serve is not usable: ${serve.ready.daemon}\n${serve.stderr()}`)
   }
   return {
-    kind: 'orcad',
+    kind: 'occd',
     userDataDir: profile.userDataDir,
     scratch,
     pairingUrl: serve.ready.pairingUrl,
     restart: async ({ cold, whileStopped } = {}) => {
-      // SIGTERM is orcad's graceful stop and leaves the PTY daemon running.
+      // SIGTERM is occd's graceful stop and leaves the PTY daemon running.
       await serve?.stop()
       serve = null
       if (cold) {
@@ -164,7 +164,7 @@ function profileParent(): string {
   if (process.platform === 'win32' || tmp.length <= 32) {
     return tmp
   }
-  const parent = path.join(os.homedir(), '.orca-lo')
+  const parent = path.join(os.homedir(), '.occ-lo')
   mkdirSync(parent, { recursive: true })
   return parent
 }
@@ -172,11 +172,11 @@ function profileParent(): string {
 export async function startHeadlessOracleHost(kind: HeadlessHostKind): Promise<HeadlessOracleHost> {
   const scratch = mkdtempSync(path.join(profileParent(), 'lo-'))
   try {
-    const node = kind === 'orcad' ? orcadNodeExecutable() : null
-    if (kind === 'orcad' && !node) {
-      throw new Error('out/orcad or its pinned Node is missing (pnpm build:orcad)')
+    const node = kind === 'occd' ? occdNodeExecutable() : null
+    if (kind === 'occd' && !node) {
+      throw new Error('out/occd or its pinned Node is missing (pnpm build:occd)')
     }
-    const started = node ? await startOrcadHost(scratch, node) : await startElectronHost(scratch)
+    const started = node ? await startOCCdHost(scratch, node) : await startElectronHost(scratch)
     const cleanups: (() => void)[] = []
     return {
       ...started,

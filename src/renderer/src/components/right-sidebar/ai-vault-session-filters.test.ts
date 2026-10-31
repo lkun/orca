@@ -69,7 +69,7 @@ describe('filterAiVaultSessions', () => {
       {
         ...baseSession,
         id: 'claude:old-path',
-        cwd: '/Users/ada/workspaces/orca/bream/src'
+        cwd: '/Users/ada/workspaces/occ/bream/src'
       },
       {
         ...baseSession,
@@ -85,8 +85,8 @@ describe('filterAiVaultSessions', () => {
         scope: 'workspace',
         sort: 'updated',
         activeWorktreePaths: [
-          '/Users/ada/workspaces/orca/fix-agent-history',
-          '/Users/ada/workspaces/orca/bream'
+          '/Users/ada/workspaces/occ/fix-agent-history',
+          '/Users/ada/workspaces/occ/bream'
         ],
         hideEmptySessions: true
       }).map((session) => session.id)
@@ -317,7 +317,7 @@ describe('filterAiVaultSessions', () => {
     const projectSession = { ...baseSession, id: 'claude:project', cwd: '/repo/project' }
     const otherSession = { ...baseSession, id: 'claude:other', cwd: '/repo/other' }
     const sessionProjectById = new Map([
-      [projectSession.id, { kind: 'repo' as const, key: 'project:orca', label: 'OCC' }],
+      [projectSession.id, { kind: 'repo' as const, key: 'project:occ', label: 'OCC' }],
       [otherSession.id, { kind: 'repo' as const, key: 'project:other', label: 'Other' }]
     ])
 
@@ -328,7 +328,7 @@ describe('filterAiVaultSessions', () => {
         scope: 'project',
         sort: 'updated',
         activeWorktreePaths: [],
-        activeProjectKey: 'project:orca',
+        activeProjectKey: 'project:occ',
         sessionProjectById,
         hideEmptySessions: true
       }).map((session) => session.id)
@@ -351,9 +351,9 @@ describe('filterAiVaultSessions', () => {
 
   it('matches repo: queries against resolved project labels before folder fallback', () => {
     const sessionProjectById = new Map([
-      [baseSession.id, { kind: 'repo' as const, key: 'project:orca', label: 'Canonical OCC' }]
+      [baseSession.id, { kind: 'repo' as const, key: 'project:occ', label: 'Canonical OCC' }]
     ])
-    const projectLabelByKey = new Map([['project:orca', 'Canonical OCC']])
+    const projectLabelByKey = new Map([['project:occ', 'Canonical OCC']])
 
     expect(
       filterAiVaultSessions([baseSession], {
@@ -374,25 +374,25 @@ describe('deriveAiVaultWorkspaceScopePaths', () => {
   it('includes current and same-repo prior filesystem paths', () => {
     expect(
       deriveAiVaultWorkspaceScopePaths({
-        id: 'repo1::/Users/ada/workspaces/orca/fix-agent-history',
+        id: 'repo1::/Users/ada/workspaces/occ/fix-agent-history',
         repoId: 'repo1',
-        path: '/Users/ada/workspaces/orca/fix-agent-history',
-        priorWorktreeIds: ['repo1::/Users/ada/workspaces/orca/bream']
+        path: '/Users/ada/workspaces/occ/fix-agent-history',
+        priorWorktreeIds: ['repo1::/Users/ada/workspaces/occ/bream']
       })
-    ).toEqual(['/Users/ada/workspaces/orca/fix-agent-history', '/Users/ada/workspaces/orca/bream'])
+    ).toEqual(['/Users/ada/workspaces/occ/fix-agent-history', '/Users/ada/workspaces/occ/bream'])
   })
 
   it('strips folder-workspace instance suffixes from prior ids', () => {
     expect(
       deriveAiVaultWorkspaceScopePaths({
-        id: 'repo1::/Users/ada/folders/orca',
+        id: 'repo1::/Users/ada/folders/occ',
         repoId: 'repo1',
-        path: '/Users/ada/folders/orca',
+        path: '/Users/ada/folders/occ',
         priorWorktreeIds: [
-          'repo1::/Users/ada/folders/old-orca::workspace:123e4567-e89b-12d3-a456-426614174000'
+          'repo1::/Users/ada/folders/old-occ::workspace:123e4567-e89b-12d3-a456-426614174000'
         ]
       })
-    ).toEqual(['/Users/ada/folders/orca', '/Users/ada/folders/old-orca'])
+    ).toEqual(['/Users/ada/folders/occ', '/Users/ada/folders/old-occ'])
   })
 
   it('ignores malformed, different-repo, relative, empty, and duplicate aliases', () => {
@@ -417,30 +417,30 @@ describe('deriveAiVaultWorkspaceScopePaths', () => {
     expect(
       deriveAiVaultWorkspaceScopePaths(
         {
-          id: 'repo1::/Users/ada/workspaces/orca/fix-agent-history',
+          id: 'repo1::/Users/ada/workspaces/occ/fix-agent-history',
           repoId: 'repo1',
-          path: '/Users/ada/workspaces/orca/fix-agent-history',
+          path: '/Users/ada/workspaces/occ/fix-agent-history',
           priorWorktreeIds: [
-            'repo1::/Users/ada/workspaces/orca/bream',
-            'repo1::/Users/ada/workspaces/orca/unclaimed-old-path'
+            'repo1::/Users/ada/workspaces/occ/bream',
+            'repo1::/Users/ada/workspaces/occ/unclaimed-old-path'
           ]
         },
         [
           {
-            id: 'repo1::/Users/ada/workspaces/orca/fix-agent-history',
+            id: 'repo1::/Users/ada/workspaces/occ/fix-agent-history',
             repoId: 'repo1',
-            path: '/Users/ada/workspaces/orca/fix-agent-history'
+            path: '/Users/ada/workspaces/occ/fix-agent-history'
           },
           {
-            id: 'repo1::/Users/ada/workspaces/orca/bream',
+            id: 'repo1::/Users/ada/workspaces/occ/bream',
             repoId: 'repo1',
-            path: '/Users/ada/workspaces/orca/bream'
+            path: '/Users/ada/workspaces/occ/bream'
           }
         ]
       )
     ).toEqual([
-      '/Users/ada/workspaces/orca/fix-agent-history',
-      '/Users/ada/workspaces/orca/unclaimed-old-path'
+      '/Users/ada/workspaces/occ/fix-agent-history',
+      '/Users/ada/workspaces/occ/unclaimed-old-path'
     ])
   })
 })
@@ -450,21 +450,21 @@ describe('deriveAiVaultScopeSessionPaths', () => {
     expect(
       deriveAiVaultScopeSessionPaths(
         {
-          id: 'repo1::/Users/ada/workspaces/orca/fix-agent-history',
+          id: 'repo1::/Users/ada/workspaces/occ/fix-agent-history',
           repoId: 'repo1',
-          path: '/Users/ada/workspaces/orca/fix-agent-history',
+          path: '/Users/ada/workspaces/occ/fix-agent-history',
           priorWorktreeIds: []
         },
         [
           {
-            id: 'repo1::/Users/ada/workspaces/orca/fix-agent-history',
+            id: 'repo1::/Users/ada/workspaces/occ/fix-agent-history',
             repoId: 'repo1',
-            path: '/Users/ada/workspaces/orca/fix-agent-history'
+            path: '/Users/ada/workspaces/occ/fix-agent-history'
           },
           {
-            id: 'repo1::/Users/ada/workspaces/orca/sibling',
+            id: 'repo1::/Users/ada/workspaces/occ/sibling',
             repoId: 'repo1',
-            path: '/Users/ada/workspaces/orca/sibling'
+            path: '/Users/ada/workspaces/occ/sibling'
           },
           {
             id: 'repo2::/Users/ada/workspaces/other/elsewhere',
@@ -474,8 +474,8 @@ describe('deriveAiVaultScopeSessionPaths', () => {
         ]
       )
     ).toEqual([
-      '/Users/ada/workspaces/orca/fix-agent-history',
-      '/Users/ada/workspaces/orca/sibling'
+      '/Users/ada/workspaces/occ/fix-agent-history',
+      '/Users/ada/workspaces/occ/sibling'
     ])
   })
 
@@ -487,29 +487,29 @@ describe('deriveAiVaultScopeSessionPaths', () => {
     expect(
       deriveAiVaultScopeSessionPaths(
         {
-          id: 'repo1::/Users/ada/workspaces/orca/app',
+          id: 'repo1::/Users/ada/workspaces/occ/app',
           repoId: 'repo1',
-          path: '/Users/ada/workspaces/orca/app',
+          path: '/Users/ada/workspaces/occ/app',
           priorWorktreeIds: []
         },
         [
           {
-            id: 'repo1::/Users/ada/workspaces/orca/app',
+            id: 'repo1::/Users/ada/workspaces/occ/app',
             repoId: 'repo1',
-            path: '/Users/ada/workspaces/orca/app'
+            path: '/Users/ada/workspaces/occ/app'
           },
           {
-            id: 'repo2::/Users/ada/workspaces/orca/docs',
+            id: 'repo2::/Users/ada/workspaces/occ/docs',
             repoId: 'repo2',
-            path: '/Users/ada/workspaces/orca/docs'
+            path: '/Users/ada/workspaces/occ/docs'
           }
         ],
         {
-          activeProjectKey: 'project:orca',
+          activeProjectKey: 'project:occ',
           projectHostSetupProjection: {
             projects: [
               {
-                id: 'orca',
+                id: 'occ',
                 displayName: 'OCC',
                 badgeColor: '#2563eb',
                 sourceRepoIds: ['repo1', 'repo2'],
@@ -520,11 +520,11 @@ describe('deriveAiVaultScopeSessionPaths', () => {
             setups: [
               {
                 id: 'setup-1',
-                projectId: 'orca',
+                projectId: 'occ',
                 hostId: 'local',
                 repoId: 'repo1',
                 displayName: 'App',
-                path: '/Users/ada/workspaces/orca/app',
+                path: '/Users/ada/workspaces/occ/app',
                 setupState: 'ready',
                 setupMethod: 'imported-existing-folder',
                 createdAt: 1,
@@ -532,11 +532,11 @@ describe('deriveAiVaultScopeSessionPaths', () => {
               },
               {
                 id: 'setup-2',
-                projectId: 'orca',
+                projectId: 'occ',
                 hostId: 'local',
                 repoId: 'repo2',
                 displayName: 'Docs',
-                path: '/Users/ada/workspaces/orca/docs',
+                path: '/Users/ada/workspaces/occ/docs',
                 setupState: 'ready',
                 setupMethod: 'imported-existing-folder',
                 createdAt: 1,
@@ -546,31 +546,31 @@ describe('deriveAiVaultScopeSessionPaths', () => {
           }
         }
       )
-    ).toEqual(['/Users/ada/workspaces/orca/app', '/Users/ada/workspaces/orca/docs'])
+    ).toEqual(['/Users/ada/workspaces/occ/app', '/Users/ada/workspaces/occ/docs'])
   })
 
   it('keeps live worktree paths when another setup shares the repo id', () => {
     expect(
       deriveAiVaultScopeSessionPaths(
         {
-          id: 'repo1::/Users/ada/workspaces/orca/app',
+          id: 'repo1::/Users/ada/workspaces/occ/app',
           repoId: 'repo1',
-          path: '/Users/ada/workspaces/orca/app',
+          path: '/Users/ada/workspaces/occ/app',
           priorWorktreeIds: []
         },
         [
           {
-            id: 'repo2::/Users/ada/workspaces/orca/docs-worktree',
+            id: 'repo2::/Users/ada/workspaces/occ/docs-worktree',
             repoId: 'repo2',
-            path: '/Users/ada/workspaces/orca/docs-worktree'
+            path: '/Users/ada/workspaces/occ/docs-worktree'
           }
         ],
         {
-          activeProjectKey: 'project:orca',
+          activeProjectKey: 'project:occ',
           projectHostSetupProjection: {
             projects: [
               {
-                id: 'orca',
+                id: 'occ',
                 displayName: 'OCC',
                 badgeColor: '#2563eb',
                 sourceRepoIds: ['repo1', 'repo2'],
@@ -581,11 +581,11 @@ describe('deriveAiVaultScopeSessionPaths', () => {
             setups: [
               {
                 id: 'setup-1',
-                projectId: 'orca',
+                projectId: 'occ',
                 hostId: 'local',
                 repoId: 'repo2',
                 displayName: 'Docs',
-                path: '/Users/ada/workspaces/orca/docs',
+                path: '/Users/ada/workspaces/occ/docs',
                 setupState: 'ready',
                 setupMethod: 'imported-existing-folder',
                 createdAt: 1,
@@ -608,9 +608,9 @@ describe('deriveAiVaultScopeSessionPaths', () => {
         }
       )
     ).toEqual([
-      '/Users/ada/workspaces/orca/app',
-      '/Users/ada/workspaces/orca/docs-worktree',
-      '/Users/ada/workspaces/orca/docs'
+      '/Users/ada/workspaces/occ/app',
+      '/Users/ada/workspaces/occ/docs-worktree',
+      '/Users/ada/workspaces/occ/docs'
     ])
   })
 })
@@ -649,17 +649,17 @@ describe('groupAiVaultSessions', () => {
     const sessionProjectById = new Map(
       sessions.map((session) => [
         session.id,
-        { kind: 'repo' as const, key: 'project:orca', label: 'OCC' }
+        { kind: 'repo' as const, key: 'project:occ', label: 'OCC' }
       ])
     )
-    const projectLabelByKey = new Map([['project:orca', 'Canonical OCC']])
+    const projectLabelByKey = new Map([['project:occ', 'Canonical OCC']])
 
     expect(
       groupAiVaultSessions(sessions, 'project', {
         sessionProjectById,
         projectLabelByKey
       })
-    ).toEqual([{ key: 'project:orca', label: 'Canonical OCC', sessions }])
+    ).toEqual([{ key: 'project:occ', label: 'Canonical OCC', sessions }])
   })
 
   it('falls back to folder grouping when project metadata is unavailable', () => {
@@ -671,9 +671,9 @@ describe('groupAiVaultSessions', () => {
 
 describe('parseVaultQuery', () => {
   it('keeps quoted terms together', () => {
-    expect(parseVaultQuery('"resume picker" repo:orca path:src')).toEqual({
+    expect(parseVaultQuery('"resume picker" repo:occ path:src')).toEqual({
       terms: ['resume picker'],
-      repoTerms: ['orca'],
+      repoTerms: ['occ'],
       pathTerms: ['src']
     })
   })

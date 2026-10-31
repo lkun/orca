@@ -47,7 +47,7 @@ vi.mock('fs', () => ({
 
 vi.mock('electron', () => ({
   app: {
-    getPath: vi.fn(() => '/tmp/orca-user-data')
+    getPath: vi.fn(() => '/tmp/occ-user-data')
   }
 }))
 
@@ -68,7 +68,7 @@ vi.mock('../pty-descendant-termination', () => ({
 const WINDOWS_POWERSHELL_ABS = 'C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe'
 const PWSH7_ABS = 'C:\\Program Files\\PowerShell\\7\\pwsh.exe'
 const CMD_ABS = 'C:\\Windows\\System32\\cmd.exe'
-const CODEX_LAUNCH_PREFLIGHT = 'C:\\Program Files\\OCC\\orca.exe'
+const CODEX_LAUNCH_PREFLIGHT = 'C:\\Program Files\\OCC\\occ.exe'
 vi.mock('./windows-powershell-executable', () => ({
   resolveWindowsPowerShellExecutablePath: (family: 'pwsh.exe' | 'powershell.exe') =>
     family === 'pwsh.exe' ? PWSH7_ABS : WINDOWS_POWERSHELL_ABS,
@@ -160,9 +160,9 @@ describe('LocalPtyProvider', () => {
       provider.configure({
         buildSpawnEnv: (_id, env) => ({
           ...env,
-          CLAUDE_CONFIG_DIR: '/home/fake/.local/share/orca/claude-profiles/a/home',
-          ORCA_CLAUDE_INJECTED_CONFIG_DIR: '/home/fake/.local/share/orca/claude-profiles/a/home',
-          ORCA_CLAUDE_PROFILE_POINTER: '~/.local/share/orca/claude-profiles/selected-wsl-orca'
+          CLAUDE_CONFIG_DIR: '/home/fake/.local/share/occ/claude-profiles/a/home',
+          OCC_CLAUDE_INJECTED_CONFIG_DIR: '/home/fake/.local/share/occ/claude-profiles/a/home',
+          OCC_CLAUDE_PROFILE_POINTER: '~/.local/share/occ/claude-profiles/selected-wsl-occ'
         })
       })
       await provider.spawn({
@@ -174,12 +174,12 @@ describe('LocalPtyProvider', () => {
       expect(env.WSLENV.split(':')).toEqual(
         expect.arrayContaining([
           'CLAUDE_CONFIG_DIR',
-          'ORCA_CLAUDE_PROFILE_POINTER',
-          'ORCA_CLAUDE_INJECTED_CONFIG_DIR'
+          'OCC_CLAUDE_PROFILE_POINTER',
+          'OCC_CLAUDE_INJECTED_CONFIG_DIR'
         ])
       )
-      expect(env.ORCA_CLAUDE_PROFILE_POINTER).toBe(
-        '~/.local/share/orca/claude-profiles/selected-wsl-orca'
+      expect(env.OCC_CLAUDE_PROFILE_POINTER).toBe(
+        '~/.local/share/occ/claude-profiles/selected-wsl-occ'
       )
     })
 
@@ -188,7 +188,7 @@ describe('LocalPtyProvider', () => {
       provider.configure({
         buildSpawnEnv: (_id, env) => {
           env.CODEX_HOME = 'C:\\Users\\jin\\.codex'
-          env.ORCA_CODEX_HOME = 'C:\\Users\\jin\\.codex'
+          env.OCC_CODEX_HOME = 'C:\\Users\\jin\\.codex'
           return env
         }
       })
@@ -202,7 +202,7 @@ describe('LocalPtyProvider', () => {
       const spawnCall = spawnMock.mock.calls.at(-1)!
       expect(spawnCall[0]).toBe('wsl.exe')
       expect(spawnCall[2].env.CODEX_HOME).toBeUndefined()
-      expect(spawnCall[2].env.ORCA_CODEX_HOME).toBeUndefined()
+      expect(spawnCall[2].env.OCC_CODEX_HOME).toBeUndefined()
     })
 
     it('does not pass a WSL managed Codex home into Windows terminals', async () => {
@@ -210,9 +210,9 @@ describe('LocalPtyProvider', () => {
       provider.configure({
         buildSpawnEnv: (_id, env) => {
           env.CODEX_HOME =
-            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\orca\\codex-accounts\\a\\home'
-          env.ORCA_CODEX_HOME =
-            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\orca\\codex-accounts\\a\\home'
+            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\occ\\codex-accounts\\a\\home'
+          env.OCC_CODEX_HOME =
+            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\occ\\codex-accounts\\a\\home'
           return env
         }
       })
@@ -225,7 +225,7 @@ describe('LocalPtyProvider', () => {
 
       const spawnCall = spawnMock.mock.calls.at(-1)!
       expect(spawnCall[2].env.CODEX_HOME).toBeUndefined()
-      expect(spawnCall[2].env.ORCA_CODEX_HOME).toBeUndefined()
+      expect(spawnCall[2].env.OCC_CODEX_HOME).toBeUndefined()
     })
 
     it('preserves an explicit Linux Codex home for WSL terminals', async () => {
@@ -254,9 +254,9 @@ describe('LocalPtyProvider', () => {
       provider.configure({
         buildSpawnEnv: (_id, env) => {
           env.CODEX_HOME =
-            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\orca\\codex-accounts\\a\\home'
-          env.ORCA_CODEX_HOME =
-            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\orca\\codex-accounts\\a\\home'
+            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\occ\\codex-accounts\\a\\home'
+          env.OCC_CODEX_HOME =
+            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\occ\\codex-accounts\\a\\home'
           return env
         }
       })
@@ -269,12 +269,12 @@ describe('LocalPtyProvider', () => {
 
       const spawnCall = spawnMock.mock.calls.at(-1)!
       expect(spawnCall[0]).toBe('wsl.exe')
-      expect(spawnCall[2].env.CODEX_HOME).toBe('/home/jin/.local/share/orca/codex-accounts/a/home')
-      expect(spawnCall[2].env.ORCA_CODEX_HOME).toBe(
-        '/home/jin/.local/share/orca/codex-accounts/a/home'
+      expect(spawnCall[2].env.CODEX_HOME).toBe('/home/jin/.local/share/occ/codex-accounts/a/home')
+      expect(spawnCall[2].env.OCC_CODEX_HOME).toBe(
+        '/home/jin/.local/share/occ/codex-accounts/a/home'
       )
       expect(spawnCall[2].env.WSLENV).toContain('CODEX_HOME')
-      expect(spawnCall[2].env.WSLENV).toContain('ORCA_CODEX_HOME')
+      expect(spawnCall[2].env.WSLENV).toContain('OCC_CODEX_HOME')
     })
 
     it('does not pass a WSL managed Codex home into a different WSL distro', async () => {
@@ -282,9 +282,9 @@ describe('LocalPtyProvider', () => {
       provider.configure({
         buildSpawnEnv: (_id, env) => {
           env.CODEX_HOME =
-            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\orca\\codex-accounts\\a\\home'
-          env.ORCA_CODEX_HOME =
-            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\orca\\codex-accounts\\a\\home'
+            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\occ\\codex-accounts\\a\\home'
+          env.OCC_CODEX_HOME =
+            '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\occ\\codex-accounts\\a\\home'
           return env
         }
       })
@@ -298,7 +298,7 @@ describe('LocalPtyProvider', () => {
       const spawnCall = spawnMock.mock.calls.at(-1)!
       expect(spawnCall[0]).toBe('wsl.exe')
       expect(spawnCall[2].env.CODEX_HOME).toBeUndefined()
-      expect(spawnCall[2].env.ORCA_CODEX_HOME).toBeUndefined()
+      expect(spawnCall[2].env.OCC_CODEX_HOME).toBeUndefined()
     })
 
     it('uses the preferred WSL distro for Windows cwd WSL terminals', async () => {
@@ -323,7 +323,7 @@ describe('LocalPtyProvider', () => {
         '-c',
         expect.stringContaining("cd '/mnt/c/Users/jin/repo'")
       ])
-      expect(spawnCall[1][5]).toContain('exec "$_orca_wsl_shell" -l')
+      expect(spawnCall[1][5]).toContain('exec "$_occ_wsl_shell" -l')
       expect(spawnCall[2].env.HISTFILE).toContain('terminal-history-wsl/Debian')
     })
 
@@ -555,14 +555,14 @@ describe('LocalPtyProvider', () => {
     it('marks OCC terminal handle for WSL import when buildSpawnEnv opts in', async () => {
       Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
       const savedCodexHome = process.env.CODEX_HOME
-      const savedOrcaCodexHome = process.env.ORCA_CODEX_HOME
+      const savedOCCCodexHome = process.env.OCC_CODEX_HOME
       delete process.env.CODEX_HOME
-      delete process.env.ORCA_CODEX_HOME
+      delete process.env.OCC_CODEX_HOME
       provider.configure({
         buildSpawnEnv: (_id, env, ctx) => {
-          env.ORCA_TERMINAL_HANDLE = 'term_wsl'
+          env.OCC_TERMINAL_HANDLE = 'term_wsl'
           if (ctx?.isWsl) {
-            env.WSLENV = 'ORCA_TERMINAL_HANDLE/u'
+            env.WSLENV = 'OCC_TERMINAL_HANDLE/u'
           }
           return env
         }
@@ -573,7 +573,7 @@ describe('LocalPtyProvider', () => {
           cols: 80,
           rows: 24,
           cwd: '\\\\wsl.localhost\\Ubuntu\\home\\jin\\repo',
-          env: { ORCA_HERMES_STARTUP_QUERY: 'line one\nline two' }
+          env: { OCC_HERMES_STARTUP_QUERY: 'line one\nline two' }
         })
       } finally {
         if (savedCodexHome === undefined) {
@@ -581,20 +581,20 @@ describe('LocalPtyProvider', () => {
         } else {
           process.env.CODEX_HOME = savedCodexHome
         }
-        if (savedOrcaCodexHome === undefined) {
-          delete process.env.ORCA_CODEX_HOME
+        if (savedOCCCodexHome === undefined) {
+          delete process.env.OCC_CODEX_HOME
         } else {
-          process.env.ORCA_CODEX_HOME = savedOrcaCodexHome
+          process.env.OCC_CODEX_HOME = savedOCCCodexHome
         }
       }
 
       const spawnCall = spawnMock.mock.calls.at(-1)!
       expect(spawnCall[0]).toBe('wsl.exe')
-      expect(spawnCall[2].env.ORCA_TERMINAL_HANDLE).toBe('term_wsl')
+      expect(spawnCall[2].env.OCC_TERMINAL_HANDLE).toBe('term_wsl')
       expect(spawnCall[2].env.WSLENV?.split(':')).toEqual(
         expect.arrayContaining([
-          'ORCA_TERMINAL_HANDLE/u',
-          'ORCA_HERMES_STARTUP_QUERY',
+          'OCC_TERMINAL_HANDLE/u',
+          'OCC_HERMES_STARTUP_QUERY',
           POWERLEVEL10K_WIZARD_DISABLE_ENV
         ])
       )
@@ -657,7 +657,7 @@ describe('LocalPtyProvider', () => {
         getWindowsShell: () => 'git-bash',
         buildSpawnEnv: (_id, env) => ({
           ...env,
-          ORCA_CODEX_LAUNCH_PREFLIGHT: CODEX_LAUNCH_PREFLIGHT
+          OCC_CODEX_LAUNCH_PREFLIGHT: CODEX_LAUNCH_PREFLIGHT
         })
       })
 
@@ -691,7 +691,7 @@ describe('LocalPtyProvider', () => {
           env: expect.objectContaining({
             CHERE_INVOKING: '1',
             PYTHONUTF8: '1',
-            ORCA_CODEX_LAUNCH_PREFLIGHT: CODEX_LAUNCH_PREFLIGHT
+            OCC_CODEX_LAUNCH_PREFLIGHT: CODEX_LAUNCH_PREFLIGHT
           })
         })
       )
@@ -704,7 +704,7 @@ describe('LocalPtyProvider', () => {
         getWindowsShell: () => 'cmd.exe',
         buildSpawnEnv: (_id, env) => ({
           ...env,
-          ORCA_CODEX_LAUNCH_PREFLIGHT: CODEX_LAUNCH_PREFLIGHT
+          OCC_CODEX_LAUNCH_PREFLIGHT: CODEX_LAUNCH_PREFLIGHT
         })
       })
 
@@ -720,12 +720,12 @@ describe('LocalPtyProvider', () => {
         'cmd.exe',
         [
           '/K',
-          'chcp 65001 > nul & if defined ORCA_CODEX_LAUNCH_PREFLIGHT call %ORCA_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE%%ORCA_CODEX_LAUNCH_PREFLIGHT%%ORCA_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE% agent hooks prepare-codex > nul 2>&1'
+          'chcp 65001 > nul & if defined OCC_CODEX_LAUNCH_PREFLIGHT call %OCC_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE%%OCC_CODEX_LAUNCH_PREFLIGHT%%OCC_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE% agent hooks prepare-codex > nul 2>&1'
         ],
         expect.objectContaining({
           env: expect.objectContaining({
-            ORCA_CODEX_LAUNCH_PREFLIGHT: CODEX_LAUNCH_PREFLIGHT,
-            ORCA_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE: '"'
+            OCC_CODEX_LAUNCH_PREFLIGHT: CODEX_LAUNCH_PREFLIGHT,
+            OCC_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE: '"'
           })
         })
       )

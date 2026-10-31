@@ -1,10 +1,10 @@
-import { OrcaRuntimeWithGetPtyRecordForPaneKey } from './terminal-pane-mail-routing'
+import { OCCRuntimeWithGetPtyRecordForPaneKey } from './terminal-pane-mail-routing'
 import type { OrchestrationMailboxTerminal } from './mailbox-owner'
 import type { RuntimePtyWorktreeRecord } from '../runtime-terminal-state-records'
 import { parsePaneKey } from '../../../shared/stable-pane-id'
 
 /** Which live terminal orchestration types mail into, and the handle it is known by. */
-export abstract class OrcaRuntimeWithMailboxTerminalIdentity extends OrcaRuntimeWithGetPtyRecordForPaneKey {
+export abstract class OCCRuntimeWithMailboxTerminalIdentity extends OCCRuntimeWithGetPtyRecordForPaneKey {
   protected getMailboxTerminalForPaneKey(paneKey: string): OrchestrationMailboxTerminal | null {
     const pty = this.getPtyRecordForPaneKey(paneKey)
     return pty ? this.getOrchestrationMailboxTerminal(pty.ptyId) : null

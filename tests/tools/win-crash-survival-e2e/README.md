@@ -2,7 +2,7 @@
 
 **Windows only.** Proves that a **crash of OCC's main process** does not orphan
 open terminal PTYs — the regression behind
-[GitHub #7742](https://github.com/stablyai/orca/issues/7742) —
+[GitHub #7742](https://github.com/stablyai/occ/issues/7742) —
 with machine-checkable assertions against an **already-installed, packaged**
 `OCC.exe`.
 
@@ -28,11 +28,11 @@ and adds only the crash step + its assertions.
 ## What it does
 
 1. **Launch** the installed `OCC.exe` under an isolated `userData` dir
-   (`ORCA_E2E_USER_DATA_DIR`), seeded with a fresh profile (onboarding dismissed
+   (`OCC_E2E_USER_DATA_DIR`), seeded with a fresh profile (onboarding dismissed
    plus one throwaway git repo), then open a plain terminal tab (the seeded
    workspace opens an agent tab, not a bare shell).
 2. **Stamp the interactive shell** — typing DIRECTLY into it (not a nested
-   `powershell`), set a per-shell env sentinel `ORCA_CRASH_SENTINEL=<canary>` and
+   `powershell`), set a per-shell env sentinel `OCC_CRASH_SENTINEL=<canary>` and
    record the shell's own `$PID`. The command finishes fast, leaving the shell
    idle at a live PSReadLine prompt — the exact state that FailFasts with `0xE9`
    on a broken build.
@@ -50,7 +50,7 @@ and adds only the crash step + its assertions.
    **unchanged** (the new main **adopts** the surviving daemon instead of forking
    a new one) and that the reattached UI is bound to the **same survivor shell** —
    a bounded, readiness-aware command on the exact restored tab reads back both
-   `ORCA_CRASH_SENTINEL` and the shell's `$PID`, which a freshly re-spawned shell
+   `OCC_CRASH_SENTINEL` and the shell's `$PID`, which a freshly re-spawned shell
    would not carry.
 7. **Scan the full crash-to-input window** and require the Windows **Application
    event log** to contain **zero** pwsh `FailFast` / `0xE9` events (matched by
@@ -70,7 +70,7 @@ a CLI usage error).
 ```powershell
 pnpm win-crash-survival-e2e --expect survival
 # or explicitly point at an installed exe:
-node tests/tools/win-crash-survival-e2e/run.mjs --expect survival --exe-path "C:\Users\<you>\AppData\Local\Programs\orca\OCC.exe"
+node tests/tools/win-crash-survival-e2e/run.mjs --expect survival --exe-path "C:\Users\<you>\AppData\Local\Programs\occ\OCC.exe"
 ```
 
 ### Flags

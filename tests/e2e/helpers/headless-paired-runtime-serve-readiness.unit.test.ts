@@ -57,7 +57,7 @@ describe('headless paired runtime readiness', () => {
     expect(
       parseHeadlessPairedRuntimePairingOffer(
         JSON.stringify({
-          type: 'orca_server_ready',
+          type: 'occ_server_ready',
           pairing: { available: true, url: 'occ://pairing-secret', webClientUrl: null }
         })
       )
@@ -68,7 +68,7 @@ describe('headless paired runtime readiness', () => {
     expect(
       parseHeadlessPairedRuntimePairingOffer(
         JSON.stringify({
-          type: 'orca_server_ready',
+          type: 'occ_server_ready',
           pairing: {
             available: true,
             url: 'occ://pairing-secret',

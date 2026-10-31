@@ -68,7 +68,7 @@ describeClosure(
       'would be reported if a document module imported it (%s entry)',
       async (entryKind) => {
         // Plant offender in scratch tree so other document censuses cannot observe test-only module.
-        const scratch = await mkdtemp(join(tmpdir(), 'orca-c75-engine-closure-'))
+        const scratch = await mkdtemp(join(tmpdir(), 'occ-c75-engine-closure-'))
         try {
           const planted = join(scratch, 'src', 'terminal', 'document')
           await mkdir(planted, { recursive: true })

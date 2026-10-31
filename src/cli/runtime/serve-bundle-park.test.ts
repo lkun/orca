@@ -23,7 +23,7 @@ describe('openServeBundlePark', () => {
   let dir: string
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-bundle-park-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-bundle-park-'))
     const bundle = join(root, 'OCC.app')
     executable = join(bundle, 'Contents', 'MacOS', 'OCC')
     await mkdir(join(bundle, 'Contents', 'MacOS'), { recursive: true })

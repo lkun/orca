@@ -4,7 +4,7 @@
 
 import { existsSync, readFileSync } from 'node:fs'
 import type { ElectronApplication } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { TEST_REPO_PATH_FILE } from './global-setup'
 import {
   discoverActivePtyId,
@@ -16,7 +16,7 @@ import {
   waitForTerminalOutput
 } from './helpers/terminal'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 
 // Serialize the shared-profile quit/relaunch so the surviving daemon and Electron lock have no competing app.
 test.describe.configure({ mode: 'serial' })
@@ -56,10 +56,10 @@ test.describe('reattach mouse-mode leak', () => {
       const ptyId = await discoverActivePtyId(firstLaunch.page)
 
       // Require arithmetic command execution, beyond echo; skip sandbox PTYs with no executing shell rather than misdiagnose reset.
-      await execInTerminal(firstLaunch.page, ptyId, 'echo ORCA_MOUSE_READY_$((21+21))')
+      await execInTerminal(firstLaunch.page, ptyId, 'echo OCC_MOUSE_READY_$((21+21))')
       const shellExecutes = await waitForTerminalOutput(
         firstLaunch.page,
-        'ORCA_MOUSE_READY_42',
+        'OCC_MOUSE_READY_42',
         15_000
       )
         .then(() => true)
@@ -133,8 +133,8 @@ test.describe('reattach mouse-mode leak', () => {
         .toBe('none')
 
       await sendToTerminal(secondLaunch.page, reattachedPtyId, '\x03')
-      await execInTerminal(secondLaunch.page, reattachedPtyId, 'echo ORCA_REATTACHED_$((21+21))')
-      await waitForTerminalOutput(secondLaunch.page, 'ORCA_REATTACHED_42', 15_000)
+      await execInTerminal(secondLaunch.page, reattachedPtyId, 'echo OCC_REATTACHED_$((21+21))')
+      await waitForTerminalOutput(secondLaunch.page, 'OCC_REATTACHED_42', 15_000)
 
       // Require no motion reports after reattach, then re-arm and require reports from the same probe.
       const probe = await secondLaunch.page.evaluate(async () => {

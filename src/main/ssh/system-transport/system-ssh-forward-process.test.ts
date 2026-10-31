@@ -18,7 +18,7 @@ const {
 }))
 
 vi.mock('./system-ssh-orphaned-forward', () => ({
-  stopOrphanedOrcaSshForward: stopOrphanMock
+  stopOrphanedOCCSshForward: stopOrphanMock
 }))
 
 vi.mock('./system-ssh-muxed-forward-cancel', () => ({
@@ -81,7 +81,7 @@ function createTarget(overrides?: Partial<SshTarget>): SshTarget {
   }
 }
 
-function expectNoOrcaControlMasterArgs(args: string[]): void {
+function expectNoOCCControlMasterArgs(args: string[]): void {
   expect(args).not.toContain('ControlMaster=auto')
   expect(args.some((arg) => arg.startsWith('ControlPath='))).toBe(false)
   expect(args).not.toContain('ControlPersist=300')
@@ -163,7 +163,7 @@ describe('system SSH forward process', () => {
     expect(args).not.toContain('ExitOnForwardFailure=yes')
     expect(args[controlPathIdx + 1]).toBe('none')
     expect(controlPathIdx).toBeLessThan(terminatorIdx)
-    expectNoOrcaControlMasterArgs(args)
+    expectNoOCCControlMasterArgs(args)
     expect(args).toContain('127.0.0.1:5173:127.0.0.1:3000')
     expect(args[terminatorIdx + 1]).toBe('fdpass-host')
     expect(spawnMock).toHaveBeenCalledWith(
@@ -201,7 +201,7 @@ describe('system SSH forward process', () => {
 
     const args = spawnMock.mock.calls[0][1] as string[]
     expect(args[args.indexOf('-S') + 1]).toBe('none')
-    expectNoOrcaControlMasterArgs(args)
+    expectNoOCCControlMasterArgs(args)
   })
 
   // A user master owns the listener and refusal stderr beyond the client's lifetime.
@@ -232,7 +232,7 @@ describe('system SSH forward process', () => {
     const controlPathIdx = args.indexOf('-S')
     expect(args[controlPathIdx + 1]).toBe('none')
     expect(controlPathIdx).toBeLessThan(args.indexOf('--'))
-    expectNoOrcaControlMasterArgs(args)
+    expectNoOCCControlMasterArgs(args)
     expect(args).toContain('workbox')
   })
 

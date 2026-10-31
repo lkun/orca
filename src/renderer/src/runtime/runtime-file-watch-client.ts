@@ -234,7 +234,7 @@ function closeSharedRuntimeFileWatch(key: string, shared: SharedRuntimeFileWatch
 }
 
 function isWebRuntimeFileWatchSharedSocket(): boolean {
-  return Boolean((globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__)
+  return Boolean((globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__)
 }
 
 function unwatchSharedRuntimeFileWatch(shared: SharedRuntimeFileWatch): void {

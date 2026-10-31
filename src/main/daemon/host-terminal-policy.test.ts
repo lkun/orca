@@ -58,7 +58,7 @@ afterEach(async () => {
 })
 
 async function home(): Promise<string> {
-  const path = await mkdtemp(join(tmpdir(), 'orca-terminal-policy-'))
+  const path = await mkdtemp(join(tmpdir(), 'occ-terminal-policy-'))
   directories.push(path)
   return path
 }
@@ -132,7 +132,7 @@ describe('host terminal policy', () => {
       systemPtyLimit: 511
     })
     const read = vi.fn()
-    const override = createPolicy(path, { ORCA_DAEMON_MAX_HOST_TERMINALS: '600' }, system(), read)
+    const override = createPolicy(path, { OCC_DAEMON_MAX_HOST_TERMINALS: '600' }, system(), read)
     await override.start()
     expect(read).not.toHaveBeenCalled()
     expect(await override.status('nonce')).toMatchObject({

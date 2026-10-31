@@ -4,7 +4,7 @@ import { quotePowerShellLiteral as powerShellLiteral } from '../../../shared/pow
 import {
   posixStateMutationGroupRecord,
   posixStateMutationPidRecord
-} from '../host-state/orcad-state-mutation-owner-record'
+} from '../host-state/occd-state-mutation-owner-record'
 
 /** Verify exited-holder token and quiet time during takeover; optionally fence state mutations. */
 export type InstallLockExitedOwner = InstallLockOwnerFile & {

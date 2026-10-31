@@ -18,7 +18,7 @@ function keySegment(value) {
     .replace(/(^\.+|\.+$)/g, '')
 }
 
-function keyForCandidate(candidate) {
+function keyFoccndidate(candidate) {
   const withoutPrefix = candidate.filePath.replace(/^src\/renderer\/src\//, '')
   const source = `${candidate.filePath}:${candidate.text}`
   const hash = createHash('sha1').update(source).digest('hex').slice(0, 10)
@@ -53,7 +53,7 @@ function isInsideJsxExpression(node) {
   return false
 }
 
-function editForCandidate(candidate, key, translation, sourceFile) {
+function editFoccndidate(candidate, key, translation, sourceFile) {
   const call = translateCall(key, translation.fallback, translation.options)
   const node = findNodeByRange(sourceFile, candidate.start, candidate.end)
   if (candidate.kind === 'jsx-text') {
@@ -95,7 +95,7 @@ function findNodeByRange(sourceFile, start, end) {
   return match
 }
 
-function translationForCandidate(candidate, sourceFile) {
+function translationFoccndidate(candidate, sourceFile) {
   if (!candidate.dynamic) {
     return { fallback: candidate.text }
   }
@@ -165,16 +165,16 @@ function applyReplacements(filePath, sourceText, candidates, catalog) {
   const replacements = uniqueCandidates(candidates)
     .map((candidate) => ({
       candidate,
-      translation: translationForCandidate(candidate, sourceFile)
+      translation: translationFoccndidate(candidate, sourceFile)
     }))
     .filter((entry) => entry.translation !== null)
     .sort((left, right) => right.candidate.start - left.candidate.start)
 
   let nextSource = sourceText
   for (const { candidate, translation } of replacements) {
-    const key = keyForCandidate(candidate)
+    const key = keyFoccndidate(candidate)
     setCatalogValue(catalog, key, translation.fallback)
-    const edit = editForCandidate(candidate, key, translation, sourceFile)
+    const edit = editFoccndidate(candidate, key, translation, sourceFile)
     nextSource = `${nextSource.slice(0, edit.start)}${edit.text}${nextSource.slice(edit.end)}`
   }
 

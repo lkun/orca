@@ -1,5 +1,5 @@
 import { createHash, randomBytes } from 'node:crypto'
-import { PUSH_LIMITS } from '@orca-cloud/push-contract'
+import { PUSH_LIMITS } from '@occ-cloud/push-contract'
 import type { PushDatabase } from './push-database.js'
 
 export type IssuedPushSession = {
@@ -28,7 +28,7 @@ export class PushHostSessionStore {
     const expiresAt = createdAt + PUSH_LIMITS.sessionTtlMs
     await this.database.transaction(async (transaction) => {
       // One active session per desktop bounds rows even for self-minted hosts that flood proofs.
-      await transaction.lockQuotaScope(`orca-push-session:${hostFingerprint}`)
+      await transaction.lockQuotaScope(`occ-push-session:${hostFingerprint}`)
       await transaction.query('DELETE FROM push_sessions WHERE host_fingerprint = ?', [
         hostFingerprint
       ])

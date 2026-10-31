@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   cleanupGoldenWorktree,
   createGoldenWorktree,
@@ -11,7 +11,7 @@ import { waitForSessionReady } from './helpers/store'
 
 // Keep separate from the open-diff golden that release-cut restores onto tags predating this menu item (#24502).
 test('@golden offers to reveal a changed file in the OS file manager from its Source Control row', async ({
-  orcaPage,
+  occPage,
   testRepoPath,
   registerPostElectronShutdownCleanup
 }) => {
@@ -19,17 +19,17 @@ test('@golden offers to reveal a changed file in the OS file manager from its So
   registerPostElectronShutdownCleanup(async () => cleanupGoldenWorktree(testRepoPath, fixture))
   seedGoldenSourceEdit(fixture.worktreePath)
 
-  await waitForSessionReady(orcaPage)
-  await openGoldenSourceControl(orcaPage, testRepoPath, fixture)
+  await waitForSessionReady(occPage)
+  await openGoldenSourceControl(occPage, testRepoPath, fixture)
 
-  const changedFile = orcaPage
+  const changedFile = occPage
     .locator('[data-testid="source-control-entry"]')
     .filter({ hasText: path.basename(GOLDEN_CHANGED_PATH) })
   await expect(changedFile).toBeVisible({ timeout: 15_000 })
   await changedFile.click({ button: 'right' })
 
   await expect(
-    orcaPage.getByRole('menuitem', {
+    occPage.getByRole('menuitem', {
       name: /Reveal in Finder|Reveal in File Explorer|Open Containing Folder/
     })
   ).toBeEnabled()

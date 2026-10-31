@@ -100,7 +100,7 @@ describe('MacOSNativeProviderClient', () => {
     providers.length = 0
     mkdtempSyncMock.mockImplementation((prefix: string) => `${prefix}${sockets.length}`)
     resolveMacOSComputerUseExecutablePathMock.mockReturnValue(
-      '/Applications/OCC Computer Use.app/Contents/MacOS/orca-computer-use-macos'
+      '/Applications/OCC Computer Use.app/Contents/MacOS/occ-computer-use-macos'
     )
     spawnMock.mockImplementation(() => {
       const provider = new FakeProvider()
@@ -517,7 +517,7 @@ describe('MacOSNativeProviderClient', () => {
     await expect(client.capabilities()).rejects.toThrow('socket did not open')
 
     expect(provider.kill).toHaveBeenCalledWith('SIGTERM')
-    expect(rmSyncMock).toHaveBeenCalledWith(expect.stringContaining('orca-computer-use-'), {
+    expect(rmSyncMock).toHaveBeenCalledWith(expect.stringContaining('occ-computer-use-'), {
       recursive: true,
       force: true
     })
@@ -716,7 +716,7 @@ describe('MacOSNativeProviderClient', () => {
 function macOSProviderCapabilities(actions: Partial<Record<string, boolean>> = {}) {
   return {
     platform: 'darwin',
-    provider: 'orca-computer-use-macos',
+    provider: 'occ-computer-use-macos',
     providerVersion: '1.0.0',
     protocolVersion: 1,
     supports: {

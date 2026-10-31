@@ -22,8 +22,8 @@ vi.mock('../../hooks', () => ({
   hasHooksFile: mocks.hasHooks,
   loadHooks: mocks.loadHooks,
   getEffectiveHooks: mocks.effectiveHooks,
-  hasUnrecognizedOrcaYamlKeys: () => false,
-  parseOrcaYaml: () => ({ issueCommand: 'shared' })
+  hasUnrecognizedOCCYamlKeys: () => false,
+  parseOCCYaml: () => ({ issueCommand: 'shared' })
 }))
 vi.mock('../../issue-command-file', () => ({
   readIssueCommandUnlessWslStopped: mocks.localRead,

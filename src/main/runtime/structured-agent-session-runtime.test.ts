@@ -78,7 +78,7 @@ describe('structured agent-session store presence', () => {
   })
 
   async function openProfileDatabase(): Promise<JournalHostDatabase> {
-    profile = await mkdtemp(join(tmpdir(), 'orca-session-presence-'))
+    profile = await mkdtemp(join(tmpdir(), 'occ-session-presence-'))
     return JournalHostDatabase.open(profile)
   }
 
@@ -99,7 +99,7 @@ describe('structured agent-session store presence', () => {
   })
 
   it('reports a database it cannot read present', async () => {
-    profile = await mkdtemp(join(tmpdir(), 'orca-session-presence-'))
+    profile = await mkdtemp(join(tmpdir(), 'occ-session-presence-'))
     await writeFile(journalDatabasePath(profile), 'not a database')
 
     expect(hasPersistedStructuredAgentSessionStore(profile)).toBe(true)
@@ -269,7 +269,7 @@ describe('structured agent-session runtime install', () => {
   it.each([false, true])(
     'backfills before the host is readable and keeps startup nonfatal on a failed write (%s)',
     async (failWrite) => {
-      stateDirectory = await mkdtemp(join(tmpdir(), 'orca-structured-runtime-backfill-'))
+      stateDirectory = await mkdtemp(join(tmpdir(), 'occ-structured-runtime-backfill-'))
       await seedTestAgentSessionRecordStore(stateDirectory, { records: [oldChat('codex')] })
       if (failWrite) {
         openTestJournalHostDatabase(stateDirectory).db.exec(
@@ -298,7 +298,7 @@ describe('structured agent-session runtime install', () => {
   ] as const)(
     "fills each old chat from its own agent's arguments when %j skip prompts",
     async (fullAccessAgents, claude, codex) => {
-      stateDirectory = await mkdtemp(join(tmpdir(), 'orca-structured-runtime-backfill-'))
+      stateDirectory = await mkdtemp(join(tmpdir(), 'occ-structured-runtime-backfill-'))
       await seedTestAgentSessionRecordStore(stateDirectory, {
         records: [oldChat('claude'), oldChat('codex')]
       })
@@ -309,7 +309,7 @@ describe('structured agent-session runtime install', () => {
   )
 
   it('moves pre-rename chat visuals under the current root before the host is readable', async () => {
-    stateDirectory = await mkdtemp(join(tmpdir(), 'orca-structured-runtime-visuals-'))
+    stateDirectory = await mkdtemp(join(tmpdir(), 'occ-structured-runtime-visuals-'))
     await seedTestAgentSessionRecordStore(stateDirectory, { records: [oldChat('codex')] })
     const current = nativeChatScratchFolderFor(stateDirectory, 'old-codex')
     const legacy = join(stateDirectory, 'native-chat-visuals', basename(current))
@@ -333,7 +333,7 @@ describe('structured agent-session runtime install', () => {
   })
 
   it('holds stop until the model catalog has written its coalesced save', async () => {
-    stateDirectory = await mkdtemp(join(tmpdir(), 'orca-structured-runtime-'))
+    stateDirectory = await mkdtemp(join(tmpdir(), 'occ-structured-runtime-'))
     await ensureStructuredAgentSessionHost({
       logger: createStructuredAgentSessionLogger(),
       stateDirectory,
@@ -364,7 +364,7 @@ describe('structured agent-session runtime install', () => {
   })
 
   it('supports native Windows creation without the process-table addon', async () => {
-    stateDirectory = await mkdtemp(join(tmpdir(), 'orca-structured-runtime-'))
+    stateDirectory = await mkdtemp(join(tmpdir(), 'occ-structured-runtime-'))
     const originalPlatform = process.platform
     const location: AgentSessionExecutionLocation = {
       executionHostId: 'local',

@@ -7,7 +7,7 @@ import {
 } from '../../../../shared/remote-rpc-content-budget'
 import { assertGitDiffWithinTransportBudget } from '../../../../shared/git-diff-transport-budget'
 import type { GitDiffResult } from '../../../../shared/git-diff-compare-types'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import type { RpcRequest, RpcResponse } from '../core'
 import { RpcDispatcher } from '../dispatcher'
 import { GIT_METHODS } from './git'
@@ -47,8 +47,8 @@ const CASES: readonly { method: string; runtimeMethod: string; params: Record<st
     }
   ]
 
-/** Stands in for orca-runtime-git.ts, which enforces the budget it is handed as its last argument. */
-function stubRuntime(runtimeMethod: string): OrcaRuntimeService {
+/** Stands in for occ-runtime-git.ts, which enforces the budget it is handed as its last argument. */
+function stubRuntime(runtimeMethod: string): OCCRuntimeService {
   return {
     getRuntimeId: () => 'test-runtime',
     [runtimeMethod]: vi.fn(async (...args: unknown[]) => {
@@ -58,10 +58,10 @@ function stubRuntime(runtimeMethod: string): OrcaRuntimeService {
         typeof maxContentBytes === 'number' ? maxContentBytes : undefined
       )
     })
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
 }
 
-function budgetArgument(runtime: OrcaRuntimeService, runtimeMethod: string): unknown {
+function budgetArgument(runtime: OCCRuntimeService, runtimeMethod: string): unknown {
   const spy = (runtime as unknown as Record<string, ReturnType<typeof vi.fn>>)[runtimeMethod]!
   return spy.mock.calls[0]!.at(-1)
 }
@@ -71,7 +71,7 @@ function makeRequest(method: string, params: Record<string, unknown>): RpcReques
 }
 
 async function dispatchRemote(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   method: string,
   params: Record<string, unknown>,
   clientKind: 'mobile' | 'runtime'

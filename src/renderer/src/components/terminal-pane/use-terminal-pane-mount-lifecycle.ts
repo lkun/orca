@@ -9,7 +9,7 @@ import { createTerminalPaneManagerOptions } from './terminal-pane-manager-option
 import { restoreTerminalPaneLayout } from './terminal-pane-layout-restore'
 import { runTerminalPaneBootstrapSplits } from './terminal-pane-mount-bootstrap'
 import { runBootstrapSplitInMain } from './terminal-pane-bootstrap-split-in-main'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { installTerminalPaneMountEvents } from './terminal-pane-mount-events'
 import { cleanupTerminalPaneMount } from './terminal-pane-mount-cleanup'
 import type { UseTerminalPaneLifecycleDeps } from './terminal-pane-lifecycle-types'
@@ -83,7 +83,7 @@ export function useTerminalPaneMountLifecycle(
       ptyDeps,
       initialLayoutHadBuffers: preparation.initialLayoutHadBuffers
     })
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       runBootstrapSplitInMain({
         manager,
         worktreeId: deps.worktreeId,

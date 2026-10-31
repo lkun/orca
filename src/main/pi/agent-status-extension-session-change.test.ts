@@ -651,7 +651,7 @@ describe('OMP session switches', () => {
         sharedEventBus: true,
         seedEventBus: (bus) => {
           Object.assign(bus, {
-            __orcaPiSubagents: {
+            __occPiSubagents: {
               active: new Set(['old-child']),
               waiting: false,
               listener: () => {},

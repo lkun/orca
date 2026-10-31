@@ -13,14 +13,14 @@ import { tmpdir } from 'node:os'
 import { join, relative } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { preparePrAppImageTools } from './package-linux-formats-appimage.mjs'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 
 const require = createRequire(import.meta.url)
 const configuration = { toolsets: { appimage: '1.0.3' } }
 let root
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca pr AppImage tools-'))
+  root = mkdtempSync(join(tmpdir(), 'occ pr AppImage tools-'))
 })
 
 afterEach(() => {
@@ -83,9 +83,9 @@ describe.skipIf(process.platform === 'win32')('real executable AppImage tool ove
       [
         '#!/usr/bin/env node',
         'if (process.argv[2] === "-version") {',
-        '  console.log(`mksquashfs version ${process.env.ORCA_TEST_SQUASHFS_VERSION ?? "4.6.1"}`)',
+        '  console.log(`mksquashfs version ${process.env.OCC_TEST_SQUASHFS_VERSION ?? "4.6.1"}`)',
         '} else { console.log(JSON.stringify(process.argv.slice(2))) }',
-        'process.exitCode = Number(process.env.ORCA_TEST_SQUASHFS_EXIT ?? 0)',
+        'process.exitCode = Number(process.env.OCC_TEST_SQUASHFS_EXIT ?? 0)',
         ''
       ].join('\n'),
       { mode: 0o755 }
@@ -128,7 +128,7 @@ describe.skipIf(process.platform === 'win32')('real executable AppImage tool ove
     expect(statSync(join(overlay, 'mksquashfs')).mode & 0o777).toBe(0o755)
     expect(readFileSync(originalProgram)).toEqual(programBytes)
     expect(process.env.APPIMAGE_TOOLS_PATH).toBe(original)
-    expect(environment.ORCA_PR_APPIMAGE_MKSQUASHFS).toBe(originalProgram)
+    expect(environment.OCC_PR_APPIMAGE_MKSQUASHFS).toBe(originalProgram)
 
     vi.stubEnv('APPIMAGE_TOOLS_PATH', environment.APPIMAGE_TOOLS_PATH)
     const tools = await require('app-builder-lib/out/toolsets/linux.js').getAppImageTools(
@@ -183,7 +183,7 @@ describe.skipIf(process.platform === 'win32')('real executable AppImage tool ove
 
   it('propagates the original executable failure without a fallback', async () => {
     const environment = await prepare()
-    vi.stubEnv('ORCA_TEST_SQUASHFS_EXIT', '17')
+    vi.stubEnv('OCC_TEST_SQUASHFS_EXIT', '17')
     const result = runProcessSync({
       program: join(overlay, 'mksquashfs'),
       args: ['app', 'output', '-comp', 'zstd'],
@@ -194,8 +194,8 @@ describe.skipIf(process.platform === 'win32')('real executable AppImage tool ove
   })
 
   it.each([
-    ['ORCA_TEST_SQUASHFS_VERSION', '4.7.0'],
-    ['ORCA_TEST_SQUASHFS_EXIT', '2']
+    ['OCC_TEST_SQUASHFS_VERSION', '4.7.0'],
+    ['OCC_TEST_SQUASHFS_EXIT', '2']
   ])(
     'rejects an unsupported original tool (%s=%s) without creating an overlay',
     async (key, value) => {

@@ -10,7 +10,7 @@ import {
 
 export const OPENCODE_BASE_URL = 'https://opencode.ai'
 
-const OPENCODE_SESSION_PARTITION = 'orca-opencode-go-rate-limit-fetch'
+const OPENCODE_SESSION_PARTITION = 'occ-opencode-go-rate-limit-fetch'
 const appliedProxyKeys = new WeakMap<Session, string>()
 
 export async function clearOpenCodeSessionCookies(openCodeSession: Session): Promise<void> {

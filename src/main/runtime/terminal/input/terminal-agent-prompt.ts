@@ -12,7 +12,7 @@ import {
   assertAgentPromptRequestActive,
   waitForAgentPromptDelay,
   waitForAgentPromptPromise
-} from '../../orca-runtime-core'
+} from '../../occ-runtime-core'
 import {
   AGENT_PROMPT_POST_PASTE_SUBMIT_DELAY_MS,
   AGENT_PROMPT_SUBMIT,
@@ -32,9 +32,9 @@ import {
   verifyAgentPromptSubmission
 } from '../../agent-prompt-submission-verification'
 import { AgentPromptPermissionReturnedError } from './agent-prompt-permission-hold'
-import { OrcaRuntimeWithResubmitHeldAgentPrompt } from './terminal-agent-prompt-resubmit'
+import { OCCRuntimeWithResubmitHeldAgentPrompt } from './terminal-agent-prompt-resubmit'
 
-export abstract class OrcaRuntimeWithWriteTerminalAgentPrompt extends OrcaRuntimeWithResubmitHeldAgentPrompt {
+export abstract class OCCRuntimeWithWriteTerminalAgentPrompt extends OCCRuntimeWithResubmitHeldAgentPrompt {
   protected abstract createAgentPromptRenderGate(
     ptyId: string,
     pasteIngestMs: number

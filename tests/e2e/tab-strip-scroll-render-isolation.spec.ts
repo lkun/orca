@@ -1,7 +1,7 @@
 // Scroll real Chromium overflow without rerendering the tab strip while its thumb tracks scroll/resize; count whole-app React commits.
 
 import type { Locator, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady, waitForActiveWorktree, ensureTerminalVisible } from './helpers/store'
 
 const STRIP = '.terminal-tab-strip'
@@ -143,17 +143,17 @@ async function expectThumbToTrackStrip(strip: Locator): Promise<void> {
 }
 
 test.describe('Tab strip scroll render isolation', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
   })
 
   test('scrolls a long strip without re-rendering its tabs, and the thumb keeps up', async ({
-    orcaPage
+    occPage
   }) => {
-    const worktreeId = await waitForActiveWorktree(orcaPage)
-    const strip = orcaPage.locator(STRIP).first()
+    const worktreeId = await waitForActiveWorktree(occPage)
+    const strip = occPage.locator(STRIP).first()
     await expect(strip).toBeVisible()
     const tabIds: string[] = []
     for (let i = 0; i < 12; i++) {
@@ -161,20 +161,20 @@ test.describe('Tab strip scroll render isolation', () => {
       if (range >= MIN_SCROLL_RANGE_PX) {
         break
       }
-      tabIds.push(...(await addBackgroundTerminalTabs(orcaPage, worktreeId, 10)))
+      tabIds.push(...(await addBackgroundTerminalTabs(occPage, worktreeId, 10)))
       await expect
         .poll(() => strip.evaluate((el) => el.querySelectorAll('[data-tab-strip-slot]').length))
         .toBeGreaterThan(tabIds.length)
     }
 
-    await startRecordingTabRenders(orcaPage)
+    await startRecordingTabRenders(occPage)
     // New terminals retitle their tabs after opening, longer on a loaded machine; wait for quiet.
     await expect
       .poll(
         async () => {
-          await takeTabRenders(orcaPage)
-          await orcaPage.waitForTimeout(1_500)
-          return (await takeTabRenders(orcaPage)).length
+          await takeTabRenders(occPage)
+          await occPage.waitForTimeout(1_500)
+          return (await takeTabRenders(occPage)).length
         },
         { timeout: 45_000 }
       )
@@ -190,14 +190,14 @@ test.describe('Tab strip scroll render isolation', () => {
           await strip.evaluate((el, left) => {
             el.scrollLeft = left
           }, START_SCROLL_LEFT_PX)
-          await orcaPage.waitForTimeout(1_500)
+          await occPage.waitForTimeout(1_500)
           return strip.evaluate((el) => el.scrollLeft)
         },
         { timeout: 30_000 }
       )
       .toBe(START_SCROLL_LEFT_PX)
     // That scroll flipped the end-edge flags; the commit it caused is not the scroll under test.
-    await takeTabRenders(orcaPage)
+    await takeTabRenders(occPage)
     // Dispatch page wheel events through the real strip handler; native input waits for CI’s sparse hidden-window frames.
     await strip.evaluate(
       async (el, { steps, delta }) => {
@@ -215,15 +215,15 @@ test.describe('Tab strip scroll render isolation', () => {
       START_SCROLL_LEFT_PX + WHEEL_STEPS * WHEEL_DELTA_PX
     )
     // Reject many-tab commits; a single late retitle may still update one tab.
-    expect((await takeTabRenders(orcaPage)).filter((tabs) => tabs >= 3)).toEqual([])
+    expect((await takeTabRenders(occPage)).filter((tabs) => tabs >= 3)).toEqual([])
     await expectThumbToTrackStrip(strip)
 
     // Control: switching tabs re-renders at least the tab it activates, so the recorder sees tabs.
-    await orcaPage.evaluate((tabId) => window.__store!.getState().setActiveTab(tabId), tabIds[0])
-    await expect.poll(async () => (await takeTabRenders(orcaPage)).length).toBeGreaterThan(0)
+    await occPage.evaluate((tabId) => window.__store!.getState().setActiveTab(tabId), tabIds[0])
+    await expect.poll(async () => (await takeTabRenders(occPage)).length).toBeGreaterThan(0)
 
     // Tabs opening grow the strip without a scroll event.
-    await addBackgroundTerminalTabs(orcaPage, worktreeId, 10)
+    await addBackgroundTerminalTabs(occPage, worktreeId, 10)
     await expectThumbToTrackStrip(strip)
 
     // A narrower pane shrinks the strip and the track without a scroll event.

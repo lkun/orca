@@ -41,12 +41,12 @@ export async function buildTerminalFreezeReport(): Promise<TerminalFreezeReport>
 }
 
 type TerminalFreezeReportWindow = Window & {
-  __orcaTerminalFreezeReport?: () => Promise<TerminalFreezeReport>
+  __occTerminalFreezeReport?: () => Promise<TerminalFreezeReport>
 }
 
 export function installTerminalFreezeReport(): void {
   if (typeof window === 'undefined') {
     return
   }
-  ;(window as TerminalFreezeReportWindow).__orcaTerminalFreezeReport = buildTerminalFreezeReport
+  ;(window as TerminalFreezeReportWindow).__occTerminalFreezeReport = buildTerminalFreezeReport
 }

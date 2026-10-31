@@ -42,7 +42,7 @@ describe('a runtime call that finds the WSL host stopped', () => {
   }
 
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-host-call-stop-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-host-call-stop-'))
     published = []
     deferred = new Map()
     vi.spyOn(console, 'warn').mockImplementation(() => {})

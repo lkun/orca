@@ -30,10 +30,10 @@ describe('orchestration worker-list Run scope (CLI handler)', () => {
     calls = []
     logged = []
     boundRun = null
-    vi.stubEnv('ORCA_TERMINAL_HANDLE', undefined)
-    vi.stubEnv('ORCA_AGENT_SESSION_ID', undefined)
-    vi.stubEnv('ORCA_STRUCTURED_SESSION', undefined)
-    vi.stubEnv('ORCA_PANE_KEY', undefined)
+    vi.stubEnv('OCC_TERMINAL_HANDLE', undefined)
+    vi.stubEnv('OCC_AGENT_SESSION_ID', undefined)
+    vi.stubEnv('OCC_STRUCTURED_SESSION', undefined)
+    vi.stubEnv('OCC_PANE_KEY', undefined)
     vi.spyOn(console, 'log').mockImplementation((line: string) => {
       logged.push(line)
     })
@@ -63,7 +63,7 @@ describe('orchestration worker-list Run scope (CLI handler)', () => {
   }
 
   it('defaults an unscoped list to the Run bound to the calling terminal', async () => {
-    process.env.ORCA_TERMINAL_HANDLE = 'term_coord'
+    process.env.OCC_TERMINAL_HANDLE = 'term_coord'
     boundRun = 'run_bound'
 
     const { listCall, receipt } = await list()
@@ -74,7 +74,7 @@ describe('orchestration worker-list Run scope (CLI handler)', () => {
   })
 
   it('keeps --run as the override and never asks for the binding', async () => {
-    process.env.ORCA_TERMINAL_HANDLE = 'term_coord'
+    process.env.OCC_TERMINAL_HANDLE = 'term_coord'
     boundRun = 'run_bound'
 
     const { listCall, receipt } = await list(new Map([['run', 'run_other']]))
@@ -85,7 +85,7 @@ describe('orchestration worker-list Run scope (CLI handler)', () => {
   })
 
   it('still lists every Run when the caller has no bound Run', async () => {
-    process.env.ORCA_TERMINAL_HANDLE = 'term_unbound_shell'
+    process.env.OCC_TERMINAL_HANDLE = 'term_unbound_shell'
     boundRun = null
 
     const { listCall, receipt } = await list()
@@ -95,7 +95,7 @@ describe('orchestration worker-list Run scope (CLI handler)', () => {
   })
 
   it('names the scope in the human-readable receipt', async () => {
-    process.env.ORCA_TERMINAL_HANDLE = 'term_coord'
+    process.env.OCC_TERMINAL_HANDLE = 'term_coord'
     boundRun = 'run_bound'
 
     await list(new Map(), false)

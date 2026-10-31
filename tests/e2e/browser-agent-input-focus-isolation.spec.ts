@@ -3,7 +3,7 @@
  * Runs hidden; browser-agent-input-focus-isolation-native.spec.ts repeats it in a visible window.
  */
 
-import { test } from './helpers/orca-app'
+import { test } from './helpers/occ-app'
 import {
   runAgentClicksScenario,
   runAgentCrossSiteFrameScenario,
@@ -13,36 +13,36 @@ import {
 import { runAgentClickDuringUserCompositionScenario } from './helpers/browser-agent-composition-scenario'
 
 test('agent keys and text reach the page without leaving the user’s terminal', async ({
-  orcaPage
+  occPage
 }) => {
   test.setTimeout(120_000)
-  await runAgentKeysScenario(orcaPage)
+  await runAgentKeysScenario(occPage)
 })
 
 test('agent clicks and presses reach the page without leaving the user’s terminal', async ({
-  orcaPage
+  occPage
 }) => {
   test.setTimeout(120_000)
-  await runAgentClicksScenario(orcaPage)
+  await runAgentClicksScenario(occPage)
 })
 
 test('agent shortcut keys stay in the page instead of running OCC shortcuts', async ({
-  orcaPage
+  occPage
 }) => {
   test.setTimeout(120_000)
-  await runAgentShortcutsScenario(orcaPage)
+  await runAgentShortcutsScenario(occPage)
 })
 
 test('agent keys and text reach a focused cross-site frame without moving the user’s focus', async ({
-  orcaPage
+  occPage
 }) => {
   test.setTimeout(120_000)
-  await runAgentCrossSiteFrameScenario(orcaPage)
+  await runAgentCrossSiteFrameScenario(occPage)
 })
 
 test('an agent click is refused while the user composes with an IME in the terminal', async ({
-  orcaPage
+  occPage
 }) => {
   test.setTimeout(120_000)
-  await runAgentClickDuringUserCompositionScenario(orcaPage)
+  await runAgentClickDuringUserCompositionScenario(occPage)
 })

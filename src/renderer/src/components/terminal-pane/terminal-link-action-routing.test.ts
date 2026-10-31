@@ -194,7 +194,7 @@ describe('terminal link action routing', () => {
       handleTerminalHttpLink('https://example.com/path', event, {
         worktreeId: 'wt-1',
         linkActionContext: actionContext(request),
-        actionDestinations: { primary: 'system', alternate: 'orca' }
+        actionDestinations: { primary: 'system', alternate: 'occ' }
       })
     ).toBe(true)
     expect(openUrl).not.toHaveBeenCalled()
@@ -230,7 +230,7 @@ describe('terminal link action routing', () => {
     handleTerminalHttpLink('https://example.com/path', plainEvent(), {
       worktreeId: 'wt-1',
       linkActionContext: actionContext(request),
-      actionDestinations: { primary: 'orca', alternate: 'system' }
+      actionDestinations: { primary: 'occ', alternate: 'system' }
     })
 
     expect(request.mock.calls[0][0].primary.label).toBe('OCC Browser')
@@ -272,7 +272,7 @@ describe('terminal link action routing', () => {
       worktreeId: 'wt-1',
       sourceOwner: { kind: 'runtime', runtimeEnvironmentId: 'env-1' },
       linkActionContext: actionContext(request),
-      actionDestinations: { primary: 'system', alternate: 'orca' }
+      actionDestinations: { primary: 'system', alternate: 'occ' }
     })
 
     request.mock.calls[0][0].primary.run()
@@ -296,7 +296,7 @@ describe('terminal link action routing', () => {
       worktreeId: 'wt-1',
       sourceOwner: { kind: 'ssh', connectionId: 'ssh-1' },
       linkActionContext: actionContext(request),
-      actionDestinations: { primary: 'system', alternate: 'orca' }
+      actionDestinations: { primary: 'system', alternate: 'occ' }
     })
 
     request.mock.calls[0][0].alternate.run()
@@ -316,7 +316,7 @@ describe('terminal link action routing', () => {
 
     handleTerminalHttpLink('https://example.com/path', event, {
       worktreeId: 'wt-1',
-      actionDestinations: { primary: 'system', alternate: 'orca' }
+      actionDestinations: { primary: 'system', alternate: 'occ' }
     })
 
     expect(openRuntimeBrowserTab).toHaveBeenCalledWith({

@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -11,8 +11,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -23,7 +23,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -46,7 +46,7 @@ import { useWorktreeAwarenessEnvironment } from './index-test-harness'
 
 function buildSetup(overrides: { id: string; hostId: string; repoId: string; path: string }) {
   return {
-    projectId: 'github:stablyai/orca',
+    projectId: 'github:stablyai/occ',
     displayName: 'OCC',
     setupState: 'ready',
     setupMethod: 'legacy-repo',
@@ -58,14 +58,14 @@ function buildSetup(overrides: { id: string; hostId: string; repoId: string; pat
 
 // Copies on different hosts retain the same repo id.
 const TWIN_SETUPS = [
-  buildSetup({ id: 'setup-1', hostId: 'local', repoId: 'repo-1', path: '/tmp/orca' }),
-  buildSetup({ id: 'setup-1', hostId: 'runtime:gpu', repoId: 'repo-1', path: '/srv/orca' })
+  buildSetup({ id: 'setup-1', hostId: 'local', repoId: 'repo-1', path: '/tmp/occ' }),
+  buildSetup({ id: 'setup-1', hostId: 'runtime:gpu', repoId: 'repo-1', path: '/srv/occ' })
 ]
 
-describe('orca worktree create carries the selected host', () => {
+describe('occ worktree create carries the selected host', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -77,7 +77,7 @@ describe('orca worktree create carries the selected host', () => {
       callMock,
       okFixture('req_project_setups', { setups: TWIN_SETUPS }),
       okFixture('req_create', {
-        worktree: buildWorktree('/tmp/orca/feature', 'feature', 'abc', 'repo-1'),
+        worktree: buildWorktree('/tmp/occ/feature', 'feature', 'abc', 'repo-1'),
         lineage: null,
         warnings: []
       })
@@ -93,7 +93,7 @@ describe('orca worktree create carries the selected host', () => {
         'worktree',
         'create',
         '--project',
-        'github:stablyai/orca',
+        'github:stablyai/occ',
         '--host',
         'local',
         '--name',
@@ -173,7 +173,7 @@ describe('orca worktree create carries the selected host', () => {
         repo: { id: 'repo-1', gitRemoteIdentity: { remoteUrl: 'https://gitlab.com/acme/app.git' } }
       }),
       okFixture('req_create', {
-        worktree: buildWorktree('/tmp/orca/feature', 'feature', 'abc', 'repo-1'),
+        worktree: buildWorktree('/tmp/occ/feature', 'feature', 'abc', 'repo-1'),
         lineage: null,
         warnings: []
       })
@@ -185,7 +185,7 @@ describe('orca worktree create carries the selected host', () => {
         'worktree',
         'create',
         '--project',
-        'github:stablyai/orca',
+        'github:stablyai/occ',
         '--host',
         'local',
         '--gitlab-mr',

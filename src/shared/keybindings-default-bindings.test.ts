@@ -275,7 +275,7 @@ describe('keybindings', () => {
     expect(
       keybindingMatchesAction('tab.closeAll', linuxCloseAll, 'linux', undefined, {
         context: 'terminal',
-        terminalShortcutPolicy: 'orca-first'
+        terminalShortcutPolicy: 'occ-first'
       })
     ).toBe(true)
     // Terminal-first preserves close-all chords for shells/TUIs because this is a workspace-tab action.

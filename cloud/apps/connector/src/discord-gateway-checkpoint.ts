@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import type { GatewayCheckpoint } from './discord-gateway-session.js'
 
 // The one checkpoint row.

@@ -6,5 +6,5 @@ export function usesNodePtySpawnHelper(platform: string): boolean {
 
 /** Per-platform/arch node-pty build slot tried before build/Release; matches config/scripts/native-build-entry.cjs for shared dev installs. */
 export function nodePtyNativeBuildEntryDir(platform: string, arch: string): string {
-  return `build/orca-napi-${platform}-${arch}`
+  return `build/occ-napi-${platform}-${arch}`
 }

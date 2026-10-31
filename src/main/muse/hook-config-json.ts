@@ -5,16 +5,16 @@ import { isPlainObject } from '../agent-hooks/installer-utils'
 
 // Muse strips nonstandard environment variables from managed hooks unless allowlisted.
 export const MUSE_MANAGED_HOOK_ENV_VARS = [
-  'ORCA_AGENT_HOOK_PORT',
-  'ORCA_AGENT_HOOK_TOKEN',
-  'ORCA_AGENT_HOOK_ENV',
-  'ORCA_AGENT_HOOK_VERSION',
-  'ORCA_AGENT_HOOK_TRANSPORT',
-  'ORCA_AGENT_HOOK_ENDPOINT',
-  'ORCA_PANE_KEY',
-  'ORCA_TAB_ID',
-  'ORCA_WORKTREE_ID',
-  'ORCA_AGENT_LAUNCH_TOKEN',
+  'OCC_AGENT_HOOK_PORT',
+  'OCC_AGENT_HOOK_TOKEN',
+  'OCC_AGENT_HOOK_ENV',
+  'OCC_AGENT_HOOK_VERSION',
+  'OCC_AGENT_HOOK_TRANSPORT',
+  'OCC_AGENT_HOOK_ENDPOINT',
+  'OCC_PANE_KEY',
+  'OCC_TAB_ID',
+  'OCC_WORKTREE_ID',
+  'OCC_AGENT_LAUNCH_TOKEN',
   // Windows cmd AutoRun may need USERPROFILE or every hook exits 1.
   'USERPROFILE'
 ] as const

@@ -2,8 +2,8 @@ import './rpc/unused-default-rpc-methods.test-fixture'
 // worker-start adopts a chat through its queued send; Stop and failed start must leave the chat intact.
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { formatOrcaSessionAddress } from '../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../shared/occ-session-address'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import type { FakeConnection } from './structured-chat-coordinator-fake-codex-fixture'
 import {
   COORDINATOR,
@@ -30,7 +30,7 @@ type WorkspaceLookup = {
   ) => Promise<Awaited<ReturnType<typeof placeWorkerAgent>>['worktree']>
 }
 
-const WORKER = formatOrcaSessionAddress(testOrcaSessionId(PEER_CHAT))
+const WORKER = formatOCCSessionAddress(testOCCSessionId(PEER_CHAT))
 
 beforeEach(() => {
   vi.spyOn<WorkspaceLookup, 'showManagedTerminalWorkspace'>(
@@ -113,7 +113,7 @@ describe('worker-start --terminal names a chat', () => {
     expect(task).not.toMatch(/exit the shell/i)
     expect(db.getDispatchContextById(dispatchId)).toMatchObject({
       assignee_handle: WORKER,
-      assignee_orca_session_id: PEER_CHAT,
+      assignee_occ_session_id: PEER_CHAT,
       assignee_pane_key: null,
       process_incarnation: null
     })
@@ -209,7 +209,7 @@ describe('worker-start --terminal refuses a chat before anything is created', ()
   it('when it is the coordinator itself', async () => {
     await openChat(COORDINATOR)
     const { taskId } = await coordinatorRunAndTask()
-    const self = formatOrcaSessionAddress(testOrcaSessionId(COORDINATOR))
+    const self = formatOCCSessionAddress(testOCCSessionId(COORDINATOR))
 
     await expectNothingCreated(
       await refusal({ task: taskId, terminal: self }),

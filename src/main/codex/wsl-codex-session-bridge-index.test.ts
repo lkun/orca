@@ -29,8 +29,8 @@ import { _internals, startWslCodexSessionBridgeInBackground } from './wsl-codex-
 import { noteWslDistroMayHaveStopped } from '../wsl-background-distro-gate'
 
 const MANAGED_HOME =
-  '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\orca\\codex-accounts\\a1\\home'
-const LINUX_HOME = '/home/alice/.local/share/orca/codex-accounts/a1/home'
+  '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\occ\\codex-accounts\\a1\\home'
+const LINUX_HOME = '/home/alice/.local/share/occ/codex-accounts/a1/home'
 const TARGET = {
   distro: 'Ubuntu',
   systemCodexHomePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.codex',
@@ -154,7 +154,7 @@ describe('startWslCodexSessionBridgeInBackground', () => {
     expect(heal?.timeoutMs).toBe(5_000)
     // A failed read keeps its marker, so it is retried after OCC restarts.
     expect(runWslProcessMock.mock.calls[1]?.[0].args).toEqual([
-      `${LINUX_HOME}/.orca-index-pending`,
+      `${LINUX_HOME}/.occ-index-pending`,
       NEWER
     ])
   })
@@ -218,7 +218,7 @@ describe('startWslCodexSessionBridgeInBackground', () => {
     ])
     // thread/read can never settle it, so it must not be reported on every launch.
     expect(runWslProcessMock.mock.calls[1]?.[0].args).toEqual([
-      `${LINUX_HOME}/.orca-index-pending`,
+      `${LINUX_HOME}/.occ-index-pending`,
       'rollout-notes.jsonl'
     ])
   })

@@ -56,7 +56,7 @@ describe('guardLinkProvider', () => {
         throw new RangeError('Invalid array length')
       }
     }
-    const guarded = guardLinkProvider(provider, 'orca-file')
+    const guarded = guardLinkProvider(provider, 'occ-file')
 
     const callback = vi.fn()
     expect(() => guarded.provideLinks(1, callback)).not.toThrow()

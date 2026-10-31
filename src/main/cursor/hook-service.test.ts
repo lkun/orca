@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { spawnSync } from 'node:child_process'
 import { createServer, type Server } from 'node:http'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { findGitBash } from '../agent-hooks/windows-git-bash-path.test-fixture'
 
 const { homedirMock } = vi.hoisted(() => ({
@@ -76,10 +76,10 @@ function runRegisteredCursorHook(
     timeout: HOOK_RUN_TIMEOUT_MS,
     env: {
       ...process.env,
-      ORCA_AGENT_HOOK_ENDPOINT: '',
-      ORCA_AGENT_HOOK_PORT: '',
-      ORCA_AGENT_HOOK_TOKEN: '',
-      ORCA_PANE_KEY: '',
+      OCC_AGENT_HOOK_ENDPOINT: '',
+      OCC_AGENT_HOOK_PORT: '',
+      OCC_AGENT_HOOK_TOKEN: '',
+      OCC_PANE_KEY: '',
       ...extraEnv
     }
   })
@@ -91,7 +91,7 @@ describe('CursorHookService', () => {
   let homeDir: string
 
   beforeEach(() => {
-    homeDir = mkdtempSync(join(tmpdir(), 'orca-cursor-home-'))
+    homeDir = mkdtempSync(join(tmpdir(), 'occ-cursor-home-'))
     homedirMock.mockReturnValue(homeDir)
   })
 
@@ -119,13 +119,13 @@ describe('CursorHookService', () => {
         process.platform === 'win32' ? WINDOWS_POWERSHELL_LAUNCHER : /cursor-hook/
       )
       if (process.platform !== 'win32') {
-        expect(definition?.command).toContain(join(homeDir, '.orca'))
+        expect(definition?.command).toContain(join(homeDir, '.occ'))
       }
       expect(definition?.hooks).toBeUndefined()
     }
 
     const script = readFileSync(
-      join(homeDir, '.orca', 'agent-hooks', CURSOR_SCRIPT_FILE_NAME),
+      join(homeDir, '.occ', 'agent-hooks', CURSOR_SCRIPT_FILE_NAME),
       'utf8'
     )
     expect(script).toContain('/hook/cursor')
@@ -144,7 +144,7 @@ describe('CursorHookService', () => {
   it.skipIf(process.platform !== 'win32')(
     'wraps the managed hook command to survive spaces in the profile path (#6078)',
     () => {
-      const spaceHome = join(tmpdir(), 'orca cursor home with spaces')
+      const spaceHome = join(tmpdir(), 'occ cursor home with spaces')
       mkdirSync(spaceHome, { recursive: true })
       homedirMock.mockReturnValue(spaceHome)
       try {
@@ -175,10 +175,10 @@ describe('CursorHookService', () => {
           hooks: {
             beforeSubmitPrompt: [
               { command: '/usr/local/bin/user-hook' },
-              { command: '/old/path/.orca/agent-hooks/cursor-hook.sh' }
+              { command: '/old/path/.occ/agent-hooks/cursor-hook.sh' }
             ],
             retiredEvent: [
-              { command: '/old/path/.orca/agent-hooks/cursor-hook.sh' },
+              { command: '/old/path/.occ/agent-hooks/cursor-hook.sh' },
               { command: '/usr/local/bin/retired-user-hook' }
             ]
           }
@@ -241,7 +241,7 @@ describe('CursorHookService', () => {
       homedirMock.mockReturnValue(installHome)
       expect(new CursorHookService().install().state).toBe('installed')
       const config = readInstalledCursorHooks(installHome)
-      unlinkSync(join(installHome, '.orca', 'agent-hooks', CURSOR_SCRIPT_FILE_NAME))
+      unlinkSync(join(installHome, '.occ', 'agent-hooks', CURSOR_SCRIPT_FILE_NAME))
 
       for (const eventName of CURSOR_EVENTS) {
         const command = requireRegisteredCommand(config, eventName)
@@ -268,9 +268,9 @@ describe('CursorHookService', () => {
           command,
           JSON.stringify({ hook_event_name: eventName, tool_name: 'Write' }),
           {
-            ORCA_AGENT_HOOK_PORT: '59999',
-            ORCA_AGENT_HOOK_TOKEN: 'token',
-            ORCA_PANE_KEY: 'tab:leaf'
+            OCC_AGENT_HOOK_PORT: '59999',
+            OCC_AGENT_HOOK_TOKEN: 'token',
+            OCC_PANE_KEY: 'tab:leaf'
           }
         )
         expect(result.status, `${eventName} dead-listener exit`).toBe(0)
@@ -323,10 +323,10 @@ describe('CursorHookService', () => {
           timeoutMs: HOOK_RUN_TIMEOUT_MS,
           env: {
             ...process.env,
-            ORCA_AGENT_HOOK_ENDPOINT: '',
-            ORCA_AGENT_HOOK_PORT: String(port),
-            ORCA_AGENT_HOOK_TOKEN: 'token',
-            ORCA_PANE_KEY: 'tab:leaf'
+            OCC_AGENT_HOOK_ENDPOINT: '',
+            OCC_AGENT_HOOK_PORT: String(port),
+            OCC_AGENT_HOOK_TOKEN: 'token',
+            OCC_PANE_KEY: 'tab:leaf'
           }
         })
         expect(result.code).toBe(0)
@@ -358,10 +358,10 @@ describe('CursorHookService', () => {
             timeout: HOOK_RUN_TIMEOUT_MS,
             env: {
               ...process.env,
-              ORCA_AGENT_HOOK_ENDPOINT: '',
-              ORCA_AGENT_HOOK_PORT: '',
-              ORCA_AGENT_HOOK_TOKEN: '',
-              ORCA_PANE_KEY: '',
+              OCC_AGENT_HOOK_ENDPOINT: '',
+              OCC_AGENT_HOOK_PORT: '',
+              OCC_AGENT_HOOK_TOKEN: '',
+              OCC_PANE_KEY: '',
               USERPROFILE: homeDir
             }
           })

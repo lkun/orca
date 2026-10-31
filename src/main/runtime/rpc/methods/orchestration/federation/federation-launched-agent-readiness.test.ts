@@ -1,7 +1,7 @@
 import { terminalExitError } from '../../../../../../shared/terminal-start-failure'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { resolveWorkerStartReadinessTimeoutMs } from '../../../../../../shared/orchestration-timing-budgets'
-import { OrcaRuntimeService } from '../../../../orca-runtime'
+import { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationDb } from '../../../../orchestration/db'
 import { ORCHESTRATION_METHODS } from '../../orchestration'
 import {
@@ -25,10 +25,10 @@ describe('federated worker first dispatch readiness', () => {
     vi.restoreAllMocks()
   })
 
-  function createWorkerHost(): OrcaRuntimeService {
+  function createWorkerHost(): OCCRuntimeService {
     const db = new OrchestrationDb(':memory:')
     databases.push(db)
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     configureFederationWorkerRuntime(runtime)
     vi.spyOn(runtime, 'waitForFreshWorkerComposer').mockResolvedValue({
@@ -42,7 +42,7 @@ describe('federated worker first dispatch readiness', () => {
   }
 
   async function attach(
-    runtime: OrcaRuntimeService,
+    runtime: OCCRuntimeService,
     target: { agent: string } | { terminal: string }
   ): Promise<unknown> {
     const method = ORCHESTRATION_METHODS.find(

@@ -40,8 +40,8 @@ function connection(failure: () => Error): RemoteInstallTransport {
 
 let localDir = ''
 beforeEach(() => {
-  localDir = mkdtempSync(join(tmpdir(), 'orca-out-of-space-'))
-  writeFileSync(join(localDir, 'orcad.js'), Buffer.alloc(2 * 1024 * 1024))
+  localDir = mkdtempSync(join(tmpdir(), 'occ-out-of-space-'))
+  writeFileSync(join(localDir, 'occd.js'), Buffer.alloc(2 * 1024 * 1024))
   vi.mocked(execHostCommand).mockReset()
 })
 afterEach(() => rmSync(localDir, { recursive: true, force: true }))
@@ -52,22 +52,22 @@ describe('a failed install write on a full host', () => {
     const upload = uploadRemoteInstallDirectory(
       connection(sftpFailure),
       localDir,
-      '/root/.orca-remote/orcad-0.1.0+abc',
+      '/root/.occ-remote/occd-0.1.0+abc',
       posix
     )
     await expect(upload).rejects.toBeInstanceOf(RemoteInstallOutOfSpaceError)
     await expect(upload).rejects.toThrow(
-      /out of disk space: the filesystem holding \/root\/\.orca-remote\/orcad-0\.1\.0\+abc has 12 KB free, and OCC needs about 2\.0 MB/
+      /out of disk space: the filesystem holding \/root\/\.occ-remote\/occd-0\.1\.0\+abc has 12 KB free, and OCC needs about 2\.0 MB/
     )
     expect(vi.mocked(execHostCommand).mock.calls[0]?.[2]).toBe(
-      remoteFreeSpaceProbeCommand('/root/.orca-remote/orcad-0.1.0+abc')
+      remoteFreeSpaceProbeCommand('/root/.occ-remote/occd-0.1.0+abc')
     )
   })
 
   it('sizes a single file write by its contents', async () => {
     vi.mocked(execHostCommand).mockResolvedValue(dfLine(0))
     await expect(
-      writeRemoteInstallFile(connection(sftpFailure), posix, '/root/.orca-remote/x/.version', 'abc')
+      writeRemoteInstallFile(connection(sftpFailure), posix, '/root/.occ-remote/x/.version', 'abc')
     ).rejects.toThrow(/has 0 KB free, and OCC needs about 1 KB/)
   })
 

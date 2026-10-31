@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { makeDeferred } from './pty-ipc-test-constants'
 import { setupPtyIpcSuite } from './pty-ipc-test-harness'
 import { isHiddenRendererPty } from './delivery/pty-hidden-delivery-gate'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { registerPtyHandlers } from './register-handlers'
 import { attachViewAfterHiddenStart } from './pane/attach-only-view'
 
@@ -34,7 +34,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -271,7 +271,7 @@ describe('runtime-controller spawn: hidden until a renderer view mounts', () => 
 
   it('answers a startup cursor-position query from the model with no renderer view', async () => {
     const daemon = installObservableDaemonTestProvider()
-    const runtime = new OrcaRuntimeService(
+    const runtime = new OCCRuntimeService(
       testDouble({
         getRepo: () => undefined,
         getRepos: () => [],

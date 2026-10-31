@@ -3,7 +3,7 @@ import AgentCombobox from '@/components/agent/AgentCombobox'
 import { translate } from '@/i18n/i18n'
 import { isValidAutomationSchedule } from '../../../../shared/automation-schedule-parsing'
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
-import type { OrcaHooks } from '../../../../shared/orca-yaml-hook-types'
+import type { OCCHooks } from '../../../../shared/occ-yaml-hook-types'
 import type { ProjectHostSetup } from '../../../../shared/project-types'
 import type { Repo } from '../../../../shared/repo-types'
 import type { Worktree } from '../../../../shared/worktree/types'
@@ -28,7 +28,7 @@ type AutomationEditorSettingsSidebarProps = {
   destination?: AutomationCreateDestinationControl
   repos: readonly Repo[]
   projectHostSetups: readonly ProjectHostSetup[]
-  automationYamlHooksByRepoKey: Record<string, OrcaHooks | null>
+  automationYamlHooksByRepoKey: Record<string, OCCHooks | null>
   getAutomationHooksCacheKey: (repoId: string) => string
   repoMap: Map<string, Repo>
   worktrees: Worktree[]

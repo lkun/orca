@@ -1,5 +1,5 @@
 
-# Existing production source files importing child_process outside @orca/process-host.
+# Existing production source files importing child_process outside @occ/process-host.
 # Migration debt: this list may only shrink; new callers use the package public API.
 src/cli/handlers/account.ts
 src/cli/handlers/core.ts

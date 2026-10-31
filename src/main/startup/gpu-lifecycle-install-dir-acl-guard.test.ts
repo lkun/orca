@@ -53,7 +53,7 @@ import {
   WINDOWS_INSTALL_DIR_ACL_REPAIR_SCHEME_VERSION
 } from './windows-install-dir-package-acl-repair'
 
-const INSTALL_DIR = 'C:\\Users\\neil\\AppData\\Local\\Programs\\orca'
+const INSTALL_DIR = 'C:\\Users\\neil\\AppData\\Local\\Programs\\occ'
 
 function recoveryOptions(userDataPath?: string): {
   platform: 'win32'
@@ -66,7 +66,7 @@ function recoveryOptions(userDataPath?: string): {
     platform: 'win32',
     installDir: INSTALL_DIR,
     appVersion: '1.4.184',
-    userDataPath: userDataPath ?? mkdtempSync(join(tmpdir(), 'orca-acl-gpu-guard-')),
+    userDataPath: userDataPath ?? mkdtempSync(join(tmpdir(), 'occ-acl-gpu-guard-')),
     recordBreadcrumb: () => undefined
   }
 }
@@ -168,7 +168,7 @@ describe('handleGpuChildCrash vs the install-dir ACL verdict', () => {
   })
 
   beforeEach(() => {
-    userData.path = mkdtempSync(join(tmpdir(), 'orca-acl-gpu-userdata-'))
+    userData.path = mkdtempSync(join(tmpdir(), 'occ-acl-gpu-userdata-'))
     resetWindowsInstallDirAclRepairForTest()
     resetWindowsInstallDirAclRecoveryForTest()
     showMessageBox.mockClear()
@@ -347,7 +347,7 @@ describe('presentGpuFallbackRecoveredLaunchPrompt vs a marker retired since it w
   })
 
   beforeEach(() => {
-    userData.path = mkdtempSync(join(tmpdir(), 'orca-acl-gpu-recovered-'))
+    userData.path = mkdtempSync(join(tmpdir(), 'occ-acl-gpu-recovered-'))
     resetWindowsInstallDirAclRepairForTest()
     resetWindowsInstallDirAclRecoveryForTest()
     showMessageBox.mockClear()

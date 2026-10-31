@@ -72,9 +72,9 @@ describe('dev channel base version', () => {
     ])
     expect(readPublishedVersionsFromEnv('')).toEqual([])
     try {
-      vi.stubEnv('ORCA_PUBLISHED_VERSIONS', 'v1.4.170\tv1.4.169')
+      vi.stubEnv('OCC_PUBLISHED_VERSIONS', 'v1.4.170\tv1.4.169')
       expect(readPublishedVersionsFromEnv()).toEqual(['v1.4.170', 'v1.4.169'])
-      vi.stubEnv('ORCA_PUBLISHED_VERSIONS', undefined)
+      vi.stubEnv('OCC_PUBLISHED_VERSIONS', undefined)
       expect(readPublishedVersionsFromEnv()).toEqual([])
     } finally {
       vi.unstubAllEnvs()

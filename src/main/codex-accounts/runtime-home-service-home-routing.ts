@@ -6,7 +6,7 @@ import { getCachedWslHome } from '../wsl-home-cache'
 import { isWslDistroRunning } from '../wsl-background-distro-gate'
 import {
   getSystemCodexHomePath,
-  resolveOrcaManagedCodexHomePath,
+  resolveOCCManagedCodexHomePath,
   syncCodexGlobalInstructionsIntoManagedHome,
   syncSystemCodexResourcesIntoManagedHome
 } from '../codex/codex-home-paths'
@@ -30,7 +30,7 @@ import { CodexRuntimeHomeManagedHome } from './runtime-home-service-managed-home
 export abstract class CodexRuntimeHomeRouting extends CodexRuntimeHomeManagedHome {
   getHostCodexHomePathsForSessionDiscovery(): string[] {
     // Transcript polling must resolve the mirror path without creating it.
-    const homes = [resolveOrcaManagedCodexHomePath()]
+    const homes = [resolveOCCManagedCodexHomePath()]
     if (this.isHostSystemDefaultRealHomeSelected() || this.getSelfContainedManagedHostAccount()) {
       // Include real-home history even when nested OCC inherits a managed CODEX_HOME.
       homes.push(getSystemCodexHomePath())
@@ -283,7 +283,7 @@ export abstract class CodexRuntimeHomeRouting extends CodexRuntimeHomeManagedHom
     if (
       this.getSelfContainedManagedHostAccount() ||
       normalizeRuntimePathForComparison(homePath) !==
-        normalizeRuntimePathForComparison(resolveOrcaManagedCodexHomePath())
+        normalizeRuntimePathForComparison(resolveOCCManagedCodexHomePath())
     ) {
       return
     }

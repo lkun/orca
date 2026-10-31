@@ -1,4 +1,4 @@
-import type { OrcaRuntimeRpcServer } from '../runtime/runtime-rpc'
+import type { OCCRuntimeRpcServer } from '../runtime/runtime-rpc'
 import { resolveAdvertisedPairingEndpoint } from '../runtime/pairing-endpoint'
 import { assertServeProjectRoot, renderServePairingQr } from './serve-pairing-output'
 import type { ServeReadiness, ServeReadinessOutput } from './serve-readiness'
@@ -10,7 +10,7 @@ export async function buildServePairingReadiness(
     mobilePairing?: boolean
     grantDesktopControl?: boolean
   },
-  rpc: Pick<OrcaRuntimeRpcServer, 'getWebSocketEndpoint' | 'createPairingOffer'>
+  rpc: Pick<OCCRuntimeRpcServer, 'getWebSocketEndpoint' | 'createPairingOffer'>
 ): Promise<Pick<ServeReadiness, 'boundEndpoint' | 'advertisedEndpoint' | 'pairing'>> {
   const boundEndpoint = rpc.getWebSocketEndpoint()
   const advertised = boundEndpoint

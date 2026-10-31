@@ -3,10 +3,10 @@ import { parseGitHubOwnerRepo } from '../github/gh-utils'
 import { findRemoteForUrl } from './worktree-push-target-setup'
 import type { GitRemoteExec } from './worktree-push-target-cleanup'
 
-const SSH_FORK = 'git@github.com:contributor/orca.git'
-const HTTPS_FORK = 'https://github.com/contributor/orca.git'
-const GITLAB_FORK = 'https://gitlab.com/contributor/orca.git'
-const UPSTREAM = 'https://github.com/stablyai/orca.git'
+const SSH_FORK = 'git@github.com:contributor/occ.git'
+const HTTPS_FORK = 'https://github.com/contributor/occ.git'
+const GITLAB_FORK = 'https://gitlab.com/contributor/occ.git'
+const UPSTREAM = 'https://github.com/stablyai/occ.git'
 
 type RemoteRow = { name: string; fetchUrl: string; pushUrl?: string }
 
@@ -82,10 +82,10 @@ async function findRemoteForUrlPerRemote(
 const fiftyEightRemotes: RemoteRow[] = [
   { name: 'origin', fetchUrl: UPSTREAM },
   ...Array.from({ length: 56 }, (_, index) => ({
-    name: `pr-user${index}-orca`,
-    fetchUrl: `https://github.com/user${index}/orca.git`
+    name: `pr-user${index}-occ`,
+    fetchUrl: `https://github.com/user${index}/occ.git`
   })),
-  { name: 'pr-contributor-orca', fetchUrl: SSH_FORK }
+  { name: 'pr-contributor-occ', fetchUrl: SSH_FORK }
 ]
 
 const matrix: { name: string; remotes: RemoteRow[]; lookupUrl: string }[] = [
@@ -144,7 +144,7 @@ const matrix: { name: string; remotes: RemoteRow[]; lookupUrl: string }[] = [
   {
     name: 'non-GitHub provider with a different host does not match',
     remotes: [{ name: 'gitlab-fork', fetchUrl: GITLAB_FORK }],
-    lookupUrl: 'https://bitbucket.org/contributor/orca.git'
+    lookupUrl: 'https://bitbucket.org/contributor/occ.git'
   }
 ]
 

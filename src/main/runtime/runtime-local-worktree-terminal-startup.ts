@@ -1,7 +1,7 @@
 import { formatTerminalStartFailure } from '../../shared/terminal-start-failure'
 import { readableWslDistroHoldText } from '../../shared/wsl-distro-stopped-hold'
 import { paneIdentity } from './runtime-terminal-pane-identity'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { shouldSeedWorktreePrimaryTerminal } from '../../shared/worktree-first-surface'
 import type { CreateWorktreeResult } from '../../shared/worktree/create-types'
 import type { Repo } from '../../shared/repo-types'
@@ -109,10 +109,10 @@ export async function startRuntimeLocalWorktreeTerminals(args: {
   }
 
   // Main owns failed agent startup too, keeping its reason visible without a terminal service.
-  if (sequencedStartup && (ports.canSpawn || ORCA_LAYOUT_OWNER_IS_MAIN)) {
+  if (sequencedStartup && (ports.canSpawn || OCC_LAYOUT_OWNER_IS_MAIN)) {
     try {
       const launchRuntime = args.startupLaunchRuntime
-      if (launchRuntime instanceof Error && !ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (launchRuntime instanceof Error && !OCC_LAYOUT_OWNER_IS_MAIN) {
         throw launchRuntime
       }
       const terminal = await ports.createTerminal(`id:${worktree.id}`, {
@@ -132,7 +132,7 @@ export async function startRuntimeLocalWorktreeTerminals(args: {
         startupCommandDelivery: sequencedStartup.startupCommandDelivery,
         telemetry: sequencedStartup.telemetry,
         // Keep failed starts visible in their panes.
-        ...(ORCA_LAYOUT_OWNER_IS_MAIN ? { keepPaneOnStartFailure: true as const } : {}),
+        ...(OCC_LAYOUT_OWNER_IS_MAIN ? { keepPaneOnStartFailure: true as const } : {}),
         ...ownerSurfacing(shouldActivate)
       })
       request.onStartupTerminalCreated?.(terminal)
@@ -154,13 +154,13 @@ export async function startRuntimeLocalWorktreeTerminals(args: {
 
   // Failed agents retain their pane; do not seed an extra shell.
   const startupPaneHeld =
-    didSpawnStartup || (ORCA_LAYOUT_OWNER_IS_MAIN && Boolean(sequencedStartup))
+    didSpawnStartup || (OCC_LAYOUT_OWNER_IS_MAIN && Boolean(sequencedStartup))
   if (shouldActivate) {
     const provisionInBackground = ports.provisionInBackground?.() === true
     // Legacy failure hands provisioning to the window, which needs the agent tab first; main provisioning would consume that slot.
     const agentStartFailed = Boolean(sequencedStartup && ports.canSpawn && !didSpawnStartup)
     // Main provisions even without an open window; no window takes over.
-    if (!ORCA_LAYOUT_OWNER_IS_MAIN && agentStartFailed && !provisionInBackground) {
+    if (!OCC_LAYOUT_OWNER_IS_MAIN && agentStartFailed && !provisionInBackground) {
       ports.activate(repo.id, worktree.id, startup, setup, defaultTabs)
     } else {
       let failedSetup: CreateWorktreeResult['setup']
@@ -192,8 +192,8 @@ export async function startRuntimeLocalWorktreeTerminals(args: {
         repo.id,
         worktree.id,
         // Main retains failed startup presentation, not the window.
-        ORCA_LAYOUT_OWNER_IS_MAIN ? undefined : startup && !didSpawnStartup ? startup : undefined,
-        ORCA_LAYOUT_OWNER_IS_MAIN ? undefined : failedSetup,
+        OCC_LAYOUT_OWNER_IS_MAIN ? undefined : startup && !didSpawnStartup ? startup : undefined,
+        OCC_LAYOUT_OWNER_IS_MAIN ? undefined : failedSetup,
         undefined,
         ...(args.promisedAgentChat && !startup ? ([true] as const) : [])
       )

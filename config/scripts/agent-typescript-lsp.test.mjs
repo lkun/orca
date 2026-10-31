@@ -125,13 +125,13 @@ describe('agent TypeScript LSP diagnostics bridge', () => {
 
   it('wires Claude and OpenCode to the repository language server', () => {
     const plugin = JSON.parse(
-      readFileSync(join(repoRoot, 'config/agent-plugins/orca-typescript/.lsp.json'), 'utf8')
+      readFileSync(join(repoRoot, 'config/agent-plugins/occ-typescript/.lsp.json'), 'utf8')
     )
     const opencode = JSON.parse(readFileSync(join(repoRoot, 'opencode.json'), 'utf8'))
     const script = 'config/scripts/agent-typescript-lsp.mjs'
     expect(existsSync(join(repoRoot, script))).toBe(true)
-    expect(plugin['orca-typescript'].command).toBe('node')
-    expect(plugin['orca-typescript'].args).toEqual([`\${CLAUDE_PROJECT_DIR}/${script}`])
-    expect(opencode.lsp['orca-typescript'].command).toEqual(['node', script])
+    expect(plugin['occ-typescript'].command).toBe('node')
+    expect(plugin['occ-typescript'].args).toEqual([`\${CLAUDE_PROJECT_DIR}/${script}`])
+    expect(opencode.lsp['occ-typescript'].command).toEqual(['node', script])
   })
 })

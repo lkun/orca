@@ -11,7 +11,7 @@ export function useMobilePairingConnectionMode(): [
   React.Dispatch<React.SetStateAction<MobilePairingConnectionMode>>
 ] {
   const savedConnectionMode = useAppStore((s) => s.settings?.mobilePairingConnectionMode)
-  const signedIn = useAppStore((s) => s.orcaProfileAuthStatus?.state === 'connected')
+  const signedIn = useAppStore((s) => s.occProfileAuthStatus?.state === 'connected')
   const [connectionMode, setConnectionMode] = useState<MobilePairingConnectionMode>(() =>
     resolveMobilePairingConnectionMode(savedConnectionMode, { signedIn })
   )

@@ -33,7 +33,7 @@ if (role === 'worker') {
   const { startTerminalScopes = () => ({}), wrapPtySpawnInTerminalScope } = require(bundlePath)
   const started = startTerminalScopes(nonce)
   // Same argv and env a PTY spawn gets; a pipe-less child stands in for node-pty.
-  const terminals = JSON.parse(process.env.ORCA_FIXTURE_TERMINALS).map((script) => {
+  const terminals = JSON.parse(process.env.OCC_FIXTURE_TERMINALS).map((script) => {
     const wrapped = wrapPtySpawnInTerminalScope
       ? wrapPtySpawnInTerminalScope('/bin/sh', ['-c', script], process.env)
       : { file: '/bin/sh', args: ['-c', script], env: process.env }

@@ -13,7 +13,7 @@ const commandManifest = pluginManifestSchema.parse({
   publisher: 'acme',
   name: 'Shortcuts',
   version: '1.0.0',
-  engines: { orca: '>=1.0.0' },
+  engines: { occ: '>=1.0.0' },
   pluginApi: 1,
   contributes: {
     commands: [{ id: 'toggle', title: 'Toggle', action: 'sidebar.left.toggle' }]
@@ -32,7 +32,7 @@ describe('pluginPageExecutionProfile', () => {
             commit: 'a'.repeat(40),
             contentHash: 'b'.repeat(64),
             execution: 'declarative',
-            minimumOrca: '1.0.0',
+            minimumOCC: '1.0.0',
             types: ['instructions']
           }
         },

@@ -1,19 +1,19 @@
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
 
 test.use({ seedTestRepo: false })
 
 test('global Auto preserves other agents’ choices and the single permission setting persists', async ({
-  orcaPage
+  occPage
 }) => {
-  await waitForSessionReady(orcaPage)
-  await orcaPage.getByRole('button', { name: 'Settings', exact: true }).click()
-  await orcaPage.getByRole('button', { name: 'Agents', exact: true }).click()
-  const permissions = orcaPage.getByRole('button', { name: 'Permissions', exact: true })
-  const group = orcaPage.getByRole('group', { name: 'Permissions', exact: true })
-  const others = orcaPage.getByRole('radiogroup', { name: 'Permissions for other agents' })
+  await waitForSessionReady(occPage)
+  await occPage.getByRole('button', { name: 'Settings', exact: true }).click()
+  await occPage.getByRole('button', { name: 'Agents', exact: true }).click()
+  const permissions = occPage.getByRole('button', { name: 'Permissions', exact: true })
+  const group = occPage.getByRole('group', { name: 'Permissions', exact: true })
+  const others = occPage.getByRole('radiogroup', { name: 'Permissions for other agents' })
   const readPermissions = () =>
-    orcaPage.evaluate(async () => {
+    occPage.evaluate(async () => {
       const settings = await window.api.settings.get()
       return {
         default: settings.agentPermissionDefault,
@@ -53,10 +53,10 @@ test('global Auto preserves other agents’ choices and the single permission se
     grok: 'own'
   })
 
-  await orcaPage.reload()
-  await orcaPage.waitForFunction(() => Boolean(window.__store))
-  await waitForSessionReady(orcaPage)
-  await orcaPage.getByRole('button', { name: 'Agents', exact: true }).click()
+  await occPage.reload()
+  await occPage.waitForFunction(() => Boolean(window.__store))
+  await waitForSessionReady(occPage)
+  await occPage.getByRole('button', { name: 'Agents', exact: true }).click()
   await permissions.click()
   await expect(group.getByRole('menuitemradio', { name: /^Approve for me\b/ })).toHaveAttribute(
     'aria-checked',

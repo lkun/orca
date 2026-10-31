@@ -46,7 +46,7 @@ vi.mock('./CliRegistrationDialog', () => ({
 function notInstalledStatus(overrides: Partial<CliInstallStatus> = {}): CliInstallStatus {
   return {
     platform: 'darwin',
-    commandName: 'orca',
+    commandName: 'occ',
     commandPath: '/usr/local/bin/occ',
     pathDirectory: '/usr/local/bin',
     pathConfigured: true,
@@ -93,14 +93,14 @@ describe('CliSection install failure surfacing', () => {
     await renderCliSectionAndInstall(async () => {
       throw new Error(
         "Error invoking remote method 'cli:install': Error: Refusing to replace non-OCC " +
-          'command at /usr/local/bin/orca. Remove it and register again if it is no longer needed.'
+          'command at /usr/local/bin/occ. Remove it and register again if it is no longer needed.'
       )
     })
 
     const alert = screen.getByRole('alert')
-    expect(alert.textContent).toContain('Failed to register `orca` in PATH.')
+    expect(alert.textContent).toContain('Failed to register `occ` in PATH.')
     expect(alert.textContent).toContain(
-      'Refusing to replace non-OCC command at /usr/local/bin/orca.'
+      'Refusing to replace non-OCC command at /usr/local/bin/occ.'
     )
     expect(alert.textContent).toContain('Remove it and register again if it is no longer needed.')
     expect(alert.textContent).not.toContain('invoking remote method')

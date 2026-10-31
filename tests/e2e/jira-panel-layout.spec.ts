@@ -1,6 +1,6 @@
 import type { Page } from '@stablyai/playwright-test'
 import type { JiraIssue } from '../../src/shared/jira/jira-types'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
 
 const ISSUE_TITLE = 'Keep planning notes visible while switching between project tasks'
@@ -66,11 +66,11 @@ async function openFixtureJiraList(page: Page): Promise<void> {
 }
 
 test('Jira titles and sort headings adapt to panel width inside a wide window', async ({
-  orcaPage
+  occPage
 }) => {
-  await openFixtureJiraList(orcaPage)
+  await openFixtureJiraList(occPage)
 
-  const title = orcaPage.getByRole('heading', { name: ISSUE_TITLE })
+  const title = occPage.getByRole('heading', { name: ISSUE_TITLE })
   await expect(title).toBeVisible()
   let previousDesktopTitleWidth: number | null = null
   for (const width of [500, 780, 1050, 1320]) {
@@ -92,8 +92,8 @@ test('Jira titles and sort headings adapt to panel width inside a wide window', 
     await (width === 780
       ? titleWidthExpectation.toBeGreaterThanOrEqual(180)
       : titleWidthExpectation.toBeGreaterThan(200))
-    const mobileSort = orcaPage.getByTestId('jira-mobile-sort-controls')
-    const assignee = orcaPage.getByRole('button', { name: 'Assignee', exact: true })
+    const mobileSort = occPage.getByTestId('jira-mobile-sort-controls')
+    const assignee = occPage.getByRole('button', { name: 'Assignee', exact: true })
     await (width < 768 ? expect(mobileSort).toBeVisible() : expect(mobileSort).toBeHidden())
     await (width >= 1024 ? expect(assignee).toBeVisible() : expect(assignee).toBeHidden())
     if (width >= 768) {
@@ -123,10 +123,10 @@ test('Jira titles and sort headings adapt to panel width inside a wide window', 
 })
 
 test('Jira planning columns persist and hiding a sorted field selects a visible fallback', async ({
-  orcaPage
+  occPage
 }) => {
-  await openFixtureJiraList(orcaPage)
-  const title = orcaPage.getByRole('heading', { name: ISSUE_TITLE })
+  await openFixtureJiraList(occPage)
+  const title = occPage.getByRole('heading', { name: ISSUE_TITLE })
   await expect(title).toBeVisible()
   await title.evaluate((element) => {
     const host =
@@ -137,15 +137,15 @@ test('Jira planning columns persist and hiding a sorted field selects a visible 
     }
     host.style.width = '780px'
   })
-  await orcaPage.getByRole('button', { name: 'Columns', exact: true }).click()
+  await occPage.getByRole('button', { name: 'Columns', exact: true }).click()
   for (const name of ['Parent', 'Sprint', 'Points', 'Estimate', 'Remaining']) {
-    await orcaPage.getByRole('menuitemcheckbox', { name, exact: true }).click()
+    await occPage.getByRole('menuitemcheckbox', { name, exact: true }).click()
   }
-  await orcaPage.keyboard.press('Escape')
-  await expect(orcaPage.getByText('Epic planning', { exact: true })).toBeVisible()
-  await expect(orcaPage.getByText('Sprint 12', { exact: true })).toBeVisible()
-  await expect(orcaPage.getByText('2h', { exact: true })).toBeVisible()
-  await expect(orcaPage.getByText('30m', { exact: true })).toBeVisible()
+  await occPage.keyboard.press('Escape')
+  await expect(occPage.getByText('Epic planning', { exact: true })).toBeVisible()
+  await expect(occPage.getByText('Sprint 12', { exact: true })).toBeVisible()
+  await expect(occPage.getByText('2h', { exact: true })).toBeVisible()
+  await expect(occPage.getByText('30m', { exact: true })).toBeVisible()
   const layout = await title.evaluate((element) => {
     const row = element.closest('[role="button"]')
     const scroll = row?.parentElement?.parentElement?.parentElement?.parentElement
@@ -160,25 +160,25 @@ test('Jira planning columns persist and hiding a sorted field selects a visible 
   })
   expect(layout.title).toBeGreaterThanOrEqual(180)
   expect(layout.content).toBeGreaterThan(layout.viewport)
-  await orcaPage.getByRole('button', { name: 'Points', exact: true }).click()
-  await expect(orcaPage.getByRole('button', { name: 'Points, ascending' })).toHaveAttribute(
+  await occPage.getByRole('button', { name: 'Points', exact: true }).click()
+  await expect(occPage.getByRole('button', { name: 'Points, ascending' })).toHaveAttribute(
     'aria-pressed',
     'true'
   )
-  await orcaPage.getByRole('button', { name: 'Columns', exact: true }).click()
-  await orcaPage.getByRole('menuitemcheckbox', { name: 'Points', exact: true }).click()
-  await orcaPage.keyboard.press('Escape')
-  await expect(orcaPage.getByRole('button', { name: 'Updated, descending' })).toHaveAttribute(
+  await occPage.getByRole('button', { name: 'Columns', exact: true }).click()
+  await occPage.getByRole('menuitemcheckbox', { name: 'Points', exact: true }).click()
+  await occPage.keyboard.press('Escape')
+  await expect(occPage.getByRole('button', { name: 'Updated, descending' })).toHaveAttribute(
     'aria-pressed',
     'true'
   )
-  await orcaPage.reload()
-  await openFixtureJiraList(orcaPage)
-  await orcaPage.getByRole('button', { name: 'Columns', exact: true }).click()
+  await occPage.reload()
+  await openFixtureJiraList(occPage)
+  await occPage.getByRole('button', { name: 'Columns', exact: true }).click()
   await expect(
-    orcaPage.getByRole('menuitemcheckbox', { name: 'Sprint', exact: true })
+    occPage.getByRole('menuitemcheckbox', { name: 'Sprint', exact: true })
   ).toHaveAttribute('aria-checked', 'true')
   await expect(
-    orcaPage.getByRole('menuitemcheckbox', { name: 'Points', exact: true })
+    occPage.getByRole('menuitemcheckbox', { name: 'Points', exact: true })
   ).toHaveAttribute('aria-checked', 'false')
 })

@@ -389,7 +389,7 @@ describe('stale session state on a cold acquire', () => {
 
   it("cancels a subagent's lost prompt as the subagent's, and the session's own as its own", async () => {
     // Producer-free cancellation revisions must retain original attribution.
-    const root = await mkdtemp(join(tmpdir(), 'orca-stale-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-stale-session-'))
     const journals = createTrackedJournalOpener()
     try {
       const journal = await journals.open({
@@ -442,7 +442,7 @@ describe('stale session state on a cold acquire', () => {
   })
 
   it('uses provider output after a renewal, excluding a later client message', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-stale-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-stale-session-'))
     const journals = createTrackedJournalOpener()
     let now = 100
     try {
@@ -476,7 +476,7 @@ describe('stale session state on a cold acquire', () => {
       )
       now = 800
       await journal.appendItem(
-        { provider: 'orca', clientMessageId: 'late-send' },
+        { provider: 'occ', clientMessageId: 'late-send' },
         { kind: 'message', role: 'user', blocks: [{ type: 'text', text: 'next task' }] },
         { fence: 1, turnScope }
       )
@@ -513,7 +513,7 @@ describe('stale session state on a cold acquire', () => {
   })
 
   it('ends a crashed turn at its last proof of life, not at a send accepted before the proof', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-stale-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-stale-session-'))
     const journals = createTrackedJournalOpener()
     let now = 100
     try {
@@ -583,7 +583,7 @@ describe('stale session state on a cold acquire', () => {
   })
 
   it('revises an unverifiable turn only from a proof naming its own owner, and only once', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-stale-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-stale-session-'))
     const journals = createTrackedJournalOpener()
     let now = 100
     try {
@@ -642,7 +642,7 @@ describe('stale session state on a cold acquire', () => {
   })
 
   it('adds one row for a death however many attempts its settle takes to write', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-stale-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-stale-session-'))
     const journals = createTrackedJournalOpener()
     let now = 100
     try {

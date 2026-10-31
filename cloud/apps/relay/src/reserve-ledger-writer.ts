@@ -165,7 +165,7 @@ export class ReserveLedgerWriter {
     this.summaryAt = now
     ;(this.input.log ?? ((line: string) => console.log(line)))(
       JSON.stringify({
-        event: 'orca_relay_reserve_ledger_summary',
+        event: 'occ_relay_reserve_ledger_summary',
         written: this.written,
         pending: this.queue.length,
         dropped: this.dropped,

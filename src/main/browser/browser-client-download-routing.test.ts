@@ -53,7 +53,7 @@ function environment(input: {
         ok: true,
         result: {
           accepted: true,
-          workspaceRelativePath: `.orca/browser-downloads/${input.environmentId}.bin`
+          workspaceRelativePath: `.occ/browser-downloads/${input.environmentId}.bin`
         },
         _meta: {}
       } as never

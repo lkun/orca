@@ -5,7 +5,7 @@
  * Launches the built app (out/) against a synthetic userData fixture that
  * mimics a long-lived real profile (tens of thousands of Chromium cache
  * files — the documented pathological case for the win32 startup ACL grant),
- * parses `ORCA_STARTUP_DIAGNOSTICS=1` milestone lines from stderr, and
+ * parses `OCC_STARTUP_DIAGNOSTICS=1` milestone lines from stderr, and
  * reports per-phase timings across iterations.
  *
  * Usage:
@@ -198,15 +198,15 @@ function buildLaunchEnvironment({ fixtureDir, githubRepos, ghShimDir }) {
   mkdirSync(isolatedHome, { recursive: true })
   const env = {
     ...process.env,
-    ORCA_STARTUP_DIAGNOSTICS: '1',
-    ORCA_E2E_USER_DATA_DIR: fixtureDir,
+    OCC_STARTUP_DIAGNOSTICS: '1',
+    OCC_E2E_USER_DATA_DIR: fixtureDir,
     HOME: isolatedHome,
     USERPROFILE: isolatedHome,
-    ORCA_E2E_HOME_DIR: isolatedHome,
-    ORCA_E2E_HEADLESS: '1'
+    OCC_E2E_HOME_DIR: isolatedHome,
+    OCC_E2E_HEADLESS: '1'
   }
   delete env.CODEX_HOME
-  delete env.ORCA_CODEX_HOME
+  delete env.OCC_CODEX_HOME
   if (ghShimDir) {
     env.PATH = `${ghShimDir}${delimiter}${env.PATH ?? ''}`
   }
@@ -431,7 +431,7 @@ async function main() {
     args.fixtureDir ??
       join(
         os.tmpdir(),
-        'orca-startup-bench',
+        'occ-startup-bench',
         `userdata-${args.files}-${args.stateProfile}-${args.sessionTabs}-gh${args.githubRepos}-ssh${args.sshUnreachableTargets}`
       )
   )

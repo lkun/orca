@@ -30,7 +30,7 @@ describe('hasCustomCodexHomeOverride', () => {
     expect(
       hasCustomCodexHomeOverride({
         CODEX_HOME: `${managedHome}${sep}.`,
-        ORCA_CODEX_HOME: managedHome
+        OCC_CODEX_HOME: managedHome
       })
     ).toBe(false)
   })
@@ -39,7 +39,7 @@ describe('hasCustomCodexHomeOverride', () => {
     expect(
       hasCustomCodexHomeOverride({
         CODEX_HOME: `${process.cwd()}${sep}custom-codex-home`,
-        ORCA_CODEX_HOME: `${process.cwd()}${sep}codex-runtime-home${sep}home`
+        OCC_CODEX_HOME: `${process.cwd()}${sep}codex-runtime-home${sep}home`
       })
     ).toBe(true)
   })
@@ -53,7 +53,7 @@ describe('hasCustomCodexHomeOverride', () => {
   it.skipIf(process.platform === 'win32')(
     'detects a pane-local shell startup override from its launch HOME',
     () => {
-      const paneHome = mkdtempSync(join(tmpdir(), 'orca-codex-pane-home-'))
+      const paneHome = mkdtempSync(join(tmpdir(), 'occ-codex-pane-home-'))
       temporaryHomes.push(paneHome)
       writeFileSync(join(paneHome, '.zshrc'), 'export CODEX_HOME="$HOME/custom-codex-home"\n')
 
@@ -65,7 +65,7 @@ describe('hasCustomCodexHomeOverride', () => {
   it.skipIf(process.platform === 'win32')(
     'resolves a fish override under the launch env XDG_CONFIG_HOME, not the process one',
     () => {
-      const paneHome = mkdtempSync(join(tmpdir(), 'orca-codex-fish-home-'))
+      const paneHome = mkdtempSync(join(tmpdir(), 'occ-codex-fish-home-'))
       temporaryHomes.push(paneHome)
       const configHome = join(paneHome, 'xdg')
       mkdirSync(join(configHome, 'fish'), { recursive: true })

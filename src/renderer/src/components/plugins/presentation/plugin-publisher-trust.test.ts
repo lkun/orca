@@ -9,7 +9,7 @@ function manifest(extra: Record<string, unknown>) {
     publisher: 'someone',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     ...extra
   })

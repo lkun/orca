@@ -28,7 +28,7 @@ const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex')
 
 const roots: string[] = []
 async function temp(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-image-cache-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-image-cache-'))
   roots.push(root)
   return root
 }

@@ -1,4 +1,4 @@
-import type { RelayRegion } from '@orca-cloud/relay-contract'
+import type { RelayRegion } from '@occ-cloud/relay-contract'
 import { z } from 'zod'
 import {
   CellPollReachability,
@@ -667,7 +667,7 @@ export type ShadowSeatPollerOptions = {
   now?: () => number
   pollMs?: number
   log?: (line: string) => void
-  // True while this director places on reserve cells (ORCA_RELAY_RESERVE_PLACEMENT=on).
+  // True while this director places on reserve cells (OCC_RELAY_RESERVE_PLACEMENT=on).
   reserver?: () => boolean
 }
 
@@ -753,7 +753,7 @@ export function startShadowSeatPoller(
       cellListRetryAt = now() + Math.min(CELL_LIST_RETRY_MAX_MS, backoffMs)
       log(
         JSON.stringify({
-          event: 'orca_relay_shadow_seat_cell_list_failed',
+          event: 'occ_relay_shadow_seat_cell_list_failed',
           failures: cellListFailures,
           reason: error instanceof Error ? error.message : 'unknown'
         })
@@ -828,7 +828,7 @@ export function startShadowSeatPoller(
     if (awaitPolls) await Promise.all([refresh, ...polls])
     if (now() - lastSummaryAt >= SUMMARY_INTERVAL_MS) {
       lastSummaryAt = now()
-      log(JSON.stringify({ event: 'orca_relay_shadow_seat_summary', ...directory.summary(now()) }))
+      log(JSON.stringify({ event: 'occ_relay_shadow_seat_summary', ...directory.summary(now()) }))
     }
   }
 
@@ -836,7 +836,7 @@ export function startShadowSeatPoller(
     round(false).catch((error: unknown) => {
       log(
         JSON.stringify({
-          event: 'orca_relay_shadow_seat_round_failed',
+          event: 'occ_relay_shadow_seat_round_failed',
           reason: error instanceof Error ? error.message : 'unknown'
         })
       )
@@ -860,7 +860,7 @@ export function startShadowSeatPoller(
       // A withheld verdict strands that cell's hosts until an operator fences it, so it alerts.
       if (verdict?.withheld && at - (withheldLoggedAt.get(cellId) ?? -Infinity) >= WITHHELD_LOG_INTERVAL_MS) {
         withheldLoggedAt.set(cellId, at)
-        log(JSON.stringify({ event: 'orca_relay_dead_cell_verdict_withheld', cellId, ...verdict }))
+        log(JSON.stringify({ event: 'occ_relay_dead_cell_verdict_withheld', cellId, ...verdict }))
       }
       return verdict
     },

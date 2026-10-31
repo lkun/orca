@@ -5,7 +5,7 @@ import { reconcileCellAdmissionAtStartup } from './cell-admission-startup.js'
 import type { RelayCellConfig } from './config.js'
 import { openRelayDatabase, type RelayDatabase } from './database.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 const schema = 'relay_startup_retry_test'
 const cell: RelayCellConfig = {
@@ -77,7 +77,7 @@ describePostgres('PostgreSQL director startup reconciliation', () => {
       { cell_id: cell.id }
     ])
     const warnings = warn.mock.calls.flat().join('\n')
-    expect(warnings).toContain('orca_relay_startup_reconcile_recovered')
-    expect(warnings).not.toContain('orca_relay_postgres_transaction_exhausted')
+    expect(warnings).toContain('occ_relay_startup_reconcile_recovered')
+    expect(warnings).not.toContain('occ_relay_postgres_transaction_exhausted')
   }, 10_000)
 })

@@ -154,7 +154,7 @@ export function PluginMarketplaceSourceDialog({
             <p className="text-xs text-muted-foreground">
               {translate(
                 'auto.components.settings.PluginMarketplaceSourceDialog.urlDescription',
-                'HTTPS or SSH, with an orca-catalog.json'
+                'HTTPS or SSH, with an occ-catalog.json'
               )}
             </p>
           </div>

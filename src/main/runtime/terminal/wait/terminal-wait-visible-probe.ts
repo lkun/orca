@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithCreateAgentPromptRenderGate } from '../input/terminal-agent-prompt-render'
+import { OCCRuntimeWithCreateAgentPromptRenderGate } from '../input/terminal-agent-prompt-render'
 import type {
   RuntimeProviderSnapshotReadOptions,
   TerminalWaiter
@@ -6,7 +6,7 @@ import type {
 import {
   TUI_IDLE_VISIBLE_PROBE_SETTLE_MARGIN_MS,
   VISIBLE_TERMINAL_SNAPSHOT_TIMEOUT_MS
-} from '../../orca-runtime-postlude'
+} from '../../occ-runtime-postlude'
 import { withTimeout } from '../../runtime-async-boundaries'
 import {
   detectTerminalWaitBlockedReason,
@@ -14,7 +14,7 @@ import {
   isKnownReadyPromptSettled
 } from '../../terminal-wait-detection'
 import { readsTrustedScreen } from '../../agent-state-rules/agent-state-rules-engine'
-import { restoreProjectedComposerDraft } from '../../orca-runtime-terminal-projection'
+import { restoreProjectedComposerDraft } from '../../occ-runtime-terminal-projection'
 import type {
   RuntimeTerminalWait,
   RuntimeTerminalWaitBlockedReason
@@ -27,7 +27,7 @@ import { outputClockOf } from '../../tui-idle-evidence-source'
 import { createSetupCompletionScanner } from '../../orchestration/setup-completion-signal'
 import type { TuiAgent } from '../../../../shared/tui-agent'
 
-export abstract class OrcaRuntimeWithStartTuiIdleVisibleReadProbe extends OrcaRuntimeWithCreateAgentPromptRenderGate {
+export abstract class OCCRuntimeWithStartTuiIdleVisibleReadProbe extends OCCRuntimeWithCreateAgentPromptRenderGate {
   /** One bounded readiness read for adopted PTYs with lost metadata; later working-to-idle transitions belong to the poll. */
   protected startTuiIdleVisibleReadProbe(
     waiter: TerminalWaiter,

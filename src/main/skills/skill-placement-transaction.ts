@@ -62,7 +62,7 @@ async function settleDeselectedAction(
   return {
     ...previous,
     status: 'skipped',
-    errorCategory: 'skill-removal-placement-modified-or-unowned',
+    errocctegory: 'skill-removal-placement-modified-or-unowned',
     failure: {
       category: 'conflict',
       code: 'skill-removal-placement-modified-or-unowned',
@@ -146,7 +146,7 @@ export async function recoverSkillPlacementTransaction(
         path: action.destinationPath,
         topology: 'independent-copy',
         status: 'skipped',
-        errorCategory: 'skill-placement-cancelled',
+        errocctegory: 'skill-placement-cancelled',
         failure: {
           category: 'cancelled',
           code: 'skill-placement-cancelled',

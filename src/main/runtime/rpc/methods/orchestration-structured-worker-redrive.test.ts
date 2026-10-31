@@ -19,7 +19,7 @@ import {
   releaseStructuredWorkerSession
 } from './orchestration-structured-worker-session'
 import { stopStructuredWorker } from './orchestration-structured-worker-lifecycle'
-import { OrcaRuntimeRpcServer } from '../../runtime-rpc'
+import { OCCRuntimeRpcServer } from '../../runtime-rpc'
 import { ORCHESTRATION_METHODS } from './orchestration'
 import { STATUS_METHODS } from './status'
 import { createKeyedTrailingEdgeCoalescer } from '../../keyed-trailing-edge-coalescer'
@@ -126,7 +126,7 @@ function workerJournal(identity: StructuredWorkerIdentity) {
       .collaboratorsForTests()
       .sessions.get(identity.sessionId)!
       .journal.appendItem(
-        { provider: 'orca', clientMessageId: id },
+        { provider: 'occ', clientMessageId: id },
         { kind: 'status', text: id },
         {
           fence: store.requireWritableRecord(identity.sessionId).lease.runtimeFence,
@@ -227,7 +227,7 @@ describe('the structured redrive publication edge', () => {
           ?.messages.map((message) => message.id)
       ).toEqual([held.id])
       const fence = store.requireWritableRecord(worker.identity.sessionId).lease.runtimeFence
-      const turn = { provider: 'orca', clientMessageId: 'busy-turn' } as const
+      const turn = { provider: 'occ', clientMessageId: 'busy-turn' } as const
       await worker.journal.appendItem(
         turn,
         { kind: 'turn', turnId: 'busy-turn', state: 'running' },
@@ -237,13 +237,13 @@ describe('the structured redrive publication edge', () => {
       await vi.advanceTimersByTimeAsync(300)
       dispatch.mockClear()
       notify.mockClear()
-      for (const name of ['ORCA_AGENT_SESSION_ID', 'ORCA_ENVIRONMENT', 'ORCA_PAIRING_CODE']) {
+      for (const name of ['OCC_AGENT_SESSION_ID', 'OCC_ENVIRONMENT', 'OCC_PAIRING_CODE']) {
         vi.stubEnv(name, '')
       }
-      vi.stubEnv('ORCA_USER_DATA_PATH', root)
-      vi.stubEnv('ORCA_TERMINAL_HANDLE', 'term_coord')
+      vi.stubEnv('OCC_USER_DATA_PATH', root)
+      vi.stubEnv('OCC_TERMINAL_HANDLE', 'term_coord')
       const output = vi.spyOn(console, 'log').mockImplementation(() => {})
-      const server = new OrcaRuntimeRpcServer({
+      const server = new OCCRuntimeRpcServer({
         runtime: state.runtime,
         userDataPath: root,
         enableWebSocket: false,
@@ -291,7 +291,7 @@ describe('the structured redrive publication edge', () => {
           }
         })
         expect(state.db.getMessageById(messageId)?.delivered_at).not.toBeNull()
-        const nextTurn = { provider: 'orca', clientMessageId: 'busy-at-teardown' } as const
+        const nextTurn = { provider: 'occ', clientMessageId: 'busy-at-teardown' } as const
         await worker.journal.appendItem(
           nextTurn,
           { kind: 'turn', turnId: 'busy-at-teardown', state: 'running' },
@@ -447,7 +447,7 @@ describe('the structured redrive publication edge', () => {
 
   it('wakes after a tombstone settles the running turn', async () => {
     const { identity, journal, fence, onJournalActivity } = await startWorker()
-    const turn = { provider: 'orca', clientMessageId: 'running-turn' } as const
+    const turn = { provider: 'occ', clientMessageId: 'running-turn' } as const
     await journal.appendItem(
       turn,
       { kind: 'status', text: 'Working', turnLifecycle: { turnId: 'turn-1', state: 'running' } },

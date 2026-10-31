@@ -11,8 +11,8 @@ import {
   listUserSshConfigHostSummaries,
   resolveUserSshConfigHost
 } from '../../ssh/config/ssh-config-host-picker'
-import { getManagedOrcadFenceEnvironmentId } from '../../../shared/managed-orcad-ssh-owner'
-import { closeOrcadManagedTunnel } from '../../managed-server/lifecycle/orcad-managed-tunnel'
+import { getManagedOCCdFenceEnvironmentId } from '../../../shared/managed-occd-ssh-owner'
+import { closeOCCdManagedTunnel } from '../../managed-server/lifecycle/occd-managed-tunnel'
 import { rotateSshProviderAuthority } from '../../ssh/ssh-provider-authority'
 import {
   getSshTargetRegistryStore,
@@ -20,7 +20,7 @@ import {
 } from '../../ssh/targets/ssh-target-registry'
 import {
   allowsDirectSshRelay,
-  isManagedOrcadSshTarget,
+  isManagedOCCdSshTarget,
   isRuntimeOwnedSshTarget
 } from '../../ssh/connection/ssh-connection-store'
 import { connectionManager, getCurrentMainWindow } from './ssh-ipc-context'
@@ -59,8 +59,8 @@ function publishRepoReadoptions(repoReadoptions: SshRepoReadoption[]): SshRepoRe
 function omitRendererSshTargetGeneration<
   T extends {
     generation?: unknown
-    orcadProvisioning?: unknown
-    orcadFence?: unknown
+    occdProvisioning?: unknown
+    occdFence?: unknown
     managedServerUnavailable?: unknown
     managedServerMoveOffered?: unknown
     managedServerLeaveBehind?: unknown
@@ -73,8 +73,8 @@ function omitRendererSshTargetGeneration<
 ): Omit<
   T,
   | 'generation'
-  | 'orcadProvisioning'
-  | 'orcadFence'
+  | 'occdProvisioning'
+  | 'occdFence'
   | 'managedServerUnavailable'
   | 'managedServerMoveOffered'
   | 'managedServerLeaveBehind'
@@ -84,8 +84,8 @@ function omitRendererSshTargetGeneration<
 > {
   const {
     generation: _generation,
-    orcadProvisioning: _orcadProvisioning,
-    orcadFence: _orcadFence,
+    occdProvisioning: _occdProvisioning,
+    occdFence: _occdFence,
     managedServerUnavailable: _managedServerUnavailable,
     managedServerMoveOffered: _managedServerMoveOffered,
     managedServerLeaveBehind: _managedServerLeaveBehind,
@@ -107,7 +107,7 @@ function assertNotRuntimeOwned(targetId: string, action: string): void {
 /** Removing a managed host would strand its server; Stop proves the exit, Forget skips a dead host. */
 export function assertNotManagedServerHost(targetId: string): void {
   const target = getSshTargetRegistryStore()!.getTarget(targetId)
-  if (target && isManagedOrcadSshTarget(target)) {
+  if (target && isManagedOCCdSshTarget(target)) {
     throw new Error(
       'OCC runs on this host. Use Stop… under Settings › OCC on your SSH hosts to stop it and remove it from the host first, or Forget… there if the host is gone.'
     )
@@ -130,14 +130,14 @@ function updateSshTarget(id: string, updates: SshTargetUpdateInput): SshTarget |
   )
   // Revoke desktop-browser control immediately when permission is disabled.
   requestDesktopBrowserBridgeReconcile()
-  const environmentId = getManagedOrcadFenceEnvironmentId(updated ?? undefined)
+  const environmentId = getManagedOCCdFenceEnvironmentId(updated ?? undefined)
   if (environmentId && updated) {
     // Edited managed hosts need fresh tunnels and transports; unserved hosts have no managed route to redial.
     const redial =
       !allowsDirectSshRelay(updated) &&
       (!before || fingerprintRuntimeSshTarget(before) !== fingerprintRuntimeSshTarget(updated))
     void runTargetLifecycle(id, async () => {
-      await closeOrcadManagedTunnel(environmentId)
+      await closeOCCdManagedTunnel(environmentId)
       if (redial) {
         await connectionManager?.disconnect(id)
       }

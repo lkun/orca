@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { BundledSkillPlan } from '../../../../shared/bundled-skill-plan'
-import { BUNDLED_ORCA_SKILL_UPDATE_REQUIRED_MESSAGE } from '../../../../shared/skill-install-capability'
+import { BUNDLED_OCC_SKILL_UPDATE_REQUIRED_MESSAGE } from '../../../../shared/skill-install-capability'
 import { bundledSkillTargetKey, type BundledSkillTarget } from '@/lib/bundled-skill-target'
 import { planBundledSkillsOnTarget } from '@/runtime/runtime-bundled-skills-client'
 
@@ -33,7 +33,7 @@ export function useReviewedSkillPlan(
           setResult(
             result.kind === 'plan'
               ? { request, plan: result.plan, error: null }
-              : { request, plan: null, error: BUNDLED_ORCA_SKILL_UPDATE_REQUIRED_MESSAGE }
+              : { request, plan: null, error: BUNDLED_OCC_SKILL_UPDATE_REQUIRED_MESSAGE }
           )
         }
       },

@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import type { WorkerThreadChildSpec } from './worker-thread-child-process-protocol'
 
 // Spawn in-process so direct-child probe suites retain their child_process/process-host mocks.

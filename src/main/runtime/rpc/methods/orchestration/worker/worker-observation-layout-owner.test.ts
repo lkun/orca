@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { inspectWorkerTerminal } from './worker-observation'
 
-vi.mock('../../../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const DISPATCH_ID = 'ctx-worker'
 const TERMINAL_HANDLE = 'term-worker'
@@ -17,7 +17,7 @@ function harness(row: { connected: boolean; verdict?: 'live' | 'unverifiable' | 
     getTerminalProcessIncarnation: vi.fn(() => 'pty-worker:incarnation-1'),
     getTerminalLivenessVerdict: vi.fn(() => null),
     getOrchestrationDispatchAuthority: vi.fn(() => null)
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: inspectWorkerTerminal calls only these db methods.
   const db = {
     getWorkerDispatch: vi.fn(() => ({ agent_terminal_handle: TERMINAL_HANDLE })),

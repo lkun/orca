@@ -7,13 +7,13 @@ import {
 
 export const FINALIZE_ABSENT_AUTH_SCRIPT = `
 set -eu
-source_recovery_auth="$3.orca-drain-source"
-source_quarantine_auth="$3.orca-drain-live-source"
-destination_recovery_auth="$3.orca-drain-destination"
-destination_recovery_path="$3.orca-drain-destination-path"
-session_link_manifest="$3.orca-drain-session-links"
-session_commit_marker="$3.orca-drain-session-commit"
-session_stage_root="$3.orca-drain-session-stage"
+source_recovery_auth="$3.occ-drain-source"
+source_quarantine_auth="$3.occ-drain-live-source"
+destination_recovery_auth="$3.occ-drain-destination"
+destination_recovery_path="$3.occ-drain-destination-path"
+session_link_manifest="$3.occ-drain-session-links"
+session_commit_marker="$3.occ-drain-session-commit"
+session_stage_root="$3.occ-drain-session-stage"
 ${ROLLBACK_SESSION_LINKS_FUNCTION}
 if [ -e "$3" ] || [ -L "$3" ]; then
   [ -f "$3" ] && [ ! -L "$3" ] || exit 46
@@ -63,7 +63,7 @@ fi
 umask 077
 marker_parent=\${3%/*}
 mkdir -p -- "$marker_parent"
-temporary_marker="$3.orca-drain-$$"
+temporary_marker="$3.occ-drain-$$"
 trap 'rm -f -- "$temporary_marker"' EXIT HUP INT TERM
 printf '%s\n' '{"completed":true}' > "$temporary_marker"
 chmod 600 "$temporary_marker"

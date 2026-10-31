@@ -14,9 +14,9 @@ export const PRIMARY_AGENT_DIR_ENV_BY_KIND: Readonly<Record<PiAgentKind, string>
 }
 
 export const SOURCE_AGENT_DIR_ENV_BY_KIND: Readonly<Record<PiAgentKind, string>> = {
-  pi: 'ORCA_PI_SOURCE_AGENT_DIR',
-  omp: 'ORCA_OMP_SOURCE_AGENT_DIR',
-  'prime-agent': 'ORCA_PRIME_AGENT_SOURCE_AGENT_DIR'
+  pi: 'OCC_PI_SOURCE_AGENT_DIR',
+  omp: 'OCC_OMP_SOURCE_AGENT_DIR',
+  'prime-agent': 'OCC_PRIME_AGENT_SOURCE_AGENT_DIR'
 }
 
 /** Pi-compatible agents emit agent_end milestones while still working; do not treat every event as turn completion. */

@@ -87,7 +87,7 @@ export async function resolvePluginGitSource(input: {
   if (SHA1_COMMIT_PATTERN.test(ref)) {
     return { ok: true, url: input.url, kind: 'commit', ref, commit: ref }
   }
-  const temporaryRoot = await mkdtemp(join(tmpdir(), 'orca-plugin-ls-remote-'))
+  const temporaryRoot = await mkdtemp(join(tmpdir(), 'occ-plugin-ls-remote-'))
   // Why the same -c policy as the download: ls-remote also follows insteadOf rewrites.
   const listRemote = (args: string[]): Promise<string> =>
     runPluginGit([...pluginGitConfigArgs(join(temporaryRoot, 'no-hooks')), ...args], temporaryRoot)

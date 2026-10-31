@@ -1,10 +1,10 @@
 import { getStructuredAgentSessionHost } from '../../native-chat/agent-session-wire/structured-agent-session-registry'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import type { OrchestrationSessionCaller } from './orchestration-caller-identity'
 
 /** No publication work participates in launch settlement, including lookup and logging failures. */
 export function prepareWorkerStartCard(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   callerSession: OrchestrationSessionCaller | undefined
 ): (args: { dispatchId: string; workerAddress: string; task: string }) => void {
   try {

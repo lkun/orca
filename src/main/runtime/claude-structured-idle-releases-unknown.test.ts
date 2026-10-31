@@ -2,7 +2,7 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { computeAgentSessionPayloadFingerprint } from '../../shared/agent-session-mutation-envelope'
-import { claudeSessionIdForOrcaSession } from '../claude/structured/claude-structured-session-id'
+import { claudeSessionIdForOCCSession } from '../claude/structured/claude-structured-session-id'
 import {
   DISPATCH_DOUBT_PROVIDER_ENDED_UNANSWERED,
   DISPATCH_DOUBT_PROVIDER_IDLE,
@@ -17,7 +17,7 @@ import {
 } from './structured-claude-scripted-runtime-test-support'
 
 const SESSION = 'claude-idle-release'
-const PROVIDER_SESSION = claudeSessionIdForOrcaSession(SESSION)
+const PROVIDER_SESSION = claudeSessionIdForOCCSession(SESSION)
 const CALLER = { callerKey: 'client-1' }
 
 let claude = createScriptedClaudeRuntime([SESSION])

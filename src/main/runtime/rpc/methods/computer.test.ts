@@ -59,7 +59,7 @@ describe('computer RPC methods', () => {
   })
 
   it('returns provider capabilities through the sidecar', async () => {
-    const result = { platform: 'darwin', provider: 'orca-computer-use-macos', protocolVersion: 1 }
+    const result = { platform: 'darwin', provider: 'occ-computer-use-macos', protocolVersion: 1 }
     computerMocks.callComputerSidecarCapabilities.mockResolvedValue(result)
 
     await expect(call('computer.capabilities', {})).resolves.toBe(result)

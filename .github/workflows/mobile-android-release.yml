@@ -99,7 +99,7 @@ jobs:
       - name: Upload APK artifact
         uses: actions/upload-artifact@v7
         with:
-          name: orca-mobile-apk
+          name: occ-mobile-apk
           path: |
             mobile/android/app/build/outputs/apk/release/*.apk
             mobile/android/app/build/outputs/apk/release/*.apk.sha256
@@ -212,10 +212,10 @@ jobs:
       contents: read
     env:
       VERSION: ${{ needs.android-build.outputs.version }}
-      SITE_REPO: stablyai/orca-marketing-website
+      SITE_REPO: stablyai/occ-marketing-website
       BRANCH: bump/android-apk-${{ needs.android-build.outputs.version }}
     steps:
-      - name: Checkout orca
+      - name: Checkout occ
         uses: actions/checkout@v6
         with:
           sparse-checkout: config/scripts
@@ -229,14 +229,14 @@ jobs:
           app-id: 2590194
           private-key: ${{ secrets.BUFO_BOT_PRIVATE_KEY }}
           owner: stablyai
-          repositories: orca-marketing-website
+          repositories: occ-marketing-website
           permission-contents: write
           permission-pull-requests: write
 
       - name: Checkout marketing site
         uses: actions/checkout@v6
         with:
-          repository: stablyai/orca-marketing-website
+          repository: stablyai/occ-marketing-website
           path: site
           token: ${{ steps.app-token.outputs.token }}
 

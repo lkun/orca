@@ -377,8 +377,8 @@ describe('AgentBrowserBridge keypress input', () => {
         expect(execFileMock).not.toHaveBeenCalled()
       } else {
         const argumentsList = execFileMock.mock.calls.map(([, args]) => args).filter(isStringArray)
-        expect(argumentsList.some((args) => args.includes('orca-tab-tab-1'))).toBe(true)
-        expect(argumentsList.some((args) => args.includes('orca-tab-tab-2'))).toBe(false)
+        expect(argumentsList.some((args) => args.includes('occ-tab-tab-1'))).toBe(true)
+        expect(argumentsList.some((args) => args.includes('occ-tab-tab-2'))).toBe(false)
       }
     })
 

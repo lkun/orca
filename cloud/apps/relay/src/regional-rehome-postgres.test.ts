@@ -7,7 +7,7 @@ import {
   REGIONAL_REHOME_SQL_FAILURES_PER_CELL_LIMIT
 } from './regional-rehome-safety.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 describePostgres('PostgreSQL regional rehoming', () => {

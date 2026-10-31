@@ -58,9 +58,9 @@ describe('registerNotificationHandlers', () => {
 
   it('opens the current macOS app notification settings entry', async () => {
     const originalPlatform = process.platform
-    const originalBundleId = process.env.ORCA_DEV_MACOS_BUNDLE_ID
+    const originalBundleId = process.env.OCC_DEV_MACOS_BUNDLE_ID
     Object.defineProperty(process, 'platform', { value: 'darwin', configurable: true })
-    process.env.ORCA_DEV_MACOS_BUNDLE_ID = 'com.lkun.occ.dev.fb5a47066f08'
+    process.env.OCC_DEV_MACOS_BUNDLE_ID = 'com.lkun.occ.dev.fb5a47066f08'
     try {
       registerNotificationHandlers({
         getSettings: () => ({
@@ -82,9 +82,9 @@ describe('registerNotificationHandlers', () => {
     } finally {
       Object.defineProperty(process, 'platform', { value: originalPlatform, configurable: true })
       if (originalBundleId === undefined) {
-        delete process.env.ORCA_DEV_MACOS_BUNDLE_ID
+        delete process.env.OCC_DEV_MACOS_BUNDLE_ID
       } else {
-        process.env.ORCA_DEV_MACOS_BUNDLE_ID = originalBundleId
+        process.env.OCC_DEV_MACOS_BUNDLE_ID = originalBundleId
       }
     }
   })

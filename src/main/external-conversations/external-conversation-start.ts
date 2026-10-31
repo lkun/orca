@@ -7,7 +7,7 @@ import {
   agentPaneWorkspace,
   type AgentPaneWorkspace
 } from '../agent-hooks/agent-transition-detector'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { resolveUnlaunchedIntent } from '../runtime/rpc/methods/agent-launch-intent-resolution'
 import { agentLaunchSurfaceFactory } from '../runtime/rpc/methods/agent-launch-surfaces'
 import { agentLaunchWorkspaceFactory } from '../runtime/rpc/methods/agent-launch-worktree-creation'
@@ -30,7 +30,7 @@ export type ConversationLauncher = {
 }
 
 /** Reuse agent.launch so conversations support both git worktrees and folder workspaces. */
-export function runtimeConversationLauncher(runtime: OrcaRuntimeService): ConversationLauncher {
+export function runtimeConversationLauncher(runtime: OCCRuntimeService): ConversationLauncher {
   const context = { runtime }
   return {
     launch: async ({ agent, target, prompt }, onSurfacePublished, signal) => {

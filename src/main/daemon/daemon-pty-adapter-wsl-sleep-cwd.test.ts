@@ -89,7 +89,7 @@ describe('a sleeping bridge WSL pane keeps its shell folder', () => {
       cols: 80,
       rows: 24,
       cwd: WSL_CWD,
-      env: { ORCA_PANE_KEY: PANE_KEY },
+      env: { OCC_PANE_KEY: PANE_KEY },
       sessionId: 'repo::/home/jin/private-repo@@spawned'
     })
 
@@ -146,7 +146,7 @@ describe('a sleeping bridge WSL pane keeps its shell folder', () => {
       cols: 80,
       rows: 24,
       cwd: WSL_CWD,
-      env: { ORCA_PANE_KEY: PANE_KEY },
+      env: { OCC_PANE_KEY: PANE_KEY },
       sessionId: 'repo::/repo@@relaunch'
     })
     await before.disconnectOnly()
@@ -168,7 +168,7 @@ describe('a sleeping bridge WSL pane keeps its shell folder', () => {
         cols: 80,
         rows: 24,
         cwd: WSL_CWD,
-        env: { ORCA_PANE_KEY: PANE_KEY },
+        env: { OCC_PANE_KEY: PANE_KEY },
         sessionId: 'repo::/repo@@wake'
       })
     const { id } = await spawn()
@@ -189,7 +189,7 @@ describe('a sleeping bridge WSL pane keeps its shell folder', () => {
         cols: 80,
         rows: 24,
         cwd: WSL_CWD,
-        env: { ORCA_PANE_KEY: PANE_KEY },
+        env: { OCC_PANE_KEY: PANE_KEY },
         sessionId: 'repo::/repo@@deleted'
       })
     const { id } = await spawn()
@@ -210,7 +210,7 @@ describe('a sleeping bridge WSL pane keeps its shell folder', () => {
       cols: 80,
       rows: 24,
       cwd: WSL_CWD,
-      env: { ORCA_PANE_KEY: PANE_KEY },
+      env: { OCC_PANE_KEY: PANE_KEY },
       sessionId: 'repo::/repo@@listed'
     })
     lastSubprocess._simulateData('$ cd deep/er\r\n')
@@ -232,7 +232,7 @@ describe('a sleeping bridge WSL pane keeps its shell folder', () => {
       cols: 80,
       rows: 24,
       cwd: WSL_CWD,
-      env: { ORCA_PANE_KEY: PANE_KEY },
+      env: { OCC_PANE_KEY: PANE_KEY },
       sessionId: 'repo::/repo@@reattached'
     })
     lastSubprocess._simulateData('$ cd deep/er\r\n')
@@ -253,7 +253,7 @@ describe('a sleeping bridge WSL pane keeps its shell folder', () => {
       cols: 80,
       rows: 24,
       cwd: WSL_CWD,
-      env: { ORCA_PANE_KEY: PANE_KEY },
+      env: { OCC_PANE_KEY: PANE_KEY },
       sessionId: 'repo::/repo@@unreadable'
     })
 
@@ -271,7 +271,7 @@ describe('a sleeping bridge WSL pane keeps its shell folder', () => {
       cols: 80,
       rows: 24,
       cwd: WSL_CWD,
-      env: { ORCA_PANE_KEY: PANE_KEY },
+      env: { OCC_PANE_KEY: PANE_KEY },
       sessionId: 'repo::/repo@@reported'
     })
     lastSubprocess._simulateData(
@@ -289,7 +289,7 @@ describe('a sleeping bridge WSL pane keeps its shell folder', () => {
       cols: 80,
       rows: 24,
       cwd: 'C:\\repo',
-      env: { ORCA_PANE_KEY: PANE_KEY },
+      env: { OCC_PANE_KEY: PANE_KEY },
       sessionId: 'repo::/repo@@windows'
     })
 

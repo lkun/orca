@@ -5,7 +5,7 @@ import { PushDispatcher } from './push-dispatcher.js'
 import { PushDeviceRegistryStore } from './device-registry-store.js'
 import { openInMemoryPushDatabase, type PushDatabase } from './push-database.js'
 import { buildPushDelivery } from './push-delivery-message.js'
-import { PushNotificationSchema } from '@orca-cloud/push-contract'
+import { PushNotificationSchema } from '@occ-cloud/push-contract'
 import { notification } from './push-server-harness.test-fixture.js'
 
 const databases: PushDatabase[] = []

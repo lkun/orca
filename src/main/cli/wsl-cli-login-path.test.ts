@@ -9,12 +9,12 @@ vi.mock('../wsl/wsl-runner', () => ({
 
 import { WslCliInstaller, _internals } from './wsl-cli-installer'
 
-const launcherPath = 'C:\\Users\\me\\AppData\\Local\\Programs\\OCC\\resources\\bin\\orca.exe'
+const launcherPath = 'C:\\Users\\me\\AppData\\Local\\Programs\\OCC\\resources\\bin\\occ.exe'
 
 function makeHostStatus(): CliInstallStatus {
   return {
     platform: 'win32',
-    commandName: 'orca',
+    commandName: 'occ',
     commandPath: launcherPath,
     pathDirectory: 'C:\\Users\\me\\AppData\\Local\\Programs\\OCC\\resources\\bin',
     pathConfigured: true,
@@ -36,7 +36,7 @@ describe('WslCliInstaller login-PATH lanes', () => {
   it('reports PATH unknown rather than "not on PATH" without the login PATH', async () => {
     const launcher = _internals.buildWslLauncher(
       launcherPath,
-      '/home/alice/.local/share/orca/orca-wsl-bridge.ps1'
+      '/home/alice/.local/share/occ/occ-wsl-bridge.ps1'
     )
     runWslProcessMock.mockImplementation(async (spec: { script: string; loginPath: string }) => ({
       environmentResolved: spec.loginPath !== 'preferred',
@@ -47,7 +47,7 @@ describe('WslCliInstaller login-PATH lanes', () => {
           ? 'no'
           : spec.script.includes('wslpath')
             ? 'yes'
-            : spec.script.includes('orca-wsl-bridge.ps1')
+            : spec.script.includes('occ-wsl-bridge.ps1')
               ? _internals.buildWslBridgeScript()
               : launcher,
       stderr: '',

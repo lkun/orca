@@ -14,7 +14,7 @@ afterEach(async () => {
 })
 
 async function fixture() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-skill-request-test-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-skill-request-test-'))
   roots.push(root)
   const home = join(root, 'home')
   const source = join(root, 'source')
@@ -101,7 +101,7 @@ describe('executeSkillInstallRequest', () => {
     ).toHaveLength(1)
     expect(
       (await readdir(join(root, 'home', '.agents', 'skills'))).filter((name) =>
-        name.includes('.orca-')
+        name.includes('.occ-')
       )
     ).toEqual([])
   })
@@ -187,7 +187,7 @@ describe('executeSkillInstallRequest', () => {
 
     expect(result).toMatchObject({
       status: 'cancelled',
-      errorCategory: 'skill-download-cancelled',
+      errocctegory: 'skill-download-cancelled',
       failure: { category: 'cancelled', retryable: true }
     })
     const downloads = join(dependencies.stateDirectory, 'skill-installs', 'downloads')

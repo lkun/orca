@@ -46,7 +46,7 @@ function getDefaultCreateProjectParent(store: Store): string {
   if (configured && !isUntouchedDefault) {
     return configured
   }
-  return join(home, 'orca', 'projects')
+  return join(home, 'occ', 'projects')
 }
 
 export function registerRepoCreationHandlers(mainWindow: BrowserWindow, store: Store): void {

@@ -22,7 +22,7 @@ import {
 const PROMPT = agentJournalSubmissionKey('prompt-1')
 const COMMAND = agentJournalSubmissionKey('command-1')
 const REAL_TURN = 'legacy:codex:session:turn-lifecycle%3Aturn-1'
-const COMMAND_TURN = 'orca:command-turn%3Acommand-1'
+const COMMAND_TURN = 'occ:command-turn%3Acommand-1'
 
 let sequence = 0
 function item(itemId: string, body: AgentJournalRenderItem['body'], scope?: string) {
@@ -92,7 +92,7 @@ function compactedAfterARealTurn(commandState: 'running' | 'completed' = 'comple
       COMMAND_TURN
     ),
     item(
-      'orca:command-result%3Acommand-1',
+      'occ:command-result%3Acommand-1',
       { kind: 'status', text: 'Conversation compacted.', presentation: 'compaction' },
       COMMAND_TURN
     )

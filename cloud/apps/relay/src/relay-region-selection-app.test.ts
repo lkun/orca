@@ -222,7 +222,7 @@ function config(): RelayConfig {
     cellUrl: 'https://relay.example.test',
     region: 'us-central1',
     authIssuer: 'https://auth.example.test',
-    authAudience: 'orca-relay',
+    authAudience: 'occ-relay',
     jwksUrl: 'https://auth.example.test/jwks',
     assignmentSigningKey: new TextEncoder().encode('assignment-key-with-at-least-32-bytes'),
     role: 'director',

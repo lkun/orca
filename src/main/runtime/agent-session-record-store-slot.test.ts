@@ -25,7 +25,7 @@ function location(directory = stateDirectory) {
 }
 
 beforeEach(async () => {
-  stateDirectory = await mkdtemp(join(tmpdir(), 'orca-record-store-slot-'))
+  stateDirectory = await mkdtemp(join(tmpdir(), 'occ-record-store-slot-'))
 })
 
 afterEach(async () => {
@@ -75,7 +75,7 @@ describe('the record store slot', () => {
 
   it('refuses a second profile rather than opening a second store', async () => {
     await openAgentSessionRecordStoreOnce(location())
-    const elsewhere = await mkdtemp(join(tmpdir(), 'orca-record-store-slot-other-'))
+    const elsewhere = await mkdtemp(join(tmpdir(), 'occ-record-store-slot-other-'))
     try {
       await expect(openAgentSessionRecordStoreOnce(location(elsewhere))).rejects.toThrow(
         'agent_session_record_store_location_changed'

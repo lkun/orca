@@ -168,7 +168,7 @@ export function createClaudeModelCatalogProbe(
                 command,
                 args: [...prefixArgs, ...argsFor(strictMcp)],
                 ...(cwd ? { cwd } : {}),
-                stdin: `${CLAUDE_MODEL_LIST_STDIN}${JSON.stringify({ type: 'control_request', request_id: 'orca-model-settings', request: { subtype: 'get_settings' } })}\n`
+                stdin: `${CLAUDE_MODEL_LIST_STDIN}${JSON.stringify({ type: 'control_request', request_id: 'occ-model-settings', request: { subtype: 'get_settings' } })}\n`
               },
               { site: 'claude-model-catalog-probe', inheritedEnv: env, signal }
             ).catch((error: unknown) => {
@@ -200,12 +200,12 @@ export function createClaudeModelCatalogProbe(
               continue
             }
             const body = response.response
-            const listed = response.request_id === 'orca-model-discovery' ? listedModels(body) : []
+            const listed = response.request_id === 'occ-model-discovery' ? listedModels(body) : []
             if (listed.length > 0) {
               models = listed
               complete = isCompleteClaudeModelListing(body)
             }
-            if (response.request_id === 'orca-model-settings') {
+            if (response.request_id === 'occ-model-settings') {
               const applied = record(record(body)?.applied)
               if (
                 applied &&

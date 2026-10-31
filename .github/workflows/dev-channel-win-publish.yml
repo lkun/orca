@@ -26,7 +26,7 @@ concurrency:
 
 jobs:
   publish-win:
-    if: github.repository == 'stablyai/orca'
+    if: github.repository == 'stablyai/occ'
     environment: adhoc-mac-build
     runs-on: ubuntu-latest
     timeout-minutes: 165
@@ -93,7 +93,7 @@ jobs:
           app-id: ${{ secrets.HOURLY_RELEASE_APP_ID }}
           private-key: ${{ secrets.HOURLY_RELEASE_APP_PRIVATE_KEY }}
           owner: stablyai
-          repositories: orca-${{ inputs.channel }}
+          repositories: occ-${{ inputs.channel }}
 
       - name: Confirm the target release is live
         shell: bash
@@ -101,7 +101,7 @@ jobs:
           GH_TOKEN: ${{ steps.app_token.outputs.token }}
         run: |
           set -euo pipefail
-          draft="$(gh release view "$TAG" --repo "stablyai/orca-$CHANNEL" --json isDraft --jq '.isDraft')"
+          draft="$(gh release view "$TAG" --repo "stablyai/occ-$CHANNEL" --json isDraft --jq '.isDraft')"
           if [[ "$draft" != false ]]; then
             echo "::error::Release $TAG is not live; refusing to publish Windows artifacts."
             exit 1
@@ -113,7 +113,7 @@ jobs:
           timeout_minutes: 5
           max_attempts: 2
           retry_wait_seconds: 10
-          command: gh release upload "$TAG" staged-windows/occ-windows-setup.exe staged-windows/occ-windows-setup.exe.blockmap staged-windows/latest.yml --clobber --repo "stablyai/orca-$CHANNEL"
+          command: gh release upload "$TAG" staged-windows/occ-windows-setup.exe staged-windows/occ-windows-setup.exe.blockmap staged-windows/latest.yml --clobber --repo "stablyai/occ-$CHANNEL"
         env:
           GH_TOKEN: ${{ steps.app_token.outputs.token }}
 
@@ -123,7 +123,7 @@ jobs:
           GH_TOKEN: ${{ steps.app_token.outputs.token }}
         run: |
           set -euo pipefail
-          assets="$(gh release view "$TAG" --repo "stablyai/orca-$CHANNEL" --json assets --jq '.assets[].name')"
+          assets="$(gh release view "$TAG" --repo "stablyai/occ-$CHANNEL" --json assets --jq '.assets[].name')"
           for required in latest.yml occ-windows-setup.exe occ-windows-setup.exe.blockmap; do
             if ! grep -qx "$required" <<<"$assets"; then
               echo "::error::$TAG is missing $required; Windows could not install this build."

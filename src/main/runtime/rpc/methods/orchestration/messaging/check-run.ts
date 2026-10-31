@@ -1,6 +1,6 @@
 import type { MessageRow, MessageType, OrchestrationDb } from '../../../../orchestration/db'
 import type { MailboxDeliveryBatch } from '../../../../orchestration/db/messages/role-mailbox-delivery'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { RpcContext } from '../../../core'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import { formatMessageBanner } from '../../../../orchestration/formatter'
@@ -17,7 +17,7 @@ type CheckParamsInput = z.infer<typeof CheckParams>
 
 export async function checkRunMailbox(args: {
   params: CheckParamsInput
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   handle: string
   paneKey: string | undefined

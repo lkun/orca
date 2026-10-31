@@ -100,7 +100,7 @@ export function wrapPtySpawnInTerminalScope(
       '--quiet',
       '--collect',
       `--slice=${scopes.slice}`,
-      `--unit=orca_pty_${scopes.launchId}_${scopeCounter}.scope`,
+      `--unit=occ_pty_${scopes.launchId}_${scopeCounter}.scope`,
       ...scopes.properties.map((property) => `--property=${property}`),
       '--',
       ...(unsets.length + sets.length > 0 ? [scopes.envBinary, ...unsets, ...sets] : []),

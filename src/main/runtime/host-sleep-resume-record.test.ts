@@ -3,14 +3,14 @@ import type { AgentStatusIpcPayload } from '../../shared/agent-status-ipc-payloa
 import { partialRuntimeStore } from './runtime-store-partial-fixture'
 
 // Preserve side-effect order: mocks, lifecycle, fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('./orca-runtime-test-fixtures.spec')
+} = await import('./occ-runtime-test-fixtures.spec')
 const { bindPaneFirst, committingSpawn } = await import('./bind-first-pane.test-fixture')
 const { applyWorktreeSleepResumeRecords, captureWorktreeSleepResumeRecords } =
   await import('./terminal/stop/worktree-sleep-resume-records')
@@ -52,7 +52,7 @@ function makeRuntime(initialVerdict: Verdict, holderVerdict: Verdict = null) {
     connectionId: null
   })
   let rows: AgentStatusIpcPayload[] = []
-  const runtime = new OrcaRuntimeService(partialRuntimeStore(runtimeStore), undefined, {
+  const runtime = new OCCRuntimeService(partialRuntimeStore(runtimeStore), undefined, {
     getAgentProviderSessionSnapshot: () => rows,
     checkHookAgentPresence: async (paneKey: string) =>
       paneKey === HOLDER_PANE_KEY ? holderVerdict : verdict
@@ -86,7 +86,7 @@ function makeRuntime(initialVerdict: Verdict, holderVerdict: Verdict = null) {
   return { runtime, spawn, reportAgent, reportHolder, setVerdict }
 }
 
-function userActivate(runtime: InstanceType<typeof OrcaRuntimeService>) {
+function userActivate(runtime: InstanceType<typeof OCCRuntimeService>) {
   return runtime.activateMobileSessionTab(`id:${TEST_WORKTREE_ID}`, 'host-tab', HEADLESS_LEAF_ID, {
     notifyClients: false,
     navigation: 'caller',

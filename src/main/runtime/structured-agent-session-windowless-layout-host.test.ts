@@ -13,7 +13,7 @@ import { normalizeExecutionHostId } from '../../shared/execution-host'
 import { closeTestJournalHostDatabases } from '../native-chat/agent-session-journal/journal-host-database-test-support'
 import { recordingStructuredAgentSessionLogger } from '../native-chat/agent-session-wire/structured-agent-session-logger-test-support'
 import { seedTestAgentSessionRecordStore } from './agent-session-record-store-test-harness'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { withChatTabChanges } from './agent-session/agent-session-tab-layout'
 import {
   chatTabCommandsSettled as settled,
@@ -43,7 +43,7 @@ const EMPTY_SESSION: WorkspaceSessionState = {
 let root: string
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-windowless-chat-layout-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-windowless-chat-layout-'))
 })
 
 afterEach(async () => {
@@ -112,7 +112,7 @@ async function runtimeWithSavedChats(
   return { runtime, state }
 }
 
-class WindowlessRuntime extends OrcaRuntimeService {
+class WindowlessRuntime extends OCCRuntimeService {
   capturedSelection() {
     return this.legacyStructuredSessionTabIds
   }

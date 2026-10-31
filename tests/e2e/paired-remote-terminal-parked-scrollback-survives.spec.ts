@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   createRuntimeDesktopPairingOffer,
   launchPairedElectronClient
@@ -25,7 +25,7 @@ import { quotePosixShell } from '../../src/shared/shell-argument-quoting'
 
 const PARK_DELAY_MS = 2_000
 const PAINT_BUDGET_MS = 30_000
-const scratch = mkdtempSync(path.join(os.tmpdir(), 'orca-parked-scrollback-'))
+const scratch = mkdtempSync(path.join(os.tmpdir(), 'occ-parked-scrollback-'))
 
 // Send the token only through stdin: startup/argv text reappears on respawn, while only the old buffer can retain this echo.
 const fixturePath = path.join(scratch, 'parked-scrollback-terminal.mjs')
@@ -267,22 +267,22 @@ async function runParkRevealScenario(args: {
 }
 
 async function runScenario(
-  orcaPage: Page,
+  occPage: Page,
   testInfo: TestInfo,
   clientName: string,
   parkKind: ParkKind
 ): Promise<ParkRevealOutcome> {
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   const client = await launchPairedElectronClient(offer, testInfo, clientName, {
     extraEnv: {
-      ORCA_E2E_TERMINAL_PARKING_DELAY_MS: String(PARK_DELAY_MS),
+      OCC_E2E_TERMINAL_PARKING_DELAY_MS: String(PARK_DELAY_MS),
       // Budget one affects only force-park; ordinary-parkable worktrees bypass the budget ranker.
-      ORCA_E2E_TERMINAL_RETENTION_LIMIT: '1'
+      OCC_E2E_TERMINAL_RETENTION_LIMIT: '1'
     }
   })
   const createdTerminals: string[] = []
   try {
-    const worktreeIds = await readHostWorktreeIds(orcaPage)
+    const worktreeIds = await readHostWorktreeIds(occPage)
     await expect
       .poll(
         () =>
@@ -343,10 +343,10 @@ const FORCE_PARKED_SHARED: Omit<ParkRevealOutcome, 'tokenAfterReveal'> = {
 
 test.describe('host retains the buffer', () => {
   test('a cold-parked remote terminal restores its scrollback on reveal', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.setTimeout(600_000)
-    expect(await runScenario(orcaPage, testInfo, 'host-retains', 'ordinary')).toEqual(
+    expect(await runScenario(occPage, testInfo, 'host-retains', 'ordinary')).toEqual(
       RESTORED_LOCAL_ONLY
     )
   })
@@ -354,14 +354,14 @@ test.describe('host retains the buffer', () => {
 
 test.describe('host retains nothing', () => {
   test.use({
-    orcaAppExtraEnv: { ORCA_E2E_FORCE_REMOTE_TERMINAL_SNAPSHOT_UNAVAILABLE: '1' }
+    occAppExtraEnv: { OCC_E2E_FORCE_REMOTE_TERMINAL_SNAPSHOT_UNAVAILABLE: '1' }
   })
 
   test('a cold-parked remote terminal keeps its scrollback when the host cannot answer', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.setTimeout(600_000)
-    expect(await runScenario(orcaPage, testInfo, 'host-empty', 'ordinary')).toEqual(
+    expect(await runScenario(occPage, testInfo, 'host-empty', 'ordinary')).toEqual(
       RESTORED_LOCAL_ONLY
     )
   })
@@ -369,18 +369,18 @@ test.describe('host retains nothing', () => {
 
 test.describe('force-park with a host that cannot answer', () => {
   test.use({
-    orcaAppExtraEnv: {
-      ORCA_E2E_FORCE_REMOTE_TERMINAL_SNAPSHOT_UNAVAILABLE: '1',
+    occAppExtraEnv: {
+      OCC_E2E_FORCE_REMOTE_TERMINAL_SNAPSHOT_UNAVAILABLE: '1',
       // Omit paired-parking capability so this topology reaches retention-budget force-park.
-      ORCA_E2E_DISABLE_PAIRED_TERMINAL_PARKING: '1'
+      OCC_E2E_DISABLE_PAIRED_TERMINAL_PARKING: '1'
     }
   })
 
   test('a force-parked remote terminal keeps its shared-layout capture across an inventory frame', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.setTimeout(600_000)
-    const outcome = await runScenario(orcaPage, testInfo, 'force-park', 'force')
+    const outcome = await runScenario(occPage, testInfo, 'force-park', 'force')
     expect({
       tokenBeforePark: outcome.tokenBeforePark,
       parked: outcome.parked,

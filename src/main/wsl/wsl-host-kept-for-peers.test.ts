@@ -47,7 +47,7 @@ function connector(serverStop: WslHostServerStop): WslHostConnector {
 describe('a WSL host kept for another OCC', () => {
   let userData: string
   beforeEach(() => {
-    userData = mkdtempSync(join(tmpdir(), 'orca-wsl-kept-'))
+    userData = mkdtempSync(join(tmpdir(), 'occ-wsl-kept-'))
     store.removed = []
     store.pending = []
   })
@@ -80,7 +80,7 @@ describe('a WSL host kept for another OCC', () => {
     const blocked = join(userData, 'blocked')
     rmSync(blocked, { force: true })
     const { mkdirSync } = await import('node:fs')
-    mkdirSync(join(blocked, 'orca-wsl-hosts-kept-for-peers.json'), { recursive: true })
+    mkdirSync(join(blocked, 'occ-wsl-hosts-kept-for-peers.json'), { recursive: true })
     const removal = await removeWslHostServer(
       blocked,
       connector({ stopped: true, keptForOtherDesktops: ['OCC Dev'] }),

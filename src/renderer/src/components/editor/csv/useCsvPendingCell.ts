@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, type RefObject } from 'react'
 import { registerPendingEditorFlush } from '../editor-pending-flush'
-import { ORCA_EDITOR_FILE_SAVED_EVENT } from '../editor-autosave'
+import { OCC_EDITOR_FILE_SAVED_EVENT } from '../editor-autosave'
 import { isEditorSavedEventFor } from '../editor-saved-event-view'
 import type { CsvTextDocument } from './csv-text-document'
 import { editCsvTextCells } from './csv-text-cell-edits'
@@ -64,10 +64,10 @@ export function useCsvPendingCell({
         latest.current.onSessionChange({ ...draft, wasDirty: false })
       }
     }
-    window.addEventListener(ORCA_EDITOR_FILE_SAVED_EVENT, saved)
+    window.addEventListener(OCC_EDITOR_FILE_SAVED_EVENT, saved)
     return () => {
       unregister()
-      window.removeEventListener(ORCA_EDITOR_FILE_SAVED_EVENT, saved)
+      window.removeEventListener(OCC_EDITOR_FILE_SAVED_EVENT, saved)
     }
   }, [fileId, editingRef])
   return useCallback(

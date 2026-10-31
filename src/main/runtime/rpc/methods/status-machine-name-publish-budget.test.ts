@@ -1,14 +1,14 @@
 import os from 'node:os'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { normalizeMachineName } from '../../../../shared/machine-name'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import { MACHINE_NAME_PUBLISH_WAIT_MS } from '../../runtime-machine-name'
 import { STATUS_METHODS } from './status'
 import { partialRuntimeStore } from '../../runtime-store-partial-fixture'
 
 // Use a fresh process before its memoized scutil lookup completes; control completion to exercise the publish deadline.
 const runProcessMock = vi.hoisted(() => vi.fn())
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 
 vi.mock('electron', () => ({
   BrowserWindow: { fromId: vi.fn(() => null) },
@@ -36,7 +36,7 @@ describe('status.get publish budget', () => {
           finishLookup = resolve
         })
     )
-    const runtime = new OrcaRuntimeService(partialRuntimeStore({ getSettings: () => ({}) }))
+    const runtime = new OCCRuntimeService(partialRuntimeStore({ getSettings: () => ({}) }))
     expect(finishLookup).toBeTypeOf('function')
     const hostname = normalizeMachineName(os.hostname())
 

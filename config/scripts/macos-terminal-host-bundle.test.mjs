@@ -45,7 +45,7 @@ describe('terminal host Info.plist', () => {
       CFBundleIdentifier: 'com.lkun.occ',
       CFBundleName: 'OCC',
       CFBundleDisplayName: 'OCC',
-      CFBundleExecutable: 'orca-terminal-host',
+      CFBundleExecutable: 'occ-terminal-host',
       CFBundleVersion: '0',
       LSMinimumSystemVersion: '13.5',
       LSUIElement: true
@@ -128,7 +128,7 @@ describe('terminal host packaging config', () => {
     )
     const helper = '/out/mac-arm64/OCC.app/Contents/Helpers/OCC Terminal Host.app'
     expect(pattern.test(helper)).toBe(true)
-    expect(pattern.test(`${helper}/Contents/MacOS/orca-terminal-host`)).toBe(true)
+    expect(pattern.test(`${helper}/Contents/MacOS/occ-terminal-host`)).toBe(true)
     expect(pattern.test('/out/mac-arm64/OCC.app/Contents/Helpers/OCC Terminal Host.bundle')).toBe(
       false
     )
@@ -147,7 +147,7 @@ describe.skipIf(process.platform !== 'darwin')('terminal host assembly', () => {
   let appPath
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-terminal-host-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-terminal-host-'))
     appPath = join(root, 'OCC.app')
     const resources = join(appPath, 'Contents', 'Resources')
     const out = join(resources, 'app.asar.unpacked', 'out')
@@ -204,14 +204,14 @@ describe.skipIf(process.platform !== 'darwin')('terminal host assembly', () => {
     writeFileSync(join(main, 'daemon-entry.js'), "require('./chunks/kill.js')")
     writeFileSync(
       join(main, 'chunks', 'kill.js'),
-      "require(`node:fs`);require('os');require(`@orca/process-host/gate`)"
+      "require(`node:fs`);require('os');require(`@occ/process-host/gate`)"
     )
     // Main-process code shipped alongside is not part of the daemon.
     writeFileSync(join(main, 'index.js'), "require('unused');require(`electron`)")
     const modules = join(resources, 'node_modules')
-    mkdirSync(join(modules, '@orca', 'process-host', 'dist'), { recursive: true })
+    mkdirSync(join(modules, '@occ', 'process-host', 'dist'), { recursive: true })
     writeFileSync(
-      join(modules, '@orca', 'process-host', 'package.json'),
+      join(modules, '@occ', 'process-host', 'package.json'),
       '{"dependencies":{"retry":"1"}}'
     )
     mkdirSync(join(modules, 'retry'), { recursive: true })
@@ -226,9 +226,9 @@ describe.skipIf(process.platform !== 'darwin')('terminal host assembly', () => {
     })
     const helperModules = join(paths.daemon, 'node_modules')
     expect(daemonBareRequires(join(paths.daemon, 'out', 'main'))).toEqual([
-      '@orca/process-host/gate'
+      '@occ/process-host/gate'
     ])
-    expect(existsSync(join(helperModules, '@orca', 'process-host', 'package.json'))).toBe(true)
+    expect(existsSync(join(helperModules, '@occ', 'process-host', 'package.json'))).toBe(true)
     expect(existsSync(join(helperModules, 'retry', 'package.json'))).toBe(true)
     expect(existsSync(join(helperModules, 'unused'))).toBe(false)
     expect(existsSync(join(helperModules, 'electron'))).toBe(false)

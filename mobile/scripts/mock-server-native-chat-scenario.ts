@@ -11,12 +11,12 @@ import type {
 import type { RpcRequest, RpcResponse } from './mock-server-rpc-handlers'
 
 // Read send behavior from control file per request: restarting mock rekeys E2EE and forces re-pair, preventing mid-session native chat repros.
-const SEND_MODE_FILE = process.env.MOCK_SEND_MODE_FILE ?? join(tmpdir(), 'orca-mock-send-mode')
+const SEND_MODE_FILE = process.env.MOCK_SEND_MODE_FILE ?? join(tmpdir(), 'occ-mock-send-mode')
 const TERMINAL_LIST_MODE_FILE =
-  process.env.MOCK_TERMINAL_LIST_MODE_FILE ?? join(tmpdir(), 'orca-mock-terminal-list-mode')
+  process.env.MOCK_TERMINAL_LIST_MODE_FILE ?? join(tmpdir(), 'occ-mock-terminal-list-mode')
 // Write dead to model subscribed→end for gone PTY, exercising rearm bound and terminal pruning.
 const TERMINAL_STREAM_MODE_FILE =
-  process.env.MOCK_TERMINAL_STREAM_MODE_FILE ?? join(tmpdir(), 'orca-mock-terminal-stream-mode')
+  process.env.MOCK_TERMINAL_STREAM_MODE_FILE ?? join(tmpdir(), 'occ-mock-terminal-stream-mode')
 const TERMINAL_HANDLE = 'chat-term-1'
 const TAB_ID = 'chat-tab-1'
 const SESSION_ID = 'mock-chat-session'

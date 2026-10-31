@@ -15,7 +15,7 @@ import { createPtyWriteInput } from '../../../src/main/ipc/pty/ipc/write-input'
 import type { IPtyProvider } from '../../../src/main/providers/pty-provider-contract'
 import type * as PtyProviderRegistry from '../../../src/main/ipc/pty/provider/registry'
 import { ptyOwnership } from '../../../src/main/ipc/pty/provider/ownership-state'
-import { OrcaRuntimeService } from '../../../src/main/runtime/orca-runtime'
+import { OCCRuntimeService } from '../../../src/main/runtime/occ-runtime'
 import { makeStore } from '../../../src/main/runtime/runtime-rpc-worktree-store-fixtures'
 
 const io = vi.hoisted(() => ({
@@ -129,7 +129,7 @@ export function createSshDelivery(mode: 'accepted' | 'lost' | 'slow' = 'accepted
 
 export async function createPairedRuntime(ssh: ReturnType<typeof createSshDelivery>) {
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: This leaf-only fixture uses the existing store stub and never invokes repository mutations.
-  const runtime = new OrcaRuntimeService(makeStore() as never)
+  const runtime = new OCCRuntimeService(makeStore() as never)
   runtime.setPtyController({
     write: (_, data) => ssh.provider.write(ssh.id, data),
     writeWithSettlement: (_, data) => ssh.provider.writeWithSettlement(ssh.id, data),
@@ -191,7 +191,7 @@ async function bundleMobilePermissionModule(): Promise<unknown> {
     throw new Error('Mobile permission module did not build')
   }
   // Why a file, not a data: URL: the Bun test runtime resolves a long data: URL as a package name.
-  const dir = await mkdtemp(join(tmpdir(), 'orca-mobile-permission-send-'))
+  const dir = await mkdtemp(join(tmpdir(), 'occ-mobile-permission-send-'))
   try {
     const file = join(dir, 'mobile-native-chat-permission-send.mjs')
     await writeFile(file, source)

@@ -1,7 +1,7 @@
 import { isAbsolute } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import type { ProcessResult, ProcessSpec } from '@orca/process-host/process-spec'
-import { windowsPowerShellPath } from '@orca/process-host/windows-system-binary'
+import type { ProcessResult, ProcessSpec } from '@occ/process-host/process-spec'
+import { windowsPowerShellPath } from '@occ/process-host/windows-system-binary'
 import { withTimeout } from '../../shared/promise-timeout-fallback'
 
 export type ClipboardFileResult = { ok: boolean; reason?: string }
@@ -18,7 +18,7 @@ export type ClipboardFileDeps = {
   runProcess: (spec: ProcessSpec) => Promise<ProcessResult>
 }
 
-const WINDOWS_CLIPBOARD_FILE_ENV = 'ORCA_CLIPBOARD_FILE'
+const WINDOWS_CLIPBOARD_FILE_ENV = 'OCC_CLIPBOARD_FILE'
 export const CLIPBOARD_FILE_RESOLUTION_TIMEOUT_MS = 5_000
 
 // Publish local OS file references for file-manager paste; remote files are unavailable here. Return clipboard failures to the renderer.

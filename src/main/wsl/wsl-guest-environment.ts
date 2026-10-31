@@ -1,4 +1,4 @@
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   buildWslCapturedLoginShellCommand,
   buildWslExecArgs
@@ -57,9 +57,9 @@ async function probeGuestEnvironment(
 ): Promise<ProbeOutcome> {
   // Resolve env instead of assuming /usr/bin/env so relocated installs remain usable.
   const script = [
-    '_orca_env=$(command -v env 2>/dev/null || true)',
-    'case "$_orca_env" in /*) [ -x "$_orca_env" ] || exit 127 ;; *) exit 127 ;; esac',
-    `printf '%s\\0%s\\0%s' "$PATH" "$HOME" "$_orca_env"`
+    '_occ_env=$(command -v env 2>/dev/null || true)',
+    'case "$_occ_env" in /*) [ -x "$_occ_env" ] || exit 127 ;; *) exit 127 ;; esac',
+    `printf '%s\\0%s\\0%s' "$PATH" "$HOME" "$_occ_env"`
   ].join('\n')
   const captured = buildWslCapturedLoginShellCommand(script)
   const result = await runProcess({

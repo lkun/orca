@@ -4,11 +4,11 @@
  * keeps its claims on those projects for the stage's 7-day lifetime and refuses every retry. The
  * reset leaves this record; the next move into the distro aborts that stage by identity first.
  */
-import type { OrcadMigrationCatalogReferenceAbortResult } from '../../../shared/orcad-migration/orcad-migration-manifest'
-import { isRecord } from '../../../shared/orcad-migration/orcad-migration-manifest-fields'
+import type { OCCdMigrationCatalogReferenceAbortResult } from '../../../shared/occd-migration/occd-migration-manifest'
+import { isRecord } from '../../../shared/occd-migration/occd-migration-manifest-fields'
 import type { WslMoveCutover } from '../../../shared/wsl-move/wsl-move-cutover'
-import { createMigrationJournalDirectory } from '../migrating-orcad-catalog/migration-journal-directory'
-import type { OrcadMigrationDestinationCatalog } from '../../ssh/orcad-migration-cutover-coordinator'
+import { createMigrationJournalDirectory } from '../migrating-occd-catalog/migration-journal-directory'
+import type { OCCdMigrationDestinationCatalog } from '../../ssh/occd-migration-cutover-coordinator'
 
 export type WslMoveOwedHostAbort = {
   migrationId: string
@@ -18,7 +18,7 @@ export type WslMoveOwedHostAbort = {
 
 const owed = createMigrationJournalDirectory<WslMoveOwedHostAbort>({
   // Its own directory: builds without it never read it, and their stage simply expires.
-  directoryName: 'orcad-migration-wsl-owed-aborts',
+  directoryName: 'occd-migration-wsl-owed-aborts',
   maxFileBytes: 4096,
   parse: parseOwedAbort,
   unreadable: (detail) => new Error(`wsl_move_owed_aborts_unreadable: ${detail}`)
@@ -64,7 +64,7 @@ export function listWslMoveOwedHostAborts(userDataPath: string): WslMoveOwedHost
 export async function settleWslMoveOwedHostAborts(
   userDataPath: string,
   journalKey: string,
-  destination: Pick<OrcadMigrationDestinationCatalog, 'abortByReference'>,
+  destination: Pick<OCCdMigrationDestinationCatalog, 'abortByReference'>,
   warn: (message: string) => void = (message) => console.warn(message)
 ): Promise<void> {
   let pending: WslMoveOwedHostAbort[]
@@ -75,7 +75,7 @@ export async function settleWslMoveOwedHostAborts(
     return
   }
   for (const entry of pending) {
-    let answer: OrcadMigrationCatalogReferenceAbortResult
+    let answer: OCCdMigrationCatalogReferenceAbortResult
     try {
       answer = await destination.abortByReference(entry)
     } catch (error) {

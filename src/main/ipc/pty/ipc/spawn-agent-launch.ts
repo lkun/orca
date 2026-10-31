@@ -7,7 +7,7 @@ import { AgentLaunchTabClosedError } from '../../../../shared/agent-launch-tab-c
 import { trackRunningAgentLaunchPane } from '../../../agent-launch/agent-launch-pane-attachment'
 import { agentLaunchTokenFor } from '../../../agent-launch/agent-launch-token'
 import { resolveUnlaunchedIntent } from '../../../runtime/rpc/methods/agent-launch-intent-resolution'
-import type { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import type { Store } from '../../../persistence'
 import { resolveEarlyPaneKey } from './spawn-begin'
 import type { PtyIpcSpawnState } from './spawn-state'
@@ -26,7 +26,7 @@ function closedInSession(store: Store | undefined, paneKey: string): boolean {
 
 function withPlannedLaunch(
   args: PtySpawnIpcArgs,
-  planned: Awaited<ReturnType<OrcaRuntimeService['planAgentPaneLaunch']>>
+  planned: Awaited<ReturnType<OCCRuntimeService['planAgentPaneLaunch']>>
 ): PtySpawnIpcArgs {
   const {
     agentLaunch: _launch,
@@ -52,7 +52,7 @@ function withPlannedLaunch(
           env: {
             ...args.env,
             ...planned.env,
-            ...(launchToken ? { ORCA_AGENT_LAUNCH_TOKEN: launchToken } : {})
+            ...(launchToken ? { OCC_AGENT_LAUNCH_TOKEN: launchToken } : {})
           }
         }
       : {}),

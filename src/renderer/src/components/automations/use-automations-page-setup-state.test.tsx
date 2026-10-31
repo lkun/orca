@@ -77,8 +77,8 @@ describe('automation hooks cache key', () => {
   })
 })
 
-// G6: the create dialog's preview must not boot a stopped WSL distro, but a save still reads orca.yaml.
-describe('automation orca.yaml loading', () => {
+// G6: the create dialog's preview must not boot a stopped WSL distro, but a save still reads occ.yaml.
+describe('automation occ.yaml loading', () => {
   it('previews in the background and lets a save inspect in the foreground', async () => {
     const hooks = { scripts: { setup: 'pnpm i' } }
     let releasePreview!: (result: HookCheckResult) => void

@@ -110,13 +110,13 @@ describe('ProjectRoadmap', () => {
     ['pt-BR', 'pt-BR'],
     ['en-US-US', DEFAULT_LOCALE]
   ])('renders date ticks and bars with plugin locale %s', async (packLocale, dateLocale) => {
-    const packId = 'plugin:stablyai.orca-portuguese/pt-BR' as const
+    const packId = 'plugin:stablyai.occ-portuguese/pt-BR' as const
     const resourceLanguage = pluginLanguageResourceId(packId)
     setRendererPluginLanguagePacks([
       {
         id: packId,
         resourceLanguage,
-        pluginKey: 'stablyai.orca-portuguese',
+        pluginKey: 'stablyai.occ-portuguese',
         locale: packLocale,
         catalog: { common: { cancel: 'Cancelar' } },
         coverage: 100
@@ -208,7 +208,7 @@ describe('ProjectRoadmap', () => {
       expect(scroller.scrollLeft).toBe(123)
       fireEvent.click(screen.getByRole('button', { name: 'Year' }))
       expect(scroller.scrollLeft).not.toBe(123)
-      expect(window.localStorage.getItem('orca.githubProject.roadmapZoom')).toBe('year')
+      expect(window.localStorage.getItem('occ.githubProject.roadmapZoom')).toBe('year')
     }
   )
 

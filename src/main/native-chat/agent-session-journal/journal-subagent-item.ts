@@ -12,7 +12,7 @@ import { isSubagentBlock, type NativeChatSubagentBlock } from '../../../shared/n
 import { boundSubagentEntryId } from '../subagent-entry-id-bounds'
 
 export function subagentJournalItemIdentity(id: string): AgentJournalItemIdentity {
-  return { provider: 'orca', clientMessageId: `subagent:${boundSubagentEntryId(id)}` }
+  return { provider: 'occ', clientMessageId: `subagent:${boundSubagentEntryId(id)}` }
 }
 
 /** Include a plain-text fallback for older clients. */

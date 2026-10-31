@@ -4,18 +4,18 @@ import { isAbsolute, join } from 'node:path'
 
 // Fish ignores HISTFILE; isolate with fish_history names in its own data directory.
 // Redirecting XDG_DATA_HOME would also move every other tool’s data.
-const SESSION_PREFIX = 'orca_'
-const RELAY_SESSION_PREFIX = 'orca_relay_'
-const SAFE_SESSION_NAME = /^orca_(?:relay_)?[0-9a-f]{1,64}$/
+const SESSION_PREFIX = 'occ_'
+const RELAY_SESSION_PREFIX = 'occ_relay_'
+const SAFE_SESSION_NAME = /^occ_(?:relay_)?[0-9a-f]{1,64}$/
 /** Exclude relay names: desktop live-workspace sets do not describe remote clients’ history. */
-const ORCA_HISTORY_FILE = /^orca_([0-9a-f]{1,64})_history$/
+const OCC_HISTORY_FILE = /^occ_([0-9a-f]{1,64})_history$/
 
 export function isSafeFishHistorySession(session: unknown): session is string {
   return typeof session === 'string' && SAFE_SESSION_NAME.test(session)
 }
 
 /** Clear inherited OCC session names so nested apps cannot write into the launching workspace’s history. */
-export function dropInheritedOrcaFishHistory(env: Record<string, string | undefined>): void {
+export function dropInheritedOCCFishHistory(env: Record<string, string | undefined>): void {
   if (isSafeFishHistorySession(env.fish_history)) {
     delete env.fish_history
   }
@@ -81,7 +81,7 @@ export function sweepOrphanedFishHistoryFiles(
       continue
     }
     for (const entry of entries) {
-      const hash = ORCA_HISTORY_FILE.exec(entry)?.[1]
+      const hash = OCC_HISTORY_FILE.exec(entry)?.[1]
       if (!hash || liveWorktreeHashes.has(hash)) {
         continue
       }

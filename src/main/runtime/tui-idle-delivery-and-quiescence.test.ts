@@ -4,7 +4,7 @@ import { waitForTranscriptIdle } from './agent-transcript-pane-test-harness'
 import { registerBoundPty } from './bind-first-pane.test-fixture'
 import { RuntimeMachineName } from './runtime-machine-name'
 import type { RuntimeSyncWindowGraph } from '../../shared/runtime-types'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import type { TuiAgent } from '../../shared/tui-agent'
 
 // #6011 follow-ups: apply wait evidence ranking to typing/delivery and allow unobserved output clocks on the open quiet lane.
@@ -52,7 +52,7 @@ async function makeRuntime(launchAgent: TuiAgent | null, foreground = 'codex') {
 }
 
 /** Spy on actual delivery while running the real settlement gate. */
-function watchDelivery(runtime: OrcaRuntimeService) {
+function watchDelivery(runtime: OCCRuntimeService) {
   return vi
     .spyOn(runtime['orchestrationMailboxNotifications'], 'deliverForTerminal')
     .mockImplementation(() => {})

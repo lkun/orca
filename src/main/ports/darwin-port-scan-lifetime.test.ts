@@ -1,7 +1,7 @@
 import { once } from 'node:events'
 import { closeSync } from 'node:fs'
 import { afterEach, describe, expect, it } from 'vitest'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import type { ChildProcess } from 'node:child_process'
 import { openDarwinPortScanLock } from './darwin-port-scan-lock'
 import { runPortScanCommandInProcess } from './port-scan-command-execution'

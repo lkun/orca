@@ -586,7 +586,7 @@ describe('createMainWindow', () => {
 
     createMainWindow({
       getUI: () => ({}),
-      getSettings: () => ({ terminalShortcutPolicy: 'orca-first' })
+      getSettings: () => ({ terminalShortcutPolicy: 'occ-first' })
     } as never)
 
     const setFocusedListener = vi
@@ -653,7 +653,7 @@ describe('createMainWindow', () => {
     createMainWindow(
       {
         getUI: () => ({}),
-        getSettings: () => ({ terminalShortcutPolicy: 'orca-first' })
+        getSettings: () => ({ terminalShortcutPolicy: 'occ-first' })
       } as never,
       {
         getKeybindings: () => ({ 'worktree.quickOpen': ['DoubleTap+Shift'] })

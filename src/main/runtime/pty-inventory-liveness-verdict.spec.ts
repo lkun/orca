@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import { SSH_EXIT_UNCONFIRMED_REASON } from '../../shared/pty-liveness-verdict'
 import { registerBoundPty } from './bind-first-pane.test-fixture'
@@ -46,8 +46,8 @@ export function registerPtyInventoryLivenessVerdictTests(): void {
   function makeRuntimeMissingFromInventory(
     hasPty: () => boolean | null,
     listProcesses: () => Promise<{ id: string; worktreeId: string }[]> = vi.fn(async () => [])
-  ): OrcaRuntimeService {
-    const runtime = new OrcaRuntimeService(makeStore() as never)
+  ): OCCRuntimeService {
+    const runtime = new OCCRuntimeService(makeStore() as never)
     runtime.setPtyController({
       write: () => true,
       kill: () => true,
@@ -200,7 +200,7 @@ export function registerPtyInventoryLivenessVerdictTests(): void {
     })
 
     it('retains unresolved verdicts for every still-addressable PTY', () => {
-      const runtime = new OrcaRuntimeService(makeStore() as never)
+      const runtime = new OCCRuntimeService(makeStore() as never)
       for (let index = 0; index < 257; index += 1) {
         const ptyId = `ssh:conn-1@@relay-${index}`
         runtime.registerPty(ptyId, WORKTREE_ID, 'conn-1')
@@ -215,7 +215,7 @@ export function registerPtyInventoryLivenessVerdictTests(): void {
 
     it('bounds detached verdicts while preserving every still-addressable one', () => {
       // Evict only currently unaddressable ids so churn cannot discard live PTY verdicts.
-      const runtime = new OrcaRuntimeService(makeStore() as never)
+      const runtime = new OCCRuntimeService(makeStore() as never)
       for (let index = 0; index < 400; index += 1) {
         const ptyId = `ssh:conn-1@@churn-${index}`
         runtime.registerPty(ptyId, WORKTREE_ID, 'conn-1')

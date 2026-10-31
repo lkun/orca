@@ -3,8 +3,8 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { ElectronApplication, Page, TestInfo } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
-import { createRestartSession } from './helpers/orca-restart'
+import { test, expect } from './helpers/occ-app'
+import { createRestartSession } from './helpers/occ-restart'
 import { readPersistedProfileState } from './helpers/persisted-profile-state'
 import {
   moveTerminalPaneByLeafId,

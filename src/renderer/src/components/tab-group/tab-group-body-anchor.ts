@@ -1,6 +1,6 @@
 // Anchor retained panes to each group body so split changes do not reparent heavyweight DOM.
 
-const ANCHOR_PREFIX = '--orca-tab-group-body-'
+const ANCHOR_PREFIX = '--occ-tab-group-body-'
 
 /** Hex-encode group IDs, including remote path-like IDs, to produce valid CSS dashed identifiers. */
 export function tabGroupBodyAnchorName(groupId: string): string {

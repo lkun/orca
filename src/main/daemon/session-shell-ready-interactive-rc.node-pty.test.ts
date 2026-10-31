@@ -7,7 +7,7 @@ import { createPtySubprocess } from './pty-subprocess'
 import { Session } from './session'
 import { buildStartupCommandSubmission } from '../../shared/startup-command-submission'
 
-const STARTUP_OUTPUT = 'ORCA_STARTUP_COMMAND_RAN'
+const STARTUP_OUTPUT = 'OCC_STARTUP_COMMAND_RAN'
 const SECRET = 'hunter2'
 // A startup file that asks for a passphrase before the shell can reach its prompt, the shape a
 // `keychain`/`ssh-add` hook has.
@@ -41,9 +41,9 @@ async function startShell(
   startupFile: string,
   shellReadyTimeoutMs: number,
   prompt: string,
-  command = `printf 'ORCA_STARTUP_%s\\n' COMMAND_RAN\r`
+  command = `printf 'OCC_STARTUP_%s\\n' COMMAND_RAN\r`
 ): Promise<{ session: Session; output: () => string; cleanup: () => Promise<void> }> {
-  const tempHome = mkdtempSync(join(tmpdir(), 'orca-zsh-interactive-init-restore-'))
+  const tempHome = mkdtempSync(join(tmpdir(), 'occ-zsh-interactive-init-restore-'))
   writeFileSync(join(tempHome, startupFile), prompt)
   const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
   const subprocess = await createPtySubprocess({
@@ -60,7 +60,7 @@ async function startShell(
       SHELL: shellPath,
       TERM: 'xterm-256color'
     },
-    envToDelete: ['ZDOTDIR', 'ORCA_ORIG_ZDOTDIR']
+    envToDelete: ['ZDOTDIR', 'OCC_ORIG_ZDOTDIR']
   })
   const session = new Session({
     sessionId: `interactive-rc-${startupFile}`,
@@ -94,7 +94,7 @@ describe.each(SHELLS)(
       'accepts the answer before readiness and runs startup once',
       async () => {
         const command = timeout
-          ? `[[ -o nonomatch ]] && printf 'ORCA_STARTUP_%s\\n' COMMAND_RAN\r`
+          ? `[[ -o nonomatch ]] && printf 'OCC_STARTUP_%s\\n' COMMAND_RAN\r`
           : undefined
         const running = await startShell(
           shellPath,
@@ -113,7 +113,7 @@ describe.each(SHELLS)(
           expect(running.session.shellState).toBe(timeout ? 'timed_out' : 'ready')
           expect(running.output().split(STARTUP_OUTPUT).length - 1).toBe(1)
           expect(running.output()).not.toContain(
-            'no such hash table element: __orca_deferred_sched_init'
+            'no such hash table element: __occ_deferred_sched_init'
           )
         } finally {
           await running.cleanup()

@@ -121,7 +121,7 @@ describe('Slack operator command', () => {
       '--default-host',
       'user-1:machine',
       '--default-project',
-      'stablyai/orca',
+      'stablyai/occ',
       '--channel-project',
       'C1=web'
     )
@@ -130,7 +130,7 @@ describe('Slack operator command', () => {
     ).toEqual({
       accountId: 'user-1',
       defaultHostId: 'user-1:machine',
-      defaultProject: 'stablyai/orca',
+      defaultProject: 'stablyai/occ',
       containerProjects: { C1: 'web' }
     })
     expect(await run('hosts', '--account', 'user-1')).toBe(

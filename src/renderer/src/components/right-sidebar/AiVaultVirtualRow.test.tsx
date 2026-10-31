@@ -9,7 +9,7 @@ import type { AiVaultSearchHit } from '../../../../shared/ai-vault-search-types'
 import type { AgentDotState } from '@/components/AgentStateDot'
 import { useAppStore } from '@/store'
 import { createEditorStore } from '@/store/slices/editor-slice-test-harness'
-import { openAiVaultSessionLogInOrca } from './ai-vault-session-log-open'
+import { openAiVaultSessionLogInOCC } from './ai-vault-session-log-open'
 import { aiVaultSearchHitToSession } from './ai-vault-search-session'
 import { AiVaultVirtualRow } from './AiVaultVirtualRow'
 
@@ -123,7 +123,7 @@ describe('AiVaultVirtualRow conversation logs', () => {
       evidence: null
     }
     renderSession(aiVaultSearchHitToSession(hit, 'local'), false, hit, undefined, {
-      onOpenLog: openAiVaultSessionLogInOrca
+      onOpenLog: openAiVaultSessionLogInOCC
     })
 
     const user = userEvent.setup()
@@ -161,7 +161,7 @@ describe('AiVaultVirtualRow conversation logs', () => {
         false,
         undefined,
         undefined,
-        { onOpenLog: openAiVaultSessionLogInOrca }
+        { onOpenLog: openAiVaultSessionLogInOCC }
       )
       expect(screen.getByText('Conversation not saved')).toBeTruthy()
       expect(screen.queryByRole('button', { name: 'View Log' })).toBeNull()

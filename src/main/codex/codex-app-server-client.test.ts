@@ -130,7 +130,7 @@ function createStubRequest(
   },
   onTestFinished?: TestContext['onTestFinished']
 ): { request: CodexHookTrustGrantRequest; recordFile: string; pidFile: string } {
-  const root = mkdtempSync(join(tmpdir(), 'orca-codex-stub-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-codex-stub-'))
   if (onTestFinished) {
     onTestFinished(() => rmSync(root, { recursive: true, force: true }))
   } else {
@@ -166,7 +166,7 @@ function createStubRequest(
   }
 }
 
-const MANAGED_COMMAND = "/bin/sh '/tmp/orca/codex-hook.sh'"
+const MANAGED_COMMAND = "/bin/sh '/tmp/occ/codex-hook.sh'"
 // Allow loaded hosts to start the supervisor and stub before the spawn-time deadline expires.
 const STUB_START_DEADLINE_MS = 8_000
 
@@ -479,7 +479,7 @@ describe('runCodexHookTrustGrantSession', () => {
   it('surfaces spawn failures as regular errors, not capability signals', async () => {
     const request: CodexHookTrustGrantRequest = {
       invocation: {
-        command: join(tmpdir(), 'orca-codex-missing-binary-does-not-exist'),
+        command: join(tmpdir(), 'occ-codex-missing-binary-does-not-exist'),
         cliPath: null,
         args: [],
         timeoutMs: 2_000

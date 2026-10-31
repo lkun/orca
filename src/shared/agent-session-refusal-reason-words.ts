@@ -17,7 +17,7 @@ export type AgentSessionRefusalAction =
   /** Continue somewhere else: the current conversation, or a new chat. */
   | 'goElsewhere'
   | 'checkChat'
-  | 'updateOrca'
+  | 'updateOCC'
   /** What the write was for is over: the question it answered moved on. */
   | 'nothingLeft'
   /** OCC's own state or fault; nothing the person does gets past it. */
@@ -167,7 +167,7 @@ const REASON_WORDS = {
     handoffInFlight: codeWords('retry')
   },
   agent_session_operation_expired: { operationExpired: codeWords('retry') },
-  agent_session_operation_capacity: { operationCapacity: codeWords('updateOrca') },
+  agent_session_operation_capacity: { operationCapacity: codeWords('updateOCC') },
   agent_session_operation_unknown: {
     outcomeUnknown: codeWords('checkChat'),
     resultLost: codeWords('checkChat'),
@@ -182,9 +182,9 @@ const REASON_WORDS = {
     // Says its step despite 'retry' unless a Retry stands beside it: the phone often has none.
     journalUnavailable: causeWords('historyUnavailable', 'retry', 'tryAgain'),
     // Writes meet newer/read-only databases; reads meet this chat, opened only by an update.
-    journalWrittenByNewerOrca: {
-      ...causeWords('savedByNewerOrca', 'updateOrca', 'updateOrcaToKeepUsing'),
-      history: { cause: 'chatSavedByNewerOrca', step: 'updateOrcaToOpenChat' }
+    journalWrittenByNewerOCC: {
+      ...causeWords('savedByNewerOCC', 'updateOCC', 'updateOCCToKeepUsing'),
+      history: { cause: 'chatSavedByNewerOCC', step: 'updateOCCToOpenChat' }
     }
   },
   // Unknown methods justify the code's update advice; unsupported agents/locations or absent chat hosts do not. Only hostUnsupported names the unsupported cause; missing client capabilities retain older copy.

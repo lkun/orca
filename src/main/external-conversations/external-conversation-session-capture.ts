@@ -7,7 +7,7 @@ import type { AgentStatusIpcPayload } from '../../shared/agent-status-ipc-payloa
 import { getConnectionExecutionHostId, type ExecutionHostId } from '../../shared/execution-host'
 import type { ExternalConversationLink } from '../../shared/external-conversation-link'
 import { isLocalHookConnectionId } from '../../shared/wsl-hook-relay-contract'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import {
   allLinks,
   findLink,
@@ -17,7 +17,7 @@ import {
 } from './external-conversation-links'
 import type { ConversationKey } from './external-conversation-types'
 
-export type SessionRows = Pick<OrcaRuntimeService, 'getAgentStatusRowsForPane'>
+export type SessionRows = Pick<OCCRuntimeService, 'getAgentStatusRowsForPane'>
 
 type CapturedSession = Required<Pick<ExternalConversationLink, 'providerSession' | 'captureHostId'>>
 

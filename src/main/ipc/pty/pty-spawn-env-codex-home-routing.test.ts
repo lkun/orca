@@ -38,7 +38,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -61,9 +61,9 @@ describe('registerPtyHandlers', () => {
     it('does not use an inherited Pi overlay source for an OMP launch', async () => {
       const env = await spawnAndGetEnv(
         {
-          PI_CODING_AGENT_DIR: '/tmp/parent-orca-pi-overlay',
-          ORCA_PI_CODING_AGENT_DIR: '/tmp/parent-orca-pi-overlay',
-          ORCA_PI_SOURCE_AGENT_DIR: '/tmp/user-pi-agent'
+          PI_CODING_AGENT_DIR: '/tmp/parent-occ-pi-overlay',
+          OCC_PI_CODING_AGENT_DIR: '/tmp/parent-occ-pi-overlay',
+          OCC_PI_SOURCE_AGENT_DIR: '/tmp/user-pi-agent'
         },
         undefined,
         undefined,
@@ -74,17 +74,17 @@ describe('registerPtyHandlers', () => {
       expect(piBuildPtyEnvMock).toHaveBeenCalledWith(expect.any(String), undefined, 'omp', {
         materializeDefaultHome: true
       })
-      expect(env.ORCA_OMP_CODING_AGENT_DIR).toBeUndefined()
-      expect(env.ORCA_OMP_SOURCE_AGENT_DIR).toBe('/tmp/default-omp-agent')
-      expect(env.ORCA_PI_CODING_AGENT_DIR).toBeUndefined()
-      expect(env.ORCA_PI_SOURCE_AGENT_DIR).toBeUndefined()
+      expect(env.OCC_OMP_CODING_AGENT_DIR).toBeUndefined()
+      expect(env.OCC_OMP_SOURCE_AGENT_DIR).toBe('/tmp/default-omp-agent')
+      expect(env.OCC_PI_CODING_AGENT_DIR).toBeUndefined()
+      expect(env.OCC_PI_SOURCE_AGENT_DIR).toBeUndefined()
     })
     it('does not use an inherited OMP overlay source for an explicit Pi launch', async () => {
       const env = await spawnAndGetEnv(
         {
-          PI_CODING_AGENT_DIR: '/tmp/parent-orca-omp-overlay',
-          ORCA_OMP_CODING_AGENT_DIR: '/tmp/parent-orca-omp-overlay',
-          ORCA_OMP_SOURCE_AGENT_DIR: '/tmp/user-omp-agent'
+          PI_CODING_AGENT_DIR: '/tmp/parent-occ-omp-overlay',
+          OCC_OMP_CODING_AGENT_DIR: '/tmp/parent-occ-omp-overlay',
+          OCC_OMP_SOURCE_AGENT_DIR: '/tmp/user-omp-agent'
         },
         undefined,
         undefined,
@@ -95,18 +95,18 @@ describe('registerPtyHandlers', () => {
       expect(piBuildPtyEnvMock).toHaveBeenCalledWith(expect.any(String), undefined, 'pi', {
         materializeDefaultHome: true
       })
-      expect(env.ORCA_PI_CODING_AGENT_DIR).toBeUndefined()
-      expect(env.ORCA_PI_SOURCE_AGENT_DIR).toBe('/tmp/default-pi-agent')
-      expect(env.ORCA_OMP_CODING_AGENT_DIR).toBeUndefined()
-      expect(env.ORCA_OMP_SOURCE_AGENT_DIR).toBeUndefined()
-      expect(env.ORCA_OMP_STATUS_EXTENSION).toBeUndefined()
+      expect(env.OCC_PI_CODING_AGENT_DIR).toBeUndefined()
+      expect(env.OCC_PI_SOURCE_AGENT_DIR).toBe('/tmp/default-pi-agent')
+      expect(env.OCC_OMP_CODING_AGENT_DIR).toBeUndefined()
+      expect(env.OCC_OMP_SOURCE_AGENT_DIR).toBeUndefined()
+      expect(env.OCC_OMP_STATUS_EXTENSION).toBeUndefined()
     })
     it('restores user Pi config when agent status hooks are disabled in a nested OCC shell', async () => {
       const env = await spawnAndGetEnv(
         {
-          PI_CODING_AGENT_DIR: '/tmp/parent-orca-pi-overlay',
-          ORCA_PI_CODING_AGENT_DIR: '/tmp/parent-orca-pi-overlay',
-          ORCA_PI_SOURCE_AGENT_DIR: '/tmp/user-pi-agent'
+          PI_CODING_AGENT_DIR: '/tmp/parent-occ-pi-overlay',
+          OCC_PI_CODING_AGENT_DIR: '/tmp/parent-occ-pi-overlay',
+          OCC_PI_SOURCE_AGENT_DIR: '/tmp/user-pi-agent'
         },
         undefined,
         undefined,
@@ -115,14 +115,14 @@ describe('registerPtyHandlers', () => {
 
       expect(piBuildPtyEnvMock).not.toHaveBeenCalled()
       expect(env.PI_CODING_AGENT_DIR).toBe('/tmp/user-pi-agent')
-      expect(env.ORCA_PI_CODING_AGENT_DIR).toBeUndefined()
-      expect(env.ORCA_PI_SOURCE_AGENT_DIR).toBeUndefined()
+      expect(env.OCC_PI_CODING_AGENT_DIR).toBeUndefined()
+      expect(env.OCC_PI_SOURCE_AGENT_DIR).toBeUndefined()
     })
     it('strips only the Prime source shadow when hooks are disabled', async () => {
       const env = await spawnAndGetEnv(
         {
           PRIME_AGENT_CODING_AGENT_DIR: '/tmp/user-prime-agent',
-          ORCA_PRIME_AGENT_SOURCE_AGENT_DIR: '/tmp/user-prime-agent'
+          OCC_PRIME_AGENT_SOURCE_AGENT_DIR: '/tmp/user-prime-agent'
         },
         undefined,
         undefined,
@@ -130,7 +130,7 @@ describe('registerPtyHandlers', () => {
       )
 
       expect(env.PRIME_AGENT_CODING_AGENT_DIR).toBe('/tmp/user-prime-agent')
-      expect(env.ORCA_PRIME_AGENT_SOURCE_AGENT_DIR).toBeUndefined()
+      expect(env.OCC_PRIME_AGENT_SOURCE_AGENT_DIR).toBeUndefined()
     })
     posixOnlyIt(
       'uses Pi config exported only by shell startup files as the managed extension target',
@@ -152,51 +152,51 @@ describe('registerPtyHandlers', () => {
           { materializeDefaultHome: false }
         )
         expect(env.PI_CODING_AGENT_DIR).toBeUndefined()
-        expect(env.ORCA_PI_CODING_AGENT_DIR).toBeUndefined()
-        expect(env.ORCA_PI_SOURCE_AGENT_DIR).toBe('/home/tester/.config/pi-agent')
+        expect(env.OCC_PI_CODING_AGENT_DIR).toBeUndefined()
+        expect(env.OCC_PI_SOURCE_AGENT_DIR).toBe('/home/tester/.config/pi-agent')
       }
     )
     it('injects the agent hook receiver env into OCC terminal PTYs', async () => {
       const env = await spawnAndGetEnv()
       expect(buildAgentHookEnvMock).toHaveBeenCalledTimes(1)
-      expect(env.ORCA_AGENT_HOOK_PORT).toBe('5678')
-      expect(env.ORCA_AGENT_HOOK_TOKEN).toBe('agent-token')
+      expect(env.OCC_AGENT_HOOK_PORT).toBe('5678')
+      expect(env.OCC_AGENT_HOOK_TOKEN).toBe('agent-token')
     })
     it('strips stale inherited hook receiver env before injecting this runtime', async () => {
       const env = await spawnAndGetEnv({
-        ORCA_AGENT_HOOK_PORT: '1111',
-        ORCA_AGENT_HOOK_TOKEN: 'stale-token',
-        ORCA_AGENT_HOOK_ENV: 'production',
-        ORCA_AGENT_HOOK_VERSION: 'stale-version',
-        ORCA_AGENT_HOOK_ENDPOINT: '/tmp/stale-endpoint.env',
-        ORCA_CLAUDE_AGENT_STATUS_SETTINGS: '/tmp/orca/agent-hooks/claude-agent-status-settings.json'
+        OCC_AGENT_HOOK_PORT: '1111',
+        OCC_AGENT_HOOK_TOKEN: 'stale-token',
+        OCC_AGENT_HOOK_ENV: 'production',
+        OCC_AGENT_HOOK_VERSION: 'stale-version',
+        OCC_AGENT_HOOK_ENDPOINT: '/tmp/stale-endpoint.env',
+        OCC_CLAUDE_AGENT_STATUS_SETTINGS: '/tmp/occ/agent-hooks/claude-agent-status-settings.json'
       })
 
-      expect(env.ORCA_AGENT_HOOK_PORT).toBe('5678')
-      expect(env.ORCA_AGENT_HOOK_TOKEN).toBe('agent-token')
-      expect(env.ORCA_AGENT_HOOK_ENV).toBeUndefined()
-      expect(env.ORCA_AGENT_HOOK_VERSION).toBeUndefined()
-      expect(env.ORCA_AGENT_HOOK_ENDPOINT).toBeUndefined()
-      expect(env.ORCA_CLAUDE_AGENT_STATUS_SETTINGS).toBeUndefined()
+      expect(env.OCC_AGENT_HOOK_PORT).toBe('5678')
+      expect(env.OCC_AGENT_HOOK_TOKEN).toBe('agent-token')
+      expect(env.OCC_AGENT_HOOK_ENV).toBeUndefined()
+      expect(env.OCC_AGENT_HOOK_VERSION).toBeUndefined()
+      expect(env.OCC_AGENT_HOOK_ENDPOINT).toBeUndefined()
+      expect(env.OCC_CLAUDE_AGENT_STATUS_SETTINGS).toBeUndefined()
     })
     it('does not leak inherited hook receiver env if the hook server is unavailable', async () => {
       buildAgentHookEnvMock.mockReturnValueOnce({})
 
       const env = await spawnAndGetEnv({
-        ORCA_AGENT_HOOK_PORT: '1111',
-        ORCA_AGENT_HOOK_TOKEN: 'stale-token',
-        ORCA_AGENT_HOOK_ENV: 'production',
-        ORCA_AGENT_HOOK_VERSION: 'stale-version',
-        ORCA_AGENT_HOOK_ENDPOINT: '/tmp/stale-endpoint.env',
-        ORCA_CLAUDE_AGENT_STATUS_SETTINGS: '/tmp/orca/agent-hooks/claude-agent-status-settings.json'
+        OCC_AGENT_HOOK_PORT: '1111',
+        OCC_AGENT_HOOK_TOKEN: 'stale-token',
+        OCC_AGENT_HOOK_ENV: 'production',
+        OCC_AGENT_HOOK_VERSION: 'stale-version',
+        OCC_AGENT_HOOK_ENDPOINT: '/tmp/stale-endpoint.env',
+        OCC_CLAUDE_AGENT_STATUS_SETTINGS: '/tmp/occ/agent-hooks/claude-agent-status-settings.json'
       })
 
-      expect(env.ORCA_AGENT_HOOK_PORT).toBeUndefined()
-      expect(env.ORCA_AGENT_HOOK_TOKEN).toBeUndefined()
-      expect(env.ORCA_AGENT_HOOK_ENV).toBeUndefined()
-      expect(env.ORCA_AGENT_HOOK_VERSION).toBeUndefined()
-      expect(env.ORCA_AGENT_HOOK_ENDPOINT).toBeUndefined()
-      expect(env.ORCA_CLAUDE_AGENT_STATUS_SETTINGS).toBeUndefined()
+      expect(env.OCC_AGENT_HOOK_PORT).toBeUndefined()
+      expect(env.OCC_AGENT_HOOK_TOKEN).toBeUndefined()
+      expect(env.OCC_AGENT_HOOK_ENV).toBeUndefined()
+      expect(env.OCC_AGENT_HOOK_VERSION).toBeUndefined()
+      expect(env.OCC_AGENT_HOOK_ENDPOINT).toBeUndefined()
+      expect(env.OCC_CLAUDE_AGENT_STATUS_SETTINGS).toBeUndefined()
     })
     it('overrides ambient CODEX_HOME with the OCC-managed home for system default', async () => {
       const env = await spawnAndGetEnv(
@@ -205,7 +205,7 @@ describe('registerPtyHandlers', () => {
         () => TEST_CODEX_HOME
       )
       expect(env.CODEX_HOME).toBe(TEST_CODEX_HOME)
-      expect(env.ORCA_CODEX_HOME).toBe(TEST_CODEX_HOME)
+      expect(env.OCC_CODEX_HOME).toBe(TEST_CODEX_HOME)
     })
     it('waits for managed Codex auth before spawning a local PTY', async () => {
       vi.useFakeTimers()
@@ -244,7 +244,7 @@ describe('registerPtyHandlers', () => {
 
       expect(spawnMock.mock.calls.at(-1)?.[2].env).toMatchObject({
         CODEX_HOME: TEST_CODEX_HOME,
-        ORCA_CODEX_HOME: TEST_CODEX_HOME
+        OCC_CODEX_HOME: TEST_CODEX_HOME
       })
     })
     it('arbitrates the exact backfill owner before spawning Codex', async () => {
@@ -345,23 +345,23 @@ describe('registerPtyHandlers', () => {
     })
     it('strips a nested-OCC override for system default when the real-home flag is ON', async () => {
       const env = await spawnAndGetEnv(
-        { CODEX_HOME: '/managed/home', ORCA_CODEX_HOME: '/managed/home' },
+        { CODEX_HOME: '/managed/home', OCC_CODEX_HOME: '/managed/home' },
         undefined,
         () => null,
         () => ({ codexSystemDefaultRealHomeEnabled: true }) as never
       )
       expect(env.CODEX_HOME).toBeUndefined()
-      expect(env.ORCA_CODEX_HOME).toBeUndefined()
+      expect(env.OCC_CODEX_HOME).toBeUndefined()
     })
     it('preserves a user-owned CODEX_HOME for system default when the real-home flag is ON', async () => {
       const env = await spawnAndGetEnv(
         { CODEX_HOME: '/home/me/.config/codex' },
-        { ORCA_CODEX_HOME: undefined },
+        { OCC_CODEX_HOME: undefined },
         () => null,
         () => ({ codexSystemDefaultRealHomeEnabled: true }) as never
       )
       expect(env.CODEX_HOME).toBe('/home/me/.config/codex')
-      expect(env.ORCA_CODEX_HOME).toBeUndefined()
+      expect(env.OCC_CODEX_HOME).toBeUndefined()
     })
     it('lets the resolver keep a per-spawn custom CODEX_HOME on the managed lane', async () => {
       const customHome = '/home/me/.config/codex'
@@ -373,7 +373,7 @@ describe('registerPtyHandlers', () => {
 
       const env = await spawnAndGetEnv(
         { CODEX_HOME: customHome },
-        { CODEX_HOME: undefined, ORCA_CODEX_HOME: undefined },
+        { CODEX_HOME: undefined, OCC_CODEX_HOME: undefined },
         resolveHome,
         () => ({ codexSystemDefaultRealHomeEnabled: true }) as never
       )
@@ -382,7 +382,7 @@ describe('registerPtyHandlers', () => {
       expect(resolveHome.mock.calls[0]?.[0]).toEqual({ runtime: 'host' })
       expect(resolvedCodexHome).toBe(customHome)
       expect(env.CODEX_HOME).toBe(TEST_CODEX_HOME)
-      expect(env.ORCA_CODEX_HOME).toBe(TEST_CODEX_HOME)
+      expect(env.OCC_CODEX_HOME).toBe(TEST_CODEX_HOME)
     })
     it('injects explicit proxy settings into local PTY env', async () => {
       const env = await spawnAndGetEnv(undefined, undefined, undefined, () => ({

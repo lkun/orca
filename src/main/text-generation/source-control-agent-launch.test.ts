@@ -3,8 +3,8 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
-import type * as RunProcess from '@orca/process-host'
-import type { ProcessSpec } from '@orca/process-host/process-spec'
+import type * as RunProcess from '@occ/process-host'
+import type { ProcessSpec } from '@occ/process-host/process-spec'
 import { POSIX_PROVIDER_SUPERVISOR_SCRIPT } from '../provider-process/provider-process-supervisor'
 import { generateCommitMessageFromContext } from './commit-message-text-generation'
 import { withPlatform } from './commit-message-text-generation-test-harness'
@@ -12,7 +12,7 @@ import { spawnSourceControlAgent } from './source-control-agent-launch'
 
 const { spawnProcessMock } = vi.hoisted(() => ({ spawnProcessMock: vi.fn() }))
 
-vi.mock('@orca/process-host', async (importOriginal) => {
+vi.mock('@occ/process-host', async (importOriginal) => {
   const actual = await importOriginal<typeof RunProcess>()
   spawnProcessMock.mockImplementation(actual.spawnProcess)
   return { ...actual, spawnProcess: spawnProcessMock }
@@ -31,10 +31,10 @@ function lastSpawnSpec(): ProcessSpec {
 }
 
 function decodedSupervisorSpec(spec: ProcessSpec): Record<string, unknown> {
-  return JSON.parse(Buffer.from(spec.env!.ORCA_PROVIDER_SUPERVISOR_SPEC!, 'base64').toString())
+  return JSON.parse(Buffer.from(spec.env!.OCC_PROVIDER_SUPERVISOR_SPEC!, 'base64').toString())
 }
 
-const folder = mkdtempSync(join(tmpdir(), 'orca-agent-launch-'))
+const folder = mkdtempSync(join(tmpdir(), 'occ-agent-launch-'))
 afterAll(() => rmSync(folder, { recursive: true, force: true }))
 
 beforeEach(() => {
@@ -91,7 +91,7 @@ describe('spawnSourceControlAgent', () => {
       program: 'C:/tools/agent.exe',
       args: ['--print']
     })
-    expect(lastSpawnSpec().env).not.toHaveProperty('ORCA_PROVIDER_SUPERVISOR_SPEC')
+    expect(lastSpawnSpec().env).not.toHaveProperty('OCC_PROVIDER_SUPERVISOR_SPEC')
   })
 
   it('hands an npm .cmd shim to process-host unwrapped, multi-line prompt included', () => {

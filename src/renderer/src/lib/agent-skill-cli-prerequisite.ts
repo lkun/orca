@@ -2,7 +2,7 @@ import { toast } from 'sonner'
 import type { CliInstallStatus } from '../../../shared/cli-install-types'
 import { translate } from '@/i18n/i18n'
 
-type EnsureOrcaCliAvailableOptions = {
+type EnsureOCCCliAvailableOptions = {
   onStatusChange?: (status: CliInstallStatus) => void
   registrationPromptDelayMs?: number
 }
@@ -11,14 +11,14 @@ export const CLI_PREREQUISITE_REGISTRATION_TOAST = 'OCC needs to register its CL
 export const CLI_PREREQUISITE_REGISTRATION_TOAST_DESCRIPTION =
   'Approve the system prompt so skill setup can use the OCC CLI command.'
 
-export function isOrcaCliAvailableOnPath(status: CliInstallStatus | null | undefined): boolean {
+export function isOCCCliAvailableOnPath(status: CliInstallStatus | null | undefined): boolean {
   return status?.state === 'installed' && status.pathConfigured === true
 }
 
-export async function ensureOrcaCliAvailableForAgentSkillTerminal({
+export async function ensureOCCCliAvailableForAgentSkillTerminal({
   onStatusChange,
   registrationPromptDelayMs = 700
-}: EnsureOrcaCliAvailableOptions = {}): Promise<CliInstallStatus | null> {
+}: EnsureOCCCliAvailableOptions = {}): Promise<CliInstallStatus | null> {
   try {
     const status = await window.api.cli.getInstallStatus()
     onStatusChange?.(status)
@@ -35,7 +35,7 @@ export async function ensureOrcaCliAvailableForAgentSkillTerminal({
 
     if (status.state !== 'installed' || status.pathConfigured === false) {
       // Show app context before macOS can immediately present its native authorization prompt.
-      await showOrcaCliRegistrationPromptToast(registrationPromptDelayMs)
+      await showOCCCliRegistrationPromptToast(registrationPromptDelayMs)
       const next = await window.api.cli.install()
       onStatusChange?.(next)
       showCliPrerequisiteWarning(next)
@@ -56,7 +56,7 @@ export async function ensureOrcaCliAvailableForAgentSkillTerminal({
   }
 }
 
-async function showOrcaCliRegistrationPromptToast(delayMs = 700): Promise<void> {
+async function showOCCCliRegistrationPromptToast(delayMs = 700): Promise<void> {
   toast.message(CLI_PREREQUISITE_REGISTRATION_TOAST, {
     description: CLI_PREREQUISITE_REGISTRATION_TOAST_DESCRIPTION
   })

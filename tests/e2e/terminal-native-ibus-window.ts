@@ -12,10 +12,10 @@ export async function presentNativeIbusWindow(
         process.platform !== 'linux' ||
         process.env.GITHUB_ACTIONS !== 'true' ||
         process.env.RUNNER_ENVIRONMENT !== 'github-hosted' ||
-        process.env.ORCA_E2E_NATIVE_IBUS_HANGUL !== '1' ||
-        process.env.ORCA_E2E_NATIVE_IBUS_XVFB !== '1' ||
+        process.env.OCC_E2E_NATIVE_IBUS_HANGUL !== '1' ||
+        process.env.OCC_E2E_NATIVE_IBUS_XVFB !== '1' ||
         !/^:\d+(?:\.\d+)?$/.test(process.env.DISPLAY ?? '') ||
-        process.env.ORCA_BACKGROUND_LAUNCH !== '1' ||
+        process.env.OCC_BACKGROUND_LAUNCH !== '1' ||
         !window ||
         window.isDestroyed() ||
         window.isVisible()

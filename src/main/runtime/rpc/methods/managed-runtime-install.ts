@@ -1,6 +1,6 @@
 // Install on the agent's chat host without a workspace; negotiate install.v1/remove.v1 and stream a snapshot followed by state revisions.
 
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import {
   ManagedRuntimeAgentParams,
   ManagedRuntimeCancelParams
@@ -9,7 +9,7 @@ import { acpLaunchSpecFor } from '../../../acp/acp-launch-specs'
 import { resolveAcpLaunchCommand } from '../../../acp/acp-structured-launch-resolution'
 import { ManagedRuntimeInstallation } from '../../../node-runtime/managed-runtime-installation'
 import { isAgentSessionPreSpawnError } from '../../../native-chat/agent-session-wire/structured-agent-session-adapter'
-import { getProfileUserDataPath } from '../../../orca-profiles/profile-storage-paths'
+import { getProfileUserDataPath } from '../../../occ-profiles/profile-storage-paths'
 import { stopStructuredAgentChats } from '../../structured-agent-chat-stop'
 import { resolveHostStructuredAgentLaunchEnvironment } from '../../structured-agent-launch-support'
 import { isPathInsideOrEqual } from '../../../../shared/cross-platform-path'
@@ -18,7 +18,7 @@ import { bindStructuredAgentSessionStream } from './structured-agent-session-sta
 
 const installations = new Map<string, ManagedRuntimeInstallation>()
 
-function installationFor(agent: string, runtime: OrcaRuntimeService): ManagedRuntimeInstallation {
+function installationFor(agent: string, runtime: OCCRuntimeService): ManagedRuntimeInstallation {
   const spec = acpLaunchSpecFor(agent)
   if (!spec?.managedRuntime) {
     throw new Error(`OCC installs no runtime for ${agent}.`)

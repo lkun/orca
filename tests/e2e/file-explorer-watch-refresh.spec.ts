@@ -1,19 +1,19 @@
 import { renameSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { openFileExplorer } from './helpers/file-explorer'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
-test('refreshes the visible tree after external Windows file changes', async ({ orcaPage }) => {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await orcaPage.evaluate(() => window.__store?.getState().setRightSidebarOpen(false))
+test('refreshes the visible tree after external Windows file changes', async ({ occPage }) => {
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await occPage.evaluate(() => window.__store?.getState().setRightSidebarOpen(false))
   await expect
-    .poll(() => orcaPage.evaluate(() => window.__store?.getState().rightSidebarOpen))
+    .poll(() => occPage.evaluate(() => window.__store?.getState().rightSidebarOpen))
     .toBe(false)
-  await openFileExplorer(orcaPage)
+  await openFileExplorer(occPage)
 
-  const worktreePath = await orcaPage.evaluate(() => {
+  const worktreePath = await occPage.evaluate(() => {
     const state = window.__store?.getState()
     const worktreeId = state?.activeWorktreeId
     if (!state || !worktreeId) {
@@ -33,15 +33,15 @@ test('refreshes the visible tree after external Windows file changes', async ({ 
   const originalPath = path.join(worktreePath, originalName)
   const renamedPath = path.join(worktreePath, renamedName)
   const row = (name: string) =>
-    orcaPage
+    occPage
       .locator('[data-file-explorer-row]')
-      .filter({ has: orcaPage.getByText(name, { exact: true }) })
+      .filter({ has: occPage.getByText(name, { exact: true }) })
 
   rmSync(originalPath, { force: true })
   rmSync(renamedPath, { force: true })
   try {
     await expect(row('README.md')).toBeVisible({ timeout: 10_000 })
-    await orcaPage.waitForTimeout(2_000)
+    await occPage.waitForTimeout(2_000)
 
     writeFileSync(originalPath, 'created outside OCC\n')
     await expect(row(originalName)).toBeVisible({ timeout: 10_000 })

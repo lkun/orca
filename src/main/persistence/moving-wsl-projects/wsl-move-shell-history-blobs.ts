@@ -4,21 +4,21 @@ import { createReadStream } from 'node:fs'
 import { open, stat } from 'node:fs/promises'
 import { join } from 'node:path'
 import {
-  assertOrcadMigrationBlobSet,
-  orcadMigrationBlobIdentity,
-  sameOrcadMigrationBlob,
-  type OrcadMigrationBlobDescriptor
-} from '../../../shared/orcad-migration/orcad-migration-blob-transfer'
-import type { OrcadMigrationBlobSource } from '../../ssh/orcad-migration-blob-coordinator'
+  assertOCCdMigrationBlobSet,
+  occdMigrationBlobIdentity,
+  sameOCCdMigrationBlob,
+  type OCCdMigrationBlobDescriptor
+} from '../../../shared/occd-migration/occd-migration-blob-transfer'
+import type { OCCdMigrationBlobSource } from '../../ssh/occd-migration-blob-coordinator'
 import { getHistoryRootWsl } from '../../terminal-history-paths'
 import { hashWorktreeId } from '../../terminal-history-id'
 import {
-  MAX_ORCAD_MIGRATION_SHELL_HISTORY_BYTES,
-  ORCAD_MIGRATION_SHELL_HISTORY_SHELLS,
-  encodeOrcadMigrationShellHistoryHeader,
-  orcadMigrationShellHistoryKey,
+  MAX_OCCD_MIGRATION_SHELL_HISTORY_BYTES,
+  OCCD_MIGRATION_SHELL_HISTORY_SHELLS,
+  encodeOCCdMigrationShellHistoryHeader,
+  occdMigrationShellHistoryKey,
   shellHistoryFileName
-} from '../migrating-orcad-catalog/orcad-migration-shell-history-format'
+} from '../migrating-occd-catalog/occd-migration-shell-history-format'
 
 export type WslMoveShellHistoryWorktree = {
   /** UNC identity used by desktop history. */
@@ -35,8 +35,8 @@ export type WslMoveShellHistoryRequest = {
 }
 
 export type WslMoveShellHistoryBlobs = {
-  descriptors: OrcadMigrationBlobDescriptor[]
-  source: OrcadMigrationBlobSource
+  descriptors: OCCdMigrationBlobDescriptor[]
+  source: OCCdMigrationBlobSource
 }
 
 type DesktopHistoryFile = { path: string; fileBytes: number }
@@ -44,7 +44,7 @@ type DesktopHistoryFile = { path: string; fileBytes: number }
 type ShellHistorySegment = { bytes: Buffer } | DesktopHistoryFile
 
 type ShellHistoryBlob = {
-  descriptor: OrcadMigrationBlobDescriptor
+  descriptor: OCCdMigrationBlobDescriptor
   segments: ShellHistorySegment[]
 }
 
@@ -58,23 +58,23 @@ export async function buildWslMoveShellHistoryBlobs(
   const blobs: ShellHistoryBlob[] = []
   for (const [destinationWorktreeId, sourceWorktreeIds] of groupByDestination(request.worktrees)) {
     let zshSent = false
-    for (const shell of ORCAD_MIGRATION_SHELL_HISTORY_SHELLS) {
+    for (const shell of OCCD_MIGRATION_SHELL_HISTORY_SHELLS) {
       const files = await desktopHistoryFiles(root, sourceWorktreeIds, shellHistoryFileName(shell))
       if (files.length === 0) {
         continue
       }
-      const key = orcadMigrationShellHistoryKey(destinationWorktreeId, shell)
+      const key = occdMigrationShellHistoryKey(destinationWorktreeId, shell)
       // zsh-first ordering proves whether a bash file has a zsh sibling.
-      const header = encodeOrcadMigrationShellHistoryHeader(destinationWorktreeId, {
+      const header = encodeOCCdMigrationShellHistoryHeader(destinationWorktreeId, {
         loginShell: shell === 'bash' && !zshSent
       })
       zshSent ||= shell === 'zsh'
       const segments = await joinHistories(header, files)
       const byteLength = segments.reduce((total, segment) => total + segmentBytes(segment), 0)
       // Refuse rather than silently dropping old commands.
-      if (byteLength > MAX_ORCAD_MIGRATION_SHELL_HISTORY_BYTES) {
+      if (byteLength > MAX_OCCD_MIGRATION_SHELL_HISTORY_BYTES) {
         throw new Error(
-          `orcad_migration_shell_history_too_large:${key}: the ${shell} history of ${destinationWorktreeId} is ${byteLength} bytes, over the ${MAX_ORCAD_MIGRATION_SHELL_HISTORY_BYTES}-byte limit`
+          `occd_migration_shell_history_too_large:${key}: the ${shell} history of ${destinationWorktreeId} is ${byteLength} bytes, over the ${MAX_OCCD_MIGRATION_SHELL_HISTORY_BYTES}-byte limit`
         )
       }
       blobs.push({
@@ -89,17 +89,17 @@ export async function buildWslMoveShellHistoryBlobs(
     }
   }
   const descriptors = blobs.map((blob) => blob.descriptor)
-  assertOrcadMigrationBlobSet(descriptors)
+  assertOCCdMigrationBlobSet(descriptors)
   const byIdentity = new Map(
-    blobs.map((blob) => [orcadMigrationBlobIdentity(blob.descriptor), blob])
+    blobs.map((blob) => [occdMigrationBlobIdentity(blob.descriptor), blob])
   )
   return {
     descriptors,
     source: {
       readChunk: async (requested, offset, maxBytes) => {
-        const blob = byIdentity.get(orcadMigrationBlobIdentity(requested))
-        if (!blob || !sameOrcadMigrationBlob(requested, blob.descriptor)) {
-          throw new Error(`orcad_migration_source_blob_changed:${requested.blobKind}`)
+        const blob = byIdentity.get(occdMigrationBlobIdentity(requested))
+        if (!blob || !sameOCCdMigrationBlob(requested, blob.descriptor)) {
+          throw new Error(`occd_migration_source_blob_changed:${requested.blobKind}`)
         }
         return readSegments(blob, offset, maxBytes)
       }
@@ -188,13 +188,13 @@ async function digestSegments(segments: readonly ShellHistorySegment[]): Promise
       end: segment.fileBytes - 1
     })) {
       if (!Buffer.isBuffer(chunk)) {
-        throw new Error('orcad_migration_shell_history_read_failed')
+        throw new Error('occd_migration_shell_history_read_failed')
       }
       hash.update(chunk)
       read += chunk.length
     }
     if (read !== segment.fileBytes) {
-      throw new Error('orcad_migration_source_blob_changed:shell-history')
+      throw new Error('occd_migration_source_blob_changed:shell-history')
     }
   }
   return hash.digest('hex')
@@ -228,12 +228,12 @@ async function readFileRange(file: DesktopHistoryFile, from: number, to: number)
   const handle = await open(file.path, 'r')
   try {
     if ((await handle.stat()).size !== file.fileBytes) {
-      throw new Error('orcad_migration_source_blob_changed:shell-history')
+      throw new Error('occd_migration_source_blob_changed:shell-history')
     }
     const buffer = Buffer.alloc(to - from)
     const { bytesRead } = await handle.read(buffer, 0, buffer.length, from)
     if (bytesRead !== buffer.length) {
-      throw new Error('orcad_migration_source_blob_changed:shell-history')
+      throw new Error('occd_migration_source_blob_changed:shell-history')
     }
     return buffer
   } finally {

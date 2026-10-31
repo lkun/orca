@@ -65,7 +65,7 @@ describe('relay observability', () => {
     )
     observability.flush(counts)
     expect(entries[0]).toMatchObject({
-      event: 'orca_relay_runtime_metrics',
+      event: 'occ_relay_runtime_metrics',
       fixLevel: RELAY_FIX_LEVEL
     })
   })
@@ -108,7 +108,7 @@ describe('relay observability', () => {
       {
         severity: 'WARNING',
         message: 'OCC Relay readiness check',
-        event: 'orca_relay_readiness_check',
+        event: 'occ_relay_readiness_check',
         metricVersion: 1,
         role: 'cell',
         cellId: 'production-gce-c28',
@@ -142,7 +142,7 @@ describe('relay observability', () => {
     expect(entries).toEqual([
       expect.objectContaining({
         severity: 'WARNING',
-        event: 'orca_relay_readiness_check',
+        event: 'occ_relay_readiness_check',
         ready: true,
         degraded: true,
         degradedDependencies: ['jwks'],
@@ -176,7 +176,7 @@ describe('relay observability', () => {
       {
         severity: 'WARNING',
         message: 'OCC Relay readiness entered last-known-good grace',
-        event: 'orca_relay_readiness_grace_entered',
+        event: 'occ_relay_readiness_grace_entered',
         metricVersion: 1,
         role: 'cell',
         cellId: 'production-gce-c28',
@@ -190,7 +190,7 @@ describe('relay observability', () => {
       {
         severity: 'INFO',
         message: 'OCC Relay readiness left last-known-good grace',
-        event: 'orca_relay_readiness_grace_left',
+        event: 'occ_relay_readiness_grace_left',
         metricVersion: 1,
         role: 'cell',
         cellId: 'production-gce-c28',
@@ -486,7 +486,7 @@ describe('relay observability', () => {
     observability.flush(counts)
 
     expect(entries[0]).toMatchObject({
-      event: 'orca_relay_runtime_metrics',
+      event: 'occ_relay_runtime_metrics',
       metricVersion: 2,
       role: 'cell',
       cellId: 'staging-c1',
@@ -638,7 +638,7 @@ describe('relay observability', () => {
       controlRttMsMax: 240
     })
     expect(entries[0]).toMatchObject({
-      event: 'orca_relay_runtime_metrics',
+      event: 'occ_relay_runtime_metrics',
       metricVersion: 2,
       clientAcceptsAbandonedByStageDelta: {},
       clientAcceptAbandonedMsMax: 0

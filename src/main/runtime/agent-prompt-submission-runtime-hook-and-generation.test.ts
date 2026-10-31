@@ -10,7 +10,7 @@ import {
   AGENT_PROMPT_TEST_WORKTREE_PATH,
   createAgentPromptSubmissionRuntime
 } from './agent-prompt-submission-runtime-test-fixture'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { makeStore } from './runtime-rpc-worktree-store-fixtures'
 
 const createPromptRuntime = createAgentPromptSubmissionRuntime
@@ -46,13 +46,13 @@ describe('agent prompt submission runtime hook and generation cases', () => {
     },
     launchAgent: 'antigravity' | 'kimi' | 'codex' = 'kimi'
   ): Promise<{
-    runtime: OrcaRuntimeService
+    runtime: OCCRuntimeService
     handle: string
     writes: string[]
   }> {
     let handle = ''
     const writes: string[] = []
-    const runtime = new OrcaRuntimeService(makeStore() as never, undefined, {
+    const runtime = new OCCRuntimeService(makeStore() as never, undefined, {
       getAgentStatusSnapshot: () => [
         {
           paneKey: 'prompt-pane',

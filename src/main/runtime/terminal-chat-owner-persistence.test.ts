@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime-test-mocks.spec'
+import { OCCRuntimeService } from './occ-runtime-test-mocks.spec'
 import {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} from './orca-runtime-test-fixtures.spec'
+} from './occ-runtime-test-fixtures.spec'
 import { UpdatePaneLayout } from '../../shared/rpc-contract/session-tabs-schemas-params'
 
 describe('remote terminal chat ownership', () => {
@@ -13,7 +13,7 @@ describe('remote terminal chat ownership', () => {
     const { runtimeStore, getSession } = makeRuntimeStoreWithWorkspaceSession(
       makeWorkspaceSessionWithHeadlessTerminal()
     )
-    const runtime = new OrcaRuntimeService(runtimeStore)
+    const runtime = new OCCRuntimeService(runtimeStore)
     const update = (owner: string | null | undefined) => {
       const params = UpdatePaneLayout.parse({
         worktree: `id:${TEST_WORKTREE_ID}`,

@@ -23,7 +23,7 @@ function manifest(overrides: Record<string, unknown> = {}): Record<string, unkno
     publisher: 'stablyai',
     name: 'Excalidraw',
     version: '1.0.0',
-    engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+    engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
     contributes: { customEditors: [excalidraw] },
     ...overrides
   }
@@ -89,7 +89,7 @@ describe('contributes.customEditors', () => {
   })
 
   it('needs the manifest v2 engine floor', () => {
-    expect(parsePluginManifest(manifest({ engines: { orca: '>=1.4.200' } }))).toMatchObject({
+    expect(parsePluginManifest(manifest({ engines: { occ: '>=1.4.200' } }))).toMatchObject({
       ok: false
     })
   })

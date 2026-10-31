@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { writeFileSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   focusActiveTerminalInput,
@@ -28,22 +28,22 @@ declare global {
 
 test('terminal input stays responsive with a slow 1,000-session inventory, and hidden open PTYs stop scanning', async ({
   electronApp,
-  orcaPage,
+  occPage,
   testRepoPath
 }, testInfo) => {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
-  await waitForActiveTerminalManager(orcaPage, 30_000)
-  const id = await waitForActivePanePtyId(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
+  await waitForActiveTerminalManager(occPage, 30_000)
+  const id = await waitForActivePanePtyId(occPage)
   const runId = randomUUID()
-  const script = join(testRepoPath, `.orca-resource-input-${runId}.mjs`)
+  const script = join(testRepoPath, `.occ-resource-input-${runId}.mjs`)
   writeFileSync(script, interactivePromptScript(runId))
   const measurements: { state: string; medianMs: number; worstMs: number }[] = []
   let sequence = 0
   try {
-    await sendToTerminal(orcaPage, id, `node ${JSON.stringify(script)}\r`)
-    await waitForTerminalOutput(orcaPage, `TYPING_READY_${runId}`, 10_000)
+    await sendToTerminal(occPage, id, `node ${JSON.stringify(script)}\r`)
+    await waitForTerminalOutput(occPage, `TYPING_READY_${runId}`, 10_000)
     await electronApp.evaluate(({ ipcMain }) => {
       const counts: PtyInputCounts = { listing: 0, metrics: 0 }
       globalThis.__ptyInputCounts = counts
@@ -68,11 +68,11 @@ test('terminal input stays responsive with a slow 1,000-session inventory, and h
         return null
       })
     })
-    await makeResourceManagerFixtureVisible(electronApp, orcaPage)
+    await makeResourceManagerFixtureVisible(electronApp, occPage)
     for (const state of ['closed', 'visible-active', 'hidden-open'] as const) {
       if (state === 'visible-active') {
-        await orcaPage.getByRole('button', { name: /^Resource Manager,/ }).click()
-        await orcaPage.getByRole('tab', { name: 'PTYs', exact: true }).click()
+        await occPage.getByRole('button', { name: /^Resource Manager,/ }).click()
+        await occPage.getByRole('tab', { name: 'PTYs', exact: true }).click()
       }
       if (state === 'hidden-open') {
         await electronApp.evaluate(({ BrowserWindow }) => {
@@ -81,7 +81,7 @@ test('terminal input stays responsive with a slow 1,000-session inventory, and h
           }
         })
       }
-      await focusActiveTerminalInput(orcaPage)
+      await focusActiveTerminalInput(occPage)
       const latencies: number[] = []
       const before = await electronApp.evaluate(() => {
         if (!globalThis.__ptyInputCounts) {
@@ -91,9 +91,9 @@ test('terminal input stays responsive with a slow 1,000-session inventory, and h
       })
       for (const char of KEY_LATENCY_SAMPLES) {
         const start = performance.now()
-        await orcaPage.keyboard.type(char)
+        await occPage.keyboard.type(char)
         await waitForMarkerLatency(
-          orcaPage,
+          occPage,
           `TYPING_KEY_${runId}_${++sequence}`,
           MAX_WORST_KEY_LATENCY_MS
         )
@@ -105,13 +105,13 @@ test('terminal input stays responsive with a slow 1,000-session inventory, and h
       expect(result.worstMs).toBeLessThan(MAX_WORST_KEY_LATENCY_MS)
       if (state === 'visible-active') {
         await expect(
-          orcaPage.getByText('1000 OCC PTYs on this computer · 1000 without a tab', {
+          occPage.getByText('1000 OCC PTYs on this computer · 1000 without a tab', {
             exact: true
           })
         ).toBeVisible()
       }
       if (state === 'hidden-open') {
-        await orcaPage.waitForTimeout(2_100)
+        await occPage.waitForTimeout(2_100)
         expect(
           await electronApp.evaluate(() => {
             if (!globalThis.__ptyInputCounts) {
@@ -120,7 +120,7 @@ test('terminal input stays responsive with a slow 1,000-session inventory, and h
             return globalThis.__ptyInputCounts
           })
         ).toEqual(before)
-        await expect(orcaPage.getByRole('tab', { name: 'PTYs 1000', exact: true })).toBeVisible()
+        await expect(occPage.getByRole('tab', { name: 'PTYs 1000', exact: true })).toBeVisible()
       }
     }
     console.info(JSON.stringify({ terminalInput: measurements }))
@@ -129,7 +129,7 @@ test('terminal input stays responsive with a slow 1,000-session inventory, and h
       contentType: 'application/json'
     })
   } finally {
-    await sendToTerminal(orcaPage, id, '\x03').catch(() => {})
+    await sendToTerminal(occPage, id, '\x03').catch(() => {})
     rmSync(script, { force: true })
   }
 })

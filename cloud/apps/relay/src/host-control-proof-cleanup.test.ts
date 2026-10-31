@@ -1,4 +1,4 @@
-import { RELAY_CLOSE_CODE } from '@orca-cloud/relay-contract'
+import { RELAY_CLOSE_CODE } from '@occ-cloud/relay-contract'
 import nacl from 'tweetnacl'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
@@ -174,7 +174,7 @@ describe('host control proof cleanup', () => {
       'relay temporarily unavailable'
     )
     expect(warn).toHaveBeenCalledExactlyOnceWith(
-      '[orca-relay] host hello proof failed: synthetic send failure'
+      '[occ-relay] host hello proof failed: synthetic send failure'
     )
     expect(vi.getTimerCount()).toBe(0)
     expect(socket.listenerCount('close')).toBe(0)
@@ -193,7 +193,7 @@ describe('host control proof cleanup', () => {
       'relay temporarily unavailable'
     )
     expect(warn).toHaveBeenCalledExactlyOnceWith(
-      '[orca-relay] host hello proof failed: synthetic lookup failure'
+      '[occ-relay] host hello proof failed: synthetic lookup failure'
     )
     expect(vi.getTimerCount()).toBe(0)
     expect(socket.listenerCount('close')).toBe(0)

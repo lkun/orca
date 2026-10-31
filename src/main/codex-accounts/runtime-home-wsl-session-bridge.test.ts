@@ -73,7 +73,7 @@ describe('CodexRuntimeHomeService', () => {
         wslHome,
         '.local',
         'share',
-        'orca',
+        'occ',
         'codex-runtime-home',
         'home'
       )
@@ -124,7 +124,7 @@ describe('CodexRuntimeHomeService', () => {
         wslHome,
         '.local',
         'share',
-        'orca',
+        'occ',
         'codex-runtime-home',
         'home'
       )
@@ -132,7 +132,7 @@ describe('CodexRuntimeHomeService', () => {
       expect(service.prepareForCodexLaunch({ runtime: 'wsl', wslDistro: 'Ubuntu' })).toBe(
         join(wslHome, '.codex')
       )
-      const baselinePath = join(wslRuntimeHomePath, '.orca-config-settings-baseline.json')
+      const baselinePath = join(wslRuntimeHomePath, '.occ-config-settings-baseline.json')
       expect(existsSync(baselinePath)).toBe(false)
 
       writeFileSync(wslSystemConfigPath, 'model = "outside-edit"\n', 'utf-8')
@@ -214,7 +214,7 @@ describe('CodexRuntimeHomeService', () => {
           candidate.includes('codex-accounts/debian-account/home')
             ? {
                 distro: 'Debian',
-                linuxPath: '/home/alice/.local/share/orca/codex-accounts/debian-account/home'
+                linuxPath: '/home/alice/.local/share/occ/codex-accounts/debian-account/home'
               }
             : null
       }
@@ -233,7 +233,7 @@ describe('CodexRuntimeHomeService', () => {
             managedHomePath,
             managedHomeRuntime: 'wsl',
             wslDistro: 'Debian',
-            wslLinuxHomePath: '/home/alice/.local/share/orca/codex-accounts/debian/home',
+            wslLinuxHomePath: '/home/alice/.local/share/occ/codex-accounts/debian/home',
             providerAccountId: null,
             workspaceLabel: null,
             workspaceAccountId: null,
@@ -282,7 +282,7 @@ describe('CodexRuntimeHomeService', () => {
       getWslHome: () => wslHome,
       getWslHomeAsync: async () => wslHome
     }))
-    const managedHomePath = join(wslHome, '.local', 'share', 'orca', 'codex-accounts', 'a', 'home')
+    const managedHomePath = join(wslHome, '.local', 'share', 'occ', 'codex-accounts', 'a', 'home')
     const retiredBridgeRuns = vi.fn()
     vi.doMock('./legacy-wsl-runtime-auth-drain', async (importOriginal) => ({
       ...(await importOriginal<typeof LegacyWslRuntimeAuthDrain>()),
@@ -439,7 +439,7 @@ describe('CodexRuntimeHomeService', () => {
         ...(await importOriginal<typeof WslCodexSessionBridge>()),
         startWslCodexSessionBridgeInBackground: vi.fn(() => Promise.resolve())
       }))
-      const retiredHome = join(guestHome, '.local', 'share', 'orca', 'codex-runtime-home', 'home')
+      const retiredHome = join(guestHome, '.local', 'share', 'occ', 'codex-runtime-home', 'home')
       const relativeSessionPath = join('sessions', '2026', '08', '26', 'retired.jsonl')
       const retiredSessionPath = join(retiredHome, relativeSessionPath)
       mkdirSync(join(retiredSessionPath, '..'), { recursive: true })

@@ -1,7 +1,7 @@
 import { formatTerminalStartFailure } from '../../../../../../shared/terminal-start-failure'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import type { WorkerDispatchRow } from '../../../../orchestration/types'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { tearDownFailedWorkerStart } from './failed-worker-start-teardown'
 import {
   isUnknownWorkerStartOutcome,
@@ -13,7 +13,7 @@ import type { WorkerStartModeReceipt } from '../../orchestration-worker-start-mo
 import { isStructuredWorkerHandle } from '../../../../../../shared/structured-worker-handle'
 
 type WorkerStartFailureArgs = {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   structuredSession: Awaited<ReturnType<typeof createStructuredWorkerSessionForWorktree>> | null
   db: OrchestrationDb
   runId: string
@@ -101,14 +101,14 @@ function failedWorkerStartReceipt(args: WorkerStartFailureArgs): unknown {
     residualResources: JSON.parse(worker.residual_resources) as unknown[],
     ...(releasable
       ? {
-          recovery: `This start created a terminal that never ran the Task. Close it with: orca orchestration worker-release --dispatch ${args.dispatchId}`
+          recovery: `This start created a terminal that never ran the Task. Close it with: occ orchestration worker-release --dispatch ${args.dispatchId}`
         }
       : {}),
     ...(unknown
       ? {
           nextCommands: [
-            `orca orchestration worker-show --dispatch ${args.dispatchId} --json`,
-            `orca orchestration worker-abandon --dispatch ${args.dispatchId} --json`
+            `occ orchestration worker-show --dispatch ${args.dispatchId} --json`,
+            `occ orchestration worker-abandon --dispatch ${args.dispatchId} --json`
           ]
         }
       : {})

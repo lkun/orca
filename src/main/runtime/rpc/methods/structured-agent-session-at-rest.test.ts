@@ -35,7 +35,7 @@ import {
   editPersistedTestAgentSessionStore,
   readPersistedTestAgentSessionStore
 } from '../../agent-session-record-store-test-harness'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import type { RpcResponse } from '../core'
 import { RpcDispatcher } from '../dispatcher'
 import { closeStructuredAgentSessionChild } from '../../agent-session/structured-agent-session-close'
@@ -93,7 +93,7 @@ beforeEach(async () => {
   requests = 0
   rig = await createRestTestRig({ idleSweep: { intervalMs: 3_600_000 } })
   setStructuredAgentSessionHost(rig.host)
-  const runtime = new OrcaRuntimeService()
+  const runtime = new OCCRuntimeService()
 
   dispatcher = new RpcDispatcher({ runtime, methods: STRUCTURED_AGENT_SESSION_METHODS })
 })
@@ -238,7 +238,7 @@ describe('the accessor', () => {
     await restingChat()
     const open = vi.spyOn(rig.host.collaboratorsForTests().conversationDelivery, 'open')
     vi.spyOn(console, 'warn').mockImplementation(() => undefined)
-    const storagePath = '/Users/someone/.orca/journals/session-1/journal.sqlite'
+    const storagePath = '/Users/someone/.occ/journals/session-1/journal.sqlite'
     const failWith = (error: Error): void => {
       open.mockRejectedValue(error)
     }
@@ -682,7 +682,7 @@ it('hands off the reduced saved chat after clear and rewind, budgets only the st
   await vi.waitFor(() => expect(writing).toHaveBeenCalledOnce())
   const currentJournal = rig.host.collaboratorsForTests().sessions.get(SESSION)!.journal
   await currentJournal.appendItem(
-    { provider: 'orca', clientMessageId: 'pr-31782-late' },
+    { provider: 'occ', clientMessageId: 'pr-31782-late' },
     hostTestMessage('LATER_SAVED_MARKER'),
     {
       fence: rig.store.getRecord(SESSION)!.lease.runtimeFence,

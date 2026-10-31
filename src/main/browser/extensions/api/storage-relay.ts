@@ -12,7 +12,7 @@ import {
  * same session (see src/preload/browser-extension-storage-relay.ts). Workers deliver their own.
  * Sync is not relayed: main owns that area and fires its events (api/storage-sync.ts).
  */
-const STORAGE_RELAY_NAMESPACE = 'orcaStorageRelay'
+const STORAGE_RELAY_NAMESPACE = 'occStorageRelay'
 
 const changesSchema = z.record(
   z.string(),

@@ -3,16 +3,16 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import { DeviceRegistry } from '../device-registry'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import { DesktopPushService } from './desktop-push-service'
 import { createPushHostKeypair } from './push-host-challenge-fixtures'
-import { OrcaRuntimeRpcServer } from '../runtime-rpc'
+import { OCCRuntimeRpcServer } from '../runtime-rpc'
 
 describe('mobile revoke when the registry write fails', () => {
   it('preserves a live route after failed unpair and deletes it after durable removal', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-revoke-write-failure-'))
-    const runtime = new OrcaRuntimeService()
-    const server = new OrcaRuntimeRpcServer({ runtime, userDataPath, enableWebSocket: false })
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-revoke-write-failure-'))
+    const runtime = new OCCRuntimeService()
+    const server = new OCCRuntimeRpcServer({ runtime, userDataPath, enableWebSocket: false })
     const registry = new DeviceRegistry(userDataPath)
     const device = registry.addDevice('phone', 'mobile')
     registry.setPushRegistration(device.deviceId, {
@@ -35,7 +35,7 @@ describe('mobile revoke when the registry write fails', () => {
     const service = DesktopPushService.create({
       runtime,
       runtimeRpc: server,
-      gatewayUrl: 'https://push.onorca.dev',
+      gatewayUrl: 'https://push.onocc.dev',
       client: client as never
     })!
     service.start()

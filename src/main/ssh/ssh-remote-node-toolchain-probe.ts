@@ -3,8 +3,8 @@ import { quotePosixShell } from '../../shared/shell-argument-quoting'
 import { quotePowerShellLiteral as powerShellLiteral } from '../../shared/powershell-native-argument'
 
 const MIN_HOST_NODE_MAJOR = 18
-const NODE_VERSION_MARKER = '__ORCA_NODE_VERSION__'
-const NPM_VERSION_MARKER = '__ORCA_NPM_VERSION__'
+const NODE_VERSION_MARKER = '__OCC_NODE_VERSION__'
+const NPM_VERSION_MARKER = '__OCC_NPM_VERSION__'
 
 export function buildPosixNodeToolchainProbe(nodePath: string): string {
   const nodeBinDir = posixPath.dirname(nodePath)
@@ -54,7 +54,7 @@ function linesAfterMarker(output: string, marker: string): string[] | null {
     return null
   }
   const rest = lines.slice(markerIndex + 1)
-  const next = rest.findIndex((line) => line.startsWith('__ORCA_'))
+  const next = rest.findIndex((line) => line.startsWith('__OCC_'))
   return next === -1 ? rest : rest.slice(0, next)
 }
 

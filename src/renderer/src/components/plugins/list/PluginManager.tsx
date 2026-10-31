@@ -42,7 +42,7 @@ import {
   type PluginListFilter
 } from './plugin-list-filter'
 import { PluginDetailPage } from '../page/PluginDetailPage'
-import { useOrcaVersion, type PluginPageNavigation } from '../state/use-plugin-page-navigation'
+import { useOCCVersion, type PluginPageNavigation } from '../state/use-plugin-page-navigation'
 import type { PluginLogsState } from '../state/use-plugin-logs'
 
 function resultCountLabel(count: number): string {
@@ -136,21 +136,21 @@ export function PluginManager({
     isFromInstallLink
   })
   const prefetch = usePluginHoverPrefetch(catalog.fetchPreview)
-  const orcaVersion = useOrcaVersion()
+  const occVersion = useOCCVersion()
   const autoUpdated = usePluginAutoUpdatesStore((state) => state.updated)
   const autoNeedsReview = usePluginAutoUpdatesStore((state) => state.needsReview)
 
   const entries = useMemo(() => {
     const built = buildPluginListEntries(plugins, catalog.listings, {
       sources: catalog.sources,
-      orcaVersion,
+      occVersion,
       autoUpdates: { updated: autoUpdated, needsReview: autoNeedsReview }
     })
     return {
       ...built,
       installed: sortByAttention(built.installed, (entry) => Boolean(entry.updateVersion))
     }
-  }, [plugins, catalog.listings, catalog.sources, orcaVersion, autoUpdated, autoNeedsReview])
+  }, [plugins, catalog.listings, catalog.sources, occVersion, autoUpdated, autoNeedsReview])
   const query = search.trim()
   const filterSize = pluginFilterSize(listFilter)
   const narrowed = Boolean(query) || filterSize > 0
@@ -188,7 +188,7 @@ export function PluginManager({
     install,
     prefetch,
     openEntry,
-    orcaVersion,
+    occVersion,
     refreshing: catalog.refreshBusy,
     installedHandlers: rowHandlers,
     busyPluginKeys
@@ -282,7 +282,7 @@ export function PluginManager({
         key={updateDialog.opens}
         open={updateDialog.entries !== null}
         entries={updateDialog.entries ?? []}
-        orcaVersion={orcaVersion}
+        occVersion={occVersion}
         onClose={updateDialog.close}
         onUpdated={onInstalled}
       />
@@ -314,7 +314,7 @@ export function PluginManager({
           key={openedEntry.pluginKey}
           entry={openedEntry}
           busy={busyPluginKeys.has(openedEntry.pluginKey)}
-          orcaVersion={orcaVersion}
+          occVersion={occVersion}
           logsState={logsByPlugin[openedEntry.pluginKey]}
           handlers={rowHandlers}
           fetchPreview={catalog.fetchPreview}

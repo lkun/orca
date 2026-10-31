@@ -1,4 +1,4 @@
-// Mirror main's host-fixable OrcadHostUnavailableReason values; each names what to change on the host.
+// Mirror main's host-fixable OCCdHostUnavailableReason values; each names what to change on the host.
 import { translate } from '@/i18n/i18n'
 
 export function hostFixableUnavailableText(reason: string): string | null {
@@ -6,7 +6,7 @@ export function hostFixableUnavailableText(reason: string): string | null {
     case 'runtime_noexec':
       return translate(
         'auto.components.settings.sshHostServer.runtimeNoexec',
-        'This host doesn’t allow running programs from ~/.orca-remote, so OCC can’t start its server there. This usually means the home folder is mounted with noexec. Ask the host’s administrator to allow running programs there, then connect again.'
+        'This host doesn’t allow running programs from ~/.occ-remote, so OCC can’t start its server there. This usually means the home folder is mounted with noexec. Ask the host’s administrator to allow running programs there, then connect again.'
       )
     case 'windows_build_unsupported':
       return translate(

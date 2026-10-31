@@ -104,7 +104,7 @@ function newWorkRefusal(
   return held
     ? new OrchestrationError(
         'invalid_argument',
-        `Terminal ${assigneeHandle} is still held by finished Dispatch ${held.owner_dispatch_id}. Start this Task on it with \`orca orchestration worker-start --task ${taskId} --terminal ${assigneeHandle}\`.`
+        `Terminal ${assigneeHandle} is still held by finished Dispatch ${held.owner_dispatch_id}. Start this Task on it with \`occ orchestration worker-start --task ${taskId} --terminal ${assigneeHandle}\`.`
       )
     : null
 }

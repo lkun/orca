@@ -143,7 +143,7 @@ describe('AgentBrowserBridge', () => {
     await vi.waitFor(() => {
       expect(releaseSnapshot).not.toBeNull()
     })
-    ;(bridge as unknown as { sessions: Map<string, unknown> }).sessions.delete('orca-tab-tab-1')
+    ;(bridge as unknown as { sessions: Map<string, unknown> }).sessions.delete('occ-tab-tab-1')
     releaseSnapshot!()
 
     await expect(snapshotPromise).rejects.toMatchObject({
@@ -212,7 +212,7 @@ describe('AgentBrowserBridge', () => {
     })
     expect(spawns.find(({ command }) => command[0] === 'screenshot')?.command).toEqual([
       'screenshot',
-      expect.stringMatching(/^\/app\/orca-screenshot-[\w-]+\.png$/),
+      expect.stringMatching(/^\/app\/occ-screenshot-[\w-]+\.png$/),
       '--if-changed',
       '--screenshot-format',
       'png'

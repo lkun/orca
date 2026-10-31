@@ -75,7 +75,7 @@ export function SkillBundleInstallOutcome({
             {retrySkills.map((skill) => (
               <p key={skill.skillId} className="text-xs">
                 {skill.name}
-                {skill.errorCategory ? ` · ${skill.errorCategory}` : ''}
+                {skill.errocctegory ? ` · ${skill.errocctegory}` : ''}
               </p>
             ))}
           </section>
@@ -92,7 +92,7 @@ export function SkillBundleInstallOutcome({
               {skills.map((skill) => (
                 <p key={skill.skillId} className="text-xs">
                   {skill.name}
-                  {skill.errorCategory ? ` · ${skill.errorCategory}` : ''}
+                  {skill.errocctegory ? ` · ${skill.errocctegory}` : ''}
                 </p>
               ))}
             </section>

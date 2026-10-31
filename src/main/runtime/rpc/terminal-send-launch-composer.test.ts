@@ -1,6 +1,6 @@
 import './unused-default-rpc-methods.test-fixture'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import { makeStore } from '../runtime-rpc-worktree-store-fixtures'
 import { AGENT_PROMPT_TEST_WORKTREE_PATH } from '../agent-prompt-submission-runtime-test-fixture'
 import { RpcDispatcher } from './dispatcher'
@@ -37,7 +37,7 @@ const CLAUDE_TRUST_DIALOG_OUTPUT =
   ' ❯ No, exit\r\n   Yes, I trust this folder\r\n\r\n Enter to confirm · Esc to cancel\r\n'
 
 async function launchClaude(command: string | undefined) {
-  const runtime = new OrcaRuntimeService(
+  const runtime = new OCCRuntimeService(
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: partial store double; terminal create and send read only its repo and worktree members.
     makeStore() as never
   )

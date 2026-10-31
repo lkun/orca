@@ -144,7 +144,7 @@ beforeAll(async () => {
   })
   leakyServer = leaky.server
   origins.leaky = leaky.origin
-  const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+  const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
   browsers.chromium = await chromium.launch({
     headless: true,
     ...(executablePath ? { executablePath } : {})

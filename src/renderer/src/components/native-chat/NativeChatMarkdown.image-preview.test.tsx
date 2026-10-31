@@ -824,7 +824,7 @@ describe('native chat Markdown image preview', () => {
     expect(screen.queryByRole('img')).toBeNull()
     expect(screen.getByRole('link', { name: 'Chart' })).toHaveAttribute(
       'href',
-      '#orca-native-chat-file-path=%2Fsrv%2Fout%2Fchart.png'
+      '#occ-native-chat-file-path=%2Fsrv%2Fout%2Fchart.png'
     )
     rerender(
       <Transcript content="![Attachment](https://github.com/user-attachments/assets/secret)" />

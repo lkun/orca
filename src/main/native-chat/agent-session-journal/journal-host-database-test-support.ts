@@ -73,10 +73,10 @@ export function createTrackedJournalOpener(): TrackedJournalOpener {
   }
 }
 
-export const SAVED_BY_NEWER_ORCA = {
+export const SAVED_BY_NEWER_OCC = {
   refusal: {
     code: 'agent_session_journal_unreadable',
-    details: { reason: 'journalWrittenByNewerOrca' }
+    details: { reason: 'journalWrittenByNewerOCC' }
   }
 }
 

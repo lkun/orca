@@ -181,7 +181,7 @@ export function RemoteServerFields({
     >
       <div className="space-y-1.5">
         <Label htmlFor="add-server-name">
-          {translate('auto.components.sidebar.AddRemoteHostDialog.nameInOrca', 'Name in OCC')}
+          {translate('auto.components.sidebar.AddRemoteHostDialog.nameInOCC', 'Name in OCC')}
         </Label>
         <Input
           id="add-server-name"

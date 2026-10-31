@@ -1,17 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import { exposeRun } from './run-receipt'
 import type { RunRow } from '../../../../orchestration/types'
-import { testOrcaSessionId } from '../../../../../../shared/orca-session-address-test-fixture'
+import { testOCCSessionId } from '../../../../../../shared/occ-session-address-test-fixture'
 
 // Loose RPC return types cannot prove internal fields were stripped.
 const RUN_ROW: RunRow = {
   id: 'run_1',
   objective: 'Coordinate reviews',
-  home_database: '/tmp/orca/orchestration.db',
+  home_database: '/tmp/occ/orchestration.db',
   coordinator_handle: 'term_coord',
   coordinator_pane_key: 'tab_coord:11111111-1111-4111-8111-111111111111',
-  coordinator_orca_session_id: testOrcaSessionId('22222222-2222-4222-8222-222222222222'),
-  coordinator_orca_session_id_generation: 3,
+  coordinator_occ_session_id: testOCCSessionId('22222222-2222-4222-8222-222222222222'),
+  coordinator_occ_session_id_generation: 3,
   consumer_generation: 3,
   legacy: 0,
   created_at: '2026-09-04T18:53:07Z',
@@ -33,7 +33,7 @@ describe('exposeRun', () => {
     ])
     expect(exposed).not.toHaveProperty('home_database')
     expect(exposed).not.toHaveProperty('coordinator_pane_key')
-    expect(exposed).not.toHaveProperty('coordinator_orca_session_id')
-    expect(exposed).not.toHaveProperty('coordinator_orca_session_id_generation')
+    expect(exposed).not.toHaveProperty('coordinator_occ_session_id')
+    expect(exposed).not.toHaveProperty('coordinator_occ_session_id_generation')
   })
 })

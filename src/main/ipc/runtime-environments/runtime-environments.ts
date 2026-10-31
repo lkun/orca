@@ -24,18 +24,18 @@ import {
   handleManagedSharedControlRefusal,
   recoverRefusedManagedPairing
 } from './runtime-environment-managed-pairing-refusal'
-import { setManagedOrcadPairingRepairedListener } from '../../managed-server/lifecycle/orcad-managed-pairing-repaired-listener'
-import { forgetFailedManagedOrcadPairingRepair } from '../../managed-server/lifecycle/orcad-managed-tunnel'
+import { setManagedOCCdPairingRepairedListener } from '../../managed-server/lifecycle/occd-managed-pairing-repaired-listener'
+import { forgetFailedManagedOCCdPairingRepair } from '../../managed-server/lifecycle/occd-managed-tunnel'
 import { registerRuntimeEnvironmentRecoveryHandler } from './runtime-environment-recovery-handler'
 import { registerRuntimeEnvironmentRepairHandler } from './runtime-environment-repair-handler'
 import { advanceRuntimeEnvironmentTransportGeneration } from './runtime-environment-transport-generation'
 import { resetSharedControlSupport } from './runtime-environment-shared-control-support'
 import { RUNTIME_ENVIRONMENT_HANDLER_CHANNELS } from './runtime-environment-handler-channels'
-import { registerOrcadRuntimeLifecycleHandlers } from './orcad-runtime-lifecycle-handlers'
-import { registerOrcadRuntimeConversionHandlers } from './orcad-runtime-conversion-handlers'
-import { registerOrcadDeltaMoveHandlers } from './orcad-delta-move-handlers'
-import { registerOrcadLeaveBehindHandlers } from './orcad-leave-behind-handlers'
-import { registerOrcadRuntimeMaintenanceHandlers } from './orcad-runtime-maintenance-handlers'
+import { registerOCCdRuntimeLifecycleHandlers } from './occd-runtime-lifecycle-handlers'
+import { registerOCCdRuntimeConversionHandlers } from './occd-runtime-conversion-handlers'
+import { registerOCCdDeltaMoveHandlers } from './occd-delta-move-handlers'
+import { registerOCCdLeaveBehindHandlers } from './occd-leave-behind-handlers'
+import { registerOCCdRuntimeMaintenanceHandlers } from './occd-runtime-maintenance-handlers'
 import { clearPublishedManagedServer } from '../ssh/ssh-renderer-broadcast'
 import { clearManagedServerNotes } from './runtime-environment-managed-tunnel'
 import { reconcileOrphanedRuntimeSessions } from './runtime-environment-session-reconcile'
@@ -154,13 +154,13 @@ export function registerRuntimeEnvironmentHandlers(store: Store): void {
     invalidateTransport: invalidateRuntimeEnvironmentTransport
   })
   registerRuntimeEnvironmentPassiveHandlers(getUserDataPath)
-  setManagedOrcadPairingRepairedListener(invalidateRuntimeEnvironmentTransport)
+  setManagedOCCdPairingRepairedListener(invalidateRuntimeEnvironmentTransport)
   setRefusedPairingHandlers({
     recover: (environmentId) => recoverRefusedManagedPairing(getUserDataPath(), environmentId),
     sharedControl: (environmentId) =>
       handleManagedSharedControlRefusal(getUserDataPath(), environmentId),
     connectRequested: (environmentId) =>
-      forgetFailedManagedOrcadPairingRepair(getUserDataPath(), environmentId)
+      forgetFailedManagedOCCdPairingRepair(getUserDataPath(), environmentId)
   })
   for (const environment of listEnvironments(getUserDataPath())) {
     if (
@@ -174,11 +174,11 @@ export function registerRuntimeEnvironmentHandlers(store: Store): void {
     getUserDataPath,
     invalidateTransport: invalidateRuntimeEnvironmentTransport
   })
-  registerOrcadRuntimeLifecycleHandlers({ getUserDataPath })
-  registerOrcadRuntimeConversionHandlers(getUserDataPath)
-  registerOrcadDeltaMoveHandlers(getUserDataPath)
-  registerOrcadLeaveBehindHandlers()
-  registerOrcadRuntimeMaintenanceHandlers({
+  registerOCCdRuntimeLifecycleHandlers({ getUserDataPath })
+  registerOCCdRuntimeConversionHandlers(getUserDataPath)
+  registerOCCdDeltaMoveHandlers(getUserDataPath)
+  registerOCCdLeaveBehindHandlers()
+  registerOCCdRuntimeMaintenanceHandlers({
     getUserDataPath,
     getActiveEnvironmentId: () => store.getSettings().activeRuntimeEnvironmentId,
     invalidateTransport: invalidateRuntimeEnvironmentTransport,

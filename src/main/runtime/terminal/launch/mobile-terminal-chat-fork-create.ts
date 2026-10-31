@@ -1,5 +1,5 @@
 import {
-  OrcaRuntimeWithCreateMobileSessionTerminal,
+  OCCRuntimeWithCreateMobileSessionTerminal,
   type MobileTerminalCreateOptions,
   type OwnedMobileTerminalCreateOptions
 } from './mobile-terminal-create'
@@ -42,7 +42,7 @@ function resolveSavedChatForkAnchor(
   return group && tab ? { afterDesktopTabId: tab.id, targetGroupId: group.id } : {}
 }
 
-export abstract class OrcaRuntimeWithMobileChatForkCreate extends OrcaRuntimeWithCreateMobileSessionTerminal {
+export abstract class OCCRuntimeWithMobileChatForkCreate extends OCCRuntimeWithCreateMobileSessionTerminal {
   protected abstract captureReadyGraphEpoch(): number
   protected abstract assertStableReadyGraph(expectedGraphEpoch: number): void
   protected abstract createRuntimeOwnedMobileSessionTerminal(

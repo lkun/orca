@@ -16,7 +16,7 @@ export function desktopScriptPlatform(): DesktopScriptPlatform | null {
 export function resolveDesktopScriptProviderPath(
   platform = desktopScriptPlatform()
 ): string | null {
-  const override = process.env.ORCA_COMPUTER_DESKTOP_SCRIPT_PROVIDER_PATH
+  const override = process.env.OCC_COMPUTER_DESKTOP_SCRIPT_PROVIDER_PATH
   if (override && existsSync(override)) {
     return override
   }
@@ -29,7 +29,7 @@ export function resolveDesktopScriptProviderPath(
   const sourceDirectory =
     platform === 'windows' ? 'native/computer-use-windows' : 'native/computer-use-linux'
   const packaged = [join(process.resourcesPath ?? '', directory, filename)]
-  // orcad has no resourcesPath; its bundled sidecar (this module's __dirname) holds the runtimes.
+  // occd has no resourcesPath; its bundled sidecar (this module's __dirname) holds the runtimes.
   const bundled = join(__dirname, directory, filename)
   const dev = [
     join(process.cwd(), sourceDirectory, filename),

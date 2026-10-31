@@ -32,7 +32,7 @@ function fakeConnection(client: unknown): SshConnection {
       label: 'Target A',
       host: 'ssh.example.com',
       port: 22,
-      username: 'orca'
+      username: 'occ'
     }),
     getSystemSshBuildArgsOptions: () => ({})
   } as unknown as SshConnection

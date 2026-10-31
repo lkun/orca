@@ -94,7 +94,7 @@ describe('parseAzureDevOpsRepoRef', () => {
   })
 
   it('ignores non-Azure remotes', () => {
-    expect(parseAzureDevOpsRepoRef('git@github.com:stablyai/orca.git')).toBeNull()
+    expect(parseAzureDevOpsRepoRef('git@github.com:stablyai/occ.git')).toBeNull()
   })
 
   it('keeps local host and local WSL repository-ref cache entries separate', async () => {

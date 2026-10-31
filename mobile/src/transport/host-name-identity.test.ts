@@ -42,7 +42,7 @@ import {
 import { resetMobileRelayHostOverlayStoreForTests } from './mobile-relay-host-overlay-store'
 import { StoredHostProfileSchema, type StoredHostProfile } from './types'
 
-const HOSTS_STORAGE_KEY = 'orca:hosts'
+const HOSTS_STORAGE_KEY = 'occ:hosts'
 
 const GENERATED_HOST = {
   id: 'host-1',

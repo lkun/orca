@@ -2,8 +2,8 @@ import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { spawnProcess } from '@orca/process-host'
-import type { PipedChildProcess } from '@orca/process-host/process-spec'
+import { spawnProcess } from '@occ/process-host'
+import type { PipedChildProcess } from '@occ/process-host/process-spec'
 import { execCommand } from '../ssh/remote-exec/remote-exec-command'
 import { WSL_COMMAND_LOOP_ARGV0, WSL_COMMAND_LOOP_SCRIPT } from './wsl-command-loop'
 import { createWslCommandLoopPool, type WslCommandLoopPool } from './wsl-command-loop-pool'
@@ -95,7 +95,7 @@ describe.runIf(posix)('WSL command loop', () => {
   })
 
   it('does not let a backgrounded writer leak into the next command', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-wsl-loop-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-wsl-loop-'))
     try {
       const { conn } = pool()
       await execCommand(conn, `(sleep 0.2; echo late; echo done > '${dir}/f') &`)

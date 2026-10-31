@@ -1,5 +1,5 @@
 import { dirname } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { pickAllowedEnv, RUNTIME_ENV_ALLOWLIST } from '../../ai-vault/session-scanner-service-env'
 
 export const ADOPTED_DIRECTORY_PROBE_TIMEOUT_MS = 5_000

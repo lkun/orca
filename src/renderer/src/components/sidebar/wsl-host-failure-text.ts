@@ -68,8 +68,8 @@ const DETAIL_COPY: Record<WslHostStatusDetailCode, (values: Values) => string | 
     ),
   guestUnanswered: () =>
     translate('sidebar.wslHosts.statusDetails.guestUnanswered', DETAIL.guestUnanswered),
-  orcadUnanswered: () =>
-    translate('sidebar.wslHosts.statusDetails.orcadUnanswered', DETAIL.orcadUnanswered),
+  occdUnanswered: () =>
+    translate('sidebar.wslHosts.statusDetails.occdUnanswered', DETAIL.occdUnanswered),
   restartGaveUp: ({ text, count: readCount }) => {
     const distro = text('distro')
     const count = readCount('count')

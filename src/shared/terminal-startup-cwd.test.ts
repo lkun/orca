@@ -37,9 +37,9 @@ describe('resolveTerminalStartupCwd', () => {
 
   it('falls back to a non-ASCII workspace root for a missing cwd (#7239)', () => {
     // Preserve the Japanese workspace path from the #7239 reproduction verbatim.
-    const worktreePath = '/Users/motoki/orca/workspaces/nakamuramotoki/Fableと議論'
+    const worktreePath = '/Users/motoki/occ/workspaces/nakamuramotoki/Fableと議論'
     expect(
-      resolveTerminalStartupCwd(worktreePath, '/var/tmp/orca-stale', {
+      resolveTerminalStartupCwd(worktreePath, '/var/tmp/occ-stale', {
         directoryExists: (path) => path === worktreePath
       })
     ).toBe(worktreePath)

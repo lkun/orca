@@ -10,7 +10,7 @@ no uniform overhead is added.
 
 Unit assignment runs inside Vitest's sequencer after discovery and CLI exclusions;
 Vitest's default sort, workers and isolation remain intact. It is enabled only by
-`ORCA_BALANCE_UNIT_SHARDS=1`; ordinary local runs and explicit file filters retain
+`OCC_BALANCE_UNIT_SHARDS=1`; ordinary local runs and explicit file filters retain
 their existing behavior. E2E uses Playwright's native `--list` and `--test-list`,
 retaining project filters, skipped tests and complete serial groups within files.
 The workflow verifies selected test IDs against full discovery before executing.
@@ -49,7 +49,7 @@ No retries, assertions, coverage exclusions, runner classes or shard counts chan
 ## Current unit refresh: October 25, 2026
 
 The baseline imports all five successful unit shards from
-[run 40276310369, attempt 1](https://github.com/stablyai/orca/actions/runs/40276310369/attempts/1),
+[run 40276310369, attempt 1](https://github.com/stablyai/occ/actions/runs/40276310369/attempts/1),
 the runner class PR shards use: `blacksmith-8vcpu-ubuntu-2404`, eight workers, Node
 24.22.1, Bun 1.4.4, source `085cfad2cb3b883c975d5630d94fb2900d0bed05`. The previous ARM
 four-worker baseline lacked 1,976 current files and left PR shards 13–44% apart.
@@ -68,7 +68,7 @@ spread of 3–4% instead of 13–44%.
 ## Historical unit refresh: October 14, 2026
 
 The baseline imports all five successful ARM unit shards from
-[run 38646706136, attempt 1](https://github.com/stablyai/orca/actions/runs/38646706136/attempts/1).
+[run 38646706136, attempt 1](https://github.com/stablyai/occ/actions/runs/38646706136/attempts/1).
 The tested merge was `8d7f46198b99432efd104ac7803174173b367c66`, using Node
 24.21.0, Bun 1.4.3, `ubuntu-24.04-arm`, and four workers per shard. All 12,314
 files appear exactly once: 12,163 passed and 151 skipped, with zero unhandled
@@ -93,7 +93,7 @@ assignment algorithm are unchanged. Later source changes need fresh validation.
 ## Historical unit refresh: September 27, 2026
 
 The baseline imports every successful Node 24 shard from
-[run 36294142683, attempt 1](https://github.com/stablyai/orca/actions/runs/36294142683/attempts/1).
+[run 36294142683, attempt 1](https://github.com/stablyai/occ/actions/runs/36294142683/attempts/1).
 The recorded checkout was `cc35c1b422e9c20197bc59aa27a71019ffc18b5b`, with Node
 24.21.0 and unchanged Linux workers. All 9,847 report entries match their saved
 assignments and current discovery exactly once, with no unhandled errors. The old
@@ -109,7 +109,7 @@ hosted wall-clock improvement. No worker, shard-count, or algorithm change is ma
 ## Previous unit refresh: September 26, 2026
 
 The previous baseline imported all eight successful unit shards from
-[run 36221874572, attempt 1](https://github.com/stablyai/orca/actions/runs/36221874572/attempts/1).
+[run 36221874572, attempt 1](https://github.com/stablyai/occ/actions/runs/36221874572/attempts/1).
 They ran Node **24.21.0** on `ubuntu-latest` with Vitest's default Linux worker
 count and isolation. The checked-out merge was
 `f68ecf8c4aeb396795a8f0f9dbd8ef58fd634d43`, whose second parent is the run's PR
@@ -177,7 +177,7 @@ allowance with the complete successful measurements described above.
 For E2E reproduction, check out the recorded source and pass the saved list to the
 existing command: `pnpm run test:e2e --test-list=/path/to/selected.txt` with the same
 CI environment/build inputs. For unit reproduction, use the unchanged workflow
-command and exclusions with `ORCA_BALANCE_UNIT_SHARDS=1` and the recorded
+command and exclusions with `OCC_BALANCE_UNIT_SHARDS=1` and the recorded
 `--shard=INDEX/8`. Direct test-file reruns remain supported.
 
 To refresh unit weights, download all `unit-shard-node-*` artifacts from one
@@ -201,15 +201,15 @@ For older unit runs without reporter artifacts, and E2E refreshes, download
 `log-JOB_ID.txt` files into one directory from
 exactly one eight-shard unit run and one fourteen-shard general E2E run. Use the
 job IDs from the Actions jobs API and fetch each with
-`gh api repos/stablyai/orca/actions/jobs/JOB_ID/logs`. Do not include dedicated
+`gh api repos/stablyai/occ/actions/jobs/JOB_ID/logs`. Do not include dedicated
 lanes or multiple attempts. Then run:
 
 ```sh
 node config/scripts/ci-shard-timing-import.mjs LOG_DIRECTORY UNIT_RUN_ID E2E_RUN_ID config/scripts/ci-shard-timings.json
 ```
 
-The initial source logs are in `/tmp/orca-ci-shard-logs`; two were reused from
-`/tmp/orca-ci-audit`, and the remaining twenty were fetched read-only. Reimporting
+The initial source logs are in `/tmp/occ-ci-shard-logs`; two were reused from
+`/tmp/occ-ci-audit`, and the remaining twenty were fetched read-only. Reimporting
 those logs reproduced the original baseline byte-for-byte. Review file-count and
 load projections before adopting a new baseline; no network access is needed to
 plan or run shards.
@@ -233,5 +233,5 @@ plan or run shards.
   importer/reporter and shard-assignment tests passed; importing the artifacts
   reproduced the refreshed JSON byte-for-byte.
 
-All local tests used `ORCA_BACKGROUND_LAUNCH=1` in background tool sessions. No app
+All local tests used `OCC_BACKGROUND_LAUNCH=1` in background tool sessions. No app
 windows or full E2E test bodies were launched.

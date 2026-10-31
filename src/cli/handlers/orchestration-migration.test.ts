@@ -4,13 +4,13 @@ import { ORCHESTRATION_HANDLERS } from './orchestration'
 // Reuse one mutation identity when retrying worker_done after runtime_unavailable.
 const WORKER_DONE_REQUEST = { orchestrationRequestId: expect.any(String) }
 
-const originalPaneKey = process.env.ORCA_PANE_KEY
+const originalPaneKey = process.env.OCC_PANE_KEY
 
 afterEach(() => {
   if (originalPaneKey === undefined) {
-    delete process.env.ORCA_PANE_KEY
+    delete process.env.OCC_PANE_KEY
   } else {
-    process.env.ORCA_PANE_KEY = originalPaneKey
+    process.env.OCC_PANE_KEY = originalPaneKey
   }
 })
 
@@ -18,7 +18,7 @@ describe('orchestration CLI migration recovery', () => {
   it.each([false, true])(
     'accepts an attested legacy worker_done settlement (replayed: %s)',
     async (replayed) => {
-      process.env.ORCA_PANE_KEY = 'tab-worker:leaf-worker'
+      process.env.OCC_PANE_KEY = 'tab-worker:leaf-worker'
       const call = vi.fn().mockResolvedValue({
         result: {
           message: { id: 'msg_done' },

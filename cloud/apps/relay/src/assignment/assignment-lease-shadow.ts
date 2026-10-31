@@ -4,7 +4,7 @@ import { classifyAssignmentLease, type AssignmentLeaseClass } from './assignment
 // Compare enforce’s hypothetical lease verdict with the authoritative DB answer; agree/disagree exposes valid leases the DB refuses before lease-only admission.
 export type AssignmentLeaseShadowClass = Exclude<AssignmentLeaseClass, 'valid'> | 'agree' | 'disagree'
 
-export const ASSIGNMENT_LEASE_SHADOW_EVENT = 'orca_relay_assignment_lease_shadow'
+export const ASSIGNMENT_LEASE_SHADOW_EVENT = 'occ_relay_assignment_lease_shadow'
 const WINDOW_MS = 60_000
 // Flat per-class totals under `classes`, so a log-based metric can extract each by path.
 const CLASS_FIELDS: ReadonlyArray<readonly [AssignmentLeaseShadowClass, string]> = [

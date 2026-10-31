@@ -607,7 +607,7 @@ function createAdoptedDb(options: { settleWork: boolean }): {
   adoptedRunId: string
   recoveryMessageId: string
 } {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-11745-m5-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-11745-m5-'))
   tempDirs.push(dir)
   const dbPath = join(dir, 'orchestration.db')
 
@@ -689,7 +689,7 @@ describe('#11745 M5 — binding an unclaimed adopted Run', () => {
         code: 'consumer_fenced',
         data: {
           effectsApplied: false,
-          recoveryCommand: `orca orchestration run-use --id ${adoptedRunId} --takeover-legacy`
+          recoveryCommand: `occ orchestration run-use --id ${adoptedRunId} --takeover-legacy`
         }
       })
     )
@@ -700,7 +700,7 @@ describe('#11745 M5 — binding an unclaimed adopted Run', () => {
 
 describe('#11745 L6 — indexed getCurrentRunForPane keeps pane equivalence', () => {
   function paneDb(): OrchestrationDb {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-11745-l6-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-11745-l6-'))
     tempDirs.push(dir)
     const db = new OrchestrationDb(join(dir, 'orchestration.db'))
     databases.push(db)

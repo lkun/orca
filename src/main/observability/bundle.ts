@@ -21,7 +21,7 @@ export type CollectBundleOptions = {
   readonly platform: string
   readonly arch: string
   readonly osRelease: string
-  readonly orcaChannel: 'stable' | 'rc' | 'dev'
+  readonly occChannel: 'stable' | 'rc' | 'dev'
 }
 
 export type CollectedBundle = {
@@ -39,7 +39,7 @@ type BundleHeader = {
   readonly platform: string
   readonly arch: string
   readonly os_release: string
-  readonly orca_channel: 'stable' | 'rc' | 'dev'
+  readonly occ_channel: 'stable' | 'rc' | 'dev'
   readonly collected_at: string
   readonly schema_version: 1
 }
@@ -165,7 +165,7 @@ export function collectBundle(opts: CollectBundleOptions): CollectedBundle {
     platform: opts.platform,
     arch: opts.arch,
     os_release: opts.osRelease,
-    orca_channel: opts.orcaChannel,
+    occ_channel: opts.occChannel,
     collected_at: new Date().toISOString(),
     schema_version: 1
   }

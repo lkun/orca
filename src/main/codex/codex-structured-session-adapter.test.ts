@@ -170,15 +170,15 @@ describe('CodexStructuredSessionAdapter.acquire', () => {
         approvalsReviewer: 'user',
         // Explicit values survive inherit = core.
         config: {
-          'shell_environment_policy.set.ORCA_AGENT_SESSION_ID': 'session-1',
-          'shell_environment_policy.set.ORCA_STRUCTURED_SESSION': '1',
-          'shell_environment_policy.set.ORCA_CLI_COMMAND': expect.stringMatching(
+          'shell_environment_policy.set.OCC_AGENT_SESSION_ID': 'session-1',
+          'shell_environment_policy.set.OCC_STRUCTURED_SESSION': '1',
+          'shell_environment_policy.set.OCC_CLI_COMMAND': expect.stringMatching(
             /^[^:;]*[\\/]cli[\\/]bin[\\/]occ-dev$/
           ),
-          'shell_environment_policy.set.ORCA_USER_DATA_PATH': expect.any(String),
-          'shell_environment_policy.set.ORCA_ENVIRONMENT': '',
-          'shell_environment_policy.set.ORCA_PAIRING_CODE': '',
-          'shell_environment_policy.set.ORCA_REMOTE_PAIRING': ''
+          'shell_environment_policy.set.OCC_USER_DATA_PATH': expect.any(String),
+          'shell_environment_policy.set.OCC_ENVIRONMENT': '',
+          'shell_environment_policy.set.OCC_PAIRING_CODE': '',
+          'shell_environment_policy.set.OCC_REMOTE_PAIRING': ''
         }
       }
     })

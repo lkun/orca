@@ -110,8 +110,8 @@ describe('browserManager', () => {
     expect(guestSetBackgroundThrottlingMock).not.toHaveBeenCalled()
 
     // Synchronous: a capture never waits on the desktop renderer.
-    const releaseFirst = browserManager.holdPaintForCapture(guest.id)
-    const releaseSecond = browserManager.holdPaintForCapture(guest.id)
+    const releaseFirst = browserManager.holdPaintFoccpture(guest.id)
+    const releaseSecond = browserManager.holdPaintFoccpture(guest.id)
 
     expect(renderer.executeJavaScript).not.toHaveBeenCalled()
     expect(renderer.send.mock.calls).toEqual([
@@ -147,7 +147,7 @@ describe('browserManager', () => {
     }
     webContentsFromIdMock.mockReturnValue(guest)
     const releaseStream = rendererPublicationThrottle.acquire(guest)
-    const releaseCapture = browserManager.holdPaintForCapture(guest.id)
+    const releaseCapture = browserManager.holdPaintFoccpture(guest.id)
 
     releaseStream()
     vi.runAllTimers()
@@ -194,22 +194,22 @@ describe('browserManager', () => {
         throw new Error('renderer unavailable')
       }
       if (failure === 'release') {
-        const release = browserManager.holdPaintForCapture(guest.id)
+        const release = browserManager.holdPaintFoccpture(guest.id)
         renderer.send.mockImplementationOnce(fail)
         expect(release).not.toThrow()
       } else if (failure === 'notify') {
         renderer.send.mockImplementationOnce(fail)
-        const release = browserManager.holdPaintForCapture(guest.id)
+        const release = browserManager.holdPaintFoccpture(guest.id)
         expect(release).not.toThrow()
       } else {
         renderer.setBackgroundThrottling.mockImplementationOnce(fail)
-        expect(() => browserManager.holdPaintForCapture(guest.id)).toThrow('renderer unavailable')
+        expect(() => browserManager.holdPaintFoccpture(guest.id)).toThrow('renderer unavailable')
       }
       vi.runAllTimers()
       expect(guest.setBackgroundThrottling.mock.calls).toEqual([[false], [true]])
 
       renderer.send.mockClear()
-      const releaseNext = browserManager.holdPaintForCapture(guest.id)
+      const releaseNext = browserManager.holdPaintFoccpture(guest.id)
       expect(renderer.send.mock.calls).toEqual([
         ['browser:capturePaintHold', { browserPageId: 'page-failure', held: true }]
       ])
@@ -257,12 +257,12 @@ describe('browserManager', () => {
       })
     }
     register(oldGuest, oldRenderer.id)
-    const releaseOld = browserManager.holdPaintForCapture(oldGuest.id)
+    const releaseOld = browserManager.holdPaintFoccpture(oldGuest.id)
     oldGuest.isDestroyed.mockReturnValue(true)
     oldRenderer.isDestroyed.mockReturnValue(true)
     register(newGuest, newRenderer.id)
     newRenderer.send.mockClear()
-    const releaseNew = browserManager.holdPaintForCapture(newGuest.id)
+    const releaseNew = browserManager.holdPaintFoccpture(newGuest.id)
 
     releaseOld()
     vi.runAllTimers()

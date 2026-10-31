@@ -1,5 +1,5 @@
 import type * as NodeCliCommandResolutionModule from '../../shared/node-cli-command-resolution'
-import type * as ProcessHostModule from '@orca/process-host'
+import type * as ProcessHostModule from '@occ/process-host'
 import { EventEmitter } from 'node:events'
 import { existsSync } from 'node:fs'
 import { delimiter } from 'node:path'
@@ -41,7 +41,7 @@ vi.mock('node:child_process', () => ({
   execFileSync: vi.fn(),
   spawn: spawnMock
 }))
-vi.mock('@orca/process-host', async (importOriginal) => ({
+vi.mock('@occ/process-host', async (importOriginal) => ({
   ...(await importOriginal<typeof ProcessHostModule>()),
   spawnProcess: spawnProcessMock
 }))
@@ -116,7 +116,7 @@ describe('account CLI handlers', () => {
   const originalElectronRunAsNode = process.env.ELECTRON_RUN_AS_NODE
   const originalPathAlias = process.env.Path
   const originalWslDistroName = process.env.WSL_DISTRO_NAME
-  const originalBridgeDistro = process.env.ORCA_CLI_WSL_DISTRO
+  const originalBridgeDistro = process.env.OCC_CLI_WSL_DISTRO
   const callMock = vi.fn()
   const client = { call: callMock } as unknown as RuntimeClient
   let logSpy: ReturnType<typeof vi.spyOn>
@@ -165,7 +165,7 @@ describe('account CLI handlers', () => {
     process.env.ELECTRON_RUN_AS_NODE = '1'
     // Clear real WSL attribution before simulating win32.
     delete process.env.WSL_DISTRO_NAME
-    delete process.env.ORCA_CLI_WSL_DISTRO
+    delete process.env.OCC_CLI_WSL_DISTRO
   })
 
   afterEach(() => {
@@ -182,9 +182,9 @@ describe('account CLI handlers', () => {
       process.env.Path = originalPathAlias
     }
     if (originalBridgeDistro === undefined) {
-      delete process.env.ORCA_CLI_WSL_DISTRO
+      delete process.env.OCC_CLI_WSL_DISTRO
     } else {
-      process.env.ORCA_CLI_WSL_DISTRO = originalBridgeDistro
+      process.env.OCC_CLI_WSL_DISTRO = originalBridgeDistro
     }
     if (originalWslDistroName === undefined) {
       delete process.env.WSL_DISTRO_NAME
@@ -328,7 +328,7 @@ describe('account CLI handlers', () => {
       expect(failure.message).toContain(WINDOWS_BATCH_UNSAFE_CHARACTERS_LABEL)
       expect(failure.message).toContain('full absolute path')
       expect(failure.message).toContain(
-        String.raw`npm install --prefix C:\tools\orca-opencode2 @opencode/cli`
+        String.raw`npm install --prefix C:\tools\occ-opencode2 @opencode/cli`
       )
       expect(failure.message).toContain('first match')
       expect(failure.message).toContain('move/rename only its suffixed opencode2 launchers')
@@ -337,7 +337,7 @@ describe('account CLI handlers', () => {
       expect(failure.message).not.toContain('Usage:')
       if (fallback === 'v1') {
         // External discovery now exposes the safe first suffix; the old generic v1 is unchanged.
-        const safe = String.raw`C:\tools\orca-opencode2\node_modules\.bin\opencode2.cmd`
+        const safe = String.raw`C:\tools\occ-opencode2\node_modules\.bin\opencode2.cmd`
         resolved.set('opencode2', safe)
         expect(resolved.get('opencode')).toBe(generic)
         spawnProcessMock
@@ -542,7 +542,7 @@ describe('account CLI handlers', () => {
   it('uses the explicit bridge distro over an ambient environment or another distro cwd', async () => {
     Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
     process.env.WSL_DISTRO_NAME = 'stale-Windows-value'
-    process.env.ORCA_CLI_WSL_DISTRO = 'Debian'
+    process.env.OCC_CLI_WSL_DISTRO = 'Debian'
 
     await ACCOUNT_HANDLERS['account add'](
       context('claude', false, String.raw`\\wsl.localhost\Ubuntu-22.04\home\user`)
@@ -559,7 +559,7 @@ describe('account CLI handlers', () => {
     'attributes %s from a Windows mount to the bridge distro',
     async (agent) => {
       Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
-      process.env.ORCA_CLI_WSL_DISTRO = 'Ubuntu Work'
+      process.env.OCC_CLI_WSL_DISTRO = 'Ubuntu Work'
       await ACCOUNT_HANDLERS['account add'](context(agent, false, String.raw`C:\work with spaces`))
       expect(
         callMock.mock.calls.some(
@@ -586,7 +586,7 @@ describe('account CLI handlers', () => {
       // Linux runtimes use host-lane accounts even when the CLI itself runs in WSL.
       Object.defineProperty(process, 'platform', { configurable: true, value: platform })
       process.env.WSL_DISTRO_NAME = 'Ubuntu-22.04'
-      process.env.ORCA_CLI_WSL_DISTRO = 'Ubuntu-22.04'
+      process.env.OCC_CLI_WSL_DISTRO = 'Ubuntu-22.04'
 
       await ACCOUNT_HANDLERS['account add'](context('codex'))
 

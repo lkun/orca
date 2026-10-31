@@ -8,7 +8,7 @@ import type { Repo } from '../../../../shared/repo-types'
 import type { DetectedWorktreeListResult } from '../../../../shared/worktree/types'
 import {
   getHiddenImportableExternalWorktrees,
-  getVisibleNonOrcaWorktrees
+  getVisibleNonOCCWorktrees
 } from '../../../../shared/external-worktree-inbox'
 import { relativePathInsideRoot } from '../../../../shared/cross-platform-path'
 
@@ -41,7 +41,7 @@ export default function HiddenWorktreeRecoveryList({
           worktree.path.toLowerCase().includes(normalizedQuery)
       )
     : hidden
-  const discoveredCount = hidden.length + getVisibleNonOrcaWorktrees(detected).length
+  const discoveredCount = hidden.length + getVisibleNonOCCWorktrees(detected).length
   const virtualizer = useVirtualizer({
     count: filtered.length,
     getScrollElement: () => listRef.current,

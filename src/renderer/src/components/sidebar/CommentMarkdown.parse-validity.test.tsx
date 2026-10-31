@@ -125,7 +125,7 @@ function native(
     </NativeChatVisualOwnerContext.Provider>
   )
 }
-const directive = (i = 0) => `::orca-visual{file="v${i}.html"}`
+const directive = (i = 0) => `::occ-visual{file="v${i}.html"}`
 const prefix = '```text\nsettled\n```\n\nNext'
 
 it.each([
@@ -139,10 +139,10 @@ it.each([
   ['lazy quote', `> a\n${directive()}\nfoo\n\nbar`, 1],
   ['nested', `- item\n\n  ${directive()}\n\n> ${directive(1)}\n\nend`, 0],
   ['fenced marker', `~~~text\n${directive()}\n~~~\n\nend`, 0],
-  ['title CRLF', '::orca-visual{file="v0.html" title="Title"}\r\n\r\nend', 1],
+  ['title CRLF', '::occ-visual{file="v0.html" title="Title"}\r\n\r\nend', 1],
   [
     'invalid escaped overlength',
-    `\\${directive()}\n\n::orca-visual{file="../bad.html"}\n\n::orca-visual{file="v.html" title="${'x'.repeat(520)}"}\n\nend`,
+    `\\${directive()}\n\n::occ-visual{file="../bad.html"}\n\n::occ-visual{file="v.html" title="${'x'.repeat(520)}"}\n\nend`,
     0
   ],
   [
@@ -193,8 +193,8 @@ it('preserves historical cuts across config, replacement, completion, re-entry a
       ['replacement', true, true, undefined],
       [directive(), true, true, undefined],
       [directive(), false, true, undefined],
-      [`${prefix}\n\n::orca-visual{file="v`, true, true, undefined],
-      [`${prefix}\n\n::orca-visual{file="v`, false, true, undefined],
+      [`${prefix}\n\n::occ-visual{file="v`, true, true, undefined],
+      [`${prefix}\n\n::occ-visual{file="v`, false, true, undefined],
       ['', true, true, undefined],
       ['one\n\n\uFEFFtail', true, true, undefined],
       [prefix, true, true, undefined]

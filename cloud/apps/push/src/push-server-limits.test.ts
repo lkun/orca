@@ -1,4 +1,4 @@
-import { PUSH_LIMITS } from '@orca-cloud/push-contract'
+import { PUSH_LIMITS } from '@occ-cloud/push-contract'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPushHostKeypair, hostPublicKeyB64 } from './host-challenge-answering.test-fixture.js'
 import {
@@ -243,7 +243,7 @@ describe('push gateway request limits', () => {
       expect(response.status).toBe(500)
       expect(await response.json()).toEqual({ error: 'internal' })
       const logged = warn.mock.calls.map((call) => String(call[0])).join('\n')
-      expect(logged).toContain('"event":"orca_push_request_failed"')
+      expect(logged).toContain('"event":"occ_push_request_failed"')
       expect(logged).not.toContain('SELECT')
       expect(logged).not.toContain('push_devices')
       expect(harness.server.observability.consume().request_error).toBe(1)

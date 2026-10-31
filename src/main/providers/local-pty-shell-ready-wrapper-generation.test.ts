@@ -23,7 +23,7 @@ restoreUserDataPathAfterEach()
 
 describe('ensureShellReadyWrappersAt', () => {
   it('keeps required wrapper paths aligned with generated files', () => {
-    const root = '/tmp/orca-shell-ready'
+    const root = '/tmp/occ-shell-ready'
     expect(getRequiredShellReadyWrapperPaths(root)).toEqual(
       buildLocalShellReadyWrapperFiles(root).map(([path]) => path)
     )
@@ -31,7 +31,7 @@ describe('ensureShellReadyWrappersAt', () => {
 
   // Rewriting content-addressed live wrappers adds Windows indexer/antivirus write collisions without changing bytes.
   it('does not rewrite a tree that is already present', async () => {
-    const userData = mkdtempSync(join(tmpdir(), 'orca-warm-tree-'))
+    const userData = mkdtempSync(join(tmpdir(), 'occ-warm-tree-'))
     try {
       setTestUserDataPath(userData)
       const generation = await import('./local-pty-shell-ready-wrapper-generation')
@@ -53,7 +53,7 @@ describe('ensureShellReadyWrappersAt', () => {
   })
 
   it('regenerates a tree whose files went missing', async () => {
-    const userData = mkdtempSync(join(tmpdir(), 'orca-missing-tree-'))
+    const userData = mkdtempSync(join(tmpdir(), 'occ-missing-tree-'))
     try {
       setTestUserDataPath(userData)
       const generation = await import('./local-pty-shell-ready-wrapper-generation')
@@ -73,8 +73,8 @@ describe('ensureShellReadyWrappersAt', () => {
 
 describe('shell-ready wrapper root resolution', () => {
   // Plain-node daemon forks have no Electron app; use the shared user-data env path.
-  it('resolves the wrapper root from ORCA_USER_DATA_PATH', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-userdata-env-'))
+  it('resolves the wrapper root from OCC_USER_DATA_PATH', async () => {
+    const root = mkdtempSync(join(tmpdir(), 'occ-userdata-env-'))
     try {
       setTestUserDataPath(root)
       const { getShellReadyLaunchConfig } = await importFreshLocalPtyShellReady()
@@ -106,7 +106,7 @@ function runInteractiveBashRcfile(
       env: {
         ...process.env,
         HOME: tempDir,
-        ORCA_SHELL_FEATURES: 'ready',
+        OCC_SHELL_FEATURES: 'ready',
         TERM: process.env.TERM || 'xterm'
       },
       timeout: 5000
@@ -145,20 +145,20 @@ function expectBashOsc133Lifecycle(output: string): void {
 
 describePosix('local PTY shell-ready launch config', () => {
   let userDataPath: string
-  let previousOrcaOrigZdotdir: string | undefined
+  let previousOCCOrigZdotdir: string | undefined
 
   beforeEach(() => {
-    previousOrcaOrigZdotdir = process.env.ORCA_ORIG_ZDOTDIR
-    delete process.env.ORCA_ORIG_ZDOTDIR
+    previousOCCOrigZdotdir = process.env.OCC_ORIG_ZDOTDIR
+    delete process.env.OCC_ORIG_ZDOTDIR
     userDataPath = mkdtempSync(join(tmpdir(), 'local-pty-shell-ready-test-'))
     setTestUserDataPath(userDataPath)
   })
 
   afterEach(() => {
-    if (previousOrcaOrigZdotdir === undefined) {
-      delete process.env.ORCA_ORIG_ZDOTDIR
+    if (previousOCCOrigZdotdir === undefined) {
+      delete process.env.OCC_ORIG_ZDOTDIR
     } else {
-      process.env.ORCA_ORIG_ZDOTDIR = previousOrcaOrigZdotdir
+      process.env.OCC_ORIG_ZDOTDIR = previousOCCOrigZdotdir
     }
     rmSync(userDataPath, { recursive: true, force: true })
     vi.restoreAllMocks()
@@ -177,8 +177,8 @@ describePosix('local PTY shell-ready launch config', () => {
     const init = config.args?.[2] ?? ''
     expect(init).toContain('--on-event fish_prompt')
     // Why `builtin`: a user-defined printf function would swallow the marker.
-    expect(init).toContain('builtin printf "\\033]777;orca-shell-ready\\007"')
-    expect(init).toContain('functions -e __orca_shell_ready_marker')
+    expect(init).toContain('builtin printf "\\033]777;occ-shell-ready\\007"')
+    expect(init).toContain('functions -e __occ_shell_ready_marker')
   })
 
   it('keeps markerless fish argv untouched and points it at the vendor snippet', async () => {
@@ -188,25 +188,25 @@ describePosix('local PTY shell-ready launch config', () => {
 
     expect(config.args).toBeNull()
     expect(config.supportsReadyMarker).toBe(false)
-    const prefix = config.env.ORCA_FISH_XDG_DATA_DIRS_PREFIX
+    const prefix = config.env.OCC_FISH_XDG_DATA_DIRS_PREFIX
     expect(prefix).toMatch(/\/fish-xdg-data:\/usr\/local\/share:\/usr\/share$/)
-    expect(config.env).toEqual({ XDG_DATA_DIRS: prefix, ORCA_FISH_XDG_DATA_DIRS_PREFIX: prefix })
+    expect(config.env).toEqual({ XDG_DATA_DIRS: prefix, OCC_FISH_XDG_DATA_DIRS_PREFIX: prefix })
     const dataDir = prefix.split(':')[0]
     expect(
-      readFileSync(`${dataDir}/fish/vendor_conf.d/orca-shell-integration.fish`, 'utf8')
+      readFileSync(`${dataDir}/fish/vendor_conf.d/occ-shell-integration.fish`, 'utf8')
     ).toContain('set argv --no-daemon $argv')
   })
 
-  it('falls back to HOME for ORCA_ORIG_ZDOTDIR when inherited ZDOTDIR points at a wrapper dir', async () => {
+  it('falls back to HOME for OCC_ORIG_ZDOTDIR when inherited ZDOTDIR points at a wrapper dir', async () => {
     // Nested OCC launches must not inherit wrapper ZDOTDIR and recurse.
     const previousZdotdir = process.env.ZDOTDIR
     const previousHome = process.env.HOME
-    process.env.ZDOTDIR = '/some/other/orca/shell-ready/zsh'
+    process.env.ZDOTDIR = '/some/other/occ/shell-ready/zsh'
     process.env.HOME = '/Users/alice'
     try {
       const { getShellReadyLaunchConfig } = await importFreshLocalPtyShellReady()
       const config = getShellReadyLaunchConfig('/bin/zsh')
-      expect(config.env.ORCA_ORIG_ZDOTDIR).toBeUndefined()
+      expect(config.env.OCC_ORIG_ZDOTDIR).toBeUndefined()
     } finally {
       if (previousZdotdir === undefined) {
         delete process.env.ZDOTDIR
@@ -221,17 +221,17 @@ describePosix('local PTY shell-ready launch config', () => {
     }
   })
 
-  it('falls back to HOME when inherited ORCA_ORIG_ZDOTDIR points at a wrapper dir', async () => {
+  it('falls back to HOME when inherited OCC_ORIG_ZDOTDIR points at a wrapper dir', async () => {
     const previousZdotdir = process.env.ZDOTDIR
-    const previousOrigZdotdir = process.env.ORCA_ORIG_ZDOTDIR
+    const previousOrigZdotdir = process.env.OCC_ORIG_ZDOTDIR
     const previousHome = process.env.HOME
     delete process.env.ZDOTDIR
-    process.env.ORCA_ORIG_ZDOTDIR = '/some/other/orca/shell-ready/zsh'
+    process.env.OCC_ORIG_ZDOTDIR = '/some/other/occ/shell-ready/zsh'
     process.env.HOME = '/Users/alice'
     try {
       const { getShellReadyLaunchConfig } = await importFreshLocalPtyShellReady()
       const config = getShellReadyLaunchConfig('/bin/zsh')
-      expect(config.env.ORCA_ORIG_ZDOTDIR).toBeUndefined()
+      expect(config.env.OCC_ORIG_ZDOTDIR).toBeUndefined()
     } finally {
       if (previousZdotdir === undefined) {
         delete process.env.ZDOTDIR
@@ -239,9 +239,9 @@ describePosix('local PTY shell-ready launch config', () => {
         process.env.ZDOTDIR = previousZdotdir
       }
       if (previousOrigZdotdir === undefined) {
-        delete process.env.ORCA_ORIG_ZDOTDIR
+        delete process.env.OCC_ORIG_ZDOTDIR
       } else {
-        process.env.ORCA_ORIG_ZDOTDIR = previousOrigZdotdir
+        process.env.OCC_ORIG_ZDOTDIR = previousOrigZdotdir
       }
       if (previousHome === undefined) {
         delete process.env.HOME
@@ -257,12 +257,12 @@ describePosix('local PTY shell-ready launch config', () => {
     getShellReadyLaunchConfig('/bin/zsh')
 
     const zshenv = readFileSync(join(getShellReadyWrapperRoot(), 'zsh', '.zshenv'), 'utf8')
-    expect(zshenv).toContain('builtin export ZDOTDIR="$ORCA_ORIG_ZDOTDIR"')
-    expect(zshenv).toContain('printf "\\033]777;orca-shell-start:%s\\007" "$$"')
+    expect(zshenv).toContain('builtin export ZDOTDIR="$OCC_ORIG_ZDOTDIR"')
+    expect(zshenv).toContain('printf "\\033]777;occ-shell-start:%s\\007" "$$"')
     // Clear handback state before nested OCC or /etc/zshrc can mistake it for user configuration.
-    expect(zshenv).toContain('builtin unset ORCA_ORIG_ZDOTDIR ORCA_ZSHENV_SOURCE_DIR')
+    expect(zshenv).toContain('builtin unset OCC_ORIG_ZDOTDIR OCC_ZSHENV_SOURCE_DIR')
     expect(zshenv.indexOf('builtin export ZDOTDIR=')).toBeLessThan(
-      zshenv.indexOf('builtin source -- "$_orca_user_zshenv"')
+      zshenv.indexOf('builtin source -- "$_occ_user_zshenv"')
     )
     // Restored user ZDOTDIR owns the remaining startup files.
     for (const name of ['.zprofile', '.zshrc', '.zlogin']) {
@@ -278,14 +278,14 @@ describePosix('local PTY shell-ready launch config', () => {
 
     // .zshenv defines the deferred registration run once by first-prompt precmd.
     const zshenv = readFileSync(join(getShellReadyWrapperRoot(), 'zsh', '.zshenv'), 'utf8')
-    expect(zshenv).toContain('zle -N zle-line-init __orca_prompt_mark')
-    expect(zshenv).toContain('__orca_prev_line_init_fn="${widgets[zle-line-init]#user:}"')
-    expect(zshenv).toContain('printf "\\033]777;orca-shell-ready\\007"')
+    expect(zshenv).toContain('zle -N zle-line-init __occ_prompt_mark')
+    expect(zshenv).toContain('__occ_prev_line_init_fn="${widgets[zle-line-init]#user:}"')
+    expect(zshenv).toContain('printf "\\033]777;occ-shell-ready\\007"')
     // Why: add-zle-hook-widget aborts its chain on a non-zero earlier hook (e.g. oh-my-zsh vi-mode); don't register the marker through it.
     expect(zshenv).not.toContain('add-zle-hook-widget line-init')
     // Re-sourcing must preserve the original widget chain instead of capturing OCC itself.
-    expect(zshenv).toContain('== "user:__orca_prompt_mark"')
-    expect(zshenv).toContain('__orca_deferred_init')
+    expect(zshenv).toContain('== "user:__occ_prompt_mark"')
+    expect(zshenv).toContain('__occ_deferred_init')
   })
 
   it('writes wrappers without restoring Pi/OMP homes after user startup files', async () => {
@@ -297,31 +297,31 @@ describePosix('local PTY shell-ready launch config', () => {
     const zshrc = readFileSync(join(getShellReadyWrapperRoot(), 'zsh', '.zshenv'), 'utf8')
     const bashRc = getBashShellReadyRcfileContent()
     const restoreLine =
-      '[[ -n "${ORCA_OPENCODE_CONFIG_DIR:-}" ]] && export OPENCODE_CONFIG_DIR="${ORCA_OPENCODE_CONFIG_DIR}"'
+      '[[ -n "${OCC_OPENCODE_CONFIG_DIR:-}" ]] && export OPENCODE_CONFIG_DIR="${OCC_OPENCODE_CONFIG_DIR}"'
     const mimoRestoreLine =
-      '[[ -n "${ORCA_MIMOCODE_CONFIG_DIR:-}" ]] && export MIMOCODE_CONFIG_DIR="${ORCA_MIMOCODE_CONFIG_DIR}"'
+      '[[ -n "${OCC_MIMOCODE_CONFIG_DIR:-}" ]] && export MIMOCODE_CONFIG_DIR="${OCC_MIMOCODE_CONFIG_DIR}"'
     const codexRestoreLine =
-      '[[ -n "${ORCA_CODEX_HOME:-}" ]] && export CODEX_HOME="${ORCA_CODEX_HOME}"'
-    const agentTeamsPathRestoreLine = '[[ -n "${ORCA_AGENT_TEAMS_SHIM_DIR:-}" ]] || return 0'
-    const ompWrapperLine = 'command omp --extension "${ORCA_OMP_STATUS_EXTENSION}" "$@"'
+      '[[ -n "${OCC_CODEX_HOME:-}" ]] && export CODEX_HOME="${OCC_CODEX_HOME}"'
+    const agentTeamsPathRestoreLine = '[[ -n "${OCC_AGENT_TEAMS_SHIM_DIR:-}" ]] || return 0'
+    const ompWrapperLine = 'command omp --extension "${OCC_OMP_STATUS_EXTENSION}" "$@"'
     expect(zshrc).toContain(restoreLine)
     expect(bashRc).toContain(restoreLine)
     expect(zshrc).toContain(mimoRestoreLine)
     expect(bashRc).toContain(mimoRestoreLine)
-    expect(zshrc).not.toContain('ORCA_PI_CODING_AGENT_DIR')
-    expect(bashRc).not.toContain('ORCA_PI_CODING_AGENT_DIR')
+    expect(zshrc).not.toContain('OCC_PI_CODING_AGENT_DIR')
+    expect(bashRc).not.toContain('OCC_PI_CODING_AGENT_DIR')
     expect(zshrc).toContain(codexRestoreLine)
     expect(zshrc).toContain(agentTeamsPathRestoreLine)
     expect(bashRc).toContain(agentTeamsPathRestoreLine)
     expect(bashRc).toContain(codexRestoreLine)
-    expect(zshrc).not.toContain('ORCA_OMP_CODING_AGENT_DIR')
-    expect(bashRc).not.toContain('ORCA_OMP_CODING_AGENT_DIR')
+    expect(zshrc).not.toContain('OCC_OMP_CODING_AGENT_DIR')
+    expect(bashRc).not.toContain('OCC_OMP_CODING_AGENT_DIR')
     expect(zshrc).toContain(ompWrapperLine)
     expect(bashRc).toContain(ompWrapperLine)
     for (const wrapperFile of [zshrc, bashRc]) {
       expect(wrapperFile).not.toContain('prime-agent()')
-      expect(wrapperFile).not.toContain('__orca_prime_agent')
-      expect(wrapperFile).not.toContain('ORCA_PRIME_AGENT_STATUS_EXTENSION')
+      expect(wrapperFile).not.toContain('__occ_prime_agent')
+      expect(wrapperFile).not.toContain('OCC_PRIME_AGENT_STATUS_EXTENSION')
       expect(wrapperFile).not.toContain('command prime-agent --extension')
     }
   })
@@ -339,10 +339,10 @@ describePosix('local PTY shell-ready launch config', () => {
   })
 
   itWithBash('emits lifecycle for foreground text ending like an internal hook', () => {
-    const input = 'echo user:__orca_osc133_prompt_done\nfalse\nexit 0\n'
+    const input = 'echo user:__occ_osc133_prompt_done\nfalse\nexit 0\n'
     const output = runInteractiveBashRcfile(getBashShellReadyRcfileContent(), userDataPath, input)
 
-    expect(output).toContain('user:__orca_osc133_prompt_done')
+    expect(output).toContain('user:__occ_osc133_prompt_done')
     expectBashOsc133Lifecycle(output)
   })
 
@@ -362,8 +362,8 @@ describePosix('local PTY shell-ready launch config', () => {
       expect(output).toContain('PROMPT_HOOK')
       expect(output).toContain('USER_DEBUG_AFTER')
       expect(output).toContain('USER_DEBUG_AFTER:<printf "PROMPT_HOOK\\n">')
-      expect(output).not.toContain('USER_DEBUG_AFTER:<(( __orca_exit_code == 0 ))>')
-      expect(output).not.toContain('USER_DEBUG_AFTER:<__orca_restore_prompt_status')
+      expect(output).not.toContain('USER_DEBUG_AFTER:<(( __occ_exit_code == 0 ))>')
+      expect(output).not.toContain('USER_DEBUG_AFTER:<__occ_restore_prompt_status')
       expectBashOsc133Lifecycle(output)
     }
   )
@@ -406,14 +406,14 @@ describePosix('local PTY shell-ready launch config', () => {
       const rcfile = getBashShellReadyRcfileContent()
       expect(rcfile).toContain(gate)
       const legacyRcfile = rcfile.replaceAll(gate, '0')
-      writeFileSync(join(userDataPath, '.bash_profile'), "PS1='ORCA_PS1> '\n")
+      writeFileSync(join(userDataPath, '.bash_profile'), "PS1='OCC_PS1> '\n")
       const input = 'trap - DEBUG\nfalse\nexit 0\n'
       const output = runInteractiveBashRcfile(legacyRcfile, userDataPath, input)
       const startBeforePrompt = new RegExp(
-        `${String.fromCharCode(27)}]133;A${String.fromCharCode(7)}(?:(?!ORCA_PS1> )[\\s\\S])*${String.fromCharCode(27)}]133;C`
+        `${String.fromCharCode(27)}]133;A${String.fromCharCode(7)}(?:(?!OCC_PS1> )[\\s\\S])*${String.fromCharCode(27)}]133;C`
       )
 
-      expect(output).toContain('ORCA_PS1> ')
+      expect(output).toContain('OCC_PS1> ')
       expect(output).not.toMatch(startBeforePrompt)
       expectBashOsc133Lifecycle(output)
     }
@@ -432,14 +432,14 @@ describePosix('local PTY shell-ready launch config', () => {
     expectBashOsc133Lifecycle(output)
   })
 
-  it('preserves a real inherited ZDOTDIR as ORCA_ORIG_ZDOTDIR', async () => {
+  it('preserves a real inherited ZDOTDIR as OCC_ORIG_ZDOTDIR', async () => {
     const previousZdotdir = process.env.ZDOTDIR
     const userZdotdir = makeUserZdotdir(userDataPath, '.config', 'zsh')
     process.env.ZDOTDIR = userZdotdir
     try {
       const { getShellReadyLaunchConfig } = await importFreshLocalPtyShellReady()
       const config = getShellReadyLaunchConfig('/bin/zsh')
-      expect(config.env.ORCA_ORIG_ZDOTDIR).toBe(userZdotdir)
+      expect(config.env.OCC_ORIG_ZDOTDIR).toBe(userZdotdir)
     } finally {
       if (previousZdotdir === undefined) {
         delete process.env.ZDOTDIR
@@ -457,7 +457,7 @@ describePosix('local PTY shell-ready launch config', () => {
     try {
       const { getShellReadyLaunchConfig } = await importFreshLocalPtyShellReady()
       const config = getShellReadyLaunchConfig('/bin/zsh')
-      expect(config.env.ORCA_ORIG_ZDOTDIR).toBeUndefined()
+      expect(config.env.OCC_ORIG_ZDOTDIR).toBeUndefined()
     } finally {
       if (previousZdotdir === undefined) {
         delete process.env.ZDOTDIR
@@ -479,7 +479,7 @@ describePosix('local PTY shell-ready launch config', () => {
     try {
       const { getShellReadyLaunchConfig } = await importFreshLocalPtyShellReady()
       const config = getShellReadyLaunchConfig('/bin/zsh')
-      expect(config.env.ORCA_ORIG_ZDOTDIR).toBe(userZdotdir)
+      expect(config.env.OCC_ORIG_ZDOTDIR).toBe(userZdotdir)
     } finally {
       if (previousZdotdir === undefined) {
         delete process.env.ZDOTDIR
@@ -497,10 +497,10 @@ describePosix('local PTY shell-ready launch config', () => {
 
     const zshenv = readFileSync(join(getShellReadyWrapperRoot(), 'zsh', '.zshenv'), 'utf8')
 
-    expect(zshenv).toContain('builtin source -- "$_orca_user_zshenv"')
+    expect(zshenv).toContain('builtin source -- "$_occ_user_zshenv"')
     // Define required functions before user emulate sh can change parsing semantics.
-    expect(zshenv.indexOf('__orca_deferred_init() {')).toBeLessThan(
-      zshenv.indexOf('builtin source -- "$_orca_user_zshenv"')
+    expect(zshenv.indexOf('__occ_deferred_init() {')).toBeLessThan(
+      zshenv.indexOf('builtin source -- "$_occ_user_zshenv"')
     )
   })
 

@@ -6,16 +6,16 @@ import {
 } from './bridge-rpc-client'
 import type { BridgeInitRoute } from './bridge-envelope'
 import {
-  createOrcaBridgePageTransport,
-  readOrcaBridgePageChannel
-} from './orca-bridge-page-channel'
+  createOCCBridgePageTransport,
+  readOCCBridgePageChannel
+} from './occ-bridge-page-channel'
 
 // Stamp boot progress to distinguish no script, thrown startup and unanswered shell; unbridged and shell-too-old are terminal states.
 export type PageMountState = 'started' | 'unbridged' | 'shell-too-old' | 'shell-ready' | 'mounted'
 
-export const PAGE_MOUNT_STATE_KEY = 'orcaWebEntry'
-export const PAGE_SESSION_ID_KEY = 'orcaWebSessionId'
-export const PAGE_BUILD_ID_KEY = 'orcaWebBuildId'
+export const PAGE_MOUNT_STATE_KEY = 'occWebEntry'
+export const PAGE_SESSION_ID_KEY = 'occWebSessionId'
+export const PAGE_BUILD_ID_KEY = 'occWebBuildId'
 
 export type PageMountTarget = { dataset: DOMStringMap }
 
@@ -36,12 +36,12 @@ export function createPageDiagnosticReporter(): (diagnostic: BridgeRpcClientDiag
 
 // Create one client before render: the channel’s single onmessage slot would let a second silently steal frames.
 export function createShellPageClient(): BridgeRpcClient | null {
-  const channel = readOrcaBridgePageChannel()
+  const channel = readOCCBridgePageChannel()
   if (channel === null) {
     return null
   }
   return createBridgeRpcClient({
-    ...createOrcaBridgePageTransport(channel),
+    ...createOCCBridgePageTransport(channel),
     onDiagnostic: createPageDiagnosticReporter()
   })
 }

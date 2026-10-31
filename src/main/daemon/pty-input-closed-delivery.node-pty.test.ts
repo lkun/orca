@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type * as pty from 'node-pty'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { loadNodePtyForTests } from '../orcad/orcad-node-slot-fixture'
+import { loadNodePtyForTests } from '../occd/occd-node-slot-fixture'
 import { SessionInputClosedError } from './daemon-errors'
 import { createDaemonPtySubprocessHandle } from './pty-subprocess/subprocess-handle'
 import { TerminalHost } from './terminal-host'
@@ -25,7 +25,7 @@ describePosix('input to a live child whose PTY master stopped taking input', () 
   })
 
   async function startLoggingChild() {
-    const root = mkdtempSync(join(tmpdir(), 'orca-input-closed-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-input-closed-'))
     const log = join(root, 'stdin.log')
     // The child ignores hangup so it outlives its PTY master, like an agent that keeps running.
     const native = nodePty.spawn(

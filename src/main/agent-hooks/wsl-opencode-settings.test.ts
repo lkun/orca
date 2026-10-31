@@ -36,7 +36,7 @@ const deps = {
   }
 }
 beforeEach(() => {
-  home = mkdtempSync(join(tmpdir(), 'orca-wsl-opencode-settings-'))
+  home = mkdtempSync(join(tmpdir(), 'occ-wsl-opencode-settings-'))
   const xdg = join(home, 'xdg')
   mkdirSync(join(xdg, 'opencode'), { recursive: true })
   writeFileSync(join(xdg, 'opencode', 'opencode.json'), '{"model":"guest-fixture"}')
@@ -60,7 +60,7 @@ beforeEach(() => {
   const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
     HOME: home,
     XDG_CONFIG_HOME: xdg,
-    ORCA_WSL_HOOK_INSTANCE: 'settings-fixture'
+    OCC_WSL_HOOK_INSTANCE: 'settings-fixture'
   })
   dispatcher.onRequest('preflight.detectAgents', async () => ({ agents: [] }))
   dispatcher.onRequest(AGENT_HOOK_INSTALL_PLUGINS_METHOD, async (request) => {
@@ -115,7 +115,7 @@ describe('WSL settings over the existing plugin RPC into real fixture overlays',
     if (!dir) {
       throw new Error('missing original overlay')
     }
-    const path = join(dir, 'plugins', 'orca-opencode-status.js')
+    const path = join(dir, 'plugins', 'occ-opencode-status.js')
     writeFileSync(path, '// installed sentinel')
     settings.disabledTuiAgents = ['opencode']
     await maybeRerunWslRelayGuestInstall(deps, state)

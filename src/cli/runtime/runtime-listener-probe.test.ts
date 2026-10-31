@@ -44,8 +44,8 @@ function metadataFor(endpoint: string): RuntimeMetadata {
 function nextEndpoint(): string {
   endpointCount += 1
   return process.platform === 'win32'
-    ? `\\\\.\\pipe\\orca-probe-${process.pid}-${endpointCount}`
-    : join(mkdtempSync(join(tmpdir(), 'orca-probe-')), 'runtime.sock')
+    ? `\\\\.\\pipe\\occ-probe-${process.pid}-${endpointCount}`
+    : join(mkdtempSync(join(tmpdir(), 'occ-probe-')), 'runtime.sock')
 }
 
 describe('probeRuntimeListener', () => {
@@ -86,7 +86,7 @@ describe('probeRuntimeListener', () => {
     'refuses to call a profile free when the endpoint could not be reached at all',
     async () => {
       // Permission errors cannot prove the profile is free for another Electron main.
-      const dir = join(mkdtempSync(join(tmpdir(), 'orca-probe-')), 'locked')
+      const dir = join(mkdtempSync(join(tmpdir(), 'occ-probe-')), 'locked')
       mkdirSync(dir)
       chmodSync(dir, 0o000)
       lockedDirs.add(dir)

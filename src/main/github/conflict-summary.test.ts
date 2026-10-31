@@ -422,7 +422,7 @@ describe('getPRConflictSummary caching', () => {
 
   it('runs the legacy merge-tree fallback against the scratch object store too', async () => {
     const commonDir = join(
-      realpathSync(mkdtempSync(join(tmpdir(), 'orca-conflict-summary-'))),
+      realpathSync(mkdtempSync(join(tmpdir(), 'occ-conflict-summary-'))),
       '.git'
     )
     mkdirSync(join(commonDir, 'objects'), { recursive: true })
@@ -447,7 +447,7 @@ describe('getPRConflictSummary caching', () => {
       expect(legacy[0]?.[1]?.env).toBeUndefined()
       expect(legacy[1]?.[1]?.env).toMatchObject({
         GIT_OBJECT_DIRECTORY: expect.stringContaining(
-          join(commonDir, 'objects', 'tmp_objdir-orca-merge-tree-')
+          join(commonDir, 'objects', 'tmp_objdir-occ-merge-tree-')
         ),
         GIT_ALTERNATE_OBJECT_DIRECTORIES: join(commonDir, 'objects')
       })

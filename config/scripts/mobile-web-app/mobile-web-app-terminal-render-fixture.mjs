@@ -71,7 +71,7 @@ export async function startTerminalRenderFixture() {
   const cspHeader = await readShellCsp()
   const bridgeVersion = await readBridgeProtocolVersion()
   const faultGrant = await readBridgeFaultGrant()
-  const scratch = await mkdtemp(join(tmpdir(), 'orca-c75-terminal-render-'))
+  const scratch = await mkdtemp(join(tmpdir(), 'occ-c75-terminal-render-'))
   let browser = null
   let served = null
   try {
@@ -94,7 +94,7 @@ export async function startTerminalRenderFixture() {
       ]
     })
     served = await createBundleServer({ outDir: built.outDir, cspHeader })
-    const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+    const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
     browser = await chromium.launch({
       headless: true,
       ...(executablePath ? { executablePath } : {})
@@ -142,7 +142,7 @@ export async function startTerminalRenderFixture() {
       }
     })
     await page.goto(`${origin}/`, { waitUntil: 'load' })
-    await page.waitForFunction(() => document.documentElement.dataset.orcaWebEntry === 'mounted', {
+    await page.waitForFunction(() => document.documentElement.dataset.occWebEntry === 'mounted', {
       timeout: 60_000,
       polling: 250
     })
@@ -151,7 +151,7 @@ export async function startTerminalRenderFixture() {
 
   async function openTerminal(options) {
     const opened = await openPage(PROBE_ROUTE, options)
-    await opened.page.waitForFunction(() => globalThis.__orcaTerminalReady === true, {
+    await opened.page.waitForFunction(() => globalThis.__occTerminalReady === true, {
       timeout: 60_000,
       polling: 100
     })
@@ -169,10 +169,10 @@ export async function startTerminalRenderFixture() {
 export async function openProbeTerminal(page) {
   await page.locator('#terminal-container').waitFor({ state: 'attached', timeout: 30_000 })
   await page.evaluate(
-    ([cols, rows]) => globalThis.__orcaTerminalProbe.init(cols, rows, ''),
+    ([cols, rows]) => globalThis.__occTerminalProbe.init(cols, rows, ''),
     [COLS, ROWS]
   )
   // Wait for attachment, not visibility: replacement surface reveals only after writes drain in awaitReady rAF chain.
   await page.locator('#terminal-surface .xterm').waitFor({ state: 'attached', timeout: 30_000 })
-  await page.evaluate(() => globalThis.__orcaTerminalProbe.awaitReady())
+  await page.evaluate(() => globalThis.__occTerminalProbe.awaitReady())
 }

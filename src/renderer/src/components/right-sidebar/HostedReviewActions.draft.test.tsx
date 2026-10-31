@@ -144,7 +144,7 @@ describe('HostedReviewActions GitHub merge selection', () => {
       number: 31259,
       title: 'fix(i18n): restore localized editor safety copy',
       state: 'open',
-      url: 'https://github.com/stablyai/orca/pull/31259',
+      url: 'https://github.com/stablyai/occ/pull/31259',
       updatedAt: '2026-10-21T16:31:00Z',
       headSha: 'e4353ead012043474fc723e50aea198a76d32979',
       autoMergeAllowed: true,

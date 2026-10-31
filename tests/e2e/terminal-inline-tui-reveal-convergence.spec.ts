@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { PNG } from 'pngjs'
 import type { ElectronApplication, Page, TestInfo } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   ensureTerminalVisible,
   getActiveTabId,
@@ -21,10 +21,10 @@ import { waitForTabParked } from './helpers/terminal-hidden-parking'
 // v1.4.144-rc.4: streaming inline Codex revealed blank/stale until resize; alt-screen parking tests missed the inline path.
 // Across gate/park boundaries require a bottom-anchored advancing live frame/input box and xterm/fit/applied-PTY size agreement without resize.
 
-const PARKING_DELAY_MS = Number(process.env.ORCA_E2E_TERMINAL_PARKING_DELAY_MS) || 500
+const PARKING_DELAY_MS = Number(process.env.OCC_E2E_TERMINAL_PARKING_DELAY_MS) || 500
 
 test.use({
-  orcaAppExtraEnv: { ORCA_E2E_TERMINAL_PARKING_DELAY_MS: String(PARKING_DELAY_MS) }
+  occAppExtraEnv: { OCC_E2E_TERMINAL_PARKING_DELAY_MS: String(PARKING_DELAY_MS) }
 })
 
 const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'codex-inline-live-block-fixture.cjs')
@@ -494,49 +494,49 @@ async function streamWhileParked(setup: StreamingTabSetup, minFrames: number): P
 
 test.describe('Inline TUI reveal convergence', () => {
   test('hidden-but-mounted tab reveal converges while the inline TUI streams', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.setTimeout(120_000)
-    const setup = await startStreamingInlineTui(orcaPage, testInfo)
+    const setup = await startStreamingInlineTui(occPage, testInfo)
     try {
       // Reveal inside the cold-park delay to isolate hidden-delivery-gate restore.
-      const tabBId = await createActiveTerminalTab(orcaPage, setup.worktreeId)
+      const tabBId = await createActiveTerminalTab(occPage, setup.worktreeId)
       expect(tabBId).not.toBe(setup.tabId)
-      await orcaPage.waitForTimeout(Math.max(50, Math.min(PARKING_DELAY_MS / 2, 200)))
+      await occPage.waitForTimeout(Math.max(50, Math.min(PARKING_DELAY_MS / 2, 200)))
       expect(
-        await isTerminalPaneMounted(orcaPage, setup.tabId),
+        await isTerminalPaneMounted(occPage, setup.tabId),
         'hidden-mounted scenario cold-parked before reveal'
       ).toBe(true)
 
-      await activateTerminalTab(orcaPage, setup.tabId)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      await assertRevealConvergence(orcaPage, testInfo, setup, 'hidden-mounted-reveal')
+      await activateTerminalTab(occPage, setup.tabId)
+      await waitForActiveTerminalManager(occPage, 30_000)
+      await assertRevealConvergence(occPage, testInfo, setup, 'hidden-mounted-reveal')
     } finally {
       await setup.stop()
     }
   })
 
   test('worktree switch reveal converges after a hidden-time window resize', async ({
-    orcaPage,
+    occPage,
     electronApp
   }, testInfo) => {
     test.setTimeout(120_000)
-    const setup = await startStreamingInlineTui(orcaPage, testInfo, {
+    const setup = await startStreamingInlineTui(occPage, testInfo, {
       historyLinesPerSecond: 20
     })
     try {
       // Switch worktrees to exercise surface suspension and heavy resume, matching the field action.
-      const otherWorktreeId = await switchToOtherWorktree(orcaPage, setup.worktreeId)
+      const otherWorktreeId = await switchToOtherWorktree(occPage, setup.worktreeId)
       test.skip(!otherWorktreeId, 'test session has a single worktree; cannot surface-hide')
 
       // Resize while display:none prevents fit, forcing revealed grid/daemon snapshot dimension disagreement as Cmd+L does.
       await resizeAppWindow(electronApp, -180, -120)
-      await orcaPage.waitForTimeout(2_500)
+      await occPage.waitForTimeout(2_500)
 
-      await switchToWorktree(orcaPage, setup.worktreeId)
-      await activateTerminalTab(orcaPage, setup.tabId)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      await assertRevealConvergence(orcaPage, testInfo, setup, 'worktree-resize-reveal')
+      await switchToWorktree(occPage, setup.worktreeId)
+      await activateTerminalTab(occPage, setup.tabId)
+      await waitForActiveTerminalManager(occPage, 30_000)
+      await assertRevealConvergence(occPage, testInfo, setup, 'worktree-resize-reveal')
     } finally {
       await resizeAppWindow(electronApp, 180, 120).catch(() => {})
       await setup.stop()
@@ -544,39 +544,39 @@ test.describe('Inline TUI reveal convergence', () => {
   })
 
   test('parked tab reveal converges across repeated cycles while the inline TUI streams heavily', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.setTimeout(480_000)
-    const setup = await startStreamingInlineTui(orcaPage, testInfo, {
+    const setup = await startStreamingInlineTui(occPage, testInfo, {
       historyLinesPerSecond: 30,
       seedLines: 8_000
     })
     try {
       // Hide A with B, then B with a decoy so B takes #8262’s exemption and A cold-parks.
-      const tabBId = await createActiveTerminalTab(orcaPage, setup.worktreeId)
-      const decoyTabId = await createActiveTerminalTab(orcaPage, setup.worktreeId)
+      const tabBId = await createActiveTerminalTab(occPage, setup.worktreeId)
+      const decoyTabId = await createActiveTerminalTab(occPage, setup.worktreeId)
 
       // Repeat park/stream/reveal because the field failure is intermittent.
       const CYCLES = 6
       for (let cycle = 0; cycle < CYCLES; cycle += 1) {
         if (cycle > 0) {
-          await activateTerminalTab(orcaPage, tabBId)
-          await activateTerminalTab(orcaPage, decoyTabId)
+          await activateTerminalTab(occPage, tabBId)
+          await activateTerminalTab(occPage, decoyTabId)
         }
-        await waitForTabParked(orcaPage, setup.tabId, { parkDelayMs: PARKING_DELAY_MS })
+        await waitForTabParked(occPage, setup.tabId, { parkDelayMs: PARKING_DELAY_MS })
 
         // Build a field-sized backlog while unmounted so replay races live output.
         await streamWhileParked(setup, 100)
 
         // Throttle reveal so replay parse/corrective fit/follow-anchor races resemble a loaded machine.
-        await withCpuThrottle(orcaPage, 6, async () => {
-          await activateTerminalTab(orcaPage, setup.tabId)
-          await waitForActiveTerminalManager(orcaPage, 30_000)
-          await orcaPage.waitForTimeout(3_000)
+        await withCpuThrottle(occPage, 6, async () => {
+          await activateTerminalTab(occPage, setup.tabId)
+          await waitForActiveTerminalManager(occPage, 30_000)
+          await occPage.waitForTimeout(3_000)
         })
-        const revealed = await waitForPaneIdentitySnapshot(orcaPage, 1)
+        const revealed = await waitForPaneIdentitySnapshot(occPage, 1)
         expect(revealed.panes[0]?.ptyId).toBe(setup.ptyId)
-        await assertRevealConvergence(orcaPage, testInfo, setup, `parked-heavy-reveal-c${cycle}`)
+        await assertRevealConvergence(occPage, testInfo, setup, `parked-heavy-reveal-c${cycle}`)
       }
     } finally {
       await setup.stop()
@@ -584,78 +584,78 @@ test.describe('Inline TUI reveal convergence', () => {
   })
 
   test('rapid tab hide/reveal flapping never wedges delivery for the streaming inline TUI', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.setTimeout(150_000)
-    const setup = await startStreamingInlineTui(orcaPage, testInfo, {
+    const setup = await startStreamingInlineTui(occPage, testInfo, {
       historyLinesPerSecond: 10
     })
     try {
-      const tabBId = await createActiveTerminalTab(orcaPage, setup.worktreeId)
+      const tabBId = await createActiveTerminalTab(occPage, setup.worktreeId)
       // Flap at varied phases to race gate claim/release against restore, exposing visible-pane byte drops.
       for (let flap = 0; flap < 12; flap += 1) {
-        await activateTerminalTab(orcaPage, tabBId)
-        await orcaPage.waitForTimeout(50 + (flap % 3) * 120)
-        await activateTerminalTab(orcaPage, setup.tabId)
-        await orcaPage.waitForTimeout(50 + ((flap * 7) % 5) * 90)
+        await activateTerminalTab(occPage, tabBId)
+        await occPage.waitForTimeout(50 + (flap % 3) * 120)
+        await activateTerminalTab(occPage, setup.tabId)
+        await occPage.waitForTimeout(50 + ((flap * 7) % 5) * 90)
       }
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      await assertRevealConvergence(orcaPage, testInfo, setup, 'tab-flapping-reveal')
+      await waitForActiveTerminalManager(occPage, 30_000)
+      await assertRevealConvergence(occPage, testInfo, setup, 'tab-flapping-reveal')
     } finally {
       await setup.stop()
     }
   })
 
   test('rapid worktree switch flapping never wedges delivery for the streaming inline TUI', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.setTimeout(150_000)
-    const setup = await startStreamingInlineTui(orcaPage, testInfo, {
+    const setup = await startStreamingInlineTui(occPage, testInfo, {
       historyLinesPerSecond: 10,
       seedLines: 4_000
     })
     try {
-      const otherWorktreeId = await switchToOtherWorktree(orcaPage, setup.worktreeId)
+      const otherWorktreeId = await switchToOtherWorktree(occPage, setup.worktreeId)
       test.skip(!otherWorktreeId, 'test session has a single worktree; cannot surface-flap')
       // Flap whole surfaces under CPU throttle to race suspension/heavy resume with gate resync/repaint.
-      await withCpuThrottle(orcaPage, 6, async () => {
+      await withCpuThrottle(occPage, 6, async () => {
         for (let flap = 0; flap < 10; flap += 1) {
-          await switchToWorktree(orcaPage, otherWorktreeId!)
-          await orcaPage.waitForTimeout(60 + (flap % 4) * 110)
-          await switchToWorktree(orcaPage, setup.worktreeId)
-          await orcaPage.waitForTimeout(60 + ((flap * 5) % 4) * 130)
+          await switchToWorktree(occPage, otherWorktreeId!)
+          await occPage.waitForTimeout(60 + (flap % 4) * 110)
+          await switchToWorktree(occPage, setup.worktreeId)
+          await occPage.waitForTimeout(60 + ((flap * 5) % 4) * 130)
         }
       })
-      await activateTerminalTab(orcaPage, setup.tabId)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      await assertRevealConvergence(orcaPage, testInfo, setup, 'worktree-flapping-reveal')
+      await activateTerminalTab(occPage, setup.tabId)
+      await waitForActiveTerminalManager(occPage, 30_000)
+      await assertRevealConvergence(occPage, testInfo, setup, 'worktree-flapping-reveal')
     } finally {
       await setup.stop()
     }
   })
 
   test('parked tab reveal converges after a parked-time window resize', async ({
-    orcaPage,
+    occPage,
     electronApp
   }, testInfo) => {
     test.setTimeout(180_000)
-    const setup = await startStreamingInlineTui(orcaPage, testInfo, {
+    const setup = await startStreamingInlineTui(occPage, testInfo, {
       historyLinesPerSecond: 20
     })
     try {
-      await createActiveTerminalTab(orcaPage, setup.worktreeId)
-      await createActiveTerminalTab(orcaPage, setup.worktreeId)
-      await waitForTabParked(orcaPage, setup.tabId, { parkDelayMs: PARKING_DELAY_MS })
+      await createActiveTerminalTab(occPage, setup.worktreeId)
+      await createActiveTerminalTab(occPage, setup.worktreeId)
+      await waitForTabParked(occPage, setup.tabId, { parkDelayMs: PARKING_DELAY_MS })
 
       // Resize while parked so remount matches neither the prior grid nor daemon snapshot.
       await resizeAppWindow(electronApp, -180, -120)
       await streamWhileParked(setup, 100)
 
-      await activateTerminalTab(orcaPage, setup.tabId)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      const revealed = await waitForPaneIdentitySnapshot(orcaPage, 1)
+      await activateTerminalTab(occPage, setup.tabId)
+      await waitForActiveTerminalManager(occPage, 30_000)
+      const revealed = await waitForPaneIdentitySnapshot(occPage, 1)
       expect(revealed.panes[0]?.ptyId).toBe(setup.ptyId)
-      await assertRevealConvergence(orcaPage, testInfo, setup, 'parked-resize-reveal')
+      await assertRevealConvergence(occPage, testInfo, setup, 'parked-resize-reveal')
     } finally {
       await resizeAppWindow(electronApp, 180, 120).catch(() => {})
       await setup.stop()

@@ -1,11 +1,11 @@
-import type { ChildProcessHandle } from '@orca/process-host/process-spec'
-import { spawnProcess } from '@orca/process-host'
+import type { ChildProcessHandle } from '@occ/process-host/process-spec'
+import { spawnProcess } from '@occ/process-host'
 import {
   forceTerminateProcessTree,
   signalProcessTree
-} from '@orca/process-host/process-tree-termination'
-import { inFlightWindowsTreeKill } from '@orca/process-host/windows-tree-kill'
-import { createOutputSink } from '@orca/process-host/bounded-output-sink'
+} from '@occ/process-host/process-tree-termination'
+import { inFlightWindowsTreeKill } from '@occ/process-host/windows-tree-kill'
+import { createOutputSink } from '@occ/process-host/bounded-output-sink'
 import { resolveCliCommand, withCliRuntimeOnPath } from '../../shared/node-cli-command-resolution'
 import {
   getSpawnArgsForWindows,
@@ -59,8 +59,8 @@ export async function resolveOpenCodeLoginCommand(
     : ''
   const installGuidance =
     process.platform === 'win32'
-      ? `Choose a separate prefix with a full absolute path without ${WINDOWS_BATCH_UNSAFE_CHARACTERS_LABEL} or line breaks, for example \`npm install --prefix C:\\tools\\orca-opencode2 @opencode/cli\`. If an existing unusable opencode2 is the first match, repair/relocate that installation or move/rename only its suffixed opencode2 launchers out of command lookup, including any further earlier matches. Leave the existing generic opencode launcher and shared npm PATH directories unchanged. Then append C:\\tools\\orca-opencode2\\node_modules\\.bin (or your safe prefix's node_modules\\.bin) to PATH after existing entries, so the first opencode2 match is the safe installation, and run this command again.`
-      : 'Install alongside your existing CLI with `npm install --prefix ./orca-opencode2 @opencode/cli`. Append the absolute path of orca-opencode2/node_modules/.bin to PATH after existing entries, then run this command again.'
+      ? `Choose a separate prefix with a full absolute path without ${WINDOWS_BATCH_UNSAFE_CHARACTERS_LABEL} or line breaks, for example \`npm install --prefix C:\\tools\\occ-opencode2 @opencode/cli\`. If an existing unusable opencode2 is the first match, repair/relocate that installation or move/rename only its suffixed opencode2 launchers out of command lookup, including any further earlier matches. Leave the existing generic opencode launcher and shared npm PATH directories unchanged. Then append C:\\tools\\occ-opencode2\\node_modules\\.bin (or your safe prefix's node_modules\\.bin) to PATH after existing entries, so the first opencode2 match is the safe installation, and run this command again.`
+      : 'Install alongside your existing CLI with `npm install --prefix ./occ-opencode2 @opencode/cli`. Append the absolute path of occ-opencode2/node_modules/.bin to PATH after existing entries, then run this command again.'
   throw new RuntimeClientError(
     'invalid_environment',
     `Could not find an OpenCode 2 login. Managed OpenCode accounts require OpenCode 2.${preparationDiagnosis} ${installGuidance}`

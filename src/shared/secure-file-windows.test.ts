@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSyn
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { runProcess, runProcessSync } from '@orca/process-host'
+import { runProcess, runProcessSync } from '@occ/process-host'
 import {
   __getSecureFileHardeningCacheStateForTests,
   __resetSecureFileHardenedPathsForTests,
@@ -25,7 +25,7 @@ import {
   type FakeWindowsSecurity
 } from './windows-security-addon.test-fixture'
 
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: vi.fn(),
   runProcessSync: vi.fn()
 }))
@@ -71,7 +71,7 @@ describe('Windows secure files through the native ACL addon', () => {
   })
 
   function tempDir(): string {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-secure-file-win-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-secure-file-win-'))
     tempDirs.push(dir)
     return dir
   }
@@ -372,7 +372,7 @@ describe('Windows secure files through the native ACL addon', () => {
   it.runIf(process.platform === 'win32')(
     'hands the addon extended-length paths past MAX_PATH',
     () => {
-      const longPath = `C:\\Users\\me\\.orca\\${'d'.repeat(300)}\\secret.json`
+      const longPath = `C:\\Users\\me\\.occ\\${'d'.repeat(300)}\\secret.json`
       const loaded = loadWindowsSecurity()
 
       expect('error' in loaded ? null : loaded.addon.getDaclAces(longPath)).toBeTruthy()
@@ -392,7 +392,7 @@ describe('Windows secure files through the native ACL addon', () => {
       .setDaclSddlAsync('C:\\OCC', 'D:P(A;OICI;FA;;;SY)')
       .then(() => order.push('relock'))
     const grant = loaded.addon
-      .grantAccessAsync('c:\\orca', FAKE_USER_SID, 0x1f01ff, { inheritable: true, replace: true })
+      .grantAccessAsync('c:\\occ', FAKE_USER_SID, 0x1f01ff, { inheritable: true, replace: true })
       .then(() => order.push('grant'))
     await settle()
 

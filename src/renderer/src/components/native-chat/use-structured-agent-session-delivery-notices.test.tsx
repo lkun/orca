@@ -98,12 +98,12 @@ it('keeps the same notices when a batch leaves every not-sent message as it was'
 
 it('keeps the notice of a row that did not change when another one does', () => {
   const { result, rerender } = renderNotices([rejected('lost', 'hostRestarted')])
-  const lost = result.current.get('orca:lost')
+  const lost = result.current.get('occ:lost')
 
   rerender({
     submissions: [rejected('lost', 'hostRestarted'), rejected('other', 'notDelivered')]
   })
 
   expect(result.current.size).toBe(2)
-  expect(result.current.get('orca:lost')).toBe(lost)
+  expect(result.current.get('occ:lost')).toBe(lost)
 })

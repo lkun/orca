@@ -66,10 +66,10 @@ const LOCAL_HOST_LABEL = getLocalExecutionHostLabel('darwin')
 const repos = [
   {
     id: 'repo-1',
-    displayName: 'orca',
-    path: '/src/orca',
+    displayName: 'occ',
+    path: '/src/occ',
     kind: 'git',
-    upstream: { owner: 'stablyai', repo: 'orca' }
+    upstream: { owner: 'stablyai', repo: 'occ' }
   }
 ]
 
@@ -154,10 +154,10 @@ describe('NewWorktreeModal project targets', () => {
 
     expect(sendRequest).toHaveBeenCalledWith('repo.list')
     expect(pickerItems(renderer, 'Project')).toEqual([
-      expect.objectContaining({ label: 'orca', detail: 'stablyai/orca' })
+      expect.objectContaining({ label: 'occ', detail: 'stablyai/occ' })
     ])
     expect(pickerItems(renderer, 'Run on')).toEqual([
-      expect.objectContaining({ label: LOCAL_HOST_LABEL, detail: '/src/orca' })
+      expect.objectContaining({ label: LOCAL_HOST_LABEL, detail: '/src/occ' })
     ])
   })
 
@@ -166,11 +166,11 @@ describe('NewWorktreeModal project targets', () => {
       ...repos,
       {
         id: 'repo-2',
-        displayName: 'orca',
-        path: '/home/dev/orca',
+        displayName: 'occ',
+        path: '/home/dev/occ',
         connectionId: 'build-server',
         kind: 'git',
-        upstream: { owner: 'stablyai', repo: 'orca' }
+        upstream: { owner: 'stablyai', repo: 'occ' }
       }
     ]
     const client = requestsOnly(
@@ -200,13 +200,13 @@ describe('NewWorktreeModal project targets', () => {
     })
 
     expect(pickerItems(renderer, 'Project')).toEqual([
-      expect.objectContaining({ label: 'orca', detail: 'stablyai/orca' })
+      expect.objectContaining({ label: 'occ', detail: 'stablyai/occ' })
     ])
     expect(pickerItems(renderer, 'Run on')).toEqual([
-      expect.objectContaining({ label: LOCAL_HOST_LABEL, detail: '/src/orca' }),
+      expect.objectContaining({ label: LOCAL_HOST_LABEL, detail: '/src/occ' }),
       expect.objectContaining({
         label: 'build-server',
-        detail: '/home/dev/orca'
+        detail: '/home/dev/occ'
       })
     ])
   })
@@ -214,11 +214,11 @@ describe('NewWorktreeModal project targets', () => {
   it('loads SSH state before detecting agents on the selected remote target', async () => {
     const remoteRepo = {
       id: 'repo-remote',
-      displayName: 'orca',
-      path: '/home/dev/orca',
+      displayName: 'occ',
+      path: '/home/dev/occ',
       connectionId: 'build-server',
       kind: 'git',
-      upstream: { owner: 'stablyai', repo: 'orca' }
+      upstream: { owner: 'stablyai', repo: 'occ' }
     }
     setCachedRepos('host-ssh', [remoteRepo])
     let resolveSshState: ((reply: unknown) => void) | undefined
@@ -390,7 +390,7 @@ describe('NewWorktreeModal project targets', () => {
   })
 
   it("creates a server repo's workspace on that server and names it for the route", async () => {
-    const serverRepo = { ...repos[0]!, id: 'server-repo', path: '/srv/orca' }
+    const serverRepo = { ...repos[0]!, id: 'server-repo', path: '/srv/occ' }
     const serverSshRepo = { ...serverRepo, id: 'server-ssh', connectionId: 'its-own-ssh' }
     const reply = (method: string, listed: unknown[], hostPlatform: string) => {
       if (method === 'repo.list') {
@@ -401,7 +401,7 @@ describe('NewWorktreeModal project targets', () => {
       }
       if (method === 'worktree.create') {
         return replied({
-          worktree: { id: 'srv-wt', displayName: 'srv-wt', path: '/srv/orca-wt' }
+          worktree: { id: 'srv-wt', displayName: 'srv-wt', path: '/srv/occ-wt' }
         })
       }
       if (method === 'settings.get') {
@@ -434,8 +434,8 @@ describe('NewWorktreeModal project targets', () => {
 
     const runTargets = pickerItems(renderer, 'Run on')
     expect(runTargets.map((item) => [item.label, item.detail])).toEqual([
-      [LOCAL_HOST_LABEL, '/src/orca'],
-      ['scratch-server', '/srv/orca']
+      [LOCAL_HOST_LABEL, '/src/occ'],
+      ['scratch-server', '/srv/occ']
     ])
     const serverTarget = runTargetPicker(renderer)
     const iconOf = (item: unknown) => {
@@ -473,7 +473,7 @@ describe('NewWorktreeModal project targets', () => {
   })
 
   it("offers the desktop's servers, by name, in a sheet opened before the list has them", async () => {
-    const serverRepo = { ...repos[0]!, id: 'server-repo', path: '/srv/orca' }
+    const serverRepo = { ...repos[0]!, id: 'server-repo', path: '/srv/occ' }
     // One desktop: its own repos, its server list, and a server's repos relayed through it.
     const desktop = new FakeSession('connected')
     desktop.sendRequest.mockImplementation(async (method: string, ...rest: unknown[]) => {
@@ -515,8 +515,8 @@ describe('NewWorktreeModal project targets', () => {
     await act(async () => renderer.update(sheet(true)))
     await flushUpdates()
     expect(pickerItems(renderer, 'Run on').map((item) => [item.label, item.detail])).toEqual([
-      [expect.any(String), '/src/orca'],
-      ['scratch-vm', '/srv/orca']
+      [expect.any(String), '/src/occ'],
+      ['scratch-vm', '/srv/occ']
     ])
   })
 
@@ -544,11 +544,11 @@ describe('NewWorktreeModal project targets', () => {
     await flushUpdates()
 
     expect(hungServer).toHaveBeenCalledWith('repo.list')
-    expect(pickerItems(renderer, 'Run on').map((item) => item.detail)).toEqual(['/src/orca'])
+    expect(pickerItems(renderer, 'Run on').map((item) => item.detail)).toEqual(['/src/occ'])
   })
 
   it('keeps a server repo picked when the desktop lists a repo with the same id', async () => {
-    const serverRepo = { ...repos[0]!, path: '/srv/orca' }
+    const serverRepo = { ...repos[0]!, path: '/srv/occ' }
     const listing = (listed: unknown[]) =>
       vi.fn((method: string) =>
         method === 'repo.list' ? replied({ repos: listed }) : new Promise<never>(() => {})
@@ -577,7 +577,7 @@ describe('NewWorktreeModal project targets', () => {
     expect(runTargetPicker(renderer).props.selectedId).toBe('runtime:env-1')
     expect(
       renderer.root.find((node) => node.props.runTarget !== undefined).props.runTarget.detail
-    ).toBe('/srv/orca')
+    ).toBe('/srv/occ')
   })
 
   it('ignores a stale repo list after the client changes', async () => {

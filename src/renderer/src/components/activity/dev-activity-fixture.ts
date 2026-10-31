@@ -5,7 +5,7 @@ import type { TerminalTab } from '../../../../shared/terminal-tab-types'
 import type { Worktree } from '../../../../shared/worktree/types'
 
 const FIXTURE_REPO_ID = 'dev-fixture-repo'
-const FIXTURE_WORKTREE_ID = `${FIXTURE_REPO_ID}::/dev/orca-sample`
+const FIXTURE_WORKTREE_ID = `${FIXTURE_REPO_ID}::/dev/occ-sample`
 const FIXTURE_LEAF_IDS = [
   '11111111-1111-4111-8111-111111111111',
   '22222222-2222-4222-8222-222222222222',
@@ -15,7 +15,7 @@ const FIXTURE_LEAF_IDS = [
 function fixtureRepo(): Repo {
   return {
     id: FIXTURE_REPO_ID,
-    path: '/dev/orca-sample',
+    path: '/dev/occ-sample',
     displayName: 'OCC Sample App',
     badgeColor: '#8b5cf6',
     addedAt: Date.now(),
@@ -28,7 +28,7 @@ function fixtureWorktree(): Worktree {
   return {
     id: FIXTURE_WORKTREE_ID,
     repoId: FIXTURE_REPO_ID,
-    path: '/dev/orca-sample',
+    path: '/dev/occ-sample',
     head: 'dev-fixture-head',
     branch: 'feature/activity-dashboard',
     isBare: false,

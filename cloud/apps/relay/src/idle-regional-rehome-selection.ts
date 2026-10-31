@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto'
-import type { IdleRegionalRehomeRequest } from '@orca-cloud/relay-contract'
+import type { IdleRegionalRehomeRequest } from '@occ-cloud/relay-contract'
 import type { RelayDatabase, SqlRow } from './database.js'
 
 export const IDLE_REHOME_PAGE_SIZE = 100

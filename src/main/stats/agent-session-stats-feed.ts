@@ -10,7 +10,7 @@ export type AgentStatusSource = {
   subscribePaneStatusClear(listener: (clear: AgentSessionClearEvent) => void): () => void
 }
 
-/** Use hook transitions on desktop/orcad (#31112); OSC titles miss hook-only agents and mistake spinner TUIs for work (#10201). */
+/** Use hook transitions on desktop/occd (#31112); OSC titles miss hook-only agents and mistake spinner TUIs for work (#10201). */
 export function feedAgentSessionStats(
   stats: AgentSessionSink,
   source: AgentStatusSource

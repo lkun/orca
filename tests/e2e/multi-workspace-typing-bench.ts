@@ -23,43 +23,43 @@ import type { AccumulatedOrderTrafficStats } from './accumulated-workspace-order
 import { withInAppTypingDiagnostic } from './in-app-typing-diagnostic'
 import type { RuntimeGraphPublicationProbeSnapshot } from './runtime-graph-publication-probe'
 
-export const BENCH_ENABLED = process.env.ORCA_TYPING_BENCH === '1'
+export const BENCH_ENABLED = process.env.OCC_TYPING_BENCH === '1'
 
 export function readPositiveInt(name: string, fallback: number): number {
   const value = Number(process.env[name])
   return Number.isInteger(value) && value > 0 ? value : fallback
 }
 
-export const LOAD_WORKSPACES = readPositiveInt('ORCA_TYPING_BENCH_LOAD_WORKSPACES', 1)
-export const LOAD_PANES = readPositiveInt('ORCA_TYPING_BENCH_LOAD_PANES', 4)
-export const LOAD_RATE_KBPS = readPositiveInt('ORCA_TYPING_BENCH_RATE_KBPS', 256)
-export const KEY_COUNT = readPositiveInt('ORCA_TYPING_BENCH_KEYS', 32)
-export const KEY_CADENCE_MS = readPositiveInt('ORCA_TYPING_BENCH_KEY_CADENCE_MS', 250)
-export const CPU_WORKERS = readPositiveInt('ORCA_TYPING_BENCH_CPU_WORKERS', 0)
+export const LOAD_WORKSPACES = readPositiveInt('OCC_TYPING_BENCH_LOAD_WORKSPACES', 1)
+export const LOAD_PANES = readPositiveInt('OCC_TYPING_BENCH_LOAD_PANES', 4)
+export const LOAD_RATE_KBPS = readPositiveInt('OCC_TYPING_BENCH_RATE_KBPS', 256)
+export const KEY_COUNT = readPositiveInt('OCC_TYPING_BENCH_KEYS', 32)
+export const KEY_CADENCE_MS = readPositiveInt('OCC_TYPING_BENCH_KEY_CADENCE_MS', 250)
+export const CPU_WORKERS = readPositiveInt('OCC_TYPING_BENCH_CPU_WORKERS', 0)
 // Inject git churn because visibility-gated source-control pollers do not run in a hidden benchmark window.
-export const GIT_CHURN_REPOS = readPositiveInt('ORCA_TYPING_BENCH_GIT_CHURN_REPOS', 0)
-export const GIT_CHURN_FILES = readPositiveInt('ORCA_TYPING_BENCH_GIT_CHURN_FILES', 2000)
-export const GIT_CHURN_CONCURRENCY = readPositiveInt('ORCA_TYPING_BENCH_GIT_CHURN_CONCURRENCY', 8)
+export const GIT_CHURN_REPOS = readPositiveInt('OCC_TYPING_BENCH_GIT_CHURN_REPOS', 0)
+export const GIT_CHURN_FILES = readPositiveInt('OCC_TYPING_BENCH_GIT_CHURN_FILES', 2000)
+export const GIT_CHURN_CONCURRENCY = readPositiveInt('OCC_TYPING_BENCH_GIT_CHURN_CONCURRENCY', 8)
 // Configure Codex-shaped rows per key and source delay between frame body and closing DEC 2026 latch.
-export const CODEX_FRAME_ROWS = readPositiveInt('ORCA_TYPING_BENCH_CODEX_FRAME_ROWS', 20)
+export const CODEX_FRAME_ROWS = readPositiveInt('OCC_TYPING_BENCH_CODEX_FRAME_ROWS', 20)
 export const CODEX_SPLIT_DELAY_MS =
-  Number(process.env.ORCA_TYPING_BENCH_CODEX_SPLIT_DELAY_MS ?? 0) || 0
-export const PTY_METADATA = process.env.ORCA_TYPING_BENCH_PTY_METADATA === '1'
-export const BENCH_LABEL = process.env.ORCA_TYPING_BENCH_LABEL ?? 'dev'
+  Number(process.env.OCC_TYPING_BENCH_CODEX_SPLIT_DELAY_MS ?? 0) || 0
+export const PTY_METADATA = process.env.OCC_TYPING_BENCH_PTY_METADATA === '1'
+export const BENCH_LABEL = process.env.OCC_TYPING_BENCH_LABEL ?? 'dev'
 // Request optional probes by default; the report records when the build does not install them.
-export const BENCH_INSTRUMENTATION_REQUESTED = process.env.ORCA_TYPING_BENCH_INSTRUMENTATION !== '0'
+export const BENCH_INSTRUMENTATION_REQUESTED = process.env.OCC_TYPING_BENCH_INSTRUMENTATION !== '0'
 // Diagnostic only: patching main's invoke handler is observer overhead, so keep it out of acceptance runs.
-export const GRAPH_PROBE_REQUESTED = process.env.ORCA_TYPING_BENCH_GRAPH_PROBE === '1'
+export const GRAPH_PROBE_REQUESTED = process.env.OCC_TYPING_BENCH_GRAPH_PROBE === '1'
 export const GRAPH_PROBE_SELF_TEST_MS = readPositiveInt(
-  'ORCA_TYPING_BENCH_GRAPH_PROBE_SELFTEST_MS',
+  'OCC_TYPING_BENCH_GRAPH_PROBE_SELFTEST_MS',
   0
 )
 // Throttle only typing: slowing setup changes fixture construction rather than the measured workload.
-export const CPU_THROTTLE_RATE = readPositiveInt('ORCA_TYPING_BENCH_CPU_THROTTLE', 1)
+export const CPU_THROTTLE_RATE = readPositiveInt('OCC_TYPING_BENCH_CPU_THROTTLE', 1)
 // Rank-only order publications for seeded repos; 0 disables. Hidden-load scenario only.
-export const ORDER_CHURN_MS = Number(process.env.ORCA_TYPING_BENCH_ORDER_CHURN_MS ?? 0) || 0
+export const ORDER_CHURN_MS = Number(process.env.OCC_TYPING_BENCH_ORDER_CHURN_MS ?? 0) || 0
 // The shipped renderer probe adds a write wrapper and long-animation-frame observer; keep it out of control runs.
-export const IN_APP_DIAGNOSTIC = process.env.ORCA_TYPING_BENCH_IN_APP_DIAGNOSTIC === '1'
+export const IN_APP_DIAGNOSTIC = process.env.OCC_TYPING_BENCH_IN_APP_DIAGNOSTIC === '1'
 
 // Outlast setup plus typing; setup cost grows with pane count.
 export const LOAD_DURATION_S = Math.ceil((KEY_COUNT * KEY_CADENCE_MS) / 1000) + 90
@@ -147,7 +147,7 @@ export async function measureTypingWindow(
   sidecarPath: string
 ): Promise<TypingWindowMeasurement> {
   const { result, appliedRate } = await withRendererCpuThrottle(page, CPU_THROTTLE_RATE, () =>
-    withTypingRendererCpuProfile(page, process.env.ORCA_TYPING_BENCH_CPU_PROFILE, () =>
+    withTypingRendererCpuProfile(page, process.env.OCC_TYPING_BENCH_CPU_PROFILE, () =>
       withInAppTypingDiagnostic(page, IN_APP_DIAGNOSTIC, () =>
         measurePacedTyping(page, runId, sidecarPath, {
           keyCount: KEY_COUNT,
@@ -206,27 +206,27 @@ export function writeBenchReport(
     config: {
       loadPanes: LOAD_PANES,
       loadWorkspaces: LOAD_WORKSPACES,
-      visitedWorkspaces: readPositiveInt('ORCA_TYPING_BENCH_VISITED_WORKSPACES', LOAD_WORKSPACES),
+      visitedWorkspaces: readPositiveInt('OCC_TYPING_BENCH_VISITED_WORKSPACES', LOAD_WORKSPACES),
       loadRateKbps: LOAD_RATE_KBPS,
       streamPacing: 'utf8-bytes-per-tick',
       keyCount: KEY_COUNT,
       keyCadenceMs: KEY_CADENCE_MS,
       cpuWorkers: workload.cpuWorkers,
       ptyMetadata: workload.ptyMetadata,
-      cpuProfile: process.env.ORCA_TYPING_BENCH_CPU_PROFILE ?? null,
-      titleChangeMs: readPositiveInt('ORCA_TYPING_BENCH_TITLE_CHANGE_MS', 0),
-      lifecycleMs: readPositiveInt('ORCA_TYPING_BENCH_LIFECYCLE_MS', 0),
-      agentRows: process.env.ORCA_TYPING_BENCH_AGENT_ROWS ?? 'default',
-      metadataWorktrees: readPositiveInt('ORCA_TYPING_BENCH_METADATA_WORKTREES', 870),
-      metadataRepositories: readPositiveInt('ORCA_TYPING_BENCH_METADATA_REPOSITORIES', 27),
-      metadataTerminalTabs: readPositiveInt('ORCA_TYPING_BENCH_METADATA_TERMINAL_TABS', 1410),
-      metadataUnifiedTabs: readPositiveInt('ORCA_TYPING_BENCH_METADATA_UNIFIED_TABS', 2000),
-      metadataPanesPerTab: readPositiveInt('ORCA_TYPING_BENCH_METADATA_PANES', 1),
-      metadataSleepingRecords: readPositiveInt('ORCA_TYPING_BENCH_METADATA_SLEEPERS', 857),
-      metadataLiveStatuses: readPositiveInt('ORCA_TYPING_BENCH_METADATA_LIVE_STATUSES', 177),
-      metadataStatusHistory: readPositiveInt('ORCA_TYPING_BENCH_METADATA_STATUS_HISTORY', 3),
+      cpuProfile: process.env.OCC_TYPING_BENCH_CPU_PROFILE ?? null,
+      titleChangeMs: readPositiveInt('OCC_TYPING_BENCH_TITLE_CHANGE_MS', 0),
+      lifecycleMs: readPositiveInt('OCC_TYPING_BENCH_LIFECYCLE_MS', 0),
+      agentRows: process.env.OCC_TYPING_BENCH_AGENT_ROWS ?? 'default',
+      metadataWorktrees: readPositiveInt('OCC_TYPING_BENCH_METADATA_WORKTREES', 870),
+      metadataRepositories: readPositiveInt('OCC_TYPING_BENCH_METADATA_REPOSITORIES', 27),
+      metadataTerminalTabs: readPositiveInt('OCC_TYPING_BENCH_METADATA_TERMINAL_TABS', 1410),
+      metadataUnifiedTabs: readPositiveInt('OCC_TYPING_BENCH_METADATA_UNIFIED_TABS', 2000),
+      metadataPanesPerTab: readPositiveInt('OCC_TYPING_BENCH_METADATA_PANES', 1),
+      metadataSleepingRecords: readPositiveInt('OCC_TYPING_BENCH_METADATA_SLEEPERS', 857),
+      metadataLiveStatuses: readPositiveInt('OCC_TYPING_BENCH_METADATA_LIVE_STATUSES', 177),
+      metadataStatusHistory: readPositiveInt('OCC_TYPING_BENCH_METADATA_STATUS_HISTORY', 3),
       metadataStatusIntervalMs: readPositiveInt(
-        'ORCA_TYPING_BENCH_METADATA_STATUS_INTERVAL_MS',
+        'OCC_TYPING_BENCH_METADATA_STATUS_INTERVAL_MS',
         100
       ),
       instrumentationRequested: BENCH_INSTRUMENTATION_REQUESTED,

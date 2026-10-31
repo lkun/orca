@@ -84,7 +84,7 @@ function positiveTime(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value) && value > 0
 }
 
-/** Legacy pre-v3 carrier: prefer the known session agent (command turns key as orca), else read lifecycle legacy:<agent> identity. */
+/** Legacy pre-v3 carrier: prefer the known session agent (command turns key as occ), else read lifecycle legacy:<agent> identity. */
 export function legacyAgentJournalTurnStatusBody(
   turn: AgentJournalTurnLifecycle,
   itemId: string,

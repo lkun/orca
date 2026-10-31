@@ -3,9 +3,9 @@ import { orchestrationSkillRecoveryData } from '../../../../../../shared/orchest
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import type { RunRow } from '../../../../orchestration/types'
 import type {
-  OrcaRuntimeService,
+  OCCRuntimeService,
   OrchestrationCompatibilityCallerAuthority
-} from '../../../../orca-runtime'
+} from '../../../../occ-runtime'
 import {
   hasRunBindingKey,
   mailboxAddressOf,
@@ -35,7 +35,7 @@ export type RunScopeParams = {
 
 // Mutable Run bindings require attested callers to name only themselves.
 export function assertCallerHandleMatchesEvidence(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   callerTerminalHandle: string,
   callerEvidence?: OrchestrationCompatibilityEvidence
 ): void {
@@ -54,7 +54,7 @@ export function assertCallerHandleMatchesEvidence(
 
 /** Use the dispatch-resolved session outright; otherwise resolve the declared handle's party and pane. */
 export function orchestrationCallerIdentity(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   caller: {
     handle: string
     paneKey: string | null | undefined
@@ -81,15 +81,15 @@ export type OrchestrationCallerParams = {
 
 /** Resolve the caller's identity and, by default, attest its declared handle. */
 export function resolveOrchestrationCaller(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   params: OrchestrationCallerParams & { requireStablePane: true }
 ): OrchestrationCallerIdentity
 export function resolveOrchestrationCaller(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   params: OrchestrationCallerParams
 ): OrchestrationCallerIdentity | null
 export function resolveOrchestrationCaller(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   params: OrchestrationCallerParams
 ): OrchestrationCallerIdentity | null {
   if (!params.evidenceAssertedByCaller) {
@@ -145,7 +145,7 @@ function unboundCallerError(
 }
 
 // Why: task and gate mutations must share one Run-binding rule.
-export function resolveRunScope(runtime: OrcaRuntimeService, params: RunScopeParams): RunRow {
+export function resolveRunScope(runtime: OCCRuntimeService, params: RunScopeParams): RunRow {
   const db = runtime.getOrchestrationDb()
   const explicit = params.runId ? db.getRun(params.runId) : undefined
   if (params.runId && (!explicit || explicit.legacy === 1)) {

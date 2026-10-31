@@ -2,8 +2,8 @@ import { quoteCmdDoubleQuoted, quotePosixShell } from './shell-argument-quoting'
 import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process'
 import { StringDecoder } from 'node:string_decoder'
 import type { EphemeralVmRecipeContext } from './ephemeral-vm-recipe-runner'
-import { admitProcessTreeKill } from '@orca/process-host/process-tree-kill-gate'
-import { GrowingByteBuffer } from '@orca/process-host/growing-byte-buffer'
+import { admitProcessTreeKill } from '@occ/process-host/process-tree-kill-gate'
+import { GrowingByteBuffer } from '@occ/process-host/growing-byte-buffer'
 
 export const DEFAULT_MAX_CAPTURE_BYTES = 1024 * 1024
 const CANCEL_FORCE_KILL_DELAY_MS = 5_000
@@ -231,18 +231,18 @@ function buildRecipeEnv(
   return {
     ...process.env,
     ...env,
-    ORCA_VM_MODE: mode,
-    ORCA_VM_INSTANCE_ID: context.instanceId ?? '',
-    ORCA_RECIPE_ID: context.recipeId,
-    ORCA_PROJECT_ID: context.projectId ?? '',
-    ORCA_WORKSPACE_ID: context.workspaceId ?? '',
-    ORCA_WORKSPACE_NAME: context.workspaceName ?? '',
-    ORCA_REPO_PATH: context.repoPath,
-    ORCA_REPO_URL: context.repoUrl ?? '',
-    ORCA_REPO_BRANCH: context.branch ?? '',
-    ORCA_REPO_REF: context.ref ?? '',
-    ORCA_REPO_REF_HEAD: context.expectedRefHead ?? '',
-    ORCA_RECIPE_RESULT_SCHEMA_VERSION: String(resultSchemaVersion),
-    ORCA_VERSION: context.orcaVersion ?? ''
+    OCC_VM_MODE: mode,
+    OCC_VM_INSTANCE_ID: context.instanceId ?? '',
+    OCC_RECIPE_ID: context.recipeId,
+    OCC_PROJECT_ID: context.projectId ?? '',
+    OCC_WORKSPACE_ID: context.workspaceId ?? '',
+    OCC_WORKSPACE_NAME: context.workspaceName ?? '',
+    OCC_REPO_PATH: context.repoPath,
+    OCC_REPO_URL: context.repoUrl ?? '',
+    OCC_REPO_BRANCH: context.branch ?? '',
+    OCC_REPO_REF: context.ref ?? '',
+    OCC_REPO_REF_HEAD: context.expectedRefHead ?? '',
+    OCC_RECIPE_RESULT_SCHEMA_VERSION: String(resultSchemaVersion),
+    OCC_VERSION: context.occVersion ?? ''
   }
 }

@@ -8,10 +8,10 @@ import { resolveWindowsShellLaunchArgs } from './windows-shell-args'
 // Resolve content-addressed wrapper paths instead of assuming a fixed directory.
 import { getShellReadyWrapperRoot } from './local-pty-shell-ready-wrapper-root'
 
-const CODEX_LAUNCH_PREFLIGHT = 'C:\\Program Files\\OCC\\orca.exe'
+const CODEX_LAUNCH_PREFLIGHT = 'C:\\Program Files\\OCC\\occ.exe'
 const POWERSHELL_STARTUP_COMMAND_C_MARK = '[Console]::Write("$([char]27)]133;C$([char]7)")'
 const CMD_CODEX_LAUNCH_PREFLIGHT =
-  'if defined ORCA_CODEX_LAUNCH_PREFLIGHT call %ORCA_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE%%ORCA_CODEX_LAUNCH_PREFLIGHT%%ORCA_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE% agent hooks prepare-codex > nul 2>&1'
+  'if defined OCC_CODEX_LAUNCH_PREFLIGHT call %OCC_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE%%OCC_CODEX_LAUNCH_PREFLIGHT%%OCC_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE% agent hooks prepare-codex > nul 2>&1'
 
 function expectedWslArgs(linuxCwd: string, distro?: string): string[] {
   const command = `cd '${linuxCwd}' && export PATH="$HOME/.local/bin:$PATH" && ${buildWslInteractiveLoginShellCommand()}`
@@ -42,16 +42,16 @@ describe('resolveWindowsShellLaunchArgs', () => {
   let userDataPath: string
 
   beforeEach(() => {
-    previousUserDataPath = process.env.ORCA_USER_DATA_PATH
+    previousUserDataPath = process.env.OCC_USER_DATA_PATH
     userDataPath = mkdtempSync(join(tmpdir(), 'windows-shell-args-test-'))
-    process.env.ORCA_USER_DATA_PATH = userDataPath
+    process.env.OCC_USER_DATA_PATH = userDataPath
   })
 
   afterEach(() => {
     if (previousUserDataPath === undefined) {
-      delete process.env.ORCA_USER_DATA_PATH
+      delete process.env.OCC_USER_DATA_PATH
     } else {
-      process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+      process.env.OCC_USER_DATA_PATH = previousUserDataPath
     }
     rmSync(userDataPath, { recursive: true, force: true })
   })
@@ -124,25 +124,25 @@ describe('resolveWindowsShellLaunchArgs', () => {
     const command = decodePowerShellCommand(result)
     const outputEncodingIndex = command.indexOf('[Console]::OutputEncoding')
     const opencodeRestoreIndex = command.indexOf(
-      '$env:OPENCODE_CONFIG_DIR = $env:ORCA_OPENCODE_CONFIG_DIR'
+      '$env:OPENCODE_CONFIG_DIR = $env:OCC_OPENCODE_CONFIG_DIR'
     )
     const mimocodeRestoreIndex = command.indexOf(
-      '$env:MIMOCODE_CONFIG_DIR = $env:ORCA_MIMOCODE_CONFIG_DIR'
+      '$env:MIMOCODE_CONFIG_DIR = $env:OCC_MIMOCODE_CONFIG_DIR'
     )
-    const duplicateStateGuardIndex = command.indexOf('Test-Path variable:global:__OrcaOsc133State')
+    const duplicateStateGuardIndex = command.indexOf('Test-Path variable:global:__OCCOsc133State')
     const languageModeGuardIndex = command.indexOf('LanguageMode -eq "FullLanguage"')
     const ompWrapperIndex = command.indexOf('function Global:omp')
-    const ompExtensionIndex = command.indexOf('--extension $env:ORCA_OMP_STATUS_EXTENSION')
-    const codexRestoreIndex = command.indexOf('$env:CODEX_HOME = $env:ORCA_CODEX_HOME')
+    const ompExtensionIndex = command.indexOf('--extension $env:OCC_OMP_STATUS_EXTENSION')
+    const codexRestoreIndex = command.indexOf('$env:CODEX_HOME = $env:OCC_CODEX_HOME')
     const promptIndex = command.indexOf('function Global:prompt')
     const cwdRestoreIndex = command.indexOf(
       expectedPowerShellRestoreCwdCommand("'C:\\Users\\alice'")
     )
 
     expect(command).not.toContain('$PROFILE')
-    expect(command).not.toContain('ORCA_PI_CODING_AGENT_DIR')
-    expect(command).not.toContain('ORCA_OMP_CODING_AGENT_DIR')
-    expect(command).not.toContain('$env:PI_CODING_AGENT_DIR = $env:ORCA_OMP_SOURCE_AGENT_DIR')
+    expect(command).not.toContain('OCC_PI_CODING_AGENT_DIR')
+    expect(command).not.toContain('OCC_OMP_CODING_AGENT_DIR')
+    expect(command).not.toContain('$env:PI_CODING_AGENT_DIR = $env:OCC_OMP_SOURCE_AGENT_DIR')
     for (const restoreIndex of [opencodeRestoreIndex, mimocodeRestoreIndex, codexRestoreIndex]) {
       expect(restoreIndex).toBeGreaterThanOrEqual(0)
       expect(restoreIndex).toBeLessThan(duplicateStateGuardIndex)
@@ -203,13 +203,13 @@ describe('resolveWindowsShellLaunchArgs', () => {
     expect(command.trimEnd().endsWith("& 'codex' '--no-alt-screen'")).toBe(true)
     // Without the mark, the first prompt after the agent exits withholds 133;D (#18180).
     expect(command).toContain(
-      `${POWERSHELL_STARTUP_COMMAND_C_MARK}; $Global:__OrcaOsc133State.HasSeenPrompt = $true }\n& 'codex' '--no-alt-screen'`
+      `${POWERSHELL_STARTUP_COMMAND_C_MARK}; $Global:__OCCOsc133State.HasSeenPrompt = $true }\n& 'codex' '--no-alt-screen'`
     )
   })
 
   it('preserves complex PowerShell startup command text through EncodedCommand', () => {
     const startupCommand =
-      '& "C:\\Program Files\\OCC CLI\\orca.exe" "--label" "quoted value"; $env:ORCA_VALUE = "nested"'
+      '& "C:\\Program Files\\OCC CLI\\occ.exe" "--label" "quoted value"; $env:OCC_VALUE = "nested"'
     const result = resolveWindowsShellLaunchArgs(
       'powershell.exe',
       'C:\\Users\\alice',
@@ -230,7 +230,7 @@ describe('resolveWindowsShellLaunchArgs', () => {
       'C:\\Users\\alice',
       'C:\\Users\\alice',
       undefined,
-      `orca ${'x'.repeat(7000)}`
+      `occ ${'x'.repeat(7000)}`
     )
 
     expect(result.startupCommandDeliveredInShellArgs).toBeUndefined()
@@ -288,7 +288,7 @@ describe('resolveWindowsShellLaunchArgs', () => {
     expect(result.validationCwd).toBe('C:\\')
 
     const bashRcfile = readFileSync(getGitBashRcfilePath(bashCommand), 'utf8')
-    expect(bashRcfile).toContain('"${ORCA_CODEX_LAUNCH_PREFLIGHT}" agent hooks prepare-codex')
+    expect(bashRcfile).toContain('"${OCC_CODEX_LAUNCH_PREFLIGHT}" agent hooks prepare-codex')
     expect(bashRcfile).not.toContain(CODEX_LAUNCH_PREFLIGHT)
   })
 
@@ -349,12 +349,12 @@ describe('resolveWindowsShellLaunchArgs', () => {
     )
 
     expect(cmd.shellArgs[1]).toContain(
-      'call %ORCA_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE%%ORCA_CODEX_LAUNCH_PREFLIGHT%%ORCA_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE%'
+      'call %OCC_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE%%OCC_CODEX_LAUNCH_PREFLIGHT%%OCC_CODEX_LAUNCH_PREFLIGHT_CMD_QUOTE%'
     )
     expect(cmd.shellArgs[1]).not.toContain('"')
     expect(cmd.shellArgs[1]).not.toContain(CODEX_LAUNCH_PREFLIGHT)
     const rcfilePath = getGitBashRcfilePath(gitBash.shellArgs[1])
-    expect(readFileSync(rcfilePath, 'utf8')).toContain('"${ORCA_CODEX_LAUNCH_PREFLIGHT}"')
+    expect(readFileSync(rcfilePath, 'utf8')).toContain('"${OCC_CODEX_LAUNCH_PREFLIGHT}"')
   })
 
   it('does not apply Git Bash launch args to unrelated bash.exe paths', () => {
@@ -408,11 +408,11 @@ describe('resolveWindowsShellLaunchArgs', () => {
     const bashRcfile = readFileSync(join(getShellReadyWrapperRoot(), 'bash', 'rcfile'), 'utf8')
     const zshEnv = readFileSync(join(getShellReadyWrapperRoot(), 'zsh', '.zshenv'), 'utf8')
     for (const wrapperFile of [bashRcfile, zshEnv]) {
-      expect(wrapperFile).toContain('command omp --extension "${ORCA_OMP_STATUS_EXTENSION}" "$@"')
-      expect(wrapperFile).toContain('function omp { __orca_omp "$@"; }')
+      expect(wrapperFile).toContain('command omp --extension "${OCC_OMP_STATUS_EXTENSION}" "$@"')
+      expect(wrapperFile).toContain('function omp { __occ_omp "$@"; }')
       expect(wrapperFile).not.toContain('prime-agent()')
-      expect(wrapperFile).not.toContain('__orca_prime_agent')
-      expect(wrapperFile).not.toContain('ORCA_PRIME_AGENT_STATUS_EXTENSION')
+      expect(wrapperFile).not.toContain('__occ_prime_agent')
+      expect(wrapperFile).not.toContain('OCC_PRIME_AGENT_STATUS_EXTENSION')
       expect(wrapperFile).not.toContain('command prime-agent --extension')
     }
   })
@@ -446,7 +446,7 @@ describe('resolveWindowsShellLaunchArgs', () => {
     const result = resolveWindowsShellLaunchArgs('wsl.exe', "C:\\weird'path", 'C:\\Users\\alice')
     // Single quotes in paths must remain within the generated sh argument.
     expect(result.shellArgs[3]).toContain("cd '/mnt/c/weird'\\''path'")
-    expect(result.shellArgs[3]).toContain('exec "$_orca_wsl_shell" -l')
+    expect(result.shellArgs[3]).toContain('exec "$_occ_wsl_shell" -l')
   })
 
   it('falls back to /mnt/c when cwd is not a drive-letter path', () => {
@@ -511,7 +511,7 @@ describe('resolveWindowsShellLaunchArgs', () => {
 // #7236: UTF-16 base64 delivers setup-runner quotes intact instead of risking partial typed-stdin parsing.
 describe('issue #7236: PowerShell setup-runner command delivery', () => {
   // git rev-parse hands back a forward-slash Windows-absolute path for the runner.
-  const runnerPath = 'C:/Users/alice/repo/.git/orca/setup-runner.cmd'
+  const runnerPath = 'C:/Users/alice/repo/.git/occ/setup-runner.cmd'
 
   it('wraps the setup runner in balanced double quotes', () => {
     const { command } = resolveSetupRunnerCommand(runnerPath, 'windows')

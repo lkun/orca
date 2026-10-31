@@ -3,7 +3,7 @@ import type { AddressInfo } from 'node:net'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
 import { RuntimeClient } from '../../src/cli/runtime/client'
 import type { RuntimeMobileSessionTabsResult } from '../../src/shared/runtime-types'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   createRuntimeDesktopPairingOffer,
   launchPairedElectronClient,
@@ -212,17 +212,17 @@ async function openLinkFromRemotePane(page: Page, testInfo: TestInfo): Promise<v
 
 test('returns a headed host page identity before owner-pinned navigation can time out @headful', async ({
   electronApp,
-  orcaPage,
+  occPage,
   testRepoPath
 }, testInfo: TestInfo) => {
   test.setTimeout(300_000)
   const fixture = await startHeldNavigationServer()
   let client: PairedElectronClient | null = null
   try {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    const offer = await createRuntimeDesktopPairingOffer(occPage)
     const userDataDir = await electronApp.evaluate(({ app }) => app.getPath('userData'))
     const hostClient = new RuntimeClient(userDataDir, 5_000)
     client = await launchPairedElectronClient(offer, testInfo, 'STA-4231 navigation deadline')
@@ -303,17 +303,17 @@ test('returns a headed host page identity before owner-pinned navigation can tim
 
 test('opens the held URL through the owner-pinned remote-pane link route @headful', async ({
   electronApp,
-  orcaPage,
+  occPage,
   testRepoPath
 }, testInfo: TestInfo) => {
   test.setTimeout(300_000)
   const fixture = await startHeldNavigationServer()
   let client: PairedElectronClient | null = null
   try {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    const offer = await createRuntimeDesktopPairingOffer(occPage)
     const userDataDir = await electronApp.evaluate(({ app }) => app.getPath('userData'))
     const hostClient = new RuntimeClient(userDataDir, 5_000)
     client = await launchPairedElectronClient(offer, testInfo, 'STA-4231 owner-pinned link route')

@@ -8,7 +8,7 @@ import {
   TerminalSessionOwnerUnverifiedError
 } from '../../daemon/daemon-errors'
 import { makePaneKey } from '../../../shared/stable-pane-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { registerPtyHandlers } from './register-handlers'
 import { clearProviderPtyState } from './provider/state-cleanup'
 import { setLocalPtyProvider } from './provider/registry'
@@ -41,7 +41,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -137,9 +137,9 @@ describe('registerPtyHandlers', () => {
       tabId,
       leafId,
       env: {
-        ORCA_PANE_KEY: paneKey,
-        ORCA_TAB_ID: tabId,
-        ORCA_WORKTREE_ID: worktreeId
+        OCC_PANE_KEY: paneKey,
+        OCC_TAB_ID: tabId,
+        OCC_WORKTREE_ID: worktreeId
       }
     }
 
@@ -344,9 +344,9 @@ describe('registerPtyHandlers', () => {
         tabId,
         leafId,
         env: {
-          ORCA_PANE_KEY: paneKey,
-          ORCA_TAB_ID: tabId,
-          ORCA_WORKTREE_ID: worktreeId
+          OCC_PANE_KEY: paneKey,
+          OCC_TAB_ID: tabId,
+          OCC_WORKTREE_ID: worktreeId
         }
       })
 
@@ -382,7 +382,7 @@ describe('registerPtyHandlers', () => {
       expect(providerSpawn.mock.calls[1]?.[0]).toMatchObject({
         command: 'codex resume exact-dead-provider-session'
       })
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         expect(store.setWorkspaceSession).not.toHaveBeenCalled()
         const [swap] = vi.mocked(store.persistPtyBinding).mock.calls[0] ?? []
         expect(typeof swap === 'function' ? swap() : swap).toMatchObject({
@@ -501,9 +501,9 @@ describe('registerPtyHandlers', () => {
         tabId,
         leafId,
         env: {
-          ORCA_PANE_KEY: paneKey,
-          ORCA_TAB_ID: tabId,
-          ORCA_WORKTREE_ID: worktreeId
+          OCC_PANE_KEY: paneKey,
+          OCC_TAB_ID: tabId,
+          OCC_WORKTREE_ID: worktreeId
         }
       })
     ).rejects.toThrow('terminal_pane_owner_unverified')

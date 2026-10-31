@@ -8,12 +8,12 @@ import { openCodexAppServerConnection } from './codex-app-server-connection'
 import { withCodexVisualsThreadConfig } from './codex-structured-visuals'
 import { codexStructuredPermissionPolicy } from '../../shared/codex-permission-policy'
 
-const enabled = process.env.ORCA_REAL_CODEX_CLI_TEST === '1'
+const enabled = process.env.OCC_REAL_CODEX_CLI_TEST === '1'
 const WORKSPACE_POLICY = codexStructuredPermissionPolicy('auto')
 
 describe.skipIf(!enabled)('Codex real app-server chat visuals', () => {
   it('lists the visuals skill and grants the chat folder beside the user writable roots', async () => {
-    const base = mkdtempSync(join(tmpdir(), 'orca-real-codex-visuals-'))
+    const base = mkdtempSync(join(tmpdir(), 'occ-real-codex-visuals-'))
     try {
       const codexHome = join(base, 'codex-home')
       const cwd = join(base, 'workspace')

@@ -142,7 +142,7 @@ type ReplacementFile = { target: string; path: string }
 
 /** Prepare the replacement with target permissions before writing config data. */
 async function createReplacementFile(target: string): Promise<ReplacementFile> {
-  const suffix = `.orca-trust-${randomUUID()}.tmp`
+  const suffix = `.occ-trust-${randomUUID()}.tmp`
   const path = `${target}${suffix}`
   const guestFile = parseWslUncPath(target)
   try {

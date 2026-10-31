@@ -4,7 +4,7 @@ import { Terminal } from '@xterm/headless'
 import { SerializeAddon } from '@xterm/addon-serialize'
 import { Unicode11Addon } from '@xterm/addon-unicode11'
 import { HeadlessEmulator } from './headless-emulator'
-import { activateOrcaTerminalUnicodeProvider } from '../../shared/terminal-unicode-provider'
+import { activateOCCTerminalUnicodeProvider } from '../../shared/terminal-unicode-provider'
 
 const WIDE = 135
 const NARROW = 48
@@ -120,7 +120,7 @@ async function replayEmulatorAt(
   const snapshot = emu.getSnapshot()
   const restored = new Terminal({ cols, rows, allowProposedApi: true })
   restored.loadAddon(new Unicode11Addon())
-  activateOrcaTerminalUnicodeProvider(restored)
+  activateOCCTerminalUnicodeProvider(restored)
   await writeTerminal(
     restored,
     `${snapshot.scrollbackAnsi ?? ''}\x1b[?1049h${snapshot.snapshotAnsi}`

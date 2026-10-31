@@ -1,5 +1,5 @@
 import { isRemoteRuntimePtyId } from '../../../../../shared/remote-runtime/remote-runtime-pty-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import type { ReattachPayloadSession } from './reattach-payload-session'
 
 /** The view painted `ptyId`'s cold restore; the terminal service may drop its copy. */
@@ -8,7 +8,7 @@ export function ackPaintedColdRestore(session: ReattachPayloadSession, ptyId: st
     return
   }
   // Switch point: main releases the copy only for the pane's current terminal.
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     window.api.pty.ackColdRestore(ptyId)
     return
   }

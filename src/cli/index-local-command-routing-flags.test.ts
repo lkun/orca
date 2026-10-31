@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -13,8 +13,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   removeEnvironmentMock: vi.fn(),
@@ -27,7 +27,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -89,7 +89,7 @@ describe('runtime-selector flags on locally pinned CLI commands', () => {
   })
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -164,9 +164,9 @@ describe('runtime-selector flags on locally pinned CLI commands', () => {
   })
 
   function agentSelectors(): void {
-    process.env.ORCA_ENVIRONMENT = ''
-    process.env.ORCA_PAIRING_CODE = ''
-    process.env.ORCA_REMOTE_PAIRING = ''
+    process.env.OCC_ENVIRONMENT = ''
+    process.env.OCC_PAIRING_CODE = ''
+    process.env.OCC_REMOTE_PAIRING = ''
   }
 
   it("keeps explicit --environment routing under an agent's empty selectors", async () => {
@@ -194,8 +194,8 @@ describe('runtime-selector flags on locally pinned CLI commands', () => {
     expect(runtimeClientConstructorMock).toHaveBeenCalledWith(null, 'gpu')
   })
 
-  it('routes `host name` through an ambient ORCA_ENVIRONMENT, unlike the pinned `host list`', async () => {
-    process.env.ORCA_ENVIRONMENT = 'm4air'
+  it('routes `host name` through an ambient OCC_ENVIRONMENT, unlike the pinned `host list`', async () => {
+    process.env.OCC_ENVIRONMENT = 'm4air'
     pairRuntimeEnvironment(listEnvironmentsMock, 'env-m4air', 'm4air')
     fakeMachineNameRuntime('M4 Air')
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
@@ -258,7 +258,7 @@ describe('runtime-selector flags on locally pinned CLI commands', () => {
     const printed = JSON.parse(String(logSpy.mock.calls[0]?.[0]))
     expect(printed.ok).toBe(false)
     expect(printed.error.code).toBe('invalid_argument')
-    expect(printed.error.message).toContain('`--environment` does not retarget `orca host list`')
+    expect(printed.error.message).toContain('`--environment` does not retarget `occ host list`')
     expect(process.exitCode).toBe(1)
     expect(callMock).not.toHaveBeenCalled()
     expect(runtimeClientConstructorMock).not.toHaveBeenCalledWith(null, 'm4air')
@@ -274,7 +274,7 @@ describe('runtime-selector flags on locally pinned CLI commands', () => {
     expect(printed.ok).toBe(false)
     expect(printed.error.code).toBe('invalid_argument')
     expect(printed.error.message).toContain(
-      '`--environment` does not retarget `orca environment list`'
+      '`--environment` does not retarget `occ environment list`'
     )
   })
 
@@ -298,8 +298,8 @@ describe('runtime-selector flags on locally pinned CLI commands', () => {
     expect(callMock).not.toHaveBeenCalled()
   })
 
-  it('keeps `host list` local when ORCA_ENVIRONMENT is set ambiently', async () => {
-    process.env.ORCA_ENVIRONMENT = 'm4air'
+  it('keeps `host list` local when OCC_ENVIRONMENT is set ambiently', async () => {
+    process.env.OCC_ENVIRONMENT = 'm4air'
     pairRuntimeEnvironment(listEnvironmentsMock, 'env-m4air', 'm4air')
     queueSshTargetLookups(1)
     const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
@@ -333,8 +333,8 @@ describe('runtime-selector flags on locally pinned CLI commands', () => {
     await main(['environment', 'show', '--environment', 'm4air', '--json'], '/tmp/repo')
     await main(['environment', 'rm', '--environment', 'm4air', '--json'], '/tmp/repo')
 
-    expect(resolveEnvironmentMock).toHaveBeenCalledExactlyOnceWith('/tmp/orca-user-data', 'm4air')
-    expect(removeEnvironmentMock).toHaveBeenCalledExactlyOnceWith('/tmp/orca-user-data', 'm4air')
+    expect(resolveEnvironmentMock).toHaveBeenCalledExactlyOnceWith('/tmp/occ-user-data', 'm4air')
+    expect(removeEnvironmentMock).toHaveBeenCalledExactlyOnceWith('/tmp/occ-user-data', 'm4air')
     expect(logSpy).toHaveBeenCalledTimes(2)
     expect(logSpy.mock.calls.map(([output]) => JSON.parse(String(output)).result)).toEqual([
       { environment },

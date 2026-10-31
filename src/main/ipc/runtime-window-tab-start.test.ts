@@ -5,7 +5,7 @@ import { TERMINAL_LIFECYCLE_METHODS } from '../runtime/rpc/methods/terminal/term
 import {
   setupLayoutOwnerRuntime,
   WORKTREE_ID
-} from '../runtime/orca-runtime-layout-owner-start-fixture'
+} from '../runtime/occ-runtime-layout-owner-start-fixture'
 
 const { handleMock } = vi.hoisted(() => ({ handleMock: vi.fn() }))
 
@@ -13,7 +13,7 @@ vi.mock('electron', () => ({
   BrowserWindow: { fromWebContents: vi.fn() },
   ipcMain: { handle: handleMock, on: vi.fn(), removeAllListeners: vi.fn(), removeHandler: vi.fn() }
 }))
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 import { registerRuntimeHandlers } from './runtime'
 

@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { _setGuestWindowsDriveMountsForTests } from '../ipc/wsl-guest-windows-drive-path'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { buildMobileTerminalChatFork } from './terminal/launch/mobile-terminal-chat-fork'
 import type { TerminalWorkspaceLaunchScope } from './runtime-legacy-worker-terminal-recovery-types'
 import type { MobileTerminalCommand } from './terminal/launch/mobile-terminal-startup'
@@ -24,7 +24,7 @@ function fakeExecutable(dir: string, name: string): string {
 }
 
 function makeRuntime(agentCmdOverrides: Record<string, string> = {}) {
-  const runtime = new OrcaRuntimeService(
+  const runtime = new OCCRuntimeService(
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: these launch paths read only getSettings for a workspace with no repo or folder.
     {
       getSettings: () => ({
@@ -79,7 +79,7 @@ beforeEach(() => {
   windowsBin = join(windowsMount, 'Users', 'u', 'AppData', 'Roaming', 'npm')
   nativeBin = join(root, 'usr', 'local', 'bin')
   Object.defineProperty(process, 'platform', { configurable: true, value: 'linux' })
-  vi.stubEnv('ORCA_WSL_ORCAD_HOST', '1')
+  vi.stubEnv('OCC_WSL_OCCD_HOST', '1')
   vi.stubEnv('WSL_DISTRO_NAME', 'Ubuntu')
   // Keep the version-manager search inside the sandbox.
   vi.stubEnv('HOME', join(root, 'home'))

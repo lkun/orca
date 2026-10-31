@@ -25,7 +25,7 @@ async function fingerprint(path = repoPath): Promise<string | null> {
 
 beforeEach(async () => {
   // realpath: macOS hands out /var/... temp paths while Git records /private/var/... in `gitdir`.
-  scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'orca-worktree-fingerprint-')))
+  scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'occ-worktree-fingerprint-')))
   repoPath = join(scratchDir, 'repo')
   worktreePath = join(scratchDir, 'trees', 'feature')
   await mkdir(repoPath, { recursive: true })
@@ -86,7 +86,7 @@ describe('readRepoWorktreeAdminFingerprint', () => {
 
   it('changes when an existing worktree lock is replaced', async () => {
     await git(
-      ['worktree', 'lock', '--reason', 'orca-create-preparation:v1:12345:lease', worktreePath],
+      ['worktree', 'lock', '--reason', 'occ-create-preparation:v1:12345:lease', worktreePath],
       repoPath
     )
     const before = await fingerprint()

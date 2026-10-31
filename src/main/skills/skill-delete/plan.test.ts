@@ -18,7 +18,7 @@ afterEach(async () => {
 })
 
 async function fixture(): Promise<{ home: string }> {
-  const home = await mkdtemp(join(tmpdir(), 'orca-skill-delete-plan-'))
+  const home = await mkdtemp(join(tmpdir(), 'occ-skill-delete-plan-'))
   roots.push(home)
   return { home }
 }

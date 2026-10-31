@@ -22,7 +22,7 @@ describe('nested agent hooks preserve the owning pane', () => {
     'keeps Claude children, prompt and turn stable through Codex review hooks over %s',
     async (transport) => {
       const server = new AgentHookServer()
-      const dir = mkdtempSync(join(tmpdir(), 'orca-nested-roster-'))
+      const dir = mkdtempSync(join(tmpdir(), 'occ-nested-roster-'))
       const relay = new RelayAgentHookServer({
         endpointDir: dir,
         forward: (event) => server.ingestRemote(event, 'conn-1')
@@ -251,7 +251,7 @@ describe('nested agent hooks preserve the owning pane', () => {
 
   it('keeps a stale owner type from letting a nested codex exec take the pane over the relay', async () => {
     const server = new AgentHookServer()
-    const dir = mkdtempSync(join(tmpdir(), 'orca-stale-owner-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-stale-owner-'))
     const relay = new RelayAgentHookServer({
       endpointDir: dir,
       forward: (event) => server.ingestRemote(event, 'conn-1')

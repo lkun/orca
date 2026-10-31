@@ -47,7 +47,7 @@ vi.mock('./browser-extension-webstore-events', () => ({
   notifyChromeWebStoreUninstalled: vi.fn()
 }))
 vi.mock('./browser-extension-load-directory', () => ({
-  refuseOrcaFileCollisions: vi.fn(async () => {})
+  refuseOCCFileCollisions: vi.fn(async () => {})
 }))
 vi.mock('./browser-extension-held-updates', () => ({
   forgetHeldBrowserExtensionUpdate: vi.fn(),
@@ -113,7 +113,7 @@ function stagedFolders(): string[] {
 }
 
 beforeEach(async () => {
-  state.userData = mkdtempSync(join(tmpdir(), 'orca-settings-prompt-'))
+  state.userData = mkdtempSync(join(tmpdir(), 'occ-settings-prompt-'))
   state.load.mockReset()
   state.load.mockResolvedValue(undefined)
   state.download.mockReset()
@@ -155,7 +155,7 @@ describe('Settings extension install prompt lifetime', () => {
     expect(stagedFolders()).toHaveLength(1)
     expect(install.isBrowserExtensionBusy(extensionId)).toBe(true)
 
-    contents.emit('did-navigate', {}, 'file:///orca/index.html', 200, 'OK')
+    contents.emit('did-navigate', {}, 'file:///occ/index.html', 200, 'OK')
 
     await vi.waitFor(() => expect(install.isBrowserExtensionBusy(extensionId)).toBe(false))
     await expect(pending).resolves.toEqual({ status: 'cancelled' })
@@ -199,7 +199,7 @@ describe('Settings extension install prompt lifetime', () => {
     })
     try {
       await vi.waitFor(() => expect(state.load).toHaveBeenCalledOnce())
-      contents.emit('did-navigate', {}, 'file:///orca/index.html', 200, 'OK')
+      contents.emit('did-navigate', {}, 'file:///occ/index.html', 200, 'OK')
       expect(install.isBrowserExtensionBusy(extensionId)).toBe(true)
     } finally {
       finishLoading()

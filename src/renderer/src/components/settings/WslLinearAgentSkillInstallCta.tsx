@@ -1,4 +1,4 @@
-// COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+// COMPAT(wsl-bridge): removed when WSL runs as an occd host.
 import { useMemo } from 'react'
 import { Copy, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
@@ -9,9 +9,9 @@ import {
   GLOBAL_AGENT_SKILL_SOURCE_KINDS,
   useInstalledAgentSkillNames
 } from '@/hooks/useInstalledAgentSkills'
-import { LINEAR_AGENT_SKILL_NAMES, ORCA_LINEAR_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { LINEAR_AGENT_SKILL_NAMES, OCC_LINEAR_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import {
-  ORCA_LINEAR_SKILL_INSTALL_COMMAND,
+  OCC_LINEAR_SKILL_INSTALL_COMMAND,
   buildAgentFeatureSkillInstallCommand
 } from '@/lib/agent-feature-install-commands'
 import { getLinearAgentSkillUpdateTarget } from '@/lib/linear-agent-skill-update-target'
@@ -54,7 +54,7 @@ export function WslLinearAgentSkillInstallCta({
           ? buildAgentFeatureSkillInstallCommand([
               getLinearAgentSkillUpdateTarget(skill.skills, skill.installed).skillName
             ])
-          : ORCA_LINEAR_SKILL_INSTALL_COMMAND,
+          : OCC_LINEAR_SKILL_INSTALL_COMMAND,
         agentRuntime
       ),
     [agentRuntime, skill.installed, skill.skills]
@@ -91,7 +91,7 @@ export function WslLinearAgentSkillInstallCta({
             'auto.components.settings.linear.agent.skill.install.cta.skillLabel',
             'Agent skill:'
           )}{' '}
-          <span className="font-mono text-[11px]">{ORCA_LINEAR_SKILL_NAME}</span>
+          <span className="font-mono text-[11px]">{OCC_LINEAR_SKILL_NAME}</span>
         </p>
         {skill.loading ? (
           <IntegrationStatusPill tone="neutral">

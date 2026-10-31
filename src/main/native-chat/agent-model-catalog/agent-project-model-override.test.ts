@@ -21,7 +21,7 @@ function mayOverride(
 
 describe('workspaceMayOverrideDefaultModel', () => {
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-project-model-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-project-model-'))
   })
 
   afterEach(() => {

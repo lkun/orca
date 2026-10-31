@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { POSIX_SHELL_STARTUP_COMMAND_ENV } from './pty/posix-shell-startup-command'
 import { selectShellStartupFeatures } from './shell-startup-features'
-import { prependOrcaCliDirToChildPath } from './cli/orca-cli-child-path'
+import { prependOCCCliDirToChildPath } from './cli/occ-cli-child-path'
 import { runZshPty } from './zsh-startup-hook-pty-harness'
 import { ZSH_WRAPPER_DIR_MARKER_FILE } from './shell-templates'
 import {
@@ -30,11 +30,11 @@ const PLAIN_PANE = {
 }
 
 describe('shell startup feature selection', () => {
-  it('ignores an inherited ORCA_SHELL_FEATURES in the spawn env', () => {
+  it('ignores an inherited OCC_SHELL_FEATURES in the spawn env', () => {
     expect(
       selectShellStartupFeatures({
         shellPath: '/bin/zsh',
-        env: { ORCA_SHELL_FEATURES: 'overlay,markers,ready,identity,history' },
+        env: { OCC_SHELL_FEATURES: 'overlay,markers,ready,identity,history' },
         ...PLAIN_PANE
       })
     ).toEqual([])
@@ -44,7 +44,7 @@ describe('shell startup feature selection', () => {
     expect(
       selectShellStartupFeatures({
         shellPath: '/bin/zsh',
-        env: { ORCA_SHELL_FEATURES: '', ORCA_HISTFILE: '/tmp/wt/zsh_history' },
+        env: { OCC_SHELL_FEATURES: '', OCC_HISTFILE: '/tmp/wt/zsh_history' },
         ...PLAIN_PANE
       })
     ).toEqual(['history'])
@@ -54,7 +54,7 @@ describe('shell startup feature selection', () => {
     expect(
       selectShellStartupFeatures({
         shellPath: '/bin/zsh',
-        env: { ORCA_HISTFILE: '/tmp/wt/zsh_history' },
+        env: { OCC_HISTFILE: '/tmp/wt/zsh_history' },
         ...PLAIN_PANE
       })
     ).not.toContain('markers')
@@ -64,7 +64,7 @@ describe('shell startup feature selection', () => {
     expect(
       selectShellStartupFeatures({
         shellPath: '/bin/zsh',
-        env: { ORCA_CODEX_HOME: '/tmp/codex' },
+        env: { OCC_CODEX_HOME: '/tmp/codex' },
         ...PLAIN_PANE
       })
     ).toContain('markers')
@@ -74,7 +74,7 @@ describe('shell startup feature selection', () => {
     expect(
       selectShellStartupFeatures({
         shellPath: '/bin/bash',
-        env: { ORCA_HISTFILE: '/tmp/wt/bash_history' },
+        env: { OCC_HISTFILE: '/tmp/wt/bash_history' },
         ...PLAIN_PANE
       })
     ).toEqual([])
@@ -86,16 +86,16 @@ describePosix('zsh launch config', () => {
   let previousFeatures: string | undefined
 
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-feature-channel-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-feature-channel-'))
     setTestUserDataPath(userDataPath)
-    previousFeatures = process.env.ORCA_SHELL_FEATURES
+    previousFeatures = process.env.OCC_SHELL_FEATURES
   })
 
   afterEach(() => {
     if (previousFeatures === undefined) {
-      delete process.env.ORCA_SHELL_FEATURES
+      delete process.env.OCC_SHELL_FEATURES
     } else {
-      process.env.ORCA_SHELL_FEATURES = previousFeatures
+      process.env.OCC_SHELL_FEATURES = previousFeatures
     }
     chmodSync(userDataPath, 0o755)
     rmSync(userDataPath, { recursive: true, force: true })
@@ -123,7 +123,7 @@ describePosix('zsh launch config', () => {
         USERPROFILE: userDataPath,
         PATH: `${ambientBin}:/usr/bin:/bin`
       }
-      const launcher = prependOrcaCliDirToChildPath(env, { isPackaged: false, userDataPath })
+      const launcher = prependOCCCliDirToChildPath(env, { isPackaged: false, userDataPath })
       const features = selectShellStartupFeatures({
         shellPath: ZSH_PATH,
         env,
@@ -134,20 +134,20 @@ describePosix('zsh launch config', () => {
       const config = getShellLaunchConfig(ZSH_PATH, features)
       const result = await runZshPty({
         env: { ...env, ...config.env },
-        commands: ['ORCA_LOOKUP=$(command -v occ-dev)'],
-        report: ['ORCA_LOOKUP']
+        commands: ['OCC_LOOKUP=$(command -v occ-dev)'],
+        report: ['OCC_LOOKUP']
       })
-      expect(result.values.ORCA_LOOKUP).toBe(launcher)
+      expect(result.values.OCC_LOOKUP).toBe(launcher)
     }
   )
 
   it('publishes exactly the selected features, whatever process.env holds', async () => {
-    process.env.ORCA_SHELL_FEATURES = 'overlay,markers,ready,identity'
+    process.env.OCC_SHELL_FEATURES = 'overlay,markers,ready,identity'
     const { getShellLaunchConfig } = await importFreshLocalPtyShellReady()
 
     const config = getShellLaunchConfig('/bin/zsh', ['history'])
 
-    expect(config.env.ORCA_SHELL_FEATURES).toBe('history')
+    expect(config.env.OCC_SHELL_FEATURES).toBe('history')
   })
 
   it('wraps a startup-only command without enabling shell readiness', async () => {
@@ -155,7 +155,7 @@ describePosix('zsh launch config', () => {
 
     const config = getShellLaunchConfig('/bin/zsh', [], 'codex')
 
-    expect(config.env.ORCA_SHELL_FEATURES).toBe('startup')
+    expect(config.env.OCC_SHELL_FEATURES).toBe('startup')
     expect(config.env[POSIX_SHELL_STARTUP_COMMAND_ENV]).toBe('codex')
     expect(config.supportsReadyMarker).toBe(false)
   })
@@ -180,7 +180,7 @@ describePosix('zsh launch config', () => {
 
   it('does not treat another terminal’s hijacked ZDOTDIR as the user config dir', async () => {
     // Other terminals may own ZDOTDIR; reject only positively identified OCC or empty directories.
-    const home = mkdtempSync(join(tmpdir(), 'orca-stacked-zdotdir-'))
+    const home = mkdtempSync(join(tmpdir(), 'occ-stacked-zdotdir-'))
     const foreignWrapper = join(home, 'other-terminal', 'zsh')
     mkdirSync(foreignWrapper, { recursive: true })
     const previousZdotdir = process.env.ZDOTDIR
@@ -191,19 +191,19 @@ describePosix('zsh launch config', () => {
       const { getShellLaunchConfig } = await importFreshLocalPtyShellReady()
 
       // An absent original ZDOTDIR must stay absent, rather than becoming HOME.
-      expect(getShellLaunchConfig('/bin/zsh', ['history']).env.ORCA_ORIG_ZDOTDIR).toBeUndefined()
+      expect(getShellLaunchConfig('/bin/zsh', ['history']).env.OCC_ORIG_ZDOTDIR).toBeUndefined()
 
       // The marker identifies ownership even without an OCC-shaped path.
       writeFileSync(join(foreignWrapper, '.zshrc'), '')
       writeFileSync(join(foreignWrapper, ZSH_WRAPPER_DIR_MARKER_FILE), '')
       const stamped = await importFreshLocalPtyShellReady()
       expect(
-        stamped.getShellLaunchConfig('/bin/zsh', ['history']).env.ORCA_ORIG_ZDOTDIR
+        stamped.getShellLaunchConfig('/bin/zsh', ['history']).env.OCC_ORIG_ZDOTDIR
       ).toBeUndefined()
 
       rmSync(join(foreignWrapper, ZSH_WRAPPER_DIR_MARKER_FILE))
       const real = await importFreshLocalPtyShellReady()
-      expect(real.getShellLaunchConfig('/bin/zsh', ['history']).env.ORCA_ORIG_ZDOTDIR).toBe(
+      expect(real.getShellLaunchConfig('/bin/zsh', ['history']).env.OCC_ORIG_ZDOTDIR).toBe(
         foreignWrapper
       )
     } finally {
@@ -227,9 +227,9 @@ describePosix('epilogue under hostile user shell options', () => {
   let home = ''
 
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-feature-channel-options-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-feature-channel-options-'))
     setTestUserDataPath(userDataPath)
-    home = mkdtempSync(join(tmpdir(), 'orca-feature-options-home-'))
+    home = mkdtempSync(join(tmpdir(), 'occ-feature-options-home-'))
   })
 
   afterEach(() => {
@@ -244,14 +244,14 @@ describePosix('epilogue under hostile user shell options', () => {
       if (!hasZsh) {
         return
       }
-      const scoped = join(home, 'orca-history', 'zsh_history')
+      const scoped = join(home, 'occ-history', 'zsh_history')
       const opencodeDir = join(home, 'opencode-overlay')
       writeFileSync(join(home, '.zshrc'), `setopt ${option}\n`)
       // overlay is the first token, exposing KSH_ARRAYS subscript errors.
       const spawnEnv: Record<string, string> = {
         HOME: home,
-        ORCA_HISTFILE: scoped,
-        ORCA_OPENCODE_CONFIG_DIR: opencodeDir
+        OCC_HISTFILE: scoped,
+        OCC_OPENCODE_CONFIG_DIR: opencodeDir
       }
       const features = selectShellStartupFeatures({
         shellPath: ZSH_PATH,
@@ -269,7 +269,7 @@ describePosix('epilogue under hostile user shell options', () => {
           PATH: '/usr/bin:/bin',
           ...spawnEnv,
           ...launch.env,
-          ORCA_ORIG_ZDOTDIR: home
+          OCC_ORIG_ZDOTDIR: home
         },
         report: ['LINEINIT', 'PRECMD', 'OPENCODE_CONFIG_DIR', 'ZDOTDIR', 'HISTFILE'],
         commands: [
@@ -277,8 +277,8 @@ describePosix('epilogue under hostile user shell options', () => {
         ]
       })
 
-      expect(values.LINEINIT).toBe('user:__orca_prompt_mark')
-      expect(values.PRECMD).toContain('__orca_osc133_precmd')
+      expect(values.LINEINIT).toBe('user:__occ_prompt_mark')
+      expect(values.PRECMD).toContain('__occ_osc133_precmd')
       expect(values.OPENCODE_CONFIG_DIR).toBe(opencodeDir)
       expect(values.ZDOTDIR).toBe(home)
       expect(values.HISTFILE).toBe(scoped)
@@ -287,7 +287,7 @@ describePosix('epilogue under hostile user shell options', () => {
 })
 
 function makeUserHome(): string {
-  const home = mkdtempSync(join(tmpdir(), 'orca-feature-home-'))
+  const home = mkdtempSync(join(tmpdir(), 'occ-feature-home-'))
   for (const file of ['.zshenv', '.zprofile', '.zshrc', '.zlogin']) {
     writeFileSync(join(home, file), `print -r -- "RAN=${file}"\n`)
   }
@@ -299,7 +299,7 @@ describePosix('history-only pane in a real zsh', () => {
   let home = ''
 
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-feature-channel-live-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-feature-channel-live-'))
     setTestUserDataPath(userDataPath)
     home = makeUserHome()
   })
@@ -310,7 +310,7 @@ describePosix('history-only pane in a real zsh', () => {
   })
 
   function withoutInheritedZdotdir(env: Record<string, string>): Record<string, string> {
-    const { ORCA_ORIG_ZDOTDIR: _inherited, ...rest } = env
+    const { OCC_ORIG_ZDOTDIR: _inherited, ...rest } = env
     return rest
   }
 
@@ -319,11 +319,11 @@ describePosix('history-only pane in a real zsh', () => {
     env: Record<string, string>
     zdotdir: string
   }> {
-    const scoped = join(home, 'orca-history', 'zsh_history')
+    const scoped = join(home, 'occ-history', 'zsh_history')
     const spawnEnv: Record<string, string> = {
       HOME: home,
       HISTFILE: scoped,
-      ORCA_HISTFILE: scoped
+      OCC_HISTFILE: scoped
     }
     const features = selectShellStartupFeatures({
       shellPath: ZSH_PATH,
@@ -354,7 +354,7 @@ describePosix('history-only pane in a real zsh', () => {
         ...args,
         '-i',
         '-c',
-        `print -r -- "SELF=[\${ORCA_SHELL_FEATURES:-}]"; zsh -c 'printenv ORCA_SHELL_FEATURES; print -r -- CHILD_CLEAN'`
+        `print -r -- "SELF=[\${OCC_SHELL_FEATURES:-}]"; zsh -c 'printenv OCC_SHELL_FEATURES; print -r -- CHILD_CLEAN'`
       ],
       { encoding: 'utf8', timeout: 20_000, env }
     )
@@ -373,7 +373,7 @@ describePosix('history-only pane in a real zsh', () => {
         'PRECMD="${precmd_functions[*]}"; PREEXEC="${preexec_functions[*]}"',
         'LINEINIT="${widgets[zle-line-init]:-none}"'
       ]
-      const report = ['PRECMD', 'PREEXEC', 'LINEINIT', 'ZDOTDIR', 'ORCA_SHELL_FEATURES']
+      const report = ['PRECMD', 'PREEXEC', 'LINEINIT', 'ZDOTDIR', 'OCC_SHELL_FEATURES']
 
       const wrapped = await runZshPty({ env, commands: capture, report })
       const unwrapped = await runZshPty({
@@ -387,9 +387,9 @@ describePosix('history-only pane in a real zsh', () => {
       expect(wrapped.values.PREEXEC).toBe(unwrapped.values.PREEXEC)
       // Global zsh config may install a widget; compare against the same host's unwrapped shell.
       expect(wrapped.values.LINEINIT).toBe(unwrapped.values.LINEINIT)
-      expect(wrapped.values.PRECMD).not.toContain('orca')
+      expect(wrapped.values.PRECMD).not.toContain('occ')
       expect(wrapped.values.ZDOTDIR).toBe(unwrapped.values.ZDOTDIR)
-      expect(wrapped.values.ORCA_SHELL_FEATURES).toBe('UNSET')
+      expect(wrapped.values.OCC_SHELL_FEATURES).toBe('UNSET')
     }
   )
 })

@@ -92,7 +92,7 @@ function deferred<T>(): {
   return { promise, resolve, reject }
 }
 
-const LINEAR_AGENT_SKILL_NAMES = ['orca-linear', 'linear-tickets'] as const
+const LINEAR_AGENT_SKILL_NAMES = ['occ-linear', 'linear-tickets'] as const
 
 const projectWslRuntime: ProjectExecutionRuntimeResolution = {
   status: 'resolved',
@@ -270,7 +270,7 @@ describe('useInstalledAgentSkill', () => {
     })
 
     await renderProbe()
-    scan.resolve(discoveryResult([skill({ name: 'orca-linear' })], [unavailableSource()]))
+    scan.resolve(discoveryResult([skill({ name: 'occ-linear' })], [unavailableSource()]))
     await act(async () => {
       await scan.promise
     })
@@ -308,13 +308,13 @@ describe('useInstalledAgentSkill', () => {
 
     expect(latestState?.installed).toBe(false)
     expect(discover).toHaveBeenNthCalledWith(1, {
-      names: ['orca-linear', 'linear-tickets'],
+      names: ['occ-linear', 'linear-tickets'],
       sourceKinds: ['home']
     })
     expect(discover).toHaveBeenNthCalledWith(2, {
       runtime: 'wsl',
       wslDistro: 'Fedora',
-      names: ['orca-linear', 'linear-tickets'],
+      names: ['occ-linear', 'linear-tickets'],
       sourceKinds: ['home']
     })
   })
@@ -351,12 +351,12 @@ describe('useInstalledAgentSkill', () => {
 
     expect(latestState?.installed).toBe(false)
     expect(discover).toHaveBeenNthCalledWith(1, {
-      names: ['orca-linear', 'linear-tickets'],
+      names: ['occ-linear', 'linear-tickets'],
       sourceKinds: ['home']
     })
     // A forced refresh must also bypass the host's shared scans, not just this cache.
     expect(discover).toHaveBeenNthCalledWith(2, {
-      names: ['orca-linear', 'linear-tickets'],
+      names: ['occ-linear', 'linear-tickets'],
       sourceKinds: ['home'],
       refresh: true
     })
@@ -410,7 +410,7 @@ describe('useInstalledAgentSkill', () => {
     expect(discover).toHaveBeenCalledWith({
       runtime: 'wsl',
       wslDistro: 'Ubuntu',
-      names: ['orca-linear', 'linear-tickets'],
+      names: ['occ-linear', 'linear-tickets'],
       sourceKinds: ['home']
     })
   })
@@ -434,7 +434,7 @@ describe('useInstalledAgentSkill', () => {
       runtime: 'wsl',
       wslDistro: 'Ubuntu',
       projectRuntime: projectWslRuntime,
-      names: ['orca-linear', 'linear-tickets'],
+      names: ['occ-linear', 'linear-tickets'],
       sourceKinds: ['home']
     })
   })
@@ -446,7 +446,7 @@ describe('useInstalledAgentSkill', () => {
     const discover = vi
       .fn<(target?: SkillDiscoveryTarget) => Promise<SkillDiscoveryResult>>()
       .mockReturnValueOnce(firstScan.promise)
-      .mockResolvedValue(discoveryResult([skill({ name: 'orca-linear' })]))
+      .mockResolvedValue(discoveryResult([skill({ name: 'occ-linear' })]))
     Object.defineProperty(window, 'api', {
       configurable: true,
       value: { skills: { discover } }
@@ -455,7 +455,7 @@ describe('useInstalledAgentSkill', () => {
     await renderProbe()
     expect(latestState?.settled).toBe(false)
 
-    firstScan.resolve(discoveryResult([skill({ name: 'orca-linear' })]))
+    firstScan.resolve(discoveryResult([skill({ name: 'occ-linear' })]))
     await act(async () => {
       await firstScan.promise
     })
@@ -483,7 +483,7 @@ describe('useInstalledAgentSkill', () => {
     nowSpy.mockReturnValue(startedAt)
     const discover = vi
       .fn<(target?: SkillDiscoveryTarget) => Promise<SkillDiscoveryResult>>()
-      .mockResolvedValue(discoveryResult([skill({ name: 'orca-linear' })]))
+      .mockResolvedValue(discoveryResult([skill({ name: 'occ-linear' })]))
     Object.defineProperty(window, 'api', {
       configurable: true,
       value: { skills: { discover } }
@@ -502,7 +502,7 @@ describe('useInstalledAgentSkill', () => {
     // The freshness window is what bounds the storm; past it, focus still reads disk.
     expect(discover).toHaveBeenCalledTimes(2)
     expect(discover).toHaveBeenLastCalledWith({
-      names: ['orca-linear', 'linear-tickets'],
+      names: ['occ-linear', 'linear-tickets'],
       sourceKinds: ['home']
     })
   })
@@ -510,7 +510,7 @@ describe('useInstalledAgentSkill', () => {
   it('reuses cached discovery when another surface finishes re-checking', async () => {
     const discover = vi
       .fn<(target?: SkillDiscoveryTarget) => Promise<SkillDiscoveryResult>>()
-      .mockResolvedValue(discoveryResult([skill({ name: 'orca-linear' })]))
+      .mockResolvedValue(discoveryResult([skill({ name: 'occ-linear' })]))
     Object.defineProperty(window, 'api', {
       configurable: true,
       value: { skills: { discover } }
@@ -544,7 +544,7 @@ describe('useInstalledAgentSkill', () => {
     })
 
     await renderProbe()
-    firstScan.resolve(discoveryResult([skill({ name: 'orca-linear' })]))
+    firstScan.resolve(discoveryResult([skill({ name: 'occ-linear' })]))
     await act(async () => {
       await firstScan.promise
     })
@@ -563,7 +563,7 @@ describe('useInstalledAgentSkill', () => {
     await flushMicrotasks()
     expect(latestState?.loading).toBe(false)
 
-    forcedScan.resolve(discoveryResult([skill({ name: 'orca-linear' })]))
+    forcedScan.resolve(discoveryResult([skill({ name: 'occ-linear' })]))
     await act(async () => {
       await forcedScan.promise
     })
@@ -583,7 +583,7 @@ describe('useInstalledAgentSkill', () => {
     })
 
     await renderProbe()
-    hostScan.resolve(discoveryResult([skill({ name: 'orca-linear' })]))
+    hostScan.resolve(discoveryResult([skill({ name: 'occ-linear' })]))
     await act(async () => {
       await hostScan.promise
     })

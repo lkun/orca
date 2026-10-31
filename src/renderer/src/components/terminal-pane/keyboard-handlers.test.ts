@@ -142,7 +142,7 @@ describe('resolveTerminalKeyboardShortcutAction', () => {
         undefined,
         () => 'alt-enter',
         () => true,
-        'orca-first',
+        'occ-first',
         () => true
       )
     ).toEqual({ type: 'sendInput', data: '\x1b[13;5u' })

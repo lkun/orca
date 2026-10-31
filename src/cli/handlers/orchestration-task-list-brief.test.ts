@@ -9,7 +9,7 @@ import { printResult } from '../format'
 import { okFixture } from '../test-fixtures'
 import { RuntimeClient } from '../runtime-client'
 
-const client = new RuntimeClient('/tmp/orca-task-brief', 60_000, null, null)
+const client = new RuntimeClient('/tmp/occ-task-brief', 60_000, null, null)
 afterEach(() => vi.restoreAllMocks())
 
 async function runTaskListBrief(): Promise<unknown> {

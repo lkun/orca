@@ -25,7 +25,7 @@ type WorktreeCardIssueDetailSectionProps = {
   onCopyIssueLink?: () => void
   onOpenIssueInBrowser?: (url: string) => void
   onEditIssue?: (event: React.MouseEvent) => void
-  onOpenGitHubIssueInOrca?: (event: React.MouseEvent) => void
+  onOpenGitHubIssueInOCC?: (event: React.MouseEvent) => void
   onManageLinks?: (event: React.MouseEvent) => void
 }
 
@@ -37,7 +37,7 @@ export function WorktreeCardIssueDetailSection({
   onCopyIssueLink,
   onOpenIssueInBrowser,
   onEditIssue,
-  onOpenGitHubIssueInOrca,
+  onOpenGitHubIssueInOCC,
   onManageLinks
 }: WorktreeCardIssueDetailSectionProps): React.JSX.Element | null {
   if (!issue) {
@@ -99,7 +99,7 @@ export function WorktreeCardIssueDetailSection({
                     >
                       <Globe className="size-3.5" />
                       {translate(
-                        'auto.components.sidebar.WorktreeCardMeta.openInOrcaBrowser',
+                        'auto.components.sidebar.WorktreeCardMeta.openInOCCBrowser',
                         'Open in OCC browser'
                       )}
                     </DropdownMenuItem>
@@ -124,13 +124,13 @@ export function WorktreeCardIssueDetailSection({
                 <Pencil className="size-3" />
               </MetadataActionIcon>
             )}
-            {issue.url && onOpenGitHubIssueInOrca && (
+            {issue.url && onOpenGitHubIssueInOCC && (
               <MetadataActionIcon
                 label={translate(
                   'auto.components.sidebar.WorktreeCardMeta.2c67730e07',
                   'Open in OCC'
                 )}
-                onClick={onOpenGitHubIssueInOrca}
+                onClick={onOpenGitHubIssueInOCC}
               >
                 <MonitorUp className="size-3" />
               </MetadataActionIcon>

@@ -56,7 +56,7 @@ vi.mock('../../telemetry/cohort-classifier', () => ({
 
 describe('Store', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
     trackMock.mockReset()
     getCohortAtEmitMock.mockReset()
     getCohortAtEmitMock.mockReturnValue({ nth_repo_added: 2 })
@@ -225,7 +225,7 @@ describe('Store', () => {
   it('treats undefined update fields as omitted, never as explicit clears', async () => {
     // Renderer patches can carry explicit undefined for untouched fields; only null clears them.
     const store = await createStore()
-    store.addRepo(makeRepo({ upstream: { owner: 'stablyai', repo: 'orca' } }))
+    store.addRepo(makeRepo({ upstream: { owner: 'stablyai', repo: 'occ' } }))
     const automation = store.createAutomation({
       name: 'Nightly',
       prompt: 'Run checks',
@@ -266,7 +266,7 @@ describe('Store', () => {
     const store = await createStore()
     store.addRepo(
       makeRepo({
-        upstream: { owner: 'stablyai', repo: 'orca' },
+        upstream: { owner: 'stablyai', repo: 'occ' },
         connectionId: 'builder'
       })
     )
@@ -284,7 +284,7 @@ describe('Store', () => {
 
     expect(automation.runContext).toMatchObject({
       kind: 'workspace-run',
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: toSshExecutionHostId('builder'),
       projectHostSetupId: 'r1',
       repoId: 'r1',
@@ -293,17 +293,17 @@ describe('Store', () => {
     expect(automation.sourceContext).toMatchObject({
       kind: 'task-source',
       provider: 'github',
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: toSshExecutionHostId('builder'),
       projectHostSetupId: 'r1',
       repoId: 'r1',
-      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' }
+      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' }
     })
   })
 
   it('stores its own contexts over a client-perspective create runContext', async () => {
     const store = await createStore()
-    store.addRepo(makeRepo({ upstream: { owner: 'stablyai', repo: 'orca' } }))
+    store.addRepo(makeRepo({ upstream: { owner: 'stablyai', repo: 'occ' } }))
 
     const automation = store.createAutomation({
       name: 'Nightly',
@@ -317,7 +317,7 @@ describe('Store', () => {
       // Client-assigned runtime IDs have no meaning in the owning host’s namespace.
       runContext: {
         kind: 'workspace-run',
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         hostId: toRuntimeExecutionHostId('client-env'),
         projectHostSetupId: 'client-setup',
         repoId: 'client-repo',
@@ -331,7 +331,7 @@ describe('Store', () => {
 
   it('re-derives a stored client-perspective context on an explicit move, not on a toggle', async () => {
     const store = await createStore()
-    store.addRepo(makeRepo({ upstream: { owner: 'stablyai', repo: 'orca' } }))
+    store.addRepo(makeRepo({ upstream: { owner: 'stablyai', repo: 'occ' } }))
     const automation = store.createAutomation({
       name: 'Nightly',
       prompt: 'Run checks',
@@ -346,7 +346,7 @@ describe('Store', () => {
     // Simulate a legacy host persisting a client-assigned runtime ID.
     persisted.automations[0].runContext = {
       kind: 'workspace-run',
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: toRuntimeExecutionHostId('client-env'),
       projectHostSetupId: 'client-setup',
       repoId: 'client-repo',
@@ -371,7 +371,7 @@ describe('Store', () => {
     store.addRepo(
       makeRepo({
         executionHostId: toRuntimeExecutionHostId('gpu-server'),
-        upstream: { owner: 'stablyai', repo: 'orca' }
+        upstream: { owner: 'stablyai', repo: 'occ' }
       })
     )
 
@@ -394,7 +394,7 @@ describe('Store', () => {
 
   it('snapshots automation contexts onto runs', async () => {
     const store = await createStore()
-    store.addRepo(makeRepo({ upstream: { owner: 'stablyai', repo: 'orca' } }))
+    store.addRepo(makeRepo({ upstream: { owner: 'stablyai', repo: 'occ' } }))
     const automation = store.createAutomation({
       name: 'Nightly',
       prompt: 'Run checks',
@@ -422,7 +422,7 @@ describe('Store', () => {
     const store = await createStore()
     store.addRepo(
       makeRepo({
-        upstream: { owner: 'stablyai', repo: 'orca' },
+        upstream: { owner: 'stablyai', repo: 'occ' },
         connectionId: 'builder'
       })
     )
@@ -457,7 +457,7 @@ describe('Store', () => {
 
     expect(migratedAutomation?.runContext).toMatchObject({
       kind: 'workspace-run',
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: toSshExecutionHostId('builder'),
       projectHostSetupId: 'r1',
       repoId: 'r1',
@@ -466,11 +466,11 @@ describe('Store', () => {
     expect(migratedAutomation?.sourceContext).toMatchObject({
       kind: 'task-source',
       provider: 'github',
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: toSshExecutionHostId('builder'),
       projectHostSetupId: 'r1',
       repoId: 'r1',
-      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' }
+      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' }
     })
     expect(migratedRun?.runContext).toEqual(migratedAutomation?.runContext)
     expect(migratedRun?.sourceContext).toEqual(migratedAutomation?.sourceContext)
@@ -480,7 +480,7 @@ describe('Store', () => {
     const seed = await createStore()
     seed.addRepo(
       makeRepo({
-        upstream: { owner: 'stablyai', repo: 'orca' },
+        upstream: { owner: 'stablyai', repo: 'occ' },
         connectionId: 'builder'
       })
     )
@@ -541,7 +541,7 @@ describe('Store', () => {
     const store = await createStore()
     store.addRepo(
       makeRepo({
-        upstream: { owner: 'stablyai', repo: 'orca' },
+        upstream: { owner: 'stablyai', repo: 'occ' },
         connectionId: 'builder'
       })
     )

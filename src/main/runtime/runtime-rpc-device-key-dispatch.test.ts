@@ -6,8 +6,8 @@ import { describe, expect, it, vi } from 'vitest'
 import { encodeDeviceProofMessage } from '../../shared/device-key-proof'
 import { devicePrincipalOf } from './device-principal'
 import { DeviceRegistry } from './device-registry'
-import type { OrcaRuntimeService } from './orca-runtime'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import type { OCCRuntimeService } from './occ-runtime'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import type { AuthenticatedMobileSocket } from './rpc/mobile-socket-wiring'
 import { visibleSnapshot } from './rpc/methods/session-tabs-snapshot.test-fixture'
 import {
@@ -17,14 +17,14 @@ import {
 } from './runtime-rpc-mobile-ws-test-harness'
 
 function keyedServer() {
-  const userDataPath = mkdtempSync(join(tmpdir(), 'orca-device-key-dispatch-'))
+  const userDataPath = mkdtempSync(join(tmpdir(), 'occ-device-key-dispatch-'))
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: status.get only reads these three members.
   const runtime = {
     configureNotificationDismissalStore: () => {},
     getRuntimeId: () => 'test-runtime',
     getStatus: vi.fn().mockResolvedValue({ graphStatus: 'ok' })
-  } as unknown as OrcaRuntimeService
-  const server = new OrcaRuntimeRpcServer({ runtime, userDataPath, enableWebSocket: false })
+  } as unknown as OCCRuntimeService
+  const server = new OCCRuntimeRpcServer({ runtime, userDataPath, enableWebSocket: false })
   const registry = new DeviceRegistry(userDataPath)
   server['deviceRegistry'] = registry
   const legacy = registry.addDevice('Laptop', 'runtime')
@@ -91,13 +91,13 @@ describe('pairing.registerDeviceKey over the dispatcher', () => {
   it.each(['runtime', 'mobile'] as const)(
     'forks a %s token row bound to the calling socket',
     async (scope) => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-device-key-register-'))
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-device-key-register-'))
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: registration never touches the runtime service.
       const runtime = {
         configureNotificationDismissalStore: () => {},
         getRuntimeId: () => 'test-runtime'
-      } as unknown as OrcaRuntimeService
-      const server = new OrcaRuntimeRpcServer({ runtime, userDataPath, enableWebSocket: false })
+      } as unknown as OCCRuntimeService
+      const server = new OCCRuntimeRpcServer({ runtime, userDataPath, enableWebSocket: false })
       const registry = new DeviceRegistry(userDataPath)
       server['deviceRegistry'] = registry
       const legacy = registry.addDevice('Device', scope)
@@ -171,10 +171,10 @@ describe('streams on an authenticated phone socket', () => {
       registerSubscriptionCleanup: (id: string, cleanup: () => void) => cleanups.set(id, cleanup),
       cleanupSubscription: (id: string) => cleanups.get(id)?.(),
       onMobileSessionTabsChanged: () => () => {}
-    } as unknown as OrcaRuntimeService
-    const server = new OrcaRuntimeRpcServer({
+    } as unknown as OCCRuntimeService
+    const server = new OCCRuntimeRpcServer({
       runtime,
-      userDataPath: mkdtempSync(join(tmpdir(), 'orca-phone-capability-dispatch-')),
+      userDataPath: mkdtempSync(join(tmpdir(), 'occ-phone-capability-dispatch-')),
       enableWebSocket: true,
       wsPort: 0
     })

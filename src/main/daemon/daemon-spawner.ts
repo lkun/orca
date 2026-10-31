@@ -126,7 +126,7 @@ export function getDaemonSocketPath(
   // Version the Windows pipe to exclude daemons with incompatible protocols.
   if (process.platform === 'win32') {
     const suffix = createHash('sha256').update(runtimeDir).digest('hex').slice(0, 12)
-    return `\\\\?\\pipe\\orca-terminal-host-v${protocolVersion}-${suffix}`
+    return `\\\\?\\pipe\\occ-terminal-host-v${protocolVersion}-${suffix}`
   }
   return resolveDaemonUnixSocketPath(runtimeDir, `daemon-v${protocolVersion}.sock`)
 }

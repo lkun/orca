@@ -14,7 +14,7 @@ const { mkdtempSync, rmSync } = process.getBuiltinModule('fs')
 let userData: string | undefined
 
 function userDataPath(): string {
-  return (userData ??= mkdtempSync(join(tmpdir(), 'orca-vitest-userdata-')))
+  return (userData ??= mkdtempSync(join(tmpdir(), 'occ-vitest-userdata-')))
 }
 
 afterAll(() => {

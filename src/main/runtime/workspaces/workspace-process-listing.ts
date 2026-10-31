@@ -2,8 +2,8 @@ import { resolveHostStructuredAgentLaunchEnvironment } from '../structured-agent
 import { resolveStructuredCodexAccountKind } from '../structured-agent-account-home'
 import { getStructuredAgentSessionHost } from '../../native-chat/agent-session-wire/structured-agent-session-registry'
 import { collectRuntimeWorktreeAgentSources } from '../runtime-worktree-agent-sources'
-import { OrcaRuntimeWithWorktreePsDependencies } from './workspace-process-listing-dependencies'
-import { DEFAULT_WORKTREE_PS_LIMIT } from '../orca-runtime-postlude'
+import { OCCRuntimeWithWorktreePsDependencies } from './workspace-process-listing-dependencies'
+import { DEFAULT_WORKTREE_PS_LIMIT } from '../occ-runtime-postlude'
 import type { RuntimeWorktreePsResult } from '../../../shared/runtime-types'
 import type { ResolvedWorktreeSnapshot } from '../runtime-resolved-worktree-cache'
 import { buildRuntimeWorktreePsSummaries } from '../runtime-worktree-ps-summaries'
@@ -36,7 +36,7 @@ import { maybeAutoRenameWorkspaceOnFirstStructuredTurn } from '../../agent-hooks
 import { firstWorkRenameDeps } from '../../agent-hooks/first-work-rename-runtime'
 import { createStructuredChatNamingHandler } from '../../native-chat/structured-chat-naming'
 import { structuredChatNamingDeps } from '../structured-chat-naming-runtime'
-import { getProfileUserDataPath } from '../../orca-profiles/profile-storage-paths'
+import { getProfileUserDataPath } from '../../occ-profiles/profile-storage-paths'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../shared/execution-host'
 import { chatWorkerTurnStopReporter } from '../orchestration/chat-worker-turn-stops'
 import { buildWorktreeListingPage } from '../worktree-listing-host-scope'
@@ -60,7 +60,7 @@ import {
 import { isWorkspaceNotificationMuted } from '../workspace-notification-mute'
 import { WorkerAutoReleaseActivity } from '../orchestration/worker-auto-release-activity'
 
-export abstract class OrcaRuntimeWithGetWorktreePs extends OrcaRuntimeWithWorktreePsDependencies {
+export abstract class OCCRuntimeWithGetWorktreePs extends OCCRuntimeWithWorktreePsDependencies {
   protected readonly workerAutoReleaseActivity = new WorkerAutoReleaseActivity(
     () => this._orchestrationDb
   )

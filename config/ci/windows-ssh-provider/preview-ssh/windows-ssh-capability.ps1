@@ -2,7 +2,7 @@
 
 function Assert-IsolatedWindowsSshCi([ValidateSet('arm64','x64')][string]$Arch) {
   $os=@{arm64='Arm64';x64='X64'}[$Arch]
-  if($env:GITHUB_ACTIONS -ne 'true' -or $env:ORCA_ISOLATED_SSH_CI -ne '1' -or [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString() -ne $os){throw "Requires isolated native $Arch GitHub runner"}
+  if($env:GITHUB_ACTIONS -ne 'true' -or $env:OCC_ISOLATED_SSH_CI -ne '1' -or [Runtime.InteropServices.RuntimeInformation]::OSArchitecture.ToString() -ne $os){throw "Requires isolated native $Arch GitHub runner"}
   $admin=([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
   if(-not $admin){throw 'Administrative private service/account setup required'}
 }

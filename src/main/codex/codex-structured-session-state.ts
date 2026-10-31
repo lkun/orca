@@ -10,7 +10,7 @@ import type {
 } from '../../shared/agent-session-journal-types'
 import { randomUUID } from 'node:crypto'
 import type { AgentJournalDispatchRejection } from '../../shared/agent-session-failure-words'
-import { cancelProcessAcquisition } from '@orca/process-host/cancel-process-acquisition'
+import { cancelProcessAcquisition } from '@occ/process-host/cancel-process-acquisition'
 import type { CodexAppServerConnection } from './app-server/codex-app-server-connection-types'
 import type { openCodexAppServerConnection } from './codex-app-server-connection'
 import { CodexAcquisitionWindow } from './codex-structured-acquisition-window'
@@ -144,7 +144,7 @@ export type CodexSession = {
   /** First observed child exit survives rejected settlement admission. */
   exitObservedAt?: number
   /** Preserve the initiating close's cause and reason through later exit reports. */
-  orcaClose?: { requested: boolean; reason: Error }
+  occClose?: { requested: boolean; reason: Error }
   fence: number
   acquisitionGeneration: string
   threadId: string

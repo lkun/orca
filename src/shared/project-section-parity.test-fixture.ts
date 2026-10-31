@@ -8,20 +8,20 @@ import {
 import type { Repo } from './repo-types'
 import type { RuntimeClientTarget } from './runtime-client-target'
 
-const orcaRemote = {
-  canonicalKey: 'github.com/stablyai/orca',
+const occRemote = {
+  canonicalKey: 'github.com/stablyai/occ',
   remoteName: 'origin',
-  remoteUrl: 'git@github.com:stablyai/orca.git'
+  remoteUrl: 'git@github.com:stablyai/occ.git'
 }
 
-function hostRepo(id: string, path: string, displayName = 'orca'): Repo {
+function hostRepo(id: string, path: string, displayName = 'occ'): Repo {
   return {
     id,
     path,
     displayName,
     badgeColor: '#737373',
     addedAt: 1,
-    ...(displayName === 'orca' ? { gitRemoteIdentity: orcaRemote } : {})
+    ...(displayName === 'occ' ? { gitRemoteIdentity: occRemote } : {})
   }
 }
 
@@ -35,11 +35,11 @@ export type ParityHostAnswer = {
 }
 
 const localRepos = [
-  hostRepo('local-stably', '/Users/jinwoo/stably/orca'),
+  hostRepo('local-stably', '/Users/jinwoo/stably/occ'),
   hostRepo('local-assets', '/Users/jinwoo/design-assets', 'design-assets'),
-  hostRepo('local-workspace', '/Users/jinwoo/orca/workspaces/orca/orca')
+  hostRepo('local-workspace', '/Users/jinwoo/occ/workspaces/occ/occ')
 ]
-const windowsRepo = hostRepo('win-orca', 'C:/Users/jinwo/orca/orca')
+const windowsRepo = hostRepo('win-occ', 'C:/Users/jinwo/occ/occ')
 
 // Several local checkouts plus copies of the same project on two servers.
 export const PROJECT_SECTION_PARITY_HOSTS: readonly ParityHostAnswer[] = [
@@ -57,10 +57,10 @@ export const PROJECT_SECTION_PARITY_HOSTS: readonly ParityHostAnswer[] = [
     lists: {
       projects: [
         {
-          id: 'github:stablyai/orca',
+          id: 'github:stablyai/occ',
           displayName: 'OCC',
           badgeColor: '#737373',
-          providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' },
+          providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' },
           sourceRepoIds: [windowsRepo.id],
           createdAt: 5,
           updatedAt: 5
@@ -69,11 +69,11 @@ export const PROJECT_SECTION_PARITY_HOSTS: readonly ParityHostAnswer[] = [
       setups: [
         {
           id: 'win-setup',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           hostId: 'local',
           repoId: windowsRepo.id,
           path: windowsRepo.path,
-          displayName: 'orca',
+          displayName: 'occ',
           setupState: 'ready',
           setupMethod: 'imported-existing-folder',
           createdAt: 5,
@@ -86,8 +86,8 @@ export const PROJECT_SECTION_PARITY_HOSTS: readonly ParityHostAnswer[] = [
     target: { kind: 'environment', environmentId: 'm4air' },
     hostId: 'runtime:m4air',
     repos: [
-      hostRepo('m4-orca', '/Users/m4air/orca/orca'),
-      hostRepo('m4-orca-two', '/Users/m4air/orca-two/orca')
+      hostRepo('m4-occ', '/Users/m4air/occ/occ'),
+      hostRepo('m4-occ-two', '/Users/m4air/occ-two/occ')
     ],
     lists: null
   }
@@ -99,28 +99,28 @@ export const PROJECT_SECTION_PARITY_ROWS: readonly {
   repoId: string
   lastActivityAt: number
 }[] = [
-  { id: 'wt-m4-two', repoId: 'm4-orca-two', lastActivityAt: 90 },
-  { id: 'wt-win', repoId: 'win-orca', lastActivityAt: 70 },
+  { id: 'wt-m4-two', repoId: 'm4-occ-two', lastActivityAt: 90 },
+  { id: 'wt-win', repoId: 'win-occ', lastActivityAt: 70 },
   { id: 'wt-workspace', repoId: 'local-workspace', lastActivityAt: 50 },
   { id: 'wt-stably', repoId: 'local-stably', lastActivityAt: 30 },
-  { id: 'wt-m4', repoId: 'm4-orca', lastActivityAt: 10 }
+  { id: 'wt-m4', repoId: 'm4-occ', lastActivityAt: 10 }
 ]
 
 // Same-host checkouts still need path prefixes; other machines do not.
 const STABLY = {
-  key: 'project:github:stablyai/orca::setup:local-stably',
-  label: 'stably/orca'
+  key: 'project:github:stablyai/occ::setup:local-stably',
+  label: 'stably/occ'
 }
 const WORKSPACE = {
-  key: 'project:github:stablyai/orca::setup:local-workspace',
-  label: 'orca/orca'
+  key: 'project:github:stablyai/occ::setup:local-workspace',
+  label: 'occ/occ'
 }
-// Why 'orca', not the server's 'OCC': the later host's derived project name wins the merge.
-const WINDOWS = { key: 'project:github:stablyai/orca', label: 'orca' }
-const M4 = { key: 'project:github:stablyai/orca::setup:m4-orca', label: 'orca/orca' }
+// Why 'occ', not the server's 'OCC': the later host's derived project name wins the merge.
+const WINDOWS = { key: 'project:github:stablyai/occ', label: 'occ' }
+const M4 = { key: 'project:github:stablyai/occ::setup:m4-occ', label: 'occ/occ' }
 const M4_TWO = {
-  key: 'project:github:stablyai/orca::setup:m4-orca-two',
-  label: 'orca-two/orca'
+  key: 'project:github:stablyai/occ::setup:m4-occ-two',
+  label: 'occ-two/occ'
 }
 const ASSETS = { key: 'project:repo:local-assets', label: 'design-assets' }
 
@@ -134,8 +134,8 @@ export const PROJECT_SECTION_PARITY_SERVED: MobileProjectSectionCatalog = {
   repos: [
     {
       id: 'local-stably',
-      displayName: 'orca',
-      path: '/Users/jinwoo/stably/orca',
+      displayName: 'occ',
+      path: '/Users/jinwoo/stably/occ',
       badgeColor: '#737373',
       addedAt: 1,
       executionHostId: 'local'
@@ -150,32 +150,32 @@ export const PROJECT_SECTION_PARITY_SERVED: MobileProjectSectionCatalog = {
     },
     {
       id: 'local-workspace',
-      displayName: 'orca',
-      path: '/Users/jinwoo/orca/workspaces/orca/orca',
+      displayName: 'occ',
+      path: '/Users/jinwoo/occ/workspaces/occ/occ',
       badgeColor: '#737373',
       addedAt: 1,
       executionHostId: 'local'
     },
     {
-      id: 'win-orca',
-      displayName: 'orca',
-      path: 'C:/Users/jinwo/orca/orca',
+      id: 'win-occ',
+      displayName: 'occ',
+      path: 'C:/Users/jinwo/occ/occ',
       badgeColor: '#737373',
       addedAt: 1,
       executionHostId: 'runtime:windows2'
     },
     {
-      id: 'm4-orca',
-      displayName: 'orca',
-      path: '/Users/m4air/orca/orca',
+      id: 'm4-occ',
+      displayName: 'occ',
+      path: '/Users/m4air/occ/occ',
       badgeColor: '#737373',
       addedAt: 1,
       executionHostId: 'runtime:m4air'
     },
     {
-      id: 'm4-orca-two',
-      displayName: 'orca',
-      path: '/Users/m4air/orca-two/orca',
+      id: 'm4-occ-two',
+      displayName: 'occ',
+      path: '/Users/m4air/occ-two/occ',
       badgeColor: '#737373',
       addedAt: 1,
       executionHostId: 'runtime:m4air'
@@ -183,16 +183,16 @@ export const PROJECT_SECTION_PARITY_SERVED: MobileProjectSectionCatalog = {
   ],
   projects: [
     { id: 'repo:local-assets', displayName: 'design-assets' },
-    { id: 'github:stablyai/orca', displayName: 'orca' }
+    { id: 'github:stablyai/occ', displayName: 'occ' }
   ],
   setups: [
     {
       id: 'local-stably',
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: 'local',
       repoId: 'local-stably',
-      path: '/Users/jinwoo/stably/orca',
-      displayName: 'orca',
+      path: '/Users/jinwoo/stably/occ',
+      displayName: 'occ',
       setupMethod: 'legacy-repo'
     },
     {
@@ -206,41 +206,41 @@ export const PROJECT_SECTION_PARITY_SERVED: MobileProjectSectionCatalog = {
     },
     {
       id: 'local-workspace',
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: 'local',
       repoId: 'local-workspace',
-      path: '/Users/jinwoo/orca/workspaces/orca/orca',
-      displayName: 'orca',
+      path: '/Users/jinwoo/occ/workspaces/occ/occ',
+      displayName: 'occ',
       setupMethod: 'legacy-repo'
     },
     {
       id: 'win-setup',
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: 'runtime:windows2',
-      repoId: 'win-orca',
-      path: 'C:/Users/jinwo/orca/orca',
-      displayName: 'orca',
+      repoId: 'win-occ',
+      path: 'C:/Users/jinwo/occ/occ',
+      displayName: 'occ',
       setupMethod: 'imported-existing-folder',
       connectionId: null,
       executionHostId: 'runtime:windows2'
     },
     {
-      id: 'm4-orca',
-      projectId: 'github:stablyai/orca',
+      id: 'm4-occ',
+      projectId: 'github:stablyai/occ',
       hostId: 'runtime:m4air',
-      repoId: 'm4-orca',
-      path: '/Users/m4air/orca/orca',
-      displayName: 'orca',
+      repoId: 'm4-occ',
+      path: '/Users/m4air/occ/occ',
+      displayName: 'occ',
       setupMethod: 'legacy-repo',
       executionHostId: 'runtime:m4air'
     },
     {
-      id: 'm4-orca-two',
-      projectId: 'github:stablyai/orca',
+      id: 'm4-occ-two',
+      projectId: 'github:stablyai/occ',
       hostId: 'runtime:m4air',
-      repoId: 'm4-orca-two',
-      path: '/Users/m4air/orca-two/orca',
-      displayName: 'orca',
+      repoId: 'm4-occ-two',
+      path: '/Users/m4air/occ-two/occ',
+      displayName: 'occ',
       setupMethod: 'legacy-repo',
       executionHostId: 'runtime:m4air'
     }

@@ -1,6 +1,6 @@
 import { createAdaptorServer } from '@hono/node-server'
-import type { CloudDatabase, CloudNotifications } from '@orca-cloud/cloud-database'
-import { CONNECTOR_LIMITS } from '@orca-cloud/connector-contract'
+import type { CloudDatabase, CloudNotifications } from '@occ-cloud/cloud-database'
+import { CONNECTOR_LIMITS } from '@occ-cloud/connector-contract'
 import type { JWTVerifyGetKey } from 'jose'
 import { Hono } from 'hono'
 import { bodyLimit } from 'hono/body-limit'
@@ -75,7 +75,7 @@ export function createConnectorServer(
   app.onError((error, context) => {
     console.warn(
       JSON.stringify({
-        event: 'orca_connector_request_failed',
+        event: 'occ_connector_request_failed',
         error: error instanceof Error ? error.name : 'unknown'
       })
     )

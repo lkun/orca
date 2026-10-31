@@ -149,7 +149,7 @@
   {
     "filePath": "mobile/src/components/NewWorkspaceSetupScriptField.tsx",
     "kind": "jsx-expression",
-    "text": "ORCA.YAML",
+    "text": "OCC.YAML",
     "dynamic": false,
     "count": 1
   },
@@ -282,14 +282,14 @@
   {
     "filePath": "mobile/src/settings/about-screen.tsx",
     "kind": "jsx-text",
-    "text": "@orca_build",
+    "text": "@occ_build",
     "dynamic": false,
     "count": 1
   },
   {
     "filePath": "mobile/src/settings/about-screen.tsx",
     "kind": "jsx-text",
-    "text": "onOrca.dev",
+    "text": "onOCC.dev",
     "dynamic": false,
     "count": 1
   },
@@ -303,7 +303,7 @@
   {
     "filePath": "mobile/src/settings/about-screen.tsx",
     "kind": "jsx-text",
-    "text": "stablyai/orca",
+    "text": "stablyai/occ",
     "dynamic": false,
     "count": 1
   },

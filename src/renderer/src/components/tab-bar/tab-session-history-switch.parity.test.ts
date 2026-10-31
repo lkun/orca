@@ -112,7 +112,7 @@ describe('the tab menu offers exactly what the Session History row offers', () =
   it('nothing for a CLI conversation a native chat already holds', () => {
     const state = useAppStore.getState()
     const owned = row({
-      structuredSession: { sessionId: 'orca-chat-1', workspaceId: WORKTREE_ID }
+      structuredSession: { sessionId: 'occ-chat-1', workspaceId: WORKTREE_ID }
     })
     expect(panelTargets(state, owned).resumeInNewChatWorkspaceId).toBeNull()
     expect(
@@ -147,12 +147,12 @@ describe('the tab menu offers exactly what the Session History row offers', () =
     const state = useAppStore.getState()
     const subject: TabSessionHistorySubject = {
       kind: 'chat',
-      sessionId: 'orca-chat-1',
+      sessionId: 'occ-chat-1',
       workspaceId: WORKTREE_ID,
       request
     }
     const chatRow = row({
-      structuredSession: { sessionId: 'orca-chat-1', workspaceId: WORKTREE_ID }
+      structuredSession: { sessionId: 'occ-chat-1', workspaceId: WORKTREE_ID }
     })
     const panel = panelTargets(state, chatRow)
 

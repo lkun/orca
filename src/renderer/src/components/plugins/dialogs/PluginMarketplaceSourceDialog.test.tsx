@@ -64,9 +64,9 @@ describe('PluginMarketplaceSourceDialog', () => {
     })
     const text = document.querySelector('[role="dialog"]')?.textContent ?? ''
     expect(text).toContain('Catalog sources')
-    expect(text).toContain('orca-catalog.json')
-    // Why the filename aside: older catalogs still publish orca-marketplace.json.
-    expect(text.replaceAll('orca-marketplace.json', '')).not.toMatch(/marketplace/i)
+    expect(text).toContain('occ-catalog.json')
+    // Why the filename aside: older catalogs still publish occ-marketplace.json.
+    expect(text.replaceAll('occ-marketplace.json', '')).not.toMatch(/marketplace/i)
     act(() => root.unmount())
   })
 

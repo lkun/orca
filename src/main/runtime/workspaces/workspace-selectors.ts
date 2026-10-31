@@ -1,5 +1,5 @@
 import { detectProjectLaunchContext } from '../../preflight/workspace-agent-detection'
-import { OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree } from '../terminal/launch/terminal-workspace-scope'
+import { OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree } from '../terminal/launch/terminal-workspace-scope'
 import type { ResolvedWorktree } from '../runtime-worktree-path-identity'
 import { splitWorktreeIdForFilesystem, worktreeIdentityKey } from '../../../shared/worktree/id'
 import { branchSelectorMatches, runtimePathsEqual } from '../runtime-worktree-path-identity'
@@ -27,7 +27,7 @@ import type { RuntimeWorkspaceCatalog } from './workspace-catalog'
 import { areWorktreePathsEqual } from '../../git/worktree-path-comparison'
 import { mergeWorktree } from '../../ipc/worktree-metadata-merge'
 
-export abstract class RuntimeWorkspaceSelectors extends OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree {
+export abstract class RuntimeWorkspaceSelectors extends OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree {
   protected abstract hasFreshResolvedWorktreeCache(
     ...args: Parameters<RuntimeWorkspaceCatalog['hasFreshResolvedWorktreeCache']>
   ): ReturnType<RuntimeWorkspaceCatalog['hasFreshResolvedWorktreeCache']>

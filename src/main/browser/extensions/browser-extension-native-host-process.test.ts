@@ -3,8 +3,8 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { once } from 'node:events'
 import { build } from 'esbuild'
-import { spawnProcess } from '@orca/process-host'
-import type { PipedChildProcess } from '@orca/process-host/process-spec'
+import { spawnProcess } from '@occ/process-host'
+import type { PipedChildProcess } from '@occ/process-host/process-spec'
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest'
 import {
   killAllNativeHosts,
@@ -49,7 +49,7 @@ const IGNORES_EOF = `${FRAMING} process.stdin.resume(); setInterval(() => {}, 10
 const OVERSIZED = `${FRAMING} send('x'.repeat(1024 * 1024));`
 const NOISY = `${FRAMING} process.stderr.write('e'.repeat(10000)); setInterval(() => {}, 1000);`
 
-const root = mkdtempSync(join(tmpdir(), 'orca-native-host-'))
+const root = mkdtempSync(join(tmpdir(), 'occ-native-host-'))
 let pidFiles = 0
 
 beforeAll(async () => {

@@ -12,7 +12,7 @@ const { runProcessMock, lstatMock, statMock, realpathMock, readFileMock, rmMock 
 )
 
 // Process-host tests own encoding, timeouts, and console hiding; assert guest commands here.
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: runProcessMock
 }))
 

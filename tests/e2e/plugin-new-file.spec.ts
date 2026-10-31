@@ -9,7 +9,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { deflateSync } from 'node:zlib'
 import { PLUGIN_MANIFEST_V2_SINCE } from '../../src/shared/plugins/manifest/plugin-schema-field-docs'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { disablePluginSystem, enableDevPlugins } from './helpers/plugin-smoke'
 
 const TEMPLATE = '{"type":"sketch","elements":[]}\n'
@@ -18,7 +18,7 @@ const FRAME = 'iframe[title="Sketch Pad"]'
 const EDITOR_HTML = `<textarea id="doc" style="width:100%;height:90vh"></textarea>
 <script>
 const doc = document.getElementById('doc')
-orca.document.onDidChange((next) => { doc.value = next.content.text })
+occ.document.onDidChange((next) => { doc.value = next.content.text })
 </script>`
 
 function crc32(bytes: Buffer): number {
@@ -67,7 +67,7 @@ async function writeSketchPlugin(root: string): Promise<void> {
   await writeFile(join(root, 'templates', 'empty.sketch'), TEMPLATE)
   await writeFile(join(root, 'tab.png'), solidPng(128, [0x6d, 0x5d, 0xfc]))
   await writeFile(
-    join(root, 'orca-plugin.json'),
+    join(root, 'occ-plugin.json'),
     JSON.stringify({
       manifestVersion: 2,
       execution: 'sandboxed-ui',
@@ -75,7 +75,7 @@ async function writeSketchPlugin(root: string): Promise<void> {
       publisher: 'samples',
       name: 'Sketch Pad',
       version: '1.0.0',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
       contributes: {
         customEditors: [
           {
@@ -101,31 +101,31 @@ async function writeSketchPlugin(root: string): Promise<void> {
 }
 
 test('a plugin new file is created from the + menu and opens in its editor', async ({
-  orcaPage,
+  occPage,
   seededRepoPath
 }) => {
-  const pluginRoot = await mkdtemp(join(tmpdir(), 'orca-new-file-'))
+  const pluginRoot = await mkdtemp(join(tmpdir(), 'occ-new-file-'))
   const filePath = join(seededRepoPath, 'untitled.sketch')
   try {
     await writeSketchPlugin(pluginRoot)
-    await enableDevPlugins(orcaPage, [pluginRoot])
+    await enableDevPlugins(occPage, [pluginRoot])
 
-    await orcaPage.getByRole('button', { name: 'New tab' }).first().click()
-    const item = orcaPage.getByRole('menuitem', { name: 'New sketch' })
+    await occPage.getByRole('button', { name: 'New tab' }).first().click()
+    const item = occPage.getByRole('menuitem', { name: 'New sketch' })
     await expect(item).toBeVisible({ timeout: 15_000 })
-    await expect(item.locator('img[src^="orca-plugin-image://"]')).toBeVisible()
+    await expect(item.locator('img[src^="occ-plugin-image://"]')).toBeVisible()
     await item.click()
 
     await expect.poll(() => readFile(filePath, 'utf8').catch(() => null)).toBe(TEMPLATE)
-    await expect(orcaPage.frameLocator(FRAME).locator('#doc')).toHaveValue(TEMPLATE, {
+    await expect(occPage.frameLocator(FRAME).locator('#doc')).toHaveValue(TEMPLATE, {
       timeout: 15_000
     })
 
-    const tab = orcaPage.locator('[data-tab-id]').filter({ hasText: 'untitled.sketch' }).first()
+    const tab = occPage.locator('[data-tab-id]').filter({ hasText: 'untitled.sketch' }).first()
     const icon = tab.locator('img[src*="/editor-0"]')
     await expect(icon).toBeVisible()
   } finally {
-    await disablePluginSystem(orcaPage).catch(() => undefined)
+    await disablePluginSystem(occPage).catch(() => undefined)
     await rm(filePath, { force: true })
     await rm(pluginRoot, { recursive: true, force: true })
   }

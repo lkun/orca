@@ -92,7 +92,7 @@ function buildManagedDefinition(event: string, command: string): HookDefinition 
 /** List-form entry, as in V3 hook files and agents `kiro-cli agent upgrade` rewrote. */
 export function buildKiroListHook(trigger: string, command: string): Record<string, unknown> {
   return {
-    name: `orca-agent-status-${trigger}`,
+    name: `occ-agent-status-${trigger}`,
     trigger,
     ...(KIRO_TOOL_EVENTS.has(trigger) ? { matcher: '*' } : {}),
     action: { type: 'command', command },

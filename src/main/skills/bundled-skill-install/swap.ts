@@ -26,7 +26,7 @@ function siblingPath(target: string, marker: string): string {
 /** Backups stay outside skill roots (agents would load them) and projects (they would pollute repos). */
 export function bundledSkillBackupPath(homeDirectory: string, name: string): string {
   const utc = new Date().toISOString().replace(/[:.]/gu, '-')
-  return join(homeDirectory, '.agents', '.orca-skill-backups', `${name}-${utc}-${randomUUID()}`)
+  return join(homeDirectory, '.agents', '.occ-skill-backups', `${name}-${utc}-${randomUUID()}`)
 }
 
 /** The installer's only delete: it refuses anything but its own stage and old siblings. */
@@ -35,7 +35,7 @@ export async function removeBundledSkillSibling(
   path: string
 ): Promise<void> {
   const name = basename(path)
-  const owner = /^\.(.+?)\.orca-(?:stage|old)-/u.exec(name)?.[1]
+  const owner = /^\.(.+?)\.occ-(?:stage|old)-/u.exec(name)?.[1]
   if (!owner || !bundledSkillSiblingKind(owner, name)) {
     throw new Error(`bundled-skill-refused-delete: ${path}`)
   }
@@ -79,7 +79,7 @@ export async function putBundledSkillFolder(
   }
 }
 
-/** POSIX cannot replace a nonempty directory atomically; an interrupted two-rename update leaves .orca-old for the next plan to restore. Return old copy for rechecking. */
+/** POSIX cannot replace a nonempty directory atomically; an interrupted two-rename update leaves .occ-old for the next plan to restore. Return old copy for rechecking. */
 export async function swapBundledSkillFolder(
   filesystem: BundledSkillFilesystem,
   target: string,
@@ -105,7 +105,7 @@ export async function swapBundledSkillFolder(
   return old
 }
 
-/** Back up the foreign object itself before replacement; never put user content in disposable .orca-old siblings. */
+/** Back up the foreign object itself before replacement; never put user content in disposable .occ-old siblings. */
 export async function replaceBundledSkillPath(
   filesystem: BundledSkillFilesystem,
   target: string,

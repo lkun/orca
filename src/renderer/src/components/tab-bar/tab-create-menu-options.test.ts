@@ -94,8 +94,8 @@ describe('tab create menu options', () => {
 
   it("offers a plugin's new files wherever New Markdown is, matched by name or extension", () => {
     const drawing = {
-      key: 'stablyai.orca-excalidraw/drawing',
-      pluginKey: 'stablyai.orca-excalidraw',
+      key: 'stablyai.occ-excalidraw/drawing',
+      pluginKey: 'stablyai.occ-excalidraw',
       pluginName: 'Excalidraw',
       id: 'drawing',
       title: 'New Excalidraw drawing',

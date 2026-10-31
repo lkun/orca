@@ -18,7 +18,7 @@ import {
 import type { AppState } from '@/store/types'
 import type { WorkspaceSessionState } from '../../../../shared/workspace-session-state-types'
 import { drawTabsFromMain, type TabsDrawnFromMain } from './tabs-drawn-from-main.test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
 vi.mock('@/runtime/runtime-rpc-client', async (importOriginal) =>
   (
@@ -410,7 +410,7 @@ describe('restored editor owner reparent', () => {
     await main.settle()
 
     const next = useAppStore.getState()
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // Main holds no such group, so it refuses the move and the window changes nothing.
       expect(next.openFiles.find((file) => file.id === oldId)).toMatchObject({
         worktreeId: SOURCE,
@@ -757,7 +757,7 @@ describe('restored editor owner reparent', () => {
     const listener = (event: Event): void => {
       externalChanges.push((event as CustomEvent).detail)
     }
-    window.addEventListener('orca:editor-external-file-change', listener)
+    window.addEventListener('occ:editor-external-file-change', listener)
     const watcher = createExternalWatchEventHandler((path, owner) =>
       path === target.worktreePath && owner === null ? target : undefined
     )
@@ -796,7 +796,7 @@ describe('restored editor owner reparent', () => {
     ).toBe('renamed')
 
     watcher.dispose()
-    window.removeEventListener('orca:editor-external-file-change', listener)
+    window.removeEventListener('occ:editor-external-file-change', listener)
     vi.useRealTimers()
   })
 })

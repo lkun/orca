@@ -2,7 +2,7 @@
 // Build 1.4.103 showed first-spawn window width persisting against narrow pane width; repeat initial-mount reloads to expose timing-sensitive dropped resize.
 
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   ensureTerminalVisible,
   getAllWorktreeIds,
@@ -98,7 +98,7 @@ async function closeRightSidebarAndFeatureTips(page: Page): Promise<void> {
     }
     store
       .getState()
-      .markFeatureTipsSeen(['orca-cli', 'cmd-j-palette', 'voice-dictation', 'agent-session-search'])
+      .markFeatureTipsSeen(['occ-cli', 'cmd-j-palette', 'voice-dictation', 'agent-session-search'])
     if (store.getState().rightSidebarOpen) {
       store.getState().setRightSidebarOpen(false)
     }
@@ -113,40 +113,40 @@ async function settleTerminal(page: Page): Promise<string> {
 }
 
 test.describe('Terminal column desync repro', () => {
-  test('PTY columns stay in sync with xterm across a visible resize', async ({ orcaPage }) => {
+  test('PTY columns stay in sync with xterm across a visible resize', async ({ occPage }) => {
     test.setTimeout(120_000)
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await closeRightSidebarAndFeatureTips(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    const ptyId = await settleTerminal(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await closeRightSidebarAndFeatureTips(occPage)
+    await ensureTerminalVisible(occPage)
+    const ptyId = await settleTerminal(occPage)
 
-    await expectColumnsInSync(orcaPage, ptyId, 'baseline')
+    await expectColumnsInSync(occPage, ptyId, 'baseline')
 
-    await orcaPage.setViewportSize({ width: 760, height: 800 })
-    await expectColumnsInSync(orcaPage, ptyId, 'after shrink')
+    await occPage.setViewportSize({ width: 760, height: 800 })
+    await expectColumnsInSync(occPage, ptyId, 'after shrink')
 
-    await orcaPage.setViewportSize({ width: 1280, height: 800 })
-    await expectColumnsInSync(orcaPage, ptyId, 'after widen')
+    await occPage.setViewportSize({ width: 1280, height: 800 })
+    await expectColumnsInSync(occPage, ptyId, 'after widen')
   })
 
   // Compare getSize to in-PTY columns: intent-only reporting hides dropped resizes from resume/handoff drift correction.
-  test('pty:getSize reports the size the PTY actually applied', async ({ orcaPage }) => {
+  test('pty:getSize reports the size the PTY actually applied', async ({ occPage }) => {
     test.setTimeout(120_000)
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await closeRightSidebarAndFeatureTips(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    const ptyId = await settleTerminal(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await closeRightSidebarAndFeatureTips(occPage)
+    await ensureTerminalVisible(occPage)
+    const ptyId = await settleTerminal(occPage)
 
-    await orcaPage.setViewportSize({ width: 900, height: 800 })
+    await occPage.setViewportSize({ width: 900, height: 800 })
 
     // Poll applied size through loaded CI’s async resize chain.
     await expect
       .poll(
         async () => {
-          const ptyCols = await readPtyCols(orcaPage, ptyId)
-          const reportedCols = await readReportedPtyCols(orcaPage, ptyId)
+          const ptyCols = await readPtyCols(occPage, ptyId)
+          const reportedCols = await readReportedPtyCols(occPage, ptyId)
           return reportedCols === ptyCols ? 'match' : `reported=${reportedCols} pty=${ptyCols}`
         },
         {
@@ -159,38 +159,38 @@ test.describe('Terminal column desync repro', () => {
       .toBe('match')
   })
 
-  test('PTY columns re-sync after the terminal is resized while hidden', async ({ orcaPage }) => {
+  test('PTY columns re-sync after the terminal is resized while hidden', async ({ occPage }) => {
     test.setTimeout(120_000)
-    await waitForSessionReady(orcaPage)
-    const homeWorktreeId = await waitForActiveWorktree(orcaPage)
-    const otherWorktreeId = (await getAllWorktreeIds(orcaPage)).find((id) => id !== homeWorktreeId)
+    await waitForSessionReady(occPage)
+    const homeWorktreeId = await waitForActiveWorktree(occPage)
+    const otherWorktreeId = (await getAllWorktreeIds(occPage)).find((id) => id !== homeWorktreeId)
     test.skip(!otherWorktreeId, 'hidden-resize repro needs the seeded secondary worktree')
     if (!otherWorktreeId) {
       return
     }
 
-    await closeRightSidebarAndFeatureTips(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    const ptyId = await settleTerminal(orcaPage)
-    await orcaPage.setViewportSize({ width: 1280, height: 800 })
-    await expectColumnsInSync(orcaPage, ptyId, 'before hidden resize')
+    await closeRightSidebarAndFeatureTips(occPage)
+    await ensureTerminalVisible(occPage)
+    const ptyId = await settleTerminal(occPage)
+    await occPage.setViewportSize({ width: 1280, height: 800 })
+    await expectColumnsInSync(occPage, ptyId, 'before hidden resize')
 
     // Resize while hidden so normal forwarding is gated, then test resume correction.
-    await switchToWorktree(orcaPage, otherWorktreeId)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
-    await orcaPage.setViewportSize({ width: 720, height: 800 })
-    await orcaPage.waitForTimeout(500)
-    await switchToWorktree(orcaPage, homeWorktreeId)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
-    await expectColumnsInSync(orcaPage, ptyId, 'after hidden resize + return')
+    await switchToWorktree(occPage, otherWorktreeId)
+    await waitForActiveTerminalManager(occPage, 30_000)
+    await occPage.setViewportSize({ width: 720, height: 800 })
+    await occPage.waitForTimeout(500)
+    await switchToWorktree(occPage, homeWorktreeId)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
+    await expectColumnsInSync(occPage, ptyId, 'after hidden resize + return')
   })
 
-  test('PTY columns re-sync after repeated background resizes', async ({ orcaPage }) => {
+  test('PTY columns re-sync after repeated background resizes', async ({ occPage }) => {
     test.setTimeout(180_000)
-    await waitForSessionReady(orcaPage)
-    const homeWorktreeId = await waitForActiveWorktree(orcaPage)
-    const otherWorktreeId = (await getAllWorktreeIds(orcaPage)).find((id) => id !== homeWorktreeId)
+    await waitForSessionReady(occPage)
+    const homeWorktreeId = await waitForActiveWorktree(occPage)
+    const otherWorktreeId = (await getAllWorktreeIds(occPage)).find((id) => id !== homeWorktreeId)
     test.skip(
       !otherWorktreeId,
       'repeated background-resize repro needs the seeded secondary worktree'
@@ -199,23 +199,23 @@ test.describe('Terminal column desync repro', () => {
       return
     }
 
-    await closeRightSidebarAndFeatureTips(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    const ptyId = await settleTerminal(orcaPage)
+    await closeRightSidebarAndFeatureTips(occPage)
+    await ensureTerminalVisible(occPage)
+    const ptyId = await settleTerminal(occPage)
 
     // Repeat hide/resize/show widths to expose missed resume correction.
     const widths = [700, 1320, 640, 1180, 600]
     for (const [index, width] of widths.entries()) {
-      await switchToWorktree(orcaPage, otherWorktreeId)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      await orcaPage.setViewportSize({ width, height: 800 })
-      await orcaPage.waitForTimeout(350)
-      await switchToWorktree(orcaPage, homeWorktreeId)
-      await ensureTerminalVisible(orcaPage)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      await orcaPage.waitForTimeout(500)
+      await switchToWorktree(occPage, otherWorktreeId)
+      await waitForActiveTerminalManager(occPage, 30_000)
+      await occPage.setViewportSize({ width, height: 800 })
+      await occPage.waitForTimeout(350)
+      await switchToWorktree(occPage, homeWorktreeId)
+      await ensureTerminalVisible(occPage)
+      await waitForActiveTerminalManager(occPage, 30_000)
+      await occPage.waitForTimeout(500)
 
-      const snapshot = await readColumnSnapshot(orcaPage, ptyId)
+      const snapshot = await readColumnSnapshot(occPage, ptyId)
       expect(
         snapshot.ptyCols,
         `cycle ${index} (width ${width}): PTY cols (${snapshot.ptyCols}) should equal xterm cols ` +
@@ -225,26 +225,26 @@ test.describe('Terminal column desync repro', () => {
   })
 
   test('both panes keep PTY columns synced after a vertical split reparent', async ({
-    orcaPage
+    occPage
   }) => {
     test.setTimeout(180_000)
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await closeRightSidebarAndFeatureTips(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await orcaPage.setViewportSize({ width: 1280, height: 800 })
-    await orcaPage.waitForTimeout(300)
-    const firstPtyId = await settleTerminal(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await closeRightSidebarAndFeatureTips(occPage)
+    await ensureTerminalVisible(occPage)
+    await occPage.setViewportSize({ width: 1280, height: 800 })
+    await occPage.waitForTimeout(300)
+    const firstPtyId = await settleTerminal(occPage)
 
-    const baseline = await readColumnSnapshot(orcaPage, firstPtyId)
+    const baseline = await readColumnSnapshot(occPage, firstPtyId)
     expect(baseline.ptyCols).toBe(baseline.xtermCols)
 
     // Split must resize the original PTY with its narrowed xterm pane.
-    await splitActiveTerminalPane(orcaPage, 'vertical')
+    await splitActiveTerminalPane(occPage, 'vertical')
     await expect
       .poll(
         async () => {
-          const snapshot = await waitForPaneIdentitySnapshot(orcaPage, 2)
+          const snapshot = await waitForPaneIdentitySnapshot(occPage, 2)
           return snapshot.panes
             .map((pane) => pane.ptyId)
             .filter((ptyId): ptyId is string => Boolean(ptyId))
@@ -252,7 +252,7 @@ test.describe('Terminal column desync repro', () => {
         { timeout: 30_000, message: 'vertical split should produce two PTY-backed panes' }
       )
       .toHaveLength(2)
-    const snapshot = await waitForPaneIdentitySnapshot(orcaPage, 2)
+    const snapshot = await waitForPaneIdentitySnapshot(occPage, 2)
 
     for (const pane of snapshot.panes) {
       const ptyId = pane.ptyId
@@ -260,8 +260,8 @@ test.describe('Terminal column desync repro', () => {
       if (!ptyId) {
         continue
       }
-      const ptyCols = await readPtyCols(orcaPage, ptyId)
-      const xtermCols = await readRenderedColsForPty(orcaPage, ptyId)
+      const ptyCols = await readPtyCols(occPage, ptyId)
+      const xtermCols = await readRenderedColsForPty(occPage, ptyId)
       expect(
         ptyCols,
         `after split, pane ${ptyId} PTY cols (${ptyCols}) should equal its xterm cols (${xtermCols})`
@@ -271,7 +271,7 @@ test.describe('Terminal column desync repro', () => {
 
   // Reload a persisted split so both panes mount narrow after wide spawn; the post-spawn reconciliation/visibility race must not pin PTYs wide.
   test('both panes stay PTY-synced when a tab MOUNTS with a split layout present', async ({
-    orcaPage
+    occPage
   }) => {
     test.setTimeout(240_000)
 
@@ -279,32 +279,32 @@ test.describe('Terminal column desync repro', () => {
     const MOUNT_ATTEMPTS = 6
     const desyncs: { attempt: number; ptyId: string; ptyCols: number; xtermCols: number }[] = []
 
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await closeRightSidebarAndFeatureTips(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await orcaPage.setViewportSize({ width: 1440, height: 900 })
-    await orcaPage.waitForTimeout(300)
-    await settleTerminal(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await closeRightSidebarAndFeatureTips(occPage)
+    await ensureTerminalVisible(occPage)
+    await occPage.setViewportSize({ width: 1440, height: 900 })
+    await occPage.waitForTimeout(300)
+    await settleTerminal(occPage)
 
-    await splitActiveTerminalPane(orcaPage, 'vertical')
-    await waitForPaneIdentitySnapshot(orcaPage, 2)
+    await splitActiveTerminalPane(occPage, 'vertical')
+    await waitForPaneIdentitySnapshot(occPage, 2)
 
     for (let attempt = 0; attempt < MOUNT_ATTEMPTS; attempt += 1) {
       // Reload at wide width, then shrink during split mount/PTy spawn.
-      await orcaPage.setViewportSize({ width: 1440, height: 900 })
-      await orcaPage.reload()
-      await orcaPage.waitForFunction(() => Boolean(window.__store), null, { timeout: 30_000 })
-      await waitForSessionReady(orcaPage)
-      await waitForActiveWorktree(orcaPage)
-      await closeRightSidebarAndFeatureTips(orcaPage)
-      await ensureTerminalVisible(orcaPage)
+      await occPage.setViewportSize({ width: 1440, height: 900 })
+      await occPage.reload()
+      await occPage.waitForFunction(() => Boolean(window.__store), null, { timeout: 30_000 })
+      await waitForSessionReady(occPage)
+      await waitForActiveWorktree(occPage)
+      await closeRightSidebarAndFeatureTips(occPage)
+      await ensureTerminalVisible(occPage)
 
-      await orcaPage.setViewportSize({ width: 1180, height: 800 })
-      await orcaPage.waitForTimeout(300)
+      await occPage.setViewportSize({ width: 1180, height: 800 })
+      await occPage.waitForTimeout(300)
 
-      const snapshot = await waitForPaneIdentitySnapshot(orcaPage, 2)
-      await orcaPage.waitForTimeout(900)
+      const snapshot = await waitForPaneIdentitySnapshot(occPage, 2)
+      await occPage.waitForTimeout(900)
 
       for (const pane of snapshot.panes) {
         const ptyId = pane.ptyId
@@ -312,8 +312,8 @@ test.describe('Terminal column desync repro', () => {
         if (!ptyId) {
           continue
         }
-        const ptyCols = await readPtyCols(orcaPage, ptyId)
-        const xtermCols = await readRenderedColsForPty(orcaPage, ptyId)
+        const ptyCols = await readPtyCols(occPage, ptyId)
+        const xtermCols = await readRenderedColsForPty(occPage, ptyId)
         if (ptyCols !== xtermCols) {
           desyncs.push({ attempt, ptyId, ptyCols, xtermCols })
         }
@@ -331,7 +331,7 @@ test.describe('Terminal column desync repro', () => {
 
   // Resize after xterm exists but before binding/visibility settles; a gated or stale spawn resize must eventually reconcile PTY columns.
   test('PTY columns stay synced when the window is resized during initial mount', async ({
-    orcaPage
+    occPage
   }) => {
     test.setTimeout(240_000)
 
@@ -340,22 +340,22 @@ test.describe('Terminal column desync repro', () => {
     const desyncs: { attempt: number; ptyCols: number; xtermCols: number }[] = []
     for (let attempt = 0; attempt < MOUNT_ATTEMPTS; attempt += 1) {
       if (attempt > 0) {
-        await orcaPage.setViewportSize({ width: 1440, height: 900 })
-        await orcaPage.reload()
-        await orcaPage.waitForFunction(() => Boolean(window.__store), null, { timeout: 30_000 })
+        await occPage.setViewportSize({ width: 1440, height: 900 })
+        await occPage.reload()
+        await occPage.waitForFunction(() => Boolean(window.__store), null, { timeout: 30_000 })
       }
-      await waitForSessionReady(orcaPage)
-      await waitForActiveWorktree(orcaPage)
-      await closeRightSidebarAndFeatureTips(orcaPage)
-      await ensureTerminalVisible(orcaPage)
+      await waitForSessionReady(occPage)
+      await waitForActiveWorktree(occPage)
+      await closeRightSidebarAndFeatureTips(occPage)
+      await ensureTerminalVisible(occPage)
 
-      await orcaPage.setViewportSize({ width: 1280, height: 800 })
-      await orcaPage.waitForTimeout(300)
+      await occPage.setViewportSize({ width: 1280, height: 800 })
+      await occPage.waitForTimeout(300)
 
-      const ptyId = await settleTerminal(orcaPage)
-      await orcaPage.waitForTimeout(700)
+      const ptyId = await settleTerminal(occPage)
+      await occPage.waitForTimeout(700)
 
-      const snapshot = await readColumnSnapshot(orcaPage, ptyId)
+      const snapshot = await readColumnSnapshot(occPage, ptyId)
       if (snapshot.ptyCols !== snapshot.xtermCols) {
         desyncs.push({ attempt, ptyCols: snapshot.ptyCols, xtermCols: snapshot.xtermCols })
       }

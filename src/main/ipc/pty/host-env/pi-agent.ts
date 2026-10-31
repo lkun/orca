@@ -8,7 +8,7 @@ import { getAgentLaunchExecutableName } from '../../../../shared/agent-command-l
 import {
   AGENT_HOOK_RUNTIME_ENV_KEYS,
   CLAUDE_CHILD_SESSION_STAMP_ENV_KEYS,
-  ORCA_AGENT_SESSION_CALLER_ENV_KEYS
+  OCC_AGENT_SESSION_CALLER_ENV_KEYS
 } from './spawn-env-keys'
 
 export function readEnvWithProcessFallback(
@@ -37,8 +37,8 @@ export function resolvePiAgentSourceDir(
     )
   }
 
-  const overlayKey = kind === 'omp' ? 'ORCA_OMP_CODING_AGENT_DIR' : 'ORCA_PI_CODING_AGENT_DIR'
-  const otherOverlayKey = kind === 'omp' ? 'ORCA_PI_CODING_AGENT_DIR' : 'ORCA_OMP_CODING_AGENT_DIR'
+  const overlayKey = kind === 'omp' ? 'OCC_OMP_CODING_AGENT_DIR' : 'OCC_PI_CODING_AGENT_DIR'
+  const otherOverlayKey = kind === 'omp' ? 'OCC_PI_CODING_AGENT_DIR' : 'OCC_OMP_CODING_AGENT_DIR'
 
   const publicDir = readEnvWithProcessFallback(baseEnv, primaryKey)
   const ownOverlayDir = readEnvWithProcessFallback(baseEnv, overlayKey)
@@ -60,18 +60,18 @@ export function resolveScopedPiAgentSourceDir(
 
 export function clearPiAgentShadowEnv(baseEnv: Record<string, string>, kind: PiAgentKind): void {
   if (kind === 'omp') {
-    delete baseEnv.ORCA_OMP_CODING_AGENT_DIR
-    delete baseEnv.ORCA_OMP_SOURCE_AGENT_DIR
-    delete baseEnv.ORCA_OMP_STATUS_EXTENSION
+    delete baseEnv.OCC_OMP_CODING_AGENT_DIR
+    delete baseEnv.OCC_OMP_SOURCE_AGENT_DIR
+    delete baseEnv.OCC_OMP_STATUS_EXTENSION
     return
   }
   if (kind === 'prime-agent') {
-    delete baseEnv.ORCA_PRIME_AGENT_SOURCE_AGENT_DIR
-    delete baseEnv.ORCA_PRIME_AGENT_STATUS_EXTENSION
+    delete baseEnv.OCC_PRIME_AGENT_SOURCE_AGENT_DIR
+    delete baseEnv.OCC_PRIME_AGENT_STATUS_EXTENSION
     return
   }
-  delete baseEnv.ORCA_PI_CODING_AGENT_DIR
-  delete baseEnv.ORCA_PI_SOURCE_AGENT_DIR
+  delete baseEnv.OCC_PI_CODING_AGENT_DIR
+  delete baseEnv.OCC_PI_SOURCE_AGENT_DIR
 }
 
 export function exposePiManagedExtensionEnv(
@@ -80,32 +80,32 @@ export function exposePiManagedExtensionEnv(
   managedEnv: Record<string, string>
 ): void {
   if (kind === 'omp') {
-    delete baseEnv.ORCA_OMP_CODING_AGENT_DIR
-    if (managedEnv.ORCA_OMP_SOURCE_AGENT_DIR) {
-      baseEnv.ORCA_OMP_SOURCE_AGENT_DIR = managedEnv.ORCA_OMP_SOURCE_AGENT_DIR
+    delete baseEnv.OCC_OMP_CODING_AGENT_DIR
+    if (managedEnv.OCC_OMP_SOURCE_AGENT_DIR) {
+      baseEnv.OCC_OMP_SOURCE_AGENT_DIR = managedEnv.OCC_OMP_SOURCE_AGENT_DIR
     } else {
-      delete baseEnv.ORCA_OMP_SOURCE_AGENT_DIR
+      delete baseEnv.OCC_OMP_SOURCE_AGENT_DIR
     }
-    if (managedEnv.ORCA_OMP_STATUS_EXTENSION) {
-      baseEnv.ORCA_OMP_STATUS_EXTENSION = managedEnv.ORCA_OMP_STATUS_EXTENSION
+    if (managedEnv.OCC_OMP_STATUS_EXTENSION) {
+      baseEnv.OCC_OMP_STATUS_EXTENSION = managedEnv.OCC_OMP_STATUS_EXTENSION
     } else {
-      delete baseEnv.ORCA_OMP_STATUS_EXTENSION
+      delete baseEnv.OCC_OMP_STATUS_EXTENSION
     }
     return
   }
   if (kind === 'prime-agent') {
-    if (managedEnv.ORCA_PRIME_AGENT_SOURCE_AGENT_DIR) {
-      baseEnv.ORCA_PRIME_AGENT_SOURCE_AGENT_DIR = managedEnv.ORCA_PRIME_AGENT_SOURCE_AGENT_DIR
+    if (managedEnv.OCC_PRIME_AGENT_SOURCE_AGENT_DIR) {
+      baseEnv.OCC_PRIME_AGENT_SOURCE_AGENT_DIR = managedEnv.OCC_PRIME_AGENT_SOURCE_AGENT_DIR
     } else {
-      delete baseEnv.ORCA_PRIME_AGENT_SOURCE_AGENT_DIR
+      delete baseEnv.OCC_PRIME_AGENT_SOURCE_AGENT_DIR
     }
     return
   }
-  delete baseEnv.ORCA_PI_CODING_AGENT_DIR
-  if (managedEnv.ORCA_PI_SOURCE_AGENT_DIR) {
-    baseEnv.ORCA_PI_SOURCE_AGENT_DIR = managedEnv.ORCA_PI_SOURCE_AGENT_DIR
+  delete baseEnv.OCC_PI_CODING_AGENT_DIR
+  if (managedEnv.OCC_PI_SOURCE_AGENT_DIR) {
+    baseEnv.OCC_PI_SOURCE_AGENT_DIR = managedEnv.OCC_PI_SOURCE_AGENT_DIR
   } else {
-    delete baseEnv.ORCA_PI_SOURCE_AGENT_DIR
+    delete baseEnv.OCC_PI_SOURCE_AGENT_DIR
   }
 }
 
@@ -121,7 +121,7 @@ export function mergePtyEnvDeletions(
 
 export function removeCodexHomeDeletionRequests(keys: string[] | undefined): string[] | undefined {
   // Resume provenance selects the home; late deletions must not fall back to current account.
-  const filtered = keys?.filter((key) => key !== 'CODEX_HOME' && key !== 'ORCA_CODEX_HOME')
+  const filtered = keys?.filter((key) => key !== 'CODEX_HOME' && key !== 'OCC_CODEX_HOME')
   return filtered?.length ? filtered : undefined
 }
 
@@ -132,13 +132,13 @@ export function getInheritedAgentHookEnvKeysToDelete(
   // Providers later merge ambient env; delete stale hooks without removing freshly injected coordinates.
   return [
     ...AGENT_HOOK_RUNTIME_ENV_KEYS,
-    'ORCA_CLAUDE_AGENT_VIEW_PLUGIN_DIR',
-    'ORCA_CLAUDE_CONFIG_DIR',
-    'ORCA_OPENCODE_AGENT',
-    'ORCA_OPENCODE_CONFIG_DIR',
-    'ORCA_OPENCODE_SOURCE_CONFIG_DIR',
-    'ORCA_MIMOCODE_CONFIG_DIR',
-    'ORCA_MIMOCODE_SOURCE_CONFIG_DIR'
+    'OCC_CLAUDE_AGENT_VIEW_PLUGIN_DIR',
+    'OCC_CLAUDE_CONFIG_DIR',
+    'OCC_OPENCODE_AGENT',
+    'OCC_OPENCODE_CONFIG_DIR',
+    'OCC_OPENCODE_SOURCE_CONFIG_DIR',
+    'OCC_MIMOCODE_CONFIG_DIR',
+    'OCC_MIMOCODE_SOURCE_CONFIG_DIR'
   ].filter((key) => env[key] === undefined)
 }
 
@@ -149,7 +149,7 @@ export function getInheritedAgentSessionStampEnvKeysToDelete(
   // Explicit nested-Claude stamps survive; structured-session caller keys never belong to terminal panes.
   return [
     ...CLAUDE_CHILD_SESSION_STAMP_ENV_KEYS.filter((key) => env[key] === undefined),
-    ...ORCA_AGENT_SESSION_CALLER_ENV_KEYS,
+    ...OCC_AGENT_SESSION_CALLER_ENV_KEYS,
     // A pane is never a Claude background job; an inherited job dir would silence its agent hooks.
     'CLAUDE_JOB_DIR'
   ]
@@ -167,11 +167,11 @@ export function resolveMimocodeSourceConfigDir(
   if (baseEnv.MIMOCODE_CONFIG_DIR) {
     return baseEnv.MIMOCODE_CONFIG_DIR
   }
-  if (inheritedEnv.ORCA_MIMOCODE_SOURCE_CONFIG_DIR) {
-    return inheritedEnv.ORCA_MIMOCODE_SOURCE_CONFIG_DIR
+  if (inheritedEnv.OCC_MIMOCODE_SOURCE_CONFIG_DIR) {
+    return inheritedEnv.OCC_MIMOCODE_SOURCE_CONFIG_DIR
   }
   const configDir = inheritedEnv.MIMOCODE_CONFIG_DIR
-  return configDir && configDir === inheritedEnv.ORCA_MIMOCODE_CONFIG_DIR ? undefined : configDir
+  return configDir && configDir === inheritedEnv.OCC_MIMOCODE_CONFIG_DIR ? undefined : configDir
 }
 
 export function resolveOpenCodeSourceConfigDir(
@@ -179,18 +179,18 @@ export function resolveOpenCodeSourceConfigDir(
   inheritedEnv: NodeJS.ProcessEnv = process.env
 ): string | undefined {
   const configDir = baseEnv.OPENCODE_CONFIG_DIR ?? inheritedEnv.OPENCODE_CONFIG_DIR
-  const orcaConfigDir = baseEnv.ORCA_OPENCODE_CONFIG_DIR ?? inheritedEnv.ORCA_OPENCODE_CONFIG_DIR
-  if (configDir && orcaConfigDir && configDir !== orcaConfigDir) {
+  const occConfigDir = baseEnv.OCC_OPENCODE_CONFIG_DIR ?? inheritedEnv.OCC_OPENCODE_CONFIG_DIR
+  if (configDir && occConfigDir && configDir !== occConfigDir) {
     return configDir
   }
   const sourceDir =
-    baseEnv.ORCA_OPENCODE_SOURCE_CONFIG_DIR ?? inheritedEnv.ORCA_OPENCODE_SOURCE_CONFIG_DIR
+    baseEnv.OCC_OPENCODE_SOURCE_CONFIG_DIR ?? inheritedEnv.OCC_OPENCODE_SOURCE_CONFIG_DIR
   if (sourceDir) {
     return sourceDir
   }
 
-  // Matching public/private paths identify OCC-owned state, not user config to mirror into child Orcas.
-  if (configDir && orcaConfigDir && configDir === orcaConfigDir) {
+  // Matching public/private paths identify OCC-owned state, not user config to mirror into child OCCs.
+  if (configDir && occConfigDir && configDir === occConfigDir) {
     return undefined
   }
 

@@ -1,5 +1,5 @@
 import { readTerminalSendAcknowledgment } from '../../shared/terminal-send-acknowledgment'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 
 /** `refused` with no `error` property: the fence passed and the host then refused the write. */
 export type FencedAgentKeysOutcome =
@@ -9,7 +9,7 @@ export type FencedAgentKeysOutcome =
 
 /** Send UI keys without Enter; fence immediately before write. Failure after the fence is unknown because bytes may have landed. */
 export async function writeFencedAgentKeys(
-  runtime: Pick<OrcaRuntimeService, 'sendTerminal'>,
+  runtime: Pick<OCCRuntimeService, 'sendTerminal'>,
   handle: string,
   keys: string,
   options: {

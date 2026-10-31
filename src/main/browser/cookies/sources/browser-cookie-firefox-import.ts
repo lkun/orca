@@ -21,7 +21,7 @@ export async function importCookiesFromFirefox(
 ): Promise<BrowserCookieImportResult> {
   diag(`importCookiesFromFirefox: partition="${targetPartition}"`)
 
-  const tmpDir = mkdtempSync(join(tmpdir(), 'orca-cookie-import-'))
+  const tmpDir = mkdtempSync(join(tmpdir(), 'occ-cookie-import-'))
   const tmpCookiesPath = join(tmpDir, 'cookies.sqlite')
 
   try {

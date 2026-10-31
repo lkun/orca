@@ -1,5 +1,5 @@
 import { createHmac } from 'node:crypto'
-import { ConnectorPollResponseSchema } from '@orca-cloud/connector-contract'
+import { ConnectorPollResponseSchema } from '@occ-cloud/connector-contract'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanupConnectorHarnesses } from './connector-server-harness.test-fixture.js'
 import { SlackApps } from './slack-apps.js'
@@ -35,9 +35,9 @@ async function linkedOwner(slack: Partial<Parameters<typeof createSlackHarness>[
     '--account',
     'user-1',
     '--default-project',
-    'orca'
+    'occ'
   )
-  const machine = await harness.machineWith('user-1', [project('orca', 'pl_orca', 'stablyai/orca')])
+  const machine = await harness.machineWith('user-1', [project('occ', 'pl_occ', 'stablyai/occ')])
   const poll = async () => ConnectorPollResponseSchema.parse((await machine.poll()).body).deliveries
   return { ...harness, machine, poll }
 }
@@ -166,7 +166,7 @@ describe('Slack event ingress', () => {
         deliveryId: `slack:${TEAM}:${CHANNEL}:${THREAD}`,
         conversation: { source: 'slack', externalId: EXTERNAL_ID },
         agent: 'claude',
-        placeId: 'pl_orca',
+        placeId: 'pl_occ',
         prompt: 'fix the flaky test'
       })
     ])
@@ -232,11 +232,11 @@ describe('Slack event ingress', () => {
   it('gives a teammate who mentions OCC their own conversation', async () => {
     const harness = await linkedOwner()
     await harness.operator('link', '--team', TEAM, '--user', TEAMMATE, '--account', 'user-2')
-    const theirs = await harness.machineWith('user-2', [project('orca', 'pl_theirs')])
+    const theirs = await harness.machineWith('user-2', [project('occ', 'pl_theirs')])
     await harness.message(mention())
     await harness.message({
       user: TEAMMATE,
-      text: `<@${BOT}> orca: what about docs`,
+      text: `<@${BOT}> occ: what about docs`,
       ts: '1800000000.000200',
       thread_ts: THREAD
     })
@@ -258,7 +258,7 @@ describe('Slack event ingress', () => {
         '[Bob] fix the flaky test',
         '',
         'Request:',
-        'orca: what about docs'
+        'occ: what about docs'
       ].join('\n')
     })
   })
@@ -337,7 +337,7 @@ describe('Slack event ingress', () => {
     await harness.message(mention())
     await harness.operator('link', '--team', TEAM, '--user', OWNER, '--account', 'user-1')
     await harness.message({ ...mention(), ts: '1800000000.000200' })
-    await harness.machineWith('user-1', [project('orca'), project('web')])
+    await harness.machineWith('user-1', [project('occ'), project('web')])
     await harness.message({ ...mention(), ts: '1800000000.000300' })
     // Only the person who wrote sees these.
     const bodies = (await harness.posts()).map((post) => [
@@ -352,7 +352,7 @@ describe('Slack event ingress', () => {
         {
           user: OWNER,
           text: expect.stringMatching(
-            /^Which project\?.*\n• orca on build-box\n• web on build-box$/s
+            /^Which project\?.*\n• occ on build-box\n• web on build-box$/s
           )
         }
       ],
@@ -414,7 +414,7 @@ describe('Slack event ingress', () => {
     harness.fake.respond('conversations.replies', Response.json({ ok: true, messages: [] }))
     await harness.core.buildHeldStarts()
     const [retry] = await harness.poll()
-    expect(retry).toMatchObject({ kind: 'start', placeId: 'pl_orca', prompt: 'try again' })
+    expect(retry).toMatchObject({ kind: 'start', placeId: 'pl_occ', prompt: 'try again' })
   })
 
   it('holds a teammate’s message once their membership check is a day old', async () => {
@@ -457,11 +457,11 @@ describe('Slack event ingress', () => {
   it('keeps a teammate’s messages as context even once they have their own conversation', async () => {
     const harness = await linkedOwner()
     await harness.operator('link', '--team', TEAM, '--user', TEAMMATE, '--account', 'user-2')
-    await harness.machineWith('user-2', [project('orca', 'pl_theirs')])
+    await harness.machineWith('user-2', [project('occ', 'pl_theirs')])
     await harness.message(mention())
     await harness.message({
       user: TEAMMATE,
-      text: `<@${BOT}> orca: what about docs`,
+      text: `<@${BOT}> occ: what about docs`,
       ts: '1800000000.000200',
       thread_ts: THREAD
     })
@@ -475,7 +475,7 @@ describe('Slack event ingress', () => {
       'SELECT external_id, text FROM connector_thread_context ORDER BY message_id'
     )
     expect(context).toEqual([
-      { external_id: EXTERNAL_ID, text: 'orca: what about docs' },
+      { external_id: EXTERNAL_ID, text: 'occ: what about docs' },
       { external_id: EXTERNAL_ID, text: 'also CI' }
     ])
   })
@@ -696,7 +696,7 @@ describe('Slack event ingress', () => {
       expect.objectContaining({
         kind: 'start',
         deliveryId: `slack:${TEAM}:${CHANNEL}:1800000300.000100`,
-        placeId: 'pl_orca',
+        placeId: 'pl_occ',
         prompt: 'retry now'
       })
     ])

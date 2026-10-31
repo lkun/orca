@@ -1,4 +1,4 @@
-import { RELAY_CLOSE_CODE, type RelayRegion } from '@orca-cloud/relay-contract'
+import { RELAY_CLOSE_CODE, type RelayRegion } from '@occ-cloud/relay-contract'
 import { hostCohortBucket } from './host-cohort-bucket.js'
 
 // Rehome only on an existing reconnect outside the requested region; failed rules retain sticky answer, never force disconnect/503.

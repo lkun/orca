@@ -10,7 +10,7 @@ import type { Repo } from '../shared/repo-types'
 import { parseWslPath } from './wsl'
 import { getRepoRoutingConnectionId } from '../shared/execution-host'
 
-export const WORKTREE_TRASH_DIR_NAME = '.orca-worktree-trash'
+export const WORKTREE_TRASH_DIR_NAME = '.occ-worktree-trash'
 
 // Only names produced by the retired rename scheme qualify for cleanup.
 const TRASH_ENTRY_PATTERN = /^wt-\d+-[0-9a-f]{8}$/

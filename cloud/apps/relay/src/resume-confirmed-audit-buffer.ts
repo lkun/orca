@@ -104,7 +104,7 @@ export class ResumeConfirmedAuditBuffer {
     const total = this.dropped.overflow + this.dropped.aged
     if (total > this.reportedDrops) {
       this.reportedDrops = total
-      this.warn(JSON.stringify({ event: 'orca_relay_resume_audit_dropped', ...this.drops() }))
+      this.warn(JSON.stringify({ event: 'occ_relay_resume_audit_dropped', ...this.drops() }))
     }
   }
 }

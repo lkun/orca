@@ -66,7 +66,7 @@ export function createStructuredAgentSessionRestartFailureLedger(deps: {
   getRecord: (sessionId: string) => AgentSessionConversationView | null
   retryable: (marker: AgentSessionResumeMarker) => boolean
   /** Preserve newer-chat failures for compatible builds, hidden here. */
-  savedByNewerOrca: (sessionId: string) => boolean
+  savedByNewerOCC: (sessionId: string) => boolean
   logger: StructuredAgentSessionLogger
   now: () => number
   /** Share the capsule mutation lane with offer operations. */
@@ -88,7 +88,7 @@ export function createStructuredAgentSessionRestartFailureLedger(deps: {
     failure: AgentSessionResumeFailureRecord
   ): StructuredAgentSessionResumeFailure[] => {
     const record = deps.getRecord(failure.marker.sessionId)
-    if (!record || deps.savedByNewerOrca(failure.marker.sessionId)) {
+    if (!record || deps.savedByNewerOCC(failure.marker.sessionId)) {
       return []
     }
     const model = normalizeOptionalField(record.options?.model, AGENT_MODEL_MAX_LENGTH)
@@ -142,7 +142,7 @@ export function createStructuredAgentSessionRestartFailureLedger(deps: {
       if (
         !resumed &&
         outcome.reason === 'agent_session_journal_unreadable' &&
-        outcome.details?.reason === 'journalWrittenByNewerOrca'
+        outcome.details?.reason === 'journalWrittenByNewerOCC'
       ) {
         continue
       }
@@ -210,7 +210,7 @@ export function createStructuredAgentSessionRestartFailureLedger(deps: {
             return (
               record === null ||
               !audience(record.provider) ||
-              (sessionIds === undefined && deps.savedByNewerOrca(marker.sessionId))
+              (sessionIds === undefined && deps.savedByNewerOCC(marker.sessionId))
             )
           }
           if (sessionIds === undefined) {
@@ -224,7 +224,7 @@ export function createStructuredAgentSessionRestartFailureLedger(deps: {
         }
         await beforeClearAll()
         // Dismiss only shown records; newer chats belong to compatible builds.
-        const keep = (marker: AgentSessionResumeMarker) => deps.savedByNewerOrca(marker.sessionId)
+        const keep = (marker: AgentSessionResumeMarker) => deps.savedByNewerOCC(marker.sessionId)
         return (await deps.capsule?.clearAll(deps.now(), keep)) ?? 0
       })
   }

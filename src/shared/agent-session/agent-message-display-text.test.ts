@@ -2,14 +2,14 @@ import { expect, it, vi } from 'vitest'
 import { agentMessageDisplayText, agentMessageTranscriptText } from './agent-message-display-text'
 import type { AgentMessageSource } from './agent-session-message-source'
 import type { NativeChatBlock } from '../native-chat-types'
-import * as grammar from '../orca-dispatch-status-prompt'
+import * as grammar from '../occ-dispatch-status-prompt'
 
 const task: AgentMessageSource = {
   kind: 'agent',
   senders: [],
   orchestration: { message: 'task', runId: 'r', taskId: 't', dispatchId: 'd' }
 }
-const prefix = `${grammar.ORCA_DISPATCH_STATUS_PREAMBLE_PREFIX}\r\nInstructions\r\n=== TASK ===\r\n`
+const prefix = `${grammar.OCC_DISPATCH_STATUS_PREAMBLE_PREFIX}\r\nInstructions\r\n=== TASK ===\r\n`
 
 it('keeps exact task suffixes and canonical blocks, with paragraph fallback for ineligible inputs', () => {
   for (const suffix of ['', '  Task 🐋\r\n\r\n=== TASK ===\ntrailing  ']) {
@@ -28,7 +28,7 @@ it('keeps exact task suffixes and canonical blocks, with paragraph fallback for 
     [
       {
         type: 'text',
-        text: `${grammar.ORCA_DISPATCH_STATUS_PREAMBLE_PREFIX}\n${'x'.repeat(24_576)}\n=== TASK ===\nlate`
+        text: `${grammar.OCC_DISPATCH_STATUS_PREAMBLE_PREFIX}\n${'x'.repeat(24_576)}\n=== TASK ===\nlate`
       }
     ]
   ] satisfies NativeChatBlock[][]) {
@@ -42,7 +42,7 @@ it('keeps exact task suffixes and canonical blocks, with paragraph fallback for 
 it.each([100, 1000])(
   'parses %i real task inputs once and invalidates immutable edited blocks',
   (n) => {
-    const parse = vi.spyOn(grammar, 'orcaDispatchTaskBodyOffset')
+    const parse = vi.spyOn(grammar, 'occDispatchTaskBodyOffset')
     const suffix = 'task '.repeat(6000)
     const inputs = Array.from({ length: n }, (): NativeChatBlock[] => [
       { type: 'text', text: prefix + suffix }

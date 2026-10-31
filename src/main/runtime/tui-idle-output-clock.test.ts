@@ -1,6 +1,6 @@
 import './rpc/unused-default-rpc-methods.test-fixture'
 import { afterEach, expect, it, vi } from 'vitest'
-import { runtimeWithLeaf } from './orca-runtime-pty-leaf.test-fixture'
+import { runtimeWithLeaf } from './occ-runtime-pty-leaf.test-fixture'
 import { evaluateTuiIdle } from './tui-idle-evidence'
 import { ptyTuiIdleEvidence } from './tui-idle-evidence-source'
 

@@ -10,7 +10,7 @@ import {
 } from './terminal-worktree-route'
 
 const EPHEMERAL_ID = brandEphemeralSetupTerminalWorktreeId(
-  'settings-mobile-emulator-orca-cli-skill-terminal'
+  'settings-mobile-emulator-occ-cli-skill-terminal'
 )
 
 // A realistic local-only store: one real repo/worktree, hydrated empty runtime catalog.

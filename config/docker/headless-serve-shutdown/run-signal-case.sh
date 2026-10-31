@@ -2,15 +2,15 @@
 set -euo pipefail
 
 signal_name=${1:?signal name is required}
-app_root=${ORCA_TEST_APP_ROOT:-/artifacts/root}
-signal_target_kind=${ORCA_SIGNAL_TARGET:-app}
-entrypoint_kind=${ORCA_TEST_ENTRYPOINT:-app}
-int_delivery=${ORCA_INT_DELIVERY:-foreground-process-group}
+app_root=${OCC_TEST_APP_ROOT:-/artifacts/root}
+signal_target_kind=${OCC_SIGNAL_TARGET:-app}
+entrypoint_kind=${OCC_TEST_ENTRYPOINT:-app}
+int_delivery=${OCC_INT_DELIVERY:-foreground-process-group}
 # Allow cold CI’s ~90s Electron startup plus log delivery before the observer deadline.
-startup_timeout_seconds=${ORCA_STARTUP_TIMEOUT_SECONDS:-180}
+startup_timeout_seconds=${OCC_STARTUP_TIMEOUT_SECONDS:-180}
 
 if ((EUID == 0)); then
-  exec runuser --user orca --preserve-environment -- "$0" "$@"
+  exec runuser --user occ --preserve-environment -- "$0" "$@"
 fi
 
 case "$signal_name" in
@@ -18,7 +18,7 @@ case "$signal_name" in
   *) echo "unsupported signal: $signal_name" >&2; exit 64 ;;
 esac
 
-state_dir=$(mktemp -d "/tmp/orca-shutdown-${signal_name}.XXXXXX")
+state_dir=$(mktemp -d "/tmp/occ-shutdown-${signal_name}.XXXXXX")
 stdout_log="$state_dir/stdout.log"
 stderr_log="$state_dir/stderr.log"
 ulimit -c 0
@@ -38,13 +38,13 @@ export XDG_CACHE_HOME="$state_dir/cache"
 export XDG_RUNTIME_DIR="$state_dir/runtime"
 export LIBGL_ALWAYS_SOFTWARE=1
 # Every entrypoint must serve the profile the caller chose, not the default one.
-export ORCA_USER_DATA_PATH="$state_dir/profile"
+export OCC_USER_DATA_PATH="$state_dir/profile"
 mkdir -p "$HOME" "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME" "$XDG_RUNTIME_DIR"
 chmod 700 "$XDG_RUNTIME_DIR"
 
 case "$entrypoint_kind" in
   app) entrypoint=("$app_root/AppRun" --no-sandbox) ;;
-  appimage) entrypoint=(/input/orca.AppImage --appimage-extract-and-run --no-sandbox) ;;
+  appimage) entrypoint=(/input/occ.AppImage --appimage-extract-and-run --no-sandbox) ;;
   launcher)
     entrypoint=("$app_root/resources/bin/occ-ide")
     ;;
@@ -59,7 +59,7 @@ app_start_ticks=$(awk '{print $22}' "/proc/$app_pid/stat")
 # Poll finite snapshots: jq inputs waits for EOF under first(), leaking tail -F observers past the timeout.
 read_ready_line() {
   sed -u -n 's/^[^{]*//p' "$stdout_log" \
-    | jq --unbuffered -Rnc 'first(inputs | fromjson? | select(.type == "orca_server_ready" and .schemaVersion == 1))'
+    | jq --unbuffered -Rnc 'first(inputs | fromjson? | select(.type == "occ_server_ready" and .schemaVersion == 1))'
 }
 
 ready_line=''
@@ -76,35 +76,35 @@ if [[ -z "$ready_line" ]]; then
 fi
 if [[ -z "$ready_line" ]]; then
   cat "$stdout_log" "$stderr_log" >&2
-  echo "FAIL: entrypoint exited or timed out before orca_server_ready" >&2
+  echo "FAIL: entrypoint exited or timed out before occ_server_ready" >&2
   exit 1
 fi
 
-if [[ ! -f "$ORCA_USER_DATA_PATH/orca-runtime.json" || -e "$XDG_CONFIG_HOME/orca/orca-runtime.json" ]]; then
-  ls -la "$ORCA_USER_DATA_PATH" "$XDG_CONFIG_HOME" >&2 || true
-  echo "FAIL: serve ignored ORCA_USER_DATA_PATH; its runtime metadata is not in $ORCA_USER_DATA_PATH" >&2
+if [[ ! -f "$OCC_USER_DATA_PATH/occ-runtime.json" || -e "$XDG_CONFIG_HOME/occ/occ-runtime.json" ]]; then
+  ls -la "$OCC_USER_DATA_PATH" "$XDG_CONFIG_HOME" >&2 || true
+  echo "FAIL: serve ignored OCC_USER_DATA_PATH; its runtime metadata is not in $OCC_USER_DATA_PATH" >&2
   exit 1
 fi
 
 registered_cli_verified=false
 if [[ "$entrypoint_kind" == appimage ]]; then
   registered_cli="$HOME/.local/bin/occ-ide"
-  expected_target="$XDG_CACHE_HOME/orca/appimage/launcher/occ-ide"
+  expected_target="$XDG_CACHE_HOME/occ/appimage/launcher/occ-ide"
   actual_target=$(readlink "$registered_cli" 2>/dev/null || true)
   if [[ "$actual_target" != "$expected_target" ]]; then
     echo "FAIL: registered CLI target is ${actual_target:-missing}; expected $expected_target" >&2
     exit 1
   fi
   if ! registered_help=$("$registered_cli" --help 2>&1) \
-    || [[ "$registered_help" != *'Usage: orca <command>'* ]]; then
+    || [[ "$registered_help" != *'Usage: occ <command>'* ]]; then
     echo "FAIL: registered CLI did not execute the packaged help command" >&2
     printf '%s\n' "$registered_help" >&2
     exit 1
   fi
   # Pre-lease builds prune every generation under sha256(AppImage path); this build must not extract there.
-  installed_target=$(readlink "$XDG_CACHE_HOME/orca/appimage/launcher/installed" 2>/dev/null || true)
+  installed_target=$(readlink "$XDG_CACHE_HOME/occ/appimage/launcher/installed" 2>/dev/null || true)
   installed_namespace=$(basename "$(dirname "$(dirname "$(dirname "$(dirname "$installed_target")")")")")
-  legacy_namespace=$(printf '%s' /input/orca.AppImage | sha256sum | cut -c1-24)
+  legacy_namespace=$(printf '%s' /input/occ.AppImage | sha256sum | cut -c1-24)
   if [[ ! -x "$installed_target" || "$installed_namespace" == "$legacy_namespace" ]]; then
     echo "FAIL: installed CLI payload ${installed_target:-missing} is in the legacy namespace or missing" >&2
     exit 1

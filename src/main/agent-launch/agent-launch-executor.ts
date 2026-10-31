@@ -3,7 +3,7 @@ import { decideAgentLaunchIntentMode } from './agent-launch-intent-mode'
 /** Structured launches create the workspace without an agent, then ask its host for chat support.
  * The host needs the created workspace to answer; a definitive refusal starts a terminal agent. */
 
-import { assertAgentPromptRequestActive } from '../runtime/orca-runtime-core'
+import { assertAgentPromptRequestActive } from '../runtime/occ-runtime-core'
 import { parsePaneKey } from '../../shared/stable-pane-id'
 import type { AgentLaunchResult } from '../../shared/agent-launch-intent'
 import { withoutReservedAgentCreateFields } from '../../shared/agent-launch-intent'

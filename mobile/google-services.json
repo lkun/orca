@@ -1,8 +1,8 @@
 {
   "project_info": {
     "project_number": "120364513935",
-    "project_id": "onorca-cloud",
-    "storage_bucket": "onorca-cloud.firebasestorage.app"
+    "project_id": "onocc-cloud",
+    "storage_bucket": "onocc-cloud.firebasestorage.app"
   },
   "client": [
     {

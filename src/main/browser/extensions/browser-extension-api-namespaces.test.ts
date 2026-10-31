@@ -56,7 +56,7 @@ vi.mock('./browser-extension-permission-prompt', () => ({
   askToGrantBrowserExtensionPermissions: mocks.prompt
 }))
 
-mocks.userData = mkdtempSync(join(tmpdir(), 'orca-extension-apis-'))
+mocks.userData = mkdtempSync(join(tmpdir(), 'occ-extension-apis-'))
 
 const { BROWSER_EXTENSION_EVENT_CHANNEL, BROWSER_EXTENSION_INVOKE_CHANNEL } =
   await import('../../../shared/browser-extension-channels')
@@ -434,7 +434,7 @@ describe('action icons', () => {
   it('reads icon paths as Chrome resolves them: against the worker script, or own URLs', async () => {
     const { getBrowserExtensionActionState } = await import('./browser-extension-action-registry')
     const manifest = extensions.get(VAULT)?.manifest ?? {}
-    manifest.background = { service_worker: 'scripts/orca-background.js' }
+    manifest.background = { service_worker: 'scripts/occ-background.js' }
     try {
       await call(VAULT, 'action', 'setIcon', [
         {

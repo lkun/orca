@@ -34,7 +34,7 @@ afterEach(async () => {
 })
 
 async function tempFile(initial: string): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-native-chat-watch-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-native-chat-watch-'))
   tempRoots.push(root)
   const filePath = join(root, 'rollout.jsonl')
   await writeFile(filePath, initial)
@@ -42,7 +42,7 @@ async function tempFile(initial: string): Promise<string> {
 }
 
 async function pendingFilePath(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-native-chat-watch-pending-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-native-chat-watch-pending-'))
   tempRoots.push(root)
   return join(root, 'rollout.jsonl')
 }

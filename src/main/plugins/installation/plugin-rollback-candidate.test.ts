@@ -8,19 +8,19 @@ import { readPluginRollbackVersion } from './plugin-rollback-candidate'
 const roots: string[] = []
 
 async function pluginDirWith(versions: Record<string, string>, current: string): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-rollback-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-rollback-'))
   roots.push(root)
   for (const [hash, version] of Object.entries(versions)) {
     await mkdir(join(root, hash), { recursive: true })
     await writeFile(
-      join(root, hash, 'orca-plugin.json'),
+      join(root, hash, 'occ-plugin.json'),
       JSON.stringify({
         manifestVersion: 1,
         id: 'notes',
         publisher: 'community',
         name: 'Notes',
         version,
-        engines: { orca: '>=1.0.0' },
+        engines: { occ: '>=1.0.0' },
         pluginApi: 1
       })
     )

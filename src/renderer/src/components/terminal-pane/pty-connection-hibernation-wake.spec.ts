@@ -2,7 +2,7 @@ import { bindPtyConnectionTestMocks } from './pty-connection-mocks.spec'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushAsyncTicks, createDeferred } from './pty-connection-test-async'
 import { sendTerminalInputThroughPane } from './pty-connection-test-dom'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import {
   bindsPaneInStore,
   expectNoWindowStart,
@@ -75,7 +75,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       })
       const pane = createPane(2)
       const paneKey = `tab-1:${leafIdForPane(2)}`
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await mainStartsPaneAs({
           ptyId: 'pty-main',
           bind: bindsPaneInStore(() => mockStoreState, 'tab-1', leafIdForPane(2))
@@ -118,7 +118,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       binding.noteVisibilityResume()
       await flushAsyncTicks()
 
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         // The wake asks main to start the pane; the window attaches to what main binds.
         await expectWindowStartAskedMain(transport, paneKey)
         expect(transport.connect).toHaveBeenLastCalledWith(
@@ -153,7 +153,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       })
       const pane = createPane(2)
       const paneKey = `tab-1:${leafIdForPane(2)}`
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await mainStartsPaneAs({
           ptyId: 'pty-main',
           bind: bindsPaneInStore(() => mockStoreState, 'tab-1', leafIdForPane(2))
@@ -186,7 +186,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       binding.noteVisibilityResume()
       await flushAsyncTicks()
 
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await expectWindowStartAskedMain(transport, paneKey)
         expect(transport.connect).toHaveBeenLastCalledWith(
           expect.objectContaining({ sessionId: 'pty-main', attachOnlyView: true })
@@ -211,7 +211,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       })
       const pane = createPane(2)
       const paneKey = `tab-1:${leafIdForPane(2)}`
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await mainStartsPaneAs({
           ptyId: 'pty-main',
           bind: bindsPaneInStore(() => mockStoreState, 'tab-1', leafIdForPane(2))
@@ -253,7 +253,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       expect(claimedProviderSessions).toEqual(new Set([claimKey]))
       await flushAsyncTicks()
 
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await expectWindowStartAskedMain(transport, paneKey)
         expect(transport.connect).toHaveBeenLastCalledWith(
           expect.objectContaining({ sessionId: 'pty-main', attachOnlyView: true })
@@ -301,7 +301,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       expect(createdTransportOptions[0]).not.toHaveProperty('replacesPtyId')
 
       const paneKey = `tab-restart-wake:${leafIdForPane(2)}`
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await mainStartsPaneAs({
           ptyId: 'pty-main',
           bind: bindsPaneInStore(() => mockStoreState, 'tab-restart-wake', leafIdForPane(2))
@@ -327,7 +327,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       await flushAsyncTicks()
       expect(binding.wakeHibernatedAgentIfArmed(new Set())).not.toBeNull()
       await flushAsyncTicks()
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         // The wake asks main; its attach to main's terminal names no PTY to replace.
         await expectWindowStartAskedMain(transport, paneKey)
         expect(transport.connect).toHaveBeenCalledTimes(2)
@@ -420,7 +420,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       })
       const pane = createPane(2)
       const paneKey = `tab-1:${leafIdForPane(2)}`
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await mainStartsPaneAs({
           ptyId: 'pty-main',
           bind: bindsPaneInStore(() => mockStoreState, 'tab-1', leafIdForPane(2))
@@ -458,7 +458,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       onPtyExit?.('tab-pty')
       await flushAsyncTicks()
 
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await expectWindowStartAskedMain(transport, paneKey)
         expect(transport.connect).toHaveBeenLastCalledWith(
           expect.objectContaining({ sessionId: 'pty-main', attachOnlyView: true })
@@ -507,7 +507,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       transport.connect.mockImplementationOnce(() => deferredSpawn.promise)
 
       const claimKey = 'wt-1\0claude\0session_id\0sess-hibernated-inflight'
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         // Claim while main starts, ask once, and leave record consumption to main.
         const layoutApply = await mainLayoutApplyTransport()
         layoutApply.answerWith('pending')
@@ -570,7 +570,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       transport.connect.mockRejectedValueOnce(new Error('transient spawn failure'))
 
       const claimKey = 'wt-1\0claude\0session_id\0sess-hibernated-retry'
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         // Main refuses the start: the wake re-arms, and the next wake asks main again.
         const layoutApply = await mainLayoutApplyTransport()
         layoutApply.answerWith({ refuse: 'pane_not_found' })
@@ -633,7 +633,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       })
       const pane = createPane(2)
       const paneKey = `tab-1:${leafIdForPane(2)}`
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await mainStartsPaneAs({
           ptyId: 'pty-main',
           bind: bindsPaneInStore(() => mockStoreState, 'tab-1', leafIdForPane(2))
@@ -665,7 +665,7 @@ export function registerPtyConnectionHibernationWakeTests(): void {
       onPtyExit?.('tab-pty')
       await flushAsyncTicks()
 
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await expectWindowStartAskedMain(transport, paneKey)
         expect(transport.connect).toHaveBeenLastCalledWith(
           expect.objectContaining({ sessionId: 'pty-main', attachOnlyView: true })

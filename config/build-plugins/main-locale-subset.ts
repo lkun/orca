@@ -64,7 +64,7 @@ export function createMainLocaleSubsetPlugin(): Plugin {
   let collectKeyLiterals: ExtractionScript['collectKeyLiterals'] | undefined
 
   return {
-    name: 'orca-main-locale-subset',
+    name: 'occ-main-locale-subset',
     async buildStart() {
       // Watch builds skip subsetting so keys added during dev are never stale.
       if (this.meta.watchMode) {

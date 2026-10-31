@@ -1,4 +1,4 @@
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { evaluatePolled } from './helpers/page-evaluate-polled'
 import {
   addRepoWithWorkspaces,
@@ -12,25 +12,25 @@ test.use({ seedTestRepo: false })
 
 for (const compactCards of [false, true]) {
   test(`legacy lineage keeps a local title step (${compactCards ? 'compact' : 'detailed'})`, async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    const repo = await addRepoWithWorkspaces(orcaPage, testInfo, 4)
+    await waitForSessionReady(occPage)
+    const repo = await addRepoWithWorkspaces(occPage, testInfo, 4)
     await writeWorkspaceMeta(
-      orcaPage,
+      occPage,
       repo.ids.map((worktreeId, index) => ({
         worktreeId,
         updates: { displayName: `Level ${index} workspace`, sortOrder: index }
       }))
     )
     await linkWorkspaces(
-      orcaPage,
+      occPage,
       repo.ids.slice(1).map((childId, index) => ({ childId, parentId: repo.ids[index]! }))
     )
     for (const showStatus of [false, true]) {
       for (const group of ['none', 'repo', 'manual', 'deep-manual', 'deep-folder'] as const) {
         await evaluatePolled(
-          orcaPage,
+          occPage,
           async ({ compactCards, showStatus, group, repoId }) => {
             const store = window.__store!
             const state = store.getState()
@@ -87,7 +87,7 @@ for (const compactCards of [false, true]) {
           { compactCards, showStatus, group, repoId: repo.repoId }
         )
 
-        const sidebar = orcaPage.locator('[data-worktree-sidebar]')
+        const sidebar = occPage.locator('[data-worktree-sidebar]')
         await expect(sidebar.locator('[data-worktree-card-status-slot]')).toHaveCount(
           showStatus ? 4 : 0
         )
@@ -112,7 +112,7 @@ for (const compactCards of [false, true]) {
             })
             .toBeCloseTo(LINEAGE_IMMEDIATE_PARENT_STEP + 1, 0)
         }
-        await orcaPage.screenshot({
+        await occPage.screenshot({
           path: testInfo.outputPath(`${group}-status-${showStatus}.png`)
         })
       }

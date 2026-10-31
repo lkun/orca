@@ -1,12 +1,12 @@
 import { agentSessionConversationView } from '../../../shared/agent-session-conversation-view'
 import { describe, expect, it } from 'vitest'
 import type { AgentSessionRecord } from '../../../shared/agent-session-record'
-import { testOrcaSessionId } from '../../../shared/orca-session-address-test-fixture'
+import { testOCCSessionId } from '../../../shared/occ-session-address-test-fixture'
 import { sessionRecord } from '../rpc/orchestration-session-caller-test-fixture'
 import { chatAssigneeSessionId, observeChatAssignee } from './chat-assignee'
 import type { AgentSessionRecordReader } from './structured-session-lineage'
 
-const CHAT = testOrcaSessionId('7e3b9d15-2c4a-4f86-a0b1-5c9e2d7f3b64')
+const CHAT = testOCCSessionId('7e3b9d15-2c4a-4f86-a0b1-5c9e2d7f3b64')
 
 function store(record: AgentSessionRecord, visible: boolean): AgentSessionRecordReader {
   return {
@@ -19,7 +19,7 @@ function store(record: AgentSessionRecord, visible: boolean): AgentSessionRecord
 
 describe('a chat assignee', () => {
   it('is named only by an OCC session ID handle', () => {
-    expect(chatAssigneeSessionId(`orca_session_id:${CHAT}`)).toBe(CHAT)
+    expect(chatAssigneeSessionId(`occ_session_id:${CHAT}`)).toBe(CHAT)
     expect(chatAssigneeSessionId('term_worker')).toBeNull()
     expect(chatAssigneeSessionId(null)).toBeNull()
   })
@@ -60,7 +60,7 @@ describe('a chat assignee', () => {
       status: 'unverifiable',
       reason: expect.stringContaining('after a /clear cannot be verified')
     })
-    const unknown = testOrcaSessionId('3f9a1c7e-6b2d-4e85-a0c4-9d1e7b3f5a26')
+    const unknown = testOCCSessionId('3f9a1c7e-6b2d-4e85-a0c4-9d1e7b3f5a26')
     expect(observeChatAssignee(unknown, null, store(sessionRecord(CHAT), true))).toMatchObject({
       status: 'unverifiable'
     })

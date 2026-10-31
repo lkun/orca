@@ -3,7 +3,7 @@ import { act, create as createRenderer } from 'react-test-renderer'
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../../src/shared/sidebar-inputs-switch', () => ({ ORCA_SIDEBAR_INPUTS_IS_MAIN: true }))
+vi.mock('../../../src/shared/sidebar-inputs-switch', () => ({ OCC_SIDEBAR_INPUTS_IS_MAIN: true }))
 
 import {
   SetCollapsedParams,
@@ -160,7 +160,7 @@ describe('the phone’s own option changes', () => {
     const screen = mount(async () => refused('method_not_found'))
     let outcome: Promise<PendingViewOutcome> | null = null
     act(() => {
-      outcome = screen.current().controls.sendCollapse('repo:orca', true)
+      outcome = screen.current().controls.sendCollapse('repo:occ', true)
     })
     await flush()
     expect(await outcome).toBe('unavailable')

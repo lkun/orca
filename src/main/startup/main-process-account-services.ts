@@ -5,7 +5,7 @@ import { createCodexSessionMigrationScheduler } from '../codex/codex-session-mig
 import { startCodexSessionBackfillInBackground } from '../codex/codex-session-backfill'
 import { startCodexSessionIndexHealInBackground } from '../codex/codex-session-index-heal'
 import { startCodexStateDbBackfillRecoveryInBackground } from '../codex/codex-state-db-backfill-recovery'
-import { getOrcaManagedCodexHomePath } from '../codex/codex-home-paths'
+import { getOCCManagedCodexHomePath } from '../codex/codex-home-paths'
 import {
   hasOpenCodeGoApiKey,
   readOpenCodeGoApiKey,
@@ -61,7 +61,7 @@ export function initializeMainProcessAccountServices(): void {
   state.codexAccounts = services.codexAccounts
   state.claudeRuntimeAuth = services.claudeRuntimeAuth
   state.claudeAccounts = services.claudeAccounts
-  void startCodexStateDbBackfillRecoveryInBackground(getOrcaManagedCodexHomePath())
+  void startCodexStateDbBackfillRecoveryInBackground(getOCCManagedCodexHomePath())
   // Defer shared-home migration; compatibility launches re-arm non-destructive scans for new rollouts (#4444, #8612, #12480).
   state.codexSessionMigration.scheduleInitialRun()
   store.onSettingsChanged((updates) => {

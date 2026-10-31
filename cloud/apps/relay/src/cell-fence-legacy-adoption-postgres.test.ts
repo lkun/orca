@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { RelayAssignmentStore } from './assignment-store.js'
 import { openRelayDatabase, type RelayDatabase } from './database.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 const cell = {
   id: 'legacy-fence-adoption-postgres',
@@ -78,9 +78,9 @@ describePostgres('PostgreSQL legacy fence adoption', () => {
       environment: 'production' as const,
       cellId: cell.id,
       cellIncarnation: incarnation,
-      migName: 'orca-relay-c3',
-      instanceGroup: 'https://compute.example/instanceGroups/orca-relay-c3',
-      generationIdentity: 'https://compute.example/instanceTemplates/orca-relay-c3-abc',
+      migName: 'occ-relay-c3',
+      instanceGroup: 'https://compute.example/instanceGroups/occ-relay-c3',
+      generationIdentity: 'https://compute.example/instanceTemplates/occ-relay-c3-abc',
       fenceCommit: 'a'.repeat(40),
       planSha256: 'b'.repeat(64),
       planObjectName:
@@ -92,7 +92,7 @@ describePostgres('PostgreSQL legacy fence adoption', () => {
       terraformStateObjectGeneration: '987654321',
       terraformStateObjectSha256: 'd'.repeat(64),
       requestReason:
-        'orca-relay-fence/22222222-2222-4222-8222-222222222222'
+        'occ-relay-fence/22222222-2222-4222-8222-222222222222'
     }
 
     const results = await Promise.allSettled([

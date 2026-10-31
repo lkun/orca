@@ -28,7 +28,7 @@ beforeEach(() => {
   mocks.hasHooksFile.mockReset().mockReturnValue(false)
 })
 
-// The host's own check of a WSL repo: orca.yaml over UNC would start a stopped distro (E9).
+// The host's own check of a WSL repo: occ.yaml over UNC would start a stopped distro (E9).
 describe('repo.hooksCheck on the host', () => {
   it('a background check of a stopped distro reads no file and says why', async () => {
     await expect(commands.checkRepoHooks('repo-1', { background: true })).resolves.toMatchObject({

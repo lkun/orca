@@ -179,7 +179,7 @@ green for new guarantees):
 7. Emergency drain/auth denial during the cutover; no altered hard-drain behavior.
 8. Real TCP WebSockets for two clients, admission race and failed cutover, independent
    execution-process identity and append-once mutation evidence. Docker SSH and
-   folder workspace continuity. Tests use `ORCA_BACKGROUND_LAUNCH=1`.
+   folder workspace continuity. Tests use `OCC_BACKGROUND_LAUNCH=1`.
 
 Keep tests proportional: deterministic component races first, then real transport,
 relevant cloud/desktop suites, types/lint and PR CI. PostgreSQL only on 55440 when

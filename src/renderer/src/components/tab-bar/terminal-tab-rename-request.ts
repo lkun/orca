@@ -1,5 +1,5 @@
 /** Address rename events to one tab; store-state requests would rerender every tab both when armed and when cleared. */
-export const RENAME_TERMINAL_TAB_EVENT = 'orca-rename-terminal-tab'
+export const RENAME_TERMINAL_TAB_EVENT = 'occ-rename-terminal-tab'
 
 export type RenameTerminalTabDetail = {
   tabId: string

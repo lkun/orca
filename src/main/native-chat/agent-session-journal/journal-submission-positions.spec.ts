@@ -45,7 +45,7 @@ export function registerJournalSubmissionPositionsTests(): void {
   })
 
   async function sendHandedOverThenWithdrawn() {
-    root = await mkdtemp(join(tmpdir(), 'orca-submission-positions-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-submission-positions-'))
     const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
     const submitted = await journal.appendSubmission({
       clientMessageId: 'send-1',
@@ -79,7 +79,7 @@ export function registerJournalSubmissionPositionsTests(): void {
   } as const
 
   async function sendWithdrawnByItsTurnEnd() {
-    root = await mkdtemp(join(tmpdir(), 'orca-submission-positions-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-submission-positions-'))
     const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
     await journal.appendSubmission({
       clientMessageId: 'send-1',

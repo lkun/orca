@@ -216,7 +216,7 @@ describe('digit-index shortcuts', () => {
         undefined,
         {
           context: 'terminal',
-          terminalShortcutPolicy: 'orca-first'
+          terminalShortcutPolicy: 'occ-first'
         }
       )
     ).toBe(1)

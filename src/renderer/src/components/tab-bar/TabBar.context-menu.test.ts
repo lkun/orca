@@ -6,7 +6,7 @@ import {
   stubTooltip
 } from './tab-bar-windows-shell-launch-render-stubs'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
 // Main's answer to the window's layout commands, as a switch-on build sends them.
 vi.mock('@/runtime/runtime-rpc-client', async (importOriginal) =>
@@ -450,7 +450,7 @@ describe('TabBar context menu wiring', () => {
     await layoutApplyTestTransport.settle()
 
     // Main-owned layouts draw the host’s unpin response; the window must not duplicate the mutation.
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       expect(unpinTabMock).not.toHaveBeenCalled()
     } else {
       expect(unpinTabMock).toHaveBeenCalledWith('unified-term-1')
@@ -512,7 +512,7 @@ describe('TabBar context menu wiring', () => {
   })
 
   it('omits impossible paired-web actions while keeping terminal and markdown', async () => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     const element = await renderTabBar({
       tabs: [TERMINAL_TAB],
       onNewFileTab: () => {},

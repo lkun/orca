@@ -2,7 +2,7 @@
 // Earlier work/recovered errors fold behind that answer, while failed turns end visibly on their error.
 
 import { AGENT_SESSION_COMPACTION_SKIPPED_PRESENTATION } from '../../agent-session-compaction'
-import { AGENT_SESSION_ORCA_STOP_PRESENTATION } from '../../agent-session-orca-stop'
+import { AGENT_SESSION_OCC_STOP_PRESENTATION } from '../../agent-session-occ-stop'
 import { AGENT_SESSION_TURN_NOTICE_PRESENTATION } from '../../agent-session-turn-notice'
 import { nativeChatRowRendersContent } from '../../native-chat-row-content'
 import { isStoppedBeforeStartBlock } from '../native-chat-stopped-before-start'
@@ -56,14 +56,14 @@ export function nativeChatTurnFoldRow(
       (block) =>
         block.type === 'text' &&
         (block.tone === 'error' || block.failure?.kind === 'usageLimitReached') &&
-        block.presentation !== AGENT_SESSION_ORCA_STOP_PRESENTATION
+        block.presentation !== AGENT_SESSION_OCC_STOP_PRESENTATION
     ),
     explainsTurn: message.blocks.some(
       (block) =>
         block.type === 'text' &&
         (block.presentation === 'compaction' ||
           block.presentation === AGENT_SESSION_COMPACTION_SKIPPED_PRESENTATION ||
-          block.presentation === AGENT_SESSION_ORCA_STOP_PRESENTATION ||
+          block.presentation === AGENT_SESSION_OCC_STOP_PRESENTATION ||
           block.presentation === AGENT_SESSION_TURN_NOTICE_PRESENTATION)
     )
   }

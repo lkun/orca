@@ -20,7 +20,7 @@ import {
 const roots: string[] = []
 
 async function tempRoot(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-marketplace-service-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-marketplace-service-'))
   roots.push(root)
   return root
 }
@@ -138,12 +138,12 @@ describe('PluginMarketplaceService', () => {
       pluginsDataDir: await tempRoot(),
       fetcher: async () =>
         fetched(
-          marketplace('Attack', 'community.orca-secrets', 'https://github.com/attacker/x.git')
+          marketplace('Attack', 'community.occ-secrets', 'https://github.com/attacker/x.git')
         )
     })
 
     await expect(service.addSource(source())).rejects.toThrow(
-      "community.orca-secrets uses a name reserved for official OCC plugins; only OCC's official catalog may list it"
+      "community.occ-secrets uses a name reserved for official OCC plugins; only OCC's official catalog may list it"
     )
     await expect(service.listSources()).resolves.toEqual([])
   })
@@ -153,7 +153,7 @@ describe('PluginMarketplaceService', () => {
       pluginsDataDir: await tempRoot(),
       fetcher: async () =>
         fetched(
-          marketplace('Mirror', 'stablyai.orca-notes', 'https://github.com/stablyai/orca-notes.git')
+          marketplace('Mirror', 'stablyai.occ-notes', 'https://github.com/stablyai/occ-notes.git')
         )
     })
 
@@ -166,10 +166,10 @@ describe('PluginMarketplaceService', () => {
       owner: 'stablyai',
       plugins: [
         {
-          id: 'stablyai.orca-shortcuts',
+          id: 'stablyai.occ-shortcuts',
           source: {
             kind: 'git',
-            url: 'git@github.com:stablyai/orca-shortcuts.git',
+            url: 'git@github.com:stablyai/occ-shortcuts.git',
             ref: 'main'
           },
           categories: ['keybindings']
@@ -181,10 +181,10 @@ describe('PluginMarketplaceService', () => {
       fetcher: async () => fetched(officialMarketplace)
     })
 
-    await service.addSource(source('https://github.com/stablyai/orca-plugins.git'))
+    await service.addSource(source('https://github.com/stablyai/occ-plugins.git'))
 
     await expect(service.listPlugins()).resolves.toEqual([
-      expect.objectContaining({ pluginKey: 'stablyai.orca-shortcuts', official: true })
+      expect.objectContaining({ pluginKey: 'stablyai.occ-shortcuts', official: true })
     ])
   })
 
@@ -228,8 +228,8 @@ describe('PluginMarketplaceService', () => {
     const root = await tempRoot()
     const officialMarketplace = marketplace(
       'OCC Plugins',
-      'stablyai.orca-notes',
-      'https://github.com/stablyai/orca-notes.git'
+      'stablyai.occ-notes',
+      'https://github.com/stablyai/occ-notes.git'
     )
     officialMarketplace.owner = 'stablyai'
     const fetcher = vi.fn(async () => fetched(officialMarketplace))
@@ -271,8 +271,8 @@ describe('PluginMarketplaceService', () => {
     }
     const officialMarketplace = marketplace(
       'OCC Plugins',
-      'stablyai.orca-notes',
-      'https://github.com/stablyai/orca-notes.git'
+      'stablyai.occ-notes',
+      'https://github.com/stablyai/occ-notes.git'
     )
     officialMarketplace.owner = 'stablyai'
     const listSources = vi
@@ -316,8 +316,8 @@ describe('PluginMarketplaceService', () => {
     )
     const officialMarketplace = marketplace(
       'OCC Plugins',
-      'stablyai.orca-notes',
-      'https://github.com/stablyai/orca-notes.git'
+      'stablyai.occ-notes',
+      'https://github.com/stablyai/occ-notes.git'
     )
     officialMarketplace.owner = 'stablyai'
     const service = new PluginMarketplaceService({
@@ -362,7 +362,7 @@ describe('PluginMarketplaceService', () => {
     const root = await tempRoot()
     const fetcher = vi.fn(async () => fetched(communityMarketplace()))
     const service = new PluginMarketplaceService({ pluginsDataDir: root, fetcher })
-    await service.addSource(source('https://github.com/StablyAI/orca-community-plugins'))
+    await service.addSource(source('https://github.com/StablyAI/occ-community-plugins'))
 
     await service.seedCommunitySource()
 

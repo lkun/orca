@@ -1,5 +1,5 @@
 import type { Store } from '../persistence'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import {
   SkillDiscoveryTargetSchema,
   type SkillDiscoveryResult,
@@ -20,7 +20,7 @@ import { runAsWslUserAct, wslDistroForPath } from '../wsl/wsl-unc-access-gate'
 import { registerSkillCloudIpcHandlers } from './skill-cloud-ipc-handlers'
 import { handleMainWindowSkillIpc } from './skill-ipc-main-window'
 
-export function registerSkillsHandlers(store: Store, runtime?: OrcaRuntimeService): void {
+export function registerSkillsHandlers(store: Store, runtime?: OCCRuntimeService): void {
   const discoverResolved = async (
     resolvedTarget: Awaited<ReturnType<typeof resolveSkillDiscoveryTarget>>,
     refresh: boolean,

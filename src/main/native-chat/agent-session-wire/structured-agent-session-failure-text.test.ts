@@ -28,7 +28,7 @@ import {
 } from './structured-agent-session-failure-text'
 import { structuredAgentSessionStartFailureRow } from './structured-agent-session-start-failure-row'
 
-const ORCA_INTERNAL =
+const OCC_INTERNAL =
   /agent_session_|execution_owner|provider_[a-z_]+|[0-9a-f]{8}-[0-9a-f]{4}-|[/\\][\w.-]+[/\\]|Error:|ENOENT/
 
 describe('structuredAgentSessionStartFailure', () => {
@@ -311,7 +311,7 @@ describe('structuredAgentSessionStartFailure', () => {
       kind: 'hostFault'
     })
     expect(structuredAgentSessionStartFailure({ hostFault: true }).reason).not.toMatch(
-      ORCA_INTERNAL
+      OCC_INTERNAL
     )
   })
 

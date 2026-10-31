@@ -33,15 +33,15 @@ const fixture = vi.hoisted(() => {
   return value
 })
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('../telemetry/client', () => ({ track: vi.fn() }))
 vi.mock('electron', () => ({
   app: { isPackaged: false, on: vi.fn(), once: vi.fn(), getPath: () => fixture.userData },
   nativeTheme: {}
 }))
 vi.mock('./main-process-state', () => ({ mainProcessState: fixture.state }))
-vi.mock('../runtime/orca-runtime', () => ({
-  OrcaRuntimeService: class {
+vi.mock('../runtime/occ-runtime', () => ({
+  OCCRuntimeService: class {
     readonly sidebarFacts = null
     readonly agentTransitions = { seedRestoredRows() {} }
     attachAgentStatusStore() {
@@ -71,7 +71,7 @@ vi.mock('../runtime/agent-state-rules/agent-state-rules-live-update', () => ({
 }))
 vi.mock('../artifacts/artifact-cloud-service', () => ({ ArtifactCloudService: class {} }))
 vi.mock('../skills/skill-cloud-service', () => ({ SkillCloudService: class {} }))
-vi.mock('./wsl-orcad-account-env-wiring', () => ({ installWslOrcadAccountShim: vi.fn() }))
+vi.mock('./wsl-occd-account-env-wiring', () => ({ installWslOCCdAccountShim: vi.fn() }))
 vi.mock('../codex/codex-hook-reconcile', () => ({ startCodexHooks: vi.fn() }))
 vi.mock('../star-nag/service', () => ({
   StarNagService: class {
@@ -115,8 +115,8 @@ vi.mock('./startup-diagnostics', () => ({ logStartupMilestone: vi.fn() }))
 vi.mock('../opencode/opencode-status-plugin-startup-refresh', () => ({
   refreshInstalledOpenCodeStatusPlugins: vi.fn()
 }))
-vi.mock('../orcad/orcad-artifact-cache-retention', () => ({
-  pruneDesktopOrcadArtifactCache: vi.fn()
+vi.mock('../occd/occd-artifact-cache-retention', () => ({
+  pruneDesktopOCCdArtifactCache: vi.fn()
 }))
 
 import { initializeReadyRuntimeServices } from './main-process-ready-runtime'
@@ -175,7 +175,7 @@ it('finishes the duplicate-terminal repair before ready services resolve, even b
   inner.writeSerializedState(Buffer.from(duplicatePtyProfile()))
   const authority = new DelayedAuthority(inner)
   const store = new Store({
-    dataFile: join(directory, 'orca-data.json'),
+    dataFile: join(directory, 'occ-data.json'),
     profileStateAuthority: authority
   })
   stores.push(store)

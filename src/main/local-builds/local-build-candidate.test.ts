@@ -30,7 +30,7 @@ function compatibility(): LocalBuildCompatibility {
 }
 
 async function fixture(options: { sha512?: string; url?: string } = {}) {
-  const directory = await mkdtemp(join(tmpdir(), 'orca-local-build-'))
+  const directory = await mkdtemp(join(tmpdir(), 'occ-local-build-'))
   tempDirectories.push(directory)
   const artifactName = 'occ-macos-arm64.zip'
   const artifactPath = join(directory, artifactName)
@@ -130,12 +130,12 @@ describe('loadLocalBuildCandidate', () => {
   it.runIf(process.platform === 'darwin')(
     'reads signed compatibility metadata through the held artifact descriptor',
     async () => {
-      const directory = await mkdtemp(join(tmpdir(), 'orca-local-build-zip-'))
+      const directory = await mkdtemp(join(tmpdir(), 'occ-local-build-zip-'))
       tempDirectories.push(directory)
       const zipRoot = join(directory, 'zip-root')
       const resources = join(zipRoot, 'OCC.app', 'Contents', 'Resources')
       await mkdir(resources, { recursive: true })
-      await writeFile(join(resources, 'orca-local-build.json'), JSON.stringify(compatibility()))
+      await writeFile(join(resources, 'occ-local-build.json'), JSON.stringify(compatibility()))
       const artifactName = 'occ-macos-arm64.zip'
       const artifactPath = join(directory, artifactName)
       await execFileAsync('/usr/bin/zip', ['-qry', artifactPath, 'OCC.app'], { cwd: zipRoot })

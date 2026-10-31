@@ -1,4 +1,4 @@
-import { CONTROL_CONTINUITY_LIMITS, RELAY_CLOSE_CODE } from '@orca-cloud/relay-contract'
+import { CONTROL_CONTINUITY_LIMITS, RELAY_CLOSE_CODE } from '@occ-cloud/relay-contract'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { RelayTokenClaims } from './relay-token-verifier.js'
 import {

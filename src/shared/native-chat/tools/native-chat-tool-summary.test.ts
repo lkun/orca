@@ -85,7 +85,7 @@ describe('describeToolInput', () => {
 
   it('keeps the filename when trimming an overlong path', () => {
     // Trim from the front to preserve the distinguishing basename.
-    const path = `/Users/me/orca/workspaces/orca/sta-3333/src/shared/${'nested/'.repeat(4)}app.tsx`
+    const path = `/Users/me/occ/workspaces/occ/sta-3333/src/shared/${'nested/'.repeat(4)}app.tsx`
     const label = describeToolInput({ file_path: path, offset: 10 })
     expect(label.length).toBeLessThanOrEqual(80)
     expect(label.startsWith('…')).toBe(true)
@@ -93,7 +93,7 @@ describe('describeToolInput', () => {
   })
 
   it('distinguishes two long paths that share a deep prefix', () => {
-    const base = '/Users/me/orca/workspaces/orca/sta-3333-tool-summary/src/session/native'
+    const base = '/Users/me/occ/workspaces/occ/sta-3333-tool-summary/src/session/native'
     const a = describeToolInput({ file_path: `${base}/MobileNativeChatMessage.tsx` })
     const b = describeToolInput({ file_path: `${base}/MobileNativeChatComposer.tsx` })
     expect(a).not.toBe(b)

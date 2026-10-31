@@ -1,7 +1,7 @@
 import { bindPtyConnectionTestMocks } from './pty-connection-mocks.spec'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { makePaneKey } from '../../../../shared/stable-pane-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import {
   expectNoWindowStart,
   expectWindowStartAskedMain,
@@ -137,7 +137,7 @@ export function registerPtyConnectionColdRestoreResumeCommandTests(): void {
         }
         await flushAsyncTicks(10)
 
-        if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+        if (OCC_LAYOUT_OWNER_IS_MAIN) {
           // Only main replaces the contentless shell and resumes the agent; the window drops its old view and asks main.
           expect(transport.disconnect).toHaveBeenCalled()
           await expectWindowStartAskedMain(transport, paneKey)
@@ -153,8 +153,8 @@ export function registerPtyConnectionColdRestoreResumeCommandTests(): void {
           expect.objectContaining({
             command: "codex '-c' 'disable_paste_burst=true' 'resume' 'codex-session-1'",
             env: expect.objectContaining({
-              ORCA_PANE_KEY: paneKey,
-              ORCA_AGENT_LAUNCH_TOKEN: expect.stringMatching(new RegExp(`^${UUID_RE}$`))
+              OCC_PANE_KEY: paneKey,
+              OCC_AGENT_LAUNCH_TOKEN: expect.stringMatching(new RegExp(`^${UUID_RE}$`))
             })
           })
         )
@@ -171,7 +171,7 @@ export function registerPtyConnectionColdRestoreResumeCommandTests(): void {
 
     // Main-owned resume must type no window-generated command.
     const windowResumeCommand = (command: string): string | undefined =>
-      ORCA_LAYOUT_OWNER_IS_MAIN ? undefined : command
+      OCC_LAYOUT_OWNER_IS_MAIN ? undefined : command
 
     // Cold restore must quote for the recorded shell; PowerShell quotes break cmd.exe resume argv (#12320).
     async function runWindowsColdRestoreResume(args: {

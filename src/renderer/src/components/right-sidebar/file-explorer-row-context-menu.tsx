@@ -58,7 +58,7 @@ type FileExplorerRowContextMenuProps = Pick<
   | 'connectionId'
   | 'runtimeDownloadContext'
   | 'supportsFolderDownload'
-  | 'canOpenInOrcaBrowser'
+  | 'canOpenInOCCBrowser'
   | 'canCollapseFolderSubtree'
   | 'targetDir'
   | 'targetDepth'
@@ -83,7 +83,7 @@ export function FileExplorerRowContextMenu({
   connectionId,
   runtimeDownloadContext,
   supportsFolderDownload,
-  canOpenInOrcaBrowser,
+  canOpenInOCCBrowser,
   canCollapseFolderSubtree,
   targetDir,
   targetDepth,
@@ -121,7 +121,7 @@ export function FileExplorerRowContextMenu({
   const revealBlocked = isRevealOrEditorOpenBlocked(revealOwner)
   // Why: only opened files save outside projects; main refuses tree edits under an outside folder link.
   const writesBlocked = node.outsideProject === true
-  const handleOpenInOrcaBrowser = useCallback(() => {
+  const handleOpenInOCCBrowser = useCallback(() => {
     if (!activeWorktreeId) {
       return
     }
@@ -222,8 +222,8 @@ export function FileExplorerRowContextMenu({
           {translate('auto.components.right.sidebar.FileExplorerRow.1d8e182c32', 'View File')}
         </ContextMenuItem>
       )}
-      {!node.isDirectory && activeWorktreeId && canOpenInOrcaBrowser && (
-        <ContextMenuItem onSelect={handleOpenInOrcaBrowser}>
+      {!node.isDirectory && activeWorktreeId && canOpenInOCCBrowser && (
+        <ContextMenuItem onSelect={handleOpenInOCCBrowser}>
           <Globe />
           {translate(
             'auto.components.right.sidebar.FileExplorerRow.dd112c81d2',

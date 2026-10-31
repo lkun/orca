@@ -1,7 +1,7 @@
 // Layout-owner editor opens/closes/promotions draw only from main frames; switch-off cases draw locally without main.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as AgentStatusModule from '@/lib/agent-status'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import type { Tab } from '../../../../shared/tab-types'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 import { buildEditorSessionData } from '@/lib/workspace-session'
@@ -84,7 +84,7 @@ const groupOf = (groupId: string) =>
 const tabFor = (fileId: string, groupId = g1): Tab | undefined =>
   tabsOf().find((tab) => tab.entityId === fileId && tab.groupId === groupId)
 
-describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('editor tabs drawn from main’s frame', () => {
+describe.runIf(OCC_LAYOUT_OWNER_IS_MAIN)('editor tabs drawn from main’s frame', () => {
   it('sends the open with the proposed id, group, preview and file; draws it with the frame', async () => {
     const fileId = openFile('/a.ts', { preview: true })
     const [command] = layoutApplyTestTransport.sentOfType('openEditorTab')
@@ -444,7 +444,7 @@ describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('editor tabs drawn from main’s frame
   })
 })
 
-describe.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)('editor tabs with the switch off', () => {
+describe.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)('editor tabs with the switch off', () => {
   it('draws at once and sends nothing', () => {
     const b = openFile('/b.ts', { preview: true })
     expect(tabFor(b)).toBeDefined()

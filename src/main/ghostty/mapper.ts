@@ -34,7 +34,7 @@ const normalizeHex = (v: string): string => (v.startsWith('#') ? v : `#${v}`)
 
 type FieldParser = (value: string, rawValue: string | string[]) => FieldResult
 
-export function mapGhosttyToOrca(
+export function mapGhosttyToOCC(
   parsed: Record<string, string | string[]>,
   isMacOS = process.platform === 'darwin'
 ): {

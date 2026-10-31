@@ -131,7 +131,7 @@ const ACCOUNTS: Record<string, Account> = {
 
 let root: string
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-new-chat-effort-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-new-chat-effort-'))
 })
 afterEach(() => {
   rmSync(root, { recursive: true, force: true })

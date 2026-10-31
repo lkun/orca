@@ -116,7 +116,7 @@ describe('resolveFullLaneDropIndex', () => {
 
 describe('workspace lane full-id channel', () => {
   it('round-trips lane membership through the delimiter', () => {
-    const ids = ['repo-a::/Users/dev/projects/orca/main', 'repo-b::C:\\src\\atlas, v2']
+    const ids = ['repo-a::/Users/dev/projects/occ/main', 'repo-b::C:\\src\\atlas, v2']
     const serialized = serializeWorkspaceLaneFullIds(ids)
 
     expect(serialized).not.toBeNull()

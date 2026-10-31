@@ -40,7 +40,7 @@ describeRender('terminal font startup and late painting', () => {
       ).toBe(false)
       await openProbeTerminal(page)
       await page.evaluate(() =>
-        globalThis.__orcaTerminalProbe.write('\x1b[?25l\x1b[2J\x1b[H\uf07b')
+        globalThis.__occTerminalProbe.write('\x1b[?25l\x1b[2J\x1b[H\uf07b')
       )
       const screen = page.locator('.xterm-screen')
       expect(await screen.locator('canvas').count()).toBeGreaterThan(0)
@@ -73,7 +73,7 @@ describeRender('terminal font startup and late painting', () => {
       expect(after.equals(before), 'the folder glyph must repaint after the font arrives').toBe(
         false
       )
-      expect(await page.evaluate(() => globalThis.__orcaTerminalEngineErrors)).toEqual([])
+      expect(await page.evaluate(() => globalThis.__occTerminalEngineErrors)).toEqual([])
     } finally {
       releaseFont()
       await page.close()
@@ -102,7 +102,7 @@ describeRender('terminal font startup and late painting', () => {
       expect(
         await page.evaluate(() => document.fonts.check('13px "OCC Nerd Font Symbols"', '\ue0b0'))
       ).toBe(false)
-      expect(await page.evaluate(() => globalThis.__orcaTerminalEngineErrors)).toEqual([])
+      expect(await page.evaluate(() => globalThis.__occTerminalEngineErrors)).toEqual([])
     } finally {
       await page.close()
     }

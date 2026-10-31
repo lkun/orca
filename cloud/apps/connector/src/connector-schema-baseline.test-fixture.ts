@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS connector_hosts (
   host_name TEXT NOT NULL,
   platform TEXT NOT NULL,
   runtime TEXT NOT NULL,
-  orca_version TEXT NOT NULL,
+  occ_version TEXT NOT NULL,
   hello_rev BIGINT NOT NULL,
   hello TEXT NOT NULL,
   unsettled_due INTEGER NOT NULL,

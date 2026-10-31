@@ -1,6 +1,6 @@
 name: Hourly macOS Dev Build
 
-# Publish signed/notarized main builds to orca-hourly; notarization preserves TCC grants across updates. PR/release gates own validation. Separate repo avoids hourly tags crowding stable/RC Atom entries. Provision shared HOURLY_RELEASE_APP_ID/private key with setup-hourly-release-token.sh and App write access there. Refresh one-hour token after read-only build; a retry may still outlive it, leaving only an invisible draft whose build number remains reserved until manifests validate.
+# Publish signed/notarized main builds to occ-hourly; notarization preserves TCC grants across updates. PR/release gates own validation. Separate repo avoids hourly tags crowding stable/RC Atom entries. Provision shared HOURLY_RELEASE_APP_ID/private key with setup-hourly-release-token.sh and App write access there. Refresh one-hour token after read-only build; a retry may still outlive it, leaving only an invisible draft whose build number remains reserved until manifests validate.
 
 on:
   schedule:
@@ -22,14 +22,14 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  HOURLY_REPO: stablyai/orca-hourly
+  HOURLY_REPO: stablyai/occ-hourly
   # Keep ~3 days of history so a regression can be bisected across a weekend.
   HOURLY_RETAIN_COUNT: 72
 
 jobs:
   # Avoid occupying the limited Mac pool when main has not moved.
   preflight:
-    if: github.repository == 'stablyai/orca'
+    if: github.repository == 'stablyai/occ'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -43,7 +43,7 @@ jobs:
           app-id: ${{ secrets.HOURLY_RELEASE_APP_ID }}
           private-key: ${{ secrets.HOURLY_RELEASE_APP_PRIVATE_KEY }}
           owner: stablyai
-          repositories: orca-hourly
+          repositories: occ-hourly
           permission-contents: read
 
       - name: Check whether main moved since the last hourly
@@ -81,8 +81,8 @@ jobs:
             echo "main moved to $head_sha (last hourly built $last_sha); building."
           fi
 
-  # As release-cut does: every SSH host runs orcad, deployed from the template this build ships.
-  orcad-template:
+  # As release-cut does: every SSH host runs occd, deployed from the template this build ships.
+  occd-template:
     needs: preflight
     if: needs.preflight.outputs.should_build == 'true'
     permissions:
@@ -97,7 +97,7 @@ jobs:
   build-hourly-mac:
     needs:
       - preflight
-      - orcad-template
+      - occd-template
     if: needs.preflight.outputs.should_build == 'true'
     outputs:
       tag: ${{ steps.release.outputs.tag }}
@@ -117,7 +117,7 @@ jobs:
           ref: ${{ needs.preflight.outputs.head_sha }}
           # Version helpers only read HEAD; published versions come from git tags.
           fetch-depth: 1
-          # Read this repo without persisted credentials; write orca-hourly via env App token (zizmor: artipacked).
+          # Read this repo without persisted credentials; write occ-hourly via env App token (zizmor: artipacked).
           persist-credentials: false
 
       - name: Mint hourly repo token
@@ -127,7 +127,7 @@ jobs:
           app-id: ${{ secrets.HOURLY_RELEASE_APP_ID }}
           private-key: ${{ secrets.HOURLY_RELEASE_APP_PRIVATE_KEY }}
           owner: stablyai
-          repositories: orca-hourly
+          repositories: occ-hourly
 
       - name: Setup pnpm
         uses: ./.github/actions/setup-pnpm
@@ -145,13 +145,13 @@ jobs:
       # Cache bundled host Node by exact pin without restore keys.
       - name: Locate the pinned Node runtime cache
         shell: bash
-        run: echo "ORCA_NODE_RUNTIME_CACHE_DIR=$HOME/Library/Caches/orca-node-runtime" >>"$GITHUB_ENV"
+        run: echo "OCC_NODE_RUNTIME_CACHE_DIR=$HOME/Library/Caches/occ-node-runtime" >>"$GITHUB_ENV"
 
       - name: Cache the pinned Node runtime
         uses: actions/cache@v5
         with:
-          path: ~/Library/Caches/orca-node-runtime
-          key: orca-node-runtime-mac-${{ hashFiles('src/shared/node-runtime-pin.ts') }}
+          path: ~/Library/Caches/occ-node-runtime
+          key: occ-node-runtime-mac-${{ hashFiles('src/shared/node-runtime-pin.ts') }}
 
       - name: Cache electron-builder downloads
         uses: actions/cache@v5
@@ -208,7 +208,7 @@ jobs:
             --jq '.[].tagName' || true)"
           published="$main_tags"$'\n'"$channel_tags"
           echo "Published version sources: $(grep -c . <<<"$main_tags" || true) main tags, $(grep -c . <<<"$channel_tags" || true) channel tags"
-          ORCA_PUBLISHED_VERSIONS="$published" ORCA_HOURLY_RELEASE_NAMES="$names" \
+          OCC_PUBLISHED_VERSIONS="$published" OCC_HOURLY_RELEASE_NAMES="$names" \
             node config/scripts/hourly-build-version.mjs \
             >"$RUNNER_TEMP/hourly-identity.txt"
           grep -E '^(version|build_number)=' "$RUNNER_TEMP/hourly-identity.txt"
@@ -224,14 +224,14 @@ jobs:
         env:
           NODE_OPTIONS: --max-old-space-size=4096
           # Unset dev identity so official-only stable/rc telemetry stays silent.
-          ORCA_DIAGNOSTICS_TOKEN_URL: https://www.onorca.dev/diagnostics/token
+          OCC_DIAGNOSTICS_TOKEN_URL: https://www.onocc.dev/diagnostics/token
 
       # After the app build so nothing that cleans out/ can drop it; electron-builder ships it.
-      - name: Download the orcad deployment template
+      - name: Download the occd deployment template
         uses: actions/download-artifact@v8
         with:
-          name: orcad-template
-          path: out/orcad-template
+          name: occd-template
+          path: out/occd-template
 
       # Refresh write token after build to give long notary/upload work a full hour.
       - name: Re-mint hourly repo token for publish
@@ -241,7 +241,7 @@ jobs:
           app-id: ${{ secrets.HOURLY_RELEASE_APP_ID }}
           private-key: ${{ secrets.HOURLY_RELEASE_APP_PRIVATE_KEY }}
           owner: stablyai
-          repositories: orca-hourly
+          repositories: occ-hourly
 
       - name: Create hourly release
         id: release
@@ -263,7 +263,7 @@ jobs:
             --draft \
             --notes "Automated hourly macOS and Windows dev build from commit \`$short_sha\`.
 
-          Built from [\`stablyai/orca@$short_sha\`](https://github.com/stablyai/orca/commit/$SHA).
+          Built from [\`stablyai/occ@$short_sha\`](https://github.com/stablyai/occ/commit/$SHA).
 
           **Unvetted.** No tests ran. The macOS build is signed and notarized like a
           release, so it installs through OCC's in-app updater and opens from a manual
@@ -283,14 +283,14 @@ jobs:
           timeout_minutes: 45
           max_attempts: 2
           retry_wait_seconds: 30
-          command: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON config/scripts/pinned-node-downloads.mjs darwin-arm64 darwin-x64 && node config/scripts/ensure-native-runtime.mjs --runtime=electron && if [ -f config/scripts/build-mac-notarization-overlap.mjs ]; then ORCA_MAC_HOURLY=1 node config/scripts/build-mac-notarization-overlap.mjs --publish always; else ORCA_MAC_HOURLY=1 pnpm exec electron-builder --config config/electron-builder.config.cjs --mac --publish always; fi
+          command: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON config/scripts/pinned-node-downloads.mjs darwin-arm64 darwin-x64 && node config/scripts/ensure-native-runtime.mjs --runtime=electron && if [ -f config/scripts/build-mac-notarization-overlap.mjs ]; then OCC_MAC_HOURLY=1 node config/scripts/build-mac-notarization-overlap.mjs --publish always; else OCC_MAC_HOURLY=1 pnpm exec electron-builder --config config/electron-builder.config.cjs --mac --publish always; fi
         env:
-          # Give publisher token write access to configured orca-hourly repo.
+          # Give publisher token write access to configured occ-hourly repo.
           GH_TOKEN: ${{ steps.app_token_publish.outputs.token }}
-          ORCA_HOURLY_BUILD_VERSION: ${{ steps.hourly.outputs.version }}
-          ORCA_BUILD_COMMIT: ${{ steps.hourly.outputs.commit }}
+          OCC_HOURLY_BUILD_VERSION: ${{ steps.hourly.outputs.version }}
+          OCC_BUILD_COMMIT: ${{ steps.hourly.outputs.commit }}
           # beforePack and afterPack fail the package when the template is absent.
-          ORCA_REQUIRE_ORCAD_TEMPLATE: '1'
+          OCC_REQUIRE_OCCD_TEMPLATE: '1'
           CSC_LINK: ${{ secrets.MAC_CERTS }}
           CSC_KEY_PASSWORD: ${{ secrets.MAC_CERTS_PASSWORD }}
           # Require Apple id/app-specific password/team for notarization, separate from signing cert.
@@ -402,5 +402,5 @@ jobs:
       tag: ${{ needs.build-hourly-mac.outputs.tag }}
       ref: ${{ needs.build-hourly-mac.outputs.head_sha }}
       version: ${{ needs.build-hourly-mac.outputs.version }}
-      orcad_template: true
+      occd_template: true
       fast_release: false

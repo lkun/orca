@@ -5,9 +5,9 @@ const os = require('node:os')
 const path = require('node:path')
 const { createRequire } = require('node:module')
 
-const CACHE_DIR_ENV = 'ORCA_MOBILE_NATIVE_BUILD_CACHE_DIR'
+const CACHE_DIR_ENV = 'OCC_MOBILE_NATIVE_BUILD_CACHE_DIR'
 // Only native-client.mjs enables writes after regeneration, preventing stale native projects from poisoning the cache.
-const CACHE_MODE_ENV = 'ORCA_MOBILE_NATIVE_BUILD_CACHE_MODE'
+const CACHE_MODE_ENV = 'OCC_MOBILE_NATIVE_BUILD_CACHE_MODE'
 const ENTRIES_KEPT_PER_PLATFORM = 3
 const STAGING_PREFIX = '.staging-'
 const STALE_STAGING_MS = 24 * 60 * 60 * 1000
@@ -25,7 +25,7 @@ function resolveCacheDir(env = process.env, platform = process.platform, homedir
   } else {
     base = env.XDG_CACHE_HOME || path.join(homedir, '.cache')
   }
-  return path.join(base, 'orca-mobile', 'native-builds')
+  return path.join(base, 'occ-mobile', 'native-builds')
 }
 
 function buildVariant(platform, runOptions = {}) {

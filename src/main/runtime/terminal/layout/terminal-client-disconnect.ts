@@ -1,8 +1,8 @@
-import { OrcaRuntimeWithHasRecentTerminalOutputPath } from '../output/terminal-output-path'
-import type { DriverState } from '../../orca-runtime-core'
+import { OCCRuntimeWithHasRecentTerminalOutputPath } from '../output/terminal-output-path'
+import type { DriverState } from '../../occ-runtime-core'
 import type { RuntimeFileCommandSurface } from '../../runtime-file-command-surface'
 
-export abstract class OrcaRuntimeWithOnClientDisconnected extends OrcaRuntimeWithHasRecentTerminalOutputPath {
+export abstract class OCCRuntimeWithOnClientDisconnected extends OCCRuntimeWithHasRecentTerminalOutputPath {
   abstract getMobileDisplayMode(ptyId: string): 'auto' | 'desktop'
   protected abstract pickMostRecentActor(
     inner: Map<string, { clientId: string; lastActedAt: number }>

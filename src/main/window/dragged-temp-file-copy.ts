@@ -26,14 +26,14 @@ import {
 
 // macOS drag thumbnails require OCC-main TCC attribution; detached PTY daemons get EPERM on TemporaryItems/NSIRD_* originals.
 
-const DRAG_TEMP_COPY_ROOT_NAME = 'orca-drops'
+const DRAG_TEMP_COPY_ROOT_NAME = 'occ-drops'
 // No expiry: terminal agents/drafts/messages may still name copies without ownership signals. A local chat's drop goes straight into its chat store instead.
 
 export type DragTempCopyEnvironment = {
   platform: NodeJS.Platform
   /** macOS per-user temp dir: where drag providers put their files. */
   sourceTempRoot: string
-  /** OCC-owned directory that holds one `orca-drop-*` directory per copy. */
+  /** OCC-owned directory that holds one `occ-drop-*` directory per copy. */
   copyRoot: string
 }
 

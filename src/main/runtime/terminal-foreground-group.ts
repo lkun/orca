@@ -1,7 +1,7 @@
 /** Limit ps to the pane's terminal so launch paste avoids whole-machine scans that take seconds on loaded hosts. */
 
 import { recognizeAgentProcessFromCommandLine } from '../../shared/agent-process-recognition'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { runPsInProcess } from '../../shared/libproc-process-table'
 import {
   parseShellForegroundRows,

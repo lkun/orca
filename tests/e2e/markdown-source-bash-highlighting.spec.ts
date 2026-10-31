@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   cleanupMarkdownFixture,
@@ -41,26 +41,26 @@ async function distinctLeafTokenColors(line: Locator): Promise<number> {
   })
 }
 
-test('highlights bash and sh fences in Markdown Source mode', async ({ orcaPage }, testInfo) => {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
+test('highlights bash and sh fences in Markdown Source mode', async ({ occPage }, testInfo) => {
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
 
-  const context = await getActiveWorktreeContext(orcaPage)
+  const context = await getActiveWorktreeContext(occPage)
   let filePath: string | null = null
 
   try {
     filePath = await createMarkdownFixture(
       context,
-      '.orca-e2e-markdown-source-highlighting',
+      '.occ-e2e-markdown-source-highlighting',
       'bash-and-sh',
       testInfo.workerIndex,
       MARKDOWN
     )
-    await openMarkdownFixture(orcaPage, context, filePath)
-    await waitForRichMarkdownEditor(orcaPage)
-    await switchToSourceMode(orcaPage)
+    await openMarkdownFixture(occPage, context, filePath)
+    await waitForRichMarkdownEditor(occPage)
+    await switchToSourceMode(occPage)
 
-    const monaco = orcaPage.locator('.monaco-editor').first()
+    const monaco = occPage.locator('.monaco-editor').first()
     await expect(monaco).toBeVisible({ timeout: 25_000 })
 
     for (const marker of ['bash-highlight-marker', 'shell-control-marker']) {

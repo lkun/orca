@@ -1,5 +1,5 @@
 import type { ExecutionHostId } from '../../../shared/execution-host'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../../shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../shared/sidebar-inputs-switch'
 import type { AppState } from '@/store/types'
 import type { ActiveWorktreeStateTransition } from '@/store/slices/worktree-helpers'
 import { stampWorktreeVisit } from '@/store/slices/worktrees/session/worktree-visit-recency'
@@ -25,7 +25,7 @@ export function visitStampsFor(
   previous: PreviousActive,
   nextHostId?: ExecutionHostId | null
 ): VisitStamp[] {
-  if (!ORCA_SIDEBAR_INPUTS_IS_MAIN) {
+  if (!OCC_SIDEBAR_INPUTS_IS_MAIN) {
     return [[workspaceId]]
   }
   // Switch point: terminals no longer stamp Recent, so leaving a workspace marks it used up to now.

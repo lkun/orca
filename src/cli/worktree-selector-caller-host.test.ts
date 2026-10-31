@@ -17,10 +17,10 @@ function row(hostId: 'local' | `ssh:${string}` | undefined, id: string, identity
 }
 
 const SSH_CALLER_D = {
-  ORCA_ORCHESTRATION_COMPATIBILITY_HOST_KIND: 'ssh',
-  ORCA_ORCHESTRATION_COMPATIBILITY_HOST_ID: 'host d',
-  ORCA_ORCHESTRATION_COMPATIBILITY_HOST_INCARNATION: 'inc-1',
-  ORCA_ORCHESTRATION_COMPATIBILITY_ATTACHMENT: 'att-1'
+  OCC_ORCHESTRATION_COMPATIBILITY_HOST_KIND: 'ssh',
+  OCC_ORCHESTRATION_COMPATIBILITY_HOST_ID: 'host d',
+  OCC_ORCHESTRATION_COMPATIBILITY_HOST_INCARNATION: 'inc-1',
+  OCC_ORCHESTRATION_COMPATIBILITY_ATTACHMENT: 'att-1'
 }
 
 const TWINS = [
@@ -35,9 +35,9 @@ describe('implicit worktree selection is scoped to the caller host (#21210)', ()
     expect(getCallerExecutionHostId({})).toBe('local')
     expect(
       getCallerExecutionHostId({
-        ORCA_ORCHESTRATION_COMPATIBILITY_HOST_KIND: 'wsl',
-        ORCA_ORCHESTRATION_COMPATIBILITY_HOST_ID: 'local',
-        ORCA_ORCHESTRATION_COMPATIBILITY_HOST_INCARNATION: 'Ubuntu'
+        OCC_ORCHESTRATION_COMPATIBILITY_HOST_KIND: 'wsl',
+        OCC_ORCHESTRATION_COMPATIBILITY_HOST_ID: 'local',
+        OCC_ORCHESTRATION_COMPATIBILITY_HOST_INCARNATION: 'Ubuntu'
       })
     ).toBe('local')
   })

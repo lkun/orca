@@ -7,7 +7,7 @@ import { resolveDevCliUserDataPath } from './dev-instance-isolation.mjs'
 
 const repoRoot = resolve(import.meta.dirname, '..', '..')
 const cliPath =
-  process.env.ORCA_COMPUTER_SMOKE_CLI_PATH ?? resolve(repoRoot, 'out', 'cli', 'index.js')
+  process.env.OCC_COMPUTER_SMOKE_CLI_PATH ?? resolve(repoRoot, 'out', 'cli', 'index.js')
 const args = new Set(process.argv.slice(2))
 const requestedApps = valueFlag('--apps')
 const includeScreenshot = args.has('--screenshot')
@@ -16,7 +16,7 @@ const requireTarget = args.has('--require-target')
 const session = valueFlag('--session') ?? `computer-smoke-${process.pid}`
 const preferredApps = (
   requestedApps ??
-  process.env.ORCA_COMPUTER_SMOKE_APPS ??
+  process.env.OCC_COMPUTER_SMOKE_APPS ??
   'Finder,TextEdit,Text Editor,gedit,Notepad,Calculator,Microsoft Edge,Google Chrome,Safari,Slack,Spotify'
 )
   .split(',')
@@ -147,8 +147,8 @@ function runCli(cliArgs, options = {}) {
     encoding: 'utf8',
     env: {
       ...process.env,
-      ORCA_USER_DATA_PATH:
-        process.env.ORCA_COMPUTER_SMOKE_USER_DATA_PATH ??
+      OCC_USER_DATA_PATH:
+        process.env.OCC_COMPUTER_SMOKE_USER_DATA_PATH ??
         resolveDevCliUserDataPath({ repoRoot, env: { ...process.env } })
     }
   })

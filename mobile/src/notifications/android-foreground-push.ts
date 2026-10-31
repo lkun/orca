@@ -1,7 +1,7 @@
 import { Platform } from 'react-native'
 import * as Notifications from 'expo-notifications'
 import { canPresentForegroundPush } from './push-receive'
-import { readOrcaPushPayload } from './push-payload'
+import { readOCCPushPayload } from './push-payload'
 
 export async function presentForegroundPush(
   identifier: string,
@@ -9,7 +9,7 @@ export async function presentForegroundPush(
   prepare: () => boolean | Promise<boolean> = () => true,
   isCurrent: () => boolean = () => true
 ): Promise<void> {
-  const payload = readOrcaPushPayload(content.data)
+  const payload = readOCCPushPayload(content.data)
   if (
     !payload ||
     !(await prepare()) ||
@@ -47,7 +47,7 @@ export function startAndroidForegroundPushPresentation(): () => void {
     ) {
       return
     }
-    const payload = readOrcaPushPayload(content.data)
+    const payload = readOCCPushPayload(content.data)
     if (!payload || payload.kind === 'dismiss' || (!content.title && !content.body)) {
       return
     }

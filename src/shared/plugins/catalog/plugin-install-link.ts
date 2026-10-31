@@ -12,7 +12,7 @@ const PLUGIN_INSTALL_LINK_PREFIX = 'occ://plugins'
 
 export const COMMUNITY_MARKETPLACE_GIT_SOURCE: PluginMarketplaceGitSource = {
   kind: 'git',
-  url: 'https://github.com/stablyai/orca-community-plugins.git',
+  url: 'https://github.com/stablyai/occ-community-plugins.git',
   ref: 'main'
 }
 

@@ -102,7 +102,7 @@ export function summarizeBundledSkillPlan(plan: BundledSkillPlan): BundledSkillP
   return {
     badge:
       global && states.has('repair') ? 'repair' : global && states.has('update') ? 'update' : null,
-    // Clean leftover swap siblings or a stray released .orca-old could restore after the user deletes the skill.
+    // Clean leftover swap siblings or a stray released .occ-old could restore after the user deletes the skill.
     hasWork:
       skills.some((skill) => ['install', 'update', 'repair'].includes(skill.state)) ||
       plan.skills.some((entry) => entry.ops.some((op) => op.cleanup.length > 0)),

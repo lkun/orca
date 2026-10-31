@@ -110,7 +110,7 @@ const URL_RULES = [
   [/src\/main\/git\/|src\/shared\/git|porcelain/, 'git-parse'],
   [/electron\/js2c|src\/main\/ipc\//, 'ipc'],
   [/node:internal\/fs|node:fs/, 'fs'],
-  [/src\//, 'other-orca'],
+  [/src\//, 'other-occ'],
   [/node:/, 'other-node']
 ]
 

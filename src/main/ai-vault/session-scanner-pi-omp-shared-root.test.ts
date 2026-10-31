@@ -133,7 +133,7 @@ describe('scanAiVaultSessions with overlapping Pi and OMP roots', () => {
       scope: { scopePaths: ['/repo/app'], limit: 1 }
     }
   ])('lists each transcript once under its writer when Pi scans $layout', async (testCase) => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-pi-omp-shared-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-pi-omp-shared-'))
     tempRoots.push(root)
     const sessionsDir = join(root, 'agent', 'sessions')
     await writeSharedRootTranscripts(sessionsDir)

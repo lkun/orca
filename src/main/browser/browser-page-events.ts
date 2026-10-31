@@ -6,7 +6,7 @@ export type BrowserPageEvent =
   | { kind: 'tab'; url: string }
   | {
       kind: 'popup'
-      action: Exclude<BrowserPopupEvent['action'], 'opened-in-orca'> | 'window'
+      action: Exclude<BrowserPopupEvent['action'], 'opened-in-occ'> | 'window'
       origin: string
     }
   | { kind: 'download'; filename: string; origin: string }

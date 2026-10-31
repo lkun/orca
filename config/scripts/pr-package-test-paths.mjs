@@ -93,7 +93,7 @@ export const WINDOWS_BOUNDARY_TESTS = [
   'src/main/cli/wsl-cli-powershell-boundary.test.ts',
   'src/main/computer/desktop-script-runtime-host.win32.test.ts',
   'src/main/cursor/hook-service.test.ts',
-  'src/main/orca-profiles/profile-index-store.test.ts',
+  'src/main/occ-profiles/profile-index-store.test.ts',
   'src/main/startup/windows-install-dir-acl-repair.win32.test.ts',
   'src/main/startup/windows-app-data-path.test.ts',
   'src/main/startup/windows-std-handle-inheritance.win32.test.ts',

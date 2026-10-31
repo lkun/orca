@@ -1,6 +1,6 @@
 /**
  * R42: during the move to WSL hosts, the WSL bridge (installing from Windows) and the distro's own
- * orcad (installing locally) both reconcile Claude's hooks in the distro's ~/.claude. Both write
+ * occd (installing locally) both reconcile Claude's hooks in the distro's ~/.claude. Both write
  * the one shared entry, so in either order the file ends with exactly one OCC entry per event,
  * and the user's own hooks survive.
  */
@@ -15,13 +15,13 @@ import {
 } from './hook-settings'
 
 const HOME = '/home/dev'
-const SCRIPT = `${HOME}/.orca/agent-hooks/${getPosixManagedScriptFileName()}`
+const SCRIPT = `${HOME}/.occ/agent-hooks/${getPosixManagedScriptFileName()}`
 const plan = getClaudeManagedHookPlan(null)
 const userHook = { matcher: '', hooks: [{ type: 'command' as const, command: 'notify-send done' }] }
 
 const originalPlatform = process.platform
 beforeEach(() => {
-  // orcad runs inside the distro: the local installer takes its Linux form.
+  // occd runs inside the distro: the local installer takes its Linux form.
   Object.defineProperty(process, 'platform', { configurable: true, value: 'linux' })
 })
 afterEach(() => {

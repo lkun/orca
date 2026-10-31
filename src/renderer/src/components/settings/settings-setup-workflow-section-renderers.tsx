@@ -4,28 +4,28 @@ import { AutomationsSettingsPane } from './AutomationsSettingsPane'
 import { GeneralPane } from './GeneralPane'
 import { IntegrationsPane } from './IntegrationsPane'
 import { MobileSettingsPane } from './MobileSettingsPane'
-import { OrcaAccountSettingsPane } from './OrcaAccountSettingsPane'
+import { OCCAccountSettingsPane } from './OCCAccountSettingsPane'
 import { SettingsSetupGuidePane } from './SettingsSetupGuidePane'
 import { ShareSkillsSettingsPane } from './ShareSkillsSettingsPane'
 import { SettingsSection } from './SettingsSection'
 import { translate } from '@/i18n/i18n'
 import type { SettingsRenderContext } from './settings-render-context'
 
-export function renderOrcaAccountSettingsSection(
+export function renderOCCAccountSettingsSection(
   context: SettingsRenderContext
 ): React.JSX.Element | null {
   const { model, navigation, view } = context
   return model.showDesktopOnlySettings ? (
     <SettingsSection
-      id="orca-account"
-      title={translate('auto.components.settings.orcaAccount.title', 'OCC Account')}
+      id="occ-account"
+      title={translate('auto.components.settings.occAccount.title', 'OCC Account')}
       description={translate(
-        'auto.components.settings.orcaAccount.description',
+        'auto.components.settings.occAccount.description',
         'Share work instantly and reach your desktop from OCC Mobile wherever you are.'
       )}
-      searchEntries={navigation.getSectionSearchEntries('orca-account')}
+      searchEntries={navigation.getSectionSearchEntries('occ-account')}
     >
-      {view.isSectionMounted('orca-account') ? <OrcaAccountSettingsPane /> : null}
+      {view.isSectionMounted('occ-account') ? <OCCAccountSettingsPane /> : null}
     </SettingsSection>
   ) : null
 }

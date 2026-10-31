@@ -26,9 +26,9 @@ import { useSidebarFeedbackEnvironmentPrefill } from './use-sidebar-feedback-env
 import { useSidebarFeedbackImages } from './use-sidebar-feedback-images'
 import { openAppHttpLink } from '@/lib/app-http-link-open'
 
-const GITHUB_ISSUES_URL = 'https://github.com/stablyai/orca/issues/'
+const GITHUB_ISSUES_URL = 'https://github.com/stablyai/occ/issues/'
 const DISCORD_URL = 'https://discord.gg/fzjDKHxv8Q'
-const X_URL = 'https://x.com/orca_build'
+const X_URL = 'https://x.com/occ_build'
 
 type SubmitIdentity = {
   githubLogin: string | null

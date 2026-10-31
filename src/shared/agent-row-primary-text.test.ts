@@ -3,8 +3,8 @@ import { normalizeAgentStatusPayload } from './agent-status-types'
 import {
   getAgentRowGeneratedTitleText,
   getAgentRowPrimaryText,
-  getOrcaDispatchTaskId,
-  isOrcaDispatchPrompt
+  getOCCDispatchTaskId,
+  isOCCDispatchPrompt
 } from './agent-row-primary-text'
 
 describe('getAgentRowPrimaryText', () => {
@@ -61,7 +61,7 @@ Your coordinator's terminal handle is: term_parent
 Your task ID is: task_1
 
 === CLI COMMANDS ===
-orca orchestration send --to term_parent
+occ orchestration send --to term_parent
 
 === TASK ===
 Review dispatch prompts and make worker labels distinct
@@ -79,7 +79,7 @@ Keep the raw preamble out of the sidebar.`
   it('derives a task preview from a normalized 200-char dispatch prompt without labels', () => {
     const longCliNoise = Array.from(
       { length: 40 },
-      (_, i) => `orca orchestration send --to term_parent --type heartbeat --phase step-${i}`
+      (_, i) => `occ orchestration send --to term_parent --type heartbeat --phase step-${i}`
     ).join('\n')
     const taskBody =
       'Release-fix task: orchestration fallback task preview for single-line normalization'
@@ -116,7 +116,7 @@ ${taskBody}`
 Your task ID is: task_label_later
 
 === CLI COMMANDS ===
-${'orca orchestration check\n'.repeat(30)}
+${'occ orchestration check\n'.repeat(30)}
 === TASK ===
 Implement the detailed worker instructions that should not stay as the final label`
     })
@@ -177,7 +177,7 @@ Implement the detailed worker instructions that should not stay as the final lab
   })
 })
 
-describe('getOrcaDispatchTaskId', () => {
+describe('getOCCDispatchTaskId', () => {
   it('extracts the id when the trailing newline was folded to a space', () => {
     const normalized = normalizeAgentStatusPayload({
       state: 'working',
@@ -187,22 +187,22 @@ Your task ID is: task_9f3ab2
 === TASK ===
 body`
     })
-    expect(getOrcaDispatchTaskId(normalized!.prompt)).toBe('task_9f3ab2')
+    expect(getOCCDispatchTaskId(normalized!.prompt)).toBe('task_9f3ab2')
   })
 
   it('extracts the id from a raw multi-line prompt', () => {
     expect(
-      getOrcaDispatchTaskId(
+      getOCCDispatchTaskId(
         `You are working inside OCC, a multi-agent IDE.\nYour task ID is: task_1\n\n=== TASK ===\nbody`
       )
     ).toBe('task_1')
   })
 })
 
-describe('isOrcaDispatchPrompt / getAgentRowGeneratedTitleText', () => {
+describe('isOCCDispatchPrompt / getAgentRowGeneratedTitleText', () => {
   it('treats leading whitespace as still a dispatch preamble', () => {
     expect(
-      isOrcaDispatchPrompt('  You are working inside OCC, a multi-agent IDE. Worker task')
+      isOCCDispatchPrompt('  You are working inside OCC, a multi-agent IDE. Worker task')
     ).toBe(true)
   })
 

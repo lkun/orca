@@ -23,7 +23,7 @@ afterEach(() => {
 })
 
 it('does not fail a successful spawn when the diagnostic sink throws', () => {
-  vi.stubEnv('ORCA_PTY_SPAWN_TIMING', '1')
+  vi.stubEnv('OCC_PTY_SPAWN_TIMING', '1')
   setActiveSink({
     push() {
       throw new Error('disk unavailable')

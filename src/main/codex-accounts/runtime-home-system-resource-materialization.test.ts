@@ -123,7 +123,7 @@ describe('CodexRuntimeHomeService', () => {
     )
     const linkedUserData = join(testState.fakeHomeDir, 'linked-user-data')
     symlinkSync(testState.userDataDir, linkedUserData, 'junction')
-    process.env.ORCA_USER_DATA_PATH = linkedUserData
+    process.env.OCC_USER_DATA_PATH = linkedUserData
     const store = createStore(createSettings())
     const { CodexRuntimeHomeService } = await import('./runtime-home-service')
     const service = new CodexRuntimeHomeService(store as never)

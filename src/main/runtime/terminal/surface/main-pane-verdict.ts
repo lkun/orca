@@ -2,7 +2,7 @@ import type { PtyLivenessVerdict } from '../../../../shared/pty-liveness-verdict
 import { isRemoteRuntimePtyId } from '../../../../shared/remote-runtime/remote-runtime-pty-id'
 import { parseAppSshPtyId } from '../../../../shared/ssh-pty-id'
 import { paneTerminalFact, type RuntimePtyRegistryView } from '../../runtime-leaf-record-projection'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { startedMainTerminalSurfaces, type SurfacesOwner } from './main-terminal-surfaces'
 
 /** A pane main owns: its bound terminal, and whether a status says that binding is not live. */
@@ -61,7 +61,7 @@ export function mainBindsUnendedTerminal(
 ): boolean {
   const status = recorded?.verdict.status
   return (
-    ORCA_LAYOUT_OWNER_IS_MAIN &&
+    OCC_LAYOUT_OWNER_IS_MAIN &&
     status !== 'exited' &&
     status !== 'unverifiable' &&
     mainHoldsTerminal(runtime, ptyId)

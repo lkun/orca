@@ -28,7 +28,7 @@ describe('pairing deep links', () => {
   })
 
   it('accepts scanner casing and surrounding whitespace', () => {
-    expect(extractPairingCodeFromUrl('  ORCA://PAIR?code=abc123\n')).toBe('abc123')
+    expect(extractPairingCodeFromUrl('  OCC://PAIR?code=abc123\n')).toBe('abc123')
   })
 
   it('rejects lookalike routes', () => {
@@ -90,7 +90,7 @@ describe('pairing deep links', () => {
   it('preserves a TLS reverse-proxy endpoint with an explicit port and path', () => {
     const proxiedOffer = {
       ...offer,
-      endpoint: 'wss://proxy.example:443/orca/runtime'
+      endpoint: 'wss://proxy.example:443/occ/runtime'
     }
     const code = encodeOffer(proxiedOffer)
 

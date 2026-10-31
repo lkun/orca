@@ -1,6 +1,6 @@
 import { FLOATING_TERMINAL_WORKTREE_ID } from './constants'
 import {
-  isWslUncPathForCallerLinuxPath,
+  isWslUncPathFoccllerLinuxPath,
   normalizeRuntimePathForComparison,
   resolveRuntimePath
 } from './cross-platform-path'
@@ -100,7 +100,7 @@ export function requestsCwdOutsideWorkspaceRoot(
   // Why: an agent inside a WSL workspace records its cwd as a Linux path, which the workspace's
   // own distro reads as the root.
   const wslRoot = parseWslUncPath(workspacePath)
-  return !(wslRoot && isWslUncPathForCallerLinuxPath(workspacePath, trimmedCwd, wslRoot.distro))
+  return !(wslRoot && isWslUncPathFoccllerLinuxPath(workspacePath, trimmedCwd, wslRoot.distro))
 }
 
 /** Use the caller’s known root before deriving it as terminal creation does; floating workspaces have no root, so every cwd is custom. */

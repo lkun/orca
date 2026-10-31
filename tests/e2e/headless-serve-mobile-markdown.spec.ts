@@ -7,11 +7,11 @@ import type {
   RuntimeMarkdownReadTabResult,
   RuntimeMarkdownSaveTabResult
 } from '../../src/shared/mobile-markdown-document'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   addRepoWorktree,
   cliClient,
-  orcadNodeExecutable,
+  occdNodeExecutable,
   pairedClient,
   startHeadlessOracleHost,
   type HeadlessHostKind
@@ -65,12 +65,12 @@ async function readTab(phone: RuntimeClient, worktree: string, tabId: string) {
     .result
 }
 
-const HOSTS: HeadlessHostKind[] = ['electron', 'orcad']
+const HOSTS: HeadlessHostKind[] = ['electron', 'occd']
 
 for (const kind of HOSTS) {
   test(`a phone reads and saves a Markdown tab on a headless ${kind} server`, async () => {
-    // Why skip in CI too: only the orcad mode-switch job builds out/orcad.
-    test.skip(kind === 'orcad' && !orcadNodeExecutable(), 'out/orcad is not built')
+    // Why skip in CI too: only the occd mode-switch job builds out/occd.
+    test.skip(kind === 'occd' && !occdNodeExecutable(), 'out/occd is not built')
     test.setTimeout(240_000)
     const host = await startHeadlessOracleHost(kind)
     try {

@@ -403,8 +403,8 @@ describe('sweep lock skips stay off the transaction retry counters', () => {
       warn.mockRestore()
     }
 
-    expect(events).not.toContain('orca_relay_postgres_transaction_retry')
-    expect(events).not.toContain('orca_relay_postgres_transaction_exhausted')
+    expect(events).not.toContain('occ_relay_postgres_transaction_retry')
+    expect(events).not.toContain('occ_relay_postgres_transaction_exhausted')
     expect(fakes.statements.filter((sql) => sql === 'BEGIN')).toHaveLength(1)
     await database.close()
   })
@@ -427,7 +427,7 @@ describe('background sweeps skip a contended cell inventory', () => {
     now += 24 * 60 * 60_000
     probe.inventoryLocks.length = 0
     probe.failNoWait = true
-    const warnings = collectWarnings('orca_relay_sweep_cell_inventory_busy')
+    const warnings = collectWarnings('occ_relay_sweep_cell_inventory_busy')
 
     let aborted: number
     try {
@@ -442,7 +442,7 @@ describe('background sweeps skip a contended cell inventory', () => {
       true
     )
     expect(warnings.entries).toEqual([
-      { event: 'orca_relay_sweep_cell_inventory_busy', sweep: 'abort-expired-evacuations', skipped: 1 }
+      { event: 'occ_relay_sweep_cell_inventory_busy', sweep: 'abort-expired-evacuations', skipped: 1 }
     ])
     await database.close()
   })
@@ -461,7 +461,7 @@ describe('background sweeps skip a contended cell inventory', () => {
     })
     await store.startEvacuation(identity, 'cell-b')
     now += 24 * 60 * 60_000
-    const warnings = collectWarnings('orca_relay_sweep_cell_inventory_busy')
+    const warnings = collectWarnings('occ_relay_sweep_cell_inventory_busy')
 
     let aborted: number
     try {

@@ -6,7 +6,7 @@ import {
   runtimeEnvironmentIdForWorkspaceOwner,
   type RuntimeEnvironmentOwnerMatch
 } from '@/lib/resolve-owner'
-import type { OrcadDeploymentLink } from '../../../shared/runtime-environments'
+import type { OCCdDeploymentLink } from '../../../shared/runtime-environments'
 import {
   callRuntimeRpc,
   peekRuntimeEnvironmentCapability,
@@ -260,14 +260,14 @@ async function fetchHostScrollback(
  */
 export function hostScrollbackEnvironmentId(
   owner: RuntimeEnvironmentOwnerMatch,
-  environments: readonly { id: string; orcadDeployment?: OrcadDeploymentLink | null }[] | undefined
+  environments: readonly { id: string; occdDeployment?: OCCdDeploymentLink | null }[] | undefined
 ): string | null {
   if (owner.kind !== 'resolved' || owner.environmentId === null) {
     return null
   }
   const environmentId = owner.environmentId
   const environment = environments?.find((candidate) => candidate.id === environmentId)
-  return environment?.orcadDeployment?.kind === 'wsl' ? environmentId : null
+  return environment?.occdDeployment?.kind === 'wsl' ? environmentId : null
 }
 
 /**

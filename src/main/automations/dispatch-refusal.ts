@@ -9,7 +9,7 @@ import type {
 import { resolveAutomationRunTarget, type AutomationRunTargetResult } from './run-target-resolution'
 import type { AutomationRunWriter } from './automation-run-writer'
 import { wslMoveRepoBackoff } from '../persistence/moving-wsl-projects/wsl-move-background-backoff'
-import { isOrcadFencedAutomation } from './orcad-fenced-automation'
+import { isOCCdFencedAutomation } from './occd-fenced-automation'
 import { blockedWslDistroForPath } from '../wsl/wsl-unc-access-gate'
 import { getLocalProjectWorktreeGitOptions } from '../project-runtime-git-options'
 import {
@@ -80,7 +80,7 @@ export async function recordRefusedAutomationRun(input: {
   automation: Automation
   allowRemoteHostScheduling: boolean
 }): Promise<void> {
-  if (isOrcadFencedAutomation(input.store, input.automation)) {
+  if (isOCCdFencedAutomation(input.store, input.automation)) {
     return
   }
   const target = resolveAutomationRunTarget(input.store, input.automation, {

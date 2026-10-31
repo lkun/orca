@@ -1,9 +1,9 @@
-import type { CloudDatabase, SqlRow } from '@orca-cloud/cloud-database'
+import type { CloudDatabase, SqlRow } from '@occ-cloud/cloud-database'
 import {
   ConnectorConversationSchema,
   type ConnectorConversation,
   type ConnectorEvent
-} from '@orca-cloud/connector-contract'
+} from '@occ-cloud/connector-contract'
 import type { ThreadPlace } from './connector-adapter.js'
 
 // Linked and snapshot (re)bind a conversation's pane. Moving to another pane forgets the old pane's

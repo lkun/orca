@@ -81,7 +81,7 @@ async function checkpointedFileBytes(db: SyncDatabase, path: string): Promise<nu
 }
 
 // Raise tool share beyond default half to price tool-row cap against real 80–97% band.
-const toolResultWords = Number(process.env.ORCA_SEARCH_BENCH_TOOL_WORDS ?? 200)
+const toolResultWords = Number(process.env.OCC_SEARCH_BENCH_TOOL_WORDS ?? 200)
 const corpus = await writeSyntheticTranscriptCorpus({ toolResultWords })
 const indexPath = join(corpus.root, 'index.sqlite')
 try {
@@ -172,7 +172,7 @@ try {
 }
 
 // Use oversized synthetic transcript to expose threshold between single/chunked commits.
-const largeTurns = Number(process.env.ORCA_SEARCH_BENCH_LARGE_TURNS ?? 23_000)
+const largeTurns = Number(process.env.OCC_SEARCH_BENCH_LARGE_TURNS ?? 23_000)
 const large = await writeSyntheticTranscriptCorpus({
   sessions: 1,
   turnsPerSession: largeTurns,

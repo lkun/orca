@@ -4,7 +4,7 @@ import type { Repo } from '../../../shared/repo-types'
 import { resolveProjectCloneUrlPrefill } from './project-clone-url-prefill'
 
 function project(sourceRepoIds: string[]): Project {
-  return { id: 'project-orca', sourceRepoIds } as unknown as Project
+  return { id: 'project-occ', sourceRepoIds } as unknown as Project
 }
 
 function repo(id: string, remoteUrl: string): Repo {
@@ -16,11 +16,11 @@ describe('resolveProjectCloneUrlPrefill', () => {
     // The clone runs on the target host and would persist this into .git/config.
     const prefill = resolveProjectCloneUrlPrefill(
       [project(['repo-1'])],
-      [repo('repo-1', 'https://x-access-token:ghp_ABC123@github.com/acme/orca.git')],
-      'project-orca'
+      [repo('repo-1', 'https://x-access-token:ghp_ABC123@github.com/acme/occ.git')],
+      'project-occ'
     )
 
-    expect(prefill).toBe('https://github.com/acme/orca.git')
+    expect(prefill).toBe('https://github.com/acme/occ.git')
     expect(prefill).not.toContain('ghp_ABC123')
   })
 
@@ -28,10 +28,10 @@ describe('resolveProjectCloneUrlPrefill', () => {
     expect(
       resolveProjectCloneUrlPrefill(
         [project(['repo-1'])],
-        [repo('repo-1', 'git@github.com:stablyai/orca.git')],
-        'project-orca'
+        [repo('repo-1', 'git@github.com:stablyai/occ.git')],
+        'project-occ'
       )
-    ).toBe('git@github.com:stablyai/orca.git')
+    ).toBe('git@github.com:stablyai/occ.git')
   })
   it('stops on the first usable source and indexes later misses only once', () => {
     let reads = 0
@@ -43,7 +43,7 @@ describe('resolveProjectCloneUrlPrefill', () => {
       }
     }))
     const sourceIds = Array.from({ length: 1000 }, (_, i) => `repo-${i}`)
-    expect(resolveProjectCloneUrlPrefill([project(sourceIds)], repos, 'project-orca')).toBe(
+    expect(resolveProjectCloneUrlPrefill([project(sourceIds)], repos, 'project-occ')).toBe(
       'https://gitlab.com/acme/repo.git'
     )
     expect(reads).toBe(1)
@@ -52,7 +52,7 @@ describe('resolveProjectCloneUrlPrefill', () => {
       resolveProjectCloneUrlPrefill(
         [project(sourceIds.map((id) => `missing-${id}`))],
         repos,
-        'project-orca'
+        'project-occ'
       )
     ).toBe('')
     expect(reads).toBeLessThanOrEqual(2000)
@@ -63,7 +63,7 @@ describe('resolveProjectCloneUrlPrefill', () => {
       resolveProjectCloneUrlPrefill(
         [project(['missing', 'duplicate'])],
         [repo('duplicate', ''), repo('duplicate', 'https://gitlab.com/acme/repo.git')],
-        'project-orca'
+        'project-occ'
       )
     ).toBe('')
   })

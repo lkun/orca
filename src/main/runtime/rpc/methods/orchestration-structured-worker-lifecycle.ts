@@ -2,7 +2,7 @@
 
 import type { AgentType, NativeChatMessage } from '../../../../shared/native-chat-types'
 import type { OrchestrationWorkerReadTranscriptResult } from '../../../../shared/orchestration-worker-output'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import type { OrchestrationDb } from '../../orchestration/db'
 import { OrchestrationError } from '../../orchestration/orchestration-error'
 import {
@@ -70,7 +70,7 @@ export type StructuredWorkerStopOutcome = {
 export async function stopStructuredWorker(
   identity: StructuredWorkerIdentity,
   runtime?: Pick<
-    OrcaRuntimeService,
+    OCCRuntimeService,
     'forgetStructuredSessionMail' | 'retireStructuredAgentSessionTabFromSnapshot'
   >,
   admitClose?: () => boolean

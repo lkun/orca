@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../../src/shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../src/shared/sidebar-inputs-switch'
 import type { useRouter } from 'expo-router'
 import { floatingWorkspaceSessionPath } from '../session/floating-workspace'
 import { holdSessionLeave } from '../session/session-leave-guard'
@@ -95,7 +95,7 @@ export function useHostWorktreeActions(args: {
   const updateLocalPins = useCallback(
     (worktreeId: string, pinned: boolean) => {
       // Switch point: a feed-built list keeps no pin cache of its own.
-      if (ORCA_SIDEBAR_INPUTS_IS_MAIN) {
+      if (OCC_SIDEBAR_INPUTS_IS_MAIN) {
         return
       }
       setPinnedIds((prev) => {
@@ -265,7 +265,7 @@ export function useHostWorktreeActions(args: {
       const target = `/h/${encodeURIComponent(hostId ?? '')}/session/${encodeURIComponent(item.worktreeId)}?name=${encodeURIComponent(item.displayName || item.repo)}${executionHost}${pane}`
       navigateFromHostList(target, Boolean(paneKey), () => {
         // Record this phone’s visit before navigation; a session opened in another page cannot publish its stored write back here.
-        if (!ORCA_SIDEBAR_INPUTS_IS_MAIN) {
+        if (!OCC_SIDEBAR_INPUTS_IS_MAIN) {
           setOptimisticActiveWorktreeIdentity(getWorktreeRowIdentity(item))
         } else if (hostId) {
           noteLastVisitedWorktree({ hostId, worktreeId: item.worktreeId, executionHost: routeHost })

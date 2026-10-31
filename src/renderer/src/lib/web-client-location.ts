@@ -5,7 +5,7 @@ export function isWebClientLocation(): boolean {
   // Guard partial window.location: launch routing swallows throws, otherwise turning missing locations into silent failures.
   const pathname = (window as { location?: { pathname?: unknown } }).location?.pathname
   return (
-    Boolean((window as unknown as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__) ||
+    Boolean((window as unknown as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__) ||
     (typeof pathname === 'string' && pathname.endsWith('/web-index.html'))
   )
 }

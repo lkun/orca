@@ -27,14 +27,14 @@ vi.mock('@/lib/agent-session-launch-plan', () => ({
 
 import { resolveAiVaultSessionResumeInChatForWorkspace } from './ai-vault-session-resume-in-chat-workspace'
 
-const PAIRED_WORKSPACE = 'repo-1::/srv/orca'
+const PAIRED_WORKSPACE = 'repo-1::/srv/occ'
 
 // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: only the fields eligibility reads are staged.
 const codexSession = {
   id: 'codex-1',
   agent: 'codex',
   executionHostId: 'local',
-  cwd: '/Users/me/orca',
+  cwd: '/Users/me/occ',
   filePath: '/Users/me/.codex/sessions/rollout-1.jsonl',
   messageCount: 4,
   previewMessages: []
@@ -68,7 +68,7 @@ it.each(['local', 'runtime:server-1'] as const)(
   'negotiates alias-only ordinary adoption with %s while preserving old routes',
   (host) => {
     mocks.owner.mockReturnValue(host)
-    const target = '/srv/orca'
+    const target = '/srv/occ'
     const resolve = (agent: AiVaultSession['agent'], cwd: string) =>
       resolveAiVaultSessionResumeInChatForWorkspace({
         session: { ...codexSession, agent, executionHostId: host, cwd, cwdAliases: [target] },
@@ -90,12 +90,12 @@ it.each(['local', 'runtime:server-1'] as const)(
       mocks.state.runtimeStatusByEnvironmentId.set('server-1', { status: { capabilities } })
     }
     set(old)
-    expect(resolve('claude', '/physical/orca')).toMatchObject({ available: false })
+    expect(resolve('claude', '/physical/occ')).toMatchObject({ available: false })
     expect(resolve('claude', target)).toMatchObject({ available: true })
-    expect(resolve('pi', '/physical/orca')).toMatchObject({ available: true })
+    expect(resolve('pi', '/physical/occ')).toMatchObject({ available: true })
     expect(resolve('codex', '/elsewhere')).toMatchObject({ available: true })
     set([...old, STRUCTURED_AGENT_SESSION_RESUME_LINKED_CWD_RUNTIME_CAPABILITY])
-    expect(resolve('claude', '/physical/orca')).toMatchObject({ available: true })
+    expect(resolve('claude', '/physical/occ')).toMatchObject({ available: true })
   }
 )
 

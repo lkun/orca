@@ -1,5 +1,5 @@
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { expect } from './orca-app'
+import { expect } from './occ-app'
 import { execInTerminal, focusActiveTerminalInput } from './terminal'
 import { clearTerminalPtyWriteLog, readTerminalPtyWrites } from './terminal-pty-write-spy'
 

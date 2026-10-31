@@ -6,13 +6,13 @@ import { getExecutionHostLabel } from '../../../../shared/execution-host'
 import type { Repo } from '../../../../shared/repo-types'
 import type { Worktree } from '../../../../shared/worktree/types'
 
-const SHARED_WORKTREE_ID = 'repo-shared::/work/orca-feature'
+const SHARED_WORKTREE_ID = 'repo-shared::/work/occ-feature'
 
-const localRepo: Repo = { ...repo, id: 'repo-shared', path: '/work/orca' }
+const localRepo: Repo = { ...repo, id: 'repo-shared', path: '/work/occ' }
 const sshRepo: Repo = {
   ...repo,
   id: 'repo-shared',
-  path: '/work/orca',
+  path: '/work/occ',
   connectionId: 'build-box',
   executionHostId: 'ssh:build-box'
 }
@@ -21,9 +21,9 @@ const localWorktree: Worktree = {
   ...worktree,
   id: SHARED_WORKTREE_ID,
   repoId: 'repo-shared',
-  path: '/work/orca-feature',
+  path: '/work/occ-feature',
   hostId: 'local',
-  displayName: 'orca-feature'
+  displayName: 'occ-feature'
 }
 const sshWorktree: Worktree = { ...localWorktree, hostId: 'ssh:build-box' }
 

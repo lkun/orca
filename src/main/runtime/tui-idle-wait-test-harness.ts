@@ -1,4 +1,4 @@
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import type { RuntimePtyWorktreeRecord } from './runtime-terminal-state-records'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
@@ -67,9 +67,9 @@ export type TuiIdleRuntimeOptions = {
 }
 
 /** A runtime wired with the narrowest store and controller the wait path needs. */
-export function makeTuiIdleRuntime(options: TuiIdleRuntimeOptions): OrcaRuntimeService {
+export function makeTuiIdleRuntime(options: TuiIdleRuntimeOptions): OCCRuntimeService {
   // Partial store/controller doubles fail loudly if the wait path reads missing members.
-  const runtime = new OrcaRuntimeService(
+  const runtime = new OCCRuntimeService(
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: partial store double; the wait path reads only the members defined above.
     makeStore(options.repoPath) as never
   )

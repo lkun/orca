@@ -1,6 +1,6 @@
 import type { MessageType } from '../../../orchestration/db'
 import type { RunRow } from '../../../orchestration/types'
-import type { OrcaRuntimeService } from '../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../occ-runtime'
 import type { OrchestrationCallerIdentity } from '../../../orchestration/orchestration-caller-identity'
 import { MESSAGE_TYPES } from '../../../orchestration/types'
 import { OrchestrationError } from '../../../orchestration/orchestration-error'
@@ -20,7 +20,7 @@ export function parseMessageTypes(rawTypes: string | undefined): MessageType[] |
 }
 
 export function resolveMessageRun(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   params: {
     /** The sender as Run binding and Dispatch identity see it. */
     sender: OrchestrationCallerIdentity
@@ -114,7 +114,7 @@ export function resolveMessageRun(
 }
 
 export function legacyWorkerDeliveryContract(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   runId: string | undefined,
   recipient: string
 ): 'legacy_direct' | undefined {
@@ -158,7 +158,7 @@ export function interruptedAcknowledgedCheck(
 
 /** Remote Run rows are local mirrors; mail stored there reaches nobody (#32292). */
 export function rejectRemotelyHomedRun(
-  db: ReturnType<OrcaRuntimeService['getOrchestrationDb']>,
+  db: ReturnType<OCCRuntimeService['getOrchestrationDb']>,
   runId: string
 ): void {
   if (db.getRun(runId)?.home_database === 'remote') {
@@ -167,7 +167,7 @@ export function rejectRemotelyHomedRun(
 }
 
 export function remoteRunHomeUnreachable(
-  db: ReturnType<OrcaRuntimeService['getOrchestrationDb']>,
+  db: ReturnType<OCCRuntimeService['getOrchestrationDb']>,
   runId: string
 ): OrchestrationError {
   const dispatchId = db.findRemoteAttachmentForHomeRun(runId)?.dispatch_id

@@ -6,7 +6,7 @@ export function paneEnv(team: AgentTeam, fakePaneId: string): Record<string, str
   return {
     ...team.baseEnv,
     TMUX_PANE: fakePaneId,
-    ORCA_AGENT_TEAMS_LEADER_PANE: team.leaderPane
+    OCC_AGENT_TEAMS_LEADER_PANE: team.leaderPane
   }
 }
 

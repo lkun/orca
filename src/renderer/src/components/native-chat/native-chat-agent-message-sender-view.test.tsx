@@ -39,7 +39,7 @@ function Probe({
 }) {
   const value = useAgentMessageSenderView(
     {
-      party: { address: `term_${id}`, terminalHandle: `term_${id}`, orcaSessionId: null },
+      party: { address: `term_${id}`, terminalHandle: `term_${id}`, occSessionId: null },
       name: 'Sender'
     },
     workspace,

@@ -39,7 +39,7 @@ describe('readGitCommonHeadIdentities (incremental)', () => {
   }
 
   async function makeCommonDir(): Promise<string> {
-    const root = await mkdtemp(join(tmpdir(), 'orca-head-incremental-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-head-incremental-'))
     roots.push(root)
     const commonDir = join(root, 'checkout', '.git')
     await mkdir(commonDir, { recursive: true })

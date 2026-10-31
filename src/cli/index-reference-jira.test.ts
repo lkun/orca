@@ -3,8 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 const mocks = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -178,7 +178,7 @@ describe('Jira reference keys', () => {
     expect(console.error).toHaveBeenCalledExactlyOnceWith(
       id === 'all'
         ? 'Choose one Jira site ID; --reference-site all is unsupported.'
-        : 'No matching connected Jira site. Check orca jira connection and OCC Jira settings.'
+        : 'No matching connected Jira site. Check occ jira connection and OCC Jira settings.'
     )
     expect(process.exitCode).toBe(1)
     expect(mocks.callMock).not.toHaveBeenCalledWith('jira.lookupIssueSummary', expect.anything())

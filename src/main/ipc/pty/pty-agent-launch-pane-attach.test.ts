@@ -12,7 +12,7 @@ import {
 import { AGENT_LAUNCH_PANE_REFUSED_CODE } from '../../../shared/agent-launch-pane-verdict'
 import { endPaneAgentLaunch } from './ipc/spawn-agent-launch-end'
 import { createPtyIpcSpawnState } from './ipc/spawn-state'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import {
   formatTerminalStartFailure,
   terminalStartError
@@ -46,7 +46,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -110,7 +110,7 @@ describe('a pane whose process belongs to an agent launch', () => {
         worktreeId,
         tabId,
         leafId,
-        env: { ORCA_PANE_KEY: paneKey, ORCA_WORKTREE_ID: worktreeId }
+        env: { OCC_PANE_KEY: paneKey, OCC_WORKTREE_ID: worktreeId }
       })
     )
   }
@@ -141,7 +141,7 @@ describe('a pane whose process belongs to an agent launch', () => {
   it.each([false, true])(
     'keeps typed capacity verdict ownership and the suppression sentinel (dispatched=%s)',
     async (dispatched) => {
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       vi.spyOn(runtime, 'reportAgentLaunchPaneVerdict')
       const running = trackRunningAgentLaunchPane(pane)
       const unexpected = (): never => {
@@ -355,7 +355,7 @@ describe('a restored pane after a restart', () => {
         worktreeId,
         tabId,
         leafId,
-        env: { ORCA_PANE_KEY: paneKey, ORCA_TAB_ID: tabId, ORCA_WORKTREE_ID: worktreeId },
+        env: { OCC_PANE_KEY: paneKey, OCC_TAB_ID: tabId, OCC_WORKTREE_ID: worktreeId },
         // A pane that still carries its launch attaches to the agent it started, never plans again.
         ...(daemon === 'live'
           ? {

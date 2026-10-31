@@ -69,16 +69,16 @@ vi.mock('node:os', async () => {
 const realFs = await vi.importActual<typeof NodeFs>('node:fs')
 const { snapshotCodexRuntimeHookTrustProvenance } = await import('./hook-trust-promotion')
 
-const PROVENANCE_ENTRY = 'orca-hooks:stop:0:0'
+const PROVENANCE_ENTRY = 'occ-hooks:stop:0:0'
 let fakeHomeDir: string
 let userDataDir: string
 let runtimeHomePath: string
 
-const provenancePath = (): string => join(runtimeHomePath, '.orca-hook-trust-provenance.json')
+const provenancePath = (): string => join(runtimeHomePath, '.occ-hook-trust-provenance.json')
 
 function seedRecordedProvenance(): string {
   const contents = `${JSON.stringify(
-    { version: 1, entries: { [PROVENANCE_ENTRY]: { trustedHash: 'sha256:orca', enabled: true } } },
+    { version: 1, entries: { [PROVENANCE_ENTRY]: { trustedHash: 'sha256:occ', enabled: true } } },
     null,
     2
   )}\n`
@@ -88,8 +88,8 @@ function seedRecordedProvenance(): string {
 
 beforeEach(() => {
   denials.reset()
-  fakeHomeDir = realFs.mkdtempSync(join(tmpdir(), 'orca-sta4735-home-'))
-  userDataDir = realFs.mkdtempSync(join(tmpdir(), 'orca-sta4735-data-'))
+  fakeHomeDir = realFs.mkdtempSync(join(tmpdir(), 'occ-sta4735-home-'))
+  userDataDir = realFs.mkdtempSync(join(tmpdir(), 'occ-sta4735-data-'))
   runtimeHomePath = join(userDataDir, 'codex-runtime-home', 'home')
   homedirMock.mockReturnValue(fakeHomeDir)
   getPathMock.mockImplementation((name: string) => {

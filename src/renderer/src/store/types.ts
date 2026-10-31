@@ -40,7 +40,7 @@ import type { PullRequestGenerationSlice } from './slices/pull-request-generatio
 import type { CommitMessageGenerationSlice } from './slices/commit-message-generation'
 import type { PinnedTabCloseConfirmSlice } from './slices/pinned-tab-close-confirm'
 import type { RecentlyClosedTabsSlice } from './slices/recently-closed-tabs'
-import type { OrcaProfilesSlice } from './slices/orca-profiles'
+import type { OCCProfilesSlice } from './slices/occ-profiles'
 import type { NewIssueDraftSlice } from './slices/new-issue-draft'
 import type { FeedbackDraftSlice } from './slices/feedback-draft'
 import type { TaskCreationDraftsSlice } from './slices/task-creation-drafts'
@@ -90,7 +90,7 @@ export type AppState = RepoSlice &
   CommitMessageGenerationSlice &
   PinnedTabCloseConfirmSlice &
   RecentlyClosedTabsSlice &
-  OrcaProfilesSlice &
+  OCCProfilesSlice &
   NewIssueDraftSlice &
   FeedbackDraftSlice &
   TaskCreationDraftsSlice &

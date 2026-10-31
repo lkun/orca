@@ -35,10 +35,10 @@ const reconcile = (): Promise<void> =>
   })
 
 beforeEach(() => {
-  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'orca-real-home-windows-keys-')))
+  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'occ-real-home-windows-keys-')))
   mkdirSync(join(root, 'home', '.codex'), { recursive: true })
   mkdirSync(join(root, 'user-data'))
-  vi.stubEnv('ORCA_USER_DATA_PATH', join(root, 'user-data'))
+  vi.stubEnv('OCC_USER_DATA_PATH', join(root, 'user-data'))
   homedirMock.mockReturnValue(join(root, 'home'))
 })
 

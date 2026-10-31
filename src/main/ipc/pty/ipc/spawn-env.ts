@@ -19,7 +19,7 @@ export async function assemblePtyIpcSpawnEnv(ctx: PtyIpcSpawnState): Promise<voi
   const args = ctx.args
   // Daemon providers bypass LocalPtyProvider environment assembly; inject the same host-local state here.
   const baseEnvWithAuth = ctx.claudeAuth ? { ...args.env, ...ctx.claudeAuth.envPatch } : args.env
-  const spawnPaneKey = baseEnvWithAuth?.ORCA_PANE_KEY
+  const spawnPaneKey = baseEnvWithAuth?.OCC_PANE_KEY
   const parsedSpawnPaneKey = parseValidPaneKey(spawnPaneKey)
   const verifiedPaneKey =
     parsedSpawnPaneKey &&
@@ -95,7 +95,7 @@ export async function assemblePtyIpcSpawnEnv(ctx: PtyIpcSpawnState): Promise<voi
       }
     }
   }
-  ctx.requestedAgentTeamsPath = ctx.baseEnv?.ORCA_AGENT_TEAMS_TEAM_ID
+  ctx.requestedAgentTeamsPath = ctx.baseEnv?.OCC_AGENT_TEAMS_TEAM_ID
     ? ctx.baseEnv[resolvePathEnvKey(ctx.baseEnv, process.platform)]
     : undefined
   ctx.agentTeamsEnvToDelete = shouldRefreshAgentTeamsEnv ? ['TERM_PROGRAM'] : undefined
@@ -114,7 +114,7 @@ export async function assemblePtyIpcSpawnEnv(ctx: PtyIpcSpawnState): Promise<voi
         : undefined
   })
   ctx.validatedPaneKey = ctx.stablePaneKey
-  // Tab/leaf metadata still identifies the pane when its supplied ORCA_PANE_KEY was unproved.
+  // Tab/leaf metadata still identifies the pane when its supplied OCC_PANE_KEY was unproved.
   ctx.reservationPaneKey = ctx.metadataPaneKey ?? ctx.validatedPaneKey
   ctx.validatedLeafId = ctx.verifiedLeafId ?? ctx.metadataLeafId
   ctx.spawnTiming.mark('pane_env')

@@ -9,7 +9,7 @@ import { getSpawnArgsForWindows } from './windows-batch-spawn'
 it.skipIf(process.platform !== 'win32')(
   'runs a spaced .cmd launcher with spaced and /? arguments intact',
   () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-batch-spawn-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-batch-spawn-'))
     try {
       const launcherDir = join(root, 'Launcher Dir (x86)')
       mkdirSync(launcherDir)

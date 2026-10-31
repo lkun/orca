@@ -70,7 +70,7 @@ describe("the status bar's Disconnect of a server", () => {
     registerRuntimeEnvironmentConnectivityHandlers({
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: these handlers read only store.getSettings(), which this stub provides.
       store: { getSettings: () => ({}) } as never,
-      getUserDataPath: () => '/tmp/orca-user-data',
+      getUserDataPath: () => '/tmp/occ-user-data',
       invalidateTransport: hoisted.invalidate
     })
   })
@@ -84,7 +84,7 @@ describe("the status bar's Disconnect of a server", () => {
   }
 
   it('also disconnects the SSH host a managed server runs on, so Settings agrees', async () => {
-    hoisted.environment = { id: 'env-1', endpoints: [], orcadDeployment: deployment }
+    hoisted.environment = { id: 'env-1', endpoints: [], occdDeployment: deployment }
 
     await invoke('runtimeEnvironments:disconnect')
 
@@ -104,7 +104,7 @@ describe("the status bar's Disconnect of a server", () => {
   })
 
   it("is lifted by the status bar's Connect, through the host's own Connect", async () => {
-    hoisted.environment = { id: 'env-1', endpoints: [], orcadDeployment: deployment }
+    hoisted.environment = { id: 'env-1', endpoints: [], occdDeployment: deployment }
     await invoke('runtimeEnvironments:disconnect')
 
     await invoke('runtimeEnvironments:connect')
@@ -114,7 +114,7 @@ describe("the status bar's Disconnect of a server", () => {
   })
 
   it('reconnects a server whose host the user never disconnected without dialing the host', async () => {
-    hoisted.environment = { id: 'env-1', endpoints: [], orcadDeployment: deployment }
+    hoisted.environment = { id: 'env-1', endpoints: [], occdDeployment: deployment }
 
     await invoke('runtimeEnvironments:connect')
 

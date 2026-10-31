@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import { existsSync } from 'node:fs'
 import { join } from 'node:path'
 import { getAppEnvironment } from '../../shared/app-environment'
-import { windowsPowerShellPath } from '@orca/process-host/windows-system-binary'
+import { windowsPowerShellPath } from '@occ/process-host/windows-system-binary'
 import { writeShellWrapperFiles } from '../shell-wrapper-file-writer'
 import { getBundledLauncherPath, LINUX_CLI_COMMAND_NAME } from './bundled-cli-launcher-path'
 import { DEV_COMMAND_NAME } from './cli-install-constants'
@@ -40,7 +40,7 @@ export function getManagedWslCliDir(opts: {
   const directory = join(opts.userDataPath, 'wsl-managed-cli', digest)
   const files = [
     [join(directory, getWslCliCommandName(opts.isPackaged)), launcher],
-    [join(directory, 'orca-wsl-bridge.ps1'), bridge]
+    [join(directory, 'occ-wsl-bridge.ps1'), bridge]
   ] as const
   const ready =
     files.every(([path]) => existsSync(path)) ||

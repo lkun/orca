@@ -218,7 +218,7 @@ export async function expectSshHostAbsentFromSettings(
     sshSection.getByText(new RegExp(escapeRegExp(hostEndpointSummary(host))))
   ).toHaveCount(0)
 }
-export async function seedOrcaSshTargetMatchingAlias(
+export async function seedOCCSshTargetMatchingAlias(
   page: Page,
   args: { alias: string; hostname: string; username?: string; port?: number }
 ): Promise<string> {

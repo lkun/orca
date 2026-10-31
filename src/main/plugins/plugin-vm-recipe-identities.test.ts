@@ -18,18 +18,18 @@ const recipe = {
   schemaVersion: 1,
   id: 'multipass-ubuntu-lts',
   name: 'Multipass Ubuntu LTS',
-  create: 'multipass launch 24.04 --name "$ORCA_VM_NAME"',
-  destroy: 'multipass delete "$ORCA_VM_NAME" --purge'
+  create: 'multipass launch 24.04 --name "$OCC_VM_NAME"',
+  destroy: 'multipass delete "$OCC_VM_NAME" --purge'
 }
 
 function manifest(version: string, path: string): PluginManifest {
   return pluginManifestSchema.parse({
     manifestVersion: 1,
-    id: 'orca-multipass-recipes',
+    id: 'occ-multipass-recipes',
     publisher: 'stablyai',
     name: 'Multipass VM Recipes',
     version,
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     capabilities: [],
     contributes: { vmRecipes: [{ path }] }
@@ -37,7 +37,7 @@ function manifest(version: string, path: string): PluginManifest {
 }
 
 async function pluginTree(path: string, contents: string): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-vm-recipe-identities-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-vm-recipe-identities-'))
   roots.push(root)
   await mkdir(join(root, 'recipes'), { recursive: true })
   await writeFile(join(root, path), contents)
@@ -82,7 +82,7 @@ describe('readPluginVmRecipeIdentities', () => {
   })
 
   it('returns null when a recipe file is missing', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-vm-recipe-identities-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-vm-recipe-identities-'))
     roots.push(root)
     await expect(
       readPluginVmRecipeIdentities(root, manifest('1.0.0', 'recipes/ubuntu-lts.json'))

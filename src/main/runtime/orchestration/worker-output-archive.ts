@@ -220,7 +220,7 @@ export function releaseCommitFieldsForStoredArchive(archive: WorkerTerminalArchi
 }
 
 /** Archive fields a release commit publishes for freshly captured output. */
-export function releaseCommitFieldsForCapturedArchive(captured: WorkerOutputArchiveCapture) {
+export function releaseCommitFieldsFoccpturedArchive(captured: WorkerOutputArchiveCapture) {
   return {
     kind: captured.kind,
     content: JSON.stringify(captured.content),

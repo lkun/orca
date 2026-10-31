@@ -4,13 +4,13 @@ import { join } from 'node:path'
 import type { ChildProcess } from 'node:child_process'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { removeTreeSync } from '../../windows-transient-lock-removal'
-import { runProcess, spawnProcess } from '@orca/process-host'
-import { _setWindowsTaskkillLauncherForTests } from '@orca/process-host/windows-tree-kill'
-import { windowsSystem32Binary } from '@orca/process-host/windows-system-binary'
+import { runProcess, spawnProcess } from '@occ/process-host'
+import { _setWindowsTaskkillLauncherForTests } from '@occ/process-host/windows-tree-kill'
+import { windowsSystem32Binary } from '@occ/process-host/windows-system-binary'
 
-/** Loaded taskkill can outlast its caller; killing root first orphans grandchildren before tree enumeration. ORCA_WINDOWS_TREE_KILL_LOAD adds CPU burners only in isolated CI steps. */
+/** Loaded taskkill can outlast its caller; killing root first orphans grandchildren before tree enumeration. OCC_WINDOWS_TREE_KILL_LOAD adds CPU burners only in isolated CI steps. */
 const describeOnWindows = process.platform === 'win32' ? describe : describe.skip
-const underLoad = process.env.ORCA_WINDOWS_TREE_KILL_LOAD === '1'
+const underLoad = process.env.OCC_WINDOWS_TREE_KILL_LOAD === '1'
 // Longer than the caller's 5 s wait, well inside the 30 s deadline.
 const TASKKILL_START_DELAY_MS = 8_000
 
@@ -19,7 +19,7 @@ describeOnWindows('Windows barrier with a taskkill slower than its caller', () =
   let burners: ChildProcess[] = []
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-late-taskkill-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-late-taskkill-'))
     writeFileSync(
       join(dir, 'hang.js'),
       `require('node:fs').writeFileSync(require('node:path').join(__dirname, 'grandchild.pid'), String(process.pid)); setInterval(function () {}, 60000);`

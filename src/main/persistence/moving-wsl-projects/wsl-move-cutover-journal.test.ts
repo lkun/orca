@@ -8,8 +8,8 @@ import {
 } from '../../../shared/wsl-move/wsl-move-cutover'
 import { wslMoveCutoverFixture as cutover } from '../__fixtures__/wsl-mover/wsl-move-cutover-fixture'
 import { seedWslMoveCutover } from '../__fixtures__/wsl-mover/wsl-move-journal-seeding'
-import { computeOrcadMigrationManifestSha256 } from '../../orcad/orcad-migration-manifest-digest'
-import { orcadMigrationCutoverJournalDirectory } from '../../ssh/orcad-migration-cutover-journal'
+import { computeOCCdMigrationManifestSha256 } from '../../occd/occd-migration-manifest-digest'
+import { occdMigrationCutoverJournalDirectory } from '../../ssh/occd-migration-cutover-journal'
 import {
   listWslMoveCutoverChain,
   listWslMoveCutovers,
@@ -38,7 +38,7 @@ describe('WSL move journal', () => {
     writeWslMoveCutover(userDataPath, cutover())
     expect(listWslMoveCutovers(userDataPath)).toEqual([cutover()])
     expect(wslMoveJournalDirectory(userDataPath)).not.toBe(
-      orcadMigrationCutoverJournalDirectory(userDataPath)
+      occdMigrationCutoverJournalDirectory(userDataPath)
     )
     if (process.platform !== 'win32') {
       expect(statSync(journalPath('move-1')).mode & 0o077).toBe(0)
@@ -133,7 +133,7 @@ describe('WSL move journal', () => {
     const other = { ...debian, journalKey: wslMoveJournalKey('Debian') }
     other.manifest = { ...debian.manifest, source: { ...debian.manifest.source, distro: 'Debian' } }
     const { manifestSha256: _digest, ...unsigned } = other.manifest
-    other.manifest.manifestSha256 = computeOrcadMigrationManifestSha256(unsigned)
+    other.manifest.manifestSha256 = computeOCCdMigrationManifestSha256(unsigned)
     other.manifestSha256 = other.manifest.manifestSha256
     expect(() => writeWslMoveCutover(userDataPath, other)).toThrow('wsl_move_id_in_use')
   })

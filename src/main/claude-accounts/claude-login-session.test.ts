@@ -27,7 +27,7 @@ function folder(runtime: 'wsl' | 'host'): ClaudeCommandConfig {
 
 // Publish atomically so the poller cannot read an empty link.
 function handOverClaudeSignInLink(windowsPath: string, link: string): void {
-  const helperPath = join(windowsPath, '.orca-sign-in-browser')
+  const helperPath = join(windowsPath, '.occ-sign-in-browser')
   writeFileSync(`${helperPath}.tmp`, link)
   renameSync(`${helperPath}.tmp`, `${helperPath}.link`)
 }
@@ -47,7 +47,7 @@ describe('runClaudeLoginSession', () => {
     const runCommand = claudeHandsOver(config, LINK, () => openWslSignInLink.mock.calls.length > 0)
     await runClaudeLoginSession(config, { runCommand, setCancel: vi.fn(), openWslSignInLink })
     expect(runCommand.mock.calls[0][3]).toMatchObject({
-      browser: `${LINUX_HOME}/.orca-sign-in-browser`
+      browser: `${LINUX_HOME}/.occ-sign-in-browser`
     })
     expect(openWslSignInLink).toHaveBeenCalledExactlyOnceWith(LINK)
     expect(readdirSync(config.windowsPath)).toEqual([])
@@ -72,7 +72,7 @@ describe('runClaudeLoginSession', () => {
     const openWslSignInLink = vi.fn()
     const runCommand = vi.fn<RunCommand>(async (_args, _config, _ms, options) => {
       expect(options?.browser).toBeUndefined()
-      expect(existsSync(join(config.windowsPath, '.orca-sign-in-browser'))).toBe(false)
+      expect(existsSync(join(config.windowsPath, '.occ-sign-in-browser'))).toBe(false)
       return ''
     })
     await runClaudeLoginSession(config, { runCommand, setCancel: vi.fn(), openWslSignInLink })

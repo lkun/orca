@@ -125,7 +125,7 @@ function uniqueCapabilities(capabilities: readonly PluginCapability[]): PluginCa
 export function pluginApprovalFingerprint(subject: ApprovalSubject): string {
   const grants = pluginApprovalGrants(subject.manifest)
   const canonical = JSON.stringify([
-    'orca-plugin-approval-v1',
+    'occ-plugin-approval-v1',
     subject.pluginKey,
     subject.manifest.version,
     subject.consentFingerprint,

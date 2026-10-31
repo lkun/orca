@@ -1,4 +1,4 @@
-import { PUSH_DEFAULTS } from '@orca-cloud/push-contract'
+import { PUSH_DEFAULTS } from '@occ-cloud/push-contract'
 import { z } from 'zod'
 
 export const PUSH_DATABASE_POOL_MAX = 10
@@ -9,32 +9,32 @@ const OptionalTextSchema = z.preprocess(
 )
 
 const EnvSchema = z.object({
-  ORCA_PUSH_MODE: z.enum(['active', 'validation']).default('active'),
+  OCC_PUSH_MODE: z.enum(['active', 'validation']).default('active'),
   PORT: z.coerce.number().int().positive().default(8080),
-  ORCA_PUSH_PUBLIC_URL: z.string().url(),
-  ORCA_PUSH_DATABASE_URL: OptionalTextSchema,
-  ORCA_PUSH_DATA_DIR: z.string().min(1).default('./data/push'),
-  ORCA_PUSH_DATABASE_POOL_MAX: z.coerce.number().int().positive().max(100).optional(),
-  ORCA_PUSH_APNS_KEY: OptionalTextSchema,
-  ORCA_PUSH_APNS_KEY_ID: z.preprocess(
+  OCC_PUSH_PUBLIC_URL: z.string().url(),
+  OCC_PUSH_DATABASE_URL: OptionalTextSchema,
+  OCC_PUSH_DATA_DIR: z.string().min(1).default('./data/push'),
+  OCC_PUSH_DATABASE_POOL_MAX: z.coerce.number().int().positive().max(100).optional(),
+  OCC_PUSH_APNS_KEY: OptionalTextSchema,
+  OCC_PUSH_APNS_KEY_ID: z.preprocess(
     (value) => (value === '' ? undefined : value),
     z
       .string()
       .regex(/^[A-Z0-9]{10}$/)
       .optional()
   ),
-  ORCA_PUSH_APPLE_TEAM_ID: z.preprocess(
+  OCC_PUSH_APPLE_TEAM_ID: z.preprocess(
     (value) => (value === '' ? undefined : value),
     z
       .string()
       .regex(/^[A-Z0-9]{10}$/)
       .optional()
   ),
-  ORCA_PUSH_APNS_TOPIC: z.string().min(1).max(255).default(PUSH_DEFAULTS.apnsTopic),
-  ORCA_PUSH_FCM_PROJECT_ID: z.string().regex(/^[a-z0-9-]{4,64}$/),
+  OCC_PUSH_APNS_TOPIC: z.string().min(1).max(255).default(PUSH_DEFAULTS.apnsTopic),
+  OCC_PUSH_FCM_PROJECT_ID: z.string().regex(/^[a-z0-9-]{4,64}$/),
   // How many proxies append to x-forwarded-for after the client. 0 is Cloud Run
   // alone; raise it to 1 when a load balancer fronts the service.
-  ORCA_PUSH_TRUSTED_PROXY_HOPS: z.coerce.number().int().nonnegative().max(8).default(0)
+  OCC_PUSH_TRUSTED_PROXY_HOPS: z.coerce.number().int().nonnegative().max(8).default(0)
 })
 
 export type ApnsCredentials = { keyPem: string; keyId: string; teamId: string }
@@ -66,21 +66,21 @@ function canonicalOrigin(value: string, name: string): string {
 // pass startup and then fail every iOS send at runtime.
 function readApnsCredentials(parsed: z.infer<typeof EnvSchema>): ApnsCredentials | undefined {
   const parts = [
-    parsed.ORCA_PUSH_APNS_KEY,
-    parsed.ORCA_PUSH_APNS_KEY_ID,
-    parsed.ORCA_PUSH_APPLE_TEAM_ID
+    parsed.OCC_PUSH_APNS_KEY,
+    parsed.OCC_PUSH_APNS_KEY_ID,
+    parsed.OCC_PUSH_APPLE_TEAM_ID
   ]
   const present = parts.filter((value) => value !== undefined).length
   if (present === 0) return undefined
   if (present !== parts.length) {
     throw new Error('APNs key, key id, and team id must be configured together')
   }
-  const keyPem = parsed.ORCA_PUSH_APNS_KEY!
-  if (!keyPem.includes('-----BEGIN')) throw new Error('ORCA_PUSH_APNS_KEY must be PEM text')
+  const keyPem = parsed.OCC_PUSH_APNS_KEY!
+  if (!keyPem.includes('-----BEGIN')) throw new Error('OCC_PUSH_APNS_KEY must be PEM text')
   return {
     keyPem,
-    keyId: parsed.ORCA_PUSH_APNS_KEY_ID!,
-    teamId: parsed.ORCA_PUSH_APPLE_TEAM_ID!
+    keyId: parsed.OCC_PUSH_APNS_KEY_ID!,
+    teamId: parsed.OCC_PUSH_APPLE_TEAM_ID!
   }
 }
 
@@ -89,20 +89,20 @@ export function loadPushConfig(env: NodeJS.ProcessEnv = process.env): PushConfig
     Object.fromEntries(
       Object.entries(env).map(([key, value]) => [
         key,
-        key !== 'ORCA_PUSH_MODE' && value?.trim() === '' ? undefined : value
+        key !== 'OCC_PUSH_MODE' && value?.trim() === '' ? undefined : value
       ])
     )
   )
   return {
-    mode: parsed.ORCA_PUSH_MODE,
+    mode: parsed.OCC_PUSH_MODE,
     port: parsed.PORT,
-    publicUrl: canonicalOrigin(parsed.ORCA_PUSH_PUBLIC_URL, 'ORCA_PUSH_PUBLIC_URL'),
-    databaseUrl: parsed.ORCA_PUSH_DATABASE_URL,
-    dataDir: parsed.ORCA_PUSH_DATA_DIR,
-    databasePoolMax: parsed.ORCA_PUSH_DATABASE_POOL_MAX ?? PUSH_DATABASE_POOL_MAX,
+    publicUrl: canonicalOrigin(parsed.OCC_PUSH_PUBLIC_URL, 'OCC_PUSH_PUBLIC_URL'),
+    databaseUrl: parsed.OCC_PUSH_DATABASE_URL,
+    dataDir: parsed.OCC_PUSH_DATA_DIR,
+    databasePoolMax: parsed.OCC_PUSH_DATABASE_POOL_MAX ?? PUSH_DATABASE_POOL_MAX,
     apns: readApnsCredentials(parsed),
-    apnsTopic: parsed.ORCA_PUSH_APNS_TOPIC,
-    fcmProjectId: parsed.ORCA_PUSH_FCM_PROJECT_ID,
-    trustedProxyHops: parsed.ORCA_PUSH_TRUSTED_PROXY_HOPS
+    apnsTopic: parsed.OCC_PUSH_APNS_TOPIC,
+    fcmProjectId: parsed.OCC_PUSH_FCM_PROJECT_ID,
+    trustedProxyHops: parsed.OCC_PUSH_TRUSTED_PROXY_HOPS
   }
 }

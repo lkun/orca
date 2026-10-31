@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithHasExactPersistedTerminalSurfaceIdentity } from '../persisted-surfaces/has-exact-persisted-terminal-surface-identity'
+import { OCCRuntimeWithHasExactPersistedTerminalSurfaceIdentity } from '../persisted-surfaces/has-exact-persisted-terminal-surface-identity'
 import type {
   OrchestrationEnvironmentCallOptions,
   OrchestrationWorkerServer
@@ -16,7 +16,7 @@ import type { ResolvedWorktree } from '../../runtime-worktree-path-identity'
 import { FLOATING_TERMINAL_WORKTREE_ID } from '../../../../shared/constants'
 import type { WorkspaceSessionState } from '../../../../shared/workspace-session-state-types'
 
-export abstract class OrcaRuntimeWithGetRuntimeId extends OrcaRuntimeWithHasExactPersistedTerminalSurfaceIdentity {
+export abstract class OCCRuntimeWithGetRuntimeId extends OCCRuntimeWithHasExactPersistedTerminalSurfaceIdentity {
   getRuntimeId(): string {
     return this.runtimeId
   }

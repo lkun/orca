@@ -148,7 +148,7 @@ function MobileNativeChatPermissionContext({
         <Text style={styles.detail}>{permission.detail}</Text>
       ) : null}
       {newerSubject ? (
-        <Text testID="native-chat-approval-needs-newer-orca" style={styles.detail}>
+        <Text testID="native-chat-approval-needs-newer-occ" style={styles.detail}>
           {t('chat.permission.newerVersionRequired', 'This request needs a newer version of OCC.')}
         </Text>
       ) : null}

@@ -8,7 +8,7 @@ function manifest(contributes: Record<string, unknown>): Record<string, unknown>
     publisher: 'samples',
     name: 'Content pack',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     contributes,
     capabilities: []

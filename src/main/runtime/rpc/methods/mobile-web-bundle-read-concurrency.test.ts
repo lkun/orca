@@ -110,7 +110,7 @@ async function settleMicrotasks(): Promise<void> {
 }
 
 beforeEach(() => {
-  scratch = mkdtempSync(join(tmpdir(), 'orca-mobile-web-reads-'))
+  scratch = mkdtempSync(join(tmpdir(), 'occ-mobile-web-reads-'))
   installMobileWebBundleAppPath(scratch)
   bundle = writeSyntheticMobileWebBundle(join(scratch, 'out', 'mobile-web'), 7)
   gate.reset()

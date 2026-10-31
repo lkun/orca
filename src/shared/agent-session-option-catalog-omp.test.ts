@@ -140,15 +140,15 @@ describe('omp session option catalog', () => {
     ])
   })
 
-  it('builds and parses /orca-model with the exact selector', () => {
+  it('builds and parses /occ-model with the exact selector', () => {
     const midSession = OMP_SESSION_OPTION_CATALOG.modelApply.midSession
     expect(midSession).toMatchObject({ kind: 'command' })
     if (midSession?.kind !== 'command') {
       throw new Error('expected a command apply')
     }
     const command = midSession.build('minimax-cn/MiniMax-M3')
-    expect(command).toBe('/orca-model minimax-cn/MiniMax-M3')
+    expect(command).toBe('/occ-model minimax-cn/MiniMax-M3')
     expect(parseBuiltSessionOptionCommand(midSession.build, command)).toBe('minimax-cn/MiniMax-M3')
-    expect(parseBuiltSessionOptionCommand(midSession.build, '/orca-model ')).toBeNull()
+    expect(parseBuiltSessionOptionCommand(midSession.build, '/occ-model ')).toBeNull()
   })
 })

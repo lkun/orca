@@ -75,8 +75,8 @@ vi.mock('./startup-diagnostics', () => ({ logStartupMilestone: vi.fn() }))
 vi.mock('../opencode/opencode-status-plugin-startup-refresh', () => ({
   refreshInstalledOpenCodeStatusPlugins: vi.fn()
 }))
-vi.mock('../orcad/orcad-artifact-cache-retention', () => ({
-  pruneDesktopOrcadArtifactCache: vi.fn()
+vi.mock('../occd/occd-artifact-cache-retention', () => ({
+  pruneDesktopOCCdArtifactCache: vi.fn()
 }))
 
 import { initializeReadyRuntimeServices } from './main-process-ready-runtime'

@@ -9,7 +9,7 @@ import {
   hostTestOperationId
 } from '../../../native-chat/agent-session-wire/structured-agent-session-host-test-data'
 import { seedTestAgentSessionStoreFromNewerBuild } from '../../agent-session-record-store-test-harness'
-import { OrcaRuntimeRpcServer } from '../../runtime-rpc'
+import { OCCRuntimeRpcServer } from '../../runtime-rpc'
 import { DeviceRegistry } from '../../device-registry'
 import WebSocket from 'ws'
 import { SESSION_TAB_METHODS } from './session-tabs'
@@ -154,7 +154,7 @@ describe('other clients after a clear', () => {
   ]
   it('clears through the authenticated mobile WebSocket allowlist without replacing the tab', async () => {
     await createChat(HOST_TEST_SESSION)
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       runtime,
       userDataPath: directory,
       enableWebSocket: false,

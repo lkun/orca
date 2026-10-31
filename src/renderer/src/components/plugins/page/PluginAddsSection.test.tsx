@@ -32,14 +32,14 @@ const gleam: PluginHostListEntry = {
 }
 const hello: PluginHostListEntry = {
   ...gleam,
-  pluginKey: 'samples.hello-orca',
+  pluginKey: 'samples.hello-occ',
   consentFingerprint: 'sha256-hello',
   name: 'Hello OCC',
   publisher: 'samples',
   status: 'running',
   hasWorker: true,
   execution: 'trusted-worker',
-  panels: [{ id: 'hello', title: 'Hello OCC', tabKey: 'plugin:samples.hello-orca/hello' }],
+  panels: [{ id: 'hello', title: 'Hello OCC', tabKey: 'plugin:samples.hello-occ/hello' }],
   commands: [
     {
       id: 'ping',
@@ -122,6 +122,6 @@ it('opens a live panel over the workspace Settings came from', () => {
   fireEvent.click(screen.getByRole('button', { name: 'Open panel: Hello OCC' }))
   const state = useAppStore.getState()
   expect(state.activeView).toBe('terminal')
-  expect(state.rightSidebarTab).toBe('plugin:samples.hello-orca/hello')
+  expect(state.rightSidebarTab).toBe('plugin:samples.hello-occ/hello')
   expect(state.rightSidebarOpen).toBe(true)
 })

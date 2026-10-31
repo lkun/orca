@@ -22,10 +22,10 @@ import { createPackagedMacLauncher, makeFixture } from './cli-installer-test-fix
 
 async function makeBundledLauncherFixture() {
   const fixture = await makeFixture()
-  const launcher = await readFile(join(process.cwd(), 'resources', 'darwin', 'bin', 'orca'), 'utf8')
+  const launcher = await readFile(join(process.cwd(), 'resources', 'darwin', 'bin', 'occ'), 'utf8')
   const resourcesPath = await createPackagedMacLauncher(fixture.root, launcher)
   const bundledBin = join(resourcesPath, 'bin')
-  const launcherPath = join(bundledBin, 'orca')
+  const launcherPath = join(bundledBin, 'occ')
   return {
     root: fixture.root,
     bundledBin,
@@ -61,7 +61,7 @@ describe('CliInstaller', () => {
       const fixture = await makeFixture()
       const homePath = join(fixture.root, 'home')
       const resourcesPath = await createPackagedMacLauncher(fixture.root)
-      const absentUsrLocalBin = join(fixture.root, 'usr', 'local', 'bin', 'orca')
+      const absentUsrLocalBin = join(fixture.root, 'usr', 'local', 'bin', 'occ')
       const installer = new CliInstaller({
         platform: 'darwin',
         isPackaged: true,
@@ -75,28 +75,28 @@ describe('CliInstaller', () => {
       })
 
       const status = await installer.getStatus()
-      expect(status.commandPath).toBe(join(homePath, '.local', 'bin', 'orca'))
+      expect(status.commandPath).toBe(join(homePath, '.local', 'bin', 'occ'))
       expect(status.state).toBe('not_installed')
       expect(status.supported).toBe(true)
 
       const installed = await installer.install()
       expect(installed.state).toBe('installed')
-      expect(installed.commandPath).toBe(join(homePath, '.local', 'bin', 'orca'))
+      expect(installed.commandPath).toBe(join(homePath, '.local', 'bin', 'occ'))
       expect(installed.pathConfigured).toBe(true)
     }
   )
 
   it.skipIf(process.platform === 'win32')(
-    'uses an existing managed macOS orca command from the shell PATH before /usr/local/bin',
+    'uses an existing managed macOS occ command from the shell PATH before /usr/local/bin',
     async () => {
       const fixture = await makeFixture()
       const homePath = join(fixture.root, 'home')
       const resourcesPath = await createPackagedMacLauncher(fixture.root)
       const usrLocalBin = join(fixture.root, 'usr', 'local', 'bin')
       const userLocalBin = join(homePath, '.local', 'bin')
-      const defaultInstallPath = join(usrLocalBin, 'orca')
-      const userInstallPath = join(userLocalBin, 'orca')
-      const launcherPath = join(resourcesPath, 'bin', 'orca')
+      const defaultInstallPath = join(usrLocalBin, 'occ')
+      const userInstallPath = join(userLocalBin, 'occ')
+      const launcherPath = join(resourcesPath, 'bin', 'occ')
       await mkdir(usrLocalBin, { recursive: true })
       await mkdir(userLocalBin, { recursive: true })
       await symlink(launcherPath, userInstallPath)
@@ -126,17 +126,17 @@ describe('CliInstaller', () => {
   )
 
   it.skipIf(process.platform === 'win32')(
-    'skips a broken managed macOS orca symlink before /usr/local/bin',
+    'skips a broken managed macOS occ symlink before /usr/local/bin',
     async () => {
       const fixture = await makeFixture()
       const homePath = join(fixture.root, 'home')
       const resourcesPath = await createPackagedMacLauncher(fixture.root)
       const usrLocalBin = join(fixture.root, 'usr', 'local', 'bin')
       const userLocalBin = join(homePath, '.local', 'bin')
-      const defaultInstallPath = join(usrLocalBin, 'orca')
-      const userInstallPath = join(userLocalBin, 'orca')
-      const launcherPath = join(resourcesPath, 'bin', 'orca')
-      const oldLauncherPath = join(fixture.root, 'Old.app', 'Contents', 'Resources', 'bin', 'orca')
+      const defaultInstallPath = join(usrLocalBin, 'occ')
+      const userInstallPath = join(userLocalBin, 'occ')
+      const launcherPath = join(resourcesPath, 'bin', 'occ')
+      const oldLauncherPath = join(fixture.root, 'Old.app', 'Contents', 'Resources', 'bin', 'occ')
       await mkdir(usrLocalBin, { recursive: true })
       await mkdir(userLocalBin, { recursive: true })
       await symlink(oldLauncherPath, userInstallPath)
@@ -169,19 +169,19 @@ describe('CliInstaller', () => {
   )
 
   it.skipIf(process.platform === 'win32')(
-    'uses a later managed macOS orca command when the default command is not executable',
+    'uses a later managed macOS occ command when the default command is not executable',
     async () => {
       const fixture = await makeFixture()
       const homePath = join(fixture.root, 'home')
       const resourcesPath = await createPackagedMacLauncher(fixture.root)
       const usrLocalBin = join(fixture.root, 'usr', 'local', 'bin')
       const userLocalBin = join(homePath, '.local', 'bin')
-      const defaultInstallPath = join(usrLocalBin, 'orca')
-      const userInstallPath = join(userLocalBin, 'orca')
-      const launcherPath = join(resourcesPath, 'bin', 'orca')
+      const defaultInstallPath = join(usrLocalBin, 'occ')
+      const userInstallPath = join(userLocalBin, 'occ')
+      const launcherPath = join(resourcesPath, 'bin', 'occ')
       await mkdir(usrLocalBin, { recursive: true })
       await mkdir(userLocalBin, { recursive: true })
-      await writeFile(defaultInstallPath, '#!/usr/bin/env bash\necho other-orca\n', 'utf8')
+      await writeFile(defaultInstallPath, '#!/usr/bin/env bash\necho other-occ\n', 'utf8')
       await symlink(launcherPath, userInstallPath)
 
       const installer = new CliInstaller({
@@ -202,7 +202,7 @@ describe('CliInstaller', () => {
 
       const installed = await installer.install()
       expect(installed.commandPath).toBe(userInstallPath)
-      await expect(readFile(defaultInstallPath, 'utf8')).resolves.toContain('other-orca')
+      await expect(readFile(defaultInstallPath, 'utf8')).resolves.toContain('other-occ')
     }
   )
 
@@ -214,12 +214,12 @@ describe('CliInstaller', () => {
       const resourcesPath = await createPackagedMacLauncher(fixture.root)
       const usrLocalBin = join(fixture.root, 'usr', 'local', 'bin')
       const userLocalBin = join(homePath, '.local', 'bin')
-      const defaultInstallPath = join(usrLocalBin, 'orca')
-      const userInstallPath = join(userLocalBin, 'orca')
-      const launcherPath = join(resourcesPath, 'bin', 'orca')
+      const defaultInstallPath = join(usrLocalBin, 'occ')
+      const userInstallPath = join(userLocalBin, 'occ')
+      const launcherPath = join(resourcesPath, 'bin', 'occ')
       await mkdir(usrLocalBin, { recursive: true })
       await mkdir(userLocalBin, { recursive: true })
-      await writeFile(userInstallPath, '#!/usr/bin/env bash\necho other-orca\n', {
+      await writeFile(userInstallPath, '#!/usr/bin/env bash\necho other-occ\n', {
         encoding: 'utf8',
         mode: 0o755
       })
@@ -244,23 +244,23 @@ describe('CliInstaller', () => {
       expect(installed.commandPath).toBe(defaultInstallPath)
       expect(installed.state).toBe('installed')
       await expect(readlink(defaultInstallPath)).resolves.toBe(launcherPath)
-      await expect(readFile(userInstallPath, 'utf8')).resolves.toContain('other-orca')
+      await expect(readFile(userInstallPath, 'utf8')).resolves.toContain('other-occ')
     }
   )
 
   it.skipIf(process.platform === 'win32')(
-    'reports a conflict for an unmanaged macOS orca that shadows the install path',
+    'reports a conflict for an unmanaged macOS occ that shadows the install path',
     async () => {
       const fixture = await makeFixture()
       const homePath = join(fixture.root, 'home')
       const resourcesPath = await createPackagedMacLauncher(fixture.root)
       const usrLocalBin = join(fixture.root, 'usr', 'local', 'bin')
       const userLocalBin = join(homePath, '.local', 'bin')
-      const defaultInstallPath = join(usrLocalBin, 'orca')
-      const userInstallPath = join(userLocalBin, 'orca')
+      const defaultInstallPath = join(usrLocalBin, 'occ')
+      const userInstallPath = join(userLocalBin, 'occ')
       await mkdir(usrLocalBin, { recursive: true })
       await mkdir(userLocalBin, { recursive: true })
-      await writeFile(userInstallPath, '#!/usr/bin/env bash\necho other-orca\n', {
+      await writeFile(userInstallPath, '#!/usr/bin/env bash\necho other-occ\n', {
         encoding: 'utf8',
         mode: 0o755
       })
@@ -282,24 +282,24 @@ describe('CliInstaller', () => {
       expect(status.state).toBe('conflict')
       await expect(installer.install()).rejects.toThrow('Refusing to replace non-OCC command')
       await expect(lstat(defaultInstallPath)).rejects.toMatchObject({ code: 'ENOENT' })
-      await expect(readFile(userInstallPath, 'utf8')).resolves.toContain('other-orca')
+      await expect(readFile(userInstallPath, 'utf8')).resolves.toContain('other-occ')
     }
   )
 
   it.skipIf(process.platform === 'win32')(
-    'skips a non-executable unmanaged macOS orca before the install path',
+    'skips a non-executable unmanaged macOS occ before the install path',
     async () => {
       const fixture = await makeFixture()
       const homePath = join(fixture.root, 'home')
       const resourcesPath = await createPackagedMacLauncher(fixture.root)
       const usrLocalBin = join(fixture.root, 'usr', 'local', 'bin')
       const userLocalBin = join(homePath, '.local', 'bin')
-      const defaultInstallPath = join(usrLocalBin, 'orca')
-      const userInstallPath = join(userLocalBin, 'orca')
-      const launcherPath = join(resourcesPath, 'bin', 'orca')
+      const defaultInstallPath = join(usrLocalBin, 'occ')
+      const userInstallPath = join(userLocalBin, 'occ')
+      const launcherPath = join(resourcesPath, 'bin', 'occ')
       await mkdir(usrLocalBin, { recursive: true })
       await mkdir(userLocalBin, { recursive: true })
-      await writeFile(userInstallPath, '#!/usr/bin/env bash\necho other-orca\n', 'utf8')
+      await writeFile(userInstallPath, '#!/usr/bin/env bash\necho other-occ\n', 'utf8')
 
       const installer = new CliInstaller({
         platform: 'darwin',
@@ -321,7 +321,7 @@ describe('CliInstaller', () => {
       expect(installed.commandPath).toBe(defaultInstallPath)
       expect(installed.state).toBe('installed')
       await expect(readlink(defaultInstallPath)).resolves.toBe(launcherPath)
-      await expect(readFile(userInstallPath, 'utf8')).resolves.toContain('other-orca')
+      await expect(readFile(userInstallPath, 'utf8')).resolves.toContain('other-occ')
     }
   )
 
@@ -335,12 +335,12 @@ describe('CliInstaller', () => {
 
       const status = await new CliInstaller({
         ...installerOptions,
-        defaultMacCommandPath: join(usrLocalBin, 'orca'),
+        defaultMacCommandPath: join(usrLocalBin, 'occ'),
         processPathEnv: [bundledBin, usrLocalBin].join(':')
       }).install()
 
       expect(status.state).toBe('installed')
-      expect(status.commandPath).toBe(join(usrLocalBin, 'orca'))
+      expect(status.commandPath).toBe(join(usrLocalBin, 'occ'))
       await expectLauncherIntact()
     })
 
@@ -352,7 +352,7 @@ describe('CliInstaller', () => {
 
       const installer = new CliInstaller({
         ...installerOptions,
-        commandPathOverride: join(aliasBin, 'orca')
+        commandPathOverride: join(aliasBin, 'occ')
       })
 
       await expect(installer.install()).rejects.toThrow('link to itself')
@@ -364,8 +364,8 @@ describe('CliInstaller', () => {
         await makeBundledLauncherFixture()
       const usrLocalBin = join(root, 'usr', 'local', 'bin')
       await mkdir(usrLocalBin, { recursive: true })
-      const hardLink = join(usrLocalBin, 'orca')
-      await link(join(bundledBin, 'orca'), hardLink)
+      const hardLink = join(usrLocalBin, 'occ')
+      await link(join(bundledBin, 'occ'), hardLink)
 
       const status = await new CliInstaller({
         ...installerOptions,

@@ -25,7 +25,7 @@ vi.mock('./repo-worktree-admin-fingerprint', () => ({
   readRepoWorktreeAdminFingerprint: vi.fn(async () => null)
 }))
 
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import type { GitWorktreeInfo } from '../../shared/worktree/types'
 import type { HostWorktreeTarget } from '../../shared/worktree/host-qualified-identity'
 import {
@@ -54,7 +54,7 @@ const OTHER_SPELLING_ROW = {
   isMainWorktree: false
 }
 
-function makeRuntime(options: { connectionId?: string } = {}): OrcaRuntimeService {
+function makeRuntime(options: { connectionId?: string } = {}): OCCRuntimeService {
   const metaById: Record<string, WorktreeMeta> = {}
   const repos = [
     {
@@ -86,14 +86,14 @@ function makeRuntime(options: { connectionId?: string } = {}): OrcaRuntimeServic
     }),
     getProjects: () => []
   }
-  return new OrcaRuntimeService(partialRuntimeStore(store))
+  return new OCCRuntimeService(partialRuntimeStore(store))
 }
 
 function gitLists(worktrees: GitWorktreeInfo[]): void {
   localScanMock.mockResolvedValue({ ok: true, worktrees })
 }
 
-async function listedRows(runtime: OrcaRuntimeService): Promise<string[]> {
+async function listedRows(runtime: OCCRuntimeService): Promise<string[]> {
   const listed = await runtime.listManagedWorktrees()
   return listed.worktrees.map((worktree) => `${worktree.id} ${worktree.branch}`)
 }

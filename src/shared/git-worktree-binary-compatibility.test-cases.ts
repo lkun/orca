@@ -127,7 +127,7 @@ export function registerGitWorktreeBinaryCompatibilityCases(
   it('supports prepared worktree creation and finalization', async () => {
     const head = (await runGit(['rev-parse', 'HEAD'])).stdout.trim()
     const lockPath = join(resolveRepoPath(), '.git', 'worktrees', 'compat-prepared', 'locked')
-    const lockReason = 'orca-create-preparation:v1:compat\n'
+    const lockReason = 'occ-create-preparation:v1:compat\n'
     try {
       await runGit([
         'worktree',

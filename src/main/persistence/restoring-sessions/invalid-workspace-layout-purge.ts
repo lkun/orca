@@ -65,7 +65,7 @@ function dropInvalidWorkspaces(
 /** Before listing, purge only unregistered repos; paired-host and staged-migration repos still count. */
 export function dropInvalidWorkspaceLayoutsAtLoad(store: PurgeStore, state: PersistedState): void {
   const repoIds = new Set(store.getRepos().map((repo) => repo.id))
-  for (const staged of state.orcadMigrationStagedCatalogs ?? []) {
+  for (const staged of state.occdMigrationStagedCatalogs ?? []) {
     for (const repo of staged.manifest.payload.repositories) {
       repoIds.add(repo.id)
     }

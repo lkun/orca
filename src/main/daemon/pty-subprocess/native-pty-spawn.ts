@@ -1,7 +1,7 @@
 import type { PtyCreationDisposition } from '../../../shared/claimed-agent-pty-owner'
 import type { TerminalCreationWork } from '../terminal-creation-work'
 import { createDaemonPtyPhysicalOwner, type DaemonPtyPhysicalOwner } from './subprocess-handle'
-import { assertWslDistroAllowed } from '@orca/process-host/wsl-distro-allowlist'
+import { assertWslDistroAllowed } from '@occ/process-host/wsl-distro-allowlist'
 import type * as pty from 'node-pty'
 import {
   hostReportsChildExitStatus,

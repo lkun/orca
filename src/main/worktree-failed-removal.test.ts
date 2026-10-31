@@ -47,7 +47,7 @@ const mainWorktree: GitWorktreeInfo = {
 }
 
 beforeEach(async () => {
-  directory = await realpath(await mkdtemp(join(tmpdir(), 'orca-failed-removal-')))
+  directory = await realpath(await mkdtemp(join(tmpdir(), 'occ-failed-removal-')))
   checkout = join(directory, 'feature-$&-$$-$`')
   worktreeId = `repo-1::${checkout}`
   // What Git left: part of the checkout, `.git` already deleted.

@@ -4,7 +4,7 @@ import type { GitPushTarget } from '../../shared/worktree/types'
 import type { GitRemoteExec, WorktreePushTargetStore } from './worktree-push-target-cleanup'
 import {
   _resetPrRemoteReconciliationRateLimitForTests,
-  isOrcaGeneratedPrRemoteName,
+  isOCCGeneratedPrRemoteName,
   reconcileOrphanedPrRemotesWithExec
 } from './worktree-push-target-reconciliation'
 
@@ -12,8 +12,8 @@ type ExecMock = Mock<GitRemoteExec>
 
 const REPO_PATH = '/repo-root'
 const REPO_ID = 'repo-1'
-const FORK_URL = 'git@github.com:contributor/orca.git'
-const FORK_REMOTE = 'pr-contributor-orca'
+const FORK_URL = 'git@github.com:contributor/occ.git'
+const FORK_REMOTE = 'pr-contributor-occ'
 
 function worktreeId(suffix: string): string {
   return `${REPO_ID}::${suffix}`
@@ -78,18 +78,18 @@ function removeCalls(exec: ExecMock): string[][] {
     .filter((args) => args[0] === 'remote' && args[1] === 'remove')
 }
 
-describe('isOrcaGeneratedPrRemoteName', () => {
+describe('isOCCGeneratedPrRemoteName', () => {
   it('matches OCC-generated names, including disambiguated ones', () => {
-    expect(isOrcaGeneratedPrRemoteName('pr-head')).toBe(true)
-    expect(isOrcaGeneratedPrRemoteName('pr-contributor-orca')).toBe(true)
-    expect(isOrcaGeneratedPrRemoteName('pr-head-2')).toBe(true)
-    expect(isOrcaGeneratedPrRemoteName('pr-contributor-orca-3')).toBe(true)
+    expect(isOCCGeneratedPrRemoteName('pr-head')).toBe(true)
+    expect(isOCCGeneratedPrRemoteName('pr-contributor-occ')).toBe(true)
+    expect(isOCCGeneratedPrRemoteName('pr-head-2')).toBe(true)
+    expect(isOCCGeneratedPrRemoteName('pr-contributor-occ-3')).toBe(true)
   })
 
   it('does not match unrelated remote names', () => {
-    expect(isOrcaGeneratedPrRemoteName('origin')).toBe(false)
-    expect(isOrcaGeneratedPrRemoteName('upstream')).toBe(false)
-    expect(isOrcaGeneratedPrRemoteName('project-remote')).toBe(false)
+    expect(isOCCGeneratedPrRemoteName('origin')).toBe(false)
+    expect(isOCCGeneratedPrRemoteName('upstream')).toBe(false)
+    expect(isOCCGeneratedPrRemoteName('project-remote')).toBe(false)
   })
 })
 

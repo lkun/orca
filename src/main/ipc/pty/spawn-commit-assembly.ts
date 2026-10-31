@@ -5,7 +5,7 @@ import type { AgentSessionClaimedSpawnResult } from '../../../shared/agent-sessi
 import type { GlobalSettings } from '../../../shared/global-settings-types'
 import type { TuiAgent } from '../../../shared/tui-agent'
 import type { Store, PtyBindingSourceExpectation } from '../../persistence'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import type { PtyRegistrationClaim } from '../../runtime/runtime-terminal-state-records'
 import { markNativeWindowsConptyPty } from '../../runtime/terminal-model-query-authority'
 import type { IPtyProvider, PtySpawnResult } from '../../providers/pty-provider-contract'
@@ -32,7 +32,7 @@ import { publishCommittedPtySpawn, type PtySpawnPaneKeyAliases } from './spawn-c
 
 export type PtySpawnCommitState = {
   deps: {
-    runtime?: OrcaRuntimeService
+    runtime?: OCCRuntimeService
     getSettings?: () => GlobalSettings | undefined
     options?: { onCodexHomePtySpawned?: (args: CodexHomePtySpawnedLifecycleArgs) => void }
     sendPtySpawnedToRenderer: (id: string) => void

@@ -15,7 +15,7 @@ vi.mock('./chat-scratch-file-root', () => ({
 
 let root: string
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-staged-commands-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-staged-commands-'))
 })
 afterEach(() => rmSync(root, { recursive: true, force: true }))
 

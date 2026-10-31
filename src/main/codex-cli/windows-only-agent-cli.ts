@@ -1,6 +1,6 @@
 // Kept apart from ./command, which many tests mock whole, so error paths always see these.
 /** procfs takes no new entries, so nothing ever exists here. */
-export const WINDOWS_ONLY_AGENT_CLI_DIR = '/proc/orca-agent-cli-installed-only-on-windows'
+export const WINDOWS_ONLY_AGENT_CLI_DIR = '/proc/occ-agent-cli-installed-only-on-windows'
 
 export function isWindowsOnlyAgentCommand(command: string): boolean {
   return command.startsWith(`${WINDOWS_ONLY_AGENT_CLI_DIR}/`)

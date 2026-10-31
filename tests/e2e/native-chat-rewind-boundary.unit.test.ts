@@ -30,7 +30,7 @@ afterEach(async () => {
 })
 
 it('offers a recovered opener only when its saved native alias arrives, retaining prior history', async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-rewind-boundary-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-rewind-boundary-'))
   const options = { identity: IDENTITY, stateDirectory: root }
   const journal = await journals.open(options)
   const native = (uuid: string) => ({ provider: 'claude' as const, sessionId: 'original', uuid })

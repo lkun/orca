@@ -1,7 +1,7 @@
 // Live parked leaves preserve paired-client terminal handles (STA-2854); unmount alone must not invalidate actively viewed streams. Park watchers prove liveness and retire on reveal/close/exit/workspace teardown so dead terminals still disappear.
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { RuntimeSyncWindowGraph } from '../../../shared/runtime-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type { AppState } from '../store/types'
 import type { TerminalTab } from '../../../shared/terminal-tab-types'
 
@@ -130,18 +130,18 @@ async function captureGraph(
  * parks (mountedLeaves), so the PTY id is main's binding and is not reported here.
  */
 function reportedPanes(graph: RuntimeSyncWindowGraph): Record<string, unknown>[] {
-  return ORCA_LAYOUT_OWNER_IS_MAIN ? (graph.mountedLeaves ?? []) : graph.leaves
+  return OCC_LAYOUT_OWNER_IS_MAIN ? (graph.mountedLeaves ?? []) : graph.leaves
 }
 
 function reportedTabIds(graph: RuntimeSyncWindowGraph): string[] {
-  return ORCA_LAYOUT_OWNER_IS_MAIN
+  return OCC_LAYOUT_OWNER_IS_MAIN
     ? (graph.mountedLeaves ?? []).map((leaf) => leaf.tabId)
     : graph.tabs.map((tab) => tab.tabId)
 }
 
 /** The window's PTY claim, which only a window-owned build reports. */
 function withPty(ptyId: string): { ptyId?: string } {
-  return ORCA_LAYOUT_OWNER_IS_MAIN ? {} : { ptyId }
+  return OCC_LAYOUT_OWNER_IS_MAIN ? {} : { ptyId }
 }
 
 describe('syncRuntimeGraph cold-parked tabs', () => {
@@ -251,7 +251,7 @@ describe('syncRuntimeGraph cold-parked tabs', () => {
     const graph = await captureGraph({ seedState: false })
 
     // With the switch on, the active pane is main's own selection (runtime-leaf-record-projection.test.ts).
-    if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (!OCC_LAYOUT_OWNER_IS_MAIN) {
       expect(graph.tabs).toContainEqual(
         expect.objectContaining({ tabId: TAB_ID, activeLeafId: LEAF })
       )

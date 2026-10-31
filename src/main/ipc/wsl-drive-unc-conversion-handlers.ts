@@ -11,12 +11,12 @@ import type {
 } from '../../shared/wsl-drive-unc-conversion-types'
 import { relaunchApp } from '../app-relaunch'
 import { gitExecFileAsync } from '../git/command-runner/git-exec-file'
-import { readProfileProjectTransferState } from '../orca-profiles/profile-project-domain-state'
-import { getOrcaProfileListState } from '../orca-profiles/profile-index-store'
-import { getProfileUserDataPath } from '../orca-profiles/profile-storage-paths'
+import { readProfileProjectTransferState } from '../occ-profiles/profile-project-domain-state'
+import { getOCCProfileListState } from '../occ-profiles/profile-index-store'
+import { getProfileUserDataPath } from '../occ-profiles/profile-storage-paths'
 import type { Store } from '../persistence'
 import { pauseWslMoveScope } from '../persistence/moving-wsl-projects/wsl-move-driver-pause'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { quitProcess } from '../startup/process-quit-request'
 import { startWslDriveUncConversion } from '../wsl/wsl-drive-unc-conversion-run'
 import {
@@ -45,7 +45,7 @@ export const WSL_DRIVE_UNC_CONVERSION_CHANNELS = [
 
 export function registerWslDriveUncConversionHandlers(
   store: Store,
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
 ): void {
   for (const channel of WSL_DRIVE_UNC_CONVERSION_CHANNELS) {
     ipcMain.removeHandler(channel)
@@ -56,7 +56,7 @@ export function registerWslDriveUncConversionHandlers(
       assertAvailable()
       const request = parseRequest(args)
       const userDataPath = app.getPath('userData')
-      const { activeProfileId } = getOrcaProfileListState()
+      const { activeProfileId } = getOCCProfileListState()
       return startWslDriveUncConversion(
         {
           userDataPath,

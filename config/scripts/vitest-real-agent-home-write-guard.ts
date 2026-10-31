@@ -12,7 +12,7 @@ type GuardState = { roots: string[]; violations: string[] }
 const AGENT_HOME_ENTRIES = [
   '.codex',
   '.claude',
-  '.orca',
+  '.occ',
   '.cursor',
   '.copilot',
   '.gemini',
@@ -22,20 +22,20 @@ const AGENT_HOME_ENTRIES = [
 const AGENT_HOME_FILE_PREFIXES = ['.claude.json']
 // Capture live OCC/agent roots from terminal env before clearing inherited values.
 const INHERITED_STATE_ENV = [
-  'ORCA_USER_DATA_PATH',
+  'OCC_USER_DATA_PATH',
   'CODEX_HOME',
-  'ORCA_CODEX_HOME',
+  'OCC_CODEX_HOME',
   'CLAUDE_CONFIG_DIR'
 ]
 // Why: an OCC terminal points this at the live app's CLI, which a test's child shell would run.
-const INHERITED_LIVE_CLI_ENV = ['ORCA_CODEX_LAUNCH_PREFLIGHT']
+const INHERITED_LIVE_CLI_ENV = ['OCC_CODEX_LAUNCH_PREFLIGHT']
 // Real-agent opt-in suites intentionally use their own home and explicit switch.
 const REAL_AGENT_SUITE_SWITCHES = [
-  'ORCA_REAL_CLAUDE_SUPERVISED_STOP',
-  'ORCA_CODEX_CONTRACT_BINARY',
-  'ORCA_CODEX_NO_DAEMON_CONTRACT_BINARY',
-  'ORCA_CODEX_TRUST_CONTRACT_BINARY',
-  'ORCA_REPRO_CODEX_BINARY'
+  'OCC_REAL_CLAUDE_SUPERVISED_STOP',
+  'OCC_CODEX_CONTRACT_BINARY',
+  'OCC_CODEX_NO_DAEMON_CONTRACT_BINARY',
+  'OCC_CODEX_TRUST_CONTRACT_BINARY',
+  'OCC_REPRO_CODEX_BINARY'
 ]
 const realAgentSuiteOptedIn = () => REAL_AGENT_SUITE_SWITCHES.some((name) => process.env[name])
 const foldCase = process.platform === 'darwin' || process.platform === 'win32'
@@ -56,13 +56,13 @@ function realHomes(): string[] {
   return homes.filter((home): home is string => Boolean(home))
 }
 
-/** Folder roots end in a separator so `~/.orca` never covers `~/.orca-relay`; file prefixes do not. */
+/** Folder roots end in a separator so `~/.occ` never covers `~/.occ-relay`; file prefixes do not. */
 function protectedRoots(): string[] {
   const folders = realHomes().flatMap((home) => [
     ...AGENT_HOME_ENTRIES.map((entry) => join(home, entry)),
-    join(home, 'Library', 'Application Support', 'orca'),
-    join(home, '.config', 'orca'),
-    join(home, 'AppData', 'Roaming', 'orca')
+    join(home, 'Library', 'Application Support', 'occ'),
+    join(home, '.config', 'occ'),
+    join(home, 'AppData', 'Roaming', 'occ')
   ])
   for (const name of INHERITED_STATE_ENV) {
     const value = process.env[name]
@@ -90,7 +90,7 @@ function targetPath(target: unknown): string | null {
 }
 
 function realClaudeTranscriptWriteOptedIn(path: string): boolean {
-  if (process.env.ORCA_REAL_CLAUDE_CLI_TEST !== '1') {
+  if (process.env.OCC_REAL_CLAUDE_CLI_TEST !== '1') {
     return false
   }
   const homes = [
@@ -191,16 +191,16 @@ function install(): GuardState {
 
 declare global {
   // Wrap once per process; per-file wrapping stacks duplicate guards.
-  var orcaRealAgentHomeWriteGuard: GuardState | undefined
+  var occRealAgentHomeWriteGuard: GuardState | undefined
 }
-const state = (globalThis.orcaRealAgentHomeWriteGuard ??= install())
+const state = (globalThis.occRealAgentHomeWriteGuard ??= install())
 // Clear inherited paths only after capturing guarded roots; suites can supply test-local values.
 export function clearInheritedAgentStateEnv(): void {
   const inheritedEnvToUnset = realAgentSuiteOptedIn()
     ? []
     : [...INHERITED_STATE_ENV, ...INHERITED_LIVE_CLI_ENV]
   for (const name of inheritedEnvToUnset) {
-    if (name === 'CLAUDE_CONFIG_DIR' && process.env.ORCA_REAL_CLAUDE_CLI_TEST === '1') {
+    if (name === 'CLAUDE_CONFIG_DIR' && process.env.OCC_REAL_CLAUDE_CLI_TEST === '1') {
       continue
     }
     delete process.env[name]

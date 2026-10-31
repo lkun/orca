@@ -4,8 +4,8 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type WebSocket from 'ws'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeService } from './occ-runtime'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import { DeviceRegistry } from './device-registry'
 import { FILE_METHODS } from './rpc/methods/files'
 import { E2EEChannel } from './rpc/e2ee-channel'
@@ -24,9 +24,9 @@ function hugeListing(): DirEntry[] {
 }
 
 function createServer() {
-  const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-reply-size-'))
-  const runtime = new OrcaRuntimeService()
-  const server = new OrcaRuntimeRpcServer({
+  const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-reply-size-'))
+  const runtime = new OCCRuntimeService()
+  const server = new OCCRuntimeRpcServer({
     runtime,
     methods: FILE_METHODS,
     userDataPath,
@@ -86,7 +86,7 @@ function connectEncryptedChannel() {
 }
 
 describe('remote RPC replies over the encrypted channel', () => {
-  const servers: OrcaRuntimeRpcServer[] = []
+  const servers: OCCRuntimeRpcServer[] = []
   afterEach(async () => {
     await Promise.all(servers.splice(0).map((server) => server.stop()))
     vi.restoreAllMocks()

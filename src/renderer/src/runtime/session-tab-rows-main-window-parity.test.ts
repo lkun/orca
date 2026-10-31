@@ -19,9 +19,9 @@ import { buildMobileSessionTabSnapshots } from './sync-runtime-graph/mobile-sess
 import { makeState } from './sync-runtime-graph-test-harness'
 
 // Main's projection runs on the layout-owner path only.
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-const README = '/Users/dev/orca/README.md'
+const README = '/Users/dev/occ/README.md'
 const SERVER_DOC = '/srv/app/GUIDE.md'
 const SERVER_DOC_ID = ownedEditorFileId(SERVER_DOC, GIT_KEY, 'env-1')
 
@@ -68,18 +68,18 @@ const files: OpenFile[] = [
   },
   // Its source tab is closed: the preview is its own source.
   {
-    id: 'markdown-preview::/Users/dev/orca/CHANGELOG.md',
-    filePath: '/Users/dev/orca/CHANGELOG.md',
+    id: 'markdown-preview::/Users/dev/occ/CHANGELOG.md',
+    filePath: '/Users/dev/occ/CHANGELOG.md',
     relativePath: 'CHANGELOG.md',
     worktreeId: GIT_KEY,
     language: 'markdown',
     mode: 'markdown-preview',
-    markdownPreviewSourceFileId: '/Users/dev/orca/CHANGELOG.md',
+    markdownPreviewSourceFileId: '/Users/dev/occ/CHANGELOG.md',
     isDirty: false
   },
   {
     id: `${GIT_KEY}::diff::unstaged::src/app.ts`,
-    filePath: '/Users/dev/orca/src/app.ts',
+    filePath: '/Users/dev/occ/src/app.ts',
     relativePath: 'src/app.ts',
     worktreeId: GIT_KEY,
     language: 'typescript',
@@ -89,7 +89,7 @@ const files: OpenFile[] = [
   },
   {
     id: `${GIT_KEY}::diff::branch::src/lib.ts`,
-    filePath: '/Users/dev/orca/src/lib.ts',
+    filePath: '/Users/dev/occ/src/lib.ts',
     relativePath: 'src/lib.ts',
     worktreeId: GIT_KEY,
     language: 'typescript',
@@ -100,7 +100,7 @@ const files: OpenFile[] = [
   // Virtual reviews have display labels in place of file paths.
   {
     id: `${GIT_KEY}::conflict-review`,
-    filePath: '/Users/dev/orca',
+    filePath: '/Users/dev/occ',
     relativePath: 'Merge conflicts',
     worktreeId: GIT_KEY,
     language: 'plaintext',
@@ -109,7 +109,7 @@ const files: OpenFile[] = [
   },
   {
     id: `${GIT_KEY}::check-details::build`,
-    filePath: '/Users/dev/orca',
+    filePath: '/Users/dev/occ',
     relativePath: 'build',
     worktreeId: GIT_KEY,
     language: 'plaintext',
@@ -118,7 +118,7 @@ const files: OpenFile[] = [
   },
   {
     id: `${GIT_KEY}::all-diffs::uncommitted`,
-    filePath: '/Users/dev/orca',
+    filePath: '/Users/dev/occ',
     relativePath: 'All Changes',
     worktreeId: GIT_KEY,
     language: 'plaintext',
@@ -221,7 +221,7 @@ describe("main's mobile editor rows", () => {
     ).toEqual([
       [README, true],
       [SERVER_DOC_ID, false],
-      ['markdown-preview::/Users/dev/orca/CHANGELOG.md', false]
+      ['markdown-preview::/Users/dev/occ/CHANGELOG.md', false]
     ])
   })
 })

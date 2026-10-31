@@ -1,6 +1,6 @@
 import { connect, type Socket } from 'node:net'
 import { afterEach, expect, it, vi } from 'vitest'
-import { RELAY_CLOSE_CODE, RELAY_PROTOCOL_LIMITS } from '@orca-cloud/relay-contract'
+import { RELAY_CLOSE_CODE, RELAY_PROTOCOL_LIMITS } from '@occ-cloud/relay-contract'
 import { loadRelayConfig } from './config.js'
 import type { RelayDatabase } from './database.js'
 import { createRelayServer } from './relay-server.js'
@@ -29,19 +29,19 @@ async function fixture(
     close: async () => {}
   }
   const config = loadRelayConfig({
-    ORCA_RELAY_PUBLIC_URL: 'http://127.0.0.1',
-    ORCA_RELAY_CELL_URL: 'http://127.0.0.1',
-    ORCA_RELAY_AUTH_ISSUER: 'https://auth.example.test',
-    ORCA_RELAY_JWKS_URL: 'https://auth.example.test/jwks',
-    ORCA_RELAY_ASSIGNMENT_SIGNING_KEY: 'synthetic-assignment-key-for-test-only',
-    ORCA_RELAY_ROLE: role,
-    ORCA_RELAY_ADMIN_AUDIENCE: 'https://auth.example.test/admin',
-    ORCA_RELAY_DEPLOY_SERVICE_ACCOUNT: 'deploy@example.test',
-    ORCA_RELAY_CELL_CONNECTION_HARD_CAP: '600',
-    ORCA_RELAY_CELL_CONNECTION_UNOBSERVED_BOUND: '60',
+    OCC_RELAY_PUBLIC_URL: 'http://127.0.0.1',
+    OCC_RELAY_CELL_URL: 'http://127.0.0.1',
+    OCC_RELAY_AUTH_ISSUER: 'https://auth.example.test',
+    OCC_RELAY_JWKS_URL: 'https://auth.example.test/jwks',
+    OCC_RELAY_ASSIGNMENT_SIGNING_KEY: 'synthetic-assignment-key-for-test-only',
+    OCC_RELAY_ROLE: role,
+    OCC_RELAY_ADMIN_AUDIENCE: 'https://auth.example.test/admin',
+    OCC_RELAY_DEPLOY_SERVICE_ACCOUNT: 'deploy@example.test',
+    OCC_RELAY_CELL_CONNECTION_HARD_CAP: '600',
+    OCC_RELAY_CELL_CONNECTION_UNOBSERVED_BOUND: '60',
     ...(role === 'director'
       ? {
-          ORCA_RELAY_CELLS_JSON: JSON.stringify([
+          OCC_RELAY_CELLS_JSON: JSON.stringify([
             { id: 'cell-1', url: 'https://cell-1.example.test', capacityRequests: 900 }
           ])
         }

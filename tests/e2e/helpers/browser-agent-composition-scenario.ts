@@ -1,7 +1,7 @@
 // Refuse agent presses during terminal IME composition: blur would commit unfinished text to the shell (#28700).
 
 import type { Page } from '@stablyai/playwright-test'
-import { expect } from './orca-app'
+import { expect } from './occ-app'
 import {
   evalInPage,
   openBackgroundProbeTab,

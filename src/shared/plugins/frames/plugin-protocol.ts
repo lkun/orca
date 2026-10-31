@@ -3,8 +3,8 @@ import { isPluginJsonObject } from '../manifest/plugin-json-object'
 
 /**
  * The one wire envelope between OCC and plugin code: worker fork channel, panel frames and custom
- * editor frames. It is internal: frames talk through the shell's `window.orca`, workers through the
- * `orca` object handed to `activate`, so the envelope can change without breaking plugins.
+ * editor frames. It is internal: frames talk through the shell's `window.occ`, workers through the
+ * `occ` object handed to `activate`, so the envelope can change without breaking plugins.
  * Ids are per direction: a `res` answers the other side's `req` with the same id.
  */
 
@@ -80,26 +80,26 @@ export const pluginErrorSchema = z.object({
 
 export const pluginEnvelopeSchema = z.discriminatedUnion('kind', [
   z.object({
-    orca: z.literal(PLUGIN_PROTOCOL_VERSION),
+    occ: z.literal(PLUGIN_PROTOCOL_VERSION),
     kind: z.literal('req'),
     id: idSchema,
     method: nameSchema,
     params: z.unknown().optional()
   }),
   z.object({
-    orca: z.literal(PLUGIN_PROTOCOL_VERSION),
+    occ: z.literal(PLUGIN_PROTOCOL_VERSION),
     kind: z.literal('res'),
     id: idSchema,
     result: z.unknown().optional(),
     error: pluginErrorSchema.optional()
   }),
   z.object({
-    orca: z.literal(PLUGIN_PROTOCOL_VERSION),
+    occ: z.literal(PLUGIN_PROTOCOL_VERSION),
     kind: z.literal('evt'),
     event: nameSchema,
     payload: z.unknown().optional()
   }),
-  z.object({ orca: z.literal(PLUGIN_PROTOCOL_VERSION), kind: z.literal('cancel'), id: idSchema })
+  z.object({ occ: z.literal(PLUGIN_PROTOCOL_VERSION), kind: z.literal('cancel'), id: idSchema })
 ])
 
 export type PluginEnvelope = z.infer<typeof pluginEnvelopeSchema>
@@ -120,15 +120,15 @@ export function pluginRequestId(data: unknown): number | null {
 }
 
 export function pluginRequest(id: number, method: string, params?: unknown): PluginRequest {
-  return { orca: PLUGIN_PROTOCOL_VERSION, kind: 'req', id, method, params }
+  return { occ: PLUGIN_PROTOCOL_VERSION, kind: 'req', id, method, params }
 }
 
 export function pluginResult(id: number, result: unknown): PluginResponse {
-  return { orca: PLUGIN_PROTOCOL_VERSION, kind: 'res', id, result }
+  return { occ: PLUGIN_PROTOCOL_VERSION, kind: 'res', id, result }
 }
 
 export function pluginFailure(id: number, error: PluginError): PluginResponse {
-  return { orca: PLUGIN_PROTOCOL_VERSION, kind: 'res', id, error }
+  return { occ: PLUGIN_PROTOCOL_VERSION, kind: 'res', id, error }
 }
 
 export function pluginOutcomeResponse(id: number, outcome: PluginHostCallOutcome): PluginResponse {
@@ -136,9 +136,9 @@ export function pluginOutcomeResponse(id: number, outcome: PluginHostCallOutcome
 }
 
 export function pluginEvent(event: string, payload?: unknown): PluginEvent {
-  return { orca: PLUGIN_PROTOCOL_VERSION, kind: 'evt', event, payload }
+  return { occ: PLUGIN_PROTOCOL_VERSION, kind: 'evt', event, payload }
 }
 
 export function pluginCancel(id: number): Extract<PluginEnvelope, { kind: 'cancel' }> {
-  return { orca: PLUGIN_PROTOCOL_VERSION, kind: 'cancel', id }
+  return { occ: PLUGIN_PROTOCOL_VERSION, kind: 'cancel', id }
 }

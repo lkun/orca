@@ -1,8 +1,8 @@
-// Runs on plain Node, as orcad does: rows come from the runtime's own listing and store.
+// Runs on plain Node, as occd does: rows come from the runtime's own listing and store.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Repo } from '../../../shared/repo-types'
 import type { RuntimeClientEvent } from '../../../shared/runtime-client-events'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import type { ResolvedWorktreeSnapshot } from '../runtime-resolved-worktree-cache'
 import type { RuntimeStore } from '../runtime-store-contract'
 import type { ResolvedWorktree } from '../runtime-worktree-path-identity'
@@ -15,7 +15,7 @@ import type {
 import { composeWorktreeHostIdentity } from '../../../shared/worktree/host-qualified-identity'
 import { getRepoHostIdentityForParts } from '../../../shared/repo-host-identity'
 
-vi.mock('../../../shared/sidebar-inputs-switch', () => ({ ORCA_SIDEBAR_INPUTS_IS_MAIN: true }))
+vi.mock('../../../shared/sidebar-inputs-switch', () => ({ OCC_SIDEBAR_INPUTS_IS_MAIN: true }))
 
 const localRepo: Repo = {
   id: 'repo-1',
@@ -110,7 +110,7 @@ function setup(repos: Repo[] = [localRepo, sshRepo]) {
   let freshGitRuns = true
   let scanGate: Promise<void> | null = null
   // The real listing cache and visibility filter run; only the scan and merge are stubbed.
-  class Probe extends OrcaRuntimeService {
+  class Probe extends OCCRuntimeService {
     protected override async computeResolvedWorktrees(): Promise<ResolvedWorktreeSnapshot> {
       return { ...listing, worktrees: [...listing.worktrees] }
     }

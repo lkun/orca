@@ -10,7 +10,7 @@ import {
   StructuredAgentSessionStatusFeed,
   type StructuredAgentSessionStatusSubscriber
 } from '../../../native-chat/agent-session-wire/structured-agent-session-status-feed'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import type { RpcAnyMethodDeclaration, RpcRequest, RpcResponse } from '../core'
 import { RpcDispatcher } from '../dispatcher'
 import { STRUCTURED_AGENT_SESSION_METHODS } from './structured-agent-session'
@@ -264,7 +264,7 @@ export function dispatcher(
     ...runtimeOverrides
   }
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: this partial runtime supplies the dispatcher methods under test and runtimeOverrides; a missing access fails the test.
-  return new RpcDispatcher({ runtime: runtime as unknown as OrcaRuntimeService, methods })
+  return new RpcDispatcher({ runtime: runtime as unknown as OCCRuntimeService, methods })
 }
 
 /** Reply transport carries the negotiated client identity the capability gate reads. */

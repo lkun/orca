@@ -14,9 +14,9 @@ import type { CodexSessionResumePreparation } from '../../codex/codex-session-re
 import type { CodexAccountSelectionTarget } from '../../codex-accounts/runtime-selection'
 import { isSafePtySessionId } from '../../daemon/pty-session-id'
 import type { IPtyProvider } from '../../providers/pty-provider-contract'
-import { stampWslOrchestrationCompatibilityHost } from '../../pty/wsl-orca-env'
+import { stampWslOrchestrationCompatibilityHost } from '../../pty/wsl-occ-env'
 import { getRuntimeSourceStamp } from '../../runtime/host-descriptor'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { buildPtyHostEnv } from './host-env/assembly'
 import { blockedWslDistroForPath } from '../../wsl/wsl-unc-access-gate'
 import { runAsWslLaunchUserAct } from '../../wsl/wsl-background-exec-gate'
@@ -25,7 +25,7 @@ import {
   getCompatibleSelectedCodexHomePath,
   resolveCodexHomeAfterManagedAuthReadiness,
   shouldSkipCodexHomeEnvForWindowsShell,
-  shouldStripInheritedOrcaCodexHome
+  shouldStripInheritedOCCCodexHome
 } from './host-env/codex-home'
 import type {
   CodexResumeLaunch,
@@ -63,7 +63,7 @@ export type PtySpawnHostEnv = {
   selectedCodexHomePath: string | null
   codexResumeHomeSelected: boolean
   skipCodexHomeEnv: boolean
-  stripInheritedOrcaCodexHome: boolean
+  stripInheritedOCCCodexHome: boolean
 }
 
 type PtySpawnHostEnvArgs = {
@@ -93,7 +93,7 @@ type PtySpawnHostEnvArgs = {
   requestedAgentTeamsPath: string | undefined
   provider: IPtyProvider
   deps: PtySpawnCodexResumeDeps & {
-    runtime?: OrcaRuntimeService
+    runtime?: OCCRuntimeService
     getSettings?: () => GlobalSettings | undefined
     getSelectedCodexHomePath?: GetSelectedCodexHomePath
   }
@@ -193,9 +193,9 @@ async function resolvePtySpawnHostEnvForAct(args: PtySpawnHostEnvArgs): Promise<
       codexResumeHome && codexHomePathsEqual(selectedCodexHomePath, codexResumeHome.codexHomePath)
     ),
     skipCodexHomeEnv,
-    stripInheritedOrcaCodexHome:
+    stripInheritedOCCCodexHome:
       args.isDaemonHostSpawn &&
-      shouldStripInheritedOrcaCodexHome({
+      shouldStripInheritedOCCCodexHome({
         target,
         selectedCodexHomePath,
         skipCodexHomeEnv,
@@ -247,7 +247,7 @@ async function resolvePtySpawnHostEnvForAct(args: PtySpawnHostEnvArgs): Promise<
       userDataPath: getAppEnvironment().getPath('userData'),
       selectedCodexHomePath,
       skipCodexHomeEnv,
-      stripInheritedOrcaCodexHome: hostEnv.stripInheritedOrcaCodexHome,
+      stripInheritedOCCCodexHome: hostEnv.stripInheritedOCCCodexHome,
       launchCommand,
       launchAgent: isTuiAgent(args.launchAgent) ? args.launchAgent : undefined,
       shellPath: args.shellOverride,

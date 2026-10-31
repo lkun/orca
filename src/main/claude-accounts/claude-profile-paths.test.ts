@@ -119,7 +119,7 @@ describe('Claude profile namespace', () => {
       ).toThrow()
       expect(describeClaudeProfile(`${dir}/./x/../`, 'account-a', target).home).toBe(profile.home)
       expect(() => describeClaudeProfile(dir, '../escape', target)).toThrow()
-      expect(() => describeClaudeProfile('C:\\orca', 'a', target)).toThrow()
+      expect(() => describeClaudeProfile('C:\\occ', 'a', target)).toThrow()
     }
   )
   it('refuses a profile whose marker names another account or target, creating nothing', () => {
@@ -154,7 +154,7 @@ describe('Claude profile namespace', () => {
   })
   it('refuses a data root inside the default Claude home', () => {
     const userHome = root()
-    const dataRoot = join(userHome, '.claude', 'orca')
+    const dataRoot = join(userHome, '.claude', 'occ')
     expect(() =>
       prepareClaudeProfileDirectory(dataRoot, describeClaudeProfile(dataRoot, 'a', local), userHome)
     ).toThrow('separate directories')
@@ -163,7 +163,7 @@ describe('Claude profile namespace', () => {
   it.runIf(caseInsensitive)('refuses a case-only alias of the default home', () => {
     const userHome = root()
     mkdirSync(join(userHome, '.claude'))
-    const dataRoot = join(userHome, '.CLAUDE', 'orca')
+    const dataRoot = join(userHome, '.CLAUDE', 'occ')
     expect(() =>
       prepareClaudeProfileDirectory(dataRoot, describeClaudeProfile(dataRoot, 'a', local), userHome)
     ).toThrow('separate directories')
@@ -177,13 +177,13 @@ describe('Claude profile namespace', () => {
     expect(
       readUserClaudeConfigDir({
         CLAUDE_CONFIG_DIR: '/data/claude-profiles/a/home',
-        ORCA_CLAUDE_INJECTED_CONFIG_DIR: '/data/claude-profiles/a/home'
+        OCC_CLAUDE_INJECTED_CONFIG_DIR: '/data/claude-profiles/a/home'
       })
     ).toBeUndefined()
     expect(
       readUserClaudeConfigDir({
         CLAUDE_CONFIG_DIR: '/cfg/claude',
-        ORCA_CLAUDE_INJECTED_CONFIG_DIR: '/data/claude-profiles/a/home'
+        OCC_CLAUDE_INJECTED_CONFIG_DIR: '/data/claude-profiles/a/home'
       })
     ).toBe(resolve('/cfg/claude'))
   })
@@ -191,11 +191,11 @@ describe('Claude profile namespace', () => {
     expect(readUserClaudeConfigDirAsSet({ CLAUDE_CONFIG_DIR: '/cfg/claude/' })).toBe('/cfg/claude/')
     const outer = {
       CLAUDE_CONFIG_DIR: '/data/claude-profiles/a/home',
-      ORCA_CLAUDE_INJECTED_CONFIG_DIR: '/data/claude-profiles/a/home'
+      OCC_CLAUDE_INJECTED_CONFIG_DIR: '/data/claude-profiles/a/home'
     }
     expect(readUserClaudeConfigDirAsSet(outer)).toBeUndefined()
     expect(
-      readUserClaudeConfigDirAsSet({ ...outer, ORCA_CLAUDE_USER_CONFIG_DIR: 'C:/Claude Config/' })
+      readUserClaudeConfigDirAsSet({ ...outer, OCC_CLAUDE_USER_CONFIG_DIR: 'C:/Claude Config/' })
     ).toBe('C:/Claude Config/')
   })
   it("refuses a profile at or around the user's own CLAUDE_CONFIG_DIR", () => {

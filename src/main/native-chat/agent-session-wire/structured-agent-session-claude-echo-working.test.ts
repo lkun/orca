@@ -40,7 +40,7 @@ let store: AgentSessionRecordStore
 const claude = { current: fakeClaude({ replayUuid: null }) }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-claude-echo-working-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-claude-echo-working-'))
   resetHostTestOperationIds()
   claude.current = fakeClaude({ replayUuid: null })
   const lifecycle: Promise<void>[] = []

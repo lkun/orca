@@ -11,7 +11,7 @@
 import { createRequire } from 'node:module'
 import { readdirSync, rmSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { derivedGoldens } from '../src/test-support/rpc-recording/derived-goldens.ts'
 import { RECORDING_DRIVERS } from '../src/test-support/rpc-recording/recording-drivers.ts'
 import { readScenarios } from '../src/test-support/rpc-recording/scenario-input.ts'
@@ -70,7 +70,7 @@ try {
     ],
     cwd: resolve(root, 'mobile'),
     timeoutMs: RECORDING_TIMEOUT_MS,
-    env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1', RPC_FOUNDATION_MODE: '--record' },
+    env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1', RPC_FOUNDATION_MODE: '--record' },
     // Stream output: multi-minute capture stays silent and truncates beyond 8 MiB.
     stdio: 'inherit'
   })

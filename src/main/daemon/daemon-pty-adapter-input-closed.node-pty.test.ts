@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type * as pty from 'node-pty'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { loadNodePtyForTests } from '../orcad/orcad-node-slot-fixture'
+import { loadNodePtyForTests } from '../occd/occd-node-slot-fixture'
 import { DaemonPtyAdapter } from './daemon-pty-adapter'
 import {
   startDaemonAdapterHarness,
@@ -46,7 +46,7 @@ describePosix('daemon adapter writes to a live session whose PTY stopped taking 
   })
 
   it('refuses writes once the daemon reports closed input, including after a main restart', async () => {
-    root = mkdtempSync(join(tmpdir(), 'orca-adapter-input-closed-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-adapter-input-closed-'))
     const log = join(root, 'stdin.log')
     harness = await startDaemonAdapterHarness(() => {
       native = nodePty.spawn(

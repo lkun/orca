@@ -39,7 +39,7 @@ describe('flipping a reserve-mode cell back to the database', () => {
     vi.spyOn(console, 'log').mockImplementation(() => undefined)
     vi.spyOn(console, 'warn').mockImplementation(() => undefined)
     vi.spyOn(console, 'error').mockImplementation(() => undefined)
-    const dataDir = mkdtempSync(join(tmpdir(), 'orca-relay-reserve-rollback-'))
+    const dataDir = mkdtempSync(join(tmpdir(), 'occ-relay-reserve-rollback-'))
     cleanup.push(() => rmSync(dataDir, { recursive: true, force: true }))
     const database = await openRelayDatabase({ dataDir })
     cleanup.push(() => database.close())
@@ -151,7 +151,7 @@ describe('flipping a reserve-mode cell back to the database', () => {
     // The endless retry is visible: one line per run of consecutive stalls.
     const stalledLines = vi
       .mocked(console.warn)
-      .mock.calls.filter(([line]) => String(line).includes('orca_relay_cell_reregistration_stalled'))
+      .mock.calls.filter(([line]) => String(line).includes('occ_relay_cell_reregistration_stalled'))
     expect(stalledLines).toHaveLength(Math.floor(stalls / REREGISTER_STALL_LOG_EVERY))
   }, 60_000)
 
@@ -272,7 +272,7 @@ describe('flipping a reserve-mode cell back to the database', () => {
     const tripped = vi
       .mocked(console.error)
       .mock.calls.map(([line]) => String(line))
-      .filter((line) => line.includes('orca_relay_cell_reserve_dead_man_tripped'))
+      .filter((line) => line.includes('occ_relay_cell_reserve_dead_man_tripped'))
     expect(tripped.map((line) => JSON.parse(line).cellId)).toEqual([reserve.config.cellId])
     // Publish raw db mode immediately despite PG’s reserve stamp so placement can recover without a working feed poll.
     await until(async () => (await reserve.admitEffectiveRow())?.mode === 'db')

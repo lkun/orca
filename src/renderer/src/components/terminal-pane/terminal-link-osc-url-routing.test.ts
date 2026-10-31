@@ -223,10 +223,10 @@ describe('handleOscLink', () => {
     expect(getTerminalFileOpenHint()).toBe(
       'Click for actions, ⌘+click to open, or ⇧⌘+click for default app'
     )
-    expect(getTerminalHtmlFileOpenHint({ primary: 'system', alternate: 'orca' })).toBe(
+    expect(getTerminalHtmlFileOpenHint({ primary: 'system', alternate: 'occ' })).toBe(
       'Click for actions, ⌘+click to open, or ⇧⌘+click to open in OCC'
     )
-    expect(getTerminalHtmlFileOpenHint({ primary: 'orca', alternate: 'system' })).toBe(
+    expect(getTerminalHtmlFileOpenHint({ primary: 'occ', alternate: 'system' })).toBe(
       'Click for actions, ⌘+click to open, or ⇧⌘+click for system browser'
     )
     expect(getTerminalUrlOpenHint()).toBe(
@@ -237,7 +237,7 @@ describe('handleOscLink', () => {
     expect(getTerminalFileOpenHint()).toBe(
       'Click for actions, Ctrl+click to open, or Shift+Ctrl+click for default app'
     )
-    expect(getTerminalHtmlFileOpenHint({ primary: 'system', alternate: 'orca' })).toBe(
+    expect(getTerminalHtmlFileOpenHint({ primary: 'system', alternate: 'occ' })).toBe(
       'Click for actions, Ctrl+click to open, or Shift+Ctrl+click to open in OCC'
     )
     expect(getTerminalUrlOpenHint()).toBe(
@@ -248,7 +248,7 @@ describe('handleOscLink', () => {
   it('omits plain-click actions from hover hints when the popover is disabled', () => {
     setPlatform('Macintosh')
     expect(getTerminalFileOpenHint(false)).toBe('⌘+click to open, or ⇧⌘+click for default app')
-    expect(getTerminalHtmlFileOpenHint({ primary: 'system', alternate: 'orca' }, false)).toBe(
+    expect(getTerminalHtmlFileOpenHint({ primary: 'system', alternate: 'occ' }, false)).toBe(
       '⌘+click to open, or ⇧⌘+click to open in OCC'
     )
     expect(getTerminalUrlOpenHint({ showActions: false })).toBe(

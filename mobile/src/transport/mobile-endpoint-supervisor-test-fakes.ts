@@ -174,8 +174,8 @@ export class FakeLogicalClient extends FakeSession implements StableLogicalRpcCl
 
 export const relay = {
   v: 1 as const,
-  directorUrl: 'https://relay.onorca.dev',
-  cellUrl: 'https://relay-c1.onorca.dev',
+  directorUrl: 'https://relay.onocc.dev',
+  cellUrl: 'https://relay-c1.onocc.dev',
   assignmentEpoch: 7,
   relayHostId: 'AbCdEf0123_-xyZ9',
   e2eeFraming: 2 as const

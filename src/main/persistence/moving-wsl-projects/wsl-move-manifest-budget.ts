@@ -3,21 +3,21 @@
  * abort carries it whole, and a reset that cannot carry it can only ask the host by identity.
  * Capping it when the move is recorded keeps new moves out of that gap entirely.
  */
-import type { OrcadMigrationManifest } from '../../../shared/orcad-migration/orcad-migration-manifest'
-import { ORCAD_MIGRATION_REQUEST_PARAMS_BUDGET_BYTES } from '../../ssh/orcad-migration-manifest-export'
+import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
+import { OCCD_MIGRATION_REQUEST_PARAMS_BUDGET_BYTES } from '../../ssh/occd-migration-manifest-export'
 
 // Headroom for a host whose request limit is a little lower than this build's.
 const WSL_MOVE_MANIFEST_MARGIN_BYTES = 16 * 1024
 
 export const WSL_MOVE_MANIFEST_REQUEST_BUDGET_BYTES =
-  ORCAD_MIGRATION_REQUEST_PARAMS_BUDGET_BYTES - WSL_MOVE_MANIFEST_MARGIN_BYTES
+  OCCD_MIGRATION_REQUEST_PARAMS_BUDGET_BYTES - WSL_MOVE_MANIFEST_MARGIN_BYTES
 
-export function wslMoveManifestRequestBytes(manifest: OrcadMigrationManifest): number {
+export function wslMoveManifestRequestBytes(manifest: OCCdMigrationManifest): number {
   return Buffer.byteLength(JSON.stringify({ manifest }), 'utf8')
 }
 
 /** Throws the user-facing refusal before a move is recorded, so nothing is fenced. */
-export function assertWslMoveManifestFits(manifest: OrcadMigrationManifest): void {
+export function assertWslMoveManifestFits(manifest: OCCdMigrationManifest): void {
   const bytes = wslMoveManifestRequestBytes(manifest)
   if (bytes <= WSL_MOVE_MANIFEST_REQUEST_BUDGET_BYTES) {
     return

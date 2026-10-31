@@ -2,14 +2,14 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
-import { openCloudDatabase, type CloudDatabase } from '@orca-cloud/cloud-database'
-import { requireSchemaLockTarget } from '@orca-cloud/postgres-schema'
+import { openCloudDatabase, type CloudDatabase } from '@occ-cloud/cloud-database'
+import { requireSchemaLockTarget } from '@occ-cloud/postgres-schema'
 import pg from 'pg'
 import { afterEach, describe, expect, it } from 'vitest'
 import { connectorBootStatements } from './connector-database.js'
 import { connectorSchemaBaseline } from './connector-schema-baseline.test-fixture.js'
 
-const testDatabaseUrl = process.env.ORCA_CONNECTOR_TEST_DATABASE_URL
+const testDatabaseUrl = process.env.OCC_CONNECTOR_TEST_DATABASE_URL
 
 type Engine = 'sqlite' | 'postgres'
 type Store = { databaseUrl?: string; dataDir: string }

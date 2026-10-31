@@ -222,7 +222,7 @@ describe('materializeRelocatedDaemonHost', () => {
     const result = materializeRelocatedDaemonHost()
     const dest = relocatedHostRoot()
     expect(result?.execPath).toBe(join(dest, 'OCC Nightly.exe'))
-    expect(existsSync(join(dest, 'orca-terminal-daemon.exe'))).toBe(false)
+    expect(existsSync(join(dest, 'occ-terminal-daemon.exe'))).toBe(false)
     expect(getRelocatedDaemonHost()?.execPath).toBe(join(dest, 'OCC Nightly.exe'))
   })
 
@@ -313,8 +313,8 @@ describe('materializeRelocatedDaemonHost', () => {
     expect(existsSync(getDaemonHostRootDir())).toBe(false)
   })
 
-  it('does nothing for a packaged host with no asar root (orcad on win32)', () => {
-    // orcad is packaged plain Node, without an Electron tree or NSIS updater to escape.
+  it('does nothing for a packaged host with no asar root (occd on win32)', () => {
+    // occd is packaged plain Node, without an Electron tree or NSIS updater to escape.
     hostApp.appPath = join(installDir, 'resources', 'app')
     installHostApp()
     expect(materializeRelocatedDaemonHost()).toBeNull()
@@ -682,7 +682,7 @@ describe('pruneOldDaemonHosts', () => {
     expect(existsSync(join(root, '1.0.0'))).toBe(true)
   })
 
-  it('reclaims nothing for a packaged host with no asar root (orcad on win32)', () => {
+  it('reclaims nothing for a packaged host with no asar root (occd on win32)', () => {
     const root = getDaemonHostRootDir()
     mkdirSync(join(root, '1.0.0'), { recursive: true })
     hostApp.appPath = join(installDir, 'resources', 'app')

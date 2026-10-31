@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { ProcessResult, ProcessSpec } from '@orca/process-host/process-spec'
+import type { ProcessResult, ProcessSpec } from '@occ/process-host/process-spec'
 import {
   CLIPBOARD_FILE_RESOLUTION_TIMEOUT_MS,
   writeFileToClipboard,
@@ -103,7 +103,7 @@ describe('writeFileToClipboard', () => {
 
   it('copies on Windows with Set-Clipboard, passing the path as data, never as script', async () => {
     vi.stubEnv('SystemRoot', 'D:\\Win')
-    vi.stubEnv('ORCA_TEST_INHERITED', 'kept')
+    vi.stubEnv('OCC_TEST_INHERITED', 'kept')
     const runProcess = vi.fn(async (_spec: ProcessSpec) => exited(0))
     const result = await writeFileToClipboard(
       "/repo/o'brien $(calc).png",
@@ -117,11 +117,11 @@ describe('writeFileToClipboard', () => {
       '-NoProfile',
       '-NonInteractive',
       '-Command',
-      'Set-Clipboard -LiteralPath $env:ORCA_CLIPBOARD_FILE'
+      'Set-Clipboard -LiteralPath $env:OCC_CLIPBOARD_FILE'
     ])
-    expect(spec.env?.ORCA_CLIPBOARD_FILE).toBe("/repo/o'brien $(calc).png")
+    expect(spec.env?.OCC_CLIPBOARD_FILE).toBe("/repo/o'brien $(calc).png")
     // Preserve inherited environment or PowerShell cannot start.
-    expect(spec.env?.ORCA_TEST_INHERITED).toBe('kept')
+    expect(spec.env?.OCC_TEST_INHERITED).toBe('kept')
   })
 
   it.each([

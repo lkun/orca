@@ -62,7 +62,7 @@ export type BrowserViewportScrollState = {
   maxScrollTop: number
 }
 
-/** Persist workspace document identity only; mount/reload mints fresh grants/orca-preview URLs, which must never be stored or published. url stays blank for the document page. */
+/** Persist workspace document identity only; mount/reload mints fresh grants/occ-preview URLs, which must never be stored or published. url stays blank for the document page. */
 export type BrowserPageDocLocation = {
   kind: 'workspace-doc'
   worktreeId: string

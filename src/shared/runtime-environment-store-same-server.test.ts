@@ -9,7 +9,7 @@ import {
   listEnvironments,
   resolveEnvironmentPairingOffer
 } from './runtime-environment-store'
-import { addManagedOrcadEnvironment } from './runtime-environment-managed-orcad-store'
+import { addManagedOCCdEnvironment } from './runtime-environment-managed-occd-store'
 
 const serverKey = Buffer.alloc(32, 7).toString('base64')
 
@@ -23,7 +23,7 @@ describe('pairing a server that is already saved', () => {
   beforeEach(() => {
     // Why: this suite tests store contents, while secure-file tests cover Windows ACLs.
     Object.defineProperty(process, 'platform', { configurable: true, value: 'linux' })
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-same-server-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-same-server-'))
   })
   afterEach(() => {
     if (originalPlatform) {
@@ -158,11 +158,11 @@ describe('pairing a server that is already saved', () => {
   })
 
   it('refuses, naming the saved entry, when OCC manages that server over SSH', () => {
-    const managed = addManagedOrcadEnvironment(userDataPath, {
+    const managed = addManagedOCCdEnvironment(userDataPath, {
       id: 'managed',
       name: 'Managed box',
       pairingCode: pairingCode('ws://127.0.0.1:41000/runtime'),
-      orcadDeployment: {
+      occdDeployment: {
         sshTargetId: 'target',
         sshTargetGeneration: 1,
         localPort: 41000,

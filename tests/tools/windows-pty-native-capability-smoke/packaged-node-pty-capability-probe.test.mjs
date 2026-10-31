@@ -4,7 +4,7 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { stagePackagedProcessHost } from '../../../config/scripts/packaged-process-host-fixture.mjs'
 
 const require = createRequire(import.meta.url)
@@ -48,7 +48,7 @@ describe('packaged node-pty launcher-surviving grandchild', () => {
     })
 
     expect(result).toMatchObject({ code: 0, timedOut: false })
-    expect(result.stdout).toBe('ORCA_ONE_SHOT_EVIDENCE=flushed\n')
+    expect(result.stdout).toBe('OCC_ONE_SHOT_EVIDENCE=flushed\n')
     expect(result.stderr).toBe('')
   })
 
@@ -60,7 +60,7 @@ describe('packaged node-pty launcher-surviving grandchild', () => {
 
     expect(launch.program).toMatch(/wscript\.exe$/i)
     expect(launch.args).toEqual([
-      expect.stringMatching(/real-orca-detached-launcher\.vbs$/),
+      expect.stringMatching(/real-occ-detached-launcher\.vbs$/),
       process.execPath,
       probePath,
       '--grandchild-member',
@@ -72,7 +72,7 @@ describe('packaged node-pty launcher-surviving grandchild', () => {
   })
 
   it('loads spawnProcess from the packaged public process-host output', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-pty-capability-resources-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-pty-capability-resources-'))
     try {
       const packageDir = await stagePackagedProcessHost(resourcesDir)
       const entry = packagedProcessHostPath(resourcesDir)
@@ -87,7 +87,7 @@ describe('packaged node-pty launcher-surviving grandchild', () => {
   })
 
   it('loads spawnProcess from the private out/ copy of a package that predates the public one', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-pty-capability-legacy-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-pty-capability-legacy-'))
     try {
       const legacy = await stageLegacyRunProcess(resourcesDir)
       const entry = packagedProcessHostPath(resourcesDir)
@@ -100,7 +100,7 @@ describe('packaged node-pty launcher-surviving grandchild', () => {
   })
 
   it('fails on a broken public package rather than loading the legacy copy', async () => {
-    const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-pty-capability-broken-'))
+    const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-pty-capability-broken-'))
     try {
       const legacy = await stageLegacyRunProcess(resourcesDir)
       const packageDir = await stagePackagedProcessHost(resourcesDir)
@@ -112,7 +112,7 @@ describe('packaged node-pty launcher-surviving grandchild', () => {
 
       await rm(join(packageDir, 'package.json'))
       expect(() => packagedProcessHostPath(resourcesDir)).toThrow(
-        /packaged @orca\/process-host has no package\.json/
+        /packaged @occ\/process-host has no package\.json/
       )
     } finally {
       await rm(resourcesDir, { recursive: true, force: true })
@@ -120,7 +120,7 @@ describe('packaged node-pty launcher-surviving grandchild', () => {
   })
 
   it('closes one-shot fixture observations before server teardown', async () => {
-    const fixtureDir = await mkdtemp(join(tmpdir(), 'orca-pty-capability-'))
+    const fixtureDir = await mkdtemp(join(tmpdir(), 'occ-pty-capability-'))
     const channel = join(fixtureDir, 'fixture.sock')
     const fixtureToken = 'fixture-token'
     const fixtures = createFixtureServer(channel, fixtureToken)

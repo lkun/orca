@@ -271,18 +271,18 @@ describe('ImageViewer reading its bytes by URL', () => {
     vi.clearAllMocks()
   })
 
-  it('shows an image from its orca-media URL, sized from the grant', async () => {
+  it('shows an image from its occ-media URL, sized from the grant', async () => {
     reactHookRuntime.index = 0
     const module = await import('./ImageViewer')
     const rendered = expandNode(
       module.default({
-        src: 'orca-media://file/token?revision=r1',
+        src: 'occ-media://file/token?revision=r1',
         byteSize: 2048,
         filePath: '/repo/preview.png',
         mimeType: 'image/png'
       })
     )
-    expect(findPreviewImage(rendered).props.src).toBe('orca-media://file/token?revision=r1')
+    expect(findPreviewImage(rendered).props.src).toBe('occ-media://file/token?revision=r1')
     expect(JSON.stringify(rendered)).toContain('2.0 KB')
   })
 
@@ -292,13 +292,13 @@ describe('ImageViewer reading its bytes by URL', () => {
     const [pdf] = findElementsByType(
       expandNode(
         module.default({
-          src: 'orca-media://file/doc?revision=r1',
+          src: 'occ-media://file/doc?revision=r1',
           filePath: '/repo/report.pdf',
           mimeType: 'application/pdf'
         })
       ),
       'PdfViewer'
     )
-    expect(pdf?.props).toMatchObject({ src: 'orca-media://file/doc?revision=r1', content: '' })
+    expect(pdf?.props).toMatchObject({ src: 'occ-media://file/doc?revision=r1', content: '' })
   })
 })

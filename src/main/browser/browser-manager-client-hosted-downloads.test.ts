@@ -91,7 +91,7 @@ describe('client-hosted downloads', () => {
     // Client-hosted pages bind in main without renderer registration.
     createBrowserClientPageGuestBinding(browserManager).bind({
       registration: {
-        partition: `persist:orca-browser-v1-${'a'.repeat(64)}`,
+        partition: `persist:occ-browser-v1-${'a'.repeat(64)}`,
         browserPageId: BROWSER_PAGE_ID,
         pageHostGeneration: 7,
         rendererWebContentsId,
@@ -147,7 +147,7 @@ describe('client-hosted downloads', () => {
         status: 'completed',
         savePath: null,
         remoteDestination: {
-          workspaceRelativePath: '.orca/browser-downloads/report.csv',
+          workspaceRelativePath: '.occ/browser-downloads/report.csv',
           hostLabel: 'build-box'
         }
       })
@@ -155,7 +155,7 @@ describe('client-hosted downloads', () => {
   })
 
   it('aborts a download canceled while its commit is still streaming', async () => {
-    const root = await realpath(await mkdtemp(path.join(tmpdir(), 'orca-client-download-')))
+    const root = await realpath(await mkdtemp(path.join(tmpdir(), 'occ-client-download-')))
     const stagingRoot = path.join(root, 'downloads')
     const writes: { transferId: string; final: boolean }[] = []
     const aborts: { transferId: string }[] = []
@@ -180,7 +180,7 @@ describe('client-hosted downloads', () => {
         return {
           ok: true,
           result: chunk.final
-            ? { accepted: true, workspaceRelativePath: '.orca/browser-downloads/report.csv' }
+            ? { accepted: true, workspaceRelativePath: '.occ/browser-downloads/report.csv' }
             : { accepted: true },
           _meta: {}
         } as never
@@ -339,7 +339,7 @@ function stubRoute(): { route: BrowserClientDownloadRoute; completed: Promise<vo
     complete: async () => {
       resolveCompleted()
       return {
-        workspaceRelativePath: '.orca/browser-downloads/report.csv',
+        workspaceRelativePath: '.occ/browser-downloads/report.csv',
         hostLabel: 'build-box'
       }
     },

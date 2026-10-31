@@ -102,7 +102,7 @@ describe('codex goal accounting revisions', () => {
       .split('\n')
       .map((line) => JSON.parse(line))
     const threadId = '<threadId-1>'
-    root = await mkdtemp(join(tmpdir(), 'orca-goal-recorded-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-goal-recorded-'))
     const journal = await journals.open({
       identity: { ...IDENTITY, providerHandle: codexProviderHandle(threadId) },
       stateDirectory: root
@@ -156,10 +156,10 @@ describe('codex goal accounting revisions', () => {
   })
 
   it('revises the goal row in place: one visible row, pinned sequence, fresh counters', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-goal-revision-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-goal-revision-'))
     const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
     await journal.appendItem(
-      { provider: 'orca', clientMessageId: 'earlier' },
+      { provider: 'occ', clientMessageId: 'earlier' },
       { kind: 'status', text: 'Context compacted' },
       { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
     )
@@ -170,7 +170,7 @@ describe('codex goal accounting revisions', () => {
     await drained()
     const [, created] = journal.snapshot().items
     await journal.appendItem(
-      { provider: 'orca', clientMessageId: 'later' },
+      { provider: 'occ', clientMessageId: 'later' },
       { kind: 'status', text: 'Something after the goal' },
       { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
     )
@@ -194,9 +194,9 @@ describe('codex goal accounting revisions', () => {
 
     const items = journal.snapshot().items
     expect(items.map((item) => item.itemId)).toEqual([
-      'orca:earlier',
+      'occ:earlier',
       created?.itemId,
-      'orca:later'
+      'occ:later'
     ])
     const revised = items[1]
     expect(revised?.sequence).toBe(created?.sequence)
@@ -222,7 +222,7 @@ describe('codex goal accounting revisions', () => {
   })
 
   it('refreshes the row from a resume snapshot of the same goal', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-goal-resume-revision-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-goal-resume-revision-'))
     const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
     const first = journalSink(journal)
     const prior = new CodexJournalGoals(first.sink, () => ({

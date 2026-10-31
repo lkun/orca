@@ -43,8 +43,8 @@ describe('git remote operations', () => {
       if (args[0] === 'config' && args[1] === '--list') {
         return {
           stdout:
-            'branch.review/pr-1738.remote\npr-prateek-orca\0' +
-            'branch.review/pr-1738.pushremote\npr-prateek-orca\0' +
+            'branch.review/pr-1738.remote\npr-prateek-occ\0' +
+            'branch.review/pr-1738.pushremote\npr-prateek-occ\0' +
             'branch.review/pr-1738.merge\nrefs/heads/prateek/fix-sidebar-agents-toggle\0',
           stderr: ''
         }
@@ -56,7 +56,7 @@ describe('git remote operations', () => {
 
     expect(gitExecFileAsyncMock).toHaveBeenCalledWith(['config', '--list', '-z'], { cwd: '/repo' })
     expect(gitExecFileAsyncMock).toHaveBeenLastCalledWith(
-      ['push', '--set-upstream', 'pr-prateek-orca', 'HEAD:prateek/fix-sidebar-agents-toggle'],
+      ['push', '--set-upstream', 'pr-prateek-occ', 'HEAD:prateek/fix-sidebar-agents-toggle'],
       { cwd: '/repo' }
     )
   })
@@ -125,14 +125,14 @@ describe('git remote operations', () => {
       if (args[0] === 'config' && args[1] === '--list') {
         return {
           stdout:
-            'branch.imp/chinese-translation.remote\nhttps://github.com/pynickle/orca.git\0' +
-            'branch.imp/chinese-translation.pushremote\nhttps://github.com/pynickle/orca.git\0' +
+            'branch.imp/chinese-translation.remote\nhttps://github.com/pynickle/occ.git\0' +
+            'branch.imp/chinese-translation.pushremote\nhttps://github.com/pynickle/occ.git\0' +
             'branch.imp/chinese-translation.merge\nrefs/heads/imp/chinese-translation\0',
           stderr: ''
         }
       }
       if (args[0] === 'remote' && args[1] === 'get-url') {
-        return { stdout: 'https://github.com/stablyai/orca.git\n', stderr: '' }
+        return { stdout: 'https://github.com/stablyai/occ.git\n', stderr: '' }
       }
       if (args[0] === 'remote') {
         return { stdout: 'origin\n', stderr: '' }
@@ -146,7 +146,7 @@ describe('git remote operations', () => {
       [
         'push',
         '--set-upstream',
-        'https://github.com/pynickle/orca.git',
+        'https://github.com/pynickle/occ.git',
         'HEAD:imp/chinese-translation'
       ],
       { cwd: '/repo' }
@@ -161,30 +161,30 @@ describe('git remote operations', () => {
       if (args[0] === 'config' && args[1] === '--list') {
         return {
           stdout:
-            'branch.imp/chinese-translation.remote\nhttps://github.com/pynickle/orca.git\0' +
+            'branch.imp/chinese-translation.remote\nhttps://github.com/pynickle/occ.git\0' +
             'branch.imp/chinese-translation.merge\nrefs/heads/imp/chinese-translation\0',
           stderr: ''
         }
       }
       if (args[0] === 'remote' && args[1] === 'get-url' && args[2] === 'origin') {
-        return { stdout: 'https://github.com/stablyai/orca.git\n', stderr: '' }
+        return { stdout: 'https://github.com/stablyai/occ.git\n', stderr: '' }
       }
-      if (args[0] === 'remote' && args[1] === 'get-url' && args[2] === 'pr-pynickle-orca') {
-        return { stdout: 'https://github.com/pynickle/orca.git\n', stderr: '' }
+      if (args[0] === 'remote' && args[1] === 'get-url' && args[2] === 'pr-pynickle-occ') {
+        return { stdout: 'https://github.com/pynickle/occ.git\n', stderr: '' }
       }
       if (args[0] === 'remote' && args[1] === '-v') {
         return {
           stdout: [
-            'origin\thttps://github.com/stablyai/orca.git (fetch)',
-            'origin\thttps://github.com/stablyai/orca.git (push)',
-            'pr-pynickle-orca\thttps://github.com/pynickle/orca.git (fetch)',
-            'pr-pynickle-orca\thttps://github.com/pynickle/orca.git (push)'
+            'origin\thttps://github.com/stablyai/occ.git (fetch)',
+            'origin\thttps://github.com/stablyai/occ.git (push)',
+            'pr-pynickle-occ\thttps://github.com/pynickle/occ.git (fetch)',
+            'pr-pynickle-occ\thttps://github.com/pynickle/occ.git (push)'
           ].join('\n'),
           stderr: ''
         }
       }
       if (args[0] === 'remote') {
-        return { stdout: 'origin\npr-pynickle-orca\n', stderr: '' }
+        return { stdout: 'origin\npr-pynickle-occ\n', stderr: '' }
       }
       return { stdout: '', stderr: '' }
     })
@@ -192,19 +192,19 @@ describe('git remote operations', () => {
     await gitPush('/repo', false)
 
     expect(gitExecFileAsyncMock).toHaveBeenLastCalledWith(
-      ['push', '--set-upstream', 'pr-pynickle-orca', 'HEAD:imp/chinese-translation'],
+      ['push', '--set-upstream', 'pr-pynickle-occ', 'HEAD:imp/chinese-translation'],
       { cwd: '/repo' }
     )
   })
 
   it('normalizes a URL-valued push remote from one remote table read at 58 remotes', async () => {
     const remotes = [
-      { name: 'origin', url: 'https://github.com/stablyai/orca.git' },
+      { name: 'origin', url: 'https://github.com/stablyai/occ.git' },
       ...Array.from({ length: 56 }, (_, index) => ({
-        name: `pr-user${index}-orca`,
-        url: `https://github.com/user${index}/orca.git`
+        name: `pr-user${index}-occ`,
+        url: `https://github.com/user${index}/occ.git`
       })),
-      { name: 'pr-pynickle-orca', url: 'https://github.com/pynickle/orca.git' }
+      { name: 'pr-pynickle-occ', url: 'https://github.com/pynickle/occ.git' }
     ]
     gitExecFileAsyncMock.mockImplementation(async (args: string[]) => {
       if (args[0] === 'symbolic-ref') {
@@ -213,7 +213,7 @@ describe('git remote operations', () => {
       if (args[0] === 'config' && args[1] === '--list') {
         return {
           stdout:
-            'branch.imp/chinese-translation.remote\nhttps://github.com/pynickle/orca.git\0' +
+            'branch.imp/chinese-translation.remote\nhttps://github.com/pynickle/occ.git\0' +
             'branch.imp/chinese-translation.merge\nrefs/heads/imp/chinese-translation\0',
           stderr: ''
         }
@@ -237,7 +237,7 @@ describe('git remote operations', () => {
     const remoteReads = gitExecFileAsyncMock.mock.calls.filter(([args]) => args[0] === 'remote')
     expect(remoteReads.map(([args]) => args)).toEqual([['remote', '-v']])
     expect(gitExecFileAsyncMock).toHaveBeenLastCalledWith(
-      ['push', '--set-upstream', 'pr-pynickle-orca', 'HEAD:imp/chinese-translation'],
+      ['push', '--set-upstream', 'pr-pynickle-occ', 'HEAD:imp/chinese-translation'],
       { cwd: '/repo' }
     )
   })
@@ -571,16 +571,16 @@ describe('git remote operations', () => {
           'fetch',
           '--no-write-fetch-head',
           'upstream',
-          expect.stringMatching(/^\+refs\/heads\/main:refs\/orca\/rebase\//),
+          expect.stringMatching(/^\+refs\/heads\/main:refs\/occ\/rebase\//),
           '+refs/heads/main:refs/remotes/upstream/main'
         ],
         { ...REBASE_OPERATION_OPTIONS, timeout: REBASE_SOURCE_FETCH_TIMEOUT_MS }
       ],
       [
-        ['rebase', '--onto', expect.stringMatching(/^refs\/orca\/rebase\//), 'fork-point'],
+        ['rebase', '--onto', expect.stringMatching(/^refs\/occ\/rebase\//), 'fork-point'],
         REBASE_OPERATION_OPTIONS
       ],
-      [['update-ref', '-d', expect.stringMatching(/^refs\/orca\/rebase\//)], { cwd: '/repo' }]
+      [['update-ref', '-d', expect.stringMatching(/^refs\/occ\/rebase\//)], { cwd: '/repo' }]
     ])
 
     const fetchRefspec = gitExecFileAsyncMock.mock.calls[3][0][3]
@@ -606,7 +606,7 @@ describe('git remote operations', () => {
 
     expect(gitExecFileAsyncMock).toHaveBeenNthCalledWith(
       5,
-      ['rebase', '--onto', expect.stringMatching(/^refs\/orca\/rebase\//), 'fork-point'],
+      ['rebase', '--onto', expect.stringMatching(/^refs\/occ\/rebase\//), 'fork-point'],
       REBASE_OPERATION_OPTIONS
     )
   })
@@ -629,7 +629,7 @@ describe('git remote operations', () => {
         'fetch',
         '--no-write-fetch-head',
         'upstream',
-        expect.stringMatching(/^\+refs\/heads\/main:refs\/orca\/rebase\//),
+        expect.stringMatching(/^\+refs\/heads\/main:refs\/occ\/rebase\//),
         '+refs/heads/main:refs/remotes/upstream/main'
       ],
       { ...REBASE_OPERATION_OPTIONS, timeout: REBASE_SOURCE_FETCH_TIMEOUT_MS }

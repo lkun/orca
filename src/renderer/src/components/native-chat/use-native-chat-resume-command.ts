@@ -25,7 +25,7 @@ export function withNativeChatResumeCommand(
       'Open Agent Session History'
     ),
     argumentHint: translate('components.native-chat.resumeCommand.argumentHint', '[search]'),
-    orcaOwned: true
+    occOwned: true
   }
   const at = commands.findIndex(({ name }) => name === RESUME)
   return at === -1
@@ -138,7 +138,7 @@ export function useNativeChatResumeCommand(args: {
       (item: TItem) => {
         const leading = autocomplete.mode === 'slash' && autocomplete.dispatchable
         // An explicit OCC command pick overrides an earlier same-named skill pick.
-        if (leading && item.kind === 'command' && item.orcaOwned) {
+        if (leading && item.kind === 'command' && item.occOwned) {
           clearSkillOrigin()
           // The caret can sit right after `/resume` with a search already typed past it.
           open(parseNativeChatResumeDraft(textareaRef.current?.value ?? '') ?? '')

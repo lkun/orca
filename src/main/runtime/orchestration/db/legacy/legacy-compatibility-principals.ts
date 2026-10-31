@@ -89,7 +89,7 @@ export function commitLegacyCompatibilityPrincipal(
     }
     if (
       params.role === 'coordinator' &&
-      !this.resolveLegacyCoordinatorCandidate({
+      !this.resolveLegacyCoordinatoccndidate({
         runId: params.runId,
         terminalHandle: params.terminalHandle,
         paneKey: params.paneKey

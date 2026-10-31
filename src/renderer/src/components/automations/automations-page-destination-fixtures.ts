@@ -41,8 +41,8 @@ export function addSshHost(): void {
 export function addSshProject(): void {
   const repo: Repo = {
     id: SSH_REPO_ID,
-    displayName: 'orca',
-    path: '/repos/orca',
+    displayName: 'occ',
+    path: '/repos/occ',
     badgeColor: '#222222',
     addedAt: 1,
     worktreeBaseRef: 'main',
@@ -58,8 +58,8 @@ export function addSshProject(): void {
       projectId: 'project-ssh',
       hostId: `ssh:${SSH_TARGET_ID}`,
       repoId: SSH_REPO_ID,
-      path: '/repos/orca',
-      displayName: 'orca',
+      path: '/repos/occ',
+      displayName: 'occ',
       setupState: 'ready',
       setupMethod: 'legacy-repo',
       createdAt: 1,

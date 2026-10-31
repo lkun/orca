@@ -1,8 +1,8 @@
 import { defineMethod, defineStreamingMethod, type RpcContext } from '../core'
-import type { OrcadFeature } from '../orcad-feature-readiness'
+import type { OCCdFeature } from '../occd-feature-readiness'
 import { rpcCallerOperationKey } from '../rpc-caller-identity'
 import { HostAccountSignInFlows } from '../../host-account-sign-in-flows'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import {
   AddDataAccountParams,
   SelectDataAccountParams,
@@ -27,8 +27,8 @@ import { HostAccountLaunchEnvParams } from '../../../../shared/host-account-laun
 // Use a per-process counter: same-millisecond subscriptions must not evict each other's cleanup.
 let accountsSubscriptionSeq = 0
 
-const hostSignIns = new WeakMap<OrcaRuntimeService, HostAccountSignInFlows>()
-function hostSignInFlows(runtime: OrcaRuntimeService): HostAccountSignInFlows {
+const hostSignIns = new WeakMap<OCCRuntimeService, HostAccountSignInFlows>()
+function hostSignInFlows(runtime: OCCRuntimeService): HostAccountSignInFlows {
   let flows = hostSignIns.get(runtime)
   if (!flows) {
     flows = new HostAccountSignInFlows((provider, channel) =>
@@ -295,5 +295,5 @@ const ACCOUNT_SERVICE_FREE_METHODS: ReadonlySet<string> = new Set([
 export const ACCOUNT_METHODS = ACCOUNT_METHOD_DEFINITIONS.map((method) =>
   ACCOUNT_SERVICE_FREE_METHODS.has(method.name)
     ? method
-    : { ...method, requires: ['accounts'] satisfies OrcadFeature[] }
+    : { ...method, requires: ['accounts'] satisfies OCCdFeature[] }
 )

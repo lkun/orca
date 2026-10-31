@@ -38,7 +38,7 @@ export function createClaudeTranscriptItemReader(
         if (
           body.kind === 'message' &&
           body.role === 'user' &&
-          parseAgentJournalItemKey(itemId)?.provider === 'orca'
+          parseAgentJournalItemKey(itemId)?.provider === 'occ'
         ) {
           prompts.set(claudePromptUuidForSubmission(sessionId, itemId), itemId)
         }

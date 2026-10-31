@@ -48,7 +48,7 @@ const LISTED = `${JSON.stringify({
   type: 'control_response',
   response: {
     subtype: 'success',
-    request_id: 'orca-model-discovery',
+    request_id: 'occ-model-discovery',
     response: {
       models: [
         {
@@ -111,7 +111,7 @@ describe('claude model catalog probe', () => {
       type: 'control_response',
       response: {
         subtype: 'success',
-        request_id: 'orca-model-discovery',
+        request_id: 'occ-model-discovery',
         response: {
           models: [
             { value: 'default', resolvedModel: 'claude-opus-5-5[1m]', supportsAutoMode: true },
@@ -180,7 +180,7 @@ describe('claude model catalog probe', () => {
   it.runIf(process.platform !== 'win32')(
     'lists through a supervised one-shot that answers after its input ends',
     async () => {
-      const folder = mkdtempSync(join(tmpdir(), 'orca-claude-probe-'))
+      const folder = mkdtempSync(join(tmpdir(), 'occ-claude-probe-'))
       try {
         const parentFile = join(folder, 'parent-pid')
         const standIn = join(folder, 'claude')
@@ -245,7 +245,7 @@ describe('Claude catalog availability', () => {
   })
 
   it('says the CLI is missing when the resolved executable is not there', async () => {
-    const folder = mkdtempSync(join(tmpdir(), 'orca-claude-missing-'))
+    const folder = mkdtempSync(join(tmpdir(), 'occ-claude-missing-'))
     try {
       const missing = join(folder, 'claude with spaces', 'claude')
       const probe = createClaudeModelCatalogProbe({
@@ -294,7 +294,7 @@ it.each(['high', 'low'])(
           type: 'control_response',
           response: {
             subtype: 'success',
-            request_id: 'orca-model-settings',
+            request_id: 'occ-model-settings',
             response: { applied: { model: 'sonnet', effort } }
           }
         })}\n`
@@ -334,11 +334,11 @@ it.each(['high', 'low'])(
 
 it('qualifies only a correlated valid settings observation', async () => {
   for (const [applied, requestId, complete] of [
-    [{}, 'orca-model-settings', true],
-    [[], 'orca-model-settings', false],
-    [{ model: 42 }, 'orca-model-settings', false],
+    [{}, 'occ-model-settings', true],
+    [[], 'occ-model-settings', false],
+    [{ model: 42 }, 'occ-model-settings', false],
     [{}, 'other-request', false],
-    [undefined, 'orca-model-settings', false]
+    [undefined, 'occ-model-settings', false]
   ] as const) {
     const probe = createClaudeModelCatalogProbe({
       ...probeDeps(),

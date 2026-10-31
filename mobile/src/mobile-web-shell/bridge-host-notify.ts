@@ -88,7 +88,7 @@ export function createBridgeNotifyForwarder(args: {
       return
     }
     if (message.name === 'storage') {
-      // Check this session’s handed-over keys, not just the envelope’s key shape; valid orca:pins keys may name another host.
+      // Check this session’s handed-over keys, not just the envelope’s key shape; valid occ:pins keys may name another host.
       // Enforce storageOversize here too: older pages ignore it and could overwrite retained device state (ruling 33.6).
       const held = options.readStorage()
       if (

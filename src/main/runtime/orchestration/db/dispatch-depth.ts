@@ -7,7 +7,7 @@ import {
 import { OrchestrationError } from '../orchestration-error'
 import { isEquivalentPaneKey } from './pane-key-match'
 import type { OrchestrationDb } from './orchestration-db'
-import type { OrcaSessionId } from '../../../../shared/orca-session-address'
+import type { OCCSessionId } from '../../../../shared/occ-session-address'
 import type { DispatchContextRow, RemoteDispatchAttachmentRow } from '../types'
 import { potentiallyLiveRemoteAttachmentSql } from './federation/remote-attachment-liveness'
 import {
@@ -25,31 +25,31 @@ export type DispatchCreator =
       /** Remote attachment matching requires the exact incarnation; local rows do not. */
       processIncarnation?: string
       /** A structured worker's bare OCC session id, recorded beside its handle. */
-      orcaSessionId?: OrcaSessionId | null
+      occSessionId?: OCCSessionId | null
     }
   /** A structured session with no terminal handle, identified by its OCC session id alone. */
-  | { kind: 'session'; orcaSessionId: OrcaSessionId }
+  | { kind: 'session'; occSessionId: OCCSessionId }
 
 /** Creator identity to persist on a new row, so depth can later tell delegation from bookkeeping. */
 export function recordedCreatorIdentity(creator: DispatchCreator): {
   creatorHandle: string | null
   creatorPaneKey: string | null
-  creatorOrcaSessionId: OrcaSessionId | null
+  creatorOCCSessionId: OCCSessionId | null
 } {
   if (creator.kind === 'system') {
-    return { creatorHandle: null, creatorPaneKey: null, creatorOrcaSessionId: null }
+    return { creatorHandle: null, creatorPaneKey: null, creatorOCCSessionId: null }
   }
   if (creator.kind === 'session') {
     return {
       creatorHandle: null,
       creatorPaneKey: null,
-      creatorOrcaSessionId: creator.orcaSessionId
+      creatorOCCSessionId: creator.occSessionId
     }
   }
   return {
     creatorHandle: creator.handle,
     creatorPaneKey: creator.paneKey ?? null,
-    creatorOrcaSessionId: creator.orcaSessionId ?? null
+    creatorOCCSessionId: creator.occSessionId ?? null
   }
 }
 
@@ -122,10 +122,10 @@ function findActiveDispatchForCreator(
   const row = this.db
     .prepare(
       `SELECT ${DISPATCH_CONTEXT_COLUMN_LIST} FROM dispatch_contexts
-       WHERE assignee_orca_session_id = ? AND status IN ('pending', 'dispatched')
+       WHERE assignee_occ_session_id = ? AND status IN ('pending', 'dispatched')
        ORDER BY rowid DESC LIMIT 1`
     )
-    .get(creator.orcaSessionId)
+    .get(creator.occSessionId)
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: The schema-pinned complete Dispatch projection returns one Dispatch row or undefined; the adapter exposes unknown.
   return row as DispatchContextRow | undefined
 }

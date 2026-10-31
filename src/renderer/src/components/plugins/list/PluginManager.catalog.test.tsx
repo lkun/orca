@@ -86,7 +86,7 @@ const preview: PluginMarketplaceHostInstallPreview = {
     name: 'Worktree Notes',
     version: '1.0.0',
     description: 'Notes for active worktrees.',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     main: 'dist/worker.js',
     contributes: {
@@ -258,7 +258,7 @@ describe('PluginManager catalog', () => {
         commit: PLUGIN_COMMIT,
         contentHash: 'd'.repeat(64),
         execution: 'data',
-        minimumOrca: '1.0.0',
+        minimumOCC: '1.0.0',
         types: ['app-theme']
       }
     }
@@ -327,7 +327,7 @@ describe('PluginManager catalog', () => {
             commit: PLUGIN_COMMIT,
             contentHash: 'd'.repeat(64),
             execution: 'trusted-worker',
-            minimumOrca: '1.0.0',
+            minimumOCC: '1.0.0',
             types: ['commands']
           }
         }

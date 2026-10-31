@@ -134,7 +134,7 @@ function errorAttributes(error: unknown): Record<string, unknown> {
     ...(code !== undefined ? { errorCode: code } : {}),
     ...(sqliteCode !== undefined ? { errorErrcode: sqliteCode } : {}),
     ...(typeof reason === 'string' ? { refusalReason: reason } : {}),
-    ...(causes.length > 0 ? { errorCause: causes } : {})
+    ...(causes.length > 0 ? { erroccuse: causes } : {})
   }
 }
 

@@ -2,7 +2,7 @@ import '../unused-default-rpc-methods.test-fixture'
 import { afterEach, expect, it, vi } from 'vitest'
 import { RpcDispatcher } from '../dispatcher'
 import type { RpcRequest } from '../core'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import type { RuntimeStore } from '../../runtime-store-contract'
 import { RuntimeRpcPairing } from '../../runtime-rpc/runtime-rpc-pairing'
 import { REPO_METHODS } from './repo'
@@ -26,7 +26,7 @@ vi.mock('../../../codex/managed-wsl-home-shell-preflight', () => ({
     hooksEnabled: boolean
   }) => (hooksEnabled ? { agent: 'codex', state: 'installed' } : null)
 }))
-vi.mock('../../../../shared/sidebar-inputs-switch', () => ({ ORCA_SIDEBAR_INPUTS_IS_MAIN: true }))
+vi.mock('../../../../shared/sidebar-inputs-switch', () => ({ OCC_SIDEBAR_INPUTS_IS_MAIN: true }))
 vi.mock('../../../claude/agent-view-service', () => ({
   getClaudeAgentViewService: () => ({ reconcile: async () => {} })
 }))
@@ -60,7 +60,7 @@ it.each([20, 200])('projects %s repos without launch work', async (n) => {
     updateSettings: (updates) => Object.assign(settings, updates),
     runDurableMutation: async (mutate) => mutate().value
   }
-  const host = new OrcaRuntimeService(partialRuntimeStore(store))
+  const host = new OCCRuntimeService(partialRuntimeStore(store))
   vi.spyOn(host, 'configureNotificationDismissalStore').mockImplementation(() => {})
   vi.spyOn(host.pairedServerRows!, 'attach').mockReturnValue(() => {})
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: invoking captured label callbacks; only relay retirement subscribes, no transport is used.
@@ -119,7 +119,7 @@ it.each([20, 200])('projects %s repos without launch work', async (n) => {
     await dispatcher.dispatch(
       makeRequest('agentHooks.prepareCodexForWslPane', {
         codexHome: '/home/qa/codex',
-        orcaCodexHome: '/home/qa/codex',
+        occCodexHome: '/home/qa/codex',
         wslDistro: 'Ubuntu'
       })
     )

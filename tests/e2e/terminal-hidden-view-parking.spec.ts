@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { alternateScreenFixtureScript } from './alternate-screen-fixture-script'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { runNodeScriptInTerminal } from './helpers/run-node-script-in-terminal'
 import {
   ensureTerminalVisible,
@@ -31,10 +31,10 @@ type ParkingDebugWindow = Window & {
 
 // Scope fast-park env to these launches; module-level process.env leaked to later specs on worker reload.
 // Production uses a 30s cold delay and multi-minute hot retention.
-const PARKING_DELAY_MS = Number(process.env.ORCA_E2E_TERMINAL_PARKING_DELAY_MS) || 500
+const PARKING_DELAY_MS = Number(process.env.OCC_E2E_TERMINAL_PARKING_DELAY_MS) || 500
 
 test.use({
-  orcaAppExtraEnv: { ORCA_E2E_TERMINAL_PARKING_DELAY_MS: String(PARKING_DELAY_MS) }
+  occAppExtraEnv: { OCC_E2E_TERMINAL_PARKING_DELAY_MS: String(PARKING_DELAY_MS) }
 })
 
 const PARKED_FRAME_SCRIPT_DELAY_MS = 750
@@ -259,56 +259,56 @@ async function setUpParkableTabA(page: Page): Promise<ParkableTabSetup> {
 
 test.describe('Terminal hidden view parking', () => {
   test('parks a hidden terminal tab and restores rich TUI output on reveal', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo: TestInfo) => {
-    await waitForSessionReady(orcaPage)
-    const setup = await setUpParkableTabA(orcaPage)
+    await waitForSessionReady(occPage)
+    const setup = await setUpParkableTabA(occPage)
     const { worktreeId, tabAId, tabAPtyId } = setup
 
     const runId = randomUUID()
     const finalMarker = `PARKED_RESTORE_FINAL_${runId}_${PARKED_FRAME_COUNT - 1}`
-    const scriptPath = path.join(testRepoPath, `.orca-parked-rich-tui-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-parked-rich-tui-${runId}.mjs`)
     writeParkedFrameScript(scriptPath, runId)
     try {
-      await sendToTerminal(orcaPage, tabAPtyId, `node ${JSON.stringify(scriptPath)}\r`)
+      await sendToTerminal(occPage, tabAPtyId, `node ${JSON.stringify(scriptPath)}\r`)
       await expect
-        .poll(() => getTerminalContent(orcaPage, 12_000), {
+        .poll(() => getTerminalContent(occPage, 12_000), {
           timeout: 15_000,
           message: 'rich TUI final frame did not render while tab A was visible'
         })
         .toContain(finalMarker)
 
-      const tabBId = await createActiveTerminalTab(orcaPage, worktreeId)
-      const parkDetectedAfterMs = await parkHiddenTabBehindDecoy(orcaPage, worktreeId, tabAId, {
+      const tabBId = await createActiveTerminalTab(occPage, worktreeId)
+      const parkDetectedAfterMs = await parkHiddenTabBehindDecoy(occPage, worktreeId, tabAId, {
         parkDelayMs: PARKING_DELAY_MS
       })
-      const wiring = await readParkingWiring(orcaPage)
+      const wiring = await readParkingWiring(occPage)
       testInfo.annotations.push({
         type: 'terminal-parking',
         description: `parkDelayMs=${wiring.parkDelayMs ?? PARKING_DELAY_MS} parkDetectedAfterMs=${parkDetectedAfterMs}`
       })
 
       // Require tab-scoped teardown: more-recently-hidden tab B stays warm under #8262.
-      const tabBState = await readTerminalTabViewState(orcaPage, tabBId)
+      const tabBState = await readTerminalTabViewState(occPage, tabBId)
       expect(tabBState.hasManager).toBe(true)
       expect(tabBState.paneCount).toBeGreaterThan(0)
 
-      await activateTerminalTab(orcaPage, tabAId)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      const revealedSnapshot = await waitForPaneIdentitySnapshot(orcaPage, 1)
+      await activateTerminalTab(occPage, tabAId)
+      await waitForActiveTerminalManager(occPage, 30_000)
+      const revealedSnapshot = await waitForPaneIdentitySnapshot(occPage, 1)
       expect(revealedSnapshot.tabId).toBe(tabAId)
       // Parking tears down only the renderer; require the same surviving PTY on reveal.
       expect(revealedSnapshot.panes[0]?.ptyId).toBe(tabAPtyId)
 
       await expect
-        .poll(() => getTerminalContent(orcaPage, 12_000), {
+        .poll(() => getTerminalContent(occPage, 12_000), {
           timeout: 15_000,
           message: 'parked rich TUI frame did not restore when the tab was revealed'
         })
         .toContain(finalMarker)
 
-      const content = await getTerminalContent(orcaPage, 12_000)
+      const content = await getTerminalContent(occPage, 12_000)
       expect(content).toContain(`Frame ${String(PARKED_FRAME_COUNT - 1).padStart(3, '0')}`)
       expect(content).toContain('╭')
       expect(content).toContain('├')
@@ -316,9 +316,9 @@ test.describe('Terminal hidden view parking', () => {
       expect(content).not.toContain('OCC skipped hidden terminal output')
 
       // Interrupt the fixture TUI and wait for shell ownership before probing input.
-      await sendToTerminal(orcaPage, tabAPtyId, '\x03')
+      await sendToTerminal(occPage, tabAPtyId, '\x03')
       // Rethrow with Ctrl-C context: readiness can look like a dead shell when ConPTY did not translate the interrupt.
-      await waitForPtyShellEcho(orcaPage, tabAPtyId, 15_000).catch((error: unknown) => {
+      await waitForPtyShellEcho(occPage, tabAPtyId, 15_000).catch((error: unknown) => {
         throw new Error(
           `Ctrl-C did not hand the PTY back from the fixture TUI: ${error instanceof Error ? error.message : String(error)}`
         )
@@ -328,18 +328,18 @@ test.describe('Terminal hidden view parking', () => {
       const typedMarker = `PARKED_TYPED_OK_${runId}`
       const typedProbeScript = `console.log('PARKED_TYPED_OK_' + '${runId}')`
       // Why: delivered via a temp file — `node -e` quoting is not PowerShell-safe (#8521).
-      await runNodeScriptInTerminal(orcaPage, tabAPtyId, typedProbeScript, {
-        prefix: 'orca-parked-typed-probe'
+      await runNodeScriptInTerminal(occPage, tabAPtyId, typedProbeScript, {
+        prefix: 'occ-parked-typed-probe'
       })
       await expect
-        .poll(() => getTerminalContent(orcaPage, 12_000), {
+        .poll(() => getTerminalContent(occPage, 12_000), {
           timeout: 10_000,
           message: 'revealed terminal did not execute and display typed input'
         })
         .toContain(typedMarker)
 
       const screenshotPath = testInfo.outputPath('parked-tab-restore-final.png')
-      await orcaPage.screenshot({ path: screenshotPath, fullPage: true })
+      await occPage.screenshot({ path: screenshotPath, fullPage: true })
       await testInfo.attach('parked-tab-restore-final.png', {
         path: screenshotPath,
         contentType: 'image/png'
@@ -349,13 +349,13 @@ test.describe('Terminal hidden view parking', () => {
     }
   })
 
-  test('keeps bell and title side effects live while parked', async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    const setup = await setUpParkableTabA(orcaPage)
+  test('keeps bell and title side effects live while parked', async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    const setup = await setUpParkableTabA(occPage)
     const { worktreeId, tabAId, tabAPtyId } = setup
 
-    await createActiveTerminalTab(orcaPage, worktreeId)
-    await parkHiddenTabBehindDecoy(orcaPage, worktreeId, tabAId, {
+    await createActiveTerminalTab(occPage, worktreeId)
+    await parkHiddenTabBehindDecoy(occPage, worktreeId, tabAId, {
       parkDelayMs: PARKING_DELAY_MS
     })
 
@@ -367,123 +367,123 @@ test.describe('Terminal hidden view parking', () => {
     const payload = `\x1b]0;${parkedTitle}\x07\x07${marker}\n`
     const sideEffectScript = `process.stdout.write(${JSON.stringify(payload)}); setTimeout(() => process.exit(0), 30000)`
     // Why: delivered via a temp file — `node -e` quoting is not PowerShell-safe (#8521).
-    await runNodeScriptInTerminal(orcaPage, tabAPtyId, sideEffectScript, {
-      prefix: 'orca-parked-side-effect'
+    await runNodeScriptInTerminal(occPage, tabAPtyId, sideEffectScript, {
+      prefix: 'occ-parked-side-effect'
     })
 
     await expect
-      .poll(() => getTerminalTabTitle(orcaPage, worktreeId, tabAId), {
+      .poll(() => getTerminalTabTitle(occPage, worktreeId, tabAId), {
         timeout: 10_000,
         message: 'parked OSC 0 title did not update the tab title in the store'
       })
       .toBe(parkedTitle)
     await expect
-      .poll(async () => (await getUnreadTerminalTabIds(orcaPage)).includes(tabAId), {
+      .poll(async () => (await getUnreadTerminalTabIds(occPage)).includes(tabAId), {
         timeout: 10_000,
         message: 'parked BEL did not mark the terminal tab unread'
       })
       .toBe(true)
     await expect
-      .poll(() => isWorktreeUnread(orcaPage, worktreeId), {
+      .poll(() => isWorktreeUnread(occPage, worktreeId), {
         timeout: 10_000,
         message: 'parked BEL did not mark the worktree unread'
       })
       .toBe(true)
 
     // Require side effects from the pane-less watcher without waking the parked view.
-    expect((await readTerminalTabViewState(orcaPage, tabAId)).hasManager).toBe(false)
+    expect((await readTerminalTabViewState(occPage, tabAId)).hasManager).toBe(false)
 
-    await activateTerminalTab(orcaPage, tabAId)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await activateTerminalTab(occPage, tabAId)
+    await waitForActiveTerminalManager(occPage, 30_000)
     await expect
-      .poll(() => getTerminalContent(orcaPage, 12_000), {
+      .poll(() => getTerminalContent(occPage, 12_000), {
         timeout: 15_000,
         message: 'parked side-effect marker did not restore when the tab was revealed'
       })
       .toContain(marker)
   })
 
-  test('does not park excluded tabs', async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    const setup = await setUpParkableTabA(orcaPage)
+  test('does not park excluded tabs', async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    const setup = await setUpParkableTabA(occPage)
     const { worktreeId, tabAId } = setup
 
     // Queue tab C’s parking-excluding startup command after mount so mount-time consume cannot drain it.
-    const tabCId = await createActiveTerminalTab(orcaPage, worktreeId)
-    await orcaPage.evaluate((tabId) => {
+    const tabCId = await createActiveTerminalTab(occPage, worktreeId)
+    await occPage.evaluate((tabId) => {
       const store = window.__store
       if (!store) {
         throw new Error('parking exclusion spec: window.__store is unavailable')
       }
       store.getState().queueTabStartupCommand(tabId, { command: 'echo parked-exclusion-probe' })
     }, tabCId)
-    expect(await hasPendingStartupCommand(orcaPage, tabCId)).toBe(true)
+    expect(await hasPendingStartupCommand(occPage, tabCId)).toBe(true)
 
-    const tabBId = await createActiveTerminalTab(orcaPage, worktreeId)
+    const tabBId = await createActiveTerminalTab(occPage, worktreeId)
     await expect
-      .poll(() => getActiveTabId(orcaPage), {
+      .poll(() => getActiveTabId(occPage), {
         timeout: 5_000,
         message: 'tab B did not stay active while waiting on the parking window'
       })
       .toBe(tabBId)
 
     // Tab A parking proves this app crossed the delay; a decoy takes #8262’s last-active exemption while pending-startup C is excluded.
-    await parkHiddenTabBehindDecoy(orcaPage, worktreeId, tabAId, {
+    await parkHiddenTabBehindDecoy(occPage, worktreeId, tabAId, {
       parkDelayMs: PARKING_DELAY_MS
     })
-    await orcaPage.waitForTimeout(PARKING_DELAY_MS * 3)
+    await occPage.waitForTimeout(PARKING_DELAY_MS * 3)
 
     // Premise guard: nothing consumed the pending startup while hidden.
-    expect(await hasPendingStartupCommand(orcaPage, tabCId)).toBe(true)
-    const tabCState = await readTerminalTabViewState(orcaPage, tabCId)
+    expect(await hasPendingStartupCommand(occPage, tabCId)).toBe(true)
+    const tabCState = await readTerminalTabViewState(occPage, tabCId)
     expect(tabCState.hasManager).toBe(true)
     expect(tabCState.paneCount).toBeGreaterThan(0)
   })
 
   // Require identical rich content across 25 teardown→snapshot-restore→reattach cycles to catch individual or accumulated garble.
   test('reproduces a static frame byte-for-byte across 25 park/reveal cycles', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo: TestInfo) => {
     test.setTimeout(420_000)
-    await waitForSessionReady(orcaPage)
-    const setup = await setUpParkableTabA(orcaPage)
+    await waitForSessionReady(occPage)
+    const setup = await setUpParkableTabA(occPage)
     const { worktreeId, tabAId, tabAPtyId } = setup
 
     const runId = randomUUID()
     const marker = `CYCLE_REFERENCE_${runId}`
-    const scriptPath = path.join(testRepoPath, `.orca-cycle-reference-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-cycle-reference-${runId}.mjs`)
     writeCycleReferenceScript(scriptPath, runId)
     try {
-      await sendToTerminal(orcaPage, tabAPtyId, `node ${JSON.stringify(scriptPath)}\r`)
+      await sendToTerminal(occPage, tabAPtyId, `node ${JSON.stringify(scriptPath)}\r`)
       await expect
-        .poll(() => getTerminalContent(orcaPage, 12_000), {
+        .poll(() => getTerminalContent(occPage, 12_000), {
           timeout: 15_000,
           message: 'cycle reference frame did not render while tab A was visible'
         })
         .toContain(marker)
 
       // Toggle A/B while a later-hidden decoy takes #8262’s exemption so A cold-parks.
-      const tabBId = await createActiveTerminalTab(orcaPage, worktreeId)
-      const decoyTabId = await createActiveTerminalTab(orcaPage, worktreeId)
+      const tabBId = await createActiveTerminalTab(occPage, worktreeId)
+      const decoyTabId = await createActiveTerminalTab(occPage, worktreeId)
 
       // Baseline after one reveal: alt restore intentionally drops normal-buffer scrollback (scrollback 0), including shell command echo.
       // Compare subsequent cycles through identical machinery so expected omission cannot masquerade as garble.
       const runOneParkRevealCycle = async (cycle: number): Promise<string[]> => {
-        await activateTerminalTab(orcaPage, tabBId)
-        await activateTerminalTab(orcaPage, decoyTabId)
-        await waitForTabParked(orcaPage, tabAId, { parkDelayMs: PARKING_DELAY_MS })
-        await activateTerminalTab(orcaPage, tabAId)
-        await waitForActiveTerminalManager(orcaPage, 30_000)
-        const revealed = await waitForPaneIdentitySnapshot(orcaPage, 1)
+        await activateTerminalTab(occPage, tabBId)
+        await activateTerminalTab(occPage, decoyTabId)
+        await waitForTabParked(occPage, tabAId, { parkDelayMs: PARKING_DELAY_MS })
+        await activateTerminalTab(occPage, tabAId)
+        await waitForActiveTerminalManager(occPage, 30_000)
+        const revealed = await waitForPaneIdentitySnapshot(occPage, 1)
         expect(revealed.panes[0]?.ptyId).toBe(tabAPtyId)
         await expect
-          .poll(() => getTerminalContent(orcaPage, 12_000), {
+          .poll(() => getTerminalContent(occPage, 12_000), {
             timeout: 15_000,
             message: `cycle ${cycle}: reference frame did not restore on reveal`
           })
           .toContain(marker)
-        const rows = terminalContentRows(await getTerminalContent(orcaPage, 12_000))
+        const rows = terminalContentRows(await getTerminalContent(occPage, 12_000))
         expect(rows.join('\n')).not.toContain('OCC skipped hidden terminal output')
         return rows
       }
@@ -497,7 +497,7 @@ test.describe('Terminal hidden view parking', () => {
       const mismatches: string[] = []
       for (let cycle = 1; cycle < CYCLES; cycle++) {
         // Each cycle flips the rendered verdict twice; stay below the 12-flip sustained-churn pin in 60s.
-        await orcaPage.waitForTimeout(PARK_VERDICT_WINDOW_SETTLE_MS)
+        await occPage.waitForTimeout(PARK_VERDICT_WINDOW_SETTLE_MS)
         const rows = await runOneParkRevealCycle(cycle)
         if (JSON.stringify(rows) !== JSON.stringify(referenceRows)) {
           mismatches.push(
@@ -516,7 +516,7 @@ test.describe('Terminal hidden view parking', () => {
       ).toEqual([])
 
       const screenshotPath = testInfo.outputPath('park-reveal-25-cycles-final.png')
-      await orcaPage.screenshot({ path: screenshotPath, fullPage: true })
+      await occPage.screenshot({ path: screenshotPath, fullPage: true })
       await testInfo.attach('park-reveal-25-cycles-final.png', {
         path: screenshotPath,
         contentType: 'image/png'

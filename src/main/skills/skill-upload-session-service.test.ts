@@ -57,7 +57,7 @@ async function stagedArchives(uploads: string): Promise<string[]> {
 
 describe('SkillUploadSessionService', () => {
   it('retries initialization after a transient failure', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const initializeRoot = vi
@@ -75,7 +75,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('rejects a staging root that redirects through a symlink or junction', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const outside = join(root, 'outside')
     const uploads = join(root, 'uploads')
@@ -90,7 +90,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('removes only staging owned by an exited process when a fresh service starts', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const staleOwner = join(uploads, 'owner-2147483646-00000000-0000-4000-8000-000000000000')
@@ -109,7 +109,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('never lets a second service delete a live upload owned by the first', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const first = createUploadService(uploads)
@@ -139,7 +139,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('serializes concurrent admission at four sessions', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const service = createUploadService(uploads)
@@ -160,7 +160,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('waits for an initializing begin before disposal removes ownership', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     let releaseInitialization!: () => void
@@ -190,7 +190,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('joins concurrent disposal callers through exact cleanup completion', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const service = createUploadService(uploads)
@@ -205,7 +205,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('bounds each abandoned-owner sweep and can resume cleanup on retry', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     await Promise.all(
@@ -228,7 +228,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('accepts monotonic chunks, acknowledges identical retries, and transfers ownership', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const service = createUploadService(join(root, 'uploads'))
     const bytes = Buffer.from('immutable skill package')
@@ -262,7 +262,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('resumes an idempotent transfer without allocating another session', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const service = createUploadService(join(root, 'uploads'))
     const bytes = Buffer.from('resumable package')
@@ -288,7 +288,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('removes an abandoned upload when its idle lifetime expires', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const service = createUploadService(uploads, { idleMs: 20 })
@@ -302,7 +302,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('keeps a taken archive until retryable cleanup succeeds', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     vi.useFakeTimers()
     try {
@@ -344,7 +344,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('releases a session when archive hashing fails after its handle closes', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const hashFailure = new Error('injected-hash-failure')
@@ -371,7 +371,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('retains failed archive cleanup within the four-path admission bound', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const service = createUploadService(uploads)
@@ -399,7 +399,7 @@ describe('SkillUploadSessionService', () => {
   })
 
   it('rejects gaps, changed retries, and an archive hash mismatch', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-session-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-session-'))
     roots.push(root)
     const service = createUploadService(join(root, 'uploads'))
     const bytes = Buffer.from('package')

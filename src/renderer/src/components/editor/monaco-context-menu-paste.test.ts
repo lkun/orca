@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { runOrcaContextMenuPaste, type OrcaContextMenuPasteDeps } from './monaco-context-menu-paste'
+import { runOCCContextMenuPaste, type OCCContextMenuPasteDeps } from './monaco-context-menu-paste'
 
 const READ_ONLY_OPTION = 104
 const EMPTY_SELECTION_OPTION = 45
@@ -63,8 +63,8 @@ function makeEditor(state: FakeEditorState = {}) {
 }
 
 function makeDeps(
-  overrides: Partial<OrcaContextMenuPasteDeps> & { editor?: ReturnType<typeof makeEditor> }
-): OrcaContextMenuPasteDeps {
+  overrides: Partial<OCCContextMenuPasteDeps> & { editor?: ReturnType<typeof makeEditor> }
+): OCCContextMenuPasteDeps {
   const editorHandle = overrides.editor ?? makeEditor()
   return {
     getFocusedEditor: () => editorHandle.editor as never,
@@ -81,29 +81,29 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-describe('runOrcaContextMenuPaste', () => {
+describe('runOCCContextMenuPaste', () => {
   it('falls through (returns false) when no editor is focused', () => {
     const deps = makeDeps({ getFocusedEditor: () => null })
-    expect(runOrcaContextMenuPaste(deps)).toBe(false)
+    expect(runOCCContextMenuPaste(deps)).toBe(false)
   })
 
   it('falls through when the focused editor has no model', () => {
     const handle = makeEditor({ hasModel: false })
     const deps = makeDeps({ editor: handle })
-    expect(runOrcaContextMenuPaste(deps)).toBe(false)
+    expect(runOCCContextMenuPaste(deps)).toBe(false)
   })
 
   it('falls through when the editor lacks text focus', () => {
     const handle = makeEditor({ hasTextFocus: false })
     const deps = makeDeps({ editor: handle })
-    expect(runOrcaContextMenuPaste(deps)).toBe(false)
+    expect(runOCCContextMenuPaste(deps)).toBe(false)
   })
 
   it('falls through for read-only editors without reading the clipboard', () => {
     const handle = makeEditor({ readOnly: true })
     const readClipboardText = vi.fn(async () => 'x')
     const deps = makeDeps({ editor: handle, readClipboardText })
-    expect(runOrcaContextMenuPaste(deps)).toBe(false)
+    expect(runOCCContextMenuPaste(deps)).toBe(false)
     expect(readClipboardText).not.toHaveBeenCalled()
   })
 
@@ -112,7 +112,7 @@ describe('runOrcaContextMenuPaste', () => {
     const readClipboardText = vi.fn(async () => 'hello world')
     const deps = makeDeps({ editor: handle, readClipboardText })
 
-    const outcome = runOrcaContextMenuPaste(deps)
+    const outcome = runOCCContextMenuPaste(deps)
     expect(outcome).not.toBe(false)
     await expect(outcome).resolves.toEqual({ status: 'pasted', mode: 'native' })
     expect(readClipboardText).toHaveBeenCalledWith({ maxBytes: 16 * 1024 * 1024 })
@@ -136,7 +136,7 @@ describe('runOrcaContextMenuPaste', () => {
       })
     })
 
-    await runOrcaContextMenuPaste(deps)
+    await runOCCContextMenuPaste(deps)
     expect(handle.trigger).toHaveBeenCalledWith('keyboard', 'paste', {
       text: 'line text',
       pasteOnNewLine: true,
@@ -153,7 +153,7 @@ describe('runOrcaContextMenuPaste', () => {
       getClipboardMetadata: () => ({ isFromEmptySelection: true })
     })
 
-    await runOrcaContextMenuPaste(deps)
+    await runOCCContextMenuPaste(deps)
     expect(handle.trigger).toHaveBeenCalledWith(
       'keyboard',
       'paste',
@@ -164,7 +164,7 @@ describe('runOrcaContextMenuPaste', () => {
   it('does nothing on an empty clipboard', async () => {
     const handle = makeEditor()
     const deps = makeDeps({ editor: handle, readClipboardText: vi.fn(async () => '') })
-    await expect(runOrcaContextMenuPaste(deps)).resolves.toEqual({
+    await expect(runOCCContextMenuPaste(deps)).resolves.toEqual({
       status: 'noop',
       reason: 'empty'
     })
@@ -182,7 +182,7 @@ describe('runOrcaContextMenuPaste', () => {
       onReadError
     })
 
-    await expect(runOrcaContextMenuPaste(deps)).resolves.toEqual({
+    await expect(runOCCContextMenuPaste(deps)).resolves.toEqual({
       status: 'noop',
       reason: 'read-failed'
     })
@@ -200,7 +200,7 @@ describe('runOrcaContextMenuPaste', () => {
       })
     })
 
-    await expect(runOrcaContextMenuPaste(deps)).resolves.toEqual({
+    await expect(runOCCContextMenuPaste(deps)).resolves.toEqual({
       status: 'noop',
       reason: 'target-lost'
     })
@@ -213,7 +213,7 @@ describe('runOrcaContextMenuPaste', () => {
     const bigText = 'x'.repeat(128 * 1024)
     const deps = makeDeps({ editor: handle, readClipboardText: vi.fn(async () => bigText) })
 
-    const outcome = await runOrcaContextMenuPaste(deps)
+    const outcome = await runOCCContextMenuPaste(deps)
     expect(outcome).toEqual({ status: 'pasted', mode: 'chunked' })
     expect(handle.trigger).not.toHaveBeenCalled()
     expect(handle.editor.executeEdits).toHaveBeenCalled()
@@ -230,7 +230,7 @@ describe('runOrcaContextMenuPaste', () => {
         return text
       })
     })
-    await expect(runOrcaContextMenuPaste(deps)).resolves.toEqual({
+    await expect(runOCCContextMenuPaste(deps)).resolves.toEqual({
       status: 'noop',
       reason: 'target-lost'
     })

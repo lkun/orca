@@ -21,7 +21,7 @@ function manifest(overrides: Record<string, unknown> = {}): PluginManifest {
     publisher: 'samples',
     name: 'Demo',
     version: '1.2.0',
-    engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+    engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
     contributes: { languagePacks: [{ locale: 'pt-BR', path: 'pt.json' }] },
     ...overrides
   })
@@ -37,7 +37,7 @@ function release(overrides: Partial<PluginCatalogRelease> = {}): PluginCatalogRe
     commit: COMMIT,
     contentHash: HASH,
     execution: 'data',
-    minimumOrca: PLUGIN_MANIFEST_V2_SINCE,
+    minimumOCC: PLUGIN_MANIFEST_V2_SINCE,
     types: ['interface-language'],
     ...overrides
   })
@@ -60,7 +60,7 @@ function manifestInput(): Record<string, unknown> {
     publisher: 'samples',
     name: 'Demo',
     version: '1.2.0',
-    engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` }
+    engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` }
   }
 }
 
@@ -146,7 +146,7 @@ describe('catalog releases', () => {
   it.each([
     ['version', release({ version: '1.3.0' }), 'version'],
     ['profile', release({ execution: 'declarative' }), 'execution profile'],
-    ['compatibility', release({ minimumOrca: '1.5.0' }), 'compatibility']
+    ['compatibility', release({ minimumOCC: '1.5.0' }), 'compatibility']
   ])('rejects a manifest whose %s differs from the release', (_label, record, message) => {
     expect(check(record)).toContain(message)
   })

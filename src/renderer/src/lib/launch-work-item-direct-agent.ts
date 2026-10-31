@@ -29,7 +29,7 @@ export function buildDirectWorkItemAgentStartupPlan(args: {
   launchPlatform: NodeJS.Platform
   /** Unset keeps the platform default: PowerShell on win32, POSIX elsewhere. */
   shell?: AgentStartupShell
-  /** Why: SSH remotes deploy the CLI shim as plain `orca`, so the Linux-only
+  /** Why: SSH remotes deploy the CLI shim as plain `occ`, so the Linux-only
    * `occ-ide` rename must not be applied for remote launches. */
   isRemote?: boolean
 }): {

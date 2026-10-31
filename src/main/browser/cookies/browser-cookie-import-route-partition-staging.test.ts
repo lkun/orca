@@ -65,7 +65,7 @@ import type { DetectedBrowser } from './sources/browser-cookie-detection-types'
 
 import { createChromiumCookieTestDatabase } from './browser-cookie-import-test-database'
 
-const routePartition = `persist:orca-browser-v1-${'b'.repeat(64)}`
+const routePartition = `persist:occ-browser-v1-${'b'.repeat(64)}`
 let tmpDir = ''
 let cookiesSetMock: ReturnType<typeof vi.fn>
 
@@ -83,7 +83,7 @@ function chromeBrowser(cookiesPath: string): DetectedBrowser {
 
 beforeEach(() => {
   // Resolve macOS /var aliases before comparing paths.
-  tmpDir = realpathSync(mkdtempSync(join(tmpdir(), 'orca-route-cookie-staging-')))
+  tmpDir = realpathSync(mkdtempSync(join(tmpdir(), 'occ-route-cookie-staging-')))
   cookiesSetMock = vi.fn().mockResolvedValue(undefined)
   appGetPathMock.mockReset()
   appGetPathMock.mockReturnValue(join(tmpDir, 'userData'))

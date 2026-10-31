@@ -2,7 +2,7 @@ import { pluginThemeSettingsAfterRemoval } from '../../shared/plugin-theme-setti
 import { ipcMain, type IpcMainInvokeEvent } from 'electron'
 import { z } from 'zod'
 import type { Store } from '../persistence'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import type { PluginFrameEntry } from '../../shared/plugins/frames/plugin-frame-bridge'
 import type { PluginHostCallOutcome } from '../../shared/plugins/frames/plugin-protocol'
 import { getUserPluginsDir, getPluginsDataDir } from '../plugins/plugin-discovery'
@@ -107,7 +107,7 @@ function rendererPanelOwner(webContentsId: number): string {
 export function registerPluginHandlers(
   store: Store,
   pluginService: PluginService,
-  runtime: OrcaRuntimeService | null,
+  runtime: OCCRuntimeService | null,
   marketplaceServices?: PluginMarketplaceHandlerServices
 ): void {
   // A structural delegate binds the real runtime without importing Electron into the facade.

@@ -5,7 +5,7 @@ import { NODE_PLATFORM_NAMES } from '../../transport/mobile-runtime-host-platfor
 import { RpcEnvelopeFieldsSchema } from '../../transport/rpc-envelope-fields'
 import { isRpcResponse } from '../../transport/rpc-response-shape'
 import type { RpcResponse } from '../../transport/types'
-import { BridgeErrorCaptureSchema } from './bridge-error-capture'
+import { BridgeErroccptureSchema } from './bridge-error-capture'
 import { BridgeInitRouteSchema, type BridgeInitRoute } from './bridge-init-route'
 import { BridgePageRouteGrantsSchema } from './bridge-page-route-grants'
 import { BridgeSafeAreaInsetsSchema } from './bridge-safe-area-insets'
@@ -259,7 +259,7 @@ const BridgeHostMessageSchema = z.union([
     v: versionSchema,
     type: z.literal('error'),
     id: idSchema,
-    error: BridgeErrorCaptureSchema
+    error: BridgeErroccptureSchema
   }),
   z.object({
     v: versionSchema,

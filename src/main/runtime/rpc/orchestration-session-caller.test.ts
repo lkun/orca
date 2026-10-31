@@ -6,7 +6,7 @@ import { ZodObject } from 'zod'
 import type { OrchestrationCompatibilityEvidence } from '../../../shared/orchestration-compatibility-evidence'
 import { ORCHESTRATION_SESSION_CALLER_ERROR_CODES as CODES } from '../../../shared/orchestration-session-caller-codes'
 import { DeviceRegistry } from '../device-registry'
-import { OrcaRuntimeRpcServer } from '../runtime-rpc'
+import { OCCRuntimeRpcServer } from '../runtime-rpc'
 import { buildRegistry } from './core'
 import { ORCHESTRATION_METHODS } from './methods/orchestration'
 import {
@@ -170,8 +170,8 @@ describe('orchestration session callers at the dispatch entry', () => {
   )
 
   it('admits the session on the real Unix-socket route and refuses it on the real paired route', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-session-caller-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-session-caller-'))
+    const server = new OCCRuntimeRpcServer({
       runtime: h.runtime,
       userDataPath,
       enableWebSocket: false
@@ -208,9 +208,9 @@ describe('orchestration session callers at the dispatch entry', () => {
       h.db.getCurrentRunForCoordinator({
         terminalHandle: null,
         paneKey: null,
-        orcaSessionId: SESSION_X
+        occSessionId: SESSION_X
       })
-    ).toMatchObject({ objective: 'o', coordinator_orca_session_id: SESSION_X })
+    ).toMatchObject({ objective: 'o', coordinator_occ_session_id: SESSION_X })
   })
 
   describe('refuses a session that cannot act, before any destructive or consuming lookup', () => {
@@ -219,7 +219,7 @@ describe('orchestration session callers at the dispatch entry', () => {
         objective: 'x',
         coordinatorHandle: null,
         coordinatorPaneKey: null,
-        coordinatorOrcaSessionId: SESSION_X
+        coordinatorOCCSessionId: SESSION_X
       })
       const message = h.db.insertMessage({
         from: 'term_worker',
@@ -273,8 +273,8 @@ describe('orchestration session callers at the dispatch entry', () => {
         ok: false,
         error: {
           code: CODES.providerId,
-          message: `${PROVIDER_ID_X} is the provider's own session id, which changes on /clear. This session's OCC session ID is orca_session_id:${SESSION_X}; set ORCA_AGENT_SESSION_ID=${SESSION_X} instead. No effects were applied.`,
-          data: { orcaSessionId: SESSION_X, effectsApplied: false }
+          message: `${PROVIDER_ID_X} is the provider's own session id, which changes on /clear. This session's OCC session ID is occ_session_id:${SESSION_X}; set OCC_AGENT_SESSION_ID=${SESSION_X} instead. No effects were applied.`,
+          data: { occSessionId: SESSION_X, effectsApplied: false }
         }
       })
       await expectRefusedWithNoEffects(PROVIDER_ID_X, CODES.providerId, /changes on \/clear/)
@@ -380,7 +380,7 @@ describe('orchestration session callers at the dispatch entry', () => {
         error: { code: CODES.notLive, message: expect.stringContaining('no longer has') }
       })
       expect(
-        h.db.listRuns().runs.filter((row) => row.coordinator_orca_session_id !== null)
+        h.db.listRuns().runs.filter((row) => row.coordinator_occ_session_id !== null)
       ).toEqual([])
     })
 
@@ -442,9 +442,9 @@ describe('orchestration session callers at the dispatch entry', () => {
           )
         )
       ).run
-      expect(h.db.getRunRaw(idOf(run))?.coordinator_orca_session_id).toBe(SESSION_X)
+      expect(h.db.getRunRaw(idOf(run))?.coordinator_occ_session_id).toBe(SESSION_X)
 
-      const stranger = 'orca_session_id:0b5e2d7c-9a41-4c3e-8f62-7d1a3e5b9c08'
+      const stranger = 'occ_session_id:0b5e2d7c-9a41-4c3e-8f62-7d1a3e5b9c08'
       const refused = await h.dispatch(
         orchestrationRequest(
           'orchestration.runCreate',
@@ -486,7 +486,7 @@ describe('orchestration session callers at the dispatch entry', () => {
         )
         expect(resultOf(listed)).toMatchObject({ runId })
 
-        const stranger = 'orca_session_id:0b5e2d7c-9a41-4c3e-8f62-7d1a3e5b9c08'
+        const stranger = 'occ_session_id:0b5e2d7c-9a41-4c3e-8f62-7d1a3e5b9c08'
         const refused = await h.dispatch(
           orchestrationRequest(method, { run: runId, [param]: stranger }, { sessionId: SESSION_Y })
         )
@@ -517,6 +517,6 @@ describe('orchestration session callers at the dispatch entry', () => {
 
     const run = resultOf(await h.dispatch(request)).run
     expect(run).toMatchObject({ coordinator_handle: 'term_worker' })
-    expect(h.db.getRunRaw(idOf(run))?.coordinator_orca_session_id).toBeNull()
+    expect(h.db.getRunRaw(idOf(run))?.coordinator_occ_session_id).toBeNull()
   })
 })

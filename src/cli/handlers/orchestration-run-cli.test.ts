@@ -28,8 +28,8 @@ describe('lightweight Run CLI handlers', () => {
   beforeEach(() => {
     callMock.mockReset()
     getTerminalHandleMock.mockReset()
-    vi.stubEnv('ORCA_TERMINAL_HANDLE', 'term_coord')
-    vi.stubEnv('ORCA_AGENT_SESSION_ID', undefined)
+    vi.stubEnv('OCC_TERMINAL_HANDLE', 'term_coord')
+    vi.stubEnv('OCC_AGENT_SESSION_ID', undefined)
   })
 
   it('creates a Run with the resolved coordinator terminal', async () => {
@@ -211,7 +211,7 @@ describe('removed work CLI text', () => {
     activeWorkersAtRemoval: 1,
     lastRemovedAt: '2026-10-19T01:00:00Z'
   }
-  const list = 'orca orchestration run-show --id run_1 --removed'
+  const list = 'occ orchestration run-show --id run_1 --removed'
 
   it('adds a run-show line only when the Run has removed work', async () => {
     expect(formatRunRemovedWorkLine('run_1', undefined)).toBe('')
@@ -321,7 +321,7 @@ describe('removed work CLI text', () => {
         }
       })
     ).toBe(
-      'Reset: tasks. Removed 3 tasks, 4 dispatches and 2 workers from 1 Run. 1 worker may still be running: reset stops tracking workers but does not stop them. List what was removed: orca orchestration run-show --id run_1 --removed'
+      'Reset: tasks. Removed 3 tasks, 4 dispatches and 2 workers from 1 Run. 1 worker may still be running: reset stops tracking workers but does not stop them. List what was removed: occ orchestration run-show --id run_1 --removed'
     )
     expect(
       formatResetResult({
@@ -336,7 +336,7 @@ describe('removed work CLI text', () => {
         }
       })
     ).toBe(
-      'Reset: tasks. Removed 1 task, 0 dispatches and 0 workers from 2 Runs. Runs: run_1, run_2. List what was removed in one: orca orchestration run-show --removed --id RUN_ID'
+      'Reset: tasks. Removed 1 task, 0 dispatches and 0 workers from 2 Runs. Runs: run_1, run_2. List what was removed in one: occ orchestration run-show --removed --id RUN_ID'
     )
   })
 })

@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
   isWslGuestProcess,
-  isWslHostOrcadProcess,
-  ORCAD_WSL_HOST_ENV,
+  isWslHostOCCdProcess,
+  OCCD_WSL_HOST_ENV,
   parseWindowsDriveMountPoints,
   withoutWindowsDriveMountDirs
 } from './wsl-guest-windows-drive-path'
@@ -57,11 +57,11 @@ describe('Windows drive dirs on a WSL guest PATH', () => {
     expect(isWslGuestProcess({}, 'linux', () => true)).toBe(true)
   })
 
-  it('filters only for an orcad OCC launched as a WSL host', () => {
+  it('filters only for an occd OCC launched as a WSL host', () => {
     const guest = { WSL_DISTRO_NAME: 'Ubuntu' }
-    expect(isWslHostOrcadProcess(guest, 'linux', () => true)).toBe(false)
-    expect(isWslHostOrcadProcess({ ...guest, [ORCAD_WSL_HOST_ENV]: '1' }, 'linux')).toBe(true)
-    expect(isWslHostOrcadProcess({ [ORCAD_WSL_HOST_ENV]: '1' }, 'linux', () => false)).toBe(false)
+    expect(isWslHostOCCdProcess(guest, 'linux', () => true)).toBe(false)
+    expect(isWslHostOCCdProcess({ ...guest, [OCCD_WSL_HOST_ENV]: '1' }, 'linux')).toBe(true)
+    expect(isWslHostOCCdProcess({ [OCCD_WSL_HOST_ENV]: '1' }, 'linux', () => false)).toBe(false)
   })
 
   it.skipIf(process.platform === 'win32')(
@@ -78,7 +78,7 @@ describe('Windows drive dirs on a WSL guest PATH', () => {
     }
   )
 
-  it('never treats orcad inside the guest as a WSL preflight context', () => {
+  it('never treats occd inside the guest as a WSL preflight context', () => {
     expect(getPreflightWslTarget({ wslDistro: 'Ubuntu' }, 'linux')).toBeNull()
     expect(getPreflightWslTarget({ wslDefault: true }, 'linux')).toBeNull()
   })

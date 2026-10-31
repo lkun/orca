@@ -14,14 +14,14 @@ BEGIN
     RETURN;
   END IF;
 
-  IF NOT pg_try_advisory_xact_lock(hashtext('orca-relay'), hashtext('statement-stats')) THEN
+  IF NOT pg_try_advisory_xact_lock(hashtext('occ-relay'), hashtext('statement-stats')) THEN
     RETURN;
   END IF;
 
   BEGIN
     CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
   EXCEPTION WHEN insufficient_privilege THEN
-    RAISE WARNING 'orca_relay_statement_stats_unavailable: insufficient privilege';
+    RAISE WARNING 'occ_relay_statement_stats_unavailable: insufficient privilege';
   END;
 END
 $relay_statement_stats$;

@@ -5,7 +5,7 @@ import { buildSkillCommandForRuntime, getSelectedAgentRuntime } from './CliSkill
 describe('CliSkillRuntimeSetup runtime helpers', () => {
   it('forces English git messages only for POSIX skill install targets', () => {
     const command =
-      'npx skills@1.7.2 add https://github.com/stablyai/orca/tree/abc --skill orca-cli'
+      'npx skills@1.7.2 add https://github.com/stablyai/occ/tree/abc --skill occ-cli'
     const wsl = { runtime: 'wsl' as const, label: 'WSL' }
 
     expect(buildSkillCommandForRuntime(command, undefined, 'linux')).toBe(`env LC_ALL=C ${command}`)

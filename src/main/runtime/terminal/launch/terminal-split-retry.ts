@@ -55,7 +55,7 @@ export function splitPanePendingError(tabId: string, leafId: string): TerminalSp
       tabId,
       splitMayStillComplete: true,
       nextSteps: [
-        `Do not split again. With an orca CLI that has --retry-split, re-run the same command with --retry-split ${leafId} to wait for this pane and get its handle.`,
+        `Do not split again. With an occ CLI that has --retry-split, re-run the same command with --retry-split ${leafId} to wait for this pane and get its handle.`,
         LIST_BEFORE_SPLITTING
       ]
     }

@@ -1,6 +1,6 @@
 import type { KnownRuntimeEnvironment, PublicKnownRuntimeEnvironment } from './runtime-environments'
 
-/** Bind SSH access to authorized environment state, excluding runtimeId because orcad changes it on restart (#32957). */
+/** Bind SSH access to authorized environment state, excluding runtimeId because occd changes it on restart (#32957). */
 export function runtimeEnvironmentSshAccessBinding(
   environment: KnownRuntimeEnvironment | PublicKnownRuntimeEnvironment,
   ignoreIntent = false

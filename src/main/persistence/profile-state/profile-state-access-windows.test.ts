@@ -34,7 +34,7 @@ let root: string
 beforeEach(() => {
   // Exercise rename retries without real backoff delays.
   vi.spyOn(Atomics, 'wait').mockReturnValue('timed-out')
-  root = mkdtempSync(join(tmpdir(), 'orca-state-access-windows-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-state-access-windows-'))
   Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
   identity.boot.mockReset().mockReturnValue(null)
   identity.machine.mockReset().mockReturnValue('win32-machine-guid:this-machine')

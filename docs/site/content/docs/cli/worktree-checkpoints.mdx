@@ -7,7 +7,7 @@ Every OCC worktree carries a lightweight, free-text **comment** field visible in
 ## The pattern
 
 ```
-orca worktree set --worktree active --comment "reproduced auth failure; testing credential-chain fix" --json
+occ worktree set --worktree active --comment "reproduced auth failure; testing credential-chain fix" --json
 ```
 
 ## Card status (optional)
@@ -15,7 +15,7 @@ orca worktree set --worktree active --comment "reproduced auth failure; testing 
 Alongside the free-text comment, set the workspace card status when the phase changes:
 
 ```bash
-orca worktree set --worktree active \
+occ worktree set --worktree active \
   --comment "fix implemented; running integration tests" \
   --workspace-status in-progress \
   --json
@@ -36,7 +36,7 @@ Statuses: `todo`, `in-progress`, `in-review`, `completed` (or a custom id your w
 First line is the action: what just happened, where, and the status or next step.
 
 ```
-orca worktree set --worktree active --comment "added debounce to SearchBar onChange (src/components/SearchBar.tsx); ready for review
+occ worktree set --worktree active --comment "added debounce to SearchBar onChange (src/components/SearchBar.tsx); ready for review
 goal: reduce redundant API calls per #298" --json
 ```
 
@@ -45,7 +45,7 @@ goal: reduce redundant API calls per #298" --json
 If the comment might have user-written context, read it first so you don't clobber goals or constraints:
 
 ```
-orca worktree current --json
+occ worktree current --json
 ```
 
 Preserve what's still valid, drop what's stale, and weave in your update.

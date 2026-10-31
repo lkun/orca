@@ -19,9 +19,9 @@ import {
   writeRuntimeEnvironmentSidecarEntry
 } from './runtime-environment-sidecar'
 import {
-  addManagedOrcadEnvironment,
-  removeManagedOrcadEnvironment
-} from './runtime-environment-managed-orcad-store'
+  addManagedOCCdEnvironment,
+  removeManagedOCCdEnvironment
+} from './runtime-environment-managed-occd-store'
 import {
   readPersistedEnvironmentStore,
   writeEnvironmentStore
@@ -43,7 +43,7 @@ function readJson(path: string): { environments?: unknown[]; entries?: Record<st
 describe('runtime environment store with records this build cannot read', () => {
   let userDataPath: string
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-environment-unreadable-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-environment-unreadable-'))
     vi.spyOn(console, 'warn').mockImplementation(() => {})
   })
   afterEach(() => {
@@ -142,7 +142,7 @@ describe('runtime environment store with records this build cannot read', () => 
       userDataPath,
       readPersistedEnvironmentStore(userDataPath).environments,
       alpha,
-      { orcadMigratedAt: new Date(0).toISOString() }
+      { occdMigratedAt: new Date(0).toISOString() }
     )
 
     expect(readJson(getRuntimeEnvironmentSidecarPath(userDataPath)).entries?.future).toEqual(
@@ -157,11 +157,11 @@ describe('runtime environment store with records this build cannot read', () => 
     }
 
     function setup() {
-      const pinned = addManagedOrcadEnvironment(userDataPath, {
+      const pinned = addManagedOCCdEnvironment(userDataPath, {
         id: 'pinned',
         name: 'Pinned',
         pairingCode: encodePairingOffer({ ...pairing, endpoint: 'ws://127.0.0.1:41000/runtime' }),
-        orcadDeployment: tunnel,
+        occdDeployment: tunnel,
         now: 100
       })
       const other = add('Other')
@@ -206,7 +206,7 @@ describe('runtime environment store with records this build cannot read', () => 
       const { pinned, other, sidecarPath } = setup()
       const storeBefore = readFileSync(getEnvironmentStorePath(userDataPath), 'utf8')
 
-      expect(() => removeManagedOrcadEnvironment(userDataPath, pinned.id)).toThrow(
+      expect(() => removeManagedOCCdEnvironment(userDataPath, pinned.id)).toThrow(
         'newer version of OCC'
       )
       expect(readFileSync(getEnvironmentStorePath(userDataPath), 'utf8')).toBe(storeBefore)

@@ -24,7 +24,7 @@ extern "system" {
 
 pub fn run_if_requested() {
     let mut args = env::args_os().skip(1);
-    if args.next().as_deref() != Some(OsStr::new("--orca-restart-as-administrator")) {
+    if args.next().as_deref() != Some(OsStr::new("--occ-restart-as-administrator")) {
         return;
     }
     let (Some(executable), Some(elevated_parameters), Some(ordinary_parameters)) =
@@ -39,7 +39,7 @@ pub fn run_if_requested() {
     let operation = wide(OsStr::new("runas"));
     let file = wide(&executable);
     let parameters = wide(&elevated_parameters);
-    let show = if env::var("ORCA_BACKGROUND_LAUNCH").as_deref() == Ok("1") {
+    let show = if env::var("OCC_BACKGROUND_LAUNCH").as_deref() == Ok("1") {
         0
     } else {
         1

@@ -1,13 +1,13 @@
 import type { Page } from '@stablyai/playwright-test'
 import { mkdirSync } from 'node:fs'
 import { resolve } from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import { seedLineageScenario } from './worktree-lineage-state'
 import { worktreeRow } from './worktree-row-locators'
 
-// ORCA_CAPTURE_EVIDENCE=1 writes before/after screenshots to pr-evidence/; default CI runs behavioral assertions only.
-const CAPTURE_EVIDENCE = process.env.ORCA_CAPTURE_EVIDENCE === '1'
+// OCC_CAPTURE_EVIDENCE=1 writes before/after screenshots to pr-evidence/; default CI runs behavioral assertions only.
+const CAPTURE_EVIDENCE = process.env.OCC_CAPTURE_EVIDENCE === '1'
 const SHOT_DIR = resolve(process.cwd(), 'pr-evidence')
 
 async function captureSidebar(page: Page, name: string): Promise<void> {
@@ -70,38 +70,38 @@ function childWorkspacesChip(page: Page, parentId: string) {
 test.describe('Worktree lineage agent-list expansion independence', () => {
   test.describe.configure({ mode: 'serial' })
 
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
   })
 
   test('toggling child worktrees does not collapse the expanded agent summary', async ({
-    orcaPage
+    occPage
   }) => {
-    const { parentId, childId } = await seedLineageScenario(orcaPage)
-    const parentRow = worktreeRow(orcaPage, parentId)
-    const childRow = worktreeRow(orcaPage, childId)
+    const { parentId, childId } = await seedLineageScenario(occPage)
+    const parentRow = worktreeRow(occPage, parentId)
+    const childRow = worktreeRow(occPage, childId)
 
     await parentRow.click()
     await expect(parentRow).toHaveAttribute('aria-current', 'page')
 
-    await seedTwoParentAgents(orcaPage, parentId)
+    await seedTwoParentAgents(occPage, parentId)
 
-    await expect(compactSummary(orcaPage, parentId)).toBeVisible({ timeout: 10_000 })
-    await expect(childWorkspacesChip(orcaPage, parentId)).toBeVisible()
+    await expect(compactSummary(occPage, parentId)).toBeVisible({ timeout: 10_000 })
+    await expect(childWorkspacesChip(occPage, parentId)).toBeVisible()
     await expect(childRow).toBeVisible()
-    await expect(compactSummary(orcaPage, parentId)).toHaveAttribute('aria-expanded', 'false')
-    await captureSidebar(orcaPage, '1-before-both-collapsed.png')
+    await expect(compactSummary(occPage, parentId)).toHaveAttribute('aria-expanded', 'false')
+    await captureSidebar(occPage, '1-before-both-collapsed.png')
 
-    await compactSummary(orcaPage, parentId).click()
-    await expect(compactSummary(orcaPage, parentId)).toHaveAttribute('aria-expanded', 'true')
-    await captureSidebar(orcaPage, '2-agents-expanded.png')
+    await compactSummary(occPage, parentId).click()
+    await expect(compactSummary(occPage, parentId)).toHaveAttribute('aria-expanded', 'true')
+    await captureSidebar(occPage, '2-agents-expanded.png')
 
     // Collapse children to remount the parent card; require expanded agent summary to survive.
-    await childWorkspacesChip(orcaPage, parentId).click()
+    await childWorkspacesChip(occPage, parentId).click()
     await expect(childRow).toBeHidden()
 
-    await expect(compactSummary(orcaPage, parentId)).toHaveAttribute('aria-expanded', 'true')
-    await captureSidebar(orcaPage, '3-after-children-toggle-agents-still-expanded.png')
+    await expect(compactSummary(occPage, parentId)).toHaveAttribute('aria-expanded', 'true')
+    await captureSidebar(occPage, '3-after-children-toggle-agents-still-expanded.png')
   })
 })

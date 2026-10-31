@@ -13,13 +13,13 @@ import {
   pluginMarketplaceSchema
 } from './plugin-marketplace'
 
-function release(version: string, minimumOrca = '1.4.0') {
+function release(version: string, minimumOCC = '1.4.0') {
   return pluginCatalogReleaseSchema.parse({
     version,
     commit: 'a'.repeat(40),
     contentHash: 'b'.repeat(64),
     execution: 'data',
-    minimumOrca,
+    minimumOCC,
     types: ['app-theme']
   })
 }
@@ -127,7 +127,7 @@ describe('plugin catalog', () => {
     expect(selectPluginCatalogRelease(releases, '1.0.0')?.version).toBe('1.0.0')
     expect(
       selectPluginCatalogRelease([release('2.0.0', '9.0.0'), release('1.0.0', '8.0.0')], '1.0.0')
-        ?.minimumOrca
+        ?.minimumOCC
     ).toBe('8.0.0')
   })
 

@@ -40,7 +40,7 @@ vi.mock('electron', () => ({
   }
 }))
 
-vi.mock('@orca/process-host', async (importOriginal) => ({
+vi.mock('@occ/process-host', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   spawnProcess: mocks.spawnProcess,
   runProcess: mocks.runProcess
@@ -131,8 +131,8 @@ describe('WSL hosts with the internal gate closed', () => {
 
   beforeEach(() => {
     vi.stubEnv(WSL_HOSTS_INTERNAL_GATE_ENV, '')
-    vi.stubEnv('ORCA_E2E_FAKE_WSL_HOSTS', '')
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-gate-'))
+    vi.stubEnv('OCC_E2E_FAKE_WSL_HOSTS', '')
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-gate-'))
     mocks.getPath.mockReturnValue(userDataPath)
     mocks.handle.mockReset()
     setWslHostService(null)
@@ -204,7 +204,7 @@ describe('WSL hosts with the internal gate closed', () => {
   it('creates the WSL host service only once the gate is open', () => {
     vi.stubEnv(WSL_HOSTS_INTERNAL_GATE_ENV, '1')
     vi.stubEnv(
-      'ORCA_E2E_FAKE_WSL_HOSTS',
+      'OCC_E2E_FAKE_WSL_HOSTS',
       JSON.stringify({ distros: [], pairingCode: pairingCode() })
     )
     mocks.createFakeConnector.mockReturnValue({

@@ -58,9 +58,9 @@ export function findWslHostForDistro(
   for (const environment of environments) {
     if (
       isWslHostRuntimeEnvironment(environment) &&
-      environment.orcadDeployment.distro.toLowerCase() === wanted
+      environment.occdDeployment.distro.toLowerCase() === wanted
     ) {
-      return { distro: environment.orcadDeployment.distro, name: environment.name }
+      return { distro: environment.occdDeployment.distro, name: environment.name }
     }
   }
   return null

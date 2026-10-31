@@ -3,7 +3,7 @@ import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { parsePluginImageUrl } from '../../../../shared/plugins/images/plugin-image-url'
 
-/** A plugin contribution's image icon (an orca-plugin-image URL main verified), or `fallback`
+/** A plugin contribution's image icon (an occ-plugin-image URL main verified), or `fallback`
  *  (an icon component or a rendered element) when it has none or the image fails to load. */
 export function PluginContributionIcon({
   url,

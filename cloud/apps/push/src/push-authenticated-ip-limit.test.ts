@@ -1,4 +1,4 @@
-import { PUSH_LIMITS } from '@orca-cloud/push-contract'
+import { PUSH_LIMITS } from '@occ-cloud/push-contract'
 import { expect, it } from 'vitest'
 import { createPushHostKeypair } from './host-challenge-answering.test-fixture.js'
 import { createPushServerHarness, FCM_TOKEN } from './push-server-harness.test-fixture.js'

@@ -47,9 +47,9 @@ import { registerGitResolutionBinaryCompatibilityCases } from './git-resolution-
 import { registerGitWorktreeBinaryCompatibilityCases } from './git-worktree-binary-compatibility.test-cases'
 import { registerPluginGitDownloadBinaryCompatibilityCase } from './plugin-git-download-binary-compatibility.test-cases'
 
-const image = process.env.ORCA_GIT_COMPAT_IMAGE
-const binary = process.env.ORCA_GIT_COMPAT_BINARY
-const expectedVersion = process.env.ORCA_GIT_COMPAT_VERSION
+const image = process.env.OCC_GIT_COMPAT_IMAGE
+const binary = process.env.OCC_GIT_COMPAT_BINARY
+const expectedVersion = process.env.OCC_GIT_COMPAT_VERSION
 const describeBinaryCompatibility = image || binary ? describe : describe.skip
 const PAIRS_REFS_TEST =
   'pairs published, tracked and default refs with configured repositories, on the selected Git binary'
@@ -88,7 +88,7 @@ describeBinaryCompatibility('real Git binary compatibility', () => {
   }
 
   beforeAll(async () => {
-    repoPath = await realpath(await mkdtemp(join(tmpdir(), 'orca-git-binary-compat-')))
+    repoPath = await realpath(await mkdtemp(join(tmpdir(), 'occ-git-binary-compat-')))
     fixture = new GitBinaryTestFixture(repoPath, '/repo')
     await fixture.start()
     const versionOutput = await runGit(['--version'])
@@ -363,7 +363,7 @@ describeBinaryCompatibility('real Git binary compatibility', () => {
       '-c',
       'color.ui=always',
       '-c',
-      'gpg.program=orca-nonexistent-signature-verifier',
+      'gpg.program=occ-nonexistent-signature-verifier',
       'log',
       '--no-show-signature',
       '--no-color',
@@ -485,7 +485,7 @@ describeBinaryCompatibility('real Git binary compatibility', () => {
     const fetchHeadPath = join(repoPath, '.git', 'FETCH_HEAD')
     await writeFile(fetchHeadPath, 'sentinel\n')
     await expectPreferredOrRecognizedFallback(
-      ['fetch', '--no-write-fetch-head', '.', '+HEAD:refs/orca/compat/no-write-fetch-head'],
+      ['fetch', '--no-write-fetch-head', '.', '+HEAD:refs/occ/compat/no-write-fetch-head'],
       supports(2, 29),
       isNoWriteFetchHeadUnsupportedError
     )

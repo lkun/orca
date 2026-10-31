@@ -111,12 +111,12 @@ describe('terminal file link actions', () => {
     mocks.settings = { activeRuntimeEnvironmentId: null, openLinksInApp: true }
     handleTerminalFileLink('/repo/report.html', null, null, plainEvent(), deps, context(request))
 
-    const [systemFirst, orcaFirst] = request.mock.calls.map(([call]) => call)
+    const [systemFirst, occFirst] = request.mock.calls.map(([call]) => call)
     expect([systemFirst.primary.label, systemFirst.alternate.label]).toEqual([
       'System Browser',
       'OCC Browser'
     ])
-    expect([orcaFirst.primary.label, orcaFirst.alternate.label]).toEqual([
+    expect([occFirst.primary.label, occFirst.alternate.label]).toEqual([
       'OCC Browser',
       'System Browser'
     ])
@@ -128,7 +128,7 @@ describe('terminal file link actions', () => {
     })
     expect(mocks.openDetectedFilePath).toHaveBeenNthCalledWith(2, '/repo/report.html', null, null, {
       ...deps,
-      browserDestination: 'orca'
+      browserDestination: 'occ'
     })
   })
 

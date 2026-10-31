@@ -18,7 +18,7 @@ import {
   insertTestJournalRowJson,
   liveTestJournalRows,
   openTestJournalHostDatabase,
-  SAVED_BY_NEWER_ORCA
+  SAVED_BY_NEWER_OCC
 } from './journal-host-database-test-support'
 
 export function registerJournalUnknownContentTests(): void {
@@ -35,7 +35,7 @@ export function registerJournalUnknownContentTests(): void {
   const journals = createTrackedJournalOpener()
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-journal-newer-content-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-journal-newer-content-'))
   })
 
   afterEach(async () => {
@@ -111,8 +111,8 @@ export function registerJournalUnknownContentTests(): void {
   }
 
   async function expectNewerAndKept(written: { seq: number; rowJson: string }[]) {
-    await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
-    await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
+    await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
+    await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
     expect(stored()).toEqual(written)
   }
 

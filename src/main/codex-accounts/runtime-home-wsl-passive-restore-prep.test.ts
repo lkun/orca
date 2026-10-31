@@ -28,7 +28,7 @@ vi.mock(import('node:os'), async (importOriginal) => ({
   homedir: () => testState.fakeHomeDir
 }))
 
-const LINUX_ACCOUNT_HOME = '/home/alice/.local/share/orca/codex-accounts/account-1/home'
+const LINUX_ACCOUNT_HOME = '/home/alice/.local/share/occ/codex-accounts/account-1/home'
 
 function wslMocks() {
   const mocks = {

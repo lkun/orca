@@ -61,7 +61,7 @@ export function setBrowserExtensionSessionHooks(hooks: BrowserExtensionSessionHo
 
 const stateByProfileId = new Map<string, ProfileSessionState>()
 const PRELOAD_FILE_NAME = 'browser-extension-preload.js'
-const PRELOAD_ID = 'orca-browser-extension-frame'
+const PRELOAD_ID = 'occ-browser-extension-frame'
 const preloadedSessions = new WeakSet<Electron.Session>()
 
 function registerExtensionPreload(sess: Electron.Session): void {

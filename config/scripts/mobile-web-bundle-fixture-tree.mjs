@@ -22,10 +22,10 @@ export async function writeMobileWebBundleFixtureTree({ outDir, body = 'fixture'
   ])
   // Provide script/style/image assets used by guard cases; missing type would throw undefined.path instead of testing rule.
   const script = hashedAsset(
-    Buffer.from(`globalThis.orca = ${JSON.stringify(body)}\n`, 'utf8'),
+    Buffer.from(`globalThis.occ = ${JSON.stringify(body)}\n`, 'utf8'),
     'js'
   )
-  const stylesheet = hashedAsset(Buffer.from(`:root{--orca:${body}}\n`, 'utf8'), 'css')
+  const stylesheet = hashedAsset(Buffer.from(`:root{--occ:${body}}\n`, 'utf8'), 'css')
   const image = hashedAsset(PIXEL_PNG, 'png')
   const indexBytes = Buffer.from(
     `<!doctype html><meta charset="utf-8">` +

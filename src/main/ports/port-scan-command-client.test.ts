@@ -286,13 +286,13 @@ describe('PortScanCommandClient on a real worker thread', () => {
 })
 
 describe('resolveWorkerEntryPath on a non-Electron host', () => {
-  // orcad is packaged but lacks Electron resourcesPath; resolve as unavailable rather than throw.
+  // occd is packaged but lacks Electron resourcesPath; resolve as unavailable rather than throw.
   it('does not join an undefined resourcesPath', () => {
     expect(() =>
       resolveWorkerEntryPath({
         isPackaged: true,
         resourcesPath: undefined,
-        moduleDir: '/opt/orcad'
+        moduleDir: '/opt/occd'
       })
     ).not.toThrow()
   })
@@ -302,8 +302,8 @@ describe('resolveWorkerEntryPath on a non-Electron host', () => {
       resolveWorkerEntryPath({
         isPackaged: true,
         resourcesPath: undefined,
-        moduleDir: '/opt/orcad'
+        moduleDir: '/opt/occd'
       })
-    ).toBe(join('/opt/orcad', 'port-scan-command-worker-entry.js'))
+    ).toBe(join('/opt/occd', 'port-scan-command-worker-entry.js'))
   })
 })

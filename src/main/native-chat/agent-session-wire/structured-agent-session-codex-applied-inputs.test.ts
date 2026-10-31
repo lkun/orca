@@ -27,7 +27,7 @@ import {
 import { createStructuredAgentSessionLogger } from './structured-agent-session-logger'
 
 it('steers inherited applied inputs and sends an explicit effort or tier change on the next turn', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'orca-codex-applied-inputs-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-codex-applied-inputs-'))
   const opened = () => ({
     thread: { id: THREAD_ID },
     model: 'model-a',

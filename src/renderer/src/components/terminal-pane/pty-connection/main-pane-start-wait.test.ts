@@ -25,7 +25,7 @@ const store = vi.hoisted(() => {
 })
 
 vi.mock('@/store', () => ({ useAppStore: store }))
-vi.mock('../../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 const callRuntimeRpc = vi.hoisted(() => vi.fn(async () => ({ started: true })))
 vi.mock('@/runtime/runtime-rpc-client', () => ({ callRuntimeRpc }))
 

@@ -7,7 +7,7 @@ import { Button } from './ui/button'
 import { Card } from './ui/card'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible'
 import { shouldShowUnexpectedSignoutCard } from './unexpected-signout/unexpected-signout-visibility'
-import { OrcaSignInButton, OrcaSignInWaitNotice } from './OrcaSignInProgress'
+import { OCCSignInButton, OCCSignInWaitNotice } from './OCCSignInProgress'
 
 function readPreviewFlag(): boolean {
   if (!import.meta.env.DEV) {
@@ -17,7 +17,7 @@ function readPreviewFlag(): boolean {
     if (new URLSearchParams(window.location.search).get('showSignoutCard') === '1') {
       return true
     }
-    return window.localStorage.getItem('orca-debug-show-signout-card') === '1'
+    return window.localStorage.getItem('occ-debug-show-signout-card') === '1'
   } catch {
     return false
   }
@@ -44,7 +44,7 @@ function FeatureRow({
 }
 
 export function UnexpectedSignoutCard(): React.JSX.Element | null {
-  const authStatus = useAppStore((s) => s.orcaProfileAuthStatus)
+  const authStatus = useAppStore((s) => s.occProfileAuthStatus)
   const persistedUIReady = useAppStore((s) => s.persistedUIReady)
   const persistedDismissedVersion = useAppStore((s) => s.dismissedUnexpectedSignoutVersion)
   const dismissedVersions = useAppStore((s) => s.unexpectedSignoutDismissedVersions)
@@ -64,7 +64,7 @@ export function UnexpectedSignoutCard(): React.JSX.Element | null {
       attempts += 1
       void useAppStore
         .getState()
-        .fetchOrcaProfileAuthStatus()
+        .fetchOCCProfileAuthStatus()
         .then((status) => {
           if (cancelled) {
             return
@@ -238,11 +238,11 @@ export function UnexpectedSignoutCard(): React.JSX.Element | null {
           </Collapsible>
 
           <div className="mt-0.5 flex gap-2">
-            <OrcaSignInButton variant="default" size="sm" className="flex-1" disabled={!canConnect}>
+            <OCCSignInButton variant="default" size="sm" className="flex-1" disabled={!canConnect}>
               {translate('auto.components.UnexpectedSignoutCard.c5b3e8a17d', 'Sign in to OCC')}
-            </OrcaSignInButton>
+            </OCCSignInButton>
           </div>
-          <OrcaSignInWaitNotice />
+          <OCCSignInWaitNotice />
         </div>
       </Card>
     </div>

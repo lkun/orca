@@ -36,7 +36,7 @@ vi.mock('./browser-process-user-agent', () => ({
     electronUserAgent:
       mocks.processUserAgentMode === 'native'
         ? mocks.processUserAgent
-        : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) orca/1.0.0 Chrome/134.0.0.0 Electron/30.0.0 Safari/537.36'
+        : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) occ/1.0.0 Chrome/134.0.0.0 Electron/30.0.0 Safari/537.36'
   })
 }))
 
@@ -65,7 +65,7 @@ const MODES = [
 ] as const
 const ORDINARY_URL = 'https://example.com/'
 const AUTH_URL = 'https://accounts.google.com/v3/signin/identifier'
-const APP_TOKENS = /Electron\/|orca\//i
+const APP_TOKENS = /Electron\/|occ\//i
 let nextGuestId = 7000
 
 type Observed = {
@@ -168,7 +168,7 @@ function expectClientHintsKept(observed: Observed): void {
 
 describe('tab identity ownership', () => {
   beforeEach(() => {
-    expect(process.env.ORCA_BACKGROUND_LAUNCH).toBe('1')
+    expect(process.env.OCC_BACKGROUND_LAUNCH).toBe('1')
     resetBrowserManagerMocks(mocks)
     resetBrowserManagerState()
     guests.clear()

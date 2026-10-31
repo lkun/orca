@@ -25,7 +25,7 @@ export function hasShallowWatchDelivered(): boolean {
 export async function measureShallowWatchDelivery(timeoutMs = PROBE_TIMEOUT_MS): Promise<boolean> {
   let directory: string | null = null
   try {
-    directory = await mkdtemp(join(tmpdir(), 'orca-shallow-probe-'))
+    directory = await mkdtemp(join(tmpdir(), 'occ-shallow-probe-'))
     const probePath = join(directory, 'probe')
     // macOS shallow subscriptions watch files (kqueue), not directories (FSEvents),
     // so probe the same notification path they depend on.

@@ -7,7 +7,7 @@ import {
   listRegisteredSshTargets,
   SshTargetManagementUnservedError
 } from '../../../ssh/targets/ssh-target-registry'
-import { isManagedOrcadSshTarget } from '../../../ssh/connection/ssh-connection-store'
+import { isManagedOCCdSshTarget } from '../../../ssh/connection/ssh-connection-store'
 import { browseSshDirectory } from '../../../ssh/ssh-remote-directory-browse'
 import { defineMethod } from '../core'
 import { getPublicSshError, getPublicSshState } from '../../public-ssh-state'
@@ -77,7 +77,7 @@ function toSshEditableTarget(target: SshTargetRecord): SshEditableTarget {
     allowRemoteCliControl: isRemoteCliControlAllowed(target),
     ...toSshTargetSummary(target),
     ...(target.source === undefined ? {} : { source: target.source }),
-    ...(isManagedOrcadSshTarget(target) ? { managedServer: true as const } : {})
+    ...(isManagedOCCdSshTarget(target) ? { managedServer: true as const } : {})
   }
 }
 

@@ -13,7 +13,7 @@ import {
 describe('a spawn ENOENT that names the command', () => {
   let folder: string
   beforeEach(() => {
-    folder = mkdtempSync(join(tmpdir(), 'orca-provider-spawn-'))
+    folder = mkdtempSync(join(tmpdir(), 'occ-provider-spawn-'))
   })
   afterEach(() => {
     rmSync(folder, { recursive: true, force: true })

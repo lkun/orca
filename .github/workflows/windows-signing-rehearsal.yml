@@ -18,18 +18,18 @@ on:
 
 jobs:
   # Ship the same qualified template as release-cut so the reseal over SignPath-rewritten binaries is rehearsed too.
-  orcad-template:
+  occd-template:
     permissions:
       contents: read
       actions: read
-    uses: ./.github/workflows/qualified-orcad-template.yml
+    uses: ./.github/workflows/qualified-occd-template.yml
     with:
       ref: ${{ github.sha }}
       # SignPath origin verification covers reusable-workflow jobs, so they stay GitHub-hosted.
       fast_runners: false
 
   rehearse:
-    needs: orcad-template
+    needs: occd-template
     # Why: SignPath origin verification requires GitHub-hosted runners, and
     # windows-2022 matches the real release job's build environment.
     runs-on: windows-2022
@@ -38,7 +38,7 @@ jobs:
       actions: read
       contents: read
     env:
-      ORCA_REQUIRE_ORCAD_TEMPLATE: '1'
+      OCC_REQUIRE_OCCD_TEMPLATE: '1'
 
     steps:
       - name: Checkout
@@ -100,18 +100,18 @@ jobs:
           NODE_OPTIONS: --max-old-space-size=4096
 
       # After the app build so nothing that cleans out/ can drop it; electron-builder ships it.
-      - name: Download the orcad deployment template
+      - name: Download the occd deployment template
         uses: actions/download-artifact@v8
         with:
-          name: orcad-template
-          path: out/orcad-template
+          name: occd-template
+          path: out/occd-template
 
       # Build full --win: --dir never creates the NSIS uninstaller needed for MDE evidence.
       - name: Package Windows app and export the NSIS uninstaller
         shell: pwsh
         env:
           # Keep capture under runner.temp; all-negation files would include checkout leftovers in app.asar.
-          ORCA_WIN_UNINSTALLER_EXPORT_PATH: ${{ runner.temp }}\uninstaller-signing\unsigned\orca-uninstaller.exe
+          OCC_WIN_UNINSTALLER_EXPORT_PATH: ${{ runner.temp }}\uninstaller-signing\unsigned\occ-uninstaller.exe
         run: |
           node config/scripts/ensure-native-runtime.mjs --runtime=electron
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -120,8 +120,8 @@ jobs:
           if (-not (Test-Path 'dist/win-unpacked/OCC.exe')) {
             throw 'electron-builder --win did not produce dist/win-unpacked/OCC.exe'
           }
-          if (-not (Test-Path -LiteralPath $env:ORCA_WIN_UNINSTALLER_EXPORT_PATH)) {
-            throw "The sign hook did not export the NSIS uninstaller to $env:ORCA_WIN_UNINSTALLER_EXPORT_PATH"
+          if (-not (Test-Path -LiteralPath $env:OCC_WIN_UNINSTALLER_EXPORT_PATH)) {
+            throw "The sign hook did not export the NSIS uninstaller to $env:OCC_WIN_UNINSTALLER_EXPORT_PATH"
           }
 
       # Sign only unsigned PE files; retain vendor signatures such as Microsoft OpenConsole.
@@ -138,9 +138,9 @@ jobs:
             Where-Object { $_.Extension -in '.exe', '.dll', '.node' } |
             ForEach-Object {
               $relative = [System.IO.Path]::GetRelativePath($root, $_.FullName)
-              # The orcad template's Linux/macOS addons are data for SSH hosts, not PE files.
-              if ($relative -match '^resources[\\/]orcad-template[\\/]targets[\\/](?!win32-)') {
-                $skipped.Add("$relative  <non-Windows orcad template payload>")
+              # The occd template's Linux/macOS addons are data for SSH hosts, not PE files.
+              if ($relative -match '^resources[\\/]occd-template[\\/]targets[\\/](?!win32-)') {
+                $skipped.Add("$relative  <non-Windows occd template payload>")
                 return
               }
               $signature = Get-AuthenticodeSignature -FilePath $_.FullName
@@ -169,11 +169,11 @@ jobs:
 
           # The uninstaller is re-injected by the sign hook, outside win-unpacked’s copy-back list.
           # Fail staging loudly: rehearsal proves the flow and needs no release-job recovery catch.
-          $exportedUninstaller = Join-Path $env:RUNNER_TEMP 'uninstaller-signing\unsigned\orca-uninstaller.exe'
-          $uninstallerStagePath = Join-Path $stage.FullName 'uninstaller\orca-uninstaller.exe'
+          $exportedUninstaller = Join-Path $env:RUNNER_TEMP 'uninstaller-signing\unsigned\occ-uninstaller.exe'
+          $uninstallerStagePath = Join-Path $stage.FullName 'uninstaller\occ-uninstaller.exe'
           New-Item -ItemType Directory -Force -Path (Split-Path $uninstallerStagePath) | Out-Null
           Copy-Item -LiteralPath $exportedUninstaller -Destination $uninstallerStagePath -Force
-          Write-Host 'Staged the NSIS uninstaller for signing: uninstaller\orca-uninstaller.exe'
+          Write-Host 'Staged the NSIS uninstaller for signing: uninstaller\occ-uninstaller.exe'
 
       - name: Upload unsigned inner binaries for SignPath
         id: upload-unsigned-inner
@@ -192,7 +192,7 @@ jobs:
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
           organization-id: c37aa192-a27a-4377-9c90-5d6c95912dc0
-          project-slug: orca
+          project-slug: occ
           signing-policy-slug: ${{ inputs.signing-policy-slug || 'test-signing' }}
           artifact-configuration-slug: ${{ inputs.inner-artifact-configuration-slug || 'windows-inner-binaries-zip' }}
           github-artifact-id: ${{ steps.upload-unsigned-inner.outputs.artifact-id }}
@@ -247,8 +247,8 @@ jobs:
           }
 
       # Recompute template checksums over the signed bytes, then verify the template as release-cut does.
-      - name: Reseal the orcad template over its signed binaries
-        run: node config/scripts/packaged-orcad-template.cjs --reseal-signed dist/win-unpacked inner-signing-list.txt
+      - name: Reseal the occd template over its signed binaries
+        run: node config/scripts/packaged-occd-template.cjs --reseal-signed dist/win-unpacked inner-signing-list.txt
 
       - name: Restore signed uninstaller for the installer rebuild
         shell: pwsh
@@ -257,11 +257,11 @@ jobs:
         run: |
           $requireValid = $env:SIGNING_POLICY -ne 'test-signing'
           $candidates = @(
-            (Join-Path 'signed-inner' 'uninstaller\orca-uninstaller.exe'),
-            (Join-Path 'signed-inner/signing-stage' 'uninstaller\orca-uninstaller.exe')
+            (Join-Path 'signed-inner' 'uninstaller\occ-uninstaller.exe'),
+            (Join-Path 'signed-inner/signing-stage' 'uninstaller\occ-uninstaller.exe')
           ) | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf }
           if (@($candidates).Count -ne 1) {
-            throw 'Missing or ambiguous uninstaller/orca-uninstaller.exe in the signed artifact; check the windows-inner-binaries-zip configuration.'
+            throw 'Missing or ambiguous uninstaller/occ-uninstaller.exe in the signed artifact; check the windows-inner-binaries-zip configuration.'
           }
           $signed = Get-Item -LiteralPath @($candidates)[0]
           $signature = Get-AuthenticodeSignature -FilePath $signed.FullName
@@ -270,13 +270,13 @@ jobs:
           }
           $signedDir = Join-Path $env:RUNNER_TEMP 'uninstaller-signing\signed'
           New-Item -ItemType Directory -Force -Path $signedDir | Out-Null
-          Copy-Item -LiteralPath $signed.FullName -Destination (Join-Path $signedDir 'orca-uninstaller.exe') -Force
+          Copy-Item -LiteralPath $signed.FullName -Destination (Join-Path $signedDir 'occ-uninstaller.exe') -Force
           Write-Host ("{0,-14} uninstaller  <{1}>" -f $signature.Status, $signature.SignerCertificate.Subject)
 
       - name: Build NSIS installer from signed unpacked app
         shell: pwsh
         env:
-          ORCA_WIN_UNINSTALLER_SIGNED_PATH: ${{ runner.temp }}\uninstaller-signing\signed\orca-uninstaller.exe
+          OCC_WIN_UNINSTALLER_SIGNED_PATH: ${{ runner.temp }}\uninstaller-signing\signed\occ-uninstaller.exe
         run: |
           pnpm exec electron-builder --config config/electron-builder.config.cjs --win --publish never --prepackaged "$env:GITHUB_WORKSPACE\dist\win-unpacked"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -299,7 +299,7 @@ jobs:
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
           organization-id: c37aa192-a27a-4377-9c90-5d6c95912dc0
-          project-slug: orca
+          project-slug: occ
           signing-policy-slug: ${{ inputs.signing-policy-slug || 'test-signing' }}
           artifact-configuration-slug: github-actions-windows-installer
           github-artifact-id: ${{ steps.upload-unsigned-installer.outputs.artifact-id }}
@@ -406,12 +406,12 @@ jobs:
           $root = Resolve-Path 'extracted-app'
           # The receipt proves import, not NSIS embedding: the uninstaller lies outside the app 7z payload.
           # Unlike publishing release jobs, rehearsal can install silently and inspect the actual MDE-flagged file.
-          $signedUninstaller = Join-Path $env:RUNNER_TEMP 'uninstaller-signing\signed\orca-uninstaller.exe'
+          $signedUninstaller = Join-Path $env:RUNNER_TEMP 'uninstaller-signing\signed\occ-uninstaller.exe'
           $receipt = "$signedUninstaller.embedded-sha256"
           if (-not (Test-Path -LiteralPath $receipt)) {
             $failures.Add('the sign hook did not embed the signed uninstaller into the rebuilt installer')
           } else {
-            Test-Signature 'relayed: orca-uninstaller.exe' $signedUninstaller
+            Test-Signature 'relayed: occ-uninstaller.exe' $signedUninstaller
           }
 
           # Try full 7z.exe’s NSIS handler non-invasively first; reduced 7za lacks it. Fall back to a real silent install.
@@ -455,7 +455,7 @@ jobs:
               }
               Start-Sleep -Milliseconds 500
             }
-            Get-Process -Name 'orca-terminal-daemon' -ErrorAction SilentlyContinue |
+            Get-Process -Name 'occ-terminal-daemon' -ErrorAction SilentlyContinue |
               Stop-Process -Force -ErrorAction SilentlyContinue
             $installedUninstaller = Get-ChildItem -Path "$env:LOCALAPPDATA\Programs" -Recurse -File -Filter 'Uninstall*.exe' -ErrorAction SilentlyContinue |
               Where-Object { $_.FullName -like '*OCC*' } |
@@ -478,7 +478,7 @@ jobs:
           }
 
           $targets = @(Get-Content 'inner-signing-list.txt')
-          foreach ($requiredTarget in @('OCC.exe', 'resources\bin\orca.exe', 'resources\bin\orca-agent-hook.exe')) {
+          foreach ($requiredTarget in @('OCC.exe', 'resources\bin\occ.exe', 'resources\bin\occ-agent-hook.exe')) {
             if ($targets -notcontains $requiredTarget) { $targets += $requiredTarget }
           }
           foreach ($relative in $targets) {

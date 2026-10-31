@@ -10,7 +10,7 @@ let db: SyncDatabase
 let dbPath: string
 
 beforeEach(() => {
-  directory = mkdtempSync(join(tmpdir(), 'orca-opencode-failure-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-opencode-failure-'))
   dbPath = join(directory, 'opencode.db')
   db = new SyncDatabase(dbPath)
   db.exec(`CREATE TABLE session_message (

@@ -153,7 +153,7 @@ function startAgent(): Promise<unknown> {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-wedged-profile-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-wedged-profile-'))
   resetHostTestOperationIds()
   acquire = vi.fn(async ({ fence }) => ({
     acquisitionGeneration: globalThis.crypto.randomUUID(),

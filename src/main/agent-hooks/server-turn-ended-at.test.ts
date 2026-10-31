@@ -15,7 +15,7 @@ describe('the host-stamped turn end', () => {
 
   beforeEach(async () => {
     _internals.resetCachesForTests()
-    directory = mkdtempSync(join(tmpdir(), 'orca-turn-ended-at-'))
+    directory = mkdtempSync(join(tmpdir(), 'occ-turn-ended-at-'))
     server = new AgentHookServer()
     await server.start({ env: 'production', userDataPath: directory })
   })

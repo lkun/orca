@@ -7,12 +7,12 @@ import { pluginCatalogTypes } from '../../../src/shared/plugins/catalog/plugin-c
 import { PLUGIN_MANIFEST_V2_SINCE } from '../../../src/shared/plugins/manifest/plugin-schema-field-docs'
 import { headCommit, runGit } from './plugin-git-fixture'
 
-export const PLUGINS = ['orca-review-notes', 'orca-review-tasks'] as const
+export const PLUGINS = ['occ-review-notes', 'occ-review-tasks'] as const
 
 export async function writePlugin(repository: string, id: string, version: string): Promise<void> {
   await mkdir(repository, { recursive: true })
   await writeFile(
-    join(repository, 'orca-plugin.json'),
+    join(repository, 'occ-plugin.json'),
     JSON.stringify({
       manifestVersion: 2,
       id,
@@ -20,7 +20,7 @@ export async function writePlugin(repository: string, id: string, version: strin
       name: id === PLUGINS[0] ? 'Review Notes' : 'Review Tasks',
       version,
       execution: version === '1.0.0' ? 'data' : 'trusted-worker',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
       ...(version === '1.0.0' ? {} : { main: 'worker.mjs' }),
       contributes:
         id === PLUGINS[0]
@@ -59,7 +59,7 @@ export async function publishCatalog(
     PLUGINS.map(async (id) => {
       const repository = join(repositories, `${id}.git`)
       const manifest = pluginManifestSchema.parse(
-        JSON.parse(await readFile(join(repository, 'orca-plugin.json'), 'utf8'))
+        JSON.parse(await readFile(join(repository, 'occ-plugin.json'), 'utf8'))
       )
       const tree = await hashPluginTree(repository)
       if (!tree.ok) {
@@ -76,7 +76,7 @@ export async function publishCatalog(
             commit: await headCommit(repository, gitEnvironment),
             contentHash: tree.hash,
             execution: manifest.manifestVersion === 2 ? manifest.execution : 'data',
-            minimumOrca: PLUGIN_MANIFEST_V2_SINCE,
+            minimumOCC: PLUGIN_MANIFEST_V2_SINCE,
             types: pluginCatalogTypes(manifest),
             contributes: pluginContributionSummary(manifest),
             capabilities: []
@@ -86,7 +86,7 @@ export async function publishCatalog(
     })
   )
   await writeFile(
-    join(repositories, 'orca-plugins.git', 'orca-catalog.json'),
+    join(repositories, 'occ-plugins.git', 'occ-catalog.json'),
     JSON.stringify({ catalogVersion: 2, name: 'OCC Plugins', owner: 'stablyai', plugins })
   )
 }
@@ -104,7 +104,7 @@ export async function commitFixtureChange(
       '-c',
       'user.name=OCC Test',
       '-c',
-      'user.email=orca-test@example.invalid',
+      'user.email=occ-test@example.invalid',
       'commit',
       '--quiet',
       '-m',

@@ -30,8 +30,8 @@ import { registerPushDismissalTask } from './push-background-dismissal'
 
 it('handles native background JSON and scopes dismissal to the originating host', async () => {
   await registerPushDismissalTask()
-  expect(state.taskName).toBe('orca-push-dismissal')
-  expect(Notifications.registerTaskAsync).toHaveBeenCalledExactlyOnceWith('orca-push-dismissal')
+  expect(state.taskName).toBe('occ-push-dismissal')
+  expect(Notifications.registerTaskAsync).toHaveBeenCalledExactlyOnceWith('occ-push-dismissal')
   await state.task!({
     data: {
       data: {
@@ -53,7 +53,7 @@ it('handles native background JSON and scopes dismissal to the originating host'
 it('does not turn ordinary alerts into dismissals', async () => {
   vi.mocked(dismissPresentedPushNotification).mockClear()
   await state.task!({
-    data: { data: { orca: { hostFingerprint: 'host-a', notificationId: 'same-id' } } }
+    data: { data: { occ: { hostFingerprint: 'host-a', notificationId: 'same-id' } } }
   })
   expect(dismissPresentedPushNotification).not.toHaveBeenCalled()
 })

@@ -10,7 +10,7 @@ export type RemoteDesktopTerminalFloorDependencies = {
   isMobileDriven: (ptyId: string) => boolean
   getTerminalSize: (ptyId: string) => Viewport | null
   resolveHostTarget: (ptyId: string) => Viewport
-  /** False on a headless host (occ serve, orcad), which has no pane to give a PTY's grid back to. */
+  /** False on a headless host (occ serve, occd), which has no pane to give a PTY's grid back to. */
   hostShowsTerminals: () => boolean
   applyLayout: (ptyId: string, target: LayoutTarget) => Promise<{ ok: boolean }>
 }

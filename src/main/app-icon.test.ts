@@ -82,12 +82,12 @@ describe('app icon selection', () => {
       (
         _file: string,
         _args: string[],
-        optionsOrCallback: unknown,
+        optionsoccllback: unknown,
         callback?: (error: Error | null) => void
       ) => {
         const onComplete =
-          typeof optionsOrCallback === 'function'
-            ? (optionsOrCallback as (error: Error | null) => void)
+          typeof optionsoccllback === 'function'
+            ? (optionsoccllback as (error: Error | null) => void)
             : callback
         pendingCallbacks.push(() => onComplete?.(null))
       }
@@ -120,7 +120,7 @@ describe('app icon selection', () => {
       expect.any(Array),
       expect.objectContaining({
         env: expect.objectContaining({
-          ORCA_APP_ICON_PATH: 'watercolor-icon-unpacked'
+          OCC_APP_ICON_PATH: 'watercolor-icon-unpacked'
         })
       }),
       expect.any(Function)
@@ -135,7 +135,7 @@ describe('app icon selection', () => {
       expect.any(Array),
       expect.objectContaining({
         env: expect.objectContaining({
-          ORCA_APP_ICON_PATH: 'blue-icon-unpacked'
+          OCC_APP_ICON_PATH: 'blue-icon-unpacked'
         })
       }),
       expect.any(Function)
@@ -149,7 +149,7 @@ describe('app icon selection', () => {
       ]),
       expect.objectContaining({
         env: expect.objectContaining({
-          ORCA_APP_BUNDLE_PATH: '/Applications/OCC.app'
+          OCC_APP_BUNDLE_PATH: '/Applications/OCC.app'
         }),
         timeout: 10_000
       }),
@@ -192,15 +192,15 @@ describe('app icon selection', () => {
       (
         _file: string,
         _args: string[],
-        optionsOrCallback: unknown,
+        optionsoccllback: unknown,
         callback?: (error: Error | null) => void
       ) => {
         if (execFile.mock.calls.length === 1) {
           return hungChildProcess
         }
         const onComplete =
-          typeof optionsOrCallback === 'function'
-            ? (optionsOrCallback as (error: Error | null) => void)
+          typeof optionsoccllback === 'function'
+            ? (optionsoccllback as (error: Error | null) => void)
             : callback
         onComplete?.(null)
         return undefined
@@ -242,7 +242,7 @@ describe('app icon selection', () => {
       expect.any(Array),
       expect.objectContaining({
         env: expect.objectContaining({
-          ORCA_APP_ICON_PATH: 'blue-icon-unpacked'
+          OCC_APP_ICON_PATH: 'blue-icon-unpacked'
         }),
         timeout: 10_000
       }),

@@ -1,12 +1,12 @@
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import type { OrcadManagedStaleLockReclaimResult } from '../../../../shared/orcad-managed-runtime'
+import type { OCCdManagedStaleLockReclaimResult } from '../../../../shared/occd-managed-runtime'
 import {
-  ORCAD_RECLAIM_STALE_LOCK_FLAG,
-  type OrcadStaleLockEvidence
-} from '../../../../shared/orcad-stale-lock-reclaim'
+  OCCD_RECLAIM_STALE_LOCK_FLAG,
+  type OCCdStaleLockEvidence
+} from '../../../../shared/occd-stale-lock-reclaim'
 import type { SshManagedServerStatus } from '../../../../shared/ssh-types'
-import type { ManagedOrcadPreloadApi } from '../../../../preload/api/managed-orcad-api'
+import type { ManagedOCCdPreloadApi } from '../../../../preload/api/managed-occd-api'
 import { quotePosixShellUnlessPlain } from '../../../../shared/shell-argument-quoting'
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { formatUiRelativeTime } from '@/i18n/relative-time-format'
@@ -22,15 +22,15 @@ import {
   DialogTitle
 } from '../ui/dialog'
 import { Label } from '../ui/label'
-import { getManagedOrcadApi } from './use-managed-server-catalog'
+import { getManagedOCCdApi } from './use-managed-server-catalog'
 
 /** Offered only when the slot's own refusal named the command, so that build supports it. */
 export function canRecoverSshHostServer(status: SshManagedServerStatus | undefined): boolean {
   return Boolean(
-    getManagedOrcadApi() &&
+    getManagedOCCdApi() &&
     status?.kind === 'managed' &&
     status.serving?.state === 'unverifiable' &&
-    status.serving.detail.includes(ORCAD_RECLAIM_STALE_LOCK_FLAG)
+    status.serving.detail.includes(OCCD_RECLAIM_STALE_LOCK_FLAG)
   )
 }
 
@@ -39,7 +39,7 @@ export function staleLockReclaimCommandFrom(detail: string): string | null {
   return (
     detail
       .match(/`([^`]*)`/g)
-      ?.find((quoted) => quoted.includes(ORCAD_RECLAIM_STALE_LOCK_FLAG))
+      ?.find((quoted) => quoted.includes(OCCD_RECLAIM_STALE_LOCK_FLAG))
       ?.slice(1, -1) ?? null
   )
 }
@@ -56,7 +56,7 @@ export function SshHostRecoverServerDialog({
   onOpenChange: (open: boolean) => void
   onChanged: () => void
 }): React.JSX.Element | null {
-  const api = getManagedOrcadApi()
+  const api = getManagedOCCdApi()
   if (!api || !open) {
     return null
   }
@@ -76,7 +76,7 @@ function OpenRecoverServerDialog({
   onOpenChange,
   onChanged
 }: {
-  api: ManagedOrcadPreloadApi
+  api: ManagedOCCdPreloadApi
   status: SshManagedServerStatus | undefined
   onOpenChange: (open: boolean) => void
   onChanged: () => void
@@ -88,7 +88,7 @@ function OpenRecoverServerDialog({
       : null
   )
   const mountedRef = useMountedRef()
-  const [check, setCheck] = useState<OrcadManagedStaleLockReclaimResult | null>(null)
+  const [check, setCheck] = useState<OCCdManagedStaleLockReclaimResult | null>(null)
   const [confirmed, setConfirmed] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -206,7 +206,7 @@ function OpenRecoverServerDialog({
 function EligibleLock({
   evidence
 }: {
-  evidence: OrcadStaleLockEvidence | undefined
+  evidence: OCCdStaleLockEvidence | undefined
 }): React.JSX.Element {
   return (
     <div className="space-y-2 text-sm">
@@ -250,7 +250,7 @@ function CheckOutcome({
   check,
   detail
 }: {
-  check: OrcadManagedStaleLockReclaimResult
+  check: OCCdManagedStaleLockReclaimResult
   detail: string
 }): React.JSX.Element {
   if (check.status === 'reclaimed') {

@@ -190,7 +190,7 @@ describe('persisted wake times', () => {
   })
 
   it('round-trips and drops malformed entries', () => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-wsl-wake-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-wsl-wake-'))
     writeWslHostAutomationWakes(dir, { a: due(1) })
     expect(readWslHostAutomationWakes(dir)).toEqual({ a: due(1) })
     writeFileSync(

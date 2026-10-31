@@ -21,7 +21,7 @@ export const STREAMING_CHUNKS = [
 ]
 
 export function createMockTerminals(worktreeId?: string) {
-  const resolvedWorktreeId = worktreeId ?? 'repo-1::/tmp/orca-mobile-repro/orca'
+  const resolvedWorktreeId = worktreeId ?? 'repo-1::/tmp/occ-mobile-repro/occ'
   return [
     {
       handle: 'term-1',

@@ -6,19 +6,19 @@ import type { ExecutionHostId } from '../../../shared/execution-host'
 import type { FolderWorkspace } from '../../../shared/folder-workspace-types'
 import type { Worktree } from '../../../shared/worktree/types'
 
-const SHARED_WORKTREE_ID = 'repo-shared::/work/orca-feature'
+const SHARED_WORKTREE_ID = 'repo-shared::/work/occ-feature'
 
 // Production Git workspace collisions share repo/path because worktreeId encodes both (STA-4343).
 const localWorktree: Worktree = {
   id: SHARED_WORKTREE_ID,
   repoId: 'repo-shared',
-  path: '/work/orca-feature',
+  path: '/work/occ-feature',
   hostId: 'local',
   head: 'abc123',
   branch: 'feature',
   isBare: false,
   isMainWorktree: false,
-  displayName: 'orca-feature',
+  displayName: 'occ-feature',
   comment: '',
   linkedIssue: null,
   linkedPR: null,
@@ -34,8 +34,8 @@ const sshWorktree: Worktree = { ...localWorktree, hostId: 'ssh:build-box' }
 const localFolder: FolderWorkspace = {
   id: 'folder-shared',
   projectGroupId: 'group-shared',
-  name: 'orca',
-  folderPath: '/work/orca-local',
+  name: 'occ',
+  folderPath: '/work/occ-local',
   executionHostId: 'local',
   linkedTask: null,
   comment: '',
@@ -49,7 +49,7 @@ const localFolder: FolderWorkspace = {
 }
 const runtimeFolder: FolderWorkspace = {
   ...localFolder,
-  folderPath: '/remote/orca',
+  folderPath: '/remote/occ',
   executionHostId: 'runtime:env-1'
 }
 
@@ -74,7 +74,7 @@ describe('projectWorkspaceSurfaces', () => {
   it('emits one surface per workspace id when two hosts publish the same worktree', () => {
     const surfaces = project({ worktrees: [localWorktree, sshWorktree] })
 
-    expect(surfaces).toEqual([{ id: SHARED_WORKTREE_ID, path: '/work/orca-feature' }])
+    expect(surfaces).toEqual([{ id: SHARED_WORKTREE_ID, path: '/work/occ-feature' }])
   })
 
   it('never emits a duplicate id, so mount loops cannot reuse a React key', () => {
@@ -102,7 +102,7 @@ describe('projectWorkspaceSurfaces', () => {
       activeWorkspaceResolvedHostId: 'runtime:env-1'
     })
 
-    expect(surfaces).toEqual([{ id: 'folder:folder-shared', path: '/remote/orca' }])
+    expect(surfaces).toEqual([{ id: 'folder:folder-shared', path: '/remote/occ' }])
   })
 
   it('ignores the active workspace id entirely when no resolved host disambiguates', () => {
@@ -127,7 +127,7 @@ describe('projectWorkspaceSurfaces', () => {
       folderWorkspaces: [runtimeFolder, localFolder]
     })
 
-    expect(surfaces).toEqual([{ id: 'folder:folder-shared', path: '/remote/orca' }])
+    expect(surfaces).toEqual([{ id: 'folder:folder-shared', path: '/remote/occ' }])
   })
 
   it('keeps first-wins for a colliding folder workspace that is not the active one', () => {
@@ -140,12 +140,12 @@ describe('projectWorkspaceSurfaces', () => {
       activeWorkspaceResolvedHostId: 'runtime:env-1'
     })
 
-    expect(surfaces).toEqual([{ id: 'folder:folder-shared', path: '/work/orca-local' }])
+    expect(surfaces).toEqual([{ id: 'folder:folder-shared', path: '/work/occ-local' }])
     expect(warn).toHaveBeenCalledWith(
       '[workspace-surface] dropping colliding folder path',
       expect.objectContaining({
-        kept: '/work/orca-local',
-        dropped: '/remote/orca'
+        kept: '/work/occ-local',
+        dropped: '/remote/occ'
       })
     )
     warn.mockRestore()
@@ -159,7 +159,7 @@ describe('projectWorkspaceSurfaces', () => {
       activeWorkspaceResolvedHostId: 'local'
     })
 
-    expect(surfaces).toEqual([{ id: 'folder:folder-shared', path: '/work/orca-local' }])
+    expect(surfaces).toEqual([{ id: 'folder:folder-shared', path: '/work/occ-local' }])
   })
 
   it('switches the active folder path from first-wins to the host that hydrates', () => {
@@ -176,8 +176,8 @@ describe('projectWorkspaceSurfaces', () => {
       activeWorkspaceResolvedHostId: 'runtime:env-1'
     })
 
-    expect(hydrating).toEqual([{ id: 'folder:folder-shared', path: '/work/orca-local' }])
-    expect(hydrated).toEqual([{ id: 'folder:folder-shared', path: '/remote/orca' }])
+    expect(hydrating).toEqual([{ id: 'folder:folder-shared', path: '/work/occ-local' }])
+    expect(hydrated).toEqual([{ id: 'folder:folder-shared', path: '/remote/occ' }])
     expect(hydrated[0]?.id).toBe(hydrating[0]?.id)
   })
 
@@ -185,19 +185,19 @@ describe('projectWorkspaceSurfaces', () => {
     // Runtime contact loss must preserve projected workspace IDs or mount pruning would unmount them.
     const surfaces = project({ worktrees: [localWorktree] })
 
-    expect(surfaces).toEqual([{ id: SHARED_WORKTREE_ID, path: '/work/orca-feature' }])
+    expect(surfaces).toEqual([{ id: SHARED_WORKTREE_ID, path: '/work/occ-feature' }])
   })
 
   it('keeps distinct workspaces on one host', () => {
     const otherWorktree: Worktree = {
       ...localWorktree,
-      id: 'repo-shared::/work/orca-other',
-      path: '/work/orca-other'
+      id: 'repo-shared::/work/occ-other',
+      path: '/work/occ-other'
     }
 
     expect(project({ worktrees: [localWorktree, otherWorktree] })).toEqual([
-      { id: SHARED_WORKTREE_ID, path: '/work/orca-feature' },
-      { id: 'repo-shared::/work/orca-other', path: '/work/orca-other' }
+      { id: SHARED_WORKTREE_ID, path: '/work/occ-feature' },
+      { id: 'repo-shared::/work/occ-other', path: '/work/occ-other' }
     ])
   })
 })
@@ -218,8 +218,8 @@ describe('projectWorkspaceSurfaces never under-selects', () => {
   it('emits every distinct id from a mixed local, SSH, runtime and folder catalog', () => {
     const distinctWorktree: Worktree = {
       ...sshWorktree,
-      id: 'repo-shared::/work/orca-ssh-only',
-      path: '/work/orca-ssh-only'
+      id: 'repo-shared::/work/occ-ssh-only',
+      path: '/work/occ-ssh-only'
     }
     const distinctFolder: FolderWorkspace = {
       ...runtimeFolder,
@@ -241,8 +241,8 @@ describe('projectWorkspaceSurfaces never under-selects', () => {
   it('mounts a local-only catalog whose rows never name a host', () => {
     const otherUnqualified: Worktree = {
       ...unqualifiedWorktree,
-      id: 'repo-shared::/work/orca-other',
-      path: '/work/orca-other'
+      id: 'repo-shared::/work/occ-other',
+      path: '/work/occ-other'
     }
 
     expect(
@@ -251,25 +251,25 @@ describe('projectWorkspaceSurfaces never under-selects', () => {
         folderWorkspaces: [localOnlyFolder]
       })
     ).toEqual([
-      { id: SHARED_WORKTREE_ID, path: '/work/orca-feature' },
-      { id: 'repo-shared::/work/orca-other', path: '/work/orca-other' },
-      { id: 'folder:folder-local-only', path: '/work/orca-local' }
+      { id: SHARED_WORKTREE_ID, path: '/work/occ-feature' },
+      { id: 'repo-shared::/work/occ-other', path: '/work/occ-other' },
+      { id: 'folder:folder-local-only', path: '/work/occ-local' }
     ])
   })
 
   it('keeps the id when an unqualified row collides with a host-qualified one', () => {
     // The host index preserves unqualified buckets too; workbench projection must still collapse duplicate IDs.
     expect(project({ worktrees: [unqualifiedWorktree, localWorktree] })).toEqual([
-      { id: SHARED_WORKTREE_ID, path: '/work/orca-feature' }
+      { id: SHARED_WORKTREE_ID, path: '/work/occ-feature' }
     ])
     expect(project({ worktrees: [localWorktree, unqualifiedWorktree] })).toEqual([
-      { id: SHARED_WORKTREE_ID, path: '/work/orca-feature' }
+      { id: SHARED_WORKTREE_ID, path: '/work/occ-feature' }
     ])
   })
 
   it('collapses two SSH hosts publishing one worktree id, with no local row present', () => {
     expect(project({ worktrees: [sshWorktree, secondSshWorktree] })).toEqual([
-      { id: SHARED_WORKTREE_ID, path: '/work/orca-feature' }
+      { id: SHARED_WORKTREE_ID, path: '/work/occ-feature' }
     ])
   })
 
@@ -281,14 +281,14 @@ describe('projectWorkspaceSurfaces never under-selects', () => {
 
     expect(surfaces).toEqual([
       { id: 'folder-shared', path: '/work/collide' },
-      { id: 'folder:folder-shared', path: '/work/orca-local' }
+      { id: 'folder:folder-shared', path: '/work/occ-local' }
     ])
   })
 
   it('collapses folder rows across three hosts to one surface without losing the id', () => {
     const sshFolder: FolderWorkspace = {
       ...localFolder,
-      folderPath: '/ssh/orca',
+      folderPath: '/ssh/occ',
       executionHostId: undefined,
       connectionId: 'build-box'
     }
@@ -299,14 +299,14 @@ describe('projectWorkspaceSurfaces never under-selects', () => {
       activeWorkspaceResolvedHostId: 'ssh:build-box'
     })
 
-    expect(surfaces).toEqual([{ id: 'folder:folder-shared', path: '/ssh/orca' }])
+    expect(surfaces).toEqual([{ id: 'folder:folder-shared', path: '/ssh/occ' }])
   })
 
   it('does not let a folder row that names no host win the local tie-break', () => {
     // Do not let default-local ownership promote unstamped paths over explicitly local rows.
     const unstampedPeer: FolderWorkspace = {
       ...localFolder,
-      folderPath: '/unknown/orca',
+      folderPath: '/unknown/occ',
       executionHostId: undefined,
       connectionId: undefined
     }
@@ -317,7 +317,7 @@ describe('projectWorkspaceSurfaces never under-selects', () => {
         activeWorkspaceId: 'folder:folder-shared',
         activeWorkspaceResolvedHostId: 'local'
       })
-    ).toEqual([{ id: 'folder:folder-shared', path: '/work/orca-local' }])
+    ).toEqual([{ id: 'folder:folder-shared', path: '/work/occ-local' }])
   })
 
   it('emits nothing extra and nothing missing for an empty catalog', () => {

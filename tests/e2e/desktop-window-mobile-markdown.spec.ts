@@ -5,7 +5,7 @@ import type {
   RuntimeMarkdownReadTabResult,
   RuntimeMarkdownSaveTabResult
 } from '../../src/shared/mobile-markdown-document'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   cleanupMarkdownFixture,
@@ -23,30 +23,30 @@ const PHONE = '# Shared notes\n\nSaved from the phone.\n'
 const BANNER = 'This file changed on disk while you have unsaved edits.'
 
 test('a phone saves a Markdown tab the desktop has unsaved edits in, without touching them', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(180_000)
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  const context = await getActiveWorktreeContext(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  const context = await getActiveWorktreeContext(occPage)
   const filePath = await createMarkdownFixture(
     context,
-    '.orca-e2e-phone-markdown',
+    '.occ-e2e-phone-markdown',
     'desktop-draft',
     testInfo.workerIndex,
     DISK
   )
-  const phone = pairMobileClient(await createDesktopMobilePairingOffer(orcaPage))
+  const phone = pairMobileClient(await createDesktopMobilePairingOffer(occPage))
   try {
-    await openMarkdownFixture(orcaPage, context, filePath)
-    const editor = await waitForRichMarkdownEditor(orcaPage)
+    await openMarkdownFixture(occPage, context, filePath)
+    const editor = await waitForRichMarkdownEditor(occPage)
     await expect(editor).toContainText('On disk.')
     await editor.click()
-    await orcaPage.keyboard.press('ControlOrMeta+End')
-    await orcaPage.keyboard.press('Enter')
-    await orcaPage.keyboard.insertText(DRAFT_LINE)
+    await occPage.keyboard.press('ControlOrMeta+End')
+    await occPage.keyboard.press('Enter')
+    await occPage.keyboard.insertText(DRAFT_LINE)
     const desktopDraft = () =>
-      orcaPage.evaluate((path) => {
+      occPage.evaluate((path) => {
         const state = window.__store!.getState()
         const file = state.openFiles.find((entry) => entry.filePath === path)
         return {
@@ -110,9 +110,9 @@ test('a phone saves a Markdown tab the desktop has unsaved edits in, without tou
     expect(saved).toMatchObject({ tabId, isDirty: false, content: PHONE })
     expect(readFileSync(filePath, 'utf8')).toBe(PHONE)
 
-    await expect(orcaPage.getByText(BANNER)).toBeVisible({ timeout: 30_000 })
+    await expect(occPage.getByText(BANNER)).toBeVisible({ timeout: 30_000 })
     await testInfo.attach('desktop-after-phone-save', {
-      body: await orcaPage.screenshot(),
+      body: await occPage.screenshot(),
       contentType: 'image/png'
     })
     const after = await desktopDraft()
@@ -126,16 +126,16 @@ test('a phone saves a Markdown tab the desktop has unsaved edits in, without tou
 })
 
 test("a phone reads the desktop's unsaved untitled Markdown tab read-only and never saves it", async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(180_000)
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  const context = await getActiveWorktreeContext(orcaPage)
-  const phone = pairMobileClient(await createDesktopMobilePairingOffer(orcaPage))
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  const context = await getActiveWorktreeContext(occPage)
+  const phone = pairMobileClient(await createDesktopMobilePairingOffer(occPage))
   let untitledPath = ''
   try {
-    untitledPath = await orcaPage.evaluate(async (worktreeId) => {
+    untitledPath = await occPage.evaluate(async (worktreeId) => {
       const store = window.__store!
       const before = new Set(store.getState().openFiles.map((file) => file.id))
       const groupId = store.getState().activeGroupIdByWorktree[worktreeId] ?? ''
@@ -148,12 +148,12 @@ test("a phone reads the desktop's unsaved untitled Markdown tab read-only and ne
       }
       return created.filePath
     }, context.worktreeId)
-    const editor = await waitForRichMarkdownEditor(orcaPage)
+    const editor = await waitForRichMarkdownEditor(occPage)
     await editor.click()
-    await orcaPage.keyboard.insertText(DRAFT_LINE)
+    await occPage.keyboard.insertText(DRAFT_LINE)
     await expect
       .poll(() =>
-        orcaPage.evaluate((path) => {
+        occPage.evaluate((path) => {
           const state = window.__store!.getState()
           const file = state.openFiles.find((entry) => entry.filePath === path)
           return file?.isDirty === true && file.isUntitled === true

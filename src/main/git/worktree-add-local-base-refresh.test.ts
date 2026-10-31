@@ -187,7 +187,7 @@ describe('addWorktree', () => {
       [
         'update-ref',
         '-m',
-        'orca: fast-forward to refs/remotes/origin/main',
+        'occ: fast-forward to refs/remotes/origin/main',
         'refs/heads/main',
         'remote-main',
         'old-main'

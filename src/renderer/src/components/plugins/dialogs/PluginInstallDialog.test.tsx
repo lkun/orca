@@ -104,7 +104,7 @@ describe('PluginInstallDialog', () => {
     })
 
     expect(document.body.textContent).toContain(
-      'orca-plugin.json is invalid. Ask the plugin author to fix the manifest.'
+      'occ-plugin.json is invalid. Ask the plugin author to fix the manifest.'
     )
     act(() => root.unmount())
   })
@@ -113,19 +113,19 @@ describe('PluginInstallDialog', () => {
     const commit = '6060a677674a2491d818961745447073411607d8'
     const resolveGitSource = vi.fn<ResolveGitSource>().mockResolvedValue({
       ok: true,
-      url: 'https://github.com/kolebayev/orca-md-layout',
+      url: 'https://github.com/kolebayev/occ-md-layout',
       kind: 'latest-tag',
       ref: 'v0.1.0',
       commit
     })
     const onInstall = vi.fn<(source: PluginHostInstallSource) => Promise<void>>()
     const root = await renderDialog(onInstall, resolveGitSource)
-    await enter(gitInput(), 'https://github.com/kolebayev/orca-md-layout')
+    await enter(gitInput(), 'https://github.com/kolebayev/occ-md-layout')
 
     await click('Continue')
 
     expect(resolveGitSource).toHaveBeenCalledWith({
-      url: 'https://github.com/kolebayev/orca-md-layout',
+      url: 'https://github.com/kolebayev/occ-md-layout',
       ref: ''
     })
     expect(onInstall).not.toHaveBeenCalled()
@@ -137,7 +137,7 @@ describe('PluginInstallDialog', () => {
 
     expect(onInstall).toHaveBeenCalledWith({
       kind: 'git',
-      url: 'https://github.com/kolebayev/orca-md-layout',
+      url: 'https://github.com/kolebayev/occ-md-layout',
       ref: 'v0.1.0',
       expectedCommit: commit
     })

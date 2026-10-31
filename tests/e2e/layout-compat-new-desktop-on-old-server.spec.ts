@@ -1,14 +1,14 @@
 // P3 frozen adapter: compare current desktop split/resize/rename/restart observations against a pinned released headless server.
-// Requires ORCA_CROSS_VERSION_PACKAGED_EXECUTABLE (packaged-browser-e2e.yml layout-compat).
+// Requires OCC_CROSS_VERSION_PACKAGED_EXECUTABLE (packaged-browser-e2e.yml layout-compat).
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchPairedElectronClient } from './helpers/paired-electron-client'
 import {
   launchPackagedServeHost,
   packagedExecutable,
   packagedExecutableMissing,
   PACKAGED_EXECUTABLE_ENV
-} from './helpers/packaged-old-orca'
+} from './helpers/packaged-old-occ'
 import {
   expectLayoutCompatBaseline,
   expectReconnectedPaneEcho,

@@ -6,16 +6,16 @@ import { UNFOCUSED_SPLIT_GROUP_OPACITY } from './split-group-dim'
 
 const HAS_CSS_ANCHOR_POSITIONING =
   typeof CSS !== 'undefined' &&
-  CSS.supports('position-anchor', '--orca-terminal-overlay-probe') &&
-  CSS.supports('top', 'anchor(--orca-terminal-overlay-probe top)') &&
-  CSS.supports('width', 'anchor-size(--orca-terminal-overlay-probe width)')
+  CSS.supports('position-anchor', '--occ-terminal-overlay-probe') &&
+  CSS.supports('top', 'anchor(--occ-terminal-overlay-probe top)') &&
+  CSS.supports('width', 'anchor-size(--occ-terminal-overlay-probe width)')
 const MIN_OVERLAY_FIT_WIDTH_PX = 48
 const MIN_OVERLAY_FIT_HEIGHT_PX = 24
 
 function shouldUseCssAnchorPositioning(): boolean {
   return (
     HAS_CSS_ANCHOR_POSITIONING &&
-    (globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ !== true
+    (globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ !== true
   )
 }
 

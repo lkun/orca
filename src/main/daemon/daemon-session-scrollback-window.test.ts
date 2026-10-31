@@ -16,11 +16,11 @@ describe('resolveDaemonSessionScrollbackRows', () => {
 
   it('accepts the inclusive override bounds and rejects everything outside them', () => {
     for (const raw of ['100', '2500', '5000']) {
-      const env = { ORCA_DAEMON_SESSION_SCROLLBACK_ROWS: raw } as NodeJS.ProcessEnv
+      const env = { OCC_DAEMON_SESSION_SCROLLBACK_ROWS: raw } as NodeJS.ProcessEnv
       expect(resolveDaemonSessionScrollbackRows(env)).toBe(Number(raw))
     }
     for (const raw of ['0', '50', '99', '5001', '50000', '-1', '3.5', 'nonsense', '']) {
-      const env = { ORCA_DAEMON_SESSION_SCROLLBACK_ROWS: raw } as NodeJS.ProcessEnv
+      const env = { OCC_DAEMON_SESSION_SCROLLBACK_ROWS: raw } as NodeJS.ProcessEnv
       expect(resolveDaemonSessionScrollbackRows(env)).toBe(DAEMON_SESSION_SCROLLBACK_ROWS)
     }
   })

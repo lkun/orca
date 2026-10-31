@@ -9,7 +9,7 @@ describe('isTestCodePath', () => {
       'internal/server/handler_test.go',
       'app/models/user_spec.rb',
       'tools/test_migration.py',
-      'src/main/java/com/orca/GitTest.java',
+      'src/main/java/com/occ/GitTest.java',
       'src/OCC.Core/GitStatusTests.cs',
       'src/UserTest.kt',
       'AppTests.swift',

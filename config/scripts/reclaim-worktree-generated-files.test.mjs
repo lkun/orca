@@ -14,8 +14,8 @@ import {
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { afterEach, expect, it, vi } from 'vitest'
-import * as processHost from '@orca/process-host'
-import { runProcess } from '@orca/process-host'
+import * as processHost from '@occ/process-host'
+import { runProcess } from '@occ/process-host'
 import { reclaimWorktreeGeneratedFiles } from './reclaim-worktree-generated-files.mjs'
 
 const roots = []
@@ -27,7 +27,7 @@ afterEach(async () => {
 })
 
 async function fixture() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-generated-reclaim-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-generated-reclaim-'))
   roots.push(root)
   const repoRoot = join(root, 'main')
   const sibling = join(root, 'sibling')
@@ -310,7 +310,7 @@ it.each(['manual', 'automatic'])(
     await utimes(dirname(file), new Date(0), new Date(0))
     const run = (args) =>
       runProcess({
-        program: process.env.ORCA_TEST_NODE_EXECUTABLE ?? process.execPath,
+        program: process.env.OCC_TEST_NODE_EXECUTABLE ?? process.execPath,
         args: [
           resolve(import.meta.dirname, 'reclaim-worktree-space.mjs'),
           '--repo',
@@ -319,7 +319,7 @@ it.each(['manual', 'automatic'])(
           ...args
         ],
         cwd: tmpdir(),
-        env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' },
+        env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' },
         timeoutMs: 30_000,
         terminationBarrier: true
       })

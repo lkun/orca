@@ -35,7 +35,7 @@ function source(url: string, official = false): PluginMarketplaceHostSourceState
     official
   }
 }
-const OFFICIAL = source('https://github.com/stablyai/orca-plugins.git', true)
+const OFFICIAL = source('https://github.com/stablyai/occ-plugins.git', true)
 
 function Harness(props: { sources: PluginMarketplaceHostSourceState[]; loading: boolean }) {
   hook = usePluginInstallLink({ ...props, loadMarketplaceData, open })
@@ -107,13 +107,13 @@ describe('usePluginInstallLink', () => {
     expect(open).not.toHaveBeenCalled()
     expect(addMarketplace).not.toHaveBeenCalled()
     expect(hook?.catalogToAdd?.source.url).toBe(
-      'https://github.com/stablyai/orca-community-plugins.git'
+      'https://github.com/stablyai/occ-community-plugins.git'
     )
 
     await act(async () => hook!.confirmCatalog())
     expect(addMarketplace).toHaveBeenCalledWith({
       kind: 'git',
-      url: 'https://github.com/stablyai/orca-community-plugins.git',
+      url: 'https://github.com/stablyai/occ-community-plugins.git',
       ref: 'main'
     })
     expect(loadMarketplaceData).toHaveBeenCalled()

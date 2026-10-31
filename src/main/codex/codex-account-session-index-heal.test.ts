@@ -18,10 +18,10 @@ const HOME = '/codex-accounts/account-1/home'
 // Why: fails closed if a regression bypasses the fake session — never the real codex or ~/.codex.
 function buildInvocation(): CodexAppServerInvocation {
   return {
-    command: '/nonexistent/orca-test-codex',
+    command: '/nonexistent/occ-test-codex',
     args: ['app-server'],
     cliPath: null,
-    env: { CODEX_HOME: join(tmpdir(), 'orca-test-nonexistent-codex-home') },
+    env: { CODEX_HOME: join(tmpdir(), 'occ-test-nonexistent-codex-home') },
     timeoutMs: 1_000
   }
 }

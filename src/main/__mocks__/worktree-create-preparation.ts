@@ -35,7 +35,7 @@ const mocks: {
 export { mocks }
 
 vi.mock('node:fs/promises', () => ({ mkdir: mocks.mkdir }))
-vi.mock('../orcad/orcad-data-root-locality', () => ({ orcadDataRootIsOnLocalDisk: () => true }))
+vi.mock('../occd/occd-data-root-locality', () => ({ occdDataRootIsOnLocalDisk: () => true }))
 vi.mock('../git/worktree', () => ({ listWorktreeGraph: mocks.listWorktreeGraph }))
 vi.mock('../git/worktree-create-preparation', () => ({
   prepareWorktreeCreateCheckout: mocks.prepareCheckout,

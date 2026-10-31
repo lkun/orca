@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { getDefaultWorkspaceSession } from '../../../shared/constants'
 import type { CommandOf } from '../../../shared/workspace-layout/workspace-layout-command-types'
 import { WorkspaceLayoutStream } from '../../runtime/workspace-layout-stream'
@@ -34,7 +34,7 @@ afterEach(() => {
 const leafOf = (index: number) => `00000000-0000-4000-8000-${String(index).padStart(12, '0')}`
 
 async function storeWithTabs(count: number): Promise<{ store: Store; directory: string }> {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-rename-tabs-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-rename-tabs-'))
   directories.push(directory)
   const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   const local = new WindowSession(getDefaultWorkspaceSession())
@@ -85,7 +85,7 @@ describe('Store.applyTabRenames (layout.apply renameTabs)', () => {
       { rename: rename(FIXTURE_GIT_WORKTREE_ID, 'missing', 'Gone'), code: 'tab_not_found' }
     ])
     // One mutation publishes every partition, using scoped notices only in layout-owner builds.
-    expect(written).toEqual(ORCA_LAYOUT_OWNER_IS_MAIN ? ['local', SSH] : [null])
+    expect(written).toEqual(OCC_LAYOUT_OWNER_IS_MAIN ? ['local', SSH] : [null])
     const reopened = await reopenTopologyStore(store, directory)
     expect(generatedTitles(reopened)).toEqual([
       ['tab-0', 'Fix the login page'],

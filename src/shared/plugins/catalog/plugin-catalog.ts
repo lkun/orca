@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { safePluginDisplayText } from '../manifest/plugin-display-text'
 import { pluginCatalogReleaseSchema, type PluginCatalogRelease } from './plugin-catalog-release'
-import { satisfiesOrcaEngineRange } from '../manifest/plugin-manifest-engine-range'
+import { satisfiesOCCEngineRange } from '../manifest/plugin-manifest-engine-range'
 import {
   catalogV2GitSourceSchema,
   marketplaceCategorySchema,
@@ -17,13 +17,13 @@ import {
 } from '../manifest/plugin-schema-field-docs'
 
 /**
- * The plugin catalog (`orca-catalog.json`). The name never changes; `catalogVersion` does, and
+ * The plugin catalog (`occ-catalog.json`). The name never changes; `catalogVersion` does, and
  * only for a change older clients cannot ignore. Everything below is tolerant by design: a
  * catalog only lists, and installing re-checks the exact bytes, so an older client keeps
  * whatever it can understand instead of losing the whole catalog. CI and `validate` are the
  * strict checks.
  */
-export const PLUGIN_CATALOG_FILENAME = 'orca-catalog.json'
+export const PLUGIN_CATALOG_FILENAME = 'occ-catalog.json'
 export const PLUGIN_CATALOG_VERSION = 2
 export const PLUGIN_CATALOG_RELEASE_LIMIT = 32
 
@@ -81,7 +81,7 @@ export const pluginCatalogEntrySchema = z
       .refine((releases) => releases.length > 0, 'needs at least one release this OCC can read')
       .meta({
         ...pluginFieldDoc(
-          `Installable releases, newest first. OCC installs the first one whose \`minimumOrca\` it meets, so keep older releases listed when you raise \`engines.orca\`. At most ${PLUGIN_CATALOG_RELEASE_LIMIT}.`,
+          `Installable releases, newest first. OCC installs the first one whose \`minimumOCC\` it meets, so keep older releases listed when you raise \`engines.occ\`. At most ${PLUGIN_CATALOG_RELEASE_LIMIT}.`,
           NEXT
         ),
         minItems: 1,
@@ -167,12 +167,12 @@ export function selectPluginCatalogRelease(
   hostVersion: string
 ): PluginCatalogRelease | undefined {
   const installable = releases.find((release) =>
-    satisfiesOrcaEngineRange(hostVersion, `>=${release.minimumOrca}`)
+    satisfiesOCCEngineRange(hostVersion, `>=${release.minimumOCC}`)
   )
   if (installable) {
     return installable
   }
   return [...releases].sort((a, b) =>
-    satisfiesOrcaEngineRange(a.minimumOrca, `>=${b.minimumOrca}`) ? 1 : -1
+    satisfiesOCCEngineRange(a.minimumOCC, `>=${b.minimumOCC}`) ? 1 : -1
   )[0]
 }

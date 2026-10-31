@@ -1,4 +1,4 @@
-import type { NodeRuntimeDownloadBudget } from '../ssh/orcad-node-runtime-install-options'
+import type { NodeRuntimeDownloadBudget } from '../ssh/occd-node-runtime-install-options'
 
 /**
  * A first WSL deploy fetches the pinned Node archive. Behind a firewall that drops packets the default

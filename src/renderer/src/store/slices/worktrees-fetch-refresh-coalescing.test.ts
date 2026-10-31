@@ -289,7 +289,7 @@ describe('fetchWorktrees', () => {
     const sshWorktree = makeWorktree({
       id: 'repo1::/ssh/wt1',
       repoId: 'repo1',
-      path: '/home/orca/wt1'
+      path: '/home/occ/wt1'
     })
     let releaseLocal!: () => void
     let releaseSsh!: () => void
@@ -328,7 +328,7 @@ describe('fetchWorktrees', () => {
         },
         {
           id: 'repo1',
-          path: '/home/orca/repo1',
+          path: '/home/occ/repo1',
           displayName: 'Repo One SSH',
           badgeColor: '#000',
           addedAt: 0,
@@ -356,9 +356,9 @@ describe('fetchWorktrees', () => {
   it('preserves SSH host identity when detected and visible refreshes overlap', async () => {
     const store = createTestStore()
     const sshWorktree = makeWorktree({
-      id: 'repo-ssh::/home/orca/wt1',
+      id: 'repo-ssh::/home/occ/wt1',
       repoId: 'repo-ssh',
-      path: '/home/orca/wt1'
+      path: '/home/occ/wt1'
     })
     let releaseScan!: () => void
     const scanStarted = new Promise<void>((resolve) => {
@@ -377,7 +377,7 @@ describe('fetchWorktrees', () => {
       repos: [
         {
           id: 'repo-ssh',
-          path: '/home/orca/repo',
+          path: '/home/occ/repo',
           displayName: 'SSH Repo',
           badgeColor: '#000',
           addedAt: 0,
@@ -408,9 +408,9 @@ describe('fetchWorktrees', () => {
   it('preserves SSH host identity when visible refresh starts before detected refresh', async () => {
     const store = createTestStore()
     const sshWorktree = makeWorktree({
-      id: 'repo-ssh::/home/orca/wt1',
+      id: 'repo-ssh::/home/occ/wt1',
       repoId: 'repo-ssh',
-      path: '/home/orca/wt1'
+      path: '/home/occ/wt1'
     })
     let releaseScan!: () => void
     const scanStarted = new Promise<void>((resolve) => {
@@ -429,7 +429,7 @@ describe('fetchWorktrees', () => {
       repos: [
         {
           id: 'repo-ssh',
-          path: '/home/orca/repo',
+          path: '/home/occ/repo',
           displayName: 'SSH Repo',
           badgeColor: '#000',
           addedAt: 0,
@@ -465,7 +465,7 @@ describe('fetchWorktrees', () => {
       repos: [
         {
           id: 'repo-ssh',
-          path: '/home/orca/repo',
+          path: '/home/occ/repo',
           displayName: 'SSH Repo',
           badgeColor: '#000',
           addedAt: 0,

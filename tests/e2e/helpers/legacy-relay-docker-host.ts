@@ -17,10 +17,10 @@ export type DockerReleasedRelay = { dir: string; version: string }
 
 export type DockerRelayInstance = { sockPath: string; relayPtyId: string }
 
-// Bundle release sources using the orcad template’s glibc-floor N-API node-pty, which loads on the host Node.
+// Bundle release sources using the occd template’s glibc-floor N-API node-pty, which loads on the host Node.
 export async function installReleasedRelayOnDockerHost(
   target: DockerSshHostTarget,
-  orcadTemplateDir: string
+  occdTemplateDir: string
 ): Promise<DockerReleasedRelay> {
   const built: unknown = JSON.parse(
     execFileSync(
@@ -43,15 +43,15 @@ export async function installReleasedRelayOnDockerHost(
     throw new Error('Building the released relay printed no bundle')
   }
   const { bundleDir, version } = built
-  const dir = `/root/.orca-remote/relay-${version}`
-  const staging = mkdtempSync(path.join(os.tmpdir(), 'orca-legacy-relay-'))
+  const dir = `/root/.occ-remote/relay-${version}`
+  const staging = mkdtempSync(path.join(os.tmpdir(), 'occ-legacy-relay-'))
   try {
     // Why the host's arch: a Docker host on an arm64 machine runs arm64 containers.
     const arch = execDockerSshHostTargetCommand(target, 'uname -m') === 'aarch64' ? 'arm64' : 'x64'
     const pty = path.join(staging, 'node_modules', 'node-pty')
-    cpSync(path.join(orcadTemplateDir, 'node_modules', 'node-pty'), pty, { recursive: true })
+    cpSync(path.join(occdTemplateDir, 'node_modules', 'node-pty'), pty, { recursive: true })
     cpSync(
-      path.join(orcadTemplateDir, 'targets', `linux-${arch}-glibc`, 'node_modules', 'node-pty'),
+      path.join(occdTemplateDir, 'targets', `linux-${arch}-glibc`, 'node_modules', 'node-pty'),
       pty,
       {
         recursive: true

@@ -1,29 +1,29 @@
 // STA-11039: save a fake MiniMax key on the scoped server, then require its own usage poller’s error meter.
-// Run electron-headless with ORCA_E2E_USAGE_CREDENTIALS=1 ORCA_BACKGROUND_LAUNCH=1; add ORCA_E2E_ORCAD_SERVE=1 after pnpm build:orcad for Node hosting.
+// Run electron-headless with OCC_E2E_USAGE_CREDENTIALS=1 OCC_BACKGROUND_LAUNCH=1; add OCC_E2E_OCCD_SERVE=1 after pnpm build:occd for Node hosting.
 import { existsSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
 import { RuntimeClient } from '../../src/cli/runtime/client'
-import { resolveBundledOrcadRuntime } from '../../src/main/orcad/orcad-bundled-runtime'
-import { expect, test } from './helpers/orca-app'
+import { resolveBundledOCCdRuntime } from '../../src/main/occd/occd-bundled-runtime'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
-import { cliServeProfile, spawnUntilReady } from './helpers/orca-serve-cli-host'
+import { cliServeProfile, spawnUntilReady } from './helpers/occ-serve-cli-host'
 import {
   launchPairedElectronClient,
   type PairedElectronClient,
   type RuntimeDesktopPairingOffer
 } from './helpers/paired-electron-client'
 
-const RUN = process.env.ORCA_E2E_USAGE_CREDENTIALS === '1'
-const RUN_ORCAD = RUN && process.env.ORCA_E2E_ORCAD_SERVE === '1'
+const RUN = process.env.OCC_E2E_USAGE_CREDENTIALS === '1'
+const RUN_OCCD = RUN && process.env.OCC_E2E_OCCD_SERVE === '1'
 const HOST_NAME = 'Build box'
 const FAKE_KEY = 'sk-e2e-fake-minimax-key-not-real'
-const KEY_FILE = path.join('.orca', 'minimax-api-key.enc')
+const KEY_FILE = path.join('.occ', 'minimax-api-key.enc')
 
 test.skip(
   !RUN,
-  'Set ORCA_E2E_USAGE_CREDENTIALS=1 to run; the server polls MiniMax with a fake key.'
+  'Set OCC_E2E_USAGE_CREDENTIALS=1 to run; the server polls MiniMax with a fake key.'
 )
 
 function homeOf(userDataDir: string): string {
@@ -91,12 +91,12 @@ async function proveKeySavedOnServer(options: {
   const serverKey = path.join(homeOf(serverUserDataDir), KEY_FILE)
   const clientKey = path.join(homeOf(client.userDataDir), KEY_FILE)
   const listing = (home: string): string[] =>
-    existsSync(path.join(home, '.orca')) ? readdirSync(path.join(home, '.orca')).sort() : []
+    existsSync(path.join(home, '.occ')) ? readdirSync(path.join(home, '.occ')).sort() : []
   const report = [
     `server key file exists: ${existsSync(serverKey)}`,
     `client key file exists: ${existsSync(clientKey)}`,
-    `server ~/.orca: ${listing(homeOf(serverUserDataDir)).join(', ')}`,
-    `client ~/.orca: ${listing(homeOf(client.userDataDir)).join(', ')}`
+    `server ~/.occ: ${listing(homeOf(serverUserDataDir)).join(', ')}`,
+    `client ~/.occ: ${listing(homeOf(client.userDataDir)).join(', ')}`
   ].join('\n')
   writeFileSync(testInfo.outputPath(`${label}-2-key-files.txt`), `${report}\n`)
   await testInfo.attach(`${label}-2-key-files`, { body: report, contentType: 'text/plain' })
@@ -160,26 +160,26 @@ test('a paired desktop saves a MiniMax key on its Electron serve host', async ({
   }
 })
 
-test('a paired desktop saves a MiniMax key on its headless orcad host', async ({
+test('a paired desktop saves a MiniMax key on its headless occd host', async ({
   testRepoPath
 }, testInfo) => {
-  test.skip(!RUN_ORCAD, 'Set ORCA_E2E_ORCAD_SERVE=1 after pnpm build:orcad.')
+  test.skip(!RUN_OCCD, 'Set OCC_E2E_OCCD_SERVE=1 after pnpm build:occd.')
   test.setTimeout(300_000)
-  const slotDir = path.resolve('out/orcad')
-  const program = resolveBundledOrcadRuntime(slotDir)
+  const slotDir = path.resolve('out/occd')
+  const program = resolveBundledOCCdRuntime(slotDir)
   if (!program) {
-    throw new Error('pnpm build:orcad must produce a packaged slot in out/orcad')
+    throw new Error('pnpm build:occd must produce a packaged slot in out/occd')
   }
   // Short root: macOS caps a unix socket path at 104 bytes, and the daemon's lives in userData.
   const scratch = mkdtempSync(
-    path.join(process.platform === 'win32' ? os.tmpdir() : '/tmp', 'orca-uc-')
+    path.join(process.platform === 'win32' ? os.tmpdir() : '/tmp', 'occ-uc-')
   )
   const profile = cliServeProfile(scratch)
   const serve = await spawnUntilReady<{ pairing?: { url?: string } }>({
-    label: 'orcad serve',
+    label: 'occd serve',
     program,
     args: [
-      path.join(slotDir, 'orcad.js'),
+      path.join(slotDir, 'occd.js'),
       '--bind',
       '127.0.0.1',
       '--port',
@@ -188,7 +188,7 @@ test('a paired desktop saves a MiniMax key on its headless orcad host', async ({
       '127.0.0.1',
       '--json'
     ],
-    env: { ...profile.env, ORCA_USER_DATA: profile.userDataDir },
+    env: { ...profile.env, OCC_USER_DATA: profile.userDataDir },
     timeoutMs: 120_000,
     parseReady: (stdout) => {
       const newline = stdout.indexOf('\n')
@@ -209,7 +209,7 @@ test('a paired desktop saves a MiniMax key on its headless orcad host', async ({
       client,
       serverUserDataDir: profile.userDataDir,
       repoPath: testRepoPath,
-      label: 'orcad',
+      label: 'occd',
       testInfo
     })
   } finally {

@@ -8,10 +8,10 @@ import { resolveWorktreeLaunchHost } from './worktree-launch-host-repo'
 import { resolveSleepScope } from './terminal/stop/worktree-terminal-sleep-key'
 
 // Fragments stay side-effect ordered: mocks, then lifecycle, then fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const { TEST_WORKTREE_ID, TEST_WORKTREE_PATH, store } =
-  await import('./orca-runtime-test-fixtures.spec')
+  await import('./occ-runtime-test-fixtures.spec')
 
 // Runtime-nested SSH routes are not dialled from this process.
 const nestedSshRepo = {
@@ -34,7 +34,7 @@ const twinPty = {
 }
 
 async function sleepLocalCopy(runtimeStore: typeof store = store, twinLive = false) {
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   const events: RuntimeClientEvent[] = []
   runtime.onClientEvent((event) => events.push(event))
   const twin = twinLive ? [twinPty] : []

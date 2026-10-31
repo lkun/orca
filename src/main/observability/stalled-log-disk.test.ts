@@ -80,7 +80,7 @@ function nextTimer(): Promise<'ran'> {
 
 let dir: string
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'orca-stalled-log-'))
+  dir = mkdtempSync(join(tmpdir(), 'occ-stalled-log-'))
 })
 afterEach(() => {
   releaseDisk()

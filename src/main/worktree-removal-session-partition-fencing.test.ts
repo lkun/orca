@@ -44,13 +44,13 @@ async function createStore() {
     hasCreatedStoreInCase = true
     initCanonicalDataPath()
     return createSqliteTestStore(CanonicalStore, {
-      dataFile: join(testState.dir, 'orca-data.json')
+      dataFile: join(testState.dir, 'occ-data.json')
     })
   }
   vi.resetModules()
   const { Store, initDataPath } = await import('./persistence')
   initDataPath()
-  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
 }
 
 const makeTerminalTab = (overrides: Partial<TerminalTab> = {}): TerminalTab => ({
@@ -73,7 +73,7 @@ describe('worktree removal across host session partitions', () => {
   beforeEach(() => {
     hasCreatedStoreInCase = false
     resetRetirementCollisionKeyCacheForTests()
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
   })
 
   afterEach(async () => {

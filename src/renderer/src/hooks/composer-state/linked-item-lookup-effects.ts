@@ -29,7 +29,7 @@ type LinkedItemLookupEffectsInput = Pick<
 import { canUseRepoBackedComposerSources } from '@/lib/new-workspace-ssh-gate'
 import { useEffect } from 'react'
 import { PER_REPO_FETCH_LIMIT } from '@/lib/new-workspace'
-import { getDefaultSetupDecision } from '../../../../shared/orca-hook-setup-config'
+import { getDefaultSetupDecision } from '../../../../shared/occ-hook-setup-config'
 import type { GitHubWorkItem } from '../../../../shared/github/work-item-types'
 import {
   lookupGitHubWorkItemByOwnerRepoForSource,

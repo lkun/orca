@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithStructuredSessionAccountHome } from './structured-session-account-home'
+import { OCCRuntimeWithStructuredSessionAccountHome } from './structured-session-account-home'
 import {
   isNativeLocalLocation,
   LOCAL_EXECUTION_HOST_ID,
@@ -16,18 +16,18 @@ import { parseWorkspaceKey } from '../../../shared/workspace-scope'
 import { splitWorktreeIdForFilesystem } from '../../../shared/worktree/id'
 import { resolveWorktreeHostRouting } from '../worktree-launch-host-repo'
 import { getRepoHostIdentityForParts } from '../../../shared/repo-host-identity'
-import type { OrcaRuntimeWithPersistHeadlessTerminalTitle } from '../workspaces/workspace-file-session-targets'
-import type { OrcaRuntimeWithTransitionGraphReloadToTerminalState } from '../session-graph/session-graph-authority'
+import type { OCCRuntimeWithPersistHeadlessTerminalTitle } from '../workspaces/workspace-file-session-targets'
+import type { OCCRuntimeWithTransitionGraphReloadToTerminalState } from '../session-graph/session-graph-authority'
 import type { RuntimeWorkspaceCatalog } from '../workspaces/workspace-catalog'
 import type { RuntimeWorkspaceSelectors } from '../workspaces/workspace-selectors'
 
-export abstract class StructuredSessionWorkspaceScope extends OrcaRuntimeWithStructuredSessionAccountHome {
+export abstract class StructuredSessionWorkspaceScope extends OCCRuntimeWithStructuredSessionAccountHome {
   protected abstract resolveFolderWorkspaceSelector(
     ...args: Parameters<
-      OrcaRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceSelector']
+      OCCRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceSelector']
     >
   ): ReturnType<
-    OrcaRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceSelector']
+    OCCRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceSelector']
   >
 
   protected abstract projectCachedWorktrees(
@@ -45,7 +45,7 @@ export abstract class StructuredSessionWorkspaceScope extends OrcaRuntimeWithStr
 
   protected structuredAgentSessionLocationForTarget(
     target: Awaited<
-      ReturnType<OrcaRuntimeWithPersistHeadlessTerminalTitle['resolveRuntimeFileTarget']>
+      ReturnType<OCCRuntimeWithPersistHeadlessTerminalTitle['resolveRuntimeFileTarget']>
     >
   ) {
     const routing = resolveWorktreeHostRouting(this.store?.getRepos() ?? [], target.worktree)

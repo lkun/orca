@@ -1,4 +1,4 @@
-import type { OrcadPeerDesktopsResult } from '../../shared/orcad-peer-desktops-contract'
+import type { OCCdPeerDesktopsResult } from '../../shared/occd-peer-desktops-contract'
 import { sanitizeDeviceLabel } from '../../shared/device-key-proof'
 import type { DeviceEntry } from './device-entry'
 
@@ -46,7 +46,7 @@ export class DeclaredDesktopClients {
   peers(
     caller: { connectionId: string; clientInstanceId?: string },
     getDevice: (deviceId: string) => DeviceEntry | null
-  ): OrcadPeerDesktopsResult {
+  ): OCCdPeerDesktopsResult {
     const callerInstance =
       caller.clientInstanceId ?? this.byConnection.get(caller.connectionId)?.clientInstanceId
     const names = new Map<string, string>()

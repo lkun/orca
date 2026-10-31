@@ -10,9 +10,9 @@ export const referenceRepo: Repo = {
   badgeColor: '',
   addedAt: 1,
   gitRemoteIdentity: {
-    canonicalKey: 'github.com/acme/orca',
+    canonicalKey: 'github.com/acme/occ',
     remoteName: 'origin',
-    remoteUrl: 'https://github.com/acme/orca.git'
+    remoteUrl: 'https://github.com/acme/occ.git'
   }
 }
 export const referenceWorkspace: Worktree = {
@@ -39,7 +39,7 @@ export function referenceAttachment(number = 7): WorkspaceAttachment {
     provider: 'github',
     type: 'pr',
     number,
-    url: `https://github.com/acme/orca/pull/${number}`
+    url: `https://github.com/acme/occ/pull/${number}`
   }
 }
 export function referenceReview(
@@ -51,7 +51,7 @@ export function referenceReview(
     provider: 'github',
     number: reviewNumber,
     title: `Review ${reviewNumber}`,
-    url: `https://github.com/acme/orca/pull/${reviewNumber}`,
+    url: `https://github.com/acme/occ/pull/${reviewNumber}`,
     state: 'open',
     status: 'success',
     mergeable: 'MERGEABLE',

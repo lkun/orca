@@ -42,7 +42,7 @@ export async function pickFreePort() {
 }
 
 export function createGpuUserDataDirectory(gpuMode) {
-  const userDataDir = mkdtempSync(path.join(os.tmpdir(), `orca-apphang-${gpuMode}-userdata-`))
+  const userDataDir = mkdtempSync(path.join(os.tmpdir(), `occ-apphang-${gpuMode}-userdata-`))
   createCompletedOnboardingProfile(userDataDir)
   return userDataDir
 }
@@ -51,7 +51,7 @@ export function launchDevApp({ cdpPort, userDataDir }) {
   const env = { ...process.env }
   delete env.ELECTRON_RUN_AS_NODE
   delete env.CODEX_HOME
-  delete env.ORCA_CODEX_HOME
+  delete env.OCC_CODEX_HOME
   const isolatedHome = path.join(userDataDir, 'home')
   mkdirSync(isolatedHome, { recursive: true })
   Object.assign(env, {
@@ -59,11 +59,11 @@ export function launchDevApp({ cdpPort, userDataDir }) {
     ELECTRON_ENABLE_STACK_DUMPING: '1',
     NODE_ENV: 'development',
     // Keep disposable app-hang measurements free of real-home Codex work and developer state exposure.
-    ORCA_DEV_USER_DATA_PATH: userDataDir,
+    OCC_DEV_USER_DATA_PATH: userDataDir,
     HOME: isolatedHome,
     USERPROFILE: isolatedHome,
-    ORCA_SKIP_DEV_WEB_PREPARE: '1',
-    ORCA_STARTUP_DIAGNOSTICS: '1',
+    OCC_SKIP_DEV_WEB_PREPARE: '1',
+    OCC_STARTUP_DIAGNOSTICS: '1',
     REMOTE_DEBUGGING_PORT: String(cdpPort),
     VITE_EXPOSE_STORE: 'true'
   })
@@ -158,7 +158,7 @@ export async function connectToApp(cdpPort) {
 
 export async function installRendererProbe(page) {
   await page.evaluate(() => {
-    if (globalThis.__orcaApphangProbe) {
+    if (globalThis.__occApphangProbe) {
       return
     }
     const probe = {
@@ -177,7 +177,7 @@ export async function installRendererProbe(page) {
       probe.lastTickAt = now
       probe.samples += 1
     }, probe.intervalMs)
-    globalThis.__orcaApphangProbe = { probe, timer }
+    globalThis.__occApphangProbe = { probe, timer }
   })
 }
 
@@ -322,7 +322,7 @@ export async function collectRendererDiagnostics(page) {
             allPaneManagersDiagnostics,
             webglContextCounts,
             webglIdentity: readWebglIdentity(),
-            rendererProbe: globalThis.__orcaApphangProbe?.probe ?? null,
+            rendererProbe: globalThis.__occApphangProbe?.probe ?? null,
             ptySessions: await timed('PTY sessions', window.api?.pty?.listSessions?.()),
             rendererDeliveryDebug: await timed(
               'renderer delivery debug',

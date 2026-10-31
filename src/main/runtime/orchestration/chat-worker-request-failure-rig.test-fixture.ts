@@ -10,8 +10,8 @@ import { join } from 'node:path'
 import { afterEach, vi } from 'vitest'
 import type { StructuredAgentSessionAdapter } from '../../native-chat/agent-session-wire/structured-agent-session-adapter'
 import { codexProviderHandle } from '../../../shared/agent-session-provider-handle-encoding'
-import { formatOrcaSessionAddress } from '../../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../../shared/occ-session-address'
+import { testOCCSessionId } from '../../../shared/occ-session-address-test-fixture'
 import { createTrackedJournalOpener } from '../../native-chat/agent-session-journal/journal-host-database-test-support'
 import { StructuredAgentSessionConversations } from '../../native-chat/agent-session-wire/structured-agent-session-conversations'
 import { StructuredAgentSessionRequestFailures } from '../../native-chat/agent-session-wire/structured-agent-session-request-failures'
@@ -22,7 +22,7 @@ import { OrchestrationDb } from './db'
 import { createRootDispatch } from './db/root-dispatch-test-fixture'
 import { escalateChatWorkerError } from './chat-worker-error-escalation'
 
-export const SESSION = testOrcaSessionId('7e3b9d15-2c4a-4f86-a0b1-5c9e2d7f3b64')
+export const SESSION = testOCCSessionId('7e3b9d15-2c4a-4f86-a0b1-5c9e2d7f3b64')
 export const journals = createTrackedJournalOpener()
 const roots: string[] = []
 const databases: OrchestrationDb[] = []
@@ -42,7 +42,7 @@ afterEach(async () => {
 export async function rig(
   capturePendingOutput?: StructuredAgentSessionAdapter['capturePendingOutput']
 ) {
-  const root = await mkdtemp(join(tmpdir(), 'orca-pr31941-requests-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-pr31941-requests-'))
   roots.push(root)
   const journal = await journals.open({
     stateDirectory: root,
@@ -65,7 +65,7 @@ export async function rig(
     createRootDispatch(
       db,
       db.createTask({ spec: 'work', runId: run.id }).id,
-      formatOrcaSessionAddress(SESSION)
+      formatOCCSessionAddress(SESSION)
     )
   let dispatch = assign()
   const notify = vi.fn<(handle: string, messageType: string) => void>()

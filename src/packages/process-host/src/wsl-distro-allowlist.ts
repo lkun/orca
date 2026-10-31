@@ -1,8 +1,8 @@
 // Internal test-box switch: keep every wsl.exe exec out of distros not on the list. Unset changes nothing.
 // Out of scope: \\wsl.localhost file access, and editors given --remote wsl+<distro> (they boot it).
-export const WSL_DISTRO_ALLOWLIST_ENV = 'ORCA_INTERNAL_WSL_DISTRO_ALLOWLIST'
+export const WSL_DISTRO_ALLOWLIST_ENV = 'OCC_INTERNAL_WSL_DISTRO_ALLOWLIST'
 
-export const WSL_DISTRO_NOT_ALLOWLISTED_CODE = 'ORCA_WSL_DISTRO_NOT_ALLOWLISTED'
+export const WSL_DISTRO_NOT_ALLOWLISTED_CODE = 'OCC_WSL_DISTRO_NOT_ALLOWLISTED'
 
 // Only pure list/status/version calls may run without naming a distro.
 const EXEMPT_FLAGS = new Set([

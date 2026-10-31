@@ -1,4 +1,4 @@
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { quotePowerShellLiteral } from '../../shared/powershell-native-argument'
 import { WINDOWS_PATH_WRITE_TIMEOUT_MS } from './cli-install-constants'
 

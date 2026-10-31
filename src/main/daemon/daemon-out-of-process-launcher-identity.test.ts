@@ -30,7 +30,7 @@ vi.mock('./daemon-appimage-launch', async (importOriginal) => ({
   resolveAppImageDaemonLaunch: resolveLaunch
 }))
 vi.mock('./daemon-launch-paths', () => ({
-  getDaemonEntryPath: () => '/tmp/.mount_orcaAbC/resources/entry.js',
+  getDaemonEntryPath: () => '/tmp/.mount_occAbC/resources/entry.js',
   probeDaemonSocket: vi.fn()
 }))
 vi.mock('./client', () => ({
@@ -79,7 +79,7 @@ describe('daemon launch identity', () => {
 
   it('keeps the entry path everywhere else', async () => {
     resolveLaunch.mockReturnValue(null)
-    expect(await expectedIdentity()).toBe('/tmp/.mount_orcaAbC/resources/entry.js')
+    expect(await expectedIdentity()).toBe('/tmp/.mount_occAbC/resources/entry.js')
   })
 
   it('matches by the AppImage file when the daemon runs on the extracted copy', async () => {

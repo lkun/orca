@@ -160,7 +160,7 @@ it.each([
   state.session = ownedSession()
   if (boundary === 'preparation' || boundary === 'terminal creation') {
     state.session.agent = 'codex'
-    state.session.codexHome = '/Users/ada/Library/Application Support/orca/codex-runtime-home/home'
+    state.session.codexHome = '/Users/ada/Library/Application Support/occ/codex-runtime-home/home'
   }
   const worktrees = [
     {

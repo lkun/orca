@@ -13,7 +13,7 @@ import type { StructuredAgentSessionLogger } from '../agent-session-wire/structu
 
 type JournalRefusalReason = AgentSessionRefusalReason<'agent_session_journal_unreadable'>
 
-export type JournalOpenFailure = Exclude<JournalRefusalReason, 'journalWrittenByNewerOrca'>
+export type JournalOpenFailure = Exclude<JournalRefusalReason, 'journalWrittenByNewerOCC'>
 
 export class JournalDamageError extends Error {
   override readonly name = 'JournalDamageError'
@@ -65,21 +65,21 @@ export function classifyJournalOpenFailure(error: unknown): JournalOpenFailure {
 const JOURNAL_OPEN_MESSAGE: Record<JournalRefusalReason, string> = {
   journalCorrupt: agentSessionWriteNoticeEnglish(['historyUnusable']),
   journalUnavailable: agentSessionWriteNoticeEnglish(['historyUnavailable', 'tryAgain']),
-  journalWrittenByNewerOrca: agentSessionWriteNoticeEnglish([
-    'savedByNewerOrca',
-    'updateOrcaToKeepUsing'
+  journalWrittenByNewerOCC: agentSessionWriteNoticeEnglish([
+    'savedByNewerOCC',
+    'updateOCCToKeepUsing'
   ])
 }
 
-export const JOURNAL_NEWER_SCHEMA_MESSAGE = JOURNAL_OPEN_MESSAGE.journalWrittenByNewerOrca
+export const JOURNAL_NEWER_SCHEMA_MESSAGE = JOURNAL_OPEN_MESSAGE.journalWrittenByNewerOCC
 
-export function isJournalWrittenByNewerOrca(error: unknown): boolean {
+export function isJournalWrittenByNewerOCC(error: unknown): boolean {
   return error instanceof AgentSessionJournalError && error.code === 'journal_read_only'
 }
 
 function journalRefusalReason(error: unknown): JournalRefusalReason {
-  return isJournalWrittenByNewerOrca(error)
-    ? 'journalWrittenByNewerOrca'
+  return isJournalWrittenByNewerOCC(error)
+    ? 'journalWrittenByNewerOCC'
     : classifyJournalOpenFailure(error)
 }
 
@@ -100,13 +100,13 @@ export function journalOpenRefusal(error: unknown): AgentSessionWireRefusal {
   return refuse('agent_session_journal_unreadable', { reason }, message)
 }
 
-export async function refusingNewerOrcaJournal<TOutcome>(
+export async function refusingNewerOCCJournal<TOutcome>(
   run: Promise<TOutcome>
 ): Promise<TOutcome | { ok: false; refusal: AgentSessionWireRefusal }> {
   try {
     return await run
   } catch (error) {
-    if (isJournalWrittenByNewerOrca(error)) {
+    if (isJournalWrittenByNewerOCC(error)) {
       return { ok: false, refusal: journalOpenRefusal(error) }
     }
     throw error

@@ -1,4 +1,4 @@
-// Drive built Electron/orcad server through public pairing/RPC, create terminal and require real command output, then shutdown; --browser also checks provider actions.
+// Drive built Electron/occd server through public pairing/RPC, create terminal and require real command output, then shutdown; --browser also checks provider actions.
 // Boot/port/host.platform can pass with dead PTYs when renderer fallback times out; both targets must satisfy the same end-to-end contract.
 import { spawn, spawnSync } from 'node:child_process'
 import { existsSync, mkdtempSync, rmSync, statSync, writeFileSync } from 'node:fs'
@@ -8,21 +8,21 @@ import { pathToFileURL } from 'node:url'
 import { randomBytes } from 'node:crypto'
 import process from 'node:process'
 import {
-  ORCAD_CLI_ENTRY_FILENAME,
-  ORCAD_SERVER_ENTRY_FILENAME
-} from '../../src/shared/orcad-artifacts.ts'
-import { packagedNodeRuntimePath } from './build-orcad-node.mjs'
+  OCCD_CLI_ENTRY_FILENAME,
+  OCCD_SERVER_ENTRY_FILENAME
+} from '../../src/shared/occd-artifacts.ts'
+import { packagedNodeRuntimePath } from './build-occd-node.mjs'
 import { currentTarget } from './server-build-target.mjs'
 
 const projectDir = resolve(import.meta.dirname, '../..')
 const serveEntry = join(projectDir, 'out', 'main', 'index.js')
-const ORCAD_DIR = join(projectDir, 'out', 'orcad')
-const ORCAD_ENTRY = join(ORCAD_DIR, ORCAD_SERVER_ENTRY_FILENAME)
+const OCCD_DIR = join(projectDir, 'out', 'occd')
+const OCCD_ENTRY = join(OCCD_DIR, OCCD_SERVER_ENTRY_FILENAME)
 const READY_TIMEOUT_MS = 120_000
 const OUTPUT_TIMEOUT_MS = 30_000
 const SHUTDOWN_TIMEOUT_MS = 15_000
-// Offset the port when a developer's own `orca serve` is already using it.
-const PORT = 6800 + Math.floor(Number(process.env.ORCA_SMOKE_PORT_OFFSET ?? '0'))
+// Offset the port when a developer's own `occ serve` is already using it.
+const PORT = 6800 + Math.floor(Number(process.env.OCC_SMOKE_PORT_OFFSET ?? '0'))
 
 function log(message) {
   process.stdout.write(`[serve-terminal-smoke] ${message}\n`)
@@ -33,13 +33,13 @@ function fail(message) {
   process.exitCode = 1
 }
 
-// Use packaged Node/CLI for orcad and checkout desktop CLI for Electron.
+// Use packaged Node/CLI for occd and checkout desktop CLI for Electron.
 export function resolveCli(target, root = projectDir) {
-  if (target === 'orcad') {
-    const directory = join(root, 'out', 'orcad')
-    const built = join(directory, ORCAD_CLI_ENTRY_FILENAME)
+  if (target === 'occd') {
+    const directory = join(root, 'out', 'occd')
+    const built = join(directory, OCCD_CLI_ENTRY_FILENAME)
     if (!existsSync(built)) {
-      throw new Error(`Missing packaged Orcad CLI at ${built}; run pnpm build:orcad`)
+      throw new Error(`Missing packaged OCCd CLI at ${built}; run pnpm build:occd`)
     }
     return {
       command: packagedNodeRuntimePath(directory, currentTarget()),
@@ -49,10 +49,10 @@ export function resolveCli(target, root = projectDir) {
   const built = join(root, 'out', 'cli', 'index.js')
   return existsSync(built)
     ? { command: process.execPath, prefix: [built] }
-    : { command: 'orca', prefix: [] }
+    : { command: 'occ', prefix: [] }
 }
 
-function orca(pairingCode, args) {
+function occ(pairingCode, args) {
   const cli = resolveCli(smokeTarget())
   const result = spawnSync(
     cli.command,
@@ -64,21 +64,21 @@ function orca(pairingCode, args) {
     }
   )
   if (result.error) {
-    throw new Error(`orca ${args[0]} failed to spawn: ${result.error.message}`)
+    throw new Error(`occ ${args[0]} failed to spawn: ${result.error.message}`)
   }
   if (result.status !== 0) {
     throw new Error(
-      `orca ${args.join(' ')} exited ${result.signal ?? result.status}:\n${result.stderr || result.stdout}`
+      `occ ${args.join(' ')} exited ${result.signal ?? result.status}:\n${result.stderr || result.stdout}`
     )
   }
   const line = (result.stdout ?? '').trim()
   if (!line.startsWith('{')) {
-    throw new Error(`orca ${args.join(' ')} produced no JSON:\n${result.stdout}\n${result.stderr}`)
+    throw new Error(`occ ${args.join(' ')} produced no JSON:\n${result.stdout}\n${result.stderr}`)
   }
   const parsed = JSON.parse(line)
   if (parsed.ok === false) {
     throw new Error(
-      `orca ${args.join(' ')} returned ${parsed.error?.code}: ${parsed.error?.message}`
+      `occ ${args.join(' ')} returned ${parsed.error?.code}: ${parsed.error?.message}`
     )
   }
   return parsed.result
@@ -106,7 +106,7 @@ function waitForReady(child) {
         }
         try {
           const payload = JSON.parse(line)
-          if (payload.type === 'orca_server_ready') {
+          if (payload.type === 'occ_server_ready') {
             clearTimeout(timer)
             resolvePromise(payload)
             return
@@ -144,7 +144,7 @@ function pairingCodeFrom(payload) {
 async function waitForNonce(pairingCode, terminalHandle, nonce) {
   const deadline = Date.now() + OUTPUT_TIMEOUT_MS
   while (Date.now() < deadline) {
-    const read = orca(pairingCode, ['terminal', 'read', '--terminal', terminalHandle])
+    const read = occ(pairingCode, ['terminal', 'read', '--terminal', terminalHandle])
     const tail = (read?.terminal?.tail ?? []).map((entry) => String(entry)).join('\n')
     if (tail.includes(nonce)) {
       return true
@@ -160,22 +160,22 @@ function smokeTarget() {
   const flagIndex = process.argv.indexOf('--target')
   return flagIndex !== -1
     ? process.argv[flagIndex + 1]
-    : (process.env.ORCA_SMOKE_TARGET ?? 'electron')
+    : (process.env.OCC_SMOKE_TARGET ?? 'electron')
 }
 
 function resolveLaunch(userDataDir) {
   const target = smokeTarget()
-  if (target === 'orcad') {
+  if (target === 'occd') {
     return {
-      label: `orcad (${ORCAD_ENTRY})`,
-      command: packagedNodeRuntimePath(ORCAD_DIR, currentTarget()),
-      args: [ORCAD_ENTRY, '--port', String(PORT), '--json'],
-      env: { ORCA_USER_DATA: userDataDir }
+      label: `occd (${OCCD_ENTRY})`,
+      command: packagedNodeRuntimePath(OCCD_DIR, currentTarget()),
+      args: [OCCD_ENTRY, '--port', String(PORT), '--json'],
+      env: { OCC_USER_DATA: userDataDir }
     }
   }
   if (target !== 'electron') {
     throw new Error(
-      `--target (or ORCA_SMOKE_TARGET) must be 'electron' or 'orcad', got '${target}'`
+      `--target (or OCC_SMOKE_TARGET) must be 'electron' or 'occd', got '${target}'`
     )
   }
   const serveArgs = [
@@ -186,18 +186,18 @@ function resolveLaunch(userDataDir) {
     '--serve-json',
     `--user-data-dir=${userDataDir}`
   ]
-  const override = process.env.ORCA_SMOKE_ELECTRON
+  const override = process.env.OCC_SMOKE_ELECTRON
   return {
     label: `electron (${serveEntry})`,
     command: override ?? 'npx',
     args: override ? serveArgs : ['electron', ...serveArgs],
-    env: { ORCA_DEV_USER_DATA_PATH: userDataDir }
+    env: { OCC_DEV_USER_DATA_PATH: userDataDir }
   }
 }
 
 function seedGitRepo() {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-smoke-repo-'))
-  writeFileSync(join(dir, 'README.md'), '# orca smoke\n')
+  const dir = mkdtempSync(join(tmpdir(), 'occ-smoke-repo-'))
+  writeFileSync(join(dir, 'README.md'), '# occ smoke\n')
   const git = (...args) => {
     const result = spawnSync('git', args, { cwd: dir, encoding: 'utf8' })
     if (result.status !== 0) {
@@ -205,7 +205,7 @@ function seedGitRepo() {
     }
   }
   git('init', '-b', 'main')
-  git('config', 'user.email', 'smoke@orca.test')
+  git('config', 'user.email', 'smoke@occ.test')
   git('config', 'user.name', 'OCC Smoke')
   git('add', '-A')
   git('commit', '-m', 'seed')
@@ -213,7 +213,7 @@ function seedGitRepo() {
 }
 
 async function main() {
-  const userDataDir = mkdtempSync(join(tmpdir(), 'orca-serve-smoke-'))
+  const userDataDir = mkdtempSync(join(tmpdir(), 'occ-serve-smoke-'))
   const launch = resolveLaunch(userDataDir)
   log(`booting ${launch.label} on port ${PORT} with userData ${userDataDir}`)
 
@@ -236,13 +236,13 @@ async function main() {
     const repoPath = seedGitRepo()
     seeded = { repoPath }
     log(`seeded repo at ${repoPath}`)
-    const repo = orca(pairingCode, ['repo', 'add', '--path', repoPath])?.repo
+    const repo = occ(pairingCode, ['repo', 'add', '--path', repoPath])?.repo
     if (!repo?.id) {
       throw new Error('repo.add returned no repo id')
     }
 
     const worktreeName = `smoke-${randomBytes(4).toString('hex')}`
-    const created = orca(pairingCode, [
+    const created = occ(pairingCode, [
       'worktree',
       'create',
       '--repo',
@@ -259,13 +259,13 @@ async function main() {
     log(`created worktree ${created.id}`)
 
     // Use show to verify this persisted worktree: capped list may omit it in shared dev profile.
-    const shown = orca(pairingCode, ['worktree', 'show', '--worktree', created.id])?.worktree
+    const shown = occ(pairingCode, ['worktree', 'show', '--worktree', created.id])?.worktree
     if (shown?.id !== created.id) {
       throw new Error('worktree.create succeeded but worktree.show cannot resolve it')
     }
     log(`server resolves ${shown.id}`)
     if (process.argv.includes('--browser')) {
-      const status = orca(pairingCode, ['status'])
+      const status = occ(pairingCode, ['status'])
       if (!status?.runtime?.capabilities?.includes('browser.headless.v1')) {
         throw new Error(
           `status omitted browser.headless.v1: ${JSON.stringify(status?.runtime?.capabilities)}`
@@ -274,9 +274,9 @@ async function main() {
       const fixturePath = join(userDataDir, 'browser-smoke.html')
       writeFileSync(
         fixturePath,
-        '<!doctype html><title>Orcad Browser Smoke</title><main>browser-ready</main>'
+        '<!doctype html><title>OCCd Browser Smoke</title><main>browser-ready</main>'
       )
-      const browserPageId = orca(pairingCode, [
+      const browserPageId = occ(pairingCode, [
         'tab',
         'create',
         '--worktree',
@@ -289,11 +289,11 @@ async function main() {
       }
       const targetFlags = ['--worktree', created.id, '--page', browserPageId]
       const targetUrl = pathToFileURL(fixturePath).href
-      const navigation = orca(pairingCode, ['goto', ...targetFlags, '--url', targetUrl])
-      if (navigation?.url !== targetUrl || navigation?.title !== 'Orcad Browser Smoke') {
+      const navigation = occ(pairingCode, ['goto', ...targetFlags, '--url', targetUrl])
+      if (navigation?.url !== targetUrl || navigation?.title !== 'OCCd Browser Smoke') {
         throw new Error(`browser.goto returned the wrong page: ${JSON.stringify(navigation)}`)
       }
-      const evaluated = orca(pairingCode, [
+      const evaluated = occ(pairingCode, [
         'eval',
         ...targetFlags,
         '--expression',
@@ -302,14 +302,14 @@ async function main() {
       if (evaluated?.result !== 'browser-ready') {
         throw new Error(`browser.eval returned ${JSON.stringify(evaluated)}`)
       }
-      const screenshot = orca(pairingCode, ['screenshot', ...targetFlags])
+      const screenshot = occ(pairingCode, ['screenshot', ...targetFlags])
       if (screenshot?.format !== 'png' || !screenshot.path || !statSync(screenshot.path).size) {
         throw new Error('browser.screenshot saved no PNG file')
       }
       log('browser navigate/evaluate/screenshot round trip OK')
     }
 
-    const terminal = orca(pairingCode, ['terminal', 'create', '--worktree', created.id])?.terminal
+    const terminal = occ(pairingCode, ['terminal', 'create', '--worktree', created.id])?.terminal
     if (!terminal?.handle) {
       throw new Error('terminal.create returned no handle')
     }
@@ -317,35 +317,35 @@ async function main() {
 
     // Why invoke node rather than `echo`: the shell differs per platform, node does not.
     const nonce = randomBytes(8).toString('hex')
-    orca(pairingCode, [
+    occ(pairingCode, [
       'terminal',
       'send',
       '--terminal',
       terminal.handle,
       '--text',
-      `"${process.execPath}" -e "console.log('ORCA_SMOKE_' + '${nonce}')"`,
+      `"${process.execPath}" -e "console.log('OCC_SMOKE_' + '${nonce}')"`,
       '--enter'
     ])
 
-    if (!(await waitForNonce(pairingCode, terminal.handle, `ORCA_SMOKE_${nonce}`))) {
+    if (!(await waitForNonce(pairingCode, terminal.handle, `OCC_SMOKE_${nonce}`))) {
       throw new Error(
         `terminal produced no output containing ${nonce} within ${OUTPUT_TIMEOUT_MS}ms — ` +
           `the server started and answered RPC, but its PTY path is dead`
       )
     }
     log('terminal round trip OK')
-    if (launch.env.ORCA_USER_DATA && process.platform !== 'win32') {
+    if (launch.env.OCC_USER_DATA && process.platform !== 'win32') {
       const cliNonce = randomBytes(8).toString('hex')
-      orca(pairingCode, [
+      occ(pairingCode, [
         'terminal',
         'send',
         '--terminal',
         terminal.handle,
         '--text',
-        `orca status && orca worktree ps --json && printf 'ORCA_CLI_%s\\n' '${cliNonce}'`,
+        `occ status && occ worktree ps --json && printf 'OCC_CLI_%s\\n' '${cliNonce}'`,
         '--enter'
       ])
-      if (!(await waitForNonce(pairingCode, terminal.handle, `ORCA_CLI_${cliNonce}`))) {
+      if (!(await waitForNonce(pairingCode, terminal.handle, `OCC_CLI_${cliNonce}`))) {
         throw new Error('The managed terminal could not run the execution host CLI')
       }
       log('execution host CLI round trip OK')

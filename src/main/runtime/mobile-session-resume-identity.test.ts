@@ -2,9 +2,9 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { agentHookServer } from '../agent-hooks/server'
 
 // Preserve side-effect order: mocks, lifecycle, fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
-const { TEST_REPO_ID, TEST_WORKTREE_ID, store } = await import('./orca-runtime-test-fixtures.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
+const { TEST_REPO_ID, TEST_WORKTREE_ID, store } = await import('./occ-runtime-test-fixtures.spec')
 const { bindPaneFirst, committingSpawn } = await import('./bind-first-pane.test-fixture')
 const { toSshExecutionHostId } = await import('../../shared/execution-host')
 
@@ -19,11 +19,11 @@ function spyOnRecord() {
 
 // Layout binds panes in the runtime store's session, so isolate the shared fixture.
 function makeRuntime(
-  runtimeStore: ConstructorParameters<typeof OrcaRuntimeService>[0] = { ...store },
+  runtimeStore: ConstructorParameters<typeof OCCRuntimeService>[0] = { ...store },
   sshTargetId?: string
 ) {
   const spawn = vi.fn().mockResolvedValue({ id: 'pty-resume' })
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   runtime.setPtyController({
     spawn: sshTargetId
       ? async (args: { worktreeId?: string; tabId?: string; leafId?: string }) => {

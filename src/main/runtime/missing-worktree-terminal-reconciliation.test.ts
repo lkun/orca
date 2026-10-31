@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { IPtyProvider } from '../providers/pty-provider-contract'
 import type { Repo } from '../../shared/repo-types'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import { stopMissingWorktreeTerminals } from './missing-worktree-terminal-reconciliation'
 import { createAdapter } from '../daemon/daemon-pty-router-test-fixture'
 import { DaemonPtyRouter } from '../daemon/daemon-pty-router'
@@ -15,10 +15,10 @@ function createProvider(sessionIds: string[]): IPtyProvider {
   } as unknown as IPtyProvider
 }
 
-function createRuntime(): OrcaRuntimeService {
+function createRuntime(): OCCRuntimeService {
   return {
     stopTerminalsForWorktree: vi.fn(async () => ({ stopped: 0 }))
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
 }
 
 const localRepo: Repo = {

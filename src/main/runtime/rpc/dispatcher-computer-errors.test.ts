@@ -3,16 +3,16 @@ import { describe, expect, it, vi } from 'vitest'
 import { z } from 'zod'
 import { RpcDispatcher } from './dispatcher'
 import { defineMethod, InvalidArgumentError, type RpcRequest } from './core'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 
 function makeRequest(method: string, params?: unknown): RpcRequest {
   return { id: 'req-1', authToken: 'tok', method, params }
 }
 
-function makeRuntime(): OrcaRuntimeService {
+function makeRuntime(): OCCRuntimeService {
   return {
     getRuntimeId: () => 'test-runtime'
-  } as OrcaRuntimeService
+  } as OCCRuntimeService
 }
 
 const METHODS = [

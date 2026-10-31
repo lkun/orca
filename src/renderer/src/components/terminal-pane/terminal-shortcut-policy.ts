@@ -89,7 +89,7 @@ export function resolveTerminalShortcutAction(
   // Why: keybindings follow the client OS, but byte protocols follow the PTY host — they differ for macOS clients on Windows runtimes.
   isWindowsTerminalHost: () => boolean = () => isWindows,
   // Why: terminal-first yields editing and TUI chords before xterm encodes them.
-  terminalShortcutPolicy: TerminalShortcutPolicy = 'orca-first',
+  terminalShortcutPolicy: TerminalShortcutPolicy = 'occ-first',
   // Why: query-only Droid/Grok consumers need CSI-u even when the live kitty flags remain inactive.
   hasCtrlEnterCsiUAuthority?: () => boolean,
   // Why: pi arms modifyOtherKeys when its kitty query goes unanswered; see encodeModifyOtherKeysEnter.

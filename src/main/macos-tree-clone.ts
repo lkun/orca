@@ -1,5 +1,5 @@
 import { basename } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { rm } from './asar-transparent-fs'
 
 /** Requires an existing destination parent; whole-tree cp avoids Node’s file-by-file APFS overhead. */

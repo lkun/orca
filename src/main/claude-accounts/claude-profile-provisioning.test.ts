@@ -16,9 +16,9 @@ import { writeFileAtomically } from '../codex-accounts/fs-utils'
 import { provisionClaudeProfile } from './claude-profile-provisioning'
 
 const USER_HOOK = { matcher: '', hooks: [{ type: 'command', command: 'notify-me' }] }
-const ORCA_HOOK = {
+const OCC_HOOK = {
   matcher: '',
-  hooks: [{ type: 'command', command: '"$HOME/.orca/agent-hooks/claude-hook.sh"' }]
+  hooks: [{ type: 'command', command: '"$HOME/.occ/agent-hooks/claude-hook.sh"' }]
 }
 const LOGIN = { emailAddress: 'p@example.com' }
 const roots: string[] = []
@@ -128,7 +128,7 @@ describe('Claude profile refresh from the default home', () => {
     const settings = {
       futureFeature: true,
       model: 'a',
-      hooks: { Stop: [USER_HOOK, ORCA_HOOK], SessionStart: [ORCA_HOOK] },
+      hooks: { Stop: [USER_HOOK, OCC_HOOK], SessionStart: [OCC_HOOK] },
       apiKeyHelper: 'helper',
       env: {
         ANTHROPIC_BASE_URL: 'https://proxy.example.test',

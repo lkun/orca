@@ -1,8 +1,8 @@
 // Dirty records must retain every view’s edits and conflict state without per-view reloads.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
-  ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT,
-  ORCA_EDITOR_FILE_CACHE_STALE_EVENT,
+  OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT,
+  OCC_EDITOR_FILE_CACHE_STALE_EVENT,
   requestEditorFileSave
 } from './editor-autosave'
 import { attachEditorAutosaveController } from './editor-autosave-controller'
@@ -79,11 +79,11 @@ describe('a dirty record shown in several workspaces', () => {
     dropped.length = 0
     mocks.readRuntimeFileContent.mockReset()
     stubGuardedDisk({ [GUARDED_PATH]: 'E' })
-    window.addEventListener(ORCA_EDITOR_FILE_CACHE_STALE_EVENT, onStale)
+    window.addEventListener(OCC_EDITOR_FILE_CACHE_STALE_EVENT, onStale)
   })
 
   afterEach(() => {
-    window.removeEventListener(ORCA_EDITOR_FILE_CACHE_STALE_EVENT, onStale)
+    window.removeEventListener(OCC_EDITOR_FILE_CACHE_STALE_EVENT, onStale)
     vi.useRealTimers()
     vi.unstubAllGlobals()
     __clearSelfWriteRegistryForTests()
@@ -94,7 +94,7 @@ describe('a dirty record shown in several workspaces', () => {
     const cleanup = attachEditorAutosaveController(store)
     try {
       window.dispatchEvent(
-        new CustomEvent(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, {
+        new CustomEvent(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, {
           detail: { worktreeId: 'wt-1', worktreePath: '/repo', relativePath: 'file.ts' }
         })
       )

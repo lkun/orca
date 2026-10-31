@@ -14,7 +14,7 @@ const publications = new Map<string, Promise<void>>()
 
 export function agentSessionContextSnapshotRoot(stateDirectory: string): string {
   const profile = createHash('sha256').update(resolve(stateDirectory)).digest('hex').slice(0, 16)
-  return getOwnedTempStagingRoot(tmpdir(), `orca-handoff-${profile}`)
+  return getOwnedTempStagingRoot(tmpdir(), `occ-handoff-${profile}`)
 }
 
 /** One snapshot per chat, replaced on each hand-off; the OS owns temp retention. */

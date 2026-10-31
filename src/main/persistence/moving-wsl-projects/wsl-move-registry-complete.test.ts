@@ -52,7 +52,7 @@ vi.mock('../../browser/browser-partition-cookie-copy', () => ({
 vi.mock('../../browser/browser-session-registry', () => ({ browserSessionRegistry: {} }))
 vi.mock('../../browser/browser-session-startup', () => ({ browserSessionsInitialized: vi.fn() }))
 vi.mock('../../browser/browser-route-partition-binding-runtime', () => ({
-  activeBrowserRoutePartitionOrcaProfileId: vi.fn(),
+  activeBrowserRoutePartitionOCCProfileId: vi.fn(),
   currentBrowserRoutePartitionBindingStore: vi.fn()
 }))
 vi.mock('../../browser/browser-route-partition-storage-dependencies', () => ({
@@ -122,7 +122,7 @@ function registerRegistry(): void {
     browserCookies: {
       userDataPath: testState.dir,
       sessionsReady: () => true,
-      orcaProfileId: () => 'orca-profile-a',
+      occProfileId: () => 'occ-profile-a',
       // No environment: the cookie store records a fresh partition, the path 7f-1 tests in full.
       listEnvironments: () => [],
       listBrowserProfiles: () => [],

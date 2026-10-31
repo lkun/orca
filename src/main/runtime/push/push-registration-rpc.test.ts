@@ -5,8 +5,8 @@ import { describe, expect, it, vi } from 'vitest'
 import { eraseRpcMethods, type RpcContext, type RpcMethod } from '../rpc/core'
 import { NOTIFICATION_METHODS } from '../rpc/methods/notifications'
 import { DeviceRegistry } from '../device-registry'
-import { OrcaRuntimeRpcServer } from '../runtime-rpc'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeRpcServer } from '../runtime-rpc'
+import { OCCRuntimeService } from '../occ-runtime'
 
 function method(name: string): RpcMethod {
   const found = eraseRpcMethods(NOTIFICATION_METHODS).find((candidate) => candidate.name === name)
@@ -121,9 +121,9 @@ describe('notifications.unregisterPush', () => {
 
 describe('revokeMobileDevice', () => {
   it('queues the gateway delete before the device row disappears', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-push-revoke-'))
-    const server = new OrcaRuntimeRpcServer({
-      runtime: new OrcaRuntimeService(),
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-push-revoke-'))
+    const server = new OCCRuntimeRpcServer({
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: false
     })
@@ -142,9 +142,9 @@ describe('revokeMobileDevice', () => {
   })
 
   it('queues nothing for a device that never enabled push', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-push-revoke-'))
-    const server = new OrcaRuntimeRpcServer({
-      runtime: new OrcaRuntimeService(),
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-push-revoke-'))
+    const server = new OCCRuntimeRpcServer({
+      runtime: new OCCRuntimeService(),
       userDataPath,
       enableWebSocket: false
     })

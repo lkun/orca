@@ -1,10 +1,10 @@
 import { mkdir, rename, rm, symlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { expect, test as base } from './helpers/orca-app'
+import { expect, test as base } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
 const test = base.extend({
-  orcaAppExtraEnv: async ({ testRepoPath }, provideEnv) => {
+  occAppExtraEnv: async ({ testRepoPath }, provideEnv) => {
     const target = path.join(testRepoPath, 'linked-watch-target')
     const replacement = path.join(testRepoPath, 'linked-watch-replacement')
     const alias = path.join(testRepoPath, 'linked-watch-alias')
@@ -26,16 +26,16 @@ const test = base.extend({
 })
 
 test('refreshes followed directory links after target changes and retargeting', async ({
-  orcaPage,
+  occPage,
   testRepoPath
 }) => {
   const target = path.join(testRepoPath, 'linked-watch-target')
   const replacement = path.join(testRepoPath, 'linked-watch-replacement')
   const alias = path.join(testRepoPath, 'linked-watch-alias')
   const linkType = process.platform === 'win32' ? 'junction' : 'dir'
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await orcaPage.evaluate(async () => {
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await occPage.evaluate(async () => {
     const store = window.__store
     if (!store) {
       throw new Error('window.__store is unavailable')
@@ -43,8 +43,8 @@ test('refreshes followed directory links after target changes and retargeting', 
     await store.getState().updateSettings({ followSymlinkedDirectories: true })
   })
   const row = (name: string) =>
-    orcaPage.locator('[data-file-explorer-row]').filter({
-      has: orcaPage.getByText(name, { exact: true })
+    occPage.locator('[data-file-explorer-row]').filter({
+      has: occPage.getByText(name, { exact: true })
     })
   await expect(row('linked-watch-alias')).toBeVisible()
   await row('linked-watch-alias').click()
@@ -65,7 +65,7 @@ test('refreshes followed directory links after target changes and retargeting', 
 
   await row('nested').click()
   await writeFile(path.join(target, 'nested', 'collapsed-linked.txt'), 'while collapsed')
-  await orcaPage.waitForTimeout(500)
+  await occPage.waitForTimeout(500)
   await row('nested').click()
   await expect(row('collapsed-linked.txt')).toBeVisible()
 

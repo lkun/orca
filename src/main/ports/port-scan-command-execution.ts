@@ -1,6 +1,6 @@
 import { execFile, type ChildProcess } from 'node:child_process'
 import { closeSync } from 'node:fs'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { LSOF_NONBLOCKING_ARGS } from '../../shared/lsof-nonblocking-args'
 import { DarwinNetstatListeners } from './darwin-netstat-listeners'
 import { openDarwinPortScanLock } from './darwin-port-scan-lock'

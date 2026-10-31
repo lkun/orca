@@ -1,7 +1,7 @@
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { installRealWorkerThreadChildProcesses } from '../worker-thread-child-process/worker-thread-child-process-real.test-fixtures'
 import { checkoutBranch, listLocalBranches } from './checkout'
@@ -17,7 +17,7 @@ async function git(...args: string[]): Promise<string> {
 }
 
 beforeEach(async () => {
-  directory = await mkdtemp(join(tmpdir(), 'orca-branch-identity-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-branch-identity-'))
   await git('init', '-q')
   await git('symbolic-ref', 'HEAD', 'refs/heads/main')
   await git('config', 'user.name', 'Audit')

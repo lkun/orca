@@ -25,10 +25,10 @@ function restoredTabs(session: WorkspaceSessionState): string[][] {
   const store = createTestStore()
   store.setState({
     repos: [
-      { id: 'repo-1', path: '/Users/dev/orca', displayName: 'orca', badgeColor: '#000', addedAt: 0 }
+      { id: 'repo-1', path: '/Users/dev/occ', displayName: 'occ', badgeColor: '#000', addedAt: 0 }
     ],
     worktreesByRepo: {
-      'repo-1': [makeWorktree({ id: GIT_KEY, repoId: 'repo-1', path: '/Users/dev/orca' })]
+      'repo-1': [makeWorktree({ id: GIT_KEY, repoId: 'repo-1', path: '/Users/dev/occ' })]
     }
   })
   store.getState().hydrateWorkspaceSession(structuredClone(session), {})

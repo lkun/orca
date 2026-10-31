@@ -1,13 +1,13 @@
 import { translate } from '../../i18n/i18n'
 import { useAppStore } from '../../store'
-import { OrcaSignInButton, OrcaSignInWaitNotice } from '../OrcaSignInProgress'
+import { OCCSignInButton, OCCSignInWaitNotice } from '../OCCSignInProgress'
 
 export function MobileRelaySignInPanel({
   reconnectRequired
 }: {
   reconnectRequired: boolean
 }): React.JSX.Element {
-  const browserWaiting = useAppStore((state) => Boolean(state.orcaProfileSignInProgress?.link))
+  const browserWaiting = useAppStore((state) => Boolean(state.occProfileSignInProgress?.link))
 
   return (
     <div
@@ -22,7 +22,7 @@ export function MobileRelaySignInPanel({
       data-testid="anywhere-sign-in-panel"
     >
       {browserWaiting ? (
-        <OrcaSignInWaitNotice className="min-w-0 flex-1" />
+        <OCCSignInWaitNotice className="min-w-0 flex-1" />
       ) : (
         <p className="min-w-0 flex-1 text-xs text-muted-foreground">
           {translate(
@@ -31,7 +31,7 @@ export function MobileRelaySignInPanel({
           )}
         </p>
       )}
-      <OrcaSignInButton size="sm" className="shrink-0">
+      <OCCSignInButton size="sm" className="shrink-0">
         {reconnectRequired
           ? translate(
               'auto.components.settings.MobilePairingConnectionOptions.signInAgain',
@@ -41,7 +41,7 @@ export function MobileRelaySignInPanel({
               'auto.components.settings.MobilePairingConnectionOptions.signIn',
               'Sign in for Relay'
             )}
-      </OrcaSignInButton>
+      </OCCSignInButton>
     </div>
   )
 }

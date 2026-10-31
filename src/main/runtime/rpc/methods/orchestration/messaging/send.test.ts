@@ -5,7 +5,7 @@ import { ORCHESTRATION_METHODS } from '../../orchestration'
 import { RpcDispatcher } from '../../../dispatcher'
 import { createOrchestrationRpcHarness } from '../rpc-test-harness'
 import type { OrchestrationDb } from '../../../../orchestration/db'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { ORCHESTRATION_CONTRACT_VERSION } from '../../../../../../shared/protocol-version'
 import { createRootDispatch } from '../../../../orchestration/db/root-dispatch-test-fixture'
 import { MessageWake } from '../../../../runtime-message-waiters'
@@ -20,7 +20,7 @@ describe('orchestration RPC methods', () => {
   const h = createOrchestrationRpcHarness()
   const { coordinatorPaneKey, findMethod } = h
   let db: OrchestrationDb
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
   let ctx: RpcContext
   let activeRunId: string | undefined
 

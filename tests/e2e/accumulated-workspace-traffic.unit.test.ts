@@ -46,7 +46,7 @@ describe('accumulated workspace benchmark setup', () => {
   it.each([undefined, 'full'])(
     'applies the requested agent row mode (%s) and restores preferences on cleanup',
     async (mode) => {
-      vi.stubEnv('ORCA_TYPING_BENCH_AGENT_ROWS', mode)
+      vi.stubEnv('OCC_TYPING_BENCH_AGENT_ROWS', mode)
       const { store, page } = rendererFixture()
       const before = store.getState()
       expect(before.agentActivityDisplayMode).toBe('compact')

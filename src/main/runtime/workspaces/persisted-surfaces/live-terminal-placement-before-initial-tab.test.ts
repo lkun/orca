@@ -7,11 +7,11 @@ import {
   FIXTURE_GIT_WORKTREE_ID,
   openTopologyStore
 } from '../../../persistence/terminal-topology/terminal-topology-profile-fixture'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import { FIRST_SURFACE_PLACEMENT_WAIT_MS } from './restored-terminal-placement'
 import type { ResolvedWorktree } from '../../runtime-worktree-path-identity'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('../../../telemetry/client', () => ({ track: vi.fn() }))
 
 // Activation must await main's in-flight placement census so the existing live terminal becomes the first tab without an extra shell.
@@ -22,7 +22,7 @@ const WINDOW_TAB = '33333333-3333-4333-8333-333333333333'
 const WINDOW_LEAF = '44444444-4444-4444-8444-444444444444'
 const directories: string[] = []
 
-class CensusRuntime extends OrcaRuntimeService {
+class CensusRuntime extends OCCRuntimeService {
   protected override async getResolvedWorktreeMap(): Promise<Map<string, ResolvedWorktree>> {
     const worktree = this.buildResolvedWorktreeFromId(WT)
     return new Map(worktree ? [[WT, worktree]] : [])
@@ -36,7 +36,7 @@ afterEach(() => {
 })
 
 async function hostPlacingALiveTerminal() {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-placement-before-initial-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-placement-before-initial-'))
   directories.push(directory)
   const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   const live = [{ id: LIVE_PTY, cwd: '/fixture/local', title: 'zsh', worktreeId: WT }]

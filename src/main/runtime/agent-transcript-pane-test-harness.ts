@@ -1,10 +1,10 @@
 import type { RuntimeTerminalCreate } from '../../shared/runtime-terminal-create-contract'
 import { vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import type { TuiAgent } from '../../shared/tui-agent'
 import type { PtyProcessInspection } from '../providers/pty-process-inspection'
 import type { RuntimeStore } from './runtime-store-contract'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { committingSpawn, registerBoundPty } from './bind-first-pane.test-fixture'
 
 const TRANSCRIPT_PANE_LEAF_ID = '11111111-1111-4111-8111-111111111111'
@@ -56,10 +56,10 @@ function transcriptLayoutStore(): RuntimeStore {
 
 export async function createTranscriptPane(
   options: TranscriptPaneOptions,
-  runtimeDeps?: ConstructorParameters<typeof OrcaRuntimeService>[2]
-): Promise<{ runtime: OrcaRuntimeService; handle: string; terminal: RuntimeTerminalCreate }> {
-  const runtime = new OrcaRuntimeService(
-    ORCA_LAYOUT_OWNER_IS_MAIN ? transcriptLayoutStore() : null,
+  runtimeDeps?: ConstructorParameters<typeof OCCRuntimeService>[2]
+): Promise<{ runtime: OCCRuntimeService; handle: string; terminal: RuntimeTerminalCreate }> {
+  const runtime = new OCCRuntimeService(
+    OCC_LAYOUT_OWNER_IS_MAIN ? transcriptLayoutStore() : null,
     undefined,
     runtimeDeps
   )
@@ -141,7 +141,7 @@ export async function createTranscriptPane(
   runtime.attachWindow(1)
   runtime.syncWindowGraph(
     1,
-    ORCA_LAYOUT_OWNER_IS_MAIN
+    OCC_LAYOUT_OWNER_IS_MAIN
       ? {
           tabs: [],
           leaves: [],

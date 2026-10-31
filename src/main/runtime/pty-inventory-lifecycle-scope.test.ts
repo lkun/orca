@@ -10,7 +10,7 @@ import {
   WORKTREE,
   type InventoryListing
 } from './pty-inventory-lifecycle-fixture'
-import { PTY_CONTROLLER_LIST_TIMEOUT_MS } from './orca-runtime-postlude'
+import { PTY_CONTROLLER_LIST_TIMEOUT_MS } from './occ-runtime-postlude'
 
 afterEach(() => vi.restoreAllMocks())
 

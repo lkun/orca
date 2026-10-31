@@ -9,7 +9,7 @@ import {
   FIXTURE_GIT_WORKTREE_ID,
   openTopologyStore
 } from '../../persistence/terminal-topology/terminal-topology-profile-fixture'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import { getRuntimeBrowserPageRegistry } from '../runtime-browser-page-registry'
 
 vi.mock('../../telemetry/client', () => ({ track: vi.fn() }))
@@ -26,7 +26,7 @@ const groupLayout: TabGroupLayoutNode = {
   second: { type: 'leaf', groupId: 'group-right' }
 }
 
-class HeadlessBrowserRuntime extends OrcaRuntimeService {
+class HeadlessBrowserRuntime extends OCCRuntimeService {
   seedSnapshot(snapshot: RuntimeMobileSessionTabsSnapshot): void {
     this.storeMobileSessionSnapshot(worktreeId, snapshot)
   }
@@ -58,7 +58,7 @@ describe('headless browser group persistence', () => {
   it.each([true, false])(
     'persists browser placement before publishing when focusesHost=%s',
     async (focusesHost) => {
-      const directory = mkdtempSync(join(tmpdir(), 'orca-browser-group-'))
+      const directory = mkdtempSync(join(tmpdir(), 'occ-browser-group-'))
       const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
       try {
         store.setWorkspaceSession({

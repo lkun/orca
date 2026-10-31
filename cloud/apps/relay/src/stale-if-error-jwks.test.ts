@@ -7,7 +7,7 @@ import { createStaleIfErrorJWKSet, RELAY_JWKS_MAX_STALE_MS } from './stale-if-er
 const config = {
   jwksUrl: 'https://auth.example.test/.well-known/jwks.json',
   authIssuer: 'https://auth.example.test',
-  authAudience: 'orca-relay'
+  authAudience: 'occ-relay'
 } satisfies Partial<RelayConfig>
 
 type SigningKey = { kid: string; privateKey: CryptoKey; jwk: JWK }

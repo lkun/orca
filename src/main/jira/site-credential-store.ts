@@ -26,24 +26,24 @@ export function getCredentialError(siteId: string): string | undefined {
   return tokenFileCache.error(siteId)
 }
 
-function getOrcaDir(): string {
-  return join(homedir(), '.orca')
+function getOCCDir(): string {
+  return join(homedir(), '.occ')
 }
 
 function getSiteFilePath(): string {
-  return join(getOrcaDir(), 'jira-sites.json')
+  return join(getOCCDir(), 'jira-sites.json')
 }
 
 export function getTokenDir(): string {
-  return join(getOrcaDir(), 'jira-tokens')
+  return join(getOCCDir(), 'jira-tokens')
 }
 
 function getTokenPath(siteId: string): string {
   return join(getTokenDir(), `${Buffer.from(siteId).toString('base64url')}.enc`)
 }
 
-function ensureOrcaDir(): void {
-  const dir = getOrcaDir()
+function ensureOCCDir(): void {
+  const dir = getOCCDir()
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true })
   }
@@ -159,7 +159,7 @@ function selectableSiteFile(file: JiraSiteFile): JiraSiteFile {
 }
 
 export function writeSiteFile(file: JiraSiteFile): void {
-  ensureOrcaDir()
+  ensureOCCDir()
   const next = selectableSiteFile(file)
   writeFileSync(getSiteFilePath(), JSON.stringify(next, null, 2), {
     encoding: 'utf-8',
@@ -178,7 +178,7 @@ export function getSiteTokenProtection(siteId: string): SecretAtRestProtection |
 }
 
 export function saveToken(siteId: string, apiToken: string): void {
-  ensureOrcaDir()
+  ensureOCCDir()
   ensureTokenDir()
   writeEncryptedCredential('Jira', getTokenPath(siteId), apiToken)
   // The next action reads the actual file, including any overlapping writer's replacement.

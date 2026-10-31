@@ -227,12 +227,12 @@ describe('repos:add + repos:clone', () => {
     }
     const existingProject = { id: 'repo:repo-setup-enterprise', displayName: 'Existing' }
     const selectedProject = {
-      id: 'github:github.acme-corp.com/acme/orca',
+      id: 'github:github.acme-corp.com/acme/occ',
       displayName: 'Enterprise project',
       providerIdentity: {
         provider: 'github',
         owner: 'acme',
-        repo: 'orca',
+        repo: 'occ',
         host: 'github.acme-corp.com'
       }
     }
@@ -266,7 +266,7 @@ describe('repos:add + repos:clone', () => {
     expect(mockStore.updateRepo).toHaveBeenNthCalledWith(1, repoTarget(existing.id), {
       upstream: {
         owner: 'acme',
-        repo: 'orca',
+        repo: 'occ',
         host: 'github.acme-corp.com'
       }
     })
@@ -289,12 +289,12 @@ describe('repos:add + repos:clone', () => {
       return repo
         ? [
             {
-              id: 'github:github.acme.test/acme/orca',
+              id: 'github:github.acme.test/acme/occ',
               displayName: 'OCC',
               providerIdentity: {
                 provider: 'github',
                 owner: 'acme',
-                repo: 'orca',
+                repo: 'occ',
                 host: 'github.acme.test'
               }
             }
@@ -303,24 +303,24 @@ describe('repos:add + repos:clone', () => {
     })
 
     const result = await handlers.get('projectHostSetups:setupExistingFolder')!(null, {
-      projectId: 'github:github.acme.test/acme/orca',
+      projectId: 'github:github.acme.test/acme/occ',
       projectProviderIdentity: {
         provider: 'github',
         owner: 'acme',
-        repo: 'orca',
+        repo: 'occ',
         host: 'github.acme.test'
       },
       hostId: 'local',
-      path: '/tmp/orca-local',
+      path: '/tmp/occ-local',
       kind: 'git'
     })
 
     expect(added[0]?.upstream).toEqual({
       owner: 'acme',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.acme.test'
     })
-    expect(result).toHaveProperty('project.id', 'github:github.acme.test/acme/orca')
+    expect(result).toHaveProperty('project.id', 'github:github.acme.test/acme/occ')
   })
 
   it('rolls back a new repo when the supplied identity does not match the project', async () => {
@@ -330,8 +330,8 @@ describe('repos:add + repos:clone', () => {
 
     await expect(
       handlers.get('projectHostSetups:setupExistingFolder')!(null, {
-        projectId: 'github:acme/orca',
-        projectProviderIdentity: { provider: 'github', owner: 'other', repo: 'orca' },
+        projectId: 'github:acme/occ',
+        projectProviderIdentity: { provider: 'github', owner: 'other', repo: 'occ' },
         hostId: 'local',
         path: '/tmp/mismatched-project',
         kind: 'git'
@@ -415,9 +415,9 @@ describe('repos:add + repos:clone', () => {
   it('refuses project setup on an SSH target with the not-connected text and adds no repo', async () => {
     await expect(
       handlers.get('projectHostSetups:setupExistingFolder')!(null, {
-        projectId: 'github:acme/orca',
+        projectId: 'github:acme/occ',
         hostId: 'ssh:conn-1',
-        path: '/srv/orca',
+        path: '/srv/occ',
         kind: 'git'
       })
     ).rejects.toThrow('SSH connection "conn-1" not found or not connected')

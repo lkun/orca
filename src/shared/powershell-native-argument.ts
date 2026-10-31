@@ -19,7 +19,7 @@ function quotePowerShellMultilineLiteral(value: string): string {
  * For cmd/naive quote counting, double quotes as process-host/windows-command-line.ts does; backslash-quote changes cmd parity
  * and could expose a later & as an operator. */
 export function getPowerShellEscapeNativeArgsFunction(): string {
-  return `function Global:__OrcaEscapeNativeArgs([string]$Program, [object[]]$Arguments) {
+  return `function Global:__OCCEscapeNativeArgs([string]$Program, [object[]]$Arguments) {
     Set-StrictMode -Off
     $mode = $PSNativeCommandArgumentPassing
     $cmd = $Program -match '\\.(bat|cmd)$'

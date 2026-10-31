@@ -2,19 +2,19 @@
  * Distros that can't host OCC's server, each refused with the step that fixes it. There is no
  * fallback once the WSL bridge is gone, so a refusal must say what to run, not only what failed.
  */
-import { OrcadHostUnsupportedError } from '../orcad/orcad-host-unavailable'
-import { OrcadHostGlibcUnsupportedError } from '../managed-server/lifecycle/orcad-runtime-target'
-import { RemoteNodeRuntimeSelfTestError } from '../ssh/orcad-remote-node-runtime-report'
+import { OCCdHostUnsupportedError } from '../occd/occd-host-unavailable'
+import { OCCdHostGlibcUnsupportedError } from '../managed-server/lifecycle/occd-runtime-target'
+import { RemoteNodeRuntimeSelfTestError } from '../ssh/occd-remote-node-runtime-report'
 import { wslHostAddRefusalText } from '../../shared/wsl-host-failure-copy'
 
-/** Keeps OrcadHostUnsupportedError's name, so callers that classify by name still see it. */
-export class WslDistroVersion1Error extends OrcadHostUnsupportedError {
+/** Keeps OCCdHostUnsupportedError's name, so callers that classify by name still see it. */
+export class WslDistroVersion1Error extends OCCdHostUnsupportedError {
   constructor(readonly distro: string) {
     super(wslHostAddRefusalText('wsl1', { distro }).text)
   }
 }
 
-export class WslDistroNotRegisteredError extends OrcadHostUnsupportedError {
+export class WslDistroNotRegisteredError extends OCCdHostUnsupportedError {
   constructor(readonly distro: string) {
     super(wslHostAddRefusalText('notRegistered', { distro }).text)
   }
@@ -39,7 +39,7 @@ const NIXOS_STUB_LOADER = /NixOS cannot run dynamically linked executables/
 
 /** The shared server refusal plus the step that fixes it in a distro; null when there is none. */
 export function wslUnsupportedDistroFixMessage(error: unknown): string | null {
-  if (error instanceof OrcadHostGlibcUnsupportedError) {
+  if (error instanceof OCCdHostGlibcUnsupportedError) {
     return (
       `${error.message} Use a Linux release with glibc 2.28 or newer ` +
       '(for example Ubuntu 20.04 or Debian 10 and later).'

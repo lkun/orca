@@ -3,7 +3,7 @@
 import { act, useState, type ReactNode } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { OrcadManagedRestartResult } from '../../../../shared/orcad-managed-runtime'
+import type { OCCdManagedRestartResult } from '../../../../shared/occd-managed-runtime'
 import type { SshManagedServerStatus } from '../../../../shared/ssh-types'
 import { canRestartSshHostServer, SshHostRestartServerDialog } from './SshHostRestartServerAction'
 
@@ -23,14 +23,14 @@ const ended: SshManagedServerStatus = {
   launchSessionEnded: true
 }
 
-const restart = vi.fn(async (): Promise<OrcadManagedRestartResult> => ({
+const restart = vi.fn(async (): Promise<OCCdManagedRestartResult> => ({
   outcome: 'restarted',
   environmentId: 'env-1'
 }))
 const roots: Root[] = []
 beforeEach(() => {
   restart.mockClear()
-  Object.assign(window, { api: { runtimeEnvironments: { managedOrcad: { restart } } } })
+  Object.assign(window, { api: { runtimeEnvironments: { managedOCCd: { restart } } } })
 })
 afterEach(() => {
   for (const root of roots.splice(0)) {

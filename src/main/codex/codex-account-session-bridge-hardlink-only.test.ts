@@ -30,7 +30,7 @@ const ROLLOUT = join(
 let root = ''
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-hardlink-only-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-hardlink-only-'))
   mkdirSync(join(root, 'account', 'sessions', '2026', '10', '28'), { recursive: true })
   writeFileSync(join(root, 'account', 'sessions', ROLLOUT), '{"type":"session_meta"}\n')
   mkdirSync(join(root, 'codex'))

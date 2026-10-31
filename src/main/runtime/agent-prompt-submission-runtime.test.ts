@@ -4,8 +4,8 @@ import {
   AGENT_PROMPT_TEST_WORKTREE_PATH,
   createAgentPromptSubmissionRuntime
 } from './agent-prompt-submission-runtime-test-fixture'
-import { OrcaRuntimeService } from './orca-runtime'
-import { TUI_IDLE_QUIESCENCE_MS } from './orca-runtime-postlude'
+import { OCCRuntimeService } from './occ-runtime'
+import { TUI_IDLE_QUIESCENCE_MS } from './occ-runtime-postlude'
 import { makeStore } from './runtime-rpc-worktree-store-fixtures'
 import { settledWriteStub } from '../providers/settled-pty-write-stub'
 
@@ -218,7 +218,7 @@ describe('agent prompt submission runtime', () => {
   })
 
   // Why real timers until the send: the emulator drains on timers, and the screen may clear only once quiet.
-  async function settleScreen(runtime: OrcaRuntimeService, handle: string): Promise<void> {
+  async function settleScreen(runtime: OCCRuntimeService, handle: string): Promise<void> {
     const outputAt = Date.now()
     vi.useRealTimers()
     await runtime.readTerminal(handle, { screen: true })
@@ -422,7 +422,7 @@ describe('agent prompt submission runtime', () => {
     vi.setSystemTime(1_000)
     let handle = ''
     const writes: string[] = []
-    const runtime = new OrcaRuntimeService(makeStore() as never, undefined, {
+    const runtime = new OCCRuntimeService(makeStore() as never, undefined, {
       getAgentStatusSnapshot: () => [
         {
           paneKey: 'prompt-pane',
@@ -571,7 +571,7 @@ const PTY = 'pty-input-dispatch'
 const HANDLE = 'term_input_dispatch'
 
 function inputDispatchRuntime() {
-  const result = new OrcaRuntimeService()
+  const result = new OCCRuntimeService()
   const write = vi.fn(() => true)
   result.setPtyController({
     write,

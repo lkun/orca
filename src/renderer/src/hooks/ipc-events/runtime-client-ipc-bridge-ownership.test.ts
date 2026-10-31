@@ -446,7 +446,7 @@ it("lists a profile created on the host once the host announces it, without touc
   const madeByCli = {
     id: 'made-by-cli',
     scope: 'isolated' as const,
-    partition: 'persist:orca-browser-session-made-by-cli',
+    partition: 'persist:occ-browser-session-made-by-cli',
     label: 'Made by CLI',
     source: null
   }

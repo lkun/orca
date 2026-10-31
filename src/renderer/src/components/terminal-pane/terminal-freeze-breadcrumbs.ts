@@ -53,8 +53,8 @@ maybeStartTerminalRenderDesyncSentinel()
 
 // The patched WebGL atlas reports failed ctx.font assignments through this global; upstream coalescing bounds rasterization storms.
 type AtlasFontProbeMismatch = { desired?: string; actual?: string }
-;(globalThis as { __orcaAtlasFontProbe?: (mismatch: AtlasFontProbeMismatch) => void })[
-  '__orcaAtlasFontProbe'
+;(globalThis as { __occAtlasFontProbe?: (mismatch: AtlasFontProbeMismatch) => void })[
+  '__occAtlasFontProbe'
 ] = (mismatch) => {
   recordTerminalWebglDiagnostic(ATLAS_FONT_PROBE_MISMATCH, {
     desired: mismatch?.desired ?? null,

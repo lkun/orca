@@ -31,7 +31,7 @@ type ActiveProjectSkillRuntime = {
   discoveryTarget?: SkillDiscoveryTarget
   discoveryRuntimeTarget: RuntimeClientTarget | null
   agentRuntime?: ProjectAgentSkillRuntime
-  // COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+  // COMPAT(wsl-bridge): removed when WSL runs as an occd host.
   terminalShellOverride?: string
   installDisabledReason: string | null
   canUseSkillFreshness: boolean
@@ -148,7 +148,7 @@ export function useActiveProjectSkillRuntime(): ActiveProjectSkillRuntime {
       discoveryRuntimeTarget,
       discoveryTarget: getProjectSkillDiscoveryTarget(projectRuntime),
       agentRuntime,
-      // COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+      // COMPAT(wsl-bridge): removed when WSL runs as an occd host.
       terminalShellOverride: getProjectAgentSkillTerminalShellOverride(
         currentPlatform,
         runtimeState.settings,

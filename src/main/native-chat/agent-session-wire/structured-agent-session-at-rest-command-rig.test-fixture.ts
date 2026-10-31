@@ -164,7 +164,7 @@ export const namesOf = (menu: AgentSessionSlashCommand[] | null, kind: 'skill' |
 beforeEach(async () => {
   resetHostTestOperationIds()
   clock = HOST_TEST_NOW
-  directory = await mkdtemp(join(tmpdir(), 'orca-at-rest-commands-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-at-rest-commands-'))
   workspace = join(directory, 'workspace')
   account = join(directory, 'claude-account')
   await writeSkill(join(workspace, '.claude', 'skills'), 'review-pr')

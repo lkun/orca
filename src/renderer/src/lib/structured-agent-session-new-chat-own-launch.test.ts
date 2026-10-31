@@ -145,7 +145,7 @@ import { resetStructuredAgentLaunchPersistenceForTests } from './agent-session/l
 import { resetStructuredAgentLaunchRegistryForTests } from './agent-session/launch/structured-agent-session-launch-registry'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 import { isPendingTab } from '@/runtime/layout-owner-pending-tabs'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { createTestStore, makeWorktree, seedStore } from '@/store/slices/store-test-helpers'
 import {
   drawTabsFromMain,
@@ -219,7 +219,7 @@ async function seedSplit(): Promise<void> {
     worktreesByRepo: { repo: [makeWorktree({ id: WORKTREE_ID, repoId: 'repo' })] },
     activeWorktreeId: WORKTREE_ID,
     tabsByWorktree: {
-      [WORKTREE_ID]: (ORCA_LAYOUT_OWNER_IS_MAIN ? ['group-left', 'group-right'] : []).map(
+      [WORKTREE_ID]: (OCC_LAYOUT_OWNER_IS_MAIN ? ['group-left', 'group-right'] : []).map(
         (groupId, index) => ({
           id: `terminal-${groupId}`,
           ptyId: null,
@@ -233,13 +233,13 @@ async function seedSplit(): Promise<void> {
       )
     },
     unifiedTabsByWorktree: {
-      [WORKTREE_ID]: ORCA_LAYOUT_OWNER_IS_MAIN ? [side('group-left'), side('group-right')] : []
+      [WORKTREE_ID]: OCC_LAYOUT_OWNER_IS_MAIN ? [side('group-left'), side('group-right')] : []
     },
     groupsByWorktree: {
       [WORKTREE_ID]: seeded.groupsByWorktree[WORKTREE_ID]!.map((group) => ({
         ...group,
-        activeTabId: ORCA_LAYOUT_OWNER_IS_MAIN ? `terminal-${group.id}` : null,
-        tabOrder: ORCA_LAYOUT_OWNER_IS_MAIN ? [`terminal-${group.id}`] : []
+        activeTabId: OCC_LAYOUT_OWNER_IS_MAIN ? `terminal-${group.id}` : null,
+        tabOrder: OCC_LAYOUT_OWNER_IS_MAIN ? [`terminal-${group.id}`] : []
       }))
     },
     layoutByWorktree: seeded.layoutByWorktree,

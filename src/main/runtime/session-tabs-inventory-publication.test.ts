@@ -1,22 +1,22 @@
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { getSessionTabsInventoryPublication } from './session-tabs/session-tabs-inventory-test-fixture'
 import type { RuntimeStore } from './runtime-store-contract'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
 import type { DurableProfileStateMutation } from '../persistence/loading-store/store-runtime-state'
 import { registerBoundPty } from './bind-first-pane.test-fixture'
-import { makeRuntimeStoreWithWorkspaceSession } from './orca-runtime-test-fixtures.spec'
+import { makeRuntimeStoreWithWorkspaceSession } from './occ-runtime-test-fixtures.spec'
 
 function createInventoryRuntime(
-  runtimeStore: ConstructorParameters<typeof OrcaRuntimeService>[0] = null
-): OrcaRuntimeService {
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  runtimeStore: ConstructorParameters<typeof OCCRuntimeService>[0] = null
+): OCCRuntimeService {
+  const runtime = new OCCRuntimeService(runtimeStore)
   runtime.setPtyController({ listProcesses: vi.fn(async () => []) } as never)
   return runtime
 }
 
-async function waitForInventoryWaiter(runtime: OrcaRuntimeService): Promise<void> {
+async function waitForInventoryWaiter(runtime: OCCRuntimeService): Promise<void> {
   const publication = getSessionTabsInventoryPublication(runtime)
   for (let index = 0; index < 20 && publication.pendingWaiterCount === 0; index += 1) {
     await Promise.resolve()
@@ -176,7 +176,7 @@ describe('authoritative session tab inventory publication', () => {
   })
 
   it('retries once and serves an unlabeled scan when the PTY census is unavailable', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const collect = vi.spyOn(
       runtime as unknown as { collectAllMobileSessionTabs: () => Promise<unknown> },
       'collectAllMobileSessionTabs'
@@ -414,7 +414,7 @@ describe('authoritative session tab inventory publication', () => {
   })
 
   it('reports no authoritative support behind the e2e disable override', () => {
-    vi.stubEnv('ORCA_E2E_DISABLE_AUTHORITATIVE_SESSION_TABS_INVENTORY', '1')
+    vi.stubEnv('OCC_E2E_DISABLE_AUTHORITATIVE_SESSION_TABS_INVENTORY', '1')
     try {
       expect(createInventoryRuntime().supportsAuthoritativeSessionTabsInventory()).toBe(false)
     } finally {
@@ -431,13 +431,13 @@ describe('workspace-terminal-resume-records characterization', () => {
   const WORKTREE_ID = 'repo::/workspace'
   const HOST_ID = 'runtime:original-partition'
 
-  function clear(runtime: InstanceType<typeof OrcaRuntimeService>): Promise<void> {
+  function clear(runtime: InstanceType<typeof OCCRuntimeService>): Promise<void> {
     return runtime['clearWorktreeTerminalResumeRecords'](WORKTREE_ID, HOST_ID, ['closed'])
   }
 
   describe('workspace terminal resume mutation ownership', () => {
     it('reads the current mutation and rollback stores with their original receivers', async () => {
-      const runtime = new OrcaRuntimeService(null)
+      const runtime = new OCCRuntimeService(null)
       let runMutation = (): void => {
         throw new Error('mutation was not reserved')
       }
@@ -542,7 +542,7 @@ describe('workspace-terminal-resume-records characterization', () => {
         }
       }
     ])('refuses admission with $label', async ({ store }) => {
-      const runtime = new OrcaRuntimeService(null)
+      const runtime = new OCCRuntimeService(null)
       Object.defineProperty(runtime, 'store', { get: () => store })
       await expect(clear(runtime)).rejects.toThrow('workspace_session_unavailable')
     })

@@ -36,33 +36,33 @@ describe('MatchedText', () => {
       kind: 'project',
       id: 'p1',
       projectId: 'p1',
-      displayName: '🚀 orca',
+      displayName: '🚀 occ',
       badgeColor: '#111111',
-      detail: '~/dev/orca'
+      detail: '~/dev/occ'
     }
-    const [match] = rankProjectOptions([option], 'orca', [])
+    const [match] = rankProjectOptions([option], 'occ', [])
     expect(match).toBeDefined()
 
     act(() => {
       root.render(<MatchedText text={option.displayName} hits={match!.nameHits} />)
     })
 
-    expect(markedText()).toBe('orca')
+    expect(markedText()).toBe('occ')
   })
 
   it('leaves text unmarked when there are no hits', () => {
     act(() => {
-      root.render(<MatchedText text="🚀 orca" hits={[]} />)
+      root.render(<MatchedText text="🚀 occ" hits={[]} />)
     })
 
     expect(container.querySelectorAll('mark')).toHaveLength(0)
-    expect(container.textContent).toBe('🚀 orca')
+    expect(container.textContent).toBe('🚀 occ')
   })
 })
 
 describe('ProjectOptionDetail', () => {
   it('keeps Windows path matches highlighted in the preserved tail', () => {
-    const detail = 'C:\\Users\\ada\\projects\\orca\\src\\renderer\\app.ts'
+    const detail = 'C:\\Users\\ada\\projects\\occ\\src\\renderer\\app.ts'
     const start = detail.indexOf('src')
 
     act(() => {

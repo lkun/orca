@@ -1,8 +1,8 @@
 /**
- * Fault injection over the real move driver and a real orcad profile store (an earlier
+ * Fault injection over the real move driver and a real occd profile store (an earlier
  * pattern): the desktop is killed at every point a clean move passes (each journal write, each
  * host call before it lands and after its reply is lost, each pause step, each desktop rewrite
- * store), optionally with orcad restarted too. After the restart and the reconnect, the move is
+ * store), optionally with occd restarted too. After the restart and the reconnect, the move is
  * back at zero or fully moved, never in between; a second restart changes nothing; and a move
  * reset to zero can be run again from scratch.
  */
@@ -121,21 +121,21 @@ describe('WSL move driver fault injection (real host store)', () => {
   })
 
   it.each([false, true])(
-    'every kill point ends at zero or fully moved, and survives a second restart (orcad restarted: %s)',
+    'every kill point ends at zero or fully moved, and survives a second restart (occd restarted: %s)',
     { timeout: 120_000 },
-    async (orcadRestarted) => {
+    async (occdRestarted) => {
       const points = await killPoints()
       expect(points.length).toBeGreaterThan(30)
       const matrix: Record<string, { hostDown: Outcome; hostUp: Outcome }> = {}
       for (const killAt of points) {
         const r = newRig()
         await killedMove(r, killAt)
-        await restartWslMoveRig(r, { hostUp: false, orcadRestarted })
+        await restartWslMoveRig(r, { hostUp: false, occdRestarted })
         const hostDown = outcomeOf(r)
-        await restartWslMoveRig(r, { hostUp: true, orcadRestarted })
+        await restartWslMoveRig(r, { hostUp: true, occdRestarted })
         const hostUp = outcomeOf(r)
         matrix[killAt] = { hostDown, hostUp }
-        await restartWslMoveRig(r, { hostUp: true, orcadRestarted })
+        await restartWslMoveRig(r, { hostUp: true, occdRestarted })
         expect(outcomeOf(r), `${killAt}: a second restart changes nothing`).toBe(hostUp)
         if (hostUp === 'back-at-zero') {
           const again = await moveProjectsToWslHost(r.world.deps, request)

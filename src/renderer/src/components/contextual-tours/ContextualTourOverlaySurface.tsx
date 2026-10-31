@@ -66,21 +66,21 @@ function disposeContextualTourGlobalKeyGuard(): void {
     return
   }
   const guardedWindow = window as Window & {
-    __orcaContextualTourGlobalKeyGuardInstalled?: boolean
+    __occContextualTourGlobalKeyGuardInstalled?: boolean
   }
-  if (!guardedWindow.__orcaContextualTourGlobalKeyGuardInstalled) {
+  if (!guardedWindow.__occContextualTourGlobalKeyGuardInstalled) {
     return
   }
   removeAppKeyListener('keydown', handleContextualTourGlobalKeyDown)
-  delete guardedWindow.__orcaContextualTourGlobalKeyGuardInstalled
+  delete guardedWindow.__occContextualTourGlobalKeyGuardInstalled
 }
 
 if (typeof window !== 'undefined') {
   const guardedWindow = window as Window & {
-    __orcaContextualTourGlobalKeyGuardInstalled?: boolean
+    __occContextualTourGlobalKeyGuardInstalled?: boolean
   }
-  if (!guardedWindow.__orcaContextualTourGlobalKeyGuardInstalled) {
-    guardedWindow.__orcaContextualTourGlobalKeyGuardInstalled = true
+  if (!guardedWindow.__occContextualTourGlobalKeyGuardInstalled) {
+    guardedWindow.__occContextualTourGlobalKeyGuardInstalled = true
     addAppKeyListener('keydown', handleContextualTourGlobalKeyDown)
   }
 }
@@ -91,7 +91,7 @@ if (import.meta !== undefined && import.meta.hot) {
 }
 
 const PANEL_BASE_CLASSES =
-  'orca-contextual-tour-panel rounded-lg border border-border text-popover-foreground backdrop-blur-[2px]'
+  'occ-contextual-tour-panel rounded-lg border border-border text-popover-foreground backdrop-blur-[2px]'
 
 const PANEL_ANIMATION_CLASSES = 'animate-in fade-in-0 zoom-in-95 duration-200 ease-out'
 
@@ -282,7 +282,7 @@ export function ContextualTourOverlaySurface({
       {showTargetRings ? (
         <div
           aria-hidden="true"
-          className="orca-contextual-tour-target-rings fixed z-[75]"
+          className="occ-contextual-tour-target-rings fixed z-[75]"
           data-contextual-tour-target-rings=""
           style={targetRingStyle}
         />

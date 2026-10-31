@@ -308,7 +308,7 @@ describe('useMobileStructuredAgentSession', () => {
           dispatchId: 'dispatch',
           task: 'Worker assignment',
           worker: {
-            party: { address: 'term_worker', terminalHandle: 'term_worker', orcaSessionId: null },
+            party: { address: 'term_worker', terminalHandle: 'term_worker', occSessionId: null },
             name: 'Worker'
           }
         }

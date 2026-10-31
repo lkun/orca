@@ -1,7 +1,7 @@
 import '../unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
 import { RpcDispatcher } from '../dispatcher'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { REPO_METHODS } from './repo'
 import { makeRequest, repoDispatcher } from './repo-rpc.test-fixture'
 import {
@@ -29,7 +29,7 @@ describe('repo RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       searchRepoRefs: vi.fn().mockResolvedValue({ refs: [], truncated: true })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
@@ -66,7 +66,7 @@ describe('repo RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       searchRepoRefs: vi.fn().mockResolvedValue(result)
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
     const legacyReplies: string[] = []
     const capableReplies: string[] = []
@@ -110,7 +110,7 @@ describe('repo RPC methods', () => {
       requireStore: () => ({
         getSettings: () => ({ worktreeVisibilityDefaults: { external: 'show' } })
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const legacyResponse = await dispatcher.dispatch(
@@ -149,8 +149,8 @@ describe('repo RPC methods', () => {
       connectionId: 'ssh-p8',
       kind: 'git' as const
     }
-    const addSshRepo = vi.fn<OrcaRuntimeService['addSshRepo']>().mockResolvedValue(repo)
-    const addRepo = vi.fn<OrcaRuntimeService['addRepo']>()
+    const addSshRepo = vi.fn<OCCRuntimeService['addSshRepo']>().mockResolvedValue(repo)
+    const addRepo = vi.fn<OCCRuntimeService['addRepo']>()
     const dispatcher = repoDispatcher({ getRuntimeId: () => 'test-runtime', addSshRepo, addRepo })
 
     const response = await dispatcher.dispatch(
@@ -164,7 +164,7 @@ describe('repo RPC methods', () => {
   })
 
   it('refuses a remote project without an SSH target rather than adding a server path', async () => {
-    const addSshRepo = vi.fn<OrcaRuntimeService['addSshRepo']>()
+    const addSshRepo = vi.fn<OCCRuntimeService['addSshRepo']>()
     const dispatcher = repoDispatcher({ getRuntimeId: () => 'test-runtime', addSshRepo })
 
     const response = await dispatcher.dispatch(
@@ -188,7 +188,7 @@ describe('repo RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       updateProject: vi.fn().mockReturnValue(project)
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
@@ -215,7 +215,7 @@ describe('repo RPC methods', () => {
       createRepo: vi.fn().mockResolvedValue({
         repo: { id: 'repo-1', path: '/srv/projects/new-app', kind: 'git' }
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
@@ -237,7 +237,7 @@ describe('repo RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       isGitAvailable: vi.fn().mockResolvedValue(true)
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(makeRequest('repo.gitAvailable'))
@@ -254,26 +254,26 @@ describe('repo RPC methods', () => {
       getRuntimeId: () => 'test-runtime',
       cloneRepo: vi.fn().mockResolvedValue({
         id: 'repo-1',
-        path: '/srv/projects/orca',
+        path: '/srv/projects/occ',
         kind: 'git'
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
       makeRequest('repo.clone', {
-        url: 'https://github.com/example/orca.git',
+        url: 'https://github.com/example/occ.git',
         destination: '/srv/projects'
       })
     )
 
     expect(runtime.cloneRepo).toHaveBeenCalledWith(
-      'https://github.com/example/orca.git',
+      'https://github.com/example/occ.git',
       '/srv/projects'
     )
     expect(response).toMatchObject({
       ok: true,
-      result: { repo: { id: 'repo-1', path: '/srv/projects/orca' } }
+      result: { repo: { id: 'repo-1', path: '/srv/projects/occ' } }
     })
   })
 
@@ -282,10 +282,10 @@ describe('repo RPC methods', () => {
       getRuntimeId: () => 'test-runtime',
       showRepo: vi.fn().mockResolvedValue({
         id: 'repo-1',
-        path: '/srv/projects/orca',
+        path: '/srv/projects/occ',
         kind: 'git'
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(makeRequest('repo.show', { repo: 'repo-1' }))
@@ -293,7 +293,7 @@ describe('repo RPC methods', () => {
     expect(runtime.showRepo).toHaveBeenCalledWith('repo-1')
     expect(response).toMatchObject({
       ok: true,
-      result: { repo: { id: 'repo-1', path: '/srv/projects/orca' } }
+      result: { repo: { id: 'repo-1', path: '/srv/projects/occ' } }
     })
   })
 
@@ -310,7 +310,7 @@ describe('repo RPC methods', () => {
           updatedAt: 2
         }
       ])
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
@@ -335,7 +335,7 @@ describe('repo RPC methods', () => {
         createdAt: 1,
         updatedAt: 2
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
@@ -363,7 +363,7 @@ describe('repo RPC methods', () => {
         hasHooksFile: true,
         hooks: { scripts: { setup: 'pnpm install' } },
         setupRunPolicy: 'run-by-default',
-        source: 'orca.yaml',
+        source: 'occ.yaml',
         setupTrust: {
           contentHash: 'hash-1',
           scriptContent: 'pnpm install'
@@ -386,11 +386,11 @@ describe('repo RPC methods', () => {
         localContent: null,
         sharedContent: 'Fix {{artifact_url}}',
         effectiveContent: 'Fix {{artifact_url}}',
-        localFilePath: '/srv/repo/.orca/issue-command',
+        localFilePath: '/srv/repo/.occ/issue-command',
         source: 'shared'
       }),
       writeRepoIssueCommand: vi.fn().mockResolvedValue({ ok: true })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const hooksResponse = await dispatcher.dispatch(makeRequest('repo.hooks', { repo: 'repo-1' }))
@@ -439,7 +439,7 @@ describe('repo RPC methods', () => {
         path: '/srv/repo',
         issueSourcePreference: 'origin'
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
@@ -466,7 +466,7 @@ describe('repo RPC methods', () => {
         path: '/srv/repo',
         forkSyncMode: 'safe-auto'
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
@@ -486,7 +486,7 @@ describe('repo RPC methods', () => {
   })
 
   it('persists normalized ghAccount bindings and clear sentinels', async () => {
-    const updateRepo = vi.fn<OrcaRuntimeService['updateRepo']>().mockResolvedValue({
+    const updateRepo = vi.fn<OCCRuntimeService['updateRepo']>().mockResolvedValue({
       id: 'repo-1',
       path: '/srv/repo',
       displayName: 'repo',
@@ -529,7 +529,7 @@ describe('repo RPC methods', () => {
         path: '/srv/repo',
         agentWorktreeVisibility: 'show'
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
@@ -552,7 +552,7 @@ describe('repo RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       updateRepo: vi.fn().mockResolvedValue({ id: 'repo-1', path: '/srv/repo' })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     await dispatcher.dispatch(
@@ -584,7 +584,7 @@ describe('repo RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       updateRepo: vi.fn().mockResolvedValue({ id: 'repo-1', path: '/srv/repo' })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     await dispatcher.dispatch(
@@ -605,24 +605,24 @@ describe('repo RPC methods', () => {
       updateRepo: vi.fn().mockResolvedValue({
         id: 'repo-1',
         path: '/srv/repo',
-        upstream: { owner: 'stablyai', repo: 'orca' }
+        upstream: { owner: 'stablyai', repo: 'occ' }
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
       makeRequest('repo.update', {
         repo: 'repo-1',
-        updates: { upstream: { owner: 'stablyai', repo: 'orca' } }
+        updates: { upstream: { owner: 'stablyai', repo: 'occ' } }
       })
     )
 
     expect(runtime.updateRepo).toHaveBeenCalledWith('repo-1', {
-      upstream: { owner: 'stablyai', repo: 'orca' }
+      upstream: { owner: 'stablyai', repo: 'occ' }
     })
     expect(response).toMatchObject({
       ok: true,
-      result: { repo: { id: 'repo-1', upstream: { owner: 'stablyai', repo: 'orca' } } }
+      result: { repo: { id: 'repo-1', upstream: { owner: 'stablyai', repo: 'occ' } } }
     })
   })
 
@@ -668,7 +668,7 @@ describe('repo RPC methods', () => {
       getFolderWorkspacePathStatus: vi
         .fn()
         .mockResolvedValue({ path: '/srv/platform', exists: true })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     await dispatcher.dispatch(makeRequest('projectGroup.list'))
@@ -782,7 +782,7 @@ describe('repo RPC methods', () => {
         alreadyKnownCount: 0,
         failedCount: 0
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(
@@ -814,7 +814,7 @@ describe('repo RPC methods', () => {
         alreadyKnownCount: 0,
         failedCount: 0
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: REPO_METHODS })
 
     const response = await dispatcher.dispatch(

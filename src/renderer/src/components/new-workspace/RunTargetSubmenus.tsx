@@ -166,11 +166,11 @@ export function AddHostSubmenuRow({
             <RunTargetRow
               icon={<Cloud className="size-3.5 shrink-0 text-muted-foreground" />}
               label={translate(
-                'auto.components.NewWorkspaceComposerCard.addRemoteOrcaServer',
+                'auto.components.NewWorkspaceComposerCard.addRemoteOCCServer',
                 'Add Remote OCC Server'
               )}
               detail={translate(
-                'auto.components.NewWorkspaceComposerCard.addRemoteOrcaServerHint',
+                'auto.components.NewWorkspaceComposerCard.addRemoteOCCServerHint',
                 'Pair another OCC runtime'
               )}
               armed={hoveredKey === 'remote'}

@@ -48,7 +48,7 @@ const settings = {
   defaultTuiAgent: null
 }
 
-/** The launched CLI name is the whole decision: `orca` is the relay shim, `occ-ide` is local. */
+/** The launched CLI name is the whole decision: `occ` is the relay shim, `occ-ide` is local. */
 function launchCliNameFor(repo: Repo): string {
   return buildWorktreeStartupForAgent({
     repo,
@@ -62,8 +62,8 @@ function launchCliNameFor(repo: Repo): string {
 describe('buildWorktreeStartupForAgent host resolution', () => {
   // Two hosts catch launch shapes resolved from another host's row (ssh:m4air to openclaw leak).
   it('drops the Linux-only rename for both spellings of SSH ownership on two hosts', () => {
-    expect(launchCliNameFor(makeRepo({ connectionId: 'm4air' }))).toBe('orca')
-    expect(launchCliNameFor(makeRepo({ executionHostId: 'ssh:openclaw' }))).toBe('orca')
+    expect(launchCliNameFor(makeRepo({ connectionId: 'm4air' }))).toBe('occ')
+    expect(launchCliNameFor(makeRepo({ executionHostId: 'ssh:openclaw' }))).toBe('occ')
   })
 
   it('keeps the Linux rename for a local row carrying a stale connection', () => {
@@ -75,11 +75,11 @@ describe('buildWorktreeStartupForAgent host resolution', () => {
   it('drops the rename for a runtime host reaching a nested SSH target', () => {
     expect(
       launchCliNameFor(makeRepo({ connectionId: 'nested', executionHostId: 'runtime:vm-1' }))
-    ).toBe('orca')
+    ).toBe('occ')
   })
 
   it('uses the headless runtime CLI with no nested SSH target (#33920)', () => {
-    expect(launchCliNameFor(makeRepo({ executionHostId: 'runtime:vm-1' }))).toBe('orca')
+    expect(launchCliNameFor(makeRepo({ executionHostId: 'runtime:vm-1' }))).toBe('occ')
   })
 
   it('uses per-launch arguments and preserves launch telemetry', () => {

@@ -449,7 +449,7 @@ describe('submission and dispatch state machine', () => {
       kind: 'agent' as const,
       senders: [
         {
-          party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: null },
+          party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: null },
           name: 'Coder'
         }
       ],
@@ -498,7 +498,7 @@ describe('submission and dispatch state machine', () => {
       }
       rows.push({
         kind: 'item',
-        itemId: 'orca:cancel-between-sends',
+        itemId: 'occ:cancel-between-sends',
         revision: 1,
         body: { kind: 'status', text: 'Cancelled an earlier turn.' },
         ...base(rows.length + 1)
@@ -666,7 +666,7 @@ describe('bounded item-key collisions', () => {
 
 describe('re-adding a tombstoned row', () => {
   it('builds the rebuilt row above the tombstone that removed it', () => {
-    const identity: AgentJournalItemIdentity = { provider: 'orca', clientMessageId: 'roster' }
+    const identity: AgentJournalItemIdentity = { provider: 'occ', clientMessageId: 'roster' }
     const itemId = agentJournalItemKey(identity)
     const state = createJournalReducerState('session-1', EPOCH)
     applyJournalRow(
@@ -701,7 +701,7 @@ describe('re-adding a tombstoned row', () => {
   })
 
   it('removes the row again after it was re-added', () => {
-    const identity: AgentJournalItemIdentity = { provider: 'orca', clientMessageId: 'roster' }
+    const identity: AgentJournalItemIdentity = { provider: 'occ', clientMessageId: 'roster' }
     const itemId = agentJournalItemKey(identity)
     const state = createJournalReducerState('session-1', EPOCH)
     applyJournalRow(

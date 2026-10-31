@@ -6,7 +6,7 @@ import type * as DurableFileWrite from '../durable-file-write'
 import { JIRA_IMAGE_SCHEME } from '../../shared/jira/jira-attachment-image'
 
 const ORIGINAL_PLATFORM = process.platform
-const ORCA_PROFILE_ID = 'local-default'
+const OCC_PROFILE_ID = 'local-default'
 const RETIRED_PROFILE_ID = '11111111-1111-4111-8111-111111111111'
 
 const mocks = vi.hoisted(() => ({
@@ -127,9 +127,9 @@ vi.mock('../browser/browser-manager', () => ({
     setSiteDisplayController: vi.fn()
   }
 }))
-vi.mock('../orca-profiles/profile-index-store', () => ({
-  ensureActiveOrcaProfile: () => ({
-    profile: { id: ORCA_PROFILE_ID },
+vi.mock('../occ-profiles/profile-index-store', () => ({
+  ensureActiveOCCProfile: () => ({
+    profile: { id: OCC_PROFILE_ID },
     profileDirectory: mocks.profileDirectory,
     dataFile: join(mocks.profileDirectory, 'data.json')
   })
@@ -170,10 +170,10 @@ vi.mock('../ipc/doc-preview-grant-ipc', () => ({ registerDocPreviewGrantHandlers
 
 // Keep registry/startup real through meta load, retired-choice inspection and identity write; stub only surrounding route/policy/cookie machinery.
 vi.mock('../browser/browser-route-session-runtime', () => ({
-  configureRouteSessionsForOrcaProfile: vi.fn()
+  configureRouteSessionsForOCCProfile: vi.fn()
 }))
 vi.mock('../browser/paired-runtime-browser-client-host-runtime', () => ({
-  configurePairedRuntimeBrowserClientHostsForOrcaProfile: vi.fn()
+  configurePairedRuntimeBrowserClientHostsForOCCProfile: vi.fn()
 }))
 vi.mock('../browser/browser-route-partition-storage-runtime', () => ({
   collectOrphanedBrowserRoutePartitionStorage: vi.fn(async () => {})
@@ -238,7 +238,7 @@ import {
   readBrowserIdentityModeRecord
 } from '../browser/browser-identity-mode-record'
 import { BROWSER_SESSION_META_FILE_NAME } from '../browser/browser-session-meta-store'
-import { getOrcaProfileBrowserSessionPartition } from '../../shared/orca-profiles'
+import { getOCCProfileBrowserSessionPartition } from '../../shared/occ-profiles'
 // Transform the ready graph at collection, outside any test timeout; tests re-evaluate it after resetModules.
 import './main-process-ready'
 
@@ -266,7 +266,7 @@ function seedRetiredProfile(): void {
         {
           id: RETIRED_PROFILE_ID,
           scope: 'isolated',
-          partition: getOrcaProfileBrowserSessionPartition(ORCA_PROFILE_ID, RETIRED_PROFILE_ID),
+          partition: getOCCProfileBrowserSessionPartition(OCC_PROFILE_ID, RETIRED_PROFILE_ID),
           label: 'Existing',
           source: null,
           userAgentMode: 'native'
@@ -301,8 +301,8 @@ function identityRecordWrites(): unknown[] {
 
 describe('ready-phase browser identity authority', () => {
   beforeAll(() => {
-    mocks.userDataPath = mkdtempSync(join(tmpdir(), 'orca-ready-identity-'))
-    mocks.profileDirectory = mkdtempSync(join(tmpdir(), 'orca-ready-identity-profile-'))
+    mocks.userDataPath = mkdtempSync(join(tmpdir(), 'occ-ready-identity-'))
+    mocks.profileDirectory = mkdtempSync(join(tmpdir(), 'occ-ready-identity-profile-'))
   })
 
   beforeEach(() => {

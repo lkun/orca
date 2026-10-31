@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { RpcDispatcher } from './dispatcher'
 import { createAgentPromptSubmissionRuntime } from '../agent-prompt-submission-runtime-test-fixture'
 import { settledWriteStub } from '../../providers/settled-pty-write-stub'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import { TERMINAL_METHODS } from './methods/terminal'
 import { createSubscriptionRegistryDouble } from './subscription-registry-test-double'
 import type { RuntimeTerminalWait } from '../../../shared/runtime-types'
@@ -33,7 +33,7 @@ function createRuntime(
   writeGate: () => Promise<void> = async () => {},
   scriptedWrites: ScriptedWrite[] = [],
   sendOptions: unknown[] = []
-): OrcaRuntimeService {
+): OCCRuntimeService {
   const registry = createSubscriptionRegistryDouble()
   return stubRuntime({
     readTerminal: vi.fn().mockResolvedValue({ tail: [], truncated: false }),

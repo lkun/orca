@@ -43,7 +43,7 @@ export class PushObservability {
     this.timer = setInterval(() => {
       const counters = this.consume()
       if (Object.values(counters).every((value) => value === 0)) return
-      console.warn(JSON.stringify({ event: 'orca_push_counters', ...counters }))
+      console.warn(JSON.stringify({ event: 'occ_push_counters', ...counters }))
     }, intervalMs)
     this.timer.unref()
   }

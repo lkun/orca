@@ -17,7 +17,7 @@ afterEach(async () => {
 
 describe('scanAiVaultSessions OMP subagent pruning', () => {
   it('prunes artifact-dir transcripts instead of listing them as sessions', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-omp-prune-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-omp-prune-'))
     tempRoots.push(root)
     const roots = isolatedScanRoots(root)
     const workspaceDir = join(roots.ompSessionsDir, 'home-app-85dfa2f0')
@@ -70,7 +70,7 @@ describe('scanAiVaultSessions OMP subagent pruning', () => {
   })
 
   it('still scans a workspace dir whose name looks like a session stem', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-omp-depth-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-omp-depth-'))
     tempRoots.push(root)
     const roots = isolatedScanRoots(root)
     // Workspace names can resemble session stems; depth 0 must never be pruned.
@@ -100,7 +100,7 @@ describe('scanAiVaultSessions OMP subagent pruning', () => {
   })
 
   it('picks up a task transcript written after the coordinator last changed', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-omp-late-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-omp-late-'))
     tempRoots.push(root)
     const roots = isolatedScanRoots(root)
     const workspaceDir = join(roots.ompSessionsDir, 'home-app-85dfa2f0')

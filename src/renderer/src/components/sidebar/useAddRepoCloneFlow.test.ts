@@ -76,8 +76,8 @@ vi.mock('sonner', () => ({
 function makeRepo(overrides: Partial<Repo> = {}): Repo {
   return {
     id: 'repo-cloned',
-    path: '/srv/orca',
-    displayName: 'orca',
+    path: '/srv/occ',
+    displayName: 'occ',
     badgeColor: '#999999',
     addedAt: 1,
     kind: 'git',
@@ -92,7 +92,7 @@ describe('useAddRepoCloneFlow', () => {
     mocks.stateSetters = []
     mocks.refIndex = 0
     mocks.refValues = []
-    mocks.stateValues = ['https://github.com/stablyai/orca.git', '/srv', false, null, null]
+    mocks.stateValues = ['https://github.com/stablyai/occ.git', '/srv', false, null, null]
     mocks.storeState.repos = []
     mocks.storeState.projects = []
     mocks.storeState.projectHostSetups = []
@@ -109,7 +109,7 @@ describe('useAddRepoCloneFlow', () => {
 
   it('strips Electron IPC wrappers from clone errors', async () => {
     const cloneError =
-      'Clone failed: Destination already exists and is not empty: /srv/orca. Choose a different parent folder, delete the existing folder, or add the existing repository instead.'
+      'Clone failed: Destination already exists and is not empty: /srv/occ. Choose a different parent folder, delete the existing folder, or add the existing repository instead.'
     mocks.cloneLocal.mockRejectedValue(
       new Error(`Error invoking remote method 'repos:clone': Error: ${cloneError}`)
     )
@@ -152,7 +152,7 @@ describe('useAddRepoCloneFlow', () => {
       { kind: 'environment', environmentId: 'env-1' },
       'repo.clone',
       {
-        url: 'https://github.com/stablyai/orca.git',
+        url: 'https://github.com/stablyai/occ.git',
         destination: '/srv'
       },
       { timeoutMs: 10 * 60_000 }

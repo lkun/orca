@@ -6,12 +6,12 @@
 import { createHash } from 'node:crypto'
 import { closeSync, mkdirSync, openSync, readSync, rmSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import type { OrcadMigrationBlobDescriptor } from '../../../shared/orcad-migration/orcad-migration-blob-transfer'
-import { ORCAD_MIGRATION_BLOB_KIND_CONTRACTS } from '../../../shared/orcad-migration/orcad-migration-blob-transfer'
+import type { OCCdMigrationBlobDescriptor } from '../../../shared/occd-migration/occd-migration-blob-transfer'
+import { OCCD_MIGRATION_BLOB_KIND_CONTRACTS } from '../../../shared/occd-migration/occd-migration-blob-transfer'
 import {
-  ORCAD_MIGRATION_TERMINAL_HISTORY_VERSION,
-  type OrcadMigrationTerminalHistoryDocument
-} from '../../../shared/orcad-migration/orcad-migration-terminal-history'
+  OCCD_MIGRATION_TERMINAL_HISTORY_VERSION,
+  type OCCdMigrationTerminalHistoryDocument
+} from '../../../shared/occd-migration/occd-migration-terminal-history'
 import { isTerminalLeafId, makePaneKey, parsePaneKey } from '../../../shared/stable-pane-id'
 import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
 import type { WslMoveRequest } from '../../../shared/wsl-move/wsl-move-driver-types'
@@ -19,8 +19,8 @@ import { parsePtySessionId } from '../../../shared/pty-session-id-format'
 import { collectLeafIds } from '../../../shared/terminal-pane-layout-tree'
 import type { ColdRestoreInfo } from '../../daemon/history-reader'
 import type { TerminalCheckpointFile } from '../../daemon/types'
-import type { OrcadMigrationBlobSource } from '../../ssh/orcad-migration-blob-coordinator'
-import { orcadMigrationTerminalHistoryKey } from '../migrating-orcad-catalog/orcad-terminal-history-installer'
+import type { OCCdMigrationBlobSource } from '../../ssh/occd-migration-blob-coordinator'
+import { occdMigrationTerminalHistoryKey } from '../migrating-occd-catalog/occd-terminal-history-installer'
 import type { WslMoveDriverDeps } from './wsl-move-driver-ports'
 import {
   wslMoveHostLinuxCwd,
@@ -40,7 +40,7 @@ export type WslMoveSleptScrollback = {
 }
 
 export const WSL_MOVE_SLEPT_SPOOL_DIR = 'wsl-move-slept-scrollback'
-const MAX_HISTORY_BYTES = ORCAD_MIGRATION_BLOB_KIND_CONTRACTS['terminal-history'].maxBytes
+const MAX_HISTORY_BYTES = OCCD_MIGRATION_BLOB_KIND_CONTRACTS['terminal-history'].maxBytes
 
 export function emptyWslMoveSleptScrollback(): WslMoveSleptScrollback {
   return { buffers: new Map(), problems: [], dispose: () => {} }
@@ -113,18 +113,18 @@ export function wslMoveTerminalHistoryBlobs(
     }
   }
 ): {
-  descriptors: OrcadMigrationBlobDescriptor[]
-  source: OrcadMigrationBlobSource
+  descriptors: OCCdMigrationBlobDescriptor[]
+  source: OCCdMigrationBlobSource
 } {
   const byKey = new Map<string, WslMoveSleptBuffer>()
-  const descriptors: OrcadMigrationBlobDescriptor[] = []
+  const descriptors: OCCdMigrationBlobDescriptor[] = []
   const layouts = manifest.payload.dormantState?.workspaceSession?.terminalLayoutsByTabId ?? {}
   for (const [paneKey, entry] of slept.buffers) {
     const pane = parsePaneKey(paneKey)
     if (!pane || !collectLeafIds(layouts[pane.tabId]?.root).includes(pane.leafId)) {
       continue
     }
-    const key = orcadMigrationTerminalHistoryKey(paneKey)
+    const key = occdMigrationTerminalHistoryKey(paneKey)
     byKey.set(key, entry)
     descriptors.push({
       blobKind: 'terminal-history',
@@ -139,7 +139,7 @@ export function wslMoveTerminalHistoryBlobs(
       readChunk: async (requested, offset, maxBytes) => {
         const entry = byKey.get(requested.key)
         if (!entry || entry.sha256 !== requested.sha256) {
-          throw new Error(`orcad_migration_source_blob_changed:${requested.blobKind}`)
+          throw new Error(`occd_migration_source_blob_changed:${requested.blobKind}`)
         }
         const length = Math.max(0, Math.min(maxBytes, entry.byteLength - offset))
         const chunk = Buffer.alloc(length)
@@ -200,8 +200,8 @@ export async function readWslMoveSleptScrollbackFromHistory(
       }
       const shellCwd = pane.shellCwd && /^\/(?!\/)/.test(pane.shellCwd) ? pane.shellCwd : null
       const cwd = shellCwd ?? wslMoveHostLinuxCwd(detection.restoreInfo.cwd, pane, distro)
-      const document: OrcadMigrationTerminalHistoryDocument = {
-        version: ORCAD_MIGRATION_TERMINAL_HISTORY_VERSION,
+      const document: OCCdMigrationTerminalHistoryDocument = {
+        version: OCCD_MIGRATION_TERMINAL_HISTORY_VERSION,
         paneKey: pane.paneKey,
         cwd,
         cols: detection.restoreInfo.cols,

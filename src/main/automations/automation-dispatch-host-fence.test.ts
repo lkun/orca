@@ -11,8 +11,8 @@ import type { Store } from '../persistence'
 import { resolveAutomationRunTarget } from './run-target-resolution'
 import { AutomationService } from './service'
 import { closeTestStores, createStore, testState } from '../persistence/persistence-test-harness'
-import { writeOrcadMigrationSourceCutover } from '../ssh/orcad-migration-cutover-journal'
-import { orcadMigrationCutoverFixture } from '../ssh/orcad-migration-cutover-fixture'
+import { writeOCCdMigrationSourceCutover } from '../ssh/occd-migration-cutover-journal'
+import { occdMigrationCutoverFixture } from '../ssh/occd-migration-cutover-fixture'
 
 vi.mock('electron', () => ({
   app: {
@@ -40,7 +40,7 @@ function sshTarget(generation: number | undefined): SshTarget {
     label: 'devbox',
     host: 'devbox.internal',
     port: 22,
-    username: 'orca',
+    username: 'occ',
     ...(generation === undefined ? {} : { generation })
   }
 }
@@ -151,7 +151,7 @@ async function evaluateAt(
 
 describe('scheduled dispatch fenced on the host the record captured', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-dispatch-fence-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-dispatch-fence-test-'))
     vi.useFakeTimers()
   })
 
@@ -309,7 +309,7 @@ describe('scheduled dispatch fenced on the host the record captured', () => {
     const store = await createStore()
     const automation = seedSshAutomation(store)
     const { service, send } = attachedService(store)
-    store.updateSshTarget(TARGET_ID, { orcadFence: { environmentId: 'env-1' } })
+    store.updateSshTarget(TARGET_ID, { occdFence: { environmentId: 'env-1' } })
     const before = store.listAutomations()[0]
 
     vi.setSystemTime(new Date('2026-05-13T09:01:00'))
@@ -324,7 +324,7 @@ describe('scheduled dispatch fenced on the host the record captured', () => {
     expect(store.listAutomationRuns(automation.id)).toEqual([])
     expect(store.listAutomations()[0]).toEqual(before)
 
-    store.updateSshTarget(TARGET_ID, { orcadFence: undefined })
+    store.updateSshTarget(TARGET_ID, { occdFence: undefined })
     await evaluateAt(store, service, automation.id, '2026-05-13T09:02:00')
 
     expect(send).toHaveBeenCalledWith('automations:dispatchRequested', expect.anything())
@@ -335,11 +335,11 @@ describe('scheduled dispatch fenced on the host the record captured', () => {
     const store = await createStore()
     const automation = seedSshAutomation(store)
     const { service, send } = attachedService(store)
-    writeOrcadMigrationSourceCutover(testState.dir, {
-      ...orcadMigrationCutoverFixture('m-1', TARGET_ID, { generation: 1 }),
+    writeOCCdMigrationSourceCutover(testState.dir, {
+      ...occdMigrationCutoverFixture('m-1', TARGET_ID, { generation: 1 }),
       phase: 'destination-committed'
     })
-    store.updateSshTarget(TARGET_ID, { orcadFence: { environmentId: 'env-1' } })
+    store.updateSshTarget(TARGET_ID, { occdFence: { environmentId: 'env-1' } })
 
     await evaluateAt(store, service, automation.id, '2026-05-13T09:01:00')
 

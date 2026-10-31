@@ -1,11 +1,11 @@
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { requireWorkerAuthority } from './worker-topology'
 
 /** Record created PTY custody before boot so user input can revoke ownership before worker-release cleanup.
  * Dispatch authority still waits for readiness; reused caller panes and structured sessions have no custody gap. */
 export function recordCreatedWorkerTerminalCustody(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   stage: { db: OrchestrationDb; dispatchId: string; worktreeId: string; terminalHandle: string },
   created: boolean
 ): void {

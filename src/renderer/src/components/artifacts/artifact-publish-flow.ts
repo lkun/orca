@@ -102,14 +102,14 @@ export async function publishArtifactFromSurface(
 
 async function ensureArtifactAccountConnected(): Promise<boolean> {
   const state = useAppStore.getState()
-  if (state.orcaProfileAuthStatus?.state === 'connected') {
+  if (state.occProfileAuthStatus?.state === 'connected') {
     return true
   }
-  return (await state.connectCurrentOrcaProfile())?.status === 'connected'
+  return (await state.connectCurrentOCCProfile())?.status === 'connected'
 }
 
 async function reconnectArtifactAccount(): Promise<boolean> {
-  return (await useAppStore.getState().connectCurrentOrcaProfile())?.status === 'connected'
+  return (await useAppStore.getState().connectCurrentOCCProfile())?.status === 'connected'
 }
 
 function showArtifactPublishedToast(result: ArtifactPublishResult): void {

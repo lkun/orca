@@ -50,7 +50,7 @@ it.skipIf(!durablePushTestDatabaseUrl)(
     )
     expect(rows.map((row) => row.indexname)).toEqual(QUEUE_INDEXES)
     const events = warnings.map((line) => JSON.parse(line).event)
-    expect(events).toContain('orca_push_postgres_schema_retry')
-    expect(events).not.toContain('orca_push_postgres_schema_object_deferred')
+    expect(events).toContain('occ_push_postgres_schema_retry')
+    expect(events).not.toContain('occ_push_postgres_schema_object_deferred')
   }
 )

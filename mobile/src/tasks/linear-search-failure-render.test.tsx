@@ -182,7 +182,7 @@ vi.mock('./mobile-tasks-workspace-option-pickers', () => ({
 vi.mock('./mobile-tasks-workspace-trust-drawers', () => ({
   renderMobileTasksWorkspaceSparseDrawer: () => null,
   renderMobileTasksSetupTrustDrawer: () => null,
-  renderMobileTasksOrcaYamlTrustDrawer: () => null
+  renderMobileTasksOCCYamlTrustDrawer: () => null
 }))
 vi.mock('./mobile-tasks-project-detail-drawer', () => ({
   renderMobileTasksProjectMissingRepoDrawer: () => null,

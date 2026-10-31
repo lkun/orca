@@ -38,7 +38,7 @@ export type PrepareEphemeralVmWorkspaceTargetResult =
       ok: true
       setup: ProjectHostSetupResult
       runtimeId: string
-      checkoutMode: 'orca-worktree' | 'provisioned-root'
+      checkoutMode: 'occ-worktree' | 'provisioned-root'
       environmentId?: string
       expectedRefHead?: string
       stderr: string
@@ -167,7 +167,7 @@ function recipeWorkspaceHost(provisioned: ProvisionedVm): {
   hostId: ExecutionHostId
   environmentId?: string
 } {
-  if (provisioned.connectionType === 'orca-server') {
+  if (provisioned.connectionType === 'occ-server') {
     const environmentId = provisioned.environment.id
     return { hostId: toRuntimeExecutionHostId(environmentId), environmentId }
   }

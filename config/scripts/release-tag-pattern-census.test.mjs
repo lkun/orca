@@ -63,11 +63,11 @@ const DESKTOP_ONLY_PROOFS = {
       vi.fn(async () => new Response(JSON.stringify(releases)))
     )
     await expect(
-      verifyRequiredReleaseAssets({ repo: 'stablyai/orca', tag: 'v1.4.1', token: '' })
+      verifyRequiredReleaseAssets({ repo: 'stablyai/occ', tag: 'v1.4.1', token: '' })
     ).rejects.toThrow('was not found')
     releases.push({ tag_name: 'v1.4.1', assets: [] })
     await expect(
-      verifyRequiredReleaseAssets({ repo: 'stablyai/orca', tag: 'v1.4.1', token: '' })
+      verifyRequiredReleaseAssets({ repo: 'stablyai/occ', tag: 'v1.4.1', token: '' })
     ).rejects.toThrow('Release v1.4.1 is missing required assets.')
   }
 }

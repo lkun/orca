@@ -3,7 +3,7 @@ import type {
   PipedChildProcess,
   PipedProcessSpawner,
   PipedProcessSpec
-} from '@orca/process-host/process-spec'
+} from '@occ/process-host/process-spec'
 import { ownRetainedString } from '../../shared/own-retained-string'
 
 export type RuntimeChildProcess = PipedChildProcess

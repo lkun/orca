@@ -39,7 +39,7 @@ const turnEnd = {
 
 beforeEach(() => {
   vi.useFakeTimers()
-  userDataPath = mkdtempSync(join(tmpdir(), 'orca-connector-cloud-'))
+  userDataPath = mkdtempSync(join(tmpdir(), 'occ-connector-cloud-'))
   outbox = join(userDataPath, 'connector-turn-outbox.json')
   fake = new FakeConnectorCloud()
   enabled = true

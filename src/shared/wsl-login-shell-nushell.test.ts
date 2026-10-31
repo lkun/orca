@@ -6,7 +6,7 @@ import { afterAll, describe, expect, it } from 'vitest'
 import { buildWslInteractiveLoginShellCommand } from './wsl-login-shell-command'
 
 // A stub nu that echoes its argv and the config-related environment it was started with.
-const root = mkdtempSync(join(tmpdir(), 'orca-wsl-nu-'))
+const root = mkdtempSync(join(tmpdir(), 'occ-wsl-nu-'))
 const tools = join(root, 'tools')
 const nu = join(root, 'bin', 'nu')
 mkdirSync(tools)

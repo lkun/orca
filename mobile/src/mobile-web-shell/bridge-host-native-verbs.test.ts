@@ -334,7 +334,7 @@ describe('grants scoped to the route the page was opened for', () => {
       { name: 'externalLink', url: 'https://example.com/' },
       { name: 'navigate', href: '/h/host-a/session/wt-1' },
       { name: 'navigate-back' },
-      { name: 'storage', key: 'orca:pins:host-a', value: '["wt-1"]' }
+      { name: 'storage', key: 'occ:pins:host-a', value: '["wt-1"]' }
     ]
     for (const frame of frames) {
       bridge.host.receive(clientFrame({ type: 'notify', ...frame }))

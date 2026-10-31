@@ -1,6 +1,6 @@
 /** R39: each ready control socket to a WSL host says which OCC installation it belongs to. */
 import { getAppEnvironment } from '../../shared/app-environment'
-import { ORCAD_DECLARE_CLIENT_METHOD } from '../../shared/orcad-peer-desktops-contract'
+import { OCCD_DECLARE_CLIENT_METHOD } from '../../shared/occd-peer-desktops-contract'
 import { resolveEnvironment } from '../../shared/runtime-environment-store'
 import type { RuntimeRpcResponse } from '../../shared/runtime-rpc-envelope'
 import { wslHostClientInstanceId } from './wsl-host-client-instance'
@@ -23,7 +23,7 @@ export function declareWslHostClient(
     return
   }
   void request(
-    ORCAD_DECLARE_CLIENT_METHOD,
+    OCCD_DECLARE_CLIENT_METHOD,
     { clientInstanceId: wslHostClientInstanceId() },
     DECLARE_TIMEOUT_MS
   )
@@ -41,7 +41,7 @@ export function declareWslHostClient(
 function isWslHostEnvironment(environmentId: string): boolean {
   try {
     const environment = resolveEnvironment(getAppEnvironment().getPath('userData'), environmentId)
-    return environment.orcadDeployment?.kind === 'wsl'
+    return environment.occdDeployment?.kind === 'wsl'
   } catch {
     return false
   }

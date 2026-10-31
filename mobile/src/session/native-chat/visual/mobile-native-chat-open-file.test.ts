@@ -75,13 +75,13 @@ describe('openMobileNativeChatFileTap', () => {
       ok({
         worktree: 'wt-1',
         relativePath: null,
-        absolutePath: '/Users/ada/orca-plans/result.html',
+        absolutePath: '/Users/ada/occ-plans/result.html',
         exists: true,
         isDirectory: false,
         openTarget: {
           kind: 'absolute-file',
           provider: 'local',
-          absolutePath: '/Users/ada/orca-plans/result.html',
+          absolutePath: '/Users/ada/occ-plans/result.html',
           grantId: 'grant-1',
           readOnly: true
         }
@@ -91,7 +91,7 @@ describe('openMobileNativeChatFileTap', () => {
 
     openMobileNativeChatFileTap({
       ...options,
-      pathText: '~/orca-plans/result.html',
+      pathText: '~/occ-plans/result.html',
       nativeChatContext: { tabId: 'tab-1', sessionId: 'session-1' }
     })
     await settle()
@@ -100,7 +100,7 @@ describe('openMobileNativeChatFileTap', () => {
       'files.resolveTerminalPath',
       {
         worktree: 'id:wt-1',
-        pathText: '~/orca-plans/result.html',
+        pathText: '~/occ-plans/result.html',
         crossWorkspace: true,
         nativeChatContext: { tabId: 'tab-1', sessionId: 'session-1' }
       },
@@ -110,7 +110,7 @@ describe('openMobileNativeChatFileTap', () => {
       pathname: '/h/[hostId]/files/preview/[worktreeId]',
       params: expect.objectContaining({
         source: 'terminalArtifact',
-        absolutePath: '/Users/ada/orca-plans/result.html',
+        absolutePath: '/Users/ada/occ-plans/result.html',
         grantId: 'grant-1',
         nativeChatTab: 'tab-1',
         nativeChatSession: 'session-1'

@@ -20,11 +20,11 @@ import {
   listLiveDaemonSessions
 } from '../daemon/daemon-provider-state'
 import { HistoryReader } from '../daemon/history-reader'
-import { orcadMigrationDestinationFor } from '../managed-server/lifecycle/orcad-runtime-conversion-wiring'
+import { occdMigrationDestinationFor } from '../managed-server/lifecycle/occd-runtime-conversion-wiring'
 import type { Store } from '../persistence'
 import { exportWslMoveManifest } from '../persistence/moving-wsl-projects/wsl-move-manifest-export'
 import { ensureWslMoveDestinationBrowserLogins } from '../persistence/moving-wsl-projects/wsl-move-browser-cookie-copy'
-import { activeBrowserRoutePartitionOrcaProfileId } from '../browser/browser-route-partition-binding-runtime'
+import { activeBrowserRoutePartitionOCCProfileId } from '../browser/browser-route-partition-binding-runtime'
 import { wslHostBrowserRouteStorage } from '../browser/wsl-host-browser-route-partition'
 import { runGatedWslMoveDesktopRewritePass } from '../persistence/moving-wsl-projects/wsl-move-desktop-rewrite'
 import type {
@@ -59,7 +59,7 @@ import {
 } from '../persistence/moving-wsl-projects/wsl-move-scope-guard'
 import { buildWslMoveShellHistoryBlobs } from '../persistence/moving-wsl-projects/wsl-move-shell-history-blobs'
 import { inspectPtyProviderProcessForRenderer } from '../providers/pty-process-inspection'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { getTrustedUIRendererWebContents, getTrustedUIRendererWindow } from './ui'
 import { registerWslMoveHandlers } from './wsl-move-handlers'
 import { registerWslMoveOrchestrator } from './wsl-move-orchestrator-wiring'
@@ -68,22 +68,22 @@ import { connectWslMoveHostService, type WslMoveHostConnectMode } from './wsl-mo
 import { wslMoveReloadableWindow } from './wsl-move-reloadable-window'
 import { setWslMoveReloadableWindow } from '../persistence/moving-wsl-projects/wsl-move-window-write-hold'
 import {
-  commitRemoteOrcadMigrationCatalog,
-  listRemoteOrcadRepositories,
-  stageRemoteOrcadMigrationBlobChunk
-} from '../ssh/orcad-migration-catalog-client'
-import { listRemoteOrcadFolderCatalog } from '../ssh/orcad-server-folder-workspaces'
+  commitRemoteOCCdMigrationCatalog,
+  listRemoteOCCdRepositories,
+  stageRemoteOCCdMigrationBlobChunk
+} from '../ssh/occd-migration-catalog-client'
+import { listRemoteOCCdFolderCatalog } from '../ssh/occd-server-folder-workspaces'
 import { makeTerminalScrollbackSnapshotRef } from '../terminal-scrollback-snapshots'
 import { pauseWorkspacesForProjectMove } from '../window/project-move-pause'
 import { getWslHostService } from '../wsl/wsl-host-service-instance'
 import { readWslGuestProcessTable } from '../wsl/wsl-guest-process-table'
 import { isWslDistroRegistered } from '../wsl/wsl-distro-registry-id'
-import { defaultWslOrcadEnvironmentId } from '../wsl/wsl-orcad-deploy'
+import { defaultWslOCCdEnvironmentId } from '../wsl/wsl-occd-deploy'
 import { ptyPaneKey } from './pty/pane/key-state'
 import { tryGetProviderForPty } from './pty/provider/registry'
 import { getRuntimeEnvironmentStatus } from './runtime-environments/runtime-environment-status-probe'
 /** The move's IPC handlers; its driver reads every move dependency from this module. */
-export function registerWslMoveWiring(store: Store, runtime: OrcaRuntimeService): void {
+export function registerWslMoveWiring(store: Store, runtime: OCCRuntimeService): void {
   setWslMoveReloadableWindow(() => {
     const contents = getTrustedUIRendererWebContents()
     return contents && wslMoveReloadableWindow(contents)
@@ -118,7 +118,7 @@ async function readWslMovePaneShellCwds(
 
 export function createWslMoveDriverDeps(
   store: Store,
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   hostConnect: WslMoveHostConnectMode
 ): WslMoveDriverDeps {
   const userDataPath = app.getPath('userData')
@@ -247,14 +247,14 @@ async function connectWslMoveHost(
   mode: WslMoveHostConnectMode
 ): Promise<WslMoveHost | null> {
   const service = getWslHostService()
-  const environmentId = defaultWslOrcadEnvironmentId(distro)
+  const environmentId = defaultWslOCCdEnvironmentId(distro)
   if (!service || !(await connectWslMoveHostService(service, userDataPath, distro, mode))) {
     return null
   }
   const { environment, notCarried } = ensureWslMoveDestinationBrowserLogins({
     resolveEnvironment: () => resolveEnvironment(userDataPath, environmentId),
     resaveConnection: () => service.resaveConnection(environmentId),
-    orcaProfileId: activeBrowserRoutePartitionOrcaProfileId,
+    occProfileId: activeBrowserRoutePartitionOCCProfileId,
     resolveHostStorage: wslHostBrowserRouteStorage
   })
   const status = await getRuntimeEnvironmentStatus(userDataPath, environmentId)
@@ -270,16 +270,16 @@ async function connectWslMoveHost(
     ...(distroGuid ? { distroGuid } : {}),
     capabilities: status.result.capabilities ?? [],
     ...(notCarried ? { browserLoginsNotCarried: notCarried } : {}),
-    catalog: orcadMigrationDestinationFor(environment),
+    catalog: occdMigrationDestinationFor(environment),
     commitWithBlobs: (manifest, expectedBlobs) =>
-      commitRemoteOrcadMigrationCatalog(pairingCode, manifest, { ...options, expectedBlobs }),
+      commitRemoteOCCdMigrationCatalog(pairingCode, manifest, { ...options, expectedBlobs }),
     blobs: {
-      stageChunk: (request) => stageRemoteOrcadMigrationBlobChunk(pairingCode, request, options)
+      stageChunk: (request) => stageRemoteOCCdMigrationBlobChunk(pairingCode, request, options)
     },
     readHolding: async () => {
       const [repositories, folders] = await Promise.all([
-        listRemoteOrcadRepositories(pairingCode, options),
-        listRemoteOrcadFolderCatalog(pairingCode, options)
+        listRemoteOCCdRepositories(pairingCode, options),
+        listRemoteOCCdFolderCatalog(pairingCode, options)
       ])
       return {
         repoIds: repositories.map((repo) => repo.id),

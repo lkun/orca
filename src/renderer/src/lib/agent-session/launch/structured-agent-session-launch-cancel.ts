@@ -1,7 +1,7 @@
 import { retireStructuredAgentSessionReadOwner } from '@/components/native-chat/structured-agent-session-read-owner-registry'
 import { structuredAgentSessionTargetForHost } from '@/runtime/structured-agent-session-owner'
 import { LOCAL_EXECUTION_HOST_ID, type ExecutionHostId } from '../../../../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import { markStructuredAgentLaunchCancellation } from '../../launch-cancel-tombstones-compat/structured-agent-session-launch-cancellation'
 import { cancelStructuredAgentLaunchOnLocalHost } from '../../structured-agent-session-local-launch-cancel'
 import { forgetStructuredSessionSelection } from '../../structured-agent-session-selection-controller'
@@ -32,7 +32,7 @@ function markStructuredAgentSessionLaunchCancelledInternal(
   const target = matchingState?.intent.target ?? structuredAgentSessionTargetForHost(host)
   if (state?.intent.worktreeId === worktreeId) {
     // The launch's own owner outranks the caller's: it is the host the create was sent to.
-    if (ORCA_LAYOUT_OWNER_IS_MAIN && state.intent.executionHostId === LOCAL_EXECUTION_HOST_ID) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN && state.intent.executionHostId === LOCAL_EXECUTION_HOST_ID) {
       cancelStructuredAgentLaunchOnLocalHost(worktreeId, sessionId)
     } else {
       markStructuredAgentLaunchCancellation(
@@ -48,7 +48,7 @@ function markStructuredAgentSessionLaunchCancelledInternal(
     // Tombstones remain durable authority; drop in-memory dead promises so bulk closes cannot retain them all session.
     deleteStructuredLaunchStateIfCurrent(state)
   } else if (
-    ORCA_LAYOUT_OWNER_IS_MAIN &&
+    OCC_LAYOUT_OWNER_IS_MAIN &&
     !alreadyCancelled &&
     executionHostId === LOCAL_EXECUTION_HOST_ID
   ) {

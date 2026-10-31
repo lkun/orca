@@ -89,7 +89,7 @@ import { buildHydratedTabState } from '@/store/slices/tabs-hydration'
 import { makeWorktree } from '@/store/slices/worktrees-slice-test-fixtures'
 import type { RuntimeMobileSessionTabsResult } from '../../../../shared/runtime-types'
 import { useAppStore } from '@/store'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 import { runCliChatResume } from './cli-chat-resume-run'
 import { toWebTerminalSurfaceTabId } from '../../../../shared/terminal-surface-id'
@@ -551,7 +551,7 @@ describe('CLI identity resume through the existing launch owner', () => {
     const slotId = `structured-agent-session-${sessionId}`
     expect(tabs().find((tab) => tab.entityId === sessionId)?.id).toBe(slotId)
     expect(useAppStore.getState().groupsByWorktree['wt-1'][0].tabOrder.at(-1)).toBe(slotId)
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       expect(layoutApplyTestTransport.sentOfType('openAgentSessionTab')).toEqual([
         expect.objectContaining({ tabId: slotId, sessionId, afterTabId: browser.id })
       ])

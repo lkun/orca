@@ -1,6 +1,6 @@
 import type { BrowserSlice, BrowserSliceGet, BrowserSliceSet } from './browser-slice-contract'
 import type { AppState } from '../../types'
-import { ORCA_BROWSER_BLANK_URL } from '../../../../../shared/constants'
+import { OCC_BROWSER_BLANK_URL } from '../../../../../shared/constants'
 import {
   browserWorkspaceMirrorFieldsEqual,
   findPage,
@@ -168,7 +168,7 @@ export function createBrowserPageStateActions(
 
     setBrowserPageUrl: (pageId, url, options) => {
       const nextUrl = normalizeUrl(url)
-      if (nextUrl !== 'about:blank' && nextUrl !== ORCA_BROWSER_BLANK_URL) {
+      if (nextUrl !== 'about:blank' && nextUrl !== OCC_BROWSER_BLANK_URL) {
         const currentPage = findPage(get().browserPagesByWorkspace, pageId)
         if (currentPage) {
           get().recordFeatureInteraction?.('browser')
@@ -184,7 +184,7 @@ export function createBrowserPageStateActions(
           return s
         }
         // Keep document URL blank at navigation sink too; committing grants here leaks to persistence, publication and address bar.
-        const nextPageUrl = page.docLocation ? ORCA_BROWSER_BLANK_URL : nextUrl
+        const nextPageUrl = page.docLocation ? OCC_BROWSER_BLANK_URL : nextUrl
         const nextPages = (s.browserPagesByWorkspace[workspace.id] ?? []).map((entry) =>
           entry.id === pageId
             ? {

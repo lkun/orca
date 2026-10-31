@@ -1,5 +1,5 @@
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
-import type { OrcaSessionId } from '../../../../../../shared/orca-session-address'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
+import type { OCCSessionId } from '../../../../../../shared/occ-session-address'
 import {
   chatAssigneeSessionId,
   observeChatAssignee,
@@ -23,7 +23,7 @@ export type SessionWorkerObservation = {
 
 /** Read session records for structured/chat workers; null selects the PTY path. */
 export async function inspectSessionWorker(
-  runtime: Pick<OrcaRuntimeService, 'ensureStructuredAgentSessionHost'>,
+  runtime: Pick<OCCRuntimeService, 'ensureStructuredAgentSessionHost'>,
   db: OrchestrationDb,
   dispatchId: string,
   terminalHandle: string
@@ -71,10 +71,10 @@ export async function inspectSessionWorker(
 
 /** A fleet page's chat verdicts, read off the session records a restart leaves uninstalled. */
 export async function chatAssigneeObserver(
-  runtime: Pick<OrcaRuntimeService, 'ensureStructuredAgentSessionHost'>,
+  runtime: Pick<OCCRuntimeService, 'ensureStructuredAgentSessionHost'>,
   db: OrchestrationDb,
   rows: readonly { agentTerminalHandle: string | null }[]
-): Promise<(sessionId: OrcaSessionId) => ChatAssigneeObservation> {
+): Promise<(sessionId: OCCSessionId) => ChatAssigneeObservation> {
   if (rows.some((row) => chatAssigneeSessionId(row.agentTerminalHandle))) {
     await runtime.ensureStructuredAgentSessionHost().catch(() => undefined)
   }

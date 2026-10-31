@@ -16,11 +16,11 @@ import {
 
 const resolveHelperAppPathMock = vi.hoisted(() => vi.fn())
 const resolveHelperExecutablePathMock = vi.hoisted(() => vi.fn())
-const permissionStatusTempDir = '/tmp/orca-computer-use-permissions-test'
+const permissionStatusTempDir = '/tmp/occ-computer-use-permissions-test'
 const helperAppPath = '/Applications/OCC Computer Use.app'
 const helperInfoPlistPath = join(helperAppPath, 'Contents', 'Info.plist')
 
-const plistBuddyStdout = vi.hoisted(() => ({ value: 'com.example.orca.computer-use\n' }))
+const plistBuddyStdout = vi.hoisted(() => ({ value: 'com.example.occ.computer-use\n' }))
 let monotonicOffset = 0
 const gate = vi.hoisted((): { current: PermissionStatusGate | null } => ({ current: null }))
 
@@ -72,7 +72,7 @@ describe('openComputerUsePermissions', () => {
     resolveHelperAppPathMock.mockReset()
     resolveHelperExecutablePathMock.mockReset()
     resolveHelperExecutablePathMock.mockReturnValue(
-      '/Applications/OCC Computer Use.app/Contents/MacOS/orca-computer-use-macos'
+      '/Applications/OCC Computer Use.app/Contents/MacOS/occ-computer-use-macos'
     )
     vi.mocked(mkdtemp).mockResolvedValue(permissionStatusTempDir)
     vi.mocked(stat).mockResolvedValue({} as Awaited<ReturnType<typeof stat>>)
@@ -130,12 +130,12 @@ describe('openComputerUsePermissions', () => {
     })
     expect(spawnSync).toHaveBeenCalledWith(
       '/usr/bin/pkill',
-      ['-f', 'orca-computer-use-macos[[:space:]]+--permission([[:space:]]|$)'],
+      ['-f', 'occ-computer-use-macos[[:space:]]+--permission([[:space:]]|$)'],
       { stdio: 'ignore' }
     )
     expect(spawnSync).toHaveBeenCalledWith(
       '/usr/bin/pkill',
-      ['-f', 'orca-computer-use-macos[[:space:]]+--permissions([[:space:]]|$)'],
+      ['-f', 'occ-computer-use-macos[[:space:]]+--permissions([[:space:]]|$)'],
       { stdio: 'ignore' }
     )
     expect(spawn).toHaveBeenCalledWith(
@@ -224,7 +224,7 @@ describe('openComputerUsePermissions', () => {
     resolveHelperExecutablePathMock.mockReturnValue(null)
 
     await expect(openComputerUsePermissions('accessibility')).rejects.toThrow(
-      '/Applications/OCC Computer Use.app/Contents/MacOS/orca-computer-use-macos was not found'
+      '/Applications/OCC Computer Use.app/Contents/MacOS/occ-computer-use-macos was not found'
     )
   })
 
@@ -239,7 +239,7 @@ describe('openComputerUsePermissions', () => {
       platform: 'darwin',
       helperAppPath: '/Applications/OCC Computer Use.app',
       helperUnavailableReason: null,
-      bundleId: 'com.example.orca.computer-use',
+      bundleId: 'com.example.occ.computer-use',
       permissions: [
         { id: 'accessibility', status: 'not-granted' },
         { id: 'screenshots', status: 'not-granted' }
@@ -253,12 +253,12 @@ describe('openComputerUsePermissions', () => {
     )
     expect(spawn).toHaveBeenCalledWith(
       '/usr/bin/tccutil',
-      ['reset', 'Accessibility', 'com.example.orca.computer-use'],
+      ['reset', 'Accessibility', 'com.example.occ.computer-use'],
       throughChokepoint
     )
     expect(spawn).toHaveBeenCalledWith(
       '/usr/bin/tccutil',
-      ['reset', 'ScreenCapture', 'com.example.orca.computer-use'],
+      ['reset', 'ScreenCapture', 'com.example.occ.computer-use'],
       throughChokepoint
     )
     // Keep resets asynchronous so helper commands cannot block the main process.
@@ -282,7 +282,7 @@ describe('setup helper launch window', () => {
     vi.mocked(stat).mockResolvedValue({} as Awaited<ReturnType<typeof stat>>)
     resolveHelperAppPathMock.mockReturnValue(helperAppPath)
     resolveHelperExecutablePathMock.mockReturnValue(
-      `${helperAppPath}/Contents/MacOS/orca-computer-use-macos`
+      `${helperAppPath}/Contents/MacOS/occ-computer-use-macos`
     )
     mockPermissionStatus('{"accessibility":"not-granted","screenshots":"not-granted"}')
     setPlatform('darwin')

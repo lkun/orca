@@ -7,8 +7,8 @@ import type { BridgePageGeometry } from './bridge/bridge-page-geometry'
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import type {
   MobileWebShellBridgeMessagePayload,
-  OrcaMobileWebShellViewHandle
-} from '../../modules/orca-mobile-web-shell/src'
+  OCCMobileWebShellViewHandle
+} from '../../modules/occ-mobile-web-shell/src'
 import { useHostClient } from '../transport/host-client-hooks'
 import { createBridgeDiagnosticReporter } from './bridge-diagnostic-log'
 import { bridgeDiagnosticLine, frameWithoutHostLine } from './shell-bridge-log-lines'
@@ -22,7 +22,7 @@ import { createBridgeHost, type BridgeHost } from './bridge-host'
 import type { BridgeSessionBack } from './bridge-host-back'
 import type { BridgeNavigateBackOutcome } from './bridge-host-contract'
 import type { BridgeNativeVerb } from './bridge/bridge-native-verbs'
-import type { BridgeErrorCapture } from './bridge/bridge-error-capture'
+import type { BridgeErroccpture } from './bridge/bridge-error-capture'
 import type { MobileWebShellSessionState } from './mobile-web-shell-session-contract'
 import type { PageHostSnapshot } from './use-page-host-snapshot'
 import type { PageStorageForInit } from './page-storage-keys'
@@ -35,7 +35,7 @@ class BridgeViewGoneError extends Error {
 }
 
 // Stamp both refs with their session: React attaches replacement refs before retired cleanup, which must not post teardown frames into the new page.
-type MountedView = { sessionId: string; handle: OrcaMobileWebShellViewHandle }
+type MountedView = { sessionId: string; handle: OCCMobileWebShellViewHandle }
 type MountedHost = { sessionId: string; host: BridgeHost }
 type EstablishedBack = { sessionId: string; back: BridgeSessionBack }
 
@@ -46,7 +46,7 @@ export type MobileWebShellBridgeMessageEvent = {
 export type MobileWebShellBridgeView = {
   // Keep bridgeEnabled tied to ready, not client arrival: toggling it reloads native. Without a client, let the page retry ready until a host can answer.
   readonly bridgeEnabled: boolean
-  readonly viewRef: (handle: OrcaMobileWebShellViewHandle | null) => void
+  readonly viewRef: (handle: OCCMobileWebShellViewHandle | null) => void
   readonly onBridgeMessage: (event: MobileWebShellBridgeMessageEvent) => void
   /**
    * Hands the mounted host a rewritten route for the screen it is already serving. Dropped when
@@ -99,7 +99,7 @@ export type MobileWebShellBridgeArgs = {
   snapshot: PageHostSnapshot | null
   readStorage: () => PageStorageForInit
   onStorageWrite: (key: string, value: string | null) => void
-  onPageFault: (error: BridgeErrorCapture) => void
+  onPageFault: (error: BridgeErroccpture) => void
   onPageReady: () => void
   onPagePainted: () => void
   // Document resets explicitly publish false so retired pages cannot retain Back.
@@ -238,7 +238,7 @@ export function useMobileWebShellBridge(args: MobileWebShellBridgeArgs): MobileW
   return {
     bridgeEnabled: ready !== null,
     viewRef: useCallback(
-      (handle: OrcaMobileWebShellViewHandle | null) => {
+      (handle: OCCMobileWebShellViewHandle | null) => {
         viewRef.current = handle === null || sessionId === null ? null : { sessionId, handle }
       },
       [sessionId]

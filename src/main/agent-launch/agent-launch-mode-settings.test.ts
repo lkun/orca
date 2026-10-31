@@ -2,11 +2,11 @@ import { requireStructuredCreateSupportAdmission } from '../runtime/rpc/methods/
 import { STRUCTURED_AGENT_SESSION_RUNTIME_CAPABILITY } from '../../shared/protocol-version'
 import { describe, expect, it, vi } from 'vitest'
 import { getDefaultSettings } from '../../shared/constants'
-import { OrcaRuntimeService } from '../runtime/orca-runtime'
+import { OCCRuntimeService } from '../runtime/occ-runtime'
 import type { RuntimeStore } from '../runtime/runtime-store-contract'
 import { decideAgentLaunchMode, readAgentLaunchModeSettings } from './agent-launch-mode'
 
-vi.mock('electron', () => ({ app: { getPath: () => '/orca-state', isPackaged: true } }))
+vi.mock('electron', () => ({ app: { getPath: () => '/occ-state', isPackaged: true } }))
 
 describe('host launch preference ownership', () => {
   it.each([false, true])('reads saved choices privately with Agents disabled=%s', (disabled) => {
@@ -18,7 +18,7 @@ describe('host launch preference ownership', () => {
     }
     const store = { getSettings: () => settings }
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: construction and these readers use only getSettings from the fixture.
-    const runtime = new OrcaRuntimeService(store as RuntimeStore)
+    const runtime = new OCCRuntimeService(store as RuntimeStore)
     expect(runtime.getClientSettings()).not.toHaveProperty('nativeChatProviders')
     expect(runtime.getClientSettings()).not.toHaveProperty('agentDefaultSurface')
     const mode = decideAgentLaunchMode({

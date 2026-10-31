@@ -44,14 +44,14 @@ const PROFILES = [
   {
     id: 'default',
     scope: 'default' as const,
-    partition: 'persist:orca-browser',
+    partition: 'persist:occ-browser',
     label: 'Default',
     source: null
   },
   {
     id: 'iso',
     scope: 'isolated' as const,
-    partition: 'persist:orca-browser-session-iso',
+    partition: 'persist:occ-browser-session-iso',
     label: 'Isolated',
     source: null
   }
@@ -74,8 +74,8 @@ describe('browser session proxy', () => {
       httpProxyBypassRules: ''
     })
 
-    expect(fromPartitionMock).toHaveBeenCalledWith('persist:orca-browser')
-    expect(fromPartitionMock).toHaveBeenCalledWith('persist:orca-browser-session-iso')
+    expect(fromPartitionMock).toHaveBeenCalledWith('persist:occ-browser')
+    expect(fromPartitionMock).toHaveBeenCalledWith('persist:occ-browser-session-iso')
     for (const partition of PROFILES.map((p) => p.partition)) {
       expect(sessionsByPartition.get(partition)?.setProxy).toHaveBeenCalledWith({
         mode: 'fixed_servers',
@@ -90,7 +90,7 @@ describe('browser session proxy', () => {
       httpProxyBypassRules: 'localhost, *.internal'
     })
 
-    expect(sessionsByPartition.get('persist:orca-browser')?.setProxy).toHaveBeenCalledWith({
+    expect(sessionsByPartition.get('persist:occ-browser')?.setProxy).toHaveBeenCalledWith({
       mode: 'fixed_servers',
       proxyRules: 'socks5://127.0.0.1:1080',
       proxyBypassRules: 'localhost;*.internal'
@@ -102,7 +102,7 @@ describe('browser session proxy', () => {
       httpProxyUrl: 'http://browser-user:browser-pass@proxy.example:8080',
       httpProxyBypassRules: ''
     })
-    const sess = sessionsByPartition.get('persist:orca-browser')
+    const sess = sessionsByPartition.get('persist:occ-browser')
     expect(sess?.setProxy).toHaveBeenCalledWith({
       mode: 'fixed_servers',
       proxyRules: 'http://proxy.example:8080'
@@ -139,24 +139,24 @@ describe('browser session proxy', () => {
         httpProxyUrl: 'socks5://127.0.0.1:1080',
         httpProxyBypassRules: ''
       })
-    ).rejects.toThrow('persist:orca-browser')
+    ).rejects.toThrow('persist:occ-browser')
 
     expect(
-      sessionsByPartition.get('persist:orca-browser-session-iso')?.setProxy
+      sessionsByPartition.get('persist:occ-browser-session-iso')?.setProxy
     ).toHaveBeenCalledWith({ mode: 'fixed_servers', proxyRules: 'socks5://127.0.0.1:1080' })
     expect(warn).toHaveBeenCalledWith(
       '[proxy] Failed to apply proxy to browser partition',
-      'persist:orca-browser'
+      'persist:occ-browser'
     )
   })
 
   it('starts every partition write without waiting for earlier partitions', async () => {
     let finishFirstWrite: (() => void) | undefined
-    const firstSession = fromPartition('persist:orca-browser')
+    const firstSession = fromPartition('persist:occ-browser')
     firstSession.setProxy.mockImplementation(
       () => new Promise<void>((resolve) => (finishFirstWrite = resolve))
     )
-    sessionsByPartition.set('persist:orca-browser', firstSession)
+    sessionsByPartition.set('persist:occ-browser', firstSession)
 
     const sweep = applyBrowserSessionProxies(PROFILES, {
       httpProxyUrl: 'socks5://127.0.0.1:1080',
@@ -165,7 +165,7 @@ describe('browser session proxy', () => {
 
     await vi.waitFor(() =>
       expect(
-        sessionsByPartition.get('persist:orca-browser-session-iso')?.setProxy
+        sessionsByPartition.get('persist:occ-browser-session-iso')?.setProxy
       ).toHaveBeenCalledOnce()
     )
     finishFirstWrite?.()
@@ -176,7 +176,7 @@ describe('browser session proxy', () => {
     let proxyUrl = 'http://old.example:8080'
     let finishFirstWrite: (() => void) | undefined
     setBrowserNetworkProxySettingsResolver(() => ({ httpProxyUrl: proxyUrl }))
-    const sess = fromPartition('persist:orca-browser-session-pending')
+    const sess = fromPartition('persist:occ-browser-session-pending')
     sess.setProxy.mockImplementationOnce(
       () => new Promise<void>((resolve) => (finishFirstWrite = resolve))
     )
@@ -198,7 +198,7 @@ describe('browser session proxy', () => {
     let proxyUrl = 'http://old.example:8080'
     let finishFirstWrite: (() => void) | undefined
     setBrowserNetworkProxySettingsResolver(() => ({ httpProxyUrl: proxyUrl }))
-    const sess = fromPartition('persist:orca-browser-session-restored')
+    const sess = fromPartition('persist:occ-browser-session-restored')
     sess.setProxy.mockImplementationOnce(
       () => new Promise<void>((resolve) => (finishFirstWrite = resolve))
     )
@@ -223,7 +223,7 @@ describe('browser session proxy', () => {
       httpProxyUrl: 'socks5://127.0.0.1:1080',
       httpProxyBypassRules: ''
     }))
-    const sess = fromPartitionMock('persist:orca-browser')
+    const sess = fromPartitionMock('persist:occ-browser')
 
     await applyProxyToBrowserSession(sess as never)
 
@@ -234,7 +234,7 @@ describe('browser session proxy', () => {
   })
 
   it('makes no proxy write when no resolver is registered', async () => {
-    const sess = fromPartitionMock('persist:orca-browser')
+    const sess = fromPartitionMock('persist:occ-browser')
 
     await applyProxyToBrowserSession(sess as never)
 
@@ -293,8 +293,8 @@ describe('browser session proxy', () => {
     })
 
     it('retries only a failed installation after its bounded attempts are exhausted', async () => {
-      const failed = fromPartition('persist:orca-browser')
-      const healthy = fromPartition('persist:orca-browser-session-iso')
+      const failed = fromPartition('persist:occ-browser')
+      const healthy = fromPartition('persist:occ-browser-session-iso')
       for (let attempt = 0; attempt < 3; attempt++) {
         failed.resolveProxy.mockRejectedValueOnce(new Error('native proxy failure'))
       }
@@ -312,10 +312,10 @@ describe('browser session proxy', () => {
 
     it('awaits every installation and preserves failed-partition warnings and retry budget', async () => {
       const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
-      const failed = fromPartition('persist:orca-browser')
+      const failed = fromPartition('persist:occ-browser')
       failed.resolveProxy.mockRejectedValue(new Error('native proxy failure'))
       await expect(applyProxySettingsToSession(failed, {})).rejects.toThrow('native proxy failure')
-      const healthy = fromPartition('persist:orca-browser-session-iso')
+      const healthy = fromPartition('persist:occ-browser-session-iso')
       let finishHealthy: (() => void) | undefined
       healthy.resolveProxy.mockImplementationOnce(
         () => new Promise<string>((resolve) => (finishHealthy = () => resolve('DIRECT')))
@@ -323,7 +323,7 @@ describe('browser session proxy', () => {
       const installation = applyProxySettingsToSession(healthy, {})
       let settled = false
       const startup = awaitBrowserSessionProxies(PROFILES).finally(() => (settled = true))
-      const failure = expect(startup).rejects.toThrow('persist:orca-browser')
+      const failure = expect(startup).rejects.toThrow('persist:occ-browser')
 
       await vi.waitFor(() => expect(failed.resolveProxy).toHaveBeenCalledTimes(6))
       expect(settled).toBe(false)
@@ -333,7 +333,7 @@ describe('browser session proxy', () => {
       expect(healthy.resolveProxy).toHaveBeenCalledOnce()
       expect(warn).toHaveBeenCalledExactlyOnceWith(
         '[proxy] Failed to apply proxy to browser partition',
-        'persist:orca-browser'
+        'persist:occ-browser'
       )
     })
 
@@ -342,7 +342,7 @@ describe('browser session proxy', () => {
       async (initialFails) => {
         const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
         const profiles = PROFILES.slice(0, 1)
-        const sess = fromPartition('persist:orca-browser')
+        const sess = fromPartition('persist:occ-browser')
         let settings: NetworkProxySettings = {}
         setBrowserNetworkProxySettingsResolver(() => settings)
         let finishInitial: (() => void) | undefined

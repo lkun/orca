@@ -220,7 +220,7 @@ describe('a provider stream cut short before its next lease renewal', () => {
     const later = RESTARTED_AT - 1_000
     rig.clock.now = later
     await journal.appendItem(
-      { provider: 'orca', clientMessageId: 'late-client-send' },
+      { provider: 'occ', clientMessageId: 'late-client-send' },
       { kind: 'message', role: 'user', blocks: [{ type: 'text', text: 'next task' }] },
       { fence: 1, turnScope: TURN_SCOPE, observedAt: later }
     )
@@ -251,7 +251,7 @@ describe('a provider stream cut short before its next lease renewal', () => {
       mutations: [{ kind: 'item', identity: REPLY, body: originalReply, turnScope: TURN_SCOPE }]
     })
     await journal.appendItem(
-      { provider: 'orca', clientMessageId: 'late-host-notice' },
+      { provider: 'occ', clientMessageId: 'late-host-notice' },
       { kind: 'status', text: 'host notice' },
       { fence: 1, turnScope: TURN_SCOPE }
     )

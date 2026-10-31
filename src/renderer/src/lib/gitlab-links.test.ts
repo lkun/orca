@@ -14,8 +14,8 @@ describe('parseGitLabIssueOrMRLink', () => {
   })
 
   it('treats /-/work_items/<iid> as an issue work item', () => {
-    expect(parseGitLabIssueOrMRLink('https://gitlab.com/stablyai/orca/-/work_items/923')).toEqual({
-      slug: { host: 'gitlab.com', path: 'stablyai/orca' },
+    expect(parseGitLabIssueOrMRLink('https://gitlab.com/stablyai/occ/-/work_items/923')).toEqual({
+      slug: { host: 'gitlab.com', path: 'stablyai/occ' },
       number: 923,
       type: 'issue'
     })

@@ -19,7 +19,7 @@ describe('one automatic-restore budget per execution host', () => {
 
   beforeEach(() => {
     vi.useFakeTimers({ now: 100_000 })
-    dir = mkdtempSync(join(tmpdir(), 'orca-shared-budget-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-shared-budget-'))
     nextPid = 5000
     exits.clear()
   })

@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import type { Hono } from 'hono'
 import { bodyLimit } from 'hono/body-limit'
 import type { ConnectorAdapter, ThreadPlace } from './connector-adapter.js'

@@ -37,7 +37,7 @@ function writeStub(path: string, markerPath: string): void {
 }
 
 function buildFixture(options: { aliasCodex?: boolean } = {}): Fixture {
-  const root = mkdtempSync(join(tmpdir(), 'orca-codex-profile-path-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-codex-profile-path-'))
   roots.push(root)
   const resourcesPath = join(root, 'resources')
   const hijackDir = join(root, 'hijack')
@@ -57,7 +57,7 @@ function buildFixture(options: { aliasCodex?: boolean } = {}): Fixture {
   }
   writeStub(launcherPath, intendedMarker)
   // Model hostile binaries under every OCC CLI spelling.
-  for (const name of ['orca', 'occ-ide', 'occ-dev']) {
+  for (const name of ['occ', 'occ-ide', 'occ-dev']) {
     writeStub(join(hijackDir, name), hijackMarker)
   }
   writeStub(join(codexDir, 'codex'), codexMarker)
@@ -85,7 +85,7 @@ function launchCodexThroughRcfile(fixture: Fixture, preflightValue: string): voi
   const rcfilePath = join(fixture.root, 'rcfile')
   writeFileSync(rcfilePath, getDaemonBashShellReadyRcfileContent(), 'utf8')
   // The later OSC hook proves parsing passed the wrapper; trailing : leaves marker absence as the failure.
-  const command = `codex --version; declare -F __orca_osc133_preexec >/dev/null && printf ran > ${JSON.stringify(fixture.postSnippetMarker)}; :`
+  const command = `codex --version; declare -F __occ_osc133_preexec >/dev/null && printf ran > ${JSON.stringify(fixture.postSnippetMarker)}; :`
   execFileSync('/bin/bash', ['--rcfile', rcfilePath, '-i', '-c', command], {
     stdio: 'ignore',
     env: {
@@ -95,8 +95,8 @@ function launchCodexThroughRcfile(fixture: Fixture, preflightValue: string): voi
       TERM: 'dumb',
       SHELL: '/bin/bash',
       // No features means no identity/readiness markers in captured stdout.
-      ORCA_CODEX_HOME: join(fixture.root, 'codex-home'),
-      ORCA_CODEX_LAUNCH_PREFLIGHT: preflightValue
+      OCC_CODEX_HOME: join(fixture.root, 'codex-home'),
+      OCC_CODEX_LAUNCH_PREFLIGHT: preflightValue
     }
   })
 }
@@ -112,7 +112,7 @@ describe.skipIf(!bashAvailable)('Codex preflight under a profile-rewritten PATH'
     const rcfile = getDaemonBashShellReadyRcfileContent()
 
     expect(rcfile.indexOf('source "$HOME/.bash_profile"')).toBeLessThan(
-      rcfile.indexOf('ORCA_CODEX_LAUNCH_PREFLIGHT')
+      rcfile.indexOf('OCC_CODEX_LAUNCH_PREFLIGHT')
     )
   })
 
@@ -159,7 +159,7 @@ describe.skipIf(!bashAvailable)('Codex preflight under a profile-rewritten PATH'
   it('skips an unqualified preflight value while still launching codex', () => {
     const fixture = buildFixture()
 
-    launchCodexThroughRcfile(fixture, 'orca')
+    launchCodexThroughRcfile(fixture, 'occ')
 
     expect(existsSync(fixture.hijackMarker)).toBe(false)
     expect(existsSync(fixture.intendedMarker)).toBe(false)

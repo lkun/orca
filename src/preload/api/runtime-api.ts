@@ -1,4 +1,4 @@
-import type { ManagedOrcadPreloadApi } from './managed-orcad-api'
+import type { ManagedOCCdPreloadApi } from './managed-occd-api'
 import type { WslHostsPreloadApi } from './wsl-hosts-api'
 import type { RuntimeHostStatusSnapshot } from '../../shared/runtime-host-status'
 import type {
@@ -21,7 +21,7 @@ import type {
   BrowserPageCreationPlacement
 } from '../../shared/browser-client-host-placement'
 import type { RemoteRuntimeSharedConnectionDiagnostics } from '../../shared/remote-runtime/control/remote-runtime-shared-control-types'
-import type { WslOrcadAccountNotAppliedEvent } from '../../shared/wsl-orcad-account-notice'
+import type { WslOCCdAccountNotAppliedEvent } from '../../shared/wsl-occd-account-notice'
 
 export type RuntimeEnvironmentSubscriptionHandle = {
   unsubscribe: () => void
@@ -128,7 +128,7 @@ export type RuntimeApi = {
     ) => () => void
     // Absent in the web client, which has no desktop account shim.
     onWslAccountNotApplied?: (
-      callback: (event: WslOrcadAccountNotAppliedEvent) => void
+      callback: (event: WslOCCdAccountNotAppliedEvent) => void
     ) => () => void
     prepareBrowserClientHostPlacement: (
       args: BrowserClientHostPlacementPreparationRequest
@@ -162,7 +162,7 @@ export type RuntimeApi = {
       }
     ) => Promise<RuntimeEnvironmentSubscriptionHandle>
     // Only desktop clients deploy servers over SSH.
-    managedOrcad?: ManagedOrcadPreloadApi
+    managedOCCd?: ManagedOCCdPreloadApi
     // Only Windows desktops (or e2e fakes) host WSL distros.
     wslHosts?: WslHostsPreloadApi
   }

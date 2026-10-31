@@ -1,7 +1,7 @@
 /** Desktop viewers suppress host resize, never input; mobile drivers retain priority and the final viewer releases its floor. */
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import type * as GitUsernameModule from '../git/git-username'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { createPtyWriteInput } from '../ipc/pty/ipc/write-input'
 import { ptyOwnership } from '../ipc/pty/provider/ownership-state'
 
@@ -41,7 +41,7 @@ vi.mock('../git/git-username', async () => {
   return { ...actual, resolveLocalGitUsername: vi.fn(async () => '') }
 })
 
-class TestOrcaRuntimeService extends OrcaRuntimeService {
+class TestOCCRuntimeService extends OCCRuntimeService {
   getLayoutForTest(ptyId: string) {
     return this.getLayout(ptyId)
   }
@@ -81,7 +81,7 @@ const store = {
 }
 
 function createRuntime(mobileAutoRestoreFitMs: number | null = 5_000) {
-  const runtime = new TestOrcaRuntimeService({
+  const runtime = new TestOCCRuntimeService({
     ...store,
     getSettings: () => ({ ...store.getSettings(), mobileAutoRestoreFitMs })
   })
@@ -681,7 +681,7 @@ describe('terminal layout runtime dispatch and ownership', () => {
   })
 
   it('dispatches the persisted preference reader through Root overrides', () => {
-    class PreferenceRuntime extends OrcaRuntimeService {
+    class PreferenceRuntime extends OCCRuntimeService {
       protected override getAutoRestoreFitMs(): number | null {
         return 24_680
       }
@@ -730,7 +730,7 @@ describe('terminal layout runtime dispatch and ownership', () => {
   })
 
   it('uses providers and notifiers replaced after construction before publishing resize', async () => {
-    const runtime = new TestOrcaRuntimeService()
+    const runtime = new TestOCCRuntimeService()
     const events: string[] = []
     let size = { cols: 120, rows: 40 }
     runtime.subscribeToTerminalResize('pty', (event) => events.push(`wire:${event.seq}`))

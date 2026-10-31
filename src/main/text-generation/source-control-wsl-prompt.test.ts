@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -63,7 +63,7 @@ function start(child = createMockDiscoveryChild(), content?: string) {
   if (!nonce) {
     throw new Error('Expected preparation')
   }
-  return { child, launch, nonce, execution, proof: `ORCA_GENERATION_READY:${nonce}\n` }
+  return { child, launch, nonce, execution, proof: `OCC_GENERATION_READY:${nonce}\n` }
 }
 function close(child: ReturnType<typeof createMockDiscoveryChild>, code = 0) {
   child.stdout.emit('data', Buffer.from('Lighthouse Signal Trace'))
@@ -76,7 +76,7 @@ it('waits for fragmented exact proof, streams once and cleans only the actual gu
   const writes: string[] = []
   child.stdin.on('data', (chunk) => writes.push(chunk.toString()))
   expect(launch?.wslDistro).toBe('Actual')
-  expect(launch?.args).toContain(`@/tmp/orca-generation-${nonce}/prompt-1.txt`)
+  expect(launch?.args).toContain(`@/tmp/occ-generation-${nonce}/prompt-1.txt`)
   expect(child.stdin.end).not.toHaveBeenCalled()
   child.stderr.emit('data', Buffer.from(`${proof.trim()}WRONG\n${'x'.repeat(100_000)}\n`))
   child.stderr.emit('data', Buffer.from(proof.slice(0, 17)))
@@ -89,7 +89,7 @@ it('waits for fragmented exact proof, streams once and cleans only the actual gu
   expect(await execution.result).toMatchObject({ success: true })
   await execution.processClosed
   expect(removeTreeMock).toHaveBeenCalledExactlyOnceWith(
-    `\\\\wsl.localhost\\Actual\\tmp\\orca-generation-${nonce}`
+    `\\\\wsl.localhost\\Actual\\tmp\\occ-generation-${nonce}`
   )
   child.stderr.emit('data', Buffer.from(proof))
   expect(removeTreeMock).toHaveBeenCalledTimes(1)
@@ -239,7 +239,7 @@ async function shellFixture(
 ) {
   const guest = prepareWslPrompt(plan(content), 'Actual')
   const [nonce] = guest.preparation.args
-  const directory = `/tmp/orca-generation-${nonce}`
+  const directory = `/tmp/occ-generation-${nonce}`
   setup?.(directory)
   const child = spawnProcess({
     program: '/bin/sh',
@@ -356,7 +356,7 @@ it.each([
   expect(result.code).not.toBe(0)
   expect(result.stdout).toBe('')
   if (route === 'collision') {
-    expect(result.stderr).not.toContain('ORCA_GENERATION_READY:')
+    expect(result.stderr).not.toContain('OCC_GENERATION_READY:')
     expect(result.sentinel).toBe('untouched')
   }
   if (route === 'wrong-ack') {
@@ -475,12 +475,12 @@ it.each(['success', 'nonzero', 'empty', 'storage', 'pipe-close'] as const)(
           if (!preparation) {
             throw new Error('Missing preparation')
           }
-          directory = `/tmp/orca-generation-${preparation.args[0]}`
+          directory = `/tmp/occ-generation-${preparation.args[0]}`
           const argv =
             outcome === 'pipe-close'
               ? [
                   '-c',
-                  `exec 0<&-; printf 'ORCA_GENERATION_READY:%s\\n' "$1" >&2; sleep 0.1`,
+                  `exec 0<&-; printf 'OCC_GENERATION_READY:%s\\n' "$1" >&2; sleep 0.1`,
                   'fixture',
                   preparation.args[0]
                 ]

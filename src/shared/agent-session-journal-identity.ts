@@ -34,6 +34,6 @@ export type AgentJournalItemIdentity =
   | { provider: 'codex'; threadId: string; turnId: string; ordinal: number }
   | { provider: 'claude'; sessionId: string; uuid: string }
   /** A submission OCC minted before any provider echo existed. */
-  | { provider: 'orca'; clientMessageId: string }
+  | { provider: 'occ'; clientMessageId: string }
   /** Bridge-era transcript record with no provider-stable identity. */
   | { provider: 'legacy'; agent: AgentType; sessionId: string; recordId: string }

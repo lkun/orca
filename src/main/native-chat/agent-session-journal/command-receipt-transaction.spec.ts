@@ -57,7 +57,7 @@ export function registerCommandReceiptTransactionTests(): void {
   }
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-command-receipt-transaction-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-command-receipt-transaction-'))
     database = openTestJournalHostDatabase(root)
     database.transaction((db) => {
       writeCommandReceiptTestRecord(db)

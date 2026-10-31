@@ -16,7 +16,7 @@ import {
 } from './agent-state-rules-bundle.mjs'
 import { agentStateRulesTag } from './release-tag-patterns.mjs'
 
-const REPO = 'stablyai/orca'
+const REPO = 'stablyai/occ'
 const NEXT = agentStateRulesTag(1, 'next')
 const STABLE = agentStateRulesTag(1, 'stable')
 

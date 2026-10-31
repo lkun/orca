@@ -1,4 +1,4 @@
-// H5c-1: with ORCA_LAYOUT_OWNER=main, desktop tab drags and splits must change server authority and draw its frames.
+// H5c-1: with OCC_LAYOUT_OWNER=main, desktop tab drags and splits must change server authority and draw its frames.
 import { existsSync } from 'node:fs'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
@@ -7,7 +7,7 @@ import {
   toWebTerminalSurfaceTabId
 } from '../../src/shared/terminal-surface-id'
 import { LAYOUT_INTENTS_RUNTIME_CAPABILITY } from '../../src/shared/workspace-layout/layout-intents-capability'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import {
   launchPairedElectronClient,
@@ -20,7 +20,7 @@ import {
 import { waitForWorktree } from './helpers/paired-desktop-server-terminal-tab'
 
 const LAYOUT_OWNER_BUILD = existsSync(
-  path.join(process.cwd(), 'out', 'main', 'ORCA_LAYOUT_OWNER_MAIN')
+  path.join(process.cwd(), 'out', 'main', 'OCC_LAYOUT_OWNER_MAIN')
 )
 const SORTABLE_TAB = '[data-testid="sortable-tab"]'
 
@@ -54,7 +54,7 @@ async function showWorkspace(client: PairedElectronClient, worktreeId: string, w
 }
 
 test.describe('paired desktop sends tab moves to a switch-on server’s main', () => {
-  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (ORCA_LAYOUT_OWNER=main)')
+  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (OCC_LAYOUT_OWNER=main)')
 
   test('a drag and a move into a split change the server’s layout, drawn from its frames', async ({
     testRepoPath

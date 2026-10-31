@@ -1,5 +1,5 @@
 import type { AgentSessionUnavailable } from '../../shared/agent-session-availability'
-import type { spawnProcess } from '@orca/process-host'
+import type { spawnProcess } from '@occ/process-host'
 import type { AgentGenerationFailureOutput } from './agent-failure-output'
 import type {
   CommitMessageAgentCapability,

@@ -1,10 +1,10 @@
-import './orca-runtime-test-lifecycle.spec'
+import './occ-runtime-test-lifecycle.spec'
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime-test-mocks.spec'
+import { OCCRuntimeService } from './occ-runtime-test-mocks.spec'
 import {
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession
-} from './orca-runtime-test-fixtures.spec'
+} from './occ-runtime-test-fixtures.spec'
 import { openEditorFileThroughLayoutOwner } from './files/editor-open-through-layout-owner'
 import { ownedEditorFileId } from '../../shared/workspace-session-pane-ownership'
 import {
@@ -13,9 +13,9 @@ import {
   leaf
 } from '../../shared/workspace-layout/workspace-layout-session.test-fixture'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-class RuntimeWithEditorOpenGroup extends OrcaRuntimeService {
+class RuntimeWithEditorOpenGroup extends OCCRuntimeService {
   groupForTest(worktreeId: string): string | undefined {
     return this.editorOpenGroupFor(worktreeId)
   }

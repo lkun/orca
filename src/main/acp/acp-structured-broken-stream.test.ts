@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 // Real Node children: direct stdout EOF at the connection boundary, then supervised root exit
 // while a descendant holds stdout. POSIX supervisors keep their own stdout open after provider EOF.
 
@@ -25,7 +25,7 @@ afterEach(async () => {
 
 const agentScript = (onPrompt: string): string => String.raw`
   const fs = require('node:fs')
-  fs.writeFileSync(process.env.ORCA_TEST_PID_FILE, String(process.pid))
+  fs.writeFileSync(process.env.OCC_TEST_PID_FILE, String(process.pid))
   const send = (frame) => process.stdout.write(JSON.stringify({ jsonrpc: '2.0', ...frame }) + '\n')
   let buffered = ''
   process.stdin.setEncoding('utf8').on('data', (chunk) => {
@@ -37,7 +37,7 @@ const agentScript = (onPrompt: string): string => String.raw`
       if (frame.method === 'initialize') {
         send({ id: frame.id, result: { protocolVersion: 1, agentCapabilities: {} } })
       } else if (frame.method === 'session/new') {
-        send({ id: frame.id, result: JSON.parse(process.env.ORCA_TEST_SESSION) })
+        send({ id: frame.id, result: JSON.parse(process.env.OCC_TEST_SESSION) })
       } else if (frame.method === '_x.ai/subagent/cancel') {
         send({ id: frame.id, error: {
           code: -32602, message: 'Invalid params', data: 'invalid params: missing field \`subagentId\`'
@@ -66,12 +66,12 @@ const CLOSES_STDOUT_MID_TURN = `
   ${agentScript('fs.closeSync(1)')}
 `
 const EXITS_HOLDING_STDOUT = agentScript(String.raw`
-  const held = require('@orca/process-host').spawnProcess({
+  const held = require('@occ/process-host').spawnProcess({
     program: process.execPath,
     args: ['-e', 'setInterval(() => {}, 60000)'],
     stdio: ['ignore', 'inherit', 'ignore']
   })
-  fs.writeFileSync(process.env.ORCA_TEST_PID_FILE + '.held', String(held.pid))
+  fs.writeFileSync(process.env.OCC_TEST_PID_FILE + '.held', String(held.pid))
   process.exit(3)
 `)
 
@@ -121,7 +121,7 @@ function ownedPidFile(prefix: string) {
 
 describe('ACP connection to a directly launched agent that closes stdout but keeps running', () => {
   it('leaves the turn running and the agent alive until OCC closes it', async () => {
-    const owned = ownedPidFile('orca-acp-broken-stream-')
+    const owned = ownedPidFile('occ-acp-broken-stream-')
     const { pidFile } = owned
     let stdoutEnded = false
     const rig = await openAcpAdapterRig({
@@ -134,8 +134,8 @@ describe('ACP connection to a directly launched agent that closes stdout but kee
               args: ['-e', CLOSES_STDOUT_MID_TURN],
               cwd: process.cwd(),
               env: {
-                ORCA_TEST_PID_FILE: pidFile,
-                ORCA_TEST_SESSION: JSON.stringify({
+                OCC_TEST_PID_FILE: pidFile,
+                OCC_TEST_SESSION: JSON.stringify({
                   sessionId: PROVIDER_SESSION,
                   configOptions: GROK_CONFIG_OPTIONS
                 })
@@ -147,7 +147,7 @@ describe('ACP connection to a directly launched agent that closes stdout but kee
                 ...spec,
                 program: process.execPath,
                 args: ['-e', CLOSES_STDOUT_MID_TURN],
-                env: { ...spec.env, ORCA_PROVIDER_SUPERVISOR_SPEC: undefined }
+                env: { ...spec.env, OCC_PROVIDER_SUPERVISOR_SPEC: undefined }
               })
               child.stdout.once('end', () => {
                 stdoutEnded = true
@@ -179,7 +179,7 @@ describe('ACP connection to a directly launched agent that closes stdout but kee
 
 describe('ACP agent that exits while a process it started holds its stdout open', () => {
   it('ends the session at the exit, with the turn interrupted', async () => {
-    const owned = ownedPidFile('orca-acp-held-stdout-')
+    const owned = ownedPidFile('occ-acp-held-stdout-')
     const { pidFile } = owned
     const rig = await openAcpAdapterRig({
       deps: {
@@ -190,8 +190,8 @@ describe('ACP agent that exits while a process it started holds its stdout open'
               args: ['-e', EXITS_HOLDING_STDOUT],
               cwd: process.cwd(),
               env: {
-                ORCA_TEST_PID_FILE: pidFile,
-                ORCA_TEST_SESSION: JSON.stringify({
+                OCC_TEST_PID_FILE: pidFile,
+                OCC_TEST_SESSION: JSON.stringify({
                   sessionId: PROVIDER_SESSION,
                   configOptions: GROK_CONFIG_OPTIONS
                 })

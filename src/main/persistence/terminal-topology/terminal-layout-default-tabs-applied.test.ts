@@ -25,7 +25,7 @@ afterEach(() => {
 })
 
 async function emptyStore() {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-layout-default-tabs-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-layout-default-tabs-'))
   directories.push(directory)
   return { store: await openTopologyStore(directory, emptyTerminalSessionProfile()), directory }
 }

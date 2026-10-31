@@ -1,5 +1,5 @@
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   execInTerminal,
   waitForActivePanePtyId,
@@ -133,25 +133,25 @@ async function focusActiveXterm(page: Page, tabId: string): Promise<void> {
 test.describe('Terminal attention', () => {
   // Units own BEL parsing; E2E pins background indicator raise and selection clear.
   test('background terminal attention marks a tab unread and clears on focus', async ({
-    orcaPage
+    occPage
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
-    const firstTabId = await getActiveTabId(orcaPage)
+    const firstTabId = await getActiveTabId(occPage)
     if (!firstTabId) {
       throw new Error('Expected an initial terminal tab')
     }
 
-    const secondTabId = await createTerminalTab(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    const secondTabId = await createTerminalTab(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
     // Focus the first tab so the second becomes a background tab; attention
     // arriving there should raise its indicator.
-    await activateTerminalTab(orcaPage, firstTabId)
-    await orcaPage.evaluate((tabId) => {
+    await activateTerminalTab(occPage, firstTabId)
+    await occPage.evaluate((tabId) => {
       const store = window.__store
       if (!store) {
         throw new Error('window.__store is unavailable')
@@ -172,13 +172,13 @@ test.describe('Terminal attention', () => {
     }, secondTabId)
 
     await expect
-      .poll(async () => (await getUnreadTerminalTabIds(orcaPage)).includes(secondTabId), {
+      .poll(async () => (await getUnreadTerminalTabIds(occPage)).includes(secondTabId), {
         timeout: 10_000,
         message: 'Background tab did not become unread after BEL'
       })
       .toBe(true)
 
-    const secondTabBell = orcaPage
+    const secondTabBell = occPage
       .locator(
         `[data-testid="sortable-tab"][data-tab-id="${secondTabId}"] [data-testid="tab-activity-bell"]`
       )
@@ -186,10 +186,10 @@ test.describe('Terminal attention', () => {
     await expect(secondTabBell).toBeVisible()
 
     // Activating the tab counts as "the user saw it" — the indicator clears.
-    await activateTerminalTab(orcaPage, secondTabId)
+    await activateTerminalTab(occPage, secondTabId)
 
     await expect
-      .poll(async () => (await getUnreadTerminalTabIds(orcaPage)).includes(secondTabId), {
+      .poll(async () => (await getUnreadTerminalTabIds(occPage)).includes(secondTabId), {
         timeout: 5_000,
         message: 'Unread state did not clear when the user focused the tab'
       })
@@ -199,37 +199,37 @@ test.describe('Terminal attention', () => {
 
   // Why (on screen means read, #28637): a BEL on the tab the present user is
   // looking at is already read, so it must leave no unread marker or bell.
-  test('a BEL on the focused tab leaves no unread marker', async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+  test('a BEL on the focused tab leaves no unread marker', async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
-    const activeTabId = await getActiveTabId(orcaPage)
+    const activeTabId = await getActiveTabId(occPage)
     if (!activeTabId) {
       throw new Error('Expected an active terminal tab')
     }
-    const activePtyId = await waitForActivePanePtyId(orcaPage)
-    await installRendererTitleLog(orcaPage)
+    const activePtyId = await waitForActivePanePtyId(occPage)
+    await installRendererTitleLog(occPage)
 
     // Why: presence comes only from trusted input; a bare Shift keydown sends nothing to the shell.
-    await focusActiveXterm(orcaPage, activeTabId)
-    await orcaPage.keyboard.press('Shift')
+    await focusActiveXterm(occPage, activeTabId)
+    await occPage.keyboard.press('Shift')
 
     await emitBellAndWaitForTitleFlush(
-      orcaPage,
+      occPage,
       activePtyId,
       `focused-tab-bell-marker-${Date.now()}`
     )
 
     await expect
-      .poll(async () => (await getUnreadTerminalTabIds(orcaPage)).includes(activeTabId), {
+      .poll(async () => (await getUnreadTerminalTabIds(occPage)).includes(activeTabId), {
         timeout: 5_000,
         message: 'A BEL on the focused tab left it unread'
       })
       .toBe(false)
     await expect(
-      orcaPage.locator(
+      occPage.locator(
         `[data-testid="sortable-tab"][data-tab-id="${activeTabId}"] [data-testid="tab-activity-bell"]`
       )
     ).toHaveCount(0)
@@ -238,24 +238,24 @@ test.describe('Terminal attention', () => {
   // Replay can re-enable mode 1004 from an old TUI snapshot; fresh-shell focus then emits escape bytes and unbound-key BELs.
   // Require POST_REPLAY_MODE_RESET to prevent post-reset focus reporting.
   test('mode bits replayed into xterm do not leak focus escapes to the shell', async ({
-    orcaPage
+    occPage
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
-    const firstTabId = await getActiveTabId(orcaPage)
+    const firstTabId = await getActiveTabId(occPage)
     if (!firstTabId) {
       throw new Error('Expected an initial terminal tab')
     }
 
-    const secondTabId = await createTerminalTab(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    const secondTabId = await createTerminalTab(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
     // Queue DECSET 1004 then reset and install the onData spy only in the reset’s write callback.
     // xterm parses asynchronously and may emit transient focus-IN while 1004 is on; observing that would falsely fail a correct reset.
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ tabId, modeReset }) =>
         new Promise<void>((resolve, reject) => {
           const managers = window.__paneManagers
@@ -286,8 +286,8 @@ test.describe('Terminal attention', () => {
     // Dispose renderer-global spies in finally so failures cannot leak subscriptions into later tests.
     try {
       // Explicitly blur after tab selection; setActiveTab alone does not move DOM focus.
-      await activateTerminalTab(orcaPage, firstTabId)
-      await orcaPage.evaluate((tabId) => {
+      await activateTerminalTab(occPage, firstTabId)
+      await occPage.evaluate((tabId) => {
         const managers = window.__paneManagers
         const manager = managers?.get(tabId)
         const pane = manager?.getActivePane()
@@ -298,10 +298,10 @@ test.describe('Terminal attention', () => {
       }, secondTabId)
 
       // Wait for the focus task; hidden-window DA1 responses are unreliable.
-      await orcaPage.waitForTimeout(100)
+      await occPage.waitForTimeout(100)
 
       // Assert precise focus-in/out bytes rather than unread state that unrelated startup BELs can change.
-      const emittedFromXterm = await orcaPage.evaluate(
+      const emittedFromXterm = await occPage.evaluate(
         () =>
           (window as unknown as { __XTERM_ONDATA_SPY__: string[] | undefined })
             .__XTERM_ONDATA_SPY__ ?? []
@@ -311,7 +311,7 @@ test.describe('Terminal attention', () => {
       expect(emittedFromXterm.join('')).not.toMatch(/\x1b\[[IO]/)
     } finally {
       // Always remove the subscription and globals before the next shared-renderer test.
-      await orcaPage.evaluate(() => {
+      await occPage.evaluate(() => {
         const w = window as unknown as {
           __XTERM_ONDATA_DISPOSE__?: () => void
           __XTERM_ONDATA_SPY__?: string[]

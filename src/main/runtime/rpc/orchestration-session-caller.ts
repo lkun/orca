@@ -1,29 +1,29 @@
 /** Resolve session identity before params, compatibility, receipts and dispatch branching; ids identify same-user callers, not credentials.
  * Refuse paired/SSH/WSL claims, provider ids that rotate on /clear, and non-live leases; a released (sleeping) one may act except as NEEDS_RUNNING_AGENT lists. Session identity overrides declarations and maps workers to minted handles/panes.
- * Without session evidence, a declared orca_session_id: may resolve a worker handle; a chat address alone identifies no caller. */
+ * Without session evidence, a declared occ_session_id: may resolve a worker handle; a chat address alone identifies no caller. */
 import {
   agentSessionLeaseAdmitsWriter,
   agentSessionLeaseIsReleased
 } from '../../../shared/agent-session-lease-adjudication'
 import type { AgentSessionRecord } from '../../../shared/agent-session-record'
-import { ORCA_AGENT_SESSION_ID_ENV } from '../../../shared/agent-session-caller-env'
+import { OCC_AGENT_SESSION_ID_ENV } from '../../../shared/agent-session-caller-env'
 import {
-  ORCA_SESSION_ADDRESS_PREFIX,
-  isOrcaSessionId,
-  parseOrcaSessionAddress
-} from '../../../shared/orca-session-address'
+  OCC_SESSION_ADDRESS_PREFIX,
+  isOCCSessionId,
+  parseOCCSessionAddress
+} from '../../../shared/occ-session-address'
 import { ORCHESTRATION_SESSION_CALLER_ERROR_CODES as CODES } from '../../../shared/orchestration-session-caller-codes'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import type { OrchestrationSessionCaller } from '../orchestration/orchestration-caller-identity'
 import { OrchestrationError } from '../orchestration/orchestration-error'
-import { canonicalOrcaSessionId } from '../orchestration/canonical-orca-session-id'
+import { canonicalOCCSessionId } from '../orchestration/canonical-occ-session-id'
 import type { OrchestrationDb } from '../orchestration/db'
 import {
   resolveDeclaredCallerParty,
-  resolveOrcaSessionParty,
+  resolveOCCSessionParty,
   resolveOrchestrationParty
 } from '../orchestration/orchestration-party'
-import { lookupOrcaAgentSession } from '../orchestration/structured-session-mail-address'
+import { lookupOCCAgentSession } from '../orchestration/structured-session-mail-address'
 import { conversationRecordReader } from '../orchestration/structured-session-lineage'
 import type { AgentSessionRecordStore } from '../agent-session-record-store'
 import { getStructuredAgentSessionHost } from '../../native-chat/agent-session-wire/structured-agent-session-registry'
@@ -92,12 +92,12 @@ function declaredSessionAddress(request: RpcRequest): string | undefined {
   }
   const values: Record<string, unknown> = { ...params }
   const declared = values[name]
-  return typeof declared === 'string' && parseOrcaSessionAddress(declared) ? declared : undefined
+  return typeof declared === 'string' && parseOCCSessionAddress(declared) ? declared : undefined
 }
 
 /** Only for a request `needsOrchestrationCallerResolution` accepts. Throws the refusal, if any. */
 export async function resolveOrchestrationSessionCaller(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   request: RpcRequest,
   route: OrchestrationRequestRoute | undefined
 ): Promise<ResolvedOrchestrationRequest> {
@@ -116,7 +116,7 @@ export async function resolveOrchestrationSessionCaller(
       `This command ran in ${evidence.host.kind === 'ssh' ? 'an SSH' : 'a WSL'} environment, and an OCC session ID identifies a caller only on the host that runs that session.`
     )
   }
-  if (typeof claimed !== 'string' || !isOrcaSessionId(claimed)) {
+  if (typeof claimed !== 'string' || !isOCCSessionId(claimed)) {
     throw new OrchestrationError(
       CODES.unknown,
       'The caller named an ID that is not an OCC session ID. No effects were applied.',
@@ -128,7 +128,7 @@ export async function resolveOrchestrationSessionCaller(
   assertSessionCanAct(sessionId, record, request.method)
   const db = runtime.getOrchestrationDb()
   const caller: OrchestrationSessionCaller = Object.freeze({
-    ...resolveOrcaSessionParty(sessionId, db),
+    ...resolveOCCSessionParty(sessionId, db),
     sessionId,
     workspaceId: record.location.workspaceId
   })
@@ -144,7 +144,7 @@ export async function resolveOrchestrationSessionCaller(
 }
 
 async function readSessionRecord(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   sessionId: string
 ): Promise<AgentSessionRecord> {
   let store: AgentSessionRecordStore | null
@@ -161,15 +161,15 @@ async function readSessionRecord(
       NO_EFFECTS
     )
   }
-  const found = lookupOrcaAgentSession(conversationRecordReader(store), sessionId)
+  const found = lookupOCCAgentSession(conversationRecordReader(store), sessionId)
   if (found.kind === 'found') {
     return store.requireWritableRecord(found.record.sessionId)
   }
   if (found.kind === 'provider-id') {
     throw new OrchestrationError(
       CODES.providerId,
-      `${sessionId} is the provider's own session id, which changes on /clear. This session's OCC session ID is ${ORCA_SESSION_ADDRESS_PREFIX}${found.orcaSessionId}; set ${ORCA_AGENT_SESSION_ID_ENV}=${found.orcaSessionId} instead. No effects were applied.`,
-      { ...NO_EFFECTS, orcaSessionId: found.orcaSessionId }
+      `${sessionId} is the provider's own session id, which changes on /clear. This session's OCC session ID is ${OCC_SESSION_ADDRESS_PREFIX}${found.occSessionId}; set ${OCC_AGENT_SESSION_ID_ENV}=${found.occSessionId} instead. No effects were applied.`,
+      { ...NO_EFFECTS, occSessionId: found.occSessionId }
     )
   }
   throw new OrchestrationError(
@@ -204,7 +204,7 @@ function assertSessionCanAct(sessionId: string, record: AgentSessionRecord, meth
   )
 }
 
-/** A request with no session id that declares an `orca_session_id:` caller: a worker's is its handle. */
+/** A request with no session id that declares an `occ_session_id:` caller: a worker's is its handle. */
 function bindDeclaredSessionAddress(db: OrchestrationDb, request: RpcRequest): RpcRequest {
   const name = ORCHESTRATION_CALLER_PARAM[request.method]
   const declared = declaredSessionAddress(request)
@@ -225,8 +225,8 @@ function declaredNamesCaller(
   if (typeof declared !== 'string') {
     return false
   }
-  if (isOrcaSessionId(declared)) {
-    return canonicalOrcaSessionId(declared) === caller.orcaSessionId
+  if (isOCCSessionId(declared)) {
+    return canonicalOCCSessionId(declared) === caller.occSessionId
   }
   try {
     return resolveOrchestrationParty(declared, db).address === caller.address

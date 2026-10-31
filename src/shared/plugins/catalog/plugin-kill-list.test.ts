@@ -13,7 +13,7 @@ function entry(pluginKey = 'community.unsafe'): Record<string, unknown> {
   return {
     pluginKey,
     reason: 'Known malicious release',
-    advisoryUrl: 'https://orca.example/security/unsafe'
+    advisoryUrl: 'https://occ.example/security/unsafe'
   }
 }
 
@@ -51,7 +51,7 @@ describe('pluginKillListSchema', () => {
       generatedAt: '2026-07-12T20:00:00Z',
       plugins: [
         { ...entry(), pluginKey: 'unsafe' },
-        { ...entry('community.other'), advisoryUrl: 'http://orca.example/advisory' },
+        { ...entry('community.other'), advisoryUrl: 'http://occ.example/advisory' },
         { publisher: 'community', reason: 'keyed by a field this client predates' },
         entry(),
         { ...entry(), reason: 'duplicate' }

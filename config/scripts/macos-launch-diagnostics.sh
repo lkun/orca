@@ -2,12 +2,12 @@
 # Capture one-shot macOS launch diagnostics for a published OCC release.
 #
 # Usage:
-#   ORCA_DIAGNOSTIC_TAG=v1.4.42-rc.1 bash config/scripts/macos-launch-diagnostics.sh
+#   OCC_DIAGNOSTIC_TAG=v1.4.42-rc.1 bash config/scripts/macos-launch-diagnostics.sh
 #   bash config/scripts/macos-launch-diagnostics.sh --tag v1.4.42-rc.1
 set -euo pipefail
 
-REPO="${ORCA_DIAGNOSTIC_REPO:-stablyai/orca}"
-TAG="${ORCA_DIAGNOSTIC_TAG:-}"
+REPO="${OCC_DIAGNOSTIC_REPO:-stablyai/occ}"
+TAG="${OCC_DIAGNOSTIC_TAG:-}"
 KEEP=0
 
 while [[ $# -gt 0 ]]; do
@@ -29,7 +29,7 @@ while [[ $# -gt 0 ]]; do
 Capture one-shot macOS launch diagnostics for a published OCC release.
 
 Usage:
-  ORCA_DIAGNOSTIC_TAG=v1.4.42-rc.1 bash config/scripts/macos-launch-diagnostics.sh
+  OCC_DIAGNOSTIC_TAG=v1.4.42-rc.1 bash config/scripts/macos-launch-diagnostics.sh
   bash config/scripts/macos-launch-diagnostics.sh --tag v1.4.42-rc.1
 EOF
       exit 0
@@ -48,7 +48,7 @@ if [[ "$(uname -s)" != "Darwin" ]]; then
 fi
 
 if [[ -z "$TAG" ]]; then
-  echo "Set ORCA_DIAGNOSTIC_TAG or pass --tag vX.Y.Z-rc.N." >&2
+  echo "Set OCC_DIAGNOSTIC_TAG or pass --tag vX.Y.Z-rc.N." >&2
   exit 2
 fi
 
@@ -63,7 +63,7 @@ case "$ARCH" in
 esac
 
 TIMESTAMP="$(date -u '+%Y%m%dT%H%M%SZ')"
-WORK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/orca-launch-diagnostics.XXXXXXXX")"
+WORK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/occ-launch-diagnostics.XXXXXXXX")"
 OUT_DIR="$WORK_DIR/output"
 MOUNT_DIR="$WORK_DIR/mount"
 APP_DIR="$WORK_DIR/OCC.app"
@@ -71,13 +71,13 @@ DMG_PATH="$WORK_DIR/$ASSET"
 mkdir -p "$OUT_DIR" "$MOUNT_DIR"
 
 if [[ -d "$HOME/Desktop" ]]; then
-  ZIP_PATH="$HOME/Desktop/orca-launch-diagnostics-${TAG}-${TIMESTAMP}.zip"
+  ZIP_PATH="$HOME/Desktop/occ-launch-diagnostics-${TAG}-${TIMESTAMP}.zip"
 else
-  ZIP_PATH="$PWD/orca-launch-diagnostics-${TAG}-${TIMESTAMP}.zip"
+  ZIP_PATH="$PWD/occ-launch-diagnostics-${TAG}-${TIMESTAMP}.zip"
 fi
 
 diag_log() {
-  printf '[orca-diagnostics] %s\n' "$*"
+  printf '[occ-diagnostics] %s\n' "$*"
 }
 
 run_capture() {
@@ -122,11 +122,11 @@ write_environment_report() {
     echo "$SHELL"
     echo
     echo "## current OCC processes before diagnostics"
-    pgrep -fl 'OCC|orca' || true
+    pgrep -fl 'OCC|occ' || true
   } >"$OUT_DIR/environment.txt"
 }
 
-ensure_no_existing_orca() {
+ensure_no_existing_occ() {
   local existing
   existing="$(pgrep -x OCC || true)"
   if [[ -z "$existing" ]]; then
@@ -137,7 +137,7 @@ ensure_no_existing_orca() {
     echo "An OCC process is already running. Close OCC and run this script again."
     echo
     ps -p "$(printf '%s' "$existing" | paste -sd, -)" -o pid=,ppid=,command= || true
-  } | tee "$OUT_DIR/existing-orca-process.txt" >&2
+  } | tee "$OUT_DIR/existing-occ-process.txt" >&2
   exit 2
 }
 
@@ -204,7 +204,7 @@ stop_log_stream() {
   fi
 }
 
-latest_orca_pid_for_app() {
+latest_occ_pid_for_app() {
   pgrep -nf "$APP_DIR/Contents/MacOS/OCC" || true
 }
 
@@ -218,7 +218,7 @@ sample_process_once() {
 
 terminate_app_processes() {
   local pid
-  pid="$(latest_orca_pid_for_app)"
+  pid="$(latest_occ_pid_for_app)"
   if [[ -n "$pid" ]]; then
     kill "$pid" >/dev/null 2>&1 || true
     sleep 1
@@ -237,7 +237,7 @@ wait_for_probe() {
 
   for i in $(seq 1 200); do
     local app_pid
-    app_pid="$(latest_orca_pid_for_app)"
+    app_pid="$(latest_occ_pid_for_app)"
     if [[ "$sampled" -eq 0 && -n "$app_pid" ]]; then
       sampled=1
       echo "sampled_pid=$app_pid" >>"$OUT_DIR/$label.meta"
@@ -284,9 +284,9 @@ run_launchservices_probe() {
       --stdout "$stdout_file" \
       --stderr "$stderr_file" \
       --env ELECTRON_ENABLE_LOGGING=1 \
-      --env ORCA_STARTUP_DIAGNOSTICS=trace \
-      --env ORCA_STARTUP_DIAGNOSTICS_TRACE_LIMIT=30000 \
-      --env ORCA_STARTUP_DIAGNOSTICS_FILE="$bootstrap_file" \
+      --env OCC_STARTUP_DIAGNOSTICS=trace \
+      --env OCC_STARTUP_DIAGNOSTICS_TRACE_LIMIT=30000 \
+      --env OCC_STARTUP_DIAGNOSTICS_FILE="$bootstrap_file" \
       --env "$extra_env_name=$extra_env_value" \
       "$APP_DIR" &
   else
@@ -294,9 +294,9 @@ run_launchservices_probe() {
       --stdout "$stdout_file" \
       --stderr "$stderr_file" \
       --env ELECTRON_ENABLE_LOGGING=1 \
-      --env ORCA_STARTUP_DIAGNOSTICS=trace \
-      --env ORCA_STARTUP_DIAGNOSTICS_TRACE_LIMIT=30000 \
-      --env ORCA_STARTUP_DIAGNOSTICS_FILE="$bootstrap_file" \
+      --env OCC_STARTUP_DIAGNOSTICS=trace \
+      --env OCC_STARTUP_DIAGNOSTICS_TRACE_LIMIT=30000 \
+      --env OCC_STARTUP_DIAGNOSTICS_FILE="$bootstrap_file" \
       "$APP_DIR" &
   fi
   local runner_pid="$!"
@@ -322,9 +322,9 @@ run_direct_exec_probe() {
   } >"$OUT_DIR/$label.meta"
 
   ELECTRON_ENABLE_LOGGING=1 \
-    ORCA_STARTUP_DIAGNOSTICS=trace \
-    ORCA_STARTUP_DIAGNOSTICS_TRACE_LIMIT=30000 \
-    ORCA_STARTUP_DIAGNOSTICS_FILE="$bootstrap_file" \
+    OCC_STARTUP_DIAGNOSTICS=trace \
+    OCC_STARTUP_DIAGNOSTICS_TRACE_LIMIT=30000 \
+    OCC_STARTUP_DIAGNOSTICS_FILE="$bootstrap_file" \
     "$APP_DIR/Contents/MacOS/OCC" >"$stdout_file" 2>"$stderr_file" &
   local runner_pid="$!"
   wait_for_probe "$runner_pid" "$label"
@@ -356,11 +356,11 @@ package_results() {
 }
 
 write_environment_report
-ensure_no_existing_orca
+ensure_no_existing_occ
 download_and_copy_app
 write_app_report
 run_launchservices_probe "launchservices-trace"
-run_launchservices_probe "launchservices-bypass-lock" "ORCA_BYPASS_SINGLE_INSTANCE_LOCK" "1"
+run_launchservices_probe "launchservices-bypass-lock" "OCC_BYPASS_SINGLE_INSTANCE_LOCK" "1"
 run_direct_exec_probe
 write_system_log_snapshot
 package_results

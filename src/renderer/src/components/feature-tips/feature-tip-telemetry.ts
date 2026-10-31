@@ -2,27 +2,27 @@ import { track } from '@/lib/telemetry'
 import type { EventProps } from '../../../../shared/telemetry-events'
 import type { ChatUiLaunchTipVariant } from '../../../../shared/native-chat/chat-ui-launch-tip-audience'
 
-export type OrcaCliFeatureTipSource = EventProps<'orca_cli_feature_tip_shown'>['source']
-export type OrcaCliFeatureTipSetupResult = EventProps<'orca_cli_feature_tip_setup_result'>['result']
+export type OCCCliFeatureTipSource = EventProps<'occ_cli_feature_tip_shown'>['source']
+export type OCCCliFeatureTipSetupResult = EventProps<'occ_cli_feature_tip_setup_result'>['result']
 export type CmdJPaletteFeatureTipSource = EventProps<'cmd_j_palette_feature_tip_shown'>['source']
 
-export function getOrcaCliFeatureTipTelemetrySource(value: unknown): OrcaCliFeatureTipSource {
+export function getOCCCliFeatureTipTelemetrySource(value: unknown): OCCCliFeatureTipSource {
   return value === 'app_open' ? 'app_open' : 'manual'
 }
 
-export function trackOrcaCliFeatureTipShown(source: OrcaCliFeatureTipSource): void {
-  track('orca_cli_feature_tip_shown', { source })
+export function trackOCCCliFeatureTipShown(source: OCCCliFeatureTipSource): void {
+  track('occ_cli_feature_tip_shown', { source })
 }
 
-export function trackOrcaCliFeatureTipSetupClicked(source: OrcaCliFeatureTipSource): void {
-  track('orca_cli_feature_tip_setup_clicked', { source })
+export function trackOCCCliFeatureTipSetupClicked(source: OCCCliFeatureTipSource): void {
+  track('occ_cli_feature_tip_setup_clicked', { source })
 }
 
-export function trackOrcaCliFeatureTipSetupResult(
-  source: OrcaCliFeatureTipSource,
-  result: OrcaCliFeatureTipSetupResult
+export function trackOCCCliFeatureTipSetupResult(
+  source: OCCCliFeatureTipSource,
+  result: OCCCliFeatureTipSetupResult
 ): void {
-  track('orca_cli_feature_tip_setup_result', { source, result })
+  track('occ_cli_feature_tip_setup_result', { source, result })
 }
 
 export function trackCmdJPaletteFeatureTipShown(source: CmdJPaletteFeatureTipSource): void {

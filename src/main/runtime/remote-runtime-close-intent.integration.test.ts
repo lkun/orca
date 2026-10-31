@@ -5,8 +5,8 @@ import { join } from 'node:path'
 import { expect, it, vi } from 'vitest'
 import { parsePairingCode } from '../../shared/pairing'
 import { RemoteRuntimeRequestConnection } from '../../shared/remote-runtime/requests/remote-runtime-request-connection'
-import type { OrcaRuntimeService } from './orca-runtime'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import type { OCCRuntimeService } from './occ-runtime'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 
 const TEST_TIMEOUT_MS = 15_000
 const REQUEST_TIMEOUT_MS = 5_000
@@ -15,7 +15,7 @@ it(
   'binds encrypted close-intent capability to the real runtime RPC context',
   { timeout: TEST_TIMEOUT_MS },
   async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-close-intent-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-close-intent-'))
     const refuseUnattributedMobileSessionTabClose = vi.fn().mockResolvedValue({
       closed: true,
       refused: true,
@@ -53,8 +53,8 @@ it(
       listMobileSessionTabs,
       refuseUnattributedMobileSessionTabClose,
       closeMobileSessionTab
-    } as unknown as OrcaRuntimeService
-    const server = new OrcaRuntimeRpcServer({
+    } as unknown as OCCRuntimeService
+    const server = new OCCRuntimeRpcServer({
       runtime,
       userDataPath,
       enableWebSocket: true,

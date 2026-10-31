@@ -138,9 +138,9 @@ describe('MobileMarkdown file links', () => {
 
   it.each([
     [
-      '投稿（https://github.com/stablyai/orca/pull/1078）。',
-      'https://github.com/stablyai/orca/pull/1078',
-      'https://github.com/stablyai/orca/pull/1078'
+      '投稿（https://github.com/stablyai/occ/pull/1078）。',
+      'https://github.com/stablyai/occ/pull/1078',
+      'https://github.com/stablyai/occ/pull/1078'
     ],
     ['詳細は「www.example.com/docs」、次へ', 'www.example.com/docs', 'http://www.example.com/docs'],
     [

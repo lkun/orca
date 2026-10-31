@@ -4,7 +4,7 @@ import { openRelayDatabase, type RelayDatabase } from './database.js'
 import { reconcileReserveLedger, ReserveLedgerWriter } from './reserve-ledger-writer.js'
 
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 const USER = `ledger-pg-${randomUUID().slice(0, 8)}`
 

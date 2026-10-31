@@ -5,7 +5,7 @@ import { isInstalledOpenCodePluginCurrent } from '../shared/opencode-installed-p
 import { writeCanonicalOpenCodePluginAtomically } from '../shared/opencode-plugin-atomic-write'
 import { writeOpenCodeTuiPlugin } from '../shared/opencode-tui-plugin-install'
 
-const RELAY_HOOKS_DIR = '.orca-relay'
+const RELAY_HOOKS_DIR = '.occ-relay'
 
 export type OpenCodeAgent = 'opencode' | 'opencode2'
 
@@ -19,7 +19,7 @@ export function installOpenCodePluginInCanonicalConfig(
   try {
     const configDir = resolveOpenCodeConfigDirectory(environment, homeDir)
     const pluginFileName =
-      agent === 'opencode2' ? 'orca-opencode2-status.js' : 'orca-opencode-status.js'
+      agent === 'opencode2' ? 'occ-opencode2-status.js' : 'occ-opencode-status.js'
     const pluginPath = join(configDir, 'plugins', pluginFileName)
     if (onlyIfInstalled && !existsSync(pluginPath)) {
       return false

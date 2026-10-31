@@ -315,7 +315,7 @@ function mergedHosts(managedServer?: SshConnectionState['managedServer']): Sideb
       {
         id: 'omarchy-server',
         name: 'Omarchy',
-        orcadDeployment: {
+        occdDeployment: {
           sshTargetId: 'omarchy-target',
           sshTargetGeneration: 1,
           localPort: 7001,

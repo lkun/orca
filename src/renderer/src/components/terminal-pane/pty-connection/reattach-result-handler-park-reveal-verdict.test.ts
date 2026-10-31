@@ -5,7 +5,7 @@ import type { ConnectPanePtySession } from './connect-pane-pty-session'
 import type { HiddenOutputSnapshotResult } from './hidden-output-snapshot-serialize'
 import type { ReattachPayloadContext } from './reattach-payload-context'
 import type { ColdRestoreAgentResumeStartup } from './fresh-spawn-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 
 /** Probe decisions must distinguish image, bounded unverifiable retry and permanent unavailability; subscribe-time tail paint could hide a wrong decision in visual assertions (docs/reference/ssh-execution-boundary.md). */
 const REMOTE_PTY_ID = 'remote:env-1@@pty-1'
@@ -372,7 +372,7 @@ describe('handleReattachResult empty reattach under a hibernation note', () => {
     expect(bag.session.setPanePtyFitBinding).toHaveBeenCalledWith(REMOTE_PTY_ID)
   })
 
-  it.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
+  it.runIf(OCC_LAYOUT_OWNER_IS_MAIN)(
     'keeps the shell main kept after its start, without asking main again',
     async () => {
       const bag = buildParkRevealSession({
@@ -402,13 +402,13 @@ describe('handleReattachResult empty reattach under a hibernation note', () => {
       bag.session.handleReattachResult(
         { id: 'local-pty-1', isReattach: true },
         null,
-        ORCA_LAYOUT_OWNER_IS_MAIN ? null : startup
+        OCC_LAYOUT_OWNER_IS_MAIN ? null : startup
       )
     ).resolves.toBe(false)
 
     expect(bag.transport.disconnect).toHaveBeenCalledOnce()
     expect(bag.session.setPanePtyFitBinding).not.toHaveBeenCalled()
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // Main retires the shell and resumes the agent in its place; the window unbinds nothing.
       expect(bag.session.syncPanePtyLayoutBinding).not.toHaveBeenCalled()
       expect(bag.session.startFreshColdRestoreAgentResume).toHaveBeenCalledExactlyOnceWith(null)

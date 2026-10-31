@@ -19,15 +19,15 @@ function workspace() {
     {
       type: 'createTerminalTab',
       workspace: WS,
-      creation: { launchAgent: 'claude', startupCwd: '/Users/dev/orca' }
+      creation: { launchAgent: 'claude', startupCwd: '/Users/dev/occ' }
     },
     {
       type: 'openEditorTab',
       workspace: WS,
-      fileId: '/Users/dev/orca/README.md',
+      fileId: '/Users/dev/occ/README.md',
       contentType: 'editor',
       file: {
-        filePath: '/Users/dev/orca/README.md',
+        filePath: '/Users/dev/occ/README.md',
         relativePath: 'README.md',
         language: 'markdown'
       }
@@ -121,10 +121,10 @@ describe('projectSessionTabs', () => {
         {
           type: 'openEditorTab',
           workspace: WS,
-          fileId: '/Users/dev/orca/app.ts',
+          fileId: '/Users/dev/occ/app.ts',
           contentType: 'editor',
           file: {
-            filePath: '/Users/dev/orca/app.ts',
+            filePath: '/Users/dev/occ/app.ts',
             relativePath: 'app.ts',
             language: 'typescript'
           }
@@ -171,7 +171,7 @@ describe('projectSessionTabs', () => {
       // Keyed as editorFileKey keys it (an owned id in a layout-owner build), as the Loader does.
       editorDrafts: {
         [WS]: {
-          [editorFileKey({ filePath: '/Users/dev/orca/README.md' })]: {
+          [editorFileKey({ filePath: '/Users/dev/occ/README.md' })]: {
             dirtyDraftContent: '# draft'
           }
         }
@@ -266,7 +266,7 @@ describe('projectSessionTabs', () => {
             parentTabId: agent!.tabId!,
             leafId: agent!.leafId!,
             launchAgent: 'claude',
-            startupCwd: '/Users/dev/orca',
+            startupCwd: '/Users/dev/occ',
             parentLayout: {
               root: { type: 'leaf', leafId: agent!.leafId! },
               activeLeafId: agent!.leafId!,
@@ -278,16 +278,16 @@ describe('projectSessionTabs', () => {
             type: 'markdown',
             id: readme!.tabId!,
             title: 'README.md',
-            filePath: '/Users/dev/orca/README.md',
+            filePath: '/Users/dev/occ/README.md',
             relativePath: 'README.md',
             language: 'markdown',
             mode: 'edit',
             isDirty: true,
             isActive: false,
-            sourceFileId: '/Users/dev/orca/README.md',
-            sourceFilePath: '/Users/dev/orca/README.md',
+            sourceFileId: '/Users/dev/occ/README.md',
+            sourceFilePath: '/Users/dev/occ/README.md',
             sourceRelativePath: 'README.md',
-            documentVersion: 'file:/Users/dev/orca/README.md',
+            documentVersion: 'file:/Users/dev/occ/README.md',
             color: null,
             isPinned: false
           },

@@ -26,7 +26,7 @@ describe('buildManagedWorktreeCreateArgs', () => {
   })
 
   it('omits name provenance when the client did not claim a generated name', () => {
-    // Absent means user-typed: default true would permanently retire deliberate names such as orca and molly.
+    // Absent means user-typed: default true would permanently retire deliberate names such as occ and molly.
     expect(build({ repo: 'id:repo-1', name: 'nautilus' })).not.toHaveProperty('nameWasGenerated')
     expect(
       build({ repo: 'id:repo-1', name: 'nautilus', nameWasGenerated: false })

@@ -19,7 +19,7 @@ vi.mock('@/runtime/structured-agent-session-client', () => ({
 }))
 
 import { useAppStore } from '@/store'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { launchStructuredWorktreeSession } from './worktree-creation-structured-session'
 
 // Main's answer to the window's layout commands, as a switch-on build sends them, and the first
@@ -42,7 +42,7 @@ vi.mock('@/runtime/runtime-rpc-client', async (importOriginal) => {
 
 /** The startup the tab's terminal runs: main's start in a layout-owner build, else the window's. */
 function startupOf(tabId: string): unknown {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     return useAppStore.getState().pendingStartupByTabId[tabId]
   }
   return mocks.mainStarts.find(
@@ -105,7 +105,7 @@ function seedPairedServer(): ReturnType<typeof vi.fn> {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the launch only checks the creation is still pending.
     pendingWorktreeCreations: { 'creation-1': {} as never },
     settings: {
-      ...getDefaultSettings(path.join('workspace', '.orca')),
+      ...getDefaultSettings(path.join('workspace', '.occ')),
       activeRuntimeEnvironmentId: 'server-1'
     }
   })
@@ -180,7 +180,7 @@ function seedThisMachine(): void {
     ptyIdsByTabId: {},
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the launch only checks the creation is still pending.
     pendingWorktreeCreations: { 'creation-1': {} as never },
-    settings: getDefaultSettings(path.join('workspace', '.orca')),
+    settings: getDefaultSettings(path.join('workspace', '.occ')),
     // The user moved to another workspace while the create ran.
     activeWorktreeId: LOCAL_OTHER.id
   })

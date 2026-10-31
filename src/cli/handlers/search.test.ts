@@ -15,7 +15,7 @@ const hit = {
   executionHostId: 'ssh:build-01',
   sessionId: 'session-1',
   title: 'Terminal resize race',
-  cwd: '/src/orca',
+  cwd: '/src/occ',
   branch: 'main',
   updatedAt: '2026-09-12T18:04:11.000Z',
   messageCount: 214,
@@ -74,7 +74,7 @@ async function runSearch(
           )
         )
   const lines: string[] = []
-  const client = new RuntimeClient('/tmp/orca-search-test', 60_000, null, null)
+  const client = new RuntimeClient('/tmp/occ-search-test', 60_000, null, null)
   vi.spyOn(client, 'call').mockImplementation(call)
   vi.spyOn(client, 'isRemote', 'get').mockReturnValue(options.isRemote ?? false)
   vi.spyOn(console, 'log').mockImplementation((value: unknown) => {
@@ -107,7 +107,7 @@ function printedResults(output: string): Extract<AiVaultSearchResponse, { kind: 
   return parsed
 }
 
-describe('orca search over the runtime RPC', () => {
+describe('occ search over the runtime RPC', () => {
   it('sends the query with the contract defaults the schema resolves', async () => {
     const { call } = await runSearch([['query', 'resize race']])
 
@@ -285,7 +285,7 @@ describe('orca search over the runtime RPC', () => {
   })
 })
 
-describe('orca search --json', () => {
+describe('occ search --json', () => {
   it('hands back the contract response unchanged under the CLI envelope', async () => {
     const { output } = await runSearch([['query', 'q']], { json: true })
     const printed = printedEnvelope(output)

@@ -89,7 +89,7 @@ describe('workspace SSH gate', () => {
   })
 
   it('asks for the desktop recovery only for the refusal the desktop offers it on', () => {
-    const named = 'run `orcad --reclaim-stale-lock --data-root /home/dev/.orca` there'
+    const named = 'run `occd --reclaim-stale-lock --data-root /home/dev/.occ` there'
     const gate = (managedServer: WorkspaceSshRecord['managedServer']) =>
       deriveWorkspaceSshGate({
         connectionId: 'ssh-1',

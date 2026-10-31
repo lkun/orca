@@ -94,7 +94,7 @@ export function setupCodexUsageStoreEnv(getPathMock: Mock): { tempUserData: stri
   const env = { tempUserData: '' }
 
   beforeEach(() => {
-    env.tempUserData = mkdtempSync(join(tmpdir(), 'orca-codex-usage-store-'))
+    env.tempUserData = mkdtempSync(join(tmpdir(), 'occ-codex-usage-store-'))
     getPathMock.mockReturnValue(env.tempUserData)
     initCodexUsagePath()
     vi.mocked(scanCodexUsageFilesViaWorker).mockReset()

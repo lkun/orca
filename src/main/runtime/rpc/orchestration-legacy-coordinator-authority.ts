@@ -1,4 +1,4 @@
-import type { OrcaRuntimeService, OrchestrationCompatibilityCallerAuthority } from '../orca-runtime'
+import type { OCCRuntimeService, OrchestrationCompatibilityCallerAuthority } from '../occ-runtime'
 import type { OrchestrationDb } from '../orchestration/db'
 import type { LegacyCompatibilityPrincipalRow } from '../orchestration/types'
 import type { LegacyCoordinatorAuthorityProof, RpcRequest } from './core'
@@ -13,7 +13,7 @@ import {
 } from './orchestration-legacy-process-identity'
 
 export class LegacyCoordinatorAuthority {
-  constructor(private readonly runtime: OrcaRuntimeService) {}
+  constructor(private readonly runtime: OCCRuntimeService) {}
 
   resolve(
     request: RpcRequest,
@@ -29,7 +29,7 @@ export class LegacyCoordinatorAuthority {
     if (requestedRun !== adoption.adopted_run_id) {
       return undefined
     }
-    const candidate = db.resolveLegacyCoordinatorCandidate({
+    const candidate = db.resolveLegacyCoordinatoccndidate({
       runId: adoption.adopted_run_id,
       terminalHandle: request.orchestrationCompatibilityEvidence?.terminalHandle,
       paneKey: request.orchestrationCompatibilityEvidence?.paneKey

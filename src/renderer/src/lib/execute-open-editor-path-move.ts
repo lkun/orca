@@ -16,7 +16,7 @@ import { runtimeEnvironmentIdOrLocalUnlessTwin } from '@/lib/worktree-runtime-ow
 import { editorMoveOwnerFromContext, isOpenFileOnMoveOwner } from '@/lib/open-editor-move-owner'
 import { documentFolderAccess } from '@/lib/local-file-access'
 import { contentRekeyOutcome } from '@/runtime/layout-owner-content-rekeys'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 
 let moveOperationCounter = 0
 
@@ -93,7 +93,7 @@ export async function executeOpenEditorPathMove(args: {
       moveOperationId: operationId
     })
     if (
-      ORCA_LAYOUT_OWNER_IS_MAIN &&
+      OCC_LAYOUT_OWNER_IS_MAIN &&
       rekeyResult.ok &&
       !(await contentRekeyOutcome(affected.map((file) => file.id)))
     ) {

@@ -22,7 +22,7 @@ afterEach(() => {
 
 /** A fake /proc: a pane shell and its untagged job among `others` processes; returns tool calls. */
 function runAgainst(others: number): { calls: number; stdout: string } {
-  root = mkdtempSync(join(tmpdir(), 'orca-guest-table-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-guest-table-'))
   const proc = join(root, 'proc')
   const entry = (pid: number, comm: string, ppid: number, sid: number, environ: string) => {
     const dir = join(proc, String(pid))
@@ -32,7 +32,7 @@ function runAgainst(others: number): { calls: number; stdout: string } {
     writeFileSync(join(dir, 'cmdline'), `${comm}\0`)
     symlinkSync('/home/a', join(dir, 'cwd'))
   }
-  entry(100, 'bash', 1, 100, 'ORCA_PANE_KEY=tab:leaf\0')
+  entry(100, 'bash', 1, 100, 'OCC_PANE_KEY=tab:leaf\0')
   // Started with `env -i`: no pane key, but in the pane shell's session.
   entry(200, 'sleep', 100, 100, 'PATH=/bin\0')
   for (let pid = 1000; pid < 1000 + others; pid += 1) {

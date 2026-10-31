@@ -36,9 +36,9 @@ export function applyManagedDataAccountEnvironment(
   }
   service.captureOriginalEnvironment(environment, selected)
   Object.assign(environment, selected)
-  environment.ORCA_DATA_ACCOUNT_DATA_HOME = selected.XDG_DATA_HOME
-  environment.ORCA_DATA_ACCOUNT_STATE_HOME = selected.XDG_STATE_HOME
-  environment.ORCA_DATA_ACCOUNT_PROVIDER = provider
+  environment.OCC_DATA_ACCOUNT_DATA_HOME = selected.XDG_DATA_HOME
+  environment.OCC_DATA_ACCOUNT_STATE_HOME = selected.XDG_STATE_HOME
+  environment.OCC_DATA_ACCOUNT_PROVIDER = provider
   if (provider === 'opencode') {
     // Clear overrides that could bypass the selected profile's credentials.
     environment.OPENCODE_AUTH_CONTENT = ''

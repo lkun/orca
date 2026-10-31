@@ -5,8 +5,8 @@ const deployment = (sshTargetId: string) => ({ sshTargetId })
 
 describe('getRecipeVmSshTargetForHost', () => {
   const environments = [
-    { id: 'env-vm', orcadDeployment: deployment('runtime-ssh-vm-1') },
-    { id: 'env-host', orcadDeployment: deployment('ssh-builder') },
+    { id: 'env-vm', occdDeployment: deployment('runtime-ssh-vm-1') },
+    { id: 'env-host', occdDeployment: deployment('ssh-builder') },
     { id: 'env-paired' }
   ]
 

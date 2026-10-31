@@ -55,7 +55,7 @@ export function normalizeRuntimePathForComparison(rawValue: string): string {
 }
 
 /** Require caller UNC cwd to prove the distro: Linux tails repeat across distros, and a tail-only match could make worktree rm delete another distro’s directory. */
-export function isWslUncPathForCallerLinuxPath(
+export function isWslUncPathFoccllerLinuxPath(
   uncPath: string,
   linuxPath: string,
   callerDistro: string

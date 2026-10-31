@@ -17,7 +17,7 @@ describe('resolveWorktreeDisplayName', () => {
       resolveWorktreeDisplayName({
         displayName: undefined as unknown as string,
         branch: 'refs/heads/main',
-        path: '/repos/orca'
+        path: '/repos/occ'
       })
     ).toBe('main')
   })

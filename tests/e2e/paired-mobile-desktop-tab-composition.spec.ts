@@ -1,7 +1,7 @@
 // Phone relay reads must match desktop host-backed tab moves in server session lists and published groups (P3), including after the macOS desktop window closes.
 import { mkdirSync, writeFileSync } from 'node:fs'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchPhoneMirrorTopology } from './helpers/phone-mirror-topology'
 import type { PairedMobileSocket } from './helpers/paired-mobile-client'
 import { readPublishedLayout, readSessionTabs } from './helpers/layout-compat-baseline'

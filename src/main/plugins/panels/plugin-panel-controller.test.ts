@@ -14,7 +14,7 @@ afterEach(async () => {
 })
 
 async function createPlugin(): Promise<ValidDiscoveredPlugin> {
-  const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-panel-controller-'))
+  const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-panel-controller-'))
   roots.push(rootDir)
   await writeFile(join(rootDir, 'panel.html'), '<h1>Panel</h1>')
   return {
@@ -26,7 +26,7 @@ async function createPlugin(): Promise<ValidDiscoveredPlugin> {
       publisher: 'samples',
       name: 'Demo',
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       contributes: {
         panels: [{ id: 'dashboard', title: 'Dashboard', entry: 'panel.html' }],

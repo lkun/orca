@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { probeClaudeCliVersion } from './claude-hook-event-versions'
 import {
   CLAUDE_APPLY_FLAG_SETTINGS_CONTROL,
@@ -24,7 +24,7 @@ import {
   refreshClaudeStructuredSessionOptions
 } from './claude-structured-session-options'
 
-vi.mock('@orca/process-host', () => ({ runProcess: vi.fn() }))
+vi.mock('@occ/process-host', () => ({ runProcess: vi.fn() }))
 
 function sessionFor(setModel: ClaudeSession['connection']['setModel']): ClaudeSession {
   return {

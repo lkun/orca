@@ -1,14 +1,14 @@
 import type { OrchestrationCliCommand } from './cli-command'
 import type { RuntimeAgentPromptWriteOptions } from '../runtime-terminal-contracts'
-import { ORCA_DISPATCH_PROMPT_LEAD_LINE } from '../../../shared/orca-dispatch-status-prompt'
-import { ORCA_SESSION_ADDRESS_PREFIX } from '../../../shared/orca-session-address-prefix'
+import { OCC_DISPATCH_PROMPT_LEAD_LINE } from '../../../shared/occ-dispatch-status-prompt'
+import { OCC_SESSION_ADDRESS_PREFIX } from '../../../shared/occ-session-address-prefix'
 
 export type PreambleParams = {
   taskId: string
   // Dispatch ids fence completion authority across retries of one Task.
   dispatchId: string
   taskSpec: string
-  /** A terminal handle, or a session's `orca_session_id:<id>`; each is labelled by its kind. */
+  /** A terminal handle, or a session's `occ_session_id:<id>`; each is labelled by its kind. */
   coordinatorHandle: string
   workerHandle: string
   devMode?: boolean
@@ -30,7 +30,7 @@ export type PreambleParams = {
 
 /** A session address names a chat worker; any other handle is a terminal. */
 function isSessionHandle(handle: string): boolean {
-  return handle.startsWith(ORCA_SESSION_ADDRESS_PREFIX)
+  return handle.startsWith(OCC_SESSION_ADDRESS_PREFIX)
 }
 
 /** Terminal agents keep their handle's wording; only a session is named by its OCC session ID. */
@@ -49,7 +49,7 @@ function dispatchIdentityLines(params: PreambleParams): string {
 // Place behavior rules beside CLI examples, where agent readers use them.
 export function buildDispatchPreamble(params: PreambleParams): string {
   // Dev agents must reach the dev socket through occ-dev.
-  const cli = params.devMode ? 'occ-dev' : (params.cliCommand ?? 'orca')
+  const cli = params.devMode ? 'occ-dev' : (params.cliCommand ?? 'occ')
   const chat = isSessionHandle(params.workerHandle)
   const surface = chat ? 'chat' : 'terminal'
   const postDoneInstructions = buildPostWorkerDoneInstructions({
@@ -113,7 +113,7 @@ export function dispatchPreambleSendOptions(requestId: string): DispatchPreamble
   // Why: a delayed provider hook must not revoke an accepted Dispatch.
   return {
     inputKind: 'orchestration',
-    leadLine: ORCA_DISPATCH_PROMPT_LEAD_LINE,
+    leadLine: OCC_DISPATCH_PROMPT_LEAD_LINE,
     acceptQueued: true,
     observationTimeoutMs: 0,
     requestId

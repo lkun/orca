@@ -31,7 +31,7 @@ afterEach(() => {
 })
 
 function userDataPath(): string {
-  const path = mkdtempSync(join(tmpdir(), 'orca-relay-region-log-'))
+  const path = mkdtempSync(join(tmpdir(), 'occ-relay-region-log-'))
   tempPaths.push(path)
   return path
 }
@@ -47,7 +47,7 @@ function sampledProbe(samples: Record<string, number[]>) {
 
 function writeCache(path: string, region: string | null, expiresAt: number): void {
   writeFileSync(
-    join(path, 'orca-relay-region-preference.json'),
+    join(path, 'occ-relay-region-preference.json'),
     JSON.stringify({ v: 2, directorUrl: DIRECTOR, region, expiresAt })
   )
 }

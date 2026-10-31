@@ -159,7 +159,7 @@ async function expectLocalFilesClosed(dir: string): Promise<void> {
 
 describe('directory upload pipeline', () => {
   it('overlaps four small files, preserves bytes, and creates parents before child writes', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-sftp-pipeline-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-sftp-pipeline-'))
     const fixture = uploadSession({ stalledCloses: true })
     const files = new Map<string, Buffer>()
     let upload: Promise<void> | undefined
@@ -199,7 +199,7 @@ describe('directory upload pipeline', () => {
   })
 
   it('preserves the first write failure while closing a sibling stalled in CLOSE', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-sftp-pipeline-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-sftp-pipeline-'))
     const settings = { stalledCloses: true, heldWrite: '' }
     const fixture = uploadSession(settings)
     try {
@@ -228,7 +228,7 @@ describe('directory upload pipeline', () => {
   })
 
   it('bounds an unconfirmed failure close and retains the install-lock uncertainty flags', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-sftp-pipeline-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-sftp-pipeline-'))
     const fixture = uploadSession({
       stalledCloses: true,
       heldWrite: '/remote/0.bin',
@@ -260,7 +260,7 @@ describe('directory upload pipeline', () => {
   })
 
   it('stops admission and closes local handles on abort', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-sftp-pipeline-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-sftp-pipeline-'))
     const fixture = uploadSession({ stalledCloses: true })
     const controller = new AbortController()
     try {

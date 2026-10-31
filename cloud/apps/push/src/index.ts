@@ -8,7 +8,7 @@ const database = await openPushDatabase({
   ...(config.databaseUrl === undefined ? {} : { databaseUrl: config.databaseUrl }),
   dataDir: config.dataDir,
   poolMax: config.databasePoolMax,
-  applicationName: 'orca-push',
+  applicationName: 'occ-push',
   readOnly: config.mode === 'validation'
 })
 const {
@@ -26,7 +26,7 @@ const stopBackground = startPushBackground(config, { challenges, sessions, deliv
 observability.start()
 
 server.listen(config.port, () => {
-  console.log(`[orca-push] listening on ${config.publicUrl} (port ${config.port})`)
+  console.log(`[occ-push] listening on ${config.publicUrl} (port ${config.port})`)
 })
 
 let stopping = false
@@ -47,7 +47,7 @@ const shutdown = (): void => {
       clearTimeout(deadline)
     })
     .catch(() => {
-      console.warn(JSON.stringify({ event: 'orca_push_shutdown_failed' }))
+      console.warn(JSON.stringify({ event: 'occ_push_shutdown_failed' }))
       process.exitCode = 1
     })
 }

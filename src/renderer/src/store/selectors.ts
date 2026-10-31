@@ -24,7 +24,7 @@ import { findSoleHostCopy } from '../../../shared/worktree/host-qualified-identi
 
 export { getProjectHostSetupProjectionFromState } from './project-host-setup-selector'
 export {
-  resetFloatingVisibleTabCountSelectorCacheForTest,
+  resetFloatingVisibleTabCountSelectocccheForTest,
   selectFloatingVisibleTabCount
 } from './floating-workspace-panel-selector'
 
@@ -104,7 +104,7 @@ export function selectFloatingWorkspaceHasUnread(state: FloatingWorkspaceUnreadS
   return hasUnread
 }
 
-export function resetFloatingWorkspaceUnreadSelectorCacheForTest(): void {
+export function resetFloatingWorkspaceUnreadSelectocccheForTest(): void {
   floatingWorkspaceUnreadCache = null
 }
 

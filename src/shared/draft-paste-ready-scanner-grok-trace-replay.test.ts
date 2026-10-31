@@ -15,7 +15,7 @@ function chunkData(chunk: GrokStartupTraceChunk): string {
   return chunk.data ?? 'x'.repeat(chunk.bytes ?? 0)
 }
 
-/** Replay caller timer semantics: re-arm quiet requests, cancel on earlier chunks, and let hard timeout outrank late markers. Null means timeout; main drops that draft. Mirrors agent-draft-readiness.ts/orca-runtime.ts. */
+/** Replay caller timer semantics: re-arm quiet requests, cancel on earlier chunks, and let hard timeout outrank late markers. Null means timeout; main drops that draft. Mirrors agent-draft-readiness.ts/occ-runtime.ts. */
 function replayReadyAtMs(
   signal: DraftPasteReadySignal,
   trace: GrokStartupTraceChunk[]

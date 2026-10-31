@@ -90,7 +90,7 @@ function storeStub(pushTarget?: GitPushTarget) {
 }
 
 /** A remote OCC added for a fork PR's push target, as worktree create does. */
-async function addOrcaPushTargetRemote(): Promise<GitPushTarget> {
+async function addOCCPushTargetRemote(): Promise<GitPushTarget> {
   const pushTarget = {
     remoteName: 'pr-contributor',
     branchName: 'feature',
@@ -98,7 +98,7 @@ async function addOrcaPushTargetRemote(): Promise<GitPushTarget> {
     remoteCreated: true
   }
   await git(['remote', 'add', pushTarget.remoteName, pushTarget.remoteUrl])
-  await git(['config', `remote.${pushTarget.remoteName}.orca-created`, 'true'])
+  await git(['config', `remote.${pushTarget.remoteName}.occ-created`, 'true'])
   return pushTarget
 }
 
@@ -206,7 +206,7 @@ describe.skipIf(process.platform !== 'darwin')('a worktree delete Git fails part
       vi.stubEnv(key, undefined)
     }
     vi.spyOn(console, 'warn').mockImplementation(() => {})
-    scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'orca-failed-removal-')))
+    scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'occ-failed-removal-')))
     recordsDir = join(scratchDir, 'profile')
     repoPath = join(scratchDir, 'repo')
     worktreePath = join(scratchDir, 'workspaces', 'feature')
@@ -360,7 +360,7 @@ describe.skipIf(process.platform !== 'darwin')('a worktree delete Git fails part
   })
 
   it('removes the push-target remote OCC added when a runtime delete fails', async () => {
-    const pushTarget = await addOrcaPushTargetRemote()
+    const pushTarget = await addOCCPushTargetRemote()
     const worktree = (await listWorktreesStrict(repoPath)).find((row) =>
       areWorktreePathsEqual(row.path, worktreePath)
     )!
@@ -401,7 +401,7 @@ describe.skipIf(process.platform !== 'darwin')('a worktree delete Git fails part
   })
 
   it('removes the push-target remote OCC added when the startup finish fails', async () => {
-    const pushTarget = await addOrcaPushTargetRemote()
+    const pushTarget = await addOCCPushTargetRemote()
 
     expect(String(await finishAtStartup([], pushTarget))).toMatch(LOCKED_FILE_ERROR)
 

@@ -15,7 +15,7 @@ const SESSION = 'session-1'
 describe('an operation whose agent start throws', () => {
   it('is refused as a failed restart, with the error only in the log', async () => {
     const log = recordingStructuredAgentSessionLogger()
-    const cause = new Error('EACCES: permission denied, open /Users/me/.orca/leases.json')
+    const cause = new Error('EACCES: permission denied, open /Users/me/.occ/leases.json')
     const context = {
       deps: {
         logger: log.logger,

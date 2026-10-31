@@ -339,7 +339,7 @@ describe('registerSkillsHandlers', () => {
     const runtime = bundledRuntime()
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: a test double implements only the members this code path reads.
     registerSkillsHandlers(store as never, runtime as never)
-    const force = ['/home/u/.claude/skills/orca-cli']
+    const force = ['/home/u/.claude/skills/occ-cli']
     const planDigest = 'c'.repeat(64)
 
     await expect(handlerFor('skills:bundledPlan')(null, undefined)).resolves.toEqual({

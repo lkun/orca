@@ -26,7 +26,7 @@ vi.mock('expo-notifications', () => ({ scheduleNotificationAsync: fallback.sched
 vi.mock('react-native', () => ({ Platform: { OS: 'ios' } }))
 vi.mock('./desktop-notification-channel', () => ({
   ensureDesktopNotificationChannel: vi.fn(),
-  DESKTOP_NOTIFICATION_CHANNEL_ID: 'orca-desktop'
+  DESKTOP_NOTIFICATION_CHANNEL_ID: 'occ-desktop'
 }))
 vi.mock('./notification-delivery-preferences', () => ({
   loadNotificationDeliveryPreferences: async () => fallback.preferences
@@ -228,8 +228,8 @@ it('presents an unsupported host with a token, using the silent channel preferen
   emitAlert()
   await vi.waitFor(() => expect(fallback.schedule).toHaveBeenCalledOnce())
   expect(fallback.schedule.mock.calls[0][0]).toMatchObject({
-    content: { sound: false, data: { channelId: 'orca-desktop-silent' } },
-    trigger: { channelId: 'orca-desktop-silent' }
+    content: { sound: false, data: { channelId: 'occ-desktop-silent' } },
+    trigger: { channelId: 'occ-desktop-silent' }
   })
 })
 

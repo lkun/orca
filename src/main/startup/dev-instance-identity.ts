@@ -68,14 +68,14 @@ export function getDevInstanceIdentity(
     }
   }
 
-  const repoRoot = cleanEnvValue(env.ORCA_DEV_REPO_ROOT)
-  const branch = cleanEnvValue(env.ORCA_DEV_BRANCH)
+  const repoRoot = cleanEnvValue(env.OCC_DEV_REPO_ROOT)
+  const branch = cleanEnvValue(env.OCC_DEV_BRANCH)
   const worktreeName =
-    cleanEnvValue(env.ORCA_DEV_WORKTREE_NAME) ??
+    cleanEnvValue(env.OCC_DEV_WORKTREE_NAME) ??
     cleanEnvValue(path.basename(repoRoot ?? process.cwd()))
-  const devLabel = cleanEnvValue(env.ORCA_DEV_INSTANCE_LABEL) ?? formatLabel(branch, worktreeName)
+  const devLabel = cleanEnvValue(env.OCC_DEV_INSTANCE_LABEL) ?? formatLabel(branch, worktreeName)
   const dockTitle =
-    cleanEnvValue(env.ORCA_DEV_DOCK_TITLE) ?? `${BASE_APP_NAME}: ${branch ?? devLabel ?? 'dev'}`
+    cleanEnvValue(env.OCC_DEV_DOCK_TITLE) ?? `${BASE_APP_NAME}: ${branch ?? devLabel ?? 'dev'}`
 
   return {
     name: dockTitle,

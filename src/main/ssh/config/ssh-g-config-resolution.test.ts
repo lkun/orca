@@ -106,11 +106,11 @@ describe('parseSshGOutput IdentityFile tokens', () => {
   })
 
   it('expands ${NAME} from the environment, and keeps the path raw when NAME is unset', () => {
-    vi.stubEnv('ORCA_TEST_KEYS', '/srv/keys-%r')
+    vi.stubEnv('OCC_TEST_KEYS', '/srv/keys-%r')
     try {
       expect(
-        parseSshGOutput(sshG('${ORCA_TEST_KEYS}/%r', '${ORCA_TEST_UNSET_VAR}/k')).identityFile
-      ).toEqual(['/srv/keys-%r/bob', '${ORCA_TEST_UNSET_VAR}/k'])
+        parseSshGOutput(sshG('${OCC_TEST_KEYS}/%r', '${OCC_TEST_UNSET_VAR}/k')).identityFile
+      ).toEqual(['/srv/keys-%r/bob', '${OCC_TEST_UNSET_VAR}/k'])
     } finally {
       vi.unstubAllEnvs()
     }
@@ -132,7 +132,7 @@ describe('siteConfigMayRestrictHostKeys', () => {
   let dir: string
 
   beforeEach(async () => {
-    dir = await mkdtemp(join(tmpdir(), 'orca-site-ssh-config-'))
+    dir = await mkdtemp(join(tmpdir(), 'occ-site-ssh-config-'))
   })
 
   afterEach(async () => {

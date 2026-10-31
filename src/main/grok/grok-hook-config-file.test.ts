@@ -20,9 +20,9 @@ describe('guarded Grok hook config mutation', () => {
   const dirs: string[] = []
 
   function makeConfigPath(): string {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-grok-guard-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-grok-guard-'))
     dirs.push(dir)
-    return join(dir, 'orca-status.json')
+    return join(dir, 'occ-status.json')
   }
 
   afterEach(() => {
@@ -135,7 +135,7 @@ describe('guarded Grok hook config mutation', () => {
     await started
 
     expect(readFileSync(configPath, 'utf8')).toBe(installed)
-    expect(readdirSync(dirname(configPath))).toEqual(['orca-status.json'])
+    expect(readdirSync(dirname(configPath))).toEqual(['occ-status.json'])
     finishProbe(false)
     await expect(cleanup).resolves.toBe(false)
   })
@@ -200,6 +200,6 @@ describe('guarded Grok hook config mutation', () => {
     await expect(
       writeGrokHookConfigIfUnchanged(configPath, installed, '{"hooks":{}}\n')
     ).resolves.toBe(true)
-    expect(readdirSync(dir)).toEqual(['orca-status.json'])
+    expect(readdirSync(dir)).toEqual(['occ-status.json'])
   })
 })

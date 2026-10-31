@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { RpcDispatcher } from './rpc/dispatcher'
 import type { RpcRequest } from './rpc/core'
 import { TERMINAL_METHODS } from './rpc/methods/terminal'
@@ -47,7 +47,7 @@ function graph(ptyId: string | null, extraLeafPtyId?: string) {
 function makeHost(options: { livePtyIds: Set<string> }) {
   const writes: string[] = []
   const inputWritten = Promise.withResolvers<void>()
-  const runtime = new OrcaRuntimeService(null)
+  const runtime = new OCCRuntimeService(null)
   runtime.setPtyController({
     write: (_ptyId, data) => {
       writes.push(data)
@@ -62,12 +62,12 @@ function makeHost(options: { livePtyIds: Set<string> }) {
   return { runtime, writes, inputWritten: inputWritten.promise }
 }
 
-async function handleFor(runtime: OrcaRuntimeService): Promise<string> {
+async function handleFor(runtime: OCCRuntimeService): Promise<string> {
   const listing = await runtime.listTerminals()
   return listing.terminals.find((terminal) => terminal.tabId === TAB_ID)!.handle
 }
 
-function startMultiplex(runtime: OrcaRuntimeService) {
+function startMultiplex(runtime: OCCRuntimeService) {
   const binaryFrames: StreamFrame[] = []
   const controlRegistered = Promise.withResolvers<void>()
   const subscribed = Promise.withResolvers<void>()

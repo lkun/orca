@@ -46,7 +46,7 @@ import {
   wslDistroNotRunningForScanFailure
 } from './wsl-stopped-worktree-listing'
 
-export async function listDetectedWorktreesForCapturedRepo(
+export async function listDetectedWorktreesFoccpturedRepo(
   store: Store,
   repo: Repo,
   isCurrent: () => boolean,

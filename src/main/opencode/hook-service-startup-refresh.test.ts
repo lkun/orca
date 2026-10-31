@@ -15,15 +15,15 @@ import { setAppEnvironment } from '../../shared/app-environment'
 import { OpenCodeHookService, openCode2HookService, getOpenCode2PluginSource } from './hook-service'
 import { resolveOpenCodeConfigDirectory } from '../../shared/opencode-config-directory'
 
-const PLUGIN = 'orca-opencode2-status.js'
-const TUI_ENTRY = join('orca-opencode2-status-tui', 'tui.js')
+const PLUGIN = 'occ-opencode2-status.js'
+const TUI_ENTRY = join('occ-opencode2-status-tui', 'tui.js')
 
 describe('OpenCodeHookService.refreshInstalledPlugins (app start)', () => {
   let userDataDir: string
   const originalXdgConfigHome = process.env.XDG_CONFIG_HOME
 
   beforeAll(() => {
-    userDataDir = mkdtempSync(join(tmpdir(), 'orca-opencode-startup-refresh-'))
+    userDataDir = mkdtempSync(join(tmpdir(), 'occ-opencode-startup-refresh-'))
     process.env.XDG_CONFIG_HOME = join(userDataDir, 'xdg')
   })
 
@@ -78,7 +78,7 @@ describe('OpenCodeHookService.refreshInstalledPlugins (app start)', () => {
 
   it('leaves a current install untouched so nothing reloads', () => {
     const pluginsDir = join(resolveOpenCodeConfigDirectory(), 'plugins')
-    mkdirSync(join(pluginsDir, 'orca-opencode2-status-tui'), { recursive: true })
+    mkdirSync(join(pluginsDir, 'occ-opencode2-status-tui'), { recursive: true })
     writeFileSync(join(pluginsDir, PLUGIN), getOpenCode2PluginSource())
     writeFileSync(join(pluginsDir, TUI_ENTRY), getOpenCode2PluginSource())
     const past = new Date('2020-01-01T00:00:00Z')
@@ -118,7 +118,7 @@ describe('OpenCodeHookService.refreshInstalledPlugins (app start)', () => {
     const pluginsDir = join(resolveOpenCodeConfigDirectory(), 'plugins')
     mkdirSync(pluginsDir, { recursive: true })
     writeFileSync(join(pluginsDir, PLUGIN), '// old')
-    writeFileSync(join(pluginsDir, 'orca-opencode2-status-tui'), 'obstruction')
+    writeFileSync(join(pluginsDir, 'occ-opencode2-status-tui'), 'obstruction')
     const overlayPlugins = join(userDataDir, 'opencode2-config-overlays', 'a', 'plugins')
     mkdirSync(overlayPlugins, { recursive: true })
     writeFileSync(join(overlayPlugins, PLUGIN), '// old')

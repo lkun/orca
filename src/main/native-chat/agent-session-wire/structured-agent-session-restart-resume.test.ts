@@ -498,7 +498,7 @@ describe('the resumable set', () => {
       supportsRecord: () => true,
       latestPrompt: () => '',
       movedOn: () => false,
-      savedByNewerOrca: () => false
+      savedByNewerOCC: () => false
     })
 
     expect(candidates).toHaveLength(1)
@@ -512,7 +512,7 @@ describe('the resumable set', () => {
       supportsRecord: () => true,
       latestPrompt: () => '',
       movedOn: () => false,
-      savedByNewerOrca: () => false
+      savedByNewerOCC: () => false
     })
 
     expect(set.candidates).toEqual([])
@@ -521,7 +521,7 @@ describe('the resumable set', () => {
 
   it("neither offers nor spends a newer OCC's chat, and offers it once this build can open it", () => {
     const offer = marker()
-    expect(resumableSet({ markers: [offer], savedByNewerOrca: [SESSION] })).toEqual({
+    expect(resumableSet({ markers: [offer], savedByNewerOCC: [SESSION] })).toEqual({
       candidates: [],
       superseded: []
     })
@@ -530,7 +530,7 @@ describe('the resumable set', () => {
 
   it('still withdraws a forked chat a newer OCC saved', () => {
     const forked = marker({ providerHandleRoot: 'codex:"other-thread"' })
-    expect(resumableSet({ markers: [forked], savedByNewerOrca: [SESSION] }).superseded).toEqual([
+    expect(resumableSet({ markers: [forked], savedByNewerOCC: [SESSION] }).superseded).toEqual([
       forked
     ])
   })

@@ -14,7 +14,7 @@ import {
   seedStore
 } from '../../store-test-helpers'
 import { createStoreCascadesMockApi } from '../../store-cascades-test-harness'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
 import {
   readStructuredAgentLaunchRecord,
   resetStructuredAgentLaunchPersistenceForTests,
@@ -40,14 +40,14 @@ const AGENT_TAB_ID = `agent-session:${SESSION_ID}`
 
 // A layout-owner build closes a local launch on its host at once and keeps no tombstone.
 function launchWasCancelled(): boolean {
-  return ORCA_LAYOUT_OWNER_IS_MAIN
+  return OCC_LAYOUT_OWNER_IS_MAIN
     ? wasStructuredAgentLaunchClosedByLocalCancel(SESSION_ID) &&
         readStructuredAgentLaunchRecord(SESSION_ID) === undefined
     : hasStructuredAgentSessionLaunchCancellationTombstone(CREATED_ID, SESSION_ID)
 }
 
 function detected(worktree: Worktree): DetectedWorktree {
-  return { ...worktree, ownership: 'orca-managed', selectedCheckout: false, visible: true }
+  return { ...worktree, ownership: 'occ-managed', selectedCheckout: false, visible: true }
 }
 
 function seedCreatedWorkspaceWithPendingLaunch(

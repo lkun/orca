@@ -45,10 +45,10 @@ describe.skipIf(process.platform === 'win32')('default terminal shell', () => {
 
   it('uses explicit interactive args for the configured default shell', () => {
     const plan = createLocalPtyLaunchPlan(
-      { cwd: '/tmp', cols: 80, rows: 24, terminalShellArgs: ['--rcfile', '/tmp/orca rc'] },
+      { cwd: '/tmp', cols: 80, rows: 24, terminalShellArgs: ['--rcfile', '/tmp/occ rc'] },
       () => ({ getDefaultShell: () => '/bin/bash' })
     )
-    expect(plan).toMatchObject({ shellPath: '/bin/bash', shellArgs: ['--rcfile', '/tmp/orca rc'] })
+    expect(plan).toMatchObject({ shellPath: '/bin/bash', shellArgs: ['--rcfile', '/tmp/occ rc'] })
   })
 
   it('allows an explicit empty argument list for wrapper shells', () => {
@@ -75,7 +75,7 @@ describe.skipIf(process.platform === 'win32')('default terminal shell', () => {
         cwd: '/tmp',
         cols: 80,
         rows: 24,
-        terminalShellArgs: ['--rcfile', '/tmp/orca'],
+        terminalShellArgs: ['--rcfile', '/tmp/occ'],
         ...overrides
       }
       const getOptions = () => ({ getDefaultShell: () => '/bin/zsh' })
@@ -103,13 +103,13 @@ describe.skipIf(process.platform === 'win32')('default terminal shell', () => {
       if (spawnSync(shell, ['--version']).status !== 0) {
         skip('Shell is not installed')
       }
-      const home = mkdtempSync(join(tmpdir(), 'orca-profile-argv-'))
-      vi.stubEnv('ORCA_USER_DATA_PATH', home)
+      const home = mkdtempSync(join(tmpdir(), 'occ-profile-argv-'))
+      vi.stubEnv('OCC_USER_DATA_PATH', home)
       vi.stubEnv('ZDOTDIR', home)
       try {
-        writeFileSync(join(home, '.bash_profile'), 'export ORCA_TEST_STARTUP=profile\n')
-        writeFileSync(join(home, 'custom rc'), 'export ORCA_TEST_STARTUP=custom\n')
-        writeFileSync(join(home, '.zshrc'), 'export ORCA_TEST_STARTUP=zshrc\n')
+        writeFileSync(join(home, '.bash_profile'), 'export OCC_TEST_STARTUP=profile\n')
+        writeFileSync(join(home, 'custom rc'), 'export OCC_TEST_STARTUP=custom\n')
+        writeFileSync(join(home, '.zshrc'), 'export OCC_TEST_STARTUP=zshrc\n')
         const terminalShellArgs = shellArgs.map((arg) =>
           arg === 'custom rc' ? join(home, arg) : arg
         )
@@ -128,12 +128,12 @@ describe.skipIf(process.platform === 'win32')('default terminal shell', () => {
             ...plan.shellArgs,
             '-i',
             '-c',
-            'login=off; if [ -n "${ZSH_VERSION:-}" ]; then [[ -o login ]] && login=on; else shopt -q login_shell && login=on; fi; printf "\\nORCA_STARTUP_RESULT=%s:%s\\n" "${ORCA_TEST_STARTUP:-unset}" "$login"'
+            'login=off; if [ -n "${ZSH_VERSION:-}" ]; then [[ -o login ]] && login=on; else shopt -q login_shell && login=on; fi; printf "\\nOCC_STARTUP_RESULT=%s:%s\\n" "${OCC_TEST_STARTUP:-unset}" "$login"'
           ],
           { env, encoding: 'utf8', timeout: 10_000 }
         )
         expect(result.status, result.stderr).toBe(0)
-        expect(result.stdout.match(/^ORCA_STARTUP_RESULT=(.*)$/m)?.[1]).toBe(expected)
+        expect(result.stdout.match(/^OCC_STARTUP_RESULT=(.*)$/m)?.[1]).toBe(expected)
       } finally {
         rmSync(home, { recursive: true, force: true })
       }

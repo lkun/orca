@@ -59,8 +59,8 @@ describe('history catch-up runner', () => {
   }
   const plan: HistoryCatchUpPlan = {
     settlementId: 's',
-    mutations: [{ kind: 'tombstone', identity: { provider: 'orca', clientMessageId: 'old' } }],
-    keys: [agentJournalItemKey({ provider: 'orca', clientMessageId: 'old' })],
+    mutations: [{ kind: 'tombstone', identity: { provider: 'occ', clientMessageId: 'old' } }],
+    keys: [agentJournalItemKey({ provider: 'occ', clientMessageId: 'old' })],
     reservedBytes: 1
   }
   it('gives up at the deadline when the commit never becomes durable', async () => {
@@ -117,7 +117,7 @@ describe('history catch-up runner', () => {
     expect(step?.resolve(journal)).toEqual([])
   })
   it('completes saved items only while all saved reads match, and checks empty plans without writes', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-31622-expected-items-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-31622-expected-items-'))
     const journals = createTrackedJournalOpener()
     const deferred = createDeferredStructuredAgentSessionEventSink(testEventSinkLogging())
     try {

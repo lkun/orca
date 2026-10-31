@@ -5,13 +5,13 @@ cask "occ@rc" do
   sha256 arm:   "563b6b14323fc9d5489299c82442d514bc12cabffc9d06d3964ed572af4b3955",
          intel: "457088c7021f07de1a419197f7b2bd00092741ad4727d4fef3d86af38a6831e7"
 
-  url "https://github.com/stablyai/orca/releases/download/v#{version}/occ-macos-#{arch}.dmg"
+  url "https://github.com/stablyai/occ/releases/download/v#{version}/occ-macos-#{arch}.dmg"
   name "OCC RC"
   desc "IDE for orchestrating AI coding agents across terminals and worktrees"
-  homepage "https://onorca.dev/"
+  homepage "https://onocc.dev/"
 
   livecheck do
-    url "https://github.com/stablyai/orca"
+    url "https://github.com/stablyai/occ"
     regex(/^v?(\d+(?:\.\d+)+-rc\.\d+)$/i)
     strategy :github_releases do |json, regex|
       json.map do |release|
@@ -33,12 +33,12 @@ cask "occ@rc" do
 
   app "OCC.app"
 
-  # Expose the symlink-resolving bundled CLI on PATH so headless hosts can use orca serve without the in-app installer.
+  # Expose the symlink-resolving bundled CLI on PATH so headless hosts can use occ serve without the in-app installer.
   binary "#{appdir}/OCC.app/Contents/Resources/bin/occ"
 
-  # Zap app-created ~/.orca and Electron userData for a clean uninstall.
+  # Zap app-created ~/.occ and Electron userData for a clean uninstall.
   zap trash: [
-    "~/.orca",
+    "~/.occ",
     "~/Library/Application Support/OCC",
     "~/Library/Caches/com.lkun.occ",
     "~/Library/Caches/com.lkun.occ.ShipIt",

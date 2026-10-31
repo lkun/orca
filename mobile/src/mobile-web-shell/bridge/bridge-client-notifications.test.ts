@@ -91,7 +91,7 @@ describe('the notify guard before init', () => {
     expect(page.client.notifyNavigate('/h/host-1')).toBe(false)
     expect(page.client.notifyNavigateBack()).toBe(false)
     expect(page.client.notifyExternalLink('https://example.com')).toBe(false)
-    expect(page.client.notifyStorageWrite('orca:last-visited-worktree', 'value')).toBe(false)
+    expect(page.client.notifyStorageWrite('occ:last-visited-worktree', 'value')).toBe(false)
     expect(page.sent).toHaveLength(beforeNotifies)
   })
 
@@ -113,12 +113,12 @@ describe('the notify guard before init', () => {
       name: 'navigate',
       href: '/h/host-1'
     })
-    expect(page.client.notifyStorageWrite('orca:last-visited-worktree', 'wt-1')).toBe(true)
+    expect(page.client.notifyStorageWrite('occ:last-visited-worktree', 'wt-1')).toBe(true)
     expect(page.frames().at(-1)).toEqual({
       v: BRIDGE_PROTOCOL_VERSION,
       type: 'notify',
       name: 'storage',
-      key: 'orca:last-visited-worktree',
+      key: 'occ:last-visited-worktree',
       value: 'wt-1'
     })
   })
@@ -163,12 +163,12 @@ describe('externalLink', () => {
 
   it('posts an allowed URL under its own grant', () => {
     const page = granted()
-    expect(page.client.notifyExternalLink('https://github.com/stablyai/orca')).toBe(true)
+    expect(page.client.notifyExternalLink('https://github.com/stablyai/occ')).toBe(true)
     expect(page.frames().at(-1)).toEqual({
       v: BRIDGE_PROTOCOL_VERSION,
       type: 'notify',
       name: BRIDGE_EXTERNAL_LINK_GRANT,
-      url: 'https://github.com/stablyai/orca'
+      url: 'https://github.com/stablyai/occ'
     })
   })
 

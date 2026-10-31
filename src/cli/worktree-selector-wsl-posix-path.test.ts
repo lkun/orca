@@ -2,7 +2,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { RuntimeWorktreeRecord } from '../shared/runtime-types'
 import type { RuntimeClient } from './runtime-client'
-import { normalizeWorktreeSelectorForCaller } from './selectors'
+import { normalizeWorktreeSelectorFoccller } from './selectors'
 
 const UBUNTU = 'Ubuntu-24.04'
 const DEBIAN = 'Debian'
@@ -33,13 +33,13 @@ afterEach(() => {
   vi.unstubAllEnvs()
 })
 
-describe('normalizeWorktreeSelectorForCaller in a WSL shell (#16628)', () => {
+describe('normalizeWorktreeSelectorFoccller in a WSL shell (#16628)', () => {
   it('resolves a shared /mnt drive without requiring the caller distro', async () => {
     const storedPath = uncPath(UBUNTU, '/mnt/c/Users/neil/qa-repo')
     const { client } = makeClient([storedPath])
 
     await expect(
-      normalizeWorktreeSelectorForCaller(`path:${MOUNTED_PATH}`, '/mnt/c/Users/neil', client)
+      normalizeWorktreeSelectorFoccller(`path:${MOUNTED_PATH}`, '/mnt/c/Users/neil', client)
     ).resolves.toBe(`path:${storedPath}`)
   })
 
@@ -51,7 +51,7 @@ describe('normalizeWorktreeSelectorForCaller in a WSL shell (#16628)', () => {
     const { client } = makeClient([storedPath])
 
     await expect(
-      normalizeWorktreeSelectorForCaller(
+      normalizeWorktreeSelectorFoccller(
         `path:${LINUX_PATH}`,
         uncPath(UBUNTU, '/home/neil'),
         client
@@ -65,7 +65,7 @@ describe('normalizeWorktreeSelectorForCaller in a WSL shell (#16628)', () => {
     vi.stubEnv('WSL_DISTRO_NAME', UBUNTU)
 
     await expect(
-      normalizeWorktreeSelectorForCaller(
+      normalizeWorktreeSelectorFoccller(
         `path:${LINUX_PATH}`,
         uncPath(DEBIAN, '/home/neil'),
         client
@@ -77,7 +77,7 @@ describe('normalizeWorktreeSelectorForCaller in a WSL shell (#16628)', () => {
     const { client } = makeClient([uncPath(UBUNTU, LINUX_PATH), uncPath(DEBIAN, LINUX_PATH)])
 
     await expect(
-      normalizeWorktreeSelectorForCaller(
+      normalizeWorktreeSelectorFoccller(
         `path:${LINUX_PATH}`,
         uncPath(DEBIAN, '/home/neil'),
         client
@@ -92,7 +92,7 @@ describe('normalizeWorktreeSelectorForCaller in a WSL shell (#16628)', () => {
     const { client, call } = makeClient([uncPath(UBUNTU, LINUX_PATH)])
     vi.stubEnv('WSL_DISTRO_NAME', UBUNTU)
 
-    await expect(normalizeWorktreeSelectorForCaller(selector, cwd, client)).resolves.toBe(selector)
+    await expect(normalizeWorktreeSelectorFoccller(selector, cwd, client)).resolves.toBe(selector)
     expect(call).not.toHaveBeenCalled()
   })
 
@@ -106,7 +106,7 @@ describe('normalizeWorktreeSelectorForCaller in a WSL shell (#16628)', () => {
     const { client, call } = makeClient([uncPath(UBUNTU, LINUX_PATH)])
 
     await expect(
-      normalizeWorktreeSelectorForCaller(selector, uncPath(UBUNTU, '/home/neil'), client)
+      normalizeWorktreeSelectorFoccller(selector, uncPath(UBUNTU, '/home/neil'), client)
     ).resolves.toBe(selector)
     expect(call).not.toHaveBeenCalled()
   })
@@ -115,7 +115,7 @@ describe('normalizeWorktreeSelectorForCaller in a WSL shell (#16628)', () => {
     const { client, call } = makeClient([uncPath(UBUNTU, LINUX_PATH)], true)
 
     await expect(
-      normalizeWorktreeSelectorForCaller(
+      normalizeWorktreeSelectorFoccller(
         `path:${LINUX_PATH}`,
         uncPath(UBUNTU, '/home/neil'),
         client

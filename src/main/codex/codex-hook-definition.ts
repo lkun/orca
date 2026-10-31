@@ -9,7 +9,7 @@ import {
   type HookDefinition
 } from '../agent-hooks/installer-utils'
 import { POSIX_HOOK_STDIN_DRAIN_COMMAND } from '../agent-hooks/hook-stdin-contract'
-import { getOrcaManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
+import { getOCCManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
 import { buildCodexHookCommand } from './codex-hook-command-form'
 import { CODEX_HOOK_EVENT_LABEL, getCodexManagedScriptFileName } from './codex-hook-identity'
 import { getManagedScript } from './codex-hook-script'
@@ -31,7 +31,7 @@ export const CODEX_EVENTS = [
   'Interrupt'
 ] as const
 
-export function getConfigPath(runtimeHomePath: string = getOrcaManagedCodexHomePath()): string {
+export function getConfigPath(runtimeHomePath: string = getOCCManagedCodexHomePath()): string {
   return join(runtimeHomePath, 'hooks.json')
 }
 
@@ -44,7 +44,7 @@ export function writeCodexHooksJson(
 }
 
 export function getCodexConfigTomlPath(
-  runtimeHomePath: string = getOrcaManagedCodexHomePath()
+  runtimeHomePath: string = getOCCManagedCodexHomePath()
 ): string {
   return join(runtimeHomePath, 'config.toml')
 }
@@ -78,7 +78,7 @@ export const CODEX_MANAGED_EVENT_LABELS = new Set<CodexEventLabel>(
 )
 
 /** Local hashes stand in until Codex returns its own. */
-export function computeOrcaCodexHookHashes(
+export function computeOCCCodexHookHashes(
   command: string = getManagedCommand(getManagedScriptPath())
 ): CodexHookHashes {
   return Object.fromEntries(

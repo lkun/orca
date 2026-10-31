@@ -22,7 +22,7 @@ export function extractPairingCodeFromUrl(url: string): string | null {
     return null
   }
   const trimmed = url.trim()
-  const match = /^orca:\/\/([^/?#]*)([^?#]*)?/i.exec(trimmed)
+  const match = /^occ:\/\/([^/?#]*)([^?#]*)?/i.exec(trimmed)
   if (!match) {
     return null
   }
@@ -58,7 +58,7 @@ export function parsePairingCode(input: string): PairingOffer | null {
     return null
   }
   try {
-    if (/^orca:\/\//i.test(trimmed)) {
+    if (/^occ:\/\//i.test(trimmed)) {
       return decodePairingUrl(trimmed)
     }
     return decodePairingBase64(trimmed)

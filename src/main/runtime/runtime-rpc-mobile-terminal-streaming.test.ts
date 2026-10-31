@@ -5,9 +5,9 @@ import { rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { readRuntimeMetadata } from './runtime-metadata'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import { parsePairingCode } from '../../shared/pairing'
 import { subscribeRemoteRuntimeRequest } from '../../shared/remote-runtime/remote-runtime-client'
 import {
@@ -43,10 +43,10 @@ vi.mock('../git/worktree', () => {
   }
 })
 
-describe('OrcaRuntimeRpcServer', () => {
+describe('OCCRuntimeRpcServer', () => {
   it('mirrors laptop-created remote runtime terminals into phone session tabs over RPC', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService(makeStore() as never)
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService(makeStore() as never)
     const spawn = vi.fn().mockResolvedValue({ id: 'laptop-created-pty' })
     runtime.setPtyController({
       spawn: committingSpawn(runtime, spawn),
@@ -54,7 +54,7 @@ describe('OrcaRuntimeRpcServer', () => {
       kill: () => true,
       getForegroundProcess: async () => null
     })
-    const server = new OrcaRuntimeRpcServer({ runtime, userDataPath })
+    const server = new OCCRuntimeRpcServer({ runtime, userDataPath })
 
     await server.start()
 
@@ -157,9 +157,9 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('streams laptop-created runtime terminals to a paired phone WebSocket client', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     const writes: string[] = []
-    const runtime = new OrcaRuntimeService(makeStore() as never)
+    const runtime = new OCCRuntimeService(makeStore() as never)
     const spawn = vi.fn().mockResolvedValue({ id: 'paired-laptop-pty' })
     runtime.setPtyController({
       spawn: committingSpawn(runtime, spawn),
@@ -170,7 +170,7 @@ describe('OrcaRuntimeRpcServer', () => {
       kill: () => true,
       getForegroundProcess: async () => null
     })
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       runtime,
       userDataPath,
       enableWebSocket: true,
@@ -300,16 +300,16 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('opens a host file outside every workspace for a phone with no terminal context', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService(makeStore() as never)
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService(makeStore() as never)
+    const server = new OCCRuntimeRpcServer({
       runtime,
       userDataPath,
       enableWebSocket: true,
       wsPort: 0
     })
     // Never printed by any terminal: a chat link or typed path is enough.
-    const artifactPath = join(tmpdir(), `orca-outside-${process.pid}-${Date.now()}.md`)
+    const artifactPath = join(tmpdir(), `occ-outside-${process.pid}-${Date.now()}.md`)
     await writeFile(artifactPath, '# handoff')
 
     await server.start()
@@ -363,9 +363,9 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('keeps active runtime multiplex streams responsive while a background stream is ACK-limited over WebSocket', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     const writes: { terminal: string; text: string }[] = []
-    const runtime = new OrcaRuntimeService(makeStore() as never)
+    const runtime = new OCCRuntimeService(makeStore() as never)
     const spawn = vi
       .fn()
       .mockResolvedValueOnce({ id: 'multiplex-background-pty' })
@@ -379,7 +379,7 @@ describe('OrcaRuntimeRpcServer', () => {
       kill: () => true,
       getForegroundProcess: async () => null
     })
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       runtime,
       userDataPath,
       enableWebSocket: true,

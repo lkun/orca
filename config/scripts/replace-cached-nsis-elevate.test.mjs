@@ -20,7 +20,7 @@ const scriptPath = join(projectRoot, 'config/scripts/replace-cached-nsis-elevate
 let scratch
 
 beforeEach(() => {
-  scratch = mkdtempSync(join(tmpdir(), 'orca elevate swap '))
+  scratch = mkdtempSync(join(tmpdir(), 'occ elevate swap '))
 })
 
 afterEach(() => {
@@ -113,7 +113,7 @@ describe('cached elevate.exe swap covers the real electron-builder layouts', () 
 describe('the probe, not the scan, decides whether the swap worked', () => {
   // customNsisBinary uses nsis-version only as memoization key; URL-parent extraction directory can bypass nsis* scan.
   it('covers a custom bundle the directory scan cannot match', async () => {
-    const relative = 'orca-nsis-mirror/nsis-custom-3.11-0zqp2/elevate.exe'
+    const relative = 'occ-nsis-mirror/nsis-custom-3.11-0zqp2/elevate.exe'
     const cacheDir = makeCache(relative)
     const packed = join(cacheDir, ...relative.split('/'))
     const signed = join(scratch, 'signed-elevate.exe')

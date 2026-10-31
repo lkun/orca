@@ -11,7 +11,7 @@ function context(
   flags = new Map<string, string | boolean>(),
   options: { isRemote?: boolean; json?: boolean } = {}
 ): HandlerContext {
-  const client = new RuntimeClient('/tmp/orca-skill-sharing-test', 60_000, null, null)
+  const client = new RuntimeClient('/tmp/occ-skill-sharing-test', 60_000, null, null)
   vi.spyOn(client, 'call').mockImplementation(call)
   vi.spyOn(client, 'isRemote', 'get').mockReturnValue(options.isRemote ?? false)
   return {
@@ -100,7 +100,7 @@ describe('skill sharing CLI handlers', () => {
         result: {
           status: 'ok',
           value: {
-            share: { id: 'shr_public', url: 'https://share.onorca.dev/skills/share/shr_public' },
+            share: { id: 'shr_public', url: 'https://share.onocc.dev/skills/share/shr_public' },
             version: {
               packageId: 'pkg_public',
               versionId: 'ver_public',
@@ -140,7 +140,7 @@ describe('skill sharing CLI handlers', () => {
     )
     const output = String(log.mock.calls[0][0])
     expect(JSON.parse(output).result).toEqual({
-      url: 'https://share.onorca.dev/skills/share/shr_public',
+      url: 'https://share.onocc.dev/skills/share/shr_public',
       shareId: 'shr_public',
       packageId: 'pkg_public',
       versionId: 'ver_public',
@@ -167,7 +167,7 @@ describe('skill sharing CLI handlers', () => {
         result: {
           status: 'ok',
           value: {
-            share: { id: 'shr_public', url: 'https://share.onorca.dev/skills/share/shr_public' },
+            share: { id: 'shr_public', url: 'https://share.onocc.dev/skills/share/shr_public' },
             version: {
               packageId: 'pkg_public',
               versionId: 'ver_public',
@@ -227,7 +227,7 @@ describe('skill sharing CLI handlers', () => {
     ['a paired runtime', true, undefined]
   ])('rejects %s before any discovery or publish call', async (_label, isRemote, forwardedCwd) => {
     if (forwardedCwd) {
-      vi.stubEnv('ORCA_CLI_CWD', forwardedCwd)
+      vi.stubEnv('OCC_CLI_CWD', forwardedCwd)
     }
     const call = vi.fn()
 

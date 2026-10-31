@@ -8,7 +8,7 @@ export type TerminalReplayFrameCapture =
 // A transaction-local image, never a cached terminal buffer or an input target.
 export function retainTerminalReplayFrame(
   screen: HTMLElement,
-  repaintForCapture: () => boolean
+  repaintFoccpture: () => boolean
 ): TerminalReplayFrameCapture {
   const initialBounds = screen.getBoundingClientRect()
   if (initialBounds.width <= 0 || initialBounds.height <= 0 || !screen.childElementCount) {
@@ -16,7 +16,7 @@ export function retainTerminalReplayFrame(
   }
   try {
     // WebGL discards its drawing buffer after compositing, so copy in the task that repaints it.
-    if (screen.querySelector('canvas') && !repaintForCapture()) {
+    if (screen.querySelector('canvas') && !repaintFoccpture()) {
       return { kind: 'unavailable' }
     }
     // Releasing xterm's render pause can flush a resize or replace its renderer.

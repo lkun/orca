@@ -10,7 +10,7 @@ import { createSkillPackageArchive } from './skill-package-creation'
 
 const execFileAsync = promisify(execFile)
 const RUN_REAL_WINDOWS =
-  process.platform === 'win32' && process.env.ORCA_REAL_WINDOWS_SKILL_TEST === '1'
+  process.platform === 'win32' && process.env.OCC_REAL_WINDOWS_SKILL_TEST === '1'
 
 describe.runIf(RUN_REAL_WINDOWS)('real Windows skill workspace installation', () => {
   let root = ''
@@ -42,7 +42,7 @@ describe.runIf(RUN_REAL_WINDOWS)('real Windows skill workspace installation', ()
     const repository = join(root, 'repository')
     gitWorktree = join(root, 'Git worktree-é')
     folderWorkspace = join(root, 'Folder workspace-é')
-    stateDirectory = join(root, 'orca state')
+    stateDirectory = join(root, 'occ state')
     const source = join(root, 'Skill source-é')
     await Promise.all([
       mkdir(homeDirectory),
@@ -54,7 +54,7 @@ describe.runIf(RUN_REAL_WINDOWS)('real Windows skill workspace installation', ()
     ])
     await git(['init', '--quiet'], repository)
     await git(['config', 'user.name', 'OCC Test'], repository)
-    await git(['config', 'user.email', 'orca@example.invalid'], repository)
+    await git(['config', 'user.email', 'occ@example.invalid'], repository)
     await writeFile(join(repository, 'README.md'), 'fixture\n')
     await git(['add', 'README.md'], repository)
     await git(['commit', '--quiet', '-m', 'fixture'], repository)

@@ -2,13 +2,13 @@ import type { BrowserWindow } from 'electron'
 import type { Store } from '../../persistence'
 import type { SshConnectionManager } from '../../ssh/connection/ssh-connection-manager'
 import type { SshPortForwardManager } from '../../ssh/port-forwarding/ssh-port-forward'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 
 export let connectionManager: SshConnectionManager | null = null
 export let portForwardManager: SshPortForwardManager | null = null
 export let persistedStore: Store | null = null
 let currentGetMainWindow: () => BrowserWindow | null = () => null
-export let currentRuntime: OrcaRuntimeService | undefined
+export let currentRuntime: OCCRuntimeService | undefined
 
 export function setConnectionManager(next: SshConnectionManager | null): void {
   connectionManager = next
@@ -26,7 +26,7 @@ export function setCurrentGetMainWindow(next: () => BrowserWindow | null): void 
   currentGetMainWindow = next
 }
 
-export function setCurrentRuntime(next: OrcaRuntimeService | undefined): void {
+export function setCurrentRuntime(next: OCCRuntimeService | undefined): void {
   currentRuntime = next
 }
 

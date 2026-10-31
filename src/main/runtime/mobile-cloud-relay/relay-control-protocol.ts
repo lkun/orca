@@ -30,7 +30,7 @@ const ConnectionKindSchema = z.enum(['invite', 'resume'])
 
 // Strict deployed cells reject new hello keys; mirror contract capabilities in upgrade headers.
 export const RELAY_HOST_CAPABILITY_HEADERS = {
-  'x-orca-host-capabilities': 'pending-conn-details,idle-regional-rehome-v1'
+  'x-occ-host-capabilities': 'pending-conn-details,idle-regional-rehome-v1'
 } as const
 
 // Mirror RELAY_PROTOCOL_LIMITS.hostAttachDeadlineMs, the phone's data-socket attach window.

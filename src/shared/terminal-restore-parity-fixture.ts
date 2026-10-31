@@ -2,7 +2,7 @@
 import { Terminal } from '@xterm/headless'
 import { SerializeAddon } from '@xterm/addon-serialize'
 import { Unicode11Addon } from '@xterm/addon-unicode11'
-import { activateOrcaTerminalUnicodeProvider } from './terminal-unicode-provider'
+import { activateOCCTerminalUnicodeProvider } from './terminal-unicode-provider'
 import { DESKTOP_TERMINAL_SCROLLBACK_ROWS_DEFAULT } from './terminal-scrollback-policy'
 import {
   readSavedCursorRegister,
@@ -30,7 +30,7 @@ export function createRendererParityTerminal(dims: { cols: number; rows: number 
   const serializeAddon = new SerializeAddon()
   terminal.loadAddon(serializeAddon)
   terminal.loadAddon(new Unicode11Addon())
-  activateOrcaTerminalUnicodeProvider(terminal)
+  activateOCCTerminalUnicodeProvider(terminal)
   return { terminal, serializeAddon }
 }
 
@@ -183,7 +183,7 @@ export type ParityMainSnapshot = {
   pendingEscapeTailAnsi?: string
 }
 
-/** Mirror HeadlessEmulator snapshot composition and OrcaRuntime normal/alt separation; renderer fuzz cannot import main/daemon sources. */
+/** Mirror HeadlessEmulator snapshot composition and OCCRuntime normal/alt separation; renderer fuzz cannot import main/daemon sources. */
 export function buildParityMainBufferSnapshot(
   parity: ParityTerminal,
   seq: number,

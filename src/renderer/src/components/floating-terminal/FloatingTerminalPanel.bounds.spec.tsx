@@ -39,13 +39,13 @@ import {
   setFloatingEditorTabs
 } from './floating-terminal-panel-test-fixtures'
 import { createUntitledMarkdownFileWithTemplateSelection } from '@/lib/create-untitled-markdown'
-import { ORCA_EDITOR_REQUEST_FILE_CLOSE_EVENT } from '@/components/editor/editor-autosave'
+import { OCC_EDITOR_REQUEST_FILE_CLOSE_EVENT } from '@/components/editor/editor-autosave'
 
 function requestedEditorCloses(): string[] {
   return vi
     .mocked(window.dispatchEvent)
     .mock.calls.flatMap(([event]) =>
-      event.type === ORCA_EDITOR_REQUEST_FILE_CLOSE_EVENT && event instanceof CustomEvent
+      event.type === OCC_EDITOR_REQUEST_FILE_CLOSE_EVENT && event instanceof CustomEvent
         ? [event.detail.fileId]
         : []
     )
@@ -555,7 +555,7 @@ describe('FloatingTerminalPanel markdown editor', () => {
   it('creates floating markdown files in local filesystem mode', async () => {
     setFloatingTabs([makeTab({ id: 'tab-1' })])
     vi.mocked(createUntitledMarkdownFileWithTemplateSelection).mockResolvedValue({
-      filePath: '/tmp/orca/floating-notes/untitled.md',
+      filePath: '/tmp/occ/floating-notes/untitled.md',
       relativePath: 'untitled.md',
       worktreeId: FLOATING_TERMINAL_WORKTREE_ID,
       language: 'markdown',
@@ -572,13 +572,13 @@ describe('FloatingTerminalPanel markdown editor', () => {
     await flushAsyncWork()
 
     expect(createUntitledMarkdownFileWithTemplateSelection).toHaveBeenCalledWith(
-      '/tmp/orca/floating-notes',
+      '/tmp/occ/floating-notes',
       FLOATING_TERMINAL_WORKTREE_ID,
       undefined,
       { kind: 'local' }
     )
     expect(mocks.openFile).toHaveBeenCalledWith(
-      expect.objectContaining({ filePath: '/tmp/orca/floating-notes/untitled.md' }),
+      expect.objectContaining({ filePath: '/tmp/occ/floating-notes/untitled.md' }),
       expect.objectContaining({ suppressActiveRuntimeFallback: true })
     )
   })
@@ -586,7 +586,7 @@ describe('FloatingTerminalPanel markdown editor', () => {
   it('opens existing markdown documents through the floating picker', async () => {
     setFloatingTabs([makeTab({ id: 'tab-1' })])
     mocks.pickFloatingMarkdownDocument.mockResolvedValue({
-      filePath: '/tmp/orca/notes.md',
+      filePath: '/tmp/occ/notes.md',
       relativePath: 'notes.md',
       basename: 'notes.md',
       name: 'notes'
@@ -600,7 +600,7 @@ describe('FloatingTerminalPanel markdown editor', () => {
     expect(mocks.pickFloatingMarkdownDocument).toHaveBeenCalledWith()
     expect(mocks.openFile).toHaveBeenCalledWith(
       expect.objectContaining({
-        filePath: '/tmp/orca/notes.md',
+        filePath: '/tmp/occ/notes.md',
         relativePath: 'notes.md',
         runtimeEnvironmentId: null,
         worktreeId: FLOATING_TERMINAL_WORKTREE_ID

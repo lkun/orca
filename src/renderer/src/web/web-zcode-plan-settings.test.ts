@@ -60,7 +60,7 @@ describe('old host GLM settings', () => {
         }
       }))
       const globals = installBrowserGlobals('Linux')
-      globals.storage.setItem('orca.web.settings.v1', JSON.stringify({ zcodePlanSite: cachedSite }))
+      globals.storage.setItem('occ.web.settings.v1', JSON.stringify({ zcodePlanSite: cachedSite }))
       writeStoredRuntimeEnvironment(globals.storage)
       const { installWebPreloadApi } = await import('./web-preload-api')
       installWebPreloadApi()

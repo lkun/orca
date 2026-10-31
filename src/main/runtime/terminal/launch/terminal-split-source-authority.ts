@@ -1,5 +1,5 @@
-import type { OrcaRuntimeWithPruneMobileSessionTabGroupLayout } from '../../session-lifecycle/projection/prune-mobile-session-tab-group-layout'
-import { OrcaRuntimeWithSplitPaneInMain } from './terminal-split-in-main'
+import type { OCCRuntimeWithPruneMobileSessionTabGroupLayout } from '../../session-lifecycle/projection/prune-mobile-session-tab-group-layout'
+import { OCCRuntimeWithSplitPaneInMain } from './terminal-split-in-main'
 import { resolveTerminalSessionWorktreeId } from '../../runtime-worktree-path-identity'
 import { makePaneKey } from '../../../../shared/stable-pane-id'
 import { terminalLayoutContainsLeaf } from '../../../../shared/workspace-session-pane-ownership'
@@ -19,12 +19,12 @@ import {
   SPLIT_PANE_START_TIMEOUT_MS
 } from './terminal-split-wait-timeout'
 
-export abstract class OrcaRuntimeWithResolveTerminalSplitSourceAuthority extends OrcaRuntimeWithSplitPaneInMain {
+export abstract class OCCRuntimeWithResolveTerminalSplitSourceAuthority extends OCCRuntimeWithSplitPaneInMain {
   abstract getTerminalHandleForPaneKey(
     ...args: Parameters<
-      OrcaRuntimeWithPruneMobileSessionTabGroupLayout['getTerminalHandleForPaneKey']
+      OCCRuntimeWithPruneMobileSessionTabGroupLayout['getTerminalHandleForPaneKey']
     >
-  ): ReturnType<OrcaRuntimeWithPruneMobileSessionTabGroupLayout['getTerminalHandleForPaneKey']>
+  ): ReturnType<OCCRuntimeWithPruneMobileSessionTabGroupLayout['getTerminalHandleForPaneKey']>
 
   /** A mounted view can drain its exited process after durable retirement removed the binding. */
   hasTerminalPaneView(worktreeId: string, tabId: string, leafId: string): boolean {
@@ -145,7 +145,7 @@ export abstract class OrcaRuntimeWithResolveTerminalSplitSourceAuthority extends
   }): Promise<{ env: Record<string, string> }> {
     const handle = this.getTerminalHandleForPaneKey(args.paneKey)
     if (!handle) {
-      throw new Error('claude_agent_teams_requires_orca_terminal')
+      throw new Error('claude_agent_teams_requires_occ_terminal')
     }
     return await this.prepareClaudeAgentTeamsLeaderForHandle({
       handle,

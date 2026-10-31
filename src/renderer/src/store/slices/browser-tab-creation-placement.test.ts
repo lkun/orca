@@ -12,7 +12,7 @@ import {
   seedStore
 } from './store-test-helpers'
 import { createStoreCascadesMockApi } from './store-cascades-test-harness'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { drawTabsFromMain, type TabsDrawnFromMain } from './tabs-drawn-from-main.test-fixture'
 
 vi.mock('sonner', () => ({
@@ -452,7 +452,7 @@ describe('browser tab creation placement', () => {
       .unifiedTabsByWorktree[WT]!.find((tab) => tab.entityId === workspace.id)
     expect(wrapper).toBeDefined()
     // A layout-owner build draws every tab with main's own host, never the routing substitute.
-    expect(wrapper?.executionHostId).toBe(ORCA_LAYOUT_OWNER_IS_MAIN ? 'local' : undefined)
+    expect(wrapper?.executionHostId).toBe(OCC_LAYOUT_OWNER_IS_MAIN ? 'local' : undefined)
   })
 
   it('rejects an anchor owned by a foreign execution host', async () => {

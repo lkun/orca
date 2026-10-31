@@ -7,7 +7,7 @@ const {
   applyBackgroundActivationPolicy,
   applyServeDesktopWindowActivationPolicy,
   isBackgroundLaunch,
-  isOrcadSidecarLaunch,
+  isOCCdSidecarLaunch,
   isWindowlessLaunch,
   showWindowWithoutStealingFocus
 } = await import('./foreground-activation-policy')
@@ -28,39 +28,39 @@ function makeWindow(destroyed = false): BrowserWindow & {
 
 describe('isBackgroundLaunch', () => {
   it('covers headless and headful E2E plus opted-in dev launches', () => {
-    expect(isBackgroundLaunch({ ORCA_E2E_HEADLESS: '1' })).toBe(true)
-    expect(isBackgroundLaunch({ ORCA_E2E_HEADFUL: '1' })).toBe(true)
-    expect(isBackgroundLaunch({ ORCA_BACKGROUND_LAUNCH: '1' })).toBe(true)
+    expect(isBackgroundLaunch({ OCC_E2E_HEADLESS: '1' })).toBe(true)
+    expect(isBackgroundLaunch({ OCC_E2E_HEADFUL: '1' })).toBe(true)
+    expect(isBackgroundLaunch({ OCC_BACKGROUND_LAUNCH: '1' })).toBe(true)
     expect(isBackgroundLaunch({})).toBe(false)
   })
 
   it('keeps an explicit background request despite inherited foreground flags', () => {
-    expect(isBackgroundLaunch({ ORCA_BACKGROUND_LAUNCH: '1', ORCA_E2E_FOREGROUND: '1' })).toBe(true)
+    expect(isBackgroundLaunch({ OCC_BACKGROUND_LAUNCH: '1', OCC_E2E_FOREGROUND: '1' })).toBe(true)
   })
 
-  it('treats the orcad browser sidecar as an explicit background launch', () => {
-    expect(isOrcadSidecarLaunch({ ORCA_ORCAD_SIDECAR: '1' })).toBe(true)
-    expect(isOrcadSidecarLaunch({})).toBe(false)
-    expect(isBackgroundLaunch({ ORCA_ORCAD_SIDECAR: '1', ORCA_E2E_FOREGROUND: '1' })).toBe(true)
-    expect(isWindowlessLaunch({ ORCA_ORCAD_SIDECAR: '1', ORCA_E2E_HEADFUL: '1' })).toBe(true)
+  it('treats the occd browser sidecar as an explicit background launch', () => {
+    expect(isOCCdSidecarLaunch({ OCC_OCCD_SIDECAR: '1' })).toBe(true)
+    expect(isOCCdSidecarLaunch({})).toBe(false)
+    expect(isBackgroundLaunch({ OCC_OCCD_SIDECAR: '1', OCC_E2E_FOREGROUND: '1' })).toBe(true)
+    expect(isWindowlessLaunch({ OCC_OCCD_SIDECAR: '1', OCC_E2E_HEADFUL: '1' })).toBe(true)
   })
 
   it('lets native-focus specs opt back into the foreground', () => {
-    expect(isBackgroundLaunch({ ORCA_E2E_HEADFUL: '1', ORCA_E2E_FOREGROUND: '1' })).toBe(false)
-    expect(isWindowlessLaunch({ ORCA_E2E_HEADLESS: '1', ORCA_E2E_FOREGROUND: '1' })).toBe(false)
+    expect(isBackgroundLaunch({ OCC_E2E_HEADFUL: '1', OCC_E2E_FOREGROUND: '1' })).toBe(false)
+    expect(isWindowlessLaunch({ OCC_E2E_HEADLESS: '1', OCC_E2E_FOREGROUND: '1' })).toBe(false)
   })
 })
 
 describe('isWindowlessLaunch', () => {
   it('keeps explicit background launches hidden while headful E2E can paint', () => {
-    expect(isWindowlessLaunch({ ORCA_E2E_HEADLESS: '1' })).toBe(true)
-    expect(isWindowlessLaunch({ ORCA_E2E_HEADLESS: '1', ORCA_E2E_HEADFUL: '1' })).toBe(false)
-    expect(isWindowlessLaunch({ ORCA_BACKGROUND_LAUNCH: '1' })).toBe(true)
+    expect(isWindowlessLaunch({ OCC_E2E_HEADLESS: '1' })).toBe(true)
+    expect(isWindowlessLaunch({ OCC_E2E_HEADLESS: '1', OCC_E2E_HEADFUL: '1' })).toBe(false)
+    expect(isWindowlessLaunch({ OCC_BACKGROUND_LAUNCH: '1' })).toBe(true)
     expect(
       isWindowlessLaunch({
-        ORCA_BACKGROUND_LAUNCH: '1',
-        ORCA_E2E_HEADFUL: '1',
-        ORCA_E2E_FOREGROUND: '1'
+        OCC_BACKGROUND_LAUNCH: '1',
+        OCC_E2E_HEADFUL: '1',
+        OCC_E2E_FOREGROUND: '1'
       })
     ).toBe(true)
   })
@@ -69,21 +69,21 @@ describe('isWindowlessLaunch', () => {
 describe('showWindowWithoutStealingFocus', () => {
   it('keeps a headless window off screen', () => {
     const window = makeWindow()
-    showWindowWithoutStealingFocus(window, { ORCA_E2E_HEADLESS: '1' })
+    showWindowWithoutStealingFocus(window, { OCC_E2E_HEADLESS: '1' })
     expect(window.show).not.toHaveBeenCalled()
     expect(window.showInactive).not.toHaveBeenCalled()
   })
 
   it('never reveals an explicitly background window', () => {
     const window = makeWindow()
-    showWindowWithoutStealingFocus(window, { ORCA_BACKGROUND_LAUNCH: '1' })
+    showWindowWithoutStealingFocus(window, { OCC_BACKGROUND_LAUNCH: '1' })
     expect(window.showInactive).not.toHaveBeenCalled()
     expect(window.show).not.toHaveBeenCalled()
   })
 
   it('still reveals explicitly headful E2E without activation', () => {
     const window = makeWindow()
-    showWindowWithoutStealingFocus(window, { ORCA_E2E_HEADFUL: '1' })
+    showWindowWithoutStealingFocus(window, { OCC_E2E_HEADFUL: '1' })
     expect(window.showInactive).toHaveBeenCalledOnce()
     expect(window.show).not.toHaveBeenCalled()
   })
@@ -110,7 +110,7 @@ describe('applyBackgroundActivationPolicy', () => {
     }
   }
 
-  it.each(['ORCA_E2E_HEADLESS', 'ORCA_BACKGROUND_LAUNCH', 'ORCA_ORCAD_SIDECAR'])(
+  it.each(['OCC_E2E_HEADLESS', 'OCC_BACKGROUND_LAUNCH', 'OCC_OCCD_SIDECAR'])(
     'drops the macOS Dock tile and menu bar for %s',
     (flag) => {
       const app = makeApp()
@@ -130,7 +130,7 @@ describe('applyBackgroundActivationPolicy', () => {
     const headful = makeApp()
     applyBackgroundActivationPolicy({
       app: headful,
-      env: { ORCA_E2E_HEADLESS: '1', ORCA_E2E_HEADFUL: '1' },
+      env: { OCC_E2E_HEADLESS: '1', OCC_E2E_HEADFUL: '1' },
       platform: 'darwin'
     })
     expect(headful.setActivationPolicy).not.toHaveBeenCalled()
@@ -162,14 +162,14 @@ describe('applyBackgroundActivationPolicy', () => {
     expect(
       applyServeDesktopWindowActivationPolicy({
         app,
-        env: { ORCA_BACKGROUND_LAUNCH: '1' },
+        env: { OCC_BACKGROUND_LAUNCH: '1' },
         platform: 'darwin'
       })
     ).toBe(false)
     expect(
       applyServeDesktopWindowActivationPolicy({
         app,
-        env: { ORCA_E2E_HEADFUL: '1' },
+        env: { OCC_E2E_HEADFUL: '1' },
         platform: 'darwin'
       })
     ).toBe(false)
@@ -181,7 +181,7 @@ describe('applyBackgroundActivationPolicy', () => {
     expect(
       applyBackgroundActivationPolicy({
         app,
-        env: { ORCA_E2E_HEADLESS: '1' },
+        env: { OCC_E2E_HEADLESS: '1' },
         platform: 'win32'
       })
     ).toBe(false)

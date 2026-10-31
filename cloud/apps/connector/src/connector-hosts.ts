@@ -1,5 +1,5 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
-import type { ConnectorHelloRequest } from '@orca-cloud/connector-contract'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
+import type { ConnectorHelloRequest } from '@occ-cloud/connector-contract'
 import type { ConnectorInbox } from './connector-inbox.js'
 
 // Coarse on purpose: last-seen is written at most once a minute per host.
@@ -7,7 +7,7 @@ const LAST_SEEN_RESOLUTION_MS = 60_000
 
 // Every machine request and queueing take this, so a newer hello lands wholly before or after each.
 export async function lockConnectorHost(transaction: CloudDatabase, hostId: string): Promise<void> {
-  await transaction.lockQuotaScope(`orca-connector-host:${hostId}`)
+  await transaction.lockQuotaScope(`occ-connector-host:${hostId}`)
 }
 
 // A host is one machine of one account, (sub, mid) from its token; its first hello records it.
@@ -34,12 +34,12 @@ export class ConnectorHosts {
     const helloRev = (row ? Number(row.hello_rev) : 0) + 1
     await transaction.query(
       `INSERT INTO connector_hosts
-       (host_id, account_id, host_name, platform, runtime, orca_version, hello_rev, hello,
+       (host_id, account_id, host_name, platform, runtime, occ_version, hello_rev, hello,
         unsettled_due, first_seen_at, last_seen_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)
        ON CONFLICT (host_id) DO UPDATE SET host_name = excluded.host_name,
          platform = excluded.platform, runtime = excluded.runtime,
-         orca_version = excluded.orca_version, hello_rev = excluded.hello_rev,
+         occ_version = excluded.occ_version, hello_rev = excluded.hello_rev,
          hello = excluded.hello, unsettled_due = 1, last_seen_at = excluded.last_seen_at,
          events_seq = NULL`,
       [
@@ -48,7 +48,7 @@ export class ConnectorHosts {
         hello.hostName,
         hello.platform,
         hello.runtime,
-        hello.orcaVersion,
+        hello.occVersion,
         helloRev,
         JSON.stringify(hello),
         now,
@@ -120,7 +120,7 @@ export async function describeAccountHosts(
   accountId: string
 ): Promise<string> {
   const rows = await database.query(
-    `SELECT host_id, host_name, orca_version, last_seen_at FROM connector_hosts
+    `SELECT host_id, host_name, occ_version, last_seen_at FROM connector_hosts
      WHERE account_id = ? ORDER BY last_seen_at DESC`,
     [accountId]
   )
@@ -129,7 +129,7 @@ export async function describeAccountHosts(
     : rows
         .map(
           (row) =>
-            `${String(row.host_id)}  ${String(row.host_name)}  OCC ${String(row.orca_version)}  last seen ${new Date(Number(row.last_seen_at)).toISOString()}`
+            `${String(row.host_id)}  ${String(row.host_name)}  OCC ${String(row.occ_version)}  last seen ${new Date(Number(row.last_seen_at)).toISOString()}`
         )
         .join('\n')
 }

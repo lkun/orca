@@ -6,7 +6,7 @@ import { executeTerminalStartupCommandPaste } from '../terminal-startup-command-
 import { resolveTerminalPasteRuntime } from '../terminal-paste-runtime'
 import { CLIENT_PLATFORM } from '@/lib/new-workspace'
 import { recordPaneWakeThroughLayoutOwner } from '@/store/terminals/terminal-sleep-layout-owner'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 
 import { shouldKeepHiddenStartupRendererQueriesLive } from './hidden-startup-renderer-query'
 import { createForegroundImmediateBudget } from './foreground-output-budgets'
@@ -58,7 +58,7 @@ export function bindDeferredColdRestoreAndSnapshot(session: ConnectPanePtySessio
   ): void => {
     if (startup && !startup.useLiveEntry && startup.sleepingRecordEntry) {
       // Record main’s wake before dropping the record; record-only consumption would leave nothing for main to resume.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         recordPaneWakeThroughLayoutOwner(
           useAppStore.getState(),
           session.deps.worktreeId,
@@ -78,8 +78,8 @@ export function bindDeferredColdRestoreAndSnapshot(session: ConnectPanePtySessio
       ? {
           ...env,
           ...session.paneIdentityEnv,
-          ...(env.ORCA_AGENT_LAUNCH_TOKEN
-            ? { ORCA_AGENT_LAUNCH_TOKEN: env.ORCA_AGENT_LAUNCH_TOKEN }
+          ...(env.OCC_AGENT_LAUNCH_TOKEN
+            ? { OCC_AGENT_LAUNCH_TOKEN: env.OCC_AGENT_LAUNCH_TOKEN }
             : {})
         }
       : undefined
@@ -100,7 +100,7 @@ export function bindDeferredColdRestoreAndSnapshot(session: ConnectPanePtySessio
       session.applyColdRestoreAgentResumeStartup(startup)
       const spawned = session.startFreshSpawn(startup, options)
       // Switch point: main's layout shows this pane unbound while the start runs.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         holdInPlaceResumeUntilSettled(() => !session.disposed, startup, spawned)
       }
       return spawned

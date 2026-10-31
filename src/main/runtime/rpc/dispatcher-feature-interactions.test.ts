@@ -5,12 +5,12 @@ import type { PersistedUIState } from '../../../shared/persisted-ui-state-types'
 import { getDefaultUIState } from '../../../shared/constants'
 import { ORCHESTRATION_CONTRACT_VERSION } from '../../../shared/protocol-version'
 import {
-  ORCA_RUNTIME_RPC_BROWSER_UI_SOURCE,
-  ORCA_RUNTIME_RPC_FEATURE_INTERACTION_SOURCE_KEY
+  OCC_RUNTIME_RPC_BROWSER_UI_SOURCE,
+  OCC_RUNTIME_RPC_FEATURE_INTERACTION_SOURCE_KEY
 } from '../../../shared/runtime-rpc-feature-interaction-source'
 import { RpcDispatcher } from './dispatcher'
 import { defineMethod, defineStreamingMethod, type RpcRequest } from './core'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 
 function makeRequest(method: string, params: unknown = {}): RpcRequest {
   return {
@@ -24,7 +24,7 @@ function makeRequest(method: string, params: unknown = {}): RpcRequest {
   }
 }
 
-function makeRuntime(ui: PersistedUIState = getDefaultUIState()): OrcaRuntimeService {
+function makeRuntime(ui: PersistedUIState = getDefaultUIState()): OCCRuntimeService {
   let currentUI = ui
   return {
     getRuntimeId: () => 'test-runtime',
@@ -52,7 +52,7 @@ function makeRuntime(ui: PersistedUIState = getDefaultUIState()): OrcaRuntimeSer
       getLegacyAdoption: () => undefined,
       resolveLegacyWorkerCandidate: () => undefined
     })
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
 }
 
 const METHODS = [
@@ -236,7 +236,7 @@ describe('RpcDispatcher feature interactions', () => {
     const runtime = makeRuntime()
     const dispatcher = new RpcDispatcher({ runtime, methods: METHODS })
     const browserPaneUiParams = {
-      [ORCA_RUNTIME_RPC_FEATURE_INTERACTION_SOURCE_KEY]: ORCA_RUNTIME_RPC_BROWSER_UI_SOURCE
+      [OCC_RUNTIME_RPC_FEATURE_INTERACTION_SOURCE_KEY]: OCC_RUNTIME_RPC_BROWSER_UI_SOURCE
     }
 
     await dispatcher.dispatch(makeRequest('browser.viewport', browserPaneUiParams))

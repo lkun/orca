@@ -1,6 +1,6 @@
 import { app, BaseWindow, BrowserWindow, protocol, ipcMain, session } from 'electron'
 import { renameSync, writeFileSync } from 'node:fs'
-import { ORCA_BROWSER_PARTITION } from '../../../shared/constants'
+import { OCC_BROWSER_PARTITION } from '../../../shared/constants'
 import { applyBackgroundActivationPolicy } from '../../window/foreground-activation-policy'
 import { browserManager } from '../browser-manager'
 import { browserSessionRegistry } from '../browser-session-registry'
@@ -20,9 +20,9 @@ import {
   openBrowserExtensionPopup
 } from './browser-extension-popup-host'
 
-const statusPath = process.env.ORCA_EXTENSION_FIXTURE_STATUS
-const extensionDirectory = process.env.ORCA_EXTENSION_FIXTURE_DIR
-if (!statusPath || !extensionDirectory || process.env.ORCA_BACKGROUND_LAUNCH !== '1') {
+const statusPath = process.env.OCC_EXTENSION_FIXTURE_STATUS
+const extensionDirectory = process.env.OCC_EXTENSION_FIXTURE_DIR
+if (!statusPath || !extensionDirectory || process.env.OCC_BACKGROUND_LAUNCH !== '1') {
   throw new Error(
     'Extension fixture requires a status path, an extension folder and background launch'
   )
@@ -62,7 +62,7 @@ function waitForReport(key: string): Promise<unknown> {
 }
 
 function captureResult(message: string): void {
-  const match = /^ORCA_EXT_(\w+) (.*)$/s.exec(message)
+  const match = /^OCC_EXT_(\w+) (.*)$/s.exec(message)
   if (!match) {
     return
   }
@@ -101,7 +101,7 @@ async function run(): Promise<void> {
   initializeBrowserExtensionSupport({ enabled: true })
   const profile = browserSessionRegistry.getDefaultProfile()
   attachBrowserExtensionsToProfileSession(profile, [])
-  const extensionSession = session.fromPartition(ORCA_BROWSER_PARTITION)
+  const extensionSession = session.fromPartition(OCC_BROWSER_PARTITION)
   extensionSession.serviceWorkers.on('console-message', (_event, details) =>
     captureResult(details.message)
   )
@@ -163,7 +163,7 @@ async function run(): Promise<void> {
       })
     })
   })
-  const webview = `<webview partition="${ORCA_BROWSER_PARTITION}" src="data:text/html,<title>tab</title>" style="width:400px;height:300px"></webview>`
+  const webview = `<webview partition="${OCC_BROWSER_PARTITION}" src="data:text/html,<title>tab</title>" style="width:400px;height:300px"></webview>`
   await host.loadURL(`data:text/html,${encodeURIComponent(webview + webview)}`)
   await attached
   recordActiveBrowserPage('page-1')

@@ -6,7 +6,7 @@ import {
   copyBrowserPartitionCookies,
   flushBrowserPartitionCookies
 } from '../../browser/browser-partition-cookie-copy'
-import { activeBrowserRoutePartitionOrcaProfileId } from '../../browser/browser-route-partition-binding-runtime'
+import { activeBrowserRoutePartitionOCCProfileId } from '../../browser/browser-route-partition-binding-runtime'
 import { browserSessionRegistry } from '../../browser/browser-session-registry'
 import { browserSessionsInitialized } from '../../browser/browser-session-startup'
 import {
@@ -28,7 +28,7 @@ export function productionWslMoveBrowserCookieCopyDependencies(
     sessionsReady: () =>
       browserSessionsInitialized() &&
       BrowserWindow.getAllWindows().some((window) => !window.isDestroyed()),
-    orcaProfileId: activeBrowserRoutePartitionOrcaProfileId,
+    occProfileId: activeBrowserRoutePartitionOCCProfileId,
     listEnvironments: () => listEnvironments(userDataPath),
     listBrowserProfiles: () => browserSessionRegistry.listProfiles(),
     resolveHostStorage: wslHostBrowserRouteStorage,

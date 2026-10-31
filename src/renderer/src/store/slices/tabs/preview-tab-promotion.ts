@@ -1,7 +1,7 @@
 // Main-owned previews end in main’s frame; paired-server layouts and host_not_owned twins promote in the window copy.
 
 import type { Tab } from '../../../../../shared/tab-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import { runtimeEnvironmentIdUnlessTwin } from '@/lib/resolve-owner'
 import { sendLayoutApply } from '@/runtime/layout-apply-send'
 import type { AppState } from '../../types'
@@ -18,7 +18,7 @@ function endPreviewHere(set: SetTabs, tabId: string): void {
 
 /** Whether the window ends a preview in its own copy: always with the switch off. */
 export function endsPreviewHere(state: OwnerState, worktreeId: string): boolean {
-  return !ORCA_LAYOUT_OWNER_IS_MAIN || runtimeEnvironmentIdUnlessTwin(state, worktreeId) !== null
+  return !OCC_LAYOUT_OWNER_IS_MAIN || runtimeEnvironmentIdUnlessTwin(state, worktreeId) !== null
 }
 
 /** Tabs whose promotion main has yet to answer: a second ask (a pin after its keep) is dropped. */

@@ -20,7 +20,7 @@ import type {
 } from 'ssh2'
 import type { SshTarget, SshConnectionState, SshConnectionStatus } from '../../../shared/ssh-types'
 import {
-  getOrcaControlSocketPath,
+  getOCCControlSocketPath,
   isOpenSshConfigBackedTarget,
   type SystemSshBuildArgsOptions
 } from '../system-transport/system-ssh-args'
@@ -96,7 +96,7 @@ export class SshConnection {
     sources: Promise<HostKeyTrustSources>
   } | null = null
   /** Generation whose ssh2 attempt found an OCC-stored key for this endpoint. */
-  private orcaStorePinnedGeneration: number | null = null
+  private occStorePinnedGeneration: number | null = null
   private systemSshControlMasterDisabledForSession = false
   private systemSshGssapiOnlyForSession = false
   private systemSshLoopbackRoute: SystemSshLoopbackRoute | null = null
@@ -172,7 +172,7 @@ export class SshConnection {
       return true
     }
     return (
-      getOrcaControlSocketPath(this.target, {
+      getOCCControlSocketPath(this.target, {
         ...this.getSystemSshBuildArgsOptions()
       }) !== null
     )
@@ -512,7 +512,7 @@ export class SshConnection {
       connect: (config) => this.doSsh2Connect(config, connectGeneration),
       respawnProxy: (config, proxy) => this.respawnProxy(config, proxy, connectGeneration),
       killProxyIfCurrent: () => this.killProxyIfCurrent(connectGeneration),
-      isPinnedByOrcaHostKeyStore: () => this.orcaStorePinnedGeneration === connectGeneration,
+      isPinnedByOCCHostKeyStore: () => this.occStorePinnedGeneration === connectGeneration,
       probeSystemSsh: (resolved, gssapiOnly) =>
         this.doSystemSshProbeWithControlMasterRetry(connectGeneration, resolved, gssapiOnly),
       resetSystemTransportIfCurrent: () => this.resetSystemTransportIfCurrent(connectGeneration),
@@ -559,7 +559,7 @@ export class SshConnection {
     // Probe before platform detection: raw echo works in POSIX, cmd and PowerShell; /bin/sh wrapping does not.
     const channel = spawnTrackedSystemSshChannel(
       this.sessionChannelHost(),
-      'echo ORCA-SYSTEM-SSH-OK',
+      'echo OCC-SYSTEM-SSH-OK',
       {
         wrapCommand: false
       }
@@ -596,7 +596,7 @@ export class SshConnection {
     this.systemSshResolvedConfig = cloneResolvedConfig(resolved)
     this.systemSshControlMasterDisabledForSession = false
     this.systemSshGssapiOnlyForSession = gssapiOnly
-    const controlPath = getOrcaControlSocketPath(this.target, {
+    const controlPath = getOCCControlSocketPath(this.target, {
       resolvedConfig: this.systemSshResolvedConfig,
       gssapiOnly: this.systemSshGssapiOnlyForSession
     })
@@ -745,8 +745,8 @@ export class SshConnection {
         this.hostKeyFingerprint = fingerprint
       }
     })
-    if (verdict.pinnedByOrcaStore && isCurrentAttempt()) {
-      this.orcaStorePinnedGeneration = connectGeneration
+    if (verdict.pinnedByOCCStore && isCurrentAttempt()) {
+      this.occStorePinnedGeneration = connectGeneration
     }
     return runSsh2Handshake(config, {
       label: this.target.label,

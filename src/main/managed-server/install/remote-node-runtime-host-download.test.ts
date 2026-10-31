@@ -3,7 +3,7 @@ import { existsSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync 
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { NODE_RUNTIME_ASSETS, NODE_RUNTIME_PIN } from '../../../shared/node-runtime-pin'
 import { getRemoteHostPlatform } from '../../ssh/ssh-remote-platform'
 import {
@@ -36,7 +36,7 @@ function which(tool: string): string | null {
 }
 
 function fakeHost(tools: Record<string, string>): { bin: string; stage: string } {
-  const root = mkdtempSync(join(tmpdir(), 'orca-host-download-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-host-download-'))
   directories.push(root)
   const bin = join(root, 'bin')
   const stage = join(root, 'stage')

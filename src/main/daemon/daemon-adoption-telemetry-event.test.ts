@@ -117,7 +117,7 @@ describe('classifyDaemonAdoptionOrigin', () => {
     const copies = '/Users/alice/Library/Application Support/OCC/daemon-host/macos'
     const stableCopy = {
       ...stalePidRecord,
-      spawnerExecPath: `${copies}/terminal-host-0f3c/app.noindex/OCC Terminal Host.app/Contents/MacOS/orca-terminal-host`
+      spawnerExecPath: `${copies}/terminal-host-0f3c/app.noindex/OCC Terminal Host.app/Contents/MacOS/occ-terminal-host`
     }
     expect(await classifyDaemonAdoptionOrigin(stableCopy)).toMatchObject({
       spawner_path_class: 'stable-copy'

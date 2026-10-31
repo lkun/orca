@@ -1,9 +1,9 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import {
   CONNECTOR_AGENTS,
   ConnectorDeliveryResultSchema,
   type ConnectorConversation
-} from '@orca-cloud/connector-contract'
+} from '@occ-cloud/connector-contract'
 import type { InboundMessage, Notice, ThreadPlace } from './connector-adapter.js'
 import { findIdentity } from './connector-identities.js'
 import type { DeliveryBody } from './connector-inbox.js'
@@ -47,7 +47,7 @@ export async function routeMessage(
   }
   // Serializes routing per thread, so two quick messages can't both start a conversation.
   await transaction.lockQuotaScope(
-    `orca-connector-thread:${source}:${place.workspaceId}:${place.containerId}:${place.threadId}`
+    `occ-connector-thread:${source}:${place.workspaceId}:${place.containerId}:${place.threadId}`
   )
   const threads = await threadsIn(transaction, source, place)
   const own = threads.find((thread) => thread.ownerUserId === authorId)

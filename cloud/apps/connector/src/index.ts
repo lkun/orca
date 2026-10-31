@@ -1,4 +1,4 @@
-import { openCloudNotifications } from '@orca-cloud/cloud-database'
+import { openCloudNotifications } from '@occ-cloud/cloud-database'
 import { loadConnectorConfig } from './config.js'
 import { startConnectorBackground } from './connector-background.js'
 import { openConnectorDatabase } from './connector-database.js'
@@ -10,12 +10,12 @@ const database = await openConnectorDatabase({
   ...(config.databaseUrl === undefined ? {} : { databaseUrl: config.databaseUrl }),
   dataDir: config.dataDir,
   poolMax: config.databasePoolMax,
-  applicationName: 'orca-connector',
+  applicationName: 'occ-connector',
   readOnly: config.mode === 'validation'
 })
 const notifications = openCloudNotifications({
   ...(config.databaseUrl === undefined ? {} : { databaseUrl: config.databaseUrl }),
-  applicationName: 'orca-connector'
+  applicationName: 'occ-connector'
 })
 
 async function serveApi(): Promise<void> {
@@ -27,7 +27,7 @@ async function serveApi(): Promise<void> {
   const stopBackground = active ? startConnectorBackground(runtime) : () => {}
 
   runtime.server.listen(config.port, listenHostname(config.publicUrl), () => {
-    console.log(`[orca-connector] listening on ${config.publicUrl} (port ${config.port})`)
+    console.log(`[occ-connector] listening on ${config.publicUrl} (port ${config.port})`)
   })
 
   let stopping = false
@@ -51,7 +51,7 @@ async function serveApi(): Promise<void> {
         clearTimeout(deadline)
       })
       .catch(() => {
-        console.warn(JSON.stringify({ event: 'orca_connector_shutdown_failed' }))
+        console.warn(JSON.stringify({ event: 'occ_connector_shutdown_failed' }))
         process.exitCode = 1
       })
   }

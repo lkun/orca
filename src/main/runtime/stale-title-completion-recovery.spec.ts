@@ -25,7 +25,7 @@ import {
 } from './orchestration-mailbox-notification-test-harness'
 
 function producerFixture(agentType: 'codex' | 'pi' = 'codex') {
-  const db = createDatabase('orca-hook-title-contract-')
+  const db = createDatabase('occ-hook-title-contract-')
   const hook: AgentStatusIpcPayload = {
     paneKey: PANE_KEY,
     terminalHandle: TERMINAL_HANDLE,
@@ -94,7 +94,7 @@ describe('hook title evidence and completion recovery', () => {
   // Synthetic: Codex's done hook, then a final native spinner that only the timer clears (#19243).
   it('delivers mail to a live Codex behind a fresh done hook and a stale spinner', async () => {
     vi.useFakeTimers()
-    const db = createDatabase('orca-stale-title-completion-')
+    const db = createDatabase('occ-stale-title-completion-')
     const hook: AgentStatusIpcPayload = {
       paneKey: PANE_KEY,
       terminalHandle: TERMINAL_HANDLE,
@@ -130,7 +130,7 @@ describe('hook title evidence and completion recovery', () => {
 
   it('delivers mail to a program that reports its status but never sets a title', async () => {
     vi.useFakeTimers()
-    const db = createDatabase('orca-titleless-program-status-')
+    const db = createDatabase('occ-titleless-program-status-')
     const { runtime, write } = createRuntime(db, { launchAgent: 'antigravity' })
     const run = createBoundRun(db, 'Titleless Run')
     await runtime.listTerminals()
@@ -148,15 +148,15 @@ describe('hook title evidence and completion recovery', () => {
 
   it('CLI waits through a silent titleless turn while its mail is typed mid-turn', async () => {
     const { db, runtime, write, status, dispose } = producerFixture()
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-title-wait-cli-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-title-wait-cli-'))
     temporaryDirectories.push(userDataPath)
     const server = createLongPollServer({ runtime, userDataPath, enableWebSocket: false })
     const exitCode = process.exitCode
-    for (const name of ['ORCA_AGENT_SESSION_ID', 'ORCA_ENVIRONMENT', 'ORCA_PAIRING_CODE']) {
+    for (const name of ['OCC_AGENT_SESSION_ID', 'OCC_ENVIRONMENT', 'OCC_PAIRING_CODE']) {
       vi.stubEnv(name, '')
     }
-    vi.stubEnv('ORCA_USER_DATA_PATH', userDataPath)
-    vi.stubEnv('ORCA_TERMINAL_HANDLE', TERMINAL_HANDLE)
+    vi.stubEnv('OCC_USER_DATA_PATH', userDataPath)
+    vi.stubEnv('OCC_TERMINAL_HANDLE', TERMINAL_HANDLE)
     const output = vi.spyOn(console, 'log').mockImplementation(() => {})
     try {
       // The source CLI has its own TS project; keep the real client import at the runtime boundary.

@@ -16,7 +16,7 @@ import { AGENT_JOURNAL_THREAD_SCOPE } from '../../../shared/agent-session-journa
 const journals = createTrackedJournalOpener()
 let directory: string
 beforeEach(async () => {
-  directory = await mkdtemp(join(tmpdir(), 'orca-first-input-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-first-input-'))
 })
 afterEach(async () => {
   await journals.closeAll()

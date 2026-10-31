@@ -23,12 +23,12 @@ function panel(onRecheck: () => Promise<void>): React.JSX.Element {
     <AgentSkillSetupPanel
       title="Linear skill"
       description={null}
-      skillNames={['orca-linear']}
+      skillNames={['occ-linear']}
       installed
       loading={false}
       error={null}
       hideHeader
-      freshnessSkillName="orca-linear"
+      freshnessSkillName="occ-linear"
       onRecheck={onRecheck}
     />
   )
@@ -43,8 +43,8 @@ it('refreshes the button and pill from one named plan after the discovery re-che
       })
   )
   mocks.plan
-    .mockResolvedValueOnce({ kind: 'plan', plan: planOf([sharedEntry('orca-linear', 'update')]) })
-    .mockResolvedValueOnce({ kind: 'plan', plan: planOf([sharedEntry('orca-linear', 'keep')]) })
+    .mockResolvedValueOnce({ kind: 'plan', plan: planOf([sharedEntry('occ-linear', 'update')]) })
+    .mockResolvedValueOnce({ kind: 'plan', plan: planOf([sharedEntry('occ-linear', 'keep')]) })
   render(panel(onRecheck))
   expect(await screen.findByText('Update available')).toBeDefined()
   fireEvent.click(screen.getByRole('button', { name: 'Re-check' }))
@@ -52,12 +52,12 @@ it('refreshes the button and pill from one named plan after the discovery re-che
   finish?.()
   expect(await screen.findByText('Up to date')).toBeDefined()
   expect(screen.queryByRole('button', { name: 'Update' })).toBeNull()
-  expect(mocks.plan).toHaveBeenLastCalledWith(TARGET, { names: ['orca-linear'] })
+  expect(mocks.plan).toHaveBeenLastCalledWith(TARGET, { names: ['occ-linear'] })
 })
 
 it('shows a failed verdict when the named post-recheck plan fails', async () => {
   mocks.plan
-    .mockResolvedValueOnce({ kind: 'plan', plan: planOf([sharedEntry('orca-linear', 'update')]) })
+    .mockResolvedValueOnce({ kind: 'plan', plan: planOf([sharedEntry('occ-linear', 'update')]) })
     .mockRejectedValueOnce(new Error('plan unavailable'))
   render(panel(vi.fn(async () => {})))
   expect(await screen.findByText('Update available')).toBeDefined()

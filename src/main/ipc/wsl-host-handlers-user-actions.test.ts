@@ -15,7 +15,7 @@ vi.mock('../wsl/wsl-host-e2e-fake-connector', () => ({
   createFakeWslHostConnector: vi.fn(),
   readFakeWslHostsConfig: () => null
 }))
-vi.mock('../orcad/orcad-artifact-materializer', () => ({ hasOrcadTemplate: () => true }))
+vi.mock('../occd/occd-artifact-materializer', () => ({ hasOCCdTemplate: () => true }))
 vi.mock('./runtime-environments/runtime-environment-removal-cleanup', () => ({
   retireRemovedRuntimeEnvironment: vi.fn()
 }))
@@ -28,7 +28,7 @@ vi.mock('./runtime-environments/runtime-environment-transport-routing', () => ({
 vi.mock('./runtime-environments/runtime-environment-request-connections', () => ({
   isRemoteRuntimeConnectionReady: () => false
 }))
-vi.mock('../ssh/orcad-terminal-census-client', () => ({ requestOrcadTerminalCensus: vi.fn() }))
+vi.mock('../ssh/occd-terminal-census-client', () => ({ requestOCCdTerminalCensus: vi.fn() }))
 const service = vi.hoisted(() => ({
   add: vi.fn(
     async (): Promise<{
@@ -72,7 +72,7 @@ describe('WSL host IPC: the user Add and Remove (D3a)', () => {
   })
 
   it('reports a successful Add, never a failed one', async () => {
-    vi.stubEnv('ORCA_INTERNAL_WSL_HOSTS', '1')
+    vi.stubEnv('OCC_INTERNAL_WSL_HOSTS', '1')
     register()
     const heard: WslHostUserAction[] = []
     const stop = onWslHostUserAction((action) => heard.push(action))
@@ -85,7 +85,7 @@ describe('WSL host IPC: the user Add and Remove (D3a)', () => {
   })
 
   it('refuses an Add in serve-only and says so in its capability, keeping saved hosts usable', async () => {
-    vi.stubEnv('ORCA_INTERNAL_WSL_HOSTS', undefined)
+    vi.stubEnv('OCC_INTERNAL_WSL_HOSTS', undefined)
     register()
 
     expect(await handlers.get('wslHosts:add')?.({}, { distro: 'Ubuntu' })).toMatchObject({
@@ -101,7 +101,7 @@ describe('WSL host IPC: the user Add and Remove (D3a)', () => {
   })
 
   it('under a remote policy block, refuses an Add but keeps Remove', async () => {
-    vi.stubEnv('ORCA_INTERNAL_WSL_HOSTS', '1')
+    vi.stubEnv('OCC_INTERNAL_WSL_HOSTS', '1')
     configureWslHostsGate({
       hasSavedWslHost: () => true,
       hasWslMoveCutover: () => false,

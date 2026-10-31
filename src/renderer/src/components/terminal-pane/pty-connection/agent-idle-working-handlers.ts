@@ -39,7 +39,7 @@ export function installAgentIdleWorkingHandlers(session: ConnectPanePtySession):
     // Why: title reversion alone is not process death. The process/PTY tracker
     // owns removing agent rows when the TUI actually exits.
   }
-  // Inject opaque ORCA_PANE_KEY matching tabId:leafId so global hooks can attribute callbacks without cwd lookup.
+  // Inject opaque OCC_PANE_KEY matching tabId:leafId so global hooks can attribute callbacks without cwd lookup.
   session.state = useAppStore.getState()
   session.parsedWorkspaceKey = parseWorkspaceKey(session.deps.worktreeId)
   session.folderWorkspace =
@@ -48,17 +48,17 @@ export function installAgentIdleWorkingHandlers(session: ConnectPanePtySession):
           (workspace) => workspace.id === session.parsedWorkspaceKey.folderWorkspaceId
         )
       : null
-  session.workspaceEnv = { ORCA_WORKSPACE_ID: session.deps.worktreeId }
+  session.workspaceEnv = { OCC_WORKSPACE_ID: session.deps.worktreeId }
   if (session.folderWorkspace) {
-    session.workspaceEnv.ORCA_PROJECT_GROUP_ID = session.folderWorkspace.projectGroupId
-    session.workspaceEnv.ORCA_WORKSPACE_ROOT = session.folderWorkspace.folderPath
+    session.workspaceEnv.OCC_PROJECT_GROUP_ID = session.folderWorkspace.projectGroupId
+    session.workspaceEnv.OCC_WORKSPACE_ROOT = session.folderWorkspace.folderPath
   }
   session.paneIdentityEnv = {
     ...session.workspaceEnv,
-    ORCA_PANE_KEY: session.cacheKey,
-    ORCA_TAB_ID: session.deps.tabId,
-    ORCA_WORKTREE_ID: session.deps.worktreeId,
-    ...(session.launchToken ? { ORCA_AGENT_LAUNCH_TOKEN: session.launchToken } : {})
+    OCC_PANE_KEY: session.cacheKey,
+    OCC_TAB_ID: session.deps.tabId,
+    OCC_WORKTREE_ID: session.deps.worktreeId,
+    ...(session.launchToken ? { OCC_AGENT_LAUNCH_TOKEN: session.launchToken } : {})
   }
   session.paneEnv = {
     ...session.paneStartup?.env,

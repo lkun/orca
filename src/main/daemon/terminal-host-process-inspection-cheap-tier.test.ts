@@ -19,7 +19,7 @@ const { execFileMock, runProcessMock } = vi.hoisted(() => ({
   runProcessMock: vi.fn()
 }))
 vi.mock('node:child_process', () => ({ execFile: execFileMock }))
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 
 // Inject /dev data without bypassing the production translator.
 vi.mock('../../shared/darwin-terminal-names', async (importOriginal) => {

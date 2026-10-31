@@ -19,7 +19,7 @@ describe('legacy terminal Windows tombstone text', () => {
   const tempRoots: string[] = []
 
   const makeUserDataDir = (): string => {
-    const userData = mkdtempSync(join(tmpdir(), 'orca-legacy-shim-win-'))
+    const userData = mkdtempSync(join(tmpdir(), 'occ-legacy-shim-win-'))
     tempRoots.push(userData)
     return userData
   }
@@ -36,18 +36,18 @@ describe('legacy terminal Windows tombstone text', () => {
 
   it('rejects stale Windows real-command paths inside the wrapper directory', () => {
     const userData = makeUserDataDir()
-    const win32Dir = join(userData, 'orca-terminal-attribution', 'win32')
+    const win32Dir = join(userData, 'occ-terminal-attribution', 'win32')
     mkdirSync(win32Dir, { recursive: true })
 
     neutralizeLegacyTerminalShimDir(userData)
 
     const cmd = readFileSync(join(win32Dir, 'git.cmd'), 'utf8')
     expect(cmd).toContain(
-      'if defined orca_real for %%G in ("%orca_real%") do if /I "%%~dpG"=="%~dp0" set "orca_real="'
+      'if defined occ_real for %%G in ("%occ_real%") do if /I "%%~dpG"=="%~dp0" set "occ_real="'
     )
     // A stale captured path must fall back instead of invoking a missing binary.
-    expect(cmd).toContain('if defined orca_real if not exist "%orca_real%" set "orca_real="')
-    expectOrdered(cmd, 'if not exist "%orca_real%"', ':orca_try_candidate')
+    expect(cmd).toContain('if defined occ_real if not exist "%occ_real%" set "occ_real="')
+    expectOrdered(cmd, 'if not exist "%occ_real%"', ':occ_try_candidate')
     const powershell = readFileSync(join(win32Dir, 'git-wrapper.ps1'), 'utf8')
     expect(powershell).toContain('[StringComparison]::OrdinalIgnoreCase')
     expect(powershell).toContain('$realCommand = $null')
@@ -61,7 +61,7 @@ describe('legacy terminal Windows tombstone text', () => {
   it('emits no percent expression inside a cmd rem comment', () => {
     // cmd expands variables even in rem; separators behave differently inside blocks.
     const userData = makeUserDataDir()
-    const win32Dir = join(userData, 'orca-terminal-attribution', 'win32')
+    const win32Dir = join(userData, 'occ-terminal-attribution', 'win32')
     mkdirSync(win32Dir, { recursive: true })
 
     neutralizeLegacyTerminalShimDir(userData)
@@ -79,7 +79,7 @@ describe('legacy terminal Windows tombstone text', () => {
   it('keeps the Windows wrappers ASCII-only', () => {
     // Multibyte comments shifted cmd byte positions and broke following lines on Windows 11.
     const userData = makeUserDataDir()
-    const win32Dir = join(userData, 'orca-terminal-attribution', 'win32')
+    const win32Dir = join(userData, 'occ-terminal-attribution', 'win32')
     mkdirSync(win32Dir, { recursive: true })
 
     neutralizeLegacyTerminalShimDir(userData)
@@ -95,7 +95,7 @@ describe('legacy terminal Windows tombstone text', () => {
   it('resolves Windows fallbacks against PATH only, never the current directory', () => {
     // where.exe searches cwd first and could execute repository-local git/gh (STA-4169).
     const userData = makeUserDataDir()
-    const win32Dir = join(userData, 'orca-terminal-attribution', 'win32')
+    const win32Dir = join(userData, 'occ-terminal-attribution', 'win32')
     mkdirSync(win32Dir, { recursive: true })
 
     neutralizeLegacyTerminalShimDir(userData)
@@ -103,48 +103,48 @@ describe('legacy terminal Windows tombstone text', () => {
     for (const command of ['git', 'gh'] as const) {
       const cmd = readFileSync(join(win32Dir, `${command}.cmd`), 'utf8')
       expect(cmd).not.toContain('where.exe')
-      expect(cmd).toContain('for %%P in ("%orca_clean_path:;=" "%") do (')
-      expect(cmd).toContain(`if exist "%orca_candidate_dir%\\${command}.exe"`)
+      expect(cmd).toContain('for %%P in ("%occ_clean_path:;=" "%") do (')
+      expect(cmd).toContain(`if exist "%occ_candidate_dir%\\${command}.exe"`)
       // Normalize trailing separators to avoid self-exec; a variable avoids cmd's literal-backslash parser trap.
-      expect(cmd).toContain('set "orca_sep=\\"')
+      expect(cmd).toContain('set "occ_sep=\\"')
       // Inherited /V:ON expands ! in PATH; measured cases executed cwd-local git or lost legitimate entries.
       expect(cmd).toContain('setlocal DisableDelayedExpansion')
       expect(cmd).not.toContain('\r\nsetlocal\r\n')
       // Relative captured commands resolve from cwd and must be rejected.
-      expect(cmd).toContain('if defined orca_real call :orca_check_rooted')
-      expect(cmd).toContain('if defined orca_real if not defined orca_rooted set "orca_real="')
+      expect(cmd).toContain('if defined occ_real call :occ_check_rooted')
+      expect(cmd).toContain('if defined occ_real if not defined occ_rooted set "occ_real="')
       // Exported PATH reaches child tools; pin the exact subroutine because matching earlier call sites hid its missing guard.
-      expect(cmd).toContain(':orca_append_path\r\nif not defined orca_entry exit /b\r\n')
+      expect(cmd).toContain(':occ_append_path\r\nif not defined occ_entry exit /b\r\n')
       expect(cmd).toContain(
-        'set "orca_probe=%orca_entry%"\r\ncall :orca_check_rooted\r\nif not defined orca_rooted exit /b\r\nfor %%G in ("%orca_entry%") do set "orca_path_entry_dir=%%~fG"'
+        'set "occ_probe=%occ_entry%"\r\ncall :occ_check_rooted\r\nif not defined occ_rooted exit /b\r\nfor %%G in ("%occ_entry%") do set "occ_path_entry_dir=%%~fG"'
       )
       // CALL re-expands path arguments: literal percent variables could become cwd and execute planted git. Pass data through variables.
-      expect(cmd).not.toContain('call :orca_check_rooted "')
-      expect(cmd).not.toContain('call :orca_try_candidate "')
-      expect(cmd).not.toContain('call :orca_append_path "')
+      expect(cmd).not.toContain('call :occ_check_rooted "')
+      expect(cmd).not.toContain('call :occ_try_candidate "')
+      expect(cmd).not.toContain('call :occ_append_path "')
       expect(cmd).not.toContain('%~1')
-      expect(cmd).toContain('set "orca_probe=%orca_entry%"\r\ncall :orca_check_rooted\r\n')
+      expect(cmd).toContain('set "occ_probe=%occ_entry%"\r\ncall :occ_check_rooted\r\n')
       // Define the separator before any normalization; otherwise stripping silently no-ops.
-      expectOrdered(cmd, 'set "orca_sep=', 'if "%orca_legacy_norm:~-1%."')
+      expectOrdered(cmd, 'set "occ_sep=', 'if "%occ_legacy_norm:~-1%."')
       // Compare dot-suffixed values to avoid expanding the separator into a literal-backslash parser trap.
-      expect(cmd).not.toContain('=="%orca_sep%"')
+      expect(cmd).not.toContain('=="%occ_sep%"')
       // Pin rejection too; accept-only assertions stayed green when the cwd-hijack guard was removed.
       expectOrdered(
         cmd,
-        'call :orca_check_rooted\r\nif not defined orca_rooted exit /b',
-        'for %%G in ("%orca_entry%") do set "orca_candidate_dir='
+        'call :occ_check_rooted\r\nif not defined occ_rooted exit /b',
+        'for %%G in ("%occ_entry%") do set "occ_candidate_dir='
       )
-      expect(cmd).toContain('if not defined orca_rooted exit /b')
-      expect(cmd).toContain('if "%orca_candidate_dir:~-1%."=="%orca_sep%."')
+      expect(cmd).toContain('if not defined occ_rooted exit /b')
+      expect(cmd).toContain('if "%occ_candidate_dir:~-1%."=="%occ_sep%."')
       expect(cmd).not.toContain(':\\#=#%')
       // CALL rebinds %~dp0; self-exclusion must use the cached wrapper directory.
-      expect(cmd).toContain('if /I "%orca_candidate_dir%\\"=="%orca_wrapper_dir%" exit /b')
+      expect(cmd).toContain('if /I "%occ_candidate_dir%\\"=="%occ_wrapper_dir%" exit /b')
       // External tools in the rooted-path check would reintroduce cwd lookup.
       expect(cmd).not.toContain('findstr')
-      expect(cmd).toContain('if "%orca_probe:~1,2%"==":\\" set "orca_rooted=1"')
-      expect(cmd).toContain('if "%orca_probe:~0,2%"=="\\\\" set "orca_rooted=1"')
+      expect(cmd).toContain('if "%occ_probe:~1,2%"==":\\" set "occ_rooted=1"')
+      expect(cmd).toContain('if "%occ_probe:~0,2%"=="\\\\" set "occ_rooted=1"')
       // Both empty-element guards need pins; removing either otherwise left the suite green.
-      expect(cmd).toContain('if not defined orca_entry exit /b')
+      expect(cmd).toContain('if not defined occ_entry exit /b')
 
       const powershell = readFileSync(join(win32Dir, `${command}-wrapper.ps1`), 'utf8')
       expect(powershell).not.toContain('Get-Command')
@@ -165,11 +165,11 @@ describe('legacy terminal Windows tombstone text', () => {
       )
       // Both separators are accepted in rooted paths and must be normalized for self-exclusion.
       expect(powershell).not.toContain("TrimEnd('\\')")
-      expect(cmd).toContain('if "%orca_probe:~1,2%"==":/" set "orca_rooted=1"')
-      expect(cmd).toContain('if "%orca_legacy_norm:~-1%."=="%orca_sep%."')
+      expect(cmd).toContain('if "%occ_probe:~1,2%"==":/" set "occ_rooted=1"')
+      expect(cmd).toContain('if "%occ_legacy_norm:~-1%."=="%occ_sep%."')
       // cmd expands whole lines before if defined; defer unset-variable substring operations into a CALL body.
-      expect(cmd).toContain('if defined orca_legacy_wrapper_dir call :orca_normalize_legacy_dir')
-      expect(cmd).not.toContain('if defined orca_legacy_wrapper_dir for ')
+      expect(cmd).toContain('if defined occ_legacy_wrapper_dir call :occ_normalize_legacy_dir')
+      expect(cmd).not.toContain('if defined occ_legacy_wrapper_dir for ')
       expect(powershell).toContain('if (-not $dir) { continue }')
       expect(powershell).toContain('Test-Path -LiteralPath $candidate -PathType Leaf')
     }
@@ -178,7 +178,7 @@ describe('legacy terminal Windows tombstone text', () => {
   it('emits Windows wrappers with CRLF line endings', () => {
     // cmd label lookup failed for longer LF-only wrappers on Windows; require CRLF.
     const userData = makeUserDataDir()
-    const win32Dir = join(userData, 'orca-terminal-attribution', 'win32')
+    const win32Dir = join(userData, 'occ-terminal-attribution', 'win32')
     mkdirSync(win32Dir, { recursive: true })
 
     neutralizeLegacyTerminalShimDir(userData)
@@ -193,20 +193,20 @@ describe('legacy terminal Windows tombstone text', () => {
   it('guards both cmd PATH walks so an empty variable cannot break parsing', () => {
     // Expanding an empty PATH into quoted elements leaves unbalanced quotes and breaks cmd parsing.
     const userData = makeUserDataDir()
-    const win32Dir = join(userData, 'orca-terminal-attribution', 'win32')
+    const win32Dir = join(userData, 'occ-terminal-attribution', 'win32')
     mkdirSync(win32Dir, { recursive: true })
 
     neutralizeLegacyTerminalShimDir(userData)
 
     for (const command of ['git', 'gh'] as const) {
       const cmd = readFileSync(join(win32Dir, `${command}.cmd`), 'utf8')
-      expect(cmd).toContain('if not defined PATH goto :orca_path_walked')
-      expect(cmd).toContain('if not defined orca_clean_path goto :orca_candidates_walked')
+      expect(cmd).toContain('if not defined PATH goto :occ_path_walked')
+      expect(cmd).toContain('if not defined occ_clean_path goto :occ_candidates_walked')
       for (const [guard, loop] of [
-        ['if not defined PATH goto :orca_path_walked', 'for %%P in ("%PATH:;='],
+        ['if not defined PATH goto :occ_path_walked', 'for %%P in ("%PATH:;='],
         [
-          'if not defined orca_clean_path goto :orca_candidates_walked',
-          'for %%P in ("%orca_clean_path:;='
+          'if not defined occ_clean_path goto :occ_candidates_walked',
+          'for %%P in ("%occ_clean_path:;='
         ]
       ] as const) {
         expectOrdered(cmd, guard, loop)

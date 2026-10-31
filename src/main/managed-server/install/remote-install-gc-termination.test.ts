@@ -7,7 +7,7 @@ vi.mock('../../ssh/remote-exec/remote-exec-command', async (importOriginal) => (
 }))
 
 import { gcOldRemoteInstallVersions } from './remote-install-gc'
-import { ORCAD_INSTALL_MODEL } from './remote-install-model'
+import { OCCD_INSTALL_MODEL } from './remote-install-model'
 import { execCommand } from '../../ssh/remote-exec/remote-exec-command'
 import { getRemoteHostPlatform } from '../../ssh/ssh-remote-platform'
 import { unusedSshConnection } from '../../ssh/unused-host-transport.test-fixture'
@@ -15,7 +15,7 @@ import { unusedSshConnection } from '../../ssh/unused-host-transport.test-fixtur
 const conn = unusedSshConnection()
 const host = getRemoteHostPlatform('linux-x64')
 const home = '/home/u'
-const currentDir = `${home}/.orca-remote/orcad-0.1.0+bbb`
+const currentDir = `${home}/.occ-remote/occd-0.1.0+bbb`
 const mockExec = vi.mocked(execCommand)
 
 beforeEach(() => {
@@ -35,13 +35,13 @@ function failAfter(replies: readonly string[], confirmed = false): Error {
 }
 
 function collectVersions(): Promise<boolean> {
-  return gcOldRemoteInstallVersions(conn, ORCAD_INSTALL_MODEL, home, currentDir, host, {
+  return gcOldRemoteInstallVersions(conn, OCCD_INSTALL_MODEL, home, currentDir, host, {
     isDirLive: async (dir) => (await execCommand(conn, `liveness ${dir}`)).trim() !== 'DEAD'
   })
 }
 
 const versionSteps = [
-  ['listing', 'orcad-0.1.0+aaa'],
+  ['listing', 'occd-0.1.0+aaa'],
   ['install lock probe', 'OPEN'],
   ['completion probe', 'COMPLETE'],
   ['liveness probe', 'DEAD'],
@@ -84,7 +84,7 @@ describe('version GC termination', () => {
 
   it('stops after unconfirmed abandoned tombstone deletion', async () => {
     const error = failAfter([
-      'orcad-0.1.0+aaa.gc-tombstone.1.1\norcad-0.1.0+ccc.gc-tombstone.1.1\norcad-0.1.0+ddd'
+      'occd-0.1.0+aaa.gc-tombstone.1.1\noccd-0.1.0+ccc.gc-tombstone.1.1\noccd-0.1.0+ddd'
     ])
 
     await expect(collectVersions()).rejects.toBe(error)

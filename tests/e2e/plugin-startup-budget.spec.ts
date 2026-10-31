@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { expect, test, type TestInfo } from '@stablyai/playwright-test'
 import { fingerprintPluginConsent } from '../../src/shared/plugins/approval/plugin-consent-fingerprint'
 import { pluginManifestSchema } from '../../src/shared/plugins/manifest/plugin-manifest'
-import { createRestartSession } from './helpers/orca-restart'
+import { createRestartSession } from './helpers/occ-restart'
 
 const PLUGIN_COUNT = 20
 const SAMPLE_COUNT = 3
@@ -17,7 +17,7 @@ type StartupSample = {
 }
 
 function updateProfile(userDataDir: string, pluginConsents: Record<string, string>): void {
-  const profilePath = join(userDataDir, 'orca-data.json')
+  const profilePath = join(userDataDir, 'occ-data.json')
   const profile = JSON.parse(readFileSync(profilePath, 'utf8')) as {
     settings?: Record<string, unknown>
   }
@@ -44,7 +44,7 @@ function seedPlugins(userDataDir: string, count: number): string[] {
       publisher: 'budget',
       name: `Startup ${index}`,
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       main: 'main.mjs',
       contributes: { panels: [], commands: [], events: [] },
@@ -56,7 +56,7 @@ function seedPlugins(userDataDir: string, count: number): string[] {
     const markerPath = join(userDataDir, `plugin-startup-marker-${index}`)
     mkdirSync(versionDir, { recursive: true })
     writeFileSync(join(pluginsDir, pluginKey, 'current'), contentHash)
-    writeFileSync(join(versionDir, 'orca-plugin.json'), JSON.stringify(manifest))
+    writeFileSync(join(versionDir, 'occ-plugin.json'), JSON.stringify(manifest))
     writeFileSync(
       join(versionDir, 'main.mjs'),
       `import { writeFileSync } from 'node:fs'; writeFileSync(${JSON.stringify(markerPath)}, 'executed')`
@@ -127,7 +127,7 @@ test('keeps real Electron launch stable with 20 approved inert plugins', async (
   for (let sample = 0; sample < SAMPLE_COUNT; sample += 1) {
     for (const count of [0, PLUGIN_COUNT]) {
       // Seed each profile before its first migration into authoritative SQLite state.
-      const session = createRestartSession(testInfo, { ORCA_STARTUP_DIAGNOSTICS: '1' })
+      const session = createRestartSession(testInfo, { OCC_STARTUP_DIAGNOSTICS: '1' })
       try {
         const markerPaths = seedPlugins(session.userDataDir, count)
         const samples = count === 0 ? baseline : populated

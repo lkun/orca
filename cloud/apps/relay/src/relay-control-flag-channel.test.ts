@@ -20,7 +20,7 @@ function fakeGoogle(initial: StoredObject = { kind: 'status', status: 404 }) {
   const fetchImpl: typeof fetch = async (target, init) => {
     const url = new URL(String(target))
     if (url.hostname === 'metadata.google.internal') {
-      if (url.pathname.endsWith('/project/project-id')) return new Response('onorca-cloud')
+      if (url.pathname.endsWith('/project/project-id')) return new Response('onocc-cloud')
       return Response.json({ access_token: ACCESS_TOKEN, expires_in: 3_600 })
     }
     state.storageRequests.push(url)
@@ -83,7 +83,7 @@ describe('control flag channel', () => {
     expect(channel.applied()).toEqual({ generation: 0, flags: CELL_FLAG_DEFAULTS })
     await channel.poll()
     expect(google.state.storageRequests[0]?.pathname).toBe(
-      `/storage/v1/b/onorca-cloud-relay-control/o/${encodeURIComponent(`cells/${CELL_ID}.json`)}`
+      `/storage/v1/b/onocc-cloud-relay-control/o/${encodeURIComponent(`cells/${CELL_ID}.json`)}`
     )
     expect(google.state.authorizations[0]).toBe(`Bearer ${ACCESS_TOKEN}`)
     expect(channel.applied()).toEqual({

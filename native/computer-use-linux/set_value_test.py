@@ -15,7 +15,7 @@ def load_runtime():
     gi.require_version = lambda *_: None
     path = Path(__file__).with_name("runtime.py")
     with mock.patch.dict(sys.modules, {"gi": gi, "gi.repository": repository}):
-        spec = importlib.util.spec_from_file_location("orca_linux_runtime_set_value_test", path)
+        spec = importlib.util.spec_from_file_location("occ_linux_runtime_set_value_test", path)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
     return module

@@ -1,4 +1,4 @@
-import { PUSH_LIMITS } from '@orca-cloud/push-contract'
+import { PUSH_LIMITS } from '@occ-cloud/push-contract'
 import { Hono } from 'hono'
 import { describe, expect, it, vi } from 'vitest'
 import { ClientIpRateLimiter, clientIpRateLimit } from './client-ip-rate-limit.js'

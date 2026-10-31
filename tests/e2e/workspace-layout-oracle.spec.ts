@@ -1,11 +1,11 @@
 // Drive user/CLI/paired-client layout journeys; compare structural rules, window DOM, client/CLI views, expected layout and restart preservation after every step.
-// Fail findings absent from workspace-layout-oracle-known-on-main.ts. ORCA_LAYOUT_ORACLE_RECORD=1 records without failing; ORCA_LAYOUT_ORACLE_REPEAT=<n> repeats.
+// Fail findings absent from workspace-layout-oracle-known-on-main.ts. OCC_LAYOUT_ORACLE_RECORD=1 records without failing; OCC_LAYOUT_ORACLE_REPEAT=<n> repeats.
 
 import { mkdtempSync, rmSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   moveTerminalPaneByLeafId,
   readTerminalPaneDomLeafOrder,
@@ -462,8 +462,8 @@ const SCENARIOS: Scenario[] = [
   }
 ]
 
-const REPEAT = Math.max(1, Number(process.env.ORCA_LAYOUT_ORACLE_REPEAT ?? 1))
-const RECORD_ONLY = process.env.ORCA_LAYOUT_ORACLE_RECORD === '1'
+const REPEAT = Math.max(1, Number(process.env.OCC_LAYOUT_ORACLE_REPEAT ?? 1))
+const RECORD_ONLY = process.env.OCC_LAYOUT_ORACLE_RECORD === '1'
 
 for (const scenario of SCENARIOS) {
   for (let attempt = 1; attempt <= REPEAT; attempt += 1) {

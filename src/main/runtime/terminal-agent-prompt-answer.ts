@@ -2,12 +2,12 @@
 import { createHash } from 'node:crypto'
 import { readAgentPromptAnswers, type PendingPrompt } from '../../shared/agent-pending-prompt'
 import type { AgentStatusIpcPayload } from '../../shared/agent-status-ipc-payload'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import { writeFencedAgentKeys } from './terminal-agent-fenced-keys'
 import type { AgentPromptExpectedBinding } from './runtime-terminal-contracts'
 
 export type TerminalAgentPromptAnswerRuntime = Pick<
-  OrcaRuntimeService,
+  OCCRuntimeService,
   'getTerminalHandleForPaneKey' | 'getTerminalPromptRequestBinding' | 'sendTerminal'
 >
 

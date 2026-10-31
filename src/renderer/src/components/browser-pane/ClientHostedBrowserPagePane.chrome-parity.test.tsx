@@ -365,7 +365,7 @@ describe('ClientHostedBrowserPagePane chrome parity', () => {
     const addressBar = screen.getByRole('combobox')
     act(() => {
       fireEvent.change(addressBar, {
-        target: { value: 'https://kagi.com/search?q=orca&token=secret-token' }
+        target: { value: 'https://kagi.com/search?q=occ&token=secret-token' }
       })
     })
     act(() => {
@@ -377,7 +377,7 @@ describe('ClientHostedBrowserPagePane chrome parity', () => {
     expect((addressBar as HTMLInputElement).value).not.toContain('secret-token')
     // The guest still gets the real link — redaction is about what OCC keeps, not what loads.
     expect(webview.loadURL).toHaveBeenCalledWith(
-      'https://kagi.com/search?q=orca&token=secret-token'
+      'https://kagi.com/search?q=occ&token=secret-token'
     )
   })
 

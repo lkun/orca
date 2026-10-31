@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import {
   CONNECTOR_CONTRACT_VERSION,
   CONNECTOR_PATHS,
@@ -10,7 +10,7 @@ import {
   type ConnectorDelivery,
   type ConnectorHelloResponse,
   type ConnectorPollResponse
-} from '@orca-cloud/connector-contract'
+} from '@occ-cloud/connector-contract'
 import type { Context, Hono, MiddlewareHandler } from 'hono'
 import type { ConnectorCore } from './connector-core.js'
 import { lockConnectorHost, type ConnectorHosts } from './connector-hosts.js'

@@ -4,7 +4,7 @@ import type {
   ArtifactListItem,
   ArtifactListPage
 } from '../../../../shared/artifacts'
-import type { OrcaProfileAuthStatus } from '../../../../shared/orca-profiles'
+import type { OCCProfileAuthStatus } from '../../../../shared/occ-profiles'
 import { translate } from '@/i18n/i18n'
 import { callRuntimeRpc } from '@/runtime/runtime-rpc-client'
 import { useAppStore } from '@/store'
@@ -12,7 +12,7 @@ import { useAppStore } from '@/store'
 const LOCAL_RUNTIME = { kind: 'local' } as const
 const EMPTY_ARTIFACTS: readonly ArtifactListItem[] = []
 
-export function artifactAccountIdentity(authStatus: OrcaProfileAuthStatus | null): string | null {
+export function artifactAccountIdentity(authStatus: OCCProfileAuthStatus | null): string | null {
   return authStatus?.state === 'connected'
     ? `${authStatus.activeProfileId}:${authStatus.cloud?.userId ?? ''}:${authStatus.cloud?.cloudProfileId ?? ''}:${authStatus.cloud?.activeOrgId ?? ''}`
     : null
@@ -33,12 +33,12 @@ function artifactRequestIsCurrent(
 ): boolean {
   return (
     sequence === currentSequence &&
-    artifactAccountIdentity(useAppStore.getState().orcaProfileAuthStatus) === identity
+    artifactAccountIdentity(useAppStore.getState().occProfileAuthStatus) === identity
   )
 }
 
 export function useArtifactPagination(
-  authStatus: OrcaProfileAuthStatus | null,
+  authStatus: OCCProfileAuthStatus | null,
   refreshAuth: () => Promise<unknown>
 ): {
   accountIdentity: string | null

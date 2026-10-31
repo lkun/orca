@@ -1,17 +1,17 @@
 import type { TuiAgent } from '../../shared/tui-agent'
 import { isTuiAgent } from '../../shared/tui-agent-config'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import type { LaunchedAgentForeground } from './launched-agent-foreground'
 
 const SHELL_RETURN_MARKERS = ['\x1b[?2004', '\x1b]133;'] as const
 const MARKER_CARRY_CHARS = Math.max(...SHELL_RETURN_MARKERS.map((marker) => marker.length)) - 1
 
 export type LaunchedAgentWriteGuardRuntime = Pick<
-  OrcaRuntimeService,
+  OCCRuntimeService,
   'readLaunchedAgentForeground' | 'subscribeToTerminalData'
 > &
   Partial<
-    Pick<OrcaRuntimeService, 'launchedAgentHostProvesAgent' | 'launchedAgentHostProvesShellAlone'>
+    Pick<OCCRuntimeService, 'launchedAgentHostProvesAgent' | 'launchedAgentHostProvesShellAlone'>
   >
 
 /** refuse: write only on agent proof. write-unless-shell: permit unknown. write-if-shell-provable: permit unknown only where a lone shell is provable. */

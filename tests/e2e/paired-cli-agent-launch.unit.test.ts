@@ -5,8 +5,8 @@ import { describe, expect, it, vi } from 'vitest'
 import { RuntimeClient } from '../../src/cli/runtime/client'
 import type { AgentLaunchResult } from '../../src/shared/agent-launch-intent'
 import { openTestAgentSessionRecordStore } from '../../src/main/runtime/agent-session-record-store-test-harness'
-import { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
-import { OrcaRuntimeRpcServer } from '../../src/main/runtime/runtime-rpc'
+import { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
+import { OCCRuntimeRpcServer } from '../../src/main/runtime/runtime-rpc'
 import {
   runtimeStub,
   setAgentLaunchRecordStore
@@ -28,7 +28,7 @@ describe.each([
   { method: 'agent.launchReplay', path: 'verified-status' }
 ])('paired CLI $method via $path', ({ method, path }) => {
   it.each(TARGETS)('launches and replays $kind without a second agent', async (target) => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-paired-cli-launch-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-paired-cli-launch-'))
     const store = await openTestAgentSessionRecordStore(directory)
     setAgentLaunchRecordStore(store)
     const boundary = runtimeStub({
@@ -38,10 +38,10 @@ describe.each([
         '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d:3f2504e0-4f89-41d3-9a0c-0305e82c3301',
       lineCarriesPrompt: true
     })
-    const runtime = Object.assign(new OrcaRuntimeService(), boundary, {
+    const runtime = Object.assign(new OCCRuntimeService(), boundary, {
       selectCreatedMobileSessionTabForClient: vi.fn(() => true)
     })
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       runtime,
       userDataPath: directory,
       methods: [...STATUS_METHODS, ...AGENT_LAUNCH_METHODS],

@@ -99,7 +99,7 @@ describe('AgentBrowserBridge', () => {
 
     const snapshotArgs = spawns.find(({ command }) => command[0] === 'snapshot')?.args
     expect(snapshotArgs).toContain('--session')
-    expect(snapshotArgs![snapshotArgs!.indexOf('--session') + 1]).toBe('orca-tab-tab-b')
+    expect(snapshotArgs![snapshotArgs!.indexOf('--session') + 1]).toBe('occ-tab-tab-b')
     expect(result).toEqual({
       browserPageId: 'tab-b',
       snapshot: 'tree output',
@@ -312,7 +312,7 @@ describe('AgentBrowserBridge', () => {
 
     expect(b.getActivePageId('wt-1')).toBe('tab-b')
     await vi.waitFor(() =>
-      expect(spawns.some((args) => args.join(' ') === '--session orca-tab-popup-7 close')).toBe(
+      expect(spawns.some((args) => args.join(' ') === '--session occ-tab-popup-7 close')).toBe(
         true
       )
     )
@@ -463,7 +463,7 @@ describe('AgentBrowserBridge', () => {
     await b.click('@e2', undefined, 'tab-a')
     await b.exec('snapshot -i', 'wt-1')
     await b.click('@e2', 'wt-1')
-    expect(clickSessions).toEqual(['orca-tab-tab-a', 'orca-tab-tab-b'])
+    expect(clickSessions).toEqual(['occ-tab-tab-a', 'occ-tab-tab-b'])
   })
 
   it('binds unpinned refs to the page an exec batch snapshotted', async () => {
@@ -500,7 +500,7 @@ describe('AgentBrowserBridge', () => {
     await b.exec('batch "snapshot -i" "get title"', 'wt-1')
     await b.click('@e2', 'wt-1')
 
-    expect(clickSessions).toEqual(['orca-tab-tab-b'])
+    expect(clickSessions).toEqual(['occ-tab-tab-b'])
   })
 
   it('queues tabSwitch behind in-flight commands on the current session', async () => {

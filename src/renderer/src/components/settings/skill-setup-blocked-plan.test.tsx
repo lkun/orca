@@ -73,7 +73,7 @@ vi.mock('../onboarding/onboarding-feature-setup', async (importOriginal) => ({
   ...(await importOriginal()),
   runOnboardingFeatureSetup: vi.fn(async () => ({
     selectedIds: ['browserUse'],
-    skillNames: ['orca-cli'],
+    skillNames: ['occ-cli'],
     warnings: [],
     computerUsePermissionsOpened: false
   }))
@@ -95,7 +95,7 @@ function renderSurface(
       <AgentSkillSetupPanel
         title="CLI skill"
         description={null}
-        skillNames={['orca-cli']}
+        skillNames={['occ-cli']}
         installed={mocks.installed}
         hideHeader={surface === 'guided-panel'}
         loading={false}
@@ -120,7 +120,7 @@ for (const surface of ['panel', 'linear', 'browser', 'capabilities'] as const) {
     it.each([false, true])(
       'shows Needs attention without executing an unreadable replacement (other work: %s)',
       async (otherWork) => {
-        const name = surface === 'linear' ? 'orca-linear' : 'orca-cli'
+        const name = surface === 'linear' ? 'occ-linear' : 'occ-cli'
         const path = `/home/u/.agents/skills/${name}`
         const agentPath = `/home/u/.claude/skills/${name}`
         const edited = planOf([
@@ -164,7 +164,7 @@ for (const surface of ['panel', 'linear', 'browser', 'capabilities'] as const) {
     )
 
     it('executes the explicit replacement plan using its full-identity digest', async () => {
-      const name = surface === 'linear' ? 'orca-linear' : 'orca-cli'
+      const name = surface === 'linear' ? 'occ-linear' : 'occ-cli'
       const path = `/home/u/.agents/skills/${name}`
       const edited = planOf([sharedEntry(name, 'leave', { reason: 'edited', replaceable: true })])
       const replacement = planOf(
@@ -202,7 +202,7 @@ for (const surface of ['panel', 'linear', 'browser', 'capabilities'] as const) {
     it.each(['edited', 'other'] as const)(
       'offers Replace without forcing a preview of a %s copy',
       async (reason) => {
-        const name = surface === 'linear' ? 'orca-linear' : 'orca-cli'
+        const name = surface === 'linear' ? 'occ-linear' : 'occ-cli'
         mocks.plan.mockResolvedValue({
           kind: 'plan',
           plan: planOf([sharedEntry(name, 'leave', { reason, replaceable: true })])
@@ -224,7 +224,7 @@ for (const surface of ['panel', 'linear', 'browser', 'capabilities'] as const) {
     it.each(['unwritable', 'busy'] as const)(
       'offers Retry when an absent skill is %s',
       async (reason) => {
-        const name = surface === 'linear' ? 'orca-linear' : 'orca-cli'
+        const name = surface === 'linear' ? 'occ-linear' : 'occ-cli'
         mocks.plan.mockResolvedValue({
           kind: 'plan',
           plan: planOf([sharedEntry(name, 'leave', { reason })])

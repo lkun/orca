@@ -19,8 +19,8 @@ globalThis.window = { api: { gh: apiMocks } }
 function makeRepo(overrides: Partial<Repo> = {}): Repo {
   return {
     id: 'repo-1',
-    path: '/workspace/orca',
-    displayName: 'orca',
+    path: '/workspace/occ',
+    displayName: 'occ',
     badgeColor: '#2563eb',
     addedAt: 1,
     kind: 'git',
@@ -35,23 +35,23 @@ describe('repository GitHub avatar resolution', () => {
   })
 
   it('uses stored upstream by default and keeps the parent avatar for same-name forks', async () => {
-    const repo = makeRepo({ upstream: { owner: 'stablyai', repo: 'orca' } })
+    const repo = makeRepo({ upstream: { owner: 'stablyai', repo: 'occ' } })
     // The fork's own origin owner — same repo name, so the parent avatar wins.
-    apiMocks.repoSlug.mockResolvedValueOnce({ owner: 'tmchow', repo: 'orca' })
+    apiMocks.repoSlug.mockResolvedValueOnce({ owner: 'tmchow', repo: 'occ' })
 
     await expect(resolveRepositoryGitHubAvatar({ kind: 'local' }, repo)).resolves.toEqual({
       repoIcon: {
         type: 'image',
         src: 'https://github.com/stablyai.png?size=64',
         source: 'github',
-        label: 'stablyai/orca'
+        label: 'stablyai/occ'
       },
-      upstream: { owner: 'stablyai', repo: 'orca' }
+      upstream: { owner: 'stablyai', repo: 'occ' }
     })
 
     expect(apiMocks.repoUpstream).not.toHaveBeenCalled()
     expect(apiMocks.repoSlug).toHaveBeenCalledExactlyOnceWith({
-      repoPath: '/workspace/orca',
+      repoPath: '/workspace/occ',
       repoId: 'repo-1'
     })
   })
@@ -92,11 +92,11 @@ describe('repository GitHub avatar resolution', () => {
         type: 'image',
         src: 'https://github.com/stablyai.png?size=64',
         source: 'github',
-        label: 'stablyai/orca'
+        label: 'stablyai/occ'
       }
     })
     apiMocks.repoUpstream.mockResolvedValueOnce(null)
-    apiMocks.repoSlug.mockResolvedValueOnce({ owner: 'parkerrex', repo: 'orca' })
+    apiMocks.repoSlug.mockResolvedValueOnce({ owner: 'parkerrex', repo: 'occ' })
 
     const resolution = await resolveRepositoryGitHubAvatar({ kind: 'local' }, repo, {
       forceLive: true
@@ -107,16 +107,16 @@ describe('repository GitHub avatar resolution', () => {
         type: 'image',
         src: 'https://github.com/parkerrex.png?size=64',
         source: 'github',
-        label: 'parkerrex/orca'
+        label: 'parkerrex/occ'
       },
       upstream: null
     })
     expect(apiMocks.repoUpstream).toHaveBeenCalledExactlyOnceWith({
-      repoPath: '/workspace/orca',
+      repoPath: '/workspace/occ',
       repoId: 'repo-1'
     })
     expect(apiMocks.repoSlug).toHaveBeenCalledExactlyOnceWith({
-      repoPath: '/workspace/orca',
+      repoPath: '/workspace/occ',
       repoId: 'repo-1'
     })
     expect(buildRepositoryGitHubAvatarUpdate(repo, resolution)).toEqual({
@@ -124,7 +124,7 @@ describe('repository GitHub avatar resolution', () => {
         type: 'image',
         src: 'https://github.com/parkerrex.png?size=64',
         source: 'github',
-        label: 'parkerrex/orca'
+        label: 'parkerrex/occ'
       }
     })
   })
@@ -135,7 +135,7 @@ describe('repository GitHub avatar resolution', () => {
         type: 'image',
         src: 'https://github.com/stablyai.png?size=64',
         source: 'github',
-        label: 'stablyai/orca'
+        label: 'stablyai/occ'
       }
     })
 
@@ -159,16 +159,16 @@ describe('repository GitHub avatar resolution', () => {
   it('preserves a known fork identity when the live upstream lookup fails', async () => {
     // Failed live upstream probes must preserve known fork parents instead of falling back to origin.
     const repo = makeRepo({
-      upstream: { owner: 'stablyai', repo: 'orca' },
+      upstream: { owner: 'stablyai', repo: 'occ' },
       repoIcon: {
         type: 'image',
         src: 'https://github.com/stablyai.png?size=64',
         source: 'github',
-        label: 'stablyai/orca'
+        label: 'stablyai/occ'
       }
     })
     apiMocks.repoUpstream.mockResolvedValueOnce(null)
-    apiMocks.repoSlug.mockResolvedValueOnce({ owner: 'parkerrex', repo: 'orca' })
+    apiMocks.repoSlug.mockResolvedValueOnce({ owner: 'parkerrex', repo: 'occ' })
 
     const resolution = await resolveRepositoryGitHubAvatar({ kind: 'local' }, repo, {
       forceLive: true
@@ -179,9 +179,9 @@ describe('repository GitHub avatar resolution', () => {
         type: 'image',
         src: 'https://github.com/stablyai.png?size=64',
         source: 'github',
-        label: 'stablyai/orca'
+        label: 'stablyai/occ'
       },
-      upstream: { owner: 'stablyai', repo: 'orca' }
+      upstream: { owner: 'stablyai', repo: 'occ' }
     })
     expect(buildRepositoryGitHubAvatarUpdate(repo, resolution)).toBeNull()
   })

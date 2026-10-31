@@ -7,16 +7,16 @@ use std::env;
 
 fn main() {
     println!("cargo:rerun-if-changed=app.manifest");
-    println!("cargo:rerun-if-env-changed=ORCA_HOOK_BUILD_VERSION");
-    println!("cargo:rerun-if-env-changed=ORCA_HOOK_BUILD_ICON");
+    println!("cargo:rerun-if-env-changed=OCC_HOOK_BUILD_VERSION");
+    println!("cargo:rerun-if-env-changed=OCC_HOOK_BUILD_ICON");
 
     if env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("windows") {
         return;
     }
 
     // Set by config/scripts/build-windows-agent-hook.mjs from package.json.
-    let version = env::var("ORCA_HOOK_BUILD_VERSION")
-        .expect("ORCA_HOOK_BUILD_VERSION must be set; build through build-windows-agent-hook.mjs");
+    let version = env::var("OCC_HOOK_BUILD_VERSION")
+        .expect("OCC_HOOK_BUILD_VERSION must be set; build through build-windows-agent-hook.mjs");
     let (major, minor, patch) = numeric_version_parts(&version);
 
     let mut resource = winresource::WindowsResource::new();
@@ -27,8 +27,8 @@ fn main() {
         "LegalCopyright",
         "Copyright (C) Stably AI. All rights reserved.",
     );
-    resource.set("InternalName", "orca-agent-hook.exe");
-    resource.set("OriginalFilename", "orca-agent-hook.exe");
+    resource.set("InternalName", "occ-agent-hook.exe");
+    resource.set("OriginalFilename", "occ-agent-hook.exe");
     resource.set("FileVersion", &format!("{major}.{minor}.{patch}.0"));
     resource.set("ProductVersion", &version);
     resource.set_version_info(
@@ -40,7 +40,7 @@ fn main() {
         (major << 48) | (minor << 32) | (patch << 16),
     );
     resource.set_manifest_file("app.manifest");
-    if let Ok(icon) = env::var("ORCA_HOOK_BUILD_ICON") {
+    if let Ok(icon) = env::var("OCC_HOOK_BUILD_ICON") {
         resource.set_icon(&icon);
     }
     resource

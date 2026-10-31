@@ -21,7 +21,7 @@ const REFUSED = {
   localContent: null,
   sharedContent: null,
   effectiveContent: null,
-  localFilePath: '\\\\wsl.localhost\\Ubuntu\\repo\\.orca\\issue-command',
+  localFilePath: '\\\\wsl.localhost\\Ubuntu\\repo\\.occ\\issue-command',
   source: 'none' as const,
   refusedWslDistro: 'Ubuntu'
 }
@@ -29,7 +29,7 @@ const READ = {
   localContent: 'my private command',
   sharedContent: null,
   effectiveContent: 'my private command',
-  localFilePath: '\\\\wsl.localhost\\Ubuntu\\repo\\.orca\\issue-command',
+  localFilePath: '\\\\wsl.localhost\\Ubuntu\\repo\\.occ\\issue-command',
   source: 'local' as const
 }
 

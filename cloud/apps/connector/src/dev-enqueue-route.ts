@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import { ConnectorDeliverySchema } from '@orca-cloud/connector-contract'
+import { ConnectorDeliverySchema } from '@occ-cloud/connector-contract'
 import type { Env, Hono, MiddlewareHandler } from 'hono'
 import { z } from 'zod'
 import type { queueDelivery } from './queue-delivery.js'

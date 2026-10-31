@@ -31,7 +31,7 @@ export const compact = defineFixture({
         ...window.api.plugins,
         readPanelEntry: async () => ({
           html: buildPluginPanelShellHtml(
-            '<body style="margin:0;color:var(--orca-foreground);background:var(--orca-background)"><div style="height:100vh;box-sizing:border-box;border:1px solid var(--orca-border);display:flex;align-items:end">Panel bottom</div></body>'
+            '<body style="margin:0;color:var(--occ-foreground);background:var(--occ-background)"><div style="height:100vh;box-sizing:border-box;border:1px solid var(--occ-border);display:flex;align-items:end">Panel bottom</div></body>'
           ),
           sessionToken: 'fixture'
         })

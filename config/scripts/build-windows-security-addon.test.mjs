@@ -20,7 +20,7 @@ const success = { code: 0, timedOut: false, outputTruncated: false, stdout: '' }
 function fixture(arch = 'x64') {
   const root = mkdtempSync(join(tmpdir(), 'windows-security-build-'))
   roots.push(root)
-  const candidate = join(root, 'native/windows-security/build/Release/orca_windows_security.node')
+  const candidate = join(root, 'native/windows-security/build/Release/occ_windows_security.node')
   mkdirSync(dirname(candidate), { recursive: true })
   writeFileSync(candidate, peImage({ arch }))
   mkdirSync(join(root, 'native/windows-security/src'))
@@ -33,7 +33,7 @@ function fixture(arch = 'x64') {
   const output = join(root, 'output/windows-security.node')
   const run = vi.fn((invocation) => {
     if (invocation.args.includes('rebuild')) {
-      const built = join(invocation.cwd, 'build/Release/orca_windows_security.node')
+      const built = join(invocation.cwd, 'build/Release/occ_windows_security.node')
       mkdirSync(dirname(built), { recursive: true })
       writeFileSync(
         built,
@@ -233,7 +233,7 @@ it.each(['failed compiler', 'missing output', 'wrong machine'])(
     options.enabled = false
     options.run.mockImplementation((invocation) => {
       if (failure === 'wrong machine') {
-        const built = join(invocation.cwd, 'build/Release/orca_windows_security.node')
+        const built = join(invocation.cwd, 'build/Release/occ_windows_security.node')
         mkdirSync(dirname(built), { recursive: true })
         writeFileSync(built, peImage({ arch: 'arm64' }))
       }

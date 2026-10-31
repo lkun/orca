@@ -129,8 +129,8 @@ describe('buildProjectHostSetupOptions', () => {
       projectHostSetups: [
         setup('local', 'project-1', 'local', 'local-repo'),
         setup('vm', 'project-1', ephemeralHostId, 'vm-repo', {
-          path: '/vercel/sandbox/orca',
-          displayName: 'orca'
+          path: '/vercel/sandbox/occ',
+          displayName: 'occ'
         })
       ]
     })
@@ -142,7 +142,7 @@ describe('buildProjectHostSetupOptions', () => {
 
   it('omits runtime-owned SSH (per-workspace-env) setups even when their host is filtered out', () => {
     // Runtime-owned SSH targets are absent from the host registry; their raw hostId must still prevent selectable run targets.
-    const runtimeSshHostId = 'ssh:runtime-ssh-orca-e37aa3a9' as ExecutionHostId
+    const runtimeSshHostId = 'ssh:runtime-ssh-occ-e37aa3a9' as ExecutionHostId
     const options = buildProjectHostSetupOptions({
       projectId: 'project-1',
       eligibleRepos: [repo('local-repo'), repo('vm-repo')],
@@ -150,8 +150,8 @@ describe('buildProjectHostSetupOptions', () => {
       projectHostSetups: [
         setup('local', 'project-1', 'local', 'local-repo'),
         setup('vm', 'project-1', runtimeSshHostId, 'vm-repo', {
-          path: '/workspace/orca',
-          displayName: 'orca'
+          path: '/workspace/occ',
+          displayName: 'occ'
         })
       ]
     })
@@ -163,7 +163,7 @@ describe('buildProjectHostSetupOptions', () => {
   })
 
   it('omits hidden host categories from setup-needed choices', () => {
-    const runtimeSshHostId = 'ssh:runtime-ssh-orca-e37aa3a9' as ExecutionHostId
+    const runtimeSshHostId = 'ssh:runtime-ssh-occ-e37aa3a9' as ExecutionHostId
     const ephemeralHostId = 'runtime:90d880b2-de1b-44be-b7b8-8e15274e184e' as ExecutionHostId
 
     const options = buildProjectHostSetupOptions({
@@ -226,7 +226,7 @@ describe('buildProjectHostSetupOptions', () => {
       eligibleRepos: [repo('main-checkout'), repo('worktree-a'), repo('worktree-b')],
       hosts: [host('local')],
       projectHostSetups: [
-        setup('main', 'project-1', 'local', 'main-checkout', { path: '/Users/dev/projects/orca' }),
+        setup('main', 'project-1', 'local', 'main-checkout', { path: '/Users/dev/projects/occ' }),
         setup('dup-a', 'project-1', 'local', 'worktree-a', {
           path: '/Users/dev/worktrees/pr-1908'
         }),
@@ -598,7 +598,7 @@ describe('buildProjectHostSetupOptions', () => {
           {
             id: 'omarchy-server',
             name: 'Omarchy',
-            orcadDeployment: { sshTargetId: 'omarchy-target' }
+            occdDeployment: { sshTargetId: 'omarchy-target' }
           }
         ]
       }),
@@ -620,14 +620,14 @@ describe('buildProjectHostSetupOptions', () => {
         {
           id: 'openclaw-server',
           name: 'openclaw',
-          orcadDeployment: { sshTargetId: 'openclaw-target' }
+          occdDeployment: { sshTargetId: 'openclaw-target' }
         }
       ]
     })
   }
 
   it('shows one row when an SSH host and its managed server report the same checkout', () => {
-    const checkout = { path: '/home/neil/projects/orca' }
+    const checkout = { path: '/home/neil/projects/occ' }
     const options = buildProjectHostSetupOptions({
       projectId: 'project-1',
       eligibleRepos: [repo('local-repo'), repo('ssh-repo'), repo('server-repo')],

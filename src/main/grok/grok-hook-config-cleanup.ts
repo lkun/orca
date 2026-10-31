@@ -50,6 +50,6 @@ export function removeManagedGrokHookEntries(
 }
 
 // Remove OCC-owned hookless remnants even with schema keys, or they look like a deliberate user opt-out.
-export function isOrcaOwnedRemnant(config: HooksConfig): boolean {
+export function isOCCOwnedRemnant(config: HooksConfig): boolean {
   return Object.keys(config.hooks ?? {}).length === 0
 }

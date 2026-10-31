@@ -4,7 +4,7 @@ import { WEB_CLIENT_FILES_FILENAME } from './bundled-web-client-manifest'
 
 export const WEB_CLIENT_INDEX_FILENAME = 'web-index.html'
 
-/** Share paired-browser bundle lookup between Electron --serve and the CLI supplying orcad’s root. */
+/** Share paired-browser bundle lookup between Electron --serve and the CLI supplying occd’s root. */
 export function findBundledWebClientRoot(appPath: string): string | undefined {
   const roots = [
     join(appPath, 'out', 'web'),

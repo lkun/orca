@@ -81,7 +81,7 @@ describe('database rejection fence', () => {
     expect(() => handleRelayUnhandledRejection(terminated)).not.toThrow()
     const fenced = warn.mock.calls
       .map((call) => String(call[0]))
-      .filter((line) => line.includes('"event":"orca_relay_database_rejection_fenced"'))
+      .filter((line) => line.includes('"event":"occ_relay_database_rejection_fenced"'))
     expect(fenced).toHaveLength(2)
     expect(fenced[0]).toContain('"code":"23505"')
     expect(error).not.toHaveBeenCalled()
@@ -139,9 +139,9 @@ describe('database rejection fence', () => {
       expect(() => handleRelayUnhandledRejection(reason)).toThrow()
     }
     expect(error.mock.calls.map((call) => String(call[0]))).toEqual([
-      expect.stringContaining('"event":"orca_relay_process_fatal"'),
-      expect.stringContaining('"event":"orca_relay_process_fatal"'),
-      expect.stringContaining('"event":"orca_relay_process_fatal"')
+      expect.stringContaining('"event":"occ_relay_process_fatal"'),
+      expect.stringContaining('"event":"occ_relay_process_fatal"'),
+      expect.stringContaining('"event":"occ_relay_process_fatal"')
     ])
   })
 

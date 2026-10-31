@@ -12,7 +12,7 @@ import { newAgentPromptOutcome } from '@/lib/new-agent-prompt-outcome'
 import { newAgentLaunchRequestId } from '@/lib/agent-launch-request-id'
 import { stubRuntimeEnvironmentBridge } from '@/runtime/runtime-environment-bridge-fixture'
 import { AGENT_LAUNCH_CHOICES_CAPABILITY } from '../../src/shared/agent-launch-runtime-capability'
-import { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import { consumeOldHostPreparedCommand } from './prepared-action-launch.test-fixture'
 import { clearHostAgentMenuSettingsForTests } from '@/components/settings/use-host-agent-launch-preferences'
 import { projectAgentLaunchSettings } from '../../src/shared/agent-launch-settings'
@@ -202,7 +202,7 @@ describe('launchAgentInNewTab paired web runtime', () => {
             ? pending.promise
             : Promise.resolve({ settings: projectAgentLaunchSettings(hostSettings) })
         )
-        const host = new OrcaRuntimeService(
+        const host = new OCCRuntimeService(
           // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the final startup owner reads only this settings store.
           { getSettings: () => hostSettings } as never
         )

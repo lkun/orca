@@ -1,22 +1,22 @@
 // Split suites rewrite platform and agent-home environment; capture and restore the host values.
 export function createPtyIpcProcessEnvScope() {
   const savedOpenCodeConfigDir = process.env.OPENCODE_CONFIG_DIR
-  const savedOrcaOpenCodeConfigDir = process.env.ORCA_OPENCODE_CONFIG_DIR
-  const savedOrcaOpenCodeSourceConfigDir = process.env.ORCA_OPENCODE_SOURCE_CONFIG_DIR
+  const savedOCCOpenCodeConfigDir = process.env.OCC_OPENCODE_CONFIG_DIR
+  const savedOCCOpenCodeSourceConfigDir = process.env.OCC_OPENCODE_SOURCE_CONFIG_DIR
   const savedPiAgentDir = process.env.PI_CODING_AGENT_DIR
-  const savedOrcaPiAgentDir = process.env.ORCA_PI_CODING_AGENT_DIR
-  const savedOrcaPiSourceAgentDir = process.env.ORCA_PI_SOURCE_AGENT_DIR
-  const savedOrcaCodexHome = process.env.ORCA_CODEX_HOME
-  const savedOrcaOmpAgentDir = process.env.ORCA_OMP_CODING_AGENT_DIR
-  const savedOrcaOmpSourceAgentDir = process.env.ORCA_OMP_SOURCE_AGENT_DIR
-  const savedOrcaOmpStatusExtension = process.env.ORCA_OMP_STATUS_EXTENSION
+  const savedOCCPiAgentDir = process.env.OCC_PI_CODING_AGENT_DIR
+  const savedOCCPiSourceAgentDir = process.env.OCC_PI_SOURCE_AGENT_DIR
+  const savedOCCCodexHome = process.env.OCC_CODEX_HOME
+  const savedOCCOmpAgentDir = process.env.OCC_OMP_CODING_AGENT_DIR
+  const savedOCCOmpSourceAgentDir = process.env.OCC_OMP_SOURCE_AGENT_DIR
+  const savedOCCOmpStatusExtension = process.env.OCC_OMP_STATUS_EXTENSION
   const savedPrimeAgentDir = process.env.PRIME_AGENT_CODING_AGENT_DIR
-  const savedOrcaPrimeAgentSourceDir = process.env.ORCA_PRIME_AGENT_SOURCE_AGENT_DIR
-  const savedOrcaPrimeAgentStatusExtension = process.env.ORCA_PRIME_AGENT_STATUS_EXTENSION
-  const savedOrcaClaudeAgentStatusSettings = process.env.ORCA_CLAUDE_AGENT_STATUS_SETTINGS
+  const savedOCCPrimeAgentSourceDir = process.env.OCC_PRIME_AGENT_SOURCE_AGENT_DIR
+  const savedOCCPrimeAgentStatusExtension = process.env.OCC_PRIME_AGENT_STATUS_EXTENSION
+  const savedOCCClaudeAgentStatusSettings = process.env.OCC_CLAUDE_AGENT_STATUS_SETTINGS
   const savedProcessPlatform = Object.getOwnPropertyDescriptor(process, 'platform')
-  const savedDisableMacosLoginShell = process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL
-  const savedOrcaUserDataPath = process.env.ORCA_USER_DATA_PATH
+  const savedDisableMacosLoginShell = process.env.OCC_DISABLE_MACOS_LOGIN_SHELL
+  const savedOCCUserDataPath = process.env.OCC_USER_DATA_PATH
 
   function applyTestEnvDefaults() {
     // POSIX is the default fixture; Windows cases explicitly opt in.
@@ -25,22 +25,22 @@ export function createPtyIpcProcessEnvScope() {
       value: 'darwin'
     })
     // Disable the TCC argv wrapper except in its dedicated tests.
-    process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL = '1'
+    process.env.OCC_DISABLE_MACOS_LOGIN_SHELL = '1'
     delete process.env.OPENCODE_CONFIG_DIR
-    delete process.env.ORCA_OPENCODE_SOURCE_CONFIG_DIR
-    delete process.env.ORCA_OPENCODE_CONFIG_DIR
-    delete process.env.ORCA_AGENT_HOOK_ENDPOINT
-    delete process.env.ORCA_CLAUDE_AGENT_STATUS_SETTINGS
+    delete process.env.OCC_OPENCODE_SOURCE_CONFIG_DIR
+    delete process.env.OCC_OPENCODE_CONFIG_DIR
+    delete process.env.OCC_AGENT_HOOK_ENDPOINT
+    delete process.env.OCC_CLAUDE_AGENT_STATUS_SETTINGS
     delete process.env.PI_CODING_AGENT_DIR
-    delete process.env.ORCA_PI_SOURCE_AGENT_DIR
-    delete process.env.ORCA_PI_CODING_AGENT_DIR
-    delete process.env.ORCA_CODEX_HOME
-    delete process.env.ORCA_OMP_SOURCE_AGENT_DIR
-    delete process.env.ORCA_OMP_CODING_AGENT_DIR
-    delete process.env.ORCA_OMP_STATUS_EXTENSION
+    delete process.env.OCC_PI_SOURCE_AGENT_DIR
+    delete process.env.OCC_PI_CODING_AGENT_DIR
+    delete process.env.OCC_CODEX_HOME
+    delete process.env.OCC_OMP_SOURCE_AGENT_DIR
+    delete process.env.OCC_OMP_CODING_AGENT_DIR
+    delete process.env.OCC_OMP_STATUS_EXTENSION
     delete process.env.PRIME_AGENT_CODING_AGENT_DIR
-    delete process.env.ORCA_PRIME_AGENT_SOURCE_AGENT_DIR
-    delete process.env.ORCA_PRIME_AGENT_STATUS_EXTENSION
+    delete process.env.OCC_PRIME_AGENT_SOURCE_AGENT_DIR
+    delete process.env.OCC_PRIME_AGENT_STATUS_EXTENSION
   }
 
   function restoreProcessEnv() {
@@ -48,84 +48,84 @@ export function createPtyIpcProcessEnvScope() {
       Object.defineProperty(process, 'platform', savedProcessPlatform)
     }
     if (savedDisableMacosLoginShell !== undefined) {
-      process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL = savedDisableMacosLoginShell
+      process.env.OCC_DISABLE_MACOS_LOGIN_SHELL = savedDisableMacosLoginShell
     } else {
-      delete process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL
+      delete process.env.OCC_DISABLE_MACOS_LOGIN_SHELL
     }
-    if (savedOrcaUserDataPath !== undefined) {
-      process.env.ORCA_USER_DATA_PATH = savedOrcaUserDataPath
+    if (savedOCCUserDataPath !== undefined) {
+      process.env.OCC_USER_DATA_PATH = savedOCCUserDataPath
     } else {
-      delete process.env.ORCA_USER_DATA_PATH
+      delete process.env.OCC_USER_DATA_PATH
     }
     if (savedOpenCodeConfigDir !== undefined) {
       process.env.OPENCODE_CONFIG_DIR = savedOpenCodeConfigDir
     } else {
       delete process.env.OPENCODE_CONFIG_DIR
     }
-    if (savedOrcaOpenCodeConfigDir !== undefined) {
-      process.env.ORCA_OPENCODE_CONFIG_DIR = savedOrcaOpenCodeConfigDir
+    if (savedOCCOpenCodeConfigDir !== undefined) {
+      process.env.OCC_OPENCODE_CONFIG_DIR = savedOCCOpenCodeConfigDir
     } else {
-      delete process.env.ORCA_OPENCODE_CONFIG_DIR
+      delete process.env.OCC_OPENCODE_CONFIG_DIR
     }
-    if (savedOrcaOpenCodeSourceConfigDir !== undefined) {
-      process.env.ORCA_OPENCODE_SOURCE_CONFIG_DIR = savedOrcaOpenCodeSourceConfigDir
+    if (savedOCCOpenCodeSourceConfigDir !== undefined) {
+      process.env.OCC_OPENCODE_SOURCE_CONFIG_DIR = savedOCCOpenCodeSourceConfigDir
     } else {
-      delete process.env.ORCA_OPENCODE_SOURCE_CONFIG_DIR
+      delete process.env.OCC_OPENCODE_SOURCE_CONFIG_DIR
     }
     if (savedPiAgentDir !== undefined) {
       process.env.PI_CODING_AGENT_DIR = savedPiAgentDir
     } else {
       delete process.env.PI_CODING_AGENT_DIR
     }
-    if (savedOrcaPiAgentDir !== undefined) {
-      process.env.ORCA_PI_CODING_AGENT_DIR = savedOrcaPiAgentDir
+    if (savedOCCPiAgentDir !== undefined) {
+      process.env.OCC_PI_CODING_AGENT_DIR = savedOCCPiAgentDir
     } else {
-      delete process.env.ORCA_PI_CODING_AGENT_DIR
+      delete process.env.OCC_PI_CODING_AGENT_DIR
     }
-    if (savedOrcaPiSourceAgentDir === undefined) {
-      delete process.env.ORCA_PI_SOURCE_AGENT_DIR
+    if (savedOCCPiSourceAgentDir === undefined) {
+      delete process.env.OCC_PI_SOURCE_AGENT_DIR
     } else {
-      process.env.ORCA_PI_SOURCE_AGENT_DIR = savedOrcaPiSourceAgentDir
+      process.env.OCC_PI_SOURCE_AGENT_DIR = savedOCCPiSourceAgentDir
     }
-    if (savedOrcaCodexHome === undefined) {
-      delete process.env.ORCA_CODEX_HOME
+    if (savedOCCCodexHome === undefined) {
+      delete process.env.OCC_CODEX_HOME
     } else {
-      process.env.ORCA_CODEX_HOME = savedOrcaCodexHome
+      process.env.OCC_CODEX_HOME = savedOCCCodexHome
     }
-    if (savedOrcaOmpAgentDir !== undefined) {
-      process.env.ORCA_OMP_CODING_AGENT_DIR = savedOrcaOmpAgentDir
+    if (savedOCCOmpAgentDir !== undefined) {
+      process.env.OCC_OMP_CODING_AGENT_DIR = savedOCCOmpAgentDir
     } else {
-      delete process.env.ORCA_OMP_CODING_AGENT_DIR
+      delete process.env.OCC_OMP_CODING_AGENT_DIR
     }
-    if (savedOrcaOmpSourceAgentDir !== undefined) {
-      process.env.ORCA_OMP_SOURCE_AGENT_DIR = savedOrcaOmpSourceAgentDir
+    if (savedOCCOmpSourceAgentDir !== undefined) {
+      process.env.OCC_OMP_SOURCE_AGENT_DIR = savedOCCOmpSourceAgentDir
     } else {
-      delete process.env.ORCA_OMP_SOURCE_AGENT_DIR
+      delete process.env.OCC_OMP_SOURCE_AGENT_DIR
     }
-    if (savedOrcaOmpStatusExtension !== undefined) {
-      process.env.ORCA_OMP_STATUS_EXTENSION = savedOrcaOmpStatusExtension
+    if (savedOCCOmpStatusExtension !== undefined) {
+      process.env.OCC_OMP_STATUS_EXTENSION = savedOCCOmpStatusExtension
     } else {
-      delete process.env.ORCA_OMP_STATUS_EXTENSION
+      delete process.env.OCC_OMP_STATUS_EXTENSION
     }
     if (savedPrimeAgentDir !== undefined) {
       process.env.PRIME_AGENT_CODING_AGENT_DIR = savedPrimeAgentDir
     } else {
       delete process.env.PRIME_AGENT_CODING_AGENT_DIR
     }
-    if (savedOrcaPrimeAgentSourceDir !== undefined) {
-      process.env.ORCA_PRIME_AGENT_SOURCE_AGENT_DIR = savedOrcaPrimeAgentSourceDir
+    if (savedOCCPrimeAgentSourceDir !== undefined) {
+      process.env.OCC_PRIME_AGENT_SOURCE_AGENT_DIR = savedOCCPrimeAgentSourceDir
     } else {
-      delete process.env.ORCA_PRIME_AGENT_SOURCE_AGENT_DIR
+      delete process.env.OCC_PRIME_AGENT_SOURCE_AGENT_DIR
     }
-    if (savedOrcaPrimeAgentStatusExtension !== undefined) {
-      process.env.ORCA_PRIME_AGENT_STATUS_EXTENSION = savedOrcaPrimeAgentStatusExtension
+    if (savedOCCPrimeAgentStatusExtension !== undefined) {
+      process.env.OCC_PRIME_AGENT_STATUS_EXTENSION = savedOCCPrimeAgentStatusExtension
     } else {
-      delete process.env.ORCA_PRIME_AGENT_STATUS_EXTENSION
+      delete process.env.OCC_PRIME_AGENT_STATUS_EXTENSION
     }
-    if (savedOrcaClaudeAgentStatusSettings === undefined) {
-      delete process.env.ORCA_CLAUDE_AGENT_STATUS_SETTINGS
+    if (savedOCCClaudeAgentStatusSettings === undefined) {
+      delete process.env.OCC_CLAUDE_AGENT_STATUS_SETTINGS
     } else {
-      process.env.ORCA_CLAUDE_AGENT_STATUS_SETTINGS = savedOrcaClaudeAgentStatusSettings
+      process.env.OCC_CLAUDE_AGENT_STATUS_SETTINGS = savedOCCClaudeAgentStatusSettings
     }
   }
 

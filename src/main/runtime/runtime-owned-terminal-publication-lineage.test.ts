@@ -2,16 +2,16 @@ import { expect, it, vi } from 'vitest'
 import type { RuntimeMobileSessionTabsResult } from '../../shared/runtime-types'
 
 // Fragments stay side-effect ordered: mocks, then lifecycle, then fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
-const { store, TEST_WORKTREE_ID } = await import('./orca-runtime-test-fixtures.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
+const { store, TEST_WORKTREE_ID } = await import('./occ-runtime-test-fixtures.spec')
 const { committingSpawn } = await import('./bind-first-pane.test-fixture')
 
 it.each(['renderer:active-generation', 'headless:active-generation'])(
   'keeps %s live when runtime-owned creation supplements its inventory',
   async (publicationEpoch) => {
     // Its own copy: layout-owner builds bind the created pane into this store's session.
-    const runtime = new OrcaRuntimeService({ ...store })
+    const runtime = new OCCRuntimeService({ ...store })
     runtime.setPtyController({
       spawn: committingSpawn(
         runtime,

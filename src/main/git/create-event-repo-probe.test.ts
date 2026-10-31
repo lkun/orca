@@ -13,7 +13,7 @@ describe('probeCreateEventRepoFacts', () => {
   let repo: string
 
   beforeEach(async () => {
-    repo = await mkdtemp(path.join(tmpdir(), 'orca-hook-probe-'))
+    repo = await mkdtemp(path.join(tmpdir(), 'occ-hook-probe-'))
     await mkdir(path.join(repo, '.git', 'hooks'), { recursive: true })
     await writeFile(path.join(repo, '.git', 'config'), '[core]\n\tbare = false\n')
   })
@@ -73,8 +73,8 @@ describe('probeCreateEventRepoFacts', () => {
     await registerWorktree('feature-b', 'on a USB drive')
     // This process's spare, another process's spare, and a crash leftover all carry the marker.
     await registerWorktree('spare-here', createWorktreePreparationLockReason('here'))
-    await registerWorktree('spare-other', 'orca-create-preparation:v1:424242:other')
-    await registerWorktree('spare-crashed', 'orca-create-preparation:v1:7:gone')
+    await registerWorktree('spare-other', 'occ-create-preparation:v1:424242:other')
+    await registerWorktree('spare-crashed', 'occ-create-preparation:v1:7:gone')
     await writeFile(path.join(repo, '.git', 'worktrees', 'stray-file'), '')
     expect(await probeCreateEventRepoFacts(repo, 'linux')).toMatchObject({ worktreeCount: 3 })
   })

@@ -30,7 +30,7 @@ export function useMobileTasksProjectWorkspaceCommentActions(model: WorkspaceCre
     setProjectEditingCommentDraft,
     setProjectEditingCommentId,
     setProjectMutating,
-    setProjectRepoNotInOrca,
+    setProjectRepoNotInOCC,
     setProjectRowDetail,
     setProjectRowDetailError,
     setProjectRowItem,
@@ -49,7 +49,7 @@ export function useMobileTasksProjectWorkspaceCommentActions(model: WorkspaceCre
       }
       if (!repo) {
         const slug = splitRepositorySlug(row.content.repository)
-        setProjectRepoNotInOrca({
+        setProjectRepoNotInOCC({
           owner: slug?.owner ?? 'Unknown',
           repo: slug?.repo ?? row.content.repository ?? 'repository',
           url: row.content.url ?? null

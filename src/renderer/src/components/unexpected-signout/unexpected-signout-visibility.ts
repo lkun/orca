@@ -1,7 +1,7 @@
-import type { OrcaProfileAuthStatus } from '../../../../shared/orca-profiles'
+import type { OCCProfileAuthStatus } from '../../../../shared/occ-profiles'
 
 export type UnexpectedSignoutGate = {
-  authStatus: OrcaProfileAuthStatus | null
+  authStatus: OCCProfileAuthStatus | null
   persistedUIReady: boolean
   appVersion: string | null
   dismissedVersion: string | null

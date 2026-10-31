@@ -15,7 +15,7 @@ import type {
 } from '../../shared/skill-install-contract'
 import type { SkillCloudDownloadGrant } from '../../shared/skill-cloud-contract'
 import { getRuntimeEnvironmentStatus } from '../ipc/runtime-environments/runtime-environment-status-probe'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { skillInstallFailureFromError } from './skill-install-operation-error'
 import { recordSkillCapabilityAbsence } from './skill-operation-observability'
 import {
@@ -64,14 +64,14 @@ function bundleFailureResult(
         digest: skill.digest,
         status: failure.category === 'cancelled' ? ('cancelled' as const) : ('failed' as const),
         placements: [],
-        errorCategory: failure.code,
+        errocctegory: failure.code,
         failure
       }))
   }
 }
 
 export async function installSkillBundleCloudGrant(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   grant: SkillCloudDownloadGrant,
   input: SkillBundleCloudGrantInstallInput,
   signal?: AbortSignal,
@@ -142,7 +142,7 @@ export async function installSkillBundleCloudGrant(
 }
 
 export async function installSkillCloudGrant(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   grant: SkillCloudDownloadGrant,
   input: SkillCloudGrantInstallInput,
   signal?: AbortSignal
@@ -210,7 +210,7 @@ export async function installSkillCloudGrant(
         name: grant.version.name,
         packageDigest: request.package.packageDigest,
         placements: [],
-        errorCategory: failure.code,
+        errocctegory: failure.code,
         failure
       }
     }

@@ -2,7 +2,7 @@
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { OrchestrationDb } from '../../../../orchestration/db'
-import { OrcaRuntimeService } from '../../../../orca-runtime'
+import { OCCRuntimeService } from '../../../../occ-runtime'
 import { createOrchestrationWorkerReleaseHarness } from './worker-release.test-support'
 import { releaseRetriedWorkerTerminal } from './retried-worker-terminal-release'
 import type { RuntimeTerminalWait } from '../../../../../../shared/runtime-terminal-contracts'
@@ -212,7 +212,7 @@ describe('releaseRetriedWorkerTerminal', () => {
     d.failWorkerStart(dispatch.id, 'agent_readiness', 'never ready')
     const request = vi.spyOn(d, 'requestWorkerTerminalRelease')
 
-    releaseRetriedWorkerTerminal(new OrcaRuntimeService(), d, { retryOf: dispatch.id })
+    releaseRetriedWorkerTerminal(new OCCRuntimeService(), d, { retryOf: dispatch.id })
 
     expect(request).not.toHaveBeenCalled()
     expect(d.getWorkerTerminalResourceByOwner(dispatch.id)?.release_state).toBe('not_requested')

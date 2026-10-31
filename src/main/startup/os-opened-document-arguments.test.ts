@@ -74,7 +74,7 @@ describe('documentPathsFromArguments', () => {
   it('drops the executable and dev entries because none of them end in a markdown extension', () => {
     const nonDocumentEntries = [
       '/Applications/OCC.app/Contents/MacOS/OCC',
-      '/Users/dev/orca/out/main/index.js',
+      '/Users/dev/occ/out/main/index.js',
       '/Applications/OCC.app/Contents/Resources/app.asar'
     ]
     for (const entry of nonDocumentEntries) {

@@ -49,7 +49,7 @@ function link(name: string, gitdir: string): void {
 const lockFile = (name: string) => join(repo, '.git', 'worktrees', name, 'locked')
 
 beforeEach(() => {
-  repo = mkdtempSync(join(tmpdir(), 'orca-prune-guard-'))
+  repo = mkdtempSync(join(tmpdir(), 'occ-prune-guard-'))
   repoRef.value = repo
   mkdirSync(join(repo, '.git', 'worktrees'), { recursive: true })
   gitExecFileAsyncMock.mockReset()
@@ -63,7 +63,7 @@ describe('pruneGitWorktrees', () => {
   it('locks WSL-made worktrees while Windows Git prunes, then unlocks them', async () => {
     link('native', 'C:/src/app-feature/.git')
     link('wsl', '/mnt/c/src/app-wsl/.git')
-    link('distro', '/home/me/orca/workspaces/app/fix/.git')
+    link('distro', '/home/me/occ/workspaces/app/fix/.git')
     await pruneGitWorktrees({ cwd: repo }, 'win32')
     expect(gitExecFileAsyncMock).toHaveBeenCalledWith(['worktree', 'prune'], { cwd: repo })
     expect(lockedDuringPrune.value.sort()).toEqual(['distro', 'wsl'])

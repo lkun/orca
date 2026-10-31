@@ -29,13 +29,13 @@ describe('readDiscordInteraction', () => {
       readDiscordInteraction({
         ...guildBase,
         type: 3,
-        data: { custom_id: 'orca:approve:r1', component_type: 2 },
+        data: { custom_id: 'occ:approve:r1', component_type: 2 },
         message: { id: '1050000000000000000', content: 'Approve?' }
       })
     ).toEqual({
       ...base,
       kind: 'component',
-      customId: 'orca:approve:r1',
+      customId: 'occ:approve:r1',
       messageId: '1050000000000000000'
     })
   })

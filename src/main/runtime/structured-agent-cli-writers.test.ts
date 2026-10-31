@@ -11,7 +11,7 @@ import {
   posixCliWriterShellAlone,
   type CliWriterHost
 } from './structured-agent-cli-writers'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import type { RuntimeStore } from './runtime-store-contract'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import { bindPaneFirst } from './bind-first-pane.test-fixture'
@@ -104,7 +104,7 @@ describe('execution-host conversation writer inspection', () => {
         pid: 10,
         ppid: 1,
         stat: 'Ss',
-        command: '/usr/bin/login -flpq user /bin/bash --noprofile --norc -p -c orca-tcc-login'
+        command: '/usr/bin/login -flpq user /bin/bash --noprofile --norc -p -c occ-tcc-login'
       },
       { pid: 11, ppid: 10, stat: 'S+', command: '-/bin/zsh -l' }
     ]
@@ -125,11 +125,11 @@ describe('execution-host conversation writer inspection', () => {
     process.platform !== 'darwin' ||
       process.env.GITHUB_ACTIONS !== 'true' ||
       process.env.RUNNER_ENVIRONMENT !== 'github-hosted' ||
-      process.env.ORCA_MACOS_LOGIN_CENSUS_CI !== '1'
+      process.env.OCC_MACOS_LOGIN_CENSUS_CI !== '1'
   )(
     'censuses a real login PTY on a disposable hosted Mac',
     async () => {
-      expect(process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL).toBeUndefined()
+      expect(process.env.OCC_DISABLE_MACOS_LOGIN_SHELL).toBeUndefined()
       const login = await import('../providers/macos-tcc-login-shell')
       expect(await login.prepareMacosTccLoginShell()).toMatchObject({
         ok: true,
@@ -527,7 +527,7 @@ describe('execution-host conversation writer inspection', () => {
           : '11111111-2222-4333-8444-555555555555:123456'
     }
     probe.mockResolvedValue('exited')
-    class WriterRuntime extends OrcaRuntimeService {
+    class WriterRuntime extends OCCRuntimeService {
       readonly sleepStates = this.terminalSleepStateByHostWorktree
     }
     const runtime = new WriterRuntime(store, undefined, {
@@ -586,7 +586,7 @@ describe('execution-host conversation writer inspection', () => {
             tpgid: 82760,
             stat: 'Ss',
             command:
-              '/usr/bin/login -flpq user /bin/bash --noprofile --norc -p -c orca-tcc-login /bin/zsh /bin/zsh -l'
+              '/usr/bin/login -flpq user /bin/bash --noprofile --norc -p -c occ-tcc-login /bin/zsh /bin/zsh -l'
           }
         ]
       : []

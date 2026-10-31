@@ -4,7 +4,7 @@ if (-not $IsWindows) { throw 'WSL test provisioning requires a Windows runner' }
 $rootfs = Join-Path $env:RUNNER_TEMP 'noble-rootfs.tar.gz'
 Invoke-WebRequest 'https://releases.ubuntu.com/24.04.4/ubuntu-24.04.4-wsl-amd64.wsl' -OutFile $rootfs
 if ((Get-FileHash $rootfs -Algorithm SHA256).Hash.ToLowerInvariant() -ne '9b2f7730dc68227dd04a9f3e5eab86ad85caf556b8606ad94f1f29ff5c4fd3f5') { throw 'Ubuntu rootfs checksum mismatch' }
-$distroDir = Join-Path $env:RUNNER_TEMP 'orca-wsl-ubuntu'
+$distroDir = Join-Path $env:RUNNER_TEMP 'occ-wsl-ubuntu'
 wsl.exe --import Ubuntu $distroDir $rootfs --version 1
 if ($LASTEXITCODE -ne 0) { throw "WSL import failed: $LASTEXITCODE" }
 wsl.exe --distribution Ubuntu --user root --exec /usr/bin/true
@@ -20,11 +20,11 @@ $installer = Start-Process msiexec.exe -ArgumentList @('/i', $kernelMsi, '/quiet
 if ($installer.ExitCode -ne 0) { throw "WSL kernel installation failed: $($installer.ExitCode)" }
 wsl.exe --status
 if ($LASTEXITCODE -ne 0) { throw "WSL status failed: $LASTEXITCODE" }
-wsl.exe --distribution Ubuntu --user root --exec /usr/bin/curl --fail --silent --show-error --location https://nodejs.org/dist/v22.23.4/node-v22.23.4-linux-x64.tar.xz --output /tmp/orca-node.tar.xz
+wsl.exe --distribution Ubuntu --user root --exec /usr/bin/curl --fail --silent --show-error --location https://nodejs.org/dist/v22.23.4/node-v22.23.4-linux-x64.tar.xz --output /tmp/occ-node.tar.xz
 if ($LASTEXITCODE -ne 0) { throw 'Node download failed' }
-$nodeHash = wsl.exe --distribution Ubuntu --user root --exec /usr/bin/sha256sum /tmp/orca-node.tar.xz
+$nodeHash = wsl.exe --distribution Ubuntu --user root --exec /usr/bin/sha256sum /tmp/occ-node.tar.xz
 if ($LASTEXITCODE -ne 0 -or -not ($nodeHash -match '^1805bcd35e6815559bd2eb97db438d3fdb0eb3a5e6a977b7c1badca76337e9ce')) { throw 'Node checksum mismatch' }
-wsl.exe --distribution Ubuntu --user root --exec /usr/bin/tar -xJf /tmp/orca-node.tar.xz -C /usr/local --strip-components=1
+wsl.exe --distribution Ubuntu --user root --exec /usr/bin/tar -xJf /tmp/occ-node.tar.xz -C /usr/local --strip-components=1
 if ($LASTEXITCODE -ne 0) { throw 'Node extraction failed' }
 wsl.exe --distribution Ubuntu --user root --exec /usr/local/bin/node --version
 if ($LASTEXITCODE -ne 0) { throw 'Node cannot execute in WSL' }

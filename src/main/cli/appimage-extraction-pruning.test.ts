@@ -49,7 +49,7 @@ async function writePayload(rootPath: string, content = '#!/usr/bin/env bash\n')
 }
 
 async function makeExtractionFixture() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-appimage-pruning-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-appimage-pruning-'))
   created.push(root)
   const appImagePath = join(root, 'OCC.AppImage')
   await writeFile(appImagePath, '#!/usr/bin/env bash\n', { mode: 0o755 })
@@ -158,7 +158,7 @@ describe('AppImage extraction pruning', () => {
   it.skipIf(process.platform === 'win32')(
     'restores a sibling endpoint that wins the uninstall rename race',
     async () => {
-      const cacheRootPath = await mkdtemp(join(tmpdir(), 'orca-appimage-pruning-'))
+      const cacheRootPath = await mkdtemp(join(tmpdir(), 'occ-appimage-pruning-'))
       created.push(cacheRootPath)
       const ownerNamespace = join(cacheRootPath, 'a'.repeat(24))
       const siblingNamespace = join(cacheRootPath, 'b'.repeat(24))

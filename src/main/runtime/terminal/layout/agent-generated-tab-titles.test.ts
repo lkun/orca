@@ -16,10 +16,10 @@ import {
   FIXTURE_GIT_WORKTREE_ID as GIT,
   openTopologyStore
 } from '../../../persistence/terminal-topology/terminal-topology-profile-fixture'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 
 vi.mock('../../../../shared/layout-owner-switch', () => ({
-  ORCA_LAYOUT_OWNER_IS_MAIN: true
+  OCC_LAYOUT_OWNER_IS_MAIN: true
 }))
 vi.mock('../../../telemetry/client', () => ({ track: vi.fn() }))
 
@@ -39,7 +39,7 @@ async function hostWith(
   workspaces: string[],
   options: { titles?: boolean; edit?: (session: WindowSession) => void } = {}
 ) {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-generated-titles-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-generated-titles-'))
   directories.push(directory)
   const store: Store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   store.updateSettings({ tabAutoGenerateTitle: options.titles ?? true })
@@ -50,7 +50,7 @@ async function hostWith(
   options.edit?.(session)
   store.setWorkspaceSession(session.snapshot(), 'local')
   await store.flushPendingOrThrowAsync()
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   const apply = vi.spyOn(runtime, 'applyLayoutCommand')
   const titleOf = (workspace: string) =>
     store.getWorkspaceSession().tabsByWorktree[workspace]?.[0]?.generatedTitle

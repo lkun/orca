@@ -42,14 +42,14 @@ async function writePluginSource(
 ): Promise<void> {
   const panelEntry = options.panelEntry ?? 'panel.html'
   await writeFile(
-    join(root, 'orca-plugin.json'),
+    join(root, 'occ-plugin.json'),
     JSON.stringify({
       manifestVersion: 1,
       id: options.id ?? 'demo',
       publisher: 'samples',
       name: 'Demo',
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       contributes: {
         panels: [{ id: 'panel', title: 'Panel', entry: panelEntry }],
@@ -72,7 +72,7 @@ afterEach(async () => {
 
 describe('installPluginFromLocalPath', () => {
   it('refuses to allocate an oversized install lockfile', async () => {
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     const lockPath = join(pluginsDir, 'plugins.lock.json')
     await writeFile(lockPath, '')
     await truncate(lockPath, PLUGIN_LOCKFILE_MAX_BYTES + 1)
@@ -81,8 +81,8 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('verifies copied content and writes a rollback-compatible consent field', async () => {
-    const sourcePath = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(sourcePath)
 
     const result = await installPluginFromLocalPath({
@@ -108,16 +108,16 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('publishes metadata from the copied immutable manifest', async () => {
-    const sourcePath = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(sourcePath)
-    const firstManifest = await readFile(join(sourcePath, 'orca-plugin.json'), 'utf8')
+    const firstManifest = await readFile(join(sourcePath, 'occ-plugin.json'), 'utf8')
     const changedManifest = {
       ...(JSON.parse(firstManifest) as Record<string, unknown>),
       name: 'Changed During Staging',
       version: '2.0.0'
     }
-    await writeFile(join(sourcePath, 'orca-plugin.json'), JSON.stringify(changedManifest))
+    await writeFile(join(sourcePath, 'occ-plugin.json'), JSON.stringify(changedManifest))
     const manifestRead = vi
       .spyOn(manifestFile, 'readPluginManifestText')
       .mockResolvedValueOnce(firstManifest)
@@ -140,8 +140,8 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('skips root Git metadata before copying while still enforcing plugin limits', async () => {
-    const sourcePath = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(sourcePath)
     const gitDir = join(sourcePath, '.git')
     await mkdir(gitDir)
@@ -163,8 +163,8 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('restores the previous current pointer when lockfile publication fails', async () => {
-    const sourcePath = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(sourcePath)
     const first = await installPluginFromLocalPath({ pluginsDir, sourcePath, hostVersion: '1.4.0' })
     expect(first.ok).toBe(true)
@@ -188,9 +188,9 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('does not replace provenance when a same-content reinstall fails to publish', async () => {
-    const firstSource = await tempRoot('orca-plugin-source-')
-    const secondSource = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const firstSource = await tempRoot('occ-plugin-source-')
+    const secondSource = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(firstSource)
     await writePluginSource(secondSource)
     const first = await installPluginFromLocalPath({
@@ -223,9 +223,9 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('preserves legacy lock provenance during a same-content reinstall', async () => {
-    const firstSource = await tempRoot('orca-plugin-source-')
-    const secondSource = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const firstSource = await tempRoot('occ-plugin-source-')
+    const secondSource = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(firstSource)
     await writePluginSource(secondSource)
     const first = await installPluginFromLocalPath({
@@ -255,8 +255,8 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('retains only the current and immediately previous content versions', async () => {
-    const sourcePath = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(sourcePath)
     const hashes: string[] = []
     for (const content of ['one', 'two', 'three']) {
@@ -284,8 +284,8 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('keeps the rollback version when current content is reinstalled', async () => {
-    const sourcePath = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(sourcePath)
     const hashes: string[] = []
     for (const content of ['one', 'two', 'two']) {
@@ -309,8 +309,8 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('repairs a pointer-new lock-old interrupted publication from provenance', async () => {
-    const sourcePath = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(sourcePath)
     const first = await installPluginFromLocalPath({ pluginsDir, sourcePath, hostVersion: '1.4.0' })
     expect(first.ok).toBe(true)
@@ -337,8 +337,8 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('rejects a manifest whose declared panel artifact is missing', async () => {
-    const sourcePath = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(sourcePath, { includePanel: false })
 
     const result = await installPluginFromLocalPath({
@@ -351,9 +351,9 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('rejects an oversized manifest without reading an unbounded JSON payload', async () => {
-    const sourcePath = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
-    const manifestPath = join(sourcePath, 'orca-plugin.json')
+    const sourcePath = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
+    const manifestPath = join(sourcePath, 'occ-plugin.json')
     await writeFile(manifestPath, '')
     await truncate(manifestPath, PLUGIN_MANIFEST_MAX_BYTES + 1)
 
@@ -367,9 +367,9 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('serializes concurrent installs so lockfile entries are not lost', async () => {
-    const firstSource = await tempRoot('orca-plugin-source-')
-    const secondSource = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const firstSource = await tempRoot('occ-plugin-source-')
+    const secondSource = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(firstSource, { id: 'first' })
     await writePluginSource(secondSource, { id: 'second' })
 
@@ -385,7 +385,7 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('serializes concurrent lockfile publications without temporary-file collisions', async () => {
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     const lock = { version: 1 as const, plugins: {} }
 
     await expect(
@@ -399,8 +399,8 @@ describe('installPluginFromLocalPath', () => {
   })
 
   it('refuses to repoint at a tampered existing content directory', async () => {
-    const sourcePath = await tempRoot('orca-plugin-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-plugin-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(sourcePath)
     const first = await installPluginFromLocalPath({
       pluginsDir,
@@ -431,8 +431,8 @@ describe('installPluginFromLocalPath', () => {
 
 describe('installPluginFromGit', () => {
   it('uses system Git, resolves the requested ref, and installs its exact bytes', async () => {
-    const sourcePath = await tempRoot('orca-plugin-git-source-')
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
+    const sourcePath = await tempRoot('occ-plugin-git-source-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
     await writePluginSource(sourcePath)
     await execFileAsync('git', ['init', '--quiet'], { cwd: sourcePath })
     await execFileAsync('git', ['config', 'user.email', 'plugins@example.invalid'], {
@@ -446,7 +446,7 @@ describe('installPluginFromGit', () => {
       cwd: sourcePath
     })
 
-    await serveRepositoriesOverTestSsh(await tempRoot('orca-plugin-ssh-shim-'), {
+    await serveRepositoriesOverTestSsh(await tempRoot('occ-plugin-ssh-shim-'), {
       '/demo.git': sourcePath
     })
     // Why: a tag moved after the dialog showed its commit must not install the new bytes.
@@ -480,9 +480,9 @@ describe('installPluginFromGit', () => {
 
 describe('removeInstalledPlugin', () => {
   it('rejects an unqualified or traversing key before removing anything', async () => {
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
-    const pluginsDataDir = await tempRoot('orca-plugin-data-')
-    const outside = join(await tempRoot('orca-plugin-outside-'), 'keep.txt')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
+    const pluginsDataDir = await tempRoot('occ-plugin-data-')
+    const outside = join(await tempRoot('occ-plugin-outside-'), 'keep.txt')
     await writeFile(outside, 'keep')
 
     await expect(
@@ -492,9 +492,9 @@ describe('removeInstalledPlugin', () => {
   })
 
   it('rejects a resolved uninstall target outside its root', async () => {
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
-    const pluginsDataDir = await tempRoot('orca-plugin-data-')
-    const outside = await tempRoot('orca-plugin-outside-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
+    const pluginsDataDir = await tempRoot('occ-plugin-data-')
+    const outside = await tempRoot('occ-plugin-outside-')
     const marker = join(outside, 'keep.txt')
     await writeFile(marker, 'keep')
     await symlink(
@@ -514,8 +514,8 @@ describe('removeInstalledPlugin', () => {
   })
 
   it('removes qualified install and data directories', async () => {
-    const pluginsDir = await tempRoot('orca-plugin-installs-')
-    const pluginsDataDir = await tempRoot('orca-plugin-data-')
+    const pluginsDir = await tempRoot('occ-plugin-installs-')
+    const pluginsDataDir = await tempRoot('occ-plugin-data-')
     const key = 'samples.demo'
     await mkdir(join(pluginsDir, key))
     await mkdir(join(pluginsDataDir, key))

@@ -214,15 +214,15 @@ describe('the legacy relay client', () => {
     expect(order).toEqual(['snapshot:SCREEN', 'returned'])
   })
 
-  it('answers an orca command from an old terminal with why it is unavailable', async () => {
+  it('answers an occ command from an old terminal with why it is unavailable', async () => {
     await open()
-    await expect(fake.requestHandlers.get('orca.cli')?.({})).rejects.toThrow(REMOTE_CLI_UNAVAILABLE)
-    await expect(fake.requestHandlers.get('orca.cli.postOutput')?.({})).rejects.toThrow(
+    await expect(fake.requestHandlers.get('occ.cli')?.({})).rejects.toThrow(REMOTE_CLI_UNAVAILABLE)
+    await expect(fake.requestHandlers.get('occ.cli.postOutput')?.({})).rejects.toThrow(
       REMOTE_CLI_UNAVAILABLE
     )
   })
 
-  it("hands an old terminal's orca command and its post-output ack to the CLI server", async () => {
+  it("hands an old terminal's occ command and its post-output ack to the CLI server", async () => {
     const cli = vi.fn(async () => ({ stdout: 'ok\n', stderr: '', exitCode: 0 }))
     const postOutput = vi.fn(async () => ({ acknowledged: true }))
     await LegacyRelayClient.open({
@@ -230,13 +230,13 @@ describe('the legacy relay client', () => {
       cliServer: { cli, postOutput },
       openTransport: async () => ({ write: () => true, onData: () => {}, onClose: () => {} })
     })
-    const params = { argv: ['orchestration', 'check'], env: { ORCA_TERMINAL_HANDLE: 'term_a' } }
-    await expect(fake.requestHandlers.get('orca.cli')?.(params)).resolves.toEqual({
+    const params = { argv: ['orchestration', 'check'], env: { OCC_TERMINAL_HANDLE: 'term_a' } }
+    await expect(fake.requestHandlers.get('occ.cli')?.(params)).resolves.toEqual({
       stdout: 'ok\n',
       stderr: '',
       exitCode: 0
     })
-    await expect(fake.requestHandlers.get('orca.cli.postOutput')?.(params)).resolves.toEqual({
+    await expect(fake.requestHandlers.get('occ.cli.postOutput')?.(params)).resolves.toEqual({
       acknowledged: true
     })
     expect(cli).toHaveBeenCalledWith(params, expect.any(AbortSignal))

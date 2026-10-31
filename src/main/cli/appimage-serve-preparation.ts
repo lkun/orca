@@ -2,7 +2,7 @@
 import { randomUUID } from 'node:crypto'
 import { mkdir, stat, statfs, unlink, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   ensureAppImageExtractedRoot,
   isAppImageExtractionComplete,

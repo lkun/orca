@@ -10,8 +10,8 @@ import {
   type TerminalReadinessCreation,
   type LaunchedAgentReadinessRuntime
 } from '../../launched-agent-composer-readiness'
-import type { OrcaRuntimeService } from '../../orca-runtime'
-import { assertAgentPromptRequestActive } from '../../orca-runtime-core'
+import type { OCCRuntimeService } from '../../occ-runtime'
+import { assertAgentPromptRequestActive } from '../../occ-runtime-core'
 import {
   createLaunchedAgentWriteGuard,
   type LaunchedAgentWriteGuardRuntime,
@@ -25,7 +25,7 @@ const BLOCKED_RECHECK_MS = 1_000
 
 export type TerminalPromptRuntime = LaunchedAgentReadinessRuntime &
   LaunchedAgentWriteGuardRuntime &
-  Pick<OrcaRuntimeService, 'sendTerminalAgentPrompt'>
+  Pick<OCCRuntimeService, 'sendTerminalAgentPrompt'>
 
 type ReadinessClock = { now: () => number; sleep: (ms: number) => Promise<void> }
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Measure click→first animation frame plus frame gaps: the synchronous active-card attribute can flip in ~1ms while activation blocks later frames.
 // This frame proxy is distinct from pixel proof. Attach to an isolated dev app via CDP:
-// ORCA_BACKGROUND_LAUNCH=1 ORCA_DEV_USER_DATA_PATH=... REMOTE_DEBUGGING_PORT=9455 pn dev
+// OCC_BACKGROUND_LAUNCH=1 OCC_DEV_USER_DATA_PATH=... REMOTE_DEBUGGING_PORT=9455 pn dev
 // node tests/tools/benchmarks/workspace-switch-paint-latency.mjs --port 9455
 // Exceeding median --budget (default 200ms) exits nonzero for git bisect run.
 

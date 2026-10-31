@@ -28,7 +28,7 @@ function runtimeRecord(
   overrides: Partial<EphemeralVmRuntimeRecord> = {}
 ): EphemeralVmRuntimeRecord {
   return {
-    id: 'orca-instance-1',
+    id: 'occ-instance-1',
     recipeId: 'cloud-sandbox',
     projectId: 'project-1',
     workspaceId: 'workspace-1',
@@ -66,7 +66,7 @@ describe('ephemeral VM runtime store', () => {
   })
 
   function makeUserDataPath(): string {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-ephemeral-vm-store-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-ephemeral-vm-store-'))
     tempDirs.push(userDataPath)
     return userDataPath
   }
@@ -77,7 +77,7 @@ describe('ephemeral VM runtime store', () => {
     const second = upsertEphemeralVmRuntime(
       userDataPath,
       runtimeRecord({
-        id: 'orca-instance-2',
+        id: 'occ-instance-2',
         createdAt: 2_000,
         updatedAt: 2_000,
         recipeResult: {
@@ -95,7 +95,7 @@ describe('ephemeral VM runtime store', () => {
     const userDataPath = makeUserDataPath()
     upsertEphemeralVmRuntime(userDataPath, runtimeRecord())
 
-    const failed = updateEphemeralVmRuntimeStatus(userDataPath, 'orca-instance-1', {
+    const failed = updateEphemeralVmRuntimeStatus(userDataPath, 'occ-instance-1', {
       status: 'cleanup_failed',
       cleanupStatus: 'failed',
       cleanupLastAttemptAt: 3_000,
@@ -111,7 +111,7 @@ describe('ephemeral VM runtime store', () => {
       updatedAt: 3_000
     })
 
-    const recovered = updateEphemeralVmRuntimeStatus(userDataPath, 'orca-instance-1', {
+    const recovered = updateEphemeralVmRuntimeStatus(userDataPath, 'occ-instance-1', {
       status: 'cleaned',
       cleanupStatus: 'succeeded',
       cleanupLastError: null,
@@ -130,7 +130,7 @@ describe('ephemeral VM runtime store', () => {
     const userDataPath = makeUserDataPath()
     upsertEphemeralVmRuntime(userDataPath, runtimeRecord())
 
-    updateEphemeralVmRuntimeStatus(userDataPath, 'orca-instance-1', {
+    updateEphemeralVmRuntimeStatus(userDataPath, 'occ-instance-1', {
       cleanupLastError: ephemeralVmFailure('destroyExited', { exitCode: 2 })
     })
     expect(listEphemeralVmRuntimes(userDataPath)[0]).toMatchObject({
@@ -139,7 +139,7 @@ describe('ephemeral VM runtime store', () => {
       cleanupLastErrorParams: { exitCode: 2 }
     })
 
-    const uncoded = updateEphemeralVmRuntimeStatus(userDataPath, 'orca-instance-1', {
+    const uncoded = updateEphemeralVmRuntimeStatus(userDataPath, 'occ-instance-1', {
       cleanupLastError: 'provider delete failed'
     })
     expect(uncoded.cleanupLastError).toBe('provider delete failed')
@@ -153,7 +153,7 @@ describe('ephemeral VM runtime store', () => {
       userDataPath,
       runtimeRecord({
         connectionMode: 'ssh',
-        sshTargetId: 'runtime-ssh-orca-instance-1',
+        sshTargetId: 'runtime-ssh-occ-instance-1',
         recipeResult: {
           schemaVersion: 1,
           connection: {
@@ -172,7 +172,7 @@ describe('ephemeral VM runtime store', () => {
 
     expect(listEphemeralVmRuntimes(userDataPath)[0]).toMatchObject({
       connectionMode: 'ssh',
-      sshTargetId: 'runtime-ssh-orca-instance-1',
+      sshTargetId: 'runtime-ssh-occ-instance-1',
       recipeResult: {
         connection: {
           type: 'ssh',

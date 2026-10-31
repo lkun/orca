@@ -3,7 +3,7 @@
   "defaultOpen": true,
   "pages": [
     "worktrees",
-    "orca-yaml",
+    "occ-yaml",
     "tabs-panes-splits",
     "agents-sessions",
     "session-restore",

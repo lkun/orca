@@ -7,7 +7,7 @@ import { Session } from './session'
 
 const COLS = 119
 const ROWS = 58
-const PROMPT = 'orca@awin:~/projects/p8/deep$ '
+const PROMPT = 'occ@awin:~/projects/p8/deep$ '
 const RESTORED = `${Array.from({ length: 6 }, (_, i) => `${PROMPT}echo L${i}\r\nL${i}`).join('\r\n')}\r\n${PROMPT}echo PRESLEEP\r\nPRESLEEP\r\n${PROMPT}`
 // The fresh shell's rows, which are all ConPTY knows about.
 const SHELL_ROWS = [PROMPT, `${PROMPT}echo WAKE`, 'WAKE', PROMPT]

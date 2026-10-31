@@ -126,7 +126,7 @@ describe('SshConnectionStore', () => {
       pinnedRefusal: 'missing_lib',
       glibc: '2.31',
       runtimeSha256: 'a'.repeat(64),
-      orcaMajor: 1
+      occMajor: 1
     }
     mockStore.addSshTarget({
       id: 'ssh-ladder',

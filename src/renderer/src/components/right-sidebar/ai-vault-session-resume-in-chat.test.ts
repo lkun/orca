@@ -7,13 +7,13 @@ type ResumeInChatSession = Parameters<
   typeof resolveAiVaultSessionResumeInChatEligibility
 >[0]['session']
 
-const WORKSPACE_PATH = '/repo/orca'
+const WORKSPACE_PATH = '/repo/occ'
 
 function session(overrides: Partial<ResumeInChatSession> = {}): ResumeInChatSession {
   return {
     agent: 'claude',
     cwd: WORKSPACE_PATH,
-    filePath: '/home/dev/.claude/projects/-repo-orca/session-1.jsonl',
+    filePath: '/home/dev/.claude/projects/-repo-occ/session-1.jsonl',
     executionHostId: 'local',
     messageCount: 12,
     previewMessages: [],
@@ -26,7 +26,7 @@ function eligibility(
 ) {
   return resolveAiVaultSessionResumeInChatEligibility({
     session: session(),
-    targetWorkspaceId: 'repo-1::/repo/orca',
+    targetWorkspaceId: 'repo-1::/repo/occ',
     targetWorkspacePath: WORKSPACE_PATH,
     structuredRouteAvailable: true,
     ...overrides
@@ -39,7 +39,7 @@ describe('resolveAiVaultSessionResumeInChatEligibility', () => {
       eligibility({
         session: {
           ...session(),
-          structuredSession: { sessionId: 'claude_1', workspaceId: 'repo-1::/repo/orca' }
+          structuredSession: { sessionId: 'claude_1', workspaceId: 'repo-1::/repo/occ' }
         }
       })
     ).toEqual({ available: false, reason: 'already-structured' })
@@ -170,7 +170,7 @@ describe('workspace matching, which binds the agents that store conversations pe
     expect(
       eligibility({
         session: session({ cwd: 'C:\\Users\\Dev\\repo\\OCC\\' }),
-        targetWorkspacePath: 'c:/users/dev/repo/orca'
+        targetWorkspacePath: 'c:/users/dev/repo/occ'
       })
     ).toMatchObject({ available: true })
   })

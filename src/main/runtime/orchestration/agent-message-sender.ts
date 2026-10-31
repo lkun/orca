@@ -1,4 +1,4 @@
-import { parseOrcaSessionAddress } from '../../../shared/orca-session-address'
+import { parseOCCSessionAddress } from '../../../shared/occ-session-address'
 import {
   agentMessageSenderName,
   type AgentMessageSender
@@ -29,7 +29,7 @@ function senderParty(address: string, db: OrchestrationDb | null): AgentMessageS
     return party
   } catch {
     // If worker identity is lost, retain only what its address proves.
-    return { address, terminalHandle: null, orcaSessionId: parseOrcaSessionAddress(address) }
+    return { address, terminalHandle: null, occSessionId: parseOCCSessionAddress(address) }
   }
 }
 

@@ -45,7 +45,7 @@ describe('skill provider placement reconciliation', () => {
   it.each(['file', 'directory'] as const)(
     'preserves an unowned provider %s destination',
     async (kind) => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-skill-placement-test-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-skill-placement-test-'))
       temporaryDirectories.push(root)
       const canonicalPath = join(root, 'canonical', 'private-skill')
       const providerRoot = join(root, 'provider')
@@ -72,7 +72,7 @@ describe('skill provider placement reconciliation', () => {
       expect(result).toMatchObject({
         topology: 'independent-copy',
         status: 'skipped',
-        errorCategory: 'skill-placement-unowned'
+        errocctegory: 'skill-placement-unowned'
       })
       const destinationStat = await lstat(destinationPath)
       expect(kind === 'file' ? destinationStat.isFile() : destinationStat.isDirectory()).toBe(true)
@@ -85,7 +85,7 @@ describe('skill provider placement reconciliation', () => {
   )
 
   it('creates a verified independent copy when native alias creation is denied', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-placement-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-placement-test-'))
     temporaryDirectories.push(root)
     const canonicalPath = join(root, 'canonical', 'private-skill')
     const providerRoot = join(root, 'provider')
@@ -108,7 +108,7 @@ describe('skill provider placement reconciliation', () => {
   })
 
   it('creates a verified copy when a host-owned alias operation is denied', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-placement-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-placement-test-'))
     temporaryDirectories.push(root)
     const canonicalPath = join(root, 'canonical', 'private-skill')
     const providerRoot = join(root, 'provider')
@@ -137,7 +137,7 @@ describe('skill provider placement reconciliation', () => {
   })
 
   it('uses host alias inspection when the client cannot stat the destination', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-placement-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-placement-test-'))
     temporaryDirectories.push(root)
     const canonicalPath = join(root, 'canonical', 'private-skill')
     const providerRoot = join(root, 'provider')
@@ -164,7 +164,7 @@ describe('skill provider placement reconciliation', () => {
   })
 
   it('updates an owned copy even when host alias inspection returns false', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-placement-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-placement-test-'))
     temporaryDirectories.push(root)
     const canonicalPath = join(root, 'canonical', 'private-skill')
     const providerRoot = join(root, 'provider')
@@ -201,7 +201,7 @@ describe('skill provider placement reconciliation', () => {
   })
 
   it('does not update a byte-identical copy previously recorded as skipped', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-placement-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-placement-test-'))
     temporaryDirectories.push(root)
     const canonicalPath = join(root, 'canonical', 'private-skill')
     const providerRoot = join(root, 'provider')
@@ -232,7 +232,7 @@ describe('skill provider placement reconciliation', () => {
       packageDigest: nextDigest
     })
 
-    expect(result).toMatchObject({ status: 'skipped', errorCategory: 'skill-placement-unowned' })
+    expect(result).toMatchObject({ status: 'skipped', errocctegory: 'skill-placement-unowned' })
     expect(await readFile(join(destinationPath, 'SKILL.md'), 'utf8')).toBe('old skill')
   })
 })

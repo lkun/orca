@@ -48,14 +48,14 @@ describe('buildPluginPanelShellHtml', () => {
     window.eval(script!.replaceAll('configurable: false', 'configurable: true'))
     document.documentElement.className = 'light keep'
     const style = document.createElement('style')
-    style.id = 'orca-design-tokens'
-    style.textContent = ':root{--orca-background:white}'
+    style.id = 'occ-design-tokens'
+    style.textContent = ':root{--occ-background:white}'
     document.head.appendChild(style)
     const theme = {
-      orca: 1,
+      occ: 1,
       kind: 'evt',
       event: 'theme',
-      payload: { colorScheme: 'dark', tokens: '--orca-background:black' }
+      payload: { colorScheme: 'dark', tokens: '--occ-background:black' }
     }
 
     window.dispatchEvent(new MessageEvent('message', { data: theme, source: null }))
@@ -64,7 +64,7 @@ describe('buildPluginPanelShellHtml', () => {
     window.dispatchEvent(new MessageEvent('message', { data: theme, source: window.parent }))
     expect(document.documentElement.classList.contains('dark')).toBe(true)
     expect(document.documentElement.classList.contains('keep')).toBe(true)
-    expect(style.textContent).toBe(':root{--orca-background:black}')
+    expect(style.textContent).toBe(':root{--occ-background:black}')
 
     window.dispatchEvent(
       new MessageEvent('message', {

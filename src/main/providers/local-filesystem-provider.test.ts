@@ -15,7 +15,7 @@ const provider = () =>
   createLocalFilesystemProvider({ requireStore: () => store, resolveAuthorizedPath: authorize })
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-local-fs-provider-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-local-fs-provider-'))
   authorize.mockClear()
 })
 afterEach(() => rm(root, { recursive: true, force: true }))

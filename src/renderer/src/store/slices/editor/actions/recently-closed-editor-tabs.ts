@@ -18,7 +18,7 @@ import {
 } from '../tabs/untitled-file-cleanup'
 import { unifiedTabsKeepWorktreeSelected } from './unified-tabs-keep-worktree-selected'
 import { isEditorTabContentType } from '../tabs/editor-tab-content-type'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
 import { afterPendingTabs, hasPendingEntityTab } from '@/runtime/layout-owner-pending-tabs'
 import type { AppState } from '../../../types'
 
@@ -44,7 +44,7 @@ export function createRecentlyClosedEditorTabs(
       const restoredFileId = get().openFile(file, {
         targetGroupId: position?.groupId,
         reopenId,
-        ...(ORCA_LAYOUT_OWNER_IS_MAIN && position?.groupIndex !== undefined
+        ...(OCC_LAYOUT_OWNER_IS_MAIN && position?.groupIndex !== undefined
           ? { groupIndex: position.groupIndex }
           : {})
       })
@@ -246,7 +246,7 @@ export function createRecentlyClosedEditorTabs(
         }
       }
       // Capture records before frames; drop content only after accepted closes, retaining files for refusals or pending reopen.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN && closingItemIds.length > 0) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN && closingItemIds.length > 0) {
         for (const itemId of closingItemIds) {
           get().closeUnifiedTab?.(itemId)
         }

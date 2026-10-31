@@ -1,9 +1,9 @@
-import { OrcaRuntimeWithCreateAgentSession } from '../../orca-runtime-create-agent-session'
+import { OCCRuntimeWithCreateAgentSession } from '../../occ-runtime-create-agent-session'
 import type { RuntimeTerminalCreate } from '../../../../shared/runtime-types'
-import { WORKTREE_CREATE_RESULT_TTL_MS } from '../../orca-runtime-core'
+import { WORKTREE_CREATE_RESULT_TTL_MS } from '../../occ-runtime-core'
 import { deriveRemoteRuntimeTerminalCreateHandle } from '../../remote-runtime-terminal-create-identity'
 import { withTimeoutResult } from '../../runtime-async-boundaries'
-import { PTY_CONTROLLER_LIST_TIMEOUT_MS } from '../../orca-runtime-postlude'
+import { PTY_CONTROLLER_LIST_TIMEOUT_MS } from '../../occ-runtime-postlude'
 import { inferWorktreeIdFromPtyId } from '../../runtime-worktree-path-identity'
 import { getRegisteredSshState } from '../../../ssh/targets/ssh-target-registry'
 import {
@@ -17,7 +17,7 @@ import type { TuiAgent } from '../../../../shared/tui-agent'
 import type { Worktree } from '../../../../shared/worktree/types'
 import type { TerminalWorkspaceLaunchScope } from '../../runtime-legacy-worker-terminal-recovery-types'
 
-export abstract class OrcaRuntimeWithTerminalCreateDeduplication extends OrcaRuntimeWithCreateAgentSession {
+export abstract class OCCRuntimeWithTerminalCreateDeduplication extends OCCRuntimeWithCreateAgentSession {
   /** A create's scope: its `wslUserAct` lets the folder check start a stopped WSL distro (E9). */
   protected resolveTerminalCreateLaunchScope(
     selector: string,

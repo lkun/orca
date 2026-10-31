@@ -19,7 +19,7 @@ function readRetiredProfiles(): Set<string> {
     if (
       !Array.isArray(raw) ||
       !raw.every(
-        (value) => typeof value === 'string' && /^persist:orca-[A-Za-z0-9_-]+$/.test(value)
+        (value) => typeof value === 'string' && /^persist:occ-[A-Za-z0-9_-]+$/.test(value)
       )
     ) {
       throw new Error('Invalid retired extension profile partitions')

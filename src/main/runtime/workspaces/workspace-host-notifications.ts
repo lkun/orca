@@ -1,9 +1,9 @@
 import { getRepoRoutingConnectionId } from '../../../shared/execution-host'
-import type { OrcaRuntimeWithHydrateHeadlessMobileSessionTabsFromWorkspaceSession } from '../session-tabs/mobile-session-hydration'
-import type { OrcaRuntimeWithBuildHeadlessMobileSessionBrowserTabs } from '../session-lifecycle/projection/build-headless-mobile-session-browser-tabs'
-import type { OrcaRuntimeWithScheduleMobileSessionTabsChanged } from '../session-tabs/session-tabs-change-publication'
+import type { OCCRuntimeWithHydrateHeadlessMobileSessionTabsFromWorkspaceSession } from '../session-tabs/mobile-session-hydration'
+import type { OCCRuntimeWithBuildHeadlessMobileSessionBrowserTabs } from '../session-lifecycle/projection/build-headless-mobile-session-browser-tabs'
+import type { OCCRuntimeWithScheduleMobileSessionTabsChanged } from '../session-tabs/session-tabs-change-publication'
 import type { RuntimeWorkspaceRepoScanRefresh } from './workspace-repo-scan-refresh'
-import { OrcaRuntimeWithGetStatus } from '../orca-runtime-get-status'
+import { OCCRuntimeWithGetStatus } from '../occ-runtime-get-status'
 import type { SshConnectionState } from '../../../shared/ssh-types'
 import { getPublicSshState } from '../public-ssh-state'
 import { splitWorktreeId } from '../../../shared/worktree/id'
@@ -16,27 +16,27 @@ import type { AgentBrowserBridge } from '../../browser/agent-browser-bridge'
 import type { BrowserBackend } from '../../browser/browser-backend'
 import type { EmulatorBridge } from '../../emulator/emulator-bridge'
 
-export abstract class OrcaRuntimeWithNotifySshStateChanged extends OrcaRuntimeWithGetStatus {
+export abstract class OCCRuntimeWithNotifySshStateChanged extends OCCRuntimeWithGetStatus {
   protected abstract hydrateHeadlessMobileSessionTabsFromWorkspaceSession(
     ...args: Parameters<
-      OrcaRuntimeWithHydrateHeadlessMobileSessionTabsFromWorkspaceSession['hydrateHeadlessMobileSessionTabsFromWorkspaceSession']
+      OCCRuntimeWithHydrateHeadlessMobileSessionTabsFromWorkspaceSession['hydrateHeadlessMobileSessionTabsFromWorkspaceSession']
     >
   ): ReturnType<
-    OrcaRuntimeWithHydrateHeadlessMobileSessionTabsFromWorkspaceSession['hydrateHeadlessMobileSessionTabsFromWorkspaceSession']
+    OCCRuntimeWithHydrateHeadlessMobileSessionTabsFromWorkspaceSession['hydrateHeadlessMobileSessionTabsFromWorkspaceSession']
   >
   protected abstract refreshMobileSessionPtyRecords(
     ...args: Parameters<
-      OrcaRuntimeWithBuildHeadlessMobileSessionBrowserTabs['refreshMobileSessionPtyRecords']
+      OCCRuntimeWithBuildHeadlessMobileSessionBrowserTabs['refreshMobileSessionPtyRecords']
     >
   ): ReturnType<
-    OrcaRuntimeWithBuildHeadlessMobileSessionBrowserTabs['refreshMobileSessionPtyRecords']
+    OCCRuntimeWithBuildHeadlessMobileSessionBrowserTabs['refreshMobileSessionPtyRecords']
   >
   protected abstract notifyMobileSessionTabsChangedNow(
     ...args: Parameters<
-      OrcaRuntimeWithScheduleMobileSessionTabsChanged['notifyMobileSessionTabsChangedNow']
+      OCCRuntimeWithScheduleMobileSessionTabsChanged['notifyMobileSessionTabsChangedNow']
     >
   ): ReturnType<
-    OrcaRuntimeWithScheduleMobileSessionTabsChanged['notifyMobileSessionTabsChangedNow']
+    OCCRuntimeWithScheduleMobileSessionTabsChanged['notifyMobileSessionTabsChangedNow']
   >
   protected abstract invalidateSshWorktreeScanCacheInternal(
     ...args: Parameters<RuntimeWorkspaceRepoScanRefresh['invalidateSshWorktreeScanCacheInternal']>
@@ -100,7 +100,7 @@ export abstract class OrcaRuntimeWithNotifySshStateChanged extends OrcaRuntimeWi
     this.sshRelayRecoveryGenerationByTargetId.set(targetId, generation)
     while (
       this.sshRelayRecoveryGenerationByTargetId.size >
-      OrcaRuntimeWithNotifySshStateChanged.MAX_SSH_RELAY_RECOVERY_GENERATIONS
+      OCCRuntimeWithNotifySshStateChanged.MAX_SSH_RELAY_RECOVERY_GENERATIONS
     ) {
       const oldest = this.sshRelayRecoveryGenerationByTargetId.keys().next()
       if (oldest.done) {

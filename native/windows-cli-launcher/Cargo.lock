@@ -25,7 +25,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "orca-cli-launcher"
+name = "occ-cli-launcher"
 version = "0.0.0"
 dependencies = [
  "winresource",

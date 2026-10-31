@@ -44,7 +44,7 @@ const { applyAgentSessionRestartAdjudication } =
   await import('./agent-session/ownership/agent-session-restart-lease-transitions')
 const { openTestAgentSessionRecordStore } =
   await import('./agent-session-record-store-test-harness')
-const { OrcaRuntimeService } = await import('./orca-runtime')
+const { OCCRuntimeService } = await import('./occ-runtime')
 const { OrchestrationDb } = await import('./orchestration/db')
 const { rpcRuntime } = await import('./structured-worker-rpc.test-support')
 const { structuredWorkerOwesWork } = await import('./structured-worker-custody')
@@ -65,7 +65,7 @@ const SECOND = 'clear-ffeeddccbbaa99887766554433221100ffeeddcc'
 const LOCAL_SCOPE = { kind: 'local', hostId: 'local' } as const
 
 /** Opens the protected mail resolver and the orchestration database a real runtime holds. */
-class RuntimeProbe extends OrcaRuntimeService {
+class RuntimeProbe extends OCCRuntimeService {
   withDb(db: Db | null): this {
     this._orchestrationDb = db
     return this
@@ -378,7 +378,7 @@ describe.each(['live', 'at-rest'] as const)(
       // The settlement probe holds only the incarnation, and no registry entry.
       structuredWorkerIdentities.clear()
       return expect(
-        new OrcaRuntimeService().inspectTerminalProcessIncarnationLiveness(
+        new OCCRuntimeService().inspectTerminalProcessIncarnationLiveness(
           structuredWorkerProcessIncarnation(MINTED),
           JSON.stringify(LOCAL_SCOPE)
         )
@@ -420,7 +420,7 @@ describe.each(['live', 'at-rest'] as const)(
     it('shows the worker through the successor in worker-show', async () => {
       const identity = registerWorker()
       const dispatchId = startWorkerDispatch(db, identity)
-      const shown = await inspectWorkerTerminal(new OrcaRuntimeService(), db, dispatchId)
+      const shown = await inspectWorkerTerminal(new OCCRuntimeService(), db, dispatchId)
       expect(shown).toMatchObject({
         exact: true,
         status: successor === 'live' ? 'live' : 'unverifiable',
@@ -436,7 +436,7 @@ describe.each(['live', 'at-rest'] as const)(
       // Never-started successors have no death evidence; retiring their tab must still let release prove exit.
       structuredWorkerIdentities.clear()
       await expect(
-        new OrcaRuntimeService().inspectTerminalProcessIncarnationLiveness(
+        new OCCRuntimeService().inspectTerminalProcessIncarnationLiveness(
           identity.processIncarnation,
           JSON.stringify(LOCAL_SCOPE)
         )
@@ -445,7 +445,7 @@ describe.each(['live', 'at-rest'] as const)(
 
     it("reports the successor's status to @idle", async () => {
       const identity = registerWorker()
-      await expect(new OrcaRuntimeService().getAgentStatusForHandle(identity.handle)).resolves.toBe(
+      await expect(new OCCRuntimeService().getAgentStatusForHandle(identity.handle)).resolves.toBe(
         'idle'
       )
       expect(journalAsked).toEqual([SUCCESSOR])
@@ -478,7 +478,7 @@ describe.each(['live', 'at-rest'] as const)(
 
     it("gives the successor's child the worker's handle", () => {
       const identity = registerWorker()
-      expect(sealedChildEnv(SUCCESSOR).ORCA_TERMINAL_HANDLE).toBe(identity.handle)
+      expect(sealedChildEnv(SUCCESSOR).OCC_TERMINAL_HANDLE).toBe(identity.handle)
     })
 
     it("keeps the successor running for the worker's open Dispatch", () => {
@@ -565,7 +565,7 @@ describe('a released session whose start was attempted stays unverifiable withou
   let directory: string
 
   beforeEach(async () => {
-    directory = await mkdtemp(join(tmpdir(), 'orca-cleared-successor-'))
+    directory = await mkdtemp(join(tmpdir(), 'occ-cleared-successor-'))
     installClearedWorker('at-rest')
     visibleTabs = []
   })
@@ -820,7 +820,7 @@ describe('a running session that cannot be verified is refused, never declared e
     const identity = registerWorker()
     expect(observeStructuredWorker(identity).status).toBe('unverifiable')
     await expect(
-      new OrcaRuntimeService().inspectTerminalProcessIncarnationLiveness(
+      new OCCRuntimeService().inspectTerminalProcessIncarnationLiveness(
         identity.processIncarnation,
         JSON.stringify(LOCAL_SCOPE)
       )

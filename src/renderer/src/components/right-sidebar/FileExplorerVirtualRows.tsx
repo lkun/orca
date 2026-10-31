@@ -36,7 +36,7 @@ type FileExplorerVirtualRowsProps = {
   dirCache?: Record<string, DirCache>
   runtimeDownloadContext?: RuntimeFileOperationArgs | null
   supportsFolderDownload?: boolean
-  canOpenInOrcaBrowser?: (filePath: string) => boolean
+  canOpenInOCCBrowser?: (filePath: string) => boolean
   onClick: (node: TreeNode, event: React.MouseEvent<HTMLButtonElement>) => void
   onDoubleClick: (node: TreeNode) => void
   onViewFile: (node: TreeNode) => void
@@ -124,7 +124,7 @@ export function FileExplorerVirtualRows(props: FileExplorerVirtualRowsProps): Re
     dirCache,
     runtimeDownloadContext,
     supportsFolderDownload = false,
-    canOpenInOrcaBrowser = () => false,
+    canOpenInOCCBrowser = () => false,
     onClick,
     onDoubleClick,
     onViewFile,
@@ -237,7 +237,7 @@ export function FileExplorerVirtualRows(props: FileExplorerVirtualRowsProps): Re
               resolveDragSourceOwner={resolveSourceOwner}
               runtimeDownloadContext={runtimeDownloadContext}
               supportsFolderDownload={supportsFolderDownload}
-              canOpenInOrcaBrowser={canOpenInOrcaBrowser(n.path)}
+              canOpenInOCCBrowser={canOpenInOCCBrowser(n.path)}
               canCollapseFolderSubtree={canCollapseFolderSubtree}
               targetDir={n.isDirectory ? n.path : dirname(n.path)}
               targetDepth={n.isDirectory ? n.depth + 1 : n.depth}

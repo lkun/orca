@@ -47,8 +47,8 @@ export function withClaudeAgentViewShortcut(config: HooksConfig): HooksConfig | 
     : null
 }
 
-export const ownership = { owner: 'stablyai/orca/claude-agent-view' }
-export const markerName = 'orca-agent-view.json'
+export const ownership = { owner: 'stablyai/occ/claude-agent-view' }
+export const markerName = 'occ-agent-view.json'
 
 function shortcutOwnership(config: HooksConfig, next: HooksConfig): HooksConfig {
   const block = config !== next && Array.isArray(next.bindings) ? next.bindings.at(-1) : undefined

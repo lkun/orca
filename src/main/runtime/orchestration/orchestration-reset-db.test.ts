@@ -327,7 +327,7 @@ describe('OrchestrationDb reset scopes', () => {
   })
 
   it('never reads a Run older than the record as complete, and moves coverage when capture was missing', () => {
-    const tempDir = mkdtempSync(join(tmpdir(), 'orca-removed-work-coverage-'))
+    const tempDir = mkdtempSync(join(tmpdir(), 'occ-removed-work-coverage-'))
     const path = join(tempDir, 'orchestration.db')
     try {
       db = new OrchestrationDb(path)

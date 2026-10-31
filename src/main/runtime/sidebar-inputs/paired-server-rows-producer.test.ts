@@ -74,7 +74,7 @@ function fakeHosts(servers: { id: string; live: boolean; wsl?: true }[]) {
         name: id,
         pairingRevision: state.pairingRevision,
         runtimeId: 'runtime-a',
-        ...(wsl ? { orcadDeployment: { kind: 'wsl' as const } } : {})
+        ...(wsl ? { occdDeployment: { kind: 'wsl' as const } } : {})
       })),
       statusByEnvironmentId: new Map(
         state.servers.map(({ id, live }) => [

@@ -10,7 +10,7 @@ import type {
 
 /** Keep runtime SSH access free of Electron imports from ipc/ssh.ts. Resolve callbacks on each call because handler registration may replace the manager. */
 
-/** orcad has no SSH stack yet still advertises ssh.target-management.v1 (D3), so clients show this. */
+/** occd has no SSH stack yet still advertises ssh.target-management.v1 (D3), so clients show this. */
 export const SSH_TARGET_MANAGEMENT_UNSERVED_MESSAGE =
   "This OCC server runs without the desktop app, so it can't manage SSH hosts yet."
 

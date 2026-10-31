@@ -49,7 +49,7 @@ const POSIX_HOOK_JSON_STDIN_PYTHON = [
 ].join('\n')
 
 // Embed the script once to avoid oversized command lines flagged by EDR.
-const POSIX_HOOK_JSON_STDIN_PYTHON_VAR = 'orca_hook_json_stdin_py'
+const POSIX_HOOK_JSON_STDIN_PYTHON_VAR = 'occ_hook_json_stdin_py'
 export const POSIX_HOOK_JSON_STDIN_PRELUDE: readonly string[] = [
   `${POSIX_HOOK_JSON_STDIN_PYTHON_VAR}='${POSIX_HOOK_JSON_STDIN_PYTHON}'`
 ]
@@ -99,25 +99,25 @@ export function buildPosixHookSpoolLines(source: string, eventNameVar?: string):
     eventFormat,
     '"paneKey":"%s","tabId":"%s","worktreeId":"%s","env":"%s","version":"%s","launchToken":"%s","source":"%s","receivedAt":%s,"agentProcess":"%s","payload":%s}\\n\'',
     eventArg,
-    ' "$(spool_json_escape "${ORCA_PANE_KEY:-}")" "$(spool_json_escape "${ORCA_TAB_ID:-}")" "$(spool_json_escape "${ORCA_WORKTREE_ID:-}")" "$(spool_json_escape "${ORCA_AGENT_HOOK_ENV:-}")" "$(spool_json_escape "${ORCA_AGENT_HOOK_VERSION:-}")" "$(spool_json_escape "${ORCA_AGENT_LAUNCH_TOKEN:-}")" "$(spool_json_escape "',
+    ' "$(spool_json_escape "${OCC_PANE_KEY:-}")" "$(spool_json_escape "${OCC_TAB_ID:-}")" "$(spool_json_escape "${OCC_WORKTREE_ID:-}")" "$(spool_json_escape "${OCC_AGENT_HOOK_ENV:-}")" "$(spool_json_escape "${OCC_AGENT_HOOK_VERSION:-}")" "$(spool_json_escape "${OCC_AGENT_LAUNCH_TOKEN:-}")" "$(spool_json_escape "',
     source,
-    '")" "$spool_now" "$(spool_json_escape "${orca_agent_process:-}")" "$payload"; } >> "$spool_file" 2>/dev/null || :'
+    '")" "$spool_now" "$(spool_json_escape "${occ_agent_process:-}")" "$payload"; } >> "$spool_file" 2>/dev/null || :'
   )
   return [
     'spool_hook_event() {',
     eventNameVar
       ? `  case "\${${eventNameVar}:-}" in PreToolUse|PostToolUse|PostToolUseFailure) return 0 ;; esac`
       : '  case "$payload" in *\'"PreToolUse"\'*|*\'"PostToolUse"\'*|*\'"PostToolUseFailure"\'*) return 0 ;; esac',
-    '  [ -n "${ORCA_AGENT_HOOK_ENDPOINT:-}" ] || return 0',
+    '  [ -n "${OCC_AGENT_HOOK_ENDPOINT:-}" ] || return 0',
     // Stale endpoint variables outside OCC must not accumulate unattributed spool records.
-    '  [ -n "${ORCA_PANE_KEY:-}" ] || return 0',
+    '  [ -n "${OCC_PANE_KEY:-}" ] || return 0',
     // A stale variable must not create spool state for an absent OCC installation.
-    '  [ -r "$ORCA_AGENT_HOOK_ENDPOINT" ] || return 0',
-    '  spool_base=${ORCA_AGENT_HOOK_ENDPOINT%/*}',
+    '  [ -r "$OCC_AGENT_HOOK_ENDPOINT" ] || return 0',
+    '  spool_base=${OCC_AGENT_HOOK_ENDPOINT%/*}',
     '  spool_dir="$spool_base/spool"',
     '  mkdir -p "$spool_dir" 2>/dev/null || return 0',
     '  chmod 700 "$spool_dir" 2>/dev/null || :',
-    "  spool_id=$(printf %s \"${ORCA_PANE_KEY:-unknown}\" | tail -c 36 | tr '/:' '__')",
+    "  spool_id=$(printf %s \"${OCC_PANE_KEY:-unknown}\" | tail -c 36 | tr '/:' '__')",
     '  spool_file="$spool_dir/pane-$spool_id.jsonl"',
     '  if [ -f "$spool_file" ] && find "$spool_file" -mtime +7 -print -quit 2>/dev/null | grep -q .; then : > "$spool_file"; fi',
     '  [ -f "$spool_file" ] || : > "$spool_file"',
@@ -137,9 +137,9 @@ export const WINDOWS_HOOK_STDIN_READER = '"%SystemRoot%\\System32\\more.com"'
 export const WINDOWS_HOOK_STDIN_DRAIN_COMMAND = `${WINDOWS_HOOK_STDIN_READER} >nul 2>nul`
 
 const WINDOWS_HOOK_ENVIRONMENT_VARS = [
-  'ORCA_AGENT_HOOK_PORT',
-  'ORCA_AGENT_HOOK_TOKEN',
-  'ORCA_PANE_KEY'
+  'OCC_AGENT_HOOK_PORT',
+  'OCC_AGENT_HOOK_TOKEN',
+  'OCC_PANE_KEY'
 ] as const
 
 // Windows callers may leave stdin open outside OCC: guard first; POSIX must capture first to avoid EPIPE.

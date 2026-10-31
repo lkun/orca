@@ -9,11 +9,11 @@ OCC hook events.
    generated status extension and this additional extension:
 
    ```sh
-   pi --offline --no-session -e /absolute/path/to/orca/tests/tools/pi-ui-prompt-extension.mjs
+   pi --offline --no-session -e /absolute/path/to/occ/tests/tools/pi-ui-prompt-extension.mjs
    ```
 
    If launching Pi directly through `node` or disabling extension discovery, explicitly
-   load OCC's generated `orca-agent-status.ts` with another `-e` argument.
+   load OCC's generated `occ-agent-status.ts` with another `-e` argument.
 
 3. Leave Pi at its input editor, then run from the OCC repository:
 
@@ -28,8 +28,8 @@ then backend `done` plus the visible completion icon. Screenshots are saved for 
 states. Custom-dialog cancellation sends a plain Escape through the real PTY;
 the standard dialogs use browser keyboard events.
 
-For manual verification, run `/orca-modal select`, `/orca-modal confirm`,
-`/orca-modal input`, `/orca-modal editor`, or `/orca-modal custom` inside Pi.
+For manual verification, run `/occ-modal select`, `/occ-modal confirm`,
+`/occ-modal input`, `/occ-modal editor`, or `/occ-modal custom` inside Pi.
 
 The separate runtime test covers active-agent close (`working`), idle close (`done`),
 overlap, unrelated tool events, and rejected dialog promises using Pi's actual runner:

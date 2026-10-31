@@ -19,7 +19,7 @@ export type ControlSocketModuleMock = {
 }
 
 export const findSystemSshMock = vi.fn<() => string | null>()
-export const getOrcaControlSocketPathMock =
+export const getOCCControlSocketPathMock =
   vi.fn<(target: SshTarget, options?: SystemSshBuildArgsOptions) => string | null>()
 export const removeControlSocketPathMock = vi.fn<(socketPath: string) => void>()
 export const spawnSystemSshMock =
@@ -63,7 +63,7 @@ export function createSystemSshBinaryModule(): SystemSshBinaryModuleMock {
 
 // The system-ssh seams SshConnection reaches, each layered over its module's real exports.
 export function withSystemSshArgsMocks(actual: typeof SystemSshArgs) {
-  return { ...actual, getOrcaControlSocketPath: getOrcaControlSocketPathMock }
+  return { ...actual, getOCCControlSocketPath: getOCCControlSocketPathMock }
 }
 
 export function withSystemSshCommandMocks(actual: typeof SystemSshCommand) {
@@ -106,8 +106,8 @@ export function withSshGConfigResolutionMocks(actual: typeof SshGConfigResolutio
 
 export function resetSshConnectionMocks(): void {
   resetSsh2ClientState()
-  getOrcaControlSocketPathMock.mockReset()
-  getOrcaControlSocketPathMock.mockReturnValue(null)
+  getOCCControlSocketPathMock.mockReset()
+  getOCCControlSocketPathMock.mockReturnValue(null)
   removeControlSocketPathMock.mockReset()
   spawnSystemSshMock.mockReset()
   spawnSystemSshMock.mockImplementation(() => createSystemSshProcess())

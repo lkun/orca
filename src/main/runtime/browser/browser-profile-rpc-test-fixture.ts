@@ -1,6 +1,6 @@
 import '../rpc/unused-default-rpc-methods.test-fixture'
 import { vi } from 'vitest'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import { RpcDispatcher } from '../rpc/dispatcher'
 import { BROWSER_PROFILE_METHODS } from '../rpc/methods/browser-profile-rpc-methods'
 import { RuntimeBrowserProfiles } from './browser-profiles'
@@ -19,7 +19,7 @@ export function browserProfileRpcFixture(executorRuntimeId: string, outerRuntime
     { requireAgentBrowserBridge: unavailable, resolveBrowserCommandTarget: async () => ({}) },
     { describeBrowserTab: unavailable, resolveClientHostedBrowserPage: async () => undefined }
   )
-  const runtime = new OrcaRuntimeService(null)
+  const runtime = new OCCRuntimeService(null)
   vi.spyOn(runtime, 'getRuntimeId').mockReturnValue(outerRuntimeId)
   vi.spyOn(runtime, 'browserProfileList').mockImplementation(() => profiles.browserProfileList())
   vi.spyOn(runtime, 'browserProfileImportFromBrowser').mockImplementation(

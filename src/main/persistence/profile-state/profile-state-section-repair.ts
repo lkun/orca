@@ -5,7 +5,7 @@ import {
   type ProfileStateRecoveryRepairSection
 } from '../../../shared/profile-state-recovery-command'
 import type { ProfileStateMaintenance } from './profile-state-access'
-import { profileHasPendingProjectMove } from '../../orca-profiles/profile-project-move-record'
+import { profileHasPendingProjectMove } from '../../occ-profiles/profile-project-move-record'
 import { readProfileStateAutomationRunsDocument } from './profile-state-automation-runs'
 import { profileStateDatabaseBackups } from './profile-state-backup-path'
 import {
@@ -70,7 +70,7 @@ export function repairProfileStateSections(options: {
   if (plan === undefined) {
     throw new ProfileStateRecoveryCommandError(
       'runtime_error',
-      `OCC can't repair this profile one section at a time (${reason}). Nothing was changed. Run \`orca profile state exports\` and restore a whole backup with \`orca profile state rollback --backup <id>\`.`
+      `OCC can't repair this profile one section at a time (${reason}). Nothing was changed. Run \`occ profile state exports\` and restore a whole backup with \`occ profile state rollback --backup <id>\`.`
     )
   }
   if (options.approved !== undefined && !sameSections(options.approved, plan.sections)) {

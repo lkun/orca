@@ -1,4 +1,4 @@
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 
 export type KeychainReachability =
   | { kind: 'reachable' }

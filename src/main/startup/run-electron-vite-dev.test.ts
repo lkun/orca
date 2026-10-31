@@ -97,16 +97,16 @@ async function stopWrapperAndTrackedPids(wrapper: ChildProcess, pids: number[]):
 function devWrapperTestEnv(extra: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
   const env = { ...process.env }
   for (const key of Object.keys(env)) {
-    if (key.startsWith('ORCA_DEV_')) {
+    if (key.startsWith('OCC_DEV_')) {
       delete env[key]
     }
   }
   delete env.ELECTRON_EXEC_PATH
   return {
     ...env,
-    ORCA_SKIP_DEV_STORAGE_RECLAIM: '1',
+    OCC_SKIP_DEV_STORAGE_RECLAIM: '1',
     // Why: the runner otherwise creates this worktree's real per-worktree profile under appData.
-    ORCA_DEV_USER_DATA_PATH: join(tmpdir(), 'occ-dev-wrapper-test-profile'),
+    OCC_DEV_USER_DATA_PATH: join(tmpdir(), 'occ-dev-wrapper-test-profile'),
     ...extra
   }
 }
@@ -188,11 +188,11 @@ describe('run-electron-vite-dev', () => {
       const wrapper = spawn(process.execPath, [wrapperPath], {
         cwd: resolve('.'),
         env: devWrapperTestEnv({
-          ORCA_ELECTRON_VITE_CLI: fakeCliPath,
-          ORCA_SKIP_DEV_CLI_PREPARE: '1',
-          ORCA_SKIP_DEV_ELECTRON_APP_PREPARE: '1',
-          ORCA_SKIP_DEV_WEB_PREPARE: '1',
-          ORCA_DEV_WRAPPER_TEST_PID_FILE: pidFile
+          OCC_ELECTRON_VITE_CLI: fakeCliPath,
+          OCC_SKIP_DEV_CLI_PREPARE: '1',
+          OCC_SKIP_DEV_ELECTRON_APP_PREPARE: '1',
+          OCC_SKIP_DEV_WEB_PREPARE: '1',
+          OCC_DEV_WRAPPER_TEST_PID_FILE: pidFile
         }),
         stdio: 'ignore'
       })
@@ -233,14 +233,14 @@ describe('run-electron-vite-dev', () => {
     const wrapper = spawn(process.execPath, [wrapperPath, '--remote-debugging-port=9444'], {
       cwd: resolve('.'),
       env: devWrapperTestEnv({
-        ORCA_ELECTRON_VITE_CLI: fakeCliPath,
-        ORCA_SKIP_DEV_CLI_PREPARE: '1',
-        ORCA_SKIP_DEV_ELECTRON_APP_PREPARE: '1',
-        ORCA_SKIP_DEV_WEB_PREPARE: '1',
-        ORCA_DEV_WRAPPER_TEST_PID_FILE: pidFile,
-        ORCA_DEV_WRAPPER_TEST_ENV_FILE: envFile,
-        ORCA_DEV_BRANCH: 'feature/billing-shell',
-        ORCA_DEV_WORKTREE_NAME: 'payment-ui'
+        OCC_ELECTRON_VITE_CLI: fakeCliPath,
+        OCC_SKIP_DEV_CLI_PREPARE: '1',
+        OCC_SKIP_DEV_ELECTRON_APP_PREPARE: '1',
+        OCC_SKIP_DEV_WEB_PREPARE: '1',
+        OCC_DEV_WRAPPER_TEST_PID_FILE: pidFile,
+        OCC_DEV_WRAPPER_TEST_ENV_FILE: envFile,
+        OCC_DEV_BRANCH: 'feature/billing-shell',
+        OCC_DEV_WORKTREE_NAME: 'payment-ui'
       }),
       stdio: 'ignore'
     })
@@ -283,7 +283,7 @@ describe('run-electron-vite-dev', () => {
   })
 
   it.skipIf(process.platform === 'win32')(
-    'prepares userData orca and occ-dev wrappers for dev terminals',
+    'prepares userData occ and occ-dev wrappers for dev terminals',
     async () => {
       const tempDir = mkdtempSync(join(tmpdir(), 'occ-dev-wrapper-'))
       const userDataPath = join(tempDir, 'userData')
@@ -295,12 +295,12 @@ describe('run-electron-vite-dev', () => {
       const wrapper = spawn(process.execPath, [wrapperPath], {
         cwd: resolve('.'),
         env: devWrapperTestEnv({
-          ORCA_DEV_USER_DATA_PATH: userDataPath,
-          ORCA_ELECTRON_VITE_CLI: fakeCliPath,
-          ORCA_SKIP_DEV_ELECTRON_APP_PREPARE: '1',
-          ORCA_SKIP_DEV_WEB_PREPARE: '1',
-          ORCA_DEV_WRAPPER_TEST_PID_FILE: pidFile,
-          ORCA_DEV_WRAPPER_TEST_ENV_FILE: envFile
+          OCC_DEV_USER_DATA_PATH: userDataPath,
+          OCC_ELECTRON_VITE_CLI: fakeCliPath,
+          OCC_SKIP_DEV_ELECTRON_APP_PREPARE: '1',
+          OCC_SKIP_DEV_WEB_PREPARE: '1',
+          OCC_DEV_WRAPPER_TEST_PID_FILE: pidFile,
+          OCC_DEV_WRAPPER_TEST_ENV_FILE: envFile
         }),
         stdio: 'ignore'
       })
@@ -318,9 +318,9 @@ describe('run-electron-vite-dev', () => {
 
       const trackedPids = trackPidFile(pidFile)
       const devWrapper = readFileSync(join(userDataPath, 'cli', 'bin', 'occ-dev'), 'utf8')
-      const publicAliasWrapper = readFileSync(join(userDataPath, 'cli', 'bin', 'orca'), 'utf8')
+      const publicAliasWrapper = readFileSync(join(userDataPath, 'cli', 'bin', 'occ'), 'utf8')
       expect(publicAliasWrapper).toBe(devWrapper)
-      expect(publicAliasWrapper).toContain('ORCA_USER_DATA_PATH')
+      expect(publicAliasWrapper).toContain('OCC_USER_DATA_PATH')
       expect(publicAliasWrapper).toContain('out/cli/index.js')
 
       await stopWrapperAndTrackedPids(wrapper, trackedPids)
@@ -340,13 +340,13 @@ describe('run-electron-vite-dev', () => {
       {
         cwd: resolve('.'),
         env: devWrapperTestEnv({
-          ORCA_ELECTRON_VITE_CLI: fakeCliPath,
-          ORCA_SKIP_DEV_CLI_PREPARE: '1',
-          ORCA_SKIP_DEV_WEB_PREPARE: '1',
-          ORCA_DEV_WRAPPER_TEST_PID_FILE: pidFile,
-          ORCA_DEV_WRAPPER_TEST_ENV_FILE: envFile,
-          ORCA_DEV_BRANCH: 'feature/stable-name',
-          ORCA_DEV_WORKTREE_NAME: 'stable-ui'
+          OCC_ELECTRON_VITE_CLI: fakeCliPath,
+          OCC_SKIP_DEV_CLI_PREPARE: '1',
+          OCC_SKIP_DEV_WEB_PREPARE: '1',
+          OCC_DEV_WRAPPER_TEST_PID_FILE: pidFile,
+          OCC_DEV_WRAPPER_TEST_ENV_FILE: envFile,
+          OCC_DEV_BRANCH: 'feature/stable-name',
+          OCC_DEV_WORKTREE_NAME: 'stable-ui'
         }),
         stdio: 'ignore'
       }
@@ -385,11 +385,11 @@ describe('run-electron-vite-dev', () => {
       const wrapperPath = resolve('config/scripts/run-electron-vite-dev.mjs')
       const fakeCliPath = resolve('src/main/startup/__fixtures__/fake-electron-vite-dev-cli.mjs')
       const baseEnv = devWrapperTestEnv({
-        ORCA_ELECTRON_VITE_CLI: fakeCliPath,
-        ORCA_SKIP_DEV_CLI_PREPARE: '1',
-        ORCA_SKIP_DEV_WEB_PREPARE: '1',
-        ORCA_DEV_BRANCH: 'feature/rebuild-electron-app',
-        ORCA_DEV_WORKTREE_NAME: 'electron-app-rebuild'
+        OCC_ELECTRON_VITE_CLI: fakeCliPath,
+        OCC_SKIP_DEV_CLI_PREPARE: '1',
+        OCC_SKIP_DEV_WEB_PREPARE: '1',
+        OCC_DEV_BRANCH: 'feature/rebuild-electron-app',
+        OCC_DEV_WORKTREE_NAME: 'electron-app-rebuild'
       })
 
       async function runWrapper(runId: string): Promise<{ electronExecPath: string }> {
@@ -399,8 +399,8 @@ describe('run-electron-vite-dev', () => {
           [wrapperPath, '--remote-debugging-port=9448'],
           {
             ...baseEnv,
-            ORCA_DEV_WRAPPER_TEST_PID_FILE: pidFile,
-            ORCA_DEV_WRAPPER_TEST_ENV_FILE: envFile
+            OCC_DEV_WRAPPER_TEST_PID_FILE: pidFile,
+            OCC_DEV_WRAPPER_TEST_ENV_FILE: envFile
           }
         )
 
@@ -462,13 +462,13 @@ describe('run-electron-vite-dev', () => {
       const { wrapper, readOutput } = spawnDevWrapper(
         [wrapperPath, '--remote-debugging-port=9448'],
         devWrapperTestEnv({
-          ORCA_ELECTRON_VITE_CLI: fakeCliPath,
-          ORCA_SKIP_DEV_CLI_PREPARE: '1',
-          ORCA_SKIP_DEV_WEB_PREPARE: '1',
-          ORCA_DEV_WRAPPER_TEST_PID_FILE: pidFile,
-          ORCA_DEV_WRAPPER_TEST_ENV_FILE: envFile,
-          ORCA_DEV_BRANCH: 'feature/framework-symlinks',
-          ORCA_DEV_WORKTREE_NAME: 'symlink-ui'
+          OCC_ELECTRON_VITE_CLI: fakeCliPath,
+          OCC_SKIP_DEV_CLI_PREPARE: '1',
+          OCC_SKIP_DEV_WEB_PREPARE: '1',
+          OCC_DEV_WRAPPER_TEST_PID_FILE: pidFile,
+          OCC_DEV_WRAPPER_TEST_ENV_FILE: envFile,
+          OCC_DEV_BRANCH: 'feature/framework-symlinks',
+          OCC_DEV_WORKTREE_NAME: 'symlink-ui'
         })
       )
 

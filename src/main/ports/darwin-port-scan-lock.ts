@@ -26,7 +26,7 @@ export function openDarwinPortScanLock(operation: DarwinPortScanOperation): numb
   if (![0x1a, 0x11].includes(filesystem.type)) {
     return null
   }
-  const directory = `${root}/orca-port-scan-${uid}`
+  const directory = `${root}/occ-port-scan-${uid}`
   mkdirSync(directory, { mode: 0o700, recursive: true })
   const dir = lstatSync(directory)
   if (

@@ -1,13 +1,13 @@
 /** Resolve structured-owned mail to a session turn, covering Run, session, Dispatch and worker-handle addresses. */
 
 import {
-  ORCA_SESSION_ADDRESS_PREFIX,
-  isOrcaSessionId,
-  parseOrcaSessionAddress,
-  type OrcaSessionId
-} from '../../../shared/orca-session-address'
+  OCC_SESSION_ADDRESS_PREFIX,
+  isOCCSessionId,
+  parseOCCSessionAddress,
+  type OCCSessionId
+} from '../../../shared/occ-session-address'
 import type { OrchestrationDb } from './db'
-import { currentRunCoordinatorOrcaSessionId } from './db/runs/run-coordinator-orca-session'
+import { currentRunCoordinatorOCCSessionId } from './db/runs/run-coordinator-occ-session'
 import type { StructuredPointerTarget } from './structured-mailbox-pointer-delivery'
 import {
   addressableSessionParty,
@@ -25,15 +25,15 @@ export function handleLessCoordinatorSessionId(
   run: Pick<
     RunRow,
     | 'coordinator_handle'
-    | 'coordinator_orca_session_id'
-    | 'coordinator_orca_session_id_generation'
+    | 'coordinator_occ_session_id'
+    | 'coordinator_occ_session_id_generation'
     | 'consumer_generation'
   >
-): OrcaSessionId | null {
+): OCCSessionId | null {
   if (run.coordinator_handle !== null) {
     return null
   }
-  return currentRunCoordinatorOrcaSessionId(run)
+  return currentRunCoordinatorOCCSessionId(run)
 }
 
 /** Resolve any lineage session to its live reachable target; null means unreachable here. */
@@ -67,16 +67,16 @@ export function structuredSessionAddressTarget(
   mailboxHandle: string,
   db: OrchestrationDb | null | undefined
 ): StructuredPointerTarget | null | undefined {
-  if (!mailboxHandle.startsWith(ORCA_SESSION_ADDRESS_PREFIX)) {
+  if (!mailboxHandle.startsWith(OCC_SESSION_ADDRESS_PREFIX)) {
     return undefined
   }
-  const sessionId = parseOrcaSessionAddress(mailboxHandle)
+  const sessionId = parseOCCSessionAddress(mailboxHandle)
   return sessionId ? structuredSessionMailTarget(sessionId, db) : null
 }
 
 /** Re-derive Run, direct and active-Dispatch mail on each idle edge, including root mail for /clear successors. */
 export function structuredSessionOwnedMailboxes(sessionId: string, db: OrchestrationDb): string[] {
-  const party = isOrcaSessionId(sessionId) ? addressableSessionParty(sessionId, db) : null
+  const party = isOCCSessionId(sessionId) ? addressableSessionParty(sessionId, db) : null
   if (!party) {
     return []
   }

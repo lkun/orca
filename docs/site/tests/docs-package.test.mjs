@@ -87,12 +87,12 @@ test('docs content does not link to routes that only exist on the marketing site
 
 test('GIF media helpers use the shared poster and video variants', async () => {
   const media = await import(pathToFileURL(path.join(siteRoot, 'src', 'lib', 'demoMedia.mjs')).href)
-  assert.equal(media.posterFor('/docs/orca-design-mode.gif'), '/docs/posters/orca-design-mode.jpg')
-  assert.equal(media.videoFor('/docs/orca-design-mode.gif'), '/docs/videos/orca-design-mode.mp4')
+  assert.equal(media.posterFor('/docs/occ-design-mode.gif'), '/docs/posters/occ-design-mode.jpg')
+  assert.equal(media.videoFor('/docs/occ-design-mode.gif'), '/docs/videos/occ-design-mode.mp4')
   assert.equal(media.posterFor('/docs/tab-split.gif'), '/docs/posters/tab-split.jpg')
   assert.equal(media.videoFor('/docs/tab-split.gif'), '/docs/videos/tab-split.mp4')
 
-  for (const name of ['orca-design-mode', 'tab-split']) {
+  for (const name of ['occ-design-mode', 'tab-split']) {
     assert.ok(existsSync(path.join(publicRoot, 'docs', 'posters', `${name}.jpg`)))
     assert.ok(existsSync(path.join(publicRoot, 'docs', 'videos', `${name}.mp4`)))
   }

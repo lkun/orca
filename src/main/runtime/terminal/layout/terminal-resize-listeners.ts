@@ -1,7 +1,7 @@
 import { sessionIdFromStructuredWorkerIncarnation } from '../../structured-worker-identity'
 import { observeStructuredWorker } from '../../rpc/methods/orchestration-structured-worker-lifecycle'
-import { OrcaRuntimeWithApplyMobileDisplayMode } from './terminal-display-mode'
-import { addListenerToMap } from '../../orca-runtime-core'
+import { OCCRuntimeWithApplyMobileDisplayMode } from './terminal-display-mode'
+import { addListenerToMap } from '../../occ-runtime-core'
 import { notifyRuntimeListeners, withTimeoutResult } from '../../runtime-async-boundaries'
 import type { TerminalExitCause } from '../../../../shared/terminal-exit-cause'
 import {
@@ -11,7 +11,7 @@ import {
 import {
   DEFAULT_TERMINAL_LIST_LIMIT,
   PTY_CONTROLLER_LIST_TIMEOUT_MS
-} from '../../orca-runtime-postlude'
+} from '../../occ-runtime-postlude'
 import type {
   RuntimeTerminalListResult,
   RuntimeTerminalOrphanAdoptionRequest,
@@ -26,7 +26,7 @@ import { reportWorkerTurnStop } from '../../orchestration/worker-turn-stop-repor
 import { LOCAL_EXECUTION_HOST_ID, toSshExecutionHostId } from '../../../../shared/execution-host'
 import type { OrchestrationDb } from '../../orchestration/db'
 
-export abstract class OrcaRuntimeWithSubscribeToTerminalResize extends OrcaRuntimeWithApplyMobileDisplayMode {
+export abstract class OCCRuntimeWithSubscribeToTerminalResize extends OCCRuntimeWithApplyMobileDisplayMode {
   subscribeToTerminalResize(
     ptyId: string,
     listener: (event: {

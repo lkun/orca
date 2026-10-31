@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { SESSION_TAB_CLOSE_FORCE_RUNTIME_CAPABILITY } from '../../shared/session-tabs-runtime-capabilities'
 import { SESSION_TAB_CLOSE_INTENT_RUNTIME_CAPABILITY } from '../../shared/protocol-version'
 import { z } from 'zod'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { RpcDispatcher } from './rpc/dispatcher'
 import { SESSION_TAB_METHODS } from './rpc/methods/session-tabs'
 import {
@@ -15,7 +15,7 @@ import {
 // Read at each close, so one import serves both builds.
 const layoutOwner = vi.hoisted(() => ({ isMain: false }))
 vi.mock('../../shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return layoutOwner.isMain
   }
 }))
@@ -94,10 +94,10 @@ async function pinnedServerTab(layoutOwnerIsMain: boolean) {
   return { f, stopped, close }
 }
 
-describe.each([false, true])('ORCA_LAYOUT_OWNER_IS_MAIN=%s', (layoutOwnerIsMain) => {
+describe.each([false, true])('OCC_LAYOUT_OWNER_IS_MAIN=%s', (layoutOwnerIsMain) => {
   it('advertises the forced-close capability', async () => {
     layoutOwner.isMain = layoutOwnerIsMain
-    expect(new OrcaRuntimeService().getStatus().capabilities).toContain(
+    expect(new OCCRuntimeService().getStatus().capabilities).toContain(
       SESSION_TAB_CLOSE_FORCE_RUNTIME_CAPABILITY
     )
   })

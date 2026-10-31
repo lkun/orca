@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import { z } from 'zod'
 import type { ClaimedPost, PostKind } from './connector-posts.js'
 import type { SendOutcome } from './post-worker.js'
@@ -32,7 +32,7 @@ const RepliesSchema = z.object({
   has_more: z.boolean().optional(),
   response_metadata: z.looseObject({ next_cursor: z.string().optional() }).optional()
 })
-const POST_METADATA_TYPE = 'orca_post'
+const POST_METADATA_TYPE = 'occ_post'
 // A post claimed back after a crash is looked for among replies sent from shortly before it, over
 // a bounded number of pages; past that it can't be ruled out, so it is uncertain.
 const RECONCILE_LOOKBACK_MS = 60_000
@@ -85,7 +85,7 @@ export class SlackPostSender {
       })
       if (result.kind === 'failed') {
         console.warn(
-          JSON.stringify({ event: 'orca_connector_slack_ephemeral_failed', error: result.error })
+          JSON.stringify({ event: 'occ_connector_slack_ephemeral_failed', error: result.error })
         )
       }
       return outcome(result, 'retry')

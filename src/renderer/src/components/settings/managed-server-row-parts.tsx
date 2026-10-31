@@ -1,5 +1,5 @@
 import { ArrowUpCircle, RefreshCw, RotateCcw, ServerOff, Trash2, Wrench } from 'lucide-react'
-import type { OrcadManagedRuntimeStatus } from '../../../../shared/orcad-managed-runtime'
+import type { OCCdManagedRuntimeStatus } from '../../../../shared/occd-managed-runtime'
 import { translate } from '@/i18n/i18n'
 import { LoadingSpinner } from '../LoadingSpinner'
 import { Button } from '../ui/button'
@@ -15,7 +15,7 @@ import type { ManagedServerLifecycle } from './use-managed-server-lifecycle'
 
 // Unloaded status means unknown; only loaded evidence can claim Not running.
 export function managedServerVersionLabel(
-  status: OrcadManagedRuntimeStatus | null,
+  status: OCCdManagedRuntimeStatus | null,
   statusError: string | null
 ): string {
   if (status) {
@@ -64,7 +64,7 @@ export function ManagedServerDetailLines({
     <div className="space-y-0.5 text-xs text-muted-foreground">
       <p>
         {translate(
-          'auto.components.settings.managedServers.row.orcaVersion',
+          'auto.components.settings.managedServers.row.occVersion',
           'OCC on this host: {{version}}',
           {
             version: managedServerVersionLabel(status, statusError)
@@ -230,7 +230,7 @@ export function ManagedServerConfirmations({
     return (
       <ConfirmStrip
         message={translate(
-          'auto.components.settings.managedServers.row.stopOrcaDescription',
+          'auto.components.settings.managedServers.row.stopOCCDescription',
           'Stops OCC on the SSH host and removes it from this list.'
         )}
         confirmLabel={translate(
@@ -309,7 +309,7 @@ export function ManagedServerMenuItems({
       <DropdownMenuItem disabled={disabled} onSelect={() => void run('update')}>
         <ArrowUpCircle />
         {translate(
-          'auto.components.settings.managedServers.row.updateOrcaOnHost',
+          'auto.components.settings.managedServers.row.updateOCCOnHost',
           'Update OCC on this host'
         )}
       </DropdownMenuItem>

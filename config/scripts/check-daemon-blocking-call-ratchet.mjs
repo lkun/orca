@@ -4,18 +4,18 @@ import { createGatedCallCollector } from './gated-call-use-collector.mjs'
 import { readTrackedSources, runCountRatchet } from './ratchet-baseline.mjs'
 import { isTestOnlySourcePath } from './test-only-source-path.mjs'
 
-// The terminal daemon and orcad serve every pane from one event loop; a blocking call there freezes all of them (#34410).
+// The terminal daemon and occd serve every pane from one event loop; a blocking call there freezes all of them (#34410).
 
 const BASELINE_PATH = 'config/daemon-blocking-call-baseline.txt'
-const SCAN_ROOTS = ['src/main/daemon', 'src/main/pty', 'src/main/runtime', 'src/main/orcad']
-const PROCESS_ADVICE = 'use runProcess or spawnProcess from @orca/process-host'
+const SCAN_ROOTS = ['src/main/daemon', 'src/main/pty', 'src/main/runtime', 'src/main/occd']
+const PROCESS_ADVICE = 'use runProcess or spawnProcess from @occ/process-host'
 const WRITE_ADVICE = 'use an async write or a buffered stream'
 const BLOCKING_CALLS = [
   {
     modules: ['child_process', 'node:child_process'],
     advice: { execFileSync: PROCESS_ADVICE, spawnSync: PROCESS_ADVICE, execSync: PROCESS_ADVICE }
   },
-  { modules: ['@orca/process-host'], advice: { runProcessSync: PROCESS_ADVICE } },
+  { modules: ['@occ/process-host'], advice: { runProcessSync: PROCESS_ADVICE } },
   {
     modules: ['fs', 'node:fs'],
     advice: { appendFileSync: WRITE_ADVICE, writeSync: WRITE_ADVICE }
@@ -48,7 +48,7 @@ export function main(root = process.cwd(), arg = undefined) {
       name: 'daemon-blocking-call',
       baselinePath: BASELINE_PATH,
       header: [
-        '# Event-loop-blocking calls in the terminal daemon, PTY and orcad runtime code, per file:',
+        '# Event-loop-blocking calls in the terminal daemon, PTY and occd runtime code, per file:',
         '# execFileSync/spawnSync/execSync, runProcessSync, appendFileSync and writeSync.',
         '# This is a RATCHET: counts may only go DOWN.',
         '# Prune after removing calls: pnpm check:daemon-blocking-call-ratchet --prune'
@@ -57,7 +57,7 @@ export function main(root = process.cwd(), arg = undefined) {
       unit: 'blocking call(s)',
       fix: [
         `Child processes: ${PROCESS_ADVICE}. File writes: ${WRITE_ADVICE}.`,
-        'One stalled call freezes every terminal the daemon or orcad serves.'
+        'One stalled call freezes every terminal the daemon or occd serves.'
       ]
     },
     root,

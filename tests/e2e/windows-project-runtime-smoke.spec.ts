@@ -4,7 +4,7 @@ import { mkdtemp } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
 
 const tempRoots: string[] = []
@@ -79,21 +79,21 @@ test.afterAll(async () => {
 
 test.describe('Windows project runtime smoke', () => {
   test('keeps a Windows-host project and WSL project available side by side', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
     test.skip(process.platform !== 'win32', 'Windows project runtime smoke requires Windows')
-    await waitForSessionReady(orcaPage)
+    await waitForSessionReady(occPage)
 
-    const wsl = await orcaPage.evaluate(async () => ({
+    const wsl = await occPage.evaluate(async () => ({
       available: await window.api.wsl.isAvailable(),
       distros: await window.api.wsl.listDistros()
     }))
     test.skip(!wsl.available || wsl.distros.length === 0, 'WSL distro is required for smoke')
     const wslDistro = wsl.distros[0]!
-    const wslRepoPath = await createGitRepo('orca-e2e-project-runtime-', 'wsl-runtime-project')
+    const wslRepoPath = await createGitRepo('occ-e2e-project-runtime-', 'wsl-runtime-project')
 
-    const smoke = await orcaPage.evaluate(
+    const smoke = await occPage.evaluate(
       async ({ hostRepoPath, wslRepoPath, wslDistro }) => {
         const store = window.__store
         if (!store) {
@@ -150,15 +150,15 @@ test.describe('Windows project runtime smoke', () => {
     expect(smoke.hostWorktreeCount).toBeGreaterThan(0)
     expect(smoke.wslWorktreeCount).toBeGreaterThan(0)
 
-    await openRepoSettings(orcaPage, smoke.hostRepoId)
-    const hostSection = orcaPage.locator(`[data-settings-section="repo-${smoke.hostRepoId}"]`)
+    await openRepoSettings(occPage, smoke.hostRepoId)
+    const hostSection = occPage.locator(`[data-settings-section="repo-${smoke.hostRepoId}"]`)
     await expect(hostSection.getByText('Project Runtime')).toBeVisible()
     await expect(hostSection.getByText('This project runs on Windows.')).toBeVisible()
-    await chooseProjectRuntime(orcaPage, smoke.hostRepoId, 'WSL')
+    await chooseProjectRuntime(occPage, smoke.hostRepoId, 'WSL')
     await expect(
       hostSection.getByText(`This project runs in ${smoke.wslDistro} via WSL.`)
     ).toBeVisible()
-    const hostAfterWslUiSwitch = await orcaPage.evaluate((hostRepoId) => {
+    const hostAfterWslUiSwitch = await occPage.evaluate((hostRepoId) => {
       const state = window.__store!.getState()
       const hostProject = state.projects.find((project) =>
         project.sourceRepoIds.includes(hostRepoId)
@@ -167,9 +167,9 @@ test.describe('Windows project runtime smoke', () => {
     }, smoke.hostRepoId)
     expect(hostAfterWslUiSwitch).toEqual({ kind: 'wsl', distro: smoke.wslDistro })
 
-    await chooseProjectRuntime(orcaPage, smoke.hostRepoId, 'Windows')
+    await chooseProjectRuntime(occPage, smoke.hostRepoId, 'Windows')
     await expect(hostSection.getByText('This project runs on Windows.')).toBeVisible()
-    const hostAfterWindowsUiSwitch = await orcaPage.evaluate((hostRepoId) => {
+    const hostAfterWindowsUiSwitch = await occPage.evaluate((hostRepoId) => {
       const state = window.__store!.getState()
       const hostProject = state.projects.find((project) =>
         project.sourceRepoIds.includes(hostRepoId)
@@ -178,14 +178,14 @@ test.describe('Windows project runtime smoke', () => {
     }, smoke.hostRepoId)
     expect(hostAfterWindowsUiSwitch).toEqual({ kind: 'windows-host' })
 
-    await openRepoSettings(orcaPage, smoke.wslRepoId)
-    const wslSection = orcaPage.locator(`[data-settings-section="repo-${smoke.wslRepoId}"]`)
+    await openRepoSettings(occPage, smoke.wslRepoId)
+    const wslSection = occPage.locator(`[data-settings-section="repo-${smoke.wslRepoId}"]`)
     await expect(wslSection.getByText('Project Runtime')).toBeVisible()
     await expect(
       wslSection.getByText(`This project runs in ${smoke.wslDistro} via WSL.`)
     ).toBeVisible()
 
-    await orcaPage.evaluate(async (repoId) => {
+    await occPage.evaluate(async (repoId) => {
       const repo = window.__store!.getState().repos.find((entry) => entry.id === repoId)
       await window.api.repos.removeForHost({ repoId, hostId: repo?.executionHostId ?? 'local' })
     }, smoke.wslRepoId)

@@ -1,9 +1,9 @@
-import type { SqlRow } from '@orca-cloud/cloud-database'
+import type { SqlRow } from '@occ-cloud/cloud-database'
 import {
   CONNECTOR_AGENTS,
   ConnectorHelloRequestSchema,
   type ConnectorHelloRequest
-} from '@orca-cloud/connector-contract'
+} from '@occ-cloud/connector-contract'
 import type { ConnectorSource } from './connector-adapter.js'
 import type { ConnectorIdentity } from './connector-identities.js'
 

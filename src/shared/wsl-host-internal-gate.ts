@@ -1,5 +1,5 @@
 /** Keep WSL hosts internal until project moves are lossless and WSL parity is met. Main/preload agree through the same launch environment. */
-export const WSL_HOSTS_INTERNAL_GATE_ENV = 'ORCA_INTERNAL_WSL_HOSTS'
+export const WSL_HOSTS_INTERNAL_GATE_ENV = 'OCC_INTERNAL_WSL_HOSTS'
 
 export function isWslHostsInternalGateOpen(
   env: Readonly<Record<string, string | undefined>>
@@ -41,7 +41,7 @@ export function noteWslHostsPolicyBlocked(blocked: boolean): void {
  * Main publishes its resolved state here so the processes it spawns (CLI, servers, terminals) read
  * the gate as main does: they inherit the internal gate env var but neither note above.
  */
-export const WSL_HOSTS_GATE_STATE_ENV = 'ORCA_WSL_HOSTS_GATE_STATE'
+export const WSL_HOSTS_GATE_STATE_ENV = 'OCC_WSL_HOSTS_GATE_STATE'
 // True once this process resolved the gate itself; an inherited value is then a parent's, so stale.
 let resolvedHere = false
 
@@ -79,7 +79,7 @@ export function isWslHostsServing(env: Readonly<Record<string, string | undefine
 }
 
 // Preload has no disk access, so main stamps the promoted state into the window's argv at birth.
-const SERVE_ONLY_ARGUMENT = '--orca-wsl-hosts-serve-only'
+const SERVE_ONLY_ARGUMENT = '--occ-wsl-hosts-serve-only'
 
 export function formatWslHostsServeOnlyArgument(): string {
   return SERVE_ONLY_ARGUMENT
@@ -90,7 +90,7 @@ export function hasWslHostsServeOnlyArgument(argv: readonly string[]): boolean {
 }
 
 // The remote policy closed an internal gate the launch environment opened.
-const POLICY_BLOCKED_ARGUMENT = '--orca-wsl-hosts-policy-blocked'
+const POLICY_BLOCKED_ARGUMENT = '--occ-wsl-hosts-policy-blocked'
 
 export function formatWslHostsPolicyBlockedArgument(): string {
   return POLICY_BLOCKED_ARGUMENT

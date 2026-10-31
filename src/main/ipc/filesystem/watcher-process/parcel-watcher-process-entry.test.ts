@@ -11,7 +11,7 @@ const { detectShallowWatchDeliveryMock, statMock, subscribeMock, watchMock, writ
   }))
 
 vi.mock('node:fs', () => ({
-  mkdtempSync: vi.fn(() => '/tmp/orca-watcher-canary-test'),
+  mkdtempSync: vi.fn(() => '/tmp/occ-watcher-canary-test'),
   rmSync: vi.fn(),
   // Shallow roots and macOS metadata files are stat-ed before watching.
   statSync: vi.fn(() => ({ isDirectory: () => true, dev: 1n, ino: 1n, birthtimeNs: 0n })),

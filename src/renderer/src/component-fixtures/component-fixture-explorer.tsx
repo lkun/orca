@@ -33,7 +33,7 @@ markComponentFixtureState('loading')
 // Reuse browser-build window.api defaults without pairing a runtime.
 installWebPreloadApi()
 // Fixtures preview the desktop renderer; keep web-only component branches off.
-Reflect.deleteProperty(window, '__ORCA_WEB_CLIENT__')
+Reflect.deleteProperty(window, '__OCC_WEB_CLIENT__')
 const defaultSettings = getDefaultSettings('/home/fixture')
 useAppStore.setState({ settings: { ...defaultSettings, theme: pageTheme } })
 const baseStoreState = useAppStore.getState()
@@ -123,7 +123,7 @@ async function listFixtures(): Promise<FixtureSummary[]> {
 }
 
 const host: ComponentFixtureHost = { render: renderFixture, list: listFixtures }
-Object.assign(window, { __orcaComponentFixtureHost: host })
+Object.assign(window, { __occComponentFixtureHost: host })
 
 const requestedId = params.get('id')
 applyTheme(pageTheme)

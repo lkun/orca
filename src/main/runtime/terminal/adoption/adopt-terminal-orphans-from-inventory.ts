@@ -5,7 +5,7 @@ import {
 } from '../../pty-recorded-surface-topology'
 import { resolveStructuredWorkerAuthority } from '../../structured-worker-authority'
 import type { RuntimeLeafRecord } from '../../runtime-terminal-state-records'
-import { OrcaRuntimeWithSubscribeToTerminalResize } from '../layout/terminal-resize-listeners'
+import { OCCRuntimeWithSubscribeToTerminalResize } from '../layout/terminal-resize-listeners'
 import type {
   RuntimeMobileSessionTabsResult,
   RuntimeTerminalOrphanAdoptionRequest,
@@ -20,7 +20,7 @@ import { getRepoIdFromWorktreeId } from '../../../../shared/worktree/id'
 import { getLatestPtyTitle } from '../../runtime-worktree-status-projection'
 import type { PtyLivenessVerdict } from '../../../../shared/pty-liveness-verdict'
 
-export abstract class OrcaRuntimeWithAdoptTerminalOrphansFromInventory extends OrcaRuntimeWithSubscribeToTerminalResize {
+export abstract class OCCRuntimeWithAdoptTerminalOrphansFromInventory extends OCCRuntimeWithSubscribeToTerminalResize {
   protected abstract issueHandle(leaf: RuntimeLeafRecord): string
 
   protected abstract getPaneKeyForTerminalHandle(handle: string): string | null
@@ -169,7 +169,7 @@ export abstract class OrcaRuntimeWithAdoptTerminalOrphansFromInventory extends O
     }
 
     // An arbitrary identity guess can attribute worker_done to a sibling and settle its tokenless dispatch.
-    // Worker children carry ORCA_TERMINAL_HANDLE; ordinary structured chats instead use ORCA_STRUCTURED_SESSION so the CLI refuses guesses even with one pane.
+    // Worker children carry OCC_TERMINAL_HANDLE; ordinary structured chats instead use OCC_STRUCTURED_SESSION so the CLI refuses guesses even with one pane.
     const candidates: RuntimeLeafRecord[] = []
     for (const leaf of this.leaves.values()) {
       if (targetWorktreeId && leaf.worktreeId !== targetWorktreeId) {

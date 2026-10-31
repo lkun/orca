@@ -1,7 +1,7 @@
-import type { OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree as ResolveBrowserNetworkExecutionHostForWorktreeMethods } from '../terminal/launch/terminal-workspace-scope'
-import { OrcaRuntimeWithHasTerminalsForWorktree } from './session-graph-reload-lifecycle'
+import type { OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree as ResolveBrowserNetworkExecutionHostForWorktreeMethods } from '../terminal/launch/terminal-workspace-scope'
+import { OCCRuntimeWithHasTerminalsForWorktree } from './session-graph-reload-lifecycle'
 import { HEADLESS_RUNTIME_WINDOW_ID } from '../../../shared/runtime-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { startedMainTerminalSurfaces } from '../terminal/surface/main-terminal-surfaces'
 import type { FolderWorkspace } from '../../../shared/folder-workspace-types'
 import {
@@ -37,7 +37,7 @@ import { hasPairedPageHost } from '../browser/browser-client-page-opening'
 import { resolveRemoteCliBrowserScopeSelector } from '../desktop-browser-bridge/remote-cli-browser-scope'
 import type { RpcContext } from '../rpc/core'
 
-export abstract class OrcaRuntimeWithTransitionGraphReloadToTerminalState extends OrcaRuntimeWithHasTerminalsForWorktree {
+export abstract class OCCRuntimeWithTransitionGraphReloadToTerminalState extends OCCRuntimeWithHasTerminalsForWorktree {
   protected abstract resolveBrowserNetworkExecutionHostForWorktree(
     ...args: Parameters<
       ResolveBrowserNetworkExecutionHostForWorktreeMethods['resolveBrowserNetworkExecutionHostForWorktree']
@@ -83,7 +83,7 @@ export abstract class OrcaRuntimeWithTransitionGraphReloadToTerminalState extend
     this.rejectAllWaiters('terminal_handle_stale')
     this.refreshWritableFlags()
     this.markSessionTabsInventoryPublished()
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       this.headlessGraphFallbackAvailable = true
       startedMainTerminalSurfaces(this)?.republish({ force: true })
     }
@@ -239,7 +239,7 @@ export abstract class OrcaRuntimeWithTransitionGraphReloadToTerminalState extend
     })
   }
 
-  /** On orcad, sends this host's CLI browser commands to the desktop that opted in to serve them. */
+  /** On occd, sends this host's CLI browser commands to the desktop that opted in to serve them. */
   routeDesktopBrowserBridgeRpc(
     method: string,
     params: unknown,

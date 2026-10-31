@@ -168,7 +168,7 @@ describe('a chat write the host refused', () => {
             refusal: {
               code: 'agent_session_journal_unreadable',
               message: 'Chats were saved by a newer OCC. Update OCC to keep using them.',
-              details: { reason: 'journalWrittenByNewerOrca' }
+              details: { reason: 'journalWrittenByNewerOCC' }
             }
           })
     )

@@ -136,7 +136,7 @@ describe('plugin list entries', () => {
       buildPluginListEntries([entry], []).installed[0]?.verifiedSource
     expect(sourceOf({ ...community, isDev: true })).toEqual({ kind: 'dev' })
     expect(sourceOf(community)).toEqual({ kind: 'unverified' })
-    expect(sourceOf(installed('stablyai.orca-notes', 'Notes'))).toEqual({ kind: 'official' })
+    expect(sourceOf(installed('stablyai.occ-notes', 'Notes'))).toEqual({ kind: 'official' })
   })
 
   it('shows what automatic updates did only while it still matches the installed version', () => {
@@ -201,12 +201,12 @@ describe('plugin list entries', () => {
         commit: 'd'.repeat(40),
         contentHash: 'e'.repeat(64),
         execution: 'data',
-        minimumOrca: '2.0.0',
+        minimumOCC: '2.0.0',
         types: []
       }
     })
-    const build = (orcaVersion: string) =>
-      buildPluginListEntries([plugin], [newer], { sources, orcaVersion }).installed[0]
+    const build = (occVersion: string) =>
+      buildPluginListEntries([plugin], [newer], { sources, occVersion }).installed[0]
     expect(build('1.9.0')?.updateVersion).toBeNull()
     expect(build('2.1.0')?.updateVersion).toBe('2.0.0')
   })
@@ -217,7 +217,7 @@ describe('plugin list entries', () => {
       status: 'invalid'
     }
     const sources = [catalog('official', 'https://official.invalid/c.git')]
-    const release = (contentHash: string, minimumOrca = '1.0.0') =>
+    const release = (contentHash: string, minimumOCC = '1.0.0') =>
       listing('acme.notes', {
         version: '1.0.0',
         release: {
@@ -225,12 +225,12 @@ describe('plugin list entries', () => {
           commit: 'd'.repeat(40),
           contentHash,
           execution: 'data',
-          minimumOrca,
+          minimumOCC,
           types: []
         }
       })
     const build = (offered: PluginMarketplaceHostListing, target = plugin) =>
-      buildPluginListEntries([target], [offered], { sources, orcaVersion: '1.5.0' }).installed[0]
+      buildPluginListEntries([target], [offered], { sources, occVersion: '1.5.0' }).installed[0]
     expect(build(release('e'.repeat(64)))?.reinstallVersion).toBe('1.0.0')
     // Same bytes would fail the same way; a release this OCC can't run is no fix either.
     expect(build(release('b'.repeat(64)))?.reinstallVersion).toBeNull()
@@ -242,11 +242,11 @@ describe('plugin list entries', () => {
 
   it('lists installed plugins once, joined to their listing, and the rest as available', () => {
     const result = buildPluginListEntries(
-      [installed('stablyai.orca-midnight-theme', 'OCC Midnight')],
+      [installed('stablyai.occ-midnight-theme', 'OCC Midnight')],
       [
-        listing('stablyai.orca-midnight-theme'),
-        listing('stablyai.orca-nord-theme'),
-        listing('stablyai.orca-nord-theme', { marketplaceSourceId: 'mirror' })
+        listing('stablyai.occ-midnight-theme'),
+        listing('stablyai.occ-nord-theme'),
+        listing('stablyai.occ-nord-theme', { marketplaceSourceId: 'mirror' })
       ]
     )
     expect(result.installed.map((entry) => [entry.name, entry.categories])).toEqual([
@@ -259,10 +259,10 @@ describe('plugin list entries', () => {
 
   it('names and versions a listing from its flat release fields, then the raw release', () => {
     const flat = pluginListEntryFromListing(
-      listing('stablyai.orca-midnight-theme', { name: 'OCC Midnight', version: '2.0.0' })
+      listing('stablyai.occ-midnight-theme', { name: 'OCC Midnight', version: '2.0.0' })
     )
     expect(flat).toMatchObject({ name: 'OCC Midnight', version: '2.0.0' })
-    const bare = pluginListEntryFromListing(listing('stablyai.orca-midnight-theme'))
+    const bare = pluginListEntryFromListing(listing('stablyai.occ-midnight-theme'))
     expect(bare.version).toBeNull()
     expect(bare.name).not.toBe('')
   })
@@ -272,7 +272,7 @@ describe('plugin list entries', () => {
       listing('vale-c.catppuccin', { marketplaceName: 'OCC Community Plugins', official: false })
     )
     expect(community.publisher).toBe('vale-c')
-    expect(pluginListEntryFromListing(listing('stablyai.orca-nord-theme')).publisher).toBe(
+    expect(pluginListEntryFromListing(listing('stablyai.occ-nord-theme')).publisher).toBe(
       'stablyai'
     )
   })
@@ -287,7 +287,7 @@ describe('plugin list entries', () => {
   })
 
   it('searches names, publishers, catalogs and categories', () => {
-    const [entry] = buildPluginListEntries([], [listing('stablyai.orca-nord-theme')]).available
+    const [entry] = buildPluginListEntries([], [listing('stablyai.occ-nord-theme')]).available
     expect(matchesPluginSearch(entry!, 'nord')).toBe(true)
     expect(matchesPluginSearch(entry!, 'THEMES')).toBe(true)
     expect(matchesPluginSearch(entry!, 'official plugins')).toBe(true)

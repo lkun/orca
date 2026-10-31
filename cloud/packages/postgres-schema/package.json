@@ -1,5 +1,5 @@
 {
-  "name": "@orca-cloud/postgres-schema",
+  "name": "@occ-cloud/postgres-schema",
   "version": "0.0.0",
   "private": true,
   "type": "module",

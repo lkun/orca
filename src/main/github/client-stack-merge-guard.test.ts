@@ -39,7 +39,7 @@ describe('GitHub GraphQL rate-limit guard', () => {
   afterEach(() => vi.restoreAllMocks())
 
   it('hydrates GitHub-registered stack metadata for exact linked PRs', async () => {
-    getOwnerRepoMock.mockResolvedValue({ owner: 'stablyai', repo: 'orca', host: 'github.com' })
+    getOwnerRepoMock.mockResolvedValue({ owner: 'stablyai', repo: 'occ', host: 'github.com' })
     ghExecFileAsyncMock
       .mockResolvedValueOnce({
         stdout: JSON.stringify({
@@ -49,7 +49,7 @@ describe('GitHub GraphQL rate-limit guard', () => {
                 number: 202,
                 title: 'Stack API',
                 state: 'OPEN',
-                url: 'https://github.com/stablyai/orca/pull/202',
+                url: 'https://github.com/stablyai/occ/pull/202',
                 updatedAt: '2026-08-10T00:00:00Z',
                 isDraft: false,
                 mergeable: 'MERGEABLE',
@@ -61,7 +61,7 @@ describe('GitHub GraphQL rate-limit guard', () => {
                 baseRefOid: 'b'.repeat(40),
                 headRefOid: 'a'.repeat(40),
                 headRepositoryOwner: { login: 'stablyai' },
-                headRepository: { name: 'orca' },
+                headRepository: { name: 'occ' },
                 commits: { nodes: [{ commit: { oid: 'a'.repeat(40), statusCheckRollup: null } }] },
                 stack: { number: 51, size: 2, baseRefName: 'main' },
                 stackEntry: { position: 2 }
@@ -97,7 +97,7 @@ describe('GitHub GraphQL rate-limit guard', () => {
                         pullRequest: {
                           number: 201,
                           title: 'Stack models',
-                          url: 'https://github.com/stablyai/orca/pull/201',
+                          url: 'https://github.com/stablyai/occ/pull/201',
                           state: 'OPEN',
                           isDraft: false,
                           mergeable: 'MERGEABLE',
@@ -109,7 +109,7 @@ describe('GitHub GraphQL rate-limit guard', () => {
                         pullRequest: {
                           number: 202,
                           title: 'Stack API',
-                          url: 'https://github.com/stablyai/orca/pull/202',
+                          url: 'https://github.com/stablyai/occ/pull/202',
                           state: 'OPEN',
                           isDraft: false,
                           mergeable: 'MERGEABLE',
@@ -202,18 +202,18 @@ describe('GitHub GraphQL rate-limit guard', () => {
     await expect(
       mergePR('/repo-root', 202, 'squash', undefined, {
         owner: 'stablyai',
-        repo: 'orca',
+        repo: 'occ',
         host: 'github.com'
       })
     ).resolves.toEqual({ ok: true })
 
     const mergeCall = ghExecFileAsyncMock.mock.calls.find(([args]) =>
-      args.includes('repos/stablyai/orca/pulls/202/merge-async')
+      args.includes('repos/stablyai/occ/pulls/202/merge-async')
     )
     expect(mergeCall?.[0]).toEqual(
       expect.arrayContaining([
         'PUT',
-        'repos/stablyai/orca/pulls/202/merge-async',
+        'repos/stablyai/occ/pulls/202/merge-async',
         'merge_action=merge_queue',
         `sha=${scenario.headSha}`
       ])
@@ -250,7 +250,7 @@ describe('GitHub GraphQL rate-limit guard', () => {
     await expect(
       mergePR('/repo-root', 202, 'squash', undefined, {
         owner: 'stablyai',
-        repo: 'orca',
+        repo: 'occ',
         host: 'github.com'
       })
     ).resolves.toEqual({ ok: false, error: 'socket closed after request submission' })
@@ -557,7 +557,7 @@ describe('GitHub GraphQL rate-limit guard', () => {
           number: 202,
           title: 'Stack API',
           state: 'OPEN',
-          url: 'https://github.com/stablyai/orca/pull/202',
+          url: 'https://github.com/stablyai/occ/pull/202',
           statusCheckRollup: [],
           updatedAt: '2026-08-10T00:00:00Z',
           isDraft: false,
@@ -571,19 +571,19 @@ describe('GitHub GraphQL rate-limit guard', () => {
 
     const result = await mergePR(scenario.repoPath, 202, 'squash', scenario.connectionId, {
       owner: 'stablyai',
-      repo: 'orca',
+      repo: 'occ',
       host: scenario.expectedOptions.host
     })
 
     expect.soft(result).toEqual({ ok: false, error: scenario.expectedError })
     expect
       .soft(ghExecFileAsyncMock.mock.calls.map(([args]) => args))
-      .toEqual([['api', 'repos/stablyai/orca/pulls/202', '--include']])
+      .toEqual([['api', 'repos/stablyai/occ/pulls/202', '--include']])
     expect.soft(ghExecFileAsyncMock.mock.calls[0]?.[1]).toEqual(scenario.expectedOptions)
     expect
       .soft(
         ghExecFileAsyncMock.mock.calls.some(([args]) =>
-          args.includes('repos/stablyai/orca/pulls/202/merge-async')
+          args.includes('repos/stablyai/occ/pulls/202/merge-async')
         )
       )
       .toBe(false)
@@ -597,7 +597,7 @@ describe('GitHub GraphQL rate-limit guard', () => {
     expect
       .soft(consoleWarnSpy)
       .toHaveBeenCalledWith(
-        'mergePR stack metadata probe failed for stablyai/orca#202:',
+        'mergePR stack metadata probe failed for stablyai/occ#202:',
         scenario.expectedDiagnostic
       )
     expect.soft(consoleWarnSpy).toHaveBeenCalledTimes(1)
@@ -626,7 +626,7 @@ describe('GitHub GraphQL rate-limit guard', () => {
           number: 13866,
           title: 'Fail closed on unavailable stack metadata',
           state: 'OPEN',
-          url: 'https://github.com/stablyai/orca/pull/13866',
+          url: 'https://github.com/stablyai/occ/pull/13866',
           statusCheckRollup: [],
           updatedAt: '2026-08-11T00:00:00Z',
           isDraft: false,
@@ -642,14 +642,14 @@ describe('GitHub GraphQL rate-limit guard', () => {
     await expect(
       mergePR('/repo-root', 13866, 'squash', undefined, {
         owner: 'stablyai',
-        repo: 'orca',
+        repo: 'occ',
         host: 'github.com'
       })
     ).resolves.toEqual({ ok: true })
 
     expect(ghExecFileAsyncMock).toHaveBeenNthCalledWith(
       3,
-      ['pr', 'merge', '13866', '--squash', '--repo', 'stablyai/orca'],
+      ['pr', 'merge', '13866', '--squash', '--repo', 'stablyai/occ'],
       expect.objectContaining({ env: expect.objectContaining({ GH_PROMPT_DISABLED: '1' }) })
     )
     expect(acquireMock).toHaveBeenCalledTimes(1)
@@ -673,7 +673,7 @@ describe('GitHub GraphQL rate-limit guard', () => {
           number: 202,
           title: 'Dependent API',
           state: 'OPEN',
-          url: 'https://github.com/stablyai/orca/pull/202',
+          url: 'https://github.com/stablyai/occ/pull/202',
           statusCheckRollup: [],
           updatedAt: '2026-08-10T00:00:00Z',
           isDraft: false,
@@ -687,14 +687,14 @@ describe('GitHub GraphQL rate-limit guard', () => {
     await expect(
       mergePR('/repo-root', 202, 'squash', undefined, {
         owner: 'stablyai',
-        repo: 'orca',
+        repo: 'occ',
         host: 'github.com'
       })
     ).resolves.toEqual({ ok: true })
 
     expect(ghExecFileAsyncMock).toHaveBeenNthCalledWith(
       3,
-      ['pr', 'merge', '202', '--squash', '--repo', 'stablyai/orca'],
+      ['pr', 'merge', '202', '--squash', '--repo', 'stablyai/occ'],
       expect.objectContaining({ env: expect.objectContaining({ GH_PROMPT_DISABLED: '1' }) })
     )
   })

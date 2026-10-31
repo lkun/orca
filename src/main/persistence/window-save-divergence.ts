@@ -20,7 +20,7 @@ import type { WorkspaceSessionState } from '../../shared/workspace-session-state
 import { droppedTabBarEntries, terminalTabBarEntries } from './window-save-raw-session-divergence'
 import { compactFieldChanges, type FieldChange } from './window-save-divergence-values'
 
-const LOG_PATH_ENV = 'ORCA_LAYOUT_SAVE_DIVERGENCE_LOG'
+const LOG_PATH_ENV = 'OCC_LAYOUT_SAVE_DIVERGENCE_LOG'
 const MAX_PATHS = 12
 const BINDING_FIELDS = new Set(['ptyId', 'incarnationId', 'sleeping', 'resume'])
 

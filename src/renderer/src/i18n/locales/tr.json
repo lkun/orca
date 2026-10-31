@@ -133,7 +133,7 @@
       "statusDetails": {
         "runningListUnavailable": "Windows, dağıtımın çalışıp çalışmadığını bildirmedi.",
         "guestUnanswered": "Dağıtım çalışıyor ancak OCC'nın kontrolüne yanıt vermedi.",
-        "orcadUnanswered": "Dağıtım içindeki OCC sunucusu yanıt vermedi.",
+        "occdUnanswered": "Dağıtım içindeki OCC sunucusu yanıt vermedi.",
         "restartGaveUp_one": "{{count}} denemeden sonra {{distro}} içindeki OCC sunucusu yeniden başlatılamadı",
         "restartGaveUp_other": "{{count}} denemeden sonra {{distro}} içindeki OCC sunucusu yeniden başlatılamadı",
         "serviceUnconfirmed": "WSL hizmeti dağıtımın çalışıp çalışmadığını doğrulamadı.",
@@ -946,7 +946,7 @@
   "menu": {
     "checkForUpdates": "Güncellemeleri Kontrol Et...",
     "settings": "Ayarlar",
-    "exploreOrca": "OCC'yı Keşfet",
+    "exploreOCC": "OCC'yı Keşfet",
     "gettingStarted": "OCC ile Başlarken",
     "reportCrash": "Çökme Bildir...",
     "file": "Dosya",
@@ -978,7 +978,7 @@
     "quitAndStopAllSessionsTooltip": "Çalışan ajanlar da dahil olmak üzere tüm terminal oturumlarını da durdurur. Çık komutu bunları çalışır durumda tutar; böylece OCC bir sonraki açılışta yeniden bağlanır."
   },
   "tray": {
-    "openOrca": "OCC'yı Aç",
+    "openOCC": "OCC'yı Aç",
     "quit": "Çıkış",
     "minimizeNotice": {
       "body": "OCC sistem tepsisinde çalışmaya devam ediyor"
@@ -1131,7 +1131,7 @@
         "sessionNoEd25519": "Bu tarayıcı güvenli oturum açma anahtarları (Ed25519) oluşturamadığından bu eşleştirme yalnızca bu sekme açıkken geçerlidir. Eşleştirmenin hatırlanması için güncel bir tarayıcı kullanın."
       },
       "runtimeAuth": {
-        "insecureOrigin": "OCC bu sayfadan eşleştirmeyi reddetti: sayfa başka bir makinede şifrelenmemiş http kullanıyor, dolayısıyla ağ yolu üzerindeki herhangi biri sayfayı değiştirebilir ve eşleştirme kodunu ele geçirebilir. Web istemcisini https üzerinden, bu bilgisayarda localhost üzerinden veya bir SSH tüneli aracılığıyla açın. Yine de izin vermek için sunucu yöneticisi OCC'yı ORCA_ALLOW_INSECURE_WEB_PAIRING=1 ile yeniden başlatabilir.",
+        "insecureOrigin": "OCC bu sayfadan eşleştirmeyi reddetti: sayfa başka bir makinede şifrelenmemiş http kullanıyor, dolayısıyla ağ yolu üzerindeki herhangi biri sayfayı değiştirebilir ve eşleştirme kodunu ele geçirebilir. Web istemcisini https üzerinden, bu bilgisayarda localhost üzerinden veya bir SSH tüneli aracılığıyla açın. Yine de izin vermek için sunucu yöneticisi OCC'yı OCC_ALLOW_INSECURE_WEB_PAIRING=1 ile yeniden başlatabilir.",
         "deviceDowngraded": "Bu OCC sunucusu artık bu tarayıcının oturum açma anahtarını desteklemiyor (sunucunun sürümü düşürülmüş olabilir). Sunucuyu güncelleyin veya bu tarayıcıyı tekrar eşleştirin.",
         "unauthorized": "Yetkisiz erişim. Bu web istemcisini tekrar eşleştirin."
       }
@@ -1277,7 +1277,7 @@
           "856083302c": "Jira bağlantısının yerini daha yeni bir istek aldı."
         },
         "linear": {},
-        "orca": {
+        "occ": {
           "profiles": {
             "612f7f6861": "Profil oluşturulamadı",
             "319d7cf39b": "Bulut profili oluşturuldu",
@@ -1817,7 +1817,7 @@
         }
       },
       "claudeAgentRowView": {
-        "subagentNavigationSetup": "Ayarlar → Ajanlar bölümünde Claude alt ajanları arasında gezinmeyi etkinleştirin, ardından OCC'da Claude 2.1.300+ sürümünü başlatın. keybindings.json dosyasında Ctrl+Alt+G, H veya V tuşlarının hâlâ command:orca-agent-view komutuna atandığını kontrol edin.",
+        "subagentNavigationSetup": "Ayarlar → Ajanlar bölümünde Claude alt ajanları arasında gezinmeyi etkinleştirin, ardından OCC'da Claude 2.1.300+ sürümünü başlatın. keybindings.json dosyasında Ctrl+Alt+G, H veya V tuşlarının hâlâ command:occ-agent-view komutuna atandığını kontrol edin.",
         "permissionPrompt": "Ajanlar arasında geçiş yapmadan önce Claude'un izin istemini yanıtlayın."
       },
       "wslHostWindowsDriveRefusal": {
@@ -2306,7 +2306,7 @@
       },
       "Landing": {
         "f9eaa9e12d": "Proje ekle",
-        "6ca6ff404e": "ORCA",
+        "6ca6ff404e": "OCC",
         "520304a067": "OCC logosu",
         "c1cf168479": "Gizle",
         "00cee697c1": "GitHub hesabınızı bağlamak için bir terminalde \"gh auth login\" komutunu çalıştırın.",
@@ -2450,12 +2450,12 @@
         "dccd26d4e4": "Proje seçin",
         "d6b0a96f32": "Proje ekle",
         "969a8bff66": "Proje",
-        "23bb365554": "orca.yaml",
+        "23bb365554": "occ.yaml",
         "a239038146": "SSH bağlantı hatası",
         "9a70e4859e": "Bu çalışma alanını oluşturmadan önce setup çalıştırılıp çalıştırılmayacağını seçin.",
         "803b7fe72f": "Setup yapılandırması kontrol ediliyor...",
         "92e34f0311": "yerel ayarlar",
-        "326a578923": "orca.yaml + yerel",
+        "326a578923": "occ.yaml + yerel",
         "ac3748dcda": "Şuradan Oluştur",
         "f660aa1454": "Bağlanıyor",
         "runOn": "Şurada çalıştır",
@@ -2490,8 +2490,8 @@
         "addHost": "Sunucu ekle",
         "addSshHost": "SSH sunucusu ekle",
         "addSshHostHint": "SSH üzerinden mevcut bir makineyi kullanın",
-        "addRemoteOrcaServer": "Uzak OCC Sunucusu Ekle",
-        "addRemoteOrcaServerHint": "Başka bir OCC çalışma zamanını eşleştirin",
+        "addRemoteOCCServer": "Uzak OCC Sunucusu Ekle",
+        "addRemoteOCCServerHint": "Başka bir OCC çalışma zamanını eşleştirin",
         "hostConnectionFailed": "Bağlantı başarısız oldu",
         "connect": "Bağlan",
         "reconnect": "Yeniden bağlan",
@@ -3935,7 +3935,7 @@
             "switchTerminal": "Terminali değiştir",
             "openTaskTerminal": "Görev terminalini aç",
             "systemBrowser": "Sistem Tarayıcısı",
-            "orcaBrowser": "OCC Tarayıcı",
+            "occBrowser": "OCC Tarayıcı",
             "terminalLinkSettings": "Terminal bağlantı ayarları",
             "copyLink": "Bağlantıyı kopyala",
             "copied": "Kopyalandı",
@@ -5175,7 +5175,7 @@
         "share": {
           "card": {
             "utils": {
-              "19f4b4dc75": "github.com/stablyai/orca",
+              "19f4b4dc75": "github.com/stablyai/occ",
               "d864fc5f98": "çıktı",
               "5d66fdd7c2": "girdi",
               "7080aeaebb": "Akıl yürütme",
@@ -5368,7 +5368,7 @@
           "updateAction_one": "{{count}} beceriyi güncelle"
         },
         "SkillUpdateRow": {
-          "replaceWithOrca": "OCC'nın kopyasıyla değiştir (yedek saklanır)"
+          "replaceWithOCC": "OCC'nın kopyasıyla değiştir (yedek saklanır)"
         },
         "SkillFreshnessStatusPill": {
           "updateAvailable": "Güncelleme mevcut",
@@ -5434,7 +5434,7 @@
           "66270286ac": "· Güvenle yeniden deneyebilirsiniz.",
           "157de228b4": "Beceriyi incele",
           "69236de8d6": "Kontrol ediliyor…",
-          "66cff7a804": "https://app.orca.dev/skills/share/…",
+          "66cff7a804": "https://app.occ.dev/skills/share/…",
           "93eb0fe8c7": "OCC beceri bağlantısı",
           "releaseNotes": "Sürüm notları:",
           "targetHeader": "Yükleme Hedefi",
@@ -5999,7 +5999,7 @@
           "8851b77327": "Bu yol yerel olarak kontrol edildi.",
           "sshConnectionUnavailable": "\"{{connection}}\" SSH bağlantısı bulunamadı veya bağlı değil"
         },
-        "OrcaYamlTrustDialog": {
+        "OCCYamlTrustDialog": {
           "f3e2b868fb": "Hook'ları çalıştır",
           "43b7bec4cd": "Çalıştırma",
           "setupChangedTitle": "{{repo}} için kurulum betiği değişti — yeni sürüm çalıştırılsın mı?",
@@ -6010,14 +6010,14 @@
           "archiveRunTitle": "{{repo}} kaynaklı arşiv betiği çalıştırılsın mı?",
           "issueCommandRunTitle": "{{repo}} kaynaklı sorun komutu çalıştırılsın mı?",
           "vmRecipeRunTitle": "{{repo}} kaynaklı VM tarifi çalıştırılsın mı?",
-          "setupChangedBody": "<code>orca.yaml</code> son onayınızdan bu yana değişti. Bu çalışma alanı oluşturulurken çalıştırılmadan önce yeniden inceleyin.",
-          "archiveChangedBody": "<code>orca.yaml</code> son onayınızdan bu yana değişti. Bu çalışma alanı kaldırılırken çalıştırılmadan önce yeniden inceleyin.",
-          "issueCommandChangedBody": "<code>orca.yaml</code> son onayınızdan bu yana değişti. Bu çalışma alanı bağlantılı bir sorunla başlatılırken çalıştırılmadan önce yeniden inceleyin.",
-          "vmRecipeChangedBody": "<code>orca.yaml</code> son onayınızdan bu yana değişti. VM sağlanmasından önce çalıştırılacağı için çalıştırılmadan önce yeniden inceleyin.",
-          "setupRunBody": "Bu repository'nin <code>orca.yaml</code> dosyası, bu çalışma alanı oluşturulurken makinenizde çalışır. Yalnızca bu repository'ye (<repo/>) güveniyorsanız çalıştırın.",
-          "archiveRunBody": "Bu repository'nin <code>orca.yaml</code> dosyası, bu çalışma alanı kaldırılırken makinenizde çalışır. Yalnızca bu repository'ye (<repo/>) güveniyorsanız çalıştırın.",
-          "issueCommandRunBody": "Bu repository'nin <code>orca.yaml</code> dosyası, bu çalışma alanı bağlantılı bir sorunla başlatılırken makinenizde çalışır. Yalnızca bu repository'ye (<repo/>) güveniyorsanız çalıştırın.",
-          "vmRecipeRunBody": "Bu repository'nin <code>orca.yaml</code> dosyası, VM sağlanmadan önce makinenizde çalışır. Yalnızca bu repository'ye (<repo/>) güveniyorsanız çalıştırın.",
+          "setupChangedBody": "<code>occ.yaml</code> son onayınızdan bu yana değişti. Bu çalışma alanı oluşturulurken çalıştırılmadan önce yeniden inceleyin.",
+          "archiveChangedBody": "<code>occ.yaml</code> son onayınızdan bu yana değişti. Bu çalışma alanı kaldırılırken çalıştırılmadan önce yeniden inceleyin.",
+          "issueCommandChangedBody": "<code>occ.yaml</code> son onayınızdan bu yana değişti. Bu çalışma alanı bağlantılı bir sorunla başlatılırken çalıştırılmadan önce yeniden inceleyin.",
+          "vmRecipeChangedBody": "<code>occ.yaml</code> son onayınızdan bu yana değişti. VM sağlanmasından önce çalıştırılacağı için çalıştırılmadan önce yeniden inceleyin.",
+          "setupRunBody": "Bu repository'nin <code>occ.yaml</code> dosyası, bu çalışma alanı oluşturulurken makinenizde çalışır. Yalnızca bu repository'ye (<repo/>) güveniyorsanız çalıştırın.",
+          "archiveRunBody": "Bu repository'nin <code>occ.yaml</code> dosyası, bu çalışma alanı kaldırılırken makinenizde çalışır. Yalnızca bu repository'ye (<repo/>) güveniyorsanız çalıştırın.",
+          "issueCommandRunBody": "Bu repository'nin <code>occ.yaml</code> dosyası, bu çalışma alanı bağlantılı bir sorunla başlatılırken makinenizde çalışır. Yalnızca bu repository'ye (<repo/>) güveniyorsanız çalıştırın.",
+          "vmRecipeRunBody": "Bu repository'nin <code>occ.yaml</code> dosyası, VM sağlanmadan önce makinenizde çalışır. Yalnızca bu repository'ye (<repo/>) güveniyorsanız çalıştırın.",
           "newSetupScript": "Yeni kurulum betiği",
           "setupScript": "Kurulum betiği",
           "newArchiveScript": "Yeni arşiv betiği",
@@ -6027,7 +6027,7 @@
           "newVmRecipe": "Yeni VM tarifi",
           "vmRecipe": "VM tarifi",
           "thisRepository": "bu repository",
-          "alwaysTrustRepo": "<repo/> içindeki <code>orca.yaml</code> dosyasına her zaman güven"
+          "alwaysTrustRepo": "<repo/> içindeki <code>occ.yaml</code> dosyasına her zaman güven"
         },
         "PendingWorktreeRow": {
           "af21e953d1": "Worktree oluşturmayı iptal et",
@@ -6118,7 +6118,7 @@
           "822ff300ad": "Kapat",
           "5bfd5c8779": "Kurulum betiklerini kapat",
           "detectedFromSource": "<source>{{source}}</source> kaynağından algılandı",
-          "ignoresSharedSetup": "Bu repo, paylaşılan <yaml>orca.yaml</yaml> kurulum betiklerini yok sayıyor. Yerel bir komut ekleyin veya Ayarlar bölümünde kaynağı değiştirin.",
+          "ignoresSharedSetup": "Bu repo, paylaşılan <yaml>occ.yaml</yaml> kurulum betiklerini yok sayıyor. Yerel bir komut ekleyin veya Ayarlar bölümünde kaynağı değiştirin.",
           "foundSetupCommandIn": "<source>{{source}}</source> içinde bir kurulum komutu bulundu. Yeni worktree'lerde çalıştırmak için kaydedin."
         },
         "SidebarFeedbackDialog": {
@@ -6371,7 +6371,7 @@
           "c7fa72ead0": "Notları düzenle",
           "93cbea12c2": "Notlar",
           "dbe2d18972": "Daha fazla {{value0}} işlemi",
-          "openInOrcaBrowser": "OCC tarayıcısında aç",
+          "openInOCCBrowser": "OCC tarayıcısında aç",
           "2c67730e07": "OCC'da aç",
           "e42941631a": "Linear'da görüntüle",
           "5e982e6128": "Linear {{value0}}",
@@ -6925,7 +6925,7 @@
           "port": "Port",
           "identityFile": "Kimlik dosyası",
           "identityFilePlaceholder": "~/.ssh/id_ed25519 (isteğe bağlı)",
-          "nameInOrca": "OCC'daki adı",
+          "nameInOCC": "OCC'daki adı",
           "serverNamePlaceholder": "Geliştirme sunucusu",
           "accessLink": "Erişim bağlantısı",
           "pairingCodePlaceholder": "occ://pair?code=...",
@@ -6951,7 +6951,7 @@
           "sshConfigPickerEmptyHint": "Oraya bir Host girişi ekleyin veya geri dönüp ayrıntıları manuel olarak girin.",
           "sshConfigPickerNoMatchHint": "Başka bir filtre deneyin veya geri dönüp manuel olarak girin.",
           "sshConfigPickerMoreResults": "İlk {{value0}} eşleşme gösteriliyor. Daha fazlasını bulmak için filtrenizi daraltın.",
-          "sshConfigPickerInOrca": "OCC'da",
+          "sshConfigPickerInOCC": "OCC'da",
           "sshConfigPickerPreviouslyRemoved": "OCC'dan kaldırıldı",
           "sshConfigPickerBack": "Geri",
           "fillFromSshConfig": "~/.ssh/config'den doldur…",
@@ -7156,7 +7156,7 @@
           "showError": "Bulunan worktree'ler gösterilemedi. Tekrar deneyin."
         },
         "repoHeaderProjectActions": {
-          "hideNonOrcaWorktrees": "OCC dışında oluşturulan worktree'leri gizle",
+          "hideNonOCCWorktrees": "OCC dışında oluşturulan worktree'leri gizle",
           "showHiddenWorktrees": "Gizli worktree'leri göster"
         },
         "useWorktreeCardLinkedDetails": {
@@ -7469,7 +7469,7 @@
           "retrySetup": "Yeniden dene",
           "installing": "Yükleniyor…",
           "hostUnavailable": "OCC bu çalışma alanının makinesine henüz beceri yükleyemiyor.",
-          "replaceWithOrcaCopy": "OCC'nın kopyasıyla değiştir",
+          "replaceWithOCCCopy": "OCC'nın kopyasıyla değiştir",
           "copyCommandAria": "Komutu kopyala",
           "ed197f59a2": "Komutu kopyala",
           "failedToCopyCommand": "Komut kopyalanamadı.",
@@ -7700,7 +7700,7 @@
           "5dae812f50": "Yenile",
           "52e640f3a0": "CLI durumunu yenile",
           "38edbb5721": "Kabuk komutu",
-          "outsideOrcaDescription": "OCC terminallerinde `occ` zaten kullanılabilir. `occ` komutunu OCC dışındaki terminallerde kullanmak için bunu açın.",
+          "outsideOCCDescription": "OCC terminallerinde `occ` zaten kullanılabilir. `occ` komutunu OCC dışındaki terminallerde kullanmak için bunu açın.",
           "c5c0f2641d": "OCC CLI",
           "d77352f2df": "`{{value0}}` PATH'ten kaldırılamadı.",
           "af5540930c": "`{{value0}}` PATH'ten kaldırıldı.",
@@ -8333,7 +8333,7 @@
         "OpenAiTranscriptionKeyDialog": {
           "fa83512e48": "Anahtarı Kaydet",
           "07b26f2742": "Anahtarı Temizle",
-          "d246b2bdb3": "Yerel çalışma zamanı anahtarları, mevcut olduğunda Electron şifreli depolama kullanılarak ~/.orca içinde saklanır.",
+          "d246b2bdb3": "Yerel çalışma zamanı anahtarları, mevcut olduğunda Electron şifreli depolama kullanılarak ~/.occ içinde saklanır.",
           "c3380e4ca5": "sk-...",
           "2f797018f0": "API anahtarı yapılandırıldı",
           "16015322f9": "API Anahtarı",
@@ -8471,11 +8471,11 @@
         },
         "RepositoryHooksSection": {
           "af49e2a19e": "Dosya mevcut, ancak OCC geçerli `scripts` veya `issueCommand` tanımları bulamadı.",
-          "39da2ae12f": "orca.yaml",
+          "39da2ae12f": "occ.yaml",
           "32fec28f5b": "Komut Kaynağı",
-          "bbbd6e0bc4": "Komut kaynağı ve orca.yaml",
+          "bbbd6e0bc4": "Komut kaynağı ve occ.yaml",
           "c9bc1bfd8f": "Gelişmiş",
-          "610d90fdbd": "Komut kaynağı ve orca.yaml ayrıntıları.",
+          "610d90fdbd": "Komut kaynağı ve occ.yaml ayrıntıları.",
           "4084720f47": "{{artifact_url}} bağlantısını tamamlayın",
           "13394103bd": "Özel GitHub sorun komutu",
           "2cc27dc12b": "Bağlantılı sorun komutunu kullanıcıya özel olarak değiştirmek için isteğe bağlı ayar.",
@@ -8487,7 +8487,7 @@
           "fb6bebcf7e": "Kurulumun Ne Zaman Çalıştırılacağı",
           "30d555acd2": "Yeni bir worktree oluşturulduktan sonra çalışan yerel ve paylaşılan betikler.",
           "52b31baf02": "Kurulum Betiği",
-          "8567127a40": "Worktree'ler oluşturulduğunda veya arşivlendiğinde çalışan betikler. Yerel betikler bu makinede saklanır; `orca.yaml` betikleri ekibinizle paylaşılır.",
+          "8567127a40": "Worktree'ler oluşturulduğunda veya arşivlendiğinde çalışan betikler. Yerel betikler bu makinede saklanır; `occ.yaml` betikleri ekibinizle paylaşılır.",
           "ff082fe7c6": "Worktree Hook'ları",
           "5d940bde5c": "Yerel betik ekle",
           "8c2893fae0": "Tek bir kabuk betiği olarak çalışır. Bu makinede saklanır.",
@@ -8501,10 +8501,10 @@
           "b2b06c7ce8": "Kullanılabilir ortam değişkenleri (ayrıntılar için üzerine gelin):",
           "95a0411b3e": "şablon",
           "175daba180": "Örnek",
-          "b20c5df6ca": "Bu repo için paylaşılan kurulum, arşiv veya sorun otomasyonu varsayılanlarını etkinleştirmek üzere bir `orca.yaml` dosyası ekleyin. Örnek şablon:",
-          "56f9a4a1d0": "`orca.yaml` Kullanılıyor",
-          "623e0c9f31": "`orca.yaml` ayrıştırılamadı",
-          "5a67e4793d": "`orca.yaml` algılanmadı",
+          "b20c5df6ca": "Bu repo için paylaşılan kurulum, arşiv veya sorun otomasyonu varsayılanlarını etkinleştirmek üzere bir `occ.yaml` dosyası ekleyin. Örnek şablon:",
+          "56f9a4a1d0": "`occ.yaml` Kullanılıyor",
+          "623e0c9f31": "`occ.yaml` ayrıştırılamadı",
+          "5a67e4793d": "`occ.yaml` algılanmadı",
           "07ba35bc68": "`scripts:` altındaki girintiyi kontrol edin. Hook anahtarları iki boşluk, komut satırları ise dört boşluk kullanmalıdır.",
           "787ca433ef": "Yalnızca desteklenen anahtarları tanımlayın: `scripts`, `setup`, `archive` ve `issueCommand`.",
           "ecc73d9125": "Dosyanızı aşağıdaki çalışan şablonla karşılaştırın ve gerekirse aynı yapıyı kopyalayın.",
@@ -8516,15 +8516,15 @@
           "0fa21e19ec": "Genellikle branch adına dayanan çalışma alanı adı.",
           "54c73d88d0": "Oluşturulan worktree'nin yolu. Kurulum komutları bu dizinden çalıştırılır.",
           "30952c4aa4": "Ana repo checkout'unun yolu. .env gibi paylaşılan dosyaları bir worktree'ye kopyalamak için kullanışlıdır.",
-          "9b821fa19d": "# e.g. echo \"Cleaning up $ORCA_WORKSPACE_NAME\"",
+          "9b821fa19d": "# e.g. echo \"Cleaning up $OCC_WORKSPACE_NAME\"",
           "6f90ebe3fd": "Bir worktree arşivlenmeden veya kaldırılmadan önce çalışır.",
-          "a3fc966677": "# e.g. pnpm install cp \"$ORCA_ROOT_PATH/.env\" \"$ORCA_WORKTREE_PATH/.env\"",
+          "a3fc966677": "# e.g. pnpm install cp \"$OCC_ROOT_PATH/.env\" \"$OCC_WORKTREE_PATH/.env\"",
           "f0710e1c83": "Yeni bir worktree oluşturulduktan sonra çalışır; bağımlılıkları yükler, env dosyalarını kopyalar, migration'ları çalıştırır.",
-          "8561b0665f": "önce orca.yaml, ardından yerel komutlarınız.",
-          "0e8b2a520d": "orca.yaml yok sayılır; yalnızca yerel komutlarınız çalıştırılır.",
+          "8561b0665f": "önce occ.yaml, ardından yerel komutlarınız.",
+          "0e8b2a520d": "occ.yaml yok sayılır; yalnızca yerel komutlarınız çalıştırılır.",
           "83dc78202a": "Yalnızca yerel",
           "29397e8bbc": "Yalnızca repoda commit'lenmiş komutlar çalıştırılır; yerel komutlar yok sayılır.",
-          "d88b6ff88f": "Yalnızca orca.yaml",
+          "d88b6ff88f": "Yalnızca occ.yaml",
           "99e3264a49": "Kurulum yalnızca çalıştırmayı seçtiğinizde başlatılır.",
           "15debc1fd9": "Varsayılan olarak atla",
           "022ba10cf2": "Kurulum otomatik olarak çalıştırılır.",
@@ -8536,17 +8536,17 @@
           "d2b3016c20": "paylaşılan",
           "4611b78617": "komut kaynağı",
           "c5a55a2d2e": "gelişmiş",
-          "0ce113fd7b": "Yerel betikler kaydedildi, ancak Betik Kaynağı yalnızca orca.yaml olarak ayarlandı.",
-          "7f78e5eea6": "Yerel betikler kaydedildi. OCC, hangi betik kaynağının kullanılacağını önerebilmek için hâlâ orca.yaml'ı kontrol ediyor.",
+          "0ce113fd7b": "Yerel betikler kaydedildi, ancak Betik Kaynağı yalnızca occ.yaml olarak ayarlandı.",
+          "7f78e5eea6": "Yerel betikler kaydedildi. OCC, hangi betik kaynağının kullanılacağını önerebilmek için hâlâ occ.yaml'ı kontrol ediyor.",
           "2b6356e744": "Kaydedildi",
           "81057d5f71": "Kaydediliyor...",
           "da37d6f10e": "Kopyala",
           "3149964b66": "Kopyalandı",
           "waitForSetupBeforeAgent": "Ajanı başlatmadan önce kurulumun tamamlanmasını bekle",
           "issueCommandDescription": "İsteğe bağlı geçersiz kılma. Bağlı sorunun veya PR'ın URL'si için <artifactUrl>{{artifact_url}}</artifactUrl> kullanın.",
-          "issueCommandSharedDefault": "<yaml>orca.yaml</yaml> dosyasındaki repo varsayılanını kullanmak için boş bırakın.",
-          "issueCommandOptionalDefault": "Varsa <yaml>orca.yaml</yaml> dosyasındaki repo varsayılanını kullanmak için boş bırakın.",
-          "commandSourceDescription": "Hem <yaml>orca.yaml</yaml> hem de yerel komutlar varsa hangilerinin çalışacağını seçin.",
+          "issueCommandSharedDefault": "<yaml>occ.yaml</yaml> dosyasındaki repo varsayılanını kullanmak için boş bırakın.",
+          "issueCommandOptionalDefault": "Varsa <yaml>occ.yaml</yaml> dosyasındaki repo varsayılanını kullanmak için boş bırakın.",
+          "commandSourceDescription": "Hem <yaml>occ.yaml</yaml> hem de yerel komutlar varsa hangilerinin çalışacağını seçin.",
           "issueCommandWslStopped": "WSL dağıtımı {{distro}} durduruldu. Bu komutu görmek veya düzenlemek için içinde bir terminal açın."
         },
         "RepositoryIconPicker": {
@@ -8939,7 +8939,7 @@
           "25b0004fbf": "Terminal etkin",
           "781cb74d22": "Terminal bölmelerinden çalışır.",
           "cb02e00202": "Terminal",
-          "d8c988dab4": "~/.orca/keybindings.json",
+          "d8c988dab4": "~/.occ/keybindings.json",
           "shortcutUnavailable": "Kısayol artık kullanılamıyor."
         },
         "SourceControlAiActionRecipeDefaults": {
@@ -9038,7 +9038,7 @@
           "removing": "Kaldırılıyor…",
           "testing": "Test ediliyor…",
           "select": "{{label}} öğesini seç",
-          "orcaServer": "OCC sunucusu",
+          "occServer": "OCC sunucusu",
           "moreActions": "{{label}} için diğer işlemler",
           "testConnection": "Bağlantıyı test et",
           "edit": "Düzenle…",
@@ -9938,7 +9938,7 @@
               "614c756ab1": "Tarayıcı Çerezlerini İçe Aktar",
               "cee44fb442": "otomasyon",
               "a57c2172dc": "agent-browser",
-              "f5b8fdddf5": "orca-cli",
+              "f5b8fdddf5": "occ-cli",
               "e5a784bc54": "kur",
               "9d97446873": "ajan",
               "a2d489263e": "beceri",
@@ -10630,7 +10630,7 @@
             "94e04427f6": "env",
             "664f1a8984": "sürekli entegrasyon",
             "5854a5c752": "ci",
-            "69637f4dc4": "orca_telemetry_disabled",
+            "69637f4dc4": "occ_telemetry_disabled",
             "058550f6bc": "do_not_track",
             "83a6cd79b3": "izleme reddi",
             "f7a2d9f137": "Telemetri iletimini devre dışı bırakan ortam değişkenleri.",
@@ -10679,13 +10679,13 @@
         },
         "repository": {
           "search": {
-            "bc7e504b8e": ".orca/issue-command",
-            "603c68b68c": "orca.yaml",
+            "bc7e504b8e": ".occ/issue-command",
+            "603c68b68c": "occ.yaml",
             "9dc60d7f6d": "github",
             "ec70364df2": "workflow",
             "66b584bd6c": "issue komutu",
             "2011a6a4f2": "github issue komutu",
-            "d42d1e49c0": "orca.yaml ve isteğe bağlı yerel geçersiz kılma ile yapılandırılan, dosya tabanlı bağlantılı issue komutu.",
+            "d42d1e49c0": "occ.yaml ve isteğe bağlı yerel geçersiz kılma ile yapılandırılan, dosya tabanlı bağlantılı issue komutu.",
             "d86ea12d16": "Özel GitHub Issue Komutu",
             "c5e8bdbcbb": "varsayılan olarak atla",
             "a69c5cbe90": "varsayılan olarak çalıştır",
@@ -10700,10 +10700,10 @@
             "0432d2fb7c": "yerel",
             "ed269fad69": "komut kaynağı",
             "19f58d6d89": "gelişmiş",
-            "d141897c90": "Komut kaynağı ve orca.yaml ayrıntıları.",
+            "d141897c90": "Komut kaynağı ve occ.yaml ayrıntıları.",
             "cc11699c3d": "Gelişmiş",
             "bf460fded8": "yaml",
-            "9cad92fe77": "orca.yaml hook'ları",
+            "9cad92fe77": "occ.yaml hook'ları",
             "6b80f7d3c8": "yerel ayar betikleri",
             "a1a4c51d58": "arşiv komutu",
             "fbfd2386e8": "arşiv betiği",
@@ -11246,7 +11246,7 @@
           "3c4d5e6f7a": "İstemci varsayılanını geçersiz kılar",
           "4d5e6f7a8b": "İstemci varsayılanını devralır",
           "5e6f7a8b9c": "Sıfırla",
-          "6f7a8b9cad": "Proje başına bir konum için göreli bir yol (ör. .orca/worktrees) veya paylaşılan tek bir klasör için mutlak bir yol kullanın."
+          "6f7a8b9cad": "Proje başına bir konum için göreli bir yol (ör. .occ/worktrees) veya paylaşılan tek bir klasör için mutlak bir yol kullanın."
         },
         "agent-awake-copy": {
           "modeTitle": "Bilgisayarı uyanık tut",
@@ -11346,9 +11346,9 @@
                   "1a9475dace": "Daha fazla bilgi",
                   "19fb419c12": "Gitea kimlik bilgileri yapılandırılmış ancak kimlik doğrulanamadı. Belirteci, API temel URL'sini ve repository izinlerini kontrol edin, ardından ortam değişkenleri değiştiyse OCC'yı yeniden başlatın.",
                   "60708f23da": "yalnızca OCC API URL'sini remote adresinden türetemediğinde.",
-                  "709057ad91": "ORCA_GITEA_API_BASE_URL",
+                  "709057ad91": "OCC_GITEA_API_BASE_URL",
                   "6da9dfa5de": "özel repository'ler için ve şunu ayarlayın",
-                  "6d5c2a3005": "ORCA_GITEA_TOKEN",
+                  "6d5c2a3005": "OCC_GITEA_TOKEN",
                   "fcbe0469fd": "Genel repository'ler git remote'larından tespit edilir. Şunu ayarlayın",
                   "0613928cb3": "Gitea durumu bu runtime'da henüz kullanılamıyor.",
                   "05863d2599": "Gitea REST API üzerinden pull request'ler ve commit durumları.",
@@ -11356,11 +11356,11 @@
                   "0b5242f8a2": "{{value0}} · Pull request'ler ve commit durumları",
                   "40f678df73": "Azure DevOps kimlik bilgileri yapılandırılmış ancak kimlik doğrulanamadı. Belirteci, API temel URL'sini ve repository izinlerini kontrol edin, ardından ortam değişkenleri değiştiyse OCC'yı yeniden başlatın.",
                   "7bd345e3f6": "yalnızca OCC API temel URL'sini git remote'undan türetemediğinde.",
-                  "186a6689df": "ORCA_AZURE_DEVOPS_API_BASE_URL",
+                  "186a6689df": "OCC_AZURE_DEVOPS_API_BASE_URL",
                   "b8a10b07c1": ". Şunu ayarlayın",
-                  "fbfd237f5e": "ORCA_AZURE_DEVOPS_ACCESS_TOKEN",
+                  "fbfd237f5e": "OCC_AZURE_DEVOPS_ACCESS_TOKEN",
                   "087feb92f1": ", ya da şunu ayarlayın",
-                  "48842720d2": "ORCA_AZURE_DEVOPS_TOKEN",
+                  "48842720d2": "OCC_AZURE_DEVOPS_TOKEN",
                   "7bbc9c64f0": "Şunu ayarlayın",
                   "f3f47dc7de": "Azure DevOps durumu bu runtime'da henüz kullanılamıyor.",
                   "0eb50d5593": "Azure DevOps REST API belirteçleri üzerinden pull request'ler ve build durumları.",
@@ -11478,8 +11478,8 @@
         },
         "PrivacyDiagnosticsRows": {
           "5a7cbe069a": "DO_NOT_TRACK=1 ayarlı; tanılama dosyaları oluşturma ve gönderme devre dışı.",
-          "63d03261d1": "ORCA_TELEMETRY_DISABLED=1 ayarlı; tanılama dosyaları oluşturma ve gönderme devre dışı.",
-          "d37e92a06b": "ORCA_DIAGNOSTICS_DISABLED=1 ayarlı; uygulama tanılaması kapalı.",
+          "63d03261d1": "OCC_TELEMETRY_DISABLED=1 ayarlı; tanılama dosyaları oluşturma ve gönderme devre dışı.",
+          "d37e92a06b": "OCC_DIAGNOSTICS_DISABLED=1 ayarlı; uygulama tanılaması kapalı.",
           "5ebb31e1fb": "CI'de çalışıyor; tanılama kapalı.",
           "e27c8d45bf": "Tanılama bir ortam değişkeni tarafından devre dışı bırakıldı."
         },
@@ -11572,13 +11572,13 @@
           "notificationPlayground": "Bildirim oyun alanı",
           "notificationPlaygroundDescription": "Toast düzenini, kurtarma eylemlerini ve uzun metin sarmalamasını kontrol etmek için yalnızca geliştirmede kullanılan tetikleyiciler.",
           "devOnly": "Yalnızca geliştirme",
-          "orcaCloud": "OCC Cloud",
-          "orcaCloudDescription": "Birinci taraf bulut girişinin yalnızca geliştirme için önizlemesi. Üretimde gizlidir; geliştirmede ORCA_CLOUD_API_URL ve ORCA_CLOUD_CLIENT_ID ayarlandığında kenar çubuğu hesap değiştiricisinde de görünür.",
-          "orcaCloudStatus": "Durum",
-          "orcaCloudSignOut": "Çıkış yap",
-          "orcaCloudConnect": "Profili bağla",
-          "orcaCloudRefresh": "Durumu yenile",
-          "orcaCloudNotConfigured": "Bu geliştirme sürümünde OCC Cloud girişini önizlemek için ORCA_CLOUD_API_URL ve ORCA_CLOUD_CLIENT_ID ayarlayın.",
+          "occCloud": "OCC Cloud",
+          "occCloudDescription": "Birinci taraf bulut girişinin yalnızca geliştirme için önizlemesi. Üretimde gizlidir; geliştirmede OCC_CLOUD_API_URL ve OCC_CLOUD_CLIENT_ID ayarlandığında kenar çubuğu hesap değiştiricisinde de görünür.",
+          "occCloudStatus": "Durum",
+          "occCloudSignOut": "Çıkış yap",
+          "occCloudConnect": "Profili bağla",
+          "occCloudRefresh": "Durumu yenile",
+          "occCloudNotConfigured": "Bu geliştirme sürümünde OCC Cloud girişini önizlemek için OCC_CLOUD_API_URL ve OCC_CLOUD_CLIENT_ID ayarlayın.",
           "deleteAnywayClicked": "Yine de Sil'e tıklandı"
         },
         "EphemeralVmRecipeRow": {
@@ -11630,7 +11630,7 @@
           "copy": "Kopyala",
           "copied": "Kopyalandı",
           "recipes": "Tarifler",
-          "recipesHelp": "orca.yaml ve etkin eklentilerden gelen tarifler burada görünür, üzerlerinde bir çalışma alanı başlatmaya hazırdır.",
+          "recipesHelp": "occ.yaml ve etkin eklentilerden gelen tarifler burada görünür, üzerlerinde bir çalışma alanı başlatmaya hazırdır.",
           "checking": "Tarifler kontrol ediliyor...",
           "none": "Henüz tarif bulunamadı.",
           "cloudVmSkillTitle": "Cloud VM kurulum becerisi",
@@ -11677,7 +11677,7 @@
                 "tickets": "biletler",
                 "issues": "issue'lar",
                 "skill": "beceri",
-                "orcaLinear": "orca-linear"
+                "occLinear": "occ-linear"
               }
             }
           }
@@ -11754,7 +11754,7 @@
         },
         "LinearAgentSkillPane": {
           "title": "Linear",
-          "description": "Linear'ın OCC'daki işleyişi: sorunlara göz atın, bağlantılı çalışma alanları başlatın ve ajanların /orca-linear ile sorunları güncellemesine izin verin.",
+          "description": "Linear'ın OCC'daki işleyişi: sorunlara göz atın, bağlantılı çalışma alanları başlatın ve ajanların /occ-linear ile sorunları güncellemesine izin verin.",
           "skillTitle": "Linear becerisi",
           "howToUse": "Örnek istemler",
           "howToUseDescription": "Bir istemi kopyalamak için karta tıklayın. Beceri yüklendikten sonra bunları Linear'a bağlı bir worktree'de kullanın.",
@@ -11822,9 +11822,9 @@
         },
         "BrowserLinkRoutingModifierSetting": {
           "titleSystem": "Web tarayıcınızda açmak için Shift tuşunu basılı tutun",
-          "titleOrca": "OCC'da açmak için Shift tuşunu basılı tutun",
+          "titleOCC": "OCC'da açmak için Shift tuşunu basılı tutun",
           "descriptionSystem": "Bağlantılar OCC'da açılır, bu yüzden {{chord}}+tıklama bunun yerine bir tanesini sistem tarayıcınıza gönderir.",
-          "descriptionOrca": "Bağlantılar sistem tarayıcınızda açılır. Etkinleştirildiğinde {{chord}}+tıklama bunun yerine bir tanesini OCC'nın yerleşik tarayıcısında açar."
+          "descriptionOCC": "Bağlantılar sistem tarayıcınızda açılır. Etkinleştirildiğinde {{chord}}+tıklama bunun yerine bir tanesini OCC'nın yerleşik tarayıcısında açar."
         },
         "BrowserLinkRoutingBackgroundSetting": {
           "title": "Bağlantıları arka planda aç",
@@ -11890,9 +11890,9 @@
           "gitTab": "Git URL'si",
           "localLabel": "Eklenti klasör yolu",
           "localPlaceholder": "/Users/you/plugins/my-plugin veya C:\\Users\\you\\plugins\\my-plugin",
-          "localHelp": "Bu bilgisayarda orca-plugin.json içeren bir klasörün tam yolu. Yol girildiği gibi kullanılır.",
+          "localHelp": "Bu bilgisayarda occ-plugin.json içeren bir klasörün tam yolu. Yol girildiği gibi kullanılır.",
           "gitLabel": "#ref içeren repository URL'si",
-          "gitPlaceholder": "https://github.com/acme/orca-notes",
+          "gitPlaceholder": "https://github.com/acme/occ-notes",
           "gitHelp": "Bir depo, sürüm veya etiket bağlantısı yapıştırın. #tag veya #commit olmadan OCC en son sürüm etiketini kullanır.",
           "cancel": "İptal",
           "installing": "Yükleniyor…",
@@ -11942,7 +11942,7 @@
           "title": "Marketplace kaynakları",
           "description": "Marketplace'ler sabitlenmiş Git repository'leridir. OCC, özel repository'ler için mevcut sistem Git kimlik bilgilerinizi kullanır.",
           "urlLabel": "Git URL'si",
-          "urlDescription": "orca-marketplace.json içeren bir HTTPS veya SSH repository URL'si kullanın.",
+          "urlDescription": "occ-marketplace.json içeren bir HTTPS veya SSH repository URL'si kullanın.",
           "urlPlaceholder": "https://git.example.com/team/plugins.git",
           "refLabel": "Git ref",
           "refDescription": "Bir branch, tag veya commit seçin. Her getirilen dizin tam bir commit'te kaydedilir.",
@@ -12002,14 +12002,14 @@
           "commandLabel": "{{value0}} · {{value1}} komutu"
         },
         "pluginError": {
-          "installManifestMissing": "Okunabilir bir orca-plugin.json bulunamadı. Eklentinin kök klasörünü seçin.",
-          "installManifestInvalid": "orca-plugin.json geçersiz. Eklenti yazarından manifest'i düzeltmesini isteyin.",
+          "installManifestMissing": "Okunabilir bir occ-plugin.json bulunamadı. Eklentinin kök klasörünü seçin.",
+          "installManifestInvalid": "occ-plugin.json geçersiz. Eklenti yazarından manifest'i düzeltmesini isteyin.",
           "incompatible": "Bu eklenti farklı bir OCC sürümü gerektiriyor.",
           "installUnsafePath": "Eklenti güvenli olmayan bir dosya yolu veya sembolik bağlantı içeriyor ve yüklenmedi.",
           "installLimit": "Eklenti, OCC'nın yükleme boyutu veya dosya sayısı sınırlarını aşıyor.",
           "installGit": "OCC, sabitlenmiş Git revizyonunu getiremedi. URL'yi, #ref'i, erişimi ve sistem Git kurulumunu kontrol edin.",
-          "invalidManifestMissing": "Eklenti kökünde orca-plugin.json eksik. Ekleyip eklentileri yenileyin.",
-          "invalidManifest": "orca-plugin.json geçersiz. Düzeltip eklentileri yenileyin.",
+          "invalidManifestMissing": "Eklenti kökünde occ-plugin.json eksik. Ekleyip eklentileri yenileyin.",
+          "invalidManifest": "occ-plugin.json geçersiz. Düzeltip eklentileri yenileyin.",
           "installedManifestUnloadable": "Bu sürüm bu OCC'da yüklenemiyor. Güncelleyin veya yeniden yükleyin.",
           "invalidArtifact": "Bildirilen bir worker veya panel dosyası eksik ya da güvenli değil. Eklenti dosyalarını düzeltip yenileyin.",
           "consentChanged": "Eklenti, siz incelerken değişti. Bu iletişim kutusunu kapatıp güncellenmiş izinleri inceleyin.",
@@ -12031,7 +12031,7 @@
           "manageKeys": "Anahtarları yönet",
           "addAccess": "Erişim ekle",
           "setupSkillTitle": "2. Ajan becerisini yükleyin",
-          "setupSkillBody": "Kodlama ajanlarına okuma, güncelleme paylaşma, triyaj yapma ve pull veya merge request ekleme için /orca-linear sağlar.",
+          "setupSkillBody": "Kodlama ajanlarına okuma, güncelleme paylaşma, triyaj yapma ve pull veya merge request ekleme için /occ-linear sağlar.",
           "setupVisibleTitle": "3. Linear'ı Görevler'de gösterin",
           "setupVisibleBody": "Linear'ı Görevler kaynak seçicisinde ve kenar çubuğu kısayollarında tutar.",
           "openTaskSources": "Görev Kaynakları",
@@ -12043,8 +12043,8 @@
           "notesIntro": "Linear bağlandıktan ve beceri yüklendikten sonra hızlı hatırlatmalar.",
           "noteLinkedTitle": "Bir Linear sorunundan başlayın",
           "noteLinkedBody": "Bilet işlemleri, sorunun bağlam olarak kalması için Görevler'den oluşturulan bir worktree'de en iyi şekilde çalışır.",
-          "noteSlashTitle": "/orca-linear'ı belirtin",
-          "noteSlashBody": "Sohbette /orca-linear kullanın (veya sade bir dille isteyin); böylece ajan o tur için beceriyi yükler.",
+          "noteSlashTitle": "/occ-linear'ı belirtin",
+          "noteSlashBody": "Sohbette /occ-linear kullanın (veya sade bir dille isteyin); böylece ajan o tur için beceriyi yükler.",
           "noteKeysTitle": "Anahtarlar çalışma zamanını izler",
           "noteKeysBody": "API anahtarları ve çalışma alanları etkin çalışma zamanı için saklanır.",
           "noteVisibilityTitle": "Gizlemek bağlantıyı kesmek değildir",
@@ -12060,7 +12060,7 @@
           "connectedHint": "Çalışma alanları ve anahtarlar etkin çalışma zamanı için saklanır. İstediğiniz zaman daha fazla erişim ekleyebilirsiniz.",
           "recheck": "Bağlantıyı yeniden kontrol et",
           "skillTitle": "Linear ajan becerisini yükle",
-          "skillDescription": "Ajanlara biletleri okuma, güncelleme paylaşma, durum değiştirme ve pull veya merge request ekleme için /orca-linear sağlar.",
+          "skillDescription": "Ajanlara biletleri okuma, güncelleme paylaşma, durum değiştirme ve pull veya merge request ekleme için /occ-linear sağlar.",
           "skillBlocked": "Önce Linear'ı bağlayın, ardından ajanlar için beceriyi yükleyin.",
           "skillPanelTitle": "Linear becerisi",
           "showDescription": "Linear'ı Görevler sayfası kaynak seçicisine ve kenar çubuğu kısayollarına dahil edin."
@@ -12207,7 +12207,7 @@
           "keywordMarkdown": "Markdown",
           "keywordUpload": "yükle"
         },
-        "orcaAccount": {
+        "occAccount": {
           "connected": "Bağlı",
           "reconnectRequired": "Oturumunuzun süresi doldu. Bulut özelliklerini kullanmak için tekrar oturum açın.",
           "unavailable": "OCC oturum açma bu sürümde kullanılamıyor.",
@@ -12331,8 +12331,8 @@
               "connectFailed": "Bağlantı başarısız oldu",
               "title": "Bitbucket'ı bağla",
               "description": "Pull request'lere ve build durumlarına göz atmak için bir Bitbucket Cloud kimlik bilgisi kullanın. OCC kaydetmeden önce doğrular.",
-              "remoteRuntime": "Etkin uzak çalışma ortamında değil, bu makinede saklanır — uzak ortamda ORCA_BITBUCKET_* ayarlayın. Ortam değişkenleri her zaman buraya kaydettiğiniz değerlerden önceliklidir.",
-              "environmentManaged": "Bitbucket zaten öncelikli olan ORCA_BITBUCKET_* ortam değişkenleri üzerinden yapılandırılmış. OCC'da bir kimlik bilgisi kaydetmek için bunların ayarını kaldırın.",
+              "remoteRuntime": "Etkin uzak çalışma ortamında değil, bu makinede saklanır — uzak ortamda OCC_BITBUCKET_* ayarlayın. Ortam değişkenleri her zaman buraya kaydettiğiniz değerlerden önceliklidir.",
+              "environmentManaged": "Bitbucket zaten öncelikli olan OCC_BITBUCKET_* ortam değişkenleri üzerinden yapılandırılmış. OCC'da bir kimlik bilgisi kaydetmek için bunların ayarını kaldırın.",
               "authModeLabel": "Bitbucket kimlik doğrulama yöntemi",
               "modeBasic": "E-posta ve API belirteci",
               "modeToken": "Erişim belirteci",
@@ -12347,7 +12347,7 @@
               "tokenHint": "Repository, proje ve çalışma alanı erişim belirteçleri ilgili Bitbucket ayarlar sayfasından oluşturulur ve pull request'ler için okuma izni gerektirir.",
               "basicHint": "Hesabınız için bir Atlassian API belirteci oluşturun, ardından bunu sahibi olan e-posta adresiyle eşleştirin.",
               "docsLink": "Bitbucket API belirteci belgeleri",
-              "storageNote": "İşletim sistemi anahtarlığı (keychain) kullanılabildiğinde şifrelenmiş depolamayla bu makinede saklanır. ORCA_BITBUCKET_* ortam değişkenleri burada kaydettiklerinizden her zaman önceliklidir.",
+              "storageNote": "İşletim sistemi anahtarlığı (keychain) kullanılabildiğinde şifrelenmiş depolamayla bu makinede saklanır. OCC_BITBUCKET_* ortam değişkenleri burada kaydettiklerinizden her zaman önceliklidir.",
               "cancel": "İptal",
               "verifying": "Doğrulanıyor...",
               "connect": "Bağlan"
@@ -12362,10 +12362,10 @@
               "authModeToken": "Erişim belirteci",
               "authModeBasic": "E-posta ve API belirteci",
               "disconnect": "Bitbucket bağlantısını kes",
-              "envManaged": "Ortam değişkenleri üzerinden yapılandırıldı. Bu kimlik bilgisini OCC'da yönetmek için ORCA_BITBUCKET_* değişkenlerinin ayarını kaldırın.",
+              "envManaged": "Ortam değişkenleri üzerinden yapılandırıldı. Bu kimlik bilgisini OCC'da yönetmek için OCC_BITBUCKET_* değişkenlerinin ayarını kaldırın.",
               "storedAuthFailed": "Kaydedilen Bitbucket kimlik bilgisi kimlik doğrulaması yapamadı. Düzenleyin veya belirtecin hâlâ pull request erişimine sahip olduğunu kontrol edin.",
-              "storedCredential": "Bu makinede OCC'da kaydedildi. Ayarlandığında ORCA_BITBUCKET_* ortam değişkenleri önceliklidir.",
-              "notConfigured": "Bir Atlassian API belirteci veya erişim belirteciyle bir Bitbucket Cloud hesabı bağlayın. ORCA_BITBUCKET_* ortam değişkenleri de çalışır ve önceliklidir.",
+              "storedCredential": "Bu makinede OCC'da kaydedildi. Ayarlandığında OCC_BITBUCKET_* ortam değişkenleri önceliklidir.",
+              "notConfigured": "Bir Atlassian API belirteci veya erişim belirteciyle bir Bitbucket Cloud hesabı bağlayın. OCC_BITBUCKET_* ortam değişkenleri de çalışır ve önceliklidir.",
               "disconnectFailed": "Kaydedilen Bitbucket kimlik bilgisi kaldırılamadı.",
               "statusLoadFailed": "Kaydedilen bir Bitbucket kimlik bilgisi kontrol edilemedi.",
               "replaceCredentials": "Kimlik bilgisi ekle veya değiştir",
@@ -12460,9 +12460,9 @@
             "confirmForget": "Bu masaüstünde unut",
             "keepLinked": "Bağlı tut",
             "forgetDescription": "Ana makinesine erişmeden bu sunucunun buradaki bağlantısını kaldırır. Ana makine geri gelirse sunucu orada hâlâ çalışıyor olabilir.",
-            "orcaVersion": "Bu ana makinedeki OCC: {{version}}",
-            "stopOrcaDescription": "SSH sunucusundaki OCC'yı durdurur ve bu listeden kaldırır.",
-            "updateOrcaOnHost": "Bu ana makinedeki OCC'yı güncelle",
+            "occVersion": "Bu ana makinedeki OCC: {{version}}",
+            "stopOCCDescription": "SSH sunucusundaki OCC'yı durdurur ve bu listeden kaldırır.",
+            "updateOCCOnHost": "Bu ana makinedeki OCC'yı güncelle",
             "updateAnyway": "Yine de güncelle",
             "notNow": "Şimdi değil",
             "forceUpdate": "Bu sunucuda terminaller çalışıyor. Güncelleme boyunca çalışmaya devam ederler ve OCC sunucusu yeniden başladığında bölmeleri yeniden bağlanır."
@@ -12584,7 +12584,7 @@
           "behindNoTemplate": "Bu uygulamanın güncelleyemediği bir OCC sunucusu sürümü çalışıyor; bu derlemede bu ana makine için sunucu bulunmuyor.",
           "behindMigrating": "OCC sunucusu çalışıyor; proje taşıma işlemi tamamlandıktan sonra güncellenecek.",
           "behindCheckFailed": "OCC sunucusu çalışıyor; OCC sunucunun bu uygulamadan eski olup olmadığını denetleyemedi.",
-          "runtimeNoexec": "Bu ana makine ~/.orca-remote dizininden program çalıştırmaya izin vermediği için OCC sunucusunu burada başlatamıyor. Bu genellikle ev klasörünün noexec ile bağlandığı anlamına gelir. Ana makinenin yöneticisinden burada program çalıştırılmasına izin vermesini isteyin, ardından yeniden bağlanın.",
+          "runtimeNoexec": "Bu ana makine ~/.occ-remote dizininden program çalıştırmaya izin vermediği için OCC sunucusunu burada başlatamıyor. Bu genellikle ev klasörünün noexec ile bağlandığı anlamına gelir. Ana makinenin yöneticisinden burada program çalıştırılmasına izin vermesini isteyin, ardından yeniden bağlanın.",
           "setupContactLost": "OCC sunucusunu kurarken bu ana makineyle bağlantısını kaybetti. Ana makinede hiçbir şey durdurulmadı. Devam etmek için yeniden bağlanın.",
           "nodeDownloadBlocked": "OCC sunucusunun ihtiyaç duyduğu Node.js ne bu bilgisayarda ne de bu ana makinede indirilebildi. Bir Node.js yansı adresi kullanın veya her iki makinenin ağ bağlantısını kontrol edin.",
           "nodeDownloadBlockedNoMirror": "OCC sunucusunun ihtiyaç duyduğu Node.js ne bu bilgisayarda ne de bu ana makinede indirilebildi. Her iki makinenin ağ veya proxy ayarlarını kontrol edin, ardından yeniden bağlanın.",
@@ -12788,7 +12788,7 @@
           "confirm": "Geri getir"
         },
         "SshTargetList": {
-          "addedInOrca": "OCC'da eklendi",
+          "addedInOCC": "OCC'da eklendi",
           "fromConfig": "~/.ssh/config kaynaklı",
           "filteredCount": "{{total}} öğeden {{count}}",
           "selectManualGroup": "OCC'da eklenen tüm SSH sunucularını seç",
@@ -13098,12 +13098,12 @@
           "viewError": "Hatayı görüntüle",
           "copyId": "Eklenti kimliğini kopyala",
           "checkUpdate": "Güncellemeyi denetle",
-          "bundledWithOrca": "OCC ile birlikte gelir",
+          "bundledWithOCC": "OCC ile birlikte gelir",
           "installName": "{{value0}} eklentisini yükle",
           "crashedOnce": "Bir kez çöktü",
           "updateLabel": "{{value0}} eklentisini {{value1}} sürümüne güncelle",
           "update": "{{value0}} sürümüne güncelle",
-          "needsOrca": "OCC {{value0}} gerekli",
+          "needsOCC": "OCC {{value0}} gerekli",
           "rollbackTo": "{{value0}} sürümüne geri al…",
           "copyContentHash": "İçerik karmasını kopyala",
           "reviewUpdate": "Güncellemeyi incele",
@@ -15122,7 +15122,7 @@
             "a6e7cdc688": "pnpm test --filter mobile",
             "21b67dfc92": "Bash",
             "d6d1041a1c": "⎿ Eşleştirme tarama slaytı terminal oturumuyla değiştirildi",
-            "336c0e070e": "mobile/orca-mobile-sidebar-mock-v3.html",
+            "336c0e070e": "mobile/occ-mobile-sidebar-mock-v3.html",
             "6d4ebd5833": "Edit",
             "fc83e0d5ef": "⎿ 2103 satır okundu",
             "80cc356591": "Read",
@@ -15151,7 +15151,7 @@
           "title": "Özel ağ adresi",
           "description": "Telefonunuzun ulaşabileceği bir adres duyurun, örneğin bir Tailscale ana bilgisayar adı, IP adresi veya ters proxy URL'si.",
           "label": "Adres",
-          "placeholder": "home.example.com:8443 or https://example.com/orca",
+          "placeholder": "home.example.com:8443 or https://example.com/occ",
           "hint": "Bir IPv4/IPv6 adresi, ana bilgisayar adı veya tam HTTP(S)/WebSocket URL'si girin. Bağlantı noktaları isteğe bağlıdır.",
           "cancel": "İptal",
           "use": "Adresi kullan",
@@ -15476,7 +15476,7 @@
                   "6d2b0a84e1": "Bu derlemede kullanılamıyor",
                   "notInstalled": "Yüklü değil",
                   "needsMacAccess": "macOS erişimi gerekiyor",
-                  "requiresOrcaDesktop": "OCC Desktop gerekiyor"
+                  "requiresOCCDesktop": "OCC Desktop gerekiyor"
                 }
               }
             }
@@ -17101,7 +17101,7 @@
             "zoomIn": "Yakınlaştır",
             "resetZoom": "Yakınlaştırmayı sıfırla",
             "appearance": "Görünüm",
-            "appearanceMatchOrca": "OCC ile eşleştir",
+            "appearanceMatchOCC": "OCC ile eşleştir",
             "appearanceLight": "Açık",
             "appearanceDark": "Koyu",
             "zoomPercent": "Yakınlaştırma %{{value0}}"
@@ -17990,7 +17990,7 @@
               "keep": {
                 "title": "Terminal bağlantıları OCC'nın tarayıcısında mı kalsın?",
                 "description": "Ya da varsayılan olarak sistem tarayıcınızı kullanın.",
-                "orca": {
+                "occ": {
                   "button": "OCC'da kalsın"
                 }
               },
@@ -17999,7 +17999,7 @@
               "link": {
                 "label": "Bağlantı"
               },
-              "orca": {
+              "occ": {
                 "note": "OCC, oturum açılmış siteler için içe aktarılan çerezleri kullanabilir.",
                 "button": "OCC'da aç"
               },
@@ -18120,7 +18120,7 @@
           "copy": "Kopyala"
         }
       },
-      "orca": {
+      "occ": {
         "profiles": {
           "signout": {
             "confirm": {
@@ -18175,7 +18175,7 @@
           "drawHintDismiss": "Anladım",
           "drawHintTry": "Dene",
           "errorAttach": "İşaretlenmiş ekran görüntüsü eklenemedi.",
-          "errorCapture": "Üzerine çizim yapılacak sayfa yakalanamadı.",
+          "erroccpture": "Üzerine çizim yapılacak sayfa yakalanamadı.",
           "errorUnavailable": "Ekran görüntüsü işaretleme bu sayfada kullanılamıyor.",
           "fontSize": "Yazı tipi boyutu",
           "hint": "Sayfa üzerine çizin, ardından işaretlemeyi kopyalayıp ajanınıza yapıştırın.",
@@ -18551,7 +18551,7 @@
         "c77189bc0c": "Filtreyi güncelle",
         "19af906d12": "Filtreyi kaydet"
       },
-      "OrcaSignInProgress": {
+      "OCCSignInProgress": {
         "waiting": "Tarayıcınızda oturum açmanız bekleniyor",
         "copyLink": "Oturum açma bağlantısını kopyala",
         "copied": "Oturum açma bağlantısı kopyalandı",
@@ -18966,10 +18966,10 @@
         "historyUnreadable": "OCC bu sohbetin kayıtlı geçmişini okuyamadı.",
         "historyUnusable": "Bu sohbet yüklenemiyor.",
         "historyUnavailable": "OCC şu anda bu sohbetin geçmişini açamadı.",
-        "savedByNewerOrca": "Sohbetler daha yeni bir OCC sürümüyle kaydedildi.",
-        "updateOrcaToKeepUsing": "Kullanmaya devam etmek için OCC'yı güncelleyin.",
-        "chatSavedByNewerOrca": "Bu sohbet daha yeni bir OCC sürümüyle kaydedilmiş.",
-        "updateOrcaToOpenChat": "Açmak için OCC'yı güncelleyin.",
+        "savedByNewerOCC": "Sohbetler daha yeni bir OCC sürümüyle kaydedildi.",
+        "updateOCCToKeepUsing": "Kullanmaya devam etmek için OCC'yı güncelleyin.",
+        "chatSavedByNewerOCC": "Bu sohbet daha yeni bir OCC sürümüyle kaydedilmiş.",
+        "updateOCCToOpenChat": "Açmak için OCC'yı güncelleyin.",
         "unsupported": "Bu işlem, sohbetin çalıştığı bilgisayarda daha yeni bir OCC sürümü gerektiriyor. Oradaki OCC'yı güncelleyip tekrar deneyin.",
         "notAvailable": "Bu özellik bu sohbette kullanılamıyor.",
         "cannotRunHere": "OCC bu ajanı burada bir sohbette çalıştıramıyor.",
@@ -19064,12 +19064,12 @@
         "stoppedBeforeStart": "Elle durduruldu",
         "dismiss": "Kapat",
         "copyError": "Hatayı kopyala",
-        "orcaStopUpdate": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC bir güncelleme için yeniden başlatıldı.",
-        "orcaStopQuit": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC kapatıldı.",
-        "orcaStopCrash": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC beklenmedik biçimde durdu.",
-        "orcaStopRemote": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC durdu.",
-        "orcaStopCanContinue": "Bu konuşmada devam edebilirsiniz.",
-        "orcaStopUnnamedServer": "uzak sunucu"
+        "occStopUpdate": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC bir güncelleme için yeniden başlatıldı.",
+        "occStopQuit": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC kapatıldı.",
+        "occStopCrash": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC beklenmedik biçimde durdu.",
+        "occStopRemote": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC durdu.",
+        "occStopCanContinue": "Bu konuşmada devam edebilirsiniz.",
+        "occStopUnnamedServer": "uzak sunucu"
       },
       "composer": {
         "send": "Gönder",
@@ -19432,7 +19432,7 @@
         "cancel": "İptal",
         "reason": "Neden",
         "needsAccess": "Erişim gerekiyor:",
-        "needsNewerOrca": "Bu istek için OCC'nın daha yeni bir sürümü gerekiyor.",
+        "needsNewerOCC": "Bu istek için OCC'nın daha yeni bir sürümü gerekiyor.",
         "plan": {
           "file": "Plan dosyası",
           "reviewTitle": "Önerilen planı incele",
@@ -19537,10 +19537,10 @@
         "estimated": "Son yanıta göre tahmin edilmiştir."
       },
       "contextMenu": {
-        "copyOrcaSessionId": "OCC Oturum Kimliğini Kopyala",
-        "orcaSessionIdCopied": "OCC oturum kimliği kopyalandı",
-        "orcaSessionIdCopyFailed": "OCC oturum kimliği kopyalanamıyor",
-        "orcaSessionIdTooltip": "OCC'nın bu sohbet için kullandığı kimliktir; ajan CLI'sinin kendi oturum kimliğinden ayrıdır. Ajanlar OCC üzerinden birbirlerine başvurmak için bunu kullanır."
+        "copyOCCSessionId": "OCC Oturum Kimliğini Kopyala",
+        "occSessionIdCopied": "OCC oturum kimliği kopyalandı",
+        "occSessionIdCopyFailed": "OCC oturum kimliği kopyalanamıyor",
+        "occSessionIdTooltip": "OCC'nın bu sohbet için kullandığı kimliktir; ajan CLI'sinin kendi oturum kimliğinden ayrıdır. Ajanlar OCC üzerinden birbirlerine başvurmak için bunu kullanır."
       },
       "dismissDeliveryNotice": "Kapat",
       "addSelectionToChat": "Sohbete ekle",
@@ -20450,7 +20450,7 @@
     },
     "eyebrowNew": "Yeni",
     "eyebrowTip": "İpucu",
-    "orcaCli": {
+    "occCli": {
       "title": "Ajanların OCC CLI ile OCC'yı yönetmesini sağlayın",
       "description": "Ajanların alt worktree'leri koordine etmesini ve worktree'ler arasında iletişim kurmasını sağlayın.",
       "cta": "CLI ve Becerileri Yükle"
@@ -20518,7 +20518,7 @@
     "createReviewFailure": {
       "authRequiredCommand": "{{providerName}} için kimlik doğrulaması yapılmamış. Sonraki adım: bu ortamda {{command}} komutunu çalıştırın.",
       "authRequiredVariable": "{{providerName}} için kimlik doğrulaması yapılmamış. Sonraki adım: bu ortamda {{variable}} değişkenini ayarlayın.",
-      "authRequiredBitbucket": "Bitbucket için kimlik doğrulaması yapılmamış. Sonraki adım: Ayarlar > Entegrasyonlar bölümünden Bitbucket'ı bağlayın veya bu ortamda ORCA_BITBUCKET_* değişkenlerini ayarlayın.",
+      "authRequiredBitbucket": "Bitbucket için kimlik doğrulaması yapılmamış. Sonraki adım: Ayarlar > Entegrasyonlar bölümünden Bitbucket'ı bağlayın veya bu ortamda OCC_BITBUCKET_* değişkenlerini ayarlayın.",
       "signInHintCommand": "Bu ortamda {{command}} komutunu çalıştırın",
       "signInHintVariable": "Bu ortamda {{variable}} değişkenini ayarlayın",
       "signInHintBitbucket": "Ayarlar > Entegrasyonlar bölümünden Bitbucket'ı bağlayın",
@@ -21808,7 +21808,7 @@
       "failed": "Doğrulanamıyor: yerel terminaller yenilenemedi. Son gözlemlenen terminaller gösteriliyor.",
       "retry": "Yeniden dene",
       "loading": "Terminaller yükleniyor…",
-      "noLocalOrcaPtys": "Yerel OCC PTY'si yok",
+      "noLocalOCCPtys": "Yerel OCC PTY'si yok",
       "openNamed": "{{terminal}} terminalini aç",
       "endNamed": "{{terminal}} terminalini sonlandır",
       "endShort": "Sonlandır",
@@ -22122,7 +22122,7 @@
       "writerUnavailable": "OCC'da profil kaydı başlatılamadı. OCC'yı yeniden başlatın; sorun devam ederse bu derlemeyi onarın veya yeniden yükleyin.",
       "publicationUnavailable": "Profil durumu OCC tarafından {{directory}} konumuna güvenli bir şekilde kaydedilemedi.",
       "publicationNeedsHardLinks": "Bu konum sabit bağlantıları desteklemeli ve OCC'nın bunları oluşturma izni olmalıdır.",
-      "publicationMoveData": "Klasör izinlerini kontrol etmeden veya OCC veri dizininin tamamını APFS, NTFS ya da ext4 gibi sabit bağlantıları destekleyen yazılabilir bir yerel dosya sistemine taşımadan önce OCC ve orcad uygulamalarını kapatın.",
+      "publicationMoveData": "Klasör izinlerini kontrol etmeden veya OCC veri dizininin tamamını APFS, NTFS ya da ext4 gibi sabit bağlantıları destekleyen yazılabilir bir yerel dosya sistemine taşımadan önce OCC ve occd uygulamalarını kapatın.",
       "publicationKeepFiles": "Özgün dizini ve tüm kurtarma dosyalarını saklayın."
     }
   },
@@ -22191,7 +22191,7 @@
       "alreadyPairedAddAgain": "Bu sunucu zaten \"{{name}}\" olarak eşleştirilmiş. Bağlantısını güncellemek için Ayarlar > Uzak OCC Sunucuları bölümünden yeniden ekleyin.",
       "alreadyPairedUnreadable": "Bu sunucu zaten \"{{name}}\" olarak eşleştirilmiş, ancak sunucunun kayıtlı ayarları OCC'nın bu sürümünde okunamıyor.",
       "nameTaken": "\"{{name}}\" adlı bir sunucu zaten var.",
-      "idNeedsNewerOrca": "Bu kimliğe sahip bir sunucu, OCC'nın daha yeni bir sürümünü gerektiren bir biçimde zaten var.",
+      "idNeedsNewerOCC": "Bu kimliğe sahip bir sunucu, OCC'nın daha yeni bir sürümünü gerektiren bir biçimde zaten var.",
       "hostSaveFailed": "OCC sunucuyu doğruladı ancak sunucu kaydedilemedi. Yerel ayar depolamasını kontrol edip yeniden deneyin.",
       "repairSaveFailed": "OCC sunucuyu doğruladı ancak yeni eşleştirme kaydedilemedi. Yerel ayar depolamasını kontrol edip yeniden deneyin.",
       "repairCloudWorkspace": "Bu sunucu, devam ettirildiğinde onu yeniden eşleştiren bir bulut çalışma alanına ait."

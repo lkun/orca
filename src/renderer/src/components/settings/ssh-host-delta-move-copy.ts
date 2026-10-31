@@ -1,7 +1,7 @@
-import type { OrcadDeltaMoveRow } from '../../../../shared/orcad-managed-runtime'
+import type { OCCdDeltaMoveRow } from '../../../../shared/occd-managed-runtime'
 import { translate } from '@/i18n/i18n'
 
-export function deltaMoveRowLabel(row: OrcadDeltaMoveRow): string {
+export function deltaMoveRowLabel(row: OCCdDeltaMoveRow): string {
   switch (row.kind) {
     case 'repository':
       return translate(

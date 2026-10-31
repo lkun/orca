@@ -2,7 +2,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { describe, expect, it } from 'vitest'
 import { packagedNodePtyFloorDockerArgs } from './run-linux-packaged-node-pty-floor-smoke.mjs'
 
@@ -29,8 +29,8 @@ describe('packaged node-pty Linux floor smoke', () => {
   })
 
   it.each([
-    ['valid output', 0, 'orca-node-pty-floor-ok', 0],
-    ['nonzero exit', 3, 'orca-node-pty-floor-ok', 1],
+    ['valid output', 0, 'occ-node-pty-floor-ok', 0],
+    ['nonzero exit', 3, 'occ-node-pty-floor-ok', 1],
     ['wrong output', 0, 'unexpected', 1]
   ])('validates packaged node-pty %s', (_name, exitCode, output, expectedCode) => {
     const resources = mkdtempSync(join(tmpdir(), 'packaged-node-pty-floor-'))
@@ -53,7 +53,7 @@ describe('packaged node-pty Linux floor smoke', () => {
         ]
       })
       expect(result.code, result.stderr).toBe(expectedCode)
-      expect(result.stdout).toBe(expectedCode === 0 ? 'orca-node-pty-floor-ok\n' : '')
+      expect(result.stdout).toBe(expectedCode === 0 ? 'occ-node-pty-floor-ok\n' : '')
       if (expectedCode !== 0) {
         expect(result.stderr).toContain('packaged node-pty floor smoke failed:')
       }

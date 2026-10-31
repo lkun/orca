@@ -84,7 +84,7 @@ afterEach(() => {
 
 it.each([
   ['journalCorrupt', 'Unable to load this chat.'],
-  ['journalWrittenByNewerOrca', 'This chat was saved by a newer OCC. Update OCC to open it.']
+  ['journalWrittenByNewerOCC', 'This chat was saved by a newer OCC. Update OCC to open it.']
 ])('reads %s as a failure no retry gets past, in its words', async (reason, words) => {
   expect(await readFailedWith(reason)).toMatchObject({
     status: 'error',

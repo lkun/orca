@@ -100,11 +100,11 @@ function isErrorData(value: unknown): value is ProfileStateWriterErrorData {
     (value.expectedRevision === undefined || isProfileStateRevision(value.expectedRevision)) &&
     (value.actualRevision === undefined || isProfileStateRevision(value.actualRevision)) &&
     (value.domain === undefined || value.domain === null || typeof value.domain === 'string') &&
-    (value.cause === undefined || isErrorCauseData(value.cause))
+    (value.cause === undefined || isErroccuseData(value.cause))
   )
 }
 
-function isErrorCauseData(value: unknown): boolean {
+function isErroccuseData(value: unknown): boolean {
   return (
     isRecord(value) &&
     typeof value.message === 'string' &&

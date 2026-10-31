@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import * as runner from './runner'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   getGitRepoRoot,
   getGitRepoRootAsync,
@@ -22,7 +22,7 @@ async function git(cwd: string, args: string[]): Promise<void> {
 }
 
 beforeEach(() => {
-  fixture = mkdtempSync(join(tmpdir(), 'orca-repo-async-'))
+  fixture = mkdtempSync(join(tmpdir(), 'occ-repo-async-'))
 })
 afterEach(() => {
   vi.restoreAllMocks()
@@ -47,7 +47,7 @@ describe('asynchronous repository detection with real Git', () => {
       '-c',
       'user.name=OCC Test',
       '-c',
-      'user.email=orca@example.invalid',
+      'user.email=occ@example.invalid',
       'commit',
       '--allow-empty',
       '--quiet',
@@ -100,7 +100,7 @@ describe('asynchronous repository detection with real Git', () => {
         '-c',
         'user.name=OCC Test',
         '-c',
-        'user.email=orca@example.invalid',
+        'user.email=occ@example.invalid',
         'commit',
         '--allow-empty',
         '--quiet',

@@ -22,5 +22,5 @@ export function openWslMoveRoundTripStore(dir: string, seed?: PersistedState): S
 
 /** The persisted JSON of the store opened over `dir`, as a reader of its profile gets it. */
 export function readWslMoveRoundTripStoreJson(dir: string): string {
-  return readPersistedStateJson(join(dir, 'orca-data.json'))
+  return readPersistedStateJson(join(dir, 'occ-data.json'))
 }

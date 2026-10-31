@@ -3,7 +3,7 @@ import { createWslDistroHolder, type WslDistroHolder } from '../wsl/wsl-distro-h
 import { ensureWindowsAppDataPath } from './windows-app-data-path'
 
 /** The NSIS uninstaller's flag (config/nsis/occ-installer-hooks.nsh); keep the two in sync. */
-export const WSL_HOLDER_UNINSTALL_FLAG = '--orca-uninstall-release-wsl-holders'
+export const WSL_HOLDER_UNINSTALL_FLAG = '--occ-uninstall-release-wsl-holders'
 
 // Uninstall must finish even if the process table never answers.
 const UNINSTALL_RELEASE_TIMEOUT_MS = 30_000
@@ -33,7 +33,7 @@ export function runWslHolderUninstallPreflight(argv: readonly string[] = process
   const timeout = setTimeout(() => app.exit(1), UNINSTALL_RELEASE_TIMEOUT_MS)
   let holder: WslDistroHolder
   try {
-    process.env.ORCA_BACKGROUND_LAUNCH = '1'
+    process.env.OCC_BACKGROUND_LAUNCH = '1'
     // The same userData the app records holders under; before any other preflight step.
     ensureWindowsAppDataPath(app)
     holder = createWslDistroHolder({ userDataPath: app.getPath('userData') })

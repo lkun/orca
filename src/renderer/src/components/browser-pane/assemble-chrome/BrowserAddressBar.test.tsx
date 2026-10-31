@@ -182,7 +182,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
       )
     })
 
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')
     expect(input).not.toBeNull()
 
     await act(async () => {
@@ -214,7 +214,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
     await act(async () => {
       root.render(<AddressBarHarness initialValue="" onNavigate={onNavigate} onSubmit={onSubmit} />)
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')
     if (!input) {
       throw new Error('address bar input missing')
     }
@@ -249,7 +249,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
     await act(async () => {
       root.render(<AddressBarHarness initialValue="" onNavigate={vi.fn()} onSubmit={vi.fn()} />)
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')
     if (!input) {
       throw new Error('address bar input missing')
     }
@@ -294,7 +294,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
     await act(async () => {
       root.render(<AddressBarHarness initialValue="" onNavigate={onNavigate} onSubmit={onSubmit} />)
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')!
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')!
     await act(async () => input.focus())
     await act(async () => typeInto(input, typed, inputType))
 
@@ -323,7 +323,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
     await act(async () => {
       root.render(<AddressBarHarness initialValue="" onNavigate={vi.fn()} onSubmit={vi.fn()} />)
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')
     if (!input) {
       throw new Error('address bar input missing')
     }
@@ -356,7 +356,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
         <AddressBarHarness initialValue="review" onNavigate={onNavigate} onSubmit={onSubmit} />
       )
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')
     if (!input) {
       throw new Error('address bar input missing')
     }
@@ -383,7 +383,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
         <AddressBarHarness initialValue="review" onNavigate={onNavigate} onSubmit={onSubmit} />
       )
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')
     if (!input) {
       throw new Error('address bar input missing')
     }
@@ -420,7 +420,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
       )
     })
 
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')
     expect(input).not.toBeNull()
 
     await act(async () => {
@@ -455,7 +455,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
         />
       )
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')!
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')!
     const shown = (): string | null | undefined =>
       container.querySelector('[data-current-address-value="true"]')?.textContent
     const press = async (key: string): Promise<void> => {
@@ -498,7 +498,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
         />
       )
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')!
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')!
     await act(async () => {
       input.focus()
       typeInto(input, 'localhost', 'insertText')
@@ -517,7 +517,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
         <AddressBarHarness initialValue="local" onNavigate={vi.fn()} onSubmit={vi.fn()} />
       )
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')!
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')!
     await act(async () => {
       input.focus()
     })
@@ -548,7 +548,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
         <AddressBarHarness initialValue="local" onNavigate={vi.fn()} onSubmit={vi.fn()} />
       )
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')!
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')!
     await act(async () => {
       input.focus()
     })
@@ -578,7 +578,7 @@ describe('BrowserAddressBar autocomplete preview', () => {
       )
     })
 
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')
     expect(input).not.toBeNull()
 
     await act(async () => {
@@ -604,11 +604,11 @@ describe('BrowserAddressBar autocomplete preview', () => {
   })
 
   it('clears the whole-URL selection on the second double-click press', async () => {
-    const url = 'https://github.com/stablyai/orca/pull/27021'
+    const url = 'https://github.com/stablyai/occ/pull/27021'
     await act(async () => {
       root.render(<AddressBarHarness initialValue={url} onNavigate={vi.fn()} onSubmit={vi.fn()} />)
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')!
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')!
 
     act(() => {
       input.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, button: 0, detail: 1 }))
@@ -625,11 +625,11 @@ describe('BrowserAddressBar autocomplete preview', () => {
   })
 
   it('clears a selection kept from before blur when a press refocuses the bar', async () => {
-    const url = 'https://github.com/stablyai/orca/pull/27021'
+    const url = 'https://github.com/stablyai/occ/pull/27021'
     await act(async () => {
       root.render(<AddressBarHarness initialValue={url} onNavigate={vi.fn()} onSubmit={vi.fn()} />)
     })
-    const input = container.querySelector<HTMLInputElement>('input[data-orca-browser-address-bar]')!
+    const input = container.querySelector<HTMLInputElement>('input[data-occ-browser-address-bar]')!
     input.setSelectionRange(0, url.length)
 
     act(() => {

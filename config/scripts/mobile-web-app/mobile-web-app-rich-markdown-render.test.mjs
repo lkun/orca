@@ -64,7 +64,7 @@ const ENGINES = [
     name: 'chromium',
     // Use runner Chrome override to avoid CI browser downloads.
     launch: () => {
-      const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+      const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
       return chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
     }
   },
@@ -101,7 +101,7 @@ function Harness() {
   })
   const handle = useRef(null)
   useEffect(() => {
-    globalThis.__orcaEditor = {
+    globalThis.__occEditor = {
       set: (next) => setState((previous) => ({ ...previous, ...next })),
       setScheme: applyMobileColorScheme,
       changes: [],
@@ -121,8 +121,8 @@ function Harness() {
       content,
       editable: state.editable,
       onChange: onChanged,
-      onOpenLink: (url) => globalThis.__orcaEditor.links.push(url),
-      onKeyboardInsetChange: (bottom) => globalThis.__orcaEditor.insets.push(bottom)
+      onOpenLink: (url) => globalThis.__occEditor.links.push(url),
+      onKeyboardInsetChange: (bottom) => globalThis.__occEditor.insets.push(bottom)
     })
   return createElement(
     SafeAreaProvider,
@@ -135,7 +135,7 @@ function Harness() {
             'div',
             { id: 'first-surface', style: { flex: 1, display: 'flex', minHeight: 0 } },
             editor('first-' + state.generation, true, state.content, (next) => {
-              globalThis.__orcaEditor.changes.push(next)
+              globalThis.__occEditor.changes.push(next)
               setState((previous) => ({ ...previous, content: next }))
             })
           )
@@ -145,7 +145,7 @@ function Harness() {
             'div',
             { id: 'second-surface', style: { flex: 1, display: 'flex', minHeight: 0 } },
             editor('second', false, state.secondContent, (next) => {
-              globalThis.__orcaEditor.secondChanges.push(next)
+              globalThis.__occEditor.secondChanges.push(next)
               setState((previous) => ({ ...previous, secondContent: next }))
             })
           )
@@ -159,14 +159,14 @@ createRoot(document.getElementById('root')).render(createElement(Harness))
 
 // Install ReactNativeWebView recorder before bundle: absence alone cannot prove editor JSON avoids shell bridge if bridge object never existed.
 function installBridgeObjectRecorder() {
-  globalThis.__orcaBridgeReads = []
+  globalThis.__occBridgeReads = []
   const bridge = {
-    postMessage: (message) => globalThis.__orcaBridgeReads.push(`post ${String(message)}`)
+    postMessage: (message) => globalThis.__occBridgeReads.push(`post ${String(message)}`)
   }
   Object.defineProperty(globalThis, 'ReactNativeWebView', {
     configurable: true,
     get: () => {
-      globalThis.__orcaBridgeReads.push('read')
+      globalThis.__occBridgeReads.push('read')
       return bridge
     }
   })
@@ -273,7 +273,7 @@ async function openPage(browser) {
 
 // Wait for whole innerHTML, not text: block changes preserve text and stale ranges caused Chromium IndexSizeError/WebKit timeout.
 async function setContent(page, markdown, html) {
-  await page.evaluate((next) => globalThis.__orcaEditor.set({ content: next }), markdown)
+  await page.evaluate((next) => globalThis.__occEditor.set({ content: next }), markdown)
   await page.waitForFunction(
     (expected) => document.querySelector('#first-surface #editor')?.innerHTML === expected,
     html,
@@ -283,7 +283,7 @@ async function setContent(page, markdown, html) {
 
 // For engine-serialized checklist/link markup, wait on target element instead of exact HTML.
 async function setContentWithin(page, markdown, selector) {
-  await page.evaluate((next) => globalThis.__orcaEditor.set({ content: next }), markdown)
+  await page.evaluate((next) => globalThis.__occEditor.set({ content: next }), markdown)
   await page.waitForFunction(
     (expected) =>
       document.querySelector('#first-surface #editor')?.querySelector(expected) !== null,
@@ -340,11 +340,11 @@ describeEditor(
             await setContent(page, '# Title', '<h1>Title</h1>')
             expect(await readSurface(page)).toBe('<h1>Title</h1>')
             // Initial markup proves document ready reached controller and pushed content through seam.
-            expect(await page.evaluate(() => globalThis.__orcaBridgeReads)).toEqual([])
-            expect(await page.evaluate(() => globalThis.__orcaCspViolations)).toEqual([])
+            expect(await page.evaluate(() => globalThis.__occBridgeReads)).toEqual([])
+            expect(await page.evaluate(() => globalThis.__occCspViolations)).toEqual([])
             expect(consoleErrors).toEqual([])
             // No editor occlusion report: screen’s web module already measures viewport, so reporting twice would lift bar twice.
-            expect(await page.evaluate(() => globalThis.__orcaEditor.insets)).toEqual([])
+            expect(await page.evaluate(() => globalThis.__occEditor.insets)).toEqual([])
           } finally {
             await page.close()
           }
@@ -363,7 +363,7 @@ describeEditor(
               onRoot: getComputedStyle(document.documentElement)
                 .getPropertyValue('--editor-surface')
                 .trim(),
-              onHost: getComputedStyle(document.querySelector('.orca-rich-markdown-document-host'))
+              onHost: getComputedStyle(document.querySelector('.occ-rich-markdown-document-host'))
                 .getPropertyValue('--editor-surface')
                 .trim()
             }))
@@ -412,7 +412,7 @@ describeEditor(
               { timeout: 15_000 }
             )
 
-            expect(await page.evaluate(() => globalThis.__orcaCspViolations)).toEqual([])
+            expect(await page.evaluate(() => globalThis.__occCspViolations)).toEqual([])
             expect(consoleErrors).toEqual([])
           } finally {
             await page.close()
@@ -449,7 +449,7 @@ describeEditor(
             await setContent(page, body, `<p>${body}</p>`)
             await select(page, 'all')
             await page.evaluate(() => {
-              globalThis.__orcaEditor.changes.length = 0
+              globalThis.__occEditor.changes.length = 0
             })
             await press(page, 'Bullet list')
             await page.waitForFunction(
@@ -457,7 +457,7 @@ describeEditor(
               null,
               { timeout: 15_000 }
             )
-            await page.waitForFunction(() => globalThis.__orcaEditor.changes.length > 0, null, {
+            await page.waitForFunction(() => globalThis.__occEditor.changes.length > 0, null, {
               timeout: 15_000
             })
             // Require real ul-in-p nesting or case would exercise flat list shape serializer already handled.
@@ -468,7 +468,7 @@ describeEditor(
                   null
               )
             ).toBe('P')
-            expect(await page.evaluate(() => globalThis.__orcaEditor.changes.at(-1))).toBe(
+            expect(await page.evaluate(() => globalThis.__occEditor.changes.at(-1))).toBe(
               `- ${body}`
             )
 
@@ -476,7 +476,7 @@ describeEditor(
             await setContent(page, 'plain again', '<p>plain again</p>')
             await setContent(page, `- ${body}`, `<ul><li><p>${body}</p></li></ul>`)
 
-            expect(await page.evaluate(() => globalThis.__orcaCspViolations)).toEqual([])
+            expect(await page.evaluate(() => globalThis.__occCspViolations)).toEqual([])
             expect(consoleErrors).toEqual([])
           } finally {
             await page.close()
@@ -522,7 +522,7 @@ describeEditor(
                 { timeout: 15_000 }
               )
               .toBeGreaterThan(0)
-            expect(await page.evaluate(() => globalThis.__orcaCspViolations)).toEqual([])
+            expect(await page.evaluate(() => globalThis.__occCspViolations)).toEqual([])
             expect(consoleErrors).toEqual([])
           } finally {
             await page.close()
@@ -534,22 +534,22 @@ describeEditor(
           try {
             await setContentWithin(page, '- [ ] one', 'input[type="checkbox"]')
             await page.evaluate(() => {
-              globalThis.__orcaEditor.changes.length = 0
+              globalThis.__occEditor.changes.length = 0
             })
             await page.locator('#first-surface #editor input[type="checkbox"]').first().click()
-            await page.waitForFunction(() => globalThis.__orcaEditor.changes.length > 0)
+            await page.waitForFunction(() => globalThis.__occEditor.changes.length > 0)
             // Single tap emits click/input/change; each once reported duplicate change.
-            expect(await page.evaluate(() => globalThis.__orcaEditor.changes)).toHaveLength(1)
-            expect(await page.evaluate(() => globalThis.__orcaEditor.changes[0])).toContain('[x]')
+            expect(await page.evaluate(() => globalThis.__occEditor.changes)).toHaveLength(1)
+            expect(await page.evaluate(() => globalThis.__occEditor.changes[0])).toContain('[x]')
 
             await setContent(page, bodyFor(0), `<p>${bodyFor(0)}</p>`)
             await select(page, 'word')
             await page.evaluate(() => {
-              globalThis.__orcaEditor.changes.length = 0
+              globalThis.__occEditor.changes.length = 0
             })
             await press(page, 'Inline code')
-            await page.waitForFunction(() => globalThis.__orcaEditor.changes.length > 0)
-            expect(await page.evaluate(() => globalThis.__orcaEditor.changes)).toHaveLength(1)
+            await page.waitForFunction(() => globalThis.__occEditor.changes.length > 0)
+            expect(await page.evaluate(() => globalThis.__occEditor.changes)).toHaveLength(1)
           } finally {
             await page.close()
           }
@@ -562,8 +562,8 @@ describeEditor(
           try {
             await setContentWithin(page, '[a](https://example.com/a)', 'a[href]')
             await page.locator('#first-surface #editor a').first().click()
-            await page.waitForFunction(() => globalThis.__orcaEditor.links.length > 0)
-            expect(await page.evaluate(() => globalThis.__orcaEditor.links)).toEqual([
+            await page.waitForFunction(() => globalThis.__occEditor.links.length > 0)
+            expect(await page.evaluate(() => globalThis.__occEditor.links)).toEqual([
               'https://example.com/a'
             ])
             expect(page.url()).toBe(`${origin}/`)
@@ -574,7 +574,7 @@ describeEditor(
 
         it('removes the first editor listeners and mounts a working second document', async () => {
           const { page, consoleErrors } = await openPage(browser)
-          const listeners = () => page.evaluate(() => globalThis.__orcaListeners.snapshot())
+          const listeners = () => page.evaluate(() => globalThis.__occListeners.snapshot())
           try {
             await setContent(page, 'first document', '<p>first document</p>')
             const first = await listeners()
@@ -589,7 +589,7 @@ describeEditor(
             expect(Object.values(firstOwned)).toEqual([1, 1, 1, 1])
 
             // Baseline after first mount cycle: RN-Web installs permanent responder listeners on first View, outside per-mount disposal.
-            await page.evaluate(() => globalThis.__orcaEditor.set({ mounted: false }))
+            await page.evaluate(() => globalThis.__occEditor.set({ mounted: false }))
             await page.waitForFunction(() => document.querySelector('#first-surface') === null)
             await expect
               .poll(
@@ -603,7 +603,7 @@ describeEditor(
             expect(Object.keys(afterOneCycle).length).toBeGreaterThan(0)
 
             await page.evaluate(() => {
-              globalThis.__orcaEditor.set({ mounted: true, generation: 1 })
+              globalThis.__occEditor.set({ mounted: true, generation: 1 })
             })
             await page.waitForSelector('#first-surface #editor')
             await setContent(page, 'second document', '<p>second document</p>')
@@ -629,11 +629,11 @@ describeEditor(
             ).toEqual(['change', 'click', 'input', 'keydown'])
             expect(Object.values(secondOwned)).toEqual([1, 1, 1, 1])
             expect(Object.keys(secondOwned).some((key) => key in firstOwned)).toBe(false)
-            expect(await page.evaluate(() => globalThis.__orcaCspViolations)).toEqual([])
+            expect(await page.evaluate(() => globalThis.__occCspViolations)).toEqual([])
             expect(consoleErrors).toEqual([])
             expect(
               await page.evaluate(
-                () => document.querySelectorAll('#orca-rich-markdown-document-style').length
+                () => document.querySelectorAll('#occ-rich-markdown-document-style').length
               )
             ).toBe(1)
           } finally {
@@ -646,7 +646,7 @@ describeEditor(
           try {
             await setContent(page, 'first only', '<p>first only</p>')
             await page.evaluate(() =>
-              globalThis.__orcaEditor.set({ both: true, secondContent: 'second only' })
+              globalThis.__occEditor.set({ both: true, secondContent: 'second only' })
             )
             await page.waitForSelector('#second-surface #editor')
             // Editor IDs repeat across hosts: document-wide lookup would bind second editor to first surface/listeners.
@@ -664,10 +664,10 @@ describeEditor(
               editor.dispatchEvent(new Event('input', { bubbles: true }))
             })
             await page.waitForFunction(() =>
-              globalThis.__orcaEditor.secondChanges.includes('typed in the second')
+              globalThis.__occEditor.secondChanges.includes('typed in the second')
             )
             // Require edit reaches second host without reporting through or changing first editor.
-            expect(await page.evaluate(() => globalThis.__orcaEditor.changes)).not.toContain(
+            expect(await page.evaluate(() => globalThis.__occEditor.changes)).not.toContain(
               'typed in the second'
             )
             expect(await readSurface(page, '#first-surface')).toContain('first only')

@@ -64,7 +64,7 @@ afterEach(async () => {
 })
 
 async function session() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-codex-context-usage-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-codex-context-usage-'))
   const journal = await journals.open({
     identity: {
       sessionId: SESSION,
@@ -171,7 +171,7 @@ describe('Codex context usage in the journal', () => {
 
     // The host owns the command's turn row; the provider turn creates none.
     const identity: AgentJournalItemIdentity = {
-      provider: 'orca',
+      provider: 'occ',
       clientMessageId: 'command-turn:cmd-1'
     }
     const running = { kind: 'turn' as const, turnId: 'compact:cmd-1', state: 'running' as const }
@@ -180,7 +180,7 @@ describe('Codex context usage in the journal', () => {
       clientMessageId: 'cmd-1',
       turnId: running.turnId,
       identity,
-      resultIdentity: { provider: 'orca', clientMessageId: 'command-result:cmd-1' },
+      resultIdentity: { provider: 'occ', clientMessageId: 'command-result:cmd-1' },
       running
     })
     on('turn/started', { turn: { id: 'compact-turn' } })

@@ -1,11 +1,11 @@
 // Adapt TypeScript 7 pull diagnostics for agent clients that only accept publishDiagnostics.
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { resolveProjectCompilerInfo } from './run-typecheck-projects-in-parallel.mjs'
 import { resolveTsrsLauncher, supportsTsrs } from './tsrs-typecheck-compiler.mjs'
 
 const PULL_DEBOUNCE_MS = 100
-const BRIDGE_ID_PREFIX = 'orca-diagnostics-'
+const BRIDGE_ID_PREFIX = 'occ-diagnostics-'
 
 export function resolveTypescriptLanguageServer({
   root,
@@ -13,9 +13,9 @@ export function resolveTypescriptLanguageServer({
   platform = process.platform,
   arch = process.arch
 }) {
-  const requested = env.ORCA_TYPESCRIPT_LSP ?? 'auto'
+  const requested = env.OCC_TYPESCRIPT_LSP ?? 'auto'
   if (!['auto', 'tsrs', 'tsc'].includes(requested)) {
-    throw new Error('ORCA_TYPESCRIPT_LSP must be auto, tsrs, or tsc')
+    throw new Error('OCC_TYPESCRIPT_LSP must be auto, tsrs, or tsc')
   }
   // tsrs answers first diagnostics in about a third of the time and memory on supported hosts.
   const server = requested === 'auto' ? (supportsTsrs(platform, arch) ? 'tsrs' : 'tsc') : requested

@@ -56,14 +56,14 @@ export async function shellScriptTest(
     const env: Record<string, string> = {
       ...config.env,
       // Startup-discovery examples must not emit PTY-owner identity/marker protocol.
-      ORCA_SHELL_FEATURES: (config.env.ORCA_SHELL_FEATURES ?? '')
+      OCC_SHELL_FEATURES: (config.env.OCC_SHELL_FEATURES ?? '')
         .split(',')
         .filter((feature) => feature !== 'identity' && feature !== 'markers')
         .join(','),
       // User startup files live in testHome; route wrapper discovery there.
       HOME: testHome,
-      ORCA_ORIG_ZDOTDIR: testHome,
-      ORCA_ZSHENV_SOURCE_DIR: testHome
+      OCC_ORIG_ZDOTDIR: testHome,
+      OCC_ZSHENV_SOURCE_DIR: testHome
     }
 
     const spawnOptions = {
@@ -109,7 +109,7 @@ export async function shellScriptTest(
 }
 
 const TEMP_PATH_PATTERN =
-  /\/(?:var\/folders|tmp)\/[^\s]+?\/(?:shell-test|orca|shell-ready)-[a-z]+-[a-z0-9-]+/g
+  /\/(?:var\/folders|tmp)\/[^\s]+?\/(?:shell-test|occ|shell-ready)-[a-z]+-[a-z0-9-]+/g
 const PID_PATTERN = /\bpid:\s*\d+/gi
 
 function normalizeOutput(

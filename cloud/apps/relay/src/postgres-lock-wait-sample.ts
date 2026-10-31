@@ -1,7 +1,7 @@
 import type { RelayDatabase } from './database.js'
 import type { DatabaseLockWaitSample } from './relay-observability.js'
 
-// Use application_name (orca-relay/<role>/<cell>) to separate shared-user waiters. Follow blockers to root, keeping non-relay intermediates and bounding depth for cycles. First referenced relay table labels the wait. Shared 3-slot pool can queue/undercount samples when saturated; dedicated sampling avoids it.
+// Use application_name (occ-relay/<role>/<cell>) to separate shared-user waiters. Follow blockers to root, keeping non-relay intermediates and bounding depth for cycles. First referenced relay table labels the wait. Shared 3-slot pool can queue/undercount samples when saturated; dedicated sampling avoids it.
 const LOCK_WAIT_SAMPLE_SQL = `
 WITH RECURSIVE waiting AS MATERIALIZED (
   SELECT pid, application_name, query, (pg_blocking_pids(pid))[1] AS blocker
@@ -25,7 +25,7 @@ SELECT split_part(w.application_name, '/', 2) AS waiter_role,
        COUNT(*) AS waiters
 FROM waiting w JOIN root ON root.waiter = w.pid
 LEFT JOIN pg_stat_activity holder ON holder.pid = root.pid
-WHERE w.application_name LIKE 'orca-relay/%'
+WHERE w.application_name LIKE 'occ-relay/%'
 GROUP BY 1, 2, 3`
 
 const RELAY_ROLES = new Set(['director', 'cell', 'combined'])

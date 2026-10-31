@@ -31,7 +31,7 @@ import { ghExecFileAsync, glabExecFileAsync, setDefaultWslDistroOverride } from 
 import { _resetGhRateLimitBreaker } from './gh-rate-limit-breaker'
 import { runAsWslExecUserAct } from '../wsl/wsl-background-exec-gate'
 import { WslDistroStoppedError, WslDistroUnverifiableError } from '../wsl/wsl-unc-access-gate'
-import { starOrca } from '../github/client/fetch/orca-star'
+import { starOCC } from '../github/client/fetch/occ-star'
 
 const originalPlatform = process.platform
 
@@ -115,7 +115,7 @@ describe('starring OCC, which is always a click', () => {
     readWslDistroRunningStateMock.mockResolvedValue('stopped')
     hostMissingThenWslAnswers('gh')
 
-    await expect(starOrca()).resolves.toBe(true)
+    await expect(starOCC()).resolves.toBe(true)
     expect(spawnedWsl()).toBe(true)
   })
 })

@@ -23,7 +23,7 @@ import {
 } from '../opencode/opencode-overlay-manifest'
 import { isSafeDescendCandidate, mirrorEntry, safeRemoveOverlay } from '../pty/overlay-mirror'
 
-const ORCA_MIMOCODE_PLUGIN_FILE = 'orca-mimocode-status.js'
+const OCC_MIMOCODE_PLUGIN_FILE = 'occ-mimocode-status.js'
 const MIMOCODE_HOOKS_DIR = 'mimocode-hooks'
 const PLUGIN_ONLY_CONFIG_DIR = 'config'
 const SOURCE_CONFIG_OVERLAYS_DIR = 'config-overlays'
@@ -48,7 +48,7 @@ function mirrorConfigDir(sourceConfigDir: string, targetConfigDir: string): void
   clearOpenCodeOverlayManifestEntries(
     targetConfigDir,
     readOpenCodeOverlayManifest(targetConfigDir),
-    ORCA_MIMOCODE_PLUGIN_FILE
+    OCC_MIMOCODE_PLUGIN_FILE
   )
   const manifest: OpenCodeOverlayManifest = {
     topLevelEntries: [],
@@ -64,7 +64,7 @@ function mirrorConfigDir(sourceConfigDir: string, targetConfigDir: string): void
         throw new Error('MiMo overlay plugins folder is not a real directory')
       }
       for (const pluginName of readdirSync(sourcePath)) {
-        if (pluginName !== ORCA_MIMOCODE_PLUGIN_FILE) {
+        if (pluginName !== OCC_MIMOCODE_PLUGIN_FILE) {
           mirrorInto(join(sourcePath, pluginName), overlayPlugins, pluginName)
           manifest.pluginEntries.push(pluginName)
         }
@@ -104,7 +104,7 @@ export class MimoCodeHookService {
         return fallback
       }
       writeFileSync(
-        join(pluginsDir, ORCA_MIMOCODE_PLUGIN_FILE),
+        join(pluginsDir, OCC_MIMOCODE_PLUGIN_FILE),
         getOpenCodeFamilyPluginSource('/hook/mimo-code', { emitSessionStart: false })
       )
     } catch {

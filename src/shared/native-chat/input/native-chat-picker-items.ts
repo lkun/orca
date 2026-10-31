@@ -15,7 +15,7 @@ export type NativeChatPickerItem =
       /** How the provider says the command is invoked, e.g. `<objective>`. */
       argumentHint?: string
       skillCollision: boolean
-      orcaOwned?: true
+      occOwned?: true
     }
   | {
       kind: 'skill'
@@ -94,18 +94,18 @@ export function buildNativeChatPickerItems(
   const available = commandAvailable
     ? commands.filter(({ name }) => commandAvailable(name))
     : commands
-  const orcaNames = new Set(available.filter((c) => c.orcaOwned).map((command) => command.name))
+  const occNames = new Set(available.filter((c) => c.occOwned).map((command) => command.name))
   const resolvedCommands = available.filter(
     (command) =>
-      command.orcaOwned ||
+      command.occOwned ||
       !(
-        orcaNames.has(command.name) ||
+        occNames.has(command.name) ||
         (sharedSigil && command.kindUnspecified && skillNames.has(command.name))
       )
   )
   // OCC runs its own rows whatever the skills are called, so a namesake skill keeps its row.
   const commandNames = new Set(
-    resolvedCommands.filter((command) => !command.orcaOwned).map((command) => command.name)
+    resolvedCommands.filter((command) => !command.occOwned).map((command) => command.name)
   )
   const commandItems = rankItems(
     resolvedCommands.map((command, index) => ({
@@ -119,8 +119,8 @@ export function buildNativeChatPickerItems(
         argumentHint: command.argumentHint
           ? sanitizePickerText(command.argumentHint, 80)
           : undefined,
-        skillCollision: sharedSigil && !command.orcaOwned && skillNames.has(command.name),
-        ...(command.orcaOwned ? { orcaOwned: true as const } : {})
+        skillCollision: sharedSigil && !command.occOwned && skillNames.has(command.name),
+        ...(command.occOwned ? { occOwned: true as const } : {})
       },
       stableOrder: index
     })),

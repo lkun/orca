@@ -1,4 +1,4 @@
-import { assertWslDistroAllowed } from '@orca/process-host/wsl-distro-allowlist'
+import { assertWslDistroAllowed } from '@occ/process-host/wsl-distro-allowlist'
 import {
   spawnShellWithFallback,
   type ShellSpawnParams,

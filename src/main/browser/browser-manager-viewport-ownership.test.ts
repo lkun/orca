@@ -37,7 +37,7 @@ vi.mock('./browser-process-user-agent', () => ({
     electronUserAgent:
       mocks.processUserAgentMode === 'native'
         ? mocks.processUserAgent
-        : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) orca/1.0.0 Chrome/134.0.0.0 Electron/30.0.0 Safari/537.36'
+        : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) occ/1.0.0 Chrome/134.0.0.0 Electron/30.0.0 Safari/537.36'
   })
 }))
 
@@ -101,7 +101,7 @@ function pause(handle: ReturnType<typeof makeGuest>, method: string) {
 
 describe('browser viewport operation ownership', () => {
   beforeEach(() => {
-    expect(process.env.ORCA_BACKGROUND_LAUNCH).toBe('1')
+    expect(process.env.OCC_BACKGROUND_LAUNCH).toBe('1')
     resetBrowserManagerMocks(mocks)
     resetBrowserManagerState()
     mocks.processUserAgentMode = 'clean'

@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { LEGACY_RELAY_BRIDGE_CHANNELS as CHANNELS } from '../../../shared/legacy-relay-bridge-contract'
 import { isRemoteCliControlAllowed } from '../../../shared/ssh-remote-cli-control'
 import type { Store } from '../../persistence'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { PtyRetirementWithoutProof } from '../../pty-exit-proof'
 import { toAppSshPtyId } from '../../../shared/ssh-pty-id'
 import { track } from '../../telemetry/client'
@@ -45,7 +45,7 @@ export function registerLegacyRelayBridgeIpc(args: {
   >
   getMainWindow: () => BrowserWindow | null
   connection: (targetId: string) => SshConnection | null
-  runtime?: () => OrcaRuntimeService | null
+  runtime?: () => OCCRuntimeService | null
 }): void {
   const send = (channel: string, payload: unknown): void => {
     const contents = args.getMainWindow()?.webContents

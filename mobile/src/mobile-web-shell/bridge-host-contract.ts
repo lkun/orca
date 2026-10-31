@@ -18,7 +18,7 @@ import type { BridgeClearableRouteParam } from './bridge/bridge-route-update'
 import type { BridgeSafeAreaInsets } from './bridge/bridge-safe-area-insets'
 import type { BridgeFoldDivision } from './bridge/bridge-fold-division'
 import type { BridgeHapticsKind } from './bridge/bridge-haptics-notify'
-import type { BridgeErrorCapture } from './bridge/bridge-error-capture'
+import type { BridgeErroccpture } from './bridge/bridge-error-capture'
 import type { BridgeNativeVerb } from './bridge/bridge-native-verbs'
 import type { BridgeNotifyRefusal } from './bridge/bridge-notify-grants'
 import type { PageStorageForInit } from './page-storage-keys'
@@ -108,7 +108,7 @@ export type BridgeHostOptions = {
   // Honor navigate’s Back on the native stack; return the refusal reason for diagnostics because the page gets no reply.
   onNavigateBack: () => BridgeNavigateBackOutcome
   // Required recovery: hash-checked disk bytes will fail again until the shell stops showing the broken generation.
-  onPageFault: (error: BridgeErrorCapture) => void
+  onPageFault: (error: BridgeErroccpture) => void
   // Ready is proof the bundle evaluated; the shell uses it to bound startup instead of waiting forever.
   onPageReady: () => void
   onPagePainted: () => void

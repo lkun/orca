@@ -12,16 +12,16 @@ import {
 import type { IPtyProvider } from '../providers/pty-provider-contract'
 import { PtyWriteUnavailableError } from '../providers/pty-write-unavailable-error'
 
-await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
+await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
 const {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   TEST_WORKTREE_PATH,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('./orca-runtime-test-fixtures.spec')
+} = await import('./occ-runtime-test-fixtures.spec')
 
 const providerSession = { key: 'session_id' as const, id: 'codex-conversation' }
 
@@ -29,7 +29,7 @@ function mobileChat(provider: IPtyProvider) {
   const { runtimeStore } = makeRuntimeStoreWithWorkspaceSession(
     makeWorkspaceSessionWithHeadlessTerminal()
   )
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   const spawn = vi.fn()
   const write = vi.fn(() => true)
   runtime.setPtyController({

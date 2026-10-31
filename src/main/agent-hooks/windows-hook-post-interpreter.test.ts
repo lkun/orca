@@ -21,7 +21,7 @@ vi.mock('../codex/codex-hook-hash-lookup', async (importOriginal) => ({
 
 vi.mock('electron', () => ({
   app: {
-    getPath: () => '/tmp/orca-user-data'
+    getPath: () => '/tmp/occ-user-data'
   }
 }))
 
@@ -73,19 +73,19 @@ describe('Windows managed hook post interpreter', () => {
   let home = ''
 
   beforeEach(() => {
-    previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-    isolatedUserDataDir = mkdtempSync(join(tmpdir(), 'orca-hook-interpreter-user-data-'))
+    previousUserDataPath = process.env.OCC_USER_DATA_PATH
+    isolatedUserDataDir = mkdtempSync(join(tmpdir(), 'occ-hook-interpreter-user-data-'))
     // Isolate managed-script resolution so tests cannot rewrite live Codex hooks.
-    process.env.ORCA_USER_DATA_PATH = isolatedUserDataDir
-    home = mkdtempSync(join(tmpdir(), 'orca-hook-interpreter-'))
+    process.env.OCC_USER_DATA_PATH = isolatedUserDataDir
+    home = mkdtempSync(join(tmpdir(), 'occ-hook-interpreter-'))
     homedirMock.mockReturnValue(home)
   })
 
   afterEach(() => {
     if (previousUserDataPath === undefined) {
-      delete process.env.ORCA_USER_DATA_PATH
+      delete process.env.OCC_USER_DATA_PATH
     } else {
-      process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+      process.env.OCC_USER_DATA_PATH = previousUserDataPath
     }
     rmSync(isolatedUserDataDir, { recursive: true, force: true })
     homedirMock.mockImplementation(() => process.env.HOME ?? tmpdir())
@@ -98,7 +98,7 @@ describe('Windows managed hook post interpreter', () => {
       for (const entry of BATCH_SCRIPT_INSTALLERS) {
         expect((await entry.install()).state, `${entry.agent} install status`).toBe('installed')
       }
-      const hooksDir = join(home, '.orca', 'agent-hooks')
+      const hooksDir = join(home, '.occ', 'agent-hooks')
       return readdirSync(hooksDir)
         .filter((name) => name.endsWith('.cmd'))
         .map((name) => ({ name, body: readFileSync(join(hooksDir, name), 'utf8') }))
@@ -115,7 +115,7 @@ describe('Windows managed hook post interpreter', () => {
     }
 
     const isWrapper = (body: string): boolean => body.includes('%~dp0')
-    const posts = (body: string): boolean => body.includes('127.0.0.1:%ORCA_AGENT_HOOK_PORT%')
+    const posts = (body: string): boolean => body.includes('127.0.0.1:%OCC_AGENT_HOOK_PORT%')
 
     expect(
       scripts.filter((s) => !isWrapper(s.body) && !posts(s.body)).map((s) => s.name),

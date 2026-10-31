@@ -1,4 +1,4 @@
-import { CONNECTOR_PATHS, ConnectorPollResponseSchema } from '@orca-cloud/connector-contract'
+import { CONNECTOR_PATHS, ConnectorPollResponseSchema } from '@occ-cloud/connector-contract'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanupConnectorHarnesses, pauseBefore } from './connector-server-harness.test-fixture.js'
 import {
@@ -16,7 +16,7 @@ import {
   turnEnded,
   turnStarted
 } from './slack-harness.test-fixture.js'
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import { ConnectorPosts } from './connector-posts.js'
 import { PostWorker } from './post-worker.js'
 
@@ -136,7 +136,7 @@ describe('Slack thread status and posts', () => {
       channel: CHANNEL,
       thread_ts: THREAD,
       text: 'Waiting for your OCC on build-box…',
-      metadata: { event_type: 'orca_post', event_payload: { post_id: `status:${EXTERNAL_ID}` } }
+      metadata: { event_type: 'occ_post', event_payload: { post_id: `status:${EXTERNAL_ID}` } }
     })
 
     await harness.events(turnStarted)
@@ -229,7 +229,7 @@ describe('Slack thread status and posts', () => {
           {
             ts: '1800000100.000009',
             metadata: {
-              event_type: 'orca_post',
+              event_type: 'occ_post',
               event_payload: { post_id: `status:${EXTERNAL_ID}` }
             }
           }
@@ -313,7 +313,7 @@ describe('Slack thread status and posts', () => {
   })
 
   // SQLite runs one transaction at a time, so only Postgres can overlap two claims.
-  it.skipIf(!process.env.ORCA_CONNECTOR_TEST_DATABASE_URL)(
+  it.skipIf(!process.env.OCC_CONNECTOR_TEST_DATABASE_URL)(
     'a claim that overlaps another one takes nothing',
     async () => {
       const harness = await startedThread()

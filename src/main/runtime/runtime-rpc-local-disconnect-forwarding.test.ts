@@ -3,13 +3,13 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { defineMethod } from './rpc/core'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import {
-  _resetOrcadFeatureReadinessForTests,
-  installOrcadFeatureReadiness
-} from './rpc/orcad-feature-readiness'
+  _resetOCCdFeatureReadinessForTests,
+  installOCCdFeatureReadiness
+} from './rpc/occd-feature-readiness'
 
 it.each([
   'browser.eval',
@@ -25,8 +25,8 @@ it.each([
 ] as const)('forwards local disconnect to %s without long-poll keepalives', async (method) => {
   const userDataPath = mkdtempSync(join(tmpdir(), 'local-disconnect-forwarding-'))
   const entered = vi.fn()
-  const server = new OrcaRuntimeRpcServer({
-    runtime: new OrcaRuntimeService(),
+  const server = new OCCRuntimeRpcServer({
+    runtime: new OCCRuntimeService(),
     userDataPath,
     methods: [
       defineMethod({
@@ -63,8 +63,8 @@ it.each([
 
 it('preserves non-Linear unary signal ownership', async () => {
   const userDataPath = mkdtempSync(join(tmpdir(), 'linear-write-namespace-'))
-  const server = new OrcaRuntimeRpcServer({
-    runtime: new OrcaRuntimeService(),
+  const server = new OCCRuntimeRpcServer({
+    runtime: new OCCRuntimeService(),
     userDataPath,
     methods: [
       defineMethod({
@@ -96,9 +96,9 @@ it('preserves non-Linear unary signal ownership', async () => {
 it('refuses a gated short RPC whose local caller disconnects while it waits', async () => {
   const userDataPath = mkdtempSync(join(tmpdir(), 'local-disconnect-feature-wait-'))
   const ran = vi.fn()
-  const readiness = installOrcadFeatureReadiness()
-  const server = new OrcaRuntimeRpcServer({
-    runtime: new OrcaRuntimeService(),
+  const readiness = installOCCdFeatureReadiness()
+  const server = new OCCRuntimeRpcServer({
+    runtime: new OCCRuntimeService(),
     userDataPath,
     methods: [
       defineMethod({
@@ -132,7 +132,7 @@ it('refuses a gated short RPC whose local caller disconnects while it waits', as
     await Promise.resolve()
     expect(ran).not.toHaveBeenCalled()
   } finally {
-    _resetOrcadFeatureReadinessForTests()
+    _resetOCCdFeatureReadinessForTests()
     await server.stop()
     rmSync(userDataPath, { recursive: true, force: true })
   }

@@ -89,7 +89,7 @@ describe.skipIf(originalPlatform === 'win32')('grantClaudeFolderTrust on a WSL g
   const guestFile = `${GUEST_PREFIX}/home/u/.claude.json`
 
   beforeEach(() => {
-    guest.root = realpathSync(mkdtempSync(join(tmpdir(), 'orca-claude-trust-guest-')))
+    guest.root = realpathSync(mkdtempSync(join(tmpdir(), 'occ-claude-trust-guest-')))
     mkdirSync(join(guest.root, 'home/u'), { recursive: true })
     writeFileSync(toGuestDisk(guestFile), JSON.stringify({ theme: 'dark' }))
     chmodSync(toGuestDisk(guestFile), 0o600)

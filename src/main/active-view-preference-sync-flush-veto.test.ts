@@ -52,7 +52,7 @@ describe('ActiveViewPreference sync flush vs. parked async rename', () => {
   const viewFile = (): string => join(dir, 'active-view.json')
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-active-view-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-active-view-'))
     gate.blockRename = false
     gate.blockAfterRename = false
     gate.waiters = []
@@ -78,7 +78,7 @@ describe('ActiveViewPreference sync flush vs. parked async rename', () => {
 
   it('a write parked on its rename cannot overwrite a later flushOrThrow', async () => {
     const { ActiveViewPreference } = await import('./active-view-preference')
-    const pref = new ActiveViewPreference(join(dir, 'orca-data.json'), 'terminal')
+    const pref = new ActiveViewPreference(join(dir, 'occ-data.json'), 'terminal')
     preferences.add(pref)
 
     gate.blockRename = true
@@ -101,7 +101,7 @@ describe('ActiveViewPreference sync flush vs. parked async rename', () => {
 
   it('an unlink veto failure queues a newest-value correction', async () => {
     const { ActiveViewPreference } = await import('./active-view-preference')
-    const pref = new ActiveViewPreference(join(dir, 'orca-data.json'), 'terminal')
+    const pref = new ActiveViewPreference(join(dir, 'occ-data.json'), 'terminal')
     preferences.add(pref)
 
     gate.blockRename = true
@@ -123,7 +123,7 @@ describe('ActiveViewPreference sync flush vs. parked async rename', () => {
 
   it('a completed stale rename cannot regress the persisted marker', async () => {
     const { ActiveViewPreference } = await import('./active-view-preference')
-    const pref = new ActiveViewPreference(join(dir, 'orca-data.json'), 'terminal')
+    const pref = new ActiveViewPreference(join(dir, 'occ-data.json'), 'terminal')
     preferences.add(pref)
     const renameCompleted = new Promise<void>((resolve) => gate.renameCompleted.push(resolve))
 
@@ -146,7 +146,7 @@ describe('ActiveViewPreference sync flush vs. parked async rename', () => {
 
   it('a pending flush drains a view changed during its rename', async () => {
     const { ActiveViewPreference } = await import('./active-view-preference')
-    const pref = new ActiveViewPreference(join(dir, 'orca-data.json'), 'terminal')
+    const pref = new ActiveViewPreference(join(dir, 'occ-data.json'), 'terminal')
     preferences.add(pref)
 
     gate.blockRename = true
@@ -165,7 +165,7 @@ describe('ActiveViewPreference sync flush vs. parked async rename', () => {
 
   it('coalesces concurrent pending flushes while draining the newest view', async () => {
     const { ActiveViewPreference } = await import('./active-view-preference')
-    const pref = new ActiveViewPreference(join(dir, 'orca-data.json'), 'terminal')
+    const pref = new ActiveViewPreference(join(dir, 'occ-data.json'), 'terminal')
     preferences.add(pref)
 
     gate.blockRename = true
@@ -186,7 +186,7 @@ describe('ActiveViewPreference sync flush vs. parked async rename', () => {
 
   it('keeps an unabortable shared drain alive when an attached signal aborts', async () => {
     const { ActiveViewPreference } = await import('./active-view-preference')
-    const pref = new ActiveViewPreference(join(dir, 'orca-data.json'), 'terminal')
+    const pref = new ActiveViewPreference(join(dir, 'occ-data.json'), 'terminal')
     preferences.add(pref)
     const controller = new AbortController()
 
@@ -207,7 +207,7 @@ describe('ActiveViewPreference sync flush vs. parked async rename', () => {
 
   it('stops an abortable-only drain after its signal aborts', async () => {
     const { ActiveViewPreference } = await import('./active-view-preference')
-    const pref = new ActiveViewPreference(join(dir, 'orca-data.json'), 'terminal')
+    const pref = new ActiveViewPreference(join(dir, 'occ-data.json'), 'terminal')
     preferences.add(pref)
     const controller = new AbortController()
 

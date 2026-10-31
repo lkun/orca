@@ -1,5 +1,5 @@
-import type { PipedChildProcess } from '@orca/process-host/process-spec'
-import { spawnProcess } from '@orca/process-host'
+import type { PipedChildProcess } from '@occ/process-host/process-spec'
+import { spawnProcess } from '@occ/process-host'
 import type {
   WorkerThreadChildErrorPayload,
   WorkerThreadChildEvent,

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { OrcaCloudAuthConfig } from '../orca-profiles/profile-cloud-auth-config'
+import type { OCCCloudAuthConfig } from '../occ-profiles/profile-cloud-auth-config'
 import { desktopConnectorTokenMint } from './connector-token-mint'
 
 const profile = vi.hoisted(() => {
@@ -8,11 +8,11 @@ const profile = vi.hoisted(() => {
 })
 const runFresh = vi.hoisted(() => vi.fn())
 
-vi.mock('../orca-profiles/profile-index-store', () => ({
-  ensureActiveOrcaProfile: () => ({ profile: { id: 'p1', cloud: profile.cloud } })
+vi.mock('../occ-profiles/profile-index-store', () => ({
+  ensureActiveOCCProfile: () => ({ profile: { id: 'p1', cloud: profile.cloud } })
 }))
-vi.mock('../orca-profiles/profile-cloud-session-refresh', () => ({
-  runWithFreshOrcaCloudSession: runFresh
+vi.mock('../occ-profiles/profile-cloud-session-refresh', () => ({
+  runWithFreshOCCCloudSession: runFresh
 }))
 vi.mock('../runtime/host-descriptor', () => ({
   loadOrCreateHostInstallationId: async () => '6b1f2c1e-0d7a-4a57-9b38-6f1c2e3d4a5b'
@@ -21,7 +21,7 @@ vi.mock('../runtime/host-descriptor', () => ({
 // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the mint reads only this endpoint.
 const authConfig = {
   connectorTokenEndpoint: 'https://login.test/v1/desktop/auth/connector-token'
-} as OrcaCloudAuthConfig
+} as OCCCloudAuthConfig
 
 let fetchImpl: ReturnType<typeof vi.fn<typeof globalThis.fetch>>
 

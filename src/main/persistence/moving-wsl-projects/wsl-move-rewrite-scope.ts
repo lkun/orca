@@ -8,7 +8,7 @@ import {
   normalizeWorkspaceSessionKeyToWorkspaceId,
   parseWorkspaceKey
 } from '../../../shared/workspace-scope'
-import { rewriteOrcadMigrationWorktreeId } from '../../ssh/orcad-migration-path-rewrite'
+import { rewriteOCCdMigrationWorktreeId } from '../../ssh/occd-migration-path-rewrite'
 import type { WslMoveDesktopRewriteContext } from './wsl-move-desktop-rewrite-stores'
 
 export type WslMoveRewriteScope = {
@@ -36,7 +36,7 @@ export function wslMoveRewriteScope(context: WslMoveDesktopRewriteContext): WslM
       return folderWorkspaceIds.has(id) || repoIds.has(getRepoIdFromWorktreeId(id))
     },
     repoInScope: (repoId) => repoIds.has(repoId),
-    worktreeId: (worktreeId) => rewriteOrcadMigrationWorktreeId(worktreeId, context.rewritePath),
+    worktreeId: (worktreeId) => rewriteOCCdMigrationWorktreeId(worktreeId, context.rewritePath),
     path: (value) => context.rewritePath.path(value, 'absolute'),
     destinationHostId: context.destinationHostId
   }

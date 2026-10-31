@@ -3,10 +3,10 @@ import {
   openInMemoryCloudDatabase,
   type CloudDatabase,
   type OpenCloudDatabaseInput
-} from '@orca-cloud/cloud-database'
+} from '@occ-cloud/cloud-database'
 import { pushSchemaStatements } from './push-schema.js'
 
-export type { CloudDatabase as PushDatabase, SqlRow } from '@orca-cloud/cloud-database'
+export type { CloudDatabase as PushDatabase, SqlRow } from '@occ-cloud/cloud-database'
 
 export async function openPushDatabase(
   input: Omit<OpenCloudDatabaseInput, 'service' | 'schemaStatements'>

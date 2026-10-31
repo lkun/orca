@@ -42,7 +42,7 @@ export function createFixturePageRunner(baseUrl, browserPromise) {
       const revision = sourceRevision
       await worker.page.goto(`${baseUrl}/fixtures.html?worker=1`)
       await worker.page.waitForFunction(
-        () => Boolean(window.__orcaComponentFixtureHost),
+        () => Boolean(window.__occComponentFixtureHost),
         undefined,
         { timeout: FIXTURE_TIMEOUT_MS }
       )
@@ -69,7 +69,7 @@ export function createFixturePageRunner(baseUrl, browserPromise) {
       if (cachedList?.revision !== sourceRevision) {
         const revision = sourceRevision
         const { page } = await readyWorker(1)
-        const fixtures = await page.evaluate(() => window.__orcaComponentFixtureHost.list())
+        const fixtures = await page.evaluate(() => window.__occComponentFixtureHost.list())
         cachedList = { revision, fixtures }
       }
       return cachedList.fixtures
@@ -80,7 +80,7 @@ export function createFixturePageRunner(baseUrl, browserPromise) {
     const worker = await readyWorker(scale)
     await worker.page.evaluate(
       ([fixtureId, fixtureTheme]) =>
-        window.__orcaComponentFixtureHost.render(fixtureId, fixtureTheme),
+        window.__occComponentFixtureHost.render(fixtureId, fixtureTheme),
       [id, theme]
     )
     return { worker, failure: await waitForFixtureOutcome(worker.page) }

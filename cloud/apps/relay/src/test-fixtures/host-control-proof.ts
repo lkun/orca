@@ -4,7 +4,7 @@ import {
   buildHostProofMacInput,
   HostChallengeSchema,
   HOST_CHALLENGE_PLAINTEXT_DOMAIN
-} from '@orca-cloud/relay-contract'
+} from '@occ-cloud/relay-contract'
 import nacl from 'tweetnacl'
 import { expect, vi, type Mock, type MockInstance } from 'vitest'
 import type WebSocket from 'ws'
@@ -62,16 +62,16 @@ export function hostControlProofFixture(
     close: async () => undefined
   }
   const config = loadRelayConfig({
-    ORCA_RELAY_PUBLIC_URL: 'http://127.0.0.1',
-    ORCA_RELAY_CELL_URL: 'http://127.0.0.1',
-    ORCA_RELAY_AUTH_ISSUER: 'https://auth.example.test',
-    ORCA_RELAY_JWKS_URL: 'https://auth.example.test/jwks',
-    ORCA_RELAY_ASSIGNMENT_SIGNING_KEY: 'synthetic-assignment-key-for-test-only',
-    ORCA_RELAY_ROLE: 'cell',
-    ORCA_RELAY_ADMIN_AUDIENCE: 'https://auth.example.test/admin',
-    ORCA_RELAY_DEPLOY_SERVICE_ACCOUNT: 'deploy@example.test',
-    ORCA_RELAY_CELL_CONNECTION_HARD_CAP: '600',
-    ORCA_RELAY_CELL_CONNECTION_UNOBSERVED_BOUND: '60'
+    OCC_RELAY_PUBLIC_URL: 'http://127.0.0.1',
+    OCC_RELAY_CELL_URL: 'http://127.0.0.1',
+    OCC_RELAY_AUTH_ISSUER: 'https://auth.example.test',
+    OCC_RELAY_JWKS_URL: 'https://auth.example.test/jwks',
+    OCC_RELAY_ASSIGNMENT_SIGNING_KEY: 'synthetic-assignment-key-for-test-only',
+    OCC_RELAY_ROLE: 'cell',
+    OCC_RELAY_ADMIN_AUDIENCE: 'https://auth.example.test/admin',
+    OCC_RELAY_DEPLOY_SERVICE_ACCOUNT: 'deploy@example.test',
+    OCC_RELAY_CELL_CONNECTION_HARD_CAP: '600',
+    OCC_RELAY_CELL_CONNECTION_UNOBSERVED_BOUND: '60'
   })
   const assignments = new RelayAssignmentStore(database)
   const verify = vi.spyOn(assignments, 'verifyCellAssignment').mockResolvedValue(true)

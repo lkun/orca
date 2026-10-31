@@ -10,11 +10,11 @@ import {
   findWorkspace,
   mirrorWorkspaceFromActivePage
 } from '../browser-page-records'
-import { ORCA_BROWSER_BLANK_URL } from '../../../../../shared/constants'
+import { OCC_BROWSER_BLANK_URL } from '../../../../../shared/constants'
 import { closeRemoteBrowserPageInOwningEnvironment } from './browser-remote-close'
 import { releaseDocPreviewGrant } from '@/lib/doc-preview-grants'
 import { admitBrowserPageMount } from '@/components/browser-pane/host-guest/browser-page-mount-admission'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import { sendBrowserLayoutCommand } from './browser-layout-owner-commands'
 
 export function createBrowserPageCreateActions(
@@ -64,7 +64,7 @@ export function createBrowserPageCreateActions(
           const shouldFocusAddressBar =
             shouldUpdateGlobalActiveSurface &&
             !page.docLocation &&
-            (page.url === 'about:blank' || page.url === ORCA_BROWSER_BLANK_URL)
+            (page.url === 'about:blank' || page.url === OCC_BROWSER_BLANK_URL)
 
           return {
             browserPagesByWorkspace: {
@@ -104,7 +104,7 @@ export function createBrowserPageCreateActions(
       }
       // Switch point: main adds the page to the tab first; the window shows it once main did.
       if (
-        ORCA_LAYOUT_OWNER_IS_MAIN &&
+        OCC_LAYOUT_OWNER_IS_MAIN &&
         sendBrowserLayoutCommand(
           get,
           workspace.worktreeId,
@@ -227,7 +227,7 @@ export function createBrowserPageCreateActions(
           get().setTabLabel(item.id, workspace.title)
         }
       }
-      const page = ORCA_LAYOUT_OWNER_IS_MAIN
+      const page = OCC_LAYOUT_OWNER_IS_MAIN
         ? findPage(get().browserPagesByWorkspace, pageId)
         : null
       const owner = page ? findWorkspace(get().browserTabsByWorktree, page.workspaceId) : null

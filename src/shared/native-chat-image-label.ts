@@ -14,7 +14,7 @@ export const NATIVE_CHAT_IMAGE_LABEL_ENGLISH: NativeChatImageLabelCopy = {
 /** Use friendly UI labels for OCC clipboard-image temp filenames. */
 export function isNativeChatPastedImagePath(path: string): boolean {
   const base = path.split(/[\\/]/).findLast(Boolean) ?? path
-  return /^orca-paste-.+\.png$/i.test(base)
+  return /^occ-paste-.+\.png$/i.test(base)
 }
 
 /** What a chat image is called where it is not drawn: its alt text, else its file's name. */

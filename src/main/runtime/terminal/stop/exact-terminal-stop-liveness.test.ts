@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 
 const WORKTREE = 'repo::/tmp/exact-stop'
 const PTY = `${WORKTREE}@@terminal`
@@ -7,7 +7,7 @@ const TAB = '10000000-0000-4000-8000-000000000001'
 const LEAF = '10000000-0000-4000-8000-000000000002'
 const INCARNATION = '10000000-0000-4000-8000-000000000003'
 
-class ExactStopRuntime extends OrcaRuntimeService {
+class ExactStopRuntime extends OCCRuntimeService {
   override resolveGitWorktreeSelector(selector: string) {
     return super.resolveGitWorktreeSelector(selector)
   }

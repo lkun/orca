@@ -21,7 +21,7 @@ import {
 
 // Leave roughly half the default macOS PTY limit for other terminals and agent-owned PTYs.
 export const DEFAULT_MAX_HOST_TERMINALS = 256
-const MAX_HOST_TERMINALS_ENV_VAR = 'ORCA_DAEMON_MAX_HOST_TERMINALS'
+const MAX_HOST_TERMINALS_ENV_VAR = 'OCC_DAEMON_MAX_HOST_TERMINALS'
 const MAX_OVERRIDE_TERMINALS = 4096
 
 const REFRESH_INTERVAL_MS = 60_000
@@ -43,7 +43,7 @@ export function defaultHostTerminalLedgerDir(
   uid: number | undefined = process.getuid?.()
 ): string | null {
   if (platform === 'win32') {
-    return join(tmpdir(), 'orca-daemon-host-terminals')
+    return join(tmpdir(), 'occ-daemon-host-terminals')
   }
   // Network-mounted home directories can span hosts; the ledger must stay machine-local.
   return uid === undefined

@@ -61,13 +61,13 @@ function rejectionFields(reason: unknown): { code: string; message: string } {
 export function handleRelayUnhandledRejection(reason: unknown, fenced = true): void {
   if (fenced && isFencedRelayDatabaseRejection(reason)) {
     console.warn(
-      JSON.stringify({ event: 'orca_relay_database_rejection_fenced', ...rejectionFields(reason) })
+      JSON.stringify({ event: 'occ_relay_database_rejection_fenced', ...rejectionFields(reason) })
     )
     return
   }
   console.error(
     JSON.stringify({
-      event: 'orca_relay_process_fatal',
+      event: 'occ_relay_process_fatal',
       kind: 'unhandled-rejection',
       ...rejectionFields(reason)
     })

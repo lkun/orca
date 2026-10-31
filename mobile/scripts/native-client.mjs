@@ -13,7 +13,7 @@ import nativeBuildCache from './native-build-cache.cjs'
 
 const execFileAsync = promisify(execFile)
 const PLATFORMS = ['ios', 'android']
-const STAMP_FILE = '.orca-native-fingerprint'
+const STAMP_FILE = '.occ-native-fingerprint'
 const USAGE = `Usage:
   native-client.mjs ensure <ios|android> [--device <name|udid|serial>] [--rebuild]
   native-client.mjs fingerprint [--project <dir>] [--out <file>]

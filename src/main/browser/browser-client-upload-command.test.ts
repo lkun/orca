@@ -11,7 +11,7 @@ import { BrowserClientUploadStaging } from './browser-client-upload-staging'
 let stagingRoot = ''
 
 beforeEach(async () => {
-  stagingRoot = await realpath(await mkdtemp(path.join(tmpdir(), 'orca-upload-command-')))
+  stagingRoot = await realpath(await mkdtemp(path.join(tmpdir(), 'occ-upload-command-')))
 })
 
 afterEach(async () => {

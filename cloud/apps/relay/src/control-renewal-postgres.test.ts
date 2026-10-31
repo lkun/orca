@@ -1,5 +1,5 @@
 import { performance } from 'node:perf_hooks'
-import { ASSIGNMENT_LIMITS, RELAY_PROTOCOL_LIMITS } from '@orca-cloud/relay-contract'
+import { ASSIGNMENT_LIMITS, RELAY_PROTOCOL_LIMITS } from '@occ-cloud/relay-contract'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { RelayAssignmentStore } from './assignment-store.js'
 import { CONTROL_RENEWAL_BATCH_SQL } from './control-renewal-statement.js'
@@ -11,7 +11,7 @@ import {
   type SqlRow
 } from './database.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 const sourceCell = {

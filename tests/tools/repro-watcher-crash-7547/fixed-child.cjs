@@ -131,7 +131,7 @@ if (!isMainThread && workerData && workerData.role === 'churn') {
   process.exit(0)
 }
 
-function subscribeLikeOrca(dir) {
+function subscribeLikeOCC(dir) {
   let subRef = { current: null }
   stats.subscribes++
   return client
@@ -171,7 +171,7 @@ async function deleteRootLane(baseDir, durationMs, lane) {
     makeTree(dir, 120, 4)
     let subRef
     try {
-      subRef = await subscribeLikeOrca(dir)
+      subRef = await subscribeLikeOCC(dir)
     } catch {
       rmrf(dir)
       round++
@@ -207,7 +207,7 @@ async function unsubChurnLane(baseDir, durationMs, lane) {
   while (Date.now() < end) {
     let subRef
     try {
-      subRef = await subscribeLikeOrca(dir)
+      subRef = await subscribeLikeOCC(dir)
     } catch {
       await sleep(20)
       continue
@@ -274,7 +274,7 @@ let completed = false
 
 async function main() {
   const durationMs = Number(process.argv[2] || 15000)
-  const baseDir = path.join(os.tmpdir(), 'orca-7547-harness-fixed', `run-${process.pid}`)
+  const baseDir = path.join(os.tmpdir(), 'occ-7547-harness-fixed', `run-${process.pid}`)
   fs.mkdirSync(baseDir, { recursive: true })
 
   // Watchdog rejects stuck lanes and premature empty-loop success.

@@ -37,7 +37,7 @@ export function MarkdownPreviewSingleNoteSendMenu({
         }
       ]}
       targetModeLabel={translate('auto.components.editor.NotesSendMenu.thisNote', 'This note')}
-      triggerClassName="orca-diff-comment-pill-btn"
+      triggerClassName="occ-diff-comment-pill-btn"
       disabledTooltip={translate(
         'auto.components.editor.NotesSendMenu.noteAlreadySent',
         'Note already sent'
@@ -101,12 +101,12 @@ export function MarkdownPreviewAnnotationComposer({
       className="markdown-annotation-composer"
       onClick={(event) => event.stopPropagation()}
     >
-      <div className="orca-diff-comment-popover-label">
+      <div className="occ-diff-comment-popover-label">
         {translate('auto.components.editor.MarkdownPreview.b1bfc04034', 'Selected text')}
       </div>
       <ImeTextarea
         ref={focusTextareaRef}
-        className="orca-diff-comment-popover-textarea"
+        className="occ-diff-comment-popover-textarea"
         placeholder={translate(
           'auto.components.editor.MarkdownPreview.d737791433',
           'Add note for the AI'
@@ -131,7 +131,7 @@ export function MarkdownPreviewAnnotationComposer({
         }}
         rows={3}
       />
-      <div className="orca-diff-comment-popover-footer">
+      <div className="occ-diff-comment-popover-footer">
         <Button variant="ghost" size="sm" onClick={onCancel} disabled={submitting}>
           {translate('auto.components.editor.MarkdownPreview.e4683f70c4', 'Cancel')}
         </Button>

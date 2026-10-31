@@ -1,6 +1,6 @@
 import './rpc/unused-default-rpc-methods.test-fixture'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { RpcDispatcher } from './rpc/dispatcher'
 import { AGENT_SESSION_METHODS } from './rpc/methods/agent-session'
 import { _resetWslCachesForTests, _setWslCachesForTests } from '../wsl'
@@ -51,14 +51,14 @@ const store: PartialRuntimeStore = {
 }
 const scope = { id: 'f', path: 'C:\\work', connectionId: null, repo: null, folderWorkspace: folder }
 const clientOperationId = `${Date.now()}-0123456789abcdef0123456789abcdef`
-let runtime: OrcaRuntimeService
+let runtime: OCCRuntimeService
 let spawned: () => (string | undefined)[]
 const original = process.platform
 const setPlatform = (value: string) =>
   Object.defineProperty(process, 'platform', { configurable: true, value })
 beforeEach(() => {
   setPlatform('win32')
-  runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+  runtime = new OCCRuntimeService(partialRuntimeStore(store))
   Object.assign(runtime, {
     resolveTerminalWorkspaceLaunchScope: async () => scope,
     executionOwnerSupportsAgentSessionOperation: async () => true

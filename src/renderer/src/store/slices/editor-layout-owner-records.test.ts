@@ -7,7 +7,7 @@ import { remapOpenEditorTabsForPathChange } from '@/lib/remap-open-editor-tabs-f
 import type { AppState } from '@/store/types'
 import type { LayoutCommand } from '../../../../shared/workspace-layout/workspace-layout-command-types'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { editorMoveOwnerFromContext, type EditorMoveOwner } from '@/lib/open-editor-move-owner'
 import { drawTabsFromMain, type TabsDrawnFromMain } from './tabs-drawn-from-main.test-fixture'
 import { contentRekeyOutcome } from '@/runtime/layout-owner-content-rekeys'
@@ -113,7 +113,7 @@ function localMoveOwner(worktreeId: string | undefined): EditorMoveOwner {
   return editorMoveOwnerFromContext({ target: { kind: 'local' } }, worktreeId)
 }
 
-describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('editor records under frames, layout-owner build', () => {
+describe.runIf(OCC_LAYOUT_OWNER_IS_MAIN)('editor records under frames, layout-owner build', () => {
   it('draws every editor tab main keeps, each with its file record', async () => {
     const state = useAppStore.getState()
     state.openFile(
@@ -184,7 +184,7 @@ describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('editor records under frames, layout-o
   })
 })
 
-describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('tabs only a frame drew, layout-owner build', () => {
+describe.runIf(OCC_LAYOUT_OWNER_IS_MAIN)('tabs only a frame drew, layout-owner build', () => {
   it("labels them as the window's own open would, from the file", async () => {
     openEdit(WT, '/repo-a/own.ts', 'own.ts')
     await main.settle()
@@ -224,7 +224,7 @@ describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('tabs only a frame drew, layout-owner 
   })
 })
 
-describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('closing every editor, layout-owner build', () => {
+describe.runIf(OCC_LAYOUT_OWNER_IS_MAIN)('closing every editor, layout-owner build', () => {
   it("keeps the files' content until main's frame drops their tabs", async () => {
     const a = openEdit(WT, '/repo-a/a.ts', 'a.ts')
     openEdit(WT, '/repo-a/b.ts', 'b.ts')
@@ -339,7 +339,7 @@ describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('closing every editor, layout-owner bu
   })
 })
 
-describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('open files renamed on disk, layout-owner build', () => {
+describe.runIf(OCC_LAYOUT_OWNER_IS_MAIN)('open files renamed on disk, layout-owner build', () => {
   it("rekeys main's tabs and file records under the window's ids", async () => {
     const plain = openEdit(WT, '/repo-a/src/a.ts', 'src/a.ts')
     // The same path in a sibling workspace gets an owner-qualified id.
@@ -561,7 +561,7 @@ describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('open files renamed on disk, layout-ow
   })
 })
 
-describe.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)('open files renamed on disk, switch off', () => {
+describe.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)('open files renamed on disk, switch off', () => {
   it('sends nothing', () => {
     openEdit(WT, '/repo-a/a.ts', 'a.ts')
     expect(
@@ -577,7 +577,7 @@ describe.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)('open files renamed on disk, switch o
   })
 })
 
-describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
+describe.runIf(OCC_LAYOUT_OWNER_IS_MAIN)(
   'a resolved deleted-side conflict, layout-owner build',
   () => {
     it("closes the placeholder's tab in main, and the frame drops it", async () => {
@@ -610,7 +610,7 @@ describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
   }
 )
 
-describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
+describe.runIf(OCC_LAYOUT_OWNER_IS_MAIN)(
   'a runtime-owned file the window opens, layout-owner build',
   () => {
     const FILE = '/repo-a/src/remote.ts'

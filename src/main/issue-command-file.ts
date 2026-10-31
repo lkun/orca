@@ -1,4 +1,4 @@
-// .orca/issue-command is local; orca.yaml supplies the tracked project default.
+// .occ/issue-command is local; occ.yaml supplies the tracked project default.
 import { readFileSync, existsSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { loadHooks } from './hooks'
@@ -12,11 +12,11 @@ import {
 
 type IssueCommandGitOptions = GitRuntimeOptions | (() => GitRuntimeOptions)
 
-const ORCA_DIR = '.orca'
+const OCC_DIR = '.occ'
 const ISSUE_COMMAND_FILENAME = 'issue-command'
 
 export function getIssueCommandFilePath(repoPath: string): string {
-  return join(repoPath, ORCA_DIR, ISSUE_COMMAND_FILENAME)
+  return join(repoPath, OCC_DIR, ISSUE_COMMAND_FILENAME)
 }
 
 export function getSharedIssueCommand(repoPath: string): string | null {
@@ -113,7 +113,7 @@ function gitWslDistro(gitOptions: IssueCommandGitOptions): string | undefined {
   }
 }
 
-/** Empty content removes the local override so the shared orca.yaml command applies. */
+/** Empty content removes the local override so the shared occ.yaml command applies. */
 export async function writeIssueCommand(
   repoPath: string,
   content: string,
@@ -128,12 +128,12 @@ export async function writeIssueCommand(
       return
     }
 
-    const orcaDir = join(repoPath, ORCA_DIR)
-    if (!existsSync(orcaDir)) {
-      mkdirSync(orcaDir, { recursive: true })
+    const occDir = join(repoPath, OCC_DIR)
+    if (!existsSync(occDir)) {
+      mkdirSync(occDir, { recursive: true })
     }
     if (!(await isIssueCommandIgnoredByGit(repoPath, options))) {
-      ensureOrcaDirIgnored(repoPath)
+      ensureOCCDirIgnored(repoPath)
     }
     writeFileSync(filePath, `${trimmed}\n`, 'utf-8')
   } catch (err) {
@@ -148,7 +148,7 @@ async function isIssueCommandIgnoredByGit(
   options: IssueCommandGitOptions = {}
 ): Promise<boolean> {
   try {
-    const issueCommandPath = `${ORCA_DIR}/${ISSUE_COMMAND_FILENAME}`
+    const issueCommandPath = `${OCC_DIR}/${ISSUE_COMMAND_FILENAME}`
     const ignored = await checkIgnoredPaths(
       repoPath,
       [issueCommandPath],
@@ -162,20 +162,20 @@ async function isIssueCommandIgnoredByGit(
   }
 }
 
-function ensureOrcaDirIgnored(repoPath: string): void {
+function ensureOCCDirIgnored(repoPath: string): void {
   const gitignorePath = join(repoPath, '.gitignore')
   try {
     if (existsSync(gitignorePath)) {
       const content = readFileSync(gitignorePath, 'utf-8')
-      if (/^\.orca\/?$/m.test(content)) {
+      if (/^\.occ\/?$/m.test(content)) {
         return
       }
       const separator = content.endsWith('\n') ? '' : '\n'
-      writeFileSync(gitignorePath, `${content}${separator}.orca\n`, 'utf-8')
+      writeFileSync(gitignorePath, `${content}${separator}.occ\n`, 'utf-8')
     } else {
-      writeFileSync(gitignorePath, '.orca\n', 'utf-8')
+      writeFileSync(gitignorePath, '.occ\n', 'utf-8')
     }
   } catch {
-    console.warn('[hooks] Could not update .gitignore to exclude .orca')
+    console.warn('[hooks] Could not update .gitignore to exclude .occ')
   }
 }

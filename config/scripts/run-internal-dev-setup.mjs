@@ -20,7 +20,7 @@ function quoteWindowsArg(value) {
   return `"${value.replace(/"/g, '""')}"`
 }
 
-// Normalize Git Bash ORCA_WORKTREE_PATH (/c/...) before feeding cmd.exe/native executable.
+// Normalize Git Bash OCC_WORKTREE_PATH (/c/...) before feeding cmd.exe/native executable.
 function posixShellPathToNativeWindowsPath(value) {
   const driveMatch = value.match(/^\/([A-Za-z])\/(.*)$/)
   if (driveMatch) {
@@ -61,13 +61,13 @@ export function runInternalDevSetup({
   access = accessSync,
   spawn = spawnSync
 } = {}) {
-  const setupPath = env.ORCA_INTERNAL_DEV_SETUP?.trim()
+  const setupPath = env.OCC_INTERNAL_DEV_SETUP?.trim()
   if (!setupPath || !exists(setupPath) || !isExecutable(setupPath, platform, access)) {
     return 0
   }
 
   // Optional local accelerator must not block workspace creation or normal dependency install.
-  spawnOptionalSetup(spawn, setupPath, env.ORCA_WORKTREE_PATH || cwd, platform, env)
+  spawnOptionalSetup(spawn, setupPath, env.OCC_WORKTREE_PATH || cwd, platform, env)
 
   return 0
 }

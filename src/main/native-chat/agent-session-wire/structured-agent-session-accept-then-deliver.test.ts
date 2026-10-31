@@ -118,7 +118,7 @@ async function startHost(): Promise<void> {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-accept-deliver-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-accept-deliver-'))
   resetHostTestOperationIds()
   adapterExtras = {}
   starts.clear()
@@ -861,7 +861,7 @@ describe('a rewind an earlier child left prepared', () => {
       persistRewindRecord(store, SESSION, fence, {
         operationId: 'rewind-op',
         callerKey: 'client-1',
-        itemId: 'orca:rewound',
+        itemId: 'occ:rewound',
         providerItemId: `codex:${THREAD}:turn-1:0`,
         expectedEpoch: 'epoch-before',
         phase: 'provider-succeeded',

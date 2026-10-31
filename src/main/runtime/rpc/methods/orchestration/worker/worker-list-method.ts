@@ -3,7 +3,7 @@ import type { WorkerTerminalListState } from '../../../../orchestration/worker-t
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { WORKER_LIST_CURSOR_EXPIRED_MESSAGE } from '../../../../orchestration/db/worker-terminal/worker-terminal-listing'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { defineMethod } from '../../../core'
 import {
   decodeWorkerListCursor,
@@ -135,7 +135,7 @@ export const ORCHESTRATION_WORKER_LIST_METHOD = defineMethod({
 })
 
 function readSnapshotRows(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   db: OrchestrationDb,
   cursor: Extract<WorkerListCursor, { version: 3 }>,
   params: WorkerListPageParams,
@@ -157,7 +157,7 @@ function readSnapshotRows(
 }
 
 type WorkerListPageArgs = {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   params: WorkerListPageParams
   limit: number
   rows: ReturnType<OrchestrationDb['listWorkerTerminalResources']>

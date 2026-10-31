@@ -16,7 +16,7 @@ const MAIN = ['terminal-history', 'shell-history']
 let root: string
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-drive-unc-renderer-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-drive-unc-renderer-'))
 })
 
 afterEach(() => {

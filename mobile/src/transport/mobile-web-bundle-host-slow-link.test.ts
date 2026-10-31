@@ -36,7 +36,7 @@ afterEach(() => {
 })
 
 it('verifies a host-served bundle over a 20 KiB/s link including incompressible assets', async () => {
-  scratch = mkdtempSync(join(tmpdir(), 'orca-bundle-slow-link-'))
+  scratch = mkdtempSync(join(tmpdir(), 'occ-bundle-slow-link-'))
   installMobileWebBundleAppPath(scratch)
   const root = join(scratch, 'out', 'mobile-web')
   mkdirSync(join(root, 'assets'), { recursive: true })

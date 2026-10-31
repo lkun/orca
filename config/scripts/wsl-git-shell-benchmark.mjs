@@ -134,17 +134,17 @@ async function main() {
   const { quotePosixShell } = await jiti.import('../../src/shared/shell-argument-quoting.ts')
 
   const loginProbe = buildWslLoginShellCommand(
-    `printf '\\n__ORCA_PATH__%s\\n__ORCA_GIT__%s\\n__ORCA_HOME__%s\\n' "$PATH" "$(command -v git)" "$HOME"`
+    `printf '\\n__OCC_PATH__%s\\n__OCC_GIT__%s\\n__OCC_HOME__%s\\n' "$PATH" "$(command -v git)" "$HOME"`
   )
   const probe = await run('wsl.exe', wslArgs(distro, ['/bin/sh', '-lc', loginProbe]))
   const probeText = probe.stdout.toString('utf8')
-  const loginPath = /__ORCA_PATH__(.*)/.exec(probeText)?.[1]?.trim()
-  const gitPath = /__ORCA_GIT__(.*)/.exec(probeText)?.[1]?.trim()
-  const loginHome = /__ORCA_HOME__(.*)/.exec(probeText)?.[1]?.trim()
+  const loginPath = /__OCC_PATH__(.*)/.exec(probeText)?.[1]?.trim()
+  const gitPath = /__OCC_GIT__(.*)/.exec(probeText)?.[1]?.trim()
+  const loginHome = /__OCC_HOME__(.*)/.exec(probeText)?.[1]?.trim()
   if (!loginPath || !gitPath?.startsWith('/') || !loginHome?.startsWith('/')) {
     throw new Error(`Could not resolve login-shell Git environment: ${probeText.trim()}`)
   }
-  const outputMarker = `__ORCA_GIT_OUTPUT_${process.pid}__\n`
+  const outputMarker = `__OCC_GIT_OUTPUT_${process.pid}__\n`
 
   const runGit = async (mode, repo, args) => {
     const startedAt = performance.now()
@@ -225,7 +225,7 @@ async function main() {
     ).stdout
       .toString('utf8')
       .trim()
-    const fixtureName = `.orca-wsl-git-shell-benchmark-${process.pid}-${randomUUID()}.txt`
+    const fixtureName = `.occ-wsl-git-shell-benchmark-${process.pid}-${randomUUID()}.txt`
     const fixturePath = posix.join(repo, fixtureName)
     const prepareStage = async () => {
       await runGit('fast', repo, ['reset', '--quiet', '--', fixtureName])
@@ -235,7 +235,7 @@ async function main() {
           '/bin/sh',
           '-c',
           'printf "benchmark\\n" > "$1"',
-          'orca-wsl-git-shell-benchmark',
+          'occ-wsl-git-shell-benchmark',
           fixturePath
         ])
       )
@@ -272,7 +272,7 @@ async function main() {
         '/bin/sh',
         '-c',
         'set -C; printf "benchmark\\n" > "$1"',
-        'orca-wsl-git-shell-benchmark',
+        'occ-wsl-git-shell-benchmark',
         fixturePath
       ]),
       { allowFailure: true }
@@ -358,7 +358,7 @@ async function main() {
     warmups: options.warmups,
     sampleAggregation: BENCHMARK_SAMPLE_AGGREGATION,
     injectedLoginDelayMs: options.loginDelayMs,
-    loginProbePreambleBytes: Buffer.byteLength(probeText.split('__ORCA_PATH__', 1)[0]),
+    loginProbePreambleBytes: Buffer.byteLength(probeText.split('__OCC_PATH__', 1)[0]),
     guestProcessChain: {
       login: 'sh -> interactive login shell -> git',
       fast: 'env -> git'

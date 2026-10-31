@@ -106,7 +106,7 @@ describe('generateCommitMessageFromContext on the Windows direct-child path', ()
       {
         agentId: 'custom',
         model: '',
-        customAgentCommand: 'orca-test-agent-nope'
+        customAgentCommand: 'occ-test-agent-nope'
       },
       {
         kind: 'local',
@@ -123,7 +123,7 @@ describe('generateCommitMessageFromContext on the Windows direct-child path', ()
       message: 'Add README note'
     })
     expect(spawnMock).toHaveBeenCalledWith(
-      'orca-test-agent-nope',
+      'occ-test-agent-nope',
       [],
       expect.objectContaining({
         env: expect.objectContaining({ CODEX_HOME: '/managed/codex-home' })
@@ -133,7 +133,7 @@ describe('generateCommitMessageFromContext on the Windows direct-child path', ()
 
   it('routes WSL local commit generation through the selected distro login shell', async () => {
     await withPlatform('win32', async () => {
-      process.env.ORCA_HOST_ONLY_SECRET = 'do-not-leak'
+      process.env.OCC_HOST_ONLY_SECRET = 'do-not-leak'
       const listeners = new Map<string, (value: unknown) => void>()
       const child = {
         pid: 123,
@@ -182,10 +182,10 @@ describe('generateCommitMessageFromContext on the Windows direct-child path', ()
         })
       )
       const spawnEnv = spawnMock.mock.calls[0]?.[2]?.env as NodeJS.ProcessEnv
-      expect(spawnEnv.ORCA_HOST_ONLY_SECRET).toBeUndefined()
+      expect(spawnEnv.OCC_HOST_ONLY_SECRET).toBeUndefined()
       const shellCommand = spawnMock.mock.calls[0]?.[1]?.[5] as string
       expect(shellCommand).toContain('getent passwd')
-      expect(shellCommand).toContain('exec "$_orca_wsl_shell" -ilc')
+      expect(shellCommand).toContain('exec "$_occ_wsl_shell" -ilc')
       expect(shellCommand).toContain('/mnt/c/repo')
       expect(shellCommand).toContain("'agent'")
       expect(shellCommand).toContain('--mode')

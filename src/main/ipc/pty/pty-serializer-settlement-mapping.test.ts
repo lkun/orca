@@ -38,13 +38,13 @@ vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
 const managedWslCliDir = vi.hoisted(() =>
-  vi.fn((): string | null => 'C:\\orca-user-data\\wsl-managed-cli\\hash')
+  vi.fn((): string | null => 'C:\\occ-user-data\\wsl-managed-cli\\hash')
 )
 vi.mock('../../cli/wsl-managed-cli', async (importOriginal) => ({
   ...(await importOriginal<typeof WslManagedCliModule>()),
   getManagedWslCliDir: managedWslCliDir
 }))
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -102,7 +102,7 @@ describe('registerPtyHandlers', () => {
       worktreeId: 'wt-1',
       tabId: 'tab-cli',
       leafId: '11111111-1111-4111-8111-111111111111',
-      env: { ORCA_PANE_KEY: ` ${paneKey} ` }
+      env: { OCC_PANE_KEY: ` ${paneKey} ` }
     })
     const replacementGen = (await handlers.get('pty:declarePendingPaneSerializer')!(null, {
       paneKey
@@ -168,7 +168,7 @@ describe('registerPtyHandlers', () => {
         worktreeId: 'wt-1',
         tabId: 'tab-reused',
         leafId: '33333333-3333-4333-8333-333333333333',
-        env: { ORCA_PANE_KEY: paneKey }
+        env: { OCC_PANE_KEY: paneKey }
       })
     }
 
@@ -243,7 +243,7 @@ describe('registerPtyHandlers', () => {
     expect(hasPendingRendererSerializerForPaneKey(paneKey)).toBe(false)
     expect(sender.once).not.toHaveBeenCalled()
   })
-  it('ignores renderer-provided ORCA_TERMINAL_HANDLE for local PTY spawns', async () => {
+  it('ignores renderer-provided OCC_TERMINAL_HANDLE for local PTY spawns', async () => {
     const runtime = {
       setPtyController: vi.fn(),
       noteTerminalSpawnCommand: vi.fn(),
@@ -257,13 +257,13 @@ describe('registerPtyHandlers', () => {
     await handlers.get('pty:spawn')!(null, {
       cols: 80,
       rows: 24,
-      env: { ORCA_TERMINAL_HANDLE: 'term_untrusted', ORCA_WSL_CLI_DIR: 'C:\\stale' }
+      env: { OCC_TERMINAL_HANDLE: 'term_untrusted', OCC_WSL_CLI_DIR: 'C:\\stale' }
     })
 
     const spawnCall = spawnMock.mock.calls.at(-1)!
     const env = spawnCall[2].env as Record<string, string>
-    expect(env.ORCA_TERMINAL_HANDLE).toBe('term_trusted')
-    expect(env.ORCA_WSL_CLI_DIR).toBeUndefined()
+    expect(env.OCC_TERMINAL_HANDLE).toBe('term_trusted')
+    expect(env.OCC_WSL_CLI_DIR).toBeUndefined()
     expect(runtime.preAllocateHandleForPty).toHaveBeenCalledWith(expect.any(String))
   })
   it('forwards the trusted OCC terminal handle into managed WSL terminals', async () => {
@@ -297,25 +297,25 @@ describe('registerPtyHandlers', () => {
     const spawnCall = spawnMock.mock.calls.at(-1)!
     const env = spawnCall[2].env as Record<string, string>
     expect(spawnCall[0]).toBe('wsl.exe')
-    expect(env.ORCA_TERMINAL_HANDLE).toBe('term_wsl')
-    expect(env.ORCA_USER_DATA_PATH).toBe('/tmp/orca-user-data')
-    expect(env.ORCA_CLI_COMMAND).toBe('occ-ide')
-    expect(env.ORCA_WSL_CLI_DIR).toBe('C:\\orca-user-data\\wsl-managed-cli\\hash')
+    expect(env.OCC_TERMINAL_HANDLE).toBe('term_wsl')
+    expect(env.OCC_USER_DATA_PATH).toBe('/tmp/occ-user-data')
+    expect(env.OCC_CLI_COMMAND).toBe('occ-ide')
+    expect(env.OCC_WSL_CLI_DIR).toBe('C:\\occ-user-data\\wsl-managed-cli\\hash')
     expect(env.WSLENV?.split(':')).toEqual(
       expect.arrayContaining([
-        'ORCA_TERMINAL_HANDLE/u',
-        'ORCA_USER_DATA_PATH/p',
-        'ORCA_CLI_COMMAND/u',
-        'ORCA_WSL_CLI_DIR/p',
-        'ORCA_AGENT_HOOK_PORT/u',
-        'ORCA_AGENT_HOOK_TOKEN/u',
+        'OCC_TERMINAL_HANDLE/u',
+        'OCC_USER_DATA_PATH/p',
+        'OCC_CLI_COMMAND/u',
+        'OCC_WSL_CLI_DIR/p',
+        'OCC_AGENT_HOOK_PORT/u',
+        'OCC_AGENT_HOOK_TOKEN/u',
         // Bare WSL shells expose OMP status without creating ~/.omp (#10196).
-        'ORCA_OMP_STATUS_EXTENSION/u',
+        'OCC_OMP_STATUS_EXTENSION/u',
         'POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD'
       ])
     )
     expect(env.WSLENV?.split(':')).not.toEqual(
-      expect.arrayContaining(['ORCA_OMP_SOURCE_AGENT_DIR/p'])
+      expect.arrayContaining(['OCC_OMP_SOURCE_AGENT_DIR/p'])
     )
   })
   it('forces managed WSL env over stale caller values, even when CLI setup fails', async () => {
@@ -340,8 +340,8 @@ describe('registerPtyHandlers', () => {
         rows: 24,
         shellOverride: 'wsl.exe',
         env: {
-          ORCA_USER_DATA_PATH: '/tmp/stale-orca-user-data',
-          ORCA_WSL_CLI_DIR: '/tmp/stale-wsl-cli'
+          OCC_USER_DATA_PATH: '/tmp/stale-occ-user-data',
+          OCC_WSL_CLI_DIR: '/tmp/stale-wsl-cli'
         }
       })
     } finally {
@@ -353,7 +353,7 @@ describe('registerPtyHandlers', () => {
     const spawnCall = spawnMock.mock.calls.at(-1)!
     const env = spawnCall[2].env as Record<string, string>
     expect(spawnCall[0]).toBe('wsl.exe')
-    expect(env.ORCA_USER_DATA_PATH).toBe('/tmp/orca-user-data')
-    expect(env.ORCA_WSL_CLI_DIR).toBeUndefined()
+    expect(env.OCC_USER_DATA_PATH).toBe('/tmp/occ-user-data')
+    expect(env.OCC_WSL_CLI_DIR).toBeUndefined()
   })
 })

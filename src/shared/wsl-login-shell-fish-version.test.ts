@@ -6,7 +6,7 @@ import { afterAll, describe, expect, it } from 'vitest'
 import { buildWslInteractiveLoginShellCommand } from './wsl-login-shell-command'
 
 // A stub fish that reports a version and echoes the argv it was started with.
-const root = mkdtempSync(join(tmpdir(), 'orca-wsl-fish-version-'))
+const root = mkdtempSync(join(tmpdir(), 'occ-wsl-fish-version-'))
 const tools = join(root, 'tools')
 const fish = join(root, 'bin', 'fish')
 mkdirSync(tools)
@@ -20,12 +20,12 @@ writeFileSync(
   [
     '#!/bin/sh',
     'if [ "$1" = --version ]; then',
-    '  [ -n "$ORCA_TEST_FISH_VERSION" ] || exit 1',
+    '  [ -n "$OCC_TEST_FISH_VERSION" ] || exit 1',
     // fish 2.x writes its version to stderr.
-    '  if [ -n "$ORCA_TEST_FISH_VERSION_ON_STDERR" ]; then',
-    '    printf "%s\\n" "$ORCA_TEST_FISH_VERSION" >&2; exit 0',
+    '  if [ -n "$OCC_TEST_FISH_VERSION_ON_STDERR" ]; then',
+    '    printf "%s\\n" "$OCC_TEST_FISH_VERSION" >&2; exit 0',
     '  fi',
-    '  printf "%s\\n" "$ORCA_TEST_FISH_VERSION"; exit 0',
+    '  printf "%s\\n" "$OCC_TEST_FISH_VERSION"; exit 0',
     'fi',
     'printf "%s\\n" "$@"',
     ''
@@ -40,8 +40,8 @@ function startFlags(version: string, onStderr = false): string[] {
     encoding: 'utf8',
     env: {
       PATH: `${tools}:/usr/bin:/bin`,
-      ORCA_TEST_FISH_VERSION: version,
-      ...(onStderr ? { ORCA_TEST_FISH_VERSION_ON_STDERR: '1' } : {})
+      OCC_TEST_FISH_VERSION: version,
+      ...(onStderr ? { OCC_TEST_FISH_VERSION_ON_STDERR: '1' } : {})
     }
   })
   return argv.split('\n').filter((arg) => arg === '-l' || arg === '-C')

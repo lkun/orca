@@ -9,11 +9,11 @@ export function reviewHeadRemoteRefComponent(remote: string, remoteUrl: string):
 }
 
 export function githubPullRequestHeadLocalRef(remoteComponent: string, prNumber: number): string {
-  return `refs/orca/pull/${remoteComponent}/${prNumber}`
+  return `refs/occ/pull/${remoteComponent}/${prNumber}`
 }
 
 export function gitlabMergeRequestHeadLocalRef(remoteComponent: string, mrIid: number): string {
-  return `refs/orca/merge-requests/${remoteComponent}/${mrIid}`
+  return `refs/occ/merge-requests/${remoteComponent}/${mrIid}`
 }
 
 // Lossy remote-name sanitization is safe because the URL hash supplies uniqueness.

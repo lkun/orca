@@ -22,7 +22,7 @@ it.runIf(process.platform === 'win32')(
     if (startedAt === null) {
       throw new Error('Native process creation-time capability is required')
     }
-    const root = mkdtempSync(join(tmpdir(), 'orca-profile-owner-native-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-profile-owner-native-'))
     try {
       const maintenance = profileStateAccessPaths(root).maintenance
       mkdirSync(maintenance)

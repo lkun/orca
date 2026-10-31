@@ -1,5 +1,5 @@
-import { runProcess } from '@orca/process-host'
-import { windowsPowerShellPath } from '@orca/process-host/windows-system-binary'
+import { runProcess } from '@occ/process-host'
+import { windowsPowerShellPath } from '@occ/process-host/windows-system-binary'
 import type { WindowsProcessRow } from './windows-process-table'
 
 /** CIM fallback for hosts without a usable native binding, including older relay deployments. Windows 11/1486-process measurement: 1.36s and 4.8MiB, bounded at 3s/8MiB. */

@@ -37,8 +37,8 @@ const repoMap = new Map<string, Repo>([
     'repo-1',
     {
       id: 'repo-1',
-      path: '/repo/orca',
-      displayName: 'stablyai/orca',
+      path: '/repo/occ',
+      displayName: 'stablyai/occ',
       badgeColor: '#22c55e',
       addedAt: 0
     }

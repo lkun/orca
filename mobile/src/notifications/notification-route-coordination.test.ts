@@ -37,7 +37,7 @@ describe('notification route coordination', () => {
   it('mounts the host before replacing it with the notification session, from a cold navigator', () => {
     const target = getNotificationNavigationTarget({
       hostId: 'host/one',
-      worktreeId: 'repo::/Users/me/orca/workspaces/feature'
+      worktreeId: 'repo::/Users/me/occ/workspaces/feature'
     })
     const harness = navigationHarness(undefined)
     const push = vi.fn()

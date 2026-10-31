@@ -12,11 +12,11 @@ import { useFloatingTerminalOrchestrationVisibility } from './use-floating-termi
 function makeCliStatus(overrides: Partial<CliInstallStatus> = {}): CliInstallStatus {
   return {
     platform: 'linux',
-    commandName: 'orca',
+    commandName: 'occ',
     commandPath: '/usr/local/bin/occ',
     pathDirectory: '/usr/local/bin',
     pathConfigured: true,
-    launcherPath: '/opt/OCC/orca',
+    launcherPath: '/opt/OCC/occ',
     installMethod: 'symlink',
     supported: true,
     state: 'installed',

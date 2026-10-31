@@ -449,7 +449,7 @@ it('keeps an actual composing return through command acceptance, composition set
       ...draft,
       setCaret: vi.fn(),
       setActiveSuggestion: vi.fn(),
-      handleDraftOrCaretChange: vi.fn(),
+      handleDraftoccretChange: vi.fn(),
       flushPendingAttachments: vi.fn()
     })
     return (
@@ -549,7 +549,7 @@ describe('an open IME composition stays in the draft every consumer reads (#3583
       ...draft,
       setCaret: vi.fn(),
       setActiveSuggestion: vi.fn(),
-      handleDraftOrCaretChange: vi.fn(),
+      handleDraftoccretChange: vi.fn(),
       flushPendingAttachments: vi.fn()
     })
     return (

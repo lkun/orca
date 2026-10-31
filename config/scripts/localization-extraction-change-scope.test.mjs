@@ -1,7 +1,7 @@
 import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { expect, it } from 'vitest'
 import { parse } from 'yaml'
 import { affectsLocalizationExtraction } from './localization-extraction-change-scope.mjs'
@@ -93,7 +93,7 @@ it.skipIf(process.platform === 'win32')(
     const step = workflow.jobs.preflight.steps.find(
       (candidate) => candidate.name === 'Verify localization extraction'
     )
-    const scratch = mkdtempSync(join(tmpdir(), 'orca-localization-routing-'))
+    const scratch = mkdtempSync(join(tmpdir(), 'occ-localization-routing-'))
     const directory = join(scratch, 'checkout')
     mkdirSync(directory)
     const calls = join(scratch, 'extraction-calls')
@@ -136,17 +136,17 @@ it.skipIf(process.platform === 'win32')(
           'pipefail',
           '-c',
           `
-        node() { command "$ORCA_TEST_NODE" "$@"; }
-        bun() { printf '%s\n' "$@" >> "$ORCA_TEST_EXTRACTION_CALLS"; }
+        node() { command "$OCC_TEST_NODE" "$@"; }
+        bun() { printf '%s\n' "$@" >> "$OCC_TEST_EXTRACTION_CALLS"; }
         ${boundary}
         ${step.run}
       `
         ],
         {
           ...process.env,
-          ORCA_BACKGROUND_LAUNCH: '1',
-          ORCA_TEST_NODE: process.execPath,
-          ORCA_TEST_EXTRACTION_CALLS: calls,
+          OCC_BACKGROUND_LAUNCH: '1',
+          OCC_TEST_NODE: process.execPath,
+          OCC_TEST_EXTRACTION_CALLS: calls,
           RUNNER_TEMP: scratch,
           BASE_SHA: base,
           GITHUB_EVENT_NAME: 'pull_request',
@@ -195,7 +195,7 @@ it.skipIf(process.platform === 'win32')(
         true,
         `node() {
         if [ "$1" = config/scripts/localization-extraction-change-scope.mjs ]; then return 1; fi
-        command "$ORCA_TEST_NODE" "$@"
+        command "$OCC_TEST_NODE" "$@"
       }`
       )
       route(deleted, false, '', { PREFLIGHT_PHASE_SELECTED: 'false' })

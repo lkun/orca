@@ -1,17 +1,17 @@
-import type { OrcaRuntimeWithScheduleMobileSessionTabsChanged as ScheduleMobileSessionTabsChangedMethods } from './session-tabs-change-publication'
+import type { OCCRuntimeWithScheduleMobileSessionTabsChanged as ScheduleMobileSessionTabsChangedMethods } from './session-tabs-change-publication'
 import { defaultAgentChatLabel } from '../../../shared/agent-session/agent-session-chat-label'
-import { OrcaRuntimeWithGetStructuredAgentSessionCreateSupport } from './structured-session-create-support'
+import { OCCRuntimeWithGetStructuredAgentSessionCreateSupport } from './structured-session-create-support'
 import { getStructuredAgentSessionHost } from '../../native-chat/agent-session-wire/structured-agent-session-registry'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../shared/execution-host'
 import { restoredChatTabChanges } from './restored-chat-tab-changes'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type {
   RuntimeMobileSessionAgentTab,
   RuntimeMobileSessionTabsSnapshot,
   RuntimeRepoSearchRefs
 } from '../../../shared/runtime-types'
 import { getHeadlessMobileSessionGroupId } from '../mobile-session-layout-projection'
-import { DEFAULT_REPO_SEARCH_REFS_LIMIT } from '../orca-runtime-postlude'
+import { DEFAULT_REPO_SEARCH_REFS_LIMIT } from '../occ-runtime-postlude'
 import type { Repo } from '../../../shared/repo-types'
 import type { GitAdmissionTier } from '../../git/command-runner/git-exec-options'
 import {
@@ -32,10 +32,10 @@ import type { PtyProcessInspection } from '../../providers/pty-process-inspectio
 import type { StructuredAgentId } from '../../../shared/agent-session-provider-handle'
 
 export type AgentLaunchScope = Parameters<
-  OrcaRuntimeWithRestoreStructuredAgentSessionTabsOnce['getAgentLaunchPlatformForWorkspace']
+  OCCRuntimeWithRestoreStructuredAgentSessionTabsOnce['getAgentLaunchPlatformForWorkspace']
 >[0]
 
-export abstract class OrcaRuntimeWithRestoreStructuredAgentSessionTabsOnce extends OrcaRuntimeWithGetStructuredAgentSessionCreateSupport {
+export abstract class OCCRuntimeWithRestoreStructuredAgentSessionTabsOnce extends OCCRuntimeWithGetStructuredAgentSessionCreateSupport {
   protected abstract notifyMobileSessionTabSnapshots(
     ...args: Parameters<ScheduleMobileSessionTabsChangedMethods['notifyMobileSessionTabSnapshots']>
   ): ReturnType<ScheduleMobileSessionTabsChangedMethods['notifyMobileSessionTabSnapshots']>
@@ -121,7 +121,7 @@ export abstract class OrcaRuntimeWithRestoreStructuredAgentSessionTabsOnce exten
         })
     }
     // Window creates retain the window's own placement decision.
-    if (!(ORCA_LAYOUT_OWNER_IS_MAIN && input.placedByWindow)) {
+    if (!(OCC_LAYOUT_OWNER_IS_MAIN && input.placedByWindow)) {
       this.saveWindowlessAgentSessionTab(input.workspaceId, input)
     }
     this.projectStructuredAgentSessionTab(input)

@@ -8,7 +8,7 @@ export type LogStreamChild = ChildProcessByStdio<Writable, Readable, Readable>
 // AUTHREQ_PROMPTING identifies actual dialogs, including access attributed to OCC’s terminal children (#9756).
 
 // TCC can attribute terminal access to the detached helper independently of the main app.
-const ORCA_RESPONSIBLE_IDENTIFIERS = new Set([
+const OCC_RESPONSIBLE_IDENTIFIERS = new Set([
   'com.lkun.occ',
   'com.lkun.occ.helper',
   'com.lkun.occ.dev',
@@ -56,9 +56,9 @@ export function parseTccPromptEvent(line: string): TccPromptEvent | null {
   }
 }
 
-export function isOrcaAttributedPrompt(event: TccPromptEvent): boolean {
+export function isOCCAttributedPrompt(event: TccPromptEvent): boolean {
   return (
-    ORCA_RESPONSIBLE_IDENTIFIERS.has(event.responsibleIdentifier) &&
+    OCC_RESPONSIBLE_IDENTIFIERS.has(event.responsibleIdentifier) &&
     WATCHED_SERVICES.has(event.service)
   )
 }
@@ -144,7 +144,7 @@ export class MacosTccPromptWatch {
 
   private handleLine(line: string): void {
     const event = parseTccPromptEvent(line)
-    if (!event || !isOrcaAttributedPrompt(event)) {
+    if (!event || !isOCCAttributedPrompt(event)) {
       return
     }
     this.options.onPrompt(event)

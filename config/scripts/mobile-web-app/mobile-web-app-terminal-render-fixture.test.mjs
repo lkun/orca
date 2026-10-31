@@ -7,7 +7,7 @@ import { startTerminalRenderFixture } from './mobile-web-app-terminal-render-fix
 
 // Force missing-browser launch after server/scratch allocation; setup failure returns no cleanup handle and must release them itself or Vitest hangs.
 
-const SCRATCH_PREFIX = 'orca-c75-terminal-render-'
+const SCRATCH_PREFIX = 'occ-c75-terminal-render-'
 const describeFixture = mobileWebAppDependenciesPresent() ? describe : describe.skip
 
 let temporaryRoot = null
@@ -15,7 +15,7 @@ let realTemporaryRoot = null
 
 beforeAll(async () => {
   // Use worker-private TMPDIR so sibling fixture creation/removal cannot pollute exact leftover-tree count.
-  temporaryRoot = await mkdtemp(join(tmpdir(), 'orca-c75-fixture-rollback-'))
+  temporaryRoot = await mkdtemp(join(tmpdir(), 'occ-c75-fixture-rollback-'))
   realTemporaryRoot = process.env.TMPDIR
   process.env.TMPDIR = temporaryRoot
 })
@@ -38,8 +38,8 @@ async function settledListeningSockets() {
 describeFixture('the terminal render fixture', () => {
   it('takes back the server and the scratch tree when the browser will not start', async () => {
     const socketsBefore = await settledListeningSockets()
-    const realBrowser = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
-    process.env.ORCA_MOBILE_WEB_RENDER_BROWSER = join(temporaryRoot, 'orca-c75-no-such-browser')
+    const realBrowser = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
+    process.env.OCC_MOBILE_WEB_RENDER_BROWSER = join(temporaryRoot, 'occ-c75-no-such-browser')
     try {
       // Require exact launch error: unrelated earlier build failure would allocate no resources and pass cleanup assertions vacuously.
       await expect(startTerminalRenderFixture()).rejects.toThrow(
@@ -47,9 +47,9 @@ describeFixture('the terminal render fixture', () => {
       )
     } finally {
       if (realBrowser === undefined) {
-        delete process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+        delete process.env.OCC_MOBILE_WEB_RENDER_BROWSER
       } else {
-        process.env.ORCA_MOBILE_WEB_RENDER_BROWSER = realBrowser
+        process.env.OCC_MOBILE_WEB_RENDER_BROWSER = realBrowser
       }
     }
 

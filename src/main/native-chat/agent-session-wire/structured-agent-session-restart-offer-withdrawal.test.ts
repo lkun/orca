@@ -471,7 +471,7 @@ describe('reading the chat against where the offer was taken', () => {
 
   // Crash lapses the retry reservation; retain its prior failure marker and reject queued continuation on reopen.
   it('keeps a failure retryable after the app crashed during its retry', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-crash-during-retry-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-crash-during-retry-'))
     try {
       const capsule = new AgentSessionRecoveryCapsule(root)
       await capsule.record([{ ...OFFER, journalCursor: TAKEN }], NOW)

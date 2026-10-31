@@ -6,7 +6,7 @@ import {
 } from './terminal-render-desync-sentinel'
 
 /** Opt-in Cmd/Ctrl+click samples divergence for 10s; add Shift for immediate capture without detection/recovery. Enable through localStorage or the live hidden-experimental toggle. */
-export const RENDER_DESYNC_SENTINEL_FLAG = 'orca:render-desync-sentinel'
+export const RENDER_DESYNC_SENTINEL_FLAG = 'occ:render-desync-sentinel'
 
 type SentinelPane = {
   terminal: unknown

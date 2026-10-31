@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   waitForActivePaneHookDescriptor,
@@ -23,23 +23,23 @@ const ERROR_TITLE = 'Could not load conversation'
 
 test.describe('Native chat first-flush transcript race (#8401)', () => {
   test('stays in loading (never errors) until a not-yet-flushed transcript appears, then hydrates live', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
-    const boundPane = await waitForPaneIdentitySnapshot(orcaPage, 1)
-    const ptyId = await waitForActivePanePtyId(orcaPage)
-    await waitForPtyShellEcho(orcaPage, ptyId, 15_000)
-    const descriptor = await waitForActivePaneHookDescriptor(orcaPage)
+    const boundPane = await waitForPaneIdentitySnapshot(occPage, 1)
+    const ptyId = await waitForActivePanePtyId(occPage)
+    await waitForPtyShellEcho(occPage, ptyId, 15_000)
+    const descriptor = await waitForActivePaneHookDescriptor(occPage)
     expect(descriptor.paneKey).toBe(`${boundPane.tabId}:${boundPane.activeLeafId}`)
     const [tabId] = descriptor.paneKey.split(':')
     const sessionId = `e2e-first-flush-${randomUUID()}`
 
     // #8401: Claude may flush its first JSONL minutes after launch; resolve providerSession before creating the file.
-    const scratchDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-native-chat-'))
+    const scratchDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-native-chat-'))
     const transcriptPath = path.join(scratchDir, `${sessionId}.jsonl`)
 
     const screenshotDir = testInfo.outputPath('screenshots')
@@ -49,26 +49,26 @@ test.describe('Native chat first-flush transcript race (#8401)', () => {
       contentType: 'text/plain'
     })
 
-    const finishLifetime = await observeTranscriptPaneLifetime(orcaPage, {
+    const finishLifetime = await observeTranscriptPaneLifetime(occPage, {
       tabId,
       worktreeId: descriptor.worktreeId,
       paneKey: descriptor.paneKey
     })
     try {
-      await seedClaudeProviderSession(orcaPage, {
+      await seedClaudeProviderSession(occPage, {
         paneKey: descriptor.paneKey,
         worktreeId: descriptor.worktreeId,
         sessionId,
         transcriptPath
       })
-      await toggleTerminalTabToChatView(orcaPage, { tabId, worktreeId: descriptor.worktreeId })
+      await toggleTerminalTabToChatView(occPage, { tabId, worktreeId: descriptor.worktreeId })
 
-      await expect(orcaPage.locator('[data-native-chat-root="true"]')).toBeVisible({
+      await expect(occPage.locator('[data-native-chat-root="true"]')).toBeVisible({
         timeout: 15_000
       })
-      await expect(orcaPage.getByText(LOADING_TITLE)).toBeVisible({ timeout: 10_000 })
-      await expect(orcaPage.getByText(ERROR_TITLE)).toHaveCount(0)
-      await orcaPage.screenshot({
+      await expect(occPage.getByText(LOADING_TITLE)).toBeVisible({ timeout: 10_000 })
+      await expect(occPage.getByText(ERROR_TITLE)).toHaveCount(0)
+      await occPage.screenshot({
         path: path.join(screenshotDir, '01-loading-no-error.png')
       })
 
@@ -76,7 +76,7 @@ test.describe('Native chat first-flush transcript race (#8401)', () => {
       await expect
         .poll(
           () =>
-            orcaPage.evaluate(
+            occPage.evaluate(
               ({ id, file }) =>
                 window.api.nativeChat
                   .readSession('claude', id, 50, file)
@@ -86,7 +86,7 @@ test.describe('Native chat first-flush transcript race (#8401)', () => {
           { timeout: 10_000, message: 'transcript resolved before the first flush' }
         )
         .toBe(true)
-      await expect(orcaPage.getByText(ERROR_TITLE)).toHaveCount(0)
+      await expect(occPage.getByText(ERROR_TITLE)).toHaveCount(0)
 
       const userText = 'Explain the native chat first-flush race fix for #8401'
       const assistantText =
@@ -94,14 +94,14 @@ test.describe('Native chat first-flush transcript race (#8401)', () => {
       writeFileSync(transcriptPath, claudeTranscriptLines({ sessionId, userText, assistantText }))
 
       // Scope to transcript content because user text also appears in workspace/tab chrome.
-      const transcript = orcaPage.locator('[data-native-chat-root="true"]')
+      const transcript = occPage.locator('[data-native-chat-root="true"]')
       await expect(transcript.getByText(userText)).toBeVisible({ timeout: 30_000 })
       await expect(transcript.getByText(assistantText)).toBeVisible({ timeout: 30_000 })
-      await expect(orcaPage.getByText(ERROR_TITLE)).toHaveCount(0)
-      await orcaPage.screenshot({
+      await expect(occPage.getByText(ERROR_TITLE)).toHaveCount(0)
+      await occPage.screenshot({
         path: path.join(screenshotDir, '02-hydrated.png')
       })
-      const finalPane = await waitForPaneIdentitySnapshot(orcaPage, 1)
+      const finalPane = await waitForPaneIdentitySnapshot(occPage, 1)
       expect(finalPane.tabId).toBe(boundPane.tabId)
       expect(finalPane.activeLeafId).toBe(boundPane.activeLeafId)
       expect(finalPane.ptyIdsByLeafId).toEqual(boundPane.ptyIdsByLeafId)

@@ -73,7 +73,7 @@ describe('skill package tar envelope', () => {
 
 describe('skill tar reader error ownership', () => {
   it('observes an abort after the pipeline completes before the first reader request', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-tar-abort-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-tar-abort-'))
     try {
       const archivePath = join(root, 'archive.tar.gz')
       await writeSkillTarGzip(archivePath, [

@@ -11,7 +11,7 @@ import { claudeNamingInvocation } from './claude-naming-invocation'
 it('captures configured command, overlay and pure selected-account policy before awaited input resolution', async ({
   onTestFinished
 }) => {
-  const root = await mkdtemp(join(tmpdir(), 'orca-naming-inputs-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-naming-inputs-'))
   onTestFinished(async () => {
     vi.restoreAllMocks()
     await rm(root, { recursive: true, force: true })
@@ -60,7 +60,7 @@ it('captures configured command, overlay and pure selected-account policy before
   }
   const snapshot = claudeNamingInvocation(sources, () => [])
   const pending = snapshot(record)
-  settings.agentCmdOverrides.claude = 'does-not-exist-orca-naming'
+  settings.agentCmdOverrides.claude = 'does-not-exist-occ-naming'
   overlay.NAMING_INPUT = 'changed'
   preparation.mockReturnValue({
     configDir: later,

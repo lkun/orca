@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Tab } from '../../../../shared/tab-types'
 import { createTestStore, makeWorktree, seedStore } from '../slices/store-test-helpers'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import type * as SessionClient from '@/runtime/structured-agent-session-client'
 import { routeTerminalTabChangesThroughLayoutOwner } from './terminal-tab-layout-owner-actions'
 import { makeFolderWorkspace } from '../slices/worktrees-slice-test-fixtures'
@@ -103,7 +103,7 @@ function colorOf(store: ReturnType<typeof createTestStore>): string | null | und
 
 /** A layout-owner build sends the change to main, whose frame draws it; otherwise the window does. */
 function expectChange(windowShows: () => void, mainGets: Record<string, unknown>): void {
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     expect(layoutApplyTestTransport.sent.at(-1)).toEqual(
       expect.objectContaining({ workspace: WORKTREE, ...mainGets })
     )
@@ -190,7 +190,7 @@ describe('renaming a structured chat tab', () => {
           .unifiedTabsByWorktree[WORKTREE]!.map((tab) => ({ ...tab, executionHostId: 'local' }))
       }
     })
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       layoutApplyTestTransport.answerWith('pending')
     }
     answer(true)
@@ -200,7 +200,7 @@ describe('renaming a structured chat tab', () => {
         { kind: 'local' }
       )
     )
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       await vi.waitFor(() => expect(layoutApplyTestTransport.pendingCount).toBe(1))
       store.getState().setUnifiedTabColor(STRUCTURED_TAB_ID, 'blue')
       layoutApplyTestTransport.answerPending()
@@ -208,7 +208,7 @@ describe('renaming a structured chat tab', () => {
     }
     await layoutApplyTestTransport.settle()
     await vi.waitFor(() => expect(labelOf(store)).toBeNull())
-    expect(colorOf(store)).toBe(ORCA_LAYOUT_OWNER_IS_MAIN ? 'blue' : 'red')
+    expect(colorOf(store)).toBe(OCC_LAYOUT_OWNER_IS_MAIN ? 'blue' : 'red')
 
     // Existing alias retirement is bookkeeping, not a reason to discard an explicit host write.
     hostSavesNames.mockImplementationOnce(

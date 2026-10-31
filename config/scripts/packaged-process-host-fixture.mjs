@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
 import { join } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 
 const require = createRequire(import.meta.url)
 const requireFromBuilder = createRequire(require.resolve('electron-builder/package.json'))
@@ -10,7 +10,7 @@ const { createPackagedRuntimeNodeModuleResources } = require('../packaged-runtim
 
 export async function stagePackagedProcessHost(resourcesDir) {
   const resource = createPackagedRuntimeNodeModuleResources().find(
-    (entry) => entry.to === join('node_modules', '@orca', 'process-host')
+    (entry) => entry.to === join('node_modules', '@occ', 'process-host')
   )
   if (!resource) {
     throw new Error('Packaged process-host resource is missing')
@@ -32,11 +32,11 @@ export async function writePackagedProcessHostConsumer(resourcesDir) {
     [
       "const assert = require('node:assert/strict')",
       "const { once } = require('node:events')",
-      "const { runProcessSync, runProcess, spawnProcess } = require('@orca/process-host')",
-      "const { setSpawnObserver } = require('@orca/process-host/spawn-observer')",
-      "const { setProcessTreeKillGate } = require('@orca/process-host/process-tree-kill-gate')",
-      "const { signalProcessTree } = require('@orca/process-host/process-tree-termination')",
-      "import('@orca/process-host').then(async ({ runProcessSync: esmRunProcessSync }) => {",
+      "const { runProcessSync, runProcess, spawnProcess } = require('@occ/process-host')",
+      "const { setSpawnObserver } = require('@occ/process-host/spawn-observer')",
+      "const { setProcessTreeKillGate } = require('@occ/process-host/process-tree-kill-gate')",
+      "const { signalProcessTree } = require('@occ/process-host/process-tree-termination')",
+      "import('@occ/process-host').then(async ({ runProcessSync: esmRunProcessSync }) => {",
       'assert.equal(runProcessSync, esmRunProcessSync)',
       'const result = runProcessSync({',
       '  program: process.execPath,',
@@ -97,6 +97,6 @@ export function runPackagedProcessHostConsumer(nodeExecutable, resourcesDir, ent
     args: [entry],
     cwd: resourcesDir,
     timeoutMs: 15_000,
-    env: { ...process.env, NODE_PATH: '', NODE_OPTIONS: '', ORCA_BACKGROUND_LAUNCH: '1' }
+    env: { ...process.env, NODE_PATH: '', NODE_OPTIONS: '', OCC_BACKGROUND_LAUNCH: '1' }
   })
 }

@@ -13,7 +13,7 @@ import {
 
 const INTERVAL_MS = 20_000
 const SESSION_ID = 'cccccccc-dddd-4eee-8fff-000000000000'
-const CWD = '/repo/orca'
+const CWD = '/repo/occ'
 
 let harness: SessionSearchIndexerHarness
 let clock: FakeSessionSearchClock

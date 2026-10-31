@@ -1,9 +1,9 @@
 import type { AutomationWorkspaceMode } from '../../../../shared/automations-types'
-import type { OrcaHooks, SetupRunPolicy } from '../../../../shared/orca-yaml-hook-types'
+import type { OCCHooks, SetupRunPolicy } from '../../../../shared/occ-yaml-hook-types'
 import type { ProjectHostSetup } from '../../../../shared/project-types'
 import type { Repo } from '../../../../shared/repo-types'
 import type { SetupDecision } from '../../../../shared/worktree/create-types'
-import { getSetupConfig } from '../../../../shared/orca-hook-setup-config'
+import { getSetupConfig } from '../../../../shared/occ-hook-setup-config'
 
 type AutomationSetupSource = {
   setupScript: string
@@ -14,7 +14,7 @@ function getAutomationSetupSource(
   repoId: string,
   repos: readonly Repo[],
   projectHostSetups: readonly ProjectHostSetup[],
-  yamlHooks: OrcaHooks | null | undefined
+  yamlHooks: OCCHooks | null | undefined
 ): AutomationSetupSource | null {
   const setup = projectHostSetups.find(
     (candidate) => candidate.repoId === repoId && candidate.setupState === 'ready'
@@ -48,7 +48,7 @@ export function getVisibleAutomationSetupDecision(args: {
   repoId: string
   repos: readonly Repo[]
   projectHostSetups: readonly ProjectHostSetup[]
-  yamlHooks?: OrcaHooks | null
+  yamlHooks?: OCCHooks | null
 }): Extract<SetupDecision, 'run' | 'skip'> | undefined {
   if (args.workspaceMode !== 'new_per_run') {
     return undefined
@@ -63,7 +63,7 @@ export function resolveAutomationSetupDecisionForSave(args: {
   repoId: string
   repos: readonly Repo[]
   projectHostSetups: readonly ProjectHostSetup[]
-  yamlHooks?: OrcaHooks | null
+  yamlHooks?: OCCHooks | null
   draftSetupDecision: Extract<SetupDecision, 'run' | 'skip'> | undefined
 }): Extract<SetupDecision, 'run' | 'skip'> | undefined {
   if (args.workspaceMode !== 'new_per_run') {

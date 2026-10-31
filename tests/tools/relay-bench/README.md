@@ -29,8 +29,8 @@ decoding, and none of them opens a socket.
 - Do not point the bench at a desktop you do not own.
 
 No script here has a production default. Every one of them refuses to open a socket unless
-`ORCA_RELAY_BENCH_LIVE=1` is set, and the two that talk to the director require its origin from
-`--director=<origin>` or `ORCA_RELAY_BENCH_DIRECTOR`. Without those, they print usage and exit 2.
+`OCC_RELAY_BENCH_LIVE=1` is set, and the two that talk to the director require its origin from
+`--director=<origin>` or `OCC_RELAY_BENCH_DIRECTOR`. Without those, they print usage and exit 2.
 That keeps an accidental or automated invocation inert instead of live traffic.
 
 The guards are in `relay-bench-invocation.mjs` and `relay-bench-state-file.mjs`, and
@@ -71,17 +71,17 @@ npx vitest run --config config/vitest.config.ts tests/tools/relay-bench
 Start a relay-enabled dev app hidden, with remote debugging on:
 
 ```bash
-ORCA_BACKGROUND_LAUNCH=1 \
+OCC_BACKGROUND_LAUNCH=1 \
 REMOTE_DEBUGGING_PORT=9222 \
-ORCA_CLOUD_API_URL=https://login.onorca.dev \
-ORCA_CLOUD_CLIENT_ID=orca-desktop \
-ORCA_DEV_USER_DATA_PATH=/tmp/orca-relay-bench-profile \
-ORCA_RELAY_REGION_OVERRIDE=us-central1 \
+OCC_CLOUD_API_URL=https://login.onocc.dev \
+OCC_CLOUD_CLIENT_ID=occ-desktop \
+OCC_DEV_USER_DATA_PATH=/tmp/occ-relay-bench-profile \
+OCC_RELAY_REGION_OVERRIDE=us-central1 \
 pnpm run dev
 ```
 
-`ORCA_DEV_USER_DATA_PATH` keeps the bench pairing out of your real profile.
-`ORCA_RELAY_REGION_OVERRIDE` pins the cell region, which is what you want when comparing a change
+`OCC_DEV_USER_DATA_PATH` keeps the bench pairing out of your real profile.
+`OCC_RELAY_REGION_OVERRIDE` pins the cell region, which is what you want when comparing a change
 rather than comparing regions. Both are optional.
 
 Sign in, then read the pairing offer out of the hidden renderer:
@@ -95,7 +95,7 @@ The `occ://pair?code=...` value in that output is the pairing link.
 ## Commands
 
 ```bash
-export ORCA_RELAY_BENCH_LIVE=1
+export OCC_RELAY_BENCH_LIVE=1
 BENCH=tests/tools/relay-bench/relay-phone-connect-bench.mjs
 
 # One-time: dial the invite, provision a resume credential, save the bundle. The pairing link
@@ -154,11 +154,11 @@ Two supporting scripts:
   selection with the same probe, sample count, and spread rule, and prints why each region passed
   or failed. A region whose every probe fails reports `UNREACHABLE`, not `ok`.
 
-Both take the director from `--director` or `ORCA_RELAY_BENCH_DIRECTOR`, and both need
-`ORCA_RELAY_BENCH_LIVE=1`:
+Both take the director from `--director` or `OCC_RELAY_BENCH_DIRECTOR`, and both need
+`OCC_RELAY_BENCH_LIVE=1`:
 
 ```bash
-ORCA_RELAY_BENCH_LIVE=1 ORCA_RELAY_BENCH_DIRECTOR=<director origin> \
+OCC_RELAY_BENCH_LIVE=1 OCC_RELAY_BENCH_DIRECTOR=<director origin> \
   node tests/tools/relay-bench/region-probe-replay.mjs --rounds=3
 ```
 
@@ -206,4 +206,4 @@ node tests/tools/relay-bench/cdp-eval.mjs 9222 'window.api.mobile.listDevices()'
 ```
 
 Then delete `state.json`. If you used
-`ORCA_DEV_USER_DATA_PATH`, removing that directory drops the pairing with it.
+`OCC_DEV_USER_DATA_PATH`, removing that directory drops the pairing with it.

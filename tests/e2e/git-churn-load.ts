@@ -20,7 +20,7 @@ export type GitChurnStats = {
 }
 
 // Keep the handle on window across page.evaluate calls without a suite-wide interface augmentation.
-type GitChurnWindow = Window & { __orcaGitChurnLoad?: { stop: () => GitChurnStats } }
+type GitChurnWindow = Window & { __occGitChurnLoad?: { stop: () => GitChurnStats } }
 
 // Use dirty, populated repositories so git status cannot short-circuit on an empty tree.
 export function createGitChurnRepos(
@@ -91,7 +91,7 @@ export async function startGitChurnLoad(
     ({ paths, concurrency, admissionTier }) => {
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the probe owns this property on its own renderer window; nothing else reads or writes it.
       const target = window as GitChurnWindow
-      target.__orcaGitChurnLoad?.stop()
+      target.__occGitChurnLoad?.stop()
       let running = true
       const stats: GitChurnStats = {
         requested: 0,
@@ -130,7 +130,7 @@ export async function startGitChurnLoad(
       for (let lane = 0; lane < concurrency; lane++) {
         void runLoop(lane)
       }
-      target.__orcaGitChurnLoad = {
+      target.__occGitChurnLoad = {
         stop: () => {
           running = false
           return { ...stats }
@@ -145,6 +145,6 @@ export async function stopGitChurnLoad(page: Page): Promise<GitChurnStats | null
   return page.evaluate(
     () =>
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: same probe-owned property as startGitChurnLoad installs.
-      (window as GitChurnWindow).__orcaGitChurnLoad?.stop() ?? null
+      (window as GitChurnWindow).__occGitChurnLoad?.stop() ?? null
   )
 }

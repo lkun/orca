@@ -16,7 +16,7 @@ describe('Hermes home on Windows', () => {
   })
 
   it('installs and reports hook status under %LOCALAPPDATA%\\hermes (#24966)', () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-hermes-win-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-hermes-win-'))
     try {
       const hermesHome = join(root, 'Local', 'hermes')
       mkdirSync(hermesHome, { recursive: true })

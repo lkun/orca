@@ -146,7 +146,7 @@ describe('countWindowsDriveReposWithWslWorktrees', () => {
   let root: string
   const originalPlatform = process.platform
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-wsl-usage-links-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-wsl-usage-links-'))
     Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
   })
   afterEach(() => {

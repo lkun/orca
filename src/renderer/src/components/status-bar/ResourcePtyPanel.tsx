@@ -102,7 +102,7 @@ export function ResourcePtyPanel({
         )}
         {inventory.observedAt !== null && sessions.length === 0 && (
           <p className="p-3 text-xs text-muted-foreground">
-            {translate('resourceManager.pty.noLocalOrcaPtys', 'No local OCC PTYs')}
+            {translate('resourceManager.pty.noLocalOCCPtys', 'No local OCC PTYs')}
           </p>
         )}
         <ResourcePtyList

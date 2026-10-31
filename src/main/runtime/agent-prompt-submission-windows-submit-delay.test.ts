@@ -5,7 +5,7 @@ import {
   getTerminalPasteIngestMs
 } from '../../shared/agent-prompt-injection'
 import { setSshTargetRegistryHandlers } from '../ssh/targets/ssh-target-registry'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { makeStore } from './runtime-rpc-worktree-store-fixtures'
 
 const WORKTREE_PATH = '/tmp/worktree-a'
@@ -40,12 +40,12 @@ vi.mock('../git/worktree', () => ({
 
 // aider uses open-loop submission, exposing the delay under test.
 async function createPromptRuntime(): Promise<{
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   handle: string
   writes: string[]
   submitTimes: number[]
 }> {
-  const runtime = new OrcaRuntimeService(makeStore() as never)
+  const runtime = new OCCRuntimeService(makeStore() as never)
   const writes: string[] = []
   const submitTimes: number[] = []
   const startedAt = Date.now()
@@ -71,7 +71,7 @@ async function createPromptRuntime(): Promise<{
 const HOST_PROBE_PROMPT = 'p'.repeat(12_000)
 
 /** Patch spawn-time execution-host state to exercise remote and WSL panes. */
-function patchPtyRecord(runtime: OrcaRuntimeService, patch: Record<string, unknown>): void {
+function patchPtyRecord(runtime: OCCRuntimeService, patch: Record<string, unknown>): void {
   const ptys = (runtime as unknown as { ptysById: Map<string, Record<string, unknown>> }).ptysById
   const record = ptys.get(PTY_ID)
   expect(record).toBeDefined()
@@ -289,13 +289,13 @@ describe('agent prompt render gate on a ConPTY host', () => {
     // Continuous noise forces the hard cap so its arithmetic can be measured.
     agentOutput: { markerDelayMs?: number; noiseUntilMs?: number } = {}
   ): Promise<{
-    runtime: OrcaRuntimeService
+    runtime: OCCRuntimeService
     handle: string
     writes: string[]
     submitTimes: number[]
   }> {
     const markerDelayMs = agentOutput.markerDelayMs ?? 100
-    const runtime = new OrcaRuntimeService(makeStore() as never)
+    const runtime = new OCCRuntimeService(makeStore() as never)
     const writes: string[] = []
     const submitTimes: number[] = []
     const startedAt = Date.now()

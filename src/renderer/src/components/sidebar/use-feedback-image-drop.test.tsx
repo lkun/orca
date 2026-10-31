@@ -3,7 +3,7 @@
 import { act } from '@testing-library/react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_INTERNAL_FILE_DRAG_TYPE } from '../../../../shared/native-file-drop'
+import { OCC_INTERNAL_FILE_DRAG_TYPE } from '../../../../shared/native-file-drop'
 import { installOsFileDropCancellationGuard } from '../../lib/os-file-drop-cancellation-guard'
 import { useFeedbackImageDrop } from './use-feedback-image-drop'
 
@@ -171,7 +171,7 @@ describe('useFeedbackImageDrop', () => {
   it('leaves in-app drags alone on dragover', async () => {
     await renderHarness(true, vi.fn())
 
-    const event = dragEvent('dragover', [], ['Files', ORCA_INTERNAL_FILE_DRAG_TYPE])
+    const event = dragEvent('dragover', [], ['Files', OCC_INTERNAL_FILE_DRAG_TYPE])
     act(() => {
       dialogChild().dispatchEvent(event)
     })

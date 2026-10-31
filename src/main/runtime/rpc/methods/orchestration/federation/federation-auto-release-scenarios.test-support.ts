@@ -3,7 +3,7 @@ import type { RuntimeRpcResponse } from '../../../../../../shared/runtime-rpc-en
 import { ORCHESTRATION_CONTRACT_VERSION } from '../../../../../../shared/protocol-version'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { getWorkerTerminalAutoReleaseScheduler } from '../../../../orchestration/worker-terminal-auto-release-scheduler'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { RpcRequest } from '../../../core'
 import { registerHomeAutoReleaseScenarios } from './federation-home-auto-release-scenarios.test-support'
 
@@ -12,8 +12,8 @@ export type AutoReleaseScenarioHarness = {
   dispatchHome: (request: RpcRequest) => Promise<RuntimeRpcResponse<unknown>>
   dispatchWorker: (request: RpcRequest) => Promise<RuntimeRpcResponse<unknown>>
   syncHome: (dispatchId: string) => Promise<unknown>
-  workerRuntime: () => OrcaRuntimeService
-  homeRuntime: () => OrcaRuntimeService
+  workerRuntime: () => OCCRuntimeService
+  homeRuntime: () => OCCRuntimeService
   homeDb: () => OrchestrationDb
   workerDb: () => OrchestrationDb
   remoteCalls: () => string[]

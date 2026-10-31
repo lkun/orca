@@ -21,7 +21,7 @@ export type NativeHostLocationEnvironment = {
   xdgConfigHome?: string
 }
 
-export const ORCA_NATIVE_MESSAGING_HOSTS_FOLDER = 'NativeMessagingHosts'
+export const OCC_NATIVE_MESSAGING_HOSTS_FOLDER = 'NativeMessagingHosts'
 
 // User data folders under ~/Library/Application Support; Chrome and Chromium also have system ones.
 const MAC_OTHER_BROWSERS = [
@@ -71,7 +71,7 @@ export function nativeHostManifestSources(
   const path = env.platform === 'win32' ? win32 : posix
   const own: NativeHostManifestSource = {
     kind: 'folder',
-    folder: path.join(env.userDataDir, ORCA_NATIVE_MESSAGING_HOSTS_FOLDER)
+    folder: path.join(env.userDataDir, OCC_NATIVE_MESSAGING_HOSTS_FOLDER)
   }
   const folders = (list: string[]): NativeHostManifestSource[] =>
     list.map((folder) => ({ kind: 'folder', folder }))

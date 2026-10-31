@@ -53,14 +53,14 @@ it.each(['success', 'budget'] as const)(
       {
         response: {
           subtype: 'success',
-          request_id: 'orca-model-discovery',
+          request_id: 'occ-model-discovery',
           response: { models: [{ value: 'opus', supportsFastMode: true }] }
         }
       },
       {
         response: {
           subtype: 'success',
-          request_id: 'orca-model-settings',
+          request_id: 'occ-model-settings',
           response: { applied: {} }
         }
       }

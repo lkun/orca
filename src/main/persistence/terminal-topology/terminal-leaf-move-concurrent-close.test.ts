@@ -19,7 +19,7 @@ import { closeLeafOrTab } from './terminal-topology-commit'
 vi.mock('electron', () => ({
   app: {
     getPath: () => tmpdir(),
-    getName: () => 'orca-test',
+    getName: () => 'occ-test',
     getVersion: () => '0.0.0-test',
     isPackaged: false,
     on: () => {},

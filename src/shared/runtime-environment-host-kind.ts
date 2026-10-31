@@ -1,15 +1,15 @@
-import type { OrcadDeploymentLink } from './runtime-environments'
-import type { OrcadWslDeploymentLink } from './wsl-host-deployment-link'
+import type { OCCdDeploymentLink } from './runtime-environments'
+import type { OCCdWslDeploymentLink } from './wsl-host-deployment-link'
 
 /** Switch exhaustively on kind: network includes SSH tunnels; wsl uses this computer’s wsl.exe bridge. */
 export type RuntimeEnvironmentHost<T> =
   | { kind: 'network'; environment: T }
-  | { kind: 'wsl'; environment: T; deployment: OrcadWslDeploymentLink }
+  | { kind: 'wsl'; environment: T; deployment: OCCdWslDeploymentLink }
 
 export function classifyRuntimeEnvironmentHost<
-  T extends { orcadDeployment?: OrcadDeploymentLink | null }
+  T extends { occdDeployment?: OCCdDeploymentLink | null }
 >(environment: T): RuntimeEnvironmentHost<T> {
-  const deployment = environment.orcadDeployment
+  const deployment = environment.occdDeployment
   if (!deployment) {
     return { kind: 'network', environment }
   }

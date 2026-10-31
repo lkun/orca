@@ -1,6 +1,6 @@
 import { linearError } from './issue-context/errors'
 
-export const ISSUE_LIST_CURSOR_PREFIX = 'orca.linear.v1.'
+export const ISSUE_LIST_CURSOR_PREFIX = 'occ.linear.v1.'
 
 export function encodeIssueListCursor(workspaceId: string, providerCursor: string): string {
   return (

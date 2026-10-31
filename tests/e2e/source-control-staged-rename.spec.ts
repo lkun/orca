@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process'
 import { readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   cleanupGoldenWorktree,
   createGoldenWorktree,
@@ -15,7 +15,7 @@ const RENAMED_PATH = 'src/renamed.ts'
 const EDITED_LINE = 'export const hello = "renamed and edited"'
 
 test('shows the source version when reviewing a staged rename', async ({
-  orcaPage,
+  occPage,
   testRepoPath,
   registerPostElectronShutdownCleanup
 }) => {
@@ -46,19 +46,19 @@ test('shows the source version when reviewing a staged rename', async ({
   writeFileSync(renamed, readFileSync(renamed, 'utf8').replace(GOLDEN_REMOVED_LINE, EDITED_LINE))
   execFileSync('git', ['add', '--', RENAMED_PATH], { cwd: fixture.worktreePath })
 
-  await waitForSessionReady(orcaPage)
-  await openGoldenSourceControl(orcaPage, testRepoPath, fixture)
-  const row = orcaPage
+  await waitForSessionReady(occPage)
+  await openGoldenSourceControl(occPage, testRepoPath, fixture)
+  const row = occPage
     .locator('[data-testid="source-control-entry"][data-source-control-area="staged"]')
     .filter({ hasText: 'renamed.ts' })
   await expect(row).toBeVisible({ timeout: 15_000 })
   await row.click()
-  await expect(orcaPage.locator('.monaco-diff-editor')).toBeVisible({ timeout: 20_000 })
+  await expect(occPage.locator('.monaco-diff-editor')).toBeVisible({ timeout: 20_000 })
   await expect(
-    orcaPage.locator('.modified-in-monaco-diff-editor .view-line').filter({ hasText: EDITED_LINE })
+    occPage.locator('.modified-in-monaco-diff-editor .view-line').filter({ hasText: EDITED_LINE })
   ).toBeVisible()
   await expect(
-    orcaPage
+    occPage
       .locator('.original-in-monaco-diff-editor .view-line')
       .filter({ hasText: GOLDEN_REMOVED_LINE })
   ).toBeVisible()

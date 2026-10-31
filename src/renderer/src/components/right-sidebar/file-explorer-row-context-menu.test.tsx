@@ -93,7 +93,7 @@ function renderRevealItem(
       onStartRename={vi.fn()}
       onDuplicate={vi.fn()}
       onRequestDelete={vi.fn()}
-      canOpenInOrcaBrowser={false}
+      canOpenInOCCBrowser={false}
       canCollapseFolderSubtree={false}
       canAddAsProject={false}
       onAddFolderAsProject={vi.fn()}

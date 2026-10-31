@@ -4,7 +4,7 @@ import { acquireElectronDebugger, type ElectronDebuggerLease } from './electron-
 import type { CdpClientResponseWriter } from './cdp-client-response-writer'
 import type { CdpSyntheticSessionRegistry } from './cdp-synthetic-session-registry'
 import { sendGuestCdpCommand } from './guest-cdp-command'
-import { isOrcaFrameSessionTraffic } from './guest-focused-frame-route'
+import { isOCCFrameSessionTraffic } from './guest-focused-frame-route'
 
 export class CdpDebuggerChannel {
   private nativeDebugger: WebContents['debugger'] | null = null
@@ -43,7 +43,7 @@ export class CdpDebuggerChannel {
         string | undefined
       ]
       // Hide OCC-owned frame sessions that the client did not request.
-      if (isOrcaFrameSessionTraffic(this.webContents, method, params, sessionId || undefined)) {
+      if (isOCCFrameSessionTraffic(this.webContents, method, params, sessionId || undefined)) {
         return
       }
       const client = this.getClient()

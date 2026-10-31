@@ -23,9 +23,9 @@ afterEach(async () => {
 })
 
 function openStore(): Store {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-host-before-unload-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-host-before-unload-'))
   directories.push(directory)
-  return createSqliteTestStore(Store, { dataFile: join(directory, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(directory, 'occ-data.json') })
 }
 
 function editorOnlySlice(worktreeId = WORKTREE): WorkspaceSessionState {

@@ -2,12 +2,12 @@
 import { expect, it, vi } from 'vitest'
 import { HEADLESS_RUNTIME_WINDOW_ID } from '../../shared/runtime-types'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 // Preserve side-effect order: mocks, lifecycle, fixtures.
-await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
-const { TEST_WORKTREE_ID, TEST_WORKTREE_PATH } = await import('./orca-runtime-test-fixtures.spec')
+await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
+const { TEST_WORKTREE_ID, TEST_WORKTREE_PATH } = await import('./occ-runtime-test-fixtures.spec')
 const { surfaceRuntime } = await import('./terminal/surface/terminal-surface-replies.test-fixture')
 
 type Runtime = ReturnType<typeof surfaceRuntime>['runtime']

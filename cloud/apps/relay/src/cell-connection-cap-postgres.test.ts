@@ -4,7 +4,7 @@ import { RelayAssignmentStore } from './assignment-store.js'
 import type { RelayCellConfig } from './config.js'
 import { openRelayDatabase, type RelayDatabase } from './database.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 const CELL_PREFIX = 'connection-cap-min-postgres'
 const CELL_ID = `${CELL_PREFIX}-single`

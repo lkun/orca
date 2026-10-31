@@ -78,7 +78,7 @@ jobs:
   release_gate:
     name: Authorize release
     if: >-
-      github.repository == 'stablyai/orca' &&
+      github.repository == 'stablyai/occ' &&
       (github.event_name == 'release' || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-24.04
     timeout-minutes: 5
@@ -204,7 +204,7 @@ jobs:
     timeout-minutes: 15
     environment:
       name: docs-production
-      url: https://www.onorca.dev/docs
+      url: https://www.onocc.dev/docs
     env:
       VERCEL_TELEMETRY_DISABLED: '1'
     steps:

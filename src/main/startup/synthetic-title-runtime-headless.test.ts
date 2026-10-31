@@ -80,7 +80,7 @@ describe('synthetic agent titles without a window', () => {
   it.each([
     { title: 'Codex ready', retracted: true },
     { title: 'Codex - action required', retracted: true },
-    { title: '⠋ Fix the build | orca', retracted: false }
+    { title: '⠋ Fix the build | occ', retracted: false }
   ])(
     'retracts only its own rest label when Codex starts a turn ($title)',
     ({ title, retracted }) => {

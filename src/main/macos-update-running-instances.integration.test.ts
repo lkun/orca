@@ -3,7 +3,7 @@ import { once } from 'node:events'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { expect, it, vi } from 'vitest'
-import { runProcess, spawnProcess } from '@orca/process-host'
+import { runProcess, spawnProcess } from '@occ/process-host'
 import { getMacUpdateRunningInstances } from './macos-update-running-instances'
 
 const APPLICATION_SOURCE = `
@@ -23,7 +23,7 @@ int main(int argc, const char *argv[]) {
 it.runIf(process.platform === 'darwin')(
   'matches ShipIt with registered sibling apps, excluding same-executable workers and other bundle copies',
   async () => {
-    const root = mkdtempSync(path.join(tmpdir(), 'orca-update-instances-'))
+    const root = mkdtempSync(path.join(tmpdir(), 'occ-update-instances-'))
     const bundle = path.join(root, 'OCC Test.app')
     const executable = path.join(bundle, 'Contents', 'MacOS', 'OCC Test')
     mkdirSync(path.dirname(executable), { recursive: true })
@@ -57,7 +57,7 @@ it.runIf(process.platform === 'darwin')(
         const child = spawnProcess({
           program,
           args,
-          env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' }
+          env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' }
         })
         children.push(child)
         closed.push(once(child, 'close'))

@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { NODE_RUNTIME_ASSETS } from '../../shared/node-runtime-pin'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import type * as preparationModule from './opencode-wsl-runtime-preparation'
 
 const mocks = vi.hoisted(() => ({
@@ -139,7 +139,7 @@ describe('WSL SQLite runtime preparation', () => {
     await prepared()
     const probe = mocks.run.mock.calls.find(([spec]) => spec.program === 'node')?.[0]
     expect(probe?.args[0]).toBe('-e')
-    const directory = await mkdtemp(join(tmpdir(), 'orca-wsl-sqlite-probe-'))
+    const directory = await mkdtemp(join(tmpdir(), 'occ-wsl-sqlite-probe-'))
     const runProbe = (preload: string) =>
       runProcess({
         program: process.execPath,
@@ -197,11 +197,11 @@ describe('WSL SQLite runtime preparation', () => {
       if (spec.script?.startsWith('printf')) {
         return success('/home/ada $literal')
       }
-      if (spec.script?.includes('ORCA_NODE_RUNTIME_EXTRACT_FAILED')) {
-        return success('ORCA_NODE_RUNTIME_READY')
+      if (spec.script?.includes('OCC_NODE_RUNTIME_EXTRACT_FAILED')) {
+        return success('OCC_NODE_RUNTIME_READY')
       }
       return success(
-        spec.script?.includes('ORCA_NODE_RUNTIME_MISSING') ? 'ORCA_NODE_RUNTIME_MISSING' : ''
+        spec.script?.includes('OCC_NODE_RUNTIME_MISSING') ? 'OCC_NODE_RUNTIME_MISSING' : ''
       )
     })
     const result = await prepared()
@@ -212,12 +212,12 @@ describe('WSL SQLite runtime preparation', () => {
     )
     expect(result[0]).toEqual({
       distro: 'Ubuntu',
-      executable: `/home/ada $literal/.cache/orca/runtimes/node-${expected}/bin/node`,
+      executable: `/home/ada $literal/.cache/occ/runtimes/node-${expected}/bin/node`,
       readerPath: '/mnt/c/reader $literal.cjs'
     })
     const install = mocks.run.mock.calls
       .map(([spec]) => spec)
-      .find((spec) => spec.script?.includes('ORCA_NODE_RUNTIME_EXTRACT_FAILED'))
+      .find((spec) => spec.script?.includes('OCC_NODE_RUNTIME_EXTRACT_FAILED'))
     expect(install).toMatchObject({ args: ['/mnt/c/node $literal.tar.gz'], loginPath: 'none' })
     expect(install.script).toContain(expected)
     expect(install.timeoutMs).toBeLessThanOrEqual(120_000)
@@ -289,7 +289,7 @@ describe('WSL SQLite runtime preparation', () => {
     async (agent) => {
       await prepared()
       const script = mocks.run.mock.calls[0]?.[0].script
-      const directory = await mkdtemp(join(tmpdir(), 'orca-wsl-presence-'))
+      const directory = await mkdtemp(join(tmpdir(), 'occ-wsl-presence-'))
       try {
         const data =
           agent === 'zcode'

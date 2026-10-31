@@ -86,7 +86,7 @@ export default function LiveInputProbeRoute() {
   }, [clearPendingLiveInputCommit])
 
   useEffect(() => {
-    globalThis.__orcaLiveInputProbe = {
+    globalThis.__occLiveInputProbe = {
       type: (text) => {
         handleLiveInputChange({ nativeEvent: { text } })
       },

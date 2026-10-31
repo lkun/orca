@@ -8,7 +8,7 @@ import {
   LeaseUnreadable
 } from './storage-lease.mjs'
 
-const BUCKET = 'onorca-cloud-terraform-state'
+const BUCKET = 'onocc-cloud-terraform-state'
 const OBJECT = 'terraform/state/cloud-sql-rollout/production.lock'
 const NOW = 1_756_000_000_000
 
@@ -67,14 +67,14 @@ function json(status, body) {
 function storedRecord({
   holderKey,
   expiresAt,
-  repository = 'stablyai/orca',
+  repository = 'stablyai/occ',
   workflow = 'Deploy Relay Production'
 }) {
   return {
     repository,
     workflow,
     run_id: '9001',
-    run_url: 'https://github.com/stablyai/orca/actions/runs/9001',
+    run_url: 'https://github.com/stablyai/occ/actions/runs/9001',
     run_attempt: '1',
     acquired_at: NOW - 60_000,
     expires_at: expiresAt,
@@ -94,11 +94,11 @@ function leaseFor(storage, { warn = () => {} } = {}) {
 }
 
 const HOLDER = {
-  holderKey: 'stablyai/orca-cloud/42',
-  repository: 'stablyai/orca-cloud',
+  holderKey: 'stablyai/occ-cloud/42',
+  repository: 'stablyai/occ-cloud',
   workflow: 'Deploy Relay Production Same-Cap',
   runId: '42',
-  runUrl: 'https://github.com/stablyai/orca-cloud/actions/runs/42',
+  runUrl: 'https://github.com/stablyai/occ-cloud/actions/runs/42',
   runAttempt: '1'
 }
 
@@ -111,14 +111,14 @@ test('acquires a lease on an empty object with ifGenerationMatch=0', async () =>
   assert.equal(upload.search.get('ifGenerationMatch'), '0')
   assert.equal(upload.search.get('name'), OBJECT)
   assert.deepEqual(storage.state.object.body, {
-    repository: 'stablyai/orca-cloud',
+    repository: 'stablyai/occ-cloud',
     workflow: 'Deploy Relay Production Same-Cap',
     run_id: '42',
-    run_url: 'https://github.com/stablyai/orca-cloud/actions/runs/42',
+    run_url: 'https://github.com/stablyai/occ-cloud/actions/runs/42',
     run_attempt: '1',
     acquired_at: NOW,
     expires_at: NOW + LEASE_TTL_MS,
-    holder_key: 'stablyai/orca-cloud/42'
+    holder_key: 'stablyai/occ-cloud/42'
   })
 })
 
@@ -126,7 +126,7 @@ test('refuses a live lease held by another run and never writes', async () => {
   const storage = fakeStorage({
     object: {
       generation: '1500',
-      body: storedRecord({ holderKey: 'stablyai/orca/9001', expiresAt: NOW + 60_000 })
+      body: storedRecord({ holderKey: 'stablyai/occ/9001', expiresAt: NOW + 60_000 })
     }
   })
 
@@ -135,8 +135,8 @@ test('refuses a live lease held by another run and never writes', async () => {
     .catch((thrown) => thrown)
 
   assert.ok(error instanceof LeaseConflict)
-  assert.equal(error.holder.repository, 'stablyai/orca')
-  assert.equal(error.holder.run_url, 'https://github.com/stablyai/orca/actions/runs/9001')
+  assert.equal(error.holder.repository, 'stablyai/occ')
+  assert.equal(error.holder.run_url, 'https://github.com/stablyai/occ/actions/runs/9001')
   assert.equal(
     storage.state.requests.filter((request) => request.method !== 'GET').length,
     0,
@@ -171,9 +171,9 @@ test('takes over an expired lease and warns naming the stale holder', async () =
     object: {
       generation: '1500',
       body: storedRecord({
-        holderKey: 'stablyai/orca/9001',
+        holderKey: 'stablyai/occ/9001',
         expiresAt: NOW - 1,
-        repository: 'stablyai/orca',
+        repository: 'stablyai/occ',
         workflow: 'Deploy Relay Production Capacity'
       })
     }
@@ -185,7 +185,7 @@ test('takes over an expired lease and warns naming the stale holder', async () =
 
   assert.equal(claim.state, 'takeover')
   assert.equal(warnings.length, 1)
-  assert.match(warnings[0], /stablyai\/orca/)
+  assert.match(warnings[0], /stablyai\/occ/)
   assert.match(warnings[0], /Deploy Relay Production Capacity/)
   assert.match(warnings[0], /actions\/runs\/9001/)
   const upload = storage.state.requests.find((request) => request.path.startsWith('/upload/'))
@@ -210,7 +210,7 @@ test('refuses to release a lease another run now holds', async () => {
   const storage = fakeStorage({
     object: {
       generation: '1500',
-      body: storedRecord({ holderKey: 'stablyai/orca/9001', expiresAt: NOW + 60_000 })
+      body: storedRecord({ holderKey: 'stablyai/occ/9001', expiresAt: NOW + 60_000 })
     }
   })
 
@@ -248,7 +248,7 @@ test('fails closed when permission is denied', async () => {
 
 test('treats an unreadable record as held, not free', async () => {
   const storage = fakeStorage({
-    object: { generation: '1500', body: { holder_key: 'stablyai/orca/9001' } }
+    object: { generation: '1500', body: { holder_key: 'stablyai/occ/9001' } }
   })
 
   const error = await leaseFor(storage)
@@ -290,7 +290,7 @@ test('renewal stops once the object belongs to someone else', async () => {
   const storage = fakeStorage({
     object: {
       generation: '1500',
-      body: storedRecord({ holderKey: 'stablyai/orca/9001', expiresAt: NOW + 60_000 })
+      body: storedRecord({ holderKey: 'stablyai/occ/9001', expiresAt: NOW + 60_000 })
     }
   })
 

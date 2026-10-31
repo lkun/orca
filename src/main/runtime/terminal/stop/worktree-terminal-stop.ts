@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithResolveTerminalSplitSourceAuthority } from '../launch/terminal-split-source-authority'
+import { OCCRuntimeWithResolveTerminalSplitSourceAuthority } from '../launch/terminal-split-source-authority'
 import type { ResolvedWorktree } from '../../runtime-worktree-path-identity'
 import { worktreeIdentityKey } from '../../../../shared/worktree/id'
 import { teardownRpcDeadline } from '../../worktree-teardown-deadline'
@@ -20,7 +20,7 @@ import {
 } from '../../../../shared/execution-host'
 import type { WorktreePtyHostFence } from '../../worktree-pty-host-fence'
 import { collectWorktreePtyIds } from './worktree-pty-collection'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { withMainBoundLeaves } from '../surface/main-terminal-surfaces'
 import { mainHoldsTerminal } from '../surface/main-pane-verdict'
 import { summarizeWorktreePtyStopVerdict } from '../../worktree-pty-stop-verdict'
@@ -29,7 +29,7 @@ import { clearClosedWorktreeResumeRecords } from './worktree-sleep-resume-record
 import { anySleepKeyNames, hostSleepKey, resolveSleepScope } from './worktree-terminal-sleep-key'
 import type { WorktreeSleepScope } from './worktree-terminal-sleep-key'
 
-export abstract class OrcaRuntimeWithStopTerminalsForWorktree extends OrcaRuntimeWithResolveTerminalSplitSourceAuthority {
+export abstract class OCCRuntimeWithStopTerminalsForWorktree extends OCCRuntimeWithResolveTerminalSplitSourceAuthority {
   protected abstract sleepResolvedWorktreeTerminals(
     worktree: ResolvedWorktree,
     scope: WorktreeSleepScope,
@@ -60,7 +60,7 @@ export abstract class OrcaRuntimeWithStopTerminalsForWorktree extends OrcaRuntim
       const snapshot = await this.listMobileSessionTabs(`id:${worktree.id}`)
       const targetPtyIds = collectWorktreePtyIds(
         // Switch point: main's bound terminals too, registered or not.
-        ORCA_LAYOUT_OWNER_IS_MAIN
+        OCC_LAYOUT_OWNER_IS_MAIN
           ? withMainBoundLeaves(this, this.leaves.values())
           : this.leaves.values(),
         this.ptysById,
@@ -71,7 +71,7 @@ export abstract class OrcaRuntimeWithStopTerminalsForWorktree extends OrcaRuntim
       // Main-bound terminals can survive inventory gaps; only certified exits count them stopped.
       const mainBound = new Set(
         [...targetPtyIds].filter(
-          (ptyId) => ORCA_LAYOUT_OWNER_IS_MAIN && mainHoldsTerminal(this, ptyId)
+          (ptyId) => OCC_LAYOUT_OWNER_IS_MAIN && mainHoldsTerminal(this, ptyId)
         )
       )
       const parentTabIds = [
@@ -191,7 +191,7 @@ export abstract class OrcaRuntimeWithStopTerminalsForWorktree extends OrcaRuntim
         : this.getWorktreeHostFence(worktree)
     const ptyIds = collectWorktreePtyIds(
       // Switch point: main's bound terminals too, registered or not.
-      ORCA_LAYOUT_OWNER_IS_MAIN
+      OCC_LAYOUT_OWNER_IS_MAIN
         ? withMainBoundLeaves(this, this.leaves.values())
         : this.leaves.values(),
       this.ptysById,

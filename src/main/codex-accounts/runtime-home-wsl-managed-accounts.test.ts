@@ -66,7 +66,7 @@ describe('CodexRuntimeHomeService', () => {
           managedHomePath: wslManagedHomePath,
           managedHomeRuntime: 'wsl',
           wslDistro: 'Ubuntu',
-          wslLinuxHomePath: '/home/alice/.local/share/orca/codex-accounts/account-1/home',
+          wslLinuxHomePath: '/home/alice/.local/share/occ/codex-accounts/account-1/home',
           providerAccountId: null,
           workspaceLabel: null,
           workspaceAccountId: null,
@@ -87,7 +87,7 @@ describe('CodexRuntimeHomeService', () => {
         wslHome,
         '.local',
         'share',
-        'orca',
+        'occ',
         'codex-runtime-home',
         'home'
       )
@@ -141,7 +141,7 @@ describe('CodexRuntimeHomeService', () => {
             managedHomePath,
             managedHomeRuntime: 'wsl',
             wslDistro: 'Ubuntu',
-            wslLinuxHomePath: '/home/alice/.local/share/orca/codex-accounts/account-1/home',
+            wslLinuxHomePath: '/home/alice/.local/share/occ/codex-accounts/account-1/home',
             providerAccountId: 'acct-wsl',
             workspaceLabel: null,
             workspaceAccountId: 'acct-wsl',
@@ -162,7 +162,7 @@ describe('CodexRuntimeHomeService', () => {
         wslHome,
         '.local',
         'share',
-        'orca',
+        'occ',
         'codex-runtime-home',
         'home'
       )
@@ -214,7 +214,7 @@ describe('CodexRuntimeHomeService', () => {
         wslHome,
         '.local',
         'share',
-        'orca',
+        'occ',
         'codex-runtime-home',
         'home'
       )
@@ -261,7 +261,7 @@ describe('CodexRuntimeHomeService', () => {
             managedHomePath: firstManagedHomePath,
             managedHomeRuntime: 'wsl',
             wslDistro: 'Ubuntu',
-            wslLinuxHomePath: '/home/alice/.local/share/orca/codex-accounts/account-1/home',
+            wslLinuxHomePath: '/home/alice/.local/share/occ/codex-accounts/account-1/home',
             providerAccountId: 'acct-first',
             workspaceLabel: null,
             workspaceAccountId: 'acct-first',
@@ -275,7 +275,7 @@ describe('CodexRuntimeHomeService', () => {
             managedHomePath: secondManagedHomePath,
             managedHomeRuntime: 'wsl',
             wslDistro: 'Ubuntu',
-            wslLinuxHomePath: '/home/alice/.local/share/orca/codex-accounts/account-2/home',
+            wslLinuxHomePath: '/home/alice/.local/share/occ/codex-accounts/account-2/home',
             providerAccountId: 'acct-second',
             workspaceLabel: null,
             workspaceAccountId: 'acct-second',
@@ -297,7 +297,7 @@ describe('CodexRuntimeHomeService', () => {
         wslHome,
         '.local',
         'share',
-        'orca',
+        'occ',
         'codex-runtime-home',
         'home'
       )
@@ -363,7 +363,7 @@ describe('CodexRuntimeHomeService', () => {
             managedHomePath,
             managedHomeRuntime: 'wsl',
             wslDistro: 'Ubuntu',
-            wslLinuxHomePath: '/home/alice/.local/share/orca/codex-accounts/account-1/home',
+            wslLinuxHomePath: '/home/alice/.local/share/occ/codex-accounts/account-1/home',
             providerAccountId: 'acct-wsl',
             workspaceLabel: null,
             workspaceAccountId: 'acct-wsl',
@@ -469,7 +469,7 @@ describe('CodexRuntimeHomeService', () => {
       wslHome,
       '.local',
       'share',
-      'orca',
+      'occ',
       'codex-runtime-home',
       'home'
     )
@@ -484,7 +484,7 @@ describe('CodexRuntimeHomeService', () => {
             managedHomePath: wslManagedHomePath,
             managedHomeRuntime: 'wsl',
             wslDistro: 'Ubuntu',
-            wslLinuxHomePath: '/home/alice/.local/share/orca/codex-accounts/wsl-account/home',
+            wslLinuxHomePath: '/home/alice/.local/share/occ/codex-accounts/wsl-account/home',
             providerAccountId: 'acct-wsl',
             workspaceLabel: null,
             workspaceAccountId: 'acct-wsl',
@@ -525,7 +525,7 @@ describe('CodexRuntimeHomeService', () => {
       'drive-refresh',
       2_000
     )
-    const linuxHomePath = '/mnt/c/Users/alice/orca/codex-accounts/drive-account/home'
+    const linuxHomePath = '/mnt/c/Users/alice/occ/codex-accounts/drive-account/home'
     vi.doMock('../wsl', () => ({
       getDefaultWslDistro: () => 'Ubuntu',
       getWslHome: () => 'C:\\Users\\alice',
@@ -578,7 +578,7 @@ describe('CodexRuntimeHomeService', () => {
           {
             id: 'drive-account',
             email: 'drive@example.com',
-            managedHomePath: 'C:\\Users\\alice\\orca\\codex-accounts\\drive-account\\home',
+            managedHomePath: 'C:\\Users\\alice\\occ\\codex-accounts\\drive-account\\home',
             managedHomeRuntime: 'wsl',
             wslDistro: 'Ubuntu',
             wslLinuxHomePath: linuxHomePath,
@@ -602,7 +602,7 @@ describe('CodexRuntimeHomeService', () => {
       const service = new CodexRuntimeHomeService(store as never)
 
       expect(service.prepareForCodexLaunch({ runtime: 'wsl', wslDistro: 'Ubuntu' })).toBe(
-        '\\\\wsl.localhost\\Ubuntu\\mnt\\c\\Users\\alice\\orca\\codex-accounts\\drive-account\\home'
+        '\\\\wsl.localhost\\Ubuntu\\mnt\\c\\Users\\alice\\occ\\codex-accounts\\drive-account\\home'
       )
       await Promise.all(drainTasks)
 
@@ -612,7 +612,7 @@ describe('CodexRuntimeHomeService', () => {
         distro: 'Ubuntu',
         systemCodexHomePath: '\\\\wsl.localhost\\Ubuntu\\mnt\\c\\Users\\alice\\.codex',
         managedCodexHomePath:
-          '\\\\wsl.localhost\\Ubuntu\\mnt\\c\\Users\\alice\\orca\\codex-accounts\\drive-account\\home'
+          '\\\\wsl.localhost\\Ubuntu\\mnt\\c\\Users\\alice\\occ\\codex-accounts\\drive-account\\home'
       })
     } finally {
       vi.doUnmock('../codex/codex-config-mirror')

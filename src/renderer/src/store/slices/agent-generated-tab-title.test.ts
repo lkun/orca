@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { GENERATED_TAB_TITLE_SOURCE_SCAN_LIMIT } from '../../../../shared/agent-tab-title'
 import { getDefaultSettings } from '../../../../shared/constants'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { makePaneKey } from '../../../../shared/stable-pane-id'
 import { resolveTerminalTabTitle } from '../../../../shared/tab-title-resolution'
 import { createTestStore, makeWorktree, seedStore } from './store-test-helpers'
@@ -51,7 +51,7 @@ function seedWorktree(store: ReturnType<typeof createTestStore>, enabled: boolea
 /** The title the window gives the tab: a layout-owner build's main derives it (its twin in
  *  agent-generated-tab-titles.test.ts), so the window writes none until main's frame. */
 const windowGives = (title: string): string | undefined =>
-  ORCA_LAYOUT_OWNER_IS_MAIN ? undefined : title
+  OCC_LAYOUT_OWNER_IS_MAIN ? undefined : title
 
 describe('generated agent tab titles', () => {
   beforeEach(() => {
@@ -118,7 +118,7 @@ describe('generated agent tab titles', () => {
 Your task ID is: task-1
 
 === CLI COMMANDS ===
-orca orchestration send --to term_parent
+occ orchestration send --to term_parent
 
 === TASK ===
 Implement the detailed worker instructions that should not be the short label`,
@@ -157,7 +157,7 @@ Implement the detailed worker instructions that should not be the short label`,
 Your task ID is: task-1
 
 === CLI COMMANDS ===
-orca orchestration send --to term_parent
+occ orchestration send --to term_parent
 
 === TASK ===
 Implement the detailed worker instructions that should not be the short label`
@@ -368,7 +368,7 @@ Implement task B worker instructions for the next dispatch`,
     await layoutApplyTestTransport.settle()
 
     const tab = store.getState().tabsByWorktree[WORKTREE_ID][0]
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // Main holds both titles and its frame draws them; the window only sent the rename.
       expect(
         layoutApplyTestTransport.sentOfType('renameTab').map((command) => command.title)

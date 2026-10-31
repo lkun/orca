@@ -1,6 +1,6 @@
 // The window uses bare file paths or owner-qualified IDs for contested, floating or moved files.
 
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../layout-owner-switch'
 import { ownedEditorFileId } from '../workspace-session-pane-ownership'
 import type { LayoutEditorFile } from './workspace-layout-model'
 
@@ -10,19 +10,19 @@ export function editorTabShowsFile(entityId: string, file: FileOwner, worktreeId
   return (
     entityId === file.filePath ||
     // Why the switch: a headless host saves through this code in shipped builds too.
-    (ORCA_LAYOUT_OWNER_IS_MAIN &&
+    (OCC_LAYOUT_OWNER_IS_MAIN &&
       entityId === ownedEditorFileId(file.filePath, worktreeId, file.runtimeEnvironmentId))
   )
 }
 
 /** Include runtime owner in owner-build keys because local/remote files can share paths; stream frame keys remain stable across builds. */
-export const EDITOR_FILE_KEY_FIELDS: readonly (keyof FileOwner)[] = ORCA_LAYOUT_OWNER_IS_MAIN
+export const EDITOR_FILE_KEY_FIELDS: readonly (keyof FileOwner)[] = OCC_LAYOUT_OWNER_IS_MAIN
   ? ['filePath', 'runtimeEnvironmentId']
   : ['filePath']
 
 export function editorFileKey(file: FileOwner): string {
   // These maps are workspace-scoped, including during cross-workspace moves; omit worktree from their internal keys.
-  return ORCA_LAYOUT_OWNER_IS_MAIN
+  return OCC_LAYOUT_OWNER_IS_MAIN
     ? ownedEditorFileId(file.filePath, '', file.runtimeEnvironmentId)
     : file.filePath
 }
@@ -53,7 +53,7 @@ export function editorTabFile<F extends FileOwner>(
   workspace: EditorWorkspace<F>,
   entityId: string
 ): F | undefined {
-  return ORCA_LAYOUT_OWNER_IS_MAIN
+  return OCC_LAYOUT_OWNER_IS_MAIN
     ? editorTabFiles(workspace, entityId)[0]
     : workspace.editorFiles?.find((file) =>
         editorTabShowsFile(entityId, file, workspace.worktreeId)
@@ -66,7 +66,7 @@ export function editorTabNamesFile<F extends FileOwner>(
   entityId: string,
   file: F
 ): boolean {
-  return ORCA_LAYOUT_OWNER_IS_MAIN
+  return OCC_LAYOUT_OWNER_IS_MAIN
     ? editorTabFile(workspace, entityId) === file
     : editorTabShowsFile(entityId, file, workspace.worktreeId)
 }

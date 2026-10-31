@@ -91,7 +91,7 @@ export class CellAdmitEffectiveWriter {
         this.failureLoggedAt = at
         ;(this.input.log ?? ((line: string) => console.warn(line)))(
           JSON.stringify({
-            event: 'orca_relay_cell_admit_effective_write_failed',
+            event: 'occ_relay_cell_admit_effective_write_failed',
             mode,
             reason: error instanceof Error ? error.message : 'unknown'
           })

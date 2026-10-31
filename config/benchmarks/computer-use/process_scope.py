@@ -45,7 +45,7 @@ if WIN:
 
 class ProcessScope:
     def __init__(self, directory=None):
-        self.directory = directory or tempfile.mkdtemp(prefix="orca-computer-trial-")
+        self.directory = directory or tempfile.mkdtemp(prefix="occ-computer-trial-")
         self.procs = []
         self.job = None
         if WIN:

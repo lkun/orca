@@ -4,25 +4,25 @@ import {
   ServeReadinessPublisher,
   type ServeReadiness
 } from './serve-readiness'
-import type { OrcadHealth } from '../orcad/orcad-health'
+import type { OCCdHealth } from '../occd/occd-health'
 
 const ready: ServeReadiness = {
   runtimeId: 'runtime-1',
   boundEndpoint: 'ws://0.0.0.0:6768',
-  advertisedEndpoint: 'wss://orca.example.test/runtime',
+  advertisedEndpoint: 'wss://occ.example.test/runtime',
   managedWslCliReconciliation: 'settled',
   pairing: {
     available: true,
     url: 'occ://pair?code=secret',
-    endpoint: 'wss://orca.example.test/runtime',
+    endpoint: 'wss://occ.example.test/runtime',
     deviceId: 'device-1',
-    webClientUrl: 'https://orca.example.test/runtime/web-index.html#pairing=secret',
+    webClientUrl: 'https://occ.example.test/runtime/web-index.html#pairing=secret',
     scope: 'runtime',
     qr: null
   }
 }
 
-const health: OrcadHealth = {
+const health: OCCdHealth = {
   buildHash: 'abc123def4567890',
   buildVersion: '1.4.0',
   nodeVersion: '20.11.0',
@@ -35,7 +35,7 @@ const health: OrcadHealth = {
     ownsFreshSessions: true,
     pid: 4242,
     buildVersion: '1.4.0',
-    entryPath: '/opt/orcad/daemon-entry.js',
+    entryPath: '/opt/occd/daemon-entry.js',
     protocolVersion: 36,
     cgroupUnit: null,
     selfTest: { ok: true, coverage: 'pty-spawn', verdict: 'healthy', durationMs: 12 }
@@ -52,7 +52,7 @@ describe('ServeReadinessPublisher', () => {
     expect(write).toHaveBeenCalledOnce()
     expect(write).toHaveBeenCalledWith(
       expect.stringContaining(
-        'OCC server ready\nBound endpoint: ws://0.0.0.0:6768\nAdvertised endpoint: wss://orca.example.test/runtime'
+        'OCC server ready\nBound endpoint: ws://0.0.0.0:6768\nAdvertised endpoint: wss://occ.example.test/runtime'
       )
     )
     expect(write).toHaveBeenCalledWith(
@@ -62,12 +62,12 @@ describe('ServeReadinessPublisher', () => {
 
   it('publishes a versioned JSON contract with explicit endpoints and pairing availability', () => {
     expect(JSON.parse(renderServeReadiness(ready, { mode: 'json' }))).toEqual({
-      type: 'orca_server_ready',
+      type: 'occ_server_ready',
       schemaVersion: 1,
       runtimeId: 'runtime-1',
       endpoint: 'ws://0.0.0.0:6768',
       boundEndpoint: 'ws://0.0.0.0:6768',
-      advertisedEndpoint: 'wss://orca.example.test/runtime',
+      advertisedEndpoint: 'wss://occ.example.test/runtime',
       managedWslCliReconciliation: 'settled',
       pairing: ready.pairing
     })
@@ -151,7 +151,7 @@ describe('ServeReadinessPublisher', () => {
     const human = renderServeReadiness(failed, { mode: 'human' })
     // Make failure explicit to operators rather than requiring inference from missing output.
     expect(human).toContain('PTY self-test FAILED')
-    expect(human).toContain('terminals survive an orcad restart: NO')
+    expect(human).toContain('terminals survive an occd restart: NO')
   })
 
   it('rejects concurrent and later duplicate publications', async () => {

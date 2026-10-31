@@ -1,6 +1,6 @@
 import { useAppStore } from '@/store'
 import { makePaneKey, parsePaneKey, type PaneKey } from '../../../shared/stable-pane-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type { AgentType } from '../../../shared/agent-status-types'
 import { bindAutomationTerminal } from '@/lib/automation-terminal-ownership'
 import { createBrowserUuid } from '@/lib/browser-uuid'
@@ -45,10 +45,10 @@ export function reserveAgentBackgroundSessionIdentity(args: {
     launchRegistration,
     paneEnv: {
       ...args.env,
-      ORCA_PANE_KEY: paneKey,
-      ORCA_TAB_ID: reservedTabId,
-      ORCA_WORKTREE_ID: args.worktreeId,
-      ORCA_AGENT_LAUNCH_TOKEN: launchToken
+      OCC_PANE_KEY: paneKey,
+      OCC_TAB_ID: reservedTabId,
+      OCC_WORKTREE_ID: args.worktreeId,
+      OCC_AGENT_LAUNCH_TOKEN: launchToken
     }
   }
 }
@@ -99,7 +99,7 @@ export async function adoptAgentBackgroundSessionTab(args: {
     initialPtyId: ptyId,
     activate: false,
     recordInteraction: false,
-    ...(ORCA_LAYOUT_OWNER_IS_MAIN ? { initialLeafId: parsePaneKey(args.paneKey)?.leafId } : {})
+    ...(OCC_LAYOUT_OWNER_IS_MAIN ? { initialLeafId: parsePaneKey(args.paneKey)?.leafId } : {})
   })
   const paneKey = args.paneKey
   store.registerAgentLaunchConfig(paneKey, args.launchConfig, launchRegistration)

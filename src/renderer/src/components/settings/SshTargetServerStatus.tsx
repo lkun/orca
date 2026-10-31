@@ -16,7 +16,7 @@ import { canRestartSshHostServer, SshHostRestartServerDialog } from './SshHostRe
 import { canRecoverSshHostServer, SshHostRecoverServerDialog } from './SshHostRecoverServerAction'
 import { Button } from '../ui/button'
 import { isSshTargetConnecting } from './ssh-target-action-state'
-import { getManagedOrcadApi } from './use-managed-server-catalog'
+import { getManagedOCCdApi } from './use-managed-server-catalog'
 
 export type SshTargetServerDialog =
   | 'details'
@@ -149,7 +149,7 @@ export function SshTargetServerDialogs({
   onDialogChange: (dialog: SshTargetServerDialog | null) => void
   onChanged: () => void
 }): React.JSX.Element {
-  const api = getManagedOrcadApi()
+  const api = getManagedOCCdApi()
   const status = state?.managedServer
   const detail = sshHostServerStatusLine(target, state)?.detail
   const openChange =

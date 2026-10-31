@@ -52,14 +52,14 @@ type WindowsGrokHookRun = {
 
 function createWindowsGrokHookEnvironment(grokHome?: string): NodeJS.ProcessEnv {
   const env = { ...process.env } as NodeJS.ProcessEnv
-  delete env.ORCA_AGENT_HOOK_ENDPOINT
+  delete env.OCC_AGENT_HOOK_ENDPOINT
   if (grokHome === undefined) {
     delete env.GROK_HOME
   } else {
     env.GROK_HOME = grokHome
   }
-  env.ORCA_AGENT_HOOK_TOKEN = 'test-token'
-  env.ORCA_PANE_KEY = 'pane-test'
+  env.OCC_AGENT_HOOK_TOKEN = 'test-token'
+  env.OCC_PANE_KEY = 'pane-test'
   return env
 }
 
@@ -91,7 +91,7 @@ async function runWindowsGrokHook(
   if (!address || typeof address === 'string') {
     throw new Error('Could not resolve Windows Grok hook test listener port')
   }
-  env.ORCA_AGENT_HOOK_PORT = String(address.port)
+  env.OCC_AGENT_HOOK_PORT = String(address.port)
   try {
     const result = await new Promise<Omit<WindowsGrokHookRun, 'request'>>((resolve, reject) => {
       const child = spawn(process.env.ComSpec ?? 'cmd.exe', ['/d', '/c', scriptPath], {
@@ -120,7 +120,7 @@ describe('GrokHookService', () => {
   let homeDir: string
 
   beforeEach(() => {
-    homeDir = mkdtempSync(join(tmpdir(), 'orca-grok-home-'))
+    homeDir = mkdtempSync(join(tmpdir(), 'occ-grok-home-'))
     homedirMock.mockReturnValue(homeDir)
   })
 
@@ -131,15 +131,15 @@ describe('GrokHookService', () => {
 
   it('guards Windows GROK_HOME substring checks when empty (#9358)', () => {
     const script = buildWindowsGrokHookScript()
-    expect(script).toContain('set "ORCA_GROK_HOME="')
-    expect(script).toContain('if not defined GROK_HOME goto :orca_grok_home_ready')
+    expect(script).toContain('set "OCC_GROK_HOME="')
+    expect(script).toContain('if not defined GROK_HOME goto :occ_grok_home_ready')
     expect(script).toContain('%GROK_HOME:~4096,1%')
-    expect(script).toContain('set "ORCA_GROK_HOME=%GROK_HOME:"=%"')
-    expect(script).toContain('%ORCA_GROK_HOME:~4096,1%')
-    expect(script).toContain(':orca_grok_home_ready')
-    expect(script).toContain('if not defined ORCA_GROK_HOME goto :orca_grok_home_ready')
-    expect(script).toContain('if "%ORCA_GROK_HOME:~-1%"=="\\"')
-    expect(script).toContain('if not "%GROK_HOME:~4096,1%"=="" goto :orca_grok_home_ready')
+    expect(script).toContain('set "OCC_GROK_HOME=%GROK_HOME:"=%"')
+    expect(script).toContain('%OCC_GROK_HOME:~4096,1%')
+    expect(script).toContain(':occ_grok_home_ready')
+    expect(script).toContain('if not defined OCC_GROK_HOME goto :occ_grok_home_ready')
+    expect(script).toContain('if "%OCC_GROK_HOME:~-1%"=="\\"')
+    expect(script).toContain('if not "%GROK_HOME:~4096,1%"=="" goto :occ_grok_home_ready')
     // Parenthesized blocks still expand percent variables before their guard executes.
     expect(script).not.toMatch(/if defined GROK_HOME \(/)
   })
@@ -233,11 +233,11 @@ describe('GrokHookService', () => {
     const status = new GrokHookService().install()
 
     expect(status.state).toBe('installed')
-    expect(status.configPath).toBe(join(homeDir, '.grok', 'hooks', 'orca-status.json'))
+    expect(status.configPath).toBe(join(homeDir, '.grok', 'hooks', 'occ-status.json'))
     expect(status.managedHooksPresent).toBe(true)
 
     const config = JSON.parse(
-      readFileSync(join(homeDir, '.grok', 'hooks', 'orca-status.json'), 'utf8')
+      readFileSync(join(homeDir, '.grok', 'hooks', 'occ-status.json'), 'utf8')
     ) as {
       hooks: Record<string, { matcher?: string; hooks: { command: string }[] }[]>
     }
@@ -273,19 +273,19 @@ describe('GrokHookService', () => {
     expect(registersManagedGrokScript(config.hooks.PostToolUse[0].hooks[0].command)).toBe(true)
     if (process.platform !== 'win32') {
       const command = config.hooks.PostToolUse[0].hooks[0].command
-      expect(command).toContain(join(homeDir, '.orca'))
-      expect(command).toMatch(/^if \[ -n "\$\{ORCA_PANE_KEY-\}" \] && /)
+      expect(command).toContain(join(homeDir, '.occ'))
+      expect(command).toMatch(/^if \[ -n "\$\{OCC_PANE_KEY-\}" \] && /)
     }
 
     const script = readFileSync(
-      join(homeDir, '.orca', 'agent-hooks', GROK_SCRIPT_FILE_NAME),
+      join(homeDir, '.occ', 'agent-hooks', GROK_SCRIPT_FILE_NAME),
       'utf8'
     )
     expect(script).toContain('/hook/grok')
     if (process.platform === 'win32') {
       expect(script).toContain('%SystemRoot%\\System32\\curl.exe')
-      expect(script).toContain('set "ORCA_GROK_HOME=%GROK_HOME:"=%"')
-      expect(script).toContain('--data-urlencode "grokHome=%ORCA_GROK_HOME%"')
+      expect(script).toContain('set "OCC_GROK_HOME=%GROK_HOME:"=%"')
+      expect(script).toContain('--data-urlencode "grokHome=%OCC_GROK_HOME%"')
     } else {
       // Stream payload to curl stdin; reader variables must be initialized before capture.
       const prelude = POSIX_HOOK_JSON_STDIN_PRELUDE.join('\n')
@@ -306,14 +306,14 @@ describe('GrokHookService', () => {
   it.skipIf(process.platform !== 'win32')(
     'wraps the managed hook command to survive spaces in the profile path (#6078)',
     () => {
-      const spaceHome = join(tmpdir(), 'orca grok home with spaces')
+      const spaceHome = join(tmpdir(), 'occ grok home with spaces')
       mkdirSync(spaceHome, { recursive: true })
       homedirMock.mockReturnValue(spaceHome)
       try {
         expect(new GrokHookService().install().state).toBe('installed')
 
         const config = JSON.parse(
-          readFileSync(join(spaceHome, '.grok', 'hooks', 'orca-status.json'), 'utf8')
+          readFileSync(join(spaceHome, '.grok', 'hooks', 'occ-status.json'), 'utf8')
         ) as { hooks: Record<string, { hooks: { command: string }[] }[]> }
 
         for (const eventName of ['SessionStart', 'UserPromptSubmit', 'Stop']) {
@@ -327,18 +327,18 @@ describe('GrokHookService', () => {
   )
 
   it('installs hooks under GROK_HOME when set', () => {
-    const grokHome = mkdtempSync(join(tmpdir(), 'orca-grok-home-env-'))
+    const grokHome = mkdtempSync(join(tmpdir(), 'occ-grok-home-env-'))
     const previous = process.env.GROK_HOME
     process.env.GROK_HOME = grokHome
     try {
       const status = new GrokHookService().install()
       expect(status.state).toBe('installed')
-      expect(status.configPath).toBe(join(grokHome, 'hooks', 'orca-status.json'))
-      expect(readFileSync(join(grokHome, 'hooks', 'orca-status.json'), 'utf8')).toContain(
+      expect(status.configPath).toBe(join(grokHome, 'hooks', 'occ-status.json'))
+      expect(readFileSync(join(grokHome, 'hooks', 'occ-status.json'), 'utf8')).toContain(
         'SessionStart'
       )
       expect(() =>
-        readFileSync(join(homeDir, '.grok', 'hooks', 'orca-status.json'), 'utf8')
+        readFileSync(join(homeDir, '.grok', 'hooks', 'occ-status.json'), 'utf8')
       ).toThrow()
     } finally {
       if (previous === undefined) {
@@ -352,7 +352,7 @@ describe('GrokHookService', () => {
 
   it('does not restore a user-cleared global hook config on the next launch', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
     const userClearedConfig = '{  "hooks" : {}  }\n'
 
     expect(service.install().state).toBe('installed')
@@ -365,7 +365,7 @@ describe('GrokHookService', () => {
 
   it('preserves a user-cleared config during session cleanup', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
     const userClearedConfig = '{  "hooks" : {}  }\n'
 
     expect(service.install().state).toBe('installed')
@@ -377,7 +377,7 @@ describe('GrokHookService', () => {
 
   it('removes the empty managed config when hooks are disabled', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
 
     service.install()
     expect(service.remove().state).toBe('not_installed')
@@ -386,7 +386,7 @@ describe('GrokHookService', () => {
 
   it('removes the managed config even when a non-hook key remains', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
 
     expect(service.install().state).toBe('installed')
     const withSchema = JSON.parse(readFileSync(configPath, 'utf8')) as Record<string, unknown>
@@ -402,7 +402,7 @@ describe('GrokHookService', () => {
   // Respect startup opt-out while allowing explicit re-enabling to override it.
   it('leaves a user-cleared config alone on a startup install', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
     const userCleared = '{  "hooks" : {}  }\n'
 
     expect(service.install().state).toBe('installed')
@@ -415,7 +415,7 @@ describe('GrokHookService', () => {
 
   it('restores a user-cleared config when the user turns hooks back on', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
     const userCleared = '{  "hooks" : {}  }\n'
 
     expect(service.install().state).toBe('installed')
@@ -430,8 +430,8 @@ describe('GrokHookService', () => {
   // Strip managed entries through symlinks so user dotfile links stay connected.
   it('writes through a symlinked config instead of destroying the link', async () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
-    const realConfig = join(homeDir, 'dotfiles', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
+    const realConfig = join(homeDir, 'dotfiles', 'occ-status.json')
 
     expect(service.install().state).toBe('installed')
     mkdirSync(dirname(realConfig), { recursive: true })
@@ -447,8 +447,8 @@ describe('GrokHookService', () => {
 
   it('respects an empty user-managed symlink as an opt-out', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
-    const realConfig = join(homeDir, 'dotfiles', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
+    const realConfig = join(homeDir, 'dotfiles', 'occ-status.json')
     const userCleared = '{"hooks":{}}\n'
     mkdirSync(dirname(configPath), { recursive: true })
     mkdirSync(dirname(realConfig), { recursive: true })
@@ -462,8 +462,8 @@ describe('GrokHookService', () => {
 
   it('writes through a symlinked config on the sync remove path too', () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
-    const realConfig = join(homeDir, 'dotfiles', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
+    const realConfig = join(homeDir, 'dotfiles', 'occ-status.json')
 
     expect(service.install().state).toBe('installed')
     mkdirSync(dirname(realConfig), { recursive: true })
@@ -480,8 +480,8 @@ describe('GrokHookService', () => {
   // Identify OCC's prior emptying separately from a deliberate user opt-out after restart.
   it('reinstalls into a symlinked config on the launch after a quit', async () => {
     const service = new GrokHookService()
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
-    const realConfig = join(homeDir, 'dotfiles', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
+    const realConfig = join(homeDir, 'dotfiles', 'occ-status.json')
 
     expect(service.install().state).toBe('installed')
     mkdirSync(dirname(realConfig), { recursive: true })
@@ -498,7 +498,7 @@ describe('GrokHookService', () => {
   })
 
   it('preserves user-authored hook entries in the OCC Grok config file', () => {
-    const configPath = join(homeDir, '.grok', 'hooks', 'orca-status.json')
+    const configPath = join(homeDir, '.grok', 'hooks', 'occ-status.json')
     mkdirSync(dirname(configPath), { recursive: true })
     writeFileSync(
       configPath,

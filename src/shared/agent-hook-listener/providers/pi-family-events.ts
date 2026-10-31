@@ -30,7 +30,7 @@ export function normalizePiCompatibleEvent(
   // Only OMP stamps provider/id on every post.
   const model = readString(hookPayload, 'model')
   const modelSwitchCommand =
-    hookPayload.model_switch_command === 'orca-model' ? 'orca-model' : undefined
+    hookPayload.model_switch_command === 'occ-model' ? 'occ-model' : undefined
   // Each post carries the whole live roster; absence means none.
   const subagents = hookPayload.subagents
   if (eventName === 'model_select' || eventName === 'subagents_update') {

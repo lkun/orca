@@ -15,7 +15,7 @@ export function every(label: string, intervalMs: number, run: () => Promise<unkn
         .catch((error: unknown) => {
           console.warn(
             JSON.stringify({
-              event: 'orca_connector_sweep_failed',
+              event: 'occ_connector_sweep_failed',
               target: label,
               error: error instanceof Error ? error.name : 'unknown'
             })
@@ -50,7 +50,7 @@ export function startConnectorBackground(runtime: {
       const threads = await runtime.inbox.expireDue(runtime.core.onExpired)
       if (threads.length > 0) {
         console.log(
-          JSON.stringify({ event: 'orca_connector_deliveries_expired', threads: threads.length })
+          JSON.stringify({ event: 'occ_connector_deliveries_expired', threads: threads.length })
         )
       }
     }),

@@ -28,7 +28,7 @@ describe('DevinHookService', () => {
   let homeDir: string
 
   beforeEach(() => {
-    homeDir = mkdtempSync(join(tmpdir(), 'orca-devin-home-'))
+    homeDir = mkdtempSync(join(tmpdir(), 'occ-devin-home-'))
     homedirMock.mockReturnValue(homeDir)
     vi.stubEnv('APPDATA', join(homeDir, 'AppData', 'Roaming'))
   })
@@ -165,7 +165,7 @@ describe('DevinHookService', () => {
     const previous = process.platform
     Object.defineProperty(process, 'platform', { value: 'win32' })
     try {
-      const scriptPath = 'C:\\Users\\Ada Lovelace\\.orca\\agent-hooks\\devin-hook.cmd'
+      const scriptPath = 'C:\\Users\\Ada Lovelace\\.occ\\agent-hooks\\devin-hook.cmd'
       const command = getDevinManagedCommand(scriptPath)
       const encoded = command.match(/ -EncodedCommand (\S+)$/)?.[1]
       expect(encoded).toBeDefined()
@@ -181,13 +181,13 @@ describe('DevinHookService', () => {
     const previous = process.platform
     Object.defineProperty(process, 'platform', { value: 'win32' })
     try {
-      const scriptPath = 'C:\\Users\\ada\\.orca\\agent-hooks\\devin-hook.cmd'
+      const scriptPath = 'C:\\Users\\ada\\.occ\\agent-hooks\\devin-hook.cmd'
       const command = getDevinManagedCommand(scriptPath)
       // Forward slashes survive Git Bash path handling.
-      expect(command).toBe('C:/Users/ada/.orca/agent-hooks/devin-hook.cmd')
+      expect(command).toBe('C:/Users/ada/.occ/agent-hooks/devin-hook.cmd')
       // UNC paths retain the encoded launcher because they have no drive letter.
       expect(
-        getDevinManagedCommand('\\\\server\\share\\ada\\.orca\\agent-hooks\\devin-hook.cmd')
+        getDevinManagedCommand('\\\\server\\share\\ada\\.occ\\agent-hooks\\devin-hook.cmd')
       ).toMatch(/ -EncodedCommand \S+$/)
 
       const next = applyDevinManagedHooks(

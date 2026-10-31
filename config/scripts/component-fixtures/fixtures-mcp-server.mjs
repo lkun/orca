@@ -105,7 +105,7 @@ async function handleRequest(message) {
           ? requested
           : SUPPORTED_PROTOCOL_VERSIONS[0],
         capabilities: { tools: {} },
-        serverInfo: { name: 'orca-component-fixtures', version: '0.1.0' }
+        serverInfo: { name: 'occ-component-fixtures', version: '0.1.0' }
       }
     }
     case 'ping':

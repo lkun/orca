@@ -112,7 +112,7 @@ const installNative: typeof subscribeViaWatcherProcess = async (
 }
 
 beforeEach(async () => {
-  common = await realpath(await mkdtemp(join(tmpdir(), 'orca-root-lifetime-')))
+  common = await realpath(await mkdtemp(join(tmpdir(), 'occ-root-lifetime-')))
   fsControl.root = join(common, 'worktrees')
   fsControl.stat = null
   fsControl.read = null

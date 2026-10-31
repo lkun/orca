@@ -15,7 +15,7 @@ let originalUserProfile: string | undefined
 let originalKiroHome: string | undefined
 
 beforeEach(() => {
-  home = mkdtempSync(join(tmpdir(), 'orca-kiro-hook-'))
+  home = mkdtempSync(join(tmpdir(), 'occ-kiro-hook-'))
   originalHome = process.env.HOME
   originalUserProfile = process.env.USERPROFILE
   process.env.HOME = home
@@ -48,7 +48,7 @@ const agentPath = (name: string): string => join(agentsDir(), `${name}.json`)
 const scriptPath = (): string =>
   join(
     home,
-    '.orca',
+    '.occ',
     'agent-hooks',
     process.platform === 'win32' ? 'kiro-hook.cmd' : 'kiro-hook.sh'
   )
@@ -143,7 +143,7 @@ describe('KiroHookService', () => {
 
   // Shape `kiro-cli agent upgrade` (2.29+) writes; edits to `hooks` keep the file "universal".
   it('converges list-form hooks in place and removes only its entries, locally and remotely', async () => {
-    const orcaHook = (trigger: string, command: string) => ({
+    const occHook = (trigger: string, command: string) => ({
       name: `${trigger}-0`,
       trigger,
       ...(trigger === 'preToolUse' ? { matcher: '*' } : {}),
@@ -157,14 +157,14 @@ describe('KiroHookService', () => {
       action: { type: 'command', command: 'audit.sh' },
       timeout: 10
     }
-    const stale = `/bin/sh '${join(home, '.orca', 'agent-hooks', 'kiro-hook.sh')}'`
+    const stale = `/bin/sh '${join(home, '.occ', 'agent-hooks', 'kiro-hook.sh')}'`
     const extra = {
       permissions: { rules: [{ capability: 'shell', effect: 'allow' }] },
       kiroUpgrade: { notes: [] }
     }
     writeAgent('reviewer', {
       name: 'reviewer',
-      hooks: [orcaHook('agentSpawn', stale), userHook, orcaHook('preToolUse', stale)],
+      hooks: [occHook('agentSpawn', stale), userHook, occHook('preToolUse', stale)],
       ...extra
     })
     writeAgent('upgraded', { name: 'upgraded', permissions: extra.permissions })

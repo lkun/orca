@@ -489,13 +489,13 @@ describe('mergePersistedWindowsPath', () => {
   it('expands variables already present in the inherited PATH', () => {
     const execFileSync = vi.fn().mockReturnValue('    Path    REG_SZ    \r\n')
     const env = {
-      ORCA_PATH_ROOT: 'C:\\Users\\orca\\AppData\\Local',
-      Path: '%orca_path_root%\\agy\\bin;C:\\Windows'
+      OCC_PATH_ROOT: 'C:\\Users\\occ\\AppData\\Local',
+      Path: '%occ_path_root%\\agy\\bin;C:\\Windows'
     }
 
     mergePersistedWindowsPath(env, { platform: 'win32', execFileSync, env })
 
-    expect(env.Path).toBe('C:\\Users\\orca\\AppData\\Local\\agy\\bin;C:\\Windows')
+    expect(env.Path).toBe('C:\\Users\\occ\\AppData\\Local\\agy\\bin;C:\\Windows')
   })
 
   it('adopts persisted machine and user PATH ordering', () => {

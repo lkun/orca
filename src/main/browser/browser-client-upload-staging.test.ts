@@ -14,7 +14,7 @@ let stagingRoot = ''
 
 beforeEach(async () => {
   // Resolve macOS /var aliases so path assertions use the real root.
-  stagingRoot = await realpath(await mkdtemp(path.join(tmpdir(), 'orca-upload-staging-')))
+  stagingRoot = await realpath(await mkdtemp(path.join(tmpdir(), 'occ-upload-staging-')))
 })
 
 afterEach(async () => {

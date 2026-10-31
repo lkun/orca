@@ -8,7 +8,7 @@ import { marketplaceSourceId, PluginMarketplaceStore } from './plugin-marketplac
 const roots: string[] = []
 
 async function tempRoot(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-marketplace-store-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-marketplace-store-'))
   roots.push(root)
   return root
 }
@@ -117,7 +117,7 @@ describe('PluginMarketplaceStore', () => {
                 commit: 'c'.repeat(40),
                 contentHash: 'f'.repeat(64),
                 execution: 'data',
-                minimumOrca: '1.4.0',
+                minimumOCC: '1.4.0',
                 types: ['interface-language']
               }
             ]

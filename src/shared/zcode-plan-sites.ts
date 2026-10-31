@@ -19,6 +19,6 @@ export type ZcodePlanCredentialsStatus = {
   zcodeCliConfigured: boolean
   apiKeyProtection: SecretAtRestProtection | null
   /** Set when the saved file cannot be used here; 'sealed-elsewhere' means the other OCC app
-   *  on that machine (desktop vs orcad) saved it. */
+   *  on that machine (desktop vs occd) saved it. */
   apiKeyUnreadable?: 'sealed-elsewhere' | 'unreadable'
 }

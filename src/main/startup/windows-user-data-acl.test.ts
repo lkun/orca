@@ -39,7 +39,7 @@ describe('ensureWindowsUserDataAclGrant', () => {
   const granted = (): string[] => fake.callsFor('grantAsync').map((call) => call.path)
 
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(os.tmpdir(), 'orca-acl-test-'))
+    userDataPath = mkdtempSync(join(os.tmpdir(), 'occ-acl-test-'))
     fake = createFakeWindowsSecurity()
     setWindowsSecurityForTests(fake)
   })
@@ -53,7 +53,7 @@ describe('ensureWindowsUserDataAclGrant', () => {
   it('grants each child directory, then the root, then writes the marker', async () => {
     mkdirSync(join(userDataPath, 'agent-hooks'))
     mkdirSync(join(userDataPath, 'codex-runtime-home'))
-    writeFileSync(join(userDataPath, 'orca-runtime.json'), '{}')
+    writeFileSync(join(userDataPath, 'occ-runtime.json'), '{}')
 
     expect(await awaitResult(userDataPath)).toEqual({ mode: 'granted' })
 

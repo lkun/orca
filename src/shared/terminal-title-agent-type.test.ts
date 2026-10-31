@@ -264,7 +264,7 @@ describe('explicit identity admission shared by display and input readers', () =
     ['hermes ready', 'hermes'],
     ['DeepSeek Build', 'dsb'],
     ['🐋 DeepSeek Harness', 'dsh'],
-    ['π > session - ~/orca', 'pi'],
+    ['π > session - ~/occ', 'pi'],
     ['OMP ready', 'omp'],
     ['Qoder CLI', 'qoder'],
     ['Qoder CLI CN', 'qoder-cn'],

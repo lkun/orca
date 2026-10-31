@@ -118,7 +118,7 @@ afterEach(async () => {
 })
 
 async function createCursorHome(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-cursor-chat-meta-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-cursor-chat-meta-'))
   tempRoots.push(root)
   const cursorHome = join(root, '.cursor')
   await mkdir(cursorHome, { recursive: true })
@@ -250,7 +250,7 @@ describe('cursor chat meta', () => {
   })
 })
 
-async function cursorCandidate(cursorHome: string): Promise<FileWithMtime> {
+async function cursoccndidate(cursorHome: string): Promise<FileWithMtime> {
   const issues: AiVaultScanIssue[] = []
   const discovery = await discoverFiles({
     rootDir: join(cursorHome, 'projects'),
@@ -265,7 +265,7 @@ async function cursorCandidate(cursorHome: string): Promise<FileWithMtime> {
 }
 
 /** Exercise the production sidecar merge in the parse cache. */
-function parseCursorCached(
+function parseCursoccched(
   file: FileWithMtime,
   stats: SessionParseStats = createSessionParseStats()
 ): Promise<{ session: AiVaultSession | null; stats: SessionParseStats }> {
@@ -306,10 +306,10 @@ describe('cursor discovery sidecar observation', () => {
     const metaPath = await writeChatMeta(cursorHome, 'workspace-hash', 'chat-7')
     const transcriptPath = await writeTranscript(cursorHome, 'slug', 'chat-7', [])
 
-    const before = await cursorCandidate(cursorHome)
+    const before = await cursoccndidate(cursorHome)
     const future = new Date(Date.now() + 10_000)
     await utimes(metaPath, future, future)
-    const after = await cursorCandidate(cursorHome)
+    const after = await cursoccndidate(cursorHome)
 
     const transcriptStat = await stat(transcriptPath)
     expect(after.mtimeMs).toBe(transcriptStat.mtimeMs)
@@ -332,7 +332,7 @@ describe('cursor sidecar enrichment', () => {
     ])
     resetSessionParseCacheForTests()
 
-    const { session } = await parseCursorCached(await cursorCandidate(cursorHome))
+    const { session } = await parseCursoccched(await cursoccndidate(cursorHome))
 
     expect(session?.cwd).toBe('/private/tmp/workspace')
     expect(session?.title).toBe('Named From Meta')
@@ -352,7 +352,7 @@ describe('cursor sidecar enrichment', () => {
     ])
     resetSessionParseCacheForTests()
 
-    const { session } = await parseCursorCached(await cursorCandidate(cursorHome))
+    const { session } = await parseCursoccched(await cursoccndidate(cursorHome))
 
     expect(session?.title).toBe('transcript first prompt')
     expect(session?.createdAt).toBe('2026-01-01T00:00:00.000Z')
@@ -368,7 +368,7 @@ describe('cursor sidecar enrichment', () => {
     ])
     resetSessionParseCacheForTests()
 
-    const { session } = await parseCursorCached(await cursorCandidate(cursorHome))
+    const { session } = await parseCursoccched(await cursoccndidate(cursorHome))
 
     expect(session?.resumeCommand).toContain('/repo/from-meta')
   })
@@ -395,13 +395,13 @@ describe('cursor sidecar enrichment', () => {
       JSON.stringify({ role: 'user', message: { content: 'hi' } })
     ])
     resetSessionParseCacheForTests()
-    await parseCursorCached(await cursorCandidate(cursorHome))
+    await parseCursoccched(await cursoccndidate(cursorHome))
 
     const future = new Date(Date.now() + 10_000)
     await writeChatMeta(cursorHome, 'workspace-hash', 'chat-8', { cwd: '/repo/second' })
     await utimes(join(cursorHome, 'chats', 'workspace-hash', 'chat-8', 'meta.json'), future, future)
 
-    const { session, stats } = await parseCursorCached(await cursorCandidate(cursorHome))
+    const { session, stats } = await parseCursoccched(await cursoccndidate(cursorHome))
 
     expect(stats.reused).toBe(1)
     expect(stats.fullParses).toBe(0)
@@ -418,11 +418,11 @@ describe('cursor sidecar enrichment', () => {
       JSON.stringify({ role: 'user', message: { content: 'hi' } })
     ])
     resetSessionParseCacheForTests()
-    await parseCursorCached(await cursorCandidate(cursorHome))
+    await parseCursoccched(await cursoccndidate(cursorHome))
     const future = new Date(Date.now() + 10_000)
     await writeChatMeta(cursorHome, 'workspace-hash', 'chat-9', { cwd: '/repo/second' })
     await utimes(join(cursorHome, 'chats', 'workspace-hash', 'chat-9', 'meta.json'), future, future)
-    const candidate = await cursorCandidate(cursorHome)
+    const candidate = await cursoccndidate(cursorHome)
     const before = getSessionParseCacheEntry(candidate.path)
 
     const controller = new AbortController()
@@ -442,7 +442,7 @@ describe('cursor sidecar enrichment', () => {
 
     expect(getSessionParseCacheEntry(candidate.path)?.session?.cwd).toBe('/repo/first')
     expect(getSessionParseCacheEntry(candidate.path)?.sidecar).toEqual(before?.sidecar)
-    const { session, stats } = await parseCursorCached(candidate)
+    const { session, stats } = await parseCursoccched(candidate)
     expect(stats.fullParses).toBe(0)
     expect(session?.cwd).toBe('/repo/second')
   })
@@ -454,10 +454,10 @@ describe('cursor sidecar enrichment', () => {
       JSON.stringify({ role: 'user', message: { content: 'hi' } })
     ])
     resetSessionParseCacheForTests()
-    await parseCursorCached(await cursorCandidate(cursorHome))
+    await parseCursoccched(await cursoccndidate(cursorHome))
 
     // Simulate a persisted entry from before sidecar observations were stored.
-    const candidate = await cursorCandidate(cursorHome)
+    const candidate = await cursoccndidate(cursorHome)
     const {
       resume: _resume,
       foldSession: _fold,
@@ -467,7 +467,7 @@ describe('cursor sidecar enrichment', () => {
     resetSessionParseCacheForTests()
     setSessionParseCacheColdTier({ read: () => persisted, stored: () => {}, deleted: () => {} })
 
-    const { session, stats } = await parseCursorCached(await cursorCandidate(cursorHome))
+    const { session, stats } = await parseCursoccched(await cursoccndidate(cursorHome))
     expect(stats.reused).toBe(0)
     expect(session?.cwd).toBe('/repo/persisted')
   })
@@ -577,18 +577,18 @@ describe('cursor chat meta scan failures', () => {
       JSON.stringify({ role: 'user', message: { content: 'one' } })
     ])
     resetSessionParseCacheForTests()
-    await parseCursorCached(await cursorCandidate(cursorHome))
+    await parseCursoccched(await cursoccndidate(cursorHome))
 
     await appendFile(
       transcriptPath,
       `${JSON.stringify({ role: 'user', message: { content: 'two' } })}\n`
     )
     failMetaJsonReads = true
-    const { stats: refusedStats } = await parseCursorCached(await cursorCandidate(cursorHome))
+    const { stats: refusedStats } = await parseCursoccched(await cursoccndidate(cursorHome))
     expect(refusedStats.incremental).toBe(1)
 
     failMetaJsonReads = false
-    const { session, stats } = await parseCursorCached(await cursorCandidate(cursorHome))
+    const { session, stats } = await parseCursoccched(await cursoccndidate(cursorHome))
     expect(stats.reused).toBe(1)
     expect(stats.fullParses).toBe(0)
     expect(session?.cwd).toBe('/repo/resume')
@@ -601,7 +601,7 @@ it('recovers a cold Cursor session when its sidecar appears without a transcript
     JSON.stringify({ role: 'user', message: { content: 'Find the bug' } })
   ])
   await utimes(path, 1, 1)
-  const file = await cursorCandidate(cursorHome)
+  const file = await cursoccndidate(cursorHome)
   const rows = new Map<string, PersistedSessionParseCacheEntry>()
   const read = vi.fn((key: string) => rows.get(key))
   const tier = {
@@ -620,7 +620,7 @@ it('recovers a cold Cursor session when its sidecar appears without a transcript
     deleted: (key: string) => rows.delete(key)
   }
   setSessionParseCacheColdTier(tier)
-  expect((await parseCursorCached(file)).session?.cwd).toBeNull()
+  expect((await parseCursoccched(file)).session?.cwd).toBeNull()
   expect(rows.get(path)?.sidecar).toBe('none')
   resetSessionParseCacheForTests()
   setSessionParseCacheColdTier(tier)

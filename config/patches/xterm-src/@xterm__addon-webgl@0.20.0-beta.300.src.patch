@@ -125,8 +125,8 @@ index 4977ad741065e26bbfd35bc50e7558a033b13340..2ee2c11eb830116aca1370d89bef1daa
 +    this.fontProbeMismatchCount++;
 +    this.fontProbeLastMismatch = { desired, actual: this._tmpCtx.font };
 +    try {
-+      (globalThis as { __orcaAtlasFontProbe?: (mismatch: { desired: string, actual: string }) => void })
-+        .__orcaAtlasFontProbe?.(this.fontProbeLastMismatch);
++      (globalThis as { __occAtlasFontProbe?: (mismatch: { desired: string, actual: string }) => void })
++        .__occAtlasFontProbe?.(this.fontProbeLastMismatch);
 +    } catch {
 +      // Diagnostics only; a throwing listener must never break rasterization.
 +    }

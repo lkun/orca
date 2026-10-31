@@ -22,7 +22,7 @@ vi.mock('node:os', async () => {
 
 import { CodexConfigMirror } from './codex-config-mirror'
 
-const OVERRIDE_LINE = 'daemon_auto_start = false # orca: CODEX_HOME too long for the daemon socket'
+const OVERRIDE_LINE = 'daemon_auto_start = false # occ: CODEX_HOME too long for the daemon socket'
 
 describe('CodexConfigMirror without ~/.codex/config.toml', () => {
   let root: string
@@ -30,7 +30,7 @@ describe('CodexConfigMirror without ~/.codex/config.toml', () => {
   let mirror: CodexConfigMirror
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-codex-accounts-mirror-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-codex-accounts-mirror-'))
     testState.fakeHomeDir = join(root, 'user-home')
     mkdirSync(testState.fakeHomeDir)
     // Long enough to exceed sun_path on every platform, like a real account home.
@@ -73,7 +73,7 @@ describe('CodexConfigMirror without ~/.codex/config.toml', () => {
     )
 
     wslMirror.safeSyncIntoManagedHome(
-      '\\\\wsl.localhost\\Ubuntu\\home\\u\\.local\\share\\orca\\codex-accounts\\acct\\home',
+      '\\\\wsl.localhost\\Ubuntu\\home\\u\\.local\\share\\occ\\codex-accounts\\acct\\home',
       undefined,
       'acct'
     )

@@ -35,11 +35,11 @@ describe('AgentBrowserBridge raw helper process', () => {
   })
 
   it('settles on helper exit with full output while a descendant still holds the pipes', async () => {
-    userDataPath.current = mkdtempSync(join(tmpdir(), 'orca-agent-browser-raw-'))
+    userDataPath.current = mkdtempSync(join(tmpdir(), 'occ-agent-browser-raw-'))
     const bridge = new AgentBrowserBridge(mockBrowserManager())
     Object.defineProperty(bridge, 'agentBrowserBin', { value: process.execPath })
 
-    const stdout = await bridge['runAgentBrowserRaw']('orca-tab-raw', [
+    const stdout = await bridge['runAgentBrowserRaw']('occ-tab-raw', [
       '-e',
       HELPER_WITH_LINGERING_DAEMON
     ])

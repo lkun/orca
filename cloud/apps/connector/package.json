@@ -1,5 +1,5 @@
 {
-  "name": "@orca-cloud/connector",
+  "name": "@occ-cloud/connector",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,7 +11,7 @@
     "lint": "tsc -p tsconfig.json --noEmit",
     "discord-operator": "node dist/discord-operator-cli.js",
     "slack-operator": "node dist/slack-operator-cli.js",
-    "pretest": "pnpm --filter @orca-cloud/postgres-schema build && pnpm --filter @orca-cloud/push-contract build && pnpm --filter @orca-cloud/connector-contract build && pnpm --filter @orca-cloud/cloud-database build",
+    "pretest": "pnpm --filter @occ-cloud/postgres-schema build && pnpm --filter @occ-cloud/push-contract build && pnpm --filter @occ-cloud/connector-contract build && pnpm --filter @occ-cloud/cloud-database build",
     "start": "node dist/index.js",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json --noEmit"
@@ -20,14 +20,14 @@
     "@discordjs/rest": "2.6.3",
     "@discordjs/ws": "2.0.4",
     "@hono/node-server": "^2.1.5",
-    "@orca-cloud/cloud-database": "workspace:*",
-    "@orca-cloud/connector-contract": "workspace:*",
+    "@occ-cloud/cloud-database": "workspace:*",
+    "@occ-cloud/connector-contract": "workspace:*",
     "hono": "^4.13.13",
     "jose": "^6.2.13",
     "zod": "^4.6.7"
   },
   "devDependencies": {
-    "@orca-cloud/postgres-schema": "workspace:*",
+    "@occ-cloud/postgres-schema": "workspace:*",
     "@types/node": "^24.19.2",
     "@types/pg": "^8.23.1",
     "@types/ws": "8.18.2",

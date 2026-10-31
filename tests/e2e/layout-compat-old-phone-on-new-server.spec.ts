@@ -2,7 +2,7 @@
 // Record terminal/file operations, pin handling and selection across restart against main’s shapes.
 import { existsSync } from 'node:fs'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { pairMobileClient, type PairedMobileClient } from './helpers/paired-mobile-client'
 import {
@@ -41,7 +41,7 @@ const OLD_PHONE_CAPABILITIES: readonly RuntimeCapability[] = [
 
 // A layout-owner build's main opens the file itself, so the open succeeds and its tab is listed.
 const LAYOUT_OWNER_BUILD = existsSync(
-  path.join(process.cwd(), 'out', 'main', 'ORCA_LAYOUT_OWNER_MAIN')
+  path.join(process.cwd(), 'out', 'main', 'OCC_LAYOUT_OWNER_MAIN')
 )
 
 // Set until the restarted host hears from its paired hosts, or a deadline passes: timing, not shape.

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { PluginInstallLinkState } from './skill-share-deep-link-state'
-import { isRoutedOrcaDeepLink } from './orca-deep-link-url'
+import { isRoutedOCCDeepLink } from './occ-deep-link-url'
 
 const LINK = 'occ://plugins/acme.dusk?catalog=community'
 
@@ -15,9 +15,9 @@ describe('PluginInstallLinkState', () => {
   it('publishes a second-instance link and keeps malformed ones for the error toast', () => {
     const state = new PluginInstallLinkState()
     const publish = vi.fn()
-    expect(state.capture(['orca.exe', 'occ://plugins/not valid'], publish)).toBe(true)
+    expect(state.capture(['occ.exe', 'occ://plugins/not valid'], publish)).toBe(true)
     expect(publish).toHaveBeenCalledWith('occ://plugins/not valid')
-    expect(state.capture(['orca.exe', '--flag'], publish)).toBe(false)
+    expect(state.capture(['occ.exe', '--flag'], publish)).toBe(false)
   })
 
   it('drops repeats and bursts', () => {
@@ -37,12 +37,12 @@ describe('PluginInstallLinkState', () => {
   })
 })
 
-describe('isRoutedOrcaDeepLink', () => {
+describe('isRoutedOCCDeepLink', () => {
   it('claims plugin and skill links on macOS open-url, nothing else', () => {
-    expect(isRoutedOrcaDeepLink(LINK)).toBe(true)
-    expect(isRoutedOrcaDeepLink('occ://plugins/bad')).toBe(true)
-    expect(isRoutedOrcaDeepLink('occ://skills/share/abc_1')).toBe(true)
-    expect(isRoutedOrcaDeepLink('occ://pair?code=x')).toBe(false)
-    expect(isRoutedOrcaDeepLink('https://example.com/plugins/acme.dusk')).toBe(false)
+    expect(isRoutedOCCDeepLink(LINK)).toBe(true)
+    expect(isRoutedOCCDeepLink('occ://plugins/bad')).toBe(true)
+    expect(isRoutedOCCDeepLink('occ://skills/share/abc_1')).toBe(true)
+    expect(isRoutedOCCDeepLink('occ://pair?code=x')).toBe(false)
+    expect(isRoutedOCCDeepLink('https://example.com/plugins/acme.dusk')).toBe(false)
   })
 })

@@ -94,7 +94,7 @@ describe('createPtySubprocess', () => {
         rows: 24,
         env: {
           SHELL: '/bin/zsh',
-          ORCA_OPENCODE_CONFIG_DIR: '/tmp/orca-opencode-config'
+          OCC_OPENCODE_CONFIG_DIR: '/tmp/occ-opencode-config'
         }
       })
     } finally {
@@ -106,7 +106,7 @@ describe('createPtySubprocess', () => {
     const lastCall = spawnMock.mock.calls.at(-1)!
     expect(lastCall[1]).toEqual(['-l'])
     expect(lastCall[2].env.ZDOTDIR).toMatch(ZSH_SHELL_READY_DIR)
-    expect(lastCall[2].env.ORCA_SHELL_FEATURES).not.toContain('ready')
+    expect(lastCall[2].env.OCC_SHELL_FEATURES).not.toContain('ready')
   })
 
   it('uses shell wrapper when OpenCode config must survive shell startup', async () => {
@@ -122,8 +122,8 @@ describe('createPtySubprocess', () => {
         rows: 24,
         env: {
           SHELL: '/bin/zsh',
-          OPENCODE_CONFIG_DIR: '/tmp/orca-opencode-overlay',
-          ORCA_OPENCODE_CONFIG_DIR: '/tmp/orca-opencode-overlay'
+          OPENCODE_CONFIG_DIR: '/tmp/occ-opencode-overlay',
+          OCC_OPENCODE_CONFIG_DIR: '/tmp/occ-opencode-overlay'
         }
       })
     } finally {
@@ -135,7 +135,7 @@ describe('createPtySubprocess', () => {
     const lastCall = spawnMock.mock.calls.at(-1)!
     expect(lastCall[1]).toEqual(['-l'])
     expect(lastCall[2].env.ZDOTDIR).toMatch(ZSH_SHELL_READY_DIR)
-    expect(lastCall[2].env.ORCA_SHELL_FEATURES).not.toContain('ready')
+    expect(lastCall[2].env.OCC_SHELL_FEATURES).not.toContain('ready')
   })
 
   it('uses shell wrapper when MiMo home must survive shell startup', async () => {
@@ -151,8 +151,8 @@ describe('createPtySubprocess', () => {
         rows: 24,
         env: {
           SHELL: '/bin/zsh',
-          MIMOCODE_CONFIG_DIR: '/tmp/orca-mimocode-overlay',
-          ORCA_MIMOCODE_CONFIG_DIR: '/tmp/orca-mimocode-overlay'
+          MIMOCODE_CONFIG_DIR: '/tmp/occ-mimocode-overlay',
+          OCC_MIMOCODE_CONFIG_DIR: '/tmp/occ-mimocode-overlay'
         }
       })
     } finally {
@@ -164,7 +164,7 @@ describe('createPtySubprocess', () => {
     const lastCall = spawnMock.mock.calls.at(-1)!
     expect(lastCall[1]).toEqual(['-l'])
     expect(lastCall[2].env.ZDOTDIR).toMatch(ZSH_SHELL_READY_DIR)
-    expect(lastCall[2].env.ORCA_SHELL_FEATURES).not.toContain('ready')
+    expect(lastCall[2].env.OCC_SHELL_FEATURES).not.toContain('ready')
   })
 
   it('uses shell wrapper when typed OMP commands need the status extension', async () => {
@@ -180,7 +180,7 @@ describe('createPtySubprocess', () => {
         rows: 24,
         env: {
           SHELL: '/bin/zsh',
-          ORCA_OMP_STATUS_EXTENSION: '/tmp/.omp/agent/extensions/orca-agent-status.ts'
+          OCC_OMP_STATUS_EXTENSION: '/tmp/.omp/agent/extensions/occ-agent-status.ts'
         }
       })
     } finally {
@@ -192,7 +192,7 @@ describe('createPtySubprocess', () => {
     const lastCall = spawnMock.mock.calls.at(-1)!
     expect(lastCall[1]).toEqual(['-l'])
     expect(lastCall[2].env.ZDOTDIR).toMatch(ZSH_SHELL_READY_DIR)
-    expect(lastCall[2].env.ORCA_SHELL_FEATURES).not.toContain('ready')
+    expect(lastCall[2].env.OCC_SHELL_FEATURES).not.toContain('ready')
   })
 
   it('uses shell wrapper when Codex home must survive shell startup', async () => {
@@ -208,8 +208,8 @@ describe('createPtySubprocess', () => {
         rows: 24,
         env: {
           SHELL: '/bin/zsh',
-          CODEX_HOME: '/tmp/orca-codex-home',
-          ORCA_CODEX_HOME: '/tmp/orca-codex-home'
+          CODEX_HOME: '/tmp/occ-codex-home',
+          OCC_CODEX_HOME: '/tmp/occ-codex-home'
         }
       })
     } finally {
@@ -221,7 +221,7 @@ describe('createPtySubprocess', () => {
     const lastCall = spawnMock.mock.calls.at(-1)!
     expect(lastCall[1]).toEqual(['-l'])
     expect(lastCall[2].env.ZDOTDIR).toMatch(ZSH_SHELL_READY_DIR)
-    expect(lastCall[2].env.ORCA_SHELL_FEATURES).not.toContain('ready')
+    expect(lastCall[2].env.OCC_SHELL_FEATURES).not.toContain('ready')
   })
 
   it('uses shell wrapper when Agent Teams shim path must survive shell startup', async () => {
@@ -237,9 +237,9 @@ describe('createPtySubprocess', () => {
         rows: 24,
         env: {
           SHELL: '/bin/zsh',
-          PATH: '/tmp/orca-agent-teams-bin:/usr/bin',
-          ORCA_AGENT_TEAMS_TEAM_ID: 'team-test',
-          ORCA_AGENT_TEAMS_SHIM_DIR: '/tmp/orca-agent-teams-bin'
+          PATH: '/tmp/occ-agent-teams-bin:/usr/bin',
+          OCC_AGENT_TEAMS_TEAM_ID: 'team-test',
+          OCC_AGENT_TEAMS_SHIM_DIR: '/tmp/occ-agent-teams-bin'
         }
       })
     } finally {
@@ -251,7 +251,7 @@ describe('createPtySubprocess', () => {
     const lastCall = spawnMock.mock.calls.at(-1)!
     expect(lastCall[1]).toEqual(['-l'])
     expect(lastCall[2].env.ZDOTDIR).toMatch(ZSH_SHELL_READY_DIR)
-    expect(lastCall[2].env.ORCA_SHELL_FEATURES).not.toContain('ready')
+    expect(lastCall[2].env.OCC_SHELL_FEATURES).not.toContain('ready')
   })
 
   it('enables readiness and shell identity for plain Codex startup', async () => {
@@ -278,8 +278,8 @@ describe('createPtySubprocess', () => {
     const lastCall = spawnMock.mock.calls.at(-1)!
     expect(lastCall[1]).toEqual(['-l'])
     expect(lastCall[2].env.ZDOTDIR).toMatch(ZSH_SHELL_READY_DIR)
-    expect(lastCall[2].env.ORCA_SHELL_FEATURES).toContain('ready')
-    expect(lastCall[2].env.ORCA_SHELL_FEATURES).toContain('identity')
+    expect(lastCall[2].env.OCC_SHELL_FEATURES).toContain('ready')
+    expect(lastCall[2].env.OCC_SHELL_FEATURES).toContain('identity')
   })
 
   it('uses shell-ready wrapper for delivery-hinted Codex startup commands', async () => {
@@ -307,7 +307,7 @@ describe('createPtySubprocess', () => {
     const lastCall = spawnMock.mock.calls.at(-1)!
     expect(lastCall[1]).toEqual(['-l'])
     expect(lastCall[2].env.ZDOTDIR).toMatch(ZSH_SHELL_READY_DIR)
-    expect(lastCall[2].env.ORCA_SHELL_FEATURES).toContain('ready')
+    expect(lastCall[2].env.OCC_SHELL_FEATURES).toContain('ready')
   })
 
   it('uses shell-ready wrapper for Codex native prefill flags', async () => {
@@ -334,7 +334,7 @@ describe('createPtySubprocess', () => {
     const lastCall = spawnMock.mock.calls.at(-1)!
     expect(lastCall[1]).toEqual(['-l'])
     expect(lastCall[2].env.ZDOTDIR).toMatch(ZSH_SHELL_READY_DIR)
-    expect(lastCall[2].env.ORCA_SHELL_FEATURES).toContain('ready')
+    expect(lastCall[2].env.OCC_SHELL_FEATURES).toContain('ready')
   })
 
   it('deletes requested env keys after merging daemon process env', async () => {
@@ -367,9 +367,9 @@ describe('createPtySubprocess', () => {
     const proc = mockPtyProcess()
     spawnMock.mockReturnValue(proc)
     const previousCodexHome = process.env.CODEX_HOME
-    const previousOrcaCodexHome = process.env.ORCA_CODEX_HOME
+    const previousOCCCodexHome = process.env.OCC_CODEX_HOME
     process.env.CODEX_HOME = '/daemon/managed/codex-home'
-    process.env.ORCA_CODEX_HOME = '/daemon/managed/codex-home'
+    process.env.OCC_CODEX_HOME = '/daemon/managed/codex-home'
 
     try {
       await createPtySubprocess({
@@ -377,7 +377,7 @@ describe('createPtySubprocess', () => {
         cols: 80,
         rows: 24,
         env: { SHELL: '/bin/bash' },
-        envToDelete: ['ORCA_CODEX_HOME']
+        envToDelete: ['OCC_CODEX_HOME']
       })
     } finally {
       if (previousCodexHome === undefined) {
@@ -385,27 +385,27 @@ describe('createPtySubprocess', () => {
       } else {
         process.env.CODEX_HOME = previousCodexHome
       }
-      if (previousOrcaCodexHome === undefined) {
-        delete process.env.ORCA_CODEX_HOME
+      if (previousOCCCodexHome === undefined) {
+        delete process.env.OCC_CODEX_HOME
       } else {
-        process.env.ORCA_CODEX_HOME = previousOrcaCodexHome
+        process.env.OCC_CODEX_HOME = previousOCCCodexHome
       }
     }
 
     const env = spawnMock.mock.calls.at(-1)![2].env
     expect(env.CODEX_HOME).toBeUndefined()
-    expect(env.ORCA_CODEX_HOME).toBeUndefined()
+    expect(env.OCC_CODEX_HOME).toBeUndefined()
   })
 
   it('strips an inherited per-account self-contained CODEX_HOME overlay in a nested OCC (#5370)', async () => {
     const proc = mockPtyProcess()
     spawnMock.mockReturnValue(proc)
     const previousCodexHome = process.env.CODEX_HOME
-    const previousOrcaCodexHome = process.env.ORCA_CODEX_HOME
+    const previousOCCCodexHome = process.env.OCC_CODEX_HOME
     // Per-account homes use the same overlay-ownership deletion rule as the shared mirror.
     const perAccountHome = '/daemon/managed/codex-accounts/019f0000-aaaa/home'
     process.env.CODEX_HOME = perAccountHome
-    process.env.ORCA_CODEX_HOME = perAccountHome
+    process.env.OCC_CODEX_HOME = perAccountHome
 
     try {
       await createPtySubprocess({
@@ -413,7 +413,7 @@ describe('createPtySubprocess', () => {
         cols: 80,
         rows: 24,
         env: { SHELL: '/bin/bash' },
-        envToDelete: ['ORCA_CODEX_HOME']
+        envToDelete: ['OCC_CODEX_HOME']
       })
     } finally {
       if (previousCodexHome === undefined) {
@@ -421,16 +421,16 @@ describe('createPtySubprocess', () => {
       } else {
         process.env.CODEX_HOME = previousCodexHome
       }
-      if (previousOrcaCodexHome === undefined) {
-        delete process.env.ORCA_CODEX_HOME
+      if (previousOCCCodexHome === undefined) {
+        delete process.env.OCC_CODEX_HOME
       } else {
-        process.env.ORCA_CODEX_HOME = previousOrcaCodexHome
+        process.env.OCC_CODEX_HOME = previousOCCCodexHome
       }
     }
 
     const env = spawnMock.mock.calls.at(-1)![2].env
     expect(env.CODEX_HOME).toBeUndefined()
-    expect(env.ORCA_CODEX_HOME).toBeUndefined()
+    expect(env.OCC_CODEX_HOME).toBeUndefined()
   })
 
   it('preserves a daemon-owned custom Codex home while deleting a stale private marker', async () => {
@@ -438,10 +438,10 @@ describe('createPtySubprocess', () => {
     spawnMock.mockReturnValue(proc)
     const platform = Object.getOwnPropertyDescriptor(process, 'platform')
     const previousCodexHome = process.env.CODEX_HOME
-    const previousOrcaCodexHome = process.env.ORCA_CODEX_HOME
+    const previousOCCCodexHome = process.env.OCC_CODEX_HOME
     Object.defineProperty(process, 'platform', { value: 'linux' })
     process.env.CODEX_HOME = '/daemon/user/codex-home'
-    process.env.ORCA_CODEX_HOME = '/daemon/stale/managed-home'
+    process.env.OCC_CODEX_HOME = '/daemon/stale/managed-home'
 
     try {
       await createPtySubprocess({
@@ -449,7 +449,7 @@ describe('createPtySubprocess', () => {
         cols: 80,
         rows: 24,
         env: { SHELL: '/bin/bash' },
-        envToDelete: ['ORCA_CODEX_HOME']
+        envToDelete: ['OCC_CODEX_HOME']
       })
     } finally {
       if (platform) {
@@ -460,15 +460,15 @@ describe('createPtySubprocess', () => {
       } else {
         process.env.CODEX_HOME = previousCodexHome
       }
-      if (previousOrcaCodexHome === undefined) {
-        delete process.env.ORCA_CODEX_HOME
+      if (previousOCCCodexHome === undefined) {
+        delete process.env.OCC_CODEX_HOME
       } else {
-        process.env.ORCA_CODEX_HOME = previousOrcaCodexHome
+        process.env.OCC_CODEX_HOME = previousOCCCodexHome
       }
     }
 
     const env = spawnMock.mock.calls.at(-1)![2].env
     expect(env.CODEX_HOME).toBe('/daemon/user/codex-home')
-    expect(env.ORCA_CODEX_HOME).toBeUndefined()
+    expect(env.OCC_CODEX_HOME).toBeUndefined()
   })
 })

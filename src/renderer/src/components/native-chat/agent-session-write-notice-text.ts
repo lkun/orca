@@ -66,17 +66,17 @@ const SENTENCES: Record<AgentSessionWriteNoticeSentence, () => string> = {
     translate('components.native-chat.writeNotice.historyUnusable', COPY.historyUnusable),
   historyUnavailable: () =>
     translate('components.native-chat.writeNotice.historyUnavailable', COPY.historyUnavailable),
-  savedByNewerOrca: () =>
-    translate('components.native-chat.writeNotice.savedByNewerOrca', COPY.savedByNewerOrca),
-  updateOrcaToKeepUsing: () =>
+  savedByNewerOCC: () =>
+    translate('components.native-chat.writeNotice.savedByNewerOCC', COPY.savedByNewerOCC),
+  updateOCCToKeepUsing: () =>
     translate(
-      'components.native-chat.writeNotice.updateOrcaToKeepUsing',
-      COPY.updateOrcaToKeepUsing
+      'components.native-chat.writeNotice.updateOCCToKeepUsing',
+      COPY.updateOCCToKeepUsing
     ),
-  chatSavedByNewerOrca: () =>
-    translate('components.native-chat.writeNotice.chatSavedByNewerOrca', COPY.chatSavedByNewerOrca),
-  updateOrcaToOpenChat: () =>
-    translate('components.native-chat.writeNotice.updateOrcaToOpenChat', COPY.updateOrcaToOpenChat),
+  chatSavedByNewerOCC: () =>
+    translate('components.native-chat.writeNotice.chatSavedByNewerOCC', COPY.chatSavedByNewerOCC),
+  updateOCCToOpenChat: () =>
+    translate('components.native-chat.writeNotice.updateOCCToOpenChat', COPY.updateOCCToOpenChat),
   unsupported: () => translate('components.native-chat.writeNotice.unsupported', COPY.unsupported),
   notAvailable: () =>
     translate('components.native-chat.writeNotice.notAvailable', COPY.notAvailable),

@@ -3,7 +3,7 @@ import { removeTreeSync } from '../../windows-transient-lock-removal'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   WINDOWS_ARGUMENT_CORPUS,
   WINDOWS_ARGUMENT_CORPUS_ENV
@@ -17,7 +17,7 @@ describeOnWindows('Windows .cmd argument round-trip', () => {
   let shim: string
 
   beforeAll(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-cmd-argv-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-cmd-argv-'))
     shim = join(dir, 'echoargs.cmd')
     // Match real npm shims: echo off and %* forwarding into Node.
     writeFileSync(shim, '@echo off\r\nnode "%~dp0echoargs.js" %*\r\n')

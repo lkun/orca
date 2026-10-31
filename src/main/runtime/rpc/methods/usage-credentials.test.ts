@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os'
 import type * as NodeOs from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { setSecretStore } from '../../../../shared/secret-store'
 import type { RpcRequest } from '../core'
 import { RpcDispatcher } from '../dispatcher'
@@ -39,7 +39,7 @@ function createRuntime() {
   const runtime = {
     getRuntimeId: () => 'runtime-a',
     requireUsageRateLimits: () => rateLimits
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
   return { runtime, rateLimits }
 }
 
@@ -50,8 +50,8 @@ function call(dispatcher: RpcDispatcher, method: string, params?: unknown) {
 
 describe('usage credential RPC methods', () => {
   beforeEach(() => {
-    home.dir = mkdtempSync(join(tmpdir(), 'orca-usage-credentials-'))
-    // Why plaintext: orcad's sealing is covered elsewhere; this pins where the bytes land.
+    home.dir = mkdtempSync(join(tmpdir(), 'occ-usage-credentials-'))
+    // Why plaintext: occd's sealing is covered elsewhere; this pins where the bytes land.
     setSecretStore({
       isEncryptionAvailable: () => false,
       encryptString: () => {
@@ -68,10 +68,10 @@ describe('usage credential RPC methods', () => {
     rmSync(home.dir, { recursive: true, force: true })
   })
 
-  it('saves and clears the MiniMax API key in this host’s ~/.orca and refreshes its usage', async () => {
+  it('saves and clears the MiniMax API key in this host’s ~/.occ and refreshes its usage', async () => {
     const { runtime, rateLimits } = createRuntime()
     const dispatcher = new RpcDispatcher({ runtime, methods: [...USAGE_CREDENTIAL_METHODS] })
-    const keyPath = join(home.dir, '.orca', 'minimax-api-key.enc')
+    const keyPath = join(home.dir, '.occ', 'minimax-api-key.enc')
 
     const saved = await call(dispatcher, 'accounts.minimaxSaveApiKey', { apiKey: SECRET })
 
@@ -107,7 +107,7 @@ describe('usage credential RPC methods', () => {
       result: { apiKeyConfigured: true, zcodeCliConfigured: false, apiKeyProtection: 'plaintext' }
     })
     expect(JSON.stringify(saved)).not.toContain(SECRET)
-    expect(existsSync(join(home.dir, '.orca', 'zcode-plan-api-key.enc'))).toBe(true)
+    expect(existsSync(join(home.dir, '.occ', 'zcode-plan-api-key.enc'))).toBe(true)
     expect(rateLimits.invalidateZcodeCredentialState).toHaveBeenCalledTimes(1)
 
     await expect(call(dispatcher, 'accounts.zcodePlanClearApiKey')).resolves.toMatchObject({
@@ -128,7 +128,7 @@ describe('usage credential RPC methods', () => {
 
     expect(refused).toMatchObject({ ok: false })
     expect(JSON.stringify(refused)).not.toContain(SECRET)
-    expect(existsSync(join(home.dir, '.orca', 'minimax-session-cookie.enc'))).toBe(false)
+    expect(existsSync(join(home.dir, '.occ', 'minimax-session-cookie.enc'))).toBe(false)
     expect(rateLimits.refresh).not.toHaveBeenCalled()
     await expect(call(dispatcher, 'accounts.minimaxCredentialsStatus')).resolves.toMatchObject({
       ok: true,
@@ -145,7 +145,7 @@ describe('usage credential RPC methods', () => {
 
     expect(refused).toMatchObject({ ok: false, error: { code: 'invalid_argument' } })
     expect(JSON.stringify(refused)).not.toContain(SECRET)
-    expect(existsSync(join(home.dir, '.orca', 'minimax-api-key.enc'))).toBe(false)
+    expect(existsSync(join(home.dir, '.occ', 'minimax-api-key.enc'))).toBe(false)
   })
 
   it('rejects a blank key as invalid instead of saving it', async () => {
@@ -157,7 +157,7 @@ describe('usage credential RPC methods', () => {
     ).resolves.toMatchObject({ ok: false, error: { code: 'invalid_argument' } })
   })
 
-  // Why a tagged cipher: this process opens only what it sealed, as safeStorage and orcad do.
+  // Why a tagged cipher: this process opens only what it sealed, as safeStorage and occd do.
   function useSealingSecretStore(options: { working: boolean }): void {
     const tag = Buffer.from('this-host:')
     setSecretStore({
@@ -179,8 +179,8 @@ describe('usage credential RPC methods', () => {
   }
 
   function writeKeyFile(fileName: string, contents: string): string {
-    mkdirSync(join(home.dir, '.orca'), { recursive: true })
-    const keyPath = join(home.dir, '.orca', fileName)
+    mkdirSync(join(home.dir, '.occ'), { recursive: true })
+    const keyPath = join(home.dir, '.occ', fileName)
     writeFileSync(keyPath, contents)
     return keyPath
   }
@@ -189,7 +189,7 @@ describe('usage credential RPC methods', () => {
     `${prefix}encrypted:${Buffer.from('other-app-cipher').toString('base64')}`
 
   const providers = [
-    ['MiniMax', 'minimax-api-key.enc', 'orca-minimax-api-key:v1:', 'minimax'],
+    ['MiniMax', 'minimax-api-key.enc', 'occ-minimax-api-key:v1:', 'minimax'],
     ['GLM', 'zcode-plan-api-key.enc', API_KEY_ENVELOPE_PREFIX, 'zcodePlan']
   ] as const
 
@@ -303,7 +303,7 @@ describe('usage credential RPC methods', () => {
     const runtime = {
       getRuntimeId: () => 'runtime-a',
       requireUsageRateLimits: () => accounts.requireUsageRateLimits()
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: [...USAGE_CREDENTIAL_METHODS] })
 
     for (const [method, params] of [
@@ -317,6 +317,6 @@ describe('usage credential RPC methods', () => {
         error: { message: hostAccountsManagedByDesktopMessage('Ubuntu') }
       })
     }
-    expect(existsSync(join(home.dir, '.orca'))).toBe(false)
+    expect(existsSync(join(home.dir, '.occ'))).toBe(false)
   })
 })

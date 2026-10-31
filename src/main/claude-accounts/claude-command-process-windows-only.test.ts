@@ -8,7 +8,7 @@ const state = vi.hoisted(() => {
   return { resolved, programs }
 })
 
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   spawnProcess: (spec: { program: string }) => {
     state.programs.push(spec.program)
     const child = Object.assign(new EventEmitter(), {
@@ -35,7 +35,7 @@ vi.mock('../codex-cli/command', () => ({
 
 import { runClaudeCommandProcess } from './claude-command-process'
 
-const WINDOWS_ONLY = '/proc/orca-agent-cli-installed-only-on-windows/claude'
+const WINDOWS_ONLY = '/proc/occ-agent-cli-installed-only-on-windows/claude'
 const config = { windowsPath: '/home/me/.claude', linuxPath: null, wslDistro: null }
 const originalPlatform = process.platform
 afterEach(() => {

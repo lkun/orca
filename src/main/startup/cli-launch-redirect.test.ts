@@ -118,7 +118,7 @@ describe('CLI launch redirect: command form', () => {
   it('redirects a direct binary launch with no AppImage env at all', () => {
     expect(
       getCliLaunchArgs(
-        ['/home/u/.config/orca-runtime/versions/1.4.158/occ-ide', 'skills', 'get', '--full'],
+        ['/home/u/.config/occ-runtime/versions/1.4.158/occ-ide', 'skills', 'get', '--full'],
         linux.cliEntryPath,
         linuxOptions
       )
@@ -231,8 +231,8 @@ describe('CLI launch redirect: command form', () => {
   })
 
   it.each([
-    ['--project', 'github:stablyai/orca', 'project', 'setups'],
-    ['--project=github:stablyai/orca', 'project', 'setups'],
+    ['--project', 'github:stablyai/occ', 'project', 'setups'],
+    ['--project=github:stablyai/occ', 'project', 'setups'],
     ['--project', 'project', 'project', 'setups'],
     ['--project=project', 'project', 'setups']
   ])('preserves a project selector in %j', (...args) => {
@@ -294,9 +294,9 @@ describe('CLI launch redirect: spawning', () => {
         timeoutMs: null,
         env: expect.objectContaining({
           ELECTRON_RUN_AS_NODE: '1',
-          ORCA_CLI_LAUNCH_REDIRECTED: '1',
-          ORCA_NODE_OPTIONS: '--inspect',
-          ORCA_NODE_REPL_EXTERNAL_MODULE: 'external-loader'
+          OCC_CLI_LAUNCH_REDIRECTED: '1',
+          OCC_NODE_OPTIONS: '--inspect',
+          OCC_NODE_REPL_EXTERNAL_MODULE: 'external-loader'
         })
       })
     )
@@ -310,7 +310,7 @@ describe('CLI launch redirect: spawning', () => {
 
     const result = maybeRedirectCliLaunch({
       argv: [linux.execPath, 'status'],
-      env: { ORCA_CLI_LAUNCH_REDIRECTED: '1' },
+      env: { OCC_CLI_LAUNCH_REDIRECTED: '1' },
       platform: 'linux',
       isPackaged: true,
       resourcesPath: linux.resourcesPath,
@@ -377,22 +377,22 @@ describe('CLI launch redirect: spawning', () => {
       [linux.execPath, linux.cliEntryPath, 'serve', '--supervise', '--port', '6792'],
       expect.objectContaining({
         ELECTRON_RUN_AS_NODE: '1',
-        ORCA_USER_DATA_PATH: '/home/u/profiles/b1',
-        ORCA_NODE_OPTIONS: '--inspect',
+        OCC_USER_DATA_PATH: '/home/u/profiles/b1',
+        OCC_NODE_OPTIONS: '--inspect',
         APPIMAGE: '/home/u/OCC.AppImage'
       })
     )
     const env = execve.mock.calls[0]?.[2]
-    expect(env).toHaveProperty('ORCA_ELECTRON_NO_SANDBOX', '1')
-    expect(env).not.toHaveProperty('ORCA_CLI_LAUNCH_REDIRECTED')
+    expect(env).toHaveProperty('OCC_ELECTRON_NO_SANDBOX', '1')
+    expect(env).not.toHaveProperty('OCC_CLI_LAUNCH_REDIRECTED')
     expect(env).not.toHaveProperty('NODE_OPTIONS')
   })
 
-  it('keeps ORCA_USER_DATA_PATH for a direct serve without --user-data-dir', () => {
+  it('keeps OCC_USER_DATA_PATH for a direct serve without --user-data-dir', () => {
     const execve = vi.fn<NonNullable<CliLaunchRedirectOptions['execve']>>()
     maybeRedirectCliLaunch({
       argv: [linux.execPath, 'serve', '--no-pairing'],
-      env: { ORCA_USER_DATA_PATH: '/home/u/profiles/b1' },
+      env: { OCC_USER_DATA_PATH: '/home/u/profiles/b1' },
       platform: 'linux',
       isPackaged: true,
       resourcesPath: linux.resourcesPath,
@@ -404,9 +404,9 @@ describe('CLI launch redirect: spawning', () => {
     expect(execve).toHaveBeenCalledWith(
       linux.execPath,
       [linux.execPath, linux.cliEntryPath, 'serve', '--no-pairing'],
-      expect.objectContaining({ ORCA_USER_DATA_PATH: '/home/u/profiles/b1' })
+      expect.objectContaining({ OCC_USER_DATA_PATH: '/home/u/profiles/b1' })
     )
-    expect(execve.mock.calls[0]?.[2]).not.toHaveProperty('ORCA_ELECTRON_NO_SANDBOX')
+    expect(execve.mock.calls[0]?.[2]).not.toHaveProperty('OCC_ELECTRON_NO_SANDBOX')
   })
 
   it('serves in-process when this runtime cannot exec or the exec fails', () => {

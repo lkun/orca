@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { AppState } from 'react-native'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../../src/shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../src/shared/sidebar-inputs-switch'
 import { useFocusEffect } from 'expo-router'
 import { setCachedWorktrees } from '../cache/worktree-cache'
 import type { RpcClient } from '../transport/rpc-client'
@@ -156,7 +156,7 @@ export function useHostWorktreeCatalog(args: {
 
           // Sync server pins only without the feed; feed-built lists keep no local pin cache.
           const serverPinned = new Set(confirmed.filter((w) => w.isPinned).map((w) => w.worktreeId))
-          if (!ORCA_SIDEBAR_INPUTS_IS_MAIN) {
+          if (!OCC_SIDEBAR_INPUTS_IS_MAIN) {
             setPinnedIds((prev) => {
               if (
                 serverPinned.size === prev.size &&

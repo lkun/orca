@@ -3,7 +3,7 @@ import {
   CONNECTOR_PATHS,
   ConnectorPollResponseSchema,
   type ConnectorProject
-} from '@orca-cloud/connector-contract'
+} from '@occ-cloud/connector-contract'
 import { expect, vi } from 'vitest'
 import { createConnectorHarness } from './connector-server-harness.test-fixture.js'
 import type { SlackConfig } from './slack-config.js'
@@ -161,7 +161,7 @@ export async function createSlackHarness(slack: Partial<SlackConfig> = {}) {
         hostName,
         platform: 'darwin',
         runtime: 'desktop',
-        orcaVersion: '1.4.230',
+        occVersion: '1.4.230',
         agents: ['claude', 'codex'],
         promptKinds: ['approval'],
         features: ['answer', 'cancel', 'reply'],
@@ -213,9 +213,9 @@ export async function startedThread() {
     '--account',
     'user-1',
     '--default-project',
-    'orca'
+    'occ'
   )
-  const machine = await harness.machineWith('user-1', [project('orca')])
+  const machine = await harness.machineWith('user-1', [project('occ')])
   await harness.message({ text: `<@${BOT}> fix it`, ts: THREAD })
   const [start] = ConnectorPollResponseSchema.parse((await machine.poll()).body).deliveries
   let seq = 0

@@ -523,7 +523,7 @@
   "menu": {
     "checkForUpdates": "업데이트 확인...",
     "settings": "설정",
-    "exploreOrca": "OCC 둘러보기",
+    "exploreOCC": "OCC 둘러보기",
     "gettingStarted": "OCC 시작하기",
     "reportCrash": "크래시 신고...",
     "file": "파일",
@@ -555,7 +555,7 @@
     "quitAndStopAllSessionsTooltip": "실행 중인 에이전트를 포함한 모든 터미널 세션도 중지합니다. 일반 종료는 세션을 계속 실행해 두어 다음 실행 시 OCC가 다시 연결합니다."
   },
   "tray": {
-    "openOrca": "OCC 열기",
+    "openOCC": "OCC 열기",
     "quit": "종료",
     "minimizeNotice": {
       "body": "OCC가 시스템 트레이에서 계속 실행 중입니다"
@@ -707,7 +707,7 @@
         "sessionNoEd25519": "이 페어링은 이 탭이 열려 있는 동안에만 유지됩니다. 이 브라우저는 보안 로그인 키(Ed25519)를 만들 수 없기 때문입니다. 브라우저가 기억하는 페어링을 원한다면 최신 브라우저를 사용하세요."
       },
       "runtimeAuth": {
-        "insecureOrigin": "OCC가 이 페이지에서의 페어링을 거부했습니다. 이 페이지는 다른 컴퓨터에 있고 일반 http이므로 네트워크 경로에 있는 누구나 이 페이지를 대체하여 페어링 코드를 가져갈 수 있습니다. https로, 이 컴퓨터의 localhost에서, 또는 SSH 터널을 통해 웹 클라이언트를 여세요. 그래도 허용하려면 서버 운영자가 ORCA_ALLOW_INSECURE_WEB_PAIRING=1로 OCC를 다시 시작할 수 있습니다.",
+        "insecureOrigin": "OCC가 이 페이지에서의 페어링을 거부했습니다. 이 페이지는 다른 컴퓨터에 있고 일반 http이므로 네트워크 경로에 있는 누구나 이 페이지를 대체하여 페어링 코드를 가져갈 수 있습니다. https로, 이 컴퓨터의 localhost에서, 또는 SSH 터널을 통해 웹 클라이언트를 여세요. 그래도 허용하려면 서버 운영자가 OCC_ALLOW_INSECURE_WEB_PAIRING=1로 OCC를 다시 시작할 수 있습니다.",
         "deviceDowngraded": "이 OCC 서버는 더 이상 이 브라우저의 로그인 키를 지원하지 않습니다(다운그레이드되었을 수 있음). 서버를 업데이트하거나 이 브라우저를 다시 페어링하세요.",
         "unauthorized": "권한이 없습니다. 이 웹 클라이언트를 다시 페어링하세요."
       }
@@ -853,7 +853,7 @@
           "856083302c": "더 새로운 요청이 있어 Jira 연결 요청을 건너뛰었습니다."
         },
         "linear": {},
-        "orca": {
+        "occ": {
           "profiles": {
             "612f7f6861": "프로필을 생성하지 못했습니다",
             "319d7cf39b": "클라우드 프로필이 생성되었습니다",
@@ -1384,7 +1384,7 @@
         }
       },
       "claudeAgentRowView": {
-        "subagentNavigationSetup": "설정 → 에이전트에서 Claude 하위 에이전트 탐색을 활성화한 다음 OCC에서 Claude 2.1.300+를 실행하세요. keybindings.json에서 Ctrl+Alt+G, H 또는 V가 여전히 command:orca-agent-view에 바인딩되어 있는지 확인하세요.",
+        "subagentNavigationSetup": "설정 → 에이전트에서 Claude 하위 에이전트 탐색을 활성화한 다음 OCC에서 Claude 2.1.300+를 실행하세요. keybindings.json에서 Ctrl+Alt+G, H 또는 V가 여전히 command:occ-agent-view에 바인딩되어 있는지 확인하세요.",
         "permissionPrompt": "에이전트를 전환하기 전에 Claude의 권한 요청에 응답하세요."
       },
       "dropFailureReason": {
@@ -2017,12 +2017,12 @@
         "dccd26d4e4": "프로젝트 선택",
         "d6b0a96f32": "프로젝트 추가",
         "969a8bff66": "프로젝트",
-        "23bb365554": "orca.yaml",
+        "23bb365554": "occ.yaml",
         "a239038146": "SSH 연결 오류",
         "9a70e4859e": "이 워크스페이스를 만들기 전에 설정을 실행할지 여부를 선택하세요.",
         "803b7fe72f": "설정 구성을 확인하는 중...",
         "92e34f0311": "로컬 설정",
-        "326a578923": "orca.yaml + 로컬",
+        "326a578923": "occ.yaml + 로컬",
         "ac3748dcda": "다음에서 만들기",
         "f660aa1454": "연결 중",
         "addProjectBeforeWorkspace": "워크스페이스를 만들기 전에 프로젝트를 추가하세요.",
@@ -2054,8 +2054,8 @@
         "addHost": "Add host",
         "addSshHost": "Add SSH host",
         "addSshHostHint": "SSH로 기존 컴퓨터 사용",
-        "addRemoteOrcaServer": "원격 OCC 서버 추가",
-        "addRemoteOrcaServerHint": "다른 OCC 런타임 페어링",
+        "addRemoteOCCServer": "원격 OCC 서버 추가",
+        "addRemoteOCCServerHint": "다른 OCC 런타임 페어링",
         "hostConnectionFailed": "Connection failed",
         "defaultBranchUpdateFailed": "프로젝트 기본 브랜치를 업데이트할 수 없습니다. 다시 시도해 보세요.",
         "setLocation": "프로젝트 위치 설정",
@@ -3592,7 +3592,7 @@
             "switchTerminal": "스위치 단자",
             "openTaskTerminal": "작업 터미널 열기",
             "systemBrowser": "시스템 브라우저",
-            "orcaBrowser": "OCC 브라우저",
+            "occBrowser": "OCC 브라우저",
             "terminalLinkSettings": "터미널 링크 설정",
             "copyLink": "링크 복사",
             "copied": "복사됨",
@@ -4630,7 +4630,7 @@
         "share": {
           "card": {
             "utils": {
-              "19f4b4dc75": "github.com/stablyai/orca",
+              "19f4b4dc75": "github.com/stablyai/occ",
               "d864fc5f98": "출력",
               "5d66fdd7c2": "입력",
               "7080aeaebb": "추론",
@@ -4892,7 +4892,7 @@
           "connectHost": "SSH 호스트 연결 필요"
         },
         "SkillUpdateRow": {
-          "replaceWithOrca": "OCC 사본으로 교체(백업 보관)"
+          "replaceWithOCC": "OCC 사본으로 교체(백업 보관)"
         },
         "host": {
           "local": "이 컴퓨터",
@@ -4951,7 +4951,7 @@
           "66270286ac": "· 안전하게 재시도할 수 있습니다.",
           "157de228b4": "스킬 점검",
           "69236de8d6": "확인 중…",
-          "66cff7a804": "https://app.orca.dev/skills/share/…",
+          "66cff7a804": "https://app.occ.dev/skills/share/…",
           "93eb0fe8c7": "OCC 스킬 링크",
           "releaseNotes": "릴리스 노트:",
           "targetHeader": "설치 대상",
@@ -5383,7 +5383,7 @@
           "8851b77327": "이 경로는 로컬에서 확인되었습니다.",
           "sshConnectionUnavailable": "\"{{connection}}\" SSH 연결을 찾을 수 없거나 연결되지 않았습니다"
         },
-        "OrcaYamlTrustDialog": {
+        "OCCYamlTrustDialog": {
           "f3e2b868fb": "후크 실행",
           "43b7bec4cd": "실행 안 함",
           "setupChangedTitle": "{{repo}}의 설정 스크립트가 변경되었습니다. 새 버전을 실행할까요?",
@@ -5394,14 +5394,14 @@
           "archiveRunTitle": "{{repo}}의 아카이브 스크립트를 실행할까요?",
           "issueCommandRunTitle": "{{repo}}의 이슈 명령을 실행할까요?",
           "vmRecipeRunTitle": "{{repo}}의 VM 레시피를 실행할까요?",
-          "setupChangedBody": "마지막 승인 이후 <code>orca.yaml</code>이 변경되었습니다. 이 워크스페이스를 만들 때 실행되기 전에 다시 검토하세요.",
-          "archiveChangedBody": "마지막 승인 이후 <code>orca.yaml</code>이 변경되었습니다. 이 워크스페이스를 제거할 때 실행되기 전에 다시 검토하세요.",
-          "issueCommandChangedBody": "마지막 승인 이후 <code>orca.yaml</code>이 변경되었습니다. 연결된 이슈가 있는 이 워크스페이스를 시작할 때 실행되기 전에 다시 검토하세요.",
-          "vmRecipeChangedBody": "마지막 승인 이후 <code>orca.yaml</code>이 변경되었습니다. VM 프로비저닝에 앞서 실행되기 전에 다시 검토하세요.",
-          "setupRunBody": "이 리포지토리의 <code>orca.yaml</code>은 이 워크스페이스를 만들 때 사용자의 컴퓨터에서 실행됩니다. <repo/>을(를) 신뢰하는 경우에만 실행하세요.",
-          "archiveRunBody": "이 리포지토리의 <code>orca.yaml</code>은 이 워크스페이스를 제거할 때 사용자의 컴퓨터에서 실행됩니다. <repo/>을(를) 신뢰하는 경우에만 실행하세요.",
-          "issueCommandRunBody": "이 리포지토리의 <code>orca.yaml</code>은 연결된 이슈가 있는 이 워크스페이스를 시작할 때 사용자의 컴퓨터에서 실행됩니다. <repo/>을(를) 신뢰하는 경우에만 실행하세요.",
-          "vmRecipeRunBody": "이 리포지토리의 <code>orca.yaml</code>은 VM 프로비저닝 전에 사용자의 컴퓨터에서 실행됩니다. <repo/>을(를) 신뢰하는 경우에만 실행하세요.",
+          "setupChangedBody": "마지막 승인 이후 <code>occ.yaml</code>이 변경되었습니다. 이 워크스페이스를 만들 때 실행되기 전에 다시 검토하세요.",
+          "archiveChangedBody": "마지막 승인 이후 <code>occ.yaml</code>이 변경되었습니다. 이 워크스페이스를 제거할 때 실행되기 전에 다시 검토하세요.",
+          "issueCommandChangedBody": "마지막 승인 이후 <code>occ.yaml</code>이 변경되었습니다. 연결된 이슈가 있는 이 워크스페이스를 시작할 때 실행되기 전에 다시 검토하세요.",
+          "vmRecipeChangedBody": "마지막 승인 이후 <code>occ.yaml</code>이 변경되었습니다. VM 프로비저닝에 앞서 실행되기 전에 다시 검토하세요.",
+          "setupRunBody": "이 리포지토리의 <code>occ.yaml</code>은 이 워크스페이스를 만들 때 사용자의 컴퓨터에서 실행됩니다. <repo/>을(를) 신뢰하는 경우에만 실행하세요.",
+          "archiveRunBody": "이 리포지토리의 <code>occ.yaml</code>은 이 워크스페이스를 제거할 때 사용자의 컴퓨터에서 실행됩니다. <repo/>을(를) 신뢰하는 경우에만 실행하세요.",
+          "issueCommandRunBody": "이 리포지토리의 <code>occ.yaml</code>은 연결된 이슈가 있는 이 워크스페이스를 시작할 때 사용자의 컴퓨터에서 실행됩니다. <repo/>을(를) 신뢰하는 경우에만 실행하세요.",
+          "vmRecipeRunBody": "이 리포지토리의 <code>occ.yaml</code>은 VM 프로비저닝 전에 사용자의 컴퓨터에서 실행됩니다. <repo/>을(를) 신뢰하는 경우에만 실행하세요.",
           "newSetupScript": "새 설정 스크립트",
           "setupScript": "설정 스크립트",
           "newArchiveScript": "새 아카이브 스크립트",
@@ -5411,7 +5411,7 @@
           "newVmRecipe": "새 VM 레시피",
           "vmRecipe": "VM 레시피",
           "thisRepository": "이 리포지토리",
-          "alwaysTrustRepo": "<repo/>의 <code>orca.yaml</code>을 항상 신뢰"
+          "alwaysTrustRepo": "<repo/>의 <code>occ.yaml</code>을 항상 신뢰"
         },
         "PendingWorktreeRow": {
           "af21e953d1": "워크트리 만들기 취소",
@@ -5499,7 +5499,7 @@
           "822ff300ad": "닫기",
           "5bfd5c8779": "설정 스크립트 닫기",
           "detectedFromSource": "<source>{{source}}</source>에서 감지됨",
-          "ignoresSharedSetup": "이 저장소는 공유 <yaml>orca.yaml</yaml> 설정 스크립트를 무시합니다. 로컬 명령을 추가하거나 설정에서 소스를 변경하세요.",
+          "ignoresSharedSetup": "이 저장소는 공유 <yaml>occ.yaml</yaml> 설정 스크립트를 무시합니다. 로컬 명령을 추가하거나 설정에서 소스를 변경하세요.",
           "foundSetupCommandIn": "<source>{{source}}</source>에서 설정 명령을 찾았습니다. 새 워크트리에서 실행하려면 저장하세요."
         },
         "SidebarFeedbackDialog": {
@@ -5773,7 +5773,7 @@
           "jiraIssue": "Jira {{value0}}",
           "viewOnJira": "Jira에서 보기",
           "linkedJira": "연결된 Jira {{value0}}",
-          "openInOrcaBrowser": "OCC 브라우저에서 열기"
+          "openInOCCBrowser": "OCC 브라우저에서 열기"
         },
         "WorktreeCardMetadataStatusBadges": {
           "fe188062a1": "상태: 열림",
@@ -6348,7 +6348,7 @@
           "port": "포트",
           "identityFile": "신원 파일",
           "identityFilePlaceholder": "~/.ssh/id_ed25519 (선택 사항)",
-          "nameInOrca": "OCC에 표시할 이름",
+          "nameInOCC": "OCC에 표시할 이름",
           "serverNamePlaceholder": "Dev box",
           "accessLink": "액세스 링크",
           "pairingCodePlaceholder": "occ://pair?code=...",
@@ -6374,7 +6374,7 @@
           "sshConfigPickerEmptyHint": "거기에 호스트 항목을 추가하거나 돌아가서 세부 정보를 수동으로 입력하세요.",
           "sshConfigPickerNoMatchHint": "다른 필터를 사용하거나 돌아가서 수동으로 입력하세요.",
           "sshConfigPickerMoreResults": "첫 번째 {{value0}} 일치 항목을 표시합니다. 더 많은 정보를 찾으려면 필터 범위를 좁혀보세요.",
-          "sshConfigPickerInOrca": "OCC에서",
+          "sshConfigPickerInOCC": "OCC에서",
           "sshConfigPickerPreviouslyRemoved": "OCC에서 삭제됨",
           "sshConfigPickerBack": "뒤로",
           "fillFromSshConfig": "~/.ssh/config…에서 채우기",
@@ -6550,7 +6550,7 @@
           "showError": "발견된 워크트리를 표시할 수 없습니다. 다시 시도하세요."
         },
         "repoHeaderProjectActions": {
-          "hideNonOrcaWorktrees": "OCC 외부 워크트리 숨기기",
+          "hideNonOCCWorktrees": "OCC 외부 워크트리 숨기기",
           "showHiddenWorktrees": "숨긴 워크트리 표시"
         },
         "useWorktreeCardLinkedDetails": {
@@ -6846,7 +6846,7 @@
           "retrySetup": "다시 시도",
           "installing": "설치 중...",
           "hostUnavailable": "OCC가 아직 이 워크스페이스의 컴퓨터에 스킬을 설치할 수 없습니다.",
-          "replaceWithOrcaCopy": "OCC 사본으로 교체",
+          "replaceWithOCCCopy": "OCC 사본으로 교체",
           "copyCommandAria": "명령 복사",
           "ed197f59a2": "명령 복사",
           "failedToCopyCommand": "명령 복사 실패.",
@@ -7097,7 +7097,7 @@
           "9fd4023db0": "파일 관리자에서 보기",
           "installFailureUnknownReason": "OCC가 CLI 등록을 완료하지 못했고 이유를 보고하지 않았습니다.",
           "installFailureConflictRemedy": "{{value0}}이(가) 더 이상 필요하지 않다면 제거한 뒤 다시 등록하세요.",
-          "outsideOrcaDescription": "OCC 터미널에서는 이미 `occ`를 쓸 수 있습니다. OCC 밖의 다른 터미널에서 `occ`를 쓰려면 켜세요."
+          "outsideOCCDescription": "OCC 터미널에서는 이미 `occ`를 쓸 수 있습니다. OCC 밖의 다른 터미널에서 `occ`를 쓰려면 켜세요."
         },
         "CliSkillRuntimeSetup": {
           "c47127f222": "WSL 기본값"
@@ -7673,7 +7673,7 @@
         "OpenAiTranscriptionKeyDialog": {
           "fa83512e48": "키 저장",
           "07b26f2742": "키 지우기",
-          "d246b2bdb3": "로컬 런타임 키는 가능한 경우 Electron 암호화 저장소를 사용하여 ~/.orca에 저장됩니다.",
+          "d246b2bdb3": "로컬 런타임 키는 가능한 경우 Electron 암호화 저장소를 사용하여 ~/.occ에 저장됩니다.",
           "c3380e4ca5": "sk-...",
           "2f797018f0": "API 키가 구성됨",
           "16015322f9": "API 키",
@@ -7805,11 +7805,11 @@
         },
         "RepositoryHooksSection": {
           "af49e2a19e": "파일이 있지만 OCC가 유효한 `scripts` 또는 `issueCommand` 정의를 찾을 수 없습니다.",
-          "39da2ae12f": "orca.yaml",
+          "39da2ae12f": "occ.yaml",
           "32fec28f5b": "명령 소스",
-          "bbbd6e0bc4": "명령 소스 및 orca.yaml",
+          "bbbd6e0bc4": "명령 소스 및 occ.yaml",
           "c9bc1bfd8f": "고급",
-          "610d90fdbd": "명령 소스 및 orca.yaml 세부정보",
+          "610d90fdbd": "명령 소스 및 occ.yaml 세부정보",
           "4084720f47": "{{artifact_url}} 완료",
           "13394103bd": "사용자 지정 GitHub 이슈 명령",
           "2cc27dc12b": "연결된 이슈 명령에 대한 선택적 사용자별 재정의입니다.",
@@ -7821,7 +7821,7 @@
           "fb6bebcf7e": "설정 스크립트 실행 시기",
           "30d555acd2": "새 작업 트리가 생성된 후 실행되는 로컬 및 공유 스크립트입니다.",
           "52b31baf02": "설정 스크립트",
-          "8567127a40": "작업 트리가 생성되거나 보관될 때 실행되는 스크립트입니다. 로컬 스크립트는 이 시스템에 저장됩니다. `orca.yaml` 스크립트는 팀과 공유됩니다.",
+          "8567127a40": "작업 트리가 생성되거나 보관될 때 실행되는 스크립트입니다. 로컬 스크립트는 이 시스템에 저장됩니다. `occ.yaml` 스크립트는 팀과 공유됩니다.",
           "ff082fe7c6": "작업트리 후크",
           "5d940bde5c": "로컬 스크립트 추가",
           "8c2893fae0": "단일 셸 스크립트로 실행됩니다. 이 컴퓨터에 저장되었습니다.",
@@ -7835,10 +7835,10 @@
           "b2b06c7ce8": "사용 가능한 환경 변수(자세한 내용을 보려면 마우스를 올리세요):",
           "95a0411b3e": "템플릿",
           "175daba180": "예",
-          "b20c5df6ca": "이 repo의 공유 설정, 아카이브 또는 이슈 자동화 기본값을 사용하려면 `orca.yaml` 파일을 추가하세요. 예제 템플릿:",
-          "56f9a4a1d0": "`orca.yaml` 사용 중",
-          "623e0c9f31": "`orca.yaml`을 구문 분석할 수 없습니다",
-          "5a67e4793d": "`orca.yaml`을 찾을 수 없습니다",
+          "b20c5df6ca": "이 repo의 공유 설정, 아카이브 또는 이슈 자동화 기본값을 사용하려면 `occ.yaml` 파일을 추가하세요. 예제 템플릿:",
+          "56f9a4a1d0": "`occ.yaml` 사용 중",
+          "623e0c9f31": "`occ.yaml`을 구문 분석할 수 없습니다",
+          "5a67e4793d": "`occ.yaml`을 찾을 수 없습니다",
           "07ba35bc68": "`scripts:` 아래의 들여쓰기를 확인하세요. 후크 키는 두 칸, 명령 줄은 네 칸을 사용해야 합니다.",
           "787ca433ef": "지원되는 키만 정의하세요: `scripts`, `setup`, `archive`, `issueCommand`.",
           "ecc73d9125": "아래의 작동하는 템플릿과 비교하고 필요한 경우 그 형식을 복사하세요.",
@@ -7850,15 +7850,15 @@
           "0fa21e19ec": "일반적으로 브랜치 이름을 기반으로 하는 워크스페이스의 이름입니다.",
           "54c73d88d0": "생성 중인 워크트리의 경로입니다. 초기 설정 명령은 이 디렉터리에서 실행됩니다.",
           "30952c4aa4": "기본 repo 체크아웃 경로입니다. .env와 같은 공유 파일을 작업 트리에 복사하는 데 유용합니다.",
-          "9b821fa19d": "# 예: echo \"$ORCA_WORKSPACE_NAME 정리 중\"",
+          "9b821fa19d": "# 예: echo \"$OCC_WORKSPACE_NAME 정리 중\"",
           "6f90ebe3fd": "작업 트리가 보관되거나 제거되기 전에 실행됩니다.",
-          "a3fc966677": "# 예: pnpm install cp \"$ORCA_ROOT_PATH/.env\" \"$ORCA_WORKTREE_PATH/.env\"",
+          "a3fc966677": "# 예: pnpm install cp \"$OCC_ROOT_PATH/.env\" \"$OCC_WORKTREE_PATH/.env\"",
           "f0710e1c83": "새 작업 트리가 생성된 후 실행됩니다. deps를 설치하고, env 파일을 복사하고, 마이그레이션을 실행하세요.",
-          "8561b0665f": "orca.yaml을 먼저 사용한 다음 로컬 명령을 실행합니다.",
-          "0e8b2a520d": "orca.yaml을 무시하십시오. 로컬 명령만 실행하세요.",
+          "8561b0665f": "occ.yaml을 먼저 사용한 다음 로컬 명령을 실행합니다.",
+          "0e8b2a520d": "occ.yaml을 무시하십시오. 로컬 명령만 실행하세요.",
           "83dc78202a": "로컬 전용",
           "29397e8bbc": "저장소에 커밋된 명령만 실행하고 로컬 명령은 무시합니다.",
-          "d88b6ff88f": "orca.yaml 전용",
+          "d88b6ff88f": "occ.yaml 전용",
           "99e3264a49": "선택한 경우에만 설정을 실행하세요.",
           "15debc1fd9": "기본적으로 건너뛰기",
           "022ba10cf2": "자동으로 설정을 실행합니다.",
@@ -7870,17 +7870,17 @@
           "d2b3016c20": "공유됨",
           "4611b78617": "명령 소스",
           "c5a55a2d2e": "고급",
-          "0ce113fd7b": "로컬 스크립트는 저장되지만 스크립트 소스는 orca.yaml로만 설정됩니다.",
-          "7f78e5eea6": "로컬 스크립트가 저장됩니다. OCC는 사용할 스크립트 소스를 추천하기 전에 orca.yaml을 계속 확인하고 있습니다.",
+          "0ce113fd7b": "로컬 스크립트는 저장되지만 스크립트 소스는 occ.yaml로만 설정됩니다.",
+          "7f78e5eea6": "로컬 스크립트가 저장됩니다. OCC는 사용할 스크립트 소스를 추천하기 전에 occ.yaml을 계속 확인하고 있습니다.",
           "2b6356e744": "저장됨",
           "81057d5f71": "저장 중...",
           "da37d6f10e": "복사",
           "3149964b66": "복사됨",
           "waitForSetupBeforeAgent": "에이전트를 시작하기 전에 설정이 완료될 때까지 기다리기",
           "issueCommandDescription": "필요하면 기본 명령을 재정의할 수 있습니다. 연결된 이슈 또는 PR의 URL에는 <artifactUrl>{{artifact_url}}</artifactUrl> 변수를 사용하세요.",
-          "issueCommandSharedDefault": "비워 두면 <yaml>orca.yaml</yaml>에 지정된 저장소 기본값을 사용합니다.",
-          "issueCommandOptionalDefault": "비워 두면 <yaml>orca.yaml</yaml>에 지정된 저장소 기본값이 있는 경우 사용합니다.",
-          "commandSourceDescription": "<yaml>orca.yaml</yaml>의 명령과 로컬 명령이 모두 있으면 실행할 명령을 선택하세요.",
+          "issueCommandSharedDefault": "비워 두면 <yaml>occ.yaml</yaml>에 지정된 저장소 기본값을 사용합니다.",
+          "issueCommandOptionalDefault": "비워 두면 <yaml>occ.yaml</yaml>에 지정된 저장소 기본값이 있는 경우 사용합니다.",
+          "commandSourceDescription": "<yaml>occ.yaml</yaml>의 명령과 로컬 명령이 모두 있으면 실행할 명령을 선택하세요.",
           "issueCommandWslStopped": "WSL 배포판 {{distro}}이(가) 중지되었습니다. 이 명령을 보거나 편집하려면 해당 배포판에서 터미널을 여세요."
         },
         "RepositoryIconPicker": {
@@ -8275,7 +8275,7 @@
           "25b0004fbf": "터미널 활성",
           "781cb74d22": "터미널 패널에서 실행됩니다.",
           "cb02e00202": "터미널",
-          "d8c988dab4": "~/.orca/keybindings.json",
+          "d8c988dab4": "~/.occ/keybindings.json",
           "shortcutUnavailable": "단축키를 더 이상 사용할 수 없습니다."
         },
         "SourceControlAiActionRecipeDefaults": {
@@ -8374,7 +8374,7 @@
           "removing": "제거 중…",
           "testing": "테스트 중…",
           "select": "{{label}} 선택",
-          "orcaServer": "OCC 서버",
+          "occServer": "OCC 서버",
           "moreActions": "{{label}} 작업 더 보기",
           "testConnection": "연결 테스트",
           "edit": "편집…",
@@ -9270,7 +9270,7 @@
               "614c756ab1": "브라우저 쿠키 가져오기",
               "cee44fb442": "오토메이션",
               "a57c2172dc": "agent-browser",
-              "f5b8fdddf5": "orca-cli",
+              "f5b8fdddf5": "occ-cli",
               "e5a784bc54": "설치",
               "9d97446873": "에이전트",
               "a2d489263e": "스킬",
@@ -9962,7 +9962,7 @@
             "94e04427f6": "환경",
             "664f1a8984": "지속적인 통합",
             "5854a5c752": "ci",
-            "69637f4dc4": "orca_telemetry_disabled",
+            "69637f4dc4": "occ_telemetry_disabled",
             "058550f6bc": "do_not_track",
             "83a6cd79b3": "추적하지 마세요",
             "f7a2d9f137": "텔레메트리 전송을 비활성화하는 환경 변수입니다.",
@@ -10011,13 +10011,13 @@
         },
         "repository": {
           "search": {
-            "bc7e504b8e": ".orca/issue-command",
-            "603c68b68c": "orca.yaml",
+            "bc7e504b8e": ".occ/issue-command",
+            "603c68b68c": "occ.yaml",
             "9dc60d7f6d": "GitHub",
             "ec70364df2": "작업 흐름",
             "66b584bd6c": "이슈 명령",
             "2011a6a4f2": "GitHub 이슈 명령",
-            "d42d1e49c0": "orca.yaml과 선택적인 로컬 재정의로 설정하는 파일 기반의 연결된 이슈 명령입니다.",
+            "d42d1e49c0": "occ.yaml과 선택적인 로컬 재정의로 설정하는 파일 기반의 연결된 이슈 명령입니다.",
             "d86ea12d16": "사용자 정의 GitHub 이슈 명령",
             "c5e8bdbcbb": "기본적으로 건너뛰기",
             "a69c5cbe90": "기본적으로 실행",
@@ -10032,10 +10032,10 @@
             "0432d2fb7c": "로컬",
             "ed269fad69": "명령 소스",
             "19f58d6d89": "고급의",
-            "d141897c90": "명령 소스 및 orca.yaml 세부정보",
+            "d141897c90": "명령 소스 및 occ.yaml 세부정보",
             "cc11699c3d": "고급",
             "bf460fded8": "yaml",
-            "9cad92fe77": "orca.yaml 후크",
+            "9cad92fe77": "occ.yaml 후크",
             "6b80f7d3c8": "로컬 설정 스크립트",
             "a1a4c51d58": "아카이브 명령",
             "fbfd2386e8": "아카이브 스크립트",
@@ -10749,9 +10749,9 @@
                   "1a9475dace": "자세히 알아보기",
                   "19fb419c12": "Gitea 자격 증명이 구성되어 있지만 인증할 수 없습니다. 토큰, API 기본 URL, repos 권한을 확인하고, 환경 변수가 변경되었다면 OCC를 다시 시작하세요.",
                   "60708f23da": "OCC가 원격에서 API URL을 추론할 수 없는 경우에만 사용하세요.",
-                  "709057ad91": "ORCA_GITEA_API_BASE_URL",
+                  "709057ad91": "OCC_GITEA_API_BASE_URL",
                   "6da9dfa5de": "비공개 repos의 경우, 그리고",
-                  "6d5c2a3005": "ORCA_GITEA_TOKEN",
+                  "6d5c2a3005": "OCC_GITEA_TOKEN",
                   "fcbe0469fd": "공개 repos는 Git 원격에서 감지됩니다. 설정하세요",
                   "0613928cb3": "이 런타임에서는 아직 Gitea 상태를 사용할 수 없습니다.",
                   "05863d2599": "Gitea REST API를 통한 PR 및 commit 상태입니다.",
@@ -10759,11 +10759,11 @@
                   "0b5242f8a2": "{{value0}} · PR 및 commit 상태",
                   "40f678df73": "Azure DevOps 자격 증명이 구성되어 있지만 인증할 수 없습니다. 토큰, API 기본 URL, repos 권한을 확인하고, 환경 변수가 변경되었다면 OCC를 다시 시작하세요.",
                   "7bd345e3f6": "OCC가 Git 원격에서 API 기본 URL을 추론할 수 없는 경우에만 사용하세요.",
-                  "186a6689df": "ORCA_AZURE_DEVOPS_API_BASE_URL",
+                  "186a6689df": "OCC_AZURE_DEVOPS_API_BASE_URL",
                   "b8a10b07c1": ". 설정하세요",
-                  "fbfd237f5e": "ORCA_AZURE_DEVOPS_ACCESS_TOKEN",
+                  "fbfd237f5e": "OCC_AZURE_DEVOPS_ACCESS_TOKEN",
                   "087feb92f1": ", 또는 설정",
-                  "48842720d2": "ORCA_AZURE_DEVOPS_TOKEN",
+                  "48842720d2": "OCC_AZURE_DEVOPS_TOKEN",
                   "7bbc9c64f0": "설정",
                   "f3f47dc7de": "이 런타임에서는 아직 Azure DevOps 상태를 사용할 수 없습니다.",
                   "0eb50d5593": "Azure DevOps REST API 토큰을 통한 PR 및 빌드 상태입니다.",
@@ -10800,7 +10800,7 @@
           "3c4d5e6f7a": "클라이언트 기본값 재정의",
           "4d5e6f7a8b": "클라이언트 기본값 상속",
           "5e6f7a8b9c": "재설정",
-          "6f7a8b9cad": "상대 경로(예: .orca/worktrees)를 사용하면 프로젝트별 위치가 되고, 절대 경로를 사용하면 모든 프로젝트가 하나의 폴더를 공유합니다."
+          "6f7a8b9cad": "상대 경로(예: .occ/worktrees)를 사용하면 프로젝트별 위치가 되고, 절대 경로를 사용하면 모든 프로젝트가 하나의 폴더를 공유합니다."
         },
         "ProviderHostScopeControl": {
           "scope_label": "{{value0}}: {{value1}}",
@@ -10889,8 +10889,8 @@
         },
         "PrivacyDiagnosticsRows": {
           "5a7cbe069a": "DO_NOT_TRACK=1이 설정되어 있어 진단 파일 만들기와 보내기가 비활성화되었습니다.",
-          "63d03261d1": "ORCA_TELEMETRY_DISABLED=1이 설정되어 있어 진단 파일 만들기와 보내기가 비활성화되었습니다.",
-          "d37e92a06b": "ORCA_DIAGNOSTICS_DISABLED=1이 설정되어 있어 앱 진단이 꺼져 있습니다.",
+          "63d03261d1": "OCC_TELEMETRY_DISABLED=1이 설정되어 있어 진단 파일 만들기와 보내기가 비활성화되었습니다.",
+          "d37e92a06b": "OCC_DIAGNOSTICS_DISABLED=1이 설정되어 있어 앱 진단이 꺼져 있습니다.",
           "5ebb31e1fb": "CI에서 실행 중입니다. 진단이 꺼져 있습니다.",
           "e27c8d45bf": "환경 변수로 인해 진단이 비활성화되었습니다."
         },
@@ -10983,13 +10983,13 @@
           "notificationPlayground": "알림 테스트",
           "notificationPlaygroundDescription": "토스트 레이아웃, 복구 액션, 긴 텍스트 줄바꿈을 확인하기 위한 개발 전용 트리거입니다.",
           "devOnly": "개발 전용",
-          "orcaCloud": "OCC Cloud",
-          "orcaCloudDescription": "자사 클라우드 로그인의 개발자 전용 미리보기. 프로덕션에서는 숨겨집니다. 개발 환경에서는 ORCA_CLOUD_API_URL과 ORCA_CLOUD_CLIENT_ID가 설정되면 사이드바 계정 전환기에도 표시됩니다.",
-          "orcaCloudStatus": "상태",
-          "orcaCloudSignOut": "로그아웃",
-          "orcaCloudConnect": "프로필 연결",
-          "orcaCloudRefresh": "상태 새로고침",
-          "orcaCloudNotConfigured": "ORCA_CLOUD_API_URL과 ORCA_CLOUD_CLIENT_ID를 설정하여 이 개발 빌드에서 OCC Cloud 로그인을 미리보세요.",
+          "occCloud": "OCC Cloud",
+          "occCloudDescription": "자사 클라우드 로그인의 개발자 전용 미리보기. 프로덕션에서는 숨겨집니다. 개발 환경에서는 OCC_CLOUD_API_URL과 OCC_CLOUD_CLIENT_ID가 설정되면 사이드바 계정 전환기에도 표시됩니다.",
+          "occCloudStatus": "상태",
+          "occCloudSignOut": "로그아웃",
+          "occCloudConnect": "프로필 연결",
+          "occCloudRefresh": "상태 새로고침",
+          "occCloudNotConfigured": "OCC_CLOUD_API_URL과 OCC_CLOUD_CLIENT_ID를 설정하여 이 개발 빌드에서 OCC Cloud 로그인을 미리보세요.",
           "deleteAnywayClicked": "무시하고 삭제를 클릭했습니다."
         },
         "EphemeralVmRecipeRow": {
@@ -11041,7 +11041,7 @@
           "copy": "복사",
           "copied": "복사됨",
           "recipes": "레시피",
-          "recipesHelp": "orca.yaml과 활성화된 플러그인의 레시피가 여기에 표시되어 워크스페이스를 시작할 수 있습니다.",
+          "recipesHelp": "occ.yaml과 활성화된 플러그인의 레시피가 여기에 표시되어 워크스페이스를 시작할 수 있습니다.",
           "checking": "레시피 확인 중...",
           "none": "아직 레시피를 찾을 수 없습니다.",
           "cloudVmSkillTitle": "클라우드 VM 설정 스킬",
@@ -11088,7 +11088,7 @@
                 "tickets": "티켓",
                 "issues": "이슈",
                 "skill": "스킬",
-                "orcaLinear": "orca-linear"
+                "occLinear": "occ-linear"
               }
             }
           }
@@ -11165,7 +11165,7 @@
         },
         "LinearAgentSkillPane": {
           "title": "Linear",
-          "description": "OCC에서 Linear 이슈를 탐색하고 연결된 워크스페이스를 시작하며 /orca-linear로 에이전트가 이슈를 업데이트할 수 있습니다.",
+          "description": "OCC에서 Linear 이슈를 탐색하고 연결된 워크스페이스를 시작하며 /occ-linear로 에이전트가 이슈를 업데이트할 수 있습니다.",
           "skillTitle": "Linear 스킬",
           "howToUse": "프롬프트 예시",
           "howToUseDescription": "카드를 클릭해 프롬프트를 복사하세요. 스킬을 설치한 후 Linear에 연결된 워크트리에서 사용하세요.",
@@ -11233,9 +11233,9 @@
         },
         "BrowserLinkRoutingModifierSetting": {
           "titleSystem": "Shift를 누른 채 클릭하면 웹 브라우저에서 열기",
-          "titleOrca": "Shift를 누른 채 클릭하면 OCC에서 열기",
+          "titleOCC": "Shift를 누른 채 클릭하면 OCC에서 열기",
           "descriptionSystem": "링크가 OCC에서 열리므로, {{chord}}+클릭 시 시스템 기본 브라우저에서 대신 열립니다.",
-          "descriptionOrca": "링크가 시스템 기본 브라우저에서 열립니다. 활성화하면 {{chord}}+클릭 시 OCC 내장 브라우저에서 대신 열립니다."
+          "descriptionOCC": "링크가 시스템 기본 브라우저에서 열립니다. 활성화하면 {{chord}}+클릭 시 OCC 내장 브라우저에서 대신 열립니다."
         },
         "BrowserLinkRoutingBackgroundSetting": {
           "title": "링크를 백그라운드에서 열기",
@@ -11291,9 +11291,9 @@
           "gitTab": "Git URL",
           "localLabel": "플러그인 폴더 경로",
           "localPlaceholder": "플러그인 폴더 경로",
-          "localHelp": "orca-plugin.json이 있는 폴더",
+          "localHelp": "occ-plugin.json이 있는 폴더",
           "gitLabel": "저장소 URL",
-          "gitPlaceholder": "https://github.com/acme/orca-notes",
+          "gitPlaceholder": "https://github.com/acme/occ-notes",
           "gitHelp": "저장소, 릴리스 또는 태그 링크를 붙여넣으세요. #tag나 #commit이 없으면 최신 버전 태그를 사용합니다.",
           "cancel": "취소",
           "installing": "설치 중…",
@@ -11343,7 +11343,7 @@
           "title": "카탈로그 소스",
           "description": "플러그인 목록이 있는 Git 저장소",
           "urlLabel": "Git URL",
-          "urlDescription": "HTTPS 또는 SSH, orca-catalog.json 포함",
+          "urlDescription": "HTTPS 또는 SSH, occ-catalog.json 포함",
           "urlPlaceholder": "https://git.example.com/team/plugins.git",
           "refLabel": "Git ref",
           "refDescription": "브랜치, 태그 또는 커밋",
@@ -11469,14 +11469,14 @@
           "switchBack": "되돌리기"
         },
         "pluginError": {
-          "installManifestMissing": "읽을 수 있는 orca-plugin.json이 없습니다. 플러그인 루트 폴더를 선택하세요.",
-          "installManifestInvalid": "orca-plugin.json이 유효하지 않습니다. 플러그인 작성자에게 매니페스트 수정을 요청하세요.",
+          "installManifestMissing": "읽을 수 있는 occ-plugin.json이 없습니다. 플러그인 루트 폴더를 선택하세요.",
+          "installManifestInvalid": "occ-plugin.json이 유효하지 않습니다. 플러그인 작성자에게 매니페스트 수정을 요청하세요.",
           "incompatible": "이 플러그인은 다른 OCC 버전이 필요합니다.",
           "installUnsafePath": "플러그인에 안전하지 않은 파일 경로 또는 심볼릭 링크가 있어 설치되지 않았습니다.",
           "installLimit": "플러그인의 설치 크기 또는 파일 수 제한을 초과합니다.",
           "installGit": "이 Git 리비전을 가져올 수 없습니다. URL, #ref, 접근 권한을 확인하세요.",
-          "invalidManifestMissing": "플러그인 루트에 orca-plugin.json이 없습니다. 추가한 후 플러그인을 새로고침하세요.",
-          "invalidManifest": "orca-plugin.json이 유효하지 않습니다. 수정한 후 플러그인을 새로고침하세요.",
+          "invalidManifestMissing": "플러그인 루트에 occ-plugin.json이 없습니다. 추가한 후 플러그인을 새로고침하세요.",
+          "invalidManifest": "occ-plugin.json이 유효하지 않습니다. 수정한 후 플러그인을 새로고침하세요.",
           "installedManifestUnloadable": "이 버전은 이 OCC에서 불러올 수 없습니다. 업데이트하거나 다시 설치하세요.",
           "invalidArtifact": "워커 또는 패널 파일이 없거나 안전하지 않습니다. 수정한 후 새로 고치세요.",
           "consentChanged": "검토하는 동안 이 플러그인이 변경되었습니다. 다시 검토하세요.",
@@ -11499,7 +11499,7 @@
           "manageKeys": "키 관리",
           "addAccess": "액세스 추가",
           "setupSkillTitle": "2. 에이전트 스킬 설치",
-          "setupSkillBody": "에이전트가 /orca-linear로 이슈 읽기, 업데이트, 분류, 풀 또는 머지 리퀘스트 첨부를 할 수 있게 합니다.",
+          "setupSkillBody": "에이전트가 /occ-linear로 이슈 읽기, 업데이트, 분류, 풀 또는 머지 리퀘스트 첨부를 할 수 있게 합니다.",
           "setupVisibleTitle": "3. 작업에 Linear 표시",
           "setupVisibleBody": "작업 소스 선택기와 사이드바 바로 가기에 Linear를 표시합니다.",
           "openTaskSources": "작업 소스",
@@ -11511,8 +11511,8 @@
           "notesIntro": "Linear를 연결하고 스킬을 설치한 후 참고할 내용입니다.",
           "noteLinkedTitle": "Linear 이슈에서 시작",
           "noteLinkedBody": "작업에서 만든 워크트리는 이슈가 컨텍스트로 연결되어 있어 이슈 작업이 가장 원활합니다.",
-          "noteSlashTitle": "/orca-linear 언급",
-          "noteSlashBody": "채팅에서 /orca-linear를 사용하거나 자연어로 요청하면 해당 턴에 에이전트가 스킬을 불러옵니다.",
+          "noteSlashTitle": "/occ-linear 언급",
+          "noteSlashBody": "채팅에서 /occ-linear를 사용하거나 자연어로 요청하면 해당 턴에 에이전트가 스킬을 불러옵니다.",
           "noteKeysTitle": "키는 런타임별로 저장",
           "noteKeysBody": "API 키와 워크스페이스는 활성 런타임에 저장됩니다.",
           "noteVisibilityTitle": "숨겨도 연결은 유지",
@@ -11528,7 +11528,7 @@
           "connectedHint": "워크스페이스와 키는 활성 런타임에 저장됩니다. 언제든 액세스를 더 추가할 수 있습니다.",
           "recheck": "연결 다시 확인",
           "skillTitle": "Linear 에이전트 스킬 설치",
-          "skillDescription": "에이전트가 /orca-linear로 이슈 읽기, 업데이트 게시, 상태 변경, 풀 또는 머지 리퀘스트 첨부를 할 수 있게 합니다.",
+          "skillDescription": "에이전트가 /occ-linear로 이슈 읽기, 업데이트 게시, 상태 변경, 풀 또는 머지 리퀘스트 첨부를 할 수 있게 합니다.",
           "skillBlocked": "먼저 Linear를 연결한 다음 에이전트용 스킬을 설치하세요.",
           "skillPanelTitle": "Linear 스킬",
           "showDescription": "작업 소스 선택기와 사이드바 바로 가기에 Linear를 표시합니다."
@@ -11598,7 +11598,7 @@
           "updateServer": "소스 기본값을 구성하려면 이 서버를 업데이트하세요.",
           "updateServerDefaults": "표시 기본값을 구성하려면 이 서버를 업데이트하세요."
         },
-        "orcaAccount": {
+        "occAccount": {
           "connected": "연결됨",
           "reconnectRequired": "세션이 만료되었습니다. 클라우드 기능을 사용하려면 다시 로그인하세요.",
           "unavailable": "이 빌드에서는 OCC 로그인을 사용할 수 없습니다.",
@@ -11798,8 +11798,8 @@
               "connectFailed": "연결 실패",
               "title": "Bitbucket 연결",
               "description": "Bitbucket Cloud 자격 증명을 사용하여 PR 및 빌드 상태를 찾아보세요. OCC는 저장하기 전에 이를 확인합니다.",
-              "remoteRuntime": "활성 원격 런타임이 아닌 이 컴퓨터에 저장됩니다. 대신 원격 런타임에서 ORCA_BITBUCKET_*을 설정하세요. 환경 변수는 항상 여기에 저장한 값보다 우선합니다.",
-              "environmentManaged": "Bitbucket은 ORCA_BITBUCKET_* 환경 변수를 통해 이미 구성되어 있으며 우선 순위가 높습니다. OCC에 자격 증명을 저장하려면 설정을 해제하세요.",
+              "remoteRuntime": "활성 원격 런타임이 아닌 이 컴퓨터에 저장됩니다. 대신 원격 런타임에서 OCC_BITBUCKET_*을 설정하세요. 환경 변수는 항상 여기에 저장한 값보다 우선합니다.",
+              "environmentManaged": "Bitbucket은 OCC_BITBUCKET_* 환경 변수를 통해 이미 구성되어 있으며 우선 순위가 높습니다. OCC에 자격 증명을 저장하려면 설정을 해제하세요.",
               "authModeLabel": "Bitbucket 인증 방법",
               "modeBasic": "이메일 및 API 토큰",
               "modeToken": "액세스 토큰",
@@ -11814,7 +11814,7 @@
               "tokenHint": "리포지토리, 프로젝트 및 워크스페이스 액세스 토큰은 일치하는 Bitbucket 설정 페이지에서 생성되며 PR에 대한 읽기 액세스 권한이 필요합니다.",
               "basicHint": "귀하의 계정에 대한 Atlassian API 토큰을 생성한 다음 이를 소유한 이메일 주소와 페어링하세요.",
               "docsLink": "Bitbucket API 토큰 문서",
-              "storageNote": "OS 키체인을 사용할 수 있는 경우 암호화된 저장소와 함께 이 시스템에 저장됩니다. ORCA_BITBUCKET_* 환경 변수는 항상 여기에 저장한 것보다 우선합니다.",
+              "storageNote": "OS 키체인을 사용할 수 있는 경우 암호화된 저장소와 함께 이 시스템에 저장됩니다. OCC_BITBUCKET_* 환경 변수는 항상 여기에 저장한 것보다 우선합니다.",
               "cancel": "취소",
               "verifying": "확인 중...",
               "connect": "연결"
@@ -11829,10 +11829,10 @@
               "authModeToken": "액세스 토큰",
               "authModeBasic": "이메일 및 API 토큰",
               "disconnect": "Bitbucket 연결 끊기",
-              "envManaged": "환경 변수를 통해 구성됩니다. OCC에서 이 자격 증명을 관리하려면 ORCA_BITBUCKET_* 변수를 설정 해제하세요.",
+              "envManaged": "환경 변수를 통해 구성됩니다. OCC에서 이 자격 증명을 관리하려면 OCC_BITBUCKET_* 변수를 설정 해제하세요.",
               "storedAuthFailed": "저장된 Bitbucket 자격 증명을 인증할 수 없습니다. 이를 편집하거나 토큰에 여전히 PR 액세스 권한이 있는지 확인하세요.",
-              "storedCredential": "이 컴퓨터의 OCC에 저장되었습니다. ORCA_BITBUCKET_* 환경 변수는 설정 시 우선순위를 갖습니다.",
-              "notConfigured": "Atlassian API 토큰 또는 액세스 토큰을 사용하여 Bitbucket Cloud 계정을 연결하세요. ORCA_BITBUCKET_* 환경 변수도 작동하며 우선 적용됩니다.",
+              "storedCredential": "이 컴퓨터의 OCC에 저장되었습니다. OCC_BITBUCKET_* 환경 변수는 설정 시 우선순위를 갖습니다.",
+              "notConfigured": "Atlassian API 토큰 또는 액세스 토큰을 사용하여 Bitbucket Cloud 계정을 연결하세요. OCC_BITBUCKET_* 환경 변수도 작동하며 우선 적용됩니다.",
               "disconnectFailed": "저장된 Bitbucket 사용자 인증 정보를 삭제할 수 없습니다.",
               "statusLoadFailed": "저장된 Bitbucket 자격 증명을 확인할 수 없습니다.",
               "replaceCredentials": "자격 증명 추가 또는 교체",
@@ -11968,9 +11968,9 @@
             "confirmForget": "이 데스크톱에서 잊기",
             "keepLinked": "연결 유지",
             "forgetDescription": "호스트에 연결하지 않고 여기서 이 서버의 연결을 해제합니다. 호스트가 다시 살아나면 서버가 그곳에서 계속 실행 중일 수 있습니다.",
-            "orcaVersion": "이 호스트의 OCC: {{version}}",
-            "stopOrcaDescription": "SSH 호스트에서 OCC를 중지하고 이 목록에서 제거합니다.",
-            "updateOrcaOnHost": "이 호스트의 OCC 업데이트",
+            "occVersion": "이 호스트의 OCC: {{version}}",
+            "stopOCCDescription": "SSH 호스트에서 OCC를 중지하고 이 목록에서 제거합니다.",
+            "updateOCCOnHost": "이 호스트의 OCC 업데이트",
             "updateAnyway": "그래도 업데이트",
             "notNow": "나중에",
             "forceUpdate": "이 호스트에서 터미널이 실행 중입니다. 업데이트 중에도 계속 실행되며, OCC 서버가 다시 시작되면 창이 다시 연결됩니다."
@@ -12097,7 +12097,7 @@
           "refusedBlockedReason": "아직 이 호스트에 OCC가 설정되지 않았습니다. {{reason}}",
           "refusedLeaveBehind": "이 호스트의 일부 저장된 항목은 OCC 서버로 옮길 수 없습니다: {{items}}. '그래도 이동'을 선택하면 호스트에 연결되고 이 항목들은 이 컴퓨터에 남습니다.",
           "refusedLeaveBehindUnnamed": "이 호스트의 일부 저장된 항목은 OCC 서버로 옮길 수 없습니다. '그래도 이동'을 선택하면 호스트에 연결되고 이 항목들은 이 컴퓨터에 남습니다.",
-          "runtimeNoexec": "이 호스트는 ~/.orca-remote에서 프로그램 실행을 허용하지 않아 OCC 서버를 시작할 수 없습니다. 보통 홈 폴더가 noexec로 마운트되어 있을 때 발생합니다. 호스트 관리자에게 이 위치에서 프로그램 실행을 허용하도록 요청한 후 다시 연결하세요.",
+          "runtimeNoexec": "이 호스트는 ~/.occ-remote에서 프로그램 실행을 허용하지 않아 OCC 서버를 시작할 수 없습니다. 보통 홈 폴더가 noexec로 마운트되어 있을 때 발생합니다. 호스트 관리자에게 이 위치에서 프로그램 실행을 허용하도록 요청한 후 다시 연결하세요.",
           "setupContactLost": "서버를 설정하는 동안 OCC와 이 호스트의 연결이 끊겼습니다. 호스트의 어떤 프로세스도 중지되지 않았습니다. 계속하려면 다시 연결하세요.",
           "automationsLeftDisabled_one": "이 호스트의 OCC 서버가 자동화 {{count}}개를 인계받았지만 다시 켜지 못했습니다. 자동화에서 켜세요.",
           "automationsLeftDisabled_other": "이 호스트의 OCC 서버가 자동화 {{count}}개를 인계받았지만 다시 켜지 못했습니다. 자동화에서 켜세요.",
@@ -12246,7 +12246,7 @@
           "confirm": "복원"
         },
         "SshTargetList": {
-          "addedInOrca": "OCC에서 추가함",
+          "addedInOCC": "OCC에서 추가함",
           "fromConfig": "~/.ssh/config에서 가져옴",
           "filteredCount": "{{total}}개 중 {{count}}개",
           "selectManualGroup": "OCC에서 추가한 호스트 모두 선택",
@@ -12437,8 +12437,8 @@
           "stoppedTitle": "오류로 인해 중지됨",
           "stoppedBody": "계속 충돌했습니다. 다시 시작해 재시도하세요.",
           "invalidTitle": "OCC가 이 플러그인을 불러올 수 없습니다",
-          "needsOrcaTitle": "OCC {{value0}} 이상이 필요합니다",
-          "needsOrcaBody": "현재 OCC {{value0}}입니다.",
+          "needsOCCTitle": "OCC {{value0}} 이상이 필요합니다",
+          "needsOCCBody": "현재 OCC {{value0}}입니다.",
           "back": "플러그인",
           "info": "정보",
           "version": "버전",
@@ -12486,7 +12486,7 @@
           "viewError": "오류 보기",
           "copyId": "플러그인 ID 복사",
           "checkUpdate": "업데이트 확인",
-          "bundledWithOrca": "OCC에 기본 포함",
+          "bundledWithOCC": "OCC에 기본 포함",
           "installName": "{{value0}} 설치",
           "copied": "플러그인 ID를 복사했습니다",
           "copyFailed": "플러그인 ID를 복사할 수 없습니다.",
@@ -12496,7 +12496,7 @@
           "updateAvailable": "업데이트 {{value0}} 사용 가능",
           "updateLabel": "{{value0}}을(를) {{value1}}(으)로 업데이트",
           "update": "{{value0}}(으)로 업데이트",
-          "needsOrca": "OCC {{value0}} 필요",
+          "needsOCC": "OCC {{value0}} 필요",
           "rollbackTo": "{{value0}}(으)로 되돌리기…",
           "copyContentHash": "콘텐츠 해시 복사",
           "reviewUpdate": "업데이트 검토",
@@ -12531,7 +12531,7 @@
           "close": "닫기",
           "retry": "다시 시도",
           "updated": "업데이트됨",
-          "needsOrca": "OCC {{value0}} 이상이 필요합니다",
+          "needsOCC": "OCC {{value0}} 이상이 필요합니다",
           "current": "이미 설치됨",
           "allAccess": "모든 접근 권한 보기",
           "newCommands": "명령",
@@ -14619,7 +14619,7 @@
             "a6e7cdc688": "pnpm test --filter mobile",
             "21b67dfc92": "Bash",
             "d6d1041a1c": "⎿ 페어 스캔 슬라이드를 terminal 세션으로 대체했습니다.",
-            "336c0e070e": "mobile/orca-mobile-sidebar-mock-v3.html",
+            "336c0e070e": "mobile/occ-mobile-sidebar-mock-v3.html",
             "6d4ebd5833": "편집",
             "fc83e0d5ef": "⎿ 2103줄 읽기",
             "80cc356591": "읽기",
@@ -14648,7 +14648,7 @@
           "title": "사용자 지정 네트워크 주소",
           "description": "휴대폰에서 접근할 수 있는 주소를 지정하세요. 예: Tailscale 호스트 이름, IP 주소 또는 리버스 프록시 URL.",
           "label": "주소",
-          "placeholder": "home.example.com:8443 또는 https://example.com/orca",
+          "placeholder": "home.example.com:8443 또는 https://example.com/occ",
           "hint": "IPv4/IPv6 주소, 호스트 이름 또는 전체 HTTP(S)/WebSocket URL을 입력하세요. 포트는 선택 사항입니다.",
           "cancel": "취소",
           "use": "주소 사용",
@@ -14973,7 +14973,7 @@
                   "6d2b0a84e1": "이 빌드에서는 사용할 수 없습니다",
                   "needsMacAccess": "macOS 접근 권한 필요",
                   "notInstalled": "설치되지 않음",
-                  "requiresOrcaDesktop": "OCC Desktop 필요"
+                  "requiresOCCDesktop": "OCC Desktop 필요"
                 }
               }
             }
@@ -16588,7 +16588,7 @@
             "zoomIn": "확대",
             "resetZoom": "확대/축소 재설정",
             "appearance": "모양",
-            "appearanceMatchOrca": "OCC와 일치",
+            "appearanceMatchOCC": "OCC와 일치",
             "appearanceLight": "밝게",
             "appearanceDark": "어둡게",
             "zoomPercent": "확대/축소 {{value0}}%"
@@ -17456,7 +17456,7 @@
               "preview": "미리보기",
               "title": "terminal 링크를 OCC 브라우저에서 열까요?",
               "description": "terminal 링크를 OCC 브라우저에서 열거나 시스템 브라우저를 계속 사용합니다.",
-              "orca": {
+              "occ": {
                 "button": "OCC에서 열기",
                 "note": "OCC는 가져온 쿠키를 사용해 로그인된 사이트를 열 수 있습니다."
               },
@@ -17478,7 +17478,7 @@
               "keep": {
                 "title": "terminal 링크를 OCC 브라우저에서 계속 열까요?",
                 "description": "또는 시스템 브라우저를 기본값으로 사용합니다.",
-                "orca": {
+                "occ": {
                   "button": "OCC에서 계속 열기"
                 }
               }
@@ -17582,7 +17582,7 @@
           "copy": "복사"
         }
       },
-      "orca": {
+      "occ": {
         "profiles": {
           "signout": {
             "confirm": {
@@ -17631,7 +17631,7 @@
           "drawHintDismiss": "확인",
           "drawHintTry": "사용해 보기",
           "errorAttach": "마크업 스크린샷을 첨부하지 못했습니다.",
-          "errorCapture": "그릴 페이지를 캡처하지 못했습니다.",
+          "erroccpture": "그릴 페이지를 캡처하지 못했습니다.",
           "errorUnavailable": "이 페이지에서는 스크린샷 마크업을 사용할 수 없습니다.",
           "fontSize": "글자 크기",
           "hint": "페이지에 그린 다음 마크업을 복사해 에이전트에 붙여넣으세요.",
@@ -18063,7 +18063,7 @@
         "c77189bc0c": "Update filter",
         "19af906d12": "Save filter"
       },
-      "OrcaSignInProgress": {
+      "OCCSignInProgress": {
         "waiting": "브라우저에서 로그인을 기다리는 중",
         "copyLink": "로그인 링크 복사",
         "copied": "로그인 링크를 복사했습니다",
@@ -18331,10 +18331,10 @@
       },
       "reasoning": "추론",
       "contextMenu": {
-        "copyOrcaSessionId": "OCC 세션 ID 복사",
-        "orcaSessionIdCopied": "OCC 세션 ID를 복사했습니다",
-        "orcaSessionIdCopyFailed": "OCC 세션 ID를 복사하지 못했습니다",
-        "orcaSessionIdTooltip": "이 채팅에 대한 OCC의 ID로, 에이전트 CLI 자체의 세션 ID와는 별개입니다. 에이전트는 OCC를 통해 서로를 가리킬 때 이 ID를 사용합니다."
+        "copyOCCSessionId": "OCC 세션 ID 복사",
+        "occSessionIdCopied": "OCC 세션 ID를 복사했습니다",
+        "occSessionIdCopyFailed": "OCC 세션 ID를 복사하지 못했습니다",
+        "occSessionIdTooltip": "이 채팅에 대한 OCC의 ID로, 에이전트 CLI 자체의 세션 ID와는 별개입니다. 에이전트는 OCC를 통해 서로를 가리킬 때 이 ID를 사용합니다."
       },
       "failureWords": {
         "theAgent": "에이전트",
@@ -18468,10 +18468,10 @@
         "historyUnreadable": "OCC가 이 채팅의 저장된 기록을 읽지 못했습니다.",
         "historyUnusable": "이 채팅을 불러올 수 없습니다.",
         "historyUnavailable": "OCC가 지금 이 채팅의 기록을 열지 못했습니다.",
-        "savedByNewerOrca": "채팅이 최신 버전의 OCC에서 저장되었습니다.",
-        "updateOrcaToKeepUsing": "계속 사용하려면 OCC를 업데이트하세요.",
-        "chatSavedByNewerOrca": "이 채팅은 최신 버전의 OCC에서 저장되었습니다.",
-        "updateOrcaToOpenChat": "열려면 OCC를 업데이트하세요.",
+        "savedByNewerOCC": "채팅이 최신 버전의 OCC에서 저장되었습니다.",
+        "updateOCCToKeepUsing": "계속 사용하려면 OCC를 업데이트하세요.",
+        "chatSavedByNewerOCC": "이 채팅은 최신 버전의 OCC에서 저장되었습니다.",
+        "updateOCCToOpenChat": "열려면 OCC를 업데이트하세요.",
         "unsupported": "이 채팅을 실행 중인 컴퓨터에 최신 버전의 OCC가 필요합니다. 해당 컴퓨터에서 OCC를 업데이트한 후 다시 시도하세요.",
         "notAvailable": "이 채팅에서는 사용할 수 없습니다.",
         "cannotRunHere": "OCC는 여기에서 이 에이전트를 채팅으로 실행할 수 없습니다.",
@@ -18787,7 +18787,7 @@
         "openTerminal": "터미널에서 응답"
       },
       "approval": {
-        "needsNewerOrca": "이 요청에는 최신 버전의 OCC가 필요합니다.",
+        "needsNewerOCC": "이 요청에는 최신 버전의 OCC가 필요합니다.",
         "title": "{{value0}}을(를) 허용하시겠습니까?",
         "allow": "허용",
         "deny": "거부",
@@ -18843,12 +18843,12 @@
         "stoppedBeforeStart": "수동으로 중지됨",
         "dismiss": "닫기",
         "copyError": "오류 복사",
-        "orcaStopUpdate": "이 응답이 진행되는 동안 {{machine}}의 OCC가 업데이트를 위해 다시 시작되었습니다.",
-        "orcaStopQuit": "이 응답이 진행되는 동안 {{machine}}의 OCC가 종료되었습니다.",
-        "orcaStopCrash": "이 응답이 진행되는 동안 {{machine}}의 OCC가 예기치 않게 중지되었습니다.",
-        "orcaStopRemote": "이 응답이 진행되는 동안 {{machine}}의 OCC가 중지되었습니다.",
-        "orcaStopCanContinue": "이 대화에서 계속할 수 있습니다.",
-        "orcaStopUnnamedServer": "원격 서버"
+        "occStopUpdate": "이 응답이 진행되는 동안 {{machine}}의 OCC가 업데이트를 위해 다시 시작되었습니다.",
+        "occStopQuit": "이 응답이 진행되는 동안 {{machine}}의 OCC가 종료되었습니다.",
+        "occStopCrash": "이 응답이 진행되는 동안 {{machine}}의 OCC가 예기치 않게 중지되었습니다.",
+        "occStopRemote": "이 응답이 진행되는 동안 {{machine}}의 OCC가 중지되었습니다.",
+        "occStopCanContinue": "이 대화에서 계속할 수 있습니다.",
+        "occStopUnnamedServer": "원격 서버"
       },
       "providerFrame": {
         "byteCount_other": "{{count}}바이트"
@@ -20160,7 +20160,7 @@
       "statusDetails": {
         "runningListUnavailable": "Windows에서 배포판의 실행 여부를 보고하지 않았습니다.",
         "guestUnanswered": "배포판이 실행 중이지만 OCC의 확인 요청에 응답하지 않았습니다.",
-        "orcadUnanswered": "배포판 내 OCC 서버가 응답하지 않았습니다.",
+        "occdUnanswered": "배포판 내 OCC 서버가 응답하지 않았습니다.",
         "restartGaveUp_other": "{{count}}회 시도 후에도 {{distro}}의 OCC 서버를 다시 시작하지 못했습니다",
         "serviceUnconfirmed": "WSL 서비스가 배포판의 실행 여부를 확인해 주지 않았습니다.",
         "peerCheckFailed": "OCC가 WSL 호스트에 이 컴퓨터의 다른 OCC가 아직 사용 중인지 확인을 요청하지 못했습니다: {{detail}}",
@@ -20305,7 +20305,7 @@
     },
     "eyebrowNew": "새 기능",
     "eyebrowTip": "팁",
-    "orcaCli": {
+    "occCli": {
       "title": "OCC CLI로 에이전트가 OCC를 제어하게 하세요",
       "description": "에이전트가 하위 워크트리를 조율하고 워크트리 간에 소통할 수 있게 하세요.",
       "cta": "CLI 및 스킬 설치"
@@ -20371,7 +20371,7 @@
     "createReviewFailure": {
       "authRequiredCommand": "{{providerName}}이(가) 인증되지 않았습니다. 다음 단계: 이 환경에서 {{command}}을(를) 실행하세요.",
       "authRequiredVariable": "{{providerName}}이(가) 인증되지 않았습니다. 다음 단계: 이 환경에서 {{variable}}을(를) 설정하세요.",
-      "authRequiredBitbucket": "Bitbucket이 인증되지 않았습니다. 다음 단계: 설정 > 연동에서 Bitbucket을 연결하거나 이 환경에서 ORCA_BITBUCKET_*을(를) 설정하세요.",
+      "authRequiredBitbucket": "Bitbucket이 인증되지 않았습니다. 다음 단계: 설정 > 연동에서 Bitbucket을 연결하거나 이 환경에서 OCC_BITBUCKET_*을(를) 설정하세요.",
       "signInHintCommand": "이 환경에서 {{command}}을(를) 실행하세요",
       "signInHintVariable": "이 환경에서 {{variable}}을(를) 설정하세요",
       "signInHintBitbucket": "설정 > 연동에서 Bitbucket을 연결하세요",
@@ -20634,7 +20634,7 @@
     "launchFailedGenericDetail": "시스템이 시작을 거부했습니다. 메모리를 확보하거나 다른 앱을 종료한 다음 다시 시도를 클릭하세요. 계속 발생하면 OCC를 다시 설치하세요.",
     "lowCommitMessage": "Windows의 메모리가 부족합니다.",
     "lowCommitDetail": "Windows에는 앱용 메모리가 {{availableMB}} MB밖에 남아 있지 않으므로 다시 로드한 후 다시 메모리가 부족합니다.",
-    "lowCommitAdvice": "사용하지 않는 앱이나 ORCA 워크스페이스를 닫거나 Windows 페이지 파일 크기를 늘려 메모리를 확보한 다음 다시 로드 를 클릭합니다."
+    "lowCommitAdvice": "사용하지 않는 앱이나 OCC 워크스페이스를 닫거나 Windows 페이지 파일 크기를 늘려 메모리를 확보한 다음 다시 로드 를 클릭합니다."
   },
   "sessionSearch": {
     "panel": {
@@ -20660,7 +20660,7 @@
       "sortSessionsAriaLabel": "세션 정렬: {{value0}}",
       "showMoreSessions": "더 많은 세션 보기",
       "loadingMoreSessions": "추가 세션 로드 중…",
-      "unsupportedAgent": "이 컴퓨터는 선택한 에이전트에 대한 이력 검색을 지원하지 않습니다. 해당 컴퓨터에서 ORCA를 업데이트하거나 다른 에이전트를 선택하십시오.",
+      "unsupportedAgent": "이 컴퓨터는 선택한 에이전트에 대한 이력 검색을 지원하지 않습니다. 해당 컴퓨터에서 OCC를 업데이트하거나 다른 에이전트를 선택하십시오.",
       "resultCount_other": "결과 {{count}}개",
       "sessionCount_other": "세션 {{count}}개",
       "sessionsShownOfLoaded_other": "세션 {{count}}개 중 {{shown}}개",
@@ -20981,33 +20981,33 @@
     "sessionSaveFailure": {
       "title": "터미널 세션을 저장할 수 없습니다",
       "capacity": "이 터미널을 저장하는 장치가 전체 스토리지 또는 초과된 스토리지 할당량을 보고했습니다. 해당 장치의 여유 공간을 확보한 다음 다시 시도하십시오.",
-      "unknown": "ORCA는 터미널 상태를 저장할 수 없습니다. 다시 시도하세요. 이 문제가 계속되면 원인을 파악할 수 있도록 지원팀과 ORCA 로그를 공유하세요."
+      "unknown": "OCC는 터미널 상태를 저장할 수 없습니다. 다시 시도하세요. 이 문제가 계속되면 원인을 파악할 수 있도록 지원팀과 OCC 로그를 공유하세요."
     },
     "codexTerminalServerIsolationNotice": {
-      "title": "ORCA는 이제 공유 서버 없이 CODEX를 실행합니다",
+      "title": "OCC는 이제 공유 서버 없이 CODEX를 실행합니다",
       "description": "이를 통해 에이전트 상태를 더욱 안정적으로 유지할 수 있습니다. 설정에서 다시 켤 수 있습니다.",
       "openSettings": "설정 열기 "
     },
     "codexSharedSettingsNotice": {
       "title": "OCC의 Codex는 이제 ~/.codex를 사용합니다",
-      "description": "Codex는 폴더를 신뢰하거나 명령을 승인하도록 다시 요청할 수 있습니다. ORCA에서만 추가한 MCP 서버를 다시 추가합니다.",
+      "description": "Codex는 폴더를 신뢰하거나 명령을 승인하도록 다시 요청할 수 있습니다. OCC에서만 추가한 MCP 서버를 다시 추가합니다.",
       "dismiss": "닫기"
     },
     "codexSharedServerBanner": {
       "title": "이 Codex는 다른 Codex 탭과 서버를 공유합니다",
       "body": "세션이 예기치 않게 종료될 수 있으며 에이전트 상태가 잘못되었을 수 있습니다.",
-      "openedBeforeUpdateBody": "이 터미널은 ORCA가 각 Codex에게 자체 서버를 제공하기 전에 열렸습니다.",
+      "openedBeforeUpdateBody": "이 터미널은 OCC가 각 Codex에게 자체 서버를 제공하기 전에 열렸습니다.",
       "oldTerminalDialogTitle": "이 Codex가 서버를 공유하는 이유",
       "oldTerminalDialogRisk": "서버를 공유하는 Codex 세션은 함께 종료될 수 있으며 에이전트 상태가 잘못될 수 있습니다.",
       "oldTerminalDialogCause": "이전 터미널은 여전히 Codex 서버를 공유합니다. 새 터미널을 열어 별도의 서버에서 Codex를 실행합니다.",
       "fix": "자물쇠",
       "dialogTitle": "각 Codex 탭에 자체 서버를 제공합니다",
-      "dialogDescription": "Codex 세션은 터미널 공유 백그라운드 서버에서 직접 시작되었습니다. ORCA는 시작되는 Codex 세션을 별도로 유지합니다. 세션이 서버를 공유할 때 서버를 닫으면 다른 세션이 종료될 수 있으며 에이전트 상태가 잘못될 수 있습니다.",
+      "dialogDescription": "Codex 세션은 터미널 공유 백그라운드 서버에서 직접 시작되었습니다. OCC는 시작되는 Codex 세션을 별도로 유지합니다. 세션이 서버를 공유할 때 서버를 닫으면 다른 세션이 종료될 수 있으며 에이전트 상태가 잘못될 수 있습니다.",
       "copy": "복사",
       "copied": "복사됨",
       "done": "완료",
       "step1Title": "Codex 서버 공유 끄기",
-      "step1Note": "이렇게 하면 Codex 설정이 변경되므로 ORCA 외부에서도 적용됩니다.",
+      "step1Note": "이렇게 하면 Codex 설정이 변경되므로 OCC 외부에서도 적용됩니다.",
       "step2Title": "실행 중인 공유 서버 중지",
       "undo": "되돌리려면 codex features enable daemon_auto_start를 실행하세요.",
       "step2Warning": "서버를 공유하는 열려 있는 Codex 세션을 닫습니다.",
@@ -21020,7 +21020,7 @@
       "stopped": "중지됨",
       "stopFailed": "OCC는 서버를 멈출 수 없었다.",
       "confirmStopTitle": "공유 서버를 중지하시겠습니까?",
-      "confirmStopDescription": "이는 ORCA 외부 세션을 포함하여 이를 공유하는 모든 공개 Codex 세션을 종료합니다.",
+      "confirmStopDescription": "이는 OCC 외부 세션을 포함하여 이를 공유하는 모든 공개 Codex 세션을 종료합니다.",
       "cancel": "취소",
       "runs": "Runs"
     },
@@ -21608,7 +21608,7 @@
       "failed": "확인할 수 없음: 로컬 터미널을 새로 고치지 못했습니다. 마지막으로 관찰된 터미널을 표시합니다.",
       "retry": "다시 시도",
       "loading": "터미널 불러오는 중…",
-      "noLocalOrcaPtys": "로컬 OCC PTY 없음",
+      "noLocalOCCPtys": "로컬 OCC PTY 없음",
       "openNamed": "{{terminal}} 열기",
       "endNamed": "{{terminal}} 종료",
       "endShort": "종료",
@@ -21913,7 +21913,7 @@
       "writerUnavailable": "OCC가 프로필 저장을 시작하지 못했습니다. OCC를 다시 시작하세요. 문제가 계속되면 이 빌드를 복구하거나 다시 설치하세요.",
       "publicationUnavailable": "OCC가 {{directory}}에 프로필 상태를 안전하게 저장하지 못했습니다.",
       "publicationNeedsHardLinks": "이 위치는 하드 링크를 지원해야 하며 OCC에 하드 링크를 만들 권한이 있어야 합니다.",
-      "publicationMoveData": "폴더 권한을 확인하거나 OCC 데이터 디렉터리 전체를 APFS, NTFS, ext4 등 하드 링크를 지원하고 쓰기 가능한 로컬 파일 시스템으로 이동하기 전에 OCC와 orcad를 종료하세요.",
+      "publicationMoveData": "폴더 권한을 확인하거나 OCC 데이터 디렉터리 전체를 APFS, NTFS, ext4 등 하드 링크를 지원하고 쓰기 가능한 로컬 파일 시스템으로 이동하기 전에 OCC와 occd를 종료하세요.",
       "publicationKeepFiles": "원본 디렉터리와 모든 복구 파일을 보관하세요."
     }
   },
@@ -22019,7 +22019,7 @@
       "alreadyPairedAddAgain": "이 서버는 이미 \"{{name}}\"(으)로 페어링되어 있습니다. 연결 정보를 업데이트하려면 설정 > 원격 OCC 서버에서 다시 추가하세요.",
       "alreadyPairedUnreadable": "이 서버는 이미 \"{{name}}\"(으)로 페어링되어 있지만 이 버전의 OCC에서는 저장된 설정을 읽을 수 없습니다.",
       "nameTaken": "\"{{name}}\" 이름의 서버가 이미 있습니다.",
-      "idNeedsNewerOrca": "이 ID의 서버가 더 최신 버전의 OCC가 필요한 형식으로 이미 존재합니다.",
+      "idNeedsNewerOCC": "이 ID의 서버가 더 최신 버전의 OCC가 필요한 형식으로 이미 존재합니다.",
       "hostSaveFailed": "OCC가 호스트를 확인했지만 저장하지 못했습니다. 로컬 설정 저장소를 확인한 후 다시 시도하세요.",
       "repairSaveFailed": "OCC가 서버를 확인했지만 새 페어링을 저장하지 못했습니다. 로컬 설정 저장소를 확인한 후 다시 시도하세요.",
       "repairCloudWorkspace": "이 서버는 클라우드 워크스페이스에 속해 있으며 워크스페이스가 재개되면 다시 페어링됩니다."

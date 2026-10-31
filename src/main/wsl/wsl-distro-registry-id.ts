@@ -1,6 +1,6 @@
 /** Lxss registration GUID survives rename but changes on unregister/reimport, distinguishing replacement distros with reused names. */
-import { runProcess } from '@orca/process-host'
-import { windowsSystem32Binary } from '@orca/process-host/windows-system-binary'
+import { runProcess } from '@occ/process-host'
+import { windowsSystem32Binary } from '@occ/process-host/windows-system-binary'
 
 const LXSS_KEY = 'HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Lxss'
 const REG_QUERY_TIMEOUT_MS = 5_000

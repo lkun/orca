@@ -215,7 +215,7 @@ it('lets the split menu override sidebar width and rotation without remounting p
     choose('Side by side')
     expect(panes().map((p) => p.props.visible)).toEqual([true, true])
     await act(async () => {})
-    expect(stored.get('orca:terminalSplitLayout')).toBe('side-by-side')
+    expect(stored.get('occ:terminalSplitLayout')).toBe('side-by-side')
     act(() => tree.unmount())
     await act(async () => {
       tree = create(createElement(Harness))

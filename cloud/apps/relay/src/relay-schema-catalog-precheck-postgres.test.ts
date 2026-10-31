@@ -5,7 +5,7 @@ import {
   catalogObjectPresence,
   schemaLockTarget,
   takesRelationLock
-} from '@orca-cloud/postgres-schema'
+} from '@occ-cloud/postgres-schema'
 import {
   openRelayDatabase,
   POSTGRES_LOCK_TIMEOUT_MS,
@@ -14,7 +14,7 @@ import {
 } from './database.js'
 
 // IF NOT EXISTS acquires relation locks before checking existence, queueing writers behind boot DDL; prove catalog prechecks avoid it on a real server.
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 const schema = 'relay_schema_precheck_test'
 
@@ -258,7 +258,7 @@ describePostgres('relay boot-time schema against PostgreSQL', () => {
     expect(summary.ran).toBeGreaterThan(0)
     const deferred = warned
       .map((line) => JSON.parse(line) as { event?: string; name?: string })
-      .filter((event) => event.event === 'orca_relay_postgres_schema_object_deferred')
+      .filter((event) => event.event === 'occ_relay_postgres_schema_object_deferred')
     expect(deferred.map((event) => event.name)).toEqual([
       'relay_assignment_activity_expiry',
       'fillfactor=70'

@@ -30,7 +30,7 @@ import {
   createRichMarkdownLiteral
 } from './raw-markdown-html-nodes'
 import {
-  createOrcaDetailsExtensions,
+  createOCCDetailsExtensions,
   getRichMarkdownPlaceholder
 } from './rich-markdown-details-extension'
 import { createMarkdownDocLink } from './rich-markdown-doc-link'
@@ -250,7 +250,7 @@ export function createRichMarkdownExtensions({
     RichMarkdownTaskItem.configure({
       nested: true
     }),
-    ...createOrcaDetailsExtensions(),
+    ...createOCCDetailsExtensions(),
     RichMarkdownTable.configure({
       resizable: false
     }),

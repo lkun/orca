@@ -16,12 +16,12 @@ import { windowsRelayConnectCommand } from './ssh-relay-windows-launch-command'
 import { listRemoteInstallBaseDirsCommand } from '../ssh-remote-commands'
 import { joinRemotePath, type RemoteHostPlatform } from '../ssh-remote-platform'
 import { isNodeRuntimeTarget } from '../../../shared/node-runtime-pin'
-import { orcadNodeRuntimeExecutable } from '../../../shared/orcad-artifacts'
+import { occdNodeRuntimeExecutable } from '../../../shared/occd-artifacts'
 import {
   nodeRuntimeStoreDir,
   remoteNodeRuntimePresentCommand
-} from '../../managed-server/install/orcad-remote-node-runtime'
-import { REMOTE_NODE_RUNTIME_READY } from '../orcad-remote-node-runtime-report'
+} from '../../managed-server/install/occd-remote-node-runtime'
+import { REMOTE_NODE_RUNTIME_READY } from '../occd-remote-node-runtime-report'
 import { resolveRemoteNodePath } from '../ssh-remote-node-resolution'
 
 const MAX_CENSUS_PIPES = 32
@@ -129,7 +129,7 @@ export async function windowsCensusNodePath(
       signal
     }).catch(() => '')
     if (present.trim() === REMOTE_NODE_RUNTIME_READY) {
-      return joinRemotePath(host, runtimeDir, orcadNodeRuntimeExecutable(target))
+      return joinRemotePath(host, runtimeDir, occdNodeRuntimeExecutable(target))
     }
   }
   return resolveRemoteNodePath(conn, host, { signal }).catch(() => null)

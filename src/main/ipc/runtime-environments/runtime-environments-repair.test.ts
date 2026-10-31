@@ -79,7 +79,7 @@ describe('runtimeEnvironments:repairFromPairingCode', () => {
   }
 
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-env-repair-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-env-repair-'))
     getPathMock.mockReturnValue(userDataPath)
     handleMock.mockReset()
     sendRemoteRuntimeRequestMock.mockReset()

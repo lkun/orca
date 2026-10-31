@@ -56,8 +56,8 @@ const VERDICT_MESSAGES = {
 function signWindowsUninstallerViaSignPath(configuration) {
   const paths = {
     filePath: configuration?.path,
-    exportPath: process.env.ORCA_WIN_UNINSTALLER_EXPORT_PATH || undefined,
-    signedPath: process.env.ORCA_WIN_UNINSTALLER_SIGNED_PATH || undefined
+    exportPath: process.env.OCC_WIN_UNINSTALLER_EXPORT_PATH || undefined,
+    signedPath: process.env.OCC_WIN_UNINSTALLER_SIGNED_PATH || undefined
   }
   const verdict = relayNsisUninstaller(paths)
   const message = VERDICT_MESSAGES[verdict]

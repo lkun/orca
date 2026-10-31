@@ -154,7 +154,7 @@ function isAccountBoundState(key: string): boolean {
 }
 
 // Ignore managed hooks to avoid copy/install churn on every launch.
-function settingsWithoutOrcaHooks(value: Record<string, unknown>): string {
+function settingsWithoutOCCHooks(value: Record<string, unknown>): string {
   return JSON.stringify(removeManagedHooks(value, getManagedScriptFileName()).config)
 }
 
@@ -167,7 +167,7 @@ function copySettings(source: string, target: string): ClaudeProfileSurfaceOutco
     input.kind === 'present' &&
     current.kind === 'present' &&
     !lstatIfPresent(target)?.isSymbolicLink() &&
-    settingsWithoutOrcaHooks(input.value) === settingsWithoutOrcaHooks(current.value)
+    settingsWithoutOCCHooks(input.value) === settingsWithoutOCCHooks(current.value)
   ) {
     return 'unchanged'
   }

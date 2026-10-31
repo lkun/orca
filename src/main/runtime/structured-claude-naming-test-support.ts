@@ -80,7 +80,7 @@ export async function createClaudeNamingRuntime(
     deps?: Partial<StructuredAgentSessionRuntimeDeps>
   } = {}
 ) {
-  const root = await mkdtemp(join(tmpdir(), 'orca-claude-naming-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-claude-naming-'))
   const home = join(root, 'claude-home')
   await mkdir(home)
   const nativeId = randomUUID()

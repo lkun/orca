@@ -11,7 +11,7 @@ import {
 import { handlers, mainWindow, setupWorktreeHandlers, store } from './worktrees-test-harness'
 import { mockSelectedWslProjectRuntime } from './worktrees-test-fixtures'
 import { pruneMetadataMissingFromAuthoritativeLocalScan } from './worktrees/listing/authoritative-local-worktree-metadata-pruning'
-import { listDetectedWorktreesForCapturedRepo } from './worktrees/listing/detected-provider-listing'
+import { listDetectedWorktreesFoccpturedRepo } from './worktrees/listing/detected-provider-listing'
 import { getLocalWorktreeScanGeneration } from '../local-worktree-scan-generation'
 import { agentHookServer } from '../agent-hooks/server'
 import { makePaneKey } from '../../shared/stable-pane-id'
@@ -410,7 +410,7 @@ describe('authoritative local worktree metadata pruning integration', () => {
       )
       listWorktreesMock.mockResolvedValue([worktree(REPO_PATH)])
 
-      const pending = listDetectedWorktreesForCapturedRepo(
+      const pending = listDetectedWorktreesFoccpturedRepo(
         store as never,
         store.getRepo(REPO_ID) as never,
         () => callerCurrent

@@ -5,7 +5,7 @@ const MAX_TIMESTAMP_SKEW_SECONDS = 5 * 60
 // The portal shows the application's Ed25519 public key as 64 hex characters.
 export function decodeDiscordPublicKey(hex: string): KeyObject {
   if (!/^[0-9a-f]{64}$/i.test(hex)) {
-    throw new Error('ORCA_CONNECTOR_DISCORD_PUBLIC_KEY must be 64 hex characters')
+    throw new Error('OCC_CONNECTOR_DISCORD_PUBLIC_KEY must be 64 hex characters')
   }
   return createPublicKey({
     key: { kty: 'OKP', crv: 'Ed25519', x: Buffer.from(hex, 'hex').toString('base64url') },

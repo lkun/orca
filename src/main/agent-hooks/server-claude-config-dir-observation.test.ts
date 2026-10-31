@@ -24,7 +24,7 @@ afterEach(() => {
 })
 
 it('records the Claude config folder from Claude hooks only, not same-layout CodeBuddy hooks', async () => {
-  root = mkdtempSync(join(tmpdir(), 'orca-claude-observed-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-claude-observed-'))
   const transcript = (home: string) => {
     mkdirSync(join(root!, home, 'projects', '-repo'), { recursive: true })
     return join(root!, home, 'projects', '-repo', 'id.jsonl')
@@ -32,7 +32,7 @@ it('records the Claude config folder from Claude hooks only, not same-layout Cod
   const dirs = new ClaudeObservedConfigDirs(join(root, 'observed.json'), () => ({}))
   installClaudeObservedConfigDirs(dirs)
   server = new AgentHookServer()
-  await server.start({ env: 'production', userDataPath: join(root, 'orca') })
+  await server.start({ env: 'production', userDataPath: join(root, 'occ') })
   const post = (path: string, transcriptPath: string, paneKey = PANE) =>
     postHookEvent(
       server!,

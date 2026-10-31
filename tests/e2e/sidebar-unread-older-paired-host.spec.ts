@@ -4,7 +4,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   launchHeadlessPairedRuntimeHost,
   type HeadlessPairedRuntimeHost
@@ -14,7 +14,7 @@ import { SIDEBAR_INPUTS_BUILD } from './helpers/sidebar-inputs-build'
 
 test.skip(
   !SIDEBAR_INPUTS_BUILD,
-  'the window defers the unread flag to its host only in an ORCA_SIDEBAR_INPUTS=main build'
+  'the window defers the unread flag to its host only in an OCC_SIDEBAR_INPUTS=main build'
 )
 
 const ReposSchema = z.object({
@@ -27,12 +27,12 @@ const WorktreeSchema = z.object({
 async function launchHost(olderHost: boolean): Promise<HeadlessPairedRuntimeHost> {
   // The serve process copies this env at launch; the desktop launched after must not see it.
   if (olderHost) {
-    process.env.ORCA_E2E_OLDER_UNREAD_HOST = '1'
+    process.env.OCC_E2E_OLDER_UNREAD_HOST = '1'
   }
   try {
     return await launchHeadlessPairedRuntimeHost({ pairingScope: 'runtime' })
   } finally {
-    delete process.env.ORCA_E2E_OLDER_UNREAD_HOST
+    delete process.env.OCC_E2E_OLDER_UNREAD_HOST
   }
 }
 

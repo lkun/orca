@@ -6,7 +6,7 @@ import { createRequire } from 'node:module'
 import { createServer } from 'node:net'
 import { tmpdir } from 'node:os'
 import { delimiter, dirname, join, resolve } from 'node:path'
-import { runProcess, spawnProcess } from '@orca/process-host'
+import { runProcess, spawnProcess } from '@occ/process-host'
 import { expect, it } from 'vitest'
 import { z } from 'zod'
 import { DATA_ACCOUNT_RUNTIME_CAPABILITY } from '../shared/account-runtime-capabilities'
@@ -29,7 +29,7 @@ async function accountFixture() {
     .object({ bin: z.object({ bun: z.string() }) })
     .parse(JSON.parse(readFileSync(manifest, 'utf8')))
   const program = join(dirname(manifest), bin.bun)
-  const root = mkdtempSync(join(tmpdir(), 'orca-account-process-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-account-process-'))
   const tools = join(root, 'bin')
   mkdirSync(tools)
   const eventsPath = join(root, 'events.jsonl')
@@ -80,7 +80,7 @@ async function accountFixture() {
   })
   await new Promise<void>((ready) => server.listen(endpoint, ready))
   writeFileSync(
-    join(root, 'orca-runtime.json'),
+    join(root, 'occ-runtime.json'),
     JSON.stringify({
       runtimeId: 'fixture-host',
       pid: process.pid,
@@ -147,14 +147,14 @@ if (probe && name === 'opencode2' && mode.lifecycle) {
   }
   const env = {
     ...Object.fromEntries(
-      'HOME USERPROFILE APPDATA LOCALAPPDATA XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME ORCA_E2E_HOME_DIR ORCA_E2E_USER_DATA_DIR ORCA_USER_DATA_PATH TEMP TMP TMPDIR'
+      'HOME USERPROFILE APPDATA LOCALAPPDATA XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME OCC_E2E_HOME_DIR OCC_E2E_USER_DATA_DIR OCC_USER_DATA_PATH TEMP TMP TMPDIR'
         .split(' ')
         .map((key) => [key, root])
     ),
     CODEX_HOME: join(root, 'codex'),
     CLAUDE_CONFIG_DIR: join(root, 'claude'),
-    ORCA_BACKGROUND_LAUNCH: '1',
-    ORCA_DISABLE_MACOS_LOGIN_SHELL: '1',
+    OCC_BACKGROUND_LAUNCH: '1',
+    OCC_DISABLE_MACOS_LOGIN_SHELL: '1',
     PATH: tools + delimiter + dirname(process.execPath),
     SystemRoot: process.env.SystemRoot,
     ComSpec: process.env.ComSpec

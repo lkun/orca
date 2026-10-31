@@ -11,7 +11,7 @@ import type { CompatVerdict } from '../transport/protocol-compat'
 import type { MobileWebBundleCompatVerdict } from '../transport/mobile-web-bundle-compat'
 import type { PageRouteRefusalVerdict } from '../mobile-web-shell/page-route-policy'
 
-const RELEASES_URL = 'https://github.com/stablyai/orca/releases'
+const RELEASES_URL = 'https://github.com/stablyai/occ/releases'
 const IOS_APP_STORE_URL = 'itms-apps://apps.apple.com/app/occ-ide/id6766130217'
 
 // Protocol/bundle/page-route walls are terminal: no native workspace fallback; update the relevant app or bundle.

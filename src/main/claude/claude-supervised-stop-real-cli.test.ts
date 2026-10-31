@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
 import { afterEach, describe, expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { resolveSessionFilePath } from '../native-chat/session-file-resolver'
 import { SUPERVISED_GRACEFUL_EXIT_MS } from './claude-child-exit-proof-ladder'
 import { claudeConfigDirEnvPatch } from './claude-config-dir-pin'
@@ -17,15 +17,15 @@ import {
   claudeStructuredPermissionOptions
 } from './claude-structured-launch-resolution'
 
-// Opt-in spends real turns; ORCA_REAL_CLAUDE_SETTINGS supports auth outside the Claude home.
-const CLAUDE_BIN = process.env.ORCA_REAL_CLAUDE_BIN ?? ''
+// Opt-in spends real turns; OCC_REAL_CLAUDE_SETTINGS supports auth outside the Claude home.
+const CLAUDE_BIN = process.env.OCC_REAL_CLAUDE_BIN ?? ''
 const enabled =
-  process.env.ORCA_REAL_CLAUDE_SUPERVISED_STOP === '1' &&
+  process.env.OCC_REAL_CLAUDE_SUPERVISED_STOP === '1' &&
   process.platform !== 'win32' &&
   CLAUDE_BIN.length > 0
-const FRAMES_OUT = process.env.ORCA_REAL_CLAUDE_FRAMES_OUT
+const FRAMES_OUT = process.env.OCC_REAL_CLAUDE_FRAMES_OUT
 const home = realClaudeLaunchHome()
-const TOOL_MARKER = 'orca_supervised_stop_probe'
+const TOOL_MARKER = 'occ_supervised_stop_probe'
 const TOOL_PROMPT = `Use the Bash tool to run exactly this command, with no timeout argument, and nothing else: python3 -c "import time; time.sleep(120)  # ${TOOL_MARKER}"`
 
 type Frame = { at: number; message: Record<string, unknown> }
@@ -81,7 +81,7 @@ async function until<T>(read: () => Promise<T | null> | T | null, what: string, 
 }
 
 async function open(sessionId: string, cwd: string, resume: boolean, frames: Frame[]) {
-  const settings = process.env.ORCA_REAL_CLAUDE_SETTINGS
+  const settings = process.env.OCC_REAL_CLAUDE_SETTINGS
   const permission = claudeStructuredPermissionOptions('full-access')
   const connection = await openClaudeStreamJsonConnection(
     {
@@ -188,7 +188,7 @@ describe.runIf(enabled)('real Claude stopped through the POSIX supervisor', () =
   it.each<StopCase>(['close mid-tool', 'SIGTERM to the supervisor mid-tool', 'close while idle'])(
     '%s: stops Claude and its tool, keeps the transcript line-atomic, and resumes',
     async (stopCase) => {
-      const cwd = mkdtempSync(join(tmpdir(), 'orca-real-claude-stop-'))
+      const cwd = mkdtempSync(join(tmpdir(), 'occ-real-claude-stop-'))
       tempDirs.push(cwd)
       const sessionId = randomUUID()
       const frames: Frame[] = []

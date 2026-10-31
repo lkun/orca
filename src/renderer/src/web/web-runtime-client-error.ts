@@ -29,7 +29,7 @@ function webRuntimeAuthFailureMessage(reason: WebRuntimeAuthFailureReason): stri
     case 'insecure-origin':
       return translate(
         'auto.web.runtimeAuth.insecureOrigin',
-        'OCC refused to pair from this page: it is plain http on another machine, so anyone on the network path could replace it and take the pairing code. Open the web client over https, at localhost on this computer, or through an SSH tunnel. To allow it anyway, the server operator can restart OCC with ORCA_ALLOW_INSECURE_WEB_PAIRING=1.'
+        'OCC refused to pair from this page: it is plain http on another machine, so anyone on the network path could replace it and take the pairing code. Open the web client over https, at localhost on this computer, or through an SSH tunnel. To allow it anyway, the server operator can restart OCC with OCC_ALLOW_INSECURE_WEB_PAIRING=1.'
       )
     case 'device-downgraded':
       return translate(

@@ -1,4 +1,4 @@
-// Set synchronously once the host commits to shutting down (Electron will-quit, orcad shutdown admission).
+// Set synchronously once the host commits to shutting down (Electron will-quit, occd shutdown admission).
 let hostShuttingDown = false
 
 export function markHostShuttingDown(): void {

@@ -38,7 +38,7 @@ vi.mock('../claude/claude-cli-flag-prewarm', () => ({
 
 const layoutOwner = vi.hoisted(() => ({ main: false }))
 vi.mock('../../shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return layoutOwner.main
   }
 }))
@@ -308,7 +308,7 @@ it.each([false, true])(
   }
 )
 
-it('first orcad status client uses the pre-snapshot capture through install-first and admission reuse', async () => {
+it('first occd status client uses the pre-snapshot capture through install-first and admission reuse', async () => {
   const profile = await authorityProfile([G, B])
   const runtime = new AuthorityRuntime(profile.profile)
   replaceSaved(profile, [])
@@ -324,7 +324,7 @@ it('first orcad status client uses the pre-snapshot capture through install-firs
   try {
     await dispatcher.dispatchStreaming(
       {
-        id: 'first-orcad',
+        id: 'first-occd',
         authToken: 'token',
         method: 'agentSession.subscribeStatus',
         params: null

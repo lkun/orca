@@ -2,12 +2,12 @@
 ; install's command directory from the user PATH and keep every other entry byte-for-byte.
 ; Native registry calls only: no PowerShell or reg.exe at uninstall (Windows EDR rules).
 
-!define ORCA_HKEY_CURRENT_USER 0x80000001
-!define ORCA_KEY_QUERY_VALUE 0x20019
-!define ORCA_REG_SZ 1
-!define ORCA_REG_EXPAND_SZ 2
+!define OCC_HKEY_CURRENT_USER 0x80000001
+!define OCC_KEY_QUERY_VALUE 0x20019
+!define OCC_REG_SZ 1
+!define OCC_REG_EXPAND_SZ 2
 
-!macro ORCA_REMOVE_USER_PATH_ENTRY DIR
+!macro OCC_REMOVE_USER_PATH_ENTRY DIR
   Push $R0
   Push $R1
   Push $R2
@@ -27,7 +27,7 @@
   ${andIf} $R1 < $R2
     ; Read the value type so an expandable PATH stays expandable; an unknown type skips the edit.
     StrCpy $R8 ""
-    System::Call 'advapi32::RegOpenKeyEx(p ${ORCA_HKEY_CURRENT_USER}, t "Environment", i 0, i ${ORCA_KEY_QUERY_VALUE}, *p .R6) i .R7'
+    System::Call 'advapi32::RegOpenKeyEx(p ${OCC_HKEY_CURRENT_USER}, t "Environment", i 0, i ${OCC_KEY_QUERY_VALUE}, *p .R6) i .R7'
     ${if} $R7 == 0
       System::Call 'advapi32::RegQueryValueEx(p R6, t "Path", p 0, *i .R4, p 0, p 0) i .R7'
       System::Call 'advapi32::RegCloseKey(p R6)'
@@ -68,9 +68,9 @@
     ${andIf} $R8 != ""
       ${if} $R3 == ""
         DeleteRegValue HKCU "Environment" "Path"
-      ${elseIf} $R8 == ${ORCA_REG_EXPAND_SZ}
+      ${elseIf} $R8 == ${OCC_REG_EXPAND_SZ}
         WriteRegExpandStr HKCU "Environment" "Path" $R3
-      ${elseIf} $R8 == ${ORCA_REG_SZ}
+      ${elseIf} $R8 == ${OCC_REG_SZ}
         WriteRegStr HKCU "Environment" "Path" $R3
       ${endIf}
       ; Tell Explorer, so new shells stop seeing the removed entry.

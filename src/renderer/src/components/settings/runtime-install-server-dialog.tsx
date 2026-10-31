@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { toast } from 'sonner'
-import type { ManagedOrcadPreloadApi } from '../../../../preload/api/managed-orcad-api'
+import type { ManagedOCCdPreloadApi } from '../../../../preload/api/managed-occd-api'
 import type { SshTarget } from '../../../../shared/ssh-types'
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { translate } from '@/i18n/i18n'
@@ -22,7 +22,7 @@ import { SshTargetSelect } from './SshTargetSelect'
 
 type RuntimeInstallServerDialogProps = {
   open: boolean
-  api: ManagedOrcadPreloadApi
+  api: ManagedOCCdPreloadApi
   emptyTargets: SshTarget[]
   loadFailed: boolean
   onOpenChange: (open: boolean) => void

@@ -5,8 +5,8 @@ export const ROWS = 24
 // Sample must reach host chunker’s measured 48KiB size.
 export const MIN_STREAM_BYTES = 48 * 1024
 // Repeat run marker at both edges so readback proves entire stream reached buffer.
-export const FIRST_MARKER = 'ORCA-TERMINAL-RENDER-FIRST'
-export const LAST_MARKER = 'ORCA-TERMINAL-RENDER-LAST'
+export const FIRST_MARKER = 'OCC-TERMINAL-RENDER-FIRST'
+export const LAST_MARKER = 'OCC-TERMINAL-RENDER-LAST'
 
 // Generate grid-dependent escape-dense 48KiB+ sample; sizing solely from cap under test would be circular.
 export function escapeDenseStream() {
@@ -42,18 +42,18 @@ export default function TerminalProbeRoute() {
   const frameRef = useRef({ width: 0, height: 0 })
   const [mounted, setMounted] = useState(true)
   const onSelectionCopy = useCallback((text) => {
-    globalThis.__orcaTerminalCopied = text
+    globalThis.__occTerminalCopied = text
   }, [])
   const onWebReady = useCallback(() => {
-    globalThis.__orcaTerminalReady = true
+    globalThis.__occTerminalReady = true
   }, [])
   const onEngineError = useCallback((message) => {
-    globalThis.__orcaTerminalEngineErrors.push(message)
+    globalThis.__occTerminalEngineErrors.push(message)
   }, [])
   useEffect(() => {
-    globalThis.__orcaTerminalEngineErrors = globalThis.__orcaTerminalEngineErrors ?? []
-    globalThis.__orcaTerminalBeforeInput = []
-    globalThis.__orcaTerminalProbe = {
+    globalThis.__occTerminalEngineErrors = globalThis.__occTerminalEngineErrors ?? []
+    globalThis.__occTerminalBeforeInput = []
+    globalThis.__occTerminalProbe = {
       init: (cols, rows, initialData) =>
         handleRef.current?.init({ cols, rows, initialData, oscLinks: [], frame: frameRef.current }),
       write: (data) => handleRef.current?.write(data),
@@ -63,7 +63,7 @@ export default function TerminalProbeRoute() {
       setMounted: (next) => setMounted(next)
     }
     const onBeforeInput = (event) => {
-      globalThis.__orcaTerminalBeforeInput.push({
+      globalThis.__occTerminalBeforeInput.push({
         inputType: event.inputType,
         data: event.data === null ? null : String(event.data),
         isComposing: !!event.isComposing
@@ -102,7 +102,7 @@ export default function TerminalProbeRoute() {
 export const CONTROL_SOURCE = `import { View } from 'react-native'
 
 export default function ControlRoute() {
-  globalThis.__orcaTerminalControlMounted = true
+  globalThis.__occTerminalControlMounted = true
   return <View testID="terminal-control" />
 }
 `

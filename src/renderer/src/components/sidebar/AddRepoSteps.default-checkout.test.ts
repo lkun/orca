@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
     repos: [] as Repo[],
     projects: [],
     projectHostSetups: [],
-    clearOrcaHookTrustForRepo: vi.fn(),
+    clearOCCHookTrustForRepo: vi.fn(),
     openModal: vi.fn(),
     sshStateByEnvironment: new Map()
   },

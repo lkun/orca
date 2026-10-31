@@ -22,8 +22,8 @@ const root = fileURLToPath(new URL('../..', import.meta.url))
 const output = path.join(root, '.build/preflight-benchmark')
 const reportName = parityOnly ? 'compiler-parity' : 'compilers'
 mkdirSync(output, { recursive: true })
-const bun = process.env.ORCA_BENCHMARK_BUN ?? 'bun'
-const env = { ...process.env, ORCA_BACKGROUND_LAUNCH: '1', GOMAXPROCS: '4' }
+const bun = process.env.OCC_BENCHMARK_BUN ?? 'bun'
+const env = { ...process.env, OCC_BACKGROUND_LAUNCH: '1', GOMAXPROCS: '4' }
 const report = {
   sourceSha: process.env.GITHUB_SHA ?? null,
   host: {

@@ -37,7 +37,7 @@ export function structuredAgentStartJournal(
     }
     const { journal } = await conversation(sessionId)
     const identity = {
-      provider: 'orca' as const,
+      provider: 'occ' as const,
       clientMessageId: `agent-start:${body.dispatchId}`
     }
     await journal.appendResolvedItem(

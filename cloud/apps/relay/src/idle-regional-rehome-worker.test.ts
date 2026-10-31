@@ -119,7 +119,7 @@ describe('idle regional worker dispatch', () => {
       await c.worker.run()
       expect(fetch).toHaveBeenCalledOnce()
       expect(warning).toHaveBeenCalledWith(
-        expect.stringContaining('"event":"orca_relay_idle_rehome_request_failed"')
+        expect.stringContaining('"event":"occ_relay_idle_rehome_request_failed"')
       )
       expect(warning).toHaveBeenCalledWith(expect.stringContaining('"outcomes":{"failed":1}'))
       expect(c.recordRegionalRehomeDispatchFailure).not.toHaveBeenCalled()

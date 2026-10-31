@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import * as loginShell from '../startup/login-shell-environment'
-import type * as runProcessModule from '@orca/process-host'
+import type * as runProcessModule from '@occ/process-host'
 import {
   __resetPersistedWindowsPathCacheForTests,
   readPersistedWindowsPathSegmentsAsync
@@ -21,7 +21,7 @@ const { runProcessMock, spawnProcessMock } = vi.hoisted(() => ({
   spawnProcessMock: vi.fn()
 }))
 
-vi.mock('@orca/process-host', async (importOriginal) => {
+vi.mock('@occ/process-host', async (importOriginal) => {
   const real = await importOriginal<typeof runProcessModule>()
   return {
     ...real,
@@ -56,7 +56,7 @@ function fakePowerShell(spec: { env: NodeJS.ProcessEnv }, failed = false): Event
     if (!failed) {
       stdout.emit(
         'data',
-        Buffer.from(`__ORCA_LOGIN_SHELL_ENV_START__${printed}__ORCA_LOGIN_SHELL_ENV_END__`)
+        Buffer.from(`__OCC_LOGIN_SHELL_ENV_START__${printed}__OCC_LOGIN_SHELL_ENV_END__`)
       )
     }
     child.emit('close', failed ? 1 : 0)
@@ -73,7 +73,7 @@ async function withSimulatedWindowsServer(
   const platform = Object.getOwnPropertyDescriptor(process, 'platform')
   Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
   __setWindowsPathRegistryLoaderForTests(() => {
-    throw new Error('Cannot find module @orca/windows-registry')
+    throw new Error('Cannot find module @occ/windows-registry')
   })
   runProcessMock.mockImplementation(async ({ args }: { args: string[] }) => {
     const key = args[1] ?? ''
@@ -121,7 +121,7 @@ const shellEnv = {
   UNSET: undefined
 }
 
-const processEnv = { PATH: '/orca/bin', HOME: '/home/me', ORCA_USER_DATA_PATH: '/orca' }
+const processEnv = { PATH: '/occ/bin', HOME: '/home/me', OCC_USER_DATA_PATH: '/occ' }
 
 describe('structuredAgentBaseEnvironment', () => {
   it('is the whole shell snapshot, and nothing else, when inheriting all', () => {
@@ -153,7 +153,7 @@ describe('structuredAgentBaseEnvironment', () => {
     ).toEqual({
       PATH: '/shell/bin',
       HOME: '/home/me',
-      ORCA_USER_DATA_PATH: '/orca',
+      OCC_USER_DATA_PATH: '/occ',
       LANG: 'en_US.UTF-8',
       SSH_AUTH_SOCK: '/tmp/agent.sock',
       CODEX_LB_API_KEY: 'lb-key'
@@ -165,7 +165,7 @@ describe('structuredAgentBaseEnvironment', () => {
       structuredAgentBaseEnvironment({
         shellEnv: { PATH: 'C:\\shell', codex_lb_api_key: 'lb-key' },
         policy: { inheritAll: false, names: ['CODEX_LB_API_KEY'] },
-        processEnv: { Path: 'C:\\orca', USERPROFILE: 'C:\\Users\\me' },
+        processEnv: { Path: 'C:\\occ', USERPROFILE: 'C:\\Users\\me' },
         platform: 'win32'
       })
     ).toEqual({ PATH: 'C:\\shell', USERPROFILE: 'C:\\Users\\me', codex_lb_api_key: 'lb-key' })
@@ -333,7 +333,7 @@ describe('createStructuredAgentEnvironmentResolvers', () => {
   it.skipIf(process.platform === 'win32')(
     'keeps the last good snapshot when a later login-shell capture fails',
     async () => {
-      const dir = await mkdtemp(join(tmpdir(), 'orca-structured-shell-env-'))
+      const dir = await mkdtemp(join(tmpdir(), 'occ-structured-shell-env-'))
       const counter = join(dir, 'count')
       const shell = join(dir, 'shell.sh')
       // Run 1 has the profile PATH, run 2 fails like a timed-out or broken profile, later runs succeed.
@@ -343,7 +343,7 @@ describe('createStructuredAgentEnvironmentResolvers', () => {
           '#!/bin/sh',
           `n=$(cat '${counter}' 2>/dev/null || echo 0); n=$((n+1)); echo $n > '${counter}'`,
           'case $n in 1) p=/profile/A ;; 2) exit 1 ;; *) p=/profile/B ;; esac',
-          'printf \'\\000__ORCA_LOGIN_SHELL_ENV_START__\\000PATH=%s\\000\\000__ORCA_LOGIN_SHELL_ENV_END__\\000\' "$p"',
+          'printf \'\\000__OCC_LOGIN_SHELL_ENV_START__\\000PATH=%s\\000\\000__OCC_LOGIN_SHELL_ENV_END__\\000\' "$p"',
           ''
         ].join('\n')
       )
@@ -383,7 +383,7 @@ describe('createStructuredAgentEnvironmentResolvers', () => {
   it.skipIf(process.platform === 'win32')(
     'shares the login-shell run an earlier reader started instead of running the shell again',
     async () => {
-      const dir = await mkdtemp(join(tmpdir(), 'orca-structured-shell-runs-'))
+      const dir = await mkdtemp(join(tmpdir(), 'occ-structured-shell-runs-'))
       const counter = join(dir, 'count')
       const shell = join(dir, 'shell.sh')
       await writeFile(
@@ -391,7 +391,7 @@ describe('createStructuredAgentEnvironmentResolvers', () => {
         [
           '#!/bin/sh',
           `echo run >> '${counter}'`,
-          "printf '\\000__ORCA_LOGIN_SHELL_ENV_START__\\000PATH=/profile/bin\\000\\000__ORCA_LOGIN_SHELL_ENV_END__\\000'",
+          "printf '\\000__OCC_LOGIN_SHELL_ENV_START__\\000PATH=/profile/bin\\000\\000__OCC_LOGIN_SHELL_ENV_END__\\000'",
           ''
         ].join('\n')
       )
@@ -422,7 +422,7 @@ describe('createStructuredAgentEnvironmentResolvers', () => {
   it.skipIf(process.platform === 'win32')(
     'retries a launch on a shell run started after it looked, not on one that predates an install',
     async () => {
-      const dir = await mkdtemp(join(tmpdir(), 'orca-structured-shell-install-'))
+      const dir = await mkdtemp(join(tmpdir(), 'occ-structured-shell-install-'))
       const [counter, pathFile, hold, shell] = ['count', 'path', 'hold', 'shell.sh'].map((name) =>
         join(dir, name)
       )
@@ -433,7 +433,7 @@ describe('createStructuredAgentEnvironmentResolvers', () => {
           '#!/bin/sh',
           `echo run >> '${counter}'; n=$(wc -l < '${counter}'); p=$(cat '${pathFile}')`,
           `if [ $n -eq 2 ]; then while [ -f '${hold}' ]; do sleep 0.02; done; fi`,
-          'printf \'\\000__ORCA_LOGIN_SHELL_ENV_START__\\000PATH=%s\\000\\000__ORCA_LOGIN_SHELL_ENV_END__\\000\' "$p"',
+          'printf \'\\000__OCC_LOGIN_SHELL_ENV_START__\\000PATH=%s\\000\\000__OCC_LOGIN_SHELL_ENV_END__\\000\' "$p"',
           ''
         ].join('\n')
       )
@@ -481,7 +481,7 @@ describe('createStructuredAgentEnvironmentResolvers', () => {
   it.skipIf(process.platform === 'win32')(
     'holds a miss for at most one shell timeout when the login shell hangs, keeping the snapshot',
     async () => {
-      const dir = await mkdtemp(join(tmpdir(), 'orca-structured-shell-hang-'))
+      const dir = await mkdtemp(join(tmpdir(), 'occ-structured-shell-hang-'))
       const [counter, shell] = ['count', 'shell.sh'].map((name) => join(dir, name))
       // Run 1 answers; every later run hangs, as a profile stuck on a prompt does.
       await writeFile(
@@ -490,7 +490,7 @@ describe('createStructuredAgentEnvironmentResolvers', () => {
           '#!/bin/sh',
           `echo run >> '${counter}'; n=$(wc -l < '${counter}')`,
           'if [ $n -gt 1 ]; then exec sleep 30; fi',
-          "printf '\\000__ORCA_LOGIN_SHELL_ENV_START__\\000PATH=/profile/A\\000\\000__ORCA_LOGIN_SHELL_ENV_END__\\000'",
+          "printf '\\000__OCC_LOGIN_SHELL_ENV_START__\\000PATH=/profile/A\\000\\000__OCC_LOGIN_SHELL_ENV_END__\\000'",
           ''
         ].join('\n')
       )

@@ -44,8 +44,8 @@ vi.mock('node:fs/promises', async (importOriginal) => {
 // Isolate userData so session backfill cannot resolve the live managed home.
 let userDataRoot: string
 beforeEach(() => {
-  userDataRoot = mkdtempSync(join(tmpdir(), 'orca-codex-resume-user-data-'))
-  vi.stubEnv('ORCA_USER_DATA_PATH', userDataRoot)
+  userDataRoot = mkdtempSync(join(tmpdir(), 'occ-codex-resume-user-data-'))
+  vi.stubEnv('OCC_USER_DATA_PATH', userDataRoot)
 })
 afterEach(() => {
   vi.unstubAllEnvs()
@@ -60,7 +60,7 @@ describe('prepareLegacySharedCodexSessionResume', () => {
 
   beforeEach(() => {
     lstatFaults.reset()
-    root = mkdtempSync(join(tmpdir(), 'orca-legacy-codex-resume-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-legacy-codex-resume-'))
     legacyHome = join(root, 'codex-runtime-home', 'home')
     systemHome = join(root, 'real-codex-home')
     rolloutPath = join(
@@ -209,7 +209,7 @@ describe('per-account resume repin', () => {
   )
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-codex-account-repin-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-codex-account-repin-'))
     peerHome = join(root, 'codex-accounts', '11111111-aaaa-4aaa-8aaa-111111111111', 'home')
     selectedHome = join(root, 'codex-accounts', '99999999-bbbb-4bbb-8bbb-999999999999', 'home')
     recordedRolloutPath = join(selectedHome, rolloutRelativePath)
@@ -332,7 +332,7 @@ describe('per-account resume repin', () => {
 
   it('does not consult the host selection while resuming a WSL account session', async () => {
     const wslHome =
-      '\\\\wsl.localhost\\Ubuntu\\home\\me\\.local\\share\\orca\\codex-accounts\\account-1\\home'
+      '\\\\wsl.localhost\\Ubuntu\\home\\me\\.local\\share\\occ\\codex-accounts\\account-1\\home'
     const result = await prepareLegacySharedCodexSessionResume(
       {
         agent: 'codex',

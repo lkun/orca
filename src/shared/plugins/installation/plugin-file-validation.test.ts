@@ -11,28 +11,28 @@ const VALID_RELEASE = {
   commit: 'a'.repeat(40),
   contentHash: 'b'.repeat(64),
   execution: 'data',
-  minimumOrca: '1.4.0',
+  minimumOCC: '1.4.0',
   types: ['syntax']
 }
 
 describe('validatePluginFile', () => {
   it('passes valid files and reports manifest errors', () => {
-    expect(validatePluginFile('orca-plugin.json', v2ManifestFixture())).toEqual([])
+    expect(validatePluginFile('occ-plugin.json', v2ManifestFixture())).toEqual([])
     expect(
-      validatePluginFile('orca-catalog.json', catalogFixture([catalogEntryFixture()]))
+      validatePluginFile('occ-catalog.json', catalogFixture([catalogEntryFixture()]))
     ).toEqual([])
     expect(
-      validatePluginFile('orca-plugin.json', v2ManifestFixture({ engines: { orca: '>=1.0.0' } }))
-    ).toEqual([expect.stringContaining('engines.orca: must be at least')])
+      validatePluginFile('occ-plugin.json', v2ManifestFixture({ engines: { occ: '>=1.0.0' } }))
+    ).toEqual([expect.stringContaining('engines.occ: must be at least')])
   })
 
   it('warns, never fails, about a deprecated manifest publisher', () => {
-    expect(validatePluginFile('orca-plugin.json', v2ManifestFixture())).toEqual([])
+    expect(validatePluginFile('occ-plugin.json', v2ManifestFixture())).toEqual([])
     expect(pluginManifestWarnings(v2ManifestFixture())).toEqual([
       expect.stringContaining('publisher is deprecated and ignored')
     ])
     const { publisher: _publisher, ...withoutPublisher } = v2ManifestFixture({
-      engines: { orca: '>=9.0.0' }
+      engines: { occ: '>=9.0.0' }
     })
     expect(pluginManifestWarnings(withoutPublisher)).toEqual([])
   })
@@ -40,7 +40,7 @@ describe('validatePluginFile', () => {
   it('accepts a catalog entry carrying the owner id', () => {
     expect(
       validatePluginFile(
-        'orca-catalog.json',
+        'occ-catalog.json',
         catalogFixture([catalogEntryFixture({ ownerId: 42 })])
       )
     ).toEqual([])
@@ -48,7 +48,7 @@ describe('validatePluginFile', () => {
 
   it('turns every runtime repair of a catalog into an error', () => {
     const errors = validatePluginFile(
-      'orca-catalog.json',
+      'occ-catalog.json',
       catalogFixture([
         catalogEntryFixture({ categories: ['syntax', 'syntax'], description: 5 }),
         catalogEntryFixture(),
@@ -70,14 +70,14 @@ describe('validatePluginFile', () => {
 
   it('refuses publishers that are or imitate a reserved name', () => {
     expect(
-      validatePluginFile('orca-plugin.json', v2ManifestFixture({ publisher: 'orca-team' }))
-    ).toEqual(['publisher: "orca-team" is reserved for official OCC plugins; use your own name'])
+      validatePluginFile('occ-plugin.json', v2ManifestFixture({ publisher: 'occ-team' }))
+    ).toEqual(['publisher: "occ-team" is reserved for official OCC plugins; use your own name'])
     expect(
-      validatePluginFile('orca-plugin.json', v2ManifestFixture({ publisher: 'stablyai' }))
+      validatePluginFile('occ-plugin.json', v2ManifestFixture({ publisher: 'stablyai' }))
     ).toEqual([])
     expect(
       validatePluginFile(
-        'orca-catalog.json',
+        'occ-catalog.json',
         catalogFixture([catalogEntryFixture({ id: 'openai.x' })])
       )
     ).toEqual([expect.stringContaining('plugins[0].id: publisher "openai" is reserved')])
@@ -85,7 +85,7 @@ describe('validatePluginFile', () => {
 
   it('refuses a newer catalog format', () => {
     expect(
-      validatePluginFile('orca-catalog.json', { ...catalogFixture([]), catalogVersion: 3 })
+      validatePluginFile('occ-catalog.json', { ...catalogFixture([]), catalogVersion: 3 })
     ).toEqual(['uses catalog format 3; update OCC to browse this catalog'])
   })
 
@@ -144,7 +144,7 @@ describe('validatePluginFile', () => {
         }
       )
     ])
-    expect(validatePluginFile('orca-catalog.json', catalog, (path) => files[path] ?? null)).toEqual(
+    expect(validatePluginFile('occ-catalog.json', catalog, (path) => files[path] ?? null)).toEqual(
       [
         'plugins[0].releases[0].images.icon: is 512×512, not 256×256',
         'plugins[0].releases[0].images.cover: sha256 does not match assets/cover.png',

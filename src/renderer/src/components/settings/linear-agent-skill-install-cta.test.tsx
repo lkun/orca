@@ -48,14 +48,14 @@ let container: HTMLDivElement | null = null
 function discoveredSkill(overrides: Partial<DiscoveredSkill>): DiscoveredSkill {
   return {
     id: 'skill-1',
-    name: 'orca-linear',
+    name: 'occ-linear',
     description: null,
     providers: ['agent-skills'],
     sourceKind: 'home',
     sourceLabel: 'Agent skills home',
     rootPath: '/Users/test/.agents/skills',
-    directoryPath: '/Users/test/.agents/skills/orca-linear',
-    skillFilePath: '/Users/test/.agents/skills/orca-linear/SKILL.md',
+    directoryPath: '/Users/test/.agents/skills/occ-linear',
+    skillFilePath: '/Users/test/.agents/skills/occ-linear/SKILL.md',
     installed: true,
     updatedAt: null,
     ...overrides
@@ -133,7 +133,7 @@ describe('LinearAgentSkillInstallCta', () => {
     mocks.agentRuntime = { runtime: 'wsl', wslDistro: 'Debian', label: 'WSL Debian' }
     const rendered = await renderCta()
     expect(rendered.textContent).toContain(
-      `npx skills@1.7.2 add https://github.com/stablyai/orca/tree/${'0'.repeat(40)} --skill orca-linear --global`
+      `npx skills@1.7.2 add https://github.com/stablyai/occ/tree/${'0'.repeat(40)} --skill occ-linear --global`
     )
     expect(rendered.textContent).not.toContain('Install skill')
     expect(mocks.plan).not.toHaveBeenCalled()

@@ -39,7 +39,7 @@ export function clearSshCredentialDeclined(targetId: string): void {
 
 /** Explicit managed-server connect also signs into its SSH host. */
 export function clearSshCredentialDeclinedForEnvironment(
-  environment: Pick<KnownRuntimeEnvironment, 'orcadDeployment' | 'sshAccess'>
+  environment: Pick<KnownRuntimeEnvironment, 'occdDeployment' | 'sshAccess'>
 ): void {
   const targetId = getRuntimeSshAccess(environment)?.sshTargetId
   if (targetId) {

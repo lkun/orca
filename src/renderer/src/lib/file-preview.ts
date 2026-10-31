@@ -20,7 +20,7 @@ import { useAppStore } from '@/store'
 import type { AppState } from '@/store/types'
 import { findSiblingGroupId } from '@/store/slices/tabs'
 import type { CreateBrowserTabOptions } from '@/store/slices/browser/browser-slice-contract'
-import { ORCA_BROWSER_BLANK_URL } from '../../../shared/constants'
+import { OCC_BROWSER_BLANK_URL } from '../../../shared/constants'
 import { chatScratchFileAddress } from '@/runtime/runtime-chat-scratch-file-address'
 import { selectFolderWorkspaces, selectWorktreesByRepo } from '@/store/workspace-record-selectors'
 import { findWorkspaceShowingDoc } from './file-preview-page-conversion'
@@ -53,7 +53,7 @@ function getLocalFilePreviewPlan(
   }
 }
 
-/** Use embedded browser tabs locally; remote documents require this desktop’s granted orca-preview scheme because client guests refuse file: and local file URLs would read the wrong machine. */
+/** Use embedded browser tabs locally; remote documents require this desktop’s granted occ-preview scheme because client guests refuse file: and local file URLs would read the wrong machine. */
 export type WorkspaceFilePreviewPlan =
   | { status: 'browser-tab'; url: string; title: string }
   | { status: 'doc-preview' }
@@ -175,7 +175,7 @@ function openDocPreviewTab(
     }
     return
   }
-  state.createBrowserTab(params.worktreeId, ORCA_BROWSER_BLANK_URL, {
+  state.createBrowserTab(params.worktreeId, OCC_BROWSER_BLANK_URL, {
     docLocation,
     title: basename(params.filePath) || params.filePath,
     ...placement,

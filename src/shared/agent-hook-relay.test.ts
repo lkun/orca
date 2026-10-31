@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  ORCA_FEATURE_REMOTE_AGENT_HOOKS_ENV,
+  OCC_FEATURE_REMOTE_AGENT_HOOKS_ENV,
   createShedSubagentsField,
   isAgentHookSource,
   isWslAgentHookRelayEnabled,
@@ -25,16 +25,16 @@ describe('isWslAgentHookRelayEnabled', () => {
   })
 
   it('is off for empty / "0"', () => {
-    expect(isWslAgentHookRelayEnabled({ [ORCA_FEATURE_REMOTE_AGENT_HOOKS_ENV]: '' })).toBe(false)
-    expect(isWslAgentHookRelayEnabled({ [ORCA_FEATURE_REMOTE_AGENT_HOOKS_ENV]: '0' })).toBe(false)
-    expect(isWslAgentHookRelayEnabled({ [ORCA_FEATURE_REMOTE_AGENT_HOOKS_ENV]: '   ' })).toBe(false)
-    expect(isWslAgentHookRelayEnabled({ [ORCA_FEATURE_REMOTE_AGENT_HOOKS_ENV]: ' 0 ' })).toBe(false)
+    expect(isWslAgentHookRelayEnabled({ [OCC_FEATURE_REMOTE_AGENT_HOOKS_ENV]: '' })).toBe(false)
+    expect(isWslAgentHookRelayEnabled({ [OCC_FEATURE_REMOTE_AGENT_HOOKS_ENV]: '0' })).toBe(false)
+    expect(isWslAgentHookRelayEnabled({ [OCC_FEATURE_REMOTE_AGENT_HOOKS_ENV]: '   ' })).toBe(false)
+    expect(isWslAgentHookRelayEnabled({ [OCC_FEATURE_REMOTE_AGENT_HOOKS_ENV]: ' 0 ' })).toBe(false)
   })
 
   it('is on for any other non-empty value', () => {
-    expect(isWslAgentHookRelayEnabled({ [ORCA_FEATURE_REMOTE_AGENT_HOOKS_ENV]: '1' })).toBe(true)
-    expect(isWslAgentHookRelayEnabled({ [ORCA_FEATURE_REMOTE_AGENT_HOOKS_ENV]: 'on' })).toBe(true)
-    expect(isWslAgentHookRelayEnabled({ [ORCA_FEATURE_REMOTE_AGENT_HOOKS_ENV]: 'true' })).toBe(true)
+    expect(isWslAgentHookRelayEnabled({ [OCC_FEATURE_REMOTE_AGENT_HOOKS_ENV]: '1' })).toBe(true)
+    expect(isWslAgentHookRelayEnabled({ [OCC_FEATURE_REMOTE_AGENT_HOOKS_ENV]: 'on' })).toBe(true)
+    expect(isWslAgentHookRelayEnabled({ [OCC_FEATURE_REMOTE_AGENT_HOOKS_ENV]: 'true' })).toBe(true)
   })
 })
 

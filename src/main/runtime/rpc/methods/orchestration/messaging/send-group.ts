@@ -1,5 +1,5 @@
 import type { MessagePriority, MessageType, OrchestrationDb } from '../../../../orchestration/db'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import { resolveGroupAddress } from '../../../../orchestration/groups'
 import { isEquivalentPaneKey } from '../../../../orchestration/db/pane-key-match'
@@ -25,7 +25,7 @@ type GroupCandidate = OrchestrationAddressableAgent & { mailbox?: { to: string; 
 
 function listRunGroupCandidates(args: {
   db: OrchestrationDb
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   senderRunId: string
   groupAddress: string
   agents: readonly GroupAgentSnapshot[]
@@ -90,7 +90,7 @@ function listRunGroupCandidates(args: {
 
 export async function sendGroupMessage(args: {
   params: SendParamsInput
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   from: string
   groupAddress: string

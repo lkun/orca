@@ -7,9 +7,9 @@ import {
 } from '../../../shared/agent-session-record.test-fixture'
 import type { OrchestrationCompatibilityEvidence } from '../../../shared/orchestration-compatibility-evidence'
 import { ORCHESTRATION_CONTRACT_VERSION } from '../../../shared/protocol-version'
-import { formatOrcaSessionAddress } from '../../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../../shared/orca-session-address-test-fixture'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { formatOCCSessionAddress } from '../../../shared/occ-session-address'
+import { testOCCSessionId } from '../../../shared/occ-session-address-test-fixture'
+import { OCCRuntimeService } from '../occ-runtime'
 import { OrchestrationDb } from '../orchestration/db'
 import { structuredWorkerIdentities } from '../structured-worker-identity'
 import type { RpcRequest, RpcResponse } from './core'
@@ -17,10 +17,10 @@ import { RpcDispatcher } from './dispatcher'
 import { ORCHESTRATION_METHODS } from './methods/orchestration'
 import { claudeProviderHandle } from '../../../shared/agent-session-provider-handle-encoding'
 
-export const SESSION_X = testOrcaSessionId('4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37')
-export const SESSION_Y = testOrcaSessionId('7e3b9d15-2c4a-4f86-a0b1-5c9e2d7f3b64')
-export const ADDRESS_X = formatOrcaSessionAddress(SESSION_X)
-export const ADDRESS_Y = formatOrcaSessionAddress(SESSION_Y)
+export const SESSION_X = testOCCSessionId('4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37')
+export const SESSION_Y = testOCCSessionId('7e3b9d15-2c4a-4f86-a0b1-5c9e2d7f3b64')
+export const ADDRESS_X = formatOCCSessionAddress(SESSION_X)
+export const ADDRESS_Y = formatOCCSessionAddress(SESSION_Y)
 export const PROVIDER_ID_X = 'c0ffee11-2233-4455-8677-8899aabbccdd'
 export const WORKSPACE_X = 'repo_1::/work/tree-x'
 export const WORKER_HANDLE = 'term_worker'
@@ -51,7 +51,7 @@ export function sessionRecord(
 }
 
 export type SessionCallerHarness = {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   dispatcher: RpcDispatcher
   records: Map<string, AgentSessionRecord>
@@ -70,7 +70,7 @@ export function createSessionCallerHarness(
   })
 ): SessionCallerHarness {
   const db = new OrchestrationDb(':memory:')
-  const runtime = new OrcaRuntimeService()
+  const runtime = new OCCRuntimeService()
   runtime.setOrchestrationDb(db)
   vi.spyOn(runtime, 'ensureStructuredAgentSessionHost').mockResolvedValue()
   vi.spyOn(runtime, 'getTerminalPaneKey').mockImplementation((handle) =>

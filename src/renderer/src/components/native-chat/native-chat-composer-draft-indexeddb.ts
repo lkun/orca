@@ -5,7 +5,7 @@ import type {
   StoredNativeChatComposerDraft
 } from './native-chat-composer-draft-storage'
 
-const DATABASE_NAME = 'orca-native-chat-composer-drafts'
+const DATABASE_NAME = 'occ-native-chat-composer-drafts'
 const DATABASE_VERSION = 1
 const DRAFTS = 'drafts'
 

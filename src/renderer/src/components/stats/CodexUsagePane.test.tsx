@@ -28,7 +28,7 @@ const mockStoreState = {
   codexUsageModelBreakdown: [],
   codexUsageProjectBreakdown: [],
   codexUsageRecentSessions: [],
-  codexUsageScope: 'orca',
+  codexUsageScope: 'occ',
   codexUsageRange: '30d',
   fetchCodexUsage: noop,
   setCodexUsageEnabled: noop,
@@ -60,7 +60,7 @@ function summaryWithUnpriced(
   estimatedCostUsd: number | null = 12.5
 ): CodexUsageSummary {
   return {
-    scope: 'orca',
+    scope: 'occ',
     range: '30d',
     sessions: 1,
     events: 1,

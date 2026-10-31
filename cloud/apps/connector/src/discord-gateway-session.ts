@@ -74,7 +74,7 @@ export async function startDiscordGatewaySession(deps: {
       if (channel.kind === 'failed' && TERMINAL_LOOKUP_STATUSES.has(channel.status)) {
         console.warn(
           JSON.stringify({
-            event: 'orca_connector_discord_channel_unreachable',
+            event: 'occ_connector_discord_channel_unreachable',
             status: channel.status
           })
         )
@@ -100,8 +100,8 @@ export async function startDiscordGatewaySession(deps: {
     shardCount: 1,
     identifyProperties: {
       os: process.platform,
-      browser: 'orca-connector',
-      device: 'orca-connector'
+      browser: 'occ-connector',
+      device: 'occ-connector'
     },
     retrieveSessionInfo: () => session,
     updateSessionInfo: (_shardId, info) => {
@@ -113,7 +113,7 @@ export async function startDiscordGatewaySession(deps: {
       const ready = ReadySchema.parse(payload.d)
       if (current !== null) {
         // A refused resume: the dispatches in between are lost.
-        console.warn(JSON.stringify({ event: 'orca_connector_discord_gateway_fresh_session' }))
+        console.warn(JSON.stringify({ event: 'occ_connector_discord_gateway_fresh_session' }))
       }
       current = { sessionId: ready.session_id, resumeURL: ready.resume_gateway_url, sequence: 0 }
     }
@@ -138,19 +138,19 @@ export async function startDiscordGatewaySession(deps: {
           return
         }
         failedSession = checkpoint.sessionId
-        console.warn(JSON.stringify({ event: 'orca_connector_discord_dispatch_failed' }))
+        console.warn(JSON.stringify({ event: 'occ_connector_discord_dispatch_failed' }))
         deps.onFatal('dispatch_failed')
       }
     })
   })
   manager.on(WebSocketShardEvents.Closed, (code) => {
     if (FATAL_CLOSE_CODES.has(code)) {
-      console.warn(JSON.stringify({ event: 'orca_connector_discord_gateway_fatal', code }))
+      console.warn(JSON.stringify({ event: 'occ_connector_discord_gateway_fatal', code }))
       deps.onFatal(`close_${code}`)
     }
   })
   manager.on(WebSocketShardEvents.Error, () => {
-    console.warn(JSON.stringify({ event: 'orca_connector_discord_gateway_error' }))
+    console.warn(JSON.stringify({ event: 'occ_connector_discord_gateway_error' }))
   })
   await manager.connect()
   return {

@@ -20,7 +20,7 @@ const contents = ['a'.repeat(8193), 'b'.repeat(16385)]
 let stagingRoot = ''
 
 beforeEach(async () => {
-  stagingRoot = await realpath(await mkdtemp(path.join(tmpdir(), 'orca-upload-buffer-retention-')))
+  stagingRoot = await realpath(await mkdtemp(path.join(tmpdir(), 'occ-upload-buffer-retention-')))
 })
 
 afterEach(async () => {

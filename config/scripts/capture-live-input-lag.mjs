@@ -15,12 +15,12 @@ export async function captureLiveInputLag(page, durationMs = 30_000) {
     if (!window.api?.app?.getIdentity) {
       throw new Error('Target is not the main OCC renderer')
     }
-    if (window.__orcaLiveInputLag || window.__orcaIdleCpuTimingProbe) {
+    if (window.__occLiveInputLag || window.__occIdleCpuTimingProbe) {
       throw new Error('A renderer timing probe already exists; stop it before capturing')
     }
     return window.api.app.getIdentity()
   })
-  const directory = await mkdtemp(join(tmpdir(), 'orca-input-lag-'))
+  const directory = await mkdtemp(join(tmpdir(), 'occ-input-lag-'))
   const cdp = await page.context().newCDPSession(page)
   let timingStarted = false
   let inputStarted = false
@@ -104,7 +104,7 @@ export async function captureLiveInputLag(page, durationMs = 30_000) {
       frameId = requestAnimationFrame(frame)
       const startedAt = performance.now()
       const startedAtIso = new Date().toISOString()
-      window.__orcaLiveInputLag = {
+      window.__occLiveInputLag = {
         stop: () => {
           cancelAnimationFrame(frameId)
           for (const type of types) {
@@ -113,7 +113,7 @@ export async function captureLiveInputLag(page, durationMs = 30_000) {
           for (const observer of observers) {
             observer.disconnect()
           }
-          delete window.__orcaLiveInputLag
+          delete window.__occLiveInputLag
           return {
             startedAt,
             startedAtIso,
@@ -136,11 +136,11 @@ export async function captureLiveInputLag(page, durationMs = 30_000) {
     await new Promise((resolve) => setTimeout(resolve, durationMs))
     const { profile } = await cdp.send('Profiler.stop')
     profilingStarted = false
-    const input = await page.evaluate(() => window.__orcaLiveInputLag.stop())
+    const input = await page.evaluate(() => window.__occLiveInputLag.stop())
     inputStarted = false
     const timing = await stopRendererTimingProbe(page)
     await page.evaluate(() => {
-      delete window.__orcaIdleCpuTimingProbe
+      delete window.__occIdleCpuTimingProbe
     })
     timingStarted = false
     await writeFile(join(directory, 'renderer.cpuprofile'), JSON.stringify(profile), {
@@ -168,13 +168,13 @@ export async function captureLiveInputLag(page, durationMs = 30_000) {
       await cdp.send('Profiler.stop').catch(() => {})
     }
     if (inputStarted) {
-      await page.evaluate(() => window.__orcaLiveInputLag?.stop()).catch(() => {})
+      await page.evaluate(() => window.__occLiveInputLag?.stop()).catch(() => {})
     }
     if (timingStarted) {
       await stopRendererTimingProbe(page).catch(() => {})
       await page
         .evaluate(() => {
-          delete window.__orcaIdleCpuTimingProbe
+          delete window.__occIdleCpuTimingProbe
         })
         .catch(() => {})
     }

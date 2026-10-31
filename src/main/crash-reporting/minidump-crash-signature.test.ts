@@ -364,7 +364,7 @@ describe('parseMinidumpCrashSignature', () => {
   it('still drops the module list when the claimed module count is absurd', async () => {
     const { dump } = buildDump({
       exception: { code: 11, address: 0x7ff7_0000_0010n },
-      modules: [{ base: 0x7ff7_0000_0000n, size: 0x1000, name: '/opt/occ/orca' }]
+      modules: [{ base: 0x7ff7_0000_0000n, size: 0x1000, name: '/opt/occ/occ' }]
     })
     const corrupt = Buffer.from(dump)
     corrupt.writeUInt32LE(0xffff_ffff, moduleListRva(corrupt))
@@ -376,7 +376,7 @@ describe('parseMinidumpCrashSignature', () => {
   it('omits the faulting module when no image range covers the address', async () => {
     const { dump } = buildDump({
       exception: { code: 11, address: 0x10n },
-      modules: [{ base: 0x7ff7_0000_0000n, size: 0x1000, name: '/opt/occ/orca' }]
+      modules: [{ base: 0x7ff7_0000_0000n, size: 0x1000, name: '/opt/occ/occ' }]
     })
 
     const signature = await parseMinidumpCrashSignature(dump)

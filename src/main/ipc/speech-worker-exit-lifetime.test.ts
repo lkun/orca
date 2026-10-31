@@ -280,9 +280,9 @@ describe('speech worker exit ownership', () => {
     environment.readyOnInit = false
     const write = Promise.withResolvers<void>()
     fileAccess.write.mockReturnValueOnce(write.promise)
-    const retired = handler('speech:startDictation')(sender, 'test-model', ['orca'], '2')
+    const retired = handler('speech:startDictation')(sender, 'test-model', ['occ'], '2')
     window.webContents.emit('render-process-gone')
-    const replacement = handler('speech:startDictation')(sender, 'test-model', ['orca'], '1')
+    const replacement = handler('speech:startDictation')(sender, 'test-model', ['occ'], '1')
     await vi.waitFor(() => expect(environment.workers).toHaveLength(1))
     write.resolve()
     const retirementError = await retired.then(
@@ -322,7 +322,7 @@ describe('speech worker exit ownership', () => {
   it('prevents renderer document hotword preparation from starting after retirement', async () => {
     const write = Promise.withResolvers<void>()
     fileAccess.write.mockReturnValueOnce(write.promise)
-    const pending = handler('speech:startDictation')(sender, 'test-model', ['orca'], '2')
+    const pending = handler('speech:startDictation')(sender, 'test-model', ['occ'], '2')
     window.webContents.emit('render-process-gone')
     write.resolve()
     await pending
@@ -449,7 +449,7 @@ describe('speech worker exit ownership', () => {
 
   it('retains hotwords until startup finishes and preserves the live hook on write failure', async () => {
     environment.readyOnInit = false
-    const pendingStart = handler('speech:startDictation')(sender, 'test-model', ['orca'], 'one')
+    const pendingStart = handler('speech:startDictation')(sender, 'test-model', ['occ'], 'one')
     await vi.waitFor(() => expect(environment.workers).toHaveLength(1))
     expect(fileAccess.write).toHaveBeenCalledTimes(1)
     expect(fileAccess.unlink).not.toHaveBeenCalled()

@@ -37,7 +37,7 @@ import {
   type RegionCorrectionResponse,
   type IdleRegionalRehomeCommit,
   type IdleRegionalRehomeRequest,
-} from '@orca-cloud/relay-contract'
+} from '@occ-cloud/relay-contract'
 import {
   cellAdmissionState,
   cellAdmissionStates,
@@ -723,7 +723,7 @@ export class RelayAssignmentStore {
         this.reserveModeFailureLoggedAt = at
         console.warn(
           JSON.stringify({
-            event: 'orca_relay_reserve_mode_read_failed',
+            event: 'occ_relay_reserve_mode_read_failed',
             reason: error instanceof Error ? error.message : 'unknown',
             lastReadAgeMs: this.reserveModeRead ? Math.round(at - this.reserveModeRead.readAt) : null
           })
@@ -963,7 +963,7 @@ export class RelayAssignmentStore {
       if (isolatedFrom) {
         console.warn(
           JSON.stringify({
-            event: 'orca_relay_sticky_replaced_off_isolated_cell',
+            event: 'occ_relay_sticky_replaced_off_isolated_cell',
             fromCellId: isolatedFrom.cellId,
             fromRegion: isolatedFrom.region,
             admissionState: ROLL_ISOLATED_ADMISSION,
@@ -1458,7 +1458,7 @@ export class RelayAssignmentStore {
             // holds units no lease backs; the reason string is a log contract.
             events.push(
               JSON.stringify({
-                event: 'orca_relay_sticky_replacement_deferred',
+                event: 'occ_relay_sticky_replacement_deferred',
                 reason: 'no_same_region_headroom',
                 cellId: current.cellId,
                 region: current.region
@@ -1575,7 +1575,7 @@ export class RelayAssignmentStore {
       if (deadReserveSource) {
         events.push(
           JSON.stringify({
-            event: 'orca_relay_dead_reserve_cell_host_replaced',
+            event: 'occ_relay_dead_reserve_cell_host_replaced',
             fromCellId: deadReserveSource.cell.cellId,
             toCellId: target.cellId,
             region: target.region,
@@ -1591,7 +1591,7 @@ export class RelayAssignmentStore {
         // drained cell's host count.
         events.push(
           JSON.stringify({
-            event: 'orca_relay_sticky_replaced_off_isolated_cell',
+            event: 'occ_relay_sticky_replaced_off_isolated_cell',
             fromCellId: isolatedIncumbent.cellId,
             fromRegion: isolatedIncumbent.region,
             admissionState: ROLL_ISOLATED_ADMISSION,
@@ -4268,7 +4268,7 @@ export class RelayAssignmentStore {
       // Rolled back whole: no attempt, migration or reservation survives, so the
       // outcome report never sees it and the director moves to its next candidate.
       console.warn(JSON.stringify({
-        event: 'orca_relay_idle_rehome_target_deferred',
+        event: 'occ_relay_idle_rehome_target_deferred',
         attemptId: request.attemptId,
         targetCellId: request.targetCellId,
         cause: targetDeferral
@@ -4423,7 +4423,7 @@ export class RelayAssignmentStore {
       // One contended host can fail the batch; fall back to per-host writes so other leases still renew.
       console.warn(
         JSON.stringify({
-          event: 'orca_relay_control_renewal_batch_failed',
+          event: 'occ_relay_control_renewal_batch_failed',
           rows: ordered.length,
           message: String((error as { message?: unknown }).message)
         })
@@ -6752,7 +6752,7 @@ export class RelayAssignmentStore {
     // Return disable reason for logging after commit; inspection alone shows only enabled=false, and rolled-back decisions must not log.
     if (disabled.length === 0) return null
     return {
-      event: 'orca_relay_regional_rehome_safety_disabled',
+      event: 'occ_relay_regional_rehome_safety_disabled',
       reason,
       controlGeneration: integer(disabled[0]!, 'generation'),
       now,
@@ -6816,7 +6816,7 @@ export class RelayAssignmentStore {
     // nothing records that the failure budget, not an operator, turned it off.
     if (disabled.length === 0) return null
     return {
-      event: 'orca_relay_regional_rehome_failure_budget_disabled',
+      event: 'occ_relay_regional_rehome_failure_budget_disabled',
       controlGeneration: integer(disabled[0]!, 'generation'),
       consecutiveFailures: failures,
       now
@@ -7950,7 +7950,7 @@ export class RelayAssignmentStore {
     })
     // Logged after COMMIT so a retried transaction reports each correction once.
     for (const sample of drift) {
-      console.warn(JSON.stringify({ event: 'orca_relay_reservation_drift', ...sample }))
+      console.warn(JSON.stringify({ event: 'occ_relay_reservation_drift', ...sample }))
     }
   }
 
@@ -9405,7 +9405,7 @@ function cellInventoryLockOptions(mode: CellInventoryLockMode): RelayLockOptions
 function warnSweepCellInventoryBusy(sweep: string, skipped: number): void {
   if (skipped === 0) return
   console.warn(
-    JSON.stringify({ event: 'orca_relay_sweep_cell_inventory_busy', sweep, skipped })
+    JSON.stringify({ event: 'occ_relay_sweep_cell_inventory_busy', sweep, skipped })
   )
 }
 
@@ -9443,7 +9443,7 @@ function warnRegionalRehomeCandidateFailure(
   const message = error instanceof Error ? error.message : ''
   console.warn(
     JSON.stringify({
-      event: 'orca_relay_regional_rehome_candidate_failed',
+      event: 'occ_relay_regional_rehome_candidate_failed',
       operation,
       attemptId,
       reason: /^[a-z0-9_]{1,64}$/.test(message) ? message : 'redacted'
@@ -9455,7 +9455,7 @@ function warnRegionalRehomeCandidateFailure(
 function noteRegionalRehomeActivityCountsRepaired(attemptId: string): void {
   console.warn(
     JSON.stringify({
-      event: 'orca_relay_regional_rehome_activity_counts_repaired',
+      event: 'occ_relay_regional_rehome_activity_counts_repaired',
       attemptId
     })
   )

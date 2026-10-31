@@ -249,7 +249,7 @@ describe('a replayed launch', () => {
   let directory: string
 
   beforeEach(async () => {
-    directory = await mkdtemp(join(tmpdir(), 'orca-agent-launch-caller-'))
+    directory = await mkdtemp(join(tmpdir(), 'occ-agent-launch-caller-'))
     const store = await openTestAgentSessionRecordStore(directory)
     setAgentLaunchRecordStore(store)
   })

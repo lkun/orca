@@ -37,41 +37,41 @@ export function renderMobileTasksProjectMissingRepoDrawer(model: ConnectionPrese
   const {
     copiedLinkKey,
     copyTextToClipboard,
-    projectRepoNotInOrca,
-    setProjectRepoNotInOrca,
+    projectRepoNotInOCC,
+    setProjectRepoNotInOCC,
     taskUiReady
   } = model
   return (
     <BottomDrawer
-      visible={taskUiReady && projectRepoNotInOrca != null}
+      visible={taskUiReady && projectRepoNotInOCC != null}
       onClose={() => {
-        setProjectRepoNotInOrca(null)
+        setProjectRepoNotInOCC(null)
       }}
       // Layer above the project detail rendered later in the shared host.
       zIndex={TASK_SECONDARY_DRAWER_Z_INDEX}
     >
-      {projectRepoNotInOrca ? (
+      {projectRepoNotInOCC ? (
         <View>
           <View style={styles.sheetHeader}>
             <Text style={styles.sheetTitle}>
-              {translate('tasks.projectDetailDrawer.repositoryNotInOrca', 'Repository not in OCC')}
+              {translate('tasks.projectDetailDrawer.repositoryNotInOCC', 'Repository not in OCC')}
             </Text>
             <Text style={styles.sheetSubtitle}>
               {translate(
                 'tasks.projectDetailDrawer.addRepositoryFromDesktop',
                 '{{repository}} is not added to OCC. Add this repository from the desktop app, then refresh mobile Tasks.',
-                { repository: `${projectRepoNotInOrca.owner}/${projectRepoNotInOrca.repo}` }
+                { repository: `${projectRepoNotInOCC.owner}/${projectRepoNotInOCC.repo}` }
               )}
             </Text>
           </View>
 
           <View style={styles.actionGroup}>
-            {projectRepoNotInOrca.url ? (
+            {projectRepoNotInOCC.url ? (
               <Pressable
                 style={styles.actionRow}
                 onPress={() => {
-                  if (projectRepoNotInOrca.url) {
-                    void Linking.openURL(projectRepoNotInOrca.url)
+                  if (projectRepoNotInOCC.url) {
+                    void Linking.openURL(projectRepoNotInOCC.url)
                   }
                 }}
               >
@@ -81,20 +81,20 @@ export function renderMobileTasksProjectMissingRepoDrawer(model: ConnectionPrese
                 </Text>
               </Pressable>
             ) : null}
-            {projectRepoNotInOrca.url ? <View style={styles.actionSeparator} /> : null}
+            {projectRepoNotInOCC.url ? <View style={styles.actionSeparator} /> : null}
             <Pressable
               style={styles.actionRow}
               onPress={() =>
                 void copyTextToClipboard(
-                  `project-repo:${projectRepoNotInOrca.owner}/${projectRepoNotInOrca.repo}`,
-                  `${projectRepoNotInOrca.owner}/${projectRepoNotInOrca.repo}`
+                  `project-repo:${projectRepoNotInOCC.owner}/${projectRepoNotInOCC.repo}`,
+                  `${projectRepoNotInOCC.owner}/${projectRepoNotInOCC.repo}`
                 )
               }
             >
               <Copy size={16} color={colors.textPrimary} />
               <Text style={styles.actionText}>
                 {copiedLinkKey ===
-                `project-repo:${projectRepoNotInOrca.owner}/${projectRepoNotInOrca.repo}`
+                `project-repo:${projectRepoNotInOCC.owner}/${projectRepoNotInOCC.repo}`
                   ? translate('common.copied', 'Copied')
                   : translate('tasks.projectDetailDrawer.copyRepository', 'Copy repository')}
               </Text>

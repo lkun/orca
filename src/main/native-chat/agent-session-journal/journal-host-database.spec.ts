@@ -7,7 +7,7 @@ import type {
   AgentJournalItemIdentity,
   AgentSessionJournalIdentity
 } from '../../../shared/agent-session-journal-types'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { tearDownRuntime } from '../../runtime/agent-session/structured-agent-session-runtime-teardown'
 import { journalDatabasePath } from './journal-host-database'
 import {
@@ -72,7 +72,7 @@ BEGIN INSERT INTO commit_probe_child (parent) VALUES (1); END`)
   }
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-journal-host-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-journal-host-'))
   })
 
   afterEach(async () => {

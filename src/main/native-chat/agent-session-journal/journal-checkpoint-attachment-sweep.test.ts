@@ -39,7 +39,7 @@ it.each(['expired', 'resumed', 'orphan', 'partial-prune'])(
       }
       return post.call(this, request)
     })
-    root = await mkdtemp(join(tmpdir(), 'orca-checkpoint-sweep-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-checkpoint-sweep-'))
     const database = JournalHostDatabase.open(root)
     host = database
     const store = new AgentSessionAttachmentStore(agentSessionAttachmentStoreRoot(root), {

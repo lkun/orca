@@ -1,4 +1,4 @@
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
@@ -15,7 +15,7 @@ import {
   TESTS_OUTSIDE_PROGRAM
 } from './check-tests-typecheck-ratchet.mjs'
 
-vi.mock('@orca/process-host', () => ({ runProcessSync: vi.fn() }))
+vi.mock('@occ/process-host', () => ({ runProcessSync: vi.fn() }))
 vi.mock('./mobile-typecheck-compiler.mjs', () => ({
   resolveMobileTypecheckCommand: (project: string, cwd: string) => ({
     program: 'compiler',
@@ -43,7 +43,7 @@ describe('ratchet failure diagnostics', () => {
       printsDiagnostics: false
     }
   ])('preserves $name outcome and baseline', ({ baseline, failed, exit, printsDiagnostics }) => {
-    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'orca-pr31180-ratchet-'))
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'occ-pr31180-ratchet-'))
     const diagnostic = 'src/value.test.ts(1,2): error TS2322: Type number is not assignable.'
     const stderrDiagnostic = 'src/value.test.ts(2,3): error TS2345: Argument type mismatch.'
     const detail = '  Type number is not assignable to type string.'

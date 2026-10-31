@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as NodeFs from 'node:fs'
 import type * as NodeFsPromises from 'node:fs/promises'
 
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 
 const {
   readFileMock,
@@ -29,7 +29,7 @@ vi.mock('node:fs/promises', async (importOriginal) => ({
 vi.mock('../crash-reporting/self-initiated-tree-kill-log', () => ({
   recordSelfInitiatedTreeKill: recordSelfInitiatedTreeKillMock
 }))
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: runProcessMock,
   runProcessSync: runProcessSyncMock
 }))

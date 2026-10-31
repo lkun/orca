@@ -6,7 +6,7 @@ import { getEditorFileOperationContext } from '@/lib/editor-file-operation-owner
 import {
   isAutosaveSuspendedForFile,
   normalizeAutoSaveDelayMs,
-  ORCA_EDITOR_FILE_SAVED_EVENT,
+  OCC_EDITOR_FILE_SAVED_EVENT,
   type EditorFileSavedDetail
 } from './editor-autosave'
 import { flushEditorViewsForSave, hasPendingEditorBufferChange } from './editor-pending-flush'
@@ -216,7 +216,7 @@ export function createEditorSaveQueue(store: AppStoreApi): EditorSaveQueue {
       settleEditorWriteWithoutViews(store.getState(), recordViewIds, identityKey, contentToSave)
     }
     window.dispatchEvent(
-      new CustomEvent<EditorFileSavedDetail>(ORCA_EDITOR_FILE_SAVED_EVENT, {
+      new CustomEvent<EditorFileSavedDetail>(OCC_EDITOR_FILE_SAVED_EVENT, {
         detail: {
           fileId,
           content: contentToSave,

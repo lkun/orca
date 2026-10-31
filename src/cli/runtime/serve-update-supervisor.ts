@@ -1,4 +1,4 @@
-import type { ChildProcessHandle, ProcessSpec } from '@orca/process-host/process-spec'
+import type { ChildProcessHandle, ProcessSpec } from '@occ/process-host/process-spec'
 import { readFileSync } from 'node:fs'
 import { readFile, rename, unlink, writeFile } from 'node:fs/promises'
 import {

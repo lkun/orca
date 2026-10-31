@@ -14,7 +14,7 @@ import { DEVICE_KEY_RUNTIME_CAPABILITIES } from './device-key-capability'
 import { FILES_RUNTIME_CAPABILITIES } from './files-runtime-capabilities'
 import { HOST_RUNTIME_CAPABILITIES } from './host-runtime-capabilities'
 import { MOBILE_RUNTIME_CAPABILITIES } from './mobile-runtime-capabilities'
-import { ORCAD_RUNTIME_CAPABILITIES } from './orcad-runtime-capabilities'
+import { OCCD_RUNTIME_CAPABILITIES } from './occd-runtime-capabilities'
 import { ORCHESTRATION_RUNTIME_CAPABILITIES } from './orchestration-runtime-capabilities'
 import { PREFLIGHT_RUNTIME_CAPABILITIES } from './preflight-runtime-capabilities'
 import {
@@ -135,7 +135,7 @@ export const RUNTIME_CAPABILITIES = [
   ...HOST_RUNTIME_CAPABILITIES,
   ...DEVICE_KEY_RUNTIME_CAPABILITIES,
   ...MOBILE_RUNTIME_CAPABILITIES,
-  ...ORCAD_RUNTIME_CAPABILITIES,
+  ...OCCD_RUNTIME_CAPABILITIES,
   ...ORCHESTRATION_RUNTIME_CAPABILITIES,
   ...agentLaunchCapabilities.AGENT_LAUNCH_RUNTIME_CAPABILITIES,
   ...AGENT_SESSION_RUNTIME_CAPABILITIES,

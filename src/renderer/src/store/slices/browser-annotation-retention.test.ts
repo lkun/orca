@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 import { createBrowserMockApi } from './browser-slice-test-harness'
 import { createTestStoreDrawnFromMain } from './browser-slice-drawn-from-main.test-fixture'
@@ -138,7 +138,7 @@ describe('saved browser note lifetime and marker eligibility', () => {
     await main.settle()
     // A layout-owner build's teardown is main's, drawn from its frame.
     expect(layoutApplyTestTransport.sent.map((command) => command.type)).toEqual(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? ['openBrowserTab', ...(mainCommand ? [mainCommand] : [])] : []
+      OCC_LAYOUT_OWNER_IS_MAIN ? ['openBrowserTab', ...(mainCommand ? [mainCommand] : [])] : []
     )
     expect(store.getState().browserAnnotationsByPageId[pageId]).toBeUndefined()
     expect(store.getState().browserAnnotationMarkerIdsByPageId[pageId]).toBeUndefined()

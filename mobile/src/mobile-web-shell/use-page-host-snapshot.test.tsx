@@ -69,10 +69,10 @@ import { PAGE_STORAGE_MAX_VALUE_CHARS } from './page-storage-keys'
 import { usePageHostSnapshot, type PageHostSnapshotView } from './use-page-host-snapshot'
 import { persistMirrored, readMirroredStorage } from '../storage/mirrored-storage-keys'
 
-const PINS = 'orca:pins:host-1'
-const LAST_VISITED = 'orca:last-visited-worktree'
-const CHAT_TABS = 'orca:nativeChatTabs:host-1:wt-1'
-const JOURNAL = 'orca:mobileStructuredSendOperations:v1'
+const PINS = 'occ:pins:host-1'
+const LAST_VISITED = 'occ:last-visited-worktree'
+const CHAT_TABS = 'occ:nativeChatTabs:host-1:wt-1'
+const JOURNAL = 'occ:mobileStructuredSendOperations:v1'
 const SESSION_ROUTE = '/h/host-1/session/wt-1'
 
 const mountedTrees: ReturnType<typeof create>[] = []
@@ -137,7 +137,7 @@ it.each([10, 100])('releases payloads from %i historical workspace snapshots', a
   const keys: string[] = []
   for (let index = 0; index < count; index++) {
     const workspace = `folder:historical-${index}`
-    const key = `orca:terminalDrafts:host-1:${encodeURIComponent(workspace)}`
+    const key = `occ:terminalDrafts:host-1:${encodeURIComponent(workspace)}`
     const value = `${index}:${'x'.repeat(8 * 1024)}`
     keys.push(key)
     doubles.store.set(key, value)
@@ -212,7 +212,7 @@ it('becomes ready when an unrelated key is written during a cold route hydration
   doubles.holdReads = true
   const mounted = await mount()
   await act(async () => {
-    await persistMirrored('orca:unrelated-preference', 'x')
+    await persistMirrored('occ:unrelated-preference', 'x')
     releaseReads()
   })
   expect(mounted.view().unreadable).toBe(false)
@@ -303,33 +303,33 @@ describe('what the shell puts on every init', () => {
 
   it('never carries another host key, whatever the store holds', async () => {
     doubles.store.set(PINS, '["mine"]')
-    doubles.store.set('orca:pins:host-2', '["theirs"]')
+    doubles.store.set('occ:pins:host-2', '["theirs"]')
     const mounted = await mount()
     await act(async () => {
       mounted.view().refreshStorage()
     })
     expect(mounted.view().readStorage().storage).toEqual({ [PINS]: '["mine"]' })
     await act(async () => {
-      mounted.view().writeStorage('orca:pins:host-2', '["overwritten"]')
+      mounted.view().writeStorage('occ:pins:host-2', '["overwritten"]')
     })
     expect(doubles.writes).toEqual([])
-    expect(doubles.store.get('orca:pins:host-2')).toBe('["theirs"]')
+    expect(doubles.store.get('occ:pins:host-2')).toBe('["theirs"]')
     expect(mounted.view().readStorage().storage).toEqual({ [PINS]: '["mine"]' })
   })
 
   it("carries the session route's own workspace, and never the workspace beside it", async () => {
     doubles.store.set(CHAT_TABS, '{"tab-1":"chat"}')
-    doubles.store.set('orca:nativeChatTabs:host-1:wt-2', '{"tab-9":"chat"}')
+    doubles.store.set('occ:nativeChatTabs:host-1:wt-2', '{"tab-9":"chat"}')
     const mounted = await mount()
     await act(async () => {
       mounted.view().refreshStorage()
     })
     expect(mounted.view().readStorage().storage).toEqual({ [CHAT_TABS]: '{"tab-1":"chat"}' })
     await act(async () => {
-      mounted.view().writeStorage('orca:nativeChatTabs:host-1:wt-2', '{}')
+      mounted.view().writeStorage('occ:nativeChatTabs:host-1:wt-2', '{}')
     })
     expect(doubles.writes).toEqual([])
-    expect(doubles.store.get('orca:nativeChatTabs:host-1:wt-2')).toBe('{"tab-9":"chat"}')
+    expect(doubles.store.get('occ:nativeChatTabs:host-1:wt-2')).toBe('{"tab-9":"chat"}')
     expect(mounted.view().readStorage().storage).toEqual({ [CHAT_TABS]: '{"tab-1":"chat"}' })
   })
 

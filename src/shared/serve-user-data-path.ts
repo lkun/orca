@@ -2,7 +2,7 @@ import { realpathSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 /** Fence the Electron child to the CLI-resolved profile, preventing acquisition or messaging of another profile’s lock. */
-export const SERVE_USER_DATA_PATH_ENV = 'ORCA_SERVE_USER_DATA_PATH'
+export const SERVE_USER_DATA_PATH_ENV = 'OCC_SERVE_USER_DATA_PATH'
 
 function canonicalUserDataPath(path: string, platform: NodeJS.Platform): string {
   let canonical = resolve(path)

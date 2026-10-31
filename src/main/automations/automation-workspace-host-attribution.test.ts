@@ -103,7 +103,7 @@ async function createStore(
 ) {
   mkdirSync(testState.dir, { recursive: true })
   writeFileSync(
-    join(testState.dir, 'orca-data.json'),
+    join(testState.dir, 'occ-data.json'),
     JSON.stringify({
       ...getDefaultPersistedState(testState.dir),
       repos,
@@ -124,7 +124,7 @@ async function createStore(
   installFakeAppEnvironment({ getPath: () => testState.dir })
   const { Store, initDataPath } = await import('../persistence')
   initDataPath()
-  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
 }
 
 beforeEach(() => {

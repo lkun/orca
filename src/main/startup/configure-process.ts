@@ -18,7 +18,7 @@ import {
 } from './http1-compatibility-profile-state'
 
 const DEV_PARENT_SHUTDOWN_GRACE_MS = 3000
-const HTTP1_COMPATIBILITY_ENV_VAR = 'ORCA_DISABLE_HTTP2'
+const HTTP1_COMPATIBILITY_ENV_VAR = 'OCC_DISABLE_HTTP2'
 const TRUE_ENV_VALUES = new Set(['1', 'true', 'yes', 'on'])
 const FALSE_ENV_VALUES = new Set(['0', 'false', 'no', 'off'])
 let devParentShutdownRequested = false
@@ -189,7 +189,7 @@ export function configureDevUserDataPath(isDev: boolean): void {
   const e2eConfig = getMainE2EConfig()
   if (e2eConfig.userDataDir) {
     // Isolate each E2E launch from persisted profiles while leaving the real packaged profile untouched.
-    const e2eHomeDir = process.env.ORCA_E2E_HOME_DIR ?? join(e2eConfig.userDataDir, 'home')
+    const e2eHomeDir = process.env.OCC_E2E_HOME_DIR ?? join(e2eConfig.userDataDir, 'home')
     // Imports can resolve homedir before Electron readiness; reject launches outside disposable Node home.
     if (!areSameE2EHomePath(homedir(), e2eHomeDir)) {
       throw new Error('Refusing to start E2E outside its disposable home boundary')
@@ -204,13 +204,13 @@ export function configureDevUserDataPath(isDev: boolean): void {
   if (!isDev) {
     return
   }
-  const overrideUserDataPath = process.env.ORCA_DEV_USER_DATA_PATH
+  const overrideUserDataPath = process.env.OCC_DEV_USER_DATA_PATH
   if (overrideUserDataPath) {
     // Why: run-electron-vite-dev.mjs resolves a per-worktree (or shared occ-dev) profile here; repros also pass isolated ones.
     app.setPath('userData', overrideUserDataPath)
     return
   }
-  // Why: launches that bypass the dev runner still need a dev-only path, or they overwrite the packaged app's runtime pointer under userData and break the orca CLI.
+  // Why: launches that bypass the dev runner still need a dev-only path, or they overwrite the packaged app's runtime pointer under userData and break the occ CLI.
   app.setPath('userData', join(app.getPath('appData'), 'occ-dev'))
 }
 
@@ -222,7 +222,7 @@ function areSameE2EHomePath(left: string, right: string): boolean {
     : normalizedLeft === normalizedRight
 }
 
-export function configureOrcaUserDataPathEnv(): void {
+export function configureOCCUserDataPathEnv(): void {
   const userDataPath = app.getPath('userData')
   // Validate final userData before instance locking; preflight catches refusals and exits serve.
   const serveProfileRefusal = checkServeUserDataPath({
@@ -233,7 +233,7 @@ export function configureOrcaUserDataPathEnv(): void {
     throw new Error(serveProfileRefusal)
   }
   // Canonicalize stale inherited profile overrides before CLI modules derive runtime-home paths.
-  process.env.ORCA_USER_DATA_PATH = userDataPath
+  process.env.OCC_USER_DATA_PATH = userDataPath
   // An OCC launched from another OCC terminal must own its CLI children.
   stampRuntimeSourceEnv(process.env, null)
 }

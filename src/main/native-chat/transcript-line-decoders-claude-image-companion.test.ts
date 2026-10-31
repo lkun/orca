@@ -26,8 +26,8 @@ const COMPANION_ROW = JSON.stringify({
   message: {
     role: 'user',
     content: [
-      { type: 'text', text: '[Image: source: /tmp/orca-paste-a.png]' },
-      { type: 'text', text: '[Image: source: /tmp/orca-paste-b.png]' }
+      { type: 'text', text: '[Image: source: /tmp/occ-paste-a.png]' },
+      { type: 'text', text: '[Image: source: /tmp/occ-paste-b.png]' }
     ]
   }
 })
@@ -48,8 +48,8 @@ describe('Claude pasted-image companion row', () => {
     const folded = normalizeImageTranscriptMessages(decode())
     expect(folded).toHaveLength(1)
     expect(folded[0]!.blocks.filter((b) => b.type === 'image-ref')).toEqual([
-      { type: 'image-ref', path: '/tmp/orca-paste-a.png' },
-      { type: 'image-ref', path: '/tmp/orca-paste-b.png' }
+      { type: 'image-ref', path: '/tmp/occ-paste-a.png' },
+      { type: 'image-ref', path: '/tmp/occ-paste-b.png' }
     ])
     const text = folded[0]!.blocks
       .filter((b) => b.type === 'text')

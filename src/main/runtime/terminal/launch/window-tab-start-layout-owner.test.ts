@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 import { collectLeafIds } from '../../../../shared/terminal-pane-layout-tree'
 import { toRuntimeExecutionHostId } from '../../../../shared/execution-host'
-import { setupLayoutOwnerRuntime, WORKTREE_ID } from '../../orca-runtime-layout-owner-start-fixture'
+import { setupLayoutOwnerRuntime, WORKTREE_ID } from '../../occ-runtime-layout-owner-start-fixture'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const TAB_ID = 'window-tab'
 const LEAF_ID = '33333333-3333-4333-8333-333333333333'

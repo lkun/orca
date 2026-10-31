@@ -4,7 +4,7 @@ import type { WorkspaceSessionState } from '../../../shared/workspace-session-st
 import type { TerminalSessionPartition } from '../../../shared/workspace-layout/terminal-owner-invariants'
 import { layoutContainsLeafId } from '../restoring-sessions/terminal-layout-normalization'
 import type { PtyBindingSourceExpectation } from './store'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { isClosedPaneFenced } from '../terminal-topology/closed-pane-binding-fence'
 
 export type PtyBindingRefusalRequest = {
@@ -72,7 +72,7 @@ export function ptyBindingIsRefused(
   }
   // An in-flight start must not recreate a pane main already closed or withdrew.
   if (
-    ORCA_LAYOUT_OWNER_IS_MAIN &&
+    OCC_LAYOUT_OWNER_IS_MAIN &&
     !layoutContainsLeafId(
       session.terminalLayoutsByTabId?.[args.tabId]?.root ?? null,
       args.leafId

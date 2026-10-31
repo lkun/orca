@@ -3,7 +3,7 @@ import { createAgentHookMemorySftp } from '../agent-hooks/agent-hook-memory-sftp
 import { KiroHookService } from './hook-service'
 import { KIRO_STANDALONE_HOOK_TRIGGERS } from './standalone-hook-settings'
 
-const REMOTE_HOOKS_FILE = '/home/dev/.kiro/hooks/orca-agent-status.json'
+const REMOTE_HOOKS_FILE = '/home/dev/.kiro/hooks/occ-agent-status.json'
 
 afterEach(() => vi.restoreAllMocks())
 
@@ -21,9 +21,9 @@ describe('KiroHookService.installRemote with the V3 standalone hooks file', () =
       ...KIRO_STANDALONE_HOOK_TRIGGERS
     ])
     for (const entry of file.hooks) {
-      expect(entry.action.command).toContain('/home/dev/.orca/agent-hooks/kiro-hook.sh')
+      expect(entry.action.command).toContain('/home/dev/.occ/agent-hooks/kiro-hook.sh')
     }
-    const script = fs.files.get('/home/dev/.orca/agent-hooks/kiro-hook.sh') ?? ''
+    const script = fs.files.get('/home/dev/.occ/agent-hooks/kiro-hook.sh') ?? ''
     expect(script.startsWith('#!/bin/sh')).toBe(true)
     expect(script).toContain('/hook/kiro')
   })
@@ -32,7 +32,7 @@ describe('KiroHookService.installRemote with the V3 standalone hooks file', () =
     const { sftp, fs } = createAgentHookMemorySftp()
 
     await new KiroHookService().installRemote(sftp, '/home/dev', '/opt/kiro')
-    expect(fs.files.has('/opt/kiro/hooks/orca-agent-status.json')).toBe(true)
+    expect(fs.files.has('/opt/kiro/hooks/occ-agent-status.json')).toBe(true)
     expect(fs.files.has(REMOTE_HOOKS_FILE)).toBe(false)
   })
 

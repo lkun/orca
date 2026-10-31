@@ -1,4 +1,4 @@
-import type { PersistedTrustedOrcaHooks } from '../../../../../shared/orca-yaml-hook-types'
+import type { PersistedTrustedOCCHooks } from '../../../../../shared/occ-yaml-hook-types'
 import type {
   FeatureInteractionId,
   FeatureInteractionState
@@ -6,7 +6,7 @@ import type {
 import type { FeatureTipId } from '../../../../../shared/feature-tips'
 import type { ChatUiLaunchTipVariant } from '../../../../../shared/native-chat/chat-ui-launch-tip-audience'
 import type { ContextualTourId } from '../../../../../shared/contextual-tours'
-import type { OrcaHookScriptKind } from '../../../lib/orca-hook-trust'
+import type { OCCHookScriptKind } from '../../../lib/occ-hook-trust'
 import type { SettingsNavigationTarget } from '../../../lib/settings-navigation-types'
 import type { ExecutionHostId } from '../../../../../shared/execution-host'
 
@@ -51,7 +51,7 @@ export type UISliceContextual = {
     | 'feature-wall'
     | 'feature-tips'
     | 'new-workspace-composer'
-    | 'confirm-orca-yaml-hooks'
+    | 'confirm-occ-yaml-hooks'
     | 'diagram-viewer'
     | 'agent-session-history'
     | 'node-dist-mirror'
@@ -95,14 +95,14 @@ export type UISliceContextual = {
   completeContextualTour: (id?: ContextualTourId) => void
   cancelContextualTour: (id?: ContextualTourId) => void
   markContextualToursSeen: (ids: ContextualTourId[]) => void
-  trustedOrcaHooks: PersistedTrustedOrcaHooks
-  markOrcaHookScriptConfirmed: (
+  trustedOCCHooks: PersistedTrustedOCCHooks
+  markOCCHookScriptConfirmed: (
     repoId: string,
-    kind: OrcaHookScriptKind,
+    kind: OCCHookScriptKind,
     contentHash: string
   ) => void
-  markOrcaHookRepoAlwaysTrusted: (repoId: string) => void
-  clearOrcaHookTrustForRepo: (repoId: string) => void
+  markOCCHookRepoAlwaysTrusted: (repoId: string) => void
+  clearOCCHookTrustForRepo: (repoId: string) => void
   setupScriptPromptDismissedRepoIds: readonly string[]
   dismissSetupScriptPrompt: (repoHostIdentity: string) => void
   setupGuideSidebarDismissed: boolean

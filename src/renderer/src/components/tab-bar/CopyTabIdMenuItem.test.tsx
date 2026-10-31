@@ -52,7 +52,7 @@ describe('CopyTabIdMenuItem', () => {
       )
       render(<CopyTabIdMenuItem unifiedTabId="workspace-tab-123" menuKind={menuKind} />)
       fireEvent.click(screen.getByRole('button', { name: 'Copy Tab ID' }))
-      expect(writeClipboardText).toHaveBeenCalledExactlyOnceWith('orcaTabId: workspace-tab-123')
+      expect(writeClipboardText).toHaveBeenCalledExactlyOnceWith('occTabId: workspace-tab-123')
       expect(toast.success).not.toHaveBeenCalled()
       await act(async () => finishWrite?.())
       expect(toast.success).toHaveBeenCalledExactlyOnceWith('Tab ID copied')

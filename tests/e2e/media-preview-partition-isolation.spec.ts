@@ -1,6 +1,6 @@
 import { rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 
 // 1x1 PNG.
 const PNG = Buffer.from(
@@ -8,8 +8,8 @@ const PNG = Buffer.from(
   'base64'
 )
 
-test('orca-media URLs load only as app elements: no fetch, and no other session can read them', async ({
-  orcaPage,
+test('occ-media URLs load only as app elements: no fetch, and no other session can read them', async ({
+  occPage,
   electronApp,
   seededRepoPath,
   registerPostElectronShutdownCleanup
@@ -17,7 +17,7 @@ test('orca-media URLs load only as app elements: no fetch, and no other session 
   const filePath = path.join(seededRepoPath, 'isolation-probe.png')
   writeFileSync(filePath, PNG)
   registerPostElectronShutdownCleanup(async () => rmSync(filePath, { force: true }))
-  await orcaPage.evaluate((filePath) => {
+  await occPage.evaluate((filePath) => {
     const state = window.__store?.getState()
     if (!state?.activeWorktreeId) {
       throw new Error('Missing fixture worktree')
@@ -30,13 +30,13 @@ test('orca-media URLs load only as app elements: no fetch, and no other session 
       mode: 'edit'
     })
   }, filePath)
-  const image = orcaPage.locator('img[src^="orca-media://"]').first()
+  const image = occPage.locator('img[src^="occ-media://"]').first()
   await expect(image).toBeVisible()
   const url = await image.getAttribute('src')
   expect(url).toBeTruthy()
 
   // The app's own page shows the image but cannot read its bytes: the scheme has no fetch privilege.
-  const pageFetch = await orcaPage.evaluate(async (url) => {
+  const pageFetch = await occPage.evaluate(async (url) => {
     try {
       await fetch(url)
       return 'read'
@@ -54,7 +54,7 @@ test('orca-media URLs load only as app elements: no fetch, and no other session 
       )
     return {
       app: await probe(session.defaultSession),
-      browserPartition: await probe(session.fromPartition('persist:orca-media-isolation-probe'))
+      browserPartition: await probe(session.fromPartition('persist:occ-media-isolation-probe'))
     }
   }, url ?? '')
   // Main's own session serves the grant; a browser-pane-style partition has no handler at all.

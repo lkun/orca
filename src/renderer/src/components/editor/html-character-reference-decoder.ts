@@ -14,7 +14,7 @@ export function decodeHtmlAttributeCharacterReferences(
   // The inert template uses a parser-constrained value and the caller’s quote, preventing attribute injection.
   const template = document.createElement('template')
   const delimiter = quote ?? ''
-  template.innerHTML = `<span data-orca-value=${delimiter}${value}${delimiter}></span>`
+  template.innerHTML = `<span data-occ-value=${delimiter}${value}${delimiter}></span>`
   const element = template.content.firstElementChild
-  return element?.getAttribute('data-orca-value') ?? ''
+  return element?.getAttribute('data-occ-value') ?? ''
 }

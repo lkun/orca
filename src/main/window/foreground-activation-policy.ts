@@ -9,13 +9,13 @@ type ActivationPolicyApp = {
 
 type PolicyEnv = Readonly<Record<string, string | undefined>>
 
-/** orcad's headless browser provider: a serve process on a throwaway profile that no user drives. */
-export function isOrcadSidecarLaunch(env: PolicyEnv = process.env): boolean {
-  return env.ORCA_ORCAD_SIDECAR === '1'
+/** occd's headless browser provider: a serve process on a throwaway profile that no user drives. */
+export function isOCCdSidecarLaunch(env: PolicyEnv = process.env): boolean {
+  return env.OCC_OCCD_SIDECAR === '1'
 }
 
 function isExplicitBackgroundLaunch(env: PolicyEnv): boolean {
-  return env.ORCA_BACKGROUND_LAUNCH === '1' || isOrcadSidecarLaunch(env)
+  return env.OCC_BACKGROUND_LAUNCH === '1' || isOCCdSidecarLaunch(env)
 }
 
 /** True when this process must not steal focus, raise windows, or activate the app. */
@@ -23,17 +23,17 @@ export function isBackgroundLaunch(env: PolicyEnv = process.env): boolean {
   if (isExplicitBackgroundLaunch(env)) {
     return true
   }
-  if (env.ORCA_E2E_FOREGROUND === '1') {
+  if (env.OCC_E2E_FOREGROUND === '1') {
     return false
   }
-  return env.ORCA_E2E_HEADLESS === '1' || env.ORCA_E2E_HEADFUL === '1'
+  return env.OCC_E2E_HEADLESS === '1' || env.OCC_E2E_HEADFUL === '1'
 }
 
 /** Suppresses automatic presentation on launch; this is not a query of current window visibility. */
 export function isWindowlessLaunch(env: PolicyEnv = process.env): boolean {
   return (
     isExplicitBackgroundLaunch(env) ||
-    (isBackgroundLaunch(env) && env.ORCA_E2E_HEADLESS === '1' && env.ORCA_E2E_HEADFUL !== '1')
+    (isBackgroundLaunch(env) && env.OCC_E2E_HEADLESS === '1' && env.OCC_E2E_HEADFUL !== '1')
   )
 }
 

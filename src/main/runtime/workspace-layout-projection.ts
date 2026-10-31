@@ -1,7 +1,7 @@
 // Reproject dirty Store partitions and publish each workspace only from its owning partition.
 
 import type { ExecutionHostId } from '../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { loadWorkspaceLayoutWithoutReport } from '../../shared/workspace-layout/workspace-layout-load'
 import { stableJson } from '../../shared/workspace-layout/workspace-layout-load-report'
 import type {
@@ -33,7 +33,7 @@ export function runtimeLayoutLoadContext(
   hostId: ExecutionHostId
 ): WorkspaceLayoutLoadContext {
   // Window-owned builds retain name-based loading without views or generations.
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN || !store) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN || !store) {
     return nameBasedLoadContext()
   }
   const generationOf = store.getPtyBindingGeneration
@@ -174,7 +174,7 @@ export class WorkspaceLayoutProjection {
       return this.deps.homeHostId(key)
     } catch (error) {
       // Window-owned builds retain whole-projection failure.
-      if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (!OCC_LAYOUT_OWNER_IS_MAIN) {
         throw error
       }
       unroutable.add(key)

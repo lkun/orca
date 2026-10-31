@@ -1,6 +1,6 @@
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { z } from 'zod'
 import { describe, expect, it } from 'vitest'
 
@@ -24,7 +24,7 @@ const measurement = z.object({
 
 async function measureTails(filler: string) {
   const executable = process.versions.bun
-    ? (process.env.ORCA_TEST_NODE_EXECUTABLE ?? process.env.npm_node_execpath)
+    ? (process.env.OCC_TEST_NODE_EXECUTABLE ?? process.env.npm_node_execpath)
     : process.execPath
   if (!executable || !path.isAbsolute(executable)) {
     throw new Error('Expected an absolute Node executable')
@@ -76,7 +76,7 @@ async function measureTails(filler: string) {
       probe
     ],
     cwd: process.cwd(),
-    env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' },
+    env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' },
     timeoutMs: 10_000,
     maxOutputBytes: 64 * 1024
   })

@@ -465,7 +465,7 @@ describe('onboarding language request', () => {
       expect(screen.queryByRole('textbox')).toBeNull()
     } finally {
       window.history.replaceState(null, '', originalPath)
-      Reflect.deleteProperty(window, '__ORCA_WEB_CLIENT__')
+      Reflect.deleteProperty(window, '__OCC_WEB_CLIENT__')
     }
   })
 

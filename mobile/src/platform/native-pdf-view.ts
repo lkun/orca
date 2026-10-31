@@ -2,7 +2,7 @@ import { useCallback, useLayoutEffect, useMemo, useRef } from 'react'
 import { Platform } from 'react-native'
 import { Directory, File as FsFile, Paths } from 'expo-file-system'
 import { useFocusEffect, useNavigation } from 'expo-router'
-import { presentPdf } from '../../modules/orca-mobile-web-shell/src'
+import { presentPdf } from '../../modules/occ-mobile-web-shell/src'
 import { getRuntimePathBasename } from '../../../src/shared/cross-platform-path'
 import { PDF_MIME_TYPE } from '../files/mobile-file-media'
 import {
@@ -58,7 +58,7 @@ export function createNativePdfViewer(
     current?.abort()
     const controller = new AbortController()
     current = controller
-    const root = new Directory(Paths.cache, 'orca-pdf')
+    const root = new Directory(Paths.cache, 'occ-pdf')
     if (root.exists) {
       root.delete()
     }

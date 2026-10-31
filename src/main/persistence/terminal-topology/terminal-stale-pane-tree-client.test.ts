@@ -6,8 +6,8 @@ import { LOCAL_EXECUTION_HOST_ID } from '../../../shared/execution-host'
 import type { TerminalPaneLayoutNode } from '../../../shared/terminal-tab-types'
 import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
 import { TEST_LEAF_1, TEST_LEAF_2 } from '../persistence-session-fixtures'
-import type { OrcaRuntimeWithCloseHeadlessMobileTerminalTab } from '../../runtime/session-tabs/headless-terminal-tab-close'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeWithCloseHeadlessMobileTerminalTab } from '../../runtime/session-tabs/headless-terminal-tab-close'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import type { Store } from '../loading-store/store'
 import { closeLeafOrTab } from './terminal-topology-commit'
 import {
@@ -31,11 +31,11 @@ const NEW_LEAF = '55555555-5555-4555-8555-555555555555'
 const directories: string[] = []
 
 type PaneLayoutHandler = Pick<
-  OrcaRuntimeWithCloseHeadlessMobileTerminalTab,
+  OCCRuntimeWithCloseHeadlessMobileTerminalTab,
   'updateMobileSessionPaneLayout'
 >
 
-class PaneLayoutRuntime extends OrcaRuntimeService {
+class PaneLayoutRuntime extends OCCRuntimeService {
   protected override getValidatedExplicitWorktreeIdSelector(): string {
     return WT
   }
@@ -73,7 +73,7 @@ function split(first: string, second: string): TerminalPaneLayoutNode {
 }
 
 async function openWithPanes(panes: readonly string[]): Promise<Store> {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-stale-pane-tree-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-stale-pane-tree-'))
   directories.push(directory)
   const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   const window = new WindowSession(structuredClone(store.getWorkspaceSession()))

@@ -27,7 +27,7 @@ async function loadStoreModule() {
 }
 
 beforeEach(() => {
-  tempHome = mkdtempLike('orca-openai-key-store-')
+  tempHome = mkdtempLike('occ-openai-key-store-')
   safeStorageMock.decryptString.mockClear()
   safeStorageMock.encryptString.mockClear()
   safeStorageMock.isEncryptionAvailable.mockClear()
@@ -39,9 +39,9 @@ function mkdtempLike(prefix: string): string {
 }
 
 function writeStoredOpenAiKey(value: string): void {
-  const orcaDir = join(tempHome, '.orca')
-  mkdirSync(orcaDir, { recursive: true })
-  writeFileSync(join(orcaDir, 'openai-speech-token.enc'), value)
+  const occDir = join(tempHome, '.occ')
+  mkdirSync(occDir, { recursive: true })
+  writeFileSync(join(occDir, 'openai-speech-token.enc'), value)
 }
 
 describe('OpenAI speech API key store', () => {
@@ -54,7 +54,7 @@ describe('OpenAI speech API key store', () => {
     expect(safeStorageMock.decryptString).not.toHaveBeenCalled()
   })
 
-  // #31174: orcad cannot open a key the desktop sealed with safeStorage, so it must not say ready.
+  // #31174: occd cannot open a key the desktop sealed with safeStorage, so it must not say ready.
   it('reports a stored key this host cannot decrypt as unusable', async () => {
     writeStoredOpenAiKey('v10\u0000ÿþ sealed by another store')
     const store = await loadStoreModule()
@@ -113,7 +113,7 @@ describe('OpenAI speech API key store', () => {
     const store = await loadStoreModule()
 
     expect(store.hasOpenAiSpeechApiKey()).toBe(false)
-    expect(existsSync(join(tempHome, '.orca'))).toBe(false)
+    expect(existsSync(join(tempHome, '.occ'))).toBe(false)
     expect(safeStorageMock.decryptString).not.toHaveBeenCalled()
   })
 })

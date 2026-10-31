@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { buildPushChallengeFixture, createPushHostKeypair } from './push-host-challenge-fixtures'
 import { PushGatewaySession, type PushSessionOutcome } from './push-gateway-session'
 
-const GATEWAY_ORIGIN = 'https://push.onorca.dev'
+const GATEWAY_ORIGIN = 'https://push.onocc.dev'
 const NOW = 1_770_000_000_000
 
 function jsonResponse(status: number, body: unknown): Response {

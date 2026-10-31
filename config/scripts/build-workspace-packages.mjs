@@ -14,7 +14,7 @@ import { dirname, join, relative, resolve } from 'node:path'
 import { resolvePnpmCliInvocation } from './pnpm-cli-invocation.mjs'
 
 const root = resolve(import.meta.dirname, '../..')
-const PACKAGES = [{ name: '@orca/process-host', dir: 'src/packages/process-host' }]
+const PACKAGES = [{ name: '@occ/process-host', dir: 'src/packages/process-host' }]
 // Outputs and build scratch space, not inputs.
 const NON_INPUTS = new Set(['dist', 'node_modules', '.dist-build.lock'])
 const COMPILER_PACKAGES = ['typescript', 'tsx', '@types/node']
@@ -64,7 +64,7 @@ function describeOutputs(packageDir) {
 }
 
 function stampPath(packageDir) {
-  return join(packageDir, 'node_modules', '.cache', 'orca-dist-stamp.json')
+  return join(packageDir, 'node_modules', '.cache', 'occ-dist-stamp.json')
 }
 
 export function isPackageBuildCurrent(packageDir, inputs) {
@@ -90,7 +90,7 @@ function writeStamp(packageDir, inputs) {
 }
 
 function runPackageBuild(name) {
-  // Why not @orca/process-host: this builds it, so its dist may not exist yet.
+  // Why not @occ/process-host: this builds it, so its dist may not exist yet.
   const { command, prefixArgs, shell } = resolvePnpmCliInvocation()
   const result = spawnSync(command, [...prefixArgs, '--filter', name, 'build'], {
     cwd: root,

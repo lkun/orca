@@ -14,8 +14,8 @@ import {
   agentSessionLeaseFixture,
   agentSessionRecordFixture
 } from '../../../shared/agent-session-record.test-fixture'
-import { formatOrcaSessionAddress, type OrcaSessionId } from '../../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress, type OCCSessionId } from '../../../shared/occ-session-address'
+import { testOCCSessionId } from '../../../shared/occ-session-address-test-fixture'
 
 const hostRef: { current: unknown } = { current: null }
 
@@ -23,9 +23,9 @@ vi.mock('../../native-chat/agent-session-wire/structured-agent-session-registry'
   getStructuredAgentSessionHost: () => hostRef.current
 }))
 
-const { OrcaRuntimeWithGetPtyRecordForPaneKey } = await import('./terminal-pane-mail-routing')
+const { OCCRuntimeWithGetPtyRecordForPaneKey } = await import('./terminal-pane-mail-routing')
 const { OrchestrationDb } = await import('./db')
-const { resolveOrcaSessionParty } = await import('./orchestration-party')
+const { resolveOCCSessionParty } = await import('./orchestration-party')
 const {
   mintStructuredWorkerHandle,
   mintStructuredWorkerPaneKey,
@@ -33,11 +33,11 @@ const {
   structuredWorkerProcessIncarnation
 } = await import('../structured-worker-identity')
 
-const CHAT = testOrcaSessionId('4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37')
-const CHAT_ADDRESS = formatOrcaSessionAddress(CHAT)
+const CHAT = testOCCSessionId('4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37')
+const CHAT_ADDRESS = formatOCCSessionAddress(CHAT)
 
 /** The real methods through the real prototype chain; a re-declared copy would pin nothing. */
-abstract class MailTargetProbe extends OrcaRuntimeWithGetPtyRecordForPaneKey {
+abstract class MailTargetProbe extends OCCRuntimeWithGetPtyRecordForPaneKey {
   target(mailboxHandle: string): unknown {
     return this.resolveStructuredMailboxTarget(mailboxHandle)
   }
@@ -95,7 +95,7 @@ function chatCoordinatedRun(): string {
     objective: 'o',
     coordinatorHandle: null,
     coordinatorPaneKey: null,
-    coordinatorOrcaSessionId: CHAT
+    coordinatorOCCSessionId: CHAT
   }).id
 }
 
@@ -165,21 +165,21 @@ describe('a Run whose coordinator is a chat (an OCC session id, no handle)', () 
       objective: 'o',
       coordinatorHandle: 'term_coord',
       coordinatorPaneKey: 'tab_c:11111111-1111-4111-8111-111111111111',
-      coordinatorOrcaSessionId: CHAT
+      coordinatorOCCSessionId: CHAT
     }).id
     expect(probe().target(`run:${runId}`)).toBeNull()
   })
 })
 
 describe('a session addressed directly', () => {
-  it('owns its `orca_session_id:<id>` mailbox', () => {
+  it('owns its `occ_session_id:<id>` mailbox', () => {
     installStore(chatRecord())
     expect(probe().target(CHAT_ADDRESS)).toEqual({ sessionId: CHAT, dispatchId: null })
   })
 
   it('claims nothing for a malformed session address', () => {
     installStore(chatRecord())
-    expect(probe().target('orca_session_id:term_abc')).toBeNull()
+    expect(probe().target('occ_session_id:term_abc')).toBeNull()
   })
 })
 
@@ -224,7 +224,7 @@ describe('the idle edge after a restart, before any orchestration call', () => {
   let previousEnvironment: AppEnvironment | null
 
   beforeEach(() => {
-    userData = mkdtempSync(join(tmpdir(), 'orca-idle-edge-db-'))
+    userData = mkdtempSync(join(tmpdir(), 'occ-idle-edge-db-'))
     previousEnvironment = hasAppEnvironment() ? getAppEnvironment() : null
     setAppEnvironment({
       getPath: () => userData,
@@ -263,7 +263,7 @@ describe('the idle edge after a restart, before any orchestration call', () => {
       objective: 'o',
       coordinatorHandle: null,
       coordinatorPaneKey: null,
-      coordinatorOrcaSessionId: CHAT
+      coordinatorOCCSessionId: CHAT
     }).id
     stored.close()
     const delivered: string[] = []
@@ -310,8 +310,8 @@ describe('the idle edge after a restart, before any orchestration call', () => {
 })
 
 describe('a coordinator chat continued by /clear', () => {
-  const MIDDLE = testOrcaSessionId('clear-fedcba9876543210fedcba9876543210fedcba98')
-  const SUCCESSOR = testOrcaSessionId('clear-0123456789abcdef0123456789abcdef01234567')
+  const MIDDLE = testOCCSessionId('clear-fedcba9876543210fedcba9876543210fedcba98')
+  const SUCCESSOR = testOCCSessionId('clear-0123456789abcdef0123456789abcdef01234567')
 
   function sessionRecord(sessionId: string, clearedInto?: string): AgentSessionRecord {
     const record = agentSessionRecordFixture(
@@ -355,12 +355,12 @@ describe('a coordinator chat continued by /clear', () => {
     return delivered
   }
 
-  function runCreatedBy(sessionId: OrcaSessionId): string {
+  function runCreatedBy(sessionId: OCCSessionId): string {
     return db.createRun({
       objective: 'o',
       coordinatorHandle: null,
       coordinatorPaneKey: null,
-      coordinatorOrcaSessionId: resolveOrcaSessionParty(sessionId, db).orcaSessionId
+      coordinatorOCCSessionId: resolveOCCSessionParty(sessionId, db).occSessionId
     }).id
   }
 
@@ -374,7 +374,7 @@ describe('a coordinator chat continued by /clear', () => {
       creator: { kind: 'system' },
       maxDepth: Number.MAX_SAFE_INTEGER
     })
-    expect(db.getDispatchContextById(dispatch.id)?.assignee_orca_session_id).toBe(CHAT)
+    expect(db.getDispatchContextById(dispatch.id)?.assignee_occ_session_id).toBe(CHAT)
   })
 
   it("never unbinds the successor's own Run", () => {
@@ -387,9 +387,9 @@ describe('a coordinator chat continued by /clear', () => {
     expect(idleEdge(SUCCESSOR)).toContain(`run:${ownRun}`)
     idleEdge(SUCCESSOR)
 
-    const successor = resolveOrcaSessionParty(SUCCESSOR, db)
+    const successor = resolveOCCSessionParty(SUCCESSOR, db)
     expect(db.getRunRaw(ownRun)).toMatchObject({
-      coordinator_orca_session_id: successor.orcaSessionId,
+      coordinator_occ_session_id: successor.occSessionId,
       consumer_generation: generation
     })
     expect(db.getCurrentRunForCoordinator(successor)?.id).toBe(ownRun)
@@ -404,11 +404,11 @@ describe('a coordinator chat continued by /clear', () => {
     expect(idleEdge(SUCCESSOR)).toContain(`run:${runId}`)
 
     expect(db.getRunRaw(runId)).toMatchObject({
-      coordinator_orca_session_id: CHAT,
+      coordinator_occ_session_id: CHAT,
       consumer_generation: generation
     })
     for (const member of [CHAT, MIDDLE, SUCCESSOR]) {
-      expect(db.getCurrentRunForCoordinator(resolveOrcaSessionParty(member, db))?.id).toBe(runId)
+      expect(db.getCurrentRunForCoordinator(resolveOCCSessionParty(member, db))?.id).toBe(runId)
     }
     expect(probe().target(`run:${runId}`)).toEqual({ sessionId: SUCCESSOR, dispatchId: null })
   })
@@ -422,9 +422,9 @@ describe('a coordinator chat continued by /clear', () => {
     installLineage(MIDDLE, SUCCESSOR)
     idleEdge(SUCCESSOR)
 
-    const successor = resolveOrcaSessionParty(SUCCESSOR, db)
+    const successor = resolveOCCSessionParty(SUCCESSOR, db)
     expect(db.getRunRaw(middleRun)).toMatchObject({
-      coordinator_orca_session_id: successor.orcaSessionId,
+      coordinator_occ_session_id: successor.occSessionId,
       consumer_generation: generation
     })
     expect(db.getCurrentRunForCoordinator(successor)?.id).toBe(middleRun)
@@ -433,11 +433,11 @@ describe('a coordinator chat continued by /clear', () => {
   it('reaches the live session through any spelling of the conversation, and stores one', () => {
     installLineage(MIDDLE, SUCCESSOR)
     for (const member of [CHAT, MIDDLE, SUCCESSOR]) {
-      expect(resolveOrcaSessionParty(member, db)).toMatchObject({
-        orcaSessionId: CHAT,
+      expect(resolveOCCSessionParty(member, db)).toMatchObject({
+        occSessionId: CHAT,
         address: CHAT_ADDRESS
       })
-      expect(probe().target(`orca_session_id:${member}`)).toEqual({
+      expect(probe().target(`occ_session_id:${member}`)).toEqual({
         sessionId: SUCCESSOR,
         dispatchId: null
       })
@@ -454,8 +454,8 @@ describe('a coordinator chat continued by /clear', () => {
 })
 
 describe('a structured worker continued by /clear', () => {
-  const WORKER = testOrcaSessionId('9c2e4a61-3f7b-4d8e-b105-6a2d8e4f1c93')
-  const WORKER_SUCCESSOR = testOrcaSessionId('clear-a1b2c3d4e5f60718293a4b5c6d7e8f9012345678')
+  const WORKER = testOCCSessionId('9c2e4a61-3f7b-4d8e-b105-6a2d8e4f1c93')
+  const WORKER_SUCCESSOR = testOCCSessionId('clear-a1b2c3d4e5f60718293a4b5c6d7e8f9012345678')
 
   afterEach(() => {
     structuredWorkerIdentities.clear()

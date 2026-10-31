@@ -281,7 +281,7 @@
       "plan": "プラン",
       "stoppedManually": "手動で停止しました"
     },
-    "orcaStop": {
+    "occStop": {
       "canContinue": "この会話で続行できます。",
       "crash": "この応答の途中で、{{machine}} の OCC が予期せず停止しました。",
       "quit": "この応答の途中で、{{machine}} の OCC が終了しました。",
@@ -904,7 +904,7 @@
     },
     "setupHookTrustDrawer": {
       "alwaysTrustAndRun": "常に信頼して実行",
-      "description": "このリポジトリの orca.yaml は、ワークスペースの起動前に実行されます。このリポジトリを信頼できる場合にのみ実行してください。",
+      "description": "このリポジトリの occ.yaml は、ワークスペースの起動前に実行されます。このリポジトリを信頼できる場合にのみ実行してください。",
       "dontRun": "実行しない",
       "newScriptLabel": "新しいセットアップスクリプト",
       "runHooks": "フックを実行する",
@@ -2560,7 +2560,7 @@
       "cannotRunHere": "OCC はここでこの Agent をチャットで実行できません。",
       "capacity": "このチャットを実行しているコンピューターの OCC がリクエストの上限に達しました。そのコンピューターで OCC を更新してから、もう一度お試しください。",
       "chatNotFound": "OCC はこのチャットを見つけられません。",
-      "chatSavedByNewerOrca": "このチャットは新しいバージョンの OCC で保存されました。",
+      "chatSavedByNewerOCC": "このチャットは新しいバージョンの OCC で保存されました。",
       "clearAfterAnswer": "Agent の質問または承認依頼に回答してから、/clear を実行してください。",
       "clearAfterRetry": "以前のメッセージを再試行してから、/clear を実行してください。",
       "clearAfterSending": "以前のメッセージはまだ送信中です。送信が終わったら /clear を実行してください。",
@@ -2606,7 +2606,7 @@
       "restartFailed": "Agent を再起動できませんでした。",
       "runClearWhenDone": "終わったら /clear を実行してください。",
       "runCompactWhenDone": "終わったら /compact を実行してください。",
-      "savedByNewerOrca": "チャットは新しいバージョンの OCC で保存されました。",
+      "savedByNewerOCC": "チャットは新しいバージョンの OCC で保存されました。",
       "sendOutcomeLost": "OCC はメッセージが Agent に届いたことを確認できませんでした。チャットを確認し、必要であればもう一度送信してください。",
       "settleEarlierMessage": "以前のメッセージが届くまで待つか、再試行してください。",
       "shortenMessage": "短くするか分割してから、もう一度送信してください。",
@@ -2618,8 +2618,8 @@
       "turnActive": "Agent はまだ応答中です。",
       "unreachable": "OCC は Agent に接続できませんでした。",
       "unsupported": "このチャットを実行しているコンピューターに新しいバージョンの OCC が必要です。そのコンピューターで OCC を更新してから、もう一度お試しください。",
-      "updateOrcaToKeepUsing": "引き続き使用するには、OCC を更新してください。",
-      "updateOrcaToOpenChat": "開くには OCC を更新してください。",
+      "updateOCCToKeepUsing": "引き続き使用するには、OCC を更新してください。",
+      "updateOCCToOpenChat": "開くには OCC を更新してください。",
       "waitForBackgroundTasks": "バックグラウンドタスクが終わるまでお待ちください。",
       "waitForCommand": "/compact または /clear が終わるまでお待ちください。",
       "waitForStart": "Agent の起動が終わるまでお待ちください。",
@@ -3624,7 +3624,7 @@
       "projectSubtitle": "GitHub プロジェクト · {{repository}}{{itemNumber}}",
       "pullRequest": "PR",
       "reopenItem": "項目を再オープン",
-      "repositoryNotInOrca": "このリポジトリは OCC に登録されていません",
+      "repositoryNotInOCC": "このリポジトリは OCC に登録されていません",
       "status": "状態",
       "type": "種類",
       "workspaceCreationRequirement": "ワークスペースは GitHub の Issue と PR からのみ作成できます。"
@@ -3869,7 +3869,7 @@
       "setupTitle": "セットアップスクリプトを実行しますか?",
       "skipSetupAndCreate": "セットアップをスキップして作成",
       "trustFailed": "セットアップスクリプトの信頼設定に失敗しました。",
-      "trustSubtitle": "このリポジトリの orca.yaml は、ワークスペースの起動前にコンピュータ上で実行されます。このリポジトリを信頼できる場合のみ実行してください。"
+      "trustSubtitle": "このリポジトリの occ.yaml は、ワークスペースの起動前にコンピュータ上で実行されます。このリポジトリを信頼できる場合のみ実行してください。"
     },
     "worktreeCreateRetry": {
       "createFailed": "ワークスペースの作成に失敗しました"

@@ -161,7 +161,7 @@ describe('original operation through actual nested resolution', () => {
 
 describe('a picker read with the CLI missing', () => {
   it('waits on at most one shell rerun per hold window, and finds a CLI installed after it', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-catalog-missing-cli-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-catalog-missing-cli-'))
     try {
       const name = `claude-missing-${process.pid}`
       const profileBin = join(root, 'profile-bin')
@@ -179,7 +179,7 @@ describe('a picker read with the CLI missing', () => {
           type: 'control_response',
           response: {
             subtype: 'success',
-            request_id: 'orca-model-discovery',
+            request_id: 'occ-model-discovery',
             response: { models: [{ value: 'sonnet', displayName: 'Sonnet' }] }
           }
         })}\n`

@@ -4,7 +4,7 @@ import type {
   BrowserWorkspace
 } from '../../../../shared/browser-workspace-types'
 import { browserPageDocLocationsEqual } from '../../../../shared/browser-page-doc-location'
-import { ORCA_BROWSER_BLANK_URL } from '../../../../shared/constants'
+import { OCC_BROWSER_BLANK_URL } from '../../../../shared/constants'
 import { redactKagiSessionToken } from '../../../../shared/browser-url'
 import { isDocPreviewUrl } from '../../../../shared/doc-preview-scheme'
 import { basename } from '@/lib/path'
@@ -34,9 +34,9 @@ export function normalizeBrowserTitle(
   }
   if (
     url === 'about:blank' ||
-    url === ORCA_BROWSER_BLANK_URL ||
+    url === OCC_BROWSER_BLANK_URL ||
     title === 'about:blank' ||
-    title === ORCA_BROWSER_BLANK_URL ||
+    title === OCC_BROWSER_BLANK_URL ||
     !title
   ) {
     // Why: don't surface the internal blank-guest URL as a title (leaks an impl detail, looks broken); show "New Tab" instead.
@@ -55,7 +55,7 @@ export function buildBrowserPage(
   docLocation?: BrowserPageDocLocation
 ): BrowserPage {
   // Override grant URLs at page creation: persistence/mobile/history/address bar read this sink and cannot use another process’s expired grant.
-  const normalizedUrl = docLocation ? ORCA_BROWSER_BLANK_URL : normalizeUrl(url)
+  const normalizedUrl = docLocation ? OCC_BROWSER_BLANK_URL : normalizeUrl(url)
   return {
     id: browserPageId ?? createBrowserUuid(),
     workspaceId,

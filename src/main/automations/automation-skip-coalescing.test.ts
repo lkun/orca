@@ -54,7 +54,7 @@ async function seedUnresolvableAutomation(): Promise<{ store: Store; automation:
   })
   seed.flushOrThrow()
   await seed.freezeWritesAsync()
-  const file = join(testState.dir, 'orca-data.json')
+  const file = join(testState.dir, 'occ-data.json')
   const state = JSON.parse(readPersistedStateJson(file))
   state.automations[0].runContext = {
     kind: 'workspace-run',
@@ -114,7 +114,7 @@ function seedSkip(store: Store, automation: Automation, scheduledFor: number, er
 
 describe('repeated skipped_unavailable coalescing', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-skip-coalescing-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-skip-coalescing-test-'))
     vi.useFakeTimers()
   })
 

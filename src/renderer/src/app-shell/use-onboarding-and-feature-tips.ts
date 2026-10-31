@@ -9,7 +9,7 @@ import {
 import {
   trackChatUiFeatureTipShown,
   trackCmdJPaletteFeatureTipShown,
-  trackOrcaCliFeatureTipShown
+  trackOCCCliFeatureTipShown
 } from '../components/feature-tips/feature-tip-telemetry'
 import { useAppStore } from '../store'
 import { isWebClientLocation } from '../lib/web-client-location'
@@ -141,8 +141,8 @@ export function useOnboardingAndFeatureTips() {
     }
 
     promptedThisSessionRef.current = true
-    if (featureTipsDecision.tipId === 'orca-cli') {
-      trackOrcaCliFeatureTipShown('app_open')
+    if (featureTipsDecision.tipId === 'occ-cli') {
+      trackOCCCliFeatureTipShown('app_open')
     } else if (featureTipsDecision.tipId === 'cmd-j-palette') {
       trackCmdJPaletteFeatureTipShown('app_open')
     } else if (featureTipsDecision.tipId === 'chat-ui-here' && chatUiLaunchTipVariant) {

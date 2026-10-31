@@ -110,7 +110,7 @@ const SkillBundlePlacementResultSchema = z.object({
   path: z.string(),
   topology: z.enum(['canonical-copy', 'provider-alias', 'independent-copy']),
   status: z.enum(['installed', 'unchanged', 'skipped', 'failed']),
-  errorCategory: z.string().optional(),
+  errocctegory: z.string().optional(),
   failure: SkillInstallFailureSchema.optional()
 })
 
@@ -134,7 +134,7 @@ export const SkillBundleInstallResultSchema = z.object({
           existingDigest: z.string().optional()
         })
         .optional(),
-      errorCategory: z.string().optional(),
+      errocctegory: z.string().optional(),
       failure: SkillInstallFailureSchema.optional()
     })
   )

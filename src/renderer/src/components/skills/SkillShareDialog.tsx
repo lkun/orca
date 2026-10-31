@@ -108,7 +108,7 @@ export function SkillShareDialog({
         ...(managedInstall ? { packageId: managedInstall.packageId } : {})
       })
       retainedPreparationId = nextPreview.preparationId
-      const auth = await window.api.orcaProfiles.authStatus()
+      const auth = await window.api.occProfiles.authStatus()
       return { nextPreview, auth, managedInstall }
     })()
       .then(async ({ nextPreview, auth, managedInstall }) => {

@@ -1,7 +1,7 @@
 const textEncoder = new TextEncoder()
 
-export const PUSH_HOST_PROOF_TRANSCRIPT_DOMAIN = 'orca-push-host-proof/v1'
-export const PUSH_HOST_CHALLENGE_PLAINTEXT_DOMAIN = 'orca-push-host-challenge/v1'
+export const PUSH_HOST_PROOF_TRANSCRIPT_DOMAIN = 'occ-push-host-proof/v1'
+export const PUSH_HOST_CHALLENGE_PLAINTEXT_DOMAIN = 'occ-push-host-challenge/v1'
 export const PUSH_HOST_CHALLENGE_BOX_ALGORITHM = 'Curve25519-XSalsa20-Poly1305'
 export const PUSH_HOST_PROOF_ALGORITHM = 'HMAC-SHA-256'
 

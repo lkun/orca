@@ -14,7 +14,7 @@ import {
   createFakeWslHostConnector,
   readFakeWslHostsConfig
 } from '../wsl/wsl-host-e2e-fake-connector'
-import { hasOrcadTemplate } from '../orcad/orcad-artifact-materializer'
+import { hasOCCdTemplate } from '../occd/occd-artifact-materializer'
 import { WslHostService } from '../wsl/wsl-host-service'
 import { WslHostVisibleWorkByWindow } from './wsl-host-visible-work-windows'
 import type { WslHostAutomationWake } from '../wsl/wsl-host-automation-wake'
@@ -35,13 +35,13 @@ import { isRemoteRuntimeConnectionReady } from './runtime-environments/runtime-e
 import { resolveEnvironment } from '../../shared/runtime-environment-store'
 import { reconcileWslHostBridgePorts } from '../../shared/runtime-environment-wsl-host-store'
 import { getPreferredPairedRuntimeConnection } from '../../shared/runtime-environments'
-import { requestOrcadTerminalCensus } from '../ssh/orcad-terminal-census-client'
+import { requestOCCdTerminalCensus } from '../ssh/occd-terminal-census-client'
 import type { WslHostRuntimeAccess } from '../wsl/wsl-host-server-stop'
 import {
   changesWslHostAccounts,
-  pushWslOrcadHostAccountEnv
-} from '../wsl/wsl-orcad-host-account-push'
-import { wslOrcadHostSupports } from '../wsl/wsl-orcad-host-environments'
+  pushWslOCCdHostAccountEnv
+} from '../wsl/wsl-occd-host-account-push'
+import { wslOCCdHostSupports } from '../wsl/wsl-occd-host-environments'
 import { wslHostConnectOptions } from '../wsl/wsl-host-connect-request'
 import { wireWslNodeRuntimePrefetch } from '../wsl/wsl-node-runtime-prefetch'
 
@@ -88,7 +88,7 @@ function wslHostRuntimeAccess(getUserDataPath: () => string): WslHostRuntimeAcce
       return response.result
     },
     census: (environmentId) =>
-      requestOrcadTerminalCensus(
+      requestOCCdTerminalCensus(
         getPreferredPairedRuntimeConnection(resolveEnvironment(getUserDataPath(), environmentId)),
         0
       )
@@ -102,12 +102,12 @@ function pushHostAccounts(
 ): void {
   const call = (method: string, params: unknown) =>
     callRuntimeEnvironment(getUserDataPath(), environmentId, method, params)
-  void pushWslOrcadHostAccountEnv({
+  void pushWslOCCdHostAccountEnv({
     environmentId,
     distro,
     call,
     hostSupports: (capability) =>
-      wslOrcadHostSupports(environmentId, capability, () => call('status.get', undefined))
+      wslOCCdHostSupports(environmentId, capability, () => call('status.get', undefined))
   })
 }
 
@@ -137,7 +137,7 @@ function createService(args: WslHostHandlerArgs): WslHostService | null {
   let automationWake: WslHostAutomationWake | null = null
   const runGate = {
     isEnabled: () => args.store.getSettings().experimentalWslHosts === true,
-    hasServerFiles: fake ? () => fake.serverFiles !== 'missing' : hasOrcadTemplate
+    hasServerFiles: fake ? () => fake.serverFiles !== 'missing' : hasOCCdTemplate
   }
   const created = new WslHostService({
     userDataPath: args.getUserDataPath,

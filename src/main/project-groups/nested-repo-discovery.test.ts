@@ -22,7 +22,7 @@ beforeEach(() => {
 let tempDirs: string[] = []
 
 async function tempRoot(): Promise<string> {
-  const dir = await mkdtemp(join(tmpdir(), 'orca-nested-repos-'))
+  const dir = await mkdtemp(join(tmpdir(), 'occ-nested-repos-'))
   tempDirs.push(dir)
   return dir
 }

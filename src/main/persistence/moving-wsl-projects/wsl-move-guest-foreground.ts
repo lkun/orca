@@ -1,7 +1,7 @@
 /**
  * What a bridge WSL pane is running, read inside its distro. On Windows the pane's own process is
  * `wsl.exe`, which every live pane has, so the host process table cannot tell an idle shell from a
- * running program. Each guest process of a pane inherits `ORCA_PANE_KEY`.
+ * running program. Each guest process of a pane inherits `OCC_PANE_KEY`.
  *
  * Idle means the pane's shell has nothing else: no foreground program, no background job (`&`,
  * `nohup`, `disown`), no daemon it started (`setsid` keeps the key), and no script it runs (a waiting
@@ -36,9 +36,9 @@ export type WslGuestProcessRow = {
   cwd?: string
 }
 
-const BEGIN = 'ORCA_PROCESS_TABLE_BEGIN'
-const TAGGED = 'ORCA_PROCESS_TABLE_TAGGED'
-const END = 'ORCA_PROCESS_TABLE_END'
+const BEGIN = 'OCC_PROCESS_TABLE_BEGIN'
+const TAGGED = 'OCC_PROCESS_TABLE_TAGGED'
+const END = 'OCC_PROCESS_TABLE_END'
 
 /**
  * Every process's /proc/<pid>/stat in one `cat`, then the pane key, argc and cwd of the OCC pane
@@ -50,9 +50,9 @@ export const WSL_GUEST_PANE_PROCESS_SCRIPT = [
   `echo ${BEGIN}`,
   'cat /proc/[0-9]*/stat 2>/dev/null',
   `echo ${TAGGED}`,
-  "for e in $(grep -l -s 'ORCA_PANE_KEY=' /proc/[0-9]*/environ); do",
+  "for e in $(grep -l -s 'OCC_PANE_KEY=' /proc/[0-9]*/environ); do",
   '  d=${e%/environ}',
-  `  k=$(tr '\\0' '\\n' < "$e" 2>/dev/null | sed -n 's/^ORCA_PANE_KEY=//p' | head -n 1)`,
+  `  k=$(tr '\\0' '\\n' < "$e" 2>/dev/null | sed -n 's/^OCC_PANE_KEY=//p' | head -n 1)`,
   `  n=$(tr '\\0' '\\n' < "$d/cmdline" 2>/dev/null | wc -l)`,
   '  w=$(readlink "$d/cwd" 2>/dev/null)',
   `  printf '%s\\t%s\\t%s\\t%s\\n' "\${d#/proc/}" "$n" "$k" "$w"`,

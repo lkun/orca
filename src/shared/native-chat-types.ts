@@ -7,7 +7,7 @@ import type {
   AgentSessionBackgroundTaskRunState
 } from './agent-session-background-task-wire'
 import type { AgentSessionTokenUsage } from './agent-session-context-usage'
-import type { AgentSessionOrcaStop } from './agent-session-orca-stop'
+import type { AgentSessionOCCStop } from './agent-session-occ-stop'
 import type { AgentSessionFailureFact } from './agent-session-failure'
 import type {
   AgentJournalMessageSendMode,
@@ -57,7 +57,7 @@ export type NativeChatTextBlock = {
   /** On a status line that reports a failure: what failed, typed. */
   failure?: AgentSessionFailureFact
   /** On the line about a reply OCC's own stop cut off: why, and the turn it cut. */
-  orcaStop?: AgentSessionOrcaStop & { turnItemId?: string }
+  occStop?: AgentSessionOCCStop & { turnItemId?: string }
   /** On a usage-limit line: the turn the limit ended, which its Continue picks up. */
   usageLimitTurnItemId?: string
 }

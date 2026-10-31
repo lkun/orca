@@ -109,15 +109,15 @@ describe('message selection actions', () => {
   it.each([
     [
       'user',
-      'Please repair:\n::orca-visual{file="usage.html"}\nKeep this.',
-      'Please repair:\n::orca-visual{file="usage.html"}\nKeep this.'
+      'Please repair:\n::occ-visual{file="usage.html"}\nKeep this.',
+      'Please repair:\n::occ-visual{file="usage.html"}\nKeep this.'
     ],
-    ['user', '::orca-visual{file="usage.html"}', '::orca-visual{file="usage.html"}'],
-    ['assistant', 'Chart:\n::orca-visual{file="usage.html"}\nDone.', 'Chart:\nDone.'],
+    ['user', '::occ-visual{file="usage.html"}', '::occ-visual{file="usage.html"}'],
+    ['assistant', 'Chart:\n::occ-visual{file="usage.html"}\nDone.', 'Chart:\nDone.'],
     [
       'assistant',
-      '```text\n::orca-visual{file="example.html"}\n```',
-      '```text\n::orca-visual{file="example.html"}\n```'
+      '```text\n::occ-visual{file="example.html"}\n```',
+      '```text\n::occ-visual{file="example.html"}\n```'
     ]
   ] as const)('copies the %s source %j through Android message actions', (role, text, expected) => {
     render({ ...message, role, blocks: [{ type: 'text', text }] })

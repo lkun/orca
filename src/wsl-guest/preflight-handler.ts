@@ -8,7 +8,7 @@ import { isPwshAvailableAsync } from '../main/pwsh'
 import { isWslAvailableAsync, listWslDistrosAsync } from '../main/wsl'
 import { isGitBashAvailable } from '../main/git-bash'
 import { buildPosixCommandPathLookupScript } from '../shared/posix-command-path-lookup'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 
 const execFileAsync = promisify(execFile)
 
@@ -36,7 +36,7 @@ type AgentDetectionCommand = {
 
 const SUPPORTED_POSIX_SHELLS = new Set(['sh', 'dash', 'bash', 'zsh', 'fish'])
 const CONSERVATIVE_SYSTEM_SHELL_DIRS = new Set(['/bin', '/usr/bin'])
-const AGENT_PATH_PREFIX = '__ORCA_AGENT_PATH__'
+const AGENT_PATH_PREFIX = '__OCC_AGENT_PATH__'
 
 export class PreflightHandler {
   constructor(private readonly dispatcher: RelayDispatcher) {

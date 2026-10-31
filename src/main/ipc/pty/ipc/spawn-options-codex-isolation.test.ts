@@ -59,9 +59,9 @@ describe.each([
   )
 
   it.each([null, 'ssh-1'])(
-    'opts new terminals out with ORCA_CODEX_ISOLATE=0 when off (connection %s)',
+    'opts new terminals out with OCC_CODEX_ISOLATE=0 when off (connection %s)',
     async (id) => {
-      expect(await spawnEnv(false, id)).toEqual({ KEEP: '1', ORCA_CODEX_ISOLATE: '0' })
+      expect(await spawnEnv(false, id)).toEqual({ KEEP: '1', OCC_CODEX_ISOLATE: '0' })
     }
   )
 })

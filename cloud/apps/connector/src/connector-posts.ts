@@ -1,4 +1,4 @@
-import type { CloudDatabase, SqlRow } from '@orca-cloud/cloud-database'
+import type { CloudDatabase, SqlRow } from '@occ-cloud/cloud-database'
 import type { ConnectorSource, ThreadPlace } from './connector-adapter.js'
 
 // message: a new post in the thread; status: posted once, then edited in place; reaction: on the
@@ -147,7 +147,7 @@ export class ConnectorPosts {
   // One claimer at a time across instances, so a container's head is claimed once per lease.
   async claim(): Promise<ClaimedPost[]> {
     return await this.database.transaction(async (transaction) => {
-      if (!(await transaction.tryLockScope(`orca-connector-posts-claim:${this.source}`))) {
+      if (!(await transaction.tryLockScope(`occ-connector-posts-claim:${this.source}`))) {
         return []
       }
       const now = this.now()

@@ -14,7 +14,7 @@ vi.mock('node:fs', async (importOriginal) => {
 })
 
 it('refuses registration until unreadable cleanup is recovered and settled on restart', async () => {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-push-unreadable-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-push-unreadable-'))
   let service: DesktopPushService | null = null
   try {
     let registry = new DeviceRegistry(dir)

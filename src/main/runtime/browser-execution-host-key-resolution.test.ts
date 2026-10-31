@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 import type { FolderWorkspace } from '../../shared/folder-workspace-types'
 import { parseBrowserNetworkExecutionHostKey } from '../browser/browser-network-execution-route'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 // Use the real resolver: adoption retires missing workspaces but preserves pages awaiting an offline host.
 const FOLDER_WORKSPACE_ID = 'folder-workspace-1'
@@ -40,8 +40,8 @@ describe('browser execution host key resolution', () => {
   })
 })
 
-function createRuntime(overrides: Partial<FolderWorkspace> = {}): OrcaRuntimeService {
-  const folderPath = mkdtempSync(join(tmpdir(), 'orca-browser-host-key-'))
+function createRuntime(overrides: Partial<FolderWorkspace> = {}): OCCRuntimeService {
+  const folderPath = mkdtempSync(join(tmpdir(), 'occ-browser-host-key-'))
   const folderWorkspace: FolderWorkspace = {
     id: FOLDER_WORKSPACE_ID,
     projectGroupId: 'project-group-1',
@@ -58,7 +58,7 @@ function createRuntime(overrides: Partial<FolderWorkspace> = {}): OrcaRuntimeSer
     updatedAt: 1,
     ...overrides
   }
-  return new OrcaRuntimeService({
+  return new OCCRuntimeService({
     getFolderWorkspaces: () => [folderWorkspace],
     getProjectGroups: () => [],
     getAllWorktreeMeta: () => ({}),

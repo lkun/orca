@@ -130,8 +130,8 @@ describe('WslRelayRecovery', () => {
     const restart = vi.fn()
     const deferred: (() => void)[] = []
     let live: WslRelayRestartSetup | undefined = {
-      codexHomePath: '/home/u/.orca-codex',
-      claudeConfigDir: '/home/u/.orca/claude',
+      codexHomePath: '/home/u/.occ-codex',
+      claudeConfigDir: '/home/u/.occ/claude',
       launchKinds: ['pi', 'omp']
     }
     const expected = live

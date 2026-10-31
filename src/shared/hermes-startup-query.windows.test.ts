@@ -8,7 +8,7 @@ import { planHermesStartupQuery } from './hermes-startup-query'
 const windowsIt = process.platform === 'win32' ? it : it.skip
 
 windowsIt('preserves the startup query and spaced custom args in native Windows argv', () => {
-  const tempDir = mkdtempSync(join(tmpdir(), 'orca-hermes-startup-query-'))
+  const tempDir = mkdtempSync(join(tmpdir(), 'occ-hermes-startup-query-'))
   const capturePath = join(tempDir, 'argv.json')
   const hermesPath = join(tempDir, 'hermes.exe')
   const prompt = [

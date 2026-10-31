@@ -2,7 +2,7 @@ import { ChildProcess } from 'node:child_process'
 import { PassThrough } from 'node:stream'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import type { ProcessSpec, SpawnedProcess } from '@orca/process-host/process-spec'
+import type { ProcessSpec, SpawnedProcess } from '@occ/process-host/process-spec'
 import { ownFreshDaemonScope } from './daemon-cgroup-scope'
 import { startDaemonScopeDeathWatch } from './daemon-scope-death-watch'
 
@@ -15,7 +15,7 @@ afterEach(() => {
 
 function options() {
   return {
-    daemonScope: 'orca-daemon-launch-a.scope',
+    daemonScope: 'occ-daemon-launch-a.scope',
     spawn: spawnProcess,
     log: vi.fn()
   }
@@ -24,12 +24,12 @@ function options() {
 describe('daemon scope death watch ownership', () => {
   it('only a fresh scope the daemon is still in qualifies', () => {
     const own = (unit: string | null) => () => unit
-    expect(ownFreshDaemonScope(true, 'launch-a', own('orca-daemon-launch-a.scope'))).toBe(
-      'orca-daemon-launch-a.scope'
+    expect(ownFreshDaemonScope(true, 'launch-a', own('occ-daemon-launch-a.scope'))).toBe(
+      'occ-daemon-launch-a.scope'
     )
-    expect(ownFreshDaemonScope(false, 'launch-a', own('orca-daemon-launch-a.scope'))).toBeNull()
-    expect(ownFreshDaemonScope(true, undefined, own('orca-daemon-launch-a.scope'))).toBeNull()
-    for (const unit of [null, 'app-orca-123.scope', 'orca-daemon-other.scope']) {
+    expect(ownFreshDaemonScope(false, 'launch-a', own('occ-daemon-launch-a.scope'))).toBeNull()
+    expect(ownFreshDaemonScope(true, undefined, own('occ-daemon-launch-a.scope'))).toBeNull()
+    for (const unit of [null, 'app-occ-123.scope', 'occ-daemon-other.scope']) {
       expect(ownFreshDaemonScope(true, 'launch-a', own(unit))).toBeNull()
     }
   })
@@ -60,9 +60,9 @@ describe('daemon scope death watch ownership', () => {
         args: [
           '-c',
           expect.any(String),
-          'orca-daemon-scope-watch',
+          'occ-daemon-scope-watch',
           String(process.pid),
-          'orca-daemon-launch-a.scope'
+          'occ-daemon-launch-a.scope'
         ],
         stdio: ['pipe', 'ignore', 'ignore'],
         env: expect.objectContaining({ XDG_RUNTIME_DIR: '/run/user/1000' })

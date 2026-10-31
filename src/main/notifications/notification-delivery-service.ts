@@ -5,7 +5,7 @@ import type {
   NotificationDispatchResult,
   NotificationSettings
 } from '../../shared/notification-settings-types'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { buildNotificationOptions } from '../ipc/notification-options'
 import { translateMain } from '../i18n/main-i18n'
 import { reserveNotificationCooldown } from '../../shared/notification-burst-cooldown'
@@ -17,7 +17,7 @@ export type NotificationDeliveryDependencies = {
   isWindowVisible: (window: BrowserWindow | null) => boolean
   setTrayAttention: (attention: boolean) => void
   isNotificationSupported: () => boolean
-  dispatchMobileNotification: OrcaRuntimeService['dispatchMobileNotification'] | null
+  dispatchMobileNotification: OCCRuntimeService['dispatchMobileNotification'] | null
   readAuthorizationStatus: () => Promise<
     'authorized' | 'denied' | 'not-determined' | 'unknown' | null
   >

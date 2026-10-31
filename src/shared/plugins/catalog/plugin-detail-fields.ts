@@ -49,7 +49,7 @@ export const pluginCatalogReleaseDetailFields = {
     .catch(undefined)
     .meta(
       pluginFieldDoc('Source repository page, https only.', NEXT, [
-        'https://github.com/acme/orca-gleam-syntax'
+        'https://github.com/acme/occ-gleam-syntax'
       ])
     ),
   homepage: httpsUrlSchema

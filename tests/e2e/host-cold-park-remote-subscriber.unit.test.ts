@@ -1,7 +1,7 @@
 // STA-2854: test host-local parking policy separately from authoritative stream/input/reconnect.
 // A windowless runtime proves already-attached PTY streams do not depend on the renderer; the final case covers initially unattached PTYs.
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import { RpcDispatcher } from '../../src/main/runtime/rpc/dispatcher'
 import type { RpcRequest } from '../../src/main/runtime/rpc/core'
 import { TERMINAL_METHODS } from '../../src/main/runtime/rpc/methods/terminal'
@@ -170,7 +170,7 @@ type RuntimeInternals = {
   issuePtyHandle: (pty: unknown) => string
 }
 
-function internals(runtime: OrcaRuntimeService): RuntimeInternals {
+function internals(runtime: OCCRuntimeService): RuntimeInternals {
   return runtime as unknown as RuntimeInternals
 }
 
@@ -181,7 +181,7 @@ function createHostProvider() {
   const session = { cols: 120, rows: 40, attached: true, screen: '' }
   const attachCalls: string[] = []
   const writes: [string, string][] = []
-  let runtime: OrcaRuntimeService | null = null
+  let runtime: OCCRuntimeService | null = null
   const controller = {
     write: (id: string, text: string) => {
       writes.push([id, text])
@@ -215,7 +215,7 @@ function createHostProvider() {
     attachCalls,
     writes,
     session,
-    bind(target: OrcaRuntimeService) {
+    bind(target: OCCRuntimeService) {
       runtime = target
     },
     emitData(data: string): boolean {
@@ -229,7 +229,7 @@ function createHostProvider() {
   }
 }
 
-function startMultiplex(runtime: OrcaRuntimeService, connectionId: string) {
+function startMultiplex(runtime: OCCRuntimeService, connectionId: string) {
   const messages: { result?: { type?: string; streamId?: number | null } }[] = []
   const binaryFrames: Uint8Array<ArrayBufferLike>[] = []
   const handlers = new Map<
@@ -328,7 +328,7 @@ function errorFrames(harness: Harness): number {
 
 describe('STA-2854 B: remote subscriber survives a fully unmounted host renderer', () => {
   it('streams, accepts input, and re-subscribes with no host renderer pane at all', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const provider = createHostProvider()
     provider.bind(runtime)
     runtime.setPtyController(provider.controller as never)
@@ -378,7 +378,7 @@ describe('STA-2854 B: remote subscriber survives a fully unmounted host renderer
   })
 
   it('counterfactual: losing every subscriber is what clears the thinning veto', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const provider = createHostProvider()
     provider.bind(runtime)
     runtime.setPtyController(provider.controller as never)
@@ -412,7 +412,7 @@ describe('STA-2854 B: remote subscriber survives a fully unmounted host renderer
 
 describe('STA-2854 C: an unattached host PTY with no mountable renderer pane', () => {
   it('still streams to the remote subscriber without any renderer mount', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const provider = createHostProvider()
     // A never-mounted pane needs main to attach before daemon output can flow.
     provider.session.attached = false

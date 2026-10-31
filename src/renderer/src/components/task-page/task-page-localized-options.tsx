@@ -41,7 +41,7 @@ export type JiraPreset = { id: JiraPresetId; label: string }
 
 export type GitHubModeButton = { id: GitHubTaskKind | 'project'; label: string }
 
-export type LinearMode = 'issues' | 'projects' | 'views' | 'in-orca'
+export type LinearMode = 'issues' | 'projects' | 'views' | 'in-occ'
 
 export function LinearIcon({ className }: { className?: string }): React.JSX.Element {
   return (
@@ -147,7 +147,7 @@ export const getLinearModeOptions = createLocalizedCatalog(
     { id: 'projects', label: translate('auto.components.TaskPage.727069bee5', 'Projects') },
     { id: 'views', label: translate('auto.components.TaskPage.e78ec261ed', 'Views') },
     {
-      id: 'in-orca',
+      id: 'in-occ',
       label: translate('auto.components.TaskPage.linearModeHasWorktree', 'Has Workspace')
     }
   ]

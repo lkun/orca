@@ -1,6 +1,6 @@
 import type { z } from 'zod'
 import { agentHookServer } from '../../../../agent-hooks/server'
-import type { OrcaRuntimeService } from '../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../occ-runtime'
 import type { TerminalSend } from '../../../../../shared/rpc-contract/terminal-unary-params'
 import {
   isPotentialQuestionAnsweredSubmitInput,
@@ -37,7 +37,7 @@ function captureQuestionAnsweredBaseline(
 /** Claude sends no hook once a question is answered, so an accepted send of its submit key clears the wait. */
 export function observeQuestionAnswerSend(
   params: z.infer<typeof TerminalSend>,
-  runtime: Pick<OrcaRuntimeService, 'getLiveTerminalPaneKey'>
+  runtime: Pick<OCCRuntimeService, 'getLiveTerminalPaneKey'>
 ): <T extends { accepted?: boolean }>(result: T) => T {
   // Desktop renderers infer answers from their own input; other writers rely on the host.
   const baseline =

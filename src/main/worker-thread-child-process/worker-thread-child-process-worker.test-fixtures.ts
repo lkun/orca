@@ -11,7 +11,7 @@ import type {
 } from './worker-thread-child-process-protocol'
 
 export async function createWorkerThreadChildProcessTestEntry() {
-  const directory = await mkdtemp(join(tmpdir(), 'orca-worker-child-'))
+  const directory = await mkdtemp(join(tmpdir(), 'occ-worker-child-'))
   const entryPath = join(directory, 'worker-thread-child-process-entry.cjs')
   await build({
     entryPoints: [join(__dirname, 'worker-thread-child-process-entry.ts')],

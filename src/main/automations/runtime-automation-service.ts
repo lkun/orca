@@ -6,7 +6,7 @@ import { tuiAgentDisplayName } from '../../shared/tui-agent-display-names'
 import type { ClaudeUsageStore } from '../claude-usage/store'
 import type { CodexUsageStore } from '../codex-usage/store'
 import type { Store } from '../persistence'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { AutomationService } from './service'
 import { createHeadlessRunTerminalRetention } from './headless-run-terminal-retention'
 import {
@@ -25,7 +25,7 @@ const MAX_REMEMBERED_LAUNCHES = 256
 
 export function createRuntimeAutomationService(input: {
   store: Store
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   claudeUsage?: ClaudeUsageStore
   codexUsage?: CodexUsageStore
   /** Execute remote_host_service schedules through the headless dispatcher. */
@@ -188,7 +188,7 @@ export function createRuntimeAutomationService(input: {
 function bindHeadlessRunTerminalRetention(
   service: AutomationService,
   store: Store,
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
 ): void {
   const retention = createHeadlessRunTerminalRetention({
     listRuns: () => store.listAutomationRuns(),

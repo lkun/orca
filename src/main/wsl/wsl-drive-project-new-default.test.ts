@@ -107,7 +107,7 @@ describe('readMainCheckoutWorktreeLinks', () => {
   let dir: string
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-drive-default-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-drive-default-'))
   })
 
   afterEach(() => {

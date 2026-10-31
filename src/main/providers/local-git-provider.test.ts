@@ -197,9 +197,9 @@ const cases: ParityCase[] = [
   ['fetchRemote', (p) => p.fetchRemote(WT), 'gitFetch', [WT, undefined, interactive]],
   [
     'syncForkDefaultBranch',
-    (p) => p.syncForkDefaultBranch(WT, { owner: 'acme', repo: 'orca' }),
+    (p) => p.syncForkDefaultBranch(WT, { owner: 'acme', repo: 'occ' }),
     'gitSyncForkDefaultBranch',
-    [WT, { owner: 'acme', repo: 'orca' }, interactive]
+    [WT, { owner: 'acme', repo: 'occ' }, interactive]
   ],
   ['listWorktrees', (p) => p.listWorktrees('/repo'), 'listWorktrees', ['/repo', {}]],
   [

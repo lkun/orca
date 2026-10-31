@@ -1,7 +1,7 @@
-import type { OrcadMigrationDependencyKind } from '../../../../shared/orcad-migration/orcad-migration-preflight'
+import type { OCCdMigrationDependencyKind } from '../../../../shared/occd-migration/occd-migration-preflight'
 import { translate } from '@/i18n/i18n'
 
-export function dependencyKindLabel(kind: OrcadMigrationDependencyKind): string {
+export function dependencyKindLabel(kind: OCCdMigrationDependencyKind): string {
   switch (kind) {
     case 'saved-port-forward':
       return translate('auto.components.settings.managedServers.kind.portForward', 'port forwards')

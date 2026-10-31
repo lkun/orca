@@ -151,7 +151,7 @@ export function registerQueuedMessagePauseTests(): void {
   }
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-queue-pause-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-queue-pause-'))
     clock = 1_000
   })
 

@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { createConnection } from 'node:net'
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { OrchestrationDb } from './orchestration/db'
 import { readRuntimeMetadata } from './runtime-metadata'
 import { classifyRuntimeLongPoll } from './runtime-rpc/runtime-rpc-long-poll'
@@ -35,7 +35,7 @@ vi.mock('../git/worktree', () => {
   }
 })
 
-describe('OrcaRuntimeRpcServer', () => {
+describe('OCCRuntimeRpcServer', () => {
   it('classifies worker-start as a keepalive-backed long poll', () => {
     expect(
       classifyRuntimeLongPoll({
@@ -110,8 +110,8 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('rejects oversized RPC frames instead of buffering them indefinitely', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService()
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService()
     const server = createServer({ runtime, userDataPath })
 
     await server.start()
@@ -151,8 +151,8 @@ describe('OrcaRuntimeRpcServer', () => {
     it.each(['agent.launch', 'agent.launchReplay'])(
       'emits keepalives over the socket while unprompted %s setup blocks',
       async (method) => {
-        const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-        const runtime = new OrcaRuntimeService()
+        const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+        const runtime = new OCCRuntimeService()
         const server = createServer({ runtime, userDataPath, keepaliveIntervalMs: 30 })
         vi.spyOn(server['dispatcher'], 'dispatch').mockImplementation(async (request) => {
           await sleep(120)
@@ -186,8 +186,8 @@ describe('OrcaRuntimeRpcServer', () => {
     )
 
     it('emits keepalives while orchestration.workerStart blocks', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const server = createServer({
         runtime,
         userDataPath,
@@ -225,8 +225,8 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('emits keepalive frames while a check --wait handler blocks', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const db = new OrchestrationDb(':memory:')
       runtime.setOrchestrationDb(db)
       // A consuming check now requires a live pane; these transport tests only need it to block.
@@ -266,8 +266,8 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('emits keepalive frames while orchestration.ask blocks for a reply', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const db = new OrchestrationDb(':memory:')
       runtime.setOrchestrationDb(db)
       // A consuming check now requires a live pane; these transport tests only need it to block.
@@ -322,8 +322,8 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('emits keepalive frames while terminal.wait blocks and returns its structured timeout', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const server = createServer({
         runtime,
         userDataPath,
@@ -393,8 +393,8 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('emits keepalive frames while agent-prompt verification blocks', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const server = createServer({
         runtime,
         userDataPath,
@@ -432,8 +432,8 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('releases terminal.wait long-poll slot when the client closes mid-wait', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const server = createServer({
         runtime,
         userDataPath,
@@ -507,8 +507,8 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('releases one same-Run wait slot when its client closes and keeps its sibling live', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const db = new OrchestrationDb(':memory:')
       runtime.setOrchestrationDb(db)
       // A consuming check now requires a live pane; these transport tests only need it to block.
@@ -564,7 +564,7 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('destroys active Unix sockets and cancels pending composer readiness when the runtime stops', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
       const { runtime, handle } = await createTranscriptPane({
         paneTitle: 'shell',
         foregroundProcess: 'bash',
@@ -601,8 +601,8 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('responds runtime_busy once the long-poll cap is saturated', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const db = new OrchestrationDb(':memory:')
       runtime.setOrchestrationDb(db)
       // A consuming check now requires a live pane; these transport tests only need it to block.
@@ -657,8 +657,8 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('reserves long-poll headroom for terminal.wait when orchestration.ask floods', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const db = new OrchestrationDb(':memory:')
       runtime.setOrchestrationDb(db)
       // A consuming check now requires a live pane; these transport tests only need it to block.
@@ -771,8 +771,8 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('keeps the full cap available to terminal.wait and check --wait', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const db = new OrchestrationDb(':memory:')
       runtime.setOrchestrationDb(db)
       // A consuming check now requires a live pane; these transport tests only need it to block.
@@ -822,8 +822,8 @@ describe('OrcaRuntimeRpcServer', () => {
     })
 
     it('does not emit keepalive frames for short RPCs', async () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const server = createServer({ runtime, userDataPath, keepaliveIntervalMs: 10 })
       const originalDispatch = server['dispatcher'].dispatch.bind(server['dispatcher'])
       vi.spyOn(server['dispatcher'], 'dispatch').mockImplementation(async (request, context) => {
@@ -853,8 +853,8 @@ describe('OrcaRuntimeRpcServer', () => {
 
     it('returns an internal_error envelope when the dispatcher throws', async () => {
       // Unexpected non-envelope throws still need a terminal error frame and dispatch cleanup; otherwise clients hang until idle timeout.
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-      const runtime = new OrcaRuntimeService()
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+      const runtime = new OCCRuntimeService()
       const server = createServer({ runtime, userDataPath })
       await server.start()
 

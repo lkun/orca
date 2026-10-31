@@ -26,7 +26,7 @@ describe('prepareEphemeralVmWorkspaceTarget', () => {
   it('provisions a recipe and imports the returned project root on the runtime host', async () => {
     vi.mocked(window.api.ephemeralVm.provision).mockResolvedValue({
       ok: true,
-      connectionType: 'orca-server',
+      connectionType: 'occ-server',
       stderr: 'creating sandbox',
       warnings: [],
       environment: {
@@ -91,7 +91,7 @@ describe('prepareEphemeralVmWorkspaceTarget', () => {
         setup: { ...setupResult.setup, hostId: 'runtime:env-1' }
       },
       runtimeId: 'runtime-1',
-      checkoutMode: 'orca-worktree',
+      checkoutMode: 'occ-worktree',
       environmentId: 'env-1',
       stderr: 'creating sandbox',
       warnings: []
@@ -240,7 +240,7 @@ describe('prepareEphemeralVmWorkspaceTarget', () => {
   it('rejects and cleans up an OCC-server provisioned root before project import', async () => {
     vi.mocked(window.api.ephemeralVm.provision).mockResolvedValue({
       ok: true,
-      connectionType: 'orca-server',
+      connectionType: 'occ-server',
       stderr: 'creating sandbox',
       warnings: [],
       environment: {
@@ -294,7 +294,7 @@ describe('prepareEphemeralVmWorkspaceTarget', () => {
     )
     vi.mocked(window.api.ephemeralVm.provision).mockResolvedValue({
       ok: true,
-      connectionType: 'orca-server',
+      connectionType: 'occ-server',
       stderr: 'creating sandbox',
       warnings: [],
       environment: {
@@ -378,7 +378,7 @@ describe('prepareEphemeralVmWorkspaceTarget', () => {
   it('cleans up the runtime when importing the project root fails', async () => {
     vi.mocked(window.api.ephemeralVm.provision).mockResolvedValue({
       ok: true,
-      connectionType: 'orca-server',
+      connectionType: 'occ-server',
       stderr: 'creating sandbox',
       warnings: [],
       environment: {
@@ -430,7 +430,7 @@ describe('prepareEphemeralVmWorkspaceTarget', () => {
   it('cleans up the runtime when the returned project root is not a git repo', async () => {
     vi.mocked(window.api.ephemeralVm.provision).mockResolvedValue({
       ok: true,
-      connectionType: 'orca-server',
+      connectionType: 'occ-server',
       stderr: 'creating sandbox',
       warnings: [],
       environment: {

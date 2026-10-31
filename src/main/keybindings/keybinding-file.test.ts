@@ -19,7 +19,7 @@ describe('keybinding-file', () => {
   let filePath: string
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-keybindings-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-keybindings-'))
     filePath = join(dir, 'keybindings.json')
   })
 
@@ -77,9 +77,9 @@ describe('keybinding-file', () => {
     ).toEqual(['Mod+Shift+J'])
   })
 
-  it('resolves the user-facing keybindings path under ~/.orca', () => {
+  it('resolves the user-facing keybindings path under ~/.occ', () => {
     expect(getUserKeybindingsPath('/home/test')).toBe(
-      join('/home/test', '.orca', 'keybindings.json')
+      join('/home/test', '.occ', 'keybindings.json')
     )
   })
 

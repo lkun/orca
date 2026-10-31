@@ -35,7 +35,7 @@ RUN for attempt in 1 2 3 4 5; do \
     xvfb \
   && rm -rf /var/lib/apt/lists/*
 
-RUN useradd --create-home --shell /bin/bash orca
+RUN useradd --create-home --shell /bin/bash occ
 
 COPY config/docker/headless-pairing/run-appimage-case.sh /usr/local/bin/run-appimage-case
 

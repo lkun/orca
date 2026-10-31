@@ -49,13 +49,13 @@ const hostPlatform = process.platform
 const variants = [
   {
     hooks: 'opencode-hooks',
-    file: 'orca-opencode-status.js',
+    file: 'occ-opencode-status.js',
     service: new OpenCodeHookService(),
     source: getOpenCodePluginSource
   },
   {
     hooks: 'opencode2-hooks',
-    file: 'orca-opencode2-status.js',
+    file: 'occ-opencode2-status.js',
     service: openCode2HookService,
     source: getOpenCode2PluginSource
   }
@@ -68,7 +68,7 @@ beforeEach(async () => {
   fsMock.writeFileSync.mockReset().mockImplementation(actual.writeFileSync)
   fsMock.mkdirSync.mockReset().mockImplementation(actual.mkdirSync)
   fsMock.grantDirAcl.mockReset()
-  root = realpathSync(mkdtempSync(join(tmpdir(), 'orca-legacy-plugin-acl-')))
+  root = realpathSync(mkdtempSync(join(tmpdir(), 'occ-legacy-plugin-acl-')))
   setAppEnvironment({
     getPath: () => root,
     getAppPath: () => process.cwd(),

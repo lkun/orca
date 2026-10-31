@@ -20,7 +20,7 @@ import {
   applyMirroredRuntimeUserHookTrustStates,
   getRuntimeHooksWithSystemUserHooks
 } from './codex-hook-user-mirroring'
-import { getOrcaManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
+import { getOCCManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
 import {
   promoteCodexRuntimeHookApprovalsToSystem,
   snapshotCodexRuntimeHookTrustProvenance
@@ -93,7 +93,7 @@ export async function removeCodexHooksExclusively(
   const configPath = getConfigPath()
   if (existsSync(configPath)) {
     // Rebuild first to move user approvals back from slots shifted by OCC's group.
-    await refreshCodexRuntimeUserHooksExclusively(getOrcaManagedCodexHomePath(), getStatus)
+    await refreshCodexRuntimeUserHooksExclusively(getOCCManagedCodexHomePath(), getStatus)
   }
   const configExists = existsSync(configPath)
   const config = readHooksJson(configPath)

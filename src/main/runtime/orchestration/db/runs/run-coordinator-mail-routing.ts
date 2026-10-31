@@ -1,7 +1,7 @@
 import type Database from '../../../../sqlite/sync-database'
 import type { OrchestrationDb } from '../orchestration-db'
-import { currentRunCoordinatorSessionAddressSql } from './run-coordinator-orca-session'
-import { orcaSessionAddressSql } from '../orca-session-address-sql'
+import { currentRunCoordinatorSessionAddressSql } from './run-coordinator-occ-session'
+import { occSessionAddressSql } from '../occ-session-address-sql'
 
 /** Mail to an active Dispatch assignee's address in the same Run is that worker's, not coordinator mail. */
 export function activeDispatchOwnsAddressSql(runIdSql: string, addressSql: string): string {
@@ -9,7 +9,7 @@ export function activeDispatchOwnsAddressSql(runIdSql: string, addressSql: strin
     SELECT 1 FROM dispatch_contexts
     WHERE dispatch_contexts.run_id = ${runIdSql}
       AND (dispatch_contexts.assignee_handle = ${addressSql}
-        OR ${orcaSessionAddressSql('dispatch_contexts.assignee_orca_session_id')} = ${addressSql})
+        OR ${occSessionAddressSql('dispatch_contexts.assignee_occ_session_id')} = ${addressSql})
       AND dispatch_contexts.status IN ('pending', 'dispatched')
   )`
 }
@@ -26,7 +26,7 @@ export function workerSeatGrabSql(aliasRow: string): string {
     SELECT 1 FROM dispatch_contexts AS grab
     WHERE grab.run_id = ${aliasRow}.run_id
       AND (grab.assignee_handle = ${aliasRow}.terminal_handle
-        OR ${orcaSessionAddressSql('grab.assignee_orca_session_id')} = ${aliasRow}.terminal_handle)
+        OR ${occSessionAddressSql('grab.assignee_occ_session_id')} = ${aliasRow}.terminal_handle)
       AND NOT (grab.creator_handle IS NOT NULL AND grab.creator_handle = grab.assignee_handle)
       AND julianday(grab.created_at) <= julianday(${aliasRow}.first_bound_at)
       AND (grab.status IN ('pending', 'dispatched')
@@ -76,8 +76,8 @@ export function createRunCoordinatorAddressTriggers(db: Database.Database): void
         WHERE ${NEW_COORDINATOR_SESSION_ADDRESS_SQL} IS NOT NULL;
       END;
       CREATE TRIGGER trg_runs_remember_coordinator_update
-      AFTER UPDATE OF coordinator_handle, coordinator_orca_session_id,
-        coordinator_orca_session_id_generation ON runs
+      AFTER UPDATE OF coordinator_handle, coordinator_occ_session_id,
+        coordinator_occ_session_id_generation ON runs
       WHEN NEW.legacy = 0
       BEGIN
         INSERT OR IGNORE INTO run_coordinator_handles (run_id, terminal_handle)

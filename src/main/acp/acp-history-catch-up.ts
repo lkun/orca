@@ -168,7 +168,7 @@ function journalView(
   ).some(
     (message) =>
       nativeChatRowRendersContent(message.blocks) &&
-      (parseAgentJournalItemKey(message.id)?.provider !== 'orca' ||
+      (parseAgentJournalItemKey(message.id)?.provider !== 'occ' ||
         (message.role === 'user' && eligibleUsers.has(message.id)))
   )
   const turnKeys = new Set(

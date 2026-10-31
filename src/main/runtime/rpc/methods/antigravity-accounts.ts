@@ -1,6 +1,6 @@
 import { defineMethod, defineStreamingMethod, type RpcContext } from '../core'
 import { rpcCallerOperationKey } from '../rpc-caller-identity'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import {
   AntigravityAccountMutationParams,
   AntigravityAccountTargetParams,
@@ -19,7 +19,7 @@ import { bindStructuredAgentSessionStream } from './structured-agent-session-sta
 import { structuredAgentHostLaunchSources } from '../../structured-agent-launch-support'
 import { stopStructuredAgentChats } from '../../structured-agent-chat-stop'
 
-const chatSignInHost = (runtime: OrcaRuntimeService) => ({
+const chatSignInHost = (runtime: OCCRuntimeService) => ({
   launchSources: (signal: AbortSignal) =>
     structuredAgentHostLaunchSources('antigravity', runtime, signal),
   stopLiveChats: () => stopStructuredAgentChats('antigravity', 'Antigravity')

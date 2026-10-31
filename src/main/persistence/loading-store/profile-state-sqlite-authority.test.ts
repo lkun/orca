@@ -30,7 +30,7 @@ import { hostWorktreeTarget } from '../../../shared/worktree/host-qualified-iden
 vi.mock('electron', () => ({
   app: {
     getPath: () => tmpdir(),
-    getName: () => 'orca-test',
+    getName: () => 'occ-test',
     getVersion: () => '0.0.0-test',
     isPackaged: false,
     on: () => {},
@@ -91,7 +91,7 @@ afterEach(async () => {
 
 describe('Store with an injected SQLite profile-state authority', () => {
   it('rejects profile-state buffers that are not valid UTF-8', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-invalid-utf8-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-invalid-utf8-'))
     temporaryDirectories.push(directory)
     const authority = createAuthority(join(directory, 'profile-state.db'), 'profile-authority-test')
 
@@ -110,9 +110,9 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('mutates, flushes, and reloads without writing the legacy JSON file', async () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-authority-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-authority-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
     const databaseFile = join(directory, 'profile-state.db')
     writeFileSync(dataFile, '{"settings":{"theme":"light"}}', 'utf8')
     const legacyBytes = readFileSync(dataFile)
@@ -137,7 +137,7 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('rejects a corrupt ordering placeholder when normalized rows exist', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-normalized-read-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-normalized-read-'))
     temporaryDirectories.push(directory)
     const databasePath = join(directory, 'profile-state.db')
     const fixture = buildProfileStateCutoverFixture()
@@ -164,7 +164,7 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('rejects invalid domain JSON before handing it to the Store', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-runtime-parse-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-runtime-parse-'))
     temporaryDirectories.push(directory)
     const databasePath = join(directory, 'profile-state.db')
     const authority = createAuthority(databasePath, 'profile-authority-test')
@@ -180,14 +180,14 @@ describe('Store with an injected SQLite profile-state authority', () => {
     expect(
       () =>
         new Store({
-          dataFile: join(directory, 'orca-data.json'),
+          dataFile: join(directory, 'occ-data.json'),
           profileStateAuthority: createAuthority(databasePath, 'profile-authority-test')
         })
     ).toThrow('Profile state document payload is invalid JSON: settings')
   })
 
   it('rejects documents whose revision metadata was removed or reset', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-authority-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-authority-'))
     temporaryDirectories.push(directory)
     const databasePath = join(directory, 'profile-state.db')
     const opened = openProfileStateDatabase(databasePath, 'profile-authority-test')
@@ -200,7 +200,7 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('fences a complete-document writer that read before another authority committed', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-authority-cas-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-authority-cas-'))
     temporaryDirectories.push(directory)
     const databasePath = join(directory, 'profile-state.db')
     const first = createAuthority(databasePath, 'profile-authority-test')
@@ -228,7 +228,7 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('fences a first commit after another authority creates the database', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-authority-create-cas-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-authority-create-cas-'))
     temporaryDirectories.push(directory)
     const databasePath = join(directory, 'profile-state.db')
     const first = createAuthority(databasePath, 'profile-authority-test')
@@ -249,7 +249,7 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('keeps normalized rows stable during a complete document replacement', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-complete-write-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-complete-write-'))
     temporaryDirectories.push(directory)
     const databasePath = join(directory, 'profile-state.db')
     const fixture = buildProfileStateCutoverFixture(directory)
@@ -301,7 +301,7 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('reopens its writer after an explicit close without losing the revision fence', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-authority-close-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-authority-close-'))
     temporaryDirectories.push(directory)
     const databasePath = join(directory, 'profile-state.db')
     const authority = createAuthority(databasePath, 'profile-authority-test')
@@ -316,9 +316,9 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('keeps a newer Store commit when a stale Store flushes afterward', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-store-cas-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-store-cas-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
     const seed = createAuthority(databasePath, 'profile-authority-test')
     seed.writeSerializedState(Buffer.from(JSON.stringify({ settings: { theme: 'light' } })))
@@ -351,11 +351,11 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('writes a local session mutation as dirty domains and preserves unrelated rows', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-domain-write-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-domain-write-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
-    const seedDataFile = join(directory, 'seed-orca-data.json')
+    const seedDataFile = join(directory, 'seed-occ-data.json')
     const seedStore = new Store({
       dataFile: seedDataFile,
       serializedState: existsSync(seedDataFile) ? readFileSync(seedDataFile, 'utf8') : '{}'
@@ -390,11 +390,11 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('writes a PTY rebind through the workspace-session domain', async () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-pty-domain-write-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-pty-domain-write-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
-    const fixtureFile = join(directory, 'fixture-orca-data.json')
+    const fixtureFile = join(directory, 'fixture-occ-data.json')
     writeFileSync(fixtureFile, JSON.stringify(buildProfileStateCutoverFixture(directory)))
     const seedStore = new Store({
       dataFile: fixtureFile,
@@ -474,10 +474,10 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('writes scheduled automation changes as automations and automationRuns domains', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-automation-write-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-automation-write-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
-    const seedDataFile = join(directory, 'seed-orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
+    const seedDataFile = join(directory, 'seed-occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
     writeFileSync(seedDataFile, JSON.stringify(buildProfileStateCutoverFixture(directory)))
     const seedStore = new Store({
@@ -513,10 +513,10 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('persists an automation run lifecycle through normalized rows', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-automation-lifecycle-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-automation-lifecycle-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
-    const seedDataFile = join(directory, 'seed-orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
+    const seedDataFile = join(directory, 'seed-occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
     writeFileSync(seedDataFile, JSON.stringify(buildProfileStateCutoverFixture(directory)))
     const seedStore = new Store({
@@ -589,10 +589,10 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('prunes normalized automation rows and reloads the retained window', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-automation-retention-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-automation-retention-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
-    const seedDataFile = join(directory, 'seed-orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
+    const seedDataFile = join(directory, 'seed-occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
     writeFileSync(seedDataFile, JSON.stringify(buildProfileStateCutoverFixture(directory)))
     const seedStore = new Store({
@@ -638,10 +638,10 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('writes host-qualified worktree metadata as projected domain rows', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-worktree-write-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-worktree-write-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
-    const seedDataFile = join(directory, 'seed-orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
+    const seedDataFile = join(directory, 'seed-occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
     writeFileSync(seedDataFile, JSON.stringify(buildProfileStateCutoverFixture(directory)))
     const seedStore = new Store({
@@ -680,7 +680,7 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('publishes a durable JSON rollback export without changing the SQLite authority', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-json-export-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-json-export-'))
     temporaryDirectories.push(directory)
     const databasePath = join(directory, 'profile-state.db')
     const authority = createAuthority(databasePath, 'profile-authority-test')
@@ -688,7 +688,7 @@ describe('Store with an injected SQLite profile-state authority', () => {
       Buffer.from(JSON.stringify({ settings: { theme: 'dark' }, unknownDomain: { keep: true } }))
     )
 
-    const exportPath = join(directory, 'rollback', 'orca-data.json.r3')
+    const exportPath = join(directory, 'rollback', 'occ-data.json.r3')
     const revision = authority.writeJsonExport(exportPath)
 
     expect(revision).toBe(1)
@@ -705,9 +705,9 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('publishes the Store export after flushing pending SQLite state', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-store-export-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-store-export-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
     const seed = new Store({ dataFile, serializedState: '{}' })
     seed.flushOrThrow()
@@ -717,7 +717,7 @@ describe('Store with an injected SQLite profile-state authority', () => {
 
     const store = new Store({ dataFile, profileStateAuthority: authority })
     store.updateSettings({ theme: 'dark' })
-    const exportPath = join(directory, 'rollback', 'orca-data.json.current')
+    const exportPath = join(directory, 'rollback', 'occ-data.json.current')
     const revision = store.writeProfileStateJsonExport(exportPath)
 
     expect(revision).toBe(2)
@@ -726,9 +726,9 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('publishes the latest SQLite revision as an idempotent versioned export', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-latest-export-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-latest-export-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
     const seed = new Store({ dataFile, serializedState: '{}' })
     seed.updateSettings({ theme: 'light' })
@@ -754,16 +754,16 @@ describe('Store with an injected SQLite profile-state authority', () => {
     )
     expect(
       readdirSync(directory).some((name) =>
-        name.startsWith('orca-data.json.sqlite-export.pending.')
+        name.startsWith('occ-data.json.sqlite-export.pending.')
       )
     ).toBe(false)
     store.freezeWrites()
   })
 
   it('refuses to overwrite a conflicting export for the same SQLite revision', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-export-conflict-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-export-conflict-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
     const authority = createAuthority(databasePath, 'profile-authority-test')
     authority.writeSerializedState(Buffer.from(JSON.stringify({ settings: { theme: 'dark' } })))
@@ -782,16 +782,16 @@ describe('Store with an injected SQLite profile-state authority', () => {
     expect(readFileSync(exportPath, 'utf8')).toContain('tampered')
     expect(
       readdirSync(directory).some((name) =>
-        name.startsWith('orca-data.json.sqlite-export.pending.')
+        name.startsWith('occ-data.json.sqlite-export.pending.')
       )
     ).toBe(false)
     store.freezeWrites()
   })
 
   it('freezes Store writes before quarantining the SQLite database family', async () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-quarantine-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-quarantine-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
     const databasePath = join(directory, 'profile-state.db')
     const authority = createAuthority(databasePath, 'profile-authority-test')
     authority.writeSerializedState(Buffer.from(JSON.stringify({ settings: { theme: 'light' } })))
@@ -821,13 +821,13 @@ describe('Store with an injected SQLite profile-state authority', () => {
   })
 
   it('prepares frozen JSON imports without permitting file publication', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-store-profile-state-legacy-export-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-store-profile-state-legacy-export-'))
     temporaryDirectories.push(directory)
-    const dataFile = join(directory, 'orca-data.json')
+    const dataFile = join(directory, 'occ-data.json')
     const store = new Store({ dataFile, serializedState: '{"settings":{"theme":"light"}}' })
     store.updateSettings({ theme: 'dark' })
 
-    const exportPath = join(directory, 'rollback', 'orca-data.json.legacy.json')
+    const exportPath = join(directory, 'rollback', 'occ-data.json.legacy.json')
     expect(() => store.writeProfileStateJsonExport(exportPath)).toThrow('require a SQLite')
     expect(JSON.parse(store.prepareProfileStateExport().json).settings.theme).toBe('dark')
     expect(existsSync(exportPath)).toBe(false)

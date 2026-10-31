@@ -32,7 +32,7 @@ const issue: LinearIssue = {
   identifier: 'ORC-1',
   title: 'Sync the board',
   description: '',
-  url: 'https://linear.app/orca/issue/ORC-1',
+  url: 'https://linear.app/occ/issue/ORC-1',
   state: { name: 'Todo', type: 'unstarted', color: '#999' },
   team: { id: 'team-1', name: 'OCC', key: 'ORC' },
   labels: [],

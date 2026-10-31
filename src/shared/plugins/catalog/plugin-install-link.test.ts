@@ -22,7 +22,7 @@ describe('parsePluginInstallLink', () => {
       kind: 'community',
       source: COMMUNITY_MARKETPLACE_GIT_SOURCE
     })
-    const official = encodeURIComponent('https://github.com/stablyai/orca-plugins.git')
+    const official = encodeURIComponent('https://github.com/stablyai/occ-plugins.git')
     expect(parsePluginInstallLink(`occ://plugins/acme.dusk?catalog=${official}`)?.catalog).toEqual(
       { kind: 'official' }
     )
@@ -64,15 +64,15 @@ describe('parsePluginInstallLink', () => {
       'long catalog',
       `occ://plugins/acme.dusk?catalog=https://github.com/acme/${'a'.repeat(520)}.git`
     ],
-    ['reserved publisher elsewhere', 'occ://plugins/stablyai.orca-skills?catalog=community'],
+    ['reserved publisher elsewhere', 'occ://plugins/stablyai.occ-skills?catalog=community'],
     ['not a plugin link', 'occ://skills/share/abc']
   ])('rejects %s', (_label, value) => {
     expect(parsePluginInstallLink(value)).toBeNull()
   })
 
   it('accepts a reserved publisher only from the official catalog', () => {
-    expect(parsePluginInstallLink('occ://plugins/stablyai.orca-skills')?.pluginKey).toBe(
-      'stablyai.orca-skills'
+    expect(parsePluginInstallLink('occ://plugins/stablyai.occ-skills')?.pluginKey).toBe(
+      'stablyai.occ-skills'
     )
   })
 
@@ -90,9 +90,9 @@ describe('pluginInstallLinkFromArguments', () => {
       pluginInstallLinkFromArguments([
         'C:\\Program Files\\OCC\\OCC.exe',
         '--allow-file-access-from-files',
-        'ORCA://plugins/acme.dusk?catalog=community'
+        'OCC://plugins/acme.dusk?catalog=community'
       ])
-    ).toBe('ORCA://plugins/acme.dusk?catalog=community')
+    ).toBe('OCC://plugins/acme.dusk?catalog=community')
     expect(pluginInstallLinkFromArguments(['/usr/bin/occ', '/tmp/notes.md'])).toBeNull()
   })
 })

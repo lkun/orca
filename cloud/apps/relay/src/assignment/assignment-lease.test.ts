@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { EventEmitter } from 'node:events'
-import { RELAY_CLOSE_CODE } from '@orca-cloud/relay-contract'
+import { RELAY_CLOSE_CODE } from '@occ-cloud/relay-contract'
 import { SignJWT } from 'jose'
 import nacl from 'tweetnacl'
 import { describe, expect, it, vi } from 'vitest'
@@ -232,7 +232,7 @@ function config(): RelayConfig {
     publicUrl: 'https://c7.relay.example.test',
     cellUrl: 'https://c7.relay.example.test',
     authIssuer: 'https://auth.example.test',
-    authAudience: 'orca-relay',
+    authAudience: 'occ-relay',
     jwksUrl: 'https://auth.example.test/jwks',
     assignmentSigningKey: KEY,
     role: 'cell',

@@ -6,14 +6,14 @@ import {
 } from '../../shared/runtime-navigation'
 import type { RuntimeMobileSessionTabsResult } from '../../shared/runtime-types'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { setRuntimeBrowserCommandsFactory } from './runtime-browser-commands-factory'
 
 const { browserSessionRegistryMock } = vi.hoisted(() => ({
   browserSessionRegistryMock: {
-    getDefaultProfile: () => ({ id: 'default', partition: 'persist:orca-browser' }),
-    getProfile: () => ({ id: 'default', partition: 'persist:orca-browser' }),
-    resolveKnownPartition: () => 'persist:orca-browser'
+    getDefaultProfile: () => ({ id: 'default', partition: 'persist:occ-browser' }),
+    getProfile: () => ({ id: 'default', partition: 'persist:occ-browser' }),
+    resolveKnownPartition: () => 'persist:occ-browser'
   }
 }))
 
@@ -86,7 +86,7 @@ function makeSession(): WorkspaceSessionState {
 
 function createPairedRuntime() {
   let session = makeSession()
-  const runtime = new OrcaRuntimeService({
+  const runtime = new OCCRuntimeService({
     ...storeBase,
     getWorkspaceSession: () => session,
     setWorkspaceSession: (next: WorkspaceSessionState) => {
@@ -141,7 +141,7 @@ function createPairedRuntime() {
 }
 
 /** Seed distinct nonempty host/bystander selections so neither absence assertion can pass vacuously. */
-async function seedSelections(runtime: OrcaRuntimeService): Promise<void> {
+async function seedSelections(runtime: OCCRuntimeService): Promise<void> {
   await runtime.browserTabCreate({ worktree: `id:${WT}`, page: 'page-old', activate: true })
   await runtime.browserTabCreate({ worktree: `id:${WT}`, page: 'page-alt', activate: false })
   await runtime.activateMobileSessionTab(`id:${WT}`, 'page-alt', undefined, {
@@ -159,7 +159,7 @@ const CREATE_NAVIGATION_OUTCOMES = {
 } satisfies Record<RuntimeNavigationTarget, { shared: string; caller: string; bystander: string }>
 
 function createBrowserTab(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   params: { navigation?: RuntimeNavigationTarget } = {}
 ): Promise<{ browserPageId: string }> {
   return runtime.browserTabCreate(

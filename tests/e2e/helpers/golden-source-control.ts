@@ -3,13 +3,13 @@ import { chmodSync, mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSy
 import os from 'node:os'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { expect } from './orca-app'
+import { expect } from './occ-app'
 
 export const GOLDEN_CHANGED_PATH = 'src/index.ts'
 export const GOLDEN_REMOVED_LINE = 'export const hello = "world"'
 export const GOLDEN_ADDED_LINE = 'export const hello = "golden daily loop"'
 export const GOLDEN_GIT_AUTHOR_NAME = 'OCC E2E'
-export const GOLDEN_GIT_AUTHOR_EMAIL = 'orca-e2e@example.invalid'
+export const GOLDEN_GIT_AUTHOR_EMAIL = 'occ-e2e@example.invalid'
 const GOLDEN_PRE_COMMIT_MARKER = '.e2e-pre-commit-ran'
 
 export type GoldenWorktree = {
@@ -127,7 +127,7 @@ export function seedGoldenSourceEdit(worktreePath: string): void {
 }
 
 export function installPassingNodePreCommitHook(fixture: GoldenWorktree): string {
-  const hooksPath = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-git-hooks-'))
+  const hooksPath = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-git-hooks-'))
   const hookPath = path.join(hooksPath, 'pre-commit')
   const markerPath = path.join(hooksPath, GOLDEN_PRE_COMMIT_MARKER)
   fixture.hooksPath = hooksPath

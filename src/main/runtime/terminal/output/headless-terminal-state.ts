@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithMaybeHydrateHeadlessFromRenderer } from './headless-terminal-hydration'
+import { OCCRuntimeWithMaybeHydrateHeadlessFromRenderer } from './headless-terminal-hydration'
 import type { RuntimeHeadlessTerminal } from '../../runtime-terminal-state-records'
 import { HeadlessEmulator } from '../../../daemon/headless-emulator'
 import { shouldForwardHeadlessTerminalQueryReply } from '../../headless-terminal-query-reply-policy'
@@ -12,7 +12,7 @@ import { isRemoteRuntimePtyId } from '../../../../shared/remote-runtime/remote-r
 import { parseAppSshPtyId } from '../../../../shared/ssh-pty-id'
 import { windowsPtyForOwnerBackend } from '../../../../shared/xterm-conpty-options'
 
-export abstract class OrcaRuntimeWithCreatePtyHeadlessTerminalState extends OrcaRuntimeWithMaybeHydrateHeadlessFromRenderer {
+export abstract class OCCRuntimeWithCreatePtyHeadlessTerminalState extends OCCRuntimeWithMaybeHydrateHeadlessFromRenderer {
   /** SSH and paired-runtime panes run on their host's PTY; every PTY this Windows process owns is ConPTY. */
   private ownerBackendForHeadlessPty(ptyId: string): PtyOwnerBackend {
     // Why the id too: main's copy starts on the first byte, before a restored relay PTY has a record.

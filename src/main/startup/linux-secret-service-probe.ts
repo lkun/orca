@@ -1,4 +1,4 @@
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import type { SecretServiceCollectionState } from './linux-keyring-backend-selection'
 
 /** Read Locked without prompting in a killable child: synchronous safeStorage can hang 76s with no prompter (STA-5765). Missing gdbus/service/alias or timeout yields unavailable, preserving Chromium choice. */

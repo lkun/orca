@@ -46,7 +46,7 @@ let storeSubscribers: ((state: StoreState) => void)[] = []
 const layoutOwner = vi.hoisted(() => ({ isMain: false }))
 
 vi.mock('../../../../shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return layoutOwner.isMain
   }
 }))

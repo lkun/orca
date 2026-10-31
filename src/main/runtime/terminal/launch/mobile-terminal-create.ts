@@ -1,5 +1,5 @@
 import type { RuntimeMobileSessionTabsResult } from '../../../../shared/runtime-session-contracts'
-import { OrcaRuntimeWithFailedStartPanes } from './failed-start-pane'
+import { OCCRuntimeWithFailedStartPanes } from './failed-start-pane'
 import type { WorktreeStartupLaunch } from '../../../../shared/worktree/launch-types'
 import type { TuiAgent } from '../../../../shared/tui-agent'
 import type {
@@ -15,7 +15,7 @@ import type {
 import type { SpawnIntent } from '../../../../shared/host-spawn-admission'
 import type { AgentLaunchRuntime } from '../../../../shared/agent-launch-runtime'
 import { navigationTargetsHost } from '../../../../shared/runtime-navigation'
-import { MOBILE_TERMINAL_CREATE_RESULT_TTL_MS } from '../../orca-runtime-core'
+import { MOBILE_TERMINAL_CREATE_RESULT_TTL_MS } from '../../occ-runtime-core'
 import { seedResumeLaunchIdentity } from '../../../ipc/pty/pane/resume-launch-identity'
 
 /** A paired client's terminal create request. */
@@ -73,7 +73,7 @@ export type OwnedMobileTerminalCreateOptions = {
   onPtyCreated?: (ptyId: string, result: RuntimeTerminalCreate) => void
 }
 
-export abstract class OrcaRuntimeWithCreateMobileSessionTerminal extends OrcaRuntimeWithFailedStartPanes {
+export abstract class OCCRuntimeWithCreateMobileSessionTerminal extends OCCRuntimeWithFailedStartPanes {
   protected abstract runCreateMobileSessionTerminal(
     worktreeSelector: string,
     opts?: MobileTerminalCreateOptions

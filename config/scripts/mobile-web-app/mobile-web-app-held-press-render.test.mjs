@@ -56,7 +56,7 @@ beforeAll(async () => {
   const cspHeader = await readShellCsp()
   bridgeVersion = await readBridgeProtocolVersion()
   faultGrant = await readBridgeFaultGrant()
-  scratch = await mkdtemp(join(tmpdir(), 'orca-mobile-web-held-press-'))
+  scratch = await mkdtemp(join(tmpdir(), 'occ-mobile-web-held-press-'))
   const appDir = join(scratch, 'app')
   const routeDir = join(appDir, MOBILE_WEB_APP_ROUTE_ROOT)
   await mkdir(routeDir, { recursive: true })
@@ -93,7 +93,7 @@ beforeAll(async () => {
   const served = await createBundleServer({ outDir: built.outDir, cspHeader })
   server = served.server
   origin = served.origin
-  const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+  const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
   browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
 }, 600_000)
 
@@ -124,11 +124,11 @@ async function openProbe(pathname) {
   await page.goto(`${origin}/`, { waitUntil: 'load' })
   await page.waitForFunction(
     () =>
-      globalThis.__orcaHeldPressProbe !== undefined ||
-      (globalThis.__orcaRenderCheckFaults ?? []).length > 0,
+      globalThis.__occHeldPressProbe !== undefined ||
+      (globalThis.__occRenderCheckFaults ?? []).length > 0,
     { timeout: 60_000, polling: 100 }
   )
-  expect(await page.evaluate(() => globalThis.__orcaRenderCheckFaults ?? [])).toEqual([])
+  expect(await page.evaluate(() => globalThis.__occRenderCheckFaults ?? [])).toEqual([])
   await page.clock.install({ time: new Date('2026-01-01T00:00:00Z') })
   await page.clock.pauseAt(new Date('2026-01-01T00:00:01Z'))
   return { errors, page }
@@ -209,7 +209,7 @@ const keyScrollOffset = (key) =>
     throw new Error('Key bar does not overflow')
   })
 
-const pressOuts = (page) => page.evaluate(() => globalThis.__orcaHeldPressProbe.pressOuts())
+const pressOuts = (page) => page.evaluate(() => globalThis.__occHeldPressProbe.pressOuts())
 
 describeRender(
   'held presses on the page',
@@ -273,18 +273,18 @@ describeRender(
         })
         await page.clock.runFor(1500)
         const midHold = await page.evaluate(() => ({
-          repeats: globalThis.__orcaHeldPressProbe.repeats(),
-          sent: globalThis.__orcaHeldPressProbe.sent()
+          repeats: globalThis.__occHeldPressProbe.repeats(),
+          sent: globalThis.__occHeldPressProbe.sent()
         }))
         expect(midHold.repeats).toEqual([{ kind: 'start', bytes: '\x1b[A' }])
         expect(midHold.sent.length).toBeGreaterThan(1)
         expect(new Set(midHold.sent)).toEqual(new Set(['\x1b[A']))
         await input.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
         await page.clock.runFor(1000)
-        expect(await page.evaluate(() => globalThis.__orcaHeldPressProbe.sent())).toEqual(
+        expect(await page.evaluate(() => globalThis.__occHeldPressProbe.sent())).toEqual(
           midHold.sent
         )
-        expect(await page.evaluate(() => globalThis.__orcaHeldPressProbe.repeats())).toEqual([
+        expect(await page.evaluate(() => globalThis.__occHeldPressProbe.repeats())).toEqual([
           { kind: 'start', bytes: '\x1b[A' },
           { kind: 'stop' }
         ])
@@ -296,10 +296,10 @@ describeRender(
         const { errors, page } = await openProbe(ROUTES.keys)
         const { input } = await beginArrowPadTouch(page)
         await page.clock.runFor(100)
-        expect(await page.evaluate(() => globalThis.__orcaHeldPressProbe.sent())).toEqual([])
+        expect(await page.evaluate(() => globalThis.__occHeldPressProbe.sent())).toEqual([])
         await input.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
         await page.clock.runFor(1000)
-        expect(await page.evaluate(() => globalThis.__orcaHeldPressProbe.sent())).toEqual([
+        expect(await page.evaluate(() => globalThis.__occHeldPressProbe.sent())).toEqual([
           '\x1b[A'
         ])
         expect(errors).toEqual([])
@@ -310,13 +310,13 @@ describeRender(
         const { errors, page } = await openProbe(ROUTES.keys)
         const { input } = await beginArrowPadTouch(page)
         await page.clock.runFor(100)
-        await page.evaluate(() => globalThis.__orcaHeldPressProbe.switchTerminal())
+        await page.evaluate(() => globalThis.__occHeldPressProbe.switchTerminal())
         await page.waitForFunction(
-          () => globalThis.__orcaHeldPressProbe.activeHandle === 'other-terminal'
+          () => globalThis.__occHeldPressProbe.activeHandle === 'other-terminal'
         )
         await input.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
         await page.clock.runFor(1000)
-        expect(await page.evaluate(() => globalThis.__orcaHeldPressProbe.sent())).toEqual([])
+        expect(await page.evaluate(() => globalThis.__occHeldPressProbe.sent())).toEqual([])
         expect(errors).toEqual([])
         await page.close()
       }, 300_000)
@@ -336,7 +336,7 @@ describeRender(
         await input.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
         await page.clock.runFor(1000)
         expect(await keyScrollOffset(key)).toBeGreaterThan(before)
-        expect(await page.evaluate(() => globalThis.__orcaHeldPressProbe.sent())).toEqual([])
+        expect(await page.evaluate(() => globalThis.__occHeldPressProbe.sent())).toEqual([])
         expect(errors).toEqual([])
         await page.close()
       }, 300_000)
@@ -356,18 +356,18 @@ describeRender(
         const { errors, page } = await openProbe(ROUTES.keys)
         const key = await page.waitForSelector(`[aria-label="${TAP_KEY_LABEL}"]`)
         await key.tap()
-        await page.waitForFunction(() => globalThis.__orcaHeldPressProbe.sent().length === 1)
-        expect(await page.evaluate(() => globalThis.__orcaHeldPressProbe.sent())).toEqual(['\x1b'])
+        await page.waitForFunction(() => globalThis.__occHeldPressProbe.sent().length === 1)
+        expect(await page.evaluate(() => globalThis.__occHeldPressProbe.sent())).toEqual(['\x1b'])
         expect(errors).toEqual([])
         await page.close()
       }, 300_000)
     })
 
     describe('the browser pane', () => {
-      const toasts = (page) => page.evaluate(() => globalThis.__orcaHeldPressProbe.toasts())
+      const toasts = (page) => page.evaluate(() => globalThis.__occHeldPressProbe.toasts())
       const clicks = (page) =>
         page.evaluate(() =>
-          globalThis.__orcaHeldPressProbe
+          globalThis.__occHeldPressProbe
             .requests()
             .filter((request) => request.method === 'browser.mouseClick')
             .map((request) => ({ button: request.params.button, page: request.params.page }))
@@ -400,7 +400,7 @@ describeRender(
         const { errors, page } = await openProbe(ROUTES.browser)
         const viewport = await page.waitForSelector(`#${BROWSER_VIEWPORT_ID}`)
         await viewport.tap()
-        await page.waitForFunction(() => globalThis.__orcaHeldPressProbe.requests().length > 0)
+        await page.waitForFunction(() => globalThis.__occHeldPressProbe.requests().length > 0)
         expect(await clicks(page)).toEqual([{ button: 'left', page: 'held-press-page' }])
         expect(await toasts(page)).toEqual([])
         expect(errors).toEqual([])

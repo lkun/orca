@@ -53,7 +53,7 @@ export function setupContextualCopy({
   const copyHintWidget: editor.IContentWidget = {
     allowEditorOverflow: true,
     suppressMouseDown: true,
-    getId: () => `orca.copy-context-hint.${filePath}`,
+    getId: () => `occ.copy-context-hint.${filePath}`,
     getDomNode: () => copyHintNode,
     getPosition: () => copyHintWidgetPosition
   }

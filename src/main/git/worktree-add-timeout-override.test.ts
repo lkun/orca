@@ -39,28 +39,28 @@ describe('resolveWorktreeAddTimeoutMs', () => {
 
   it('falls back to the default when the override is unset, blank, or unparseable', () => {
     expect(resolveWorktreeAddTimeoutMs({})).toBe(WORKTREE_ADD_TIMEOUT_MS)
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '   ' })).toBe(
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '   ' })).toBe(
       WORKTREE_ADD_TIMEOUT_MS
     )
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: 'nope' })).toBe(
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: 'nope' })).toBe(
       WORKTREE_ADD_TIMEOUT_MS
     )
   })
 
   it('raises the timeout up to the closed maximum', () => {
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '300000' })).toBe(300_000)
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '300000.9' })).toBe(300_000)
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '999999999' })).toBe(
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '300000' })).toBe(300_000)
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '300000.9' })).toBe(300_000)
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '999999999' })).toBe(
       1_800_000
     )
   })
 
   it('treats an infinite override as the maximum, not the default', () => {
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: 'Infinity' })).toBe(
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: 'Infinity' })).toBe(
       1_800_000
     )
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '1e400' })).toBe(1_800_000)
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '-Infinity' })).toBe(
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '1e400' })).toBe(1_800_000)
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '-Infinity' })).toBe(
       WORKTREE_ADD_TIMEOUT_MS
     )
     expect(warnSpy).toHaveBeenCalledWith(
@@ -70,25 +70,25 @@ describe('resolveWorktreeAddTimeoutMs', () => {
 
   it('stays quiet when the value is unset, blank, or lands in range', () => {
     resolveWorktreeAddTimeoutMs({})
-    resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '   ' })
-    resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '600000' })
-    resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '300000.9' })
+    resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '   ' })
+    resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '600000' })
+    resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '300000.9' })
 
     expect(warnSpy).not.toHaveBeenCalled()
   })
 
   // A seconds-versus-milliseconds mistake should warn when clamped.
   it('warns with the range when it clamps an out-of-range value', () => {
-    resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '300' })
+    resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '300' })
 
     expect(warnSpy).toHaveBeenCalledTimes(1)
     expect(warnSpy).toHaveBeenCalledWith(
-      '[git/worktree] ORCA_WORKTREE_ADD_TIMEOUT_MS="300" is outside [180000, 1800000]ms; using 180000ms'
+      '[git/worktree] OCC_WORKTREE_ADD_TIMEOUT_MS="300" is outside [180000, 1800000]ms; using 180000ms'
     )
   })
 
   it('warns that an unparseable value is not a number rather than out of range', () => {
-    resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '600_000' })
+    resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '600_000' })
 
     expect(warnSpy).toHaveBeenCalledTimes(1)
     expect(warnSpy).toHaveBeenCalledWith(
@@ -97,13 +97,13 @@ describe('resolveWorktreeAddTimeoutMs', () => {
   })
 
   it('never lowers the timeout below the stall-guard default', () => {
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '300' })).toBe(
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '300' })).toBe(
       WORKTREE_ADD_TIMEOUT_MS
     )
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '0' })).toBe(
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '0' })).toBe(
       WORKTREE_ADD_TIMEOUT_MS
     )
-    expect(resolveWorktreeAddTimeoutMs({ ORCA_WORKTREE_ADD_TIMEOUT_MS: '-1' })).toBe(
+    expect(resolveWorktreeAddTimeoutMs({ OCC_WORKTREE_ADD_TIMEOUT_MS: '-1' })).toBe(
       WORKTREE_ADD_TIMEOUT_MS
     )
   })
@@ -122,12 +122,12 @@ describe('addWorktree timeout', () => {
 
     expect(error).toBeInstanceOf(GitCommandTimeoutError)
     expect(String(error)).toContain('180 seconds')
-    expect(String(error)).toContain('ORCA_WORKTREE_ADD_TIMEOUT_MS')
+    expect(String(error)).toContain('OCC_WORKTREE_ADD_TIMEOUT_MS')
   })
 
   it('drops the override advice once the limit is already at the maximum', () => {
     expect(worktreeAddTimeoutMessage(WORKTREE_ADD_TIMEOUT_MAX_MS)).not.toContain(
-      'ORCA_WORKTREE_ADD_TIMEOUT_MS'
+      'OCC_WORKTREE_ADD_TIMEOUT_MS'
     )
   })
 })

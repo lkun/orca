@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { computeOrcadMigrationManifestSha256 } from '../../orcad/orcad-migration-manifest-digest'
+import { computeOCCdMigrationManifestSha256 } from '../../occd/occd-migration-manifest-digest'
 import { wslMoveCutoverFixture } from '../__fixtures__/wsl-mover/wsl-move-cutover-fixture'
 import { listWslMoveCutovers, writeWslMoveCutover } from './wsl-move-cutover-journal'
 import {
@@ -31,7 +31,7 @@ function moveSized(delta: number) {
       }))
     }
     const signed = { ...unsigned, payload }
-    return { ...signed, manifestSha256: computeOrcadMigrationManifestSha256(signed) }
+    return { ...signed, manifestSha256: computeOCCdMigrationManifestSha256(signed) }
   }
   const overhead = wslMoveManifestRequestBytes(sized(0))
   const manifest = sized(WSL_MOVE_MANIFEST_REQUEST_BUDGET_BYTES - overhead + delta)

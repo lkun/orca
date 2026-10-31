@@ -13,7 +13,7 @@ import {
   type RemoteServerPairingFailureFields
 } from './remote-server-pairing-failure-copy'
 
-const ENVIRONMENTS_FILE = 'orca-environments.json'
+const ENVIRONMENTS_FILE = 'occ-environments.json'
 export const MAX_RUNTIME_ENVIRONMENT_STORE_FILE_BYTES = 1024 * 1024
 
 export type RuntimeEnvironmentStoreErrorCode = 'invalid_argument' | 'runtime_error'

@@ -159,7 +159,7 @@ afterEach(async () => {
   await act(async () => {
     roots.splice(0).forEach((root) => root.unmount())
   })
-  Reflect.deleteProperty(globalThis, '__ORCA_WEB_CLIENT__')
+  Reflect.deleteProperty(globalThis, '__OCC_WEB_CLIENT__')
   document.body.innerHTML = ''
 })
 
@@ -181,7 +181,7 @@ describe('useAutomationHostCatalog on a paired web client', () => {
   }
 
   beforeEach(() => {
-    Object.assign(globalThis, { __ORCA_WEB_CLIENT__: true })
+    Object.assign(globalThis, { __OCC_WEB_CLIENT__: true })
   })
 
   // #32415: the browser's local transport is its server's, so Desktop listed the same records again.

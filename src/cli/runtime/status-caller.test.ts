@@ -10,7 +10,7 @@ import { RuntimeClient } from './client'
 
 const SESSION = '4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37'
 const RUNTIME_ID = 'runtime-caller'
-const IDENTITY_ENV = ['ORCA_AGENT_SESSION_ID', 'ORCA_TERMINAL_HANDLE', 'ORCA_PANE_KEY'] as const
+const IDENTITY_ENV = ['OCC_AGENT_SESSION_ID', 'OCC_TERMINAL_HANDLE', 'OCC_PANE_KEY'] as const
 
 type ReceivedRequest = RuntimeOrchestrationEnvelope & {
   id: string
@@ -21,7 +21,7 @@ type ReceivedRequest = RuntimeOrchestrationEnvelope & {
 type HostReply = { result: unknown } | { error: { code: string; message: string } }
 
 describe.skipIf(process.platform === 'win32')(
-  "orca status reports a session caller's OCC session ID",
+  "occ status reports a session caller's OCC session ID",
   () => {
     let server: Server
     const sockets = new Set<Socket>()
@@ -36,7 +36,7 @@ describe.skipIf(process.platform === 'win32')(
         delete process.env[key]
       }
       received.length = 0
-      userDataPath = mkdtempSync(join(tmpdir(), 'orca-status-caller-'))
+      userDataPath = mkdtempSync(join(tmpdir(), 'occ-status-caller-'))
       const endpoint = join(userDataPath, 'runtime.sock')
       server = createServer((socket) => {
         sockets.add(socket)
@@ -114,9 +114,9 @@ describe.skipIf(process.platform === 'win32')(
     }
 
     it('asks the host as the session its environment names, and prints the OCC session ID it resolved', async () => {
-      process.env.ORCA_AGENT_SESSION_ID = SESSION
-      process.env.ORCA_TERMINAL_HANDLE = 'term_tui'
-      const caller = { orcaSessionId: `orca_session_id:${SESSION}`, live: true }
+      process.env.OCC_AGENT_SESSION_ID = SESSION
+      process.env.OCC_TERMINAL_HANDLE = 'term_tui'
+      const caller = { occSessionId: `occ_session_id:${SESSION}`, live: true }
       callerShowReply = { result: { caller } }
 
       expect(await statusCaller()).toEqual(caller)
@@ -127,12 +127,12 @@ describe.skipIf(process.platform === 'win32')(
         agentSessionId: SESSION,
         terminalHandle: 'term_tui'
       })
-      expect(await status(false)).toContain(`\norcaSessionId: orca_session_id:${SESSION}`)
+      expect(await status(false)).toContain(`\noccSessionId: occ_session_id:${SESSION}`)
     })
 
     it.each([
-      ['a terminal agent', { ORCA_TERMINAL_HANDLE: 'term_mine', ORCA_PANE_KEY: 'tab_1:leaf_1' }],
-      ['a pane key alone', { ORCA_PANE_KEY: 'tab_1:leaf_1' }],
+      ['a terminal agent', { OCC_TERMINAL_HANDLE: 'term_mine', OCC_PANE_KEY: 'tab_1:leaf_1' }],
+      ['a pane key alone', { OCC_PANE_KEY: 'tab_1:leaf_1' }],
       ['a plain shell', {}]
     ])('prints exactly the readiness status for %s, without asking the host', async (_who, env) => {
       Object.assign(process.env, env)
@@ -142,12 +142,12 @@ describe.skipIf(process.platform === 'win32')(
 
       expect(printed.result).not.toHaveProperty('caller')
       expect(text.split('\n').at(-1)).toMatch(/^graphState: /)
-      expect(text).not.toMatch(/^(?:orcaSessionId|caller):/m)
+      expect(text).not.toMatch(/^(?:occSessionId|caller):/m)
       expect(callerShowRequests()).toHaveLength(0)
     })
 
     it("reports the host's refusal of the session instead of an OCC session ID", async () => {
-      process.env.ORCA_AGENT_SESSION_ID = SESSION
+      process.env.OCC_AGENT_SESSION_ID = SESSION
       callerShowReply = {
         error: { code: 'session_caller_not_live', message: `Agent session ${SESSION} has ended.` }
       }
@@ -157,12 +157,12 @@ describe.skipIf(process.platform === 'win32')(
         refusal: { code: 'session_caller_not_live', message: `Agent session ${SESSION} has ended.` }
       })
       expect(await status(false)).toContain(
-        '\norcaSessionId: none (refused: session_caller_not_live)'
+        '\noccSessionId: none (refused: session_caller_not_live)'
       )
     })
 
     it('leaves the caller out when the host predates the method', async () => {
-      process.env.ORCA_AGENT_SESSION_ID = SESSION
+      process.env.OCC_AGENT_SESSION_ID = SESSION
       callerShowReply = { error: { code: 'method_not_found', message: 'Unknown method' } }
 
       expect(JSON.parse(await status(true)).result).not.toHaveProperty('caller')

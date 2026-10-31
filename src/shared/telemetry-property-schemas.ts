@@ -187,7 +187,7 @@ export const featureWallExitActionSchema = z.enum(FEATURE_WALL_EXIT_ACTIONS)
 export const optInViaSchema = z.enum(['first_launch_banner', 'settings'])
 export type OptInVia = z.infer<typeof optInViaSchema>
 
-// Exclude build-time orca_channel and the opt-in toggle, which has dedicated events.
+// Exclude build-time occ_channel and the opt-in toggle, which has dedicated events.
 export type BooleanGlobalSettingsKey = {
   // Legacy-compatible optional toggles become booleans after defaulting.
   [Key in keyof GlobalSettings]-?: NonNullable<GlobalSettings[Key]> extends boolean ? Key : never

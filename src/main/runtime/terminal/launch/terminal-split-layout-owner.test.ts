@@ -1,18 +1,18 @@
 import { describe, expect, it, vi } from 'vitest'
-import { makePaneKey } from '../../orca-runtime-test-mocks.spec'
+import { makePaneKey } from '../../occ-runtime-test-mocks.spec'
 import {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   TEST_WORKTREE_PATH,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} from '../../orca-runtime-test-fixtures.spec'
-import { createMobileCreateTestNotifier } from '../../orca-runtime-test-scenario-builders.spec'
+} from '../../occ-runtime-test-fixtures.spec'
+import { createMobileCreateTestNotifier } from '../../occ-runtime-test-scenario-builders.spec'
 import { collectLayoutLeafIdsInOrder } from '../../../../shared/workspace-layout/terminal-pane-tree'
-import { ProvisioningRuntime } from '../../orca-runtime-layout-owner-start-fixture'
+import { ProvisioningRuntime } from '../../occ-runtime-layout-owner-start-fixture'
 import { committingSpawn, registerBoundPty } from '../../bind-first-pane.test-fixture'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const TAB_ID = 'host-tab'
 const NEW_LEAF_ID = '22222222-2222-4222-8222-222222222222'

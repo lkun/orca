@@ -3,17 +3,17 @@ import { expect, it, vi } from 'vitest'
 import type { SleepingAgentLaunchConfig } from '../../shared/agent-session-resume'
 import { buildAgentResumeStartupPlan } from '../../shared/tui-agent-startup'
 
-await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-const { store, TEST_WORKTREE_PATH } = await import('./orca-runtime-test-fixtures.spec')
+await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+const { store, TEST_WORKTREE_PATH } = await import('./occ-runtime-test-fixtures.spec')
 const { detectAgentCommandsOnHost } = await import('../preflight/agent-detection')
 const { bindPaneFirst, committingSpawn, registerBoundPty } =
   await import('./bind-first-pane.test-fixture')
 
 type SpawnPane = { worktreeId?: string; tabId?: string; leafId?: string }
 
-class QoderAdoptionRuntime extends OrcaRuntimeService {
+class QoderAdoptionRuntime extends OCCRuntimeService {
   retainedRecipe(ptyId: string, worktreeId: string) {
     return this.recordPtyWorktree(ptyId, worktreeId)
   }
@@ -29,12 +29,12 @@ it.each([
   'surviving-recipe'
 ])('reconciles a paired Qoder resume after ambiguous creation: %s', async (scenario) => {
   const failure = scenario === 'Terminal creation timed out' ? scenario : 'client_disconnected'
-  const { withPlatform } = await import('./orca-runtime-test-fixtures.spec')
+  const { withPlatform } = await import('./occ-runtime-test-fixtures.spec')
   await withPlatform(scenario === 'wsl-inventory' ? 'win32' : 'darwin', async () => {
     vi.useFakeTimers()
     try {
-      const { electronMocks } = await import('./orca-runtime-test-mocks.spec')
-      const { TEST_WORKTREE_ID } = await import('./orca-runtime-test-fixtures.spec')
+      const { electronMocks } = await import('./occ-runtime-test-mocks.spec')
+      const { TEST_WORKTREE_ID } = await import('./occ-runtime-test-fixtures.spec')
       vi.mocked(detectAgentCommandsOnHost).mockResolvedValue(new Set(['qoder']))
       // Copy the fixture store so main-owned bindings cannot leak into shared tests.
       const runtime = new QoderAdoptionRuntime({ ...store })
@@ -295,7 +295,7 @@ it.each([
 it.each(['missing-original', 'different-agent'])(
   'refuses unproven adopted launch recipe: %s',
   async (state) => {
-    const { TEST_WORKTREE_ID } = await import('./orca-runtime-test-fixtures.spec')
+    const { TEST_WORKTREE_ID } = await import('./occ-runtime-test-fixtures.spec')
     const { deriveRemoteRuntimeTerminalCreateHandle } =
       await import('./remote-runtime-terminal-create-identity')
     const handle = deriveRemoteRuntimeTerminalCreateHandle(
@@ -368,13 +368,13 @@ it.each(['missing-original', 'different-agent'])(
 it('releases abandoned dispatch capacity without guessing an expired live recipe', async () => {
   vi.useFakeTimers()
   try {
-    const { TEST_WORKTREE_ID } = await import('./orca-runtime-test-fixtures.spec')
+    const { TEST_WORKTREE_ID } = await import('./occ-runtime-test-fixtures.spec')
     const { deriveRemoteRuntimeTerminalCreateHandle } =
       await import('./remote-runtime-terminal-create-identity')
     vi.mocked(detectAgentCommandsOnHost)
       .mockReset()
       .mockResolvedValue(new Set(['qoder']))
-    const runtime = new OrcaRuntimeService({ ...store })
+    const runtime = new OCCRuntimeService({ ...store })
     runtime.syncWindowGraph(0, { tabs: [], leaves: [] })
     let accept = false
     const inventory: {

@@ -1,6 +1,6 @@
 import { app } from 'electron'
 import type { Store } from '../../persistence'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import {
   SkillDeleteRequestSchema,
   type SkillDeletePlan,
@@ -16,7 +16,7 @@ import { resolveSkillDiscoveryTarget } from '../../skills/skill-discovery-target
 import { handleMainWindowSkillIpc } from '../skill-ipc-main-window'
 
 /** Local IPC only: remote scan/delete use renderer runtime RPC, so their capability checks stay on that transport. */
-export function registerSkillDeleteIpcHandlers(store: Store, runtime?: OrcaRuntimeService): void {
+export function registerSkillDeleteIpcHandlers(store: Store, runtime?: OCCRuntimeService): void {
   const dependencies: SkillDeleteRequestDependencies = {
     repos: () => store.getRepos(),
     ...(runtime

@@ -19,22 +19,22 @@ import PluginCustomEditorFrame from './PluginCustomEditorFrame'
 import { flushEditorFrames } from './editor-pending-flush'
 
 const FILE_ID = '/repo/diagram.excalidraw'
-const READY = { orca: 1, kind: 'evt', event: 'ready', payload: { protocol: 1 } }
+const READY = { occ: 1, kind: 'evt', event: 'ready', payload: { protocol: 1 } }
 const textEdit = (text: string, id = 1) => ({
-  orca: 1,
+  occ: 1,
   kind: 'req',
   id,
   method: 'editor.applyEdit',
   params: { baseVersion: 1, content: { kind: 'text', text } }
 })
 const keydown = (payload: Record<string, unknown>) => ({
-  orca: 1,
+  occ: 1,
   kind: 'evt',
   event: 'editor.keydown',
   payload
 })
 const textDocument = (text: string, readOnly: boolean) => ({
-  orca: 1,
+  occ: 1,
   kind: 'evt',
   event: 'editor.document',
   payload: { version: 1, readOnly, content: { kind: 'text', text } }
@@ -121,7 +121,7 @@ describe('PluginCustomEditorFrame', () => {
     })
     // allow-same-origin would expose app DOM, storage and IPC to the plugin.
     expect(iframe.getAttribute('sandbox')).toBe('allow-scripts')
-    expect(iframe.getAttribute('name')?.startsWith('orca-plugin-panel:editor:')).toBe(true)
+    expect(iframe.getAttribute('name')?.startsWith('occ-plugin-panel:editor:')).toBe(true)
     // window.name is readable in the frame, so it must not name the file.
     expect(iframe.getAttribute('name')).not.toContain('diagram')
     expect(iframe.getAttribute('name')).not.toContain('/repo')
@@ -143,12 +143,12 @@ describe('PluginCustomEditorFrame', () => {
     const index = { editorBufferIdOf: {}, editorBufferViews: {} }
     const flushed = flushEditorFrames(index, FILE_ID)
     expect(posted).toHaveBeenLastCalledWith(
-      { orca: 1, kind: 'req', id: 0, method: 'editor.flush' },
+      { occ: 1, kind: 'req', id: 0, method: 'editor.flush' },
       '*',
       []
     )
     await fromFrame(textEdit('scene+late'))
-    await fromFrame({ orca: 1, kind: 'res', id: 0, result: null })
+    await fromFrame({ occ: 1, kind: 'res', id: 0, result: null })
     await expect(flushed).resolves.toBe(true)
 
     let silent: Promise<boolean> | null = null

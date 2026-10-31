@@ -53,8 +53,8 @@ export type SavedBrowserScreenshot = Omit<BrowserScreenshotResult, 'data'> & {
 }
 
 const BROWSER_SCREENSHOT_TEMP_DIR = {
-  envVar: 'ORCA_BROWSER_SCREENSHOT_TMPDIR',
-  dirName: 'orca-browser-screenshots'
+  envVar: 'OCC_BROWSER_SCREENSHOT_TMPDIR',
+  dirName: 'occ-browser-screenshots'
 }
 
 // Base64 is unreadable to an agent and the host's disk may be another machine, so save it here.

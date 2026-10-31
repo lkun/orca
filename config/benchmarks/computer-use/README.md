@@ -6,7 +6,7 @@ workflows. It does not install cua-driver in OCC.
 
 Run the `Computer-use task benchmark` GitHub Actions workflow on a branch. Native
 input runs only on its disposable Windows runner or Linux Xvfb desktop. The runner
-refuses to run on the developer's desktop. Keep `ORCA_BACKGROUND_LAUNCH=1`.
+refuses to run on the developer's desktop. Keep `OCC_BACKGROUND_LAUNCH=1`.
 
 The first matrix covers GTK/WinForms and Electron fixtures. Editor applications,
 Wayland, macOS and additional Windows control frameworks need separate coverage.
@@ -85,7 +85,7 @@ covers stable fixtures and detected ambiguity, not those concurrent lifecycle ra
 ## Headless contract checks
 
 ```sh
-ORCA_BACKGROUND_LAUNCH=1 python3 -m unittest discover -s config/benchmarks/computer-use -p 'test_*.py'
+OCC_BACKGROUND_LAUNCH=1 python3 -m unittest discover -s config/benchmarks/computer-use -p 'test_*.py'
 ```
 
 These checks protect the historical false-success cases and process-tree cleanup.

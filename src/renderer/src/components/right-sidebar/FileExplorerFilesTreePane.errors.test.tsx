@@ -117,7 +117,7 @@ function renderRow(overrides: Partial<FileExplorerRowProps>): string {
     statusColor: null,
     isIgnored: false,
     deleteShortcutLabel: 'Del',
-    canOpenInOrcaBrowser: false,
+    canOpenInOCCBrowser: false,
     canCollapseFolderSubtree: true,
     targetDir: directoryNode.path,
     targetDepth: 1,

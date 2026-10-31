@@ -201,12 +201,12 @@ describe('buildAiVaultResumeShellCommand env removal', () => {
   const base = {
     resumeCommand: "codex 'resume' 'sid'",
     cwd: '/repo',
-    clearEnvNames: ['CODEX_HOME', 'ORCA_CODEX_HOME']
+    clearEnvNames: ['CODEX_HOME', 'OCC_CODEX_HOME']
   }
 
   it('carries the removal on the agent under a POSIX shell', () => {
     expect(buildAiVaultResumeShellCommand({ ...base, platform: 'darwin' })).toBe(
-      "cd '/repo' && env -u CODEX_HOME -u ORCA_CODEX_HOME codex 'resume' 'sid'"
+      "cd '/repo' && env -u CODEX_HOME -u OCC_CODEX_HOME codex 'resume' 'sid'"
     )
   })
 
@@ -219,7 +219,7 @@ describe('buildAiVaultResumeShellCommand env removal', () => {
     })
 
     expect(command).toBe(
-      "cd '/repo' && CODEX_HOME='/home/a/.codex-work' env -u ORCA_CODEX_HOME codex 'resume' 'sid'"
+      "cd '/repo' && CODEX_HOME='/home/a/.codex-work' env -u OCC_CODEX_HOME codex 'resume' 'sid'"
     )
     expect(command).not.toContain('-u CODEX_HOME')
   })
@@ -233,7 +233,7 @@ describe('buildAiVaultResumeShellCommand env removal', () => {
         codexHome: '/c/users/a/.codex-work'
       })
     ).toBe(
-      "cd '/repo' && CODEX_HOME='/c/users/a/.codex-work' env -u ORCA_CODEX_HOME codex 'resume' 'sid'"
+      "cd '/repo' && CODEX_HOME='/c/users/a/.codex-work' env -u OCC_CODEX_HOME codex 'resume' 'sid'"
     )
   })
 
@@ -248,7 +248,7 @@ describe('buildAiVaultResumeShellCommand env removal', () => {
     expect(command).not.toContain('env -u')
     expect(command).toBe(
       'Remove-Item Env:CODEX_HOME -ErrorAction SilentlyContinue; ' +
-        'Remove-Item Env:ORCA_CODEX_HOME -ErrorAction SilentlyContinue; ' +
+        'Remove-Item Env:OCC_CODEX_HOME -ErrorAction SilentlyContinue; ' +
         "Set-Location -LiteralPath '/repo'; codex 'resume' 'sid'"
     )
   })
@@ -262,7 +262,7 @@ describe('buildAiVaultResumeShellCommand env removal', () => {
         shell: 'cmd'
       })
     ).toBe(
-      'set "CODEX_HOME=" & set "ORCA_CODEX_HOME=" & cd /d "C:\\repo" && codex \'resume\' \'sid\''
+      'set "CODEX_HOME=" & set "OCC_CODEX_HOME=" & cd /d "C:\\repo" && codex \'resume\' \'sid\''
     )
   })
 })

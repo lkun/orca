@@ -18,7 +18,7 @@ import {
   sessionSlashCommandSuggestions
 } from '../../shared/native-chat/input/native-chat-slash-commands'
 import { setStructuredAgentSessionHost } from '../native-chat/agent-session-wire/structured-agent-session-registry'
-import { OrcaRuntimeService } from '../runtime/orca-runtime'
+import { OCCRuntimeService } from '../runtime/occ-runtime'
 import { RpcDispatcher } from '../runtime/rpc/dispatcher'
 import { STRUCTURED_AGENT_SESSION_OPTIONS_READ_METHODS } from '../runtime/rpc/methods/structured-agent-session-options-read'
 import { handleStructuredAgentSessionCreate } from '../runtime/rpc/methods/structured-agent-session-create-handler'
@@ -164,7 +164,7 @@ it('answers modern empty-chat first-open through RPC and desktop subscription be
       agent: 'omp',
       accountHome: { variable: 'PI_CODING_AGENT_DIR', path: '/accounts/omp' }
     })
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const resolveIntent = vi
       .spyOn(runtime, 'resolveStructuredAgentSessionCreateIntent')
       .mockResolvedValue(params)
@@ -188,7 +188,7 @@ it('answers modern empty-chat first-open through RPC and desktop subscription be
       emit: (frame) => events.push(frame)
     })
     const dispatcher = new RpcDispatcher({
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       methods: STRUCTURED_AGENT_SESSION_OPTIONS_READ_METHODS
     })
     const replies: unknown[] = []

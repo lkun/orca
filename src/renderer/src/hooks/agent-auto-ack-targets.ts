@@ -1,5 +1,5 @@
 import { FLOATING_TERMINAL_WORKTREE_ID } from '../../../shared/constants'
-import { isOrcaWindowForegroundFocused } from '@/components/terminal-pane/terminal-notification-pane-visibility'
+import { isOCCWindowForegroundFocused } from '@/components/terminal-pane/terminal-notification-pane-visibility'
 import { isStructuredTab } from '../../../shared/structured-agent-session-tab'
 import type { Tab, TabGroup, TabGroupLayoutNode } from '../../../shared/tab-types'
 import { collectTabGroupLayoutGroupIds } from '../../../shared/workspace-layout/tab-group-moves'
@@ -77,7 +77,7 @@ export function onScreenWorkspaceIds(state: AutoAckTargetState): string[] {
 
 export function isWorkspaceOnScreen(state: AutoAckTargetState, workspaceId: string): boolean {
   return (
-    isOrcaWindowForegroundFocused() &&
+    isOCCWindowForegroundFocused() &&
     isPresenceConfirmed() &&
     onScreenWorkspaceIds(state).includes(workspaceId)
   )
@@ -91,7 +91,7 @@ export function isTabOnScreen(
   surfaceKind: AutoAckTabTarget['surfaceKind']
 ): boolean {
   return (
-    isOrcaWindowForegroundFocused() &&
+    isOCCWindowForegroundFocused() &&
     isPresenceConfirmed() &&
     resolveAutoAckTabTargets(state).some(
       (target) =>

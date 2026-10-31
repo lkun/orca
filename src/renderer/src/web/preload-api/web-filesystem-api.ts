@@ -46,7 +46,7 @@ export function createFileApi(): NonNullable<Partial<PreloadApi>['fs']> {
         relativePath: file.relativePath
       })
     },
-    // No orca-media protocol in a browser; audio and video keep the binary placeholder.
+    // No occ-media protocol in a browser; audio and video keep the binary placeholder.
     grantRuntimeFilePreview: async () => null,
     // Never minted here, so no viewer asks.
     readPreviewRange: async () => {

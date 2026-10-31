@@ -6,7 +6,7 @@
  * again on the next remount. A pin that silently forgets itself is worse than one that cannot be
  * set, so the page's store is the app's, reached over the `storage` grant.
  *
- * An allowlist and not a passthrough. Everything the app keeps under `orca:` is in one namespace —
+ * An allowlist and not a passthrough. Everything the app keeps under `occ:` is in one namespace —
  * paired hosts, push registrations — and a page that could write any of them could rewrite state
  * the native app owns. A prefix is listed only where the key carries an id the desktop chooses; the
  * rest are exact.
@@ -17,25 +17,25 @@
  * (rulings-ota-c7.md ruling 7).
  */
 export const TERMINAL_SHORTCUT_STORAGE_KEYS = [
-  'orca:terminal-accessory-layout',
-  'orca:custom-accessory-keys'
+  'occ:terminal-accessory-layout',
+  'occ:custom-accessory-keys'
 ] as const
 
 export const PAGE_STORAGE_EXACT_KEYS = [
-  'orca:last-visited-worktree',
-  'orca:hostSidebarWidth',
-  'orca:hostDockWidth',
-  'orca:terminal-accessory-layout',
-  'orca:custom-accessory-keys',
-  'orca:defaultSessionView',
+  'occ:last-visited-worktree',
+  'occ:hostSidebarWidth',
+  'occ:hostDockWidth',
+  'occ:terminal-accessory-layout',
+  'occ:custom-accessory-keys',
+  'occ:defaultSessionView',
   /** Legacy journal access for embedded pages served by older hosts. */
-  'orca:mobileStructuredSendOperations:v1',
-  'orca:terminalTextScale',
-  'orca:terminalAutocompleteEnabled',
+  'occ:mobileStructuredSendOperations:v1',
+  'occ:terminalTextScale',
+  'occ:terminalAutocompleteEnabled',
   /** Whether a terminal link opens in OCC's browser or the phone's. */
-  'orca:terminalLinkOpenMode',
+  'occ:terminalLinkOpenMode',
   /** The split terminal's chosen direction. */
-  'orca:terminalSplitLayout'
+  'occ:terminalSplitLayout'
 ] as const
 
 /**
@@ -43,7 +43,7 @@ export const PAGE_STORAGE_EXACT_KEYS = [
  * reader refines each key against its own list and refuses the whole frame on one it lacks, so
  * the host sends these only to a page whose `ready` named them in `storageKeys`.
  */
-export const NEGOTIATED_PAGE_STORAGE_KEYS = ['orca:terminalSplitLayout'] as const
+export const NEGOTIATED_PAGE_STORAGE_KEYS = ['occ:terminalSplitLayout'] as const
 
 /** Whether a page that declared `storageKeys` (null: declared nothing) reads this key in `init`. */
 export function pageReadsStorageKey(key: string, declared: readonly string[] | null): boolean {
@@ -67,10 +67,10 @@ export function pageStorageForReader(
 }
 
 export const PAGE_STORAGE_KEY_PREFIXES = [
-  'orca:pins:',
-  'orca:nativeChatTabs:',
-  'orca:terminalLiveInputDisabled:',
-  'orca:terminalDrafts:'
+  'occ:pins:',
+  'occ:nativeChatTabs:',
+  'occ:terminalLiveInputDisabled:',
+  'occ:terminalDrafts:'
 ] as const
 
 export const PAGE_STORAGE_MAX_VALUE_CHARS = 16 * 1024
@@ -109,9 +109,9 @@ export function pageRouteWorkspace(
 }
 
 const WORKSPACE_KEY_PREFIXES = [
-  'orca:nativeChatTabs:',
-  'orca:terminalLiveInputDisabled:',
-  'orca:terminalDrafts:'
+  'occ:nativeChatTabs:',
+  'occ:terminalLiveInputDisabled:',
+  'occ:terminalDrafts:'
 ] as const
 
 function workspaceScopedKey(prefix: string, hostId: string, worktreeId: string): string {
@@ -138,7 +138,7 @@ export function pageStorageKeysForRoute(hostId: string, routePathname: string): 
       : WORKSPACE_KEY_PREFIXES.map((prefix) =>
           workspaceScopedKey(prefix, hostId, workspace.worktreeId)
         )
-  return [...PAGE_STORAGE_EXACT_KEYS, `orca:pins:${hostId}`, ...scoped].filter(isPageStorageKey)
+  return [...PAGE_STORAGE_EXACT_KEYS, `occ:pins:${hostId}`, ...scoped].filter(isPageStorageKey)
 }
 
 // Narrow key shapes to this host/workspace; host-area pages additionally reach this host’s other workspaces.

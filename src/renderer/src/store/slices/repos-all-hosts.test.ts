@@ -195,17 +195,17 @@ function configureSharedProjectCompatibilityMocks(
   sharedProjectId: string
   sharedRemoteProject: Project
 } {
-  const sharedProjectId = 'github:stablyai/orca'
+  const sharedProjectId = 'github:stablyai/occ'
   const localRepoForSharedProject: Repo =
     options.localRepoHasProviderIdentity === false
       ? localRepo
       : {
           ...localRepo,
-          upstream: { owner: 'stablyai', repo: 'orca' }
+          upstream: { owner: 'stablyai', repo: 'occ' }
         }
   const remoteRepoWithIdentity: Repo = {
     ...remoteRepo,
-    upstream: { owner: 'stablyai', repo: 'orca' }
+    upstream: { owner: 'stablyai', repo: 'occ' }
   }
   const sharedLocalProject: Project = {
     id: sharedProjectId,
@@ -679,7 +679,7 @@ describe('fetchReposForAllHosts', () => {
         .getState()
         .projects.map((project) => project.id)
         .sort()
-    ).toEqual(['github:stablyai/orca', 'repo:remote-repo'])
+    ).toEqual(['github:stablyai/occ', 'repo:remote-repo'])
     expect(store.getState().projectHostSetups).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -788,7 +788,7 @@ describe('fetchReposForAllHosts', () => {
       activeRepoId: 'remote-repo',
       filterRepoIds: ['remote-repo', 'stale-repo'],
       setupScriptPromptDismissedRepoIds: [remoteDismissalKey, staleDismissalKey],
-      trustedOrcaHooks: {
+      trustedOCCHooks: {
         'remote-repo': { all: { approvedAt: 1 } },
         'stale-repo': { all: { approvedAt: 2 } }
       }
@@ -802,7 +802,7 @@ describe('fetchReposForAllHosts', () => {
       remoteDismissalKey,
       staleDismissalKey
     ])
-    expect(store.getState().trustedOrcaHooks).toEqual({
+    expect(store.getState().trustedOCCHooks).toEqual({
       'remote-repo': { all: { approvedAt: 1 } },
       'stale-repo': { all: { approvedAt: 2 } }
     })
@@ -812,7 +812,7 @@ describe('fetchReposForAllHosts', () => {
     expect(store.getState().activeRepoId).toBe('remote-repo')
     expect(store.getState().filterRepoIds).toEqual(['remote-repo'])
     expect(store.getState().setupScriptPromptDismissedRepoIds).toEqual([remoteDismissalKey])
-    expect(store.getState().trustedOrcaHooks).toEqual({
+    expect(store.getState().trustedOCCHooks).toEqual({
       'remote-repo': { all: { approvedAt: 1 } }
     })
   })

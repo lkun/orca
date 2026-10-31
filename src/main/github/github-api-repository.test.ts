@@ -267,9 +267,9 @@ describe('skip missing upstream remote probes', () => {
     getOwnerRepoForRemoteMock.mockImplementation(async (_path, remote) => {
       if (remote === 'origin') {
         originStarted = true
-        return { owner: 'fork', repo: 'orca' }
+        return { owner: 'fork', repo: 'occ' }
       }
-      return { owner: 'stablyai', repo: 'orca' }
+      return { owner: 'stablyai', repo: 'occ' }
     })
 
     const resultPromise = getIssueGitHubApiRepository('/repo')
@@ -278,7 +278,7 @@ describe('skip missing upstream remote probes', () => {
     releaseRemoteProbe(true)
     await expect(resultPromise).resolves.toEqual({
       owner: 'stablyai',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.com'
     })
   })
@@ -299,12 +299,12 @@ describe('skip missing upstream remote probes', () => {
 
   it('still probes upstream for issue identity when that remote is present', async () => {
     getOwnerRepoForRemoteMock.mockImplementation(async (_path, remote) =>
-      remote === 'upstream' ? { owner: 'stablyai', repo: 'orca' } : { owner: 'fork', repo: 'orca' }
+      remote === 'upstream' ? { owner: 'stablyai', repo: 'occ' } : { owner: 'fork', repo: 'occ' }
     )
 
     await expect(getIssueGitHubApiRepository('/repo')).resolves.toEqual({
       owner: 'stablyai',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.com'
     })
     expect(getOwnerRepoForRemoteMock).toHaveBeenCalledWith('/repo', 'upstream', undefined, {})
@@ -316,12 +316,12 @@ describe('skip missing upstream remote probes', () => {
       if (remote === 'origin') {
         throw originError
       }
-      return { owner: 'stablyai', repo: 'orca' }
+      return { owner: 'stablyai', repo: 'occ' }
     })
 
     await expect(getIssueGitHubApiRepository('/repo')).resolves.toEqual({
       owner: 'stablyai',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.com'
     })
   })
@@ -340,11 +340,11 @@ describe('skip missing upstream remote probes', () => {
 
   it('does not probe upstream for PR candidates when that remote is absent', async () => {
     shouldProbeGitRemoteMock.mockResolvedValue(false)
-    getOwnerRepoForRemoteMock.mockResolvedValue({ owner: 'fork', repo: 'orca' })
+    getOwnerRepoForRemoteMock.mockResolvedValue({ owner: 'fork', repo: 'occ' })
 
     await expect(resolveGitHubApiRepositoryCandidates('/repo')).resolves.toEqual({
-      candidates: [{ owner: 'fork', repo: 'orca', host: 'github.com' }],
-      headRepo: { owner: 'fork', repo: 'orca', host: 'github.com' }
+      candidates: [{ owner: 'fork', repo: 'occ', host: 'github.com' }],
+      headRepo: { owner: 'fork', repo: 'occ', host: 'github.com' }
     })
     expect(getOwnerRepoForRemoteMock.mock.calls.map(([, remote]) => remote)).toEqual(['origin'])
   })
@@ -361,7 +361,7 @@ describe('skip missing upstream remote probes', () => {
       if (remote === 'origin') {
         throw originError
       }
-      return { owner: 'stablyai', repo: 'orca' }
+      return { owner: 'stablyai', repo: 'occ' }
     })
 
     const resultPromise = resolveGitHubApiRepositoryCandidates('/repo')
@@ -381,12 +381,12 @@ describe('skip missing upstream remote probes', () => {
 
   it('still probes upstream for PR candidates when that remote is present', async () => {
     getOwnerRepoForRemoteMock.mockImplementation(async (_path, remote) =>
-      remote === 'upstream' ? { owner: 'Acme', repo: 'OCC' } : { owner: 'acme', repo: 'orca' }
+      remote === 'upstream' ? { owner: 'Acme', repo: 'OCC' } : { owner: 'acme', repo: 'occ' }
     )
 
     await expect(resolveGitHubApiRepositoryCandidates('/repo')).resolves.toEqual({
       candidates: [{ owner: 'Acme', repo: 'OCC', host: 'github.com' }],
-      headRepo: { owner: 'acme', repo: 'orca', host: 'github.com' }
+      headRepo: { owner: 'acme', repo: 'occ', host: 'github.com' }
     })
     expect(getOwnerRepoForRemoteMock).toHaveBeenCalledWith(
       '/repo',

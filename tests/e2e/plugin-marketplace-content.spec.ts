@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
 import { expect, test } from '@stablyai/playwright-test'
-import { createRestartSession } from './helpers/orca-restart'
+import { createRestartSession } from './helpers/occ-restart'
 import { commitRepository, configureFixtureGit } from './helpers/plugin-git-fixture'
 import {
   FIXTURE_LANGUAGE_PLUGIN,
@@ -13,9 +13,9 @@ import {
 } from './helpers/plugin-language-pack-fixture'
 
 const FIXTURE_REPOSITORIES = [
-  'orca-plugins',
+  'occ-plugins',
   FIXTURE_LANGUAGE_PLUGIN.repository,
-  'orca-multipass-recipes'
+  'occ-multipass-recipes'
 ]
 
 type MarketplaceFixture = {
@@ -38,7 +38,7 @@ async function copyLaunchPlugin(
 }
 
 async function createMarketplaceFixture(): Promise<MarketplaceFixture> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-marketplace-e2e-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-marketplace-e2e-'))
   const repositories = join(root, 'repositories')
   const home = join(root, 'home')
   await mkdir(repositories, { recursive: true })
@@ -49,22 +49,22 @@ async function createMarketplaceFixture(): Promise<MarketplaceFixture> {
   await commitRepository(languageRepository, gitEnvironment)
   await copyLaunchPlugin(
     repositories,
-    'orca-multipass-recipes',
-    'stablyai.orca-multipass-recipes',
+    'occ-multipass-recipes',
+    'stablyai.occ-multipass-recipes',
     gitEnvironment
   )
 
-  const marketplaceRepository = join(repositories, 'orca-plugins.git')
+  const marketplaceRepository = join(repositories, 'occ-plugins.git')
   await mkdir(marketplaceRepository, { recursive: true })
   await writeFile(
-    join(marketplaceRepository, 'orca-marketplace.json'),
+    join(marketplaceRepository, 'occ-marketplace.json'),
     `${JSON.stringify(
       {
         name: 'OCC Plugins',
         owner: 'stablyai',
         plugins: [
           [FIXTURE_LANGUAGE_PLUGIN.pluginKey, FIXTURE_LANGUAGE_PLUGIN.repository, 'languages'],
-          ['stablyai.orca-multipass-recipes', 'orca-multipass-recipes', 'vm-recipes']
+          ['stablyai.occ-multipass-recipes', 'occ-multipass-recipes', 'vm-recipes']
         ].map(([id, repository, category]) => ({
           id,
           source: {
@@ -185,7 +185,7 @@ async function runMarketplaceJourney(page: Page): Promise<void> {
       sources: [expect.objectContaining({ official: true, stale: false })],
       listings: expect.arrayContaining([
         expect.objectContaining({ pluginKey: FIXTURE_LANGUAGE_PLUGIN.pluginKey, official: true }),
-        expect.objectContaining({ pluginKey: 'stablyai.orca-multipass-recipes', official: true })
+        expect.objectContaining({ pluginKey: 'stablyai.occ-multipass-recipes', official: true })
       ])
     })
 
@@ -197,7 +197,7 @@ async function runMarketplaceJourney(page: Page): Promise<void> {
   )
   await installMarketplacePluginThroughUi(
     page,
-    'stablyai.orca-multipass-recipes',
+    'stablyai.occ-multipass-recipes',
     'Multipass VM Recipes',
     { runsInstructions: true }
   )

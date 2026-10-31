@@ -6,7 +6,7 @@ import {
   getPreferredPairedRuntimeConnection,
   type KnownRuntimeEnvironment
 } from '../../../shared/runtime-environments'
-import { OrcadManagedPairingRepairFailedError } from '../../managed-server/lifecycle/orcad-managed-pairing-repair-failure'
+import { OCCdManagedPairingRepairFailedError } from '../../managed-server/lifecycle/occd-managed-pairing-repair-failure'
 import { recoverRefusedPairing } from './runtime-environment-pairing-refusal-registry'
 import { recordRuntimeEnvironmentUsage } from './runtime-environment-usage-record'
 import { RuntimeHostStatusOwner } from '../../../shared/runtime-host-status-owner'
@@ -47,7 +47,7 @@ async function answerRefusedPairing(
   try {
     outcome = await recovery
   } catch (error) {
-    return error instanceof OrcadManagedPairingRepairFailedError
+    return error instanceof OCCdManagedPairingRepairFailedError
       ? runtimeHostStatusFailure('unauthorized', error.message)
       : runtimeHostStatusError(error)
   }
@@ -78,7 +78,7 @@ export function createRuntimeEnvironmentStatusOwner(
         try {
           await resolveManagedRuntimeEnvironment(userDataPath, environment.id)
         } catch (error) {
-          if (error instanceof OrcadManagedPairingRepairFailedError) {
+          if (error instanceof OCCdManagedPairingRepairFailedError) {
             return runtimeHostStatusFailure('unauthorized', error.message)
           }
           throw error

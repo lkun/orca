@@ -22,9 +22,9 @@ vi.mock('../git/worktree', async (importOriginal) => ({
   listWorktreesStrict: listWorktreesStrictMock
 }))
 
-import { isWslUncPathForCallerLinuxPath } from '../../shared/cross-platform-path'
+import { isWslUncPathFoccllerLinuxPath } from '../../shared/cross-platform-path'
 import { parseWslUncPath } from '../../shared/wsl-paths'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 const UBUNTU = 'Ubuntu-24.04'
 const DEBIAN = 'Debian'
@@ -97,14 +97,14 @@ function scanReports(registrations: readonly Registration[]): void {
   })
 }
 
-function makeRuntime(registrations: readonly Registration[]): OrcaRuntimeService {
+function makeRuntime(registrations: readonly Registration[]): OCCRuntimeService {
   scanReports(registrations)
-  return new OrcaRuntimeService(makeStore(registrations) as never)
+  return new OCCRuntimeService(makeStore(registrations) as never)
 }
 
 /** Mirror the CLI's caller-distro translation; src/cli lies outside this test's tsconfig. */
 async function selectorTheCliWouldSend(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   callerCwd: string,
   typedPath: string
 ): Promise<string> {
@@ -114,7 +114,7 @@ async function selectorTheCliWouldSend(
   }
   const listed = await runtime.listManagedWorktrees()
   const match = listed.worktrees.find((worktree) =>
-    isWslUncPathForCallerLinuxPath(worktree.path, typedPath, callerDistro)
+    isWslUncPathFoccllerLinuxPath(worktree.path, typedPath, callerDistro)
   )
   return match ? `path:${match.path}` : `path:${typedPath}`
 }

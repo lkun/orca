@@ -7,7 +7,7 @@ import { RuntimeClient } from '../../src/cli/runtime/client'
 import type { FolderWorkspace } from '../../src/shared/folder-workspace-types'
 import type { ProjectGroup } from '../../src/shared/project-group-types'
 import type { Repo } from '../../src/shared/repo-types'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { revealPairedClientWindow } from './helpers/paired-client-window-reveal'
 import { forwardRendererConsole } from './helpers/renderer-console-forwarding'
 import {
@@ -80,20 +80,20 @@ async function setActiveRuntimePreference(page: Page, environmentId: string | nu
 
 async function runSelectedRuntimeAddJourney(
   electronApp: ElectronApplication,
-  orcaPage: Page,
+  occPage: Page,
   testInfo: TestInfo,
   visible: boolean
 ): Promise<void> {
   const runtimeName = `PR 11346 ${visible ? 'headed' : 'hidden-window'} runtime`
   const fixture = await createProjectFixtures()
-  await waitForSessionReady(orcaPage)
+  await waitForSessionReady(occPage)
   const serverVisible = await electronApp.evaluate(({ BrowserWindow }) =>
     BrowserWindow.getAllWindows().some((window) => window.isVisible())
   )
   expect(serverVisible).toBe(visible)
   configureIsolatedGitIdentity(await electronApp.evaluate(({ app }) => app.getPath('home')))
 
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   const client = await launchPairedElectronClient(offer, testInfo, runtimeName)
   // Forward renderer console because contained render failures expose their component stacks only there.
   forwardRendererConsole(client.page, testInfo)
@@ -750,16 +750,16 @@ async function runSelectedRuntimeAddJourney(
 
 test('routes every Add Project path to a selected non-default headed runtime @headful', async ({
   electronApp,
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(300_000)
-  await runSelectedRuntimeAddJourney(electronApp, orcaPage, testInfo, true)
+  await runSelectedRuntimeAddJourney(electronApp, occPage, testInfo, true)
 })
 
 test('keeps every selected-runtime Add Project path in hidden-window desktop parity', async ({
   electronApp,
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(300_000)
-  await runSelectedRuntimeAddJourney(electronApp, orcaPage, testInfo, false)
+  await runSelectedRuntimeAddJourney(electronApp, occPage, testInfo, false)
 })

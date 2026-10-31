@@ -1,6 +1,6 @@
 // Skipped/misselected Playwright tests and stale IBus can exit green without composing text; require a receipt from every pinned test after real composition.
 
-export const IME_ENGAGEMENT_RECEIPT_ENV = 'ORCA_E2E_IME_ENGAGEMENT_RECEIPT'
+export const IME_ENGAGEMENT_RECEIPT_ENV = 'OCC_E2E_IME_ENGAGEMENT_RECEIPT'
 
 /** The tests that must each leave a receipt. Pinned so deleting one cannot quietly shrink the lane. */
 export const EXPECTED_NATIVE_IME_TESTS = [

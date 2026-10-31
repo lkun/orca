@@ -1,11 +1,11 @@
 import * as pdfjsLib from 'pdfjs-dist'
 import { buildPdfJsDocumentOptions } from './pdf-js-document-options'
-import { createOrcaMediaRangeTransport } from './pdf-orca-media-range-transport'
+import { createOCCMediaRangeTransport } from './pdf-occ-media-range-transport'
 import { translate } from '@/i18n/i18n'
 
 type PdfLoadingTask = ReturnType<typeof pdfjsLib.getDocument>
 
-/** Bytes as base64, or an orca-media URL (with its size) pdf.js reads by range. */
+/** Bytes as base64, or an occ-media URL (with its size) pdf.js reads by range. */
 export type PdfDocumentSource = { base64: string } | { url: string; length?: number }
 
 export type PdfDocumentLoader = {
@@ -67,11 +67,11 @@ export function createPdfDocumentLoader({
         'url' in source
           ? source.length
             ? {
-                range: createOrcaMediaRangeTransport(source.url, source.length, (error) =>
+                range: createOCCMediaRangeTransport(source.url, source.length, (error) =>
                   failRange(error)
                 )
               }
-            : // orca-media refuses fetch, so a URL is only readable through its sized range transport.
+            : // occ-media refuses fetch, so a URL is only readable through its sized range transport.
               pdfLoadFailedMessage()
           : decodePdfBase64(source.base64)
       if (typeof documentSource === 'string') {

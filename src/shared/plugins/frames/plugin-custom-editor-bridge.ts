@@ -24,7 +24,7 @@ export type CustomEditorContent =
   | { kind: 'text'; text: string }
   | { kind: 'bytes'; bytes: ArrayBuffer }
 
-/** Payload of the `editor.document` event: `window.orca.document.get()` in the frame. */
+/** Payload of the `editor.document` event: `window.occ.document.get()` in the frame. */
 export type CustomEditorDocument = {
   /** Rises each time OCC sends a document; an edit names the version it was made against. */
   version: number

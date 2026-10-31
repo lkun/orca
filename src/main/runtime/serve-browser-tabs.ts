@@ -4,7 +4,7 @@ import type { BrowserBackend } from '../browser/browser-backend'
 import type { ExecutionHostId } from '../../shared/execution-host'
 import type { BrowserTabInfo } from '../../shared/runtime-types'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import type {
   LayoutApplyOutcome,
   LayoutCommand
@@ -53,7 +53,7 @@ export class ServeBrowserTabs {
 
   opened(page: ServeBrowserPageState & { profileId?: string; groupId?: string }): void {
     // Main commits the tab layout before its page address is saved.
-    if (ORCA_LAYOUT_OWNER_IS_MAIN && this.deps.applyLayout) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN && this.deps.applyLayout) {
       this.openThroughLayout(page, this.deps.applyLayout)
       return
     }
@@ -65,7 +65,7 @@ export class ServeBrowserTabs {
   /** A saved tab follows its page; a page whose tab was closed is not saved again. */
   navigated(page: ServeBrowserPageState): void {
     // While layout open is pending, retain the latest page address for its eventual save.
-    if (ORCA_LAYOUT_OWNER_IS_MAIN && this.pendingOpens.has(page.pageId)) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN && this.pendingOpens.has(page.pageId)) {
       this.pendingOpens.set(page.pageId, page)
       return
     }
@@ -75,7 +75,7 @@ export class ServeBrowserTabs {
   /** A closed page's tab, true when one was saved; a page destroyed with the process is not a close. */
   closed(worktreeId: string, pageId: string): boolean {
     // Drop page facts before main closes the tab layout.
-    if (ORCA_LAYOUT_OWNER_IS_MAIN && this.deps.applyLayout) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN && this.deps.applyLayout) {
       return this.closeThroughLayout(worktreeId, pageId, this.deps.applyLayout)
     }
     return this.write(worktreeId, (hostId, session) =>

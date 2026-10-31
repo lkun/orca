@@ -13,7 +13,7 @@ import type { SshPendingPtyKill } from '../../../shared/ssh-pending-pty-kill'
 import type { SshRemotePtyLease } from '../../../shared/ssh-types'
 import type { SshConnection } from '../connection/ssh-connection'
 import { waitForSentinel } from './ssh-relay-sentinel'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { LegacyRelayClient } from './legacy-relay-client'
 import { createLegacyRelayCliServer } from './legacy-relay-cli-server'
 import { listLegacyRelayEndpoints, posixEndpointExited } from './legacy-relay-endpoints'
@@ -49,10 +49,10 @@ export type LegacyRelayBridgeHost = {
   onReplay: (ptyId: string, replay: string) => void
   onExit: (ptyId: string, code: number) => void
   report: (targetId: string, phase: ReportPhase, terminals: number) => void
-  /** Absent: relay-era `orca` commands are refused, as before this host served them. */
+  /** Absent: relay-era `occ` commands are refused, as before this host served them. */
   remoteCli?: {
-    runtime: () => OrcaRuntimeService | null
-    /** The per-host "Allow this host's orca CLI to control OCC" switch. */
+    runtime: () => OCCRuntimeService | null
+    /** The per-host "Allow this host's occ CLI to control OCC" switch. */
     allowed: (targetId: string) => boolean
   }
 }
@@ -99,7 +99,7 @@ function bridgeFor(targetId: string): LegacyRelayTargetBridge | null {
     return existing ?? null
   }
   const installed = host
-  const clientInstanceId = `orca-legacy-relay-bridge:${targetId}`
+  const clientInstanceId = `occ-legacy-relay-bridge:${targetId}`
   const connection = (): SshConnection => {
     const conn = installed.connection(targetId)
     if (!conn) {

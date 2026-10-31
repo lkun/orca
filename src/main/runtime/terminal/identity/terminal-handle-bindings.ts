@@ -1,13 +1,13 @@
-import { OrcaRuntimeWithBuildPtyTerminalSummary } from '../query/pty-terminal-summary'
-import type { PtyIncarnationHandleRecord } from '../../orca-runtime-core'
+import { OCCRuntimeWithBuildPtyTerminalSummary } from '../query/pty-terminal-summary'
+import type { PtyIncarnationHandleRecord } from '../../occ-runtime-core'
 import type {
   RuntimeLeafRecord,
   RuntimePtyWorktreeRecord
 } from '../../runtime-terminal-state-records'
 import { randomUUID } from 'node:crypto'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
-export abstract class OrcaRuntimeWithBindPtyIncarnationHandle extends OrcaRuntimeWithBuildPtyTerminalSummary {
+export abstract class OCCRuntimeWithBindPtyIncarnationHandle extends OCCRuntimeWithBuildPtyTerminalSummary {
   protected abstract getLeafKey(tabId: string, leafId: string): string
 
   protected bindPtyIncarnationHandle(
@@ -98,7 +98,7 @@ export abstract class OrcaRuntimeWithBindPtyIncarnationHandle extends OrcaRuntim
   protected issuePtyHandle(pty: RuntimePtyWorktreeRecord): string {
     const handle = this.issuePtyHandleRecord(pty)
     // An unbound terminal retains its issued pane stamp for recovery, including after replacement.
-    const record = ORCA_LAYOUT_OWNER_IS_MAIN ? this.handles.get(handle) : undefined
+    const record = OCC_LAYOUT_OWNER_IS_MAIN ? this.handles.get(handle) : undefined
     const issuedForPaneKey = record && this.paneOfPty(pty).paneKey
     if (record && issuedForPaneKey && record.issuedForPaneKey !== issuedForPaneKey) {
       this.handles.set(handle, { ...record, issuedForPaneKey })
@@ -194,7 +194,7 @@ export abstract class OrcaRuntimeWithBindPtyIncarnationHandle extends OrcaRuntim
   protected rememberDetachedPreAllocatedLeaves(): void {
     for (const leaf of this.leaves.values()) {
       if (leaf.ptyId && this.handleByPtyId.has(leaf.ptyId)) {
-        // Agent identity via ORCA_TERMINAL_HANDLE must survive renderer graph loss while the PTY lives.
+        // Agent identity via OCC_TERMINAL_HANDLE must survive renderer graph loss while the PTY lives.
         this.detachedPreAllocatedLeaves.set(leaf.ptyId, leaf)
       }
     }

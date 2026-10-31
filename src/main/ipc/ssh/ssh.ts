@@ -19,13 +19,13 @@ import {
 
 import { registerSshBrowseHandler } from './ssh-browse'
 import { registerCredentialHandler } from './ssh-passphrase'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import {
   initializeSshConnectionGenerationSession,
   resetSshConnectionGenerations
 } from '../../ssh/connection/ssh-connection-generation'
 import { resetSshProviderAuthorities } from '../../ssh/ssh-provider-authority'
-import { installManagedOrcadStartStatus } from '../runtime-environments/runtime-environment-managed-tunnel'
+import { installManagedOCCdStartStatus } from '../runtime-environments/runtime-environment-managed-tunnel'
 import {
   connectInFlight,
   credentialRequestedForTarget,
@@ -60,10 +60,10 @@ import { broadcastPortForwards } from './ssh-renderer-broadcast'
 import { resetSshShutdownDrain } from './ssh-shutdown-drain'
 import { registerSshTargetCrudHandlers } from './ssh-target-crud-handlers'
 import { targetLifecycleInFlight } from './ssh-target-lifecycle-queue'
-import { disposeOrcadManagedTunnels } from '../../managed-server/lifecycle/orcad-managed-tunnel'
-import { retainUnretainedOrcadMigrationSources } from '../../ssh/orcad-migration-source-retention'
-import { reconcileManagedOrcadSshTargets } from '../../ssh/orcad-retained-source'
-import { installOrcadMigrationScrollbackRetention } from '../../ssh/orcad-migration-scrollback-retention-wiring'
+import { disposeOCCdManagedTunnels } from '../../managed-server/lifecycle/occd-managed-tunnel'
+import { retainUnretainedOCCdMigrationSources } from '../../ssh/occd-migration-source-retention'
+import { reconcileManagedOCCdSshTargets } from '../../ssh/occd-retained-source'
+import { installOCCdMigrationScrollbackRetention } from '../../ssh/occd-migration-scrollback-retention-wiring'
 import { getAppEnvironment } from '../../../shared/app-environment'
 import { registerLegacyRelayBridgeIpc } from '../../ssh/legacy-relay/legacy-relay-bridge-ipc'
 import {
@@ -97,7 +97,7 @@ const SSH_IPC_CHANNELS = [
 export function registerSshHandlers(
   store: Store,
   getMainWindow: () => BrowserWindow | null,
-  runtime?: OrcaRuntimeService
+  runtime?: OCCRuntimeService
 ): { connectionManager: SshConnectionManager; sshStore: SshConnectionStore } {
   initializeSshConnectionGenerationSession()
   // macOS window recreation re-registers handlers; remove old channels to avoid duplicate registration.
@@ -109,10 +109,10 @@ export function registerSshHandlers(
   setCurrentRuntime(runtime)
   setSshTargetRegistryStore(new SshConnectionStore(store))
   setPersistedStore(store)
-  reconcileManagedOrcadSshTargets(getAppEnvironment().getPath('userData'), store)
-  void retainUnretainedOrcadMigrationSources(getAppEnvironment().getPath('userData'), store)
-  installOrcadMigrationScrollbackRetention(getAppEnvironment().getPath('userData'), store)
-  installManagedOrcadStartStatus()
+  reconcileManagedOCCdSshTargets(getAppEnvironment().getPath('userData'), store)
+  void retainUnretainedOCCdMigrationSources(getAppEnvironment().getPath('userData'), store)
+  installOCCdMigrationScrollbackRetention(getAppEnvironment().getPath('userData'), store)
+  installManagedOCCdStartStatus()
 
   registerCredentialHandler()
 
@@ -201,7 +201,7 @@ export async function resetSshHandlerStateForTests(): Promise<void> {
 
   disposeDesktopBrowserBridge()
   await connectionManager?.disconnectAll()
-  disposeOrcadManagedTunnels()
+  disposeOCCdManagedTunnels()
   portForwardManager?.dispose()
   setConnectionManager(null)
   setSshConnectionManagerResolver(null)

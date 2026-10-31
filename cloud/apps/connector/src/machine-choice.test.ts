@@ -1,4 +1,4 @@
-import type { ConnectorProject } from '@orca-cloud/connector-contract'
+import type { ConnectorProject } from '@occ-cloud/connector-contract'
 import { describe, expect, it } from 'vitest'
 import type { ConnectorIdentity } from './connector-identities.js'
 import { chooseMachine, type KnownHost } from './machine-choice.js'
@@ -19,7 +19,7 @@ function host(
       hostName,
       platform: 'darwin',
       runtime: 'desktop',
-      orcaVersion: '1.4.230',
+      occVersion: '1.4.230',
       agents,
       promptKinds: [],
       features: [],
@@ -46,10 +46,10 @@ const identity = (overrides: Partial<ConnectorIdentity> = {}): ConnectorIdentity
 })
 
 const laptop = host('h1', 'laptop', [
-  project('orca', 'pl_1', 'stablyai/orca'),
+  project('occ', 'pl_1', 'stablyai/occ'),
   project('web', 'pl_2')
 ])
-const server = host('h2', 'build box', [project('orca', 'pl_3', 'stablyai/orca')])
+const server = host('h2', 'build box', [project('occ', 'pl_3', 'stablyai/occ')])
 
 const choose = (text: string, ident = identity(), hosts = [laptop, server], channelId = 'C1') =>
   chooseMachine({ source: 'slack', hosts, identity: ident, containerId: channelId, text })
@@ -62,12 +62,12 @@ describe('chooseMachine', () => {
       placeId: 'pl_2',
       agent: 'claude'
     })
-    expect(choose('in stablyai/orca on build box')).toMatchObject({ kind: 'chosen', hostId: 'h2' })
+    expect(choose('in stablyai/occ on build box')).toMatchObject({ kind: 'chosen', hostId: 'h2' })
   })
 
   it('falls back to the channel default, then the personal default', () => {
     const ident = identity({
-      defaultProject: 'orca',
+      defaultProject: 'occ',
       containerProjects: { C1: 'web' },
       defaultHostId: 'h2'
     })
@@ -79,11 +79,11 @@ describe('chooseMachine', () => {
   })
 
   it('asks when the project is on several machines and none is the default', () => {
-    expect(choose('fix orca')).toEqual({
+    expect(choose('fix occ')).toEqual({
       kind: 'ask',
       options: [
-        { project: 'orca', hostName: 'laptop' },
-        { project: 'orca', hostName: 'build box' }
+        { project: 'occ', hostName: 'laptop' },
+        { project: 'occ', hostName: 'build box' }
       ]
     })
   })
@@ -97,37 +97,37 @@ describe('chooseMachine', () => {
 
   it('needs a machine that can run a connector agent', () => {
     expect(
-      choose('fix orca', identity(), [host('h3', 'old', [project('orca', 'pl_4')], ['gemini'])])
+      choose('fix occ', identity(), [host('h3', 'old', [project('occ', 'pl_4')], ['gemini'])])
     ).toEqual({
       kind: 'no_machine'
     })
-    expect(choose('fix orca', identity(), [])).toEqual({ kind: 'no_machine' })
+    expect(choose('fix occ', identity(), [])).toEqual({ kind: 'no_machine' })
   })
 
   it('passes over a machine that does not take Slack work', () => {
-    const orca = [project('orca', 'pl_3', 'stablyai/orca')]
-    const discordOnly = host('h2', 'build box', orca, ['claude'], ['discord'])
-    expect(choose('fix orca', identity(), [laptop, discordOnly])).toMatchObject({
+    const occ = [project('occ', 'pl_3', 'stablyai/occ')]
+    const discordOnly = host('h2', 'build box', occ, ['claude'], ['discord'])
+    expect(choose('fix occ', identity(), [laptop, discordOnly])).toMatchObject({
       kind: 'chosen',
       hostId: 'h1'
     })
-    expect(choose('fix orca', identity(), [discordOnly])).toEqual({ kind: 'no_machine' })
+    expect(choose('fix occ', identity(), [discordOnly])).toEqual({ kind: 'no_machine' })
   })
 
   it('reads a repository link, and lets no default override the project the message names', () => {
     const ident = identity({ defaultProject: 'web', defaultHostId: 'h1' })
-    expect(choose('fix <https://github.com/stablyai/orca|this> on build box', ident)).toMatchObject(
+    expect(choose('fix <https://github.com/stablyai/occ|this> on build box', ident)).toMatchObject(
       {
         kind: 'chosen',
         hostId: 'h2'
       }
     )
-    expect(choose('compare orca and web', ident)).toMatchObject({ kind: 'ask' })
+    expect(choose('compare occ and web', ident)).toMatchObject({ kind: 'ask' })
   })
 
   it('reads a project name at the end of a sentence', () => {
     const ident = identity({ defaultProject: 'web' })
-    for (const text of ['Please fix orca.', 'Please fix orca...', 'Please fix orca?']) {
+    for (const text of ['Please fix occ.', 'Please fix occ...', 'Please fix occ?']) {
       expect(choose(text, ident, [laptop])).toMatchObject({ kind: 'chosen', placeId: 'pl_1' })
     }
   })

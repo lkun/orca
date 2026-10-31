@@ -6,7 +6,7 @@
  */
 import { findWslHostDeployment } from '../../shared/runtime-environment-wsl-host-store'
 import type { WslHostService } from '../wsl/wsl-host-service'
-import { defaultWslOrcadEnvironmentId } from '../wsl/wsl-orcad-deploy'
+import { defaultWslOCCdEnvironmentId } from '../wsl/wsl-occd-deploy'
 
 export type WslMoveHostConnectMode = 'user' | 'automatic'
 
@@ -14,7 +14,7 @@ export type WslMoveHostConnectMode = 'user' | 'automatic'
 export function wslHostRemovalPending(userDataPath: string, distro: string): boolean {
   const record: object | null = findWslHostDeployment(
     userDataPath,
-    defaultWslOrcadEnvironmentId(distro)
+    defaultWslOCCdEnvironmentId(distro)
   )
   // Optional until #33843 lands: older records have no such field.
   return !!record && 'pendingStop' in record && !!record.pendingStop
@@ -30,7 +30,7 @@ export async function connectWslMoveHostService(
   distro: string,
   mode: WslMoveHostConnectMode
 ): Promise<boolean> {
-  const environmentId = defaultWslOrcadEnvironmentId(distro)
+  const environmentId = defaultWslOCCdEnvironmentId(distro)
   if (!service.recordForEnvironment(environmentId) || wslHostRemovalPending(userDataPath, distro)) {
     return false
   }

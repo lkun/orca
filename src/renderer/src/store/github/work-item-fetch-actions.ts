@@ -164,7 +164,7 @@ export const createWorkItemFetchActions = (
             issuesError
           )
         }
-        const errorForCache: WorkItemsCacheError | undefined =
+        const errorFoccche: WorkItemsCacheError | undefined =
           issuesError && envelope.sources.issues
             ? { ...issuesError, source: envelope.sources.issues }
             : undefined
@@ -193,7 +193,7 @@ export const createWorkItemFetchActions = (
           )
           const nextFellBack = envelope.issueSourceFellBack ? true : undefined
           const sourcesUnchanged = structuralValuesEqual(previousEntry?.sources, envelope.sources)
-          const errorUnchanged = structuralValuesEqual(previousEntry?.error, errorForCache)
+          const errorUnchanged = structuralValuesEqual(previousEntry?.error, errorFoccche)
           const fellBackUnchanged = previousEntry?.issueSourceFellBack === nextFellBack
           if (
             previousEntry &&
@@ -216,10 +216,10 @@ export const createWorkItemFetchActions = (
                 sourcesUnchanged && previousSources !== undefined
                   ? previousSources
                   : envelope.sources,
-              ...(errorForCache
+              ...(errorFoccche
                 ? {
                     error:
-                      errorUnchanged && previousError !== undefined ? previousError : errorForCache
+                      errorUnchanged && previousError !== undefined ? previousError : errorFoccche
                   }
                 : {}),
               ...(nextFellBack ? { issueSourceFellBack: true } : {})

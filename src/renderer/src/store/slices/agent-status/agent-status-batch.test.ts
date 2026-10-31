@@ -13,7 +13,7 @@ import type {
 import type { GeneratedTabTitleUpdate } from '../terminal-tab-title-batch'
 import { createTestStore } from '../store-test-helpers'
 import { makeTab, makeUnifiedTab } from '../store-session-test-harness'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import { layoutApplyTestDouble } from '@/runtime/layout-apply-test-double'
 
 const BASE_TIME = 2_000_000
@@ -273,7 +273,7 @@ describe('setAgentStatuses', () => {
     const outcomes = store.getState().setAgentStatuses(updates)
 
     expect(outcomes).toEqual(Array(paneCount).fill(true))
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // Main derives titles and frames write them once; window batch writes only status and sends no titles.
       for (let turn = 0; turn < 10; turn += 1) {
         await Promise.resolve()

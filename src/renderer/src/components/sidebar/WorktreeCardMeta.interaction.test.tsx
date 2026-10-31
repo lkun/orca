@@ -92,7 +92,7 @@ const reviewFixture = {
   number: 456,
   title: 'Fix stale GH PR',
   state: 'open' as const,
-  url: 'https://github.com/acme/orca/pull/456',
+  url: 'https://github.com/acme/occ/pull/456',
   status: 'success' as const,
   updatedAt: '2026-05-17T00:00:00.000Z',
   mergeable: 'MERGEABLE' as const
@@ -145,7 +145,7 @@ describe('WorktreeCardDetailsHover interactions', () => {
           comment={null}
           onEditIssue={vi.fn()}
           onEditComment={vi.fn()}
-          onOpenReviewInOrca={vi.fn()}
+          onOpenReviewInOCC={vi.fn()}
           onUnlinkReview={onUnlinkReview}
           onOpenReviewInBrowser={onOpenReviewInBrowser}
         >
@@ -279,7 +279,7 @@ describe('WorktreeCardDetailsHover interactions', () => {
   })
 
   it('opens the native review from the dropdown and closes the hover', () => {
-    const onOpenReviewInOrca = vi.fn()
+    const onOpenReviewInOCC = vi.fn()
     container = document.createElement('div')
     root = createRoot(container)
     act(() =>
@@ -289,7 +289,7 @@ describe('WorktreeCardDetailsHover interactions', () => {
           linearIssue={null}
           review={reviewFixture}
           comment={null}
-          onOpenReviewInOrca={onOpenReviewInOrca}
+          onOpenReviewInOCC={onOpenReviewInOCC}
         >
           <span>Linked PR</span>
         </WorktreeCardDetailsHover>
@@ -304,7 +304,7 @@ describe('WorktreeCardDetailsHover interactions', () => {
     )
     expect(nativeAction).toBeDefined()
     act(() => nativeAction?.dispatchEvent(new MouseEvent('click', { bubbles: true })))
-    expect(onOpenReviewInOrca).toHaveBeenCalledTimes(1)
+    expect(onOpenReviewInOCC).toHaveBeenCalledTimes(1)
     expect(container.querySelector('[data-hover-open]')?.getAttribute('data-hover-open')).toBe(
       'false'
     )
@@ -321,7 +321,7 @@ describe('WorktreeCardDetailsHover interactions', () => {
             number: 5518,
             title: 'Agent monitor issue',
             state: 'open',
-            url: 'https://github.com/acme/orca/issues/5518',
+            url: 'https://github.com/acme/occ/issues/5518',
             labels: []
           }}
           linearIssue={null}
@@ -346,6 +346,6 @@ describe('WorktreeCardDetailsHover interactions', () => {
       browserButton?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
-    expect(onOpenIssueInBrowser).toHaveBeenCalledWith('https://github.com/acme/orca/issues/5518')
+    expect(onOpenIssueInBrowser).toHaveBeenCalledWith('https://github.com/acme/occ/issues/5518')
   })
 })

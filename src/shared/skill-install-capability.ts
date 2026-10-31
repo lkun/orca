@@ -17,10 +17,10 @@ export const SKILL_DELETE_CAPABILITY = 'skills.delete.v1' as const
 export const SKILL_DELETE_UPDATE_REQUIRED_MESSAGE =
   'Update OCC on the selected machine to delete skills.'
 
-/** skills.planBundledOrca/executeBundledOrca v1 freezes op/reason enums; unknown values render “Needs attention”. */
-export const BUNDLED_ORCA_SKILL_CAPABILITY = 'skills.bundled-orca.v1' as const
+/** skills.planBundledOCC/executeBundledOCC v1 freezes op/reason enums; unknown values render “Needs attention”. */
+export const BUNDLED_OCC_SKILL_CAPABILITY = 'skills.bundled-occ.v1' as const
 
-export const BUNDLED_ORCA_SKILL_UPDATE_REQUIRED_MESSAGE =
+export const BUNDLED_OCC_SKILL_UPDATE_REQUIRED_MESSAGE =
   'Update OCC on the server to update its OCC skills.'
 
 /** skills.discover scans a workspace named only by worktreeId, so phones without its folder can ask. */
@@ -36,6 +36,6 @@ export const SKILL_RUNTIME_CAPABILITIES = [
   SKILL_MANAGEMENT_CAPABILITY,
   SKILL_INSTALL_PROVIDERS_CAPABILITY,
   SKILL_DELETE_CAPABILITY,
-  BUNDLED_ORCA_SKILL_CAPABILITY,
+  BUNDLED_OCC_SKILL_CAPABILITY,
   SKILL_DISCOVER_WORKSPACE_CAPABILITY
 ] as const

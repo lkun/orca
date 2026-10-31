@@ -2,7 +2,7 @@ import type { Page } from '@stablyai/playwright-test'
 import { randomUUID } from 'node:crypto'
 import { rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   focusActiveTerminalInput,
   waitForActivePanePtyId,
@@ -199,49 +199,49 @@ async function measureTypingLatency(
 
 test.describe('Terminal typing latency vs scrollback history size', () => {
   test('typing stays responsive as terminal history grows', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
     test.setTimeout(900_000)
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
+    const ptyId = await waitForActivePanePtyId(occPage)
     const runId = randomUUID()
-    const scriptPath = path.join(testRepoPath, `.orca-history-benchmark-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-history-benchmark-${runId}.mjs`)
     writeFileSync(scriptPath, historyEchoScript(runId))
     let commandSent = false
     try {
-      await sendToTerminal(orcaPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
+      await sendToTerminal(occPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
       commandSent = true
-      await waitForRecentTerminalMarker(orcaPage, `HIST_READY_${runId}`, 10_000)
-      await focusActiveTerminalInput(orcaPage)
+      await waitForRecentTerminalMarker(occPage, `HIST_READY_${runId}`, 10_000)
+      await focusActiveTerminalInput(occPage)
 
       const phases: PhaseLatency[] = []
       let seq = 0
 
-      const baseline = await measureTypingLatency(orcaPage, runId, 'empty history', seq)
+      const baseline = await measureTypingLatency(occPage, runId, 'empty history', seq)
       phases.push(baseline.phase)
       seq = baseline.nextSeq
 
       for (const [phaseIndex] of FILL_PHASES.entries()) {
-        await orcaPage.keyboard.type('!')
+        await occPage.keyboard.type('!')
         await waitForRecentTerminalMarker(
-          orcaPage,
+          occPage,
           `HIST_FILL_DONE_${runId}_${phaseIndex + 1}`,
           FILL_DONE_TIMEOUT_MS
         )
         // Drain queued output and allow a daemon checkpoint before steady-state sampling.
-        await orcaPage.waitForTimeout(2_000)
-        await focusActiveTerminalInput(orcaPage)
+        await occPage.waitForTimeout(2_000)
+        await focusActiveTerminalInput(occPage)
         const cumulativeRows = FILL_PHASES.slice(0, phaseIndex + 1).reduce(
           (total, rows) => total + rows,
           0
         )
         const measured = await measureTypingLatency(
-          orcaPage,
+          occPage,
           runId,
           `after ${cumulativeRows} history rows`,
           seq
@@ -285,7 +285,7 @@ test.describe('Terminal typing latency vs scrollback history size', () => {
       }
     } finally {
       if (commandSent) {
-        await sendToTerminal(orcaPage, ptyId, '\x03').catch(() => undefined)
+        await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
       }
       rmSync(scriptPath, { force: true })
     }

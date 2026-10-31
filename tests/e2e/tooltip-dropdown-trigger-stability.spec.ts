@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
 async function expectTooltipClosed(page: Page, text: string): Promise<void> {
@@ -82,7 +82,7 @@ for (const surface of [
   }
 ] as const) {
   test(`${surface.name} menu button retains tooltip descriptions through focus, hover and remounts`, async ({
-    orcaPage: page
+    occPage: page
   }) => {
     await waitForSessionReady(page)
     await waitForActiveWorktree(page)

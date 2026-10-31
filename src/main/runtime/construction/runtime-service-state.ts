@@ -4,9 +4,9 @@ import { createStructuredMailboxPointerHost } from '../orchestration/structured-
 import { localOrchestrationCliCommand } from '../orchestration/cli-command'
 import { RuntimeOrchestrationSenderNames } from '../runtime-orchestration-sender-names'
 import { isStructuredWorkerHandle } from '../../../shared/structured-worker-handle'
-import { ORCA_SESSION_ADDRESS_PREFIX } from '../../../shared/orca-session-address'
+import { OCC_SESSION_ADDRESS_PREFIX } from '../../../shared/occ-session-address'
 import { resolveStructuredWorkerAuthority } from '../structured-worker-authority'
-import { OrcaRuntimeWithRuntimeId } from './runtime-identity-state'
+import { OCCRuntimeWithRuntimeId } from './runtime-identity-state'
 import { RuntimeTerminalAgentPresence } from '../runtime-terminal-agent-presence'
 import type { RuntimeNotifier } from '../runtime-notifier-contract'
 import { RuntimeClientEventBus } from '../runtime-client-event-bus'
@@ -16,7 +16,7 @@ import type {
   RuntimeWorktreeLifecycleEvent,
   RuntimeWorktreeScanCache,
   RuntimeWorktreeScanInFlight
-} from '../orca-runtime-core'
+} from '../occ-runtime-core'
 import type { AgentBrowserBridge } from '../../browser/agent-browser-bridge'
 import type { BrowserBackend } from '../../browser/browser-backend'
 import type { EmulatorBridge } from '../../emulator/emulator-bridge'
@@ -41,15 +41,15 @@ import type { WorkerTurnStopReportDeps } from '../orchestration/worker-turn-stop
 import type { RuntimeSkillCommands } from '../runtime-skill-command-surface'
 import { RuntimeTerminalStreamConsumers } from '../runtime-terminal-stream-consumers'
 import type { RecentPtyOutputBuffer } from '../recent-pty-output-buffer'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { mainListsEveryPane } from '../terminal/surface/main-terminal-surfaces'
-import { TUI_IDLE_QUIESCENCE_MS } from '../orca-runtime-postlude'
+import { TUI_IDLE_QUIESCENCE_MS } from '../occ-runtime-postlude'
 import { screenClearsBlockedTail } from '../blocked-tail-screen-clear'
 import { conversationRecordReader } from '../orchestration/structured-session-lineage'
 import { getStructuredAgentSessionHost } from '../../native-chat/agent-session-wire/structured-agent-session-registry'
 import { peekOpenedAgentSessionRecordStore } from '../agent-session-record-store-slot'
 
-export abstract class OrcaRuntimeWithStopRequestedPtyIds extends OrcaRuntimeWithRuntimeId {
+export abstract class OCCRuntimeWithStopRequestedPtyIds extends OCCRuntimeWithRuntimeId {
   protected readonly stopRequestedPtyIds = new Set<string>()
 
   protected readonly ptyExitListenersByPtyId = new Map<string, Set<() => void>>()
@@ -159,7 +159,7 @@ export abstract class OrcaRuntimeWithStopRequestedPtyIds extends OrcaRuntimeWith
     buildHostScope: (targetWorktreeId, terminals, worktrees, queriedHostIds) =>
       this.buildTerminalListHostScope(targetWorktreeId, terminals, worktrees, queriedHostIds),
     // Switch point: main lists every saved pane of a workspace it owns.
-    ...(ORCA_LAYOUT_OWNER_IS_MAIN ? { listsEveryPane: (id) => mainListsEveryPane(this, id) } : {})
+    ...(OCC_LAYOUT_OWNER_IS_MAIN ? { listsEveryPane: (id) => mainListsEveryPane(this, id) } : {})
   })
 
   protected readonly managedWorktreeQueries = new RuntimeManagedWorktreeQueries({
@@ -256,7 +256,7 @@ export abstract class OrcaRuntimeWithStopRequestedPtyIds extends OrcaRuntimeWith
     getTerminalForHandle: (handle) => this.getOrchestrationMailboxTerminalForHandle(handle),
     hasTerminalHandle: (handle) => this.hasMailboxTerminalHandle(handle),
     isStructuredSessionOwner: (handle) =>
-      isStructuredWorkerHandle(handle) || handle.startsWith(ORCA_SESSION_ADDRESS_PREFIX),
+      isStructuredWorkerHandle(handle) || handle.startsWith(OCC_SESSION_ADDRESS_PREFIX),
     canProbePtyLiveness: () => Boolean(this.ptyController?.probePtyLiveness),
     controllerKnowsPtyIsLive: (ptyId) => this.controllerKnowsPtyIsLive(ptyId),
     isLeafPtyProvenAbsent: (ptyId) => this.isLeafPtyProvenAbsent(ptyId)

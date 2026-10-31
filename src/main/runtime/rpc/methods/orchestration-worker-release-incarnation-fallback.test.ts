@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { ORCHESTRATION_METHODS } from './orchestration'
 import { eraseRpcMethods, type RpcContext } from '../core'
 import { OrchestrationDb } from '../../orchestration/db'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import { completeWorkerTerminalRelease } from './orchestration/worker/worker-release-completion'
 import type { RuntimeTerminalShow } from '../../../../shared/runtime-terminal-contracts'
 import type { OrchestrationCompatibilityTerminalAuthority } from '../../runtime-terminal-contracts'
@@ -13,11 +13,11 @@ const workerStartResult = z.object({ dispatchId: z.string(), state: z.string() }
 describe('orchestration worker release incarnation fallback', () => {
   let db: OrchestrationDb
   let dbOpen = false
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
   let ctx: RpcContext
   let activeRunId: string
   let inspectProcessLiveness: MockInstance<
-    OrcaRuntimeService['inspectTerminalProcessIncarnationLiveness']
+    OCCRuntimeService['inspectTerminalProcessIncarnationLiveness']
   >
 
   const coordinatorPaneKey = 'tab_coord:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
@@ -58,7 +58,7 @@ describe('orchestration worker release incarnation fallback', () => {
   function setup(): void {
     db = new OrchestrationDb(':memory:')
     dbOpen = true
-    runtime = new OrcaRuntimeService()
+    runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     inspectProcessLiveness = vi
       .spyOn(runtime, 'inspectTerminalProcessIncarnationLiveness')
@@ -94,7 +94,7 @@ describe('orchestration worker release incarnation fallback', () => {
       status: 'running',
       exitCode: null
     })
-    vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('orca')
+    vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('occ')
     vi.spyOn(runtime, 'sendTerminalAgentPrompt').mockResolvedValue({
       handle: 'term_worker',
       accepted: true,

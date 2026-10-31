@@ -10,8 +10,8 @@ import {
   type WorkerTerminalListState
 } from '../../../../orchestration/worker-terminal-ownership'
 import type { OrchestrationDb } from '../../../../orchestration/db'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
-import type { OrcaSessionId } from '../../../../../../shared/orca-session-address'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
+import type { OCCSessionId } from '../../../../../../shared/occ-session-address'
 import {
   chatAssigneeSessionId,
   type ChatAssigneeObservation
@@ -38,7 +38,7 @@ export function projectWorkerFleet(args: {
   now: number
   completeProjection?: boolean
   /** A chat assignee's verdict; no agent-status row names a chat, so its reach stands in. */
-  observeChat?: (sessionId: OrcaSessionId) => ChatAssigneeObservation
+  observeChat?: (sessionId: OCCSessionId) => ChatAssigneeObservation
 }) {
   const workers: FleetDurableWorker[] = args.rows.map((row) => {
     return {
@@ -104,7 +104,7 @@ export function projectWorkerFleet(args: {
 /** Read off the session records, as worker-show and mail read it: at rest is live, closed exited. */
 function applyChatAssigneeLiveness(
   fleet: { workers: OrchestrationFleetWorker[]; durable: ReadonlyMap<string, FleetDurableWorker> },
-  observeChat: ((sessionId: OrcaSessionId) => ChatAssigneeObservation) | undefined,
+  observeChat: ((sessionId: OCCSessionId) => ChatAssigneeObservation) | undefined,
   now: number
 ): void {
   for (const worker of observeChat ? fleet.workers : []) {
@@ -128,7 +128,7 @@ function applyChatAssigneeLiveness(
 
 /** worker-list's projection of these rows; includeRemote layers on execution-host verdicts. */
 export async function projectWorkerListFleet(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   rows: ReturnType<OrchestrationDb['listWorkerTerminalResources']>,
   options: { limit: number; completeProjection?: boolean; includeRemote?: boolean }
 ) {

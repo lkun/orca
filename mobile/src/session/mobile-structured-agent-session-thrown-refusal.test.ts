@@ -79,7 +79,7 @@ describe('a refusal the host threw', () => {
 })
 
 describe('a write refused on a journal a newer OCC wrote', () => {
-  const newerOrcaClient = (): RpcClient => {
+  const newerOCCClient = (): RpcClient => {
     const sendRequest = async (): Promise<RpcResponse> => ({
       id: 'req-1',
       ok: true,
@@ -88,7 +88,7 @@ describe('a write refused on a journal a newer OCC wrote', () => {
         refusal: {
           code: 'agent_session_journal_unreadable',
           message: 'Chats were saved by a newer OCC. Update OCC to keep using them.',
-          details: { reason: 'journalWrittenByNewerOrca' }
+          details: { reason: 'journalWrittenByNewerOCC' }
         }
       }
     })
@@ -108,7 +108,7 @@ describe('a write refused on a journal a newer OCC wrote', () => {
     ]
   ] as const)('says to update OCC for %s', async (method, fields, message) => {
     const result = await requestStructuredAgentSessionMutation({
-      client: newerOrcaClient(),
+      client: newerOCCClient(),
       method,
       fingerprintMethod: method,
       sessionId: 'session-1',

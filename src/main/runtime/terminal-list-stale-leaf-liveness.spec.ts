@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
 
@@ -38,8 +38,8 @@ export function registerTerminalListStaleLeafLivenessTests(): void {
     leafPtyId: string
     controllerSessions: ControllerSession[] | 'unavailable'
     hasPty?: (ptyId: string) => boolean | null
-  }): OrcaRuntimeService {
-    const runtime = new OrcaRuntimeService(makeStore() as never)
+  }): OCCRuntimeService {
+    const runtime = new OCCRuntimeService(makeStore() as never)
     runtime.setPtyController({
       spawn: vi.fn(async () => ({ id: 'never' })),
       write: () => true,

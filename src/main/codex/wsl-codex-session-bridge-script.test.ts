@@ -39,10 +39,10 @@ function runBridge(options: { markers?: boolean } = {}): string[] {
 }
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-wsl-bridge-markers-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-wsl-bridge-markers-'))
   sourceSessionsRoot = join(root, 'source', 'sessions')
   managedHome = join(root, 'managed')
-  pendingRoot = join(managedHome, '.orca-index-pending')
+  pendingRoot = join(managedHome, '.occ-index-pending')
 })
 
 afterEach(() => {

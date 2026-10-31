@@ -40,7 +40,7 @@ vi.mock('../../browser/browser-partition-cookie-copy', () => ({
 vi.mock('../../browser/browser-session-registry', () => ({ browserSessionRegistry: {} }))
 vi.mock('../../browser/browser-session-startup', () => ({ browserSessionsInitialized: vi.fn() }))
 vi.mock('../../browser/browser-route-partition-binding-runtime', () => ({
-  activeBrowserRoutePartitionOrcaProfileId: vi.fn(),
+  activeBrowserRoutePartitionOCCProfileId: vi.fn(),
   currentBrowserRoutePartitionBindingStore: vi.fn()
 }))
 vi.mock('../../browser/browser-route-partition-storage-dependencies', () => ({
@@ -124,7 +124,7 @@ function registeredStoreIds(): string[] {
     browserCookies: {
       userDataPath: '/nowhere',
       sessionsReady: () => false,
-      orcaProfileId: () => null,
+      occProfileId: () => null,
       listEnvironments: () => [],
       listBrowserProfiles: () => [],
       resolveHostStorage: vi.fn(),

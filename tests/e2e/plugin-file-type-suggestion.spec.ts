@@ -1,5 +1,5 @@
 /**
- * Official ids start with `orca-`, as the catalog requires for unsolicited suggestions.
+ * Official ids start with `occ-`, as the catalog requires for unsolicited suggestions.
  *
  * Invariant: opening a file a catalog plugin handles suggests that plugin — an unknown file
  * (.gleam syntax), OCC's binary placeholder (.xlsx editor), and a file OCC already shows as text
@@ -16,16 +16,16 @@ import { hashPluginTree } from '../../src/main/plugins/plugin-content-hash'
 import { pluginContributionSummary } from '../../src/shared/plugins/contributions/plugin-contribution-summary'
 import { pluginEditorFileTypes } from '../../src/shared/plugins/contributions/plugin-file-type'
 import { parsePluginManifest } from '../../src/shared/plugins/manifest/plugin-manifest'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 import { commitRepository, configureFixtureGit, headCommit } from './helpers/plugin-git-fixture'
 import { openRepoFile } from './helpers/plugin-smoke'
 
-const SYNTAX_PLUGIN = 'orca-gleam-syntax'
+const SYNTAX_PLUGIN = 'occ-gleam-syntax'
 const SYNTAX_PLUGIN_KEY = `stablyai.${SYNTAX_PLUGIN}`
 
 const EDITORS = [
   {
-    repo: 'orca-spreadsheet',
+    repo: 'occ-spreadsheet',
     name: 'Spreadsheet Viewer',
     editor: {
       id: 'spreadsheet',
@@ -36,7 +36,7 @@ const EDITORS = [
     }
   },
   {
-    repo: 'orca-excalidraw',
+    repo: 'occ-excalidraw',
     name: 'Excalidraw',
     editor: {
       id: 'excalidraw',
@@ -52,7 +52,7 @@ async function createCatalogFixture(root: string) {
   const home = join(root, 'home')
   await mkdir(home, { recursive: true })
   const gitEnvironment = await configureFixtureGit(home, repositories, [
-    'orca-plugins',
+    'occ-plugins',
     SYNTAX_PLUGIN,
     ...EDITORS.map((plugin) => plugin.repo)
   ])
@@ -81,7 +81,7 @@ async function createCatalogFixture(root: string) {
           commit: await headCommit(syntaxDir, gitEnvironment),
           contentHash: syntaxHash.hash,
           execution: 'data',
-          minimumOrca: PLUGIN_MANIFEST_V2_SINCE,
+          minimumOCC: PLUGIN_MANIFEST_V2_SINCE,
           name: 'Gleam',
           types: ['syntax'],
           fileTypes: ['gleam']
@@ -102,10 +102,10 @@ async function createCatalogFixture(root: string) {
       name: plugin.name,
       version: '1.0.0',
       license: 'MIT',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
       contributes: { customEditors: [plugin.editor] }
     }
-    await writeFile(join(dir, 'orca-plugin.json'), JSON.stringify(manifest))
+    await writeFile(join(dir, 'occ-plugin.json'), JSON.stringify(manifest))
     const parsed = parsePluginManifest(manifest)
     if (!parsed.ok) {
       throw new Error(parsed.error)
@@ -124,7 +124,7 @@ async function createCatalogFixture(root: string) {
           commit: await headCommit(dir, gitEnvironment),
           contentHash: hashed.hash,
           execution: 'sandboxed-ui',
-          minimumOrca: PLUGIN_MANIFEST_V2_SINCE,
+          minimumOCC: PLUGIN_MANIFEST_V2_SINCE,
           name: plugin.name,
           contributes: pluginContributionSummary(parsed.manifest),
           fileTypes: pluginEditorFileTypes(parsed.manifest.contributes),
@@ -134,10 +134,10 @@ async function createCatalogFixture(root: string) {
     })
   }
 
-  const catalog = join(repositories, 'orca-plugins.git')
+  const catalog = join(repositories, 'occ-plugins.git')
   await mkdir(catalog, { recursive: true })
   await writeFile(
-    join(catalog, 'orca-catalog.json'),
+    join(catalog, 'occ-catalog.json'),
     JSON.stringify({ catalogVersion: 2, name: 'OCC Plugins', owner: 'stablyai', plugins })
   )
   await commitRepository(catalog, gitEnvironment)
@@ -157,7 +157,7 @@ async function createCatalogFixture(root: string) {
 test('suggests catalog plugins for file types and never installs them', async ({}, testInfo) => {
   // Why: one Electron launch plus a Git catalog fetch and a plugin page; slower than the 30s default on CI.
   test.setTimeout(180_000)
-  const root = await mkdtemp(join(tmpdir(), 'orca-file-type-suggestion-e2e-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-file-type-suggestion-e2e-'))
   const fixture = await createCatalogFixture(root)
   const session = createRestartSession(testInfo as TestInfo, fixture.gitEnvironment)
   let launched: Awaited<ReturnType<typeof session.launch>> | null = null
@@ -180,8 +180,8 @@ test('suggests catalog plugins for file types and never installs them', async ({
       .toEqual(
         expect.arrayContaining([
           SYNTAX_PLUGIN_KEY,
-          'stablyai.orca-spreadsheet',
-          'stablyai.orca-excalidraw'
+          'stablyai.occ-spreadsheet',
+          'stablyai.occ-excalidraw'
         ])
       )
 

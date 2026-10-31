@@ -17,7 +17,7 @@ import { preambleDispatchState } from '../orchestration-structured-worker-sessio
 /** Handed over in every case: started, still starting its agent, or held as a card. */
 export type ChatTaskDelivery = 'accepted' | 'pending' | 'queued'
 
-type ChatTaskDispatch = Pick<DispatchContextRow, 'id' | 'assignee_orca_session_id' | 'created_at'>
+type ChatTaskDispatch = Pick<DispatchContextRow, 'id' | 'assignee_occ_session_id' | 'created_at'>
 
 /** The host's `<13-digit ms>-<32 hex>` shape, stamped at the Dispatch's creation. */
 export function chatTaskOperationId(
@@ -39,7 +39,7 @@ export async function sendChatTask(args: {
   from: AgentMessageSource
   preamble: string
 }): Promise<ChatTaskDelivery> {
-  const sessionId = args.dispatch.assignee_orca_session_id
+  const sessionId = args.dispatch.assignee_occ_session_id
   const host = getStructuredAgentSessionHost()
   const observed =
     sessionId && host

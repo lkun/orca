@@ -125,7 +125,7 @@ describe('STA-4735 an unreadable runtime auth.json must not be written over', ()
     const service = await createService()
     const runtimeAuthPath = getRuntimeCodexAuthPath()
     const ROTATED = createCodexAuthJson('user@example.com', 'acct-1', 'refresh-rotated-by-codex')
-    const STALE = createCodexAuthJson('user@example.com', 'acct-1', 'refresh-stale-orca-copy')
+    const STALE = createCodexAuthJson('user@example.com', 'acct-1', 'refresh-stale-occ-copy')
     realFs.mkdirSync(join(runtimeAuthPath, '..'), { recursive: true })
     realFs.writeFileSync(runtimeAuthPath, ROTATED, 'utf-8')
 

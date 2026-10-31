@@ -5,7 +5,7 @@
 import type { AgentLaunchTarget } from '../../../../shared/agent-launch-intent'
 import type { AgentLaunchPublishedSurface } from '../../../agent-launch/agent-launch-executor'
 import { parsePaneKey } from '../../../../shared/stable-pane-id'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import type { RpcContext } from '../core'
 import { clientRendersStructuredAgent } from './structured-agent-session-policy'
 
@@ -20,8 +20,8 @@ export function agentLaunchCallerNavigationId(
 }
 
 /** Bookkeeping, never a gate: the agent already runs, so a failure here only leaves the view as it was. */
-export function selectAgentLaunchTabForCaller(
-  runtime: Pick<OrcaRuntimeService, 'selectCreatedMobileSessionTabForClient'>,
+export function selectAgentLaunchTabFoccller(
+  runtime: Pick<OCCRuntimeService, 'selectCreatedMobileSessionTabForClient'>,
   surface: AgentLaunchPublishedSurface,
   clientNavigationId: string
 ): void {

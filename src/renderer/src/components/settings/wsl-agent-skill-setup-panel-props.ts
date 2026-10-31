@@ -1,4 +1,4 @@
-// COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+// COMPAT(wsl-bridge): removed when WSL runs as an occd host.
 import type { ComponentProps, ReactNode } from 'react'
 import type { Button } from '../ui/button'
 import type { LocalAgentRuntime } from './CliSkillRuntimeSetup'

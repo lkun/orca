@@ -46,9 +46,9 @@ afterEach(() => {
 })
 
 describe('feedAgentSessionStats', () => {
-  // #31112: orcad is plain Node, so the collector must not need Electron's `app`.
+  // #31112: occd is plain Node, so the collector must not need Electron's `app`.
   it('counts hook sessions on a Node host and the totals survive a restart', async () => {
-    const userData = mkdtempSync(join(tmpdir(), 'orca-stats-feed-'))
+    const userData = mkdtempSync(join(tmpdir(), 'occ-stats-feed-'))
     roots.push(userData)
     installFakeAppEnvironment({ getPath: () => userData })
     initStatsPath()

@@ -57,10 +57,10 @@ async function reopenStore(): Promise<ReturnType<typeof createStore>> {
   return createStore()
 }
 
-// The orcad serve host uses the same SSH-target loading path.
-describe("pinning existing hosts' orca CLI control switch on upgrade", () => {
+// The occd serve host uses the same SSH-target loading path.
+describe("pinning existing hosts' occ CLI control switch on upgrade", () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
   })
 
   afterEach(async () => {

@@ -69,7 +69,7 @@ describe('media preview protocol', () => {
   const store = {} as Store
 
   beforeEach(async () => {
-    directory = await mkdtemp(join(tmpdir(), 'orca-video-protocol-'))
+    directory = await mkdtemp(join(tmpdir(), 'occ-video-protocol-'))
     authorize.mockReset().mockImplementation(async (path) => path)
   })
   afterEach(async () => {
@@ -124,7 +124,7 @@ describe('media preview protocol', () => {
     }
     authorize.mockResolvedValueOnce(directory)
     expect((await handleMediaPreviewRequest(new Request(result.mediaUrl))).status).toBe(404)
-    expect((await handleMediaPreviewRequest(new Request('orca-media://file/unknown'))).status).toBe(
+    expect((await handleMediaPreviewRequest(new Request('occ-media://file/unknown'))).status).toBe(
       404
     )
     expect(
@@ -260,7 +260,7 @@ describe('media preview protocol', () => {
     it('mints a stream for audio and video only, after one stat proves the file', async () => {
       const result = await grantRemoteFilePreview(event, addr('out/clip.webm'), store)
       expect(result).toMatchObject({ isBinary: true, mimeType: 'video/webm', content: '' })
-      expect(result?.mediaUrl).toMatch(/^orca-media:\/\/file\/[^/?]+\?revision=/)
+      expect(result?.mediaUrl).toMatch(/^occ-media:\/\/file\/[^/?]+\?revision=/)
       expect(statRemotePreviewFile).toHaveBeenCalledTimes(1)
       await expect(grantRemoteFilePreview(event, addr('notes.txt'), store)).resolves.toBeNull()
       expect(statRemotePreviewFile).toHaveBeenCalledTimes(1)

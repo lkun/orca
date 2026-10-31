@@ -101,7 +101,7 @@ import {
 } from './use-native-chat-composer-attachments'
 
 const PANE = 'tab-1::session-1'
-const STORED = '/srv/agent-session-attachments/0b6f8a52-4a3e-4c4e-9a59-1d5d1f2b8c01/orca-paste.png'
+const STORED = '/srv/agent-session-attachments/0b6f8a52-4a3e-4c4e-9a59-1d5d1f2b8c01/occ-paste.png'
 
 function composer(
   acceptsImages = true,
@@ -304,10 +304,10 @@ it('keeps a local image paste after the real composer closes and reopens', async
   await waitFor(() => expect(mocks.save).toHaveBeenCalled())
   expect(mocks.state.fieldProps?.imageAttachments).toMatchObject([{ pending: true }])
   first.unmount()
-  await act(async () => finishUpload('/local/native-chat-pastes/orca-paste-1-image.png'))
+  await act(async () => finishUpload('/local/native-chat-pastes/occ-paste-1-image.png'))
   render(composer())
   expect(mocks.state.fieldProps?.imageAttachments).toMatchObject([
-    { path: '/local/native-chat-pastes/orca-paste-1-image.png' }
+    { path: '/local/native-chat-pastes/occ-paste-1-image.png' }
   ])
   await waitFor(() => expect(mocks.state.fieldProps?.imageAttachments?.[0]?.pending).toBeFalsy())
 })
@@ -331,7 +331,7 @@ it.each([false, true])(
       fireEvent.click(screen.getByRole('button', { name: 'Remove attachment' }))
     )
     expect(mocks.state.fieldProps?.sendButtonDisabled).toBe(false)
-    await act(async () => finishUpload('/local/native-chat-pastes/orca-paste-1-image.png'))
+    await act(async () => finishUpload('/local/native-chat-pastes/occ-paste-1-image.png'))
     expect(readNativeChatAttachmentCache(PANE)).toEqual([])
     expect(readNativeChatDraftCache(PANE)).toBe('look at this')
     expect(mocks.state.fieldProps?.imageAttachments).toEqual([])
@@ -470,7 +470,7 @@ it.each([false, true])(
     act(() => editor().commands.setTextSelection({ from: 6, to: 11 }))
     await act(async () => paste('x'.repeat(32768)))
     const raw = promptValue(field())
-    expect(raw).toMatch(/^hello\[Pasted text\]\(orca-paste:[0-9a-f-]{36}\)end$/)
+    expect(raw).toMatch(/^hello\[Pasted text\]\(occ-paste:[0-9a-f-]{36}\)end$/)
     expect(mocks.state.fieldProps?.sendButtonDisabled).toBe(true)
     act(() => expect(copy()).toBe(`hello${'x'.repeat(32768)}end`))
     const clock = vi.spyOn(Date, 'now').mockReturnValue(1000000)
@@ -555,7 +555,7 @@ it.each(['terminal', 'structured', 'goal'] as const)(
         )
       )
       const failedDraft = promptValue(field())
-      expect(failedDraft).toContain('orca-paste:')
+      expect(failedDraft).toContain('occ-paste:')
       expect(mocks.state.fieldProps?.sendButtonDisabled).toBe(false)
       act(() => mocks.state.fieldProps?.onSend())
       expect(mocks.goal).not.toHaveBeenCalled()
@@ -574,7 +574,7 @@ it.each(['terminal', 'structured', 'goal'] as const)(
       expect(raw).toBe(text)
       expect(save).not.toHaveBeenCalled()
     } else {
-      expect(raw).toMatch(/^\[Pasted text\]\(orca-paste:[0-9a-f-]{36}\)$/)
+      expect(raw).toMatch(/^\[Pasted text\]\(occ-paste:[0-9a-f-]{36}\)$/)
       expect(save).toHaveBeenCalledWith({ text })
       expect(mocks.state.fieldProps?.sendButtonDisabled).toBe(true)
       act(() => mocks.state.fieldProps?.onSend())

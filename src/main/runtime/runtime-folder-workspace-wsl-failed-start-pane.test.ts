@@ -6,17 +6,17 @@ vi.mock('node:fs/promises', async (importOriginal) => ({
   ...(await importOriginal<typeof FsPromises>()),
   stat: statMock
 }))
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 // Fragments stay side-effect ordered: mocks, then lifecycle, then fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const {
   createFolderWorkspaceRuntimeStore,
   makeFolderProjectGroup,
   makeFolderWorkspace,
   TEST_FOLDER_WORKSPACE_KEY
-} = await import('./orca-runtime-test-fixtures.spec')
+} = await import('./occ-runtime-test-fixtures.spec')
 const { blockedWslDistroForPath } = await import('../wsl/wsl-unc-access-gate')
 const { isWslUserActFor } = await import('../wsl/wsl-user-act-scope')
 
@@ -26,7 +26,7 @@ const hostPlatform = process.platform
 const statsInUserAct: boolean[] = []
 
 function failedStart(wslUserAct: boolean): Promise<unknown> {
-  const runtime = new OrcaRuntimeService(
+  const runtime = new OCCRuntimeService(
     createFolderWorkspaceRuntimeStore(
       makeFolderWorkspace({ folderPath: FOLDER }),
       makeFolderProjectGroup({ parentPath: PARENT })

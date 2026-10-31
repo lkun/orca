@@ -4,7 +4,7 @@
  * snapshot and no live terminal), and this desktop has never painted them. Opening the tab must
  * show the history the pane had before it slept.
  *
- * Topology: the headed fixture app stands in for the distro's orcad; a paired desktop client
+ * Topology: the headed fixture app stands in for the distro's occd; a paired desktop client
  * stands in for the moving desktop. The host's own sleep writes the snapshot the move would.
  *
  * Run:
@@ -16,7 +16,7 @@ import { mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   createRuntimeDesktopPairingOffer,
   launchPairedElectronClient
@@ -32,7 +32,7 @@ import { createMovedRepo, MOVED_TAB, seedImportedMovedTab } from './helpers/wsl-
 import { quotePosixShell } from '../../src/shared/shell-argument-quoting'
 import { toWebTerminalSurfaceTabId } from '../../src/shared/terminal-surface-id'
 
-const scratch = mkdtempSync(path.join(os.tmpdir(), 'orca-moved-history-'))
+const scratch = mkdtempSync(path.join(os.tmpdir(), 'occ-moved-history-'))
 const fixturePath = path.join(scratch, 'history-terminal.mjs')
 writeFileSync(
   fixturePath,
@@ -72,19 +72,19 @@ async function readClientTabState(page: Page, tabId: string): Promise<ClientTabS
 }
 
 test('a slept host pane this desktop never painted shows its history when opened', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.skip(process.platform === 'win32', 'POSIX fixture command')
   // A paired host and client each boot a full app, and the host terminal runs before the check.
   test.setTimeout(600_000)
-  const worktreeId = await orcaPage.evaluate(() => {
+  const worktreeId = await occPage.evaluate(() => {
     const id = window.__store?.getState().activeWorktreeId
     if (!id) {
       throw new Error('host has no active worktree')
     }
     return id
   })
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   const client = await launchPairedElectronClient(offer, testInfo, 'moved-history')
   try {
     await expect
@@ -156,13 +156,13 @@ async function openImportedPane(
   importedByWslMove: boolean
 ): Promise<ImportedOutcome> {
   const outcome: ImportedOutcome = { marker: '', content: '', browserUrls: [] }
-  const root = mkdtempSync(path.join(os.tmpdir(), 'orca-moved-import-'))
+  const root = mkdtempSync(path.join(os.tmpdir(), 'occ-moved-import-'))
   const repoPath = createMovedRepo(root)
-  // A windowless host, as the distro's orcad is: nothing there restores a pane or a browser tab itself.
+  // A windowless host, as the distro's occd is: nothing there restores a pane or a browser tab itself.
   const host = await launchHeadlessPairedRuntimeHost({
     pinnedServePort: true,
-    // Stands in for the distro's orcad, the only host that serves moved panes' history.
-    extraEnv: { ORCA_E2E_WSL_MOVE_DESTINATION: '1' }
+    // Stands in for the distro's occd, the only host that serves moved panes' history.
+    extraEnv: { OCC_E2E_WSL_MOVE_DESTINATION: '1' }
   })
   try {
     const added = await host.client.call<{ repo: { id: string } }>('repo.add', {

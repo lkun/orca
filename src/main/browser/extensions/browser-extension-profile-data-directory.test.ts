@@ -7,17 +7,17 @@ vi.mock('electron', () => ({ app: { getPath: () => tmpdir(), on: vi.fn() } }))
 
 const EXTENSION = 'a'.repeat(32)
 const extension = { id: EXTENSION, version: '1.0' }
-const userData = mkdtempSync(join(tmpdir(), 'orca-extension-orca-profiles-'))
+const userData = mkdtempSync(join(tmpdir(), 'occ-extension-occ-profiles-'))
 
 afterEach(() => {
   vi.resetModules()
 })
 
 /** One launch of OCC as the given OCC profile, with fresh store singletons. */
-async function openStoresAs(orcaProfileId: string) {
+async function openStoresAs(occProfileId: string) {
   const { configureBrowserExtensionProfileDataDirectory } =
     await import('./browser-extension-profile-data-directory')
-  configureBrowserExtensionProfileDataDirectory(join(userData, 'profiles', orcaProfileId))
+  configureBrowserExtensionProfileDataDirectory(join(userData, 'profiles', occProfileId))
   const sync = (
     await import('./browser-extension-sync-storage-store')
   ).getBrowserExtensionSyncStorageStore()

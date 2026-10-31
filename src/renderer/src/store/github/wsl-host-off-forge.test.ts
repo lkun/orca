@@ -14,7 +14,7 @@ function environment(id: string, wsl: boolean): AppState['runtimeEnvironments'][
     preferredEndpointId: 'ws',
     endpoints: [],
     ...(wsl
-      ? { orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 } }
+      ? { occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 } }
       : {})
   }
 }

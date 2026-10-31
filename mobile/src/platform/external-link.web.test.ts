@@ -18,8 +18,8 @@ describe('opening a URL from inside the shell', () => {
       asked.push(url)
       return true
     })
-    openExternalLink('https://github.com/stablyai/orca')
-    expect(asked).toEqual(['https://github.com/stablyai/orca'])
+    openExternalLink('https://github.com/stablyai/occ')
+    expect(asked).toEqual(['https://github.com/stablyai/occ'])
     expect(warned).not.toHaveBeenCalled()
   })
 

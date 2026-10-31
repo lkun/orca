@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 const electronApp = vi.hoisted(() => ({
   isPackaged: false,
   on: vi.fn(),
-  getPath: vi.fn(() => '/tmp/orca-user-data'),
+  getPath: vi.fn(() => '/tmp/occ-user-data'),
   getVersion: vi.fn(() => '0.0.0-test'),
   isReady: vi.fn(() => true),
   focus: vi.fn()
@@ -14,18 +14,18 @@ const launchHooks = vi.hoisted(() => ({
 }))
 
 vi.mock('electron', () => ({ app: electronApp, powerMonitor: { on: vi.fn() } }))
-vi.mock('../orca-profiles/profile-cloud-auth-config', () => ({
-  getOrcaCloudAuthConfig: () => ({ configured: false })
+vi.mock('../occ-profiles/profile-cloud-auth-config', () => ({
+  getOCCCloudAuthConfig: () => ({ configured: false })
 }))
-vi.mock('../orca-profiles/profile-storage-paths', () => ({ getProfileUserDataPath: vi.fn() }))
+vi.mock('../occ-profiles/profile-storage-paths', () => ({ getProfileUserDataPath: vi.fn() }))
 vi.mock('../persistence', () => ({
-  getCanonicalUserDataPath: () => '/tmp/orca-user-data',
+  getCanonicalUserDataPath: () => '/tmp/occ-user-data',
   migrateMobilePairingDataToCanonicalUserDataPath: vi.fn()
 }))
 const launchOrder = vi.hoisted((): string[] => [])
 const rpcOptions = vi.hoisted((): Record<string, unknown>[] => [])
 vi.mock('../runtime/runtime-rpc', () => ({
-  OrcaRuntimeRpcServer: class {
+  OCCRuntimeRpcServer: class {
     constructor(options: Record<string, unknown>) {
       rpcOptions.push(options)
     }
@@ -86,7 +86,7 @@ vi.mock('../runtime/runtime-rpc-startup-failure', () => ({
   showRuntimeRpcStartupFailureDialog: vi.fn()
 }))
 vi.mock('../cli/cli-installer', () => ({ CliInstaller: class {} }))
-vi.mock('../cli/linux-bare-orca-dispatcher', () => ({ installLinuxBareOrcaDispatcher: vi.fn() }))
+vi.mock('../cli/linux-bare-occ-dispatcher', () => ({ installLinuxBareOCCDispatcher: vi.fn() }))
 vi.mock('../terminal-history-deletion', () => ({ scheduleAllPendingHistoryTreeRemovals: vi.fn() }))
 vi.mock('../ipc/startup-notification-registration', () => ({
   triggerStartupNotificationRegistration: vi.fn()
@@ -104,10 +104,10 @@ vi.mock('../browser/browser-identity-mode-store', () => ({
   getBrowserIdentityModeStatus: vi.fn()
 }))
 const showWindowWithoutStealingFocus = vi.hoisted(() => vi.fn())
-const isOrcadSidecarLaunch = vi.hoisted(() => vi.fn(() => false))
+const isOCCdSidecarLaunch = vi.hoisted(() => vi.fn(() => false))
 vi.mock('../window/foreground-activation-policy', () => ({
   isBackgroundLaunch: () => true,
-  isOrcadSidecarLaunch,
+  isOCCdSidecarLaunch,
   isWindowlessLaunch: () => false,
   showWindowWithoutStealingFocus
 }))
@@ -196,7 +196,7 @@ describe('desktop startup activation', () => {
   beforeEach(() => {
     windows = []
     showWindowWithoutStealingFocus.mockClear()
-    isOrcadSidecarLaunch.mockReturnValue(false)
+    isOCCdSidecarLaunch.mockReturnValue(false)
     ipcHandles = new Set()
     trustedRendererId = null
     firstLoadListeners = []
@@ -332,10 +332,10 @@ describe('desktop startup activation', () => {
     { sidecar: false, pinnedBindHost: undefined },
     { sidecar: true, pinnedBindHost: '127.0.0.1' }
   ])(
-    'pins the serve listener to loopback only for orcad browser sidecars (sidecar=$sidecar, #31895)',
+    'pins the serve listener to loopback only for occd browser sidecars (sidecar=$sidecar, #31895)',
     async ({ sidecar, pinnedBindHost }) => {
       state.isServeMode = true
-      isOrcadSidecarLaunch.mockReturnValue(sidecar)
+      isOCCdSidecarLaunch.mockReturnValue(sidecar)
       vi.mocked(getServeOptions).mockReturnValueOnce({
         json: false,
         pairingAddress: null,

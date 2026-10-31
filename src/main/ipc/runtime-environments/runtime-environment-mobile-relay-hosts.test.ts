@@ -54,7 +54,7 @@ const WSL_HOST = {
   name: 'Ubuntu (WSL)',
   createdAt: 2,
   runtimeId: null,
-  orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
+  occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
 }
 
 import {
@@ -135,13 +135,13 @@ describe('runtime environment mobile relay hosts', () => {
   it('relays SSH-managed servers, with and without the persisted deployment kind', async () => {
     const tunnel = { sshTargetId: 't', sshTargetGeneration: 1, localPort: 1, remotePort: 2 }
     mocks.environments = [
-      { id: 'legacy', name: 'A', createdAt: 1, runtimeId: null, orcadDeployment: tunnel },
+      { id: 'legacy', name: 'A', createdAt: 1, runtimeId: null, occdDeployment: tunnel },
       {
         id: 'managed',
         name: 'B',
         createdAt: 2,
         runtimeId: null,
-        orcadDeployment: { kind: 'ssh', ...tunnel }
+        occdDeployment: { kind: 'ssh', ...tunnel }
       }
     ]
     const hosts = createRuntimeEnvironmentMobileRelayHosts()
@@ -204,7 +204,7 @@ describe('runtime environment mobile relay hosts', () => {
         id: 'env-1',
         name: 'VM',
         source: undefined,
-        orcadDeployment: undefined,
+        occdDeployment: undefined,
         pairingRevision: 7,
         runtimeId: 'runtime-a'
       },
@@ -212,7 +212,7 @@ describe('runtime environment mobile relay hosts', () => {
         id: 'env-2',
         name: 'Box',
         source: 'ephemeral-vm',
-        orcadDeployment: undefined,
+        occdDeployment: undefined,
         pairingRevision: 2,
         runtimeId: null
       }

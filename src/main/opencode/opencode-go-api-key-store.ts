@@ -2,7 +2,7 @@ import { createEncryptedApiKeyFileStore } from '../credentials/encrypted-api-key
 
 const store = createEncryptedApiKeyFileStore({
   fileName: 'opencode-go-api-key.enc',
-  envelopePrefix: 'orca-opencode-go-api-key:v1:',
+  envelopePrefix: 'occ-opencode-go-api-key:v1:',
   providerLabel: 'OpenCode Go',
   logScope: 'opencode-go'
 })

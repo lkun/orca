@@ -1,4 +1,4 @@
-export const TOGGLE_FLOATING_TERMINAL_EVENT = 'orca-toggle-floating-terminal'
+export const TOGGLE_FLOATING_TERMINAL_EVENT = 'occ-toggle-floating-terminal'
 
 // Keep one-shot maximize intent across closed→mounted: the panel’s keyboard handler is absent until App opens it.
 let openMaximizedIntentAt: number | null = null

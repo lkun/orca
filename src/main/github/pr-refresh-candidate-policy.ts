@@ -113,13 +113,13 @@ export function shouldSkipFresh(
   ) {
     return false
   }
-  return Date.now() - candidate.cachedFetchedAt < refreshIntervalForCandidate(candidate)
+  return Date.now() - candidate.cachedFetchedAt < refreshIntervalFoccndidate(candidate)
 }
 
 export function freshRetryAt(candidate: GitHubPRRefreshCandidate): number | null {
   return candidate.cachedFetchedAt == null || hasStaleHead(candidate)
     ? null
-    : candidate.cachedFetchedAt + refreshIntervalForCandidate(candidate)
+    : candidate.cachedFetchedAt + refreshIntervalFoccndidate(candidate)
 }
 
 export function aliasFromCandidate(candidate: GitHubPRRefreshCandidate): GitHubPRRefreshAlias {
@@ -165,7 +165,7 @@ export function hasStaleHead(candidate: GitHubPRRefreshCandidate): boolean {
   )
 }
 
-export function refreshIntervalForCandidate(candidate: GitHubPRRefreshCandidate): number {
+export function refreshIntervalFoccndidate(candidate: GitHubPRRefreshCandidate): number {
   return (
     reviewRefreshIntervalMs({
       state: candidate.cachedPRState,

@@ -15,7 +15,7 @@ import { isAbsolute, join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { BundledSkillInstallResult, BundledSkillPlan } from '../shared/bundled-skill-plan'
 
-const NAME = 'orca-cli'
+const NAME = 'occ-cli'
 const OLD_TEXT = `---\nname: ${NAME}\ndescription: Old\n---\n\nOld body\n`
 const NEW_TEXT = `---\nname: ${NAME}\ndescription: New\n---\n\nNew body\n`
 const EDITED_TEXT = `---\nname: ${NAME}\n---\nmine\n`
@@ -52,7 +52,7 @@ type Paths = { root: string; home: string; userData: string; shared: string; cla
 let paths: Paths
 
 async function makeHome(): Promise<Paths> {
-  const root = await realpath(await mkdtemp(join(tmpdir(), 'orca-cli-skills-')))
+  const root = await realpath(await mkdtemp(join(tmpdir(), 'occ-cli-skills-')))
   const home = join(root, 'home')
   await mkdir(home, { recursive: true })
   return {
@@ -103,15 +103,15 @@ type RunJson = {
   notInstalled: string[]
 }
 
-describe('orca skills install/update', () => {
+describe('occ skills install/update', () => {
   beforeEach(async () => {
     paths = await makeHome()
     vi.stubEnv('HOME', paths.home)
     vi.stubEnv('USERPROFILE', paths.home)
-    vi.stubEnv('ORCA_USER_DATA_PATH', paths.userData)
+    vi.stubEnv('OCC_USER_DATA_PATH', paths.userData)
     vi.stubEnv('CLAUDE_CONFIG_DIR', '')
     vi.stubEnv('OPENCLAUDE_CONFIG_DIR', '')
-    vi.stubEnv('ORCA_CLI_CWD', '')
+    vi.stubEnv('OCC_CLI_CWD', '')
     detectAgentsMock.mockReset()
     detectAgentsMock.mockResolvedValue(['claude'])
     process.exitCode = undefined
@@ -197,7 +197,7 @@ describe('orca skills install/update', () => {
     expect(forced.plan.skills[0].ops.map((op) => op.kind)).toEqual(['replace'])
     expect(await skillText(paths.shared)).toBe(NEW_TEXT)
     const backupPath = forced.result.skills[0].ops[0].backupPath ?? ''
-    expect(backupPath.startsWith(join(paths.home, '.agents', '.orca-skill-backups'))).toBe(true)
+    expect(backupPath.startsWith(join(paths.home, '.agents', '.occ-skill-backups'))).toBe(true)
     expect(await skillText(backupPath)).toBe(EDITED_TEXT)
   })
 

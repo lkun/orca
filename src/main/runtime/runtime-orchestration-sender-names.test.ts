@@ -7,7 +7,7 @@ import {
   agentSessionLeaseFixture,
   agentSessionRecordFixture
 } from '../../shared/agent-session-record.test-fixture'
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import { wslHookRelayConnectionId } from '../../shared/wsl-hook-relay-contract'
 import { OrchestrationDb } from './orchestration/db'
 import { createRootDispatch } from './orchestration/db/root-dispatch-test-fixture'
@@ -22,7 +22,7 @@ vi.mock('../native-chat/agent-session-wire/structured-agent-session-registry', (
   getStructuredAgentSessionHost: () => hostRef.current
 }))
 
-const CHAT = testOrcaSessionId('4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37')
+const CHAT = testOCCSessionId('4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37')
 const WORKTREE = 'repo_1::/work/tree'
 
 type Session = NonNullable<
@@ -166,11 +166,11 @@ afterEach(() => {
   db.close()
 })
 
-const chatParty = { address: `orca_session_id:${CHAT}`, terminalHandle: null, orcaSessionId: CHAT }
+const chatParty = { address: `occ_session_id:${CHAT}`, terminalHandle: null, occSessionId: CHAT }
 const terminalParty = (handle: string) => ({
   address: handle,
   terminalHandle: handle,
-  orcaSessionId: null
+  occSessionId: null
 })
 
 describe("a sender's name, from what OCC shows for it", () => {
@@ -397,8 +397,8 @@ describe("a sender's name, from what OCC shows for it", () => {
 
   it('builds the one sender a message records: its party and the name it has now', () => {
     session.unifiedTabs = { [WORKTREE]: [chatTab(null, 'Fix the login flow')] }
-    expect(names().sender(`orca_session_id:${CHAT}`)).toEqual({
-      party: { address: `orca_session_id:${CHAT}`, terminalHandle: null, orcaSessionId: CHAT },
+    expect(names().sender(`occ_session_id:${CHAT}`)).toEqual({
+      party: { address: `occ_session_id:${CHAT}`, terminalHandle: null, occSessionId: CHAT },
       name: 'Fix the login flow'
     })
   })

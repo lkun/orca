@@ -16,7 +16,7 @@ import {
 
 let root: string
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-permission-backfill-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-permission-backfill-'))
 })
 afterEach(async () => {
   await closeTestJournalHostDatabases()

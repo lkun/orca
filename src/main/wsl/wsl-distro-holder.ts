@@ -1,11 +1,11 @@
 import { runKeyedSerializedOperation } from '../cli/keyed-promise-queue'
-import { spawnDetachedWithoutInheritance } from '@orca/process-host/isolated-detached-spawn'
+import { spawnDetachedWithoutInheritance } from '@occ/process-host/isolated-detached-spawn'
 import { queryWindowsProcess } from '../daemon/daemon-process-inspection'
 import {
   listConfirmedRunningWslDistros,
   noteWslDistroMayHaveStopped
 } from '../wsl-background-distro-gate'
-import { WslDistroNotRunningError } from './wsl-orcad-connection-errors'
+import { WslDistroNotRunningError } from './wsl-occd-connection-errors'
 import { resolveWslInteropSpawnCwd } from '../wsl-interop-spawn-directory'
 import { buildWslDistroHolderArgs } from './wsl-distro-holder-command'
 import {

@@ -1,6 +1,6 @@
 # Linux clipboard publisher
 
-OCC text copies on native Wayland use `orca-wayland-clipboard` instead of asking
+OCC text copies on native Wayland use `occ-wayland-clipboard` instead of asking
 Electron to own the clipboard. A rejected or reused input serial can leave
 Chromium returning its own cached text after other applications copy something.
 After the helper acknowledges publication, the main process discards that source
@@ -65,7 +65,7 @@ node config/scripts/build-wayland-clipboard.mjs --arch arm64
 Builds use Ubuntu 20.04, preserve the glibc 2.31 floor, validate ELF architecture
 and library requirements, and cache by source/toolchain fingerprint. Linux
 packaging builds the target slice before copying it into
-`resources/bin/orca-wayland-clipboard` and validates the copied executable.
+`resources/bin/occ-wayland-clipboard` and validates the copied executable.
 Development uses `.build/<arch>/`.
 
 On an executable target architecture, the build runs `protocol_test.py` against

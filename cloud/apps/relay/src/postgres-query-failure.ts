@@ -44,7 +44,7 @@ export function reportPostgresQueryFailure(input: {
     const connectionTimeout = isPostgresPoolConnectTimeout(input.error)
     console.warn(
       JSON.stringify({
-        event: 'orca_relay_postgres_query_failed',
+        event: 'occ_relay_postgres_query_failed',
         phase: input.phase,
         operation: /^\s*WITH\s+assignment_state\s+AS\s+MATERIALIZED\b/i.test(input.sql)
           ? 'control-renewal'

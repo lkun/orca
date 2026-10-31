@@ -14,7 +14,7 @@ describe('getCloneDestinationAutoFill', () => {
         step: 'clone',
         cloneDestination: '/tmp/project',
         activeRuntimeEnvironmentId: null,
-        workspaceDir: '/Users/mvanhorn/orca/workspaces',
+        workspaceDir: '/Users/mvanhorn/occ/workspaces',
         cloneStepAutoFilled: false
       })
     ).toBeNull()
@@ -23,7 +23,7 @@ describe('getCloneDestinationAutoFill', () => {
         step: 'clone',
         cloneDestination: '',
         activeRuntimeEnvironmentId: null,
-        workspaceDir: '/Users/mvanhorn/orca/workspaces',
+        workspaceDir: '/Users/mvanhorn/occ/workspaces',
         cloneStepAutoFilled: true
       })
     ).toBeNull()
@@ -35,7 +35,7 @@ describe('getCloneDestinationAutoFill', () => {
         step: 'clone',
         cloneDestination: '',
         activeRuntimeEnvironmentId: 'env-local-linux',
-        workspaceDir: '/Users/mvanhorn/orca/workspaces',
+        workspaceDir: '/Users/mvanhorn/occ/workspaces',
         cloneStepAutoFilled: false
       })
     ).toBeNull()

@@ -2,7 +2,7 @@
 // Legacy version directories supply references and diagnostics but are never deleted here.
 import { randomInt } from 'node:crypto'
 import type { RemoteInstallTransport } from './remote-install-transport'
-import { RUNTIME_STORE_STAGE_PREFIX } from './orcad-remote-node-runtime'
+import { RUNTIME_STORE_STAGE_PREFIX } from './occd-remote-node-runtime'
 import { inventoryRemoteInstallDirs } from './remote-install-model'
 import {
   parseRuntimeStoreInventory,
@@ -214,7 +214,7 @@ async function collectHoldingStoreLock(
     return { state: 'skipped', reason: 'runtime store inventory was unverifiable' }
   }
   const legacy = inventoryRemoteInstallDirs(inventory.dirNames)
-  const legacyDirs = [...legacy.relay, ...legacy.orcad]
+  const legacyDirs = [...legacy.relay, ...legacy.occd]
   const plan = planRuntimeStoreGc(inventory, options.currentPins)
   const removed: string[] = []
   const kept = [...plan.kept]

@@ -32,9 +32,9 @@ afterEach(() => {
 
 function conoutPipeName(): string {
   if (process.platform === 'win32') {
-    return `\\\\.\\pipe\\orca-conout-test-${process.pid}-${Date.now()}`
+    return `\\\\.\\pipe\\occ-conout-test-${process.pid}-${Date.now()}`
   }
-  const dir = mkdtempSync(join(tmpdir(), 'orca-conout-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-conout-'))
   cleanups.push(() => rmSync(dir, { recursive: true, force: true }))
   return join(dir, 'conout.sock')
 }

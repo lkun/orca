@@ -1,4 +1,4 @@
-/** Desktop account routing for terminal agents on WSL orcad hosts without account services: four variables, absolute POSIX paths (the shell pointer may use ~/). Structured-session homes remain host-derived. */
+/** Desktop account routing for terminal agents on WSL occd hosts without account services: four variables, absolute POSIX paths (the shell pointer may use ~/). Structured-session homes remain host-derived. */
 
 import { z } from 'zod'
 import {

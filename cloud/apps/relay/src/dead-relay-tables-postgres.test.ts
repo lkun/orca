@@ -4,7 +4,7 @@ import { openRelayDatabase } from './database.js'
 
 // Three tables were created at every boot and never written. The schema stops creating them, and
 // a database that already has them must still boot, because they stay until a separate drop.
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 const schema = 'relay_dead_tables_test'
 const DEAD_TABLES = [

@@ -59,7 +59,7 @@ export function fakeMachine(
     agentList: ['claude', 'codex'],
     runtime: 'desktop',
     hostName: 'box',
-    orcaVersion: '1.4.250',
+    occVersion: '1.4.250',
     seam: () => current()?.seam ?? null,
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the fake seam never reads its host.
     conversationHost: () => ({}) as ReturnType<ConnectorMachine['conversationHost']>,

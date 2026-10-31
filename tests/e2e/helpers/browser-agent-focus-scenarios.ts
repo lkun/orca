@@ -2,7 +2,7 @@
 
 import { createServer, type Server } from 'node:http'
 import type { Page } from '@stablyai/playwright-test'
-import { expect } from './orca-app'
+import { expect } from './occ-app'
 import {
   ensureTerminalVisible,
   getActiveTabId,

@@ -7,7 +7,7 @@ import type {
 } from '../../../../orchestration/worker-terminal-ownership'
 import {
   captureWorkerOutputArchive,
-  releaseCommitFieldsForCapturedArchive,
+  releaseCommitFieldsFoccpturedArchive,
   releaseCommitFieldsForStoredArchive,
   summarizeWorkerOutputArchive
 } from '../../../../orchestration/worker-output-archive'
@@ -156,7 +156,7 @@ async function completeRemoteAttachmentRelease(
   try {
     const archive = storedArchive
       ? releaseCommitFieldsForStoredArchive(storedArchive)
-      : releaseCommitFieldsForCapturedArchive(
+      : releaseCommitFieldsFoccpturedArchive(
           await captureWorkerOutputArchive({
             runtime,
             dispatchId: attachment.dispatch_id,

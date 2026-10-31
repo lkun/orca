@@ -1,11 +1,11 @@
 import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync, realpathSync, unlinkSync, writeFileSync } from 'node:fs'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 
 // This isolated app needs local trace files; network telemetry remains disabled.
 test.use({
-  orcaAppExtraEnv: {
+  occAppExtraEnv: {
     CI: '',
     GITHUB_ACTIONS: '',
     GITLAB_CI: '',
@@ -14,9 +14,9 @@ test.use({
     BUILDKITE: '',
     JENKINS_URL: '',
     TEAMCITY_VERSION: '',
-    ORCA_DIAGNOSTICS_DISABLED: '',
+    OCC_DIAGNOSTICS_DISABLED: '',
     DO_NOT_TRACK: '1',
-    ORCA_TELEMETRY_DISABLED: '1'
+    OCC_TELEMETRY_DISABLED: '1'
   }
 })
 
@@ -209,20 +209,20 @@ function annotatePolling(
 
 test.describe('Git no-upstream polling churn repro', () => {
   test('active worktree polling does not repeatedly retry stable no-upstream probes', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
     const repoPath = realpathSync(testRepoPath)
     prepareNoUpstreamBranch(repoPath)
-    await selectRepoForActivePolling(orcaPage, testRepoPath, repoPath)
+    await selectRepoForActivePolling(occPage, testRepoPath, repoPath)
 
-    const diagnostics = await readDiagnosticsStatus(orcaPage)
+    const diagnostics = await readDiagnosticsStatus(occPage)
     expect(diagnostics.localFileEnabled).toBe(true)
     expect(diagnostics.bundleEnabled).toBe(false)
 
     clearTraceFile(diagnostics)
-    const measurement = await measureRendererDuringPolling(orcaPage)
-    await flushTraceFile(orcaPage, diagnostics)
+    const measurement = await measureRendererDuringPolling(occPage)
+    await flushTraceFile(occPage, diagnostics)
     const counts = readGitProbeFailureCounts(diagnostics.traceFilePath, repoPath)
     annotatePolling(testInfo, measurement, counts)
 

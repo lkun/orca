@@ -14,9 +14,9 @@ function isEnvFlagEnabled(value: boolean | string | undefined): boolean {
 const exposeStore = preloadEnv?.MODE === 'e2e' || isEnvFlagEnabled(preloadEnv?.VITE_EXPOSE_STORE)
 
 export const preloadE2EConfig = createE2EConfig({
-  headless: process.env.ORCA_E2E_HEADLESS === '1',
+  headless: process.env.OCC_E2E_HEADLESS === '1',
   exposeStore,
-  userDataDir: process.env.ORCA_E2E_USER_DATA_DIR ?? null,
-  terminalParkingDelayMs: Number(process.env.ORCA_E2E_TERMINAL_PARKING_DELAY_MS) || null,
-  terminalRetentionLimit: Number(process.env.ORCA_E2E_TERMINAL_RETENTION_LIMIT) || null
+  userDataDir: process.env.OCC_E2E_USER_DATA_DIR ?? null,
+  terminalParkingDelayMs: Number(process.env.OCC_E2E_TERMINAL_PARKING_DELAY_MS) || null,
+  terminalRetentionLimit: Number(process.env.OCC_E2E_TERMINAL_RETENTION_LIMIT) || null
 })

@@ -16,10 +16,10 @@ import {
   NATIVE_CHAT_NOTICE_COPY,
   nativeChatNoticeLook
 } from '../../../../shared/native-chat/native-chat-notice'
-import { useNativeChatOrcaStopView } from './native-chat-orca-stop-context'
+import { useNativeChatOCCStopView } from './native-chat-occ-stop-context'
 import { NativeChatInterruptedContinueButton } from './NativeChatInterruptedContinue'
-import { nativeChatOrcaStopRowText } from '../../../../shared/native-chat/native-chat-orca-stop-words'
-import { sayNativeChatOrcaStopTranslated } from './native-chat-orca-stop-words-text'
+import { nativeChatOCCStopRowText } from '../../../../shared/native-chat/native-chat-occ-stop-words'
+import { sayNativeChatOCCStopTranslated } from './native-chat-occ-stop-words-text'
 import { ProviderFrameRow } from './NativeChatTranscriptChrome'
 import { Button } from '@/components/ui/button'
 import {
@@ -74,7 +74,7 @@ export function NativeChatNoticeRow({
   allowFileUriLinks?: boolean
 }): React.JSX.Element {
   useTranslation()
-  const orcaStopView = useNativeChatOrcaStopView()
+  const occStopView = useNativeChatOCCStopView()
   const claudeSignIn = useNativeChatClaudeSignInView()
   const look = nativeChatNoticeLook(block)
   if (look.kind === 'divider') {
@@ -137,14 +137,14 @@ export function NativeChatNoticeRow({
     )
   }
   // Name OCC and its host as the stop cause; without host context, preserve the original words.
-  const { orcaStop } = block
-  const { hostLabel, remoteHost, continueAvailable, wslDistro } = orcaStopView
+  const { occStop } = block
+  const { hostLabel, remoteHost, continueAvailable, wslDistro } = occStopView
   // A paired server with no name to show is still a remote server; its id is not a name.
   const machine =
-    hostLabel ?? (remoteHost ? sayNativeChatOrcaStopTranslated('unnamedServer') : null)
-  const named = orcaStop !== undefined && machine !== null
+    hostLabel ?? (remoteHost ? sayNativeChatOCCStopTranslated('unnamedServer') : null)
+  const named = occStop !== undefined && machine !== null
   const continueOffered =
-    orcaStop?.turnItemId !== undefined && orcaStop.turnItemId === orcaStopView.offeredTurnItemId
+    occStop?.turnItemId !== undefined && occStop.turnItemId === occStopView.offeredTurnItemId
   const failure = readWholeAgentSessionFailureFact(block.failure)
   const antigravitySignInContent = nativeChatAntigravitySignInContent(failure?.kind, agentName)
   // Only reword auth text fully described by its fact; host text may also carry command advice.
@@ -162,11 +162,11 @@ export function NativeChatNoticeRow({
         )
       : undefined
   const text = named
-    ? nativeChatOrcaStopRowText(
-        orcaStop.cause,
+    ? nativeChatOCCStopRowText(
+        occStop.cause,
         machine,
         { continueAvailable, remoteHost },
-        sayNativeChatOrcaStopTranslated
+        sayNativeChatOCCStopTranslated
       )
     : failure?.kind === 'usageLimitReached'
       ? agentSessionFailureSentence(
@@ -220,7 +220,7 @@ export function NativeChatNoticeRow({
           {antigravitySignInContent ?? text}
         </p>
         {continueOffered ? (
-          <NativeChatInterruptedContinueButton onContinue={orcaStopView.continueNow} />
+          <NativeChatInterruptedContinueButton onContinue={occStopView.continueNow} />
         ) : null}
       </div>
       {claudeSignIn && isClaudeSignInFailureKind(block.failure?.kind) ? (

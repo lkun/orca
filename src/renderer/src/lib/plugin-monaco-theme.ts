@@ -108,5 +108,5 @@ export function derivePluginMonacoTheme(input: {
     }),
     colors
   }
-  return { name: `orca-plugin-${hashName(JSON.stringify(data))}`, data }
+  return { name: `occ-plugin-${hashName(JSON.stringify(data))}`, data }
 }

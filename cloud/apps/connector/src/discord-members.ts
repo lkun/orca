@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 
 // Decisions §15: on Discord only people linked to an OCC account count as the same company; their
 // words reach an agent, labelled with the name their own message carried.

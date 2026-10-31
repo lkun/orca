@@ -193,7 +193,7 @@ export function migrateLegacyJiraImages(content: string, target: RuntimeClientTa
         if (!saveImage(imageKey(target, reference), new Blob([bytes], { type: mimeType }))) {
           return `${prefix}${suffix}`
         }
-        return `${prefix}orca-jira-image://attachment/${reference}${suffix}`
+        return `${prefix}occ-jira-image://attachment/${reference}${suffix}`
       } catch {
         return `${prefix}${suffix}`
       }

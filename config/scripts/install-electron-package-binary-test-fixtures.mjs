@@ -13,7 +13,7 @@ export const sharedEntryName = '41.5.0-linux-x64'
 export const sharedEntryNameFor = (version) => `${version}-linux-x64`
 
 export function mkTempProject() {
-  const projectDir = mkdtempSync(join(tmpdir(), 'orca-install-electron-'))
+  const projectDir = mkdtempSync(join(tmpdir(), 'occ-install-electron-'))
   copyScriptWithLocalModules(sourceScriptPath, join(projectDir, 'config', 'scripts'))
   return projectDir
 }
@@ -25,10 +25,10 @@ export function runInstallScript(projectDir, extraEnv = {}) {
     env: {
       ...process.env,
       ELECTRON_CACHE: undefined,
-      ORCA_ELECTRON_PACKAGE_CACHE_ROOT: undefined,
+      OCC_ELECTRON_PACKAGE_CACHE_ROOT: undefined,
       npm_config_platform: 'linux',
       npm_config_arch: 'x64',
-      ORCA_ELECTRON_PACKAGE_EXTRACTOR: join(projectDir, 'fake-extractor.cjs'),
+      OCC_ELECTRON_PACKAGE_EXTRACTOR: join(projectDir, 'fake-extractor.cjs'),
       ...extraEnv
     }
   })
@@ -163,7 +163,7 @@ syncBuiltinESMExports()
 
 export function initGitRepo(projectDir) {
   runGit(projectDir, ['init', '--quiet', '--initial-branch=main'])
-  runGit(projectDir, ['config', 'user.email', 'orca-test@example.com'])
+  runGit(projectDir, ['config', 'user.email', 'occ-test@example.com'])
   runGit(projectDir, ['config', 'user.name', 'OCC Test'])
   runGit(projectDir, ['commit', '--quiet', '--allow-empty', '-m', 'init'])
 }
@@ -179,18 +179,18 @@ function runGit(projectDir, args) {
 }
 
 export function sharedCacheRoot(repoDir) {
-  return join(repoDir, '.git', 'orca-cache', 'electron')
+  return join(repoDir, '.git', 'occ-cache', 'electron')
 }
 
 export function readSharedDistMarker(projectDir) {
   try {
-    return readFileSync(join(projectDir, 'node_modules/electron/.orca-shared-dist'), 'utf8')
+    return readFileSync(join(projectDir, 'node_modules/electron/.occ-shared-dist'), 'utf8')
   } catch {
     return null
   }
 }
 
-export function readExtractorCallCount(projectDir) {
+export function readExtractoccllCount(projectDir) {
   try {
     return readFileSync(join(projectDir, 'fake-extractor.log'), 'utf8').trim().split('\n').length
   } catch {

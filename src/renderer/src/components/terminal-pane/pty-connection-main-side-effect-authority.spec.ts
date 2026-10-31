@@ -311,8 +311,8 @@ export function registerPtyConnectionMainSideEffectAuthorityTests(): void {
         onPtySpawn('pty-fact-pr')
 
         const link = {
-          url: 'https://github.com/acme/orca/pull/42',
-          slug: { owner: 'acme', repo: 'orca' },
+          url: 'https://github.com/acme/occ/pull/42',
+          slug: { owner: 'acme', repo: 'occ' },
           number: 42
         }
         handler._dispatchTerminalSideEffectBatchForTest({
@@ -357,7 +357,7 @@ export function registerPtyConnectionMainSideEffectAuthorityTests(): void {
         await flushAsyncTicks()
         expect(capturedDataCallback.current).not.toBeNull()
 
-        capturedDataCallback.current?.('Created https://github.com/acme/orca/pull/42\r\n')
+        capturedDataCallback.current?.('Created https://github.com/acme/occ/pull/42\r\n')
         capturedDataCallback.current?.('\x1b]133;D;130\x07prompt $ ')
 
         expect(mockStoreState.observeTerminalGitHubPullRequestLink).not.toHaveBeenCalled()

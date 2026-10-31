@@ -153,7 +153,7 @@ describe('launchAgentInNewTab execution host resolution', () => {
 
     await launchOnLinux()
 
-    expect(queuedCommand()).toBe("orca claude-teams '--dangerously-skip-permissions'")
+    expect(queuedCommand()).toBe("occ claude-teams '--dangerously-skip-permissions'")
   })
 
   it('keeps a runtime host reaching a nested SSH target on the relay shim name', async () => {
@@ -164,7 +164,7 @@ describe('launchAgentInNewTab execution host resolution', () => {
 
     await launchOnLinux()
 
-    expect(queuedCommand()).toBe("orca claude-teams '--dangerously-skip-permissions'")
+    expect(queuedCommand()).toBe("occ claude-teams '--dangerously-skip-permissions'")
   })
 
   it('uses the headless runtime CLI with no nested SSH target (#33920)', async () => {
@@ -175,6 +175,6 @@ describe('launchAgentInNewTab execution host resolution', () => {
 
     await launchOnLinux()
 
-    expect(queuedCommand()).toBe("orca claude-teams '--dangerously-skip-permissions'")
+    expect(queuedCommand()).toBe("occ claude-teams '--dangerously-skip-permissions'")
   })
 })

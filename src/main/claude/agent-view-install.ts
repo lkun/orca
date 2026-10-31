@@ -44,7 +44,7 @@ export function installClaudeAgentView(configPath: string): boolean {
   }
   const marker = join(configDir, markerName)
   const legacyRoot = join(configDir, 'skills', CLAUDE_AGENT_VIEW_PLUGIN)
-  const legacy = readHooksJson(join(legacyRoot, '.claude-plugin', 'orca-managed.json'))
+  const legacy = readHooksJson(join(legacyRoot, '.claude-plugin', 'occ-managed.json'))
   if (legacy?.owner === ownership.owner) {
     writeHooksJson(marker, { ...legacy, setup: 'attempted' })
     rmSync(legacyRoot, { recursive: true, force: true })
@@ -64,7 +64,7 @@ export function installClaudeAgentView(configPath: string): boolean {
 export function removeClaudeAgentView(configPath: string): void {
   const configDir = dirname(configPath)
   const root = join(configDir, 'skills', CLAUDE_AGENT_VIEW_PLUGIN)
-  const legacy = readHooksJson(join(root, '.claude-plugin', 'orca-managed.json'))
+  const legacy = readHooksJson(join(root, '.claude-plugin', 'occ-managed.json'))
   const markerPath = join(configDir, markerName)
   const marker = legacy?.owner === ownership.owner ? legacy : readHooksJson(markerPath)
   if (marker?.owner !== ownership.owner) {
@@ -106,7 +106,7 @@ async function retireLegacyClaudeAgentView(configPath: string): Promise<void> {
   const configDir = dirname(configPath)
   const root = join(configDir, 'skills', CLAUDE_AGENT_VIEW_PLUGIN)
   const legacy = parseHooksJsonText(
-    await readFile(join(root, '.claude-plugin', 'orca-managed.json'), 'utf8').catch(() => '{}')
+    await readFile(join(root, '.claude-plugin', 'occ-managed.json'), 'utf8').catch(() => '{}')
   )
   const markerPath = join(configDir, markerName)
   const previous = parseHooksJsonText(await readFile(markerPath, 'utf8').catch(() => '{}'))
@@ -146,7 +146,7 @@ export async function removeClaudeAgentViewRemote(
   const root = posix.join(configDir, 'skills', CLAUDE_AGENT_VIEW_PLUGIN)
   const legacy = await readHooksJsonRemote(
     sftp,
-    posix.join(root, '.claude-plugin', 'orca-managed.json')
+    posix.join(root, '.claude-plugin', 'occ-managed.json')
   )
   const markerPath = posix.join(configDir, markerName)
   const previous = await readHooksJsonRemote(sftp, markerPath)
@@ -171,6 +171,6 @@ export async function removeClaudeAgentViewRemote(
     }
   }
   if (legacy?.owner === ownership.owner) {
-    await renamePlain(sftp, root, posix.join(configDir, `orca-agent-view-retired-${randomUUID()}`))
+    await renamePlain(sftp, root, posix.join(configDir, `occ-agent-view-retired-${randomUUID()}`))
   }
 }

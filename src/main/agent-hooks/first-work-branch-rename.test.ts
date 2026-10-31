@@ -645,7 +645,7 @@ describe('maybeAutoRenameBranchOnFirstWork', () => {
   })
 
   it('leaves ineligible branches untouched even when their leaf is a creature name', async () => {
-    const { deps, onRenamed } = makeDeps({ canRenameOrcaCreatedBranch: () => false })
+    const { deps, onRenamed } = makeDeps({ canRenameOCCCreatedBranch: () => false })
     await maybeAutoRenameBranchOnFirstWork(workingEvent(), deps)
     expect(generateBranchNameMock).not.toHaveBeenCalled()
     expect(onRenamed).not.toHaveBeenCalled()

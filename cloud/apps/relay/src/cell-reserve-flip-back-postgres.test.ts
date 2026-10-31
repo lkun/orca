@@ -9,7 +9,7 @@ import { RESERVE_MODE_CELL_ID, startReserveModeCell } from './test-fixtures/rese
 
 // PostgreSQL flip-back keeps controls connected, reserves most pool capacity for DB work and folds cell deltas per tick even across cross-region round trips (E-mix).
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 async function until(check: () => Promise<boolean> | boolean, timeoutMs: number): Promise<void> {
@@ -44,7 +44,7 @@ describePostgres('flipping a reserve-mode cell back on PostgreSQL', () => {
   async function cellOn(database: RelayDatabase, databasePoolMax = 10) {
     vi.spyOn(console, 'log').mockImplementation(() => undefined)
     vi.spyOn(console, 'warn').mockImplementation(() => undefined)
-    const dataDir = mkdtempSync(join(tmpdir(), 'orca-relay-flip-back-pg-'))
+    const dataDir = mkdtempSync(join(tmpdir(), 'occ-relay-flip-back-pg-'))
     cleanup.push(() => rmSync(dataDir, { recursive: true, force: true }))
     return await startReserveModeCell({ database, dataDir, cleanup, databasePoolMax })
   }

@@ -1,7 +1,7 @@
 # Remote sidebar rendering proof
 
 ```sh
-ORCA_BACKGROUND_LAUNCH=1 node tests/tools/omp-remote-sidebar-rendered/run.mjs
+OCC_BACKGROUND_LAUNCH=1 node tests/tools/omp-remote-sidebar-rendered/run.mjs
 ```
 
 The fixture uses the production worktree selector, row builder, compact sidebar rows and styles. It supplies completed paired and SSH OMP status entries before any client tabs hydrate, alongside a local completed orphan. Both remote rows must render and the local orphan must remain absent. It then removes the injected statuses and verifies the rows disappear.

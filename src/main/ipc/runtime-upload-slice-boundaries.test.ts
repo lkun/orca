@@ -52,7 +52,7 @@ let workDir: string
 let remoteDir: string
 
 beforeEach(async () => {
-  workDir = await mkdtemp(join(tmpdir(), 'orca-upload-bounds-'))
+  workDir = await mkdtemp(join(tmpdir(), 'occ-upload-bounds-'))
   remoteDir = join(workDir, 'remote')
   await mkdir(remoteDir)
   callRuntimeEnvironment.mockReset()

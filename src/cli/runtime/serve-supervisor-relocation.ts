@@ -7,7 +7,7 @@ import { cloneMacTree } from '../../main/macos-tree-clone'
 import { isProcessAlive } from '../../shared/serve-bundle-coordination'
 
 /** Relocated supervisors can no longer derive the app root from __dirname. */
-export const SERVE_SUPERVISOR_APP_ROOT_ENV = 'ORCA_SERVE_SUPERVISOR_APP_ROOT'
+export const SERVE_SUPERVISOR_APP_ROOT_ENV = 'OCC_SERVE_SUPERVISOR_APP_ROOT'
 
 const PACKAGED_APP_ROOT_NAME = 'app.asar.unpacked'
 const COMPLETE_MARKER = '.complete'
@@ -155,7 +155,7 @@ export async function relocateServeSupervisor(
     return 'already-relocated'
   }
   // Dev and overridden executables are not swapped by app updates.
-  const override = deps.env.ORCA_APP_EXECUTABLE
+  const override = deps.env.OCC_APP_EXECUTABLE
   if (
     deps.env.ELECTRON_RUN_AS_NODE !== '1' ||
     (typeof override === 'string' && override.trim().length > 0) ||

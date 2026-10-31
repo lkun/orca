@@ -1,4 +1,4 @@
-import { assertWslDistroAllowed } from '@orca/process-host/wsl-distro-allowlist'
+import { assertWslDistroAllowed } from '@occ/process-host/wsl-distro-allowlist'
 import { getDefaultWslDistro, parseWslPath, type WslPathInfo } from '../../wsl'
 import {
   buildWslCapturedLoginShellCommand,
@@ -227,7 +227,7 @@ export function withWslPreparation(
       '/bin/sh',
       '-c',
       preparation.script,
-      'orca-generation',
+      'occ-generation',
       ...preparation.args,
       ...command.args.slice(execIndex + 1)
     ]

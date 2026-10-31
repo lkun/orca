@@ -12,7 +12,7 @@ const readers = vi.hoisted((): { onRead: ((read: SidebarFeedReaderRead) => void)
   onRead: []
 }))
 
-vi.mock('../../../src/shared/sidebar-inputs-switch', () => ({ ORCA_SIDEBAR_INPUTS_IS_MAIN: true }))
+vi.mock('../../../src/shared/sidebar-inputs-switch', () => ({ OCC_SIDEBAR_INPUTS_IS_MAIN: true }))
 vi.mock('../../../src/shared/sidebar-feed-client/sidebar-feed-reader', () => ({
   SidebarFeedReader: class {
     constructor(
@@ -40,8 +40,8 @@ import { stubRpcClient } from '../transport/rpc-client-test-stub'
 // Use worktree.ps order and flat rows, which differ from the desktop’s rendered sidebar.
 const LISTED = [
   liveRow({ worktreeId: 'lab::/w/gpu', repoId: 'lab', repo: 'lab', hostId: 'ssh:gpu' }),
-  liveRow({ worktreeId: 'orca::/w/child' }),
-  liveRow({ worktreeId: 'orca::/w/parent' })
+  liveRow({ worktreeId: 'occ::/w/child' }),
+  liveRow({ worktreeId: 'occ::/w/parent' })
 ]
 
 const INSTALLED: InstalledSidebarInputs = {
@@ -53,8 +53,8 @@ const INSTALLED: InstalledSidebarInputs = {
     [
       'workspaces',
       new Map<string, unknown>([
-        ['|orca::/w/parent', FEED_ROWS.parent],
-        ['|orca::/w/child', FEED_ROWS.child]
+        ['|occ::/w/parent', FEED_ROWS.parent],
+        ['|occ::/w/child', FEED_ROWS.child]
       ])
     ]
   ])
@@ -119,7 +119,7 @@ describe("the host list's first frame under the feed", () => {
     expect(drawn).toEqual([])
     await read({ snapshot: SNAPSHOT, unavailable: false })
     expect(drawn[0]?.icon).toBe('pin')
-    expect(rowIds()).toContain('orca::/w/parent')
+    expect(rowIds()).toContain('occ::/w/parent')
   })
 
   it("opens the list again on the host's last installed feed, not on worktree.ps", async () => {

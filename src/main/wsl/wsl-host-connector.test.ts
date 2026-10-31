@@ -1,7 +1,7 @@
 import { expect, it, vi } from 'vitest'
 import { createWslHostConnector } from './wsl-host-connector'
 import type { WslRunningDistrosRead } from '../wsl-background-distro-gate'
-import type * as TunnelIdentity from '../managed-server/lifecycle/orcad-managed-tunnel-identity'
+import type * as TunnelIdentity from '../managed-server/lifecycle/occd-managed-tunnel-identity'
 
 const mocks = vi.hoisted(() => ({
   readRunning: vi.fn<(distro: string) => Promise<WslRunningDistrosRead>>(),
@@ -14,9 +14,9 @@ const mocks = vi.hoisted(() => ({
   managerEnsure: vi.fn(),
   managerIsConnecting: vi.fn(() => false)
 }))
-vi.mock('./wsl-orcad-connection', async (importOriginal) => ({
+vi.mock('./wsl-occd-connection', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  WslOrcadConnectionManager: class {
+  WslOCCdConnectionManager: class {
     get = mocks.managerGet
     ensure = mocks.managerEnsure
     isConnecting = mocks.managerIsConnecting
@@ -29,17 +29,17 @@ vi.mock('../wsl-background-distro-gate', () => ({
   noteWslDistroMayHaveStopped: vi.fn(),
   listConfirmedRunningWslDistros: vi.fn(async () => [])
 }))
-vi.mock('../managed-server/lifecycle/orcad-managed-tunnel-identity', async (importOriginal) => ({
+vi.mock('../managed-server/lifecycle/occd-managed-tunnel-identity', async (importOriginal) => ({
   ...(await importOriginal<typeof TunnelIdentity>()),
-  verifyOrcadPairingIdentity: mocks.verify
+  verifyOCCdPairingIdentity: mocks.verify
 }))
-vi.mock('./wsl-orcad-liveness-wiring', () => ({
-  createWslOrcadLivenessSupervisor: () => ({ connect: mocks.connect })
+vi.mock('./wsl-occd-liveness-wiring', () => ({
+  createWslOCCdLivenessSupervisor: () => ({ connect: mocks.connect })
 }))
 vi.mock('./wsl-host-server-stop', () => ({
   stopWslHostServer: mocks.stopServer,
   wslHostRuntimeStopSteps: vi.fn(() => ({})),
-  decommissionWslHostOrcad: vi.fn()
+  decommissionWslHostOCCd: vi.fn()
 }))
 
 it('uses owned readiness without discovery and coalesces cold cleanup without waking stopped or unknown guests', async () => {

@@ -29,7 +29,7 @@ describe('isTailscaleEndpoint', () => {
 
   it('rejects non-Tailscale hosts and the surrounding 100.x space', () => {
     expect(isTailscaleEndpoint('ws://192.168.1.10:6768')).toBe(false)
-    expect(isTailscaleEndpoint('wss://orca.example.com')).toBe(false)
+    expect(isTailscaleEndpoint('wss://occ.example.com')).toBe(false)
     expect(isTailscaleEndpoint('ws://100.63.0.1:6768')).toBe(false)
     expect(isTailscaleEndpoint('ws://100.128.0.1:6768')).toBe(false)
     expect(isTailscaleEndpoint('ws://notts.net.evil.com')).toBe(false)

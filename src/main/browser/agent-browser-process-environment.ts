@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import { chmodSync, mkdirSync } from 'node:fs'
 import { join } from 'node:path'
 
-const AGENT_BROWSER_SOCKET_DIRECTORY_PREFIX = 'orca-ab-'
+const AGENT_BROWSER_SOCKET_DIRECTORY_PREFIX = 'occ-ab-'
 
 /** Per-tab daemon expiry survives OCC crashes and exceeds the bridge command timeout. */
 export const AGENT_BROWSER_IDLE_TIMEOUT_MS = 10 * 60 * 1000

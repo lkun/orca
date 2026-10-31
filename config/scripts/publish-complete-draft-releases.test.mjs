@@ -20,7 +20,7 @@ function git(cwd, args) {
 }
 
 async function withGitRepo(run) {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-draft-release-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-draft-release-'))
   try {
     git(dir, ['init', '--initial-branch=main'])
     git(dir, ['config', 'user.name', 'Test Bot'])
@@ -151,20 +151,20 @@ describe('publishCompleteDraftReleases', () => {
           assets
             .filter(({ name }) => name.startsWith('latest'))
             .map(({ id, name }) => [
-              `https://api.github.com/repos/stablyai/orca/releases/assets/${id}`,
+              `https://api.github.com/repos/stablyai/occ/releases/assets/${id}`,
               name === 'latest.yml' ? 'path: occ-windows-setup.exe\n' : ''
             ])
         )
       )
       const fetchImpl = vi.fn(async (url, options) => {
-        if (url === 'https://api.github.com/repos/stablyai/orca/releases?per_page=100') {
+        if (url === 'https://api.github.com/repos/stablyai/occ/releases?per_page=100') {
           return jsonResponse(releases)
         }
         if (manifestUrls.has(url) && !options.method) {
           return jsonResponse(manifestUrls.get(url))
         }
         if (
-          url === 'https://api.github.com/repos/stablyai/orca/releases/7' &&
+          url === 'https://api.github.com/repos/stablyai/occ/releases/7' &&
           options.method === 'PATCH'
         ) {
           return jsonResponse({ tag_name: 'v1.4.2-rc.7', draft: false })
@@ -174,7 +174,7 @@ describe('publishCompleteDraftReleases', () => {
       const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(fetchImpl)
       try {
         const result = await publishCompleteDraftReleases({
-          repo: 'stablyai/orca',
+          repo: 'stablyai/occ',
           token: 'token',
           fetchImpl,
           isDraftBuiltFromCurrentRef: ({ tag }) => isTagBuiltFromCurrentRef(tag, { cwd: repo }),
@@ -188,7 +188,7 @@ describe('publishCompleteDraftReleases', () => {
         })
         expect(fetchImpl.mock.calls.filter(([, options]) => options.method === 'PATCH')).toEqual([
           [
-            'https://api.github.com/repos/stablyai/orca/releases/7',
+            'https://api.github.com/repos/stablyai/occ/releases/7',
             expect.objectContaining({
               method: 'PATCH',
               body: JSON.stringify({ draft: false, prerelease: true })
@@ -225,7 +225,7 @@ describe('publishCompleteDraftReleases', () => {
       const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(fetchImpl)
       try {
         const result = await publishCompleteDraftReleases({
-          repo: 'stablyai/orca',
+          repo: 'stablyai/occ',
           token: 'token',
           fetchImpl,
           isDraftBuiltFromCurrentRef: ({ tag }) => isTagBuiltFromCurrentRef(tag, { cwd: repo }),
@@ -245,7 +245,7 @@ describe('publishCompleteDraftReleases', () => {
 
 describe('writeGithubOutputs', () => {
   it('writes count outputs for workflow conditions', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-release-outputs-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-release-outputs-'))
     const outputPath = join(dir, 'output')
     try {
       writeGithubOutputs(

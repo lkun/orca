@@ -15,7 +15,7 @@ afterEach(async () => {
 })
 
 async function worktreeWithCaches(ages) {
-  const worktree = await mkdtemp(join(tmpdir(), 'orca-vitest-module-cache-'))
+  const worktree = await mkdtemp(join(tmpdir(), 'occ-vitest-module-cache-'))
   roots.push(worktree)
   for (const [name, days] of Object.entries(ages)) {
     const path = join(localModuleCacheParent(worktree), name)

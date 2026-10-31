@@ -110,13 +110,13 @@ export function PluginDetailInfo({
             value={updated}
           />
         ) : null}
-        {entry.minimumOrca ? (
+        {entry.minimumOCC ? (
           <InfoRow
             label={translate('auto.components.settings.PluginDetailPage.requires', 'Requires')}
             value={translate(
               'auto.components.settings.PluginDetailPage.requiresValue',
               'OCC {{value0}} or later',
-              { value0: entry.minimumOrca }
+              { value0: entry.minimumOCC }
             )}
           />
         ) : null}

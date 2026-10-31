@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 import { beforeAll, describe, expect, it } from 'vitest'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 
 const hooks = readFileSync(new URL('../nsis/occ-installer-hooks.nsh', import.meta.url), 'utf8')
 const processCheck = readFileSync(
@@ -51,18 +51,18 @@ describe('NSIS process-check integration', () => {
 describe.runIf(process.platform === 'win32')(
   'NSIS capability probe under Restricted policy',
   () => {
-    const policyReceipt = 'orca-nsis: restricted policy verified'
-    const queryFailureReceipt = 'orca-nsis: injected query failure'
+    const policyReceipt = 'occ-nsis: restricted policy verified'
+    const queryFailureReceipt = 'occ-nsis: injected query failure'
     const policyCheck = [
-      'function Test-OrcaRestrictedPolicy { param([string]$Scope)',
+      'function Test-OCCRestrictedPolicy { param([string]$Scope)',
       "try { $parameters = @{ ErrorAction = 'Stop' };",
       'if ($Scope) { $parameters.Scope = $Scope };',
       "return ((Get-ExecutionPolicy @parameters) -eq 'Restricted')",
       '} catch { return $false } };',
       // A failed getter must not fall through to the query's successful exit.
-      "if ((Test-OrcaRestrictedPolicy '__orca_invalid_scope__') -ne $false) { exit 11 };",
-      "if ((Test-OrcaRestrictedPolicy 'Process') -ne $true) { exit 10 };",
-      'if ((Test-OrcaRestrictedPolicy) -ne $true) { exit 10 };',
+      "if ((Test-OCCRestrictedPolicy '__occ_invalid_scope__') -ne $false) { exit 11 };",
+      "if ((Test-OCCRestrictedPolicy 'Process') -ne $true) { exit 10 };",
+      'if ((Test-OCCRestrictedPolicy) -ne $true) { exit 10 };',
       `[Console]::Out.WriteLine('${policyReceipt}');`
     ].join(' ')
 
@@ -88,7 +88,7 @@ describe.runIf(process.platform === 'win32')(
         args: [...args, '-Command', `${policyCheck} ${prefix}${command}`],
         env: {
           ...env,
-          ORCA_BACKGROUND_LAUNCH: '1',
+          OCC_BACKGROUND_LAUNCH: '1',
           PSExecutionPolicyPreference: 'Restricted'
         },
         timeoutMs

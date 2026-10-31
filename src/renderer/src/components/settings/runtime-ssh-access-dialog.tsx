@@ -1,6 +1,6 @@
 import type { PublicKnownRuntimeEnvironment } from '../../../../shared/runtime-environments'
 import type { SshTarget } from '../../../../shared/ssh-types'
-import type { ManagedOrcadPreloadApi } from '../../../../preload/api/managed-orcad-api'
+import type { ManagedOCCdPreloadApi } from '../../../../preload/api/managed-occd-api'
 import { translate } from '@/i18n/i18n'
 import { Button } from '../ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '../ui/dialog'
@@ -15,7 +15,7 @@ export function RuntimeSshAccessDialog({
   onChanged
 }: {
   open: boolean
-  api: Pick<ManagedOrcadPreloadApi, 'linkSshAccess' | 'unlinkSshAccess'>
+  api: Pick<ManagedOCCdPreloadApi, 'linkSshAccess' | 'unlinkSshAccess'>
   environment: PublicKnownRuntimeEnvironment
   targets: SshTarget[]
   onOpenChange: (open: boolean) => void

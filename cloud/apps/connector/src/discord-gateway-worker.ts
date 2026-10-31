@@ -4,7 +4,7 @@ import {
   acquireLeadership,
   type CloudDatabase,
   type CloudNotifications
-} from '@orca-cloud/cloud-database'
+} from '@occ-cloud/cloud-database'
 import { Hono } from 'hono'
 import type { ConnectorConfig } from './config.js'
 import { createConnectorRuntime } from './connector-runtime.js'
@@ -12,7 +12,7 @@ import { loadCheckpoint, saveCheckpoint } from './discord-gateway-checkpoint.js'
 import { startDiscordGatewaySession } from './discord-gateway-session.js'
 import { createDiscordRestApi } from './discord-rest.js'
 
-const LEADER_KEY = 'orca-connector-discord-gateway'
+const LEADER_KEY = 'occ-connector-discord-gateway'
 
 // The discord-gateway role: one leader across instances holds the gateway session and routes each
 // message in the transaction that commits its checkpoint, on the lock's own connection, so a leader
@@ -43,7 +43,7 @@ export async function runDiscordGatewayWorker(input: {
       ...(config.databaseUrl === undefined ? {} : { databaseUrl: config.databaseUrl }),
       database,
       key: LEADER_KEY,
-      applicationName: 'orca-connector',
+      applicationName: 'occ-connector',
       signal
     }).catch((error: unknown) => {
       if (signal.aborted) {
@@ -82,7 +82,7 @@ export async function runDiscordGatewayWorker(input: {
       // A stop or lost lock during startup ends the process, which closes the half-open session.
       const session = await Promise.race([starting, ended])
       const reason = typeof session === 'string' ? session : await ended
-      console.log(JSON.stringify({ event: 'orca_connector_discord_gateway_stopping', reason }))
+      console.log(JSON.stringify({ event: 'occ_connector_discord_gateway_stopping', reason }))
       if (typeof session !== 'string') {
         await session.close({ drain: reason === 'stopping' })
       }

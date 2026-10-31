@@ -27,7 +27,7 @@ async function liveStoreWithoutStartTime(): Promise<{
   store: AgentSessionRecordStore
   fence: number
 }> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-held-child-renewal-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-held-child-renewal-'))
   roots.push(root)
   const store = await openTestAgentSessionRecordStore(root)
   const reserved = await store.reserveOwner({

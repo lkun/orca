@@ -4,19 +4,19 @@ import { parsePaneKey } from '../../shared/stable-pane-id'
 import type { RuntimeMobileSessionTabsResult } from '../../shared/runtime-types'
 
 // Preserve side-effect order: mocks, lifecycle, fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const { store, TEST_WORKTREE_ID, HEADLESS_LEAF_ID } =
-  await import('./orca-runtime-test-fixtures.spec')
+  await import('./occ-runtime-test-fixtures.spec')
 const { makePendingAgentTabActivationRuntime } =
-  await import('./orca-runtime-test-scenario-builders.spec')
+  await import('./occ-runtime-test-scenario-builders.spec')
 
 const WT = TEST_WORKTREE_ID
 
 function pairedRuntime() {
   let next = 0
   const spawn = vi.fn(async () => ({ id: `pty-${++next}` }))
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   runtime.setPtyController({
     spawn,
     write: () => true,
@@ -29,7 +29,7 @@ function pairedRuntime() {
   return { runtime, spawn, caller }
 }
 
-async function createPane(runtime: InstanceType<typeof OrcaRuntimeService>) {
+async function createPane(runtime: InstanceType<typeof OCCRuntimeService>) {
   const created = await runtime.createTerminal(`id:${WT}`)
   const pane = parsePaneKey(created.paneKey ?? '')
   if (!pane) {

@@ -13,11 +13,11 @@ describe('published artifact link client', () => {
   it('returns the public link from the local runtime RPC', async () => {
     mocks.callRuntimeRpc.mockResolvedValue({
       status: 'ok',
-      value: { shareUrl: 'https://share.onorca.dev/a/artifact-a' }
+      value: { shareUrl: 'https://share.onocc.dev/a/artifact-a' }
     })
 
     await expect(getPublishedArtifactLink('/repo/report.md')).resolves.toBe(
-      'https://share.onorca.dev/a/artifact-a'
+      'https://share.onocc.dev/a/artifact-a'
     )
     expect(mocks.callRuntimeRpc).toHaveBeenCalledWith(
       { kind: 'local' },

@@ -6,7 +6,7 @@ import {
   setAppEnvironment,
   type AppEnvironment
 } from '../../../shared/app-environment'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import { deliverWorkerDispatchPreamble } from '../rpc/methods/orchestration/worker/deliver-worker-dispatch-preamble'
 import {
   localOrchestrationCliCommand,
@@ -30,7 +30,7 @@ vi.mock('../rpc/methods/orchestration-structured-worker-session', () => ({
 }))
 
 const CHAT_SESSION = '4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37'
-const CHAT_ADDRESS = `orca_session_id:${CHAT_SESSION}`
+const CHAT_ADDRESS = `occ_session_id:${CHAT_SESSION}`
 const TERMINAL_HANDLE = 'term_worker'
 // The structured worker's hidden mailbox handle differs from its visible session address.
 const CHAT_WORKER_HANDLE = 'structworker_1'
@@ -52,8 +52,8 @@ afterAll(() => {
 
 function installApp(isPackaged: boolean): void {
   setAppEnvironment({
-    getPath: () => '/tmp/orca-parity',
-    getAppPath: () => '/tmp/orca-parity',
+    getPath: () => '/tmp/occ-parity',
+    getAppPath: () => '/tmp/occ-parity',
     getVersion: () => '0.0.0-test',
     isPackaged: () => isPackaged,
     onWillQuit: () => {},
@@ -62,22 +62,22 @@ function installApp(isPackaged: boolean): void {
   } satisfies AppEnvironment)
 }
 
-function runtime(prompts: string[]): OrcaRuntimeService {
+function runtime(prompts: string[]): OCCRuntimeService {
   const fake: Pick<
-    OrcaRuntimeService,
+    OCCRuntimeService,
     'getNestedWorkerMaxDepth' | 'getTerminalOrchestrationCliCommand' | 'sendTerminalAgentPrompt'
-  > & { orchestrationSenderNames: Pick<OrcaRuntimeService['orchestrationSenderNames'], 'nameOf'> } =
+  > & { orchestrationSenderNames: Pick<OCCRuntimeService['orchestrationSenderNames'], 'nameOf'> } =
     {
       orchestrationSenderNames: { nameOf: () => null },
       getNestedWorkerMaxDepth: () => 2,
-      getTerminalOrchestrationCliCommand: () => 'orca',
+      getTerminalOrchestrationCliCommand: () => 'occ',
       sendTerminalAgentPrompt: async (handle, text) => {
         prompts.push(text)
         return { handle, accepted: true, bytesWritten: text.length }
       }
     }
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: preamble delivery reads only the members the fake implements.
-  return fake as OrcaRuntimeService
+  return fake as OCCRuntimeService
 }
 
 type StructuredSession = Parameters<typeof deliverWorkerDispatchPreamble>[0]['structuredSession']
@@ -173,7 +173,7 @@ describe('a chat agent and a terminal agent see the same text but for how each i
         worktreeId: 'repo::/tmp/wt',
         runtimeCliCommand: runtimeOrchestrationCliCommand()
       })
-      expect(terminalCli).toBe(packaged ? 'orca' : 'occ-dev')
+      expect(terminalCli).toBe(packaged ? 'occ' : 'occ-dev')
 
       for (const mailbox of ['run:run_parity', CHAT_ADDRESS]) {
         expect(await renderChatPointer(mailbox)).toBe(

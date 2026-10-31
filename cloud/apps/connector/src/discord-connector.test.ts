@@ -1,4 +1,4 @@
-import { CONNECTOR_PATHS, ConnectorPollResponseSchema } from '@orca-cloud/connector-contract'
+import { CONNECTOR_PATHS, ConnectorPollResponseSchema } from '@occ-cloud/connector-contract'
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanupConnectorHarnesses } from './connector-server-harness.test-fixture.js'
 import {
@@ -143,10 +143,10 @@ describe('Discord connector', () => {
       '--account',
       'user-1',
       '--default-project',
-      'orca'
+      'occ'
     )
     await linkTeammate(harness)
-    const machine = await harness.machineWith('user-1', [project('orca')])
+    const machine = await harness.machineWith('user-1', [project('occ')])
     const thread = '1000000000000000500'
     const author = (id: string, username: string) => ({ id, username })
     harness.fake.respond('GET', `/channels/${thread}/messages?`, {

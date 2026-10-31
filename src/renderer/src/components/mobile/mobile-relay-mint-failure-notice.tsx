@@ -27,7 +27,7 @@ export function MobileRelayMintFailureNotice({
   const providerMissing = failure.stage === 'provider_missing'
   // Why: a revoked cloud session fails every mint; "retry or use LAN" hides the one action that works.
   const reconnectRequired =
-    useAppStore((state) => state.orcaProfileAuthStatus?.state === 'reconnect-required') ||
+    useAppStore((state) => state.occProfileAuthStatus?.state === 'reconnect-required') ||
     failure.code === 'relay_signed_out'
   const notEntitled = failure.code === 'relay_not_entitled'
   const [showBusyFeedback, setShowBusyFeedback] = useState(false)

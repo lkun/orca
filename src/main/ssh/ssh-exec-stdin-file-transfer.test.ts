@@ -14,7 +14,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { Duplex } from 'node:stream'
 import { afterEach, describe, expect, it } from 'vitest'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import type { SshConnection } from './connection/ssh-connection'
 import {
   EXEC_STDIN_WRITE_DONE,
@@ -92,17 +92,17 @@ describe('exec-stdin write command construction', () => {
     expect(command).toBe(
       [
         "{ mkdir -p '/h/o'\\''dd'",
-        "cat > '/h/o'\\''dd/file.orca-part-abc'",
-        `[ "$(wc -c < '/h/o'\\''dd/file.orca-part-abc' | tr -d ' ')" = 42 ]`,
-        "mv -f '/h/o'\\''dd/file.orca-part-abc' '/h/o'\\''dd/file'",
-        `echo ${EXEC_STDIN_WRITE_DONE}; } || { rm -f '/h/o'\\''dd/file.orca-part-abc'; exit 1; }`
+        "cat > '/h/o'\\''dd/file.occ-part-abc'",
+        `[ "$(wc -c < '/h/o'\\''dd/file.occ-part-abc' | tr -d ' ')" = 42 ]`,
+        "mv -f '/h/o'\\''dd/file.occ-part-abc' '/h/o'\\''dd/file'",
+        `echo ${EXEC_STDIN_WRITE_DONE}; } || { rm -f '/h/o'\\''dd/file.occ-part-abc'; exit 1; }`
       ].join(' && ')
     )
   })
 
   it('keeps the executable bit when asked and rejects an impossible size', () => {
     expect(makeExecStdinWriteFileCommand('/h/f', 1, { token: 't', executable: true })).toContain(
-      "chmod 755 '/h/f.orca-part-t'"
+      "chmod 755 '/h/f.occ-part-t'"
     )
     expect(() => makeExecStdinWriteFileCommand('/h/f', -1, { token: 't' })).toThrow()
     expect(() => makeExecStdinWriteFileCommand('/h/f', 1.5, { token: 't' })).toThrow()

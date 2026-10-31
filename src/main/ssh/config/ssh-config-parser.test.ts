@@ -489,7 +489,7 @@ describe('sshConfigHostsToSummaries', () => {
         port: 22,
         username: 'ubuntu',
         identityFile: '/home/me/.ssh/staging',
-        alreadyInOrca: true
+        alreadyInOCC: true
       },
       {
         alias: 'prod',
@@ -497,7 +497,7 @@ describe('sshConfigHostsToSummaries', () => {
         port: 2222,
         username: 'ops',
         jumpHost: 'bastion',
-        alreadyInOrca: false
+        alreadyInOCC: false
       }
     ])
   })
@@ -515,7 +515,7 @@ describe('sshConfigHostsToSummaries', () => {
       hostname: 'box',
       port: 22,
       username: '',
-      alreadyInOrca: false
+      alreadyInOCC: false
     })
     expect(summaries[1].alias).toBe('other')
   })

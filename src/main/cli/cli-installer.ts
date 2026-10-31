@@ -14,7 +14,7 @@ import {
 } from './appimage-extracted-root'
 import { isAppImageStableLauncherReady } from './appimage-stable-launcher'
 import { CliPathRegistration } from './cli-path-registration'
-import { removeLinuxBareOrcaDispatcher } from './linux-bare-orca-dispatcher'
+import { removeLinuxBareOCCDispatcher } from './linux-bare-occ-dispatcher'
 
 export class CliInstaller extends CliPathRegistration {
   isAppImageRegistrationOwnedBySibling(status: CliInstallStatus): boolean {
@@ -139,7 +139,7 @@ export class CliInstaller extends CliPathRegistration {
       await this.installSymlink(status)
       await this.removeLegacyLinuxCommandIfManaged(status.launcherPath)
     } else if (this.isWindowsPackagedBundledCommand(status.commandPath, status.launcherPath)) {
-      // Why: packaged Windows already ships resources/bin/orca.exe; registration only owns the PATH entry.
+      // Why: packaged Windows already ships resources/bin/occ.exe; registration only owns the PATH entry.
     } else {
       await mkdir(dirname(status.commandPath), { recursive: true })
       await this.installWindowsWrapper(status.commandPath, status.launcherPath)
@@ -165,7 +165,7 @@ export class CliInstaller extends CliPathRegistration {
   }
 
   private async removeUnlocked(): Promise<CliInstallStatus> {
-    await this.removeLinuxBareOrcaDispatcher()
+    await this.removeLinuxBareOCCDispatcher()
     const status = await this.getStatus()
     if (!status.supported || !status.commandPath || !status.launcherPath || !status.installMethod) {
       await this.removeLinuxAppImagePayloads()
@@ -206,13 +206,13 @@ export class CliInstaller extends CliPathRegistration {
     return this.getStatus()
   }
 
-  // Removing the `orca` command also retires the bare-name dispatcher headless serve installed.
-  private async removeLinuxBareOrcaDispatcher(): Promise<void> {
+  // Removing the `occ` command also retires the bare-name dispatcher headless serve installed.
+  private async removeLinuxBareOCCDispatcher(): Promise<void> {
     if (this.platform !== 'linux' || this.commandPathOverride) {
       return
     }
     try {
-      await removeLinuxBareOrcaDispatcher(this.homePath)
+      await removeLinuxBareOCCDispatcher(this.homePath)
     } catch (error) {
       console.warn(
         '[cli] Could not remove the bare occ dispatcher:',

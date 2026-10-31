@@ -81,7 +81,7 @@ const { setBrowserExtensionSupportEnabled } = await import('./browser-extension-
 // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the prompt is mocked, so the renderer is only passed through.
 const renderer = {} as Electron.WebContents
 
-mocks.installedPath = mkdtempSync(join(tmpdir(), 'orca-held-update-'))
+mocks.installedPath = mkdtempSync(join(tmpdir(), 'occ-held-update-'))
 writeFileSync(
   join(mocks.installedPath, 'manifest.json'),
   JSON.stringify({

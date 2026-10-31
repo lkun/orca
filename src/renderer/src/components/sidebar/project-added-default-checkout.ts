@@ -80,7 +80,7 @@ function hasDetectedHiddenLinkedExternalWorktrees(
       !worktree.isMainWorktree &&
       !worktree.selectedCheckout &&
       !worktree.visible &&
-      worktree.ownership !== 'orca-managed' &&
+      worktree.ownership !== 'occ-managed' &&
       // Agent scratch alone must not enable repo-wide external visibility.
       worktree.ownership !== 'agent-scratch'
   )

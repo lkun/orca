@@ -133,7 +133,7 @@ export function taskMountAdapters(
         taskUiReady: true,
         githubProjectFieldVisibilityScope: null,
         taskResumeRef: { current: {} },
-        trustedOrcaHooks: {}
+        trustedOCCHooks: {}
       })
       let actions: ReturnType<typeof usePreferences>
       const hook = hookMount(() => {

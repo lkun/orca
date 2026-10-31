@@ -20,18 +20,18 @@ import { leaveBehindLine, REFUSAL_INLINE_CHARS, refusedLine } from './ssh-host-r
 export type SshHostServerStatusLine = {
   text: string
   tone: 'muted' | 'warning' | 'destructive'
-  /** Main's untranslated cause, with the host's orcad.log tail when there is one; shown on request. */
+  /** Main's untranslated cause, with the host's occd.log tail when there is one; shown on request. */
   detail?: string
   /** A muted second line, e.g. what moving onto the host does and doesn't touch. */
   hint?: string
 }
 
 export function sshHostServerStatusLine(
-  target: Pick<SshTarget, 'label' | 'orcadFence' | 'managedServerUnavailable'>,
+  target: Pick<SshTarget, 'label' | 'occdFence' | 'managedServerUnavailable'>,
   state: Pick<SshConnectionState, 'managedServer'> | undefined
 ): SshHostServerStatusLine | null {
   const status = state?.managedServer
-  if (target.orcadFence?.sourceChangedAt) {
+  if (target.occdFence?.sourceChangedAt) {
     return sourceChangedLine()
   }
   if (status?.kind === 'managed' && status.serving) {
@@ -58,7 +58,7 @@ export function sshHostServerStatusLine(
     return automationsLeftDisabledLine(status.automationsLeftDisabled)
   }
   // A healthy managed server is the default; the card stays quiet unless something needs attention.
-  if (status?.kind === 'managed' || (!status && target.orcadFence)) {
+  if (status?.kind === 'managed' || (!status && target.occdFence)) {
     return null
   }
   if (status?.kind === 'setting-up') {
@@ -106,7 +106,7 @@ export function sshTargetConnectFailureText(
   return sshConnectFailureText(state, published || extractIpcErrorMessage(error, fallback))
 }
 
-// Mirror main's ORCAD_TUNNEL_UNAVAILABLE_REASON.
+// Mirror main's OCCD_TUNNEL_UNAVAILABLE_REASON.
 const TUNNEL_UNAVAILABLE = 'ssh_tunnel_unavailable'
 
 function sourceChangedLine(): SshHostServerStatusLine {
@@ -119,7 +119,7 @@ function sourceChangedLine(): SshHostServerStatusLine {
   }
 }
 
-/** `reason` is main's OrcadHostUnavailableReason; an unknown one is shown only as a detail. */
+/** `reason` is main's OCCdHostUnavailableReason; an unknown one is shown only as a detail. */
 function unavailableLine(reason: string | undefined): SshHostServerStatusLine {
   if (reason === TUNNEL_UNAVAILABLE) {
     return tunnelUnavailableLine()
@@ -286,7 +286,7 @@ function unservedLine(
           'OCC couldn’t confirm that terminals started by an older version of OCC have exited. Reconnect to try again.'
         )
       }
-    case 'orcad_unavailable':
+    case 'occd_unavailable':
       return unavailableLine(status.detail)
     case 'source_changed':
       return sourceChangedLine()

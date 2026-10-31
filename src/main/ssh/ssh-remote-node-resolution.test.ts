@@ -23,11 +23,11 @@ const conn = {} as SshConnection
 
 function loginShellAnswer(output: string) {
   return async (_conn: SshConnection, command: string): Promise<string> => {
-    const begin = (/__ORCA_SSH_LOGIN_CAPTURE_BEGIN_ \w+?__/.exec(command)?.[0] ?? '').replace(
+    const begin = (/__OCC_SSH_LOGIN_CAPTURE_BEGIN_ \w+?__/.exec(command)?.[0] ?? '').replace(
       ' ',
       ''
     )
-    const end = (/__ORCA_SSH_LOGIN_CAPTURE_END_ \w+?__/.exec(command)?.[0] ?? '').replace(' ', '')
+    const end = (/__OCC_SSH_LOGIN_CAPTURE_END_ \w+?__/.exec(command)?.[0] ?? '').replace(' ', '')
     return `RC-BANNER\n${begin}${output}${end}`
   }
 }
@@ -63,7 +63,7 @@ describe('resolveRemoteNodePath', () => {
     execCommandMock
       .mockResolvedValueOnce('/usr/bin/node\n/home/u/.nvm/versions/node/v22.22.0/bin/node\n')
       .mockRejectedValueOnce(new Error('/usr/bin/npm: not found'))
-      .mockResolvedValueOnce('__ORCA_NODE_VERSION__\nv22.22.0\n__ORCA_NPM_VERSION__\n11.13.0\n')
+      .mockResolvedValueOnce('__OCC_NODE_VERSION__\nv22.22.0\n__OCC_NPM_VERSION__\n11.13.0\n')
 
     await expect(resolveRemoteNodePath(conn)).resolves.toBe(
       '/home/u/.nvm/versions/node/v22.22.0/bin/node'
@@ -78,7 +78,7 @@ describe('resolveRemoteNodePath', () => {
   it.runIf(process.platform !== 'win32')(
     'accepts npm elsewhere on PATH without probing another Node candidate',
     async () => {
-      const root = mkdtempSync(path.join(os.tmpdir(), 'orca-split-node-npm-'))
+      const root = mkdtempSync(path.join(os.tmpdir(), 'occ-split-node-npm-'))
       try {
         const nodePath = path.join(root, 'selected node', 'bin', 'node')
         const npmBinDir = path.join(root, 'npm elsewhere', 'bin')
@@ -151,7 +151,7 @@ describe('resolveRemoteNodePath', () => {
 
     const callScript = execCommandMock.mock.calls[0]![1] as string
     expect(callScript).toContain('nvm_dirs=${NVM_DIR:-"$HOME/.nvm"}')
-    expect(callScript).toContain('orca_dotfile_dirs NVM_DIR')
+    expect(callScript).toContain('occ_dotfile_dirs NVM_DIR')
     expect(callScript).toContain('"$nvm_dir"/versions/node/*/bin/node')
   })
 
@@ -164,7 +164,7 @@ describe('resolveRemoteNodePath', () => {
 
     const callScript = execCommandMock.mock.calls[0]![1] as string
     expect(callScript).toContain('mise_dirs=${MISE_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}')
-    expect(callScript).toContain('orca_dotfile_dirs MISE_DATA_DIR')
+    expect(callScript).toContain('occ_dotfile_dirs MISE_DATA_DIR')
     expect(callScript).toContain('"$mise_dir"/installs/node/*/bin/node')
     expect(callScript).toContain('"$mise_dir/shims/node"')
   })
@@ -177,7 +177,7 @@ describe('resolveRemoteNodePath', () => {
     await resolveRemoteNodePath(conn)
 
     const callScript = execCommandMock.mock.calls[0]![1] as string
-    const home = mkdtempSync(path.join(os.tmpdir(), 'orca-mise-probe-'))
+    const home = mkdtempSync(path.join(os.tmpdir(), 'occ-mise-probe-'))
     try {
       const shimPath = path.join(home, 'custom-mise/shims/node')
       const installPath = path.join(home, 'custom-mise/installs/node/v20.11.0/bin/node')
@@ -209,7 +209,7 @@ describe('resolveRemoteNodePath', () => {
     await resolveRemoteNodePath(conn)
 
     const callScript = execCommandMock.mock.calls[0]![1] as string
-    const home = mkdtempSync(path.join(os.tmpdir(), 'orca-mise-env-probe-'))
+    const home = mkdtempSync(path.join(os.tmpdir(), 'occ-mise-env-probe-'))
     try {
       const miseDataDir = path.join(home, 'env-mise')
       const installPath = path.join(miseDataDir, 'installs/node/v20.11.0/bin/node')
@@ -236,7 +236,7 @@ describe('resolveRemoteNodePath', () => {
     await resolveRemoteNodePath(conn)
 
     const callScript = execCommandMock.mock.calls[0]![1] as string
-    const home = mkdtempSync(path.join(os.tmpdir(), 'orca-mise-xdg-probe-'))
+    const home = mkdtempSync(path.join(os.tmpdir(), 'occ-mise-xdg-probe-'))
     try {
       const xdgDataHome = path.join(home, 'xdg')
       const installPath = path.join(xdgDataHome, 'mise/installs/node/v20.11.0/bin/node')
@@ -311,7 +311,7 @@ describe('resolveRemoteNodePath', () => {
     await resolveRemoteNodePath(conn)
 
     const callScript = execCommandMock.mock.calls[0]![1] as string
-    const home = mkdtempSync(path.join(os.tmpdir(), 'orca-nvm-probe-'))
+    const home = mkdtempSync(path.join(os.tmpdir(), 'occ-nvm-probe-'))
     try {
       const nodePath = path.join(home, 'tilde-nvm/versions/node/v20.11.0/bin/node')
       mkdirSync(path.dirname(nodePath), { recursive: true })
@@ -338,7 +338,7 @@ describe('resolveRemoteNodePath', () => {
     await resolveRemoteNodePath(conn)
 
     const callScript = execCommandMock.mock.calls[0]![1] as string
-    const home = mkdtempSync(path.join(os.tmpdir(), 'orca-xdg-probe-'))
+    const home = mkdtempSync(path.join(os.tmpdir(), 'occ-xdg-probe-'))
     try {
       // A name the seeded `${XDG_DATA_HOME:-$HOME/.local/share}/mise` default cannot reach, so
       // only the dotfile arm can find it.
@@ -371,7 +371,7 @@ describe('resolveRemoteNodePath', () => {
     await resolveRemoteNodePath(conn)
 
     const callScript = execCommandMock.mock.calls[0]![1] as string
-    const home = mkdtempSync(path.join(os.tmpdir(), 'orca-xdg-default-probe-'))
+    const home = mkdtempSync(path.join(os.tmpdir(), 'occ-xdg-default-probe-'))
     try {
       // sshd's exec channel runs without the profile, so XDG_DATA_HOME is often simply absent.
       const nodePath = path.join(home, '.local/share/custom-mise/installs/node/20.11.0/bin/node')

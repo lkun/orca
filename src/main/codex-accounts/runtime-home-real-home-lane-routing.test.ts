@@ -96,9 +96,9 @@ describe('CodexRuntimeHomeService', () => {
       )
     }
     const previousCodexHome = process.env.CODEX_HOME
-    const previousOrcaCodexHome = process.env.ORCA_CODEX_HOME
+    const previousOCCCodexHome = process.env.OCC_CODEX_HOME
     process.env.CODEX_HOME = getRuntimeCodexHomePath()
-    process.env.ORCA_CODEX_HOME = getRuntimeCodexHomePath()
+    process.env.OCC_CODEX_HOME = getRuntimeCodexHomePath()
     try {
       // Pin the path so nested OCC cannot poll an inherited managed CODEX_HOME.
 
@@ -107,7 +107,7 @@ describe('CodexRuntimeHomeService', () => {
         codexHomePath: getSystemCodexHomePath()
       })
       process.env.CODEX_HOME = getSystemCodexHomePath()
-      delete process.env.ORCA_CODEX_HOME
+      delete process.env.OCC_CODEX_HOME
       expect(service.isHostSystemDefaultRealHomeSelected()).toBe(true)
       process.env.CODEX_HOME = join(testState.fakeHomeDir, 'user-owned-codex-home')
       expect(service.isHostSystemDefaultRealHomeSelected()).toBe(false)
@@ -121,10 +121,10 @@ describe('CodexRuntimeHomeService', () => {
       } else {
         process.env.CODEX_HOME = previousCodexHome
       }
-      if (previousOrcaCodexHome === undefined) {
-        delete process.env.ORCA_CODEX_HOME
+      if (previousOCCCodexHome === undefined) {
+        delete process.env.OCC_CODEX_HOME
       } else {
-        process.env.ORCA_CODEX_HOME = previousOrcaCodexHome
+        process.env.OCC_CODEX_HOME = previousOCCCodexHome
       }
     }
   })
@@ -260,7 +260,7 @@ describe('CodexRuntimeHomeService', () => {
     )
     const unownedHome = join(testState.fakeHomeDir, 'unowned-codex-home')
     mkdirSync(unownedHome, { recursive: true })
-    writeFileSync(join(unownedHome, '.orca-managed-home'), 'account-2\n', 'utf-8')
+    writeFileSync(join(unownedHome, '.occ-managed-home'), 'account-2\n', 'utf-8')
     writePaneRegistry({
       'shared-pane': { selectionKey: 'host', accountId: null, homeRoute: 'shared-home' },
       'account-pane': { selectionKey: 'host', accountId: 'account-1', homeRoute: 'account-home' },

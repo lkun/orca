@@ -127,7 +127,7 @@ function evaluate({
     }
   }
 
-  const markerPath = join(canonicalCandidate, '.orca-managed-home')
+  const markerPath = join(canonicalCandidate, '.occ-managed-home')
   let markerIsRegularFile: boolean
   let markerContents: string
   try {

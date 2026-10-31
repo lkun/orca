@@ -41,8 +41,8 @@ const markdownPreviewSanitizeSchema = {
     details: [
       ...(defaultSchema.attributes?.details ?? []),
       'open',
-      ['className', 'orca-details'],
-      ['dataOrcaToggle', 'heading-1', 'heading-2', 'heading-3', 'heading-4', 'heading-5']
+      ['className', 'occ-details'],
+      ['dataOCCToggle', 'heading-1', 'heading-2', 'heading-3', 'heading-4', 'heading-5']
     ],
     h1: [...(defaultSchema.attributes?.h1 ?? []), 'id'],
     h2: [...(defaultSchema.attributes?.h2 ?? []), 'id'],

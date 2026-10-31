@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithWaitForLeafPtyId } from '../view/renderer-terminal-snapshot'
+import { OCCRuntimeWithWaitForLeafPtyId } from '../view/renderer-terminal-snapshot'
 import type { RuntimeTerminalFocus } from '../../../../shared/runtime-types'
 import type {
   RuntimeTerminalReveal,
@@ -7,9 +7,9 @@ import type {
 import { parsePaneKey } from '../../../../shared/stable-pane-id'
 import { getLatestPtyTitle } from '../../runtime-worktree-status-projection'
 import { copySleepingAgentLaunchConfig } from '../../runtime-agent-launch-resolution'
-import type { OrcaRuntimeWithBuildPtyTerminalSummary as PtyTerminalSummaryMethods } from '../query/pty-terminal-summary'
+import type { OCCRuntimeWithBuildPtyTerminalSummary as PtyTerminalSummaryMethods } from '../query/pty-terminal-summary'
 
-export abstract class OrcaRuntimeWithFocusTerminal extends OrcaRuntimeWithWaitForLeafPtyId {
+export abstract class OCCRuntimeWithFocusTerminal extends OCCRuntimeWithWaitForLeafPtyId {
   protected abstract getPtyManualTitle(
     ...args: Parameters<PtyTerminalSummaryMethods['getPtyManualTitle']>
   ): ReturnType<PtyTerminalSummaryMethods['getPtyManualTitle']>

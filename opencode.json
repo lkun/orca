@@ -18,7 +18,7 @@
     "typescript": {
       "disabled": true
     },
-    "orca-typescript": {
+    "occ-typescript": {
       "command": ["node", "config/scripts/agent-typescript-lsp.mjs"],
       "extensions": [".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs"]
     }

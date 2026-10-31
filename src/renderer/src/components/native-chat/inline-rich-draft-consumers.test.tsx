@@ -215,9 +215,9 @@ it('replays a full rich addition into existing content, renders it and sends res
   handBackNativeChatQueuedEdit(edit)
   discardNativeChatQueuedEdit(edit)
   // Simulate another renderer run reading the actual addition journal before storage confirmation.
-  const raw = localStorage.getItem('orca:nativeChatComposerDraftJournal:v1')!
+  const raw = localStorage.getItem('occ:nativeChatComposerDraftJournal:v1')!
   localStorage.setItem(
-    'orca:nativeChatComposerDraftJournal:v1',
+    'occ:nativeChatComposerDraftJournal:v1',
     raw.replaceAll(/"run":"[^"]+"/g, '"run":"previous-run"')
   )
   const loaded = new Map<string, StoredNativeChatComposerDraft | null>([

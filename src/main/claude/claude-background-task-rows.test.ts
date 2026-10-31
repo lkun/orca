@@ -16,7 +16,7 @@ describe('claude background task rows', () => {
 
     const identities = new Set(
       items.map((item) =>
-        item.identity.provider === 'orca' ? item.identity.clientMessageId : item.identity.provider
+        item.identity.provider === 'occ' ? item.identity.clientMessageId : item.identity.provider
       )
     )
     expect([...identities]).toEqual(['claude-background-task:byjnee2no'])

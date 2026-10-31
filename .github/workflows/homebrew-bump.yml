@@ -1,6 +1,6 @@
 name: Homebrew Cask Bump
 
-# Update desktop stable/RC casks in stablyai/homebrew-orca with release DMG hashes through release-cut workflow_call or manual backfill. Avoid release.published because mobile/non-desktop releases lack those DMGs and must never rewrite casks.
+# Update desktop stable/RC casks in stablyai/homebrew-occ with release DMG hashes through release-cut workflow_call or manual backfill. Avoid release.published because mobile/non-desktop releases lack those DMGs and must never rewrite casks.
 
 on:
   workflow_call:
@@ -27,7 +27,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout orca
+      - name: Checkout occ
         uses: actions/checkout@v6
 
       - name: Resolve tag and version
@@ -124,12 +124,12 @@ jobs:
           app-id: 2590194
           private-key: ${{ secrets.BUFO_BOT_PRIVATE_KEY }}
           owner: stablyai
-          repositories: homebrew-orca
+          repositories: homebrew-occ
 
       - name: Checkout tap
         uses: actions/checkout@v6
         with:
-          repository: stablyai/homebrew-orca
+          repository: stablyai/homebrew-occ
           path: tap
           token: ${{ steps.app-token.outputs.token }}
 
@@ -165,7 +165,7 @@ jobs:
           # Backfills can race an existing branch; update its PR title when creation finds one.
           gh pr create \
             --title "$TITLE" \
-            --body "Automated bump of $CASK_PATH from stablyai/orca release $TAG." \
+            --body "Automated bump of $CASK_PATH from stablyai/occ release $TAG." \
             --base main \
             --head "$branch" \
             || gh pr edit "$branch" --title "$TITLE"

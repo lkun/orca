@@ -235,18 +235,18 @@ async function recoverTerminalOrphans(
 }
 
 function normalizeOptions(
-  optionsOrCall: TerminalOrphanRecoveryOptions | TerminalOrphanRecoveryCall | undefined
+  optionsoccll: TerminalOrphanRecoveryOptions | TerminalOrphanRecoveryCall | undefined
 ): TerminalOrphanRecoveryOptions {
-  return typeof optionsOrCall === 'function' ? { call: optionsOrCall } : (optionsOrCall ?? {})
+  return typeof optionsoccll === 'function' ? { call: optionsoccll } : (optionsoccll ?? {})
 }
 
 export function recoverWebSessionTerminalOrphansBeforeApply(
   state: TerminalOrphanRecoveryState,
   frame: RuntimeMobileSessionTabsResult,
   environmentId: string,
-  optionsOrCall?: TerminalOrphanRecoveryOptions | TerminalOrphanRecoveryCall
+  optionsoccll?: TerminalOrphanRecoveryOptions | TerminalOrphanRecoveryCall
 ): Promise<RuntimeMobileSessionTabsResult | null> {
-  const options = normalizeOptions(optionsOrCall)
+  const options = normalizeOptions(optionsoccll)
   // Every delta enters here; recover previously sent proofs per the negotiated ledger contract.
   const snapshot = suppressCancelledStructuredSessionTabs(
     mergeRetainedTerminalRetirementProofs(environmentId, frame),

@@ -34,7 +34,7 @@ describe('ssh host server telemetry', () => {
         kind: 'decided',
         outcome: 'relay',
         reason: 'refused',
-        refusal: 'orcad_migration_preflight_blocked',
+        refusal: 'occd_migration_preflight_blocked',
         recorded: false,
         durationMs: 7_000
       },
@@ -136,9 +136,9 @@ describe('ssh host server telemetry', () => {
   })
 
   it('narrows any unrecognised code, so free text never reaches an event', () => {
-    expect(hostServerRefusal('orcad_migration_/home/me/secret')).toBe('other')
+    expect(hostServerRefusal('occd_migration_/home/me/secret')).toBe('other')
     expect(hostServerFailure('Error: ssh me@host.example failed')).toBe('other')
-    expect(hostServerFailure('orcad_activation_no_readiness')).toBe('activation_no_readiness')
+    expect(hostServerFailure('occd_activation_no_readiness')).toBe('activation_no_readiness')
     expect(hostServerFailure('unsupported_host')).toBe('unsupported_host')
 
     trackSshHostServerEvent(
@@ -170,7 +170,7 @@ describe('ssh host server telemetry', () => {
         kind: 'conversion',
         phase: 'failed',
         failure: 'refused',
-        code: 'orcad_migration_terminals',
+        code: 'occd_migration_terminals',
         durationMs: 100
       },
       linuxGlibc
@@ -182,7 +182,7 @@ describe('ssh host server telemetry', () => {
         kind: 'deploy_failed',
         context: 'deploy',
         failure: 'deferred',
-        code: 'orcad_candidate_preflight_failed',
+        code: 'occd_candidate_preflight_failed',
         durationMs: 20_000
       },
       { os: 'linux', arch: 'arm64', libc: 'musl' }

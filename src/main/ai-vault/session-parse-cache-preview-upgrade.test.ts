@@ -27,7 +27,7 @@ afterEach(async () => {
 })
 
 it('reparses unchanged transcripts whose cached previews included reasoning', async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-preview-upgrade-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-preview-upgrade-'))
   const path = join(root, 'session.jsonl')
   const records = [
     { type: 'user', sessionId: 'preview-upgrade', message: { content: 'Question' } },

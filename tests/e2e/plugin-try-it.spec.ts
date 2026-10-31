@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
 import { expect, test } from '@stablyai/playwright-test'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 import {
   createGleamCatalogFixture,
   EXCALIDRAW_PLUGIN_KEY,
@@ -41,7 +41,7 @@ async function tryFromToast(page: Page, name: string): Promise<void> {
 test('Try it opens a highlighted sample and a new drawing', async ({}, testInfo) => {
   // Why: one Electron launch, a Git catalog fetch and two installs; slower than the 30s default.
   test.setTimeout(180_000)
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-try-it-e2e-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-try-it-e2e-'))
   const fixture = await createGleamCatalogFixture(root)
   const session = createRestartSession(testInfo, fixture.gitEnvironment)
   let launched: Awaited<ReturnType<typeof session.launch>> | null = null

@@ -64,7 +64,7 @@ describe('install-dir package grant passes', () => {
   let installDir: string
 
   beforeEach(() => {
-    installDir = mkdtempSync(join(tmpdir(), 'orca-acl-grant-'))
+    installDir = mkdtempSync(join(tmpdir(), 'occ-acl-grant-'))
     mkdirSync(join(installDir, 'resources', 'app.asar.unpacked'), { recursive: true })
     writeFileSync(join(installDir, 'ffmpeg.dll'), 'binary')
     writeFileSync(join(installDir, 'resources', 'app.asar.unpacked', 'addon.node'), 'binary')
@@ -131,7 +131,7 @@ describe('install-dir package grant passes', () => {
   })
 
   it('does not follow a link out of the install tree', async (context) => {
-    const outside = mkdtempSync(join(tmpdir(), 'orca-acl-grant-outside-'))
+    const outside = mkdtempSync(join(tmpdir(), 'occ-acl-grant-outside-'))
     writeFileSync(join(outside, 'elsewhere.dll'), 'binary')
     try {
       symlinkSync(outside, join(installDir, 'linked'), 'junction')
@@ -187,7 +187,7 @@ describe('install-dir package grant passes', () => {
     'reaches a path past MAX_PATH through the extended-length prefix',
     async () => {
       const calls = installFakeAddon()
-      const longDir = `C:\\Program Files\\${'orca'.repeat(70)}`
+      const longDir = `C:\\Program Files\\${'occ'.repeat(70)}`
       const seen: string[] = []
       setWindowsSecurityForTests({
         currentUserSid: () => 'S-1-5-21-1-2-3-1001',

@@ -85,7 +85,7 @@ function createLocalRepoFixture(worktreeCount) {
   const repoPath = path.join(baseDir, 'repo')
   mkdirSync(repoPath, { recursive: true })
   git(repoPath, 'init', '--initial-branch=main')
-  git(repoPath, 'config', 'user.email', 'bench@orca.local')
+  git(repoPath, 'config', 'user.email', 'bench@occ.local')
   git(repoPath, 'config', 'user.name', 'OCC Bench')
   writeFileSync(path.join(repoPath, 'README.md'), '# cold-park resource fixture\n')
   git(repoPath, 'add', '.')
@@ -337,7 +337,7 @@ async function main() {
     fixture = createLocalRepoFixture(args.worktrees)
     const cdpPort = await pickFreePort()
     userDataDir = createShortUserDataDirectory()
-    process.env.ORCA_E2E_TERMINAL_PARKING_DELAY_MS = String(PARK_DELAY_MS)
+    process.env.OCC_E2E_TERMINAL_PARKING_DELAY_MS = String(PARK_DELAY_MS)
     console.log(
       `[cold-park-res] fixture=${fixture.baseDir} userData=${userDataDir} cdp=${cdpPort} worktrees=${args.worktrees}`
     )

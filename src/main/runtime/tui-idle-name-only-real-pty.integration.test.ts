@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import * as pty from 'node-pty'
 import { describe, it, type TestContext } from 'vitest'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import { makeTuiIdleRuntime } from './tui-idle-wait-test-harness'
 import type { RuntimeSyncWindowGraph } from '../../shared/runtime-types'
 import { TERMINAL_LIFECYCLE_METHODS } from './rpc/methods/terminal/terminal-lifecycle-methods'
@@ -77,7 +77,7 @@ async function startRealAgentPane(
 
 /** Exactly what `occ terminal wait --terminal <h> --for tui-idle` reaches over RPC. */
 async function terminalWait(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   terminal: string,
   timeoutMs: number
 ): Promise<{ satisfied: boolean; elapsedMs: number }> {

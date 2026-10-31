@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { test } from 'vitest'
 import { parse } from 'yaml'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   assertNativeColdProbe,
   assertNoHeaderDownloads,
@@ -98,8 +98,8 @@ test('requires all four initial addon failures and excludes timed header downloa
     code: 1,
     stderr: [
       'node-pty',
-      '@orca/windows-registry',
-      '@orca/windows-security',
+      '@occ/windows-registry',
+      '@occ/windows-security',
       '@vscode/windows-process-tree'
     ]
       .map((name) => `${name}: unavailable`)
@@ -140,7 +140,7 @@ test('uses case-insensitive environment comparisons and never publishes values',
 })
 
 test('writes an empty warm trace and observes calls without changing execution', () => {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-native-observer-test-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-native-observer-test-'))
   try {
     const output = join(directory, 'trace.json')
     const result = { code: 0, stdout: 'original stdout', stderr: '', timedOut: false }
@@ -167,10 +167,10 @@ test('writes an empty warm trace and observes calls without changing execution',
 })
 
 test('preload observes the CJS process-host export imported by production ESM code', async () => {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-native-observer-esm-test-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-native-observer-esm-test-'))
   try {
     const trace = join(directory, 'trace.json')
-    const program = `import { runProcessSync } from '@orca/process-host'; const value = runProcessSync({program:process.execPath,args:['-e','process.stdout.write("proof")']}); if(value.stdout !== 'proof') process.exit(2);`
+    const program = `import { runProcessSync } from '@occ/process-host'; const value = runProcessSync({program:process.execPath,args:['-e','process.stdout.write("proof")']}); if(value.stdout !== 'proof') process.exit(2);`
     const result = await runProcess({
       program: process.execPath,
       args: [
@@ -181,7 +181,7 @@ test('preload observes the CJS process-host export imported by production ESM co
         program
       ],
       cwd: join(import.meta.dirname, '../..'),
-      env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1', ORCA_NATIVE_BENCHMARK_TRACE: trace }
+      env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1', OCC_NATIVE_BENCHMARK_TRACE: trace }
     })
     assert.equal(result.code, 0, result.stderr)
     const value = JSON.parse(readFileSync(trace, 'utf8'))
@@ -214,7 +214,7 @@ test('manual workflow freezes source and limits Windows occupancy without changi
 })
 
 test('source validation allows owned workflow receipts but rejects unrelated untracked source', async () => {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-native-output-ignore-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-native-output-ignore-'))
   const git = async (args) => {
     const result = await runProcess({ program: 'git', args, cwd: directory, timeoutMs: 10_000 })
     assert.equal(result.code, 0)

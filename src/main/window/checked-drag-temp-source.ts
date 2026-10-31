@@ -12,7 +12,7 @@ import type {
 } from './dragged-temp-file-copy'
 import { ensureOwnedTempStagingRoot } from './owned-temp-staging-root'
 
-const COPY_DIR_PREFIX = 'orca-drop-'
+const COPY_DIR_PREFIX = 'occ-drop-'
 const COPY_HIGH_WATER_MARK = 1024 * 1024
 
 /** A checked drag-temp file: the handle reads the dropped bytes even after the provider removes

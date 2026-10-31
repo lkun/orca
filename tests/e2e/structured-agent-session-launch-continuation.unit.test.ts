@@ -14,7 +14,7 @@ import { createBrowserUuid } from '@/lib/browser-uuid'
 import { mkdir, mkdtemp, writeFile, rm, realpath } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join, dirname } from 'node:path'
-import { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import { prepareStructuredAgentSessionCreateForWorktree } from '../../src/main/runtime/rpc/methods/structured-agent-session-create'
 import type { StructuredAgentSessionHost } from '../../src/main/native-chat/agent-session-wire/structured-agent-session-host'
 import { setStructuredAgentSessionHost } from '../../src/main/native-chat/agent-session-wire/structured-agent-session-registry'
@@ -59,8 +59,8 @@ let root: string
 beforeEach(async () => {
   restore = resetCreateMessageFixture()
   mocks.exactSupport.mockResolvedValue(true)
-  root = await mkdtemp(join(await realpath(tmpdir()), 'orca-36210-continuation-'))
-  vi.stubEnv('ORCA_USER_DATA_PATH', join(root, 'profile'))
+  root = await mkdtemp(join(await realpath(tmpdir()), 'occ-36210-continuation-'))
+  vi.stubEnv('OCC_USER_DATA_PATH', join(root, 'profile'))
 })
 afterEach(async () => {
   vi.unstubAllEnvs()
@@ -103,7 +103,7 @@ it.each(['claude', 'codex'] as const)(
     Object.assign(mocks.settings, settings)
     const store = { getSettings: () => settings }
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: create-intent resolution only reads this runtime store's settings.
-    const runtime = new OrcaRuntimeService(store as never, undefined, {
+    const runtime = new OCCRuntimeService(store as never, undefined, {
       prepareCodexStructuredLaunch: () => home
     })
     vi.spyOn(runtime, 'getStructuredAgentSessionCreateSupport').mockResolvedValue({

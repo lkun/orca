@@ -19,7 +19,7 @@ let root: Root
 function Probe({
   id = 'row',
   seeds,
-  repo = 'orca',
+  repo = 'occ',
   host,
   target
 }: {
@@ -86,7 +86,7 @@ describe('repository assignee reuse across row seeds', () => {
 
     expect(listUsers).toHaveBeenCalledExactlyOnceWith({
       owner: 'stablyai',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.com'
     })
     expect(logins('a')).toEqual(['member', 'alpha', 'zeta'])
@@ -141,14 +141,14 @@ describe('repository assignee reuse across row seeds', () => {
     expect(listUsers).toHaveBeenCalledTimes(3)
     expect(listUsers).toHaveBeenLastCalledWith({
       owner: 'stablyai',
-      repo: 'orca',
+      repo: 'occ',
       host: 'ghe.example.test'
     })
     expect(callRuntimeRpc).toHaveBeenCalledTimes(2)
     expect(callRuntimeRpc).toHaveBeenLastCalledWith(
       { kind: 'environment', environmentId: 'remote-b' },
       'github.project.listAssignableUsersBySlug',
-      { owner: 'stablyai', repo: 'orca', host: 'github.com' },
+      { owner: 'stablyai', repo: 'occ', host: 'github.com' },
       { timeoutMs: 30_000 }
     )
     clearGitHubSlugMetadataCache()

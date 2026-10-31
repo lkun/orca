@@ -3,11 +3,11 @@ import { existsSync, mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import * as runtimeMetadataModule from './runtime-metadata'
 import { readRuntimeMetadata, writeRuntimeMetadata } from './runtime-metadata'
 import { createRuntimeTransportMetadata } from './runtime-rpc/runtime-rpc-socket-metadata'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import type { DeviceRegistry } from './device-registry'
 import type { RuntimeMetadata } from '../../shared/runtime-bootstrap'
 
@@ -27,11 +27,11 @@ vi.mock('../git/worktree', () => {
   }
 })
 
-describe('OrcaRuntimeRpcServer', () => {
+describe('OCCRuntimeRpcServer', () => {
   it('writes runtime metadata with transport details when started', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService()
-    const server = new OrcaRuntimeRpcServer({ methods: [], runtime, userDataPath })
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService()
+    const server = new OCCRuntimeRpcServer({ methods: [], runtime, userDataPath })
 
     await server.start()
 
@@ -49,9 +49,9 @@ describe('OrcaRuntimeRpcServer', () => {
 
   it('reclaims runtime metadata clobbered by a second instance that has since died', async () => {
     // A second instance can replace metadata then exit; reclaim it so CLI finds this still-serving runtime (#7848).
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService()
-    const server = new OrcaRuntimeRpcServer({ methods: [], runtime, userDataPath })
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService()
+    const server = new OCCRuntimeRpcServer({ methods: [], runtime, userDataPath })
     await server.start()
     const published = readRuntimeMetadata(userDataPath)
 
@@ -70,11 +70,11 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('leaves runtime metadata owned by a live sibling runtime untouched', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     // Use a synthetic owned pid and process.pid as live sibling; Windows never assigns pid 1.
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath,
       pid: 4242
     })
@@ -95,10 +95,10 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('stops reclaiming runtime metadata after the server is stopped', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
+      runtime: new OCCRuntimeService(),
       userDataPath
     })
     await server.start()
@@ -126,9 +126,9 @@ describe('OrcaRuntimeRpcServer', () => {
 
   it('drops a republish from an ownership read that lands after the server stopped', async () => {
     // In-flight async reads can outlive stop; activeTransports must prevent late republish.
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService()
-    const server = new OrcaRuntimeRpcServer({ methods: [], runtime, userDataPath, pid: 1001 })
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService()
+    const server = new OCCRuntimeRpcServer({ methods: [], runtime, userDataPath, pid: 1001 })
     await server.start()
 
     let releaseRead: (record: RuntimeMetadata | null) => void = () => {}
@@ -157,10 +157,10 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('flushes a lastSeen refresh scheduled while transports stop', async () => {
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
-      userDataPath: mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-')),
+      runtime: new OCCRuntimeService(),
+      userDataPath: mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-')),
       enableWebSocket: false
     })
     let pending = false
@@ -210,9 +210,9 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('leaves the last published metadata in place when a runtime stops', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService()
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService()
+    const server = new OCCRuntimeRpcServer({
       methods: [],
       runtime,
       userDataPath,
@@ -231,9 +231,9 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('closes the socket if metadata publication fails during startup', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService()
-    const server = new OrcaRuntimeRpcServer({ methods: [], runtime, userDataPath })
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService()
+    const server = new OCCRuntimeRpcServer({ methods: [], runtime, userDataPath })
     const writeMetadataSpy = vi
       .spyOn(runtimeMetadataModule, 'writeRuntimeMetadata')
       .mockImplementationOnce(() => {

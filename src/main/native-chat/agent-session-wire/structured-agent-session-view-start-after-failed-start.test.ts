@@ -59,7 +59,7 @@ let driver: Promise<void> | undefined
 let stopped: boolean
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-view-start-after-failed-start-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-view-start-after-failed-start-'))
   resetHostTestOperationIds()
   lifecycle = []
   entries = []

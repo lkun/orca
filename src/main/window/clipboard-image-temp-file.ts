@@ -48,7 +48,7 @@ export async function saveClipboardImageBufferAsTempFile(
   }
   // A picked file keeps its own name, so the paste gets a folder to stay unique.
   const tempPath = args?.fileName
-    ? path.join(folder, `orca-paste-${randomUUID()}`, shellInertFileName(args.fileName))
+    ? path.join(folder, `occ-paste-${randomUUID()}`, shellInertFileName(args.fileName))
     : path.join(folder, agentSessionPastedImageName(Date.now(), randomUUID()))
   if (args?.fileName) {
     await fs.mkdir(path.dirname(tempPath), { recursive: true })

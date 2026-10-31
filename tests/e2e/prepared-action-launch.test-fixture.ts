@@ -8,15 +8,15 @@ import { resolveAgentStartupPlanInputs } from '../../src/shared/agent-startup-pl
 import { buildAgentStartupPlan } from '../../src/shared/tui-agent-startup'
 import { resolveAgentSessionOptionLaunch } from '../../src/shared/agent-session-option-launch-legacy.test-fixture'
 import {
-  OrcaRuntimeWithResolveMobileSessionTerminalCommand,
+  OCCRuntimeWithResolveMobileSessionTerminalCommand,
   type MobileTerminalCommandOptions
 } from '../../src/main/runtime/terminal/launch/mobile-terminal-startup'
 
 vi.mock('../../src/main/runtime/terminal/launch/mobile-terminal-renderer-create', () => ({
-  OrcaRuntimeWithRunCreateMobileSessionTerminal: class {}
+  OCCRuntimeWithRunCreateMobileSessionTerminal: class {}
 }))
 
-abstract class PreparedMobileCommandHost extends OrcaRuntimeWithResolveMobileSessionTerminalCommand {
+abstract class PreparedMobileCommandHost extends OCCRuntimeWithResolveMobileSessionTerminalCommand {
   static get commandResolver() {
     return this.prototype.resolveMobileSessionTerminalCommand
   }

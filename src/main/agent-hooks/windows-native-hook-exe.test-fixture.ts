@@ -1,4 +1,4 @@
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { join, resolve } from 'node:path'
 
 const REPO_ROOT = resolve(import.meta.dirname, '../../..')
@@ -7,7 +7,7 @@ const BUILD_OUTPUT = join(
   'native',
   'windows-agent-hook',
   '.build',
-  'orca-agent-hook.exe'
+  'occ-agent-hook.exe'
 )
 
 let built = false
@@ -22,7 +22,7 @@ export function buildWindowsNativeHookExecutable(): string {
       timeoutMs: 300_000
     })
     if (result.code !== 0) {
-      throw new Error(`orca-agent-hook.exe build failed:\n${result.stdout}\n${result.stderr}`)
+      throw new Error(`occ-agent-hook.exe build failed:\n${result.stdout}\n${result.stderr}`)
     }
     built = true
   }

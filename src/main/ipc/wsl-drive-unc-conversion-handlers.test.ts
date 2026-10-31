@@ -19,8 +19,8 @@ const startup = vi.hoisted(() => ({
   lastWslDriveUncConversionOutcomes: vi.fn(() => [{ migrationId: 'conv-1', outcome: 'converted' }])
 }))
 vi.mock('../wsl/wsl-drive-unc-conversion-startup', () => startup)
-vi.mock('../orca-profiles/profile-index-store', () => ({
-  getOrcaProfileListState: () => ({ activeProfileId: 'profile-1' })
+vi.mock('../occ-profiles/profile-index-store', () => ({
+  getOCCProfileListState: () => ({ activeProfileId: 'profile-1' })
 }))
 
 import { registerWslDriveUncConversionHandlers } from './wsl-drive-unc-conversion-handlers'

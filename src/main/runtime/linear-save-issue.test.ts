@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { LINEAR_WRITE_BODY_CAP } from '../../shared/linear/agent-access'
 import * as mutations from '../linear/linear-issue-mutations'
 import * as linearTeams from '../linear/teams'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 const issue = {
   id: 'issue-1',
@@ -38,7 +38,7 @@ afterEach(() => {
 
 describe('Linear save issue', () => {
   it('delegates creates with the MCP-required team and title', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const create = vi.spyOn(runtime, 'linearIssueCreate').mockResolvedValue({
       issue,
       meta: { workspaceId: 'workspace-1', writeId: 'write-1', deduplicated: false }
@@ -63,7 +63,7 @@ describe('Linear save issue', () => {
   })
 
   it('keeps team changes explicitly unsupported on updates', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
 
     await expect(
       runtime.linearSaveIssue({ input: 'ENG-1', team: 'OPS', title: 'Moved issue' })
@@ -74,7 +74,7 @@ describe('Linear save issue', () => {
   })
 
   it('rejects oversized descriptions before resolving an issue or calling Linear', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const resolveTarget = vi.fn()
     Object.assign(runtime, { resolveLinearAgentWriteTarget: resolveTarget })
 
@@ -88,7 +88,7 @@ describe('Linear save issue', () => {
   })
 
   it('does not send a mutation or confirmation read when every field is already set', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const mutation = vi.spyOn(mutations, 'updateIssueForAgent')
     const notify = vi.fn().mockResolvedValue(undefined)
     Object.assign(runtime, {
@@ -110,7 +110,7 @@ describe('Linear save issue', () => {
   })
 
   it('accepts user UUIDs without listing every team member', async () => {
-    const runtime = new OrcaRuntimeService() as unknown as SaveIssueInternals
+    const runtime = new OCCRuntimeService() as unknown as SaveIssueInternals
     const listMembers = vi.spyOn(linearTeams, 'getTeamMembersOrThrow')
     const userId = '11111111-1111-4111-8111-111111111111'
 
@@ -121,7 +121,7 @@ describe('Linear save issue', () => {
   })
 
   it('matches assignees by full name or email like Linear MCP', async () => {
-    const runtime = new OrcaRuntimeService() as unknown as SaveIssueInternals
+    const runtime = new OCCRuntimeService() as unknown as SaveIssueInternals
     vi.spyOn(linearTeams, 'getTeamMembersOrThrow').mockResolvedValue([
       {
         id: 'user-1',
@@ -140,7 +140,7 @@ describe('Linear save issue', () => {
   })
 
   it('resolves workflow lifecycle types while preferring exact state names', () => {
-    const runtime = new OrcaRuntimeService() as unknown as SaveIssueInternals
+    const runtime = new OCCRuntimeService() as unknown as SaveIssueInternals
     const states = [
       { id: 'state-progress', name: 'In Progress', type: 'started' },
       { id: 'state-started', name: 'Started', type: 'unstarted' }
@@ -151,7 +151,7 @@ describe('Linear save issue', () => {
   })
 
   it('clears labels without listing the team label catalog', async () => {
-    const runtime = new OrcaRuntimeService() as unknown as SaveIssueInternals
+    const runtime = new OCCRuntimeService() as unknown as SaveIssueInternals
     const listLabels = vi.spyOn(linearTeams, 'getTeamLabelsOrThrow')
 
     await expect(

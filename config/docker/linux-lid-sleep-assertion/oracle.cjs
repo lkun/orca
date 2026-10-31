@@ -75,7 +75,7 @@ function kill(pid) {
 }
 
 async function runScenario(scenario) {
-  const unit = `app-orca-inhibitor-oracle-${randomUUID()}.scope`
+  const unit = `app-occ-inhibitor-oracle-${randomUUID()}.scope`
   const identityFile = join('/tmp', `${unit}.pid`)
   const owner = spawn(
     'systemd-run',

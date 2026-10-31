@@ -80,13 +80,13 @@ afterEach(async () => {
 })
 
 async function createMacCommandFixture() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-cli-command-race-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-cli-command-race-'))
   createdRoots.push(root)
   const commandDirectory = join(root, 'bin')
-  const commandPath = join(commandDirectory, 'orca')
+  const commandPath = join(commandDirectory, 'occ')
   const resourcesPath = join(root, 'Current.app', 'Contents', 'Resources')
-  const launcherPath = join(resourcesPath, 'bin', 'orca')
-  const staleLauncherPath = join(root, 'Old.app', 'Contents', 'Resources', 'bin', 'orca')
+  const launcherPath = join(resourcesPath, 'bin', 'occ')
+  const staleLauncherPath = join(root, 'Old.app', 'Contents', 'Resources', 'bin', 'occ')
   await mkdir(commandDirectory, { recursive: true })
   await mkdir(dirname(launcherPath), { recursive: true })
   await writeFile(launcherPath, '#!/usr/bin/env bash\n', { mode: 0o755 })
@@ -133,12 +133,12 @@ function createMacInstaller(
 
 async function recoveryPath(commandDirectory: string): Promise<string> {
   const transactionName = (await readdir(commandDirectory)).find((name) =>
-    name.startsWith('.orca-cli-')
+    name.startsWith('.occ-cli-')
   )
   if (!transactionName) {
     throw new Error('Expected a preserved CLI command transaction.')
   }
-  return join(commandDirectory, transactionName, 'orca')
+  return join(commandDirectory, transactionName, 'occ')
 }
 
 async function rejectionFrom(operation: Promise<unknown>): Promise<Error> {
@@ -197,7 +197,7 @@ describe.skipIf(process.platform === 'win32')('CLI command filesystem races', ()
     await expect(installer.install()).rejects.toThrow('Refusing to replace non-OCC command')
     await expect(readlink(fixture.commandPath)).resolves.toBe(foreignTarget)
     expect(
-      (await readdir(fixture.commandDirectory)).some((name) => name.startsWith('.orca-cli-'))
+      (await readdir(fixture.commandDirectory)).some((name) => name.startsWith('.occ-cli-'))
     ).toBe(false)
   })
 
@@ -209,8 +209,8 @@ describe.skipIf(process.platform === 'win32')('CLI command filesystem races', ()
       [
         '#!/usr/bin/env bash',
         `CLI='${oldCliPath}'`,
-        'export ORCA_NODE_OPTIONS="${NODE_OPTIONS-}"',
-        'export ORCA_NODE_REPL_EXTERNAL_MODULE="${NODE_REPL_EXTERNAL_MODULE-}"',
+        'export OCC_NODE_OPTIONS="${NODE_OPTIONS-}"',
+        'export OCC_NODE_REPL_EXTERNAL_MODULE="${NODE_REPL_EXTERNAL_MODULE-}"',
         'ELECTRON_RUN_AS_NODE=1 exec electron "$CLI" "$@"'
       ].join('\n')
     )
@@ -301,15 +301,15 @@ describe.skipIf(process.platform === 'win32')('CLI command filesystem races', ()
   })
 
   it('keeps a foreign legacy Linux command when readlink loses the inspection race', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-cli-legacy-race-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-cli-legacy-race-'))
     createdRoots.push(root)
     const homePath = join(root, 'home')
     const commandDirectory = join(homePath, '.local', 'bin')
     const resourcesPath = join(root, 'resources')
     const launcherPath = join(resourcesPath, 'bin', 'occ-ide')
-    const legacyPath = join(commandDirectory, 'orca')
-    const managedLegacyTarget = join(resourcesPath, 'bin', 'orca')
-    const foreignTarget = join(root, 'foreign-orca')
+    const legacyPath = join(commandDirectory, 'occ')
+    const managedLegacyTarget = join(resourcesPath, 'bin', 'occ')
+    const foreignTarget = join(root, 'foreign-occ')
     await mkdir(commandDirectory, { recursive: true })
     await mkdir(dirname(launcherPath), { recursive: true })
     await writeFile(launcherPath, '#!/usr/bin/env bash\n', { mode: 0o755 })
@@ -333,15 +333,15 @@ describe.skipIf(process.platform === 'win32')('CLI command filesystem races', ()
   })
 
   it('keeps a foreign legacy Linux command whose quarantined inode is reused', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-cli-legacy-identity-race-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-cli-legacy-identity-race-'))
     createdRoots.push(root)
     const homePath = join(root, 'home')
     const commandDirectory = join(homePath, '.local', 'bin')
     const resourcesPath = join(root, 'resources')
     const launcherPath = join(resourcesPath, 'bin', 'occ-ide')
-    const legacyPath = join(commandDirectory, 'orca')
-    const managedTarget = join(resourcesPath, 'bin', 'orca')
-    const foreignTarget = join(root, 'foreign-orca')
+    const legacyPath = join(commandDirectory, 'occ')
+    const managedTarget = join(resourcesPath, 'bin', 'occ')
+    const foreignTarget = join(root, 'foreign-occ')
     await mkdir(commandDirectory, { recursive: true })
     await mkdir(dirname(launcherPath), { recursive: true })
     await writeFile(launcherPath, '#!/usr/bin/env bash\n', { mode: 0o755 })

@@ -32,7 +32,7 @@ describe('relocateServeSupervisor', () => {
   let userData: string
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-supervisor-relocation-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-supervisor-relocation-'))
     resources = join(root, 'OCC.app', 'Contents', 'Resources')
     appRoot = join(resources, 'app.asar.unpacked')
     userData = join(root, 'profile')
@@ -95,7 +95,7 @@ describe('relocateServeSupervisor', () => {
   it('stays in place outside a packaged app', async () => {
     for (const d of [
       deps({ env: {} }),
-      deps({ env: { ELECTRON_RUN_AS_NODE: '1', ORCA_APP_EXECUTABLE: '/dev/OCC' } }),
+      deps({ env: { ELECTRON_RUN_AS_NODE: '1', OCC_APP_EXECUTABLE: '/dev/OCC' } }),
       deps({ appRoot: join(root, 'checkout') })
     ]) {
       await expect(relocateServeSupervisor(d)).resolves.toBe('in-place')

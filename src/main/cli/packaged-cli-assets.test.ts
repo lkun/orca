@@ -18,7 +18,7 @@ import { promisify } from 'node:util'
 import { fileURLToPath } from 'node:url'
 import { createPackageWithOptions, statFile } from '@electron/asar'
 import { describe, expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { stagePackagedProcessHost } from '../../../config/scripts/packaged-process-host-fixture.mjs'
 
 const require = createRequire(import.meta.url)
@@ -44,7 +44,7 @@ const unixLauncherFixtures = [
     name: 'macOS',
     asset: darwinLauncherAsset,
     appDir: ['OCC.app'],
-    launcher: ['Contents', 'Resources', 'bin', 'orca'],
+    launcher: ['Contents', 'Resources', 'bin', 'occ'],
     executable: ['Contents', 'MacOS', 'OCC'],
     cli: ['Contents', 'Resources', 'app.asar.unpacked', 'out', 'cli', 'index.js']
   }
@@ -52,7 +52,7 @@ const unixLauncherFixtures = [
 
 describe('packaged CLI assets', () => {
   it('loads worktree link validation from the installed CLI', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-cli-gitlab-package-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-cli-gitlab-package-'))
     const projectDir = fileURLToPath(new URL('../../../', import.meta.url))
     const source = join(root, 'app-source')
     const archive = join(root, 'resources', 'app.asar')
@@ -114,10 +114,10 @@ describe('packaged CLI assets', () => {
         cwd: root,
         env: {
           ...process.env,
-          ORCA_BACKGROUND_LAUNCH: '1',
+          OCC_BACKGROUND_LAUNCH: '1',
           NODE_PATH: '',
           NODE_OPTIONS: '',
-          ORCA_USER_DATA_PATH: join(root, 'user-data'),
+          OCC_USER_DATA_PATH: join(root, 'user-data'),
           HOME: join(root, 'home')
         },
         timeoutMs: 10_000
@@ -136,7 +136,7 @@ describe('packaged CLI assets', () => {
     'delivers Unix termination signals to the $name executable and releases its listener',
     async (launcherFixture) => {
       for (const signal of unixTerminationSignals) {
-        const root = await mkdtemp(join(tmpdir(), 'orca-unix-cli-signal-'))
+        const root = await mkdtemp(join(tmpdir(), 'occ-unix-cli-signal-'))
         const appDir = join(root, ...launcherFixture.appDir)
         const launcherPath = join(appDir, ...launcherFixture.launcher)
         const electronPath = join(appDir, ...launcherFixture.executable)
@@ -160,7 +160,7 @@ const shutdown = () => server.close(() => process.exit(0))
 process.on('SIGINT', shutdown)
 process.on('SIGTERM', shutdown)
 server.listen(0, '127.0.0.1', () => {
-  fs.writeFileSync(process.env.ORCA_TEST_LISTENER_STATE, JSON.stringify({
+  fs.writeFileSync(process.env.OCC_TEST_LISTENER_STATE, JSON.stringify({
     pid: process.pid,
     port: server.address().port
   }))
@@ -170,7 +170,7 @@ server.listen(0, '127.0.0.1', () => {
           )
 
           launcher = spawn(launcherPath, [], {
-            env: { ...process.env, ORCA_TEST_LISTENER_STATE: statePath },
+            env: { ...process.env, OCC_TEST_LISTENER_STATE: statePath },
             stdio: 'ignore'
           })
           const state = await waitForListenerState(statePath)
@@ -238,7 +238,7 @@ printf 'arg=%s\\n' "$@"
         const commandDir = join(homeDir, '.local', 'bin')
         const commandPath = join(commandDir, 'occ-ide')
         await mkdir(commandDir, { recursive: true })
-        await mkdir(join(homeDir, 'orca'), { recursive: true })
+        await mkdir(join(homeDir, 'occ'), { recursive: true })
         await symlink(launcherPath, commandPath)
 
         const symlinked = await execFileAsync(commandPath, ['--help'], {
@@ -257,7 +257,7 @@ printf 'arg=%s\\n' "$@"
   itRunsUnixShell.each(unixLauncherFixtures)(
     'sanitizes node env and forwards argv verbatim through the $name launcher',
     async (launcherFixture) => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-unix-cli-env-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-unix-cli-env-'))
       try {
         const appDir = join(root, ...launcherFixture.appDir)
         const launcherPath = join(appDir, ...launcherFixture.launcher)
@@ -276,9 +276,9 @@ node -e 'console.log(JSON.stringify({
   argv: process.argv.slice(1),
   runAsNode: process.env.ELECTRON_RUN_AS_NODE,
   nodeOptions: process.env.NODE_OPTIONS ?? null,
-  orcaNodeOptions: process.env.ORCA_NODE_OPTIONS ?? null,
+  occNodeOptions: process.env.OCC_NODE_OPTIONS ?? null,
   nodeReplExternalModule: process.env.NODE_REPL_EXTERNAL_MODULE ?? null,
-  orcaNodeReplExternalModule: process.env.ORCA_NODE_REPL_EXTERNAL_MODULE ?? null
+  occNodeReplExternalModule: process.env.OCC_NODE_REPL_EXTERNAL_MODULE ?? null
 }))' -- "$@"
 `,
           { encoding: 'utf8', mode: 0o755 }
@@ -296,18 +296,18 @@ node -e 'console.log(JSON.stringify({
           argv: string[]
           runAsNode: string
           nodeOptions: string | null
-          orcaNodeOptions: string | null
+          occNodeOptions: string | null
           nodeReplExternalModule: string | null
-          orcaNodeReplExternalModule: string | null
+          occNodeReplExternalModule: string | null
         }
 
         expect(payload.argv).toEqual([cliPath, '--help', 'two words'])
         expect(payload.runAsNode).toBe('1')
         // Hide node options from Electron's bootstrap but preserve them for the CLI.
         expect(payload.nodeOptions).toBeNull()
-        expect(payload.orcaNodeOptions).toBe('--trace-warnings')
+        expect(payload.occNodeOptions).toBe('--trace-warnings')
         expect(payload.nodeReplExternalModule).toBeNull()
-        expect(payload.orcaNodeReplExternalModule).toBe('external-loader')
+        expect(payload.occNodeReplExternalModule).toBe('external-loader')
       } finally {
         await rm(root, { recursive: true, force: true })
       }

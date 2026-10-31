@@ -1,25 +1,25 @@
 // #1066/#1112: collapsed-sidebar floating chrome must not cover the first tab.
 // Measure the whole header including navigation, then require both clearing geometry and a successful tab-center hit test.
 
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady, waitForActiveWorktree, ensureTerminalVisible } from './helpers/store'
 import { pressShortcut } from './helpers/shortcuts'
 
 test.describe('Tab visibility with closed sidebar', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
   })
 
-  test('first tab stays visible after Cmd+B collapses the sidebar', async ({ orcaPage }) => {
+  test('first tab stays visible after Cmd+B collapses the sidebar', async ({ occPage }) => {
     // Use Cmd/Ctrl+B so broken binding/editable-target routing cannot pass via direct state setup.
 
     // Require terminal view and initially open sidebar to exercise the actual open→collapsed transition.
     await expect
       .poll(
         async () =>
-          orcaPage.evaluate(() => {
+          occPage.evaluate(() => {
             const store = window.__store
             if (!store) {
               // Fail a missing exposed store explicitly instead of timing out on downstream state.
@@ -36,20 +36,20 @@ test.describe('Tab visibility with closed sidebar', () => {
       .toEqual({ activeView: 'terminal', sidebarOpen: true })
 
     // Blur non-xterm editable focus so the chord reaches sidebar toggle instead of an editor’s bold keymap.
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       const active = document.activeElement
       if (active instanceof HTMLElement && !active.classList.contains('xterm-helper-textarea')) {
         active.blur()
       }
     })
 
-    await pressShortcut(orcaPage, 'b')
+    await pressShortcut(occPage, 'b')
 
     // Poll closed state before layout measurement; React and ResizeObserver settle on later frames.
     await expect
       .poll(
         async () =>
-          orcaPage.evaluate(() => {
+          occPage.evaluate(() => {
             const store = window.__store
             if (!store) {
               throw new Error('window.__store is not available — is the app in dev mode?')
@@ -70,7 +70,7 @@ test.describe('Tab visibility with closed sidebar', () => {
       firstTabWidth: number
       centerIsTabOrDescendant: boolean
     } | null> =>
-      orcaPage.evaluate(() => {
+      occPage.evaluate(() => {
         const titlebarLeft = document.querySelector<HTMLElement>('.titlebar-left')
         // Pick the visually leftmost tab because split-group DOM order need not match screen order.
         const allTabs = Array.from(
@@ -137,9 +137,9 @@ test.describe('Tab visibility with closed sidebar', () => {
   })
 
   test('sidebar toggle and Back button stay separated after sidebar collapse', async ({
-    orcaPage
+    occPage
   }) => {
-    await orcaPage.addInitScript(() => {
+    await occPage.addInitScript(() => {
       // Why: #2082 was reported against Windows-only titlebar chrome. Reloading
       // with a Windows UA makes App.tsx take that renderer branch on any CI host.
       const userAgent =
@@ -149,16 +149,16 @@ test.describe('Tab visibility with closed sidebar', () => {
         configurable: true
       })
     })
-    await orcaPage.reload({ waitUntil: 'domcontentloaded' })
-    await orcaPage.waitForFunction(() => Boolean(window.__store), null, { timeout: 30_000 })
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
+    await occPage.reload({ waitUntil: 'domcontentloaded' })
+    await occPage.waitForFunction(() => Boolean(window.__store), null, { timeout: 30_000 })
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
 
     await expect
       .poll(
         async () =>
-          orcaPage.evaluate(() => ({
+          occPage.evaluate(() => ({
             hasWindowsUserAgent: navigator.userAgent.includes('Windows'),
             hasWindowsTitlebarChrome:
               Boolean(document.querySelector('button[aria-label="Application menu"]')) &&
@@ -171,7 +171,7 @@ test.describe('Tab visibility with closed sidebar', () => {
       )
       .toEqual({ hasWindowsUserAgent: true, hasWindowsTitlebarChrome: true })
 
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       const store = window.__store
       if (!store) {
         throw new Error('window.__store is not available — is the app in dev mode?')
@@ -182,7 +182,7 @@ test.describe('Tab visibility with closed sidebar', () => {
     await expect
       .poll(
         async () =>
-          orcaPage.evaluate(() => {
+          occPage.evaluate(() => {
             const store = window.__store
             if (!store) {
               throw new Error('window.__store is not available — is the app in dev mode?')
@@ -197,7 +197,7 @@ test.describe('Tab visibility with closed sidebar', () => {
       )
       .toEqual({ activeView: 'terminal', sidebarOpen: true })
 
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       const store = window.__store
       if (!store) {
         throw new Error('window.__store is not available — is the app in dev mode?')
@@ -209,7 +209,7 @@ test.describe('Tab visibility with closed sidebar', () => {
     await expect
       .poll(
         async () =>
-          orcaPage.evaluate(() => {
+          occPage.evaluate(() => {
             const store = window.__store
             if (!store) {
               throw new Error('window.__store is not available — is the app in dev mode?')
@@ -229,7 +229,7 @@ test.describe('Tab visibility with closed sidebar', () => {
       backLeft: number
       backCenterHitsBack: boolean
     } | null> =>
-      orcaPage.evaluate(() => {
+      occPage.evaluate(() => {
         const titlebarLeft = document.querySelector<HTMLElement>('.titlebar-left')
         const sidebarToggle = titlebarLeft?.querySelector<HTMLButtonElement>(
           'button[aria-label="Toggle sidebar"]'

@@ -72,18 +72,18 @@ function pushTrigger(remote: FirebaseRemoteMessageNotification | null): Notifica
   }
 }
 
-const ORCA_PUSH_DATA: Record<string, unknown> = {
+const OCC_PUSH_DATA: Record<string, unknown> = {
   hostFingerprint: 'host',
   notificationId: 'event',
   notificationEpoch: 'epoch',
   notificationSeq: '3',
   paneKey: 'pane',
-  channelId: 'orca-desktop'
+  channelId: 'occ-desktop'
 }
 
 function notification(
   trigger: NotificationTrigger = pushTrigger(null),
-  data: Record<string, unknown> = ORCA_PUSH_DATA
+  data: Record<string, unknown> = OCC_PUSH_DATA
 ): Notification {
   return {
     date: 0,
@@ -122,7 +122,7 @@ it('presents a title-only data push with its original identity, routing and chan
       data: incoming.request.content.data,
       sound: 'default'
     },
-    trigger: { channelId: 'orca-desktop' }
+    trigger: { channelId: 'occ-desktop' }
   })
   stop()
   expect(mocks.remove).toHaveBeenCalledOnce()
@@ -131,14 +131,14 @@ it('presents a title-only data push with its original identity, routing and chan
 it('does not reschedule its own local notification or normal provider notifications', () => {
   startAndroidForegroundPushPresentation()
   mocks.receive(notification(null))
-  mocks.receive(notification({ channelId: 'orca-desktop' }))
+  mocks.receive(notification({ channelId: 'occ-desktop' }))
   mocks.receive(notification(pushTrigger({ ...REMOTE_NOTIFICATION, title: 'Test' })))
   expect(mocks.schedule).not.toHaveBeenCalled()
 })
 
 it('leaves silent dismissals and unrelated messages alone', () => {
   startAndroidForegroundPushPresentation()
-  mocks.receive(notification(undefined, { ...ORCA_PUSH_DATA, kind: 'dismiss' }))
+  mocks.receive(notification(undefined, { ...OCC_PUSH_DATA, kind: 'dismiss' }))
   mocks.receive(notification(undefined, {}))
   expect(mocks.schedule).not.toHaveBeenCalled()
 })

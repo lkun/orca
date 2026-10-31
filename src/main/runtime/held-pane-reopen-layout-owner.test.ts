@@ -5,7 +5,7 @@ import { LOCAL_EXECUTION_HOST_ID, type ExecutionHostId } from '../../shared/exec
 import type * as DaemonHoldModule from '../daemon/daemon-newer-protocol-hold'
 import { committingSpawn } from './bind-first-pane.test-fixture'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 const daemonHold = vi.hoisted(() => ({ reopen: vi.fn() }))
 vi.mock('../daemon/daemon-newer-protocol-hold', async (importOriginal) => ({
   ...(await importOriginal<typeof DaemonHoldModule>()),
@@ -13,15 +13,15 @@ vi.mock('../daemon/daemon-newer-protocol-hold', async (importOriginal) => ({
 }))
 
 // Preserve side-effect order: mocks, lifecycle, fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const {
   HEADLESS_LEAF_ID,
   makeDeferred,
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('./orca-runtime-test-fixtures.spec')
+} = await import('./occ-runtime-test-fixtures.spec')
 
 const PANE = { worktreeId: TEST_WORKTREE_ID, tabId: 'host-tab', leafId: HEADLESS_LEAF_ID }
 
@@ -29,7 +29,7 @@ async function heldPaneRuntime() {
   const { runtimeStore, getSession, setSession } = makeRuntimeStoreWithWorkspaceSession(
     makeWorkspaceSessionWithHeadlessTerminal()
   )
-  const runtime = new OrcaRuntimeService(
+  const runtime = new OCCRuntimeService(
     Object.assign(runtimeStore, {
       getWorkspaceSessionHostIds: (): ExecutionHostId[] => [LOCAL_EXECUTION_HOST_ID]
     })
@@ -62,7 +62,7 @@ async function heldPaneRuntime() {
   return { runtime, spawn, getSession, setSession, desktopStream }
 }
 
-function publishedStatus(runtime: InstanceType<typeof OrcaRuntimeService>) {
+function publishedStatus(runtime: InstanceType<typeof OCCRuntimeService>) {
   const { snapshot, unsubscribe } = runtime.subscribeWorkspaceLayouts(() => {})
   unsubscribe()
   return snapshot

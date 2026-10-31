@@ -34,13 +34,13 @@ background scheduling, production authentication/network behavior or user latenc
 
 ## Commands and results
 
-Every test/app command uses `ORCA_BACKGROUND_LAUNCH=1`. Cloud commands run from
+Every test/app command uses `OCC_BACKGROUND_LAUNCH=1`. Cloud commands run from
 `cloud/apps/relay`; root commands run from this worktree. All logs below are under
 `.tmp/idle-cutover-review/`.
 
 | Scope | Command | Result / log |
 | --- | --- | --- |
-| Cloud | `ORCA_RELAY_TEST_POSTGRES_URL='postgresql://postgres@127.0.0.1:55440/postgres?options=-csearch_path%3Didle_full_root_20260911' ORCA_IDLE_REHOME_POSTGRES_URL='postgresql://postgres@127.0.0.1:55440/postgres' ORCA_REGION_CORRECTION_POSTGRES=1 pnpm exec vitest run --no-file-parallelism` |77 files /682 passed /zero skips; `cloud-full-postgres-idle.log` |
+| Cloud | `OCC_RELAY_TEST_POSTGRES_URL='postgresql://postgres@127.0.0.1:55440/postgres?options=-csearch_path%3Didle_full_root_20260911' OCC_IDLE_REHOME_POSTGRES_URL='postgresql://postgres@127.0.0.1:55440/postgres' OCC_REGION_CORRECTION_POSTGRES=1 pnpm exec vitest run --no-file-parallelism` |77 files /682 passed /zero skips; `cloud-full-postgres-idle.log` |
 | Cloud | `pnpm run typecheck` | Passed; `cloud-typecheck-after-preview.log` |
 | Cloud | `pnpm build` | Passed; `cloud-release-build-idle.log` |
 | Root | `pnpm test src/main/runtime/relay` |20 files /177 passed; `desktop-relay-full-idle.log` |
@@ -50,10 +50,10 @@ Every test/app command uses `ORCA_BACKGROUND_LAUNCH=1`. Cloud commands run from
 | Root | `pnpm exec oxlint src/main/runtime/relay tests/e2e/relay-region-correction.unit.test.ts tests/e2e/relay-region-compatibility.unit.test.ts` | Passed; `desktop-lint-idle.log` |
 | Root | `pnpm run check:code-quality:changed` | Passed,0 new findings across30 changed files; `code-quality-changed-idle.log` |
 | Root | `pnpm run check:reliability-gates` |121 manifest gates passed; `reliability-idle.log` |
-| Root | `ORCA_E2E_SSH_DOCKER=1 pnpm exec playwright test tests/e2e/ssh-docker-transport-drop-recovery.spec.ts tests/e2e/paired-remote-terminal-serve-restart-binding.spec.ts --config tests/playwright.config.ts --project electron-headless --workers=1` |7 passed after fresh build; `ssh-folder-idle.log` |
+| Root | `OCC_E2E_SSH_DOCKER=1 pnpm exec playwright test tests/e2e/ssh-docker-transport-drop-recovery.spec.ts tests/e2e/paired-remote-terminal-serve-restart-binding.spec.ts --config tests/playwright.config.ts --project electron-headless --workers=1` |7 passed after fresh build; `ssh-folder-idle.log` |
 | Root | `node --test cloud/dev/scripts/deploy-relay-blue-green.test.mjs cloud/dev/scripts/read-relay-serving-regional-placement-version.test.mjs cloud/dev/scripts/relay-regional-rehome-workflow.test.mjs` |47 passed; `deployment-guards-idle.log` |
 
-PostgreSQL16.15 reused the existing `orca-region-release-pg16` container on55440.
+PostgreSQL16.15 reused the existing `occ-region-release-pg16` container on55440.
 The suite used an isolated schema, dropped afterward (`cloud-full-postgres-cleanup.log`);
 new concurrency tests create and clean independent schemas. No other PostgreSQL
 port was used. Root oxlint ignores cloud; the configured cloud lint is TypeScript.
@@ -90,8 +90,8 @@ consumers already consume/cancel bodies, so the audited count is corrected.
 The unit workflow installs locked cloud relay dependencies and builds their contracts.
 From `cloud/`, both commands pass (`ci-relay-dependencies.log`):
 
-- `npx --yes pnpm@10.24.0 --filter '@orca-cloud/relay...' install --frozen-lockfile --ignore-scripts`
-- `npx --yes pnpm@10.24.0 --filter '@orca-cloud/relay^...' build`
+- `npx --yes pnpm@10.24.0 --filter '@occ-cloud/relay...' install --frozen-lockfile --ignore-scripts`
+- `npx --yes pnpm@10.24.0 --filter '@occ-cloud/relay^...' build`
 
 Local split patches and draft bodies are in `.tmp/idle-cutover-review/`:
 `cloud-idle.patch`, `desktop-idle.patch`, `cloud-pr-body.md`, `desktop-pr-body.md`.

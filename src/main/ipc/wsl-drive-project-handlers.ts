@@ -5,7 +5,7 @@
 import { join } from 'node:path'
 import { ipcMain } from 'electron'
 import type { Store } from '../persistence'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { registerWslDriveUncConversionHandlers } from './wsl-drive-unc-conversion-handlers'
 import { gitExecFileAsync } from '../git/command-runner/git-exec-file'
 import { readWorktreeLinks as readWorktreeAdminLinks } from '../git/worktree-prune-guard'
@@ -22,7 +22,7 @@ export const WSL_DRIVE_PROJECT_HANDLER_CHANNELS = [
   'wslDriveProject:convert'
 ] as const
 
-export function registerWslDriveProjectHandlers(store: Store, runtime: OrcaRuntimeService): void {
+export function registerWslDriveProjectHandlers(store: Store, runtime: OCCRuntimeService): void {
   for (const channel of WSL_DRIVE_PROJECT_HANDLER_CHANNELS) {
     ipcMain.removeHandler(channel)
   }

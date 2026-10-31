@@ -1,4 +1,4 @@
-import { ASSIGNMENT_LIMITS } from '@orca-cloud/relay-contract'
+import { ASSIGNMENT_LIMITS } from '@occ-cloud/relay-contract'
 
 // Why an attempt was rolled back to its source. Attempts settled by the
 // migration-side abort paths, and every row aborted before the column existed,

@@ -102,7 +102,7 @@ function createPaneSurface(): {
 
 describe('reconciling retained runs against a graph that has not published yet', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-retained-run-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-retained-run-'))
     vi.useFakeTimers()
     // Away from the automation's 09:00 UTC occurrence so timer advances stay inert.
     vi.setSystemTime(new Date('2026-06-01T12:00:00Z'))

@@ -12,7 +12,7 @@ import { RepositoryHostSetupsSection } from './RepositoryHostSetupsSection'
 let container: HTMLDivElement
 let root: Root
 
-const projectId = 'github:stablyai/orca'
+const projectId = 'github:stablyai/occ'
 
 function makeRepo(overrides: Partial<Repo> & Pick<Repo, 'id' | 'displayName' | 'path'>): Repo {
   return { badgeColor: '#737373', addedAt: 100, kind: 'git', ...overrides }
@@ -56,12 +56,12 @@ afterEach(() => {
 
 describe('RepositoryHostSetupsSection settings entry scope', () => {
   it('lists only its own settings entry when same-host clones split the project (#20861)', () => {
-    const cloneA = makeRepo({ id: 'clone-a', displayName: 'OCC', path: '/work/orca' })
-    const cloneB = makeRepo({ id: 'clone-b', displayName: 'OCC B', path: '/work/orca-b' })
+    const cloneA = makeRepo({ id: 'clone-a', displayName: 'OCC', path: '/work/occ' })
+    const cloneB = makeRepo({ id: 'clone-b', displayName: 'OCC B', path: '/work/occ-b' })
     const remoteRepo = makeRepo({
       id: 'remote-repo',
       displayName: 'OCC',
-      path: '/home/alice/orca',
+      path: '/home/alice/occ',
       connectionId: 'openclaw 2'
     })
     useAppStore.setState({
@@ -77,13 +77,13 @@ describe('RepositoryHostSetupsSection settings entry scope', () => {
         }
       ],
       projectHostSetups: [
-        makeSetup({ id: 'clone-a', repoId: 'clone-a', hostId: 'local', path: '/work/orca' }),
-        makeSetup({ id: 'clone-b', repoId: 'clone-b', hostId: 'local', path: '/work/orca-b' }),
+        makeSetup({ id: 'clone-a', repoId: 'clone-a', hostId: 'local', path: '/work/occ' }),
+        makeSetup({ id: 'clone-b', repoId: 'clone-b', hostId: 'local', path: '/work/occ-b' }),
         makeSetup({
           id: 'remote-repo',
           repoId: 'remote-repo',
           hostId: toSshExecutionHostId('openclaw 2'),
-          path: '/home/alice/orca'
+          path: '/home/alice/occ'
         }),
         makeSetup({
           id: 'gpu-setup',
@@ -108,33 +108,33 @@ describe('RepositoryHostSetupsSection settings entry scope', () => {
       )
     })
 
-    expect(container.textContent).toContain('/work/orca')
+    expect(container.textContent).toContain('/work/occ')
     expect(container.textContent).toContain('Path pending')
-    expect(container.textContent).not.toContain('/work/orca-b')
-    expect(container.textContent).not.toContain('/home/alice/orca')
+    expect(container.textContent).not.toContain('/work/occ-b')
+    expect(container.textContent).not.toContain('/home/alice/occ')
     expect(findButton('Open')).toBeUndefined()
     expect(findButton('Add to another host')).toBeUndefined()
   })
 
   it("stores a host switch under the clone entry's own selection key", () => {
     const setSettingsProjectHostSelection = vi.fn()
-    const cloneA = makeRepo({ id: 'clone-a', displayName: 'OCC', path: '/work/orca' })
+    const cloneA = makeRepo({ id: 'clone-a', displayName: 'OCC', path: '/work/occ' })
     const cloneATwin = makeRepo({
       id: 'clone-a',
       displayName: 'OCC',
-      path: '/home/alice/orca',
+      path: '/home/alice/occ',
       connectionId: 'openclaw 2'
     })
     const sshHostId = toSshExecutionHostId('openclaw 2')
     useAppStore.setState({
       repos: [cloneA, cloneATwin],
       projectHostSetups: [
-        makeSetup({ id: 'clone-a', repoId: 'clone-a', hostId: 'local', path: '/work/orca' }),
+        makeSetup({ id: 'clone-a', repoId: 'clone-a', hostId: 'local', path: '/work/occ' }),
         makeSetup({
           id: 'clone-a-ssh',
           repoId: 'clone-a',
           hostId: sshHostId,
-          path: '/home/alice/orca'
+          path: '/home/alice/occ'
         })
       ],
       sshTargetLabels: new Map([['openclaw 2', 'openclaw 2']]),

@@ -41,11 +41,11 @@ it('enforces one session per host directly in the schema', async () => {
   expect(await db.query('SELECT token_hash FROM push_sessions')).toEqual([{ token_hash: 'first' }])
 })
 
-describe.skipIf(!process.env.ORCA_PUSH_TEST_DATABASE_URL)('PostgreSQL push sessions', () => {
+describe.skipIf(!process.env.OCC_PUSH_TEST_DATABASE_URL)('PostgreSQL push sessions', () => {
   it('leaves exactly one live token after concurrent creates', async () => {
     await concurrentSessions(
       await openPushDatabase({
-        databaseUrl: process.env.ORCA_PUSH_TEST_DATABASE_URL!,
+        databaseUrl: process.env.OCC_PUSH_TEST_DATABASE_URL!,
         dataDir: tmpdir()
       })
     )
@@ -54,7 +54,7 @@ describe.skipIf(!process.env.ORCA_PUSH_TEST_DATABASE_URL)('PostgreSQL push sessi
     const opened = await Promise.all(
       Array.from({ length: 4 }, () =>
         openPushDatabase({
-          databaseUrl: process.env.ORCA_PUSH_TEST_DATABASE_URL!,
+          databaseUrl: process.env.OCC_PUSH_TEST_DATABASE_URL!,
           dataDir: tmpdir()
         })
       )

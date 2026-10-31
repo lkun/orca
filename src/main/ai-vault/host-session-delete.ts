@@ -24,7 +24,7 @@ let remoteDeleteDeps: HostAiVaultSessionDeleteDeps = {
   removePath: removeAiVaultSessionPathPermanently
 }
 
-/** An Electron host swaps in its Trash and its own multi-host cache; orcad keeps the default. */
+/** An Electron host swaps in its Trash and its own multi-host cache; occd keeps the default. */
 export function configureRemoteAiVaultSessionDelete(deps: HostAiVaultSessionDeleteDeps): void {
   remoteDeleteDeps = deps
 }

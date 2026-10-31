@@ -3,7 +3,7 @@ import type { OrchestrationDb } from '../../../../orchestration/db'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import { liveFederatedHomeAutoReleaseAt } from '../../../../orchestration/worker-terminal-ownership'
 import type { DispatchContextRow, FederatedDispatchRow } from '../../../../orchestration/types'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import {
   callFederatedWorkerShow,
   exposeDispatchContext,
@@ -17,7 +17,7 @@ import { applyConfirmedFederatedReleaseHomeProjection } from './federated-worker
 
 /** Query host evidence: push-fed fleet snapshots cover only local panes and would fabricate unverifiable for federated workers. */
 export function projectFederatedFleetWorker(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   dispatchId: string
   environmentId: string
@@ -56,7 +56,7 @@ export function projectFederatedFleetWorker(args: {
 }
 
 export async function showFederatedWorker(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   dispatchId: string
   dispatch: DispatchContextRow

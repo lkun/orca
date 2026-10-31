@@ -14,7 +14,7 @@ import { successResponse } from './errors'
 import { ALL_RPC_METHODS } from './methods'
 import { withoutMethodsThisHostDoesNotServe } from './methods/session-terminal-scrollback'
 import { emulatorProbe, emulatorProbeError } from '../../emulator/emulator-probe'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import { isDurableMutation } from '../../../shared/orchestration-rpc-contract'
 import type { OrchestrationSessionCaller } from '../orchestration/orchestration-caller-identity'
 import {
@@ -33,10 +33,10 @@ import { recordRuntimeFeatureInteraction } from './runtime-feature-interaction'
 import type { RpcCallerScope } from './rpc-caller-scope'
 import { runWithActiveRpcCaller } from './rpc-active-caller'
 import { admitRpcRequest } from './rpc-request-admission-prologue'
-import { resolveOrcadFeatureRequirement, rpcMethodFeatureWait } from './orcad-feature-readiness'
+import { resolveOCCdFeatureRequirement, rpcMethodFeatureWait } from './occd-feature-readiness'
 
 export type DispatcherOptions = {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   methods?: readonly RpcAnyMethodDeclaration[]
   /** Pins every call to this scope, for in-process bridges that relay a non-owner caller. */
   callerScope?: RpcCallerScope
@@ -50,7 +50,7 @@ type AdmittedUnaryCall = {
 }
 
 export class RpcDispatcher {
-  private readonly runtime: OrcaRuntimeService
+  private readonly runtime: OCCRuntimeService
   private readonly registry: RpcRegistry
   private readonly orchestrationMutations: OrchestrationMutationExecutor
   private readonly legacyOrchestration: OrchestrationLegacyCompatibility
@@ -85,7 +85,7 @@ export class RpcDispatcher {
     }
     try {
       const featureWait = rpcMethodFeatureWait(
-        resolveOrcadFeatureRequirement(admission.method.requires, admission.params),
+        resolveOCCdFeatureRequirement(admission.method.requires, admission.params),
         [options?.signal, options?.connectionSignal]
       )
       if (featureWait) {
@@ -122,7 +122,7 @@ export class RpcDispatcher {
     }
     const { method, request, params, caller } = admission
     const featureWait = rpcMethodFeatureWait(
-      resolveOrcadFeatureRequirement(method.requires, params),
+      resolveOCCdFeatureRequirement(method.requires, params),
       [options?.signal, options?.connectionSignal]
     )
     if (featureWait) {
@@ -261,7 +261,7 @@ export class RpcDispatcher {
       effectiveParams,
       invoke,
       callerFingerprint,
-      context.orchestrationCaller?.orcaSessionId
+      context.orchestrationCaller?.occSessionId
     )
     recordRuntimeFeatureInteraction(runtime, request.method, result, undefined, request.params)
     return result

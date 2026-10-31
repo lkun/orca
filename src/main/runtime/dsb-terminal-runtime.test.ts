@@ -4,7 +4,7 @@ import { afterEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 import { buildAgentPromptPasteBytes } from '../../shared/agent-prompt-injection'
 import type { RuntimeTerminalSummary } from '../../shared/runtime-terminal-contracts'
 import type { TerminalAgent } from '../../shared/terminal-agent'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { makeStore } from './runtime-rpc-worktree-store-fixtures'
 import { partialRuntimeStore } from './runtime-store-partial-fixture'
 
@@ -33,7 +33,7 @@ describe('manually started DeepSeek Build terminals', () => {
   afterEach(() => vi.useRealTimers())
 
   it('publishes title-only identity from captured release PTY bytes', async () => {
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
+    const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
     runtime.setPtyController({
       spawn: async () => ({ id: 'pty-dsb' }),
       write: () => true,
@@ -55,7 +55,7 @@ describe('manually started DeepSeek Build terminals', () => {
   it.each(['✦', '⏲', '◇', '✋'])(
     'preserves Build title and identity through OSC normalization with task glyph %s',
     async (glyph) => {
-      const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
+      const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
       runtime.setPtyController({
         spawn: async () => ({ id: 'pty-dsb' }),
         write: () => true,
@@ -74,7 +74,7 @@ describe('manually started DeepSeek Build terminals', () => {
 
   it('publishes observed DSB identity and sends a prompt with generic input behavior', async () => {
     vi.useFakeTimers()
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
+    const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
     const writes: string[] = []
     runtime.setPtyController({
       spawn: async () => ({ id: 'pty-dsb' }),

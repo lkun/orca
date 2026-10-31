@@ -15,13 +15,13 @@ export * from './legacy-wsl-runtime-auth-drain-exit-codes'
 export { FINALIZE_ABSENT_AUTH_SCRIPT } from './legacy-wsl-runtime-auth-finalize-script'
 export const INSPECT_LEGACY_AUTH_SCRIPT = `
 set -eu
-source_recovery_auth="$3.orca-drain-source"
-source_quarantine_auth="$3.orca-drain-live-source"
-destination_recovery_auth="$3.orca-drain-destination"
-destination_recovery_path="$3.orca-drain-destination-path"
-session_link_manifest="$3.orca-drain-session-links"
-session_commit_marker="$3.orca-drain-session-commit"
-session_stage_root="$3.orca-drain-session-stage"
+source_recovery_auth="$3.occ-drain-source"
+source_quarantine_auth="$3.occ-drain-live-source"
+destination_recovery_auth="$3.occ-drain-destination"
+destination_recovery_path="$3.occ-drain-destination-path"
+session_link_manifest="$3.occ-drain-session-links"
+session_commit_marker="$3.occ-drain-session-commit"
+session_stage_root="$3.occ-drain-session-stage"
 ${ROLLBACK_SESSION_LINKS_FUNCTION}
 ${RESOLVE_LEGACY_HOME_SCRIPT}
 source_auth="$legacy_home/auth.json"
@@ -85,14 +85,14 @@ fi
 
 export const APPLY_LEGACY_AUTH_SCRIPT = `
 set -eu
-source_recovery_auth="$3.orca-drain-source"
-source_quarantine_auth="$3.orca-drain-live-source"
-destination_recovery_auth="$3.orca-drain-destination"
-destination_recovery_path="$3.orca-drain-destination-path"
-session_link_manifest="$3.orca-drain-session-links"
-session_commit_marker="$3.orca-drain-session-commit"
-session_stage_root="$3.orca-drain-session-stage"
-session_scan_watermark="$3.orca-drain-session-watermark"
+source_recovery_auth="$3.occ-drain-source"
+source_quarantine_auth="$3.occ-drain-live-source"
+destination_recovery_auth="$3.occ-drain-destination"
+destination_recovery_path="$3.occ-drain-destination-path"
+session_link_manifest="$3.occ-drain-session-links"
+session_commit_marker="$3.occ-drain-session-commit"
+session_stage_root="$3.occ-drain-session-stage"
+session_scan_watermark="$3.occ-drain-session-watermark"
 ${ROLLBACK_SESSION_LINKS_FUNCTION}
 if [ -e "$3" ] || [ -L "$3" ]; then
   [ -f "$3" ] && [ ! -L "$3" ] || exit 46
@@ -125,15 +125,15 @@ if [ -e "$destination_recovery_auth" ] || [ -L "$destination_recovery_auth" ] ||
   ${DISCARD_DESTINATION_RECOVERY_COMMAND} || exit 46
 fi
 umask 077
-temporary_auth="$target_auth.orca-drain-$$"
-temporary_credentials="$target_home/.credentials.json.orca-drain-$$"
-temporary_previous_auth="$target_auth.orca-drain-previous-$$"
-temporary_destination_auth="$target_auth.orca-drain-destination-$$"
-temporary_source_auth="$source_auth.orca-drain-source-$$"
-temporary_destination_snapshot="$target_auth.orca-drain-snapshot-$$"
-temporary_destination_path="$3.orca-drain-destination-path-$$"
-temporary_source_snapshot="$3.orca-drain-source-$$"
-temporary_marker="$3.orca-drain-$$"
+temporary_auth="$target_auth.occ-drain-$$"
+temporary_credentials="$target_home/.credentials.json.occ-drain-$$"
+temporary_previous_auth="$target_auth.occ-drain-previous-$$"
+temporary_destination_auth="$target_auth.occ-drain-destination-$$"
+temporary_source_auth="$source_auth.occ-drain-source-$$"
+temporary_destination_snapshot="$target_auth.occ-drain-snapshot-$$"
+temporary_destination_path="$3.occ-drain-destination-path-$$"
+temporary_source_snapshot="$3.occ-drain-source-$$"
+temporary_marker="$3.occ-drain-$$"
 temporary_session_scan_watermark="$session_scan_watermark.$$"
 drain_marker="$3"
 expected_source_hash="$5"

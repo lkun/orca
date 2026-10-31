@@ -181,7 +181,7 @@ export function DiffCommentPopover({
   return (
     <div
       ref={popoverRef}
-      className="orca-diff-comment-popover"
+      className="occ-diff-comment-popover"
       style={{ top: `${resolvedTop}px`, ...(left == null ? {} : { left: `${left}px` }) }}
       role="dialog"
       aria-modal="true"
@@ -190,8 +190,8 @@ export function DiffCommentPopover({
       onClick={(ev) => ev.stopPropagation()}
     >
       {/* Content */}
-      <div className="orca-diff-comment-content-col" style={{ gap: '8px' }}>
-        <div id={labelId} className="orca-diff-comment-popover-label">
+      <div className="occ-diff-comment-content-col" style={{ gap: '8px' }}>
+        <div id={labelId} className="occ-diff-comment-popover-label">
           {title ??
             (startLine && startLine !== lineNumber
               ? translate(
@@ -207,7 +207,7 @@ export function DiffCommentPopover({
         </div>
         <ImeTextarea
           ref={focusTextareaRef}
-          className="orca-diff-comment-popover-textarea"
+          className="occ-diff-comment-popover-textarea"
           placeholder={placeholder}
           value={body}
           onChange={(e) => {
@@ -231,7 +231,7 @@ export function DiffCommentPopover({
           }}
           rows={3}
         />
-        <div className="orca-diff-comment-popover-footer">
+        <div className="occ-diff-comment-popover-footer">
           <Button variant="ghost" size="sm" onClick={onCancel}>
             {translate('auto.components.diff.comments.DiffCommentPopover.2b3ce6d394', 'Cancel')}
           </Button>

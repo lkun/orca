@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import pg from 'pg'
 import { parseIntoClientConfig } from 'pg-connection-string'
-import { applyPostgresSchema, schemaLockTarget } from '@orca-cloud/postgres-schema'
+import { applyPostgresSchema, schemaLockTarget } from '@occ-cloud/postgres-schema'
 
 const POSTGRES_LOCK_TIMEOUT_MS = 1_000
 const POSTGRES_CONNECTION_TIMEOUT_MS = 2_000
@@ -203,7 +203,7 @@ class PostgresDatabase implements CloudDatabase {
         }
         console.warn(
           JSON.stringify({
-            event: `orca_${this.service}_postgres_transaction_retry`,
+            event: `occ_${this.service}_postgres_transaction_retry`,
             code: String((error as { code?: unknown }).code),
             attempt
           })
@@ -273,7 +273,7 @@ async function applySchemaOnUntimedPool(
   const database = new PostgresDatabase(pool, service)
   try {
     await applyPostgresSchema(schemaStatements, (statement) => database.query(statement), {
-      eventPrefix: `orca_${service}_postgres_schema`,
+      eventPrefix: `occ_${service}_postgres_schema`,
       // No catalog pre-check: lock timeout cannot prove DDL already exists, so retain bounded retry.
       retryLockTimeout: true
     })
@@ -285,12 +285,12 @@ async function applySchemaOnUntimedPool(
 function absorbPostgresIdleClientErrors(pool: Pick<pg.Pool, 'on'>, service: string): void {
   pool.on('error', () => {
     // Handle idle pg errors after the pool removes failed clients; otherwise transient SQL faults crash-loop the service.
-    console.warn(`[orca-${service}] idle PostgreSQL client failed`)
+    console.warn(`[occ-${service}] idle PostgreSQL client failed`)
   })
 }
 
 export type OpenCloudDatabaseInput = {
-  // Names the SQLite file and every log event, e.g. 'push' -> orca-push.sqlite, orca_push_postgres_*.
+  // Names the SQLite file and every log event, e.g. 'push' -> occ-push.sqlite, occ_push_postgres_*.
   service: string
   schemaStatements: string[]
   databaseUrl?: string
@@ -326,7 +326,7 @@ export async function openCloudDatabase(input: OpenCloudDatabaseInput): Promise<
     database = new PostgresDatabase(pool, input.service)
   } else {
     mkdirSync(input.dataDir, { recursive: true })
-    const sqlite = new DatabaseSync(join(input.dataDir, `orca-${input.service}.sqlite`), {
+    const sqlite = new DatabaseSync(join(input.dataDir, `occ-${input.service}.sqlite`), {
       readOnly: input.readOnly ?? false
     })
     if (!input.readOnly) {

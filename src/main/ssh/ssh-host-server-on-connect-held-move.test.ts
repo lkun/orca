@@ -88,7 +88,7 @@ describe('a move to the managed server that stops short', () => {
     const { host, deps } = fencedHost('destination-staged', true)
     const d = deps({
       convert: vi.fn(async () => {
-        throw new Error('orcad_migration_commit_not_committed:staged')
+        throw new Error('occd_migration_commit_not_committed:staged')
       }),
       abandonConversion: vi.fn(async () => {
         host.phase = null
@@ -98,7 +98,7 @@ describe('a move to the managed server that stops short', () => {
     expect(result).toEqual({
       route: 'unserved',
       reason: 'failed',
-      detail: 'orcad_migration_commit_not_committed:staged'
+      detail: 'occd_migration_commit_not_committed:staged'
     })
     if (result.route === 'unserved') {
       expect(unservedHostServerMessage(result)).toBe(
@@ -117,7 +117,7 @@ describe('a move to the managed server that stops short', () => {
       async () => ({
         outcome: 'deferred' as const,
         candidateVersion: '0.1.0+abc',
-        code: 'orcad_update_fence_held',
+        code: 'occd_update_fence_held',
         reason: 'Another desktop is updating this host.'
       })
     ]
@@ -143,7 +143,7 @@ describe('a move to the managed server that stops short', () => {
     const { host, deps } = fencedHost('destination-staged', true)
     const lost = deps({
       convert: vi.fn(async () => {
-        throw new Error('orcad_migration_commit_reply_lost')
+        throw new Error('occd_migration_commit_reply_lost')
       }),
       // The abort's re-read found the commit landed and recorded it.
       abandonConversion: vi.fn(async () => {

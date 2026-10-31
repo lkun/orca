@@ -96,10 +96,10 @@ beforeEach(() => {
   delete process.env.CODEX_HOME
   worktreePathComparisons.count = 0
   // Match canonical worktree paths on macOS, where /var resolves to /private/var.
-  fakeHomeDir = realpathSync(mkdtempSync(join(tmpdir(), 'orca-codex-memo-home-')))
-  userDataDir = mkdtempSync(join(tmpdir(), 'orca-codex-memo-user-data-'))
-  previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-  process.env.ORCA_USER_DATA_PATH = userDataDir
+  fakeHomeDir = realpathSync(mkdtempSync(join(tmpdir(), 'occ-codex-memo-home-')))
+  userDataDir = mkdtempSync(join(tmpdir(), 'occ-codex-memo-user-data-'))
+  previousUserDataPath = process.env.OCC_USER_DATA_PATH
+  process.env.OCC_USER_DATA_PATH = userDataDir
   homedirMock.mockReturnValue(fakeHomeDir)
   getPathMock.mockImplementation((name: string) => {
     if (name === 'userData') {
@@ -118,9 +118,9 @@ afterEach(() => {
     process.env.CODEX_HOME = originalCodexHome
   }
   if (previousUserDataPath === undefined) {
-    delete process.env.ORCA_USER_DATA_PATH
+    delete process.env.OCC_USER_DATA_PATH
   } else {
-    process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+    process.env.OCC_USER_DATA_PATH = previousUserDataPath
   }
   vi.clearAllMocks()
 })

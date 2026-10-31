@@ -220,7 +220,7 @@ describe('startDiscordGatewaySession', () => {
       d: {
         token: 'bot-token',
         intents: 33281,
-        properties: { os: process.platform, browser: 'orca-connector', device: 'orca-connector' }
+        properties: { os: process.platform, browser: 'occ-connector', device: 'occ-connector' }
       }
     })
     connection.send(ready(origin))

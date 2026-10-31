@@ -17,7 +17,7 @@ import {
 } from './worktree-agent-activation-gate.test-fixture'
 import type { LiveTerminalSurfaceOwner } from './worktree-live-terminal-surface-owners'
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const LIVE_PTY = `${WORKTREE_ID}@@live-pty`
 const MAIN_TAB = 'tab-main'

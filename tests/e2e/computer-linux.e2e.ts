@@ -1,21 +1,21 @@
 import { afterAll, beforeAll, describe, expect, test } from 'vitest'
 import type { ComputerActionResult, ComputerSnapshotResult } from '../../src/shared/runtime-types'
 import {
-  ensureOrcaRuntimeLaunched,
+  ensureOCCRuntimeLaunched,
   ensureGeditLaunched,
   findRoleIndex,
   killGedit,
   parseJsonOutput,
-  runOrcaCli
+  runOCCCli
 } from './helpers/computer-driver'
 
 const isLinux = process.platform === 'linux'
-const e2eOptIn = process.env.ORCA_COMPUTER_E2E === '1'
+const e2eOptIn = process.env.OCC_COMPUTER_E2E === '1'
 
 async function focusGeditDocument(): Promise<void> {
   const before = parseJsonOutput<{ result: ComputerSnapshotResult }>(
     (
-      await runOrcaCli([
+      await runOCCCli([
         'computer',
         'get-app-state',
         '--app',
@@ -32,7 +32,7 @@ async function focusGeditDocument(): Promise<void> {
   )
   expect(textIndex).toBeGreaterThanOrEqual(0)
 
-  await runOrcaCli([
+  await runOCCCli([
     'computer',
     'click',
     '--app',
@@ -47,7 +47,7 @@ async function focusGeditDocument(): Promise<void> {
 
 describe.skipIf(!isLinux || !e2eOptIn)('computer-use Linux e2e (gedit)', () => {
   beforeAll(async () => {
-    await ensureOrcaRuntimeLaunched()
+    await ensureOCCRuntimeLaunched()
     await ensureGeditLaunched()
   })
 
@@ -56,14 +56,14 @@ describe.skipIf(!isLinux || !e2eOptIn)('computer-use Linux e2e (gedit)', () => {
   })
 
   test('gedit exposes a basic accessibility tree', async () => {
-    const result = await runOrcaCli(['computer', 'get-app-state', '--app', 'gedit', '--json'])
+    const result = await runOCCCli(['computer', 'get-app-state', '--app', 'gedit', '--json'])
     const envelope = parseJsonOutput<{ result: ComputerSnapshotResult }>(result.stdout)
 
     expect(envelope.result.snapshot.elementCount).toBeGreaterThan(0)
     expect(envelope.result.snapshot.coordinateSpace).toBe('window')
     expect(envelope.result.snapshot.truncation?.truncated).toBe(false)
     expect(envelope.result.screenshot?.data).toBeUndefined()
-    expect(envelope.result.screenshot?.path).toContain('orca-computer-use')
+    expect(envelope.result.screenshot?.path).toContain('occ-computer-use')
   })
 
   test('click and type-text insert into the focused document through AT-SPI', async () => {
@@ -72,7 +72,7 @@ describe.skipIf(!isLinux || !e2eOptIn)('computer-use Linux e2e (gedit)', () => {
     const marker = ` occ-linux-type-${Date.now()}-élan-🚀`
     const typed = parseJsonOutput<{ result: ComputerActionResult }>(
       (
-        await runOrcaCli([
+        await runOCCCli([
           'computer',
           'type-text',
           '--app',
@@ -95,7 +95,7 @@ describe.skipIf(!isLinux || !e2eOptIn)('computer-use Linux e2e (gedit)', () => {
     const marker = `occ-linux-paste-${Date.now()}-café-🚀`
     const action = parseJsonOutput<{ result: ComputerActionResult }>(
       (
-        await runOrcaCli([
+        await runOCCCli([
           'computer',
           'paste-text',
           '--app',
@@ -116,7 +116,7 @@ describe.skipIf(!isLinux || !e2eOptIn)('computer-use Linux e2e (gedit)', () => {
 
     const after = parseJsonOutput<{ result: ComputerSnapshotResult }>(
       (
-        await runOrcaCli([
+        await runOCCCli([
           'computer',
           'get-app-state',
           '--app',

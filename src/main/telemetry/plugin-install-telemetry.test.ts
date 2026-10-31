@@ -15,14 +15,14 @@ beforeEach(() => {
 
 describe('plugin install telemetry', () => {
   it('names only the official and community catalogs', () => {
-    expect(pluginTelemetryCatalog('https://github.com/stablyai/orca-plugins.git')).toBe('official')
-    expect(pluginTelemetryCatalog('git@github.com:stablyai/orca-plugins.git')).toBe('official')
-    expect(pluginTelemetryCatalog('https://github.com/stablyai/orca-community-plugins')).toBe(
+    expect(pluginTelemetryCatalog('https://github.com/stablyai/occ-plugins.git')).toBe('official')
+    expect(pluginTelemetryCatalog('git@github.com:stablyai/occ-plugins.git')).toBe('official')
+    expect(pluginTelemetryCatalog('https://github.com/stablyai/occ-community-plugins')).toBe(
       'community'
     )
     expect(pluginTelemetryCatalog('https://github.com/acme/private-plugins.git')).toBeNull()
     expect(
-      pluginTelemetryCatalog('https://gitlab.example.com/stablyai/orca-plugins.git')
+      pluginTelemetryCatalog('https://gitlab.example.com/stablyai/occ-plugins.git')
     ).toBeNull()
   })
 
@@ -49,7 +49,7 @@ describe('plugin install telemetry', () => {
     })
     expect(() =>
       trackPluginInstalled({
-        marketplaceUrl: 'https://github.com/stablyai/orca-plugins.git',
+        marketplaceUrl: 'https://github.com/stablyai/occ-plugins.git',
         plugin_key: 'acme.notes',
         version: '1.0.0',
         kind: 'install',

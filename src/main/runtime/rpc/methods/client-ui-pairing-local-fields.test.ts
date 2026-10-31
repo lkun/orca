@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { z } from 'zod'
 import { getDefaultUIState } from '../../../../shared/constants'
 import { PAIRING_LOCAL_UI_FIELDS } from '../../../../shared/pairing-local-ui-fields'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import type { RpcRequest } from '../core'
 import { RpcDispatcher } from '../dispatcher'
 import { CLIENT_UI_METHODS } from './client-ui'
@@ -18,7 +18,7 @@ describe('client UI RPC pairing-local field seams', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       updateUIState: vi.fn(() => getDefaultUIState())
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: CLIENT_UI_METHODS })
 
     // Web pseudo-host order keys belong to that client; persisting them erases this desktop's order.
@@ -66,7 +66,7 @@ describe('client UI RPC pairing-local field seams', () => {
       const runtime = {
         getRuntimeId: () => 'test-runtime',
         updateUIState: vi.fn(() => getDefaultUIState())
-      } as unknown as OrcaRuntimeService
+      } as unknown as OCCRuntimeService
       const dispatcher = new RpcDispatcher({ runtime, methods: CLIENT_UI_METHODS })
 
       const response = await dispatcher.dispatch(
@@ -87,7 +87,7 @@ describe('client UI RPC pairing-local field seams', () => {
       const runtime = {
         getRuntimeId: () => 'test-runtime',
         getUIState: vi.fn(() => ({ ...getDefaultUIState(), [field]: pairingLocalSamples[field] }))
-      } as unknown as OrcaRuntimeService
+      } as unknown as OCCRuntimeService
       const dispatcher = new RpcDispatcher({ runtime, methods: CLIENT_UI_METHODS })
 
       const response = await dispatcher.dispatch(makeRequest('ui.get'))
@@ -106,7 +106,7 @@ describe('client UI RPC pairing-local field seams', () => {
         getRuntimeId: () => 'test-runtime',
         updateUIState: vi.fn(() => stored),
         recordFeatureInteraction: vi.fn(() => stored)
-      } as unknown as OrcaRuntimeService
+      } as unknown as OCCRuntimeService
       const dispatcher = new RpcDispatcher({ runtime, methods: CLIENT_UI_METHODS })
 
       const setResponse = await dispatcher.dispatch(makeRequest('ui.set', { sidebarWidth: 280 }))
@@ -130,7 +130,7 @@ describe('client UI RPC pairing-local field seams', () => {
         getRuntimeId: () => 'test-runtime',
         getUIState: vi.fn(() => ui),
         updateUIState: vi.fn(() => ui)
-      } as unknown as OrcaRuntimeService
+      } as unknown as OCCRuntimeService
     }
     const ownPhone = { clientKind: 'mobile' } as const
     const delegatedPhone = { clientKind: 'mobile', pairedDeviceParentId: 'other-desktop' } as const

@@ -20,14 +20,14 @@ the validation required before rolling out the updated images and host pins.
   desktop app, and the mobile app (frame shapes, close codes, admission budgets,
   splice state machine).
 - `apps/relay`: the relay server. The same image runs as a director or a cell
-  depending on `ORCA_RELAY_ROLE`.
+  depending on `OCC_RELAY_ROLE`.
 - `apps/relay-fence-broker`: a private, IAM-only service that owns the durable
   mutation lease, the Terraform checkout, and the narrow Compute mutation used
   when a registered target is superseded. The workflow that calls it holds read
   and invoke rights only, never those mutation permissions.
 - `apps/push` and `packages/push-contract`: the mobile push gateway that holds
   the APNs key and sends to phones through APNs and FCM, and its wire contract.
-  Deployment and operations are owned by the private `stablyai/orca-cloud` repository.
+  Deployment and operations are owned by the private `stablyai/occ-cloud` repository.
 - `apps/connector` and `packages/connector-contract`: the Slack connector service
   (experimental). A signed-in OCC calls it with short-lived connector tokens
   from the auth service, checked the way the relay checks relay tokens.
@@ -53,12 +53,12 @@ FCM notification messages are inherently collapsible while offline and have a
 small concurrent collapse-key budget, so every pending alert is not guaranteed.
 
 Storage follows the relay pattern: PostgreSQL in production, SQLite for tests
-and local development. Configure it with `ORCA_PUSH_PUBLIC_URL`, `ORCA_PUSH_FCM_PROJECT_ID`,
-`ORCA_PUSH_DATABASE_URL`, the three APNs variables (`ORCA_PUSH_APNS_KEY`,
-`ORCA_PUSH_APNS_KEY_ID`, `ORCA_PUSH_APPLE_TEAM_ID`, all three or none), and
-optionally `ORCA_PUSH_APNS_TOPIC`. The FCM credential comes from
+and local development. Configure it with `OCC_PUSH_PUBLIC_URL`, `OCC_PUSH_FCM_PROJECT_ID`,
+`OCC_PUSH_DATABASE_URL`, the three APNs variables (`OCC_PUSH_APNS_KEY`,
+`OCC_PUSH_APNS_KEY_ID`, `OCC_PUSH_APPLE_TEAM_ID`, all three or none), and
+optionally `OCC_PUSH_APNS_TOPIC`. The FCM credential comes from
 the runtime service account, so no key material is configured for Android. See
-[push gateway operations](https://github.com/stablyai/orca-cloud/blob/main/cloud/docs/push-gateway.md) for deployment and recovery.
+[push gateway operations](https://github.com/stablyai/occ-cloud/blob/main/cloud/docs/push-gateway.md) for deployment and recovery.
 
 Logging is aggregate counters only. Tokens, notification titles, notification
 bodies, and full host fingerprints never reach a log line.
@@ -67,7 +67,7 @@ bodies, and full host fingerprints never reach a log line.
 
 The relay runtime and wire contracts are public. Production and staging Terraform,
 backend configuration, operator tools, runbooks, broker image assembly, and deployment
-workflows live in the private `stablyai/orca-cloud` repository. That repository pins
+workflows live in the private `stablyai/occ-cloud` repository. That repository pins
 an immutable public source revision and combines it with its deployment configuration.
 
 `Cloud Verify` here builds and tests public runtime code, audits dependencies, scans
@@ -84,17 +84,17 @@ pnpm test
 ```
 
 `pnpm test` runs the SQLite-backed suites. Tests that need PostgreSQL run only
-when `ORCA_RELAY_TEST_POSTGRES_URL` points at a disposable PostgreSQL 16 or 17
+when `OCC_RELAY_TEST_POSTGRES_URL` points at a disposable PostgreSQL 16 or 17
 database, for example:
 
 ```sh
-docker run --rm -d --name orca-relay-pg -e POSTGRES_HOST_AUTH_METHOD=trust \
-  -e POSTGRES_DB=orca_relay_test -p 55440:5432 postgres:16-alpine
-ORCA_RELAY_TEST_POSTGRES_URL=postgres://postgres@127.0.0.1:55440/orca_relay_test \
-  pnpm --filter @orca-cloud/relay test
-docker rm -f orca-relay-pg
+docker run --rm -d --name occ-relay-pg -e POSTGRES_HOST_AUTH_METHOD=trust \
+  -e POSTGRES_DB=occ_relay_test -p 55440:5432 postgres:16-alpine
+OCC_RELAY_TEST_POSTGRES_URL=postgres://postgres@127.0.0.1:55440/occ_relay_test \
+  pnpm --filter @occ-cloud/relay test
+docker rm -f occ-relay-pg
 ```
 
 Configuration is read from environment variables validated in
-`apps/relay/src/config.ts`. `ORCA_RELAY_ASSIGNMENT_SIGNING_KEY` (at least 32
+`apps/relay/src/config.ts`. `OCC_RELAY_ASSIGNMENT_SIGNING_KEY` (at least 32
 bytes) is the only required value; everything else has a local default.

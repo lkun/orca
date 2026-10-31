@@ -2,7 +2,7 @@
 import { readFileSync, statSync, type Stats } from 'node:fs'
 import { win32 } from 'node:path'
 
-const DISABLE_FLAG = 'ORCA_DISABLE_CMD_SHIM_RESOLUTION'
+const DISABLE_FLAG = 'OCC_DISABLE_CMD_SHIM_RESOLUTION'
 
 // Bound reads of unrecognized or malformed shim files.
 const MAX_SHIM_BYTES = 64 * 1024

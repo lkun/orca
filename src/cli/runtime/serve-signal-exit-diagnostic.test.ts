@@ -166,7 +166,7 @@ describe('superviseForegroundServe signal exits', () => {
 
   it('does not terminate an exited child when update handoff completion fails late', async () => {
     vi.useFakeTimers()
-    const missingParent = await mkdtemp(join(tmpdir(), 'orca-serve-missing-handoff-'))
+    const missingParent = await mkdtemp(join(tmpdir(), 'occ-serve-missing-handoff-'))
     await rm(missingParent, { recursive: true })
     const child = new FakeChildProcess()
     const supervised = superviseForegroundServe({
@@ -185,7 +185,7 @@ describe('superviseForegroundServe signal exits', () => {
     vi.spyOn(process.stderr, 'write').mockImplementation(() => true)
 
     child.emit('message', {
-      type: 'orca:serve-ready',
+      type: 'occ:serve-ready',
       version: '1.0.61',
       runtimeId: 'runtime-new'
     })

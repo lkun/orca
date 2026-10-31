@@ -1,7 +1,7 @@
 import { getSystemLanguageDetection } from './system-language'
 import type { i18n as I18nInstance } from 'i18next'
 
-import { createOrcaI18n } from '../../shared/orca-i18n-instance'
+import { createOCCI18n } from '../../shared/occ-i18n-instance'
 import { DEFAULT_UI_LOCALE, resolveUiLocale, type SupportedUiLocale } from '../../shared/ui-locale'
 import { UI_LANGUAGE_SYSTEM, type UiLanguage } from '../../shared/ui-language'
 
@@ -28,14 +28,14 @@ const LAZY_LOCALE_LOADER_MAP = new Map<string, () => Promise<{ default: Record<s
 )
 
 // Initializes synchronously, so startup dialogs can translate before settings load.
-const orcaI18n = createOrcaI18n({
+const occI18n = createOCCI18n({
   loadCatalog: (language) => LAZY_LOCALE_LOADER_MAP.get(language)?.().then((mod) => mod.default),
   englishResources: {}
 })
 
-export const mainI18n: I18nInstance = orcaI18n.i18n
-export const translateMain = orcaI18n.translate
-export const setMainPluginLanguagePacks = orcaI18n.setPluginLanguagePacks
+export const mainI18n: I18nInstance = occI18n.i18n
+export const translateMain = occI18n.translate
+export const setMainPluginLanguagePacks = occI18n.setPluginLanguagePacks
 
 export function getMainSystemLocale(): string {
   return getSystemLanguageDetection()?.locale ?? DEFAULT_UI_LOCALE
@@ -43,7 +43,7 @@ export function getMainSystemLocale(): string {
 
 export async function setMainUiLanguage(language: UiLanguage): Promise<string> {
   const request = ++languageGeneration
-  const locale = orcaI18n.resolveResourceLanguage(
+  const locale = occI18n.resolveResourceLanguage(
     resolveUiLocale(
       language,
       language === UI_LANGUAGE_SYSTEM ? getMainSystemLocale() : DEFAULT_UI_LOCALE

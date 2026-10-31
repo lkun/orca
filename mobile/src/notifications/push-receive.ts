@@ -4,7 +4,7 @@ import { shouldSuppressNotificationWhileViewing } from './notification-viewing-p
 import { loadPushNotificationsEnabled } from '../storage/preferences'
 import { loadHostCatalog } from '../transport/host-store'
 import { resolveHostIdForFingerprint } from './push-host-fingerprint'
-import { readOrcaPushPayload, type OrcaPushPayload } from './push-payload'
+import { readOCCPushPayload, type OCCPushPayload } from './push-payload'
 import type { NotificationBehavior } from 'expo-notifications'
 import { readNativeNotificationData } from './native-notification-data'
 import { loadNotificationDeliveryPreferences } from './notification-delivery-preferences'
@@ -12,7 +12,7 @@ import { loadNotificationDeliveryPreferences } from './notification-delivery-pre
 const RECENT_FOREGROUND_PUSH_CAP = 512
 const recentForegroundPushes = new Set<string>()
 
-function claimForegroundPush(payload: OrcaPushPayload): boolean {
+function claimForegroundPush(payload: OCCPushPayload): boolean {
   const seq = payload.notificationSeq
   if (
     !payload.notificationEpoch ||
@@ -49,7 +49,7 @@ export async function foregroundNotificationBehavior(notification: {
   request: Parameters<typeof readNativeNotificationData>[0]
 }): Promise<NotificationBehavior> {
   const data = readNativeNotificationData(notification.request)
-  const payload = readOrcaPushPayload(data)
+  const payload = readOCCPushPayload(data)
   const preferences = await loadNotificationDeliveryPreferences()
   // Preserve unknown notifications; recognized pushes fail closed when eligibility/dismissal checks cannot complete.
   const ineligible = await shouldSuppressForegroundPush(
@@ -65,18 +65,18 @@ export async function foregroundNotificationBehavior(notification: {
   }
 }
 
-export async function canPresentForegroundPush(payload: OrcaPushPayload): Promise<boolean> {
+export async function canPresentForegroundPush(payload: OCCPushPayload): Promise<boolean> {
   const preferences = await loadNotificationDeliveryPreferences()
   return !(await shouldSuppressForegroundPush(payload, preferences.suppressWhileViewing))
 }
 
-async function resolvePushHostId(payload: OrcaPushPayload): Promise<string | null> {
+async function resolvePushHostId(payload: OCCPushPayload): Promise<string | null> {
   const hosts = await loadHostCatalog().catch(() => [])
   return resolveHostIdForFingerprint(payload.hostFingerprint, hosts)
 }
 
 async function shouldSuppressForegroundPush(
-  payload: OrcaPushPayload | null,
+  payload: OCCPushPayload | null,
   suppressWhileViewing: boolean
 ): Promise<boolean> {
   if (!payload) {
@@ -122,7 +122,7 @@ export function pushNotificationRouteData(
   hosts: readonly { readonly id: string; readonly publicKeyB64: string }[],
   remote = false
 ): unknown {
-  const payload = readOrcaPushPayload(data)
+  const payload = readOCCPushPayload(data)
   if (!payload) {
     return remote ? null : data
   }

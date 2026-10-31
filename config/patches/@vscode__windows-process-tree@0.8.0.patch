@@ -41,8 +41,8 @@ index 9747a7402600cd252859144d32580ed45c8c93f7..69cf7fe6d14e52b199ac9ab869567be5
  const util_1 = require("util");
 -const native = process.platform === 'win32' ? require('../build/Release/windows_process_tree.node') : undefined;
 +// OCC's per-ABI build, published into package dirs shared across worktrees, wins over build/Release.
-+const orcaNativeBuild = `${__dirname}/../build/orca-napi-win32-${process.arch}/windows_process_tree.node`;
-+const native = process.platform === 'win32' ? require(require('fs').existsSync(orcaNativeBuild) ? orcaNativeBuild : '../build/Release/windows_process_tree.node') : undefined;
++const occNativeBuild = `${__dirname}/../build/occ-napi-win32-${process.arch}/windows_process_tree.node`;
++const native = process.platform === 'win32' ? require(require('fs').existsSync(occNativeBuild) ? occNativeBuild : '../build/Release/windows_process_tree.node') : undefined;
 +exports.getProcessCreationTime = native === undefined ? undefined : native.getProcessCreationTime;
 +exports.supportedProcessDataFlags = native === undefined ? undefined : native.supportedProcessDataFlags;
  var ProcessDataFlag;
@@ -78,8 +78,8 @@ index 7b53aad05c3682a5c7d814d81a39c3f391ae97e3..364b384e7d55f3682515431839352b5b
  
 -const native = process.platform === 'win32' ? require('../build/Release/windows_process_tree.node') : undefined;
 +// OCC's per-ABI build, published into package dirs shared across worktrees, wins over build/Release.
-+const orcaNativeBuild = `${__dirname}/../build/orca-napi-win32-${process.arch}/windows_process_tree.node`;
-+const native = process.platform === 'win32' ? require(require('fs').existsSync(orcaNativeBuild) ? orcaNativeBuild : '../build/Release/windows_process_tree.node') : undefined;
++const occNativeBuild = `${__dirname}/../build/occ-napi-win32-${process.arch}/windows_process_tree.node`;
++const native = process.platform === 'win32' ? require(require('fs').existsSync(occNativeBuild) ? occNativeBuild : '../build/Release/windows_process_tree.node') : undefined;
 +export const getProcessCreationTime: ((pid: number) => number | undefined) | undefined = native?.getProcessCreationTime;
 +/** The flag bits this compiled addon reports; undefined off win32. */
 +export const supportedProcessDataFlags: number | undefined = native?.supportedProcessDataFlags;

@@ -4,7 +4,7 @@ import {
   HOST_TERMINAL_SURFACE_SEPARATOR,
   toWebTerminalSurfaceTabId
 } from '../../src/shared/terminal-surface-id'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   createRuntimeDesktopPairingOffer,
   launchPairedElectronClient
@@ -64,13 +64,13 @@ function shownPaneTitles(page: Page): Promise<string[]> {
 }
 
 test('pane names travel between a desktop host and its paired client, live', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(300_000)
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   const client = await launchPairedElectronClient(offer, testInfo, 'pane-title-desktop-host')
   try {
-    const worktreeId = await orcaPage.evaluate(() => {
+    const worktreeId = await occPage.evaluate(() => {
       const id = window.__store?.getState().activeWorktreeId
       if (!id) {
         throw new Error('host has no active worktree')
@@ -95,7 +95,7 @@ test('pane names travel between a desktop host and its paired client, live', asy
     const hostTabId = createdTabId.split(HOST_TERMINAL_SURFACE_SEPARATOR)[0]
     const webTabId = toWebTerminalSurfaceTabId(hostTabId)
     const hostTabTitle = () =>
-      orcaPage.evaluate(
+      occPage.evaluate(
         ({ worktreeId, tabId }) =>
           (window.__store?.getState().tabsByWorktree[worktreeId] ?? []).find(
             (tab) => tab.id === tabId
@@ -103,7 +103,7 @@ test('pane names travel between a desktop host and its paired client, live', asy
         { worktreeId, tabId: hostTabId }
       )
 
-    await showTab(orcaPage, worktreeId, hostTabId)
+    await showTab(occPage, worktreeId, hostTabId)
     await expect
       .poll(
         () =>
@@ -120,7 +120,7 @@ test('pane names travel between a desktop host and its paired client, live', asy
     // #30386 gap 1: the client's pane rename reaches the host's window, and only as a pane name.
     await setPaneTitleFromTerminalMenu(client.page, 'client-named')
     await expect
-      .poll(() => shownPaneTitles(orcaPage), {
+      .poll(() => shownPaneTitles(occPage), {
         timeout: 30_000,
         message: "the host window never showed the client's pane name"
       })
@@ -128,7 +128,7 @@ test('pane names travel between a desktop host and its paired client, live', asy
     expect(await hostTabTitle()).toBe(tabTitleBefore)
 
     // #30386 gap 2: a name the host sets reaches the client's already-open pane.
-    await setPaneTitleFromTerminalMenu(orcaPage, 'host-named')
+    await setPaneTitleFromTerminalMenu(occPage, 'host-named')
     await expect
       .poll(() => shownPaneTitles(client.page), {
         timeout: 30_000,
@@ -137,7 +137,7 @@ test('pane names travel between a desktop host and its paired client, live', asy
       .toContain('host-named')
     expect(await shownPaneTitles(client.page)).not.toContain('client-named')
     expect(await hostTabTitle()).toBe(tabTitleBefore)
-    await testInfo.attach('host', { body: await orcaPage.screenshot(), contentType: 'image/png' })
+    await testInfo.attach('host', { body: await occPage.screenshot(), contentType: 'image/png' })
     await testInfo.attach('client', {
       body: await client.page.screenshot(),
       contentType: 'image/png'

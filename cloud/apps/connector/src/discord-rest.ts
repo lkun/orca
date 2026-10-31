@@ -156,7 +156,7 @@ export function createDiscordRestApi(
       // 401 and 403 count toward Discord's invalid-request ban, so they are never retried.
       if (response.status === 401 || response.status === 403) {
         console.warn(
-          JSON.stringify({ event: 'orca_connector_discord_refused', status: response.status })
+          JSON.stringify({ event: 'occ_connector_discord_refused', status: response.status })
         )
       }
       const error = ErrorSchema.safeParse(body)

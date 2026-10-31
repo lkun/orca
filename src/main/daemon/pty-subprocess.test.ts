@@ -137,7 +137,7 @@ describe('createPtySubprocess', () => {
       sessionId: 'canceled-validation',
       cols: 80,
       rows: 24,
-      cwd: process.platform === 'win32' ? 'C:\\orca-cwd-fixture' : '/tmp/orca-cwd-fixture',
+      cwd: process.platform === 'win32' ? 'C:\\occ-cwd-fixture' : '/tmp/occ-cwd-fixture',
       isCanceled: () => canceled
     })
     await vi.waitFor(() => expect(validateWorkingDirectoryMock).toHaveBeenCalled())
@@ -217,13 +217,13 @@ describe('createPtySubprocess', () => {
     resolveUnixShellPathMock.mockReturnValue('/bin/sh')
     const platform = Object.getOwnPropertyDescriptor(process, 'platform')
     const previousShell = process.env.SHELL
-    const previousFeatures = process.env.ORCA_SHELL_FEATURES
+    const previousFeatures = process.env.OCC_SHELL_FEATURES
     const previousZdotdir = process.env.ZDOTDIR
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     Object.defineProperty(process, 'platform', { configurable: true, value: 'linux' })
     delete process.env.SHELL
     // Remove wrapper state inherited when the test runner starts inside an OCC pane.
-    delete process.env.ORCA_SHELL_FEATURES
+    delete process.env.OCC_SHELL_FEATURES
     delete process.env.ZDOTDIR
 
     try {
@@ -240,7 +240,7 @@ describe('createPtySubprocess', () => {
       expect(shellPath).toBe('/bin/sh')
       expect(shellArgs).toEqual(['-l'])
       expect(spawnOptions.env.ZDOTDIR).toBeUndefined()
-      expect(spawnOptions.env.ORCA_SHELL_FEATURES).toBeUndefined()
+      expect(spawnOptions.env.OCC_SHELL_FEATURES).toBeUndefined()
       expect(spawnOptions.env.SHELL).toBe('/bin/sh')
     } finally {
       warn.mockRestore()
@@ -253,9 +253,9 @@ describe('createPtySubprocess', () => {
         process.env.SHELL = previousShell
       }
       if (previousFeatures === undefined) {
-        delete process.env.ORCA_SHELL_FEATURES
+        delete process.env.OCC_SHELL_FEATURES
       } else {
-        process.env.ORCA_SHELL_FEATURES = previousFeatures
+        process.env.OCC_SHELL_FEATURES = previousFeatures
       }
       if (previousZdotdir === undefined) {
         delete process.env.ZDOTDIR
@@ -502,9 +502,9 @@ describe('createPtySubprocess', () => {
           sessionId: 'test',
           cols: 80,
           rows: 24,
-          cwd: '/definitely-missing-orca-cwd'
+          cwd: '/definitely-missing-occ-cwd'
         })
-      ).rejects.toThrow(/definitely-missing-orca-cwd/)
+      ).rejects.toThrow(/definitely-missing-occ-cwd/)
     } finally {
       if (platform) {
         Object.defineProperty(process, 'platform', platform)
@@ -525,7 +525,7 @@ describe('createPtySubprocess', () => {
     Object.defineProperty(process, 'platform', { value: 'win32' })
     delete process.env.USERPROFILE
     process.env.HOMEDRIVE = 'D:'
-    process.env.HOMEPATH = '\\Users\\orca'
+    process.env.HOMEPATH = '\\Users\\occ'
 
     try {
       await createPtySubprocess({ sessionId: 'test', cols: 80, rows: 24 })
@@ -553,7 +553,7 @@ describe('createPtySubprocess', () => {
     expect(spawnMock).toHaveBeenCalledWith(
       expect.any(String),
       expect.any(Array),
-      expect.objectContaining({ cwd: 'D:\\Users\\orca' })
+      expect.objectContaining({ cwd: 'D:\\Users\\occ' })
     )
   })
 })
@@ -564,16 +564,16 @@ describe('checkPtySpawnHealth (retry on transient failure)', () => {
 
   beforeEach(() => {
     spawnMock.mockReset()
-    previousUserDataPath = process.env.ORCA_USER_DATA_PATH
+    previousUserDataPath = process.env.OCC_USER_DATA_PATH
     userDataPath = mkdtempSync(join(tmpdir(), 'daemon-pty-health-test-'))
-    process.env.ORCA_USER_DATA_PATH = userDataPath
+    process.env.OCC_USER_DATA_PATH = userDataPath
   })
 
   afterEach(() => {
     if (previousUserDataPath === undefined) {
-      delete process.env.ORCA_USER_DATA_PATH
+      delete process.env.OCC_USER_DATA_PATH
     } else {
-      process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+      process.env.OCC_USER_DATA_PATH = previousUserDataPath
     }
     rmSync(userDataPath, { recursive: true, force: true })
   })

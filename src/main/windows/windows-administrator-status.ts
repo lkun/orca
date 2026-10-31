@@ -1,5 +1,5 @@
 import { join } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { getAppEnvironment } from '../../shared/app-environment'
 import { getBundledLauncherPath } from '../cli/bundled-cli-launcher-path'
 
@@ -17,13 +17,13 @@ async function readStatus(): Promise<boolean | null> {
   const environment = getAppEnvironment()
   const launcher = environment.isPackaged()
     ? getBundledLauncherPath('win32', process.resourcesPath)
-    : join(environment.getAppPath(), 'native', 'windows-cli-launcher', '.build', 'orca.exe')
+    : join(environment.getAppPath(), 'native', 'windows-cli-launcher', '.build', 'occ.exe')
   if (!launcher) {
     return null
   }
   const result = await runProcess({
     program: launcher,
-    args: ['--orca-administrator-status'],
+    args: ['--occ-administrator-status'],
     timeoutMs: 3_000,
     maxOutputBytes: 64
   })

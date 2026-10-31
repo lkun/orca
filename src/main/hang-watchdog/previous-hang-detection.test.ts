@@ -23,7 +23,7 @@ beforeEach(() => {
     'BUILDKITE',
     'JENKINS_URL',
     'TEAMCITY_VERSION',
-    'ORCA_DIAGNOSTICS_DISABLED'
+    'OCC_DIAGNOSTICS_DISABLED'
   ]) {
     vi.stubEnv(name, '')
   }
@@ -84,7 +84,7 @@ describe('previous hang detection', () => {
   it('does not mutate marker files when local diagnostics are disabled', () => {
     const markerPath = hangDetectionMarkerPath(dir)
     writeHangDetectionMarker(markerPath, marker)
-    vi.stubEnv('ORCA_DIAGNOSTICS_DISABLED', '1')
+    vi.stubEnv('OCC_DIAGNOSTICS_DISABLED', '1')
     preservePreviousHangDetection(dir)
     expect(existsSync(markerPath)).toBe(true)
     expect(existsSync(`${markerPath}.previous`)).toBe(false)

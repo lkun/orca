@@ -12,16 +12,16 @@ const mocks = vi.hoisted(() => ({
   cleared: [] as string[],
   removedDirectories: [] as string[],
   onRemoveDirectory: vi.fn<(directory: string) => void>(),
-  bindingFilePath: '/tmp/orca-test-profile/browser-route-partition-bindings.json',
+  bindingFilePath: '/tmp/occ-test-profile/browser-route-partition-bindings.json',
   environments: [{ id: 'env-1' }]
 }))
 
-vi.mock('electron', () => ({ app: { getPath: () => '/tmp/orca-test-user-data' } }))
+vi.mock('electron', () => ({ app: { getPath: () => '/tmp/occ-test-user-data' } }))
 vi.mock('../../shared/runtime-environment-store', () => ({
   listEnvironments: () => mocks.environments
 }))
 vi.mock('./browser-route-partition-binding-runtime', () => ({
-  activeBrowserRoutePartitionOrcaProfileId: () => 'local-default',
+  activeBrowserRoutePartitionOCCProfileId: () => 'local-default',
   currentBrowserRoutePartitionBindingFilePath: () => mocks.bindingFilePath
 }))
 vi.mock('./browser-route-partition-storage-dependencies', () => ({
@@ -35,7 +35,7 @@ vi.mock('./browser-route-partition-storage-dependencies', () => ({
         return partitions.length
       }
     },
-    partitionDataRoot: '/tmp/orca-test-partitions',
+    partitionDataRoot: '/tmp/occ-test-partitions',
     isPartitionLive,
     clearPartitionStorage: async (partition: string) => {
       mocks.cleared.push(partition)
@@ -54,30 +54,30 @@ import {
   collectOrphanedBrowserRoutePartitionStorage
 } from './browser-route-partition-storage-runtime'
 
-const ENV_PARTITION = `persist:orca-browser-v1-${'a'.repeat(64)}`
-const LIVE_TARGET_PARTITION = `persist:orca-browser-v1-${'b'.repeat(64)}`
-const REMOVED_TARGET_PARTITION = `persist:orca-browser-v1-${'c'.repeat(64)}`
+const ENV_PARTITION = `persist:occ-browser-v1-${'a'.repeat(64)}`
+const LIVE_TARGET_PARTITION = `persist:occ-browser-v1-${'b'.repeat(64)}`
+const REMOVED_TARGET_PARTITION = `persist:occ-browser-v1-${'c'.repeat(64)}`
 
 function seedBindings(): void {
   mocks.bindings.clear()
   mocks.bindings.set(ENV_PARTITION, {
     fingerprint: '1'.repeat(64),
     storageScope: deriveBrowserRoutePartitionStorageScope({
-      orcaProfileId: 'local-default',
+      occProfileId: 'local-default',
       environmentId: 'env-1'
     })
   })
   mocks.bindings.set(LIVE_TARGET_PARTITION, {
     fingerprint: '2'.repeat(64),
     storageScope: deriveLocalSshBrowserRoutePartitionStorageScope({
-      orcaProfileId: 'local-default',
+      occProfileId: 'local-default',
       targetId: 'target-live'
     })
   })
   mocks.bindings.set(REMOVED_TARGET_PARTITION, {
     fingerprint: '3'.repeat(64),
     storageScope: deriveLocalSshBrowserRoutePartitionStorageScope({
-      orcaProfileId: 'local-default',
+      occProfileId: 'local-default',
       targetId: 'target-removed'
     })
   })
@@ -145,7 +145,7 @@ describe('deferred partition folder deletion at startup', () => {
   let profileDirectory: string
 
   beforeEach(() => {
-    profileDirectory = mkdtempSync(join(tmpdir(), 'orca-partition-runtime-'))
+    profileDirectory = mkdtempSync(join(tmpdir(), 'occ-partition-runtime-'))
     mocks.bindingFilePath = join(profileDirectory, 'browser-route-partition-bindings.json')
   })
 
@@ -154,9 +154,9 @@ describe('deferred partition folder deletion at startup', () => {
   })
 
   it('keeps a queued folder whose partition is bound while an earlier delete is in flight', async () => {
-    const rebound = `persist:orca-browser-v1-${'d'.repeat(64)}`
-    const first = join('/tmp/orca-test-partitions', `orca-browser-v1-${'e'.repeat(64)}`)
-    const second = join('/tmp/orca-test-partitions', rebound.slice('persist:'.length))
+    const rebound = `persist:occ-browser-v1-${'d'.repeat(64)}`
+    const first = join('/tmp/occ-test-partitions', `occ-browser-v1-${'e'.repeat(64)}`)
+    const second = join('/tmp/occ-test-partitions', rebound.slice('persist:'.length))
     writeFileSync(
       browserRoutePartitionPendingDeletesPath(mocks.bindingFilePath),
       JSON.stringify([first, second])
@@ -166,7 +166,7 @@ describe('deferred partition folder deletion at startup', () => {
         mocks.bindings.set(rebound, {
           fingerprint: '4'.repeat(64),
           storageScope: deriveBrowserRoutePartitionStorageScope({
-            orcaProfileId: 'local-default',
+            occProfileId: 'local-default',
             environmentId: 'env-1'
           })
         })

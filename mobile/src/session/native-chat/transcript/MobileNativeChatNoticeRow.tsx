@@ -12,7 +12,7 @@ import {
   type NativeChatTextBlock
 } from '../../../../../src/shared/native-chat-types'
 import { readWholeAgentSessionFailureFact } from '../../../../../src/shared/agent-session-failure'
-import { nativeChatOrcaStopRowText } from '../../../../../src/shared/native-chat/native-chat-orca-stop-words'
+import { nativeChatOCCStopRowText } from '../../../../../src/shared/native-chat/native-chat-occ-stop-words'
 import {
   MobileNativeChatNoticeContext,
   type MobileNativeChatNoticeNames
@@ -23,7 +23,7 @@ import { colors, radii, spacing, typography } from '../../../theme/mobile-theme'
 import { themedStyleSheet } from '../../../theme/themed-styles'
 import { useMobileColorScheme } from '../../../theme/use-mobile-color-scheme'
 import { nativeChatHostStatusCopy, nativeChatNoticeCopy } from './native-chat-notice-copy'
-import { nativeChatOrcaStopSay } from './native-chat-orca-stop-copy'
+import { nativeChatOCCStopSay } from './native-chat-occ-stop-copy'
 import { nativeChatUsageLimitText } from './native-chat-usage-limit-copy'
 import type { Translate } from '../../../i18n/mobile-i18n'
 import { useMobileTranslation } from '../../../i18n/use-mobile-translation'
@@ -40,10 +40,10 @@ function noticeLineText(
   names: MobileNativeChatNoticeNames,
   t: Translate
 ): string {
-  if (notice.orcaStop) {
-    const say = nativeChatOrcaStopSay(t)
-    return nativeChatOrcaStopRowText(
-      notice.orcaStop.cause,
+  if (notice.occStop) {
+    const say = nativeChatOCCStopSay(t)
+    return nativeChatOCCStopRowText(
+      notice.occStop.cause,
       names.hostName ?? say('unnamedServer'),
       { continueAvailable: false, remoteHost: true },
       say

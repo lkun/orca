@@ -103,7 +103,7 @@ describe('CI dependency download caches', () => {
       "steps.pnpm-store-mode.outputs.lookup-only == 'true' && runner.environment != 'github-hosted'"
     )
     expect(lookup.with).toEqual({
-      path: '${{ env.ORCA_PNPM_STORE_CACHE_PATH }}',
+      path: '${{ env.OCC_PNPM_STORE_CACHE_PATH }}',
       key: restore.with.key,
       'lookup-only': true
     })
@@ -398,7 +398,7 @@ describe('CI dependency download caches', () => {
       expect(step, name).toBeDefined()
       expect(runInNewContext(step.if, context)).toBe(cli)
     }
-    const consumer = workflow('wsl-orcad-e2e').jobs.wsl2
+    const consumer = workflow('wsl-occd-e2e').jobs.wsl2
     const installer = './.github/actions/install-node-dependencies'
     expect(consumer['runs-on']).toBe('windows-2025')
     expect(warm.steps.find((step) => step.uses === installer).with['native-runtime']).toBe(

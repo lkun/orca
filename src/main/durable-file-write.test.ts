@@ -13,7 +13,7 @@ describe('durable file write', () => {
   let dir: string
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-durable-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-durable-'))
   })
 
   afterEach(() => {

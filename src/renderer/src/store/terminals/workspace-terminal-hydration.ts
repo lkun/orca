@@ -25,7 +25,7 @@ import { buildWorkspaceTerminalLayoutPlan } from './workspace-terminal-layout-pl
 import { addHydratedSshWorktreePlaceholders } from './workspace-terminal-ssh-placeholders'
 import { retainUnverifiedPtyLossTabIds } from './terminal-unverified-pty-loss'
 import { restoreActiveTabIdByWorktree } from './workspace-terminal-active-tabs'
-import { retainPairedTerminalTabCloseIntentsForCatalog } from '../../runtime/paired-terminal-tab-close-intents'
+import { retainPairedTerminalTabCloseIntentsFocctalog } from '../../runtime/paired-terminal-tab-close-intents'
 
 export function createWorkspaceTerminalHydrationActions(
   set: TerminalStoreSet,
@@ -176,7 +176,7 @@ export function createWorkspaceTerminalHydrationActions(
           closedTerminalTabTombstonesByTabId:
             session.closedTerminalTabTombstonesByTabId ?? s.closedTerminalTabTombstonesByTabId,
           // Pull merges omit intents; only startup replaces them wholesale before snapshots can hide tabs. Filter against any catalog already loaded to discard servers removed while closed.
-          pairedTerminalTabCloseIntentsByEnvironment: retainPairedTerminalTabCloseIntentsForCatalog(
+          pairedTerminalTabCloseIntentsByEnvironment: retainPairedTerminalTabCloseIntentsFocctalog(
             session.pairedTerminalTabCloseIntentsByEnvironment ??
               s.pairedTerminalTabCloseIntentsByEnvironment,
             {

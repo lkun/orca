@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto'
 import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   launchHeadlessPairedRuntimeHost,
   type HeadlessPairedRuntimeHost
@@ -194,7 +194,7 @@ test('a phone paired to headless serve gets each terminal agent its provider ses
   testRepoPath
 }) => {
   test.setTimeout(240_000)
-  const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-10923-'))
+  const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-10923-'))
   const host = await launchHeadlessPairedRuntimeHost({ pairingScope: 'mobile' })
   const phone = pairMobileClient(host.offer)
   try {
@@ -241,7 +241,7 @@ test('a phone can read a resumed Codex chat before its first new turn', async ({
   testRepoPath
 }) => {
   test.setTimeout(240_000)
-  const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-10923-'))
+  const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-10923-'))
   const host = await launchHeadlessPairedRuntimeHost({ pairingScope: 'mobile' })
   const phone = pairMobileClient(host.offer)
   try {
@@ -281,7 +281,7 @@ test('a phone can read a Codex chat it resumed from Session History before its f
   testRepoPath
 }) => {
   test.setTimeout(240_000)
-  const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-10923-'))
+  const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-10923-'))
   const host = await launchHeadlessPairedRuntimeHost({ pairingScope: 'mobile' })
   const phone = pairMobileClient(host.offer)
   try {

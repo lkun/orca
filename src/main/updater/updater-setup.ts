@@ -160,7 +160,7 @@ export class UpdaterSetup extends UpdaterDownloadInstall {
     if (this.activeUpdateSource === 'release') {
       autoUpdater.setFeedURL({
         provider: 'generic',
-        url: 'https://github.com/stablyai/orca/releases/latest/download'
+        url: 'https://github.com/stablyai/occ/releases/latest/download'
       })
     }
     if (this.autoUpdaterInitialized) {

@@ -22,8 +22,8 @@ const STABLE = '1.4.2'
 describe('WSL hosts gate startup promotion', () => {
   let userDataPath: string
   beforeEach(() => {
-    vi.stubEnv('ORCA_INTERNAL_WSL_HOSTS', undefined)
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-gate-'))
+    vi.stubEnv('OCC_INTERNAL_WSL_HOSTS', undefined)
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-gate-'))
   })
   afterEach(() => {
     vi.restoreAllMocks()
@@ -84,7 +84,7 @@ describe('WSL hosts gate startup promotion', () => {
         createdAt: 1
       })
     beforeEach(() => {
-      vi.stubEnv('ORCA_INTERNAL_WSL_HOSTS', '1')
+      vi.stubEnv('OCC_INTERNAL_WSL_HOSTS', '1')
     })
 
     it('stays open with no cached policy', () => {

@@ -16,10 +16,10 @@ export const RECOVERABLE_CODES: ReadonlySet<string> = new Set([
 ])
 
 export const RECOVERABLE_MESSAGE_FRAGMENTS: readonly string[] = [
-  'could not connect to the remote orca runtime',
-  'remote orca runtime closed the connection',
-  'remote orca runtime connection closed',
-  'remote orca runtime is not connected',
+  'could not connect to the remote occ runtime',
+  'remote occ runtime closed the connection',
+  'remote occ runtime connection closed',
+  'remote occ runtime is not connected',
   RUNTIME_RPC_QUEUE_OVERLOAD_MESSAGE_FRAGMENT,
   'remote runtime connection closed',
   // remote_runtime_busy wording, for when IPC strips the code.
@@ -29,7 +29,7 @@ export const RECOVERABLE_MESSAGE_FRAGMENTS: readonly string[] = [
   'remote runtime subscription memory limit reached',
   'remote runtime subscription closed before it started',
   'remote terminal stream is not connected',
-  'timed out waiting for the remote orca runtime'
+  'timed out waiting for the remote occ runtime'
 ]
 
 export function isRuntimeRpcQueueOverloadError(error: RemoteRuntimeClientErrorLike): boolean {

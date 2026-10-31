@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events'
 import { PassThrough } from 'node:stream'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { spawnProcess } from '@orca/process-host'
+import type { spawnProcess } from '@occ/process-host'
 import type { DescendantTreeVerdict } from '../pty-descendant-exit-verification'
 import { providerRequestTimeoutOf } from '../provider-process/provider-request-timeout'
 import { openCodexAppServerConnection } from './codex-app-server-connection'

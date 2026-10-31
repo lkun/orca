@@ -27,7 +27,7 @@ import {
 import type { RpcContext } from '../core'
 import type { AgentLaunchParams } from '../../../../shared/rpc-contract/agent-launch-params'
 import { agentLaunchOperationCallerKey } from './agent-launch-replay'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
 /** Paired launches move only the caller's view; both early publication and spawn must obey this. */
 export function agentLaunchMovesHostWindow(
@@ -127,7 +127,7 @@ export async function publishAgentLaunchTabEarly(
     params.surface === 'chat' ||
     !readsEarlyLaunchTab(context) ||
     // Switch point: main writes the tab of a workspace it owns itself, window or not.
-    !(ORCA_LAYOUT_OWNER_IS_MAIN || runtime.canPublishAgentLaunchTab()) ||
+    !(OCC_LAYOUT_OWNER_IS_MAIN || runtime.canPublishAgentLaunchTab()) ||
     // Never touch an occupied reserved pane; attaching would run this launch into another agent.
     (params.paneKey !== undefined && runtime.hasLiveTerminalForPaneKey(params.paneKey))
   ) {
@@ -177,7 +177,7 @@ export async function publishAgentLaunchTabEarly(
     }
     // Switch point: a workspace main owns gets its tab in main's layout; any other, the window's.
     publishing =
-      (ORCA_LAYOUT_OWNER_IS_MAIN ? runtime.publishAgentLaunchTabInMainLayout(request) : null) ??
+      (OCC_LAYOUT_OWNER_IS_MAIN ? runtime.publishAgentLaunchTabInMainLayout(request) : null) ??
       runtime.publishAgentLaunchTab(request)
   } catch (error) {
     running.finish({ kind: 'proceed' })
@@ -197,7 +197,7 @@ export async function publishAgentLaunchTabEarly(
     report: (verdict) => {
       const address = { worktreeId: workspace.id, tabId: pane.tabId, leafId: pane.leafId }
       // Main withdraws panes it owns; the window still receives the verdict to release retained launch state.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN && verdict.kind === 'withdrawn') {
+      if (OCC_LAYOUT_OWNER_IS_MAIN && verdict.kind === 'withdrawn') {
         runtime.withdrawAgentLaunchPaneInMainLayout(address)
       }
       runtime.reportAgentLaunchPaneVerdict(address, verdict)

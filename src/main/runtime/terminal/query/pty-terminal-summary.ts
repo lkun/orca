@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithMailboxTerminalIdentity } from '../../orchestration/mailbox-terminal-identity'
+import { OCCRuntimeWithMailboxTerminalIdentity } from '../../orchestration/mailbox-terminal-identity'
 import type {
   RuntimeLeafRecord,
   RuntimePtyWorktreeRecord
@@ -13,14 +13,14 @@ import {
   ptyHoldsRecordedSurface,
   type PtySurfaceTopology
 } from '../../pty-recorded-surface-topology'
-import type { PtyIncarnationHandleRecord } from '../../orca-runtime-core'
+import type { PtyIncarnationHandleRecord } from '../../occ-runtime-core'
 import type { TerminalHandleRecord } from '../../runtime-terminal-contracts'
 import { readTerminalTail } from '../../terminal-tail-read'
 import { structuredWorkerTerminalRefusal } from '../../structured-worker-terminal-refusal'
 import { randomUUID } from 'node:crypto'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
-export abstract class OrcaRuntimeWithBuildPtyTerminalSummary extends OrcaRuntimeWithMailboxTerminalIdentity {
+export abstract class OCCRuntimeWithBuildPtyTerminalSummary extends OCCRuntimeWithMailboxTerminalIdentity {
   protected abstract bindPtyIncarnationHandle(
     retained: PtyIncarnationHandleRecord,
     leaf: RuntimeLeafRecord
@@ -184,7 +184,7 @@ export abstract class OrcaRuntimeWithBuildPtyTerminalSummary extends OrcaRuntime
   /** Main-owned panes adopt the terminal's original handle; own-handle checks fence epochs because replacement incarnations drop that handle. */
   private mainPaneOwnHandle(handle: string, record: TerminalHandleRecord): boolean {
     if (
-      !ORCA_LAYOUT_OWNER_IS_MAIN ||
+      !OCC_LAYOUT_OWNER_IS_MAIN ||
       !record.ptyId ||
       !isTerminalLeafId(record.leafId) ||
       !isValidTerminalTabId(record.tabId) ||

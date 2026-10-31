@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 
 const { runProcessMock, blockedForExecMock } = vi.hoisted(() => ({
   runProcessMock: vi.fn(),
   blockedForExecMock: vi.fn(async (): Promise<{ distro: string; state: string } | null> => null)
 }))
 
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 vi.mock('../wsl/wsl-background-exec-gate', () => ({
   blockedWslDistroForExec: blockedForExecMock
 }))
@@ -79,7 +79,7 @@ describe('canonicalizeWslLinuxPath', () => {
       () => '/'
     )
 
-    expect(plan?.commandScriptPath).toBe('/.orca/agent-hooks/codex-hook.sh')
+    expect(plan?.commandScriptPath).toBe('/.occ/agent-hooks/codex-hook.sh')
     expect(plan?.trustConfigPath).toBe('/hooks.json')
   })
 
@@ -105,7 +105,7 @@ describe('canonicalizeWslLinuxPath', () => {
         '--exec',
         'sh',
         '-c',
-        `if [ ! -d "$1" ]; then printf '%s\\n' '__ORCA_WSL_PATH_MISSING__'; exit 0; fi; readlink -f -- "$1"`,
+        `if [ ! -d "$1" ]; then printf '%s\\n' '__OCC_WSL_PATH_MISSING__'; exit 0; fi; readlink -f -- "$1"`,
         'sh',
         '/home/alias'
       ]
@@ -142,12 +142,12 @@ describe('canonicalizeWslLinuxPath', () => {
   it('resolves a custom automount root and notifies the first launch', async () => {
     setPlatform('win32')
     const settled = vi.fn()
-    const windowsPath = 'D:\\orca\\codex-runtime-home\\home'
+    const windowsPath = 'D:\\occ\\codex-runtime-home\\home'
 
     expect(
       _internals.canonicalizeWslLinuxPath(
         'Ubuntu',
-        '/mnt/d/orca/codex-runtime-home/home',
+        '/mnt/d/occ/codex-runtime-home/home',
         windowsPath,
         settled
       )
@@ -163,16 +163,16 @@ describe('canonicalizeWslLinuxPath', () => {
         '--exec',
         'sh',
         '-c',
-        `resolved=$(wslpath -a -u "$1") || exit; if [ ! -d "$resolved" ]; then printf '%s\\n' '__ORCA_WSL_PATH_MISSING__'; exit 0; fi; readlink -f -- "$resolved"`,
+        `resolved=$(wslpath -a -u "$1") || exit; if [ ! -d "$resolved" ]; then printf '%s\\n' '__OCC_WSL_PATH_MISSING__'; exit 0; fi; readlink -f -- "$resolved"`,
         'sh',
         windowsPath
       ]
     })
 
-    await answer(0, exited('/windows/d/orca/codex-runtime-home/home\n'))
+    await answer(0, exited('/windows/d/occ/codex-runtime-home/home\n'))
     expect(settled).toHaveBeenCalledWith({
       status: 'resolved',
-      canonicalPath: '/windows/d/orca/codex-runtime-home/home'
+      canonicalPath: '/windows/d/occ/codex-runtime-home/home'
     })
   })
 
@@ -225,7 +225,7 @@ describe('canonicalizeWslLinuxPath', () => {
       _internals.canonicalizeWslLinuxPath('Ubuntu', '/home/alias', '/home/alias', settled)
     ).toBe('/home/alice')
     await spawned(2)
-    await answer(1, exited('__ORCA_WSL_PATH_MISSING__\n'))
+    await answer(1, exited('__OCC_WSL_PATH_MISSING__\n'))
 
     expect(settled).toHaveBeenCalledWith({ status: 'missing' })
     expect(_internals.canonicalizeWslLinuxPath('Ubuntu', '/home/alias')).toBeNull()

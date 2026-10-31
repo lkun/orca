@@ -60,14 +60,14 @@ function isUserFacingExternalWorktree(worktree: DetectedWorktree): boolean {
   // Agent plumbing stays outside discovery even when its separate visibility policy shows it.
   return (
     !worktree.selectedCheckout &&
-    worktree.ownership !== 'orca-managed' &&
+    worktree.ownership !== 'occ-managed' &&
     worktree.ownership !== 'agent-scratch'
   )
 }
 
 // Keep per-path recovery available when either visibility policy is off.
 function isImportableExternalWorktree(worktree: DetectedWorktree): boolean {
-  return !worktree.selectedCheckout && worktree.ownership !== 'orca-managed'
+  return !worktree.selectedCheckout && worktree.ownership !== 'occ-managed'
 }
 
 export function getHiddenImportableExternalWorktrees(
@@ -81,7 +81,7 @@ export function getHiddenImportableExternalWorktrees(
   )
 }
 
-export function getVisibleNonOrcaWorktrees(
+export function getVisibleNonOCCWorktrees(
   detected: DetectedWorktreeListResult | undefined
 ): DetectedWorktree[] {
   if (detected?.authoritative !== true) {
@@ -89,7 +89,7 @@ export function getVisibleNonOrcaWorktrees(
   }
   return detected.worktrees.filter(
     (worktree) =>
-      worktree.visible && !worktree.selectedCheckout && worktree.ownership !== 'orca-managed'
+      worktree.visible && !worktree.selectedCheckout && worktree.ownership !== 'occ-managed'
   )
 }
 

@@ -244,8 +244,8 @@ async function resetComputerUsePermissionsAsync(): Promise<ComputerUsePermission
 function closeExistingPermissionHelpers(): void {
   // Preserve concurrent status probes when replacing permission-setup helpers.
   const setupHelperPatterns = [
-    'orca-computer-use-macos[[:space:]]+--permission([[:space:]]|$)',
-    'orca-computer-use-macos[[:space:]]+--permissions([[:space:]]|$)'
+    'occ-computer-use-macos[[:space:]]+--permission([[:space:]]|$)',
+    'occ-computer-use-macos[[:space:]]+--permissions([[:space:]]|$)'
   ]
   for (const pattern of setupHelperPatterns) {
     spawnSync('/usr/bin/pkill', ['-f', pattern], {

@@ -28,7 +28,7 @@ import { PaginationBar } from '../../src/renderer/src/components/task-page/Pagin
 import { useTaskPageLinearListProjectionPrelude } from '../../src/renderer/src/components/task-page/linear/use-task-page-linear-list-projection'
 import type { LinearIssue } from '../../src/shared/linear/issue-types'
 import type { TaskSourceContext } from '../../src/shared/task-source-context'
-import { useTaskPageLinearInOrcaEffects } from '../../src/renderer/src/components/task-page/linear/use-task-page-linear-in-orca-effects'
+import { useTaskPageLinearInOCCEffects } from '../../src/renderer/src/components/task-page/linear/use-task-page-linear-in-occ-effects'
 import { useTaskPageDetailRouting } from '../../src/renderer/src/components/task-page/use-task-page-detail-routing'
 import { useLinearIssueWorkspaceDetail } from '../../src/renderer/src/components/linear-issue-workspace-detail-state'
 import { assert, afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -225,12 +225,12 @@ it('retains ordered linked source provenance when two hosts return the same UUID
     ...s.getState(),
     taskResumeApplied: true,
     taskSource: 'linear',
-    linearMode: 'in-orca',
+    linearMode: 'in-occ',
     linearConnected: true,
     linearRefreshNonce: 0,
     lastLinearRequestRef: { current: null },
-    inOrcaLinkedLinearRefsRef: { current: refs },
-    inOrcaLinkedLinearRefsSignature: 'two-hosts',
+    inOCCLinkedLinearRefsRef: { current: refs },
+    inOCCLinkedLinearRefsSignature: 'two-hosts',
     setLinearLoading: vi.fn(),
     setLinearError: vi.fn(),
     setLinearIssuesHasMore: vi.fn()
@@ -243,7 +243,7 @@ it('retains ordered linked source provenance when two hosts return the same UUID
     )
     // SAFETY: fixture supplies the linked loader fields.
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: this fixture supplies the real consumer's exercised fields and actions; unrelated full-page/provider services are intentionally absent.
-    useTaskPageLinearInOrcaEffects({
+    useTaskPageLinearInOCCEffects({
       ...base,
       linearIssueResult: result,
       setLinearIssues: result.setData
@@ -522,12 +522,12 @@ it.each([20, 200])(
       ...s.getState(),
       taskResumeApplied: true,
       taskSource: 'linear',
-      linearMode: 'in-orca',
+      linearMode: 'in-occ',
       linearConnected: true,
       linearRefreshNonce: 0,
       lastLinearRequestRef: { current: null },
-      inOrcaLinkedLinearRefsRef: { current: refs },
-      inOrcaLinkedLinearRefsSignature: `N${n}`,
+      inOCCLinkedLinearRefsRef: { current: refs },
+      inOCCLinkedLinearRefsSignature: `N${n}`,
       setLinearLoading: vi.fn(),
       setLinearError: vi.fn(),
       setLinearIssuesHasMore: vi.fn()
@@ -542,7 +542,7 @@ it.each([20, 200])(
       )
       // SAFETY: the fixture installs the actual linked hook's selected dependencies.
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: this fixture supplies the real consumer's exercised fields and actions; unrelated full-page/provider services are intentionally absent.
-      useTaskPageLinearInOrcaEffects({
+      useTaskPageLinearInOCCEffects({
         ...base,
         linearIssueResult: result,
         setLinearIssues: result.setData

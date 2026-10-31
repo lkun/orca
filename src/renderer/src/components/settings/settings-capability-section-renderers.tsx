@@ -64,7 +64,7 @@ export function renderAccountsSettingsSection(context: SettingsRenderContext): R
       {!view.isSectionMounted('accounts') ? null : !model.settingsHostScope.available ? (
         <SettingsHostScopeUnavailableNotice />
       ) : wslHostDistro ? (
-        // A WSL host's orcad has no account services; this desktop owns its distro's accounts.
+        // A WSL host's occd has no account services; this desktop owns its distro's accounts.
         <AccountsPane
           settings={model.settings}
           updateSettings={model.updateSettings}

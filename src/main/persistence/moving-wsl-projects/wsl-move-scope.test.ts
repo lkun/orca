@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import type { FolderWorkspace } from '../../../shared/folder-workspace-types'
-import type { OrcadMigrationCatalogPayload } from '../../../shared/orcad-migration/orcad-migration-manifest'
+import type { OCCdMigrationCatalogPayload } from '../../../shared/occd-migration/occd-migration-manifest'
 import type { Repo } from '../../../shared/repo-types'
-import { rewriteOrcadMigrationPayloadPaths } from '../../ssh/orcad-migration-path-rewrite'
+import { rewriteOCCdMigrationPayloadPaths } from '../../ssh/occd-migration-path-rewrite'
 import { createUncToLinuxPathRewriter } from './wsl-move-path-rewriter'
 import { collectWslMoveScope } from './wsl-move-scope'
 
@@ -179,7 +179,7 @@ describe('createUncToLinuxPathRewriter', () => {
   it('rewrites a whole catalog, including worktree ids and owner keys', () => {
     const repoPath = unc('/home/dev/app')
     const worktreeId = `repo-a::${repoPath}`
-    const payload: OrcadMigrationCatalogPayload = {
+    const payload: OCCdMigrationCatalogPayload = {
       repositories: [repo('repo-a', repoPath)],
       projectGroups: [],
       folderWorkspaces: [],
@@ -210,7 +210,7 @@ describe('createUncToLinuxPathRewriter', () => {
         retiredWorktreeNamespaces: []
       }
     }
-    const rewritten = rewriteOrcadMigrationPayloadPaths(payload, rewriter)
+    const rewritten = rewriteOCCdMigrationPayloadPaths(payload, rewriter)
     expect(rewritten.repositories[0].path).toBe('/home/dev/app')
     // Preserve source keys for matching rows during subtraction.
     expect(rewritten.dormantState?.worktreeMeta[0]).toMatchObject({

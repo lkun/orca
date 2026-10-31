@@ -237,7 +237,7 @@ describe('host-qualified scoped worktree resolution', () => {
 
   it.each([
     ['runtime:windows', String.raw`C:\Users\dev\occ worktree`],
-    ['local', '/mnt/c/Users/dev/orca worktree']
+    ['local', '/mnt/c/Users/dev/occ worktree']
   ] satisfies [ExecutionHostId, string][])(
     'keeps %s path resolution scoped',
     async (hostId, path) => {

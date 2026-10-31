@@ -9,12 +9,12 @@ import {
   openTopologyStore,
   reopenTopologyStore
 } from '../../../persistence/terminal-topology/terminal-topology-profile-fixture'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import type { ResolvedWorktree } from '../../runtime-worktree-path-identity'
 import { TERMINAL_QUERY_METHODS } from '../../rpc/methods/terminal/terminal-query-methods'
 import { FIRST_SURFACE_PLACEMENT_WAIT_MS } from './restored-terminal-placement'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('../../../telemetry/client', () => ({ track: vi.fn() }))
 
 // A window sweep must let main place only that workspace's unshown live terminals before listing them.
@@ -32,7 +32,7 @@ type LiveSession = {
   exiting?: true
 }
 
-class SweepRuntime extends OrcaRuntimeService {
+class SweepRuntime extends OCCRuntimeService {
   protected override async getResolvedWorktreeMap(): Promise<Map<string, ResolvedWorktree>> {
     return new Map(
       [SWEPT, OTHER].flatMap((id) => {
@@ -70,7 +70,7 @@ function runtimeOn(store: Store, live: LiveSession[]): SweepRuntime {
 }
 
 async function hostWith(live: LiveSession[]) {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-sweep-placement-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-sweep-placement-'))
   directories.push(directory)
   const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   return { store, directory, runtime: runtimeOn(store, live) }
@@ -186,7 +186,7 @@ describe('a terminal created by the CLI, across a restart, layout-owner build', 
 
 describe('a workspace’s first surface beside a sweep’s pass, layout-owner build', () => {
   async function hostReadingASweepCensus() {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-sweep-first-surface-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-sweep-first-surface-'))
     directories.push(directory)
     const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
     let answerCensus = (): void => {}

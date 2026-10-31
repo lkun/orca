@@ -1,4 +1,4 @@
-/** A second desktop on a fake WSL transport whose "distro" is the HUB's orcad, for WSL host e2e. */
+/** A second desktop on a fake WSL transport whose "distro" is the HUB's occd, for WSL host e2e. */
 import { execFileSync } from 'node:child_process'
 import {
   existsSync,
@@ -17,10 +17,10 @@ import {
   type Page
 } from '@stablyai/playwright-test'
 import { getE2ECompletedOnboardingProfile } from './e2e-completed-onboarding-profile'
-import { getOrcaElectronLaunchArgs } from './electron-launch-args'
+import { getOCCElectronLaunchArgs } from './electron-launch-args'
 import { cleanupE2EDaemons, closeElectronAppForE2E } from './electron-process-shutdown'
 import { createElectronHomeIsolation } from './electron-home-isolation'
-import { forwardElectronProcessLogs } from './orca-app'
+import { forwardElectronProcessLogs } from './occ-app'
 import { waitForSessionReady } from './store'
 import { toRuntimeExecutionHostId } from '../../../src/shared/execution-host'
 import { WSL_HOSTS_INTERNAL_GATE_ENV } from '../../../src/shared/wsl-host-internal-gate'
@@ -39,9 +39,9 @@ export async function launchDesktopWithFakeWsl(
   userDataDir: string
   dispose: () => Promise<void>
 }> {
-  const userDataDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-host-desktop-'))
+  const userDataDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-host-desktop-'))
   writeFileSync(
-    path.join(userDataDir, 'orca-data.json'),
+    path.join(userDataDir, 'occ-data.json'),
     `${JSON.stringify(getE2ECompletedOnboardingProfile(), null, 2)}\n`
   )
   options.beforeLaunch?.(userDataDir)
@@ -53,13 +53,13 @@ export async function launchDesktopWithFakeWsl(
     extraEnv: {
       // WSL hosts exist only behind this internal gate; the gated-off test leaves it closed.
       ...(options.internalGate === false ? {} : { [WSL_HOSTS_INTERNAL_GATE_ENV]: '1' }),
-      ORCA_E2E_FAKE_WSL_HOSTS: JSON.stringify(fake)
+      OCC_E2E_FAKE_WSL_HOSTS: JSON.stringify(fake)
     },
     userDataDir
   })
   const app = await electron.launch({
-    args: getOrcaElectronLaunchArgs(path.join(process.cwd(), 'out', 'main', 'index.js'), false),
-    env: { ...isolation.env, NODE_ENV: 'development', ORCA_E2E_HEADLESS: '1' }
+    args: getOCCElectronLaunchArgs(path.join(process.cwd(), 'out', 'main', 'index.js'), false),
+    env: { ...isolation.env, NODE_ENV: 'development', OCC_E2E_HEADLESS: '1' }
   })
   forwardElectronProcessLogs(app, testInfo)
   const dispose = async (): Promise<void> => {
@@ -105,7 +105,7 @@ export async function setWslHostsEnabled(page: Page, enabled: boolean): Promise<
 
 export function createGitProject(): string {
   // Real path: macOS tmpdir is a /var symlink, and the host lists the repo by its resolved path.
-  const dir = realpathSync(mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-host-project-')))
+  const dir = realpathSync(mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-host-project-')))
   execFileSync('git', ['init', '-q', '-b', 'main', dir])
   writeFileSync(path.join(dir, 'README.md'), '# wsl host project\n')
   execFileSync('git', ['-C', dir, 'add', '.'])

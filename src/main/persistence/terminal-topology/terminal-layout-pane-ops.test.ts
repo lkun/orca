@@ -1,4 +1,4 @@
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -56,7 +56,7 @@ function legacyOnly(change: ReturnType<typeof diffStoredSession>[number]): boole
 /** Layout-owner builds retain closed-terminal exit evidence that legacy closes cannot record. */
 function layoutOwnerOnly(change: ReturnType<typeof diffStoredSession>[number]): boolean {
   return (
-    ORCA_LAYOUT_OWNER_IS_MAIN &&
+    OCC_LAYOUT_OWNER_IS_MAIN &&
     change.table === 'session' &&
     change.field === 'closedTerminalPanesByPaneKey'
   )
@@ -65,7 +65,7 @@ function layoutOwnerOnly(change: ReturnType<typeof diffStoredSession>[number]): 
 const FOLDED_LEGACY_ROW_CLOSES = new Map([
   [
     'tab-legacy',
-    ['row/repo-1::/Users/dev/orca|tab-legacy/ptyId', 'layout/tab-legacy/ptyIdsByLeafId']
+    ['row/repo-1::/Users/dev/occ|tab-legacy/ptyId', 'layout/tab-legacy/ptyIdsByLeafId']
   ]
 ])
 
@@ -139,7 +139,7 @@ describe('layout.apply closePane against the legacy pane close', () => {
 
 describe('Store.applyLayoutCommand pane operations', () => {
   async function storeWithSplitTab(hostIds: string[]) {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-layout-pane-ops-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-layout-pane-ops-'))
     directories.push(directory)
     const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
     const window = new WindowSession(getDefaultWorkspaceSession())

@@ -13,7 +13,7 @@ const WINDOWS_REPO_ID = 'a0a2b4a4-1bff-494c-b005-d77918abc6a7'
 
 function command(repoId: string): TerminalQuickCommand {
   return {
-    id: 'test-orca',
+    id: 'test-occ',
     label: 'Test OCC',
     action: 'terminal-command',
     command: 'pnpm test',
@@ -25,7 +25,7 @@ function command(repoId: string): TerminalQuickCommand {
 function setup(
   hostId: ExecutionHostId,
   repoId: string,
-  projectId = 'github:stablyai/orca'
+  projectId = 'github:stablyai/occ'
 ): ScopeSetup {
   return { hostId, projectId, repoId }
 }
@@ -54,20 +54,20 @@ describe('terminalQuickCommandMatchesWorkspaceProject', () => {
     const repo = (id: string, path: string, executionHostId?: ExecutionHostId): Repo => ({
       id,
       path,
-      displayName: 'orca',
+      displayName: 'occ',
       badgeColor: '#737373',
       addedAt: 100,
       kind: 'git',
       gitRemoteIdentity: {
-        canonicalKey: 'github.com/stablyai/orca',
+        canonicalKey: 'github.com/stablyai/occ',
         remoteName: 'origin',
-        remoteUrl: 'git@github.com:stablyai/orca.git'
+        remoteUrl: 'git@github.com:stablyai/occ.git'
       },
       ...(executionHostId ? { executionHostId } : {})
     })
     const projectHostSetups = projectHostSetupProjectionFromRepos([
-      repo(LOCAL_REPO_ID, '/Users/alice/orca'),
-      repo(WINDOWS_REPO_ID, 'C:\\Users\\alice\\orca', 'runtime:windows-2')
+      repo(LOCAL_REPO_ID, '/Users/alice/occ'),
+      repo(WINDOWS_REPO_ID, 'C:\\Users\\alice\\occ', 'runtime:windows-2')
     ]).setups
 
     expect(

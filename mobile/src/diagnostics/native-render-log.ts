@@ -2,7 +2,7 @@ import { sanitizeCrashReportString } from '../../../src/shared/crash-report-reda
 import { captureBridgeError } from '../mobile-web-shell/bridge/bridge-error-capture'
 import { connectionLogStore } from '../transport/persisted-connection-log-store'
 
-export const NATIVE_APP_LOG_ID = 'orca:native-app'
+export const NATIVE_APP_LOG_ID = 'occ:native-app'
 let sequence = 0
 
 export function recordNativeRenderError(error: unknown, route: string): void {

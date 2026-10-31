@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   waitForActivePaneHookDescriptor,
@@ -108,22 +108,22 @@ function pendingAskTranscript(args: { sessionId: string; userText: string }): st
 
 test.describe('Desktop chat AskUserQuestion card (#11761)', () => {
   test('renders the answerable question card from the transcript when live status carries no ask', async ({
-    orcaPage
+    occPage
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
-    const boundPane = await waitForPaneIdentitySnapshot(orcaPage, 1)
-    const ptyId = await waitForActivePanePtyId(orcaPage)
-    await waitForPtyShellEcho(orcaPage, ptyId, 15_000)
-    const descriptor = await waitForActivePaneHookDescriptor(orcaPage)
+    const boundPane = await waitForPaneIdentitySnapshot(occPage, 1)
+    const ptyId = await waitForActivePanePtyId(occPage)
+    await waitForPtyShellEcho(occPage, ptyId, 15_000)
+    const descriptor = await waitForActivePaneHookDescriptor(occPage)
     expect(descriptor.paneKey).toBe(`${boundPane.tabId}:${boundPane.activeLeafId}`)
     const [tabId] = descriptor.paneKey.split(':')
     const sessionId = `e2e-ask-card-${randomUUID()}`
 
-    const scratchDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-ask-card-'))
+    const scratchDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-ask-card-'))
     const transcriptPath = path.join(scratchDir, `${sessionId}.jsonl`)
     const screenshotDir = path.join(process.cwd(), 'validation-screenshots', 'ask-user-question')
     mkdirSync(screenshotDir, { recursive: true })
@@ -132,38 +132,38 @@ test.describe('Desktop chat AskUserQuestion card (#11761)', () => {
       const userText = 'Reformat the config file for me'
       writeFileSync(transcriptPath, pendingAskTranscript({ sessionId, userText }))
 
-      await enableNativeChatSetting(orcaPage)
-      await seedStatusWithoutAskPayload(orcaPage, {
+      await enableNativeChatSetting(occPage)
+      await seedStatusWithoutAskPayload(occPage, {
         paneKey: descriptor.paneKey,
         worktreeId: descriptor.worktreeId,
         sessionId,
         transcriptPath
       })
-      await toggleTerminalTabToChatView(orcaPage, { tabId, worktreeId: descriptor.worktreeId })
+      await toggleTerminalTabToChatView(occPage, { tabId, worktreeId: descriptor.worktreeId })
 
-      await expect(orcaPage.locator('[data-native-chat-root="true"]')).toBeVisible({
+      await expect(occPage.locator('[data-native-chat-root="true"]')).toBeVisible({
         timeout: 15_000
       })
-      await expect(orcaPage.getByText(userText)).toBeVisible({ timeout: 30_000 })
+      await expect(occPage.getByText(userText)).toBeVisible({ timeout: 30_000 })
 
       // Gate on the card’s title: awaiting-input transcript rows also contain the question (#20724).
-      const cardQuestion = orcaPage
+      const cardQuestion = occPage
         .getByTestId('native-chat-question-card-title')
         .filter({ hasText: QUESTION })
       await expect(cardQuestion).toBeVisible({ timeout: 10_000 })
-      await expect(orcaPage.getByRole('button', { name: /Spaces/ })).toBeVisible()
-      await orcaPage.screenshot({ path: path.join(screenshotDir, '01-question-card.png') })
+      await expect(occPage.getByRole('button', { name: /Spaces/ })).toBeVisible()
+      await occPage.screenshot({ path: path.join(screenshotDir, '01-question-card.png') })
 
       // A final single-select pick auto-submits (#26288), proving the card accepts answers.
-      await orcaPage.getByRole('button', { name: /Spaces/ }).click()
+      await occPage.getByRole('button', { name: /Spaces/ }).click()
       // Require card dismissal and composer return; the transcript keeps its resolution receipt.
       await expect(cardQuestion).toHaveCount(0, { timeout: 20_000 })
-      await orcaPage.screenshot({ path: path.join(screenshotDir, '03-answered.png') })
-      const finalPane = await waitForPaneIdentitySnapshot(orcaPage, 1)
+      await occPage.screenshot({ path: path.join(screenshotDir, '03-answered.png') })
+      const finalPane = await waitForPaneIdentitySnapshot(occPage, 1)
       expect(finalPane.tabId).toBe(boundPane.tabId)
       expect(finalPane.activeLeafId).toBe(boundPane.activeLeafId)
       expect(finalPane.ptyIdsByLeafId).toEqual(boundPane.ptyIdsByLeafId)
-      await expect(orcaPage.locator('[data-native-chat-root="true"]')).toBeVisible()
+      await expect(occPage.locator('[data-native-chat-root="true"]')).toBeVisible()
     } finally {
       rmSync(scratchDir, { recursive: true, force: true })
     }

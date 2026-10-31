@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import * as cut from '../../shared/native-chat/native-chat-orca-stop-cut'
+import * as cut from '../../shared/native-chat/native-chat-occ-stop-cut'
 import * as commands from '../../shared/structured-agent-session-command-entry'
 import type {
   AgentJournalRenderItem,

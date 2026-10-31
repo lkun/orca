@@ -63,7 +63,7 @@ export class ReserveDeadMan {
       if (this.pending?.generation !== applied.generation) {
         this.log(
           JSON.stringify({
-            event: 'orca_relay_cell_reserve_dead_man_held',
+            event: 'occ_relay_cell_reserve_dead_man_held',
             cellId: this.cellId,
             generation: applied.generation,
             silentMs: now - this.lastContactAt,
@@ -78,7 +78,7 @@ export class ReserveDeadMan {
     this.trippedGeneration = applied.generation
     this.log(
       JSON.stringify({
-        event: 'orca_relay_cell_reserve_dead_man_tripped',
+        event: 'occ_relay_cell_reserve_dead_man_tripped',
         cellId: this.cellId,
         generation: applied.generation,
         silentMs: now - this.lastContactAt

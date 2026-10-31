@@ -36,7 +36,7 @@ const manifest = pluginManifestSchema.parse({
   publisher: 'samples',
   name: 'Demo',
   version: '1.0.0',
-  engines: { orca: '>=1.0.0' },
+  engines: { occ: '>=1.0.0' },
   pluginApi: 1,
   contributes: { panels: [], commands: [], events: [] },
   capabilities: [{ kind: 'workspace:read' }]
@@ -98,7 +98,7 @@ describe('buildPluginList consent identity', () => {
   it('does not expose an invalid development plugin absolute path as identity', async () => {
     const invalid: InvalidDiscoveredPlugin = {
       rootDir: join(tmpdir(), 'private', 'secret-plugin-path'),
-      error: 'missing orca-plugin.json',
+      error: 'missing occ-plugin.json',
       isDev: true
     }
     const service = {

@@ -9,7 +9,7 @@ vi.mock('node-pty', () => nodePty)
 import { loadLocalPtyRuntimeSpawn } from './local-pty-runtime-spawn'
 
 // A real file named wsl: the spawn path validates the shell before handing it to node-pty.
-const WSL = join(mkdtempSync(join(tmpdir(), 'orca-wsl-allowlist-')), 'wsl')
+const WSL = join(mkdtempSync(join(tmpdir(), 'occ-wsl-allowlist-')), 'wsl')
 writeFileSync(WSL, '#!/bin/sh\n')
 chmodSync(WSL, 0o755)
 
@@ -26,7 +26,7 @@ describe.skipIf(process.platform === 'win32')(
     })
 
     it('never starts a pane in an excluded distro, and still starts one in an allowed distro', async () => {
-      vi.stubEnv('ORCA_INTERNAL_WSL_DISTRO_ALLOWLIST', 'orca-test-a')
+      vi.stubEnv('OCC_INTERNAL_WSL_DISTRO_ALLOWLIST', 'occ-test-a')
       vi.spyOn(console, 'warn').mockImplementation(() => {})
       const pane = { pid: 1 }
       nodePty.spawn.mockReturnValue(pane)
@@ -40,8 +40,8 @@ describe.skipIf(process.platform === 'win32')(
       }
       expect(nodePty.spawn.mock.calls.filter(([file]) => file === WSL)).toEqual([])
 
-      expect(await spawn(params(['-d', 'orca-test-a']))).toMatchObject({ process: pane })
-      expect(nodePty.spawn).toHaveBeenLastCalledWith(WSL, ['-d', 'orca-test-a'], expect.anything())
+      expect(await spawn(params(['-d', 'occ-test-a']))).toMatchObject({ process: pane })
+      expect(nodePty.spawn).toHaveBeenLastCalledWith(WSL, ['-d', 'occ-test-a'], expect.anything())
     })
 
     it('starts any distro when the allowlist is unset', async () => {

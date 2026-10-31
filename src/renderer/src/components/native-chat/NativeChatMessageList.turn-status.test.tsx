@@ -25,7 +25,7 @@ afterEach(() => {
   expect(unusedChatLeaves.inlineVisual).not.toHaveBeenCalled()
   expect(unusedChatLeaves.openSender).not.toHaveBeenCalled()
 })
-import { NativeChatOrcaStopContext } from './native-chat-orca-stop-context'
+import { NativeChatOCCStopContext } from './native-chat-occ-stop-context'
 import { agentSessionFailureWords } from '../../../../shared/agent-session-failure-words'
 import type {
   AgentJournalItemBody,
@@ -299,7 +299,7 @@ const usageLimitView = {
         }
       ]
       render(
-        <NativeChatOrcaStopContext.Provider value={usageLimitView}>
+        <NativeChatOCCStopContext.Provider value={usageLimitView}>
           <NativeChatMessageList
             session={{
               ...session,
@@ -312,7 +312,7 @@ const usageLimitView = {
             isWorking={false}
             expandSignal={false}
           />
-        </NativeChatOrcaStopContext.Provider>
+        </NativeChatOCCStopContext.Provider>
       )
       expect(screen.getByRole('button', { name: 'Toggle turn details' })).toHaveAttribute(
         'aria-expanded',

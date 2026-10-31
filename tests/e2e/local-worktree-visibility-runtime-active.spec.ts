@@ -1,19 +1,19 @@
 // Create through the real CLI socket while a remote runtime is active; local worktrees:changed must still refresh the sidebar.
 // Inject only remote selection: the old renderer routed unbound local repo fetches away and hid new worktrees until restart.
 
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady, waitForActiveWorktree } from './helpers/store'
 import { RuntimeClient } from '../../src/cli/runtime-client'
 
 test.describe('worktree visibility with a remote runtime active', () => {
   test('a CLI-created worktree appears in the sidebar while a remote runtime is active', async ({
-    orcaPage,
+    occPage,
     electronApp
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
 
-    const repoId = await orcaPage.evaluate(() => {
+    const repoId = await occPage.evaluate(() => {
       const repos = window.__store?.getState().repos ?? []
       // Require an unbound local-host repo so active-runtime routing exercises the reported failure.
       const target = repos.find(
@@ -37,13 +37,13 @@ test.describe('worktree visibility with a remote runtime active', () => {
       return response.result.worktree.id
     }
     const worktreeRow = (worktreeId: string) =>
-      orcaPage.locator(`[data-worktree-id=${JSON.stringify(worktreeId)}]`).first()
+      occPage.locator(`[data-worktree-id=${JSON.stringify(worktreeId)}]`).first()
 
     // Control: creation without a remote selection must appear, proving create/notify works.
     const controlId = await createViaCli(`wt-control-${Date.now()}`)
     await expect(worktreeRow(controlId)).toBeVisible({ timeout: 15_000 })
 
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       window.__store?.setState((current) => {
         if (!current.settings) {
           throw new Error('Settings are not hydrated')

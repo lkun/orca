@@ -4,7 +4,7 @@ import {
   PUSH_HOST_PROOF_TRANSCRIPT_DOMAIN,
   PUSH_HOST_PROOF_TRANSCRIPT_FIELD_COUNT,
   PUSH_LIMITS
-} from '@orca-cloud/push-contract'
+} from '@occ-cloud/push-contract'
 import nacl from 'tweetnacl'
 import { decodeCanonicalBase64 } from './canonical-base64.js'
 import { deriveHostFingerprint } from './host-fingerprint.js'

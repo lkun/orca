@@ -2,7 +2,7 @@
   "hostSecretKeyB64": "BwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwcHBwc=",
   "hostPublicKeyB64": "E75P6uryBMf9M1j8nAByGIHRdCeBKCJ+xnTzf3/pe20=",
   "hostFingerprint": "D20lU_8MD0R64gLt",
-  "gatewayOrigin": "https://push.onorca.dev",
+  "gatewayOrigin": "https://push.onocc.dev",
   "challenge": {
     "challengeId": "vector-challenge-1",
     "gatewayEphemeralPublicKeyB64": "V9tLNZ8jrl4Ubk4lEgVnBHIlBjSMFQwUdT0Mkz0E1CE=",

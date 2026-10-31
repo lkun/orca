@@ -180,7 +180,7 @@ describe('removing a managed server host', () => {
       host: 'box.example.test',
       port: 22,
       username: 'dev',
-      orcadFence: { environmentId: 'env-box' }
+      occdFence: { environmentId: 'env-box' }
     }
     Object.defineProperty(window, 'api', {
       configurable: true,
@@ -271,7 +271,7 @@ describe('bulk removal from SSH settings', () => {
     const pane = await renderPane([
       host('alpha'),
       host('beta'),
-      host('gamma', { orcadFence: { environmentId: 'env-gamma' } })
+      host('gamma', { occdFence: { environmentId: 'env-gamma' } })
     ])
     await act(async () => checkbox(pane, 'alpha').click())
     await act(async () => {

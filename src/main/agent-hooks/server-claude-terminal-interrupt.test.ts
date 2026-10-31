@@ -68,7 +68,7 @@ describe('Claude native title confirms an Escape interruption', () => {
     }
   })
 
-  it.each(['stream-usage-cancel-orca', 'tool-cancel-supported'])(
+  it.each(['stream-usage-cancel-occ', 'tool-cancel-supported'])(
     'replays the real %s PTY through the title parser and canonical store',
     async (capture) => {
       const events = loadClaudeInterruptCapture(capture)
@@ -133,7 +133,7 @@ describe('Claude native title confirms an Escape interruption', () => {
       onTitle: (_normalized, raw, meta) => title(raw, meta?.staleWorkingTitleClear)
     })
     try {
-      for (const event of loadClaudeInterruptCapture('stream-usage-cancel-orca')) {
+      for (const event of loadClaudeInterruptCapture('stream-usage-cancel-occ')) {
         if (event.kind === 'input' && event.label === 'cancel-turn') {
           break
         }

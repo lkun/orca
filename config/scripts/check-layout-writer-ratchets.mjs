@@ -102,7 +102,7 @@ export const RATCHETS = [
       'deleteScannedSessionFieldsForOwners',
       'removeRepoFromWorkspaceSession',
       'removeRepoFromHostWorkspaceSessions',
-      'applyPreparedOrcadMigrationWorkspaceSession',
+      'applyPreparedOCCdMigrationWorkspaceSession',
       'applyPayloadToTarget',
       'removeSourceRepo',
       'clearSshRemotePtyBindingsForTarget',

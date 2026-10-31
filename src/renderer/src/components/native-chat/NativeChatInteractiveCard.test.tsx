@@ -647,7 +647,7 @@ describe('terminal async contributors through the production hooks and card', ()
         kind: 'agent',
         senders: [
           {
-            party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: null },
+            party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: null },
             name: 'Coder'
           }
         ],

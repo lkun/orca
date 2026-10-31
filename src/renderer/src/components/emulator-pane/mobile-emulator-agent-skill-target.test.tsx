@@ -95,7 +95,7 @@ for (const surface of ['guide', 'settings'] as const) {
         })
         renderSurface()
         expect(mocks.discover).toHaveBeenCalledWith(
-          'orca-cli',
+          'occ-cli',
           expect.objectContaining({ runtimeTarget: null })
         )
         expect(screen.getByRole('button', { name: 'Install' }).hasAttribute('disabled')).toBe(true)
@@ -113,7 +113,7 @@ for (const surface of ['guide', 'settings'] as const) {
       })
       renderSurface()
       expect(mocks.discover).toHaveBeenCalledWith(
-        'orca-cli',
+        'occ-cli',
         expect.objectContaining({ runtimeTarget: null })
       )
       expect(
@@ -122,7 +122,7 @@ for (const surface of ['guide', 'settings'] as const) {
       expect(screen.queryByRole('button', { name: 'Install' })).toBeNull()
       expect(mocks.plan).toHaveBeenCalledWith(
         { kind: 'ssh', targetId: 'box' },
-        { names: ['orca-cli'] }
+        { names: ['occ-cli'] }
       )
       expect(mocks.execute).not.toHaveBeenCalled()
     })
@@ -141,14 +141,14 @@ for (const surface of ['guide', 'settings'] as const) {
       })
       renderSurface()
       expect(mocks.discover).toHaveBeenCalledWith(
-        'orca-cli',
+        'occ-cli',
         expect.objectContaining({ runtimeTarget: { kind: 'environment', environmentId: 'paired' } })
       )
       await screen.findByText('Update OCC on the server to install its skills.')
       expect(screen.queryByRole('button', { name: 'Install' })).toBeNull()
       expect(mocks.plan).toHaveBeenCalledWith(
         { kind: 'environment', environmentId: 'paired' },
-        { names: ['orca-cli'] }
+        { names: ['occ-cli'] }
       )
     })
 
@@ -218,7 +218,7 @@ for (const surface of ['guide', 'settings'] as const) {
         }
         renderSurface()
         expect(mocks.discover).toHaveBeenCalledWith(
-          'orca-cli',
+          'occ-cli',
           expect.objectContaining({
             runtimeTarget: { kind: 'local' },
             discoveryTarget: expect.objectContaining({ projectRuntime: expect.anything() })

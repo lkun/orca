@@ -3,7 +3,7 @@ import {
   CONNECTOR_PATHS,
   ConnectorPollResponseSchema,
   type ConnectorProject
-} from '@orca-cloud/connector-contract'
+} from '@occ-cloud/connector-contract'
 import { expect } from 'vitest'
 import { createConnectorHarness } from './connector-server-harness.test-fixture.js'
 import type { DiscordConfig } from './discord-config.js'
@@ -140,7 +140,7 @@ export async function createDiscordHarness(discord: Partial<DiscordConfig> = {})
         hostName: 'build-box',
         platform: 'darwin',
         runtime: 'desktop',
-        orcaVersion: '1.4.230',
+        occVersion: '1.4.230',
         agents: ['claude'],
         promptKinds: ['approval'],
         features: ['answer', 'cancel', 'reply'],
@@ -194,9 +194,9 @@ export async function startedThread() {
     '--account',
     'user-1',
     '--default-project',
-    'orca'
+    'occ'
   )
-  const machine = await harness.machineWith('user-1', [project('orca')])
+  const machine = await harness.machineWith('user-1', [project('occ')])
   await harness.message({ messageId: MENTION, text: 'fix it', mentioned: true })
   const [start] = ConnectorPollResponseSchema.parse((await machine.poll()).body).deliveries
   let seq = 0

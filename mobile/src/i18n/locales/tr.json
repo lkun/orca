@@ -281,7 +281,7 @@
       "plan": "Plan",
       "stoppedManually": "Elle durduruldu"
     },
-    "orcaStop": {
+    "occStop": {
       "canContinue": "Bu konuşmada devam edebilirsiniz.",
       "crash": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC beklenmedik biçimde durdu.",
       "quit": "Bu yanıt hazırlanırken {{machine}} üzerindeki OCC kapatıldı.",
@@ -908,7 +908,7 @@
     },
     "setupHookTrustDrawer": {
       "alwaysTrustAndRun": "Her zaman güven ve çalıştır",
-      "description": "Bu repository'deki orca.yaml, çalışma alanı başlamadan önce çalıştırılır. Yalnızca bu repository'ye güveniyorsanız çalıştırın.",
+      "description": "Bu repository'deki occ.yaml, çalışma alanı başlamadan önce çalıştırılır. Yalnızca bu repository'ye güveniyorsanız çalıştırın.",
       "dontRun": "Çalıştırma",
       "newScriptLabel": "Yeni kurulum betiği",
       "runHooks": "Hook'ları çalıştır",
@@ -2564,7 +2564,7 @@
       "cannotRunHere": "OCC bu ajanı burada bir sohbette çalıştıramıyor.",
       "capacity": "Bu sohbeti çalıştıran bilgisayardaki OCC istek sınırına ulaştı. O bilgisayarda OCC'yı güncelleyip yeniden deneyin.",
       "chatNotFound": "OCC'da bu sohbet bulunamadı.",
-      "chatSavedByNewerOrca": "Bu sohbet daha yeni bir OCC sürümüyle kaydedilmiş.",
+      "chatSavedByNewerOCC": "Bu sohbet daha yeni bir OCC sürümüyle kaydedilmiş.",
       "clearAfterAnswer": "Ajanın sorusuna veya onay isteğine yanıt verin, ardından /clear komutunu çalıştırın.",
       "clearAfterRetry": "Önceki mesajınızı yeniden göndermeyi deneyin, ardından /clear komutunu çalıştırın.",
       "clearAfterSending": "Önceki mesajınız hâlâ gönderiliyor. Gönderildikten sonra /clear komutunu çalıştırın.",
@@ -2610,7 +2610,7 @@
       "restartFailed": "Ajan yeniden başlatılamadı.",
       "runClearWhenDone": "Tamamlandığında /clear komutunu çalıştırın.",
       "runCompactWhenDone": "Tamamlandığında /compact komutunu çalıştırın.",
-      "savedByNewerOrca": "Sohbetler daha yeni bir OCC sürümüyle kaydedildi.",
+      "savedByNewerOCC": "Sohbetler daha yeni bir OCC sürümüyle kaydedildi.",
       "sendOutcomeLost": "OCC mesajınızın ajana ulaştığını doğrulayamadı. Sohbeti kontrol edip gerekirse yeniden gönderin.",
       "settleEarlierMessage": "Önceki mesajınızın iletilmesini bekleyin veya yeniden deneyin.",
       "shortenMessage": "Kısaltın veya bölün, ardından yeniden gönderin.",
@@ -2622,8 +2622,8 @@
       "turnActive": "Ajan hâlâ yanıt veriyor.",
       "unreachable": "OCC ajana ulaşamadı.",
       "unsupported": "Bu işlem, sohbetin çalıştığı bilgisayarda daha yeni bir OCC sürümü gerektiriyor. Oradaki OCC'yı güncelleyip tekrar deneyin.",
-      "updateOrcaToKeepUsing": "Kullanmaya devam etmek için OCC'yı güncelleyin.",
-      "updateOrcaToOpenChat": "Açmak için OCC'yı güncelleyin.",
+      "updateOCCToKeepUsing": "Kullanmaya devam etmek için OCC'yı güncelleyin.",
+      "updateOCCToOpenChat": "Açmak için OCC'yı güncelleyin.",
       "waitForBackgroundTasks": "Arka plan görevlerinin tamamlanmasını bekleyin.",
       "waitForCommand": "/compact veya /clear işleminin tamamlanmasını bekleyin.",
       "waitForStart": "Ajanın başlatılmasının tamamlanmasını bekleyin.",
@@ -3628,7 +3628,7 @@
       "projectSubtitle": "GitHub Projesi · {{repository}}{{itemNumber}}",
       "pullRequest": "Pull request",
       "reopenItem": "Öğeyi yeniden aç",
-      "repositoryNotInOrca": "Repository OCC'da değil",
+      "repositoryNotInOCC": "Repository OCC'da değil",
       "status": "Durum",
       "type": "Tür",
       "workspaceCreationRequirement": "Çalışma alanları yalnızca GitHub sorunlarından ve pull request'lerinden oluşturulabilir."
@@ -3873,7 +3873,7 @@
       "setupTitle": "Kurulum Betiği Çalıştırılsın mı?",
       "skipSetupAndCreate": "Kurulumu atla ve oluştur",
       "trustFailed": "Kurulum betiği güvenilir olarak işaretlenemedi.",
-      "trustSubtitle": "Bu repository'nin orca.yaml dosyası, çalışma alanı başlamadan önce makinenizde çalıştırılır. Yalnızca bu repository'ye güveniyorsanız çalıştırın."
+      "trustSubtitle": "Bu repository'nin occ.yaml dosyası, çalışma alanı başlamadan önce makinenizde çalıştırılır. Yalnızca bu repository'ye güveniyorsanız çalıştırın."
     },
     "worktreeCreateRetry": {
       "createFailed": "Çalışma alanı oluşturulamadı"

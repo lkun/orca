@@ -56,7 +56,7 @@ describe('post-proof close log', () => {
     const { log, lines } = createLog()
     log.record({ ...close, appVersion: '1.4.150\n\u0007injected' })
     expect(lines[0]).toMatch(
-      /^\[orca-relay\] control refused after proof host=\S+ gen=7 app="1\.4\.150injected" code=4409 reason="assignment changed during host proof" cause=wrong_assignment$/
+      /^\[occ-relay\] control refused after proof host=\S+ gen=7 app="1\.4\.150injected" code=4409 reason="assignment changed during host proof" cause=wrong_assignment$/
     )
     expect(lines[0]).not.toContain(close.relayHostId)
   })

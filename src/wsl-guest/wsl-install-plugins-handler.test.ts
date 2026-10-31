@@ -35,7 +35,7 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
         HOME: home,
         CLAUDE_CONFIG_DIR: config,
-        ORCA_WSL_HOOK_INSTANCE: 'claude-test'
+        OCC_WSL_HOOK_INSTANCE: 'claude-test'
       })
       expect(install({ claudeAgentViewSource: '' }).overlayDirs.claudeAgentView).toBeUndefined()
       expect(existsSync(config)).toBe(false)
@@ -44,7 +44,7 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
       if (!first) {
         throw new Error('Claude mod was not installed')
       }
-      expect(first.startsWith(join(home, '.orca-relay'))).toBe(true)
+      expect(first.startsWith(join(home, '.occ-relay'))).toBe(true)
       expect(readFileSync(join(first, 'hooks', 'register.js'), 'utf8')).toBe(source)
       expect(existsSync(join(config, 'skills'))).toBe(false)
       const second = install({ claudeAgentViewSource: `${source}\n// new version` }).overlayDirs
@@ -63,19 +63,19 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
     })
   })
 
-  it('writes orca-opencode-status.js into the overlay and returns that dir', () => {
+  it('writes occ-opencode-status.js into the overlay and returns that dir', () => {
     withHome((home) => {
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
         HOME: home,
-        ORCA_WSL_HOOK_INSTANCE: 'inst1'
+        OCC_WSL_HOOK_INSTANCE: 'inst1'
       })
-      const source = '// orca opencode status plugin\nexport const Plugin = () => ({})\n'
+      const source = '// occ opencode status plugin\nexport const Plugin = () => ({})\n'
       const res = install({ opencodePluginSource: source })
 
       expect(res.installed.opencode).toBe(true)
       const dir = res.overlayDirs.opencode
       expect(typeof dir).toBe('string')
-      const pluginPath = join(requireOverlayDir(dir), 'plugins', 'orca-opencode-status.js')
+      const pluginPath = join(requireOverlayDir(dir), 'plugins', 'occ-opencode-status.js')
       expect(existsSync(pluginPath)).toBe(true)
       expect(readFileSync(pluginPath, 'utf8')).toBe(source)
     })
@@ -85,12 +85,12 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
     withHome((home) => {
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
         HOME: home,
-        ORCA_WSL_HOOK_INSTANCE: 'inst-pi'
+        OCC_WSL_HOOK_INSTANCE: 'inst-pi'
       })
-      const source = '// @orca-managed-pi-extension\nexport default {}\n'
+      const source = '// @occ-managed-pi-extension\nexport default {}\n'
       const res = install({ piExtensionSource: source, launchKind: 'pi' })
       expect(res.overlayDirs.pi).toBe(join(home, '.pi', 'agent'))
-      const extension = join(home, '.pi', 'agent', 'extensions', 'orca-agent-status.ts')
+      const extension = join(home, '.pi', 'agent', 'extensions', 'occ-agent-status.ts')
       expect(readFileSync(extension, 'utf8')).toContain(source)
     })
   })
@@ -99,7 +99,7 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
     withHome((home) => {
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
         HOME: home,
-        ORCA_WSL_HOOK_INSTANCE: 'inst-v2'
+        OCC_WSL_HOOK_INSTANCE: 'inst-v2'
       })
       const source = '// opencode2\n'
       const res = install({ opencode2PluginSource: source })
@@ -107,7 +107,7 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
       expect(res.installed.opencode2).toBe(true)
       expect(typeof dir).toBe('string')
       expect(
-        readFileSync(join(requireOverlayDir(dir), 'plugins', 'orca-opencode2-status.js'), 'utf8')
+        readFileSync(join(requireOverlayDir(dir), 'plugins', 'occ-opencode2-status.js'), 'utf8')
       ).toBe(source)
       expect(res.overlayDirs.opencode).toBeUndefined()
     })
@@ -117,7 +117,7 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
     withHome((home) => {
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
         HOME: home,
-        ORCA_WSL_HOOK_INSTANCE: 'inst1'
+        OCC_WSL_HOOK_INSTANCE: 'inst1'
       })
       const source = '// v1\n'
       const dir = requireOverlayDir(install({ opencodePluginSource: source }).overlayDirs.opencode)
@@ -136,14 +136,14 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
     withHome((home) => {
       // Mutate captured env to model a newly resolvable source dir; production relay env stays fixed for its lifetime.
       const userConfig = join(home, 'my-opencode')
-      const env: NodeJS.ProcessEnv = { HOME: home, ORCA_WSL_HOOK_INSTANCE: 'inst1' }
+      const env: NodeJS.ProcessEnv = { HOME: home, OCC_WSL_HOOK_INSTANCE: 'inst1' }
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), env)
       const source = '// v1\n'
       install({ opencodePluginSource: source })
 
       mkdirSync(userConfig, { recursive: true })
       writeFileSync(join(userConfig, 'opencode.json'), '{"model":"late"}')
-      env.ORCA_OPENCODE_SOURCE_CONFIG_DIR = userConfig
+      env.OCC_OPENCODE_SOURCE_CONFIG_DIR = userConfig
 
       const dir = requireOverlayDir(install({ opencodePluginSource: source }).overlayDirs.opencode)
       expect(readFileSync(join(dir, 'opencode.json'), 'utf8')).toBe('{"model":"late"}')
@@ -154,15 +154,15 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
     withHome((home) => {
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
         HOME: home,
-        ORCA_WSL_HOOK_INSTANCE: 'inst1'
+        OCC_WSL_HOOK_INSTANCE: 'inst1'
       })
       const source = '// v1\n'
       const dir = requireOverlayDir(install({ opencodePluginSource: source }).overlayDirs.opencode)
       // A failed rebuild can leave an empty directory; only the plugin file proves a cache hit.
-      rmSync(join(dir, 'plugins', 'orca-opencode-status.js'))
+      rmSync(join(dir, 'plugins', 'occ-opencode-status.js'))
 
       expect(install({ opencodePluginSource: source }).overlayDirs.opencode).toBe(dir)
-      expect(existsSync(join(dir, 'plugins', 'orca-opencode-status.js'))).toBe(true)
+      expect(existsSync(join(dir, 'plugins', 'occ-opencode-status.js'))).toBe(true)
     })
   })
 
@@ -170,14 +170,14 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
     withHome((home) => {
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
         HOME: home,
-        ORCA_WSL_HOOK_INSTANCE: 'inst1'
+        OCC_WSL_HOOK_INSTANCE: 'inst1'
       })
       install({ opencodePluginSource: '// v1\n' })
       // Why: a mid-session OCC upgrade ships new plugin source; future spawns must see it.
       const dir = requireOverlayDir(
         install({ opencodePluginSource: '// v2\n' }).overlayDirs.opencode
       )
-      expect(readFileSync(join(dir, 'plugins', 'orca-opencode-status.js'), 'utf8')).toBe('// v2\n')
+      expect(readFileSync(join(dir, 'plugins', 'occ-opencode-status.js'), 'utf8')).toBe('// v2\n')
     })
   })
 
@@ -185,14 +185,14 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
     withHome((home) => {
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
         HOME: home,
-        ORCA_WSL_HOOK_INSTANCE: 'inst1'
+        OCC_WSL_HOOK_INSTANCE: 'inst1'
       })
       const source = '// v1\n'
       const dir = requireOverlayDir(install({ opencodePluginSource: source }).overlayDirs.opencode)
       rmSync(dir, { recursive: true, force: true })
 
       expect(install({ opencodePluginSource: source }).overlayDirs.opencode).toBe(dir)
-      expect(existsSync(join(dir, 'plugins', 'orca-opencode-status.js'))).toBe(true)
+      expect(existsSync(join(dir, 'plugins', 'occ-opencode-status.js'))).toBe(true)
     })
   })
 
@@ -205,15 +205,15 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
       writeFileSync(join(userConfig, 'opencode.json'), '{"model":"user-set"}')
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
         HOME: home,
-        ORCA_OPENCODE_SOURCE_CONFIG_DIR: userConfig,
-        ORCA_WSL_HOOK_INSTANCE: 'inst1'
+        OCC_OPENCODE_SOURCE_CONFIG_DIR: userConfig,
+        OCC_WSL_HOOK_INSTANCE: 'inst1'
       })
       const dir = requireOverlayDir(
         install({ opencodePluginSource: '// v1\n' }).overlayDirs.opencode
       )
 
       expect(readFileSync(join(dir, 'opencode.json'), 'utf8')).toBe('{"model":"user-set"}')
-      expect(existsSync(join(dir, 'plugins', 'orca-opencode-status.js'))).toBe(true)
+      expect(existsSync(join(dir, 'plugins', 'occ-opencode-status.js'))).toBe(true)
     })
   })
 
@@ -226,14 +226,14 @@ describe.skipIf(process.platform === 'win32')('createInstallPluginsHandler (gues
       writeFileSync(join(defaultConfig, 'opencode.json'), '{"model":"default"}')
       const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
         HOME: home,
-        ORCA_WSL_HOOK_INSTANCE: 'inst1'
+        OCC_WSL_HOOK_INSTANCE: 'inst1'
       })
       const dir = requireOverlayDir(
         install({ opencodePluginSource: '// v1\n' }).overlayDirs.opencode
       )
 
       expect(existsSync(join(dir, 'opencode.json'))).toBe(true)
-      expect(existsSync(join(dir, 'plugins', 'orca-opencode-status.js'))).toBe(true)
+      expect(existsSync(join(dir, 'plugins', 'occ-opencode-status.js'))).toBe(true)
     })
   })
 

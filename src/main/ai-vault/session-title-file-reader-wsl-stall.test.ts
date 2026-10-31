@@ -53,7 +53,7 @@ beforeEach(async () => {
   resetSessionParseCacheForTests()
   mocks.lstat.mockReset()
   releaseStall = undefined
-  tempRoot = await mkdtemp(join(tmpdir(), 'orca-title-stall-'))
+  tempRoot = await mkdtemp(join(tmpdir(), 'occ-title-stall-'))
 })
 
 afterEach(async () => {

@@ -53,7 +53,7 @@ afterEach(async () => {
 })
 
 it('resolves idle metadata independently of chat admission, preserving configured context and errors', async () => {
-  root = await fs.mkdtemp(join(tmpdir(), 'orca-codex-rename-'))
+  root = await fs.mkdtemp(join(tmpdir(), 'occ-codex-rename-'))
   const program = process.execPath
   const entrypoint = join(root, 'codex entry.mjs')
   await fs.writeFile(entrypoint, '')
@@ -112,11 +112,11 @@ it('resolves idle metadata independently of chat admission, preserving configure
       '--no-daemon',
       ...tail
     ])
-    const stale = { ORCA_CHAT_SCRATCH_DIR: 'old', ORCA_CHAT_VISUALS_DIR: 'old' }
+    const stale = { OCC_CHAT_SCRATCH_DIR: 'old', OCC_CHAT_VISUALS_DIR: 'old' }
     const child = resolveProviderChildEnv(invocation, stale)
     expect(child).toMatchObject({ CODEX_HOME: '/saved/account', CUSTOM: 'first', PATH: 'bin' })
-    expect(child.ORCA_CHAT_SCRATCH_DIR).toBeUndefined()
-    expect(child.ORCA_CHAT_VISUALS_DIR).toBeUndefined()
+    expect(child.OCC_CHAT_SCRATCH_DIR).toBeUndefined()
+    expect(child.OCC_CHAT_VISUALS_DIR).toBeUndefined()
   }
   expect(workspace).not.toHaveBeenCalled()
   record.launchDirectory = undefined

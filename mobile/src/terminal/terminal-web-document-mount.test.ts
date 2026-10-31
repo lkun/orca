@@ -50,7 +50,7 @@ const { createTerminalDocument } = await import('./document/create-terminal-docu
 const { mountTerminalWebDocument } = await import('./terminal-web-document-mount')
 const { TerminalWebView } = await import('./TerminalWebView.web')
 
-const HOST_CLASS = 'orca-terminal-document-host'
+const HOST_CLASS = 'occ-terminal-document-host'
 
 function plantHost() {
   const host = document.createElement('div')
@@ -85,7 +85,7 @@ afterEach(() => {
 describe('a stopped document takes its engines with it', () => {
   it('loads the page symbol font from its bundled asset before starting the document', () => {
     const terminal = mountTerminalWebDocument(plantHost(), () => {})
-    const style = document.getElementById('orca-terminal-document-style')?.textContent ?? ''
+    const style = document.getElementById('occ-terminal-document-style')?.textContent ?? ''
     expect(style).toContain(`src:url('${terminalNerdFontUrl}') format('woff2')`)
     // Only the sub-KiB symbols subset is inlined; the Nerd font stays a hashed asset.
     expect(style.match(/data:font\//g)).toHaveLength(1)

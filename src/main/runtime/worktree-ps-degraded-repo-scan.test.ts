@@ -25,7 +25,7 @@ import { LOCAL_EXECUTION_HOST_ID, toSshExecutionHostId } from '../../shared/exec
 import type { WorktreeMeta } from '../../shared/worktree/meta-types'
 import type { WorktreeLineage } from '../../shared/worktree/lineage-types'
 import { worktreeWorkspaceKey } from '../../shared/workspace-scope'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import {
   hostWorktreeTarget,
   type HostWorktreeTarget
@@ -146,7 +146,7 @@ describe('worktree.ps on a degraded repo scan', () => {
   it('keeps persisted worktrees when a remote scan stalls past the per-repo budget', async () => {
     vi.useFakeTimers()
     try {
-      const runtime = new OrcaRuntimeService(
+      const runtime = new OCCRuntimeService(
         partialRuntimeStore(makeStore({ connectionId: 'ssh-remote-1' }))
       )
 
@@ -159,7 +159,7 @@ describe('worktree.ps on a degraded repo scan', () => {
   })
 
   it('keeps persisted worktrees when a remote repo is unreachable', async () => {
-    const runtime = new OrcaRuntimeService(
+    const runtime = new OCCRuntimeService(
       partialRuntimeStore(makeStore({ connectionId: 'ssh-remote-1' }))
     )
 
@@ -172,7 +172,7 @@ describe('worktree.ps on a degraded repo scan', () => {
     vi.useFakeTimers()
     try {
       listWorktreesStrictMock.mockImplementation(neverSettles)
-      const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
+      const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
 
       const result = await advancePastRepoScanBudget(runtime.getWorktreePs(10_000))
 
@@ -185,7 +185,7 @@ describe('worktree.ps on a degraded repo scan', () => {
   // withTimeout also falls back on rejection; absorb real scan failures before they can restore stale rows.
   it('treats a rejected scan as a real answer instead of restoring persisted worktrees', async () => {
     listWorktreesStrictMock.mockRejectedValue(new Error('git unavailable'))
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
+    const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
 
     const result = await runtime.getWorktreePs(10_000)
 
@@ -194,7 +194,7 @@ describe('worktree.ps on a degraded repo scan', () => {
 
   it('still reports selector_not_found for a local worktree when the scan rejects', async () => {
     listWorktreesStrictMock.mockRejectedValue(new Error('git unavailable'))
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
+    const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
 
     await expect(runtime.showManagedWorktree(`id:${WORKTREE_ID}`)).rejects.toThrow(
       'selector_not_found'
@@ -205,7 +205,7 @@ describe('worktree.ps on a degraded repo scan', () => {
     vi.useFakeTimers()
     try {
       listWorktreesStrictMock.mockResolvedValue([])
-      const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
+      const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
 
       await runtime.getWorktreePs(10_000)
       await vi.advanceTimersByTimeAsync(2_000)
@@ -221,7 +221,7 @@ describe('worktree.ps on a degraded repo scan', () => {
     vi.useFakeTimers()
     try {
       listWorktreesStrictMock.mockRejectedValue(new Error('spawn git EAGAIN'))
-      const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
+      const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
 
       await runtime.getWorktreePs(10_000)
       await vi.advanceTimersByTimeAsync(2_000)
@@ -237,7 +237,7 @@ describe('worktree.ps on a degraded repo scan', () => {
     vi.useFakeTimers()
     try {
       listWorktreesStrictMock.mockImplementation(neverSettles)
-      const runtime = new OrcaRuntimeService(
+      const runtime = new OCCRuntimeService(
         partialRuntimeStore(
           makeStore({
             connectionId: SSH_CONNECTION_ID,
@@ -267,7 +267,7 @@ describe('worktree.ps on a degraded repo scan', () => {
     vi.useFakeTimers()
     try {
       listWorktreesStrictMock.mockImplementation(neverSettles)
-      const runtime = new OrcaRuntimeService(
+      const runtime = new OCCRuntimeService(
         partialRuntimeStore(
           makeStore({
             metaById: {
@@ -302,7 +302,7 @@ describe('worktree.ps on a degraded repo scan', () => {
     vi.useFakeTimers()
     try {
       listWorktreesStrictMock.mockImplementation(neverSettles)
-      const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
+      const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
 
       await advancePastRepoScanBudget(runtime.getWorktreePs(10_000))
       await advancePastRepoScanBudget(runtime.getWorktreePs(10_000))
@@ -318,7 +318,7 @@ describe('worktree.ps on a degraded repo scan', () => {
     listWorktreesStrictMock.mockResolvedValue([
       { path: REPO_PATH, head: 'abc', branch: 'main', isBare: false, isMainWorktree: true }
     ])
-    const runtime = new OrcaRuntimeService(
+    const runtime = new OCCRuntimeService(
       partialRuntimeStore(makeStore({ removeWorktreeLineage }))
     )
 
@@ -335,7 +335,7 @@ describe('worktree.ps on a degraded repo scan', () => {
     try {
       const removeWorktreeLineage = vi.fn()
       listWorktreesStrictMock.mockImplementation(neverSettles)
-      const runtime = new OrcaRuntimeService(
+      const runtime = new OCCRuntimeService(
         partialRuntimeStore(makeStore({ removeWorktreeLineage }))
       )
 
@@ -352,7 +352,7 @@ describe('worktree.ps on a degraded repo scan', () => {
       { path: REPO_PATH, head: 'abc', branch: 'main', isBare: false, isMainWorktree: true }
     ])
     const store = makeStore()
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+    const runtime = new OCCRuntimeService(partialRuntimeStore(store))
 
     await runtime.getWorktreePs(10_000)
 
@@ -363,7 +363,7 @@ describe('worktree.ps on a degraded repo scan', () => {
     vi.useFakeTimers()
     try {
       listWorktreesStrictMock.mockImplementation(neverSettles)
-      const runtime = new OrcaRuntimeService(
+      const runtime = new OCCRuntimeService(
         partialRuntimeStore(
           makeStore({
             metaById: {

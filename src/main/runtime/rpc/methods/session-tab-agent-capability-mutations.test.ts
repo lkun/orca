@@ -7,7 +7,7 @@ import {
   type RuntimeCapability
 } from '../../../../shared/protocol-version'
 import type { RuntimeMobileSessionTabsResult } from '../../../../shared/runtime-types'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { RpcDispatcher } from '../dispatcher'
 import type { RpcDispatchStreamingOptions } from '../dispatcher-stream-options'
 import { SESSION_TAB_METHODS } from './session-tabs'
@@ -135,7 +135,7 @@ describe('session tab structured capability mutations', () => {
         getClientSettings: vi.fn(() => ({ nativeChatProviders: EVERY_AGENT_CHAT })),
         listMobileSessionTabs: vi.fn().mockResolvedValue(snapshot),
         closeMobileSessionTab
-      } as unknown as OrcaRuntimeService
+      } as unknown as OCCRuntimeService
       const dispatcher = new RpcDispatcher({ runtime, methods: SESSION_TAB_METHODS })
       const replies: string[] = []
       await dispatcher.dispatchStreaming(
@@ -188,7 +188,7 @@ function createFixture(
       nativeChatProviders: options.structuredNativeChatEnabled !== false ? EVERY_AGENT_CHAT : {}
     }),
     ...calls
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
   const dispatcher = new RpcDispatcher({ runtime, methods: SESSION_TAB_METHODS })
   const context: RpcDispatchStreamingOptions = {
     clientKind: options.clientKind ?? 'runtime',

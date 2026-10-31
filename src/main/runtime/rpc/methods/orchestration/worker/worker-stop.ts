@@ -3,7 +3,7 @@ import { defineMethod } from '../../../core'
 import { describeUnconfirmedAgentStop } from '../../../../../../shared/pty-liveness-verdict'
 import { ORCHESTRATION_WORKER_STOP_VERDICT_RUNTIME_CAPABILITY } from '../../../../../../shared/protocol-version'
 import type { RuntimeStatus } from '../../../../../../shared/runtime-types'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { inspectWorkerTerminal, resolvePinnedFederatedServer } from './worker-observation'
 import { refuseFederatedStopWhileKeptOpen } from './worker-keep-open'
 import { archiveWorkerOutputBeforeStop } from './worker-stop-archive'
@@ -247,11 +247,11 @@ export const ORCHESTRATION_WORKER_STOP_METHODS = [
   })
 ]
 
-const activeStopByRuntime = new WeakMap<OrcaRuntimeService, Map<string, Promise<unknown>>>()
+const activeStopByRuntime = new WeakMap<OCCRuntimeService, Map<string, Promise<unknown>>>()
 
 /** Coalesce same-runtime stops so only one closes; beginWorkerStop admits this epoch only to recover a row stranded by a dead runtime. */
 function dedupeWorkerStop(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   dispatchId: string,
   stop: () => Promise<unknown>
 ): Promise<unknown> {

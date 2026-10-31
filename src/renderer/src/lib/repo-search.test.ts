@@ -5,8 +5,8 @@ import type { Repo } from '../../../shared/repo-types'
 function makeRepo(overrides: Partial<Repo> = {}): Repo {
   return {
     id: 'repo-1',
-    path: '/Users/test/src/orca',
-    displayName: 'stablyai/orca',
+    path: '/Users/test/src/occ',
+    displayName: 'stablyai/occ',
     badgeColor: '#22c55e',
     addedAt: 0,
     ...overrides
@@ -16,11 +16,11 @@ function makeRepo(overrides: Partial<Repo> = {}): Repo {
 describe('repo-search', () => {
   it('keeps display-name matches ahead of path-only matches', () => {
     const repos = [
-      makeRepo({ id: '1', displayName: 'misc', path: '/src/orca-tools/misc' }),
-      makeRepo({ id: '2', displayName: 'orca', path: '/src/team-a/project' })
+      makeRepo({ id: '1', displayName: 'misc', path: '/src/occ-tools/misc' }),
+      makeRepo({ id: '2', displayName: 'occ', path: '/src/team-a/project' })
     ]
 
-    expect(searchRepos(repos, 'orca').map((repo) => repo.id)).toEqual(['2', '1'])
+    expect(searchRepos(repos, 'occ').map((repo) => repo.id)).toEqual(['2', '1'])
   })
 
   it('rejects oversized pasted queries before reading repo names or paths', () => {

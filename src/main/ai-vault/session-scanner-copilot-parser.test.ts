@@ -41,7 +41,7 @@ async function parse(
   records: Record<string, unknown>[],
   platform: NodeJS.Platform = 'linux'
 ): Promise<AiVaultSession> {
-  const dir = await mkdtemp(join(tmpdir(), 'orca-copilot-parser-'))
+  const dir = await mkdtemp(join(tmpdir(), 'occ-copilot-parser-'))
   tempDirs.push(dir)
   const path = join(dir, 'events.jsonl')
   await writeFile(path, records.map((record) => JSON.stringify(record)).join('\n'))

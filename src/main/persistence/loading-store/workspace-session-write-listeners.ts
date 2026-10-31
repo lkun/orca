@@ -1,5 +1,5 @@
 import type { ExecutionHostId } from '../../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type { StoreRuntimeState } from './store-runtime-state'
 import { refileEditorViews } from './layout-editor-views'
 
@@ -44,7 +44,7 @@ export function notifyWorkspaceSessionOperationEnded(
   >,
   hostIds: readonly ExecutionHostId[] | null
 ): void {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     notifyWorkspaceSessionWritten(runtime)
     return
   }

@@ -30,7 +30,7 @@ function mockSubprocess(shellPath: string): SubprocessHandle {
 }
 
 beforeEach(() => {
-  tempDir = mkdtempSync(join(tmpdir(), 'orca-daemon-staging-'))
+  tempDir = mkdtempSync(join(tmpdir(), 'occ-daemon-staging-'))
   vi.stubEnv('TMPDIR', tempDir)
   exitSubprocess = undefined
 })
@@ -67,7 +67,7 @@ describePosix('daemon startup command staging', () => {
     const command = `claude '${'x'.repeat(600)}'`
     const { sub, result } = await create(command)
     const [script] = readdirSync(tempDir)
-    expect(script).toMatch(/^orca-launch-[0-9a-f]+\.sh$/)
+    expect(script).toMatch(/^occ-launch-[0-9a-f]+\.sh$/)
     const scriptPath = join(tempDir, script)
     expect(sub.write).toHaveBeenCalledWith(`. '${scriptPath}'\r`)
     expect(readFileSync(scriptPath, 'utf8').split('\n')[1]).toBe(command)
@@ -76,7 +76,7 @@ describePosix('daemon startup command staging', () => {
 
   it('stages a multi-line launch instead of bracket-pasting it', async () => {
     const { sub } = await create(`claude 'one\ntwo'`)
-    expect(vi.mocked(sub.write).mock.calls[0][0]).toMatch(/^\. '.*orca-launch-[0-9a-f]+\.sh'\r$/)
+    expect(vi.mocked(sub.write).mock.calls[0][0]).toMatch(/^\. '.*occ-launch-[0-9a-f]+\.sh'\r$/)
   })
 
   it('deletes a script the shell never sourced when the session exits', async () => {
@@ -116,7 +116,7 @@ describePosix('daemon startup command staging', () => {
     expect(sub.write).toHaveBeenCalledWith(`${command}\r`)
     await vi.waitFor(() => {
       expect(onData.mock.calls.map(([data]) => String(data)).join('')).toContain(
-        '[orca] Could not stage the launch command (ENOENT'
+        '[occ] Could not stage the launch command (ENOENT'
       )
     })
   })

@@ -3,7 +3,7 @@
 #include <node_api.h>
 
 // Electron does not expose Squirrel's launchd job configuration to JavaScript.
-@interface NSObject (OrcaShipItSignal)
+@interface NSObject (OCCShipItSignal)
 - (id)map:(id (^)(id))transform;
 @end
 

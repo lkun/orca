@@ -28,7 +28,7 @@ const HELD_MOVE_MESSAGE =
 // Host-fixable reasons carry their own remedy; others fall back to the unsupported-version line.
 const UNAVAILABLE_MESSAGES: Record<string, string> = {
   runtime_noexec:
-    'This host doesn’t allow running programs from ~/.orca-remote, so OCC can’t start its server there. This usually means the home folder is mounted with noexec. Ask the host’s administrator to allow running programs there, then connect again.',
+    'This host doesn’t allow running programs from ~/.occ-remote, so OCC can’t start its server there. This usually means the home folder is mounted with noexec. Ask the host’s administrator to allow running programs there, then connect again.',
   windows_build_unsupported:
     'This host runs a version of Windows older than Windows 10 and Windows Server 2016, so it can’t run OCC’s server. Use a host with a newer version of Windows, or a Linux or macOS host.',
   windows_no_extractor:
@@ -53,7 +53,7 @@ export function unservedHostServerMessage(decision: UnservedDecision): string {
     return HELD_MOVE_MESSAGE
   }
   switch (decision.reason) {
-    case 'orcad_unavailable':
+    case 'occd_unavailable':
       return (
         (decision.detail && UNAVAILABLE_MESSAGES[decision.detail]) ||
         'This SSH host isn’t supported by this version of OCC. To keep using it, install an older version of OCC.'

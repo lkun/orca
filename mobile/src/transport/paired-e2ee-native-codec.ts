@@ -4,7 +4,7 @@ export type PairedE2EENativeCodec = {
   decodeBase64(value: string): Uint8Array | null
   /** XSalsa20-Poly1305 secretbox open; null for a box that fails authentication. */
   openSecretbox(box: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array | null
-  /** Throws on a body that is not one well-formed gzip member. See orca-gzip-utf8-codec. */
+  /** Throws on a body that is not one well-formed gzip member. See occ-gzip-utf8-codec. */
   gunzip(input: Uint8Array, outputLimit: number): Uint8Array
   /** Null where only TextDecoder's replacement or BOM rules give the answer, or native failed. */
   decodeUtf8(input: Uint8Array): string | null

@@ -131,7 +131,7 @@ function initialState(): Record<string, unknown> {
 async function loadStore(state: Record<string, unknown>) {
   mkdirSync(testState.dir, { recursive: true })
   writeFileSync(
-    join(testState.dir, 'orca-data.json'),
+    join(testState.dir, 'occ-data.json'),
     JSON.stringify({ ...getDefaultPersistedState(testState.dir), ...state }),
     'utf-8'
   )
@@ -144,11 +144,11 @@ async function loadStore(state: Record<string, unknown>) {
   const { Store } = await import('../loading-store/store')
   const { initDataPath } = await import('../loading-store/user-data-path')
   initDataPath()
-  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
 }
 
 function repinWorkspace(connectionId: string, sshTargets?: SshTarget[]): void {
-  const file = join(testState.dir, 'orca-data.json')
+  const file = join(testState.dir, 'occ-data.json')
   const state = JSON.parse(readPersistedStateJson(file))
   state.folderWorkspaces = [folderWorkspace(connectionId)]
   if (sshTargets) {
@@ -160,7 +160,7 @@ function repinWorkspace(connectionId: string, sshTargets?: SshTarget[]): void {
 beforeEach(() => {
   hasCreatedStoreInCase = false
   resetRetirementCollisionKeyCacheForTests()
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-workspace-repin-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-workspace-repin-'))
 })
 
 afterEach(async () => {
@@ -191,7 +191,7 @@ describe('a workspace re-pinned outside the automation editor', () => {
     const { initDataPath } = await import('../loading-store/user-data-path')
     initDataPath()
     const reloaded = createSqliteTestStore(Store, {
-      dataFile: join(testState.dir, 'orca-data.json')
+      dataFile: join(testState.dir, 'occ-data.json')
     })
 
     expect(reloaded.listAutomations()[0].executionTargetGeneration).toBe(STAGING_GENERATION)
@@ -215,7 +215,7 @@ describe('a workspace re-pinned outside the automation editor', () => {
     const { initDataPath } = await import('../loading-store/user-data-path')
     initDataPath()
     const reloaded = createSqliteTestStore(Store, {
-      dataFile: join(testState.dir, 'orca-data.json')
+      dataFile: join(testState.dir, 'occ-data.json')
     })
 
     expect(reloaded.listAutomations()[0].executionTargetGeneration).toBe(PROD_GENERATION)

@@ -58,15 +58,15 @@ vi.mock('./runtime-client', async () => {
     RuntimeClient,
     RuntimeClientError,
     RuntimeRpcFailureError,
-    serveOrcaApp: vi.fn(),
-    getDefaultUserDataPath: vi.fn(() => '/tmp/orca-user-data')
+    serveOCCApp: vi.fn(),
+    getDefaultUserDataPath: vi.fn(() => '/tmp/occ-user-data')
   }
 })
 
 import { dispatch } from './dispatch'
 import { main } from './index'
 
-describe('orca skills CLI', () => {
+describe('occ skills CLI', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
     runtimeClientConstructorMock.mockClear()
@@ -186,7 +186,7 @@ describe('orca skills CLI', () => {
     await main(['--help'], '/tmp/repo')
 
     expect(String(logSpy.mock.calls[0]?.[0])).toContain(
-      'Usage: orca skills get <topic> [--full | --reference <name>] [--json]'
+      'Usage: occ skills get <topic> [--full | --reference <name>] [--json]'
     )
     expect(String(logSpy.mock.calls[1]?.[0])).toContain(
       'Commands:\n  installed          List installed skill selectors'
@@ -229,8 +229,8 @@ describe('orca skills CLI', () => {
         '  gamma',
         '  zeta',
         '',
-        'Usage: orca skills install --skill <name> [--skill <name> ...]',
-        '   or: orca skills install --all',
+        'Usage: occ skills install --skill <name> [--skill <name> ...]',
+        '   or: occ skills install --all',
         ''
       ].join('\n')
     )
@@ -288,15 +288,15 @@ describe('orca skills CLI', () => {
         '  gamma',
         '  zeta',
         '',
-        'Usage: orca skills update --skill <name> [--skill <name> ...]',
-        '   or: orca skills update --all',
+        'Usage: occ skills update --skill <name> [--skill <name> ...]',
+        '   or: occ skills update --all',
         ''
       ].join('\n')
     )
   })
 
-  it('refuses a real run when the shell forwards orca to the OCC host', async () => {
-    vi.stubEnv('ORCA_CLI_CWD', '/home/alice/wt')
+  it('refuses a real run when the shell forwards occ to the OCC host', async () => {
+    vi.stubEnv('OCC_CLI_CWD', '/home/alice/wt')
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     await main(['skills', 'install', '--skill', 'alpha'], '/tmp/repo')
@@ -307,7 +307,7 @@ describe('orca skills CLI', () => {
   })
 
   it('refuses --dry-run through the host-forwarding shim too', async () => {
-    vi.stubEnv('ORCA_CLI_CWD', '/home/alice/wt')
+    vi.stubEnv('OCC_CLI_CWD', '/home/alice/wt')
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
 
     await main(['skills', 'install', '--skill', 'alpha', '--dry-run'], '/tmp/repo')

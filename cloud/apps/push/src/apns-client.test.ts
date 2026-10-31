@@ -99,7 +99,7 @@ describe('apns client', () => {
         sound: 'default',
         'thread-id': HOST
       },
-      orca: {
+      occ: {
         hostFingerprint: HOST,
         worktreeId: 'wt-1',
         notificationId: 'note-1',
@@ -179,7 +179,7 @@ it('does not collapse background dismissals with visible alerts', async () => {
   })
   const alert = delivery()
   await apns.send(
-    { ...alert, orca: { ...alert.orca, kind: 'dismiss' } },
+    { ...alert, occ: { ...alert.occ, kind: 'dismiss' } },
     {
       token: 'test',
       apnsEnvironment: 'sandbox'

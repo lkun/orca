@@ -17,7 +17,7 @@ import {
   type RuntimeCapability
 } from '../../shared/protocol-version'
 import { attachFingerprintFields } from '../native-chat/agent-session-wire/structured-agent-session-attach'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import type { RpcRequest, RpcResponse } from './rpc/core'
 import { RpcDispatcher } from './rpc/dispatcher'
 import { STRUCTURED_AGENT_SESSION_METHODS } from './rpc/methods/structured-agent-session'
@@ -190,7 +190,7 @@ export async function openStructuredCodexRpcHarness(
     ...transport
   }
   let operations = 0
-  const root = await mkdtemp(join(tmpdir(), 'orca-structured-integration-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-structured-integration-'))
   const codex = fakeCodex()
   // Use ledger-shaped ids with its clock; future-dated ids are refused.
   const operationId = (): string => {
@@ -246,7 +246,7 @@ export async function openStructuredCodexRpcHarness(
     }))
   }
   const dispatcher = new RpcDispatcher({
-    runtime: runtime as unknown as OrcaRuntimeService,
+    runtime: runtime as unknown as OCCRuntimeService,
     methods: STRUCTURED_AGENT_SESSION_METHODS
   })
   const call: StructuredCodexRpcHarness['call'] = async (method, params) => {

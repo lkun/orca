@@ -84,7 +84,7 @@ export function registerJournalEpochReplacementTests(): void {
   }
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-journal-replace-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-journal-replace-'))
     clock = 1_000
     database = openTestJournalHostDatabase(root)
   })
@@ -204,7 +204,7 @@ export function registerJournalEpochReplacementTests(): void {
             returnedReason
           }))
       const before = cards()
-      const goal = { provider: 'orca' as const, clientMessageId: 'live-goal' }
+      const goal = { provider: 'occ' as const, clientMessageId: 'live-goal' }
       await journal.appendClaimingAttachments(
         goal,
         { ...files[0].body, sentAs: 'goal' },
@@ -290,7 +290,7 @@ export function registerJournalEpochReplacementTests(): void {
       const [file] = await legacyInputs(1)
       const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
       for (const phase of ['rollback', 'publication'] as const) {
-        const goal = { provider: 'orca' as const, clientMessageId: `goal-${phase}` }
+        const goal = { provider: 'occ' as const, clientMessageId: `goal-${phase}` }
         await journal.appendClaimingAttachments(
           goal,
           { ...file.body, sentAs: 'goal' },

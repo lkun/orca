@@ -17,7 +17,7 @@ import type { callStructuredAgentSession } from '@/runtime/structured-agent-sess
 import type { StructuredAgentSessionHost } from '../../src/main/native-chat/agent-session-wire/structured-agent-session-host'
 import { createQueuedMessageTestRig } from '../../src/main/native-chat/agent-session-wire/structured-agent-session-queued-message-rig.test-fixture'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import type { AgentLaunchResult } from '../../src/shared/agent-launch-intent'
 import { buildProfileStateCutoverFixture } from '../../src/main/persistence/profile-state-cutover-fixture'
 import { launchAutomationChatAgent } from '../../src/main/automations/automation-chat-agent-launch'
@@ -143,7 +143,7 @@ function fixture() {
     openAgentSessionRecordStore: vi.fn(async () => records)
   }
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: only the runtime boundaries above are reached; the ordinary launch is mocked separately.
-  return { runtime: runtime as unknown as OrcaRuntimeService, records }
+  return { runtime: runtime as unknown as OCCRuntimeService, records }
 }
 beforeEach(() => {
   vi.clearAllMocks()

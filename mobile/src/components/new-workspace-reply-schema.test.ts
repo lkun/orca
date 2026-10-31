@@ -53,8 +53,8 @@ describe('the setup run policy is a closed enum with the call site defaulting it
 
 describe('the trust record salvages per repo', () => {
   it('keeps the approvals isSetupHookTrusted reads', () => {
-    const ui = { trustedOrcaHooks: { 'repo-1': { setup: { contentHash: 'h', approvedAt: 1 } } } }
-    expect(reads(newWorkspaceUiTrustSchema, { ui })?.trustedOrcaHooks?.['repo-1']?.setup).toEqual({
+    const ui = { trustedOCCHooks: { 'repo-1': { setup: { contentHash: 'h', approvedAt: 1 } } } }
+    expect(reads(newWorkspaceUiTrustSchema, { ui })?.trustedOCCHooks?.['repo-1']?.setup).toEqual({
       contentHash: 'h',
       approvedAt: 1
     })
@@ -62,12 +62,12 @@ describe('the trust record salvages per repo', () => {
 
   it('drops one unreadable repo without costing the others their trust', () => {
     const ui = {
-      trustedOrcaHooks: {
+      trustedOCCHooks: {
         'repo-1': { all: { approvedAt: 1 } },
         'repo-2': 'not-a-record'
       }
     }
-    const trust = reads(newWorkspaceUiTrustSchema, { ui })?.trustedOrcaHooks
+    const trust = reads(newWorkspaceUiTrustSchema, { ui })?.trustedOCCHooks
     expect(trust?.['repo-1']?.all).toEqual({ approvedAt: 1 })
     expect(trust?.['repo-2']).toBe(undefined)
   })

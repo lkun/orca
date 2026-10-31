@@ -2,14 +2,14 @@
 import { describe, expect, it, vi } from 'vitest'
 import { spawnWorktreeTarget } from '../../shared/worktree/host-qualified-identity'
 import type { Repo } from '../../shared/repo-types'
-import { OrcaRuntimeService } from './orca-runtime-test-mocks.spec'
-import { TEST_REPO_ID, TEST_WORKTREE_ID, store } from './orca-runtime-test-fixtures.spec'
+import { OCCRuntimeService } from './occ-runtime-test-mocks.spec'
+import { TEST_REPO_ID, TEST_WORKTREE_ID, store } from './occ-runtime-test-fixtures.spec'
 
 const HIDDEN_WORKTREE_ID = `${TEST_REPO_ID}::/tmp/hidden-worktree`
 const OTHER_WORKTREE_ID = 'repo-2::/tmp/other'
 
 function createRemovableRuntime(onFirstStop?: () => void): {
-  runtime: InstanceType<typeof OrcaRuntimeService>
+  runtime: InstanceType<typeof OCCRuntimeService>
   stopAndWait: ReturnType<typeof vi.fn>
   removeProjectForHost: ReturnType<typeof vi.fn>
   stoppedBeforeRemoval: string[]
@@ -32,7 +32,7 @@ function createRemovableRuntime(onFirstStop?: () => void): {
     runtime.onPtyExit(ptyId, 0)
     return true
   })
-  const runtime = new OrcaRuntimeService({ ...store, removeProjectForHost })
+  const runtime = new OCCRuntimeService({ ...store, removeProjectForHost })
   runtime.setPtyController({
     write: () => true,
     kill: vi.fn(() => false),
@@ -65,7 +65,7 @@ describe('project removal on the execution host', () => {
       ...store.getRepo(TEST_REPO_ID)!,
       executionHostId: 'runtime:env-self'
     }
-    const runtime = new OrcaRuntimeService({
+    const runtime = new OCCRuntimeService({
       ...store,
       getRepo: (id: string) => (id === TEST_REPO_ID ? stampedRepo : undefined),
       getRepos: () => [stampedRepo],
@@ -94,7 +94,7 @@ describe('project removal on the execution host', () => {
       executionHostId: 'runtime:env-self',
       connectionId: 'ssh-target'
     }
-    const runtime = new OrcaRuntimeService({
+    const runtime = new OCCRuntimeService({
       ...store,
       getRepo: (id: string) => (id === TEST_REPO_ID ? sshRepo : undefined),
       getRepos: () => [sshRepo],
@@ -135,7 +135,7 @@ describe('project removal on the execution host', () => {
   it('refuses a spawn that reaches its lease after the project is gone', async () => {
     let removed = false
     const repo = store.getRepo(TEST_REPO_ID)!
-    const runtime = new OrcaRuntimeService({
+    const runtime = new OCCRuntimeService({
       ...store,
       getRepo: (id: string) => (id === TEST_REPO_ID && !removed ? repo : undefined),
       getRepos: () => (removed ? [] : [repo]),
@@ -163,7 +163,7 @@ describe('project removal on the execution host', () => {
     const localRow = store.getRepo(TEST_REPO_ID)!
     const sshRow: Repo = { ...localRow, path: '/srv/ssh-copy', connectionId: 'ssh-target' }
     let rows = [localRow, sshRow]
-    const runtime = new OrcaRuntimeService({
+    const runtime = new OCCRuntimeService({
       ...store,
       getRepo: (id: string) => rows.find((row) => row.id === id),
       getRepos: () => rows,
@@ -196,7 +196,7 @@ describe('project removal on the execution host', () => {
     // A paired client's registration: the runtime stamp names files on this host.
     const selfRow: Repo = { ...store.getRepo(TEST_REPO_ID)!, executionHostId: 'runtime:env-self' }
     let rows = [sshRow, selfRow]
-    const runtime = new OrcaRuntimeService({
+    const runtime = new OCCRuntimeService({
       ...store,
       getRepo: (id: string) => rows.find((row) => row.id === id),
       getRepos: () => rows,
@@ -227,7 +227,7 @@ describe('project removal on the execution host', () => {
   it('refuses a spawn on any host once no row with the removed id survives', async () => {
     const sshRow: Repo = { ...store.getRepo(TEST_REPO_ID)!, connectionId: 'ssh-target' }
     let rows = [sshRow]
-    const runtime = new OrcaRuntimeService({
+    const runtime = new OCCRuntimeService({
       ...store,
       getRepo: (id: string) => rows.find((row) => row.id === id),
       getRepos: () => rows,
@@ -260,7 +260,7 @@ describe('project removal on the execution host', () => {
       path: '/srv/foreign-copy',
       executionHostId: 'runtime:env-other'
     }
-    const runtime = new OrcaRuntimeService({
+    const runtime = new OCCRuntimeService({
       ...store,
       getRepos: () => [localRow, foreignRow],
       removeProjectForHost

@@ -17,7 +17,7 @@ import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { performance } from 'node:perf_hooks'
 import { pathToFileURL } from 'node:url'
-import { runProcess, runProcessSync } from '@orca/process-host'
+import { runProcess, runProcessSync } from '@occ/process-host'
 import { NODE_RUNTIME_ASSETS, NODE_RUNTIME_PIN } from '../../src/shared/node-runtime-pin.ts'
 import {
   buildWindowsSecurityAddon,
@@ -25,14 +25,14 @@ import {
 } from './build-windows-security-addon.mjs'
 import { assertNoHeaderDownloads, treeDigest } from './benchmark-windows-native-preparation.mjs'
 import { ensurePinnedNodeExecutable, preparePinnedNodeDir } from './pinned-node-downloads.mjs'
-import { sha256Of } from './orcad-prebuild-slot-contents.mjs'
+import { sha256Of } from './occd-prebuild-slot-contents.mjs'
 import { hash } from './windows-native-benchmark-observer.mjs'
 
 const ROOT = resolve(import.meta.dirname, '../..')
 const { PE_MACHINE, readPeMachine } = createRequire(import.meta.url)('./windows-pe-machine.cjs')
 const invalidCandidate = Buffer.from('occ-windows-security-qualification-invalid')
 const preparedPath = (root) =>
-  join(root, 'native/windows-security/build/Release/orca_windows_security.node')
+  join(root, 'native/windows-security/build/Release/occ_windows_security.node')
 
 export function assertSecurityComparisonHost({
   platform = process.platform,
@@ -213,7 +213,7 @@ export async function benchmarkWindowsSecurityReuse(
   const output = join(root, '.build/windows-native-benchmark/security')
   mkdirSync(output, { recursive: true })
   const temporary = mkdtempSync(
-    join(process.env.RUNNER_TEMP || tmpdir(), 'orca-security-comparison-')
+    join(process.env.RUNNER_TEMP || tmpdir(), 'occ-security-comparison-')
   )
   const report = {
     schemaVersion: 1,
@@ -234,7 +234,7 @@ export async function benchmarkWindowsSecurityReuse(
   }
   const save = () =>
     writeFileSync(join(output, 'receipt.json'), `${JSON.stringify(report, null, 2)}\n`)
-  let environment = { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' }
+  let environment = { ...process.env, OCC_BACKGROUND_LAUNCH: '1' }
   const command = async (label, program, args) => {
     report.stage = label
     const start = performance.now()

@@ -28,7 +28,7 @@ jobs:
     timeout-minutes: 50
     env:
       EXPECT: ${{ inputs.expect || 'survival' }}
-      ORCA_BACKGROUND_LAUNCH: '1'
+      OCC_BACKGROUND_LAUNCH: '1'
 
     steps:
       - name: Checkout
@@ -134,10 +134,10 @@ jobs:
           Start-Process -FilePath $exe -ArgumentList '/S' -Wait
           $installed = Join-Path $env:LOCALAPPDATA 'Programs/OCC/OCC.exe'
           if (-not (Test-Path $installed)) {
-            $installed = Join-Path $env:LOCALAPPDATA 'Programs/orca/OCC.exe'
+            $installed = Join-Path $env:LOCALAPPDATA 'Programs/occ/OCC.exe'
           }
           if (-not (Test-Path $installed)) { throw "Installed OCC.exe not found after silent install" }
-          "ORCA_EXE=$installed" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "OCC_EXE=$installed" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
 
       # Why: crash ONLY the app main and assert the relocated daemon + its shell
       # survive, then that relaunch adopts them and input causes no pwsh FailFast.
@@ -145,13 +145,13 @@ jobs:
         id: harness
         shell: pwsh
         env:
-          ORCA_E2E_DIAG_DIR: artifacts/diag
+          OCC_E2E_DIAG_DIR: artifacts/diag
         run: |
           New-Item -ItemType Directory -Force artifacts | Out-Null
           $log = "artifacts/crash-survival-output.log"
           node tests/tools/win-crash-survival-e2e/run.mjs `
             --expect "$env:EXPECT" `
-            --exe-path "$env:ORCA_EXE" `
+            --exe-path "$env:OCC_EXE" `
             --soak-seconds 8 2>&1 | Tee-Object -FilePath $log
           exit $LASTEXITCODE
 

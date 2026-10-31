@@ -1,4 +1,4 @@
-import { ASSIGNMENT_LIMITS } from '@orca-cloud/relay-contract'
+import { ASSIGNMENT_LIMITS } from '@occ-cloud/relay-contract'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import {
   RelayAssignmentStore,
@@ -8,7 +8,7 @@ import {
 import { openRelayDatabase, type RelayDatabase } from './database.js'
 import { readRegisteredMigrationInventory } from './registered-migration-inventory.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 type RecoveryFixture = {

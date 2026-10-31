@@ -14,8 +14,8 @@ afterEach(() => {
   }
 })
 
-// orcad: a packaged host with no Electron resources tree.
-describe('speech worker paths on orcad (#31174)', () => {
+// occd: a packaged host with no Electron resources tree.
+describe('speech worker paths on occd (#31174)', () => {
   it('has no on-device recognizer unless occ serve names one', () => {
     installFakeAppEnvironment({ isPackaged: () => true })
     expect(getSherpaModulePath()).toBeNull()
@@ -24,7 +24,7 @@ describe('speech worker paths on orcad (#31174)', () => {
 
   it("uses the installed app's recognizer that occ serve names", () => {
     installFakeAppEnvironment({ isPackaged: () => true })
-    const dir = mkdtempSync(join(tmpdir(), 'orca-recognizer-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-recognizer-'))
     roots.push(dir)
     writeFileSync(join(dir, 'sherpa-onnx.node'), '')
     process.env[SPEECH_RECOGNIZER_DIR_ENV] = dir
@@ -33,7 +33,7 @@ describe('speech worker paths on orcad (#31174)', () => {
 
   it('ignores a named directory that holds no recognizer', () => {
     installFakeAppEnvironment({ isPackaged: () => true })
-    const dir = mkdtempSync(join(tmpdir(), 'orca-recognizer-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-recognizer-'))
     roots.push(dir)
     process.env[SPEECH_RECOGNIZER_DIR_ENV] = dir
     expect(getSherpaModulePath()).toBeNull()

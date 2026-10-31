@@ -48,9 +48,9 @@ afterEach(() => {
 
 describe('push-target bookkeeping under a WSL move', () => {
   const target: GitPushTarget = {
-    remoteName: 'pr-contributor-orca',
+    remoteName: 'pr-contributor-occ',
     branchName: 'contributor/fix',
-    remoteUrl: 'git@github.com:contributor/orca.git'
+    remoteUrl: 'git@github.com:contributor/occ.git'
   }
 
   async function push(worktreeId: string, hostId?: ExecutionHostId) {

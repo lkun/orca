@@ -88,8 +88,8 @@ async function main() {
   watcherError.catch(() => undefined)
 
   try {
-    createdRootPath = await mkdtemp(join(tmpdir(), 'orca-runtime-watcher-fault-'))
-    bundleDir = await mkdtemp(join(tmpdir(), 'orca-runtime-watcher-harness-'))
+    createdRootPath = await mkdtemp(join(tmpdir(), 'occ-runtime-watcher-fault-'))
+    bundleDir = await mkdtemp(join(tmpdir(), 'occ-runtime-watcher-harness-'))
     // Match Parcel’s canonical event paths; macOS tmpdir may use /var symlink spelling.
     rootPath = await realpath(createdRootPath)
     const WatcherProcessSupervisor = await loadSupervisor(bundleDir)

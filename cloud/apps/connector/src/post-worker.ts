@@ -52,7 +52,7 @@ export class PostWorker {
       case 'uncertain':
         if (await posts.settle(post, 'uncertain')) {
           console.warn(
-            JSON.stringify({ event: 'orca_connector_post_uncertain', source: posts.source })
+            JSON.stringify({ event: 'occ_connector_post_uncertain', source: posts.source })
           )
         }
         break

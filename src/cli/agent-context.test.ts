@@ -13,13 +13,13 @@ describe('buildAgentContext', () => {
         ['worktree', 'delete']
       ],
       summary: 'Remove a worktree',
-      usage: 'orca worktree rm',
+      usage: 'occ worktree rm',
       allowedFlags: ['worktree', 'force']
     },
     {
       path: ['agent-context'],
       summary: 'Print the schema',
-      usage: 'orca agent-context',
+      usage: 'occ agent-context',
       allowedFlags: []
     }
   ]
@@ -63,7 +63,7 @@ describe('buildAgentContext', () => {
       {
         path: ['terminal', 'stop'],
         summary: 'Deprecated',
-        usage: 'orca terminal stop',
+        usage: 'occ terminal stop',
         allowedFlags: [],
         hidden: true
       }

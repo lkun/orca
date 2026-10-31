@@ -85,11 +85,11 @@ describe('electron-builder config', () => {
     expect(packs('out/web/web-index.html')).toBe(false)
     expect(packs('out/web/assets/shared.js')).toBe(false)
     expect(packs('out/renderer/web-index.html')).toBe(true)
-    expect(packs('out/renderer/.orca-web-client-files.json')).toBe(true)
+    expect(packs('out/renderer/.occ-web-client-files.json')).toBe(true)
   })
 
   it.each(['file', 'directory'])('keeps a root notes %s out of app.asar', async (kind) => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-packaging-notes-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-packaging-notes-'))
     const source = join(root, 'app')
     const destination = join(root, 'selected')
     const runtimePaths = [
@@ -108,8 +108,8 @@ describe('electron-builder config', () => {
         ? ['notes']
         : [
             'notes/build.log',
-            'notes/installed-orca-backup/OCC.exe',
-            'notes/installed-orca-backup/resources/app.asar',
+            'notes/installed-occ-backup/OCC.exe',
+            'notes/installed-occ-backup/resources/app.asar',
             'notes/occ-windows-setup.exe',
             'notes/.recovery/state.json'
           ]
@@ -154,9 +154,9 @@ describe('electron-builder config', () => {
 
     for (const authoringOnly of [
       'examples/plugins/hostile-panel/panel.html',
-      'examples/plugins/hostile-panel/orca-plugin.json',
-      'examples/plugins/hello-orca/main.mjs',
-      'examples/plugins/hello-orca/orca-plugin.json'
+      'examples/plugins/hostile-panel/occ-plugin.json',
+      'examples/plugins/hello-occ/main.mjs',
+      'examples/plugins/hello-occ/occ-plugin.json'
     ]) {
       expect(packs(authoringOnly)).toBe(false)
     }
@@ -214,7 +214,7 @@ describe('electron-builder config', () => {
   it.runIf(hostBuilderPlatform)(
     'ships the agent-browser skill catalog the packaged binary resolves',
     async () => {
-      const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-packaged-agent-browser-'))
+      const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-packaged-agent-browser-'))
       try {
         const resources = electronBuilderConfig[hostBuilderPlatform].extraResources.filter(
           (entry) => entry.from.startsWith('node_modules/agent-browser/') || entry.to === 'skills'
@@ -250,7 +250,7 @@ describe('electron-builder config', () => {
   it.each(['mac', 'linux'])(
     'loads Codex TOML parsing after %s runtime pruning',
     async (platform) => {
-      const resourcesDir = await mkdtemp(join(tmpdir(), 'orca-packaged-codex-toml-'))
+      const resourcesDir = await mkdtemp(join(tmpdir(), 'occ-packaged-codex-toml-'))
       try {
         const resource = electronBuilderConfig[platform].extraResources.find(
           (entry) => entry.to === join('node_modules', 'smol-toml')
@@ -280,19 +280,19 @@ describe('electron-builder config', () => {
 
   // Why: serve-sim's addon is a Mach-O, and Windows signing rejects every *.node that is not PE.
 
-  // Source shim unpacked under resources/win32/bin lacks adjacent orca.exe (#7351); only extraResources/bin copy works.
+  // Source shim unpacked under resources/win32/bin lacks adjacent occ.exe (#7351); only extraResources/bin copy works.
 
   // macOS 26 UNUserNotificationCenter aborts helpers launched from Resources; ship under MacOS (#7929).
 
   // Missing unpacked entry silently restores in-process watcher and #7547 main crashes.
 
-  // CLI Node mode cannot read asar; packed entry sends orca serve to Electron (#27307).
-  it('unpacks the orcad serve-selection entry the CLI runs', async () => {
+  // CLI Node mode cannot read asar; packed entry sends occ serve to Electron (#27307).
+  it('unpacks the occd serve-selection entry the CLI runs', async () => {
     const sharedSource = await readFile(
-      join(REPO_ROOT, 'src', 'shared', 'orcad-local-serve-selection.ts'),
+      join(REPO_ROOT, 'src', 'shared', 'occd-local-serve-selection.ts'),
       'utf8'
     )
-    const entryName = sharedSource.match(/ORCAD_LOCAL_SERVE_SELECTION_ENTRY = '([^']+)'/)?.[1]
+    const entryName = sharedSource.match(/OCCD_LOCAL_SERVE_SELECTION_ENTRY = '([^']+)'/)?.[1]
     expect(entryName).toBeDefined()
 
     const matcher = new FileMatcher(
@@ -319,7 +319,7 @@ describe('electron-builder config', () => {
     for (const webPath of [
       'out/renderer/web-index.html',
       'out/renderer/assets/index-abc123.js',
-      'out/renderer/.orca-web-client-files.json',
+      'out/renderer/.occ-web-client-files.json',
       'out/mobile-web/manifest.json',
       'out/mobile-web/assets/index-abc123.js'
     ]) {
@@ -328,7 +328,7 @@ describe('electron-builder config', () => {
   })
 
   it('validates each AppImage before electron-builder publishes it', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-electron-builder-appimage-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-electron-builder-appimage-'))
     try {
       const appImage = join(root, 'occ-linux.AppImage')
       await writeFile(appImage, 'not an ELF')
@@ -346,18 +346,18 @@ describe('electron-builder config', () => {
   })
   it('uses a distinct AppImage name for Linux arm64 release uploads', () => {
     const configPath = require.resolve('../electron-builder.config.cjs')
-    const original = process.env.ORCA_LINUX_ARM64_RELEASE
+    const original = process.env.OCC_LINUX_ARM64_RELEASE
     try {
       delete require.cache[configPath]
-      process.env.ORCA_LINUX_ARM64_RELEASE = '1'
+      process.env.OCC_LINUX_ARM64_RELEASE = '1'
       expect(require('../electron-builder.config.cjs').appImage.artifactName).toBe(
         'occ-linux-arm64.${ext}'
       )
     } finally {
       if (original === undefined) {
-        delete process.env.ORCA_LINUX_ARM64_RELEASE
+        delete process.env.OCC_LINUX_ARM64_RELEASE
       } else {
-        process.env.ORCA_LINUX_ARM64_RELEASE = original
+        process.env.OCC_LINUX_ARM64_RELEASE = original
       }
       delete require.cache[configPath]
       require('../electron-builder.config.cjs')
@@ -366,25 +366,25 @@ describe('electron-builder config', () => {
 
   it('overrides packaged semver only for local macOS builds', () => {
     const configPath = require.resolve('../electron-builder.config.cjs')
-    const original = process.env.ORCA_LOCAL_BUILD_VERSION
-    const originalMacRelease = process.env.ORCA_MAC_RELEASE
+    const original = process.env.OCC_LOCAL_BUILD_VERSION
+    const originalMacRelease = process.env.OCC_MAC_RELEASE
     try {
       delete require.cache[configPath]
-      delete process.env.ORCA_MAC_RELEASE
-      process.env.ORCA_LOCAL_BUILD_VERSION = '1.4.159-rc.0.local.123.abc'
+      delete process.env.OCC_MAC_RELEASE
+      process.env.OCC_LOCAL_BUILD_VERSION = '1.4.159-rc.0.local.123.abc'
       expect(require('../electron-builder.config.cjs').extraMetadata).toEqual({
         version: '1.4.159-rc.0.local.123.abc'
       })
     } finally {
       if (originalMacRelease === undefined) {
-        delete process.env.ORCA_MAC_RELEASE
+        delete process.env.OCC_MAC_RELEASE
       } else {
-        process.env.ORCA_MAC_RELEASE = originalMacRelease
+        process.env.OCC_MAC_RELEASE = originalMacRelease
       }
       if (original === undefined) {
-        delete process.env.ORCA_LOCAL_BUILD_VERSION
+        delete process.env.OCC_LOCAL_BUILD_VERSION
       } else {
-        process.env.ORCA_LOCAL_BUILD_VERSION = original
+        process.env.OCC_LOCAL_BUILD_VERSION = original
       }
       delete require.cache[configPath]
       require('../electron-builder.config.cjs')
@@ -393,23 +393,23 @@ describe('electron-builder config', () => {
 
   it('never applies local semver to release packaging', () => {
     const configPath = require.resolve('../electron-builder.config.cjs')
-    const originalLocalVersion = process.env.ORCA_LOCAL_BUILD_VERSION
-    const originalMacRelease = process.env.ORCA_MAC_RELEASE
+    const originalLocalVersion = process.env.OCC_LOCAL_BUILD_VERSION
+    const originalMacRelease = process.env.OCC_MAC_RELEASE
     try {
       delete require.cache[configPath]
-      process.env.ORCA_LOCAL_BUILD_VERSION = '1.4.159-local.123.abc'
-      process.env.ORCA_MAC_RELEASE = '1'
+      process.env.OCC_LOCAL_BUILD_VERSION = '1.4.159-local.123.abc'
+      process.env.OCC_MAC_RELEASE = '1'
       expect(require('../electron-builder.config.cjs').extraMetadata).toBeUndefined()
     } finally {
       if (originalLocalVersion === undefined) {
-        delete process.env.ORCA_LOCAL_BUILD_VERSION
+        delete process.env.OCC_LOCAL_BUILD_VERSION
       } else {
-        process.env.ORCA_LOCAL_BUILD_VERSION = originalLocalVersion
+        process.env.OCC_LOCAL_BUILD_VERSION = originalLocalVersion
       }
       if (originalMacRelease === undefined) {
-        delete process.env.ORCA_MAC_RELEASE
+        delete process.env.OCC_MAC_RELEASE
       } else {
-        process.env.ORCA_MAC_RELEASE = originalMacRelease
+        process.env.OCC_MAC_RELEASE = originalMacRelease
       }
       delete require.cache[configPath]
       require('../electron-builder.config.cjs')
@@ -429,7 +429,7 @@ describe('arch-aware packaging guard', () => {
   let scratch
   let bundleDir
   beforeAll(async () => {
-    scratch = await mkdtemp(join(tmpdir(), 'orca-electron-builder-guard-'))
+    scratch = await mkdtemp(join(tmpdir(), 'occ-electron-builder-guard-'))
     bundleDir = join(scratch, 'mobile-web')
     await writeMobileWebBundleFixtureTree({ outDir: bundleDir })
   })
@@ -449,23 +449,23 @@ describe('arch-aware packaging guard', () => {
   })
 
   it('refuses to package a dark layout-owner build', () => {
-    const previous = process.env.ORCA_LAYOUT_OWNER
-    process.env.ORCA_LAYOUT_OWNER = 'main'
+    const previous = process.env.OCC_LAYOUT_OWNER
+    process.env.OCC_LAYOUT_OWNER = 'main'
     try {
-      expect(() => packHost(HOST_ARCH)).toThrow('ORCA_LAYOUT_OWNER=main')
+      expect(() => packHost(HOST_ARCH)).toThrow('OCC_LAYOUT_OWNER=main')
     } finally {
       if (previous === undefined) {
-        delete process.env.ORCA_LAYOUT_OWNER
+        delete process.env.OCC_LAYOUT_OWNER
       } else {
-        process.env.ORCA_LAYOUT_OWNER = previous
+        process.env.OCC_LAYOUT_OWNER = previous
       }
     }
   })
 
-  it('refuses to package an orcad template marked by a dark test build', async () => {
-    const templateDir = join(scratch, 'orcad-template')
+  it('refuses to package an occd template marked by a dark test build', async () => {
+    const templateDir = join(scratch, 'occd-template')
     await mkdir(templateDir, { recursive: true })
-    await writeFile(join(templateDir, 'ORCA_LAYOUT_OWNER_MAIN'), 'dark\n')
+    await writeFile(join(templateDir, 'OCC_LAYOUT_OWNER_MAIN'), 'dark\n')
     try {
       expect(() =>
         electronBuilderConfig.beforePack(
@@ -474,7 +474,7 @@ describe('arch-aware packaging guard', () => {
           () => undefined,
           templateDir
         )
-      ).toThrow(`${templateDir} holds an ORCA_LAYOUT_OWNER=main build`)
+      ).toThrow(`${templateDir} holds an OCC_LAYOUT_OWNER=main build`)
     } finally {
       await rm(templateDir, { recursive: true, force: true })
     }
@@ -503,7 +503,7 @@ describe('arch-aware packaging guard', () => {
   it.runIf(process.platform === 'win32')(
     'refuses a Windows workspace addon built for another architecture',
     () => {
-      for (const binary of ['orca_windows_registry.node', 'orca_windows_security.node']) {
+      for (const binary of ['occ_windows_registry.node', 'occ_windows_security.node']) {
         expect(() => packHost(OTHER_ARCH)).toThrow(`${binary} for ${OTHER_ARCH_NAME}`)
       }
     }
@@ -521,7 +521,7 @@ describe('arch-aware packaging guard', () => {
       expect(packWindows).toThrow('@vscode/windows-process-tree')
       expect(packWindows).toThrow('Windows packaging requires a Windows host')
       // A workspace link exists everywhere; only its compiled binary proves the addon will load.
-      expect(packWindows).toThrow('@orca/windows-security')
+      expect(packWindows).toThrow('@occ/windows-security')
     }
   })
 })

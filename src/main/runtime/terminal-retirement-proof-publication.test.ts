@@ -1,12 +1,12 @@
 import { expect, it } from 'vitest'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import {
   createStaleTabCloseHarness,
   WORKTREE_ID
-} from './__fixtures__/orca-runtime-terminal-close-continuity-fixtures'
+} from './__fixtures__/occ-runtime-terminal-close-continuity-fixtures'
 
 // L259a: switch-on bug waiting on its ledger row's fix (same stale headless close).
-;(ORCA_LAYOUT_OWNER_IS_MAIN ? it.fails : it)(
+;(OCC_LAYOUT_OWNER_IS_MAIN ? it.fails : it)(
   'keeps host retirement proof across a later renderer publication',
   async () => {
     const harness = await createStaleTabCloseHarness({ headless: true })

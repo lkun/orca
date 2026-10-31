@@ -76,9 +76,9 @@ beforeEach(() => {
   mocks.requestSingleInstanceLock.mockReturnValue(true)
   mocks.whenReady.mockResolvedValue(undefined)
   mocks.showMessageBox.mockResolvedValue({ response: 0 })
-  vi.stubEnv('ORCA_USER_DATA_PATH', '/stale/inherited/root')
-  vi.stubEnv('ORCA_BYPASS_SINGLE_INSTANCE_LOCK', '1')
-  vi.stubEnv('ORCA_E2E_ENFORCE_SINGLE_INSTANCE_LOCK', '0')
+  vi.stubEnv('OCC_USER_DATA_PATH', '/stale/inherited/root')
+  vi.stubEnv('OCC_BYPASS_SINGLE_INSTANCE_LOCK', '1')
+  vi.stubEnv('OCC_E2E_ENFORCE_SINGLE_INSTANCE_LOCK', '0')
 })
 afterEach(() => {
   vi.restoreAllMocks()
@@ -89,16 +89,16 @@ afterEach(() => {
 })
 
 function fixture() {
-  const root = realpathSync(mkdtempSync(join(tmpdir(), 'orca-recovery-bridge-')))
+  const root = realpathSync(mkdtempSync(join(tmpdir(), 'occ-recovery-bridge-')))
   roots.push(root)
   const profileId = 'bridge-profile'
   const directory = join(root, 'profiles', profileId)
   mkdirSync(directory, { recursive: true })
   writeFileSync(
-    join(root, 'orca-profile-index.json'),
+    join(root, 'occ-profile-index.json'),
     JSON.stringify({ activeProfileId: profileId, profiles: [{ id: profileId }] })
   )
-  const dataFile = join(directory, 'orca-data.json')
+  const dataFile = join(directory, 'occ-data.json')
   const databaseFile = join(directory, 'profile-state.db')
   const exportFile = profileStateJsonExportPath(dataFile, 1)
   const restored = {
@@ -165,8 +165,8 @@ describe('Electron recovery preflight', () => {
         return true
       })
       expect(runProfileStateRecoveryPreflight(item.argv)).toBe(true)
-      expect(process.env.ORCA_USER_DATA_PATH).toBe(item.root)
-      expect(process.env.ORCA_BACKGROUND_LAUNCH).toBe('1')
+      expect(process.env.OCC_USER_DATA_PATH).toBe(item.root)
+      expect(process.env.OCC_BACKGROUND_LAUNCH).toBe('1')
       expect(mocks.background).toHaveBeenCalledOnce()
       expect(mocks.requestSingleInstanceLock).toHaveBeenCalledOnce()
       expect(response()).toMatchObject({
@@ -294,7 +294,7 @@ describe('Electron recovery preflight', () => {
   describe('desktop choice relaunch', () => {
     it('carries the captured root, failing profile and approved repair sources unchanged', () => {
       const request: ProfileStateRecoveryRequest = {
-        userDataPath: '/captured/orca',
+        userDataPath: '/captured/occ',
         profileId: 'damaged-profile',
         selector: { kind: 'repair', sections: [{ domain: 'repos', backupId: null }] }
       }

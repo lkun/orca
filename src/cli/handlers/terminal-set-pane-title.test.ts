@@ -84,7 +84,7 @@ describe('terminal set-pane-title', () => {
     printHelp(COMMAND_SPECS, ['terminal', 'set-pane-title'])
     const help = log.mock.calls.flat().join('\n')
     expect(help).toContain(
-      'Usage: orca terminal set-pane-title [--terminal <handle>] --title <text>'
+      'Usage: occ terminal set-pane-title [--terminal <handle>] --title <text>'
     )
     expect(help).toContain('Custom title for one pane (pass "" to reset)')
     expect(help).not.toContain('omit or pass')

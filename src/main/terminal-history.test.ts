@@ -314,27 +314,27 @@ describe('terminal-history', () => {
       expect(envA.fish_history).not.toBe(envB.fish_history)
     })
 
-    it('drops an ORCA_HISTFILE inherited from a parent OCC PTY', () => {
+    it('drops an OCC_HISTFILE inherited from a parent OCC PTY', () => {
       const env: Record<string, string> = {
-        ORCA_HISTFILE: ['', 'other', 'wt', 'zsh_history'].join(sep)
+        OCC_HISTFILE: ['', 'other', 'wt', 'zsh_history'].join(sep)
       }
 
       injectHistoryEnv(env, 'repo-1::/path/wt', '/bin/zsh', '/path/wt')
 
-      expect(env.ORCA_HISTFILE).toBe(env.HISTFILE)
-      expect(env.ORCA_HISTFILE).not.toContain('other')
+      expect(env.OCC_HISTFILE).toBe(env.HISTFILE)
+      expect(env.OCC_HISTFILE).not.toContain('other')
     })
 
-    it('drops an inherited ORCA_HISTFILE even when it injects nothing', () => {
+    it('drops an inherited OCC_HISTFILE even when it injects nothing', () => {
       const env: Record<string, string> = {
         HISTFILE: ['', 'mine', 'zsh_history'].join(sep),
-        ORCA_HISTFILE: ['', 'other', 'wt', 'zsh_history'].join(sep)
+        OCC_HISTFILE: ['', 'other', 'wt', 'zsh_history'].join(sep)
       }
 
       injectHistoryEnv(env, 'repo-1::/path/wt', '/bin/zsh', '/path/wt')
 
       expect(env.HISTFILE).toBe(['', 'mine', 'zsh_history'].join(sep))
-      expect(env.ORCA_HISTFILE).toBeUndefined()
+      expect(env.OCC_HISTFILE).toBeUndefined()
     })
 
     it.each([
@@ -348,7 +348,7 @@ describe('terminal-history', () => {
           '',
           'home',
           'me',
-          '.orca-remote',
+          '.occ-remote',
           'terminal-history',
           `${OTHER_WORKTREE_HASH}-zsh_history`
         ].join(sep)
@@ -478,11 +478,11 @@ describe('terminal-history', () => {
     })
 
     it('swaps an injected fish session for the fallback shell HISTFILE', () => {
-      const env: Record<string, string> = { fish_history: 'orca_abc123' }
+      const env: Record<string, string> = { fish_history: 'occ_abc123' }
       updateHistoryEnvForFallback(env, '/bin/bash', {
         shell: 'fish',
         histFile: null,
-        fishSession: 'orca_abc123',
+        fishSession: 'occ_abc123',
         historyDir: '/fake/userData/terminal-history/abc123'
       })
       expect(env.fish_history).toBeUndefined()
@@ -554,12 +554,12 @@ describe('terminal-history', () => {
       existsSyncMock.mockReturnValue(true)
       lstatSyncMock.mockReturnValue({ isFile: () => true })
       readFileSyncMock.mockReturnValue(
-        JSON.stringify({ worktreeId, fishSession: 'orca_deadbeefdeadbeef' })
+        JSON.stringify({ worktreeId, fishSession: 'occ_deadbeefdeadbeef' })
       )
 
       deleteWorktreeHistoryDir('repo-1::/path/wt')
 
-      expect(rmSyncMock).not.toHaveBeenCalledWith(expect.stringContaining('orca_deadbeefdeadbeef'))
+      expect(rmSyncMock).not.toHaveBeenCalledWith(expect.stringContaining('occ_deadbeefdeadbeef'))
       await flushPendingWorktreeHistoryDeletions()
     })
 

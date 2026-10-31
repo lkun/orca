@@ -18,28 +18,28 @@ function makeRepo(id: string, overrides: Partial<Repo> = {}): Repo {
 
 describe('new-workspace-composer-repo', () => {
   describe('resolveComposerActiveRepoId', () => {
-    const localOrca = makeRepo('local-orca', { upstream: { owner: 'stablyai', repo: 'orca' } })
-    const runtimeOrca = makeRepo('runtime-orca', {
-      connectionId: 'runtime-ssh-orca-1',
-      upstream: { owner: 'stablyai', repo: 'orca' }
+    const localOCC = makeRepo('local-occ', { upstream: { owner: 'stablyai', repo: 'occ' } })
+    const runtimeOCC = makeRepo('runtime-occ', {
+      connectionId: 'runtime-ssh-occ-1',
+      upstream: { owner: 'stablyai', repo: 'occ' }
     })
     const otherProject = makeRepo('noqa', { upstream: { owner: 'stablyai', repo: 'noqa' } })
-    const repos = [otherProject, localOrca, runtimeOrca]
+    const repos = [otherProject, localOCC, runtimeOCC]
     const eligibleRepos = getComposerEligibleRepos(repos)
 
     it('maps an active runtime-owned SSH repo to its local same-project sibling', () => {
-      expect(resolveComposerActiveRepoId(repos, eligibleRepos, 'runtime-orca')).toBe('local-orca')
+      expect(resolveComposerActiveRepoId(repos, eligibleRepos, 'runtime-occ')).toBe('local-occ')
     })
 
     it('keeps the runtime repo id when no same-project sibling is eligible', () => {
-      const onlyRuntime = [runtimeOrca]
+      const onlyRuntime = [runtimeOCC]
       expect(
         resolveComposerActiveRepoId(
           onlyRuntime,
           getComposerEligibleRepos(onlyRuntime),
-          'runtime-orca'
+          'runtime-occ'
         )
-      ).toBe('runtime-orca')
+      ).toBe('runtime-occ')
     })
   })
 })

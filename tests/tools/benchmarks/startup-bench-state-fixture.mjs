@@ -1,4 +1,4 @@
-// Seed startup paths in orca-data.json: git/GitHub repos, restored terminals and unreachable SSH targets.
+// Seed startup paths in occ-data.json: git/GitHub repos, restored terminals and unreachable SSH targets.
 import { spawnSync } from 'node:child_process'
 import { existsSync, mkdirSync, realpathSync, unlinkSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -27,7 +27,7 @@ function buildGithubRepoFixtures(fixtureDir, githubRepos) {
         'remote',
         'add',
         'origin',
-        `https://github.com/orca-bench/bench-gh-repo-${i}.git`
+        `https://github.com/occ-bench/bench-gh-repo-${i}.git`
       ],
       { stdio: 'ignore' }
     )
@@ -56,7 +56,7 @@ function buildUnreachableSshTargets(count) {
       label: `Unreachable Host ${i}`,
       host: `203.0.113.${i + 1}`,
       port: 22,
-      username: 'orca',
+      username: 'occ',
       source: 'manual',
       lastRequiredPassphrase: false
     })
@@ -68,7 +68,7 @@ export function writePersistedStateFixture(
   fixtureDir,
   { stateProfile, sessionTabs, githubRepos, sshUnreachableTargets = 0 }
 ) {
-  const dataPath = join(fixtureDir, 'orca-data.json')
+  const dataPath = join(fixtureDir, 'occ-data.json')
   if (stateProfile === 'none' && githubRepos === 0 && sshUnreachableTargets === 0) {
     try {
       unlinkSync(dataPath)

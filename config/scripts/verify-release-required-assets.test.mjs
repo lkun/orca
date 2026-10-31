@@ -78,7 +78,7 @@ describe('extractManifestAssetNames', () => {
 describe('verifyRequiredReleaseAssets', () => {
   function releaseFetch(release, manifestAsset, manifestText) {
     return vi.fn(async (url) => {
-      const releasesUrl = 'https://api.github.com/repos/stablyai/orca/releases'
+      const releasesUrl = 'https://api.github.com/repos/stablyai/occ/releases'
       if (url === `${releasesUrl}?per_page=100`) {
         return jsonResponse([release])
       }
@@ -112,7 +112,7 @@ describe('verifyRequiredReleaseAssets', () => {
     )
 
     await expect(
-      verifyRequiredReleaseAssets({ repo: 'stablyai/orca', tag, token: 'token' })
+      verifyRequiredReleaseAssets({ repo: 'stablyai/occ', tag, token: 'token' })
     ).rejects.toThrow('Missing: mac-updater-only.zip')
   })
 
@@ -136,7 +136,7 @@ describe('verifyRequiredReleaseAssets', () => {
     )
 
     await expect(
-      verifyRequiredReleaseAssets({ repo: 'stablyai/orca', tag, token: 'token' })
+      verifyRequiredReleaseAssets({ repo: 'stablyai/occ', tag, token: 'token' })
     ).rejects.toThrow('Missing: occ-linux-arm64.AppImage.blockmap')
   })
 })

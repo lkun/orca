@@ -12,8 +12,8 @@ const FRAME_STYLE = `body {
         margin: 0;
         padding: 12px;
         font: 13px system-ui, sans-serif;
-        color: var(--orca-foreground);
-        background: var(--orca-background);
+        color: var(--occ-foreground);
+        background: var(--occ-background);
       }`
 
 export function editor(input: PluginTemplateInput): PluginTemplate {
@@ -21,7 +21,7 @@ export function editor(input: PluginTemplateInput): PluginTemplate {
   return {
     description: 'Custom editor for a file type, in a sandboxed frame (needs --approve to load)',
     files: {
-      'orca-plugin.json': manifest(input, `Edits ${extension} files.`, {
+      'occ-plugin.json': manifest(input, `Edits ${extension} files.`, {
         execution: 'sandboxed-ui',
         pluginApi: 1,
         contributes: {
@@ -47,7 +47,7 @@ export function editor(input: PluginTemplateInput): PluginTemplate {
         height: calc(100vh - 24px);
         color: inherit;
         background: transparent;
-        border: 1px solid var(--orca-border);
+        border: 1px solid var(--occ-border);
         font: 13px ui-monospace, monospace;
       }
     </style>
@@ -58,7 +58,7 @@ export function editor(input: PluginTemplateInput): PluginTemplate {
       const text = document.getElementById('text')
       let version = 0
       // OCC sends the document now and again whenever the file changes outside the editor.
-      orca.document.onDidChange((doc) => {
+      occ.document.onDidChange((doc) => {
         version = doc.version
         text.readOnly = doc.readOnly
         if (doc.content.kind === 'text' && text.value !== doc.content.text) {
@@ -66,7 +66,7 @@ export function editor(input: PluginTemplateInput): PluginTemplate {
         }
       })
       text.addEventListener('input', () => {
-        void orca.document
+        void occ.document
           .applyEdit({ baseVersion: version, content: { kind: 'text', text: text.value } })
           .catch((error) => console.warn(error.code, error.message))
       })
@@ -76,7 +76,7 @@ export function editor(input: PluginTemplateInput): PluginTemplate {
 `,
       'README.md': readme(
         input,
-        `A custom editor for \`${extension}\` files. It runs in a sandboxed frame and talks to OCC only through \`window.orca\`. Loading it needs approval: \`occ plugin dev load\` prints the exact access and the \`--approve\` fingerprint.`
+        `A custom editor for \`${extension}\` files. It runs in a sandboxed frame and talks to OCC only through \`window.occ\`. Loading it needs approval: \`occ plugin dev load\` prints the exact access and the \`--approve\` fingerprint.`
       ),
       ...COMMON_FILES
     }
@@ -87,7 +87,7 @@ export function panel(input: PluginTemplateInput): PluginTemplate {
   return {
     description: 'Right-sidebar panel in a sandboxed frame (needs --approve to load)',
     files: {
-      'orca-plugin.json': manifest(input, 'A sidebar panel.', {
+      'occ-plugin.json': manifest(input, 'A sidebar panel.', {
         execution: 'sandboxed-ui',
         pluginApi: 1,
         contributes: {
@@ -109,12 +109,12 @@ export function panel(input: PluginTemplateInput): PluginTemplate {
     <script>
       const label = document.getElementById('workspace')
       async function refresh() {
-        if (!orca.host.has('workspace.readContext')) {
+        if (!occ.host.has('workspace.readContext')) {
           label.textContent = 'This OCC cannot read workspace context.'
           return
         }
         try {
-          const context = await orca.host.call('workspace.readContext', {})
+          const context = await occ.host.call('workspace.readContext', {})
           label.textContent = JSON.stringify(context, null, 2)
         } catch (error) {
           label.textContent = error.code + ': ' + error.message
@@ -127,7 +127,7 @@ export function panel(input: PluginTemplateInput): PluginTemplate {
 `,
       'README.md': readme(
         input,
-        'A right-sidebar panel. It runs in a sandboxed frame and calls host methods its `capabilities` allow through `window.orca`. Loading it needs approval: `occ plugin dev load` prints the exact access and the `--approve` fingerprint.'
+        'A right-sidebar panel. It runs in a sandboxed frame and calls host methods its `capabilities` allow through `window.occ`. Loading it needs approval: `occ plugin dev load` prints the exact access and the `--approve` fingerprint.'
       ),
       ...COMMON_FILES
     }

@@ -53,7 +53,7 @@ export function useTerminalPaneReconciliation(controller: TerminalPaneCloseContr
     if (
       hostRetiredLeafIdsRef.current.size === 0 &&
       !isHostAuthoritativeLayout({
-        isWebClient: !!(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__,
+        isWebClient: !!(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__,
         ptyIdsByLeafId: restoredLayout.ptyIdsByLeafId
       })
     ) {

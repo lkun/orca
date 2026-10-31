@@ -44,7 +44,7 @@ describe('submitConnectionDiagnostics', () => {
 
     expect(result).toEqual({ ok: true })
     expect(fetchImpl).toHaveBeenCalledWith(
-      'https://www.onorca.dev/v1/feedback',
+      'https://www.onocc.dev/v1/feedback',
       expect.objectContaining({ method: 'POST' })
     )
     const request = fetchImpl.mock.calls[0]?.[1]

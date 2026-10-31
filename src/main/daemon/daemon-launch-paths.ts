@@ -27,7 +27,7 @@ export function getDaemonHistoryDir(): string {
 
 export function getDaemonEntryPath(): string {
   const appPath = getAppEnvironment().getAppPath()
-  // Electron needs the unpacked script; packaged orcad has no asar to redirect.
+  // Electron needs the unpacked script; packaged occd has no asar to redirect.
   const basePath = appPath.includes('app.asar')
     ? appPath.replace('app.asar', 'app.asar.unpacked')
     : appPath
@@ -37,7 +37,7 @@ export function getDaemonEntryPath(): string {
     : join(basePath, 'out', 'main', 'daemon-entry.js')
 }
 
-/** Recycle drained stale daemons on macOS for TCC; orcad opts in everywhere for code and umask updates. */
+/** Recycle drained stale daemons on macOS for TCC; occd opts in everywhere for code and umask updates. */
 export function resolveStaleDaemonRecycleVersion(onEveryPlatform = false): string | null {
   const environment = getAppEnvironment()
   if (!environment.isPackaged()) {
@@ -47,7 +47,7 @@ export function resolveStaleDaemonRecycleVersion(onEveryPlatform = false): strin
 }
 
 export function daemonLogArgs(): string[] {
-  const disabled = (process.env.ORCA_DIAGNOSTICS_DISABLED ?? '').trim().toLowerCase()
+  const disabled = (process.env.OCC_DIAGNOSTICS_DISABLED ?? '').trim().toLowerCase()
   return disabled === '1' || disabled === 'true' ? [] : ['--log-file', getDaemonLogFilePath()]
 }
 

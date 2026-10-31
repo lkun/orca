@@ -1,7 +1,7 @@
 import { withTimeout } from '../../shared/promise-timeout-fallback'
 import type { ExternalConversationLink } from '../../shared/external-conversation-link'
 import { createLaunchedAgentWriteGuard } from '../runtime/launched-agent-write-guard'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { interruptWorkingAgent } from '../runtime/terminal-agent-interrupt'
 import type { ConversationPrompts, PromptTerminal } from './external-conversation-prompts'
 import type { ConversationChain } from './external-conversation-chain'
@@ -19,7 +19,7 @@ import {
 // Refuse rather than claim cancellation when a host operation ignores abort.
 export const CANCEL_SETTLE_TIMEOUT_MS = 5_000
 
-export type CancelTerminal = PromptTerminal & Pick<OrcaRuntimeService, 'getPtyLivenessVerdict'>
+export type CancelTerminal = PromptTerminal & Pick<OCCRuntimeService, 'getPtyLivenessVerdict'>
 
 export type CancelSeam = Pick<ExternalConversationSeamDeps, 'store' | 'readHookRow'> & {
   prompts: ConversationPrompts

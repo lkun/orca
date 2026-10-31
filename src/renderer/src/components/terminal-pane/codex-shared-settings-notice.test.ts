@@ -79,7 +79,7 @@ describe('useCodexSharedSettingsNotice', () => {
   })
 
   it('stays quiet in a paired web client window', async () => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     resetStore({ tabsByWorktree: codexTab })
     await mountHook(useNoticeProbe)
     expect(isVisible()).toBe(false)

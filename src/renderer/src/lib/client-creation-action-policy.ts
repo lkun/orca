@@ -6,7 +6,7 @@ import { isPairedWebClientWindow } from './desktop-window-chrome'
 import { runtimeEnvironmentIdOrLocalUnlessTwin } from './worktree-runtime-owner'
 import { expectsBrowserClientHosting } from '../../../shared/browser-client-hosting-eligibility'
 import {
-  getOrcadSshDeployment,
+  getOCCdSshDeployment,
   type PublicKnownRuntimeEnvironment
 } from '../../../shared/runtime-environments'
 import type { GlobalSettings } from '../../../shared/global-settings-types'
@@ -117,11 +117,11 @@ export type RuntimeBrowserHostingState = {
     string,
     { status: Pick<RuntimeStatus, 'capabilities' | 'deviceScope'> | null }
   >
-  runtimeEnvironments?: readonly Pick<PublicKnownRuntimeEnvironment, 'id' | 'orcadDeployment'>[]
+  runtimeEnvironments?: readonly Pick<PublicKnownRuntimeEnvironment, 'id' | 'occdDeployment'>[]
   settings?: Pick<GlobalSettings, 'browserClientHostedRemoteEnabled'> | null
 }
 
-/** Host orcad browser pages on this desktop through runtime tunnels; managed SSH deployments retain the SSH browser route. */
+/** Host occd browser pages on this desktop through runtime tunnels; managed SSH deployments retain the SSH browser route. */
 export function runtimeHostsPagesOnThisDesktop(
   state: RuntimeBrowserHostingState,
   runtimeEnvironmentId: string
@@ -130,7 +130,7 @@ export function runtimeHostsPagesOnThisDesktop(
     return false
   }
   const environment = state.runtimeEnvironments?.find((entry) => entry.id === runtimeEnvironmentId)
-  if (environment && getOrcadSshDeployment(environment)) {
+  if (environment && getOCCdSshDeployment(environment)) {
     return false
   }
   const status = state.runtimeStatusByEnvironmentId?.get(runtimeEnvironmentId)?.status

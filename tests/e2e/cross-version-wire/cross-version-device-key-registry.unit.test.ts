@@ -39,7 +39,7 @@ beforeAll(async () => {
 
 describe('cross-version: device keys against a released host', () => {
   it('a released registry keeps keyed rows intact and inert, and token rows working', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-xv-device-key-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-xv-device-key-'))
     const current = new DeviceRegistry(userDataPath)
     const legacy = current.addDevice('Phone', 'mobile')
     current.updateLastSeen(legacy.deviceId)
@@ -58,7 +58,7 @@ describe('cross-version: device keys against a released host', () => {
       forkedFrom: legacy.deviceId
     })
     expect(reread.lookupDeviceKey(forked.deviceId)).toMatchObject({ kind: 'found' })
-    expect(JSON.parse(readFileSync(join(userDataPath, 'orca-devices.json'), 'utf-8'))).toHaveLength(
+    expect(JSON.parse(readFileSync(join(userDataPath, 'occ-devices.json'), 'utf-8'))).toHaveLength(
       2
     )
   })
@@ -107,11 +107,11 @@ describe('cross-version: device keys against a released host', () => {
   })
 
   it('old registry files load unchanged', () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-xv-device-key-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-xv-device-key-'))
     const released = new ReleasedRegistry(userDataPath)
     expect(released.listDevices()).toHaveLength(0)
     writeFileSync(
-      join(userDataPath, 'orca-devices.json'),
+      join(userDataPath, 'occ-devices.json'),
       JSON.stringify([
         { deviceId: 'd', name: 'n', token: 't', scope: 'mobile', pairedAt: 1, lastSeenAt: 2 }
       ])

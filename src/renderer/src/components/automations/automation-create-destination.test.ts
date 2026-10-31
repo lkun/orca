@@ -238,8 +238,8 @@ describe('create project mismatch', () => {
   function repo(overrides: Partial<Repo>): Repo {
     return {
       id: 'repo-1',
-      displayName: 'orca',
-      path: '/repos/orca',
+      displayName: 'occ',
+      path: '/repos/occ',
       badgeColor: '#000000',
       addedAt: 1,
       worktreeBaseRef: 'main',

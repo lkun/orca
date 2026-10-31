@@ -149,7 +149,7 @@ async function markLegacyConflicted(
 }
 
 beforeEach(async () => {
-  directory = await mkdtemp(join(tmpdir(), 'orca-agent-session-store-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-agent-session-store-'))
 })
 
 afterEach(async () => {
@@ -862,7 +862,7 @@ describe('claim keys and unreadable rows', () => {
     await expect(store.reserveOwner(reserveRequest())).rejects.toMatchObject({
       refusal: {
         code: 'agent_session_journal_unreadable',
-        details: { reason: 'journalWrittenByNewerOrca' }
+        details: { reason: 'journalWrittenByNewerOCC' }
       }
     })
   })

@@ -111,7 +111,7 @@ describe('unreadable bundled skill content', () => {
   it('retains an unreadable recovery sibling while updating a readable target', async () => {
     const home = await makeSkillHome()
     await writeCopy(home.shared, OLD_TEXT)
-    const old = join(dirname(home.shared), `.${NAME}.orca-old-1`)
+    const old = join(dirname(home.shared), `.${NAME}.occ-old-1`)
     await writeCopy(old, 'mine', { 'notes.md': 'mine' })
     const { plan } = await previewAndInstall(
       serviceInput(home, {

@@ -93,7 +93,7 @@ async function acceptPersonSend(
 }
 
 test("an older build reads the send this build's quit left queued, its source included, and settles it", async () => {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-kept-leftover-downgrade-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-kept-leftover-downgrade-'))
   const journals = createTrackedJournalOpener()
   try {
     const quitting = await journals.open({ identity: IDENTITY, stateDirectory: directory })

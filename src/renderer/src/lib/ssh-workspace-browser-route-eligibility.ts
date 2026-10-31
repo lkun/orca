@@ -1,7 +1,7 @@
 import type { GlobalSettings } from '../../../shared/global-settings-types'
 import { isRuntimeOwnedSshTargetId, parseExecutionHostId } from '../../../shared/execution-host'
 import {
-  getOrcadSshDeployment,
+  getOCCdSshDeployment,
   type PublicKnownRuntimeEnvironment
 } from '../../../shared/runtime-environments'
 
@@ -19,7 +19,7 @@ export type SshWorkspaceBrowserRouteEligibility = {
 export function resolveSshWorkspaceBrowserRouteEligibility(
   executionHostId: string | null | undefined,
   settings: SshBrowserRoutingSettings | null | undefined,
-  environments?: readonly Pick<PublicKnownRuntimeEnvironment, 'id' | 'orcadDeployment'>[]
+  environments?: readonly Pick<PublicKnownRuntimeEnvironment, 'id' | 'occdDeployment'>[]
 ): SshWorkspaceBrowserRouteEligibility | null {
   const parsed = parseExecutionHostId(executionHostId)
   const environment =
@@ -27,7 +27,7 @@ export function resolveSshWorkspaceBrowserRouteEligibility(
       ? environments?.find((candidate) => candidate.id === parsed.environmentId)
       : undefined
   // WSL pages use the paired-runtime tunnel over wsl.exe, never SSH/localhost-forwarded routing.
-  const deployment = environment && getOrcadSshDeployment(environment)
+  const deployment = environment && getOCCdSshDeployment(environment)
   const targetId = parsed?.kind === 'ssh' ? parsed.targetId : deployment?.sshTargetId
   // Why: runtime-owned ephemeral SSH targets belong to the paired runtime's browser route.
   if (!targetId || isRuntimeOwnedSshTargetId(targetId)) {

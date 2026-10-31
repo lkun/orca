@@ -6,13 +6,13 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { Worker } from 'node:worker_threads'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { describeProcessFailure } from './process-failure-message.mjs'
 import {
-  ORCAD_PROFILE_PREFLIGHT_FLAG,
-  parseOrcadProfilePreflight
-} from '../../src/shared/orcad-profile-preflight.ts'
-import { ORCAD_SERVER_ENTRY_FILENAME } from '../../src/shared/orcad-artifacts.ts'
+  OCCD_PROFILE_PREFLIGHT_FLAG,
+  parseOCCdProfilePreflight
+} from '../../src/shared/occd-profile-preflight.ts'
+import { OCCD_SERVER_ENTRY_FILENAME } from '../../src/shared/occd-artifacts.ts'
 import { NODE_RUNTIME_PIN } from '../../src/shared/node-runtime-pin.ts'
 
 async function initializeFixture(directory, databasePath, profileId) {
@@ -90,8 +90,8 @@ export async function smokeProfileStateWorkers(outDir, { timeoutMs = 30_000, run
     const nonce = randomUUID()
     const result = runProcessSync({
       program: runtimePath,
-      args: [join(outDir, ORCAD_SERVER_ENTRY_FILENAME), ORCAD_PROFILE_PREFLIGHT_FLAG, nonce],
-      env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' },
+      args: [join(outDir, OCCD_SERVER_ENTRY_FILENAME), OCCD_PROFILE_PREFLIGHT_FLAG, nonce],
+      env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' },
       timeoutMs,
       maxOutputBytes: 64 * 1024
     })
@@ -100,13 +100,13 @@ export async function smokeProfileStateWorkers(outDir, { timeoutMs = 30_000, run
         `Packaged profile runtime preflight failed: ${describeProcessFailure(result)}`
       )
     }
-    parseOrcadProfilePreflight(result.stdout, nonce, {
+    parseOCCdProfilePreflight(result.stdout, nonce, {
       runtime: 'node',
       runtimeVersion: NODE_RUNTIME_PIN.version
     })
     return
   }
-  const directory = mkdtempSync(join(tmpdir(), 'orca-profile-worker-smoke-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-profile-worker-smoke-'))
   const databasePath = join(directory, 'profile.db')
   const targetPath = join(directory, 'backup.db')
   const profileId = 'build-smoke'

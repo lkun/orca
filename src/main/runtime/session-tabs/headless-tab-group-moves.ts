@@ -12,27 +12,27 @@ import {
 import { randomUUID } from 'node:crypto'
 import { withSelectedTabs } from '../headless-tab-group-selection'
 import type { TabGroupLayoutNode } from '../../../shared/tab-types'
-import type { OrcaRuntimeWithPersistHeadlessTerminalTitle } from '../workspaces/workspace-file-session-targets'
-import type { OrcaRuntimeWithPruneMobileSessionTabGroupLayout } from '../session-lifecycle/projection/prune-mobile-session-tab-group-layout'
+import type { OCCRuntimeWithPersistHeadlessTerminalTitle } from '../workspaces/workspace-file-session-targets'
+import type { OCCRuntimeWithPruneMobileSessionTabGroupLayout } from '../session-lifecycle/projection/prune-mobile-session-tab-group-layout'
 
 export abstract class RuntimeHeadlessTabGroups extends RuntimeHeadlessTabProperties {
   protected abstract resolveMobileSessionHostTabId(
     ...args: Parameters<
-      OrcaRuntimeWithPersistHeadlessTerminalTitle['resolveMobileSessionHostTabId']
+      OCCRuntimeWithPersistHeadlessTerminalTitle['resolveMobileSessionHostTabId']
     >
-  ): ReturnType<OrcaRuntimeWithPersistHeadlessTerminalTitle['resolveMobileSessionHostTabId']>
+  ): ReturnType<OCCRuntimeWithPersistHeadlessTerminalTitle['resolveMobileSessionHostTabId']>
 
   protected abstract normalizeMobileSessionTabOrder(
     ...args: Parameters<
-      OrcaRuntimeWithPersistHeadlessTerminalTitle['normalizeMobileSessionTabOrder']
+      OCCRuntimeWithPersistHeadlessTerminalTitle['normalizeMobileSessionTabOrder']
     >
-  ): ReturnType<OrcaRuntimeWithPersistHeadlessTerminalTitle['normalizeMobileSessionTabOrder']>
+  ): ReturnType<OCCRuntimeWithPersistHeadlessTerminalTitle['normalizeMobileSessionTabOrder']>
 
   protected abstract toMobileSessionTabsResult(
     ...args: Parameters<
-      OrcaRuntimeWithPruneMobileSessionTabGroupLayout['toMobileSessionTabsResult']
+      OCCRuntimeWithPruneMobileSessionTabGroupLayout['toMobileSessionTabsResult']
     >
-  ): ReturnType<OrcaRuntimeWithPruneMobileSessionTabGroupLayout['toMobileSessionTabsResult']>
+  ): ReturnType<OCCRuntimeWithPruneMobileSessionTabGroupLayout['toMobileSessionTabsResult']>
 
   protected moveHeadlessMobileSessionTab(
     worktreeId: string,

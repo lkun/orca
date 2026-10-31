@@ -8,9 +8,9 @@ import { createInterface } from 'node:readline'
 
 const scriptDir = import.meta.dirname
 const repoRoot = path.resolve(scriptDir, '..', '..')
-const orcaDevScript = path.join(scriptDir, 'occ-dev.mjs')
+const occDevScript = path.join(scriptDir, 'occ-dev.mjs')
 const ensureNativeRuntimeScript = path.join(scriptDir, 'ensure-native-runtime.mjs')
-const fixedProfileDir = process.env.ORCA_HEADLESS_PAIRING_PROFILE_DIR
+const fixedProfileDir = process.env.OCC_HEADLESS_PAIRING_PROFILE_DIR
 const parsed = parseArgs(process.argv.slice(2))
 
 if (parsed.help) {
@@ -34,7 +34,7 @@ const serveArgs = withDefaultPairingAddress(parsed.serveArgs)
 ensureElectronRuntime()
 
 const profileDir =
-  fixedProfileDir ?? mkdtempSync(path.join(tmpdir(), 'orca-headless-pairing-profile-'))
+  fixedProfileDir ?? mkdtempSync(path.join(tmpdir(), 'occ-headless-pairing-profile-'))
 const ownsProfileDir = !fixedProfileDir
 mkdirSync(profileDir, { recursive: true })
 const isolatedHome = path.join(profileDir, 'home')
@@ -47,10 +47,10 @@ let stopAttempts = 0
 // Local headless worktrees lack root-owned chrome-sandbox; this exception is not packaged-production policy.
 const childEnv = { ...process.env }
 delete childEnv.CODEX_HOME
-delete childEnv.ORCA_CODEX_HOME
+delete childEnv.OCC_CODEX_HOME
 Object.assign(childEnv, {
   // Prevent disposable pairing smoke from reading/mutating developer’s default Codex profile.
-  ORCA_DEV_USER_DATA_PATH: profileDir,
+  OCC_DEV_USER_DATA_PATH: profileDir,
   HOME: isolatedHome,
   USERPROFILE: isolatedHome,
   ...(process.platform === 'linux'
@@ -61,7 +61,7 @@ Object.assign(childEnv, {
 console.error(`[headless-pairing] userData=${profileDir}`)
 console.error(`[headless-pairing] starting: occ-dev serve --json${formatForwardedArgs(serveArgs)}`)
 
-child = spawn(process.execPath, [orcaDevScript, 'serve', '--json', ...serveArgs], {
+child = spawn(process.execPath, [occDevScript, 'serve', '--json', ...serveArgs], {
   cwd: repoRoot,
   detached: process.platform !== 'win32',
   env: childEnv,
@@ -116,7 +116,7 @@ function parseArgs(args) {
 }
 
 function printHelp() {
-  console.log(`Usage: node config/scripts/serve-headless-fresh-profile-pairing.mjs [--keep] [orca serve flags]
+  console.log(`Usage: node config/scripts/serve-headless-fresh-profile-pairing.mjs [--keep] [occ serve flags]
 
 Starts occ-dev serve --json with a fresh isolated userData profile, ensures Electron's dev runtime is usable, and prints the pairing URL.
 
@@ -130,8 +130,8 @@ Forwarded examples:
   node config/scripts/serve-headless-fresh-profile-pairing.mjs --mobile-pairing
 
 Environment:
-  ORCA_HEADLESS_PAIRING_ADDRESS=<host|host:port|ws://...>  Override the auto pairing address.
-  ORCA_HEADLESS_PAIRING_PROFILE_DIR=/path/to/profile       Use a fixed profile directory.
+  OCC_HEADLESS_PAIRING_ADDRESS=<host|host:port|ws://...>  Override the auto pairing address.
+  OCC_HEADLESS_PAIRING_PROFILE_DIR=/path/to/profile       Use a fixed profile directory.
 `)
 }
 
@@ -158,7 +158,7 @@ function hasForwardedServeFlag(args, name) {
 
 // Prefer override/Tailscale/hostname: loopback is unreachable from pairing phone.
 function resolveDefaultPairingAddress() {
-  const configured = process.env.ORCA_HEADLESS_PAIRING_ADDRESS?.trim()
+  const configured = process.env.OCC_HEADLESS_PAIRING_ADDRESS?.trim()
   if (configured) {
     return configured
   }
@@ -223,7 +223,7 @@ function printReadyLine(line) {
   } catch {
     return false
   }
-  if (!payload || payload.type !== 'orca_server_ready') {
+  if (!payload || payload.type !== 'occ_server_ready') {
     return false
   }
   console.log(`OCC server ready: ${payload.boundEndpoint ?? 'websocket unavailable'}`)
@@ -280,7 +280,7 @@ function cleanupProfile() {
     console.error(`[headless-pairing] kept ${profileDir}`)
     return
   }
-  if (!existsSync(profileDir) || !profileDir.includes('orca-headless-pairing-profile-')) {
+  if (!existsSync(profileDir) || !profileDir.includes('occ-headless-pairing-profile-')) {
     console.error(`[headless-pairing] skipped cleanup for unexpected profile path: ${profileDir}`)
     return
   }

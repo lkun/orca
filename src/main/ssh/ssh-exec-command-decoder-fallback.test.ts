@@ -1,14 +1,14 @@
 import { EventEmitter } from 'node:events'
 import { PassThrough } from 'node:stream'
 import { describe, expect, it, vi } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { wrapRemoteCommandForPosixShell } from './ssh-posix-command-wrapper'
 import type { SshExecOptions } from './connection/ssh-exec-options'
 import { execCommand } from './remote-exec/remote-exec-command'
 import {
-  captureOrcadStateSnapshotCommand,
-  parseOrcadSnapshotCapture
-} from '../managed-server/host-state/orcad-state-snapshot'
+  captureOCCdStateSnapshotCommand,
+  parseOCCdSnapshotCapture
+} from '../managed-server/host-state/occd-state-snapshot'
 import { getRemoteHostPlatform } from './ssh-remote-platform'
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -87,17 +87,17 @@ describe.skipIf(process.platform === 'win32')(
     })
 
     it('captures a snapshot whole through a gateway that cuts exec requests at 6 KiB and merges stderr', async () => {
-      const base = mkdtempSync(join(tmpdir(), 'orcad-gateway-capture-'))
+      const base = mkdtempSync(join(tmpdir(), 'occd-gateway-capture-'))
       try {
-        const root = join(base, '.orca')
+        const root = join(base, '.occ')
         mkdirSync(join(root, 'profiles'), { recursive: true })
         writeFileSync(join(root, 'profiles', 'p.json'), 'state')
-        const snapshot = join(base, '.orca-remote', 'orcad-state-snapshots', 'pre-1')
-        const command = captureOrcadStateSnapshotCommand(
+        const snapshot = join(base, '.occ-remote', 'occd-state-snapshots', 'pre-1')
+        const command = captureOCCdStateSnapshotCommand(
           getRemoteHostPlatform('linux-x64'),
           root,
           snapshot,
-          join(base, '.orca-remote')
+          join(base, '.occ-remote')
         )
         const gatewayLimitBytes = 6 * 1024
         expect(
@@ -106,7 +106,7 @@ describe.skipIf(process.platform === 'win32')(
 
         const output = await execCommand(host({ gatewayLimitBytes }), command)
 
-        expect(parseOrcadSnapshotCapture(output)).toBe('captured')
+        expect(parseOCCdSnapshotCapture(output)).toBe('captured')
         expect(existsSync(join(snapshot, 'state.tar'))).toBe(true)
       } finally {
         rmSync(base, { recursive: true, force: true })

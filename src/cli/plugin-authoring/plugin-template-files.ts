@@ -46,7 +46,7 @@ occ plugin dev unload .
 \`\`\`
 
 Set \`publisher\` to the GitHub or GitLab user or organization that owns the repository before
-publishing. See https://github.com/stablyai/orca/blob/main/docs/reference/plugin-authoring.md.
+publishing. See https://github.com/stablyai/occ/blob/main/docs/reference/plugin-authoring.md.
 `
 }
 

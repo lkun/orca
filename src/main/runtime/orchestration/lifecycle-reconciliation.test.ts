@@ -273,7 +273,7 @@ describe('lifecycle reconciliation', () => {
     expect(JSON.parse(persisted?.payload ?? '{}')).toMatchObject({
       taskId: task.id,
       dispatchId: dispatch.id,
-      _orcaLifecycleRejection: { code: 'sender_not_assignee' }
+      _occLifecycleRejection: { code: 'sender_not_assignee' }
     })
     const rereadLogs: string[] = []
     expect(
@@ -300,7 +300,7 @@ describe('lifecycle reconciliation', () => {
         taskId: task.id,
         dispatchId: dispatch.id,
         outcome: 'succeeded',
-        _orcaLifecycleRejection: {
+        _occLifecycleRejection: {
           code: 'sender_not_assignee',
           reason: 'caller supplied'
         }

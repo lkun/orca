@@ -4,7 +4,7 @@ import type { AccountsSnapshot } from '../components/AccountUsage'
 // Persist canonical countsProvenAt so rehydrated counts retain freshness evidence.
 import type { HostWorktreeInfo } from '../worktree/home-worktree-info'
 
-const STORAGE_KEY = 'orca:home-snapshot:v1'
+const STORAGE_KEY = 'occ:home-snapshot:v1'
 
 export type HomeSnapshot = {
   worktreeInfo: Record<string, HostWorktreeInfo>

@@ -1,8 +1,8 @@
-import type { OrcaRuntimeService } from '../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../occ-runtime'
 import { DESKTOP_TERMINAL_SCROLLBACK_ROWS_DEFAULT } from '../../../../../shared/terminal-scrollback-policy'
 
 type HeadlessCopySource = Pick<
-  OrcaRuntimeService,
+  OCCRuntimeService,
   | 'getPtyOutputSequence'
   | 'serializeRendererTerminalBuffer'
   | 'replaceHeadlessTerminalFromRendererSnapshotForRecovery'

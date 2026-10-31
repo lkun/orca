@@ -66,7 +66,7 @@ describe('SshConnection', () => {
     expect(spawnSystemSshCommandMock).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({ gssapiAuthentication: true }),
-      'echo ORCA-SYSTEM-SSH-OK',
+      'echo OCC-SYSTEM-SSH-OK',
       {
         gssapiOnly: true,
         wrapCommand: false
@@ -98,7 +98,7 @@ describe('SshConnection', () => {
 
     expect(spawnSystemSshCommandMock).toHaveBeenCalledWith(
       expect.objectContaining({ source: 'manual', configHost: 'prod' }),
-      'echo ORCA-SYSTEM-SSH-OK',
+      'echo OCC-SYSTEM-SSH-OK',
       expect.objectContaining({ gssapiOnly: true, wrapCommand: false })
     )
     expect(clientInstances).toHaveLength(0)
@@ -117,7 +117,7 @@ describe('SshConnection', () => {
     expect(clientInstances).toHaveLength(1)
     expect(spawnSystemSshCommandMock).toHaveBeenCalledWith(
       expect.objectContaining({ gssapiAuthentication: true }),
-      'echo ORCA-SYSTEM-SSH-OK',
+      'echo OCC-SYSTEM-SSH-OK',
       {
         gssapiOnly: true,
         wrapCommand: false
@@ -205,7 +205,7 @@ describe('SshConnection', () => {
     expect(conn.usesSystemSshTransport()).toBe(false)
     expect(spawnSystemSshCommandMock).toHaveBeenCalledWith(
       expect.objectContaining({ configHost: 'krb-host' }),
-      'echo ORCA-SYSTEM-SSH-OK',
+      'echo OCC-SYSTEM-SSH-OK',
       expect.objectContaining({ wrapCommand: false })
     )
     expect(onCredentialRequest).toHaveBeenCalledWith(
@@ -220,7 +220,7 @@ describe('SshConnection', () => {
   it('tries the GSSAPI probe before prompting for an encrypted key passphrase', async () => {
     // Try a valid Kerberos ticket before prompting for the encrypted key after agent/key failure.
     vi.stubEnv('SSH_AUTH_SOCK', '/tmp/agent.sock')
-    const tempDir = mkdtempSync(join(tmpdir(), 'orca-ssh-key-'))
+    const tempDir = mkdtempSync(join(tmpdir(), 'occ-ssh-key-'))
     const keyPath = join(tempDir, 'id_ed25519')
     writeFileSync(keyPath, 'test-key')
     ssh2Mock.connectSequence = [

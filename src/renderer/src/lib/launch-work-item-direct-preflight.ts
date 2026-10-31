@@ -12,14 +12,14 @@ import {
   planAgentSessionLaunch,
   type AgentSessionLaunchRequest
 } from './agent-session-launch-plan'
-import { getDefaultSetupDecision, getSetupConfig } from '../../../shared/orca-hook-setup-config'
+import { getDefaultSetupDecision, getSetupConfig } from '../../../shared/occ-hook-setup-config'
 import { checkRuntimeHooks } from '@/runtime/runtime-hooks-client'
 import { resolveGitHubPrStartPointForRepo } from '@/lib/github-pr-start-point'
 import type { RuntimeClientTarget } from '../../../shared/runtime-client-target'
 import { getRepoExecutionHostId, type ExecutionHostId } from '../../../shared/execution-host'
 import { ipcOrRuntimeTargetForHostId } from '@/runtime/runtime-client-target'
 import type { Repo } from '../../../shared/repo-types'
-import type { OrcaHooks, RepoHookSettings } from '../../../shared/orca-yaml-hook-types'
+import type { OCCHooks, RepoHookSettings } from '../../../shared/occ-yaml-hook-types'
 import type { SetupDecision } from '../../../shared/worktree/create-types'
 import type { GitHubPrStartPoint } from '../../../shared/worktree/types'
 import type { LaunchWorkItemDirectArgs } from './launch-work-item-direct-types'
@@ -50,11 +50,11 @@ export async function resolveDirectSetupDecision(
   repo: { hookSettings?: RepoHookSettings },
   ownerHostId: ExecutionHostId
 ): Promise<{ kind: 'decided'; decision: SetupDecision } | { kind: 'needs-modal' }> {
-  let yamlHooks: OrcaHooks | null = null
+  let yamlHooks: OCCHooks | null = null
   try {
     // Why: the same owner host as the PR start point and createWorktree, never focus.
     const result = await checkRuntimeHooks(ownerHostId, repoId)
-    yamlHooks = (result.hooks as OrcaHooks | null) ?? null
+    yamlHooks = (result.hooks as OCCHooks | null) ?? null
   } catch {
     yamlHooks = null
   }

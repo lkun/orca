@@ -1,7 +1,7 @@
 // Why import-free: the community directory's indexer can vendor this file verbatim, so
 // validate:plugin, install and the indexer reserve exactly the same names.
 
-/** Publishers only OCC's official catalog may use, plus every name starting with `orca`. */
+/** Publishers only OCC's official catalog may use, plus every name starting with `occ`. */
 export const RESERVED_PLUGIN_PUBLISHERS: readonly string[] = [
   'stablyai',
   'official',
@@ -9,7 +9,7 @@ export const RESERVED_PLUGIN_PUBLISHERS: readonly string[] = [
   'openai',
   'github'
 ]
-export const RESERVED_PLUGIN_PUBLISHER_PREFIX = 'orca'
+export const RESERVED_PLUGIN_PUBLISHER_PREFIX = 'occ'
 
 export function isReservedPluginPublisher(publisher: string): boolean {
   const name = publisher.toLowerCase()

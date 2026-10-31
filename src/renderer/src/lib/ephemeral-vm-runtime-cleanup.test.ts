@@ -95,16 +95,16 @@ describe('cleanupEphemeralVmRuntimesForDeleted', () => {
   it('cleans a runtime matched only by its runtime-owned SSH target id', async () => {
     // SSH-mode workspace deletion is project removal; find its runtime via repo connectionId even without a matching workspace ID.
     listRuntimes.mockResolvedValue([
-      runtime({ id: 'rt-1', workspaceId: undefined, sshTargetId: 'runtime-ssh-orca-1' })
+      runtime({ id: 'rt-1', workspaceId: undefined, sshTargetId: 'runtime-ssh-occ-1' })
     ])
 
     const destroyed = await cleanupEphemeralVmRuntimesForDeleted({
-      runtimeOwnedSshTargetIds: ['runtime-ssh-orca-1']
+      runtimeOwnedSshTargetIds: ['runtime-ssh-occ-1']
     })
 
     expect(cleanup).toHaveBeenCalledWith({ runtimeId: 'rt-1' })
     expect(destroyed).toEqual({
-      destroyedSshTargetIds: ['runtime-ssh-orca-1'],
+      destroyedSshTargetIds: ['runtime-ssh-occ-1'],
       retainedSshTargetIds: []
     })
   })

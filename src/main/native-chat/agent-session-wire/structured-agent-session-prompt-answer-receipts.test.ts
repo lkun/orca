@@ -9,7 +9,7 @@ import { encodeAgentSessionQuestionAnswers } from '../../../shared/agent-session
 import type { AgentSessionRecordStore } from '../../runtime/agent-session-record-store'
 import {
   openTestJournalHostDatabase,
-  SAVED_BY_NEWER_ORCA
+  SAVED_BY_NEWER_OCC
 } from '../agent-session-journal/journal-host-database-test-support'
 import type { StructuredAgentSessionAdapter } from './structured-agent-session-adapter'
 import type { StructuredAgentSessionHost } from './structured-agent-session-host'
@@ -279,7 +279,7 @@ describe('a prompt answer', () => {
     Object.defineProperty(openTestJournalHostDatabase(root), 'readOnly', { value: true })
     expect(await host.respondToPrompt(CALLER, answer(prompt, id))).toMatchObject({
       ok: false,
-      ...SAVED_BY_NEWER_ORCA
+      ...SAVED_BY_NEWER_OCC
     })
     expect(receipt(id)).toEqual({ verdict: 'absent' })
   })

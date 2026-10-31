@@ -36,9 +36,9 @@ import { WslTranscriptFsError } from './wsl-transcript-fs-gate'
 const UBUNTU_HOME = '\\\\wsl.localhost\\Ubuntu\\home\\ada'
 const DEBIAN_HOME = '\\\\wsl.localhost\\Debian\\home\\other'
 const ROLLOUT_LINUX =
-  '/home/ada/.local/share/orca/codex-runtime-home/home/sessions/2026/07/24/rollout-sess.jsonl'
+  '/home/ada/.local/share/occ/codex-runtime-home/home/sessions/2026/07/24/rollout-sess.jsonl'
 const ROLLOUT_UNC =
-  '\\\\wsl.localhost\\Ubuntu\\home\\ada\\.local\\share\\orca\\codex-runtime-home\\home\\sessions\\2026\\07\\24\\rollout-sess.jsonl'
+  '\\\\wsl.localhost\\Ubuntu\\home\\ada\\.local\\share\\occ\\codex-runtime-home\\home\\sessions\\2026\\07\\24\\rollout-sess.jsonl'
 
 beforeEach(() => {
   resetHostReadableTranscriptPathCacheForTests()
@@ -323,7 +323,7 @@ describe('toHostReadableTranscriptPath', () => {
 
 describe('toHostReadableTranscriptPath through guest symlinks', () => {
   // OCC's Claude profile links `<profile>/home/projects` to `~/.claude/projects`; Windows cannot follow it.
-  const PROFILE_DIR = '/home/ada/.local/share/orca/claude-profiles/acct/home/projects/-home-ada-app'
+  const PROFILE_DIR = '/home/ada/.local/share/occ/claude-profiles/acct/home/projects/-home-ada-app'
   const REAL_DIR = '/home/ada/.claude/projects/-home-ada-app'
   const LINKED_PATH = `${PROFILE_DIR}/sess.jsonl`
   const REAL_UNC =
@@ -473,13 +473,13 @@ describe('wslAgentSessionsDirs', () => {
         listWslHomeDirs: async () => [UBUNTU_HOME]
       })
     ).resolves.toEqual([
-      `${UBUNTU_HOME}\\.local\\share\\orca\\codex-runtime-home\\home\\sessions`,
+      `${UBUNTU_HOME}\\.local\\share\\occ\\codex-runtime-home\\home\\sessions`,
       `${UBUNTU_HOME}\\.codex\\sessions`
     ])
   })
 
   it('includes WSL managed-account session roots supplied by the runtime', async () => {
-    const accountHome = `${UBUNTU_HOME}\\.local\\share\\orca\\codex-accounts\\account-1\\home`
+    const accountHome = `${UBUNTU_HOME}\\.local\\share\\occ\\codex-accounts\\account-1\\home`
     configureHostReadableTranscriptPathSources({
       getAdditionalCodexHomePaths: () => [accountHome, '/host/account/home']
     })

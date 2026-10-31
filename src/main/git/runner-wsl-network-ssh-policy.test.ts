@@ -49,9 +49,9 @@ function installShell(
       const payload = isProbe
         ? `core.sshcommand\n${SSH_COMMAND}\0ssh.variant\n${options.variant ?? 'ssh'}\0`
         : 'fetch-ok'
-      const nonce = /__ORCA_WSL_CAPTURE_BEGIN_ ([^_]+)__/.exec(script)?.[1]
+      const nonce = /__OCC_WSL_CAPTURE_BEGIN_ ([^_]+)__/.exec(script)?.[1]
       const stdout = nonce
-        ? `profile banner\n__ORCA_WSL_CAPTURE_BEGIN_${nonce}__${payload}__ORCA_WSL_CAPTURE_END_${nonce}__`
+        ? `profile banner\n__OCC_WSL_CAPTURE_BEGIN_${nonce}__${payload}__OCC_WSL_CAPTURE_END_${nonce}__`
         : payload
       callback(isProbe ? (options.configError ?? null) : null, stdout, '')
       close()
@@ -106,7 +106,7 @@ describe('WSL network Git SSH policy startup', () => {
     expect(probeScript.indexOf("'-c'")).toBeGreaterThan(-1)
     expect(probeScript.indexOf("'-c'")).toBeLessThan(probeScript.indexOf('core.sshCommand='))
     expect(probeScript.indexOf('core.sshCommand=')).toBeLessThan(probeScript.indexOf("'config'"))
-    expect(calls[0].script).toContain('__ORCA_WSL_CAPTURE_BEGIN_')
+    expect(calls[0].script).toContain('__OCC_WSL_CAPTURE_BEGIN_')
     expect(calls[0].env.GIT_SSH_COMMAND).toBeUndefined()
     expect(networkCalls(calls)[0].env.GIT_SSH_COMMAND).toBe(
       SSH_COMMAND.replace('ssh', 'ssh -o BatchMode=yes')

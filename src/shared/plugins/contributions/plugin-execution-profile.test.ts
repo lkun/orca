@@ -11,7 +11,7 @@ function manifestInput(): Record<string, unknown> {
     publisher: 'samples',
     name: 'Demo',
     version: '1.2.0',
-    engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` }
+    engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` }
   }
 }
 

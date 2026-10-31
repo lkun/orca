@@ -31,7 +31,7 @@ const journals = createTrackedJournalOpener()
 
 beforeEach(async () => {
   _internals.resetCachesForTests()
-  root = await mkdtemp(join(tmpdir(), 'orca-subagent-recency-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-subagent-recency-'))
 })
 
 afterEach(async () => {
@@ -87,7 +87,7 @@ async function openSession() {
   // Provider user frames never become personal rows.
   const prompt = (clientMessageId: string, text: string) =>
     journal.appendItem(
-      { provider: 'orca', clientMessageId },
+      { provider: 'occ', clientMessageId },
       { kind: 'message', role: 'user', blocks: [{ type: 'text', text }] },
       { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
     )

@@ -1,7 +1,7 @@
 // #10205: a slept pane’s dead wake-hint id must not reattach/spawn on incidental remount.
 // Keep production park timing because shortened delays unmount the target and hide the regression.
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { getAllWorktreeIds, waitForSessionReady } from './helpers/store'
 import {
   activateWorkspaceByClick,
@@ -35,47 +35,47 @@ async function assertStaysCold(page: Page, worktreeId: string): Promise<void> {
   expect(diag.at(-1), 'remounted pane did not wait for the wake').toContain('WAIT FOR WAKE')
 }
 
-test('remounting a slept hidden pane does not respawn its PTY', async ({ orcaPage }) => {
-  await waitForSessionReady(orcaPage)
-  const [slept, other] = await getAllWorktreeIds(orcaPage)
+test('remounting a slept hidden pane does not respawn its PTY', async ({ occPage }) => {
+  await waitForSessionReady(occPage)
+  const [slept, other] = await getAllWorktreeIds(occPage)
   expect(other, 'seeded repo must expose two worktrees').toBeTruthy()
-  await giveWorkspaceALivePty(orcaPage, slept)
-  await giveWorkspaceALivePty(orcaPage, other)
-  await activateWorkspaceByClick(orcaPage, slept)
-  expect((await readWorkspaceSample(orcaPage, slept)).livePtyCount).toBeGreaterThan(0)
+  await giveWorkspaceALivePty(occPage, slept)
+  await giveWorkspaceALivePty(occPage, other)
+  await activateWorkspaceByClick(occPage, slept)
+  expect((await readWorkspaceSample(occPage, slept)).livePtyCount).toBeGreaterThan(0)
 
-  await sleepWorkspaceViaSidebar(orcaPage, slept)
+  await sleepWorkspaceViaSidebar(occPage, slept)
   await expect
-    .poll(async () => (await readWorkspaceSample(orcaPage, slept)).livePtyCount, {
+    .poll(async () => (await readWorkspaceSample(occPage, slept)).livePtyCount, {
       timeout: 20_000,
       message: 'sleep did not release the workspace PTYs'
     })
     .toBe(0)
-  await activateWorkspaceByClick(orcaPage, other)
+  await activateWorkspaceByClick(occPage, other)
 
-  const sample = await readWorkspaceSample(orcaPage, slept)
+  const sample = await readWorkspaceSample(occPage, slept)
   const sleptTabId = sample.tabIds[0]
   expect(sleptTabId, 'slept workspace must retain a tab').toBeTruthy()
   // Require mounted pane and wake hint or remount has nothing to reattach.
   expect(sample.mountedTabIds, 'slept pane was parked before the remount').toContain(sleptTabId)
   expect(sample.tabPtyHints[0], 'sleep must keep the session id as a wake hint').toBeTruthy()
 
-  const remounted = await orcaPage.evaluate(
+  const remounted = await occPage.evaluate(
     (tabId) => window.__store?.getState().remountTerminalTabForRecovery(tabId).remounted ?? false,
     sleptTabId
   )
   expect(remounted, 'remountTerminalTabForRecovery did not find the slept tab').toBe(true)
-  await assertStaysCold(orcaPage, slept)
+  await assertStaysCold(occPage, slept)
 
   // Positive control: explicit selection must wake exactly once across the remount.
-  await activateWorkspaceByClick(orcaPage, slept)
+  await activateWorkspaceByClick(occPage, slept)
   await expect
-    .poll(async () => (await readWorkspaceSample(orcaPage, slept)).livePtyCount, {
+    .poll(async () => (await readWorkspaceSample(occPage, slept)).livePtyCount, {
       timeout: 40_000,
       message: 'the slept workspace never wakes even on deliberate activation'
     })
     .toBeGreaterThan(0)
-  await orcaPage.waitForTimeout(3_000)
-  expect((await readWorkspaceSample(orcaPage, slept)).livePtyCount).toBe(1)
-  expect(await readHostLiveTerminalCount(orcaPage, slept)).toBe(1)
+  await occPage.waitForTimeout(3_000)
+  expect((await readWorkspaceSample(occPage, slept)).livePtyCount).toBe(1)
+  expect(await readHostLiveTerminalCount(occPage, slept)).toBe(1)
 })

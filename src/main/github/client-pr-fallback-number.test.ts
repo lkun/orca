@@ -142,7 +142,7 @@ describe('getPRForBranch', () => {
 
   it('reports upstream error when fallback branch discovery fails transiently then retry misses', async () => {
     resolvePRRepositoryCandidatesMock.mockResolvedValueOnce({
-      candidates: [{ owner: 'stablyai', repo: 'orca' }],
+      candidates: [{ owner: 'stablyai', repo: 'occ' }],
       headRepo: null
     })
     ghExecFileAsyncMock
@@ -161,7 +161,7 @@ describe('getPRForBranch', () => {
         'pr',
         'list',
         '--repo',
-        'stablyai/orca',
+        'stablyai/occ',
         '--head',
         'feature/test',
         '--state',
@@ -177,7 +177,7 @@ describe('getPRForBranch', () => {
       2,
       [
         'api',
-        'repos/stablyai/orca/pulls?head=stablyai%3Afeature%2Ftest&state=all&per_page=1',
+        'repos/stablyai/occ/pulls?head=stablyai%3Afeature%2Ftest&state=all&per_page=1',
         '--include'
       ],
       { cwd: '/repo-root' }
@@ -186,7 +186,7 @@ describe('getPRForBranch', () => {
 
   it('propagates a Retry-After cooldown into the rate-limited retry schedule', async () => {
     resolvePRRepositoryCandidatesMock.mockResolvedValueOnce({
-      candidates: [{ owner: 'stablyai', repo: 'orca' }],
+      candidates: [{ owner: 'stablyai', repo: 'occ' }],
       headRepo: null
     })
     // gh puts the diagnostic on `.stderr`; a secondary limit carries Retry-After.
@@ -213,7 +213,7 @@ describe('getPRForBranch', () => {
 
   it('reports no PR when fallback branch discovery cleanly misses', async () => {
     resolvePRRepositoryCandidatesMock.mockResolvedValueOnce({
-      candidates: [{ owner: 'stablyai', repo: 'orca' }],
+      candidates: [{ owner: 'stablyai', repo: 'occ' }],
       headRepo: null
     })
     ghExecFileAsyncMock.mockResolvedValueOnce({ stdout: JSON.stringify([]) })
@@ -226,7 +226,7 @@ describe('getPRForBranch', () => {
 
   it('returns found when fallback branch discovery retry finds the PR', async () => {
     resolvePRRepositoryCandidatesMock.mockResolvedValueOnce({
-      candidates: [{ owner: 'stablyai', repo: 'orca' }],
+      candidates: [{ owner: 'stablyai', repo: 'occ' }],
       headRepo: null
     })
     ghExecFileAsyncMock
@@ -237,7 +237,7 @@ describe('getPRForBranch', () => {
             number: 42,
             title: 'Retry branch PR',
             state: 'open',
-            html_url: 'https://github.com/stablyai/orca/pull/42',
+            html_url: 'https://github.com/stablyai/occ/pull/42',
             updated_at: '2026-03-28T00:00:00Z',
             draft: false,
             mergeable: true,
@@ -251,7 +251,7 @@ describe('getPRForBranch', () => {
           number: 42,
           title: 'Hydrated retry branch PR',
           state: 'OPEN',
-          url: 'https://github.com/stablyai/orca/pull/42',
+          url: 'https://github.com/stablyai/occ/pull/42',
           statusCheckRollup: [],
           updatedAt: '2026-03-28T00:00:00Z',
           isDraft: false,
@@ -270,14 +270,14 @@ describe('getPRForBranch', () => {
       pr: {
         number: 42,
         title: 'Hydrated retry branch PR',
-        prRepo: { owner: 'stablyai', repo: 'orca' }
+        prRepo: { owner: 'stablyai', repo: 'occ' }
       }
     })
   })
 
   it('lets fallback PR number recovery win after fallback branch queries throw', async () => {
     resolvePRRepositoryCandidatesMock.mockResolvedValueOnce({
-      candidates: [{ owner: 'stablyai', repo: 'orca' }],
+      candidates: [{ owner: 'stablyai', repo: 'occ' }],
       headRepo: null
     })
     ghExecFileAsyncMock
@@ -288,7 +288,7 @@ describe('getPRForBranch', () => {
           number: 42,
           title: 'Fallback number recovered PR',
           state: 'OPEN',
-          url: 'https://github.com/stablyai/orca/pull/42',
+          url: 'https://github.com/stablyai/occ/pull/42',
           statusCheckRollup: [],
           updatedAt: '2026-03-28T00:00:00Z',
           isDraft: false,
@@ -316,7 +316,7 @@ describe('getPRForBranch', () => {
         'view',
         '42',
         '--repo',
-        'stablyai/orca',
+        'stablyai/occ',
         '--json',
         'number,title,state,url,statusCheckRollup,updatedAt,isDraft,mergeable,reviewDecision,mergeStateStatus,autoMergeRequest,baseRefName,headRefName,baseRefOid,headRefOid,headRepositoryOwner,headRepository,isCrossRepository'
       ],
@@ -326,7 +326,7 @@ describe('getPRForBranch', () => {
 
   it('reports upstream error when fallback branch discovery has a network failure', async () => {
     resolvePRRepositoryCandidatesMock.mockResolvedValueOnce({
-      candidates: [{ owner: 'stablyai', repo: 'orca' }],
+      candidates: [{ owner: 'stablyai', repo: 'occ' }],
       headRepo: null
     })
     ghExecFileAsyncMock
@@ -343,7 +343,7 @@ describe('getPRForBranch', () => {
 
   it('reports a GitHub server error when fallback branch discovery receives 5xx responses', async () => {
     resolvePRRepositoryCandidatesMock.mockResolvedValueOnce({
-      candidates: [{ owner: 'stablyai', repo: 'orca' }],
+      candidates: [{ owner: 'stablyai', repo: 'occ' }],
       headRepo: null
     })
     ghExecFileAsyncMock
@@ -361,8 +361,8 @@ describe('getPRForBranch', () => {
   it('keeps a pending fallback branch error when a later candidate cleanly misses', async () => {
     resolvePRRepositoryCandidatesMock.mockResolvedValueOnce({
       candidates: [
-        { owner: 'stablyai', repo: 'orca' },
-        { owner: 'fork', repo: 'orca' }
+        { owner: 'stablyai', repo: 'occ' },
+        { owner: 'fork', repo: 'occ' }
       ],
       headRepo: null
     })
@@ -383,7 +383,7 @@ describe('getPRForBranch', () => {
         'pr',
         'list',
         '--repo',
-        'fork/orca',
+        'fork/occ',
         '--head',
         'feature/test',
         '--state',
@@ -407,7 +407,7 @@ describe('getPRForBranch', () => {
             title: 'Merged branch PR',
             state: 'closed',
             merged_at: '2026-06-16T17:15:33Z',
-            html_url: 'https://github.com/stablyai/orca/pull/5511',
+            html_url: 'https://github.com/stablyai/occ/pull/5511',
             updated_at: '2026-06-16T17:15:33Z',
             draft: false,
             mergeable_state: 'clean',
@@ -421,7 +421,7 @@ describe('getPRForBranch', () => {
           number: 5511,
           title: 'Merged branch PR',
           state: 'MERGED',
-          url: 'https://github.com/stablyai/orca/pull/5511',
+          url: 'https://github.com/stablyai/occ/pull/5511',
           statusCheckRollup: [],
           updatedAt: '2026-06-16T17:15:33Z',
           isDraft: false,
@@ -526,10 +526,10 @@ describe('getPRForBranch', () => {
 
   it('does not carry a merged upstream branch head repo into a fallback PR number', async () => {
     resolvePRRepositoryCandidatesMock.mockResolvedValueOnce({
-      candidates: [{ owner: 'stablyai', repo: 'orca' }],
-      headRepo: { owner: 'origin-owner', repo: 'orca' }
+      candidates: [{ owner: 'stablyai', repo: 'occ' }],
+      headRepo: { owner: 'origin-owner', repo: 'occ' }
     })
-    getOwnerRepoForRemoteMock.mockResolvedValueOnce({ owner: 'fork-owner', repo: 'orca' })
+    getOwnerRepoForRemoteMock.mockResolvedValueOnce({ owner: 'fork-owner', repo: 'occ' })
     gitExecFileAsyncMock.mockResolvedValueOnce({
       stdout: 'local-created-from-pr\0fork/contributor/original\n',
       stderr: ''
@@ -543,7 +543,7 @@ describe('getPRForBranch', () => {
             title: 'Merged upstream branch PR',
             state: 'closed',
             merged_at: '2026-06-16T17:15:33Z',
-            html_url: 'https://github.com/stablyai/orca/pull/5511',
+            html_url: 'https://github.com/stablyai/occ/pull/5511',
             updated_at: '2026-06-16T17:15:33Z',
             draft: false,
             mergeable_state: 'clean',
@@ -557,7 +557,7 @@ describe('getPRForBranch', () => {
           number: 5511,
           title: 'Merged upstream branch PR',
           state: 'MERGED',
-          url: 'https://github.com/stablyai/orca/pull/5511',
+          url: 'https://github.com/stablyai/occ/pull/5511',
           statusCheckRollup: [],
           updatedAt: '2026-06-16T17:15:33Z',
           isDraft: false,
@@ -573,7 +573,7 @@ describe('getPRForBranch', () => {
           number: 42,
           title: 'Open fallback PR',
           state: 'OPEN',
-          url: 'https://github.com/stablyai/orca/pull/42',
+          url: 'https://github.com/stablyai/occ/pull/42',
           statusCheckRollup: [],
           updatedAt: '2026-06-17T00:00:00Z',
           isDraft: false,
@@ -590,7 +590,7 @@ describe('getPRForBranch', () => {
     expect(pr).toMatchObject({
       number: 42,
       title: 'Open fallback PR',
-      headRepo: { owner: 'origin-owner', repo: 'orca' }
+      headRepo: { owner: 'origin-owner', repo: 'occ' }
     })
   })
 
@@ -603,7 +603,7 @@ describe('getPRForBranch', () => {
           number: 5511,
           title: 'Merged fallback PR',
           state: 'MERGED',
-          url: 'https://github.com/stablyai/orca/pull/5511',
+          url: 'https://github.com/stablyai/occ/pull/5511',
           statusCheckRollup: [],
           updatedAt: '2026-06-16T17:15:33Z',
           isDraft: false,

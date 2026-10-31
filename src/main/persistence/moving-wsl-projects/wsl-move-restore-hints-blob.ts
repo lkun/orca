@@ -1,40 +1,40 @@
 import { createHash } from 'node:crypto'
-import type { OrcadMigrationBlobDescriptor } from '../../../shared/orcad-migration/orcad-migration-blob-transfer'
-import { sameOrcadMigrationBlob } from '../../../shared/orcad-migration/orcad-migration-blob-transfer'
+import type { OCCdMigrationBlobDescriptor } from '../../../shared/occd-migration/occd-migration-blob-transfer'
+import { sameOCCdMigrationBlob } from '../../../shared/occd-migration/occd-migration-blob-transfer'
 import {
-  MAX_ORCAD_MIGRATION_TERMINAL_RESTORE_HINTS_BYTES,
-  ORCAD_MIGRATION_TERMINAL_RESTORE_HINTS_KEY,
-  ORCAD_MIGRATION_TERMINAL_RESTORE_HINTS_VERSION,
-  parseOrcadMigrationTerminalRestoreHintsDocument,
-  type OrcadMigrationTerminalRestoreHint
-} from '../../../shared/orcad-migration/orcad-migration-terminal-restore-hints'
-import type { OrcadMigrationBlobSource } from '../../ssh/orcad-migration-blob-coordinator'
+  MAX_OCCD_MIGRATION_TERMINAL_RESTORE_HINTS_BYTES,
+  OCCD_MIGRATION_TERMINAL_RESTORE_HINTS_KEY,
+  OCCD_MIGRATION_TERMINAL_RESTORE_HINTS_VERSION,
+  parseOCCdMigrationTerminalRestoreHintsDocument,
+  type OCCdMigrationTerminalRestoreHint
+} from '../../../shared/occd-migration/occd-migration-terminal-restore-hints'
+import type { OCCdMigrationBlobSource } from '../../ssh/occd-migration-blob-coordinator'
 
 export type WslMoveRestoreHintsBlob = {
-  descriptor: OrcadMigrationBlobDescriptor
+  descriptor: OCCdMigrationBlobDescriptor
   bytes: Buffer
-  source: OrcadMigrationBlobSource
+  source: OCCdMigrationBlobSource
 }
 
 /** Omit the blob when there are no hints. */
 export function buildWslMoveRestoreHintsBlob(
-  hints: readonly OrcadMigrationTerminalRestoreHint[]
+  hints: readonly OCCdMigrationTerminalRestoreHint[]
 ): WslMoveRestoreHintsBlob | null {
   if (hints.length === 0) {
     return null
   }
   // Validate before staging so malformed hints fail while the source still owns the move.
-  const document = parseOrcadMigrationTerminalRestoreHintsDocument({
-    version: ORCAD_MIGRATION_TERMINAL_RESTORE_HINTS_VERSION,
+  const document = parseOCCdMigrationTerminalRestoreHintsDocument({
+    version: OCCD_MIGRATION_TERMINAL_RESTORE_HINTS_VERSION,
     hints: hints.map((hint) => ({ paneKey: hint.paneKey, cwd: hint.cwd }))
   })
   const bytes = Buffer.from(JSON.stringify(document), 'utf8')
-  if (bytes.length > MAX_ORCAD_MIGRATION_TERMINAL_RESTORE_HINTS_BYTES) {
-    throw new Error('orcad_migration_terminal_restore_hints_too_large')
+  if (bytes.length > MAX_OCCD_MIGRATION_TERMINAL_RESTORE_HINTS_BYTES) {
+    throw new Error('occd_migration_terminal_restore_hints_too_large')
   }
-  const descriptor: OrcadMigrationBlobDescriptor = {
+  const descriptor: OCCdMigrationBlobDescriptor = {
     blobKind: 'terminal-restore-hints',
-    key: ORCAD_MIGRATION_TERMINAL_RESTORE_HINTS_KEY,
+    key: OCCD_MIGRATION_TERMINAL_RESTORE_HINTS_KEY,
     sha256: createHash('sha256').update(bytes).digest('hex'),
     byteLength: bytes.length
   }
@@ -43,8 +43,8 @@ export function buildWslMoveRestoreHintsBlob(
     bytes,
     source: {
       readChunk: async (requested, offset, maxBytes) => {
-        if (!sameOrcadMigrationBlob(requested, descriptor)) {
-          throw new Error(`orcad_migration_source_blob_changed:${requested.blobKind}`)
+        if (!sameOCCdMigrationBlob(requested, descriptor)) {
+          throw new Error(`occd_migration_source_blob_changed:${requested.blobKind}`)
         }
         return bytes.subarray(offset, offset + maxBytes)
       }

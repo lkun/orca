@@ -196,9 +196,9 @@ describe('task workspace create params', () => {
       item: {
         provider: 'jira',
         source: {
-          key: 'ORCA-123',
+          key: 'OCC-123',
           title: 'Add Jira to mobile',
-          url: 'https://acme.atlassian.net/browse/ORCA-123'
+          url: 'https://acme.atlassian.net/browse/OCC-123'
         }
       },
       targetRepoId: 'repo-jira',
@@ -209,9 +209,9 @@ describe('task workspace create params', () => {
 
     expect(params).toMatchObject({
       repo: 'id:repo-jira',
-      name: 'orca-123',
-      displayName: 'ORCA-123 Add Jira to mobile',
-      startupDraft: 'https://acme.atlassian.net/browse/ORCA-123',
+      name: 'occ-123',
+      displayName: 'OCC-123 Add Jira to mobile',
+      startupDraft: 'https://acme.atlassian.net/browse/OCC-123',
       createdWithAgent: 'claude',
       comment: 'mobile parity',
       linkedWorkItem: {
@@ -219,8 +219,8 @@ describe('task workspace create params', () => {
         type: 'issue',
         number: 0,
         title: 'Add Jira to mobile',
-        url: 'https://acme.atlassian.net/browse/ORCA-123',
-        jiraIdentifier: 'ORCA-123'
+        url: 'https://acme.atlassian.net/browse/OCC-123',
+        jiraIdentifier: 'OCC-123'
       }
     })
     // A stray linkedLinearIssue would relink the workspace to the wrong provider.
@@ -233,9 +233,9 @@ describe('task workspace create params', () => {
         item: {
           provider: 'jira',
           source: {
-            key: 'ORCA-9',
+            key: 'OCC-9',
             title: 'Rename me',
-            url: 'https://acme.atlassian.net/browse/ORCA-9'
+            url: 'https://acme.atlassian.net/browse/OCC-9'
           }
         },
         targetRepoId: 'repo-jira',

@@ -21,10 +21,10 @@ const SESSION = 'f7a1c0de-1111-4222-8333-444455556666'
 /** SESSION continues ROOT after /clear, retaining ROOT's orchestration address. */
 const ROOT = '0b5e2d7c-9a41-4c3e-8f62-7d1a3e5b9c08'
 const IDENTITY_ENV = [
-  'ORCA_AGENT_SESSION_ID',
-  'ORCA_TERMINAL_HANDLE',
-  'ORCA_PANE_KEY',
-  'ORCA_STRUCTURED_SESSION'
+  'OCC_AGENT_SESSION_ID',
+  'OCC_TERMINAL_HANDLE',
+  'OCC_PANE_KEY',
+  'OCC_STRUCTURED_SESSION'
 ] as const
 const originalEnv = Object.fromEntries(IDENTITY_ENV.map((name) => [name, process.env[name]]))
 
@@ -227,9 +227,9 @@ function setEnv(env: Partial<Record<(typeof IDENTITY_ENV)[number], string>>): vo
 
 function asSessionWithInheritedPane(): void {
   setEnv({
-    ORCA_AGENT_SESSION_ID: SESSION,
-    ORCA_TERMINAL_HANDLE: 'term_inherited_pane',
-    ORCA_PANE_KEY: 'tab_inherited:11111111-1111-4111-8111-111111111111'
+    OCC_AGENT_SESSION_ID: SESSION,
+    OCC_TERMINAL_HANDLE: 'term_inherited_pane',
+    OCC_PANE_KEY: 'tab_inherited:11111111-1111-4111-8111-111111111111'
   })
 }
 
@@ -287,7 +287,7 @@ describe.each(CALLER_VERBS)('orchestration $command run as an agent session', (v
     }
   )
 
-  it.runIf(verb.callerFlag !== undefined).each([`orca_session_id:${SESSION}`, SESSION])(
+  it.runIf(verb.callerFlag !== undefined).each([`occ_session_id:${SESSION}`, SESSION])(
     'accepts a caller flag that restates the session (%s)',
     async (restated) => {
       await invoke(verb.command, flagMap({ ...verb.flags, [verb.callerFlag ?? 'from']: restated }))
@@ -307,12 +307,12 @@ describe.each(CALLER_VERBS.filter((verb) => verb.callerFlag !== undefined))(
     it('sends the address it had before the clear for the host to place, instead of refusing it', async () => {
       const flags = flagMap({
         ...verb.flags,
-        [verb.callerFlag ?? 'from']: `orca_session_id:${ROOT}`
+        [verb.callerFlag ?? 'from']: `occ_session_id:${ROOT}`
       })
       await invoke(verb.command, flags)
 
       const [params] = callsTo(verb.method)
-      expect(params?.[verb.callerParam]).toBe(`orca_session_id:${ROOT}`)
+      expect(params?.[verb.callerParam]).toBe(`occ_session_id:${ROOT}`)
       expect(params?.terminalPaneKey).toBeUndefined()
       expect(params?.senderPaneKey).toBeUndefined()
       expect(getTerminalHandleMock).not.toHaveBeenCalled()
@@ -339,11 +339,11 @@ describe.each([
   })
 
   it('accepts a --from that restates the session', async () => {
-    await invoke(command, flagMap({ run: 'run_1', from: `orca_session_id:${SESSION}` }))
+    await invoke(command, flagMap({ run: 'run_1', from: `occ_session_id:${SESSION}` }))
     expect(callsTo(method)[0]?.[callerParam]).toBeUndefined()
   })
 
-  it.each([`orca_session_id:${ROOT}`, 'orca_session_id:9d4c1b2a-3e5f-4a6b-8c7d-0e1f2a3b4c5d'])(
+  it.each([`occ_session_id:${ROOT}`, 'occ_session_id:9d4c1b2a-3e5f-4a6b-8c7d-0e1f2a3b4c5d'])(
     'sends a session address it cannot place (%s) for the host to check, never dropping it',
     async (declared) => {
       // Forward session addresses for host lineage checks; dropping them would bypass caller fencing.
@@ -355,7 +355,7 @@ describe.each([
 
 describe('the identity a session presents', () => {
   it("lets a structured worker restate its own minted handle, and nobody else's", async () => {
-    setEnv({ ORCA_AGENT_SESSION_ID: SESSION, ORCA_TERMINAL_HANDLE: 'structworker_self' })
+    setEnv({ OCC_AGENT_SESSION_ID: SESSION, OCC_TERMINAL_HANDLE: 'structworker_self' })
 
     await invoke('send', flagMap({ from: 'structworker_self', to: 'run:run_1', subject: 's' }))
     expect(callsTo('send')[0]?.from).toBeUndefined()
@@ -368,7 +368,7 @@ describe('the identity a session presents', () => {
   })
 
   it("sends a structured worker's lifecycle report as the session, not refused as identity-less", async () => {
-    setEnv({ ORCA_AGENT_SESSION_ID: SESSION })
+    setEnv({ OCC_AGENT_SESSION_ID: SESSION })
 
     await invoke(
       'send',
@@ -380,7 +380,7 @@ describe('the identity a session presents', () => {
   })
 
   it('never treats a session that has an id as identity-less, even beside the old marker', async () => {
-    setEnv({ ORCA_AGENT_SESSION_ID: SESSION, ORCA_STRUCTURED_SESSION: '1' })
+    setEnv({ OCC_AGENT_SESSION_ID: SESSION, OCC_STRUCTURED_SESSION: '1' })
 
     await invoke('check', flagMap({}))
 
@@ -389,7 +389,7 @@ describe('the identity a session presents', () => {
   })
 
   it('keeps the identity-less refusal, without --from advice, for a child that has no id', async () => {
-    setEnv({ ORCA_STRUCTURED_SESSION: '1' })
+    setEnv({ OCC_STRUCTURED_SESSION: '1' })
 
     await expect(invoke('reply', flagMap({ id: 'msg_1', body: 'b' }))).rejects.toMatchObject({
       code: 'no_active_sender_terminal',
@@ -400,7 +400,7 @@ describe('the identity a session presents', () => {
   })
 
   it('leaves a terminal agent exactly as it was: its own handle is the caller', async () => {
-    setEnv({ ORCA_TERMINAL_HANDLE: 'term_pty', ORCA_PANE_KEY: 'tab_pty:1:2' })
+    setEnv({ OCC_TERMINAL_HANDLE: 'term_pty', OCC_PANE_KEY: 'tab_pty:1:2' })
     callMock.mockImplementation(async (name: string) =>
       name === 'terminal.resolveIdentity' ? { result: { identity: { live: true } } } : RESULT
     )
@@ -422,9 +422,9 @@ describe('the identity a session presents', () => {
       return callsTo('dispatchShow')[0]?.from
     }
     asSessionWithInheritedPane()
-    expect(await preview({})).toBe(`orca_session_id:${SESSION}`)
+    expect(await preview({})).toBe(`occ_session_id:${SESSION}`)
     expect(await preview({ from: 'term_sibling' })).toBe('term_sibling')
-    setEnv({ ORCA_AGENT_SESSION_ID: SESSION, ORCA_TERMINAL_HANDLE: 'structworker_self' })
+    setEnv({ OCC_AGENT_SESSION_ID: SESSION, OCC_TERMINAL_HANDLE: 'structworker_self' })
     expect(await preview({})).toBe('structworker_self')
     expect(getTerminalHandleMock).not.toHaveBeenCalled()
   })
@@ -473,7 +473,7 @@ describe('a host refusal of the session', () => {
       error: {
         code: 'session_caller_provider_id',
         message: 'provider id',
-        data: { effectsApplied: false, orcaSessionId: SESSION }
+        data: { effectsApplied: false, occSessionId: SESSION }
       },
       _meta: { runtimeId: 'runtime_1' }
     })
@@ -486,7 +486,7 @@ describe('a host refusal of the session', () => {
 
     expect(JSON.parse(printed.join('\n'))).toMatchObject({
       ok: false,
-      error: { code: 'session_caller_provider_id', data: { orcaSessionId: SESSION } }
+      error: { code: 'session_caller_provider_id', data: { occSessionId: SESSION } }
     })
   })
 })
@@ -494,8 +494,8 @@ describe('a host refusal of the session', () => {
 describe('the orchestration envelope', () => {
   it('carries the injected id beside whatever terminal evidence the process also has', () => {
     const envelope = createOrchestrationCompatibilityEnvelope({
-      ORCA_AGENT_SESSION_ID: ` ${SESSION} `,
-      ORCA_TERMINAL_HANDLE: 'term_inherited_pane'
+      OCC_AGENT_SESSION_ID: ` ${SESSION} `,
+      OCC_TERMINAL_HANDLE: 'term_inherited_pane'
     })
 
     expect(envelope.orchestrationCompatibilityEvidence).toEqual({
@@ -505,18 +505,18 @@ describe('the orchestration envelope', () => {
   })
 
   it('binds whichever current OCC CLI the agent reached, not only the one the session names', () => {
-    // Another CLI install may rewrite ORCA_CLI_COMMAND; the envelope must still pin the session instance.
-    vi.stubEnv('ORCA_USER_DATA_PATH', '/data/session-orca')
+    // Another CLI install may rewrite OCC_CLI_COMMAND; the envelope must still pin the session instance.
+    vi.stubEnv('OCC_USER_DATA_PATH', '/data/session-occ')
     try {
       const envelope = createOrchestrationCompatibilityEnvelope({
-        ORCA_AGENT_SESSION_ID: SESSION,
-        ORCA_CLI_COMMAND: 'orca',
-        ORCA_WINDOWS_PACKAGED_CLI_LAUNCHER: '1',
-        ORCA_USER_DATA_PATH: '/data/session-orca'
+        OCC_AGENT_SESSION_ID: SESSION,
+        OCC_CLI_COMMAND: 'occ',
+        OCC_WINDOWS_PACKAGED_CLI_LAUNCHER: '1',
+        OCC_USER_DATA_PATH: '/data/session-occ'
       })
 
       expect(envelope.orchestrationCompatibilityEvidence).toEqual({ agentSessionId: SESSION })
-      expect(getDefaultUserDataPath('linux', '/home/u')).toBe('/data/session-orca')
+      expect(getDefaultUserDataPath('linux', '/home/u')).toBe('/data/session-occ')
     } finally {
       vi.unstubAllEnvs()
     }
@@ -524,17 +524,17 @@ describe('the orchestration envelope', () => {
 
   it('claims no session without an injected id', () => {
     expect(
-      createOrchestrationCompatibilityEnvelope({ ORCA_AGENT_SESSION_ID: '  ' })
+      createOrchestrationCompatibilityEnvelope({ OCC_AGENT_SESSION_ID: '  ' })
         .orchestrationCompatibilityEvidence
     ).toBeUndefined()
   })
 
   it('keeps a WSL stamp beside the id, so the host can refuse the cross-host claim', () => {
     const envelope = createOrchestrationCompatibilityEnvelope({
-      ORCA_AGENT_SESSION_ID: SESSION,
-      ORCA_ORCHESTRATION_COMPATIBILITY_HOST_KIND: 'wsl',
-      ORCA_ORCHESTRATION_COMPATIBILITY_HOST_ID: 'local',
-      ORCA_ORCHESTRATION_COMPATIBILITY_HOST_INCARNATION: 'Ubuntu'
+      OCC_AGENT_SESSION_ID: SESSION,
+      OCC_ORCHESTRATION_COMPATIBILITY_HOST_KIND: 'wsl',
+      OCC_ORCHESTRATION_COMPATIBILITY_HOST_ID: 'local',
+      OCC_ORCHESTRATION_COMPATIBILITY_HOST_INCARNATION: 'Ubuntu'
     })
 
     expect(envelope.orchestrationCompatibilityEvidence).toEqual({

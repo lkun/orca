@@ -1,10 +1,10 @@
 import type { ProviderRateLimits } from '../../src/shared/rate-limit-types'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 
 test.use({ seedTestRepo: false })
 
 test('ten usage providers survive a narrow viewport and expand again', async ({
-  orcaPage: page
+  occPage: page
 }, testInfo) => {
   const densityErrors: string[] = []
   const captureDensityError = (message: string): void => {

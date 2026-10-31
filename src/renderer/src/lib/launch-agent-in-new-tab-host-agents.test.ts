@@ -128,10 +128,10 @@ describe('a new tab whose chat route waits on the host agent list', () => {
   it('releases a timed-out capability waiter without starting host discovery', async () => {
     vi.useFakeTimers()
     setLocalRuntimeCapabilitiesForTests(null)
-    const waitForCapabilities = localCapabilities.awaitLocalRuntimeCapabilities
+    const waitFoccpabilities = localCapabilities.awaitLocalRuntimeCapabilities
     const stop = vi.fn()
     vi.spyOn(localCapabilities, 'awaitLocalRuntimeCapabilities').mockImplementation(() => {
-      const wait = waitForCapabilities()
+      const wait = waitFoccpabilities()
       return {
         known: wait.known,
         stop: () => {

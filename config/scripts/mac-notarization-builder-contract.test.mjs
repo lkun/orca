@@ -95,15 +95,15 @@ describe('macOS build workflow policy', () => {
       if (channel === 'adhoc') {
         expect(job.strategy).toEqual({ 'fail-fast': false, matrix: { arch: ['x64', 'arm64'] } })
         expect(command).toContain('--mac dmg zip --${{ matrix.arch }} --publish never')
-        expect(command).toContain('ORCA_MAC_ADHOC=1 pnpm exec electron-builder')
+        expect(command).toContain('OCC_MAC_ADHOC=1 pnpm exec electron-builder')
         expect(command).not.toContain('build-mac-notarization-overlap.mjs')
       } else {
         expect(command).toContain('if [ -f config/scripts/build-mac-notarization-overlap.mjs ]')
         expect(command).toContain(
-          `ORCA_MAC_${channel.toUpperCase()}=1 node config/scripts/build-mac-notarization-overlap.mjs`
+          `OCC_MAC_${channel.toUpperCase()}=1 node config/scripts/build-mac-notarization-overlap.mjs`
         )
         expect(command).toContain(
-          `else ORCA_MAC_${channel.toUpperCase()}=1 pnpm exec electron-builder`
+          `else OCC_MAC_${channel.toUpperCase()}=1 pnpm exec electron-builder`
         )
       }
       expect(step.with.max_attempts).toBeGreaterThan(1)
@@ -132,17 +132,17 @@ describe('macOS build workflow policy', () => {
       ref: '${{ github.sha }}'
     })
     expect(source.jobs['qualification-template'].uses).toBe(
-      './.github/workflows/qualified-orcad-template.yml'
+      './.github/workflows/qualified-occd-template.yml'
     )
     const job = source.jobs['build-mac']
     expect(job.needs).toBe('qualification-template')
     expect(job.if).toContain('!cancelled()')
     expect(job.if).toContain("needs.qualification-template.result == 'success'")
     const publish = job.steps.find((step) => step.name === 'Publish release artifacts (macOS)')
-    expect(publish.env.ORCA_MAC_PUBLISH).toBe(
+    expect(publish.env.OCC_MAC_PUBLISH).toBe(
       "${{ inputs.qualification_only && 'never' || 'always' }}"
     )
-    expect(publish.with.command.match(/--publish "\$ORCA_MAC_PUBLISH"/g)).toHaveLength(2)
+    expect(publish.with.command.match(/--publish "\$OCC_MAC_PUBLISH"/g)).toHaveLength(2)
     for (const name of [
       'Abort if the parent release-cut run was cancelled',
       'Verify release remains draft after artifact upload'

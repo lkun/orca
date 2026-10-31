@@ -6,7 +6,7 @@
  */
 
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   focusActiveTerminalInput,
   readTerminalPaneDomLeafOrder,
@@ -49,32 +49,32 @@ test.describe('Terminal close pane focus', () => {
   registerTerminalPaneMountReadiness()
 
   test('closing the last of four split panes focuses the neighbor that fills its space', async ({
-    orcaPage
+    occPage
   }) => {
-    await waitForPaneIdentitySnapshot(orcaPage, 1)
+    await waitForPaneIdentitySnapshot(occPage, 1)
     for (const paneCount of [2, 3, 4]) {
-      await focusActiveTerminalInput(orcaPage)
-      await orcaPage.keyboard.press(SPLIT_RIGHT_CHORD)
-      await waitForPaneCount(orcaPage, paneCount)
+      await focusActiveTerminalInput(occPage)
+      await occPage.keyboard.press(SPLIT_RIGHT_CHORD)
+      await waitForPaneCount(occPage, paneCount)
     }
-    const snapshot = await waitForPaneIdentitySnapshot(orcaPage, 4)
-    const [, , neighborLeafId, closedLeafId] = await readTerminalPaneDomLeafOrder(orcaPage)
+    const snapshot = await waitForPaneIdentitySnapshot(occPage, 4)
+    const [, , neighborLeafId, closedLeafId] = await readTerminalPaneDomLeafOrder(occPage)
     expect(snapshot.activeLeafId).toBe(closedLeafId)
     const neighborPtyId = neighborLeafId ? snapshot.ptyIdsByLeafId[neighborLeafId] : undefined
     if (!neighborLeafId || !neighborPtyId) {
       throw new Error(`No bound neighbor pane in ${JSON.stringify(snapshot)}`)
     }
 
-    await closeActivePaneFromKeyboard(orcaPage, 4)
-    await waitThreeFrames(orcaPage)
+    await closeActivePaneFromKeyboard(occPage, 4)
+    await waitThreeFrames(occPage)
 
-    const tabId = await resolveActiveTabId(orcaPage)
+    const tabId = await resolveActiveTabId(occPage)
     if (!tabId) {
       throw new Error('No active terminal tab after closing a pane')
     }
-    expect(await readFocusedTerminalLeafId(orcaPage, tabId)).toBe(neighborLeafId)
+    expect(await readFocusedTerminalLeafId(occPage, tabId)).toBe(neighborLeafId)
     const marker = `CLOSE_FOCUS_${Date.now()}`
-    await orcaPage.keyboard.type(`echo ${marker}\r`)
-    await waitForTerminalOutputForPtyId(orcaPage, neighborPtyId, marker, 10_000)
+    await occPage.keyboard.type(`echo ${marker}\r`)
+    await waitForTerminalOutputForPtyId(occPage, neighborPtyId, marker, 10_000)
   })
 })

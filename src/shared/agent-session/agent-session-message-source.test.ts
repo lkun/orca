@@ -4,7 +4,7 @@ import {
   readAgentMessageSource,
   type AgentMessageSource
 } from './agent-session-message-source'
-import { testOrcaSessionId } from '../orca-session-address-test-fixture'
+import { testOCCSessionId } from '../occ-session-address-test-fixture'
 
 const SESSION = '4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37'
 
@@ -12,14 +12,14 @@ const FROM: AgentMessageSource = {
   kind: 'agent',
   senders: [
     {
-      party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: null },
+      party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: null },
       name: 'Build tab'
     },
     {
       party: {
-        address: `orca_session_id:${SESSION}`,
+        address: `occ_session_id:${SESSION}`,
         terminalHandle: null,
-        orcaSessionId: testOrcaSessionId(SESSION)
+        occSessionId: testOCCSessionId(SESSION)
       },
       name: null
     }
@@ -64,10 +64,10 @@ describe("a message's sender, read through its one reader", () => {
     const read = readAgentMessageSource({
       ...FROM,
       senders: [
-        { party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: 'term_a' } },
-        { party: { address: 'term_b', terminalHandle: 'term_b', orcaSessionId: null }, name: 7 },
+        { party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: 'term_a' } },
+        { party: { address: 'term_b', terminalHandle: 'term_b', occSessionId: null }, name: 7 },
         {
-          party: { address: 'term_c', terminalHandle: 'term_c', orcaSessionId: null },
+          party: { address: 'term_c', terminalHandle: 'term_c', occSessionId: null },
           name: `a‮b\n${'x'.repeat(300)}`
         }
       ]
@@ -89,7 +89,7 @@ describe("a message's sender, read through its one reader", () => {
     const many: AgentMessageSource = {
       ...FROM,
       senders: Array.from({ length: 5 }, (_, index) => ({
-        party: { address: `term_${index}`, terminalHandle: `term_${index}`, orcaSessionId: null },
+        party: { address: `term_${index}`, terminalHandle: `term_${index}`, occSessionId: null },
         name: `Agent ${index}`
       }))
     }

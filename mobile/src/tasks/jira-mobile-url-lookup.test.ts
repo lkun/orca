@@ -15,11 +15,11 @@ const other: JiraSite = { ...acme, id: 'site-other', siteUrl: 'https://other.atl
 function issue(overrides: Partial<JiraIssue> = {}): JiraIssue {
   return {
     id: '1',
-    key: 'ORCA-123',
+    key: 'OCC-123',
     siteId: 'site-acme',
     title: 'Add Jira to mobile',
-    url: 'https://acme.atlassian.net/browse/ORCA-123',
-    project: { id: 'p1', key: 'ORCA', name: 'OCC' },
+    url: 'https://acme.atlassian.net/browse/OCC-123',
+    project: { id: 'p1', key: 'OCC', name: 'OCC' },
     issueType: { id: 't1', name: 'Task' },
     status: { id: 's1', name: 'To Do', categoryKey: 'new', categoryName: 'To Do' },
     labels: [],
@@ -39,10 +39,10 @@ describe('lookupJiraIssueByUrl', () => {
     const sendRequest = vi.fn()
     const client = clientReturning(issue(), sendRequest)
     await expect(
-      lookupJiraIssueByUrl(client, 'https://acme.atlassian.net/browse/ORCA-123', [acme, other])
-    ).resolves.toMatchObject({ key: 'ORCA-123' })
+      lookupJiraIssueByUrl(client, 'https://acme.atlassian.net/browse/OCC-123', [acme, other])
+    ).resolves.toMatchObject({ key: 'OCC-123' })
     expect(sendRequest).toHaveBeenCalledWith('jira.getIssue', {
-      key: 'ORCA-123',
+      key: 'OCC-123',
       siteId: 'site-acme'
     })
   })
@@ -52,17 +52,17 @@ describe('lookupJiraIssueByUrl', () => {
     const client = clientReturning(issue(), sendRequest)
     // Same issue keys can exist on multiple sites; never answer an acme link with another site’s issue.
     await expect(
-      lookupJiraIssueByUrl(client, 'https://acme.atlassian.net/browse/ORCA-123', [other])
+      lookupJiraIssueByUrl(client, 'https://acme.atlassian.net/browse/OCC-123', [other])
     ).resolves.toBeNull()
     expect(sendRequest).not.toHaveBeenCalled()
   })
 
   it('rejects a response whose issue does not canonically match the link', async () => {
     const client = clientReturning(
-      issue({ url: 'https://other.atlassian.net/browse/ORCA-123', siteId: 'site-acme' })
+      issue({ url: 'https://other.atlassian.net/browse/OCC-123', siteId: 'site-acme' })
     )
     await expect(
-      lookupJiraIssueByUrl(client, 'https://acme.atlassian.net/browse/ORCA-123', [acme])
+      lookupJiraIssueByUrl(client, 'https://acme.atlassian.net/browse/OCC-123', [acme])
     ).resolves.toBeNull()
   })
 
@@ -71,8 +71,8 @@ describe('lookupJiraIssueByUrl', () => {
     const client = clientReturning(issue(), sendRequest)
     for (const value of [
       'not a url',
-      'https://acme.atlassian.net/jira/software/ORCA-1',
-      'ORCA-1'
+      'https://acme.atlassian.net/jira/software/OCC-1',
+      'OCC-1'
     ]) {
       await expect(lookupJiraIssueByUrl(client, value, [acme])).resolves.toBeNull()
     }
@@ -87,7 +87,7 @@ describe('lookupJiraIssueByUrl', () => {
       .mockResolvedValueOnce({ ok: true, result: issue({ siteId: 'site-acme-2' }) })
     const client = { sendRequest }
     await expect(
-      lookupJiraIssueByUrl(client, 'https://acme.atlassian.net/browse/ORCA-123', [acme, twin])
+      lookupJiraIssueByUrl(client, 'https://acme.atlassian.net/browse/OCC-123', [acme, twin])
     ).resolves.toMatchObject({ siteId: 'site-acme-2' })
     expect(sendRequest).toHaveBeenCalledTimes(2)
   })

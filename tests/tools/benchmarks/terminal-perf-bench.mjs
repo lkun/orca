@@ -124,11 +124,11 @@ function git(cwd, ...cmd) {
 
 // Use native local repo plus two external worktrees for portable default-workflow coverage rather than the WSL apphang fixture.
 function createLocalRepoFixture() {
-  const baseDir = mkdtempSync(path.join(os.tmpdir(), 'orca-termperf-'))
+  const baseDir = mkdtempSync(path.join(os.tmpdir(), 'occ-termperf-'))
   const repoPath = path.join(baseDir, 'repo')
   mkdirSync(repoPath, { recursive: true })
   git(repoPath, 'init', '--initial-branch=main')
-  git(repoPath, 'config', 'user.email', 'bench@orca.local')
+  git(repoPath, 'config', 'user.email', 'bench@occ.local')
   git(repoPath, 'config', 'user.name', 'OCC Bench')
   writeFileSync(path.join(repoPath, 'README.md'), '# terminal perf fixture\n')
   git(repoPath, 'add', '.')
@@ -561,7 +561,7 @@ async function main() {
         report.cleanupErrors.push(error instanceof Error ? error.message : String(error))
       }
       report.appLogsTail = launched.logs.slice(-80)
-      // Main-process phase attribution (requires ORCA_PTY_SPAWN_TIMING=1 in the
+      // Main-process phase attribution (requires OCC_PTY_SPAWN_TIMING=1 in the
       // benchmark's environment; launchDevApp inherits it into the app).
       report.ptySpawnTimings = launched.logs
         .filter((entry) => entry.line.includes('[pty-spawn-timing]'))

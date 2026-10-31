@@ -2,13 +2,13 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { buildAppImageDaemonCommand, resolveAppImageDaemonLaunch } from './daemon-appimage-launch'
 
 const { resolveIdentity } = vi.hoisted(() => ({ resolveIdentity: vi.fn() }))
 vi.mock('../appimage-runtime-identity', () => ({ resolveAppImageRuntimeIdentity: resolveIdentity }))
 
-const APPDIR = '/tmp/.mount_orcaAbC'
+const APPDIR = '/tmp/.mount_occAbC'
 const FUSE_MOUNTINFO = `953 65 0:108 / ${APPDIR} ro,nosuid,nodev,relatime shared:1 - fuse.OCC.AppImage OCC.AppImage ro,user_id=1000`
 const INPUT = {
   entryPath: `${APPDIR}/resources/app.asar.unpacked/out/main/daemon-entry.js`,
@@ -93,7 +93,7 @@ describe('buildAppImageDaemonCommand', () => {
     result: ReturnType<typeof runProcessSync>
     appDir: string
   } {
-    const appDir = mkdtempSync(join(tmpdir(), 'orca-appimage-boot-'))
+    const appDir = mkdtempSync(join(tmpdir(), 'occ-appimage-boot-'))
     root = appDir
     mkdirSync(join(appDir, 'resources', 'app.asar'), { recursive: true })
     writeFileSync(

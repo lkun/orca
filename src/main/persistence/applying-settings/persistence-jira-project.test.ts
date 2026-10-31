@@ -11,7 +11,7 @@ vi.mock('../../telemetry/cohort-classifier', () => ({
 const project = { id: '10', key: 'ALP', name: 'Alpha', siteId: 'site-a' }
 describe('persisted repository Jira defaults', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-jira-project-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-jira-project-'))
   })
   afterEach(async () => {
     await closeTestStores()

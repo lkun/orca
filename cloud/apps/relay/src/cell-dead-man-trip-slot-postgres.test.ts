@@ -6,7 +6,7 @@ import { openRelayDatabase, type RelayDatabase } from './database.js'
 // Concurrent claims on real PostgreSQL: a director outage trips at most `slots` cells, however
 // many claim at the same moment.
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 const run = randomUUID().slice(0, 8)

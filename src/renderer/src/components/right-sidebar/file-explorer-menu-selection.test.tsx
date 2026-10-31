@@ -36,7 +36,7 @@ function ExplorerMenu({ row }: { row: boolean }) {
             targetDepth={DEPTH}
             selectionSize={1}
             deleteShortcutLabel=""
-            canOpenInOrcaBrowser={false}
+            canOpenInOCCBrowser={false}
             canCollapseFolderSubtree={false}
             canAddAsProject={false}
             onStartNew={onStartNew}

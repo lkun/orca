@@ -1,6 +1,6 @@
 import type { MessageRow, MessageType, OrchestrationDb } from '../../../../orchestration/db'
 import type { MailboxDeliveryBatch } from '../../../../orchestration/db/messages/role-mailbox-delivery'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import { formatMessageBanner } from '../../../../orchestration/formatter'
 import { acknowledgedOnlyReceipt, deliveryReceipt, exposeMessages } from './mailbox-message-receipt'
@@ -19,7 +19,7 @@ type RemoteAttachment = NonNullable<
 
 export async function checkWorkerMailbox(args: {
   params: CheckParamsInput
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   handle: string
   paneKey: string | undefined

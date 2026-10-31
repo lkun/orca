@@ -1,15 +1,15 @@
 import { errorMessage } from '../../shared/error-message'
 import { RemoteRuntimeClientError } from '../../shared/remote-runtime/remote-runtime-client-error'
-import { OrcadHostUnsupportedError } from '../orcad/orcad-host-unavailable'
+import { OCCdHostUnsupportedError } from '../occd/occd-host-unavailable'
 import {
   WslDistroNotRunningError,
-  WslOrcadLaunchDeferredError
-} from './wsl-orcad-connection-errors'
+  WslOCCdLaunchDeferredError
+} from './wsl-occd-connection-errors'
 import {
-  OrcadManagedIdentityError,
-  OrcadManagedPairingRejectedError
-} from '../managed-server/lifecycle/orcad-managed-tunnel-identity'
-import { OrcadManagedPairingRepairFailedError } from '../managed-server/lifecycle/orcad-managed-pairing-repair-failure'
+  OCCdManagedIdentityError,
+  OCCdManagedPairingRejectedError
+} from '../managed-server/lifecycle/occd-managed-tunnel-identity'
+import { OCCdManagedPairingRepairFailedError } from '../managed-server/lifecycle/occd-managed-pairing-repair-failure'
 
 /**
  * Liveness keeps reconnecting a running host whose connect failed, so a call that met the failure
@@ -18,14 +18,14 @@ import { OrcadManagedPairingRepairFailedError } from '../managed-server/lifecycl
  */
 export function retryableConnectFailure(distro: string, error: unknown): unknown {
   if (
-    error instanceof WslOrcadLaunchDeferredError ||
-    error instanceof OrcadHostUnsupportedError ||
+    error instanceof WslOCCdLaunchDeferredError ||
+    error instanceof OCCdHostUnsupportedError ||
     error instanceof WslDistroNotRunningError ||
     // A foreign or unpaired server, or a failed re-pair, needs the user (as on the SSH tunnel path);
     // retrying would run a full deploy per pane until the deadline.
-    error instanceof OrcadManagedIdentityError ||
-    error instanceof OrcadManagedPairingRejectedError ||
-    error instanceof OrcadManagedPairingRepairFailedError
+    error instanceof OCCdManagedIdentityError ||
+    error instanceof OCCdManagedPairingRejectedError ||
+    error instanceof OCCdManagedPairingRepairFailedError
   ) {
     return error
   }

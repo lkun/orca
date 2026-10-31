@@ -144,7 +144,7 @@ export function registerPtyConnectionWindowsKeyboardResetTests(): void {
             {
               id: 'repo1',
               connectionId: null,
-              displayName: 'orca',
+              displayName: 'occ',
               executionHostId: 'runtime:owner-runtime'
             }
           ]

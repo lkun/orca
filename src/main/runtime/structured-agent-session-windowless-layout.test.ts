@@ -4,10 +4,10 @@ import { getDefaultWorkspaceSession } from '../../shared/constants'
 import { normalizeExecutionHostId } from '../../shared/execution-host'
 import type { StructuredAgentSessionHost } from '../native-chat/agent-session-wire/structured-agent-session-host'
 import { setStructuredAgentSessionHost } from '../native-chat/agent-session-wire/structured-agent-session-registry'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { withChatTabChanges } from './agent-session/agent-session-tab-layout'
 import { structuredAgentSessionTabId } from '../../shared/structured-agent-session-projection'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { chatTabCommandsSettled, layoutApplyOn } from './session-layout-apply.test-fixture'
 import { partialRuntimeStore } from './runtime-store-partial-fixture'
 
@@ -25,7 +25,7 @@ function createRuntime() {
       terminalLayoutsByTabId: {}
     }
   }
-  const runtime = new OrcaRuntimeService(partialRuntimeStore(runtimeStore(state)))
+  const runtime = new OCCRuntimeService(partialRuntimeStore(runtimeStore(state)))
   return { runtime, state }
 }
 
@@ -149,7 +149,7 @@ describe('a chat tab on a host with no window', () => {
     await settled()
     expect(savedChatIds(state)).toEqual(['chat-1'])
     // A fresh runtime lists no chats, as when the close RPC or a worker stop runs before a restore.
-    const fresh = new OrcaRuntimeService(partialRuntimeStore(runtimeStore(state)))
+    const fresh = new OCCRuntimeService(partialRuntimeStore(runtimeStore(state)))
     useChatHost({ getPersistedVisibleSessionTabIndex: () => ({ present: true, sessionIds: [] }) })
 
     fresh.onStructuredSessionTabHidden('chat-1')
@@ -200,7 +200,7 @@ describe('a chat tab on a host with no window', () => {
         (next, hostId) => sessions.set(hostId, next)
       )
     }
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+    const runtime = new OCCRuntimeService(partialRuntimeStore(store))
     useChatHost({ getPersistedVisibleSessionTabIndex: () => ({ present: true, sessionIds: [] }) })
 
     runtime.onStructuredSessionTabHidden('chat-1')
@@ -272,7 +272,7 @@ describe('a chat tab on a host with no window', () => {
     })
     await settled()
 
-    expect(savedChatIds(state)).toEqual(ORCA_LAYOUT_OWNER_IS_MAIN ? ['chat-1'] : [])
+    expect(savedChatIds(state)).toEqual(OCC_LAYOUT_OWNER_IS_MAIN ? ['chat-1'] : [])
   })
 
   // Window launches reserve their tab position; main publication must defer to that placement regardless of order.
@@ -317,7 +317,7 @@ describe('a chat tab on a host with no window', () => {
       }
       await settled()
 
-      if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (!OCC_LAYOUT_OWNER_IS_MAIN) {
         return
       }
       expect(state.session.tabGroups?.[WT]?.map((group) => group.tabOrder)).toEqual([

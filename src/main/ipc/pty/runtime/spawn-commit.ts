@@ -35,7 +35,7 @@ export async function commitRuntimePtySpawn(ctx: RuntimePtySpawnState) {
       },
       preAllocatedHandle: args.preAllocatedHandle,
       // Runtime spawns bypass renderer IPC; publish reverse pane lookup for hooks and cleanup.
-      paneKey: normalizeValidPaneKey(ctx.env?.ORCA_PANE_KEY),
+      paneKey: normalizeValidPaneKey(ctx.env?.OCC_PANE_KEY),
       resumeArgvDropped: ctx.codexResumeArgvDropped,
       codexLaunchEnv: ctx.env,
       initiallyHidden: args.initiallyHidden === true,

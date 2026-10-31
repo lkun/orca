@@ -20,7 +20,7 @@ import {
   latestStructuredAgentSessionRequest
 } from './structured-agent-session-latest-request'
 import { projectStructuredAgentSessionStatusSummary } from './structured-agent-session-projection'
-import { latestNativeChatTurnSinceRequest } from './native-chat/native-chat-orca-stop-cut'
+import { latestNativeChatTurnSinceRequest } from './native-chat/native-chat-occ-stop-cut'
 import { selectStructuredAgentTurnTimings } from './structured-agent-session-turn-timing'
 
 const START_FAILURE = 'Claude is not signed in.'
@@ -379,9 +379,9 @@ describe('the assistant line plain-text surfaces show', () => {
         'said',
         2,
         'assistant',
-        'p95 is highest in ap-south.\n\n::orca-visual{file="latency.html" title="p95"}'
+        'p95 is highest in ap-south.\n\n::occ-visual{file="latency.html" title="p95"}'
       ),
-      message('only-visual', 3, 'assistant', '::orca-visual{file="table.html"}')
+      message('only-visual', 3, 'assistant', '::occ-visual{file="table.html"}')
     ]
     // A reply that is nothing but a visual leaves the turn's earlier prose as the preview.
     expect(projectStructuredAgentSessionStatusSummary(items).lastAssistantMessage).toBe(

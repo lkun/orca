@@ -1,5 +1,5 @@
 // Which server workspaces layout frames draw: a leaf, so store slices can ask without the sync graph.
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
 // Why one source per workspace: frames and the mirror writing the same tree would fight.
 const frameDrawnWorktreeIdsByEnvironment = new Map<string, ReadonlySet<string>>()
@@ -28,7 +28,7 @@ export function isFrameDrawnServerWorkspace(environmentId: string, worktreeId: s
 
 /** Switch point: a desktop write to a frame-drawn workspace keeps none of the mirror's ledgers. */
 export function isServerFrameDrawnWorkspace(environmentId: string, worktreeId: string): boolean {
-  return ORCA_LAYOUT_OWNER_IS_MAIN && isFrameDrawnServerWorkspace(environmentId, worktreeId)
+  return OCC_LAYOUT_OWNER_IS_MAIN && isFrameDrawnServerWorkspace(environmentId, worktreeId)
 }
 
 export function resetFrameDrawnServerWorkspacesForTests(): void {

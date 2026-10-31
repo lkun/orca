@@ -2,7 +2,7 @@ import './unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
 import { RpcDispatcher } from './dispatcher'
 import type { RpcRequest } from './core'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import { TERMINAL_METHODS } from './methods/terminal'
 import type { RuntimeTerminalWait } from '../../../shared/runtime-types'
 import {
@@ -15,14 +15,14 @@ import {
 
 // Preserve pendingEscapeTailAnsi through SnapshotStart (#7329); after reset, missing partial escapes make subsequent live bytes render literally.
 
-function stubRuntime(overrides: Partial<OrcaRuntimeService> = {}): OrcaRuntimeService {
+function stubRuntime(overrides: Partial<OCCRuntimeService> = {}): OCCRuntimeService {
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: This partial runtime supplies the terminal RPC methods these tests invoke.
   return {
     getRuntimeId: () => 'test-runtime',
     getPtyExecutionHostMetadata: () => ({ incarnationId: 'test-incarnation' }),
     getTerminalLaunchResult: () => undefined,
     ...overrides
-  } as OrcaRuntimeService
+  } as OCCRuntimeService
 }
 
 function makeRequest(method: string, params?: unknown): RpcRequest {

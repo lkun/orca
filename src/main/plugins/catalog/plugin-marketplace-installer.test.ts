@@ -56,7 +56,7 @@ vi.mock('../../telemetry/client', () => telemetry)
 const roots: string[] = []
 
 async function tempRoot(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-marketplace-installer-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-marketplace-installer-'))
   roots.push(root)
   return root
 }
@@ -94,16 +94,16 @@ function marketplace(): PluginMarketplace {
 async function writeCurrentPlugin(destination: string, path?: string): Promise<void> {
   await mkdir(destination, { recursive: true })
   await writeFile(
-    join(destination, 'orca-plugin.json'),
+    join(destination, 'occ-plugin.json'),
     JSON.stringify({
       ...(git.v2
         ? {
             manifestVersion: 2,
             execution: 'declarative',
-            engines: { orca: `>=${PLUGIN_SCHEMA_NEWEST_SINCE}` },
+            engines: { occ: `>=${PLUGIN_SCHEMA_NEWEST_SINCE}` },
             contributes: { commands: [{ id: 'tasks', title: 'Tasks', action: 'view.tasks' }] }
           }
-        : { manifestVersion: 1, engines: { orca: '>=1.0.0' }, pluginApi: 1 }),
+        : { manifestVersion: 1, engines: { occ: '>=1.0.0' }, pluginApi: 1 }),
       id: path?.split('/').at(-1) ?? git.id,
       publisher: git.publisher,
       name: 'Notes',
@@ -260,7 +260,7 @@ describe('PluginMarketplaceInstaller', () => {
       commit: git.commit,
       contentHash: unpinned.contentHash,
       execution: 'declarative',
-      minimumOrca: PLUGIN_SCHEMA_NEWEST_SINCE,
+      minimumOCC: PLUGIN_SCHEMA_NEWEST_SINCE,
       types: ['instructions']
     }
     const { installer, sourceId } = await setup()
@@ -286,7 +286,7 @@ describe('PluginMarketplaceInstaller', () => {
       commit: git.commit,
       contentHash: 'c'.repeat(64),
       execution: 'declarative',
-      minimumOrca: '9.0.0',
+      minimumOCC: '9.0.0',
       types: ['instructions']
     }
     const { marketplace, installer, sourceId } = await setup()
@@ -499,7 +499,7 @@ describe('PluginMarketplaceInstaller', () => {
   })
 
   it('reports public-catalog installs as install, reinstall, then update', async () => {
-    const communityCatalog = 'https://github.com/stablyai/orca-community-plugins.git'
+    const communityCatalog = 'https://github.com/stablyai/occ-community-plugins.git'
     const { installer, sourceId } = await setup(undefined, communityCatalog)
     const preview = await installer.preview(sourceId, 'community.notes')
     await installer.install(preview, { trigger: 'deep_link' })

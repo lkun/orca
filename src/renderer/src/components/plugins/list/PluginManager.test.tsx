@@ -21,7 +21,7 @@ vi.mock('../dialogs/PluginMarketplaceSourceDialog', () => ({
 }))
 
 const installedPlugin: PluginHostListEntry = {
-  pluginKey: 'stablyai.orca-nord-theme',
+  pluginKey: 'stablyai.occ-nord-theme',
   consentFingerprint: 'sha256-nord',
   name: 'OCC Nord',
   version: '1.0.0',
@@ -76,13 +76,13 @@ function listing(pluginKey: string, extra: Partial<PluginMarketplaceHostListing>
 }
 
 const catalogListings = [
-  listing('stablyai.orca-nord-theme', {
+  listing('stablyai.occ-nord-theme', {
     release: {
       version: '1.2.0',
       commit: 'd'.repeat(40),
       contentHash: 'e'.repeat(64),
       execution: 'data',
-      minimumOrca: '1.4.0',
+      minimumOCC: '1.4.0',
       types: ['app-theme'],
       name: 'OCC Nord'
     },
@@ -176,7 +176,7 @@ describe('PluginManager', () => {
       Array.from(container.querySelectorAll('[data-plugin-key]'))
     const rows = catalogCards().map((row) => row.getAttribute('data-plugin-key'))
     // Why one grid: an installed catalog plugin keeps its card, so installing never moves it.
-    expect(rows.filter((key) => key === 'stablyai.orca-nord-theme')).toHaveLength(1)
+    expect(rows.filter((key) => key === 'stablyai.occ-nord-theme')).toHaveLength(1)
     // Why: an installed plugin past the cap keeps its card, so its switch never hides behind Show all.
     expect(rows).toHaveLength(PLUGIN_GROUP_ROW_CAP + 1)
     expect(rows).toContain('stablyai.extra-13')
@@ -208,19 +208,19 @@ describe('PluginManager', () => {
         tab?.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, button: 0 }))
       })
     }
-    const nord = container.querySelector('[data-plugin-key="stablyai.orca-nord-theme"]')
+    const nord = container.querySelector('[data-plugin-key="stablyai.occ-nord-theme"]')
     expect(nord?.querySelector('[data-plugin-installed-badge]')).not.toBeNull()
     expect(buttonNamed(container, 'Disable OCC Nord')?.getAttribute('role')).toBe('switch')
     expect(keys()).toContain('local.dev-theme')
     expect(container.textContent).toContain('not from a catalog')
 
     showFilter(/^Not installed/)
-    expect(keys()).not.toContain('stablyai.orca-nord-theme')
+    expect(keys()).not.toContain('stablyai.occ-nord-theme')
     expect(keys()).not.toContain('local.dev-theme')
     expect(container.querySelector('[data-plugin-installed-badge]')).toBeNull()
 
     showFilter(/^Installed/)
-    expect(keys().sort()).toEqual(['local.dev-theme', 'stablyai.orca-nord-theme'])
+    expect(keys().sort()).toEqual(['local.dev-theme', 'stablyai.occ-nord-theme'])
   })
 
   it('filters by one inline category chip at a time', async () => {
@@ -259,7 +259,7 @@ describe('PluginManager', () => {
       source: undefined
     }
     const container = await render([installedPlugin, worker])
-    const nord = container.querySelector('[data-plugin-key="stablyai.orca-nord-theme"]')
+    const nord = container.querySelector('[data-plugin-key="stablyai.occ-nord-theme"]')
     const watcher = container.querySelector('[data-plugin-key="local.watcher"]')
     expect(nord?.textContent).toContain('Themes')
     expect(nord?.textContent).not.toContain('Content only')
@@ -270,7 +270,7 @@ describe('PluginManager', () => {
   it('keeps installed plugins when the catalog never loads', async () => {
     installApi({ listMarketplaces: vi.fn().mockRejectedValue(new Error('offline')) })
     const container = await render()
-    expect(container.querySelector('[data-plugin-key="stablyai.orca-nord-theme"]')).not.toBeNull()
+    expect(container.querySelector('[data-plugin-key="stablyai.occ-nord-theme"]')).not.toBeNull()
     expect(container.textContent).toContain('Couldn’t load the plugin catalog.')
   })
 
@@ -279,12 +279,12 @@ describe('PluginManager', () => {
     await act(async () =>
       container
         .querySelector<HTMLButtonElement>(
-          '[data-plugin-key="stablyai.orca-nord-theme"] [data-plugin-row-name]'
+          '[data-plugin-key="stablyai.occ-nord-theme"] [data-plugin-row-name]'
         )
         ?.click()
     )
     expect(window.api.plugins.getRollbackVersion).toHaveBeenCalledWith({
-      pluginKey: 'stablyai.orca-nord-theme'
+      pluginKey: 'stablyai.occ-nord-theme'
     })
     expect(container.textContent).toContain('What’s new')
     expect(container.textContent).toContain('<b>not markup</b>')

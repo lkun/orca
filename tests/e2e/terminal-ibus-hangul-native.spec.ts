@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { writeFileSync } from 'node:fs'
 import type { ElectronApplication, Page, TestInfo } from '@stablyai/playwright-test'
 import type { BrowserWindow, Event as ElectronEvent, Input as ElectronInput } from 'electron'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   focusActiveTerminalInput,
@@ -34,7 +34,7 @@ const MAX_KEY_DELAY_MS = 100
 const NATIVE_COMMAND_TIMEOUT_MS = 10_000
 
 test.use({
-  orcaAppExtraEnv: {
+  occAppExtraEnv: {
     GTK_IM_MODULE: 'ibus',
     IBUS_ENABLE_SYNC_MODE: '1',
     QT_IM_MODULE: 'ibus',
@@ -43,14 +43,14 @@ test.use({
 })
 
 function nativeRepetitions(): number {
-  const parsed = Number(process.env.ORCA_E2E_NATIVE_IBUS_REPETITIONS ?? DEFAULT_REPETITIONS)
+  const parsed = Number(process.env.OCC_E2E_NATIVE_IBUS_REPETITIONS ?? DEFAULT_REPETITIONS)
   return Number.isInteger(parsed) && parsed > 0
     ? Math.min(parsed, MAX_REPETITIONS)
     : DEFAULT_REPETITIONS
 }
 
 function nativeKeyDelayMs(): number {
-  const parsed = Number(process.env.ORCA_E2E_NATIVE_IBUS_KEY_DELAY_MS ?? DEFAULT_KEY_DELAY_MS)
+  const parsed = Number(process.env.OCC_E2E_NATIVE_IBUS_KEY_DELAY_MS ?? DEFAULT_KEY_DELAY_MS)
   return Number.isInteger(parsed) && parsed >= 0
     ? Math.min(parsed, MAX_KEY_DELAY_MS)
     : DEFAULT_KEY_DELAY_MS
@@ -62,7 +62,7 @@ function runXdotool(...args: string[]): void {
 
 async function focusNativeTerminalWindow(page: Page): Promise<string> {
   await focusActiveTerminalInput(page)
-  const title = `ORCA_NATIVE_IBUS_${randomUUID()}`
+  const title = `OCC_NATIVE_IBUS_${randomUUID()}`
   await page.evaluate((nextTitle) => {
     document.title = nextTitle
   }, title)
@@ -170,18 +170,18 @@ async function runNativeIbusScenario(
 
 test.describe('Native IBus Hangul terminal input @headful', () => {
   test.skip(
-    process.env.ORCA_E2E_NATIVE_IBUS_HANGUL !== '1',
+    process.env.OCC_E2E_NATIVE_IBUS_HANGUL !== '1',
     'Run through config/scripts/run-terminal-ibus-hangul-e2e.mjs'
   )
 
   test('forwards the issue exact-byte sequence without loss or duplication', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
     await runNativeIbusScenario(
       electronApp,
-      orcaPage,
+      occPage,
       testInfo,
       testRepoPath,
       '한abc글',
@@ -191,12 +191,12 @@ test.describe('Native IBus Hangul terminal input @headful', () => {
 
   test('forwards the issue sentence stress sequence without leaked ASCII', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
     await runNativeIbusScenario(
       electronApp,
-      orcaPage,
+      occPage,
       testInfo,
       testRepoPath,
       '테스트를 하고 있는데 여전히 그러네',
@@ -206,22 +206,22 @@ test.describe('Native IBus Hangul terminal input @headful', () => {
 })
 
 test.describe('Native IBus Hangul workspace notes @headful', () => {
-  test.use({ launchEnv: { ORCA_BACKGROUND_LAUNCH: '1' } })
+  test.use({ launchEnv: { OCC_BACKGROUND_LAUNCH: '1' } })
   test.skip(
-    process.env.ORCA_E2E_NATIVE_IBUS_HANGUL !== '1',
+    process.env.OCC_E2E_NATIVE_IBUS_HANGUL !== '1',
     'Run through the isolated native IBus harness'
   )
 
   test('confirms native Hangul notes before a deliberate Enter saves', async ({
     electronApp,
-    orcaPage
+    occPage
   }, testInfo) => {
     expect(process.platform).toBe('linux')
     expect(process.env.GITHUB_ACTIONS).toBe('true')
     expect(process.env.RUNNER_ENVIRONMENT).toBe('github-hosted')
     expect(process.env.DISPLAY).toMatch(/^:\d+(?:\.\d+)?$/)
-    const ownedWindow = await electronApp.browserWindow(orcaPage)
-    await presentNativeIbusWindow(electronApp, orcaPage)
+    const ownedWindow = await electronApp.browserWindow(occPage)
+    await presentNativeIbusWindow(electronApp, occPage)
     const windowId = await ownedWindow.evaluate((window: BrowserWindow) =>
       window.getNativeWindowHandle().readUInt32LE(0).toString()
     )
@@ -233,7 +233,7 @@ test.describe('Native IBus Hangul workspace notes @headful', () => {
       }).trim()
     ).toBe('hangul')
 
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       const state = window.__store?.getState()
       const worktree =
         state &&
@@ -251,7 +251,7 @@ test.describe('Native IBus Hangul workspace notes @headful', () => {
         focus: 'comment'
       })
     })
-    const input = orcaPage.getByPlaceholder('Notes about this worktree...')
+    const input = occPage.getByPlaceholder('Notes about this worktree...')
     await expect(input).toBeVisible()
     await input.evaluate(async (element) => {
       const animations = element.closest('[role=dialog]')?.getAnimations({ subtree: true }) ?? []
@@ -370,7 +370,7 @@ test.describe('Native IBus Hangul workspace notes @headful', () => {
       }
     })
     const readSavedComment = () =>
-      orcaPage.evaluate(() => {
+      occPage.evaluate(() => {
         const state = window.__store?.getState()
         return (
           state &&
@@ -407,7 +407,7 @@ test.describe('Native IBus Hangul workspace notes @headful', () => {
     try {
       runXdotool('windowfocus', '--sync', windowId)
       await nativeProbe.evaluate(({ window }) => window.webContents.focus())
-      const geometry = await orcaPage.evaluate(() => ({
+      const geometry = await occPage.evaluate(() => ({
         ratio: window.devicePixelRatio,
         width: window.innerWidth,
         height: window.innerHeight
@@ -487,7 +487,7 @@ test.describe('Native IBus Hangul workspace notes @headful', () => {
           )
         )
         .toBeGreaterThan(compositionEndsBeforeReturn)
-      await orcaPage.evaluate(
+      await occPage.evaluate(
         () =>
           new Promise<void>((resolve) =>
             requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
@@ -533,7 +533,7 @@ test.describe('Native IBus Hangul workspace notes @headful', () => {
       expect(dom.some((event) => /[\uac00-\ud7af]/.test(event.data ?? ''))).toBe(true)
       appendImeEngagementReceipt(testInfo.title, { dom, onData: [] })
       completed = true
-      await orcaPage.screenshot({
+      await occPage.screenshot({
         path: testInfo.outputPath('native-deliberate-return-saves-notes.png')
       })
     } finally {
@@ -566,7 +566,7 @@ test.describe('Native IBus Hangul workspace notes @headful', () => {
         }))
       )
       const notes = await readDiagnostic(() =>
-        orcaPage.evaluate(() => {
+        occPage.evaluate(() => {
           const element = document.querySelector(
             'textarea[placeholder="Notes about this worktree..."]'
           )

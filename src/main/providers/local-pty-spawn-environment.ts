@@ -1,8 +1,8 @@
 import { mergeGitConfigEnvProtocol } from '../../shared/git-credential-prompt-env'
 import { restoreManagedDataAccountEnvironment } from '../../shared/managed-data-account-environment'
 import {
-  ORCA_IMAGE_PROTOCOL_ENV,
-  ORCA_IMAGE_PROTOCOL_VALUE
+  OCC_IMAGE_PROTOCOL_ENV,
+  OCC_IMAGE_PROTOCOL_VALUE
 } from '../../shared/terminal-image-protocol'
 import { removeAppImageRuntimeEnv } from '../pty/appimage-terminal-env'
 import { removeChromiumDisabledSessionBus } from '../pty/chromium-session-bus-env'
@@ -64,10 +64,10 @@ export function buildInheritedLocalPtyEnvironment(
     COLORTERM: 'truecolor',
     TERM_PROGRAM: 'OCC',
     // TUIs gate features on version; plain-node/test launches lack the app version.
-    TERM_PROGRAM_VERSION: process.env.ORCA_APP_VERSION ?? '0.0.0-dev',
+    TERM_PROGRAM_VERSION: process.env.OCC_APP_VERSION ?? '0.0.0-dev',
     // supports-hyperlinks rejects OCC by name despite xterm supporting OSC 8; force support.
     FORCE_HYPERLINK: '1',
-    [ORCA_IMAGE_PROTOCOL_ENV]: ORCA_IMAGE_PROTOCOL_VALUE
+    [OCC_IMAGE_PROTOCOL_ENV]: OCC_IMAGE_PROTOCOL_VALUE
   } satisfies Record<string, string>
   removeUnspecifiedPaneIdentityEnv(spawnEnv, explicitEnv)
   stripPiProcessOwnerEnv(spawnEnv)

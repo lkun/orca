@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { preserveTerminalRetirementProofs } from '../mobile-session-terminal-retirement-proof'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { startedMainTerminalSurfaces } from '../terminal/surface/main-terminal-surfaces'
 import { mainBindsUnendedTerminal } from '../terminal/surface/main-pane-verdict'
 import {
@@ -46,7 +46,7 @@ import type {
 } from '../runtime-pty-controller-contract'
 import type { RuntimeLeafRecord, PtyRegistrationClaim } from '../runtime-terminal-state-records'
 import type { TerminalHandleRecord } from '../runtime-terminal-contracts'
-import type { PtyIncarnationHandleRecord } from '../orca-runtime-core'
+import type { PtyIncarnationHandleRecord } from '../occ-runtime-core'
 import { MailPointerRepointScheduler } from '../orchestration/mail-pointer-repoint-scheduler'
 import { RuntimeTerminalWaiterRegistry } from '../terminal/wait/terminal-waiter-registry'
 import { RuntimeTerminalWriter } from '../runtime-terminal-writer'
@@ -60,14 +60,14 @@ import {
   TUI_IDLE_DEFAULT_TIMEOUT_MS,
   TUI_IDLE_POLL_INTERVAL_MS,
   TUI_IDLE_QUIESCENCE_MS
-} from '../orca-runtime-postlude'
+} from '../occ-runtime-postlude'
 import { RuntimeTerminalWait as RuntimeTerminalWaitController } from '../terminal/wait/terminal-wait'
 import type { PtyLivenessVerdict } from '../../../shared/pty-liveness-verdict'
 import type { HostScopedWorktreeKey } from '../../../shared/worktree/host-qualified-identity'
 
 import { RuntimeConstructionServices } from './runtime-construction-services'
 
-export abstract class OrcaRuntimeWithRuntimeId extends RuntimeConstructionServices {
+export abstract class OCCRuntimeWithRuntimeId extends RuntimeConstructionServices {
   protected readonly runtimeId = randomUUID()
 
   protected readonly startedAt = Date.now()
@@ -120,7 +120,7 @@ export abstract class OrcaRuntimeWithRuntimeId extends RuntimeConstructionServic
     snapshot: RuntimeMobileSessionTabsSnapshot
   ): RuntimeMobileSessionTabsSnapshot {
     const existing = this.mobileSessionTabsByWorktree.get(worktreeId)
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       const merged = startedMainTerminalSurfaces(this)?.withMainOrder(snapshot) ?? snapshot
       // Main-order-only rebuilds are no-ops unless occupant/publication/retirement evidence changed.
       if (

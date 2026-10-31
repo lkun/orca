@@ -26,7 +26,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 10
     env:
-      ORCA_BACKGROUND_LAUNCH: '1'
+      OCC_BACKGROUND_LAUNCH: '1'
     steps:
       - uses: actions/checkout@v6
         with:
@@ -54,7 +54,7 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 15
     env:
-      ORCA_BACKGROUND_LAUNCH: '1'
+      OCC_BACKGROUND_LAUNCH: '1'
     steps:
       - uses: actions/checkout@v6
         with:
@@ -82,7 +82,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     env:
-      ORCA_BACKGROUND_LAUNCH: '1'
+      OCC_BACKGROUND_LAUNCH: '1'
     steps:
       - uses: actions/checkout@v6
         with:
@@ -141,26 +141,26 @@ jobs:
         uses: ./.github/actions/prepare-windows-agent-hook
 
       - name: Warm the Windows server prebuild
-        id: orcad-prebuild
+        id: occd-prebuild
         if: matrix.os != 'windows-2025'
-        uses: ./.github/actions/prepare-orcad-prebuilds
+        uses: ./.github/actions/prepare-occd-prebuilds
         with:
           resolve-windows-cache: 'true'
           restore-windows-cache: 'true'
       # Same check a consumer runs before trusting a restored slot.
       - name: Validate the Windows server prebuild before saving
-        id: orcad-prebuild-validate
+        id: occd-prebuild-validate
         if: >-
           github.event_name != 'pull_request' && matrix.os != 'windows-2025' &&
-          steps.orcad-prebuild.outputs.cache-hit != 'true' && steps.orcad-prebuild.outputs.cache-key != ''
-        run: node config/scripts/orcad-windows-prebuild-cache.mjs --validate
+          steps.occd-prebuild.outputs.cache-hit != 'true' && steps.occd-prebuild.outputs.cache-key != ''
+        run: node config/scripts/occd-windows-prebuild-cache.mjs --validate
       - name: Save the Windows server prebuild
-        if: steps.orcad-prebuild-validate.outcome == 'success'
+        if: steps.occd-prebuild-validate.outcome == 'success'
         continue-on-error: true
         uses: actions/cache/save@v5
         with:
-          path: ${{ steps.orcad-prebuild.outputs.cache-path }}
-          key: ${{ steps.orcad-prebuild.outputs.cache-key }}
+          path: ${{ steps.occd-prebuild.outputs.cache-path }}
+          key: ${{ steps.occd-prebuild.outputs.cache-key }}
 
   # Windows packaging and E2E restore these; PRs no longer save their own copies.
   warm-windows-electron:
@@ -170,7 +170,7 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 20
     env:
-      ORCA_BACKGROUND_LAUNCH: '1'
+      OCC_BACKGROUND_LAUNCH: '1'
     steps:
       - uses: actions/checkout@v6
         with:
@@ -188,7 +188,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
-      ORCA_BACKGROUND_LAUNCH: '1'
+      OCC_BACKGROUND_LAUNCH: '1'
     steps:
       - uses: actions/checkout@v6
         with:
@@ -277,7 +277,7 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 10
     env:
-      ORCA_BACKGROUND_LAUNCH: '1'
+      OCC_BACKGROUND_LAUNCH: '1'
     steps:
       - uses: actions/checkout@v6
         with:

@@ -5,13 +5,13 @@ import { fetchJiraIssueDetail, fetchJiraTaskIssues } from './mobile-jira-task-so
 
 const issue: JiraIssue = {
   id: '1',
-  key: 'ORCA-7',
+  key: 'OCC-7',
   title: 'Read Jira on mobile',
-  url: 'https://acme.atlassian.net/browse/ORCA-7',
+  url: 'https://acme.atlassian.net/browse/OCC-7',
   siteId: 'site-a',
   description: 'A description',
   labels: ['mobile'],
-  project: { id: 'p', key: 'ORCA', name: 'OCC' },
+  project: { id: 'p', key: 'OCC', name: 'OCC' },
   issueType: { id: 'task', name: 'Task' },
   status: { id: 'open', name: 'Open', categoryKey: 'new', categoryName: 'To Do' },
   updatedAt: '2026-01-01T00:00:00Z',
@@ -40,11 +40,11 @@ describe('mobile Jira task requests', () => {
     await expect(
       fetchJiraTaskIssues(
         { sendRequest },
-        { jql: ' project = ORCA ', filter: 'assigned', siteId: 'all' }
+        { jql: ' project = OCC ', filter: 'assigned', siteId: 'all' }
       )
     ).resolves.toEqual([issue])
     expect(sendRequest).toHaveBeenCalledWith('jira.searchIssues', {
-      jql: 'project = ORCA',
+      jql: 'project = OCC',
       limit: 50,
       siteId: 'all'
     })

@@ -461,16 +461,16 @@ describe('a direct SSH listing older than an applied create', () => {
 
   function seedSsh(store: ReturnType<typeof createTestStore>) {
     const created = makeWorktree({
-      id: 'repo-ssh::/home/orca/created',
+      id: 'repo-ssh::/home/occ/created',
       repoId: 'repo-ssh',
-      path: '/home/orca/created',
+      path: '/home/occ/created',
       hostId: sshHost
     })
     store.setState({
       repos: [
         {
           id: 'repo-ssh',
-          path: '/home/orca/repo',
+          path: '/home/occ/repo',
           displayName: 'SSH Repo',
           badgeColor: '#000',
           addedAt: 0,

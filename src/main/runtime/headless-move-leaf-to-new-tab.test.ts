@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime-test-mocks.spec'
+import { OCCRuntimeService } from './occ-runtime-test-mocks.spec'
 import {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} from './orca-runtime-test-fixtures.spec'
+} from './occ-runtime-test-fixtures.spec'
 import type { RuntimeStore } from './runtime-store-contract'
 import { planTerminalLeafMove } from '../persistence/terminal-topology/terminal-leaf-move'
 import type { TerminalLeafMoveRequest } from '../../shared/terminal-leaf-move'
@@ -62,7 +62,7 @@ async function setup(
     return plan.result
   })
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: The shared fixture implements RuntimeStore for this runtime.
-  const runtime = new OrcaRuntimeService(runtimeStore as RuntimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore as RuntimeStore)
   await runtime.listMobileSessionTabs(`id:${TEST_WORKTREE_ID}`)
   const published: unknown[] = []
   runtime.onMobileSessionTabsChanged((snapshot) => published.push(snapshot))

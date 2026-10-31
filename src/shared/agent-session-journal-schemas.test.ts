@@ -27,7 +27,7 @@ const CANONICAL_BODIES: AgentJournalItemBody[] = [
     dispatchId: 'dispatch',
     task: 'Complete task',
     worker: {
-      party: { address: 'term_worker', terminalHandle: 'term_worker', orcaSessionId: null },
+      party: { address: 'term_worker', terminalHandle: 'term_worker', occSessionId: null },
       name: 'Worker'
     }
   },

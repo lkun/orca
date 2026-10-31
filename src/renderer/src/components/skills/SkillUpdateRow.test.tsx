@@ -36,15 +36,15 @@ afterEach(async () => {
   container = null
 })
 
-const SHARED = '/home/u/.agents/skills/orca-cli'
-const CLAUDE = '/home/u/.claude/skills/orca-cli'
+const SHARED = '/home/u/.agents/skills/occ-cli'
+const CLAUDE = '/home/u/.claude/skills/occ-cli'
 
 function skillOf(ops: BundledSkillOp[]) {
-  return summarizeBundledSkillPlan(planOf([planEntry('orca-cli', ops)])).skills[0]
+  return summarizeBundledSkillPlan(planOf([planEntry('occ-cli', ops)])).skills[0]
 }
 
 function row(view: HTMLElement): string {
-  return view.querySelector('[data-skill-row="orca-cli"]')?.textContent ?? ''
+  return view.querySelector('[data-skill-row="occ-cli"]')?.textContent ?? ''
 }
 
 describe('SkillUpdateRow', () => {
@@ -72,7 +72,7 @@ describe('SkillUpdateRow', () => {
     const view = await render(
       <SkillUpdateRow skill={skillOf([planOp(kind, CLAUDE)])} phase="plan" showLocations={false} />
     )
-    expect(row(view)).toBe(`orca-cli${label}`)
+    expect(row(view)).toBe(`occ-cli${label}`)
   })
 
   it('reports an unknown reason without claiming the copy was updated', async () => {
@@ -83,7 +83,7 @@ describe('SkillUpdateRow', () => {
         showLocations={false}
       />
     )
-    expect(row(view)).toBe('orca-cliUpdate skipped: This copy was kept as it is')
+    expect(row(view)).toBe('occ-cliUpdate skipped: This copy was kept as it is')
   })
 
   it.each([
@@ -104,7 +104,7 @@ describe('SkillUpdateRow', () => {
         />
       )
       expect(row(view)).toBe(
-        `orca-cliUpdate skipped: ${text}Claude Code · ~/.claude/skills/orca-cli`
+        `occ-cliUpdate skipped: ${text}Claude Code · ~/.claude/skills/occ-cli`
       )
     }
   )
@@ -113,11 +113,11 @@ describe('SkillUpdateRow', () => {
     const skill = skillOf([planOp('update', SHARED), planOp('keep', CLAUDE)])
     expect(
       row(await render(<SkillUpdateRow skill={skill} phase="plan" showLocations={false} />))
-    ).toBe('orca-cliUpdate available')
+    ).toBe('occ-cliUpdate available')
     await act(async () => root?.unmount())
     const shown = row(await render(<SkillUpdateRow skill={skill} phase="plan" showLocations />))
-    expect(shown).toContain('Shared folder · ~/.agents/skills/orca-cli')
-    expect(shown).toContain('Claude Code · ~/.claude/skills/orca-cli')
+    expect(shown).toContain('Shared folder · ~/.agents/skills/occ-cli')
+    expect(shown).toContain('Claude Code · ~/.claude/skills/occ-cli')
     expect(shown.match(/Update/gu)).toHaveLength(1)
     expect(shown).not.toContain('No change')
   })
@@ -125,7 +125,7 @@ describe('SkillUpdateRow', () => {
   it.each(['plan', 'result'] as const)(
     'shows identical skip reasons once per skill in the %s phase, retaining every folder',
     async (phase) => {
-      const cursor = '/home/u/.cursor/skills/orca-cli'
+      const cursor = '/home/u/.cursor/skills/occ-cli'
       const ops = [
         planOp('leave', SHARED, { reason: 'edited' }),
         planOp('leave', CLAUDE, { reason: 'shared-not-current' }),
@@ -136,7 +136,7 @@ describe('SkillUpdateRow', () => {
           skill={skillOf(ops)}
           phase={phase}
           outcome={{
-            name: 'orca-cli',
+            name: 'occ-cli',
             status: 'ran',
             ops: ops.map((op) => ({ ...op, status: 'done' }))
           }}
@@ -202,7 +202,7 @@ describe('SkillUpdateRow', () => {
 
   it('shows the outcome after a run, keeping what was left alone', async () => {
     const outcome: BundledSkillOutcome = {
-      name: 'orca-cli',
+      name: 'occ-cli',
       status: 'ran',
       ops: [
         { path: SHARED, kind: 'update', status: 'done' },
@@ -220,7 +220,7 @@ describe('SkillUpdateRow', () => {
         showLocations={false}
       />
     )
-    expect(row(view)).toBe('orca-cliUpdatedUpdate skipped: Skill edited outside OCC')
+    expect(row(view)).toBe('occ-cliUpdatedUpdate skipped: Skill edited outside OCC')
   })
 
   it.each<{
@@ -251,10 +251,10 @@ describe('SkillUpdateRow', () => {
       <SkillUpdateRow
         skill={skillOf([planOp('keep', SHARED), planOp('keep', CLAUDE)])}
         phase="result"
-        outcome={{ name: 'orca-cli', status: 'ran', ops }}
+        outcome={{ name: 'occ-cli', status: 'ran', ops }}
         showLocations={false}
       />
     )
-    expect(row(view)).toBe(`orca-cli${text}`)
+    expect(row(view)).toBe(`occ-cli${text}`)
   })
 })

@@ -4,7 +4,7 @@ const hostId = process.argv[2]
 const bogus = 'A'.repeat(43)
 const probe = (cell) =>
   new Promise((resolve) => {
-    const ws = new WebSocket(`wss://${cell}.relay.onorca.dev/v1/connect/${hostId}`, {
+    const ws = new WebSocket(`wss://${cell}.relay.onocc.dev/v1/connect/${hostId}`, {
       perMessageDeflate: false
     })
     const t0 = performance.now()

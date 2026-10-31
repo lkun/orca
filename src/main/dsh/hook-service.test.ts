@@ -21,7 +21,7 @@ let originalUserProfile: string | undefined
 let originalDshHome: string | undefined
 
 beforeEach(() => {
-  home = mkdtempSync(join(tmpdir(), 'orca-dsh-hook-'))
+  home = mkdtempSync(join(tmpdir(), 'occ-dsh-hook-'))
   originalHome = process.env.HOME
   originalUserProfile = process.env.USERPROFILE
   originalDshHome = process.env.DSH_HOME
@@ -50,9 +50,9 @@ afterEach(() => {
 })
 
 const configPath = (): string => join(home, '.dsh', 'cordis.patch.yml')
-const managedHooksPath = (): string => join(home, '.orca', 'agent-hooks', 'dsh-hooks.json')
+const managedHooksPath = (): string => join(home, '.occ', 'agent-hooks', 'dsh-hooks.json')
 const scriptPath = (): string =>
-  join(home, '.orca', 'agent-hooks', process.platform === 'win32' ? 'dsh-hook.cmd' : 'dsh-hook.sh')
+  join(home, '.occ', 'agent-hooks', process.platform === 'win32' ? 'dsh-hook.cmd' : 'dsh-hook.sh')
 
 function readManagedHooks(): { hooks: Record<string, unknown[]> } {
   const parsed: { hooks: Record<string, unknown[]> } = JSON.parse(
@@ -89,10 +89,10 @@ describe('DshHookService', () => {
     // DSH scrubs KEY/TOKEN variables, so restore aliases before guards or spooling.
     new DshHookService().install()
     const script = readFileSync(scriptPath(), 'utf-8')
-    const restoreAt = script.indexOf('ORCA_AGENT_PANE')
-    const guardAt = script.indexOf('ORCA_AGENT_HOOK_PORT')
+    const restoreAt = script.indexOf('OCC_AGENT_PANE')
+    const guardAt = script.indexOf('OCC_AGENT_HOOK_PORT')
     expect(restoreAt).toBeGreaterThan(-1)
-    expect(script).toContain('ORCA_AGENT_LAUNCH')
+    expect(script).toContain('OCC_AGENT_LAUNCH')
     expect(restoreAt).toBeLessThan(guardAt)
   })
 

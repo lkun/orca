@@ -194,7 +194,7 @@ describe('reference agent discovery', () => {
     const record = agentSessionRecordFixture()
     const index = createReferenceAgentIndex(runtime([]), null, sessionStore([record]))
     expect(index.get('local|workspace-1')?.[0]).toMatchObject({
-      mailbox: `orca_session_id:${record.sessionId}`,
+      mailbox: `occ_session_id:${record.sessionId}`,
       sessionId: record.sessionId,
       liveness: 'live',
       sessionIds: [record.sessionId, 'provider-session-alpha-1']

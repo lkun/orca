@@ -18,7 +18,7 @@ function readJson(filePath) {
 }
 
 function makeProject({ sourceText, enCatalog = {}, esCatalog = {} }) {
-  const root = mkdtempSync(path.join(tmpdir(), 'orca-localization-catalog-'))
+  const root = mkdtempSync(path.join(tmpdir(), 'occ-localization-catalog-'))
   const rendererDir = path.join(root, 'src', 'renderer', 'src', 'components')
   const mainDir = path.join(root, 'src', 'main')
   const localesDir = path.join(root, 'src', 'renderer', 'src', 'i18n', 'locales')

@@ -62,7 +62,7 @@ beforeEach(async () => {
   delete process.env.APPIMAGE
   delete process.env.APPDIR
   setPlatform('linux')
-  resourcesDir = await fsp.mkdtemp(path.join(os.tmpdir(), 'orca-package-type-'))
+  resourcesDir = await fsp.mkdtemp(path.join(os.tmpdir(), 'occ-package-type-'))
   setResourcesPath(resourcesDir)
 })
 
@@ -137,36 +137,36 @@ describe('getLinuxRootPackageType', () => {
   })
 
   it('uses a legacy AppImage identity when its executable and resources are inside APPDIR', async () => {
-    process.env.APPIMAGE = '/opt/occ/orca.AppImage'
-    process.env.APPDIR = '/tmp/.mount_orca'
-    setExecPath('/tmp/.mount_orca/orca')
-    setResourcesPath('/tmp/.mount_orca/resources')
+    process.env.APPIMAGE = '/opt/occ/occ.AppImage'
+    process.env.APPDIR = '/tmp/.mount_occ'
+    setExecPath('/tmp/.mount_occ/occ')
+    setResourcesPath('/tmp/.mount_occ/resources')
     const module = await loadPackageType()
     expect(module.getLinuxPackageType()).toBe('non-root')
     expect(module.getLinuxRootPackageType()).toBeNull()
   })
 
   it.each([
-    ['relative APPIMAGE', 'relative/orca.AppImage', '/tmp/.mount_orca'],
-    ['relative APPDIR', '/opt/occ/orca.AppImage', 'relative/.mount_orca']
+    ['relative APPIMAGE', 'relative/occ.AppImage', '/tmp/.mount_occ'],
+    ['relative APPDIR', '/opt/occ/occ.AppImage', 'relative/.mount_occ']
   ])('rejects a legacy identity with %s', async (_label, appImagePath, appDirPath) => {
     process.env.APPIMAGE = appImagePath
     process.env.APPDIR = appDirPath
-    setExecPath('/tmp/.mount_orca/orca')
-    setResourcesPath('/tmp/.mount_orca/resources')
+    setExecPath('/tmp/.mount_occ/occ')
+    setResourcesPath('/tmp/.mount_occ/resources')
     const module = await loadPackageType()
     expect(module.getLinuxPackageType()).toBe('unusable')
     expect(module.getLinuxRootPackageType()).toBeNull()
   })
 
   it.each([
-    ['executable', '/tmp/.mount_orca-shadow/orca', '/tmp/.mount_orca/resources'],
-    ['resources', '/tmp/.mount_orca/orca', '/tmp/.mount_orca-shadow/resources']
+    ['executable', '/tmp/.mount_occ-shadow/occ', '/tmp/.mount_occ/resources'],
+    ['resources', '/tmp/.mount_occ/occ', '/tmp/.mount_occ-shadow/resources']
   ])(
     'rejects a prefix-collision outside APPDIR for %s',
     async (_label, execPath, resourcesPath) => {
-      process.env.APPIMAGE = '/opt/occ/orca.AppImage'
-      process.env.APPDIR = '/tmp/.mount_orca'
+      process.env.APPIMAGE = '/opt/occ/occ.AppImage'
+      process.env.APPDIR = '/tmp/.mount_occ'
       setExecPath(execPath)
       setResourcesPath(resourcesPath)
       const module = await loadPackageType()
@@ -178,10 +178,10 @@ describe('getLinuxRootPackageType', () => {
   it('rejects NULs in every legacy AppImage identity path', async () => {
     const { isLegacyAppImageRuntimeIdentity } = await loadPackageType()
     const identity = {
-      appImagePath: '/opt/occ/orca.AppImage',
-      appDirPath: '/tmp/.mount_orca',
-      execPath: '/tmp/.mount_orca/orca',
-      resourcesPath: '/tmp/.mount_orca/resources'
+      appImagePath: '/opt/occ/occ.AppImage',
+      appDirPath: '/tmp/.mount_occ',
+      execPath: '/tmp/.mount_occ/occ',
+      resourcesPath: '/tmp/.mount_occ/resources'
     }
 
     for (const field of Object.keys(identity) as (keyof typeof identity)[]) {
@@ -194,10 +194,10 @@ describe('getLinuxRootPackageType', () => {
   it('requires every legacy AppImage identity path to be absolute', async () => {
     const { isLegacyAppImageRuntimeIdentity } = await loadPackageType()
     const identity = {
-      appImagePath: '/opt/occ/orca.AppImage',
-      appDirPath: '/tmp/.mount_orca',
-      execPath: '/tmp/.mount_orca/orca',
-      resourcesPath: '/tmp/.mount_orca/resources'
+      appImagePath: '/opt/occ/occ.AppImage',
+      appDirPath: '/tmp/.mount_occ',
+      execPath: '/tmp/.mount_occ/occ',
+      resourcesPath: '/tmp/.mount_occ/resources'
     }
 
     for (const field of Object.keys(identity) as (keyof typeof identity)[]) {
@@ -207,8 +207,8 @@ describe('getLinuxRootPackageType', () => {
 
   it('prefers a package marker over an invalid legacy AppImage identity', async () => {
     await writeMarker('deb')
-    process.env.APPIMAGE = 'relative/orca.AppImage'
-    process.env.APPDIR = 'relative/.mount_orca'
+    process.env.APPIMAGE = 'relative/occ.AppImage'
+    process.env.APPDIR = 'relative/.mount_occ'
     const module = await loadPackageType()
     expect(module.getLinuxPackageType()).toBe('deb')
     expect(module.getLinuxRootPackageType()).toBe('deb')

@@ -1,13 +1,13 @@
 [package]
-name = "orca-agent-hook"
+name = "occ-agent-hook"
 version = "0.0.0"
 edition = "2021"
 publish = false
 
-# Why `orca-agent-hook`: it ships as resources\bin\orca-agent-hook.exe and installs under the
-# same name in ~/.orca/agent-hooks, so the name that runs matches the PE's OriginalFilename.
+# Why `occ-agent-hook`: it ships as resources\bin\occ-agent-hook.exe and installs under the
+# same name in ~/.occ/agent-hooks, so the name that runs matches the PE's OriginalFilename.
 [[bin]]
-name = "orca-agent-hook"
+name = "occ-agent-hook"
 path = "src/main.rs"
 
 [build-dependencies]

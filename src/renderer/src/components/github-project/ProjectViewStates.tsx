@@ -11,7 +11,7 @@ import type { GitHubProjectViewSummary } from '../../../../shared/github/project
 import type { GitHubProjectViewError } from '../../../../shared/github/project-result-types'
 import { openAppHttpLink } from '@/lib/app-http-link-open'
 
-const ORCA_FEATURE_REQUEST_URL = 'https://github.com/stablyai/orca/issues/new'
+const OCC_FEATURE_REQUEST_URL = 'https://github.com/stablyai/occ/issues/new'
 
 export function ProjectViewTabStrip({
   views,
@@ -71,7 +71,7 @@ function ProjectViewTab({
           : translate(
               'auto.components.github.project.ProjectViewWrapper.2edf5e7e77',
               "{{value0}} — OCC doesn't support {{value1}} project views yet. File a feature request at {{value2}}.",
-              { value0: view.name, value1: layoutLabel, value2: ORCA_FEATURE_REQUEST_URL }
+              { value0: view.name, value1: layoutLabel, value2: OCC_FEATURE_REQUEST_URL }
             )
       }
       className={cn(
@@ -103,7 +103,7 @@ function ProjectViewTab({
           aria-label={translate(
             'auto.components.github.project.ProjectViewWrapper.55de4fb57a',
             '{{value0}}. {{value1}} File a feature request at {{value2}}.',
-            { value0: view.name, value1: message, value2: ORCA_FEATURE_REQUEST_URL }
+            { value0: view.name, value1: message, value2: OCC_FEATURE_REQUEST_URL }
           )}
           className="inline-flex shrink-0 cursor-not-allowed rounded-t-md outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
         >
@@ -123,7 +123,7 @@ function ProjectViewTab({
             type="button"
             size="xs"
             variant="outline"
-            onClick={(event) => openAppHttpLink(ORCA_FEATURE_REQUEST_URL, { event })}
+            onClick={(event) => openAppHttpLink(OCC_FEATURE_REQUEST_URL, { event })}
           >
             {translate(
               'auto.components.github.project.ProjectViewWrapper.4d2a77a119',

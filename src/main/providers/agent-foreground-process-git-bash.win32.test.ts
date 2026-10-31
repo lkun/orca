@@ -55,9 +55,9 @@ async function proveIdlePromptCycle(
 
     // Interrupt only after the child is ready, not during a transient shell fork.
     proc.write(
-      "node -e \"console.log(['ORCA','FOREGROUND_READY'].join('_')); setInterval(() => {}, 1000)\"\r"
+      "node -e \"console.log(['OCC','FOREGROUND_READY'].join('_')); setInterval(() => {}, 1000)\"\r"
     )
-    await vi.waitFor(() => expect(output).toContain('ORCA_FOREGROUND_READY'), {
+    await vi.waitFor(() => expect(output).toContain('OCC_FOREGROUND_READY'), {
       timeout: 10_000
     })
     await vi.waitFor(async () => expect(await confirm()).toBe(false), { timeout: 10_000 })
@@ -80,19 +80,19 @@ async function proveIdlePromptCycle(
 
 describeOnWindows("Git Bash launcher shell proof with OCC's real launch", () => {
   let userData: string
-  const previousUserData = process.env.ORCA_USER_DATA_PATH
+  const previousUserData = process.env.OCC_USER_DATA_PATH
 
   beforeAll(() => {
     // The launch plan writes shell-ready wrappers under the user-data root.
-    userData = mkdtempSync(join(tmpdir(), 'orca-git-bash-proof-'))
-    process.env.ORCA_USER_DATA_PATH = userData
+    userData = mkdtempSync(join(tmpdir(), 'occ-git-bash-proof-'))
+    process.env.OCC_USER_DATA_PATH = userData
   })
 
   afterAll(() => {
     if (previousUserData === undefined) {
-      delete process.env.ORCA_USER_DATA_PATH
+      delete process.env.OCC_USER_DATA_PATH
     } else {
-      process.env.ORCA_USER_DATA_PATH = previousUserData
+      process.env.OCC_USER_DATA_PATH = previousUserData
     }
     removeTreeSync(userData)
   })
@@ -100,7 +100,7 @@ describeOnWindows("Git Bash launcher shell proof with OCC's real launch", () => 
   it.each([
     ['login shell', {}],
     // Why: with the Codex preflight set, the exec'd shell runs OCC's --rcfile wrapper.
-    ['rcfile wrapper', { ORCA_CODEX_LAUNCH_PREFLIGHT: 'C:\\orca-missing-preflight.exe' }]
+    ['rcfile wrapper', { OCC_CODEX_LAUNCH_PREFLIGHT: 'C:\\occ-missing-preflight.exe' }]
   ])(
     'confirms an idle %s prompt, refutes a running command, and confirms again',
     async (_label, extraEnv) => {
@@ -129,7 +129,7 @@ describeOnWindows("Git Bash launcher shell proof with OCC's real launch", () => 
     }
     expect(isGitForWindowsBashLauncherPath(discovered)).toBe(true)
     // A junction, not a copy: the operator's install is neither modified nor duplicated.
-    const stagingRoot = mkdtempSync(join(tmpdir(), 'orca-git-renamed-'))
+    const stagingRoot = mkdtempSync(join(tmpdir(), 'occ-git-renamed-'))
     const stagedInstall = join(stagingRoot, 'Git-2.55')
     symlinkSync(dirname(dirname(discovered)), stagedInstall, 'junction')
     const opts: PtySubprocessOptions = {
@@ -174,10 +174,10 @@ describeOnWindows("Git Bash launcher shell proof with OCC's real launch", () => 
     try {
       await vi.waitFor(() => expect(output).toContain('$'), { timeout: 20_000 })
       // ssh-agent forks, setsids off the console, and its Win32 parent exits.
-      proc.write('eval "$(ssh-agent -s)"; echo ORCA_AGENT_$SSH_AGENT_PID\r')
+      proc.write('eval "$(ssh-agent -s)"; echo OCC_AGENT_$SSH_AGENT_PID\r')
       // Usually ~1s, but it exceeded 10s on a loaded runner; the bound only catches a hang.
-      await vi.waitFor(() => expect(output).toMatch(/ORCA_AGENT_\d+/), { timeout: 30_000 })
-      agentPid = Number(/ORCA_AGENT_(\d+)/.exec(output)?.[1])
+      await vi.waitFor(() => expect(output).toMatch(/OCC_AGENT_\d+/), { timeout: 30_000 })
+      agentPid = Number(/OCC_AGENT_(\d+)/.exec(output)?.[1])
       await vi.waitFor(async () => expect(await inspect(true)).toBe('no-children'), {
         timeout: 10_000
       })

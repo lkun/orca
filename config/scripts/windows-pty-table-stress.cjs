@@ -11,7 +11,7 @@ function report(phase, details = {}) {
 
 async function exerciseTable() {
   assert.equal(process.platform, 'win32', 'This probe requires real Windows ConPTY')
-  const rounds = Number(process.env.ORCA_PTY_TABLE_STRESS_ROUNDS ?? 8)
+  const rounds = Number(process.env.OCC_PTY_TABLE_STRESS_ROUNDS ?? 8)
   assert.ok(Number.isInteger(rounds) && rounds > 0 && rounds <= 2000)
   const { createStressObserver, loadedStressInputHashes, sanitizeStressText } =
     await import('./windows-pty-table-stress-observer.mjs')

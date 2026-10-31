@@ -32,7 +32,7 @@ function readProtocolVersion() {
 function makeSocketPath(userDataDir) {
   // Windows uses named pipes; POSIX socket stays under scratch userData for cleanup.
   if (process.platform === 'win32') {
-    return `\\\\.\\pipe\\orca-daemon-smoke-${process.pid}-${randomUUID()}`
+    return `\\\\.\\pipe\\occ-daemon-smoke-${process.pid}-${randomUUID()}`
   }
   return join(userDataDir, 'daemon.sock')
 }
@@ -133,7 +133,7 @@ async function runPtySpawnHealthCheck(socketPath, tokenPath, protocolVersion) {
 }
 
 async function main() {
-  const userDataDir = mkdtempSync(join(tmpdir(), 'orca-daemon-boot-smoke-'))
+  const userDataDir = mkdtempSync(join(tmpdir(), 'occ-daemon-boot-smoke-'))
   const socketPath = makeSocketPath(userDataDir)
   const tokenPath = join(userDataDir, 'daemon.token')
   const pidPath = join(userDataDir, 'daemon.pid')
@@ -160,7 +160,7 @@ async function main() {
     {
       // Use Node directly, without ELECTRON_RUN_AS_NODE, to expose leaked Electron dependencies at startup.
       stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-      env: { ...process.env, ORCA_USER_DATA_PATH: userDataDir }
+      env: { ...process.env, OCC_USER_DATA_PATH: userDataDir }
     }
   )
 

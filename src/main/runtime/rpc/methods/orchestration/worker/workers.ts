@@ -17,7 +17,7 @@ import {
 } from '../../../../../../shared/orchestration-timing-budgets'
 import { buildOrchestrationTaskDisplayMetadata } from '../../../../../../shared/orchestration-task-display'
 import { assertWorkerStartTaskSpecWithinPromptBudget } from './worker-start-prompt-budget'
-import { ORCA_SESSION_ADDRESS_PREFIX } from '../../../../../../shared/orca-session-address'
+import { OCC_SESSION_ADDRESS_PREFIX } from '../../../../../../shared/occ-session-address'
 import { ORCHESTRATION_SESSION_CALLER_ERROR_CODES as SESSION_CODES } from '../../../../../../shared/orchestration-session-caller-codes'
 
 export const ORCHESTRATION_WORKER_START_METHODS = [
@@ -36,7 +36,7 @@ export const ORCHESTRATION_WORKER_START_METHODS = [
           '--timeout-ms is too large for worker-start transport grace; the derived timeout must fit within the timer limit.'
         )
       }
-      if (params.on && params.terminal?.startsWith(ORCA_SESSION_ADDRESS_PREFIX)) {
+      if (params.on && params.terminal?.startsWith(OCC_SESSION_ADDRESS_PREFIX)) {
         // Refused here, before any remote call: an OCC session ID names a chat only on its own host.
         throw new OrchestrationError(
           SESSION_CODES.hostBoundary,

@@ -11,7 +11,7 @@ function v2Manifest(overrides: Record<string, unknown> = {}): Record<string, unk
     publisher: 'acme',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+    engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
     ...overrides
   }
 }
@@ -80,7 +80,7 @@ describe('plugin schema issues', () => {
   it('tells a missing field from a mistyped one by the input, not the message wording', () => {
     expect(manifestError(v2Manifest({ name: undefined }))).toBe('name: is required')
     expect(manifestError(v2Manifest({ name: 5 }))).toBe('name: must be a string')
-    expect(manifestError(v2Manifest({ engines: {} }))).toBe('engines.orca: is required')
+    expect(manifestError(v2Manifest({ engines: {} }))).toBe('engines.occ: is required')
     expect(manifestError(v2Manifest({ engines: 'soon' }))).toBe('engines: must be an object')
   })
 })

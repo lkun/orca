@@ -42,7 +42,7 @@ vi.mock('./cli/appimage-copy-pre-extraction', () => ({
 vi.mock('./updater-changelog', () => ({ fetchChangelog: vi.fn().mockResolvedValue(null) }))
 vi.mock('./updater-lifecycle-diagnostics', () => ({ recordUpdaterLifecycle: vi.fn() }))
 
-const DEB_PATH = '/home/tester/.cache/orca-updater/pending/occ-ide_1.0.61_amd64.deb'
+const DEB_PATH = '/home/tester/.cache/occ-updater/pending/occ-ide_1.0.61_amd64.deb'
 // Capture requires a digest that decodes to exactly 64 bytes.
 const DEB_SHA512 =
   'LHlL7dKoqg98gS2nfQv878dK+UoktbAkm4M20/hoJ2Qr0Kqsa3MSL4VmWy/Lll/MYjQFkpvOxduQ/vswentozA=='
@@ -158,7 +158,7 @@ describe('registerAutoUpdaterHandlers linux package artifact tracking', () => {
     getLinuxPackageTypeMock.mockReturnValue('non-root')
     getLinuxRootPackageTypeMock.mockReturnValue(null)
     preExtractUpdateMock.mockReturnValue(new Promise(() => {}))
-    const appImagePath = '/home/tester/.cache/orca-updater/pending/OCC-1.0.61.AppImage'
+    const appImagePath = '/home/tester/.cache/occ-updater/pending/OCC-1.0.61.AppImage'
     const { context, emit } = await register()
     emit('update-downloaded', downloadedEvent({ downloadedFile: appImagePath }))
 
@@ -185,12 +185,12 @@ describe('registerAutoUpdaterHandlers linux package artifact tracking', () => {
       getLinuxPackageTypeMock.mockReturnValue(packageType)
       getLinuxRootPackageTypeMock.mockReturnValue(packageType)
       const { emit, context } = await register()
-      const fileName = packageType === 'deb' ? 'orca.deb' : 'orca.rpm'
+      const fileName = packageType === 'deb' ? 'occ.deb' : 'occ.rpm'
 
       emit(
         'update-downloaded',
         downloadedEvent({
-          downloadedFile: `/home/tester/.cache/orca-updater/pending/${fileName}`,
+          downloadedFile: `/home/tester/.cache/occ-updater/pending/${fileName}`,
           files: [{ url: fileName, sha512: DEB_SHA512 }]
         })
       )

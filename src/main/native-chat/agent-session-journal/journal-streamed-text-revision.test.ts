@@ -28,7 +28,7 @@ const journals = createTrackedJournalOpener()
 let root: string
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-streamed-revision-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-streamed-revision-'))
 })
 afterEach(async () => {
   vi.restoreAllMocks()
@@ -115,7 +115,7 @@ it('keeps image and goal transitions FULL, streams text at NORMAL, and restores 
   }
   // Existing items retain creation provenance; a caller's ownerFence hint changes no stored owner.
   expect(levels).toEqual([2, 1, 2, 2])
-  const identity = { provider: 'orca' as const, clientMessageId: 'failed-stream' }
+  const identity = { provider: 'occ' as const, clientMessageId: 'failed-stream' }
   await journal.appendItem(identity, text('assistant', 'before failure'), {
     fence: 2,
     turnScope: AGENT_JOURNAL_THREAD_SCOPE
@@ -247,7 +247,7 @@ it.each([1, 10])(
       levels.length = 0
       const input = await uploadedInput()
       await journal.appendClaimingAttachments(
-        { provider: 'orca', clientMessageId: 'goal' },
+        { provider: 'occ', clientMessageId: 'goal' },
         { ...input.body, sentAs: 'goal' },
         { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
       )
@@ -262,7 +262,7 @@ it.each([1, 10])(
 
 it('resolves/builds once after preceding writes and preserves actual output and external receipt durability', async () => {
   const journal = await openJournal()
-  const identity = { provider: 'orca' as const, clientMessageId: 'dynamic' }
+  const identity = { provider: 'occ' as const, clientMessageId: 'dynamic' }
   let release = () => {}
   const barrier = new Promise<void>((resolve) => {
     release = resolve
@@ -379,7 +379,7 @@ it.each([1, 10])(
     const journal = await openJournal()
     const other = await openJournal('other')
     for (let n = 0; n < 10 * count; n++) {
-      const identity = { provider: 'orca' as const, clientMessageId: `old-${n}` }
+      const identity = { provider: 'occ' as const, clientMessageId: `old-${n}` }
       await journal.appendItem(identity, text('user', 'old'), {
         fence: 1,
         turnScope: AGENT_JOURNAL_THREAD_SCOPE
@@ -414,7 +414,7 @@ it.each([1, 10])(
       levels.length = 0
       for (let n = 0; n < count; n++) {
         const { id, body } = await uploadedInput()
-        const identity = { provider: 'orca' as const, clientMessageId: `${writer}-${n}` }
+        const identity = { provider: 'occ' as const, clientMessageId: `${writer}-${n}` }
         const resolve = vi.fn(() => ({ identity, body }))
         if (writer === 'direct') {
           await journal.appendItem(identity, body, {

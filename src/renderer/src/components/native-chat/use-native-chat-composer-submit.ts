@@ -42,12 +42,12 @@ export function useNativeChatComposerSubmit(args: {
   sendPty: () => void
   sendStructured: (text: string, attachments: readonly NativeChatComposerImageAttachment[]) => void
   /** Runs a command OCC owns, like `/resume`; true means the draft never reaches the agent. */
-  consumeOrcaCommand?: (draft: string) => boolean
+  consumeOCCCommand?: (draft: string) => boolean
   setDraft: (value: string) => void
   setCaret: (caret: number) => void
 }): { send: () => void; goalMode: NativeChatComposerGoalMode } {
   const { caret, disabled, draft, draftScopeKey, imageAttachments, sendPty, sendStructured } = args
-  const { consumeOrcaCommand, setCaret, setDraft, structuredTransport } = args
+  const { consumeOCCCommand, setCaret, setDraft, structuredTransport } = args
   const threadGoal = structuredTransport?.threadGoal
   const [entered, setEntered] = useState(false)
   const active = entered && threadGoal !== undefined
@@ -106,7 +106,7 @@ export function useNativeChatComposerSubmit(args: {
 
   const send = useCallback(() => {
     // Before goal mode too: a navigation command must never become an objective.
-    if (consumeOrcaCommand?.(draft)) {
+    if (consumeOCCCommand?.(draft)) {
       return
     }
     if (
@@ -134,7 +134,7 @@ export function useNativeChatComposerSubmit(args: {
     }
   }, [
     active,
-    consumeOrcaCommand,
+    consumeOCCCommand,
     disabled,
     draft,
     draftScopeKey,

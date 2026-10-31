@@ -2,7 +2,7 @@
 // Drive recovery from main because renderer crash severs Playwright’s CDP session even after the app reloads.
 
 import type { ElectronApplication } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { retryTransientMainEvaluate } from './helpers/electron-main-evaluate-retry'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
@@ -82,21 +82,21 @@ async function waitForRendererRecovery(electronApp: ElectronApplication): Promis
 
 test.describe('Renderer crash recovery keeps terminal input alive', () => {
   test('typing still reaches the PTY after forced renderer crash + auto-reload', async ({
-    orcaPage,
+    occPage,
     electronApp
   }) => {
     test.setTimeout(300_000)
 
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
-    await waitForPaneCount(orcaPage, 1, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
+    await waitForPaneCount(occPage, 1, 30_000)
 
     // Prove DOM keyboard and PTY roundtrip before crash so recovery failures are interpretable.
-    const baselinePtyId = await discoverActivePtyId(orcaPage)
+    const baselinePtyId = await discoverActivePtyId(occPage)
     expect(
-      await probeKeyboardType(orcaPage, 'KB_BASELINE_OK'),
+      await probeKeyboardType(occPage, 'KB_BASELINE_OK'),
       'baseline keyboard input must reach the PTY before any crash is forced'
     ).toBe(true)
 

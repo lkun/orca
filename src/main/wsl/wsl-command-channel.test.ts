@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events'
 import { PassThrough } from 'node:stream'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import type { PipedChildProcess } from '@orca/process-host/process-spec'
+import type { PipedChildProcess } from '@occ/process-host/process-spec'
 import {
   killWslChannelsInCloseGrace,
   WSL_CHANNEL_CLOSE_GRACE_MS,

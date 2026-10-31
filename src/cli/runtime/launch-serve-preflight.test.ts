@@ -25,7 +25,7 @@ vi.mock('./serve-update-supervisor', async (importOriginal) => ({
   superviseForegroundServe: superviseMock
 }))
 
-import { serveOrcaApp } from './launch'
+import { serveOCCApp } from './launch'
 
 let actualPreflight: typeof ServePreflight
 beforeAll(async () => {
@@ -41,13 +41,13 @@ class FakeChildProcess extends EventEmitter {
 
 const PROFILE = resolve('/profiles/serve-preflight')
 
-describe('serveOrcaApp: Electron serve preflight', () => {
+describe('serveOCCApp: Electron serve preflight', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     spawnMock.mockReturnValue(new FakeChildProcess())
-    vi.stubEnv('ORCA_APP_EXECUTABLE', '/opt/occ/orca')
-    vi.stubEnv('ORCA_SERVE_RUNTIME', 'electron')
-    vi.stubEnv('ORCA_USER_DATA_PATH', PROFILE)
+    vi.stubEnv('OCC_APP_EXECUTABLE', '/opt/occ/occ')
+    vi.stubEnv('OCC_SERVE_RUNTIME', 'electron')
+    vi.stubEnv('OCC_USER_DATA_PATH', PROFILE)
   })
 
   afterEach(() => {
@@ -57,7 +57,7 @@ describe('serveOrcaApp: Electron serve preflight', () => {
   it('never execs a second Electron main once the preflight refuses', async () => {
     preflightMock.mockReturnValue(Promise.resolve(3))
 
-    await expect(serveOrcaApp({ json: true })).resolves.toBe(3)
+    await expect(serveOCCApp({ json: true })).resolves.toBe(3)
     expect(spawnMock).not.toHaveBeenCalled()
     expect(preflightMock).toHaveBeenCalledWith({ json: true }, PROFILE)
   })
@@ -66,7 +66,7 @@ describe('serveOrcaApp: Electron serve preflight', () => {
     preflightMock.mockReturnValue(Promise.resolve(null))
     superviseMock.mockResolvedValue(0)
 
-    await expect(serveOrcaApp({})).resolves.toBe(0)
+    await expect(serveOCCApp({})).resolves.toBe(0)
     expect(spawnMock).toHaveBeenCalledOnce()
   })
 
@@ -75,7 +75,7 @@ describe('serveOrcaApp: Electron serve preflight', () => {
     const abort = new MacServeStartupAbortError('runtime_serve_failed', 'aborted at startup')
     superviseMock.mockRejectedValue(abort)
 
-    await expect(serveOrcaApp({})).rejects.toBe(abort)
+    await expect(serveOCCApp({})).rejects.toBe(abort)
     expect(recordAbortMock).toHaveBeenCalledWith(PROFILE, 'aborted at startup')
   })
 })
@@ -86,7 +86,7 @@ describe.skipIf(process.platform === 'win32')(
     it.each(['absent', 'accepting'])(
       'reaches the existing launch/refusal seam for a %s endpoint',
       async (state) => {
-        const root = mkdtempSync(join(tmpdir(), 'orca-serve-launch-'))
+        const root = mkdtempSync(join(tmpdir(), 'occ-serve-launch-'))
         const endpoint = join(root, 'runtime.sock')
         const sockets = new Set<Socket>()
         const server = createServer((socket) => {
@@ -96,11 +96,11 @@ describe.skipIf(process.platform === 'win32')(
         })
         try {
           vi.clearAllMocks()
-          vi.stubEnv('ORCA_USER_DATA_PATH', root)
-          vi.stubEnv('ORCA_APP_EXECUTABLE', '/opt/occ/orca')
-          vi.stubEnv('ORCA_SERVE_RUNTIME', 'electron')
+          vi.stubEnv('OCC_USER_DATA_PATH', root)
+          vi.stubEnv('OCC_APP_EXECUTABLE', '/opt/occ/occ')
+          vi.stubEnv('OCC_SERVE_RUNTIME', 'electron')
           writeFileSync(
-            join(root, 'orca-runtime.json'),
+            join(root, 'occ-runtime.json'),
             JSON.stringify({
               runtimeId: 'leftover',
               pid: 2147483647,
@@ -116,7 +116,7 @@ describe.skipIf(process.platform === 'win32')(
           superviseMock.mockResolvedValue(0)
           spawnMock.mockReturnValue(new FakeChildProcess())
           vi.spyOn(process.stderr, 'write').mockImplementation(() => true)
-          expect(await serveOrcaApp({})).toBe(state === 'absent' ? 0 : 3)
+          expect(await serveOCCApp({})).toBe(state === 'absent' ? 0 : 3)
           expect(spawnMock).toHaveBeenCalledTimes(state === 'absent' ? 1 : 0)
         } finally {
           for (const socket of sockets) {

@@ -40,7 +40,7 @@ export function buildAiVaultResumeCopyCommandForWorktree(args: AiVaultResumeWork
   // Copied lines run in unknown shells; env -u avoids fish_pid probing that aborts under set -u before agent launch (#14863).
   const clearEnvNames =
     args.session.agent === 'codex' && args.session.codexHome === null
-      ? (['CODEX_HOME', 'ORCA_CODEX_HOME'] as const)
+      ? (['CODEX_HOME', 'OCC_CODEX_HOME'] as const)
       : undefined
   return buildAiVaultResumeForWorktree(args, true, clearEnvNames).command
 }

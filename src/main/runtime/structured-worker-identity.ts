@@ -10,7 +10,7 @@ import {
   structuredAgentSessionTabId
 } from '../../shared/structured-agent-session-projection'
 import { isTerminalLeafId, makePaneKey, parsePaneKey } from '../../shared/stable-pane-id'
-import { isOrcaSessionId, type OrcaSessionId } from '../../shared/orca-session-address'
+import { isOCCSessionId, type OCCSessionId } from '../../shared/occ-session-address'
 import type { TuiAgent } from '../../shared/tui-agent'
 import {
   STRUCTURED_WORKER_HANDLE_PREFIX,
@@ -91,11 +91,11 @@ export function sessionIdFromStructuredWorkerIncarnation(
 }
 
 /** The OCC session id a `structured:<sessionId>` incarnation names; null for any other. */
-export function structuredWorkerOrcaSessionIdForIncarnation(
+export function structuredWorkerOCCSessionIdForIncarnation(
   processIncarnation: string | null | undefined
-): OrcaSessionId | null {
+): OCCSessionId | null {
   const sessionId = sessionIdFromStructuredWorkerIncarnation(processIncarnation)
-  return sessionId !== null && isOrcaSessionId(sessionId) ? sessionId : null
+  return sessionId !== null && isOCCSessionId(sessionId) ? sessionId : null
 }
 
 /** Structured sessions can only exist local and outside WSL; anything else is not our authority. */

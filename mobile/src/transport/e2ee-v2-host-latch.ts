@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // After any v2 success, refuse legacy downgrade on every path; key by the pinned, nonsecret host public key.
-const STORAGE_KEY = 'orca:e2ee-v2-hosts'
+const STORAGE_KEY = 'occ:e2ee-v2-hosts'
 const MAX_LATCHED_HOSTS = 128
 
 let latched: Set<string> | null = null

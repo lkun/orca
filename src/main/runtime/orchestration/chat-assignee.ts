@@ -1,9 +1,9 @@
 import type { AgentSessionConversationView } from '../../../shared/agent-session-conversation-view'
 import {
-  ORCA_SESSION_ADDRESS_PREFIX,
-  parseOrcaSessionAddress,
-  type OrcaSessionId
-} from '../../../shared/orca-session-address'
+  OCC_SESSION_ADDRESS_PREFIX,
+  parseOCCSessionAddress,
+  type OCCSessionId
+} from '../../../shared/occ-session-address'
 import type { OrchestrationDb } from './db'
 import { DISPATCH_CONTEXT_COLUMN_LIST } from './db/row-column-lists'
 import type { DispatchContextRow } from './types'
@@ -17,8 +17,8 @@ import {
 /** The chat a Dispatch assignee handle names; null for a terminal or a structured worker. */
 export function chatAssigneeSessionId(
   assigneeHandle: string | null | undefined
-): OrcaSessionId | null {
-  return assigneeHandle ? parseOrcaSessionAddress(assigneeHandle) : null
+): OCCSessionId | null {
+  return assigneeHandle ? parseOCCSessionAddress(assigneeHandle) : null
 }
 
 export type ChatAssigneeObservation =
@@ -29,7 +29,7 @@ export type ChatAssigneeObservation =
 
 /** Idle chats remain live; only closed chats exited, while missing or remote records are unverifiable. */
 export function observeChatAssignee(
-  sessionId: OrcaSessionId,
+  sessionId: OCCSessionId,
   db: OrchestrationDb | null | undefined,
   store: AgentSessionRecordReader | null = readAgentSessionRecordStore()
 ): ChatAssigneeObservation {
@@ -83,7 +83,7 @@ export function exitedChatDispatchesForSession(
       `SELECT ${DISPATCH_CONTEXT_COLUMN_LIST} FROM dispatch_contexts
         WHERE status IN ('pending', 'dispatched') AND substr(assignee_handle, 1, ?) = ?`
     )
-    .all(ORCA_SESSION_ADDRESS_PREFIX.length, ORCA_SESSION_ADDRESS_PREFIX)
+    .all(OCC_SESSION_ADDRESS_PREFIX.length, OCC_SESSION_ADDRESS_PREFIX)
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: The schema-pinned complete Dispatch projection returns Dispatch rows; the adapter exposes unknown.
   return (rows as DispatchContextRow[]).filter(
     (dispatch): dispatch is DispatchContextRow & { assignee_handle: string } => {

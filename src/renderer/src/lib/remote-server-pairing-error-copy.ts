@@ -93,8 +93,8 @@ const COPY: Record<RemoteServerPairingFailureCode, (name: string | null) => stri
       : translate('runtime.remoteServerPairingErrors.nameTaken', EN.nameTaken, {
           name
         }),
-  idNeedsNewerOrca: () =>
-    translate('runtime.remoteServerPairingErrors.idNeedsNewerOrca', EN.idNeedsNewerOrca),
+  idNeedsNewerOCC: () =>
+    translate('runtime.remoteServerPairingErrors.idNeedsNewerOCC', EN.idNeedsNewerOCC),
   hostSaveFailed: () =>
     translate('runtime.remoteServerPairingErrors.hostSaveFailed', EN.hostSaveFailed),
   repairSaveFailed: () =>

@@ -10,7 +10,7 @@ function resultLine(plan: ReturnType<typeof planOf>): string {
 
 describe('setup result details', () => {
   it('reports the backup only when a replacement finished', () => {
-    const plan = planOf([sharedEntry('orca-cli', 'replace')])
+    const plan = planOf([sharedEntry('occ-cli', 'replace')])
     const result = doneResult(plan)
     expect(resultLine(plan)).toBe('Replaced · Your copy was saved as a backup')
     result.skills[0].ops[0].status = 'failed'

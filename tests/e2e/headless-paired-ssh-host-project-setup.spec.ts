@@ -3,7 +3,7 @@
  * reaches that host's runtime over its own tunnel, which the client has no route to. Adding or
  * cloning there says so plainly instead of failing with a TypeError or "not connected" (#33124).
  */
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { launchPairedWebClient } from './helpers/paired-electron-client'
 import { toSshExecutionHostId } from '../../src/shared/execution-host'

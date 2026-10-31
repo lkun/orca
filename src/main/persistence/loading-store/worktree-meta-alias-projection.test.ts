@@ -18,7 +18,7 @@ import { normalizeWorktreeLinkedItemMetadata } from '../tracking-repos/worktree-
 vi.mock('electron', () => ({
   app: {
     getPath: () => tmpdir(),
-    getName: () => 'orca-test',
+    getName: () => 'occ-test',
     getVersion: () => '0.0.0-test',
     isPackaged: false,
     on: () => {},
@@ -62,7 +62,7 @@ function openStore(dataFile: string): InstanceType<typeof Store> {
 }
 
 function tempDataFile(): string {
-  return join(realpathSync(mkdtempSync(join(tmpdir(), 'orca-alias-projection-'))), 'orca-data.json')
+  return join(realpathSync(mkdtempSync(join(tmpdir(), 'occ-alias-projection-'))), 'occ-data.json')
 }
 
 function worktreeId(index: number): string {

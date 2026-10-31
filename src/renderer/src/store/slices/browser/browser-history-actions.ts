@@ -18,7 +18,7 @@ import {
   workspaceDocHistoryEntriesEqual
 } from '../../../../../shared/workspace-doc-history'
 import { browserPageDocLocationsEqual } from '../../../../../shared/browser-page-doc-location'
-import { ORCA_BROWSER_BLANK_URL } from '../../../../../shared/constants'
+import { OCC_BROWSER_BLANK_URL } from '../../../../../shared/constants'
 
 export function createBrowserHistoryActions(
   set: BrowserSliceSet,
@@ -82,7 +82,7 @@ export function createBrowserHistoryActions(
 
     addBrowserHistoryEntry: (url, title, faviconUrl) => {
       const safeUrl = redactKagiSessionToken(url)
-      if (safeUrl === ORCA_BROWSER_BLANK_URL || safeUrl === 'about:blank' || !safeUrl) {
+      if (safeUrl === OCC_BROWSER_BLANK_URL || safeUrl === 'about:blank' || !safeUrl) {
         return
       }
       const normalized = normalizeBrowserHistoryUrl(safeUrl)

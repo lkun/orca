@@ -241,8 +241,8 @@ describe('resolveAuthorizedPath allowed-root reuse', () => {
   let counts: StoreCallCounts
 
   beforeEach(async () => {
-    repoRoot = await mkdtemp(join(await realpath(tmpdir()), 'orca-allowed-roots-'))
-    outsideRoot = await mkdtemp(join(await realpath(tmpdir()), 'orca-outside-'))
+    repoRoot = await mkdtemp(join(await realpath(tmpdir()), 'occ-allowed-roots-'))
+    outsideRoot = await mkdtemp(join(await realpath(tmpdir()), 'occ-outside-'))
     const fixture = makeMixedFixture()
     fixture.repos = [makeRepo({ id: 'repo-local', path: repoRoot }), ...fixture.repos]
     fixture.projects[0]!.sourceRepoIds = ['repo-local']

@@ -45,7 +45,7 @@ describe('syncWslCodexSessionsIntoManagedHome', () => {
       distro: 'Ubuntu',
       systemCodexHomePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.codex',
       managedCodexHomePath:
-        '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\orca\\codex-runtime-home\\home'
+        '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\occ\\codex-runtime-home\\home'
     })
 
     expect(summary).toEqual({
@@ -68,13 +68,13 @@ describe('syncWslCodexSessionsIntoManagedHome', () => {
     expect(spec.timeoutMs).toBe(30_000)
     expect(runWslProcessMock.mock.calls[0]?.[0]).toHaveProperty('maxOutputBytes', 64 * 1024 * 1024)
     expect(spec.script).toContain(
-      "index_pending_root='/home/alice/.local/share/orca/codex-runtime-home/home/.orca-index-pending'"
+      "index_pending_root='/home/alice/.local/share/occ/codex-runtime-home/home/.occ-index-pending'"
     )
 
     const shellCommand = spec.script
     expect(shellCommand).toContain("source_sessions_root='/home/alice/.codex/sessions'")
     expect(shellCommand).toContain(
-      "managed_sessions_root='/home/alice/.local/share/orca/codex-runtime-home/home/sessions'"
+      "managed_sessions_root='/home/alice/.local/share/occ/codex-runtime-home/home/sessions'"
     )
     expect(shellCommand).toContain(`find "$source_sessions_root" -type f -name '*.jsonl' -print0`)
     expect(shellCommand).toContain('ln -- "$link_source" "$target_file"')
@@ -88,7 +88,7 @@ describe('syncWslCodexSessionsIntoManagedHome', () => {
     const summary = await syncWslCodexSessionsIntoManagedHome({
       distro: 'Ubuntu',
       systemCodexHomePath: 'C:\\Users\\alice\\.codex',
-      managedCodexHomePath: 'C:\\Users\\alice\\AppData\\Roaming\\orca\\codex-runtime-home\\home'
+      managedCodexHomePath: 'C:\\Users\\alice\\AppData\\Roaming\\occ\\codex-runtime-home\\home'
     })
 
     expect(summary).toEqual({
@@ -109,7 +109,7 @@ describe('syncWslCodexSessionsIntoManagedHome', () => {
       distro: 'Ubuntu',
       systemCodexHomePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.codex',
       managedCodexHomePath:
-        '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\orca\\codex-runtime-home\\home'
+        '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\occ\\codex-runtime-home\\home'
     })
 
     expect(summary).toEqual({
@@ -134,7 +134,7 @@ describe('syncWslCodexSessionsIntoManagedHome', () => {
         distro: 'Ubuntu',
         systemCodexHomePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.codex',
         managedCodexHomePath:
-          '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\orca\\codex-runtime-home\\home'
+          '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\occ\\codex-runtime-home\\home'
       })
     ).rejects.toThrow('WSL codex session bridge failed')
   })
@@ -145,7 +145,7 @@ describe('syncWslCodexSessionsIntoManagedHome', () => {
       distro: 'Ubuntu',
       systemCodexHomePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.codex',
       managedCodexHomePath:
-        '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\orca\\codex-runtime-home\\home'
+        '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\occ\\codex-runtime-home\\home'
     }
 
     const dependencies = {
@@ -168,7 +168,7 @@ describe('resolveWslCodexSessionBridgeLinuxPaths', () => {
         distro: 'Ubuntu',
         systemCodexHomePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.codex',
         managedCodexHomePath:
-          '\\\\wsl.localhost\\Debian\\home\\alice\\.local\\share\\orca\\codex-runtime-home\\home'
+          '\\\\wsl.localhost\\Debian\\home\\alice\\.local\\share\\occ\\codex-runtime-home\\home'
       })
     ).toBeNull()
   })
@@ -178,13 +178,13 @@ describe('resolveWslCodexSessionBridgeLinuxPaths', () => {
       resolveWslCodexSessionBridgeLinuxPaths({
         distro: 'Ubuntu',
         systemCodexHomePath: '/home/alice/.codex',
-        managedCodexHomePath: '/home/alice/.local/share/orca/codex-runtime-home/home'
+        managedCodexHomePath: '/home/alice/.local/share/occ/codex-runtime-home/home'
       })
     ).toEqual({
       systemSessionsRoot: '/home/alice/.codex/sessions',
-      managedSessionsRoot: '/home/alice/.local/share/orca/codex-runtime-home/home/sessions',
-      managedHomePath: '/home/alice/.local/share/orca/codex-runtime-home/home',
-      indexPendingRoot: '/home/alice/.local/share/orca/codex-runtime-home/home/.orca-index-pending'
+      managedSessionsRoot: '/home/alice/.local/share/occ/codex-runtime-home/home/sessions',
+      managedHomePath: '/home/alice/.local/share/occ/codex-runtime-home/home',
+      indexPendingRoot: '/home/alice/.local/share/occ/codex-runtime-home/home/.occ-index-pending'
     })
   })
 })
@@ -193,7 +193,7 @@ describe('buildWslCodexSessionBridgeShellCommand', () => {
   it('only targets JSONL session files under sessions', () => {
     const shellCommand = buildWslCodexSessionBridgeShellCommand({
       systemSessionsRoot: "/home/alice/.codex/sessions with 'quote'",
-      managedSessionsRoot: '/home/alice/.local/share/orca/codex-runtime-home/home/sessions'
+      managedSessionsRoot: '/home/alice/.local/share/occ/codex-runtime-home/home/sessions'
     })
 
     expect(shellCommand).toContain(
@@ -206,7 +206,7 @@ describe('buildWslCodexSessionBridgeShellCommand', () => {
   it('keeps Linux-side shell variable expansion intact for the guest shell', () => {
     const shellCommand = buildWslCodexSessionBridgeShellCommand({
       systemSessionsRoot: '/home/alice/.codex/sessions',
-      managedSessionsRoot: '/home/alice/.local/share/orca/codex-runtime-home/home/sessions'
+      managedSessionsRoot: '/home/alice/.local/share/occ/codex-runtime-home/home/sessions'
     })
 
     expect(shellCommand).toContain('$source_sessions_root')
@@ -217,7 +217,7 @@ describe('buildWslCodexSessionBridgeShellCommand', () => {
   it.skipIf(process.platform === 'win32')(
     'publishes a verified guest-side copy across filesystems',
     () => {
-      const root = mkdtempSync(join(tmpdir(), 'orca-wsl-session-bridge-cross-fs-'))
+      const root = mkdtempSync(join(tmpdir(), 'occ-wsl-session-bridge-cross-fs-'))
       const sourceSessionsRoot = join(root, 'legacy', 'sessions')
       const managedSessionsRoot = join(root, 'managed', 'sessions')
       const binDir = join(root, 'bin')
@@ -262,7 +262,7 @@ exec /bin/ln "$@"
   it.skipIf(process.platform === 'win32')(
     'leaves an existing copied session to its current writer',
     () => {
-      const root = mkdtempSync(join(tmpdir(), 'orca-wsl-session-bridge-existing-'))
+      const root = mkdtempSync(join(tmpdir(), 'occ-wsl-session-bridge-existing-'))
       const sourceSessionsRoot = join(root, 'legacy', 'sessions')
       const managedSessionsRoot = join(root, 'managed', 'sessions')
       const relativePath = join('2026', '08', '26', 'retired.jsonl')
@@ -289,7 +289,7 @@ exec /bin/ln "$@"
   it.skipIf(process.platform === 'win32')(
     'fails in the guest shell when a missing session cannot be linked, then retries cleanly',
     () => {
-      const root = mkdtempSync(join(tmpdir(), 'orca-wsl-session-bridge-'))
+      const root = mkdtempSync(join(tmpdir(), 'occ-wsl-session-bridge-'))
       const sourceSessionsRoot = join(root, 'legacy', 'sessions')
       const managedSessionsRoot = join(root, 'managed', 'sessions')
       const relativePath = join('2026', '08', '26', 'retired.jsonl')

@@ -1,11 +1,11 @@
-import type { CloudDatabase, CloudNotifications } from '@orca-cloud/cloud-database'
+import type { CloudDatabase, CloudNotifications } from '@occ-cloud/cloud-database'
 import {
   CONNECTOR_LIMITS,
   ConnectorDeliverySchema,
   type ConnectorAcksRequest,
   type ConnectorConversation,
   type ConnectorDelivery
-} from '@orca-cloud/connector-contract'
+} from '@occ-cloud/connector-contract'
 import { conversationKey, conversationOf } from './connector-threads.js'
 
 // NOTIFY channel; the payload is the host id whose inbox changed.

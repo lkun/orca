@@ -11,7 +11,7 @@ import {
 import { writeProfileStateBackup } from './profile-state-backup-job'
 import { openWritableProfileStateDatabase } from './profile-state-database'
 import * as database from './profile-state-database'
-import { profileProjectMoveIntentPath } from '../../orca-profiles/profile-project-move-record'
+import { profileProjectMoveIntentPath } from '../../occ-profiles/profile-project-move-record'
 import { hashProfileStatePayload } from './profile-state-document-validation'
 import { writeProfileStateDomains } from './profile-state-domain-writes'
 import { migrateProfileStateToSqlite } from './profile-state-migration'
@@ -38,15 +38,15 @@ afterEach(() => {
 })
 
 async function profileWithNewerSaves(extra: Record<string, unknown> = {}) {
-  const root = mkdtempSync(join(tmpdir(), 'orca-section-repair-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-section-repair-'))
   roots.push(root)
   const directory = join(root, 'profiles', profileId)
   mkdirSync(directory, { recursive: true })
   writeFileSync(
-    join(root, 'orca-profile-index.json'),
+    join(root, 'occ-profile-index.json'),
     JSON.stringify({ activeProfileId: profileId, profiles: [{ id: profileId }] })
   )
-  const dataFile = join(directory, 'orca-data.json')
+  const dataFile = join(directory, 'occ-data.json')
   const databaseFile = join(directory, 'profile-state.db')
   const initialJson = JSON.stringify({
     ...extra,
@@ -171,7 +171,7 @@ describe('repairing damaged profile-state sections', () => {
         { domain: section, backupId: profile.backupId, backupCreatedAtMs: expect.any(Number) }
       ])
       expect(formatProfileStateStartupFailure(failure)).toContain(
-        `orca profile state rollback --repair --profile-id ${profileId}`
+        `occ profile state rollback --repair --profile-id ${profileId}`
       )
 
       expect(() =>

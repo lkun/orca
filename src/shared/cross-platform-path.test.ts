@@ -4,7 +4,7 @@ import {
   isCaseInsensitiveRuntimeRoot,
   isPathInsideOrEqual,
   isRuntimePathAbsolute,
-  isWslUncPathForCallerLinuxPath,
+  isWslUncPathFoccllerLinuxPath,
   isWslUncPathForLinuxMountedPath,
   normalizeRuntimePathForComparison,
   relativePathInsideRoot,
@@ -52,19 +52,19 @@ describe('isCaseInsensitiveRuntimeRoot', () => {
   })
 })
 
-describe('isWslUncPathForCallerLinuxPath', () => {
+describe('isWslUncPathFoccllerLinuxPath', () => {
   const UBUNTU = 'Ubuntu-24.04'
 
   it('matches the Linux path a WSL shell prints against both UNC spellings of its own distro', () => {
     expect(
-      isWslUncPathForCallerLinuxPath(
+      isWslUncPathFoccllerLinuxPath(
         '\\\\wsl.localhost\\Ubuntu-24.04\\home\\neil\\qa-repo',
         '/home/neil/qa-repo',
         UBUNTU
       )
     ).toBe(true)
     expect(
-      isWslUncPathForCallerLinuxPath(
+      isWslUncPathFoccllerLinuxPath(
         '//wsl$/ubuntu-24.04/home/neil/qa-repo',
         '/home/neil/qa-repo',
         UBUNTU
@@ -75,7 +75,7 @@ describe('isWslUncPathForCallerLinuxPath', () => {
   // The destructive case: this feeds `worktree rm`, so a tail-only match deletes the wrong distro.
   it('refuses a Linux path another distro spells identically', () => {
     expect(
-      isWslUncPathForCallerLinuxPath(
+      isWslUncPathFoccllerLinuxPath(
         '\\\\wsl.localhost\\Debian\\home\\neil\\qa-repo',
         '/home/neil/qa-repo',
         UBUNTU
@@ -85,16 +85,16 @@ describe('isWslUncPathForCallerLinuxPath', () => {
 
   it('keeps the Linux tail case-sensitive and refuses a non-WSL path', () => {
     expect(
-      isWslUncPathForCallerLinuxPath(
+      isWslUncPathFoccllerLinuxPath(
         '\\\\wsl.localhost\\Ubuntu-24.04\\home\\Neil\\qa-repo',
         '/home/neil/qa-repo',
         UBUNTU
       )
     ).toBe(false)
-    expect(isWslUncPathForCallerLinuxPath('/home/neil/qa-repo', '/home/neil/qa-repo', UBUNTU)).toBe(
+    expect(isWslUncPathFoccllerLinuxPath('/home/neil/qa-repo', '/home/neil/qa-repo', UBUNTU)).toBe(
       false
     )
-    expect(isWslUncPathForCallerLinuxPath('C:\\repos\\qa-repo', '/home/neil/qa-repo', UBUNTU)).toBe(
+    expect(isWslUncPathFoccllerLinuxPath('C:\\repos\\qa-repo', '/home/neil/qa-repo', UBUNTU)).toBe(
       false
     )
   })

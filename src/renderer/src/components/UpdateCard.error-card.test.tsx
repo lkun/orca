@@ -66,8 +66,8 @@ beforeEach(() => {
   setSettings.mockReset().mockResolvedValue(undefined)
   getInstructions.mockReset().mockResolvedValue({
     ok: true,
-    command: 'sudo apt-get install -y /tmp/orca_1.4.200_amd64.deb',
-    packageFileName: 'orca_1.4.200_amd64.deb'
+    command: 'sudo apt-get install -y /tmp/occ_1.4.200_amd64.deb',
+    packageFileName: 'occ_1.4.200_amd64.deb'
   })
   Object.defineProperty(window, 'api', {
     configurable: true,
@@ -188,7 +188,7 @@ describe('UpdateCard Windows signature failures', () => {
     expect(screen.queryByText(message)).toBeNull()
 
     fireEvent.click(screen.getByRole('button', { name: 'Check official releases' }))
-    expect(openUrl).toHaveBeenCalledWith('https://github.com/stablyai/orca/releases')
+    expect(openUrl).toHaveBeenCalledWith('https://github.com/stablyai/occ/releases')
     expect(openUrl).not.toHaveBeenCalledWith(expect.stringContaining('/tag/'))
   })
 
@@ -245,7 +245,7 @@ describe('UpdateCard hourly builds', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Release notes' }))
     expect(openUrl).toHaveBeenCalledWith(
-      'https://github.com/stablyai/orca-hourly/releases/tag/v1.4.160-hourly.202607281400'
+      'https://github.com/stablyai/occ-hourly/releases/tag/v1.4.160-hourly.202607281400'
     )
   })
 })
@@ -326,7 +326,7 @@ describe('UpdateCard Linux package-install recovery', () => {
 
     expect(screen.getByText('Manual Install Required')).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Download Manually' }))
-    expect(openUrl).toHaveBeenCalledWith('https://github.com/stablyai/orca/releases/tag/v1.4.200')
+    expect(openUrl).toHaveBeenCalledWith('https://github.com/stablyai/occ/releases/tag/v1.4.200')
   })
 
   it('uses the recovery version when cached update state is stale', () => {
@@ -334,7 +334,7 @@ describe('UpdateCard Linux package-install recovery', () => {
     showPackageRecovery()
 
     fireEvent.click(screen.getByRole('button', { name: 'Download Manually' }))
-    expect(openUrl).toHaveBeenCalledWith('https://github.com/stablyai/orca/releases/tag/v1.4.200')
+    expect(openUrl).toHaveBeenCalledWith('https://github.com/stablyai/occ/releases/tag/v1.4.200')
   })
 
   it.each([
@@ -360,7 +360,7 @@ describe('UpdateCard Linux package-install recovery', () => {
 
     expect(getInstructions).toHaveBeenCalledTimes(1)
     expect(writeClipboardText).toHaveBeenCalledWith(
-      'sudo apt-get install -y /tmp/orca_1.4.200_amd64.deb'
+      'sudo apt-get install -y /tmp/occ_1.4.200_amd64.deb'
     )
   })
 
@@ -377,7 +377,7 @@ describe('UpdateCard Linux package-install recovery', () => {
     await flushActions()
 
     fireEvent.click(screen.getByRole('button', { name: 'Download Manually' }))
-    expect(openUrl).toHaveBeenCalledWith('https://github.com/stablyai/orca/releases/tag/v1.4.200')
+    expect(openUrl).toHaveBeenCalledWith('https://github.com/stablyai/occ/releases/tag/v1.4.200')
   })
 
   it('resets command discovery when a newer package cycle replaces the recovery', async () => {
@@ -416,7 +416,7 @@ describe('UpdateCard Linux package-install recovery', () => {
     expect(screen.queryByText('Manual Install Required')).toBeNull()
     expect(screen.queryByRole('button', { name: 'Retry Download' })).toBeNull()
     fireEvent.click(screen.getByRole('button', { name: 'Download Manually' }))
-    expect(openUrl).toHaveBeenCalledWith('https://github.com/stablyai/orca/releases/tag/v1.4.200')
+    expect(openUrl).toHaveBeenCalledWith('https://github.com/stablyai/occ/releases/tag/v1.4.200')
   })
 
   it('keeps generic errors on the generic card when no recovery is attached', () => {

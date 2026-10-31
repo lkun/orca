@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import { z } from 'zod'
 import type { ThreadPlace } from './connector-adapter.js'
 import { PERSON_SUBTYPES, promptText } from './slack-events.js'

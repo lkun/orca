@@ -13,7 +13,7 @@ BINARY = os.path.abspath(sys.argv.pop(1))
 class X11PublisherTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.directory = tempfile.TemporaryDirectory(prefix="orca-clipboard-x11-")
+        cls.directory = tempfile.TemporaryDirectory(prefix="occ-clipboard-x11-")
         reader, writer = os.pipe()
         cls.display = subprocess.Popen(
             ["Xvfb", "-displayfd", str(writer), "-screen", "0", "640x480x24", "-nolisten", "tcp"],
@@ -28,7 +28,7 @@ class X11PublisherTest(unittest.TestCase):
                 raise RuntimeError("Invalid private display number")
             cls.env = {**os.environ, "DISPLAY": ":" + number, "GDK_BACKEND": "wayland",
                        "XAUTHORITY": os.path.join(cls.directory.name, "unused-authority"),
-                       "ORCA_BACKGROUND_LAUNCH": "1"}
+                       "OCC_BACKGROUND_LAUNCH": "1"}
         except BaseException:
             cls.tearDownClass()
             raise

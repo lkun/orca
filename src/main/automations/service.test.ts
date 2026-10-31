@@ -26,7 +26,7 @@ vi.mock('electron', () => ({
 
 /** Inject persisted drift that normal creation would resolve. */
 function mutateDataFile(mutate: (state: { automations: Record<string, unknown>[] }) => void): void {
-  const file = join(testState.dir, 'orca-data.json')
+  const file = join(testState.dir, 'occ-data.json')
   const state = JSON.parse(readPersistedStateJson(file))
   mutate(state)
   writePersistedStateJson(file, JSON.stringify(state))
@@ -43,7 +43,7 @@ const makeRepo = (overrides: Partial<Repo> = {}): Repo => ({
 
 describe('AutomationService', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-automations-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-automations-test-'))
     vi.useFakeTimers()
   })
 

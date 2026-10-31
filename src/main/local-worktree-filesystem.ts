@@ -1,5 +1,5 @@
 import { posix } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { lstat, stat, readFile, realpath } from 'node:fs/promises'
 import { buildWslExecArgs } from '../shared/wsl-login-shell-command'
 import { quotePosixShell } from '../shared/shell-argument-quoting'

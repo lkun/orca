@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { afterEach, describe, expect, it } from 'vitest'
 import {
   isWindowsProcessTableAvailable,
@@ -6,8 +6,8 @@ import {
 } from '../windows/windows-process-table'
 import { inspectDaemonProcessIdentity } from './daemon-pid-identity'
 
-const socketPath = 'C:\\orca-test\\daemon-v4.sock'
-const tokenPath = 'C:\\orca-test\\daemon-v4.token'
+const socketPath = 'C:\\occ-test\\daemon-v4.sock'
+const tokenPath = 'C:\\occ-test\\daemon-v4.token'
 
 describe.runIf(process.platform === 'win32')(
   'daemon PID identity on the real process table',

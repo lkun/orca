@@ -5,7 +5,7 @@ import {
 } from '../../../shared/agent-session-resume'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../shared/execution-host'
 import type { StructuredAgentId } from '../../../shared/agent-session-provider-handle'
-import { OrcaRuntimeWithGetWorktreePs } from '../workspaces/workspace-process-listing'
+import { OCCRuntimeWithGetWorktreePs } from '../workspaces/workspace-process-listing'
 import { getProviderForPty } from '../../ipc/pty/provider/registry'
 import { LocalPtyProvider } from '../../providers/local-pty-provider'
 import { inspectPtyProviderProcess } from '../../providers/pty-process-inspection'
@@ -26,7 +26,7 @@ import { CLI_CONVERSATION_ADOPTING_AGENTS } from '../../../shared/structured-age
 import { recordConversationKey } from '../../native-chat/structured-conversation-key'
 import type { StructuredAgentCliSourceRoute } from '../../native-chat/structured-agent-cli-source'
 
-export abstract class OrcaRuntimeWithStructuredSessionCliWriterHost extends OrcaRuntimeWithGetWorktreePs {
+export abstract class OCCRuntimeWithStructuredSessionCliWriterHost extends OCCRuntimeWithGetWorktreePs {
   getStructuredAgentCliSourceRoute(source: {
     workspaceId: string
     paneKey: string

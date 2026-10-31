@@ -1,4 +1,4 @@
-import type { CloudNotifications } from '@orca-cloud/cloud-database'
+import type { CloudNotifications } from '@occ-cloud/cloud-database'
 import { INBOX_CHANNEL } from './connector-inbox.js'
 
 export type InboxWaiter = { wait(ms: number): Promise<void>; cancel(): void }

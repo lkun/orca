@@ -14,7 +14,7 @@ import {
   captureWebSessionIntentOwner,
   isWebRuntimeSessionActive
 } from './web-runtime-session-environment'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { isServerFrameDrawnWorkspace } from './web-session-tabs-sync/frame-drawn-server-workspaces'
 import { redrawServerLayoutWorkspace } from './server-layout-apply-routes'
 import {
@@ -190,7 +190,7 @@ export function closeWebRuntimeTerminal(
     })
     .catch((error) => {
       // Switch point: the window already dropped the pane; the server's frames draw what it kept.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN && worktreeId) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN && worktreeId) {
         redrawServerLayoutWorkspace(environmentId, worktreeId)
       }
       console.warn(

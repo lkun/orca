@@ -17,7 +17,7 @@ describe('AI Vault Grok session parser', () => {
   it.each([false, true])(
     'bounds preview scanning while preserving full turns with capture %s',
     async (active) => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-grok-preview-budget-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-grok-preview-budget-'))
       tempRoots.push(root)
       const path = join(root, 'summary.json')
       await writeFile(path, JSON.stringify({ info: { id: 'grok-preview-budget' } }))
@@ -69,7 +69,7 @@ describe('AI Vault Grok session parser', () => {
   it.each([5000, 256 * 1024 + 1])(
     'publishes %i-character Grok turns before preview limits',
     async (length) => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-grok-transcript-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-grok-transcript-'))
       tempRoots.push(root)
       const path = join(root, 'summary.json')
       await writeFile(path, JSON.stringify({ info: { id: 'grok-transcript' } }))
@@ -109,7 +109,7 @@ describe('AI Vault Grok session parser', () => {
   )
 
   it('stores the unwrapped user_query as firstUserPrompt under full capture', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-grok-first-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-grok-first-'))
     tempRoots.push(root)
     const sessionDir = join(root, 'session-1')
     await mkdir(sessionDir, { recursive: true })

@@ -5,7 +5,7 @@ import { useAppStore } from '@/store'
 import type { AppState } from '@/store/types'
 import type { OpenFilePathRekey } from './editor'
 import type { Tab, TabGroup } from '../../../../shared/tab-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { drawTabsFromMain, type TabsDrawnFromMain } from './tabs-drawn-from-main.test-fixture'
 
 // Switch on: main renames the tabs, and its frame rekeys the content (T1 transport, apply mode).
@@ -111,7 +111,7 @@ describe('rekeyOpenFilesForPathChange', () => {
     await main.settle()
     const oldId = useAppStore.getState().openFiles[0]!.id
     // Switch on, main's frame drew the tab under its own id; off, a tab keyed by its file's id.
-    if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (!OCC_LAYOUT_OWNER_IS_MAIN) {
       const tab: Tab = {
         id: oldId,
         entityId: oldId,

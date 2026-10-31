@@ -27,7 +27,7 @@ const WORKING_CHILD: AgentSubagentSnapshot = {
 let dir: string
 
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'orca-restored-status-'))
+  dir = mkdtempSync(join(tmpdir(), 'occ-restored-status-'))
 })
 
 afterEach(() => {

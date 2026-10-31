@@ -174,9 +174,9 @@ describe('a failed delete Git no longer registers, over desktop IPC', () => {
   it('removes the push-target remote OCC added when Delete fails partway', async () => {
     const [main] = mockKnownFeatureWorktree()
     const pushTarget = {
-      remoteName: 'pr-contributor-orca',
+      remoteName: 'pr-contributor-occ',
       branchName: 'feature',
-      remoteUrl: 'https://github.com/contributor/orca.git',
+      remoteUrl: 'https://github.com/contributor/occ.git',
       remoteCreated: true
     }
     store.getWorktreeMeta.mockReturnValue(makeWorktreeMeta({ pushTarget }))

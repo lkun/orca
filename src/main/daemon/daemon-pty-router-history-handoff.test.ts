@@ -106,11 +106,11 @@ describe('DaemonPtyRouter history handoff', () => {
     const sessionId = 'large-legacy-session'
     const marker = 'V29-HISTORY-HANDOFF-MARKER'
     // Model the legacy 5,000-row window so the fixture exceeds the chunked-seed threshold.
-    vi.stubEnv('ORCA_DAEMON_SESSION_SCROLLBACK_ROWS', '5000')
+    vi.stubEnv('OCC_DAEMON_SESSION_SCROLLBACK_ROWS', '5000')
     await legacyAdapter.spawn({ sessionId, cols: 400, rows: 24 })
     legacySubprocess.emitData(`${'x'.repeat(TERMINAL_HISTORY_INLINE_SEED_CODE_UNITS + 1)}${marker}`)
     // Restore the receiving daemon's smaller live window.
-    vi.stubEnv('ORCA_DAEMON_SESSION_SCROLLBACK_ROWS', String(DAEMON_SESSION_SCROLLBACK_ROWS))
+    vi.stubEnv('OCC_DAEMON_SESSION_SCROLLBACK_ROWS', String(DAEMON_SESSION_SCROLLBACK_ROWS))
     router = new DaemonPtyRouter({ current: currentAdapter, legacy: [legacyAdapter] })
     await router.discoverLegacySessions()
     const client = (

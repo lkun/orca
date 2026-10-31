@@ -58,7 +58,7 @@ beforeAll(() => {
 })
 
 beforeEach(async () => {
-  state.userData = mkdtempSync(join(tmpdir(), 'orca-webstore-install-'))
+  state.userData = mkdtempSync(join(tmpdir(), 'occ-webstore-install-'))
   state.enabled = {}
   state.load.mockReset()
   state.load.mockImplementation(async () => ({}))
@@ -220,7 +220,7 @@ describe('store installs', () => {
         archive: Buffer.from(
           zipSync({
             'manifest.json': strToU8(JSON.stringify(shown)),
-            'orca-original-manifest.json': strToU8(JSON.stringify(hidden))
+            'occ-original-manifest.json': strToU8(JSON.stringify(hidden))
           })
         )
       })

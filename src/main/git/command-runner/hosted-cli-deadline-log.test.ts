@@ -49,7 +49,7 @@ describe('hosted CLI deadline logging', () => {
     spawnMock.mockReturnValue(mockChild())
 
     const rejection = expect(
-      ghExecFileAsync(['api', '--include', 'user/starred/stablyai/orca'], { timeout: 15_000 })
+      ghExecFileAsync(['api', '--include', 'user/starred/stablyai/occ'], { timeout: 15_000 })
     ).rejects.toThrow('timed out')
     await vi.advanceTimersByTimeAsync(15_000)
     await vi.advanceTimersByTimeAsync(15_000)
@@ -65,7 +65,7 @@ describe('hosted CLI deadline logging', () => {
     spawnMock.mockReturnValue(mockChild())
 
     const rejection = expect(
-      ghExecFileAsync(['api', '--include', 'user/starred/stablyai/orca'], {
+      ghExecFileAsync(['api', '--include', 'user/starred/stablyai/occ'], {
         timeout: 15_000,
         signal: controller.signal
       })

@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { getSecretStore } from '../../shared/secret-store'
 
 export type SavedCredentialUnreadable =
-  /** Desktop safeStorage and orcad host keys cannot decrypt each other's files in ~/.orca. */
+  /** Desktop safeStorage and occd host keys cannot decrypt each other's files in ~/.occ. */
   'sealed-elsewhere' | 'unreadable'
 
 export type SavedCredentialFile = {
@@ -12,13 +12,13 @@ export type SavedCredentialFile = {
   legacyRaw?: boolean
 }
 
-// Orcad can report encryption available before its host key is loaded; probe actual use.
+// OCCd can report encryption available before its host key is loaded; probe actual use.
 function secretStoreWorks(): boolean {
   try {
     const store = getSecretStore()
     return (
-      store.decryptString(store.encryptString('orca-secret-store-probe')) ===
-      'orca-secret-store-probe'
+      store.decryptString(store.encryptString('occ-secret-store-probe')) ===
+      'occ-secret-store-probe'
     )
   } catch {
     return false

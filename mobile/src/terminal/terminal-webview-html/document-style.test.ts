@@ -4,7 +4,7 @@ import { XTERM_ENGINE_CSS } from '../terminal-webview-engine-css.generated'
 import { TERMINAL_DOCUMENT_ELEMENT_STYLE, TERMINAL_DOCUMENT_ROOT_STYLE } from './document-style'
 
 // Verify native root rules remain separate while page-injected rules can reach only terminal-owned elements.
-const PREFIX = '.orca-terminal-document-host'
+const PREFIX = '.occ-terminal-document-host'
 
 function selectorsOf(css: string): string[] {
   return [...css.matchAll(/(?:^|\})\s*([^{}]+)\{/g)].flatMap((match) =>

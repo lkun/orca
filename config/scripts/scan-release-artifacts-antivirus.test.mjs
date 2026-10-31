@@ -11,10 +11,10 @@ import {
 
 describe('antivirus detection report', () => {
   it('hashes an artifact with the same digest the issue reports quote', async () => {
-    const directory = await mkdtemp(join(tmpdir(), 'orca-av-scan-'))
+    const directory = await mkdtemp(join(tmpdir(), 'occ-av-scan-'))
     try {
       const artifact = join(directory, 'occ-windows-setup.exe')
-      await writeFile(artifact, 'orca', 'utf8')
+      await writeFile(artifact, 'occ', 'utf8')
       // Use lowercase hex SHA-256 to compare directly with reporter’s shasum output.
       expect(await hashFile(artifact)).toBe(
         'e0c924608fdcda8536bd9cc86b0fce0ab2d54ecc1e8ed9673624c39cde7f7820'
@@ -72,7 +72,7 @@ describe('antivirus detection report', () => {
 
   it('reports every flagging engine and its detection name', () => {
     const report = formatArtifactReport({
-      name: 'orca.exe',
+      name: 'occ.exe',
       sha256: 'b'.repeat(64),
       known: true,
       scanned: 70,

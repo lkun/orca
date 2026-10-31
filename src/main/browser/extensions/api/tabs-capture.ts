@@ -77,7 +77,7 @@ async function captureVisibleTab(
     throw new BrowserExtensionApiError(denial)
   }
   consumeBrowserExtensionCaptureQuota(caller)
-  const releasePaint = browserManager.holdPaintForCapture(tab.contents.id)
+  const releasePaint = browserManager.holdPaintFoccpture(tab.contents.id)
   let image: Electron.NativeImage
   try {
     image = await tab.contents.capturePage()

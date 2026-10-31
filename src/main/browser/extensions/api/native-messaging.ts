@@ -21,7 +21,7 @@ import {
  * browser-extension-native-messaging.ts installs. Preload-only: never on the API surface. Messages
  * travel as JSON text so the host receives exactly what the extension serialized.
  */
-const NATIVE_MESSAGING_NAMESPACE = 'orcaNativeMessaging'
+const NATIVE_MESSAGING_NAMESPACE = 'occNativeMessaging'
 const PORT_EVENT = 'onPortEvent'
 
 const portId = z.string().min(1).max(100)

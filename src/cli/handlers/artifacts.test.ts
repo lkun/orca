@@ -24,7 +24,7 @@ const item: ArtifactListItem = {
     byteSize: 12,
     deletedAt: null
   },
-  shareUrl: 'https://share.onorca.dev/a/artifact-1'
+  shareUrl: 'https://share.onocc.dev/a/artifact-1'
 }
 
 afterEach(async () => {
@@ -34,7 +34,7 @@ afterEach(async () => {
 
 const directories: string[] = []
 async function artifactDirectory(): Promise<string> {
-  const path = await mkdtemp(join(tmpdir(), 'orca-artifact-cli-'))
+  const path = await mkdtemp(join(tmpdir(), 'occ-artifact-cli-'))
   directories.push(path)
   return path
 }

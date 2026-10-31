@@ -1,6 +1,6 @@
-import type { SpawnedProcess } from '@orca/process-host/process-spec'
+import type { SpawnedProcess } from '@occ/process-host/process-spec'
 import { delimiter, win32 as pathWin32 } from 'node:path'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { stripAnsiEscapeSequences } from '../../shared/ansi-escape-sequences'
 import type { ShellHydrationFailureReason } from '../../shared/shell-path-hydration-types'
 import { resolveWindowsShellStartupFamily } from '../../shared/windows-terminal-shell'
@@ -28,7 +28,7 @@ const LAUNCH_PATH_KEY =
   process.platform === 'win32' && process.env.Path !== undefined ? 'Path' : 'PATH'
 const LAUNCH_PATH = process.env[LAUNCH_PATH_KEY] ?? null
 // Allow heavy rc files to recognize the probe and skip multiplexers/prompts.
-export const PROBE_MARKER_ENV_VAR = 'ORCA_SHELL_PATH_PROBE'
+export const PROBE_MARKER_ENV_VAR = 'OCC_SHELL_PATH_PROBE'
 let launchPathOverride: { key: string; value: string } | null = null
 let configuredWindowsShell = 'powershell.exe'
 let configuredWindowsGitBashPath: string | null = null

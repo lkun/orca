@@ -22,7 +22,7 @@ const ENGINES = [
   {
     name: 'chromium',
     launch: () => {
-      const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+      const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
       return chromium.launch({
         headless: true,
         args: ['--force-device-scale-factor=3'],

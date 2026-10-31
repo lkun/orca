@@ -154,7 +154,7 @@ export function UpdateCard(): React.JSX.Element | null {
         setCompatibilityRelaunching(false)
       })
   }
-  const errorCard = buildUpdateCardErrorModel({
+  const erroccrd = buildUpdateCardErrorModel({
     status,
     isLocalBuild,
     cachedVersion,
@@ -220,7 +220,7 @@ export function UpdateCard(): React.JSX.Element | null {
     <UpdateCardStateContent
       status={status}
       changelog={changelog}
-      errorCard={errorCard}
+      erroccrd={erroccrd}
       linuxPackageRecovery={linuxPackageRecovery}
       isLocalBuild={isLocalBuild}
       hasStartedDownload={hasStartedDownload.current}

@@ -66,7 +66,7 @@ describe('activateTabAndFocusPane', () => {
     }
     expect(dispatchEvent).toHaveBeenCalledExactlyOnceWith(
       expect.objectContaining({
-        type: 'orca-focus-terminal-pane',
+        type: 'occ-focus-terminal-pane',
         detail: {
           tabId: 'tab-2',
           leafId: 'leaf-2',

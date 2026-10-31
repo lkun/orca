@@ -8,11 +8,11 @@ if (process.argv.includes('--version')) {
   process.exit(0)
 }
 
-const scenarioPath = process.env.ORCA_SDK_CONTRACT_SCENARIO_PATH
-const reportPath = process.env.ORCA_SDK_CONTRACT_REPORT_PATH
+const scenarioPath = process.env.OCC_SDK_CONTRACT_SCENARIO_PATH
+const reportPath = process.env.OCC_SDK_CONTRACT_REPORT_PATH
 // Every launch shares the report path, so a later one (e.g. model discovery) overwrites it; the
 // log keeps each launch's reports, one JSON line per write.
-const reportLogPath = process.env.ORCA_SDK_CONTRACT_REPORT_LOG_PATH
+const reportLogPath = process.env.OCC_SDK_CONTRACT_REPORT_LOG_PATH
 
 const report = {
   argv: process.argv.slice(1),
@@ -21,7 +21,7 @@ const report = {
   env: Object.fromEntries(
     Object.entries(process.env).filter(
       ([key]) =>
-        key.startsWith('ORCA_') || ['HOME', 'CODEX_HOME', 'CLAUDE_CONFIG_DIR'].includes(key)
+        key.startsWith('OCC_') || ['HOME', 'CODEX_HOME', 'CLAUDE_CONFIG_DIR'].includes(key)
     )
   ),
   controlRequests: [],
@@ -42,12 +42,12 @@ writeReport()
 
 const scenario = scenarioPath ? JSON.parse(readFileSync(scenarioPath, 'utf8')) : { steps: [] }
 
-if (process.env.ORCA_SDK_CONTRACT_IGNORE_SIGTERM) {
+if (process.env.OCC_SDK_CONTRACT_IGNORE_SIGTERM) {
   process.on('SIGTERM', () => {})
   process.on('SIGINT', () => {})
   setInterval(() => {}, 1_000_000)
 }
-if (process.env.ORCA_SDK_CONTRACT_DESCENDANT) {
+if (process.env.OCC_SDK_CONTRACT_DESCENDANT) {
   const descendant = spawn(process.execPath, ['-e', 'setInterval(() => {}, 1000000)'], {
     stdio: 'ignore'
   })
@@ -101,7 +101,7 @@ createInterface({ input: process.stdin }).on('line', (line) => {
     report.controlRequests.push(frame)
     settle('control_request', frame.request?.subtype)
     writeReport()
-    if (process.env.ORCA_SDK_CONTRACT_IGNORE_CONTROL_REQUESTS) {
+    if (process.env.OCC_SDK_CONTRACT_IGNORE_CONTROL_REQUESTS) {
       return
     }
     const response = {
@@ -136,7 +136,7 @@ createInterface({ input: process.stdin }).on('line', (line) => {
 // Bound fixture lifetime if the SDK stops driving stdin.
 setTimeout(
   () => process.exit(3),
-  Number(process.env.ORCA_SDK_CONTRACT_TIMEOUT_MS ?? 20_000)
+  Number(process.env.OCC_SDK_CONTRACT_TIMEOUT_MS ?? 20_000)
 ).unref()
 
 for (const step of scenario.steps) {

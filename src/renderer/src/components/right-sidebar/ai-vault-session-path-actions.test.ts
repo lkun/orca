@@ -1,7 +1,7 @@
 import type { AiVaultAgent, AiVaultSession } from '../../../../shared/ai-vault-types'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
-  canOpenAiVaultSessionLogInOrca,
+  canOpenAiVaultSessionLogInOCC,
   canUseLocalAiVaultSessionPathActions,
   isSyntheticAiVaultSessionPath,
   revealAiVaultSessionPath
@@ -33,7 +33,7 @@ describe('isSyntheticAiVaultSessionPath', () => {
   })
 })
 
-describe('canOpenAiVaultSessionLogInOrca', () => {
+describe('canOpenAiVaultSessionLogInOCC', () => {
   it.each<[AiVaultAgent, string]>([
     ['opencode2', '/home/user/.local/share/opencode/opencode.db'],
     ['opencode', '/home/user/.local/share/opencode/opencode-preview.db'],
@@ -47,7 +47,7 @@ describe('canOpenAiVaultSessionLogInOrca', () => {
       filePath,
       executionHostId: 'local'
     }
-    expect(canOpenAiVaultSessionLogInOrca(session)).toBe(false)
+    expect(canOpenAiVaultSessionLogInOCC(session)).toBe(false)
   })
 
   it.each<[AiVaultAgent, string]>([
@@ -56,7 +56,7 @@ describe('canOpenAiVaultSessionLogInOrca', () => {
     ['codex', '/home/user/project#1/session.jsonl']
   ])('allows a local %s conversation file: %s', (agent, filePath) => {
     expect(
-      canOpenAiVaultSessionLogInOrca({
+      canOpenAiVaultSessionLogInOCC({
         agent,
         filePath,
         executionHostId: 'local'
@@ -66,17 +66,17 @@ describe('canOpenAiVaultSessionLogInOrca', () => {
 
   it('withholds blank, remote, and synthetic identities', () => {
     expect(
-      canOpenAiVaultSessionLogInOrca({ agent: 'claude', filePath: '   ', executionHostId: 'local' })
+      canOpenAiVaultSessionLogInOCC({ agent: 'claude', filePath: '   ', executionHostId: 'local' })
     ).toBe(false)
     expect(
-      canOpenAiVaultSessionLogInOrca({
+      canOpenAiVaultSessionLogInOCC({
         agent: 'claude',
         filePath: '/remote/.claude/log.jsonl',
         executionHostId: 'ssh:dev-box'
       })
     ).toBe(false)
     expect(
-      canOpenAiVaultSessionLogInOrca({
+      canOpenAiVaultSessionLogInOCC({
         agent: 'claude',
         filePath: '/home/user/.opencode/db.sqlite#sess_1',
         executionHostId: 'local'

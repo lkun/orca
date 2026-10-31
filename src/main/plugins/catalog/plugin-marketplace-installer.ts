@@ -101,7 +101,7 @@ export class PluginMarketplaceInstaller {
     if (incompatible) {
       throw new Error(incompatible)
     }
-    const stagingDirectory = await mkdtemp(join(tmpdir(), 'orca-plugin-marketplace-preview-'))
+    const stagingDirectory = await mkdtemp(join(tmpdir(), 'occ-plugin-marketplace-preview-'))
     try {
       const resolvedCommit = await checkoutPluginGitSource({
         url: listing.source.url,

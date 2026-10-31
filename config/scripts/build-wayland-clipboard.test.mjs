@@ -13,7 +13,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { parse } from 'yaml'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { buildWaylandClipboard } from './build-wayland-clipboard.mjs'
 import glibcVerification from './verify-linux-glibc-floor.cjs'
 
@@ -28,7 +28,7 @@ let root
 let verify
 
 function output(arch = 'x64') {
-  return join(root, 'native', 'wayland-clipboard', '.build', arch, 'orca-wayland-clipboard')
+  return join(root, 'native', 'wayland-clipboard', '.build', arch, 'occ-wayland-clipboard')
 }
 
 function writeExecutable(arch) {
@@ -42,7 +42,7 @@ function writeExecutable(arch) {
 }
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-wayland-build-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-wayland-build-'))
   for (const file of [
     'native/wayland-clipboard/wayland-clipboard.c',
     'native/wayland-clipboard/x11-clipboard-publisher.c',
@@ -212,7 +212,7 @@ describe('Wayland clipboard packaging', () => {
       arch
     ])
     const resource = config.linux.extraResources.find(
-      (entry) => entry.to === 'bin/orca-wayland-clipboard'
+      (entry) => entry.to === 'bin/occ-wayland-clipboard'
     )
     const target = join(root, 'packaged', resource.to)
     const source = join(root, resource.from.replace('${arch}', arch))
@@ -234,7 +234,7 @@ describe('Wayland clipboard packaging', () => {
       const resources = join(root, 'resources')
       if (state === 'corrupt') {
         mkdirSync(join(resources, 'bin'), { recursive: true })
-        writeFileSync(join(resources, 'bin', 'orca-wayland-clipboard'), 'not ELF')
+        writeFileSync(join(resources, 'bin', 'occ-wayland-clipboard'), 'not ELF')
       }
       expect(() => finalizePackagedWaylandClipboard(resources)).toThrow(
         'missing its Wayland clipboard executable'

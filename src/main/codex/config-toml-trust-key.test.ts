@@ -85,7 +85,7 @@ describe('computeTrustKey', () => {
   )
 
   it('uses native Windows backslashes in the trust key Codex looks up', () => {
-    const winPath = 'C:\\Users\\Rod\\AppData\\Roaming\\orca\\hooks.json'
+    const winPath = 'C:\\Users\\Rod\\AppData\\Roaming\\occ\\hooks.json'
     const key = computeTrustKey({
       sourcePath: winPath,
       eventLabel: 'session_start',
@@ -94,7 +94,7 @@ describe('computeTrustKey', () => {
       command: 'echo'
     })
     expect(key).toContain('\\')
-    expect(key.startsWith('C:\\Users\\Rod\\AppData\\Roaming\\orca\\hooks.json:')).toBe(true)
+    expect(key.startsWith('C:\\Users\\Rod\\AppData\\Roaming\\occ\\hooks.json:')).toBe(true)
   })
 
   it('preserves literal backslashes in non-Windows-style fallback paths', () => {

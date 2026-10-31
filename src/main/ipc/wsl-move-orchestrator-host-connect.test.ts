@@ -24,7 +24,7 @@ const moved: WslMoveResult = {
 let userDataPath: string
 
 beforeEach(() => {
-  userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-move-orchestrator-connect-'))
+  userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-move-orchestrator-connect-'))
   vi.spyOn(console, 'warn').mockImplementation(() => {})
 })
 afterEach(() => {

@@ -52,7 +52,7 @@ it('loads the selected icon theme and drops it when its plugin goes away', async
   listed = []
   act(() => listeners.forEach((listener) => listener({ contentPacksChanged: true })))
   await waitFor(() => expect(store.useActivePluginIconTheme.getState().theme).toBeNull())
-  expect(document.getElementById('orca-plugin-icon-theme')).toBeNull()
+  expect(document.getElementById('occ-plugin-icon-theme')).toBeNull()
 })
 
 it('drops the previous icons when the next selected theme fails to load', async () => {
@@ -80,9 +80,9 @@ it('drops the previous icons when the next selected theme fails to load', async 
   const { rerender } = renderHook(({ id }) => store.usePluginIconThemeActivation(id), {
     initialProps: { id: working.id }
   })
-  await waitFor(() => expect(document.getElementById('orca-plugin-icon-theme')).not.toBeNull())
+  await waitFor(() => expect(document.getElementById('occ-plugin-icon-theme')).not.toBeNull())
   rerender({ id: broken.id })
-  await waitFor(() => expect(document.getElementById('orca-plugin-icon-theme')).toBeNull())
+  await waitFor(() => expect(document.getElementById('occ-plugin-icon-theme')).toBeNull())
   expect(store.useActivePluginIconTheme.getState().theme).toBeNull()
 })
 

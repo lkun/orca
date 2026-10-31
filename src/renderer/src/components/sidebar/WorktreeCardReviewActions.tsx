@@ -20,7 +20,7 @@ export function WorktreeCardReviewActions({
   provider,
   open,
   onOpenChange,
-  onOpenInOrca,
+  onOpenInOCC,
   onUnlink,
   closeHover
 }: {
@@ -29,13 +29,13 @@ export function WorktreeCardReviewActions({
   provider: string
   open?: boolean
   onOpenChange: (open: boolean) => void
-  onOpenInOrca?: (event: MouseEvent) => void
+  onOpenInOCC?: (event: MouseEvent) => void
   onUnlink?: () => void
   closeHover: () => void
 }): React.JSX.Element | null {
   const [internalOpen, setInternalOpen] = useState(false)
   const isOpen = open ?? internalOpen
-  if (!onOpenInOrca && !onUnlink) {
+  if (!onOpenInOCC && !onUnlink) {
     return null
   }
   const moreActionsLabel = translate(
@@ -81,11 +81,11 @@ export function WorktreeCardReviewActions({
         className="w-52"
         onClick={(event) => event.stopPropagation()}
       >
-        {onOpenInOrca ? (
+        {onOpenInOCC ? (
           <DropdownMenuItem
             onClick={(event) => {
               closeHover()
-              onOpenInOrca(event)
+              onOpenInOCC(event)
             }}
           >
             <MonitorUp className="size-3.5" />
@@ -112,14 +112,14 @@ export function WorktreeCardLinkedReviewActions({
   item,
   review,
   onOpenChange,
-  onOpenInOrca,
+  onOpenInOCC,
   onUnlink,
   closeHover
 }: {
   item: WorkspaceAttachment
   review: WorktreeCardPrDisplay | null
   onOpenChange: (open: boolean) => void
-  onOpenInOrca?: (event: MouseEvent, review?: WorktreeCardPrDisplay) => void
+  onOpenInOCC?: (event: MouseEvent, review?: WorktreeCardPrDisplay) => void
   onUnlink?: (item?: WorkspaceAttachment) => void
   closeHover: () => void
 }): React.JSX.Element {
@@ -131,10 +131,10 @@ export function WorktreeCardLinkedReviewActions({
       number={item.number}
       provider={workspaceAttachmentProviderLabel(item)}
       onOpenChange={onOpenChange}
-      onOpenInOrca={
-        url && item.provider === 'github' && onOpenInOrca
+      onOpenInOCC={
+        url && item.provider === 'github' && onOpenInOCC
           ? (event) =>
-              onOpenInOrca(
+              onOpenInOCC(
                 event,
                 review ?? {
                   provider: 'github',

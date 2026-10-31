@@ -1,6 +1,6 @@
 name: Daily macOS Dev Build
 
-# Publish daily main builds to orca-daily, separate from hourly and stable/RC feeds. Sign/notarize for update-preserved macOS TCC grants; PR/release pipelines own blocking validation, with E2E detached after publish. Cron 18:15 UTC means 10:15 PST/11:15 PDT, offset from hourly. Use the shared hourly App with write access to orca-daily (setup-hourly-release-token.sh/setup-daily-release-repo.sh). Mint tokens again after build and upload because 2×45min retry can exceed their 1h life. Keep releases draft until manifests verify; drafts retain build numbers.
+# Publish daily main builds to occ-daily, separate from hourly and stable/RC feeds. Sign/notarize for update-preserved macOS TCC grants; PR/release pipelines own blocking validation, with E2E detached after publish. Cron 18:15 UTC means 10:15 PST/11:15 PDT, offset from hourly. Use the shared hourly App with write access to occ-daily (setup-hourly-release-token.sh/setup-daily-release-repo.sh). Mint tokens again after build and upload because 2×45min retry can exceed their 1h life. Keep releases draft until manifests verify; drafts retain build numbers.
 
 on:
   schedule:
@@ -22,14 +22,14 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  DAILY_REPO: stablyai/orca-daily
+  DAILY_REPO: stablyai/occ-daily
   # Keep ~30 days so a regression can be bisected without holding a full year.
   DAILY_RETAIN_COUNT: 30
 
 jobs:
-  # Why: the app and the orcad template it ships must come from one commit, so resolve main once.
+  # Why: the app and the occd template it ships must come from one commit, so resolve main once.
   resolve-main:
-    if: github.repository == 'stablyai/orca'
+    if: github.repository == 'stablyai/occ'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -46,8 +46,8 @@ jobs:
           [[ "$head_sha" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::Could not resolve main"; exit 1; }
           echo "head_sha=$head_sha" >>"$GITHUB_OUTPUT"
 
-  # As release-cut does: every SSH host runs orcad, deployed from the template this build ships.
-  orcad-template:
+  # As release-cut does: every SSH host runs occd, deployed from the template this build ships.
+  occd-template:
     needs: resolve-main
     permissions:
       contents: read
@@ -61,8 +61,8 @@ jobs:
   build-daily-mac:
     needs:
       - resolve-main
-      - orcad-template
-    if: github.repository == 'stablyai/orca'
+      - occd-template
+    if: github.repository == 'stablyai/occ'
     outputs:
       tag: ${{ steps.release.outputs.tag }}
       version: ${{ steps.daily.outputs.version }}
@@ -81,7 +81,7 @@ jobs:
           ref: ${{ needs.resolve-main.outputs.head_sha }}
           # Version helpers only read HEAD; published versions come from git tags.
           fetch-depth: 1
-          # Read this repo without persisted credentials; write orca-daily through env-passed App token (zizmor: artipacked).
+          # Read this repo without persisted credentials; write occ-daily through env-passed App token (zizmor: artipacked).
           persist-credentials: false
 
       - name: Mint daily repo token
@@ -91,7 +91,7 @@ jobs:
           app-id: ${{ secrets.HOURLY_RELEASE_APP_ID }}
           private-key: ${{ secrets.HOURLY_RELEASE_APP_PRIVATE_KEY }}
           owner: stablyai
-          repositories: orca-daily
+          repositories: occ-daily
 
       # Skip unchanged main to avoid duplicate builds/tags and runner cost.
       - name: Check whether main moved since the last daily
@@ -148,14 +148,14 @@ jobs:
       - name: Locate the pinned Node runtime cache
         if: steps.freshness.outputs.should_build == 'true'
         shell: bash
-        run: echo "ORCA_NODE_RUNTIME_CACHE_DIR=$HOME/Library/Caches/orca-node-runtime" >>"$GITHUB_ENV"
+        run: echo "OCC_NODE_RUNTIME_CACHE_DIR=$HOME/Library/Caches/occ-node-runtime" >>"$GITHUB_ENV"
 
       - name: Cache the pinned Node runtime
         if: steps.freshness.outputs.should_build == 'true'
         uses: actions/cache@v5
         with:
-          path: ~/Library/Caches/orca-node-runtime
-          key: orca-node-runtime-mac-${{ hashFiles('src/shared/node-runtime-pin.ts') }}
+          path: ~/Library/Caches/occ-node-runtime
+          key: occ-node-runtime-mac-${{ hashFiles('src/shared/node-runtime-pin.ts') }}
 
       - name: Cache electron-builder downloads
         if: steps.freshness.outputs.should_build == 'true'
@@ -218,7 +218,7 @@ jobs:
             --jq '.[].tagName' || true)"
           published="$main_tags"$'\n'"$channel_tags"
           echo "Published version sources: $(grep -c . <<<"$main_tags" || true) main tags, $(grep -c . <<<"$channel_tags" || true) channel tags"
-          ORCA_PUBLISHED_VERSIONS="$published" ORCA_DAILY_RELEASE_NAMES="$names" \
+          OCC_PUBLISHED_VERSIONS="$published" OCC_DAILY_RELEASE_NAMES="$names" \
             node config/scripts/daily-build-version.mjs \
             >"$RUNNER_TEMP/daily-identity.txt"
           grep -E '^(version|build_number)=' "$RUNNER_TEMP/daily-identity.txt"
@@ -235,15 +235,15 @@ jobs:
         env:
           NODE_OPTIONS: --max-old-space-size=4096
           # Leave dev identity unset so official-only stable/rc telemetry stays silent.
-          ORCA_DIAGNOSTICS_TOKEN_URL: https://www.onorca.dev/diagnostics/token
+          OCC_DIAGNOSTICS_TOKEN_URL: https://www.onocc.dev/diagnostics/token
 
       # After the app build so nothing that cleans out/ can drop it; electron-builder ships it.
-      - name: Download the orcad deployment template
+      - name: Download the occd deployment template
         if: steps.freshness.outputs.should_build == 'true'
         uses: actions/download-artifact@v8
         with:
-          name: orcad-template
-          path: out/orcad-template
+          name: occd-template
+          path: out/occd-template
 
       # Refresh the one-hour token after read-only install/build, before long publish/notary work.
       - name: Re-mint daily repo token for publish
@@ -254,7 +254,7 @@ jobs:
           app-id: ${{ secrets.HOURLY_RELEASE_APP_ID }}
           private-key: ${{ secrets.HOURLY_RELEASE_APP_PRIVATE_KEY }}
           owner: stablyai
-          repositories: orca-daily
+          repositories: occ-daily
 
       - name: Create daily release
         id: release
@@ -274,7 +274,7 @@ jobs:
           cat >"$notes_file" <<EOF
           Automated daily macOS and Windows dev build from commit \`$short_sha\`.
 
-          Built from [\`stablyai/orca@$short_sha\`](https://github.com/stablyai/orca/commit/$SHA).
+          Built from [\`stablyai/occ@$short_sha\`](https://github.com/stablyai/occ/commit/$SHA).
 
           **Unvetted.** No tests ran. The macOS build is signed and notarized like a
           release, so it installs through OCC's in-app updater and opens from a manual
@@ -304,14 +304,14 @@ jobs:
           timeout_minutes: 45
           max_attempts: 2
           retry_wait_seconds: 30
-          command: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON config/scripts/pinned-node-downloads.mjs darwin-arm64 darwin-x64 && node config/scripts/ensure-native-runtime.mjs --runtime=electron && if [ -f config/scripts/build-mac-notarization-overlap.mjs ]; then ORCA_MAC_DAILY=1 node config/scripts/build-mac-notarization-overlap.mjs --publish always; else ORCA_MAC_DAILY=1 pnpm exec electron-builder --config config/electron-builder.config.cjs --mac --publish always; fi
+          command: node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON config/scripts/pinned-node-downloads.mjs darwin-arm64 darwin-x64 && node config/scripts/ensure-native-runtime.mjs --runtime=electron && if [ -f config/scripts/build-mac-notarization-overlap.mjs ]; then OCC_MAC_DAILY=1 node config/scripts/build-mac-notarization-overlap.mjs --publish always; else OCC_MAC_DAILY=1 pnpm exec electron-builder --config config/electron-builder.config.cjs --mac --publish always; fi
         env:
-          # Give the publisher App write access to its configured orca-daily target.
+          # Give the publisher App write access to its configured occ-daily target.
           GH_TOKEN: ${{ steps.app_token_publish.outputs.token }}
-          ORCA_DAILY_BUILD_VERSION: ${{ steps.daily.outputs.version }}
-          ORCA_BUILD_COMMIT: ${{ steps.daily.outputs.commit }}
+          OCC_DAILY_BUILD_VERSION: ${{ steps.daily.outputs.version }}
+          OCC_BUILD_COMMIT: ${{ steps.daily.outputs.commit }}
           # beforePack and afterPack fail the package when the template is absent.
-          ORCA_REQUIRE_ORCAD_TEMPLATE: '1'
+          OCC_REQUIRE_OCCD_TEMPLATE: '1'
           CSC_LINK: ${{ secrets.MAC_CERTS }}
           CSC_KEY_PASSWORD: ${{ secrets.MAC_CERTS_PASSWORD }}
           # Require Apple id/app-specific password/team for notary authentication, separate from signing cert.
@@ -328,7 +328,7 @@ jobs:
           app-id: ${{ secrets.HOURLY_RELEASE_APP_ID }}
           private-key: ${{ secrets.HOURLY_RELEASE_APP_PRIVATE_KEY }}
           owner: stablyai
-          repositories: orca-daily
+          repositories: occ-daily
 
       # Verify latest-mac.yml before exposing its release to prevent picker downloads returning 404.
       - name: Verify update manifest published
@@ -464,5 +464,5 @@ jobs:
       tag: ${{ needs.build-daily-mac.outputs.tag }}
       ref: ${{ needs.build-daily-mac.outputs.head_sha }}
       version: ${{ needs.build-daily-mac.outputs.version }}
-      orcad_template: true
+      occd_template: true
       fast_release: false

@@ -1,5 +1,5 @@
 import { useMemo, useState, useSyncExternalStore } from 'react'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../../../../../shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../../../../shared/sidebar-inputs-switch'
 import {
   withHeldProjectRecency,
   type SidebarFeedIndex
@@ -76,8 +76,8 @@ const notEngaged = (): boolean => false
 function useListEngaged(): boolean {
   // Only the main-input path needs event-driven hover holds; the legacy list settles independently.
   return useSyncExternalStore(
-    ORCA_SIDEBAR_INPUTS_IS_MAIN ? subscribe : noSubscription,
-    ORCA_SIDEBAR_INPUTS_IS_MAIN ? isEngaged : notEngaged,
+    OCC_SIDEBAR_INPUTS_IS_MAIN ? subscribe : noSubscription,
+    OCC_SIDEBAR_INPUTS_IS_MAIN ? isEngaged : notEngaged,
     notEngaged
   )
 }
@@ -93,10 +93,10 @@ export function useOrderHeldWhileEngaged(ids: string[], sortBy: SortBy): string[
       ? { ids: mergeHeldOrder(shown.ids, ids), sortBy }
       : { ids, sortBy }
   const changed = next.ids !== shown.ids || next.sortBy !== shown.sortBy
-  if (ORCA_SIDEBAR_INPUTS_IS_MAIN && changed) {
+  if (OCC_SIDEBAR_INPUTS_IS_MAIN && changed) {
     setShown(next)
   }
-  return ORCA_SIDEBAR_INPUTS_IS_MAIN ? next.ids : ids
+  return OCC_SIDEBAR_INPUTS_IS_MAIN ? next.ids : ids
 }
 
 /** As above for project sections in Recent order: they keep the stamps they had at engagement. */

@@ -78,7 +78,7 @@ it.each([false, true])(
       worktreeId: WORKSPACE,
       sourceTabId: 'source',
       sourceOwner: { kind: 'local' },
-      forceDestination: 'orca',
+      forceDestination: 'occ',
       openInSourceGroup: explicit
     })
     await settle()
@@ -129,7 +129,7 @@ it('a newer activation suppresses an older pending preference decision', async (
   openRoutedHttpLink('https://second.example/', {
     worktreeId: WORKSPACE,
     sourceTabId: 'source',
-    forceDestination: 'orca'
+    forceDestination: 'occ'
   })
   resolvePreference?.(true)
   await settle()
@@ -231,7 +231,7 @@ it.each([false, true])(
       worktreeId: floating,
       sourceTabId: 'floating-source',
       sourceOwner: { kind: 'local' },
-      forceDestination: 'orca',
+      forceDestination: 'occ',
       openInSourceGroup: explicit
     })
     await settle()

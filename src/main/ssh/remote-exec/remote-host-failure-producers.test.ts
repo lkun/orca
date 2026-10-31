@@ -6,21 +6,21 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { NODE_RUNTIME_PIN } from '../../../shared/node-runtime-pin'
 import type { SshTarget } from '../../../shared/ssh-types'
-import { runProcess, runProcessSync } from '@orca/process-host'
+import { runProcess, runProcessSync } from '@occ/process-host'
 import {
   REMOTE_NODE_RUNTIME_READY,
   REMOTE_NODE_RUNTIME_VERIFIED_MARKER,
   RemoteNodeRuntimeSelfTestError,
   assertRemoteNodeRuntimePromoted
-} from '../orcad-remote-node-runtime-report'
-import { remoteNodeRuntimePresentCommand } from '../../managed-server/install/orcad-remote-node-runtime'
+} from '../occd-remote-node-runtime-report'
+import { remoteNodeRuntimePresentCommand } from '../../managed-server/install/occd-remote-node-runtime'
 import { getRemoteHostPlatform } from '../ssh-remote-platform'
 import { findSystemSsh } from '../system-transport/system-ssh-binary'
 import { uploadDirectoryViaSystemSsh } from '../system-transport/system-ssh-file-transfer'
 import { runSftpBatch } from '../system-transport/system-ssh-sftp-transfer'
 import { isHostAnsweredSystemSshExit } from '../system-transport/system-ssh-operation-lifecycle'
 
-vi.mock('@orca/process-host', async (importOriginal) => ({
+vi.mock('@occ/process-host', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   runProcess: vi.fn()
 }))
@@ -35,7 +35,7 @@ const target = {} as SshTarget
 let scratch: string
 
 beforeEach(async () => {
-  scratch = await mkdtemp(join(tmpdir(), 'orca-answered-producers-'))
+  scratch = await mkdtemp(join(tmpdir(), 'occ-answered-producers-'))
 })
 afterEach(async () => {
   vi.unstubAllEnvs()
@@ -117,7 +117,7 @@ describe.runIf(posix)('system-ssh directory upload', () => {
 
 describe('system sftp batch', () => {
   beforeEach(() => {
-    vi.stubEnv('ORCA_SYSTEM_SFTP_PATH', '/fixture/sftp')
+    vi.stubEnv('OCC_SYSTEM_SFTP_PATH', '/fixture/sftp')
   })
 
   it('reports a Windows file permission refusal as the host answering', async () => {
@@ -125,7 +125,7 @@ describe('system sftp batch', () => {
       code: 1,
       signal: null,
       stdout: '',
-      stderr: 'dest open "C:/Users/me/.orca-remote/node.zip": Permission denied',
+      stderr: 'dest open "C:/Users/me/.occ-remote/node.zip": Permission denied',
       timedOut: false
     })
     const error = await runSftpBatch(target, ['put node.zip']).catch((e: unknown) => e)

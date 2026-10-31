@@ -83,8 +83,8 @@ function host(id: string, lastConnected: number, extra: Partial<HostProfile> = {
 
 const RELAY: MobileRelayEndpoint = {
   v: 1,
-  directorUrl: 'https://relay-staging.onorca.dev',
-  cellUrl: 'https://c1.relay-staging.onorca.dev',
+  directorUrl: 'https://relay-staging.onocc.dev',
+  cellUrl: 'https://c1.relay-staging.onocc.dev',
   assignmentEpoch: 4,
   relayHostId: 'AbCdEf0123_-xyZ9',
   e2eeFraming: 2

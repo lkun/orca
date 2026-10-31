@@ -244,7 +244,7 @@ const REPLY = [
   'pnpm build',
   '```',
   '',
-  '::orca-visual{file="chart.html"}'
+  '::occ-visual{file="chart.html"}'
 ].join('\n')
 
 describe('NativeChatResolvedView right-click targets', () => {

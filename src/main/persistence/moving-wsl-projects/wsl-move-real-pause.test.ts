@@ -3,7 +3,7 @@
  * daemon. Sleep ends them through the daemon, the daemon's own census proves they exited, its
  * final checkpoint names each pane's folder, and a new shell started there prints it.
  *
- * On Windows it runs only in the real-WSL lane (ORCA_WSL_MOVE_REAL_PAUSE_DISTRO): the shells are
+ * On Windows it runs only in the real-WSL lane (OCC_WSL_MOVE_REAL_PAUSE_DISTRO): the shells are
  * `wsl.exe` in that distro, opened through its UNC path, exactly as a moving project's are.
  */
 import { existsSync, mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
@@ -15,7 +15,7 @@ import { DaemonServer } from '../../daemon/daemon-server'
 import { getDaemonSocketPath } from '../../daemon/daemon-spawner'
 import { HistoryReader } from '../../daemon/history-reader'
 import { createPtySubprocess } from '../../daemon/pty-subprocess'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { buildWslExecArgs } from '../../../shared/wsl-login-shell-command'
 import { toWindowsWslUncPath } from '../../../shared/wsl-paths'
 import { wslMoveCutoverFixture } from '../__fixtures__/wsl-mover/wsl-move-cutover-fixture'
@@ -29,7 +29,7 @@ import { quiesceWslMove, type WslMoveQuiesceScope } from './wsl-move-quiesce'
 import { captureWslMoveRestoreHints } from './wsl-move-restore-hints'
 
 const WSL_DISTRO =
-  process.platform === 'win32' ? process.env.ORCA_WSL_MOVE_REAL_PAUSE_DISTRO : undefined
+  process.platform === 'win32' ? process.env.OCC_WSL_MOVE_REAL_PAUSE_DISTRO : undefined
 const DISTRO = WSL_DISTRO ?? 'Ubuntu'
 const SHELL = ['/bin/bash', '/bin/sh'].find(existsSync) ?? '/bin/sh'
 const WORKTREE = `repo-1::${toWindowsWslUncPath('/home/dev/repo-1', DISTRO)}`
@@ -169,7 +169,7 @@ function prepareMove() {
 
 /** A project folder inside the distro, made there, so no Windows path stands in for it. */
 function makeDistroProject(distro: string): string {
-  const dir = `/tmp/orca-wmrp-${process.pid}-${Date.now()}`
+  const dir = `/tmp/occ-wmrp-${process.pid}-${Date.now()}`
   const made = runProcessSync({
     program: 'wsl.exe',
     args: buildWslExecArgs(distro, ['mkdir', '-p', `${dir}/sub`])

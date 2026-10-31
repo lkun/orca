@@ -8,7 +8,7 @@ export type TrustConfigFixture = {
 }
 
 export function createTrustConfigFixture(): TrustConfigFixture {
-  const tmpDir = mkdtempSync(join(tmpdir(), 'orca-codex-trust-test-'))
+  const tmpDir = mkdtempSync(join(tmpdir(), 'occ-codex-trust-test-'))
   return { tmpDir, configPath: join(tmpDir, 'config.toml') }
 }
 

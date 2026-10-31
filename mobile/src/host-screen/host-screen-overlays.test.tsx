@@ -49,7 +49,7 @@ async function renderSheet(row: Partial<Worktree>) {
     hostId: 'host-1',
     settings: {},
     state: {
-      actionTarget: { worktreeId: 'wt', repo: 'orca', branch: 'main', ...row },
+      actionTarget: { worktreeId: 'wt', repo: 'occ', branch: 'main', ...row },
       confirmDelete: null,
       view: INITIAL_MOBILE_VIEW,
       hostLabelById: new Map(),

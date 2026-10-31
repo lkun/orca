@@ -1,5 +1,5 @@
 import { getPtyIpc } from '../pty-host-bindings'
-import type { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import { tryGetProviderForPty } from '../provider/registry'
 import { providerSnapshotRequiredPtys } from '../delivery/visibility-state'
 import type { PtyPendingDataDrainQueue } from '../delivery/pty-pending-data-drain-queue'
@@ -18,7 +18,7 @@ function normalizeSnapshotScrollbackRows(value: unknown): number | undefined {
 }
 
 export function installPtySnapshotIpcHandlers(deps: {
-  runtime?: OrcaRuntimeService
+  runtime?: OCCRuntimeService
   pendingData: PtyPendingDataDrainQueue
 }): void {
   const ipcMain = getPtyIpc()

@@ -6,7 +6,7 @@ import { basename, dirname, join } from 'node:path'
 import { parse, stringify } from 'yaml'
 import {
   LOCAL_BUILD_COMPATIBILITY_FILENAME,
-  ORCA_APP_ID,
+  OCC_APP_ID,
   parseLocalBuildCompatibility,
   type LocalBuildCompatibility
 } from '../../shared/local-build-compatibility'
@@ -193,7 +193,7 @@ async function validateArtifact(
       throw new Error(`SHA-512 verification failed for ${manifestFile.url}.`)
     }
     const compatibility = await compatibilityReader(file)
-    if (compatibility.appId !== ORCA_APP_ID || compatibility.version !== manifestVersion) {
+    if (compatibility.appId !== OCC_APP_ID || compatibility.version !== manifestVersion) {
       throw new Error('The selected ZIP does not match its update manifest.')
     }
     return { compatibility, file, size: fileStats.size }

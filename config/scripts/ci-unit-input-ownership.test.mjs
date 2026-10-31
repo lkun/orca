@@ -159,7 +159,7 @@ describe('checked indirect unit inputs', () => {
   })
 
   it('rejects environment-dependent declarations when the required variable is set', () => {
-    const conditional = { ...record, emptyEnv: ['ORCA_CENSUS_EXTRA_ROOT'] }
+    const conditional = { ...record, emptyEnv: ['OCC_CENSUS_EXTRA_ROOT'] }
     const closure = () =>
       new Map([
         [helper, original.get(helper)],
@@ -172,7 +172,7 @@ describe('checked indirect unit inputs', () => {
       checkUnitInputOwnership(
         [conditional],
         closure,
-        { ORCA_CENSUS_EXTRA_ROOT: 'src/other/' },
+        { OCC_CENSUS_EXTRA_ROOT: 'src/other/' },
         record.contextSha256
       ).size
     ).toBe(0)

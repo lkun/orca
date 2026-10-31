@@ -6,13 +6,13 @@ import { PluginContentVerifier } from './plugin-content-integrity'
 import { inspectPluginInstallTree } from './installation/plugin-install-staging'
 import { PluginSyntaxRegistry } from './contributions/plugin-syntax-registry'
 
-const root = join(process.cwd(), 'examples', 'plugins', 'orca-gleam-syntax')
+const root = join(process.cwd(), 'examples', 'plugins', 'occ-gleam-syntax')
 
 it('ships an installable Gleam syntax pack whose grammar loads', async () => {
   const inspection = await inspectPluginInstallTree({
     rootDir: root,
     hostVersion: PLUGIN_SCHEMA_NEWEST_SINCE,
-    identity: { pluginKey: 'stablyai.orca-gleam-syntax' }
+    identity: { pluginKey: 'stablyai.occ-gleam-syntax' }
   })
   expect(inspection).toMatchObject({ ok: true })
   if (!inspection.ok) {
@@ -24,7 +24,7 @@ it('ships an installable Gleam syntax pack whose grammar loads', async () => {
   await registry.reconcile(
     [
       {
-        pluginKey: 'stablyai.orca-gleam-syntax',
+        pluginKey: 'stablyai.occ-gleam-syntax',
         rootDir: root,
         manifest: inspection.manifest,
         consentFingerprint: fingerprintPluginConsent(inspection.manifest),
@@ -34,14 +34,14 @@ it('ships an installable Gleam syntax pack whose grammar loads', async () => {
     ],
     () => true
   )
-  expect(registry.error('stablyai.orca-gleam-syntax')).toBeNull()
+  expect(registry.error('stablyai.occ-gleam-syntax')).toBeNull()
   expect(registry.list()).toEqual([
     expect.objectContaining({
-      id: 'plugin:stablyai.orca-gleam-syntax/gleam',
+      id: 'plugin:stablyai.occ-gleam-syntax/gleam',
       extensions: ['.gleam']
     })
   ])
-  expect(registry.load('plugin:stablyai.orca-gleam-syntax/gleam')).toMatchObject({
+  expect(registry.load('plugin:stablyai.occ-gleam-syntax/gleam')).toMatchObject({
     scopeName: 'source.gleam',
     configuration: { comments: { lineComment: '//' } }
   })

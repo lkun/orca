@@ -1,8 +1,8 @@
 /** Deploy empty hosts, migrate source state, or connect/update managed hosts when terminal safety permits. Publish explicit unserved reasons on refusal; use stdio when sshd blocks forwarding. */
 import type {
-  OrcadManagedConversionResult,
-  OrcadManagedDeployResult
-} from '../../shared/orcad-managed-runtime'
+  OCCdManagedConversionResult,
+  OCCdManagedDeployResult
+} from '../../shared/occd-managed-runtime'
 import type {
   SshManagedServerRelayReason,
   SshManagedServerLinkedProject,
@@ -11,7 +11,7 @@ import type {
   SshManagedServerUpdateNote,
   SshTarget
 } from '../../shared/ssh-types'
-import type { OrcadManagedServing } from '../managed-server/lifecycle/orcad-managed-serving'
+import type { OCCdManagedServing } from '../managed-server/lifecycle/occd-managed-serving'
 import {
   checkManagedServerUpdate,
   type ManagedServerUpdateDeps
@@ -20,9 +20,9 @@ import { managedResultAfterUpdate, unservedManagedResult } from './managed-serve
 import { keptForBridgedTerminals, relayTerminalReason } from './ssh-host-server-bridged-unserved'
 import { deferred, setupFailed } from './ssh-host-server-setup-outcome'
 import {
-  classifyOrcadHostUnavailable,
-  ORCAD_TUNNEL_UNAVAILABLE_REASON
-} from '../orcad/orcad-host-unavailable'
+  classifyOCCdHostUnavailable,
+  OCCD_TUNNEL_UNAVAILABLE_REASON
+} from '../occd/occd-host-unavailable'
 import {
   decidedEvent,
   reportHostServerConversion,
@@ -75,7 +75,7 @@ export type HostServerOnConnectDeps = {
   managedEnvironmentId: (target: SshTarget) => string | null
   ensureTunnel: (environmentId: string) => Promise<void>
   /** Wake only on proven stopped activation, then verify serving behind the tunnel. */
-  ensureServing: (environmentId: string) => Promise<OrcadManagedServing>
+  ensureServing: (environmentId: string) => Promise<OCCdManagedServing>
   /** Finish retained-source bookkeeping after late commit replies without deleting source rows; resolves how many moved automations the server kept off. */
   retainCommittedSource: (target: SshTarget) => Promise<number>
   hasTemplate: () => boolean
@@ -83,12 +83,12 @@ export type HostServerOnConnectDeps = {
   recordUnavailable: (target: SshTarget, reason: string) => void
   isEmptyHost: (target: SshTarget) => boolean
   relayTerminals: (target: SshTarget) => Promise<HostServerTerminalVerdict>
-  deploy: (target: SshTarget) => Promise<OrcadManagedDeployResult>
+  deploy: (target: SshTarget) => Promise<OCCdManagedDeployResult>
   /** Reuse the connect's pre-session terminal proof when available. */
   convert: (
     target: SshTarget,
     hostProof: HostServerTerminalVerdict | null
-  ) => Promise<OrcadManagedConversionResult>
+  ) => Promise<OCCdManagedConversionResult>
   hasUnfinishedConversion: (target: SshTarget) => boolean
   /** Releases a conversion fence once its server provably holds nothing. */
   abandonConversion: (target: SshTarget) => Promise<void>
@@ -121,7 +121,7 @@ async function decide(
   deps: HostServerOnConnectDeps,
   trace: HostServerDecisionTrace
 ): Promise<HostServerOnConnectResult> {
-  if (target.orcadFence?.sourceChangedAt) {
+  if (target.occdFence?.sourceChangedAt) {
     return { route: 'unserved', reason: 'source_changed' }
   }
   const existing = deps.managedEnvironmentId(target)
@@ -133,15 +133,15 @@ async function decide(
     } catch (error) {
       // Before staging only: once remote state exists, destination evidence must resolve it.
       if (
-        classifyOrcadHostUnavailable(error) === ORCAD_TUNNEL_UNAVAILABLE_REASON &&
+        classifyOCCdHostUnavailable(error) === OCCD_TUNNEL_UNAVAILABLE_REASON &&
         deps.isFencedBeforeStaging(target)
       ) {
         await deps.releaseUnreachableSetup(target)
-        deps.recordUnavailable(target, ORCAD_TUNNEL_UNAVAILABLE_REASON)
+        deps.recordUnavailable(target, OCCD_TUNNEL_UNAVAILABLE_REASON)
         return {
           route: 'unserved',
-          reason: 'orcad_unavailable',
-          detail: ORCAD_TUNNEL_UNAVAILABLE_REASON
+          reason: 'occd_unavailable',
+          detail: OCCD_TUNNEL_UNAVAILABLE_REASON
         }
       }
       throw error
@@ -174,10 +174,10 @@ async function decide(
   const recorded = deps.recordedUnavailable(target)
   if (recorded) {
     trace.recorded = true
-    return { route: 'unserved', reason: 'orcad_unavailable', detail: recorded }
+    return { route: 'unserved', reason: 'occd_unavailable', detail: recorded }
   }
   if (!deps.hasTemplate()) {
-    return { route: 'unserved', reason: 'orcad_unavailable', detail: 'artifacts_unavailable' }
+    return { route: 'unserved', reason: 'occd_unavailable', detail: 'artifacts_unavailable' }
   }
   if (deps.isEmptyHost(target)) {
     try {
@@ -232,7 +232,7 @@ async function afterDeploy(
   target: SshTarget,
   deps: HostServerOnConnectDeps,
   trace: HostServerDecisionTrace,
-  result: OrcadManagedDeployResult
+  result: OCCdManagedDeployResult
 ): Promise<HostServerOnConnectResult> {
   if (result.outcome === 'deferred') {
     return deferred(target, deps, result, true)
@@ -253,7 +253,7 @@ async function afterDeploy(
 async function afterConversion(
   target: SshTarget,
   deps: HostServerOnConnectDeps,
-  result: OrcadManagedConversionResult
+  result: OCCdManagedConversionResult
 ): Promise<HostServerOnConnectResult> {
   switch (result.outcome) {
     case 'converted':
@@ -268,7 +268,7 @@ async function afterConversion(
     case 'deferred':
       return deferred(target, deps, result, false)
     case 'refused':
-      if (result.code === 'orcad_migration_terminals') {
+      if (result.code === 'occd_migration_terminals') {
         return { route: 'unserved', reason: relayTerminalReason(result.verdict) }
       }
       return {

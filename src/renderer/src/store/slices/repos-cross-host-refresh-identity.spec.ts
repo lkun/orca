@@ -10,29 +10,29 @@ import { clearRuntimeCompatibilityCacheForTests } from '../../runtime/runtime-rp
 
 export function registerReposCrossHostRefreshIdentityTests(): void {
   // Same-name local/remote clones with distinct repo IDs exercise compat sourceRepoIds assembled across hosts.
-  const SHARED_PROJECT_ID = 'github:stablyai/orca'
+  const SHARED_PROJECT_ID = 'github:stablyai/occ'
 
   const localRepo: Repo = {
     id: 'local-repo',
-    path: '/local/orca',
-    displayName: 'orca',
+    path: '/local/occ',
+    displayName: 'occ',
     badgeColor: '#22c55e',
-    upstream: { owner: 'stablyai', repo: 'orca' },
+    upstream: { owner: 'stablyai', repo: 'occ' },
     addedAt: 1_700_000_000_000
   }
 
   const remoteRepo: Repo = {
     id: 'remote-repo',
-    path: '/srv/orca',
-    displayName: 'orca',
+    path: '/srv/occ',
+    displayName: 'occ',
     badgeColor: '#737373',
-    upstream: { owner: 'stablyai', repo: 'orca' },
+    upstream: { owner: 'stablyai', repo: 'occ' },
     addedAt: 1_700_000_001_000
   }
 
   const localProject: Project = {
     id: SHARED_PROJECT_ID,
-    displayName: 'orca',
+    displayName: 'occ',
     badgeColor: '#22c55e',
     sourceRepoIds: ['local-repo'],
     createdAt: 1,
@@ -54,7 +54,7 @@ export function registerReposCrossHostRefreshIdentityTests(): void {
       hostId: 'local',
       repoId,
       path,
-      displayName: 'orca',
+      displayName: 'occ',
       setupState: 'ready',
       setupMethod: 'imported-existing-folder',
       createdAt: 1,
@@ -81,7 +81,7 @@ export function registerReposCrossHostRefreshIdentityTests(): void {
       return { projects: [clone(remoteProject)] }
     }
     if (method === 'projectHostSetup.list') {
-      return { setups: [clone(setup('remote-repo', '/srv/orca'))] }
+      return { setups: [clone(setup('remote-repo', '/srv/occ'))] }
     }
     return {}
   }
@@ -101,7 +101,7 @@ export function registerReposCrossHostRefreshIdentityTests(): void {
 
       reposList.mockImplementation(async () => [clone(localRepo)])
       projectsList.mockImplementation(async () => [clone(localProject)])
-      listHostSetups.mockImplementation(async () => [clone(setup('local-repo', '/local/orca'))])
+      listHostSetups.mockImplementation(async () => [clone(setup('local-repo', '/local/occ'))])
       runtimeEnvironmentsList.mockResolvedValue([{ id: 'env-1', name: 'awin' }])
       runtimeEnvironmentTransportCall.mockImplementation((args: RuntimeEnvironmentCallRequest) => {
         const compatible = createCompatibleRuntimeStatusResponseIfNeeded(args)

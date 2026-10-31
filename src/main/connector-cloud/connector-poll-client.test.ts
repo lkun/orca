@@ -16,7 +16,7 @@ const SERVER_NOW = 1_800_000_000_000
 const conversation = { source: 'slack', externalId: 'T1:C9:1792.9:U5' } as const
 const [project] = connectorProjects({
   getRepos: () => [
-    { id: 'orca', path: '/src/orca', displayName: 'orca', badgeColor: '#000', addedAt: 1 }
+    { id: 'occ', path: '/src/occ', displayName: 'occ', badgeColor: '#000', addedAt: 1 }
   ],
   getProjectGroups: () => [],
   getFolderWorkspaces: () => [],
@@ -63,7 +63,7 @@ beforeEach(() => {
     toFake: ['setTimeout', 'clearTimeout', 'Date', 'performance'],
     now: SERVER_NOW
   })
-  userDataPath = mkdtempSync(join(tmpdir(), 'orca-connector-client-'))
+  userDataPath = mkdtempSync(join(tmpdir(), 'occ-connector-client-'))
   fake = new FakeConnectorCloud()
 })
 
@@ -85,7 +85,7 @@ describe('ConnectorPollClient', () => {
       promptKinds: ['approval', 'question'],
       features: ['answer', 'cancel', 'reply'],
       sources: ['slack', 'discord', 'linear'],
-      projects: [{ placeId: project!.placeId, name: 'orca', kind: 'git' }]
+      projects: [{ placeId: project!.placeId, name: 'occ', kind: 'git' }]
     })
     expect(fake.events).toEqual([{ kind: 'snapshot', conversations: [] }])
     expect(fake.requestsTo(CONNECTOR_PATHS.poll)).toHaveLength(1)

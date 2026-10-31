@@ -62,7 +62,7 @@ describe('FloatingTerminalPanel close behavior', () => {
           canGoForward: false,
           loadError: null,
           sessionProfileId: 'profile-1',
-          sessionPartition: 'persist:orca-browser-session-profile-1',
+          sessionPartition: 'persist:occ-browser-session-profile-1',
           createdAt: 1
         }
       ]
@@ -98,7 +98,7 @@ describe('FloatingTerminalPanel close behavior', () => {
       {
         title: 'Example',
         sessionProfileId: 'profile-1',
-        sessionPartition: 'persist:orca-browser-session-profile-1',
+        sessionPartition: 'persist:occ-browser-session-profile-1',
         afterTabId: 'browser-unified-1',
         browserRuntimeEnvironmentId: null
       }
@@ -119,7 +119,7 @@ describe('FloatingTerminalPanel close behavior', () => {
     const openElement = await renderPanel(true)
     const openLayers = findByTypeName(openElement, 'WorkspacePaneOverlayLayers')
     expect(openLayers.props.isVisible).toBe(true)
-    expect(openLayers.props.worktreePath).toBe('/tmp/orca')
+    expect(openLayers.props.worktreePath).toBe('/tmp/occ')
   })
 
   it('wires the shared pane overlay with the floating parking and shortcut policy', async () => {

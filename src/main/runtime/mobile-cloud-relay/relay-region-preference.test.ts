@@ -25,7 +25,7 @@ afterEach(() => {
 })
 
 function userDataPath(): string {
-  const path = mkdtempSync(join(tmpdir(), 'orca-relay-region-'))
+  const path = mkdtempSync(join(tmpdir(), 'occ-relay-region-'))
   tempPaths.push(path)
   return path
 }
@@ -52,7 +52,7 @@ function writeNoHintCache(path: string, expiresAt: number): void {
 }
 
 function cachePath(path: string): string {
-  return join(path, 'orca-relay-region-preference.json')
+  return join(path, 'occ-relay-region-preference.json')
 }
 
 function writeCache(path: string, region: string, expiresAt = 999): void {
@@ -392,7 +392,7 @@ describe('Relay region preference', () => {
   it('lets the environment override win and never self-heals its cache', async () => {
     const path = userDataPath()
     writeCache(path, 'us-central1', 50_000_000)
-    vi.stubEnv('ORCA_RELAY_REGION_OVERRIDE', 'asia-east2')
+    vi.stubEnv('OCC_RELAY_REGION_OVERRIDE', 'asia-east2')
     const fetch = vi.fn<typeof globalThis.fetch>()
     const resolver = new RelayRegionPreferenceResolver({
       directorUrl: DIRECTOR,

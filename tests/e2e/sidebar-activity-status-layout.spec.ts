@@ -1,5 +1,5 @@
 import type { Locator, Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
 type ActivityState = 'idle' | 'working' | 'blocked'
@@ -182,11 +182,11 @@ async function expectActivityGeometry(
 
 for (const theme of ['dark', 'light'] as const) {
   test(`activity side-column counts align with their status and preserve the control size (${theme})`, async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    const worktreeId = await waitForActiveWorktree(orcaPage)
-    await orcaPage.evaluate(
+    await waitForSessionReady(occPage)
+    const worktreeId = await waitForActiveWorktree(occPage)
+    await occPage.evaluate(
       async ({ theme, worktreeId }) => {
         const store = window.__store
         if (!store) {
@@ -217,8 +217,8 @@ for (const theme of ['dark', 'light'] as const) {
       },
       { theme, worktreeId }
     )
-    await expect(orcaPage.locator('html')).toHaveClass(theme === 'dark' ? /\bdark\b/ : /\blight\b/)
-    const referenceCount = orcaPage.locator('[data-reference-count]').first()
+    await expect(occPage.locator('html')).toHaveClass(theme === 'dark' ? /\bdark\b/ : /\blight\b/)
+    const referenceCount = occPage.locator('[data-reference-count]').first()
     await expect(referenceCount).toHaveText('12')
     const { referenceTypography, referenceLetterSpacing } = await referenceCount.evaluate(
       (element) => {
@@ -240,14 +240,14 @@ for (const theme of ['dark', 'light'] as const) {
 
     for (const sidebarBody of ['workspaces', 'agents'] as const) {
       if (sidebarBody === 'agents') {
-        await orcaPage.getByRole('button', { name: 'View activity', exact: true }).click()
+        await occPage.getByRole('button', { name: 'View activity', exact: true }).click()
       }
-      const button = orcaPage.getByRole('button', {
+      const button = occPage.getByRole('button', {
         name: sidebarBody === 'agents' ? 'Turn off activity view' : 'View activity',
         exact: true
       })
       await expect(button).toHaveAttribute('aria-pressed', String(sidebarBody === 'agents'))
-      await orcaPage.mouse.move(0, 0)
+      await occPage.mouse.move(0, 0)
       const background = await button.evaluate(
         (element) => getComputedStyle(element).backgroundColor
       )
@@ -262,7 +262,7 @@ for (const theme of ['dark', 'light'] as const) {
       }
       for (const { state, count } of CASES) {
         await test.step(`${sidebarBody}: ${state} ${count}`, async () => {
-          await seedActivity(orcaPage, worktreeId, state, count)
+          await seedActivity(occPage, worktreeId, state, count)
           await expectActivityGeometry(
             button,
             state,

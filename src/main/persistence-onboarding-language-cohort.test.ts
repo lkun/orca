@@ -22,7 +22,7 @@ vi.mock('node:crypto', async (importOriginal) => ({
 }))
 
 beforeEach(() => {
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-onboarding-language-cohort-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-onboarding-language-cohort-'))
 })
 afterEach(async () => {
   await closeTestStores()

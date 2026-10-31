@@ -6,7 +6,7 @@ import type { RuntimeSyncedLeaf, RuntimeSyncedTab } from '../../shared/runtime-t
 import type { RuntimeLeafPtyFacts } from './runtime-leaf-record-projection'
 import type { RuntimeLeafRecord } from './runtime-terminal-state-records'
 
-export const WORKTREE_ID = 'repo-1::/Users/dev/orca'
+export const WORKTREE_ID = 'repo-1::/Users/dev/occ'
 export const LEAF_1 = '11111111-1111-4111-8111-111111111111'
 export const LEAF_2 = '22222222-2222-4222-8222-222222222222'
 export const LEAF_3 = '33333333-3333-4333-8333-333333333333'

@@ -25,7 +25,7 @@ const exitAfterMs = Number(
   process.argv.find((arg) => arg.startsWith('--exit-after-ms='))?.slice('--exit-after-ms='.length)
 )
 
-const profileRoot = mkdtempSync(join(tmpdir(), `orca-google-signin-${mode}-`))
+const profileRoot = mkdtempSync(join(tmpdir(), `occ-google-signin-${mode}-`))
 const partition = `persist:google-signin-${mode}`
 app.setPath('userData', profileRoot)
 

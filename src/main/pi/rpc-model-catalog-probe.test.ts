@@ -88,7 +88,7 @@ describe('Pi model catalog', () => {
         resolveEnvironment: async () => ({
           PATH: '/usr/bin',
           HOME: '/home/user',
-          ORCA_PANE_KEY: 'p'
+          OCC_PANE_KEY: 'p'
         }),
         resolveCommandSettings: () => ({ agentCmdOverrides: { pi: command } }),
         resolveCommand: () => '/opt/pi/bin/pi',
@@ -143,7 +143,7 @@ describe('Pi model catalog', () => {
           args: [...(command ? ['run', '--', 'pi'] : []), '--mode', 'rpc', '--no-session'],
           env: expect.objectContaining({ PI_CODING_AGENT_DIR: '/homes/pi-a' }),
           // OCC's status extension stays silent in a probe that belongs to no pane.
-          envToDelete: expect.arrayContaining(['ORCA_PANE_KEY'])
+          envToDelete: expect.arrayContaining(['OCC_PANE_KEY'])
         })
       ])
       expect(probeVersion).toHaveBeenCalledWith(

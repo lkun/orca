@@ -1,7 +1,7 @@
-import { OrcaRuntimeWithRecordPtyWorktree } from '../identity/pty-worktree-record'
+import { OCCRuntimeWithRecordPtyWorktree } from '../identity/pty-worktree-record'
 import type { ResolvedWorktree } from '../../runtime-worktree-path-identity'
 
-export abstract class OrcaRuntimeWithRefreshPtyWorktreeRecordsFromController extends OrcaRuntimeWithRecordPtyWorktree {
+export abstract class OCCRuntimeWithRefreshPtyWorktreeRecordsFromController extends OCCRuntimeWithRecordPtyWorktree {
   protected abstract refreshFloatingWorkspacePtyLiveness(): Set<string> | null
 
   /** Synchronizes PTY tracking records with running daemon sessions, querying their foreground agent states. */

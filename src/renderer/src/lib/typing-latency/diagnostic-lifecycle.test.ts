@@ -46,11 +46,11 @@ vi.mock('./input-events', () => ({
   })
 }))
 
-type DiagnosticWindow = Window & { __orcaTypingDiagnostic?: TypingDiagnosticBridge }
+type DiagnosticWindow = Window & { __occTypingDiagnostic?: TypingDiagnosticBridge }
 
 describe('typing latency diagnostic lifecycle', () => {
   afterEach(() => {
-    delete (window as DiagnosticWindow).__orcaTypingDiagnostic
+    delete (window as DiagnosticWindow).__occTypingDiagnostic
     vi.restoreAllMocks()
     vi.unstubAllGlobals()
   })
@@ -58,7 +58,7 @@ describe('typing latency diagnostic lifecycle', () => {
   it('releases stopped pane state while preserving the instrumented count', () => {
     vi.spyOn(console, 'log').mockImplementation(() => undefined)
     installTypingLatencyDiagnostic()
-    const bridge = (window as DiagnosticWindow).__orcaTypingDiagnostic
+    const bridge = (window as DiagnosticWindow).__occTypingDiagnostic
     if (!bridge) {
       throw new Error('Typing latency diagnostic bridge was not installed')
     }
@@ -90,7 +90,7 @@ describe('typing latency diagnostic lifecycle', () => {
     vi.spyOn(console, 'log').mockImplementation(() => undefined)
     mocks.drainTimedOutEchoCandidates.mockReturnValueOnce(1)
     installTypingLatencyDiagnostic()
-    const bridge = (window as DiagnosticWindow).__orcaTypingDiagnostic
+    const bridge = (window as DiagnosticWindow).__occTypingDiagnostic
     if (!bridge) {
       throw new Error('Typing latency diagnostic bridge was not installed')
     }
@@ -117,7 +117,7 @@ describe('typing latency diagnostic lifecycle', () => {
       }
     )
     installTypingLatencyDiagnostic()
-    const bridge = (window as DiagnosticWindow).__orcaTypingDiagnostic
+    const bridge = (window as DiagnosticWindow).__occTypingDiagnostic
     if (!bridge) {
       throw new Error('Typing latency diagnostic bridge was not installed')
     }
@@ -202,7 +202,7 @@ describe('typing latency diagnostic lifecycle', () => {
     mocks.drainTimedOutEchoCandidates.mockReturnValueOnce(1)
     mocks.discardUndispatchedKeystroke.mockReturnValueOnce('counted-unmatched')
     installTypingLatencyDiagnostic()
-    const bridge = (window as DiagnosticWindow).__orcaTypingDiagnostic
+    const bridge = (window as DiagnosticWindow).__occTypingDiagnostic
     if (!bridge || !mocks.inputListener) {
       throw new Error('Typing latency diagnostic did not start')
     }
@@ -228,7 +228,7 @@ describe('typing latency diagnostic lifecycle', () => {
     mocks.findPaneOwningNode.mockReturnValueOnce({ pane: mocks.panes[0] })
     mocks.discardUndispatchedKeystroke.mockReturnValueOnce('pending')
     installTypingLatencyDiagnostic()
-    const bridge = (window as DiagnosticWindow).__orcaTypingDiagnostic
+    const bridge = (window as DiagnosticWindow).__occTypingDiagnostic
     if (!bridge || !mocks.inputListener) {
       throw new Error('Typing latency diagnostic did not start')
     }
@@ -256,7 +256,7 @@ describe('typing latency diagnostic lifecycle', () => {
     mocks.findPaneOwningNode.mockReturnValueOnce({ pane: mocks.panes[0] })
     mocks.discardUndispatchedKeystroke.mockReturnValueOnce(null)
     installTypingLatencyDiagnostic()
-    const bridge = (window as DiagnosticWindow).__orcaTypingDiagnostic
+    const bridge = (window as DiagnosticWindow).__occTypingDiagnostic
     if (!bridge || !mocks.inputListener) {
       throw new Error('Typing latency diagnostic did not start')
     }
@@ -282,7 +282,7 @@ describe('typing latency diagnostic lifecycle', () => {
     mocks.recordKeystroke.mockReturnValueOnce({ candidate: {}, unmatched: 1 })
     mocks.discardUndispatchedKeystroke.mockReturnValueOnce('counted-unmatched')
     installTypingLatencyDiagnostic()
-    const bridge = (window as DiagnosticWindow).__orcaTypingDiagnostic
+    const bridge = (window as DiagnosticWindow).__occTypingDiagnostic
     if (!bridge || !mocks.inputListener) {
       throw new Error('Typing latency diagnostic did not start')
     }
@@ -322,7 +322,7 @@ describe('typing latency diagnostic lifecycle', () => {
       }
     )
     installTypingLatencyDiagnostic()
-    const bridge = (window as DiagnosticWindow).__orcaTypingDiagnostic
+    const bridge = (window as DiagnosticWindow).__occTypingDiagnostic
     if (!bridge) {
       throw new Error('Typing latency diagnostic bridge was not installed')
     }

@@ -2,7 +2,7 @@
 import type { RuntimeClient } from '../../src/cli/runtime/client'
 import type { RuntimeMobileSessionTabsResult } from '../../src/shared/runtime-session-contracts'
 import { createServer, type Server } from 'node:http'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   addRepoWorktree,
   cliClient,

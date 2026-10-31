@@ -135,9 +135,9 @@ describe('one Unix startup dialect', () => {
     })
 
     expect(plan?.launchCommand).toBe(
-      `pi; command test -n "$fish_pid" && set --erase -g ORCA_PI_PREFILL; command test -z "$fish_pid" && unset ORCA_PI_PREFILL; true`
+      `pi; command test -n "$fish_pid" && set --erase -g OCC_PI_PREFILL; command test -z "$fish_pid" && unset OCC_PI_PREFILL; true`
     )
-    expect(plan?.env?.ORCA_PI_PREFILL).toBe('hello')
+    expect(plan?.env?.OCC_PI_PREFILL).toBe('hello')
   })
 
   it('leaves a multi-line argv draft to the paste fallback in cmd.exe', () => {

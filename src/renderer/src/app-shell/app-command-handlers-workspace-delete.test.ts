@@ -41,7 +41,7 @@ function shortcutState(overrides: Partial<AppShortcutState> = {}): AppShortcutSt
     openFloatingWorkspaceMaximized: vi.fn(),
     pluginCommands: [],
     setFloatingTerminalOpen: vi.fn(),
-    terminalShortcutPolicy: 'orca-first',
+    terminalShortcutPolicy: 'occ-first',
     workspaceChromeActive: true,
     ...overrides
   }

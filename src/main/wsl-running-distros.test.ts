@@ -2,11 +2,11 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 
 const { runProcessMock } = vi.hoisted(() => ({ runProcessMock: vi.fn() }))
 
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 
 function exited(stdout: string, code: number | null = 0): ProcessResult {
   return { code, signal: null, stdout, stderr: '', timedOut: false }
@@ -70,11 +70,11 @@ describe('running WSL distro discovery', () => {
 
   it('runs the startup probe from the system root, never the profile (#29845)', async () => {
     runProcessMock.mockResolvedValue(exited('Ubuntu\n'))
-    const saved = { SystemRoot: process.env.SystemRoot, profile: process.env.ORCA_USER_DATA_PATH }
-    const systemRoot = mkdtempSync(join(tmpdir(), 'orca-wsl-probe-system-root-'))
-    const profile = mkdtempSync(join(tmpdir(), 'orca-wsl-probe-profile-'))
+    const saved = { SystemRoot: process.env.SystemRoot, profile: process.env.OCC_USER_DATA_PATH }
+    const systemRoot = mkdtempSync(join(tmpdir(), 'occ-wsl-probe-system-root-'))
+    const profile = mkdtempSync(join(tmpdir(), 'occ-wsl-probe-profile-'))
     process.env.SystemRoot = systemRoot
-    process.env.ORCA_USER_DATA_PATH = profile
+    process.env.OCC_USER_DATA_PATH = profile
     resetWslInteropSpawnDirectoryCache()
     try {
       await withPlatform('win32', () => listRunningWslDistrosAsync({ requireConfirmed: true }))
@@ -83,7 +83,7 @@ describe('running WSL distro discovery', () => {
       )
     } finally {
       restoreEnv('SystemRoot', saved.SystemRoot)
-      restoreEnv('ORCA_USER_DATA_PATH', saved.profile)
+      restoreEnv('OCC_USER_DATA_PATH', saved.profile)
       resetWslInteropSpawnDirectoryCache()
       rmSync(systemRoot, { recursive: true, force: true })
       rmSync(profile, { recursive: true, force: true })

@@ -14,7 +14,7 @@ APP_DIR="$(cd "$RESOURCES_DIR/.." >/dev/null 2>&1 && pwd)"
 
 # occ-ide avoids the GNOME OCC name; -f excludes executable directories.
 ELECTRON=""
-for candidate in occ-ide orca OCC; do
+for candidate in occ-ide occ OCC; do
 	if [ -f "$APP_DIR/$candidate" ] && [ -x "$APP_DIR/$candidate" ]; then
 		ELECTRON="$APP_DIR/$candidate"
 		break
@@ -29,8 +29,8 @@ fi
 # The unpacked entrypoint runs directly in Electron's Node mode.
 CLI="$RESOURCES_DIR/app.asar.unpacked/out/cli/index.js"
 
-export ORCA_NODE_OPTIONS="${NODE_OPTIONS-}"
-export ORCA_NODE_REPL_EXTERNAL_MODULE="${NODE_REPL_EXTERNAL_MODULE-}"
+export OCC_NODE_OPTIONS="${NODE_OPTIONS-}"
+export OCC_NODE_REPL_EXTERNAL_MODULE="${NODE_REPL_EXTERNAL_MODULE-}"
 unset NODE_OPTIONS
 unset NODE_REPL_EXTERNAL_MODULE
 

@@ -6,7 +6,7 @@ import { buildShortcutRowVisibility } from './shortcut-row-visibility'
 const baseOptions = {
   keybindings: {},
   conflictByAction: new Map(),
-  terminalShortcutPolicy: 'orca-first',
+  terminalShortcutPolicy: 'occ-first',
   platform: 'darwin',
   managedBrowserCreationEnabled: false,
   mobileEmulatorCreationEnabled: false,

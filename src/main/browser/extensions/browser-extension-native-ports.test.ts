@@ -46,7 +46,7 @@ const { handleBrowserExtensionApiRequest } = await import('./browser-extension-a
 const VAULT = 'v'.repeat(32)
 const PLAIN = 'p'.repeat(32)
 registerNativeMessagingNamespace()
-const methods = registry.getBrowserExtensionNamespace('orcaNativeMessaging')?.methods ?? {}
+const methods = registry.getBrowserExtensionNamespace('occNativeMessaging')?.methods ?? {}
 
 function fakeSession() {
   const emitter = { extensions: new EventEmitter(), serviceWorkers: new EventEmitter() }
@@ -119,7 +119,7 @@ describe('native messaging ports', () => {
     const result = await handleBrowserExtensionApiRequest(
       caller,
       contexts.ensureHostSessionState(session, 'default'),
-      { type: 'call', namespace: 'orcaNativeMessaging', method: 'connect', args: ['p1', 'com.x'] },
+      { type: 'call', namespace: 'occNativeMessaging', method: 'connect', args: ['p1', 'com.x'] },
       {
         kind: 'worker',
         context: contexts.ensureWorkerContext(
@@ -164,7 +164,7 @@ describe('native messaging ports', () => {
     expect(mocks.workerEvents).toHaveBeenCalledWith(
       session,
       VAULT,
-      'orcaNativeMessaging',
+      'occNativeMessaging',
       'onPortEvent',
       ['p1', 'message', '{"b":2}']
     )
@@ -186,7 +186,7 @@ describe('native messaging ports', () => {
     expect(mocks.hosts[0].send).not.toHaveBeenCalled()
     mocks.hosts[0].handlers.onClose('Native host has exited.')
     expect(first.frame.send).toHaveBeenCalledWith('browserExtension:event', {
-      namespace: 'orcaNativeMessaging',
+      namespace: 'occNativeMessaging',
       event: 'onPortEvent',
       args: ['same-id', 'disconnect', 'Native host has exited.']
     })

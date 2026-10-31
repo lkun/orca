@@ -51,7 +51,7 @@ export function setRepoMaintenanceActivityProbe(probe: RepoMaintenanceActivityPr
 }
 
 function isDisabled(): boolean {
-  return process.env.ORCA_DISABLE_REPO_REF_MAINTENANCE === '1'
+  return process.env.OCC_DISABLE_REPO_REF_MAINTENANCE === '1'
 }
 
 function localMaintenanceOptions(): RepoRefMaintenanceOptions {

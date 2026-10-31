@@ -23,7 +23,7 @@ afterEach(() => {
 
 it('retires only owned remote skills without installing new mods or shortcuts', async () => {
   const config = '/home/remote/.claude/settings.json'
-  const root = '/home/remote/.claude/skills/orca-agent-view'
+  const root = '/home/remote/.claude/skills/occ-agent-view'
   const memory = createAgentHookMemorySftp({ [config]: '{"enabledPlugins":{"user@market":true}}' })
   memory.fs.dirs.add(root)
   memory.fs.files.set(`${root}/SKILL.md`, 'user-owned')
@@ -31,9 +31,9 @@ it('retires only owned remote skills without installing new mods or shortcuts', 
   await removeClaudeAgentViewRemote(memory.sftp, config)
   expect([...memory.fs.files]).toEqual(before)
   memory.fs.files.set(
-    `${root}/.claude-plugin/orca-managed.json`,
+    `${root}/.claude-plugin/occ-managed.json`,
     JSON.stringify({
-      owner: 'stablyai/orca/claude-agent-view',
+      owner: 'stablyai/occ/claude-agent-view',
       binding: { context: 'Chat', chord: 'ctrl+alt+g' }
     })
   )
@@ -41,7 +41,7 @@ it('retires only owned remote skills without installing new mods or shortcuts', 
   memory.fs.files.set(
     '/home/remote/.claude/keybindings.json',
     JSON.stringify({
-      bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+      bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
     })
   )
   await removeClaudeAgentViewRemote(memory.sftp, config)
@@ -52,7 +52,7 @@ it('retires only owned remote skills without installing new mods or shortcuts', 
 })
 
 it('installs alongside other skills and plugins without changing their settings or shortcuts', () => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-agent-view-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-agent-view-'))
   roots.push(root)
   mkdirSync(join(root, 'skills', 'user-skill'), { recursive: true })
   writeFileSync(join(root, 'skills', 'user-skill', 'SKILL.md'), 'User skill')
@@ -75,21 +75,21 @@ it('installs alongside other skills and plugins without changing their settings 
     custom: true,
     bindings: [
       userBlock,
-      { context: 'Chat', bindings: { 'ctrl+alt+h': 'command:orca-agent-view' } }
+      { context: 'Chat', bindings: { 'ctrl+alt+h': 'command:occ-agent-view' } }
     ]
   })
   expect(readFileSync(join(root, 'settings.json'), 'utf8')).toBe(settings)
   expect(readFileSync(join(root, 'skills', 'user-skill', 'SKILL.md'), 'utf8')).toBe('User skill')
-  expect(existsSync(join(root, 'skills', 'orca-agent-view'))).toBe(false)
-  const plugin = ensureClaudeAgentViewPlugin(join(root, 'orca-user-data'))
+  expect(existsSync(join(root, 'skills', 'occ-agent-view'))).toBe(false)
+  const plugin = ensureClaudeAgentViewPlugin(join(root, 'occ-user-data'))
   expect(readFileSync(join(plugin, 'hooks', 'register.js'), 'utf8')).toContain('$.ui.view(')
-  expect(ensureClaudeAgentViewPlugin(join(root, 'orca-user-data'))).toBe(plugin)
+  expect(ensureClaudeAgentViewPlugin(join(root, 'occ-user-data'))).toBe(plugin)
   installClaudeAgentView(join(root, 'settings.json'))
   expect(readFileSync(join(root, 'keybindings.json'), 'utf8')).toBe(installed)
 })
 
 it('leaves unreadable or malformed user bindings untouched', () => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-agent-view-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-agent-view-'))
   roots.push(root)
   writeFileSync(join(root, 'keybindings.json'), '{broken')
   installClaudeAgentView(join(root, 'settings.json'))
@@ -97,7 +97,7 @@ it('leaves unreadable or malformed user bindings untouched', () => {
 })
 
 it('preserves JSONC comments and trailing commas through install and removal', () => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-agent-view-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-agent-view-'))
   roots.push(root)
   const path = join(root, 'keybindings.json')
   const original = `{
@@ -135,7 +135,7 @@ it('respects equivalent modifier orders and chord prefixes, and declines exhaust
         }
       ]
     })?.bindings
-  ).toContainEqual({ context: 'Chat', bindings: { 'ctrl+alt+v': 'command:orca-agent-view' } })
+  ).toContainEqual({ context: 'Chat', bindings: { 'ctrl+alt+v': 'command:occ-agent-view' } })
   expect(
     withClaudeAgentViewShortcut({
       bindings: [
@@ -153,9 +153,9 @@ it('respects equivalent modifier orders and chord prefixes, and declines exhaust
 })
 
 it('never overwrites an unowned skill and removes only its own installation', () => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-agent-view-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-agent-view-'))
   roots.push(root)
-  const folder = join(root, 'skills', 'orca-agent-view')
+  const folder = join(root, 'skills', 'occ-agent-view')
   mkdirSync(folder, { recursive: true })
   writeFileSync(join(folder, 'SKILL.md'), 'user-owned')
   installClaudeAgentView(join(root, 'settings.json'))
@@ -174,15 +174,15 @@ it('never overwrites an unowned skill and removes only its own installation', ()
 })
 
 it('removes only its recorded binding across reinstalls, preserving other contexts and chords', () => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-agent-view-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-agent-view-'))
   roots.push(root)
   const settings = join(root, 'settings.json')
   const path = join(root, 'keybindings.json')
   installClaudeAgentView(settings)
   const config = JSON.parse(readFileSync(path, 'utf8'))
   const userBindings = [
-    { context: 'Global', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } },
-    { context: 'Chat', bindings: { 'ctrl+x': 'command:orca-agent-view' } }
+    { context: 'Global', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } },
+    { context: 'Chat', bindings: { 'ctrl+x': 'command:occ-agent-view' } }
   ]
   config.bindings.push(...userBindings)
   writeFileSync(path, JSON.stringify(config))
@@ -192,20 +192,20 @@ it('removes only its recorded binding across reinstalls, preserving other contex
 })
 
 it.each([false, true])('preserves reused user bindings with a legacy marker: %s', (legacy) => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-agent-view-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-agent-view-'))
   roots.push(root)
   const settings = join(root, 'settings.json')
   const path = join(root, 'keybindings.json')
   const original = JSON.stringify({
-    bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+    bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
   })
   writeFileSync(path, original)
   if (legacy) {
-    const markerDir = join(root, 'skills', 'orca-agent-view', '.claude-plugin')
+    const markerDir = join(root, 'skills', 'occ-agent-view', '.claude-plugin')
     mkdirSync(markerDir, { recursive: true })
     writeFileSync(
-      join(markerDir, 'orca-managed.json'),
-      '{"owner":"stablyai/orca/claude-agent-view"}'
+      join(markerDir, 'occ-managed.json'),
+      '{"owner":"stablyai/occ/claude-agent-view"}'
     )
   }
   installClaudeAgentView(settings)
@@ -215,7 +215,7 @@ it.each([false, true])('preserves reused user bindings with a legacy marker: %s'
 })
 
 it('remembers removed and edited bindings across launches', () => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-agent-view-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-agent-view-'))
   roots.push(root)
   const settings = join(root, 'settings.json')
   const bindings = join(root, 'keybindings.json')
@@ -225,7 +225,7 @@ it('remembers removed and edited bindings across launches', () => {
   expect(readFileSync(bindings, 'utf8')).toBe('{"bindings": []}')
   writeFileSync(
     bindings,
-    '{"bindings": [{"context":"Chat","bindings":{"ctrl+x":"command:orca-agent-view"}}]}'
+    '{"bindings": [{"context":"Chat","bindings":{"ctrl+x":"command:occ-agent-view"}}]}'
   )
   expect(installClaudeAgentView(settings)).toBe(false)
   expect(claudeAgentViewChord(readFileSync(bindings, 'utf8'))).toBeUndefined()
@@ -234,15 +234,15 @@ it('remembers removed and edited bindings across launches', () => {
 it.each([false, true])(
   'retires the legacy auto-loaded mod while preserving opt-out memory (malformed: %s)',
   async (malformed) => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-agent-view-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-agent-view-'))
     roots.push(root)
-    const legacy = join(root, 'skills', 'orca-agent-view')
+    const legacy = join(root, 'skills', 'occ-agent-view')
     mkdirSync(join(legacy, '.claude-plugin'), { recursive: true })
     mkdirSync(join(legacy, 'hooks'))
     writeFileSync(
-      join(legacy, '.claude-plugin', 'orca-managed.json'),
+      join(legacy, '.claude-plugin', 'occ-managed.json'),
       JSON.stringify({
-        owner: 'stablyai/orca/claude-agent-view',
+        owner: 'stablyai/occ/claude-agent-view',
         binding: { context: 'Chat', chord: 'ctrl+alt+g' }
       })
     )
@@ -252,7 +252,7 @@ it.each([false, true])(
       bindings,
       malformed
         ? '{broken'
-        : '{"bindings":[{"context":"Chat","bindings":{"ctrl+alt+g":"command:orca-agent-view"}}]}'
+        : '{"bindings":[{"context":"Chat","bindings":{"ctrl+alt+g":"command:occ-agent-view"}}]}'
     )
     await refreshClaudeAgentView(join(root, 'settings.json'))
     expect(existsSync(join(legacy, 'hooks', 'register.js'))).toBe(false)
@@ -260,7 +260,7 @@ it.each([false, true])(
       expect(readFileSync(bindings, 'utf8')).toBe('{broken')
       writeFileSync(
         bindings,
-        '{"bindings":[{"context":"Chat","bindings":{"ctrl+alt+g":"command:orca-agent-view"}}]}'
+        '{"bindings":[{"context":"Chat","bindings":{"ctrl+alt+g":"command:occ-agent-view"}}]}'
       )
       await refreshClaudeAgentView(join(root, 'settings.json'))
     }

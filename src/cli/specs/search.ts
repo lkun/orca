@@ -39,7 +39,7 @@ export const SEARCH_COMMAND_SPECS: CommandSpec[] = [
     examples: [
       'occ search "strict mode violation getByRole"',
       'occ search resolveTerminalPath --agent claude --sort newest',
-      'occ search "kernel panic" --path /Users/me/orca --since 2026-08-01T00:00:00Z --json',
+      'occ search "kernel panic" --path /Users/me/occ --since 2026-08-01T00:00:00Z --json',
       'occ search "kernel panic" --limit 50 --cursor eyJ2IjoxfQ',
       'occ search --index-status',
       'occ search "flaky test" --environment build-server'

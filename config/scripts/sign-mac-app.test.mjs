@@ -20,7 +20,7 @@ it('preserves file-specific signing policy and retries with fresh options', asyn
     keychain: '/fixture/signing.keychain',
     binaries: ['/fixture/extra-helper'],
     optionsForFile: (path) => ({ entitlements: `${path}.plist`, hardenedRuntime: true }),
-    ignore: [(path) => path.includes('/orcad-template/')],
+    ignore: [(path) => path.includes('/occd-template/')],
     preAutoEntitlements: false
   }
   let policy
@@ -53,7 +53,7 @@ it('preserves file-specific signing policy and retries with fresh options', asyn
       entitlements: '/fixture/helper.plist',
       hardenedRuntime: true
     })
-    expect(received.ignore[0]('/fixture/orcad-template/helper')).toBe(true)
+    expect(received.ignore[0]('/fixture/occd-template/helper')).toBe(true)
   }
   expect(options).not.toHaveProperty('batchCodesignCalls')
 })
@@ -74,12 +74,12 @@ it('propagates signing failure after the retry policy is exhausted', async () =>
 })
 
 it.each([
-  { ORCA_MAC_ADHOC: '1' },
+  { OCC_MAC_ADHOC: '1' },
   {},
-  { ORCA_MAC_RELEASE: '1' },
-  { ORCA_MAC_HOURLY: '1' },
-  { ORCA_MAC_DAILY: '1' },
-  { ORCA_WIN_ADHOC: '1' }
+  { OCC_MAC_RELEASE: '1' },
+  { OCC_MAC_HOURLY: '1' },
+  { OCC_MAC_DAILY: '1' },
+  { OCC_WIN_ADHOC: '1' }
 ])(
   'uses batched signing and strict verification for every macOS release channel: %j',
   async (env) => {
@@ -87,7 +87,7 @@ it.each([
     const saved = { ...process.env }
     try {
       for (const name of Object.keys(process.env)) {
-        if (name.startsWith('ORCA_')) {
+        if (name.startsWith('OCC_')) {
           delete process.env[name]
         }
       }
@@ -95,7 +95,7 @@ it.each([
       delete require.cache[configPath]
       const config = require(configPath)
       if (
-        ['ORCA_MAC_ADHOC', 'ORCA_MAC_RELEASE', 'ORCA_MAC_HOURLY', 'ORCA_MAC_DAILY'].some(
+        ['OCC_MAC_ADHOC', 'OCC_MAC_RELEASE', 'OCC_MAC_HOURLY', 'OCC_MAC_DAILY'].some(
           (name) => env[name] === '1'
         )
       ) {
@@ -103,7 +103,7 @@ it.each([
         const hook = await resolveFunction(undefined, config.mac.sign, 'sign', process.cwd())
         expect(typeof hook).toBe('function')
         expect(hook.name).toBe('sign')
-        expect(config.mac.signIgnore).toContain('/orcad-template/')
+        expect(config.mac.signIgnore).toContain('/occd-template/')
         expect(config.forceCodeSigning).toBe(true)
         expect(config.mac.hardenedRuntime).toBe(true)
         expect(config.mac.notarize).toBe(true)

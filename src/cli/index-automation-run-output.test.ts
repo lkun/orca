@@ -4,7 +4,7 @@ import type { AutomationRun } from '../shared/automations-types'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -12,8 +12,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -24,7 +24,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -84,7 +84,7 @@ function queueRun(result: AutomationRun): void {
 describe('automation run command output', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -92,9 +92,9 @@ describe('automation run command output', () => {
   })
 
   beforeEach(() => {
-    vi.stubEnv('ORCA_ENVIRONMENT', undefined)
-    vi.stubEnv('ORCA_PAIRING_CODE', undefined)
-    vi.stubEnv('ORCA_REMOTE_PAIRING', undefined)
+    vi.stubEnv('OCC_ENVIRONMENT', undefined)
+    vi.stubEnv('OCC_PAIRING_CODE', undefined)
+    vi.stubEnv('OCC_REMOTE_PAIRING', undefined)
   })
 
   afterEach(() => {
@@ -143,7 +143,7 @@ describe('automation run command output', () => {
           'trigger: manual',
           'scheduledFor: 1970-01-01T00:00:00.000Z',
           ...(error ? [`error: ${error}`] : []),
-          `Follow up: orca automations runs --id ${AUTOMATION_ID}`
+          `Follow up: occ automations runs --id ${AUTOMATION_ID}`
         ].join('\n')
       )
       expect(callMock).toHaveBeenCalledTimes(2)
@@ -176,7 +176,7 @@ describe('automation run command output', () => {
         'terminalSessionId: tab-1',
         'terminalPaneKey: tab-1:leaf-1',
         'terminalPtyId: pty-1',
-        `Follow up: orca automations runs --id ${AUTOMATION_ID}`
+        `Follow up: occ automations runs --id ${AUTOMATION_ID}`
       ].join('\n')
     )
   })
@@ -214,7 +214,7 @@ describe('automation run command output', () => {
         'scheduledFor: 1970-01-01T00:00:00.000Z',
         'precheck: exit 1; Not ready',
         'error: Precheck exited with code 1.',
-        `Follow up: orca automations runs --id ${AUTOMATION_ID}`
+        `Follow up: occ automations runs --id ${AUTOMATION_ID}`
       ].join('\n')
     )
   })
@@ -306,13 +306,13 @@ describe('automation run command output', () => {
       const log = vi.spyOn(console, 'log').mockImplementation(() => {})
       pairRuntimeEnvironment(listEnvironmentsMock, 'env-build', 'Build server')
       const flags = selection === 'explicit' ? ['--environment', 'Build server'] : []
-      process.env.ORCA_ENVIRONMENT = selection === 'explicit' ? 'wrong-host' : 'Build server'
+      process.env.OCC_ENVIRONMENT = selection === 'explicit' ? 'wrong-host' : 'Build server'
       queueRun(run())
       await main(['automations', 'run', AUTOMATION_ID, ...flags], '/tmp/repo')
       const quotedEnvironment = process.platform === 'win32' ? '"Build server"' : "'Build server'"
       const output = String(log.mock.calls[0]?.[0])
       expect(output.split('\n').at(-1)).toBe(
-        `Follow up: orca automations runs --id ${AUTOMATION_ID} --environment ${quotedEnvironment}`
+        `Follow up: occ automations runs --id ${AUTOMATION_ID} --environment ${quotedEnvironment}`
       )
       expect(output).not.toContain('wrong-host')
       expect(callMock).toHaveBeenNthCalledWith(2, 'automation.runNow', { id: AUTOMATION_ID })
@@ -328,7 +328,7 @@ describe('automation run command output', () => {
       queueRun(run())
       await main(['automations', 'run', AUTOMATION_ID, '--environment', environment], '/tmp/repo')
       expect(String(log.mock.calls[0]?.[0]).split('\n').at(-1)).toBe(
-        `Follow up on the same host and profile (preserve your connection/profile settings): orca automations runs --id ${AUTOMATION_ID}`
+        `Follow up on the same host and profile (preserve your connection/profile settings): occ automations runs --id ${AUTOMATION_ID}`
       )
     }
   )
@@ -339,7 +339,7 @@ describe('automation run command output', () => {
     queueRun(run())
     await main(['automations', 'run', AUTOMATION_ID, '--environment=--build'], '/tmp/repo')
     expect(String(log.mock.calls[0]?.[0]).split('\n').at(-1)).toBe(
-      `Follow up on the same host and profile (preserve your connection/profile settings): orca automations runs --id ${AUTOMATION_ID}`
+      `Follow up on the same host and profile (preserve your connection/profile settings): occ automations runs --id ${AUTOMATION_ID}`
     )
   })
 
@@ -350,11 +350,11 @@ describe('automation run command output', () => {
     queueRun(run())
     await main(['automations', 'run', AUTOMATION_ID, '--environment', '$box'], '/tmp/repo')
     expect(String(log.mock.calls[0]?.[0]).split('\n').at(-1)).toBe(
-      `Follow up: orca automations runs --id ${AUTOMATION_ID} --environment '$box'`
+      `Follow up: occ automations runs --id ${AUTOMATION_ID} --environment '$box'`
     )
   })
 
-  it.each(['explicit', 'ORCA_PAIRING_CODE', 'ORCA_REMOTE_PAIRING'] as const)(
+  it.each(['explicit', 'OCC_PAIRING_CODE', 'OCC_REMOTE_PAIRING'] as const)(
     'requires the same target without exposing %s pairing credentials',
     async (selection) => {
       const log = vi.spyOn(console, 'log').mockImplementation(() => {})
@@ -366,7 +366,7 @@ describe('automation run command output', () => {
       queueRun(run())
       await main(['automations', 'run', AUTOMATION_ID, ...flags], '/tmp/repo')
       expect(String(log.mock.calls[0]?.[0]).split('\n').at(-1)).toBe(
-        `Follow up on the same host and profile (preserve your connection/profile settings): orca automations runs --id ${AUTOMATION_ID}`
+        `Follow up on the same host and profile (preserve your connection/profile settings): occ automations runs --id ${AUTOMATION_ID}`
       )
       queueRun(run())
       await main(['automations', 'run', AUTOMATION_ID, ...flags, '--json'], '/tmp/repo')
@@ -382,14 +382,14 @@ describe('automation run command output', () => {
     'requires the same custom profile with environment selection %s',
     async (withEnvironment) => {
       const log = vi.spyOn(console, 'log').mockImplementation(() => {})
-      process.env.ORCA_USER_DATA_PATH = '/tmp/nondefault profile'
+      process.env.OCC_USER_DATA_PATH = '/tmp/nondefault profile'
       const flags = withEnvironment ? ['--environment', 'build'] : []
       pairRuntimeEnvironment(listEnvironmentsMock, 'env-build', 'build')
       queueRun(run())
       await main(['automations', 'run', AUTOMATION_ID, ...flags], '/tmp/repo')
       const output = String(log.mock.calls[0]?.[0])
       expect(output.split('\n').at(-1)).toBe(
-        `Follow up on the same host and profile (preserve your connection/profile settings): orca automations runs --id ${AUTOMATION_ID}${withEnvironment ? ' --environment build' : ''}`
+        `Follow up on the same host and profile (preserve your connection/profile settings): occ automations runs --id ${AUTOMATION_ID}${withEnvironment ? ' --environment build' : ''}`
       )
       expect(output).not.toContain('/tmp/nondefault profile')
       expect(callMock).toHaveBeenCalledTimes(2)
@@ -417,12 +417,12 @@ describe('automation run command output', () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => {})
     await main(['automations', 'run', '--help'], '/tmp/repo')
     expect(String(log.mock.calls[0]?.[0])).toContain(
-      'Use the full automation UUID from orca automations list; shortened prefixes are not accepted.'
+      'Use the full automation UUID from occ automations list; shortened prefixes are not accepted.'
     )
     expect(String(log.mock.calls[0]?.[0])).toContain(
       'A queued or dispatching run has been accepted'
     )
-    expect(String(log.mock.calls[0]?.[0])).toContain(`orca automations run ${AUTOMATION_ID}`)
+    expect(String(log.mock.calls[0]?.[0])).toContain(`occ automations run ${AUTOMATION_ID}`)
     expect(callMock).not.toHaveBeenCalled()
   })
 })

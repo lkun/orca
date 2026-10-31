@@ -21,7 +21,7 @@ let directory: string
 const forward = vi.fn()
 const unavailable = vi.fn()
 beforeEach(async () => {
-  directory = mkdtempSync(join(tmpdir(), 'orca-tmux-canonical-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-tmux-canonical-'))
   forward.mockClear()
   unavailable.mockClear()
   probe.mockResolvedValue({ clients: [{ pid: 101, pane: '%0' }], rows: TMUX_TEST_ROWS })

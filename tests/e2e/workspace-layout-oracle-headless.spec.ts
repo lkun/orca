@@ -1,6 +1,6 @@
-// Drive orcad/Electron serve with paired clients and CLI; after each step compare live layout rules, client views and expected panes, plus restart/disk round trips.
-// #12723 needs SSH and is not covered. ORCA_LAYOUT_ORACLE_RECORD=1 records without failing; ORCA_LAYOUT_ORACLE_REPEAT=<n> repeats; ORCA_LAYOUT_ORACLE_HEADLESS_HOSTS=orcad,electron chooses hosts (both default).
-// Run ORCA_BACKGROUND_LAUNCH=1 SKIP_BUILD=1 pnpm exec playwright test tests/e2e/workspace-layout-oracle-headless.spec.ts --config tests/playwright.config.ts --project electron-headless --workers=1.
+// Drive occd/Electron serve with paired clients and CLI; after each step compare live layout rules, client views and expected panes, plus restart/disk round trips.
+// #12723 needs SSH and is not covered. OCC_LAYOUT_ORACLE_RECORD=1 records without failing; OCC_LAYOUT_ORACLE_REPEAT=<n> repeats; OCC_LAYOUT_ORACLE_HEADLESS_HOSTS=occd,electron chooses hosts (both default).
+// Run OCC_BACKGROUND_LAUNCH=1 SKIP_BUILD=1 pnpm exec playwright test tests/e2e/workspace-layout-oracle-headless.spec.ts --config tests/playwright.config.ts --project electron-headless --workers=1.
 
 import { mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
@@ -12,12 +12,12 @@ import type {
   RuntimeTerminalListResult,
   RuntimeTerminalSplit
 } from '../../src/shared/runtime-terminal-contracts'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { pickNextActiveTabAfterClose } from '../../src/shared/workspace-session-terminal-tab-close'
 import {
   addRepoWorktree,
   cliClient,
-  orcadNodeExecutable,
+  occdNodeExecutable,
   pairedClient,
   startHeadlessOracleHost,
   type HeadlessHostKind,
@@ -483,10 +483,10 @@ async function runHeadlessScenario(
     writeReport(testInfo, `${kind}-${scenario.id}`, {
       durationMs: ended - started,
       findings,
-      // orcad, or Electron serve's main process.
+      // occd, or Electron serve's main process.
       eventLoopDelay: summarizeEventLoopDelay(
         host.userDataDir,
-        kind === 'orcad' ? 'orcad' : 'main',
+        kind === 'occd' ? 'occd' : 'main',
         started,
         ended
       )
@@ -513,11 +513,11 @@ function writeReport(
   )
 }
 
-const REPEAT = Math.max(1, Number(process.env.ORCA_LAYOUT_ORACLE_REPEAT ?? 1))
-const RECORD_ONLY = process.env.ORCA_LAYOUT_ORACLE_RECORD === '1'
-const HOSTS = (process.env.ORCA_LAYOUT_ORACLE_HEADLESS_HOSTS ?? 'orcad,electron')
+const REPEAT = Math.max(1, Number(process.env.OCC_LAYOUT_ORACLE_REPEAT ?? 1))
+const RECORD_ONLY = process.env.OCC_LAYOUT_ORACLE_RECORD === '1'
+const HOSTS = (process.env.OCC_LAYOUT_ORACLE_HEADLESS_HOSTS ?? 'occd,electron')
   .split(',')
-  .filter((kind): kind is HeadlessHostKind => kind === 'orcad' || kind === 'electron')
+  .filter((kind): kind is HeadlessHostKind => kind === 'occd' || kind === 'electron')
 
 for (const kind of HOSTS) {
   for (const scenario of SCENARIOS) {
@@ -525,10 +525,10 @@ for (const kind of HOSTS) {
       const suffix = REPEAT > 1 ? ` #${attempt}` : ''
       // oxlint-disable-next-line no-empty-pattern -- Each scenario owns its serve host.
       test(`headless layout oracle: ${kind} ${scenario.id}${suffix}`, async ({}, testInfo) => {
-        // CI runs this spec only in the job that builds orcad, so a missing build there is a failure.
+        // CI runs this spec only in the job that builds occd, so a missing build there is a failure.
         test.skip(
-          kind === 'orcad' && !orcadNodeExecutable() && !process.env.CI,
-          'out/orcad is not built'
+          kind === 'occd' && !occdNodeExecutable() && !process.env.CI,
+          'out/occd is not built'
         )
         test.setTimeout(300_000)
         const id = `headless-${kind}-${scenario.id}`

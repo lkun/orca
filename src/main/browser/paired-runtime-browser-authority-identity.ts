@@ -4,27 +4,27 @@ import type { KnownRuntimeEnvironment } from '../../shared/runtime-environments'
 import type { BrowserClientPageAuthorityIdentity } from './browser-client-page-command-executor-dependencies'
 
 export function derivePairedRuntimeBrowserAuthorityIdentity(input: {
-  orcaProfileId: string
-  environment: Pick<KnownRuntimeEnvironment, 'id' | 'orcadDeployment'>
+  occProfileId: string
+  environment: Pick<KnownRuntimeEnvironment, 'id' | 'occdDeployment'>
   pairingRevision: number
   authorityRuntimeId: string
   connection: PairedRuntimeConnection
 }): BrowserClientPageAuthorityIdentity {
-  const { orcaProfileId, environment, pairingRevision, connection } = input
+  const { occProfileId, environment, pairingRevision, connection } = input
   const pairingIdentity = pairingAuthorityConnectionIdentity(
-    orcaProfileId,
+    occProfileId,
     environment.id,
     pairingRevision,
     connection
   )
   return {
     // Managed SSH/WSL deployments re-pair in place, so cookie storage must outlive pairing revisions.
-    authorityConnectionIdentity: environment.orcadDeployment
-      ? deployedAuthorityConnectionIdentity(orcaProfileId, environment.id, connection)
+    authorityConnectionIdentity: environment.occdDeployment
+      ? deployedAuthorityConnectionIdentity(occProfileId, environment.id, connection)
       : pairingIdentity,
     pairingAuthorityConnectionIdentity: pairingIdentity,
     legacyAuthorityConnectionIdentity: legacyAuthorityConnectionIdentity(
-      orcaProfileId,
+      occProfileId,
       environment.id,
       pairingRevision,
       input.authorityRuntimeId,
@@ -35,14 +35,14 @@ export function derivePairedRuntimeBrowserAuthorityIdentity(input: {
 
 // Exclude the per-process authorityRuntimeId so remote restarts preserve cookies.
 function pairingAuthorityConnectionIdentity(
-  orcaProfileId: string,
+  occProfileId: string,
   environmentId: string,
   pairingRevision: number,
   connection: PairedRuntimeConnection
 ): string {
   return connectionIdentityDigest([
     'paired-runtime-browser',
-    orcaProfileId,
+    occProfileId,
     environmentId,
     pairingRevision,
     connection.hostPublicKeyB64,
@@ -52,13 +52,13 @@ function pairingAuthorityConnectionIdentity(
 
 // Re-pairing rotates device ids and revisions; the server key still isolates cookie storage.
 function deployedAuthorityConnectionIdentity(
-  orcaProfileId: string,
+  occProfileId: string,
   environmentId: string,
   connection: PairedRuntimeConnection
 ): string {
   return connectionIdentityDigest([
     'paired-runtime-browser-deployed',
-    orcaProfileId,
+    occProfileId,
     environmentId,
     connection.hostPublicKeyB64
   ])
@@ -66,7 +66,7 @@ function deployedAuthorityConnectionIdentity(
 
 /** Superseded per-process identity, kept only so its partition can be adopted. */
 function legacyAuthorityConnectionIdentity(
-  orcaProfileId: string,
+  occProfileId: string,
   environmentId: string,
   pairingRevision: number,
   authorityRuntimeId: string,
@@ -74,7 +74,7 @@ function legacyAuthorityConnectionIdentity(
 ): string {
   return connectionIdentityDigest([
     'paired-runtime-browser',
-    orcaProfileId,
+    occProfileId,
     environmentId,
     pairingRevision,
     authorityRuntimeId,

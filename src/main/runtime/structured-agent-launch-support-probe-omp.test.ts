@@ -69,7 +69,7 @@ function launchWith(settings: Settings) {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-omp-probe-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-omp-probe-'))
   shellBin = await fakeOmp(join(root, 'shell-bin'), '16.2.0')
   privateBin = await fakeOmp(join(root, 'omp-prefix', 'bin'), '17.0.5')
   // OCC's resolved login-shell PATH, with an OMP older than ACP support first.

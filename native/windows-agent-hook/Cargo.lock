@@ -25,7 +25,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "orca-agent-hook"
+name = "occ-agent-hook"
 version = "0.0.0"
 dependencies = [
  "winresource",

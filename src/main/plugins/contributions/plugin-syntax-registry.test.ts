@@ -14,7 +14,7 @@ afterEach(async () => {
 })
 
 async function syntaxPlugin(files: Record<string, unknown>): Promise<ValidDiscoveredPlugin> {
-  const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-syntax-'))
+  const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-syntax-'))
   roots.push(rootDir)
   for (const [name, content] of Object.entries(files)) {
     await writeFile(join(rootDir, name), JSON.stringify(content))
@@ -25,7 +25,7 @@ async function syntaxPlugin(files: Record<string, unknown>): Promise<ValidDiscov
     publisher: 'samples',
     name: 'Demo syntax',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     contributes: {
       syntaxes: [

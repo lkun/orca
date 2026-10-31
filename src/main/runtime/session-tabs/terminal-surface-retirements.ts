@@ -1,9 +1,9 @@
-import type { OrcaRuntimeWithBindPtyIncarnationHandle as BindPtyIncarnationHandleMethods } from '../terminal/identity/terminal-handle-bindings'
-import { OrcaRuntimeWithTouchMobileSessionTabsForWorktree } from './mobile-session-membership'
+import type { OCCRuntimeWithBindPtyIncarnationHandle as BindPtyIncarnationHandleMethods } from '../terminal/identity/terminal-handle-bindings'
+import { OCCRuntimeWithTouchMobileSessionTabsForWorktree } from './mobile-session-membership'
 import type { RetiredTerminalSurface } from '../mobile-session-terminal-retirement'
 import type { RuntimeMobileSessionRetiredTerminalSurface } from '../../../shared/runtime-types'
 import { LOCAL_EXECUTION_HOST_ID, parseExecutionHostId } from '../../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { keepsExitedPane } from '../exited-split-pane-layout-close'
 import type { ExitedSplitPaneFacts } from '../terminal/lifecycle/exited-split-pane-rule'
 import {
@@ -15,7 +15,7 @@ import { retireTerminalSurfacesFromSnapshot } from '../mobile-session-terminal-r
 import { attachRetirementProofsToSnapshot } from '../mobile-session-terminal-retirement-proof'
 import { getRepoIdFromWorktreeId } from '../../../shared/worktree/id'
 
-export abstract class OrcaRuntimeWithPersistTerminalSurfaceRetirements extends OrcaRuntimeWithTouchMobileSessionTabsForWorktree {
+export abstract class OCCRuntimeWithPersistTerminalSurfaceRetirements extends OCCRuntimeWithTouchMobileSessionTabsForWorktree {
   protected abstract findHandleForPtyRecord(
     ...args: Parameters<BindPtyIncarnationHandleMethods['findHandleForPtyRecord']>
   ): ReturnType<BindPtyIncarnationHandleMethods['findHandleForPtyRecord']>
@@ -43,7 +43,7 @@ export abstract class OrcaRuntimeWithPersistTerminalSurfaceRetirements extends O
       }
       // Main retains exited panes matching window retention rules; retire all others normally.
       if (
-        ORCA_LAYOUT_OWNER_IS_MAIN &&
+        OCC_LAYOUT_OWNER_IS_MAIN &&
         exit &&
         parseExecutionHostId(hostId)?.kind !== 'runtime' &&
         keepsExitedPane(current, surface, exit)

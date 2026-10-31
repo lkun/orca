@@ -109,14 +109,14 @@ function run(command, args, cwd) {
 }
 
 function createFixture(instanceLabel) {
-  const root = mkdtempSync(path.join(os.tmpdir(), `orca-delete-bench-${instanceLabel}-`))
+  const root = mkdtempSync(path.join(os.tmpdir(), `occ-delete-bench-${instanceLabel}-`))
   const repoPath = path.join(root, 'repo')
   const userDataPath = path.join(root, 'user-data')
   mkdirSync(repoPath)
   mkdirSync(userDataPath)
   // Git 2.25 lacks `git init --initial-branch`; rename after the first commit below.
   run('git', ['init'], repoPath)
-  run('git', ['config', 'user.email', 'worktree-delete-bench@orca.invalid'], repoPath)
+  run('git', ['config', 'user.email', 'worktree-delete-bench@occ.invalid'], repoPath)
   run('git', ['config', 'user.name', 'OCC Worktree Delete Bench'], repoPath)
   writeFileSync(path.join(repoPath, 'README.md'), '# OCC worktree deletion benchmark\n')
   run('git', ['add', 'README.md'], repoPath)
@@ -132,7 +132,7 @@ function launchDevInstance({ label, repoRoot }, fixture, port) {
   }
   const env = {
     ...process.env,
-    ORCA_DEV_USER_DATA_PATH: fixture.userDataPath,
+    OCC_DEV_USER_DATA_PATH: fixture.userDataPath,
     REMOTE_DEBUGGING_PORT: String(port)
   }
   delete env.ELECTRON_RUN_AS_NODE
@@ -158,7 +158,7 @@ function appendLog(current, chunk) {
   return `${current}${String(chunk)}`.slice(-30_000)
 }
 
-async function connectToOrca(instance) {
+async function connectToOCC(instance) {
   const deadline = Date.now() + START_TIMEOUT_MS
   let lastError = null
   while (Date.now() < deadline) {
@@ -170,8 +170,8 @@ async function connectToOrca(instance) {
     try {
       const browser = await chromium.connectOverCDP(instance.endpoint)
       try {
-        // Wait for __store before accepting CDP; findOrcaPage retries otherwise leak browser handles.
-        const page = await findOrcaPage(browser)
+        // Wait for __store before accepting CDP; findOCCPage retries otherwise leak browser handles.
+        const page = await findOCCPage(browser)
         return { browser, page }
       } catch (error) {
         await browser.close().catch(() => undefined)
@@ -187,7 +187,7 @@ async function connectToOrca(instance) {
   )
 }
 
-async function findOrcaPage(browser) {
+async function findOCCPage(browser) {
   const deadline = Date.now() + 30_000
   while (Date.now() < deadline) {
     for (const context of browser.contexts()) {
@@ -426,7 +426,7 @@ async function verifyRestart(instanceConfig, fixture, port, repoId) {
   const relaunched = launchDevInstance(instanceConfig, fixture, port)
   let browser = null
   try {
-    const connection = await connectToOrca(relaunched)
+    const connection = await connectToOCC(relaunched)
     browser = connection.browser
     const { page } = connection
     const state = await page.evaluate(async (fixtureRepoId) => {
@@ -478,7 +478,7 @@ async function benchmarkInstance(instanceConfig, index, options) {
     run('git', ['remote', 'set-url', 'origin', delayedFetchServer.url], fixture.repoPath)
     const port = await findAvailablePort(CDP_START_PORT + index)
     instance = launchDevInstance(instanceConfig, fixture, port)
-    const { browser: connectedBrowser, page } = await connectToOrca(instance)
+    const { browser: connectedBrowser, page } = await connectToOCC(instance)
     browser = connectedBrowser
     const repoState = await addFixtureRepo(page, fixture.repoPath)
     const iterations = []

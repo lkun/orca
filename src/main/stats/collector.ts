@@ -13,9 +13,9 @@ const DEBOUNCE_MS = 5_000
 // Capture after userData overrides and before app naming can change its path.
 let _statsFile: string | null = null
 
-/** Use the app environment because plain-Node orcad records stats too (#31112). */
+/** Use the app environment because plain-Node occd records stats too (#31112). */
 export function initStatsPath(userDataPath = getAppEnvironment().getPath('userData')): string {
-  _statsFile = join(userDataPath, 'orca-stats.json')
+  _statsFile = join(userDataPath, 'occ-stats.json')
   return _statsFile
 }
 

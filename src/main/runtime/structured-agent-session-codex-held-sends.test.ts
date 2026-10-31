@@ -91,7 +91,7 @@ async function rawSubmission(clientMessageId: string): Promise<AgentJournalSubmi
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-codex-held-sends-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-codex-held-sends-'))
   answers = 0
   events.length = 0
   turns = codexTurnLifecycleFake(

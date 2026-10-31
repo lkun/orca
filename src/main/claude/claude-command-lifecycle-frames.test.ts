@@ -26,7 +26,7 @@ function providerFrameKinds(items: { body: AgentJournalItemBody }[]): string[] {
 function commandLifecycle(state: 'started' | 'completed' | 'cancelled', uuid: string) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     message: {
       type: 'command_lifecycle',
       command_uuid: 'command-1',
@@ -40,7 +40,7 @@ function commandLifecycle(state: 'started' | 'completed' | 'cancelled', uuid: st
 function userTurn(uuid: string, text: string) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     startsTurn: true as const,
     message: {
       type: 'user',
@@ -56,7 +56,7 @@ function userTurn(uuid: string, text: string) {
 function assistantReply(uuid: string, text: string) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     message: {
       type: 'assistant',
       uuid,
@@ -79,7 +79,7 @@ describe('Claude command_lifecycle frames', () => {
     translator.handle(commandLifecycle('completed', 'lifecycle-3'))
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: {
         type: 'result',
         subtype: 'success',

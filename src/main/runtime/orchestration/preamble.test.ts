@@ -56,7 +56,7 @@ describe('buildDispatchPreamble', () => {
     const result = buildDispatchPreamble(baseParams())
     const commandLines = result
       .split('\n')
-      .filter((line) => line.trimStart().startsWith('orca orchestration'))
+      .filter((line) => line.trimStart().startsWith('occ orchestration'))
 
     expect(commandLines).toHaveLength(3)
     expect(result).not.toContain('\\\n')
@@ -135,7 +135,7 @@ describe('buildDispatchPreamble', () => {
     expect(result).toContain('occ-dev orchestration ask')
     const fragments = result.split('occ-dev')
     for (const fragment of fragments) {
-      expect(fragment).not.toMatch(/orca orchestration/)
+      expect(fragment).not.toMatch(/occ orchestration/)
     }
   })
 
@@ -145,7 +145,7 @@ describe('buildDispatchPreamble', () => {
     expect(result).toContain('occ-ide orchestration send')
     expect(result).toContain('occ-ide orchestration check')
     expect(result).toContain('occ-ide orchestration ask')
-    expect(result).not.toMatch(/(^|\s)orca orchestration/m)
+    expect(result).not.toMatch(/(^|\s)occ orchestration/m)
   })
 
   it('never mentions heartbeats', () => {
@@ -232,8 +232,8 @@ describe('buildDispatchPreamble', () => {
       taskId: 'task_SNAP',
       dispatchId: 'ctx_SNAP',
       taskSpec: 'TASK_BODY',
-      coordinatorHandle: 'orca_session_id:COORD',
-      workerHandle: 'orca_session_id:WORKER'
+      coordinatorHandle: 'occ_session_id:COORD',
+      workerHandle: 'occ_session_id:WORKER'
     })
     expect(result).toMatchSnapshot()
   })
@@ -268,8 +268,8 @@ describe('sub-dispatch section', () => {
 })
 
 describe('how the preamble names the worker and its coordinator, by kind', () => {
-  const SESSION_COORD = 'orca_session_id:4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37'
-  const SESSION_WORKER = 'orca_session_id:7e3b9d15-2c4a-4f86-a0b1-5c9e2d7f3b64'
+  const SESSION_COORD = 'occ_session_id:4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37'
+  const SESSION_WORKER = 'occ_session_id:7e3b9d15-2c4a-4f86-a0b1-5c9e2d7f3b64'
   const header = (preamble: string) => preamble.slice(0, preamble.indexOf('\n\n'))
   const FIRST = 'You are working inside OCC, a multi-agent IDE. You are a dispatched worker.'
 

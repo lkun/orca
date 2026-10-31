@@ -44,7 +44,7 @@ describe('AntigravityHookService', () => {
   let homeDir: string
 
   beforeEach(() => {
-    homeDir = mkdtempSync(join(tmpdir(), 'orca-antigravity-home-'))
+    homeDir = mkdtempSync(join(tmpdir(), 'occ-antigravity-home-'))
     homedirMock.mockReturnValue(homeDir)
   })
 
@@ -60,15 +60,15 @@ describe('AntigravityHookService', () => {
 
       const result = spawnSync(
         '/bin/sh',
-        [join(homeDir, '.orca', 'agent-hooks', 'antigravity-hook.sh')],
+        [join(homeDir, '.occ', 'agent-hooks', 'antigravity-hook.sh')],
         {
           env: {
             ...process.env,
-            ORCA_ANTIGRAVITY_EVENT: 'PreToolUse',
-            ORCA_AGENT_HOOK_ENDPOINT: '',
-            ORCA_AGENT_HOOK_PORT: '',
-            ORCA_AGENT_HOOK_TOKEN: '',
-            ORCA_PANE_KEY: ''
+            OCC_ANTIGRAVITY_EVENT: 'PreToolUse',
+            OCC_AGENT_HOOK_ENDPOINT: '',
+            OCC_AGENT_HOOK_PORT: '',
+            OCC_AGENT_HOOK_TOKEN: '',
+            OCC_PANE_KEY: ''
           },
           input: '{"toolCall":{"name":"run_command","args":{"CommandLine":"ls"}}}',
           encoding: 'utf8'
@@ -84,19 +84,19 @@ describe('AntigravityHookService', () => {
     'keeps answering the PreToolUse gate when the managed script is missing',
     () => {
       new AntigravityHookService().install()
-      rmSync(join(homeDir, '.orca', 'agent-hooks'), { recursive: true, force: true })
+      rmSync(join(homeDir, '.occ', 'agent-hooks'), { recursive: true, force: true })
 
       const config = JSON.parse(
         readFileSync(join(homeDir, '.gemini', 'config', 'hooks.json'), 'utf8')
-      ) as { 'orca-status': Record<string, { hooks?: { command: string }[] }[]> }
-      const command = config['orca-status'].PreToolUse[0].hooks?.[0]?.command
+      ) as { 'occ-status': Record<string, { hooks?: { command: string }[] }[]> }
+      const command = config['occ-status'].PreToolUse[0].hooks?.[0]?.command
 
       const result = spawnSync('/bin/sh', ['-c', command!], {
         input: '{"toolCall":{"name":"run_command"}}',
         encoding: 'utf8'
       })
 
-      // Config under .gemini can outlive managed scripts under .orca.
+      // Config under .gemini can outlive managed scripts under .occ.
       expect(result.status).toBe(0)
       expect(result.stdout).toBe(`${PRE_TOOL_USE_DECISION}\n`)
     }
@@ -106,15 +106,15 @@ describe('AntigravityHookService', () => {
     'leaves non-gate Antigravity events silent when the managed script is missing',
     () => {
       new AntigravityHookService().install()
-      rmSync(join(homeDir, '.orca', 'agent-hooks'), { recursive: true, force: true })
+      rmSync(join(homeDir, '.occ', 'agent-hooks'), { recursive: true, force: true })
 
       const config = JSON.parse(
         readFileSync(join(homeDir, '.gemini', 'config', 'hooks.json'), 'utf8')
       ) as {
-        'orca-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
+        'occ-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
       }
-      const postToolUse = config['orca-status'].PostToolUse[0].hooks?.[0]?.command
-      const preInvocation = config['orca-status'].PreInvocation[0].command
+      const postToolUse = config['occ-status'].PostToolUse[0].hooks?.[0]?.command
+      const preInvocation = config['occ-status'].PreInvocation[0].command
 
       for (const command of [postToolUse, preInvocation]) {
         const result = spawnSync('/bin/sh', ['-c', command!], { input: '{}', encoding: 'utf8' })
@@ -129,7 +129,7 @@ describe('AntigravityHookService', () => {
       const configPath = join(homeDir, '.gemini', 'config', 'hooks.json')
       const staleScriptPath = join(
         homeDir,
-        '.orca',
+        '.occ',
         'agent-hooks',
         'antigravity-hook.cmd'
       ).replaceAll('/', '\\')
@@ -138,14 +138,14 @@ describe('AntigravityHookService', () => {
         configPath,
         `${JSON.stringify(
           {
-            'orca-status': {
+            'occ-status': {
               PreToolUse: [
                 {
                   matcher: '*',
                   hooks: [
                     {
                       type: 'command',
-                      command: `cmd /d /s /c "set "ORCA_ANTIGRAVITY_EVENT=PreToolUse" && call "${staleScriptPath}""`
+                      command: `cmd /d /s /c "set "OCC_ANTIGRAVITY_EVENT=PreToolUse" && call "${staleScriptPath}""`
                     }
                   ]
                 }
@@ -167,12 +167,12 @@ describe('AntigravityHookService', () => {
       expect(status.state).toBe('installed')
 
       const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
-        'orca-status': Record<
+        'occ-status': Record<
           string,
           { matcher?: string; command?: string; hooks?: { command: string }[] }[]
         >
       }
-      expect(config['orca-status'].PreToolUse).toHaveLength(1)
+      expect(config['occ-status'].PreToolUse).toHaveLength(1)
 
       const expectedWrappers = {
         PreInvocation: 'antigravity-pre-invocation.cmd',
@@ -182,17 +182,17 @@ describe('AntigravityHookService', () => {
         PostToolUse: 'antigravity-post-tool-use.cmd'
       }
       for (const [eventName, wrapperFileName] of Object.entries(expectedWrappers)) {
-        const definition = config['orca-status'][eventName][0]
+        const definition = config['occ-status'][eventName][0]
         const command = ['PreToolUse', 'PostToolUse'].includes(eventName)
           ? definition.hooks?.[0]?.command
           : definition.command
         expect(createManagedCommandMatcher(wrapperFileName)(command)).toBe(true)
         expect(command).not.toContain('cmd /d /s /c')
-        expect(command).not.toContain('ORCA_ANTIGRAVITY_EVENT')
+        expect(command).not.toContain('OCC_ANTIGRAVITY_EVENT')
 
-        const wrapper = readFileSync(join(homeDir, '.orca', 'agent-hooks', wrapperFileName), 'utf8')
-        expect(wrapper).toContain(`set "ORCA_ANTIGRAVITY_EVENT=${eventName}"`)
-        expect(wrapper).toContain('call "%ORCA_ANTIGRAVITY_CORE%"')
+        const wrapper = readFileSync(join(homeDir, '.occ', 'agent-hooks', wrapperFileName), 'utf8')
+        expect(wrapper).toContain(`set "OCC_ANTIGRAVITY_EVENT=${eventName}"`)
+        expect(wrapper).toContain('call "%OCC_ANTIGRAVITY_CORE%"')
         if (eventName === 'PreToolUse') {
           expect(wrapper).toContain(`echo ${PRE_TOOL_USE_DECISION}`)
         }
@@ -202,14 +202,14 @@ describe('AntigravityHookService', () => {
       }
 
       const script = readFileSync(
-        join(homeDir, '.orca', 'agent-hooks', 'antigravity-hook.cmd'),
+        join(homeDir, '.occ', 'agent-hooks', 'antigravity-hook.cmd'),
         'utf8'
       )
       expect(script).toContain('antigravity-hook-post.cjs')
       expect(script).not.toContain('powershell.exe')
       expect(script).toContain('ELECTRON_RUN_AS_NODE=1')
       expect(
-        readFileSync(join(homeDir, '.orca', 'agent-hooks', 'antigravity-hook-post.cjs'), 'utf8')
+        readFileSync(join(homeDir, '.occ', 'agent-hooks', 'antigravity-hook-post.cjs'), 'utf8')
       ).toContain('/hook/antigravity')
       expect(script).toContain('setlocal DisableDelayedExpansion')
     })
@@ -219,7 +219,7 @@ describe('AntigravityHookService', () => {
     withPlatform('win32', () => {
       const service = new AntigravityHookService()
       expect(service.install().state).toBe('installed')
-      const hookDir = join(homeDir, '.orca', 'agent-hooks')
+      const hookDir = join(homeDir, '.occ', 'agent-hooks')
       const readerPath = join(hookDir, 'antigravity-hook-post.cjs')
       const corePath = join(hookDir, 'antigravity-hook.cmd')
       const configPath = join(homeDir, '.gemini', 'config', 'hooks.json')
@@ -238,19 +238,19 @@ describe('AntigravityHookService', () => {
     vi.spyOn(process, 'platform', 'get').mockReturnValue('win32')
     try {
       const service = new AntigravityHookService()
-      let runtimePath = 'C:\\Orca1\\OCC.exe'
+      let runtimePath = 'C:\\OCC1\\OCC.exe'
       service.setWindowsRuntimePathProvider(() => runtimePath)
-      const readerPath = join(homeDir, '.orca', 'agent-hooks', 'antigravity-hook-post.cjs')
+      const readerPath = join(homeDir, '.occ', 'agent-hooks', 'antigravity-hook-post.cjs')
       await service.refreshManagedScripts()
       expect(existsSync(readerPath)).toBe(false)
       expect(service.install().state).toBe('installed')
       rmSync(readerPath)
-      runtimePath = 'C:\\Orca2\\OCC.exe'
+      runtimePath = 'C:\\OCC2\\OCC.exe'
       await service.refreshManagedScripts()
       expect(readFileSync(readerPath, 'utf8')).toContain("require('node:string_decoder')")
       expect(
-        readFileSync(join(homeDir, '.orca', 'agent-hooks', 'antigravity-hook.cmd'), 'utf8')
-      ).toContain('ORCA_AGENT_HOOK_NODE=C:\\Orca2\\OCC.exe')
+        readFileSync(join(homeDir, '.occ', 'agent-hooks', 'antigravity-hook.cmd'), 'utf8')
+      ).toContain('OCC_AGENT_HOOK_NODE=C:\\OCC2\\OCC.exe')
     } finally {
       vi.restoreAllMocks()
     }
@@ -266,8 +266,8 @@ describe('AntigravityHookService', () => {
           'user-hook': {
             PreInvocation: [{ type: 'command', command: '/usr/local/bin/user-hook' }]
           },
-          'orca-status': {
-            PreInvocation: [{ type: 'command', command: '/usr/local/bin/orca-extra' }]
+          'occ-status': {
+            PreInvocation: [{ type: 'command', command: '/usr/local/bin/occ-extra' }]
           }
         },
         null,
@@ -279,11 +279,11 @@ describe('AntigravityHookService', () => {
 
     const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
       'user-hook': { PreInvocation: { command: string }[] }
-      'orca-status': { PreInvocation: { command: string }[] }
+      'occ-status': { PreInvocation: { command: string }[] }
     }
     expect(config['user-hook'].PreInvocation[0].command).toBe('/usr/local/bin/user-hook')
-    const commands = config['orca-status'].PreInvocation.map((entry) => entry.command)
-    expect(commands).toContain('/usr/local/bin/orca-extra')
+    const commands = config['occ-status'].PreInvocation.map((entry) => entry.command)
+    expect(commands).toContain('/usr/local/bin/occ-extra')
     expect(commands.some((command) => command.includes(ANTIGRAVITY_PRE_INVOCATION_COMMAND))).toBe(
       true
     )
@@ -296,7 +296,7 @@ describe('AntigravityHookService', () => {
       configPath,
       `${JSON.stringify(
         {
-          'orca-status': {
+          'occ-status': {
             OldEvent: [
               {
                 type: 'command',
@@ -319,23 +319,23 @@ describe('AntigravityHookService', () => {
     new AntigravityHookService().install()
 
     const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
-      'orca-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
+      'occ-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
     }
-    expect(config['orca-status'].OldEvent).toBeUndefined()
-    const preToolCommands = config['orca-status'].PreToolUse.flatMap((definition) =>
+    expect(config['occ-status'].OldEvent).toBeUndefined()
+    const preToolCommands = config['occ-status'].PreToolUse.flatMap((definition) =>
       (definition.hooks ?? []).map((hook) => hook.command)
     )
     expect(preToolCommands).toHaveLength(1)
     expect(preToolCommands[0]).toContain(
-      join(homeDir, '.orca', 'agent-hooks', ANTIGRAVITY_PRE_TOOL_USE_COMMAND).replaceAll('\\', '/')
+      join(homeDir, '.occ', 'agent-hooks', ANTIGRAVITY_PRE_TOOL_USE_COMMAND).replaceAll('\\', '/')
     )
     expect(preToolCommands[0]).not.toContain('/tmp/old/agent-hooks/antigravity-hook.sh')
-    const commands = config['orca-status'].PostToolUse.flatMap((definition) =>
+    const commands = config['occ-status'].PostToolUse.flatMap((definition) =>
       (definition.hooks ?? []).map((hook) => hook.command)
     )
     expect(commands).toHaveLength(1)
     expect(commands[0]).toContain(
-      join(homeDir, '.orca', 'agent-hooks', ANTIGRAVITY_POST_TOOL_USE_COMMAND).replaceAll('\\', '/')
+      join(homeDir, '.occ', 'agent-hooks', ANTIGRAVITY_POST_TOOL_USE_COMMAND).replaceAll('\\', '/')
     )
   })
 
@@ -343,14 +343,14 @@ describe('AntigravityHookService', () => {
     withPlatform('win32', () => {
       const configPath = join(homeDir, '.gemini', 'config', 'hooks.json')
       // Git Bash strips backslashes from legacy bare paths.
-      const legacyStop = 'C:\\Users\\ada\\.orca\\agent-hooks\\antigravity-stop.cmd'
-      const legacyPreToolUse = 'C:\\Users\\ada\\.orca\\agent-hooks\\antigravity-pre-tool-use.cmd'
+      const legacyStop = 'C:\\Users\\ada\\.occ\\agent-hooks\\antigravity-stop.cmd'
+      const legacyPreToolUse = 'C:\\Users\\ada\\.occ\\agent-hooks\\antigravity-pre-tool-use.cmd'
       const userHook = { type: 'command', command: 'C:\\tools\\user-hook.cmd' }
       mkdirSync(dirname(configPath), { recursive: true })
       writeFileSync(
         configPath,
         `${JSON.stringify({
-          'orca-status': {
+          'occ-status': {
             Stop: [{ type: 'command', command: legacyStop }, userHook],
             PreToolUse: [{ matcher: '*', hooks: [{ type: 'command', command: legacyPreToolUse }] }]
           }
@@ -362,14 +362,14 @@ describe('AntigravityHookService', () => {
       expect(service.install().state).toBe('installed')
 
       const config = JSON.parse(readFileSync(configPath, 'utf8')) as {
-        'orca-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
+        'occ-status': Record<string, { command?: string; hooks?: { command: string }[] }[]>
       }
-      const [keptUserHook, stop] = config['orca-status'].Stop
-      expect(config['orca-status'].Stop).toHaveLength(2)
+      const [keptUserHook, stop] = config['occ-status'].Stop
+      expect(config['occ-status'].Stop).toHaveLength(2)
       expect(keptUserHook).toEqual(userHook)
       expect(stop.command).not.toBe(legacyStop)
       expect(createManagedCommandMatcher('antigravity-stop.cmd')(stop.command)).toBe(true)
-      const preToolUse = config['orca-status'].PreToolUse.flatMap((d) => d.hooks ?? [])
+      const preToolUse = config['occ-status'].PreToolUse.flatMap((d) => d.hooks ?? [])
       expect(preToolUse).toHaveLength(1)
       expect(preToolUse[0].command).not.toBe(legacyPreToolUse)
     })

@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithResolveMobileSessionTerminalCommand } from './mobile-terminal-startup'
+import { OCCRuntimeWithResolveMobileSessionTerminalCommand } from './mobile-terminal-startup'
 import type { TuiAgent } from '../../../../shared/tui-agent'
 import type { SleepingAgentLaunchConfig } from '../../../../shared/agent-session-resume'
 import type {
@@ -13,7 +13,7 @@ import { deriveRemoteRuntimeTerminalCreateHandle } from '../../remote-runtime-te
 import { parsePaneKey } from '../../../../shared/stable-pane-id'
 import { placeCreatedSessionTab } from '../../../../shared/session-tab-placement'
 import { insertTabIdIntoOrder } from '../../../../shared/workspace-layout/tab-order'
-import type { OrcaRuntimeWithBuildPtyTerminalSummary as PtyTerminalSummaryMethods } from '../query/pty-terminal-summary'
+import type { OCCRuntimeWithBuildPtyTerminalSummary as PtyTerminalSummaryMethods } from '../query/pty-terminal-summary'
 import {
   buildHeadlessMobileSessionTabGroups,
   buildMaterializedHeadlessParentLayout,
@@ -22,7 +22,7 @@ import {
 
 const OWNED_MOBILE_DISPATCH_RECIPE_TTL_MS = 15 * 60_000
 
-export abstract class OrcaRuntimeWithCreateRuntimeOwnedMobileSessionTerminal extends OrcaRuntimeWithResolveMobileSessionTerminalCommand {
+export abstract class OCCRuntimeWithCreateRuntimeOwnedMobileSessionTerminal extends OCCRuntimeWithResolveMobileSessionTerminalCommand {
   protected abstract getPtyManualTitle(
     ...args: Parameters<PtyTerminalSummaryMethods['getPtyManualTitle']>
   ): ReturnType<PtyTerminalSummaryMethods['getPtyManualTitle']>

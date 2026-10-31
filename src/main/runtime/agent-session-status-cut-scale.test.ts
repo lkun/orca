@@ -2,7 +2,7 @@ import { afterEach, expect, it, vi } from 'vitest'
 import { AGENT_JOURNAL_THREAD_SCOPE } from '../../shared/agent-session-journal-types'
 import type { AgentJournalItemIdentity } from '../../shared/agent-session-journal-types'
 import type { AgentJournalTurnOutcome } from '../../shared/agent-turn-outcome'
-import { orcaShutdownRowClientMessageId } from '../../shared/native-chat/native-chat-orca-stop-cut'
+import { occShutdownRowClientMessageId } from '../../shared/native-chat/native-chat-occ-stop-cut'
 import { agentHookRuntimeDeps } from '../agent-hooks/agent-hook-runtime-deps'
 import { AgentHookServer } from '../agent-hooks/server'
 import { AgentStatusObservedPaneIdentities } from './agent-status-observed-pane-identity'
@@ -81,14 +81,14 @@ async function publicationRig(history: number, sends: number, ending: Ending) {
   if (ending !== 'no-cut') {
     await journal.appendItem(
       {
-        provider: 'orca',
-        clientMessageId: orcaShutdownRowClientMessageId(record.sessionId, 7, 'generation')
+        provider: 'occ',
+        clientMessageId: occShutdownRowClientMessageId(record.sessionId, 7, 'generation')
       },
       {
         kind: 'status',
         text: 'Stopped by OCC',
         tone: 'error',
-        orcaStop: { cause: ending === 'crash' ? 'crash' : ending === 'update' ? 'update' : 'quit' }
+        occStop: { cause: ending === 'crash' ? 'crash' : ending === 'update' ? 'update' : 'quit' }
       },
       { fence: 7, turnScope: { kind: 'turn', turnItemId: turn.itemId } }
     )

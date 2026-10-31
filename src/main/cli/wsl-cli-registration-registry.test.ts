@@ -13,7 +13,7 @@ describe('WSL CLI registration registry', () => {
   let userDataPath: string
 
   beforeEach(async () => {
-    userDataPath = await mkdtemp(join(tmpdir(), 'orca-wsl-cli-registry-'))
+    userDataPath = await mkdtemp(join(tmpdir(), 'occ-wsl-cli-registry-'))
   })
 
   afterEach(async () => {
@@ -21,7 +21,7 @@ describe('WSL CLI registration registry', () => {
   })
 
   it('skips a registered distro already reconciled by this build against this launcher', async () => {
-    const reconciled = { target: 'C:\\OCC\\resources\\bin\\orca.exe', appVersion: '1.4.138' }
+    const reconciled = { target: 'C:\\OCC\\resources\\bin\\occ.exe', appVersion: '1.4.138' }
     await recordWslCliRegistrationObservations(userDataPath, [
       { distro: 'Ubuntu', inspected: true, managed: true, reconciled }
     ])
@@ -34,7 +34,7 @@ describe('WSL CLI registration registry', () => {
     ).resolves.toEqual([])
     await expect(
       getWslCliRegistrationCandidates(userDataPath, ['Ubuntu'], {
-        currentTarget: 'D:\\Elsewhere\\orca.exe',
+        currentTarget: 'D:\\Elsewhere\\occ.exe',
         appVersion: reconciled.appVersion
       })
     ).resolves.toEqual(['Ubuntu'])
@@ -127,17 +127,17 @@ describe('WSL CLI registration registry', () => {
   })
 
   it('forgets every entry of a deleted distro and leaves the others', async () => {
-    const reconciled = { target: 'C:\\OCC\\resources\\bin\\orca.exe', appVersion: '1.4.244' }
+    const reconciled = { target: 'C:\\OCC\\resources\\bin\\occ.exe', appVersion: '1.4.244' }
     await recordWslCliRegistrationObservations(
       userDataPath,
       [
-        { distro: 'orca-uqa-1029', inspected: true, managed: true, reconciled },
+        { distro: 'occ-uqa-1029', inspected: true, managed: true, reconciled },
         { distro: 'Ubuntu', inspected: true, managed: true, reconciled }
       ],
       { now: 1_000 }
     )
 
-    await forgetWslCliRegistration(userDataPath, 'ORCA-UQA-1029')
+    await forgetWslCliRegistration(userDataPath, 'OCC-UQA-1029')
 
     expect(
       JSON.parse(await readFile(join(userDataPath, 'wsl-cli-registrations.json'), 'utf8'))

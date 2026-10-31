@@ -62,7 +62,7 @@ async function answer(next: CodexHookAnswer): Promise<void> {
   await resolveCodexHookAnswer()
 }
 
-async function writeOrcaEntry(hashes: CodexHookHashes | null): Promise<void> {
+async function writeOCCEntry(hashes: CodexHookHashes | null): Promise<void> {
   mkdirSync(join(home, '.codex'), { recursive: true })
   writeFileSync(hooksPath(), '{ "hooks": {} }\n')
   await reconcileRealHomeCodexHookEntries({
@@ -76,12 +76,12 @@ const status = () => new CodexHookService().getStatus()
 
 beforeEach(() => {
   // Resolve macOS /var symlinks to avoid a second trust-key spelling.
-  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'orca-codex-real-home-status-')))
+  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'occ-codex-real-home-status-')))
   home = join(root, 'home')
   userData = join(root, 'user-data')
   mkdirSync(home)
   mkdirSync(userData)
-  vi.stubEnv('ORCA_USER_DATA_PATH', userData)
+  vi.stubEnv('OCC_USER_DATA_PATH', userData)
   vi.stubEnv('CODEX_HOME', '')
   mocks.homedir.mockReturnValue(home)
   mocks.codexPath = join(userData, 'codex')
@@ -109,7 +109,7 @@ describe('Codex hook status for ~/.codex', () => {
 
   it("is installed once ~/.codex holds OCC's entry approved with Codex's hash", async () => {
     await answer({ kind: 'hashes', codexVersion: 'codex-cli 0.160.1', hashes: CODEX_HASHES })
-    await writeOrcaEntry(CODEX_HASHES)
+    await writeOCCEntry(CODEX_HASHES)
 
     expect(status()).toMatchObject({ state: 'installed', detail: null })
   })
@@ -126,7 +126,7 @@ describe('Codex hook status for ~/.codex', () => {
     await answer({ kind: 'pending', failure })
     expect(status()).toMatchObject({ state: 'not_installed', detail: failure })
 
-    await writeOrcaEntry(null)
+    await writeOCCEntry(null)
 
     expect(status()).toMatchObject({
       state: 'installed',
@@ -139,7 +139,7 @@ describe('Codex hook status for ~/.codex', () => {
     mkdirSync(join(home, '.codex'), { recursive: true })
     writeFileSync(tomlPath(), 'model = "m"\nhooks = { state = {} }\n')
     vi.spyOn(console, 'warn').mockImplementation(() => {})
-    await writeOrcaEntry(CODEX_HASHES)
+    await writeOCCEntry(CODEX_HASHES)
 
     expect(status()).toMatchObject({
       state: 'not_installed',

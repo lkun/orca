@@ -63,45 +63,45 @@ describe('SkillFreshnessStatusPill', () => {
   })
 
   it('shows Update available when the plan updates the skill', async () => {
-    mocks.plan = planOf([sharedEntry('orca-cli', 'update')])
+    mocks.plan = planOf([sharedEntry('occ-cli', 'update')])
 
-    const rendered = await renderPill('orca-cli')
+    const rendered = await renderPill('occ-cli')
     expect(pillText(rendered)).toBe('Update available')
     expect(detailsButton(rendered)?.textContent).toBe('Details')
   })
 
   it('shows Up to date when every location is current', async () => {
-    mocks.plan = planOf([sharedEntry('orca-cli', 'keep')])
+    mocks.plan = planOf([sharedEntry('occ-cli', 'keep')])
 
-    const rendered = await renderPill('orca-cli')
+    const rendered = await renderPill('occ-cli')
     expect(pillText(rendered)).toBe('Up to date')
     expect(detailsButton(rendered)).toBeNull()
   })
 
   it('offers Details beside Installed when an agent still needs linking', async () => {
     mocks.plan = planOf([
-      planEntry('orca-cli', [
-        planOp('keep', '/home/u/.agents/skills/orca-cli'),
-        planOp('link', '/home/u/.claude/skills/orca-cli')
+      planEntry('occ-cli', [
+        planOp('keep', '/home/u/.agents/skills/occ-cli'),
+        planOp('link', '/home/u/.claude/skills/occ-cli')
       ])
     ])
 
-    const rendered = await renderPill('orca-cli')
+    const rendered = await renderPill('occ-cli')
     expect(pillText(rendered)).toBe('Installed')
     expect(detailsButton(rendered)?.textContent).toBe('Details')
   })
 
   it('flags a copy the update leaves alone instead of reading as all-clear', async () => {
-    mocks.plan = planOf([sharedEntry('orca-cli', 'leave', { reason: 'edited' })])
+    mocks.plan = planOf([sharedEntry('occ-cli', 'leave', { reason: 'edited' })])
 
-    const rendered = await renderPill('orca-cli')
+    const rendered = await renderPill('occ-cli')
     // Why: a green pill over a copy the update cannot reach hides real drift.
     expect(pillText(rendered)).toBe('Review skill')
     expect(detailsButton(rendered)?.textContent).toBe('Details')
   })
 
   it('falls back to Installed before the plan loads', async () => {
-    const rendered = await renderPill('orca-cli')
+    const rendered = await renderPill('occ-cli')
     expect(pillText(rendered)).toBe('Installed')
     expect(detailsButton(rendered)).toBeNull()
   })
@@ -109,7 +109,7 @@ describe('SkillFreshnessStatusPill', () => {
   it('shows a neutral verdict while freshness is being checked', async () => {
     mocks.loading = true
 
-    const rendered = await renderPill('orca-cli')
+    const rendered = await renderPill('occ-cli')
     expect(pillText(rendered)).toBe('Checking...')
     expect(detailsButton(rendered)).toBeNull()
   })
@@ -117,14 +117,14 @@ describe('SkillFreshnessStatusPill', () => {
   it('does not report success after a freshness check fails', async () => {
     mocks.error = 'Could not read skills.'
 
-    const rendered = await renderPill('orca-cli')
+    const rendered = await renderPill('occ-cli')
     expect(pillText(rendered)).toBe('Check failed')
     expect(detailsButton(rendered)).toBeNull()
   })
 
   it('opens the freshness review dialog from Details', async () => {
-    mocks.plan = planOf([sharedEntry('orca-cli', 'update')])
-    const rendered = await renderPill('orca-cli')
+    mocks.plan = planOf([sharedEntry('occ-cli', 'update')])
+    const rendered = await renderPill('occ-cli')
 
     await act(async () => {
       detailsButton(rendered)?.click()

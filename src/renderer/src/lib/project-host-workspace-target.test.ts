@@ -58,27 +58,27 @@ function makeSetup(
 
 describe('project-host workspace target resolution', () => {
   it('falls back to a local setup for a local-only repo', () => {
-    const repo = makeRepo('orca')
+    const repo = makeRepo('occ')
 
     const resolution = resolveWorkspaceCreationTarget({ eligibleRepos: [repo] })
 
     expect(resolution).toMatchObject({
       status: 'ready',
       target: {
-        projectId: 'repo:orca',
+        projectId: 'repo:occ',
         hostId: 'local',
-        projectHostSetupId: 'orca',
-        repoId: 'orca'
+        projectHostSetupId: 'occ',
+        repoId: 'occ'
       }
     })
   })
 
   it('chooses the focused host setup when one project exists on multiple hosts', () => {
-    const repos = [makeRepo('orca-local'), makeRepo('orca-ssh', { connectionId: 'openclaw-2' })]
-    const projects = [makeProject('github:stablyai/orca', ['orca-local', 'orca-ssh'])]
+    const repos = [makeRepo('occ-local'), makeRepo('occ-ssh', { connectionId: 'openclaw-2' })]
+    const projects = [makeProject('github:stablyai/occ', ['occ-local', 'occ-ssh'])]
     const projectHostSetups = [
-      makeSetup('orca-local', 'github:stablyai/orca', 'local', 'orca-local'),
-      makeSetup('orca-ssh', 'github:stablyai/orca', 'ssh:openclaw-2', 'orca-ssh')
+      makeSetup('occ-local', 'github:stablyai/occ', 'local', 'occ-local'),
+      makeSetup('occ-ssh', 'github:stablyai/occ', 'ssh:openclaw-2', 'occ-ssh')
     ]
 
     expect(
@@ -86,22 +86,22 @@ describe('project-host workspace target resolution', () => {
         eligibleRepos: repos,
         projects,
         projectHostSetups,
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         focusedHostScope: 'ssh:openclaw-2'
       })
-    ).toBe('orca-ssh')
+    ).toBe('occ-ssh')
   })
 
   it('matches duplicate repo ids to the setup execution host', () => {
-    const localRepo = makeRepo('orca', { path: '/local/orca' })
-    const sshRepo = makeRepo('orca', {
-      path: '/remote/orca',
+    const localRepo = makeRepo('occ', { path: '/local/occ' })
+    const sshRepo = makeRepo('occ', {
+      path: '/remote/occ',
       connectionId: 'builder'
     })
-    const projects = [makeProject('github:stablyai/orca', ['orca'])]
+    const projects = [makeProject('github:stablyai/occ', ['occ'])]
     const projectHostSetups = [
-      makeSetup('local-setup', 'github:stablyai/orca', 'local', 'orca'),
-      makeSetup('ssh-setup', 'github:stablyai/orca', 'ssh:builder', 'orca')
+      makeSetup('local-setup', 'github:stablyai/occ', 'local', 'occ'),
+      makeSetup('ssh-setup', 'github:stablyai/occ', 'ssh:builder', 'occ')
     ]
 
     const resolution = resolveWorkspaceCreationTarget({
@@ -115,18 +115,18 @@ describe('project-host workspace target resolution', () => {
       status: 'ready',
       target: {
         hostId: 'ssh:builder',
-        repo: { path: '/remote/orca', connectionId: 'builder' }
+        repo: { path: '/remote/occ', connectionId: 'builder' }
       }
     })
   })
 
   it('keeps a focused duplicate repo id on its selected host', () => {
-    const localRepo = makeRepo('orca', { path: '/local/orca' })
-    const sshRepo = makeRepo('orca', { path: '/remote/orca', connectionId: 'builder' })
-    const projects = [makeProject('github:stablyai/orca', ['orca'])]
+    const localRepo = makeRepo('occ', { path: '/local/occ' })
+    const sshRepo = makeRepo('occ', { path: '/remote/occ', connectionId: 'builder' })
+    const projects = [makeProject('github:stablyai/occ', ['occ'])]
     const projectHostSetups = [
-      makeSetup('local-setup', 'github:stablyai/orca', 'local', 'orca'),
-      makeSetup('ssh-setup', 'github:stablyai/orca', 'ssh:builder', 'orca')
+      makeSetup('local-setup', 'github:stablyai/occ', 'local', 'occ'),
+      makeSetup('ssh-setup', 'github:stablyai/occ', 'ssh:builder', 'occ')
     ]
 
     expect(
@@ -134,7 +134,7 @@ describe('project-host workspace target resolution', () => {
         eligibleRepos: [localRepo, sshRepo],
         projects,
         projectHostSetups,
-        draftRepoId: 'orca',
+        draftRepoId: 'occ',
         focusedHostScope: 'ssh:builder'
       })
     ).toMatchObject({
@@ -142,18 +142,18 @@ describe('project-host workspace target resolution', () => {
       target: {
         hostId: 'ssh:builder',
         projectHostSetupId: 'ssh-setup',
-        repo: { path: '/remote/orca', connectionId: 'builder' }
+        repo: { path: '/remote/occ', connectionId: 'builder' }
       }
     })
   })
 
   it('resolves duplicate repo ids to a ready setup when no host is focused', () => {
-    const localRepo = makeRepo('orca', { path: '/local/orca' })
-    const sshRepo = makeRepo('orca', { path: '/remote/orca', connectionId: 'builder' })
-    const projects = [makeProject('github:stablyai/orca', ['orca'])]
+    const localRepo = makeRepo('occ', { path: '/local/occ' })
+    const sshRepo = makeRepo('occ', { path: '/remote/occ', connectionId: 'builder' })
+    const projects = [makeProject('github:stablyai/occ', ['occ'])]
     const projectHostSetups = [
-      makeSetup('local-setup', 'github:stablyai/orca', 'local', 'orca'),
-      makeSetup('ssh-setup', 'github:stablyai/orca', 'ssh:builder', 'orca')
+      makeSetup('local-setup', 'github:stablyai/occ', 'local', 'occ'),
+      makeSetup('ssh-setup', 'github:stablyai/occ', 'ssh:builder', 'occ')
     ]
 
     expect(
@@ -161,7 +161,7 @@ describe('project-host workspace target resolution', () => {
         eligibleRepos: [localRepo, sshRepo],
         projects,
         projectHostSetups,
-        draftRepoId: 'orca',
+        draftRepoId: 'occ',
         focusedHostScope: 'all',
         actionableHostIds: new Set(['local', 'ssh:builder'])
       })
@@ -170,70 +170,70 @@ describe('project-host workspace target resolution', () => {
       target: {
         hostId: 'local',
         projectHostSetupId: 'local-setup',
-        repoId: 'orca',
-        repo: { path: '/local/orca' }
+        repoId: 'occ',
+        repo: { path: '/local/occ' }
       }
     })
   })
 
   it('resolves an explicit project and host to the matching setup', () => {
     const repos = [
-      makeRepo('orca-local'),
-      makeRepo('orca-runtime', { executionHostId: 'runtime:gpu-1' })
+      makeRepo('occ-local'),
+      makeRepo('occ-runtime', { executionHostId: 'runtime:gpu-1' })
     ]
-    const projects = [makeProject('github:stablyai/orca', ['orca-local', 'orca-runtime'])]
+    const projects = [makeProject('github:stablyai/occ', ['occ-local', 'occ-runtime'])]
     const projectHostSetups = [
-      makeSetup('orca-local', 'github:stablyai/orca', 'local', 'orca-local'),
-      makeSetup('orca-runtime', 'github:stablyai/orca', 'runtime:gpu-1', 'orca-runtime')
+      makeSetup('occ-local', 'github:stablyai/occ', 'local', 'occ-local'),
+      makeSetup('occ-runtime', 'github:stablyai/occ', 'runtime:gpu-1', 'occ-runtime')
     ]
 
     const resolution = resolveWorkspaceCreationTarget({
       eligibleRepos: repos,
       projects,
       projectHostSetups,
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: 'runtime:gpu-1'
     })
 
     expect(resolution).toMatchObject({
       status: 'ready',
       target: {
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         hostId: 'runtime:gpu-1',
-        projectHostSetupId: 'orca-runtime',
-        repoId: 'orca-runtime'
+        projectHostSetupId: 'occ-runtime',
+        repoId: 'occ-runtime'
       }
     })
   })
 
   it('canonicalizes a stale same-host setup id to the setup the picker shows', () => {
     // Legacy drafts can name hidden duplicate setups; creation must use the canonical picker row/path.
-    const repos = [makeRepo('orca-main'), makeRepo('orca-worktree')]
-    const projects = [makeProject('github:stablyai/orca', ['orca-main', 'orca-worktree'])]
+    const repos = [makeRepo('occ-main'), makeRepo('occ-worktree')]
+    const projects = [makeProject('github:stablyai/occ', ['occ-main', 'occ-worktree'])]
     const projectHostSetups = [
-      makeSetup('orca-main', 'github:stablyai/orca', 'local', 'orca-main'),
-      makeSetup('orca-worktree', 'github:stablyai/orca', 'local', 'orca-worktree')
+      makeSetup('occ-main', 'github:stablyai/occ', 'local', 'occ-main'),
+      makeSetup('occ-worktree', 'github:stablyai/occ', 'local', 'occ-worktree')
     ]
 
     const resolution = resolveWorkspaceCreationTarget({
       eligibleRepos: repos,
       projects,
       projectHostSetups,
-      projectHostSetupId: 'orca-worktree'
+      projectHostSetupId: 'occ-worktree'
     })
 
     expect(resolution).toMatchObject({
       status: 'ready',
-      target: { projectHostSetupId: 'orca-main', repoId: 'orca-main', hostId: 'local' }
+      target: { projectHostSetupId: 'occ-main', repoId: 'occ-main', hostId: 'local' }
     })
   })
 
   it('keeps an explicit setup id that is the only one on its host', () => {
-    const repos = [makeRepo('orca-local'), makeRepo('orca-ssh', { connectionId: 'builder' })]
-    const projects = [makeProject('github:stablyai/orca', ['orca-local', 'orca-ssh'])]
+    const repos = [makeRepo('occ-local'), makeRepo('occ-ssh', { connectionId: 'builder' })]
+    const projects = [makeProject('github:stablyai/occ', ['occ-local', 'occ-ssh'])]
     const projectHostSetups = [
-      makeSetup('orca-local', 'github:stablyai/orca', 'local', 'orca-local'),
-      makeSetup('orca-ssh', 'github:stablyai/orca', 'ssh:builder', 'orca-ssh')
+      makeSetup('occ-local', 'github:stablyai/occ', 'local', 'occ-local'),
+      makeSetup('occ-ssh', 'github:stablyai/occ', 'ssh:builder', 'occ-ssh')
     ]
 
     expect(
@@ -241,40 +241,40 @@ describe('project-host workspace target resolution', () => {
         eligibleRepos: repos,
         projects,
         projectHostSetups,
-        projectHostSetupId: 'orca-ssh'
+        projectHostSetupId: 'occ-ssh'
       })
     ).toMatchObject({
       status: 'ready',
-      target: { projectHostSetupId: 'orca-ssh', repoId: 'orca-ssh', hostId: 'ssh:builder' }
+      target: { projectHostSetupId: 'occ-ssh', repoId: 'occ-ssh', hostId: 'ssh:builder' }
     })
   })
 
   it('does not merge same-name repos without shared project identity', () => {
     const repos = [
-      makeRepo('personal-orca', { displayName: 'orca' }),
-      makeRepo('work-orca', { displayName: 'orca', connectionId: 'work-linux' })
+      makeRepo('personal-occ', { displayName: 'occ' }),
+      makeRepo('work-occ', { displayName: 'occ', connectionId: 'work-linux' })
     ]
 
     expect(
       resolveWorkspaceCreationRepoId({
         eligibleRepos: repos,
-        projectId: 'repo:personal-orca',
+        projectId: 'repo:personal-occ',
         focusedHostScope: 'ssh:work-linux'
       })
-    ).toBe('personal-orca')
+    ).toBe('personal-occ')
   })
 
   it('reports unavailable when the project is not set up on the selected host', () => {
-    const repo = makeRepo('orca')
-    const projects = [makeProject('github:stablyai/orca', ['orca'])]
-    const projectHostSetups = [makeSetup('orca', 'github:stablyai/orca', 'local', 'orca')]
+    const repo = makeRepo('occ')
+    const projects = [makeProject('github:stablyai/occ', ['occ'])]
+    const projectHostSetups = [makeSetup('occ', 'github:stablyai/occ', 'local', 'occ')]
 
     expect(
       resolveWorkspaceCreationTarget({
         eligibleRepos: [repo],
         projects,
         projectHostSetups,
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         hostId: 'ssh:openclaw-2'
       })
     ).toEqual({
@@ -284,11 +284,11 @@ describe('project-host workspace target resolution', () => {
   })
 
   it('does not fall back to another host when only a host is selected', () => {
-    const localRepo = makeRepo('orca-local')
-    const remoteRepo = makeRepo('orca-ssh', { connectionId: 'builder' })
-    const projects = [makeProject('github:stablyai/orca', ['orca-local', 'orca-ssh'])]
+    const localRepo = makeRepo('occ-local')
+    const remoteRepo = makeRepo('occ-ssh', { connectionId: 'builder' })
+    const projects = [makeProject('github:stablyai/occ', ['occ-local', 'occ-ssh'])]
     const projectHostSetups = [
-      makeSetup('orca-local', 'github:stablyai/orca', 'local', 'orca-local')
+      makeSetup('occ-local', 'github:stablyai/occ', 'local', 'occ-local')
     ]
 
     expect(
@@ -296,7 +296,7 @@ describe('project-host workspace target resolution', () => {
         eligibleRepos: [localRepo, remoteRepo],
         projects,
         projectHostSetups,
-        draftRepoId: 'orca-local',
+        draftRepoId: 'occ-local',
         hostId: 'ssh:builder',
         actionableHostIds: new Set(['local', 'ssh:builder'])
       })
@@ -307,11 +307,11 @@ describe('project-host workspace target resolution', () => {
   })
 
   it('reports setup-not-ready when the selected host has pending setup metadata', () => {
-    const repo = makeRepo('orca')
-    const projects = [makeProject('github:stablyai/orca', ['orca'])]
+    const repo = makeRepo('occ')
+    const projects = [makeProject('github:stablyai/occ', ['occ'])]
     const projectHostSetups = [
-      makeSetup('orca', 'github:stablyai/orca', 'local', 'orca'),
-      makeSetup('gpu-pending', 'github:stablyai/orca', 'runtime:gpu', '', {
+      makeSetup('occ', 'github:stablyai/occ', 'local', 'occ'),
+      makeSetup('gpu-pending', 'github:stablyai/occ', 'runtime:gpu', '', {
         path: '',
         setupState: 'setting-up',
         setupMethod: 'provisioned'
@@ -323,7 +323,7 @@ describe('project-host workspace target resolution', () => {
         eligibleRepos: [repo],
         projects,
         projectHostSetups,
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         hostId: 'runtime:gpu'
       })
     ).toEqual({
@@ -333,10 +333,10 @@ describe('project-host workspace target resolution', () => {
   })
 
   it('reports unavailable when an explicit setup is not ready', () => {
-    const repo = makeRepo('orca')
-    const projects = [makeProject('github:stablyai/orca', ['orca'])]
+    const repo = makeRepo('occ')
+    const projects = [makeProject('github:stablyai/occ', ['occ'])]
     const projectHostSetups = [
-      makeSetup('orca', 'github:stablyai/orca', 'local', 'orca', { setupState: 'setting-up' })
+      makeSetup('occ', 'github:stablyai/occ', 'local', 'occ', { setupState: 'setting-up' })
     ]
 
     expect(
@@ -344,7 +344,7 @@ describe('project-host workspace target resolution', () => {
         eligibleRepos: [repo],
         projects,
         projectHostSetups,
-        projectHostSetupId: 'orca'
+        projectHostSetupId: 'occ'
       })
     ).toEqual({
       status: 'unavailable',
@@ -374,10 +374,10 @@ describe('project-host workspace target resolution', () => {
   it('does not silently switch an explicit setup id to an actionable sibling host', () => {
     const remoteRepo = makeRepo('remote-repo', { connectionId: 'removed' })
     const localRepo = makeRepo('local-repo')
-    const projects = [makeProject('repo:orca', ['remote-repo', 'local-repo'])]
+    const projects = [makeProject('repo:occ', ['remote-repo', 'local-repo'])]
     const projectHostSetups = [
-      makeSetup('removed-setup', 'repo:orca', 'ssh:removed', 'remote-repo'),
-      makeSetup('local-setup', 'repo:orca', 'local', 'local-repo')
+      makeSetup('removed-setup', 'repo:occ', 'ssh:removed', 'remote-repo'),
+      makeSetup('local-setup', 'repo:occ', 'local', 'local-repo')
     ]
 
     expect(

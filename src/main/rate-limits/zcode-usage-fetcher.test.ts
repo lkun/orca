@@ -8,7 +8,7 @@ let dir: string
 let configPath: string
 
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'orca-zcode-usage-'))
+  dir = mkdtempSync(join(tmpdir(), 'occ-zcode-usage-'))
   configPath = join(dir, 'config.json')
   vi.stubGlobal('fetch', vi.fn())
   vi.useFakeTimers()
@@ -309,15 +309,15 @@ describe('fetchZcodeRateLimits', () => {
 
     const result = await fetchZcodeRateLimits({
       configPath,
-      planCredential: { apiKey: 'orca-saved-key', baseUrl: 'https://api.z.ai' }
+      planCredential: { apiKey: 'occ-saved-key', baseUrl: 'https://api.z.ai' }
     })
 
     expect(result.status).toBe('ok')
     const [url, init] = vi.mocked(fetch).mock.calls[0]
     expect(String(url)).toBe('https://api.z.ai/api/monitor/usage/quota/limit')
-    expect(new Headers(init?.headers).get('Authorization')).toBe('orca-saved-key')
-    expect(result.usageMetadata?.credentialSource).toBe('orca-plan')
-    expect(JSON.stringify(result)).not.toContain('orca-saved-key')
+    expect(new Headers(init?.headers).get('Authorization')).toBe('occ-saved-key')
+    expect(result.usageMetadata?.credentialSource).toBe('occ-plan')
+    expect(JSON.stringify(result)).not.toContain('occ-saved-key')
   })
 
   it('uses the BigModel host for the mainland plan site', async () => {

@@ -15,8 +15,8 @@ import {
 } from '../ssh/system-transport/system-ssh-file-transfer'
 import { buildUstarEntryHeader, USTAR_BLOCK_BYTES, ustarPaddingBytes } from '../ustar-entry-header'
 
-export const WSL_GUEST_SOURCE_UNAVAILABLE = 'ORCA_WSL_GUEST_SOURCE_UNAVAILABLE'
-export const WSL_UPLOAD_PROMOTED = 'ORCA_WSL_UPLOAD_PROMOTED'
+export const WSL_GUEST_SOURCE_UNAVAILABLE = 'OCC_WSL_GUEST_SOURCE_UNAVAILABLE'
+export const WSL_UPLOAD_PROMOTED = 'OCC_WSL_UPLOAD_PROMOTED'
 
 type UploadOptions = { signal?: AbortSignal }
 
@@ -175,7 +175,7 @@ export async function uploadDirectoryIntoWsl(
     signal
   )
   const manifest = await digestManifest(plan, signal)
-  const stage = `${remoteDir.replace(/\/+$/, '')}/.orca-upload-${randomBytes(8).toString('hex')}`
+  const stage = `${remoteDir.replace(/\/+$/, '')}/.occ-upload-${randomBytes(8).toString('hex')}`
   // Cold runtime deployment exceeds the 30s probe default; use the deploy timeout.
   const execOptions = { signal, timeoutMs: REMOTE_INSTALL_TIMEOUT_MS }
   const stagedFromGuest =

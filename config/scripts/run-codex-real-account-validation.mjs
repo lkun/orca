@@ -34,12 +34,12 @@ const RESTRICTED_ENV_KEYS = [
   'HOMEDRIVE',
   'HOMEPATH',
   'CODEX_HOME',
-  'ORCA_CODEX_HOME',
-  'ORCA_E2E_HOME_DIR',
-  'ORCA_E2E_USER_DATA_DIR',
-  'ORCA_USER_DATA_PATH',
+  'OCC_CODEX_HOME',
+  'OCC_E2E_HOME_DIR',
+  'OCC_E2E_USER_DATA_DIR',
+  'OCC_USER_DATA_PATH',
   'ZDOTDIR',
-  'ORCA_ORIG_ZDOTDIR',
+  'OCC_ORIG_ZDOTDIR',
   'BASH_ENV',
   'ENV',
   'ELECTRON_RUN_AS_NODE'
@@ -78,15 +78,15 @@ export function createValidationEnv(inheritedEnv, layout) {
     HOME: layout.homeDir,
     USERPROFILE: layout.homeDir,
     NODE_ENV: 'development',
-    ORCA_E2E_HOME_DIR: layout.homeDir,
-    ORCA_E2E_USER_DATA_DIR: layout.userDataDir,
-    ORCA_USER_DATA_PATH: layout.userDataDir
+    OCC_E2E_HOME_DIR: layout.homeDir,
+    OCC_E2E_USER_DATA_DIR: layout.userDataDir,
+    OCC_USER_DATA_PATH: layout.userDataDir
   }
 }
 
 export async function createValidationLayout(options = {}) {
   const primaryHome = path.resolve(options.primaryHome ?? os.homedir())
-  const envTempParent = process.env.ORCA_CODEX_VALIDATION_TEMP_PARENT?.trim()
+  const envTempParent = process.env.OCC_CODEX_VALIDATION_TEMP_PARENT?.trim()
   const tempParent = path.resolve(options.tempParent ?? (envTempParent || os.tmpdir()))
   // Canonicalize containment paths so symlinked temp parent cannot place disposable root inside primary home.
   const [primaryHomeReal, tempParentReal] = await Promise.all([
@@ -97,10 +97,10 @@ export async function createValidationLayout(options = {}) {
   if (samePath(tempParentReal, primaryHomeReal) || isWithin(tempParentReal, primaryHomeReal)) {
     throw new Error(
       `Refusing to place the disposable validation root inside the primary home (${primaryHome}). ` +
-        'Pass --temp-parent <dir> or set ORCA_CODEX_VALIDATION_TEMP_PARENT to a directory outside it.'
+        'Pass --temp-parent <dir> or set OCC_CODEX_VALIDATION_TEMP_PARENT to a directory outside it.'
     )
   }
-  const tempRoot = await mkdtemp(path.join(tempParent, 'orca-codex-real-'))
+  const tempRoot = await mkdtemp(path.join(tempParent, 'occ-codex-real-'))
   const homeDir = path.join(tempRoot, 'home')
   const userDataDir = path.join(tempRoot, 'user-data')
   await Promise.all([
@@ -128,7 +128,7 @@ async function seedCompletedProfile(layout) {
     ui: { contextualToursAutoEligible: false, projectOrderManualDefaultNoticeDismissed: true }
   }
   await writeFile(
-    path.join(layout.userDataDir, 'orca-data.json'),
+    path.join(layout.userDataDir, 'occ-data.json'),
     `${JSON.stringify(profile, null, 2)}\n`
   )
 }
@@ -344,20 +344,20 @@ function buildAppIfNeeded(repoRoot, skipBuild) {
 }
 
 function validationCliCommand() {
-  if (process.env.ORCA_VALIDATION_CLI) {
-    return process.env.ORCA_VALIDATION_CLI
+  if (process.env.OCC_VALIDATION_CLI) {
+    return process.env.OCC_VALIDATION_CLI
   }
-  if (process.env.ORCA_CLI_COMMAND) {
-    return process.env.ORCA_CLI_COMMAND
+  if (process.env.OCC_CLI_COMMAND) {
+    return process.env.OCC_CLI_COMMAND
   }
-  return process.platform === 'linux' ? 'occ-ide' : 'orca'
+  return process.platform === 'linux' ? 'occ-ide' : 'occ'
 }
 
 async function probeTerminalEnvironment(terminalHandle, launchEnv) {
-  const marker = `__ORCA_CODEX_VALIDATION_${randomUUID()}__`
+  const marker = `__OCC_CODEX_VALIDATION_${randomUUID()}__`
   const command = [
     'node -e',
-    `"console.log('${marker}:' + JSON.stringify({home: require('node:os').homedir(), codexHome: process.env.CODEX_HOME || null, orcaCodexHome: process.env.ORCA_CODEX_HOME || null}))"`
+    `"console.log('${marker}:' + JSON.stringify({home: require('node:os').homedir(), codexHome: process.env.CODEX_HOME || null, occCodexHome: process.env.OCC_CODEX_HOME || null}))"`
   ].join(' ')
   const cli = validationCliCommand()
   execFileSync(
@@ -452,7 +452,7 @@ async function main() {
   })
   const reportPath =
     options.reportPath ??
-    path.join(os.tmpdir(), `orca-codex-real-account-${options.scenario}-${Date.now()}.json`)
+    path.join(os.tmpdir(), `occ-codex-real-account-${options.scenario}-${Date.now()}.json`)
   const launchEnv = createValidationEnv(process.env, layout)
   let app = null
   let tripwire = null
@@ -509,7 +509,7 @@ async function main() {
       app = await electron.launch({
         args: [mainPath],
         // Why: a validation run must not pull the window over the developer's work.
-        env: { ...launchEnv, ORCA_BACKGROUND_LAUNCH: '1' }
+        env: { ...launchEnv, OCC_BACKGROUND_LAUNCH: '1' }
       })
       report.electronPaths = await app.evaluate(({ app: electronApp }) => ({
         home: electronApp.getPath('home'),

@@ -5,14 +5,14 @@
 #>
 
 # Compile once: repeated dot-sourcing must not duplicate Add-Type.
-if (-not ('OrcaWinEnum.Native' -as [type])) {
+if (-not ('OCCWinEnum.Native' -as [type])) {
   Add-Type -TypeDefinition @'
 using System;
 using System.Text;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace OrcaWinEnum {
+namespace OCCWinEnum {
   public static class Native {
     private delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
 
@@ -61,7 +61,7 @@ namespace OrcaWinEnum {
 
 function Get-VisibleTopLevelWindows {
   # PS 5.1 unwraps one-row results; @() preserves array/count semantics.
-  $rows = @([OrcaWinEnum.Native]::Enumerate())
+  $rows = @([OCCWinEnum.Native]::Enumerate())
 
   # Cache pid -> process name so we resolve each owning process at most once.
   $nameByPid = @{}

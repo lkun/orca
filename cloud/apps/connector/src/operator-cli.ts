@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import { openConnectorDatabase } from './connector-database.js'
 
 // An operator command against the service's database (its env), printing what it returns.
@@ -8,8 +8,8 @@ export async function runOperatorCli(
 ): Promise<void> {
   const env = process.env
   const database = await openConnectorDatabase({
-    ...(env.ORCA_CONNECTOR_DATABASE_URL ? { databaseUrl: env.ORCA_CONNECTOR_DATABASE_URL } : {}),
-    dataDir: env.ORCA_CONNECTOR_DATA_DIR || './data/connector',
+    ...(env.OCC_CONNECTOR_DATABASE_URL ? { databaseUrl: env.OCC_CONNECTOR_DATABASE_URL } : {}),
+    dataDir: env.OCC_CONNECTOR_DATA_DIR || './data/connector',
     poolMax: 1,
     applicationName
   })

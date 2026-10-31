@@ -70,14 +70,14 @@ function phaseValue(phase: WslMoveCutoverPhase | null): Props['phase'] {
 
 // Ordered: the first match names the reason, so specific codes come before generic ones.
 const RESET_REASON_PATTERNS: readonly [RegExp, Props['reset_reason']][] = [
-  [/orcad_migration_staged_claim_conflict/u, 'staged_claim_conflict'],
-  [/orcad_migration_repository_path_conflict/u, 'repository_path_conflict'],
+  [/occd_migration_staged_claim_conflict/u, 'staged_claim_conflict'],
+  [/occd_migration_repository_path_conflict/u, 'repository_path_conflict'],
   [/distro_unregistered|wsl_distro_not_registered/u, 'distro_unregistered'],
   [/terminals-started-after-pause/u, 'terminals_started'],
   [/exit-unverifiable/u, 'exit_unverifiable'],
   [/wsl_move_stage_not_staged/u, 'stage_rejected'],
-  [/orcad_migration_blob/u, 'blob_rejected'],
-  [/wsl_move_commit_not_committed|orcad_migration_catalog_not_staged/u, 'commit_rejected'],
+  [/occd_migration_blob/u, 'blob_rejected'],
+  [/wsl_move_commit_not_committed|occd_migration_catalog_not_staged/u, 'commit_rejected'],
   [/destination_unreachable|ECONNREFUSED|ECONNRESET|EPIPE/u, 'host_unreachable']
 ]
 

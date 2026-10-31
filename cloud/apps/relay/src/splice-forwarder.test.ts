@@ -4,7 +4,7 @@ import type { Writable } from 'node:stream'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type WebSocket from 'ws'
 import type { RawData } from 'ws'
-import { RELAY_ADMISSION_BUDGETS } from '@orca-cloud/relay-contract'
+import { RELAY_ADMISSION_BUDGETS } from '@occ-cloud/relay-contract'
 import {
   ProcessQueuedByteBudget,
   wireSplice,

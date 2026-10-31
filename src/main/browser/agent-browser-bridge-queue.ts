@@ -1,7 +1,7 @@
 import type { BrowserTabSwitchResult } from '../../shared/runtime-types'
 import { BrowserError } from './cdp-bridge'
 import { AgentBrowserBridgeActionEffects } from './agent-browser-bridge-action-effects'
-import { ORCA_TAB_SESSION_PREFIX } from './agent-browser-orphan-sweep'
+import { OCC_TAB_SESSION_PREFIX } from './agent-browser-orphan-sweep'
 import type {
   EnqueueTargetedCommandOptions,
   ResolvedBrowserCommandTarget
@@ -95,7 +95,7 @@ export abstract class AgentBrowserBridgeQueue extends AgentBrowserBridgeActionEf
     }
     // Fail before queueing: the turn ahead may be a command waiting on this very dialog.
     assertNoJavaScriptDialog(webContentsId, pageId, assertNotRevoked)
-    const sessionName = `${ORCA_TAB_SESSION_PREFIX}${pageId}`
+    const sessionName = `${OCC_TAB_SESSION_PREFIX}${pageId}`
     const agentCommand = this.browserManager.beginAgentCommand(pageId)
     // Decided at enqueue: a queued command runs under the caller of the command ahead of it.
     const reportEffects = options.reportEffects === true && agentCommand.agent
@@ -204,7 +204,7 @@ export abstract class AgentBrowserBridgeQueue extends AgentBrowserBridgeActionEf
     options: EnqueueTargetedCommandOptions
   ): Promise<T> {
     this.assertCommandAdmission()
-    const sessionName = `${ORCA_TAB_SESSION_PREFIX}${browserPageId}`
+    const sessionName = `${OCC_TAB_SESSION_PREFIX}${browserPageId}`
     // A queued page may acquire a replacement guest before execution.
     const target = this.resolveCommandTarget(worktreeId, browserPageId)
     const releaseGuest = this.browserManager.holdGuestActive(target.webContentsId)

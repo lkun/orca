@@ -32,7 +32,7 @@ import {
 import { startFirstWindowStartupServices } from './first-window-startup-services'
 import { logStartupMilestone } from './startup-diagnostics'
 import type { WindowsDesktopStartupServices } from './windows-desktop-shell-path-startup'
-import type { RuntimeWorktreeLifecycleEvent } from '../runtime/orca-runtime'
+import type { RuntimeWorktreeLifecycleEvent } from '../runtime/occ-runtime'
 import { mainProcessState as state } from './main-process-state'
 import { shortPluginBranchName } from '../../shared/plugins/events/plugin-events'
 
@@ -164,7 +164,7 @@ export function startTerminalRuntimeStartupServices(): WindowsDesktopStartupServ
       state.codexRuntimeHome?.reconcileLegacySharedHomeForRetainedPanes()
       logStartupMilestone('startup-service-done', { service: 'daemon-pty-provider' })
     },
-    // Restored PTYs need live ORCA_AGENT_HOOK_* endpoint state before reconnecting.
+    // Restored PTYs need live OCC_AGENT_HOOK_* endpoint state before reconnecting.
     startAgentHookServer: async () => {
       const settings = state.store?.getSettings()
       logStartupMilestone('startup-service-start', { service: 'agent-hook-server' })

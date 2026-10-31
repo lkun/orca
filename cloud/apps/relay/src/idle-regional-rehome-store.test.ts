@@ -318,7 +318,7 @@ describe('constrained idle regional assignment transaction', () => {
     expect(decisions.every((decision) => Number(decision.last_considered_at) === 0)).toBe(true)
   })
 
-  it.runIf(Boolean(process.env.ORCA_IDLE_REHOME_POSTGRES_URL))(
+  it.runIf(Boolean(process.env.OCC_IDLE_REHOME_POSTGRES_URL))(
     'rechecks generation when replacement wins after the initial authority lookup',
     async () => {
       const { store, safety, request, database } = await setup()

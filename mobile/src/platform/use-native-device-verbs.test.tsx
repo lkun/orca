@@ -25,7 +25,7 @@ vi.mock('expo-clipboard', () => ({
 vi.mock('expo-document-picker', () => ({
   getDocumentAsync: device.picker.getDocumentAsync
 }))
-vi.mock('@orca/expo-two-way-audio', () => ({
+vi.mock('@occ/expo-two-way-audio', () => ({
   addExpoTwoWayAudioEventListener: () => ({ remove: () => {} }),
   initialize: () => Promise.resolve(true),
   requestMicrophonePermissionsAsync: () =>
@@ -215,11 +215,11 @@ describe('the screen a page session leaves behind', () => {
     const first = mount('session-a')
     await first.serve('native.audio.start', { sampleRate: 16_000 })
     await Promise.resolve()
-    expect(device.wakeTags).toEqual(['+orca-microphone'])
+    expect(device.wakeTags).toEqual(['+occ-microphone'])
     // Page-session cleanup must release a mic’s wake lock even if the document disappears mid-dictation.
     first.unmount()
     await new Promise((resolve) => setTimeout(resolve, 0))
-    expect(device.wakeTags).toEqual(['+orca-microphone', '-orca-microphone'])
+    expect(device.wakeTags).toEqual(['+occ-microphone', '-occ-microphone'])
   })
 
   it('leaves the next session nothing of the last one to give back', async () => {

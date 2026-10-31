@@ -71,7 +71,7 @@ describe('summarizeBundledSkillPlan', () => {
   it('counts leftover swap siblings as work without raising the badge', () => {
     const withCleanup: BundledSkillOp = {
       ...op('keep'),
-      cleanup: [{ path: '/x/.s.orca-old-1', action: 'delete', observed: { kind: 'absent' } }]
+      cleanup: [{ path: '/x/.s.occ-old-1', action: 'delete', observed: { kind: 'absent' } }]
     }
     expect(summarizeBundledSkillPlan(plan([[withCleanup]]))).toMatchObject({
       badge: null,
@@ -151,11 +151,11 @@ describe('summarizeBundledSkillOutcomes', () => {
       scope: 'global',
       skills: [
         {
-          name: 'orca-cli',
+          name: 'occ-cli',
           status: 'ran',
           ops: [
-            { path: '/shared/orca-cli', kind: 'update', status: 'done' },
-            { path: '/claude/orca-cli', kind: 'update', status: 'done' }
+            { path: '/shared/occ-cli', kind: 'update', status: 'done' },
+            { path: '/claude/occ-cli', kind: 'update', status: 'done' }
           ]
         },
         {

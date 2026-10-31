@@ -20,7 +20,7 @@ export function observeJournalProviderActivity(
   // Codex detail rows use OCC IDs; fallback rows already identify their provider.
   if (
     !identity ||
-    (identity.provider === 'orca' &&
+    (identity.provider === 'occ' &&
       !identity.clientMessageId.startsWith('codex-item:') &&
       !(body.kind === 'status' && body.providerFrame !== undefined))
   ) {

@@ -6,7 +6,7 @@ import { useAppStore } from '@/store'
 import { captureEditorFileOperationProvenance } from '@/lib/editor-file-operation-owner'
 import type { AppState } from '@/store/types'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import type { LayoutCommand } from '../../../../shared/workspace-layout/workspace-layout-command-types'
 import { drawTabsFromMain, type TabsDrawnFromMain } from './tabs-drawn-from-main.test-fixture'
 import { contentRekeyOutcome } from '@/runtime/layout-owner-content-rekeys'
@@ -144,7 +144,7 @@ function expectMainMatchesWindow(): void {
   }
 }
 
-describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
+describe.runIf(OCC_LAYOUT_OWNER_IS_MAIN)(
   'restored editor tab moved to its owning workspace, layout-owner build',
   () => {
     it('records the move under the ids and group the window chose', async () => {
@@ -380,7 +380,7 @@ describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
   }
 )
 
-describe.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)('restored editor tab moved, switch off', () => {
+describe.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)('restored editor tab moved, switch off', () => {
   it('sends nothing', () => {
     const oldId = openRestoredSource()
     expect(reparent(oldId).ok).toBe(true)

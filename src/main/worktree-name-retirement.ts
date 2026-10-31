@@ -33,7 +33,7 @@ import { hasCachedWslHome, parseWslPath } from './wsl'
 import { getWorktreeMirrorDistro } from './project-runtime-git-options'
 import type { ProjectRuntimeResolutionStore } from './local-project-runtime-resolution'
 
-const RETIREMENT_PROBE_NAME = 'orca-retirement-probe'
+const RETIREMENT_PROBE_NAME = 'occ-retirement-probe'
 
 type RetirementRuntimeStore = {
   getProjects?: ProjectRuntimeResolutionStore['getProjects']

@@ -12,7 +12,7 @@ const transport = vi.hoisted(() => ({ local: vi.fn(), remote: vi.fn() }))
 vi.mock('./transport', () => ({ sendRequest: transport.local }))
 vi.mock('./websocket-transport', () => ({ sendWebSocketRequest: transport.remote }))
 
-const SELECTORS = ['ORCA_ENVIRONMENT', 'ORCA_PAIRING_CODE', 'ORCA_REMOTE_PAIRING'] as const
+const SELECTORS = ['OCC_ENVIRONMENT', 'OCC_PAIRING_CODE', 'OCC_REMOTE_PAIRING'] as const
 const publicKeyB64 = Buffer.from(new Uint8Array(32).fill(1)).toString('base64')
 const pairingCode = encodePairingOffer({
   v: 2,
@@ -22,9 +22,9 @@ const pairingCode = encodePairingOffer({
   scope: 'runtime'
 })
 const selection = {
-  ORCA_ENVIRONMENT: 'other-server',
-  ORCA_PAIRING_CODE: pairingCode,
-  ORCA_REMOTE_PAIRING: pairingCode
+  OCC_ENVIRONMENT: 'other-server',
+  OCC_PAIRING_CODE: pairingCode,
+  OCC_REMOTE_PAIRING: pairingCode
 }
 const roots: string[] = []
 
@@ -57,7 +57,7 @@ function serverProfileWith(env: Partial<Record<(typeof SELECTORS)[number], strin
     startedAt: 1
   }
   writeFileSync(getRuntimeMetadataPath(root), JSON.stringify(metadata))
-  vi.stubEnv('ORCA_USER_DATA_PATH', root)
+  vi.stubEnv('OCC_USER_DATA_PATH', root)
   for (const key of SELECTORS) {
     vi.stubEnv(key, env[key])
   }
@@ -71,9 +71,9 @@ async function requestServer(client: RuntimeClient): Promise<string> {
 it("stays on its own server with an agent's empty selectors, and explicit flags still route", async () => {
   // Empty selectors prevent profile exports from routing the agent to another server.
   const root = serverProfileWith({
-    ORCA_ENVIRONMENT: '',
-    ORCA_PAIRING_CODE: '',
-    ORCA_REMOTE_PAIRING: ''
+    OCC_ENVIRONMENT: '',
+    OCC_PAIRING_CODE: '',
+    OCC_REMOTE_PAIRING: ''
   })
   expect(await requestServer(new RuntimeClient())).toBe('local')
   expect(transport.remote).not.toHaveBeenCalled()

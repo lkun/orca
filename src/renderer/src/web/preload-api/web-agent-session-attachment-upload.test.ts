@@ -105,7 +105,7 @@ describe('uploadBrowserFilesToWebAgentSessionAttachments', () => {
 
     const result = await uploadBrowserFilesToWebAgentSessionAttachments({
       ...target,
-      paths: [token!, 'orca-browser-file:gone/old.txt']
+      paths: [token!, 'occ-browser-file:gone/old.txt']
     })
 
     expect(token).toMatch(/\/notes\.txt$/)
@@ -124,7 +124,7 @@ describe('uploadBrowserFilesToWebAgentSessionAttachments', () => {
     ])
     // A token is claimed once; one nothing holds fails instead of attaching nothing silently.
     expect(result.failed.map(({ sourcePath }) => sourcePath)).toEqual([
-      'orca-browser-file:gone/old.txt'
+      'occ-browser-file:gone/old.txt'
     ])
   })
 })

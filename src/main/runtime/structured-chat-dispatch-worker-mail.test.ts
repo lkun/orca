@@ -2,8 +2,8 @@ import './rpc/unused-default-rpc-methods.test-fixture'
 // Worker mail belongs to its Dispatch mailbox; held pointers redrive on the next idle edge, including after restart or clear.
 
 import { describe, expect, it, vi } from 'vitest'
-import { formatOrcaSessionAddress } from '../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../shared/occ-session-address'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import { idOf } from './rpc/orchestration-session-caller-test-fixture'
 import {
   COORDINATOR,
@@ -25,7 +25,7 @@ import {
   turnText
 } from './structured-chat-coordinator-mail-rig.test-fixture'
 
-const WORKER = formatOrcaSessionAddress(testOrcaSessionId(PEER_CHAT))
+const WORKER = formatOCCSessionAddress(testOCCSessionId(PEER_CHAT))
 const POINTER = /orchestration message/
 
 async function idleEdges(sessionId: string): Promise<void> {

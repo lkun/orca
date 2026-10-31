@@ -5,8 +5,8 @@ import {
   getOpenFilesForExternalFileChange,
   isExternalReloadableEditorTab,
   normalizeAutoSaveDelayMs,
-  ORCA_EDITOR_REQUEST_FILE_CLOSE_EVENT,
-  ORCA_EDITOR_QUIESCE_FILE_SAVES_EVENT,
+  OCC_EDITOR_REQUEST_FILE_CLOSE_EVENT,
+  OCC_EDITOR_QUIESCE_FILE_SAVES_EVENT,
   requestEditorFileClose,
   requestEditorFileSave,
   requestEditorSaveQuiesce
@@ -126,7 +126,7 @@ describe('requestEditorSaveQuiesce', () => {
       window.setTimeout(() => detail.resolve(), 0)
     }
 
-    window.addEventListener(ORCA_EDITOR_QUIESCE_FILE_SAVES_EVENT, handler as EventListener)
+    window.addEventListener(OCC_EDITOR_QUIESCE_FILE_SAVES_EVENT, handler as EventListener)
     try {
       const promise = requestEditorSaveQuiesce({ fileId: 'file-1' }).then(() => {
         resolved = true
@@ -136,7 +136,7 @@ describe('requestEditorSaveQuiesce', () => {
       await promise
       expect(resolved).toBe(true)
     } finally {
-      window.removeEventListener(ORCA_EDITOR_QUIESCE_FILE_SAVES_EVENT, handler as EventListener)
+      window.removeEventListener(OCC_EDITOR_QUIESCE_FILE_SAVES_EVENT, handler as EventListener)
     }
   })
 })
@@ -152,14 +152,14 @@ describe('requestEditorFileSave', () => {
 describe('requestEditorFileClose', () => {
   it('dispatches a close request event with the file id', () => {
     const listener = vi.fn()
-    window.addEventListener(ORCA_EDITOR_REQUEST_FILE_CLOSE_EVENT, listener as EventListener)
+    window.addEventListener(OCC_EDITOR_REQUEST_FILE_CLOSE_EVENT, listener as EventListener)
     try {
       requestEditorFileClose('file-1')
       expect(listener).toHaveBeenCalledTimes(1)
       const event = listener.mock.calls[0][0] as CustomEvent<{ fileId: string }>
       expect(event.detail).toEqual({ fileId: 'file-1' })
     } finally {
-      window.removeEventListener(ORCA_EDITOR_REQUEST_FILE_CLOSE_EVENT, listener as EventListener)
+      window.removeEventListener(OCC_EDITOR_REQUEST_FILE_CLOSE_EVENT, listener as EventListener)
     }
   })
 })
@@ -313,7 +313,7 @@ describe('getOpenFilesForExternalFileChange', () => {
     ).toEqual([])
 
     vi.stubGlobal('navigator', { userAgent: 'Windows' })
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     expect(
       getOpenFilesForExternalFileChange([terminalLinkTab], {
         worktreeId: 'wt-wsl',

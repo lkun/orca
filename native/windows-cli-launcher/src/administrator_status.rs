@@ -20,7 +20,7 @@ extern "system" {
 
 pub fn run_if_requested() {
     if std::env::args_os().nth(1).as_deref()
-        != Some(std::ffi::OsStr::new("--orca-administrator-status"))
+        != Some(std::ffi::OsStr::new("--occ-administrator-status"))
     {
         return;
     }

@@ -3,7 +3,7 @@
 import { findPaneSleepingRecord } from './pane-sleeping-record'
 import { hookRowPaneResumeRecord, isPaneLocalHookRow } from './hook-row-pane-resume-record'
 import { makePaneKey } from '../../../../shared/stable-pane-id'
-import { OrcaRuntimeWithApplyMobileSessionTabNavigation } from './apply-mobile-session-tab-navigation'
+import { OCCRuntimeWithApplyMobileSessionTabNavigation } from './apply-mobile-session-tab-navigation'
 import type { RuntimeMobileSessionTerminalTab } from '../../../../shared/runtime-types'
 import {
   agentProviderSessionsEqual,
@@ -11,10 +11,10 @@ import {
 } from '../../../../shared/agent-session-resume'
 import type {
   MobileTerminalResumeCommand,
-  OrcaRuntimeWithResolveMobileSessionTerminalCommand as MobileTerminalStartup
+  OCCRuntimeWithResolveMobileSessionTerminalCommand as MobileTerminalStartup
 } from '../../terminal/launch/mobile-terminal-startup'
-import type { OrcaRuntimeWithMarkPtyLivenessUnverifiable as PtyExitFloor } from '../../terminal/layout/terminal-input-floor'
-import type { OrcaRuntimeWithStopTerminalsForWorktree as SessionEditHost } from '../../terminal/stop/worktree-terminal-stop'
+import type { OCCRuntimeWithMarkPtyLivenessUnverifiable as PtyExitFloor } from '../../terminal/layout/terminal-input-floor'
+import type { OCCRuntimeWithStopTerminalsForWorktree as SessionEditHost } from '../../terminal/stop/worktree-terminal-stop'
 import { claimSleepRecordForPane, isUnclaimedRunningSleepRecord } from './sleep-record-pane-claim'
 import {
   AgentSessionResumeClaims,
@@ -27,7 +27,7 @@ import {
 export type PaneResumeStartup = MobileTerminalResumeCommand & {
   resumeClaim: AgentSessionResumeClaim
 }
-export abstract class OrcaRuntimeWithAgentSessionResumeOwnership extends OrcaRuntimeWithApplyMobileSessionTabNavigation {
+export abstract class OCCRuntimeWithAgentSessionResumeOwnership extends OCCRuntimeWithApplyMobileSessionTabNavigation {
   protected abstract resolveMobileSessionResumeCommand(
     ...args: Parameters<MobileTerminalStartup['resolveMobileSessionResumeCommand']>
   ): ReturnType<MobileTerminalStartup['resolveMobileSessionResumeCommand']>

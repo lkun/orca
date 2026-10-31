@@ -2,7 +2,7 @@
 
 Read this before changing how the packaged macOS terminal daemon is launched, copied or cleaned
 up, or before treating a missing executable as a permission denial. Background: issue
-[#13921](https://github.com/stablyai/orca/issues/13921); the signed native evidence is in PR #25848.
+[#13921](https://github.com/stablyai/occ/issues/13921); the signed native evidence is in PR #25848.
 
 ## Why a signed copy started by launchd
 

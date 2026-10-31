@@ -1,10 +1,10 @@
 /** Edit only OCC's marker-delimited region in the user-owned YAML patch layer. */
 
-const START_MARKER = '# >>> orca-managed-dsh-hooks (managed by OCC; do not edit) >>>'
-const END_MARKER = '# <<< orca-managed-dsh-hooks <<<'
+const START_MARKER = '# >>> occ-managed-dsh-hooks (managed by OCC; do not edit) >>>'
+const END_MARKER = '# <<< occ-managed-dsh-hooks <<<'
 
 /** DSH targets patch rows by ID, so keep this stable. */
-const MANAGED_ROW_ID = 'orca-agent-hooks'
+const MANAGED_ROW_ID = 'occ-agent-hooks'
 
 const EMPTY_FLOW_SEQUENCE = '[]'
 

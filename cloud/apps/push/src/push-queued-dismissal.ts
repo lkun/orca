@@ -1,4 +1,4 @@
-import type { PushNotification } from '@orca-cloud/push-contract'
+import type { PushNotification } from '@occ-cloud/push-contract'
 import type { PushDatabase } from './push-database.js'
 import { parsePushDeliveryPayload } from './push-delivery-payload.js'
 

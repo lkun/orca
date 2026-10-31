@@ -17,7 +17,7 @@ export function checkSourceControlAgentActionLaunch(args: {
   agentArgs?: string | null
   platform?: NodeJS.Platform
   terminalWindowsShell?: string | null
-  // SSH installs the CLI shim as orca; never apply the local Linux occ-ide rename to remote launches.
+  // SSH installs the CLI shim as occ; never apply the local Linux occ-ide rename to remote launches.
   isRemote?: boolean
 }): SourceControlLaunchCheckResult {
   const agent = args.agent

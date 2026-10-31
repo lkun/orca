@@ -77,7 +77,7 @@ describe("undo's stop of the host's copies", () => {
     })
   })
 
-  // verify-15c: with the host's orcad stopped, undo of a project this computer kept no tabs for
+  // verify-15c: with the host's occd stopped, undo of a project this computer kept no tabs for
   // asked the host nothing, released it, and left its host shell running.
   it('refuses an unanswering host even when this computer names none of its workspaces', async () => {
     const host = port({ workspacesWithTerminals: vi.fn(async () => null) })

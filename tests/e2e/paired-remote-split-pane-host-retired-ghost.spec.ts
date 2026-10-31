@@ -2,7 +2,7 @@
 // Insertion-only reconciliation shrank store layout but left a dead DOM ghost; retiring the active leaf must also avoid writing it back during PTY exit.
 import type { Page, TestInfo } from '@stablyai/playwright-test'
 import { toWebTerminalSurfaceTabId } from '../../src/shared/terminal-surface-id'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { launchPairedElectronClient } from './helpers/paired-electron-client'
 import { findPairedWorktreeId } from './helpers/paired-browser-placement-fixture'

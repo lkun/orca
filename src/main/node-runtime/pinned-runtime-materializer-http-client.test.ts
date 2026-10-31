@@ -12,7 +12,7 @@ const originalAsset = { ...NODE_RUNTIME_ASSETS[TARGET] }
 let root = ''
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-node-runtime-http-client-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-node-runtime-http-client-'))
 })
 
 afterEach(async () => {

@@ -8,7 +8,7 @@ export const PLUGIN_DERIVED_PUBLISHER_SINCE = '1.4.246'
 
 type PluginFieldDoc = {
   description: string
-  'x-orca-since': string
+  'x-occ-since': string
   examples?: unknown[]
 }
 
@@ -33,6 +33,6 @@ export function pluginFieldDoc(
   examples?: readonly unknown[]
 ): PluginFieldDoc {
   return examples
-    ? { description, 'x-orca-since': since, examples: [...examples] }
-    : { description, 'x-orca-since': since }
+    ? { description, 'x-occ-since': since, examples: [...examples] }
+    : { description, 'x-occ-since': since }
 }

@@ -9,7 +9,7 @@ import {
 import type { PtyTransport } from './pty-transport-types'
 import { resolveSplitCwd, type PaneCwdMap } from './resolve-split-cwd'
 import { recordCreatedTerminalPaneSplit } from './terminal-pane-split-completion'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import {
   splitPaneFirstSize,
   splitPaneInMain,
@@ -40,7 +40,7 @@ export function splitTerminalPaneWithInheritedCwd(args: SplitArgs): void {
     return
   }
   // Main starts the split and frames draw it; handle-less server-framed panes use their paired main.
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     const cwd = splitCwd(args, ptyId)
     const asToday = (): void => splitLocally(args, () => cwd)
     const request: SplitInMainRequest = {

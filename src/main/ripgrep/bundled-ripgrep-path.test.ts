@@ -10,7 +10,7 @@ import {
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { toBundledRipgrepPlatform } from '../../shared/bundled-ripgrep'
 import {
   bundledRipgrepCommand,
@@ -48,7 +48,7 @@ describe('bundled ripgrep path', () => {
   })
 
   it('prefers the packaged resources copy', () => {
-    const resourcesDir = mkdtempSync(join(tmpdir(), 'orca-rg-resources-'))
+    const resourcesDir = mkdtempSync(join(tmpdir(), 'occ-rg-resources-'))
     try {
       const packaged = join(resourcesDir, 'ripgrep', 'linux-x64', 'rg')
       mkdirSync(join(resourcesDir, 'ripgrep', 'linux-x64'), { recursive: true })
@@ -85,7 +85,7 @@ describe('bundled ripgrep path', () => {
     expect(wslShellCommand).toContain(`wslpath -u 'C:\\Program Files\\OCC\\resources\\ripgrep'`)
     expect(wslShellCommand).toContain('aarch64|arm64) a=linux-arm64')
     expect(wslShellCommand).toContain('printf %s "$d/$a/rg"')
-    expect(wslShellCommand).toContain('else printf /dev/null/orca-ripgrep-unavailable')
+    expect(wslShellCommand).toContain('else printf /dev/null/occ-ripgrep-unavailable')
     expect(wslShellCommand).not.toContain('else printf rg')
     expect(bundledRipgrepWslSpawnOptions('rg')).toEqual({})
   })

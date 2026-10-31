@@ -18,7 +18,7 @@ export const PLUGIN_EVENT_SUBSCRIPTION_LIMIT = PLUGIN_EVENT_NAMES.length
 
 export type PluginEventName = (typeof PLUGIN_EVENT_NAMES)[number]
 
-/** The release each event arrived in; engines.orca must cover every one a plugin subscribes to. */
+/** The release each event arrived in; engines.occ must cover every one a plugin subscribes to. */
 export const PLUGIN_EVENT_SINCE: Record<PluginEventName, string> = {
   'workspace.created': PLUGIN_MANIFEST_V2_SINCE,
   'workspace.removed': PLUGIN_MANIFEST_V2_SINCE,

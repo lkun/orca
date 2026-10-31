@@ -12,7 +12,7 @@ const mocks = vi.hoisted(() => ({
   openSkillsPage: vi.fn(),
   updateSettings: vi.fn(),
   state: {
-    orcaProfileAuthStatus: { configured: true, state: 'connected' } as Record<
+    occProfileAuthStatus: { configured: true, state: 'connected' } as Record<
       string,
       unknown
     > | null,
@@ -33,8 +33,8 @@ vi.mock('@/store', () => ({
   useAppStore: (selector: (state: Record<string, unknown>) => unknown) =>
     selector({
       ...mocks.state,
-      connectCurrentOrcaProfile: mocks.connect,
-      fetchOrcaProfileAuthStatus: mocks.fetchAuthStatus,
+      connectCurrentOCCProfile: mocks.connect,
+      fetchOCCProfileAuthStatus: mocks.fetchAuthStatus,
       openSkillsPage: mocks.openSkillsPage,
       updateSettings: mocks.updateSettings
     })
@@ -48,7 +48,7 @@ describe('ShareSkillsSettingsPane', () => {
     mocks.fetchAuthStatus.mockReset()
     mocks.openSkillsPage.mockReset()
     mocks.updateSettings.mockReset()
-    mocks.state.orcaProfileAuthStatus = { configured: true, state: 'connected' }
+    mocks.state.occProfileAuthStatus = { configured: true, state: 'connected' }
     mocks.state.isWebClient = false
     Object.defineProperty(window, 'api', {
       configurable: true,
@@ -88,7 +88,7 @@ describe('ShareSkillsSettingsPane', () => {
 
   it('offers owner sign-in while explaining recipients stay signed out', async () => {
     const user = userEvent.setup()
-    mocks.state.orcaProfileAuthStatus = { configured: true, state: 'local' }
+    mocks.state.occProfileAuthStatus = { configured: true, state: 'local' }
     render(
       <TooltipProvider>
         <ShareSkillsSettingsPane />
@@ -119,7 +119,7 @@ describe('ShareSkillsSettingsPane', () => {
 
   it('does not offer desktop publishing from the web client', () => {
     mocks.state.isWebClient = true
-    mocks.state.orcaProfileAuthStatus = { configured: true, state: 'local' }
+    mocks.state.occProfileAuthStatus = { configured: true, state: 'local' }
     render(
       <TooltipProvider>
         <ShareSkillsSettingsPane />

@@ -1,7 +1,7 @@
 import { isDismissedAlert, reconcileQueuedDismissal } from './push-queued-dismissal.js'
 import { parsePushDeliveryPayload } from './push-delivery-payload.js'
 import { createHash, randomUUID } from 'node:crypto'
-import { PUSH_LIMITS, type PushNotification } from '@orca-cloud/push-contract'
+import { PUSH_LIMITS, type PushNotification } from '@occ-cloud/push-contract'
 import { WORKER_DRAINS } from './push-worker-concurrency.js'
 import type { PushDatabase, SqlRow } from './push-database.js'
 import { limitPushDatabaseConcurrency } from './push-background-database.js'

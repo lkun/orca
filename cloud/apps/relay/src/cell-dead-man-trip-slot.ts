@@ -12,7 +12,7 @@ export async function claimDeadManTripSlot(
     // PostgreSQL claims must serialize to see occupied slots; SQLite already serializes transactions.
     if (transaction.dialect === 'postgres') {
       const [lock] = await transaction.query(
-        `SELECT pg_try_advisory_xact_lock(hashtext('orca-relay'), hashtext('dead-man-trip-slots')) AS locked`
+        `SELECT pg_try_advisory_xact_lock(hashtext('occ-relay'), hashtext('dead-man-trip-slots')) AS locked`
       )
       if (lock?.locked !== true) {
         return false

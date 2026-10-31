@@ -1,4 +1,4 @@
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../layout-owner-switch'
 import { applied, refuse, workspaceOrEmpty, type Applied } from './workspace-layout-command-steps'
 import type { CommandOf, LayoutContext } from './workspace-layout-command-types'
 import { editorOpenFileId } from './workspace-layout-editor-open-file-id'
@@ -213,7 +213,7 @@ export function openAgentSessionTab(
     command.tabId,
     (tab) => tab.kind === 'agent-session' && tab.entityId === command.sessionId,
     // Switch point: shipped builds still save a chat tab whose id another tab holds.
-    ORCA_LAYOUT_OWNER_IS_MAIN
+    OCC_LAYOUT_OWNER_IS_MAIN
   )
   if (drawn) {
     return drawn

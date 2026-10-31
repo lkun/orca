@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { checkAgentCliVersion } from './agent-cli-version-probe'
 
 const { runProcess } = vi.hoisted(() => ({ runProcess: vi.fn() }))
-vi.mock('@orca/process-host', () => ({ runProcess }))
+vi.mock('@occ/process-host', () => ({ runProcess }))
 
 const INPUT = { program: '/opt/bin/agent', cwd: '/repo', env: { PATH: '/opt/bin' } }
 const OPENCODE_MINIMUMS = ['1.18.31', '2.0.14']

@@ -92,8 +92,8 @@ export function prepareComputerCliJsonResult<TResult>(
 }
 
 const COMPUTER_SCREENSHOT_TEMP_DIR = {
-  envVar: 'ORCA_COMPUTER_SCREENSHOT_TMPDIR',
-  dirName: 'orca-computer-use'
+  envVar: 'OCC_COMPUTER_SCREENSHOT_TMPDIR',
+  dirName: 'occ-computer-use'
 }
 
 export function formatListApps(result: ComputerListAppsResult): string {

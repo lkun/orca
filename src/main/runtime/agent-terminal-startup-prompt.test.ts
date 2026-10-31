@@ -1,7 +1,7 @@
 /** The resolver has no PTY: dropping followupPrompt would silently launch without the user's text. */
 
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import {
   CODEX_REMOTE_VIEWER_SSH_CONNECTION,
   PI_CLIPBOARD_OSC52_ENV
@@ -22,10 +22,10 @@ function runtimeWithAgentLaunch(
     agentDefaultEnv?: Record<string, Record<string, string>>
   } = {}
 ): {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   spawn: ReturnType<typeof vi.fn>
 } {
-  const runtime = new OrcaRuntimeService()
+  const runtime = new OCCRuntimeService()
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the resolver under test is a protected member; the assertion names only the two internals this stub replaces, each of which is assigned before the create reaches it.
   const internal = runtime as unknown as {
     store: { getSettings: () => Record<string, unknown> }

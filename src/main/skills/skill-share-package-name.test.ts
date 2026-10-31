@@ -33,8 +33,8 @@ function service(): SkillSharePreparationService {
 }
 
 beforeEach(async () => {
-  vi.stubEnv('ORCA_CLOUD_AUTH_TOKEN', 'desktop-e2e-token')
-  root = await mkdtemp(join(tmpdir(), 'orca-skill-share-name-'))
+  vi.stubEnv('OCC_CLOUD_AUTH_TOKEN', 'desktop-e2e-token')
+  root = await mkdtemp(join(tmpdir(), 'occ-skill-share-name-'))
   source = join(root, 'source')
   await mkdir(source)
   await writeFile(join(source, 'SKILL.md'), '---\nname: lw-skill\ndescription: d\n---\n# d\n')

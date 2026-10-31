@@ -1,6 +1,6 @@
 /**
  * Retain and reconcile for WSL moves (mover design, section 4.5), extending what
- * `reconcileManagedOrcadSshTargets` does for SSH hosts:
+ * `reconcileManagedOCCdSshTargets` does for SSH hosts:
  * - Retain: a move whose desktop rewrite finished (`client-rewritten`) marks its source rows, makes
  *   the marks durable, and only then becomes `retained`. Nothing is deleted.
  * - Reconcile, on start and after every journal change: put back marks an older build stripped,

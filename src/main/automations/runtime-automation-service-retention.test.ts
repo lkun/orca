@@ -83,7 +83,7 @@ afterEach(() => {
 })
 
 describe('headless automation service run terminal retention', () => {
-  it('closes finished run terminals on orcad once the service runs, and stops with it', async () => {
+  it('closes finished run terminals on occd once the service runs, and stops with it', async () => {
     vi.useFakeTimers()
     const { runtime, service } = build(true)
     service.start()

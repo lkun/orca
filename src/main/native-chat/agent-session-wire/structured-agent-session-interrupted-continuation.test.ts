@@ -5,7 +5,7 @@ import {
   AGENT_SESSION_RESTART_CONTINUATION_REFUSED_NOTE,
   restartContinuationMessage
 } from '../../../shared/agent-session-restart-continuation'
-import { latestNativeChatOrcaStopCut } from '../../../shared/native-chat/native-chat-orca-stop-cut'
+import { latestNativeChatOCCStopCut } from '../../../shared/native-chat/native-chat-occ-stop-cut'
 import { CALLER, envelope } from './structured-agent-session-host-test-harness'
 import {
   HOST_TEST_SESSION as SESSION,
@@ -23,7 +23,7 @@ type Restarted = Awaited<ReturnType<typeof interruptedRestart>>
 
 async function cutTurn(host: StructuredAgentSessionHost): Promise<string> {
   const { items } = await host.journalSnapshot(SESSION)
-  const cut = latestNativeChatOrcaStopCut(items, [])
+  const cut = latestNativeChatOCCStopCut(items, [])
   if (!cut) {
     throw new Error('the restart left no OCC-stop cut')
   }
@@ -206,7 +206,7 @@ it('continues a reply the user had steered before OCC stopped', async () => {
   }
   // Client rules still offer Continue after a steer; host admission must agree.
   await journal.appendItem(
-    { provider: 'orca', clientMessageId: 'steer' },
+    { provider: 'occ', clientMessageId: 'steer' },
     hostTestMessage('also update the tests'),
     { fence, turnScope: { kind: 'turn', turnItemId } }
   )

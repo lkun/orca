@@ -13,15 +13,15 @@ import type { SidebarInputsFeedDomain } from '../../../../main/runtime/sidebar-i
 
 const ENVIRONMENT_ID = 'env-1'
 const SERVER_HOST_ID = toRuntimeExecutionHostId(ENVIRONMENT_ID)
-const ORCA_UPSTREAM = { owner: 'stablyai', repo: 'orca' }
+const OCC_UPSTREAM = { owner: 'stablyai', repo: 'occ' }
 
 const isServerHost = (hostId: string | null | undefined): boolean =>
   parseExecutionHostId(hostId)?.kind === 'runtime'
 
 // Model unstamped server catalog responses, including an ungrouped copy of the grouped OCC project.
-const SERVER_ORCA = repo('orca-srv', 'orca', { path: '/srv/orca', upstream: ORCA_UPSTREAM })
+const SERVER_OCC = repo('occ-srv', 'occ', { path: '/srv/occ', upstream: OCC_UPSTREAM })
 const SERVER_ANSWERS = {
-  'repo.list': { repos: [repo('api', 'api'), SERVER_ORCA] },
+  'repo.list': { repos: [repo('api', 'api'), SERVER_OCC] },
   'projectGroup.list': {
     groups: [
       group('pg-server-folders', 'Server folders', {
@@ -35,7 +35,7 @@ const SERVER_ANSWERS = {
 
 // Saved for only some repos, as after a drag that predates the rest: unranked ones keep fetch order.
 const SAVED_REPO_ORDER = [
-  { hostId: SERVER_HOST_ID, repoId: SERVER_ORCA.id },
+  { hostId: SERVER_HOST_ID, repoId: SERVER_OCC.id },
   { hostId: 'local' as const, repoId: 'lab' }
 ]
 
@@ -44,7 +44,7 @@ export function windowCatalogFromServerAnswers(base: Partial<AppState>): Partial
   const target = { kind: 'environment', environmentId: ENVIRONMENT_ID } as const
   const local = (base.repos ?? [])
     .filter((entry) => !isServerHost(entry.executionHostId))
-    .map((entry) => (entry.id === 'orca' ? { ...entry, upstream: ORCA_UPSTREAM } : entry))
+    .map((entry) => (entry.id === 'occ' ? { ...entry, upstream: OCC_UPSTREAM } : entry))
   const fetched = SERVER_ANSWERS['repo.list'].repos.map((entry) => adoptEndpointRepo(target, entry))
   const repos = applyManualRepoOrder(
     mergeFetchedReposForHost(local, fetched, SERVER_HOST_ID),
@@ -71,7 +71,7 @@ export function windowCatalogFromServerAnswers(base: Partial<AppState>): Partial
     ],
     worktreesByRepo: {
       ...base.worktreesByRepo,
-      [SERVER_ORCA.id]: [mainWt(SERVER_ORCA, { hostId: SERVER_HOST_ID, sortOrder: 2 })]
+      [SERVER_OCC.id]: [mainWt(SERVER_OCC, { hostId: SERVER_HOST_ID, sortOrder: 2 })]
     }
   }
 }

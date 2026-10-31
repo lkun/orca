@@ -2,7 +2,7 @@ import {
   CONNECTOR_LIMITS,
   CONNECTOR_PATHS,
   ConnectorPollResponseSchema
-} from '@orca-cloud/connector-contract'
+} from '@occ-cloud/connector-contract'
 import { afterEach, describe, expect, it } from 'vitest'
 import { listenHostname } from './connector-server.js'
 import {
@@ -54,7 +54,7 @@ describe('connector turn events', () => {
   it('listens only on loopback when the dev route is on', async () => {
     expect(listenHostname('http://127.0.0.1:8080')).toBe('127.0.0.1')
     expect(listenHostname('http://[::1]:8080')).toBe('::1')
-    expect(listenHostname('https://connector.onorca.dev')).toBeUndefined()
+    expect(listenHostname('https://connector.onocc.dev')).toBeUndefined()
     const { harness } = await setup()
     const { server } = harness.runtime
     await new Promise<void>((resolve) => server.listen(0, listenHostname('http://127.0.0.1:8080'), resolve))
@@ -333,7 +333,7 @@ describe('connector turn events', () => {
   })
 
   // SQLite runs one transaction at a time, so only Postgres can race a batch with a hello.
-  it.skipIf(!process.env.ORCA_CONNECTOR_TEST_DATABASE_URL)(
+  it.skipIf(!process.env.OCC_CONNECTOR_TEST_DATABASE_URL)(
     'refuses a batch from the old hello that waited on a newer hello',
     async () => {
       let gate!: ReturnType<typeof pauseBefore>

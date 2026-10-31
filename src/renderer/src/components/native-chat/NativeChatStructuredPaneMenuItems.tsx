@@ -6,19 +6,19 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { translate } from '@/i18n/i18n'
 import { useAppStore } from '@/store'
-import { NativeChatCopyOrcaSessionIdMenuItem } from './NativeChatCopyOrcaSessionIdMenuItem'
+import { NativeChatCopyOCCSessionIdMenuItem } from './NativeChatCopyOCCSessionIdMenuItem'
 import { useStructuredChatPaneActions } from './use-structured-chat-pane-actions'
 
 export function NativeChatStructuredPaneMenuItems({
   pane,
   leadingSeparator,
   splitShortcutLabels,
-  resolveOrcaSessionId
+  resolveOCCSessionId
 }: {
   pane: { tabId: string; worktreeId: string; groupId: string }
   leadingSeparator: boolean
   splitShortcutLabels?: { right: string; down: string }
-  resolveOrcaSessionId?: () => Promise<string | null>
+  resolveOCCSessionId?: () => Promise<string | null>
 }): React.JSX.Element {
   const actions = useStructuredChatPaneActions(pane.tabId, pane.worktreeId, pane.groupId)
   const hasSplitPanes = useAppStore(
@@ -37,10 +37,10 @@ export function NativeChatStructuredPaneMenuItems({
         {translate('auto.components.cmd.j.quick.actions.splitChatDown', 'Split Chat Down')}
         <DropdownMenuShortcut>{splitShortcutLabels?.down}</DropdownMenuShortcut>
       </DropdownMenuItem>
-      {resolveOrcaSessionId ? (
+      {resolveOCCSessionId ? (
         <>
           <DropdownMenuSeparator />
-          <NativeChatCopyOrcaSessionIdMenuItem resolveOrcaSessionId={resolveOrcaSessionId} />
+          <NativeChatCopyOCCSessionIdMenuItem resolveOCCSessionId={resolveOCCSessionId} />
         </>
       ) : null}
       {hasSplitPanes && actions.canClosePane ? (

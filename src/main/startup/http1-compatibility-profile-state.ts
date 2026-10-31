@@ -5,12 +5,12 @@ import { hasProfileStateAuthorityMarker } from '../persistence/profile-state/pro
 import { profileStateDatabaseBackups } from '../persistence/profile-state/profile-state-backup-path'
 import { hasProfileStateDatabaseFiles } from '../persistence/profile-state/profile-state-storage-classification'
 
-// Keep the pre-ready graph small; this stable ID mirrors DEFAULT_LOCAL_ORCA_PROFILE_ID.
+// Keep the pre-ready graph small; this stable ID mirrors DEFAULT_LOCAL_OCC_PROFILE_ID.
 const DEFAULT_LOCAL_PROFILE_ID = 'local-default'
 
 /** `null` means malformed index; `undefined` means a pre-profile legacy install. */
 export function readActiveProfileId(userDataPath: string): string | null | undefined {
-  const indexPath = join(userDataPath, 'orca-profile-index.json')
+  const indexPath = join(userDataPath, 'occ-profile-index.json')
   const candidates = [indexPath, `${indexPath}.bak`].filter(existsSync)
   if (candidates.length === 0) {
     return undefined
@@ -47,7 +47,7 @@ export function readPersistedHttp1CompatibilityMode(userDataPath: string): boole
   const profileDataFile =
     activeProfileId === undefined
       ? undefined
-      : join(userDataPath, 'profiles', activeProfileId, 'orca-data.json')
+      : join(userDataPath, 'profiles', activeProfileId, 'occ-data.json')
   const profileDatabaseFile =
     activeProfileId === undefined
       ? undefined
@@ -65,7 +65,7 @@ export function readPersistedHttp1CompatibilityMode(userDataPath: string): boole
     // Unseeded non-default profiles use defaults; install-level JSON belongs to another profile.
     return false
   }
-  const dataFile = profileDataFile ?? join(userDataPath, 'orca-data.json')
+  const dataFile = profileDataFile ?? join(userDataPath, 'occ-data.json')
   // Lost SQLite authority must not revive stale JSON in the pre-ready path.
   try {
     if (
@@ -107,7 +107,7 @@ export function hasMissingProfileStateDatabaseWithRetainedAuthority(
   if (hasProfileStateDatabaseFiles(databaseFile)) {
     return false
   }
-  const dataFile = join(profileDirectory, 'orca-data.json')
+  const dataFile = join(profileDirectory, 'occ-data.json')
   try {
     return (
       hasProfileStateAuthorityMarker(databaseFile) ||

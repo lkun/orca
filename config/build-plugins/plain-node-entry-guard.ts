@@ -15,11 +15,11 @@ type OutputChunk = Rollup.OutputChunk
 export const CLI_MAIN_ENTRY_NAMES = [
   'agent-hooks/managed-agent-hook-controls',
   'gitlab/project-ref-parser',
-  'orca-profiles/profile-index-store',
+  'occ-profiles/profile-index-store',
   'claude-accounts/keychain',
   'skills/bundled-skill-install/cli-entry',
   'macos-tree-clone',
-  'orcad/orcad-stale-lock-reclaim',
+  'occd/occd-stale-lock-reclaim',
   'plugins/plugin-authoring-checks',
   ...[
     'access',
@@ -44,7 +44,7 @@ const PLAIN_NODE_ENTRY_NAMES = [
   'session-scanner-service-entry',
   'computer-sidecar',
   'wsl-transcript-fs-process-entry',
-  'orcad/orcad-local-serve-selection-entry',
+  'occd/occd-local-serve-selection-entry',
   ...CLI_MAIN_ENTRY_NAMES
 ] as const
 
@@ -142,7 +142,7 @@ function assertNoElectronRequire(
 
 // Relocated Windows daemon copies only these packages; other bare requires cause silent fallback to an unrelocated daemon that updates kill.
 const DAEMON_HOST_MIRRORED_PACKAGES = [
-  '@orca/process-host',
+  '@occ/process-host',
   'node-pty',
   '@vscode/windows-process-tree'
 ]
@@ -284,7 +284,7 @@ export function createPlainNodeEntryGuardPlugin(
   let daemonOutputDir: string | undefined
 
   return {
-    name: 'orca-plain-node-entry-guard',
+    name: 'occ-plain-node-entry-guard',
     buildStart(options: NormalizedInputOptions) {
       assertEntryNamesAreRollupInputs(options.input)
     },

@@ -2,7 +2,7 @@ import type { RuntimeTerminalCreate } from '../../../../../../shared/runtime-ter
 import type { AgentLaunchPreferences } from '../../../../../../shared/agent-session-host-authority'
 import { narrowStructuredLaunchSeedOptions } from '../../../../../../shared/native-chat/input/native-chat-session-option-defaults'
 import type { TuiAgent } from '../../../../../../shared/tui-agent'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { createStructuredWorkerSession } from '../../orchestration-structured-worker-session'
 import { dispatchReportMailbox } from '../../../../orchestration/dispatch-report-mailbox'
@@ -43,7 +43,7 @@ export type WorkerSetupReceipt = {
     | 'not_applicable'
 }
 
-export function requireWorkerAuthority(runtime: OrcaRuntimeService, terminalHandle: string) {
+export function requireWorkerAuthority(runtime: OCCRuntimeService, terminalHandle: string) {
   const authority = runtime.getOrchestrationDispatchAuthority(terminalHandle)
   const paneKey = authority?.paneKey ?? runtime.getTerminalPaneKey(terminalHandle)
   const processIncarnation =
@@ -60,7 +60,7 @@ export function requireWorkerAuthority(runtime: OrcaRuntimeService, terminalHand
 }
 
 export async function createExistingWorktreeWorkerTerminal(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   worktreeId: string
   agent: TuiAgent
   launchPreferences?: AgentLaunchPreferences
@@ -90,7 +90,7 @@ export async function createExistingWorktreeWorkerTerminal(args: {
 
 /** Return structured workers in the terminal authority shape; registry-backed pane/incarnation getters keep requireWorkerAuthority mode-independent. */
 export async function createStructuredWorkerSessionForWorktree(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   worktreeId: string
   agent: TuiAgent
   dispatchId: string
@@ -140,7 +140,7 @@ export function applyWaitForSetupOutcome(
 }
 
 export function monitorWorkerSetup(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   runId: string
   dispatchId: string

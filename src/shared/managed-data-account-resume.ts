@@ -1,5 +1,5 @@
 /** Spawn-env request for one managed account; the host validates it and falls back to the active one. */
-export const MANAGED_DATA_ACCOUNT_RESUME_ENV = 'ORCA_DATA_ACCOUNT_ID'
+export const MANAGED_DATA_ACCOUNT_RESUME_ENV = 'OCC_DATA_ACCOUNT_ID'
 
 const OPENCODE_ACCOUNT_STORE =
   /[\\/]managed-data-accounts[\\/]opencode[\\/]([0-9a-f-]{36})[\\/]data[\\/]opencode[\\/]/i

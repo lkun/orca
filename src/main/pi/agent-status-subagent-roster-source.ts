@@ -55,14 +55,14 @@ export function getPiSubagentSnapshotSourceLines(): string[] {
 // Pi replaces registrations/buses and reloads modules; globalThis retains run state. OMP/Prime retain their bus.
 export function getPiSubagentRosterSetupSourceLines(kind: PiAgentKind): string[] {
   return [
-    '  const piEventBus = (pi as { events?: { __orcaPiSubagents?: SubagentRoster; __orcaPiSubagentsHeard?: boolean; __orcaPiRunnerExitsHeard?: boolean; on?: (name: string, handler: (event: unknown) => void) => void } }).events',
+    '  const piEventBus = (pi as { events?: { __occPiSubagents?: SubagentRoster; __occPiSubagentsHeard?: boolean; __occPiRunnerExitsHeard?: boolean; on?: (name: string, handler: (event: unknown) => void) => void } }).events',
     kind === 'pi'
-      ? '  const runStateHome: { __orcaPiSubagents?: SubagentRoster } | undefined = isOmpRuntime() ? piEventBus : (globalThis as { __orcaPiSubagents?: SubagentRoster })'
-      : '  const runStateHome: { __orcaPiSubagents?: SubagentRoster } | undefined = piEventBus',
+      ? '  const runStateHome: { __occPiSubagents?: SubagentRoster } | undefined = isOmpRuntime() ? piEventBus : (globalThis as { __occPiSubagents?: SubagentRoster })'
+      : '  const runStateHome: { __occPiSubagents?: SubagentRoster } | undefined = piEventBus',
     // Adopt older in-process rosters with their existing subscriptions.
-    '  const busRoster = piEventBus?.__orcaPiSubagents',
-    '  const lifecycleState: SubagentRoster = busRoster ?? runStateHome?.__orcaPiSubagents ?? { active: new Set<string>(), waiting: false }',
-    '  if (runStateHome) runStateHome.__orcaPiSubagents = lifecycleState',
+    '  const busRoster = piEventBus?.__occPiSubagents',
+    '  const lifecycleState: SubagentRoster = busRoster ?? runStateHome?.__occPiSubagents ?? { active: new Set<string>(), waiting: false }',
+    '  if (runStateHome) runStateHome.__occPiSubagents = lifecycleState',
     // Reload upgrades rosters created by older in-process builds.
     '  const subagentDetails = (lifecycleState.details ??= new Map<string, SubagentDetail>())',
     // A sibling may start the next run before this run settles; completion needs a per-run counter.
@@ -82,14 +82,14 @@ export function getPiSubagentRosterSetupSourceLines(kind: PiAgentKind): string[]
     '    lifecycleState.waiting = false',
     '  }',
     // Replaced Pi registrations lose their subscriptions; subscribe once per bus.
-    '  if (ownsPaneRoster && piEventBus?.on && !piEventBus.__orcaPiSubagentsHeard && !busRoster?.listener) {',
-    '    piEventBus.__orcaPiSubagentsHeard = true',
+    '  if (ownsPaneRoster && piEventBus?.on && !piEventBus.__occPiSubagentsHeard && !busRoster?.listener) {',
+    '    piEventBus.__occPiSubagentsHeard = true',
     "    piEventBus.on('task:subagent:lifecycle', (event: unknown) => lifecycleState.onEvent?.(event))",
     "    piEventBus.on('subagent:async-started', (event: unknown) => lifecycleState.onEvent?.(event, 'started'))",
     "    piEventBus.on('subagent:async-complete', (event: unknown) => lifecycleState.onEvent?.(event, 'completed'))",
     '  }',
-    '  if (ownsPaneRoster && piEventBus?.on && !piEventBus.__orcaPiRunnerExitsHeard && !busRoster?.runnerExitListener) {',
-    '    piEventBus.__orcaPiRunnerExitsHeard = true',
+    '  if (ownsPaneRoster && piEventBus?.on && !piEventBus.__occPiRunnerExitsHeard && !busRoster?.runnerExitListener) {',
+    '    piEventBus.__occPiRunnerExitsHeard = true',
     "    piEventBus.on('subagent:process-terminal', (event: unknown) => lifecycleState.onRunnerExit?.(event))",
     '  }'
   ]

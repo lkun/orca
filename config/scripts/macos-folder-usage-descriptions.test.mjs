@@ -14,7 +14,7 @@ const config = require('../electron-builder.config.cjs')
 it('uses the same three folder descriptions for the app and every packaged Electron Helper', () => {
   expect(config.mac.extendInfo).toMatchObject(MACOS_FOLDER_USAGE_DESCRIPTIONS)
   expect(Object.keys(MACOS_FOLDER_USAGE_DESCRIPTIONS)).toHaveLength(3)
-  const root = mkdtempSync(join(tmpdir(), 'orca-helper-privacy-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-helper-privacy-'))
   try {
     const names = [
       'OCC Dev Helper.app',

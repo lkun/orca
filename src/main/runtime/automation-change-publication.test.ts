@@ -15,7 +15,7 @@ import { AUTOMATION_OWNER_CONFLICT_CODES } from '../../shared/automation-owner-c
 import type { AutomationOwnerPrecondition } from '../../shared/automation-owner-precondition'
 import { AutomationService } from '../automations/service'
 import { Store, initDataPath } from '../persistence'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import * as worktreeChangeInvalidators from '../ipc/worktree-change-invalidators'
 import { _resetTerminalModelQueryAuthorityForTest } from './terminal-model-query-authority'
 import { _resetTerminalViewAttributesForTest } from './terminal-view-attribute-store'
@@ -97,7 +97,7 @@ const AUTOMATIONS = [
 async function makeRuntime() {
   mkdirSync(testState.dir, { recursive: true })
   writeFileSync(
-    join(testState.dir, 'orca-data.json'),
+    join(testState.dir, 'occ-data.json'),
     JSON.stringify({
       ...getDefaultPersistedState(testState.dir),
       repos: REPOS,
@@ -108,8 +108,8 @@ async function makeRuntime() {
     'utf-8'
   )
   initDataPath()
-  const store = createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
-  const runtime = new OrcaRuntimeService(store as never)
+  const store = createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
+  const runtime = new OCCRuntimeService(store as never)
   const published: AutomationsChangedPayload[] = []
   vi.spyOn(runtime, 'notifyAutomationsChanged').mockImplementation(
     (payload: AutomationsChangedPayload = {}) => {

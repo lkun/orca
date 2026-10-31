@@ -1,7 +1,7 @@
 import type { BrowserNetworkExecutionHost } from '../../shared/browser-network-execution-host'
 
 const STORAGE_IDENTITY_VERSION = 1
-const STORAGE_IDENTITY_TAG = 'orca-browser-execution-host-storage'
+const STORAGE_IDENTITY_TAG = 'occ-browser-execution-host-storage'
 
 /** Persist storage across reconnects; route fencing keys contain per-boot values. */
 export function browserNetworkExecutionHostStorageIdentity(

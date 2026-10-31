@@ -111,7 +111,7 @@ export function renderDiffCommentZoneCard(
                 'auto.components.diff.comments.useDiffCommentDecorator.995fa28b50',
                 'This note'
               )}
-              triggerClassName="orca-diff-comment-edit"
+              triggerClassName="occ-diff-comment-edit"
               disabledTooltip={translate(
                 'auto.components.diff.comments.diffCommentZoneCard.noteAlreadySent',
                 'Note already sent'

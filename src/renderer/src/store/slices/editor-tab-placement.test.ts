@@ -7,7 +7,7 @@ import {
 } from './editor-slice-test-harness'
 import type { AppState } from '../types'
 import { FLOATING_TERMINAL_WORKTREE_ID } from '../../../../shared/constants'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 import { makeLayout, makeTab } from './store-test-helpers'
 import { drawTabsFromMain, type TabsDrawnFromMain } from './tabs-drawn-from-main.test-fixture'
@@ -58,7 +58,7 @@ function fileIdOf(store: { getState: () => AppState }, filePath: string): string
 
 /** A floating file's id: its path, or an owned id when main owns the layout. */
 function expectedFileId(filePath: string): unknown {
-  return ORCA_LAYOUT_OWNER_IS_MAIN
+  return OCC_LAYOUT_OWNER_IS_MAIN
     ? ownedEditorFileId(filePath, FLOATING_TERMINAL_WORKTREE_ID, null)
     : filePath
 }
@@ -70,7 +70,7 @@ describe('createEditorSlice floating editor activation', () => {
 
     store.getState().openFile(
       {
-        filePath: '/tmp/orca/notes.md',
+        filePath: '/tmp/occ/notes.md',
         relativePath: 'notes.md',
         worktreeId: FLOATING_TERMINAL_WORKTREE_ID,
         runtimeEnvironmentId: null,
@@ -82,14 +82,14 @@ describe('createEditorSlice floating editor activation', () => {
     // A layout-owner build draws and selects the tab once main's frame is in.
     await main.settle()
 
-    const fileId = fileIdOf(store, '/tmp/orca/notes.md')
-    expect(fileId).toEqual(expectedFileId('/tmp/orca/notes.md'))
+    const fileId = fileIdOf(store, '/tmp/occ/notes.md')
+    expect(fileId).toEqual(expectedFileId('/tmp/occ/notes.md'))
     const tab = store.getState().unifiedTabsByWorktree[FLOATING_TERMINAL_WORKTREE_ID]?.[0]
     expect(tab).toMatchObject({
       contentType: 'editor',
       entityId: fileId,
       // Main publishes no editor label; the tab bar names an editor tab by its file.
-      ...(ORCA_LAYOUT_OWNER_IS_MAIN ? {} : { label: 'notes.md' }),
+      ...(OCC_LAYOUT_OWNER_IS_MAIN ? {} : { label: 'notes.md' }),
       worktreeId: FLOATING_TERMINAL_WORKTREE_ID
     })
     expect(store.getState().groupsByWorktree[FLOATING_TERMINAL_WORKTREE_ID]?.[0]).toMatchObject({
@@ -109,7 +109,7 @@ describe('createEditorSlice floating editor activation', () => {
     } as Partial<AppState>)
 
     store.getState().openFile({
-      filePath: '/tmp/orca/untitled.md',
+      filePath: '/tmp/occ/untitled.md',
       relativePath: 'untitled.md',
       worktreeId: FLOATING_TERMINAL_WORKTREE_ID,
       language: 'markdown',
@@ -120,7 +120,7 @@ describe('createEditorSlice floating editor activation', () => {
     expect(store.getState().activeFileId).toBe('/repo/main.md')
     expect(store.getState().activeTabType).toBe('editor')
     expect(store.getState().activeFileIdByWorktree[FLOATING_TERMINAL_WORKTREE_ID]).toEqual(
-      expectedFileId('/tmp/orca/untitled.md')
+      expectedFileId('/tmp/occ/untitled.md')
     )
     expect(store.getState().activeTabTypeByWorktree[FLOATING_TERMINAL_WORKTREE_ID]).toBe('editor')
   })
@@ -231,7 +231,7 @@ describe('createEditorSlice split-group editor routing', () => {
 
   /** The group an open put the file in: a layout-owner build names it in main's open command. */
   function openedGroupOf(store: StoreApi<AppState>, entityId: string): string | undefined {
-    return ORCA_LAYOUT_OWNER_IS_MAIN
+    return OCC_LAYOUT_OWNER_IS_MAIN
       ? layoutApplyTestTransport
           .sentOfType('openEditorTab')
           .find((command) => command.fileId === entityId)?.groupId

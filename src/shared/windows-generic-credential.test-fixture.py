@@ -4,7 +4,7 @@ import sys
 from ctypes import wintypes
 
 phase, target = sys.argv[1:]
-assert target.startswith('orca-sta11846-test:') and target != 'gemini:antigravity'
+assert target.startswith('occ-sta11846-test:') and target != 'gemini:antigravity'
 
 class Attribute(ctypes.Structure):
     _fields_ = [('Keyword', wintypes.LPWSTR), ('Flags', wintypes.DWORD),
@@ -32,7 +32,7 @@ if phase == 'seed':
     assert ctypes.get_last_error() == 1168
     blob = (ctypes.c_ubyte * 7)(*b'initial')
     value = (ctypes.c_ubyte * 3)(1, 2, 3)
-    attributes = (Attribute * 1)(Attribute('orca-fixture', 0, 3, value))
+    attributes = (Attribute * 1)(Attribute('occ-fixture', 0, 3, value))
     credential = Credential(0, 1, target, 'fixture-comment', wintypes.FILETIME(),
                             7, blob, 1, 1, attributes, 'fixture-alias', 'fixture-user')
     assert api.CredWriteW(ctypes.byref(credential), 0), ctypes.get_last_error()
@@ -46,7 +46,7 @@ elif phase == 'verify':
             'fixture-user', 'fixture-comment', 'fixture-alias')
         assert credential.AttributeCount == 1
         attribute = credential.Attributes[0]
-        assert (attribute.Keyword, attribute.Flags) == ('orca-fixture', 0)
+        assert (attribute.Keyword, attribute.Flags) == ('occ-fixture', 0)
         assert ctypes.string_at(attribute.Value, attribute.ValueSize) == bytes([1, 2, 3])
         assert ctypes.string_at(credential.CredentialBlob, credential.CredentialBlobSize) == b'replacement-fixture'
     finally:

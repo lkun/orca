@@ -33,7 +33,7 @@ export class CdpTargetDiscovery {
         JSON.stringify([
           {
             ...this.buildTargetInfo(),
-            id: 'orca-proxy-target',
+            id: 'occ-proxy-target',
             webSocketDebuggerUrl: `ws://127.0.0.1:${this.getPort()}`
           }
         ])
@@ -97,7 +97,7 @@ export class CdpTargetDiscovery {
   private buildTargetInfo(): Record<string, unknown> {
     const destroyed = this.webContents.isDestroyed()
     return {
-      targetId: 'orca-proxy-target',
+      targetId: 'occ-proxy-target',
       type: 'page',
       title: destroyed ? '' : this.webContents.getTitle(),
       url: destroyed ? '' : this.webContents.getURL(),

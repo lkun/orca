@@ -1,6 +1,6 @@
 import '../unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { RpcDispatcher } from '../dispatcher'
 import { PAIRING_METHODS } from './pairing'
 
@@ -13,7 +13,7 @@ function dispatchPairing(
     const runtime = { getRuntimeId: () => 'test-runtime' }
     const dispatcher = new RpcDispatcher({
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: Pairing handlers use the supplied pairing context; the envelope reads only getRuntimeId.
-      runtime: runtime as OrcaRuntimeService,
+      runtime: runtime as OCCRuntimeService,
       methods: PAIRING_METHODS
     })
     void dispatcher.dispatchStreaming(

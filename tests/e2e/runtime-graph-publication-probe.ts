@@ -1,7 +1,7 @@
 // Count runtime graph publications at main’s invoke handler because contextBridge freezes renderer window.api.
-// Long-task numbers are unproven until ORCA_TYPING_BENCH_GRAPH_PROBE_SELFTEST_MS yields its own nonzero entry; exclude that entry from workload summaries.
+// Long-task numbers are unproven until OCC_TYPING_BENCH_GRAPH_PROBE_SELFTEST_MS yields its own nonzero entry; exclude that entry from workload summaries.
 // Main-handler durations exclude renderer graph build: use a CPU profile for that cost.
-// Diagnostic gate ORCA_TYPING_BENCH_GRAPH_PROBE=1 must stay off in acceptance timing runs.
+// Diagnostic gate OCC_TYPING_BENCH_GRAPH_PROBE=1 must stay off in acceptance timing runs.
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
 
 const GRAPH_CHANNEL = 'runtime:syncWindowGraph'
@@ -40,13 +40,13 @@ export type RuntimeGraphPublicationProbeSnapshot = {
 }
 
 type MainProbeGlobals = {
-  __orcaGraphPublicationMainProbe?: {
+  __occGraphPublicationMainProbe?: {
     stop: () => { count: number; handlerMs: number[]; atEpochMs: number[] }
   }
 }
 
 type RendererProbeWindow = Window & {
-  __orcaGraphPublicationRendererProbe?: {
+  __occGraphPublicationRendererProbe?: {
     stop: () => { timeOrigin: number; longTasks: { start: number; duration: number }[] }
   }
 }
@@ -142,12 +142,12 @@ export async function startRuntimeGraphPublicationProbe(
     registry.set(channel, wrapped)
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: main-process bag read back only by the paired stop() call in this same run.
     const globals = globalThis as unknown as MainProbeGlobals
-    globals.__orcaGraphPublicationMainProbe = {
+    globals.__occGraphPublicationMainProbe = {
       stop: () => {
         if (registry.get(channel) === wrapped) {
           registry.set(channel, original)
         }
-        delete globals.__orcaGraphPublicationMainProbe
+        delete globals.__occGraphPublicationMainProbe
         return publications
       }
     }
@@ -156,7 +156,7 @@ export async function startRuntimeGraphPublicationProbe(
 
   const renderer = await page.evaluate((): string => {
     const probeWindow: RendererProbeWindow = window
-    if (probeWindow.__orcaGraphPublicationRendererProbe) {
+    if (probeWindow.__occGraphPublicationRendererProbe) {
       return 'already-installed'
     }
     const supported = PerformanceObserver.supportedEntryTypes ?? []
@@ -175,13 +175,13 @@ export async function startRuntimeGraphPublicationProbe(
     } catch (error) {
       return `longtask-observer-unavailable ${String(error)}`
     }
-    probeWindow.__orcaGraphPublicationRendererProbe = {
+    probeWindow.__occGraphPublicationRendererProbe = {
       stop: () => {
         for (const entry of observer.takeRecords()) {
           longTasks.push({ start: entry.startTime, duration: entry.duration })
         }
         observer.disconnect()
-        delete probeWindow.__orcaGraphPublicationRendererProbe
+        delete probeWindow.__occGraphPublicationRendererProbe
         return { timeOrigin: performance.timeOrigin, longTasks }
       }
     }
@@ -202,14 +202,14 @@ export async function stopRuntimeGraphPublicationProbe(
       ? await electronApp.evaluate(() => {
           // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: reads back the bag installed by startRuntimeGraphPublicationProbe in this run.
           const globals = globalThis as unknown as MainProbeGlobals
-          return globals.__orcaGraphPublicationMainProbe?.stop() ?? null
+          return globals.__occGraphPublicationMainProbe?.stop() ?? null
         })
       : null
   const rendererResult =
     start.renderer === 'installed'
       ? await page.evaluate(() => {
           const probeWindow: RendererProbeWindow = window
-          return probeWindow.__orcaGraphPublicationRendererProbe?.stop() ?? null
+          return probeWindow.__occGraphPublicationRendererProbe?.stop() ?? null
         })
       : null
 

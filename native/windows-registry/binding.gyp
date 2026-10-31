@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "orca_windows_registry",
+      "target_name": "occ_windows_registry",
       "sources": ["src/addon.cc"],
       "libraries": ["advapi32.lib"],
       "include_dirs": ["<!@(node -p \"require('node-addon-api').include\")"],

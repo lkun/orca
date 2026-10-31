@@ -6,7 +6,7 @@ import {
   readHooksJson,
   type HookDefinition
 } from '../agent-hooks/installer-utils'
-import { getOrcaManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
+import { getOCCManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
 import {
   codexHookSourcePathsEqual,
   getCodexExplicitHomeHookSourcePath,
@@ -37,7 +37,7 @@ type HookTrustProvenanceFile = {
 }
 
 function getProvenancePath(runtimeHomePath: string): string {
-  return join(runtimeHomePath, '.orca-hook-trust-provenance.json')
+  return join(runtimeHomePath, '.occ-hook-trust-provenance.json')
 }
 
 /** Missing, unreadable or malformed provenance cannot establish an approval's origin. */
@@ -87,7 +87,7 @@ function provenanceIsUnreadable(provenancePath: string): boolean {
 
 /** Snapshot after all trust writes to distinguish OCC changes from later user approvals. */
 export function snapshotCodexRuntimeHookTrustProvenance(
-  runtimeHomePath: string = getOrcaManagedCodexHomePath()
+  runtimeHomePath: string = getOCCManagedCodexHomePath()
 ): void {
   if (provenanceIsUnreadable(getProvenancePath(runtimeHomePath))) {
     return
@@ -118,7 +118,7 @@ export function snapshotCodexRuntimeHookTrustProvenance(
 
 /** Promote user approvals into canonical config before the mirror replaces runtime trust. */
 export function promoteCodexRuntimeHookApprovalsToSystem(
-  runtimeHomePath: string = getOrcaManagedCodexHomePath()
+  runtimeHomePath: string = getOCCManagedCodexHomePath()
 ): void {
   try {
     promoteCodexRuntimeHookApprovalsToSystemUnsafe(runtimeHomePath)

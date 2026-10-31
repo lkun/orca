@@ -3,8 +3,8 @@ import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeService } from './occ-runtime'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 
 vi.mock('../git/worktree', () => ({
   listWorktrees: vi.fn().mockResolvedValue([]),
@@ -13,10 +13,10 @@ vi.mock('../git/worktree', () => ({
 
 describe('automatic mobile pairing with a missing Relay provider (#20005)', () => {
   it('installs the provider on demand instead of failing provider_missing', async () => {
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
-      userDataPath: mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-')),
+      runtime: new OCCRuntimeService(),
+      userDataPath: mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-')),
       enableWebSocket: true,
       wsPort: 0
     })
@@ -55,10 +55,10 @@ describe('automatic mobile pairing with a missing Relay provider (#20005)', () =
 
   it('reports the provider missing when an install outlives the mint budget', async () => {
     vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       methods: [],
-      runtime: new OrcaRuntimeService(),
-      userDataPath: mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-')),
+      runtime: new OCCRuntimeService(),
+      userDataPath: mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-')),
       enableWebSocket: true,
       wsPort: 0
     })

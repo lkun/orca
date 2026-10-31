@@ -1,5 +1,5 @@
 /** Recover fixed ports only from parentless processes with the exact same OCC forward/host argv; user SSH and live OCC tunnels are excluded. */
-import { parseWindowsCommandLine } from '@orca/process-host/windows-command-line'
+import { parseWindowsCommandLine } from '@occ/process-host/windows-command-line'
 import { getFreshShellForegroundSnapshot } from '../../../shared/process-table-snapshot-reader'
 import { readWindowsProcessTableFresh } from '../../windows/windows-process-table'
 import {
@@ -89,7 +89,7 @@ function sshArgv(command: string, platform: NodeJS.Platform): string[] | null {
 }
 
 /** Extra argv belongs to another SSH invocation; require the complete OCC forward. */
-function isOrcaForward(
+function isOCCForward(
   command: string,
   expectedArgs: readonly string[],
   platform: NodeJS.Platform
@@ -123,7 +123,7 @@ function parentIsGone(
   return row.ppid <= 1 || !parent || REAPER_NAMES.has(executableName(parent.command))
 }
 
-export function findOrphanedOrcaSshForward(
+export function findOrphanedOCCSshForward(
   rows: readonly SshForwardProcessRow[],
   expectedArgs: readonly string[],
   platform: NodeJS.Platform
@@ -132,7 +132,7 @@ export function findOrphanedOrcaSshForward(
   return (
     rows.find(
       (row) =>
-        isOrcaForward(row.command, expectedArgs, platform) && parentIsGone(row, byPid, platform)
+        isOCCForward(row.command, expectedArgs, platform) && parentIsGone(row, byPid, platform)
     ) ?? null
   )
 }
@@ -161,14 +161,14 @@ async function waitUntilGone(
 }
 
 /** True when an orphaned OCC forward was signalled; false means nothing was touched. */
-export async function stopOrphanedOrcaSshForward(
+export async function stopOrphanedOCCSshForward(
   localPort: number,
   expectedArgs: readonly string[],
   deps: OrphanedForwardDeps = DEFAULT_DEPS
 ): Promise<boolean> {
   const find = async (): Promise<SshForwardProcessRow | null> => {
     try {
-      return findOrphanedOrcaSshForward(await deps.listProcesses(), expectedArgs, deps.platform)
+      return findOrphanedOCCSshForward(await deps.listProcesses(), expectedArgs, deps.platform)
     } catch {
       return null
     }

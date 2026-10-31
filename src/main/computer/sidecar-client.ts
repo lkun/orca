@@ -16,7 +16,7 @@ import { validateComputerSidecarPasteText } from './computer-sidecar-paste-valid
 import { RuntimeClientError } from './runtime-client-error'
 import { getForkedChildEntryPath } from '../forked-child-entry-path'
 
-// Bundled beside orcad.js on servers and under out/main on desktop.
+// Bundled beside occd.js on servers and under out/main on desktop.
 export const COMPUTER_SIDECAR_ENTRY_FILENAME = 'computer-sidecar.js'
 
 type ComputerSidecarMethod =
@@ -214,7 +214,7 @@ class ComputerSidecarProcess {
       env: {
         ...process.env,
         ELECTRON_RUN_AS_NODE: '1',
-        ORCA_COMPUTER_SIDECAR: '1'
+        OCC_COMPUTER_SIDECAR: '1'
       },
       ...(process.platform === 'win32' ? { windowsHide: true } : {})
     })

@@ -80,7 +80,7 @@ describe('send without ledger policy', () => {
     try {
       await expect(host.send(CALLER, expiredParams('long gone'))).resolves.toMatchObject({
         ok: false,
-        refusal: { details: { reason: 'journalWrittenByNewerOrca' } }
+        refusal: { details: { reason: 'journalWrittenByNewerOCC' } }
       })
     } finally {
       // Restore writes for teardown’s child-stop settlement.

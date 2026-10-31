@@ -49,7 +49,7 @@ describe('moved-code matcher and changed-line gate', () => {
   })
 
   it('reports a new added-line finding from every configured scan in main', () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-moved-code-main-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-moved-code-main-'))
     const file = join(root, 'fixture.mjs')
     writeFileSync(file, 'brandNewCall()\n')
     vi.stubEnv('GITHUB_EVENT_NAME', '')

@@ -40,7 +40,7 @@ export function useMobileTasksWorkspaceCreateActions(model: WorkspaceSshStateMod
     setActionItem,
     setCreatingKey,
     setError,
-    setOrcaYamlTrustPrompt,
+    setOCCYamlTrustPrompt,
     setRuntimeTaskSettings,
     setSetupPrompt,
     setWorkspaceAgent,
@@ -48,7 +48,7 @@ export function useMobileTasksWorkspaceCreateActions(model: WorkspaceSshStateMod
     setWorkspaceCreateDraft,
     taskStateHydrated,
     tasksSupported,
-    trustedOrcaHooks,
+    trustedOCCHooks,
     workspaceDetectedAgentIds,
     workspaceLastAutoName
   } = model
@@ -132,7 +132,7 @@ export function useMobileTasksWorkspaceCreateActions(model: WorkspaceSshStateMod
           setupResolution.setupTrust &&
           setupResolution.setupTrust.contentHash !== approvedSetupContentHash &&
           !isSetupHookTrusted(
-            trustedOrcaHooks,
+            trustedOCCHooks,
             repos,
             targetRepo.id,
             setupResolution.setupTrust.contentHash
@@ -140,7 +140,7 @@ export function useMobileTasksWorkspaceCreateActions(model: WorkspaceSshStateMod
         ) {
           // Persist the desktop’s trust hash so either surface can approve this repo script version.
           setSetupPrompt(null)
-          setOrcaYamlTrustPrompt({
+          setOCCYamlTrustPrompt({
             item,
             ...(repoIdOverride ? { repoIdOverride } : {}),
             setupOverride: 'run',
@@ -154,7 +154,7 @@ export function useMobileTasksWorkspaceCreateActions(model: WorkspaceSshStateMod
             repoName: targetRepo.displayName,
             scriptContent: setupResolution.setupTrust.scriptContent,
             contentHash: setupResolution.setupTrust.contentHash,
-            previouslyApproved: wasSetupHookPreviouslyApproved(trustedOrcaHooks, targetRepo.id)
+            previouslyApproved: wasSetupHookPreviouslyApproved(trustedOCCHooks, targetRepo.id)
           })
           return
         }
@@ -294,7 +294,7 @@ export function useMobileTasksWorkspaceCreateActions(model: WorkspaceSshStateMod
       runtimeTaskSettings,
       taskStateHydrated,
       tasksSupported,
-      trustedOrcaHooks,
+      trustedOCCHooks,
       workspaceDetectedAgentIds,
       workspaceLastAutoName
     ]

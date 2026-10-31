@@ -46,7 +46,7 @@ describe('buildRows with pinned worktrees', () => {
     )
 
     expect(rows).toMatchObject([
-      { type: 'header', key: 'project:github:stablyai/orca', label: 'OCC', count: 2 },
+      { type: 'header', key: 'project:github:stablyai/occ', label: 'OCC', count: 2 },
       { type: 'item', worktree: { id: worktree.id }, hostContextLabel: LOCAL_HOST_LABEL },
       { type: 'item', worktree: { id: remoteWorktree.id }, hostContextLabel: 'gpu-vm' }
     ])
@@ -97,10 +97,10 @@ describe('buildRows with pinned worktrees', () => {
     }
 
     expect(buildHeaders([], [])).toMatchObject([
-      { key: 'project:github:stablyai/orca', label: 'OCC' }
+      { key: 'project:github:stablyai/occ', label: 'OCC' }
     ])
     expect(buildHeaders([otherWorktree], [otherRepo])).toMatchObject([
-      { key: 'project:github:stablyai/orca', label: 'OCC' },
+      { key: 'project:github:stablyai/occ', label: 'OCC' },
       { key: 'repo:repo-other', label: 'design-assets' }
     ])
   })
@@ -362,22 +362,22 @@ describe('buildRows with pinned worktrees', () => {
 
     const headers = rows.filter((row) => row.type === 'header')
     expect(headers.map((row) => row.key)).toEqual([
-      'project:github:stablyai/orca',
+      'project:github:stablyai/occ',
       'project:github:stablyai/analytics'
     ])
     expect(headers[0]).toMatchObject({
-      key: 'project:github:stablyai/orca',
+      key: 'project:github:stablyai/occ',
       repo: { id: repo.id, badgeColor: repo.badgeColor }
     })
   })
 
   it('splits same-host checkouts of one project into separate per-setup groups', () => {
-    const repoB: Repo = { ...repo, id: 'repo-2', path: '/tmp/orca-2', displayName: 'orca-2' }
+    const repoB: Repo = { ...repo, id: 'repo-2', path: '/tmp/occ-2', displayName: 'occ-2' }
     const worktreeB: Worktree = {
       ...worktree,
       id: 'wt-2',
       repoId: repoB.id,
-      path: '/tmp/orca-2-feature',
+      path: '/tmp/occ-2-feature',
       displayName: 'feature-b'
     }
     const localSetupB: ProjectHostSetup = {
@@ -422,12 +422,12 @@ describe('buildRows with pinned worktrees', () => {
     expect(headers).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          key: 'project:github:stablyai/orca::setup:repo-1',
-          label: 'orca'
+          key: 'project:github:stablyai/occ::setup:repo-1',
+          label: 'occ'
         }),
         expect.objectContaining({
-          key: 'project:github:stablyai/orca::setup:repo-2',
-          label: 'orca-2'
+          key: 'project:github:stablyai/occ::setup:repo-2',
+          label: 'occ-2'
         })
       ])
     )
@@ -437,14 +437,14 @@ describe('buildRows with pinned worktrees', () => {
     const localRepoB: Repo = {
       ...repo,
       id: 'repo-local-b',
-      path: '/tmp/orca-b',
-      displayName: 'orca-b'
+      path: '/tmp/occ-b',
+      displayName: 'occ-b'
     }
     const localWorktreeB: Worktree = {
       ...worktree,
       id: 'wt-local-b',
       repoId: localRepoB.id,
-      path: '/tmp/orca-b-feature',
+      path: '/tmp/occ-b-feature',
       displayName: 'feature-b'
     }
     const localSetupB: ProjectHostSetup = {
@@ -488,9 +488,9 @@ describe('buildRows with pinned worktrees', () => {
 
     const headers = rows.filter((row) => row.type === 'header')
     expect(headers.map((row) => row.key)).toEqual([
-      'project:github:stablyai/orca::setup:repo-1',
-      'project:github:stablyai/orca::setup:repo-local-b',
-      'project:github:stablyai/orca'
+      'project:github:stablyai/occ::setup:repo-1',
+      'project:github:stablyai/occ::setup:repo-local-b',
+      'project:github:stablyai/occ'
     ])
   })
 
@@ -499,7 +499,7 @@ describe('buildRows with pinned worktrees', () => {
     const runtimeRepo: Repo = {
       ...remoteRepo,
       id: 'repo-runtime',
-      path: '/home/alice/orca-runtime',
+      path: '/home/alice/occ-runtime',
       connectionId: undefined,
       executionHostId: runtimeHostId
     }
@@ -507,7 +507,7 @@ describe('buildRows with pinned worktrees', () => {
       ...remoteWorktree,
       id: 'wt-runtime',
       repoId: runtimeRepo.id,
-      path: '/home/alice/orca-runtime-feature'
+      path: '/home/alice/occ-runtime-feature'
     }
     const runtimeSetup: ProjectHostSetup = {
       ...projectHostSetups[1]!,
@@ -552,7 +552,7 @@ describe('buildRows with pinned worktrees', () => {
         undefined,
         grouping
       )
-    ]).toEqual(['project:github:stablyai/orca', 'project:github:stablyai/orca'])
+    ]).toEqual(['project:github:stablyai/occ', 'project:github:stablyai/occ'])
   })
 
   it('keeps Git hosts grouped when folder setups share the project identity', () => {
@@ -560,7 +560,7 @@ describe('buildRows with pinned worktrees', () => {
     const windowsRepo: Repo = {
       ...repo,
       id: 'repo-windows',
-      path: 'C:\\Users\\neil\\orca\\orca',
+      path: 'C:\\Users\\neil\\occ\\occ',
       executionHostId: windowsHostId
     }
     const folderRepoA: Repo = {
@@ -621,21 +621,21 @@ describe('buildRows with pinned worktrees', () => {
         grouping
       )
     )
-    expect(new Set(groupKeys)).toEqual(new Set(['project:github:stablyai/orca']))
+    expect(new Set(groupKeys)).toEqual(new Set(['project:github:stablyai/occ']))
   })
 
   it('keeps a provisioned runtime copy under the project header alongside a same-host checkout', () => {
     const runtimeRepoB: Repo = {
       ...repo,
       id: 'repo-runtime-b',
-      path: '/tmp/orca-runtime-b',
-      displayName: 'orca-runtime-b'
+      path: '/tmp/occ-runtime-b',
+      displayName: 'occ-runtime-b'
     }
     const runtimeWorktreeB: Worktree = {
       ...worktree,
       id: 'wt-runtime-b',
       repoId: runtimeRepoB.id,
-      path: '/tmp/orca-runtime-b-feature',
+      path: '/tmp/occ-runtime-b-feature',
       displayName: 'feature-runtime-b'
     }
     // Provisioned copies share project identity and nest rather than split real checkouts into extra headers.
@@ -680,7 +680,7 @@ describe('buildRows with pinned worktrees', () => {
     const headers = rows.filter((row) => row.type === 'header')
     expect(headers).toHaveLength(1)
     expect(headers[0]).toMatchObject({
-      key: 'project:github:stablyai/orca',
+      key: 'project:github:stablyai/occ',
       label: 'OCC',
       count: 2
     })
@@ -691,14 +691,14 @@ describe('buildRows with pinned worktrees', () => {
     const localRepoB: Repo = {
       ...repo,
       id: 'repo-local-b',
-      path: '/tmp/orca-b',
-      displayName: 'orca-b'
+      path: '/tmp/occ-b',
+      displayName: 'occ-b'
     }
     const localWorktreeB: Worktree = {
       ...worktree,
       id: 'wt-local-b',
       repoId: localRepoB.id,
-      path: '/tmp/orca-b-feature',
+      path: '/tmp/occ-b-feature',
       displayName: 'feature-b'
     }
     const localSetupB: ProjectHostSetup = {
@@ -711,14 +711,14 @@ describe('buildRows with pinned worktrees', () => {
     const runtimeRepoB: Repo = {
       ...repo,
       id: 'repo-runtime-b',
-      path: '/tmp/orca-runtime-b',
-      displayName: 'orca-runtime-b'
+      path: '/tmp/occ-runtime-b',
+      displayName: 'occ-runtime-b'
     }
     const runtimeWorktreeB: Worktree = {
       ...worktree,
       id: 'wt-runtime-b',
       repoId: runtimeRepoB.id,
-      path: '/tmp/orca-runtime-b-feature',
+      path: '/tmp/occ-runtime-b-feature',
       displayName: 'feature-runtime-b'
     }
     const runtimeSetupB: ProjectHostSetup = {
@@ -763,15 +763,15 @@ describe('buildRows with pinned worktrees', () => {
 
     const headers = rows.filter((row) => row.type === 'header')
     expect(headers.map((row) => row.key).sort()).toEqual([
-      'project:github:stablyai/orca',
-      'project:github:stablyai/orca::setup:repo-1',
-      'project:github:stablyai/orca::setup:repo-local-b'
+      'project:github:stablyai/occ',
+      'project:github:stablyai/occ::setup:repo-1',
+      'project:github:stablyai/occ::setup:repo-local-b'
     ])
     // Only real checkouts receive setup-scoped headers; provisioned copies retain the project label.
     expect(
-      headers.some((row) => row.key === 'project:github:stablyai/orca::setup:repo-runtime-b')
+      headers.some((row) => row.key === 'project:github:stablyai/occ::setup:repo-runtime-b')
     ).toBe(false)
-    expect(headers.find((row) => row.key === 'project:github:stablyai/orca')).toMatchObject({
+    expect(headers.find((row) => row.key === 'project:github:stablyai/occ')).toMatchObject({
       label: 'OCC',
       count: 1
     })

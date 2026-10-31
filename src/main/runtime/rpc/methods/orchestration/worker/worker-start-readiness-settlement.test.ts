@@ -47,7 +47,7 @@ function settle(delivered: 'accepted' | undefined) {
   const args = {
     runtime: {
       getNestedWorkerMaxDepth: () => 3,
-      getTerminalOrchestrationCliCommand: () => 'orca'
+      getTerminalOrchestrationCliCommand: () => 'occ'
     },
     db,
     run: { id: 'run_1' },
@@ -83,8 +83,8 @@ describe('a structured worker whose agent outlasts the preamble wait', () => {
       state: 'outcome_unknown',
       turnStart: 'unobserved',
       nextCommands: [
-        'orca orchestration worker-show --dispatch d1 --json',
-        'orca orchestration worker-abandon --dispatch d1 --json'
+        'occ orchestration worker-show --dispatch d1 --json',
+        'occ orchestration worker-abandon --dispatch d1 --json'
       ]
     })
     expect(db.markWorkerStartUnknown).toHaveBeenCalledWith(
@@ -123,7 +123,7 @@ describe('a terminal worker whose preamble delivery waited out a held paste', ()
       }))
       const runtime = {
         getNestedWorkerMaxDepth: () => 3,
-        getTerminalOrchestrationCliCommand: () => 'orca',
+        getTerminalOrchestrationCliCommand: () => 'occ',
         // A Windows Codex rescue held the writer for 40 s of the 50 s grace.
         sendTerminalAgentPrompt: async () => {
           vi.setSystemTime(Date.now() + 40_000)

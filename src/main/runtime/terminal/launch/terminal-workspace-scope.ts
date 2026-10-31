@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithTransitionGraphReloadToTerminalState } from '../../session-graph/session-graph-authority'
+import { OCCRuntimeWithTransitionGraphReloadToTerminalState } from '../../session-graph/session-graph-authority'
 import type { ExecutionHostId } from '../../../../shared/execution-host'
 import {
   floatingWorkspaceToWorktree,
@@ -26,8 +26,8 @@ import type { Worktree } from '../../../../shared/worktree/types'
 import { folderWorkspaceToWorktree } from '../../../../shared/folder-workspace-worktree'
 import type { TerminalWorkspaceLaunchScope } from '../../runtime-legacy-worker-terminal-recovery-types'
 import { resolveTerminalStartupCwd } from '../../../../shared/terminal-startup-cwd'
-import type { ResolvedTerminalWorkspaceLaunchTarget } from '../../orca-runtime-core'
-import { AGENT_HOOK_RUNTIME_ENV_KEYS } from '../../orca-runtime-core'
+import type { ResolvedTerminalWorkspaceLaunchTarget } from '../../occ-runtime-core'
+import { AGENT_HOOK_RUNTIME_ENV_KEYS } from '../../occ-runtime-core'
 import { FLOATING_TERMINAL_WORKTREE_ID } from '../../../../shared/constants'
 import { homedir } from 'node:os'
 import { getExplicitWorktreeIdSelector } from '../../runtime-worktree-selection'
@@ -58,7 +58,7 @@ function withoutWorktreeLineage(worktree: Worktree): ResolvedWorktree {
   }
 }
 
-export abstract class OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree extends OrcaRuntimeWithTransitionGraphReloadToTerminalState {
+export abstract class OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree extends OCCRuntimeWithTransitionGraphReloadToTerminalState {
   protected resolveBrowserNetworkExecutionHostForWorktree(worktree?: {
     id: string
     repoId?: string
@@ -196,20 +196,20 @@ export abstract class OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktr
     for (const key of AGENT_HOOK_RUNTIME_ENV_KEYS) {
       delete cleanBaseEnv[key]
     }
-    // Spawn stamps pane ids and jcode dir; match the window's ORCA_WORKSPACE_ID for every workspace kind.
+    // Spawn stamps pane ids and jcode dir; match the window's OCC_WORKSPACE_ID for every workspace kind.
     const env = {
       ...cleanBaseEnv,
       ...agentTeamsEnv,
       ...this.buildAgentHookPtyEnv?.(),
-      ORCA_WORKSPACE_ID: scope.id
+      OCC_WORKSPACE_ID: scope.id
     }
     if (!scope.folderWorkspace) {
       return env
     }
     return {
       ...env,
-      ORCA_PROJECT_GROUP_ID: scope.folderWorkspace.projectGroupId,
-      ORCA_WORKSPACE_ROOT: scope.folderWorkspace.folderPath
+      OCC_PROJECT_GROUP_ID: scope.folderWorkspace.projectGroupId,
+      OCC_WORKSPACE_ROOT: scope.folderWorkspace.folderPath
     }
   }
 

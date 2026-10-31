@@ -11,10 +11,10 @@ import { GROK, openAcpAdapterRig } from './acp-structured-adapter.test-support'
 afterEach(() => closeProviderTimelineRigs())
 
 it('starts the installed release first, else a copy beside every pinned member', async () => {
-  const dataDirectory = await mkdtemp(join(tmpdir(), 'orca-acp-managed-'))
+  const dataDirectory = await mkdtemp(join(tmpdir(), 'occ-acp-managed-'))
   onTestFinished(() => rm(dataDirectory, { recursive: true, force: true }))
   const homePath = join(dataDirectory, 'home')
-  const command = `orca-managed-${basename(dataDirectory)}`
+  const command = `occ-managed-${basename(dataDirectory)}`
   const root = join(dataDirectory, 'agent-runtimes', 'grok')
   const pin = {
     version: '1.0',

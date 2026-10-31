@@ -33,7 +33,7 @@ export const hostOptions: ProjectHostSetupOption[] = [
     repoId: 'repo-a',
     label: 'Local Mac',
     detail: 'OCC',
-    path: '/Users/alice/orca'
+    path: '/Users/alice/occ'
   },
   {
     kind: 'needs-setup',

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { WebContents } from 'electron'
 import {
-  isOrcaFrameSessionTraffic,
+  isOCCFrameSessionTraffic,
   resolveFocusedFrameRoute,
   type GuestSessionCdpSender
 } from './guest-focused-frame-route'
@@ -137,7 +137,7 @@ describe('resolveFocusedFrameRoute', () => {
       expect(await route).toEqual({ kind: 'unknown' })
       await vi.advanceTimersByTimeAsync(2_000)
 
-      expect(isOrcaFrameSessionTraffic(guest, 'Runtime.consoleAPICalled', {}, 'LATE')).toBe(true)
+      expect(isOCCFrameSessionTraffic(guest, 'Runtime.consoleAPICalled', {}, 'LATE')).toBe(true)
     } finally {
       vi.useRealTimers()
     }
@@ -186,7 +186,7 @@ describe('resolveFocusedFrameRoute', () => {
   })
 })
 
-describe('isOrcaFrameSessionTraffic', () => {
+describe('isOCCFrameSessionTraffic', () => {
   it('hides only the sessions OCC attached, and forgets them when they detach', async () => {
     const guest = fakeGuest()
     await resolveFocusedFrameRoute(
@@ -198,11 +198,11 @@ describe('isOrcaFrameSessionTraffic', () => {
       })
     )
 
-    expect(isOrcaFrameSessionTraffic(guest, 'Runtime.consoleAPICalled', {}, 'S1')).toBe(true)
-    expect(isOrcaFrameSessionTraffic(guest, 'Runtime.consoleAPICalled', {}, 'AGENT')).toBe(false)
-    expect(isOrcaFrameSessionTraffic(guest, 'Page.loadEventFired', {}, undefined)).toBe(false)
+    expect(isOCCFrameSessionTraffic(guest, 'Runtime.consoleAPICalled', {}, 'S1')).toBe(true)
+    expect(isOCCFrameSessionTraffic(guest, 'Runtime.consoleAPICalled', {}, 'AGENT')).toBe(false)
+    expect(isOCCFrameSessionTraffic(guest, 'Page.loadEventFired', {}, undefined)).toBe(false)
     expect(
-      isOrcaFrameSessionTraffic(guest, 'Target.detachedFromTarget', { sessionId: 'S1' }, undefined)
+      isOCCFrameSessionTraffic(guest, 'Target.detachedFromTarget', { sessionId: 'S1' }, undefined)
     ).toBe(true)
   })
 })

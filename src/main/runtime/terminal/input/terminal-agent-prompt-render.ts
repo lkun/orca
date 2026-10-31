@@ -1,16 +1,16 @@
-import { OrcaRuntimeWithSubmitTerminalAgentPrompt } from './terminal-agent-prompt-submit'
+import { OCCRuntimeWithSubmitTerminalAgentPrompt } from './terminal-agent-prompt-submit'
 import {
   CLAUDE_AGENT_PROMPT_RENDER_MARKER,
   CLAUDE_AGENT_PROMPT_RENDER_QUIET_MS,
   CLAUDE_AGENT_PROMPT_RENDER_TIMEOUT_MS
-} from '../../orca-runtime-core'
+} from '../../occ-runtime-core'
 import type {
   RuntimeTerminalWait,
   RuntimeTerminalWaitCondition
 } from '../../../../shared/runtime-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
-export abstract class OrcaRuntimeWithCreateAgentPromptRenderGate extends OrcaRuntimeWithSubmitTerminalAgentPrompt {
+export abstract class OCCRuntimeWithCreateAgentPromptRenderGate extends OCCRuntimeWithSubmitTerminalAgentPrompt {
   protected createAgentPromptRenderGate(
     ptyId: string,
     pasteIngestMs: number
@@ -139,7 +139,7 @@ export abstract class OrcaRuntimeWithCreateAgentPromptRenderGate extends OrcaRun
     }
   ): Promise<RuntimeTerminalWait> {
     // Switch point: a saved pane main holds with no terminal yet starts first (once, shared).
-    const starting = ORCA_LAYOUT_OWNER_IS_MAIN
+    const starting = OCC_LAYOUT_OWNER_IS_MAIN
       ? this.startRestoredHandlePane(handle, options ?? {})
       : null
     if (starting) {

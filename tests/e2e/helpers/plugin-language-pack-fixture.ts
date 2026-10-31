@@ -4,8 +4,8 @@ import { isProtectedPluginTranslationPath } from '../../../src/shared/plugins/ar
 import { translatablePluginChromeContainer } from '../../../src/shared/plugins/languages/plugin-translatable-chrome'
 
 export const FIXTURE_LANGUAGE_PLUGIN = {
-  repository: 'orca-pseudo-language',
-  pluginKey: 'stablyai.orca-pseudo-language',
+  repository: 'occ-pseudo-language',
+  pluginKey: 'stablyai.occ-pseudo-language',
   name: 'Pseudo Language',
   locale: 'en-XA'
 } as const
@@ -56,15 +56,15 @@ export async function writeFixtureLanguagePlugin(directory: string): Promise<voi
     JSON.stringify(bracketCatalog(Object.fromEntries(Object.entries(english)), []))
   )
   await writeFile(
-    join(directory, 'orca-plugin.json'),
+    join(directory, 'occ-plugin.json'),
     `${JSON.stringify(
       {
         manifestVersion: 1,
-        id: 'orca-pseudo-language',
+        id: 'occ-pseudo-language',
         publisher: 'stablyai',
         name: FIXTURE_LANGUAGE_PLUGIN.name,
         version: '1.0.0',
-        engines: { orca: '>=1.4.0' },
+        engines: { occ: '>=1.4.0' },
         pluginApi: 1,
         contributes: {
           languagePacks: [

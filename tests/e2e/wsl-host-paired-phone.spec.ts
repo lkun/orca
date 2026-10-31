@@ -1,14 +1,14 @@
 /**
  * E6: a phone paired with a desktop reaches that desktop's WSL host through the desktop, as it
  * reaches a managed SSH host, but never starts the distro. The HUB fixture stands in for the
- * distro's orcad behind a fake WSL transport; the oracle is the phone's wire.
+ * distro's occd behind a fake WSL transport; the oracle is the phone's wire.
  */
 import { execFileSync } from 'node:child_process'
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { z } from 'zod'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { RuntimeClient } from '../../src/cli/runtime/client'
 import {
   createDesktopMobilePairingOffer,
@@ -85,7 +85,7 @@ async function call<T>(
 }
 
 function createGitProject(): string {
-  const dir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-phone-project-'))
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-phone-project-'))
   execFileSync('git', ['init', '-q', '-b', 'main', dir])
   writeFileSync(path.join(dir, 'README.md'), '# wsl host phone project\n')
   execFileSync('git', ['-C', dir, 'add', '.'])
@@ -98,18 +98,18 @@ function createGitProject(): string {
 }
 
 test("a paired phone lists, opens, runs and launches on the desktop's WSL host, and never starts it", async ({
-  orcaPage,
+  occPage,
   electronApp
 }, testInfo) => {
   // Two OCC instances, a pairing, a terminal and an agent launch on a cold runner.
   test.setTimeout(300_000)
-  await waitForSessionReady(orcaPage)
-  // The HUB is the "distro's orcad": its projects are the WSL host's projects.
+  await waitForSessionReady(occPage)
+  // The HUB is the "distro's occd": its projects are the WSL host's projects.
   const hub = new RuntimeClient(await electronApp.evaluate(({ app }) => app.getPath('userData')))
   const projectPath = createGitProject()
   await hub.call('repo.add', { path: projectPath, kind: 'git' })
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
-  const distrosDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-phone-distros-'))
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
+  const distrosDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-phone-distros-'))
   const distrosFile = path.join(distrosDir, 'distros.json')
   const connectLogFile = path.join(distrosDir, 'connects.log')
   writeFileSync(distrosFile, JSON.stringify([UBUNTU]))

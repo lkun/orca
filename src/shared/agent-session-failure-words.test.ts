@@ -22,7 +22,7 @@ import {
 } from './structured-agent-session-dispatch-rejection'
 
 /** What OCC's own text looks like: a code or marker, a uuid, a path, an exception. */
-const ORCA_INTERNAL = /\b[a-z]+_[a-z_]+\b|[0-9a-f]{8}-[0-9a-f]{4}-|[/\\][\w.-]+[/\\]|Error:|ENOENT/
+const OCC_INTERNAL = /\b[a-z]+_[a-z_]+\b|[0-9a-f]{8}-[0-9a-f]{4}-|[/\\][\w.-]+[/\\]|Error:|ENOENT/
 
 const SURFACES: readonly AgentSessionFailureSurface[] = ['row', 'rejection', 'answer']
 const LEGACY_MARKER_KINDS: ReadonlySet<SubmissionRejectionKind> = new Set([
@@ -75,7 +75,7 @@ describe('the words written beside a failure fact', () => {
           const sentence = agentSessionFailureSentence(fact, surface, context)
           expect(sentence).toMatch(/[^.]\.$/)
           expect(sentence).not.toMatch(/\.\./)
-          expect(sentence).not.toMatch(ORCA_INTERNAL)
+          expect(sentence).not.toMatch(OCC_INTERNAL)
           if (surface === 'row') {
             expect(agentSessionFailureWords(fact, { ...context, surface })).toEqual({
               text: sentence,

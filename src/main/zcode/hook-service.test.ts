@@ -30,7 +30,7 @@ function readConfig(): ZCodeConfigFile {
 }
 
 beforeEach(() => {
-  hoisted.home = mkdtempSync(join(tmpdir(), 'orca-zcode-'))
+  hoisted.home = mkdtempSync(join(tmpdir(), 'occ-zcode-'))
 })
 afterEach(() => {
   rmSync(hoisted.home, { recursive: true, force: true })
@@ -157,10 +157,10 @@ describe('ZCodeHookService', () => {
 
   it('registers a forward-slash cmd path on Windows and replaces the legacy backslash entry', () => {
     vi.spyOn(process, 'platform', 'get').mockReturnValue('win32')
-    const scriptPath = 'C:\\Users\\ada\\.orca\\agent-hooks\\zcode-hook.cmd'
+    const scriptPath = 'C:\\Users\\ada\\.occ\\agent-hooks\\zcode-hook.cmd'
     const command = getZCodeManagedCommand(scriptPath)
     // Forward slashes survive Git Bash, which strips bare-path backslashes.
-    expect(command).toBe('C:/Users/ada/.orca/agent-hooks/zcode-hook.cmd')
+    expect(command).toBe('C:/Users/ada/.occ/agent-hooks/zcode-hook.cmd')
 
     const next = applyZCodeManagedHooks(
       {
@@ -186,7 +186,7 @@ describe('ZCodeHookService', () => {
     zcodeHookService.install()
     const scriptPath = join(
       hoisted.home,
-      '.orca',
+      '.occ',
       'agent-hooks',
       process.platform === 'win32' ? 'zcode-hook.cmd' : 'zcode-hook.sh'
     )

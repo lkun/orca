@@ -13,8 +13,8 @@ if [[ -o xtrace ]]; then
 fi
 set +x
 
-MAIN_REPO="stablyai/orca"
-HOURLY_REPO="stablyai/orca-hourly"
+MAIN_REPO="stablyai/occ"
+HOURLY_REPO="stablyai/occ-hourly"
 APP_ID_SECRET="HOURLY_RELEASE_APP_ID"
 APP_KEY_SECRET="HOURLY_RELEASE_APP_PRIVATE_KEY"
 
@@ -38,7 +38,7 @@ cat <<EOF
 Create a GitHub App (one time — the key never expires)
 ──────────────────────────────────────────────────────
   1. Open:  https://github.com/organizations/stablyai/settings/apps/new
-  2. Name ..................  orca-hourly-release
+  2. Name ..................  occ-hourly-release
      Homepage URL ..........  https://github.com/$HOURLY_REPO
      Webhook ...............  UNCHECK "Active"
   3. Repository permissions  ->  Contents: Read and write

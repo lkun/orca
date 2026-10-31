@@ -11,7 +11,7 @@ This page describes the anonymous product-usage telemetry we collect in packaged
 
 - **Anonymous.** Events are keyed by a random ID stored locally on your machine. No account, email, IP address, or user name is collected.
 - **No content.** We never transmit file contents, prompts, agent output, terminal output, repo names, branch names, URLs, paths, or commit messages.
-- **Always off when:** `DO_NOT_TRACK=1` or `ORCA_TELEMETRY_DISABLED=1` is set.
+- **Always off when:** `DO_NOT_TRACK=1` or `OCC_TELEMETRY_DISABLED=1` is set.
 
 ## What we collect
 
@@ -53,7 +53,7 @@ You can disable telemetry in three ways. Any one of them is sufficient; they com
 />
 2. **`DO_NOT_TRACK=1`** — community-standard environment variable. Disables transmission for that
 launch. Unsetting it restores your stored preference on the next launch. 3.
-**`ORCA_TELEMETRY_DISABLED=1`** — OCC-specific kill switch with the same semantics as
+**`OCC_TELEMETRY_DISABLED=1`** — OCC-specific kill switch with the same semantics as
 `DO_NOT_TRACK`.
 
 ## Where the data goes

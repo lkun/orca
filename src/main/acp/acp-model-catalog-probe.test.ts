@@ -78,7 +78,7 @@ function scriptedGrok(initializeMeta: Record<string, unknown>): {
     closed: () => closes,
     deps: {
       resolveEnvironment: async () => ({ PATH: '/usr/bin', HOME: '/home/user' }),
-      dataDirectory: '/orca-data',
+      dataDirectory: '/occ-data',
       resolveLaunchEnv: () => ({ XAI_API_KEY: 'from-settings' }),
       resolveCommand: () => '/opt/grok/bin/grok',
       homePath: '/home/user',
@@ -147,7 +147,7 @@ function scriptedOpenCode2(canDelete: boolean): {
       resolveCommand: () => '/opt/opencode/bin/opencode',
       probeVersion: async () => ({ version: '2.0.29' }),
       homePath: '/home/user',
-      dataDirectory: '/orca-data',
+      dataDirectory: '/occ-data',
       runListing: vi.fn<NonNullable<AcpModelCatalogProbeDeps['runListing']>>(),
       connectSession: (launch) => {
         launches.push(launch)
@@ -239,7 +239,7 @@ describe('ACP model catalog probes', () => {
     const connect = vi.fn()
     const probe = createAcpModelCatalogProbe(OPENCODE, {
       resolveEnvironment: async () => ({ PATH: '/usr/bin', HOME: '/home/user' }),
-      dataDirectory: '/orca-data',
+      dataDirectory: '/occ-data',
       resolveCommandSettings: () => launcherSettings('opencode'),
       probeVersion: async () => ({ version: '1.18.35' }),
       homePath: '/home/user',
@@ -309,7 +309,7 @@ describe('ACP model catalog probes', () => {
 
   it('lists OMP from a session kept in a folder it removes, in the chat folder', async () => {
     const { agent, deps, launches } = scriptedOpenCode2(false)
-    const dataDirectory = await mkdtemp(join(tmpdir(), 'orca-omp-listing-'))
+    const dataDirectory = await mkdtemp(join(tmpdir(), 'occ-omp-listing-'))
     try {
       const success = await createAcpModelCatalogProbe(acpLaunchSpecFor('omp')!, {
         ...deps,
@@ -405,7 +405,7 @@ describe('ACP model catalog probes', () => {
     const runListing = vi.fn()
     const probe = createAcpModelCatalogProbe(OPENCODE, {
       resolveEnvironment: async () => ({ PATH: '/usr/bin' }),
-      dataDirectory: '/orca-data',
+      dataDirectory: '/occ-data',
       resolveCommand: () => '/opt/opencode/bin/opencode',
       probeVersion: async () => ({ version: '1.0.0' }),
       runListing

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcadDecommissionResult } from '../../shared/orcad-decommission'
-import type { OrcadTerminalCensus } from '../../shared/orcad-terminal-census'
+import type { OCCdDecommissionResult } from '../../shared/occd-decommission'
+import type { OCCdTerminalCensus } from '../../shared/occd-terminal-census'
 import {
   stopWslHostServer,
   wslHostRuntimeStopSteps,
@@ -9,11 +9,11 @@ import {
 } from './wsl-host-server-stop'
 import type { WslHostPeerDesktops } from './wsl-host-peer-desktops'
 
-function census(liveSessions: number | null): OrcadTerminalCensus {
+function census(liveSessions: number | null): OCCdTerminalCensus {
   return { liveSessions, startedSinceActivation: liveSessions, daemonProtocolVersion: 1 }
 }
 
-const RETIRED: OrcadDecommissionResult = {
+const RETIRED: OCCdDecommissionResult = {
   outcome: 'decommissioned',
   version: '1.0.0',
   retirement: 'retired'
@@ -49,7 +49,7 @@ function steps(overrides: Partial<WslHostServerStopSteps> = {}) {
 }
 
 describe('stopWslHostServer', () => {
-  it('closes terminals, proves none remain, names the serving orcad, then retires it', async () => {
+  it('closes terminals, proves none remain, names the serving occd, then retires it', async () => {
     const { all, order } = steps()
     await expect(stopWslHostServer(all)).resolves.toEqual({ stopped: true })
     expect(order).toEqual([
@@ -107,10 +107,10 @@ describe('stopWslHostServer', () => {
         { handle: 'term_1', worktreeId: 'gone::/home/me/old', reason: 'selector_not_found' }
       ]),
       census: vi.fn(async () => census(1)),
-      decommission: vi.fn(async (): Promise<OrcadDecommissionResult> => ({
+      decommission: vi.fn(async (): Promise<OCCdDecommissionResult> => ({
         outcome: 'refused',
         verdict: 'live',
-        code: 'orcad_decommission_terminals_running',
+        code: 'occd_decommission_terminals_running',
         reason: '1 terminal is still running on this host.'
       }))
     })
@@ -124,13 +124,13 @@ describe('stopWslHostServer', () => {
     })
   })
 
-  it('never reports stopped when the decommission could not prove it stopped the serving orcad', async () => {
+  it('never reports stopped when the decommission could not prove it stopped the serving occd', async () => {
     const { all } = steps({
-      decommission: vi.fn(async (): Promise<OrcadDecommissionResult> => ({
+      decommission: vi.fn(async (): Promise<OCCdDecommissionResult> => ({
         outcome: 'refused',
         verdict: 'unverifiable',
-        code: 'orcad_wsl_host_serving_instance_unproven',
-        reason: 'the orcad this computer was connected to is not the one the distro records'
+        code: 'occd_wsl_host_serving_instance_unproven',
+        reason: 'the occd this computer was connected to is not the one the distro records'
       }))
     })
     await expect(stopWslHostServer(all)).resolves.toMatchObject({
@@ -142,10 +142,10 @@ describe('stopWslHostServer', () => {
   it('calls a census that did not answer unverifiable, not live', async () => {
     const { all } = steps({
       census: vi.fn(async () => census(null)),
-      decommission: vi.fn(async (): Promise<OrcadDecommissionResult> => ({
+      decommission: vi.fn(async (): Promise<OCCdDecommissionResult> => ({
         outcome: 'refused',
         verdict: 'unverifiable',
-        code: 'orcad_decommission_census_unavailable',
+        code: 'occd_decommission_census_unavailable',
         reason: 'The terminal daemon did not answer a session count.'
       }))
     })
@@ -157,7 +157,7 @@ describe('stopWslHostServer', () => {
 
   it('reports a daemon that did not retire', async () => {
     const { all } = steps({
-      decommission: vi.fn(async (): Promise<OrcadDecommissionResult> => ({
+      decommission: vi.fn(async (): Promise<OCCdDecommissionResult> => ({
         ...RETIRED,
         retirement: 'live'
       }))

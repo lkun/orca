@@ -11,8 +11,8 @@ import type { WorkspaceSessionState } from '../../../../shared/workspace-session
 import {
   getOpenFilesForExternalFileChange,
   isAutosaveSuspendedForFile,
-  ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT,
-  ORCA_EDITOR_FILE_SAVED_EVENT,
+  OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT,
+  OCC_EDITOR_FILE_SAVED_EVENT,
   requestEditorFileSave,
   type EditorFileSavedDetail
 } from './editor-autosave'
@@ -341,7 +341,7 @@ describe('two workspaces on one record', () => {
     const cleanup = attachEditorAutosaveController(store)
     try {
       const detail = { worktreeId: 'wt-1', worktreePath: '/repo', relativePath: 'file.ts' }
-      window.dispatchEvent(new CustomEvent(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, { detail }))
+      window.dispatchEvent(new CustomEvent(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, { detail }))
       for (const id of [a.id, b.id]) {
         if (state === 'dirty') {
           expect(view(store, id)?.externalMutation).toBe('changed')
@@ -371,7 +371,7 @@ describe('two workspaces on one record', () => {
 
         // After a desktop save, the panel must advance the sibling view’s loaded disk text too.
         const saved: EditorFileSavedDetail[] = []
-        window.addEventListener(ORCA_EDITOR_FILE_SAVED_EVENT, (event) => {
+        window.addEventListener(OCC_EDITOR_FILE_SAVED_EVENT, (event) => {
           if (event instanceof CustomEvent) {
             saved.push(event.detail)
           }

@@ -32,7 +32,7 @@ afterEach(() => {
 
 // Sequential source-CLI subprocesses and a disk-backed runtime restart exceed the default test budget.
 it("retains CLI work and mail across restart, refuses a worker's own Run, and completes a separate Run handoff", async () => {
-  const home = mkdtempSync(join(tmpdir(), 'orca-cli-restart-handoff-'))
+  const home = mkdtempSync(join(tmpdir(), 'occ-cli-restart-handoff-'))
   for (const name of [
     'HOME',
     'USERPROFILE',
@@ -45,26 +45,26 @@ it("retains CLI work and mail across restart, refuses a worker's own Run, and co
     'XDG_RUNTIME_DIR',
     'CLAUDE_CONFIG_DIR',
     'CODEX_HOME',
-    'ORCA_E2E_HOME_DIR',
-    'ORCA_E2E_USER_DATA_DIR',
-    'ORCA_USER_DATA_PATH'
+    'OCC_E2E_HOME_DIR',
+    'OCC_E2E_USER_DATA_DIR',
+    'OCC_USER_DATA_PATH'
   ]) {
     vi.stubEnv(name, home)
   }
-  vi.stubEnv('ORCA_BACKGROUND_LAUNCH', '1')
-  vi.stubEnv('ORCA_DISABLE_MACOS_LOGIN_SHELL', '1')
+  vi.stubEnv('OCC_BACKGROUND_LAUNCH', '1')
+  vi.stubEnv('OCC_DISABLE_MACOS_LOGIN_SHELL', '1')
   for (const name of [
-    'ORCA_ENVIRONMENT',
-    'ORCA_PAIRING_CODE',
-    'ORCA_REMOTE_PAIRING',
-    'ORCA_AGENT_SESSION_ID',
-    'ORCA_RUNTIME_SOURCE_ID',
-    'ORCA_RUNTIME_SOURCE_INCARNATION',
-    'ORCA_RUNTIME_SOURCE_PROFILE_PATH'
+    'OCC_ENVIRONMENT',
+    'OCC_PAIRING_CODE',
+    'OCC_REMOTE_PAIRING',
+    'OCC_AGENT_SESSION_ID',
+    'OCC_RUNTIME_SOURCE_ID',
+    'OCC_RUNTIME_SOURCE_INCARNATION',
+    'OCC_RUNTIME_SOURCE_PROFILE_PATH'
   ]) {
     vi.stubEnv(name, '')
   }
-  const { OrcaRuntimeRpcServer } = await import('./runtime-rpc')
+  const { OCCRuntimeRpcServer } = await import('./runtime-rpc')
   const fixture = await import('./orchestration-mailbox-notification-test-harness')
   const { registerBoundPty } = await import('./bind-first-pane.test-fixture')
   const coord = fixture.TERMINAL_HANDLE
@@ -87,14 +87,14 @@ it("retains CLI work and mail across restart, refuses a worker's own Run, and co
     return runtime
   }
   let runtime = runtimeForDatabase()
-  let server = new OrcaRuntimeRpcServer({ runtime, userDataPath: home })
+  let server = new OCCRuntimeRpcServer({ runtime, userDataPath: home })
   async function cli(handle: string, args: string[], exitCode = 0): Promise<unknown> {
     const child = spawn(
       process.execPath,
       [
         '--import',
         tsxLoader,
-        '--conditions=orca-source',
+        '--conditions=occ-source',
         cliPath,
         'orchestration',
         ...args,
@@ -104,9 +104,9 @@ it("retains CLI work and mail across restart, refuses a worker's own Run, and co
         cwd: home,
         env: {
           ...process.env,
-          ORCA_TERMINAL_HANDLE: handle,
-          ORCA_PANE_KEY: runtime.getTerminalPaneKey(handle) ?? '',
-          ORCA_AGENT_LAUNCH_TOKEN:
+          OCC_TERMINAL_HANDLE: handle,
+          OCC_PANE_KEY: runtime.getTerminalPaneKey(handle) ?? '',
+          OCC_AGENT_LAUNCH_TOKEN:
             handle === coord
               ? fixture.LAUNCH_TOKEN
               : handle === worker
@@ -166,7 +166,7 @@ it("retains CLI work and mail across restart, refuses a worker's own Run, and co
     db.close()
     db = new OrchestrationDb(join(home, 'orchestration.db'))
     runtime = runtimeForDatabase()
-    server = new OrcaRuntimeRpcServer({ runtime, userDataPath: home })
+    server = new OCCRuntimeRpcServer({ runtime, userDataPath: home })
     await server.start()
     expect(await cli(coord, ['run-current'])).toMatchObject({ result: { run: { id: root } } })
     expect(await cli(coord, ['task-list'])).toMatchObject({

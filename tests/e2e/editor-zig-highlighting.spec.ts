@@ -1,7 +1,7 @@
 import { writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { Locator } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   cleanupGoldenWorktree,
   createGoldenWorktree,
@@ -59,7 +59,7 @@ async function expectHighlighted(editor: Locator): Promise<void> {
 }
 
 test('renders Zig source and source-control diffs in both themes', async ({
-  orcaPage,
+  occPage,
   electronApp,
   testRepoPath,
   registerPostElectronShutdownCleanup
@@ -67,8 +67,8 @@ test('renders Zig source and source-control diffs in both themes', async ({
   const fixture = createGoldenWorktree(testRepoPath, 'zig-highlighting')
   registerPostElectronShutdownCleanup(async () => cleanupGoldenWorktree(testRepoPath, fixture))
   writeFileSync(path.join(fixture.worktreePath, 'main.zig'), source)
-  await waitForSessionReady(orcaPage)
-  await openGoldenSourceControl(orcaPage, testRepoPath, fixture)
+  await waitForSessionReady(occPage)
+  await openGoldenSourceControl(occPage, testRepoPath, fixture)
   const identity = await electronApp.evaluate(({ BrowserWindow }) => ({
     cwd: process.cwd(),
     windows: BrowserWindow.getAllWindows().map((window) => ({
@@ -85,24 +85,24 @@ test('renders Zig source and source-control diffs in both themes', async ({
   })
 
   for (const filename of ['main.zig']) {
-    await orcaPage.evaluate(() => window.__store?.getState().showRightSidebarFiles())
-    await orcaPage
+    await occPage.evaluate(() => window.__store?.getState().showRightSidebarFiles())
+    await occPage
       .locator('button[data-explorer-draggable="true"]')
-      .filter({ has: orcaPage.getByText(filename, { exact: true }) })
+      .filter({ has: occPage.getByText(filename, { exact: true }) })
       .click()
     await expect
-      .poll(() => orcaPage.evaluate(() => window.__monacoEditorE2E?.filePath))
+      .poll(() => occPage.evaluate(() => window.__monacoEditorE2E?.filePath))
       .toBe(path.join(fixture.worktreePath, filename))
     await expect
-      .poll(() => orcaPage.evaluate(() => window.__monacoEditorE2E?.snapshot().valueLength))
+      .poll(() => occPage.evaluate(() => window.__monacoEditorE2E?.snapshot().valueLength))
       .toBe(source.length)
 
     for (const theme of ['light', 'dark'] as const) {
-      await orcaPage.evaluate(
+      await occPage.evaluate(
         (theme) => window.__store?.getState().updateSettings({ theme }),
         theme
       )
-      const editor = orcaPage
+      const editor = occPage
         .locator(theme === 'light' ? '.monaco-editor.vs' : '.monaco-editor.vs-dark')
         .first()
       await expectHighlighted(editor)
@@ -110,20 +110,20 @@ test('renders Zig source and source-control diffs in both themes', async ({
         body: JSON.stringify(await paintedTokens(editor), null, 2),
         contentType: 'application/json'
       })
-      await orcaPage.screenshot({ path: testInfo.outputPath(`${filename}-source-${theme}.png`) })
+      await occPage.screenshot({ path: testInfo.outputPath(`${filename}-source-${theme}.png`) })
     }
 
-    await orcaPage.getByRole('button', { name: /Source Control/ }).click()
-    await orcaPage
+    await occPage.getByRole('button', { name: /Source Control/ }).click()
+    await occPage
       .locator('[data-testid="source-control-entry"]')
       .filter({ hasText: filename })
       .click()
     for (const theme of ['light', 'dark'] as const) {
-      await orcaPage.evaluate(
+      await occPage.evaluate(
         (theme) => window.__store?.getState().updateSettings({ theme }),
         theme
       )
-      const editor = orcaPage.locator(
+      const editor = occPage.locator(
         theme === 'light'
           ? '.modified-in-monaco-diff-editor.vs'
           : '.modified-in-monaco-diff-editor.vs-dark'
@@ -133,7 +133,7 @@ test('renders Zig source and source-control diffs in both themes', async ({
         body: JSON.stringify(await paintedTokens(editor), null, 2),
         contentType: 'application/json'
       })
-      await orcaPage.screenshot({ path: testInfo.outputPath(`${filename}-diff-${theme}.png`) })
+      await occPage.screenshot({ path: testInfo.outputPath(`${filename}-diff-${theme}.png`) })
     }
   }
   expect(

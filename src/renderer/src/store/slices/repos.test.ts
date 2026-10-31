@@ -10,7 +10,7 @@ import { createFallbackProxy } from '../../web/preload-api/web-fallback-api'
 import {
   installReposRuntimeRoutingHarness,
   localRepo,
-  orcaProfileFindProjectProfiles,
+  occProfileFindProjectProfiles,
   projectGroupsMoveProject,
   projectsSetupExistingFolder,
   ptyKill,
@@ -221,12 +221,12 @@ describe('repo slice runtime routing', () => {
     })
     expect(reposAdd).not.toHaveBeenCalled()
     expect(reposPickFolder).not.toHaveBeenCalled()
-    expect(orcaProfileFindProjectProfiles).not.toHaveBeenCalled()
+    expect(occProfileFindProjectProfiles).not.toHaveBeenCalled()
   })
 
   it('warns when a local project is already present in another profile', async () => {
     reposAdd.mockResolvedValue({ repo: localRepo })
-    orcaProfileFindProjectProfiles.mockResolvedValue({
+    occProfileFindProjectProfiles.mockResolvedValue({
       projects: [
         {
           profileId: 'work',
@@ -238,14 +238,14 @@ describe('repo slice runtime routing', () => {
       ]
     })
     const store = createTestStore()
-    store.setState({ activeOrcaProfileId: 'local-default' })
+    store.setState({ activeOCCProfileId: 'local-default' })
 
     await expect(store.getState().addRepoPath('/local')).resolves.toEqual({
       ...localRepo,
       executionHostId: 'local'
     })
 
-    expect(orcaProfileFindProjectProfiles).toHaveBeenCalledWith({
+    expect(occProfileFindProjectProfiles).toHaveBeenCalledWith({
       path: '/local',
       connectionId: null,
       executionHostId: 'local',
@@ -258,10 +258,10 @@ describe('repo slice runtime routing', () => {
 
   it('sets up a project on a local host through the project setup API', async () => {
     const project: Project = {
-      id: 'github:stablyai/orca',
+      id: 'github:stablyai/occ',
       displayName: 'Project',
       badgeColor: '#000',
-      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' },
+      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' },
       sourceRepoIds: ['local-repo'],
       createdAt: 1,
       updatedAt: 1
@@ -300,7 +300,7 @@ describe('repo slice runtime routing', () => {
     expect(store.getState().projectHostSetups).toEqual([setup])
     expect(projectsSetupExistingFolder).toHaveBeenCalledWith({
       projectId: project.id,
-      projectProviderIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' },
+      projectProviderIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' },
       hostId: 'local',
       path: '/local',
       kind: 'git'
@@ -320,7 +320,7 @@ describe('repo slice runtime routing', () => {
     async (kind, activeRuntimeEnvironmentId) => {
       const store = createTestStore()
       store.setState({ settings: createGlobalSettingsFixture({ activeRuntimeEnvironmentId }) })
-      Object.assign(window, { __ORCA_WEB_CLIENT__: true })
+      Object.assign(window, { __OCC_WEB_CLIENT__: true })
       window.api.projects = createFallbackProxy(['projects'])
       const before = store.getState()
 
@@ -475,7 +475,7 @@ describe('repo slice runtime routing', () => {
       store.getState().setupProjectClone({
         projectId: project.id,
         hostId: 'local',
-        url: 'https://github.com/stablyai/orca.git',
+        url: 'https://github.com/stablyai/occ.git',
         destination: '/workspace',
         displayName: 'Project'
       })
@@ -486,7 +486,7 @@ describe('repo slice runtime routing', () => {
     })
 
     expect(reposClone).toHaveBeenCalledWith({
-      url: 'https://github.com/stablyai/orca.git',
+      url: 'https://github.com/stablyai/occ.git',
       destination: '/workspace'
     })
     expect(projectsSetupExistingFolder).toHaveBeenCalledWith({
@@ -540,7 +540,7 @@ describe('repo slice runtime routing', () => {
       store.getState().setupProjectClone({
         projectId: project.id,
         hostId: 'runtime:env-1',
-        url: 'https://github.com/stablyai/orca.git',
+        url: 'https://github.com/stablyai/occ.git',
         destination: '/srv',
         displayName: 'Project'
       })
@@ -560,7 +560,7 @@ describe('repo slice runtime routing', () => {
       selector: 'env-1',
       method: 'repo.clone',
       params: {
-        url: 'https://github.com/stablyai/orca.git',
+        url: 'https://github.com/stablyai/occ.git',
         destination: '/srv'
       },
       timeoutMs: 10 * 60_000
@@ -587,7 +587,7 @@ describe('repo slice runtime routing', () => {
       store.getState().setupProjectClone({
         projectId: 'project-1',
         hostId: 'ssh:ssh-1',
-        url: 'https://github.com/stablyai/orca.git',
+        url: 'https://github.com/stablyai/occ.git',
         destination: '/srv',
         displayName: 'Project'
       })
@@ -677,7 +677,7 @@ describe('repo slice runtime routing', () => {
 
   it('removes SSH-owned repos through local IPC even when a runtime is focused', async () => {
     const store = createTestStore()
-    const worktreeId = `${sshRepo.id}::/home/orca/wt`
+    const worktreeId = `${sshRepo.id}::/home/occ/wt`
     store.setState({
       settings: { activeRuntimeEnvironmentId: 'env-1' } as never,
       repos: [sshRepo],
@@ -697,7 +697,7 @@ describe('repo slice runtime routing', () => {
 
   it('drops persisted visit timestamps for removed unhydrated SSH repos', async () => {
     const store = createTestStore()
-    const sshWorktreeId = `${sshRepo.id}::/home/orca/wt`
+    const sshWorktreeId = `${sshRepo.id}::/home/occ/wt`
     const localWorktreeId = `${localRepo.id}::/local/wt`
     store.setState({
       repos: [sshRepo, localRepo],
@@ -724,7 +724,7 @@ describe('repo slice runtime routing', () => {
       _meta: { runtimeId: 'runtime-remote' }
     })
     const store = createTestStore()
-    const remoteWorktreeId = `${remoteRepo.id}::/srv/orca/wt`
+    const remoteWorktreeId = `${remoteRepo.id}::/srv/occ/wt`
     const localWorktreeId = `${localRepo.id}::/local/wt`
     store.setState({
       settings: { activeRuntimeEnvironmentId: 'env-1' } as never,

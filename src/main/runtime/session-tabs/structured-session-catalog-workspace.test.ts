@@ -2,19 +2,19 @@ import { afterEach, expect, it, vi } from 'vitest'
 
 // Ancestors outside this fixture's owner boundaries are inert; owner methods below are real.
 vi.mock('../session-graph/session-graph-reload-lifecycle.ts', () => ({
-  OrcaRuntimeWithHasTerminalsForWorktree: class {}
+  OCCRuntimeWithHasTerminalsForWorktree: class {}
 }))
-vi.mock('../orca-runtime-read-kitty-file.ts', () => ({ OrcaRuntimeWithReadKittyFile: class {} }))
+vi.mock('../occ-runtime-read-kitty-file.ts', () => ({ OCCRuntimeWithReadKittyFile: class {} }))
 vi.mock('./headless-tab-group-moves.ts', () => ({ RuntimeHeadlessTabGroups: class {} }))
 vi.mock('./structured-session-account-home.ts', () => ({
-  OrcaRuntimeWithStructuredSessionAccountHome: class {}
+  OCCRuntimeWithStructuredSessionAccountHome: class {}
 }))
 
 import { RuntimeWorkspaceSelectors } from '../workspaces/workspace-selectors'
 import { RuntimeWorkspaceCatalog } from '../workspaces/workspace-catalog'
 import { RuntimeWorkspaceRepoScanRefresh } from '../workspaces/workspace-repo-scan-refresh'
-import { OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree } from '../terminal/launch/terminal-workspace-scope'
-import { OrcaRuntimeWithPersistHeadlessTerminalTitle } from '../workspaces/workspace-file-session-targets'
+import { OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree } from '../terminal/launch/terminal-workspace-scope'
+import { OCCRuntimeWithPersistHeadlessTerminalTitle } from '../workspaces/workspace-file-session-targets'
 import { StructuredSessionWorkspaceScope } from './structured-session-workspace-scope'
 import { RuntimeResolvedWorktreeCache } from '../runtime-resolved-worktree-cache'
 import { STRUCTURED_AGENT_SESSION_OPTIONS_READ_METHODS } from '../rpc/methods/structured-agent-session-options-read'
@@ -38,7 +38,7 @@ import type { RuntimeStore } from '../runtime-store-contract'
 import type { RpcContext } from '../rpc/core'
 import type { StructuredAgentSessionHost } from '../../native-chat/agent-session-wire/structured-agent-session-host'
 import type { AgentModelCatalogReadParams } from '../../native-chat/agent-model-catalog/agent-model-catalog-service-contract'
-import type { RuntimeWorktreeScanCache, RuntimeWorktreeScanInFlight } from '../orca-runtime-core'
+import type { RuntimeWorktreeScanCache, RuntimeWorktreeScanInFlight } from '../occ-runtime-core'
 import type { RuntimeWorktreeScanResult } from '../repo-worktree-resolution-scan'
 import type { ResolvedWorktree } from '../runtime-worktree-path-identity'
 import type { ResolvedWorktreeScanJoin } from '../workspaces/resolved-worktree-scan-join'
@@ -144,11 +144,11 @@ function rig(agent = 'opencode') {
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: shipping prototypes are installed immediately below and the fixture supplies their observed dependency slice.
   const runtime = runtimeState as unknown as ScopeFixture
   for (const owner of [
-    OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree,
+    OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree,
     RuntimeWorkspaceSelectors,
     RuntimeWorkspaceCatalog,
     RuntimeWorkspaceRepoScanRefresh,
-    OrcaRuntimeWithPersistHeadlessTerminalTitle,
+    OCCRuntimeWithPersistHeadlessTerminalTitle,
     StructuredSessionWorkspaceScope
   ]) {
     for (const key of Object.getOwnPropertyNames(owner.prototype)) {

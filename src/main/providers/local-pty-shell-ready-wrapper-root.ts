@@ -10,14 +10,14 @@ import {
 export { SHELL_READY_MARKER_ESCAPED } from './local-pty-shell-ready-marker'
 
 function getShellReadyWrapperBaseDir(): string {
-  // Plain-node daemon forks share ORCA_USER_DATA_PATH with main; empty values must fall back, never form relative roots.
-  const userDataPath = process.env.ORCA_USER_DATA_PATH
+  // Plain-node daemon forks share OCC_USER_DATA_PATH with main; empty values must fall back, never form relative roots.
+  const userDataPath = process.env.OCC_USER_DATA_PATH
   // Avoid legacy shell-ready/ trees still overwritten by old daemons.
-  // The temp fallback trusts nonempty preplanted files; production must seed ORCA_USER_DATA_PATH before spawning.
-  return userDataPath ? join(userDataPath, 'shell-wrappers') : join(tmpdir(), 'orca-shell-wrappers')
+  // The temp fallback trusts nonempty preplanted files; production must seed OCC_USER_DATA_PATH before spawning.
+  return userDataPath ? join(userDataPath, 'shell-wrappers') : join(tmpdir(), 'occ-shell-wrappers')
 }
 
-// Cache by base directory so changing ORCA_USER_DATA_PATH invalidates the digest.
+// Cache by base directory so changing OCC_USER_DATA_PATH invalidates the digest.
 let cachedShellReadyWrapperRoot: { baseDir: string; root: string } | null = null
 
 export function getShellReadyWrapperRoot(): string {

@@ -22,8 +22,8 @@ export const KIMI_HOOK_EVENTS = [
 ] as const
 
 const MARKERS: ManagedTomlMarkers = {
-  startMarker: '# >>> orca-managed-kimi-hooks (managed by OCC; do not edit) >>>',
-  endMarker: '# <<< orca-managed-kimi-hooks <<<'
+  startMarker: '# >>> occ-managed-kimi-hooks (managed by OCC; do not edit) >>>',
+  endMarker: '# <<< occ-managed-kimi-hooks <<<'
 }
 const HOOK_TABLE_HEADER = '[[hooks]]'
 

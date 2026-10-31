@@ -1,7 +1,7 @@
-// Normalize one desktop scenario's CLI, paired and orcad replies for byte-identical comparison across layout ownership modes.
+// Normalize one desktop scenario's CLI, paired and occd replies for byte-identical comparison across layout ownership modes.
 import { readFileSync } from 'node:fs'
 import { vi } from 'vitest'
-import { OrcaRuntimeService } from '../../orca-runtime-test-mocks.spec'
+import { OCCRuntimeService } from '../../occ-runtime-test-mocks.spec'
 import {
   HEADLESS_LEAF_ID,
   HEADLESS_SECOND_LEAF_ID,
@@ -10,7 +10,7 @@ import {
   makeHeadlessTerminalLayout,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} from '../../orca-runtime-test-fixtures.spec'
+} from '../../occ-runtime-test-fixtures.spec'
 import type { RuntimeSyncWindowGraph, RuntimeTerminalShow } from '../../../../shared/runtime-types'
 import type { WorkspaceSessionState } from '../../../../shared/workspace-session-state-types'
 import type { ExecutionHostId } from '../../../../shared/execution-host'
@@ -21,7 +21,7 @@ import { partialRuntimeStore } from '../../runtime-store-partial-fixture'
 export const SURFACE_TAB_ID = '44444444-4444-4444-8444-444444444444'
 export const SURFACE_PTYS = { [HEADLESS_LEAF_ID]: 'pty-a', [HEADLESS_SECOND_LEAF_ID]: 'pty-b' }
 
-type Runtime = InstanceType<typeof OrcaRuntimeService>
+type Runtime = InstanceType<typeof OCCRuntimeService>
 
 /** A saved tab split in two, each pane bound to a live terminal. */
 export function surfaceRuntime(
@@ -102,7 +102,7 @@ export function surfaceRuntime(
       return change.value
     }
   }
-  const runtime = new OrcaRuntimeService(partialRuntimeStore(runtimeStore))
+  const runtime = new OCCRuntimeService(partialRuntimeStore(runtimeStore))
   const killed: string[] = []
   runtime.setPtyController({
     write: () => true,

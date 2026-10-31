@@ -117,8 +117,8 @@ export async function loadPluginDevFolder(input: {
       path,
       error,
       nextSteps: [
-        'Run `orca plugin validate <dir>` for every problem, fix them, then `orca plugin dev reload <dir>`.',
-        'The folder stays in the development list; `orca plugin dev unload <dir>` removes it.'
+        'Run `occ plugin validate <dir>` for every problem, fix them, then `occ plugin dev reload <dir>`.',
+        'The folder stays in the development list; `occ plugin dev unload <dir>` removes it.'
       ]
     })
   }
@@ -139,7 +139,7 @@ export async function loadPluginDevFolder(input: {
           ...error.data,
           nextSteps: [
             ...error.data.nextSteps,
-            'Until then the folder stays loaded but nothing in it runs; `orca plugin dev unload <dir>` removes it.'
+            'Until then the folder stays loaded but nothing in it runs; `occ plugin dev unload <dir>` removes it.'
           ]
         },
         error.code !== 'approval_required'
@@ -178,7 +178,7 @@ export async function unloadPluginDevFolder(input: {
       {
         loaded: [...stored],
         nextSteps: [
-          'Pass the absolute folder path or plugin key shown by `orca plugin list --json`.'
+          'Pass the absolute folder path or plugin key shown by `occ plugin list --json`.'
         ]
       }
     )

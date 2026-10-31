@@ -66,15 +66,15 @@ function stopHooks(f: ReturnType<typeof fixture>) {
       ? hooks.Stop
       : []
   }
-  const isOrca = (entry: unknown) => JSON.stringify(entry).includes('agent-hooks')
+  const isOCC = (entry: unknown) => JSON.stringify(entry).includes('agent-hooks')
   const setStop = (dir: string, commands: string[]) =>
     f.edit(dir, (value) => {
       const hooks = typeof value.hooks === 'object' ? value.hooks : {}
-      value.hooks = { ...hooks, Stop: [...commands.map(hook), ...stopOf(value).filter(isOrca)] }
+      value.hooks = { ...hooks, Stop: [...commands.map(hook), ...stopOf(value).filter(isOCC)] }
     })
   const stop = (dir: string) => stopOf(f.settings(dir))
-  const orcaCount = (dir: string) => stop(dir).filter(isOrca).length
-  return { hook, setStop, stop, orcaCount }
+  const occCount = (dir: string) => stop(dir).filter(isOCC).length
+  return { hook, setStop, stop, occCount }
 }
 const sync = async (f: ReturnType<typeof fixture>) => {
   const report = await f.provision()
@@ -100,7 +100,7 @@ describe('Claude hooks at an explicit profile', () => {
   })
   it("shares the user's hooks, OCC's hooks and statusline as plain keys that installs leave in sync", async () => {
     const f = fixture()
-    const { hook, setStop, stop, orcaCount } = stopHooks(f)
+    const { hook, setStop, stop, occCount } = stopHooks(f)
     f.service.install(CURRENT)
     setStop(f.defaultDir, ['notify-me'])
     await sync(f)
@@ -110,12 +110,12 @@ describe('Claude hooks at an explicit profile', () => {
     setStop(f.defaultDir, ['notify-v2'])
     await sync(f)
     expect(stop(f.profile)[0]).toEqual(hook('notify-v2'))
-    expect(orcaCount(f.profile)).toBe(1)
+    expect(occCount(f.profile)).toBe(1)
     setStop(f.profile, ['profile-only'])
     setStop(f.defaultDir, ['notify-v3'])
     await sync(f)
     expect(stop(f.profile)[0]).toEqual(hook('notify-v3'))
-    expect(orcaCount(f.profile)).toBe(1)
+    expect(occCount(f.profile)).toBe(1)
   })
   it.each(['with', 'without'])(
     'leaves the profile settings untouched by a refresh that changes nothing, %s OCC hooks in the default home',

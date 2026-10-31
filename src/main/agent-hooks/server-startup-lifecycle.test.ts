@@ -35,7 +35,7 @@ function fixture(mode: 'main' | 'relay') {
     return {
       start: () => server.start({ env: 'production', userDataPath: directory }),
       stop: () => server.stop(),
-      port: () => Number(server.buildPtyEnv().ORCA_AGENT_HOOK_PORT ?? 0),
+      port: () => Number(server.buildPtyEnv().OCC_AGENT_HOOK_PORT ?? 0),
       endpoint: join(directory, 'agent-hooks', getEndpointFileName())
     }
   }

@@ -1,5 +1,5 @@
-import type { CloudDatabase, SqlRow } from '@orca-cloud/cloud-database'
-import type { ConnectorConversation, ConnectorHelloRequest } from '@orca-cloud/connector-contract'
+import type { CloudDatabase, SqlRow } from '@occ-cloud/cloud-database'
+import type { ConnectorConversation, ConnectorHelloRequest } from '@occ-cloud/connector-contract'
 import type { ConnectorAdapter, Notice, NoticeTarget, ThreadPlace } from './connector-adapter.js'
 import { ConnectorPosts } from './connector-posts.js'
 import { conversationKey, threadPlace } from './connector-threads.js'
@@ -61,7 +61,7 @@ export class ThreadPosts {
 
   // Serialized per conversation, so a refresh that read older state can't land after a newer one.
   async lockStatus(transaction: CloudDatabase, externalId: string): Promise<void> {
-    await transaction.lockQuotaScope(`orca-connector-status:${this.adapter.source}:${externalId}`)
+    await transaction.lockQuotaScope(`occ-connector-status:${this.adapter.source}:${externalId}`)
   }
 
   // The status message is a projection of the thread's current state: refreshing twice is a no-op.
@@ -102,7 +102,7 @@ export class ThreadPosts {
 
   // A turn's reply and its fallback decide under one lock, so exactly one of them wins.
   private async lockTurn(transaction: CloudDatabase, turnKey: string): Promise<void> {
-    await transaction.lockQuotaScope(`orca-connector-turn:${this.adapter.source}:${turnKey}`)
+    await transaction.lockQuotaScope(`occ-connector-turn:${this.adapter.source}:${turnKey}`)
   }
 
   // From each turn-ended event itself, so every ended turn gets its own fallback.

@@ -25,7 +25,7 @@ afterEach(() => {
 })
 
 function makeRoot() {
-  const root = mkdtempSync(path.join(tmpdir(), 'orca-native-entry-'))
+  const root = mkdtempSync(path.join(tmpdir(), 'occ-native-entry-'))
   roots.push(root)
   return root
 }
@@ -50,11 +50,11 @@ describe('nativeBuildEntryName', () => {
       arch: 'arm64',
       modules: '148'
     })
-    expect(node).toBe('orca-napi-darwin-arm64')
+    expect(node).toBe('occ-napi-darwin-arm64')
     expect(electron).toBe(node)
     expect(
       nativeBuildEntryName('@vscode/windows-process-tree', { platform: 'win32', arch: 'x64' })
-    ).toBe('orca-napi-win32-x64')
+    ).toBe('occ-napi-win32-x64')
   })
 
   it('separates arches and refuses a package with no descriptor', () => {
@@ -81,7 +81,7 @@ describe('nativeBuildEntryName', () => {
   })
 
   it('matches the dir the patched windows-process-tree loader prefers', () => {
-    const line = addedPatchLine('@vscode__windows-process-tree@0.8.0.patch', /orcaNativeBuild = /)
+    const line = addedPatchLine('@vscode__windows-process-tree@0.8.0.patch', /occNativeBuild = /)
     const template = /= `(.*)`;/.exec(line)[1]
     for (const arch of ['x64', 'arm64']) {
       const resolved = template.replace('${__dirname}', '/pkg/lib').replace('${process.arch}', arch)
@@ -129,9 +129,9 @@ describe('loadedNativeBuildDir', () => {
     const root = makeRoot()
     const target = { platform: 'linux', arch: 'x64' }
     expect(loadedNativeBuildDir(root, 'node-pty', target)).toBe(path.join(root, 'build', 'Release'))
-    mkdirSync(path.join(root, 'build', 'orca-napi-linux-x64'), { recursive: true })
+    mkdirSync(path.join(root, 'build', 'occ-napi-linux-x64'), { recursive: true })
     expect(loadedNativeBuildDir(root, 'node-pty', target)).toBe(
-      path.join(root, 'build', 'orca-napi-linux-x64')
+      path.join(root, 'build', 'occ-napi-linux-x64')
     )
   })
 })
@@ -139,7 +139,7 @@ describe('loadedNativeBuildDir', () => {
 describe('isSourceBuildDir', () => {
   it('accepts build/Release and a published entry, never a prebuild', () => {
     expect(isSourceBuildDir('../build/Release/')).toBe(true)
-    expect(isSourceBuildDir('..\\build\\orca-napi-win32-x64\\')).toBe(true)
+    expect(isSourceBuildDir('..\\build\\occ-napi-win32-x64\\')).toBe(true)
     expect(isSourceBuildDir('../prebuilds/darwin-arm64/')).toBe(false)
     expect(isSourceBuildDir(undefined)).toBe(false)
   })
@@ -167,14 +167,14 @@ describe('adoptPackagedNativeBuildEntries', () => {
     const root = makeRoot()
     const buildDir = packagedNodePty(root, {
       Release: 'pnpm-install-build',
-      'orca-napi-darwin-arm64': 'entry-arm64',
-      'orca-napi-darwin-x64': 'entry-x64',
-      'orca-napi-darwin-arm64.staging-1-x': 'partial'
+      'occ-napi-darwin-arm64': 'entry-arm64',
+      'occ-napi-darwin-x64': 'entry-x64',
+      'occ-napi-darwin-arm64.staging-1-x': 'partial'
     })
     adoptPackagedNativeBuildEntries(root, 'darwin', 'x64')
     expect(readFileSync(path.join(buildDir, 'Release', 'pty.node'), 'utf8')).toBe('entry-x64')
     expect(
-      ['Release', 'orca-napi-darwin-arm64'].map((name) => isNativeBuildEntryName(name))
+      ['Release', 'occ-napi-darwin-arm64'].map((name) => isNativeBuildEntryName(name))
     ).toEqual([false, true])
     expect(require('node:fs').readdirSync(buildDir)).toEqual(['Release'])
   })

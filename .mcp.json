@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "orca-component-fixtures": {
+    "occ-component-fixtures": {
       "type": "stdio",
       "command": "node",
       "args": ["config/scripts/component-fixtures/fixtures-mcp-server.mjs"]

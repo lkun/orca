@@ -24,7 +24,7 @@ const RUNTIME_PAIRED_STANDARD: ReadonlySet<RpcMethodPermission> = new Set([
 ])
 
 /** Mobile checks unknown methods by name because older phones interpret forbidden as unsupported; other callers retain method_not_found. */
-export function denyRpcMethodForCaller(
+export function denyRpcMethodFoccller(
   scope: RpcCallerScope,
   methodName: string,
   permission: RpcMethodPermission | undefined

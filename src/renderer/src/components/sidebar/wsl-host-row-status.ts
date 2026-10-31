@@ -89,7 +89,7 @@ export function getWslHostsPausedShortLabel(): string {
   )
 }
 
-/** Explain missing orcad templates in dialogs; without them WSL hosts cannot run. */
+/** Explain missing occd templates in dialogs; without them WSL hosts cannot run. */
 export function getWslHostServerFilesMissingLabel(): string {
   return translate(
     'auto.components.sidebar.wslHostRowStatus.serverFilesMissing',

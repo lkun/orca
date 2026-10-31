@@ -9,7 +9,7 @@ description: >-
   that agent, even when you have your own model subagents.
   Also use when you are a dispatched worker (a prompt with Task and Dispatch
   IDs: ask, worker_done). Otherwise prefer your own subagents,
-  including for long or parallel work. Use `orca-cli` to hand work off with
+  including for long or parallel work. Use `occ-cli` to hand work off with
   nothing expected back ("hand off", "handover", "give this to another agent",
   "another worktree"), and for terminal control, shell commands, worktree
   management, and reading or waiting on terminals.
@@ -19,15 +19,15 @@ description: >-
 
 If your prompt has a preamble with Task and Dispatch IDs, you are a worker:
 follow the preamble. To ask your coordinator, run `ask`, then end your turn;
-OCC wakes you with the answer. To hand work off with nothing back, use `orca-cli`.
+OCC wakes you with the answer. To hand work off with nothing back, use `occ-cli`.
 
 ## Recipe
 
-`ORCA` stands for the executable you used to run `skills get`; type it in its
+`OCC` stands for the executable you used to run `skills get`; type it in its
 place and use it for every command.
 
 ```text
-ORCA orchestration worker-start --spec "<task>" --worktree current --agent codex --json
+OCC orchestration worker-start --spec "<task>" --worktree current --agent codex --json
 ```
 
 - Start every independent worker, then **end your turn**. "Report back" and
@@ -38,12 +38,12 @@ ORCA orchestration worker-start --spec "<task>" --worktree current --agent codex
 - `--worktree current` uses your workspace. Use a new one only when the user
   asks or sharing would conflict:
   `--worktree new-top-level --repo id:<repoId> --name <short-name>`
-  (`ORCA repo list --json` gives the id).
+  (`OCC repo list --json` gives the id).
 - Add `--model` only if the user named one.
 - If `worker-start` fails, do not rerun it; read `failedStage` and load
   `references/recovery-and-cleanup.md`.
 - To steer a worker, use
-  `ORCA orchestration send --to dispatch:<dispatch_id> --subject "<topic>" --body "<guidance>"`.
+  `OCC orchestration send --to dispatch:<dispatch_id> --subject "<topic>" --body "<guidance>"`.
 
 Never:
 
@@ -55,17 +55,17 @@ Never:
 ## When OCC wakes you
 
 - Run the `check` command the wake gives you. Answer each `question` with
-  `ORCA orchestration reply --id <message_id> --body "<answer>" --json`.
+  `OCC orchestration reply --id <message_id> --body "<answer>" --json`.
 - An `escalation` with `stopReason` means the worker stopped without
   `worker_done`: steer it with `send`, stop and retry it, or tell the user.
 - A `worker_done` settles its Task; never mark a reported failure completed.
 - When every worker has settled, report to the user per Task: outcome,
   evidence, open blockers.
-- Lost track? `ORCA orchestration inbox --terminal run:<run_id> --limit 50 --full --json`
+- Lost track? `OCC orchestration inbox --terminal run:<run_id> --limit 50 --full --json`
   shows mail `check` already handled.
 
 Finished workers close on their own unless the user chose Keep open. To keep one
-for a follow-up, run `ORCA orchestration worker-retain --dispatch <dispatch_id> --json`.
+for a follow-up, run `OCC orchestration worker-retain --dispatch <dispatch_id> --json`.
 If `worker-list` shows no `autoReleaseAt` for a finished worker, release it yourself.
 
 ## Task spec
@@ -87,7 +87,7 @@ assignment does not prove its agent stopped.
 
 ## References
 
-`ORCA skills get orchestration --reference references/<file>.md`
+`OCC skills get orchestration --reference references/<file>.md`
 
 | Situation                                      | Reference                                 |
 | ---------------------------------------------- | ----------------------------------------- |

@@ -125,7 +125,7 @@ describe('KimiSessionIndexCache', () => {
 
 describe('Kimi session index reader cache', () => {
   it('releases a retained map when its index file disappears', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-kimi-index-delete-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-kimi-index-delete-'))
     tempDirs.push(root)
     const indexPath = join(root, 'session_index.jsonl')
     await writeFile(indexPath, `${JSON.stringify({ sessionId: 'session', workDir: '/repo' })}\n`)
@@ -139,7 +139,7 @@ describe('Kimi session index reader cache', () => {
   })
 
   it('reloads a grown index after its mtime is restored', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-kimi-index-mutation-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-kimi-index-mutation-'))
     tempDirs.push(root)
     const indexPath = join(root, 'session_index.jsonl')
     await writeFile(indexPath, `${JSON.stringify({ sessionId: 'session-old', workDir: '/old' })}\n`)

@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type Database from '../../../../../sqlite/sync-database'
-import { OrcaRuntimeService } from '../../../../orca-runtime'
+import { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationDb } from '../../../../orchestration/db'
 import type { OrchestrationSessionCaller } from '../../../../orchestration/orchestration-caller-identity'
 import { ORCHESTRATION_METHODS } from '../../orchestration'
 import { eraseRpcMethods, type RpcContext } from '../../../core'
-import { parseOrcaSessionAddress } from '../../../../../../shared/orca-session-address'
+import { parseOCCSessionAddress } from '../../../../../../shared/occ-session-address'
 
 const COORDINATOR = 'term_coordinator'
 const TARGET = 'term_target'
@@ -14,12 +14,12 @@ const SUPERVISED = 'term_supervised'
 
 describe('manual Dispatch release', () => {
   let db: OrchestrationDb
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
   let runId: string
 
   beforeEach(() => {
     db = new OrchestrationDb(':memory:')
-    runtime = new OrcaRuntimeService()
+    runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     vi.spyOn(runtime, 'getTerminalPaneKey').mockImplementation((handle) => paneKey(handle))
     vi.spyOn(runtime, 'getTerminalProcessIncarnation').mockImplementation(
@@ -200,11 +200,11 @@ function sqliteFor(db: OrchestrationDb): Database.Database {
 
 describe('orchestration.workerAbandon', () => {
   let db: OrchestrationDb
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
 
   beforeEach(() => {
     db = new OrchestrationDb(':memory:')
-    runtime = new OrcaRuntimeService()
+    runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
   })
   afterEach(() => db.close())
@@ -250,13 +250,13 @@ describe('orchestration.workerAbandon', () => {
 
   it('records the resolved OCC session as the one who abandoned the worker', async () => {
     const dispatchId = readyWorker()
-    const orcaSessionId = parseOrcaSessionAddress('orca_session_id:chat_1')!
+    const occSessionId = parseOCCSessionAddress('occ_session_id:chat_1')!
     const session: OrchestrationSessionCaller = {
-      address: 'orca_session_id:chat_1',
+      address: 'occ_session_id:chat_1',
       terminalHandle: null,
       paneKey: null,
-      orcaSessionId,
-      sessionId: orcaSessionId,
+      occSessionId,
+      sessionId: occSessionId,
       workspaceId: 'wt'
     }
 
@@ -265,20 +265,20 @@ describe('orchestration.workerAbandon', () => {
       orchestrationCompatibilityEvidence: { terminalHandle: 'term_coord' }
     })
     expect(db.getWorkerDispatch(dispatchId)?.last_error).toBe(
-      'Abandoned by orca_session_id:chat_1.'
+      'Abandoned by occ_session_id:chat_1.'
     )
   })
 
   it('refuses self-abandon by a terminal handle, reissued pane, or resolved session before effects', async () => {
     const dispatchId = readyWorker()
     const pane = 'tab_worker:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
-    const orcaSessionId = parseOrcaSessionAddress('orca_session_id:worker_1')!
+    const occSessionId = parseOCCSessionAddress('occ_session_id:worker_1')!
     const session: OrchestrationSessionCaller = {
       address: 'term_worker',
       terminalHandle: 'term_worker',
       paneKey: pane,
-      orcaSessionId,
-      sessionId: orcaSessionId,
+      occSessionId,
+      sessionId: occSessionId,
       workspaceId: 'wt'
     }
     const callers: Partial<RpcContext>[] = [

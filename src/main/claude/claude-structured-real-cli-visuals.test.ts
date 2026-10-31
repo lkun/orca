@@ -30,7 +30,7 @@ describe.skipIf(!realClaudeAvailable)(suiteTitle, () => {
     "loads the visuals skill through OCC's launch and grants the chat folder",
     async () => {
       const claudeConfigDir = process.env.CLAUDE_CONFIG_DIR?.trim() || join(homedir(), '.claude')
-      const scratch = await mkdtemp(join(tmpdir(), 'orca-real-cli-visuals-'))
+      const scratch = await mkdtemp(join(tmpdir(), 'occ-real-cli-visuals-'))
       const cwd = join(scratch, 'workspace')
       const stateDirectory = join(scratch, 'state')
       const record = agentSessionRecordFixture({

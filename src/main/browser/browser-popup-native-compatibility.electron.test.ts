@@ -51,7 +51,7 @@ async function childPage(url: string): Promise<Page> {
 
 async function refreshStatus(): Promise<void> {
   const before = status().revision
-  await guest('route').evaluate('console.log("orca-popup-fixture:snapshot")')
+  await guest('route').evaluate('console.log("occ-popup-fixture:snapshot")')
   await expect.poll(() => status().revision).toBeGreaterThan(before)
 }
 
@@ -83,7 +83,7 @@ describe('hidden Chromium native popup request compatibility', () => {
           cookie: `synthetic_session=${name}`,
           proxied: name === 'route'
         })
-      await page.evaluate('console.log("orca-popup-fixture:snapshot")')
+      await page.evaluate('console.log("occ-popup-fixture:snapshot")')
       await expect
         .poll(() =>
           browser
@@ -103,7 +103,7 @@ describe('hidden Chromium native popup request compatibility', () => {
         document.title = 'Another hostile title'
       })
       if (name === 'route') {
-        await page.evaluate('console.log("orca-popup-fixture:snapshot")')
+        await page.evaluate('console.log("occ-popup-fixture:snapshot")')
       }
       await expect.poll(() => status().native.windows.at(-1)?.title).toBe(origin)
       expect(status().native.windows.at(-1)).toMatchObject({ fullscreen: false, focused: false })
@@ -384,7 +384,7 @@ describe('hidden Chromium native popup request compatibility', () => {
       })
       await child.locator('#fullscreen-probe').click()
       await (name === 'route'
-        ? page.evaluate('console.log("orca-popup-fixture:snapshot")')
+        ? page.evaluate('console.log("occ-popup-fixture:snapshot")')
         : child.evaluate('document.title="Second synthetic spoof"'))
       await expect.poll(() => status().native.windows.at(-1)?.title).toBe(targetOrigin)
       expect(status().native.windows.at(-1)).toMatchObject({ fullscreen: false, focused: false })
@@ -408,18 +408,18 @@ describe('hidden Chromium native popup request compatibility', () => {
           form.action = '/must-not-execute'
         }
       })
-      await page.evaluate((failure) => console.log(`orca-popup-fixture:fail-${failure}`), failure)
+      await page.evaluate((failure) => console.log(`occ-popup-fixture:fail-${failure}`), failure)
       const before = status().native.windows.length
       const receiptCount = receipts.length
       await page.locator('#post').click({ modifiers: ['Shift'] })
-      await page.evaluate('console.log("orca-popup-fixture:snapshot")')
+      await page.evaluate('console.log("occ-popup-fixture:snapshot")')
       await expect.poll(() => status().native.windows.length).toBe(before + 1)
       await expect.poll(() => status().native.windows.at(-1)?.closed).toBe(true)
       expect(
         receipts.slice(receiptCount).some((receipt) => receipt.path === '/must-not-execute')
       ).toBe(false)
       snapshots.push(status())
-      await page.evaluate('console.log("orca-popup-fixture:restore-authority")')
+      await page.evaluate('console.log("occ-popup-fixture:restore-authority")')
       await page.evaluate(() =>
         document
           .querySelector('meta[name=referrer]')
@@ -433,12 +433,12 @@ describe('hidden Chromium native popup request compatibility', () => {
     for (const failure of ['authority', 'webrtc', 'close']) {
       const path = `/adopted-${failure}`
       await page.locator('#link').evaluate((link, path) => link.setAttribute('href', path), path)
-      await page.evaluate((failure) => console.log(`orca-popup-fixture:fail-${failure}`), failure)
+      await page.evaluate((failure) => console.log(`occ-popup-fixture:fail-${failure}`), failure)
       const receiptCount = receipts.length
       await page.locator('#link').click()
       await new Promise((resolve) => setTimeout(resolve, 750))
       expect(receipts.slice(receiptCount).some((receipt) => receipt.path === path)).toBe(false)
-      await page.evaluate('console.log("orca-popup-fixture:restore-authority")')
+      await page.evaluate('console.log("occ-popup-fixture:restore-authority")')
     }
     // Control: once preparation passes, the same adopted link does load.
     const receiptCount = receipts.length
@@ -522,12 +522,12 @@ describe('hidden Chromium native popup request compatibility', () => {
     expect(status().native.windows.slice(-4)).toEqual(
       Array.from({ length: 4 }, () => expect.objectContaining({ closed: false, title: origin }))
     )
-    await page.evaluate('console.log("orca-popup-fixture:fence")')
+    await page.evaluate('console.log("occ-popup-fixture:fence")')
     await expect.poll(() => status().routeGranted).toBe(false)
     for (const child of children) {
       await expect.poll(() => child.isClosed()).toBe(true)
     }
-    await page.evaluate('console.log("orca-popup-fixture:grant")')
+    await page.evaluate('console.log("occ-popup-fixture:grant")')
     await expect.poll(() => status().routeGranted).toBe(true)
     expect(status().windowsHidden).toBe(true)
   })

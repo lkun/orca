@@ -21,7 +21,7 @@ afterEach(() => {
 
 /** A fake /proc with two pane processes among `others` untagged ones; returns the tool calls. */
 function runAgainst(others: number): { calls: number; stdout: string } {
-  root = mkdtempSync(join(tmpdir(), 'orca-guest-proc-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-guest-proc-'))
   const proc = join(root, 'proc')
   const entry = (pid: number, environ: string, comm?: string, cwd?: string) => {
     const dir = join(proc, String(pid))
@@ -33,8 +33,8 @@ function runAgainst(others: number): { calls: number; stdout: string } {
       symlinkSync(cwd, join(dir, 'cwd'))
     }
   }
-  entry(10, 'HOME=/h\0ORCA_PANE_KEY=tab:leaf\0', 'bash', '/home/a/deep')
-  entry(11, 'ORCA_PANE_KEY=tab:leaf\0', 'sleep', '/tmp')
+  entry(10, 'HOME=/h\0OCC_PANE_KEY=tab:leaf\0', 'bash', '/home/a/deep')
+  entry(11, 'OCC_PANE_KEY=tab:leaf\0', 'sleep', '/tmp')
   for (let pid = 1000; pid < 1000 + others; pid += 1) {
     entry(pid, 'HOME=/h\0PATH=/bin\0')
   }

@@ -1,10 +1,10 @@
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import { isStructuredWorkerHandle } from '../../../../../../shared/structured-worker-handle'
 import type { OrchestrationCallerIdentity } from '../../../../orchestration/orchestration-caller-identity'
 import type { OrchestrationDb } from '../../../../orchestration/db'
-import type { OrcaSessionId } from '../../../../../../shared/orca-session-address'
-import { formatOrcaSessionAddress } from '../../../../../../shared/orca-session-address'
+import type { OCCSessionId } from '../../../../../../shared/occ-session-address'
+import { formatOCCSessionAddress } from '../../../../../../shared/occ-session-address'
 import {
   admitChatAssignee,
   chatAssigneeOf,
@@ -14,7 +14,7 @@ import type { OrchestrationParty } from '../../../../orchestration/orchestration
 
 /** Before any effects, refuse coordinator self-assignment, foreign-workspace panes and terminals without agents. */
 export async function assertExplicitWorkerTerminalUsable(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   terminal: string
   from: string
   coordinator: OrchestrationCallerIdentity | null
@@ -56,7 +56,7 @@ export async function assertExplicitWorkerTerminalUsable(args: {
 
 /** A `--terminal` party: a terminal pane, or a chat named by its OCC session ID. */
 export async function assertExplicitWorkerUsable(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   terminal: OrchestrationParty
   from: string
@@ -71,22 +71,22 @@ export async function assertExplicitWorkerUsable(args: {
 
 /** The same refusals for a chat named by its OCC session ID: itself, unreachable, another worktree. */
 async function assertExplicitWorkerChatUsable(args: {
-  runtime: Pick<OrcaRuntimeService, 'ensureStructuredAgentSessionHost'>
+  runtime: Pick<OCCRuntimeService, 'ensureStructuredAgentSessionHost'>
   db: OrchestrationDb
-  chat: OrcaSessionId
+  chat: OCCSessionId
   coordinator: OrchestrationCallerIdentity | null
   resolvedWorktreeId: string | undefined
 }): Promise<void> {
   refuseChatSelfAssignment({
     sessionId: args.chat,
-    coordinatorSessionId: args.coordinator?.orcaSessionId,
+    coordinatorSessionId: args.coordinator?.occSessionId,
     remedy: 'Pass --terminal for a different agent, or omit it so worker-start creates one.'
   })
   const session = await admitChatAssignee(args.runtime, args.chat, args.db)
   if (session.location.workspaceId !== args.resolvedWorktreeId) {
     throw new OrchestrationError(
       'terminal_worktree_mismatch',
-      `${formatOrcaSessionAddress(args.chat)} does not belong to worktree ${args.resolvedWorktreeId}.`
+      `${formatOCCSessionAddress(args.chat)} does not belong to worktree ${args.resolvedWorktreeId}.`
     )
   }
 }

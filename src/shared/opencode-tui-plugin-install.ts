@@ -43,9 +43,9 @@ export function writeOpenCodeTuiPluginDirectory(
   const entry = join(dir, 'tui.js')
   // The 1.x TUI loader rejects a default object that also exposes server().
   const tuiSource =
-    source.includes('const ORCA_STATUS_AGENT = "opencode";') &&
+    source.includes('const OCC_STATUS_AGENT = "opencode";') &&
     source.includes('async function setupLegacyOpenCodeTui(')
-      ? `${source.replace(/^export default /m, 'const orcaServerPlugin = ')}\nconst { server: _orcaServerOnly, ...orcaTuiPlugin } = orcaServerPlugin;\nexport default { id: ${JSON.stringify(directoryName.replace(/-tui$/, ''))}, setup: setupOpenCode2Status, ...orcaTuiPlugin, tui: setupLegacyOpenCodeTui };\n`
+      ? `${source.replace(/^export default /m, 'const occServerPlugin = ')}\nconst { server: _occServerOnly, ...occTuiPlugin } = occServerPlugin;\nexport default { id: ${JSON.stringify(directoryName.replace(/-tui$/, ''))}, setup: setupOpenCode2Status, ...occTuiPlugin, tui: setupLegacyOpenCodeTui };\n`
       : source
   const isCurrent =
     ownership === 'canonical' ? isInstalledOpenCodePluginCurrent : isOverlayOpenCodePluginCurrent

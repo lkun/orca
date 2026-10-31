@@ -1,6 +1,6 @@
 import type { ConnectorCloud } from '../connector-cloud/connector-cloud'
 import { createDesktopConnectorCloud } from '../connector-cloud/connector-cloud-install'
-import { getProfileUserDataPath } from '../orca-profiles/profile-storage-paths'
+import { getProfileUserDataPath } from '../occ-profiles/profile-storage-paths'
 import { mainProcessState as state } from './main-process-state'
 
 // Desktop only: the connector acts as the signed-in OCC account, which `occ serve` does not have yet.

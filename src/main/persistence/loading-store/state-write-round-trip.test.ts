@@ -15,7 +15,7 @@ import type { WorkspaceSessionState } from '../../../shared/workspace-session-st
 vi.mock('electron', () => ({
   app: {
     getPath: () => tmpdir(),
-    getName: () => 'orca-test',
+    getName: () => 'occ-test',
     getVersion: () => '0.0.0-test',
     isPackaged: false,
     on: () => {},
@@ -77,7 +77,7 @@ describe('persisted state survives a save/load round trip', () => {
     'drops retired setup location %s on update and disk serialization',
     (setupScriptLaunchMode) => {
       const dataFile = join(
-        realpathSync(mkdtempSync(join(tmpdir(), 'orca-retired-setup-location-'))),
+        realpathSync(mkdtempSync(join(tmpdir(), 'occ-retired-setup-location-'))),
         'state.json'
       )
       const written = openStore(dataFile)
@@ -94,7 +94,7 @@ describe('persisted state survives a save/load round trip', () => {
 
   it('keeps a #22551 settings-slot OpenCode Go key on disk until its new owner has it', () => {
     const dataFile = join(
-      realpathSync(mkdtempSync(join(tmpdir(), 'orca-legacy-opencode-go-key-'))),
+      realpathSync(mkdtempSync(join(tmpdir(), 'occ-legacy-opencode-go-key-'))),
       'state.json'
     )
     const first = openStore(dataFile)
@@ -156,8 +156,8 @@ describe('persisted state survives a save/load round trip', () => {
 
   it('reloads settings, secrets and both session partitions unchanged', () => {
     const dataFile = join(
-      realpathSync(mkdtempSync(join(tmpdir(), 'orca-store-round-trip-'))),
-      'orca-data.json'
+      realpathSync(mkdtempSync(join(tmpdir(), 'occ-store-round-trip-'))),
+      'occ-data.json'
     )
     const written = openStore(dataFile)
     written.updateSettings({
@@ -182,7 +182,7 @@ describe('persisted state survives a save/load round trip', () => {
     expect(Buffer.from(onDisk.settings.opencodeSessionCookie, 'base64').toString('utf8')).toContain(
       'cookie-é-value'
     )
-    expect(bytes.toString('utf8')).not.toContain('orca-secret-slot-')
+    expect(bytes.toString('utf8')).not.toContain('occ-secret-slot-')
 
     const reloaded = openStore(dataFile)
     expect(reloaded.getSettings().opencodeSessionCookie).toBe(before.settings.opencodeSessionCookie)

@@ -3,9 +3,9 @@ import {
   getEphemeralVmRecipeCheckoutModeFailure,
   getEphemeralVmRecipeResultSchemaVersion
 } from './ephemeral-vm-recipe-checkout-mode'
-import type { OrcaVmRecipe } from './orca-yaml-hook-types'
+import type { OCCVmRecipe } from './occ-yaml-hook-types'
 
-const defaultRecipe: OrcaVmRecipe = {
+const defaultRecipe: OCCVmRecipe = {
   id: 'cloud-sandbox',
   name: 'Cloud Sandbox',
   create: './create.sh'

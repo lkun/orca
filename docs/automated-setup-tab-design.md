@@ -1,12 +1,12 @@
 # Automated workspace setup: dedicated Setup tab
 
-Status: design converged; implementation, local validation, and independent source review complete. Exact-head CI and merge authorization are tracked by [PR #29819](https://github.com/stablyai/orca/pull/29819).
+Status: design converged; implementation, local validation, and independent source review complete. Exact-head CI and merge authorization are tracked by [PR #29819](https://github.com/stablyai/occ/pull/29819).
 
 ## Decision and boundary
 
 Run terminal-backed automated workspace setup in its own **Setup** tab using the existing new-tab path. Remove automated setup split placement, its preference/control, and its one-shot split/geometry state. Keep manual splits, issue-command splits, generic startup consumption, saved layouts, default-tab policy, and setup-to-agent sequencing.
 
-This is PR 2. [PR 1 (#29810)](https://github.com/stablyai/orca/pull/29810) separately fixed background native-chat setup provisioning and merged first as `7f9b51cf5cc1de8769baa646b40c0c93af76be81`. This branch was rebased onto that exact merge before final review and relevant checks. Parent chat-publication and sibling-reattachment fixes, broad terminal ownership, corrupt saved-binding repair, and retries are outside this PR.
+This is PR 2. [PR 1 (#29810)](https://github.com/stablyai/occ/pull/29810) separately fixed background native-chat setup provisioning and merged first as `7f9b51cf5cc1de8769baa646b40c0c93af76be81`. This branch was rebased onto that exact merge before final review and relevant checks. Parent chat-publication and sibling-reattachment fixes, broad terminal ownership, corrupt saved-binding repair, and retries are outside this PR.
 
 ## Evidence and severity
 
@@ -53,7 +53,7 @@ Changing only the default retains legacy split behavior and lifecycle complexity
 
 Before implementation: Astra round 1 found no demonstrated unresolved P0/P1 in this scoped design, with concrete route/settings evidence and no known smaller adequate approach. Round 2 confirms the corrected local-IPC label, historical settings evidence, unchanged first-terminal delivery and strict PR 1/publication/reattachment boundary. The independent report is `docs/automated-setup-tab-astra-review.md`; implementation review remains separate.
 
-Meaningful automated coverage: renderer/native-chat/terminal/setup-only/default-tab/background actual requests, host/remote no-split command/env preservation, sequencing/failure fallback, old-host returned layout/no replay, remount one-shot startup, issue-command/manual split/restore/purge regression intent. Run relevant tests with `ORCA_BACKGROUND_LAUNCH=1`, node/web typechecks, changed-file code-quality and format checks. Preserve platform-specific runner tests; report platforms actually exercised.
+Meaningful automated coverage: renderer/native-chat/terminal/setup-only/default-tab/background actual requests, host/remote no-split command/env preservation, sequencing/failure fallback, old-host returned layout/no replay, remount one-shot startup, issue-command/manual split/restore/purge regression intent. Run relevant tests with `OCC_BACKGROUND_LAUNCH=1`, node/web typechecks, changed-file code-quality and format checks. Preserve platform-specific runner tests; report platforms actually exercised.
 
 Rendered checks require rebuilt hidden Electron plus Playwright CDP; inspect tab count/selection/setup output and retained manual splits, with before/after evidence. The installed agent-browser CLI provides the version-matched Electron skill (`agent-browser skills get core`, then `agent-browser skills get electron`), now read; use it alongside Playwright CDP. The coordinator serialized the shared native-runtime lease after an initial local rebuild failure; the supported rebuilt hidden-app checks subsequently passed.
 

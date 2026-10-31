@@ -1,5 +1,5 @@
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
 const NOTE_LINE = 6
@@ -9,7 +9,7 @@ const NOTE_BODY =
   'This saved note is intentionally one long paragraph so it wraps across several visual lines in narrow and wide diff layouts without adding newline characters to the initial zone estimate.'
 
 async function assertCardClearsFollowingLine(page: Page): Promise<void> {
-  const card = page.locator('.orca-diff-comment-card').first()
+  const card = page.locator('.occ-diff-comment-card').first()
   const followingLine = page
     .locator('.modified-in-monaco-diff-editor .view-lines .view-line')
     .filter({ hasText: FOLLOWING_LINE })
@@ -42,17 +42,17 @@ async function attachDiffScreenshot(page: Page, testInfo: TestInfo, name: string
 }
 
 test.describe('Diff note layout', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
   })
 
   test('saved notes reserve their rendered height in both diff layouts', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    await orcaPage.setViewportSize({ width: 1200, height: 800 })
-    const worktreeId = await waitForActiveWorktree(orcaPage)
-    const relativePath = await orcaPage.evaluate(async (wId) => {
+    await occPage.setViewportSize({ width: 1200, height: 800 })
+    const worktreeId = await waitForActiveWorktree(occPage)
+    const relativePath = await occPage.evaluate(async (wId) => {
       const store = window.__store
       if (!store) {
         throw new Error('window.__store is not available')
@@ -79,7 +79,7 @@ test.describe('Diff note layout', () => {
       return relative
     }, worktreeId)
 
-    const added = await orcaPage.evaluate(
+    const added = await occPage.evaluate(
       ({ wId, filePath, lineNumber, body }) =>
         window.__store?.getState().addDiffComment({
           worktreeId: wId,
@@ -93,7 +93,7 @@ test.describe('Diff note layout', () => {
     )
     expect(added, 'addDiffComment returned null').not.toBeNull()
 
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ wId, filePath }) => {
         const state = window.__store?.getState()
         const worktree = Object.values(state?.worktreesByRepo ?? {})
@@ -114,15 +114,15 @@ test.describe('Diff note layout', () => {
       { wId: worktreeId, filePath: relativePath }
     )
 
-    await expect(orcaPage.locator('button:has(svg.lucide-rows-2)')).toBeVisible()
-    await assertCardClearsFollowingLine(orcaPage)
-    await attachDiffScreenshot(orcaPage, testInfo, 'side-by-side-diff-note-layout')
+    await expect(occPage.locator('button:has(svg.lucide-rows-2)')).toBeVisible()
+    await assertCardClearsFollowingLine(occPage)
+    await attachDiffScreenshot(occPage, testInfo, 'side-by-side-diff-note-layout')
 
-    await orcaPage.evaluate(() =>
+    await occPage.evaluate(() =>
       window.__store?.getState().updateSettings({ diffDefaultView: 'inline' })
     )
-    await expect(orcaPage.locator('button:has(svg.lucide-columns-2)')).toBeVisible()
-    await assertCardClearsFollowingLine(orcaPage)
-    await attachDiffScreenshot(orcaPage, testInfo, 'inline-diff-note-layout')
+    await expect(occPage.locator('button:has(svg.lucide-columns-2)')).toBeVisible()
+    await assertCardClearsFollowingLine(occPage)
+    await attachDiffScreenshot(occPage, testInfo, 'inline-diff-note-layout')
   })
 })

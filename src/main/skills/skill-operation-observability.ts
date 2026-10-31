@@ -40,7 +40,7 @@ type SkillPhaseStart = {
 
 type SkillPhaseOutcome = {
   status?: 'complete' | 'partial' | 'installed' | 'unchanged' | 'removed' | 'skipped' | 'failed'
-  errorCategory?: string
+  errocctegory?: string
   fileCount?: number
   totalBytes?: number
   compressedBytes?: number
@@ -109,7 +109,7 @@ function setOutcome(span: ActiveSpan, outcome: SkillPhaseOutcome): void {
   for (const [key, value] of Object.entries(outcome)) {
     span.setAttribute(
       key,
-      key === 'errorCategory' && typeof value === 'string'
+      key === 'errocctegory' && typeof value === 'string'
         ? safeLabel(value, 'skill-operation-unknown')
         : typeof value === 'number'
           ? boundedNumber(value, key.endsWith('Bytes') ? MAX_OBSERVED_BYTES : MAX_OBSERVED_COUNT)
@@ -141,7 +141,7 @@ export function startSkillPhaseOperation(input: SkillPhaseStart): SkillPhaseOper
     fail(error) {
       const failure = failureLabel(error)
       span.setAttribute('status', failure.category)
-      span.setAttribute('errorCategory', failure.code)
+      span.setAttribute('errocctegory', failure.code)
       if (failure.category === 'cancelled') {
         span.interrupt(failure.code)
       } else {
@@ -176,7 +176,7 @@ function recordPlacement(span: ActiveSpan, placement: SkillPlacementResult): voi
     provider: safeLabel(placement.provider, 'unknown'),
     topology: placement.topology,
     status: placement.status,
-    errorCategory: safeLabel(placement.errorCategory, 'none')
+    errocctegory: safeLabel(placement.errocctegory, 'none')
   })
 }
 
@@ -211,9 +211,9 @@ export function startSkillInstallOperation(
         recordPlacement(span, placement)
       }
       if (result.status === 'cancelled') {
-        span.interrupt(safeLabel(result.errorCategory, 'skill-install-cancelled'))
+        span.interrupt(safeLabel(result.errocctegory, 'skill-install-cancelled'))
       } else if (result.status === 'failed') {
-        span.fail(safeLabel(result.errorCategory, 'skill-install-failed'))
+        span.fail(safeLabel(result.errocctegory, 'skill-install-failed'))
       } else {
         span.end()
       }
@@ -221,7 +221,7 @@ export function startSkillInstallOperation(
     fail(error) {
       const failure = failureLabel(error, 'skill-install-unknown')
       span.setAttribute('status', failure.category)
-      span.setAttribute('errorCategory', failure.code)
+      span.setAttribute('errocctegory', failure.code)
       if (failure.category === 'cancelled') {
         span.interrupt(failure.code)
       } else {
@@ -254,7 +254,7 @@ export function startSkillBundleInstallOperation(
       for (const [key, value] of Object.entries(summary.attributes)) {
         span.setAttribute(key, boundedNumber(value))
       }
-      for (const [category, count] of summary.errorCategories) {
+      for (const [category, count] of summary.errocctegories) {
         span.addEvent('skill.error-category', {
           category: safeLabel(category, 'skill-bundle-install-unknown'),
           count: boundedNumber(count)
@@ -271,7 +271,7 @@ export function startSkillBundleInstallOperation(
     fail(error) {
       const failure = failureLabel(error, 'skill-bundle-install-unknown')
       span.setAttribute('status', failure.category)
-      span.setAttribute('errorCategory', failure.code)
+      span.setAttribute('errocctegory', failure.code)
       if (failure.category === 'cancelled') {
         span.interrupt(failure.code)
       } else {

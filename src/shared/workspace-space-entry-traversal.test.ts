@@ -244,7 +244,7 @@ describe('scanWorkspaceSpaceEntryTree', () => {
   // Unlike the tests above, these exercise the production byte cap across checkout depths.
   describe('capacity at the production default limits', () => {
     // The regression appeared for checkout paths longer than about 58 characters.
-    const DEEP_ROOT = '/Users/octocat/projects/orca/.claude/worktrees/wf_d39acf3c-e7d-2'
+    const DEEP_ROOT = '/Users/octocat/projects/occ/.claude/worktrees/wf_d39acf3c-e7d-2'
 
     function scanAtDefaults(
       rootPath: string,

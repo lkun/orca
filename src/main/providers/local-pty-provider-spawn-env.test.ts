@@ -47,7 +47,7 @@ vi.mock('fs', () => ({
 
 vi.mock('electron', () => ({
   app: {
-    getPath: vi.fn(() => '/tmp/orca-user-data')
+    getPath: vi.fn(() => '/tmp/occ-user-data')
   }
 }))
 
@@ -164,14 +164,14 @@ describe('LocalPtyProvider', () => {
         rows: 24,
         cwd: 'C:\\repo',
         env: {
-          ORCA_AGENT_TEAMS_TEAM_ID: 'team-test',
-          ORCA_PATH_ROOT: 'C:\\Users\\orca\\AppData\\Local',
-          PATH: '%orca_path_root%\\agy\\bin;C:\\Windows'
+          OCC_AGENT_TEAMS_TEAM_ID: 'team-test',
+          OCC_PATH_ROOT: 'C:\\Users\\occ\\AppData\\Local',
+          PATH: '%occ_path_root%\\agy\\bin;C:\\Windows'
         }
       })
 
       expect(spawnMock.mock.calls.at(-1)?.[2].env.PATH).toBe(
-        'C:\\Users\\orca\\AppData\\Local\\agy\\bin;C:\\Windows'
+        'C:\\Users\\occ\\AppData\\Local\\agy\\bin;C:\\Windows'
       )
     })
 
@@ -217,7 +217,7 @@ describe('LocalPtyProvider', () => {
 
     it.each([
       // Exported fish_history can leak the launching workspace session even when isolation is off (STA-4682).
-      ['an inherited OCC session', 'orca_abc123', undefined],
+      ['an inherited OCC session', 'occ_abc123', undefined],
       ['a user value', 'mine', 'mine']
     ])('history isolation off: %s', async (_kind, inherited, expected) => {
       const previous = process.env.fish_history
@@ -332,8 +332,8 @@ describe('LocalPtyProvider', () => {
       provider.configure({
         buildSpawnEnv: (_id, env) => {
           env.TERM_PROGRAM = 'OCC'
-          env.ORCA_STALE_TEST_ENV = '/tmp/orca-stale'
-          env.PATH = `/tmp/orca-stale:${env.PATH ?? ''}`
+          env.OCC_STALE_TEST_ENV = '/tmp/occ-stale'
+          env.PATH = `/tmp/occ-stale:${env.PATH ?? ''}`
           return env
         }
       })
@@ -343,18 +343,18 @@ describe('LocalPtyProvider', () => {
         rows: 24,
         env: {
           TERM: 'screen-256color',
-          PATH: '/tmp/orca-agent-teams-bin:/usr/bin',
-          ORCA_AGENT_TEAMS_TEAM_ID: 'team-test'
+          PATH: '/tmp/occ-agent-teams-bin:/usr/bin',
+          OCC_AGENT_TEAMS_TEAM_ID: 'team-test'
         },
-        envToDelete: ['TERM_PROGRAM', 'ORCA_STALE_TEST_ENV']
+        envToDelete: ['TERM_PROGRAM', 'OCC_STALE_TEST_ENV']
       })
 
       const spawnCall = spawnMock.mock.calls.at(-1)!
       expect(spawnCall[2].name).toBe('screen-256color')
       expect(spawnCall[2].env.TERM).toBe('screen-256color')
-      expect(spawnCall[2].env.PATH.split(':')[0]).toBe('/tmp/orca-agent-teams-bin')
+      expect(spawnCall[2].env.PATH.split(':')[0]).toBe('/tmp/occ-agent-teams-bin')
       expect(spawnCall[2].env.TERM_PROGRAM).toBeUndefined()
-      expect(spawnCall[2].env.ORCA_STALE_TEST_ENV).toBeUndefined()
+      expect(spawnCall[2].env.OCC_STALE_TEST_ENV).toBeUndefined()
     })
 
     it('does not re-promote a legacy attribution path for Agent Teams', async () => {
@@ -362,8 +362,8 @@ describe('LocalPtyProvider', () => {
         cols: 80,
         rows: 24,
         env: {
-          PATH: '/tmp/orca-terminal-attribution/posix:/usr/bin',
-          ORCA_AGENT_TEAMS_TEAM_ID: 'team-test'
+          PATH: '/tmp/occ-terminal-attribution/posix:/usr/bin',
+          OCC_AGENT_TEAMS_TEAM_ID: 'team-test'
         }
       })
 
@@ -422,15 +422,15 @@ describe('LocalPtyProvider', () => {
         PATH: process.env.PATH,
         LD_LIBRARY_PATH: process.env.LD_LIBRARY_PATH
       }
-      process.env.APPIMAGE = '/data/apps/orca.appimage'
-      process.env.APPDIR = '/tmp/.mount_orca123'
-      process.env.ARGV0 = '/data/apps/orca.appimage'
+      process.env.APPIMAGE = '/data/apps/occ.appimage'
+      process.env.APPDIR = '/tmp/.mount_occ123'
+      process.env.ARGV0 = '/data/apps/occ.appimage'
       process.env.OWD = '/home/user/project'
-      process.env.APPIMAGE_LIBRARY_PATH = '/tmp/.mount_orca123/usr/lib'
-      process.env.PATH = ['/tmp/.mount_orca123', '/tmp/.mount_orca123/usr/sbin', '/usr/bin'].join(
+      process.env.APPIMAGE_LIBRARY_PATH = '/tmp/.mount_occ123/usr/lib'
+      process.env.PATH = ['/tmp/.mount_occ123', '/tmp/.mount_occ123/usr/sbin', '/usr/bin'].join(
         delimiter
       )
-      process.env.LD_LIBRARY_PATH = ['/tmp/.mount_orca123/usr/lib', '/opt/audio/lib'].join(
+      process.env.LD_LIBRARY_PATH = ['/tmp/.mount_occ123/usr/lib', '/opt/audio/lib'].join(
         delimiter
       )
 
@@ -522,8 +522,8 @@ describe('LocalPtyProvider', () => {
     it('uses shell wrapper when MiMo home must survive shell startup', async () => {
       provider.configure({
         buildSpawnEnv: (_id, env) => {
-          env.MIMOCODE_CONFIG_DIR = '/tmp/orca-mimocode-overlay'
-          env.ORCA_MIMOCODE_CONFIG_DIR = '/tmp/orca-mimocode-overlay'
+          env.MIMOCODE_CONFIG_DIR = '/tmp/occ-mimocode-overlay'
+          env.OCC_MIMOCODE_CONFIG_DIR = '/tmp/occ-mimocode-overlay'
           return env
         }
       })
@@ -533,7 +533,7 @@ describe('LocalPtyProvider', () => {
       const spawnCall = spawnMock.mock.calls.at(-1)!
       expect(spawnCall[1]).toEqual(['-l'])
       expect(spawnCall[2].env.ZDOTDIR).toMatch(/shell-ready[\\/]zsh/)
-      expect(spawnCall[2].env.ORCA_SHELL_FEATURES).not.toContain('ready')
+      expect(spawnCall[2].env.OCC_SHELL_FEATURES).not.toContain('ready')
     })
 
     it('promotes the agent-teams shim onto the Windows `Path` spelling', async () => {
@@ -542,7 +542,7 @@ describe('LocalPtyProvider', () => {
         buildSpawnEnv: (_id, env) => {
           // Why: host env collapses Windows PATH onto `Path` and prepends its own shim dir.
           delete env.PATH
-          env.Path = `/tmp/orca-stale:${env.Path ?? ''}`
+          env.Path = `/tmp/occ-stale:${env.Path ?? ''}`
           return env
         }
       })
@@ -551,31 +551,31 @@ describe('LocalPtyProvider', () => {
         cols: 80,
         rows: 24,
         env: {
-          Path: '/tmp/orca-agent-teams-bin:/usr/bin',
-          ORCA_AGENT_TEAMS_TEAM_ID: 'team-test'
+          Path: '/tmp/occ-agent-teams-bin:/usr/bin',
+          OCC_AGENT_TEAMS_TEAM_ID: 'team-test'
         }
       })
 
       const spawnEnv = spawnMock.mock.calls.at(-1)![2].env
       expect(Object.keys(spawnEnv).filter((key) => /^path$/i.test(key))).toEqual(['Path'])
-      expect(spawnEnv.Path.split(':')[0]).toBe('/tmp/orca-agent-teams-bin')
+      expect(spawnEnv.Path.split(':')[0]).toBe('/tmp/occ-agent-teams-bin')
     })
 
     it('does not inherit parent OCC pane identity when caller omits pane env', async () => {
       const saved = {
-        ORCA_PANE_KEY: process.env.ORCA_PANE_KEY,
-        ORCA_TAB_ID: process.env.ORCA_TAB_ID,
-        ORCA_WORKTREE_ID: process.env.ORCA_WORKTREE_ID,
-        ORCA_ORCAD_MANAGED_ACTIVATION_ROOT: process.env.ORCA_ORCAD_MANAGED_ACTIVATION_ROOT,
-        ORCA_REMOTE_VIEWER_CLIPBOARD: process.env.ORCA_REMOTE_VIEWER_CLIPBOARD,
-        ORCA_ORCAD_IDLE_TIMEOUT_MS: process.env.ORCA_ORCAD_IDLE_TIMEOUT_MS
+        OCC_PANE_KEY: process.env.OCC_PANE_KEY,
+        OCC_TAB_ID: process.env.OCC_TAB_ID,
+        OCC_WORKTREE_ID: process.env.OCC_WORKTREE_ID,
+        OCC_OCCD_MANAGED_ACTIVATION_ROOT: process.env.OCC_OCCD_MANAGED_ACTIVATION_ROOT,
+        OCC_REMOTE_VIEWER_CLIPBOARD: process.env.OCC_REMOTE_VIEWER_CLIPBOARD,
+        OCC_OCCD_IDLE_TIMEOUT_MS: process.env.OCC_OCCD_IDLE_TIMEOUT_MS
       }
-      process.env.ORCA_ORCAD_MANAGED_ACTIVATION_ROOT = '/home/u/.orca-remote/.activation'
-      process.env.ORCA_ORCAD_IDLE_TIMEOUT_MS = '300000'
-      process.env.ORCA_REMOTE_VIEWER_CLIPBOARD = '1'
-      process.env.ORCA_PANE_KEY = 'parent-tab:parent-leaf'
-      process.env.ORCA_TAB_ID = 'parent-tab'
-      process.env.ORCA_WORKTREE_ID = 'parent-worktree'
+      process.env.OCC_OCCD_MANAGED_ACTIVATION_ROOT = '/home/u/.occ-remote/.activation'
+      process.env.OCC_OCCD_IDLE_TIMEOUT_MS = '300000'
+      process.env.OCC_REMOTE_VIEWER_CLIPBOARD = '1'
+      process.env.OCC_PANE_KEY = 'parent-tab:parent-leaf'
+      process.env.OCC_TAB_ID = 'parent-tab'
+      process.env.OCC_WORKTREE_ID = 'parent-worktree'
 
       try {
         await provider.spawn({ cols: 80, rows: 24 })
@@ -590,32 +590,32 @@ describe('LocalPtyProvider', () => {
       }
 
       const spawnCall = spawnMock.mock.calls.at(-1)!
-      expect(spawnCall[2].env.ORCA_PANE_KEY).toBeUndefined()
-      expect(spawnCall[2].env.ORCA_TAB_ID).toBeUndefined()
-      expect(spawnCall[2].env.ORCA_WORKTREE_ID).toBeUndefined()
-      expect(spawnCall[2].env.ORCA_ORCAD_MANAGED_ACTIVATION_ROOT).toBeUndefined()
-      expect(spawnCall[2].env.ORCA_REMOTE_VIEWER_CLIPBOARD).toBeUndefined()
-      expect(spawnCall[2].env.ORCA_ORCAD_IDLE_TIMEOUT_MS).toBeUndefined()
+      expect(spawnCall[2].env.OCC_PANE_KEY).toBeUndefined()
+      expect(spawnCall[2].env.OCC_TAB_ID).toBeUndefined()
+      expect(spawnCall[2].env.OCC_WORKTREE_ID).toBeUndefined()
+      expect(spawnCall[2].env.OCC_OCCD_MANAGED_ACTIVATION_ROOT).toBeUndefined()
+      expect(spawnCall[2].env.OCC_REMOTE_VIEWER_CLIPBOARD).toBeUndefined()
+      expect(spawnCall[2].env.OCC_OCCD_IDLE_TIMEOUT_MS).toBeUndefined()
     })
 
     it('preserves explicit child OCC pane identity over parent env', async () => {
       const saved = {
-        ORCA_PANE_KEY: process.env.ORCA_PANE_KEY,
-        ORCA_TAB_ID: process.env.ORCA_TAB_ID,
-        ORCA_WORKTREE_ID: process.env.ORCA_WORKTREE_ID
+        OCC_PANE_KEY: process.env.OCC_PANE_KEY,
+        OCC_TAB_ID: process.env.OCC_TAB_ID,
+        OCC_WORKTREE_ID: process.env.OCC_WORKTREE_ID
       }
-      process.env.ORCA_PANE_KEY = 'parent-tab:parent-leaf'
-      process.env.ORCA_TAB_ID = 'parent-tab'
-      process.env.ORCA_WORKTREE_ID = 'parent-worktree'
+      process.env.OCC_PANE_KEY = 'parent-tab:parent-leaf'
+      process.env.OCC_TAB_ID = 'parent-tab'
+      process.env.OCC_WORKTREE_ID = 'parent-worktree'
 
       try {
         await provider.spawn({
           cols: 80,
           rows: 24,
           env: {
-            ORCA_PANE_KEY: 'child-tab:child-leaf',
-            ORCA_TAB_ID: 'child-tab',
-            ORCA_WORKTREE_ID: 'child-worktree'
+            OCC_PANE_KEY: 'child-tab:child-leaf',
+            OCC_TAB_ID: 'child-tab',
+            OCC_WORKTREE_ID: 'child-worktree'
           }
         })
       } finally {
@@ -629,9 +629,9 @@ describe('LocalPtyProvider', () => {
       }
 
       const spawnCall = spawnMock.mock.calls.at(-1)!
-      expect(spawnCall[2].env.ORCA_PANE_KEY).toBe('child-tab:child-leaf')
-      expect(spawnCall[2].env.ORCA_TAB_ID).toBe('child-tab')
-      expect(spawnCall[2].env.ORCA_WORKTREE_ID).toBe('child-worktree')
+      expect(spawnCall[2].env.OCC_PANE_KEY).toBe('child-tab:child-leaf')
+      expect(spawnCall[2].env.OCC_TAB_ID).toBe('child-tab')
+      expect(spawnCall[2].env.OCC_WORKTREE_ID).toBe('child-worktree')
     })
   })
 })

@@ -3,7 +3,7 @@ import { act, create as createRenderer, type ReactTestRenderer } from 'react-tes
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { ReactNode } from 'react'
 import { getFoldSplit, type FoldSplit } from './fold-division'
-import type { ReservedRegions } from '../../modules/orca-reserved-regions/src'
+import type { ReservedRegions } from '../../modules/occ-reserved-regions/src'
 import type { EdgeInsets, Rect } from 'react-native-safe-area-context'
 
 const renderers = new Set<ReturnType<typeof createRenderer>>()

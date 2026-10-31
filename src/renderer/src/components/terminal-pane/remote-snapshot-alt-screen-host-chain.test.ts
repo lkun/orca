@@ -164,7 +164,7 @@ async function render(events: PaneEvent[]): Promise<Terminal> {
 }
 
 type HostModules = {
-  OrcaRuntimeService: new (store: null) => HostRuntime
+  OCCRuntimeService: new (store: null) => HostRuntime
   sendSnapshotFrames: (send: HostSendFrame, options: Record<string, unknown>) => unknown
   serializeBudgetedRequestedSnapshot: (
     runtime: HostRuntime,
@@ -176,8 +176,8 @@ type HostModules = {
 
 async function loadHostModules(): Promise<HostModules> {
   const [runtime, publication, flowControl] = await Promise.all([
-    vi.importActual<Pick<HostModules, 'OrcaRuntimeService'>>(
-      '../../../../main/runtime/orca-runtime'
+    vi.importActual<Pick<HostModules, 'OCCRuntimeService'>>(
+      '../../../../main/runtime/occ-runtime'
     ),
     vi.importActual<Pick<HostModules, 'sendSnapshotFrames' | 'serializeBudgetedRequestedSnapshot'>>(
       '../../../../main/runtime/rpc/methods/terminal/terminal-snapshot-publication'
@@ -187,7 +187,7 @@ async function loadHostModules(): Promise<HostModules> {
     )
   ])
   return {
-    OrcaRuntimeService: runtime.OrcaRuntimeService,
+    OCCRuntimeService: runtime.OCCRuntimeService,
     sendSnapshotFrames: publication.sendSnapshotFrames,
     serializeBudgetedRequestedSnapshot: publication.serializeBudgetedRequestedSnapshot,
     installMultiplexFlowControl: flowControl.installMultiplexFlowControl
@@ -202,13 +202,13 @@ async function publishHostRecovery(
   missed: string
 ): Promise<{ data: string; meta: PtyReplayDataMeta; published: HostSnapshot }> {
   const {
-    OrcaRuntimeService,
+    OCCRuntimeService,
     sendSnapshotFrames,
     serializeBudgetedRequestedSnapshot,
     installMultiplexFlowControl
   } = hostModules
 
-  const host = new OrcaRuntimeService(null)
+  const host = new OCCRuntimeService(null)
   host.setPtyController({
     write: () => true,
     kill: () => true,

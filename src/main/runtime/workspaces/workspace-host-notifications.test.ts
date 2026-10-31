@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import type { Repo } from '../../../shared/repo-types'
 import type { RuntimeClientEvent } from '../../../shared/runtime-client-events'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import type { RuntimeStore } from '../runtime-store-contract'
 import { partialRuntimeStore } from '../runtime-store-partial-fixture'
 
 function catalogEventsFor(repo: Repo): RuntimeClientEvent[] {
   const store: Pick<RuntimeStore, 'getRepos'> = { getRepos: () => [repo] }
-  const runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+  const runtime = new OCCRuntimeService(partialRuntimeStore(store))
   const events: RuntimeClientEvent[] = []
   runtime.onClientEvent((event) => events.push(event))
   runtime.notifyWorktreeCatalogChangedForRemoteClients(repo.id)

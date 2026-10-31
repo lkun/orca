@@ -1,7 +1,7 @@
 import { seededPermissionMode } from '../../../../shared/native-chat/input/native-chat-session-option-defaults'
 // Resolve the host launch identity, then commit an at-rest create or the compatible acquired path.
 
-import { assertAgentPromptRequestActive } from '../../orca-runtime-core'
+import { assertAgentPromptRequestActive } from '../../occ-runtime-core'
 import { AGENT_CHAT_PERMISSION_MODE_OPTION_ID } from '../../../../shared/agent-chat-permission-mode'
 import { refuse, AgentSessionRefusalError } from '../../../../shared/agent-session-wire-refusals'
 import { computeAgentSessionPayloadFingerprint } from '../../../../shared/agent-session-mutation-envelope'
@@ -22,14 +22,14 @@ import type {
 } from '../../../../shared/structured-agent-session-create'
 import { structuredAgentSessionOptionOverridesRefusal } from '../../../native-chat/agent-session-wire/structured-agent-session-options-read'
 import type { StructuredAgentSessionCreateOptions } from '../../../native-chat/agent-session-wire/structured-agent-session-create'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import {
   captureStructuredAgentCliSource,
   type StructuredAgentCliSourceEvidence
 } from '../../../native-chat/structured-agent-cli-source'
 import type { StructuredAgentId } from '../../../../shared/agent-session-provider-handle'
 import { resolveUncommittedStructuredCreate } from './structured-agent-session-precommit-refusal'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { structuredAgentSessionClosedBeforeCreate } from './structured-agent-session-close-before-create'
 import type { ChatTabPlacement } from '../../agent-session/agent-session-tab-layout'
 
@@ -72,7 +72,7 @@ export function structuredAgentSessionCreateIntentFingerprint(params: {
 
 /** Run throwing pre-commit work inside resolveUncommittedStructuredCreate so clients receive a no-effects refusal. */
 export async function prepareStructuredAgentSessionCreateForWorktree(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   /** Installs the host lazily; called at the same point the RPC handler always installed it. */
   ensureHost: () => Promise<StructuredAgentSessionHost>
   envelope: AgentSessionMutationEnvelope
@@ -169,7 +169,7 @@ export async function prepareStructuredAgentSessionCreateForWorktree(args: {
 
 /** The commit half. Past `attach`, a failure no longer proves the session does not exist. */
 export async function commitStructuredAgentSessionCreate(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   caller: StructuredAgentSessionCaller
   prepared: PreparedStructuredAgentSessionCreate
   activate: boolean
@@ -195,7 +195,7 @@ export async function commitStructuredAgentSessionCreate(args: {
         ? {
             // A chat closed while it was being made gets no tab to show before main closes it.
             publishTab: () =>
-              ORCA_LAYOUT_OWNER_IS_MAIN &&
+              OCC_LAYOUT_OWNER_IS_MAIN &&
               structuredAgentSessionClosedBeforeCreate(prepared.attachParams.envelope.sessionId)
                 ? Promise.resolve()
                 : args.runtime.publishStructuredAgentSessionTab({
@@ -221,7 +221,7 @@ export async function commitStructuredAgentSessionCreate(args: {
   }
   // A chat closed while it was being made gets no tab to show before main closes it.
   if (
-    ORCA_LAYOUT_OWNER_IS_MAIN &&
+    OCC_LAYOUT_OWNER_IS_MAIN &&
     structuredAgentSessionClosedBeforeCreate(result.value.sessionId)
   ) {
     return result
@@ -257,7 +257,7 @@ export async function commitStructuredAgentSessionCreate(args: {
 }
 
 export async function createStructuredAgentSessionForWorktree(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   ensureHost: () => Promise<StructuredAgentSessionHost>
   caller: StructuredAgentSessionCaller
   envelope: AgentSessionMutationEnvelope

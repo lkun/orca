@@ -3,7 +3,7 @@ import { encodePairingOffer } from '../../shared/pairing'
 import type { WslHostServerStop } from '../../shared/wsl-host-types'
 import type { WslHostDistroCandidate } from './wsl-host-distro-list'
 import type { WslHostConnector } from './wsl-host-service'
-import type { WslOrcadConnection } from './wsl-orcad-connection'
+import type { WslOCCdConnection } from './wsl-occd-connection'
 
 export const KEY = Buffer.alloc(32, 3).toString('base64')
 export const UBUNTU_ID = '0e3a7f2c-1b4d-4c5e-9f60-7a8b9c0d1e2f'
@@ -12,7 +12,7 @@ export function pairing(port: number, deviceToken = 'token-1', publicKeyB64 = KE
   return encodePairingOffer({ v: 2, endpoint: `ws://127.0.0.1:${port}`, deviceToken, publicKeyB64 })
 }
 
-export function connection(distro: string, port = 42000, token = 'token-1'): WslOrcadConnection {
+export function connection(distro: string, port = 42000, token = 'token-1'): WslOCCdConnection {
   return {
     distro,
     environmentId: `wsl:${distro.toLowerCase()}`,
@@ -27,12 +27,12 @@ export function connection(distro: string, port = 42000, token = 'token-1'): Wsl
 }
 
 export function makeConnector(distros: WslHostDistroCandidate[]) {
-  const active = new Map<string, WslOrcadConnection>()
+  const active = new Map<string, WslOCCdConnection>()
   // What WSL's running list says about the distro when its server isn't answering.
   const distro: { state: 'running' | 'stopped' | 'unavailable' } = { state: 'running' }
   const connector = {
     listDistros: vi.fn(async () => distros),
-    readOrcadPublicKey: vi.fn(async (_distro: string): Promise<string | null> => null),
+    readOCCdPublicKey: vi.fn(async (_distro: string): Promise<string | null> => null),
     connect: vi.fn(async (distro: string) => {
       const opened = connection(distro)
       active.set(distro.toLowerCase(), opened)

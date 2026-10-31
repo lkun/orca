@@ -14,7 +14,7 @@ import {
   agentSessionRecordFixture
 } from '../../shared/agent-session-record.test-fixture'
 import { createStore, closeTestStores, testState } from '../persistence/persistence-test-harness'
-import { initOrcaProfilePaths } from '../orca-profiles/profile-storage-paths'
+import { initOCCProfilePaths } from '../occ-profiles/profile-storage-paths'
 import { closeTestJournalHostDatabases } from '../native-chat/agent-session-journal/journal-host-database-test-support'
 import { getStructuredAgentSessionHost } from '../native-chat/agent-session-wire/structured-agent-session-registry'
 import {
@@ -22,7 +22,7 @@ import {
   CREATE_TEST_CALLER
 } from '../native-chat/agent-session-wire/structured-agent-session-create-test-fixture'
 import { seedTestAgentSessionRecordStore } from './agent-session-record-store-test-harness'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { withChatTabChanges } from './agent-session/agent-session-tab-layout'
 import { collectSavedStructuredAgentSessionIds } from './saved-structured-agent-session-restoration'
 import { chatTabCommandsSettled } from './session-layout-apply.test-fixture'
@@ -34,7 +34,7 @@ export const B = 'chat-b-0002',
 export let root: string
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-tab-authority-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-tab-authority-'))
   testState.dir = root
   vi.spyOn(console, 'warn').mockImplementation(() => undefined)
 })
@@ -47,7 +47,7 @@ afterEach(async () => {
   await rm(root, { recursive: true, force: true })
 })
 
-export class AuthorityRuntime extends OrcaRuntimeService {
+export class AuthorityRuntime extends OCCRuntimeService {
   protected override async refreshMobileSessionPtyRecords() {
     return new Set<string>()
   }
@@ -64,7 +64,7 @@ export async function authorityProfile(
   options: { visible?: string[]; records?: string[] } = {}
 ) {
   const profile = createStore()
-  initOrcaProfilePaths()
+  initOCCProfilePaths()
   const group = profile.createProjectGroup({
     name: 'Chats',
     parentPath: root,

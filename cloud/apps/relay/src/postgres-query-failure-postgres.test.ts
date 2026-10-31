@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
 import { openRelayDatabase, type RelayDatabase } from './database.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 describePostgres('real PostgreSQL query failure phases', () => {
@@ -26,7 +26,7 @@ describePostgres('real PostgreSQL query failure phases', () => {
     const log = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
     await expect(database.query('SELECT pg_sleep(0.2)')).rejects.toMatchObject({ code: '57014' })
     expect(JSON.parse(log.mock.calls[0]![0] as string)).toMatchObject({
-      event: 'orca_relay_postgres_query_failed',
+      event: 'occ_relay_postgres_query_failed',
       phase: 'execute',
       code: '57014',
       connectionTimeout: false,
@@ -55,7 +55,7 @@ describePostgres('real PostgreSQL query failure phases', () => {
         'timeout exceeded when trying to connect'
       )
       expect(JSON.parse(log.mock.calls[0]![0] as string)).toMatchObject({
-        event: 'orca_relay_postgres_query_failed',
+        event: 'occ_relay_postgres_query_failed',
         phase: 'acquire',
         code: 'unknown',
         connectionTimeout: true,

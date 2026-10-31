@@ -11,11 +11,11 @@ afterEach(() => {
   }
 })
 function fixture() {
-  const root = mkdtempSync(join(tmpdir(), 'orca-managed-wsl-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-managed-wsl-'))
   roots.push(root)
   const resourcesPath = join(root, 'resources with spaces')
   mkdirSync(join(resourcesPath, 'bin'), { recursive: true })
-  writeFileSync(join(resourcesPath, 'bin', 'orca.exe'), 'fixture')
+  writeFileSync(join(resourcesPath, 'bin', 'occ.exe'), 'fixture')
   return { isPackaged: true, resourcesPath, userDataPath: join(root, 'user data') }
 }
 

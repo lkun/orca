@@ -89,7 +89,7 @@ describe('composer goal mode', () => {
       if (goal) {
         act(() => hook.result.current.goalMode.interceptPick(vi.fn())(GOAL_ITEM))
       }
-      const token = '[Pasted text](orca-paste:00000000-0000-4000-8000-000000000000)'
+      const token = '[Pasted text](occ-paste:00000000-0000-4000-8000-000000000000)'
       type(token, 0)
       const id = '00000000-0000-4000-8000-000000000000'
       nativeChatPastedTextOperations.set(id, { scopeKey: SCOPE, text: 'original' })
@@ -277,7 +277,7 @@ describe('composer goal mode', () => {
   it('does not send while an image waits to be attached again', () => {
     const { hook, calls } = harness({
       draft: 'see the screenshot',
-      imageAttachments: [{ id: 'm1', path: '', unavailableName: 'orca-paste-1-ab.png' }]
+      imageAttachments: [{ id: 'm1', path: '', unavailableName: 'occ-paste-1-ab.png' }]
     })
     act(() => hook.result.current.send())
     expect(calls.sendStructured).not.toHaveBeenCalled()

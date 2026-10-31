@@ -19,7 +19,7 @@ const WSL_ENV: AppState['runtimeEnvironments'][number] = {
   runtimeId: null,
   preferredEndpointId: 'ws',
   endpoints: [],
-  orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
+  occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
 }
 
 const REPO: Repo = {

@@ -4,7 +4,7 @@ import { DatabaseSync } from 'node:sqlite'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { createDefaultLocalOrcaProfile } from '../../src/shared/orca-profiles'
+import { createDefaultLocalOCCProfile } from '../../src/shared/occ-profiles'
 import { seedDevProfile } from './dev-profile-seed.mjs'
 
 const roots = []
@@ -26,13 +26,13 @@ function hashTree(dir) {
 }
 
 function createSourceProfile() {
-  const root = mkdtempSync(path.join(tmpdir(), 'orca-seed-source-'))
+  const root = mkdtempSync(path.join(tmpdir(), 'occ-seed-source-'))
   roots.push(root)
-  const profile = createDefaultLocalOrcaProfile(0)
+  const profile = createDefaultLocalOCCProfile(0)
   const profileDir = path.join(root, 'profiles', profile.id)
   mkdirSync(profileDir, { recursive: true })
   writeFileSync(
-    path.join(root, 'orca-profile-index.json'),
+    path.join(root, 'occ-profile-index.json'),
     JSON.stringify({
       schemaVersion: 1,
       activeProfileId: profile.id,
@@ -62,14 +62,14 @@ describe('seedDevProfile', () => {
   it('copies durable profile domains and the account file without changing the source', async () => {
     const source = createSourceProfile()
     const before = hashTree(source)
-    const target = path.join(mkdtempSync(path.join(tmpdir(), 'orca-seed-target-')), 'profile')
+    const target = path.join(mkdtempSync(path.join(tmpdir(), 'occ-seed-target-')), 'profile')
     roots.push(path.dirname(target))
 
     await seedDevProfile({ sourceDir: source, targetDir: target, report: () => {} })
 
     expect(hashTree(source)).toBe(before)
     const seeded = JSON.parse(
-      readFileSync(path.join(target, 'profiles', 'local-default', 'orca-data.json'), 'utf8')
+      readFileSync(path.join(target, 'profiles', 'local-default', 'occ-data.json'), 'utf8')
     )
     expect(seeded).toEqual({
       repos: [{ id: 'repo-1', path: '/src/app' }],
@@ -84,21 +84,21 @@ describe('seedDevProfile', () => {
     ).toBe('{"ciphertext":"x"}')
     expect(readdirSync(target).sort()).toEqual([
       'occ-dev-seed.json',
-      'orca-profile-index.json',
+      'occ-profile-index.json',
       'profiles'
     ])
   })
 
   it('refuses to overwrite a profile that already has state', async () => {
     const source = createSourceProfile()
-    const target = mkdtempSync(path.join(tmpdir(), 'orca-seed-target-'))
+    const target = mkdtempSync(path.join(tmpdir(), 'occ-seed-target-'))
     roots.push(target)
-    writeFileSync(path.join(target, 'orca-profile-index.json'), '{"existing":true}')
+    writeFileSync(path.join(target, 'occ-profile-index.json'), '{"existing":true}')
 
     await expect(
       seedDevProfile({ sourceDir: source, targetDir: target, report: () => {} })
     ).rejects.toThrow('already has state')
-    expect(readFileSync(path.join(target, 'orca-profile-index.json'), 'utf8')).toBe(
+    expect(readFileSync(path.join(target, 'occ-profile-index.json'), 'utf8')).toBe(
       '{"existing":true}'
     )
   })

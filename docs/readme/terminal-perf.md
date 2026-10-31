@@ -10,15 +10,15 @@ PTY, scheduler or xterm changes.
 
 ```sh
 # Smaller suite: typing latency, foreground redraw, output scheduler, hidden TUI restore.
-ORCA_BACKGROUND_LAUNCH=1 pnpm test:e2e:terminal-perf
+OCC_BACKGROUND_LAUNCH=1 pnpm test:e2e:terminal-perf
 
 # Scale suite with JSON report, budget check and HTML report.
 npx electron-vite build --mode e2e
-ORCA_BACKGROUND_LAUNCH=1 SKIP_BUILD=1 pnpm test:e2e:terminal-perf:scale:report
+OCC_BACKGROUND_LAUNCH=1 SKIP_BUILD=1 pnpm test:e2e:terminal-perf:scale:report
 ```
 
 On Linux, wrap the commands in `xvfb-run --auto-servernum` to keep windows off
-your desktop. Do not set `ORCA_E2E_TERMINAL_PERF_XVFB` locally: it presents
+your desktop. Do not set `OCC_E2E_TERMINAL_PERF_XVFB` locally: it presents
 frames on a GitHub-hosted Xvfb display and throws anywhere else.
 
 Pass Playwright arguments after `--`, for example
@@ -27,12 +27,12 @@ Pass Playwright arguments after `--`, for example
 ## Outputs
 
 - `test-results/terminal-scale-perf-report.json`: the Playwright JSON report
-  (change with `--report <path>` or `ORCA_E2E_TERMINAL_PERF_REPORT_PATH`).
+  (change with `--report <path>` or `OCC_E2E_TERMINAL_PERF_REPORT_PATH`).
 - A summary table on stdout (`test:e2e:terminal-perf:summarize <report>`).
 - A budget check (`test:e2e:terminal-perf:check-report <report>`); budgets live
   in `config/scripts/terminal-perf-report-budgets.mjs`.
 - `test-results/terminal-perf-impact-report.html`
-  (`ORCA_E2E_TERMINAL_PERF_HTML_REPORT_PATH`).
+  (`OCC_E2E_TERMINAL_PERF_HTML_REPORT_PATH`).
 
 Compare reports from the base and candidate commits on the same machine; the
 absolute numbers depend on hardware and display.
@@ -41,13 +41,13 @@ absolute numbers depend on hardware and display.
 
 | Variable                                        | Default        |
 | ----------------------------------------------- | -------------- |
-| `ORCA_E2E_OPENCODE_SCALE_PANES`                 | `10,25,50,100` |
-| `ORCA_E2E_OPENCODE_SCALE_CROSS_WORKSPACE_PANES` | `10,25,50,100` |
-| `ORCA_E2E_OPENCODE_SCALE_PRESSURE_PANES`        | `25,50`        |
-| `ORCA_E2E_OPENCODE_SCALE_HIDDEN_PRESSURE_PANES` | `25`           |
-| `ORCA_E2E_OPENCODE_FRAME_COUNT`                 | `60`           |
-| `ORCA_E2E_OPENCODE_FRAME_INTERVAL_MS`           | spec default   |
-| `ORCA_E2E_OPENCODE_PRESSURE_OUTPUT_CHARS`       | spec default   |
+| `OCC_E2E_OPENCODE_SCALE_PANES`                 | `10,25,50,100` |
+| `OCC_E2E_OPENCODE_SCALE_CROSS_WORKSPACE_PANES` | `10,25,50,100` |
+| `OCC_E2E_OPENCODE_SCALE_PRESSURE_PANES`        | `25,50`        |
+| `OCC_E2E_OPENCODE_SCALE_HIDDEN_PRESSURE_PANES` | `25`           |
+| `OCC_E2E_OPENCODE_FRAME_COUNT`                 | `60`           |
+| `OCC_E2E_OPENCODE_FRAME_INTERVAL_MS`           | spec default   |
+| `OCC_E2E_OPENCODE_PRESSURE_OUTPUT_CHARS`       | spec default   |
 
 ## Run in CI
 

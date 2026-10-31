@@ -80,7 +80,7 @@ export function describeManagedBrowserExtension(
   }
 }
 
-function listForCaller(caller: BrowserExtensionCaller): chrome.management.ExtensionInfo[] {
+function listFoccller(caller: BrowserExtensionCaller): chrome.management.ExtensionInfo[] {
   const enabledIds = new Set(browserSessionRegistry.getEnabledExtensionIds(caller.browserProfileId))
   return getBrowserExtensionInstallStore()
     .list()
@@ -97,7 +97,7 @@ function requireManaged(
   caller: BrowserExtensionCaller,
   id: string
 ): chrome.management.ExtensionInfo {
-  const info = listForCaller(caller).find((entry) => entry.id === id)
+  const info = listFoccller(caller).find((entry) => entry.id === id)
   if (!info) {
     throw new BrowserExtensionApiError(`Failed to find extension with id ${id}.`)
   }
@@ -131,7 +131,7 @@ export function registerManagementNamespace(): void {
   registerBrowserExtensionNamespace('management', {
     permission: 'management',
     methods: {
-      getAll: defineBrowserExtensionMethod(z.tuple([]), listForCaller),
+      getAll: defineBrowserExtensionMethod(z.tuple([]), listFoccller),
       get: defineBrowserExtensionMethod(z.tuple([z.string()]), requireManaged),
       setEnabled: defineBrowserExtensionMethod(z.tuple([z.string(), z.boolean()]), setEnabled)
     },

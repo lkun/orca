@@ -1,8 +1,8 @@
 /** Escape Win32-OpenSSH’s session job so detached children survive disconnect. libuv does not request breakaway; the staged addon uses CreateProcessW.
- * Legacy relay scripts alone may fall back to WMI, which standard-user network logons deny; orcad has no fallback. */
+ * Legacy relay scripts alone may fall back to WMI, which standard-user network logons deny; occd has no fallback. */
 import { closeSync, openSync, readSync, renameSync, statSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
-import { quoteWindowsArgument } from '@orca/process-host/windows-command-line'
+import { quoteWindowsArgument } from '@occ/process-host/windows-command-line'
 import {
   formatWindowsBreakawayLaunchReport,
   WINDOWS_BREAKAWAY_ENV_FLAG,
@@ -15,10 +15,10 @@ import {
   type WindowsBreakawayLaunchContract,
   type WindowsBreakawayLaunchReport
 } from './windows-breakaway-launch'
-import { ORCAD_WINDOWS_PROCESS_TREE_FILENAME } from './orcad-artifacts'
+import { OCCD_WINDOWS_PROCESS_TREE_FILENAME } from './occd-artifacts'
 
 /** Both bundles stage the addon under this name beside their entry script. */
-const WINDOWS_PROCESS_TREE_ADDON = `./${ORCAD_WINDOWS_PROCESS_TREE_FILENAME}`
+const WINDOWS_PROCESS_TREE_ADDON = `./${OCCD_WINDOWS_PROCESS_TREE_FILENAME}`
 /** The kept previous log is its tail, so a crash loop cannot grow it without bound. */
 export const PREVIOUS_STDERR_LOG_MAX_BYTES = 1024 * 1024
 

@@ -11,7 +11,7 @@ import type {
   AgentSessionSendResult
 } from '../../../shared/agent-session-wire'
 import { QueuedMessageNotConsumableError } from '../agent-session-journal/queued-message-consume-error'
-import { refusingNewerOrcaJournal } from '../agent-session-journal/journal-open-failure'
+import { refusingNewerOCCJournal } from '../agent-session-journal/journal-open-failure'
 import {
   journalRowReceiptResult,
   type MutationPlan
@@ -64,7 +64,7 @@ export function mutateQueued<TValue>(
     context,
     caller,
     envelope,
-    { ...plan, run: (ctx) => refusingNewerOrcaJournal(plan.run(ctx)) },
+    { ...plan, run: (ctx) => refusingNewerOCCJournal(plan.run(ctx)) },
     openForWrite(context, envelope)
   )
 }

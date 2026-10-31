@@ -25,7 +25,7 @@ function storeWith(state: Parameters<typeof seedStore>[1]) {
         runtimeId: null,
         preferredEndpointId: 'ws',
         endpoints: [],
-        orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
+        occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
       },
       {
         id: 'ssh-box',
@@ -63,7 +63,7 @@ describe('selectWslHostsWithVisibleWork', () => {
           ...store.getState().runtimeEnvironments[0],
           id: 'wsl:debian',
           name: 'Debian (WSL)',
-          orcadDeployment: { kind: 'wsl', distro: 'Debian', localPort: 42001, remotePort: 6768 }
+          occdDeployment: { kind: 'wsl', distro: 'Debian', localPort: 42001, remotePort: 6768 }
         }
       ],
       repos: [

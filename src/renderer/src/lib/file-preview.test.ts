@@ -573,7 +573,7 @@ describe('convertBrowserPageToWorkspaceDoc', () => {
 // Web clients cannot host desktop preview webviews; hide the action instead of creating an unusable tab (#22618).
 describe('document previews in a paired web client', () => {
   it('hides Open in OCC Browser and refuses with a reason instead of a silent no-op', () => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     try {
       mocks.environmentId = 'runtime-1'
       mocks.browserAvailability = { state: 'enabled', provider: 'paired-runtime' }

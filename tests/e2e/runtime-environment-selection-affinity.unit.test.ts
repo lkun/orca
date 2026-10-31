@@ -53,7 +53,7 @@ vi.mock(
 
 let userDataPath: string
 beforeEach(() => {
-  userDataPath = mkdtempSync(join(tmpdir(), 'orca-selection-affinity-'))
+  userDataPath = mkdtempSync(join(tmpdir(), 'occ-selection-affinity-'))
   getPathMock.mockReturnValue(userDataPath)
 })
 afterEach(() => {

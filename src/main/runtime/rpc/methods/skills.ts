@@ -31,7 +31,7 @@ import {
   resolveSkillDiscoveryTarget
 } from '../../../skills/skill-discovery-target'
 import { SKILL_INSTALL_RESULT_V2_CAPABILITY } from '../../../../shared/skill-install-capability'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { parseExecutionHostId } from '../../../../shared/execution-host'
 import {
   AGENT_SKILL_SHARING_UNSUPPORTED_ENVIRONMENT_CODE,
@@ -49,7 +49,7 @@ import { runAsWslUserAct, wslDistroForPath } from '../../../wsl/wsl-unc-access-g
 // Use the same target resolution for discovery and delete-plan roots, including WSL.
 export function resolveDiscoveryTarget(
   params: z.infer<typeof SkillDiscoveryTargetSchema>,
-  runtime: Pick<OrcaRuntimeService, 'resolveProjectRuntimeForWorktree'>,
+  runtime: Pick<OCCRuntimeService, 'resolveProjectRuntimeForWorktree'>,
   options: { refuseStoppedWslDistro?: boolean } = {}
 ) {
   const target = params.projectRuntime
@@ -64,7 +64,7 @@ export function resolveDiscoveryTarget(
 // A caller naming only the workspace gets its folder from the host, which refuses SSH workspaces like desktop.
 async function withWorkspaceCwd(
   params: z.infer<typeof SkillsDiscoverParams>,
-  runtime: Pick<OrcaRuntimeService, 'resolveRuntimeFileTarget'>
+  runtime: Pick<OCCRuntimeService, 'resolveRuntimeFileTarget'>
 ): Promise<z.infer<typeof SkillsDiscoverParams>> {
   if (params.cwd?.trim() || !params.worktreeId) {
     return params
@@ -77,7 +77,7 @@ async function withWorkspaceCwd(
 }
 
 function skillDeleteDependencies(
-  runtime: Pick<OrcaRuntimeService, 'listRepos' | 'resolveSkillDiscoveryProviderRoots'>
+  runtime: Pick<OCCRuntimeService, 'listRepos' | 'resolveSkillDiscoveryProviderRoots'>
 ): SkillDeleteRequestDependencies {
   return {
     repos: () => runtime.listRepos(),
@@ -129,13 +129,13 @@ export const SKILL_METHODS = [
   }),
   // The host plans OCC's skills on its own disk; a paired client never sends a WSL target.
   defineMethod({
-    name: 'skills.planBundledOrca',
+    name: 'skills.planBundledOCC',
     permission: 'workspace',
     params: BundledSkillPlanRequestSchema,
     handler: (params, { runtime }) => runtime.planLocalBundledSkills(params)
   }),
   defineMethod({
-    name: 'skills.executeBundledOrca',
+    name: 'skills.executeBundledOCC',
     permission: 'skills-admin',
     params: BundledSkillExecuteRequestSchema,
     handler: (params, { runtime }) => runtime.executeLocalBundledSkills(params)
@@ -204,7 +204,7 @@ export const SKILL_METHODS = [
         return {
           ...result,
           status: 'failed' as const,
-          errorCategory: result.failure?.code ?? 'skill-install-cancelled',
+          errocctegory: result.failure?.code ?? 'skill-install-cancelled',
           failure: undefined
         }
       }

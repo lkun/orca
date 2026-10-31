@@ -23,7 +23,7 @@ export const ConnectorSend = z.object({
 })
 
 /** Settles the conversation's queued work and stops what its agent is doing. */
-export const ConnectorCancel = z.object(ConnectorDelivery)
+export const Connectoccncel = z.object(ConnectorDelivery)
 
 const ConnectorConversation = {
   source: ConnectorDelivery.source,

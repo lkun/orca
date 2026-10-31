@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import type { Page } from '@stablyai/playwright-test'
 import { alternateScreenFixtureScript } from './alternate-screen-fixture-script'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { stageNodeScriptForTerminal } from './helpers/run-node-script-in-terminal'
 import { parkHiddenTabBehindDecoy } from './helpers/terminal-hidden-parking'
 import {
@@ -20,10 +20,10 @@ import {
 import { nodeTerminalCommand } from './terminal-node-command'
 import { waitForPtyShellEcho } from './terminal-pty-readiness'
 
-const PARKING_DELAY_MS = Number(process.env.ORCA_E2E_TERMINAL_PARKING_DELAY_MS) || 500
+const PARKING_DELAY_MS = Number(process.env.OCC_E2E_TERMINAL_PARKING_DELAY_MS) || 500
 
 test.use({
-  orcaAppExtraEnv: { ORCA_E2E_TERMINAL_PARKING_DELAY_MS: String(PARKING_DELAY_MS) }
+  occAppExtraEnv: { OCC_E2E_TERMINAL_PARKING_DELAY_MS: String(PARKING_DELAY_MS) }
 })
 
 type LinkProbe = { clientX: number; clientY: number; tabId: string }
@@ -120,40 +120,40 @@ async function activateTerminalTab(page: Page, tabId: string): Promise<void> {
   await waitForActiveTerminalManager(page, 30_000)
 }
 
-test('restores and opens an OSC 8 link after its terminal is cold-parked', async ({ orcaPage }) => {
-  await waitForSessionReady(orcaPage)
-  const worktreeId = await waitForActiveWorktree(orcaPage)
-  await orcaPage.evaluate(async () => {
+test('restores and opens an OSC 8 link after its terminal is cold-parked', async ({ occPage }) => {
+  await waitForSessionReady(occPage)
+  const worktreeId = await waitForActiveWorktree(occPage)
+  await occPage.evaluate(async () => {
     await window.__store?.getState().updateSettings({
       openLinksInApp: true,
       openLinksInAppPreferencePrompted: true
     })
   })
-  await ensureTerminalVisible(orcaPage)
-  await waitForActiveTerminalManager(orcaPage, 30_000)
-  const tabId = await getActiveTabId(orcaPage)
+  await ensureTerminalVisible(occPage)
+  await waitForActiveTerminalManager(occPage, 30_000)
+  const tabId = await getActiveTabId(occPage)
   if (!tabId) {
     throw new Error('No active terminal tab')
   }
-  const ptyId = await waitForActivePanePtyId(orcaPage)
-  await waitForPtyShellEcho(orcaPage, ptyId, 15_000)
+  const ptyId = await waitForActivePanePtyId(occPage)
+  await waitForPtyShellEcho(occPage, ptyId, 15_000)
 
   const label = `#${randomUUID().slice(0, 6)}`
-  const url = `https://example.com/orca-osc8-${randomUUID()}`
+  const url = `https://example.com/occ-osc8-${randomUUID()}`
   const linkedOutput = `\x1b[?1049h\x1b[2J\x1b[H\x1b]8;id=cold-park;${url}\x1b\\${label}\x1b]8;;\x1b\\\n`
   // Stage to avoid PowerShell escape mangling (#8521) and keep the readiness label out of command echo.
   // Use nodeTerminalCommand instead of bare-node staged.command to pin Windows CI’s executable.
   const staged = stageNodeScriptForTerminal(alternateScreenFixtureScript(linkedOutput), {
-    prefix: 'orca-osc8-cold-park'
+    prefix: 'occ-osc8-cold-park'
   })
   try {
-    await sendToTerminal(orcaPage, ptyId, `${nodeTerminalCommand([staged.scriptPath])}\r`)
-    await expect.poll(() => getTerminalContent(orcaPage, 4_000)).toContain(label)
+    await sendToTerminal(occPage, ptyId, `${nodeTerminalCommand([staged.scriptPath])}\r`)
+    await expect.poll(() => getTerminalContent(occPage, 4_000)).toContain(label)
 
-    const baselineProbe = await locateLink(orcaPage, label)
-    await orcaPage.mouse.move(baselineProbe.clientX, baselineProbe.clientY)
+    const baselineProbe = await locateLink(occPage, label)
+    await occPage.mouse.move(baselineProbe.clientX, baselineProbe.clientY)
     await expect
-      .poll(() => readLinkState(orcaPage, tabId, label))
+      .poll(() => readLinkState(occPage, tabId, label))
       .toMatchObject({
         bufferType: 'alternate',
         serializedUri: true,
@@ -161,16 +161,16 @@ test('restores and opens an OSC 8 link after its terminal is cold-parked', async
         uri: url
       })
 
-    await parkHiddenTabBehindDecoy(orcaPage, worktreeId, tabId, {
+    await parkHiddenTabBehindDecoy(occPage, worktreeId, tabId, {
       parkDelayMs: PARKING_DELAY_MS
     })
-    await activateTerminalTab(orcaPage, tabId)
-    await expect.poll(() => getTerminalContent(orcaPage, 4_000)).toContain(label)
+    await activateTerminalTab(occPage, tabId)
+    await expect.poll(() => getTerminalContent(occPage, 4_000)).toContain(label)
 
-    const restoredProbe = await locateLink(orcaPage, label)
-    await orcaPage.mouse.move(restoredProbe.clientX, restoredProbe.clientY)
+    const restoredProbe = await locateLink(occPage, label)
+    await occPage.mouse.move(restoredProbe.clientX, restoredProbe.clientY)
     await expect
-      .poll(() => readLinkState(orcaPage, tabId, label))
+      .poll(() => readLinkState(occPage, tabId, label))
       .toMatchObject({
         bufferType: 'alternate',
         serializedUri: true,
@@ -178,17 +178,17 @@ test('restores and opens an OSC 8 link after its terminal is cold-parked', async
         uri: url
       })
 
-    const isMac = await orcaPage.evaluate(() => navigator.userAgent.includes('Mac'))
+    const isMac = await occPage.evaluate(() => navigator.userAgent.includes('Mac'))
     const modifier = isMac ? 'Meta' : 'Control'
-    await orcaPage.keyboard.down(modifier)
-    await orcaPage.mouse.down()
-    await orcaPage.mouse.up()
-    await orcaPage.keyboard.up(modifier)
+    await occPage.keyboard.down(modifier)
+    await occPage.mouse.down()
+    await occPage.mouse.up()
+    await occPage.keyboard.up(modifier)
     await expect
-      .poll(async () => (await getBrowserTabs(orcaPage, worktreeId)).some((tab) => tab.url === url))
+      .poll(async () => (await getBrowserTabs(occPage, worktreeId)).some((tab) => tab.url === url))
       .toBe(true)
   } finally {
-    await sendToTerminal(orcaPage, ptyId, '\x03').catch(() => undefined)
+    await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
     staged.cleanup()
   }
 })

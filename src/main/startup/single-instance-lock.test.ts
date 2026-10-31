@@ -68,7 +68,7 @@ describe('acquireSingleInstanceLock', () => {
 
     const [registered] = fake.listeners['second-instance'] ?? []
     expect(registered).toBeDefined()
-    registered?.({}, ['/opt/occ/occ-linux.AppImage', '--serve'], '/home/orca')
+    registered?.({}, ['/opt/occ/occ-linux.AppImage', '--serve'], '/home/occ')
 
     expect(onSecondInstance).toHaveBeenCalledTimes(1)
     expect(onSecondInstance).toHaveBeenCalledWith(['/opt/occ/occ-linux.AppImage', '--serve'])
@@ -80,7 +80,7 @@ describe('shouldActivateDesktopForSecondInstance', () => {
     // Supervisor serve restarts must not open desktop windows on displayless hosts (#11935).
     const serveArgv = ['/opt/occ/occ-linux.AppImage', '--serve']
     expect(shouldActivateDesktopForSecondInstance(serveArgv)).toBe(false)
-    expect(shouldActivateDesktopForSecondInstance(['/Applications/OCC.app/orca'])).toBe(true)
+    expect(shouldActivateDesktopForSecondInstance(['/Applications/OCC.app/occ'])).toBe(true)
   })
 
   it('ignores a duplicate CLI-form serve launch the CLI redirect never rewrote', () => {
@@ -113,7 +113,7 @@ describe('SINGLE_INSTANCE_ALREADY_RUNNING_EXIT_CODE', () => {
 })
 
 describe('shouldSkipSingleInstanceLock', () => {
-  const E2E = { ORCA_E2E_USER_DATA_DIR: '/tmp/orca-e2e-userdata-1' }
+  const E2E = { OCC_E2E_USER_DATA_DIR: '/tmp/occ-e2e-userdata-1' }
 
   it('takes the lock for dev desktop, packaged and serve launches alike', () => {
     expect(shouldSkipSingleInstanceLock({ isDev: true, isServeMode: false, env: {} })).toBe(false)
@@ -129,7 +129,7 @@ describe('shouldSkipSingleInstanceLock', () => {
       shouldSkipSingleInstanceLock({
         isDev: true,
         isServeMode: false,
-        env: { ...E2E, ORCA_E2E_ENFORCE_SINGLE_INSTANCE_LOCK: '1' }
+        env: { ...E2E, OCC_E2E_ENFORCE_SINGLE_INSTANCE_LOCK: '1' }
       })
     ).toBe(false)
   })
@@ -156,7 +156,7 @@ describe('logSingleInstanceLockFailure', () => {
     expect(line).toBe(`${singleInstanceLockFailureMessage({ isDevDesktop: true, userDataPath })}\n`)
     expect(line.trimEnd()).not.toContain('\n')
     expect(line).toContain(`the profile at ${userDataPath}`)
-    expect(line).toContain('ORCA_DEV_USER_DATA_PATH=')
+    expect(line).toContain('OCC_DEV_USER_DATA_PATH=')
     expect(line).not.toMatch(/focus|window/i)
   })
 })
@@ -165,7 +165,7 @@ describe('shouldBypassSingleInstanceLock', () => {
   it('allows the hidden diagnostic bypass only for packaged macOS app launches', () => {
     expect(
       shouldBypassSingleInstanceLock({
-        env: { ORCA_BYPASS_SINGLE_INSTANCE_LOCK: '1' },
+        env: { OCC_BYPASS_SINGLE_INSTANCE_LOCK: '1' },
         isDev: false,
         isServeMode: false,
         platform: 'darwin'
@@ -173,7 +173,7 @@ describe('shouldBypassSingleInstanceLock', () => {
     ).toBe(true)
     expect(
       shouldBypassSingleInstanceLock({
-        env: { ORCA_BYPASS_SINGLE_INSTANCE_LOCK: '1' },
+        env: { OCC_BYPASS_SINGLE_INSTANCE_LOCK: '1' },
         isDev: true,
         isServeMode: false,
         platform: 'darwin'
@@ -181,7 +181,7 @@ describe('shouldBypassSingleInstanceLock', () => {
     ).toBe(false)
     expect(
       shouldBypassSingleInstanceLock({
-        env: { ORCA_BYPASS_SINGLE_INSTANCE_LOCK: '1' },
+        env: { OCC_BYPASS_SINGLE_INSTANCE_LOCK: '1' },
         isDev: false,
         isServeMode: false,
         platform: 'linux'

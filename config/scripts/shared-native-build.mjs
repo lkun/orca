@@ -4,9 +4,9 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, realpathSync, rmSync } from
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join, relative } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { disableMsbuildFileTrackingOnWindows } from './msbuild-file-tracking.mjs'
-import { stageNodeAddonApi } from './orcad-prebuild-node-gyp.mjs'
+import { stageNodeAddonApi } from './occd-prebuild-node-gyp.mjs'
 import { describeProcessFailure } from './process-failure-message.mjs'
 import { publishSharedTree, sharedTreeStagingPath } from './shared-tree-publish.mjs'
 import { nativeBuildEntryDir } from './native-build-entry.cjs'
@@ -104,7 +104,7 @@ export function ensureSharedNativeBuild({
     )
   }
 
-  const workDir = mkdtempSync(join(tmpdir(), 'orca-native-build-'))
+  const workDir = mkdtempSync(join(tmpdir(), 'occ-native-build-'))
   try {
     const releaseDir = compileInScratchCopy({
       moduleName,

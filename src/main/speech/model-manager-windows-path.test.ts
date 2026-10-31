@@ -50,7 +50,7 @@ describe('ModelManager Windows model path handling', () => {
   beforeEach(() => {
     appGetPathMock.mockReset()
     netRequestMock.mockReset()
-    appGetPathMock.mockImplementation(() => join(tmpdir(), 'orca-speech-models-test'))
+    appGetPathMock.mockImplementation(() => join(tmpdir(), 'occ-speech-models-test'))
   })
 
   afterEach(() => {
@@ -58,7 +58,7 @@ describe('ModelManager Windows model path handling', () => {
   })
 
   it('uses an ASCII cache path when the Windows default user data path has non-ASCII characters', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-model-manager-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-model-manager-'))
     try {
       setPlatform('win32')
       const programDataDir = join(dir, 'ProgramData')
@@ -80,7 +80,7 @@ describe('ModelManager Windows model path handling', () => {
   })
 
   it('migrates existing ready model files from a non-ASCII Windows default cache', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-model-manager-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-model-manager-'))
     try {
       setPlatform('win32')
       const programDataDir = join(dir, 'ProgramData')
@@ -119,7 +119,7 @@ describe('ModelManager Windows model path handling', () => {
   })
 
   it('deleting a migrated model removes the legacy copy so it is not resurrected on next launch', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-model-manager-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-model-manager-'))
     try {
       setPlatform('win32')
       const programDataDir = join(dir, 'ProgramData')

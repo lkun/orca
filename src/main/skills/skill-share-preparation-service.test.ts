@@ -13,7 +13,7 @@ async function nameIsFree() {
 }
 
 async function createSource(): Promise<{ root: string; source: string }> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-skill-share-preparation-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-skill-share-preparation-'))
   temporaryDirectories.push(root)
   const source = join(root, 'source')
   await mkdir(source)

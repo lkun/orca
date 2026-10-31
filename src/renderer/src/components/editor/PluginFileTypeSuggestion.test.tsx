@@ -14,7 +14,7 @@ const openSettingsPage = vi.fn()
 beforeEach(() => {
   suggestForFileType.mockResolvedValue({
     marketplaceSourceId: 'official',
-    pluginKey: 'stablyai.orca-typst',
+    pluginKey: 'stablyai.occ-typst',
     fileType: 'typ',
     name: 'Typst'
   })
@@ -43,7 +43,7 @@ it('offers the catalog plugin and opens its preview without installing', async (
   fireEvent.click(screen.getByRole('button', { name: 'View plugin' }))
   expect(usePluginPreviewRequestStore.getState().request).toMatchObject({
     marketplaceSourceId: 'official',
-    pluginKey: 'stablyai.orca-typst'
+    pluginKey: 'stablyai.occ-typst'
   })
   expect(openSettingsTarget).toHaveBeenCalledWith({ pane: 'plugins', repoId: null })
 })

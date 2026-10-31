@@ -26,7 +26,7 @@ async function tempRoot(prefix: string): Promise<string> {
 
 async function writeThemePlugin(root: string, publisher?: string): Promise<void> {
   await writeFile(
-    join(root, 'orca-plugin.json'),
+    join(root, 'occ-plugin.json'),
     JSON.stringify({
       manifestVersion: 2,
       execution: 'data',
@@ -34,7 +34,7 @@ async function writeThemePlugin(root: string, publisher?: string): Promise<void>
       ...(publisher ? { publisher } : {}),
       name: 'Dusk',
       version: '1.0.0',
-      engines: { orca: `>=${HOST}` },
+      engines: { occ: `>=${HOST}` },
       contributes: { terminalThemes: [{ id: 'dusk', title: 'Dusk', path: 'dusk.json' }] }
     })
   )
@@ -60,11 +60,11 @@ afterEach(async () => {
 
 describe('derived plugin publishers', () => {
   it('names a Git URL install after the URL owner, ignoring the manifest publisher', async () => {
-    const source = await tempRoot('orca-derived-git-')
-    const pluginsDir = await tempRoot('orca-derived-installs-')
+    const source = await tempRoot('occ-derived-git-')
+    const pluginsDir = await tempRoot('occ-derived-installs-')
     await writeThemePlugin(source, 'brand-name')
     await commitRepository(source)
-    await serveRepositoriesOverTestSsh(await tempRoot('orca-derived-ssh-'), {
+    await serveRepositoriesOverTestSsh(await tempRoot('occ-derived-ssh-'), {
       '/Acme/dusk.git': source
     })
 
@@ -79,11 +79,11 @@ describe('derived plugin publishers', () => {
   })
 
   it('keeps the key of an install made before publishers were derived', async () => {
-    const source = await tempRoot('orca-derived-git-')
-    const pluginsDir = await tempRoot('orca-derived-installs-')
+    const source = await tempRoot('occ-derived-git-')
+    const pluginsDir = await tempRoot('occ-derived-installs-')
     await writeThemePlugin(source, 'brand-name')
     await commitRepository(source)
-    await serveRepositoriesOverTestSsh(await tempRoot('orca-derived-ssh-'), {
+    await serveRepositoriesOverTestSsh(await tempRoot('occ-derived-ssh-'), {
       '/acme/dusk.git': source
     })
     const url = 'ssh://git@plugin.test/acme/dusk.git'
@@ -105,8 +105,8 @@ describe('derived plugin publishers', () => {
   })
 
   it('installs a folder without a publisher as local', async () => {
-    const source = await tempRoot('orca-derived-folder-')
-    const pluginsDir = await tempRoot('orca-derived-installs-')
+    const source = await tempRoot('occ-derived-folder-')
+    const pluginsDir = await tempRoot('occ-derived-installs-')
     await writeThemePlugin(source)
 
     await expect(
@@ -115,10 +115,10 @@ describe('derived plugin publishers', () => {
   })
 
   it('discovers installed and development plugins under their derived publisher', async () => {
-    const installedSource = await tempRoot('orca-derived-installed-')
-    const devFolder = await tempRoot('orca-derived-dev-')
-    const legacyDevFolder = await tempRoot('orca-derived-legacy-dev-')
-    const pluginsDir = await tempRoot('orca-derived-installs-')
+    const installedSource = await tempRoot('occ-derived-installed-')
+    const devFolder = await tempRoot('occ-derived-dev-')
+    const legacyDevFolder = await tempRoot('occ-derived-legacy-dev-')
+    const pluginsDir = await tempRoot('occ-derived-installs-')
     await writeThemePlugin(installedSource)
     await writeThemePlugin(devFolder)
     await writeThemePlugin(legacyDevFolder, 'acme')

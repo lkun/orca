@@ -46,7 +46,7 @@ export function SkillShareLinkInputForm({
         onChange={(event) => onLinkChange(event.target.value)}
         placeholder={translate(
           'auto.components.skills.SkillInstallReviewContent.66cff7a804',
-          'https://app.orca.dev/skills/share/…'
+          'https://app.occ.dev/skills/share/…'
         )}
         className="font-mono text-xs"
         autoFocus
@@ -93,7 +93,7 @@ export function SkillInstallOutcome({ result }: { result: SkillInstallResult }):
             .filter((item) => item.status === 'failed' || item.status === 'skipped')
             .map((item) => (
               <p key={`${item.provider}:${item.path}`}>
-                {item.provider}: {item.errorCategory || item.status}
+                {item.provider}: {item.errocctegory || item.status}
               </p>
             ))}
         </div>

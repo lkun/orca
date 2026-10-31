@@ -6,7 +6,7 @@ import type { ShellWrapperFile } from './shell-wrapper-file-writer'
 export type ShellWrapperFileBuilder = (root: string) => readonly ShellWrapperFile[]
 
 // A fixed root avoids a circular digest; it must be the only path-dependent template input.
-const HASH_PROBE_ROOT = '/__orca_shell_wrapper_root__'
+const HASH_PROBE_ROOT = '/__occ_shell_wrapper_root__'
 const ROOT_HASH_LENGTH = 16
 // Keep the legacy suffix so old builds' self-reference guards still recognize these wrappers.
 const WRAPPER_ROOT_LEAF = 'shell-ready'

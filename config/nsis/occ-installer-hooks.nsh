@@ -10,17 +10,17 @@
 !define MARKDOWN_PROGID "OCC.Markdown"
 !define TABULAR_PROGID "OCC.Tabular"
 
-!macro ORCA_REGISTER_DOCUMENT_OPEN_WITH EXT PROGID
+!macro OCC_REGISTER_DOCUMENT_OPEN_WITH EXT PROGID
   WriteRegNone SHELL_CONTEXT "Software\Classes\${EXT}\OpenWithProgids" "${PROGID}"
   WriteRegStr SHELL_CONTEXT "Software\Classes\Applications\${APP_EXECUTABLE_FILENAME}\SupportedTypes" "${EXT}" ""
 !macroend
 
-!macro ORCA_UNREGISTER_DOCUMENT_OPEN_WITH EXT PROGID
+!macro OCC_UNREGISTER_DOCUMENT_OPEN_WITH EXT PROGID
   DeleteRegValue SHELL_CONTEXT "Software\Classes\${EXT}\OpenWithProgids" "${PROGID}"
   DeleteRegValue SHELL_CONTEXT "Software\Classes\Applications\${APP_EXECUTABLE_FILENAME}\SupportedTypes" "${EXT}"
 !macroend
 
-!macro ORCA_REGISTER_DOCUMENT_PROGID PROGID NAME
+!macro OCC_REGISTER_DOCUMENT_PROGID PROGID NAME
   WriteRegStr SHELL_CONTEXT "Software\Classes\${PROGID}" "" "${NAME}"
   WriteRegStr SHELL_CONTEXT "Software\Classes\${PROGID}\DefaultIcon" "" "$appExe,0"
   WriteRegStr SHELL_CONTEXT "Software\Classes\${PROGID}\shell\open" "" "Open with ${PRODUCT_NAME}"
@@ -28,13 +28,13 @@
 !macroend
 
 !macro customInstall
-  !insertmacro ORCA_REGISTER_DOCUMENT_PROGID "${MARKDOWN_PROGID}" "Markdown Document"
-  !insertmacro ORCA_REGISTER_DOCUMENT_PROGID "${TABULAR_PROGID}" "Tabular Document"
-  !insertmacro ORCA_REGISTER_DOCUMENT_OPEN_WITH ".md" "${MARKDOWN_PROGID}"
-  !insertmacro ORCA_REGISTER_DOCUMENT_OPEN_WITH ".markdown" "${MARKDOWN_PROGID}"
-  !insertmacro ORCA_REGISTER_DOCUMENT_OPEN_WITH ".mdx" "${MARKDOWN_PROGID}"
-  !insertmacro ORCA_REGISTER_DOCUMENT_OPEN_WITH ".csv" "${TABULAR_PROGID}"
-  !insertmacro ORCA_REGISTER_DOCUMENT_OPEN_WITH ".tsv" "${TABULAR_PROGID}"
+  !insertmacro OCC_REGISTER_DOCUMENT_PROGID "${MARKDOWN_PROGID}" "Markdown Document"
+  !insertmacro OCC_REGISTER_DOCUMENT_PROGID "${TABULAR_PROGID}" "Tabular Document"
+  !insertmacro OCC_REGISTER_DOCUMENT_OPEN_WITH ".md" "${MARKDOWN_PROGID}"
+  !insertmacro OCC_REGISTER_DOCUMENT_OPEN_WITH ".markdown" "${MARKDOWN_PROGID}"
+  !insertmacro OCC_REGISTER_DOCUMENT_OPEN_WITH ".mdx" "${MARKDOWN_PROGID}"
+  !insertmacro OCC_REGISTER_DOCUMENT_OPEN_WITH ".csv" "${TABULAR_PROGID}"
+  !insertmacro OCC_REGISTER_DOCUMENT_OPEN_WITH ".tsv" "${TABULAR_PROGID}"
   ; Why: Explorer caches the association list until told otherwise.
   System::Call "shell32::SHChangeNotify(i,i,i,i) (0x08000000, 0x1000, 0, 0)"
 !macroend
@@ -59,7 +59,7 @@
     ${endIf}
     nsExec::Exec 'taskkill /F /IM "${APP_EXECUTABLE_FILENAME}" $2'
     Pop $0
-    nsExec::Exec 'taskkill /F /IM "orca-terminal-daemon.exe" $2'
+    nsExec::Exec 'taskkill /F /IM "occ-terminal-daemon.exe" $2'
     Pop $0
     ; WSL hosts: the detached wsl.exe holders outlive the app and keep their distros running. OCC
     ; ends only the holders its profile recorded, each checked by pid, start time and command line.
@@ -88,21 +88,21 @@
       SetShellVarContext all
     ${endIf}
     ${if} $1 == "1"
-      nsExec::Exec '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" --orca-uninstall-release-wsl-holders'
+      nsExec::Exec '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" --occ-uninstall-release-wsl-holders'
       Pop $0
     ${endIf}
-    ; Agent hook entries call the ~/.orca\agent-hooks scripts by bare path. Those scripts outlive the
+    ; Agent hook entries call the ~/.occ\agent-hooks scripts by bare path. Those scripts outlive the
     ; app, but once that folder is removed every agent fails a hook per event, so the last OCC for
     ; this user takes the entries out. Another install, or an unreadable registry, keeps them.
     ; Best effort: the exit code never blocks uninstall.
     ; Sync the flag with AGENT_HOOKS_UNINSTALL_FLAG in src/main/startup/agent-hooks-uninstall-preflight.ts.
-    !insertmacro ORCA_OTHER_INSTALL_STATE $1
+    !insertmacro OCC_OTHER_INSTALL_STATE $1
     ${if} $1 == "none"
-      nsExec::Exec '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" --orca-uninstall-remove-agent-hooks'
+      nsExec::Exec '"$INSTDIR\${APP_EXECUTABLE_FILENAME}" --occ-uninstall-remove-agent-hooks'
       Pop $0
     ${endIf}
-    ; The `orca` command's PATH entry (Settings → Command line) would otherwise outlive the app.
-    !insertmacro ORCA_REMOVE_USER_PATH_ENTRY "$INSTDIR\resources\bin"
+    ; The `occ` command's PATH entry (Settings → Command line) would otherwise outlive the app.
+    !insertmacro OCC_REMOVE_USER_PATH_ENTRY "$INSTDIR\resources\bin"
     Pop $2
     Pop $1
     Pop $0
@@ -114,10 +114,10 @@
   ; customInstall rewrites associations on every update, so remove them during uninstallOldVersion too.
   DeleteRegKey SHELL_CONTEXT "Software\Classes\${MARKDOWN_PROGID}"
   DeleteRegKey SHELL_CONTEXT "Software\Classes\${TABULAR_PROGID}"
-  !insertmacro ORCA_UNREGISTER_DOCUMENT_OPEN_WITH ".md" "${MARKDOWN_PROGID}"
-  !insertmacro ORCA_UNREGISTER_DOCUMENT_OPEN_WITH ".markdown" "${MARKDOWN_PROGID}"
-  !insertmacro ORCA_UNREGISTER_DOCUMENT_OPEN_WITH ".mdx" "${MARKDOWN_PROGID}"
-  !insertmacro ORCA_UNREGISTER_DOCUMENT_OPEN_WITH ".csv" "${TABULAR_PROGID}"
-  !insertmacro ORCA_UNREGISTER_DOCUMENT_OPEN_WITH ".tsv" "${TABULAR_PROGID}"
+  !insertmacro OCC_UNREGISTER_DOCUMENT_OPEN_WITH ".md" "${MARKDOWN_PROGID}"
+  !insertmacro OCC_UNREGISTER_DOCUMENT_OPEN_WITH ".markdown" "${MARKDOWN_PROGID}"
+  !insertmacro OCC_UNREGISTER_DOCUMENT_OPEN_WITH ".mdx" "${MARKDOWN_PROGID}"
+  !insertmacro OCC_UNREGISTER_DOCUMENT_OPEN_WITH ".csv" "${TABULAR_PROGID}"
+  !insertmacro OCC_UNREGISTER_DOCUMENT_OPEN_WITH ".tsv" "${TABULAR_PROGID}"
   System::Call "shell32::SHChangeNotify(i,i,i,i) (0x08000000, 0x1000, 0, 0)"
 !macroend

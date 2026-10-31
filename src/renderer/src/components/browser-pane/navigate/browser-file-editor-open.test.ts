@@ -21,7 +21,7 @@ import {
   openBrowserFileSource
 } from './browser-file-editor-open'
 
-const PATH = '/Users/me/orca/chat-scratch/0123456789abcdef0123456789abcdef/usage.html'
+const PATH = '/Users/me/occ/chat-scratch/0123456789abcdef0123456789abcdef/usage.html'
 const initialState = useAppStore.getInitialState()
 
 afterEach(() => {

@@ -1,4 +1,4 @@
-// orcad packages daemon-entry.js beside orcad.js without an asar archive.
+// occd packages daemon-entry.js beside occd.js without an asar archive.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { join } from 'node:path'
 import { FAKE_APP_PATH, FAKE_DAEMON_ENTRY_PATH } from './daemon-init-test-harness'
@@ -45,8 +45,8 @@ const ASAR_UNPACKED_ENTRY = join(
   'main',
   'daemon-entry.js'
 )
-const ORCAD_ROOT = join('/opt', 'orcad')
-const ORCAD_ADJACENT_ENTRY = join(ORCAD_ROOT, 'daemon-entry.js')
+const OCCD_ROOT = join('/opt', 'occd')
+const OCCD_ADJACENT_ENTRY = join(OCCD_ROOT, 'daemon-entry.js')
 
 async function forkedDaemonEntryPath(layout: {
   appPath: string
@@ -94,13 +94,13 @@ describe('daemon entry path per deployment layout', () => {
     )
   })
 
-  it('forks the entry beside orcad.js on a packaged host with no asar', async () => {
+  it('forks the entry beside occd.js on a packaged host with no asar', async () => {
     expect(
       await forkedDaemonEntryPath({
-        appPath: ORCAD_ROOT,
+        appPath: OCCD_ROOT,
         isPackaged: true,
-        existingEntry: ORCAD_ADJACENT_ENTRY
+        existingEntry: OCCD_ADJACENT_ENTRY
       })
-    ).toBe(ORCAD_ADJACENT_ENTRY)
+    ).toBe(OCCD_ADJACENT_ENTRY)
   })
 })

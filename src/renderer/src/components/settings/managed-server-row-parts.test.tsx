@@ -3,9 +3,9 @@
 import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { OrcadManagedRuntimeStatus } from '../../../../shared/orcad-managed-runtime'
+import type { OCCdManagedRuntimeStatus } from '../../../../shared/occd-managed-runtime'
 import type { PublicKnownRuntimeEnvironment } from '../../../../shared/runtime-environments'
-import type { ManagedOrcadPreloadApi } from '../../../../preload/api/managed-orcad-api'
+import type { ManagedOCCdPreloadApi } from '../../../../preload/api/managed-occd-api'
 import {
   ManagedServerConfirmations,
   ManagedServerDetailLines,
@@ -31,7 +31,7 @@ function ManagedRowHarness({
   api,
   environment
 }: {
-  api: ManagedOrcadPreloadApi
+  api: ManagedOCCdPreloadApi
   environment: PublicKnownRuntimeEnvironment
 }): React.JSX.Element {
   const lifecycle = useManagedServerLifecycle({
@@ -58,7 +58,7 @@ afterEach(() => {
   document.body.innerHTML = ''
 })
 
-const status: OrcadManagedRuntimeStatus = {
+const status: OCCdManagedRuntimeStatus = {
   environmentId: 'env-1',
   sshTargetId: 'ssh-1',
   activeVersion: '1.2.0',
@@ -71,7 +71,7 @@ const status: OrcadManagedRuntimeStatus = {
   deferredUpdate: {
     outcome: 'deferred',
     candidateVersion: '1.3.0',
-    code: 'orcad_update_terminal_census_unavailable',
+    code: 'occd_update_terminal_census_unavailable',
     reason: 'the daemon did not answer',
     deferredAt: 'now'
   }
@@ -80,14 +80,14 @@ const status: OrcadManagedRuntimeStatus = {
 const terminalsRunning = {
   outcome: 'deferred' as const,
   candidateVersion: '0.1.0+b',
-  code: 'orcad_update_terminals_running',
+  code: 'occd_update_terminals_running',
   reason: '2 terminals are running on this host.',
   forceable: true
 }
 
 async function render(
-  rowStatus: OrcadManagedRuntimeStatus = status,
-  getStatus: () => Promise<OrcadManagedRuntimeStatus> = async () => rowStatus,
+  rowStatus: OCCdManagedRuntimeStatus = status,
+  getStatus: () => Promise<OCCdManagedRuntimeStatus> = async () => rowStatus,
   updateResult: (args: { force?: boolean }) => unknown = () => terminalsRunning
 ) {
   const update = vi.fn(async (args: { force?: boolean }) => updateResult(args))
@@ -99,7 +99,7 @@ async function render(
       : {
           outcome: 'refused',
           verdict: 'unverifiable',
-          code: 'orcad_recovery_changed_state'
+          code: 'occd_recovery_changed_state'
         }
   )
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the row calls only getStatus, stop, forget, recover and update here.
@@ -109,7 +109,7 @@ async function render(
     forget,
     recover,
     update
-  } as unknown as ManagedOrcadPreloadApi
+  } as unknown as ManagedOCCdPreloadApi
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the row reads only id and name.
   const environment = { id: 'env-1', name: 'Builder' } as PublicKnownRuntimeEnvironment
   const container = document.createElement('div')
@@ -262,7 +262,7 @@ describe('managed server row', () => {
       async () => offered,
       () => ({
         ...terminalsRunning,
-        code: 'orcad_update_strands_live_terminals',
+        code: 'occd_update_strands_live_terminals',
         forceable: false
       })
     )

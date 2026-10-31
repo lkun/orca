@@ -8,7 +8,7 @@
 import type { ClosedTerminalTabTombstone } from '../../../shared/closed-terminal-tab-tombstones'
 import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
 import { ownedEditorFileId } from '../../../shared/workspace-session-pane-ownership'
-import { isHostBoundOpenFile } from '../migrating-orcad-catalog/orcad-source-draft-rename'
+import { isHostBoundOpenFile } from '../migrating-occd-catalog/occd-source-draft-rename'
 import type { WslMoveRewriteScope } from './wsl-move-rewrite-scope'
 
 type ViewStateScope = Pick<WslMoveRewriteScope, 'inScope' | 'worktreeId' | 'path'> & {

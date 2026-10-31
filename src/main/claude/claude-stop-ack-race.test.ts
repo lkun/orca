@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { createAgentChildWorkAdmission } from '../../shared/agent-status-child-work-admission'
 import type { AgentChildWorkEvidence } from '../../shared/agent-status-child-work-evidence'
 import { reconcileAgentChildWorkEvidence } from '../../shared/agent-status-child-work-reconciliation'
@@ -97,8 +97,8 @@ async function stoppedAsItCompleted(ahead: number) {
       cwd: dir,
       env: {
         PATH: process.env.PATH ?? '',
-        ORCA_SDK_CONTRACT_SCENARIO_PATH: scenarioPath,
-        ORCA_SDK_CONTRACT_REPORT_PATH: join(dir, 'report.json')
+        OCC_SDK_CONTRACT_SCENARIO_PATH: scenarioPath,
+        OCC_SDK_CONTRACT_REPORT_PATH: join(dir, 'report.json')
       }
     },
     {

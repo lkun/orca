@@ -1,15 +1,15 @@
 import { describe, expect, it, vi } from 'vitest'
 
 // Fragments stay side-effect ordered: mocks, then lifecycle, then fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const { createFolderWorkspaceRuntimeStore, makeFolderWorkspace } =
-  await import('./orca-runtime-test-fixtures.spec')
+  await import('./occ-runtime-test-fixtures.spec')
 
 describe('deleting a folder workspace', () => {
   it('announces the removal to worktree lifecycle listeners under its folder key', async () => {
     const folderWorkspace = makeFolderWorkspace({ folderPath: '/tmp/folder-ws' })
-    const runtime = new OrcaRuntimeService({
+    const runtime = new OCCRuntimeService({
       ...createFolderWorkspaceRuntimeStore(folderWorkspace),
       removeFolderWorkspace: () => true
     })

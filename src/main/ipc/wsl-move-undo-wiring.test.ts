@@ -205,7 +205,7 @@ describe("undo's host automation port, refusing", () => {
   })
 })
 
-// verify-15c: with the host's orcad stopped, undo of a moved project this computer kept no tabs
+// verify-15c: with the host's occd stopped, undo of a moved project this computer kept no tabs
 // for asked the host nothing, released it, and its host shell kept running.
 describe("undo's stop of the host's terminals", () => {
   const move = wslMoveCutoverFixture('move-1', 'retained', {}, { repoIds: ['repo-a'] })

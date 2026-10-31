@@ -24,7 +24,7 @@ type Props = {
   onClose: () => void
 }
 
-// Prompt before create runs untrusted repo-owned orca.yaml setup; caller retains async persistence/create.
+// Prompt before create runs untrusted repo-owned occ.yaml setup; caller retains async persistence/create.
 export function SetupHookTrustDrawer({
   visible,
   prompt,
@@ -59,7 +59,7 @@ export function SetupHookTrustDrawer({
             <Text style={styles.subtitle}>
               {t(
                 'components.setupHookTrustDrawer.description',
-                "This repository's orca.yaml runs before the workspace starts. Only run it if you trust this repository."
+                "This repository's occ.yaml runs before the workspace starts. Only run it if you trust this repository."
               )}
             </Text>
           </View>

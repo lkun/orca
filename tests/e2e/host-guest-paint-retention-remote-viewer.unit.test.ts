@@ -1,7 +1,7 @@
 // Test runtime subscribers → reload IPC snapshots → isBrowserPagePanePaintable across main/renderer.
 // Nonmobile remote viewers must retain guest paint after automation leases expire and the host looks elsewhere.
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import {
   createScreencastHarness,
   HARNESS_PAGE_ID as PAGE
@@ -22,7 +22,7 @@ vi.mock('electron', () => ({
 }))
 
 function hostGuestIsPaintable(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   hostIsLookingAtThisPage: boolean
 ): boolean {
   hydrateBrowserDrivers(

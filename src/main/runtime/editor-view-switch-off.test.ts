@@ -12,7 +12,7 @@ import {
   openTopologyStore
 } from '../persistence/terminal-topology/terminal-topology-profile-fixture'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: false }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: false }))
 vi.mock('../telemetry/client', () => ({ track: vi.fn() }))
 vi.mock('../ssh/config/ssh-config-parser', () => ({
   loadUserSshConfig: () => ({ hosts: [] }),
@@ -28,7 +28,7 @@ afterEach(() => {
 })
 
 it('keeps no view for a diff tab a layout command opens', async () => {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-editor-view-off-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-editor-view-off-'))
   directories.push(directory)
   const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   const window = new WindowSession(getDefaultWorkspaceSession())

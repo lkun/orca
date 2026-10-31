@@ -1,4 +1,4 @@
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { isStructuredWorkerHandle } from '../../../../../../shared/structured-worker-handle'
 import { completeWorkerTerminalRelease } from './worker-release-completion'
@@ -6,7 +6,7 @@ import { completeWorkerTerminalRelease } from './worker-release-completion'
 /** Release the failed attempt's terminal on retry-of: archive output, preserve user takeover and retain interrupted cleanup for recovery.
  * Best-effort only; cleanup never blocks or fails the new start. */
 export function releaseRetriedWorkerTerminal(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   db: OrchestrationDb,
   start: { retryOf?: string; terminal?: string }
 ): void {

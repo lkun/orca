@@ -5,7 +5,7 @@ import { getSystemCodexHomePath } from '../codex/codex-home-paths'
 import { resolveHostCodexManagedHomeVerdict } from './host-codex-managed-home-ownership'
 
 // Guest homes use $HOME/<root>/<accountId>/home with an account-ID ownership marker.
-export const GUEST_CODEX_ACCOUNTS_ROOT_SEGMENTS = ['.local', 'share', 'orca', 'codex-accounts']
+export const GUEST_CODEX_ACCOUNTS_ROOT_SEGMENTS = ['.local', 'share', 'occ', 'codex-accounts']
 
 function guestCodexAccountsRoot(home: string): string {
   return join(home, ...GUEST_CODEX_ACCOUNTS_ROOT_SEGMENTS)

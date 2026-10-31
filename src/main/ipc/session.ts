@@ -1,25 +1,25 @@
 import { ipcMain } from 'electron'
 import type { Store } from '../persistence'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { parseTerminalSurfaceCloseTarget } from '../../shared/terminal-surface-close-target'
-import { isFrozenOrcadSourceSessionPartition } from '../ssh/orcad-retained-source'
+import { isFrozenOCCdSourceSessionPartition } from '../ssh/occd-retained-source'
 import { isWslMoveWindowWriteHeld } from '../persistence/moving-wsl-projects/wsl-move-window-write-hold'
-import { visibleSessionHostIds } from '../ssh/orcad-retained-source-session'
+import { visibleSessionHostIds } from '../ssh/occd-retained-source-session'
 import { markAgentLaunchesClosedByUser } from '../agent-launch/agent-launch-pane-attachment'
 import { windowViewPatchForMain, windowViewSaveForMain } from '../persistence/window-save-view'
 import { reportWindowSaveDrift } from '../persistence/window-save-divergence'
 import { windowSaveKeepingMainSleepRecords } from '../persistence/window-save-sleep-records'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import type {
   WorkspaceSessionPatch,
   WorkspaceSessionState
 } from '../../shared/workspace-session-state-types'
 
-export function registerSessionHandlers(store: Store, runtime: OrcaRuntimeService): void {
+export function registerSessionHandlers(store: Store, runtime: OCCRuntimeService): void {
   // Why: renderer saves would change a fenced host's frozen source partition, or write back what a
   // WSL move rewrote under this window before main reloads it.
   const isFenced = (hostId?: string | null): boolean =>
-    isFrozenOrcadSourceSessionPartition(store, hostId) || isWslMoveWindowWriteHeld()
+    isFrozenOCCdSourceSessionPartition(store, hostId) || isWslMoveWindowWriteHeld()
 
   // Optional hostId preserves local-partition behavior for older renderers.
   ipcMain.handle('session:get', (_event, hostId?: string | null) => {
@@ -50,7 +50,7 @@ export function registerSessionHandlers(store: Store, runtime: OrcaRuntimeServic
   ipcMain.handle('session:set', (_event, args: WorkspaceSessionState, hostId?: string | null) => {
     if (!isFenced(hostId)) {
       store.setWorkspaceSession(
-        ORCA_LAYOUT_OWNER_IS_MAIN
+        OCC_LAYOUT_OWNER_IS_MAIN
           ? sessionForMain(args, hostId)
           : windowSaveKeepingMainSleepRecords(store.getWorkspaceSession(hostId), args, 'set'),
         hostId
@@ -61,7 +61,7 @@ export function registerSessionHandlers(store: Store, runtime: OrcaRuntimeServic
   ipcMain.handle('session:patch', (_event, args: WorkspaceSessionPatch, hostId?: string | null) => {
     if (!isFenced(hostId)) {
       store.patchWorkspaceSession(
-        ORCA_LAYOUT_OWNER_IS_MAIN
+        OCC_LAYOUT_OWNER_IS_MAIN
           ? patchForMain(args, hostId)
           : windowSaveKeepingMainSleepRecords(store.getWorkspaceSession(hostId), args, 'patch'),
         hostId

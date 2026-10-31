@@ -5,12 +5,12 @@ import {
 } from '../../transport/rpc-delivery-ambiguity'
 
 // Capture rejected promises, not RpcFailure data replies. Preserve the recorder’s five error fields, never stacks.
-export type BridgeErrorCapture = {
+export type BridgeErroccpture = {
   category: string
   message: string
   isRpcDeliveryUnknown: boolean
   code?: unknown
-  cause?: BridgeErrorCapture
+  cause?: BridgeErroccpture
 }
 
 // Match recorder cause depth; truncate deeper chains instead of losing the whole rejection.
@@ -44,7 +44,7 @@ function boundCode(code: unknown): { code?: unknown } {
   }
 }
 
-function errorCaptureSchema(remainingCauses: number): z.ZodType<BridgeErrorCapture> {
+function erroccptureSchema(remainingCauses: number): z.ZodType<BridgeErroccpture> {
   const fields = {
     category: z.string(),
     message: z.string(),
@@ -53,14 +53,14 @@ function errorCaptureSchema(remainingCauses: number): z.ZodType<BridgeErrorCaptu
   }
   return remainingCauses === 0
     ? z.object(fields)
-    : z.object({ ...fields, cause: errorCaptureSchema(remainingCauses - 1).optional() })
+    : z.object({ ...fields, cause: erroccptureSchema(remainingCauses - 1).optional() })
 }
 
-export const BridgeErrorCaptureSchema = errorCaptureSchema(BRIDGE_MAX_CAUSE_DEPTH)
+export const BridgeErroccptureSchema = erroccptureSchema(BRIDGE_MAX_CAUSE_DEPTH)
 
 // Read code and cause separately through checked schemas; either getter may throw and must cost only its own field.
 const errorCodeSchema = z.object({ code: z.unknown().optional() })
-const errorCauseSchema = z.object({ cause: z.unknown().optional() })
+const erroccuseSchema = z.object({ cause: z.unknown().optional() })
 
 // Always produce a capture; throwing getters drop only their fields, never the envelope that settles the request.
 function readDetail<TDetail>(error: Error, schema: z.ZodType<TDetail>): TDetail | undefined {
@@ -75,7 +75,7 @@ function readDetail<TDetail>(error: Error, schema: z.ZodType<TDetail>): TDetail 
 export const BRIDGE_UNREADABLE_ERROR_MESSAGE = 'error could not be read'
 
 // Guard arbitrary message/constructor getters and String(value): thrown user code must not prevent the request’s rejection envelope.
-export function captureBridgeError(error: unknown, depth = 0): BridgeErrorCapture {
+export function captureBridgeError(error: unknown, depth = 0): BridgeErroccpture {
   try {
     return capture(error, depth)
   } catch {
@@ -96,7 +96,7 @@ function readDeliveryUnknownMark(error: unknown): boolean {
   }
 }
 
-function capture(error: unknown, depth: number): BridgeErrorCapture {
+function capture(error: unknown, depth: number): BridgeErroccpture {
   if (!(error instanceof Error)) {
     return {
       category: typeof error,
@@ -105,7 +105,7 @@ function capture(error: unknown, depth: number): BridgeErrorCapture {
     }
   }
   const code = readDetail(error, errorCodeSchema)?.code
-  const cause = readDetail(error, errorCauseSchema)?.cause
+  const cause = readDetail(error, erroccuseSchema)?.cause
   return {
     category: error.constructor.name,
     message: boundMessage(error.message),
@@ -142,7 +142,7 @@ function errorClassFor(category: string): ReconstructedErrorClass {
 }
 
 // Restore the delivery-unknown WeakSet mark after serialization; losing object identity must not turn executed requests into retryable definite failures.
-export function reconstructBridgeError(capture: BridgeErrorCapture): Error {
+export function reconstructBridgeError(capture: BridgeErroccpture): Error {
   const created = new (errorClassFor(capture.category))(capture.message)
   created.name = capture.category
   if (capture.code !== undefined) {

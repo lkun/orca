@@ -386,7 +386,7 @@ describe('the notice for every reason a host names', () => {
           words.action === 'wait' ||
             words.action === 'actFirst' ||
             words.action === 'goElsewhere' ||
-            words.action === 'updateOrca'
+            words.action === 'updateOCC'
         )
         // A card's Cancel that was not saved names its step: its notice has no Retry beside it.
         expect(retryNow, cell).toBe(
@@ -615,22 +615,22 @@ describe('a chat whose history the host could not open', () => {
     ],
     // Only an update gets past it, so it never says to try again. A read meets it on one chat.
     [
-      'journalWrittenByNewerOrca',
+      'journalWrittenByNewerOCC',
       'read-history',
       'This chat was saved by a newer OCC. Update OCC to open it.'
     ],
     [
-      'journalWrittenByNewerOrca',
+      'journalWrittenByNewerOCC',
       'send',
       'Chats were saved by a newer OCC. Your message was not sent. Update OCC to keep using them.'
     ],
     [
-      'journalWrittenByNewerOrca',
+      'journalWrittenByNewerOCC',
       'stop',
       "Chats were saved by a newer OCC. The agent wasn't stopped. Update OCC to keep using them."
     ],
     [
-      'journalWrittenByNewerOrca',
+      'journalWrittenByNewerOCC',
       'answer',
       'Chats were saved by a newer OCC. Your answer was not sent. Update OCC to keep using them.'
     ]

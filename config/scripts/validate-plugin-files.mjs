@@ -1,5 +1,5 @@
 // Strict check of plugin manifests and catalogs, for authors and catalog CI.
-// Usage: node config/scripts/validate-plugin-files.mjs <plugin dir | orca-plugin.json | orca-catalog.json>...
+// Usage: node config/scripts/validate-plugin-files.mjs <plugin dir | occ-plugin.json | occ-catalog.json>...
 // For a plugin directory in a Git repository it also prints the catalog release entry for the
 // committed HEAD, with the `source.path` to list when the plugin is not the repository root.
 import { createHash } from 'node:crypto'
@@ -25,7 +25,7 @@ const { parseGitRepositoryIdentity } = loadPluginSchemaModule('catalog/plugin-ma
 const { catalogImagesFromManifest } = loadPluginSchemaModule(
   'images/plugin-manifest-catalog-images.ts'
 )
-// Why shared: `orca plugin validate` runs these same strict artifact checks.
+// Why shared: `occ plugin validate` runs these same strict artifact checks.
 const { strictPluginArtifactErrors } = loadPluginSchemaModule(
   'authoring/plugin-strict-artifact-checks.ts'
 )
@@ -71,7 +71,7 @@ async function catalogReleaseEntry(pluginDir) {
   }
   const commit = await git(pluginDir, ['rev-parse', 'HEAD'])
   const dirty = (await git(pluginDir, ['status', '--porcelain', '--', '.'])) !== ''
-  const tree = mkdtempSync(path.join(tmpdir(), 'orca-plugin-release-'))
+  const tree = mkdtempSync(path.join(tmpdir(), 'occ-plugin-release-'))
   try {
     await materializePluginGitTree({
       repository: pluginDir,
@@ -80,7 +80,7 @@ async function catalogReleaseEntry(pluginDir) {
       ...(sourcePath ? { path: sourcePath } : {})
     })
     const hashed = await hashPluginTree(tree)
-    const rawManifest = JSON.parse(readFileSync(path.join(tree, 'orca-plugin.json'), 'utf8'))
+    const rawManifest = JSON.parse(readFileSync(path.join(tree, 'occ-plugin.json'), 'utf8'))
     const parsed = parsePluginManifest(rawManifest)
     const release =
       hashed.ok && parsed.ok
@@ -120,7 +120,7 @@ async function catalogReleaseEntry(pluginDir) {
 async function publisherOwnerWarning(pluginDir) {
   const remote = await git(pluginDir, ['remote', 'get-url', 'origin']).catch(() => '')
   const owner = parseGitRepositoryIdentity(remote)?.owner
-  const { publisher } = JSON.parse(readFileSync(path.join(pluginDir, 'orca-plugin.json'), 'utf8'))
+  const { publisher } = JSON.parse(readFileSync(path.join(pluginDir, 'occ-plugin.json'), 'utf8'))
   return owner && typeof publisher === 'string' && owner.toLowerCase() !== publisher.toLowerCase()
     ? `warning: OCC lists this plugin under the repository owner "${owner.toLowerCase()}", and older OCC refuses it because publisher is "${publisher}"; remove publisher or set it to "${owner.toLowerCase()}"`
     : null
@@ -129,19 +129,19 @@ async function publisherOwnerWarning(pluginDir) {
 const targets = process.argv.slice(2)
 if (targets.length === 0) {
   console.error(
-    'usage: validate-plugin-files <plugin dir | orca-plugin.json | orca-catalog.json>...'
+    'usage: validate-plugin-files <plugin dir | occ-plugin.json | occ-catalog.json>...'
   )
   process.exit(2)
 }
 let failed = false
 for (const target of targets) {
   const files = statSync(target).isDirectory()
-    ? ['orca-plugin.json', 'orca-catalog.json']
+    ? ['occ-plugin.json', 'occ-catalog.json']
         .map((name) => path.join(target, name))
         .filter((file) => existsSync(file))
     : [target]
   if (files.length === 0) {
-    console.error(`${target}: no orca-plugin.json or orca-catalog.json`)
+    console.error(`${target}: no occ-plugin.json or occ-catalog.json`)
     failed = true
   }
   let manifestOk = false
@@ -165,14 +165,14 @@ for (const target of targets) {
       return { bytes, sha256: createHash('sha256').update(bytes).digest('hex') }
     }
     const errors = validatePluginFile(path.basename(file), raw, readCatalogFile)
-    if (errors.length === 0 && path.basename(file) === 'orca-plugin.json') {
+    if (errors.length === 0 && path.basename(file) === 'occ-plugin.json') {
       const { manifest } = parsePluginManifest(raw)
       errors.push(...strictPluginArtifactErrors(manifest, readPluginText(root), englishLookup()))
     }
     for (const error of errors) {
       console.error(`${file}: ${error}`)
     }
-    if (errors.length === 0 && path.basename(file) === 'orca-plugin.json') {
+    if (errors.length === 0 && path.basename(file) === 'occ-plugin.json') {
       for (const warning of pluginManifestWarnings(raw)) {
         console.warn(`${file}: warning: ${warning}`)
       }
@@ -180,7 +180,7 @@ for (const target of targets) {
     failed ||= errors.length > 0
     if (errors.length === 0) {
       console.log(`${file}: ok`)
-      manifestOk ||= path.basename(file) === 'orca-plugin.json'
+      manifestOk ||= path.basename(file) === 'occ-plugin.json'
     }
   }
   if (manifestOk && statSync(target).isDirectory()) {

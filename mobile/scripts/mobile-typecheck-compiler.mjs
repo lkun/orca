@@ -8,16 +8,16 @@ import {
 
 const root = fileURLToPath(new URL('../..', import.meta.url))
 
-// Run from the mobile cwd for relative diagnostics; ORCA_MOBILE_TYPECHECK_COMPILER selects auto|tsrs|bun|native.
+// Run from the mobile cwd for relative diagnostics; OCC_MOBILE_TYPECHECK_COMPILER selects auto|tsrs|bun|native.
 export function resolveMobileTypecheckCommand(project, cwd = process.cwd()) {
-  const requested = process.env.ORCA_MOBILE_TYPECHECK_COMPILER ?? 'auto'
+  const requested = process.env.OCC_MOBILE_TYPECHECK_COMPILER ?? 'auto'
   if (!/^(auto|tsrs|bun|native)$/.test(requested)) {
     throw new Error(`Unknown mobile typecheck compiler: ${requested}`)
   }
   const selection = selectTypecheckCompiler(requested, {
     root,
     resolveBunExecutable: resolveTypecheckBunExecutable,
-    fallbackHint: 'set ORCA_MOBILE_TYPECHECK_COMPILER=native'
+    fallbackHint: 'set OCC_MOBILE_TYPECHECK_COMPILER=native'
   })
   const command = resolveTypecheckCommand(resolve(cwd, project), {
     ...selection,

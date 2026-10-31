@@ -8,7 +8,7 @@ import {
   statSync
 } from 'node:fs'
 import { basename, dirname, join, resolve } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 
 // Avoid process startup for small copies.
 const MINIMUM_CLONE_BYTES = 8 * 1024 * 1024
@@ -49,7 +49,7 @@ export function copyProfileStateRecoveryFiles(files: readonly RecoveryCopy[]): v
   if (clones.length === 0) {
     return
   }
-  const directory = mkdtempSync(join(dirname(clones[0].target), '.orca-recovery-clone-'))
+  const directory = mkdtempSync(join(dirname(clones[0].target), '.occ-recovery-clone-'))
   const temporary = (source: string) =>
     join(directory, clones.length === 1 ? 'copy' : basename(source))
   let cloned = false

@@ -91,7 +91,7 @@ export function registerPtyConnectionWindowsCjkRepaintTests(): void {
         connectPanePty(pane as never, createManager(1) as never, createDeps() as never)
         await flushAsyncTicks(6)
 
-        capturedDataCallback.current?.('\r\x1b[Korca % npm test')
+        capturedDataCallback.current?.('\r\x1b[Kocc % npm test')
 
         parseCallback?.()
         expect(refresh).toHaveBeenCalledWith(0, 39, true)

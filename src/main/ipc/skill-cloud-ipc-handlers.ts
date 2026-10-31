@@ -6,7 +6,7 @@ import { SKILL_INSTALL_UPDATE_REQUIRED_MESSAGE } from '../../shared/skill-instal
 import type { SkillDiscoveryResult, SkillDiscoveryTargetSchema } from '../../shared/skills'
 import type { SkillCloudDownloadGrant } from '../../shared/skill-cloud-contract'
 import type { SkillBundleInstallProgress } from '../../shared/skill-bundle-install-contract'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import {
   installSkillBundleCloudGrant,
   installSkillCloudGrant
@@ -43,7 +43,7 @@ export type SkillShareDiscover = (
   skillDirectories?: readonly string[]
 ) => Promise<SkillDiscoveryResult>
 
-function registerSharingHandlers(runtime: OrcaRuntimeService, discover: SkillShareDiscover): void {
+function registerSharingHandlers(runtime: OCCRuntimeService, discover: SkillShareDiscover): void {
   const preparations = new SkillSharePreparationService(
     join(app.getPath('userData'), 'skill-share-preparations'),
     {
@@ -85,7 +85,7 @@ function registerSharingHandlers(runtime: OrcaRuntimeService, discover: SkillSha
   })
 }
 
-function registerCloudInstallHandlers(runtime: OrcaRuntimeService): void {
+function registerCloudInstallHandlers(runtime: OCCRuntimeService): void {
   const remoteInstallCancellation = new SkillRemoteInstallCancellation()
   const installAuthorizedGrant = async (
     grant: SkillCloudDownloadGrant,
@@ -291,7 +291,7 @@ function registerCloudInstallHandlers(runtime: OrcaRuntimeService): void {
 }
 
 export function registerSkillCloudIpcHandlers(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   discover: SkillShareDiscover
 ): void {
   registerSharingHandlers(runtime, discover)

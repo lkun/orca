@@ -283,7 +283,7 @@ describe('seat-feed poller reachability', () => {
     cells.stop()
     expect(cells.deadCellVerdict('c2', at)).toMatchObject({ dead: false, withheld: 'fleet' })
     cells.deadCellVerdict('c2', at + 1_000)
-    const withheld = cells.logs.filter((line) => line.includes('orca_relay_dead_cell_verdict_withheld'))
+    const withheld = cells.logs.filter((line) => line.includes('occ_relay_dead_cell_verdict_withheld'))
     expect(withheld).toHaveLength(1)
     expect(JSON.parse(withheld[0]!)).toMatchObject({ cellId: 'c2', withheld: 'fleet', fleetFailing: 3, fleetPolled: 6 })
 

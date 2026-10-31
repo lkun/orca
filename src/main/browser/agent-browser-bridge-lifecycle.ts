@@ -1,6 +1,6 @@
 import { CdpWsProxy } from './cdp-ws-proxy'
 import { BrowserError } from './cdp-bridge'
-import { ORCA_TAB_SESSION_PREFIX } from './agent-browser-orphan-sweep'
+import { OCC_TAB_SESSION_PREFIX } from './agent-browser-orphan-sweep'
 import { AgentBrowserBridgeRawProcess } from './agent-browser-bridge-raw-process'
 import type { AgentBrowserCleanupOptions } from './agent-browser-bridge-types'
 import { AGENT_BROWSER_CLEANUP_TIMEOUT_MS } from './agent-browser-bridge-types'
@@ -34,7 +34,7 @@ export abstract class AgentBrowserBridgeLifecycle extends AgentBrowserBridgeRawP
 
   /** Offscreen backends unregister guests before cleanup, so close by page ID. */
   async onPageClosed(browserPageId: string): Promise<void> {
-    const sessionName = `${ORCA_TAB_SESSION_PREFIX}${browserPageId}`
+    const sessionName = `${OCC_TAB_SESSION_PREFIX}${browserPageId}`
     await this.destroySession(sessionName)
     this.pendingInterceptRestore.delete(sessionName)
   }
@@ -45,7 +45,7 @@ export abstract class AgentBrowserBridgeLifecycle extends AgentBrowserBridgeRawP
     previousWebContentsId?: number
   ): Promise<void> {
     // Process swaps preserve page IDs but replace the guest and its session.
-    const sessionName = `${ORCA_TAB_SESSION_PREFIX}${browserPageId}`
+    const sessionName = `${OCC_TAB_SESSION_PREFIX}${browserPageId}`
     const session = this.sessions.get(sessionName)
     const oldWebContentsId = previousWebContentsId ?? session?.webContentsId
     const owningWorktreeId = this.browserManager.getWorktreeIdForTab(browserPageId)
@@ -84,7 +84,7 @@ export abstract class AgentBrowserBridgeLifecycle extends AgentBrowserBridgeRawP
       const closeSession = (): void => void this.onPageClosed(popup.browserPageId)
       // The click that makes a popup close itself reports its own result, not a kill.
       const running = this.sessions.get(
-        `${ORCA_TAB_SESSION_PREFIX}${popup.browserPageId}`
+        `${OCC_TAB_SESSION_PREFIX}${popup.browserPageId}`
       )?.activeProcess
       if (running) {
         running.once('close', closeSession)
@@ -140,7 +140,7 @@ export abstract class AgentBrowserBridgeLifecycle extends AgentBrowserBridgeRawP
 
       const proxy = new CdpWsProxy(
         wc,
-        () => this.browserManager.holdPaintForCapture(webContentsId),
+        () => this.browserManager.holdPaintFoccpture(webContentsId),
         () => this.browserManager.guardUserFocusForAgentInput(webContentsId),
         (input) => this.browserManager.showAgentPointer(wc, input)
       )

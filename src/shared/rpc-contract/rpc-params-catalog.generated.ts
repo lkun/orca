@@ -35,13 +35,13 @@ import {
 } from '../mobile-relay-credential-contract'
 import { MobileRelayHostWorktreesParamsSchema } from '../mobile-relay-hosts-contract'
 import { MobileWebBundleChunkParamsSchema } from '../mobile-web-bundle/bundle-rpc-contract'
-import { OrcadMigrationBlobChunkRequestSchema } from '../orcad-migration/orcad-migration-blob-transfer'
-import { OrcadMigrationSnapshotChunkRequestSchema } from '../orcad-migration/orcad-migration-scrollback'
+import { OCCdMigrationBlobChunkRequestSchema } from '../occd-migration/occd-migration-blob-transfer'
+import { OCCdMigrationSnapshotChunkRequestSchema } from '../occd-migration/occd-migration-scrollback'
 import {
-  OrcadDeclareClientParamsSchema,
-  OrcadPeerDesktopsParamsSchema
-} from '../orcad-peer-desktops-contract'
-import { OrcadTerminalCensusParamsSchema } from '../orcad-terminal-census'
+  OCCdDeclareClientParamsSchema,
+  OCCdPeerDesktopsParamsSchema
+} from '../occd-peer-desktops-contract'
+import { OCCdTerminalCensusParamsSchema } from '../occd-terminal-census'
 import {
   AccountsUnsubscribeParams,
   AddClaudeFromConfigDirParams,
@@ -184,7 +184,7 @@ import {
 } from './computer-schemas-params'
 import {
   ConnectorAnswer,
-  ConnectorCancel,
+  Connectoccncel,
   ConnectorPendingPrompt,
   ConnectorReply,
   ConnectorSend,
@@ -439,10 +439,10 @@ import {
   NotificationsSubscribeParams
 } from './notifications-params'
 import {
-  OrcadMigrationCatalogParams,
-  OrcadMigrationCatalogReferenceParams,
-  OrcadMigrationCommitCatalogParams
-} from './orcad-migration-params'
+  OCCdMigrationCatalogParams,
+  OCCdMigrationCatalogReferenceParams,
+  OCCdMigrationCommitCatalogParams
+} from './occd-migration-params'
 import {
   FederationDispatchParams,
   FederationFleetSnapshotParams,
@@ -941,7 +941,7 @@ export const RPC_PARAMS_BY_METHOD = {
   'computer.setValue': SetValue,
   'computer.typeText': TypeText,
   'connector.answer': ConnectorAnswer,
-  'connector.cancel': ConnectorCancel,
+  'connector.cancel': Connectoccncel,
   'connector.pendingPrompt': ConnectorPendingPrompt,
   'connector.reply': ConnectorReply,
   'connector.send': ConnectorSend,
@@ -1124,9 +1124,9 @@ export const RPC_PARAMS_BY_METHOD = {
   'gitlab.updateMRState': UpdateMrState,
   'gitlab.workItemByPath': WorkItemByPath,
   'gitlab.workItemDetails': WorkItemDetails,
-  'host.declareClient': OrcadDeclareClientParamsSchema,
+  'host.declareClient': OCCdDeclareClientParamsSchema,
   'host.gitBash.isAvailable': null,
-  'host.peerDesktops': OrcadPeerDesktopsParamsSchema,
+  'host.peerDesktops': OCCdPeerDesktopsParamsSchema,
   'host.platform': null,
   'host.pwsh.isAvailable': null,
   'host.wsl.isAvailable': null,
@@ -1244,14 +1244,14 @@ export const RPC_PARAMS_BY_METHOD = {
   'notifications.testPush': null,
   'notifications.unregisterPush': null,
   'notifications.unsubscribe': NotificationUnsubscribeParams,
-  'orcad.migration.abortCatalog': OrcadMigrationCatalogParams,
-  'orcad.migration.abortCatalogByReference': OrcadMigrationCatalogReferenceParams,
-  'orcad.migration.catalogState': OrcadMigrationCatalogParams,
-  'orcad.migration.commitCatalog': OrcadMigrationCommitCatalogParams,
-  'orcad.migration.stageBlobChunk': OrcadMigrationBlobChunkRequestSchema,
-  'orcad.migration.stageCatalog': OrcadMigrationCatalogParams,
-  'orcad.migration.stageSnapshotChunk': OrcadMigrationSnapshotChunkRequestSchema,
-  'orcad.terminalCensus': OrcadTerminalCensusParamsSchema,
+  'occd.migration.abortCatalog': OCCdMigrationCatalogParams,
+  'occd.migration.abortCatalogByReference': OCCdMigrationCatalogReferenceParams,
+  'occd.migration.catalogState': OCCdMigrationCatalogParams,
+  'occd.migration.commitCatalog': OCCdMigrationCommitCatalogParams,
+  'occd.migration.stageBlobChunk': OCCdMigrationBlobChunkRequestSchema,
+  'occd.migration.stageCatalog': OCCdMigrationCatalogParams,
+  'occd.migration.stageSnapshotChunk': OCCdMigrationSnapshotChunkRequestSchema,
+  'occd.terminalCensus': OCCdTerminalCensusParamsSchema,
   'orchestration.ask': AskParams,
   'orchestration.callerShow': null,
   'orchestration.check': CheckParams,
@@ -1400,12 +1400,12 @@ export const RPC_PARAMS_BY_METHOD = {
   'skills.commitUpload': SkillUploadCommitRequestSchema,
   'skills.delete': SkillDeleteRequestSchema,
   'skills.discover': SkillsDiscoverParams,
-  'skills.executeBundledOrca': BundledSkillExecuteRequestSchema,
+  'skills.executeBundledOCC': BundledSkillExecuteRequestSchema,
   'skills.getInstallProgress': SkillsGetInstallProgressParams,
   'skills.install': SkillInstallRequestSchema,
   'skills.installBundle': SkillBundleInstallRequestSchema,
   'skills.listManagedInstalls': null,
-  'skills.planBundledOrca': BundledSkillPlanRequestSchema,
+  'skills.planBundledOCC': BundledSkillPlanRequestSchema,
   'skills.previewDelete': SkillDeleteRequestSchema,
   'skills.previewInstall': SkillInstallPreviewRequestSchema,
   'skills.removeInstall': SkillRemoveRequestSchema,

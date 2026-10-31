@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 // Keep debounce writes asynchronous and flush synchronous; parked writes before temp creation or at rename must never overwrite the newer flush or leak temp files.
 
 let userDataDir: string
-const statsPath = (): string => join(userDataDir, 'orca-stats.json')
+const statsPath = (): string => join(userDataDir, 'occ-stats.json')
 
 vi.mock('electron', () => ({
   app: { getPath: () => userDataDir }
@@ -58,7 +58,7 @@ async function importCollector() {
 
 describe('StatsCollector async debounced save', () => {
   beforeEach(() => {
-    userDataDir = mkdtempSync(join(tmpdir(), 'orca-stats-test-'))
+    userDataDir = mkdtempSync(join(tmpdir(), 'occ-stats-test-'))
     gate.blocked = false
     gate.blockRename = false
     gate.waiters = []
@@ -85,7 +85,7 @@ describe('StatsCollector async debounced save', () => {
 
     await vi.advanceTimersByTimeAsync(5_000)
     await vi.waitFor(() => {
-      expect(readdirSync(userDataDir)).toContain('orca-stats.json')
+      expect(readdirSync(userDataDir)).toContain('occ-stats.json')
     })
 
     expect(gate.writeFileCalls).toBeGreaterThan(0)

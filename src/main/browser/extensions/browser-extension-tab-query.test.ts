@@ -2,8 +2,8 @@
 import { describe, expect, it } from 'vitest'
 import {
   matchesDiscardedTabNativeQuery,
-  matchesOrcaTabQuery,
-  type OrcaTabQuery
+  matchesOCCTabQuery,
+  type OCCTabQuery
 } from './browser-extension-tab-query'
 
 const MAIN = 1
@@ -34,7 +34,7 @@ const tabs = [
   tab({ id: 30, index: 2, discarded: true, status: 'unloaded' })
 ]
 
-function query(q: OrcaTabQuery, callerWindowId: number | null = MAIN): (number | undefined)[] {
+function query(q: OCCTabQuery, callerWindowId: number | null = MAIN): (number | undefined)[] {
   const context = {
     callerWindowId,
     lastFocusedWindowId: MAIN,
@@ -43,10 +43,10 @@ function query(q: OrcaTabQuery, callerWindowId: number | null = MAIN): (number |
       [POPOUT, 'popup']
     ])
   }
-  return tabs.filter((t) => matchesOrcaTabQuery(t, q, context)).map((t) => t.id)
+  return tabs.filter((t) => matchesOCCTabQuery(t, q, context)).map((t) => t.id)
 }
 
-describe('matchesOrcaTabQuery', () => {
+describe('matchesOCCTabQuery', () => {
   it('answers the common "active tab in my window" query per caller window', () => {
     expect(query({ active: true, currentWindow: true })).toEqual([11])
     expect(query({ active: true, currentWindow: true }, POPOUT)).toEqual([20])

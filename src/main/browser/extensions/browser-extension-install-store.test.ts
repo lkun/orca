@@ -30,7 +30,7 @@ function record(overrides: Partial<InstalledBrowserExtension>): InstalledBrowser
 }
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-browser-extensions-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-browser-extensions-'))
 })
 afterEach(() => {
   rmSync(root, { recursive: true, force: true })

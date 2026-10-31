@@ -3,7 +3,7 @@ import { getDefaultSettings } from './constants'
 import { migratePortugueseUiLanguageOnLoad } from './portuguese-ui-language-migration'
 import { normalizeUiLanguage } from './ui-language'
 
-const plugin = 'plugin:stablyai.orca-portuguese/pt-BR'
+const plugin = 'plugin:stablyai.occ-portuguese/pt-BR'
 
 describe('Portuguese UI language load migration', () => {
   it.each([undefined, false, null, 'true', 1, {}])(
@@ -27,12 +27,12 @@ describe('Portuguese UI language load migration', () => {
     'es',
     'fr',
     'pt',
-    'plugin:other.orca-portuguese/pt-BR',
+    'plugin:other.occ-portuguese/pt-BR',
     'plugin:stablyai.other/pt-BR',
-    'plugin:stablyai.orca-portuguese/pt',
-    'plugin:stablyai.orca-portuguese/pt-br',
-    'Plugin:stablyai.orca-portuguese/pt-BR',
-    'plugin:Stablyai.orca-portuguese/pt-BR',
+    'plugin:stablyai.occ-portuguese/pt',
+    'plugin:stablyai.occ-portuguese/pt-br',
+    'Plugin:stablyai.occ-portuguese/pt-BR',
+    'plugin:Stablyai.occ-portuguese/pt-BR',
     undefined,
     null,
     42,

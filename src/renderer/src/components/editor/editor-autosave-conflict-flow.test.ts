@@ -1,6 +1,6 @@
 // Exercise draft preservation, self-write echoes, autosave suspension and baseline settlement through the headless controller.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, requestEditorFileSave } from './editor-autosave'
+import { OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, requestEditorFileSave } from './editor-autosave'
 import { attachEditorAutosaveController } from './editor-autosave-controller'
 import { __clearSelfWriteRegistryForTests, recordSelfWrite } from './editor-self-write-registry'
 import {
@@ -34,7 +34,7 @@ function openDirtyFile(store: ReturnType<typeof createEditorStore>, draft = 'uns
 
 function dispatchExternalChange(): void {
   window.dispatchEvent(
-    new CustomEvent(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, {
+    new CustomEvent(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, {
       detail: { worktreeId: 'wt-1', worktreePath: '/repo', relativePath: 'file.ts' }
     })
   )
@@ -100,7 +100,7 @@ describe('editor autosave changed-on-disk conflict flow', () => {
     const store = createEditorStore()
     openDirtyFile(store, 'typed during save')
     // Combined-diff notifications bypass watcher echo checks; a fresh self-write stamp identifies the controller’s own save.
-    recordSelfWrite('/repo/file.ts', 'orca save')
+    recordSelfWrite('/repo/file.ts', 'occ save')
 
     const cleanup = attachEditorAutosaveController(withLoadedBaselines(store))
     try {

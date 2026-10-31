@@ -6,12 +6,12 @@
  *
  * A project an earlier move took and an older build has since changed is listed, not taken: the
  * host already holds it under the same ids and refuses a second copy, so the change stays in the
- * retained row (as SSH's delta does; see `planOrcadDeltaMove`). The same goes for a project the
+ * retained row (as SSH's delta does; see `planOCCdDeltaMove`). The same goes for a project the
  * host still holds after its move was dropped from the journal.
  */
 import type { FolderWorkspace } from '../../../shared/folder-workspace-types'
-import type { OrcadMigrationManifest } from '../../../shared/orcad-migration/orcad-migration-manifest'
-import { isOrcadMigrationLocalWslSource } from '../../../shared/orcad-migration/orcad-migration-source-kind'
+import type { OCCdMigrationManifest } from '../../../shared/occd-migration/occd-migration-manifest'
+import { isOCCdMigrationLocalWslSource } from '../../../shared/occd-migration/occd-migration-source-kind'
 import type { ProjectGroup } from '../../../shared/project-group-types'
 import type { Repo } from '../../../shared/repo-types'
 import {
@@ -209,7 +209,7 @@ const sameIds = (left: readonly string[], right: readonly string[]): boolean =>
 export function journalWslMove(args: {
   userDataPath: string
   plan: WslMovePlan
-  manifest: OrcadMigrationManifest
+  manifest: OCCdMigrationManifest
   destinationName: string
   /** Carried disabled; the host turns them back on after commit. */
   automationsToReenable?: readonly string[]
@@ -219,7 +219,7 @@ export function journalWslMove(args: {
   const { source, destinationEnvironmentId } = manifest
   if (
     !destinationEnvironmentId ||
-    !isOrcadMigrationLocalWslSource(source) ||
+    !isOCCdMigrationLocalWslSource(source) ||
     wslMoveJournalKey(source.distro) !== plan.journalKey ||
     source.generation !== plan.generation ||
     !sameIds(source.scopeRepoIds, plan.repoIds) ||

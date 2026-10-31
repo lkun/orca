@@ -37,7 +37,7 @@ export async function readEnabledHostCapabilities(
     // `skills share` refuses forwarded and remote invocations, so their hosts cannot publish skills.
     if (
       settings?.agentSkillSharingEnabled === true &&
-      !process.env.ORCA_CLI_CWD &&
+      !process.env.OCC_CLI_CWD &&
       !ctx.client.isRemote
     ) {
       enabled.add('skill-publishing')

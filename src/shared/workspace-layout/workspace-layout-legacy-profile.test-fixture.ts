@@ -164,14 +164,14 @@ export const LEGACY_WORKSPACE_LAYOUT_PROFILES: readonly WorkspaceLayoutProfile[]
     session.openFilesByWorktree = {
       [GIT_KEY]: [
         {
-          filePath: '/Users/dev/orca/src/app.ts',
+          filePath: '/Users/dev/occ/src/app.ts',
           relativePath: 'src/app.ts',
           worktreeId: GIT_KEY,
           language: 'typescript'
         }
       ]
     }
-    session.activeFileIdByWorktree = { [GIT_KEY]: '/Users/dev/orca/src/app.ts' }
+    session.activeFileIdByWorktree = { [GIT_KEY]: '/Users/dev/occ/src/app.ts' }
     session.activeTabTypeByWorktree = { [GIT_KEY]: 'editor' }
     return session
   }),

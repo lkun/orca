@@ -7,7 +7,7 @@ import {
 } from '../../shared/claude-sign-in-link'
 import type { ClaudeCommandConfig } from './claude-command-process'
 
-const HELPER_NAME = '.orca-sign-in-browser'
+const HELPER_NAME = '.occ-sign-in-browser'
 const LINK_SUFFIX = '.link'
 const POLL_INTERVAL_MS = 250
 const LINK_WAIT_MS = 60_000

@@ -139,7 +139,7 @@ export class SlowConnectionRetirement {
     // Cloud Run labels each line with its instance, so retirements count per instance.
     console.warn(
       JSON.stringify({
-        event: 'orca_relay_postgres_slow_connection_retired',
+        event: 'occ_relay_postgres_slow_connection_retired',
         connectionId,
         shape: slowMedian ? 'median' : 'tail',
         medianMs: rounded(medianMs),

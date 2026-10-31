@@ -18,7 +18,7 @@ async function createFixture(): Promise<{
   docs: string
   assets: string
 }> {
-  const fixture = await mkdtemp(join(tmpdir(), 'orca-doc-preview-access-'))
+  const fixture = await mkdtemp(join(tmpdir(), 'occ-doc-preview-access-'))
   fixtureRoots.push(fixture)
   const workspace = join(fixture, 'workspace')
   const docs = join(workspace, 'docs')

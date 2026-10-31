@@ -28,7 +28,7 @@ const edited = new Uint8Array([0x50, 0x4b, 0x03, 0x04, 0x80, 0xfe, 0x00, 0x01])
 
 let root = ''
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-bytes-ipc-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-bytes-ipc-'))
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: authorization is stubbed, and no other context member is used by this handler.
   registerFilesystemWriteHandlers({ store: {} } as FilesystemHandlerContext)
 })

@@ -7,7 +7,7 @@ const step = jobs.desktop_template.steps.find(
   (item) => item.name === 'Wait for every template qualification lane'
 )
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor
-function lanes(prefix = 'orcad-template / qualify / ') {
+function lanes(prefix = 'occd-template / qualify / ') {
   return [
     { name: `${prefix}desktop_template`, status: 'in_progress' },
     ...Object.entries({
@@ -55,7 +55,7 @@ function execute(snapshots) {
 }
 
 describe('early template assembly qualification gate', () => {
-  it.each(['', 'orcad-template / qualify / '])(
+  it.each(['', 'occd-template / qualify / '])(
     'waits for all current-attempt jobs with prefix %s',
     async (prefix) => {
       const incomplete = lanes(prefix)

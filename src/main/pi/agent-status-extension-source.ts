@@ -6,7 +6,7 @@ import { getPiAgentStatusRuntimeDetectionSourceLines } from './agent-status-runt
 import { getPiAgentStatusWslCurlSourceLines } from './agent-status-wsl-curl-source'
 import { getPiSubagentSnapshotSourceLines } from './agent-status-subagent-roster-source'
 
-export const ORCA_PI_AGENT_STATUS_EXTENSION_FILE = 'orca-agent-status.ts'
+export const OCC_PI_AGENT_STATUS_EXTENSION_FILE = 'occ-agent-status.ts'
 
 /** Self-contained source runs inside Pi-family agents without OCC module imports. */
 export function getPiAgentStatusExtensionSource(kind: PiAgentKind = 'pi'): string {
@@ -96,7 +96,7 @@ export function getPiAgentStatusExtensionSource(kind: PiAgentKind = 'pi'): strin
     "    if (!model || typeof model !== 'object') return",
     "    const provider = 'provider' in model && typeof model.provider === 'string' ? model.provider : ''",
     "    const id = 'id' in model && typeof model.id === 'string' ? model.id : ''",
-    "    if (provider && id) modelMetadata = { model: provider + '/' + id, ...(ompModelSwitchSupported ? { model_switch_command: 'orca-model' } : {}) }",
+    "    if (provider && id) modelMetadata = { model: provider + '/' + id, ...(ompModelSwitchSupported ? { model_switch_command: 'occ-model' } : {}) }",
     '  } catch {',
     '    // Throwing model getters cannot interrupt status delivery.',
     '  }',
@@ -128,7 +128,7 @@ export function getPiAgentStatusExtensionSource(kind: PiAgentKind = 'pi'): strin
     'let cachedEndpointValues: Record<string, string> | null = null',
     '',
     'function readEndpointFile(): Record<string, string> | null {',
-    '  const path = process.env.ORCA_AGENT_HOOK_ENDPOINT',
+    '  const path = process.env.OCC_AGENT_HOOK_ENDPOINT',
     '  if (!path) return null',
     '  try {',
     "    const fs = require('fs')",
@@ -157,7 +157,7 @@ export function getPiAgentStatusExtensionSource(kind: PiAgentKind = 'pi'): strin
     '    const code = (err as { code?: string } | null)?.code',
     "    if (err && code !== 'ENOENT' && !warnedBadEndpoint) {",
     '      warnedBadEndpoint = true',
-    "      console.warn('[orca-pi-status] failed to parse endpoint file:', (err as Error).message)",
+    "      console.warn('[occ-pi-status] failed to parse endpoint file:', (err as Error).message)",
     '    }',
     '    return null',
     '  }',
@@ -166,10 +166,10 @@ export function getPiAgentStatusExtensionSource(kind: PiAgentKind = 'pi'): strin
     'function resolveHookCoords() {',
     '  const fileEnv = readEndpointFile() || {}',
     '  return {',
-    '    port: fileEnv.ORCA_AGENT_HOOK_PORT || process.env.ORCA_AGENT_HOOK_PORT,',
-    '    token: fileEnv.ORCA_AGENT_HOOK_TOKEN || process.env.ORCA_AGENT_HOOK_TOKEN,',
-    "    env: fileEnv.ORCA_AGENT_HOOK_ENV || process.env.ORCA_AGENT_HOOK_ENV || '',",
-    "    version: fileEnv.ORCA_AGENT_HOOK_VERSION || process.env.ORCA_AGENT_HOOK_VERSION || '',",
+    '    port: fileEnv.OCC_AGENT_HOOK_PORT || process.env.OCC_AGENT_HOOK_PORT,',
+    '    token: fileEnv.OCC_AGENT_HOOK_TOKEN || process.env.OCC_AGENT_HOOK_TOKEN,',
+    "    env: fileEnv.OCC_AGENT_HOOK_ENV || process.env.OCC_AGENT_HOOK_ENV || '',",
+    "    version: fileEnv.OCC_AGENT_HOOK_VERSION || process.env.OCC_AGENT_HOOK_VERSION || '',",
     '  }',
     '}',
     '',
@@ -213,14 +213,14 @@ export function getPiAgentStatusExtensionSource(kind: PiAgentKind = 'pi'): strin
     '  final: boolean',
     '): Promise<void> {',
     '  const coords = resolveHookCoords()',
-    '  const paneKey = process.env.ORCA_PANE_KEY',
+    '  const paneKey = process.env.OCC_PANE_KEY',
     '  if (!coords.port || !coords.token || !paneKey) return',
     '  const url = `http://127.0.0.1:${coords.port}${resolveHookPath(ompRuntime)}`',
     '  const bodyWith = (subagents: Record<string, unknown>): string => JSON.stringify({',
     '    paneKey,',
-    "    launchToken: process.env.ORCA_AGENT_LAUNCH_TOKEN || '',",
-    "    tabId: process.env.ORCA_TAB_ID || '',",
-    "    worktreeId: process.env.ORCA_WORKTREE_ID || '',",
+    "    launchToken: process.env.OCC_AGENT_LAUNCH_TOKEN || '',",
+    "    tabId: process.env.OCC_TAB_ID || '',",
+    "    worktreeId: process.env.OCC_WORKTREE_ID || '',",
     '    env: coords.env,',
     '    version: coords.version,',
     payloadLine,

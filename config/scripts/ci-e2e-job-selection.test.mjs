@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { expect, it } from 'vitest'
 import { parse } from 'yaml'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   classifyE2eJobs,
   DEDICATED_E2E_SPECS,
@@ -23,7 +23,7 @@ it('scales broad general selections without charging extra VMs for duplicate or 
     '2/3',
     '3/3'
   ])
-  expect(generalE2eShards(JSON.stringify(['tests/e2e/ssh-orcad-example.spec.ts']))).toEqual(['1/1'])
+  expect(generalE2eShards(JSON.stringify(['tests/e2e/ssh-occd-example.spec.ts']))).toEqual(['1/1'])
   expect(generalE2eShards('')).toEqual(['1/1'])
   expect(generalE2eShards('[]')).toEqual(['1/1'])
   expect(

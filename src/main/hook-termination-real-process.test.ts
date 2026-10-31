@@ -19,10 +19,10 @@ async function survivorsAfterDeadline(
   script: string
 ): Promise<{ shell: boolean; child: boolean; output: string; pids: number[] }> {
   const { runHook } = await import('./hooks')
-  const dir = mkdtempSync(join(tmpdir(), 'orca-term-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-term-'))
   const pidFile = join(dir, 'pids')
   writeFileSync(
-    join(dir, 'orca.yaml'),
+    join(dir, 'occ.yaml'),
     `scripts:\n  archive: |\n${script.replace(/^/gm, '    ')}\n`
   )
   let pids: number[] = []

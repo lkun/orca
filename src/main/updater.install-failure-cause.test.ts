@@ -100,7 +100,7 @@ vi.mock('./updater-prerelease-feed', () => ({
     .fn()
     .mockResolvedValue({ tags: ['v1.4.241'], state: 'ready' }),
   getReleaseDownloadUrl: (tag: string) =>
-    `https://github.com/stablyai/orca/releases/download/${tag}`
+    `https://github.com/stablyai/occ/releases/download/${tag}`
 }))
 
 vi.mock('./electron-updater-loader', () => ({
@@ -124,7 +124,7 @@ vi.mock('./linux-update-package-type', () => ({
 }))
 
 const DEB_ELEVATION_ERROR =
-  'Error: Command failed: /usr/bin/pkexec --disable-internal-agent "/bin/bash" "-c" "dpkg -i \'/home/u/.cache/orca-updater/pending/orca-ide_1.4.163_amd64.deb\'"\npkexec must be setuid root'
+  'Error: Command failed: /usr/bin/pkexec --disable-internal-agent "/bin/bash" "-c" "dpkg -i \'/home/u/.cache/occ-updater/pending/occ-ide_1.4.163_amd64.deb\'"\npkexec must be setuid root'
 
 const WINDOWS_SIGNATURE_MISMATCH_ERROR =
   'New version 1.4.163 is not signed by the application owner: publisherNames: OCC, Inc.'
@@ -318,7 +318,7 @@ describe('quitAndInstall failure carries the updater cause', () => {
     autoUpdaterMock.quitAndInstall.mockImplementation(() => {
       autoUpdaterMock.emit(
         'error',
-        new Error(`${escape}[31mdpkg -i '${home}/.cache/orca-updater/pending/orca.deb'${escape}[0m`)
+        new Error(`${escape}[31mdpkg -i '${home}/.cache/occ-updater/pending/occ.deb'${escape}[0m`)
       )
     })
 
@@ -332,7 +332,7 @@ describe('quitAndInstall failure carries the updater cause', () => {
     const message = status.state === 'error' ? status.message : ''
     expect(message).not.toContain(home)
     expect(message).not.toContain(escape)
-    expect(message).toContain("<home>/.cache/orca-updater/pending/orca.deb'")
+    expect(message).toContain("<home>/.cache/occ-updater/pending/occ.deb'")
   })
 
   it('carries the cause when quitAndInstall throws instead of dispatching an error event', async () => {

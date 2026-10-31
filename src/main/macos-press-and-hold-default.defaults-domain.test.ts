@@ -4,7 +4,7 @@ import { chmodSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs'
 import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import {
   PRESS_AND_HOLD_KEY,
   ensureMacPressAndHoldDefault,
@@ -122,7 +122,7 @@ describe.skipIf(process.platform !== 'darwin')(
 
     // Root could still write the read-only fixture directory.
     it.skipIf(process.getuid?.() === 0)('reports a write the binary refused', () => {
-      const readOnly = join(mkdtempSync(join(tmpdir(), 'orca-press-hold-ro-')), 'locked')
+      const readOnly = join(mkdtempSync(join(tmpdir(), 'occ-press-hold-ro-')), 'locked')
       mkdirSync(readOnly)
       chmodSync(readOnly, 0o500)
       try {

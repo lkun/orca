@@ -29,7 +29,7 @@ describe('a coordinator of two Runs', () => {
 
   it('is woken for its earlier Run with a pointer naming that Run', async () => {
     vi.useFakeTimers()
-    const db = createDatabase('orca-multi-run-wake-')
+    const db = createDatabase('occ-multi-run-wake-')
     const harness = createRuntime(db)
     const runA = createBoundRun(db, 'Run A')
     createBoundRun(db, 'Run B')
@@ -48,7 +48,7 @@ describe('a coordinator of two Runs', () => {
 
   it('points at earlier-Run mail that arrived mid-turn on the next idle edge', async () => {
     vi.useFakeTimers()
-    const db = createDatabase('orca-multi-run-idle-')
+    const db = createDatabase('occ-multi-run-idle-')
     const harness = createRuntime(db)
     const runA = createBoundRun(db, 'Run A')
     createBoundRun(db, 'Run B')

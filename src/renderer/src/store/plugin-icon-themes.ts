@@ -30,7 +30,7 @@ export const useActivePluginIconTheme = create<{ theme: ActivePluginIconTheme | 
 
 /** Attribute that selects an icon's one shared CSS rule; rows carry only the index. */
 export const PLUGIN_ICON_ATTRIBUTE = 'data-plugin-icon'
-const STYLE_ELEMENT_ID = 'orca-plugin-icon-theme'
+const STYLE_ELEMENT_ID = 'occ-plugin-icon-theme'
 let registeredUrls: string[] = []
 let loadGeneration = 0
 

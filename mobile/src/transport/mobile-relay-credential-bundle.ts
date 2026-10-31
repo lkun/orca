@@ -44,7 +44,7 @@ export const MobileRelayCredentialBundleSchema = z
 export type MobileRelayCredentialBundle = z.infer<typeof MobileRelayCredentialBundleSchema>
 
 function credentialKey(hostId: string): string {
-  return `orca.mobile-relay.credentials.${hostId}`
+  return `occ.mobile-relay.credentials.${hostId}`
 }
 
 export function promotePairingJournalCredential(args: {

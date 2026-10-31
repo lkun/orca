@@ -26,7 +26,7 @@ const identity: AgentSessionJournalIdentity = {
 let root: string
 beforeEach(async () => {
   probeVersion.mockReset().mockResolvedValue({ version: '0.84.0' })
-  root = await mkdtemp(join(tmpdir(), 'orca-pi-resolver-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-pi-resolver-'))
 })
 afterEach(async () => {
   await closeTestJournalHostDatabase(root)

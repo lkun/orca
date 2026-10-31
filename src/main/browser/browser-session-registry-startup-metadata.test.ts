@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
-  DEFAULT_LOCAL_ORCA_PROFILE_ID,
-  getOrcaProfileBrowserSessionPartition
-} from '../../shared/orca-profiles'
+  DEFAULT_LOCAL_OCC_PROFILE_ID,
+  getOCCProfileBrowserSessionPartition
+} from '../../shared/occ-profiles'
 import {
   createFsState,
   installModuleMocks,
@@ -25,7 +25,7 @@ describe('browser profile startup metadata reads', () => {
         return {
           id,
           scope: 'isolated',
-          partition: getOrcaProfileBrowserSessionPartition(DEFAULT_LOCAL_ORCA_PROFILE_ID, id),
+          partition: getOCCProfileBrowserSessionPartition(DEFAULT_LOCAL_OCC_PROFILE_ID, id),
           label: `Browser ${index}`,
           source: null
         }

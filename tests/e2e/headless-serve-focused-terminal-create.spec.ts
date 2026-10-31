@@ -1,4 +1,4 @@
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 
 // A real windowless serve host must degrade focus-requested terminal creation without refusing for lack of a renderer (#10333).
@@ -31,7 +31,7 @@ test('creates a focus-requested terminal against a headless serve host', async (
       terminal: { handle: string; worktreeId: string; ptyId?: string }
     }>('terminal.create', {
       worktree: `id:${worktreeId}`,
-      command: 'echo orca-10333-focus',
+      command: 'echo occ-10333-focus',
       focus: true,
       presentation: 'focused'
     })

@@ -1,10 +1,10 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import type {
   ConnectorConversation,
   ConnectorEvent,
   ConnectorReplyRequest,
   ConnectorReplyResponse
-} from '@orca-cloud/connector-contract'
+} from '@occ-cloud/connector-contract'
 import { every } from './connector-background.js'
 import type { ConnectorAdapter, ConnectorSource, InboundMessage } from './connector-adapter.js'
 import type { ConnectorInbox, ExpiredThread } from './connector-inbox.js'

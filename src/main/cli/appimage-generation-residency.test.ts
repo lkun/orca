@@ -5,7 +5,7 @@ import {
   type ProcReader
 } from './appimage-generation-residency'
 
-const ROOT = '/home/u/.cache/orca/appimage/aaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbb'
+const ROOT = '/home/u/.cache/occ/appimage/aaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbb'
 
 function errorWithCode(code: string): Error {
   return Object.assign(new Error(code), { code })

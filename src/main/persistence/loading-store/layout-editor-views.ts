@@ -5,7 +5,7 @@ import {
   normalizeExecutionHostId,
   type ExecutionHostId
 } from '../../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type { LayoutEditorView } from '../../../shared/workspace-layout/layout-editor-view'
 import type { WorkspaceLayoutModel } from '../../../shared/workspace-layout/workspace-layout-model'
 import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
@@ -22,7 +22,7 @@ export function partitionEditorViewsOf(
   runtime: ViewsRuntime,
   hostId: ExecutionHostId
 ): PartitionEditorViews | undefined {
-  return ORCA_LAYOUT_OWNER_IS_MAIN ? (runtime.layoutEditorViews.get(hostId) ?? {}) : undefined
+  return OCC_LAYOUT_OWNER_IS_MAIN ? (runtime.layoutEditorViews.get(hostId) ?? {}) : undefined
 }
 
 export function editorViewsOfModel(model: WorkspaceLayoutModel): PartitionEditorViews {

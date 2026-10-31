@@ -300,7 +300,7 @@ export class DeviceRegistry {
     }
   }
 
-  /** Auth checks see a removal made on disk (an admin revoke) without waiting for orcad's next save. */
+  /** Auth checks see a removal made on disk (an admin revoke) without waiting for occd's next save. */
   private adoptExternalEdits(): void {
     // An unreadable load refuses everything until restart; there is nothing to merge into.
     if (!this.registryUnreadable) {

@@ -19,7 +19,7 @@ describe('a diff side past the read cap', () => {
   let repo: string
 
   beforeEach(() => {
-    repo = mkdtempSync(path.join(tmpdir(), 'orca-diff-too-large-'))
+    repo = mkdtempSync(path.join(tmpdir(), 'occ-diff-too-large-'))
     git(repo, ['init'])
     git(repo, ['config', 'user.email', 'test@example.com'])
     git(repo, ['config', 'user.name', 'Test User'])

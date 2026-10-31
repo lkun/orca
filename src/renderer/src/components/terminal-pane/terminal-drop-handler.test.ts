@@ -137,7 +137,7 @@ describe('handleTerminalFileDrop', () => {
         {
           sourcePath: '/Users/me/logo.png',
           status: 'imported',
-          destPath: '/remote/repo/.orca/drops/logo.png',
+          destPath: '/remote/repo/.occ/drops/logo.png',
           kind: 'file',
           renamed: false
         }
@@ -169,11 +169,11 @@ describe('handleTerminalFileDrop', () => {
         expectedSshConnectionGeneration: undefined
       },
       ['/Users/me/logo.png'],
-      '/remote/repo/.orca/drops',
+      '/remote/repo/.occ/drops',
       { assertCurrent: expect.any(Function), nameExtensionlessImages: true }
     )
     expect(sendInput).toHaveBeenCalledWith(
-      wrapTerminalBracketedPasteText('/remote/repo/.orca/drops/logo.png'),
+      wrapTerminalBracketedPasteText('/remote/repo/.occ/drops/logo.png'),
       'driving'
     )
     expect(focus).not.toHaveBeenCalled()
@@ -191,7 +191,7 @@ describe('handleTerminalFileDrop', () => {
           {
             sourcePath: '/Users/me/logo.png',
             status: 'imported',
-            destPath: '/remote/repo/.orca/drops/logo.png',
+            destPath: '/remote/repo/.occ/drops/logo.png',
             kind: 'file',
             renamed: false
           }
@@ -237,7 +237,7 @@ describe('handleTerminalFileDrop', () => {
         {
           sourcePath: '/Users/me/logo.png',
           status: 'imported',
-          destPath: '//server/share/repo\\.orca\\drops\\logo.png',
+          destPath: '//server/share/repo\\.occ\\drops\\logo.png',
           kind: 'file',
           renamed: false
         }
@@ -272,11 +272,11 @@ describe('handleTerminalFileDrop', () => {
         expectedSshConnectionGeneration: undefined
       },
       ['/Users/me/logo.png'],
-      '\\\\server\\share\\repo\\.orca\\drops',
+      '\\\\server\\share\\repo\\.occ\\drops',
       { assertCurrent: expect.any(Function), nameExtensionlessImages: true }
     )
     expect(sendInput).toHaveBeenCalledWith(
-      wrapTerminalBracketedPasteText('\\\\server\\share\\repo\\.orca\\drops\\logo.png'),
+      wrapTerminalBracketedPasteText('\\\\server\\share\\repo\\.occ\\drops\\logo.png'),
       'driving'
     )
   })
@@ -301,7 +301,7 @@ describe('handleTerminalFileDrop', () => {
         {
           sourcePath: '/Users/me/spec.pdf',
           status: 'imported',
-          destPath: '/remote/repo/.orca/drops/spec.pdf',
+          destPath: '/remote/repo/.occ/drops/spec.pdf',
           kind: 'file',
           renamed: false
         }
@@ -336,10 +336,10 @@ describe('handleTerminalFileDrop', () => {
         expectedSshConnectionGeneration: undefined
       },
       ['/Users/me/spec.pdf'],
-      '/remote/repo/.orca/drops',
+      '/remote/repo/.occ/drops',
       { assertCurrent: expect.any(Function), nameExtensionlessImages: true }
     )
-    expect(sendInput).toHaveBeenCalledWith('/remote/repo/.orca/drops/spec.pdf ', 'driving')
+    expect(sendInput).toHaveBeenCalledWith('/remote/repo/.occ/drops/spec.pdf ', 'driving')
   })
 
   it('keeps explicit local worktree drops local while a runtime is focused', async () => {

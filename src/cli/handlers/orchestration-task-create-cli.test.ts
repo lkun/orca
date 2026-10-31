@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const callMock = vi.hoisted(() => vi.fn())
 const getTerminalHandleMock = vi.hoisted(() => vi.fn())
-const originalTerminalHandle = process.env.ORCA_TERMINAL_HANDLE
+const originalTerminalHandle = process.env.OCC_TERMINAL_HANDLE
 
 vi.mock('../format', () => ({ printResult: vi.fn() }))
 vi.mock('../selectors', () => ({ getTerminalHandle: getTerminalHandleMock }))
@@ -13,14 +13,14 @@ describe('orchestration task-create CLI mapping', () => {
   beforeEach(() => {
     callMock.mockReset()
     getTerminalHandleMock.mockReset()
-    process.env.ORCA_TERMINAL_HANDLE = 'term_creator'
+    process.env.OCC_TERMINAL_HANDLE = 'term_creator'
   })
 
   afterEach(() => {
     if (originalTerminalHandle === undefined) {
-      delete process.env.ORCA_TERMINAL_HANDLE
+      delete process.env.OCC_TERMINAL_HANDLE
     } else {
-      process.env.ORCA_TERMINAL_HANDLE = originalTerminalHandle
+      process.env.OCC_TERMINAL_HANDLE = originalTerminalHandle
     }
   })
 

@@ -5,9 +5,9 @@ import { spawn, ChildProcess } from 'node:child_process'
 import { subscribe, unsubscribe } from 'node:diagnostics_channel'
 import { afterAll, afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { setAppEnvironment, type AppEnvironment } from '../shared/app-environment'
-import { setProcessTreeKillGate } from '@orca/process-host/process-tree-kill-gate'
-import { signalProcessTree } from '@orca/process-host/process-tree-termination'
-import { windowsSystem32Binary } from '@orca/process-host/windows-system-binary'
+import { setProcessTreeKillGate } from '@occ/process-host/process-tree-kill-gate'
+import { signalProcessTree } from '@occ/process-host/process-tree-termination'
+import { windowsSystem32Binary } from '@occ/process-host/windows-system-binary'
 import { removeTreeSync } from '../shared/windows-transient-lock-removal'
 import {
   findSelfInitiatedTreeKills,
@@ -19,7 +19,7 @@ import { terminateWindowsProcessTree } from './windows-process-tree-kill'
 /** Exercise real taskkill and root-only fallback behavior with detached descendants. */
 const describeOnWindows = process.platform === 'win32' ? describe : describe.skip
 
-let orcaChromiumPids: number[] = []
+let occChromiumPids: number[] = []
 
 function appEnvironment(): AppEnvironment {
   return {
@@ -30,7 +30,7 @@ function appEnvironment(): AppEnvironment {
     onWillQuit: () => {},
     exit: () => {},
     getAppMetrics: (() =>
-      orcaChromiumPids.map((pid) => ({
+      occChromiumPids.map((pid) => ({
         pid,
         type: 'Tab'
       }))) as unknown as AppEnvironment['getAppMetrics']
@@ -98,9 +98,9 @@ async function spawnLiveTree(): Promise<{
 
 describeOnWindows('own-Chromium gate against real Windows process trees', () => {
   beforeEach(() => {
-    markerDirectory ||= mkdtempSync(join(tmpdir(), 'orca-live-tree-kill-'))
+    markerDirectory ||= mkdtempSync(join(tmpdir(), 'occ-live-tree-kill-'))
     resetSelfInitiatedTreeKillLogForTest()
-    orcaChromiumPids = []
+    occChromiumPids = []
     setAppEnvironment(appEnvironment())
     installMainProcessTreeKillGate()
     observedSpawns.length = 0
@@ -109,7 +109,7 @@ describeOnWindows('own-Chromium gate against real Windows process trees', () => 
 
   afterEach(async () => {
     unsubscribe('child_process', observeSpawn)
-    orcaChromiumPids = []
+    occChromiumPids = []
     for (const leafPid of spawnedLeaves.splice(0)) {
       await terminateWindowsProcessTree(leafPid, { site: 'live-tree-kill-cleanup' })
     }
@@ -141,7 +141,7 @@ describeOnWindows('own-Chromium gate against real Windows process trees', () => 
 
   it('refused: the tree survives, nothing is recorded, and the handle kill still reaps the root', async () => {
     const { child, rootPid, leafPid } = await spawnLiveTree()
-    orcaChromiumPids = [rootPid]
+    occChromiumPids = [rootPid]
 
     await terminateWindowsProcessTree(rootPid, { site: 'live-tree-kill-refuse' })
 
@@ -159,7 +159,7 @@ describeOnWindows('own-Chromium gate against real Windows process trees', () => 
 
   it('signalProcessTree refused: the root goes by handle and the barrier reports unverified', async () => {
     const { child, rootPid, leafPid } = await spawnLiveTree()
-    orcaChromiumPids = [rootPid]
+    occChromiumPids = [rootPid]
     observedSpawns.length = 0
 
     await expect(signalProcessTree(child, 'SIGKILL')).resolves.toBe(false)

@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
-import { PushNotificationSchema } from '@orca-cloud/push-contract'
-import { buildPushDelivery, orcaDataStrings } from './push-delivery-message.js'
+import { PushNotificationSchema } from '@occ-cloud/push-contract'
+import { buildPushDelivery, occDataStrings } from './push-delivery-message.js'
 
 const base = {
   notificationSeq: 1,
@@ -22,8 +22,8 @@ it('carries the workspace server to APNs and FCM, and accepts older messages wit
       expiresAt: Date.now() + 300000
     })
     const expected = 'executionHost' in extra ? executionHost : undefined
-    expect(delivery.orca.executionHost).toBe(expected)
-    expect(orcaDataStrings(delivery.orca).executionHost).toBe(expected)
+    expect(delivery.occ.executionHost).toBe(expected)
+    expect(occDataStrings(delivery.occ).executionHost).toBe(expected)
   }
 })
 

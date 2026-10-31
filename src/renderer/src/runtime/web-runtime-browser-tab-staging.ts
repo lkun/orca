@@ -1,6 +1,6 @@
 import { useAppStore } from '../store'
 import { toRuntimeExecutionHostId } from '../../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import {
   forgetDesktopCreatedServerTab,
   noteDesktopCreatedServerTab
@@ -180,7 +180,7 @@ function holdStagedBrowserTab(
   worktreeId: string,
   staged: StagedWebRuntimeBrowserTab
 ): void {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     return
   }
   for (const id of stagedTabIds(staged)) {

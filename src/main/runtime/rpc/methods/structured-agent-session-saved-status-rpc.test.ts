@@ -9,7 +9,7 @@ import { HOST_TEST_SESSION as SESSION } from '../../../native-chat/agent-session
 import { StructuredAgentSessionHost } from '../../../native-chat/agent-session-wire/structured-agent-session-host'
 import * as journalFactory from '../../../native-chat/agent-session-journal/journal-store-factory'
 import { RpcDispatcher } from '../dispatcher'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { STRUCTURED_AGENT_SESSION_RUNTIME_CAPABILITY } from '../../../../shared/protocol-version'
 import { STRUCTURED_AGENT_SESSION_STATUS_METHODS } from './structured-agent-session-status-stream'
 
@@ -36,12 +36,12 @@ it.each(['mobile', 'runtime'] as const)(
     const cleanups: (() => void)[] = []
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: this RPC reads only startup preparation and stream cleanup from the runtime.
     const runtime = {
-      getRuntimeId: () => 'restarted-orcad',
+      getRuntimeId: () => 'restarted-occd',
       getClientSettings: () => ({}),
       restoreStructuredAgentSessionTabs: () => host.seedSessionTabs(),
       registerSubscriptionCleanup: (_id: string, cleanup: () => void) => cleanups.push(cleanup),
       cleanupSubscription: () => cleanups.forEach((cleanup) => cleanup())
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     try {
       const dispatcher = new RpcDispatcher({
         runtime,

@@ -57,7 +57,7 @@ export class PluginSyntaxSlotPool<
   private claim(key: string): Slot<Engine> | null {
     let slot = this.slots.find((candidate) => candidate.key === null)
     if (!slot && this.slots.length < (this.options.limit ?? PLUGIN_SYNTAX_SLOT_LIMIT)) {
-      const languageId = `orca-plugin-syntax-${this.slots.length}`
+      const languageId = `occ-plugin-syntax-${this.slots.length}`
       this.options.register(languageId)
       slot = { languageId, key: null, engine: null, refs: 0, lastUsed: 0 }
       this.slots.push(slot)

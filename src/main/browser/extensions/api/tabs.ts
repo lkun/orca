@@ -22,8 +22,8 @@ import {
 } from '../browser-extension-tab-model'
 import {
   matchesDiscardedTabNativeQuery,
-  matchesOrcaTabQuery,
-  type OrcaTabQuery
+  matchesOCCTabQuery,
+  type OCCTabQuery
 } from '../browser-extension-tab-query'
 import {
   activateBrowserExtensionDiscardedTab,
@@ -117,7 +117,7 @@ function mergeCallerTab(
 
 function queryTabs(
   caller: BrowserExtensionCaller,
-  query: OrcaTabQuery,
+  query: OCCTabQuery,
   nativeTabs: Record<string, unknown>[]
 ): chrome.tabs.Tab[] {
   const context = {
@@ -140,7 +140,7 @@ function queryTabs(
         : []
     })
     .concat(discarded)
-    .filter((tab) => matchesOrcaTabQuery(tab, query, context))
+    .filter((tab) => matchesOCCTabQuery(tab, query, context))
     .sort((a, b) => a.windowId - b.windowId || a.index - b.index)
 }
 

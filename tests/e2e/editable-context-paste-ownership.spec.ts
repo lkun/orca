@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   ensureTerminalVisible,
   getActiveTabId,
@@ -62,27 +62,27 @@ function tabLocatorByTitle(page: Page, title: string): ReturnType<Page['locator'
 test.describe('editable context paste ownership', () => {
   test('context-menu paste into a rename textbox does not also write to the active terminal', async ({
     electronApp,
-    orcaPage
+    occPage
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
     await installTerminalPtyWriteSpy(electronApp)
 
-    const worktreeId = (await getActiveWorktreeId(orcaPage))!
-    const originalTitle = await getActiveTabTitle(orcaPage, worktreeId)
-    await tabLocatorByTitle(orcaPage, originalTitle).dblclick()
+    const worktreeId = (await getActiveWorktreeId(occPage))!
+    const originalTitle = await getActiveTabTitle(occPage, worktreeId)
+    await tabLocatorByTitle(occPage, originalTitle).dblclick()
 
-    const renameInput = orcaPage.getByRole('textbox', {
+    const renameInput = occPage.getByRole('textbox', {
       name: `Rename tab ${originalTitle}`,
       exact: true
     })
     await expect(renameInput).toBeVisible()
     await renameInput.fill('')
 
-    const payload = `ORCA_E2E_CONTEXT_TEXTBOX_${randomUUID()}`
-    await orcaPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
+    const payload = `OCC_E2E_CONTEXT_TEXTBOX_${randomUUID()}`
+    await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
     await clearTerminalPtyWriteLog(electronApp)
     await expect(renameInput).toBeFocused()
 
@@ -93,6 +93,6 @@ test.describe('editable context paste ownership', () => {
     expect((await readTerminalPtyWrites(electronApp)).join('')).not.toContain(payload)
 
     await renameInput.press('Escape')
-    await expect(tabLocatorByTitle(orcaPage, originalTitle)).toBeVisible()
+    await expect(tabLocatorByTitle(occPage, originalTitle)).toBeVisible()
   })
 })

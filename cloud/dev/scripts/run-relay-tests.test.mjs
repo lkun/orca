@@ -18,16 +18,16 @@ import { join, resolve } from 'node:path'
 import { setImmediate } from 'node:timers/promises'
 import { pathToFileURL } from 'node:url'
 import test from 'node:test'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { runRelayTests } from './run-relay-tests.mjs'
 
 const success = { code: 0, signal: null, timedOut: false }
-const databaseUrl = 'postgres://relay_test:relay_test@127.0.0.1:5432/orca_relay_test'
+const databaseUrl = 'postgres://relay_test:relay_test@127.0.0.1:5432/occ_relay_test'
 const require = createRequire(import.meta.url)
 const cloud = resolve(import.meta.dirname, '../..')
 
 function temporary(t) {
-  const directory = realpathSync(mkdtempSync(join(tmpdir(), 'orca-relay-runner-contract-')))
+  const directory = realpathSync(mkdtempSync(join(tmpdir(), 'occ-relay-runner-contract-')))
   t.after(() => rmSync(directory, { recursive: true, force: true }))
   return directory
 }
@@ -37,7 +37,7 @@ function start(t, options = {}) {
   const calls = []
   const reports = []
   const events = new EventEmitter()
-  const env = { ORCA_RELAY_TEST_POSTGRES_URL: databaseUrl, PRESERVED: 'yes', ...options.env }
+  const env = { OCC_RELAY_TEST_POSTGRES_URL: databaseUrl, PRESERVED: 'yes', ...options.env }
   const pending = runRelayTests({
     cwd: join(scratchParent, 'relay'),
     cli: join(scratchParent, 'vitest.mjs'),
@@ -76,14 +76,14 @@ test('overlaps both projects within the worker budget and isolates their scratch
   assert.deepEqual(regular.args.slice(1), ['run', '--project=relay', '--maxWorkers=2'])
   assert.deepEqual(postgres.args.slice(1), ['run', '--project=relay-postgres', '--maxWorkers=1'])
   assert.notEqual(regular.env.TMPDIR, postgres.env.TMPDIR)
-  assert.notEqual(regular.env.ORCA_RELAY_TEST_CACHE_DIR, postgres.env.ORCA_RELAY_TEST_CACHE_DIR)
+  assert.notEqual(regular.env.OCC_RELAY_TEST_CACHE_DIR, postgres.env.OCC_RELAY_TEST_CACHE_DIR)
   for (const spec of [regular, postgres]) {
     assert.equal(spec.env.TMP, spec.env.TMPDIR)
     assert.equal(spec.env.TEMP, spec.env.TMPDIR)
-    assert.equal(spec.env.ORCA_RELAY_TEST_CACHE_DIR, join(spec.env.TMPDIR, 'cache'))
-    assert.equal(spec.env.ORCA_RELAY_TEST_POSTGRES_URL, databaseUrl)
+    assert.equal(spec.env.OCC_RELAY_TEST_CACHE_DIR, join(spec.env.TMPDIR, 'cache'))
+    assert.equal(spec.env.OCC_RELAY_TEST_POSTGRES_URL, databaseUrl)
     assert.equal(spec.env.PRESERVED, 'yes')
-    assert.equal(spec.env.ORCA_BACKGROUND_LAUNCH, '1')
+    assert.equal(spec.env.OCC_BACKGROUND_LAUNCH, '1')
     assert.ok(existsSync(spec.env.TMPDIR))
     assert.equal(spec.timeoutMs, null)
     assert.equal(typeof spec.terminationBarrier.force, 'function')
@@ -107,7 +107,7 @@ for (const [name, options] of [
   ['selectors', { args: ['src/assignment.test.ts', '-t', 'requested behavior'] }],
   [
     'alternate PostgreSQL',
-    { env: { ORCA_IDLE_REHOME_POSTGRES_URL: 'postgres://localhost:55440/relay' } }
+    { env: { OCC_IDLE_REHOME_POSTGRES_URL: 'postgres://localhost:55440/relay' } }
   ],
   ['application database', { env: { DATABASE_URL: databaseUrl } }],
   ['one CPU', { parallelism: 1 }],
@@ -215,7 +215,7 @@ test('launches with only the Cloud dependency link and no root install or compil
   const root = temporary(t)
   const standalone = join(root, 'cloud')
   const manifest = JSON.parse(readFileSync(join(cloud, 'package.json'), 'utf8'))
-  const dependency = manifest.devDependencies['@orca/process-host']
+  const dependency = manifest.devDependencies['@occ/process-host']
   assert.equal(dependency, 'link:../src/packages/process-host')
   const packageDir = resolve(standalone, dependency.slice('link:'.length))
   mkdirSync(packageDir, { recursive: true })
@@ -229,10 +229,10 @@ test('launches with only the Cloud dependency link and no root install or compil
   cpSync(join(cloud, 'dev', 'scripts', 'run-relay-tests.mjs'), join(scripts, 'run-relay-tests.mjs'))
   writeFileSync(join(standalone, 'package.json'), JSON.stringify(manifest))
   mkdirSync(join(standalone, 'apps', 'relay'), { recursive: true })
-  mkdirSync(join(standalone, 'node_modules', '@orca'), { recursive: true })
+  mkdirSync(join(standalone, 'node_modules', '@occ'), { recursive: true })
   symlinkSync(
     packageDir,
-    join(standalone, 'node_modules', '@orca', 'process-host'),
+    join(standalone, 'node_modules', '@occ', 'process-host'),
     process.platform === 'win32' ? 'junction' : 'dir'
   )
   const fakeVitest = join(standalone, 'node_modules', 'vitest')
@@ -240,7 +240,7 @@ test('launches with only the Cloud dependency link and no root install or compil
   writeFileSync(join(fakeVitest, 'package.json'), '{"name":"vitest","version":"0.0.0"}')
   writeFileSync(
     join(fakeVitest, 'vitest.mjs'),
-    'console.log(JSON.stringify({args:process.argv.slice(2), background:process.env.ORCA_BACKGROUND_LAUNCH, database:process.env.ORCA_RELAY_TEST_POSTGRES_URL}))'
+    'console.log(JSON.stringify({args:process.argv.slice(2), background:process.env.OCC_BACKGROUND_LAUNCH, database:process.env.OCC_RELAY_TEST_POSTGRES_URL}))'
   )
   assert.equal(existsSync(join(root, 'node_modules')), false)
   assert.equal(existsSync(join(packageDir, 'dist')), false)
@@ -249,7 +249,7 @@ test('launches with only the Cloud dependency link and no root install or compil
     args: [
       '--import',
       pathToFileURL(require.resolve('tsx')).href,
-      '--conditions=orca-source',
+      '--conditions=occ-source',
       join(scripts, 'run-relay-tests.mjs'),
       'src/requested.test.ts'
     ],
@@ -260,8 +260,8 @@ test('launches with only the Cloud dependency link and no root install or compil
       ...process.env,
       NODE_PATH: '',
       NODE_OPTIONS: '',
-      ORCA_BACKGROUND_LAUNCH: '1',
-      ORCA_RELAY_TEST_POSTGRES_URL: databaseUrl
+      OCC_BACKGROUND_LAUNCH: '1',
+      OCC_RELAY_TEST_POSTGRES_URL: databaseUrl
     }
   })
   assert.equal(result.code, 0, result.stderr)

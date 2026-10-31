@@ -51,15 +51,15 @@ describe('registrable family across public-suffix sections', () => {
 // Unlisted .local uses a two-label family boundary.
 describe('unlisted .local suffix', () => {
   it('stops at the two-label boundary', () => {
-    expect(registrableFamily('app.orca.local')).toBe('orca.local')
-    expect(registrableFamily('orca.local')).toBe('orca.local')
+    expect(registrableFamily('app.occ.local')).toBe('occ.local')
+    expect(registrableFamily('occ.local')).toBe('occ.local')
   })
 
   it('pulls the shared parent into the removal scope', () => {
-    const scope = importedDomainScope(['app.orca.local'])
+    const scope = importedDomainScope(['app.occ.local'])
 
-    expect(domainIsInImportedScope(scope, 'orca.local', false)).toBe(true)
-    expect(domainIsInImportedScope(scope, 'orca.local', true)).toBe(false)
+    expect(domainIsInImportedScope(scope, 'occ.local', false)).toBe(true)
+    expect(domainIsInImportedScope(scope, 'occ.local', true)).toBe(false)
   })
 })
 

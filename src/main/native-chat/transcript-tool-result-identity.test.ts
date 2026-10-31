@@ -16,7 +16,7 @@ afterEach(async () => {
 })
 
 async function load(records: unknown[], agent: 'claude' | 'codex'): Promise<NativeChatMessage[]> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-transcript-result-identity-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-transcript-result-identity-'))
   roots.push(root)
   const filePath = join(root, 'transcript.jsonl')
   await writeFile(filePath, `${records.map((record) => JSON.stringify(record)).join('\n')}\n`)

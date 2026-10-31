@@ -121,7 +121,7 @@ async function journalWithRejections(directory: string, journals: TrackedJournal
 test.each(BASELINE_REFS)(
   'a released client (%s) draws a page and a batch carrying journal positions and answered turns as it draws them without',
   async (ref) => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-submission-positions-downgrade-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-submission-positions-downgrade-'))
     const journals = createTrackedJournalOpener()
     try {
       const { before, after, batch } = await journalWithRejections(directory, journals)

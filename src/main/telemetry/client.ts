@@ -9,7 +9,7 @@ import { consumeBurstToken, resetBurstCapsForSession } from './burst-cap'
 import { getCohortAtEmit } from './cohort-classifier'
 import { isConsentEnvOverridden, resolveConsent } from './consent'
 import * as postHogStart from './posthog-client-start'
-import { buildCommonProps, createPostHogClient, waitForCaptureEnqueue } from './posthog-transport'
+import { buildCommonProps, createPostHogClient, waitFoccptureEnqueue } from './posthog-transport'
 import { commonPropsSchema, validate } from './validator'
 
 export { shouldOptOutSdkAtInit } from './posthog-transport'
@@ -20,13 +20,13 @@ const TELEMETRY_ENABLED = true
 
 // Require both CI-injected official build identity and write key; contributor builds fail closed. Vitest bypasses defines and uses globalThis fallbacks.
 const BUILD_IDENTITY: 'stable' | 'rc' | null =
-  typeof ORCA_BUILD_IDENTITY !== 'undefined'
-    ? ORCA_BUILD_IDENTITY
-    : ((globalThis as { ORCA_BUILD_IDENTITY?: 'stable' | 'rc' | null }).ORCA_BUILD_IDENTITY ?? null)
+  typeof OCC_BUILD_IDENTITY !== 'undefined'
+    ? OCC_BUILD_IDENTITY
+    : ((globalThis as { OCC_BUILD_IDENTITY?: 'stable' | 'rc' | null }).OCC_BUILD_IDENTITY ?? null)
 const WRITE_KEY: string | null =
-  typeof ORCA_POSTHOG_WRITE_KEY !== 'undefined'
-    ? ORCA_POSTHOG_WRITE_KEY
-    : ((globalThis as { ORCA_POSTHOG_WRITE_KEY?: string | null }).ORCA_POSTHOG_WRITE_KEY ?? null)
+  typeof OCC_POSTHOG_WRITE_KEY !== 'undefined'
+    ? OCC_POSTHOG_WRITE_KEY
+    : ((globalThis as { OCC_POSTHOG_WRITE_KEY?: string | null }).OCC_POSTHOG_WRITE_KEY ?? null)
 const IS_OFFICIAL_BUILD: boolean =
   (BUILD_IDENTITY === 'stable' || BUILD_IDENTITY === 'rc') &&
   typeof WRITE_KEY === 'string' &&
@@ -265,7 +265,7 @@ export async function setOptIn(via: OptInVia, optedIn: boolean): Promise<void> {
         const validated = validate('telemetry_opted_out', { via })
         if (validated.ok) {
           const uuid = randomUUID()
-          const enqueued = waitForCaptureEnqueue(client, 'telemetry_opted_out', uuid)
+          const enqueued = waitFoccptureEnqueue(client, 'telemetry_opted_out', uuid)
           client.capture({
             distinctId: commonProps.install_id,
             event: 'telemetry_opted_out',

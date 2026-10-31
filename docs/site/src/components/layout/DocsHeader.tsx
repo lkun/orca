@@ -5,7 +5,7 @@ import { ThemeSwitch } from 'fumadocs-ui/layouts/shared/slots/theme-switch'
 
 async function getGithubStars(): Promise<number | undefined> {
   try {
-    const response = await fetch('https://api.github.com/repos/stablyai/orca', {
+    const response = await fetch('https://api.github.com/repos/stablyai/occ', {
       headers: { Accept: 'application/vnd.github+json' },
       next: { revalidate: 3600 }
     })
@@ -41,7 +41,7 @@ export async function DocsHeader() {
               aria-hidden="true"
               className="font-sans text-sm font-semibold tracking-tight text-foreground"
             >
-              ORCA
+              OCC
             </span>
           </Link>
           <nav className="hidden items-center gap-5 sm:flex" aria-label="Primary navigation">
@@ -52,13 +52,13 @@ export async function DocsHeader() {
               Docs
             </Link>
             <a
-              href="https://www.onorca.dev"
+              href="https://www.onocc.dev"
               className="rounded-md px-2 py-1 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
             >
               Home
             </a>
             <a
-              href="https://www.onorca.dev/download"
+              href="https://www.onocc.dev/download"
               className="rounded-md px-2 py-1 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"
             >
               Download
@@ -78,7 +78,7 @@ export async function DocsHeader() {
             <MessageCircle className="size-4" aria-hidden="true" />
           </a>
           <a
-            href="https://x.com/orca_build"
+            href="https://x.com/occ_build"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50 sm:flex"
@@ -89,7 +89,7 @@ export async function DocsHeader() {
             </span>
           </a>
           <a
-            href="https://github.com/stablyai/orca"
+            href="https://github.com/stablyai/occ"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[13px] font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50"

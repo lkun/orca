@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 
-// With ORCA_LAYOUT_OWNER=main, a simulator tab's open and close reach main as commands first and
+// With OCC_LAYOUT_OWNER=main, a simulator tab's open and close reach main as commands first and
 // the window draws them from main's frames, so its next save changes nothing in main's model.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../shared/execution-host'
@@ -35,7 +35,7 @@ const mocks = vi.hoisted((): Mocks => ({ layoutOwnerIsMain: true, store: null })
 let main: TabsDrawnFromMain
 
 vi.mock('../../../shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return mocks.layoutOwnerIsMain
   }
 }))

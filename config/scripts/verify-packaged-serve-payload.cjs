@@ -17,14 +17,14 @@ function referencedAssets(html) {
   return [...assets]
 }
 
-// Plain Node orcad cannot read app.asar; unpack browser client and dependencies beside CLI app root or serve launches without web client (#30100).
+// Plain Node occd cannot read app.asar; unpack browser client and dependencies beside CLI app root or serve launches without web client (#30100).
 function assertPackagedWebClient(resourcesDir) {
   const outDir = join(resourcesDir, 'app.asar.unpacked', 'out')
   if (!existsSync(join(outDir, 'cli'))) {
     throw failure(`no unpacked CLI at ${join(outDir, 'cli')}; the web client root resolves from it`)
   }
   const webRoot = join(outDir, 'renderer')
-  const manifestPath = join(webRoot, '.orca-web-client-files.json')
+  const manifestPath = join(webRoot, '.occ-web-client-files.json')
   if (!existsSync(manifestPath)) {
     throw failure(`missing unpacked web file manifest at ${manifestPath}. ${REMEDY}`)
   }
@@ -70,8 +70,8 @@ function assertPackagedWebClient(resourcesDir) {
   console.log(`[verify-packaged-serve-payload] OK — ${String(assets.length)} asset(s) unpacked`)
 }
 
-// Relative to out/; mirrors ORCAD_LOCAL_SERVE_SELECTION_ENTRY, which a test pins.
-const SERVE_SELECTION_ENTRY = 'main/orcad/orcad-local-serve-selection-entry.js'
+// Relative to out/; mirrors OCCD_LOCAL_SERVE_SELECTION_ENTRY, which a test pins.
+const SERVE_SELECTION_ENTRY = 'main/occd/occd-local-serve-selection-entry.js'
 
 /** The file Node loads for a relative require, or null when none is unpacked. */
 function resolveRequiredFile(path) {
@@ -108,7 +108,7 @@ function missingRelativeRequires(entry) {
 function assertPackagedServeSelectionEntry(resourcesDir) {
   const entry = join(resourcesDir, 'app.asar.unpacked', 'out', ...SERVE_SELECTION_ENTRY.split('/'))
   if (!existsSync(entry)) {
-    throw failure(`missing unpacked ${entry}; orca serve runs it under ELECTRON_RUN_AS_NODE`)
+    throw failure(`missing unpacked ${entry}; occ serve runs it under ELECTRON_RUN_AS_NODE`)
   }
   const missing = missingRelativeRequires(entry)
   if (missing.length > 0) {

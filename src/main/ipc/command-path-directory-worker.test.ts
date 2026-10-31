@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { Worker } from 'node:worker_threads'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as DirectoryWorkerClient from './command-path-directory-worker-client'
 import { DetectionDirectoryWorkerClient } from './command-path-directory-worker-client'
@@ -31,7 +31,7 @@ function client(factory: ConstructorParameters<typeof DetectionDirectoryWorkerCl
 }
 
 beforeEach(async () => {
-  dir = await mkdtemp(path.join(tmpdir(), 'orca-detection-dir-'))
+  dir = await mkdtemp(path.join(tmpdir(), 'occ-detection-dir-'))
 })
 
 afterEach(async () => {
@@ -48,7 +48,7 @@ describe('detection directory worker boundary', () => {
     const result = await runProcess({
       program: process.execPath,
       args: [fixture, dir],
-      env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' },
+      env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' },
       timeoutMs: 5_000
     })
     expect(result.code, result.stderr).toBe(0)

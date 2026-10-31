@@ -58,7 +58,7 @@ export function useAgentMessageSenderView(
   target?: RuntimeClientTarget
 ) {
   const address = sender?.party.address
-  const sessionId = sender?.party.orcaSessionId
+  const sessionId = sender?.party.occSessionId
   const handle = sender?.party.terminalHandle
   const targetKind = target?.kind
   const environmentId = target?.kind === 'environment' ? target.environmentId : undefined

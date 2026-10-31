@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import type { ConnectorSource } from './connector-adapter.js'
 import { saveIdentity } from './connector-identities.js'
 

@@ -27,8 +27,8 @@ const { registerPluginHandlers } = await import('./plugins')
 const roots: string[] = []
 const controllers: PluginPanelController[] = []
 const senders: EventEmitter[] = []
-const PREDECESSOR = 'orca-samples.predecessor'
-const SUCCESSOR = 'orca-samples.successor'
+const PREDECESSOR = 'occ-samples.predecessor'
+const SUCCESSOR = 'occ-samples.successor'
 const entrySchema = z.object({ html: z.string(), sessionToken: panelSessionTokenSchema })
 
 beforeEach(() => mocks.handlers.clear())
@@ -44,11 +44,11 @@ afterEach(async () => {
 })
 
 async function plugin(id: string): Promise<ValidDiscoveredPlugin> {
-  const rootDir = await mkdtemp(join(tmpdir(), 'orca-panel-document-'))
+  const rootDir = await mkdtemp(join(tmpdir(), 'occ-panel-document-'))
   roots.push(rootDir)
   await writeFile(join(rootDir, 'panel.html'), `<h1>${id}</h1>`)
   return {
-    pluginKey: `orca-samples.${id}`,
+    pluginKey: `occ-samples.${id}`,
     rootDir,
     contentHash: null,
     consentFingerprint: 'approved',
@@ -56,10 +56,10 @@ async function plugin(id: string): Promise<ValidDiscoveredPlugin> {
     manifest: pluginManifestSchema.parse({
       manifestVersion: 1,
       id,
-      publisher: 'orca-samples',
+      publisher: 'occ-samples',
       name: id,
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       contributes: { panels: [{ id: 'panel', title: id, entry: 'panel.html' }] },
       capabilities: [{ kind: 'notifications:show' }]

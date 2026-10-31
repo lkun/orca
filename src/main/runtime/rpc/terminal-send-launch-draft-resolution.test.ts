@@ -1,6 +1,6 @@
 import './unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import type { RpcRequest } from './core'
 import { RpcDispatcher } from './dispatcher'
 import { TERMINAL_METHODS } from './methods/terminal'
@@ -11,7 +11,7 @@ function makeRequest(params: unknown): RpcRequest {
   return { id: 'request', authToken: 'token', method: 'terminal.send', params }
 }
 
-function makeRuntime(accepted: boolean): OrcaRuntimeService {
+function makeRuntime(accepted: boolean): OCCRuntimeService {
   return {
     getRuntimeId: () => 'runtime',
     resolveLiveLeafForHandle: vi.fn().mockReturnValue({ ptyId: 'pty-1' }),
@@ -23,11 +23,11 @@ function makeRuntime(accepted: boolean): OrcaRuntimeService {
       bytesWritten: accepted ? 1 : 0
     }),
     notifyNativeChatLaunchDraftResolved: vi.fn()
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
 }
 
 async function send(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   options: { enter: boolean; clientType: 'mobile' | 'desktop' }
 ): Promise<void> {
   const dispatcher = new RpcDispatcher({ runtime, methods: TERMINAL_METHODS })

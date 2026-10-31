@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 export function registerRuntimeTerminalClientUseTests(): void {
   describe('readTerminalClientUse', () => {
     it('reads a terminal a client is viewing as used', () => {
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       runtime.terminalRunFacts.recordSpawnCommit({ id: 'pty-1' })
       // What a client's terminal stream subscribe registers.
       const release = runtime.registerRemoteTerminalViewSubscriber('pty-1')

@@ -33,7 +33,7 @@ import {
 } from './terminal-topology/terminal-pane-admission'
 import { windowViewPatchForMain, windowViewSaveForMain } from './window-save-view'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 type PatchCall = {
   hostId: ExecutionHostId
@@ -291,7 +291,7 @@ function differingRecords(calls: readonly PatchCall[]): string[] {
   return [...differing].sort()
 }
 
-const GIT = 'repo-1::/Users/dev/orca'
+const GIT = 'repo-1::/Users/dev/occ'
 // These fixtures also differ visibly in switch-off windows; other divergences affect stored rows only.
 const SURFACE_TOMBSTONE = 'legacy surface tombstone on a pane still showing its terminal'
 const HIDDEN_ROW = 'row without a tab-bar entry or a terminal'

@@ -1,11 +1,11 @@
 import { vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import type {
   PtyInventoryRefreshOptions,
   RuntimePtyController
 } from './runtime-pty-controller-contract'
 import type { PtyProcessInfo } from '../providers/pty-process-info'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { registerBoundPty } from './bind-first-pane.test-fixture'
 
 export const WORKTREE = 'repo::/tmp/inventory-admission'
@@ -36,7 +36,7 @@ export function processRow(id = PTY, incarnationId = PREDECESSOR): PtyProcessInf
   }
 }
 
-export class InventoryLifecycleRuntime extends OrcaRuntimeService {
+export class InventoryLifecycleRuntime extends OCCRuntimeService {
   read(
     connectionId?: string | null,
     target: string | null = null,
@@ -82,7 +82,7 @@ export class InventoryLifecycleRuntime extends OrcaRuntimeService {
 export function createInventoryRuntime(listProcesses: InventoryListing) {
   const runtime = new InventoryLifecycleRuntime()
   // Main resolves terminal ownership from its session layout; keep the rest of the store empty.
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     Reflect.set(runtime, 'store', {
       getRepos: () => [],
       getRepo: () => undefined,

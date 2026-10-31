@@ -7,7 +7,7 @@ import type { Tab, TabContentType, TabGroup } from '../../../../shared/tab-types
 import { makeTab } from './store-session-test-harness'
 import { emptyTabLayoutState } from './editor-slice-test-harness'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
 vi.mock('@/runtime/runtime-rpc-client', async (importOriginal) =>
   (
@@ -349,7 +349,7 @@ describe('New Markdown — split group targeting', () => {
     )
 
     // A layout-owner build asks main to open the tab in that group; main's frame draws it there.
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       expect(createdTabs).toEqual([])
       expect(layoutApplyTestTransport.sentOfType('openEditorTab')).toEqual([
         expect.objectContaining({

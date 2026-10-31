@@ -19,7 +19,7 @@ function stateWithWorkspace() {
       {
         id: 'repo',
         displayName: 'OCC',
-        path: '/orca',
+        path: '/occ',
         connectionId: null,
         badgeColor: 'blue',
         addedAt: 0
@@ -217,7 +217,7 @@ describe('notification workspace labels', () => {
   })
 
   describe('STA-4343 two-host worktree id collision', () => {
-    const COLLIDING_ID = 'repo1::/work/orca'
+    const COLLIDING_ID = 'repo1::/work/occ'
     const HOSTS = {
       // The laptop row is unqualified, which is how a local worktree listing publishes it.
       local: {
@@ -236,7 +236,7 @@ describe('notification workspace labels', () => {
       const rival: CollidingHostId = naiveWinner === 'local' ? 'ssh:build-box' : 'local'
       const repos: Repo[] = [rival, naiveWinner].map((hostId) => ({
         id: 'repo1',
-        path: '/work/orca',
+        path: '/work/occ',
         badgeColor: 'blue',
         addedAt: 0,
         ...HOSTS[hostId].repo
@@ -249,7 +249,7 @@ describe('notification workspace labels', () => {
               makeWorktree({
                 id: COLLIDING_ID,
                 repoId: 'repo1',
-                path: '/work/orca',
+                path: '/work/occ',
                 ...HOSTS[hostId].row
               })
             ],

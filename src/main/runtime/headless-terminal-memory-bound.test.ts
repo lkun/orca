@@ -1,8 +1,8 @@
 import { expect, it, vi } from 'vitest'
 import { DAEMON_SESSION_SCROLLBACK_ROWS } from '../daemon/daemon-session-scrollback-window'
-import { AUTHORITATIVE_TERMINAL_SNAPSHOT_TIMEOUT_MS } from './orca-runtime-postlude'
+import { AUTHORITATIVE_TERMINAL_SNAPSHOT_TIMEOUT_MS } from './occ-runtime-postlude'
 import type { PtyProviderBufferSnapshot } from '../providers/pty-provider-contract'
-import { deferred } from './orca-runtime-test-fixtures.spec'
+import { deferred } from './occ-runtime-test-fixtures.spec'
 import { createHydrationRuntime, PTY_ID, SIZE } from './headless-hydration-ownership-test-fixture'
 
 it('retains only the configured scrollback depth', async () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import type * as GitUsernameModule from '../git/git-username'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 vi.mock('../git/worktree', () => ({
   listWorktrees: vi.fn().mockResolvedValue([
@@ -75,7 +75,7 @@ const store = {
 
 describe('fit override integration', () => {
   it('restore resizes PTY even with mounted leaf (the bug fix)', async () => {
-    const runtime = new OrcaRuntimeService(store)
+    const runtime = new OCCRuntimeService(store)
     let ptySize = { cols: 120, rows: 35 }
     const resizes: string[] = []
 

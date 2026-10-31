@@ -340,7 +340,7 @@ function readDynamicInfo(filePath, objdumpPath) {
 
 function isMuslTemplatePayload(filePath, neededLibraries, versionNeeds) {
   return (
-    /(?:^|[/\\])orcad-template[/\\]targets[/\\]linux-(?:x64|arm64)-musl[/\\]/.test(filePath) &&
+    /(?:^|[/\\])occd-template[/\\]targets[/\\]linux-(?:x64|arm64)-musl[/\\]/.test(filePath) &&
     [...neededLibraries].some(
       (name) => name === 'libc.so' || /^libc\.musl-[\w-]+\.so\.1$/.test(name)
     ) &&

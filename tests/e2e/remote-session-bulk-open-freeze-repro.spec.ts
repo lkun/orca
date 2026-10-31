@@ -1,7 +1,7 @@
 // R1: measure renderer timer drift while a headless paired host floods hidden sessions and the desktop bulk-opens worktrees/tabs.
 // Soft/hard freeze thresholds are 2.5s/5s; run pnpm run test:e2e:remote-bulk-open-freeze.
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import {
   createRuntimeDesktopPairingOffer,
@@ -22,17 +22,17 @@ import {
 } from './helpers/terminal-host-focus-storm-oracle'
 
 const REPORT_DIR = path.join(process.cwd(), 'test-results', 'freeze-repro')
-const USE_DESKTOP_PAIR = process.env.ORCA_E2E_FREEZE_DESKTOP_PAIR === '1'
+const USE_DESKTOP_PAIR = process.env.OCC_E2E_FREEZE_DESKTOP_PAIR === '1'
 
 test('paired client host-focus storm keeps the latest terminal @freeze-repro', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(180_000)
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   const client = await launchPairedElectronClient(offer, testInfo, 'focus-storm')
   let disposeSessions: (() => Promise<void>) | null = null
   try {
-    const worktreeId = await orcaPage.evaluate(() => {
+    const worktreeId = await occPage.evaluate(() => {
       const id = window.__store?.getState().activeWorktreeId
       if (!id) {
         throw new Error('headed host has no active worktree')
@@ -74,7 +74,7 @@ test('paired client host-focus storm keeps the latest terminal @freeze-repro', a
     await expect
       .poll(
         () =>
-          orcaPage.evaluate((id) => {
+          occPage.evaluate((id) => {
             const state = window.__store?.getState()
             return {
               worktreeId: state?.activeWorktreeId ?? null,

@@ -19,7 +19,7 @@ const corpus = await writeSyntheticTranscriptCorpus({
   sessions: SESSIONS,
   turnsPerSession: TURNS_PER_SESSION
 })
-const root = await mkdtemp(join(tmpdir(), 'orca-search-pass-'))
+const root = await mkdtemp(join(tmpdir(), 'occ-search-pass-'))
 const roots = isolatedScanRoots(root)
 const databasePath = join(root, 'index', 'session-search.sqlite')
 

@@ -2,7 +2,7 @@
 // Measure real browser width: shrink-to-fit layout is invisible to zero-rect DOM emulators.
 // Assert only a >one-cell floor because font fallback can span four cells; an exact two-cell band would pin the runner.
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { closeTerminalImePaneArena, openTerminalImePaneArena } from './terminal-ime-pane-arena'
 import { setImeComposition } from './terminal-ime-cdp-composition'
 import {
@@ -35,16 +35,16 @@ function describeSpan(sample: MidlinePreeditOcclusionSample): string {
 }
 
 test.describe('Terminal end-of-row Korean preedit cell span', () => {
-  test('keeps the preedit caret inside the final terminal cell', async ({ orcaPage }, testInfo) => {
-    const arena = await openTerminalImePaneArena(orcaPage)
+  test('keeps the preedit caret inside the final terminal cell', async ({ occPage }, testInfo) => {
+    const arena = await openTerminalImePaneArena(occPage)
     let completed = false
     try {
       // CHA clamps to the last column; xterm's wrap-pending cursor is the final-cell shape the
       // composition helper itself clamps onto.
-      await writeToActiveTerminal(orcaPage, '\x1b[2J\x1b[H\x1b[999Gx')
+      await writeToActiveTerminal(occPage, '\x1b[2J\x1b[H\x1b[999Gx')
       await setImeComposition(arena.session, '가')
 
-      const sample = await sampleOpenComposition(orcaPage)
+      const sample = await sampleOpenComposition(occPage)
       const caret = sample.caretRect
       const preedit = sample.preeditRect
       const textarea = sample.textareaRect
@@ -103,16 +103,16 @@ test.describe('Terminal end-of-row Korean preedit cell span', () => {
   })
 
   test('renders a composing syllable wider than the one cell #12729 measured', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    const arena = await openTerminalImePaneArena(orcaPage)
+    const arena = await openTerminalImePaneArena(occPage)
     let completed = false
     try {
       // 안녕하세요 spans ten cells, leaving the end-of-row overlay with only preedit, matching #12729.
-      await writeToActiveTerminal(orcaPage, '\x1b[2J\x1b[H안녕하세요')
+      await writeToActiveTerminal(occPage, '\x1b[2J\x1b[H안녕하세요')
       await setImeComposition(arena.session, '가')
 
-      const sample = await sampleOpenComposition(orcaPage)
+      const sample = await sampleOpenComposition(occPage)
       expect(sample.rowTailFromCursor, 'text still sits after the cursor').toBe('')
       expect(sample.cursorColumn, 'the cursor is not at the end of the committed run').toBe(10)
       expect(

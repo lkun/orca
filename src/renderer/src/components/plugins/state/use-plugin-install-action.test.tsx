@@ -30,7 +30,7 @@ const listing: PluginMarketplaceHostListing = {
     commit: 'c'.repeat(40),
     contentHash: 'd'.repeat(64),
     execution: 'data',
-    minimumOrca: '1.0.0',
+    minimumOCC: '1.0.0',
     types: ['app-theme']
   }
 }
@@ -46,7 +46,7 @@ const preview: PluginMarketplaceHostInstallPreview = {
     publisher: 'acme',
     name: 'Dusk',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     contributes: { themes: [{ id: 'dusk', title: 'Dusk', path: 'themes/dusk.json' }] }
   })

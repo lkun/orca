@@ -86,7 +86,7 @@ vi.mock('./native-chat/input/MobileNativeChatQuestion', () => ({
   MobileNativeChatQuestion: 'ChatQuestion'
 }))
 
-const STOP_ROW = `stopped-before-start:orca:${NEVER_OPENED}`
+const STOP_ROW = `stopped-before-start:occ:${NEVER_OPENED}`
 
 // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the overlay reads only these members of the image attachments, none of which this test exercises.
 const OVERLAY_IMAGES = {

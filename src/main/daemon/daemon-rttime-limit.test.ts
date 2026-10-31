@@ -12,7 +12,7 @@ afterEach(() => {
 })
 
 function procLimits(soft: string, hard: string): string {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-limits-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-limits-'))
   dirs.push(dir)
   const path = join(dir, 'limits')
   writeFileSync(

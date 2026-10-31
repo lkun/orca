@@ -195,7 +195,7 @@ describe('resolveTrustedCodexSessionResumeHome', () => {
   })
 
   it('requires the transcript provenance to name a regular rollout file', () => {
-    const homePath = mkdtempSync(join(tmpdir(), 'orca-codex-resume-home-'))
+    const homePath = mkdtempSync(join(tmpdir(), 'occ-codex-resume-home-'))
     tempRoots.push(homePath)
     const rolloutDirectory = join(homePath, 'sessions', '2026', '07', '20', 'rollout-a.jsonl')
     mkdirSync(rolloutDirectory, { recursive: true })
@@ -218,7 +218,7 @@ describe('resolveTrustedCodexSessionResumeHome', () => {
   })
 
   it('follows Codex when a persisted plain rollout was compressed in place', async () => {
-    const homePath = mkdtempSync(join(tmpdir(), 'orca-codex-resume-home-'))
+    const homePath = mkdtempSync(join(tmpdir(), 'occ-codex-resume-home-'))
     tempRoots.push(homePath)
     const plainPath = join(
       homePath,
@@ -253,7 +253,7 @@ describe('resolveTrustedCodexSessionResumeHome', () => {
   })
 
   it('finds compressed rollouts for legacy records without transcript provenance', async () => {
-    const homePath = mkdtempSync(join(tmpdir(), 'orca-codex-resume-home-'))
+    const homePath = mkdtempSync(join(tmpdir(), 'occ-codex-resume-home-'))
     tempRoots.push(homePath)
     const sessionId = '019f81b9-19a9-7651-a8d1-352d9420bd11'
     const compressedPath = join(
@@ -429,7 +429,7 @@ describe('findTrustedCodexSessionResume legacy-rescan home ranking', () => {
   })
 
   it('ranks the real system home above the others even when its path sorts last', async () => {
-    const lateSortingSystemHome = join('/var', 'lib', 'orca', '.codex')
+    const lateSortingSystemHome = join('/var', 'lib', 'occ', '.codex')
     await expect(
       findTrustedCodexSessionResume({
         sessionId,
@@ -543,22 +543,22 @@ describe('findTrustedCodexSessionResume legacy-rescan home ranking', () => {
 })
 
 describe('codexDatedRolloutRelativePath', () => {
-  const sessionsRoot = String.raw`C:\Users\Example\AppData\Roaming\orca\codex-runtime-home\home\sessions`
+  const sessionsRoot = String.raw`C:\Users\Example\AppData\Roaming\occ\codex-runtime-home\home\sessions`
 
   it('folds the extended-length prefix Codex adds to Windows transcripts (#27200)', () => {
     expect(
       codexDatedRolloutRelativePath(
         sessionsRoot,
-        String.raw`\\?\C:\Users\Example\AppData\Roaming\orca\codex-runtime-home\home\sessions\2026\10\01\rollout-example.jsonl`
+        String.raw`\\?\C:\Users\Example\AppData\Roaming\occ\codex-runtime-home\home\sessions\2026\10\01\rollout-example.jsonl`
       )
     ).toBe('2026/10/01/rollout-example.jsonl')
   })
 
   it('rejects device namespaces, extended UNC paths, and non-rollout layouts', () => {
     for (const filePath of [
-      String.raw`\\.\C:\Users\Example\AppData\Roaming\orca\codex-runtime-home\home\sessions\2026\10\01\rollout-example.jsonl`,
+      String.raw`\\.\C:\Users\Example\AppData\Roaming\occ\codex-runtime-home\home\sessions\2026\10\01\rollout-example.jsonl`,
       String.raw`\\?\UNC\server\share\sessions\2026\10\01\rollout-example.jsonl`,
-      String.raw`C:\Users\Example\AppData\Roaming\orca\codex-runtime-home\home\sessions\2026\10\01\..\..\..\2026\10\01\rollout-example.jsonl`,
+      String.raw`C:\Users\Example\AppData\Roaming\occ\codex-runtime-home\home\sessions\2026\10\01\..\..\..\2026\10\01\rollout-example.jsonl`,
       String.raw`C:\Users\Example\.codex\sessions\2026\10\01\rollout-example.jsonl`
     ]) {
       expect(codexDatedRolloutRelativePath(sessionsRoot, filePath)).toBeNull()
@@ -620,7 +620,7 @@ describe('claimsCodexRolloutLayout', () => {
 
 describe('resolveCodexSessionResumeProvenance', () => {
   function writeRollout(sessionId: string): { homePath: string; rolloutPath: string } {
-    const homePath = mkdtempSync(join(tmpdir(), 'orca-codex-resume-provenance-'))
+    const homePath = mkdtempSync(join(tmpdir(), 'occ-codex-resume-provenance-'))
     tempRoots.push(homePath)
     const rolloutPath = join(
       homePath,
@@ -638,7 +638,7 @@ describe('resolveCodexSessionResumeProvenance', () => {
   it('starts fresh for a rollout file that really exists under a home OCC no longer trusts', async () => {
     const sessionId = '019f81b9-19a9-7651-a8d1-352d9420bd11'
     const removed = writeRollout(sessionId)
-    const trusted = mkdtempSync(join(tmpdir(), 'orca-codex-resume-provenance-'))
+    const trusted = mkdtempSync(join(tmpdir(), 'occ-codex-resume-provenance-'))
     tempRoots.push(trusted)
 
     await expect(

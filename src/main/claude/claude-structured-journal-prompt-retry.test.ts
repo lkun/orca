@@ -96,7 +96,7 @@ function transientBackpressureSink(
 function rootResult() {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     message: {
       type: 'result',
       subtype: 'success',
@@ -112,7 +112,7 @@ function rootResult() {
 function streamDelta(index: number) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     message: {
       type: 'stream_event',
       uuid: `stream-${index}`,
@@ -135,10 +135,10 @@ describe('Claude journal prompt cancellation retry', () => {
       const translator = createClaudeJournalTranslator({ sink: state.sink })
       const prompt = approval('permission-retry')
 
-      translator.handle({ type: 'prompt', sessionId: 'orca-session', prompt })
+      translator.handle({ type: 'prompt', sessionId: 'occ-session', prompt })
       translator.handle({
         type: 'prompt-cancelled',
-        sessionId: 'orca-session',
+        sessionId: 'occ-session',
         promptKey: prompt.promptKey
       })
       expect(state.durableApproval()).toMatchObject({ resolution: { state: 'pending' } })
@@ -160,10 +160,10 @@ describe('Claude journal prompt cancellation retry', () => {
     const translator = createClaudeJournalTranslator({ sink: state.sink })
     const prompt = approval('permission-streaming')
 
-    translator.handle({ type: 'prompt', sessionId: 'orca-session', prompt })
+    translator.handle({ type: 'prompt', sessionId: 'occ-session', prompt })
     translator.handle({
       type: 'prompt-cancelled',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       promptKey: prompt.promptKey
     })
     expect(state.appendAttempts()).toBe(1)
@@ -194,11 +194,11 @@ describe('Claude journal prompt cancellation retry', () => {
     bindClaudeJournalReadingControl(sink, connection, translator)
     const prompt = approval('permission-drain')
 
-    translator.handle({ type: 'prompt', sessionId: 'orca-session', prompt })
+    translator.handle({ type: 'prompt', sessionId: 'occ-session', prompt })
     control?.pauseReading()
     translator.handle({
       type: 'prompt-cancelled',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       promptKey: prompt.promptKey
     })
     control?.resumeReading()

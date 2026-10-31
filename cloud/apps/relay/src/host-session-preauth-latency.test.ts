@@ -4,7 +4,7 @@ import {
   buildHostProofMacInput,
   HOST_CHALLENGE_PLAINTEXT_DOMAIN,
   RELAY_CLOSE_CODE
-} from '@orca-cloud/relay-contract'
+} from '@occ-cloud/relay-contract'
 import nacl from 'tweetnacl'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type WebSocket from 'ws'
@@ -305,7 +305,7 @@ function config(): RelayConfig {
     publicUrl: 'https://c1.relay.example.test',
     cellUrl: 'https://c1.relay.example.test',
     authIssuer: 'https://auth.example.test',
-    authAudience: 'orca-relay',
+    authAudience: 'occ-relay',
     jwksUrl: 'https://auth.example.test/jwks',
     assignmentSigningKey: new TextEncoder().encode('0123456789abcdef0123456789abcdef'),
     role: 'cell',

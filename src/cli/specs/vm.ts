@@ -10,7 +10,7 @@ export const VM_COMMAND_SPECS: CommandSpec[] = [
     allowedFlags: [...LOCAL_COMMAND_FLAGS, 'recipe-id', 'repo-path', 'provision', 'connect'],
     positionalArgs: ['recipe-id'],
     notes: [
-      'Reads environmentRecipes from orca.yaml in the repo path, validates the selected recipe, and reports agent-friendly checks.',
+      'Reads environmentRecipes from occ.yaml in the repo path, validates the selected recipe, and reports agent-friendly checks.',
       'This default mode is non-destructive and does not run the recipe command.',
       'Use --provision or --connect to run the recipe, validate its result, and run cleanup when configured.'
     ],

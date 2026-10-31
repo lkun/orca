@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithListManagedWorktrees } from './managed-workspace-operations'
+import { OCCRuntimeWithListManagedWorktrees } from './managed-workspace-operations'
 import type { RuntimeNavigationTarget } from '../../../shared/runtime-navigation'
 import {
   navigationTargetsClients,
@@ -55,7 +55,7 @@ import {
   type FreshComposerPtyHost
 } from '../launch-composer-watch'
 
-export abstract class OrcaRuntimeWithActivateManagedWorktree extends OrcaRuntimeWithListManagedWorktrees {
+export abstract class OCCRuntimeWithActivateManagedWorktree extends OCCRuntimeWithListManagedWorktrees {
   protected abstract toAgentSessionOptions(
     preferences: AgentLaunchPreferences | undefined
   ): Record<string, string> | undefined

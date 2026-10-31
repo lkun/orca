@@ -129,8 +129,8 @@ describe('MobileNativeChatMessage status notices', () => {
         kind: 'status',
         text: 'Codex stopped while this response was in progress.',
         tone: 'error',
-        presentation: 'orca-stop',
-        orcaStop: { cause: 'quit' }
+        presentation: 'occ-stop',
+        occStop: { cause: 'quit' }
       },
       { hostName: 'MacBook Pro' }
     )

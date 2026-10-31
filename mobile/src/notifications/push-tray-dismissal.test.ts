@@ -24,10 +24,10 @@ describe('dismissPresentedPushNotification', () => {
   it('dismisses only the tray entries whose push payload carries the same notification id', async () => {
     vi.mocked(Notifications.getPresentedNotificationsAsync).mockResolvedValue([
       presented('tray-1', {
-        orca: { hostFingerprint: 'fp0123456789abcd', notificationId: 'agent:one' }
+        occ: { hostFingerprint: 'fp0123456789abcd', notificationId: 'agent:one' }
       }),
       presented('tray-2', {
-        orca: { hostFingerprint: 'fp0123456789abcd', notificationId: 'agent:two' }
+        occ: { hostFingerprint: 'fp0123456789abcd', notificationId: 'agent:two' }
       }),
       presented('other-host', { hostFingerprint: 'another-host', notificationId: 'agent:one' }),
       presented('tray-3', { hostFingerprint: 'fp0123456789abcd', notificationId: 'agent:one' })

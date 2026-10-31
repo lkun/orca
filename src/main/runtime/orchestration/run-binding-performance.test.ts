@@ -2,8 +2,8 @@ import { DatabaseSync } from 'node:sqlite'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { OrchestrationDb } from './db'
 import { createRootDispatch } from './db/root-dispatch-test-fixture'
-import { formatOrcaSessionAddress } from '../../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../../shared/occ-session-address'
+import { testOCCSessionId } from '../../../shared/occ-session-address-test-fixture'
 
 const databases: OrchestrationDb[] = []
 afterEach(() => {
@@ -145,10 +145,10 @@ describe('Run binding scaling contracts', () => {
       })
       const task = db.createTask({ spec: 'retained work', runId: run.id })
       const otherTask = db.createTask({ spec: 'unrelated retained work', runId: other.id })
-      const sessionId = testOrcaSessionId('11111111-1111-4111-8111-111111111111')
-      const aliases = ['old_coord', 'old_worker', formatOrcaSessionAddress(sessionId)]
+      const sessionId = testOCCSessionId('11111111-1111-4111-8111-111111111111')
+      const aliases = ['old_coord', 'old_worker', formatOCCSessionAddress(sessionId)]
       const insert = db.db.prepare(`INSERT INTO dispatch_contexts
-        (id, task_id, run_id, assignee_handle, assignee_orca_session_id, creator_handle, status, created_at, completed_at)
+        (id, task_id, run_id, assignee_handle, assignee_occ_session_id, creator_handle, status, created_at, completed_at)
         VALUES (?, ?, ?, ?, ?, 'coord', 'completed', '2000-01-01', ?)`)
       for (const [index, alias] of aliases.entries()) {
         db.rememberRunCoordinatorHandle(run.id, alias)

@@ -109,7 +109,7 @@ const input = {
 } as const
 const missingPlacement = {
   status: 'failed',
-  errorCategory: 'skill-discovery-placement-missing',
+  errocctegory: 'skill-discovery-placement-missing',
   failure: {
     category: 'provider-placement',
     code: 'skill-discovery-placement-missing',
@@ -207,7 +207,7 @@ describe('WSL install verification at the discovery transport boundary', () => {
       ...result,
       status: 'failed',
       placements: [{ ...result.placements[0], ...missingPlacement }],
-      errorCategory: 'skill-discovery-canonical-missing',
+      errocctegory: 'skill-discovery-canonical-missing',
       failure: {
         category: 'provider-placement',
         code: 'skill-discovery-canonical-missing',
@@ -256,7 +256,7 @@ describe('WSL install verification at the discovery transport boundary', () => {
     expect(await verifySkillInstallDiscovery({ ...input, result })).toEqual({
       ...result,
       status: 'failed',
-      errorCategory: 'skill-discovery-verification-failed',
+      errocctegory: 'skill-discovery-verification-failed',
       failure: {
         category: 'provider-placement',
         code: 'skill-discovery-verification-failed',

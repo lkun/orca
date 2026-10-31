@@ -19,7 +19,7 @@ import { getStructuredAgentSessionHost } from '../native-chat/agent-session-wire
 import Database from '../sqlite/sync-database'
 import type { RuntimeNavigationTarget } from '../../shared/runtime-navigation'
 import type { RuntimeMobileSessionTabsResult } from '../../shared/runtime-types'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { requireStructuredHost } from './rpc/methods/structured-agent-session-gate'
 import { assertLegacyAiVaultResumeCommandAllowed } from '../ai-vault/structured-session-ownership'
 import type { RpcContext } from './rpc/core'
@@ -71,7 +71,7 @@ async function digest(path: string): Promise<string> {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-journal-host-refusal-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-journal-host-refusal-'))
   log = recordingStructuredAgentSessionLogger()
 })
 
@@ -181,7 +181,7 @@ describe('logging a journal that will not open', () => {
 
 describe('startup and other non-chat work without a structured host', () => {
   function startupRuntime(ensureHost: () => Promise<unknown> = install) {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const refreshPtyRecords = vi.fn(async () => new Set<string>())
     const hydrateTabs = vi.fn(() => new Set<string>())
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: these are the runtime's own protected members; the test roots the host at `root` and stubs the PTY daemon.
@@ -200,7 +200,7 @@ describe('startup and other non-chat work without a structured host', () => {
     return { runtime, refreshPtyRecords, hydrateTabs }
   }
 
-  async function expectStartupWithoutHost(runtime: OrcaRuntimeService): Promise<void> {
+  async function expectStartupWithoutHost(runtime: OCCRuntimeService): Promise<void> {
     await expect(runtime.prepareStructuredAgentSessionStartupRestoration()).resolves.toBeUndefined()
     // What `session.tabs.list` awaits before it answers a paired client.
     await expect(runtime.restoreStructuredAgentSessionTabs()).resolves.toBeUndefined()
@@ -242,7 +242,7 @@ describe('startup and other non-chat work without a structured host', () => {
       tabs: []
     }
 
-    function publishWorktreeFrame(runtime: OrcaRuntimeService): void {
+    function publishWorktreeFrame(runtime: OCCRuntimeService): void {
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the runtime's own protected store, called as its graph publication does.
       const internal = runtime as unknown as {
         storeMobileSessionSnapshot(worktreeId: string, snapshot: unknown): unknown
@@ -250,7 +250,7 @@ describe('startup and other non-chat work without a structured host', () => {
       internal.storeMobileSessionSnapshot('workspace-1', WORKTREE_FRAME)
     }
 
-    async function listInventory(runtime: OrcaRuntimeService) {
+    async function listInventory(runtime: OCCRuntimeService) {
       await runtime.restoreStructuredAgentSessionTabs()
       return runtime.listAllMobileSessionTabs()
     }

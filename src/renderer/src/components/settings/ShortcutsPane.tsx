@@ -54,7 +54,7 @@ export function ShortcutsPane(): React.JSX.Element {
   useTranslation()
   const searchQuery = useAppStore((state) => state.settingsSearchQuery)
   const terminalShortcutPolicy = useAppStore(
-    (state) => state.settings?.terminalShortcutPolicy ?? 'orca-first'
+    (state) => state.settings?.terminalShortcutPolicy ?? 'occ-first'
   )
   const updateSettings = useAppStore((state) => state.updateSettings)
   const keybindings = useAppStore((state) => state.keybindings)
@@ -324,7 +324,7 @@ export function ShortcutsPane(): React.JSX.Element {
                 {keybindingSnapshot?.path ??
                   translate(
                     'auto.components.settings.ShortcutsPane.d8c988dab4',
-                    '~/.orca/keybindings.json'
+                    '~/.occ/keybindings.json'
                   )}
               </span>{' '}
               {translate('auto.components.settings.ShortcutsPane.4b7ae34062', 'directly.')}

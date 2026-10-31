@@ -143,7 +143,7 @@ describe.each(['renderer', 'runtime'] as const)('%s spawn builder agent trust', 
       launchAgent: 'codex',
       command: 'codex',
       wslDistro: 'Ubuntu',
-      selectedCodexHomePath: '/orca/codex-accounts/acct-1/home'
+      selectedCodexHomePath: '/occ/codex-accounts/acct-1/home'
     })
     expect(applyAgentWorkspaceTrust).toHaveBeenCalledWith('codex', '/repo/wt', {
       env: expect.objectContaining({ CLAUDE_CONFIG_DIR: '/cfg' }),
@@ -151,7 +151,7 @@ describe.each(['renderer', 'runtime'] as const)('%s spawn builder agent trust', 
       wslDistro: 'Ubuntu',
       connectionId: null,
       // The env lacks CODEX_HOME until the provider injects it (#27235).
-      codexHome: '/orca/codex-accounts/acct-1/home'
+      codexHome: '/occ/codex-accounts/acct-1/home'
     })
   })
 
@@ -184,7 +184,7 @@ describe.each(['renderer', 'runtime'] as const)('%s spawn builder agent trust', 
   })
 
   it('keys on the declared agent even when setup sequencing rewrote the command', async () => {
-    await build(route, { launchAgent: 'claude', command: 'sh /tmp/orca-setup-runner.sh' })
+    await build(route, { launchAgent: 'claude', command: 'sh /tmp/occ-setup-runner.sh' })
     expect(applyAgentWorkspaceTrust).toHaveBeenCalledWith('claude', '/repo/wt', expect.anything())
   })
 

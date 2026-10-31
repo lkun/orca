@@ -24,7 +24,7 @@ const DRIVE = String.raw`C:\src\app`
 let root: string
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-drive-unc-run-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-drive-unc-run-'))
 })
 
 afterEach(() => {

@@ -166,7 +166,7 @@ async function runFixture(): Promise<{
   fixture: FixtureResult
   sourceCookieRows: SourceCookieRow[]
 }> {
-  const root = mkdtempSync(join(tmpdir(), 'orca-samesite-enum-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-samesite-enum-'))
   fixtureRoots.push(root)
   const bundlePath = join(root, 'cookie-import-samesite.cjs')
   const bundleEntryPath = join(root, 'cookie-import-samesite.ts')
@@ -213,7 +213,7 @@ async function runFixture(): Promise<{
       : electronArgs
   const run = spawnSync(executable, args, {
     encoding: 'utf8',
-    env: { ...env, ORCA_BACKGROUND_LAUNCH: '1' },
+    env: { ...env, OCC_BACKGROUND_LAUNCH: '1' },
     timeout: 90_000
   })
   const fixtureResult = existsSync(resultPath) ? readFileSync(resultPath, 'utf8') : 'no result'

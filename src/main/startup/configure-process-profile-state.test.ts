@@ -28,15 +28,15 @@ describe('pre-ready profile-state recovery boundary', () => {
     const { writeHttp1CompatibilityMarker } = await import('./http1-compatibility-marker')
     const { profileStateJsonExportPath } =
       await import('../persistence/profile-state/legacy-json/profile-state-export-path')
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-http1-profile-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-http1-profile-'))
     temporaryDirectories.push(userDataPath)
     const profileDirectory = join(userDataPath, 'profiles', 'profile-b')
     mkdirSync(profileDirectory, { recursive: true })
     writeFileSync(
-      join(userDataPath, 'orca-profile-index.json'),
+      join(userDataPath, 'occ-profile-index.json'),
       JSON.stringify({ activeProfileId: 'profile-b', profiles: [{ id: 'profile-b' }] })
     )
-    const dataFile = join(profileDirectory, 'orca-data.json')
+    const dataFile = join(profileDirectory, 'occ-data.json')
     writeFileSync(dataFile, JSON.stringify({ settings: { electronHttp1CompatibilityMode: true } }))
     writeHttp1CompatibilityMarker(userDataPath, true, 'profile-b')
     writeFileSync(profileStateJsonExportPath(dataFile, 7), '{}')

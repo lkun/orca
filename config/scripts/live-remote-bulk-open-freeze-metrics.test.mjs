@@ -25,8 +25,8 @@ describe('live-remote-bulk-open-freeze-metrics', () => {
 
   it('builds worktree selectors from id/path', () => {
     expect(
-      worktreeSelector({ id: 'repo::C:/Users/neil/orca/orca', path: 'C:/Users/neil/orca/orca' })
-    ).toBe('id:repo::C:/Users/neil/orca/orca')
+      worktreeSelector({ id: 'repo::C:/Users/neil/occ/occ', path: 'C:/Users/neil/occ/occ' })
+    ).toBe('id:repo::C:/Users/neil/occ/occ')
     expect(worktreeSelector({ path: '/tmp/x' })).toBe('path:/tmp/x')
     expect(worktreeSelector({})).toBeNull()
   })
@@ -141,12 +141,12 @@ describe('live-remote-bulk-open-freeze-metrics', () => {
   })
 
   it('rejects invalid numeric environment values', () => {
-    process.env.ORCA_FREEZE_TEST_NUMBER = 'not-a-number'
-    expect(() => readFreezeNumberEnv('ORCA_FREEZE_TEST_NUMBER', 5)).toThrow(
-      'Invalid ORCA_FREEZE_TEST_NUMBER'
+    process.env.OCC_FREEZE_TEST_NUMBER = 'not-a-number'
+    expect(() => readFreezeNumberEnv('OCC_FREEZE_TEST_NUMBER', 5)).toThrow(
+      'Invalid OCC_FREEZE_TEST_NUMBER'
     )
-    delete process.env.ORCA_FREEZE_TEST_NUMBER
-    expect(readFreezeNumberEnv('ORCA_FREEZE_TEST_NUMBER', 5)).toBe(5)
+    delete process.env.OCC_FREEZE_TEST_NUMBER
+    expect(readFreezeNumberEnv('OCC_FREEZE_TEST_NUMBER', 5)).toBe(5)
   })
 
   it('distinguishes recovered hard stall from permanent lockup', () => {

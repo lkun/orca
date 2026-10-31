@@ -57,14 +57,14 @@ export class CodexManagedHomePath {
       })
     }
     if (
-      !wslInfo.linuxPath.includes('/.local/share/orca/codex-accounts/') ||
+      !wslInfo.linuxPath.includes('/.local/share/occ/codex-accounts/') ||
       !wslInfo.linuxPath.endsWith('/home')
     ) {
       throw new Error('Managed WSL Codex home is outside OCC account storage.')
     }
     if (
       expectedAccountId !== undefined &&
-      !wslInfo.linuxPath.endsWith(`/.local/share/orca/codex-accounts/${expectedAccountId}/home`)
+      !wslInfo.linuxPath.endsWith(`/.local/share/occ/codex-accounts/${expectedAccountId}/home`)
     ) {
       throw new Error('Managed WSL Codex home does not match its persisted account ID.')
     }
@@ -81,7 +81,7 @@ export class CodexManagedHomePath {
     }
     // Recreate missing homes only at this account's exact persisted OCC path.
     mkdirSync(expectedPath, { recursive: true })
-    writeFileSync(join(expectedPath, '.orca-managed-home'), `${account.id}\n`, 'utf-8')
+    writeFileSync(join(expectedPath, '.occ-managed-home'), `${account.id}\n`, 'utf-8')
     return this.assert(expectedPath, account.id)
   }
 
@@ -93,7 +93,7 @@ export class CodexManagedHomePath {
       account.managedHomeRuntime !== 'wsl' ||
       account.wslDistro !== wslInfo.distro ||
       account.wslLinuxHomePath !== wslInfo.linuxPath ||
-      !wslInfo.linuxPath.endsWith(`/.local/share/orca/codex-accounts/${account.id}/home`)
+      !wslInfo.linuxPath.endsWith(`/.local/share/occ/codex-accounts/${account.id}/home`)
     ) {
       return
     }
@@ -104,7 +104,7 @@ export class CodexManagedHomePath {
         'set -euo pipefail',
         `candidate=${quotePosixShell(wslInfo.linuxPath)}`,
         `expected_marker=${quotePosixShell(account.id)}`,
-        'marker="$candidate/.orca-managed-home"',
+        'marker="$candidate/.occ-managed-home"',
         'if [ -e "$candidate" ] && [ ! -f "$marker" ]; then exit 41; fi',
         'if [ -f "$marker" ] && [ "$(cat "$marker")" != "$expected_marker" ]; then exit 42; fi',
         'mkdir -p -- "$candidate"',
@@ -131,10 +131,10 @@ export class CodexManagedHomePath {
         [
           'set -euo pipefail',
           `candidate=${quotePosixShell(wslInfo.linuxPath)}`,
-          'managed_root="${HOME%/}/.local/share/orca/codex-accounts"',
+          'managed_root="${HOME%/}/.local/share/occ/codex-accounts"',
           'candidate_real=$(readlink -f -- "$candidate")',
           'managed_root_real=$(readlink -f -- "$managed_root")',
-          'test -f "$candidate_real/.orca-managed-home"',
+          'test -f "$candidate_real/.occ-managed-home"',
           ...(expectedAccountId === undefined
             ? [
                 'case "$candidate_real" in "$managed_root_real"/*/home) printf "%s\\n" "$candidate_real" ;; *) exit 35 ;; esac'
@@ -142,7 +142,7 @@ export class CodexManagedHomePath {
             : [
                 `expected_marker=${quotePosixShell(expectedAccountId)}`,
                 'test "$candidate_real" = "$managed_root_real/$expected_marker/home"',
-                'test "$(cat "$candidate_real/.orca-managed-home")" = "$expected_marker"',
+                'test "$(cat "$candidate_real/.occ-managed-home")" = "$expected_marker"',
                 'printf "%s\\n" "$candidate_real"'
               ])
         ].join('\n')
@@ -169,7 +169,7 @@ export class CodexManagedHomePath {
     if (!existsSync(candidatePath)) {
       throw new Error('Managed Codex home directory does not exist on disk.')
     }
-    const markerPath = join(candidatePath, '.orca-managed-home')
+    const markerPath = join(candidatePath, '.occ-managed-home')
     if (!existsSync(markerPath)) {
       throw new Error('Managed Codex home is missing OCC ownership marker.')
     }

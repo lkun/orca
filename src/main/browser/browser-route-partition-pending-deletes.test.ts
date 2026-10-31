@@ -15,7 +15,7 @@ let partitions: string
 let listPath: string
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-partition-deletes-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-partition-deletes-'))
   partitions = join(root, 'Partitions')
   listPath = browserRoutePartitionPendingDeletesPath(
     join(root, 'profiles', 'a', 'browser-route-partition-bindings.json')
@@ -119,13 +119,13 @@ it('compares Windows partition folders case-insensitively', async () => {
   const winRoot = 'C:\\Users\\Me\\AppData\\OCC\\Partitions'
   expect(browserRoutePartitionDirectoryKey(`${winRoot}\\Abc`, win32.resolve)).toBe(
     browserRoutePartitionDirectoryKey(
-      'c:\\users\\me\\appdata\\orca\\partitions\\abc',
+      'c:\\users\\me\\appdata\\occ\\partitions\\abc',
       win32.resolve
     )
   )
   writeFileSync(
     listPath,
-    JSON.stringify(['c:\\USERS\\me\\appdata\\orca\\PARTITIONS\\abc', `${winRoot}\\..\\x`])
+    JSON.stringify(['c:\\USERS\\me\\appdata\\occ\\PARTITIONS\\abc', `${winRoot}\\..\\x`])
   )
   const removed: string[] = []
   await deletePendingBrowserRoutePartitionDirectories({
@@ -137,7 +137,7 @@ it('compares Windows partition folders case-insensitively', async () => {
     },
     resolvePath: win32.resolve
   })
-  expect(removed).toEqual(['c:\\USERS\\me\\appdata\\orca\\PARTITIONS\\abc'])
+  expect(removed).toEqual(['c:\\USERS\\me\\appdata\\occ\\PARTITIONS\\abc'])
 })
 
 it('keeps a folder queued while an earlier delete is in flight', async () => {

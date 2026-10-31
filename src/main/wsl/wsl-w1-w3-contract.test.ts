@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 
 const runProcessMock = vi.hoisted(() => vi.fn())
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 vi.mock('./wsl-executable-path', () => ({
   resolveWslExecutablePath: () => 'C:\\Windows\\System32\\wsl.exe'
 }))
@@ -89,7 +89,7 @@ describe('W3: the five per-call decisions are made once', () => {
   it('runs no shell on the probe lane, so ~/.profile cannot stall it', async () => {
     // #14288: blocking profiles must not consume the command timeout.
     await runWslProcess({ loginPath: 'preferred', distro: 'Ubuntu', program: 'codex' })
-    expect(JSON.stringify(spawnSpec().args)).not.toContain('_orca_wsl_shell')
+    expect(JSON.stringify(spawnSpec().args)).not.toContain('_occ_wsl_shell')
   })
 
   it('applies the user login PATH even with no shell in the loop', async () => {

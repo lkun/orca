@@ -25,7 +25,7 @@ function listing(
       commit: 'c'.repeat(40),
       contentHash: 'f'.repeat(64),
       execution: 'data',
-      minimumOrca: '1.4.0',
+      minimumOCC: '1.4.0',
       types: ['syntax'],
       fileTypes
     },
@@ -41,7 +41,7 @@ function installed(pluginKey: string, extensions: string[]): ValidDiscoveredPlug
     publisher,
     name: id,
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     contributes: {
       syntaxes: extensions.length
@@ -121,7 +121,7 @@ describe('editor suggestions for files OCC already opens as text', () => {
         commit: 'c'.repeat(40),
         contentHash: 'f'.repeat(64),
         execution: 'sandboxed-ui',
-        minimumOrca: '1.4.0',
+        minimumOCC: '1.4.0',
         fileTypes: ['excalidraw'],
         editorFileTypes: ['excalidraw'],
         contributes: [
@@ -170,7 +170,7 @@ describe('editor suggestions for files OCC already opens as text', () => {
         commit: 'c'.repeat(40),
         contentHash: 'f'.repeat(64),
         execution: 'sandboxed-ui',
-        minimumOrca: '1.4.0',
+        minimumOCC: '1.4.0',
         fileTypes: ['xlsx'],
         contributes: [{ kind: 'customEditors', name: 'Spreadsheet', detail: '.xlsx' }]
       }

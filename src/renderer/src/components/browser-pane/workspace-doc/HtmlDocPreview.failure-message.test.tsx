@@ -38,7 +38,7 @@ vi.mock('@/lib/doc-preview-grants', () => ({
     const grantId = grantRuntime.mints === 1 ? GRANT_ID : REMINTED_GRANT_ID
     return Promise.resolve({
       grantId,
-      url: `orca-preview://${grantId}/${ENTRY_RELATIVE_PATH}`,
+      url: `occ-preview://${grantId}/${ENTRY_RELATIVE_PATH}`,
       location
     })
   },

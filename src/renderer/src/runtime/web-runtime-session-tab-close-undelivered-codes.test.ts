@@ -125,7 +125,7 @@ function envelope(code: string): unknown {
 // Pins which close failures keep the user's close for replay (round-2 S5), so a dropped code is deliberate.
 describe('user close: which failures keep the intent', () => {
   beforeEach(() => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     const intents = createPairedTerminalTabCloseIntentTestStore()
     mocks.getState.mockImplementation(() => ({
       settings: {

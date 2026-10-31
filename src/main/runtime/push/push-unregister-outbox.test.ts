@@ -13,7 +13,7 @@ vi.mock('node:fs', async (importOriginal) => {
 const OUTBOX_FILENAME = 'mobile-push-unregister-outbox.json'
 
 function userDataDir(): string {
-  return mkdtempSync(join(tmpdir(), 'orca-push-outbox-'))
+  return mkdtempSync(join(tmpdir(), 'occ-push-outbox-'))
 }
 
 describe('PushUnregisterOutbox', () => {

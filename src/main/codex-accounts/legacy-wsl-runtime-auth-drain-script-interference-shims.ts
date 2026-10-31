@@ -63,10 +63,10 @@ export function installDrainInterferenceShims(
   const sourceInstalled =
   process.env.KILL_SOURCE === '1' &&
   from.endsWith('/legacy/auth.json') &&
-  to.endsWith('.orca-drain-live-source')
+  to.endsWith('.occ-drain-live-source')
   const destinationInstalled =
   process.env.KILL_DESTINATION === '1' &&
-  from.includes('/account/auth.json.orca-drain-snapshot-') &&
+  from.includes('/account/auth.json.occ-drain-snapshot-') &&
   to.endsWith('/account/auth.json')
   if (result.status === 0 && (sourceInstalled || destinationInstalled)) {
   interruptDrainApply(1)

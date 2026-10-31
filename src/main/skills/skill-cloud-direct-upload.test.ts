@@ -14,7 +14,7 @@ afterEach(async () => {
 describe('uploadSkillPackageToSignedPolicy', () => {
   it('allows a slow progressing upload to continue beyond one minute', async () => {
     vi.useFakeTimers()
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-cloud-upload-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-cloud-upload-'))
     roots.push(root)
     const archivePath = join(root, 'package.tar.gz')
     const archive = Buffer.alloc(3 * 64 * 1024, 0x61)
@@ -81,7 +81,7 @@ describe('uploadSkillPackageToSignedPolicy', () => {
   })
 
   it('streams exact bytes with policy fields and bounded progress', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-cloud-upload-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-cloud-upload-'))
     roots.push(root)
     const archivePath = join(root, 'package.tar.gz')
     const archive = Buffer.from('private-package-bytes')
@@ -122,7 +122,7 @@ describe('uploadSkillPackageToSignedPolicy', () => {
     expect(Buffer.from(await file.arrayBuffer())).toEqual(archive)
     expect(file.name).toBe('package.tar.gz')
     expect(uploaded.toString('utf8')).toContain(
-      'Content-Disposition: form-data; name="file"; filename="package.tar.gz"\r\nContent-Type: application/vnd.orca.skill+tar+gzip\r\n\r\n'
+      'Content-Disposition: form-data; name="file"; filename="package.tar.gz"\r\nContent-Type: application/vnd.occ.skill+tar+gzip\r\n\r\n'
     )
     const sent = progress.mock.calls.map(([bytes]) => bytes)
     expect(sent).not.toHaveLength(0)
@@ -134,7 +134,7 @@ describe('uploadSkillPackageToSignedPolicy', () => {
   })
 
   it('rejects insecure destinations and source drift before upload', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-cloud-upload-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-cloud-upload-'))
     roots.push(root)
     const archivePath = join(root, 'package.tar.gz')
     await writeFile(archivePath, 'bytes')
@@ -167,7 +167,7 @@ describe('uploadSkillPackageToSignedPolicy', () => {
 
   it('bounds a stalled signed upload even without a caller-owned signal', async () => {
     vi.useFakeTimers()
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-cloud-upload-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-cloud-upload-'))
     roots.push(root)
     const archivePath = join(root, 'package.tar.gz')
     await writeFile(archivePath, 'bytes')

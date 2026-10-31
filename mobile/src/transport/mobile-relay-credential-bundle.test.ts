@@ -41,8 +41,8 @@ const journal = {
     },
     relay: {
       v: 1,
-      directorUrl: 'https://relay.onorca.dev',
-      cellUrl: 'https://relay-c1.onorca.dev',
+      directorUrl: 'https://relay.onocc.dev',
+      cellUrl: 'https://relay-c1.onocc.dev',
       assignmentEpoch: 7,
       relayHostId: 'AbCdEf0123_-xyZ9',
       inviteExpiresAt: 10_000,
@@ -108,7 +108,7 @@ describe('mobile relay credential bundle', () => {
     }
     expect(bundle).toEqual(expected)
     await expect(readMobileRelayCredentialBundle('host-1')).resolves.toEqual(expected)
-    expect(stored.get('orca.mobile-relay.credentials.host-1')).toBe(JSON.stringify(expected))
+    expect(stored.get('occ.mobile-relay.credentials.host-1')).toBe(JSON.stringify(expected))
   })
 
   it('rejects a result from another request or authorization mode', () => {
@@ -148,7 +148,7 @@ describe('mobile relay credential bundle', () => {
     await deleteMobileRelayCredentialBundle('host-1')
     await expect(readMobileRelayCredentialBundle('host-1')).resolves.toBeNull()
     expect(secureStore.deleteItemAsync).toHaveBeenCalledWith(
-      'orca.mobile-relay.credentials.host-1',
+      'occ.mobile-relay.credentials.host-1',
       expect.any(Object)
     )
     secureStore.deleteItemAsync.mockClear()

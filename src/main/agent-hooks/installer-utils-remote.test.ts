@@ -270,9 +270,9 @@ describe('installer-utils-remote', () => {
 
   it('writes the managed script and chmods 0o755', async () => {
     const { sftp, fs } = createFakeSftp()
-    await writeManagedScriptRemote(sftp, '/home/u/.orca/agent-hooks/claude-hook.sh', '#!/bin/sh\n')
-    expect(fs.files.get('/home/u/.orca/agent-hooks/claude-hook.sh')).toBe('#!/bin/sh\n')
-    expect(fs.modes.get('/home/u/.orca/agent-hooks/claude-hook.sh')).toBe(0o755)
+    await writeManagedScriptRemote(sftp, '/home/u/.occ/agent-hooks/claude-hook.sh', '#!/bin/sh\n')
+    expect(fs.files.get('/home/u/.occ/agent-hooks/claude-hook.sh')).toBe('#!/bin/sh\n')
+    expect(fs.modes.get('/home/u/.occ/agent-hooks/claude-hook.sh')).toBe(0o755)
   })
 
   it('replaces an existing managed script atomically via temp file rename', async () => {
@@ -280,7 +280,7 @@ describe('installer-utils-remote', () => {
       plainRenameOverwrites: false,
       openSshRename: true
     })
-    const path = '/home/u/.orca/agent-hooks/claude-hook.sh'
+    const path = '/home/u/.occ/agent-hooks/claude-hook.sh'
     fs.files.set(path, 'old script')
 
     await writeManagedScriptRemote(sftp, path, 'new script')
@@ -289,7 +289,7 @@ describe('installer-utils-remote', () => {
     expect(fs.modes.get(path)).toBe(0o755)
     expect([...fs.files.keys()]).toEqual([path])
     const tempPath = fs.operations[0]?.path
-    expect(tempPath).toMatch(/^\/home\/u\/\.orca\/agent-hooks\/\.[^.]+\.tmp$/)
+    expect(tempPath).toMatch(/^\/home\/u\/\.occ\/agent-hooks\/\.[^.]+\.tmp$/)
     expect(fs.operations).toEqual([
       { kind: 'write', path: tempPath },
       { kind: 'chmod', path: tempPath },
@@ -299,7 +299,7 @@ describe('installer-utils-remote', () => {
 
   it('leaves the existing managed script intact when temp write fails', async () => {
     const { sftp, fs } = createFakeSftp({ failDotFileWrites: true })
-    const path = '/home/u/.orca/agent-hooks/claude-hook.sh'
+    const path = '/home/u/.occ/agent-hooks/claude-hook.sh'
     fs.files.set(path, 'old script')
 
     await expect(writeManagedScriptRemote(sftp, path, 'new script')).rejects.toMatchObject({

@@ -179,9 +179,9 @@ async function attach(
 
 describe('adopting a provider conversation on create', () => {
   it('seeds the chain from the adopted handle and fills the journal from its transcript', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-adopt-import-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-adopt-import-'))
     const transcriptPath = join(root, 'rollout.jsonl')
-    await writeCodexRollout(transcriptPath, 'token ORCA-ADOPT-1')
+    await writeCodexRollout(transcriptPath, 'token OCC-ADOPT-1')
     const sessionAdapter = adapter()
 
     const result = await attach(transcriptPath, sessionAdapter)
@@ -189,7 +189,7 @@ describe('adopting a provider conversation on create', () => {
     expect(result).toMatchObject({ ok: true })
     // The seeded chain must resume the adopted conversation.
     const page = (result as { value: { page: { items: unknown[] } } }).value.page
-    expect(JSON.stringify(page.items)).toContain('ORCA-ADOPT-1')
+    expect(JSON.stringify(page.items)).toContain('OCC-ADOPT-1')
   })
 
   it.each([
@@ -232,8 +232,8 @@ describe('adopting a provider conversation on create', () => {
   ] as const)(
     "seeds a $agent chat's chain with the session it adopts and imports that CLI's history",
     async ({ agent, accountHome, record }) => {
-      root = await mkdtemp(join(tmpdir(), `orca-adopt-${agent}-`))
-      const transcriptPath = await record(root, `ORCA-${agent}-ADOPT`)
+      root = await mkdtemp(join(tmpdir(), `occ-adopt-${agent}-`))
+      const transcriptPath = await record(root, `OCC-${agent}-ADOPT`)
       const definition = structuredAgentRuntimeRegistration(agent)?.definition
       if (!definition) {
         throw new Error(`this build registers no ${agent} chats`)
@@ -270,7 +270,7 @@ describe('adopting a provider conversation on create', () => {
         structuredAgentsDeclaringNothing([definition])
       )
 
-      expect(result.ok && JSON.stringify(result.value.page.items)).toContain(`ORCA-${agent}-ADOPT`)
+      expect(result.ok && JSON.stringify(result.value.page.items)).toContain(`OCC-${agent}-ADOPT`)
       expect(store?.getRecord(SESSION)?.providerHandleChain[0]).toMatchObject({
         origin: 'adopted',
         handle
@@ -279,7 +279,7 @@ describe('adopting a provider conversation on create', () => {
   )
 
   it('replays create without replacing journal-only messages or rereading the source', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-adopt-replay-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-adopt-replay-'))
     const transcriptPath = join(root, 'rollout.jsonl')
     await writeCodexRollout(transcriptPath, 'original turn')
     const sessionAdapter = adapter()
@@ -308,7 +308,7 @@ describe('adopting a provider conversation on create', () => {
   it.each(['missing', 'oversized', 'empty', 'metadata-only', 'invalid', 'source-less'] as const)(
     'refuses %s source before claiming a conversation',
     async (kind) => {
-      root = await mkdtemp(join(tmpdir(), 'orca-adopt-preflight-'))
+      root = await mkdtemp(join(tmpdir(), 'occ-adopt-preflight-'))
       const transcriptPath = join(root, 'rollout.jsonl')
       if (kind === 'oversized') {
         await writeCodexRollout(transcriptPath, 'original turn')
@@ -344,7 +344,7 @@ describe('adopting a provider conversation on create', () => {
   )
 
   it('still releases acquisition on an import write failure, and leaves the conversation open', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-adopt-write-failure-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-adopt-write-failure-'))
     const transcriptPath = join(root, 'rollout.jsonl')
     await writeCodexRollout(transcriptPath, 'valid source')
     vi.spyOn(AgentSessionJournal.prototype, 'replaceEpochItems').mockRejectedValueOnce(
@@ -357,7 +357,7 @@ describe('adopting a provider conversation on create', () => {
   })
 
   it('leaves the conversation writable when the import fails after acquiring', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-adopt-host-failure-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-adopt-host-failure-'))
     const transcriptPath = join(root, 'rollout.jsonl')
     await writeCodexRollout(transcriptPath, 'valid source')
     store = await openTestAgentSessionRecordStore(root)
@@ -401,7 +401,7 @@ describe('adopting a provider conversation on create', () => {
   })
 
   it('prepares a valid source once before acquisition and imports those exact items', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-adopt-once-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-adopt-once-'))
     const parent = await writeCodexHistoryFixture(root, '01a17c7f-6f58-7a73-b87a-a8702ff2da17', [
       'sky'
     ])

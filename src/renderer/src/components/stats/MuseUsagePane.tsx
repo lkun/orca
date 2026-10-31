@@ -13,7 +13,7 @@ import { getIntlLocale, translate } from '@/i18n/i18n'
 const RANGE_OPTIONS: MuseUsageRange[] = ['7d', '30d', '90d', 'all']
 const SCOPE_OPTIONS: { value: MuseUsageScope; label: string }[] = [
   {
-    value: 'orca',
+    value: 'occ',
     get label() {
       return translate('auto.components.stats.OpenCodeUsagePane.e04c58327c', 'OCC worktrees only')
     }

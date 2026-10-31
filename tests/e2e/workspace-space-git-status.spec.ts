@@ -2,18 +2,18 @@ import { execFileSync } from 'node:child_process'
 import { mkdtempSync, realpathSync, rmSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { loadWorktreesUntilPathsPresent } from './helpers/worktree-registration'
 
 test.describe('Workspace Space git status checks', () => {
   test('checks every scanned deletable row, including rows after the first 50', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
     // Canonicalize parent before git worktree add so macOS/CI tmp symlinks match OCC’s realpath-registered rows.
     const worktreeParent = realpathSync(
-      mkdtempSync(path.join(os.tmpdir(), 'orca-space-git-status-'))
+      mkdtempSync(path.join(os.tmpdir(), 'occ-space-git-status-'))
     )
     const worktreePaths = Array.from({ length: 60 }, (_, index) =>
       path.join(worktreeParent, `worktree-${index}`)
@@ -30,7 +30,7 @@ test.describe('Workspace Space git status checks', () => {
         realpathSync(worktreePath)
       )
 
-      const repoId = await orcaPage.evaluate((testRepoPath) => {
+      const repoId = await occPage.evaluate((testRepoPath) => {
         const store = window.__store
         if (!store) {
           throw new Error('Expected e2e store to be exposed')
@@ -43,9 +43,9 @@ test.describe('Workspace Space git status checks', () => {
       }, testRepoPath)
 
       // Poll past the 5s scan cache until all 60 raw-git-added worktrees register before deriving space rows.
-      await loadWorktreesUntilPathsPresent(orcaPage, repoId, registeredWorktreePaths)
+      await loadWorktreesUntilPathsPresent(occPage, repoId, registeredWorktreePaths)
 
-      const rowDisplayNames = await orcaPage.evaluate(
+      const rowDisplayNames = await occPage.evaluate(
         async ({ testRepoPath, worktreePaths }) => {
           const store = window.__store
           if (!store) {

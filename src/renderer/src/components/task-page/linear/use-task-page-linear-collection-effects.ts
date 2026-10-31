@@ -2,14 +2,14 @@ import { observeLinearIssueRead } from '@/store/slices/linear/linear-issue-publi
 import { linearIssueReadError } from '@/lib/linear-read-error'
 import { taskProviderErrorText } from '@/lib/task-provider-error-copy'
 import { translate } from '@/i18n/i18n'
-import type { TaskPageLinearInOrcaEffectsModel } from './use-task-page-linear-in-orca-effects'
+import type { TaskPageLinearInOCCEffectsModel } from './use-task-page-linear-in-occ-effects'
 import { useEffect } from 'react'
 import { LINEAR_ITEM_LIMIT } from '../task-page-source-context'
 import { useTaskSearchDebouncedApply } from '../use-task-search-debounced-apply'
 import { clampLinearIssueListLimit } from '../../../../../shared/linear/issue-read-limits'
 import { useTaskPageLinearCustomViewEffects } from './use-task-page-linear-custom-view-effects'
 
-export function useTaskPageLinearCollectionEffectsPrelude(model: TaskPageLinearInOrcaEffectsModel) {
+export function useTaskPageLinearCollectionEffectsPrelude(model: TaskPageLinearInOCCEffectsModel) {
   const {
     setTaskResumeState,
     getCachedLinearProjects,
@@ -209,7 +209,7 @@ export function useTaskPageLinearCollectionEffectsPrelude(model: TaskPageLinearI
   ])
   return model
 }
-export function useTaskPageLinearCollectionEffects(model: TaskPageLinearInOrcaEffectsModel) {
+export function useTaskPageLinearCollectionEffects(model: TaskPageLinearInOCCEffectsModel) {
   const preludeModel = useTaskPageLinearCollectionEffectsPrelude(model)
   return useTaskPageLinearCustomViewEffects(preludeModel)
 }

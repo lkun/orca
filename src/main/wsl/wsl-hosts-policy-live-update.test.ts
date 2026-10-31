@@ -72,7 +72,7 @@ describe('WSL hosts policy parsing', () => {
 describe('WSL hosts policy live update', () => {
   let userDataPath: string
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-policy-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-policy-'))
   })
   afterEach(() => {
     vi.restoreAllMocks()

@@ -72,7 +72,7 @@ describe('adoptRuntimeProvisionedRoot', () => {
       expect.objectContaining({
         ephemeralVmCheckoutMode: 'provisioned-root',
         displayName: 'fix-login',
-        orcaCreationSource: 'runtime',
+        occCreationSource: 'runtime',
         baseRef: 'main'
       })
     )

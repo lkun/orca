@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import { quoteWindowsArgument } from '@orca/process-host/windows-command-line'
+import { quoteWindowsArgument } from '@occ/process-host/windows-command-line'
 import {
-  ORCAD_WINDOWS_BREAKAWAY_CONTRACT,
+  OCCD_WINDOWS_BREAKAWAY_CONTRACT,
   parseWindowsBreakawayLaunchReport,
   WINDOWS_BREAKAWAY_EXIT_CODES as RELAY_WINDOWS_BREAKAWAY_EXIT_CODES,
   WINDOWS_BREAKAWAY_LAUNCH_FLAG as RELAY_WINDOWS_BREAKAWAY_LAUNCH_FLAG,
@@ -18,7 +18,7 @@ import {
 // The launcher is contract-agnostic; this stands in for the retired relay's contract.
 const RELAY_WINDOWS_BREAKAWAY_CONTRACT: WindowsBreakawayLaunchContract = {
   argsFlag: '--relay-args',
-  reportMarker: 'ORCA_RELAY_LAUNCH'
+  reportMarker: 'OCC_RELAY_LAUNCH'
 }
 
 const parseRelayWindowsBreakawayLaunch = (args: readonly string[]) =>
@@ -44,7 +44,7 @@ const launchRelayOutsideJob = (
 
 const argv = [
   'C:\\rt\\node.exe',
-  'C:\\Users\\me user\\.orca-remote\\relay-1\\relay.js',
+  'C:\\Users\\me user\\.occ-remote\\relay-1\\relay.js',
   RELAY_WINDOWS_BREAKAWAY_LAUNCH_FLAG,
   '--stdout-file',
   'C:/Users/me user/relay.log',
@@ -53,7 +53,7 @@ const argv = [
   '--relay-args',
   '--detached',
   '--sock-path',
-  '\\\\.\\pipe\\orca-relay-1',
+  '\\\\.\\pipe\\occ-relay-1',
   '--log-file',
   'C:/Users/me user/relay.log'
 ]
@@ -196,30 +196,30 @@ describe('relay Windows breakaway launcher', () => {
   })
 })
 
-describe('orcad Windows breakaway launcher', () => {
-  const orcadArgv = [
+describe('occd Windows breakaway launcher', () => {
+  const occdArgv = [
     'C:\\rt\\node.exe',
-    'C:\\Users\\me\\.orca-remote\\orcad-1\\orcad.js',
+    'C:\\Users\\me\\.occ-remote\\occd-1\\occd.js',
     RELAY_WINDOWS_BREAKAWAY_LAUNCH_FLAG,
     '--stdout-file',
-    'C:/slot/.orcad-readiness',
+    'C:/slot/.occd-readiness',
     '--stderr-file',
-    'C:/slot/orcad.log',
+    'C:/slot/occd.log',
     '--process-file',
-    'C:/slot/.orcad-process.json',
-    '--orcad-args',
+    'C:/slot/.occd-process.json',
+    '--occd-args',
     '--json',
     '--bind',
     '127.0.0.1'
   ]
-  const orcadRuntime = { execPath: orcadArgv[0], script: orcadArgv[1], cwd: 'C:/slot' }
+  const occdRuntime = { execPath: occdArgv[0], script: occdArgv[1], cwd: 'C:/slot' }
 
   it('splits on its own args flag, not the relay one', () => {
-    expect(parseWindowsBreakawayLaunchRequest(ORCAD_WINDOWS_BREAKAWAY_CONTRACT, orcadArgv)).toEqual(
+    expect(parseWindowsBreakawayLaunchRequest(OCCD_WINDOWS_BREAKAWAY_CONTRACT, occdArgv)).toEqual(
       {
-        stdoutPath: 'C:/slot/.orcad-readiness',
-        stderrPath: 'C:/slot/orcad.log',
-        processFilePath: 'C:/slot/.orcad-process.json',
+        stdoutPath: 'C:/slot/.occd-readiness',
+        stderrPath: 'C:/slot/occd.log',
+        processFilePath: 'C:/slot/.occd-process.json',
         env: {},
         programArgs: ['--json', '--bind', '127.0.0.1']
       }
@@ -228,45 +228,45 @@ describe('orcad Windows breakaway launcher', () => {
 
   it('collects --env assignments for the launched process and refuses a malformed one', () => {
     const withEnv = [
-      ...orcadArgv.slice(0, 3),
+      ...occdArgv.slice(0, 3),
       '--env',
-      'ORCA_VERSION=0.2.0+bb01',
+      'OCC_VERSION=0.2.0+bb01',
       '--env',
-      'ORCA_USER_DATA=C:/Users/Ann Lee/.orca',
-      ...orcadArgv.slice(3)
+      'OCC_USER_DATA=C:/Users/Ann Lee/.occ',
+      ...occdArgv.slice(3)
     ]
     expect(
-      parseWindowsBreakawayLaunchRequest(ORCAD_WINDOWS_BREAKAWAY_CONTRACT, withEnv)?.env
-    ).toEqual({ ORCA_VERSION: '0.2.0+bb01', ORCA_USER_DATA: 'C:/Users/Ann Lee/.orca' })
+      parseWindowsBreakawayLaunchRequest(OCCD_WINDOWS_BREAKAWAY_CONTRACT, withEnv)?.env
+    ).toEqual({ OCC_VERSION: '0.2.0+bb01', OCC_USER_DATA: 'C:/Users/Ann Lee/.occ' })
     expect(() =>
-      parseWindowsBreakawayLaunchRequest(ORCAD_WINDOWS_BREAKAWAY_CONTRACT, [
-        ...orcadArgv.slice(0, 3),
+      parseWindowsBreakawayLaunchRequest(OCCD_WINDOWS_BREAKAWAY_CONTRACT, [
+        ...occdArgv.slice(0, 3),
         '--env',
         'lower=1',
-        ...orcadArgv.slice(3)
+        ...occdArgv.slice(3)
       ])
     ).toThrow('NAME=VALUE')
   })
 
   it.each([
-    'ORCA_PAIRING_TOKEN',
-    'ORCA_RUNTIME_SECRET',
+    'OCC_PAIRING_TOKEN',
+    'OCC_RUNTIME_SECRET',
     'ANTHROPIC_API_KEY',
     'DB_PASSWORD',
-    'ORCA_CREDENTIAL_FILE'
+    'OCC_CREDENTIAL_FILE'
   ])('refuses the secret-shaped name %s on --env', (name) => {
     expect(() =>
-      parseWindowsBreakawayLaunchRequest(ORCAD_WINDOWS_BREAKAWAY_CONTRACT, [
-        ...orcadArgv.slice(0, 3),
+      parseWindowsBreakawayLaunchRequest(OCCD_WINDOWS_BREAKAWAY_CONTRACT, [
+        ...occdArgv.slice(0, 3),
         '--env',
         `${name}=x`,
-        ...orcadArgv.slice(3)
+        ...occdArgv.slice(3)
       ])
     ).toThrow('argv is not secret')
   })
 
   it('records the PID with its creation time so a reused PID is never mistaken for it', () => {
-    const request = parseWindowsBreakawayLaunchRequest(ORCAD_WINDOWS_BREAKAWAY_CONTRACT, orcadArgv)
+    const request = parseWindowsBreakawayLaunchRequest(OCCD_WINDOWS_BREAKAWAY_CONTRACT, occdArgv)
     if (!request) {
       throw new Error('expected a launch request')
     }
@@ -274,7 +274,7 @@ describe('orcad Windows breakaway launcher', () => {
     const outcome = launchOutsideJob(
       request,
       launcherFor(() => ({ ok: true, pid: 4242, inJob: false }), 1_700_000_000_123),
-      orcadRuntime,
+      occdRuntime,
       (path, contents) => writes.push([path, contents])
     )
     expect(outcome).toEqual({
@@ -282,12 +282,12 @@ describe('orcad Windows breakaway launcher', () => {
       exitCode: RELAY_WINDOWS_BREAKAWAY_EXIT_CODES.launched
     })
     expect(writes).toEqual([
-      ['C:/slot/.orcad-process.json', '{"pid":4242,"creationTimeMs":1700000000123}']
+      ['C:/slot/.occd-process.json', '{"pid":4242,"creationTimeMs":1700000000123}']
     ])
   })
 
   it('fails the launch and stops the process when its record cannot be written', () => {
-    const request = parseWindowsBreakawayLaunchRequest(ORCAD_WINDOWS_BREAKAWAY_CONTRACT, orcadArgv)
+    const request = parseWindowsBreakawayLaunchRequest(OCCD_WINDOWS_BREAKAWAY_CONTRACT, occdArgv)
     if (!request) {
       throw new Error('expected a launch request')
     }
@@ -295,7 +295,7 @@ describe('orcad Windows breakaway launcher', () => {
     const outcome = launchOutsideJob(
       request,
       launcherFor(() => ({ ok: true, pid: 4242, inJob: false })),
-      orcadRuntime,
+      occdRuntime,
       () => {
         throw Object.assign(new Error('EACCES'), { errno: -4048 })
       },
@@ -309,8 +309,8 @@ describe('orcad Windows breakaway launcher', () => {
   })
 
   it('reports under its own marker, which the relay parser does not read', () => {
-    const line = 'ORCA_ORCAD_LAUNCH {"method":"breakaway","pid":9,"inJob":false}'
-    expect(parseWindowsBreakawayLaunchReport(ORCAD_WINDOWS_BREAKAWAY_CONTRACT, line)).toEqual({
+    const line = 'OCC_OCCD_LAUNCH {"method":"breakaway","pid":9,"inJob":false}'
+    expect(parseWindowsBreakawayLaunchReport(OCCD_WINDOWS_BREAKAWAY_CONTRACT, line)).toEqual({
       method: 'breakaway',
       pid: 9,
       inJob: false

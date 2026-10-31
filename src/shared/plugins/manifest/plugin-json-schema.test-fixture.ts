@@ -6,8 +6,8 @@ import { isPluginJsonObject } from './plugin-json-object'
 export function compilePluginJsonSchema(schema: PluginJsonSchema) {
   // Why no format plugin: every format the schemas use also carries a `pattern`.
   const ajv = new Ajv2020({ allErrors: true, validateFormats: false })
-  ajv.addKeyword('x-orca-since')
-  ajv.addKeyword('x-orca-enum-since')
+  ajv.addKeyword('x-occ-since')
+  ajv.addKeyword('x-occ-enum-since')
   return { ajv, validate: ajv.compile(schema) }
 }
 
@@ -31,7 +31,7 @@ export function v2ManifestFixture(
     publisher: 'acme',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+    engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
     ...overrides
   }
 }
@@ -50,7 +50,7 @@ export function catalogEntryFixture(
         commit: 'a'.repeat(40),
         contentHash: 'b'.repeat(64),
         execution: 'data',
-        minimumOrca: PLUGIN_MANIFEST_V2_SINCE,
+        minimumOCC: PLUGIN_MANIFEST_V2_SINCE,
         types: ['syntax'],
         ...release
       }

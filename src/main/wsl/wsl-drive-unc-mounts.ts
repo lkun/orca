@@ -3,7 +3,7 @@
  * there, so a UNC path converts only when the distro's own mountinfo shows that same drive folder.
  */
 import { posix } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { buildPosixStdoutFence } from '../../shared/posix-stdout-fence'
 import { normalizeRuntimePathForComparison } from '../../shared/cross-platform-path'
 import { buildWslExecArgs } from '../../shared/wsl-login-shell-command'

@@ -46,7 +46,7 @@ function status(version: string, runtimeId = 'runtime-old', automatic = true): R
 
 // The main process's own copy once quitAndInstall fails; it must survive to the client verbatim.
 const INSTALL_FAILURE =
-  "Could not start the update installer. OCC remains open. (Command failed: pkexec dpkg -i '/home/u/.cache/orca-updater/pending/occ-ide_1.5.0_amd64.deb' pkexec must be setuid root)"
+  "Could not start the update installer. OCC remains open. (Command failed: pkexec dpkg -i '/home/u/.cache/occ-updater/pending/occ-ide_1.5.0_amd64.deb' pkexec must be setuid root)"
 
 const availableSnapshot: RemoteServerUpdaterSnapshot = {
   appVersion: '1.4.0',

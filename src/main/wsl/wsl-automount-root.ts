@@ -6,7 +6,7 @@
  * restart between two probes goes unseen, so OCC's own wake also allows one re-read; a restart
  * outside OCC with no wake after it keeps the old root until the next noticed stop or wake.
  */
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { buildPosixStdoutFence } from '../../shared/posix-stdout-fence'
 import { buildWslExecArgs } from '../../shared/wsl-login-shell-command'
 import {

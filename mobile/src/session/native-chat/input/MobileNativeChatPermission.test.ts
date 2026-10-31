@@ -198,7 +198,7 @@ describe('MobileNativeChatPermission', () => {
   })
 
   describe("a subject of a kind this build cannot draw: a newer OCC's", () => {
-    const NEEDS_NEWER_ORCA = 'This request needs a newer version of OCC.'
+    const NEEDS_NEWER_OCC = 'This request needs a newer version of OCC.'
 
     async function renderNewer(detail: string | undefined) {
       const onRespond = vi.fn(async () => true)
@@ -228,9 +228,9 @@ describe('MobileNativeChatPermission', () => {
     it('with no detail: says so, answers nothing, and only its cancel reaches the host', async () => {
       const { onRespond, onCancel, options } = await renderNewer(undefined)
       expect(
-        renderer!.root.findByProps({ testID: 'native-chat-approval-needs-newer-orca' }).props
+        renderer!.root.findByProps({ testID: 'native-chat-approval-needs-newer-occ' }).props
           .children
-      ).toBe(NEEDS_NEWER_ORCA)
+      ).toBe(NEEDS_NEWER_OCC)
       expect(options).toHaveLength(2)
       expect(options.every((option) => option.props.disabled === true)).toBe(true)
       const cancel = renderer!.root.findByProps({ accessibilityLabel: 'Cancel' })

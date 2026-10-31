@@ -42,10 +42,10 @@ function ok(args) {
   const r = cli(args)
   const parsed = parseJsonLine(r)
   if (!parsed) {
-    throw new Error(`orca ${args.join(' ')} produced no JSON:\n${r.stdout}\n${r.stderr}`)
+    throw new Error(`occ ${args.join(' ')} produced no JSON:\n${r.stdout}\n${r.stderr}`)
   }
   if (parsed.ok === false) {
-    throw new Error(`orca ${args.join(' ')} failed: ${parsed.error?.code} ${parsed.error?.message}`)
+    throw new Error(`occ ${args.join(' ')} failed: ${parsed.error?.code} ${parsed.error?.message}`)
   }
   return parsed.result
 }
@@ -83,20 +83,20 @@ esac
 echo "unknown mode $mode" >&2; exit 99
 `
 
-/** A throwaway git repo with one commit; optionally an orca.yaml archive hook. */
+/** A throwaway git repo with one commit; optionally an occ.yaml archive hook. */
 function seedGitRepo(label, withHook, githubSlug) {
   const dir = mkdtempSync(join(tmpdir(), `agh-repo-${label}-`))
   writeFileSync(join(dir, 'README.md'), `# ${label}\n`)
   if (withHook) {
     writeFileSync(
-      join(dir, 'orca.yaml'),
+      join(dir, 'occ.yaml'),
       `scripts:\n  archive: |\n${ARCHIVE_HOOK.split('\n')
         .map((l) => `    ${l}`)
         .join('\n')}\n`
     )
   }
   git(dir, 'init', '-b', 'main')
-  git(dir, 'config', 'user.email', 'verify@orca.test')
+  git(dir, 'config', 'user.email', 'verify@occ.test')
   git(dir, 'config', 'user.name', 'Archive Gate Verify')
   if (githubSlug) {
     git(dir, 'remote', 'add', 'origin', `https://github.com/agh-owner/${githubSlug}.git`)
@@ -127,7 +127,7 @@ function waitForReady(child) {
         }
         try {
           const p = JSON.parse(line)
-          if (p.type === 'orca_server_ready') {
+          if (p.type === 'occ_server_ready') {
             clearTimeout(timer)
             res(p)
             return
@@ -194,7 +194,7 @@ async function main() {
     {
       cwd: projectDir,
       stdio: ['ignore', 'pipe', 'pipe'],
-      env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' }
+      env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' }
     }
   )
   const created = []
@@ -235,7 +235,7 @@ async function main() {
     out(`worktree: ${wt1.path}`)
     const before = evidence(wt1.repoPath, wt1.path)
 
-    out('\n$ orca worktree rm --worktree <id> --run-hooks     (human output)')
+    out('\n$ occ worktree rm --worktree <id> --run-hooks     (human output)')
     const human = cli(['worktree', 'rm', '--worktree', wt1.id, '--run-hooks'], { json: false })
     out(`  exit code: ${human.status}`)
     out('  --- stdout ---')
@@ -256,7 +256,7 @@ async function main() {
     )
 
     out(
-      '\n$ orca worktree rm --worktree <id> --force --run-hooks --json   (--force must NOT waive)'
+      '\n$ occ worktree rm --worktree <id> --force --run-hooks --json   (--force must NOT waive)'
     )
     const forced = cli(['worktree', 'rm', '--worktree', wt1.id, '--force', '--run-hooks'])
     const forcedJson = parseJsonLine(forced)
@@ -451,7 +451,7 @@ async function main() {
     ]).worktree
     out(`folder workspace: ${folderChild.id}`)
     const runsBeforeFolder = hookRuns().length
-    out(`\n$ orca worktree rm --worktree <folder workspace> --force --run-hooks`)
+    out(`\n$ occ worktree rm --worktree <folder workspace> --force --run-hooks`)
     const folderRm = cli(['worktree', 'rm', '--worktree', folderChild.id, '--force', '--run-hooks'])
     const folderJson = parseJsonLine(folderRm)
     out(`  exit code: ${folderRm.status}`)

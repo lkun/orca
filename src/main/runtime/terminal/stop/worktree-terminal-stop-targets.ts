@@ -1,19 +1,19 @@
 import { setTimeout as delay } from 'node:timers/promises'
-import { OrcaRuntimeWithSleepResolvedWorktreeTerminals } from './worktree-terminal-sleep'
+import { OCCRuntimeWithSleepResolvedWorktreeTerminals } from './worktree-terminal-sleep'
 import { setsEqual } from '../../runtime-worktree-binding-index'
 import type { RuntimeLeafRecord } from '../../runtime-terminal-state-records'
 import { worktreeIdsEqual } from '../../../../shared/worktree/id'
 import { worktreePtyBelongsToHost, type WorktreePtyHostFence } from '../../worktree-pty-host-fence'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { mainHoldsTerminal } from '../surface/main-pane-verdict'
 import type { ResolvedWorktree } from '../../runtime-worktree-path-identity'
-import { PTY_CONTROLLER_LIST_TIMEOUT_MS } from '../../orca-runtime-postlude'
+import { PTY_CONTROLLER_LIST_TIMEOUT_MS } from '../../occ-runtime-postlude'
 
 // Overlapping inventories can invalidate post-stop checks; retry within a fresh list budget before calling confirmed exits unverifiable.
 const POST_STOP_LIVENESS_RETRY_MS = PTY_CONTROLLER_LIST_TIMEOUT_MS
 const POST_STOP_LIVENESS_RETRY_DELAY_MS = 100
 
-export abstract class OrcaRuntimeWithStopExactTerminalsForWorktree extends OrcaRuntimeWithSleepResolvedWorktreeTerminals {
+export abstract class OCCRuntimeWithStopExactTerminalsForWorktree extends OCCRuntimeWithSleepResolvedWorktreeTerminals {
   protected abstract issueHandle(leaf: RuntimeLeafRecord): string
 
   async stopExactTerminalsForWorktree(
@@ -155,7 +155,7 @@ export abstract class OrcaRuntimeWithStopExactTerminalsForWorktree extends OrcaR
       }
     }
     // Main-bound terminals can survive listing gaps; only certified exits or fresh inventory remove them.
-    for (const pty of ORCA_LAYOUT_OWNER_IS_MAIN ? this.ptysById.values() : []) {
+    for (const pty of OCC_LAYOUT_OWNER_IS_MAIN ? this.ptysById.values() : []) {
       if (
         worktreeIdsEqual(pty.worktreeId, worktreeId) &&
         mainHoldsTerminal(this, pty.ptyId) &&

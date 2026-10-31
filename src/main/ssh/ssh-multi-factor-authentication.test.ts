@@ -55,11 +55,11 @@ class SingleKeyAgent extends BaseAgent<ParsedKey> {
   sign(
     _pubKey: ParsedKey,
     data: Buffer,
-    optionsOrCallback?: SigningRequestOptions | SignCallback,
+    optionsoccllback?: SigningRequestOptions | SignCallback,
     callback?: SignCallback
   ): void {
-    const options = typeof optionsOrCallback === 'function' ? {} : optionsOrCallback
-    const done = typeof optionsOrCallback === 'function' ? optionsOrCallback : callback
+    const options = typeof optionsoccllback === 'function' ? {} : optionsoccllback
+    const done = typeof optionsoccllback === 'function' ? optionsoccllback : callback
     const signature = this.key.sign(data, options?.hash)
     if (signature instanceof Error) {
       done?.(signature)
@@ -216,7 +216,7 @@ function makeResolved(port: number, identityFile: string[]): SshResolvedConfig {
   }
 }
 
-function connectWithOrcaConfig(
+function connectWithOCCConfig(
   target: SshTarget,
   resolved: SshResolvedConfig | null,
   password: string | undefined,
@@ -257,7 +257,7 @@ describe('multi-stage SSH authentication', () => {
   let keyPaths: string[]
 
   beforeEach(() => {
-    tempDir = mkdtempSync(join(tmpdir(), 'orca-mfa-'))
+    tempDir = mkdtempSync(join(tmpdir(), 'occ-mfa-'))
     // Default-key discovery must never read the developer's SSH credentials.
     vi.mocked(homedir).mockReturnValue(tempDir)
     keyPaths = ['id_a', 'id_b'].map((name) => {
@@ -275,7 +275,7 @@ describe('multi-stage SSH authentication', () => {
   it('answers a keyboard-interactive stage that follows a password partial success', async () => {
     const server = await startMultiFactorServer(['password', 'keyboard-interactive'])
     try {
-      const { ready, prompts } = connectWithOrcaConfig(makeTarget(server.port), null, PASSWORD, [
+      const { ready, prompts } = connectWithOCCConfig(makeTarget(server.port), null, PASSWORD, [
         PASSCODE
       ])
 
@@ -289,7 +289,7 @@ describe('multi-stage SSH authentication', () => {
   it('answers a second keyboard-interactive stage after the first partially succeeds', async () => {
     const server = await startMultiFactorServer(['keyboard-interactive', 'keyboard-interactive'])
     try {
-      const { ready, prompts } = connectWithOrcaConfig(makeTarget(server.port), null, undefined, [
+      const { ready, prompts } = connectWithOCCConfig(makeTarget(server.port), null, undefined, [
         PASSCODE,
         PASSCODE
       ])
@@ -305,7 +305,7 @@ describe('multi-stage SSH authentication', () => {
     const server = await startMultiFactorServer(['password', 'keyboard-interactive'])
     try {
       const target = makeTarget(server.port, { source: 'ssh-config', configHost: 'hpc' })
-      const { ready } = connectWithOrcaConfig(
+      const { ready } = connectWithOCCConfig(
         target,
         makeResolved(server.port, keyPaths),
         PASSWORD,
@@ -337,7 +337,7 @@ describe('multi-stage SSH authentication', () => {
       parseFixtureKey(generatePrivateKey())
     )
     try {
-      const { ready, prompts } = connectWithOrcaConfig(
+      const { ready, prompts } = connectWithOCCConfig(
         makeTarget(server.port, { identityAgent: join(tempDir, 'agent.sock') }),
         null,
         undefined,
@@ -371,7 +371,7 @@ describe('multi-stage SSH authentication', () => {
       )
       try {
         const target = makeTarget(server.port, { identityAgent: join(tempDir, 'agent.sock') })
-        const agentFirst = connectWithOrcaConfig(
+        const agentFirst = connectWithOCCConfig(
           target,
           null,
           undefined,
@@ -384,7 +384,7 @@ describe('multi-stage SSH authentication', () => {
         )
         expect(agentFirst.prompts).toEqual([])
 
-        const keyRetry = connectWithOrcaConfig(target, null, undefined, [PASSCODE])
+        const keyRetry = connectWithOCCConfig(target, null, undefined, [PASSCODE])
         await expect(keyRetry.ready).resolves.toBeUndefined()
         expect(keyRetry.prompts).toEqual([])
       } finally {
@@ -395,7 +395,7 @@ describe('multi-stage SSH authentication', () => {
     it('answers the second factor after the agent key partially succeeds', async () => {
       const server = await startMultiFactorServer(['publickey', 'keyboard-interactive'])
       try {
-        const { ready, prompts } = connectWithOrcaConfig(
+        const { ready, prompts } = connectWithOCCConfig(
           makeTarget(server.port, { identityAgent: join(tempDir, 'agent.sock') }),
           null,
           undefined,
@@ -418,7 +418,7 @@ describe('multi-stage SSH authentication', () => {
         'keyboard-interactive'
       ])
       try {
-        const { ready, prompts } = connectWithOrcaConfig(
+        const { ready, prompts } = connectWithOCCConfig(
           makeTarget(server.port, { identityAgent: join(tempDir, 'agent.sock') }),
           null,
           undefined,

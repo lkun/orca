@@ -48,7 +48,7 @@ import { subscribeRuntimeEnvironment } from './runtime-environment-transport-rou
 let userDataPath: string
 
 beforeEach(() => {
-  userDataPath = mkdtempSync(join(tmpdir(), 'orca-cli-removal-routing-'))
+  userDataPath = mkdtempSync(join(tmpdir(), 'occ-cli-removal-routing-'))
   resetRuntimeEnvironmentCapabilityEvidence()
   subscribeMock.mockReset()
   supportsMock.mockReset()

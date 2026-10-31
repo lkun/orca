@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { makeStore } from './runtime-rpc-worktree-store-fixtures'
 import { spawnedPtyEnv } from './spawned-pty-env-fixtures'
 import { committingSpawn } from './bind-first-pane.test-fixture'
@@ -24,7 +24,7 @@ vi.mock('../git/worktree', () => {
 })
 
 async function launchOmpPane(): Promise<{
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   retire: ReturnType<typeof vi.fn>
   paneKey: string
 }> {
@@ -33,7 +33,7 @@ async function launchOmpPane(): Promise<{
     id: 'pty-omp',
     incarnationId: 'incarnation-1'
   }))
-  const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()), undefined, {
+  const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()), undefined, {
     attestAgentHookCompatibilityAuthority: (candidate) => ({
       paneKey: candidate.paneKey,
       source: 'current_hook' as const
@@ -51,7 +51,7 @@ async function launchOmpPane(): Promise<{
     launchConfig: { agentCommand: 'omp', agentArgs: '', agentEnv: {} },
     launchAgent: 'omp'
   })
-  return { runtime, retire, paneKey: spawnedPtyEnv(spawn.mock.calls[0]?.[0]).ORCA_PANE_KEY }
+  return { runtime, retire, paneKey: spawnedPtyEnv(spawn.mock.calls[0]?.[0]).OCC_PANE_KEY }
 }
 
 describe('OMP user bubbles and launch authority (#10923)', () => {

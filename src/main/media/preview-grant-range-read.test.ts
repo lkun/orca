@@ -32,7 +32,7 @@ const store = {} as Store
 describe('readPreviewGrantRange', () => {
   let directory: string
   beforeEach(async () => {
-    directory = await mkdtemp(join(tmpdir(), 'orca-preview-range-'))
+    directory = await mkdtemp(join(tmpdir(), 'occ-preview-range-'))
   })
   afterEach(async () => {
     emitter.emit('destroyed')

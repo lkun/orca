@@ -12,7 +12,7 @@ import {
   type BridgeHostMessage,
   type BridgeInitRoute
 } from './bridge-envelope'
-import type { BridgeErrorCapture } from './bridge-error-capture'
+import type { BridgeErroccpture } from './bridge-error-capture'
 import type { BridgeSafeAreaInsets } from './bridge-safe-area-insets'
 import type { BridgeFoldDivision } from './bridge-fold-division'
 import type { BridgeTerminalKeyRail } from './bridge-terminal-key'
@@ -37,7 +37,7 @@ export type BridgePortPair<TRpc extends RpcClient = FakeRpcClient> = {
   haptics: BridgeHapticsKind[]
   backPops: BridgeNavigateBackOutcome[]
   storageWrites: { key: string; value: string | null }[]
-  pageFaults: BridgeErrorCapture[]
+  pageFaults: BridgeErroccpture[]
   readonly pageReadyCount: () => number
   readonly pagePaintCount: () => number
   readonly backClaims: boolean[]
@@ -175,7 +175,7 @@ export function createBridgePortPair<TRpc extends RpcClient>(
   const haptics: BridgeHapticsKind[] = []
   const backPops: BridgeNavigateBackOutcome[] = []
   const storageWrites: { key: string; value: string | null }[] = []
-  const pageFaults: BridgeErrorCapture[] = []
+  const pageFaults: BridgeErroccpture[] = []
   const backClaims: boolean[] = []
   const terminalKeyRailClaims: boolean[] = []
   let pageReadies = 0

@@ -374,7 +374,7 @@ describe('TerminalSshReconnectOverlay', () => {
     const connect = vi.fn().mockResolvedValue(null)
     installSshConnect(connect)
     Object.assign(window.api, {
-      runtimeEnvironments: { managedOrcad: { allowMoveLeavingBehind } }
+      runtimeEnvironments: { managedOCCd: { allowMoveLeavingBehind } }
     })
     useAppStore.getState().setSshConnectionState('ssh-target-1', {
       targetId: 'ssh-target-1',

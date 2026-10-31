@@ -97,9 +97,9 @@ describe('useRichMarkdownEditorInstance', () => {
     expect(result.current).toBe(useEditorMock.mock.results[0]?.value)
     expect(createExtensionsMock).toHaveBeenCalledOnce()
     expect(useEditorMock).toHaveBeenCalledTimes(2)
-    const editorCalls = useEditorMock.mock.calls as unknown[][]
-    expect(editorCalls[0]?.[1]).toEqual([])
-    expect(editorCalls[1]?.[1]).toEqual([])
+    const editocclls = useEditorMock.mock.calls as unknown[][]
+    expect(editocclls[0]?.[1]).toEqual([])
+    expect(editocclls[1]?.[1]).toEqual([])
     expect(createConfigMock).toHaveBeenCalledTimes(2)
   })
 })

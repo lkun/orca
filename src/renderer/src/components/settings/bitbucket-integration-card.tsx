@@ -266,7 +266,7 @@ function BitbucketCardNote(props: {
       <p className="text-xs text-muted-foreground">
         {translate(
           'auto.components.settings.bitbucket.integration.card.envManaged',
-          'Configured via environment variables. Unset the ORCA_BITBUCKET_* variables to manage this credential in OCC.'
+          'Configured via environment variables. Unset the OCC_BITBUCKET_* variables to manage this credential in OCC.'
         )}
       </p>
     )
@@ -291,7 +291,7 @@ function BitbucketCardNote(props: {
       <p className="text-xs text-muted-foreground">
         {translate(
           'auto.components.settings.bitbucket.integration.card.storedCredential',
-          'Saved in OCC on this machine. ORCA_BITBUCKET_* environment variables take precedence when set.'
+          'Saved in OCC on this machine. OCC_BITBUCKET_* environment variables take precedence when set.'
         )}
       </p>
     )
@@ -300,7 +300,7 @@ function BitbucketCardNote(props: {
     <p className="text-xs text-muted-foreground">
       {translate(
         'auto.components.settings.bitbucket.integration.card.notConfigured',
-        'Connect a Bitbucket Cloud account with an Atlassian API token or an access token. ORCA_BITBUCKET_* environment variables work too and take precedence.'
+        'Connect a Bitbucket Cloud account with an Atlassian API token or an access token. OCC_BITBUCKET_* environment variables work too and take precedence.'
       )}
     </p>
   )

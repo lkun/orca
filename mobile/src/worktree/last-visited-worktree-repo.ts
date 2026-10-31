@@ -1,5 +1,5 @@
 import { getRepoIdFromWorktreeId } from '../../../src/shared/worktree/id'
-export const LAST_VISITED_WORKTREE_STORAGE_KEY = 'orca:last-visited-worktree'
+export const LAST_VISITED_WORKTREE_STORAGE_KEY = 'occ:last-visited-worktree'
 
 export type LastVisitedWorktreeRecord = {
   hostId: string

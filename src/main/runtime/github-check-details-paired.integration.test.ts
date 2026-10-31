@@ -4,7 +4,7 @@ import { existsSync, mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type * as ProcessHostModule from '@orca/process-host'
+import type * as ProcessHostModule from '@occ/process-host'
 import {
   completeFakeSpawn,
   createFakeSpawnedChild
@@ -13,8 +13,8 @@ import { parsePairingCode } from '../../shared/pairing'
 import { pairedRuntimeConnectionFromOffer } from '../../shared/paired-runtime-connection'
 import { RemoteRuntimeRequestConnection } from '../../shared/remote-runtime/requests/remote-runtime-request-connection'
 import type { Repo } from '../../shared/repo-types'
-import type { OrcaRuntimeService } from './orca-runtime'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import type { OCCRuntimeService } from './occ-runtime'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import { RuntimeGitHubReviewQueryCommands } from './runtime-github-review-query-commands'
 import { GITHUB_PULL_REQUEST_METHODS } from './rpc/methods/github-pull-request-methods'
 import { clearGhAccountTokenCacheForTests } from '../github/gh-account-token'
@@ -44,11 +44,11 @@ vi.mock('../github/client', async () => {
   }
 })
 vi.mock('../github/work-item-details', () => ({ getPRFileContents: vi.fn() }))
-vi.mock('@orca/process-host/process-tree-termination', () => ({
+vi.mock('@occ/process-host/process-tree-termination', () => ({
   signalProcessTree: terminationMock,
   forceTerminateProcessTree: terminationMock
 }))
-vi.mock('@orca/process-host', async (original) => {
+vi.mock('@occ/process-host', async (original) => {
   const actual = await original<typeof ProcessHostModule>()
   return {
     ...actual,
@@ -84,7 +84,7 @@ describe('paired check details over real encrypted loopback transport', () => {
     { timeout: 15_000 },
     async (mode) => {
       const disconnect = mode === 'disconnect' || mode === 'drain-failure'
-      const directory = mkdtempSync(join(tmpdir(), 'orca-paired-check-details-'))
+      const directory = mkdtempSync(join(tmpdir(), 'occ-paired-check-details-'))
       hostFolder = join(directory, 'handling-host-folder')
       const repo: Repo = {
         id: 'folder',
@@ -168,9 +168,9 @@ describe('paired check details over real encrypted loopback transport', () => {
           )
           return child
         })
-      const server = new OrcaRuntimeRpcServer({
+      const server = new OCCRuntimeRpcServer({
         // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: Explicit methods and lifecycle callbacks are the entire runtime surface used by this server fixture.
-        runtime: runtime as unknown as OrcaRuntimeService,
+        runtime: runtime as unknown as OCCRuntimeService,
         userDataPath: directory,
         enableWebSocket: true,
         wsPort: 0,

@@ -44,7 +44,7 @@ export function useMobileSessionScreenState(scope: MobileSessionFoundationModel)
   const terminalTextScaleRevisionRef = useRef(0)
   const [autocompleteEnabled, setAutocompleteEnabled] = useState(false)
   const [terminalLinkOpenMode, setTerminalLinkOpenMode] =
-    useState<MobileTerminalLinkOpenMode>('orca-browser')
+    useState<MobileTerminalLinkOpenMode>('occ-browser')
   const [liveInputCapture, setLiveInputCapture] = useState('')
   const agentHandleKey = listMobileTerminalAgentHandles(sessionTabs).join('\n')
   const agentHandles = useMemo(

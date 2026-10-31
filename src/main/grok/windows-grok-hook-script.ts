@@ -5,7 +5,7 @@ import { buildWindowsHookEnvironmentGuardLines } from '../agent-hooks/hook-stdin
 export const GROK_HOME_ENVELOPE_MAX_LENGTH = 4096
 
 const WINDOWS_GROK_HOOK_POST_COMMAND = buildWindowsAgentHookPostCommand('grok', [
-  '  --data-urlencode "grokHome=%ORCA_GROK_HOME%" ^'
+  '  --data-urlencode "grokHome=%OCC_GROK_HOME%" ^'
 ])
 
 /** Guard cmd substring operations with goto when GROK_HOME is unset; bound length and strip quotes before expansion. */
@@ -14,18 +14,18 @@ export function buildWindowsGrokHookScript(): string {
     '@echo off',
     // Inherited delayed expansion would consume literal ! characters in Windows paths and pane identity.
     'setlocal DisableDelayedExpansion',
-    'if defined ORCA_AGENT_HOOK_ENDPOINT if exist "%ORCA_AGENT_HOOK_ENDPOINT%" call "%ORCA_AGENT_HOOK_ENDPOINT%" 2>nul',
+    'if defined OCC_AGENT_HOOK_ENDPOINT if exist "%OCC_AGENT_HOOK_ENDPOINT%" call "%OCC_AGENT_HOOK_ENDPOINT%" 2>nul',
     ...buildWindowsHookEnvironmentGuardLines(),
-    'set "ORCA_GROK_HOME="',
-    'if not defined GROK_HOME goto :orca_grok_home_ready',
-    `if not "%GROK_HOME:~${GROK_HOME_ENVELOPE_MAX_LENGTH},1%"=="" goto :orca_grok_home_ready`,
+    'set "OCC_GROK_HOME="',
+    'if not defined GROK_HOME goto :occ_grok_home_ready',
+    `if not "%GROK_HOME:~${GROK_HOME_ENVELOPE_MAX_LENGTH},1%"=="" goto :occ_grok_home_ready`,
     // setx can store a trailing quote, which is illegal in paths and breaks cmd parsing; strip it first.
-    'set "ORCA_GROK_HOME=%GROK_HOME:"=%"',
-    'if not defined ORCA_GROK_HOME goto :orca_grok_home_ready',
-    'if "%ORCA_GROK_HOME:~-1%"=="\\" set "ORCA_GROK_HOME=%ORCA_GROK_HOME%."',
+    'set "OCC_GROK_HOME=%GROK_HOME:"=%"',
+    'if not defined OCC_GROK_HOME goto :occ_grok_home_ready',
+    'if "%OCC_GROK_HOME:~-1%"=="\\" set "OCC_GROK_HOME=%OCC_GROK_HOME%."',
     // Leave room for the trailing-backslash sentinel in the relay envelope.
-    `if not "%ORCA_GROK_HOME:~${GROK_HOME_ENVELOPE_MAX_LENGTH},1%"=="" set "ORCA_GROK_HOME="`,
-    ':orca_grok_home_ready',
+    `if not "%OCC_GROK_HOME:~${GROK_HOME_ENVELOPE_MAX_LENGTH},1%"=="" set "OCC_GROK_HOME="`,
+    ':occ_grok_home_ready',
     WINDOWS_GROK_HOOK_POST_COMMAND,
     'exit /b 0',
     ''

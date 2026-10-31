@@ -18,7 +18,7 @@ import { ClientHostedBrowserPagePane } from './ClientHostedBrowserPagePane'
 type PopupEvent = {
   browserPageId: string
   origin: string
-  action: 'opened-in-orca' | 'opened-external' | 'blocked'
+  action: 'opened-in-occ' | 'opened-external' | 'blocked'
 }
 
 let popups = paneChannel<PopupEvent>()
@@ -90,7 +90,7 @@ describe('ClientHostedBrowserPagePane popup notices', () => {
   it('silences in-OCC opens but reports external opens', () => {
     renderPane()
 
-    emitPopup({ action: 'opened-in-orca' })
+    emitPopup({ action: 'opened-in-occ' })
     expect(toastMocks.message).not.toHaveBeenCalled()
     emitPopup({ action: 'opened-external' })
     expect(toastMocks.message).toHaveBeenCalledExactlyOnceWith(

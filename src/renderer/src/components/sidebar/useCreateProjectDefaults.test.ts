@@ -86,7 +86,7 @@ describe('useCreateProjectDefaults', () => {
         }
       }
     })
-    mocks.getDefaultCreateProjectParent.mockResolvedValue('/Users/alice/orca/projects')
+    mocks.getDefaultCreateProjectParent.mockResolvedValue('/Users/alice/occ/projects')
   })
 
   it('auto-fills the local default parent and reports Git availability', async () => {
@@ -95,8 +95,8 @@ describe('useCreateProjectDefaults', () => {
     const { setCreateParent } = useHarness()
     await flushAsync()
 
-    expect(setCreateParent).toHaveBeenCalledWith('/Users/alice/orca/projects')
-    expect(mocks.stateValues[DEFAULT_PARENT_STATE]).toBe('/Users/alice/orca/projects')
+    expect(setCreateParent).toHaveBeenCalledWith('/Users/alice/occ/projects')
+    expect(mocks.stateValues[DEFAULT_PARENT_STATE]).toBe('/Users/alice/occ/projects')
     expect(mocks.stateValues[GIT_AVAILABILITY_STATE]).toBe('available')
     expect(mocks.getDefaultCreateProjectParent).toHaveBeenCalled()
     expect(mocks.callRuntimeRpc).not.toHaveBeenCalled()
@@ -107,9 +107,9 @@ describe('useCreateProjectDefaults', () => {
 
     useHarness()
     await flushAsync()
-    useHarness({ createParent: '/Users/alice/orca/projects' })
+    useHarness({ createParent: '/Users/alice/occ/projects' })
 
-    expect(mocks.stateValues[DEFAULT_PARENT_STATE]).toBe('/Users/alice/orca/projects')
+    expect(mocks.stateValues[DEFAULT_PARENT_STATE]).toBe('/Users/alice/occ/projects')
   })
 
   it('reports unavailable Git without changing the fixed project kind', async () => {
@@ -147,8 +147,8 @@ describe('useCreateProjectDefaults', () => {
     await flushAsync()
 
     expect(mocks.browseRuntimeServerDirectory).toHaveBeenCalledWith('env-1', '~')
-    expect(setCreateParent).toHaveBeenCalledWith('/home/alice/orca/projects')
-    expect(mocks.stateValues[DEFAULT_PARENT_STATE]).toBe('/home/alice/orca/projects')
+    expect(setCreateParent).toHaveBeenCalledWith('/home/alice/occ/projects')
+    expect(mocks.stateValues[DEFAULT_PARENT_STATE]).toBe('/home/alice/occ/projects')
     expect(mocks.stateValues[RUNTIME_PARENT_STATUS_STATE]).toBe('idle')
     expect(mocks.callRuntimeRpc).toHaveBeenCalledWith(
       { kind: 'environment', environmentId: 'env-1' },
@@ -166,11 +166,11 @@ describe('useCreateProjectDefaults', () => {
 
     const local = useHarness()
     await flushAsync()
-    expect(local.setCreateParent).toHaveBeenCalledWith('/Users/alice/orca/projects')
+    expect(local.setCreateParent).toHaveBeenCalledWith('/Users/alice/occ/projects')
 
     const runtime = useHarness({
       activeRuntimeEnvironmentId: 'env-1',
-      createParent: '/Users/alice/orca/projects'
+      createParent: '/Users/alice/occ/projects'
     })
 
     expect(runtime.result.createParentDefaultPending).toBe(true)
@@ -185,8 +185,8 @@ describe('useCreateProjectDefaults', () => {
     await flushAsync()
 
     expect(mocks.browseRuntimeServerDirectory).toHaveBeenCalledWith('env-1', '~')
-    expect(resolvedRuntime.setCreateParent).toHaveBeenCalledWith('/home/alice/orca/projects')
-    expect(mocks.stateValues[DEFAULT_PARENT_STATE]).toBe('/home/alice/orca/projects')
+    expect(resolvedRuntime.setCreateParent).toHaveBeenCalledWith('/home/alice/occ/projects')
+    expect(mocks.stateValues[DEFAULT_PARENT_STATE]).toBe('/home/alice/occ/projects')
     expect(resolvedRuntime.result.createParentDefaultPending).toBe(false)
   })
 
@@ -195,12 +195,12 @@ describe('useCreateProjectDefaults', () => {
     mocks.browseRuntimeServerDirectory.mockResolvedValue({ resolvedPath: '/home/alice' })
     mocks.callRuntimeRpc.mockResolvedValue({ available: true })
 
-    const local = useHarness({ createParent: '/Users/alice/orca/projects' })
-    local.result.markCreateParentTouched('/Users/alice/orca/projects/pr5115-target-switch')
+    const local = useHarness({ createParent: '/Users/alice/occ/projects' })
+    local.result.markCreateParentTouched('/Users/alice/occ/projects/pr5115-target-switch')
 
     const runtime = useHarness({
       activeRuntimeEnvironmentId: 'env-1',
-      createParent: '/Users/alice/orca/projects/pr5115-target-switch'
+      createParent: '/Users/alice/occ/projects/pr5115-target-switch'
     })
     await flushAsync()
 

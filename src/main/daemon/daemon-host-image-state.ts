@@ -15,7 +15,7 @@ export type SeveredDaemonRestartResult =
   /** Refuse a replaced or unverified incarnation without killing it. */
   | { status: 'refused'; reason: 'not-severed' | 'replaced' | 'unverifiable' }
 
-/** Supplied by the desktop daemon provider; hosts without one (orcad) report nothing severed. */
+/** Supplied by the desktop daemon provider; hosts without one (occd) report nothing severed. */
 export type SeveredDaemonController = {
   countLiveSessions(): Promise<number | null>
   restart(expected: SeveredDaemonIncarnation): Promise<SeveredDaemonRestartResult>

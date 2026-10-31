@@ -61,7 +61,7 @@ const LISTING = `${JSON.stringify({
   type: 'control_response',
   response: {
     subtype: 'success',
-    request_id: 'orca-model-discovery',
+    request_id: 'occ-model-discovery',
     response: {
       models: [
         { value: 'default', resolvedModel: 'claude-opus-5-5[1m]', supportsAutoMode: true },
@@ -86,13 +86,13 @@ const LISTING = `${JSON.stringify({
       ]
     }
   }
-})}\n${JSON.stringify({ type: 'control_response', response: { subtype: 'success', request_id: 'orca-model-settings', response: { applied: { model: 'claude-opus-5-5[1m]' } } } })}\n`
+})}\n${JSON.stringify({ type: 'control_response', response: { subtype: 'success', request_id: 'occ-model-settings', response: { applied: { model: 'claude-opus-5-5[1m]' } } } })}\n`
 
 let dir: string
 let release: () => void
 
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'orca-host-auto-mode-'))
+  dir = mkdtempSync(join(tmpdir(), 'occ-host-auto-mode-'))
   mocks.rpc.mockReset()
   setLocalRuntimeCapabilitiesForTests(DESKTOP_RENDERER_RUNTIME_CLIENT_CAPABILITIES)
   resetHostModelCatalogSnapshotsForTests()

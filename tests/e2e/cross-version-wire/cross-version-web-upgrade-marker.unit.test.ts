@@ -8,7 +8,7 @@ import {
   resolveBaselineReleaseRef
 } from './release-checkout'
 
-// Released hosts must accept ?orca-client=web upgrades from plain-HTTP LAN pages, like phone upgrades.
+// Released hosts must accept ?occ-client=web upgrades from plain-HTTP LAN pages, like phone upgrades.
 const SUITE_TIMEOUT_MS = 180_000
 const LAN_PAGE = 'http://192.168.1.20:6768'
 

@@ -100,7 +100,7 @@ export function resolveLegacyWorkerCandidate(
   return rows[0] ? { dispatch: rows[0] } : undefined
 }
 
-export function resolveLegacyCoordinatorCandidate(
+export function resolveLegacyCoordinatoccndidate(
   this: OrchestrationDb,
   params: {
     runId: string
@@ -169,7 +169,7 @@ export function isLegacyCoordinatorDeliveryTarget(
 export type LegacyCompatibilityCandidatesMethods = {
   resolveLegacyCompatibilityPrincipalByIdentity: typeof resolveLegacyCompatibilityPrincipalByIdentity
   resolveLegacyWorkerCandidate: typeof resolveLegacyWorkerCandidate
-  resolveLegacyCoordinatorCandidate: typeof resolveLegacyCoordinatorCandidate
+  resolveLegacyCoordinatoccndidate: typeof resolveLegacyCoordinatoccndidate
   isLegacyCoordinatorHandle: typeof isLegacyCoordinatorHandle
   isLegacyCoordinatorDeliveryTarget: typeof isLegacyCoordinatorDeliveryTarget
 }
@@ -178,7 +178,7 @@ export function attachLegacyCompatibilityCandidates(ctor: { prototype: object })
   Object.assign(ctor.prototype, {
     resolveLegacyCompatibilityPrincipalByIdentity,
     resolveLegacyWorkerCandidate,
-    resolveLegacyCoordinatorCandidate,
+    resolveLegacyCoordinatoccndidate,
     isLegacyCoordinatorHandle,
     isLegacyCoordinatorDeliveryTarget
   })

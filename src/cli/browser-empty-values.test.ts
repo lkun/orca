@@ -6,7 +6,7 @@ vi.mock('./runtime-client', () => {
   class RuntimeClient {
     call = callMock
     getCliStatus = vi.fn()
-    openOrca = vi.fn()
+    openOCC = vi.fn()
   }
 
   class RuntimeClientError extends Error {
@@ -37,7 +37,7 @@ vi.mock('./runtime-client', () => {
 import { main } from './index'
 import { okFixture, queueFixtures } from './test-fixtures'
 
-describe('orca cli storage set preserves an empty value', () => {
+describe('occ cli storage set preserves an empty value', () => {
   beforeEach(() => {
     callMock.mockReset()
     process.exitCode = undefined
@@ -53,7 +53,7 @@ describe('orca cli storage set preserves an empty value', () => {
 
     await main(
       ['storage', 'local', 'set', '--key', 'flag', '--value', '', '--worktree', 'all', '--json'],
-      '/tmp/not-an-orca-worktree'
+      '/tmp/not-an-occ-worktree'
     )
 
     expect(callMock).toHaveBeenCalledTimes(1)
@@ -70,7 +70,7 @@ describe('orca cli storage set preserves an empty value', () => {
 
     await main(
       ['storage', 'session', 'set', '--key', 'flag', '--value', '', '--worktree', 'all', '--json'],
-      '/tmp/not-an-orca-worktree'
+      '/tmp/not-an-occ-worktree'
     )
 
     expect(callMock).toHaveBeenCalledTimes(1)
@@ -88,7 +88,7 @@ describe('orca cli storage set preserves an empty value', () => {
 
     await main(
       ['storage', 'local', 'set', '--key=flag', '--value=', '--worktree', 'all', '--json'],
-      '/tmp/not-an-orca-worktree'
+      '/tmp/not-an-occ-worktree'
     )
 
     expect(callMock).toHaveBeenCalledTimes(1)
@@ -105,7 +105,7 @@ describe('orca cli storage set preserves an empty value', () => {
 
     await main(
       ['storage', 'local', 'set', '--key', '', '--value', 'x', '--worktree', 'all'],
-      '/tmp/not-an-orca-worktree'
+      '/tmp/not-an-occ-worktree'
     )
 
     expect(callMock).not.toHaveBeenCalled()
@@ -121,7 +121,7 @@ describe('orca cli storage set preserves an empty value', () => {
 
     await main(
       ['storage', 'local', 'set', '--key', 'flag', '--worktree', 'all'],
-      '/tmp/not-an-orca-worktree'
+      '/tmp/not-an-occ-worktree'
     )
 
     expect(callMock).not.toHaveBeenCalled()
@@ -132,7 +132,7 @@ describe('orca cli storage set preserves an empty value', () => {
   })
 })
 
-describe('orca cli cookie set and set credentials preserve an empty value', () => {
+describe('occ cli cookie set and set credentials preserve an empty value', () => {
   beforeEach(() => {
     callMock.mockReset()
     process.exitCode = undefined
@@ -148,7 +148,7 @@ describe('orca cli cookie set and set credentials preserve an empty value', () =
 
     await main(
       ['cookie', 'set', '--name', 'sid', '--value', '', '--worktree', 'all', '--json'],
-      '/tmp/not-an-orca-worktree'
+      '/tmp/not-an-occ-worktree'
     )
 
     expect(callMock).toHaveBeenCalledTimes(1)
@@ -165,7 +165,7 @@ describe('orca cli cookie set and set credentials preserve an empty value', () =
 
     await main(
       ['set', 'credentials', '--user', 'token', '--pass', '', '--worktree', 'all', '--json'],
-      '/tmp/not-an-orca-worktree'
+      '/tmp/not-an-occ-worktree'
     )
 
     expect(callMock).toHaveBeenCalledTimes(1)
@@ -182,7 +182,7 @@ describe('orca cli cookie set and set credentials preserve an empty value', () =
 
     await main(
       ['cookie', 'set', '--name', '', '--value', 'x', '--worktree', 'all'],
-      '/tmp/not-an-orca-worktree'
+      '/tmp/not-an-occ-worktree'
     )
 
     expect(callMock).not.toHaveBeenCalled()
@@ -198,7 +198,7 @@ describe('orca cli cookie set and set credentials preserve an empty value', () =
 
     await main(
       ['set', 'credentials', '--user', 'token', '--worktree', 'all'],
-      '/tmp/not-an-orca-worktree'
+      '/tmp/not-an-occ-worktree'
     )
 
     expect(callMock).not.toHaveBeenCalled()
@@ -209,7 +209,7 @@ describe('orca cli cookie set and set credentials preserve an empty value', () =
   })
 })
 
-describe('orca cli fill and select preserve an empty value', () => {
+describe('occ cli fill and select preserve an empty value', () => {
   beforeEach(() => {
     callMock.mockReset()
     process.exitCode = undefined
@@ -228,7 +228,7 @@ describe('orca cli fill and select preserve an empty value', () => {
 
     await main(
       [command, '--element', 'ref_1', '--value', '', '--worktree', 'all', '--json'],
-      '/tmp/not-an-orca-worktree'
+      '/tmp/not-an-occ-worktree'
     )
 
     expect(callMock).toHaveBeenCalledTimes(1)

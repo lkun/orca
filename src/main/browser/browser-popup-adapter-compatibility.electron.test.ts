@@ -44,7 +44,7 @@ async function childAt(url: string): Promise<Page> {
 }
 
 async function configure(page: Page, path: CreationPath): Promise<void> {
-  await page.evaluate((path) => console.log(`orca-popup-fixture:probe-${path}`), path)
+  await page.evaluate((path) => console.log(`occ-popup-fixture:probe-${path}`), path)
 }
 
 async function installBurst(page: Page, count = 3): Promise<void> {
@@ -77,7 +77,7 @@ function assertObservedCreationOrder(events: Record<string, unknown>[], path: Cr
       expect(event.callbackRequest).toBe(admitted[index].request)
     } else {
       expect(event.optionsArguments).toEqual([
-        `--orca-popup-probe=${String(admitted[index].request)}`
+        `--occ-popup-probe=${String(admitted[index].request)}`
       ])
     }
     const first = events.findIndex(
@@ -270,7 +270,7 @@ describe('Electron popup adapter API limits (not an admission safety gate)', () 
 
   it('reproduces production native admission attaching to an unrelated same-session app window', async () => {
     const page = guest('probe-two')
-    await page.evaluate('console.log("orca-popup-fixture:probe-unrelated")')
+    await page.evaluate('console.log("occ-popup-fixture:probe-unrelated")')
     await installBurst(page, 1)
     const offset = status().adapterProbe?.length ?? 0
     await page.locator('#identity-burst').click({ modifiers: ['Shift'] })
@@ -284,7 +284,7 @@ describe('Electron popup adapter API limits (not an admission safety gate)', () 
     const realChild = events.find((event) => event.event === 'did-create-window')
     expect(realChild?.contentsId).not.toBe(admitted?.contentsId)
     snapshots.push(status())
-    await page.evaluate('console.log("orca-popup-fixture:probe-cleanup")')
+    await page.evaluate('console.log("occ-popup-fixture:probe-cleanup")')
     await closeChildren(page)
   })
 })
@@ -364,7 +364,7 @@ async function exerciseSandboxControls(
         )
         .toBe(true)
     }
-    await page.evaluate('console.log("orca-popup-fixture:snapshot")')
+    await page.evaluate('console.log("occ-popup-fixture:snapshot")')
     const creation = eventsSince(offset).find(
       (event) => event.event === (path === 'adopted' ? 'createWindow' : 'did-create-window')
     )

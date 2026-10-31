@@ -27,7 +27,7 @@ function setup() {
     startsTurn = false
   ): ClaudeStructuredSessionEvent => ({
     type: 'message',
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     observedAt,
     ...(startsTurn ? { startsTurn: true } : {}),
     message: { session_id: 'claude-session', parent_tool_use_id: null, ...frame }
@@ -86,7 +86,7 @@ describe('a streamed reasoning row the provider never finishes', () => {
     thinkingDelta('delta', 'Unfinished thought', 1_000)
     translator.handle({
       type: 'ended',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       reason: 'exit',
       observedAt: 7_000
     })

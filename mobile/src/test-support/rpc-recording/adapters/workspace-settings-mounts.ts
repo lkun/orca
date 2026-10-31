@@ -26,7 +26,7 @@ export function workspaceSettingsMounts(
         tasksSupported: true,
         taskStateHydrated: true,
         runtimeTaskSettings: { disabledTuiAgents: ['claude'] },
-        trustedOrcaHooks: {},
+        trustedOCCHooks: {},
         workspaceDetectedAgentIds: new Set(['codex']),
         workspaceLastAutoName: '',
         ensureWorkspaceSshReady: async () => {},
@@ -95,7 +95,7 @@ export function workspaceSettingsMounts(
         setupRunPolicy: 'never',
         setupDecisionChoice: null,
         runSetup: false,
-        trustedOrcaHooks: {},
+        trustedOCCHooks: {},
         getWorktreeCreateCutoverSupport: async () => false,
         getBranchIntentSupport: async () => false,
         // Pin an older host so create remains worktree.create rather than agent.launch.

@@ -52,7 +52,7 @@ function goalSink(
     backgroundTasks.observe(message)
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       observedAt: at,
       message: { session_id: 'claude-session', parent_tool_use_id: null, ...message }
     })

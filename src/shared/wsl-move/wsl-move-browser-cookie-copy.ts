@@ -7,7 +7,7 @@ import { z } from 'zod'
 export const WSL_MOVE_BROWSER_COOKIES_STORE_ID = 'browser-cookies'
 
 export const WSL_MOVE_BROWSER_COOKIE_FRESH_PARTITION_REASONS = [
-  // The host has no deployment link, so its partition names the pairing and the next orcad
+  // The host has no deployment link, so its partition names the pairing and the next occd
   // relaunch would move it, stranding the copy.
   'no-stable-partition',
   'destination-not-wsl-host',

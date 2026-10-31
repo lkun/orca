@@ -2,14 +2,14 @@ import { z } from 'zod'
 
 // Why: v0 supports only the ">=x.y.z" form. A closed grammar keeps the gate
 // predictable; richer ranges can be added without breaking old manifests.
-export const orcaEngineRangeSchema = z
+export const occEngineRangeSchema = z
   .string()
   .max(64)
   .regex(/^>=\d+\.\d+\.\d+$/, 'must be a ">=x.y.z" version range')
 
 /** v0 engines gate: supports the ">=x.y.z" grammar the schema enforces. A prerelease host
  *  (`1.5.0-rc.1`) ranks below its release, as in semver; build metadata (`+…`) is ignored. */
-export function satisfiesOrcaEngineRange(hostVersion: string, range: string): boolean {
+export function satisfiesOCCEngineRange(hostVersion: string, range: string): boolean {
   const minimum = range.slice(2)
   const parse = (value: string): number[] =>
     value

@@ -1,7 +1,7 @@
 import { chmodSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
 function isProcessAlive(pid: number): boolean {
@@ -14,10 +14,10 @@ function isProcessAlive(pid: number): boolean {
 }
 
 // Reproduce detached tool-child leakage after agent PTY kill (STA-1800); name the stand-in claude for agent recognition.
-test('killing an agent PTY terminates its detached-pgid descendants', async ({ orcaPage }) => {
+test('killing an agent PTY terminates its detached-pgid descendants', async ({ occPage }) => {
   test.skip(process.platform === 'win32', 'descendant tree-kill is POSIX-only for now')
 
-  const stage = mkdtempSync(join(tmpdir(), 'orca-agent-descendant-'))
+  const stage = mkdtempSync(join(tmpdir(), 'occ-agent-descendant-'))
   const markerPath = join(stage, 'detached-child.pid')
   const spawnerPath = join(stage, 'spawn-detached.cjs')
   writeFileSync(
@@ -39,10 +39,10 @@ test('killing an agent PTY terminates its detached-pgid descendants', async ({ o
 
   let detachedChildPid = 0
   try {
-    await waitForSessionReady(orcaPage)
-    const worktreeId = await waitForActiveWorktree(orcaPage)
+    await waitForSessionReady(occPage)
+    const worktreeId = await waitForActiveWorktree(occPage)
 
-    const ptyId = await orcaPage.evaluate(
+    const ptyId = await occPage.evaluate(
       async ({ command, cwd, worktreeId: wt }) => {
         const result = await window.api.pty.spawn({
           cols: 120,
@@ -68,7 +68,7 @@ test('killing an agent PTY terminates its detached-pgid descendants', async ({ o
     expect(detachedChildPid).toBeGreaterThan(0)
     expect(isProcessAlive(detachedChildPid)).toBe(true)
 
-    await orcaPage.evaluate((id) => window.api.pty.kill(id), ptyId)
+    await occPage.evaluate((id) => window.api.pty.kill(id), ptyId)
 
     await expect
       .poll(() => isProcessAlive(detachedChildPid), {

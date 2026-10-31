@@ -1,15 +1,15 @@
-import { OrcaRuntimeWithAgentGeneratedTabTitles } from '../layout/agent-generated-tab-titles-runtime'
+import { OCCRuntimeWithAgentGeneratedTabTitles } from '../layout/agent-generated-tab-titles-runtime'
 import {
   includeTargetResolvedWorktree,
   type ResolvedWorktree
 } from '../../runtime-worktree-path-identity'
 import type { RuntimeWorktreeTerminalSleepResult } from '../../../../shared/runtime-types'
-import { WORKTREE_TERMINAL_SLEEP_TIMEOUT_MS } from '../../orca-runtime-postlude'
+import { WORKTREE_TERMINAL_SLEEP_TIMEOUT_MS } from '../../occ-runtime-postlude'
 import { teardownRpcDeadline } from '../../worktree-teardown-deadline'
 import { sleptNothing } from './worktree-terminal-sleep-result'
 import type { WorktreeSleepScope } from './worktree-terminal-sleep-key'
 
-export abstract class OrcaRuntimeWithSleepResolvedWorktreeTerminals extends OrcaRuntimeWithAgentGeneratedTabTitles {
+export abstract class OCCRuntimeWithSleepResolvedWorktreeTerminals extends OCCRuntimeWithAgentGeneratedTabTitles {
   protected async sleepResolvedWorktreeTerminals(
     worktree: ResolvedWorktree,
     scope: WorktreeSleepScope,

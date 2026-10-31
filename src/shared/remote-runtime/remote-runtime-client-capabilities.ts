@@ -22,7 +22,7 @@ import {
 } from '../terminal-quick-command-capabilities'
 import { AGENT_SESSION_BACKGROUND_TASK_CHILD_VIEWS_CAPABILITY } from '../agent-session-background-task-child-views-capability'
 import { SKILL_INSTALL_RESULT_V2_CAPABILITY } from '../skill-install-capability'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../sidebar-inputs-switch'
 import { WORKSPACE_UNREAD_HOST_RAISES_CAPABILITY } from '../workspace-unread-raise-capability'
 
 // Keep every remote request transport on the same mixed-version capability contract.
@@ -48,7 +48,7 @@ export function remoteRuntimeClientCapabilities(
       TERMINAL_QUICK_COMMAND_LARGE_LISTS_RUNTIME_CAPABILITY,
       // Switch point: every desktop socket, browser hosting's included, leaves the unread flag to
       // a host that raises it.
-      ...(ORCA_SIDEBAR_INPUTS_IS_MAIN ? [WORKSPACE_UNREAD_HOST_RAISES_CAPABILITY] : []),
+      ...(OCC_SIDEBAR_INPUTS_IS_MAIN ? [WORKSPACE_UNREAD_HOST_RAISES_CAPABILITY] : []),
       ...additionalCapabilities
     ])
   )

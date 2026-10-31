@@ -4,8 +4,8 @@ import type {
   ProviderTerminalBufferWait,
   RuntimeHeadlessTerminal
 } from '../../runtime-terminal-state-records'
-import type { OrcaRuntimeWithSerializeTerminalBufferFromAvailableState } from './terminal-buffer-selection'
-import { OrcaRuntimeWithNotifyRemoteTerminalViewPresenceChanged } from '../layout/terminal-view-presence'
+import type { OCCRuntimeWithSerializeTerminalBufferFromAvailableState } from './terminal-buffer-selection'
+import { OCCRuntimeWithNotifyRemoteTerminalViewPresenceChanged } from '../layout/terminal-view-presence'
 import type { TerminalOscLinkRange } from '../../../../shared/terminal-osc-link-ranges'
 import {
   applyRestoredTerminalTailSeed,
@@ -16,12 +16,12 @@ import {
 import { hookLeadTurnState } from '../../tui-idle-hook-lane'
 import { agentHookServer } from '../../../agent-hooks/server'
 
-export abstract class OrcaRuntimeWithSerializeMainTerminalBuffer extends OrcaRuntimeWithNotifyRemoteTerminalViewPresenceChanged {
+export abstract class OCCRuntimeWithSerializeMainTerminalBuffer extends OCCRuntimeWithNotifyRemoteTerminalViewPresenceChanged {
   protected abstract serializePreferredRestoredTerminalBuffer(
     ptyId: string,
     opts?: { scrollbackRows?: number }
   ): ReturnType<
-    OrcaRuntimeWithSerializeTerminalBufferFromAvailableState['serializePreferredRestoredTerminalBuffer']
+    OCCRuntimeWithSerializeTerminalBufferFromAvailableState['serializePreferredRestoredTerminalBuffer']
   >
   protected abstract serializeHeadlessTerminalBuffer(
     ptyId: string,

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import type { LinearIssue } from '../../src/shared/linear/issue-types'
 import type { LinearIssueUpdate } from '../../src/shared/issue-mutation-types'
 
@@ -105,12 +105,12 @@ test.use({ seedTestRepo: false })
 
 test('private Linear images load without putting signatures into description edits', async ({
   electronApp,
-  orcaPage
+  occPage
 }, testInfo) => {
   const image = readFileSync(join(process.cwd(), 'resources', 'icon.png'))
   let unsignedRequests = 0
   let signedRequests = 0
-  await orcaPage.route('https://uploads.linear.app/**', async (route) => {
+  await occPage.route('https://uploads.linear.app/**', async (route) => {
     if (new URL(route.request().url()).searchParams.get('signature') === 'temporary') {
       signedRequests++
       await route.fulfill({ status: 200, contentType: 'image/png', body: image })
@@ -121,46 +121,46 @@ test('private Linear images load without putting signatures into description edi
   })
 
   await installFixture(electronApp, false)
-  await openIssue(orcaPage, false)
+  await openIssue(occPage, false)
   await expect.poll(() => unsignedRequests).toBeGreaterThanOrEqual(1)
   await expect
     .poll(() =>
-      orcaPage
+      occPage
         .getByAltText('Screenshot', { exact: true })
         .evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth === 0)
     )
     .toBe(true)
   await testInfo.attach('linear-images-before.png', {
-    body: await orcaPage.screenshot({ path: testInfo.outputPath('linear-images-before.png') }),
+    body: await occPage.screenshot({ path: testInfo.outputPath('linear-images-before.png') }),
     contentType: 'image/png'
   })
 
   await installFixture(electronApp, true)
-  await openIssue(orcaPage, true)
+  await openIssue(occPage, true)
   await expect
     .poll(() =>
-      orcaPage
+      occPage
         .getByAltText('Screenshot', { exact: true })
         .evaluate((img: HTMLImageElement) => img.naturalWidth)
     )
     .toBeGreaterThan(0)
-  await expect(orcaPage.getByRole('link', { name: 'Comment screenshot' })).toHaveAttribute(
+  await expect(occPage.getByRole('link', { name: 'Comment screenshot' })).toHaveAttribute(
     'href',
     SIGNED
   )
   await expect.poll(() => signedRequests).toBeGreaterThanOrEqual(1)
   await testInfo.attach('linear-images-after.png', {
-    body: await orcaPage.screenshot({ path: testInfo.outputPath('linear-images-after.png') }),
+    body: await occPage.screenshot({ path: testInfo.outputPath('linear-images-after.png') }),
     contentType: 'image/png'
   })
 
-  const editor = orcaPage.getByLabel('Issue description', { exact: true })
+  const editor = occPage.getByLabel('Issue description', { exact: true })
   await editor.click()
   await editor.press('End')
   await editor.press('ArrowRight')
   await editor.press('Enter')
   await editor.pressSequentially('Verified edit')
-  await orcaPage.getByRole('textbox', { name: 'Issue title' }).click()
+  await occPage.getByRole('textbox', { name: 'Issue title' }).click()
   await expect
     .poll(() => electronApp.evaluate(() => globalThis.__linearImageSaved))
     .toEqual([{ description: expect.stringContaining(`![Screenshot](${SOURCE})`) }])

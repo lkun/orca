@@ -5,7 +5,7 @@ import { mkdirSync, readdirSync, rmSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { durableWriteTempPath, writeFileDurableSync } from '../durable-file-write'
 import { readNodeFileSyncWithinLimit } from '../../shared/node-bounded-file-reader'
-import type { AgentSessionOrcaStopCause } from '../../shared/agent-session-orca-stop'
+import type { AgentSessionOCCStopCause } from '../../shared/agent-session-occ-stop'
 import {
   AGENT_SESSION_RESUME_TRIGGERS,
   type AgentSessionResumeTrigger
@@ -107,7 +107,7 @@ function readTrigger(value: unknown): AgentSessionResumeTrigger | undefined {
   return AGENT_SESSION_RESUME_TRIGGERS.find((trigger) => trigger === value)
 }
 
-function readRecordedEnd(path: string, runtime: string): AgentSessionOrcaStopCause | undefined {
+function readRecordedEnd(path: string, runtime: string): AgentSessionOCCStopCause | undefined {
   try {
     const parsed: unknown = JSON.parse(
       readNodeFileSyncWithinLimit(path, MAX_RUNTIME_RECORD_BYTES).buffer.toString('utf8')
@@ -137,7 +137,7 @@ function readRecordedEnd(path: string, runtime: string): AgentSessionOrcaStopCau
 /** Missing/unreadable runtime records give no cause; null means the directory itself could not be listed. */
 export function readAgentSessionRuntimeEnds(
   stateDirectory: string
-): ReadonlyMap<string, AgentSessionOrcaStopCause> | null {
+): ReadonlyMap<string, AgentSessionOCCStopCause> | null {
   const directory = join(stateDirectory, RUNTIMES_DIRECTORY)
   let names: string[]
   try {
@@ -145,7 +145,7 @@ export function readAgentSessionRuntimeEnds(
   } catch (error) {
     return error instanceof Error && 'code' in error && error.code === 'ENOENT' ? new Map() : null
   }
-  const ends = new Map<string, AgentSessionOrcaStopCause>()
+  const ends = new Map<string, AgentSessionOCCStopCause>()
   for (const name of names) {
     const runtime = RECORD_FILE.exec(name)?.[1]
     const end = runtime ? readRecordedEnd(join(directory, name), runtime) : undefined

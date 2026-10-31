@@ -1,13 +1,13 @@
 <h1 align="center">
-  <a href="https://onOrca.dev"><img src="../../resources/build/icon.png" alt="OCC" width="64" valign="middle" /></a> OCC
+  <a href="https://onOCC.dev"><img src="../../resources/build/icon.png" alt="OCC" width="64" valign="middle" /></a> OCC
 </h1>
 
 <p align="center">
-  <a href="https://github.com/stablyai/orca"><img src="https://img.shields.io/github/stars/stablyai/orca?style=flat&amp;label=%E2%98%85&amp;color=08C" alt="Estrelas no GitHub" /></a>
-  <a href="https://github.com/stablyai/orca/releases"><img src="../assets/readme-downloads.svg" alt="Total de downloads em todas as versões" /></a>
+  <a href="https://github.com/stablyai/occ"><img src="https://img.shields.io/github/stars/stablyai/occ?style=flat&amp;label=%E2%98%85&amp;color=08C" alt="Estrelas no GitHub" /></a>
+  <a href="https://github.com/stablyai/occ/releases"><img src="../assets/readme-downloads.svg" alt="Total de downloads em todas as versões" /></a>
   <img src="https://img.shields.io/badge/license-MIT-08C?style=flat" alt="Licença: MIT" />
   <a href="https://discord.gg/fzjDKHxv8Q"><img src="https://img.shields.io/badge/Discord-5865F2?logo=discord&logoColor=white" alt="Entre no Discord do OCC" /></a>
-  <a href="https://x.com/orca_build"><img src="https://img.shields.io/badge/X-000000?logo=x&logoColor=white" alt="Siga o OCC no X" /></a>
+  <a href="https://x.com/occ_build"><img src="https://img.shields.io/badge/X-000000?logo=x&logoColor=white" alt="Siga o OCC no X" /></a>
   <img src="https://img.shields.io/badge/macOS%20%7C%20Windows%20%7C%20Linux-4493F8?style=flat-square" alt="Plataformas compatíveis: macOS, Windows e Linux" />
 </p>
 
@@ -20,7 +20,7 @@
   Rode Codex, ClaudeCode, OpenCode ou Pi lado a lado — cada um em seu próprio worktree, acompanhado em um só lugar.
 </p>
 
-<h3 align="center"><a href="https://onorca.dev/download"><ins>Baixar o OCC</ins></a></h3>
+<h3 align="center"><a href="https://onocc.dev/download"><ins>Baixar o OCC</ins></a></h3>
 
 <p align="center">
   <img src="../assets/readme-hero.jpg" alt="App desktop do OCC executando agentes em worktrees paralelos, com o app companion móvel do OCC no canto" width="960" />
@@ -36,11 +36,11 @@
 
 Monitore e conduza seus agentes pelo celular — receba uma notificação quando um agente terminar e envie instruções de acompanhamento de qualquer lugar.
 
-[App Store para iOS](https://apps.apple.com/us/app/occ-ide/id6766130217) · [APK Android](https://www.onorca.dev/download/android) · [Docs →](https://www.onorca.dev/docs/mobile)
+[App Store para iOS](https://apps.apple.com/us/app/occ-ide/id6766130217) · [APK Android](https://www.onocc.dev/download/android) · [Docs →](https://www.onocc.dev/docs/mobile)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/mobile"><picture><source srcset="../assets/feature-wall/mobile-companion-app-showcase.gif" type="image/gif"><img src="../assets/feature-wall/mobile-companion-app-showcase.jpg" alt="OCC desktop com o app companion móvel" width="100%" /></picture></a>
+  <a href="https://www.onocc.dev/docs/mobile"><picture><source srcset="../assets/feature-wall/mobile-companion-app-showcase.gif" type="image/gif"><img src="../assets/feature-wall/mobile-companion-app-showcase.jpg" alt="OCC desktop com o app companion móvel" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -50,11 +50,11 @@ Monitore e conduza seus agentes pelo celular — receba uma notificação quando
 
 Envie um mesmo prompt para cinco agentes, cada um em seu próprio worktree git isolado — compare os resultados e faça merge do vencedor.
 
-[Docs →](https://www.onorca.dev/docs/model/worktrees)
+[Docs →](https://www.onocc.dev/docs/model/worktrees)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/model/worktrees"><picture><source srcset="../site/public/docs/tab-split.gif" type="image/gif"><img src="../site/public/docs/posters/tab-split.jpg" alt="Orquestração de worktrees paralelos" width="100%" /></picture></a>
+  <a href="https://www.onocc.dev/docs/model/worktrees"><picture><source srcset="../site/public/docs/tab-split.gif" type="image/gif"><img src="../site/public/docs/posters/tab-split.jpg" alt="Orquestração de worktrees paralelos" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -64,11 +64,11 @@ Envie um mesmo prompt para cinco agentes, cada um em seu próprio worktree git i
 
 Terminais no nível do Ghostty com renderização WebGL, divisões infinitas e scrollback que sobrevive a reinicializações.
 
-[Docs →](https://www.onorca.dev/docs/terminal)
+[Docs →](https://www.onocc.dev/docs/terminal)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/terminal"><picture><source srcset="../../resources/onboarding/feature-wall/tile-02.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-02.poster.jpg" alt="Terminais divididos" width="100%" /></picture></a>
+  <a href="https://www.onocc.dev/docs/terminal"><picture><source srcset="../../resources/onboarding/feature-wall/tile-02.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-02.poster.jpg" alt="Terminais divididos" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -78,11 +78,11 @@ Terminais no nível do Ghostty com renderização WebGL, divisões infinitas e s
 
 Clique em qualquer elemento de UI em uma janela real do Chromium para enviar HTML, CSS e uma captura recortada direto para o prompt do seu agente.
 
-[Docs →](https://www.onorca.dev/docs/browser/design-mode)
+[Docs →](https://www.onocc.dev/docs/browser/design-mode)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/browser/design-mode"><picture><source srcset="../site/public/docs/orca-design-mode.gif" type="image/gif"><img src="../../resources/onboarding/feature-wall/tile-05.poster.jpg" alt="Navegador integrado e Modo Design" width="100%" /></picture></a>
+  <a href="https://www.onocc.dev/docs/browser/design-mode"><picture><source srcset="../site/public/docs/occ-design-mode.gif" type="image/gif"><img src="../../resources/onboarding/feature-wall/tile-05.poster.jpg" alt="Navegador integrado e Modo Design" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -92,11 +92,11 @@ Clique em qualquer elemento de UI em uma janela real do Chromium para enviar HTM
 
 Navegue por PRs, issues e quadros de projeto dentro do app — abra um worktree a partir de qualquer tarefa e revise sem trocar de contexto.
 
-[Docs →](https://www.onorca.dev/docs/review/linear)
+[Docs →](https://www.onocc.dev/docs/review/linear)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/review/linear"><picture><source srcset="../../resources/onboarding/feature-wall/tile-03.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-03.poster.jpg" alt="Fluxos de trabalho de tarefas do GitHub e Linear no OCC" width="100%" /></picture></a>
+  <a href="https://www.onocc.dev/docs/review/linear"><picture><source srcset="../../resources/onboarding/feature-wall/tile-03.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-03.poster.jpg" alt="Fluxos de trabalho de tarefas do GitHub e Linear no OCC" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -106,11 +106,11 @@ Navegue por PRs, issues e quadros de projeto dentro do app — abra um worktree 
 
 Execute agentes em uma máquina remota potente com edição completa de arquivos, git e terminais — com reconexão automática e encaminhamento de portas incluídos.
 
-[Docs →](https://www.onorca.dev/docs/ssh)
+[Docs →](https://www.onocc.dev/docs/ssh)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/ssh"><picture><source srcset="../../resources/onboarding/feature-wall/tile-06.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-06.poster.jpg" alt="Worktrees remotos por SSH" width="100%" /></picture></a>
+  <a href="https://www.onocc.dev/docs/ssh"><picture><source srcset="../../resources/onboarding/feature-wall/tile-06.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-06.poster.jpg" alt="Worktrees remotos por SSH" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -120,11 +120,11 @@ Execute agentes em uma máquina remota potente com edição completa de arquivos
 
 Deixe comentários em qualquer linha de diff e envie-os de volta ao agente — revise, edite e faça commit sem sair do OCC.
 
-[Docs →](https://www.onorca.dev/docs/review/annotate-ai-diff)
+[Docs →](https://www.onocc.dev/docs/review/annotate-ai-diff)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/review/annotate-ai-diff"><picture><source srcset="../site/public/docs/annotate-ai-diff.gif" type="image/gif"><img src="../../resources/onboarding/feature-wall/tile-08.poster.jpg" alt="Anotar diffs gerados por IA" width="100%" /></picture></a>
+  <a href="https://www.onocc.dev/docs/review/annotate-ai-diff"><picture><source srcset="../site/public/docs/annotate-ai-diff.gif" type="image/gif"><img src="../../resources/onboarding/feature-wall/tile-08.poster.jpg" alt="Anotar diffs gerados por IA" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -134,11 +134,11 @@ Deixe comentários em qualquer linha de diff e envie-os de volta ao agente — r
 
 O editor do VS Code com salvamento automático em todos os lugares — arraste arquivos ou imagens direto para o prompt de um agente.
 
-[Docs →](https://www.onorca.dev/docs/editing/file-explorer)
+[Docs →](https://www.onocc.dev/docs/editing/file-explorer)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/editing/file-explorer"><picture><source srcset="../../resources/onboarding/feature-wall/tile-07.gif" type="image/gif"><img src="../../resources/onboarding/feature-wall/tile-07.poster.jpg" alt="Arraste arquivos e imagens para o prompt de um agente" width="100%" /></picture></a>
+  <a href="https://www.onocc.dev/docs/editing/file-explorer"><picture><source srcset="../../resources/onboarding/feature-wall/tile-07.gif" type="image/gif"><img src="../../resources/onboarding/feature-wall/tile-07.poster.jpg" alt="Arraste arquivos e imagens para o prompt de um agente" width="100%" /></picture></a>
 </td>
 </tr>
 <tr>
@@ -146,25 +146,25 @@ O editor do VS Code com salvamento automático em todos os lugares — arraste a
 
 ### OCC CLI
 
-Agentes também controlam o OCC — automatize qualquer fluxo de trabalho com `orca worktree create`, `snapshot`, `click` e `fill`.
+Agentes também controlam o OCC — automatize qualquer fluxo de trabalho com `occ worktree create`, `snapshot`, `click` e `fill`.
 
-[Docs →](https://www.onorca.dev/docs/cli/overview)
+[Docs →](https://www.onocc.dev/docs/cli/overview)
 
 </td>
 <td width="50%">
-  <a href="https://www.onorca.dev/docs/cli/overview"><picture><source srcset="../../resources/onboarding/feature-wall/tile-09.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-09.poster.jpg" alt="Automatize o OCC pela CLI" width="100%" /></picture></a>
+  <a href="https://www.onocc.dev/docs/cli/overview"><picture><source srcset="../../resources/onboarding/feature-wall/tile-09.webp" type="image/webp"><img src="../../resources/onboarding/feature-wall/tile-09.poster.jpg" alt="Automatize o OCC pela CLI" width="100%" /></picture></a>
 </td>
 </tr>
 </table>
 
 **Também incluído:**
 
-- **[Abertura rápida](https://www.onorca.dev/docs/model/quick-open)** — Pesquise entre worktrees, arquivos, agentes, comandos e contexto do repositório sem sair do seu fluxo.
-- **[Troca de contas e acompanhamento de uso](https://www.onorca.dev/docs/agents/usage-tracking)** — Veja o uso de Claude e Codex, os reinícios de limites e troque contas instantaneamente sem fazer login de novo.
-- **[Prévias ricas do repositório](https://www.onorca.dev/docs/editing/markdown)** — Pré-visualize Markdown, imagens, PDFs e documentos do repositório no workspace.
-- **[Computer Use](https://www.onorca.dev/docs/cli/computer-use)** — Deixe agentes operarem apps de desktop e UI visível quando um fluxo de trabalho precisa de interação real.
-- **[Notificações e estado de não lido](https://www.onorca.dev/docs/notifications)** — Saiba quando um agente termina ou precisa de atenção, depois marque conversas como não lidas para voltar depois.
-- **E muito, muito mais** — lançamos novidades todos os dias, então esta lista vive atrasada. O [changelog](https://github.com/stablyai/orca/releases) é a lista real de recursos.
+- **[Abertura rápida](https://www.onocc.dev/docs/model/quick-open)** — Pesquise entre worktrees, arquivos, agentes, comandos e contexto do repositório sem sair do seu fluxo.
+- **[Troca de contas e acompanhamento de uso](https://www.onocc.dev/docs/agents/usage-tracking)** — Veja o uso de Claude e Codex, os reinícios de limites e troque contas instantaneamente sem fazer login de novo.
+- **[Prévias ricas do repositório](https://www.onocc.dev/docs/editing/markdown)** — Pré-visualize Markdown, imagens, PDFs e documentos do repositório no workspace.
+- **[Computer Use](https://www.onocc.dev/docs/cli/computer-use)** — Deixe agentes operarem apps de desktop e UI visível quando um fluxo de trabalho precisa de interação real.
+- **[Notificações e estado de não lido](https://www.onocc.dev/docs/notifications)** — Saiba quando um agente termina ou precisa de atenção, depois marque conversas como não lidas para voltar depois.
+- **E muito, muito mais** — lançamos novidades todos os dias, então esta lista vive atrasada. O [changelog](https://github.com/stablyai/occ/releases) é a lista real de recursos.
 
 ---
 
@@ -215,20 +215,20 @@ Funciona com **qualquer agente CLI** — se roda em um terminal, roda no OCC.
 
 ### Desktop — macOS, Windows, Linux
 
-- **[Baixe em onOrca.dev](https://onorca.dev/download)**
-- Ou baixe um build diretamente: [macOS Apple Silicon](https://github.com/stablyai/orca/releases/latest/download/occ-macos-arm64.dmg) · [macOS Intel](https://github.com/stablyai/orca/releases/latest/download/occ-macos-x64.dmg) · [Windows (.exe)](https://github.com/stablyai/orca/releases/latest/download/occ-windows-setup.exe) · [Linux AppImage](https://github.com/stablyai/orca/releases/latest/download/occ-linux.AppImage) · [Todos os builds](https://github.com/stablyai/orca/releases/latest)
+- **[Baixe em onOCC.dev](https://onocc.dev/download)**
+- Ou baixe um build diretamente: [macOS Apple Silicon](https://github.com/stablyai/occ/releases/latest/download/occ-macos-arm64.dmg) · [macOS Intel](https://github.com/stablyai/occ/releases/latest/download/occ-macos-x64.dmg) · [Windows (.exe)](https://github.com/stablyai/occ/releases/latest/download/occ-windows-setup.exe) · [Linux AppImage](https://github.com/stablyai/occ/releases/latest/download/occ-linux.AppImage) · [Todos os builds](https://github.com/stablyai/occ/releases/latest)
 
 _Ou por um gerenciador de pacotes:_
 
 ```bash
 # macOS (Homebrew)
-# Use sempre o nome completo; `orca` sozinho é um cask do Plotly sem relação.
-brew install --cask stablyai/orca/orca
+# Use sempre o nome completo; `occ` sozinho é um cask do Plotly sem relação.
+brew install --cask stablyai/occ/occ
 # Atualizar uma instalação existente
-brew upgrade --cask stablyai/orca/orca
+brew upgrade --cask stablyai/occ/occ
 
-# Arch Linux (AUR) — ou stably-orca-git para compilar a partir do código-fonte
-yay -S stably-orca-bin
+# Arch Linux (AUR) — ou stably-occ-git para compilar a partir do código-fonte
+yay -S stably-occ-bin
 ```
 
 ### Companion móvel — iOS, Android
@@ -236,17 +236,17 @@ yay -S stably-orca-bin
 Conecte ao app desktop para monitorar e conduzir seus agentes pelo celular.
 
 - **iOS:** [Baixar na App Store](https://apps.apple.com/us/app/occ-ide/id6766130217)
-- **Android:** [Baixar APK](https://www.onorca.dev/download/android)
+- **Android:** [Baixar APK](https://www.onocc.dev/download/android)
 
 ---
 
 ## Comunidade e suporte
 
 - **Discord:** Entre na comunidade no **[Discord](https://discord.gg/fzjDKHxv8Q)**.
-- **Twitter / X:** Siga **[@orca_build](https://x.com/orca_build)** para atualizações e anúncios.
-- **Feedback e ideias:** Lançamos rápido. Sentiu falta de algo? [Peça um novo recurso](https://github.com/stablyai/orca/issues).
-- **Privacidade:** Veja a [documentação de privacidade e telemetria](https://www.onorca.dev/docs/telemetry) para saber quais dados anônimos de uso o OCC coleta e como desativar.
-- **Mostre apoio:** Dê uma [estrela](https://github.com/stablyai/orca) neste repositório para acompanhar nossos lançamentos diários.
+- **Twitter / X:** Siga **[@occ_build](https://x.com/occ_build)** para atualizações e anúncios.
+- **Feedback e ideias:** Lançamos rápido. Sentiu falta de algo? [Peça um novo recurso](https://github.com/stablyai/occ/issues).
+- **Privacidade:** Veja a [documentação de privacidade e telemetria](https://www.onocc.dev/docs/telemetry) para saber quais dados anônimos de uso o OCC coleta e como desativar.
+- **Mostre apoio:** Dê uma [estrela](https://github.com/stablyai/occ) neste repositório para acompanhar nossos lançamentos diários.
 
 ---
 
@@ -254,8 +254,8 @@ Conecte ao app desktop para monitorar e conduzir seus agentes pelo celular.
 
 Quer contribuir ou rodar localmente? Veja nosso guia [CONTRIBUTING.md](../../.github/CONTRIBUTING.md).
 
-<a href="https://github.com/stablyai/orca/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=stablyai/orca" alt="Contribuidores do OCC" />
+<a href="https://github.com/stablyai/occ/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=stablyai/occ" alt="Contribuidores do OCC" />
 </a>
 
 ## Licença

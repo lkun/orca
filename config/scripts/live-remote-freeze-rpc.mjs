@@ -1,9 +1,9 @@
 import { spawn, spawnSync } from 'node:child_process'
 import path from 'node:path'
 
-export const MAX_ORCA_RPC_OUTPUT_BYTES = 20 * 1024 * 1024
+export const MAX_OCC_RPC_OUTPUT_BYTES = 20 * 1024 * 1024
 
-export function appendOrcaRpcOutput(output, chunk, bytes, limit = MAX_ORCA_RPC_OUTPUT_BYTES) {
+export function appendOCCRpcOutput(output, chunk, bytes, limit = MAX_OCC_RPC_OUTPUT_BYTES) {
   const nextBytes = bytes + Buffer.byteLength(chunk)
   return {
     output: nextBytes > limit ? output : output + chunk,
@@ -12,26 +12,26 @@ export function appendOrcaRpcOutput(output, chunk, bytes, limit = MAX_ORCA_RPC_O
   }
 }
 
-export function resolveOrcaCliCommand({ env = process.env, platform = process.platform } = {}) {
-  if (env.ORCA_CLI_COMMAND?.trim()) {
-    return env.ORCA_CLI_COMMAND.trim()
+export function resolveOCCCliCommand({ env = process.env, platform = process.platform } = {}) {
+  if (env.OCC_CLI_COMMAND?.trim()) {
+    return env.OCC_CLI_COMMAND.trim()
   }
-  if (env.ORCA_DEV_REPO_ROOT) {
+  if (env.OCC_DEV_REPO_ROOT) {
     return 'occ-dev'
   }
-  return platform === 'linux' ? 'occ-ide' : 'orca'
+  return platform === 'linux' ? 'occ-ide' : 'occ'
 }
 
-export function resolveOrcaCliInvocation({
+export function resolveOCCCliInvocation({
   env = process.env,
   platform = process.platform,
   nodeExecutable = process.execPath
 } = {}) {
-  const command = resolveOrcaCliCommand({ env, platform })
+  const command = resolveOCCCliCommand({ env, platform })
   const commandName = platform === 'win32' ? path.win32.basename(command).toLowerCase() : command
   if (
     platform === 'win32' &&
-    env.ORCA_DEV_REPO_ROOT &&
+    env.OCC_DEV_REPO_ROOT &&
     (commandName === 'occ-dev' || commandName === 'occ-dev.cmd')
   ) {
     const defaultUserDataPath = path.win32.join(
@@ -40,29 +40,29 @@ export function resolveOrcaCliInvocation({
     )
     return {
       command: nodeExecutable,
-      prefixArgs: [path.win32.join(env.ORCA_DEV_REPO_ROOT, 'out', 'cli', 'index.js')],
+      prefixArgs: [path.win32.join(env.OCC_DEV_REPO_ROOT, 'out', 'cli', 'index.js')],
       env: {
         ...env,
-        ORCA_USER_DATA_PATH:
-          env.ORCA_USER_DATA_PATH ?? env.ORCA_DEV_USER_DATA_PATH ?? defaultUserDataPath,
-        ORCA_DEV_CLI_INVOCATION: '1',
-        ORCA_APP_EXECUTABLE:
-          env.ORCA_APP_EXECUTABLE ??
+        OCC_USER_DATA_PATH:
+          env.OCC_USER_DATA_PATH ?? env.OCC_DEV_USER_DATA_PATH ?? defaultUserDataPath,
+        OCC_DEV_CLI_INVOCATION: '1',
+        OCC_APP_EXECUTABLE:
+          env.OCC_APP_EXECUTABLE ??
           path.win32.join(
-            env.ORCA_DEV_REPO_ROOT,
+            env.OCC_DEV_REPO_ROOT,
             'node_modules',
             'electron',
             'dist',
             'electron.exe'
           ),
-        ORCA_APP_EXECUTABLE_NEEDS_APP_ROOT: '1'
+        OCC_APP_EXECUTABLE_NEEDS_APP_ROOT: '1'
       }
     }
   }
   return { command, prefixArgs: [] }
 }
 
-export function createOrcaRpc({
+export function createOCCRpc({
   envName,
   cliCommand,
   env = process.env,
@@ -70,8 +70,8 @@ export function createOrcaRpc({
 }) {
   const cliInvocation = cliCommand
     ? { command: cliCommand, prefixArgs: [] }
-    : resolveOrcaCliInvocation({ env, platform })
-  const commandLabel = cliCommand ?? resolveOrcaCliCommand({ env, platform })
+    : resolveOCCCliInvocation({ env, platform })
+  const commandLabel = cliCommand ?? resolveOCCCliCommand({ env, platform })
   const commandArgs = (args, local) => [
     ...cliInvocation.prefixArgs,
     ...args,
@@ -79,12 +79,12 @@ export function createOrcaRpc({
     '--json'
   ]
 
-  function orcaJsonSync(args, opts = {}) {
+  function occJsonSync(args, opts = {}) {
     const started = performance.now()
     const result = spawnSync(cliInvocation.command, commandArgs(args, opts.local), {
       encoding: 'utf8',
       env: cliInvocation.env,
-      maxBuffer: MAX_ORCA_RPC_OUTPUT_BYTES,
+      maxBuffer: MAX_OCC_RPC_OUTPUT_BYTES,
       timeout: opts.timeoutMs ?? 120_000
     })
     const elapsedMs = performance.now() - started
@@ -103,7 +103,7 @@ export function createOrcaRpc({
     return { parsed, elapsedMs, result: parsed.result }
   }
 
-  function orcaJsonAsync(args, opts = {}) {
+  function occJsonAsync(args, opts = {}) {
     const started = performance.now()
     return new Promise((resolve, reject) => {
       const child = spawn(cliInvocation.command, commandArgs(args, opts.local), {
@@ -127,7 +127,7 @@ export function createOrcaRpc({
         if (settled) {
           return stream
         }
-        const appended = appendOrcaRpcOutput(stream, chunk, outputBytes)
+        const appended = appendOCCRpcOutput(stream, chunk, outputBytes)
         outputBytes = appended.bytes
         if (appended.exceeded) {
           child.kill('SIGKILL')
@@ -199,12 +199,12 @@ export function createOrcaRpc({
   async function runReconnectRefreshStorm(notes) {
     const started = performance.now()
     const jobs = [
-      () => orcaJsonAsync(['status'], { timeoutMs: 90_000 }),
-      () => orcaJsonAsync(['worktree', 'list'], { timeoutMs: 120_000 }),
-      () => orcaJsonAsync(['terminal', 'list'], { timeoutMs: 120_000 }),
-      () => orcaJsonAsync(['status'], { local: true, timeoutMs: 60_000 }),
-      () => orcaJsonAsync(['worktree', 'list'], { timeoutMs: 120_000 }),
-      () => orcaJsonAsync(['terminal', 'list'], { timeoutMs: 120_000 })
+      () => occJsonAsync(['status'], { timeoutMs: 90_000 }),
+      () => occJsonAsync(['worktree', 'list'], { timeoutMs: 120_000 }),
+      () => occJsonAsync(['terminal', 'list'], { timeoutMs: 120_000 }),
+      () => occJsonAsync(['status'], { local: true, timeoutMs: 60_000 }),
+      () => occJsonAsync(['worktree', 'list'], { timeoutMs: 120_000 }),
+      () => occJsonAsync(['terminal', 'list'], { timeoutMs: 120_000 })
     ]
     const results = await Promise.all(
       jobs.map(async (job, index) => {
@@ -228,14 +228,14 @@ export function createOrcaRpc({
   async function runRestartProxy(notes) {
     const started = performance.now()
     try {
-      const opened = await orcaJsonAsync(['open'], { local: true, timeoutMs: 120_000 })
-      notes.push(`orca open ms=${opened.elapsedMs.toFixed(0)}`)
+      const opened = await occJsonAsync(['open'], { local: true, timeoutMs: 120_000 })
+      notes.push(`occ open ms=${opened.elapsedMs.toFixed(0)}`)
     } catch (error) {
-      notes.push(`orca open failed: ${String(error).slice(0, 200)}`)
+      notes.push(`occ open failed: ${String(error).slice(0, 200)}`)
     }
     const storm = await runReconnectRefreshStorm(notes)
     return { wallMs: performance.now() - started, storm }
   }
 
-  return { orcaJsonSync, orcaJsonAsync, runReconnectRefreshStorm, runRestartProxy }
+  return { occJsonSync, occJsonAsync, runReconnectRefreshStorm, runRestartProxy }
 }

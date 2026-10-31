@@ -5,7 +5,7 @@ import {
   isDesktopCreatedTabInFrameDrawnServerWorkspace,
   serverTabCount
 } from '@/lib/frame-drawn-desktop-created-tabs'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { dropTabThroughLayoutOwner } from '../tab-group/tab-group-layout-owner-commands'
 
 type TabMovePaneColumnState = Pick<
@@ -57,7 +57,7 @@ export function moveTabToNewPaneColumn(args: {
     return false
   }
   if (
-    ORCA_LAYOUT_OWNER_IS_MAIN &&
+    OCC_LAYOUT_OWNER_IS_MAIN &&
     dropTabThroughLayoutOwner(worktreeId, {
       kind: 'split',
       tabId: args.unifiedTabId,

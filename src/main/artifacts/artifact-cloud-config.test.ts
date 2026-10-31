@@ -9,7 +9,7 @@ describe('resolveArtifactCloudApiUrl', () => {
     expect(
       resolveArtifactCloudApiUrl(
         undefined,
-        { ORCA_ARTIFACTS_API_URL: 'http://127.0.0.1:45961' },
+        { OCC_ARTIFACTS_API_URL: 'http://127.0.0.1:45961' },
         false
       )
     ).toBe('http://127.0.0.1:45961')
@@ -18,9 +18,9 @@ describe('resolveArtifactCloudApiUrl', () => {
 
   it('rejects origins that could receive an OCC access token', () => {
     expect(() => resolveArtifactCloudApiUrl('https://example.com', {}, false)).toThrow(
-      /onorca\.dev/
+      /onocc\.dev/
     )
-    expect(() => resolveArtifactCloudApiUrl('https://share.onorca.dev/path', {}, false)).toThrow(
+    expect(() => resolveArtifactCloudApiUrl('https://share.onocc.dev/path', {}, false)).toThrow(
       /origin/
     )
   })

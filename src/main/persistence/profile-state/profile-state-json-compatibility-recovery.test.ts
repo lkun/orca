@@ -14,7 +14,7 @@ import { createProfileStateStore } from './profile-state-store-factory'
 vi.mock('electron', () => ({
   app: {
     getPath: () => tmpdir(),
-    getName: () => 'orca-test',
+    getName: () => 'occ-test',
     getVersion: () => '0.0.0-test',
     isPackaged: false,
     on: () => {},
@@ -44,9 +44,9 @@ afterEach(() => {
 })
 
 function fixture() {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-json-compatibility-recovery-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-json-compatibility-recovery-'))
   const paths = {
-    dataFile: join(directory, 'orca-data.json'),
+    dataFile: join(directory, 'occ-data.json'),
     databaseFile: join(directory, 'profile-state.db'),
     profileId: 'compatibility-recovery'
   }

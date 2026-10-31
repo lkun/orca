@@ -125,7 +125,7 @@ describe('the phone list from the sidebar feed', () => {
   it('draws the shared builder’s headers, order and nesting', () => {
     const lines = outline(sectionsFor(phoneView()))
     expect(lines[0]).toMatch(/ "Pinned" 2 pin$/)
-    expect(lines.some((line) => line.includes('orca::/w/child depth=1'))).toBe(true)
+    expect(lines.some((line) => line.includes('occ::/w/child depth=1'))).toBe(true)
     expect(lines.some((line) => line.includes('"lab"'))).toBe(true)
   })
 
@@ -169,7 +169,7 @@ describe('the phone list from the sidebar feed', () => {
     const domains = feedDomains({
       workspaces: new Map([
         ...base.workspaces,
-        [feedKey('|orca::/w/solo'), feedRow({ id: 'orca::/w/solo', manualOrder: 4 })]
+        [feedKey('|occ::/w/solo'), feedRow({ id: 'occ::/w/solo', manualOrder: 4 })]
       ])
     })
     const built = buildSidebarFeedRows(domains, grouped, phoneFeedView(phoneView()))
@@ -189,7 +189,7 @@ describe('the phone list from the sidebar feed', () => {
       'school group depth=0',
       'inner group depth=1',
       'lab depth=2',
-      'orca depth=2'
+      'occ depth=2'
     ])
     expect(
       sections
@@ -211,10 +211,10 @@ describe('the phone list from the sidebar feed', () => {
 
     it('highlights the listed row this phone opened, and only it', () => {
       const lines = active(
-        sectionsFor(phoneView(), { lastVisited: { worktreeId: 'orca::/w/child' } })
+        sectionsFor(phoneView(), { lastVisited: { worktreeId: 'occ::/w/child' } })
       )
       expect(lines).toHaveLength(1)
-      expect(lines[0]).toContain('orca::/w/child')
+      expect(lines[0]).toContain('occ::/w/child')
     })
 
     it('highlights an SSH row by its id, as the session route names it', () => {
@@ -224,7 +224,7 @@ describe('the phone list from the sidebar feed', () => {
     })
 
     it('never matches a desktop row for a visit on a server of the same id', () => {
-      const lastVisited = { worktreeId: 'orca::/w/child', executionHost: 'runtime:env-1' as const }
+      const lastVisited = { worktreeId: 'occ::/w/child', executionHost: 'runtime:env-1' as const }
       expect(active(sectionsFor(phoneView(), { lastVisited }))).toEqual([])
     })
 
@@ -239,10 +239,10 @@ describe('the phone list from the sidebar feed', () => {
 
     it('highlights nothing once the row is deleted', () => {
       const workspaces = new Map(feedDomains().workspaces)
-      workspaces.delete(feedKey('|orca::/w/child'))
+      workspaces.delete(feedKey('|occ::/w/child'))
       const domains = feedDomains({ workspaces })
       const sections = sectionsFromDomains(domains, phoneView(), '', {
-        worktreeId: 'orca::/w/child'
+        worktreeId: 'occ::/w/child'
       })
       expect(active(sections)).toEqual([])
     })
@@ -251,7 +251,7 @@ describe('the phone list from the sidebar feed', () => {
       const lines = active(
         sectionsFor(phoneView(), {
           showPinnedInGroups: true,
-          lastVisited: { worktreeId: 'orca::/w/parent' }
+          lastVisited: { worktreeId: 'occ::/w/parent' }
         })
       )
       expect(lines).toHaveLength(2)
@@ -260,9 +260,9 @@ describe('the phone list from the sidebar feed', () => {
 
   const scopes: [ExecutionHostScope, string[] | null, string[]][] = [
     ['ssh:gpu', null, ['lab::/w/gpu']],
-    ['all', ['local', 'ssh:gpu'], ['orca::/w/parent', 'orca::/w/child', 'lab::/w/gpu']],
+    ['all', ['local', 'ssh:gpu'], ['occ::/w/parent', 'occ::/w/child', 'lab::/w/gpu']],
     ['all', ['ssh:gpu'], ['lab::/w/gpu']],
-    ['local', ['local', 'ssh:gpu'], ['orca::/w/parent', 'orca::/w/child', 'lab::/w/gpu']]
+    ['local', ['local', 'ssh:gpu'], ['occ::/w/parent', 'occ::/w/child', 'lab::/w/gpu']]
   ]
   it.each(scopes)(
     'shows the expected workspaces for scope %s and hosts %j',
@@ -310,7 +310,7 @@ describe('the phone list from the sidebar feed', () => {
   it('draws each row with the live content worktree.ps served, matched by host', () => {
     const sections = sectionsFor(phoneView(), {
       live: [
-        liveRow({ worktreeId: 'orca::/w/child', liveTerminalCount: 2, status: 'working' }),
+        liveRow({ worktreeId: 'occ::/w/child', liveTerminalCount: 2, status: 'working' }),
         liveRow({
           worktreeId: 'lab::/w/gpu',
           hostId: 'ssh:gpu',
@@ -320,7 +320,7 @@ describe('the phone list from the sidebar feed', () => {
       ]
     })
     const rows = sections.flatMap((section) => section.data)
-    expect(rows.find((row) => row.worktreeId === 'orca::/w/child')).toMatchObject({
+    expect(rows.find((row) => row.worktreeId === 'occ::/w/child')).toMatchObject({
       liveTerminalCount: 2,
       status: 'working',
       lineageDepth: 1
@@ -328,8 +328,8 @@ describe('the phone list from the sidebar feed', () => {
     expect(rows.find((row) => row.worktreeId === 'lab::/w/gpu')).toMatchObject({
       hasAttachedPty: true
     })
-    expect(rows.find((row) => row.worktreeId === 'orca::/w/parent')).toMatchObject({
-      displayName: 'orca::/w/parent',
+    expect(rows.find((row) => row.worktreeId === 'occ::/w/parent')).toMatchObject({
+      displayName: 'occ::/w/parent',
       liveTerminalCount: 0,
       isPinned: true
     })
@@ -347,15 +347,15 @@ describe('the phone list from the sidebar feed', () => {
     const built = buildSidebarFeedRows(
       feedDomains({
         workspaces: new Map([
-          [feedKey('|orca::/w/parent'), FEED_ROWS.parent],
-          [feedKey('|orca::/w/child'), feedChild]
+          [feedKey('|occ::/w/parent'), FEED_ROWS.parent],
+          [feedKey('|occ::/w/child'), feedChild]
         ])
       }),
       catalog,
       phoneFeedView(phoneView())
     )
     const stale = liveRow({
-      worktreeId: 'orca::/w/child',
+      worktreeId: 'occ::/w/child',
       displayName: 'old name',
       branch: 'old-branch',
       comment: 'old note',
@@ -373,7 +373,7 @@ describe('the phone list from the sidebar feed', () => {
     })
     expect(sections.flatMap((section) => section.data)).toEqual([
       expect.objectContaining({
-        worktreeId: 'orca::/w/child',
+        worktreeId: 'occ::/w/child',
         displayName: 'new name',
         branch: 'new-branch',
         comment: 'new note',
@@ -420,10 +420,10 @@ describe('the phone list from the sidebar feed', () => {
 
   it('draws creations above every group when not grouped by project', () => {
     const [first] = sectionsFromDomains(
-      feedDomains({ creations: new Map([['c1', { repoId: 'orca' }]]) }),
+      feedDomains({ creations: new Map([['c1', { repoId: 'occ' }]]) }),
       phoneView({ groupBy: 'none' })
     )
-    expect(first).toMatchObject({ title: '', pendingCreations: [{ repoName: 'orca' }] })
+    expect(first).toMatchObject({ title: '', pendingCreations: [{ repoName: 'occ' }] })
   })
 
   it('drops a creation from a section search narrows to its matching rows', () => {
@@ -454,9 +454,9 @@ describe('the phone list from the sidebar feed', () => {
 
 describe('the phone list before the first feed read', () => {
   const cached = [
-    liveRow({ worktreeId: 'orca::/w/b', displayName: 'beta' }),
-    liveRow({ worktreeId: 'orca::/w/a', displayName: 'alpha' }),
-    liveRow({ worktreeId: 'orca::/w/old', displayName: 'old', isArchived: true })
+    liveRow({ worktreeId: 'occ::/w/b', displayName: 'beta' }),
+    liveRow({ worktreeId: 'occ::/w/a', displayName: 'alpha' }),
+    liveRow({ worktreeId: 'occ::/w/old', displayName: 'old', isArchived: true })
   ]
   const preFeedVisiting = (
     search: string,
@@ -489,12 +489,12 @@ describe('the phone list before the first feed read', () => {
         ?.data.filter((row) => row.isActive)
         .map((row) => row.worktreeId)
     expect(highlighted(null)).toEqual([])
-    expect(highlighted({ worktreeId: 'orca::/w/a' })).toEqual(['orca::/w/a'])
-    expect(highlighted({ worktreeId: 'orca::/w/gone' })).toEqual([])
+    expect(highlighted({ worktreeId: 'occ::/w/a' })).toEqual(['occ::/w/a'])
+    expect(highlighted({ worktreeId: 'occ::/w/gone' })).toEqual([])
   })
 
   it('narrows them by search, and draws nothing with none', () => {
-    expect(preFeed('alp')[0]?.data.map((row) => row.worktreeId)).toEqual(['orca::/w/a'])
+    expect(preFeed('alp')[0]?.data.map((row) => row.worktreeId)).toEqual(['occ::/w/a'])
     expect(preFeed('', [])).toEqual([])
   })
 })

@@ -5,12 +5,12 @@ import {
   persistSetupHookTrustApproval,
   wasSetupHookPreviouslyApproved
 } from './setup-hook-trust'
-import type { PersistedTrustedOrcaHooks } from '../../../src/shared/orca-yaml-hook-types'
+import type { PersistedTrustedOCCHooks } from '../../../src/shared/occ-yaml-hook-types'
 import type { RpcClient } from '../transport/rpc-client'
 
 describe('setup hook trust', () => {
   it('trusts a setup script only when the approved hash matches', () => {
-    const trust: PersistedTrustedOrcaHooks = {
+    const trust: PersistedTrustedOCCHooks = {
       'repo-1': { setup: { contentHash: 'hash-1', approvedAt: 1000 } }
     }
 
@@ -19,7 +19,7 @@ describe('setup hook trust', () => {
   })
 
   it('treats an always-trusted repo as trusted for changed setup scripts', () => {
-    const trust: PersistedTrustedOrcaHooks = {
+    const trust: PersistedTrustedOCCHooks = {
       'repo-1': { all: { approvedAt: 1000 } }
     }
 
@@ -43,7 +43,7 @@ describe('setup hook trust', () => {
       alwaysTrust: false
     })
 
-    expect(persisted).toEqual({ trustedOrcaHooks: next })
+    expect(persisted).toEqual({ trustedOCCHooks: next })
     expect(isSetupHookTrusted(next, [{ id: 'repo-1' }], 'repo-1', 'setup-hash')).toBe(true)
   })
 

@@ -11,7 +11,7 @@ import {
   killWorkspacePortForTarget,
   openWorkspacePortInBrowser,
   refreshWorkspacePortScanAfterStop,
-  resolvePortOpenInOrcaBrowser
+  resolvePortOpenInOCCBrowser
 } from '@/lib/workspace-port-actions'
 import type { WorkspacePortGroup } from '@/lib/workspace-port-groups'
 import { useLocalhostLabelRouteForPort } from '@/lib/workspace-port-localhost-label-selector'
@@ -104,7 +104,7 @@ export function PortRow({
     (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation()
       recordFeatureInteraction('ports')
-      const openInOrcaBrowser = resolvePortOpenInOrcaBrowser({
+      const openInOCCBrowser = resolvePortOpenInOCCBrowser({
         settings,
         // Keyboard activation has no pointer modifier intent for the system-browser escape hatch.
         event: event.detail > 0 ? event : null,
@@ -116,7 +116,7 @@ export function PortRow({
         runtimeTarget,
         createBrowserTab,
         setRemoteBrowserPageHandle,
-        openInOrcaBrowser,
+        openInOCCBrowser,
         localhostLabelRoute
       }).then((result) => {
         if (!result.ok) {

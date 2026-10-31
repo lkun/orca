@@ -1,8 +1,8 @@
 import path from 'node:path'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
-import { createRestartSession } from './helpers/orca-restart'
+import { createRestartSession } from './helpers/occ-restart'
 
 // Mirror FLOATING_TERMINAL_WORKTREE_ID without loading renderer/shared modules into Playwright.
 const FLOATING_WORKTREE_ID = 'global-floating-terminal'
@@ -85,21 +85,21 @@ async function openFloatingPanel(page: Page): Promise<void> {
     OPEN_PANEL_SELECTOR
   )
   if (!alreadyOpen) {
-    await page.evaluate(() => window.dispatchEvent(new Event('orca-toggle-floating-terminal')))
+    await page.evaluate(() => window.dispatchEvent(new Event('occ-toggle-floating-terminal')))
   }
   await expect(page.locator(OPEN_PANEL_SELECTOR)).toBeVisible()
 }
 
 test('concurrent floating Markdown renames do not clobber the destination', async ({
-  orcaPage
+  occPage
 }) => {
-  const directory = await orcaPage.evaluate(() => window.api.app.getFloatingMarkdownDirectory())
+  const directory = await occPage.evaluate(() => window.api.app.getFloatingMarkdownDirectory())
   const suffix = Date.now().toString(36)
   const firstPath = path.join(directory, `floating-first-${suffix}.md`)
   const secondPath = path.join(directory, `floating-second-${suffix}.md`)
   const destinationPath = path.join(directory, `floating-destination-${suffix}.md`)
 
-  const result = await orcaPage.evaluate(
+  const result = await occPage.evaluate(
     async ({ firstPath, secondPath, destinationPath }) => {
       await window.api.fs.createFile({ filePath: firstPath })
       await window.api.fs.createFile({ filePath: secondPath })
@@ -139,14 +139,14 @@ test('concurrent floating Markdown renames do not clobber the destination', asyn
   ).toEqual(['first\n', 'second\n'])
 })
 
-test('Enter commits a floating Markdown rename only once', async ({ orcaPage }) => {
-  const seeded = await seedFloatingMarkdownFile(orcaPage)
-  await openFloatingPanel(orcaPage)
+test('Enter commits a floating Markdown rename only once', async ({ occPage }) => {
+  const seeded = await seedFloatingMarkdownFile(occPage)
+  await openFloatingPanel(occPage)
 
-  const panel = orcaPage.locator(OPEN_PANEL_SELECTOR)
+  const panel = occPage.locator(OPEN_PANEL_SELECTOR)
   const tab = panel.locator(`[data-tab-id="${seeded.tabId}"]`)
   await tab.click({ button: 'right' })
-  await orcaPage.getByRole('menuitem').filter({ hasText: 'Rename' }).first().click()
+  await occPage.getByRole('menuitem').filter({ hasText: 'Rename' }).first().click()
 
   const input = panel.getByRole('textbox', {
     name: `Rename file ${seeded.originalName}`,
@@ -158,7 +158,7 @@ test('Enter commits a floating Markdown rename only once', async ({ orcaPage }) 
   await expect(tab).toContainText(seeded.renamedName)
   await expect
     .poll(() =>
-      orcaPage.evaluate(
+      occPage.evaluate(
         async ({ originalPath, renamedPath }) => ({
           originalExists: await window.api.fs.pathExists({ filePath: originalPath }),
           renamedExists: await window.api.fs.pathExists({ filePath: renamedPath })
@@ -167,19 +167,19 @@ test('Enter commits a floating Markdown rename only once', async ({ orcaPage }) 
       )
     )
     .toEqual({ originalExists: false, renamedExists: true })
-  await expect(orcaPage.getByText(/Failed to rename/)).toHaveCount(0)
+  await expect(occPage.getByText(/Failed to rename/)).toHaveCount(0)
 })
 
-test('Electron serializes native Unicode rename aliases', async ({ orcaPage }) => {
+test('Electron serializes native Unicode rename aliases', async ({ occPage }) => {
   test.skip(process.platform !== 'darwin', 'Requires native Unicode aliasing')
-  const directory = await orcaPage.evaluate(() => window.api.app.getFloatingMarkdownDirectory())
+  const directory = await occPage.evaluate(() => window.api.app.getFloatingMarkdownDirectory())
   const suffix = Date.now().toString(36)
   const firstPath = path.join(directory, `floating-unicode-first-${suffix}.md`)
   const secondPath = path.join(directory, `floating-unicode-second-${suffix}.md`)
   const sharpSDestination = path.join(directory, `floating-destination-${suffix}-straße.md`)
   const expandedDestination = path.join(directory, `floating-destination-${suffix}-STRASSE.MD`)
 
-  const result = await orcaPage.evaluate(
+  const result = await occPage.evaluate(
     async ({ firstPath, secondPath, sharpSDestination, expandedDestination }) => {
       await window.api.fs.createFile({ filePath: firstPath })
       await window.api.fs.createFile({ filePath: secondPath })

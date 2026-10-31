@@ -8,7 +8,7 @@ let directory: string
 let fileWatch: RebindingFileWatch | null
 
 beforeEach(() => {
-  directory = mkdtempSync(join(tmpdir(), 'orca-rebinding-file-watch-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-rebinding-file-watch-'))
   fileWatch = null
 })
 

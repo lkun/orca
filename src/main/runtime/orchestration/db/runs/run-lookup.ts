@@ -33,7 +33,7 @@ const RUNS_BOUND_TO_PANE_SQL = `SELECT ${RUN_COLUMN_LIST} FROM runs
 const RUNS_BOUND_TO_COORDINATOR_SQL = `SELECT ${RUN_COLUMN_LIST} FROM runs
          WHERE legacy = 0 AND (
            (coordinator_pane_key IS NOT NULL AND ${RUN_PANE_KEY_MATCH_SUFFIX_SQL} = ?)
-           OR coordinator_orca_session_id = ?
+           OR coordinator_occ_session_id = ?
          )
          ORDER BY rowid DESC`
 
@@ -161,11 +161,11 @@ export function runsBoundToCoordinator(
   this: OrchestrationDb,
   caller: OrchestrationCoordinatorKey
 ): RunRow[] {
-  if (caller.orcaSessionId === null) {
+  if (caller.occSessionId === null) {
     return caller.paneKey === null ? [] : this.runsBoundToPane(caller.paneKey)
   }
   const suffix = caller.paneKey === null ? null : paneKeyMatchSuffix(caller.paneKey)
-  const rows = this.db.prepare(RUNS_BOUND_TO_COORDINATOR_SQL).all(suffix, caller.orcaSessionId)
+  const rows = this.db.prepare(RUNS_BOUND_TO_COORDINATOR_SQL).all(suffix, caller.occSessionId)
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: SELECT * over this table returns the row shape its schema and row type define, like every row cast in db/.
   return (rows as RunRow[]).filter((run) => runBoundToCoordinator(run, caller))
 }
@@ -184,8 +184,8 @@ export function unbindOtherRunsForCoordinator(
       this.db
         .prepare(
           `UPDATE runs
-           SET coordinator_handle = NULL, coordinator_pane_key = NULL, coordinator_orca_session_id = NULL,
-               coordinator_orca_session_id_generation = NULL,
+           SET coordinator_handle = NULL, coordinator_pane_key = NULL, coordinator_occ_session_id = NULL,
+               coordinator_occ_session_id_generation = NULL,
                consumer_generation = consumer_generation + 1,
                updated_at = datetime('now')
            WHERE id = ?`

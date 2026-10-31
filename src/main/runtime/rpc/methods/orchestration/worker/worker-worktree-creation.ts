@@ -4,7 +4,7 @@ import type { RuntimeTerminalCreate } from '../../../../../../shared/runtime-ter
 import type { AgentLaunchPreferences } from '../../../../../../shared/agent-session-host-authority'
 import type { TuiAgent } from '../../../../../../shared/tui-agent'
 import { suggestCreatureNameForPaths } from '../../../../../../shared/worktree-name-suggestion'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import type { WorkerEffect, WorkerSetupReceipt } from './worker-topology'
@@ -13,7 +13,7 @@ import type { WorkerEffect, WorkerSetupReceipt } from './worker-topology'
 export type WorkerWorktreeCreationTarget = { repoSelector: string; parentWorktreeId?: string }
 
 export async function resolveWorkerWorktreeCreationTarget(args: {
-  runtime: Pick<OrcaRuntimeService, 'showManagedWorktree'>
+  runtime: Pick<OCCRuntimeService, 'showManagedWorktree'>
   requestedWorktree: string
   repo: string | undefined
   callerWorktreeId: string
@@ -75,7 +75,7 @@ export async function resolveWorkerWorktreeName(
 }
 
 export async function createWorkerWorktree(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   dispatchId: string
   requestedWorktree: string
@@ -96,7 +96,7 @@ export async function createWorkerWorktree(args: {
   launchPreferences?: AgentLaunchPreferences
   effects: WorkerEffect[]
 }): Promise<{
-  worktree: Awaited<ReturnType<OrcaRuntimeService['showManagedWorktree']>>
+  worktree: Awaited<ReturnType<OCCRuntimeService['showManagedWorktree']>>
   terminalHandle: string | undefined
   terminalCreation?: RuntimeTerminalCreate
   setupReceipt: WorkerSetupReceipt
@@ -198,7 +198,7 @@ export async function createWorkerWorktree(args: {
     terminalId: setupTerminalHandle ?? setupTerminal?.id
   })
   return {
-    worktree: created.worktree as Awaited<ReturnType<OrcaRuntimeService['showManagedWorktree']>>,
+    worktree: created.worktree as Awaited<ReturnType<OCCRuntimeService['showManagedWorktree']>>,
     terminalHandle,
     terminalCreation,
     setupReceipt

@@ -9,7 +9,7 @@ import {
 } from './daemon-launched-child-spawn'
 import { parseDaemonReadyIdentity } from './daemon-ready-identity'
 import { unlinkOwnedDaemonPidFile } from './daemon-spawner'
-import { childProcessHasExited } from '@orca/process-host/process-tree-termination'
+import { childProcessHasExited } from '@occ/process-host/process-tree-termination'
 
 /** Default readiness IPC budget; callers may allow longer. */
 export const DAEMON_CHILD_STARTUP_TIMEOUT_MS = 10_000

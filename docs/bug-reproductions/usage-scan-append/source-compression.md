@@ -14,12 +14,12 @@ Compression trades CPU for space. Full rebuilds measured 82 vs main's 62 ms, 410
 
 Small caches stay plain. Compression is kept only when smaller than this PR's plain representation. Sources exceeding 128 MiB stay plain, preserving history and existing cache reuse. Compressed reads validate the decoded size, bound expansion, and then apply the same independent source integrity checks. Truncation, corruption, inconsistent concatenated output and forged sizes are rejected. Existing plain caches remain readable. Older OCC versions skip the optional compressed source cache and can rebuild it; their independently valid displayed report remains available. Writes capture their destination and workspace binding before awaiting compression. A test changes the caller's binding mid-write and verifies that only the original destination is written. No public wire format changes.
 
-[Evidence receipt](./claude-source-compression-receipt.json) links raw samples and source hashes. Earlier measurement files describe the previous uncompressed implementation and remain historical evidence. Integration with current main updates benchmark subprocess imports to the existing `@orca/process-host` package; captured source and tooling hashes retain their original measurement provenance.
+[Evidence receipt](./claude-source-compression-receipt.json) links raw samples and source hashes. Earlier measurement files describe the previous uncompressed implementation and remain historical evidence. Integration with current main updates benchmark subprocess imports to the existing `@occ/process-host` package; captured source and tooling hashes retain their original measurement provenance.
 
 Reproduce:
 
 ```bash
-ORCA_BACKGROUND_LAUNCH=1 node config/scripts/claude-usage-source-compression-benchmark.mjs --usage-keys 16384 --maxima-pattern repeated --rounds 6
-ORCA_BACKGROUND_LAUNCH=1 node config/scripts/claude-usage-source-compression-benchmark.mjs --usage-keys 100000 --maxima-pattern unique --rounds 6
-ORCA_BACKGROUND_LAUNCH=1 node config/scripts/claude-usage-source-compression-benchmark.mjs --usage-keys 100000 --maxima-pattern varied --rounds 6
+OCC_BACKGROUND_LAUNCH=1 node config/scripts/claude-usage-source-compression-benchmark.mjs --usage-keys 16384 --maxima-pattern repeated --rounds 6
+OCC_BACKGROUND_LAUNCH=1 node config/scripts/claude-usage-source-compression-benchmark.mjs --usage-keys 100000 --maxima-pattern unique --rounds 6
+OCC_BACKGROUND_LAUNCH=1 node config/scripts/claude-usage-source-compression-benchmark.mjs --usage-keys 100000 --maxima-pattern varied --rounds 6
 ```

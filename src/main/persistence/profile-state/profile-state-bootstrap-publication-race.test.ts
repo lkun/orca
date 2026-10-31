@@ -35,10 +35,10 @@ describe('first database publication with competing startup', () => {
   it.each(['empty', 'legacy'])(
     'explains unavailable hard links without publishing a partial %s database',
     (kind) => {
-      const root = fs.mkdtempSync(join(tmpdir(), 'orca-bootstrap-no-hardlinks-'))
+      const root = fs.mkdtempSync(join(tmpdir(), 'occ-bootstrap-no-hardlinks-'))
       roots.push(root)
       const options = {
-        dataFile: join(root, 'orca-data.json'),
+        dataFile: join(root, 'occ-data.json'),
         databaseFile: join(root, 'profile-state.db'),
         profileId: 'unsupported-publication',
         allowEmptyProfileState: true
@@ -66,7 +66,7 @@ describe('first database publication with competing startup', () => {
       expect(message).toContain('complete OCC data directory')
       expect(message).not.toContain('rollback')
       expect(fs.existsSync(options.databaseFile)).toBe(false)
-      expect(fs.readdirSync(root)).toEqual(kind === 'legacy' ? ['orca-data.json'] : [])
+      expect(fs.readdirSync(root)).toEqual(kind === 'legacy' ? ['occ-data.json'] : [])
       if (kind === 'legacy') {
         expect(fs.readFileSync(options.dataFile, 'utf8')).toBe(json)
       }
@@ -80,10 +80,10 @@ describe('first database publication with competing startup', () => {
   )
 
   it('names its migration export after the snapshot actually captured', () => {
-    const root = fs.mkdtempSync(join(tmpdir(), 'orca-migration-export-race-'))
+    const root = fs.mkdtempSync(join(tmpdir(), 'occ-migration-export-race-'))
     roots.push(root)
     const options = {
-      dataFile: join(root, 'orca-data.json'),
+      dataFile: join(root, 'occ-data.json'),
       databaseFile: join(root, 'profile-state.db'),
       profileId: 'migration-export-race',
       expectedLegacyJson: '{"settings":{"theme":"dark"}}',
@@ -116,10 +116,10 @@ describe('first database publication with competing startup', () => {
   })
 
   it.each(['empty', 'legacy'])('cannot replace an acknowledged competing %s profile', (kind) => {
-    const root = fs.mkdtempSync(join(tmpdir(), 'orca-bootstrap-publication-race-'))
+    const root = fs.mkdtempSync(join(tmpdir(), 'occ-bootstrap-publication-race-'))
     roots.push(root)
     const options = {
-      dataFile: join(root, 'orca-data.json'),
+      dataFile: join(root, 'occ-data.json'),
       databaseFile: join(root, 'profile-state.db'),
       profileId: 'publication-race',
       allowEmptyProfileState: true

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Badge } from '../ui/badge'
 import { translate } from '../../i18n/i18n'
 import { useAppStore } from '../../store'
-import { useOrcaProfileAuthStatusRefresh } from '@/hooks/use-orca-profile-auth-status-refresh'
+import { useOCCProfileAuthStatusRefresh } from '@/hooks/use-occ-profile-auth-status-refresh'
 import { cn } from '@/lib/utils'
 import type {
   MobileRelayStatus,
@@ -64,7 +64,7 @@ export function MobilePairingConnectionOptions({
   relayMintFailed?: boolean
   relayMintRetrying?: boolean
 }): React.JSX.Element {
-  const authStatus = useAppStore((state) => state.orcaProfileAuthStatus)
+  const authStatus = useAppStore((state) => state.occProfileAuthStatus)
   const [relayStatus, setRelayStatus] = useState<MobileRelayStatusDetail>({ status: 'offline' })
   const signedIn = authStatus?.state === 'connected'
   const reconnectRequired = authStatus?.state === 'reconnect-required'
@@ -100,7 +100,7 @@ export function MobilePairingConnectionOptions({
 
   const relayCell = relayStatus.cellUrl ? relayCellLabel(relayStatus.cellUrl) : null
 
-  useOrcaProfileAuthStatusRefresh()
+  useOCCProfileAuthStatusRefresh()
 
   useEffect(() => {
     let receivedEvent = false

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -11,8 +11,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -23,7 +23,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -43,10 +43,10 @@ vi.mock('child_process', async () => {
 import { main } from './index'
 import { useWorktreeAwarenessEnvironment } from './index-test-harness'
 
-describe('orca serve restore resume', () => {
+describe('occ serve restore resume', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -58,7 +58,7 @@ describe('orca serve restore resume', () => {
   })
 
   it('asks the local OCC to resume and never starts a server', async () => {
-    process.env.ORCA_ENVIRONMENT = 'paired-env'
+    process.env.OCC_ENVIRONMENT = 'paired-env'
     callMock.mockResolvedValue({
       id: 'rpc',
       ok: true,
@@ -75,7 +75,7 @@ describe('orca serve restore resume', () => {
 
     await main(['serve', 'restore', 'resume'], '/tmp/repo')
 
-    expect(serveOrcaAppMock).not.toHaveBeenCalled()
+    expect(serveOCCAppMock).not.toHaveBeenCalled()
     expect(callMock.mock.calls).toEqual([['runtime.automaticWork.resume']])
     expect(runtimeClientConstructorMock.mock.calls).toEqual([[null, null]])
     expect(logSpy.mock.calls).toEqual([

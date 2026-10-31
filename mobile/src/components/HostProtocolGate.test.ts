@@ -134,7 +134,7 @@ describe('HostProtocolGate', () => {
     const [openReleases] = findAllByHostType(renderer.root, 'Pressable')
     act(() => openReleases?.props.onPress())
     expect(nativeTestState.openUrl).toHaveBeenCalledWith(
-      'https://github.com/stablyai/orca/releases'
+      'https://github.com/stablyai/occ/releases'
     )
   })
 

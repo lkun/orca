@@ -36,15 +36,15 @@ function defineSignObservingAgent() {
     sign(
       pubKey: AgentPublicKey,
       data: Buffer,
-      optionsOrCallback?: SigningRequestOptions | SignCallback,
+      optionsoccllback?: SigningRequestOptions | SignCallback,
       callback?: SignCallback
     ): void {
       this.onSign()
-      if (typeof optionsOrCallback === 'function') {
-        this.agent.sign(pubKey, data, optionsOrCallback)
+      if (typeof optionsoccllback === 'function') {
+        this.agent.sign(pubKey, data, optionsoccllback)
         return
       }
-      this.agent.sign(pubKey, data, optionsOrCallback ?? {}, callback)
+      this.agent.sign(pubKey, data, optionsoccllback ?? {}, callback)
     }
   }
 }

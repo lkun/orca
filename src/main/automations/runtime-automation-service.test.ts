@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as AgentLauncher from './automation-chat-agent-launch'
 import type { HeadlessAutomationDispatcher } from './headless-dispatch'
 import type { AutomationRunTerminalObserver } from './run-completion-watcher'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import type { Store } from '../persistence'
 import { buildProfileStateCutoverFixture } from '../persistence/profile-state-cutover-fixture'
 import { automationRunOperationId } from './automation-run-operation'
@@ -83,7 +83,7 @@ function fixture(headless: boolean, definitionSurface: 'chat' | 'terminal' = 'ch
       ]
     } as unknown as Store,
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: launching and chat observation are mocked; the runtime implements the recovery boundaries.
-    runtime: runtime as unknown as OrcaRuntimeService,
+    runtime: runtime as unknown as OCCRuntimeService,
     headless
   })
   return { runtime, rows }

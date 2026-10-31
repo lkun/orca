@@ -1,24 +1,24 @@
-import { ORCAD_MIGRATION_MANIFEST_VERSION } from '../../../../shared/orcad-migration/orcad-migration-manifest-validation'
-import type { OrcadMigrationDormantStatePayload } from '../../../../shared/orcad-migration/orcad-migration-manifest'
+import { OCCD_MIGRATION_MANIFEST_VERSION } from '../../../../shared/occd-migration/occd-migration-manifest-validation'
+import type { OCCdMigrationDormantStatePayload } from '../../../../shared/occd-migration/occd-migration-manifest'
 import {
   wslMoveJournalKey,
   type WslMoveCutover,
   type WslMoveCutoverPhase
 } from '../../../../shared/wsl-move/wsl-move-cutover'
-import { computeOrcadMigrationManifestSha256 } from '../../../orcad/orcad-migration-manifest-digest'
+import { computeOCCdMigrationManifestSha256 } from '../../../occd/occd-migration-manifest-digest'
 
 export function wslMoveCutoverFixture(
   migrationId = 'move-1',
   phase: WslMoveCutoverPhase = 'prepared',
   extra: Partial<WslMoveCutover> = {},
   scope: { repoIds?: string[]; folderWorkspaceIds?: string[] } = {},
-  dormantState?: OrcadMigrationDormantStatePayload,
+  dormantState?: OCCdMigrationDormantStatePayload,
   distro = 'Ubuntu'
 ): WslMoveCutover {
   const repoIds = scope.repoIds ?? ['repo-1']
   const folderWorkspaceIds = scope.folderWorkspaceIds ?? []
   const unsigned = {
-    version: ORCAD_MIGRATION_MANIFEST_VERSION,
+    version: OCCD_MIGRATION_MANIFEST_VERSION,
     migrationId,
     createdAt: '2026-10-13T00:00:00.000Z',
     source: {
@@ -56,7 +56,7 @@ export function wslMoveCutoverFixture(
     },
     destinationEnvironmentId: `wsl:${distro}`
   }
-  const manifest = { ...unsigned, manifestSha256: computeOrcadMigrationManifestSha256(unsigned) }
+  const manifest = { ...unsigned, manifestSha256: computeOCCdMigrationManifestSha256(unsigned) }
   return {
     version: 1,
     migrationId,

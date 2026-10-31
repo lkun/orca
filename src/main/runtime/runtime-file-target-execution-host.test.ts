@@ -20,7 +20,7 @@ vi.mock('../ipc/markdown-documents', async () => ({
 
 import { ExecutionHostNotDispatchableError } from '../providers/execution-host-provider-dispatch'
 import { SshHostNotServedError } from '../providers/ssh-host-not-served-error'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 const REMOTE_PATH = '/srv/app-feature'
 const WORKTREE_ID = 'repo-shared::/srv/app-feature'
@@ -37,7 +37,7 @@ function makeRuntime(repos: readonly Record<string, unknown>[], hostId?: string)
     getRepos: () => repos,
     getRepo: (id: string) => repos.find((repo) => repo.id === id)
   }
-  const runtime = new OrcaRuntimeService(store as never)
+  const runtime = new OCCRuntimeService(store as never)
   runtime['resolveGitWorktreeSelector'] = vi.fn().mockResolvedValue({
     id: WORKTREE_ID,
     repoId: 'repo-shared',

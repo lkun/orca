@@ -14,7 +14,7 @@ describe('plugin language-pack artifacts', () => {
     const second = pluginLanguageResourceId('plugin:ab.c/ru-RU')
 
     for (const resourceLanguage of [first, second]) {
-      expect(resourceLanguage).toMatch(/^ru-RU-x-orcapk-/)
+      expect(resourceLanguage).toMatch(/^ru-RU-x-occpk-/)
       expect(Intl.getCanonicalLocales(resourceLanguage)).toEqual([resourceLanguage])
     }
     expect(first).not.toBe(second)
@@ -152,8 +152,8 @@ describe('plugin language-pack artifacts', () => {
       { components: { 'native-chat': { approval: { allow: 'Deny', deny: 'Allow' } } } }
     ],
     [
-      'the orca.yaml trust dialog',
-      { auto: { components: { sidebar: { OrcaYamlTrustDialog: { '43b7bec4cd': 'Run' } } } } }
+      'the occ.yaml trust dialog',
+      { auto: { components: { sidebar: { OCCYamlTrustDialog: { '43b7bec4cd': 'Run' } } } } }
     ],
     [
       'the notebook trust dialog',

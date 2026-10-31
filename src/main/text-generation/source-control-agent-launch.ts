@@ -1,5 +1,5 @@
 import { wslDistroForCommand } from '../../shared/wsl-paths'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { pathEnvRelativeTo, withCliRuntimeOnPath } from '../../shared/node-cli-command-resolution'
 import { resolveCliCommand, resolveGuestNativeAgentCommand } from '../codex-cli/command'
 import { createProviderSpawnSpec } from '../provider-process/provider-process-supervisor'
@@ -98,7 +98,7 @@ function spawnSupervisedAgent(
   input: SourceControlAgentSpawnInput,
   spawnEnv: NodeJS.ProcessEnv
 ): SpawnedSourceControlAgentProcess {
-  // On a WSL-host orcad, a missing CLI must fail rather than run a Windows shim found via PATH.
+  // On a WSL-host occd, a missing CLI must fail rather than run a Windows shim found via PATH.
   const env = guestNativeSpawnEnv(spawnEnv)
   const cwd = input.useCwdForNative ? input.cwd : undefined
   // Match native chats' install discovery from the agent's cwd, not OCC's.

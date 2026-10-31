@@ -27,7 +27,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { registerMobileHandlers } from './mobile'
 import { createMobileRpcSurfaceRuntime } from '../runtime/runtime-rpc-mobile-method-allowlist-fixtures'
-import { OrcaRuntimeRpcServer } from '../runtime/runtime-rpc'
+import { OCCRuntimeRpcServer } from '../runtime/runtime-rpc'
 
 const GLOBAL_IPV6 = '2605:340:cd51:2a01:0:2b13:f279:c096'
 
@@ -129,8 +129,8 @@ describe('pairing addresses follow the runtime listener family', () => {
         { family: 'IPv6', internal: false, address: GLOBAL_IPV6 }
       ]
     })
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-mobile-ipc-'))
-    const server = new OrcaRuntimeRpcServer({
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-mobile-ipc-'))
+    const server = new OCCRuntimeRpcServer({
       methods: [],
       runtime: createMobileRpcSurfaceRuntime().runtime,
       userDataPath,

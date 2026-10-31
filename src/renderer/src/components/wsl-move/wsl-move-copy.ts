@@ -1,4 +1,4 @@
-/** Plain-language copy for the WSL move dialog: no "manifest", "orcad" or "UNC". */
+/** Plain-language copy for the WSL move dialog: no "manifest", "occd" or "UNC". */
 import { translate } from '@/i18n/i18n'
 import type {
   WslMoveBlockerKind,

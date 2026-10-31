@@ -69,8 +69,8 @@ describe('listChangedFiles', () => {
     git('init', '-q')
     git('config', 'core.quotePath', 'true')
     git('commit', '--allow-empty', '-qm', 'base')
-    vi.stubEnv('ORCA_CODE_QUALITY_BASE', git('rev-parse', 'HEAD'))
-    vi.stubEnv('ORCA_FLAKY_TEST_RATCHET_ALL', '')
+    vi.stubEnv('OCC_CODE_QUALITY_BASE', git('rev-parse', 'HEAD'))
+    vi.stubEnv('OCC_FLAKY_TEST_RATCHET_ALL', '')
     const file = '測試.test.ts'
     writeFileSync(join(fixture, file), 'Date.now()\n')
     git('add', '--', file)
@@ -94,14 +94,14 @@ describe('listChangedFiles', () => {
     git('update-ref', 'refs/remotes/origin/main', commit('fork-base.txt'))
     const upstream = commit('upstream-drift.txt')
     commit('contribution.txt')
-    vi.stubEnv('ORCA_FLAKY_TEST_RATCHET_ALL', '')
-    vi.stubEnv('ORCA_CODE_QUALITY_BASE', '')
+    vi.stubEnv('OCC_FLAKY_TEST_RATCHET_ALL', '')
+    vi.stubEnv('OCC_CODE_QUALITY_BASE', '')
 
     expect([...listChangedFiles(fixture)].sort()).toEqual([
       'contribution.txt',
       'upstream-drift.txt'
     ])
-    vi.stubEnv('ORCA_CODE_QUALITY_BASE', upstream)
+    vi.stubEnv('OCC_CODE_QUALITY_BASE', upstream)
     expect([...listChangedFiles(fixture)]).toEqual(['contribution.txt'])
   })
 })

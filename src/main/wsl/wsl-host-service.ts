@@ -25,7 +25,7 @@ import {
   WSL_HOST_REMOVING_MESSAGE,
   wslHostRunRefusal
 } from './wsl-host-add-admission'
-import type { WslOrcadConnection } from './wsl-orcad-connection'
+import type { WslOCCdConnection } from './wsl-occd-connection'
 import { registerWslHost } from './wsl-host-registration'
 import { WslHostStatusBoard } from './wsl-host-status-board'
 import { withWslHostIds } from './wsl-host-records'
@@ -35,7 +35,7 @@ import {
   readdPendingWslHost,
   removeWslHostServer
 } from './wsl-host-removal'
-import type { WslOrcadConnectionStatus } from './wsl-orcad-connection-status'
+import type { WslOCCdConnectionStatus } from './wsl-occd-connection-status'
 import {
   forgetWslHostToWake,
   forgetWslHostsToWake,
@@ -75,8 +75,8 @@ export class WslHostService {
   /** C5's `onChange`: persist what moved, then tell the UI. */
   handleConnectionChange(
     distro: string,
-    connection: WslOrcadConnection | null,
-    status: WslOrcadConnectionStatus
+    connection: WslOCCdConnection | null,
+    status: WslOCCdConnectionStatus
   ): void {
     const record = this.recordForDistro(distro)
     if (!record) {
@@ -335,8 +335,8 @@ export class WslHostService {
 
   private setStatus(
     record: WslHostDeploymentRecord,
-    status: WslOrcadConnectionStatus,
-    connection: WslOrcadConnection | null = null
+    status: WslOCCdConnectionStatus,
+    connection: WslOCCdConnection | null = null
   ): void {
     this.board.set(toWslHostStatus(record, status, connection))
   }

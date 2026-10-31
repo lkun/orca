@@ -1,5 +1,5 @@
 import { createHmac } from 'node:crypto'
-import { ConnectorPollResponseSchema } from '@orca-cloud/connector-contract'
+import { ConnectorPollResponseSchema } from '@occ-cloud/connector-contract'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanupConnectorHarnesses } from './connector-server-harness.test-fixture.js'
 import { answerDeliveryId } from './owner-controls.js'

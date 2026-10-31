@@ -1,4 +1,4 @@
-import { PUSH_LIMITS } from '@orca-cloud/push-contract'
+import { PUSH_LIMITS } from '@occ-cloud/push-contract'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import {
   answerPushHostChallenge,
@@ -9,7 +9,7 @@ import { PushHostChallengeStore } from './host-challenge-store.js'
 import { deriveHostFingerprint } from './host-fingerprint.js'
 import { openInMemoryPushDatabase, type PushDatabase } from './push-database.js'
 
-const GATEWAY_ORIGIN = 'https://push.onorca.dev'
+const GATEWAY_ORIGIN = 'https://push.onocc.dev'
 
 describe('push host challenge store', () => {
   let database: PushDatabase

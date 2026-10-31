@@ -12,18 +12,18 @@ import {
 import { resolveServiceCommand } from '../runtime/serve-app-launcher'
 import { serveSupervisorBrakePath } from '../runtime/serve-supervisor-brake'
 
-describe('orca serve service', () => {
+describe('occ serve service', () => {
   let home: string
   let bin: string
   let calls: string[]
   let answers: Map<string, { code: number | null; out: string }>
 
   beforeEach(async () => {
-    home = await mkdtemp(join(tmpdir(), 'orca-serve-service-'))
+    home = await mkdtemp(join(tmpdir(), 'occ-serve-service-'))
     bin = join(home, 'bin')
     await mkdir(bin)
-    await writeFile(join(bin, 'orca'), '#!/bin/sh\n')
-    await chmod(join(bin, 'orca'), 0o755)
+    await writeFile(join(bin, 'occ'), '#!/bin/sh\n')
+    await chmod(join(bin, 'occ'), 0o755)
     await writeFile(join(bin, 'occ-ide'), '#!/bin/sh\n')
     await chmod(join(bin, 'occ-ide'), 0o755)
     calls = []
@@ -38,7 +38,7 @@ describe('orca serve service', () => {
     platform,
     env: {
       PATH: `/nonexistent:${bin}`,
-      ORCA_USER_DATA_PATH: join(home, 'profile'),
+      OCC_USER_DATA_PATH: join(home, 'profile'),
       ELECTRON_RUN_AS_NODE: '1'
     },
     homeDir: home,
@@ -55,9 +55,9 @@ describe('orca serve service', () => {
     await writeFile(serveSupervisorBrakePath(join(home, 'profile')), '{}')
     const result = await installServeService({ command: null, dryRun: false }, deps('darwin'))
     const unitPath = String(result.unitPath)
-    expect(await readFile(unitPath, 'utf8')).toContain(`<string>${join(bin, 'orca')}</string>`)
+    expect(await readFile(unitPath, 'utf8')).toContain(`<string>${join(bin, 'occ')}</string>`)
     expect(calls).toEqual([
-      expect.stringMatching(/^launchctl bootout gui\/501\/com\.stablyai\.orca\.serve\./),
+      expect.stringMatching(/^launchctl bootout gui\/501\/com\.stablyai\.occ\.serve\./),
       `launchctl bootstrap gui/501 ${unitPath}`
     ])
     expect(existsSync(serveSupervisorBrakePath(join(home, 'profile')))).toBe(false)
@@ -70,8 +70,8 @@ describe('orca serve service', () => {
     expect(result.linger).toBe('no')
     expect(calls.slice(0, 3)).toEqual([
       'systemctl --user daemon-reload',
-      expect.stringMatching(/^systemctl --user enable orca-serve-[0-9a-f]{8}\.service$/),
-      expect.stringMatching(/^systemctl --user restart orca-serve-/)
+      expect.stringMatching(/^systemctl --user enable occ-serve-[0-9a-f]{8}\.service$/),
+      expect.stringMatching(/^systemctl --user restart occ-serve-/)
     ])
   })
 
@@ -121,26 +121,26 @@ describe('orca serve service', () => {
     ])
   })
 
-  it('skips a profile launcher and refuses a bare Linux orca', async () => {
+  it('skips a profile launcher and refuses a bare Linux occ', async () => {
     const scoped = join(home, 'profile', 'cli', 'bin')
     await mkdir(scoped, { recursive: true })
-    await writeFile(join(scoped, 'orca'), '#!/bin/sh\n')
-    await chmod(join(scoped, 'orca'), 0o755)
+    await writeFile(join(scoped, 'occ'), '#!/bin/sh\n')
+    await chmod(join(scoped, 'occ'), 0o755)
     expect(
       resolveServiceCommand(null, {
         platform: 'darwin',
-        env: { PATH: `${scoped}:${bin}`, ORCA_USER_DATA_PATH: join(home, 'profile') }
+        env: { PATH: `${scoped}:${bin}`, OCC_USER_DATA_PATH: join(home, 'profile') }
       })
-    ).toBe(join(bin, 'orca'))
-    // Linux takes only occ-ide, never a bare `orca` (often the screen reader).
-    const onlyOrca = join(home, 'only-orca')
-    await mkdir(onlyOrca)
-    await writeFile(join(onlyOrca, 'orca'), '#!/bin/sh\n')
-    await chmod(join(onlyOrca, 'orca'), 0o755)
+    ).toBe(join(bin, 'occ'))
+    // Linux takes only occ-ide, never a bare `occ` (often the screen reader).
+    const onlyOCC = join(home, 'only-occ')
+    await mkdir(onlyOCC)
+    await writeFile(join(onlyOCC, 'occ'), '#!/bin/sh\n')
+    await chmod(join(onlyOCC, 'occ'), 0o755)
     expect(() =>
       resolveServiceCommand(null, {
         platform: 'linux',
-        env: { PATH: onlyOrca, ORCA_USER_DATA_PATH: join(home, 'profile') }
+        env: { PATH: onlyOCC, OCC_USER_DATA_PATH: join(home, 'profile') }
       })
     ).toThrow(/PATH/)
   })
@@ -149,12 +149,12 @@ describe('orca serve service', () => {
     await expect(
       installServeService({ command: null, dryRun: true }, deps('win32'))
     ).rejects.toThrow(/Windows/)
-    expect(() => resolveServiceCommand('orca', { platform: 'darwin', env: {} })).toThrow()
+    expect(() => resolveServiceCommand('occ', { platform: 'darwin', env: {} })).toThrow()
     expect(() =>
       resolveServiceCommand(null, { platform: 'darwin', env: { PATH: '/nonexistent' } })
     ).toThrow(/PATH/)
   })
-  it('names the command to run when only a server-only orca exists here', async () => {
+  it('names the command to run when only a server-only occ exists here', async () => {
     // SSH server launchers run on plain Node, without an installed Electron desktop.
     const serverCli = (platform: NodeJS.Platform, path: string): ServeServiceDeps => {
       const base = deps(platform)
@@ -163,14 +163,14 @@ describe('orca serve service', () => {
     }
     const scoped = join(home, 'profile', 'cli', 'bin')
     await mkdir(scoped, { recursive: true })
-    await writeFile(join(scoped, 'orca'), '#!/bin/sh\n')
-    await chmod(join(scoped, 'orca'), 0o755)
+    await writeFile(join(scoped, 'occ'), '#!/bin/sh\n')
+    await chmod(join(scoped, 'occ'), 0o755)
     await expect(
       installServeService({ command: null, dryRun: false }, serverCli('linux', scoped))
     ).rejects.toThrow(/install the OCC app.*`occ-ide serve service install`/i)
     await expect(
       installServeService({ command: null, dryRun: true }, serverCli('darwin', scoped))
-    ).rejects.toThrow(/`orca serve service install`/)
+    ).rejects.toThrow(/`occ serve service install`/)
     expect(calls).toEqual([])
     await expect(
       installServeService({ command: null, dryRun: true }, serverCli('linux', `${scoped}:${bin}`))
@@ -186,12 +186,12 @@ describe('orca serve service', () => {
   it('refuses a --command tied to one OCC version', async () => {
     const scoped = join(home, 'profile', 'cli', 'bin')
     await mkdir(scoped, { recursive: true })
-    await writeFile(join(scoped, 'orca'), '#!/bin/sh\n')
-    await chmod(join(scoped, 'orca'), 0o755)
+    await writeFile(join(scoped, 'occ'), '#!/bin/sh\n')
+    await chmod(join(scoped, 'occ'), 0o755)
     expect(() =>
-      resolveServiceCommand(join(scoped, 'orca'), {
+      resolveServiceCommand(join(scoped, 'occ'), {
         platform: 'darwin',
-        env: { ORCA_USER_DATA_PATH: join(home, 'profile') }
+        env: { OCC_USER_DATA_PATH: join(home, 'profile') }
       })
     ).toThrow(/one OCC version/)
   })

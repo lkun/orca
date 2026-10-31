@@ -51,7 +51,7 @@ const DIFF_ID = `${GIT_KEY}::diff::unstaged::src/app.ts`
 const VIEW: LayoutEditorView = {
   view: { mode: 'diff', diffSource: 'unstaged' },
   file: {
-    filePath: '/Users/dev/orca/src/app.ts',
+    filePath: '/Users/dev/occ/src/app.ts',
     relativePath: 'src/app.ts',
     language: 'typescript'
   }

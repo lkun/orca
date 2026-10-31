@@ -1,4 +1,4 @@
-import { PUSH_LIMITS } from '@orca-cloud/push-contract'
+import { PUSH_LIMITS } from '@occ-cloud/push-contract'
 import type { Context, MiddlewareHandler } from 'hono'
 
 const REFILL_WINDOW_MS = 60_000

@@ -7,7 +7,7 @@ import { HEADLESS_RUNTIME_WINDOW_ID } from '../../shared/runtime-session-contrac
 import { applyCommandToSession } from '../persistence/terminal-topology/terminal-pane-admission'
 import { resolveHostId } from '../persistence/loading-store/session-host-partitions'
 import { withDurableRuntimeStore, withRuntimePaneAdmission } from './runtime-durable-store-fixture'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 export const REPO = {
   id: 'repo-1',
@@ -93,7 +93,7 @@ export function setupMainOwnedWorkspace(opts: { split?: boolean; pinned?: boolea
     })
   )
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the fake carries every store method a close, rename and sleep reach.
-  const runtime = new OrcaRuntimeService(store as never)
+  const runtime = new OCCRuntimeService(store as never)
   const stopped: string[] = []
   runtime.setPtyController({
     write: () => true,
@@ -110,7 +110,7 @@ export function setupMainOwnedWorkspace(opts: { split?: boolean; pinned?: boolea
     const leafId = index === 0 ? LEAF_A : LEAF_B
     runtime.registerPty(ptyId, WORKTREE_ID, null, { tabId: TAB_ID, leafId })
   }
-  // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: both members are declared on OrcaRuntimeService's inheritance chain.
+  // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: both members are declared on OCCRuntimeService's inheritance chain.
   const internals = runtime as unknown as {
     issuePtyHandle: (pty: unknown) => string
     ptysById: Map<string, { title?: string | null; titleUpdatedAt?: number }>

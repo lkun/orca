@@ -12,21 +12,21 @@ let _userDataDir: string | null = null
 export function initDataPath(): void {
   const userDataDir = getAppEnvironment().getPath('userData')
   _userDataDir = userDataDir
-  _dataFile = join(userDataDir, 'orca-data.json')
+  _dataFile = join(userDataDir, 'occ-data.json')
 }
 
 export function getDataFile(): string {
   if (!_dataFile) {
     const userDataDir = getAppEnvironment().getPath('userData')
     _userDataDir = userDataDir
-    _dataFile = join(userDataDir, 'orca-data.json')
+    _dataFile = join(userDataDir, 'occ-data.json')
   }
   return _dataFile
 }
 
 // Cache polls use a disposable sidecar to avoid full-profile rewrites; snapshots accelerate next-launch badges.
 export function getGithubCacheFile(dataFile = getDataFile()): string {
-  return join(dirname(dataFile), 'orca-github-cache.json')
+  return join(dirname(dataFile), 'occ-github-cache.json')
 }
 
 export function readGithubCacheSnapshot(dataFile: string): PersistedState['githubCache'] | null {

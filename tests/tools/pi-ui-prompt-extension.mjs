@@ -1,6 +1,6 @@
-// Load with Pi's -e flag; /orca-modal exercises real dialogs without a model or API key.
+// Load with Pi's -e flag; /occ-modal exercises real dialogs without a model or API key.
 export default function (pi) {
-  pi.registerCommand('orca-modal', {
+  pi.registerCommand('occ-modal', {
     description: 'Verify OCC status: select, confirm, input, editor, or custom',
     handler: async (args, ctx) => {
       const kind = args.trim() || 'select'

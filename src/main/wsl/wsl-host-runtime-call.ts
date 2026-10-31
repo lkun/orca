@@ -10,7 +10,7 @@ import {
   wslHostRunRefusal
 } from './wsl-host-add-admission'
 import { admitConnectToPendingHost } from './wsl-host-removal'
-import type { WslOrcadConnection } from './wsl-orcad-connection'
+import type { WslOCCdConnection } from './wsl-occd-connection'
 
 export type WslHostRuntimeCallPort = {
   record: WslHostDeploymentRecord | null
@@ -22,7 +22,7 @@ export type WslHostRuntimeCallPort = {
   isVisible: () => boolean
   /** Shown as liveness shows a stop, so the host's panes offer Start. */
   publishStopped: (record: WslHostDeploymentRecord) => void
-  publishReady: (record: WslHostDeploymentRecord, connection: WslOrcadConnection) => void
+  publishReady: (record: WslHostDeploymentRecord, connection: WslOCCdConnection) => void
   /** The same call again, once the distro is confirmed running. */
   retry: () => Promise<void>
 }

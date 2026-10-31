@@ -88,7 +88,7 @@ export async function hashPluginTree(root: string): Promise<PluginTreeHashResult
     }
     const hash = createHash('sha256')
     // Length framing prevents delimiter-containing paths/bytes from sharing a hash preimage.
-    hash.update('orca-plugin-tree-v1\0')
+    hash.update('occ-plugin-tree-v1\0')
     let totalBytes = 0
     for (const file of files) {
       totalBytes += file.size

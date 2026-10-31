@@ -24,7 +24,7 @@ describe('Claude settings written for a strict settings schema', () => {
   let settingsPath: string
 
   beforeEach(() => {
-    tmpHome = mkdtempSync(join(tmpdir(), 'orca-claude-settings-schema-'))
+    tmpHome = mkdtempSync(join(tmpdir(), 'occ-claude-settings-schema-'))
     settingsPath = join(tmpHome, '.claude', 'settings.json')
     vi.stubEnv('HOME', tmpHome)
     vi.stubEnv('USERPROFILE', tmpHome)

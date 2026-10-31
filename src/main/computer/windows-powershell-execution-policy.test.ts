@@ -64,7 +64,7 @@ describe('isExecutionPolicyBlocked', () => {
 describe('windowsPowerShellRuntimeArgs', () => {
   it('never emits Bypass unless the caller escalated to it', () => {
     const preferred = windowsPowerShellRuntimeArgs(
-      'C:\\orca\\runtime.ps1',
+      'C:\\occ\\runtime.ps1',
       PREFERRED_WINDOWS_EXECUTION_POLICY,
       ['-Serve']
     )
@@ -76,7 +76,7 @@ describe('windowsPowerShellRuntimeArgs', () => {
       '-ExecutionPolicy',
       'RemoteSigned',
       '-File',
-      'C:\\orca\\runtime.ps1',
+      'C:\\occ\\runtime.ps1',
       '-Serve'
     ])
   })

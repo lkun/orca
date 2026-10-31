@@ -1,5 +1,5 @@
 import type { Page } from '@stablyai/playwright-test'
-import { expect } from './orca-app'
+import { expect } from './occ-app'
 import type { CommitMessageAiSettings } from '../../../src/shared/commit-message-ai-types'
 
 // Raw git worktree add bypasses OCC’s 5s scan-cache invalidation; poll for 10s to cross the TTL and allow a slow scan.

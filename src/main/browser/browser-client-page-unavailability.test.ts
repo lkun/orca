@@ -3,7 +3,7 @@ import type { BrowserClientHostCommandEvent } from '../../shared/browser-client-
 import type { BrowserRoutePageGuestIdentity } from './browser-route-page-authority'
 import { BrowserClientPageCommandExecutor } from './browser-client-page-command-executor'
 
-const partition = `persist:orca-browser-v1-${'a'.repeat(64)}`
+const partition = `persist:occ-browser-v1-${'a'.repeat(64)}`
 const registration = {
   partition,
   browserPageId: 'page-a',
@@ -57,7 +57,7 @@ function harness() {
   }
   const onPageUnavailable = vi.fn()
   const executor = new BrowserClientPageCommandExecutor({
-    orcaProfileId: 'profile-a',
+    occProfileId: 'profile-a',
     authorityConnectionIdentity: 'authority-a',
     pairingAuthorityConnectionIdentity: 'pairing-authority-a',
     legacyAuthorityConnectionIdentity: 'legacy-authority-a',

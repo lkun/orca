@@ -338,7 +338,7 @@ describe('async occurrences through the phone controller and rendered card actio
           kind: 'agent',
           senders: [
             {
-              party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: null },
+              party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: null },
               name: 'Coder'
             }
           ],

@@ -149,7 +149,7 @@ function rebindDuringFirstResolution() {
   }
 }
 beforeEach(() => {
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-pr35023-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-pr35023-'))
   const original = createStore()
   original.addRepo(makeRepo({ id: 'work', path: '/work', issueSourcePreference: 'origin' }))
   original.updateRepo({ id: 'work' }, { ghAccount: { host: ' GitHub.COM ', user: ' Alice ' } })

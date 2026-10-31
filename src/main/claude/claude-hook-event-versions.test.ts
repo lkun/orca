@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { readManagedHookDetectionResult } from '../agent-hooks/managed-hook-detection-commands'
 import { getClaudeManagedHookPlan } from './claude-managed-hook-events'
 
-vi.mock('@orca/process-host', () => ({ runProcess: vi.fn() }))
+vi.mock('@occ/process-host', () => ({ runProcess: vi.fn() }))
 import { compareAppVersions } from '../../shared/app-version'
 import fixture from './__fixtures__/claude-hook-event-enums.json'
 import {

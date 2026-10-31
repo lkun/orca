@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { ManagedCodexHomeTemporarilyUnavailableError } from '../codex-accounts/host-codex-managed-home-ownership'
 import { prepareCodexAiVaultSessionResume } from './codex-ai-vault-session-resume'
-import { getOrcaManagedCodexHomePath } from './codex-home-paths'
+import { getOCCManagedCodexHomePath } from './codex-home-paths'
 
 const ROLLOUT_RELATIVE_PATH = join(
   'sessions',
@@ -17,8 +17,8 @@ const ROLLOUT_RELATIVE_PATH = join(
 // Why: session backfill resolves OCC's managed Codex home from userData, which otherwise resolves to the live one.
 let userDataRoot: string
 beforeEach(() => {
-  userDataRoot = mkdtempSync(join(tmpdir(), 'orca-codex-resume-user-data-'))
-  vi.stubEnv('ORCA_USER_DATA_PATH', userDataRoot)
+  userDataRoot = mkdtempSync(join(tmpdir(), 'occ-codex-resume-user-data-'))
+  vi.stubEnv('OCC_USER_DATA_PATH', userDataRoot)
 })
 afterEach(() => {
   vi.restoreAllMocks()
@@ -35,7 +35,7 @@ describe('prepareCodexAiVaultSessionResume', () => {
 
   beforeEach(() => {
     preparePinnedLaunchHome = vi.fn(async () => undefined)
-    root = mkdtempSync(join(tmpdir(), 'orca-codex-ai-vault-resume-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-codex-ai-vault-resume-'))
     peerHome = join(root, 'codex-accounts', 'account-a', 'home')
     selectedHome = join(root, 'codex-accounts', 'account-b', 'home')
     peerRolloutPath = join(peerHome, ROLLOUT_RELATIVE_PATH)
@@ -111,7 +111,7 @@ describe('prepareCodexAiVaultSessionResume', () => {
   })
 
   it('leaves a fork moved into the real home to the pane spawn', async () => {
-    const legacyHome = getOrcaManagedCodexHomePath()
+    const legacyHome = getOCCManagedCodexHomePath()
     const legacyRolloutPath = join(legacyHome, ROLLOUT_RELATIVE_PATH)
     mkdirSync(dirname(legacyRolloutPath), { recursive: true })
     writeFileSync(legacyRolloutPath, '{"type":"session_meta"}\n', 'utf-8')

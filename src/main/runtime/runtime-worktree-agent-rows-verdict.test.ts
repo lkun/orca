@@ -53,7 +53,7 @@ const journals = createTrackedJournalOpener()
 
 beforeEach(async () => {
   _internals.resetCachesForTests()
-  root = await mkdtemp(join(tmpdir(), 'orca-verdict-rows-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-verdict-rows-'))
 })
 
 afterEach(async () => {

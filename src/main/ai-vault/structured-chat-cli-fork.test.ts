@@ -65,7 +65,7 @@ afterEach(async () => {
 
 it('locates the current Codex rollout in its recorded home and materializes the selected home', async () => {
   root = await mkdtemp(join(tmpdir(), 'chat-cli-fork-'))
-  vi.stubEnv('ORCA_USER_DATA_PATH', root)
+  vi.stubEnv('OCC_USER_DATA_PATH', root)
   const home = join(root, 'codex-runtime-home', 'home')
   const system = join(root, 'system')
   const record = agentSessionRecordFixture()
@@ -110,7 +110,7 @@ it.runIf(process.platform === 'win32')(
   'maps an extended-length Windows rollout path into the prepared home (#27200)',
   async () => {
     root = await mkdtemp(join(tmpdir(), 'chat-cli-fork-'))
-    vi.stubEnv('ORCA_USER_DATA_PATH', root)
+    vi.stubEnv('OCC_USER_DATA_PATH', root)
     const home = join(root, 'codex-runtime-home', 'home')
     const system = join(root, 'system')
     const record = agentSessionRecordFixture()

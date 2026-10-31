@@ -11,7 +11,7 @@ import {
 
 /** Refuses replacing or removing a pairing that SSH access or a managed deployment depends on. */
 export function assertNoIndependentSshAccess(environment: KnownRuntimeEnvironment): void {
-  if (environment.orcadDeployment) {
+  if (environment.occdDeployment) {
     throw remoteServerPairingStoreError('managedDeployment')
   }
   if (environment.pendingSshAccessOperation) {
@@ -36,7 +36,7 @@ export function assertPairingReplaceableByAdd(
   if (source === 'ephemeral-vm') {
     throw remoteServerPairingStoreError('alreadyPairedCloudIdentity', named)
   }
-  if (environment.orcadDeployment?.kind === 'wsl') {
+  if (environment.occdDeployment?.kind === 'wsl') {
     throw remoteServerPairingStoreError('alreadyPairedWslHost', named)
   }
   try {

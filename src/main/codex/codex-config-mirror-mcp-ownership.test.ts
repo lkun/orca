@@ -12,7 +12,7 @@ let runtimeHomePath: string
 let systemHomePath: string
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-mcp-ownership-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-mcp-ownership-'))
   runtimeHomePath = join(root, 'runtime')
   systemHomePath = join(root, 'system')
   mkdirSync(runtimeHomePath)
@@ -21,7 +21,7 @@ beforeEach(() => {
 
 afterEach(() => rmSync(root, { recursive: true, force: true }))
 
-const BASELINE_FILE = '.orca-config-settings-baseline.json'
+const BASELINE_FILE = '.occ-config-settings-baseline.json'
 
 type StoredBaselineFixture = {
   version: 1 | 3
@@ -91,7 +91,7 @@ describe('canonical MCP ownership during config mirroring', () => {
     )
     expect(
       JSON.parse(
-        readFileSync(join(runtimeHomePath, '.orca-config-settings-baseline.json'), 'utf-8')
+        readFileSync(join(runtimeHomePath, '.occ-config-settings-baseline.json'), 'utf-8')
       )
     ).toMatchObject({ mcpServerRoot: true })
     writeFileSync(join(runtimeHomePath, 'config.toml'), '[mcp_servers.shared]\nenabled = false\n')
@@ -110,7 +110,7 @@ describe('MCP ownership migration', () => {
     writeFileSync(join(runtimeHomePath, 'config.toml'), '[mcp_servers.removed]\ncommand = "old"\n')
     writeFileSync(join(systemHomePath, 'config.toml'), 'model = "system"\n')
     writeFileSync(
-      join(runtimeHomePath, '.orca-config-settings-baseline.json'),
+      join(runtimeHomePath, '.occ-config-settings-baseline.json'),
       JSON.stringify({ version: 1, settings: {} })
     )
 
@@ -121,7 +121,7 @@ describe('MCP ownership migration', () => {
     )
     expect(
       JSON.parse(
-        readFileSync(join(runtimeHomePath, '.orca-config-settings-baseline.json'), 'utf-8')
+        readFileSync(join(runtimeHomePath, '.occ-config-settings-baseline.json'), 'utf-8')
       )
     ).toMatchObject({ mcpServers: [] })
     writeFileSync(join(runtimeHomePath, 'config.toml'), '[mcp_servers.added]\ncommand = "new"\n')
@@ -161,7 +161,7 @@ describe('MCP ownership migration', () => {
       join(runtimeHomePath, 'config.toml'),
       [
         '[mcp_servers.demo-mcp]',
-        'command = "orca-only"',
+        'command = "occ-only"',
         '[mcp_servers.removed]',
         'command = "mirrored"',
         '[mcp_servers.kept]',
@@ -178,7 +178,7 @@ describe('MCP ownership migration', () => {
     syncSystemConfigIntoLegacySharedCodexHome({ runtimeHomePath, systemHomePath })
 
     const runtimeConfig = readFileSync(join(runtimeHomePath, 'config.toml'), 'utf-8')
-    expect(runtimeConfig).toContain('[mcp_servers.demo-mcp]\ncommand = "orca-only"')
+    expect(runtimeConfig).toContain('[mcp_servers.demo-mcp]\ncommand = "occ-only"')
     expect(runtimeConfig).not.toContain('[mcp_servers.removed]')
     expect(runtimeConfig).toContain('[mcp_servers.kept]\ncommand = "system"')
     expect(runtimeConfig).not.toContain('"stale"')
@@ -186,7 +186,7 @@ describe('MCP ownership migration', () => {
   })
 
   it('leaves the retained shared home untouched when its baseline cannot be read', () => {
-    const runtimeConfig = 'model = "retained"\n[mcp_servers.demo-mcp]\ncommand = "orca-only"\n'
+    const runtimeConfig = 'model = "retained"\n[mcp_servers.demo-mcp]\ncommand = "occ-only"\n'
     writeFileSync(join(runtimeHomePath, 'config.toml'), runtimeConfig)
     writeFileSync(join(systemHomePath, 'config.toml'), 'model = "system"\n')
     mkdirSync(join(runtimeHomePath, BASELINE_FILE))

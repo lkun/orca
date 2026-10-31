@@ -36,7 +36,7 @@ const SEAM_IMPORT = "import { TEXT_INPUT_FONT_SIZE } from '../platform/text-inpu
 
 // Isolate planted offenders from other censuses’ source trees.
 function plant(files) {
-  const root = mkdtempSync(join(tmpdir(), 'orca-text-input-census-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-text-input-census-'))
   for (const [path, source] of Object.entries({ ...FLOOR_SOURCE, ...files })) {
     mkdirSync(join(root, path.slice(0, path.lastIndexOf('/'))), { recursive: true })
     writeFileSync(join(root, path), source)

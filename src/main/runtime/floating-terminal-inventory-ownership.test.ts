@@ -4,10 +4,10 @@ import { FLOATING_TERMINAL_WORKTREE_ID } from '../../shared/constants'
 import { committingSpawn } from './bind-first-pane.test-fixture'
 
 // Preserve side-effect order: mocks, lifecycle, fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const { createFolderWorkspaceRuntimeStore, makeFolderProjectGroup, makeFolderWorkspace, store } =
-  await import('./orca-runtime-test-fixtures.spec')
+  await import('./occ-runtime-test-fixtures.spec')
 
 const HOME_FOLDER = '/tmp/platform'
 
@@ -21,7 +21,7 @@ function makeRuntime() {
     getSettings: () => ({ ...store.getSettings(), floatingTerminalCwd: HOME_FOLDER })
   }
   const live = new Set<string>()
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   const spawn = vi.fn(
     committingSpawn(
       runtime,

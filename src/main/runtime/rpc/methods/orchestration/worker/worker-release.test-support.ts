@@ -2,10 +2,10 @@ import { expect, vi } from 'vitest'
 import { ORCHESTRATION_METHODS } from '../../orchestration'
 import { eraseRpcMethods, type RpcContext } from '../../../core'
 import { OrchestrationDb } from '../../../../orchestration/db'
-import { OrcaRuntimeService } from '../../../../orca-runtime'
+import { OCCRuntimeService } from '../../../../occ-runtime'
 import type { TuiAgent } from '../../../../../../shared/tui-agent'
 import type { RuntimeStore } from '../../../../runtime-store-contract'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
 import {
   getAppEnvironment,
   hasAppEnvironment,
@@ -51,7 +51,7 @@ export type OrchestrationWorkerReleaseHarness = {
   coordinatorPaneKey: string
   workerPaneKey: string
   readonly db: OrchestrationDb
-  readonly runtime: OrcaRuntimeService
+  readonly runtime: OCCRuntimeService
   readonly activeRunId: string
   readonly inspectProcessLiveness: ReturnType<typeof vi.fn>
 }
@@ -81,7 +81,7 @@ function workerReleaseLayoutStore(): RuntimeStore {
 export function createOrchestrationWorkerReleaseHarness(): OrchestrationWorkerReleaseHarness {
   let db: OrchestrationDb
   let dbOpen = false
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
   let ctx: RpcContext
   let activeRunId: string
   let inspectProcessLiveness: ReturnType<typeof vi.fn>
@@ -116,7 +116,7 @@ export function createOrchestrationWorkerReleaseHarness(): OrchestrationWorkerRe
 
   // A file-backed runtime opens its database itself, as startup does, so armed deadlines recover.
   function startRuntime(): void {
-    runtime = new OrcaRuntimeService(ORCA_LAYOUT_OWNER_IS_MAIN ? workerReleaseLayoutStore() : null)
+    runtime = new OCCRuntimeService(OCC_LAYOUT_OWNER_IS_MAIN ? workerReleaseLayoutStore() : null)
     if (userDataDir) {
       db = runtime.getOrchestrationDb()
     } else {
@@ -182,7 +182,7 @@ export function createOrchestrationWorkerReleaseHarness(): OrchestrationWorkerRe
       status: 'running',
       exitCode: null
     })
-    vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('orca')
+    vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('occ')
     vi.spyOn(runtime, 'sendTerminalAgentPrompt').mockResolvedValue({
       handle: 'term_worker',
       accepted: true,

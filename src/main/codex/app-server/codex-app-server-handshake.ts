@@ -8,7 +8,7 @@ export async function initializeCodexAppServerConnection(
   await connection.request(
     'initialize',
     {
-      clientInfo: { name: 'orca_desktop', title: 'OCC', version: '0.0.0' },
+      clientInfo: { name: 'occ_desktop', title: 'OCC', version: '0.0.0' },
       capabilities: {
         experimentalApi: true,
         requestAttestation: false,

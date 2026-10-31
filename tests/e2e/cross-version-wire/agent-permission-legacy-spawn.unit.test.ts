@@ -2,15 +2,15 @@ import { tokenizeStartupCommand } from '../../../src/shared/tui-agent-startup-sh
 import * as startupInputs from '../../../src/shared/agent-startup-plan-inputs'
 import { resolveBaselineAgentStartupPlanInputs } from '../../../src/shared/agent-startup-plan-inputs-baseline-test-fixture'
 import {
-  OrcaRuntimeService,
+  OCCRuntimeService,
   getDefaultWorkspaceSession
-} from '../../../src/main/runtime/orca-runtime-test-mocks.spec'
-import '../../../src/main/runtime/orca-runtime-test-lifecycle.spec'
+} from '../../../src/main/runtime/occ-runtime-test-mocks.spec'
+import '../../../src/main/runtime/occ-runtime-test-lifecycle.spec'
 import {
   TEST_WORKTREE_ID,
   TEST_WORKTREE_PATH,
   makeRuntimeStoreWithWorkspaceSession
-} from '../../../src/main/runtime/orca-runtime-test-fixtures.spec'
+} from '../../../src/main/runtime/occ-runtime-test-fixtures.spec'
 import { committingSpawn } from '../../../src/main/runtime/bind-first-pane.test-fixture'
 import type { RuntimePtyController } from '../../../src/main/runtime/runtime-pty-controller-contract'
 import { RpcDispatcher } from '../../../src/main/runtime/rpc/dispatcher'
@@ -168,7 +168,7 @@ describe('createWebRuntimeSessionTerminal', () => {
       })
     )
     const { runtimeStore } = makeRuntimeStoreWithWorkspaceSession(getDefaultWorkspaceSession())
-    const runtime = new OrcaRuntimeService({
+    const runtime = new OCCRuntimeService({
       ...runtimeStore,
       getSettings: () => ({ ...runtimeStore.getSettings(), ...settings })
     })

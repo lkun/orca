@@ -147,7 +147,7 @@ function readCompleteDiagnostics(stdout, root, comparisonBase) {
 export function main(
   root = process.cwd(),
   requestedBase = process.argv.slice(2).find((argument) => argument !== '--') ??
-    process.env.ORCA_CODE_QUALITY_BASE ??
+    process.env.OCC_CODE_QUALITY_BASE ??
     'origin/main',
   run = runAuditTool
 ) {

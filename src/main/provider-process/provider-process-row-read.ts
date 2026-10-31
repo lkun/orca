@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { runPsInProcess } from '../../shared/libproc-process-table'
 import { parseProcessTable, type ProcessTableRow } from '../pty-process-table-parser'
 

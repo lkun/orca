@@ -59,7 +59,7 @@ function config(overrides: Partial<RelayConfig> = {}): RelayConfig {
     cellUrl: 'https://relay.example.test',
     region: 'us-central1',
     authIssuer: 'https://auth.example.test',
-    authAudience: 'orca-relay',
+    authAudience: 'occ-relay',
     jwksUrl: 'https://auth.example.test/jwks',
     assignmentSigningKey: new Uint8Array(32),
     role: 'director',

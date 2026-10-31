@@ -2,26 +2,26 @@ import { existsSync, mkdtempSync, realpathSync, rmSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { _electron as electron, type ElectronApplication } from '@stablyai/playwright-test'
-import { test, expect, forwardElectronProcessLogs } from './helpers/orca-app'
-import { getOrcaElectronLaunchArgs } from './helpers/electron-launch-args'
+import { test, expect, forwardElectronProcessLogs } from './helpers/occ-app'
+import { getOCCElectronLaunchArgs } from './helpers/electron-launch-args'
 import { cleanupE2EDaemons, closeElectronAppForE2E } from './helpers/electron-process-shutdown'
 import { assertElectronResolvedIsolatedHome } from './helpers/electron-home-isolation'
-import { isolatedServeProfile } from './helpers/orca-serve-cli-host'
+import { isolatedServeProfile } from './helpers/occ-serve-cli-host'
 import { RuntimeClient } from '../../src/cli/runtime/client'
 import { RuntimeClientError } from '../../src/cli/runtime/types'
 
-// Regression: a profile-less Windows session (e.g. `orca serve` over SSH) has no roaming AppData,
+// Regression: a profile-less Windows session (e.g. `occ serve` over SSH) has no roaming AppData,
 // and Electron 43 crashed natively resolving userData before OCC pinned it.
-test('orca serve starts on Windows when the home has no AppData folder', async (// oxlint-disable-next-line no-empty-pattern -- This spec owns its launch and opts out of the default app fixture.
+test('occ serve starts on Windows when the home has no AppData folder', async (// oxlint-disable-next-line no-empty-pattern -- This spec owns its launch and opts out of the default app fixture.
 {}, testInfo) => {
   test.skip(process.platform !== 'win32', 'Windows AppData resolution only')
 
   const mainPath = path.join(process.cwd(), 'out', 'main', 'index.js')
-  const userDataDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-missing-appdata-'))
+  const userDataDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-missing-appdata-'))
   const missingAppData = path.join(userDataDir, 'absent', 'AppData', 'Roaming')
   const isolation = isolatedServeProfile(userDataDir, {
     NODE_ENV: 'development',
-    ORCA_E2E_HEADLESS: '1',
+    OCC_E2E_HEADLESS: '1',
     APPDATA: missingAppData
   })
   rmSync(path.join(isolation.isolatedHome, 'AppData'), { recursive: true, force: true })
@@ -30,7 +30,7 @@ test('orca serve starts on Windows when the home has no AppData folder', async (
   let serveApp: ElectronApplication | null = null
   try {
     serveApp = await electron.launch({
-      args: [...getOrcaElectronLaunchArgs(mainPath, false), '--serve', '--serve-no-pairing'],
+      args: [...getOCCElectronLaunchArgs(mainPath, false), '--serve', '--serve-no-pairing'],
       env: Object.fromEntries(
         Object.entries(isolation.env).filter(
           (entry): entry is [string, string] => entry[1] !== undefined
@@ -67,7 +67,7 @@ test('orca serve starts on Windows when the home has no AppData folder', async (
             throw error
           }
         },
-        { timeout: 60_000, message: 'orca serve never became ready without AppData' }
+        { timeout: 60_000, message: 'occ serve never became ready without AppData' }
       )
       .toBe('openable')
   } finally {

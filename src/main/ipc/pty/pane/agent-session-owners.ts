@@ -5,7 +5,7 @@ import {
 import type { AgentSessionOwnerBinding } from '../../../../shared/agent-session-host-authority'
 import { ClaimedAgentPtyOwnerRegistry } from '../../../../shared/claimed-agent-pty-owner'
 import { isPtyIncarnationId } from '../../../../shared/pty-incarnation'
-import type { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import type { PtySpawnResult } from '../../../providers/pty-provider-contract'
 import { ptyIncarnationById, ptyOwnership } from '../provider/ownership-state'
 import type { ExecutionHostId } from '../../../../shared/execution-host'
@@ -19,7 +19,7 @@ const OWNER_LISTING_DEADLINE_MS = 5_000
 
 // Spawn-result restores bypass onPtyData; both entry points must seed list/read history. The empty-record guard prevents duplicate seeding.
 export function seedTerminalRestoreRecordsFromSpawnResult(
-  runtime: OrcaRuntimeService | undefined,
+  runtime: OCCRuntimeService | undefined,
   result: PtySpawnResult
 ): void {
   const text =
@@ -62,7 +62,7 @@ export function assertSpawnReplyWasLive(result: PtySpawnResult): void {
 }
 
 export function assertSpawnRegistrationAllowed(
-  runtime: Pick<OrcaRuntimeService, 'assertPtyRegistrationAllowed'> | undefined,
+  runtime: Pick<OCCRuntimeService, 'assertPtyRegistrationAllowed'> | undefined,
   result: PtySpawnResult
 ): void {
   try {

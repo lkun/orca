@@ -79,7 +79,7 @@ import { useTerminalWatcherEffects } from '../use-terminal-watcher-effects'
 import { beginStructuredAgentSessionProvisionalLaunch } from '@/lib/agent-session/structured-agent-session-provisional-tab'
 import { isEmptyWorkspaceDefaultSurfacePending } from '@/lib/empty-workspace-default-surface-claims'
 import type { AgentSessionLaunchPlan } from '@/lib/agent-session-launch-plan'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true })
@@ -174,7 +174,7 @@ function expectNoShell(): void {
 
 /** The watcher's shell create: here, or (switch-on) sent to main, whose frame draws it. */
 async function expectShellCreatedOnce(): Promise<void> {
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     await layoutApplyTestTransport.settle()
     expect(layoutApplyTestTransport.sentOfType('createTerminalTab')).toEqual([
       expect.objectContaining({ workspace: 'wt-1' })
@@ -186,7 +186,7 @@ async function expectShellCreatedOnce(): Promise<void> {
 
 /** Observe the original create/open request count; finishChat verifies the actual drawn row. */
 async function expectChatOpenedOnce(): Promise<void> {
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     await layoutApplyTestTransport.settle()
     expect(layoutApplyTestTransport.sentOfType('openAgentSessionTab')).toEqual([
       expect.objectContaining({ workspace: 'wt-1', sessionId: 'claude_1' })

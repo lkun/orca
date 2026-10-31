@@ -120,7 +120,7 @@ export function registerWorkspaceSessionWriteListenersTests(): void {
     const fixed = new Set([TEST_LEAF_1, TEST_LEAF_2])
     const renamed = new Map<string, string>()
     const json = JSON.stringify(value)
-      .replace(/orca-worker-coordination-[A-Za-z0-9]+/g, 'orca-worker-coordination-dir')
+      .replace(/occ-worker-coordination-[A-Za-z0-9]+/g, 'occ-worker-coordination-dir')
       .replace(/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/g, (id) => {
         if (fixed.has(id)) {
           return id

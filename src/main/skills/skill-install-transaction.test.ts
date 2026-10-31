@@ -15,7 +15,7 @@ import { skillInstallStateKey } from './skill-install-provenance'
 const temporaryDirectories: string[] = []
 
 async function temporaryDirectory(): Promise<string> {
-  const directory = await mkdtemp(join(tmpdir(), 'orca-skill-install-test-'))
+  const directory = await mkdtemp(join(tmpdir(), 'occ-skill-install-test-'))
   temporaryDirectories.push(directory)
   return directory
 }
@@ -207,7 +207,7 @@ describe('skill install transaction', () => {
     const busyFilesystem = {
       ...nativeSkillInstallFilesystem,
       rename: async (source: string, target: string): Promise<void> => {
-        if (target.includes('.orca-backup-')) {
+        if (target.includes('.occ-backup-')) {
           throw Object.assign(new Error('locked by scanner'), { code: 'EBUSY' })
         }
         await nativeSkillInstallFilesystem.rename(source, target)
@@ -220,7 +220,7 @@ describe('skill install transaction', () => {
 
     expect(result).toMatchObject({
       status: 'failed',
-      errorCategory: 'skill-install-filesystem-failed',
+      errocctegory: 'skill-install-filesystem-failed',
       failure: { category: 'filesystem', retryable: true }
     })
     expect(await readFile(join(root, 'skills', 'test-skill', 'SKILL.md'), 'utf8')).toContain(
@@ -241,7 +241,7 @@ describe('skill install transaction', () => {
       const failingFilesystem = {
         ...nativeSkillInstallFilesystem,
         rename: async (source: string, target: string): Promise<void> => {
-          if (target.includes('.orca-backup-')) {
+          if (target.includes('.occ-backup-')) {
             throw Object.assign(new Error(`injected ${code}`), { code })
           }
           await nativeSkillInstallFilesystem.rename(source, target)
@@ -274,7 +274,7 @@ describe('skill install transaction', () => {
       )
       expect(result).toMatchObject({
         status: 'failed',
-        errorCategory: 'skill-install-busy',
+        errocctegory: 'skill-install-busy',
         failure: { category: 'filesystem', retryable: true }
       })
       expect(
@@ -298,7 +298,7 @@ describe('skill install transaction', () => {
     expect(await readFile(join(root, 'skills', 'test-skill', 'SKILL.md'), 'utf8')).toContain(
       '# Concurrent'
     )
-    expect((await readdir(join(root, 'skills'))).filter((name) => name.includes('.orca-'))).toEqual(
+    expect((await readdir(join(root, 'skills'))).filter((name) => name.includes('.occ-'))).toEqual(
       []
     )
     expect(await readdir(join(root, 'state', 'receipts'))).toHaveLength(1)
@@ -313,7 +313,7 @@ describe('skill install transaction', () => {
       ...nativeSkillInstallFilesystem,
       rename: async (source: string, target: string): Promise<void> => {
         await nativeSkillInstallFilesystem.rename(source, target)
-        if (!injected && target.includes('.orca-staging-')) {
+        if (!injected && target.includes('.occ-staging-')) {
           injected = true
           await mkdir(canonicalPath)
           await writeFile(join(canonicalPath, 'SKILL.md'), 'local content')
@@ -327,10 +327,10 @@ describe('skill install transaction', () => {
 
     expect(result).toMatchObject({
       status: 'conflict',
-      errorCategory: 'skill-install-conflict-stale-preview'
+      errocctegory: 'skill-install-conflict-stale-preview'
     })
     expect(await readFile(join(canonicalPath, 'SKILL.md'), 'utf8')).toBe('local content')
-    expect((await readdir(join(root, 'skills'))).filter((name) => name.includes('.orca-'))).toEqual(
+    expect((await readdir(join(root, 'skills'))).filter((name) => name.includes('.occ-'))).toEqual(
       []
     )
   })
@@ -345,7 +345,7 @@ describe('skill install transaction', () => {
       ...nativeSkillInstallFilesystem,
       rename: async (source: string, target: string): Promise<void> => {
         await nativeSkillInstallFilesystem.rename(source, target)
-        if (target.includes('.orca-backup-')) {
+        if (target.includes('.occ-backup-')) {
           controller.abort()
         }
       }
@@ -374,7 +374,7 @@ describe('skill install transaction', () => {
       ...nativeSkillInstallFilesystem,
       rename: async (source: string, target: string): Promise<void> => {
         await nativeSkillInstallFilesystem.rename(source, target)
-        if (target.includes('.orca-staging-')) {
+        if (target.includes('.occ-staging-')) {
           controller.abort()
         }
       }
@@ -391,7 +391,7 @@ describe('skill install transaction', () => {
     await expect(lstat(join(root, 'skills', 'test-skill'))).rejects.toMatchObject({
       code: 'ENOENT'
     })
-    expect((await readdir(join(root, 'skills'))).filter((name) => name.includes('.orca-'))).toEqual(
+    expect((await readdir(join(root, 'skills'))).filter((name) => name.includes('.occ-'))).toEqual(
       []
     )
   })
@@ -451,7 +451,7 @@ describe('skill install transaction', () => {
 
     const skillMarkdown = await readFile(join(root, 'skills', 'test-skill', 'SKILL.md'), 'utf8')
     expect(skillMarkdown.includes('# First') || skillMarkdown.includes('# Second')).toBe(true)
-    expect((await readdir(join(root, 'skills'))).filter((name) => name.includes('.orca-'))).toEqual(
+    expect((await readdir(join(root, 'skills'))).filter((name) => name.includes('.occ-'))).toEqual(
       []
     )
     expect(await readdir(join(root, 'state', 'journals'))).toEqual([])

@@ -1,7 +1,7 @@
 // Completed tab and composer actions return keyboard input to the chat draft.
 
 import type { Locator, Page } from '@stablyai/playwright-test'
-import { expect } from './helpers/orca-app'
+import { expect } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import { buildFakeAgentCommandOverride } from './helpers/fake-agent-command-override'
 import { SUPPORTED, createChatOnHost, test } from './helpers/structured-claude-stub'
@@ -48,7 +48,7 @@ test.describe('native chat composer focus', () => {
   test.skip(!SUPPORTED, 'the Claude stub wrapper is POSIX-only')
 
   test('keyboard tab rename returns input to the native chat composer', async ({
-    orcaPage: page,
+    occPage: page,
     claudeStub
   }) => {
     const { tab, composer } = await openChat(page, claudeStub.command)
@@ -65,7 +65,7 @@ test.describe('native chat composer focus', () => {
     await expect(composer).toContainText('Draft after rename')
   })
 
-  test('when Send disables at the end of the turn', async ({ orcaPage: page, claudeStub }) => {
+  test('when Send disables at the end of the turn', async ({ occPage: page, claudeStub }) => {
     const { composer, send, stop, reply } = await openChat(page, claudeStub.command)
     await page.keyboard.type('hello')
     await send.click()
@@ -74,7 +74,7 @@ test.describe('native chat composer focus', () => {
     await expect.poll(() => focusIsIn(composer)).toBe(true)
   })
 
-  test('when Stop disables while the stop is in flight', async ({ orcaPage: page, claudeStub }) => {
+  test('when Stop disables while the stop is in flight', async ({ occPage: page, claudeStub }) => {
     const { composer, send, stop } = await openChat(page, claudeStub.command)
     // The stub runs a prompt containing "slow" until it is interrupted.
     await page.keyboard.type('slow')

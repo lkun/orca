@@ -1,4 +1,4 @@
-// Summarize main/orcad event-loop delay windows from the E2E profile’s diagnostic log.
+// Summarize main/occd event-loop delay windows from the E2E profile’s diagnostic log.
 
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
@@ -33,7 +33,7 @@ function parseWindow(line: string): ReadWindow | null {
     typeof value.windowMs !== 'number' ||
     typeof value.p99 !== 'number' ||
     typeof value.max !== 'number' ||
-    (value.process !== 'main' && value.process !== 'orcad')
+    (value.process !== 'main' && value.process !== 'occd')
   ) {
     return null
   }

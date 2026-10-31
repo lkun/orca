@@ -9,7 +9,7 @@ export type SessionInfo = {
   shellState: ShellReadyState
   isAlive: boolean
   terminalHandle?: string
-  /** ORCA_PANE_KEY the PTY was spawned with; absent from daemons that predate it. */
+  /** OCC_PANE_KEY the PTY was spawned with; absent from daemons that predate it. */
   paneKey?: string
   wslDistro?: string | null
   pid: number | null

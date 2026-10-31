@@ -45,7 +45,7 @@ export class RegionalRehomePollTelemetry {
     if (input.now - this.windowStartedAt < REGIONAL_REHOME_POLL_SUMMARY_INTERVAL_MS) return
     this.write(
       JSON.stringify({
-        event: 'orca_relay_regional_rehome_poll_summary',
+        event: 'occ_relay_regional_rehome_poll_summary',
         windowMs: input.now - this.windowStartedAt,
         polls: Object.values(this.gates).reduce((total, count) => total + count, 0),
         ...this.gates,

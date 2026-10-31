@@ -1,10 +1,10 @@
-// H5c-v: with ORCA_LAYOUT_OWNER=main, layout.reportView must send the desktop’s shown group so server CLI file-open lands there, independent of saved server selection.
+// H5c-v: with OCC_LAYOUT_OWNER=main, layout.reportView must send the desktop’s shown group so server CLI file-open lands there, independent of saved server selection.
 import { existsSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { HOST_TERMINAL_SURFACE_SEPARATOR } from '../../src/shared/terminal-surface-id'
 import { LAYOUT_INTENTS_RUNTIME_CAPABILITY } from '../../src/shared/workspace-layout/layout-intents-capability'
 import type { PublishedWorkspaceLayout } from '../../src/shared/workspace-layout/workspace-layout-published'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { readServerLayout } from './helpers/paired-desktop-server-layout'
 import {
   launchHeadlessPairedRuntimeHost,
@@ -16,7 +16,7 @@ import {
 } from './helpers/paired-electron-client'
 
 const LAYOUT_OWNER_BUILD = existsSync(
-  path.join(process.cwd(), 'out', 'main', 'ORCA_LAYOUT_OWNER_MAIN')
+  path.join(process.cwd(), 'out', 'main', 'OCC_LAYOUT_OWNER_MAIN')
 )
 
 function groupOfTab(layout: PublishedWorkspaceLayout | null, tabId: string): string | null {
@@ -113,7 +113,7 @@ async function showGroupOnDesktop(
 }
 
 test.describe('a file opened on a switch-on server lands in the group a paired desktop shows', () => {
-  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (ORCA_LAYOUT_OWNER=main)')
+  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (OCC_LAYOUT_OWNER=main)')
 
   test('each CLI open follows the group the desktop switched to', async ({
     testRepoPath

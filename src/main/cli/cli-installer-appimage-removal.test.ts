@@ -27,7 +27,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI removal', () => {
   it.each([false, true])(
     'removes installed payloads and the legacy live endpoint (command missing: %s)',
     async (removeCommandFirst) => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-appimage-cli-remove-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-appimage-cli-remove-'))
       created.push(root)
       const appImagePath = join(root, 'OCC.AppImage')
       const cacheRootPath = join(root, 'cache')
@@ -88,7 +88,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI removal', () => {
   )
 
   it('does not remove a sibling AppImage registration or payload', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-appimage-cli-siblings-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-appimage-cli-siblings-'))
     created.push(root)
     const cacheRootPath = join(root, 'cache')
     const commandPath = join(root, 'home', '.local', 'bin', 'occ-ide')

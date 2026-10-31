@@ -38,7 +38,7 @@ afterEach(async () => {
 async function stopWhileTheTurnOpens(
   outcome: Awaited<ReturnType<StructuredAgentSessionAdapter['cancelTurn']>>
 ) {
-  root = await mkdtemp(join(tmpdir(), 'orca-stop-note-opened-turn-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-stop-note-opened-turn-'))
   const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
   const ctx: AgentSessionTurnContext = {
     logger: createStructuredAgentSessionLogger(),

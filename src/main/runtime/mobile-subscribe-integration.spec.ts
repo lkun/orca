@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { listWorktrees } from '../git/worktree'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 // Legacy restore cases need finite 5s (the clamp floor); production defaults to indefinite hold.
 const LEGACY_RESTORE_MS = 5_000
@@ -42,7 +42,7 @@ const store = {
   }
 }
 
-class ObservableRuntime extends OrcaRuntimeService {
+class ObservableRuntime extends OCCRuntimeService {
   get restoreTimers(): typeof this.pendingRestoreTimers {
     return this.pendingRestoreTimers
   }

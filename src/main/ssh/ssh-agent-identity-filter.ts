@@ -58,14 +58,14 @@ function defineIdentityFilteredAgent() {
     sign(
       pubKey: ParsedKey | Buffer | string,
       data: Buffer,
-      optionsOrCallback?: SigningRequestOptions | SignCallback,
+      optionsoccllback?: SigningRequestOptions | SignCallback,
       callback?: SignCallback
     ): void {
-      if (typeof optionsOrCallback === 'function') {
-        this.agent.sign(pubKey, data, optionsOrCallback)
+      if (typeof optionsoccllback === 'function') {
+        this.agent.sign(pubKey, data, optionsoccllback)
         return
       }
-      this.agent.sign(pubKey, data, optionsOrCallback ?? {}, callback)
+      this.agent.sign(pubKey, data, optionsoccllback ?? {}, callback)
     }
   }
 }

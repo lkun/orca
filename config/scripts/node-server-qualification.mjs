@@ -14,22 +14,22 @@ const BUILD_PREFIXES = [
   '.github/actions/install-node-dependencies/',
   '.github/actions/restore-pnpm-verification/',
   '.github/actions/prepare-native-runtime/',
-  '.github/actions/prepare-orcad-prebuilds/'
+  '.github/actions/prepare-occd-prebuilds/'
 ]
 // A remote target's OS does not identify the client platform that builds its commands.
 const CROSS_HOST_PREFIXES = [
   'src/main/ssh/',
   'src/main/managed-server/',
   'src/main/node-runtime/',
-  'src/main/orcad/orcad-artifact-materializer.ts',
-  'src/main/orcad/orcad-host-unavailable.ts',
+  'src/main/occd/occd-artifact-materializer.ts',
+  'src/main/occd/occd-host-unavailable.ts',
   'src/main/providers/',
   'src/wsl-guest/'
 ]
 const PLATFORM_PREFIXES = [
   'src/main/persistence/',
   'src/main/sqlite/',
-  'src/main/orcad/',
+  'src/main/occd/',
   'src/main/daemon/',
   'src/main/wsl/',
   'src/packages/process-host/'

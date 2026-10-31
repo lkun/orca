@@ -8,13 +8,13 @@ import type { MobileWorkspaceRepo } from './new-worktree-modal-types'
 import { useNewWorkspaceSetupScript } from './use-new-workspace-setup-script'
 
 type SetupScript = ReturnType<typeof useNewWorkspaceSetupScript>
-const repo: MobileWorkspaceRepo = { id: 'repo', displayName: 'OCC', path: '/orca' }
+const repo: MobileWorkspaceRepo = { id: 'repo', displayName: 'OCC', path: '/occ' }
 const hooks: RpcResponse = {
   id: 'hooks',
   ok: true,
   result: {
     hooks: { scripts: { setup: 'pnpm install' } },
-    source: 'orca.yaml',
+    source: 'occ.yaml',
     setupRunPolicy: 'ask',
     setupTrust: { contentHash: 'hash', scriptContent: 'pnpm install' }
   }
@@ -56,13 +56,13 @@ describe('new workspace setup choices', () => {
     expect(current().runSetup).toBe(false)
     expect(current().showAdvanced).toBe(false)
   })
-  it('asks about orca.yaml default-tab commands when the repo has no setup script', async () => {
+  it('asks about occ.yaml default-tab commands when the repo has no setup script', async () => {
     const client = new FakeSession('connected')
     client.sendRequest.mockResolvedValue({
       ...hooks,
       result: {
         hooks: null,
-        source: 'orca.yaml',
+        source: 'occ.yaml',
         setupRunPolicy: 'ask',
         setupConfig: {
           source: 'yaml',

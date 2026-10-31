@@ -379,7 +379,7 @@ it('keeps compatibility, blocked guidance, aliases and diagnostic equality live 
       runtimeEnvironments: [
         {
           ...environment('A'),
-          orcadDeployment: {
+          occdDeployment: {
             sshTargetId: 'managed',
             sshTargetGeneration: 1,
             localPort: 7001,
@@ -400,7 +400,7 @@ it('keeps compatibility, blocked guidance, aliases and diagnostic equality live 
           'managed',
           {
             ...ssh('connected', 'managed'),
-            managedServer: { kind: 'relay', reason: 'orcad_unavailable' }
+            managedServer: { kind: 'relay', reason: 'occd_unavailable' }
           }
         ]
       ])

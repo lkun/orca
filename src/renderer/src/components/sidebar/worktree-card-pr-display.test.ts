@@ -11,7 +11,7 @@ const pr: HostedReviewInfo = {
   number: 123,
   title: 'Ready PR',
   state: 'open',
-  url: 'https://github.com/stablyai/orca/pull/123',
+  url: 'https://github.com/stablyai/occ/pull/123',
   status: 'success',
   updatedAt: '2026-05-13T00:00:00.000Z',
   mergeable: 'MERGEABLE'
@@ -22,7 +22,7 @@ const gitLabReview: HostedReviewInfo = {
   number: 321,
   title: 'Ready MR',
   state: 'open',
-  url: 'https://gitlab.com/stablyai/orca/-/merge_requests/321',
+  url: 'https://gitlab.com/stablyai/occ/-/merge_requests/321',
   status: 'success',
   updatedAt: '2026-05-13T00:00:00.000Z',
   mergeable: 'MERGEABLE'
@@ -78,7 +78,7 @@ describe('isCachedMergedBranchPRCurrentForWorktree', () => {
     number: 55,
     title: 'Merged PR',
     state: 'merged',
-    url: 'https://github.com/stablyai/orca/pull/55',
+    url: 'https://github.com/stablyai/occ/pull/55',
     checksStatus: 'success',
     updatedAt: '2026-07-03T00:00:00.000Z',
     mergeable: 'MERGEABLE',

@@ -59,7 +59,7 @@ describe('findCreatedWorktree', () => {
       branch: 'refs/heads/other'
     }
 
-    expect(findCreatedWorktree([created], 'c:/users/orca/feature', 'feature', 'win32')).toBe(
+    expect(findCreatedWorktree([created], 'c:/users/occ/feature', 'feature', 'win32')).toBe(
       created
     )
   })

@@ -29,7 +29,7 @@ const MAIL_SOURCE: AgentMessageSource = {
       party: {
         address: 'term_peer',
         terminalHandle: 'term_peer',
-        orcaSessionId: null
+        occSessionId: null
       },
       name: 'Claude'
     }

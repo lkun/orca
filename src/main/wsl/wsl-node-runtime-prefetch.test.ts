@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { orcadNodeRuntimeInstallOptions } from '../ssh/orcad-node-runtime-install-options'
+import { occdNodeRuntimeInstallOptions } from '../ssh/occd-node-runtime-install-options'
 import {
   prefetchWslNodeRuntime,
   resetWslNodeRuntimePrefetchForTests,
@@ -17,7 +17,7 @@ let userDataPath: string
 
 beforeEach(async () => {
   resetWslNodeRuntimePrefetchForTests()
-  userDataPath = await mkdtemp(join(tmpdir(), 'orca-wsl-node-prefetch-'))
+  userDataPath = await mkdtemp(join(tmpdir(), 'occ-wsl-node-prefetch-'))
 })
 
 afterEach(async () => {
@@ -73,7 +73,7 @@ describe('wireWslNodeRuntimePrefetch', () => {
     expect(scheduled).toHaveLength(1)
     scheduled[0]()
     await prefetchWslNodeRuntime({ userDataPath })
-    const deployCache = join(userDataPath, 'orcad-artifacts')
+    const deployCache = join(userDataPath, 'occd-artifacts')
     expect(materialize).toHaveBeenCalledWith('linux-x64-glibc', deployCache, {})
   })
 
@@ -131,7 +131,7 @@ describe('prefetchWslNodeRuntime', () => {
     await first
     expect(materialize).toHaveBeenCalledWith(
       'linux-arm64-glibc',
-      join(userDataPath, 'orcad-artifacts'),
+      join(userDataPath, 'occd-artifacts'),
       {}
     )
   })
@@ -150,9 +150,9 @@ describe('prefetchWslNodeRuntime', () => {
   it('skips the download when the deploy cache already has the archive', async () => {
     const target = wslNodeRuntimePrefetchTarget('x64')
     // The path a WSL deploy names as its offline archive is the one the prefetch fills.
-    const cached = orcadNodeRuntimeInstallOptions(
+    const cached = occdNodeRuntimeInstallOptions(
       target,
-      join(userDataPath, 'orcad-artifacts'),
+      join(userDataPath, 'occd-artifacts'),
       {}
     ).nodeRuntimeOfflineArchivePath
     await mkdir(dirname(cached), { recursive: true })

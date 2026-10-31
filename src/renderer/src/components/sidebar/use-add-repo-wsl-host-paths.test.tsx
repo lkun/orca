@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
     runtimeEnvironments: [
       {
         id: 'wsl:Ubuntu',
-        orcadDeployment: {
+        occdDeployment: {
           kind: 'wsl' as const,
           distro: 'Ubuntu',
           localPort: 4100,

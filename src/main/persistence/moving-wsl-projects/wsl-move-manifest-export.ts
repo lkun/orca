@@ -1,5 +1,5 @@
 /**
- * The signed manifest a local WSL move carries into the distro's orcad (mover design, section 2).
+ * The signed manifest a local WSL move carries into the distro's occd (mover design, section 2).
  *
  * Reads only. The same dormant-state collectors the SSH conversion uses, through a local-WSL scope,
  * then the UNC→Linux rewrite. Anything those collectors cannot carry comes back as a blocker: a move
@@ -10,27 +10,27 @@ import { getRepoExecutionHostId, LOCAL_EXECUTION_HOST_ID } from '../../../shared
 import { resolveFolderWorkspaceHost } from '../../../shared/folder-workspace-execution-host'
 import type { FolderWorkspace } from '../../../shared/folder-workspace-types'
 import type {
-  OrcadMigrationCatalogPayload,
-  OrcadMigrationLocalWslManifestSource,
-  OrcadMigrationManifest
-} from '../../../shared/orcad-migration/orcad-migration-manifest'
+  OCCdMigrationCatalogPayload,
+  OCCdMigrationLocalWslManifestSource,
+  OCCdMigrationManifest
+} from '../../../shared/occd-migration/occd-migration-manifest'
 import {
-  ORCAD_MIGRATION_MANIFEST_VERSION,
-  parseOrcadMigrationManifest
-} from '../../../shared/orcad-migration/orcad-migration-manifest-validation'
-import { withoutOrcadRetainedMarker } from '../../../shared/orcad-retained-marker'
+  OCCD_MIGRATION_MANIFEST_VERSION,
+  parseOCCdMigrationManifest
+} from '../../../shared/occd-migration/occd-migration-manifest-validation'
+import { withoutOCCdRetainedMarker } from '../../../shared/occd-retained-marker'
 import type { ProjectGroup } from '../../../shared/project-group-types'
 import type { Repo } from '../../../shared/repo-types'
 import { parseWorkspaceKey } from '../../../shared/workspace-scope'
 import { getRepoIdFromWorktreeId, getRepoMainWorktreeId } from '../../../shared/worktree/id'
-import { computeOrcadMigrationManifestSha256 } from '../../orcad/orcad-migration-manifest-digest'
-import { hasDormantState } from '../../ssh/orcad-migration-manifest-export'
+import { computeOCCdMigrationManifestSha256 } from '../../occd/occd-migration-manifest-digest'
+import { hasDormantState } from '../../ssh/occd-migration-manifest-export'
 import {
-  rewriteOrcadMigrationPayloadPaths,
-  rewriteOrcadMigrationWorktreeId
-} from '../../ssh/orcad-migration-path-rewrite'
+  rewriteOCCdMigrationPayloadPaths,
+  rewriteOCCdMigrationWorktreeId
+} from '../../ssh/occd-migration-path-rewrite'
 import type { Store } from '../../persistence'
-import { compareKeys } from '../migrating-orcad-catalog/orcad-source-key-order'
+import { compareKeys } from '../migrating-occd-catalog/occd-source-key-order'
 import { wslUncPathToLinux } from '../../../shared/wsl-paths'
 import { createUncToLinuxPathRewriter } from './wsl-move-path-rewriter'
 import { withoutWindowsShellChoices } from './wsl-move-windows-shell-choices'
@@ -55,7 +55,7 @@ export type WslMoveManifestExportRequest = {
 
 export type WslMoveManifestExport = {
   /** Signed; its source scope is exactly the request's, its paths rewritten to the distro's. */
-  manifest: OrcadMigrationManifest
+  manifest: OCCdMigrationManifest
   /** User-facing reasons for state the manifest cannot carry. Non-empty: the driver refuses. */
   blockers: string[]
   /** What the Sleep relay takes: every worktree id and `folder:<id>` key in scope (UNC form). */
@@ -83,7 +83,7 @@ export type WslMoveManifestExportStore = Pick<
   | 'getRepos'
   | 'getFolderWorkspaces'
   | 'getProjectGroups'
-  | 'inspectOrcadMigrationSourceDormantState'
+  | 'inspectOCCdMigrationSourceDormantState'
 >
 
 const DORMANT_KIND_WORDS: Record<string, string> = {
@@ -109,7 +109,7 @@ export function exportWslMoveManifest(
   // The retained mark is this desktop's record; the host must never receive it.
   const repos = pickLocalRows(store.getRepos(), request.repoIds, isLocalRepo, (id) =>
     missing.push(id)
-  ).map(withoutOrcadRetainedMarker)
+  ).map(withoutOCCdRetainedMarker)
   const allGroups = store.getProjectGroups()
   const allFolders = store.getFolderWorkspaces()
   const folderWorkspaces = pickLocalRows(
@@ -121,17 +121,17 @@ export function exportWslMoveManifest(
         workspace.id
       ).kind === 'local',
     (id) => missing.push(id)
-  ).map(withoutOrcadRetainedMarker)
+  ).map(withoutOCCdRetainedMarker)
   // The signed scope must name exactly the rows it carries: a stale plan is replanned, not signed.
   if (missing.length > 0) {
     throw new WslMoveScopeChangedError(missing)
   }
-  const catalog: OrcadMigrationCatalogPayload = {
+  const catalog: OCCdMigrationCatalogPayload = {
     repositories: repos,
     projectGroups: referencedGroups(allGroups, [...repos, ...folderWorkspaces]),
     folderWorkspaces
   }
-  const source: OrcadMigrationLocalWslManifestSource = {
+  const source: OCCdMigrationLocalWslManifestSource = {
     kind: 'local-wsl',
     distro: request.distro,
     ...(request.distroGuid ? { distroGuid: request.distroGuid } : {}),
@@ -139,7 +139,7 @@ export function exportWslMoveManifest(
     scopeFolderWorkspaceIds: [...request.folderWorkspaceIds],
     generation: request.generation
   }
-  const inspection = store.inspectOrcadMigrationSourceDormantState(
+  const inspection = store.inspectOCCdMigrationSourceDormantState(
     source,
     catalog,
     request.destinationEnvironmentId,
@@ -163,16 +163,16 @@ export function exportWslMoveManifest(
     ? { ...inspection.payload, workspaceSession }
     : inspection.payload
   const rewriter = createUncToLinuxPathRewriter(request.distro)
-  const payload = rewriteOrcadMigrationPayloadPaths(
+  const payload = rewriteOCCdMigrationPayloadPaths(
     { ...catalog, ...(hasDormantState(dormantState) ? { dormantState } : {}) },
     rewriter
   )
   // Sign what the journal and the host read back: the parsed form (the parser keeps only the fields
   // it knows, so a session field it drops would break the digest) of the JSON (an in-memory value
   // with toJSON serializes differently), never the live objects.
-  const unsigned: Omit<OrcadMigrationManifest, 'manifestSha256'> = JSON.parse(
+  const unsigned: Omit<OCCdMigrationManifest, 'manifestSha256'> = JSON.parse(
     JSON.stringify({
-      version: ORCAD_MIGRATION_MANIFEST_VERSION,
+      version: OCCD_MIGRATION_MANIFEST_VERSION,
       migrationId: request.migrationId,
       createdAt: request.now().toISOString(),
       source,
@@ -180,19 +180,19 @@ export function exportWslMoveManifest(
       destinationEnvironmentId: request.destinationEnvironmentId
     })
   )
-  const { manifestSha256: _unsigned, ...normalized } = parseOrcadMigrationManifest({
+  const { manifestSha256: _unsigned, ...normalized } = parseOCCdMigrationManifest({
     ...unsigned,
     manifestSha256: UNSIGNED_DIGEST
   })
-  const manifestSha256 = computeOrcadMigrationManifestSha256(normalized)
-  if (manifestSha256 !== computeOrcadMigrationManifestSha256(unsigned)) {
+  const manifestSha256 = computeOCCdMigrationManifestSha256(normalized)
+  if (manifestSha256 !== computeOCCdMigrationManifestSha256(unsigned)) {
     // Not refused (the parsed form is what moves), but a field the parser drops does not move.
     console.warn(
       '[wsl-move] The manifest parser dropped fields of the exported state:',
       differingPaths(unsigned, normalized).join(', ')
     )
   }
-  const manifest: OrcadMigrationManifest = { ...normalized, manifestSha256 }
+  const manifest: OCCdMigrationManifest = { ...normalized, manifestSha256 }
   const worktreeIds = scopedWorktreeIds(repos, { ...catalog, dormantState })
   const workspaceKeys = [
     ...worktreeIds,
@@ -205,7 +205,7 @@ export function exportWslMoveManifest(
     workspaceKeys,
     worktrees: worktreeIds.map((sourceWorktreeId) => ({
       sourceWorktreeId,
-      destinationWorktreeId: rewriteOrcadMigrationWorktreeId(sourceWorktreeId, rewriter)
+      destinationWorktreeId: rewriteOCCdMigrationWorktreeId(sourceWorktreeId, rewriter)
     })),
     automationsToReenable: inspection.automationsEnabledAtSource
   }
@@ -256,7 +256,7 @@ function referencedGroups(
 /** Every worktree id in scope the store names: each repo's main worktree and any saved for it. */
 function scopedWorktreeIds(
   repos: readonly Repo[],
-  payload: OrcadMigrationCatalogPayload
+  payload: OCCdMigrationCatalogPayload
 ): string[] {
   const repoIds = new Set(repos.map((repo) => repo.id))
   const ids = new Set(repos.map((repo) => getRepoMainWorktreeId(repo)))

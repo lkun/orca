@@ -14,7 +14,7 @@ import {
   buildAiVaultSessionProjectById
 } from './ai-vault-session-projects'
 import { useAiVaultSessionLaunchActions } from './ai-vault-session-launch-actions'
-import { openAiVaultSessionLogInOrca } from './ai-vault-session-log-open'
+import { openAiVaultSessionLogInOCC } from './ai-vault-session-log-open'
 import { revealAiVaultSessionPath } from './ai-vault-session-path-actions'
 import { useAiVaultOriginalPaneActions } from './ai-vault-original-pane-actions'
 import { translate } from '@/i18n/i18n'
@@ -373,7 +373,7 @@ export default function AiVaultPanel({
                 translate('auto.components.right.sidebar.AiVaultPanel.logPath', 'Log path')
               )
             }
-            onOpenLog={(session) => void openAiVaultSessionLogInOrca(session)}
+            onOpenLog={(session) => void openAiVaultSessionLogInOCC(session)}
             onRevealLog={(session) => void revealAiVaultSessionPath(session, session.filePath)}
             onOpenCwd={(session) => void revealAiVaultSessionPath(session, session.cwd)}
             onRequestDelete={(session) => void requestDelete(session)}

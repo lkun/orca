@@ -1,7 +1,7 @@
 // #24932: terminal-agent completion/input pushes come from a windowless host, or once from the desktop window.
 import { randomUUID } from 'node:crypto'
 import type { ElectronApplication } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { postClaudeHook, readHookEndpoint } from './helpers/agent-hook-endpoint'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { createDesktopMobilePairingOffer } from './helpers/paired-electron-client'
@@ -41,7 +41,7 @@ const agentAlerts = (alerts: PhoneAlert[]): string[] =>
   alerts.filter((alert) => alert.source === 'agent-task-complete').map((a) => a.agentState ?? '')
 
 type WindowDispatchRecorder = typeof globalThis & {
-  __orcaE2eWindowDispatches?: { source?: string }[]
+  __occE2eWindowDispatches?: { source?: string }[]
 }
 
 /** Records each agent request the window sends main, then hands it to the real handler. */
@@ -57,7 +57,7 @@ async function recordWindowDispatches(electronApp: ElectronApplication): Promise
     }
     const recorded: { source?: string }[] = []
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: a test-only slot on the main process global, read back below.
-    ;(globalThis as WindowDispatchRecorder).__orcaE2eWindowDispatches = recorded
+    ;(globalThis as WindowDispatchRecorder).__occE2eWindowDispatches = recorded
     ipcMain.removeHandler('notifications:dispatch')
     ipcMain.handle('notifications:dispatch', (event, request: { source?: string }, ...rest) => {
       recorded.push(request)
@@ -71,7 +71,7 @@ async function windowAgentDispatchCount(electronApp: ElectronApplication): Promi
   return electronApp.evaluate(
     () =>
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the slot recordWindowDispatches set.
-      ((globalThis as WindowDispatchRecorder).__orcaE2eWindowDispatches ?? []).filter(
+      ((globalThis as WindowDispatchRecorder).__occE2eWindowDispatches ?? []).filter(
         (request) => request.source === 'agent-task-complete'
       ).length
   )
@@ -122,18 +122,18 @@ test('a host with no window pushes its phone when a terminal agent finishes or n
 })
 
 test('a desktop with a window pushes its phone once, from the window, for a terminal agent’s finish', async ({
-  orcaPage,
+  occPage,
   electronApp
 }) => {
   test.setTimeout(120_000)
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
-  await waitForActiveTerminalManager(orcaPage, 30_000)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
+  await waitForActiveTerminalManager(occPage, 30_000)
   const endpoint = await readHookEndpoint(electronApp)
-  const pane = await waitForActivePaneHookDescriptor(orcaPage)
+  const pane = await waitForActivePaneHookDescriptor(occPage)
   await recordWindowDispatches(electronApp)
-  const phone = pairMobileClient(await createDesktopMobilePairingOffer(orcaPage))
+  const phone = pairMobileClient(await createDesktopMobilePairingOffer(occPage))
   try {
     const streamErrors: string[] = []
     const alerts = await collectPhoneAlerts(phone, streamErrors)

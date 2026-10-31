@@ -64,7 +64,7 @@ vi.mock('../../runtime/browser/browser-tab-renderer-close', () => ({
 vi.mock('./browser-extension-permission-prompt', () => ({
   askToGrantBrowserExtensionPermissions: mocks.prompt
 }))
-mocks.userData = mkdtempSync(join(tmpdir(), 'orca-extension-api-host-'))
+mocks.userData = mkdtempSync(join(tmpdir(), 'occ-extension-api-host-'))
 
 const {
   BROWSER_EXTENSION_EVENT_CHANNEL,

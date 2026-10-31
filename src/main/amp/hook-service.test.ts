@@ -21,7 +21,7 @@ describe('AmpHookService', () => {
   let homeDir: string
 
   beforeEach(() => {
-    homeDir = mkdtempSync(join(tmpdir(), 'orca-amp-home-'))
+    homeDir = mkdtempSync(join(tmpdir(), 'occ-amp-home-'))
     homedirMock.mockReturnValue(homeDir)
   })
 

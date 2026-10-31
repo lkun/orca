@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { OnboardingInlineCommandTerminal } from './OnboardingInlineCommandTerminal'
 import { FeatureSetupInlineTerminal } from './FeatureSetupInlineTerminal'
 import {
-  ORCA_TERMINAL_COMMAND_FINISHED_EVENT,
+  OCC_TERMINAL_COMMAND_FINISHED_EVENT,
   type TerminalCommandFinishedEventDetail
 } from '@/hooks/terminal-command-finished-event'
 import { PASTE_TERMINAL_TEXT_EVENT, type PasteTerminalTextDetail } from '@/constants/terminal'
@@ -53,7 +53,7 @@ vi.mock('@/lib/focus-terminal-tab-surface', () => ({
 
 function dispatchCommandFinished(worktreeId: string, exitCode: number | null): void {
   window.dispatchEvent(
-    new CustomEvent<TerminalCommandFinishedEventDetail>(ORCA_TERMINAL_COMMAND_FINISHED_EVENT, {
+    new CustomEvent<TerminalCommandFinishedEventDetail>(OCC_TERMINAL_COMMAND_FINISHED_EVENT, {
       detail: { worktreeId, exitCode }
     })
   )
@@ -106,7 +106,7 @@ describe('OnboardingInlineCommandTerminal command-finished forwarding', () => {
       }
       await act(async () => {
         root?.render(
-          <FeatureSetupInlineTerminal command="npx skills add orca-cli" selection={selection} />
+          <FeatureSetupInlineTerminal command="npx skills add occ-cli" selection={selection} />
         )
       })
       const telemetry = {
@@ -152,7 +152,7 @@ describe('OnboardingInlineCommandTerminal command-finished forwarding', () => {
     await act(async () => {
       root?.render(
         <FeatureSetupInlineTerminal
-          command="npx skills add orca-cli"
+          command="npx skills add occ-cli"
           selection={{
             browserUse: true,
             computerUse: false,

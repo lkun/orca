@@ -1,5 +1,5 @@
 import type { RuntimePtySpawnState } from './spawn-state'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import type { PaneResumeOutcome } from '../../../../shared/workspace-layout/workspace-layout-published'
 
 type RuntimeResumeOutcomeState = Pick<
@@ -23,7 +23,7 @@ export function resumeOutcomeOf(ctx: RuntimeResumeOutcomeState): PaneResumeOutco
 /** Publish resume outcome before binding so the first frame with the new terminal includes it. */
 export function reportRuntimeResumeOutcome(ctx: RuntimeResumeOutcomeState): void {
   const outcome =
-    ORCA_LAYOUT_OWNER_IS_MAIN && ctx.args.onResumeOutcome ? resumeOutcomeOf(ctx) : null
+    OCC_LAYOUT_OWNER_IS_MAIN && ctx.args.onResumeOutcome ? resumeOutcomeOf(ctx) : null
   if (outcome) {
     ctx.args.onResumeOutcome?.(ctx.result.id, outcome)
   }

@@ -25,7 +25,7 @@ export function AddRemoteHostSshConfigPicker({
   onQueryChange,
   onRetry,
   onBack,
-  onAddAllToOrca
+  onAddAllToOCC
 }: {
   hosts: SshConfigHostSummary[]
   totalHostCount: number
@@ -40,7 +40,7 @@ export function AddRemoteHostSshConfigPicker({
   onQueryChange: (query: string) => void
   onRetry: () => void
   onBack: () => void
-  onAddAllToOrca: () => void
+  onAddAllToOCC: () => void
 }): React.JSX.Element {
   const [query, setQuery] = useState('')
   const queryTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -162,7 +162,7 @@ export function AddRemoteHostSshConfigPicker({
               <li key={host.alias}>
                 <button
                   type="button"
-                  disabled={picksDisabled || host.alreadyInOrca}
+                  disabled={picksDisabled || host.alreadyInOCC}
                   className={cn(
                     'flex w-full items-start justify-between gap-3 px-3 py-2.5 text-left',
                     'hover:bg-accent focus-visible:bg-accent focus-visible:outline-none',
@@ -190,13 +190,13 @@ export function AddRemoteHostSshConfigPicker({
                         'Reading…'
                       )}
                     </span>
-                  ) : host.alreadyInOrca ? (
+                  ) : host.alreadyInOCC ? (
                     <Badge
                       variant="outline"
                       className="mt-0.5 shrink-0 border-emerald-500/40 text-[10.5px] text-emerald-400"
                     >
                       {translate(
-                        'auto.components.sidebar.AddRemoteHostDialog.sshConfigPickerInOrca',
+                        'auto.components.sidebar.AddRemoteHostDialog.sshConfigPickerInOCC',
                         'In OCC'
                       )}
                     </Badge>
@@ -233,7 +233,7 @@ export function AddRemoteHostSshConfigPicker({
           type="button"
           variant="secondary"
           disabled={!canAddAll}
-          onClick={onAddAllToOrca}
+          onClick={onAddAllToOCC}
           className="w-full sm:w-auto"
         >
           {isBulkImporting

@@ -13,7 +13,7 @@ import {
 import { tmpdir } from 'node:os'
 import { AgentSessionAttachmentStore } from '../native-chat/agent-session-attachments/agent-session-attachment-store'
 import { AGENT_SESSION_ATTACHMENT_MAX_BYTES } from '../../shared/agent-session-attachments'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { dirname, join } from 'node:path'
 import { beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest'
 import type { DragTempCopyItemResult } from './dragged-temp-file-copy'
@@ -36,7 +36,7 @@ vi.mock('./dragged-temp-file-copy', async (original) => ({
 }))
 const TEMP = join('/', 'var', 'T', 'TemporaryItems', 'NSIRD_one', 'Shot.png')
 const ORDINARY = join('/', 'files', 'notes.txt')
-const COPY = join('/', 'var', 'T', 'orca-drops', 'orca-drop-abc123', 'Shot.png')
+const COPY = join('/', 'var', 'T', 'occ-drops', 'occ-drop-abc123', 'Shot.png')
 const env = { platform: 'darwin' as const, sourceTempRoot: '/var/T', copyRoot: '/var/T/drops' }
 
 function queue(lane = createDragTempCopyLane(), copyTimeoutMs = 1000) {
@@ -73,7 +73,7 @@ beforeEach(() => {
 })
 
 async function realDrop() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-30419-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-30419-'))
   onTestFinished(() => rm(root, { recursive: true, force: true }))
   const sourceTempRoot = join(root, 'T')
   const source = join(sourceTempRoot, 'TemporaryItems', 'NSIRD_test', 'shot.png')
@@ -117,7 +117,7 @@ describe('dropped path preparation through the shared copy queue', () => {
     const bytes = Buffer.alloc(AGENT_SESSION_ATTACHMENT_MAX_BYTES, 7)
     await writeFile(large, bytes)
     if (process.platform === 'darwin') {
-      expect((await xattr(['-w', 'com.orca.test-marker', '1', source])).code).toBe(0)
+      expect((await xattr(['-w', 'com.occ.test-marker', '1', source])).code).toBe(0)
     }
     const write = vi.spyOn(store, 'storeWith')
     const bufferedWrite = vi.spyOn(store, 'storeFile')
@@ -138,7 +138,7 @@ describe('dropped path preparation through the shared copy queue', () => {
       expect((await stat(result.paths[3])).mode & 0o777).toBe(0o600)
     }
     if (process.platform === 'darwin') {
-      expect((await xattr([result.paths[0]])).stdout).not.toContain('com.orca.test-marker')
+      expect((await xattr([result.paths[0]])).stdout).not.toContain('com.occ.test-marker')
     }
     // Each dropped file is opened once, in the provider's folder, and never reopened by path.
     const provider = await realpath(env.sourceTempRoot)

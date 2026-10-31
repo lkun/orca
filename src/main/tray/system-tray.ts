@@ -250,7 +250,7 @@ function buildTrayMenu(opts: SystemTrayOptions): Menu {
         ] satisfies Electron.MenuItemConstructorOptions[])
       : []),
     {
-      label: translateMain('tray.openOrca', 'Open OCC'),
+      label: translateMain('tray.openOCC', 'Open OCC'),
       click: safeMenuAction(() => opts.onOpen())
     },
     { type: 'separator' },

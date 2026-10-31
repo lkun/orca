@@ -55,7 +55,7 @@ describe('spawn observer', () => {
   it('reports a runProcessSync launch that throws or times out', () => {
     const seen: string[] = []
     setSpawnObserver((command) => seen.push(command))
-    const missing = path.join(tmpdir(), 'orca-spawn-observer-missing-program')
+    const missing = path.join(tmpdir(), 'occ-spawn-observer-missing-program')
     expect(() => runProcessSync({ program: missing, args: [] })).toThrow()
     const timedOut = runProcessSync({
       program: process.execPath,
@@ -77,7 +77,7 @@ describe('spawn observer', () => {
   })
 
   it('logs every spawn, sync or async, to the e2e spawn log when one is named', async () => {
-    const dir = mkdtempSync(path.join(tmpdir(), 'orca-spawn-log-'))
+    const dir = mkdtempSync(path.join(tmpdir(), 'occ-spawn-log-'))
     const log = path.join(dir, 'spawns.jsonl')
     process.env[E2E_SPAWN_LOG_ENV] = log
     process.env[E2E_USER_DATA_DIR_ENV] = dir
@@ -101,7 +101,7 @@ describe('spawn observer', () => {
   })
 
   it('outside e2e mode writes nothing and captures no stack, even with the log variable set', () => {
-    const dir = mkdtempSync(path.join(tmpdir(), 'orca-spawn-log-'))
+    const dir = mkdtempSync(path.join(tmpdir(), 'occ-spawn-log-'))
     const log = path.join(dir, 'spawns.jsonl')
     process.env[E2E_SPAWN_LOG_ENV] = log
     const errors = vi.spyOn(globalThis, 'Error')

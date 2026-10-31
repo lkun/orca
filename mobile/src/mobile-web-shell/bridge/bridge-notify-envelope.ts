@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { BridgeErrorCaptureSchema } from './bridge-error-capture'
+import { BridgeErroccptureSchema } from './bridge-error-capture'
 import { BRIDGE_HAPTICS_NOTIFY_FIELDS } from './bridge-haptics-notify'
 import { BRIDGE_LIVENESS_PROBE_NOTIFY_FIELDS } from './bridge-liveness-probe-notify'
 import { BRIDGE_BACK_CLAIM_NOTIFY } from './bridge-page-back'
@@ -81,7 +81,7 @@ export const BridgeNotifySchema = z.discriminatedUnion('name', [
     type: z.literal('notify'),
     name: z.literal(BRIDGE_FAULT_GRANT),
     // Share error capture bounds in both directions; this fault report owes no reply.
-    error: BridgeErrorCaptureSchema
+    error: BridgeErroccptureSchema
   }),
   z.object({ v: versionSchema, ...BRIDGE_HAPTICS_NOTIFY_FIELDS }),
   z.object({ v: versionSchema, ...BRIDGE_LIVENESS_PROBE_NOTIFY_FIELDS }),

@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from 'react'
 import type { OpenFile } from '@/store/slices/editor'
 import type { GitStatusEntry } from '../../../../../../shared/git-status-types'
 import {
-  ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT,
+  OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT,
   type EditorPathMutationTarget
 } from '../../editor-autosave'
-import { ORCA_WORKTREE_FILE_CHANGE_EVENT } from '@/hooks/worktree-file-change-event'
+import { OCC_WORKTREE_FILE_CHANGE_EVENT } from '@/hooks/worktree-file-change-event'
 import { normalizeRuntimePathForComparison } from '../../../../../../shared/cross-platform-path'
 import { buildCombinedGitStatusSnapshot } from '../resolve-changes/combined-diff-git-status-signature'
 import {
@@ -97,9 +97,9 @@ export function useCombinedDiffSectionRevalidation({
         }
       }
     }
-    window.addEventListener(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, handler as EventListener)
+    window.addEventListener(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, handler as EventListener)
     return () =>
-      window.removeEventListener(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, handler as EventListener)
+      window.removeEventListener(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, handler as EventListener)
   }, [
     file.runtimeEnvironmentId,
     file.worktreeId,
@@ -113,7 +113,7 @@ export function useCombinedDiffSectionRevalidation({
       return
     }
     // Watch-gap resync has no paths and must refresh loaded snapshot-backed sections too; storm overflow only refreshes status.
-    const handler = (event: WindowEventMap[typeof ORCA_WORKTREE_FILE_CHANGE_EVENT]): void => {
+    const handler = (event: WindowEventMap[typeof OCC_WORKTREE_FILE_CHANGE_EVENT]): void => {
       const { payload, runtimeEnvironmentId } = event.detail
       if (
         (runtimeEnvironmentId?.trim() || null) !== (file.runtimeEnvironmentId?.trim() || null) ||
@@ -128,8 +128,8 @@ export function useCombinedDiffSectionRevalidation({
         requestSectionReload(index)
       }
     }
-    window.addEventListener(ORCA_WORKTREE_FILE_CHANGE_EVENT, handler)
-    return () => window.removeEventListener(ORCA_WORKTREE_FILE_CHANGE_EVENT, handler)
+    window.addEventListener(OCC_WORKTREE_FILE_CHANGE_EVENT, handler)
+    return () => window.removeEventListener(OCC_WORKTREE_FILE_CHANGE_EVENT, handler)
   }, [
     file.filePath,
     file.runtimeEnvironmentId,

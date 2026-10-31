@@ -15,8 +15,8 @@ import {
   nodeRuntimeStoreDir,
   posixNodeRuntimeExecutable,
   probeRemoteNodeRuntimeCommand
-} from '../managed-server/install/orcad-remote-node-runtime'
-import { REMOTE_NODE_RUNTIME_READY } from '../ssh/orcad-remote-node-runtime-report'
+} from '../managed-server/install/occd-remote-node-runtime'
+import { REMOTE_NODE_RUNTIME_READY } from '../ssh/occd-remote-node-runtime-report'
 import { getRemoteHostPlatform } from '../ssh/ssh-remote-platform'
 import { runWslProcess, type WslSpec } from '../wsl/wsl-runner'
 import { describeWslProcessFailure } from '../wsl/wsl-process-failure'
@@ -145,7 +145,7 @@ async function prepare(distro: string): Promise<OpenCodeWslRuntime> {
     }
     // Reuse SSH runtime-store validation; leave legacy vault-sqlite Bun installations untouched.
     const host = getRemoteHostPlatform(arch === 'x86_64' ? 'linux-x64' : 'linux-arm64')
-    const runtimeDir = nodeRuntimeStoreDir(host, `${home}/.cache/orca`, target)
+    const runtimeDir = nodeRuntimeStoreDir(host, `${home}/.cache/occ`, target)
     executable = posixNodeRuntimeExecutable(host, runtimeDir)
     const probe = await run({
       script: probeRemoteNodeRuntimeCommand(host, runtimeDir, target),
@@ -156,7 +156,7 @@ async function prepare(distro: string): Promise<OpenCodeWslRuntime> {
       if (!download) {
         download = materializeNodeRuntimeArchive(
           target,
-          join(app.getPath('userData'), 'orcad-artifacts'),
+          join(app.getPath('userData'), 'occd-artifacts'),
           { signal: AbortSignal.timeout(PREPARATION_TIMEOUT_MS) }
         ).finally(() => downloads.delete(target))
         downloads.set(target, download)

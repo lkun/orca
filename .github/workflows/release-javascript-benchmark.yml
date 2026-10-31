@@ -14,9 +14,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  ORCA_BACKGROUND_LAUNCH: '1'
-  ORCA_DIAGNOSTICS_TOKEN_URL: https://www.onorca.dev/diagnostics/token
-  ORCA_POSTHOG_WRITE_KEY: ci-build-comparison
+  OCC_BACKGROUND_LAUNCH: '1'
+  OCC_DIAGNOSTICS_TOKEN_URL: https://www.onocc.dev/diagnostics/token
+  OCC_POSTHOG_WRITE_KEY: ci-build-comparison
   NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
     with:
       ref: ${{ github.sha }}
     secrets:
-      ORCA_POSTHOG_WRITE_KEY: ci-build-comparison
+      OCC_POSTHOG_WRITE_KEY: ci-build-comparison
 
   measure:
     needs: bundle
@@ -69,7 +69,7 @@ jobs:
         run: |
           RELEASE_TAG="v$(node -p 'require("./package.json").version')"
           export RELEASE_TAG
-          echo "ORCA_BUILD_IDENTITY=$(node config/scripts/release-javascript-artifact.mjs identity)" >> "$GITHUB_ENV"
+          echo "OCC_BUILD_IDENTITY=$(node config/scripts/release-javascript-artifact.mjs identity)" >> "$GITHUB_ENV"
       - name: Download shared JavaScript
         if: matrix.mode == 'shared'
         uses: actions/download-artifact@v8
@@ -80,7 +80,7 @@ jobs:
         shell: bash
         env:
           MEASUREMENT_MODE: ${{ matrix.mode }}
-          ORCA_RELEASE_JAVASCRIPT_SOURCE_SHA: ${{ needs.bundle.outputs.source_sha }}
+          OCC_RELEASE_JAVASCRIPT_SOURCE_SHA: ${{ needs.bundle.outputs.source_sha }}
         run: node config/scripts/release-javascript-benchmark.mjs "$MEASUREMENT_MODE"
       - uses: actions/upload-artifact@v7
         with:

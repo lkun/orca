@@ -23,7 +23,7 @@ vi.mock('./profile-state-access-identity', async (importOriginal) => ({
 
 const roots: string[] = []
 function root(): string {
-  const path = fs.mkdtempSync(join(tmpdir(), 'orca-state-access-'))
+  const path = fs.mkdtempSync(join(tmpdir(), 'occ-state-access-'))
   roots.push(path)
   return path
 }
@@ -130,7 +130,7 @@ describe('profile state admission and maintenance', () => {
     fs.mkdirSync(profileDir, { recursive: true })
     const files = {
       profileId,
-      dataFile: join(profileDir, 'orca-data.json'),
+      dataFile: join(profileDir, 'occ-data.json'),
       databasePath: join(profileDir, 'profile-state.db')
     }
     const owner = acquireProfileStateMaintenance(path)
@@ -157,7 +157,7 @@ describe('profile state admission and maintenance', () => {
       expect(() =>
         assertProfileStateMaintenance(owner, {
           profileId: 'escaped',
-          dataFile: join(outside, 'orca-data.json'),
+          dataFile: join(outside, 'occ-data.json'),
           databasePath: join(outside, 'profile-state.db')
         })
       ).toThrow('paths')
@@ -299,7 +299,7 @@ describe('profile state owner reclamation', () => {
       .mockImplementation(() => clock)
     vi.spyOn(fs, 'readFileSync').mockImplementation((file, options) => {
       if (file === '/proc/12345/stat') {
-        return `12345 (orca daemon) ${fields.join(' ')}`
+        return `12345 (occ daemon) ${fields.join(' ')}`
       }
       return read(file, options)
     })

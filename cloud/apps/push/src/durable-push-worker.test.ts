@@ -1,6 +1,6 @@
 import { setImmediate } from 'node:timers/promises'
 import { afterEach, expect, it, vi } from 'vitest'
-import type { PushNotification } from '@orca-cloud/push-contract'
+import type { PushNotification } from '@occ-cloud/push-contract'
 import { DurablePushStore } from './durable-push-store.js'
 import { DurablePushWorker } from './durable-push-worker.js'
 import { PushDispatcher } from './push-dispatcher.js'
@@ -77,12 +77,12 @@ it('sends every burst event immediately with its original content and identity',
   )
   await h.worker.runDue()
   expect(h.send).toHaveBeenCalledTimes(2)
-  const first = h.send.mock.calls.find(([delivery]) => delivery.orca.notificationSeq === 1)![0]
-  const second = h.send.mock.calls.find(([delivery]) => delivery.orca.notificationSeq === 2)![0]
+  const first = h.send.mock.calls.find(([delivery]) => delivery.occ.notificationSeq === 1)![0]
+  const second = h.send.mock.calls.find(([delivery]) => delivery.occ.notificationSeq === 2)![0]
   expect(first).toMatchObject({
     title: 'Done',
     body: 'Finished task',
-    orca: {
+    occ: {
       notificationId: 'note-1',
       notificationSeq: 1
     }
@@ -90,11 +90,11 @@ it('sends every burst event immediately with its original content and identity',
   expect(second).toMatchObject({
     title: 'Answer needed',
     body: 'Please respond',
-    orca: { notificationId: 'note-2', notificationSeq: 2 }
+    occ: { notificationId: 'note-2', notificationSeq: 2 }
   })
   expect(first.collapseId).not.toBe(second.collapseId)
-  expect(h.send.mock.calls.every(([delivery]) => !('coalescedCount' in delivery.orca))).toBe(true)
-  expect(h.send.mock.calls.every(([delivery]) => !('summaryMembers' in delivery.orca))).toBe(true)
+  expect(h.send.mock.calls.every(([delivery]) => !('coalescedCount' in delivery.occ))).toBe(true)
+  expect(h.send.mock.calls.every(([delivery]) => !('summaryMembers' in delivery.occ))).toBe(true)
   expect(h.onRetry).not.toHaveBeenCalled()
 })
 
@@ -119,7 +119,7 @@ it('keeps untrackable bells and per-phone deliveries individually replaceable', 
   expect(new Set(primary.map((delivery) => delivery.collapseId)).size).toBe(3)
   expect(
     deliveries.find((delivery) => delivery.registrationId === other.registrationId)
-  ).toMatchObject({ orca: { notificationId: 'note-2', notificationSeq: 2 } })
+  ).toMatchObject({ occ: { notificationId: 'note-2', notificationSeq: 2 } })
 })
 
 it('preserves provider retry delay when waking a restarted worker', async () => {
@@ -242,7 +242,7 @@ it('stops queued claim admissions without leasing the remaining device', async (
     paused.release()
     await within(Promise.all([pending, stopping]), 2_000)
     expect(h.send).toHaveBeenCalledOnce()
-    expect(h.send.mock.calls[0]?.[0].orca.notificationSeq).toBe(1)
+    expect(h.send.mock.calls[0]?.[0].occ.notificationSeq).toBe(1)
     const [remaining] = await h.db.query(
       'SELECT attempts, lease_until FROM push_delivery_batches WHERE registration_id = ?',
       [other.registrationId]
@@ -276,12 +276,12 @@ it('claims new devices while an earlier provider response is still pending', asy
   const secondSent = Promise.withResolvers<void>()
   const thirdSent = Promise.withResolvers<void>()
   h.send.mockImplementation(async (delivery) => {
-    if (delivery.orca.notificationSeq === 1) {
+    if (delivery.occ.notificationSeq === 1) {
       entered.resolve()
       return await held.promise
     }
-    if (delivery.orca.notificationSeq === 2) secondSent.resolve()
-    if (delivery.orca.notificationSeq === 3) thirdSent.resolve()
+    if (delivery.occ.notificationSeq === 2) secondSent.resolve()
+    if (delivery.occ.notificationSeq === 3) thirdSent.resolve()
     return { status: 'sent' }
   })
   await h.accept(note(1))
@@ -370,7 +370,7 @@ it('coalesces wakes arriving after every active drain found an empty queue', asy
     await vi.waitFor(() => expect(h.send).toHaveBeenCalledOnce())
     await vi.waitFor(() => expect(h.store.claim).toHaveBeenCalledTimes(WORKER_DRAINS + 2))
     expect(Date.now() - startedAt).toBeLessThan(1000)
-    expect(h.send.mock.calls[0]?.[0].orca.notificationSeq).toBe(1)
+    expect(h.send.mock.calls[0]?.[0].occ.notificationSeq).toBe(1)
   } finally {
     holding = false
     release.resolve()
@@ -434,7 +434,7 @@ it('recovers from a failed automatic wake without leaving another timer', async 
   h.worker.start()
   h.worker.wake()
   await vi.waitFor(() =>
-    expect(console.warn).toHaveBeenCalledWith(JSON.stringify({ event: 'orca_push_worker_failed' }))
+    expect(console.warn).toHaveBeenCalledWith(JSON.stringify({ event: 'occ_push_worker_failed' }))
   )
   await h.accept(note(1))
   h.worker.wake()

@@ -214,9 +214,9 @@ describe('a send the host rejected', () => {
   // A rejected startup never ran a turn; do not fold its diagnostic behind a locally measured Worked for 0s.
   it('leaves the row naming the cause on screen', () => {
     const messages = [
-      text('orca:first-start', DIAGNOSTIC, 'system'),
-      text('orca:dead', 'Reply with exactly: DEAD', 'user'),
-      text('orca:restart-exit', DIAGNOSTIC, 'system')
+      text('occ:first-start', DIAGNOSTIC, 'system'),
+      text('occ:dead', 'Reply with exactly: DEAD', 'user'),
+      text('occ:restart-exit', DIAGNOSTIC, 'system')
     ]
     const settledByTurn = selectStructuredAgentSettledTurns(
       [],
@@ -234,16 +234,16 @@ describe('a send the host rejected', () => {
       ]
     )
     const turnStatuses = selectNativeChatTurnStatuses(
-      { 'orca:dead': { startedAt: 900, workedSeconds: 0 } },
-      { activeTurnKey: 'orca:dead', isWorking: false, thinking: false, settledByTurn }
+      { 'occ:dead': { startedAt: 900, workedSeconds: 0 } },
+      { activeTurnKey: 'occ:dead', isWorking: false, thinking: false, settledByTurn }
     )
 
     const slots = build(messages, { turnStatuses })
 
     expect(slots.map((slot) => [slot.message.id, slot.folded, slot.status])).toEqual([
-      ['orca:first-start', false, undefined],
-      ['orca:dead', false, undefined],
-      ['orca:restart-exit', false, undefined]
+      ['occ:first-start', false, undefined],
+      ['occ:dead', false, undefined],
+      ['occ:restart-exit', false, undefined]
     ])
   })
 })
@@ -301,30 +301,30 @@ describe('a turn no message opened', () => {
 
   // Legacy red OCC-stop rows are not agent failures and must stay visible.
   it("keeps the row about OCC's stop on screen beside the reply it cut, which stays the answer", () => {
-    const orcaStop: NativeChatMessage = {
-      ...failure('orca-stop'),
+    const occStop: NativeChatMessage = {
+      ...failure('occ-stop'),
       blocks: [
         {
           type: 'text' as const,
           text: 'Codex stopped while this response was in progress.',
           tone: 'error',
-          presentation: 'orca-stop',
-          orcaStop: { cause: 'update' }
+          presentation: 'occ-stop',
+          occStop: { cause: 'update' }
         }
       ]
     }
-    const messages = [text('u1', 'go', 'user'), text('a1', 'Looking.'), toolRun('work'), orcaStop]
+    const messages = [text('u1', 'go', 'user'), text('a1', 'Looking.'), toolRun('work'), occStop]
     const slots = build(messages, {
       turnStatuses: { active: settled(3), completedByTurn: { u1: settled(3) } }
     })
     expect(slots.map((slot) => [slot.message.id, slot.folded])).toEqual([
       ['u1', false],
       ['a1', false],
-      ['orca-stop', false]
+      ['occ-stop', false]
     ])
     const neutral: NativeChatMessage = {
-      ...orcaStop,
-      blocks: orcaStop.blocks.map((block) =>
+      ...occStop,
+      blocks: occStop.blocks.map((block) =>
         block.type === 'text' ? { ...block, tone: 'notice' } : block
       )
     }
@@ -335,7 +335,7 @@ describe('a turn no message opened', () => {
     ).toEqual([
       ['u1', false],
       ['a1', false],
-      ['orca-stop', false]
+      ['occ-stop', false]
     ])
   })
 

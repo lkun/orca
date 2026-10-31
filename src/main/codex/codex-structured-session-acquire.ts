@@ -195,7 +195,7 @@ export async function acquireCodexStructuredSession(input: {
               connection: acquisition.connection,
               error,
               // A previously unproven OCC close still owns this exit.
-              ...(exit?.expected ? { closedByOrca: true as const } : {}),
+              ...(exit?.expected ? { closedByOCC: true as const } : {}),
               ...(deps.logger ? { logger: deps.logger } : {}),
               prompts: acquisition.prompts,
               ...(deps.onEvent ? { onEvent: deps.onEvent } : {})

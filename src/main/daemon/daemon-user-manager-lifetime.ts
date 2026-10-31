@@ -1,7 +1,7 @@
 /** Outside callers require linger: logout can stop the user manager while their own cgroup survives (#24201). */
 import { readFileSync } from 'node:fs'
-import { runProcessSync } from '@orca/process-host'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import { runProcessSync } from '@occ/process-host'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 
 const LINGER_PROBE_TIMEOUT_MS = 2_000
 

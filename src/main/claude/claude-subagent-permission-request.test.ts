@@ -38,7 +38,7 @@ import { claudeStartupSettled } from './claude-structured-startup-settled-test-s
 const SESSION = 'session-1'
 const FENCE = 7
 
-type Captured = { from: 'cli' | 'orca'; frame: Record<string, unknown> }
+type Captured = { from: 'cli' | 'occ'; frame: Record<string, unknown> }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -56,7 +56,7 @@ function captured(name: string): Captured[] {
     throw new Error(`no captured scenario ${name}`)
   }
   return events.flatMap((event) =>
-    isRecord(event) && (event.from === 'cli' || event.from === 'orca') && isRecord(event.frame)
+    isRecord(event) && (event.from === 'cli' || event.from === 'occ') && isRecord(event.frame)
       ? [{ from: event.from, frame: event.frame }]
       : []
   )
@@ -101,7 +101,7 @@ let root: string
 const hooks: { onEvent?: (event: ClaudeStructuredSessionEvent) => void } = {}
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-claude-subagent-request-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-claude-subagent-request-'))
 })
 
 afterEach(async () => {
@@ -350,7 +350,7 @@ async function replay(name: string): Promise<Pipeline & { timeline: string[] }> 
     const response = isRecord(event.frame.response) ? event.frame.response : null
     const request = isRecord(event.frame.request) ? event.frame.request : null
     let label = text(event.frame.subtype) || text(event.frame.type)
-    if (event.from === 'orca' && event.frame.type === 'control_response' && response) {
+    if (event.from === 'occ' && event.frame.type === 'control_response' && response) {
       const behavior = isRecord(response.response) ? text(response.response.behavior) : ''
       await answer(run, behavior === 'deny' ? 'deny' : 'allow')
       await run.settle()

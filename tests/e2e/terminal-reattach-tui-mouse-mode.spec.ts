@@ -5,7 +5,7 @@ import { mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   execInTerminal,
   sendToTerminal,
@@ -14,7 +14,7 @@ import {
   waitForPaneCount
 } from './helpers/terminal'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 
 const VISIBLE_TUI_FIXTURE_PATH = path.join(
   process.cwd(),
@@ -27,7 +27,7 @@ const WHEEL_DOWN_REPORT = '\x1b[<65;10;10M'
 // Own the seed repo: concurrent globalTeardown can delete the machine-global pointer’s repo mid-restart.
 function createIsolatedProofRepo(): string {
   // Why realpathSync: macOS tmpdir symlinks through /private and OCC canonicalizes repo.path.
-  const repoDir = realpathSync(mkdtempSync(path.join(os.tmpdir(), 'orca-mouse-reattach-repo-')))
+  const repoDir = realpathSync(mkdtempSync(path.join(os.tmpdir(), 'occ-mouse-reattach-repo-')))
   const git = (...args: string[]): void => {
     execFileSync('git', args, { cwd: repoDir, stdio: 'pipe' })
   }
@@ -200,7 +200,7 @@ test.describe('terminal reattach mouse mode', () => {
       await dragAcrossTuiRows(secondLaunch.page, afterReattach.screen)
       const afterDrag = await readTerminalSurface(secondLaunch.page)
       // Capture a screenshot: restart prevents video WebM flush; the frame must show no row-selection overlay on the live TUI.
-      const proofShot = process.env.ORCA_E2E_PROOF_SCREENSHOT
+      const proofShot = process.env.OCC_E2E_PROOF_SCREENSHOT
       if (proofShot) {
         await secondLaunch.page.screenshot({ path: proofShot })
       }

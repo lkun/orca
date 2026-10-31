@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import { z } from 'zod'
 import type { ConnectorAdapter } from './connector-adapter.js'
 import type { ConnectorInbox } from './connector-inbox.js'

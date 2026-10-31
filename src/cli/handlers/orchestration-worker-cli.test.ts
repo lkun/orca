@@ -17,7 +17,7 @@ import { RuntimeClient } from '../runtime-client'
 import { ORCHESTRATION_WORKER_COMMAND_SPECS } from '../specs/orchestration-worker-specs'
 import { ORCHESTRATION_WORKER_LAUNCH_PREFERENCES_RUNTIME_CAPABILITY } from '../../shared/protocol-version'
 
-const client = new RuntimeClient('/tmp/orca-worker-cli', 60_000, null, null)
+const client = new RuntimeClient('/tmp/occ-worker-cli', 60_000, null, null)
 
 describe('orchestration worker-start CLI contract', () => {
   beforeEach(() => {
@@ -26,11 +26,11 @@ describe('orchestration worker-start CLI contract', () => {
     vi.mocked(printResult).mockClear()
     vi.spyOn(console, 'log').mockImplementation(() => {})
     process.exitCode = undefined
-    vi.stubEnv('ORCA_CLI_COMMAND', undefined)
-    vi.stubEnv('ORCA_DEV_CLI_INVOCATION', undefined)
-    vi.stubEnv('ORCA_USER_DATA_PATH', undefined)
-    vi.stubEnv('ORCA_TERMINAL_HANDLE', 'term_coord')
-    vi.stubEnv('ORCA_AGENT_SESSION_ID', undefined)
+    vi.stubEnv('OCC_CLI_COMMAND', undefined)
+    vi.stubEnv('OCC_DEV_CLI_INVOCATION', undefined)
+    vi.stubEnv('OCC_USER_DATA_PATH', undefined)
+    vi.stubEnv('OCC_TERMINAL_HANDLE', 'term_coord')
+    vi.stubEnv('OCC_AGENT_SESSION_ID', undefined)
   })
 
   afterEach(() => {
@@ -226,7 +226,7 @@ describe('orchestration worker-start CLI contract', () => {
   ] as const)(
     'renders %s recovery commands through the resolved %s executable',
     async (_format, executable, json) => {
-      process.env.ORCA_CLI_COMMAND = executable
+      process.env.OCC_CLI_COMMAND = executable
       callMock.mockResolvedValue({
         result: {
           taskId: 'task_1',
@@ -235,8 +235,8 @@ describe('orchestration worker-start CLI contract', () => {
           effects: [],
           residualResources: [],
           nextCommands: [
-            'orca orchestration worker-show --dispatch ctx_unknown --json',
-            'orca orchestration worker-abandon --dispatch ctx_unknown --json'
+            'occ orchestration worker-show --dispatch ctx_unknown --json',
+            'occ orchestration worker-abandon --dispatch ctx_unknown --json'
           ]
         }
       })

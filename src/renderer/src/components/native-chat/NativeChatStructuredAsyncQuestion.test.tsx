@@ -71,7 +71,7 @@ describe('NativeChatStructuredAsyncQuestion', () => {
       )
       act(() => blue?.dispatchEvent(new MouseEvent('click', { bubbles: true })))
       const notice = projectStructuredItemToNativeChat({
-        itemId: 'orca:submission:mail',
+        itemId: 'occ:submission:mail',
         sequence: 2,
         revision: 0,
         observedAt: 2,
@@ -83,7 +83,7 @@ describe('NativeChatStructuredAsyncQuestion', () => {
             kind: 'agent',
             senders: [
               {
-                party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: null },
+                party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: null },
                 name: 'Coder'
               }
             ],

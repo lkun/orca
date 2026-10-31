@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { RelayAssignmentStore } from './assignment-store.js'
 import { openRelayDatabase, type RelayDatabase } from './database.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 // Three cells: the inventory lock covers more than the rows a move touches, and
@@ -209,7 +209,7 @@ describePostgres('PostgreSQL control rebind under a held cell row', () => {
     const movingDatabase = await openRelayDatabase({
       databaseUrl,
       dataDir: '',
-      applicationName: 'orca-relay/cloud3-rebind-move'
+      applicationName: 'occ-relay/cloud3-rebind-move'
     })
     const moveStore = new RelayAssignmentStore(movingDatabase, () => 100)
     // Hold B: ordered B→C move waits with no other lock; C-first or fleet-wide locking would hold C or A.
@@ -253,7 +253,7 @@ describePostgres('PostgreSQL control rebind under a held cell row', () => {
             const rows = await databases[0]!.query(
               `SELECT count(*) AS waiting FROM pg_stat_activity
         WHERE datname = current_database() AND application_name = ? AND wait_event_type = 'Lock'`,
-              ['orca-relay/cloud3-rebind-move']
+              ['occ-relay/cloud3-rebind-move']
             )
             return Number(rows[0]!.waiting)
           },

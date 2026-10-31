@@ -5,7 +5,7 @@ import { join } from 'node:path'
 const STALE_AFTER_MS = 30 * 60_000
 
 export function localModuleCacheParent(root) {
-  return join(root, 'node_modules', '.cache', 'orca-vitest-modules')
+  return join(root, 'node_modules', '.cache', 'occ-vitest-modules')
 }
 
 /** Retire directories from earlier policies so one worktree holds a single cache. */
@@ -32,7 +32,7 @@ export function pruneLocalModuleCaches(parent, keep, now = Date.now()) {
  * change starts a fresh directory. CI keeps its own shard-keyed cache.
  */
 export async function localModuleCacheEnv(root, env = process.env) {
-  if (env.CI || env.ORCA_UNIT_MODULE_CACHE_PATH || env.ORCA_LOCAL_MODULE_CACHE === '0') {
+  if (env.CI || env.OCC_UNIT_MODULE_CACHE_PATH || env.OCC_LOCAL_MODULE_CACHE === '0') {
     return {}
   }
   const parent = localModuleCacheParent(root)
@@ -45,5 +45,5 @@ export async function localModuleCacheEnv(root, env = process.env) {
   mkdirSync(path, { recursive: true })
   const now = new Date()
   utimesSync(path, now, now)
-  return { ORCA_UNIT_MODULE_CACHE_PATH: path }
+  return { OCC_UNIT_MODULE_CACHE_PATH: path }
 }

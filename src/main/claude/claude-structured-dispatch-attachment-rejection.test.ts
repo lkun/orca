@@ -26,7 +26,7 @@ describe('Claude structured dispatch attachment rejections', () => {
   })
 
   it('rejects local images whose aggregate size exceeds twenty MiB', async () => {
-    const directory = await mkdtemp(join(tmpdir(), 'orca-claude-images-'))
+    const directory = await mkdtemp(join(tmpdir(), 'occ-claude-images-'))
     try {
       const paths = await Promise.all(
         Array.from({ length: 5 }, async (_, index) => {
@@ -56,7 +56,7 @@ describe('Claude structured dispatch attachment rejections', () => {
   })
 
   it('rejects a local image by actual bytes read beyond the per-image cap', async () => {
-    const directory = await mkdtemp(join(tmpdir(), 'orca-claude-image-'))
+    const directory = await mkdtemp(join(tmpdir(), 'occ-claude-image-'))
     try {
       const path = join(directory, 'oversized.png')
       await writeFile(path, Buffer.alloc(5 * 1024 * 1024 + 1))
@@ -80,7 +80,7 @@ describe('Claude structured dispatch attachment rejections', () => {
   })
 
   it('names an empty image as empty, not as too large', async () => {
-    const directory = await mkdtemp(join(tmpdir(), 'orca-claude-image-'))
+    const directory = await mkdtemp(join(tmpdir(), 'occ-claude-image-'))
     try {
       const path = join(directory, 'empty.png')
       await writeFile(path, Buffer.alloc(0))
@@ -102,7 +102,7 @@ describe('Claude structured dispatch attachment rejections', () => {
   })
 
   it('names an unsupported image type in words a person can act on', async () => {
-    const directory = await mkdtemp(join(tmpdir(), 'orca-claude-image-'))
+    const directory = await mkdtemp(join(tmpdir(), 'occ-claude-image-'))
     try {
       const path = join(directory, 'picture.bmp')
       await writeFile(path, Buffer.alloc(64))
@@ -152,7 +152,7 @@ describe('Claude structured dispatch attachment rejections', () => {
   it('rejects an attachment it cannot read with the generic sentence and no path', async () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     const session = sessionFor()
-    const path = join(tmpdir(), 'orca-claude-image-missing', 'gone.png')
+    const path = join(tmpdir(), 'occ-claude-image-missing', 'gone.png')
 
     await expect(
       dispatchClaudeTurn(session, {

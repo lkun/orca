@@ -42,7 +42,7 @@ let claude: ReturnType<typeof fakeClaude>
 let answerInitialize: () => void = () => {}
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-claude-hung-start-stop-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-claude-hung-start-stop-'))
   resetHostTestOperationIds()
   claude = fakeClaude({ initProof: 'none', replayUuid: null, holdInit: true })
   const openConnection = claude.openConnection

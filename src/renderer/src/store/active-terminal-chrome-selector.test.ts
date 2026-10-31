@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import type { TerminalTab } from '../../../shared/terminal-tab-types'
 import {
-  resetActiveTerminalChromeStateSelectorCacheForTest,
+  resetActiveTerminalChromeStateSelectocccheForTest,
   selectActiveTerminalChromeState
 } from './active-terminal-chrome-selector'
 
@@ -20,7 +20,7 @@ function terminalTab(id: string, worktreeId = 'wt-1'): TerminalTab {
 
 describe('selectActiveTerminalChromeState', () => {
   beforeEach(() => {
-    resetActiveTerminalChromeStateSelectorCacheForTest()
+    resetActiveTerminalChromeStateSelectocccheForTest()
   })
 
   it('reuses the projection for stable inputs across selector fanout', () => {

@@ -29,7 +29,7 @@ function saveTempPath(relativePath: string): string {
   const normalized = normalizeRelativePath(relativePath)
   const slash = normalized.lastIndexOf('/')
   const nonce = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`
-  return `${normalized.slice(0, slash + 1)}.${normalized.slice(slash + 1)}.orca-save-${nonce}`
+  return `${normalized.slice(0, slash + 1)}.${normalized.slice(slash + 1)}.occ-save-${nonce}`
 }
 
 /**

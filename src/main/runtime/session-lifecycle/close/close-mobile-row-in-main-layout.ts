@@ -1,5 +1,5 @@
 // In main-owned layouts, phone row closes use main's pane/tab close with or without a window.
-import { OrcaRuntimeWithRefuseUnattributedMobileSessionTabClose } from './refuse-unattributed-mobile-session-tab-close'
+import { OCCRuntimeWithRefuseUnattributedMobileSessionTabClose } from './refuse-unattributed-mobile-session-tab-close'
 import type {
   RuntimeMobileSessionTerminalTab,
   RuntimeSessionTabCloseReason
@@ -12,7 +12,7 @@ import {
 import type { ExplicitCloseStop } from '../../session-tabs/explicit-terminal-close-pty-stops'
 import { retireTerminalSurfacesFromSnapshot } from '../../mobile-session-terminal-retirement'
 
-export abstract class OrcaRuntimeWithCloseMobileRowInMainLayout extends OrcaRuntimeWithRefuseUnattributedMobileSessionTabClose {
+export abstract class OCCRuntimeWithCloseMobileRowInMainLayout extends OCCRuntimeWithRefuseUnattributedMobileSessionTabClose {
   protected abstract stopExplicitlyClosedTabPtys(
     ptyIds: readonly string[],
     addressedPtyId: string

@@ -1,19 +1,19 @@
 import { mkdirSync } from 'node:fs'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { makeResourceManagerFixtureVisible } from './helpers/resource-manager-visible-fixture'
 import { waitForSessionReady } from './helpers/store'
 
 test.use({ seedTestRepo: false })
 
 test('Resource Manager ends a tab-less terminal this run spawned', async ({
-  orcaPage,
+  occPage,
   electronApp
 }, testInfo) => {
   const folderPath = testInfo.outputPath('notes')
   mkdirSync(folderPath, { recursive: true })
-  await waitForSessionReady(orcaPage)
-  await orcaPage.setViewportSize({ width: 1200, height: 900 })
-  const ptyId = await orcaPage.evaluate(async (folderPath) => {
+  await waitForSessionReady(occPage)
+  await occPage.setViewportSize({ width: 1200, height: 900 })
+  const ptyId = await occPage.evaluate(async (folderPath) => {
     const state = window.__store!.getState()
     const group = await window.api.projectGroups.create({
       name: 'Notes',
@@ -41,20 +41,20 @@ test('Resource Manager ends a tab-less terminal this run spawned', async ({
     return spawned.id
   }, folderPath)
 
-  await makeResourceManagerFixtureVisible(electronApp, orcaPage)
-  await orcaPage.getByRole('button', { name: /^Resource Manager,/ }).click()
-  await orcaPage.getByRole('tab', { name: 'PTYs', exact: true }).click()
-  const panel = orcaPage.getByRole('tabpanel', { name: /^PTYs/ })
+  await makeResourceManagerFixtureVisible(electronApp, occPage)
+  await occPage.getByRole('button', { name: /^Resource Manager,/ }).click()
+  await occPage.getByRole('tab', { name: 'PTYs', exact: true }).click()
+  const panel = occPage.getByRole('tabpanel', { name: /^PTYs/ })
   await expect(panel.getByText(/1 without a tab/)).toBeVisible()
   await panel.getByRole('button', { name: /^End / }).click()
-  const dialog = orcaPage.getByRole('dialog', { name: /^End .*\?$/ })
+  const dialog = occPage.getByRole('dialog', { name: /^End .*\?$/ })
   await dialog.getByRole('button', { name: 'End terminal', exact: true }).click()
   // The dialog closes only after End returns, so the row state below is End's result.
   await expect(dialog).toBeHidden()
   await expect(panel.getByRole('button', { name: /^End / })).toHaveCount(0)
   await expect
     .poll(async () =>
-      (await orcaPage.evaluate(() => window.api.pty.listSessions({ connectionId: null }))).map(
+      (await occPage.evaluate(() => window.api.pty.listSessions({ connectionId: null }))).map(
         (session) => session.id
       )
     )

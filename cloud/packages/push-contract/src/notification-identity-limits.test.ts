@@ -9,7 +9,7 @@ const base = {
   body: ''
 }
 it.each([
-  'repo::/Users/developer/orca/workspaces/monorepo/packages/desktop/integrations/feature-mobile-background-notifications',
+  'repo::/Users/developer/occ/workspaces/monorepo/packages/desktop/integrations/feature-mobile-background-notifications',
   'repo::C:\\Users\\developer\\Documents\\projects\\monorepo\\packages\\desktop\\feature-mobile-notifications',
   'folder::/home/developer/projects/通知/作業ディレクトリ/機能',
   'ssh:host::/home/developer/workspaces/monorepo/packages/desktop/feature-mobile-background-notifications'

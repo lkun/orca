@@ -54,7 +54,7 @@ const { importCookieFileIntoClientRoutePartition, importCookiesIntoClientRoutePa
   await import('./browser-client-route-cookie-import')
 
 const routeIdentity = {
-  orcaProfileId: 'orca-profile-a',
+  occProfileId: 'occ-profile-a',
   authorityConnectionIdentity: 'paired-runtime:authority-a',
   executionHostIdentity: 'execution-host-a',
   pairingAuthorityConnectionIdentity: 'paired-runtime:pairing-authority-a',

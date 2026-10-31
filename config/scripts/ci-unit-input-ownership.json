@@ -118,8 +118,8 @@
       "inputs": ["src/main/runtime/__fixtures__/", "src/main/daemon/__fixtures__/"],
       "emptyEnv": [
         "SERIALIZE_TRANSCRIPT_DIR",
-        "ORCA_OLD_SERIALIZE_ADDON",
-        "ORCA_NEW_SERIALIZE_ADDON"
+        "OCC_OLD_SERIALIZE_ADDON",
+        "OCC_NEW_SERIALIZE_ADDON"
       ],
       "reason": "Captured transcript replay reads these fixture directories. Optional external capture/addon paths must be unset; package dependencies and the entire local source closure are fingerprinted.",
       "contextSha256": "747ec5af67a0b60890da900a83fa255d3b96e2fa17d9199f8e483ef5051b213c",

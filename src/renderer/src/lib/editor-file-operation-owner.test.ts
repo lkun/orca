@@ -62,11 +62,11 @@ describe('editor file operation owner', () => {
           runtimeEnvironmentId: null,
           operationProvenance: provenance
         },
-        '/tmp/orca/floating-workspace'
+        '/tmp/occ/floating-workspace'
       )
     ).toMatchObject({
       worktreeId: FLOATING_TERMINAL_WORKTREE_ID,
-      worktreePath: '/tmp/orca/floating-workspace',
+      worktreePath: '/tmp/occ/floating-workspace',
       expectedExecutionHostId: 'local'
     })
   })
@@ -422,7 +422,7 @@ describe('shared editor owner interpretation', () => {
   it.each(['runtime:hub-a', 'ssh:private'] as const)(
     'keeps uncaptured models and operations on stamped paired owner %s',
     (hostId) => {
-      vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+      vi.stubGlobal('__OCC_WEB_CLIENT__', true)
       useAppStore.setState({
         worktreesByRepo: {
           repo: [

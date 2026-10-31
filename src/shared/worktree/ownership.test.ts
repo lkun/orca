@@ -7,7 +7,7 @@ import type { Worktree } from './types'
 import { migrateExternalWorktreeVisibilityDefaults } from '../external-worktree-visibility'
 import {
   applyMetadataFallbackVisibility,
-  buildKnownOrcaWorkspaceLayouts,
+  buildKnownOCCWorkspaceLayouts,
   classifyWorktreeOwnership,
   shouldShowWorktree,
   toDetectedWorktree,
@@ -75,7 +75,7 @@ function makeMeta(overrides: Partial<WorktreeMeta> = {}): WorktreeMeta {
 
 function makeSettings(overrides: Partial<GlobalSettings> = {}): GlobalSettings {
   return {
-    workspaceDir: '/orca/workspaces',
+    workspaceDir: '/occ/workspaces',
     nestWorkspaces: true,
     workspaceDirHistory: [],
     refreshLocalBaseRefOnWorktreeCreate: false,
@@ -104,11 +104,11 @@ describe('worktree ownership classification', () => {
       repo,
       settings,
       worktree: makeWorktree({
-        path: '/orca/workspaces/app/manual-git-worktree',
+        path: '/occ/workspaces/app/manual-git-worktree',
         isMainWorktree: false
       }),
       meta: makeMeta({ displayName: 'manual-git-worktree' }),
-      knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+      knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
     })
 
     expect(detected.ownership).toBe('external')
@@ -119,14 +119,14 @@ describe('worktree ownership classification', () => {
     const repo = makeRepo()
     const settings = makeSettings({
       nestWorkspaces: true,
-      workspaceDirHistory: [{ path: '/orca/workspaces', nestWorkspaces: false }]
+      workspaceDirHistory: [{ path: '/occ/workspaces', nestWorkspaces: false }]
     })
     expect(
       classifyWorktreeOwnership({
         repo,
         settings,
-        worktree: makeWorktree({ path: '/orca/workspaces/feature' }),
-        knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+        worktree: makeWorktree({ path: '/occ/workspaces/feature' }),
+        knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
       })
     ).toBe('unknown-legacy')
   })
@@ -145,7 +145,7 @@ describe('worktree ownership classification', () => {
       workspaceDirHistory
     })
 
-    const layouts = buildKnownOrcaWorkspaceLayouts(settings, repo)
+    const layouts = buildKnownOCCWorkspaceLayouts(settings, repo)
 
     expect(layouts).toHaveLength(LARGE_WORKSPACE_HISTORY_COUNT + 1)
     expect(layouts[0]).toEqual({ path: '/new/workspaces', nestWorkspaces: true })
@@ -166,7 +166,7 @@ describe('worktree ownership classification', () => {
         path: '/repos/app-linked',
         isMainWorktree: false
       }),
-      knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+      knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
     })
     const gitMain = toDetectedWorktree({
       repo,
@@ -175,7 +175,7 @@ describe('worktree ownership classification', () => {
         path: '/repos/app-main',
         isMainWorktree: true
       }),
-      knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+      knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
     })
 
     expect(selected.visible).toBe(true)
@@ -259,7 +259,7 @@ describe('external worktree visibility policy', () => {
     expect(
       shouldShowWorktree({
         repo,
-        worktree: makeWorktree({ path: '/orca/workspaces/feature' }),
+        worktree: makeWorktree({ path: '/occ/workspaces/feature' }),
         ownership: 'unknown-legacy',
         isLegacyRepoForVisibility: true,
         isSelectedCheckout: false
@@ -279,10 +279,10 @@ describe('agent scratch worktrees', () => {
         repo,
         settings,
         worktree: makeWorktree({ path: scratchPath, isMainWorktree: false }),
-        meta: makeMeta({ orcaCreatedAt: 1 }),
-        knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+        meta: makeMeta({ occCreatedAt: 1 }),
+        knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
       })
-    ).toBe('orca-managed')
+    ).toBe('occ-managed')
   })
 
   it('keeps agent scratch hidden by default for new and legacy repos', () => {
@@ -295,7 +295,7 @@ describe('agent scratch worktrees', () => {
         repo,
         settings,
         worktree: makeWorktree({ path: scratchPath, isMainWorktree: false }),
-        knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+        knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
       })
       expect(detected.ownership).toBe('agent-scratch')
       expect(detected.visible).toBe(false)
@@ -316,7 +316,7 @@ describe('agent scratch worktrees', () => {
         repo,
         settings,
         worktree: makeWorktree({ path: scratchPath, isMainWorktree: false }),
-        knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+        knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
       }).visible
     ).toBe(false)
     expect(
@@ -327,7 +327,7 @@ describe('agent scratch worktrees', () => {
           path: '/repos/app/.gsd-workspaces/phase-1',
           isMainWorktree: false
         }),
-        knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+        knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
       }).visible
     ).toBe(true)
   })
@@ -344,7 +344,7 @@ describe('agent scratch worktrees', () => {
       repo,
       settings,
       worktree: makeWorktree({ path: customPath, isMainWorktree: false }),
-      knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+      knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
     })
 
     expect(detected.visibilitySource).toEqual({ kind: 'custom', id: 'team' })
@@ -355,18 +355,18 @@ describe('agent scratch worktrees', () => {
   it('keeps agent scratch hidden in the metadata fallback while revealing the rest', () => {
     const repo = makeRepo()
     const settings = makeSettings()
-    const layouts = buildKnownOrcaWorkspaceLayouts(settings, repo)
+    const layouts = buildKnownOCCWorkspaceLayouts(settings, repo)
     const scratch = toDetectedWorktree({
       repo,
       settings,
       worktree: makeWorktree({ path: scratchPath, isMainWorktree: false }),
-      knownOrcaLayouts: layouts
+      knownOCCLayouts: layouts
     })
     const external = toDetectedWorktree({
       repo,
       settings,
       worktree: makeWorktree({ path: '/scratch/manual', isMainWorktree: false }),
-      knownOrcaLayouts: layouts
+      knownOCCLayouts: layouts
     })
 
     expect(applyMetadataFallbackVisibility(scratch)).toMatchObject({
@@ -389,7 +389,7 @@ describe('agent scratch worktrees', () => {
       repo,
       settings,
       worktree: makeWorktree({ path: scratchPath, isMainWorktree: false }),
-      knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+      knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
     })
 
     expect(scratch).toMatchObject({ ownership: 'agent-scratch', visible: true })
@@ -408,7 +408,7 @@ describe('agent scratch worktrees', () => {
           path: '/repos/.claude/worktrees/app/manual/feature-x',
           isMainWorktree: false
         }),
-        knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+        knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
       })
     ).not.toBe('agent-scratch')
   })

@@ -1,5 +1,5 @@
 import type { JSX } from 'react'
-import { ORCA_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { OCC_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import { BROWSER_USE_ENABLED_STORAGE_KEY } from '@/lib/browser-use-setup-state'
 import type { InstalledAgentSkillState } from '@/hooks/useInstalledAgentSkills'
 import { useActiveProjectSkillRuntime } from '@/hooks/useActiveProjectSkillRuntime'
@@ -30,7 +30,7 @@ export function BrowserUseSkillSetupCard(props: {
         'auto.components.feature.wall.BrowserUseSkillSetupCard.cbc45022d4',
         "Enables agents to navigate and verify pages in OCC's browser."
       )}
-      skillNames={[ORCA_CLI_SKILL_NAME]}
+      skillNames={[OCC_CLI_SKILL_NAME]}
       installed={skill.installed}
       loading={skill.loading}
       error={activeSkillRuntime.installDisabledReason ?? skill.error}
@@ -38,7 +38,7 @@ export function BrowserUseSkillSetupCard(props: {
       onBeforeInstall={handleBeforeInstall}
       showRecheckWhenInstalled={false}
       onRecheck={skill.refresh}
-      freshnessSkillName={activeSkillRuntime.canUseSkillFreshness ? ORCA_CLI_SKILL_NAME : undefined}
+      freshnessSkillName={activeSkillRuntime.canUseSkillFreshness ? OCC_CLI_SKILL_NAME : undefined}
     />
   )
 

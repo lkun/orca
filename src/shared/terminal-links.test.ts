@@ -61,7 +61,7 @@ describe('terminal path helpers', () => {
     it('does not treat regular URL hosts as local file paths', () => {
       expect(
         extractTerminalFileLinks(
-          'PR opened: https://github.com/stablyai/orca-marketing-website/pull/82'
+          'PR opened: https://github.com/stablyai/occ-marketing-website/pull/82'
         )
       ).toEqual([])
     })
@@ -109,8 +109,8 @@ describe('terminal path helpers', () => {
     // A spaced guess must never hide the plain path; the host keeps whichever exists.
     it.each([
       [
-        '~/orca-lanes/webhooks-research/bots/bots-ux-outline.md. It covers setup and/or teardown.',
-        '~/orca-lanes/webhooks-research/bots/bots-ux-outline.md'
+        '~/occ-lanes/webhooks-research/bots/bots-ux-outline.md. It covers setup and/or teardown.',
+        '~/occ-lanes/webhooks-research/bots/bots-ux-outline.md'
       ],
       ['Wrote ~/notes/plan.md. Next: src/foo.ts', '~/notes/plan.md'],
       ['Wrote ~/notes/plan.md and src/foo.ts covers the rest', '~/notes/plan.md'],
@@ -219,21 +219,21 @@ describe('terminal path helpers', () => {
 
   describe('plain-text file:// URIs', () => {
     it('extracts a printed file:// URI as a file link resolving to its path', () => {
-      const line = 'Report: file:///Users/dev/orca/report.html'
+      const line = 'Report: file:///Users/dev/occ/report.html'
       const link = extractTerminalFileLinks(line).find(
-        (candidate) => candidate.displayText === 'file:///Users/dev/orca/report.html'
+        (candidate) => candidate.displayText === 'file:///Users/dev/occ/report.html'
       )
-      expect(link).toMatchObject({ pathText: '/Users/dev/orca/report.html' })
-      expect(resolveTerminalFileLink(link!, '/Users/dev/orca')).toEqual({
-        absolutePath: '/Users/dev/orca/report.html',
+      expect(link).toMatchObject({ pathText: '/Users/dev/occ/report.html' })
+      expect(resolveTerminalFileLink(link!, '/Users/dev/occ')).toEqual({
+        absolutePath: '/Users/dev/occ/report.html',
         line: null,
         column: null
       })
     })
 
     it('does not also emit a bare-path link for the URI body', () => {
-      const links = extractTerminalFileLinks('file:///Users/dev/orca/report.html')
-      expect(links.map((link) => link.displayText)).toEqual(['file:///Users/dev/orca/report.html'])
+      const links = extractTerminalFileLinks('file:///Users/dev/occ/report.html')
+      expect(links.map((link) => link.displayText)).toEqual(['file:///Users/dev/occ/report.html'])
     })
   })
 })

@@ -22,7 +22,7 @@ import type { UiLanguage } from '../../../shared/ui-language'
 import type { PluginLanguagePackRegistration } from '../../../shared/plugins/artifacts/plugin-language-pack-artifact'
 import { withTimeout } from '../../../shared/promise-timeout-fallback'
 import { supportedIntlLocale } from './intl-locale-support'
-import { createOrcaI18n } from '../../../shared/orca-i18n-instance'
+import { createOCCI18n } from '../../../shared/occ-i18n-instance'
 
 // Fetch catalogs as data: Chromium caches rejected module imports for the document's lifetime.
 const NON_DEFAULT_LOCALE_URLS: Record<Exclude<SupportedUiLocale, 'en'>, string> = {
@@ -68,7 +68,7 @@ function loadLocaleCatalog(language: string): Promise<Record<string, unknown>> |
   return request
 }
 
-const orcaI18n = createOrcaI18n({
+const occI18n = createOCCI18n({
   loadCatalog: loadLocaleCatalog,
   // Inline defaults cover most English; sync:localization-runtime-catalog retains plural/dynamic/edited entries. en.json remains the translator source for lazy catalogs.
   englishResources: enRuntimeRequired,
@@ -76,7 +76,7 @@ const orcaI18n = createOrcaI18n({
   initOptions: { react: { useSuspense: false } }
 })
 
-export const i18n = orcaI18n.i18n
+export const i18n = occI18n.i18n
 
 // Plugin packs can replace translations without changing the active language.
 i18n.store.on('added', advanceTranslationResourceVersion)
@@ -90,7 +90,7 @@ let plainTranslationCacheScope = ''
 
 export function translate(key: string, fallback: string, options?: TOptions): string {
   if (options !== undefined) {
-    return orcaI18n.translate(key, fallback, options)
+    return occI18n.translate(key, fallback, options)
   }
   const scope = `${i18n.isInitialized}\0${i18n.language}\0${getTranslationResourceVersion()}`
   if (
@@ -105,13 +105,13 @@ export function translate(key: string, fallback: string, options?: TOptions): st
   if (cached !== undefined) {
     return cached
   }
-  const value = orcaI18n.translate(key, fallback)
+  const value = occI18n.translate(key, fallback)
   plainTranslationCache.set(cacheKey, value)
   return value
 }
 
 export async function loadRendererUiLanguage(language: UiLanguage): Promise<string> {
-  const locale = orcaI18n.resolveResourceLanguage(resolveUiLocale(language))
+  const locale = occI18n.resolveResourceLanguage(resolveUiLocale(language))
   const request = i18n.hasResourceBundle(locale, 'translation')
     ? undefined
     : loadLocaleCatalog(locale)
@@ -135,12 +135,12 @@ export async function loadRendererUiLanguage(language: UiLanguage): Promise<stri
 /** Resolve an Intl-compatible BCP-47 tag: plugin pack resources use the pack’s declared tag, then the default locale. */
 export function getIntlLocale(): string {
   const active = i18n.language
-  const pack = orcaI18n.getPluginLanguagePacks().find((entry) => entry.resourceLanguage === active)
+  const pack = occI18n.getPluginLanguagePacks().find((entry) => entry.resourceLanguage === active)
   return supportedIntlLocale(pack?.locale ?? active, Intl.DateTimeFormat)
 }
 
 export function setRendererPluginLanguagePacks(
   packs: readonly PluginLanguagePackRegistration[]
 ): void {
-  orcaI18n.setPluginLanguagePacks(packs)
+  occI18n.setPluginLanguagePacks(packs)
 }

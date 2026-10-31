@@ -72,7 +72,7 @@ describe('runClaudePastedCodeLogin', () => {
     expect(runCommand.mock.calls[0][0]).toEqual(['auth', 'login', '--claudeai'])
     expect(runCommand.mock.calls[0][3]).toMatchObject({
       keepStdinOpen: true,
-      browser: join(folder.windowsPath, '.orca-sign-in-browser')
+      browser: join(folder.windowsPath, '.occ-sign-in-browser')
     })
     expect(value.onPrompt).toHaveBeenCalledExactlyOnceWith({
       url: new URL(PASTE_LINK).toString(),

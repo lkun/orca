@@ -9,7 +9,7 @@ export async function readRemoteRangePreview(
   if (!filePreviewForPath(remote.relativePath)) {
     return null
   }
-  // Null when this client cannot serve orca-media URLs (the paired web client).
+  // Null when this client cannot serve occ-media URLs (the paired web client).
   return window.api.fs.grantRuntimeFilePreview({
     environmentId: remote.target.environmentId,
     worktree: remote.worktree,

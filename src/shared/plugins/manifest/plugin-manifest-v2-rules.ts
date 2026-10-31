@@ -5,7 +5,7 @@ import {
   type PluginExecutionProfile
 } from '../contributions/plugin-execution-profile'
 import { pluginCapabilityReachable } from '../capabilities/plugin-capability-reach'
-import { orcaEngineRangeSchema, satisfiesOrcaEngineRange } from './plugin-manifest-engine-range'
+import { occEngineRangeSchema, satisfiesOCCEngineRange } from './plugin-manifest-engine-range'
 import { PLUGIN_DERIVED_PUBLISHER_SINCE } from './plugin-schema-field-docs'
 
 type V2RuleSubject = {
@@ -40,19 +40,19 @@ export function validatePluginManifestV2Rules(manifest: V2RuleSubject, ctx: Refi
 /** Why authoring only: OCC before PLUGIN_DERIVED_PUBLISHER_SINCE requires `publisher`, so a
  *  manifest without it must say "requires OCC X" there instead of failing to parse. */
 export function validateOmittedPublisherFloor(
-  manifest: { publisher?: string; engines: { orca: string } },
+  manifest: { publisher?: string; engines: { occ: string } },
   ctx: RefinementCtx
 ): void {
   if (
     manifest.publisher !== undefined ||
-    !orcaEngineRangeSchema.safeParse(manifest.engines.orca).success ||
-    satisfiesOrcaEngineRange(manifest.engines.orca.slice(2), `>=${PLUGIN_DERIVED_PUBLISHER_SINCE}`)
+    !occEngineRangeSchema.safeParse(manifest.engines.occ).success ||
+    satisfiesOCCEngineRange(manifest.engines.occ.slice(2), `>=${PLUGIN_DERIVED_PUBLISHER_SINCE}`)
   ) {
     return
   }
   ctx.addIssue({
     code: 'custom',
-    path: ['engines', 'orca'],
+    path: ['engines', 'occ'],
     message: `must be at least >=${PLUGIN_DERIVED_PUBLISHER_SINCE} when publisher is left out, because older OCC requires publisher`
   })
 }

@@ -45,20 +45,20 @@ let metadataLoadedFromDisk = false
 let cachedSecret: BitbucketStoredSecret | null = null
 let credentialError: string | null = null
 
-function getOrcaDir(): string {
-  return join(homedir(), '.orca')
+function getOCCDir(): string {
+  return join(homedir(), '.occ')
 }
 
 function getMetadataPath(): string {
-  return join(getOrcaDir(), 'bitbucket-credential.json')
+  return join(getOCCDir(), 'bitbucket-credential.json')
 }
 
 export function getSecretPath(): string {
-  return join(getOrcaDir(), 'bitbucket-credential.enc')
+  return join(getOCCDir(), 'bitbucket-credential.enc')
 }
 
-function ensureOrcaDir(): void {
-  const dir = getOrcaDir()
+function ensureOCCDir(): void {
+  const dir = getOCCDir()
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true })
   }
@@ -153,7 +153,7 @@ export function getBitbucketCredentialProtection(): SecretAtRestProtection | nul
 }
 
 export function saveBitbucketCredential(input: BitbucketCredentialSaveInput): void {
-  ensureOrcaDir()
+  ensureOCCDir()
   const secret: BitbucketStoredSecret = {
     accessToken: input.accessToken,
     apiToken: input.apiToken,

@@ -1,6 +1,6 @@
 import { getRepoRoutingConnectionId } from '../../../../shared/execution-host'
 import { resolveStructuredWorkerAuthority } from '../../structured-worker-authority'
-import { OrcaRuntimeWithAdoptTerminalOrphansFromInventory } from '../adoption/adopt-terminal-orphans-from-inventory'
+import { OCCRuntimeWithAdoptTerminalOrphansFromInventory } from '../adoption/adopt-terminal-orphans-from-inventory'
 import type {
   RuntimeTerminalAgentStatus,
   RuntimeTerminalInteractiveWait,
@@ -14,7 +14,7 @@ import type {
 } from './terminal-wait-permission'
 import type { AgentLaunchScope } from '../../session-tabs/structured-session-tab-restoration'
 import { withTimeout } from '../../runtime-async-boundaries'
-import { TERMINAL_INTERACTIVE_WAIT_PROBE_TIMEOUT_MS } from '../../orca-runtime-core'
+import { TERMINAL_INTERACTIVE_WAIT_PROBE_TIMEOUT_MS } from '../../occ-runtime-core'
 import { parsePaneKey } from '../../../../shared/stable-pane-id'
 import type { ExactWorkerProviderSession } from '../../../../shared/orchestration-worker-output'
 import { selectExactWorkerProviderSession } from '../../orchestration/worker-provider-session'
@@ -35,7 +35,7 @@ import { resolveOpenCodeModelLaunchRoute } from '../../../opencode/opencode-mode
 import type { RuntimePtyWorktreeRecord } from '../../runtime-terminal-state-records'
 import type { OrchestrationDb } from '../../orchestration/db/orchestration-db'
 
-export abstract class OrcaRuntimeWithGetTerminalInteractiveWait extends OrcaRuntimeWithAdoptTerminalOrphansFromInventory {
+export abstract class OCCRuntimeWithGetTerminalInteractiveWait extends OCCRuntimeWithAdoptTerminalOrphansFromInventory {
   protected abstract getTerminalAgentStatusPtyId(handle: string): string
 
   protected abstract getTerminalWaitPermissionInputs(

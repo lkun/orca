@@ -1,4 +1,4 @@
-const PREFIX = '--orca-browser-client-host-id='
+const PREFIX = '--occ-browser-client-host-id='
 
 /** Pass host identity in renderer argv from birth. Electron 43 sendSync before listener registration blocks forever even after registration; startup snapshots need this before any IPC dependency. */
 export function formatBrowserClientHostIdArgument(browserHostClientId: string): string {

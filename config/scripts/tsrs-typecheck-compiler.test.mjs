@@ -10,12 +10,12 @@ import {
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { expect, it } from 'vitest'
 import { resolveTsrsTypecheckCommand, supportsTsrs } from './tsrs-typecheck-compiler.mjs'
 
 it('isolates cache files by project, worktree and compiler version', () => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-tsrs-paths-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-tsrs-paths-'))
   try {
     const manifest = join(root, 'node_modules', 'tsrs', 'package.json')
     mkdirSync(dirname(manifest), { recursive: true })
@@ -42,11 +42,11 @@ it('isolates cache files by project, worktree and compiler version', () => {
 })
 
 it('explains how to install a missing local compiler', () => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-tsrs-missing-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-tsrs-missing-'))
   try {
     const module = pathToFileURL(resolve('config/scripts/tsrs-typecheck-compiler.mjs')).href
     const result = runProcessSync({
-      program: process.env.ORCA_TEST_NODE_EXECUTABLE ?? process.execPath,
+      program: process.env.OCC_TEST_NODE_EXECUTABLE ?? process.execPath,
       args: [
         '--input-type=module',
         '-e',
@@ -66,7 +66,7 @@ it('explains how to install a missing local compiler', () => {
 it.skipIf(!supportsTsrs())(
   'reuses a real cache and invalidates exported types, deleted files and config changes',
   () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-tsrs-incremental-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-tsrs-incremental-'))
     try {
       symlinkSync(resolve('node_modules'), join(root, 'node_modules'), 'junction')
       writeFileSync(join(root, 'package.json'), '{"type":"commonjs"}')
@@ -100,7 +100,7 @@ it.skipIf(!supportsTsrs())(
           ...command,
           args: [...command.args, '--pretty', 'false'],
           timeoutMs: 30_000,
-          env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' }
+          env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' }
         })
       expect(check().code).toBe(0)
       const cache = command.args[command.args.indexOf('--tsBuildInfoFile') + 1]

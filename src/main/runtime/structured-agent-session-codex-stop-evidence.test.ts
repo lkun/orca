@@ -39,7 +39,7 @@ vi.mock('../crash-reporting/self-initiated-tree-kill-log', () => ({
 }))
 
 async function pipedChat() {
-  const directory = await mkdtemp(join(tmpdir(), 'orca-codex-stop-evidence-'))
+  const directory = await mkdtemp(join(tmpdir(), 'occ-codex-stop-evidence-'))
   const children: ReturnType<typeof createFakePipedChild>[] = []
   const connections: Awaited<ReturnType<typeof openCodexAppServerConnection>>[] = []
   const delivered = new Set<number>()

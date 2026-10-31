@@ -124,10 +124,10 @@ describe('ensureVirtualDisplayForHeadlessServe', () => {
     expect(appMock.commandLine.appendSwitch).toHaveBeenCalledWith('disable-gpu')
   })
 
-  it('keeps hardware acceleration when ORCA_SERVE_GPU=1 opts in', async () => {
+  it('keeps hardware acceleration when OCC_SERVE_GPU=1 opts in', async () => {
     setPlatform('linux')
     process.env.DISPLAY = ':0'
-    vi.stubEnv('ORCA_SERVE_GPU', '1')
+    vi.stubEnv('OCC_SERVE_GPU', '1')
     mockLiveXDisplay()
     const { ensureVirtualDisplayForHeadlessServe } = await import('./ensure-virtual-display')
 

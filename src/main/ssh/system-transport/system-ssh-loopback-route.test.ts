@@ -16,13 +16,13 @@ vi.mock('./system-ssh-loopback-route-admission', () => ({
   admitSystemSshLoopbackRoute: admissionMock
 }))
 
-vi.mock('@orca/process-host/process-tree-termination', async (importOriginal) => {
+vi.mock('@occ/process-host/process-tree-termination', async (importOriginal) => {
   const actual: Record<string, unknown> = await importOriginal()
   return { ...actual, signalProcessTree: treeKillMock }
 })
 
 vi.mock('./system-ssh-orphaned-forward', () => ({
-  stopOrphanedOrcaSshForward: vi.fn().mockResolvedValue(false)
+  stopOrphanedOCCSshForward: vi.fn().mockResolvedValue(false)
 }))
 
 vi.mock('fs', async (importOriginal) => {
@@ -130,7 +130,7 @@ function createListeningSocket(): EventEmitter {
 function answerProbe(proc: FakeProcess, code: number): void {
   setImmediate(() => {
     if (code === 0) {
-      proc.stdout.write('ORCA-SYSTEM-SSH-LOOPBACK-OK\n')
+      proc.stdout.write('OCC-SYSTEM-SSH-LOOPBACK-OK\n')
     }
     proc.stdout.end()
     proc.emit('exit', code, null)

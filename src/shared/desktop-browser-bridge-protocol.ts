@@ -10,7 +10,7 @@ export const DESKTOP_BROWSER_BRIDGE_NOT_FORWARDED_CODE = 'desktop_browser_bridge
 export const DESKTOP_BROWSER_BRIDGE_SCOPE_CODE = 'desktop_browser_bridge_out_of_scope'
 export const DESKTOP_BROWSER_BRIDGE_UNROUTED_CODE = 'desktop_browser_bridge_unrouted'
 
-export const DESKTOP_BROWSER_BRIDGE_SETTING_LABEL = "Allow this host's orca CLI to control OCC"
+export const DESKTOP_BROWSER_BRIDGE_SETTING_LABEL = "Allow this host's occ CLI to control OCC"
 
 /** The desktop also withholds the bridge while this host's pages browse from the desktop's own network. */
 export const DESKTOP_BROWSER_BRIDGE_ROUTING_SETTING_LABEL = 'Settings › Browser › SSH workspaces'
@@ -93,14 +93,14 @@ export const DesktopBrowserBridgeRequest = z.object({
   type: z.literal('request'),
   requestId: Identity,
   method: z.string().refine(isDesktopBrowserBridgeMethod, 'method is not forwarded'),
-  /** How long orcad waits for this answer; the desktop never starts the command after it. */
+  /** How long occd waits for this answer; the desktop never starts the command after it. */
   timeoutMs: z
     .number()
     .int()
     .positive()
     .max(60 * 60_000)
     .optional(),
-  /** The workspace orcad resolved the caller's selector to; absent when it named none. */
+  /** The workspace occd resolved the caller's selector to; absent when it named none. */
   // Why longer than an identity: a worktree id embeds the repository's absolute path.
   workspaceId: z.string().min(1).max(MAX_WORKSPACE_ID_LENGTH).optional(),
   params: z
@@ -115,7 +115,7 @@ export type DesktopBrowserBridgeRequest = z.infer<typeof DesktopBrowserBridgeReq
 export const DesktopBrowserBridgeEvent = z.discriminatedUnion('type', [
   z.object({ type: z.literal('ready'), attachmentId: Identity }),
   DesktopBrowserBridgeRequest,
-  /** orcad stopped waiting for this request; the desktop must not start or continue it. */
+  /** occd stopped waiting for this request; the desktop must not start or continue it. */
   z.object({ type: z.literal('cancel'), requestId: Identity })
 ])
 export type DesktopBrowserBridgeEvent = z.infer<typeof DesktopBrowserBridgeEvent>

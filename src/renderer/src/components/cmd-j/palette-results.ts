@@ -177,7 +177,7 @@ function startsOrIsStartedBy(query: string, keyword: string): boolean {
   return keyword.startsWith(query) || query.startsWith(keyword)
 }
 
-function rankingForCandidate(
+function rankingFoccndidate(
   query: string,
   queryTokens: readonly string[],
   candidate: CmdJMiddleResult,
@@ -275,7 +275,7 @@ export function rankCmdJMiddleResults({
 
   return [...settings, ...actions]
     .map((candidate) =>
-      rankingForCandidate(
+      rankingFoccndidate(
         normalizedQuery,
         queryTokens,
         candidate,

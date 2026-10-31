@@ -57,7 +57,7 @@ vi.mock('../../telemetry/cohort-classifier', () => ({
 
 describe('Store', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
     trackMock.mockReset()
     getCohortAtEmitMock.mockReset()
     getCohortAtEmitMock.mockReturnValue({ nth_repo_added: 2 })
@@ -101,9 +101,9 @@ describe('Store', () => {
       provider: 'jira' as const,
       type: 'issue' as const,
       number: 0,
-      title: 'ORCA-123 Link Jira',
-      url: 'https://company.atlassian.net/browse/ORCA-123',
-      jiraIdentifier: 'ORCA-123'
+      title: 'OCC-123 Link Jira',
+      url: 'https://company.atlassian.net/browse/OCC-123',
+      jiraIdentifier: 'OCC-123'
     }
     const linkedTaskSourceContext = {
       kind: 'task-source' as const,
@@ -114,7 +114,7 @@ describe('Store', () => {
         provider: 'jira' as const,
         siteId: 'site-1',
         siteUrl: 'https://company.atlassian.net',
-        projectKey: 'ORCA'
+        projectKey: 'OCC'
       },
       accountLabel: 'ada@example.com'
     }
@@ -158,9 +158,9 @@ describe('Store', () => {
             provider: 'jira',
             type: 'issue',
             number: 0,
-            title: 'ORCA-123 Link Jira',
-            url: 'https://company.atlassian.net/browse/ORCA-123',
-            jiraIdentifier: 'ORCA-123'
+            title: 'OCC-123 Link Jira',
+            url: 'https://company.atlassian.net/browse/OCC-123',
+            jiraIdentifier: 'OCC-123'
           },
           linkedTaskSourceContext: {
             kind: 'task-source',
@@ -172,7 +172,7 @@ describe('Store', () => {
               provider: 'jira',
               siteId: 'site-1',
               siteUrl: 'https://company.atlassian.net',
-              projectKey: 'ORCA'
+              projectKey: 'OCC'
             }
           }
         }
@@ -181,7 +181,7 @@ describe('Store', () => {
 
     const store = await createStore()
 
-    expect(store.getWorktreeMeta('wt-malformed')?.linkedWorkItem?.jiraIdentifier).toBe('ORCA-123')
+    expect(store.getWorktreeMeta('wt-malformed')?.linkedWorkItem?.jiraIdentifier).toBe('OCC-123')
     expect(store.getWorktreeMeta('wt-malformed')?.linkedTaskSourceContext).toBeNull()
   })
 
@@ -201,9 +201,9 @@ describe('Store', () => {
             provider: 'jira',
             type: 'issue',
             number: 0,
-            title: 'ORCA-123 Link Jira',
-            url: 'https://company.atlassian.net/browse/ORCA-123',
-            jiraIdentifier: 'ORCA-123'
+            title: 'OCC-123 Link Jira',
+            url: 'https://company.atlassian.net/browse/OCC-123',
+            jiraIdentifier: 'OCC-123'
           },
           linkedTaskSourceContext: {
             kind: 'task-source',
@@ -215,7 +215,7 @@ describe('Store', () => {
               provider: 'jira',
               siteId: 'site-1',
               siteUrl: 'https://company.atlassian.net',
-              projectKey: 'ORCA'
+              projectKey: 'OCC'
             }
           }
         }
@@ -224,7 +224,7 @@ describe('Store', () => {
 
     const store = await createStore()
 
-    expect(store.getWorktreeMeta('wt-sibling')?.linkedWorkItem?.jiraIdentifier).toBe('ORCA-123')
+    expect(store.getWorktreeMeta('wt-sibling')?.linkedWorkItem?.jiraIdentifier).toBe('OCC-123')
     expect(store.getWorktreeMeta('wt-sibling')?.linkedTaskSourceContext).toBeNull()
     // Reject corrupt rows before unguarded consumers read them, including older builds after rollback.
     expect(store.getAllWorktreeMeta()).not.toHaveProperty('r1::/tmp/wt')
@@ -331,9 +331,9 @@ describe('Store', () => {
       provider: 'jira' as const,
       type: 'issue' as const,
       number: 0,
-      title: 'ORCA-123 Link Jira',
-      url: 'https://company.atlassian.net/browse/ORCA-123',
-      jiraIdentifier: 'ORCA-123'
+      title: 'OCC-123 Link Jira',
+      url: 'https://company.atlassian.net/browse/OCC-123',
+      jiraIdentifier: 'OCC-123'
     }
     const linkedTaskSourceContext = {
       kind: 'task-source' as const,
@@ -345,7 +345,7 @@ describe('Store', () => {
         provider: 'jira' as const,
         siteId: 'site-1',
         siteUrl: 'https://company.atlassian.net',
-        projectKey: 'ORCA'
+        projectKey: 'OCC'
       },
       accountLabel: 'ada@example.com'
     }

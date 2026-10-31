@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../orca-runtime'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCCRuntimeService } from '../../occ-runtime'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { TerminalSplitOutcomeError } from '../../../../shared/terminal-split-outcome'
 
 const WORKTREE_ID = 'repo-1::/workspace'
@@ -11,7 +11,7 @@ type Leaf = { leafId: string; paneRuntimeId: number; ptyId: string | null }
 
 function createHarness() {
   const rendererSplitTerminal = vi.fn()
-  const runtime = new OrcaRuntimeService()
+  const runtime = new OCCRuntimeService()
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the split path calls only splitTerminal on the notifier.
   runtime.setNotifier({ splitTerminal: rendererSplitTerminal } as never)
   const publish = (extra: Leaf[] = []): void => {
@@ -55,7 +55,7 @@ async function timedOutSplit(harness: ReturnType<typeof createHarness>): Promise
   return { error, leafId: error.data.splitId }
 }
 
-describe.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
+describe.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)(
   'window-made split that outlives its wait (#32169)',
   () => {
     beforeEach(() => {

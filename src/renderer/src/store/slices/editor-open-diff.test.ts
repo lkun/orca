@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createEditorStore, createEditorTabsStore } from './editor-slice-test-harness'
 import type { AppState } from '../types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { makeLayout, makeTab } from './store-test-helpers'
 import { drawTabsFromMain } from './tabs-drawn-from-main.test-fixture'
 import { withLayoutOwnerTabProps } from '@/components/tab-bar/tab-bar-layout-owner-props'
@@ -666,7 +666,7 @@ describe('createEditorSlice openDiff', () => {
     // A layout-owner build pins through main first, as the tab bar does.
     const tabId = store.getState().unifiedTabsByWorktree['wt-1']![0]!.id
     const pin = (): void => store.getState().pinFile('/repo/a.ts')
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       withLayoutOwnerTabProps(
         {
           togglePinned: pin,
@@ -710,7 +710,7 @@ describe('createEditorSlice openDiff', () => {
     ])
     // Not a preview: a switch-on build omits the flag rather than writing false.
     expect(store.getState().unifiedTabsByWorktree['wt-1']?.[0]?.isPreview).toBe(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? undefined : false
+      OCC_LAYOUT_OWNER_IS_MAIN ? undefined : false
     )
   })
 
@@ -744,7 +744,7 @@ describe('createEditorSlice openDiff', () => {
     expect(store.getState().unifiedTabsByWorktree['wt-1']?.[0]?.isPinned).toBeUndefined()
     // Not a preview: a switch-on build omits the flag rather than writing false.
     expect(store.getState().unifiedTabsByWorktree['wt-1']?.[0]?.isPreview).toBe(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? undefined : false
+      OCC_LAYOUT_OWNER_IS_MAIN ? undefined : false
     )
   })
 
@@ -791,7 +791,7 @@ describe('createEditorSlice openDiff', () => {
     ])
     // Not a preview: a switch-on build omits the flag rather than writing false.
     expect(store.getState().unifiedTabsByWorktree['wt-1']?.[0]?.isPreview).toBe(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? undefined : false
+      OCC_LAYOUT_OWNER_IS_MAIN ? undefined : false
     )
   })
 })

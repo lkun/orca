@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 
 const STEP = 'Refuse a ref that still ships the SSH relay'
 const directory = mkdtempSync(join(tmpdir(), 'relay-era-ref-refusal-'))
@@ -28,8 +28,8 @@ const refusalTargets = [
   // The refusal must precede everything that tags, signs or publishes.
   [
     'adhoc-mac-build.yml',
-    'orcad-template-support',
-    'Detect whether the ref ships the orcad template'
+    'occd-template-support',
+    'Detect whether the ref ships the occd template'
   ],
   ['release-cut.yml', 'cut', 'Resolve ref SHA'],
   // Dispatchable on its own with any tag, so release-cut's refusal does not cover it.

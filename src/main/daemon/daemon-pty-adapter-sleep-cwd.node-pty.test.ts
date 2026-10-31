@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type * as pty from 'node-pty'
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { loadNodePtyForTests } from '../orcad/orcad-node-slot-fixture'
+import { loadNodePtyForTests } from '../occd/occd-node-slot-fixture'
 import { DaemonPtyAdapter } from './daemon-pty-adapter'
 import {
   startDaemonAdapterHarness,
@@ -16,7 +16,7 @@ import { createDaemonPtySubprocessHandle } from './pty-subprocess/subprocess-han
 const describePosix = process.platform === 'win32' ? describe.skip : describe
 const SESSION_ID = 'wt-1::/project@@sleep-cwd'
 
-// verify-15b: a WSL host pane (orcad on Linux) woke in the project root after `cd deep`.
+// verify-15b: a WSL host pane (occd on Linux) woke in the project root after `cd deep`.
 describePosix('a real bash slept and woken by the daemon', () => {
   let nodePty: typeof pty
   let harness: DaemonAdapterHarness | null = null
@@ -42,7 +42,7 @@ describePosix('a real bash slept and woken by the daemon', () => {
   })
 
   it('wakes in the folder bash was in, though bash prints no OSC 7', async () => {
-    root = realpathSync(mkdtempSync(join(tmpdir(), 'orca-sleep-cwd-')))
+    root = realpathSync(mkdtempSync(join(tmpdir(), 'occ-sleep-cwd-')))
     const deep = join(root, 'deep')
     mkdirSync(deep)
     const spawnedCwds: string[] = []

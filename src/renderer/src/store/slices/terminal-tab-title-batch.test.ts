@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { getDefaultSettings } from '../../../../shared/constants'
 import { makePaneKey } from '../../../../shared/stable-pane-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { layoutApplyTestDouble } from '@/runtime/layout-apply-test-double'
 
 vi.mock('sonner', () => ({ toast: { info: vi.fn(), success: vi.fn(), error: vi.fn() } }))
@@ -226,7 +226,7 @@ describe('terminal tab title batches', () => {
       'Final live title',
       'Second visible'
     ])
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // Main derives the generated title from its own agent status and its frame draws it: the
       // window sends and writes none.
       await new Promise<void>((resolve) => setTimeout(resolve, 0))
@@ -334,7 +334,7 @@ describe('terminal tab title batches', () => {
 
     await new Promise<void>((resolve) => setTimeout(resolve, 0))
     unsubscribe()
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // Main derives batch titles from agent status; first-write/replacement coverage is in agent-generated-tab-titles.test.ts, with no window writes.
       expect(main.commands).toEqual([])
       expect(publications).toBe(0)

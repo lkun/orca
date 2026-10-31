@@ -1,7 +1,7 @@
 import './unused-default-rpc-methods.test-fixture'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { agentHookServer } from '../../agent-hooks/server'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import { RpcDispatcher } from './dispatcher'
 import { createTerminalInputReservation } from '../terminal-input-admission'
 import { TERMINAL_CLAUDE_AGENT_VIEW_METHODS } from './methods/terminal/terminal-claude-agent-view-method'
@@ -47,18 +47,18 @@ it.each(['permission', 'new-session', 'new-mod', 'new-pty', 'mobile-lock'] as co
       action: 'register',
       view: { revision: 1 },
       keybindings: JSON.stringify({
-        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:orca-agent-view' } }]
+        bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+g': 'command:occ-agent-view' } }]
       })
     })
     const write = vi.fn()
-    const overrides: Partial<OrcaRuntimeService> = {
+    const overrides: Partial<OCCRuntimeService> = {
       getRuntimeId: () => 'test-runtime',
       resolveLiveLeafForHandle: vi.fn(() => ({ ptyId })),
       getLiveTerminalPaneKey: () => identity.paneKey,
-      getDriver: vi.fn<OrcaRuntimeService['getDriver']>(() =>
+      getDriver: vi.fn<OCCRuntimeService['getDriver']>(() =>
         mobileLocked ? { kind: 'mobile', clientId: 'phone' } : { kind: 'desktop' }
       ),
-      getTerminalAgentStatus: vi.fn<OrcaRuntimeService['getTerminalAgentStatus']>(async () => ({
+      getTerminalAgentStatus: vi.fn<OCCRuntimeService['getTerminalAgentStatus']>(async () => ({
         handle: 'terminal',
         isRunningAgent: true,
         status: permission ? 'permission' : 'idle'
@@ -83,7 +83,7 @@ it.each(['permission', 'new-session', 'new-mod', 'new-pty', 'mobile-lock'] as co
             action: 'register',
             view: { revision: 1 },
             keybindings: JSON.stringify({
-              bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+h': 'command:orca-agent-view' } }]
+              bindings: [{ context: 'Chat', bindings: { 'ctrl+alt+h': 'command:occ-agent-view' } }]
             })
           })
         }
@@ -95,7 +95,7 @@ it.each(['permission', 'new-session', 'new-mod', 'new-pty', 'mobile-lock'] as co
       })
     }
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: this scoped dispatcher reaches only the runtime methods defined above.
-    const runtime = overrides as OrcaRuntimeService
+    const runtime = overrides as OCCRuntimeService
     const response = await new RpcDispatcher({
       runtime,
       methods: TERMINAL_CLAUDE_AGENT_VIEW_METHODS

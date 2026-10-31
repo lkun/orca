@@ -15,7 +15,7 @@ import type {
   AutomationWorkspaceMode
 } from '../../../../shared/automations-types'
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
-import type { OrcaHooks } from '../../../../shared/orca-yaml-hook-types'
+import type { OCCHooks } from '../../../../shared/occ-yaml-hook-types'
 import type { ProjectHostSetup } from '../../../../shared/project-types'
 import type { Repo } from '../../../../shared/repo-types'
 import type { TuiAgent } from '../../../../shared/tui-agent'
@@ -74,7 +74,7 @@ type AutomationEditorDialogProps = {
   canSave: boolean
   repos: readonly Repo[]
   projectHostSetups: readonly ProjectHostSetup[]
-  automationYamlHooksByRepoKey: Record<string, OrcaHooks | null>
+  automationYamlHooksByRepoKey: Record<string, OCCHooks | null>
   getAutomationHooksCacheKey: (repoId: string) => string
   repoMap: Map<string, Repo>
   worktrees: Worktree[]

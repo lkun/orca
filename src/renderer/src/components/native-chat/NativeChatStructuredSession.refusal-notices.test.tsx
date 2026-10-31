@@ -41,7 +41,7 @@ afterEach(() => {
   }
 
   function journalRefusal(
-    reason: 'journalCorrupt' | 'journalUnavailable' | 'journalWrittenByNewerOrca'
+    reason: 'journalCorrupt' | 'journalUnavailable' | 'journalWrittenByNewerOCC'
   ) {
     return { code: 'agent_session_journal_unreadable', details: { reason } } as const
   }
@@ -123,7 +123,7 @@ afterEach(() => {
 
   it('says once that a newer OCC saved the chat and only an update opens it, with no composer', () => {
     mocks.status = 'error'
-    mocks.readRefusal = journalRefusal('journalWrittenByNewerOrca')
+    mocks.readRefusal = journalRefusal('journalWrittenByNewerOCC')
     mocks.messages = []
 
     renderPane()

@@ -1,13 +1,13 @@
 import type { RuntimeTerminalSend } from '../../../../../../shared/runtime-terminal-contracts'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import {
-  formatOrcaSessionAddress,
-  isOrcaSessionId
-} from '../../../../../../shared/orca-session-address'
-import { canonicalOrcaSessionId } from '../../../../orchestration/canonical-orca-session-id'
+  formatOCCSessionAddress,
+  isOCCSessionId
+} from '../../../../../../shared/occ-session-address'
+import { canonicalOCCSessionId } from '../../../../orchestration/canonical-occ-session-id'
 import {
-  orcaSessionIdOrHandle,
+  occSessionIdOrHandle,
   resolveDispatchAssigneeParty
 } from '../../../../orchestration/orchestration-party'
 import { buildDispatchPreamble } from '../../../../orchestration/preamble'
@@ -28,7 +28,7 @@ type StructuredSession = Awaited<ReturnType<typeof createStructuredWorkerSession
  * PTY writes return queued/accepted; structured turns may stay held while agents start. Unobserved starts remain unknown, never torn down.
  * Busy chat tasks queue as cards, like input waiting in busy terminals. */
 export async function deliverWorkerDispatchPreamble(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   structuredSession: StructuredSession
   terminalHandle: string
@@ -59,13 +59,13 @@ export async function deliverWorkerDispatchPreamble(args: {
     taskId: args.taskId,
     dispatchId: args.dispatchId,
     taskSpec: args.taskSpec,
-    coordinatorHandle: orcaSessionIdOrHandle(args.coordinatorHandle, args.db),
+    coordinatorHandle: occSessionIdOrHandle(args.coordinatorHandle, args.db),
     // Its mailbox stays keyed by the handle; its commands name its OCC session ID, which binds to it.
     workerHandle:
-      structuredSession && isOrcaSessionId(structuredSession.identity.sessionId)
-        ? formatOrcaSessionAddress(canonicalOrcaSessionId(structuredSession.identity.sessionId))
+      structuredSession && isOCCSessionId(structuredSession.identity.sessionId)
+        ? formatOCCSessionAddress(canonicalOCCSessionId(structuredSession.identity.sessionId))
         : chat
-          ? formatOrcaSessionAddress(chat)
+          ? formatOCCSessionAddress(chat)
           : terminalHandle,
     devMode: args.devMode,
     cliCommand: runtime.getTerminalOrchestrationCliCommand(terminalHandle)
@@ -144,7 +144,7 @@ function chatTaskTurnStart(delivery: ChatTaskDelivery): WorkerTurnStartObservati
 
 /** Who the task is from, for a worker whose chat shows the sender. */
 function workerTaskSource(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   dispatchId: string
   runId: string

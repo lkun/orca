@@ -7,7 +7,7 @@ import {
   makeWorktree,
   TEST_REPO
 } from '../store/slices/store-test-helpers'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { layoutApplyTestDouble } from '@/runtime/layout-apply-test-double'
 import type { AppState } from '../store/types'
 import type { MigrationUnsupportedPtyEntry } from '../../../shared/agent-status-types'
@@ -454,7 +454,7 @@ describe('useIpcEvents agent status snapshot integration', () => {
         'Pi - action required'
       )
       // Main derives layout-owner tab titles; its unmodeled frames draw them without renderer writes.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         expect(store.getState().tabsByWorktree['wt-snapshot-99']?.[0]?.generatedTitle).toBeFalsy()
       } else {
         expect(store.getState().tabsByWorktree['wt-snapshot-99']?.[0]?.generatedTitle).toBeTruthy()
@@ -464,7 +464,7 @@ describe('useIpcEvents agent status snapshot integration', () => {
       await Promise.resolve()
     }
 
-    expect(relevantPublications).toBe(ORCA_LAYOUT_OWNER_IS_MAIN ? 2 : 3)
+    expect(relevantPublications).toBe(OCC_LAYOUT_OWNER_IS_MAIN ? 2 : 3)
     unsubscribe()
     expect(renamed()).toEqual([])
   })

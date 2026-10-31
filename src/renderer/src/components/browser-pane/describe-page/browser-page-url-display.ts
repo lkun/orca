@@ -1,5 +1,5 @@
 import type { BrowserPage as BrowserPageState } from '../../../../../shared/browser-workspace-types'
-import { ORCA_BROWSER_BLANK_URL } from '../../../../../shared/constants'
+import { OCC_BROWSER_BLANK_URL } from '../../../../../shared/constants'
 import {
   normalizeBrowserNavigationUrl,
   normalizeExternalBrowserUrl,
@@ -27,9 +27,9 @@ export function toDisplayUrl(url: string): string {
 export function getBrowserDisplayTitle(title: string | null | undefined, url: string): string {
   if (
     url === 'about:blank' ||
-    url === ORCA_BROWSER_BLANK_URL ||
+    url === OCC_BROWSER_BLANK_URL ||
     title === 'about:blank' ||
-    title === ORCA_BROWSER_BLANK_URL ||
+    title === OCC_BROWSER_BLANK_URL ||
     !title
   ) {
     return 'New Tab'

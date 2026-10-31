@@ -24,7 +24,7 @@ let root: string
 let journal: AgentSessionJournal
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-reasoning-sweep-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-reasoning-sweep-'))
   journal = await openAgentSessionJournal({
     identity: {
       sessionId: SESSION,

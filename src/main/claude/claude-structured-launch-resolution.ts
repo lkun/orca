@@ -32,7 +32,7 @@ import {
   resolveClaudeStructuredLaunchHome
 } from './claude-structured-launch-home'
 import type { StructuredAgentLaunchPartResolver } from '../runtime/structured-agent-launch-composition'
-import { claudeSessionIdForOrcaSession } from './structured/claude-structured-session-id'
+import { claudeSessionIdForOCCSession } from './structured/claude-structured-session-id'
 import {
   pendingAgentSessionRewindFork,
   type AgentSessionRewindFork
@@ -185,7 +185,7 @@ export function claudeStructuredLaunchPart(
       ? fork.sessionId
       : head
         ? head.nativeId
-        : claudeSessionIdForOrcaSession(
+        : claudeSessionIdForOCCSession(
             identity.sessionId,
             active.pendingClear ? record.providerContextBoundary?.operationId : undefined
           )
@@ -294,7 +294,7 @@ export function claudeStructuredLaunchPart(
       },
       env,
       inheritedEnvToDelete: [],
-      // The agent runtime follows OCC's CLI directory on PATH so another orca cannot shadow it.
+      // The agent runtime follows OCC's CLI directory on PATH so another occ cannot shadow it.
       cliRuntimeCommand: command
     }
   }

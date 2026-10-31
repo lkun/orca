@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
-import { type PushNotification } from '@orca-cloud/push-contract'
+import { type PushNotification } from '@occ-cloud/push-contract'
 
-export type PushOrcaData = {
+export type PushOCCData = {
   kind?: 'alert' | 'dismiss'
   hostFingerprint: string
   worktreeId?: string
@@ -22,7 +22,7 @@ export type PushDelivery = {
   title: string
   body: string
   collapseId: string
-  orca: PushOrcaData
+  occ: PushOCCData
 }
 
 export function collapseIdFor(notification: PushNotification, hostFingerprint: string): string {
@@ -50,7 +50,7 @@ export function buildPushDelivery(input: {
     title: notification.title,
     body: notification.body,
     collapseId: collapseIdFor(notification, hostFingerprint),
-    orca: {
+    occ: {
       ...(notification.kind ? { kind: notification.kind } : {}),
       hostFingerprint,
       ...(notification.paneKey === undefined ? {} : { paneKey: notification.paneKey }),
@@ -69,9 +69,9 @@ export function buildPushDelivery(input: {
   }
 }
 
-export function orcaDataStrings(orca: PushOrcaData): Record<string, string> {
+export function occDataStrings(occ: PushOCCData): Record<string, string> {
   return Object.fromEntries(
-    Object.entries(orca)
+    Object.entries(occ)
       .filter(([, value]) => value !== undefined && value !== null)
       .map(([key, value]) => [
         key,

@@ -4,7 +4,7 @@ import {
   resetAntigravityUsageSupportForTests
 } from './antigravity-usage-fetcher'
 import { ANTIGRAVITY_USAGE_ARGS, ANTIGRAVITY_VERSION_ARGS } from './antigravity-usage-command'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 
 const { hostShellEnvironmentMock } = vi.hoisted(() => ({
   hostShellEnvironmentMock: vi.fn(async () => ({ PATH: '/usr/bin' }))

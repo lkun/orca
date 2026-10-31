@@ -5,7 +5,7 @@ import type {
   OrchestrationSessionCaller
 } from '../../../../orchestration/orchestration-caller-identity'
 import type { DispatchContextRow, RunRow, TaskRow } from '../../../../orchestration/types'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { resolveDispatchCreator } from '../runs/dispatch-creator'
 import { createBoundRun } from '../runs/runs'
 import { ROOT_DISPATCH_DEPTH } from '../../../../../../shared/nested-worker-depth'
@@ -14,7 +14,7 @@ export type WorkerStartRunBinding = { run: RunRow; created: boolean }
 
 /** Coordinators start workers in their Run, creating one when none is bound; active workers start helpers as themselves so reports return to their Dispatch without moving its mailbox. A new Run is created and bound only when `bindRun` is first called, so a start refused before it leaves no Run behind. */
 export function resolveWorkerStartRun(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   args: {
     coordinator: OrchestrationCallerIdentity | null
     from: string

@@ -1,6 +1,6 @@
 // #24354: waits and mail address a terminal, not the pane a window shows for it, so opening
 // a background worker's workspace (which remounts its pane) must not break either.
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
 import {
   getAllWorktreeIds,
@@ -87,12 +87,12 @@ async function waitForObservedTitle(worker: BackgroundWorker, title: string): Pr
 
 test.describe('orchestration across a worker pane remount', () => {
   test('a wait and a mail pointer survive opening the worker workspace', async ({
-    orcaPage,
+    occPage,
     electronApp
   }) => {
     // Agent launch, a worktree activation, a 60 s wait budget and pointer delivery.
     test.setTimeout(180_000)
-    const worker = await startWorkerInUnopenedWorkspace(orcaPage, electronApp)
+    const worker = await startWorkerInUnopenedWorkspace(occPage, electronApp)
     worker.agent.setTitle(CODEX_WORKING_TITLE)
     await waitForObservedTitle(worker, CODEX_WORKING_TITLE)
     const run = await worker.client.call<{ run: { id: string } }>('orchestration.runCreate', {
@@ -138,7 +138,7 @@ test.describe('orchestration across a worker pane remount', () => {
     )
 
     // Opening the workspace mounts a pane for the worker's live terminal.
-    await switchToWorktree(orcaPage, worker.worktreeId)
+    await switchToWorktree(occPage, worker.worktreeId)
     await expect
       .poll(async () => (await readSummary(worker))?.orphaned, {
         timeout: 30_000,

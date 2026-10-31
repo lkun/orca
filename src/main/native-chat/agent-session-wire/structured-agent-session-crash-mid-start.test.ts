@@ -40,7 +40,7 @@ const CHILD_PID = 4321
 let root: string
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-crash-mid-start-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-crash-mid-start-'))
   resetHostTestOperationIds()
 })
 

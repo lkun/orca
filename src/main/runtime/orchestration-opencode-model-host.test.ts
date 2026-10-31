@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { resolveOpenCodeDirectModelExecutable } from '../opencode/opencode-model-executable'
 import { probeOpenCodeLaunchCapabilities } from '../opencode/opencode-launch-capabilities'
 import { resolveLocalProjectRuntimeForRepo } from '../project-runtime-git-options'
@@ -37,7 +37,7 @@ function probe(
   runtime: ReturnType<typeof host>,
   target = { worktree: 'id:folder', model: 'opencode/fledge-alpha-free' }
 ) {
-  return OrcaRuntimeService.prototype.probeOrchestrationOpenCodeModelLaunchSupport.call(
+  return OCCRuntimeService.prototype.probeOrchestrationOpenCodeModelLaunchSupport.call(
     runtime,
     target
   )

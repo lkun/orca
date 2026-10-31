@@ -115,7 +115,7 @@ export async function installPluginFromGit(input: {
       input.pluginsDir,
       (source) => source.kind === 'git' && isSameGitRepository(source.url, input.url)
     )
-    const stagingDir = await mkdtemp(join(tmpdir(), 'orca-plugin-install-'))
+    const stagingDir = await mkdtemp(join(tmpdir(), 'occ-plugin-install-'))
     try {
       const ref = input.ref.trim()
       const resolvedCommit = await checkoutPluginGitSource({
@@ -193,7 +193,7 @@ export async function installPluginFromMarketplace(input: {
         error: `${input.expectedPluginKey} is installed from ${installedFrom.url}; remove it first to install it from another catalog`
       }
     }
-    const stagingDir = await mkdtemp(join(tmpdir(), 'orca-plugin-marketplace-install-'))
+    const stagingDir = await mkdtemp(join(tmpdir(), 'occ-plugin-marketplace-install-'))
     try {
       const resolvedCommit = await checkoutPluginGitSource({
         url: input.plugin.url,

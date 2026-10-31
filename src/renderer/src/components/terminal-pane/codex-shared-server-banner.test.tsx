@@ -139,7 +139,7 @@ describe('CodexSharedServerBanner', () => {
     expect(isCodexOnSharedServer).toHaveBeenCalledWith(ptyId)
     expect(paneElement.textContent).toContain('agent status may be wrong')
     expect(paneElement.querySelector(':scope > .pane-top-banner')).not.toBeNull()
-    expect(paneElement.style.getPropertyValue('--orca-pane-top-banner-height')).toMatch(/px$/)
+    expect(paneElement.style.getPropertyValue('--occ-pane-top-banner-height')).toMatch(/px$/)
   })
 
   it('keeps the default Learn more on the Fix steps, with no old-terminal copy', async () => {
@@ -256,7 +256,7 @@ describe('CodexSharedServerBanner', () => {
     await advance(1_000)
     await act(async () => button('Dismiss').click())
     expect(paneElement.textContent).toBe('')
-    expect(paneElement.style.getPropertyValue('--orca-pane-top-banner-height')).toBe('')
+    expect(paneElement.style.getPropertyValue('--occ-pane-top-banner-height')).toBe('')
     expect(updateSettings).not.toHaveBeenCalled()
 
     act(() => root.unmount())

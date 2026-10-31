@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useWindowDimensions, type View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import type { ReservedRect } from '../../modules/orca-reserved-regions/src'
+import type { ReservedRect } from '../../modules/occ-reserved-regions/src'
 import { useReservedRegions } from './reserved-regions'
 import { topChromeSpace } from './top-chrome-space'
 

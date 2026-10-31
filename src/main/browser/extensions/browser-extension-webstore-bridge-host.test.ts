@@ -44,7 +44,7 @@ function fakeEvent(overrides: {
 }
 
 const lookups = {
-  isOrcaBrowserTab: (id: number) => id === 7,
+  isOCCBrowserTab: (id: number) => id === 7,
   profileIdForSession: (session: unknown) => (session === localSession ? 'default' : null)
 }
 

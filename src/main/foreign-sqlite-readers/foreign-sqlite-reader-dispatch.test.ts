@@ -14,7 +14,7 @@ describe('handleForeignSqliteReaderRequest', () => {
         dbPath: '/definitely/missing/opencode.db'
       })
     ).toEqual({ id: 5, ok: true, value: [] })
-    const dir = mkdtempSync(join(tmpdir(), 'orca-foreign-sqlite-dispatch-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-foreign-sqlite-dispatch-'))
     try {
       const dbPath = join(dir, 'opencode.db')
       writeFileSync(dbPath, 'not a sqlite database'.repeat(100))

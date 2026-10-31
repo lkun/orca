@@ -2,7 +2,7 @@ import { delimiter, join } from 'node:path'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import type * as NodeOs from 'node:os'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { detectCommandsInInstallDirs } from './local-agent-install-dir-detection'
 import {
@@ -205,7 +205,7 @@ describe('agent CLI install-dir fallback', () => {
     }
   })
 
-  // Verify the orca CLI detection entrypoint's absolute-path installation contract.
+  // Verify the occ CLI detection entrypoint's absolute-path installation contract.
   it.skipIf(process.platform === 'win32')(
     'reports a system-installed CLI as detected, not just resolved',
     () => {
@@ -239,7 +239,7 @@ describe('agent CLI install-dir fallback', () => {
   it.skipIf(process.platform === 'win32')(
     'keeps login PATH first, then resolves nvm and installer fallbacks with spaces in HOME',
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-guest-fallback-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-guest-fallback-'))
       const home = join(root, 'home with space')
       const login = join(root, 'login-bin')
       const directories = [
@@ -249,7 +249,7 @@ describe('agent CLI install-dir fallback', () => {
         join(home, '.vite-plus', 'bin'),
         join(home, '.grok', 'bin')
       ]
-      const command = 'orca-fallback-fixture'
+      const command = 'occ-fallback-fixture'
       try {
         for (const directory of directories) {
           await mkdir(directory, { recursive: true })
@@ -259,7 +259,7 @@ describe('agent CLI install-dir fallback', () => {
           const result = await runProcess({
             program: '/bin/sh',
             args: ['-c', `${buildPosixFallbackPathPrelude()}\ncommand -v ${command}`],
-            env: { HOME: home, PATH: login, ORCA_BACKGROUND_LAUNCH: '1' },
+            env: { HOME: home, PATH: login, OCC_BACKGROUND_LAUNCH: '1' },
             timeoutMs: 10_000,
             terminationBarrier: true
           })

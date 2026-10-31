@@ -31,7 +31,7 @@ const ENGINES = [
     name: 'chromium',
     // Use runner Chrome override to avoid CI browser downloads.
     launch: () => {
-      const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+      const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
       return chromium.launch({
         headless: true,
         ...(executablePath ? { executablePath } : {})
@@ -60,7 +60,7 @@ beforeAll(async () => {
   bridgeVersion = await readBridgeProtocolVersion()
   faultGrant = await readBridgeFaultGrant()
   backNames = await readBridgeBackNames()
-  scratch = await mkdtemp(join(tmpdir(), 'orca-mobile-web-app-drawer-'))
+  scratch = await mkdtemp(join(tmpdir(), 'occ-mobile-web-app-drawer-'))
   const { outDir } = await buildMobileWebAppBundle({ outDir: join(scratch, 'bundle') })
   const served = await createBundleServer({ outDir, cspHeader })
   server = served.server
@@ -154,7 +154,7 @@ describeDrawer('the bottom drawer on the page', () => {
           await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches)
         ).toBe(false)
         await page.waitForFunction(
-          () => document.documentElement.dataset.orcaWebEntry === 'mounted',
+          () => document.documentElement.dataset.occWebEntry === 'mounted',
           undefined,
           { timeout: 30_000, polling: 250 }
         )
@@ -229,7 +229,7 @@ describeDrawer('the bottom drawer on the page', () => {
 
 /** Every notify the page posted, by name, so a case can say what crossed and what did not. */
 function notifyNames() {
-  return globalThis.__orcaRenderCheckNotifies.map((frame) => frame.name)
+  return globalThis.__occRenderCheckNotifies.map((frame) => frame.name)
 }
 
 // Chromium matches Android WebView’s hardware Back; prove mounted page claims key over real bridge and closes animated sheet. WebKit has no hardware Back.
@@ -252,7 +252,7 @@ describeDrawer('the device Back key reaching a sheet on the page', () => {
       })
       await page.goto(`${origin}/`, { waitUntil: 'load' })
       await page.waitForFunction(
-        () => document.documentElement.dataset.orcaWebEntry === 'mounted',
+        () => document.documentElement.dataset.occWebEntry === 'mounted',
         undefined,
         { timeout: 30_000, polling: 250 }
       )
@@ -267,7 +267,7 @@ describeDrawer('the device Back key reaching a sheet on the page', () => {
       )
       const claimed = await page.waitForFunction(
         (name) =>
-          globalThis.__orcaRenderCheckNotifies.find(
+          globalThis.__occRenderCheckNotifies.find(
             (frame) => frame.name === name && frame.claimed === true
           ) ?? null,
         backNames.claim,
@@ -276,7 +276,7 @@ describeDrawer('the device Back key reaching a sheet on the page', () => {
       expect(await claimed.jsonValue(), errors.join(' | ')).toMatchObject({ claimed: true })
 
       await page.evaluate(() => {
-        globalThis.__orcaRenderCheckSendBack()
+        globalThis.__occRenderCheckSendBack()
       })
       const closed = await page
         .waitForFunction(
@@ -296,7 +296,7 @@ describeDrawer('the device Back key reaching a sheet on the page', () => {
       // And the key goes back to the shell with the sheet, so the next press leaves the screen.
       const claims = await page.evaluate(
         (name) =>
-          globalThis.__orcaRenderCheckNotifies
+          globalThis.__occRenderCheckNotifies
             .filter((frame) => frame.name === name)
             .map((frame) => frame.claimed),
         backNames.claim

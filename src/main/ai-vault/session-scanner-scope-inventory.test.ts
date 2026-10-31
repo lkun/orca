@@ -20,7 +20,7 @@ afterEach(async () => {
 })
 
 it('replays tied selection, winner exclusion and evicted paths in original root order', async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-bucket-replay-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-bucket-replay-'))
   const paths = ['b', 'a', 'c', 'winner'].map((name) => join(root!, '--repo--', `${name}.jsonl`))
   for (const [index, path] of paths.entries()) {
     await writeJsonlFile(path, [{ type: 'session', cwd: '/repo' }])
@@ -56,7 +56,7 @@ it('replays tied selection, winner exclusion and evicted paths in original root 
 })
 
 it('replays staged errors after global errors, interleaved with bucket errors under the issue cap', async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-bucket-issues-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-bucket-issues-'))
   const path = join(root, '--repo--', 'a.jsonl')
   await writeJsonlFile(path, [{ type: 'session', cwd: '/repo' }])
   const read = transcriptFs.wslGatedReaddir
@@ -99,7 +99,7 @@ it('replays staged errors after global errors, interleaved with bucket errors un
 })
 
 it('closes representative streams and inventory sources on cancellation before reading', async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-bucket-abort-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-bucket-abort-'))
   await writeJsonlFile(join(root, '-repo', 'a.jsonl'), [{ cwd: '/repo' }])
   const controller = new AbortController()
   const input = new PassThrough()

@@ -167,7 +167,7 @@ export function useMobileNativeChatSessionOptions(
   const { agent, scopeKey, reportedModel, discoveredModels } = args
   const catalog = agent ? getAgentSessionOptionCatalog(agent) : null
   const identity = agent && scopeKey && catalog ? `${scopeKey}\0${agent}` : null
-  const canSwitchOmpModel = args.modelSwitchCommand === 'orca-model'
+  const canSwitchOmpModel = args.modelSwitchCommand === 'occ-model'
   const latest = useRef(args)
   const activeIdentityRef = useRef(identity)
   const [pending, setPending] = useState<PendingOperation | null>(null)

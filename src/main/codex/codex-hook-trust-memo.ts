@@ -4,7 +4,7 @@ import { isDeepStrictEqual } from 'node:util'
 import { normalizeRuntimePathForComparison } from '../../shared/cross-platform-path'
 import { writeFileAtomically } from '../codex-accounts/fs-utils'
 import { isPlainObject } from '../agent-hooks/hooks-json-read'
-import { getOrcaUserDataPath } from './codex-home-paths'
+import { getOCCUserDataPath } from './codex-home-paths'
 import type { CodexHookAnswer, CodexHookHashes } from './codex-hook-trust-derivation'
 import { CODEX_MANAGED_EVENT_LABELS } from './codex-hook-definition'
 import type { CodexEventLabel } from './config-toml-trust'
@@ -26,7 +26,7 @@ type MemoizedCodexHookAnswer = Exclude<CodexHookAnswer, { kind: 'pending' }>
 const MAX_RECORDS = 8
 
 export function getCodexHookTrustMemoPath(): string {
-  return join(getOrcaUserDataPath(), 'codex-hook-trust.json')
+  return join(getOCCUserDataPath(), 'codex-hook-trust.json')
 }
 
 export function codexBinaryKey(codexPath: string): string {

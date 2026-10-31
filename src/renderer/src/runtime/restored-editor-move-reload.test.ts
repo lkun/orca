@@ -27,7 +27,7 @@ import {
 import { installLayoutFrameApplyCheck } from './workspace-layout-frame-apply-check.test-fixture'
 import { openWorkspaceLayoutFrameSync } from './workspace-layout-frame-sync'
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('sonner', () => ({ toast: { info: vi.fn(), success: vi.fn(), error: vi.fn() } }))
 vi.mock('@/lib/agent-status', async (importOriginal) => {
   const actual = await importOriginal<typeof AgentStatusModule>()
@@ -53,7 +53,7 @@ createStoreSessionMockApi()
 const settle = () => new Promise<void>((resolve) => setTimeout(resolve, 0))
 
 const TAB_ID = 'editor:src/app.ts'
-const FILE_PATH = '/Users/dev/orca/src/app.ts'
+const FILE_PATH = '/Users/dev/occ/src/app.ts'
 const MOVED_ID = ownedEditorFileId(FILE_PATH, FOLDER_KEY, null)
 
 /** The session main saves after applying the window's re-own of the restored tab to the folder. */

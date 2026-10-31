@@ -1,8 +1,8 @@
 import './rpc/unused-default-rpc-methods.test-fixture'
 
 import { describe, expect, it, vi } from 'vitest'
-import { formatOrcaSessionAddress } from '../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../shared/occ-session-address'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import { idOf } from './rpc/orchestration-session-caller-test-fixture'
 import { closeStructuredAgentSessionChild } from './agent-session/structured-agent-session-close'
 import type { FakeConnection } from './structured-chat-coordinator-fake-codex-fixture'
@@ -23,7 +23,7 @@ import {
   startClearedContext
 } from './structured-chat-coordinator-mail-rig.test-fixture'
 
-const WORKER = formatOrcaSessionAddress(testOrcaSessionId(PEER_CHAT))
+const WORKER = formatOCCSessionAddress(testOCCSessionId(PEER_CHAT))
 
 /** A Dispatch of the coordinator's task to the peer chat, both chats open. */
 async function dispatchToChat(): Promise<{

@@ -11,7 +11,7 @@ describe('real WSL terminal lane', () => {
     'config/scripts/verify-playwright-participation.mjs',
     'src/main/wsl-availability.ts',
     'src/main/wsl/wsl-runner.ts',
-    'src/main/pty/wsl-orca-env.ts',
+    'src/main/pty/wsl-occ-env.ts',
     'src/shared/wsl-login-shell-command.ts',
     'src/shared/shell-argument-quoting.ts',
     'src/shared/windows-terminal-shell.ts',
@@ -74,7 +74,7 @@ describe('real WSL terminal lane', () => {
     const guard = steps.find(
       (step) => step.name === 'Guard that background work never starts the stopped WSL distro'
     )
-    expect(guard.env.ORCA_E2E_WSL_TERMINATE_DISTRO).toBe('Ubuntu')
+    expect(guard.env.OCC_E2E_WSL_TERMINATE_DISTRO).toBe('Ubuntu')
     expect(guard.run).toContain('tests/e2e/wsl-bridge-no-background-boot.spec.ts')
     expect(guard.run).toContain('--repeat-each=3')
     const guardReceipt = steps.find((step) => step.name === 'Require all three E9 guard executions')

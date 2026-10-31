@@ -23,9 +23,9 @@ vi.mock('expo-file-system', () => ({ File: class {}, Paths: {} }))
 
 const ref = <T,>(current: T) => ({ current })
 const renderers: ReactTestRenderer[] = []
-const imagePayload = '\x1b[200~/tmp/orca-image.png\x1b[201~ '
+const imagePayload = '\x1b[200~/tmp/occ-image.png\x1b[201~ '
 
-function fixture(title = 'Terminal', imagePath = '/tmp/orca-image.png', launchAgent?: TuiAgent) {
+function fixture(title = 'Terminal', imagePath = '/tmp/occ-image.png', launchAgent?: TuiAgent) {
   const agent = resolveMobileImageAttachmentAgent(
     { type: 'terminal', id: 'tab-1', title, terminal: 'term-1', isActive: true, launchAgent },
     null
@@ -236,9 +236,9 @@ it.each([
   ['picker', 'codex'],
   ['clipboard', 'codex']
 ] as const)('%s escapes a spaced host temp path with agent %s', async (entry, launchAgent) => {
-  const test = fixture('Terminal', '/tmp/orca images/orca.png', launchAgent)
+  const test = fixture('Terminal', '/tmp/occ images/occ.png', launchAgent)
   await test.attach(entry)
   expect(test.sends).toEqual([
-    { terminal: 'term-1', text: '\x1b[200~/tmp/orca\\ images/orca.png\x1b[201~ ', enter: false }
+    { terminal: 'term-1', text: '\x1b[200~/tmp/occ\\ images/occ.png\x1b[201~ ', enter: false }
   ])
 })

@@ -30,7 +30,7 @@ export const PLUGIN_AUTHORING_COMMAND_SPECS: CommandSpec[] = [
   {
     path: ['plugin', 'validate'],
     summary: 'Check a plugin folder, manifest or catalog the way OCC will load it',
-    usage: 'occ plugin validate <dir|orca-plugin.json|orca-catalog.json> [--json]',
+    usage: 'occ plugin validate <dir|occ-plugin.json|occ-catalog.json> [--json]',
     allowedFlags: [...LOCAL_COMMAND_FLAGS, 'path'],
     positionalArgs: ['path'],
     notes: [

@@ -7,10 +7,10 @@ import {
 } from './dev-electron-bundle-identity.mjs'
 
 const BRANCH_ENV_KEYS = [
-  'ORCA_DEV_DOCK_TITLE',
-  'ORCA_DEV_BRANCH',
-  'ORCA_DEV_INSTANCE_LABEL',
-  'ORCA_DEV_WORKTREE_NAME'
+  'OCC_DEV_DOCK_TITLE',
+  'OCC_DEV_BRANCH',
+  'OCC_DEV_INSTANCE_LABEL',
+  'OCC_DEV_WORKTREE_NAME'
 ] as const
 
 /** Collect the patch set as it would be computed on a given branch. */
@@ -18,10 +18,10 @@ function patchesUnder(dockTitle: string, branch: string) {
   // Restore env keys individually: replacing process.env loses Node’s string coercion and leaks a plain object into later worker tests.
   const saved = BRANCH_ENV_KEYS.map((key) => [key, process.env[key]] as const)
   Object.assign(process.env, {
-    ORCA_DEV_DOCK_TITLE: dockTitle,
-    ORCA_DEV_BRANCH: branch,
-    ORCA_DEV_INSTANCE_LABEL: branch,
-    ORCA_DEV_WORKTREE_NAME: branch
+    OCC_DEV_DOCK_TITLE: dockTitle,
+    OCC_DEV_BRANCH: branch,
+    OCC_DEV_INSTANCE_LABEL: branch,
+    OCC_DEV_WORKTREE_NAME: branch
   })
   try {
     return [...getDevBundlePlistPatches(), ...getDevHelperPlistPatches()]

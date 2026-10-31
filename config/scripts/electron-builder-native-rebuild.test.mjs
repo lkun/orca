@@ -44,7 +44,7 @@ describe('electron-builder native rebuild hook', () => {
 
   it('reuses a prepared native runtime only for the host target', () => {
     const runtime = {
-      environment: { ORCA_REUSE_PREPARED_NATIVE_RUNTIME: '1' },
+      environment: { OCC_REUSE_PREPARED_NATIVE_RUNTIME: '1' },
       hostPlatform: 'linux',
       hostArch: 'x64'
     }

@@ -38,7 +38,7 @@ function rowText(value: unknown, maxLength: number): string | undefined {
   return collapsed.length > 0 && collapsed.length <= maxLength ? collapsed : undefined
 }
 
-function descriptorCatalog(value: unknown): {
+function descriptocctalog(value: unknown): {
   names: string[]
   details: Map<string, CommandDetail>
 } {
@@ -112,7 +112,7 @@ export class ClaudeSlashCommandCatalog {
       'commands' in initialization &&
       Array.isArray(initialization.commands)
     ) {
-      const catalog = descriptorCatalog(initialization.commands)
+      const catalog = descriptocctalog(initialization.commands)
       this.details = catalog.details
       this.entries = this.describe(
         catalog.names.map((name) => ({
@@ -165,7 +165,7 @@ export class ClaudeSlashCommandCatalog {
       message.subtype === 'commands_changed' &&
       Array.isArray(message.commands)
     ) {
-      const catalog = descriptorCatalog(message.commands)
+      const catalog = descriptocctalog(message.commands)
       this.details = catalog.details
       next = this.describe(
         catalog.names.map((name) =>

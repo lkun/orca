@@ -1,8 +1,8 @@
-import './orca-runtime-test-lifecycle.spec'
+import './occ-runtime-test-lifecycle.spec'
 import { describe, expect, it, vi } from 'vitest'
-import { createRuntime, syncSinglePty, TEST_WORKTREE_ID } from './orca-runtime-test-fixtures.spec'
-import { electronMocks } from './orca-runtime-test-mocks.spec'
-import { createMobileCreateTestNotifier } from './orca-runtime-test-scenario-builders.spec'
+import { createRuntime, syncSinglePty, TEST_WORKTREE_ID } from './occ-runtime-test-fixtures.spec'
+import { electronMocks } from './occ-runtime-test-mocks.spec'
+import { createMobileCreateTestNotifier } from './occ-runtime-test-scenario-builders.spec'
 import { RpcDispatcher } from './rpc/dispatcher'
 import { TERMINAL_QUERY_METHODS } from './rpc/methods/terminal/terminal-query-methods'
 

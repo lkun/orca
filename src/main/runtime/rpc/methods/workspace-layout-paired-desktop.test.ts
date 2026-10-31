@@ -23,13 +23,13 @@ const LAYOUT_METHODS = [
 
 const layoutOwner = vi.hoisted(() => ({ isMain: true }))
 vi.mock('../../../../shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return layoutOwner.isMain
   }
 }))
 
 // Loaded once as a layout-owner build; window-owned registration is covered in workspace-layout-apply.test.ts.
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import { RpcDispatcher } from '../dispatcher'
 import { ALL_RPC_METHODS } from './index'
 
@@ -50,14 +50,14 @@ afterEach(() => {
 
 describe('the layout intents capability', () => {
   it('is advertised only by a layout-owner build', () => {
-    expect(new OrcaRuntimeService().getStatus().capabilities).toEqual(
+    expect(new OCCRuntimeService().getStatus().capabilities).toEqual(
       expect.arrayContaining([
         LAYOUT_INTENTS_RUNTIME_CAPABILITY,
         LAYOUT_REOPEN_HELD_PANES_CAPABILITY
       ])
     )
     layoutOwner.isMain = false
-    const offCapabilities = new OrcaRuntimeService().getStatus().capabilities
+    const offCapabilities = new OCCRuntimeService().getStatus().capabilities
     expect(offCapabilities).not.toContain(LAYOUT_INTENTS_RUNTIME_CAPABILITY)
     expect(offCapabilities).not.toContain(LAYOUT_REOPEN_HELD_PANES_CAPABILITY)
   })
@@ -78,7 +78,7 @@ describe('layout methods on a layout-owner server', () => {
     ['layout.reopenHeldPanes', 'invalid_argument'],
     ['layout.reportView', 'invalid_argument']
   ] as const)('admits a paired desktop and refuses a phone: %s', async (method, nextCheck) => {
-    const dispatcher = new RpcDispatcher({ runtime: new OrcaRuntimeService() })
+    const dispatcher = new RpcDispatcher({ runtime: new OCCRuntimeService() })
     const asDesktop = await dispatcher.dispatch(request(method, { bad: 1 }), {
       callerScope: PAIRED_DESKTOP
     })
@@ -88,7 +88,7 @@ describe('layout methods on a layout-owner server', () => {
   })
 
   it('streams a snapshot to a paired desktop', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const dispatcher = new RpcDispatcher({ runtime })
     const frames: z.infer<typeof Frame>[] = []
     const done = dispatcher.dispatchStreaming(
@@ -116,7 +116,7 @@ describe('layout.reportView', () => {
   }
 
   it("records the desktop's groups under its connection", async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const reported = vi.spyOn(runtime, 'reportClientView')
     const dispatcher = new RpcDispatcher({ runtime })
     const reply = await dispatcher.dispatch(
@@ -128,7 +128,7 @@ describe('layout.reportView', () => {
   })
 
   it('passes a refresh on as one', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const reported = vi.spyOn(runtime, 'reportClientView')
     const reply = await new RpcDispatcher({ runtime }).dispatch(
       request('layout.reportView', { activeGroupByWorkspace: { 'wt-1': 'g2' }, refresh: true }),
@@ -139,7 +139,7 @@ describe('layout.reportView', () => {
   })
 
   it('refuses a caller with no connection to tie the report to', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const reported = vi.spyOn(runtime, 'reportClientView')
     const reply = await new RpcDispatcher({ runtime }).dispatch(
       request('layout.reportView', { activeGroupByWorkspace: { 'wt-1': 'g2' } }),
@@ -156,7 +156,7 @@ describe('layout.reportView', () => {
     [{ activeGroupByWorkspace: ['g1'] }],
     [{ activeGroupByWorkspace: {}, refresh: false }]
   ])('refuses params it cannot read: %j', async (params) => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const reported = vi.spyOn(runtime, 'reportClientView')
     const reply = await new RpcDispatcher({ runtime }).dispatch(
       request('layout.reportView', params),
@@ -207,7 +207,7 @@ describe('an older desktop on a layout-owner server', () => {
 
   /** A windowless (serve) host: no notifier, its tabs already published. */
   async function headlessServer() {
-    class HeadlessServer extends OrcaRuntimeService {
+    class HeadlessServer extends OCCRuntimeService {
       seed(): void {
         this.storeMobileSessionSnapshot(WT, published())
       }

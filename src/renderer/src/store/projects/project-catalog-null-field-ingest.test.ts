@@ -7,13 +7,13 @@ import { adoptFromEndpoint } from '../adopt-from-endpoint'
 
 // Normalize wire catalog fields at ingest so null repoId/path cannot crash Settings/sidebar trim/grouping readers (3bcc5be3, v1.4.188 Linux).
 const repos = [
-  { id: 'repo-1', path: '/Users/alice/orca', displayName: 'orca', badgeColor: '#000', addedAt: 1 }
+  { id: 'repo-1', path: '/Users/alice/occ', displayName: 'occ', badgeColor: '#000', addedAt: 1 }
 ] satisfies Repo[]
 
 const projects = [
   {
     id: 'repo:repo-1',
-    displayName: 'orca',
+    displayName: 'occ',
     badgeColor: '#000',
     sourceRepoIds: ['repo-1'],
     createdAt: 1,
@@ -49,17 +49,17 @@ function badSetups(): ProjectHostSetup[] {
     projectId: 'repo:repo-1',
     hostId: 'local',
     repoId: 'repo-1',
-    path: '/Users/alice/orca',
+    path: '/Users/alice/occ',
     displayName,
     setupState: 'ready',
     setupMethod: 'legacy-repo',
     createdAt: 1,
     updatedAt: 1
   })
-  const corrupted = base('repo:repo-1::local::2', 'orca-2')
+  const corrupted = base('repo:repo-1::local::2', 'occ-2')
   Reflect.set(corrupted, 'repoId', null)
   Reflect.set(corrupted, 'path', null)
-  return [base('repo:repo-1::local', 'orca'), corrupted]
+  return [base('repo:repo-1::local', 'occ'), corrupted]
 }
 
 function stubProjectsApi(setups: ProjectHostSetup[], projectRows: Project[] = projects): void {

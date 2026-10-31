@@ -13,7 +13,7 @@ vi.mock('./chat-scratch-file-root', () => ({
 let root: string
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-file-reads-binary-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-file-reads-binary-'))
 })
 
 afterEach(() => {

@@ -25,7 +25,7 @@ Source experiments used `origin/main` at `721a2692893ab29f8daee3149965bf5e9adf99
 - A SQLite store test sustained a registered migration for a simulated hour with both controls renewed, then completed on source release.
 - Mobile harness restored credentials/assignment/subscriptions after simulated drain. Sent mutations can become delivery-unknown and are not blindly replayed. The 251ms fake-clock recovery result is not measured real-world downtime.
 
-Full evidence: [interruption findings](RELAY-INTERRUPTION-FINDINGS.md), [harness and patches](https://github.com/stablyai/orca/blob/0db9fdc486366f7451289f0c0599eed9ae1d94be/tests/tools/relay-rehome-interruption/README.md). The counterfactual patch is NOT production code: it has no negotiation, incorrectly changes normal deadline semantics, and does not validate failure/replay paths.
+Full evidence: [interruption findings](RELAY-INTERRUPTION-FINDINGS.md), [harness and patches](https://github.com/stablyai/occ/blob/0db9fdc486366f7451289f0c0599eed9ae1d94be/tests/tools/relay-rehome-interruption/README.md). The counterfactual patch is NOT production code: it has no negotiation, incorrectly changes normal deadline semantics, and does not validate failure/replay paths.
 
 ## 1. Ordered, expiring region decisions
 
@@ -98,7 +98,7 @@ The independent review found three required contracts. This section supersedes a
 
 ### Reuse the cell's existing activity renewal (supersedes the extra wire exchange)
 
-Follow-up investigation found a smaller mechanism: a successfully validated `renewControlActivity` result can extend the same retained control's in-memory lease to `max(existingExpiry, requestedActivityExpiry)`. The cell already runs this renewal; no new desktop renewal timer, old-source rebind or recurring WebSocket exchange is needed. See [prototype evidence](https://github.com/stablyai/orca/blob/0db9fdc486366f7451289f0c0599eed9ae1d94be/tests/tools/relay-rehome-interruption/RETAINED-CONTROL-LEASE.md).
+Follow-up investigation found a smaller mechanism: a successfully validated `renewControlActivity` result can extend the same retained control's in-memory lease to `max(existingExpiry, requestedActivityExpiry)`. The cell already runs this renewal; no new desktop renewal timer, old-source rebind or recurring WebSocket exchange is needed. See [prototype evidence](https://github.com/stablyai/occ/blob/0db9fdc486366f7451289f0c0599eed9ae1d94be/tests/tools/relay-rehome-interruption/RETAINED-CONTROL-LEASE.md).
 
 Before acknowledging the optional drain and telling desktop to cut over, establish the first short authorized renewal for the exact mode/attempt/source generation/incarnation. Subsequent grants reuse normal heartbeat renewal. Failure or stale state during adoption does not authorize retaining the source; reconcile the provisional target through the rollback contract below. A mode flag, pending database request or activity reacquisition alone is not a grant.
 
@@ -108,7 +108,7 @@ Prototype evidence: 43 cell-registry tests and package typecheck pass, including
 
 ### Final renewal-review correction: fence failures as well as success
 
-Fresh GPT-6-astra / low review: [retained-control review](https://github.com/stablyai/orca/blob/0db9fdc486366f7451289f0c0599eed9ae1d94be/docs/relay-region-correction/RELAY-RETAINED-CONTROL-REVIEW.md), **REVISE one completion-fencing detail; heartbeat reuse supported**. The following correction is incorporated after review, not independently approved or implemented.
+Fresh GPT-6-astra / low review: [retained-control review](https://github.com/stablyai/occ/blob/0db9fdc486366f7451289f0c0599eed9ae1d94be/docs/relay-region-correction/RELAY-RETAINED-CONTROL-REVIEW.md), **REVISE one completion-fencing detail; heartbeat reuse supported**. The following correction is incorporated after review, not independently approved or implemented.
 
 Every renewal completion and awaited recovery continuation must validate its captured socket/session, activity ID, current authority/mode transition and applicable ordering before altering scheduling, extending expiry, closing a socket, or reacquiring activity. In particular, a denial from an aborted retained attempt arriving after same-generation rollback must not close the restored source. A current applicable denial must still enforce closure. An obsolete missing-activity result must not initiate recovery; after awaited recovery, recheck authority and clean up abandoned acquisition as required. Do not use a blanket success-only fence or suppress all failures.
 

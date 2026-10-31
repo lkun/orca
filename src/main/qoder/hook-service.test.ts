@@ -16,7 +16,7 @@ import { markQoderWorkspaceTrusted, withQoderTrustedWorkspace } from './workspac
 import { qwenCodeHookService, QWEN_CODE_HOOK_EVENTS } from '../qwen-code/hook-service'
 
 beforeAll(() => {
-  sandbox.home = mkdtempSync(join(tmpdir(), 'orca-qoder-test-'))
+  sandbox.home = mkdtempSync(join(tmpdir(), 'occ-qoder-test-'))
   mkdirSync(join(sandbox.home, '.qoder'))
 })
 afterAll(() => {
@@ -81,7 +81,7 @@ describe('Qoder Windows hook shell', () => {
   it('uses the documented explicit shell without relying on Git Bash or another PowerShell hop', () => {
     vi.spyOn(process, 'platform', 'get').mockReturnValue('win32')
     try {
-      const hook = getManagedLifecycleHook('C:\\Users\\a b\\.orca\\agent-hooks\\qoder-hook.cmd', {
+      const hook = getManagedLifecycleHook('C:\\Users\\a b\\.occ\\agent-hooks\\qoder-hook.cmd', {
         configDirName: '.qoder',
         scriptBaseName: 'qoder-hook',
         usesWindowsCompatLauncher: true,
@@ -131,7 +131,7 @@ it.each([
     expect(Object.keys(installed.hooks).sort()).toEqual([...events].sort())
     expect(installed.statusLine).toEqual({ command: 'user-status' })
     expect(
-      readFileSync(join(sandbox.home, '.orca', 'agent-hooks', `${source}-hook.sh`), 'utf8')
+      readFileSync(join(sandbox.home, '.occ', 'agent-hooks', `${source}-hook.sh`), 'utf8')
     ).toContain(`/hook/${source}`)
     if (source === 'qoder-cn') {
       markQoderWorkspaceTrusted('/cn-workspace', sandbox.home, '.qoder-cn')

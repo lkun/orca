@@ -6,7 +6,7 @@ const { listRepoWorktreesMock } = vi.hoisted(() => ({ listRepoWorktreesMock: vi.
 
 vi.mock('electron', () => ({
   ipcMain: { handle: vi.fn(), removeHandler: vi.fn() },
-  app: { getPath: () => '/tmp/orca-test' }
+  app: { getPath: () => '/tmp/occ-test' }
 }))
 vi.mock('../../../repo-worktrees', () => ({
   listRepoWorktreesForDetectedScan: listRepoWorktreesMock
@@ -27,7 +27,7 @@ vi.mock('./authoritative-local-worktree-metadata-pruning', () => ({
     .mockResolvedValue({ scanGenerationCurrent: true, preservedMetadataCandidateIds: new Set() })
 }))
 
-const { listDetectedWorktreesForCapturedRepo } = await import('./detected-provider-listing')
+const { listDetectedWorktreesFoccpturedRepo } = await import('./detected-provider-listing')
 const { __resetDetectedWorktreeScanCacheForTests, invalidateDetectedWorktreeScanCache } =
   await import('./detected-worktree-scan-cache')
 const { getLocalWorktreeCatalogVersion, getLocalWorktreeScanGeneration } =
@@ -64,7 +64,7 @@ function worktreeAt(repo: Repo, path: string): GitWorktreeInfo {
 }
 
 function listLocal() {
-  return listDetectedWorktreesForCapturedRepo(createStore(localRepo), localRepo, () => true)
+  return listDetectedWorktreesFoccpturedRepo(createStore(localRepo), localRepo, () => true)
 }
 
 // Clients order listing rows by scan-start generation against applied create/remove replies.

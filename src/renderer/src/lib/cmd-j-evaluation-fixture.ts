@@ -4,9 +4,9 @@ import type { Worktree } from '../../../shared/worktree/types'
 /** Synthetic names/IDs/titles with realistic workspace shapes for the multi-keyword evaluation gate. */
 export const CMD_J_FIXTURE_REPOS: Repo[] = [
   {
-    id: 'repo-orca',
-    path: '/repos/orca',
-    displayName: 'acme/orca',
+    id: 'repo-occ',
+    path: '/repos/occ',
+    displayName: 'acme/occ',
     badgeColor: '#22c55e',
     addedAt: 0
   },
@@ -55,14 +55,14 @@ const AUTOMATION_BASE = {
   kind: 'created-by-automation',
   automationId: 'auto-1',
   executionTargetType: 'local',
-  executionTargetId: 'repo-orca',
+  executionTargetId: 'repo-occ',
   projectId: 'project-1'
 } as const
 
 export const CMD_J_FIXTURE_WORKTREES: Worktree[] = [
   worktree({
     id: 'wt-scan-daily',
-    repoId: 'repo-orca',
+    repoId: 'repo-occ',
     displayName: 'scan daily 1.4.182 · 2026-08-13 · 93334dc',
     branch: 'refs/heads/automation/scan-daily-182',
     automationProvenance: {
@@ -75,7 +75,7 @@ export const CMD_J_FIXTURE_WORKTREES: Worktree[] = [
   }),
   worktree({
     id: 'wt-scan-daily-older',
-    repoId: 'repo-orca',
+    repoId: 'repo-occ',
     displayName: 'scan daily 1.4.181 · 2026-08-12 · 1122334',
     branch: 'refs/heads/automation/scan-daily-181',
     automationProvenance: {
@@ -102,8 +102,8 @@ export const CMD_J_FIXTURE_WORKTREES: Worktree[] = [
     }
   }),
   worktree({
-    id: 'wt-main-orca',
-    repoId: 'repo-orca',
+    id: 'wt-main-occ',
+    repoId: 'repo-occ',
     displayName: 'main',
     branch: 'refs/heads/main',
     isMainWorktree: true
@@ -136,7 +136,7 @@ export const CMD_J_FIXTURE_WORKTREES: Worktree[] = [
   }),
   worktree({
     id: 'wt-linear',
-    repoId: 'repo-orca',
+    repoId: 'repo-occ',
     displayName: 'Palette ranking',
     branch: 'refs/heads/feature/palette-ranking',
     linkedLinearIssue: 'ORC-912',
@@ -153,7 +153,7 @@ export const CMD_J_FIXTURE_WORKTREES: Worktree[] = [
 
 export const CMD_J_FIXTURE_PORTS: ReadonlyMap<string, { port: number; processName?: string }[]> =
   new Map([
-    ['wt-main-orca', [{ port: 3000, processName: 'node' }]],
+    ['wt-main-occ', [{ port: 3000, processName: 'node' }]],
     ['wt-docs', [{ port: 4123, processName: 'vite' }]]
   ])
 
@@ -173,9 +173,9 @@ export const CMD_J_FIXTURE_CASES: readonly CmdJFixtureCase[] = [
   { query: 'nightly review run-184', expected: ['wt-scan-daily'] },
   { query: 'sta-4052 reconnect', expected: ['wt-reconnect'] },
   { query: 'reconnect infra', expected: ['wt-reconnect'] },
-  { query: 'main 3000', expected: ['wt-main-orca'] },
-  { query: 'acme/orca main', expected: ['wt-main-orca'] },
-  { query: 'orca/main', expected: ['wt-main-orca'] },
+  { query: 'main 3000', expected: ['wt-main-occ'] },
+  { query: 'acme/occ main', expected: ['wt-main-occ'] },
+  { query: 'occ/main', expected: ['wt-main-occ'] },
   { query: 'docs terminal', expected: ['wt-docs'] },
   { query: '#4123', expected: ['wt-docs'] },
   { query: '123', expected: [] },

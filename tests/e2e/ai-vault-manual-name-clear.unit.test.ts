@@ -107,7 +107,7 @@ it('detaches a mounted provider History row after clear without losing the nativ
   for (const remount of [false, true]) {
     resetAiVaultForcedRescanThrottleForTest()
     resetStructuredAgentSessionStatusFeedsForTests()
-    directory = await mkdtemp(join(tmpdir(), 'orca-history-manual-clear-'))
+    directory = await mkdtemp(join(tmpdir(), 'occ-history-manual-clear-'))
     const lease = agentSessionLeaseFixture({
       sessionId: SESSION,
       ownerProcess: null,

@@ -17,8 +17,8 @@ const HOST_ID = 'runtime:env-1'
 const worktree = (path: string) =>
   makeWorktree({ id: `${REPO_ID}::${path}`, repoId: REPO_ID, path, hostId: HOST_ID })
 
-const live = worktree('/home/orca/live')
-const deletedOnHost = worktree('/home/orca/deleted')
+const live = worktree('/home/occ/live')
+const deletedOnHost = worktree('/home/occ/deleted')
 
 function seedClientWithBothRows(): ReturnType<typeof createTestStore> {
   const store = createTestStore()
@@ -27,7 +27,7 @@ function seedClientWithBothRows(): ReturnType<typeof createTestStore> {
     repos: [
       {
         id: REPO_ID,
-        path: '/home/orca/repo',
+        path: '/home/occ/repo',
         displayName: 'Runtime Repo',
         badgeColor: '#000',
         addedAt: 0,

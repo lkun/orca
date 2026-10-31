@@ -44,7 +44,7 @@ const SETTINGS_NAV_TARGETS = [
   'session-history',
   'share-skills',
   'automations',
-  'orca-account',
+  'occ-account',
   'linear',
   'setup-guide',
   'servers',
@@ -55,7 +55,7 @@ const SETTINGS_NAV_TARGETS = [
 
 const SETTINGS_NAV_INTENTS = [
   'add-quick-command',
-  'add-remote-orca-server',
+  'add-remote-occ-server',
   'add-ssh-host',
   // Closes Settings when the target pane is already showing.
   'toggle'

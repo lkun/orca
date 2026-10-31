@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import type { RuntimeMobileSessionTabsResult } from '../../../shared/runtime-session-contracts'
 import type * as RecoveryModule from '@/lib/agent-session/launch/structured-agent-session-launch-recovery'
 import type { StructuredAgentSessionLaunchIntent } from '@/lib/launch-structured-agent-session'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 
 const mocks = vi.hoisted(() => ({
   abandonIntent: vi.fn(),
@@ -197,8 +197,8 @@ describe('a close that races a structured launch', () => {
     await vi.waitFor(() => expect(refreshLocalStructuredSessionTabs).toHaveBeenCalledOnce())
     expect(cancelStructuredAgentLaunch(worktreeId, intent.sessionId)).toBe(true)
     const persistedTombstones =
-      localStorage.getItem('orca:structuredAgentLaunchCancelledSessions:v1') ?? ''
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      localStorage.getItem('occ:structuredAgentLaunchCancelledSessions:v1') ?? ''
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       // This machine's main hears the cancel at once and fences the chat; the window keeps none.
       expect(
         hasStructuredAgentSessionLaunchCancellationTombstone(worktreeId, intent.sessionId)
@@ -257,7 +257,7 @@ describe('a close that races a structured launch', () => {
 
     // Closed-chat text is neither sent nor returned; layout-owner cancellation only retires it on main.
     expect(mocks.callRuntimeRpc.mock.calls.map(([, method]) => method)).toEqual(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? ['session.tabs.close'] : []
+      OCC_LAYOUT_OWNER_IS_MAIN ? ['session.tabs.close'] : []
     )
     expect(readNativeChatDraftCache(structuredAgentSessionDraftScopeKey(intent.sessionId))).toBe('')
   })

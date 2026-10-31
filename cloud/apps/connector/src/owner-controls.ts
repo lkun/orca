@@ -1,12 +1,12 @@
 import { createHash } from 'node:crypto'
-import type { CloudDatabase, SqlRow } from '@orca-cloud/cloud-database'
+import type { CloudDatabase, SqlRow } from '@occ-cloud/cloud-database'
 import {
   ConnectorDeliveryResultSchema,
   ConnectorPendingPromptSchema,
   type ConnectorConversation,
   type ConnectorHelloRequest,
   type ConnectorPendingPrompt
-} from '@orca-cloud/connector-contract'
+} from '@occ-cloud/connector-contract'
 import { lockConnectorHost } from './connector-hosts.js'
 import { conversationKey, threadPlace } from './connector-threads.js'
 import type { QueueInTransaction } from './queue-delivery.js'

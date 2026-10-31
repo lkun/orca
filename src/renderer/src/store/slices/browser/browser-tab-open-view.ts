@@ -2,7 +2,7 @@ import type { CreateBrowserTabOptions } from './browser-slice-contract'
 import type { BrowserPage, BrowserWorkspace } from '../../../../../shared/browser-workspace-types'
 import {
   FLOATING_TERMINAL_WORKTREE_ID,
-  ORCA_BROWSER_BLANK_URL
+  OCC_BROWSER_BLANK_URL
 } from '../../../../../shared/constants'
 import type { AppState } from '../../types'
 import { ownsGlobalSelection } from '../../global-selection-owner'
@@ -43,7 +43,7 @@ export function browserTabOpenView(
     // the blank url is exactly what marks a New Tab as wanting the address bar it does not have.
     !page.docLocation &&
     (options?.focusAddressBar ??
-      (page.url === 'about:blank' || page.url === ORCA_BROWSER_BLANK_URL))
+      (page.url === 'about:blank' || page.url === OCC_BROWSER_BLANK_URL))
 
   return {
     tabBarOrderByWorktree: {

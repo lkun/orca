@@ -39,7 +39,7 @@ export function registerJournalRowWriterTests(): void {
     let readOnly = false
 
     beforeEach(async () => {
-      root = await mkdtemp(join(tmpdir(), 'orca-journal-row-writer-'))
+      root = await mkdtemp(join(tmpdir(), 'occ-journal-row-writer-'))
       database = openTestJournalHostDatabase(root)
       publishTestJournalEpoch(database.db, SESSION_ID, EPOCH)
       readOnly = false

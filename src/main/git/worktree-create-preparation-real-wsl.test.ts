@@ -10,13 +10,13 @@ import {
 import { removeWorktree } from './worktree-removal'
 
 // Opt in on Windows with a running distro; all Git commands use the production WSL router.
-const wslDistro = process.env.ORCA_TEST_WSL_DISTRO
+const wslDistro = process.env.OCC_TEST_WSL_DISTRO
 
 it.skipIf(process.platform !== 'win32' || !wslDistro)(
   'prepares, retargets, moves and cleans up a real WSL checkout from Windows',
   async () => {
-    const fixtureParent = process.env.ORCA_TEST_WSL_ROOT ?? `\\\\wsl.localhost\\${wslDistro}\\tmp`
-    const root = await mkdtemp(join(fixtureParent, 'orca-create-route-'))
+    const fixtureParent = process.env.OCC_TEST_WSL_ROOT ?? `\\\\wsl.localhost\\${wslDistro}\\tmp`
+    const root = await mkdtemp(join(fixtureParent, 'occ-create-route-'))
     const repoPath = join(root, 'repo')
     const preparedPath = join(root, 'prepared checkout')
     const finalPath = join(root, 'final checkout')
@@ -37,7 +37,7 @@ it.skipIf(process.platform !== 'win32' || !wslDistro)(
       const lockReason = createWorktreePreparationLockReason('real-wsl-test')
       await prepareWorktreeCreateCheckout(repoPath, preparedPath, 'main', lockReason, options)
       expect(await git(repoPath, ['worktree', 'list', '--porcelain'])).toContain(
-        'locked orca-create-preparation:v1:'
+        'locked occ-create-preparation:v1:'
       )
 
       await writeFile(join(repoPath, 'version.txt'), 'two\n')

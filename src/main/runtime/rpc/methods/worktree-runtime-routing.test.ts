@@ -3,7 +3,7 @@ import '../unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
 import { RpcDispatcher } from '../dispatcher'
 import type { RpcRequest, RpcResponse } from '../core'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { WORKTREE_METHODS } from './worktree'
 import {
   WORKTREE_BACKGROUND_REMOVAL_RUNTIME_CAPABILITY,
@@ -29,7 +29,7 @@ describe('worktree.create launch source', () => {
         run(),
       showRepo: vi.fn().mockResolvedValue(repo),
       createManagedWorktree: vi.fn().mockResolvedValue({ worktree: { id: 'wt-1' } })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: WORKTREE_METHODS })
 
     // An open label: a surface this host has never heard of must not refuse the create.
@@ -111,7 +111,7 @@ describe('worktree.create with a startup agent', () => {
       })),
       resolveStartupDraftAgent,
       createManagedWorktree
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: WORKTREE_METHODS })
     const dispatch = (params: Record<string, unknown>) =>
       dispatcher.dispatch({
@@ -209,7 +209,7 @@ describe('worktree GitHub PR suppression RPC', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       updateManagedWorktreeMeta: vi.fn().mockResolvedValue({ id: 'wt-1' })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const request: RpcRequest = {
       id: 'req-1',
       authToken: 'tok',
@@ -242,7 +242,7 @@ describe('worktree missing-terminal teardown RPC', () => {
       teardownMissingManagedWorktreeTerminals: vi
         .fn()
         .mockResolvedValue({ stoppedWorktreeIds: ['repo-1::/workspace/deleted'] })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: WORKTREE_METHODS })
 
     const response = await dispatcher.dispatch({
@@ -277,7 +277,7 @@ describe('worktree.listRetiredNames', () => {
     const runtime = {
       getRuntimeId: () => 'test-runtime',
       listRetiredWorktreeNames: vi.fn().mockResolvedValue(RETIRED)
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const request: RpcRequest = {
       id: 'req-1',
       authToken: 'tok',
@@ -296,16 +296,16 @@ describe('worktree.listRetiredNames', () => {
 })
 
 describe('worktree.rm waits for the delete only for clients that can show it', () => {
-  function makeRuntime(): OrcaRuntimeService {
+  function makeRuntime(): OCCRuntimeService {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: worktree.rm with an explicit host reads only removeManagedWorktree.
     return {
       getRuntimeId: () => 'test-runtime',
       removeManagedWorktree: vi.fn().mockResolvedValue({})
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
   }
 
   async function dispatchRm(
-    runtime: OrcaRuntimeService,
+    runtime: OCCRuntimeService,
     clientCapabilities: readonly RuntimeCapability[] | undefined,
     params: Record<string, unknown> = {}
   ): Promise<RpcResponse> {
@@ -376,7 +376,7 @@ describe('worktree.rm waits for the delete only for clients that can show it', (
 })
 
 describe('worktree.rm host qualification', () => {
-  function makeRuntime(repoHostIds: (string | undefined)[] = ['local']): OrcaRuntimeService {
+  function makeRuntime(repoHostIds: (string | undefined)[] = ['local']): OCCRuntimeService {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: this fixture supplies every runtime member reached by the requests in this suite.
     return {
       getRuntimeId: () => 'test-runtime',
@@ -388,7 +388,7 @@ describe('worktree.rm host qualification', () => {
         })),
       showManagedWorktree: vi.fn().mockResolvedValue({ id: 'wt-1', hostId: 'local' }),
       removeManagedWorktree: vi.fn().mockResolvedValue({})
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
   }
 
   const WORKTREE_ID = 'repo-1::/repo/wt'
@@ -571,7 +571,7 @@ describe('worktree.rm host qualification', () => {
 })
 
 describe('worktree.rm waivers travel on their own fields', () => {
-  function makeRuntime(): OrcaRuntimeService {
+  function makeRuntime(): OCCRuntimeService {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: this fixture supplies every runtime member reached by the requests in this suite.
     return {
       getRuntimeId: () => 'test-runtime',
@@ -579,7 +579,7 @@ describe('worktree.rm waivers travel on their own fields', () => {
         run(),
       showManagedWorktree: vi.fn().mockResolvedValue({ hostId: 'ssh:builder' }),
       removeManagedWorktree: vi.fn().mockResolvedValue({})
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
   }
 
   /** Use wire params because dispatcher validation uses the Zod schema. */
@@ -591,7 +591,7 @@ describe('worktree.rm waivers travel on their own fields', () => {
     allowFailedArchiveHook?: boolean
   }
 
-  async function dispatchRm(runtime: OrcaRuntimeService, params: RmParams): Promise<void> {
+  async function dispatchRm(runtime: OCCRuntimeService, params: RmParams): Promise<void> {
     const dispatcher = new RpcDispatcher({ runtime, methods: WORKTREE_METHODS })
     const request: RpcRequest = {
       id: 'req-1',

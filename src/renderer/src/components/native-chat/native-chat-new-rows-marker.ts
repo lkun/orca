@@ -1,7 +1,7 @@
 // Mark the first row that arrived or kept growing while the reader was away.
 
 import { useCallback, useMemo, useState } from 'react'
-import { useOrcaWindowForegroundFocused } from '@/hooks/use-orca-window-foreground-focused'
+import { useOCCWindowForegroundFocused } from '@/hooks/use-occ-window-foreground-focused'
 import { compareAgentJournalPositions } from '../../../../shared/agent-session-journal-position'
 import type { AgentJournalPosition } from '../../../../shared/agent-session-journal-types'
 import { nativeChatSlotKey, type NativeChatTranscriptSlot } from './native-chat-transcript-slots'
@@ -149,7 +149,7 @@ export function useNativeChatNewRowsMarker(
   /** The reader answered the conversation, so nothing in it is news to them. */
   dismiss: () => void
 } {
-  const watching = useOrcaWindowForegroundFocused(isShowingLatest)
+  const watching = useOCCWindowForegroundFocused(isShowingLatest)
   const [seen, setSeen] = useState<{
     watching: boolean
     /** While the reader is away: where they had read to. */

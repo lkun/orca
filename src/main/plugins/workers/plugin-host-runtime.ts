@@ -49,8 +49,8 @@ export type PluginHostCallError = Error & {
 
 export type PluginDisposable = { dispose(): void }
 
-/** API surface handed to a plugin's `activate(orca)` export (host API 1). */
-export type PluginWorkerOrcaApi = {
+/** API surface handed to a plugin's `activate(occ)` export (host API 1). */
+export type PluginWorkerOCCApi = {
   api: { readonly major: number; readonly minor: number }
   commands: {
     register(
@@ -160,12 +160,12 @@ export function createPluginWorkerRuntime(
       throw new Error(`plugin entry ${input.mainEntry} has a non-function deactivate export`)
     }
     deactivate = deactivateExport === undefined ? null : () => deactivateExport()
-    const orca: PluginWorkerOrcaApi = Object.freeze({
+    const occ: PluginWorkerOCCApi = Object.freeze({
       api: Object.freeze({ major: PLUGIN_HOST_API_MAJOR, minor: PLUGIN_HOST_API_MINOR }),
       commands: Object.freeze({
         register(
           commandId: string,
-          handler: Parameters<PluginWorkerOrcaApi['commands']['register']>[1]
+          handler: Parameters<PluginWorkerOCCApi['commands']['register']>[1]
         ) {
           commandHandlers.set(commandId, handler)
           return {
@@ -202,7 +202,7 @@ export function createPluginWorkerRuntime(
         send(pluginWorkerLog('info', String(message)))
       }
     })
-    await activate(orca)
+    await activate(occ)
     send(pluginEvent(WORKER_EVENTS.ready, { commands: [...commandHandlers.keys()] }))
   }
 

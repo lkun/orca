@@ -20,7 +20,7 @@ const journals = createTrackedJournalOpener()
 const cleanups: (() => Promise<void>)[] = []
 
 async function ownerMidSecondTurn(persisted: unknown[]) {
-  const root = await mkdtemp(join(tmpdir(), 'orca-claude-completed-leaf-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-claude-completed-leaf-'))
   const claudeConfigDir = join(root, 'claude')
   const project = join(claudeConfigDir, 'projects', '-work-repo')
   await mkdir(project, { recursive: true })

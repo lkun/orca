@@ -55,14 +55,14 @@ describe('mobile clipboard image paste helpers', () => {
       ok('start', { uploadId: 'upload-1' }),
       ok('append-1', { receivedBase64Length: MOBILE_CLIPBOARD_IMAGE_UPLOAD_CHUNK_BASE64_CHARS }),
       ok('append-2', { receivedBase64Length: base64.length }),
-      ok('commit', '/tmp/orca-paste-image.png')
+      ok('commit', '/tmp/occ-paste-image.png')
     ])
 
     await expect(
       saveMobileClipboardImageAsTempFile(client, `data:image/png;base64,${base64}`, {
         connectionId: 'ssh-1'
       })
-    ).resolves.toBe('/tmp/orca-paste-image.png')
+    ).resolves.toBe('/tmp/occ-paste-image.png')
 
     for (const call of client.calls) {
       if (call.method === 'clipboard.appendImageUploadChunk') {
@@ -98,11 +98,11 @@ describe('mobile clipboard image paste helpers', () => {
   it('falls back to the legacy single-frame image save method when needed', async () => {
     const client = clientWithResponses([
       fail('start', 'method_not_found', 'missing'),
-      ok('save', '/tmp/orca-paste-image.png')
+      ok('save', '/tmp/occ-paste-image.png')
     ])
 
     await expect(saveMobileClipboardImageAsTempFile(client, 'aGVsbG8=')).resolves.toBe(
-      '/tmp/orca-paste-image.png'
+      '/tmp/occ-paste-image.png'
     )
 
     expect(client.calls).toEqual([
@@ -141,10 +141,10 @@ describe('mobile clipboard image paste helpers', () => {
       .mockResolvedValueOnce(ok('abort-1', { aborted: true }))
       .mockResolvedValueOnce(ok('start-2', { uploadId: 'upload-2' }))
       .mockResolvedValueOnce(ok('append-2', { receivedBase64Length: 8 }))
-      .mockResolvedValueOnce(ok('commit-2', '/tmp/orca-paste-image.png'))
+      .mockResolvedValueOnce(ok('commit-2', '/tmp/occ-paste-image.png'))
 
     await expect(saveMobileClipboardImageAsTempFile({ sendRequest }, 'aGVsbG8=')).resolves.toBe(
-      '/tmp/orca-paste-image.png'
+      '/tmp/occ-paste-image.png'
     )
 
     expect(sendRequest.mock.calls.map(([method]) => method)).toEqual([
@@ -158,8 +158,8 @@ describe('mobile clipboard image paste helpers', () => {
   })
 
   it('brackets generated image paths before sending to the terminal', () => {
-    expect(buildMobileImagePastePayload('/tmp/orca.png', 'claude')).toBe(
-      '\x1b[200~/tmp/orca.png\x1b[201~'
+    expect(buildMobileImagePastePayload('/tmp/occ.png', 'claude')).toBe(
+      '\x1b[200~/tmp/occ.png\x1b[201~'
     )
     expect(buildMobileImagePastePayload('/tmp/\x1b.png', 'claude')).toBe(
       '\x1b[200~/tmp/\u241b.png\x1b[201~'
@@ -199,8 +199,8 @@ describe('mobile clipboard image paste helpers', () => {
 
   it('quotes Windows paths with spaces using the host path dialect', () => {
     expect(
-      buildMobileTerminalImagePastePayload('C:\\Users\\Jane Doe\\Temp\\orca-paste.png', null)
-    ).toBe('\x1b[200~"C:\\Users\\Jane Doe\\Temp\\orca-paste.png"\x1b[201~')
+      buildMobileTerminalImagePastePayload('C:\\Users\\Jane Doe\\Temp\\occ-paste.png', null)
+    ).toBe('\x1b[200~"C:\\Users\\Jane Doe\\Temp\\occ-paste.png"\x1b[201~')
   })
 })
 

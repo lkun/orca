@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import { ORCA_SCRUB_SAFE_PANE_ENV } from '../../shared/agent-hook-scrub-safe-env'
+import { OCC_SCRUB_SAFE_PANE_ENV } from '../../shared/agent-hook-scrub-safe-env'
 import { CONNECTOR_REPLY_UNAVAILABLE } from '../../shared/rpc-contract/connector-params'
 import type { CommandHandler, HandlerContext } from '../dispatch'
 import {
@@ -180,7 +180,7 @@ export const CONNECTOR_HANDLERS: Record<string, CommandHandler> = {
   },
   'connector reply': async ({ flags, client, json }) => {
     // Claude can scrub names containing KEY from its tools' environment; the alias survives.
-    const paneKey = process.env.ORCA_PANE_KEY || process.env[ORCA_SCRUB_SAFE_PANE_ENV]
+    const paneKey = process.env.OCC_PANE_KEY || process.env[OCC_SCRUB_SAFE_PANE_ENV]
     if (!paneKey) {
       throw new RuntimeClientError(
         'invalid_argument',

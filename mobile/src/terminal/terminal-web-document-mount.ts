@@ -22,9 +22,9 @@ export type TerminalWebDocument = {
   dispose: () => void
 }
 
-const STYLE_ELEMENT_ID = 'orca-terminal-document-style'
+const STYLE_ELEMENT_ID = 'occ-terminal-document-style'
 
-const HOST_CLASS = 'orca-terminal-document-host'
+const HOST_CLASS = 'occ-terminal-document-host'
 
 // Prefix a page-wide sheet once; it matches nothing after the host class is removed.
 // Shadow roots would require reparsing the document and xterm sheets inside every mount.

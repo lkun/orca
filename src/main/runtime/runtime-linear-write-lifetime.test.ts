@@ -381,7 +381,7 @@ it.each(['write', 'total'] as const)(
         code: 'linear_write_unconfirmed',
         data: {
           cause: 'Linear write deadline elapsed before confirmation.',
-          nextSteps: [expect.stringContaining('orca linear issue ENG-1')]
+          nextSteps: [expect.stringContaining('occ linear issue ENG-1')]
         }
       })
     } finally {
@@ -425,7 +425,7 @@ it.each(['status', 'relation'] as const)(
           )
     const rejected = expect(pending).rejects.toMatchObject({
       code: 'linear_write_unconfirmed',
-      data: { nextSteps: [expect.stringContaining('orca linear issue ENG-1')] }
+      data: { nextSteps: [expect.stringContaining('occ linear issue ENG-1')] }
     })
     try {
       await vi.advanceTimersByTimeAsync(0)

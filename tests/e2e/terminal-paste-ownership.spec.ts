@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   focusActiveTerminalInput,
   sendToTerminal,
@@ -120,7 +120,7 @@ async function installClipboardReadTerminalBlurRepro(app: ElectronApplication): 
   await app.evaluate(({ BrowserWindow, ipcMain }) => {
     type ClipboardReadHandler = (event: unknown, ...args: unknown[]) => unknown
     const global = globalThis as unknown as {
-      __orcaOriginalClipboardReadTextHandler?: ClipboardReadHandler
+      __occOriginalClipboardReadTextHandler?: ClipboardReadHandler
     }
     const invokeHandlers = (
       ipcMain as unknown as {
@@ -128,10 +128,10 @@ async function installClipboardReadTerminalBlurRepro(app: ElectronApplication): 
       }
     )._invokeHandlers
     const handler = invokeHandlers?.get('clipboard:readText')
-    if (!invokeHandlers || !handler || global.__orcaOriginalClipboardReadTextHandler) {
+    if (!invokeHandlers || !handler || global.__occOriginalClipboardReadTextHandler) {
       return
     }
-    global.__orcaOriginalClipboardReadTextHandler = handler
+    global.__occOriginalClipboardReadTextHandler = handler
     invokeHandlers.set('clipboard:readText', async (event, ...args) => {
       const windows = BrowserWindow.getAllWindows().filter((window) => !window.isDestroyed())
       await Promise.all(
@@ -149,7 +149,7 @@ async function installClipboardReadTerminalBlurRepro(app: ElectronApplication): 
       )
       // Why: reproduce the focus churn window before the async clipboard read resolves.
       await new Promise((resolve) => setTimeout(resolve, 0))
-      return global.__orcaOriginalClipboardReadTextHandler!(event, ...args)
+      return global.__occOriginalClipboardReadTextHandler!(event, ...args)
     })
   })
 }
@@ -158,16 +158,16 @@ async function restoreClipboardReadTerminalBlurRepro(app: ElectronApplication): 
   await app.evaluate(({ ipcMain }) => {
     type ClipboardReadHandler = (event: unknown, ...args: unknown[]) => unknown
     const global = globalThis as unknown as {
-      __orcaOriginalClipboardReadTextHandler?: ClipboardReadHandler
+      __occOriginalClipboardReadTextHandler?: ClipboardReadHandler
     }
     const invokeHandlers = (
       ipcMain as unknown as {
         _invokeHandlers?: Map<string, ClipboardReadHandler>
       }
     )._invokeHandlers
-    if (invokeHandlers && global.__orcaOriginalClipboardReadTextHandler) {
-      invokeHandlers.set('clipboard:readText', global.__orcaOriginalClipboardReadTextHandler)
-      delete global.__orcaOriginalClipboardReadTextHandler
+    if (invokeHandlers && global.__occOriginalClipboardReadTextHandler) {
+      invokeHandlers.set('clipboard:readText', global.__occOriginalClipboardReadTextHandler)
+      delete global.__occOriginalClipboardReadTextHandler
     }
   })
 }
@@ -190,42 +190,42 @@ async function openTerminalContextMenu(page: Page): Promise<void> {
 test.describe('terminal paste ownership', () => {
   test('keyboard paste shortcuts send clipboard text to the focused terminal exactly once', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
     await installTerminalPtyWriteSpy(electronApp)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
+    const ptyId = await waitForActivePanePtyId(occPage)
     const runId = randomUUID()
-    const scriptPath = path.join(testRepoPath, `.orca-paste-ownership-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-paste-ownership-${runId}.mjs`)
     writeFileSync(scriptPath, pasteEchoScript(runId))
     let scriptStarted = false
 
     try {
-      await sendToTerminal(orcaPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
+      await sendToTerminal(occPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
       scriptStarted = true
-      await waitForTerminalOutput(orcaPage, `PASTE_READY_${runId}`, 10_000)
+      await waitForTerminalOutput(occPage, `PASTE_READY_${runId}`, 10_000)
 
       for (const [index, chord] of keyboardPasteChords().entries()) {
-        const payload = `ORCA_E2E_PASTE_${runId}_${index}`
+        const payload = `OCC_E2E_PASTE_${runId}_${index}`
         const encodedPayload = Buffer.from(payload, 'utf8').toString('base64')
         await clearTerminalPtyWriteLog(electronApp)
-        await orcaPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
-        await focusActiveTerminalInput(orcaPage)
+        await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
+        await focusActiveTerminalInput(occPage)
 
-        await orcaPage.keyboard.press(chord)
-        await waitForTerminalOutput(orcaPage, encodedPayload, 10_000, 12_000)
+        await occPage.keyboard.press(chord)
+        await waitForTerminalOutput(occPage, encodedPayload, 10_000, 12_000)
 
         const writes = (await readTerminalPtyWrites(electronApp)).join('')
         expect(countOccurrences(writes, payload), `${chord} PTY write count`).toBe(1)
       }
     } finally {
       if (scriptStarted) {
-        await sendToTerminal(orcaPage, ptyId, '\x03').catch(() => undefined)
+        await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
       }
       rmSync(scriptPath, { force: true })
     }
@@ -233,42 +233,42 @@ test.describe('terminal paste ownership', () => {
 
   test('keyboard paste survives transient terminal blur during clipboard read', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
     await installTerminalPtyWriteSpy(electronApp)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
+    const ptyId = await waitForActivePanePtyId(occPage)
     const runId = randomUUID()
-    const scriptPath = path.join(testRepoPath, `.orca-paste-blur-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-paste-blur-${runId}.mjs`)
     writeFileSync(scriptPath, pasteEchoScript(runId))
     let scriptStarted = false
 
     try {
-      await sendToTerminal(orcaPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
+      await sendToTerminal(occPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
       scriptStarted = true
-      await waitForTerminalOutput(orcaPage, `PASTE_READY_${runId}`, 10_000)
+      await waitForTerminalOutput(occPage, `PASTE_READY_${runId}`, 10_000)
 
-      const payload = `ORCA_E2E_TRANSIENT_BLUR_PASTE_${runId}`
+      const payload = `OCC_E2E_TRANSIENT_BLUR_PASTE_${runId}`
       const encodedPayload = Buffer.from(payload, 'utf8').toString('base64')
       await clearTerminalPtyWriteLog(electronApp)
-      await orcaPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
-      await focusActiveTerminalInput(orcaPage)
+      await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
+      await focusActiveTerminalInput(occPage)
       await installClipboardReadTerminalBlurRepro(electronApp)
 
-      await orcaPage.keyboard.press(keyboardPasteChords()[0])
-      await waitForTerminalOutput(orcaPage, encodedPayload, 10_000, 12_000)
+      await occPage.keyboard.press(keyboardPasteChords()[0])
+      await waitForTerminalOutput(occPage, encodedPayload, 10_000, 12_000)
 
       const writes = (await readTerminalPtyWrites(electronApp)).join('')
       expect(countOccurrences(writes, payload), 'transient blur PTY write count').toBe(1)
     } finally {
       await restoreClipboardReadTerminalBlurRepro(electronApp).catch(() => undefined)
       if (scriptStarted) {
-        await sendToTerminal(orcaPage, ptyId, '\x03').catch(() => undefined)
+        await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
       }
       rmSync(scriptPath, { force: true })
     }
@@ -276,41 +276,41 @@ test.describe('terminal paste ownership', () => {
 
   test('terminal context-menu Paste sends clipboard text exactly once', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
     await installTerminalPtyWriteSpy(electronApp)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
+    const ptyId = await waitForActivePanePtyId(occPage)
     const runId = randomUUID()
-    const scriptPath = path.join(testRepoPath, `.orca-paste-context-menu-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-paste-context-menu-${runId}.mjs`)
     writeFileSync(scriptPath, pasteEchoScript(runId))
     let scriptStarted = false
 
     try {
-      await sendToTerminal(orcaPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
+      await sendToTerminal(occPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
       scriptStarted = true
-      await waitForTerminalOutput(orcaPage, `PASTE_READY_${runId}`, 10_000)
+      await waitForTerminalOutput(occPage, `PASTE_READY_${runId}`, 10_000)
 
-      const payload = `ORCA_E2E_CONTEXT_MENU_PASTE_${runId}`
+      const payload = `OCC_E2E_CONTEXT_MENU_PASTE_${runId}`
       const encodedPayload = Buffer.from(payload, 'utf8').toString('base64')
       await clearTerminalPtyWriteLog(electronApp)
-      await orcaPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
-      await focusActiveTerminalInput(orcaPage)
+      await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
+      await focusActiveTerminalInput(occPage)
 
-      await openTerminalContextMenu(orcaPage)
-      await orcaPage.getByRole('menuitem', { name: /Paste/ }).click()
-      await waitForTerminalOutput(orcaPage, encodedPayload, 10_000, 12_000)
+      await openTerminalContextMenu(occPage)
+      await occPage.getByRole('menuitem', { name: /Paste/ }).click()
+      await waitForTerminalOutput(occPage, encodedPayload, 10_000, 12_000)
 
       const writes = (await readTerminalPtyWrites(electronApp)).join('')
       expect(countOccurrences(writes, payload), 'terminal context-menu PTY write count').toBe(1)
     } finally {
       if (scriptStarted) {
-        await sendToTerminal(orcaPage, ptyId, '\x03').catch(() => undefined)
+        await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
       }
       rmSync(scriptPath, { force: true })
     }
@@ -318,42 +318,42 @@ test.describe('terminal paste ownership', () => {
 
   test('right-click paste into a mouse-tracking terminal app sends the clipboard once and no right-button report', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
     await installTerminalPtyWriteSpy(electronApp)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
+    const ptyId = await waitForActivePanePtyId(occPage)
     const runId = randomUUID()
-    const scriptPath = path.join(testRepoPath, `.orca-paste-right-click-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-paste-right-click-${runId}.mjs`)
     writeFileSync(scriptPath, pasteEchoScript(runId, { mouseTracking: true }))
     let scriptStarted = false
 
     try {
-      await sendToTerminal(orcaPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
+      await sendToTerminal(occPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
       scriptStarted = true
-      await waitForTerminalOutput(orcaPage, `PASTE_READY_${runId}`, 10_000)
-      await orcaPage.evaluate(() =>
+      await waitForTerminalOutput(occPage, `PASTE_READY_${runId}`, 10_000)
+      await occPage.evaluate(() =>
         window.__store?.getState().updateSettings({ terminalRightClickToPaste: true })
       )
       await expect
         .poll(() =>
-          orcaPage.evaluate(() => window.__store?.getState().settings?.terminalRightClickToPaste)
+          occPage.evaluate(() => window.__store?.getState().settings?.terminalRightClickToPaste)
         )
         .toBe(true)
 
-      const payload = `ORCA_E2E_RIGHT_CLICK_PASTE_${runId}`
+      const payload = `OCC_E2E_RIGHT_CLICK_PASTE_${runId}`
       const encodedPayload = Buffer.from(payload, 'utf8').toString('base64')
       await clearTerminalPtyWriteLog(electronApp)
-      await orcaPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
-      await focusActiveTerminalInput(orcaPage)
+      await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
+      await focusActiveTerminalInput(occPage)
 
-      await rightClickActiveTerminalSurface(orcaPage)
-      await waitForTerminalOutput(orcaPage, encodedPayload, 10_000, 12_000)
+      await rightClickActiveTerminalSurface(occPage)
+      await waitForTerminalOutput(occPage, encodedPayload, 10_000, 12_000)
 
       const writes = (await readTerminalPtyWrites(electronApp)).join('')
       expect(countOccurrences(writes, payload), 'right-click PTY write count').toBe(1)
@@ -361,7 +361,7 @@ test.describe('terminal paste ownership', () => {
       expect(writes, 'right-button mouse report').not.toContain('\x1b[<2;')
     } finally {
       if (scriptStarted) {
-        await sendToTerminal(orcaPage, ptyId, '\x03').catch(() => undefined)
+        await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
       }
       rmSync(scriptPath, { force: true })
     }
@@ -369,22 +369,22 @@ test.describe('terminal paste ownership', () => {
 
   test('Windows multiline keyboard paste normalizes terminal newlines with one PTY owner', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
     test.skip(process.platform !== 'win32', 'Windows multiline paste behavior is Windows-only')
 
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
     await installTerminalPtyWriteSpy(electronApp)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
+    const ptyId = await waitForActivePanePtyId(occPage)
     const runId = randomUUID()
-    const sentinel = `ORCA_E2E_MULTILINE_DONE_${runId}`
+    const sentinel = `OCC_E2E_MULTILINE_DONE_${runId}`
     const payload = [
-      `ORCA_E2E_MULTILINE_${runId}`,
+      `OCC_E2E_MULTILINE_${runId}`,
       'line with spaces and tabs\tend',
       'PowerShell metacharacters: ` $ " \' ; | & < > @ { } ( )',
       'cmd metacharacters: % ! ^ & | < >',
@@ -393,27 +393,27 @@ test.describe('terminal paste ownership', () => {
     ].join('\n')
     // Match xterm’s clipboard line-ending→Enter translation in OCC’s direct Windows bracketed-paste path.
     const terminalText = payload.replace(/\r?\n/g, '\r')
-    const scriptPath = path.join(testRepoPath, `.orca-paste-multiline-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-paste-multiline-${runId}.mjs`)
     writeFileSync(scriptPath, pasteCollectScript(runId, sentinel, terminalText))
     let scriptStarted = false
 
     try {
-      await sendToTerminal(orcaPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
+      await sendToTerminal(occPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
       scriptStarted = true
-      await waitForTerminalOutput(orcaPage, `PASTE_READY_${runId}`, 10_000)
+      await waitForTerminalOutput(occPage, `PASTE_READY_${runId}`, 10_000)
 
       await clearTerminalPtyWriteLog(electronApp)
-      await orcaPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
-      await focusActiveTerminalInput(orcaPage)
+      await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
+      await focusActiveTerminalInput(occPage)
 
-      await orcaPage.keyboard.press('Control+V')
-      await waitForTerminalOutput(orcaPage, `PASTE_COMPLETE_${runId}:MATCH`, 10_000, 12_000)
+      await occPage.keyboard.press('Control+V')
+      await waitForTerminalOutput(occPage, `PASTE_COMPLETE_${runId}:MATCH`, 10_000, 12_000)
 
       const writes = (await readTerminalPtyWrites(electronApp)).join('')
       expect(countOccurrences(writes, terminalText), 'multiline payload PTY write count').toBe(1)
     } finally {
       if (scriptStarted) {
-        await sendToTerminal(orcaPage, ptyId, '\x03').catch(() => undefined)
+        await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
       }
       rmSync(scriptPath, { force: true })
     }
@@ -421,43 +421,43 @@ test.describe('terminal paste ownership', () => {
 
   test('right-click paste sends clipboard text to the focused terminal exactly once', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await orcaPage.evaluate(async () => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await occPage.evaluate(async () => {
       await window.__store?.getState().updateSettings({ terminalRightClickToPaste: true })
     })
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForActiveTerminalManager(occPage, 30_000)
     await installTerminalPtyWriteSpy(electronApp)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
+    const ptyId = await waitForActivePanePtyId(occPage)
     const runId = randomUUID()
-    const scriptPath = path.join(testRepoPath, `.orca-paste-right-click-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-paste-right-click-${runId}.mjs`)
     writeFileSync(scriptPath, pasteEchoScript(runId))
     let scriptStarted = false
 
     try {
-      await sendToTerminal(orcaPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
+      await sendToTerminal(occPage, ptyId, `node ${JSON.stringify(scriptPath)}\r`)
       scriptStarted = true
-      await waitForTerminalOutput(orcaPage, `PASTE_READY_${runId}`, 10_000)
+      await waitForTerminalOutput(occPage, `PASTE_READY_${runId}`, 10_000)
 
-      const payload = `ORCA_E2E_RIGHT_CLICK_PASTE_${runId}`
+      const payload = `OCC_E2E_RIGHT_CLICK_PASTE_${runId}`
       const encodedPayload = Buffer.from(payload, 'utf8').toString('base64')
       await clearTerminalPtyWriteLog(electronApp)
-      await orcaPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
-      await focusActiveTerminalInput(orcaPage)
+      await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
+      await focusActiveTerminalInput(occPage)
 
-      await rightClickActiveTerminalSurface(orcaPage)
-      await waitForTerminalOutput(orcaPage, encodedPayload, 10_000, 12_000)
+      await rightClickActiveTerminalSurface(occPage)
+      await waitForTerminalOutput(occPage, encodedPayload, 10_000, 12_000)
 
       const writes = (await readTerminalPtyWrites(electronApp)).join('')
       expect(countOccurrences(writes, payload), 'right-click PTY write count').toBe(1)
     } finally {
       if (scriptStarted) {
-        await sendToTerminal(orcaPage, ptyId, '\x03').catch(() => undefined)
+        await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
       }
       rmSync(scriptPath, { force: true })
     }

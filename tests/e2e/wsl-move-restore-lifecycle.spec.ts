@@ -1,6 +1,6 @@
 /**
  * The restart-style restore a WSL move ends in, from the pane's own daemon checkpoint to what the
- * desktop shows across reloads. The distro's orcad is a windowless paired host; the desktop is a
+ * desktop shows across reloads. The distro's occd is a windowless paired host; the desktop is a
  * paired client. The move's export reads the host pane's real checkpoint, the host's installer
  * lays it into its daemon's history, and the host's first start of that pane replays it once.
  *
@@ -23,12 +23,12 @@ import os from 'node:os'
 import path from 'node:path'
 import { z } from 'zod'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchPairedElectronClient } from './helpers/paired-electron-client'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { openPairedClientTab, readPairedPaneContent } from './helpers/paired-host-terminal'
 import { mutateStoppedProfileState } from './helpers/persisted-profile-state'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 import { ensureTerminalVisible, waitForSessionReady } from './helpers/store'
 import {
   execInTerminal,
@@ -46,12 +46,12 @@ import {
   withMovedRows
 } from './helpers/wsl-moved-host-profile'
 import { HistoryReader } from '../../src/main/daemon/history-reader'
-import { getOrcadMigrationReceivedBlobPath } from '../../src/main/persistence/migrating-orcad-catalog/orcad-migration-blob-staging'
+import { getOCCdMigrationReceivedBlobPath } from '../../src/main/persistence/migrating-occd-catalog/occd-migration-blob-staging'
 import {
-  installOrcadMigrationTerminalHistory,
+  installOCCdMigrationTerminalHistory,
   movedPaneHistorySessionId,
-  orcadMigrationTerminalHistoryKey
-} from '../../src/main/persistence/migrating-orcad-catalog/orcad-terminal-history-installer'
+  occdMigrationTerminalHistoryKey
+} from '../../src/main/persistence/migrating-occd-catalog/occd-terminal-history-installer'
 import { getHistorySessionDirName } from '../../src/main/daemon/history-paths'
 import { readWslMoveSleptScrollbackFromHistory } from '../../src/main/persistence/moving-wsl-projects/wsl-move-slept-scrollback'
 import { wslMoveCutoverFixture } from '../../src/main/persistence/__fixtures__/wsl-mover/wsl-move-cutover-fixture'
@@ -81,7 +81,7 @@ const MOVED_AGENT_SESSION = 'e2e-wsl-moved-resume-session'
 const UNDO_AGENT_SESSION = 'e2e-wsl-undo-resume-session'
 const MIGRATION = { migrationId: 'restore-lifecycle-move', manifestSha256: 'a'.repeat(64) }
 
-const scratch = mkdtempSync(path.join(os.tmpdir(), 'orca-restore-lifecycle-'))
+const scratch = mkdtempSync(path.join(os.tmpdir(), 'occ-restore-lifecycle-'))
 const printerPath = path.join(scratch, 'print-history.mjs')
 writeFileSync(
   printerPath,
@@ -159,7 +159,7 @@ test('a moved pane shows its own history once, in its folder, across three reloa
   test.skip(process.platform === 'win32', 'POSIX fixture command')
   // A move, three reloads and a restart, each booting a full app against a real daemon.
   test.setTimeout(900_000)
-  const root = mkdtempSync(path.join(os.tmpdir(), 'orca-restore-lifecycle-repo-'))
+  const root = mkdtempSync(path.join(os.tmpdir(), 'occ-restore-lifecycle-repo-'))
   const repoPath = realpathSync(createMovedRepo(root))
   const deep = path.join(repoPath, 'deep')
   mkdirSync(deep)
@@ -170,8 +170,8 @@ test('a moved pane shows its own history once, in its folder, across three reloa
   const host = await launchHeadlessPairedRuntimeHost({
     pinnedServePort: true,
     withoutBrowser: true,
-    // Stands in for the distro's orcad, the only host that serves moved panes' history.
-    extraEnv: { ORCA_E2E_WSL_MOVE_DESTINATION: '1' }
+    // Stands in for the distro's occd, the only host that serves moved panes' history.
+    extraEnv: { OCC_E2E_WSL_MOVE_DESTINATION: '1' }
   })
   try {
     const added = await host.client.call<{ repo: { id: string } }>('repo.add', {
@@ -299,13 +299,13 @@ test('a moved pane shows its own history once, in its folder, across three reloa
             })
           )
         })
-        const received = getOrcadMigrationReceivedBlobPath(scratch, MIGRATION, {
+        const received = getOCCdMigrationReceivedBlobPath(scratch, MIGRATION, {
           blobKind: 'terminal-history',
-          key: orcadMigrationTerminalHistoryKey(paneKey)
+          key: occdMigrationTerminalHistoryKey(paneKey)
         })
         mkdirSync(path.dirname(received), { recursive: true })
         writeFileSync(received, readFileSync(blob.path))
-        installOrcadMigrationTerminalHistory({
+        installOCCdMigrationTerminalHistory({
           migration: MIGRATION,
           root: scratch,
           historyRoot,
@@ -487,7 +487,7 @@ test('"Use on this computer again" after reloads and a restart brings back slept
   test.skip(process.platform === 'win32', 'POSIX shell commands')
   // A move, reloads, a restart and the undo's reload, each booting a full app.
   test.setTimeout(900_000)
-  const root = mkdtempSync(path.join(os.tmpdir(), 'orca-restore-lifecycle-undo-'))
+  const root = mkdtempSync(path.join(os.tmpdir(), 'occ-restore-lifecycle-undo-'))
   const repoPath = realpathSync(createMovedRepo(root))
   const session = createRestartSession(testInfo, { [WSL_HOSTS_INTERNAL_GATE_ENV]: '1' })
   let launched: Awaited<ReturnType<typeof session.launch>> | undefined

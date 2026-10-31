@@ -3,10 +3,10 @@ import { readFileSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { RuntimeClient } from '../../src/cli/runtime-client'
 import type { RuntimeTerminalSummary } from '../../src/shared/runtime-types'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { TEST_REPO_PATH_FILE } from './global-setup'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 import { createRetentionFixtureDirectory } from './helpers/host-created-terminal-retention-oracle'
 
 const scratch = createRetentionFixtureDirectory()

@@ -13,7 +13,7 @@ import { registerLaunchRecipe } from './launch-recipe-registration'
 import { wasAgentLaunchPaneClosedByUser } from '@/lib/agent-launch-pane-closes'
 import { revealWorkspaceSurface } from '@/lib/workspace-surface-reveal'
 import { useAppStore } from '../../store'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import {
   activateExistingLeafInLayout,
   addSplitLeafToLayout,
@@ -98,7 +98,7 @@ export function registerTerminalPresentationIpcBridge(unsubs: (() => void)[]): v
           let reusedTab = existingTab ?? splitTargetTab
           // Reuse main’s frame-drawn tab even if stale records make legacy ownership ambiguous.
           const frameDrawnTab =
-            ORCA_LAYOUT_OWNER_IS_MAIN && !reusedTab && tabId !== undefined
+            OCC_LAYOUT_OWNER_IS_MAIN && !reusedTab && tabId !== undefined
               ? worktreeTabs.find((candidate) => candidate.id === tabId)
               : undefined
           if (frameDrawnTab) {
@@ -126,7 +126,7 @@ export function registerTerminalPresentationIpcBridge(unsubs: (() => void)[]): v
                   ...(cwd ? { startupCwd: cwd } : {}),
                   // Why: CLI-spawned PTYs bake the pane key into env; adopt the same tab id so hook-event attribution keeps working.
                   ...(tabId !== undefined ? { id: tabId } : {}),
-                  ...(ORCA_LAYOUT_OWNER_IS_MAIN && leafId ? { initialLeafId: leafId } : {})
+                  ...(OCC_LAYOUT_OWNER_IS_MAIN && leafId ? { initialLeafId: leafId } : {})
                 })
               : store.createTab(
                   worktreeId,
@@ -220,7 +220,7 @@ export function registerTerminalPresentationIpcBridge(unsubs: (() => void)[]): v
                 })
               )
             } else {
-              const paneTitle = ORCA_LAYOUT_OWNER_IS_MAIN ? undefined : title
+              const paneTitle = OCC_LAYOUT_OWNER_IS_MAIN ? undefined : title
               // Why: CLI/runtime PTYs emit hook events before the tab mounts, so the leaf must exist in layout for paneKey validation.
               const existingLayout = reusedTab
                 ? activateExistingLeafInLayout(

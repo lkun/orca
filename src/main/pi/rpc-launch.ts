@@ -1,5 +1,5 @@
-import { ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV } from '../../shared/agent-session-caller-env'
-import { ORCA_AGENT_SESSION_CALLER_ENV_KEYS } from '../ipc/pty/host-env/spawn-env-keys'
+import { OCC_AGENT_SESSION_SPAWN_TOKEN_ENV } from '../../shared/agent-session-caller-env'
+import { OCC_AGENT_SESSION_CALLER_ENV_KEYS } from '../ipc/pty/host-env/spawn-env-keys'
 import {
   LEGACY_NATIVE_CHAT_VISUALS_DIR_ENV,
   NATIVE_CHAT_SCRATCH_DIR_ENV
@@ -20,15 +20,15 @@ export type PiRpcLaunchOptions = {
 }
 
 const CALLER_ENV_TO_DELETE = [
-  ...ORCA_AGENT_SESSION_CALLER_ENV_KEYS,
-  'ORCA_TERMINAL_HANDLE',
-  ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV
+  ...OCC_AGENT_SESSION_CALLER_ENV_KEYS,
+  'OCC_TERMINAL_HANDLE',
+  OCC_AGENT_SESSION_SPAWN_TOKEN_ENV
 ]
 
 /** Structured Pi has no scratch folder; an inherited one belongs to another chat. */
 export const PI_RPC_SESSION_ENV_TO_DELETE: readonly string[] = [
   ...STRUCTURED_CHILD_ENV_TO_DELETE,
-  'ORCA_TERMINAL_HANDLE',
+  'OCC_TERMINAL_HANDLE',
   NATIVE_CHAT_SCRATCH_DIR_ENV,
   LEGACY_NATIVE_CHAT_VISUALS_DIR_ENV
 ]

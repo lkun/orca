@@ -1,6 +1,6 @@
 import { agentSessionConversationView } from '../../../../shared/agent-session-conversation-view'
 import { CLAUDE_CLI_CONVERSATIONS } from '../../../claude/claude-cli-conversations'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { localProvider } from '../provider/registry'
 import { spawnPtyFromRuntimeController } from './spawn'
 import * as owners from '../pane/agent-session-owners'
@@ -12,7 +12,7 @@ import {
   agentSessionRecordFixture
 } from '../../../../shared/agent-session-record.test-fixture'
 import { AgentSessionRecordStore } from '../../../runtime/agent-session-record-store'
-import type { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import { finishPtyShutdown } from '../provider/liveness'
 import { listStructuredProviderSessionOwnership } from '../../../native-chat/agent-session-wire/structured-provider-session-ownership'
 import type { PtyRuntimeControllerDeps } from './controller-deps'
@@ -104,7 +104,7 @@ function deps(runtime: ReturnType<typeof chatHost>): PtyRuntimeControllerDeps {
   })
   return {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the preflight reads only the admission members `chatHost` provides.
-    runtime: runtime as unknown as OrcaRuntimeService,
+    runtime: runtime as unknown as OCCRuntimeService,
     store: undefined,
     getSettings: () => getDefaultSettings('/tmp'),
     adoptStablePane: async (args) => {
@@ -149,9 +149,9 @@ describe('actual runtime saved-resume outcomes', () => {
       env: {
         WORKSPACE: 'keep',
         AGENT_ONLY: 'yes',
-        ORCA_AGENT_LAUNCH_TOKEN: 'rejected',
-        ORCA_SEQUENCED_STARTUP_COMMAND: `claude --resume ${C}`,
-        ORCA_SEQUENCED_STARTUP_SCRIPT: `fallback claude --resume ${C}`
+        OCC_AGENT_LAUNCH_TOKEN: 'rejected',
+        OCC_SEQUENCED_STARTUP_COMMAND: `claude --resume ${C}`,
+        OCC_SEQUENCED_STARTUP_SCRIPT: `fallback claude --resume ${C}`
       }
     })
     ctx.spawnOptions = {
@@ -389,7 +389,7 @@ it('returns the committed runtime shell when exact saved-record persistence fail
     expect(runtime.registerPty).toHaveBeenCalled()
     expect(runtime.forgetRefusedSavedResume).toHaveBeenCalledOnce()
     expect(onResumeOutcome.mock.calls).toEqual(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? [['cleanup-failed-shell', 'resume-unavailable']] : []
+      OCC_LAYOUT_OWNER_IS_MAIN ? [['cleanup-failed-shell', 'resume-unavailable']] : []
     )
     await Promise.resolve()
     expect(warning).toHaveBeenCalled()

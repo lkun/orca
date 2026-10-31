@@ -2,11 +2,11 @@ import { ArrowRight, Files } from 'lucide-react'
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
 import { Button } from '@/components/ui/button'
 import { SettingsSwitchRow } from './SettingsFormControls'
-import { useOrcaProfileAuthStatusRefresh } from '@/hooks/use-orca-profile-auth-status-refresh'
+import { useOCCProfileAuthStatusRefresh } from '@/hooks/use-occ-profile-auth-status-refresh'
 import { useAppStore } from '@/store'
 import { isWebClientLocation } from '@/lib/web-client-location'
 import { translate } from '@/i18n/i18n'
-import { OrcaSignInButton, OrcaSignInWaitNotice } from '../OrcaSignInProgress'
+import { OCCSignInButton, OCCSignInWaitNotice } from '../OCCSignInProgress'
 
 type HowToStep = { key: string; title: string; description: string }
 
@@ -18,13 +18,13 @@ export function ArtifactsSettingsPane({
   updateSettings: (updates: Partial<GlobalSettings>) => Promise<void>
 }): React.JSX.Element {
   const openArtifactsPage = useAppStore((state) => state.openArtifactsPage)
-  const authStatus = useAppStore((state) => state.orcaProfileAuthStatus)
+  const authStatus = useAppStore((state) => state.occProfileAuthStatus)
   const signedIn = authStatus?.state === 'connected'
   // Only the desktop host can grant sharing; web clients mirror it because settings.update excludes this capability.
   const isWebClient = isWebClientLocation()
   const sharingEnabled = settings.artifactSharingEnabled === true
 
-  useOrcaProfileAuthStatusRefresh()
+  useOCCProfileAuthStatusRefresh()
 
   const howToSteps: HowToStep[] = [
     ...(sharingEnabled
@@ -123,12 +123,12 @@ export function ArtifactsSettingsPane({
               )}
             </p>
           </div>
-          <OrcaSignInButton size="sm" disabled={authStatus?.configured !== true}>
+          <OCCSignInButton size="sm" disabled={authStatus?.configured !== true}>
             {authStatus?.state === 'reconnect-required'
               ? translate('auto.components.settings.artifacts.signInAgain', 'Sign in again')
               : translate('auto.components.settings.artifacts.signIn', 'Sign in to OCC')}
-          </OrcaSignInButton>
-          <OrcaSignInWaitNotice className="basis-full" />
+          </OCCSignInButton>
+          <OCCSignInWaitNotice className="basis-full" />
         </section>
       ) : null}
       <section className="space-y-4 py-5">

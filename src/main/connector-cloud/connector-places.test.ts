@@ -34,23 +34,23 @@ describe('connector places', () => {
     const projects = connectorProjects(
       store([
         repo({
-          id: 'orca',
-          displayName: 'orca',
+          id: 'occ',
+          displayName: 'occ',
           gitRemoteIdentity: {
-            canonicalKey: 'github.com/stablyai/orca',
+            canonicalKey: 'github.com/stablyai/occ',
             remoteName: 'origin',
-            remoteUrl: 'git@github.com:stablyai/orca.git'
+            remoteUrl: 'git@github.com:stablyai/occ.git'
           }
         }),
-        repo({ id: 'orca', connectionId: 'box', executionHostId: 'ssh:box' }),
+        repo({ id: 'occ', connectionId: 'box', executionHostId: 'ssh:box' }),
         repo({ id: 'linux', path: '\\\\wsl.localhost\\Ubuntu\\home\\me\\linux' }),
         repo({ id: 'served', executionHostId: 'runtime:server-1' }),
         repo({ id: 'notes', kind: 'folder' })
       ])
     )
     expect(projects.map(({ name, remote, where }) => ({ name, remote, where }))).toEqual([
-      { name: 'orca', remote: 'stablyai/orca', where: { kind: 'local' } },
-      { name: 'orca', remote: undefined, where: { kind: 'ssh', label: 'openclaw' } },
+      { name: 'occ', remote: 'stablyai/occ', where: { kind: 'local' } },
+      { name: 'occ', remote: undefined, where: { kind: 'ssh', label: 'openclaw' } },
       { name: 'linux', remote: undefined, where: { kind: 'wsl', label: 'Ubuntu' } }
     ])
     expect(JSON.stringify(projects)).not.toContain('/src/')
@@ -58,14 +58,14 @@ describe('connector places', () => {
     expect(placeLaunchTarget(local!.placeId, 'T1:C9:1', 'slack')).toEqual({
       kind: 'create-worktree',
       create: {
-        repo: 'id:orca',
+        repo: 'id:occ',
         repoHostId: 'local',
         name: expect.stringMatching(/^slack-[0-9a-f]{8}$/),
         nameWasGenerated: true
       }
     })
     expect(placeLaunchTarget(remote!.placeId, 'T1:C9:1', 'slack')).toMatchObject({
-      create: { repo: 'id:orca', repoHostId: 'ssh:box' }
+      create: { repo: 'id:occ', repoHostId: 'ssh:box' }
     })
   })
 
@@ -87,7 +87,7 @@ describe('connector places', () => {
   })
 
   it('derives the same worktree name for a resent start, and refuses a place it cannot read', () => {
-    const [project] = connectorProjects(store([repo({ id: 'orca' })]))
+    const [project] = connectorProjects(store([repo({ id: 'occ' })]))
     expect(placeLaunchTarget(project!.placeId, 'd1', 'slack')).toEqual(
       placeLaunchTarget(project!.placeId, 'd1', 'slack')
     )

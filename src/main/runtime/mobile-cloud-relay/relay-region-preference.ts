@@ -31,7 +31,7 @@ import {
   type RelayRegionProbeReport
 } from './relay-region-probe'
 
-const RELAY_REGION_CACHE_FILENAME = 'orca-relay-region-preference.json'
+const RELAY_REGION_CACHE_FILENAME = 'occ-relay-region-preference.json'
 const CACHE_MAX_BYTES = 8 * 1024
 const CACHE_TTL_MS = 24 * 60 * 60_000
 // Cache withheld hints briefly to avoid probing every reconnect without retaining them as long as chosen regions.
@@ -243,7 +243,7 @@ export class RelayRegionPreferenceResolver {
 
   private overrideRegion(): RelayRegion | undefined {
     const override = RelayRegionSchema.safeParse(
-      this.options.diagnosticOverride ?? process.env.ORCA_RELAY_REGION_OVERRIDE
+      this.options.diagnosticOverride ?? process.env.OCC_RELAY_REGION_OVERRIDE
     )
     return override.success ? override.data : undefined
   }

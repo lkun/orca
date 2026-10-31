@@ -1,6 +1,6 @@
 /**
  * E9 guard: background work never starts a stopped WSL distro. A desktop with a fake WSL transport
- * (the HUB stands in for the distro's orcad) keeps a WSL project and a local one. With the distro
+ * (the HUB stands in for the distro's occd) keeps a WSL project and a local one. With the distro
  * stopped, a window of ordinary background activity elsewhere must start nothing in it; the user
  * then opening a terminal there starts it exactly once. Catches any new caller that skips the gate.
  * Host dials only; bridge/UNC background paths are covered by their unit gates and the Windows lane guard.
@@ -9,7 +9,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { expect } from './helpers/orca-app'
+import { expect } from './helpers/occ-app'
 import { createRuntimeDesktopPairingOffer } from './helpers/paired-electron-client'
 import { callEnvironment } from './helpers/paired-host-terminal'
 import { buildFakeAgentCommandOverride } from './helpers/fake-agent-command-override'
@@ -78,14 +78,14 @@ test.describe('E9: background work on a stopped WSL host', () => {
   test.skip(!SUPPORTED, 'the Claude stub wrapper is POSIX-only')
 
   test('starts nothing in the stopped distro until the user opens a terminal there', async ({
-    orcaPage: hub,
+    occPage: hub,
     claudeStub
   }, testInfo) => {
     // Two Electron apps, a host add, a chat turn and a 20 s background window.
     test.setTimeout(300_000)
     await waitForSessionReady(hub)
     const offer = await createRuntimeDesktopPairingOffer(hub)
-    const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-no-boot-fake-'))
+    const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-no-boot-fake-'))
     const distrosFile = path.join(fakeDir, 'distros.json')
     const connectLogFile = path.join(fakeDir, 'connects.log')
     writeDistros(distrosFile, RUNNING)

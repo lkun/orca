@@ -15,7 +15,7 @@ import type {
   openClaudeStreamJsonConnection
 } from '../claude/claude-stream-json-connection'
 import { runClaudeControl } from '../claude/claude-agent-sdk-control-requests'
-import { claudeSessionIdForOrcaSession } from '../claude/structured/claude-structured-session-id'
+import { claudeSessionIdForOCCSession } from '../claude/structured/claude-structured-session-id'
 import type { AgentSessionAttachParams } from '../native-chat/agent-session-wire/structured-agent-session-attach'
 import { hostTestAttachParams } from '../native-chat/agent-session-wire/structured-agent-session-host-test-data'
 import type { StructuredAgentSessionHost } from '../native-chat/agent-session-wire/structured-agent-session-host'
@@ -88,7 +88,7 @@ export function createScriptedClaudeRuntime(sessionIds: readonly string[]) {
     const providerSessionId = String(launch.options.sessionId ?? launch.options.resume)
     const sessionId = sessionIds.find(
       (candidate) =>
-        claudeSessionIdForOrcaSession(
+        claudeSessionIdForOCCSession(
           candidate,
           host?.deps.store.getRecord(candidate)?.providerContextBoundary?.operationId
         ) === providerSessionId
@@ -241,7 +241,7 @@ export function createScriptedClaudeRuntime(sessionIds: readonly string[]) {
     children: (sessionId: string): ScriptedClaudeChild[] =>
       children.filter((entry) => entry.sessionId === sessionId),
     install: async (): Promise<StructuredAgentSessionHost> => {
-      root ??= await mkdtemp(join(tmpdir(), 'orca-scripted-claude-runtime-'))
+      root ??= await mkdtemp(join(tmpdir(), 'occ-scripted-claude-runtime-'))
       await mkdir(join(root, 'claude-home'), { recursive: true })
       const directory = root
       host = await ensureStructuredAgentSessionHost({
@@ -283,7 +283,7 @@ export function createScriptedClaudeRuntime(sessionIds: readonly string[]) {
         accountHome: { variable: 'CLAUDE_CONFIG_DIR', path: join(root ?? '', 'claude-home') },
         providerHandle: {
           kind: 'claude',
-          sessionId: claudeSessionIdForOrcaSession(sessionId),
+          sessionId: claudeSessionIdForOCCSession(sessionId),
           leafUuid: null
         },
         ...overrides

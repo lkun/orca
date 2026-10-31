@@ -1,4 +1,4 @@
-import type { ReservedRect } from '../../modules/orca-reserved-regions/src'
+import type { ReservedRect } from '../../modules/occ-reserved-regions/src'
 
 /** The part of a side inset strip below what occludes it, in window points. */
 export type SideRailStrip = {

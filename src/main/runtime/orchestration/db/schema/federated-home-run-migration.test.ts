@@ -71,7 +71,7 @@ describe('federated home Run migration', () => {
   })
 
   it('repairs rows a rolled-back v1.4.198 host inserted after user_version reached 40', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-federated-home-run-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-federated-home-run-'))
     const dbPath = join(dir, 'orchestration.db')
     try {
       const upgraded = new OrchestrationDb(dbPath)

@@ -23,7 +23,7 @@ vi.mock('child_process', () => ({
 }))
 
 // Mock the process wrapper; this suite verifies queries, while wrapper tests cover launch policy.
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: (spec: { program: string; args?: string[] }) => runProcessMock(spec)
 }))
 

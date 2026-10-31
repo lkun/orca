@@ -6,7 +6,7 @@ vi.mock('../runtime-client', async () => {
   class RuntimeClient {
     call = callMock
     getCliStatus = vi.fn()
-    openOrca = vi.fn()
+    openOCC = vi.fn()
   }
 
   // Error formatting uses instanceof, so preserve the production error classes.
@@ -17,7 +17,7 @@ vi.mock('../runtime-client', async () => {
 import { main } from '../index'
 import { buildWorktree, okFixture, queueFixtures, worktreeListFixture } from '../test-fixtures'
 
-describe('orca computer observation CLI handlers', () => {
+describe('occ computer observation CLI handlers', () => {
   beforeEach(() => {
     vi.restoreAllMocks()
     callMock.mockReset()
@@ -30,7 +30,7 @@ describe('orca computer observation CLI handlers', () => {
     await main(['computer', '--help'], '/tmp/repo')
 
     const output = vi.mocked(console.log).mock.calls[0][0]
-    expect(output).toContain('Usage: orca computer <command> [options]')
+    expect(output).toContain('Usage: occ computer <command> [options]')
     expect(output).toContain('get-app-state')
     expect(callMock).not.toHaveBeenCalled()
   })
@@ -40,7 +40,7 @@ describe('orca computer observation CLI handlers', () => {
 
     const output = vi.mocked(console.log).mock.calls[0][0]
     expect(output).toContain(
-      'orca computer permissions [--id <accessibility|screenshots>] [--json]'
+      'occ computer permissions [--id <accessibility|screenshots>] [--json]'
     )
     expect(output).toContain('--id <id>')
     expect(output).toContain('Identifier for a target item or permission')
@@ -94,7 +94,7 @@ describe('orca computer observation CLI handlers', () => {
       callMock,
       okFixture('req_capabilities', {
         platform: 'darwin',
-        provider: 'orca-computer-use-macos',
+        provider: 'occ-computer-use-macos',
         providerVersion: '1.0.0',
         protocolVersion: 1,
         supports: {
@@ -111,7 +111,7 @@ describe('orca computer observation CLI handlers', () => {
 
     expect(callMock).toHaveBeenCalledTimes(1)
     expect(callMock).toHaveBeenCalledWith('computer.capabilities', {})
-    expect(vi.mocked(console.log).mock.calls[0][0]).toContain('orca-computer-use-macos')
+    expect(vi.mocked(console.log).mock.calls[0][0]).toContain('occ-computer-use-macos')
   })
 
   it('opens computer permission setup without resolving a worktree', async () => {

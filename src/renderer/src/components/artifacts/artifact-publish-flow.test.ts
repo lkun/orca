@@ -11,8 +11,8 @@ const mocks = vi.hoisted(() => ({
   toastError: vi.fn(),
   toastSuccess: vi.fn(),
   state: {
-    orcaProfileAuthStatus: { state: 'connected' } as { state: string } | null,
-    connectCurrentOrcaProfile: vi.fn()
+    occProfileAuthStatus: { state: 'connected' } as { state: string } | null,
+    connectCurrentOCCProfile: vi.fn()
   }
 }))
 
@@ -36,19 +36,19 @@ const published = {
   change: 'created' as const,
   item: {
     artifact: { slug: 'artifact-a' },
-    shareUrl: 'https://share.onorca.dev/a/artifact-a'
+    shareUrl: 'https://share.onocc.dev/a/artifact-a'
   }
 }
 
 beforeEach(() => {
   vi.clearAllMocks()
-  mocks.state.orcaProfileAuthStatus = { state: 'connected' }
-  mocks.state.connectCurrentOrcaProfile = mocks.connect
+  mocks.state.occProfileAuthStatus = { state: 'connected' }
+  mocks.state.connectCurrentOCCProfile = mocks.connect
 })
 
 describe('artifact publish flow', () => {
   it('prepares the request once, before signing in and publishing it', async () => {
-    mocks.state.orcaProfileAuthStatus = { state: 'local' }
+    mocks.state.occProfileAuthStatus = { state: 'local' }
     mocks.connect.mockResolvedValue({ status: 'connected' })
     mocks.callRuntimeRpc.mockResolvedValue({ status: 'ok', value: published })
     const createRequest = vi.fn().mockResolvedValue(request)
@@ -85,7 +85,7 @@ describe('artifact publish flow', () => {
   })
 
   it('surfaces sign-in failures without publishing', async () => {
-    mocks.state.orcaProfileAuthStatus = { state: 'local' }
+    mocks.state.occProfileAuthStatus = { state: 'local' }
     mocks.connect.mockRejectedValue(new Error('login failed'))
     const createRequest = vi.fn().mockResolvedValue(request)
 
@@ -95,7 +95,7 @@ describe('artifact publish flow', () => {
   })
 
   it('reports an unreadable file without asking the user to sign in', async () => {
-    mocks.state.orcaProfileAuthStatus = { state: 'local' }
+    mocks.state.occProfileAuthStatus = { state: 'local' }
     const createRequest = vi
       .fn()
       .mockRejectedValue(new ArtifactPublishPreparationError('unreadable'))

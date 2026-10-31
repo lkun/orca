@@ -12,8 +12,8 @@ vi.mock('../windows/windows-process-table', () => ({
 
 const { inspectDaemonProcessIdentity } = await import('./daemon-pid-identity')
 
-const socketPath = 'C:\\Users\\me\\AppData\\Roaming\\orca\\daemon\\daemon-v4.sock'
-const tokenPath = 'C:\\Users\\me\\AppData\\Roaming\\orca\\daemon\\daemon-v4.token'
+const socketPath = 'C:\\Users\\me\\AppData\\Roaming\\occ\\daemon\\daemon-v4.sock'
+const tokenPath = 'C:\\Users\\me\\AppData\\Roaming\\occ\\daemon\\daemon-v4.token'
 const STARTED_AT_MS = 1_700_000_000_000
 // process.kill(pid, 0) must succeed, so the row under test is this process's own.
 const pid = process.pid

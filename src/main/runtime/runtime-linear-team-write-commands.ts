@@ -143,7 +143,7 @@ export class RuntimeLinearTeamWriteCommands extends RuntimeLinearDedupeCommands 
     }
     if (!teamInput) {
       throw linearError('linear_team_required', 'Pass --team or create under a parent issue.', {
-        nextSteps: ['Run `orca linear create --team <key> ...` or use --parent-current.']
+        nextSteps: ['Run `occ linear create --team <key> ...` or use --parent-current.']
       })
     }
 

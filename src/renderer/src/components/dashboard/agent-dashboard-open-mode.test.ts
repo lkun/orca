@@ -19,7 +19,7 @@ describe('Agent Dashboard open mode', () => {
   afterEach(() => vi.unstubAllGlobals())
 
   it('opens the in-window board in a web client even when the setting says pop-out', () => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     const state = dashboardState()
     const openPopout = vi.fn()
     expect(resolveAgentDashboardMode(state.settings)).toBe('in-window')

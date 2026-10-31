@@ -9,7 +9,7 @@ import type { RuntimeRpcResponse } from '../../../shared/runtime-rpc-envelope'
 import type { DesktopBrowserBridgeOutcome } from './desktop-browser-bridge-executor'
 
 const RESULT_TIMEOUT_MS = 30_000
-// Keep browser errors within orcad's result-schema limits.
+// Keep browser errors within occd's result-schema limits.
 const MAX_ERROR_CODE_LENGTH = 128
 const MAX_ERROR_MESSAGE_LENGTH = 4096
 
@@ -109,7 +109,7 @@ export class DesktopBrowserBridgeConnection {
   }
 
   private async answer(attachmentId: string, request: DesktopBrowserBridgeRequest): Promise<void> {
-    // Cancel queued commands once orcad has stopped waiting.
+    // Cancel queued commands once occd has stopped waiting.
     const cancelled = new AbortController()
     this.cancellations.set(request.requestId, cancelled)
     const signals = [this.revoked.signal, cancelled.signal]

@@ -1,4 +1,4 @@
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
 const PANE_COUNT = 100
@@ -20,11 +20,11 @@ type BurstEvidence = {
 
 test('keeps the visible Agent Dashboard interactive during a 100-pane status replay', async ({
   electronApp,
-  orcaPage
+  occPage
 }) => {
-  await waitForSessionReady(orcaPage)
-  const worktreeId = await waitForActiveWorktree(orcaPage)
-  const panes = await orcaPage.evaluate(
+  await waitForSessionReady(occPage)
+  const worktreeId = await waitForActiveWorktree(occPage)
+  const panes = await occPage.evaluate(
     ({ baseTime, paneCount, worktreeId }): BurstPane[] => {
       const store = window.__store
       if (!store) {
@@ -81,7 +81,7 @@ test('keeps the visible Agent Dashboard interactive during a 100-pane status rep
     { baseTime: BASE_TIME, paneCount: PANE_COUNT, worktreeId }
   )
 
-  const dashboardButton = orcaPage.getByRole('button', { name: /Agent Dashboard/ })
+  const dashboardButton = occPage.getByRole('button', { name: /Agent Dashboard/ })
   await expect(dashboardButton).toBeVisible()
 
   await electronApp.evaluate(
@@ -108,9 +108,9 @@ test('keeps the visible Agent Dashboard interactive during a 100-pane status rep
 
   const interactionStartedAt = performance.now()
   await dashboardButton.click()
-  await orcaPage.locator('[data-agent-dashboard-sheet]').waitFor({ state: 'visible' })
+  await occPage.locator('[data-agent-dashboard-sheet]').waitFor({ state: 'visible' })
   const interactionElapsedMs = performance.now() - interactionStartedAt
-  const statusPublicationsAtVisible = await orcaPage.evaluate(() => {
+  const statusPublicationsAtVisible = await occPage.evaluate(() => {
     const probe = (
       window as typeof window & { __agentDashboardBurstProbe?: { statusPublications: number } }
     ).__agentDashboardBurstProbe
@@ -123,7 +123,7 @@ test('keeps the visible Agent Dashboard interactive during a 100-pane status rep
   await expect
     .poll(
       () =>
-        orcaPage.evaluate(
+        occPage.evaluate(
           (paneKeys) => {
             const statuses = window.__store?.getState().agentStatusByPaneKey ?? {}
             return paneKeys.every((paneKey) => statuses[paneKey]?.state === 'done')
@@ -134,7 +134,7 @@ test('keeps the visible Agent Dashboard interactive during a 100-pane status rep
     )
     .toBe(true)
 
-  const evidence = await orcaPage.evaluate(
+  const evidence = await occPage.evaluate(
     ({ paneKeys, statusPublicationsAtVisible }): BurstEvidence => {
       const state = window.__store?.getState()
       const probe = (

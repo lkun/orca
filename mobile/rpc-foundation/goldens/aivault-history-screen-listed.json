@@ -269,7 +269,7 @@
         "View": 6
       },
       "labels": ["Back", "Refresh agent sessions", "Search sessions, repo:, path:"],
-      "text": ["Agent Session History", "orca-history", "Workspace", "Project", "All"]
+      "text": ["Agent Session History", "occ-history", "Workspace", "Project", "All"]
     },
     "a26eb8ffaa7c": {
       "name": "status.get#2",
@@ -324,7 +324,7 @@
         "View": 4
       },
       "labels": ["Back", "Refresh agent sessions"],
-      "text": ["Agent Session History", "orca-history"]
+      "text": ["Agent Session History", "occ-history"]
     },
     "e28c488ce6b2": {
       "name": "agentSession.subscribeStatus#1",

@@ -1,8 +1,8 @@
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import type { OrcadDeltaMovePreview } from '../../../../shared/orcad-managed-runtime'
+import type { OCCdDeltaMovePreview } from '../../../../shared/occd-managed-runtime'
 import type { SshTarget } from '../../../../shared/ssh-types'
-import type { ManagedOrcadPreloadApi } from '../../../../preload/api/managed-orcad-api'
+import type { ManagedOCCdPreloadApi } from '../../../../preload/api/managed-occd-api'
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { translate } from '@/i18n/i18n'
 import { Button } from '../ui/button'
@@ -18,7 +18,7 @@ import { conversionBlockerLabel, managedServerOutcomeLabel } from './managed-ser
 import { deltaMoveRowLabel } from './ssh-host-delta-move-copy'
 
 type SshHostDeltaMoveDialogProps = {
-  api: ManagedOrcadPreloadApi
+  api: ManagedOCCdPreloadApi
   target: SshTarget | null
   onClose: () => void
   onFinished: () => void
@@ -32,7 +32,7 @@ export function SshHostDeltaMoveDialog({
   onFinished
 }: SshHostDeltaMoveDialogProps): React.JSX.Element {
   const mountedRef = useMountedRef()
-  const [preview, setPreview] = useState<OrcadDeltaMovePreview | null>(null)
+  const [preview, setPreview] = useState<OCCdDeltaMovePreview | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [running, setRunning] = useState(false)
   // Key by target ID so reloads with fresh target objects cannot reset a running move.

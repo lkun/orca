@@ -13,8 +13,8 @@ describe('reportSecretProtectionGap', () => {
   let logged: string[]
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-secret-report-'))
-    dataFile = join(dir, 'orca-data.json')
+    dir = mkdtempSync(join(tmpdir(), 'occ-secret-report-'))
+    dataFile = join(dir, 'occ-data.json')
     logged = []
   })
 
@@ -83,7 +83,7 @@ describe('reportSecretProtectionGap', () => {
 
   it('re-reports when the stored state is corrupt rather than trusting it', () => {
     installStore(WEAK)
-    writeFileSync(join(dir, 'orca-secret-protection.json'), '{ not json', 'utf-8')
+    writeFileSync(join(dir, 'occ-secret-protection.json'), '{ not json', 'utf-8')
     expect(report()).toBe(WEAK)
     expect(logged).toHaveLength(1)
   })

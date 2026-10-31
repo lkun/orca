@@ -3,7 +3,7 @@ import type { CreateWorktreeResult } from '../../shared/worktree/create-types'
 import { shouldSeedWorktreePrimaryTerminal } from '../../shared/worktree-first-surface'
 import { buildObservedSetupCommand } from './orchestration/setup-completion-signal'
 import { buildSetupRunnerCommand } from '../../shared/setup-runner-command'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import type { DefaultTerminalTab } from '../../shared/workspace-layout/workspace-layout-command-types'
 
 type TerminalResult = { handle: string }
@@ -80,7 +80,7 @@ export async function createWorktreeDefaultTabTerminals(
   if (startupHandle && first) {
     await dressAsDefaultTab(host, worktreeId, startupHandle, first)
   }
-  if (ORCA_LAYOUT_OWNER_IS_MAIN && host.applyDefaultTabs) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN && host.applyDefaultTabs) {
     return startDefaultTabsInLayout(
       host,
       host.applyDefaultTabs,
@@ -246,7 +246,7 @@ export async function provisionWorktreeTerminals(
         command,
         env,
         // Keep failed setup in its pane to show the failure.
-        ...(ORCA_LAYOUT_OWNER_IS_MAIN ? { keepPaneOnStartFailure: true as const } : {}),
+        ...(OCC_LAYOUT_OWNER_IS_MAIN ? { keepPaneOnStartFailure: true as const } : {}),
         ...surfacing
       })
       setupTerminalHandle = setupTerminal.handle

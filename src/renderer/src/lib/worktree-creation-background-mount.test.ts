@@ -23,7 +23,7 @@ vi.mock('sonner', () => ({
 
 import { useAppStore } from '@/store'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { runBackgroundWorktreeCreation } from './worktree-creation-flow'
 import {
   makeCreatedAgentWorktree,
@@ -50,7 +50,7 @@ vi.mock('@/runtime/runtime-rpc-client', async (importOriginal) => {
 
 /** Whether the tab's startup runs: main runs it in a layout-owner build, else the window's mount. */
 function startupRuns(tabId: string): boolean {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     return useAppStore.getState().pendingStartupByTabId[tabId] !== undefined
   }
   return mainStarts.some(
@@ -62,7 +62,7 @@ function startupRuns(tabId: string): boolean {
 /** Whether the user sees the terminal titled Setup: a layout-owner build sends the title to main,
  *  whose frame (not modelled here) draws it; otherwise the window titles the row itself. */
 function titledSetup(terminal: { id: string; customTitle?: string | null }): boolean {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     return terminal.customTitle === 'Setup'
   }
   const tabBarId = useAppStore
@@ -131,7 +131,7 @@ describe('a create finishing after the user switched away', () => {
     // SSH-like: the host started nothing, so the renderer seeds the agent and setup terminals.
     await createAfterUserSwitchedAway({
       worktree,
-      setup: { runnerScriptPath: '/workspace/repo/.git/orca/setup-runner.sh', envVars: {} }
+      setup: { runnerScriptPath: '/workspace/repo/.git/occ/setup-runner.sh', envVars: {} }
     })
 
     const state = useAppStore.getState()
@@ -156,7 +156,7 @@ describe('a create finishing after the user switched away', () => {
     await createAfterUserSwitchedAway({
       worktree,
       startupTerminal: { spawned: true, surface: 'visible' },
-      setup: { runnerScriptPath: '/workspace/repo/.git/orca/setup-runner.sh', envVars: {} }
+      setup: { runnerScriptPath: '/workspace/repo/.git/occ/setup-runner.sh', envVars: {} }
     })
 
     const tabs = useAppStore.getState().tabsByWorktree[worktree.id] ?? []
@@ -170,7 +170,7 @@ describe('a create finishing after the user switched away', () => {
     await createAfterUserSwitchedAway(
       {
         worktree,
-        setup: { runnerScriptPath: '/workspace/repo/.git/orca/setup-runner.sh', envVars: {} }
+        setup: { runnerScriptPath: '/workspace/repo/.git/occ/setup-runner.sh', envVars: {} }
       },
       makeBlankTerminalRequest()
     )

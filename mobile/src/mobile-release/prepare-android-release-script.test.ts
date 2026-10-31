@@ -21,7 +21,7 @@ const appConfig = {
 let tempDirs: string[] = []
 
 function createAppConfig() {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-android-release-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-android-release-'))
   tempDirs.push(dir)
   const configPath = join(dir, 'app.json')
   const contents = `${JSON.stringify(appConfig, null, 2)}\n`

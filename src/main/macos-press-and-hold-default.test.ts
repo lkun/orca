@@ -3,18 +3,18 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 import {
   ensureMacPressAndHoldDefault,
   interpretDefaultsRead,
-  isOrcaPreferencesDomain,
+  isOCCPreferencesDomain,
   readBundleIdentifierFromExecutablePath,
   type PressAndHoldDecision,
   type PressAndHoldHost,
   type PressAndHoldRecord
 } from './macos-press-and-hold-default'
 
-const ORCA_DOMAIN = 'com.lkun.occ'
+const OCC_DOMAIN = 'com.lkun.occ'
 
 type HostOverrides = Partial<PressAndHoldHost> & { record?: PressAndHoldRecord | null }
 
@@ -28,7 +28,7 @@ function createHost(overrides: HostOverrides = {}): {
   let stored = overrides.record ?? null
   const host: PressAndHoldHost = {
     platform: 'darwin',
-    resolveBundleIdentifier: () => ORCA_DOMAIN,
+    resolveBundleIdentifier: () => OCC_DOMAIN,
     readRecord: () => stored,
     writeRecord: (record) => {
       stored = record
@@ -46,7 +46,7 @@ function createHost(overrides: HostOverrides = {}): {
 }
 
 function terminalRecord(decision: PressAndHoldDecision): PressAndHoldRecord {
-  return { version: 1, decision, domain: ORCA_DOMAIN, decidedAt: '2026-01-01T00:00:00.000Z' }
+  return { version: 1, decision, domain: OCC_DOMAIN, decidedAt: '2026-01-01T00:00:00.000Z' }
 }
 
 describe('ensureMacPressAndHoldDefault', () => {
@@ -54,7 +54,7 @@ describe('ensureMacPressAndHoldDefault', () => {
     const { host, writes, records } = createHost()
 
     expect(ensureMacPressAndHoldDefault(host)).toBe('applied')
-    expect(writes).toEqual([{ domain: ORCA_DOMAIN, value: false }])
+    expect(writes).toEqual([{ domain: OCC_DOMAIN, value: false }])
     expect(records.at(-1)?.decision).toBe('applied')
   })
 
@@ -136,10 +136,10 @@ describe('ensureMacPressAndHoldDefault', () => {
     })
 
     it('accepts OCC and its channel-scoped bundles, and nothing else', () => {
-      expect(isOrcaPreferencesDomain('com.lkun.occ')).toBe(true)
-      expect(isOrcaPreferencesDomain('com.lkun.occ.dev')).toBe(true)
-      expect(isOrcaPreferencesDomain('com.github.Electron')).toBe(false)
-      expect(isOrcaPreferencesDomain('com.lkun.occfake')).toBe(false)
+      expect(isOCCPreferencesDomain('com.lkun.occ')).toBe(true)
+      expect(isOCCPreferencesDomain('com.lkun.occ.dev')).toBe(true)
+      expect(isOCCPreferencesDomain('com.github.Electron')).toBe(false)
+      expect(isOCCPreferencesDomain('com.lkun.occfake')).toBe(false)
     })
   })
 
@@ -158,7 +158,7 @@ describe('ensureMacPressAndHoldDefault', () => {
 
       const retry = createHost({ record: records.at(-1) })
       expect(ensureMacPressAndHoldDefault(retry.host)).toBe('applied')
-      expect(retry.writes).toEqual([{ domain: ORCA_DOMAIN, value: false }])
+      expect(retry.writes).toEqual([{ domain: OCC_DOMAIN, value: false }])
     })
   })
 
@@ -223,7 +223,7 @@ describe('readBundleIdentifierFromExecutablePath', () => {
   })
 
   function bundleWithPlist(body: string): string {
-    const root = mkdtempSync(join(tmpdir(), 'orca-press-hold-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-press-hold-'))
     roots.push(root)
     mkdirSync(join(root, 'OCC.app', 'Contents', 'MacOS'), { recursive: true })
     writeFileSync(join(root, 'OCC.app', 'Contents', 'Info.plist'), body)

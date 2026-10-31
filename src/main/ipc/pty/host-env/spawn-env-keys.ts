@@ -1,15 +1,15 @@
-import { ORCA_AGENT_SESSION_ID_ENV } from '../../../../shared/agent-session-caller-env'
-import { ORCA_STRUCTURED_SESSION_ENV } from '../../../../shared/structured-session-marker'
+import { OCC_AGENT_SESSION_ID_ENV } from '../../../../shared/agent-session-caller-env'
+import { OCC_STRUCTURED_SESSION_ENV } from '../../../../shared/structured-session-marker'
 
 export const AGENT_HOOK_RUNTIME_ENV_KEYS = [
-  'ORCA_AGENT_HOOK_PORT',
-  'ORCA_AGENT_HOOK_TOKEN',
-  'ORCA_AGENT_HOOK_ENV',
-  'ORCA_AGENT_HOOK_VERSION',
-  'ORCA_AGENT_HOOK_TRANSPORT',
-  'ORCA_AGENT_HOOK_ENDPOINT',
+  'OCC_AGENT_HOOK_PORT',
+  'OCC_AGENT_HOOK_TOKEN',
+  'OCC_AGENT_HOOK_ENV',
+  'OCC_AGENT_HOOK_VERSION',
+  'OCC_AGENT_HOOK_TRANSPORT',
+  'OCC_AGENT_HOOK_ENDPOINT',
   // Remove the reverted inherited path still present in older PTYs (#2778).
-  'ORCA_CLAUDE_AGENT_STATUS_SETTINGS'
+  'OCC_CLAUDE_AGENT_STATUS_SETTINGS'
 ] as const
 
 // Inherited Claude child stamps make an independent pane act as the launching session's child.
@@ -23,7 +23,7 @@ export const CLAUDE_CHILD_SESSION_STAMP_ENV_KEYS = [
 ] as const
 
 // Inherited structured-session IDs would make every pane claim the parent orchestration caller.
-export const ORCA_AGENT_SESSION_CALLER_ENV_KEYS = [
-  ORCA_AGENT_SESSION_ID_ENV,
-  ORCA_STRUCTURED_SESSION_ENV
+export const OCC_AGENT_SESSION_CALLER_ENV_KEYS = [
+  OCC_AGENT_SESSION_ID_ENV,
+  OCC_STRUCTURED_SESSION_ENV
 ] as const

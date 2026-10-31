@@ -485,7 +485,7 @@ describe('repo slice host identity routing', () => {
     // SSH ownership must route host-scoped local removal even with runtime focused.
     const sshDuplicate: Repo = {
       id: 'same-repo',
-      path: '/home/orca/project',
+      path: '/home/occ/project',
       displayName: 'SSH',
       badgeColor: '#222',
       addedAt: 3,
@@ -493,7 +493,7 @@ describe('repo slice host identity routing', () => {
       executionHostId: 'ssh:ssh-1'
     }
     const sshWorktree = makeWorktree({
-      id: 'same-repo::/home/orca/wt',
+      id: 'same-repo::/home/occ/wt',
       repoId: 'same-repo',
       hostId: 'ssh:ssh-1'
     })

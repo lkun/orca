@@ -20,9 +20,9 @@ const RESTRICTED_E2E_ENV_KEYS = new Set([
   'HOME',
   'USERPROFILE',
   'CODEX_HOME',
-  'ORCA_CODEX_HOME',
-  'ORCA_E2E_HOME_DIR',
-  'ORCA_E2E_USER_DATA_DIR'
+  'OCC_CODEX_HOME',
+  'OCC_E2E_HOME_DIR',
+  'OCC_E2E_USER_DATA_DIR'
 ])
 
 // Launch with harness-owned userData for unique daemon scope; optional seedProfile writes only before FIRST launch, preserving later restore evidence.
@@ -35,12 +35,12 @@ export async function launchInstalledApp({
   const {
     ELECTRON_RUN_AS_NODE: _drop,
     CODEX_HOME: _codexHome,
-    ORCA_CODEX_HOME: _orcaCodexHome,
+    OCC_CODEX_HOME: _occCodexHome,
     ...cleanEnv
   } = process.env
   void _drop
   void _codexHome
-  void _orcaCodexHome
+  void _occCodexHome
   const restrictedExtraEnvKey = Object.keys(extraEnv).find((key) =>
     RESTRICTED_E2E_ENV_KEYS.has(key.toUpperCase())
   )
@@ -61,15 +61,15 @@ export async function launchInstalledApp({
     args: [],
     env: {
       ...cleanEnv,
-      // Packaged main honors ORCA_E2E_USER_DATA_DIR to relocate userData
+      // Packaged main honors OCC_E2E_USER_DATA_DIR to relocate userData
       // (logs/daemon/terminal-history) under a controlled dir.
       ...extraEnv,
-      ORCA_E2E_USER_DATA_DIR: userDataDir,
+      OCC_E2E_USER_DATA_DIR: userDataDir,
       // Why: the driven app stays off the foreground so a local run doesn't steal focus.
-      ORCA_BACKGROUND_LAUNCH: '1',
+      OCC_BACKGROUND_LAUNCH: '1',
       HOME: isolatedHome,
       USERPROFILE: isolatedHome,
-      ORCA_E2E_HOME_DIR: isolatedHome
+      OCC_E2E_HOME_DIR: isolatedHome
     }
   })
   // Kill launch tree if firstWindow fails; Electron may still run after the driver times out.

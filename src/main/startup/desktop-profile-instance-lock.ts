@@ -1,17 +1,17 @@
-/** Share orcad's profile lock to prevent concurrent desktop/serve writers; Electron's own instance lock cannot fence plain Node. */
-import { acquireOrcadInstanceLock, type OrcadInstanceLock } from '../orcad/orcad-instance-lock'
-import { OrcadInstanceLockError } from '../orcad/orcad-data-root-privacy'
+/** Share occd's profile lock to prevent concurrent desktop/serve writers; Electron's own instance lock cannot fence plain Node. */
+import { acquireOCCdInstanceLock, type OCCdInstanceLock } from '../occd/occd-instance-lock'
+import { OCCdInstanceLockError } from '../occd/occd-data-root-privacy'
 import { writeStartupDiagnosticLine, type StartupDiagnosticSink } from './startup-diagnostics'
 
 export type DesktopProfileLockResult =
-  | { state: 'acquired'; lock: OrcadInstanceLock }
+  | { state: 'acquired'; lock: OCCdInstanceLock }
   | { state: 'held'; message: string }
   /** Unrelated lock failures preserve legacy desktop startup. */
   | { state: 'unavailable' }
 
 export function acquireDesktopProfileInstanceLock(
   userDataPath: string,
-  acquire: typeof acquireOrcadInstanceLock = acquireOrcadInstanceLock,
+  acquire: typeof acquireOCCdInstanceLock = acquireOCCdInstanceLock,
   write?: StartupDiagnosticSink
 ): DesktopProfileLockResult {
   try {
@@ -22,9 +22,9 @@ export function acquireDesktopProfileInstanceLock(
   } catch (error) {
     // A holder this machine cannot judge may still be running: refusing keeps one writer.
     if (
-      error instanceof OrcadInstanceLockError &&
-      (error.code === 'orcad_instance_lock_held' ||
-        error.code === 'orcad_instance_lock_holder_unverifiable')
+      error instanceof OCCdInstanceLockError &&
+      (error.code === 'occd_instance_lock_held' ||
+        error.code === 'occd_instance_lock_holder_unverifiable')
     ) {
       writeStartupDiagnosticLine(`[single-instance] ${error.message}`, write)
       return { state: 'held', message: error.message }

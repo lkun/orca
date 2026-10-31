@@ -30,7 +30,7 @@ const { AGENT_LAUNCH_METHODS } = await import('../../src/main/runtime/rpc/method
 
 let directory: string
 beforeEach(async () => {
-  directory = await mkdtemp(join(tmpdir(), 'orca-launch-cli-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-launch-cli-'))
   setAgentLaunchRecordStore(await openTestAgentSessionRecordStore(directory))
   chatCreate
     .mockReset()

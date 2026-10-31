@@ -1,6 +1,6 @@
-import { OrcaRuntimeWithCollectMobileVisibleGraphChangedWorktrees } from './session-tabs-inventory'
+import { OCCRuntimeWithCollectMobileVisibleGraphChangedWorktrees } from './session-tabs-inventory'
 
-export abstract class RuntimeSessionTabsInventoryPublication extends OrcaRuntimeWithCollectMobileVisibleGraphChangedWorktrees {
+export abstract class RuntimeSessionTabsInventoryPublication extends OCCRuntimeWithCollectMobileVisibleGraphChangedWorktrees {
   protected waitForSessionTabsInventoryPublication(signal?: AbortSignal): Promise<void> {
     if (this.getAuthoritativeSessionTabsInventoryEpoch() !== null) {
       return Promise.resolve()

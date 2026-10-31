@@ -360,7 +360,7 @@ describe('MobileNativeChatMessage', () => {
         kind: 'agent',
         senders: [
           {
-            party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: null },
+            party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: null },
             name: 'Coder'
           }
         ],
@@ -397,7 +397,7 @@ describe('MobileNativeChatMessage', () => {
           kind: 'agent',
           senders: [
             {
-              party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: null },
+              party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: null },
               name: 'Coder'
             }
           ],
@@ -501,7 +501,7 @@ describe('MobileNativeChatMessage', () => {
   })
 
   // An older host refuses the read; the row keeps today's placeholder.
-  const STORED = '/home/me/.orca/agent-session-attachments/6f1c2a4e/shot.png'
+  const STORED = '/home/me/.occ/agent-session-attachments/6f1c2a4e/shot.png'
   const GENERATED = '/home/me/.codex/generated_images/shot.png'
   const IMAGE = {
     ok: true,

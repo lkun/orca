@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
-import type { ProcessTerminationBarrier } from '@orca/process-host/process-spec'
+import type { ProcessTerminationBarrier } from '@occ/process-host/process-spec'
 import { quotePosixShell } from '../../shared/shell-argument-quoting'
 import { runWslProcess } from '../wsl/wsl-runner'
 import { WSL_UNC_RUNNING_LEASE_MS, wslDistroForPath } from '../wsl/wsl-unc-access-gate'
@@ -17,7 +17,7 @@ export type WslProcessGroupTermination = ProcessTerminationBarrier & {
 }
 
 export function createWslProcessGroupTermination(distro: string): WslProcessGroupTermination {
-  const marker = `__ORCA_WSL_PROCESS_GROUP_${randomUUID()}__=`
+  const marker = `__OCC_WSL_PROCESS_GROUP_${randomUUID()}__=`
   let processGroupId: number | null = null
   // When the guest proved it ran; a 'stopped' read probed before then cannot prove the group ended.
   let groupObservedAt = -Infinity
@@ -50,12 +50,12 @@ export function createWslProcessGroupTermination(distro: string): WslProcessGrou
       }
     }
     const script = [
-      '_orca_group=$1',
-      `kill -${signal} "-$_orca_group" 2>/dev/null || :`,
-      '_orca_attempt=0',
-      'while kill -0 "-$_orca_group" 2>/dev/null; do',
-      `  [ "$_orca_attempt" -ge ${GUEST_TERMINATION_ATTEMPTS} ] && exit 1`,
-      '  _orca_attempt=$((_orca_attempt + 1))',
+      '_occ_group=$1',
+      `kill -${signal} "-$_occ_group" 2>/dev/null || :`,
+      '_occ_attempt=0',
+      'while kill -0 "-$_occ_group" 2>/dev/null; do',
+      `  [ "$_occ_attempt" -ge ${GUEST_TERMINATION_ATTEMPTS} ] && exit 1`,
+      '  _occ_attempt=$((_occ_attempt + 1))',
       `  sleep ${GUEST_TERMINATION_INTERVAL_SECONDS}`,
       'done'
     ].join('\n')
@@ -83,11 +83,11 @@ export function createWslProcessGroupTermination(distro: string): WslProcessGrou
       // BusyBox setsid lacks --wait; without a new session, report no group to avoid killing another owner.
       const script = [
         'if setsid --wait true 2>/dev/null; then',
-        `  exec setsid --wait sh -c ${quotePosixShell(reportGroup)} orca-wsl-process-group "$@"`,
+        `  exec setsid --wait sh -c ${quotePosixShell(reportGroup)} occ-wsl-process-group "$@"`,
         'fi',
         'exec "$@"'
       ].join('\n')
-      return ['sh', '-c', script, 'orca-wsl-process-group', ...args]
+      return ['sh', '-c', script, 'occ-wsl-process-group', ...args]
     },
     stripControlOutput: (stderr) => stderr.replace(new RegExp(`${marker}\\d+\\r?\\n?`, 'g'), '')
   }

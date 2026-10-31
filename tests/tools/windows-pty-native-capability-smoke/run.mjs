@@ -3,7 +3,7 @@ import path from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { assertPackagedNodePtyCapability } from './packaged-node-pty-capability-oracle.mjs'
 
-const EVIDENCE_PREFIX = 'ORCA_NODE_PTY_CAPABILITY_EVIDENCE='
+const EVIDENCE_PREFIX = 'OCC_NODE_PTY_CAPABILITY_EVIDENCE='
 const PROBE_TIMEOUT_MS = 45_000
 const MAX_DIAGNOSTIC_CHARS = 8_000
 
@@ -16,7 +16,7 @@ function executableArgument(argv) {
 }
 
 export function checkoutRunProcessPath() {
-  return createRequire(import.meta.url).resolve('@orca/process-host')
+  return createRequire(import.meta.url).resolve('@occ/process-host')
 }
 
 export function packagedProbeInvocation(executable, environment = process.env) {

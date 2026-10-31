@@ -157,7 +157,7 @@ export async function prefillFormFromSshConfigHost(
   }
 }
 
-export async function addAllSshConfigHostsToOrca({
+export async function addAllSshConfigHostsToOCC({
   ssh,
   recordSshRepoReadoptions,
   setSshTargetsMetadata,
@@ -243,7 +243,7 @@ function normalizeSshConfigHostListResult(value: unknown): SshConfigHostListResu
       totalHostCount: value.length,
       newHostCount: value.filter(
         (host): host is SshConfigHostSummary =>
-          typeof host === 'object' && host !== null && host.alreadyInOrca === false
+          typeof host === 'object' && host !== null && host.alreadyInOCC === false
       ).length,
       matchCount: value.length,
       hasMore: value.length > hosts.length

@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithAgentPromptRequestCorrelation } from '../../orca-runtime-agent-prompt-request-correlation'
+import { OCCRuntimeWithAgentPromptRequestCorrelation } from '../../occ-runtime-agent-prompt-request-correlation'
 import type { RuntimeTerminalAgentStatusSnapshot } from '../../runtime-terminal-agent-status-query'
 import type { AgentStatus } from '../../../../shared/agent-detection'
 import type { RuntimeTerminalWaitBlockedReason } from '../../../../shared/runtime-terminal-contracts'
@@ -30,14 +30,14 @@ import {
 import { selectFreshExplicitAgentStatusRow } from '../../runtime-hook-agent-row-selection'
 import { isClaudeDialogHoldingPane } from '../../claude-open-dialog-hold'
 
-import type { OrcaRuntimeWithStopExactTerminalsForWorktree } from '../stop/worktree-terminal-stop-targets'
+import type { OCCRuntimeWithStopExactTerminalsForWorktree } from '../stop/worktree-terminal-stop-targets'
 
 export type TerminalWaitPermissionInputs = ReturnType<
-  OrcaRuntimeWithResolveAuthoritativeTerminalWaitPermission['getTerminalWaitPermissionInputs']
+  OCCRuntimeWithResolveAuthoritativeTerminalWaitPermission['getTerminalWaitPermissionInputs']
 >
 
 export type TerminalWaitStatusEvidence = Parameters<
-  OrcaRuntimeWithResolveAuthoritativeTerminalWaitPermission['resolveAuthoritativeTerminalWaitPermission']
+  OCCRuntimeWithResolveAuthoritativeTerminalWaitPermission['resolveAuthoritativeTerminalWaitPermission']
 >[1]
 
 export type TerminalInteractiveWaitEvidence = {
@@ -47,12 +47,12 @@ export type TerminalInteractiveWaitEvidence = {
   unconfirmed: boolean
 }
 
-export abstract class OrcaRuntimeWithResolveAuthoritativeTerminalWaitPermission extends OrcaRuntimeWithAgentPromptRequestCorrelation {
+export abstract class OCCRuntimeWithResolveAuthoritativeTerminalWaitPermission extends OCCRuntimeWithAgentPromptRequestCorrelation {
   protected abstract getExistingTerminalHandlesForPtyId(
     ...args: Parameters<
-      OrcaRuntimeWithStopExactTerminalsForWorktree['getExistingTerminalHandlesForPtyId']
+      OCCRuntimeWithStopExactTerminalsForWorktree['getExistingTerminalHandlesForPtyId']
     >
-  ): ReturnType<OrcaRuntimeWithStopExactTerminalsForWorktree['getExistingTerminalHandlesForPtyId']>
+  ): ReturnType<OCCRuntimeWithStopExactTerminalsForWorktree['getExistingTerminalHandlesForPtyId']>
 
   readOpenCodeStartupPromptOwner(ptyId: string, incarnationId: string, launchToken: string) {
     const pty = this.ptysById.get(ptyId)

@@ -44,7 +44,7 @@ describe.skipIf(!realClaudeAvailable)('Claude structured real CLI rewind', () =>
     async () => {
       const source = randomUUID()
       const { claudeConfigDir, env } = realClaudeLaunchHome()
-      const cwd = await mkdtemp(join(tmpdir(), 'orca-real-rewind-'))
+      const cwd = await mkdtemp(join(tmpdir(), 'occ-real-rewind-'))
       const results: string[] = []
       // Replay supplies transcript prompt IDs after dispatch resolves.
       const promptIds: string[] = []
@@ -106,7 +106,7 @@ describe.skipIf(!realClaudeAvailable)('Claude structured real CLI rewind', () =>
       })
 
       const fork = await resolveClaudeRewindFork({
-        orcaSessionId: SESSION_ID,
+        occSessionId: SESSION_ID,
         rewindOperationId: randomUUID(),
         head: claudeProviderHandle(source, null),
         prompt: { sessionId: source, uuid: promptUuid ?? '' },

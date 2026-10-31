@@ -1,5 +1,5 @@
 // `pnpm lint`: runs the independent lint steps in a bounded pool, printing output only for failures.
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { readFileSync } from 'node:fs'
 import { availableParallelism } from 'node:os'
 import path from 'node:path'

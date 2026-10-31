@@ -27,7 +27,7 @@ vi.mock('@react-native-async-storage/async-storage', () => ({
       store.writes += 1
       if (store.refuse) {
         throw new Error(
-          'OCC could not save orca:custom-accessory-keys: a stored value may be too large.'
+          'OCC could not save occ:custom-accessory-keys: a stored value may be too large.'
         )
       }
       store.raw = value
@@ -66,7 +66,7 @@ import { CustomKeyModal } from './CustomKeyModal'
 import { loadCustomKeys, removeCustomKey, saveCustomKeys } from '../terminal/terminal-custom-keys'
 import { readMirroredStorage, retainMirroredStorage } from '../storage/mirrored-storage-keys'
 
-const CUSTOM_KEYS = 'orca:custom-accessory-keys'
+const CUSTOM_KEYS = 'occ:custom-accessory-keys'
 let releaseStorage = () => {}
 
 afterEach(() => releaseStorage())

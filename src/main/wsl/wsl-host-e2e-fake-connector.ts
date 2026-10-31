@@ -1,11 +1,11 @@
-/** ORCA_E2E_FAKE_WSL_HOSTS maps fake distros directly to a headless server pairing so any CI OS can test WSL host UI without wsl.exe. */
+/** OCC_E2E_FAKE_WSL_HOSTS maps fake distros directly to a headless server pairing so any CI OS can test WSL host UI without wsl.exe. */
 import { appendFileSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { z } from 'zod'
 import { parsePairingCode } from '../../shared/pairing'
 import type { WslHostConnector } from './wsl-host-service'
-import type { WslOrcadConnection, WslOrcadConnectionDependencies } from './wsl-orcad-connection'
-import type { WslOrcadConnectIntent, WslOrcadConnectionStatus } from './wsl-orcad-connection-status'
-import { defaultWslOrcadEnvironmentId } from './wsl-orcad-deploy'
+import type { WslOCCdConnection, WslOCCdConnectionDependencies } from './wsl-occd-connection'
+import type { WslOCCdConnectIntent, WslOCCdConnectionStatus } from './wsl-occd-connection-status'
+import { defaultWslOCCdEnvironmentId } from './wsl-occd-deploy'
 import {
   stopWslHostServer,
   wslHostRuntimeStopSteps,
@@ -28,14 +28,14 @@ const FakeWslHostsSchema = z.object({
   pairingCode: z.string().min(1),
   /** Each distro the fake is asked to start, one per line, so e2e can prove nothing respawns. */
   connectLogFile: z.string().optional(),
-  /** `missing` stands in for a build shipped without the orcad template. */
+  /** `missing` stands in for a build shipped without the occd template. */
   serverFiles: z.enum(['present', 'missing']).optional(),
   /** A stop the fake does not report, as when liveness sees only a quick reboot: a runtime call must. */
   stopSilently: z.boolean().optional()
 })
 
 export function readFakeWslHostsConfig(
-  raw = process.env.ORCA_E2E_FAKE_WSL_HOSTS
+  raw = process.env.OCC_E2E_FAKE_WSL_HOSTS
 ): z.infer<typeof FakeWslHostsSchema> | null {
   if (!raw) {
     return null
@@ -45,12 +45,12 @@ export function readFakeWslHostsConfig(
 
 export function createFakeWslHostConnector(
   config: z.infer<typeof FakeWslHostsSchema>,
-  onChange: NonNullable<WslOrcadConnectionDependencies['onChange']>,
+  onChange: NonNullable<WslOCCdConnectionDependencies['onChange']>,
   options: { isKnownDistro: (distro: string) => boolean; runtime: WslHostRuntimeAccess }
 ): WslHostConnector {
   const offer = parsePairingCode(config.pairingCode)
   const port = offer ? Number(new URL(offer.endpoint).port) : 0
-  const active = new Map<string, WslOrcadConnection>()
+  const active = new Map<string, WslOCCdConnection>()
   const key = (distro: string): string => distro.toLowerCase()
   const readDistros = (): z.infer<typeof FakeDistrosSchema> =>
     config.distrosFile
@@ -60,15 +60,15 @@ export function createFakeWslHostConnector(
   const isStopped = (distro: string): boolean =>
     Boolean(config.distrosFile) &&
     readDistros().some((entry) => key(entry.name) === key(distro) && entry.state === 'stopped')
-  const dropBridge = (distro: string, status: WslOrcadConnectionStatus): void => {
+  const dropBridge = (distro: string, status: WslOCCdConnectionStatus): void => {
     if (active.delete(key(distro))) {
       onChange(distro, null, status)
     }
   }
   const connect = async (
     distro: string,
-    intent?: WslOrcadConnectIntent
-  ): Promise<WslOrcadConnection> => {
+    intent?: WslOCCdConnectIntent
+  ): Promise<WslOCCdConnection> => {
     // Same guard as the real connector: nothing starts for a host that is gone.
     if (!options.isKnownDistro(distro)) {
       throw new Error(`${distro} is no longer a WSL host; OCC will not start anything for it.`)
@@ -94,9 +94,9 @@ export function createFakeWslHostConnector(
       appendFileSync(config.connectLogFile, `${distro}\n`)
     }
     onChange(distro, null, { state: 'connecting' })
-    const connection: WslOrcadConnection = {
+    const connection: WslOCCdConnection = {
       distro,
-      environmentId: defaultWslOrcadEnvironmentId(distro),
+      environmentId: defaultWslOCCdEnvironmentId(distro),
       localPort: port,
       remotePort: port,
       fullVersion: 'e2e',
@@ -117,7 +117,7 @@ export function createFakeWslHostConnector(
         ...distro,
         id: `00000000-0000-4000-8000-${String(index + 1).padStart(12, '0')}`
       })),
-    readOrcadPublicKey: async () => null,
+    readOCCdPublicKey: async () => null,
     connect,
     get: (distro) => active.get(key(distro)) ?? null,
     isReachable: async (distro) => !isStopped(distro) && active.has(key(distro)),

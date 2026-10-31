@@ -14,7 +14,7 @@ import {
   reopenTopologyStore
 } from './terminal-topology-profile-fixture'
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('../../telemetry/client', () => ({ track: vi.fn() }))
 vi.mock('../../ssh/config/ssh-config-parser', () => ({
   loadUserSshConfig: () => ({ hosts: [] }),
@@ -64,7 +64,7 @@ function terminalsOf(session: WorkspaceSessionState) {
 
 describe('a windowless host reloaded in the layout-owner build', () => {
   it('drops no terminal tab, pane or sleeping agent that main wrote itself', async () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-windowless-reload-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-windowless-reload-'))
     directories.push(directory)
     const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
 

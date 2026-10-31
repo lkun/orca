@@ -9,7 +9,7 @@ import {
   computeSkillPackageDigest,
   parseSkillPackageManifest
 } from '../../shared/skill-package-manifest'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 
 const mocks = vi.hoisted(() => ({
   getRuntimeEnvironmentStatus: vi.fn(),
@@ -127,7 +127,7 @@ describe('installSkillCloudGrant', () => {
 
     await expect(
       installSkillCloudGrant(
-        {} as OrcaRuntimeService,
+        {} as OCCRuntimeService,
         grant,
         {
           operationId: 'operation-1',
@@ -159,7 +159,7 @@ describe('installSkillCloudGrant', () => {
     mocks.installSkillBundleOnRemoteRuntime.mockResolvedValue(result)
 
     await expect(
-      installSkillBundleCloudGrant({} as OrcaRuntimeService, bundleGrant, {
+      installSkillBundleCloudGrant({} as OCCRuntimeService, bundleGrant, {
         operationId: 'operation-1',
         environmentId: 'environment-1',
         selectedSkillIds: ['skill-1'],
@@ -180,7 +180,7 @@ it('reports only selected skills in manifest order', async () => {
     installSharedSkillBundleRequest: vi
       .fn()
       .mockRejectedValue(new Error('skill-install-filesystem-failed'))
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
   const result = await installSkillBundleCloudGrant(runtime, bundleGrant, {
     operationId: 'op',
     selectedSkillIds: ['a', 'b'],
@@ -210,7 +210,7 @@ it.each(['skill-install-cancelled', 'skill-install-filesystem-failed'])(
     const bundleGrant = bundleDownloadGrant(ids)
     const runtime = {
       installSharedSkillBundleRequest: vi.fn().mockRejectedValue(new Error(code))
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const result = await installSkillBundleCloudGrant(runtime, bundleGrant, {
       operationId: 'op',
       selectedSkillIds,

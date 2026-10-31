@@ -51,7 +51,7 @@ describe('orchestration.callerShow: a session learns its OCC session ID from the
     )
 
     expect(resultOf(response)).toEqual({
-      caller: { orcaSessionId: ADDRESS_X, live: true }
+      caller: { occSessionId: ADDRESS_X, live: true }
     })
   })
 
@@ -86,7 +86,7 @@ describe('orchestration.callerShow: a session learns its OCC session ID from the
     )
     const checked = resultOf(await asX('orchestration.check', { all: true, format: true }))
 
-    expect(shown).toEqual({ caller: { orcaSessionId: ADDRESS_Y, live: true } })
+    expect(shown).toEqual({ caller: { occSessionId: ADDRESS_Y, live: true } })
     expect(preamble).toContain(`Your coordinator's OCC session ID is: ${ADDRESS_X}\n`)
     expect(preamble).toContain(`Your OCC session ID is: ${ADDRESS_Y}\n`)
     expect(preamble).not.toContain(handle)
@@ -110,7 +110,7 @@ describe('orchestration.callerShow: a session learns its OCC session ID from the
 
     expect(response).toMatchObject({
       ok: false,
-      error: { code: CODES.providerId, data: { orcaSessionId: SESSION_X } }
+      error: { code: CODES.providerId, data: { occSessionId: SESSION_X } }
     })
   })
 
@@ -148,8 +148,8 @@ describe('orchestration.callerShow: a session learns its OCC session ID from the
       )
       const acting = resultOf(await h.dispatch(callerShow({ sessionId })))
       // One derivation: the conversation's root, which the successor copies and acts as too.
-      expect(shown.orcaSessionId).toBe(ADDRESS_X)
-      expect(acting.caller).toMatchObject({ orcaSessionId: shown.orcaSessionId })
+      expect(shown.occSessionId).toBe(ADDRESS_X)
+      expect(acting.caller).toMatchObject({ occSessionId: shown.occSessionId })
     }
   })
 

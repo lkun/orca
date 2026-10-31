@@ -26,15 +26,15 @@ function flushingSftp(): SFTPWrapper {
   return sftp as unknown as SFTPWrapper
 }
 
-describe('quitting during an orcad bundle upload', () => {
+describe('quitting during an occd bundle upload', () => {
   it("aborts through the connection's teardown signal with no uncaught exception", async () => {
-    const localDir = await mkdtemp(join(tmpdir(), 'orca-quit-upload-'))
+    const localDir = await mkdtemp(join(tmpdir(), 'occ-quit-upload-'))
     // The disconnect aborts this controller, exactly as SshConnection.disconnect does.
     const teardown = new AbortController()
     const uncaught = vi.fn()
     process.prependListener('uncaughtException', uncaught)
     try {
-      await writeFile(join(localDir, 'orcad.js'), Buffer.alloc(64 * 1024, 7))
+      await writeFile(join(localDir, 'occd.js'), Buffer.alloc(64 * 1024, 7))
       const upload = uploadSshDirectory(
         {
           target,
@@ -44,7 +44,7 @@ describe('quitting during an orcad bundle upload', () => {
           sftp: async () => flushingSftp()
         },
         localDir,
-        '/home/u/.orca-remote/orcad-candidate'
+        '/home/u/.occ-remote/occd-candidate'
       )
       const settled = upload.then(
         () => 'resolved',

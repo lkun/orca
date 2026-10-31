@@ -21,7 +21,7 @@ import { recordingStructuredAgentSessionLogger } from '../agent-session-wire/str
 let root: string
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-journal-open-failure-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-journal-open-failure-'))
 })
 
 afterEach(async () => {
@@ -237,20 +237,20 @@ describe('a journal a newer OCC wrote', () => {
     expect(JSON.parse(JSON.stringify(journalOpenRefusal(readOnly())))).toEqual({
       code: 'agent_session_journal_unreadable',
       message: 'Chats were saved by a newer OCC. Update OCC to keep using them.',
-      details: { reason: 'journalWrittenByNewerOrca' }
+      details: { reason: 'journalWrittenByNewerOCC' }
     })
     expect(journalOpenRefusalError(readOnly()).refusal).toMatchObject({
-      details: { reason: 'journalWrittenByNewerOrca' }
+      details: { reason: 'journalWrittenByNewerOCC' }
     })
   })
 
   it('refuses a read with the same reason', () => {
     const { logger } = recordingStructuredAgentSessionLogger()
     expect(journalOpenReadRefusal(readOnly(), logger, 'session-1').refusal).toMatchObject({
-      details: { reason: 'journalWrittenByNewerOrca' }
+      details: { reason: 'journalWrittenByNewerOCC' }
     })
     expect(
       createJournalOpenReadRefusals(logger).refusal('session-1', readOnly()).refusal
-    ).toMatchObject({ details: { reason: 'journalWrittenByNewerOrca' } })
+    ).toMatchObject({ details: { reason: 'journalWrittenByNewerOCC' } })
   })
 })

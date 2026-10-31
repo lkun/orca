@@ -32,15 +32,15 @@ const SSH_FORK_PATH = '/tmp/ssh-fork-checkout'
 
 const REMOTE_URLS_BY_REPO: Record<string, Record<string, string>> = {
   [FORK_PATH]: {
-    origin: 'https://github.com/fsdwen/orca.git',
-    upstream: 'https://github.com/stablyai/orca.git'
+    origin: 'https://github.com/fsdwen/occ.git',
+    upstream: 'https://github.com/stablyai/occ.git'
   },
   [NON_FORK_PATH]: {
-    origin: 'https://github.com/stablyai/orca.git'
+    origin: 'https://github.com/stablyai/occ.git'
   },
   [SSH_FORK_PATH]: {
-    origin: 'git@github.com:fsdwen/orca.git',
-    upstream: 'git@github.com:stablyai/orca.git'
+    origin: 'git@github.com:fsdwen/occ.git',
+    upstream: 'git@github.com:stablyai/occ.git'
   }
 }
 
@@ -71,13 +71,13 @@ describe('issue #7331: fork PR owner/repo resolution', () => {
   it('getOwnerRepo prefers the upstream parent on a fork checkout', async () => {
     const prRepo = await getOwnerRepo(FORK_PATH)
 
-    expect(prRepo).toEqual({ owner: 'stablyai', repo: 'orca' })
+    expect(prRepo).toEqual({ owner: 'stablyai', repo: 'occ' })
   })
 
   it('getOwnerRepo falls back to origin when there is no upstream remote', async () => {
     const prRepo = await getOwnerRepo(NON_FORK_PATH)
 
-    expect(prRepo).toEqual({ owner: 'stablyai', repo: 'orca' })
+    expect(prRepo).toEqual({ owner: 'stablyai', repo: 'occ' })
   })
 
   it('skips git remote get-url upstream on origin-only clones and caches the listing', async () => {
@@ -101,20 +101,20 @@ describe('issue #7331: fork PR owner/repo resolution', () => {
   it('resolves the upstream parent for SSH-style remote URLs', async () => {
     const prRepo = await getOwnerRepo(SSH_FORK_PATH)
 
-    expect(prRepo).toEqual({ owner: 'stablyai', repo: 'orca' })
+    expect(prRepo).toEqual({ owner: 'stablyai', repo: 'occ' })
   })
 
   it('getOwnerRepoForRemote(origin) still resolves the fork itself', async () => {
     const origin = await getOwnerRepoForRemote(FORK_PATH, 'origin')
 
-    expect(origin).toEqual({ owner: 'fsdwen', repo: 'orca' })
+    expect(origin).toEqual({ owner: 'fsdwen', repo: 'occ' })
   })
 
   it('getRepoUpstream still resolves the fork parent offline (regression)', async () => {
     // An upstream-first origin probe would hide the fork distinction and defeat the offline fast path.
     const upstream = await getRepoUpstream(FORK_PATH)
 
-    expect(upstream).toEqual({ owner: 'stablyai', repo: 'orca', host: 'github.com' })
+    expect(upstream).toEqual({ owner: 'stablyai', repo: 'occ', host: 'github.com' })
     expect(ghExecFileAsyncMock).not.toHaveBeenCalled()
   })
 })

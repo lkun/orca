@@ -1,9 +1,9 @@
-import { registerOrcaRuntimeEmulatorFolderWorkspaceTests } from './orca-runtime-emulator-folder-workspace.spec'
+import { registerOCCRuntimeEmulatorFolderWorkspaceTests } from './occ-runtime-emulator-folder-workspace.spec'
 import { registerOrchestrationConfiguredAgentTargetTests } from './orchestration-configured-agent-target.spec'
-import { registerOrcaRuntimeAutomationsTests } from './orca-runtime-automations.spec'
+import { registerOCCRuntimeAutomationsTests } from './occ-runtime-automations.spec'
 import { registerHostAccountLaunchEnvTests } from './host-account-launch-env.spec'
 
-registerOrcaRuntimeEmulatorFolderWorkspaceTests()
+registerOCCRuntimeEmulatorFolderWorkspaceTests()
 registerOrchestrationConfiguredAgentTargetTests()
-registerOrcaRuntimeAutomationsTests()
+registerOCCRuntimeAutomationsTests()
 registerHostAccountLaunchEnvTests()

@@ -12,7 +12,7 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as ClaudeFolderTrustFile from './claude/claude-folder-trust-file'
 
-const CODEX_CONFIG_FILES = ['/orca/codex-home/config.toml', '/home/u/.codex/config.toml']
+const CODEX_CONFIG_FILES = ['/occ/codex-home/config.toml', '/home/u/.codex/config.toml']
 
 const mocks = vi.hoisted(() => ({
   codex: vi.fn<(path: string, configFiles: readonly string[]) => Promise<void>>(async () => {}),
@@ -92,14 +92,14 @@ describe('applyAgentWorkspaceTrust on this machine', () => {
     const context = {
       ...local,
       env: { HOME: '/home/agent', USERPROFILE: '/home/agent' },
-      codexHome: '/orca/codex-accounts/acct-1/home'
+      codexHome: '/occ/codex-accounts/acct-1/home'
     }
     for (const preset of ['codex', 'cursor', 'copilot', 'qoder', 'antigravity'] as const) {
       await applyAgentWorkspaceTrust(preset, WORKSPACE, context)
     }
     expect(mocks.codexConfigFiles).toHaveBeenCalledWith(
       '/home/agent',
-      '/orca/codex-accounts/acct-1/home'
+      '/occ/codex-accounts/acct-1/home'
     )
     for (const writer of [mocks.cursor, mocks.copilot, mocks.qoder, mocks.antigravity]) {
       expect(writer).toHaveBeenCalledWith(WORKSPACE, '/home/agent')
@@ -152,7 +152,7 @@ describe('applyAgentWorkspaceTrust on this machine', () => {
   })
 
   // A nonexistent config directory prevents this test from modifying real Claude config.
-  const noConfig = { ...local, env: { CLAUDE_CONFIG_DIR: join(tmpdir(), 'orca-no-claude-config') } }
+  const noConfig = { ...local, env: { CLAUDE_CONFIG_DIR: join(tmpdir(), 'occ-no-claude-config') } }
   it.each([
     ['the home folder', homedir(), noConfig],
     [
@@ -184,7 +184,7 @@ describe('applyAgentWorkspaceTrust on this machine', () => {
   })
 
   it('never pre-trusts a home reached through a symlink, since the writers store the realpath', async () => {
-    const root = realpathSync(mkdtempSync(join(tmpdir(), 'orca-agent-trust-home-')))
+    const root = realpathSync(mkdtempSync(join(tmpdir(), 'occ-agent-trust-home-')))
     try {
       const home = join(root, 'home')
       mkdirSync(home)
@@ -258,7 +258,7 @@ describe('applyAgentWorkspaceTrust for Claude', () => {
   let root: string
 
   beforeEach(() => {
-    root = realpathSync(mkdtempSync(join(tmpdir(), 'orca-agent-trust-')))
+    root = realpathSync(mkdtempSync(join(tmpdir(), 'occ-agent-trust-')))
   })
 
   afterEach(() => {

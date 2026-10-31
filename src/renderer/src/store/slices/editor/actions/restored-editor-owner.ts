@@ -2,7 +2,7 @@ import type { EditorGet, EditorSet } from '../types/editor-set-get'
 import type { EditorSlice } from '../types/editor-slice'
 import type { RestoredEditorOwnerResult } from '../types/restored-editor-owner'
 import { buildRestoredEditorOwnerTransition } from './restored-editor-owner-transition'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
 import { reparentRestoredEditorThroughLayoutOwner } from '../tabs/restored-editor-move-through-layout-owner'
 import { updateEditorBuffer } from '../buffers/editor-buffer-record'
 
@@ -42,7 +42,7 @@ export function createRestoredEditorOwner(
         }
       }
       // Switch point: main moves the tabs and its frame rekeys the content.
-      const sent = ORCA_LAYOUT_OWNER_IS_MAIN
+      const sent = OCC_LAYOUT_OWNER_IS_MAIN
         ? reparentRestoredEditorThroughLayoutOwner(
             set,
             get,

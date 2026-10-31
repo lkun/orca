@@ -12,8 +12,8 @@ import { MobileRelayBetaNotice } from './MobileRelayBetaNotice'
 import { openAppHttpLink } from '@/lib/app-http-link-open'
 export { getMobileSettingsPaneSearchEntries }
 
-const ORCA_IOS_APP_STORE_URL = 'https://apps.apple.com/app/occ-ide/id6766130217'
-const ORCA_ANDROID_APK_URL = 'https://www.onorca.dev/download/android'
+const OCC_IOS_APP_STORE_URL = 'https://apps.apple.com/app/occ-ide/id6766130217'
+const OCC_ANDROID_APK_URL = 'https://www.onocc.dev/download/android'
 
 export function MobileSettingsPane(): React.JSX.Element {
   const showMobileButton = useAppStore((s) => s.settings?.showMobileButton !== false)
@@ -38,7 +38,7 @@ export function MobileSettingsPane(): React.JSX.Element {
             )}{' '}
             <button
               type="button"
-              onClick={(event) => openAppHttpLink(ORCA_IOS_APP_STORE_URL, { event })}
+              onClick={(event) => openAppHttpLink(OCC_IOS_APP_STORE_URL, { event })}
               className="cursor-pointer underline underline-offset-2 hover:text-foreground"
             >
               {translate('auto.components.settings.MobileSettingsPane.b5a2ed83ff', 'App Store')}
@@ -47,7 +47,7 @@ export function MobileSettingsPane(): React.JSX.Element {
             <button
               type="button"
               // Link the pinned release APK until Android distribution moves to Google Play.
-              onClick={(event) => openAppHttpLink(ORCA_ANDROID_APK_URL, { event })}
+              onClick={(event) => openAppHttpLink(OCC_ANDROID_APK_URL, { event })}
               className="cursor-pointer underline underline-offset-2 hover:text-foreground"
             >
               {translate(

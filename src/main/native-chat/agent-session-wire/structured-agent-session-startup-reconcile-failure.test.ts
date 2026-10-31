@@ -177,7 +177,7 @@ it('refuses a send over records a newer OCC wrote with the update words', async 
     ok: false,
     refusal: {
       code: 'agent_session_journal_unreadable',
-      details: { reason: 'journalWrittenByNewerOrca' },
+      details: { reason: 'journalWrittenByNewerOCC' },
       message: JOURNAL_NEWER_SCHEMA_MESSAGE
     }
   })

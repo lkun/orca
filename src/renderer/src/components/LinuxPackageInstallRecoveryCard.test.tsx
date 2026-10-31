@@ -10,10 +10,10 @@ vi.mock('sonner', () => ({ toast: { success: toastSuccess } }))
 import { LinuxPackageInstallRecoveryCard } from './LinuxPackageInstallRecoveryCard'
 import { UPDATER_FAILURE_COPY } from '../../../shared/updater-failure-copy'
 
-const RELEASE_URL = 'https://github.com/stablyai/orca/releases/tag/v1.4.200'
+const RELEASE_URL = 'https://github.com/stablyai/occ/releases/tag/v1.4.200'
 const DIAGNOSTIC = 'pkexec: no polkit authentication agent found'
-const INSTALL_COMMAND = 'sudo apt-get install -y /tmp/orca-updates/orca_1.4.200_amd64.deb'
-const PACKAGE_FILE_NAME = 'orca_1.4.200_amd64.deb'
+const INSTALL_COMMAND = 'sudo apt-get install -y /tmp/occ-updates/occ_1.4.200_amd64.deb'
+const PACKAGE_FILE_NAME = 'occ_1.4.200_amd64.deb'
 const SUMMARY =
   'OCC downloaded the system package. Quit OCC before finishing the update from a terminal.'
 const COPIED_NOTE =

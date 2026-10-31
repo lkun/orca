@@ -96,7 +96,7 @@ export type PtyIpcSpawnState = {
   spawnOptions: PtySpawnOptions
   combinedEnvToDelete: string[] | undefined
   skipCodexHomeEnv: boolean
-  stripInheritedOrcaCodexHome: boolean
+  stripInheritedOCCCodexHome: boolean
   codexResumeHomeSelected: boolean
   provisionalPtySize: PtySpawnSizeSeed | undefined
   initiallyHidden: boolean
@@ -173,7 +173,7 @@ export function createPtyIpcSpawnState(
     spawnOptions: { cols: args.cols, rows: args.rows },
     combinedEnvToDelete: undefined,
     skipCodexHomeEnv: false,
-    stripInheritedOrcaCodexHome: false,
+    stripInheritedOCCCodexHome: false,
     codexResumeHomeSelected: false,
     provisionalPtySize: undefined,
     initiallyHidden: false,

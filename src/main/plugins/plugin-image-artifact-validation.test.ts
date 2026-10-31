@@ -51,7 +51,7 @@ function png(width: number, height: number): Buffer {
 }
 
 async function pluginWith(files: Record<string, Buffer>, fields: Record<string, unknown>) {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-images-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-images-'))
   roots.push(root)
   for (const [path, bytes] of Object.entries(files)) {
     await mkdir(join(root, path, '..'), { recursive: true })
@@ -64,7 +64,7 @@ async function pluginWith(files: Record<string, Buffer>, fields: Record<string, 
     publisher: 'acme',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+    engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
     ...fields
   })
   return { root, manifest }
@@ -122,7 +122,7 @@ describe('plugin image artifacts', () => {
       publisher: 'acme',
       name: 'Demo',
       version: '1.0.0',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` }
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` }
     }
     expect(pluginManifestSchema.safeParse({ ...base, cover: { path: 'c.png' } }).success).toBe(
       false

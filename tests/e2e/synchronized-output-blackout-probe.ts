@@ -29,7 +29,7 @@ type BlackoutProbePane = { terminal?: BlackoutProbeTerminal }
 
 // Keep the probe handle on window across evaluate calls, matching runtime-graph-publication-probe.
 type BlackoutProbeWindow = Window & {
-  __orcaSyncOutputBlackoutProbe?: { stop: () => SynchronizedOutputBlackoutSnapshot }
+  __occSyncOutputBlackoutProbe?: { stop: () => SynchronizedOutputBlackoutSnapshot }
 }
 
 // Sample the target pane’s latch and report blocked-thread sampling gaps rather than hiding them.
@@ -40,7 +40,7 @@ export async function startSynchronizedOutputBlackoutProbe(
   return page.evaluate((activeTabId) => {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the probe owns this property on its own renderer window; nothing else reads or writes it.
     const target = window as BlackoutProbeWindow
-    target.__orcaSyncOutputBlackoutProbe?.stop()
+    target.__occSyncOutputBlackoutProbe?.stop()
     const manager = window.__paneManagers?.get(activeTabId)
     const pane: BlackoutProbePane | null =
       manager?.getActivePane?.() ?? manager?.getPanes?.()[0] ?? null
@@ -76,7 +76,7 @@ export async function startSynchronizedOutputBlackoutProbe(
     }
     const timer = window.setInterval(sampleLatch, 4)
 
-    target.__orcaSyncOutputBlackoutProbe = {
+    target.__occSyncOutputBlackoutProbe = {
       stop: () => {
         window.clearInterval(timer)
         subscription.dispose()
@@ -121,6 +121,6 @@ export async function stopSynchronizedOutputBlackoutProbe(
   return page.evaluate(
     () =>
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: same probe-owned property as startSynchronizedOutputBlackoutProbe installs.
-      (window as BlackoutProbeWindow).__orcaSyncOutputBlackoutProbe?.stop() ?? null
+      (window as BlackoutProbeWindow).__occSyncOutputBlackoutProbe?.stop() ?? null
   )
 }

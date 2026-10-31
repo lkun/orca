@@ -38,7 +38,7 @@ function createTestThread(overrides: Partial<AgentPaneThread> = {}): AgentPaneTh
     ...makeWorktree(),
     displayName: 'm4air-audit',
     branch: 'feat/m4air-performance',
-    path: '/Users/test/projects/orca/worktrees/m4air-audit',
+    path: '/Users/test/projects/occ/worktrees/m4air-audit',
     comment: 'Notes for performance audit',
     hostId: 'runtime:m4air-env-id' as const
   }
@@ -181,7 +181,7 @@ describe('ActivityThreadHoverCard and ActivityThreadRow', () => {
         ...makeWorktree(),
         displayName: 'm4air-audit',
         branch: 'feat/m4air-performance',
-        path: '/Users/test/projects/orca/worktrees/m4air-audit',
+        path: '/Users/test/projects/occ/worktrees/m4air-audit',
         comment: 'Performance investigation notes',
         hostId: 'runtime:m4air-env' as const
       }
@@ -202,7 +202,7 @@ describe('ActivityThreadHoverCard and ActivityThreadRow', () => {
     expect(content).toContain('Workspace')
     expect(content).toContain('m4air-audit')
     expect(content).toContain('feat/m4air-performance')
-    expect(content).toContain('/Users/test/projects/orca/worktrees/m4air-audit')
+    expect(content).toContain('/Users/test/projects/occ/worktrees/m4air-audit')
 
     expect(content).toContain('Claude')
     expect(content).toContain('Audit current HEAD on m4air environment')

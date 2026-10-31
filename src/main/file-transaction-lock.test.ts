@@ -35,7 +35,7 @@ afterEach(async () => {
 })
 
 it('fails the transaction instead of throwing from the refresh timer when the lock is lost', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'orca-file-transaction-lock-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-file-transaction-lock-'))
   roots.push(root)
   const filePath = join(root, 'agent-session-recovery.json')
 

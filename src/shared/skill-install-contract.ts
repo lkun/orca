@@ -171,7 +171,7 @@ export type SkillPlacementResult = {
   path: string
   topology: 'canonical-copy' | 'provider-alias' | 'independent-copy'
   status: 'installed' | 'unchanged' | 'removed' | 'skipped' | 'failed'
-  errorCategory?: string
+  errocctegory?: string
   failure?: SkillInstallFailure
 }
 
@@ -194,7 +194,7 @@ export type SkillInstallResult = {
     kind: 'modified' | 'unowned' | 'external-link' | 'name-collision'
     existingDigest?: string
   }
-  errorCategory?: string
+  errocctegory?: string
   failure?: SkillInstallFailure
 }
 
@@ -219,7 +219,7 @@ export const SkillInstallResultSchema: z.ZodType<SkillInstallResult> = z.object(
       path: z.string(),
       topology: z.enum(['canonical-copy', 'provider-alias', 'independent-copy']),
       status: z.enum(['installed', 'unchanged', 'removed', 'skipped', 'failed']),
-      errorCategory: z.string().optional(),
+      errocctegory: z.string().optional(),
       failure: SkillInstallFailureSchema.optional()
     })
   ),
@@ -229,6 +229,6 @@ export const SkillInstallResultSchema: z.ZodType<SkillInstallResult> = z.object(
       existingDigest: z.string().optional()
     })
     .optional(),
-  errorCategory: z.string().optional(),
+  errocctegory: z.string().optional(),
   failure: SkillInstallFailureSchema.optional()
 })

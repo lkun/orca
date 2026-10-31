@@ -9,7 +9,7 @@ let dir: string
 let server: AgentHookServer
 
 beforeEach(async () => {
-  dir = mkdtempSync(join(tmpdir(), 'orca-process-lifetime-'))
+  dir = mkdtempSync(join(tmpdir(), 'occ-process-lifetime-'))
   server = new AgentHookServer()
   await server.start({ env: 'production', userDataPath: dir })
 })

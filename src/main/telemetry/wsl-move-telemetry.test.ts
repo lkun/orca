@@ -76,7 +76,7 @@ describe('WSL move telemetry', () => {
       {
         outcome: 'reset',
         migrationId: 'move-id-1',
-        detail: 'orcad_migration_repository_path_conflict:/home/secret-user/app'
+        detail: 'occd_migration_repository_path_conflict:/home/secret-user/app'
       },
       [{ distro: 'MyDistro', step: 'copying', phase: 'destination-staged' }]
     )
@@ -148,7 +148,7 @@ describe('WSL move telemetry', () => {
   })
 
   it.each([
-    ['orcad_migration_staged_claim_conflict:repository:repo-1', 'staged_claim_conflict'],
+    ['occd_migration_staged_claim_conflict:repository:repo-1', 'staged_claim_conflict'],
     ['terminals-started-after-pause', 'terminals_started'],
     ['exit-unverifiable: census_unavailable', 'exit_unverifiable'],
     ['wsl_move_commit_not_committed:absent', 'commit_rejected'],

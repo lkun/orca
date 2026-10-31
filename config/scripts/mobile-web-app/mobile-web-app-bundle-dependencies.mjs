@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 const projectDir = fileURLToPath(new URL('../../..', import.meta.url))
 
 // Mobile CI requires dependencies so broken installs fail instead of silently skipping their tests.
-export const MOBILE_WEB_APP_DEPENDENCIES_REQUIRED_ENV = 'ORCA_MOBILE_WEB_APP_DEPS_REQUIRED'
+export const MOBILE_WEB_APP_DEPENDENCIES_REQUIRED_ENV = 'OCC_MOBILE_WEB_APP_DEPS_REQUIRED'
 
 export const MOBILE_WEB_APP_DEPENDENCY_PATH = join(
   projectDir,

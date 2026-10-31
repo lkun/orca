@@ -105,13 +105,13 @@ describe('the batched resume-confirmed audit', () => {
     // The batch the 500th row sent fails and comes back: rows in flight count toward the cap.
     await buffer.flush()
     expect(buffer.pending()).toBe(RESUME_AUDIT_BUFFER_MAX_ROWS)
-    expect(lines).toEqual([{ event: 'orca_relay_resume_audit_dropped', overflow: 1, aged: 0 }])
+    expect(lines).toEqual([{ event: 'occ_relay_resume_audit_dropped', overflow: 1, aged: 0 }])
     now += RESUME_AUDIT_MAX_AGE_MS
     database.failing = null
     await buffer.flush()
     expect(buffer.drops()).toEqual({ overflow: 1, aged: RESUME_AUDIT_BUFFER_MAX_ROWS })
     expect(lines.at(-1)).toEqual({
-      event: 'orca_relay_resume_audit_dropped',
+      event: 'occ_relay_resume_audit_dropped',
       overflow: 1,
       aged: RESUME_AUDIT_BUFFER_MAX_ROWS
     })

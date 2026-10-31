@@ -13,8 +13,8 @@ function attachment(number: number, provider: 'github' | 'gitlab' = 'github'): W
     number,
     url:
       provider === 'github'
-        ? `https://github.com/acme/orca/pull/${number}`
-        : `https://gitlab.com/acme/orca/-/merge_requests/${number}`
+        ? `https://github.com/acme/occ/pull/${number}`
+        : `https://gitlab.com/acme/occ/-/merge_requests/${number}`
   }
 }
 function details(

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Compare confirmed cold-parked reveal with warm retention and parking-off arms; stock three-worktree cycling never parks.
-// Shorten delay with ORCA_E2E_TERMINAL_PARKING_DELAY_MS and confirm parking before measurement.
+// Shorten delay with OCC_E2E_TERMINAL_PARKING_DELAY_MS and confirm parking before measurement.
 // Report switch→activation, bound PTY, and two-rAF settle (frame proxy, not pixel proof).
 
 import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs'
@@ -85,7 +85,7 @@ function createLocalRepoFixture() {
   const repoPath = path.join(baseDir, 'repo')
   mkdirSync(repoPath, { recursive: true })
   git(repoPath, 'init', '--initial-branch=main')
-  git(repoPath, 'config', 'user.email', 'bench@orca.local')
+  git(repoPath, 'config', 'user.email', 'bench@occ.local')
   git(repoPath, 'config', 'user.name', 'OCC Bench')
   writeFileSync(path.join(repoPath, 'README.md'), '# cold-park fixture\n')
   git(repoPath, 'add', '.')
@@ -440,7 +440,7 @@ async function main() {
     const cdpPort = await pickFreePort()
     userDataDir = createShortUserDataDirectory()
     // Pass shortened cold/hot retention through launchDevApp so parking is observable.
-    process.env.ORCA_E2E_TERMINAL_PARKING_DELAY_MS = String(PARK_DELAY_MS)
+    process.env.OCC_E2E_TERMINAL_PARKING_DELAY_MS = String(PARK_DELAY_MS)
     console.log(
       `[cold-park] fixture=${fixture.baseDir} userData=${userDataDir} cdp=${cdpPort} parkDelay=${PARK_DELAY_MS}ms`
     )

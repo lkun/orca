@@ -70,7 +70,7 @@ function oldRecord(value: unknown) {
 
 // Materializing the historical source checkout and importing its modules can exceed the default timeout.
 test(`${RELEASE_REF} keeps a stopped chat readable through restart, resume and evidence replacement`, async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'orca-kill-downgrade-'))
+  const directory = await mkdtemp(join(tmpdir(), 'occ-kill-downgrade-'))
   try {
     const live = agentSessionRecordFixture()
     const sessionId = live.sessionId

@@ -133,7 +133,7 @@ describe('CodexRuntimeHomeService.resolveSelectedHostAccountCodexHomePathForResu
 
     expect(service.resolveSelectedHostAccountCodexHomePathForResume()).toBe(managedHomePath)
 
-    const markerPath = join(realpathSync(managedHomePath), '.orca-managed-home')
+    const markerPath = join(realpathSync(managedHomePath), '.occ-managed-home')
     lstatFaults.hold(markerPath)
 
     expect(() => service.resolveSelectedHostAccountCodexHomePathForResume()).toThrow(
@@ -154,7 +154,7 @@ describe('CodexRuntimeHomeService.resolveSelectedHostAccountCodexHomePathForResu
   it('reports no managed selection for a proven untrusted home rather than refusing', async () => {
     const { service, store, managedHomePath } = await createServiceWithSelectedAccount()
 
-    writeFileSync(join(managedHomePath, '.orca-managed-home'), 'someone-else\n', 'utf-8')
+    writeFileSync(join(managedHomePath, '.occ-managed-home'), 'someone-else\n', 'utf-8')
 
     expect(service.resolveSelectedHostAccountCodexHomePathForResume()).toBeNull()
     expect(store.getSettings().activeCodexManagedAccountId).toBeNull()

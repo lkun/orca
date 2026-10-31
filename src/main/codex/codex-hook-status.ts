@@ -18,14 +18,14 @@ import {
   getManagedScriptPath
 } from './codex-hook-definition'
 import {
-  approvalsAtOrcaEntries,
-  findOrcaEntrySlots,
+  approvalsAtOCCEntries,
+  findOCCEntrySlots,
   getManagedCodexHookHome,
-  isKnownOrcaHash,
-  readKnownOrcaHashes,
+  isKnownOCCHash,
+  readKnownOCCHashes,
   getRealHomeCodexHookHome,
   type CodexHookHome
-} from './codex-hook-orca-approvals'
+} from './codex-hook-occ-approvals'
 import type { CodexHookAnswer } from './codex-hook-trust-derivation'
 import { readKnownCodexHookAnswer } from './codex-hook-hash-lookup'
 import { resolveCodexHookStatusHome } from './codex-hook-reconcile'
@@ -98,7 +98,7 @@ function readHomeStatus(
   if (!config) {
     return status('error', false, 'Could not parse Codex hooks.json')
   }
-  const slots = findOrcaEntrySlots(config.hooks, command)
+  const slots = findOCCEntrySlots(config.hooks, command)
   // Distinguish unreadable config from absence, which reads as an empty map.
   let trustStates: ReadonlyMap<string, CodexHookTrustState>
   let spelled: (key: string) => boolean = () => false
@@ -112,7 +112,7 @@ function readHomeStatus(
   }
   // Windows Codex ignores approvals kept only under the forward-slash key.
   const approvals = new Map(
-    [...approvalsAtOrcaEntries(trustStates, slots, home.keySourcePaths, command)].map(
+    [...approvalsAtOCCEntries(trustStates, slots, home.keySourcePaths, command)].map(
       ([eventLabel, held]) => [eventLabel, held.filter((approval) => spelled(approval.key))]
     )
   )
@@ -125,13 +125,13 @@ function readHomeStatus(
       return status('partial', true, `OCC's hook entry is installed, but ${reason}`)
     }
     // Known or local approvals may stand until Codex answers.
-    const known = readKnownOrcaHashes(home, command)
+    const known = readKnownOCCHashes(home, command)
     const approved =
       trustReadError === null &&
       [...approvals].every(([eventLabel, held]) =>
         held.some(
           (approval) =>
-            approval.enabled !== false && isKnownOrcaHash(known, eventLabel, approval.trustedHash)
+            approval.enabled !== false && isKnownOCCHash(known, eventLabel, approval.trustedHash)
         )
       )
     return approved
@@ -191,7 +191,7 @@ function describeInlineApprovals(
   }
   const command = getManagedCommand(getManagedScriptPath())
   const hooks = readHooksJson(home.hooksJsonPath)?.hooks
-  const slots = findOrcaEntrySlots(hooks, command)
+  const slots = findOCCEntrySlots(hooks, command)
   const probes: CodexTrustEntry[] = CODEX_EVENTS.flatMap((eventName) => {
     const label = CODEX_EVENT_LABEL[eventName]
     const hash = answer?.kind === 'hashes' ? answer.hashes[label] : 'probe'

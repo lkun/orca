@@ -60,7 +60,7 @@ vi.mock('os', async (importOriginal) => {
 })
 
 import { EmulatorBridge } from './emulator-bridge'
-import { RuntimeEmulatorCommands } from '../runtime/orca-runtime-emulator'
+import { RuntimeEmulatorCommands } from '../runtime/occ-runtime-emulator'
 
 function session(deviceUdid: string): EmulatorSessionInfo {
   return {

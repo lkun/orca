@@ -18,7 +18,7 @@ describe('prepareShipItStaging', () => {
   let coordinationDir: string
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-shipit-recovery-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-shipit-recovery-'))
     cacheDir = join(root, 'Caches', 'com.lkun.occ.ShipIt')
     coordinationDir = join(root, 'coordination')
     await mkdir(join(cacheDir, 'update.6rnCgPu', 'OCC.app'), { recursive: true })

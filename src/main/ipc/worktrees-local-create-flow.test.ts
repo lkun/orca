@@ -456,7 +456,7 @@ describe('registerWorktreeHandlers', () => {
     expect(store.setWorktreeMeta).toHaveBeenCalledWith(
       hostWorktreeTarget({ id: 'repo-1::../worktrees/feature', hostId: 'local' }),
       expect.objectContaining({
-        orcaCreationWorkspaceLayout: { path: '../worktrees', nestWorkspaces: false }
+        occCreationWorkspaceLayout: { path: '../worktrees', nestWorkspaces: false }
       })
     )
   })
@@ -652,7 +652,7 @@ describe('registerWorktreeHandlers', () => {
       createdWithAgent: 'claude',
       startup: {
         command: 'claude --prefill test',
-        env: { ORCA_AGENT_MODE: 'direct' },
+        env: { OCC_AGENT_MODE: 'direct' },
         viewMode: 'chat',
         telemetry: {
           agent_kind: 'claude',
@@ -683,7 +683,7 @@ describe('registerWorktreeHandlers', () => {
       {
         claudeAgentTeamsSourceCommand: 'claude --prefill test',
         command: 'claude --prefill test',
-        env: { ORCA_AGENT_MODE: 'direct' },
+        env: { OCC_AGENT_MODE: 'direct' },
         launchAgent: 'claude',
         viewMode: 'chat',
         startupCommandDelivery: undefined,
@@ -703,10 +703,10 @@ describe('registerWorktreeHandlers', () => {
       'id:repo-1::/workspace/improve-dashboard',
       {
         title: 'Setup',
-        command: expect.stringContaining('bash /workspace/repo/.git/orca/setup-runner.sh'),
+        command: expect.stringContaining('bash /workspace/repo/.git/occ/setup-runner.sh'),
         env: {
-          ORCA_ROOT_PATH: '/workspace/repo',
-          ORCA_WORKTREE_PATH: '/workspace/improve-dashboard'
+          OCC_ROOT_PATH: '/workspace/repo',
+          OCC_WORKTREE_PATH: '/workspace/improve-dashboard'
         },
         activate: false,
         surfaceOwner: false,
@@ -724,7 +724,7 @@ describe('registerWorktreeHandlers', () => {
     const startupCommand = (startupCreateCall[1] as { command: string }).command
     const setupCommand = (setupCreateCall[1] as { command: string }).command
     expect(startupCommand).toBe('claude --prefill test')
-    expect(setupCommand).toBe('bash /workspace/repo/.git/orca/setup-runner.sh')
+    expect(setupCommand).toBe('bash /workspace/repo/.git/occ/setup-runner.sh')
     expect(result.setup).toBeUndefined()
     expect(result.startupTerminal).toEqual({ spawned: true, surface: 'visible' })
     expect(runtimeStub.invalidateWorktreeCatalog).toHaveBeenCalledWith('repo-1')
@@ -759,11 +759,11 @@ describe('registerWorktreeHandlers', () => {
     getEffectiveHooksFromConfigMock.mockReturnValue({ scripts: { setup: 'pnpm install' } })
     shouldRunSetupForCreateMock.mockReturnValue(true)
     createSetupRunnerScriptMock.mockReturnValueOnce({
-      runnerScriptPath: 'C:\\workspace\\repo\\.git\\orca\\setup-runner.sh',
+      runnerScriptPath: 'C:\\workspace\\repo\\.git\\occ\\setup-runner.sh',
       shell: { family: 'posix', executable: 'wsl.exe' },
       envVars: {
-        ORCA_ROOT_PATH: 'C:\\workspace\\repo',
-        ORCA_WORKTREE_PATH: 'C:\\workspace\\improve-dashboard'
+        OCC_ROOT_PATH: 'C:\\workspace\\repo',
+        OCC_WORKTREE_PATH: 'C:\\workspace\\improve-dashboard'
       },
       waitForAgentStartup: true
     })
@@ -777,7 +777,7 @@ describe('registerWorktreeHandlers', () => {
       createdWithAgent: 'claude',
       startup: {
         command: 'claude --prefill test',
-        env: { ORCA_AGENT_MODE: 'direct' },
+        env: { OCC_AGENT_MODE: 'direct' },
         telemetry: {
           agent_kind: 'claude',
           launch_source: 'new_workspace_composer',
@@ -788,12 +788,12 @@ describe('registerWorktreeHandlers', () => {
 
     expect(result.setup).toEqual(
       expect.objectContaining({
-        runnerScriptPath: 'C:\\workspace\\repo\\.git\\orca\\setup-runner.sh',
+        runnerScriptPath: 'C:\\workspace\\repo\\.git\\occ\\setup-runner.sh',
         command: `bash -lc 'eval "\${${SETUP_AGENT_SEQUENCE_SETUP_SCRIPT_ENV}:?missing}"'`
       })
     )
     expect(result.setup?.envVars[SETUP_AGENT_SEQUENCE_SETUP_SCRIPT_ENV]).toContain(
-      'bash /mnt/c/workspace/repo/.git/orca/setup-runner.sh'
+      'bash /mnt/c/workspace/repo/.git/occ/setup-runner.sh'
     )
   })
 

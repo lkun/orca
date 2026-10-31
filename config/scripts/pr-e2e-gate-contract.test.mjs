@@ -26,7 +26,7 @@ const restartSurvivalRoute = PR_E2E_SOURCE_ROUTES.find(
 describe('restart-survival E2E routing', () => {
   // Every file below carries behavior the restart spec is the only test that exercises end to end.
   it.each([
-    'src/main/runtime/orca-runtime.ts',
+    'src/main/runtime/occ-runtime.ts',
     'src/main/runtime/browser/browser-commands.ts',
     'src/main/runtime/client-hosted-page-reconciliation-window.ts',
     'src/main/runtime/runtime-browser-client-page-adoption.ts',
@@ -83,7 +83,7 @@ describe('PR E2E gate contract', () => {
   it('scopes the VM rollback oracle to the PR range and recipe schema authorities', () => {
     expect(rollbackStep.run).toMatch(/diff-base\.mjs "\$BASE_SHA"[\s\S]*"\$DIFF_BASE" HEAD --/)
     expect(rollbackStep.run).toContain('src/shared/ephemeral-vm-recipes.ts')
-    expect(rollbackStep.run).toContain('src/shared/orca-yaml-hook-types.ts')
+    expect(rollbackStep.run).toContain('src/shared/occ-yaml-hook-types.ts')
   })
 
   it('routes P0 sentinels from their causal sources', () => {
@@ -92,7 +92,7 @@ describe('PR E2E gate contract', () => {
         'src/renderer/src/components/tab-bar/TabBarQuickCommandsMenu.tsx',
         'tests/e2e/terminal-quick-command-pre-bind-recovery.spec.ts'
       ],
-      ['src/main/runtime/orca-runtime-files.ts', 'tests/e2e/paired-quick-open-large-tree.spec.ts'],
+      ['src/main/runtime/occ-runtime-files.ts', 'tests/e2e/paired-quick-open-large-tree.spec.ts'],
       [
         'src/renderer/src/runtime/sync-runtime-graph.ts',
         'tests/e2e/host-parked-pane-remote-viewer.spec.ts'
@@ -180,7 +180,7 @@ describe('PR E2E gate contract', () => {
     }
     expect(
       selectPrE2eSpecs([
-        'src/main/runtime/orca-runtime-files.ts',
+        'src/main/runtime/occ-runtime-files.ts',
         'tests/e2e/paired-quick-open-large-tree.spec.ts'
       ])
     ).toEqual(['tests/e2e/paired-quick-open-large-tree.spec.ts'])
@@ -278,7 +278,7 @@ describe('Daemon mock modified-only source routing', () => {
   const helper = 'src/main/daemon/daemon-init-dependency-mocks.ts'
   const verified = { allowDaemonInitTestSupport: true }
   it('omits the real D7 route only for the proven unit-support scope', () => {
-    expect(selectPrE2eSpecs([helper])).toContain('tests/e2e/orcad-serve-mode-switch.spec.ts')
+    expect(selectPrE2eSpecs([helper])).toContain('tests/e2e/occd-serve-mode-switch.spec.ts')
     expect(selectPrE2eSpecs([helper], undefined, verified)).toEqual([])
     const companion = 'config/scripts/process-host-build-dist.test.mjs'
     expect(selectPrE2eSpecs([helper, companion], undefined, verified)).toEqual(

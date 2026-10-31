@@ -79,7 +79,7 @@ import { handleElectronProxyLogin } from '../network/electron-proxy-credentials'
 let partitionCounter = 0
 function nextProfile() {
   partitionCounter += 1
-  const partition = `persist:orca-browser-session-install-${partitionCounter}`
+  const partition = `persist:occ-browser-session-install-${partitionCounter}`
   return {
     id: `p${partitionCounter}`,
     scope: 'isolated' as const,

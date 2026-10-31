@@ -20,7 +20,7 @@ function runsInIsolatedWorld(entry: unknown): entry is ScriptEntry {
  * that entry's run_at. MAIN-world scripts have no extension APIs to fix. Null when no content
  * script runs there.
  */
-export function withOrcaContentScript(manifest: Manifest): Manifest | null {
+export function withOCCContentScript(manifest: Manifest): Manifest | null {
   const entries = manifest.content_scripts
   if (!Array.isArray(entries) || !entries.some(runsInIsolatedWorld)) {
     return null

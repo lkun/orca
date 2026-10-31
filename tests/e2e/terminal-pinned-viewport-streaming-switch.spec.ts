@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto'
 import { rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   ensureTerminalVisible,
   getAllWorktreeIds,
@@ -50,7 +50,7 @@ async function closeFeatureTips(page: Page): Promise<void> {
     const store = window.__store
     store
       ?.getState()
-      .markFeatureTipsSeen(['orca-cli', 'cmd-j-palette', 'voice-dictation', 'agent-session-search'])
+      .markFeatureTipsSeen(['occ-cli', 'cmd-j-palette', 'voice-dictation', 'agent-session-search'])
     if (store?.getState().activeModal === 'feature-tips') {
       store.getState().closeModal()
     }
@@ -140,13 +140,13 @@ async function readSettledViewport(
 
 test.describe('Terminal pinned viewport with streaming agent across worktree switch', () => {
   test('returning to a pinned pane with an active stream does not land at the top', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
-    await waitForSessionReady(orcaPage)
-    await closeFeatureTips(orcaPage)
-    const firstWorktreeId = await waitForActiveWorktree(orcaPage)
-    const secondWorktreeId = (await getAllWorktreeIds(orcaPage)).find(
+    await waitForSessionReady(occPage)
+    await closeFeatureTips(occPage)
+    const firstWorktreeId = await waitForActiveWorktree(occPage)
+    const secondWorktreeId = (await getAllWorktreeIds(occPage)).find(
       (id) => id !== firstWorktreeId
     )
     test.skip(!secondWorktreeId, 'streaming pinned repro needs the seeded secondary worktree')
@@ -154,37 +154,37 @@ test.describe('Terminal pinned viewport with streaming agent across worktree swi
       return
     }
 
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
-    const ptyId = await waitForActivePanePtyId(orcaPage)
-    await waitForPtyShellEcho(orcaPage, ptyId, 15_000)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
+    const ptyId = await waitForActivePanePtyId(occPage)
+    await waitForPtyShellEcho(occPage, ptyId, 15_000)
     const runId = randomUUID()
-    const scriptPath = path.join(testRepoPath, `.orca-streaming-switch-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-streaming-switch-${runId}.mjs`)
     writeFileSync(scriptPath, streamingAgentFixtureScript(runId))
 
     try {
-      await sendToTerminal(orcaPage, ptyId, `${nodeTerminalCommand([scriptPath])}\r`)
+      await sendToTerminal(occPage, ptyId, `${nodeTerminalCommand([scriptPath])}\r`)
       await expect
-        .poll(() => getTerminalContent(orcaPage, 30_000), {
+        .poll(() => getTerminalContent(occPage, 30_000), {
           timeout: 15_000,
           message: 'streaming fixture did not reach terminal scrollback'
         })
         .toContain(`STREAMING_SWITCH_${runId}_PRESTREAM_DONE`)
 
-      const pinned = await pinActiveTerminalNearBottom(orcaPage)
+      const pinned = await pinActiveTerminalNearBottom(occPage)
       expect(pinned.baseY).toBeGreaterThan(100)
-      await orcaPage.waitForTimeout(150)
+      await occPage.waitForTimeout(150)
 
       // Hidden drops force snapshot restore while the agent continues streaming.
-      await switchToWorktree(orcaPage, secondWorktreeId)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
-      await orcaPage.waitForTimeout(3_000)
+      await switchToWorktree(occPage, secondWorktreeId)
+      await waitForActiveTerminalManager(occPage, 30_000)
+      await occPage.waitForTimeout(3_000)
 
-      await switchToWorktree(orcaPage, firstWorktreeId)
-      await ensureTerminalVisible(orcaPage)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
+      await switchToWorktree(occPage, firstWorktreeId)
+      await ensureTerminalVisible(occPage)
+      await waitForActiveTerminalManager(occPage, 30_000)
 
-      const settled = await readSettledViewport(orcaPage, pinned.tabId)
+      const settled = await readSettledViewport(occPage, pinned.tabId)
       const bottomDistance = settled.baseY - settled.viewportY
       // Require the six-row user pin; the bug clamped to scrollback’s top.
       expect(

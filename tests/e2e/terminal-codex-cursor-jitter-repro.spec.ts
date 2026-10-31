@@ -1,7 +1,7 @@
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import { waitForActiveTerminalManager } from './helpers/terminal'
 import { analyzeRasterCursorCells, type RasterCursorCell } from './terminal-cursor-raster-probe'
@@ -45,7 +45,7 @@ type CursorMarker = {
 type CursorDebug = {
   cursorCount: number
   cursorLayerCount: number
-  cursorCanvasCount: number
+  cursoccnvasCount: number
   firstCursorClass: string
   firstCursorDisplay: string
   firstCursorVisibility: string
@@ -480,24 +480,24 @@ async function readCaptureTarget(page: Page, tabId: string, ptyId: string): Prom
               cellY: Math.max(0, Math.floor((cursorRect.top - rect.top) / cellHeight))
             }
           : null
-      const cursorCanvas = pane.container.querySelector<HTMLCanvasElement>(
+      const cursoccnvas = pane.container.querySelector<HTMLCanvasElement>(
         '.xterm-cursor-layer canvas'
       )
-      const canvasLayer = cursorCanvas?.closest<HTMLElement>('.xterm-cursor-layer')
+      const canvasLayer = cursoccnvas?.closest<HTMLElement>('.xterm-cursor-layer')
       const canvasLayerStyle = canvasLayer ? window.getComputedStyle(canvasLayer) : null
       const canvasMarker = (() => {
         if (
-          !cursorCanvas ||
+          !cursoccnvas ||
           canvasLayerStyle?.display === 'none' ||
           canvasLayerStyle?.visibility === 'hidden'
         ) {
           return null
         }
-        const context = cursorCanvas.getContext('2d', { willReadFrequently: true })
+        const context = cursoccnvas.getContext('2d', { willReadFrequently: true })
         if (!context) {
           return null
         }
-        const image = context.getImageData(0, 0, cursorCanvas.width, cursorCanvas.height)
+        const image = context.getImageData(0, 0, cursoccnvas.width, cursoccnvas.height)
         let pixelCount = 0
         let minX = Number.POSITIVE_INFINITY
         let minY = Number.POSITIVE_INFINITY
@@ -505,9 +505,9 @@ async function readCaptureTarget(page: Page, tabId: string, ptyId: string): Prom
         let maxY = 0
         let sumX = 0
         let sumY = 0
-        for (let y = 0; y < cursorCanvas.height; y += 1) {
-          for (let x = 0; x < cursorCanvas.width; x += 1) {
-            const offset = (y * cursorCanvas.width + x) * 4
+        for (let y = 0; y < cursoccnvas.height; y += 1) {
+          for (let x = 0; x < cursoccnvas.width; x += 1) {
+            const offset = (y * cursoccnvas.width + x) * 4
             const red = image.data[offset] ?? 0
             const green = image.data[offset + 1] ?? 0
             const blue = image.data[offset + 2] ?? 0
@@ -527,8 +527,8 @@ async function readCaptureTarget(page: Page, tabId: string, ptyId: string): Prom
         if (pixelCount < 4) {
           return null
         }
-        const canvasCellWidth = cursorCanvas.width / terminal.cols
-        const canvasCellHeight = cursorCanvas.height / terminal.rows
+        const canvasCellWidth = cursoccnvas.width / terminal.cols
+        const canvasCellHeight = cursoccnvas.height / terminal.rows
         const centerX = sumX / pixelCount
         const centerY = sumY / pixelCount
         return {
@@ -568,7 +568,7 @@ async function readCaptureTarget(page: Page, tabId: string, ptyId: string): Prom
         cursorDebug: {
           cursorCount: pane.container.querySelectorAll('.xterm-cursor').length,
           cursorLayerCount: pane.container.querySelectorAll('.xterm-cursor-layer').length,
-          cursorCanvasCount: pane.container.querySelectorAll('.xterm-cursor-layer canvas').length,
+          cursoccnvasCount: pane.container.querySelectorAll('.xterm-cursor-layer canvas').length,
           firstCursorClass: cursorElement?.className ?? '',
           firstCursorDisplay: cursorStyle?.display ?? '',
           firstCursorVisibility: cursorStyle?.visibility ?? '',
@@ -695,53 +695,53 @@ async function captureQueuedMessageFrames(
 
 test.describe('Codex terminal cursor jitter repro', () => {
   test('keeps queued-message cursor out of the Working status row in native Windows Codex @headful', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.skip(process.platform !== 'win32', 'native Windows cursor repro only runs on Windows')
 
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await installPtyWriteDiagnostics(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await installPtyWriteDiagnostics(occPage)
     rmSync(ARTIFACT_DIR, { recursive: true, force: true })
     mkdirSync(ARTIFACT_DIR, { recursive: true })
 
     const shellCase = SHELL_CASES[0]!
-    const { tabId, ptyId } = await prepareCodexTerminal(orcaPage, shellCase)
-    await installPtyOutputDiagnostics(orcaPage)
-    await orcaPage.keyboard.type(CODEX_REPO_PROMPT)
-    await orcaPage.waitForTimeout(250)
-    await orcaPage.keyboard.press('Enter')
-    await orcaPage.waitForTimeout(1_000)
-    if (!CODEX_WORKING_STATUS_RE.test(await getTerminalContentForTab(orcaPage, tabId, 8_000))) {
-      await orcaPage.keyboard.press('Enter')
+    const { tabId, ptyId } = await prepareCodexTerminal(occPage, shellCase)
+    await installPtyOutputDiagnostics(occPage)
+    await occPage.keyboard.type(CODEX_REPO_PROMPT)
+    await occPage.waitForTimeout(250)
+    await occPage.keyboard.press('Enter')
+    await occPage.waitForTimeout(1_000)
+    if (!CODEX_WORKING_STATUS_RE.test(await getTerminalContentForTab(occPage, tabId, 8_000))) {
+      await occPage.keyboard.press('Enter')
     }
-    await orcaPage.waitForTimeout(3_000)
-    const submittedContent = await getTerminalContentForTab(orcaPage, tabId, 8_000)
+    await occPage.waitForTimeout(3_000)
+    const submittedContent = await getTerminalContentForTab(occPage, tabId, 8_000)
     writeFileSync(path.join(ARTIFACT_DIR, 'queued-message-after-submit.txt'), submittedContent)
     await expect
       .poll(
         async () =>
-          CODEX_WORKING_STATUS_RE.test(await getTerminalContentForTab(orcaPage, tabId, 8_000)),
+          CODEX_WORKING_STATUS_RE.test(await getTerminalContentForTab(occPage, tabId, 8_000)),
         {
           timeout: 30_000,
           message: 'Codex did not enter Working state'
         }
       )
       .toBe(true)
-    await applyCursorProbeTheme(orcaPage, tabId)
+    await applyCursorProbeTheme(occPage, tabId)
     const workingOnlyFrames = await captureQueuedMessageFrames(
-      orcaPage,
+      occPage,
       `${shellCase.label}-no-input`,
       tabId,
       ptyId,
       testInfo
     )
-    await orcaPage.keyboard.insertText('s')
+    await occPage.keyboard.insertText('s')
     await expect
       .poll(
         async () =>
-          (await readScreenLines(orcaPage, tabId)).some((line) => isQueuedInputLine(line.text)),
+          (await readScreenLines(occPage, tabId)).some((line) => isQueuedInputLine(line.text)),
         {
           timeout: 5_000,
           message: 'queued input did not appear before cursor capture'
@@ -749,15 +749,15 @@ test.describe('Codex terminal cursor jitter repro', () => {
       )
       .toBe(true)
     const frames = await captureQueuedMessageFrames(
-      orcaPage,
+      occPage,
       shellCase.label,
       tabId,
       ptyId,
       testInfo
     )
 
-    const snapshot = await readScreenSnapshot(orcaPage, shellCase.label, tabId, ptyId)
-    const rawChunks = await readPtyOutputDiagnostics(orcaPage)
+    const snapshot = await readScreenSnapshot(occPage, shellCase.label, tabId, ptyId)
+    const rawChunks = await readPtyOutputDiagnostics(occPage)
     const visibleWorkingOnlyCursorFrames = workingOnlyFrames.filter(isPromptCursorFrame)
     const unexpectedWorkingOnlyCursorFrames = workingOnlyFrames.filter(
       isUnexpectedVisibleCursorFrame

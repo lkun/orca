@@ -6,7 +6,7 @@ import type { RpcRequest } from './rpc/core'
 import { REPO_METHODS } from './rpc/methods/repo'
 import { WORKTREE_METHODS } from './rpc/methods/worktree'
 import { agentLaunchWorkspaceFactory } from './rpc/methods/agent-launch-worktree-creation'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { partialRuntimeStore } from './runtime-store-partial-fixture'
 
 // Projects copied between hosts retain their repo id.
@@ -31,8 +31,8 @@ const REPOS: Repo[] = [
   }
 ]
 
-function createRuntime(): OrcaRuntimeService {
-  return new OrcaRuntimeService(
+function createRuntime(): OCCRuntimeService {
+  return new OCCRuntimeService(
     partialRuntimeStore({
       getRepos: () => REPOS,
       getRepo: (id: string) => REPOS.find((repo) => repo.id === id),
@@ -49,7 +49,7 @@ function stopAtResolvedProject() {
   return vi
     .spyOn(
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: spies on the private step that receives the resolved repo; it exists on the prototype.
-      OrcaRuntimeService.prototype as unknown as {
+      OCCRuntimeService.prototype as unknown as {
         createInResolvedProject: (args: unknown, repo: Repo) => Promise<never>
       },
       'createInResolvedProject'

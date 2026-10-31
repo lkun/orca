@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { openInMemoryCloudDatabase } from './cloud-database.js'
 import { acquireLeadership } from './cloud-leader-lock.js'
 
-const postgresUrl = process.env.ORCA_CLOUD_DATABASE_TEST_URL
+const postgresUrl = process.env.OCC_CLOUD_DATABASE_TEST_URL
 const database = await openInMemoryCloudDatabase([])
 
 describe('acquireLeadership', () => {

@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { BROWSER_ANNOTATION_VIEWPORT_MESSAGE_PREFIX } from '../../../../../shared/browser-annotation-viewport-bridge'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 import { createBrowserMockApi } from '@/store/slices/browser-slice-test-harness'
 import { createTestStoreDrawnFromMain } from '@/store/slices/browser-slice-drawn-from-main.test-fixture'
@@ -38,7 +38,7 @@ async function createHarness() {
   }
   // A layout-owner build's main opened the page's tab, and its frame drew the page.
   expect(layoutApplyTestTransport.sentOfType('openBrowserTab')).toEqual(
-    ORCA_LAYOUT_OWNER_IS_MAIN ? [expect.objectContaining({ pageId })] : []
+    OCC_LAYOUT_OWNER_IS_MAIN ? [expect.objectContaining({ pageId })] : []
   )
   expect(Object.values(store.getState().browserPagesByWorkspace).flat()).toEqual([
     expect.objectContaining({ id: pageId })

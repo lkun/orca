@@ -56,7 +56,7 @@ const target: SshTarget = {
 }
 const managedServer = {
   id: 'env-managed',
-  orcadDeployment: {
+  occdDeployment: {
     kind: 'ssh',
     requestId: 'request-1',
     sshTargetId: 'ssh-1',
@@ -249,7 +249,7 @@ describe('a host whose managed server the user stopped and removed', () => {
     runtime.environments = [managedServer]
     mockSshStore.getTarget.mockReturnValue({
       ...removed,
-      orcadFence: { environmentId: managedServer.id }
+      occdFence: { environmentId: managedServer.id }
     })
     const { decideHostServer } = await import('./ssh-host-server-connect')
 

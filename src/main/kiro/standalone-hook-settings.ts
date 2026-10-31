@@ -7,7 +7,7 @@ import {
   kiroListHookRunsManagedCommand
 } from './hook-settings'
 
-const KIRO_STANDALONE_HOOKS_FILE_NAME = 'orca-agent-status.json'
+const KIRO_STANDALONE_HOOKS_FILE_NAME = 'occ-agent-status.json'
 
 /** V3 triggers (kiro-cli 2.27+); the docs' `PromptSubmit`/`AgentStop` spellings are dropped on load. */
 export const KIRO_STANDALONE_HOOK_TRIGGERS = [

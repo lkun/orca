@@ -15,7 +15,7 @@ retain the status label, and reduced motion renders the metadata normally.
 The selected text effect uses shadcn's [official CSS shimmer utility](https://ui.shadcn.com/docs/utils/shimmer).
 Its MIT license is retained in `resources/licenses/shadcn/LICENSE-MIT`.
 
-The [temporary comparison Gist](https://gist.github.com/OrcaWin/5e39ef4c8975d13bda6a2c79a6c904a7)
+The [temporary comparison Gist](https://gist.github.com/OCCWin/5e39ef4c8975d13bda6a2c79a6c904a7)
 and [comparison captures](comparison/README.md) preserve the reviewed alternatives.
 The selected option is C, metadata-only shimmer.
 

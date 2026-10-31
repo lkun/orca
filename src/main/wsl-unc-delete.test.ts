@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 
 const { runProcessMock, wokenMock } = vi.hoisted(() => ({
   runProcessMock: vi.fn(),
   wokenMock: vi.fn((_distro: string) => {})
 }))
 
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 vi.mock('./wsl-background-distro-gate', async (importOriginal) => ({
   ...(await importOriginal<object>()),
   noteWslDistroWoken: wokenMock
@@ -114,7 +114,7 @@ describe('tryDeleteWslUncPath', () => {
   })
 
   it('rejects an inspection failure instead of falling back to direct rm', async () => {
-    runProcessMock.mockResolvedValue(exited(65, 'ORCA_WSL_DELETE_REJECT:inspection'))
+    runProcessMock.mockResolvedValue(exited(65, 'OCC_WSL_DELETE_REJECT:inspection'))
 
     await withPlatform('win32', async () => {
       await expect(

@@ -1,5 +1,5 @@
 import { monitorEventLoopDelay, performance } from 'node:perf_hooks'
-import { RELAY_REGION_METRIC_SEGMENTS, type RelayRegion } from '@orca-cloud/relay-contract'
+import { RELAY_REGION_METRIC_SEGMENTS, type RelayRegion } from '@occ-cloud/relay-contract'
 import type { ControlRenewalOutcome } from './assignment-store.js'
 import type { ControlRenewalFlush } from './control-renewal-batch.js'
 import type { CellInventoryHoldCounts } from './cell-inventory-hold-samples.js'
@@ -557,7 +557,7 @@ export class RelayObservability implements RelayRuntimeObserver {
     this.write({
       severity: observation.ready && !observation.degraded ? 'INFO' : 'WARNING',
       message: 'OCC Relay readiness check',
-      event: 'orca_relay_readiness_check',
+      event: 'occ_relay_readiness_check',
       metricVersion: 1,
       ...this.identity,
       ...observation
@@ -571,7 +571,7 @@ export class RelayObservability implements RelayRuntimeObserver {
       message: entered
         ? 'OCC Relay readiness entered last-known-good grace'
         : 'OCC Relay readiness left last-known-good grace',
-      event: entered ? 'orca_relay_readiness_grace_entered' : 'orca_relay_readiness_grace_left',
+      event: entered ? 'occ_relay_readiness_grace_entered' : 'occ_relay_readiness_grace_left',
       metricVersion: 1,
       ...this.identity,
       ...event
@@ -695,7 +695,7 @@ export class RelayObservability implements RelayRuntimeObserver {
     this.write({
       severity: 'INFO',
       message: 'OCC Relay runtime metrics',
-      event: 'orca_relay_runtime_metrics',
+      event: 'occ_relay_runtime_metrics',
       metricVersion: 2,
       fixLevel: RELAY_FIX_LEVEL,
       role: this.identity.role,

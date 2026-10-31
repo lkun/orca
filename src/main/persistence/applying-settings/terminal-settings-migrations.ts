@@ -1,5 +1,5 @@
 import { homedir } from 'node:os'
-import type { GlobalSettings, OrcaWorkspaceLayout } from '../../../shared/global-settings-types'
+import type { GlobalSettings, OCCWorkspaceLayout } from '../../../shared/global-settings-types'
 import { normalizeRuntimePathForComparison } from '../../../shared/cross-platform-path'
 import {
   legacyTerminalScrollbackBytesToRows,
@@ -23,7 +23,7 @@ export function expandWorkspaceDirHome(settings: Partial<GlobalSettings>): Parti
 export function buildWorkspaceDirHistoryForUpdate(
   current: GlobalSettings,
   updates: Partial<GlobalSettings>
-): OrcaWorkspaceLayout[] | null {
+): OCCWorkspaceLayout[] | null {
   if (!('workspaceDir' in updates) && !('nestWorkspaces' in updates)) {
     return null
   }
@@ -172,7 +172,7 @@ export function migrateTerminalTuiScrollSensitivityDefault(settings: GlobalSetti
   }
 }
 
-export function getWorkspaceLayoutHistoryKey(layout: OrcaWorkspaceLayout): string {
+export function getWorkspaceLayoutHistoryKey(layout: OCCWorkspaceLayout): string {
   return `${normalizeRuntimePathForComparison(layout.path)}:${layout.nestWorkspaces}`
 }
 

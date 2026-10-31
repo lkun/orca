@@ -2,7 +2,7 @@ import { getPiTitlebarLifetimeSourceLines } from './titlebar-extension-lifetime-
 import type { PiAgentKind } from '../../shared/pi-agent-kind'
 import { getPiOmpRuntimeDetectionSourceLines } from './agent-status-runtime-detection-source'
 
-export const ORCA_PI_EXTENSION_FILE = 'orca-titlebar-spinner.ts'
+export const OCC_PI_EXTENSION_FILE = 'occ-titlebar-spinner.ts'
 
 export function getPiTitlebarExtensionSource(kind: PiAgentKind = 'pi'): string {
   // OMP paints this marker natively; detect bare-shell OMP too, which can run inside a Pi-kind pane.
@@ -87,13 +87,13 @@ export function getPiTitlebarExtensionSource(kind: PiAgentKind = 'pi'): string {
     '}',
     '',
     'export default function (pi) {',
-    '  if (!process.env.ORCA_PANE_KEY) return',
+    '  if (!process.env.OCC_PANE_KEY) return',
     ...(kind === 'pi'
       ? [
           "  // Child processes inherit pane identity; only the owner may report the pane's needs-input marker.",
-          '  const markerOwnerPid = process.env.ORCA_PI_TITLE_MARKER_OWNED',
+          '  const markerOwnerPid = process.env.OCC_PI_TITLE_MARKER_OWNED',
           '  const ownsMarker = !markerOwnerPid || markerOwnerPid === String(process.pid)',
-          '  if (ownsMarker) process.env.ORCA_PI_TITLE_MARKER_OWNED = String(process.pid)'
+          '  if (ownsMarker) process.env.OCC_PI_TITLE_MARKER_OWNED = String(process.pid)'
         ]
       : []),
 

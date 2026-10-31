@@ -2,14 +2,14 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { WslHostConnectionState } from '../../shared/wsl-host-types'
 import type { WslHostReachability } from './wsl-host-connector-contract'
 import { WslHostPhoneGate } from './wsl-host-phone-reach'
-import type { WslOrcadConnection } from './wsl-orcad-connection-types'
+import type { WslOCCdConnection } from './wsl-occd-connection-types'
 
 const STOPPED =
   'The WSL host Ubuntu isn’t running. Open one of its projects on your computer to start it.'
 const NEUTRAL =
   'The WSL host Ubuntu isn’t available from your phone right now. Open one of its projects on your computer to connect it.'
 
-const BRIDGE: WslOrcadConnection = {
+const BRIDGE: WslOCCdConnection = {
   distro: 'Ubuntu',
   environmentId: 'wsl:ubuntu',
   localPort: 1,

@@ -13,7 +13,7 @@ export function writeShellWrapperFiles(
     for (const [path, content] of files) {
       mkdirSync(dirname(path), { recursive: true })
       // Rename keeps concurrent shell reads from seeing truncated wrappers.
-      const temporaryPath = `${path}.orca-tmp-${process.pid}`
+      const temporaryPath = `${path}.occ-tmp-${process.pid}`
       try {
         writeFileSync(temporaryPath, content, 'utf8')
         chmodSync(temporaryPath, 0o644)

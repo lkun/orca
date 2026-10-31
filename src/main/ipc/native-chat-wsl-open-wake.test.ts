@@ -14,7 +14,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { EventEmitter } from 'node:events'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 import type { WslTranscriptFsReusableProcessCall } from '../native-chat/wsl-transcript-fs-process-protocol'
 
 const mocks = vi.hoisted(() => ({
@@ -34,7 +34,7 @@ vi.mock('electron', () => ({
       mocks.listeners.set(channel, listener)
   }
 }))
-vi.mock('@orca/process-host', () => ({ runProcess: mocks.runProcess }))
+vi.mock('@occ/process-host', () => ({ runProcess: mocks.runProcess }))
 
 const GUEST_HOME = '\\\\wsl.localhost\\Ubuntu\\home\\ada'
 const ROOT = '\\\\wsl.localhost\\Ubuntu\\'
@@ -83,7 +83,7 @@ let originalPlatform: NodeJS.Platform
 beforeEach(async () => {
   originalPlatform = process.platform
   Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
-  mocks.home = await mkdtemp(join(tmpdir(), 'orca-wsl-open-wake-'))
+  mocks.home = await mkdtemp(join(tmpdir(), 'occ-wsl-open-wake-'))
   const dir = join(mocks.home, '.claude', 'projects', '-repo')
   await mkdir(dir, { recursive: true })
   await writeFile(

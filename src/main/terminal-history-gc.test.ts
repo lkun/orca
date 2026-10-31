@@ -151,7 +151,7 @@ function survivingDirs(): Set<string> {
 }
 
 beforeEach(() => {
-  userDataDir = mkdtempSync(join(tmpdir(), 'orca-history-gc-'))
+  userDataDir = mkdtempSync(join(tmpdir(), 'occ-history-gc-'))
   historyRoot = join(userDataDir, 'terminal-history')
   mkdirSync(historyRoot, { recursive: true })
   installFakeAppEnvironment({ getPath: () => userDataDir })

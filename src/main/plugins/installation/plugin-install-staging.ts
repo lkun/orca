@@ -5,7 +5,7 @@ import {
   PLUGIN_MANIFEST_FILENAME,
   parseHostPluginManifest,
   qualifiedPluginKey,
-  satisfiesOrcaEngineRange,
+  satisfiesOCCEngineRange,
   type PluginManifest,
   type PluginManifestWithPublisher
 } from '../../../shared/plugins/manifest/plugin-manifest'
@@ -79,10 +79,10 @@ async function readInstallManifest(
     const incompatible = pluginManifestCompatibilityError(raw, hostVersion)
     return { ok: false, error: incompatible ?? `invalid manifest: ${parsed.error}` }
   }
-  if (!satisfiesOrcaEngineRange(hostVersion, parsed.manifest.engines.orca)) {
+  if (!satisfiesOCCEngineRange(hostVersion, parsed.manifest.engines.occ)) {
     return {
       ok: false,
-      error: `plugin requires OCC ${parsed.manifest.engines.orca} (this is ${hostVersion})`
+      error: `plugin requires OCC ${parsed.manifest.engines.occ} (this is ${hostVersion})`
     }
   }
   return { ok: true, manifest: parsed.manifest }

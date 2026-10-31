@@ -101,7 +101,7 @@
       },
       "labels": ["Back to session"],
       "rows": ["dir:src", "file:README.md"],
-      "text": ["Files", "orca-files - Showing first 5000"]
+      "text": ["Files", "occ-files - Showing first 5000"]
     },
     "59851eb4cbf7": {
       "name": "files.readDir#1",
@@ -154,7 +154,7 @@
       },
       "labels": ["Back to session"],
       "rows": [],
-      "text": ["Files", "orca-files"]
+      "text": ["Files", "occ-files"]
     },
     "eb79a9b3682a": {
       "status": "fulfilled",

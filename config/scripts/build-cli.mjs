@@ -2,7 +2,7 @@ import { availableParallelism } from 'node:os'
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { describeProcessFailure } from './process-failure-message.mjs'
 import { isDirectInvocation } from './script-entry-detection.mjs'
 import { supportsTsrs } from './tsrs-typecheck-compiler.mjs'
@@ -21,11 +21,11 @@ export async function buildCli({
   outDir = 'out',
   check = runTypecheckProjects,
   execute = runProcess,
-  compiler = process.env.ORCA_CLI_BUILD_COMPILER ?? 'bun',
+  compiler = process.env.OCC_CLI_BUILD_COMPILER ?? 'bun',
   resolveBunExecutable = resolveTypecheckBunExecutable
 } = {}) {
   if (compiler !== 'bun' && compiler !== 'tsrs') {
-    throw new Error(`Invalid ORCA_CLI_BUILD_COMPILER: ${compiler}`)
+    throw new Error(`Invalid OCC_CLI_BUILD_COMPILER: ${compiler}`)
   }
   const emitArguments = [
     '-p',
@@ -54,7 +54,7 @@ export async function buildCli({
   const selection = selectTypecheckCompiler('bun', {
     root,
     resolveBunExecutable,
-    fallbackHint: supportsTsrs() ? 'set ORCA_CLI_BUILD_COMPILER=tsrs' : null
+    fallbackHint: supportsTsrs() ? 'set OCC_CLI_BUILD_COMPILER=tsrs' : null
   })
   const failures = await check({
     ...selection,

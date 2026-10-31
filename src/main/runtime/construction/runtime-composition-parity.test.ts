@@ -5,10 +5,10 @@ import { RUNTIME_CAPABILITIES } from '../../../shared/protocol-version'
 import { SSH_TARGET_MANAGEMENT_RUNTIME_CAPABILITY } from '../../../shared/ssh-target-management'
 import { SKILL_INSTALL_CAPABILITY } from '../../../shared/skill-install-capability'
 
-/** Optional services can silently diverge between Electron/orcad (#30120, #31112, #31174).
+/** Optional services can silently diverge between Electron/occd (#30120, #31112, #31174).
  * Compare constructor args/options, runtime/RPC setters and preflight host ports; require reasons for differences. */
 
-type Root = 'electron' | 'orcad'
+type Root = 'electron' | 'occd'
 
 type DeclaredDifference = {
   wiring: string
@@ -20,148 +20,148 @@ type DeclaredDifference = {
 const DECLARED_HOST_DIFFERENCES: readonly DeclaredDifference[] = [
   {
     wiring: 'runtime.setArtifactService',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: 'Artifact sharing uses the desktop sign-in; a headless host has none yet.'
   },
   {
     wiring: 'runtime.setSkillCloudService',
-    missingOn: 'orcad',
-    reason: 'Skill sharing uses the desktop sign-in; installs from Git still work on orcad.',
+    missingOn: 'occd',
+    reason: 'Skill sharing uses the desktop sign-in; installs from Git still work on occd.',
     advertisedUnserved: [SKILL_INSTALL_CAPABILITY]
   },
   {
     wiring: 'registerSshHandlers',
-    missingOn: 'orcad',
-    reason: 'orcad has no SSH stack; its SSH target methods refuse with an accurate message.',
+    missingOn: 'occd',
+    reason: 'occd has no SSH stack; its SSH target methods refuse with an accurate message.',
     advertisedUnserved: [SSH_TARGET_MANAGEMENT_RUNTIME_CAPABILITY]
   },
   {
     wiring: 'runtime.setAgentBrowserBridge',
-    missingOn: 'orcad',
-    reason: 'orcad installs browser automation through the runtime factory when Chromium exists.'
+    missingOn: 'occd',
+    reason: 'occd installs browser automation through the runtime factory when Chromium exists.'
   },
   {
     wiring: 'runtime.setOffscreenBrowserBackend',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: 'Offscreen WebContents need Electron.'
   },
   {
     wiring: 'ctor:getSetupTerminalTitle',
-    missingOn: 'orcad',
-    reason: 'orcad has no UI language and serves clients in any locale, so Setup tabs stay English.'
+    missingOn: 'occd',
+    reason: 'occd has no UI language and serves clients in any locale, so Setup tabs stay English.'
   },
   {
     wiring: 'ctor:prepareClaudeAuth',
-    missingOn: 'orcad',
-    reason: 'orcad passes it to registerHeadlessPtyRuntime instead, and only off WSL.'
+    missingOn: 'occd',
+    reason: 'occd passes it to registerHeadlessPtyRuntime instead, and only off WSL.'
   },
   {
     wiring: 'ctor:onPtyStopped',
-    missingOn: 'orcad',
-    reason: 'It clears renderer-side provider state, and orcad has no renderer.'
+    missingOn: 'occd',
+    reason: 'It clears renderer-side provider state, and occd has no renderer.'
   },
   {
     wiring: 'ctor:onTerminalSideEffects',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: 'Side effects are delivered to a desktop window only.'
   },
   {
     wiring: 'ctor:attestAgentHookCompatibilityAuthority',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: 'Compatibility hook authority belongs to desktop-launched panes.'
   },
   {
     wiring: 'ctor:retireAgentHookCompatibilityAuthority',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: 'Pairs with attestAgentHookCompatibilityAuthority.'
   },
   {
     wiring: 'ctor:getPairedDeviceName',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: 'Unwired gap (follow-up): client-hosted browser rows show no paired-device name.'
   },
   {
     wiring: 'ctor:orchestrationEnvironmentTransport',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: 'Cross-environment orchestration dials paired environments from the desktop only.'
   },
   {
     wiring: 'ctor:skillTransactionRecovery',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason:
-      'No startup skill-transaction recovery runs on orcad, so installs need not wait for one.'
+      'No startup skill-transaction recovery runs on occd, so installs need not wait for one.'
   },
   {
     wiring: 'ctor:workspaceSleepPlatform',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason:
-      'Sleep reaches paired servers and suspends VMs from the desktop only; orcad refuses those parts.'
+      'Sleep reaches paired servers and suspends VMs from the desktop only; occd refuses those parts.'
   },
   {
     wiring: 'ctor:headlessTerminalScrollbackRows',
     missingOn: 'electron',
     reason:
-      "Desktop reveals hidden panes from its model at desktop depth; renderer-less orcad needs only the daemon's live window."
+      "Desktop reveals hidden panes from its model at desktop depth; renderer-less occd needs only the daemon's live window."
   },
   {
     wiring: 'rpc-option:exposeNetworkByDefault',
-    missingOn: 'orcad',
-    reason: 'orcad pins its bind host instead, so exposure never widens itself.'
+    missingOn: 'occd',
+    reason: 'occd pins its bind host instead, so exposure never widens itself.'
   },
   {
     wiring: 'rpc.setMobileDesktopRelayHosts',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: 'The mobile desktop relay is hosted by the desktop.'
   },
   {
     wiring: 'rpc.setOnUnpairedDeviceAuthFailure',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: 'It notifies a desktop window.'
   },
   {
     wiring: 'host:setMainHttpClient',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: "The port's default is Node's fetch; Chromium's network stack is desktop-only."
   },
   {
     wiring: 'host:setDefaultProxySessionResolver',
-    missingOn: 'orcad',
-    reason: 'It resolves a Chromium session; orcad reads proxy settings from the environment.'
+    missingOn: 'occd',
+    reason: 'It resolves a Chromium session; occd reads proxy settings from the environment.'
   },
   {
     wiring: 'host:setRuntimeDesktopSurface',
-    missingOn: 'orcad',
-    reason: 'Desktop windows and notifications; orcad has none to surface.'
+    missingOn: 'occd',
+    reason: 'Desktop windows and notifications; occd has none to surface.'
   },
   {
     wiring: 'host:setPtyHostBindings',
-    missingOn: 'orcad',
-    reason: "It binds Electron's ipcMain and powerMonitor; orcad serves PTYs over runtime RPC."
+    missingOn: 'occd',
+    reason: "It binds Electron's ipcMain and powerMonitor; occd serves PTYs over runtime RPC."
   },
   {
     wiring: 'host:setSpawnObserver',
-    missingOn: 'orcad',
+    missingOn: 'occd',
     reason: 'Desktop subprocess-spawn diagnostics only.'
   },
   {
     wiring: 'host:setWorktreeWatcherRemoval',
-    missingOn: 'orcad',
-    reason: 'It closes renderer-side worktree watchers; orcad has no renderer.'
+    missingOn: 'occd',
+    reason: 'It closes renderer-side worktree watchers; occd has no renderer.'
   },
   {
     wiring: 'host:setBrowserHostClientProfileResolver',
-    missingOn: 'orcad',
-    reason: 'Browser profiles live in Chromium sessions; orcad pages carry profile ids only.'
+    missingOn: 'occd',
+    reason: 'Browser profiles live in Chromium sessions; occd pages carry profile ids only.'
   },
   {
     wiring: 'host:setManagedBrowserProfileDeleter',
-    missingOn: 'orcad',
-    reason: 'Managed profiles live in Chromium sessions; orcad has none to delete on removal.'
+    missingOn: 'occd',
+    reason: 'Managed profiles live in Chromium sessions; occd has none to delete on removal.'
   },
   {
     wiring: 'host:setDesktopBrowserBridgeHostEnabled',
     missingOn: 'electron',
-    reason: 'The desktop hosts browser pages itself; orcad enables the bridge to a desktop.'
+    reason: 'The desktop hosts browser pages itself; occd enables the bridge to a desktop.'
   }
 ]
 
@@ -176,10 +176,10 @@ const ROOT_SOURCES: Record<Root, readonly string[]> = {
     'src/main/startup/main-process-runtime-launch.ts',
     'src/main/window/attach-main-window-services.ts'
   ],
-  orcad: [
-    'src/main/orcad/orcad-entry.ts',
-    'src/main/orcad/orcad-account-services.ts',
-    'src/main/orcad/orcad-emulator-bridge.ts'
+  occd: [
+    'src/main/occd/occd-entry.ts',
+    'src/main/occd/occd-account-services.ts',
+    'src/main/occd/occd-emulator-bridge.ts'
   ]
 }
 
@@ -189,10 +189,10 @@ const HOST_PORT_SOURCES: Record<Root, readonly string[]> = {
     'src/main/startup/agent-hooks-uninstall-preflight.ts',
     'src/main/host/electron-browser-commands.ts'
   ],
-  orcad: [
-    'src/main/orcad/orcad-host-adapters.ts',
-    'src/main/orcad/orcad-lifecycle.ts',
-    'src/main/orcad/orcad-browser-startup.ts'
+  occd: [
+    'src/main/occd/occd-host-adapters.ts',
+    'src/main/occd/occd-lifecycle.ts',
+    'src/main/occd/occd-browser-startup.ts'
   ]
 }
 
@@ -208,10 +208,10 @@ const SPREAD_SOURCES: Record<string, { file: string; anchor: string }> = {
     anchor: 'codexStructuredLaunchHomeResolvers = {'
   },
   'accountLaunch?.runtimeDeps': {
-    file: 'src/main/orcad/orcad-account-services.ts',
+    file: 'src/main/occd/occd-account-services.ts',
     anchor: 'runtimeDeps: {'
   },
-  'orcadWsPortOptions(': { file: 'src/main/orcad/orcad-ws-port-policy.ts', anchor: 'wsPort: port' }
+  'occdWsPortOptions(': { file: 'src/main/occd/occd-ws-port-policy.ts', anchor: 'wsPort: port' }
 }
 
 const repoRoot = join(__dirname, '../../../..')
@@ -350,8 +350,8 @@ function recordWiring(root: Root): Set<string> {
   const wired = new Set<string>()
   for (const file of ROOT_SOURCES[root]) {
     const source = read(file)
-    if (source.includes('new OrcaRuntimeService(')) {
-      const call = source.indexOf('new OrcaRuntimeService(')
+    if (source.includes('new OCCRuntimeService(')) {
+      const call = source.indexOf('new OCCRuntimeService(')
       const [, ...positional] = topLevelEntries(parenGroup(source, source.indexOf('(', call)))
       const options = positional.pop() ?? ''
       positional.forEach((argument, index) => {
@@ -363,8 +363,8 @@ function recordWiring(root: Root): Set<string> {
         wired.add(`ctor:${key}`)
       }
     }
-    if (source.includes('new OrcaRuntimeRpcServer(')) {
-      for (const key of objectKeys(objectLiteralAfter(source, 'new OrcaRuntimeRpcServer({'))) {
+    if (source.includes('new OCCRuntimeRpcServer(')) {
+      for (const key of objectKeys(objectLiteralAfter(source, 'new OCCRuntimeRpcServer({'))) {
         wired.add(`rpc-option:${key}`)
       }
     }
@@ -416,9 +416,9 @@ function declaredPositionalParameters(): string[] {
   return params.slice(1, -1).map((param) => /^([A-Za-z_$][\w$]*)/.exec(param)?.[1] ?? param)
 }
 
-describe('runtime composition parity (Electron vs orcad)', () => {
+describe('runtime composition parity (Electron vs occd)', () => {
   const electron = recordWiring('electron')
-  const orcad = recordWiring('orcad')
+  const occd = recordWiring('occd')
 
   it('records the wiring both roots share', () => {
     for (const shared of [
@@ -439,14 +439,14 @@ describe('runtime composition parity (Electron vs orcad)', () => {
       'runtime.setEmulatorBridge'
     ]) {
       expect(electron, shared).toContain(shared)
-      expect(orcad, shared).toContain(shared)
+      expect(occd, shared).toContain(shared)
     }
   })
 
   it('declares every wiring one root skips, and nothing it does not skip', () => {
     const actual = [
-      ...[...electron].filter((w) => !orcad.has(w)).map((w) => `orcad lacks ${w}`),
-      ...[...orcad].filter((w) => !electron.has(w)).map((w) => `electron lacks ${w}`)
+      ...[...electron].filter((w) => !occd.has(w)).map((w) => `occd lacks ${w}`),
+      ...[...occd].filter((w) => !electron.has(w)).map((w) => `electron lacks ${w}`)
     ].sort()
     const declared = DECLARED_HOST_DIFFERENCES.map((d) => `${d.missingOn} lacks ${d.wiring}`)
     expect(actual).toEqual([...declared].sort())
@@ -454,7 +454,7 @@ describe('runtime composition parity (Electron vs orcad)', () => {
 
   it('accounts for every way the runtime takes a host service', () => {
     expect(declaredPositionalParameters()).toEqual([...POSITIONAL_CONSTRUCTOR_PARAMETERS])
-    const wiredAnywhere = new Set([...electron, ...orcad])
+    const wiredAnywhere = new Set([...electron, ...occd])
     const unaccounted = declaredConstructionOptions().filter(
       (key) => !wiredAnywhere.has(`ctor:${key}`) && !(key in UNWIRED_CONSTRUCTION_OPTIONS)
     )
@@ -466,16 +466,16 @@ describe('runtime composition parity (Electron vs orcad)', () => {
 
   it('finds every host-port install in the files it reads', () => {
     const known = new Set(
-      [...electron, ...orcad].filter((w) => w.startsWith('host:')).map((w) => w.slice(5))
+      [...electron, ...occd].filter((w) => w.startsWith('host:')).map((w) => w.slice(5))
     )
     const listed = new Set(Object.values(HOST_PORT_SOURCES).flat())
-    const unlisted = ['src/main/startup', 'src/main/orcad']
+    const unlisted = ['src/main/startup', 'src/main/occd']
       .flatMap(sourceFilesUnder)
       .filter((file) => !listed.has(file) && hostPortCalls(read(file)).some((s) => known.has(s)))
     expect(unlisted, 'add these files to HOST_PORT_SOURCES').toEqual([])
   })
 
-  // #30731: orcad once installed a browser factory that could not place pages on a desktop.
+  // #30731: occd once installed a browser factory that could not place pages on a desktop.
   it('wires the browser factory and client-hosting options on both roots', () => {
     const installs: Record<Root, { root: string; call: string; file: string; option: RegExp }> = {
       electron: {
@@ -484,10 +484,10 @@ describe('runtime composition parity (Electron vs orcad)', () => {
         file: 'src/main/host/electron-browser-commands.ts',
         option: /\bclientHosting: true\b/
       },
-      orcad: {
-        root: 'src/main/orcad/orcad-lifecycle.ts',
-        call: 'startOrcadBrowserProvider(',
-        file: 'src/main/orcad/orcad-browser-startup.ts',
+      occd: {
+        root: 'src/main/occd/occd-lifecycle.ts',
+        call: 'startOCCdBrowserProvider(',
+        file: 'src/main/occd/occd-browser-startup.ts',
         option: /\bclientHostingWithoutEngine: true\b/
       }
     }

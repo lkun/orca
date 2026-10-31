@@ -212,7 +212,7 @@ function normalizeGrokUserQueryBlock(block: NativeChatBlock): NativeChatBlock[] 
 function splitGrokPastedImageQuery(text: string): { path: string; query: string } | null {
   // Grok 0.2.93 concatenates clipboard temp paths with prompts; recover the attachment separately.
   const match = text.match(
-    /^((?:[a-z]:[\\/]|\/|[\\/]{2}[^\\/\r\n]+[\\/][^\\/\r\n]+[\\/])(?:.*?[\\/])?orca-paste-[^\\/\r\n]+?\.png)([\s\S]*)$/i
+    /^((?:[a-z]:[\\/]|\/|[\\/]{2}[^\\/\r\n]+[\\/][^\\/\r\n]+[\\/])(?:.*?[\\/])?occ-paste-[^\\/\r\n]+?\.png)([\s\S]*)$/i
   )
   if (!match?.[1]) {
     return null

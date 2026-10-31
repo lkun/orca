@@ -25,7 +25,7 @@ import { cleanupLocalOrphanedWorktreeDirectory } from '../local-orphaned-worktre
 import * as removalOwnership from '../ipc/worktrees/removal/worktree-removal-ownership'
 import { executeWorktreeRemoval } from '../ipc/worktrees/removal/execute-worktree-removal'
 import { RuntimeWorktreeRemovalInFlight } from './runtime-worktree-removal-in-flight'
-import { OrcaRuntimeWithResolveWorktreeRemovalTarget } from './workspaces/workspace-removal-target'
+import { OCCRuntimeWithResolveWorktreeRemovalTarget } from './workspaces/workspace-removal-target'
 import type { WorktreeIpcContext } from '../ipc/worktrees/worktree-ipc-context'
 import * as backgroundRemoval from '../worktree-background-removal'
 import * as worktreeGit from '../git/worktree'
@@ -100,7 +100,7 @@ beforeEach(async () => {
   lifecycle = new WorkspaceLifecycleQueue()
   vi.mocked(getLocalProjectWorktreeGitOptions).mockReturnValue({})
   // realpath: macOS hands out /var/... temp paths while Git reports /private/var/....
-  scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'orca-interrupted-removal-')))
+  scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'occ-interrupted-removal-')))
   recordsDir = join(scratchDir, 'profile')
   repoPath = join(scratchDir, 'repo')
   worktreePath = join(scratchDir, 'workspaces', 'feature')
@@ -204,8 +204,8 @@ function removalHost(
     getWorktreeMeta: () => ({
       ...getProjectHostSetupWorktreeMeta([], repo),
       instanceId: 'removal-fixture',
-      orcaCreatedAt: 1,
-      orcaCreationSource: 'runtime',
+      occCreatedAt: 1,
+      occCreationSource: 'runtime',
       pushTarget
     }),
     getWorktreeMetaForHost: () => store.getWorktreeMeta(),
@@ -251,8 +251,8 @@ async function deleteViaEntry(
   const worktreeId = `repo-1::${worktreePath}`
   const host = removalHost(false, stop, teardown)
   const { store } = host
-  const runtime: OrcaRuntimeWithResolveWorktreeRemovalTarget = Object.assign(
-    Object.create(OrcaRuntimeWithResolveWorktreeRemovalTarget.prototype),
+  const runtime: OCCRuntimeWithResolveWorktreeRemovalTarget = Object.assign(
+    Object.create(OCCRuntimeWithResolveWorktreeRemovalTarget.prototype),
     {
       store,
       workspaceLifecycle: lifecycle,
@@ -410,7 +410,7 @@ describe('finishing an interrupted worktree removal after a restart', () => {
         remoteUrl
       }
       await git(['remote', 'add', pushTarget.remoteName, remoteUrl])
-      await git(['config', `remote.${pushTarget.remoteName}.orca-created`, 'true'])
+      await git(['config', `remote.${pushTarget.remoteName}.occ-created`, 'true'])
       const sibling = join(scratchDir, 'temporarily-missing')
       await git(['worktree', 'add', '-q', sibling, '-b', 'sibling'])
       await rename(sibling, join(scratchDir, 'offline'))

@@ -4,7 +4,7 @@ import {
   ORCHESTRATION_FEDERATION_STRUCTURED_READ_RUNTIME_CAPABILITY,
   ORCHESTRATION_WORKER_AUTO_RELEASE_RUNTIME_CAPABILITY
 } from '../../../../../../shared/protocol-version'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 
 /** Capabilities a simulated older execution host leaves out of its status.get. */
 function withheldPeerCapabilities(host: {
@@ -27,7 +27,7 @@ function withheldPeerCapabilities(host: {
 }
 
 export function olderPeerStatusResponse(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   host: Parameters<typeof withheldPeerCapabilities>[0]
 ) {
   const status = runtime.getStatus()

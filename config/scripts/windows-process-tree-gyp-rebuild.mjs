@@ -196,7 +196,7 @@ export function ensureWindowsProcessTreeCommandLinePatch(
           cwd: realpathSync(packageDir),
           stdio: 'pipe',
           // Hide repo from git apply: worktree cwd prefix can silently skip every patch path with exit 0 while changing nothing.
-          env: { ...process.env, GIT_DIR: join(packageDir, '.orca-no-such-git-dir') }
+          env: { ...process.env, GIT_DIR: join(packageDir, '.occ-no-such-git-dir') }
         }
       )
     } catch (error) {

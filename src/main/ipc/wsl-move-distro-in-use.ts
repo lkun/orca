@@ -7,7 +7,7 @@ import {
   isLocalWslMoveRow,
   wslMoveHostDistro
 } from '../persistence/moving-wsl-projects/wsl-move-scope-guard'
-import { defaultWslOrcadEnvironmentId } from '../wsl/wsl-orcad-deploy'
+import { defaultWslOCCdEnvironmentId } from '../wsl/wsl-occd-deploy'
 
 /**
  * A bridge project of the distro (local, on its UNC path, not moved) or its WSL host record. A
@@ -18,7 +18,7 @@ export function isDistroInUse(
   userDataPath: string,
   distro: string
 ): boolean {
-  const environmentId = defaultWslOrcadEnvironmentId(distro)
+  const environmentId = defaultWslOCCdEnvironmentId(distro)
   try {
     const hosts = readWslHostDeployments(userDataPath)
     if (

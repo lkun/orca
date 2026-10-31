@@ -15,18 +15,18 @@ async function tempRoot(prefix: string): Promise<string> {
 }
 
 async function writeBundle(root: string, name = 'Skills'): Promise<{ path: string; hash: string }> {
-  const path = 'stablyai.orca-skills'
+  const path = 'stablyai.occ-skills'
   const pluginRoot = join(root, path)
   await mkdir(pluginRoot, { recursive: true })
   await writeFile(
-    join(pluginRoot, 'orca-plugin.json'),
+    join(pluginRoot, 'occ-plugin.json'),
     JSON.stringify({
       manifestVersion: 1,
-      id: 'orca-skills',
+      id: 'occ-skills',
       publisher: 'stablyai',
       name,
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       capabilities: []
     })
@@ -43,7 +43,7 @@ async function writeIndex(root: string, path: string, contentHash: string): Prom
     join(root, 'bundled-plugins.json'),
     JSON.stringify({
       version: 1,
-      plugins: [{ pluginKey: 'stablyai.orca-skills', path, contentHash }]
+      plugins: [{ pluginKey: 'stablyai.occ-skills', path, contentHash }]
     })
   )
 }
@@ -54,15 +54,15 @@ afterEach(async () => {
 
 describe('bundled plugin bootstrap', () => {
   it('installs release-indexed content once and keeps unchanged startup work bounded', async () => {
-    const root = await tempRoot('orca-bundled-resources-')
-    const userDataPath = await tempRoot('orca-bundled-user-data-')
+    const root = await tempRoot('occ-bundled-resources-')
+    const userDataPath = await tempRoot('occ-bundled-user-data-')
     const bundle = await writeBundle(root)
     await writeIndex(root, bundle.path, bundle.hash)
 
     await expect(
       bootstrapBundledPlugins({ root, userDataPath, hostVersion: '1.4.0' })
     ).resolves.toEqual({
-      installed: ['stablyai.orca-skills'],
+      installed: ['stablyai.occ-skills'],
       unchanged: [],
       retired: [],
       errors: []
@@ -71,15 +71,15 @@ describe('bundled plugin bootstrap', () => {
       bootstrapBundledPlugins({ root, userDataPath, hostVersion: '1.4.0' })
     ).resolves.toEqual({
       installed: [],
-      unchanged: ['stablyai.orca-skills'],
+      unchanged: ['stablyai.occ-skills'],
       retired: [],
       errors: []
     })
   })
 
   it('publishes an updated immutable bundle only when the indexed hash matches', async () => {
-    const root = await tempRoot('orca-bundled-resources-')
-    const userDataPath = await tempRoot('orca-bundled-user-data-')
+    const root = await tempRoot('occ-bundled-resources-')
+    const userDataPath = await tempRoot('occ-bundled-user-data-')
     const first = await writeBundle(root)
     await writeIndex(root, first.path, first.hash)
     await bootstrapBundledPlugins({ root, userDataPath, hostVersion: '1.4.0' })
@@ -89,28 +89,28 @@ describe('bundled plugin bootstrap', () => {
     const updated = await bootstrapBundledPlugins({ root, userDataPath, hostVersion: '1.4.0' })
 
     expect(updated).toEqual({
-      installed: ['stablyai.orca-skills'],
+      installed: ['stablyai.occ-skills'],
       unchanged: [],
       retired: [],
       errors: []
     })
     const lock = await readPluginLockfile(join(userDataPath, 'plugins'))
-    expect(lock.plugins['stablyai.orca-skills']?.contentHash).toBe(second.hash)
+    expect(lock.plugins['stablyai.occ-skills']?.contentHash).toBe(second.hash)
   })
 
   it('repairs a missing or modified bundled current version', async () => {
-    const root = await tempRoot('orca-bundled-resources-')
-    const userDataPath = await tempRoot('orca-bundled-user-data-')
+    const root = await tempRoot('occ-bundled-resources-')
+    const userDataPath = await tempRoot('occ-bundled-user-data-')
     const bundle = await writeBundle(root)
     await writeIndex(root, bundle.path, bundle.hash)
     await bootstrapBundledPlugins({ root, userDataPath, hostVersion: '1.4.0' })
-    const versionDir = join(userDataPath, 'plugins', 'stablyai.orca-skills', bundle.hash)
-    await writeFile(join(versionDir, 'orca-plugin.json'), '{}')
+    const versionDir = join(userDataPath, 'plugins', 'stablyai.occ-skills', bundle.hash)
+    await writeFile(join(versionDir, 'occ-plugin.json'), '{}')
 
     await expect(
       bootstrapBundledPlugins({ root, userDataPath, hostVersion: '1.4.0' })
     ).resolves.toEqual({
-      installed: ['stablyai.orca-skills'],
+      installed: ['stablyai.occ-skills'],
       unchanged: [],
       retired: [],
       errors: []
@@ -120,7 +120,7 @@ describe('bundled plugin bootstrap', () => {
     await expect(
       bootstrapBundledPlugins({ root, userDataPath, hostVersion: '1.4.0' })
     ).resolves.toEqual({
-      installed: ['stablyai.orca-skills'],
+      installed: ['stablyai.occ-skills'],
       unchanged: [],
       retired: [],
       errors: []
@@ -128,12 +128,12 @@ describe('bundled plugin bootstrap', () => {
   })
 
   it('uninstalls a previously bundled plugin once a release stops shipping it', async () => {
-    const root = await tempRoot('orca-bundled-resources-')
-    const userDataPath = await tempRoot('orca-bundled-user-data-')
+    const root = await tempRoot('occ-bundled-resources-')
+    const userDataPath = await tempRoot('occ-bundled-user-data-')
     const bundle = await writeBundle(root)
     await writeIndex(root, bundle.path, bundle.hash)
     await bootstrapBundledPlugins({ root, userDataPath, hostVersion: '1.4.0' })
-    const dataDir = join(userDataPath, 'plugins-data', 'stablyai.orca-skills')
+    const dataDir = join(userDataPath, 'plugins-data', 'stablyai.occ-skills')
     await mkdir(dataDir, { recursive: true })
     await writeFile(join(root, 'bundled-plugins.json'), JSON.stringify({ version: 1, plugins: [] }))
 
@@ -142,11 +142,11 @@ describe('bundled plugin bootstrap', () => {
     ).resolves.toEqual({
       installed: [],
       unchanged: [],
-      retired: ['stablyai.orca-skills'],
+      retired: ['stablyai.occ-skills'],
       errors: []
     })
     expect((await readPluginLockfile(join(userDataPath, 'plugins'))).plugins).toEqual({})
-    await expect(access(join(userDataPath, 'plugins', 'stablyai.orca-skills'))).rejects.toThrow()
+    await expect(access(join(userDataPath, 'plugins', 'stablyai.occ-skills'))).rejects.toThrow()
     await expect(access(dataDir)).rejects.toThrow()
     await expect(
       bootstrapBundledPlugins({ root, userDataPath, hostVersion: '1.4.0' })
@@ -154,19 +154,19 @@ describe('bundled plugin bootstrap', () => {
   })
 
   it('leaves plugins the user installed alone', async () => {
-    const root = await tempRoot('orca-bundled-resources-')
-    const userDataPath = await tempRoot('orca-bundled-user-data-')
+    const root = await tempRoot('occ-bundled-resources-')
+    const userDataPath = await tempRoot('occ-bundled-user-data-')
     const sourcePath = join(root, 'local-plugin')
     await mkdir(sourcePath, { recursive: true })
     await writeFile(
-      join(sourcePath, 'orca-plugin.json'),
+      join(sourcePath, 'occ-plugin.json'),
       JSON.stringify({
         manifestVersion: 1,
         id: 'local-plugin',
         publisher: 'someone',
         name: 'Local Plugin',
         version: '1.0.0',
-        engines: { orca: '>=1.0.0' },
+        engines: { occ: '>=1.0.0' },
         pluginApi: 1,
         capabilities: []
       })
@@ -187,8 +187,8 @@ describe('bundled plugin bootstrap', () => {
   })
 
   it('refuses mismatched release hashes before publication', async () => {
-    const root = await tempRoot('orca-bundled-resources-')
-    const userDataPath = await tempRoot('orca-bundled-user-data-')
+    const root = await tempRoot('occ-bundled-resources-')
+    const userDataPath = await tempRoot('occ-bundled-user-data-')
     const bundle = await writeBundle(root)
     await writeIndex(root, bundle.path, 'f'.repeat(64))
 

@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('../node-runtime/pinned-runtime-materializer', () => ({
   materializeNodeRuntimeArchive: mocks.download
 }))
-function runner(present = false, libc = 'glibc 2.31', promoted = 'ORCA_NODE_RUNTIME_READY') {
+function runner(present = false, libc = 'glibc 2.31', promoted = 'OCC_NODE_RUNTIME_READY') {
   return vi.fn<WslRuntimeCommand>(async (spec) => {
     if (spec.program === 'uname') {
       return 'x86_64'
@@ -24,10 +24,10 @@ function runner(present = false, libc = 'glibc 2.31', promoted = 'ORCA_NODE_RUNT
     if (spec.script?.startsWith('printf')) {
       return '/home/fake'
     }
-    if (spec.script?.includes('ORCA_NODE_RUNTIME_EXTRACT_FAILED')) {
+    if (spec.script?.includes('OCC_NODE_RUNTIME_EXTRACT_FAILED')) {
       return promoted
     }
-    return present ? 'ORCA_NODE_RUNTIME_READY' : 'ORCA_NODE_RUNTIME_MISSING'
+    return present ? 'OCC_NODE_RUNTIME_READY' : 'OCC_NODE_RUNTIME_MISSING'
   })
 }
 describe('shared WSL pinned runtime', () => {
@@ -38,7 +38,7 @@ describe('shared WSL pinned runtime', () => {
     expect(mocks.download).toHaveBeenCalledWith('linux-x64-glibc', '/fake/cache', expect.anything())
     expect(result).toContain(NODE_RUNTIME_ASSETS['linux-x64-glibc'].executableSha256)
     const install = run.mock.calls.find(([spec]) =>
-      spec.script?.includes('ORCA_NODE_RUNTIME_EXTRACT_FAILED')
+      spec.script?.includes('OCC_NODE_RUNTIME_EXTRACT_FAILED')
     )?.[0]
     expect(install?.args).toEqual(['/mnt/c/cache/pinned.tar.gz'])
     expect(install?.script).toContain('--version')
@@ -50,7 +50,7 @@ describe('shared WSL pinned runtime', () => {
     await ensureWslPinnedRuntime(run, '/fake/cache', new AbortController().signal)
     expect(mocks.download).not.toHaveBeenCalled()
     expect(
-      run.mock.calls.some(([spec]) => spec.script?.includes('ORCA_NODE_RUNTIME_EXTRACT_FAILED'))
+      run.mock.calls.some(([spec]) => spec.script?.includes('OCC_NODE_RUNTIME_EXTRACT_FAILED'))
     ).toBe(false)
     expect(run.mock.calls.some(([spec]) => spec.script?.includes('sha256sum'))).toBe(true)
   })
@@ -110,7 +110,7 @@ describe('shared WSL pinned runtime', () => {
     ).rejects.toThrow('glibc 2.27 is older than 2.28')
     expect(mocks.download).not.toHaveBeenCalled()
     expect(
-      run.mock.calls.some(([spec]) => spec.script?.includes('ORCA_NODE_RUNTIME_EXTRACT_FAILED'))
+      run.mock.calls.some(([spec]) => spec.script?.includes('OCC_NODE_RUNTIME_EXTRACT_FAILED'))
     ).toBe(false)
     await expect(
       ensureWslPinnedRuntime(
@@ -118,7 +118,7 @@ describe('shared WSL pinned runtime', () => {
         '/fake/cache',
         new AbortController().signal
       )
-    ).resolves.toContain('/home/fake/.cache/orca')
+    ).resolves.toContain('/home/fake/.cache/occ')
   })
   it('gives a shared download its own deadline and lets each caller leave on its own signal', async () => {
     const archive = Promise.withResolvers<string>()
@@ -138,7 +138,7 @@ describe('shared WSL pinned runtime', () => {
     await expect(a).rejects.toThrow('first caller deadline')
     expect(downloadSignal?.aborted).toBe(false)
     archive.resolve('C:/cache/pinned.tar.gz')
-    await expect(b).resolves.toContain('/home/fake/.cache/orca')
+    await expect(b).resolves.toContain('/home/fake/.cache/occ')
     mocks.download.mockReset().mockImplementation(async () => 'C:/cache/pinned.tar.gz')
   })
 })

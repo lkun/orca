@@ -8,7 +8,7 @@ const {
   collectDiagnosticBundleMock,
   getDiagnosticsStatusMock,
   recordCrashBreadcrumbMock,
-  resolveDiagnosticOrcaChannelMock,
+  resolveDiagnosticOCCChannelMock,
   spanEndMock,
   startSpanMock,
   submitFeedbackMock
@@ -21,7 +21,7 @@ const {
     collectDiagnosticBundleMock: vi.fn(),
     getDiagnosticsStatusMock: vi.fn(),
     recordCrashBreadcrumbMock: vi.fn(),
-    resolveDiagnosticOrcaChannelMock: vi.fn(),
+    resolveDiagnosticOCCChannelMock: vi.fn(),
     spanEndMock,
     startSpanMock: vi.fn(() => ({
       traceId: 'trace-id',
@@ -68,7 +68,7 @@ vi.mock('../observability', () => ({
 }))
 
 vi.mock('../observability/diagnostic-upload-endpoint', () => ({
-  resolveDiagnosticOrcaChannel: resolveDiagnosticOrcaChannelMock
+  resolveDiagnosticOCCChannel: resolveDiagnosticOCCChannelMock
 }))
 
 vi.mock('../observability/tracer', () => ({
@@ -128,8 +128,8 @@ describe('registerCrashReportingHandlers', () => {
       traceFilePath: '/tmp/main.trace.ndjson',
       traceFamilySize: 25
     })
-    resolveDiagnosticOrcaChannelMock.mockReset()
-    resolveDiagnosticOrcaChannelMock.mockReturnValue('stable')
+    resolveDiagnosticOCCChannelMock.mockReset()
+    resolveDiagnosticOCCChannelMock.mockReturnValue('stable')
     startSpanMock.mockClear()
     spanEndMock.mockClear()
     submitFeedbackMock.mockReset()
@@ -321,7 +321,7 @@ describe('registerCrashReportingHandlers', () => {
       }
     })
     expect(collectDiagnosticBundleMock).toHaveBeenCalledWith(
-      expect.objectContaining({ lookbackMinutes: 3 * 24 * 60, orcaChannel: 'stable' })
+      expect.objectContaining({ lookbackMinutes: 3 * 24 * 60, occChannel: 'stable' })
     )
     expect(submitFeedbackMock).toHaveBeenCalledWith({
       feedback: expect.stringContaining('Report ID: not captured'),

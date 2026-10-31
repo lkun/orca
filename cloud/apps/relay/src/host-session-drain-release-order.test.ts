@@ -1,4 +1,4 @@
-import { RELAY_CLOSE_CODE } from '@orca-cloud/relay-contract'
+import { RELAY_CLOSE_CODE } from '@occ-cloud/relay-contract'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { DRAIN_RELEASE_BEFORE_CLOSE_MS } from './host-session-registry.js'
 import {
@@ -88,7 +88,7 @@ describe('a zero-grace drain releases the host before telling it', () => {
     const slow = vi
       .mocked(console.warn)
       .mock.calls.map(([line]) => String(line))
-      .filter((line) => line.includes('"orca_relay_host_drain_release_slow"'))
+      .filter((line) => line.includes('"occ_relay_host_drain_release_slow"'))
     expect(slow).toHaveLength(1)
     expect(slow[0]).not.toContain(h.identity.relayHostId)
   })

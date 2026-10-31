@@ -57,7 +57,7 @@ export function escapeDetailsHtml(value: string): string {
 export function parseDetailsAttributes(rawAttributes: string): Record<string, unknown> {
   // Match validation’s whitespace rules around = or editable toggles lose heading variants.
   const variantMatch = rawAttributes.match(
-    /\sdata-orca-toggle\s*=\s*(?:"(heading-[1-5])"|'(heading-[1-5])'|(heading-[1-5]))(?:\s|$)/i
+    /\sdata-occ-toggle\s*=\s*(?:"(heading-[1-5])"|'(heading-[1-5])'|(heading-[1-5]))(?:\s|$)/i
   )
   return {
     open: /\sopen(?:\s|=|$)/i.test(rawAttributes),
@@ -76,11 +76,11 @@ export function detailsBodyHtmlToMarkdown(body: string): string {
 }
 
 export function renderDetailsAttributes(attrs: Record<string, unknown> | undefined): string {
-  const attributes = ['class="orca-details"']
+  const attributes = ['class="occ-details"']
 
   const variant = parseToggleHeadingVariant(attrs?.variant)
   if (variant) {
-    attributes.push(`data-orca-toggle="${variant}"`)
+    attributes.push(`data-occ-toggle="${variant}"`)
   }
 
   if (attrs?.open === true) {
@@ -149,11 +149,11 @@ function hasOnlySupportedDetailsAttributes(rawAttributes: string): boolean {
       .replace(/\s+open(?:\s*=\s*(?:""|"open"|''|'open'|open))?(?=\s|$)/giu, '')
       // HTML attribute names ignore case; class tokens do not.
       .replace(
-        /\s+[cC][lL][aA][sS][sS]\s*=\s*(?:"orca-details"|'orca-details'|orca-details)(?=\s|$)/gu,
+        /\s+[cC][lL][aA][sS][sS]\s*=\s*(?:"occ-details"|'occ-details'|occ-details)(?=\s|$)/gu,
         ''
       )
       .replace(
-        /\s+data-orca-toggle\s*=\s*(?:"heading-[1-5]"|'heading-[1-5]'|heading-[1-5])(?=\s|$)/giu,
+        /\s+data-occ-toggle\s*=\s*(?:"heading-[1-5]"|'heading-[1-5]'|heading-[1-5])(?=\s|$)/giu,
         ''
       )
       .trim() === ''

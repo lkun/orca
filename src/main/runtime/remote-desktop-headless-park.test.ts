@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { publishHeadlessRuntimeGraph } from './headless-runtime-graph'
 import { partialRuntimeStore } from './runtime-store-partial-fixture'
 
@@ -15,7 +15,7 @@ function createRuntime({ headless }: { headless: boolean }) {
     getWorktreeMeta: () => undefined,
     getSettings: () => ({ workspaceDir: '/tmp/workspaces', mobileAutoRestoreFitMs: 5_000 })
   }
-  const runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+  const runtime = new OCCRuntimeService(partialRuntimeStore(store))
   const sizes = new Map([[PTY, { ...SPAWN_GRID }]])
   runtime.setPtyController({
     write: () => true,

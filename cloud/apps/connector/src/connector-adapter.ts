@@ -1,5 +1,5 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
-import type { ConnectorConversation } from '@orca-cloud/connector-contract'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
+import type { ConnectorConversation } from '@occ-cloud/connector-contract'
 import type { ClaimedPost, PostBody } from './connector-posts.js'
 import type { PlaceOption } from './machine-choice.js'
 import type { AnswerablePrompt } from './owner-controls.js'

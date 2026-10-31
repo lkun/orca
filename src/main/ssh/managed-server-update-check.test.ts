@@ -4,8 +4,8 @@ import {
   checkManagedServerUpdate,
   type ManagedServerUpdateDeps
 } from './managed-server-update-check'
-import type { ManagedOrcadAutoUpdateOutcome } from '../managed-server/lifecycle/orcad-managed-auto-update'
-import { ORCAD_ACTIVATION_FENCE_BUSY_CODE } from '../managed-server/activation/orcad-activation-fence-hold'
+import type { ManagedOCCdAutoUpdateOutcome } from '../managed-server/lifecycle/occd-managed-auto-update'
+import { OCCD_ACTIVATION_FENCE_BUSY_CODE } from '../managed-server/activation/occd-activation-fence-hold'
 
 // Read the final callback because retry eligibility is decided under the lifecycle lock.
 const failedBeforeOf = (autoUpdate: ManagedServerUpdateDeps['autoUpdate']) =>
@@ -14,7 +14,7 @@ const failedBeforeOf = (autoUpdate: ManagedServerUpdateDeps['autoUpdate']) =>
 const target: SshTarget = { id: 'ssh-1', label: 'Box', host: 'box', port: 22, username: 'me' }
 
 function deps(
-  outcome: ManagedOrcadAutoUpdateOutcome | Error,
+  outcome: ManagedOCCdAutoUpdateOutcome | Error,
   overrides: Partial<ManagedServerUpdateDeps> = {}
 ): ManagedServerUpdateDeps {
   return {
@@ -35,7 +35,7 @@ function deps(
 const check = (d: ManagedServerUpdateDeps) => checkManagedServerUpdate(target, 'env-1', d, vi.fn())
 
 describe('checkManagedServerUpdate notes a server that may be behind this app', () => {
-  it.each<[string, ManagedOrcadAutoUpdateOutcome | Error, unknown]>([
+  it.each<[string, ManagedOCCdAutoUpdateOutcome | Error, unknown]>([
     ['rolled back', { outcome: 'skipped', reason: 'rolled-back' }, { state: 'rolled-back' }],
     ['no bundled build', { outcome: 'skipped', reason: 'no-template' }, { state: 'no-template' }],
     ['mid-migration', { outcome: 'skipped', reason: 'migrating' }, { state: 'migrating' }],
@@ -43,7 +43,7 @@ describe('checkManagedServerUpdate notes a server that may be behind this app', 
     ['failed', { outcome: 'failed', reason: 'bad' }, { state: 'failed', detail: 'bad' }],
     [
       'fence busy',
-      { outcome: 'deferred', code: ORCAD_ACTIVATION_FENCE_BUSY_CODE, reason: 'held' },
+      { outcome: 'deferred', code: OCCD_ACTIVATION_FENCE_BUSY_CODE, reason: 'held' },
       { state: 'deferred', detail: 'held' }
     ],
     ['host newer', { outcome: 'skipped', reason: 'host-newer' }, { state: 'host-newer' }]
@@ -101,7 +101,7 @@ describe('a recorded update failure', () => {
         },
         // Serialize like the host lifecycle lock, reading each decision after the preceding update.
         autoUpdate: (_id, options) => {
-          const run = lock.then(async (): Promise<ManagedOrcadAutoUpdateOutcome> => {
+          const run = lock.then(async (): Promise<ManagedOCCdAutoUpdateOutcome> => {
             if (options.failedBefore()) {
               return { outcome: 'skipped', reason: 'failed-before' }
             }

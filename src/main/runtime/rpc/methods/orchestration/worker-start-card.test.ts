@@ -13,7 +13,7 @@ import {
   hostTestAttachParams,
   hostTestOperationId
 } from '../../../../native-chat/agent-session-wire/structured-agent-session-host-test-data'
-import { testOrcaSessionId } from '../../../../../shared/orca-session-address-test-fixture'
+import { testOCCSessionId } from '../../../../../shared/occ-session-address-test-fixture'
 import { projectStructuredAgentStartItem } from '../../../../../shared/structured-agent-start-projection'
 import {
   AGENT_JOURNAL_THREAD_SCOPE,
@@ -39,8 +39,8 @@ import {
 } from '../../../../../shared/protocol-version'
 
 const h = createOrchestrationRpcHarness()
-const COORD = testOrcaSessionId('start-card-caller')
-const WORKER = testOrcaSessionId('start-card-worker')
+const COORD = testOCCSessionId('start-card-caller')
+const WORKER = testOCCSessionId('start-card-worker')
 let rig: QueuedMessageTestRig | undefined
 afterEach(async () => {
   setStructuredAgentSessionHost(null)
@@ -174,7 +174,7 @@ it.each([
       objective: 'cards',
       coordinatorHandle: null,
       coordinatorPaneKey: null,
-      coordinatorOrcaSessionId: COORD
+      coordinatorOCCSessionId: COORD
     })
     const append = vi.spyOn(current.host, 'appendAgentStart')
     const pending = Promise.withResolvers<void>()
@@ -203,7 +203,7 @@ it.each([
         params: dispatch
           ? {
               task: db.createTask({ runId: run.id, spec: task }).id,
-              to: `orca_session_id:${WORKER}`,
+              to: `occ_session_id:${WORKER}`,
               inject: scenario === 'dispatch',
               returnPreamble: true
             }
@@ -212,7 +212,7 @@ it.each([
               ...(scenario === 'reuse' ? {} : { agent: 'codex' }),
               timeoutMs: 1000,
               ...(federated ? { on: 'remote', worktree: 'id:remote-workspace' } : {}),
-              ...(scenario === 'reuse' ? { terminal: `orca_session_id:${WORKER}` } : {})
+              ...(scenario === 'reuse' ? { terminal: `occ_session_id:${WORKER}` } : {})
             },
         orchestrationCompatibilityEvidence: { agentSessionId: COORD }
       },
@@ -225,7 +225,7 @@ it.each([
     ]
     for (const [index, body] of callerBodies.entries()) {
       await callerJournal.appendItem(
-        { provider: 'orca', clientMessageId: `caller-${index}` },
+        { provider: 'occ', clientMessageId: `caller-${index}` },
         body,
         {
           fence: current.store.getConversation(COORD)!.currentFence,
@@ -385,7 +385,7 @@ it.each([
       expect(reopened.items.filter(({ body }) => body.kind !== 'tool-call')).toEqual(
         snapshot.items.filter(({ body }) => body.kind !== 'tool-call')
       )
-      const recovered = reopened.items.find(({ itemId }) => itemId === 'orca:caller-1')
+      const recovered = reopened.items.find(({ itemId }) => itemId === 'occ:caller-1')
       expect(recovered).toEqual({
         ...snapshot.items[1],
         revision: snapshot.items[1].revision + 1,
@@ -408,7 +408,7 @@ it.each([
     if (scenario === 'success') {
       for (let index = 0; index < 3; index++) {
         await journal.appendItem(
-          { provider: 'orca', clientMessageId: `pressure-${index}` },
+          { provider: 'occ', clientMessageId: `pressure-${index}` },
           {
             kind: 'message',
             role: 'assistant',
@@ -437,7 +437,7 @@ it.each([
       expect(older.page.items.find(({ itemId }) => itemId === card.itemId)).toEqual(card)
     }
     await journal.appendTombstone(
-      { provider: 'orca', clientMessageId: `agent-start:${card.body.dispatchId}` },
+      { provider: 'occ', clientMessageId: `agent-start:${card.body.dispatchId}` },
       { fence: current.store.getConversation(COORD)!.currentFence }
     )
     if (scenario === 'success') {
@@ -544,7 +544,7 @@ it.each([10, 100])(
     const journal = current.host.collaboratorsForTests().sessions.get(COORD)!.journal
     for (let index = 0; index < 9 * count; index++) {
       await journal.appendItem(
-        { provider: 'orca', clientMessageId: `history-${index}` },
+        { provider: 'occ', clientMessageId: `history-${index}` },
         {
           kind: 'message',
           role: 'assistant',
@@ -738,7 +738,7 @@ it.each([10, 100])(
           party: {
             address: fact.workerAddress,
             terminalHandle: fact.workerAddress,
-            orcaSessionId: null
+            occSessionId: null
           },
           name: fact.name
         }

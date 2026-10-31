@@ -223,13 +223,13 @@ describe('requireOrigin and requireDirector', () => {
   })
 
   it('exits 2 when the director origin is missing', () => {
-    const previous = process.env.ORCA_RELAY_BENCH_DIRECTOR
-    delete process.env.ORCA_RELAY_BENCH_DIRECTOR
+    const previous = process.env.OCC_RELAY_BENCH_DIRECTOR
+    delete process.env.OCC_RELAY_BENCH_DIRECTOR
     try {
       expect(captureRefusal(() => requireDirector(new Map(), 'usage'))?.code).toBe(2)
     } finally {
       if (previous !== undefined) {
-        process.env.ORCA_RELAY_BENCH_DIRECTOR = previous
+        process.env.OCC_RELAY_BENCH_DIRECTOR = previous
       }
     }
   })

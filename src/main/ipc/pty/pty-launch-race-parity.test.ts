@@ -1,4 +1,4 @@
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import type { TerminalCreateOptions } from '../../runtime/runtime-terminal-contracts'
 import { registerPtyHandlers } from './register-handlers'
 import { makePaneKey } from '../../../shared/stable-pane-id'
@@ -69,7 +69,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -113,7 +113,7 @@ describe('launch race parity, both spawn lanes', () => {
         '94949494-9494-4494-8494-949494949494'
       )
       const store = Object.assign(createPaneBindingStore(), { getSettings: () => ({}) })
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       Object.assign(runtime, {
         store,
         resolveTerminalWorkspaceLaunchScope: async () => ({
@@ -727,7 +727,7 @@ describe('launch race parity, both spawn lanes', () => {
 
         const spawn = lanes.spawn[lane]({ ...pane.args, ...SAVE_BINDING_ARGS[lane] })
 
-        await expect(spawn).rejects.toThrow('ORCA_TERMINAL_SESSION_STATE_SAVE_FAILED')
+        await expect(spawn).rejects.toThrow('OCC_TERMINAL_SESSION_STATE_SAVE_FAILED')
         await expect(spawn).rejects.toMatchObject({ agentSessionOperationOutcome: 'unknown' })
         expect(shutdown).toHaveBeenCalledWith(ptyId, {
           immediate: true,

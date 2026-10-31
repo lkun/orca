@@ -3,8 +3,8 @@ import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeService } from './occ-runtime'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import type { DeviceRegistry } from './device-registry'
 
 vi.mock('../git/worktree', () => ({
@@ -12,14 +12,14 @@ vi.mock('../git/worktree', () => ({
   listWorktreesStrict: vi.fn().mockResolvedValue([])
 }))
 
-let server: OrcaRuntimeRpcServer
+let server: OCCRuntimeRpcServer
 let registry: DeviceRegistry
 let parentDeviceId: string
 
 beforeEach(async () => {
-  server = new OrcaRuntimeRpcServer({
-    runtime: new OrcaRuntimeService(),
-    userDataPath: mkdtempSync(join(tmpdir(), 'orca-delegated-sync-')),
+  server = new OCCRuntimeRpcServer({
+    runtime: new OCCRuntimeService(),
+    userDataPath: mkdtempSync(join(tmpdir(), 'occ-delegated-sync-')),
     enableWebSocket: true,
     wsPort: 0
   })

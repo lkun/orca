@@ -11,7 +11,7 @@ import { PrivacyDiagnosticsSection } from './PrivacyDiagnosticsSection'
 import { translate } from '@/i18n/i18n'
 import { openAppHttpLink } from '@/lib/app-http-link-open'
 
-export type EnvBlockedReason = 'do_not_track' | 'orca_disabled' | 'ci'
+export type EnvBlockedReason = 'do_not_track' | 'occ_disabled' | 'ci'
 export type BlockedReason = { kind: 'env'; reason: EnvBlockedReason }
 
 type PrivacyPaneProps = {
@@ -27,7 +27,7 @@ export function isEnvBlocked(consent: TelemetryConsentState | null): consent is 
   return (
     consent?.effective === 'disabled' &&
     (consent.reason === 'do_not_track' ||
-      consent.reason === 'orca_disabled' ||
+      consent.reason === 'occ_disabled' ||
       consent.reason === 'ci')
   )
 }
@@ -36,8 +36,8 @@ export function envVarNameForReason(reason: EnvBlockedReason): string {
   if (reason === 'do_not_track') {
     return 'DO_NOT_TRACK'
   }
-  if (reason === 'orca_disabled') {
-    return 'ORCA_TELEMETRY_DISABLED'
+  if (reason === 'occ_disabled') {
+    return 'OCC_TELEMETRY_DISABLED'
   }
   return 'CI'
 }

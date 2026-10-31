@@ -4,7 +4,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { openRelayDatabase } from './database.js'
 import { POSTGRES_STATEMENT_STATS_MIGRATION } from './postgres-statement-stats.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 describePostgres('optional PostgreSQL statement statistics', () => {
@@ -116,7 +116,7 @@ describePostgres('optional PostgreSQL statement statistics', () => {
     try {
       await owner.query('BEGIN')
       await owner.query(
-        `SELECT pg_advisory_xact_lock(hashtext('orca-relay'), hashtext('statement-stats'))`
+        `SELECT pg_advisory_xact_lock(hashtext('occ-relay'), hashtext('statement-stats'))`
       )
       await contender.query(POSTGRES_STATEMENT_STATS_MIGRATION)
       expect(await installed(contender)).toBe(false)

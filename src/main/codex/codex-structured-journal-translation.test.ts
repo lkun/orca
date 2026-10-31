@@ -471,7 +471,7 @@ describe('codex journal translation', () => {
 
     expect(tap.rows.map((row) => row.key)).toEqual([
       'codex:thread-abc:turn-1:0',
-      'orca:codex-item%3Athread-abc%3Aitem-2'
+      'occ:codex-item%3Athread-abc%3Aitem-2'
     ])
   })
 
@@ -678,7 +678,7 @@ describe('codex journal translation', () => {
     expect(admission).toEqual({ accepted: true })
     expect(bound).toEqual([
       [
-        'orca:codex-prompt%3Athread-abc%3Aapproval-hard-watermark',
+        'occ:codex-prompt%3Athread-abc%3Aapproval-hard-watermark',
         THREAD_ID,
         'approval-hard-watermark'
       ]
@@ -725,8 +725,8 @@ describe('codex journal translation', () => {
 
     expect(admission).toEqual({ accepted: true })
     expect(bound.map(([journalItemId]) => journalItemId)).toEqual([
-      'orca:codex-prompt%3Athread-abc%3Ainput-hard-watermark%3Aq1',
-      'orca:codex-prompt%3Athread-abc%3Ainput-hard-watermark%3Aq2'
+      'occ:codex-prompt%3Athread-abc%3Ainput-hard-watermark%3Aq1',
+      'occ:codex-prompt%3Athread-abc%3Ainput-hard-watermark%3Aq2'
     ])
     expect(deferred.state()).toMatchObject({ queuedOperations: 2, backpressured: true })
 

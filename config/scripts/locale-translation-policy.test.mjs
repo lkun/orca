@@ -47,7 +47,7 @@ describe('locale-translation-policy', () => {
     ).toBe('Gemini')
   })
 
-  it('preserves orca URL scheme in Chinese', () => {
+  it('preserves occ URL scheme in Chinese', () => {
     expect(
       repairTranslatedValue({
         key: 'auto.web.WebConnect.27393856e4',

@@ -175,8 +175,8 @@ describe('resolveWindowsShiftEnterEncoding', () => {
       'OMP ready',
       'OMP',
       'OMP - action required',
-      'OMP - fixing the sidebar - orca',
-      '⠋ OMP - fixing the sidebar - orca',
+      'OMP - fixing the sidebar - occ',
+      '⠋ OMP - fixing the sidebar - occ',
       'OMP > fixing the sidebar'
     ]) {
       expect(resolveWindowsShiftEnterEncodingForPane(state, 'tab:pane', title)).toBe('csi-u')

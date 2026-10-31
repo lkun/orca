@@ -18,7 +18,7 @@ import { useMobileColorScheme } from '../theme/use-mobile-color-scheme'
 function linkModeOptions(t: Translate): PickerOption<MobileTerminalLinkOpenMode>[] {
   return [
     {
-      value: 'orca-browser',
+      value: 'occ-browser',
       label: t('settings.browserSettingsScreen.desktopBrowser', 'OCC browser on desktop'),
       subtitle: t(
         'settings.browserSettingsScreen.desktopBrowserDescription',
@@ -52,13 +52,13 @@ export default function BrowserSettingsScreen({
   useMobileColorScheme()
   const router = useRouter()
   const insets = useSafeAreaInsets()
-  const [linkMode, setLinkMode] = useState<MobileTerminalLinkOpenMode>('orca-browser')
+  const [linkMode, setLinkMode] = useState<MobileTerminalLinkOpenMode>('occ-browser')
   const [pickerOpen, setPickerOpen] = useState(false)
   const [error, setError] = useState<'load' | 'save' | null>(null)
   const options = linkModeOptions(t)
   const selectionRevision = useRef(0)
   const failedSelectionRevision = useRef<number | null>(null)
-  const savedMode = useRef<MobileTerminalLinkOpenMode>('orca-browser')
+  const savedMode = useRef<MobileTerminalLinkOpenMode>('occ-browser')
   const hasSaved = useRef(false)
 
   useEffect(() => {

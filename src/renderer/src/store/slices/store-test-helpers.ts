@@ -43,7 +43,7 @@ import { createPullRequestGenerationSlice } from './pull-request-generation'
 import { createCommitMessageGenerationSlice } from './commit-message-generation'
 import { createPinnedTabCloseConfirmSlice } from './pinned-tab-close-confirm'
 import { createRecentlyClosedTabsSlice } from './recently-closed-tabs'
-import { createOrcaProfilesSlice } from './orca-profiles'
+import { createOCCProfilesSlice } from './occ-profiles'
 import { createNewIssueDraftSlice } from './new-issue-draft'
 import { createFeedbackDraftSlice } from './feedback-draft'
 import { createTaskCreationDraftsSlice } from './task-creation-drafts'
@@ -113,7 +113,7 @@ export function createTestStore() {
         ...createCommitMessageGenerationSlice(...a),
         ...createPinnedTabCloseConfirmSlice(...a),
         ...createRecentlyClosedTabsSlice(...a),
-        ...createOrcaProfilesSlice(...a),
+        ...createOCCProfilesSlice(...a),
         ...createNewIssueDraftSlice(...a),
         ...createFeedbackDraftSlice(...a),
         ...createTaskCreationDraftsSlice(...a),

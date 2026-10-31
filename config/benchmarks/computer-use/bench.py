@@ -166,7 +166,7 @@ class Trial:
         return {"idle": idle, "steal": steal, "keys_sent": sent}
 
     def engine(self, name, sources):
-        from providers import Cua, CuaEngine, OrcaEngine, OrcaLinux, OrcaWin, cua_sc
+        from providers import Cua, CuaEngine, OCCEngine, OCCLinux, OCCWin, cua_sc
         if name == "cua":
             client = Cua(self.args.cua, str(self.directory / "cua-home"), self.log, self.engines)
             response = client.call("list_windows", {"pid": self.pid})
@@ -178,7 +178,7 @@ class Trial:
             if len(matches) != 1:
                 raise DiscoveryError(f"cua list_windows matched {len(matches)} fixture windows")
             return CuaEngine(client, self.pid, matches[0]["window_id"])
-        return OrcaEngine((OrcaWin if WIN else OrcaLinux)(str(sources / name), self.log, self.engines), self.pid)
+        return OCCEngine((OCCWin if WIN else OCCLinux)(str(sources / name), self.log, self.engines), self.pid)
 
     def run(self, cell, sources):
         row = {**cell, "prepared": False, "api_errors": [], "action_read_ms": [], "steps": []}
@@ -295,8 +295,8 @@ def markdown(meta, summary):
 
 
 def main():
-    if (os.environ.get("ORCA_COMPUTER_BENCH_ISOLATED") != "1" or os.environ.get("GITHUB_ACTIONS") != "true"
-            or os.environ.get("ORCA_BACKGROUND_LAUNCH") != "1" or sys.platform not in ("linux", "win32")):
+    if (os.environ.get("OCC_COMPUTER_BENCH_ISOLATED") != "1" or os.environ.get("GITHUB_ACTIONS") != "true"
+            or os.environ.get("OCC_BACKGROUND_LAUNCH") != "1" or sys.platform not in ("linux", "win32")):
         raise SystemExit("Native input benchmark requires the isolated Linux/Windows GitHub Actions desktop")
     global obs
     if WIN:

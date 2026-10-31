@@ -83,9 +83,9 @@ it('observes pre-initialize reports, validates session identity and keeps the la
     ],
     env: { PI_CODING_AGENT_DIR: '/accounts/omp', OMP_PROFILE: 'configured' },
     envToDelete: expect.arrayContaining([
-      'ORCA_CHAT_SCRATCH_DIR',
-      'ORCA_CHAT_VISUALS_DIR',
-      'ORCA_PANE_KEY'
+      'OCC_CHAT_SCRATCH_DIR',
+      'OCC_CHAT_VISUALS_DIR',
+      'OCC_PANE_KEY'
     ])
   })
   expect(children[0]!.agent.frames.map((frame) => frame.method)).toEqual([

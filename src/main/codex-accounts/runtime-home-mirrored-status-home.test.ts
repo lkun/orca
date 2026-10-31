@@ -19,14 +19,14 @@ vi.mock('node:os', async () => {
 
 beforeEach(() => {
   vi.resetModules()
-  testState.userData = mkdtempSync(join(tmpdir(), 'orca-codex-status-home-ud-'))
-  testState.home = mkdtempSync(join(tmpdir(), 'orca-codex-status-home-'))
+  testState.userData = mkdtempSync(join(tmpdir(), 'occ-codex-status-home-ud-'))
+  testState.home = mkdtempSync(join(tmpdir(), 'occ-codex-status-home-'))
   // Isolate routing checks from the developer's home overrides.
-  for (const key of ['ORCA_USER_DATA_PATH', 'CODEX_HOME', 'ORCA_CODEX_HOME']) {
+  for (const key of ['OCC_USER_DATA_PATH', 'CODEX_HOME', 'OCC_CODEX_HOME']) {
     previousEnv[key] = process.env[key]
     delete process.env[key]
   }
-  process.env.ORCA_USER_DATA_PATH = testState.userData
+  process.env.OCC_USER_DATA_PATH = testState.userData
   mkdirSync(join(testState.home, '.codex'), { recursive: true })
 })
 
@@ -57,7 +57,7 @@ function createStore(accounts: CodexManagedAccount[], activeId: string | null) {
 function createManagedAccount(id: string): CodexManagedAccount {
   const home = join(testState.userData, 'codex-accounts', id, 'home')
   mkdirSync(home, { recursive: true })
-  writeFileSync(join(home, '.orca-managed-home'), `${id}\n`, 'utf-8')
+  writeFileSync(join(home, '.occ-managed-home'), `${id}\n`, 'utf-8')
   writeFileSync(join(home, 'auth.json'), '{}', 'utf-8')
   return {
     id,
@@ -90,12 +90,12 @@ describe('CodexRuntimeHomeService.getMirroredHostHomePathForStatus', () => {
   it('returns the shared runtime home when a custom CODEX_HOME keeps the mirror lane', async () => {
     process.env.CODEX_HOME = join(testState.home, 'custom-codex-home')
     const { CodexRuntimeHomeService } = await import('./runtime-home-service')
-    const { getOrcaManagedCodexHomePath } = await import('../codex/codex-home-paths')
+    const { getOCCManagedCodexHomePath } = await import('../codex/codex-home-paths')
     const service = new CodexRuntimeHomeService(createStore([], null) as never)
 
     expect(service.getMirroredHostHomePathForStatus()).toEqual({
       kind: 'ready',
-      homePath: getOrcaManagedCodexHomePath()
+      homePath: getOCCManagedCodexHomePath()
     })
   })
 })

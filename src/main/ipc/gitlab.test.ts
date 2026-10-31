@@ -124,7 +124,7 @@ import { registerGitLabHandlers } from './gitlab'
 function repo(overrides: Partial<Repo> = {}): Repo {
   return {
     id: 'repo-local',
-    path: '/local/orca',
+    path: '/local/occ',
     displayName: 'OCC',
     badgeColor: '#737373',
     addedAt: 1,
@@ -205,7 +205,7 @@ describe('GitLab IPC handlers', () => {
       ) as Store
     )
     const details = ipcHandlers.get('gitlab:workItemDetails')!
-    const args = { repoPath: '/local/orca', iid: 8, type: 'mr' }
+    const args = { repoPath: '/local/occ', iid: 8, type: 'mr' }
 
     await expect(details(null, { ...args, background: true })).rejects.toThrow(
       "WSL distro 'Ubuntu' is not running"
@@ -219,7 +219,7 @@ describe('GitLab IPC handlers', () => {
   it('resolves repoId and source host context before listing work items', async () => {
     const remoteRepo = repo({
       id: 'repo-ssh',
-      path: '/ssh/orca',
+      path: '/ssh/occ',
       connectionId: 'builder',
       executionHostId: toSshExecutionHostId('builder')
     })
@@ -234,7 +234,7 @@ describe('GitLab IPC handlers', () => {
         sourceContext: {
           kind: 'task-source',
           provider: 'gitlab',
-          projectId: 'gitlab:stablyai/orca',
+          projectId: 'gitlab:stablyai/occ',
           hostId: toSshExecutionHostId('builder'),
           repoId: 'repo-ssh'
         }
@@ -242,7 +242,7 @@ describe('GitLab IPC handlers', () => {
     ).resolves.toEqual({ items: [] })
 
     expect(listWorkItemsMock).toHaveBeenCalledWith(
-      '/ssh/orca',
+      '/ssh/occ',
       'opened',
       1,
       20,
@@ -265,14 +265,14 @@ describe('GitLab IPC handlers', () => {
     registerGitLabHandlers(storeWithRepos([repo()]) as Store)
 
     const mergeRequests = await ipcHandlers.get('gitlab:listMRs')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       state: 'opened',
       page: 3,
       perPage: 1,
       query: '  fix login  '
     })
     const workItems = await ipcHandlers.get('gitlab:listWorkItems')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       state: 'opened',
       page: 3,
       perPage: 1,
@@ -283,7 +283,7 @@ describe('GitLab IPC handlers', () => {
     expect(workItems).toEqual(result)
     // Preserve the query's sixth argument slot; omitting it silently disables search (#6263).
     expect(listMergeRequestsMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       'opened',
       3,
       1,
@@ -292,7 +292,7 @@ describe('GitLab IPC handlers', () => {
       null
     )
     expect(listWorkItemsMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       'opened',
       3,
       1,
@@ -307,12 +307,12 @@ describe('GitLab IPC handlers', () => {
     registerGitLabHandlers(storeWithRepos([repo()]) as Store)
 
     await ipcHandlers.get('gitlab:listMRs')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       query: '   '
     })
 
     expect(listMergeRequestsMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       'opened',
       1,
       20,
@@ -324,18 +324,18 @@ describe('GitLab IPC handlers', () => {
 
   it('rejects source context for a different host', async () => {
     registerGitLabHandlers(
-      storeWithRepos([repo({ id: 'repo-local', path: '/local/orca' })]) as Store
+      storeWithRepos([repo({ id: 'repo-local', path: '/local/occ' })]) as Store
     )
 
     const handler = ipcHandlers.get('gitlab:listWorkItems')
     await expect(
       handler?.(null, {
-        repoPath: '/local/orca',
+        repoPath: '/local/occ',
         repoId: 'repo-local',
         sourceContext: {
           kind: 'task-source',
           provider: 'gitlab',
-          projectId: 'gitlab:stablyai/orca',
+          projectId: 'gitlab:stablyai/occ',
           hostId: toSshExecutionHostId('builder'),
           repoId: 'repo-local'
         }
@@ -346,7 +346,7 @@ describe('GitLab IPC handlers', () => {
   it('resolves pasted URL lookups by repoId and source host context', async () => {
     const remoteRepo = repo({
       id: 'repo-ssh',
-      path: '/ssh/orca',
+      path: '/ssh/occ',
       connectionId: 'builder',
       executionHostId: toSshExecutionHostId('builder')
     })
@@ -360,25 +360,25 @@ describe('GitLab IPC handlers', () => {
     const handler = ipcHandlers.get('gitlab:workItemByPath')
     await expect(
       handler?.(null, {
-        repoPath: '/local/orca',
+        repoPath: '/local/occ',
         repoId: 'repo-ssh',
         sourceContext: {
           kind: 'task-source',
           provider: 'gitlab',
-          projectId: 'gitlab:stablyai/orca',
+          projectId: 'gitlab:stablyai/occ',
           hostId: toSshExecutionHostId('builder'),
           repoId: 'repo-ssh'
         },
         host: 'gitlab.com',
-        path: 'stablyai/orca',
+        path: 'stablyai/occ',
         iid: 42,
         type: 'issue'
       })
     ).resolves.toMatchObject({ number: 42 })
 
     expect(getWorkItemByProjectRefMock).toHaveBeenCalledWith(
-      '/ssh/orca',
-      { host: 'gitlab.com', path: 'stablyai/orca' },
+      '/ssh/occ',
+      { host: 'gitlab.com', path: 'stablyai/occ' },
       42,
       'issue',
       'builder'
@@ -408,68 +408,68 @@ describe('GitLab IPC handlers', () => {
     listLabelsMock.mockResolvedValue([])
     listAssignableUsersMock.mockResolvedValue([])
     listTodosMock.mockResolvedValue([])
-    getProjectSlugMock.mockResolvedValue({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getProjectSlugMock.mockResolvedValue({ host: 'gitlab.com', path: 'stablyai/occ' })
     getMergeRequestForBranchMock.mockResolvedValue(null)
     getMergeRequestMock.mockResolvedValue(null)
     registerGitLabHandlers(storeWithRepos([repo()], projects) as Store)
     const localGitOptions = { wslDistro: 'Ubuntu' }
 
-    await ipcHandlers.get('gitlab:projectSlug')?.(null, { repoPath: '/local/orca' })
+    await ipcHandlers.get('gitlab:projectSlug')?.(null, { repoPath: '/local/occ' })
     await ipcHandlers.get('gitlab:mrForBranch')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       branch: 'feature/wsl'
     })
-    await ipcHandlers.get('gitlab:mr')?.(null, { repoPath: '/local/orca', iid: 8 })
+    await ipcHandlers.get('gitlab:mr')?.(null, { repoPath: '/local/occ', iid: 8 })
     await ipcHandlers.get('gitlab:listMRs')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       state: 'opened',
       page: 1,
       perPage: 20
     })
     await ipcHandlers.get('gitlab:listWorkItems')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       state: 'opened',
       page: 1,
       perPage: 20
     })
     const issueListResult = await ipcHandlers.get('gitlab:listIssues')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       state: 'opened',
       limit: 20,
       page: 3
     })
-    await ipcHandlers.get('gitlab:issue')?.(null, { repoPath: '/local/orca', number: 7 })
+    await ipcHandlers.get('gitlab:issue')?.(null, { repoPath: '/local/occ', number: 7 })
     await ipcHandlers.get('gitlab:createIssue')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       title: 'Title',
       body: 'Body'
     })
     await ipcHandlers.get('gitlab:updateIssue')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       number: 7,
       updates: { body: 'Updated' }
     })
     await ipcHandlers.get('gitlab:addIssueComment')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       number: 7,
       body: 'Comment'
     })
-    await ipcHandlers.get('gitlab:listLabels')?.(null, { repoPath: '/local/orca' })
-    await ipcHandlers.get('gitlab:listAssignableUsers')?.(null, { repoPath: '/local/orca' })
-    await ipcHandlers.get('gitlab:todos')?.(null, { repoPath: '/local/orca' })
+    await ipcHandlers.get('gitlab:listLabels')?.(null, { repoPath: '/local/occ' })
+    await ipcHandlers.get('gitlab:listAssignableUsers')?.(null, { repoPath: '/local/occ' })
+    await ipcHandlers.get('gitlab:todos')?.(null, { repoPath: '/local/occ' })
 
     const hostedReviewOptions = { localGitExecOptions: localGitOptions }
-    expect(getProjectSlugMock).toHaveBeenCalledWith('/local/orca', null, hostedReviewOptions)
+    expect(getProjectSlugMock).toHaveBeenCalledWith('/local/occ', null, hostedReviewOptions)
     expect(getMergeRequestForBranchMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       'feature/wsl',
       null,
       null,
       hostedReviewOptions
     )
-    expect(getMergeRequestMock).toHaveBeenCalledWith('/local/orca', 8, null, hostedReviewOptions)
+    expect(getMergeRequestMock).toHaveBeenCalledWith('/local/occ', 8, null, hostedReviewOptions)
     expect(listMergeRequestsMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       'opened',
       1,
       20,
@@ -480,7 +480,7 @@ describe('GitLab IPC handlers', () => {
     )
     expect(issueListResult).toMatchObject({ totalPages: 3 })
     expect(listWorkItemsMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       'opened',
       1,
       20,
@@ -490,7 +490,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(listIssuesMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       20,
       undefined,
       'opened',
@@ -499,9 +499,9 @@ describe('GitLab IPC handlers', () => {
       localGitOptions,
       3
     )
-    expect(getIssueMock).toHaveBeenCalledWith('/local/orca', 7, null, localGitOptions)
+    expect(getIssueMock).toHaveBeenCalledWith('/local/occ', 7, null, localGitOptions)
     expect(createIssueMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       'Title',
       'Body',
       undefined,
@@ -509,7 +509,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(updateIssueMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       7,
       { body: 'Updated' },
       undefined,
@@ -518,7 +518,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(addIssueCommentMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       7,
       'Comment',
       undefined,
@@ -526,14 +526,14 @@ describe('GitLab IPC handlers', () => {
       undefined,
       localGitOptions
     )
-    expect(listLabelsMock).toHaveBeenCalledWith('/local/orca', undefined, null, localGitOptions)
+    expect(listLabelsMock).toHaveBeenCalledWith('/local/occ', undefined, null, localGitOptions)
     expect(listAssignableUsersMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       undefined,
       null,
       localGitOptions
     )
-    expect(listTodosMock).toHaveBeenCalledWith('/local/orca', null, localGitOptions)
+    expect(listTodosMock).toHaveBeenCalledWith('/local/occ', null, localGitOptions)
   })
 
   it('routes local WSL project GitLab MR details, review, job, and pasted URL IPC through project git options', async () => {
@@ -573,47 +573,47 @@ describe('GitLab IPC handlers', () => {
     const localGitOptions = { wslDistro: 'Ubuntu' }
 
     await ipcHandlers.get('gitlab:workItemDetails')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       iid: 8,
       type: 'mr'
     })
-    await ipcHandlers.get('gitlab:closeMR')?.(null, { repoPath: '/local/orca', iid: 8 })
-    await ipcHandlers.get('gitlab:reopenMR')?.(null, { repoPath: '/local/orca', iid: 8 })
+    await ipcHandlers.get('gitlab:closeMR')?.(null, { repoPath: '/local/occ', iid: 8 })
+    await ipcHandlers.get('gitlab:reopenMR')?.(null, { repoPath: '/local/occ', iid: 8 })
     await ipcHandlers.get('gitlab:mergeMR')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       iid: 8,
       method: 'squash'
     })
     await ipcHandlers.get('gitlab:updateMR')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       iid: 8,
       updates: { title: 'Renamed' }
     })
     await ipcHandlers.get('gitlab:updateMRReviewers')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       iid: 8,
       reviewerIds: [1]
     })
     await ipcHandlers.get('gitlab:addMRComment')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       iid: 8,
       body: 'Comment'
     })
     await ipcHandlers.get('gitlab:addMRInlineComment')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       iid: 8,
       input: inlineInput
     })
     await ipcHandlers.get('gitlab:resolveMRDiscussion')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       iid: 8,
       discussionId: 'discussion-1',
       resolved: true
     })
-    await ipcHandlers.get('gitlab:jobTrace')?.(null, { repoPath: '/local/orca', jobId: 99 })
-    await ipcHandlers.get('gitlab:retryJob')?.(null, { repoPath: '/local/orca', jobId: 99 })
+    await ipcHandlers.get('gitlab:jobTrace')?.(null, { repoPath: '/local/occ', jobId: 99 })
+    await ipcHandlers.get('gitlab:retryJob')?.(null, { repoPath: '/local/occ', jobId: 99 })
     await ipcHandlers.get('gitlab:workItemByPath')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       host: 'gitlab.com',
       path: 'g/p',
       iid: 8,
@@ -621,7 +621,7 @@ describe('GitLab IPC handlers', () => {
     })
 
     expect(getWorkItemDetailsMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       8,
       'mr',
       undefined,
@@ -631,13 +631,13 @@ describe('GitLab IPC handlers', () => {
       { includeReviewDetails: undefined }
     )
     await ipcHandlers.get('gitlab:workItemDetails')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       iid: 8,
       type: 'mr',
       includeReviewDetails: false
     })
     expect(getWorkItemDetailsMock).toHaveBeenLastCalledWith(
-      '/local/orca',
+      '/local/occ',
       8,
       'mr',
       undefined,
@@ -647,7 +647,7 @@ describe('GitLab IPC handlers', () => {
       { includeReviewDetails: false }
     )
     expect(closeMRMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       8,
       undefined,
       null,
@@ -655,7 +655,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(reopenMRMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       8,
       undefined,
       null,
@@ -663,7 +663,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(mergeMRMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       8,
       'squash',
       undefined,
@@ -672,7 +672,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(updateMRMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       8,
       { title: 'Renamed' },
       undefined,
@@ -681,7 +681,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(updateMRReviewersMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       8,
       [1],
       undefined,
@@ -690,7 +690,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(addMRCommentMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       8,
       'Comment',
       undefined,
@@ -699,7 +699,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(addMRInlineCommentMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       8,
       inlineInput,
       undefined,
@@ -708,7 +708,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(resolveMRDiscussionMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       8,
       'discussion-1',
       true,
@@ -718,7 +718,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(getJobTraceMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       99,
       undefined,
       null,
@@ -726,7 +726,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(retryJobMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       99,
       undefined,
       null,
@@ -734,7 +734,7 @@ describe('GitLab IPC handlers', () => {
       localGitOptions
     )
     expect(getWorkItemByProjectRefMock).toHaveBeenCalledWith(
-      '/local/orca',
+      '/local/occ',
       { host: 'gitlab.com', path: 'g/p' },
       8,
       'mr',
@@ -754,11 +754,11 @@ describe('GitLab IPC handlers', () => {
     registerGitLabHandlers(storeWithRepos([repo()]) as Store)
 
     const raw = (await ipcHandlers.get('gitlab:jobTrace')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       jobId: 99
     })) as { ok: true; trace: string }
     const excerpt = (await ipcHandlers.get('gitlab:jobTrace')?.(null, {
-      repoPath: '/local/orca',
+      repoPath: '/local/occ',
       jobId: 99,
       logExcerpt: true
     })) as { ok: true; trace: string }

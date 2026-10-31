@@ -1,4 +1,4 @@
-import type { OrcaRuntimeService } from '../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../occ-runtime'
 import {
   TerminalStreamOpcode,
   encodeTerminalStreamJson
@@ -22,11 +22,11 @@ const REQUESTED_SNAPSHOT_BYTE_BUDGET = 2 * 1024 * 1024
 
 /** E2E-only: simulate unavailable retained state, which a parked client cannot distinguish from slow hydration. */
 export function isTerminalSnapshotForcedUnavailable(): boolean {
-  return process.env.ORCA_E2E_FORCE_REMOTE_TERMINAL_SNAPSHOT_UNAVAILABLE === '1'
+  return process.env.OCC_E2E_FORCE_REMOTE_TERMINAL_SNAPSHOT_UNAVAILABLE === '1'
 }
 
 export async function serializeBudgetedRequestedSnapshot(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   ptyId: string,
   scrollbackRows: number | undefined
 ): Promise<SerializedSnapshot> {
@@ -100,7 +100,7 @@ type SnapshotVariableMeta = Pick<
   | 'lastTitle'
 >
 
-type TerminalBufferSource = Pick<OrcaRuntimeService, 'serializeTerminalBuffer'>
+type TerminalBufferSource = Pick<OCCRuntimeService, 'serializeTerminalBuffer'>
 
 /** Carry publication fields with the cap: measuring snapshot text alone omits caller-owned metadata. */
 export type MobileSnapshotByteBudget = {
@@ -126,7 +126,7 @@ export type MobileSnapshotByteBudget = {
 /** `JSON.stringify` writes `false` in five bytes and `true` in four, so `false` is the bound. */
 const WIDEST_BOOLEAN = false
 
-type MobileDisplayMode = ReturnType<OrcaRuntimeService['getMobileDisplayMode']>
+type MobileDisplayMode = ReturnType<OCCRuntimeService['getMobileDisplayMode']>
 
 const DISPLAY_MODES = ['auto', 'desktop'] as const satisfies readonly MobileDisplayMode[]
 
@@ -230,7 +230,7 @@ export async function serializeBudgetedMobileSnapshot(
 }
 
 type RendererBufferSource = Pick<
-  OrcaRuntimeService,
+  OCCRuntimeService,
   'getPtyOutputSequence' | 'serializeRendererTerminalBuffer'
 >
 
@@ -273,7 +273,7 @@ export async function serializeStableMobileRendererSnapshot(
 
 // Restored hard newlines cannot rewrap in mobile xterm; reserialize the full buffer at the new columns.
 export async function sendMobileResizeRestream(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   ptyId: string,
   sendFrame: (opcode: TerminalStreamOpcode, payload?: Uint8Array<ArrayBufferLike>) => void,
   event: { cols: number; rows: number; displayMode: string; reason: string; seq?: number },

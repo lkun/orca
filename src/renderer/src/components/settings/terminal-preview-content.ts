@@ -11,7 +11,7 @@ const BG_GREEN = '\x1b[42m'
 const FG_BLACK = '\x1b[30m'
 
 function prompt(): string {
-  return `${BLUE}~/orca${RESET} ${MAGENTA}main${RESET} ${YELLOW}*${RESET} $ `
+  return `${BLUE}~/occ${RESET} ${MAGENTA}main${RESET} ${YELLOW}*${RESET} $ `
 }
 
 // Fit PREVIEW_COLS at the default font so xterm does not wrap preview lines.

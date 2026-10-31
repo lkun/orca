@@ -1,18 +1,18 @@
-/** Stop terminals by handle, then managed-decommission orcad/daemon. Claim stopped only with zero-session census, exact serving-orcad identity and retired daemon evidence. */
+/** Stop terminals by handle, then managed-decommission occd/daemon. Claim stopped only with zero-session census, exact serving-occd identity and retired daemon evidence. */
 import { z } from 'zod'
 import { errorMessage } from '../../shared/error-message'
-import type { OrcadDecommissionResult } from '../../shared/orcad-decommission'
-import { ORCAD_MANAGED_REMOTE_PORT } from '../../shared/orcad-managed-runtime'
-import type { OrcadTerminalCensus } from '../../shared/orcad-terminal-census'
+import type { OCCdDecommissionResult } from '../../shared/occd-decommission'
+import { OCCD_MANAGED_REMOTE_PORT } from '../../shared/occd-managed-runtime'
+import type { OCCdTerminalCensus } from '../../shared/occd-terminal-census'
 import type { RuntimeTerminalListResult } from '../../shared/runtime-terminal-contracts'
 import { wslHostServerStopReason } from '../../shared/wsl-host-failure-copy'
 import type { WslHostServerStop } from '../../shared/wsl-host-types'
-import type { OrcadHostTransport } from '../ssh/orcad-host-transport'
-import { readRemoteOrcadManagedStopTarget } from '../managed-server/lifecycle/orcad-managed-remote-stop'
-import { managedOrcadSlot } from '../managed-server/lifecycle/orcad-managed-runtime-context'
-import { resolveOrcadRemoteContext } from '../managed-server/install/orcad-remote-context'
-import { decommissionRemoteOrcad } from '../managed-server/install/orcad-remote-decommission'
-import type { WslOrcadHostTarget } from './wsl-orcad-host-target'
+import type { OCCdHostTransport } from '../ssh/occd-host-transport'
+import { readRemoteOCCdManagedStopTarget } from '../managed-server/lifecycle/occd-managed-remote-stop'
+import { managedOCCdSlot } from '../managed-server/lifecycle/occd-managed-runtime-context'
+import { resolveOCCdRemoteContext } from '../managed-server/install/occd-remote-context'
+import { decommissionRemoteOCCd } from '../managed-server/install/occd-remote-decommission'
+import type { WslOCCdHostTarget } from './wsl-occd-host-target'
 import { readWslHostPeerDesktops, type WslHostPeerDesktops } from './wsl-host-peer-desktops'
 
 const CENSUS_ATTEMPTS = 20
@@ -24,17 +24,17 @@ export type WslHostTerminalLeftover = { handle: string; worktreeId: string; reas
 export type WslHostServerStopSteps = {
   /** Which other desktops share this server; throws when it can't say. */
   peerDesktops: () => Promise<WslHostPeerDesktops>
-  /** Closes every terminal orcad runs; returns the ones that refused instead of stopping. */
+  /** Closes every terminal occd runs; returns the ones that refused instead of stopping. */
   endTerminals: () => Promise<WslHostTerminalLeftover[]>
-  census: () => Promise<OrcadTerminalCensus>
-  /** The runtime id of the orcad the bridge is serving; read before the bridge closes. */
+  census: () => Promise<OCCdTerminalCensus>
+  /** The runtime id of the occd the bridge is serving; read before the bridge closes. */
   servingRuntimeId: () => Promise<string | null>
   /** After the bridge closed: liveness must not see this exit as a crash to recover. */
   closeBridge: () => Promise<void>
   decommission: (
-    census: OrcadTerminalCensus,
+    census: OCCdTerminalCensus,
     servingRuntimeId: string | null
-  ) => Promise<OrcadDecommissionResult>
+  ) => Promise<OCCdDecommissionResult>
   sleep?: (ms: number) => Promise<void>
 }
 
@@ -120,7 +120,7 @@ export async function stopWslHostServer(steps: WslHostServerStopSteps): Promise<
 export type WslHostRuntimeAccess = {
   isReady?: (environmentId: string) => boolean
   call: (environmentId: string, method: string, params: unknown) => Promise<unknown>
-  census: (environmentId: string) => Promise<OrcadTerminalCensus>
+  census: (environmentId: string) => Promise<OCCdTerminalCensus>
 }
 
 // Only what removal reads from each live terminal.
@@ -132,7 +132,7 @@ const TerminalHandlesSchema = z.object({
 
 const RuntimeIdSchema = z.object({ runtimeId: z.string().min(1) })
 
-/** Closing terminals, counting what is left and naming the serving orcad, all through its RPC. */
+/** Closing terminals, counting what is left and naming the serving occd, all through its RPC. */
 export function wslHostRuntimeStopSteps(
   access: WslHostRuntimeAccess,
   environmentId: string
@@ -161,28 +161,28 @@ export function wslHostRuntimeStopSteps(
   }
 }
 
-/** After bridge close, decommission via wsl.exe only if recorded active orcad matches the previously serving runtime; re-add may have adopted another instance. */
-export function decommissionWslHostOrcad(
-  target: WslOrcadHostTarget,
-  transport: OrcadHostTransport
+/** After bridge close, decommission via wsl.exe only if recorded active occd matches the previously serving runtime; re-add may have adopted another instance. */
+export function decommissionWslHostOCCd(
+  target: WslOCCdHostTarget,
+  transport: OCCdHostTransport
 ): WslHostServerStopSteps['decommission'] {
   return async (census, servingRuntimeId) => {
-    const context = await resolveOrcadRemoteContext(target, transport)
-    const slot = managedOrcadSlot(context, ORCAD_MANAGED_REMOTE_PORT)
+    const context = await resolveOCCdRemoteContext(target, transport)
+    const slot = managedOCCdSlot(context, OCCD_MANAGED_REMOTE_PORT)
     const active = context.activationRecord.active
     if (active) {
-      const stopTarget = await readRemoteOrcadManagedStopTarget(slot, active)
+      const stopTarget = await readRemoteOCCdManagedStopTarget(slot, active)
       const recordedRuntimeId = stopTarget.state === 'ready' ? stopTarget.context.runtimeId : null
       if (!servingRuntimeId || recordedRuntimeId !== servingRuntimeId) {
         return {
           outcome: 'refused',
           verdict: 'unverifiable',
-          code: 'orcad_wsl_host_serving_instance_unproven',
+          code: 'occd_wsl_host_serving_instance_unproven',
           reason:
-            'the orcad this computer was connected to is not the one the distro records as active, so OCC could not prove it stopped.'
+            'the occd this computer was connected to is not the one the distro records as active, so OCC could not prove it stopped.'
         }
       }
     }
-    return decommissionRemoteOrcad({ ...slot, record: context.activationRecord, census })
+    return decommissionRemoteOCCd({ ...slot, record: context.activationRecord, census })
   }
 }

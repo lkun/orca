@@ -24,7 +24,7 @@ export const OMP_SESSION_OPTION_CATALOG: AgentSessionOptionCatalog = {
       '--model'
     ),
     // OMP only opens its TUI picker for /model; our extension applies the exact selector.
-    midSession: { kind: 'command', build: (value) => `/orca-model ${String(value)}` }
+    midSession: { kind: 'command', build: (value) => `/occ-model ${String(value)}` }
   },
   // Saved model IDs remain launch selections even when discovery no longer lists them.
   discoveredModelsAreAuthoritative: true,

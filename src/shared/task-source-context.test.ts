@@ -43,21 +43,21 @@ describe('task source context', () => {
       projectId: 'project-1',
       hostId: 'local',
       repoId: 'repo-1',
-      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' }
+      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' }
     })
     const ssh = getTaskSourceCacheScope({
       provider: 'github',
       projectId: 'project-1',
       hostId: toSshExecutionHostId('builder'),
       repoId: 'repo-1',
-      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' }
+      providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' }
     })
     const differentRepo = getTaskSourceCacheScope({
       provider: 'github',
       projectId: 'project-1',
       hostId: 'local',
       repoId: 'repo-1',
-      providerIdentity: { provider: 'github', owner: 'other', repo: 'orca' }
+      providerIdentity: { provider: 'github', owner: 'other', repo: 'occ' }
     })
     const enterpriseRepo = getTaskSourceCacheScope({
       provider: 'github',
@@ -67,7 +67,7 @@ describe('task source context', () => {
       providerIdentity: {
         provider: 'github',
         owner: 'stablyai',
-        repo: 'orca',
+        repo: 'occ',
         host: 'github.acme.test'
       }
     })
@@ -97,7 +97,7 @@ describe('task source context', () => {
       normalizeTaskSourceContext({
         provider: 'gitlab',
         projectId: 'project-1',
-        providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' }
+        providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' }
       })?.providerIdentity
     ).toBeNull()
   })
@@ -139,7 +139,7 @@ describe('areTaskSourceContextsEqual', () => {
       provider: 'jira',
       siteId: 'site-1',
       siteUrl: 'https://company.atlassian.net',
-      projectKey: 'ORCA'
+      projectKey: 'OCC'
     }
   }
 
@@ -147,7 +147,7 @@ describe('areTaskSourceContextsEqual', () => {
     expect(
       areTaskSourceContextsEqual(base, {
         providerIdentity: {
-          projectKey: 'ORCA',
+          projectKey: 'OCC',
           siteUrl: 'https://company.atlassian.net',
           siteId: 'site-1',
           provider: 'jira'

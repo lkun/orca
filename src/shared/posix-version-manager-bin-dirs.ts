@@ -26,10 +26,10 @@ const POSIX_VERSION_MANAGER_BIN_DIRS = [
 /** Append behind login PATH so stale fallback nvm installs cannot shadow the user’s selected binary. */
 export function buildPosixFallbackPathPrelude(): string {
   return [
-    `for _orca_dir in ${POSIX_VERSION_MANAGER_BIN_DIRS}; do`,
-    '  if [ -d "$_orca_dir" ]; then PATH="$PATH:$_orca_dir"; fi',
+    `for _occ_dir in ${POSIX_VERSION_MANAGER_BIN_DIRS}; do`,
+    '  if [ -d "$_occ_dir" ]; then PATH="$PATH:$_occ_dir"; fi',
     'done',
     'export PATH',
-    'unset _orca_dir'
+    'unset _occ_dir'
   ].join('\n')
 }

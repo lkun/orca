@@ -3,7 +3,7 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { ORCAD_LOCAL_SERVE_SELECTION_ENTRY } from '../../src/shared/orcad-local-serve-selection'
+import { OCCD_LOCAL_SERVE_SELECTION_ENTRY } from '../../src/shared/occd-local-serve-selection'
 
 const require = createRequire(import.meta.url)
 const {
@@ -24,7 +24,7 @@ function packagedResources({ index, assets = [], cli = true }) {
   const webDir = join(outDir, 'renderer')
   mkdirSync(join(webDir, 'assets'), { recursive: true })
   writeFileSync(
-    join(webDir, '.orca-web-client-files.json'),
+    join(webDir, '.occ-web-client-files.json'),
     JSON.stringify(['web-index.html', ...assets])
   )
   if (index !== undefined) {
@@ -89,7 +89,7 @@ describe('assertPackagedWebClient', () => {
       assets: ['assets/web.js', 'assets/web.css']
     })
     writeFileSync(
-      join(resourcesDir, 'app.asar.unpacked/out/renderer/.orca-web-client-files.json'),
+      join(resourcesDir, 'app.asar.unpacked/out/renderer/.occ-web-client-files.json'),
       JSON.stringify(files)
     )
     expect(() => assertPackagedWebClient(resourcesDir)).toThrow(/invalid web file manifest/)
@@ -101,7 +101,7 @@ describe('assertPackagedWebClient', () => {
       assets: ['assets/web.js', 'assets/web.css']
     })
     writeFileSync(
-      join(resourcesDir, 'app.asar.unpacked/out/renderer/.orca-web-client-files.json'),
+      join(resourcesDir, 'app.asar.unpacked/out/renderer/.occ-web-client-files.json'),
       JSON.stringify([
         'web-index.html',
         'assets/web.js',
@@ -136,7 +136,7 @@ describe('assertPackagedServeSelectionEntry', () => {
 
   it('passes an unpacked entry whose relative requires are all unpacked', () => {
     const resourcesDir = packagedEntry({
-      [`main/${ORCAD_LOCAL_SERVE_SELECTION_ENTRY}.js`]:
+      [`main/${OCCD_LOCAL_SERVE_SELECTION_ENTRY}.js`]:
         'require("../chunks/a.js"); require("node:fs")',
       'main/chunks/a.js': 'require("./b"); require("../persistence")',
       'main/chunks/b.js': '',

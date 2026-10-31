@@ -95,7 +95,7 @@ describe.skipIf(process.platform === 'win32')('WSL public-manager settings lifet
     const install = createInstallPluginsHandler(new PluginOverlayManager({ homeDir: home }), {
       HOME: home,
       XDG_CONFIG_HOME: join(home, '.config'),
-      ORCA_WSL_HOOK_INSTANCE: 'independent-manager'
+      OCC_WSL_HOOK_INSTANCE: 'independent-manager'
     })
     dispatcher.onRequest(AGENT_HOOK_INSTALL_PLUGINS_METHOD, async (params) => {
       requests.push(params)
@@ -115,7 +115,7 @@ describe.skipIf(process.platform === 'win32')('WSL public-manager settings lifet
   }
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-wsl-manager-boundary-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-wsl-manager-boundary-'))
     settings = { disabledTuiAgents: [] }
     requests = []
     now = Date.now()
@@ -132,7 +132,7 @@ describe.skipIf(process.platform === 'win32')('WSL public-manager settings lifet
     manager = new WslHookRelayManager({
       platform: () => 'win32',
       remoteHooksEnabled: () => true,
-      hookCoordsEnv: () => ({ ORCA_AGENT_HOOK_PORT: '43117', ORCA_AGENT_HOOK_TOKEN: 'fixture' }),
+      hookCoordsEnv: () => ({ OCC_AGENT_HOOK_PORT: '43117', OCC_AGENT_HOOK_TOKEN: 'fixture' }),
       instanceKey: () => 'independent',
       resolveBundle: () => ({ jsPath: join(root, 'relay.js'), version: 'fixture' }),
       readBundle: () => Buffer.from('// fixture'),
@@ -230,7 +230,7 @@ describe.skipIf(process.platform === 'win32')('WSL public-manager settings lifet
           if (!dir) {
             throw new Error('missing enabled overlay')
           }
-          expect(readFileSync(join(dir, 'plugins', `orca-${agent}-status.js`), 'utf8')).toBe(
+          expect(readFileSync(join(dir, 'plugins', `occ-${agent}-status.js`), 'utf8')).toBe(
             agent === 'opencode' ? sources.opencodePluginSource : sources.opencode2PluginSource
           )
         } else {
@@ -303,7 +303,7 @@ describe.skipIf(process.platform === 'win32')('WSL public-manager settings lifet
     if (!pi || !omp) {
       throw new Error('missing guest agent paths')
     }
-    expect(readFileSync(join(pi, 'extensions', 'orca-agent-status.ts'), 'utf8')).toContain('// pi')
+    expect(readFileSync(join(pi, 'extensions', 'occ-agent-status.ts'), 'utf8')).toContain('// pi')
     expect(readFileSync(omp, 'utf8')).toContain('// omp')
     await manager.ensureForDistro('fixture')
     expect(requests).toHaveLength(5)

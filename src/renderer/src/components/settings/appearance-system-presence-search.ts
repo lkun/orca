@@ -61,7 +61,7 @@ const getMenuBarIconEntryCatalog = createLocalizedCatalog((): SettingsSearchEntr
       ...translateSearchKeyword('auto.components.settings.appearance.search.tray.tray', 'tray', {
         englishOnly: true
       }),
-      ...translateSearchKeyword('auto.components.settings.appearance.search.1f2880a9d5', 'orca'),
+      ...translateSearchKeyword('auto.components.settings.appearance.search.1f2880a9d5', 'occ'),
       ...translateSearchKeyword(
         'settings.appearance.menuBarIcon.keyword.statusItem',
         'status item',

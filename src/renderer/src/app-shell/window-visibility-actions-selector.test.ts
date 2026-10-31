@@ -5,7 +5,7 @@ import { useStore } from 'zustand'
 import { createStore } from 'zustand/vanilla'
 import { describe, expect, it, vi } from 'vitest'
 import {
-  resetWindowVisibilityActionsSelectorCacheForTest,
+  resetWindowVisibilityActionsSelectocccheForTest,
   selectWindowVisibilityActions,
   type WindowVisibilityActions
 } from './window-visibility-actions-selector'
@@ -20,7 +20,7 @@ function makeActions(): WindowVisibilityActions {
 
 describe('window visibility action selector', () => {
   it('reuses one action bundle across repeated store reads', () => {
-    resetWindowVisibilityActionsSelectorCacheForTest()
+    resetWindowVisibilityActionsSelectocccheForTest()
     const actions = makeActions()
     const first = selectWindowVisibilityActions(actions)
 
@@ -30,7 +30,7 @@ describe('window visibility action selector', () => {
   })
 
   it('rebuilds the bundle when an action reference changes', () => {
-    resetWindowVisibilityActionsSelectorCacheForTest()
+    resetWindowVisibilityActionsSelectocccheForTest()
     const actions = makeActions()
     const first = selectWindowVisibilityActions(actions)
     const replacement = { ...actions, refreshAllGitHub: vi.fn() }
@@ -41,7 +41,7 @@ describe('window visibility action selector', () => {
   })
 
   it('does not rerender a subscriber for unrelated store writes', () => {
-    resetWindowVisibilityActionsSelectorCacheForTest()
+    resetWindowVisibilityActionsSelectocccheForTest()
     const store = createStore<WindowVisibilityActions & { unrelated: number }>(() => ({
       ...makeActions(),
       unrelated: 0

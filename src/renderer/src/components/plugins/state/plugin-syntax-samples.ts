@@ -118,7 +118,7 @@ Content-Type: application/json
 
 {
   "customer": "ada@example.com",
-  "items": [{ "sku": "ORCA-1", "quantity": 2 }],
+  "items": [{ "sku": "OCC-1", "quantity": 2 }],
   "express": true
 }
 `,

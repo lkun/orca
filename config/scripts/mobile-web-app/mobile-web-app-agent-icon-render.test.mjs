@@ -47,7 +47,7 @@ beforeAll(async () => {
   if (!mobileWebAppDependenciesPresent()) {
     return
   }
-  scratch = await mkdtemp(join(tmpdir(), 'orca-agent-icon-render-'))
+  scratch = await mkdtemp(join(tmpdir(), 'occ-agent-icon-render-'))
   const appDir = join(scratch, 'app')
   const routeDir = join(appDir, 'h')
   await mkdir(join(routeDir, '[hostId]/session'), { recursive: true })
@@ -83,7 +83,7 @@ export default function Layout() { return <HostStack animation="default" /> }`
     pageRoutes: pageRoutes.map((route) => route.pathname),
     replies: {}
   }
-  const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+  const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
   browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
 }, 180_000)
 

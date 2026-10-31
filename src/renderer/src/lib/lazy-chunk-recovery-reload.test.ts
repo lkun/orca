@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_RENDERER_UNLOAD_PREVENTED_EVENT } from '../../../shared/renderer-shutdown-events'
+import { OCC_RENDERER_UNLOAD_PREVENTED_EVENT } from '../../../shared/renderer-shutdown-events'
 import { requestLazyChunkRecoveryReload } from './lazy-chunk-recovery-reload'
 
 describe('requestLazyChunkRecoveryReload', () => {
@@ -36,7 +36,7 @@ describe('requestLazyChunkRecoveryReload', () => {
     vi.stubGlobal('api', { app: { awaitBeforeUnloadCheckpoint } })
     const reload = vi.spyOn(window.location, 'reload').mockImplementation(() => {
       order.push('reload')
-      window.dispatchEvent(new Event(ORCA_RENDERER_UNLOAD_PREVENTED_EVENT))
+      window.dispatchEvent(new Event(OCC_RENDERER_UNLOAD_PREVENTED_EVENT))
     })
 
     const outcome = requestLazyChunkRecoveryReload(window)

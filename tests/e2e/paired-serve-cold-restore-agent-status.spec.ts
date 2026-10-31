@@ -4,7 +4,7 @@
  * beside the new shell, yet must still find the conversation through its provider session. A phone
  * that cannot read unverifiable rows keeps the legacy Done it always received.
  */
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchPhoneMirrorTopology } from './helpers/phone-mirror-topology'
 import { pairMobileClient, type PairedMobileClient } from './helpers/paired-mobile-client'
 import { emitCodexHookStatus, readHookEndpoint } from './helpers/agent-hook-endpoint'

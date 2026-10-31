@@ -96,7 +96,7 @@ The worktree being launched is excluded from every pass except historical test c
 the idle-worktree rule. Existing bundle checks protect
 active sibling Electron bundles and recent unfinished bundles from the bundle-specific pass;
 the generated-directory pass uses its 30-day age cutoff and filesystem/Git protections.
-Background sweep output is suppressed; worker start or exit failures are reported without stopping dev. Set `ORCA_SKIP_DEV_STORAGE_RECLAIM=1` to opt out.
+Background sweep output is suppressed; worker start or exit failures are reported without stopping dev. Set `OCC_SKIP_DEV_STORAGE_RECLAIM=1` to opt out.
 The worker finishes independently if the dev app exits, and each cleanup operation has a ten-minute limit.
 
 Automatic invocations also run historical test cache cleanup with the idle-worktree rule; they

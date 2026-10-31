@@ -31,7 +31,7 @@ const listing: PluginMarketplaceHostListing = {
   marketplaceName: 'OCC Official Plugins',
   marketplaceOwner: 'stablyai',
   marketplaceCommit: 'c',
-  pluginKey: 'stablyai.orca-minimal-icons',
+  pluginKey: 'stablyai.occ-minimal-icons',
   source: { kind: 'git', url: 'https://example.invalid/icons.git', ref: 'main' },
   description: 'Monochrome icons.',
   categories: ['icons'],
@@ -42,18 +42,18 @@ const listing: PluginMarketplaceHostListing = {
     commit: 'd'.repeat(40),
     contentHash: 'e'.repeat(64),
     execution: 'data',
-    minimumOrca: '1.0.0',
+    minimumOCC: '1.0.0',
     types: ['icon-theme']
   }
 }
 
 const manifest = pluginManifestSchema.parse({
   manifestVersion: 1,
-  id: 'orca-minimal-icons',
+  id: 'occ-minimal-icons',
   publisher: 'stablyai',
   name: 'OCC Minimal Icons',
   version: '1.0.0',
-  engines: { orca: '>=1.0.0' },
+  engines: { occ: '>=1.0.0' },
   pluginApi: 1,
   contributes: {
     iconThemes: [{ id: 'minimal', title: 'Minimal Icons', path: 'icons/theme.json' }]
@@ -115,7 +115,7 @@ async function render(
       <PluginDetailPage
         entry={entry}
         busy={false}
-        orcaVersion="1.4.214"
+        occVersion="1.4.214"
         logsState={undefined}
         handlers={{
           onOpen: vi.fn(),

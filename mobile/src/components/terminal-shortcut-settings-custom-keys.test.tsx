@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { loadTerminalAccessoryLayout } from '../terminal/terminal-accessory-layout'
 import type { CustomKey } from '../terminal/terminal-custom-keys'
 
-const CUSTOM_KEYS = 'orca:custom-accessory-keys'
+const CUSTOM_KEYS = 'occ:custom-accessory-keys'
 
 const store = vi.hoisted(() => {
   const held: {

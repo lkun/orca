@@ -133,9 +133,9 @@ describe('WSL CLI registration IPC', () => {
     })
 
     await expect(
-      getWslHandler('cli:removeWsl')({}, { distro: 'orca-uqa-1029' })
+      getWslHandler('cli:removeWsl')({}, { distro: 'occ-uqa-1029' })
     ).resolves.toMatchObject({ state: 'not_installed', supported: false })
-    expect(forgetMock).toHaveBeenCalledWith('/canonical-user-data', 'orca-uqa-1029')
+    expect(forgetMock).toHaveBeenCalledWith('/canonical-user-data', 'occ-uqa-1029')
     expect(recordRemovedMock).not.toHaveBeenCalled()
   })
 

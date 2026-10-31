@@ -17,7 +17,7 @@ export const WINDOWS_PROCESS_TREE_REQUIRED = [
 export const WINDOWS_REGISTRY_REQUIRED = [
   'package.json',
   'index.js',
-  'build/Release/orca_windows_registry.node'
+  'build/Release/occ_windows_registry.node'
 ] as const
 
 export type CopyOp = {
@@ -42,11 +42,11 @@ export type DaemonHostSources = {
 }
 
 export function daemonHostProcessPackageDir(sources: DaemonHostSources): string {
-  return join(sources.resourcesPath, 'node_modules', '@orca', 'process-host')
+  return join(sources.resourcesPath, 'node_modules', '@occ', 'process-host')
 }
 
 export function daemonHostWindowsRegistryDir(sources: DaemonHostSources): string {
-  return join(sources.resourcesPath, 'node_modules', '@orca', 'windows-registry')
+  return join(sources.resourcesPath, 'node_modules', '@occ', 'windows-registry')
 }
 
 function daemonHostNodePtyDir(sources: DaemonHostSources): string {

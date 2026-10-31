@@ -31,23 +31,23 @@ export function installMainThreadHangWatchdog(options: {
     return null
   }
   // Debugger pauses are normal in development; enable only when packaged or explicitly forced.
-  if (!app.isPackaged && process.env.ORCA_HANG_WATCHDOG_FORCE !== '1') {
+  if (!app.isPackaged && process.env.OCC_HANG_WATCHDOG_FORCE !== '1') {
     return null
   }
   const workerPath = resolveHangWatchdogWorkerPath(app.getAppPath(), app.isPackaged)
   const workerData: HangWatchdogWorkerData = {
     parentPid: process.pid,
     markerPath: hangDetectionMarkerPath(options.userDataPath),
-    timeoutMs: positiveTiming(process.env.ORCA_HANG_WATCHDOG_TIMEOUT_MS, HANG_WATCHDOG_TIMEOUT_MS),
+    timeoutMs: positiveTiming(process.env.OCC_HANG_WATCHDOG_TIMEOUT_MS, HANG_WATCHDOG_TIMEOUT_MS),
     checkIntervalMs: positiveTiming(
-      process.env.ORCA_HANG_WATCHDOG_CHECK_INTERVAL_MS,
+      process.env.OCC_HANG_WATCHDOG_CHECK_INTERVAL_MS,
       HANG_WATCHDOG_CHECK_INTERVAL_MS
     )
   }
   let worker: Worker
   try {
     worker = new Worker(workerPath, {
-      name: 'orca-main-thread-hang-watchdog',
+      name: 'occ-main-thread-hang-watchdog',
       workerData
     })
   } catch (error) {

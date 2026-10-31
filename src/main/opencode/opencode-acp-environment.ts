@@ -2,7 +2,7 @@ import { restoreOrStripOverlayEnv } from '../../shared/agent-overlay-env'
 import { getAppEnvironment } from '../../shared/app-environment'
 import { isOpenCodeLegacySharedConfigDir } from './legacy-shared-config-dir'
 
-const ORCA_ENV_PREFIXES = ['ORCA_OPENCODE_', 'ORCA_DATA_ACCOUNT_']
+const OCC_ENV_PREFIXES = ['OCC_OPENCODE_', 'OCC_DATA_ACCOUNT_']
 const ACCOUNT_ENV_KEYS = ['XDG_DATA_HOME', 'XDG_STATE_HOME', 'OPENCODE_DB', 'OPENCODE_AUTH_CONTENT']
 
 /** Run after account setup: restore user config and remove terminal-hook/account inheritance.
@@ -10,7 +10,7 @@ const ACCOUNT_ENV_KEYS = ['XDG_DATA_HOME', 'XDG_STATE_HOME', 'OPENCODE_DB', 'OPE
 export function scrubOpenCodeAcpEnvironment(
   env: Record<string, string>,
   inherited: NodeJS.ProcessEnv,
-  userDataPath: string | null = orcaUserDataPath()
+  userDataPath: string | null = occUserDataPath()
 ): string[] {
   const view: Record<string, string> = {}
   for (const [key, value] of Object.entries(inherited)) {
@@ -23,8 +23,8 @@ export function scrubOpenCodeAcpEnvironment(
     view,
     {
       primary: 'OPENCODE_CONFIG_DIR',
-      overlay: 'ORCA_OPENCODE_CONFIG_DIR',
-      source: 'ORCA_OPENCODE_SOURCE_CONFIG_DIR',
+      overlay: 'OCC_OPENCODE_CONFIG_DIR',
+      source: 'OCC_OPENCODE_SOURCE_CONFIG_DIR',
       preserveExplicitPrimary: true
     },
     {}
@@ -47,7 +47,7 @@ export function scrubOpenCodeAcpEnvironment(
     }
   }
   for (const key of new Set([...Object.keys(env), ...Object.keys(inherited)])) {
-    if (ORCA_ENV_PREFIXES.some((prefix) => key.startsWith(prefix))) {
+    if (OCC_ENV_PREFIXES.some((prefix) => key.startsWith(prefix))) {
       delete env[key]
       removed.push(key)
     }
@@ -55,7 +55,7 @@ export function scrubOpenCodeAcpEnvironment(
   return removed
 }
 
-function orcaUserDataPath(): string | null {
+function occUserDataPath(): string | null {
   try {
     return getAppEnvironment().getPath('userData')
   } catch {

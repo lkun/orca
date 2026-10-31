@@ -18,7 +18,7 @@ export type WslHostAddRefusalCode = keyof typeof WSL_HOST_ADD_REFUSAL_COPY
 export const WSL_HOST_STATUS_DETAIL_COPY = {
   runningListUnavailable: 'Windows didn’t report whether the distro is running.',
   guestUnanswered: 'The distro is running but didn’t answer OCC’s check.',
-  orcadUnanswered: 'OCC’s server in the distro didn’t answer.',
+  occdUnanswered: 'OCC’s server in the distro didn’t answer.',
   restartGaveUp: {
     one: 'Could not restart the OCC server in {{distro}} after {{count}} attempt',
     other: 'Could not restart the OCC server in {{distro}} after {{count}} attempts'

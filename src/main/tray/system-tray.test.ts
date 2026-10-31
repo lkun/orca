@@ -707,7 +707,7 @@ describe('language changes', () => {
     expect(builtMenuItems()[0].label).toBe('OCC DEV (language-test)')
     expect(composeAttentionMock).toHaveBeenCalled()
 
-    mainI18n.addResource('ja', 'translation', 'tray.openOrca', 'OCC を表示')
+    mainI18n.addResource('ja', 'translation', 'tray.openOCC', 'OCC を表示')
     rebuildSystemTrayMenu()
     flushTraySceneMutation()
     expect(builtMenuItems()[2].label).toBe('OCC を表示')

@@ -1,7 +1,7 @@
 // Burst large output from mounted background tabs while requiring a foreground marker through the shared scheduler.
 
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   ensureTerminalVisible,
   getActiveTabId,
@@ -170,39 +170,39 @@ async function mainSnapshotContains(page: Page, ptyId: string, text: string): Pr
 
 test.describe('Terminal output scheduler', () => {
   test('background tab output bursts use the shared drain while the active tab renders', async ({
-    orcaPage
+    occPage
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
-    const firstTabId = await getActiveTabId(orcaPage)
+    const firstTabId = await getActiveTabId(occPage)
     if (!firstTabId) {
       throw new Error('Expected an initial terminal tab')
     }
 
     const tabIds = [firstTabId]
     const ptyIdsByTabId: Record<string, string> = {
-      [firstTabId]: await waitForTabPtyId(orcaPage, firstTabId)
+      [firstTabId]: await waitForTabPtyId(occPage, firstTabId)
     }
 
     while (tabIds.length < TAB_COUNT) {
-      const tabId = await createTerminalTab(orcaPage)
-      await waitForActiveTerminalManager(orcaPage, 30_000)
+      const tabId = await createTerminalTab(occPage)
+      await waitForActiveTerminalManager(occPage, 30_000)
       tabIds.push(tabId)
-      ptyIdsByTabId[tabId] = await waitForTabPtyId(orcaPage, tabId)
+      ptyIdsByTabId[tabId] = await waitForTabPtyId(occPage, tabId)
     }
 
-    await tabLocator(orcaPage, firstTabId).click()
+    await tabLocator(occPage, firstTabId).click()
     await expect
-      .poll(() => getDomActiveTabId(orcaPage), {
+      .poll(() => getDomActiveTabId(occPage), {
         timeout: 5_000,
         message: 'First terminal tab did not become active before the burst repro'
       })
       .toBe(firstTabId)
 
-    await resetSchedulerDebug(orcaPage)
+    await resetSchedulerDebug(occPage)
 
     const runId = Date.now()
     const foregroundMarker = `FG_SCHED_${runId}`
@@ -214,10 +214,10 @@ test.describe('Terminal output scheduler', () => {
     }))
 
     await sendPtyCommands(
-      orcaPage,
+      occPage,
       backgroundCommands.map(({ ptyId, command }) => ({ ptyId, command }))
     )
-    await sendPtyCommands(orcaPage, [
+    await sendPtyCommands(occPage, [
       {
         ptyId: ptyIdsByTabId[firstTabId],
         command: nodeConsoleCommand(`'${foregroundMarker}'`)
@@ -225,7 +225,7 @@ test.describe('Terminal output scheduler', () => {
     ])
 
     await expect
-      .poll(async () => (await getTerminalContent(orcaPage)).includes(foregroundMarker), {
+      .poll(async () => (await getTerminalContent(occPage)).includes(foregroundMarker), {
         timeout: 5_000,
         message: 'Active terminal did not render foreground output during background bursts'
       })
@@ -234,13 +234,13 @@ test.describe('Terminal output scheduler', () => {
     await expect
       .poll(
         async () => {
-          const debug = await getSchedulerDebug(orcaPage)
+          const debug = await getSchedulerDebug(occPage)
           if (debug.backgroundEnqueueCount >= backgroundCommands.length) {
             return true
           }
           const snapshots = await Promise.all(
             backgroundCommands.map(({ ptyId, marker }) =>
-              mainSnapshotContains(orcaPage, ptyId, marker)
+              mainSnapshotContains(occPage, ptyId, marker)
             )
           )
           return snapshots.every(Boolean)
@@ -255,7 +255,7 @@ test.describe('Terminal output scheduler', () => {
     await expect
       .poll(
         async () => {
-          const debug = await getSchedulerDebug(orcaPage)
+          const debug = await getSchedulerDebug(occPage)
           return debug.backgroundEnqueueCount > 0
             ? debug.backgroundWriteCount >= backgroundCommands.length
             : true
@@ -267,7 +267,7 @@ test.describe('Terminal output scheduler', () => {
       )
       .toBe(true)
 
-    const debug = await getSchedulerDebug(orcaPage)
+    const debug = await getSchedulerDebug(occPage)
     expect(debug.foregroundWriteCount).toBeGreaterThan(0)
     expect(debug.drainHighPriority).toHaveLength(debug.drainWrites.length)
     for (const [index, writes] of debug.drainWrites.entries()) {
@@ -276,15 +276,15 @@ test.describe('Terminal output scheduler', () => {
 
     const firstBackground = backgroundCommands[0]
     const firstBackgroundTabId = tabIds[1]
-    await tabLocator(orcaPage, firstBackgroundTabId).click()
+    await tabLocator(occPage, firstBackgroundTabId).click()
     await expect
-      .poll(() => getDomActiveTabId(orcaPage), {
+      .poll(() => getDomActiveTabId(occPage), {
         timeout: 5_000,
         message: 'Background terminal tab did not become active for content verification'
       })
       .toBe(firstBackgroundTabId)
     await expect
-      .poll(async () => (await getTerminalContent(orcaPage)).includes(firstBackground.marker), {
+      .poll(async () => (await getTerminalContent(occPage)).includes(firstBackground.marker), {
         timeout: 5_000,
         message: 'Background terminal output was not preserved after scheduler drain'
       })
@@ -292,19 +292,19 @@ test.describe('Terminal output scheduler', () => {
   })
 
   test('visible bulk output uses the high-priority drain instead of synchronous xterm writes', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
-    const activeTabId = await createTerminalTab(orcaPage)
+    const activeTabId = await createTerminalTab(occPage)
     if (!activeTabId) {
       throw new Error('Expected a fresh terminal tab')
     }
-    const ptyId = await waitForTabPtyId(orcaPage, activeTabId)
-    await resetSchedulerDebug(orcaPage)
+    const ptyId = await waitForTabPtyId(occPage, activeTabId)
+    await resetSchedulerDebug(occPage)
 
     const runId = Date.now()
     const marker = `VISIBLE_THROUGHPUT_${runId}`
@@ -312,16 +312,16 @@ test.describe('Terminal output scheduler', () => {
       `const marker='VISIBLE' + '_THROUGHPUT_' + '${runId}'; process.stdout.write('VISIBLE_FILL_${runId}\\n' + 'x'.repeat(700000) + '\\n' + marker + '\\n')`
     )
 
-    await sendPtyCommands(orcaPage, [{ ptyId, command: floodCommand }])
+    await sendPtyCommands(occPage, [{ ptyId, command: floodCommand }])
 
     await expect
-      .poll(async () => (await getTerminalContent(orcaPage, 12_000)).includes(marker), {
+      .poll(async () => (await getTerminalContent(occPage, 12_000)).includes(marker), {
         timeout: 30_000,
         message: 'Active terminal did not render the visible throughput marker'
       })
       .toBe(true)
 
-    const debug = await getSchedulerDebug(orcaPage)
+    const debug = await getSchedulerDebug(occPage)
     await testInfo.attach('terminal-visible-throughput-proof', {
       body: JSON.stringify(debug, null, 2),
       contentType: 'application/json'
@@ -335,24 +335,24 @@ test.describe('Terminal output scheduler', () => {
   })
 
   test('hidden overflow restores from main-owned terminal state when the tab becomes visible', async ({
-    orcaPage
+    occPage
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
-    const foregroundTabId = await getActiveTabId(orcaPage)
+    const foregroundTabId = await getActiveTabId(occPage)
     if (!foregroundTabId) {
       throw new Error('Expected an initial terminal tab')
     }
-    const hiddenTabId = await createTerminalTab(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
-    const hiddenPtyId = await waitForTabPtyId(orcaPage, hiddenTabId)
+    const hiddenTabId = await createTerminalTab(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
+    const hiddenPtyId = await waitForTabPtyId(occPage, hiddenTabId)
 
-    await tabLocator(orcaPage, foregroundTabId).click()
+    await tabLocator(occPage, foregroundTabId).click()
     await expect
-      .poll(() => getDomActiveTabId(orcaPage), {
+      .poll(() => getDomActiveTabId(occPage), {
         timeout: 5_000,
         message: 'Foreground terminal tab did not become active before hidden flood'
       })
@@ -363,30 +363,30 @@ test.describe('Terminal output scheduler', () => {
       `for (let i = 0; i < 55000; i++) console.log('RECOVER_FILL_' + i + '_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'); console.log('${marker}')`
     )
 
-    await sendPtyCommands(orcaPage, [{ ptyId: hiddenPtyId, command: floodCommand }])
+    await sendPtyCommands(occPage, [{ ptyId: hiddenPtyId, command: floodCommand }])
 
     await expect
-      .poll(async () => mainSnapshotContains(orcaPage, hiddenPtyId, marker), {
+      .poll(async () => mainSnapshotContains(occPage, hiddenPtyId, marker), {
         timeout: 30_000,
         message: 'Main-owned terminal snapshot did not capture the hidden flood marker'
       })
       .toBe(true)
 
-    await tabLocator(orcaPage, hiddenTabId).click()
+    await tabLocator(occPage, hiddenTabId).click()
     await expect
-      .poll(() => getDomActiveTabId(orcaPage), {
+      .poll(() => getDomActiveTabId(occPage), {
         timeout: 5_000,
         message: 'Hidden terminal tab did not become visible for recovery verification'
       })
       .toBe(hiddenTabId)
 
     await expect
-      .poll(async () => (await getTerminalContent(orcaPage)).includes(marker), {
+      .poll(async () => (await getTerminalContent(occPage)).includes(marker), {
         timeout: 10_000,
         message: 'Hidden terminal did not restore the marker from main-owned state'
       })
       .toBe(true)
 
-    expect(await getTerminalContent(orcaPage)).not.toContain('OCC skipped hidden terminal output')
+    expect(await getTerminalContent(occPage)).not.toContain('OCC skipped hidden terminal output')
   })
 })

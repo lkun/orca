@@ -50,17 +50,17 @@ function lookup(
 const MAC: NativeHostLocationEnvironment = {
   platform: 'darwin',
   homeDir: '/Users/me',
-  userDataDir: '/Users/me/Library/Application Support/orca'
+  userDataDir: '/Users/me/Library/Application Support/occ'
 }
 const LINUX: NativeHostLocationEnvironment = {
   platform: 'linux',
   homeDir: '/home/me',
-  userDataDir: '/home/me/.config/orca'
+  userDataDir: '/home/me/.config/occ'
 }
 const WINDOWS: NativeHostLocationEnvironment = {
   platform: 'win32',
   homeDir: 'C:\\Users\\me',
-  userDataDir: 'C:\\Users\\me\\AppData\\Roaming\\orca'
+  userDataDir: 'C:\\Users\\me\\AppData\\Roaming\\occ'
 }
 
 describe('native messaging host manifests', () => {
@@ -136,7 +136,7 @@ describe('native messaging host manifests', () => {
     const mac = lookup(MAC, {})
     await mac.resolve()
     expect(mac.reads).toEqual([
-      `/Users/me/Library/Application Support/orca/NativeMessagingHosts/${NAME}.json`,
+      `/Users/me/Library/Application Support/occ/NativeMessagingHosts/${NAME}.json`,
       `/Users/me/Library/Application Support/Google/Chrome/NativeMessagingHosts/${NAME}.json`,
       `/Users/me/Library/Application Support/Chromium/NativeMessagingHosts/${NAME}.json`,
       `/Library/Google/Chrome/NativeMessagingHosts/${NAME}.json`,
@@ -154,7 +154,7 @@ describe('native messaging host manifests', () => {
     const linux = lookup({ ...LINUX, xdgConfigHome: '/home/me/xdg' }, {})
     await linux.resolve()
     expect(linux.reads).toEqual([
-      `/home/me/.config/orca/NativeMessagingHosts/${NAME}.json`,
+      `/home/me/.config/occ/NativeMessagingHosts/${NAME}.json`,
       `/home/me/xdg/google-chrome/NativeMessagingHosts/${NAME}.json`,
       `/home/me/xdg/chromium/NativeMessagingHosts/${NAME}.json`,
       `/etc/opt/chrome/native-messaging-hosts/${NAME}.json`,
@@ -187,8 +187,8 @@ describe('native messaging host manifests', () => {
 
   it('refuses a relative host path outside Windows', async () => {
     const linux = lookup(LINUX, {
-      [`/home/me/.config/orca/NativeMessagingHosts/${NAME}.json`]: manifest({ path: 'host' }),
-      '/home/me/.config/orca/NativeMessagingHosts/host': ''
+      [`/home/me/.config/occ/NativeMessagingHosts/${NAME}.json`]: manifest({ path: 'host' }),
+      '/home/me/.config/occ/NativeMessagingHosts/host': ''
     })
     expect(await linux.resolve()).toMatchObject({
       ok: false,

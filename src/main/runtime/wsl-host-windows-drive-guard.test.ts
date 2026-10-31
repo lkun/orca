@@ -54,7 +54,7 @@ describe('refuseWslHostWindowsDrivePath', () => {
     })
   })
 
-  it('rereads mounts per check, so a drive mounted after orcad started is caught', async () => {
+  it('rereads mounts per check, so a drive mounted after occd started is caught', async () => {
     let mounted = false
     const guardDeps = deps({
       readMounts: async () => (mounted ? [{ mountPoint: '/mnt/q', windowsRoot: 'Q:\\' }] : [])

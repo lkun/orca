@@ -86,7 +86,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -236,8 +236,8 @@ describe('host lane: producer call -> runtime controller -> provider', () => {
     expect(await providerFacts(lanes.provider)).toEqual(expectedHostProvider(c))
     // The host stamps its own pane identity (the window lane's stale-key case is below).
     const spawned = recordOf(lanes.provider.mock.calls.at(-1)?.[0])
-    expect(recordOf(spawned.env).ORCA_PANE_KEY).toBe(spawned.paneKey)
-    expect(recordOf(spawned.env).ORCA_WORKSPACE_ID).toBe(launchWorkspaceId(c.workspace))
+    expect(recordOf(spawned.env).OCC_PANE_KEY).toBe(spawned.paneKey)
+    expect(recordOf(spawned.env).OCC_WORKSPACE_ID).toBe(launchWorkspaceId(c.workspace))
     expect(trackMock.mock.calls).toEqual(c.telemetry ? [['agent_started', c.telemetry]] : [])
     expect(lanes.persistPtyBinding.mock.calls[0]?.[0]).toMatchObject({
       placement: { kind: 'new-tab' }
@@ -702,15 +702,15 @@ describe('launch facts outside the tables', () => {
       worktreeId: launchWorkspaceId(POSIX_REPO),
       tabId,
       leafId,
-      env: { ORCA_WORKSPACE_ID: 'folder:f1', ORCA_PANE_KEY: 'stale', ORCA_TAB_ID: 'stale' }
+      env: { OCC_WORKSPACE_ID: 'folder:f1', OCC_PANE_KEY: 'stale', OCC_TAB_ID: 'stale' }
     })
     const env = recordOf(recordOf(lanes.provider.mock.calls.at(-1)?.[0]).env)
-    expect(pick(env, ['ORCA_WORKSPACE_ID', 'ORCA_PANE_KEY', 'ORCA_TAB_ID'])).toEqual({
-      ORCA_WORKSPACE_ID: 'folder:f1',
-      ORCA_PANE_KEY: `${tabId}:${leafId}`,
-      ORCA_TAB_ID: tabId
+    expect(pick(env, ['OCC_WORKSPACE_ID', 'OCC_PANE_KEY', 'OCC_TAB_ID'])).toEqual({
+      OCC_WORKSPACE_ID: 'folder:f1',
+      OCC_PANE_KEY: `${tabId}:${leafId}`,
+      OCC_TAB_ID: tabId
     })
-    expect(env.ORCA_AGENT_PANE).toBe(`${tabId}:${leafId}`) // SSH relays skip local env builders
+    expect(env.OCC_AGENT_PANE).toBe(`${tabId}:${leafId}`) // SSH relays skip local env builders
   })
 })
 
@@ -804,7 +804,7 @@ describe('spawn preflight: where the lanes differ today', () => {
   // Managed SSH hosts expose this shell environment; the shared resolver serves both lanes.
   it('Windows managed SSH host: both lanes open the OpenSSH login shell', async () => {
     setMainPlatform('win32')
-    vi.stubEnv('ORCA_ORCAD_MANAGED_ACTIVATION_ROOT', '/activation')
+    vi.stubEnv('OCC_OCCD_MANAGED_ACTIVATION_ROOT', '/activation')
     vi.mocked(readOpenSshDefaultShell).mockReturnValue(LOGIN_SHELL)
     const workspace = { kind: 'repo', path: WIN_PATH } satisfies LaunchWorkspace
     const lanes = startParityLanes(suite, { workspace })

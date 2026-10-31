@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { RpcContext } from '../../../core'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import type { OrchestrationCompatibilityEvidence } from '../../../../../../shared/orchestration-compatibility-evidence'
-import { testOrcaSessionId } from '../../../../../../shared/orca-session-address-test-fixture'
+import { testOCCSessionId } from '../../../../../../shared/occ-session-address-test-fixture'
 import {
   createRootDispatch,
   reattachDispatchConsumer
@@ -24,7 +24,7 @@ type CheckResult = {
 describe('orchestration.check on a re-attached Dispatch', () => {
   const h = createOrchestrationRpcHarness()
   let db: OrchestrationDb
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
   let ctx: RpcContext
 
   afterEach(() => {
@@ -239,7 +239,7 @@ const WORKER_PROCESS = 'runtime_test:term_worker:1'
 describe('worker report authority without a Dispatch capability', () => {
   const harness = createOrchestrationRpcHarness()
   let db: OrchestrationDb
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
   let ctx: RpcContext
   let panes: Record<string, string>
 
@@ -480,7 +480,7 @@ describe('worker report authority without a Dispatch capability', () => {
 
 const PANE = 'tab_lead:22222222-2222-4222-9222-222222222222'
 const OTHER = 'tab_other:33333333-3333-4333-8333-333333333333'
-const SESSION = testOrcaSessionId('4bd46b4a-035b-41dd-a122-a9c29122ff11')
+const SESSION = testOCCSessionId('4bd46b4a-035b-41dd-a122-a9c29122ff11')
 
 describe.each([false, true])('Dispatch recipient identity (settled=%s)', (settled) => {
   const h = createOrchestrationRpcHarness()
@@ -509,13 +509,13 @@ describe.each([false, true])('Dispatch recipient identity (settled=%s)', (settle
   }
   function sessionRun() {
     state.db.db
-      .prepare('UPDATE dispatch_contexts SET assignee_orca_session_id = ? WHERE id = ?')
+      .prepare('UPDATE dispatch_contexts SET assignee_occ_session_id = ? WHERE id = ?')
       .run(SESSION, dispatch.id)
     return state.db.createRun({
       objective: 'session lead',
       coordinatorHandle: 'term_lead',
       coordinatorPaneKey: null,
-      coordinatorOrcaSessionId: SESSION
+      coordinatorOCCSessionId: SESSION
     })
   }
   async function expectRun(runId: string) {

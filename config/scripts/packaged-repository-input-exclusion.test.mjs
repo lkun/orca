@@ -11,7 +11,7 @@ const { copyFiles, FileMatcher } = require('app-builder-lib/out/fileMatcher')
 
 describe('packaged repository input exclusion', () => {
   it('omits repository build inputs while preserving runtime files', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-packaging-inputs-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-packaging-inputs-'))
     const source = join(root, 'app')
     const destination = join(root, 'selected')
     const cloudPaths = [
@@ -27,7 +27,7 @@ describe('packaged repository input exclusion', () => {
       '.oxfmtrc.json',
       'components.json',
       'opencode.json',
-      'orca.yaml',
+      'occ.yaml',
       'pnpm-workspace.yaml',
       'vite.web.config.ts'
     ]
@@ -41,7 +41,7 @@ describe('packaged repository input exclusion', () => {
       'out/shared/mobile-push-contract.js',
       'out/renderer/index.html',
       'out/renderer/assets/cloud/client.js',
-      'resources/configs/orca.yaml',
+      'resources/configs/occ.yaml',
       'resources/cloud/icon.png'
     ]
     try {

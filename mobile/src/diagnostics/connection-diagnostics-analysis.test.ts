@@ -73,7 +73,7 @@ describe('diagnoseConnection', () => {
     ).toEqual({
       likelyCause: 'Relay stopped answering authenticated health checks.',
       nextStep: 'OCC closed the stale session and started recovery.',
-      reportability: 'orca-relay'
+      reportability: 'occ-relay'
     })
   })
 
@@ -94,7 +94,7 @@ describe('diagnoseConnection', () => {
     ).toEqual({
       likelyCause: 'The active Relay session closed unexpectedly.',
       nextStep: 'OCC started Relay recovery; the event history includes the cell close reason.',
-      reportability: 'orca-relay'
+      reportability: 'occ-relay'
     })
   })
 

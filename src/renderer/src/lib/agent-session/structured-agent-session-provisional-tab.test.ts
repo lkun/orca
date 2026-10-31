@@ -26,7 +26,7 @@ import { makeEmptyHostSnapshot } from '@/runtime/host-session-mirror-frame-fixtu
 import * as unlisted from '../structured-agent-session-unlisted-created-chats'
 import { buildFullWorktreePurgeState } from '@/store/slices/worktrees/teardown/worktree-purge-state'
 import type { TerminalTab } from '../../../../shared/terminal-tab-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { sendLayoutCommandToOwner } from '@/runtime/layout-owner-command'
 import { structuredAgentSessionTabId } from '../../../../shared/structured-agent-session-projection'
 import {
@@ -147,7 +147,7 @@ async function mainLoadsStoreLayout(): Promise<void> {
 }
 
 function pinAsUser(tabId: string): void {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     useAppStore.getState().pinTab(tabId)
     return
   }
@@ -160,7 +160,7 @@ function pinAsUser(tabId: string): void {
 }
 
 function labelAsUser(tabId: string, label: string, color: string): void {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     useAppStore.getState().setTabCustomLabel(tabId, label)
     useAppStore.getState().setUnifiedTabColor(tabId, color)
     return
@@ -273,7 +273,7 @@ describe('a provisional structured chat tab', () => {
       useAppStore.getState().closeUnifiedTab(chat.id)
       await main.settle()
       expect(
-        ORCA_LAYOUT_OWNER_IS_MAIN
+        OCC_LAYOUT_OWNER_IS_MAIN
           ? wasStructuredAgentLaunchClosedByLocalCancel(chat.entityId)
           : hasStructuredAgentSessionLaunchCancellationTombstone('wt-1', chat.entityId)
       ).toBe(true)
@@ -364,7 +364,7 @@ describe('a provisional structured chat tab', () => {
   )
 
   it
-    .skipIf(!ORCA_LAYOUT_OWNER_IS_MAIN)
+    .skipIf(!OCC_LAYOUT_OWNER_IS_MAIN)
     .each([
       'initializer',
       'published',
@@ -535,7 +535,7 @@ describe('a provisional structured chat tab', () => {
     })
     const groupId = sibling.groupId
     const siblingRecords = () =>
-      ORCA_LAYOUT_OWNER_IS_MAIN ? [terminalRecord(sibling.entityId)] : []
+      OCC_LAYOUT_OWNER_IS_MAIN ? [terminalRecord(sibling.entityId)] : []
     useAppStore.setState({ tabsByWorktree: { 'wt-1': siblingRecords() } })
     await mainLoadsStoreLayout()
     const pinnedSource = ['empty', 'typed-during', 'initializer'].includes(scenario)
@@ -706,7 +706,7 @@ describe('a provisional structured chat tab', () => {
     })
     useAppStore.setState({
       tabsByWorktree: {
-        'wt-1': ORCA_LAYOUT_OWNER_IS_MAIN
+        'wt-1': OCC_LAYOUT_OWNER_IS_MAIN
           ? [terminalRecord(sibling.entityId), terminalRecord(terminal.entityId)]
           : []
       }
@@ -775,7 +775,7 @@ it.each(['expiry', 'purge'])('created pane publication: %s', async (order) => {
     expect(store().unifiedTabsByWorktree['wt-1']?.some((t) => t.id === chat.id)).toBe(true)
     list(101)
     expect(store().unifiedTabsByWorktree['wt-1']?.some((t) => t.id === chat.id)).toBe(
-      ORCA_LAYOUT_OWNER_IS_MAIN
+      OCC_LAYOUT_OWNER_IS_MAIN
     )
   }
 })

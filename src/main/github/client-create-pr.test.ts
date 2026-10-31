@@ -142,13 +142,13 @@ describe('createGitHubPullRequest', () => {
     // Creation targets the fork holding the unqualified head branch; reads can prefer upstream.
     getOwnerRepoForRemoteMock.mockImplementation(async (_repoPath: string, remoteName: string) =>
       remoteName === 'origin'
-        ? { owner: 'fsdwen', repo: 'orca' }
-        : { owner: 'stablyai', repo: 'orca' }
+        ? { owner: 'fsdwen', repo: 'occ' }
+        : { owner: 'stablyai', repo: 'occ' }
     )
     ghExecFileAsyncMock.mockResolvedValueOnce({
       stdout: JSON.stringify({
         number: 5,
-        url: 'https://github.com/fsdwen/orca/pull/5'
+        url: 'https://github.com/fsdwen/occ/pull/5'
       })
     })
 
@@ -166,11 +166,11 @@ describe('createGitHubPullRequest', () => {
     ).resolves.toEqual({
       ok: true,
       number: 5,
-      url: 'https://github.com/fsdwen/orca/pull/5'
+      url: 'https://github.com/fsdwen/occ/pull/5'
     })
 
     const [args] = ghExecFileAsyncMock.mock.calls[0]
-    expect(args[args.indexOf('--repo') + 1]).toBe('fsdwen/orca')
+    expect(args[args.indexOf('--repo') + 1]).toBe('fsdwen/occ')
     expect(args[args.indexOf('--head') + 1]).toBe('my-branch')
   })
 
@@ -178,11 +178,11 @@ describe('createGitHubPullRequest', () => {
     getOwnerRepoMock.mockResolvedValueOnce(null)
     getEnterpriseGitHubRepoSlugMock.mockResolvedValueOnce({
       owner: 'team',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.acme-corp.com'
     })
     ghExecFileAsyncMock.mockResolvedValueOnce({
-      stdout: 'https://github.acme-corp.com/team/orca/pull/7\n'
+      stdout: 'https://github.acme-corp.com/team/occ/pull/7\n'
     })
 
     await expect(
@@ -199,12 +199,12 @@ describe('createGitHubPullRequest', () => {
     ).resolves.toEqual({
       ok: true,
       number: 7,
-      url: 'https://github.acme-corp.com/team/orca/pull/7'
+      url: 'https://github.acme-corp.com/team/occ/pull/7'
     })
 
     const [args, options] = ghExecFileAsyncMock.mock.calls[0]
     // The real runner qualifies argv from options.host after this mocked boundary.
-    expect(args[args.indexOf('--repo') + 1]).toBe('team/orca')
+    expect(args[args.indexOf('--repo') + 1]).toBe('team/occ')
     expect(options).toMatchObject({ host: 'github.acme-corp.com' })
   })
 
@@ -212,7 +212,7 @@ describe('createGitHubPullRequest', () => {
     getOwnerRepoMock.mockResolvedValue(null)
     getEnterpriseGitHubRepoSlugMock.mockResolvedValue({
       owner: 'team',
-      repo: 'orca',
+      repo: 'occ',
       host: 'github.acme-corp.com'
     })
     ghExecFileAsyncMock
@@ -224,7 +224,7 @@ describe('createGitHubPullRequest', () => {
       )
       .mockResolvedValueOnce({
         stdout: JSON.stringify([
-          { number: 9, url: 'https://github.acme-corp.com/team/orca/pull/9' }
+          { number: 9, url: 'https://github.acme-corp.com/team/occ/pull/9' }
         ])
       })
 
@@ -242,12 +242,12 @@ describe('createGitHubPullRequest', () => {
     ).resolves.toMatchObject({
       ok: false,
       code: 'already_exists',
-      existingReview: { number: 9, url: 'https://github.acme-corp.com/team/orca/pull/9' }
+      existingReview: { number: 9, url: 'https://github.acme-corp.com/team/occ/pull/9' }
     })
 
     const [listArgs, listOptions] = ghExecFileAsyncMock.mock.calls[1]
     expect(listArgs).toEqual(expect.arrayContaining(['pr', 'list']))
-    expect(listArgs[listArgs.indexOf('--repo') + 1]).toBe('team/orca')
+    expect(listArgs[listArgs.indexOf('--repo') + 1]).toBe('team/occ')
     expect(listOptions).toMatchObject({ host: 'github.acme-corp.com' })
   })
 

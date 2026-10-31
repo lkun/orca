@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { LayoutCommand } from '../../../shared/workspace-layout/workspace-layout-command-types'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import type { Store } from '../loading-store/store'
 import {
   emptyTerminalSessionProfile,
@@ -12,7 +12,7 @@ import {
   reopenTopologyStore
 } from './terminal-topology-profile-fixture'
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('../../telemetry/client', () => ({ track: vi.fn() }))
 vi.mock('../../ssh/config/ssh-config-parser', () => ({
   loadUserSshConfig: () => ({ hosts: [] }),
@@ -36,7 +36,7 @@ async function apply(store: Store, command: LayoutCommand) {
 }
 
 async function storeWithSplit(): Promise<{ store: Store; directory: string }> {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-pane-last-grid-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-pane-last-grid-'))
   directories.push(directory)
   const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   await apply(store, { ...on, type: 'createTerminalTab', tabId: 'tab-1', leafId: LEAF_A })
@@ -129,7 +129,7 @@ describe("a pane's last grid (layout-owner build)", () => {
       leafId: LEAF_B,
       ptyId: 'pty-b'
     })
-    const runtime = new OrcaRuntimeService(store)
+    const runtime = new OCCRuntimeService(store)
 
     // Queue resize inside the write burst before flushing.
     runtime.onExternalPtyResize('pty-b', 91, 33)

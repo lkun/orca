@@ -1,5 +1,5 @@
 import type { AgentLaunchResult } from '../../shared/agent-launch-intent'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import type { AutomationRun } from '../../shared/automations-types'
 import type { AutomationChatAgentLaunch } from './automation-chat-agent-launch'
 import { tuiAgentDisplayName } from '../../shared/tui-agent-display-names'
@@ -8,7 +8,7 @@ import { readAutomationRunReceipt } from './automation-run-receipt'
 import { AutomationRunLaunchError } from './headless-dispatch'
 
 export function publishedLaunchTarget(
-  runtime: Pick<OrcaRuntimeService, 'getTerminalPaneKey' | 'getTerminalPtyIdForHandle'>,
+  runtime: Pick<OCCRuntimeService, 'getTerminalPaneKey' | 'getTerminalPtyIdForHandle'>,
   result: Pick<AgentLaunchResult, 'worktreeId' | 'outcome'>
 ): AutomationChatAgentLaunch {
   let paneKey = result.outcome.kind === 'terminal' ? (result.outcome.paneKey ?? null) : null
@@ -38,7 +38,7 @@ export function publishedLaunchTarget(
 }
 
 export async function enrichAutomationRunTarget(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   target: AutomationChatAgentLaunch
 ): Promise<AutomationChatAgentLaunch> {
   try {
@@ -59,7 +59,7 @@ export async function enrichAutomationRunTarget(
 
 /** A lost reply is not proof of no effect; recovery reads the ordinary operation receipt. */
 export async function automationRunAcceptedTarget(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   run: Pick<AutomationRun, 'id' | 'createdAt'>,
   target: AutomationChatAgentLaunch | undefined,
   error: unknown,

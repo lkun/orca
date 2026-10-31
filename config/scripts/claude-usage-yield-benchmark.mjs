@@ -7,7 +7,7 @@ import { join } from 'node:path'
 import { performance } from 'node:perf_hooks'
 
 const REPO_ROOT = new URL('../..', import.meta.url)
-const ROUNDS = Number(process.env.ORCA_YIELD_BENCH_ROUNDS ?? '10')
+const ROUNDS = Number(process.env.OCC_YIELD_BENCH_ROUNDS ?? '10')
 
 // Read real batch size/yield sites or scanner drift makes benchmark claims stale.
 const SCANNER_SOURCE = readFileSync(new URL('src/main/claude-usage/scanner.ts', REPO_ROOT), 'utf8')

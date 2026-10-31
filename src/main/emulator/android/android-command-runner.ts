@@ -1,4 +1,4 @@
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { basename } from 'node:path'
 import { emulatorProbe, emulatorProbeError } from '../emulator-probe'
 

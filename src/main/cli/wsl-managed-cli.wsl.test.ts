@@ -2,18 +2,18 @@ import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { removeTree } from '../../shared/windows-transient-lock-removal'
 import { buildWslExecArgs } from '../../shared/wsl-login-shell-command'
 import { installFakeAppEnvironment } from '../../../config/scripts/vitest-host-ports-setup'
-import { addOrcaWslInteropEnv } from '../pty/wsl-orca-env'
+import { addOCCWslInteropEnv } from '../pty/wsl-occ-env'
 import { getManagedWslCliDir } from './wsl-managed-cli'
 import { buildLocalShellReadyWrapperFiles } from '../providers/local-pty-shell-ready-wrapper-fileset'
 
 // Explicit opt-in: never require a developer's WSL installation for unit tests.
-const enabled = process.platform === 'win32' && process.env.ORCA_TEST_MANAGED_WSL === '1'
+const enabled = process.platform === 'win32' && process.env.OCC_TEST_MANAGED_WSL === '1'
 const FIXTURE_CLI =
-  'if(process.argv.includes("--exit"))process.exit(23); console.error("bridge stderr"); console.log(JSON.stringify({argv:process.argv.slice(2),owner:process.env.ORCA_USER_DATA_PATH,handle:process.env.ORCA_TERMINAL_HANDLE}))'
+  'if(process.argv.includes("--exit"))process.exit(23); console.error("bridge stderr"); console.log(JSON.stringify({argv:process.argv.slice(2),owner:process.env.OCC_USER_DATA_PATH,handle:process.env.OCC_TERMINAL_HANDLE}))'
 
 async function withManagedCli(
   run: (fixture: {
@@ -24,10 +24,10 @@ async function withManagedCli(
     wsl: (args: string[], input?: string) => ReturnType<typeof runProcess>
   }) => Promise<void>
 ): Promise<void> {
-  const root = mkdtempSync(join(tmpdir(), "orca WSL's managed CLI "))
-  const distro = process.env.ORCA_TEST_WSL_DISTRO || undefined
+  const root = mkdtempSync(join(tmpdir(), "occ WSL's managed CLI "))
+  const distro = process.env.OCC_TEST_WSL_DISTRO || undefined
   const userDataPath = join(root, 'user data 张三 O\u2019Brien')
-  const env: Record<string, string> = { ORCA_BACKGROUND_LAUNCH: '1' }
+  const env: Record<string, string> = { OCC_BACKGROUND_LAUNCH: '1' }
   for (const [key, value] of Object.entries(process.env)) {
     if (value !== undefined) {
       env[key] = value
@@ -46,7 +46,7 @@ async function withManagedCli(
     wsl([
       'sh',
       '-c',
-      'for file in "$HOME/.profile" "$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.zshrc" "$HOME/.zprofile" "$HOME/.zshenv" "$HOME/.local/bin/occ" "$HOME/.local/bin/occ-ide" "$HOME/.local/bin/occ-dev" "$HOME/.local/share/orca/orca-wsl-bridge.ps1"; do if [ -f "$file" ]; then sha256sum "$file"; fi; done; printf "PATH=%s\\n" "$PATH"'
+      'for file in "$HOME/.profile" "$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.zshrc" "$HOME/.zprofile" "$HOME/.zshenv" "$HOME/.local/bin/occ" "$HOME/.local/bin/occ-ide" "$HOME/.local/bin/occ-dev" "$HOME/.local/share/occ/occ-wsl-bridge.ps1"; do if [ -f "$file" ]; then sha256sum "$file"; fi; done; printf "PATH=%s\\n" "$PATH"'
     ])
   try {
     const before = await snapshot()
@@ -63,11 +63,11 @@ async function withManagedCli(
     const directory = getManagedWslCliDir({ isPackaged: false, userDataPath })
     expect(directory).not.toBeNull()
     Object.assign(env, {
-      ORCA_WSL_CLI_DIR: directory ?? '',
-      ORCA_CLI_COMMAND: 'occ-dev',
-      ORCA_TERMINAL_HANDLE: 'term_managed_fixture'
+      OCC_WSL_CLI_DIR: directory ?? '',
+      OCC_CLI_COMMAND: 'occ-dev',
+      OCC_TERMINAL_HANDLE: 'term_managed_fixture'
     })
-    addOrcaWslInteropEnv(env)
+    addOCCWslInteropEnv(env)
     await run({ env, guestRoot: translated.stdout.trim(), root, userDataPath, wsl })
     expect((await snapshot()).stdout).toBe(before.stdout)
   } finally {
@@ -100,7 +100,7 @@ it.skipIf(!enabled)(
       expect(result.stdout).toContain('"handle":"term_managed_fixture"')
       expect((await shell('occ-dev --exit')).code).toBe(23)
 
-      env.ORCA_WSL_CLI_DIR = join(root, 'missing-cli')
+      env.OCC_WSL_CLI_DIR = join(root, 'missing-cli')
       const missing = await shell('echo SHELL_CONTINUED')
       expect(missing.code).toBe(0)
       expect(missing.stdout).toContain('SHELL_CONTINUED')

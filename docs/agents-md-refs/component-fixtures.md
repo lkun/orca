@@ -43,7 +43,7 @@ PNGs go to `.cache/fixtures/` (override with `--out`), and the command prints th
 
 The first call starts a detached server: Vite (`config/vite.fixtures.config.ts`, which extends `vite.web.config.ts`) plus one headless Chromium. The first call takes 10–20 seconds. After that, each shot takes about 100 ms. The first shot after a source edit takes 1–2 seconds because the page reloads. The server restarts itself when the fixture scripts change and exits after 20 idle minutes.
 
-Chromium resolution order: `ORCA_FIXTURES_BROWSER` (an executable path), then the Playwright-managed `chromium-headless-shell`, then an installed Chrome or Edge. Every option runs headless, so screenshots never open a window or take focus.
+Chromium resolution order: `OCC_FIXTURES_BROWSER` (an executable path), then the Playwright-managed `chromium-headless-shell`, then an installed Chrome or Edge. Every option runs headless, so screenshots never open a window or take focus.
 
 ## Browsing
 
@@ -51,7 +51,7 @@ Chromium resolution order: `ORCA_FIXTURES_BROWSER` (an executable path), then th
 
 ## MCP
 
-`.mcp.json` registers `orca-component-fixtures`, a stdio server at `config/scripts/component-fixtures/fixtures-mcp-server.mjs`. It has two tools:
+`.mcp.json` registers `occ-component-fixtures`, a stdio server at `config/scripts/component-fixtures/fixtures-mcp-server.mjs`. It has two tools:
 
 - `list_fixtures({ filter? })`
 - `screenshot_fixture({ id, theme?, scale? })`: returns the PNGs inline (up to 6) along with their paths.

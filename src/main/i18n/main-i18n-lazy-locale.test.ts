@@ -72,7 +72,7 @@ describe('main-i18n lazy locale loading', () => {
   })
 
   it('still lazy-loads built-in catalogs after a pack is removed', async () => {
-    const packs = ['orca-samples.first', 'orca-samples.second'].map((pluginKey) => {
+    const packs = ['occ-samples.first', 'occ-samples.second'].map((pluginKey) => {
       const id = `plugin:${pluginKey}/pt-BR` as const
       return {
         id,
@@ -95,12 +95,12 @@ describe('main-i18n lazy locale loading', () => {
   })
 
   it("uses a contributed pack's plural rules and English for its empty values", async () => {
-    const id = 'plugin:orca-samples.russian/ru-RU' as const
+    const id = 'plugin:occ-samples.russian/ru-RU' as const
     setMainPluginLanguagePacks([
       {
         id,
         resourceLanguage: pluginLanguageResourceId(id),
-        pluginKey: 'orca-samples.russian',
+        pluginKey: 'occ-samples.russian',
         coverage: 100,
         locale: 'ru-RU',
         catalog: {

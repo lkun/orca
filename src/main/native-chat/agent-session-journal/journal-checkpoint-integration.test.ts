@@ -45,7 +45,7 @@ afterEach(async () => {
   }
 })
 async function open() {
-  root = await mkdtemp(join(tmpdir(), 'orca-checkpoint-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-checkpoint-'))
   host = JournalHostDatabase.open(root)
   return host
 }

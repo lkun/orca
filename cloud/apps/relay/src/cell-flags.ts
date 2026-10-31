@@ -42,7 +42,7 @@ export function defaultIntakePerSec(region: string | undefined): number {
   return region === 'asia-east2' ? 2 : 5
 }
 
-export const CELL_FLAGS_APPLIED_EVENT = 'orca_relay_cell_flags_applied'
+export const CELL_FLAGS_APPLIED_EVENT = 'occ_relay_cell_flags_applied'
 
 const CellFlagsSchema = z.object({
   readinessLocal: z.boolean().default(CELL_FLAG_DEFAULTS.readinessLocal),

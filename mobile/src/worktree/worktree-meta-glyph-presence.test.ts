@@ -14,7 +14,7 @@ const ALL = getWorktreeCardDetails(DEFAULT_WORKTREE_CARD_PROPERTIES, {
 const row: Worktree = {
   worktreeId: 'w',
   repoId: 'r',
-  repo: 'orca',
+  repo: 'occ',
   path: '/w',
   branch: 'b',
   displayName: 'w',

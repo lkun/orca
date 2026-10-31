@@ -26,7 +26,7 @@ import {
 } from './keybinding-file-parser'
 
 export function getUserKeybindingsPath(homePath: string): string {
-  return join(homePath, '.orca', 'keybindings.json')
+  return join(homePath, '.occ', 'keybindings.json')
 }
 
 export function readKeybindingFile(

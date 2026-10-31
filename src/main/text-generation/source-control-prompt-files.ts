@@ -25,7 +25,7 @@ export function stageLocalPromptFiles(
   if (!plan.promptFile) {
     return plan
   }
-  const directory = mkdtempSync(join(tmpdir(), 'orca-generation-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-generation-'))
   own(directory)
   const attachments: string[] = []
   for (const content of promptFileContents(plan.promptFile.content)) {
@@ -41,12 +41,12 @@ export function stageLocalPromptFiles(
 // Preparation precedes profiles; only a proved empty allocation may roll back before ACK.
 export const WSL_PROMPT_PREPARATION = `
 nonce=$1; count=$2; shift 2
-dir=/tmp/orca-generation-$nonce
+dir=/tmp/occ-generation-$nonce
 old_umask=$(umask)
 umask 077
 mkdir "$dir" || exit 1
 trap 'rmdir "$dir" 2>/dev/null' EXIT
-printf '\\nORCA_GENERATION_READY:%s\\n' "$nonce" >&2 || exit 1
+printf '\\nOCC_GENERATION_READY:%s\\n' "$nonce" >&2 || exit 1
 IFS= read -r record && [ "$record" = "A$nonce" ] || exit 1
 trap - EXIT
 index=1
@@ -69,14 +69,14 @@ exec "$@" </dev/null
 
 export function prepareWslPrompt(plan: CommitMessagePlan, distro: string) {
   const nonce = randomUUID()
-  const directory = `/tmp/orca-generation-${nonce}`
+  const directory = `/tmp/occ-generation-${nonce}`
   const attachments: string[] = []
   for (const _content of promptFileContents(plan.promptFile?.content ?? '')) {
     attachments.push(`@${directory}/prompt-${attachments.length + 1}.txt`)
   }
   const args = [...plan.args]
   args.splice(plan.promptFile?.argIndex ?? 0, 1, ...attachments)
-  const proof = `ORCA_GENERATION_READY:${nonce}`
+  const proof = `OCC_GENERATION_READY:${nonce}`
   let partial = ''
   let oversized = false
   let proved = false

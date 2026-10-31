@@ -201,7 +201,7 @@ export function PluginInstallDialog({
               <p className="text-xs leading-5 text-muted-foreground">
                 {translate(
                   'auto.components.settings.PluginInstallDialog.localHelp',
-                  'The folder with orca-plugin.json'
+                  'The folder with occ-plugin.json'
                 )}
               </p>
             </TabsContent>
@@ -224,7 +224,7 @@ export function PluginInstallDialog({
                 }}
                 placeholder={translate(
                   'auto.components.settings.PluginInstallDialog.gitPlaceholder',
-                  'https://github.com/acme/orca-notes'
+                  'https://github.com/acme/occ-notes'
                 )}
                 spellCheck={false}
                 aria-invalid={kind === 'git' && Boolean(error)}

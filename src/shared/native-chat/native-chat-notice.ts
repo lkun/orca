@@ -4,7 +4,7 @@ import {
   isAgentSessionHostStatusPresentation,
   type AgentSessionHostStatusPresentation
 } from '../agent-session-host-status-rows'
-import { AGENT_SESSION_ORCA_STOP_PRESENTATION } from '../agent-session-orca-stop'
+import { AGENT_SESSION_OCC_STOP_PRESENTATION } from '../agent-session-occ-stop'
 import { NATIVE_CHAT_STOPPED_BEFORE_START_PRESENTATION } from './native-chat-stopped-before-start'
 import type { NativeChatBlock, NativeChatTextBlock } from '../native-chat-types'
 
@@ -60,7 +60,7 @@ export function nativeChatNoticeLook(block: NativeChatTextBlock): NativeChatNoti
     return { kind: 'aside' }
   }
   // OCC stopped the reply, not the agent: stored red for clients that predate it, read as a notice.
-  if (presentation === AGENT_SESSION_ORCA_STOP_PRESENTATION) {
+  if (presentation === AGENT_SESSION_OCC_STOP_PRESENTATION) {
     return { kind: 'line', tone: 'notice' }
   }
   const { tone } = block

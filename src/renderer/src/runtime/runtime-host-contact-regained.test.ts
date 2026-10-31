@@ -53,7 +53,7 @@ const env = (revision: number, key?: string): PublicKnownRuntimeEnvironment => (
   preferredEndpointId: 'loopback',
   connectionDependency: 'ssh-tunnel',
   hostKeyFingerprint: key,
-  orcadDeployment: {
+  occdDeployment: {
     sshTargetId: 'box',
     sshTargetGeneration: 1,
     localPort: 46768,

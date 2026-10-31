@@ -31,7 +31,7 @@ describe('Claude statusLine by resolved version', () => {
   let settingsPath: string
 
   beforeEach(() => {
-    tmpHome = mkdtempSync(join(tmpdir(), 'orca-claude-statusline-version-'))
+    tmpHome = mkdtempSync(join(tmpdir(), 'occ-claude-statusline-version-'))
     settingsPath = join(tmpHome, '.claude', 'settings.json')
     vi.stubEnv('HOME', tmpHome)
     vi.stubEnv('USERPROFILE', tmpHome)
@@ -94,9 +94,9 @@ describe('Claude statusLine on Windows', () => {
   let scriptPath: string
 
   beforeEach(() => {
-    tmpHome = mkdtempSync(join(tmpdir(), 'orca-claude-statusline-win-'))
+    tmpHome = mkdtempSync(join(tmpdir(), 'occ-claude-statusline-win-'))
     settingsPath = join(tmpHome, '.claude', 'settings.json')
-    scriptPath = join(tmpHome, '.orca', 'agent-hooks', 'claude-statusline.cmd')
+    scriptPath = join(tmpHome, '.occ', 'agent-hooks', 'claude-statusline.cmd')
     vi.stubEnv('HOME', tmpHome)
     vi.stubEnv('USERPROFILE', tmpHome)
     Object.defineProperty(process, 'platform', { value: 'win32', configurable: true })
@@ -116,22 +116,22 @@ describe('Claude statusLine on Windows', () => {
 
   it('registers a cmd-safe script bare, which Windows PowerShell can run', () => {
     expect(
-      getManagedStatusLineCommand('C:\\Users\\alice\\.orca\\agent-hooks\\claude-statusline.cmd')
-    ).toBe('C:/Users/alice/.orca/agent-hooks/claude-statusline.cmd')
+      getManagedStatusLineCommand('C:\\Users\\alice\\.occ\\agent-hooks\\claude-statusline.cmd')
+    ).toBe('C:/Users/alice/.occ/agent-hooks/claude-statusline.cmd')
   })
 
   it('keeps the runtime-home form for an unsafe path rather than an encoded PowerShell launcher', () => {
-    const spaced = 'C:\\Users\\John Smith\\.orca\\agent-hooks\\claude-statusline.cmd'
+    const spaced = 'C:\\Users\\John Smith\\.occ\\agent-hooks\\claude-statusline.cmd'
     expect(getManagedStatusLineCommand(spaced)).toBe(getManagedCommand(spaced))
   })
 
   it.each([
     ['the runtime-home form', () => getManagedCommand(scriptPath)],
-    ['a stale bare path', () => 'C:/Users/someone-else/.orca/agent-hooks/claude-statusline.cmd']
+    ['a stale bare path', () => 'C:/Users/someone-else/.occ/agent-hooks/claude-statusline.cmd']
   ])('replaces %s as OCC-owned', (_name, command) => {
     seedStatusLine(command())
-    mkdirSync(join(tmpHome, '.orca', 'agent-hooks'), { recursive: true })
-    writeFileSync(join(tmpHome, '.orca', 'agent-hooks', 'claude-statusline.installed'), '')
+    mkdirSync(join(tmpHome, '.occ', 'agent-hooks'), { recursive: true })
+    writeFileSync(join(tmpHome, '.occ', 'agent-hooks', 'claude-statusline.installed'), '')
 
     new ClaudeHookService().install(CURRENT_CLAUDE)
     expect(readSettings().statusLine).toEqual({

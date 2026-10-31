@@ -179,7 +179,7 @@ describe('TerminalHost', () => {
       expect(lastSubprocess.write).not.toHaveBeenCalled()
 
       // Delay post-marker input until prompt output and raw-mode setup prevent cooked echo.
-      lastSubprocess._onDataCb?.('\x1b]777;orca-shell-ready\x07')
+      lastSubprocess._onDataCb?.('\x1b]777;occ-shell-ready\x07')
       expect(lastSubprocess.write).not.toHaveBeenCalled()
 
       lastSubprocess._onDataCb?.('\r\nuser@host $ ')
@@ -199,7 +199,7 @@ describe('TerminalHost', () => {
           streamClient: { onData: vi.fn(), onExit: vi.fn() }
         })
 
-        lastSubprocess._onDataCb?.('\x1b]777;orca-shell-ready\x07\r\nuser@host $ ')
+        lastSubprocess._onDataCb?.('\x1b]777;occ-shell-ready\x07\r\nuser@host $ ')
         vi.advanceTimersByTime(29)
         expect(lastSubprocess.write).not.toHaveBeenCalled()
 
@@ -261,7 +261,7 @@ describe('TerminalHost', () => {
 
       const written = (lastSubprocess.write as ReturnType<typeof vi.fn>).mock.calls[0]?.[0]
       // Multiline launch commands are staged in a sourced script and submitted with Enter CR.
-      const scriptPath = /^\. '(.*orca-launch-[0-9a-f]+\.sh)'\r$/.exec(written)?.[1]
+      const scriptPath = /^\. '(.*occ-launch-[0-9a-f]+\.sh)'\r$/.exec(written)?.[1]
       expect(scriptPath).toBeDefined()
       expect(readFileSync(scriptPath!, 'utf8')).toContain('claude "line one\nline two"\n')
       rmSync(scriptPath!, { force: true })
@@ -788,7 +788,7 @@ describe('TerminalHost', () => {
         sessionId: 'session-1',
         cols: 80,
         rows: 24,
-        env: { ORCA_PANE_KEY: paneKey },
+        env: { OCC_PANE_KEY: paneKey },
         streamClient: { onData: vi.fn(), onExit: vi.fn() }
       })
     const launchedFor = 'client-tab:11111111-1111-4111-8111-111111111111'

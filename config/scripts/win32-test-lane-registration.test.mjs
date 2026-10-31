@@ -38,23 +38,23 @@ const UNREGISTERED_ON_MAIN = [
 
 // Manual suites need real-distro/filesystem opt-in as well as win32; assert env actually reaches gate so this cannot hide registrable debt.
 const MANUAL_OPT_IN = [
-  // `runIf(platform === 'win32' && Boolean(distro))`, distro from ORCA_TEST_WSL_DISTRO.
+  // `runIf(platform === 'win32' && Boolean(distro))`, distro from OCC_TEST_WSL_DISTRO.
   'src/main/git/runner-wsl-linked-gitdir-windows.test.ts',
-  // `runRealWsl = … && ORCA_REAL_WSL_BANNER_TEST === '1'`; needs a real distro.
+  // `runRealWsl = … && OCC_REAL_WSL_BANNER_TEST === '1'`; needs a real distro.
   'src/main/local-worktree-filesystem-wsl-banner.wsl.test.ts',
-  // `ORCA_REAL_WINDOWS_SKILL_TEST === '1'`; installs into a real Windows workspace.
+  // `OCC_REAL_WINDOWS_SKILL_TEST === '1'`; installs into a real Windows workspace.
   'src/main/skills/skill-windows-workspace.integration.test.ts',
-  // `RUN_REAL_WSL = … && ORCA_REAL_WSL_SKILL_TEST === '1'`; real distro filesystem.
+  // `RUN_REAL_WSL = … && OCC_REAL_WSL_SKILL_TEST === '1'`; real distro filesystem.
   'src/main/skills/skill-wsl-delete.integration.test.ts',
   // Same flag; real WSL install transactions.
   'src/main/skills/skill-wsl-install-transaction.integration.test.ts',
   // Same flag; real WSL POSIX semantics.
   'src/main/skills/skill-wsl-posix-semantics.integration.test.ts',
-  // `runRealWsl = … && ORCA_REAL_WSL_DELETE_TEST === '1'`; real distro traversal race.
+  // `runRealWsl = … && OCC_REAL_WSL_DELETE_TEST === '1'`; real distro traversal race.
   'src/main/wsl-approved-root-race.wsl.test.ts',
   // Same flag; real UNC delete against a distro.
   'src/main/wsl-unc-delete.wsl.test.ts',
-  // `enabled = platform === 'win32' && ORCA_REAL_WSL_RUNNER_TEST === '1'`; mutates a real distro's ~/.profile.
+  // `enabled = platform === 'win32' && OCC_REAL_WSL_RUNNER_TEST === '1'`; mutates a real distro's ~/.profile.
   'src/main/wsl/wsl-runner.wsl.test.ts'
 ]
 
@@ -208,8 +208,8 @@ describe('Windows-gated test files are registered in the Windows CI lane', () =>
     const step = workflow.jobs.package_windows.steps.find(
       (candidate) => candidate.name === 'Test Windows-specific boundaries'
     )
-    expect(step.env.ORCA_REAL_WINDOWS_SKILL_TEST).toBe('1')
-    expect(step.env.ORCA_BACKGROUND_LAUNCH).toBe('1')
+    expect(step.env.OCC_REAL_WINDOWS_SKILL_TEST).toBe('1')
+    expect(step.env.OCC_BACKGROUND_LAUNCH).toBe('1')
     expect(WINDOWS_BOUNDARY_TESTS).toContain(
       'src/main/skills/skill-windows-rename-contention.integration.test.ts'
     )

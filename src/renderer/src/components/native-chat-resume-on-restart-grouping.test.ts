@@ -95,7 +95,7 @@ describe('choosing the workspace glyph', () => {
 
 describe('naming the group header', () => {
   const REPO_ICON = { type: 'lucide', name: 'git-branch' } as const
-  const REPOS = [{ id: 'repo-1', displayName: 'orca', repoIcon: REPO_ICON }]
+  const REPOS = [{ id: 'repo-1', displayName: 'occ', repoIcon: REPO_ICON }]
   const GROUPS = [{ id: '4c3c3452-758b-418b-add1-0a280c8e03a0', name: 'Scratch' }]
 
   // Folder workspaces carry non-null synthetic repoIds; resolve their project name instead of showing the raw uuid.
@@ -114,7 +114,7 @@ describe('naming the group header', () => {
   it('titles a git repo with its display name and keeps its own glyph', () => {
     expect(resolveResumeGroupHeader('repo-1', REPOS, GROUPS)).toEqual({
       kind: 'repo',
-      name: 'orca',
+      name: 'occ',
       repoIcon: REPO_ICON
     })
   })

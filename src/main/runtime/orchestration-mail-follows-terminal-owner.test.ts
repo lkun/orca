@@ -1,6 +1,6 @@
 import './rpc/unused-default-rpc-methods.test-fixture'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { OrchestrationDb } from './orchestration/db'
 import { settledWriteStub } from '../providers/settled-pty-write-stub'
 import {
@@ -103,7 +103,7 @@ describe('Run mail follows the terminal that owns its mailbox', () => {
   })
 
   it('wakes a Run bound to one of two panes showing its terminal, whichever is listed first', async () => {
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     const write = vi.fn((_ptyId: string, _data: string) => true)
     runtime.setPtyController({
       write,
@@ -171,7 +171,7 @@ describe.each(['pane-issued', 'preallocated'] as const)('a %s handle across a re
   })
 
   async function rendererTerminal() {
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     const write = vi.fn((_ptyId: string, _data: string) => true)
     runtime.setPtyController({
       write,

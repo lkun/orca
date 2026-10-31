@@ -1156,7 +1156,7 @@
     "setupHookTrustDrawer": {
       "scriptChangedTitle": "{{repoName}}'s setup script changed",
       "runSetupTitle": "Run setup from {{repoName}}?",
-      "description": "This repository's orca.yaml runs before the workspace starts. Only run it if you trust this repository.",
+      "description": "This repository's occ.yaml runs before the workspace starts. Only run it if you trust this repository.",
       "newScriptLabel": "New setup script",
       "scriptLabel": "Setup script",
       "runHooks": "Run hooks",
@@ -2432,10 +2432,10 @@
       "historyUnreadable": "OCC couldn't read this chat's saved history.",
       "historyUnusable": "Unable to load this chat.",
       "historyUnavailable": "OCC couldn't open this chat's history right now.",
-      "savedByNewerOrca": "Chats were saved by a newer OCC.",
-      "updateOrcaToKeepUsing": "Update OCC to keep using them.",
-      "chatSavedByNewerOrca": "This chat was saved by a newer OCC.",
-      "updateOrcaToOpenChat": "Update OCC to open it.",
+      "savedByNewerOCC": "Chats were saved by a newer OCC.",
+      "updateOCCToKeepUsing": "Update OCC to keep using them.",
+      "chatSavedByNewerOCC": "This chat was saved by a newer OCC.",
+      "updateOCCToOpenChat": "Update OCC to open it.",
       "unsupported": "This needs a newer OCC on the computer running this chat. Update OCC there, then try again.",
       "notAvailable": "This isn't available in this chat.",
       "cannotRunHere": "OCC can't run this agent in a chat here.",
@@ -2758,7 +2758,7 @@
       "continuedOutside": "Continued outside this chat.",
       "continuedOutsideRewound": "Continued outside this chat. Earlier replies above are no longer in this conversation's history."
     },
-    "orcaStop": {
+    "occStop": {
       "update": "OCC on {{machine}} restarted for an update while this response was in progress.",
       "quit": "OCC on {{machine}} was closed while this response was in progress.",
       "crash": "OCC on {{machine}} stopped unexpectedly while this response was in progress.",
@@ -3686,7 +3686,7 @@
       "reply": "Reply"
     },
     "projectDetailDrawer": {
-      "repositoryNotInOrca": "Repository not in OCC",
+      "repositoryNotInOCC": "Repository not in OCC",
       "addRepositoryFromDesktop": "{{repository}} is not added to OCC. Add this repository from the desktop app, then refresh mobile Tasks.",
       "openInGitHub": "Open in GitHub",
       "copyRepository": "Copy repository",
@@ -3859,7 +3859,7 @@
       "skipSetupAndCreate": "Skip setup and create",
       "setupChangedTitle": "{{name}}'s setup script changed",
       "runSetupTitle": "Run setup from {{name}}?",
-      "trustSubtitle": "This repository's orca.yaml runs on your machine before the workspace starts. Only run it if you trust this repository.",
+      "trustSubtitle": "This repository's occ.yaml runs on your machine before the workspace starts. Only run it if you trust this repository.",
       "newSetupScript": "New setup script",
       "setupScript": "Setup script",
       "trustFailed": "Failed to trust setup script.",

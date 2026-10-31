@@ -1,15 +1,15 @@
 import { Import } from 'lucide-react'
-import { ORCA_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { OCC_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import { useMobileEmulatorAgentSetupState } from '../emulator-pane/use-mobile-emulator-agent-setup-state'
 import { AgentSkillSetupPanel } from './AgentSkillSetupPanel'
 import { MobileEmulatorExamples } from './MobileEmulatorExamples'
 import { translate } from '@/i18n/i18n'
 
 const EMULATOR_CLI_COMMANDS = [
-  'orca emulator list --json',
-  'orca emulator attach "iPhone 16 Pro" --json',
-  'orca emulator tap 0.5 0.7 --json',
-  'orca emulator type "hello" --json'
+  'occ emulator list --json',
+  'occ emulator attach "iPhone 16 Pro" --json',
+  'occ emulator tap 0.5 0.7 --json',
+  'occ emulator type "hello" --json'
 ] as const
 
 export function MobileEmulatorAgentControlRow(): React.JSX.Element {
@@ -47,7 +47,7 @@ export function MobileEmulatorAgentControlRow(): React.JSX.Element {
               'auto.components.settings.MobileEmulatorAgentControlRow.d94ca6a623',
               'Enables agents to use OCC CLI commands, including mobile emulator control.'
             )}
-            skillNames={[ORCA_CLI_SKILL_NAME]}
+            skillNames={[OCC_CLI_SKILL_NAME]}
             target={activeSkillRuntime.bundledSkillTarget}
             terminalRuntime={activeSkillRuntime.agentRuntime}
             installDisabled={Boolean(activeSkillRuntime.installDisabledReason)}
@@ -56,7 +56,7 @@ export function MobileEmulatorAgentControlRow(): React.JSX.Element {
             error={setup.cliSkillError}
             onRecheck={setup.refreshCliSkill}
             freshnessSkillName={
-              activeSkillRuntime.canUseSkillFreshness ? ORCA_CLI_SKILL_NAME : undefined
+              activeSkillRuntime.canUseSkillFreshness ? OCC_CLI_SKILL_NAME : undefined
             }
           />
         </div>

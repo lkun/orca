@@ -1,14 +1,14 @@
 import { withDurableRuntimeStore } from './runtime-durable-store-fixture'
 import { describe, expect, it, vi } from 'vitest'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { sessionLayoutApply } from './__fixtures__/main-layout-close-fixture'
 import type {
   RuntimeMobileSessionTabsResult,
   RuntimeMobileSessionTabsSnapshot
 } from '../../shared/runtime-types'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 export function registerPairedCloseRetirementProofPublicationOrderTests(): void {
   /** Mirrors need a retirement proof or two omitting inventories; quiet closes must publish proof regardless of renderer/exit ordering. */
@@ -81,12 +81,12 @@ export function registerPairedCloseRetirementProofPublicationOrderTests(): void 
   }
 
   function createHost(): {
-    runtime: OrcaRuntimeService
+    runtime: OCCRuntimeService
     handle: string
     retirePersistedSurface: () => Promise<void>
   } {
     let session = makePersistedSession()
-    const runtime = new OrcaRuntimeService(
+    const runtime = new OCCRuntimeService(
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: This runtime fixture supplies the persistence and graph methods exercised by the test.
       withDurableRuntimeStore({
         getRepos: () => [LIVE_REPO],
@@ -137,7 +137,7 @@ export function registerPairedCloseRetirementProofPublicationOrderTests(): void 
       handle,
       // De-persist before renderer publication through whichever side owns the layout.
       retirePersistedSurface: async () => {
-        if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+        if (OCC_LAYOUT_OWNER_IS_MAIN) {
           await runtime.applyLayoutCommand({
             type: 'closeTabs',
             workspace: WORKTREE_ID,
@@ -152,7 +152,7 @@ export function registerPairedCloseRetirementProofPublicationOrderTests(): void 
   }
 
   /** What the host renderer publishes once it has retired the tab it was told to close. */
-  function republishWithoutTheSurface(runtime: OrcaRuntimeService): void {
+  function republishWithoutTheSurface(runtime: OCCRuntimeService): void {
     runtime.syncWindowGraph(1, {
       tabs: [],
       leaves: [],

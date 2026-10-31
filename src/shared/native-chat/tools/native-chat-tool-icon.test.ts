@@ -179,8 +179,8 @@ describe('native chat tool icons', () => {
 
     it('reads shell calls that drive the OCC browser CLI as a browser run', () => {
       const run = [
-        { name: 'Bash', input: { command: 'orca snapshot' } },
-        { name: 'shell', input: { command: "/bin/zsh -lc 'orca click --element e3'" } }
+        { name: 'Bash', input: { command: 'occ snapshot' } },
+        { name: 'shell', input: { command: "/bin/zsh -lc 'occ click --element e3'" } }
       ]
 
       expect(nativeChatToolRunCategory(run)).toBe('browser')

@@ -55,7 +55,7 @@ let claude: ReturnType<typeof fakeClaude>
 
 beforeEach(async () => {
   vi.useFakeTimers()
-  root = await mkdtemp(join(tmpdir(), 'orca-claude-queued-stop-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-claude-queued-stop-'))
   resetHostTestOperationIds()
   queued = []
   lifecycleCancelled = []

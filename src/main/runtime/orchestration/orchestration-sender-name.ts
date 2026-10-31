@@ -43,7 +43,7 @@ export function orchestrationSenderName(
   const federated = party.address.startsWith('dispatch:')
   const terminal =
     !federated && party.terminalHandle ? sources.terminal(party.terminalHandle) : null
-  const chat = party.orcaSessionId ? structuredChatNaming(party.orcaSessionId, sources) : null
+  const chat = party.occSessionId ? structuredChatNaming(party.occSessionId, sources) : null
   const terminalName = terminal?.tab
     ? getAgentRowConversationName(
         terminal.tab,

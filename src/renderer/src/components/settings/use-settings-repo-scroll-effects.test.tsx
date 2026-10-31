@@ -63,7 +63,7 @@ function renderEffects(): { map: () => HooksMap } {
 }
 
 // G6: showing a project's settings is no act on its WSL distro.
-describe('settings orca.yaml inspection', () => {
+describe('settings occ.yaml inspection', () => {
   beforeEach(() => {
     checkRuntimeHooksMock.mockReset()
   })
@@ -123,7 +123,7 @@ describe('settings orca.yaml inspection', () => {
         .mockResolvedValueOnce({ hasHooks: false, hooks: null, mayNeedUpdate: false })
       const { map } = renderEffects()
       await act(async () => {})
-      // An unverifiable distro is unread too, never stored as "no orca.yaml".
+      // An unverifiable distro is unread too, never stored as "no occ.yaml".
       expect(map()).toEqual({})
 
       await act(async () => vi.advanceTimersByTime(10_000))

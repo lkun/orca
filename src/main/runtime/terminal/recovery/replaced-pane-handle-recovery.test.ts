@@ -3,18 +3,18 @@ import { readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-await import('../../orca-runtime-test-mocks.spec')
-await import('../../orca-runtime-test-lifecycle.spec')
-const { OrcaRuntimeService, makePaneKey } = await import('../../orca-runtime-test-mocks.spec')
+await import('../../occ-runtime-test-mocks.spec')
+await import('../../occ-runtime-test-lifecycle.spec')
+const { OCCRuntimeService, makePaneKey } = await import('../../occ-runtime-test-mocks.spec')
 const { HEADLESS_LEAF_ID, HEADLESS_SECOND_LEAF_ID, TEST_REPO_ID, TEST_WORKTREE_ID, store } =
-  await import('../../orca-runtime-test-fixtures.spec')
+  await import('../../occ-runtime-test-fixtures.spec')
 const { dropFromHostInventory, movePaneFirst, registerBoundPty } =
   await import('../../bind-first-pane.test-fixture')
 
 function paneWithHandle(tabId: string) {
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   const paneKey = makePaneKey(tabId, HEADLESS_LEAF_ID)
   registerBoundPty(runtime, 'pty-old', TEST_WORKTREE_ID, null, { tabId, leafId: HEADLESS_LEAF_ID })
   const oldHandle = runtime.resolveTerminalPane(paneKey, TEST_WORKTREE_ID).handle
@@ -118,7 +118,7 @@ describe('a stale handle of a replaced pane (switch on)', () => {
 
   it('fails closed after a restart, with the error base gives (no record of the old handle)', async () => {
     const { paneKey, oldHandle } = paneWithHandle('tab-p4-restart')
-    const restarted = new OrcaRuntimeService(store)
+    const restarted = new OCCRuntimeService(store)
     registerBoundPty(restarted, 'pty-new', TEST_WORKTREE_ID, null, {
       tabId: 'tab-p4-restart',
       leafId: HEADLESS_LEAF_ID

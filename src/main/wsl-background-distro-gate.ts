@@ -14,7 +14,7 @@ type DeferredTask = () => unknown
 const deferredTasksByDistro = new Map<string, Map<string, DeferredTask>>()
 let unsubscribeObservations: (() => void) | null = null
 // Right after a stop WSL can still list the distro; a running read started inside this window never counts.
-// Same window as the orcad liveness EXIT_SETTLE_MS; not imported, to keep this module's graph small.
+// Same window as the occd liveness EXIT_SETTLE_MS; not imported, to keep this module's graph small.
 export const WSL_STOP_SETTLE_MS = 500
 const mayHaveStoppedAt = new Map<string, number>()
 const wokenAt = new Map<string, number>()

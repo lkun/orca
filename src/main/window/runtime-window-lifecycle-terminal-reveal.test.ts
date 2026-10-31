@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { BrowserWindow } from 'electron'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import type { RuntimeNotifier } from '../runtime/runtime-notifier-contract'
 
 const { ipcMain } = await vi.hoisted(async () => {
@@ -46,7 +46,7 @@ function attachWindow(id: number): {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: registration only reads id, isDestroyed, on and webContents.
     mainWindow as unknown as BrowserWindow,
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: registration only calls the stubbed runtime members.
-    runtime as unknown as OrcaRuntimeService
+    runtime as unknown as OCCRuntimeService
   )
   if (!attached.notifier) {
     throw new Error('runtime notifier was not attached')

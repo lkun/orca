@@ -1,14 +1,14 @@
 import { createHash } from 'node:crypto'
 import { win32 as pathWin32 } from 'node:path'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { resolveWindowsShellStartupFamily } from '../../shared/windows-terminal-shell'
 import {
   resolveProfileLoadingFallbackShell,
   resolveProfileLoadingShell
 } from './hydrate-shell-path'
 
-const START_MARKER = '__ORCA_LOGIN_SHELL_ENV_START__'
-const END_MARKER = '__ORCA_LOGIN_SHELL_ENV_END__'
+const START_MARKER = '__OCC_LOGIN_SHELL_ENV_START__'
+const END_MARKER = '__OCC_LOGIN_SHELL_ENV_END__'
 const SPAWN_TIMEOUT_MS = 5000
 
 export type LoginShellEnvironmentCapture = {

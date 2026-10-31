@@ -73,7 +73,7 @@ describe('captured Jira detail owners', () => {
     const issue = await jiraGetIssueForTarget(target, 'JIR-1', 'site')
     const comments = await jiraIssueCommentsForTarget(target, 'JIR-1', 'site')
     for (const body of [issue?.description, comments[0]?.body]) {
-      const reference = body?.match(/orca-jira-image:\/\/attachment\/([^)]+)/)?.[1]
+      const reference = body?.match(/occ-jira-image:\/\/attachment\/([^)]+)/)?.[1]
       if (!reference) {
         throw new Error('Expected a migrated image reference')
       }

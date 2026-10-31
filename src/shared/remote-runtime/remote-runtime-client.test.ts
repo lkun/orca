@@ -621,7 +621,7 @@ async function createInvalidHandshakeServer(): Promise<{ pairing: PairedRuntimeC
   const wss = new WebSocketServer({ host: '127.0.0.1', port: 0 })
   servers.push(wss)
   wss.on('connection', (ws) => {
-    ws.once('message', () => ws.send(JSON.stringify({ type: 'not_orca' })))
+    ws.once('message', () => ws.send(JSON.stringify({ type: 'not_occ' })))
   })
 
   await new Promise<void>((resolve) => wss.once('listening', resolve))

@@ -126,7 +126,7 @@ function transitionHookPresence(
         ? { ...incoming, agentPresence: { ...owner, ...incoming.agentPresence, session } }
         : incoming
     }
-    // Why: nested agents inherit ORCA_PANE_KEY; their hooks update status, never ownership.
+    // Why: nested agents inherit OCC_PANE_KEY; their hooks update status, never ownership.
     return incoming.agentPresence === owner ? incoming : { ...incoming, agentPresence: owner }
   }
   if (exit) {

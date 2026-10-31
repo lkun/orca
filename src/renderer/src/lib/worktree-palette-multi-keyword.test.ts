@@ -59,8 +59,8 @@ describe('token coverage', () => {
   })
 
   it('keeps composite matching inside a multi-token query', () => {
-    expect(ids('scan orca/main')).toEqual([])
-    expect(ids('main orca/main')).toEqual(['wt-main-orca'])
+    expect(ids('scan occ/main')).toEqual([])
+    expect(ids('main occ/main')).toEqual(['wt-main-occ'])
   })
 
   it('removes prior results when an uncovered token is appended', () => {
@@ -173,7 +173,7 @@ describe('document invalidation inputs', () => {
       workspacePortsByWorktreeId: CMD_J_FIXTURE_PORTS
     })
     // Host-qualified documents keep same-ID twins distinct.
-    const key = documentKey('wt-main-orca')
+    const key = documentKey('wt-main-occ')
     expect(before.get(key)?.evidenceUnits.has('port:3000')).toBe(false)
     expect(after.get(key)?.evidenceUnits.has('port:3000')).toBe(true)
   })

@@ -1,7 +1,7 @@
-import type { OrcaRuntimeService } from '../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../occ-runtime'
 
 type RegistrationRuntime = Pick<
-  OrcaRuntimeService,
+  OCCRuntimeService,
   | 'registerOwnedSubscriptionCleanup'
   | 'subscribeToPtyExit'
   | 'handleMobileSubscribe'

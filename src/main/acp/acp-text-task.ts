@@ -20,12 +20,12 @@ type TextInput = Parameters<NonNullable<StructuredAgentSessionAdapter['generateT
 const envelope = z.looseObject({ sessionId: z.string() })
 const TASK_ENV_TO_DELETE = [
   ...STRUCTURED_CHILD_ENV_TO_DELETE,
-  'ORCA_AGENT_SESSION_ID',
-  'ORCA_AGENT_SESSION_SPAWN_TOKEN',
-  'ORCA_TERMINAL_HANDLE',
-  'ORCA_STRUCTURED_SESSION',
-  'ORCA_CHAT_SCRATCH_DIR',
-  'ORCA_CHAT_VISUALS_DIR'
+  'OCC_AGENT_SESSION_ID',
+  'OCC_AGENT_SESSION_SPAWN_TOKEN',
+  'OCC_TERMINAL_HANDLE',
+  'OCC_STRUCTURED_SESSION',
+  'OCC_CHAT_SCRATCH_DIR',
+  'OCC_CHAT_VISUALS_DIR'
 ]
 
 /** Disposable native tasks belong to the adapter so shutdown also owns uncertain closes. */
@@ -123,7 +123,7 @@ export class AcpTextTasks {
         signal
       )
       home = launch.env.GEMINI_HOME ?? ''
-      cwd = await mkdtemp(join(tmpdir(), 'orca-chat-name-'))
+      cwd = await mkdtemp(join(tmpdir(), 'occ-chat-name-'))
       signal.throwIfAborted()
       const failed = new AbortController()
       const taskSignal = AbortSignal.any([signal, failed.signal])
@@ -164,7 +164,7 @@ export class AcpTextTasks {
             envToDelete: [...launch.envToDelete, ...TASK_ENV_TO_DELETE]
           },
           {
-            clientInfo: { name: 'orca-chat-naming', version: '1' },
+            clientInfo: { name: 'occ-chat-naming', version: '1' },
             signIn: spec.signIn,
             onPermission: reject,
             onRequest: reject,

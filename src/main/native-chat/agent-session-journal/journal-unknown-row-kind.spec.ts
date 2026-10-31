@@ -16,7 +16,7 @@ import {
   insertTestJournalRowJson,
   liveTestJournalRows,
   openTestJournalHostDatabase,
-  SAVED_BY_NEWER_ORCA
+  SAVED_BY_NEWER_OCC
 } from './journal-host-database-test-support'
 import { parseJournalRow, type JournalRow } from './journal-row-schema'
 import {
@@ -42,7 +42,7 @@ export function registerJournalUnknownRowKindTests(): void {
   const journals = createTrackedJournalOpener()
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-journal-newer-kind-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-journal-newer-kind-'))
   })
 
   afterEach(async () => {
@@ -224,8 +224,8 @@ export function registerJournalUnknownRowKindTests(): void {
 
       await rewriteClosed((put) => put(3, newer))
       const refused = stored()
-      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
-      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
+      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
+      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
       expect(stored()).toEqual(refused)
       expect(stored().find((row) => row.seq === 3)?.rowJson).toBe(newer)
 
@@ -238,7 +238,7 @@ export function registerJournalUnknownRowKindTests(): void {
     it("fails the load as a newer OCC's chat with nothing deleted when the row names another sequence than its key", async () => {
       const epoch = await journalWithOneItem()
       await rewriteClosed((put) => put(3, JSON.stringify(newerRow(epoch, 9))))
-      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
+      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
       expect(storedKinds()).toEqual([
         [1, 'epoch'],
         [2, 'item'],

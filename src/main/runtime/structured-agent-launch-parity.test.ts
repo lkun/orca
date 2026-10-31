@@ -6,8 +6,8 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { GlobalSettings } from '../../shared/global-settings-types'
-import type * as ProcessHostModule from '@orca/process-host'
-import type { ProcessSpec } from '@orca/process-host/process-spec'
+import type * as ProcessHostModule from '@occ/process-host'
+import type { ProcessSpec } from '@occ/process-host/process-spec'
 import type * as AcpAdapterModule from '../acp/acp-structured-session-adapter'
 import type * as ClaudeAdapterModule from '../claude/claude-structured-session-adapter'
 import type * as CodexAdapterModule from '../codex/codex-structured-session-adapter'
@@ -33,7 +33,7 @@ const capture = vi.hoisted(() => {
 /** Thrown in place of a real child: the start ends right where the process would begin. */
 class SpawnCaptured extends Error {}
 
-vi.mock('@orca/process-host', async (importOriginal) => {
+vi.mock('@occ/process-host', async (importOriginal) => {
   const actual = await importOriginal<typeof ProcessHostModule>()
   return {
     ...actual,
@@ -120,15 +120,15 @@ import {
 } from '../../shared/agent-session-provider-handle-encoding'
 import { FLOATING_TERMINAL_WORKTREE_ID } from '../../shared/constants'
 import {
-  ORCA_SCRUB_SAFE_LAUNCH_ENV,
-  ORCA_SCRUB_SAFE_PANE_ENV
+  OCC_SCRUB_SAFE_LAUNCH_ENV,
+  OCC_SCRUB_SAFE_PANE_ENV
 } from '../../shared/agent-hook-scrub-safe-env'
 import { STRUCTURED_WORKER_HANDLE_PREFIX } from '../../shared/structured-worker-handle'
 import { YOLO_TUI_AGENT_ARGS } from '../../shared/tui-agent-permissions'
 import { agentChatPermissionModes } from '../../shared/agent-chat-permission-mode'
 import {
   AGENT_HOOK_RUNTIME_ENV_KEYS,
-  ORCA_AGENT_SESSION_CALLER_ENV_KEYS
+  OCC_AGENT_SESSION_CALLER_ENV_KEYS
 } from '../ipc/pty/host-env/spawn-env-keys'
 import {
   LEGACY_NATIVE_CHAT_VISUALS_DIR_ENV,
@@ -139,7 +139,7 @@ import type { StructuredAgentSessionEventSink } from '../native-chat/agent-sessi
 import type { JournalHostDatabase } from '../native-chat/agent-session-journal/journal-host-database'
 import { createClaudeCliFlagSupport } from '../claude/claude-cli-flag-support'
 import type { AgentSessionRecordStore } from './agent-session-record-store'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import {
   STRUCTURED_AGENT_RUNTIME_REGISTRATIONS,
   type StructuredAgentAdapterContext,
@@ -321,28 +321,28 @@ function inheritedEnvironment(): Record<string, string> {
     HOME: join(root, 'home'),
     LANG: 'en_US.UTF-8',
     INHERITED_ONLY: 'process',
-    ORCA_PANE_KEY: 'tab_parent:parent-pane',
-    ORCA_TAB_ID: 'tab_parent',
-    ORCA_WORKTREE_ID: 'parent-worktree',
-    ORCA_AGENT_LAUNCH_TOKEN: 'parent-launch-token',
-    [ORCA_SCRUB_SAFE_PANE_ENV]: 'parent-scrub-safe-pane',
-    [ORCA_SCRUB_SAFE_LAUNCH_ENV]: 'parent-scrub-safe-launch',
-    ORCA_TERMINAL_HANDLE: 'term_parent',
-    ORCA_AGENT_SESSION_SPAWN_TOKEN: 'parent-spawn-token',
+    OCC_PANE_KEY: 'tab_parent:parent-pane',
+    OCC_TAB_ID: 'tab_parent',
+    OCC_WORKTREE_ID: 'parent-worktree',
+    OCC_AGENT_LAUNCH_TOKEN: 'parent-launch-token',
+    [OCC_SCRUB_SAFE_PANE_ENV]: 'parent-scrub-safe-pane',
+    [OCC_SCRUB_SAFE_LAUNCH_ENV]: 'parent-scrub-safe-launch',
+    OCC_TERMINAL_HANDLE: 'term_parent',
+    OCC_AGENT_SESSION_SPAWN_TOKEN: 'parent-spawn-token',
     [NATIVE_CHAT_SCRATCH_DIR_ENV]: '/parent/scratch',
     [LEGACY_NATIVE_CHAT_VISUALS_DIR_ENV]: '/parent/visuals',
-    ORCA_CLI_COMMAND: '/parent/orca',
-    ORCA_CLI_BIN_DIR: '/parent/bin',
-    ORCA_USER_DATA_PATH: '/parent/user-data',
-    ORCA_OPENCODE_CONFIG_DIR: '/parent/opencode-overlay',
-    ORCA_DATA_ACCOUNT_PROVIDER: 'parent-account',
+    OCC_CLI_COMMAND: '/parent/occ',
+    OCC_CLI_BIN_DIR: '/parent/bin',
+    OCC_USER_DATA_PATH: '/parent/user-data',
+    OCC_OPENCODE_CONFIG_DIR: '/parent/opencode-overlay',
+    OCC_DATA_ACCOUNT_PROVIDER: 'parent-account',
     CLAUDE_CONFIG_DIR: '/parent/claude',
     CLAUDE_CODE_SESSION_ID: 'parent-claude-session',
     ANTHROPIC_API_KEY: 'parent-api-key',
     CODEX_HOME: '/parent/codex',
     NODE_OPTIONS: '--max-old-space-size=4096'
   }
-  for (const key of [...AGENT_HOOK_RUNTIME_ENV_KEYS, ...ORCA_AGENT_SESSION_CALLER_ENV_KEYS]) {
+  for (const key of [...AGENT_HOOK_RUNTIME_ENV_KEYS, ...OCC_AGENT_SESSION_CALLER_ENV_KEYS]) {
     env[key] = `parent-${key.toLowerCase()}`
   }
   return env
@@ -546,8 +546,8 @@ function sortedEnv(env: NodeJS.ProcessEnv): Record<string, string> {
 function childOf(capture: { spec: ProcessSpec; envToDelete: readonly string[] }) {
   const { spec } = capture
   const env = { ...spec.env }
-  const encoded = env.ORCA_PROVIDER_SUPERVISOR_SPEC
-  delete env.ORCA_PROVIDER_SUPERVISOR_SPEC
+  const encoded = env.OCC_PROVIDER_SUPERVISOR_SPEC
+  delete env.OCC_PROVIDER_SUPERVISOR_SPEC
   delete env.ELECTRON_RUN_AS_NODE
   const supervised = spec.args?.[0] === '-e' && encoded !== undefined
   const argv = supervised ? (spec.args ?? []).slice((spec.args ?? []).indexOf('--') + 1) : []
@@ -577,7 +577,7 @@ function installAppEnvironment(): void {
     getAppPath: () => process.cwd(),
     getVersion: () => '1.0.0',
     isPackaged: () => false,
-    getCliLauncherPath: () => join(root, 'orca-cli', 'bin', 'orca'),
+    getCliLauncherPath: () => join(root, 'occ-cli', 'bin', 'occ'),
     onWillQuit: () => {},
     exit: () => {},
     getAppMetrics: () => []
@@ -585,7 +585,7 @@ function installAppEnvironment(): void {
 }
 
 beforeAll(async () => {
-  root = await realpath(await mkdtemp(join(tmpdir(), 'orca-launch-parity-')))
+  root = await realpath(await mkdtemp(join(tmpdir(), 'occ-launch-parity-')))
   await installFakeBinaries(join(root, 'bin'))
   // Loaded first: the SDK writes into this process's environment once, when imported.
   await import('@anthropic-ai/claude-agent-sdk')
@@ -595,7 +595,7 @@ beforeAll(async () => {
   process.env = inheritedEnvironment()
   installAppEnvironment()
   settings = defaultSettings()
-  const runtime = new OrcaRuntimeService(
+  const runtime = new OCCRuntimeService(
     partialRuntimeStore({
       getSettings: () => settings
     })
@@ -665,7 +665,7 @@ describe.skipIf(process.platform === 'win32')('native-chat launch parity', () =>
       expect(child.cwd).toBe('<root>/worktree')
       expect(child.args).toEqual(expect.arrayContaining(['acp', '--session-dir']))
       expect(child.env).toMatchObject({ PARITY_OVERLAY: 'omp-configured' })
-      expect(child.env).not.toHaveProperty('ORCA_AGENT_SESSION_ID')
+      expect(child.env).not.toHaveProperty('OCC_AGENT_SESSION_ID')
       expect(pins).toEqual([])
       for (const agent of ['grok', 'opencode', 'opencode2', 'antigravity']) {
         expect(

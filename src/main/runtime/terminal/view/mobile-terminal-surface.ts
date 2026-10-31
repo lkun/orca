@@ -1,10 +1,10 @@
-import { OrcaRuntimeWithCreateRuntimeOwnedMobileSessionTerminal } from '../launch/mobile-terminal-owned-create'
-import type { OrcaRuntimeWithResolveTerminalSplitSourceAuthority } from '../launch/terminal-split-source-authority'
+import { OCCRuntimeWithCreateRuntimeOwnedMobileSessionTerminal } from '../launch/mobile-terminal-owned-create'
+import type { OCCRuntimeWithResolveTerminalSplitSourceAuthority } from '../launch/terminal-split-source-authority'
 import type {
   RuntimeMobileSessionCreateTerminalResult,
   RuntimeMobileSessionTerminalClientTab
 } from '../../../../shared/runtime-types'
-import { MOBILE_TERMINAL_SURFACE_TIMEOUT_MS } from '../../orca-runtime-core'
+import { MOBILE_TERMINAL_SURFACE_TIMEOUT_MS } from '../../occ-runtime-core'
 import { makePaneKey, parsePaneKey } from '../../../../shared/stable-pane-id'
 import { resolveTerminalSessionWorktreeId } from '../../runtime-worktree-path-identity'
 import { worktreeIdsEqual } from '../../../../shared/worktree/id'
@@ -13,13 +13,13 @@ import type {
   RuntimePtyWorktreeRecord
 } from '../../runtime-terminal-state-records'
 
-export abstract class OrcaRuntimeWithWaitForMobileTerminalSurface extends OrcaRuntimeWithCreateRuntimeOwnedMobileSessionTerminal {
+export abstract class OCCRuntimeWithWaitForMobileTerminalSurface extends OCCRuntimeWithCreateRuntimeOwnedMobileSessionTerminal {
   protected abstract resolveTerminalSplitSourceAuthority(
     ...args: Parameters<
-      OrcaRuntimeWithResolveTerminalSplitSourceAuthority['resolveTerminalSplitSourceAuthority']
+      OCCRuntimeWithResolveTerminalSplitSourceAuthority['resolveTerminalSplitSourceAuthority']
     >
   ): ReturnType<
-    OrcaRuntimeWithResolveTerminalSplitSourceAuthority['resolveTerminalSplitSourceAuthority']
+    OCCRuntimeWithResolveTerminalSplitSourceAuthority['resolveTerminalSplitSourceAuthority']
   >
 
   protected waitForMobileTerminalSurface(

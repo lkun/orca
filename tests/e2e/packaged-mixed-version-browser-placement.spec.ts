@@ -2,7 +2,7 @@ import { createServer, type Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
 
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import {
   launchPairedElectronClient,
@@ -15,7 +15,7 @@ import {
   packagedExecutableMissing,
   PACKAGED_EXECUTABLE_ENV,
   type PackagedPairedClient
-} from './helpers/packaged-old-orca'
+} from './helpers/packaged-old-occ'
 
 const CLIENT_HOST_CAPABILITY = 'browser.clientHost.v1'
 const TUNNEL_CAPABILITY = 'network.browserTunnel.v1'

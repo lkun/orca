@@ -13,7 +13,7 @@ import {
   seedTestAgentSessionStoreFromNewerBuild
 } from './agent-session-record-store-test-harness'
 import { closeTestJournalHostDatabases } from '../native-chat/agent-session-journal/journal-host-database-test-support'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import {
   ensureStructuredAgentSessionHost,
   stopStructuredAgentSessionRuntime
@@ -38,7 +38,7 @@ vi.mock('./agent-session-record-rows', async (importOriginal) => {
 let root: string
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-startup-reconcile-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-startup-reconcile-'))
 })
 
 afterEach(async () => {
@@ -61,7 +61,7 @@ async function seedChat(options: { newer?: boolean } = {}) {
 }
 
 function startupRuntime(log = recordingStructuredAgentSessionLogger()) {
-  const runtime = new OrcaRuntimeService()
+  const runtime = new OCCRuntimeService()
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: these are the runtime's own protected members; the test roots the host at `root` and stubs the PTY daemon.
   const internal = runtime as unknown as {
     hasPersistedStructuredAgentSessionStore(): boolean
@@ -143,7 +143,7 @@ it('closes a chat tab over records a newer OCC wrote, reporting the index it can
       scope: 'tab-visibility-close',
       sessionId,
       error: expect.objectContaining({
-        refusal: expect.objectContaining({ details: { reason: 'journalWrittenByNewerOrca' } })
+        refusal: expect.objectContaining({ details: { reason: 'journalWrittenByNewerOCC' } })
       })
     }
   })

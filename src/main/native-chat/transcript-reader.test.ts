@@ -30,7 +30,7 @@ async function writeFixture(prefix: string, records: unknown[]): Promise<string>
 
 describe('readNativeChatTranscript (claude)', () => {
   it('decodes OpenClaude with the Claude transcript format', async () => {
-    const filePath = await writeFixture('orca-native-chat-openclaude-', [
+    const filePath = await writeFixture('occ-native-chat-openclaude-', [
       {
         type: 'assistant',
         uuid: 'openclaude-assistant',
@@ -78,7 +78,7 @@ describe('readNativeChatTranscript (claude)', () => {
       }
     })
 
-    const filePath = await writeFixture('orca-native-chat-claude-', records)
+    const filePath = await writeFixture('occ-native-chat-claude-', records)
     const result = await readNativeChatTranscript('claude', 'sess', { filePath })
     expect('messages' in result).toBe(true)
     if (!('messages' in result)) {
@@ -105,7 +105,7 @@ describe('readNativeChatTranscript (claude)', () => {
   })
 
   it('drops structurally marked injected user turns but keeps their tool results', async () => {
-    const filePath = await writeFixture('orca-native-chat-claude-meta-', [
+    const filePath = await writeFixture('occ-native-chat-claude-meta-', [
       {
         type: 'user',
         uuid: 'u-real',
@@ -173,7 +173,7 @@ describe('readNativeChatTranscript (claude)', () => {
   })
 
   it('marks thinking-only assistant content as a reasoning surface', async () => {
-    const filePath = await writeFixture('orca-native-chat-claude-think-', [
+    const filePath = await writeFixture('occ-native-chat-claude-think-', [
       {
         type: 'assistant',
         uuid: 'a-think',
@@ -194,7 +194,7 @@ describe('readNativeChatTranscript (claude)', () => {
 
 describe('readNativeChatTranscript (codex)', () => {
   it('maps tool calls and results to tool-call/tool-result blocks', async () => {
-    const filePath = await writeFixture('orca-native-chat-codex-', [
+    const filePath = await writeFixture('occ-native-chat-codex-', [
       {
         type: 'session_meta',
         timestamp: '2026-06-01T10:00:00.000Z',
@@ -264,7 +264,7 @@ describe('readNativeChatTranscript (codex)', () => {
 describe('readNativeChatTranscript (errors)', () => {
   it('marks an ENOENT on a directly-passed path as notFound (vanished after resolve)', async () => {
     const result = await readNativeChatTranscript('claude', 'sess', {
-      filePath: join(tmpdir(), 'orca-native-chat-does-not-exist.jsonl')
+      filePath: join(tmpdir(), 'occ-native-chat-does-not-exist.jsonl')
     })
     expect('error' in result).toBe(true)
     if ('error' in result) {
@@ -273,7 +273,7 @@ describe('readNativeChatTranscript (errors)', () => {
   })
 
   it('returns a real read error (no notFound) when the path exists but is unreadable', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-native-chat-unreadable-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-native-chat-unreadable-'))
     tempRoots.push(root)
     const result = await readNativeChatTranscript('claude', 'sess', { filePath: root })
     expect('error' in result).toBe(true)
@@ -283,7 +283,7 @@ describe('readNativeChatTranscript (errors)', () => {
   })
 
   it('marks an unresolved session as notFound so callers know to retry', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-native-chat-noresolve-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-native-chat-noresolve-'))
     tempRoots.push(root)
     const result = await readNativeChatTranscript('claude', 'missing', {
       claudeProjectsDir: join(root, 'empty')
@@ -300,7 +300,7 @@ describe('readNativeChatTranscriptTailFile', () => {
     const result = await readNativeChatTranscriptTail({
       agent: 'claude',
       sessionId: 'sess',
-      filePath: join(tmpdir(), 'orca-native-chat-tail-does-not-exist.jsonl'),
+      filePath: join(tmpdir(), 'occ-native-chat-tail-does-not-exist.jsonl'),
       limit: 40
     })
 
@@ -309,7 +309,7 @@ describe('readNativeChatTranscriptTailFile', () => {
 
   it('windows to nothing for a non-positive limit instead of the whole tail', async () => {
     const decode = nativeChatLineDecoderForAgent('claude')!
-    const filePath = await writeFixture('orca-native-chat-tail-limit-', [
+    const filePath = await writeFixture('occ-native-chat-tail-limit-', [
       {
         type: 'assistant',
         uuid: 'a-1',

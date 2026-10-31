@@ -4,7 +4,7 @@ import type {
 } from './browser-extension-main-world'
 
 /** Main-only namespace backing chrome.storage.sync; never installed on `chrome` by that name. */
-export const PRELOAD_STORAGE_SYNC_NAMESPACE = 'orcaStorageSync'
+export const PRELOAD_STORAGE_SYNC_NAMESPACE = 'occStorageSync'
 
 /** chrome.storage.sync's constants. Main enforces the size limits; write rates are not enforced. */
 export const PRELOAD_STORAGE_SYNC_CONSTANTS: Record<string, number> = {
@@ -49,7 +49,7 @@ export function installBrowserExtensionStorageSync(
   constants: Record<string, number>,
   forward?: BrowserExtensionStorageSyncForward
 ): BrowserExtensionStorageSyncRelay | null {
-  const namespace = 'orcaStorageSync'
+  const namespace = 'occStorageSync'
   const isObject = (value: unknown): value is ApiObject =>
     value !== null && typeof value === 'object'
   const isCallable = (value: unknown): value is ExtensionCallable => typeof value === 'function'

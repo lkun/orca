@@ -1,7 +1,7 @@
 // Baseline: a phone paired to a desktop client sees only desktop workspaces until mirror slice S2; update the server-row assertion when that slice lands.
 import { mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchPhoneMirrorTopology } from './helpers/phone-mirror-topology'
 import { RuntimeClient } from '../../src/cli/runtime/client'
 import type { RuntimeWorktreePsSummary } from '../../src/shared/runtime-worktree-contracts'

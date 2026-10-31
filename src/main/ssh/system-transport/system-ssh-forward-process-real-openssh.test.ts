@@ -1,4 +1,4 @@
-/** ORCA_REAL_OPENSSH_TEST=1 requires ssh/sshd; verify listener/refusal ownership even with a user-configured ControlMaster. */
+/** OCC_REAL_OPENSSH_TEST=1 requires ssh/sshd; verify listener/refusal ownership even with a user-configured ControlMaster. */
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { SshConnection } from '../connection/ssh-connection'
 import { SystemSshPortForwardProvider } from '../port-forwarding/system-ssh-port-forward-provider'

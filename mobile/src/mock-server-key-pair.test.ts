@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
@@ -31,7 +31,7 @@ type ConcurrentCreator = {
 }
 
 function keyFilePath(): string {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-mock-key-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-mock-key-'))
   temporaryDirectories.push(directory)
   return join(directory, 'server-key')
 }

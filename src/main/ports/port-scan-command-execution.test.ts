@@ -19,7 +19,7 @@ const { execFileMock, statfsMock, lstatMock, mkdirMock, openMock, spawnMock } = 
 vi.mock('child_process', () => ({
   execFile: execFileMock
 }))
-vi.mock('@orca/process-host', () => ({ spawnProcess: spawnMock }))
+vi.mock('@occ/process-host', () => ({ spawnProcess: spawnMock }))
 vi.mock('node:fs', async (importOriginal) => ({
   ...(await importOriginal<typeof NodeFs>()),
   statfsSync: statfsMock,

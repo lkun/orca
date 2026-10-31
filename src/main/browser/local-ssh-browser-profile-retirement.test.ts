@@ -93,7 +93,7 @@ vi.mock('./local-ssh-browser-route', () => ({
 import { session } from 'electron'
 import { browserSessionRegistry as registry } from './browser-session-registry'
 import {
-  configureBrowserRoutePartitionBindingsForOrcaProfile,
+  configureBrowserRoutePartitionBindingsForOCCProfile,
   currentBrowserRoutePartitionBindingStore
 } from './browser-route-partition-binding-runtime'
 import { isBrowserRoutePartitionRetainedByAnyOwner } from './browser-route-partition-retention'
@@ -112,9 +112,9 @@ beforeEach(() => {
   state.retain.mockClear()
   state.probe.mockReset().mockResolvedValue('ok')
   state.closeTarget.mockClear()
-  const options = { orcaProfileId: 'default', profileDirectory: state.directory }
-  registry.configureForOrcaProfile(options)
-  configureBrowserRoutePartitionBindingsForOrcaProfile(options)
+  const options = { occProfileId: 'default', profileDirectory: state.directory }
+  registry.configureForOCCProfile(options)
+  configureBrowserRoutePartitionBindingsForOCCProfile(options)
 })
 afterAll(() => {
   for (const directory of state.directories) {

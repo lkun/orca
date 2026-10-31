@@ -160,7 +160,7 @@ describe('a terminal the host fails to create', () => {
   })
 
   it('stays quiet when no host session exists, so callers can fall back to a local tab', async () => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', false)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', false)
     mocks.getState.mockReturnValue({ ...mocks.getState(), settings: {} })
     await expect(
       createWebRuntimeSessionTerminal({ worktreeId: WORKTREE_ID, activate: true })

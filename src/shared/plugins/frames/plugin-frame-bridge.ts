@@ -6,12 +6,12 @@ import { PLUGIN_PROTOCOL_VERSION } from './plugin-protocol'
  * Host side of plugin frames (panels and custom editors). A frame has an opaque origin
  * (sandbox="allow-scripts"), so neither side can use origins for trust: the host verifies the
  * sending window and re-validates every envelope; main re-checks capabilities before executing.
- * Frames speak the shared envelope (plugin-protocol.ts) through the shell's `window.orca`.
+ * Frames speak the shared envelope (plugin-protocol.ts) through the shell's `window.occ`.
  */
 
-export const PLUGIN_PANEL_FRAME_NAME_PREFIX = 'orca-plugin-panel:'
+export const PLUGIN_PANEL_FRAME_NAME_PREFIX = 'occ-plugin-panel:'
 
-/** Envelope names private to frames; plugin code only sees `window.orca`. */
+/** Envelope names private to frames; plugin code only sees `window.occ`. */
 export const FRAME_EVENTS = {
   /** frame → host, payload `{ protocol }`: the shell is listening. */
   ready: 'ready',
@@ -80,7 +80,7 @@ export type PluginFrameEntry = {
 export function readPanelPongId(data: unknown): number | null {
   if (
     !isPluginJsonObject(data) ||
-    data.orca !== PLUGIN_PROTOCOL_VERSION ||
+    data.occ !== PLUGIN_PROTOCOL_VERSION ||
     data.kind !== 'evt' ||
     data.event !== FRAME_EVENTS.pong
   ) {

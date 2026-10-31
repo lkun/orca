@@ -46,28 +46,28 @@ function readHooks(): { hooks?: Record<string, unknown[]> } {
   return JSON.parse(readFileSync(hooksJsonPath(), 'utf-8'))
 }
 
-function orcaHandler(): { type: string; command: string; timeout: number } {
+function occHandler(): { type: string; command: string; timeout: number } {
   return { type: 'command', command: getCodexManagedHookInstallMaterial().command, timeout: 10 }
 }
 
-function orcaStopAt(sourcePath: string, groupIndex = 0): CodexTrustEntry {
+function occStopAt(sourcePath: string, groupIndex = 0): CodexTrustEntry {
   return {
     sourcePath,
     eventLabel: 'stop',
     groupIndex,
     handlerIndex: 0,
-    command: orcaHandler().command
+    command: occHandler().command
   }
 }
 
 beforeEach(() => {
   // Resolve macOS /var symlinks so the temp root adds no extra approval-key spelling.
-  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'orca-real-home-removal-')))
+  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'occ-real-home-removal-')))
   home = join(root, 'home')
   userDataDir = join(root, 'user-data')
   mkdirSync(home)
   mkdirSync(userDataDir)
-  vi.stubEnv('ORCA_USER_DATA_PATH', userDataDir)
+  vi.stubEnv('OCC_USER_DATA_PATH', userDataDir)
   vi.stubEnv('CODEX_HOME', '')
   homedirMock.mockReturnValue(home)
 })
@@ -85,7 +85,7 @@ describe('removeRealHomeCodexHookForOptOut', () => {
 
   it("keeps a malformed hooks.json's bytes, OCC's trust and its ledger", async () => {
     mkdirSync(join(home, '.codex'))
-    const entry: CodexTrustEntry = { ...orcaStopAt(hooksJsonPath()), timeoutSec: 10 }
+    const entry: CodexTrustEntry = { ...occStopAt(hooksJsonPath()), timeoutSec: 10 }
     writeFileSync(configTomlPath(), upsertHookTrustEntriesInContent('', [entry]), 'utf-8')
     writeCodexTrustGrantLedgerHome(join(home, '.codex'), { binary: null, entries: {} })
     writeFileSync(hooksJsonPath(), '{ not json', 'utf-8')
@@ -108,7 +108,7 @@ describe('removeRealHomeCodexHookForOptOut', () => {
     const userCommand = 'my-user-hook.sh'
     writeFileSync(
       hooksJsonPath(),
-      `${JSON.stringify({ hooks: { Stop: [{ hooks: [{ type: 'command', command: userCommand }, orcaHandler()] }] } }, null, 2)}\n`
+      `${JSON.stringify({ hooks: { Stop: [{ hooks: [{ type: 'command', command: userCommand }, occHandler()] }] } }, null, 2)}\n`
     )
     const entries: CodexTrustEntry[] = [
       {
@@ -123,7 +123,7 @@ describe('removeRealHomeCodexHookForOptOut', () => {
         eventLabel: 'stop',
         groupIndex: 0,
         handlerIndex: 1,
-        command: orcaHandler().command,
+        command: occHandler().command,
         timeoutSec: 10
       }
     ]
@@ -145,7 +145,7 @@ describe('removeRealHomeCodexHookForOptOut', () => {
     const after = { type: 'command', command: 'after.sh' }
     writeFileSync(
       hooksJsonPath(),
-      `${JSON.stringify({ hooks: { Stop: [{ hooks: [before] }, { hooks: [orcaHandler()] }, { hooks: [after] }] } }, null, 2)}\n`
+      `${JSON.stringify({ hooks: { Stop: [{ hooks: [before] }, { hooks: [occHandler()] }, { hooks: [after] }] } }, null, 2)}\n`
     )
     const afterAt = (groupIndex: number): CodexTrustEntry => ({
       sourcePath: hooksJsonPath(),
@@ -170,25 +170,25 @@ describe('removeRealHomeCodexHookForOptOut', () => {
     mkdirSync(join(home, '.codex'))
     writeFileSync(
       hooksJsonPath(),
-      `${JSON.stringify({ hooks: { Stop: [{ hooks: [orcaHandler()] }] } }, null, 2)}\n`
+      `${JSON.stringify({ hooks: { Stop: [{ hooks: [occHandler()] }] } }, null, 2)}\n`
     )
-    const orcaAt = orcaStopAt(hooksJsonPath())
-    upsertHookTrustEntries(configTomlPath(), [{ ...orcaAt, trustedHash: 'sha256:codex-stop' }])
+    const occAt = occStopAt(hooksJsonPath())
+    upsertHookTrustEntries(configTomlPath(), [{ ...occAt, trustedHash: 'sha256:codex-stop' }])
 
     expect(await removeRealHomeCodexHookForOptOut([{ stop: 'sha256:codex-stop' }])).toBe('removed')
 
-    expect(readHookTrustEntries(configTomlPath()).has(computeTrustKey(orcaAt))).toBe(false)
+    expect(readHookTrustEntries(configTomlPath()).has(computeTrustKey(occAt))).toBe(false)
   })
 
   it("removes approvals left after the entry is gone, by Codex's hash", async () => {
     mkdirSync(join(home, '.codex'))
     writeFileSync(hooksJsonPath(), `${JSON.stringify({ hooks: {} }, null, 2)}\n`)
-    const orcaAt = orcaStopAt(hooksJsonPath())
-    upsertHookTrustEntries(configTomlPath(), [{ ...orcaAt, trustedHash: 'sha256:codex-stop' }])
+    const occAt = occStopAt(hooksJsonPath())
+    upsertHookTrustEntries(configTomlPath(), [{ ...occAt, trustedHash: 'sha256:codex-stop' }])
 
     expect(await removeRealHomeCodexHookForOptOut([{ stop: 'sha256:codex-stop' }])).toBe('removed')
 
-    expect(readHookTrustEntries(configTomlPath()).has(computeTrustKey(orcaAt))).toBe(false)
+    expect(readHookTrustEntries(configTomlPath()).has(computeTrustKey(occAt))).toBe(false)
   })
 })
 
@@ -200,7 +200,7 @@ describe('turning hooks off', () => {
     const resolvedHooksPath = join(target, 'hooks.json')
     writeFileSync(
       hooksJsonPath(),
-      `${JSON.stringify({ hooks: { Stop: [{ hooks: [orcaHandler()] }] } }, null, 2)}\n`
+      `${JSON.stringify({ hooks: { Stop: [{ hooks: [occHandler()] }] } }, null, 2)}\n`
     )
     const command = getCodexManagedHookInstallMaterial().command
     // The cache retains the older Codex version that approved this hook.
@@ -215,15 +215,15 @@ describe('turning hooks off', () => {
       hashes: { stop: 'sha256:codex-new-stop' }
     })
     upsertHookTrustEntries(configTomlPath(), [
-      { ...orcaStopAt(hooksJsonPath()), trustedHash: 'sha256:codex-old-stop' },
-      { ...orcaStopAt(resolvedHooksPath), trustedHash: 'sha256:codex-old-stop' }
+      { ...occStopAt(hooksJsonPath()), trustedHash: 'sha256:codex-old-stop' },
+      { ...occStopAt(resolvedHooksPath), trustedHash: 'sha256:codex-old-stop' }
     ])
 
     await new CodexHookService().remove()
 
     expect(readHooks().hooks?.Stop).toBeUndefined()
     const trust = readHookTrustEntries(configTomlPath())
-    expect(trust.has(computeTrustKey(orcaStopAt(hooksJsonPath())))).toBe(false)
-    expect(trust.has(computeTrustKey(orcaStopAt(resolvedHooksPath)))).toBe(false)
+    expect(trust.has(computeTrustKey(occStopAt(hooksJsonPath())))).toBe(false)
+    expect(trust.has(computeTrustKey(occStopAt(resolvedHooksPath)))).toBe(false)
   })
 })

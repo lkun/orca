@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { parse } from 'yaml'
 import { peImage } from './windows-pe-image-fixture.mjs'
 import { canReusePreparedAddon } from './windows-process-tree-prepared-addon.mjs'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 
 const directories = []
 afterEach(() => {
@@ -16,7 +16,7 @@ afterEach(() => {
 })
 
 function prepared(arch = 'x64', suffix = 'spawnOutsideJob') {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-prepared-relay-addon-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-prepared-relay-addon-'))
   directories.push(directory)
   const addonPath = join(directory, 'process-tree.node')
   writeFileSync(addonPath, Buffer.concat([peImage({ arch }), Buffer.from(suffix)]))
@@ -127,7 +127,7 @@ it.each(['pull_request', 'workflow_dispatch'])(
 
 it.each(['x64', 'arm64'])('passes the optional reuse flag safely to the %s builder', (arch) => {
   for (const enabled of ['true', 'false']) {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-relay-build-args-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-relay-build-args-'))
     directories.push(directory)
     const output = join(directory, 'arguments.txt')
     const script = `node() { printf '%s\n' "$@" > "$ARGUMENTS_FILE"; }\n${build.run.replaceAll('${{ matrix.arch }}', arch)}`
@@ -149,17 +149,17 @@ it.each(['x64', 'arm64'])('passes the optional reuse flag safely to the %s build
 
 it('reuses the Windows E2E process-tree addon between standalone and template builds', () => {
   const workflow = parse(readFileSync('.github/workflows/e2e.yml', 'utf8'))
-  const job = workflow.jobs['orcad-serve-mode-switch-windows']
+  const job = workflow.jobs['occd-serve-mode-switch-windows']
   const build = job.steps.find(
-    (step) => step.name === 'Build the e2e app, CLI, orcad slot and template'
+    (step) => step.name === 'Build the e2e app, CLI, occd slot and template'
   )
   const commands = build.run.trim().split('\n')
-  const standalone = commands.indexOf('pnpm build:orcad')
+  const standalone = commands.indexOf('pnpm build:occd')
   const processTree = commands.indexOf(
     'node config/scripts/build-windows-process-tree-addon.mjs --arch=x64 --reuse-prepared-runtime'
   )
   const template = commands.indexOf(
-    'node config/scripts/build-orcad-template.mjs --targets win32-x64'
+    'node config/scripts/build-occd-template.mjs --targets win32-x64'
   )
   expect(standalone).toBeGreaterThanOrEqual(0)
   expect(processTree).toBeGreaterThan(standalone)

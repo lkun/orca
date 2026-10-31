@@ -266,7 +266,7 @@ describe('structured chat naming runtime', () => {
   })
 
   it('uses the current routed Claude account', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-naming-account-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-naming-account-test-'))
     roots.push(root)
     const home = join(root, 'claude-profiles', 'selected', 'home')
     await mkdir(home, { recursive: true })
@@ -298,7 +298,7 @@ describe('structured chat naming runtime', () => {
   it.each([undefined, '/user-configured/claude'])(
     'distinguishes the explicit Claude directory %s from inherited environment under System default',
     async (configuredDir) => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-naming-system-account-test-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-naming-system-account-test-'))
       roots.push(root)
       const router = new ClaudeProfileRouter({
         getSettings: () => ({

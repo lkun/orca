@@ -90,7 +90,7 @@ function parseCliJson(output) {
   return JSON.parse(text)
 }
 
-async function callOrca(cli, args, options = {}) {
+async function callOCC(cli, args, options = {}) {
   const result = await runCommand(cli, [...args, '--json'], options)
   const parsed = parseCliJson(result.stdout)
   if (parsed.ok === false) {
@@ -102,14 +102,14 @@ async function callOrca(cli, args, options = {}) {
 function buildLongSpec(sizeKb, marker) {
   const targetBytes = sizeKb * 1024
   const header = [
-    `ORCA_LONG_PROMPT_REPRO_START ${marker}`,
+    `OCC_LONG_PROMPT_REPRO_START ${marker}`,
     'This task is intentionally long so orchestration dispatch crosses terminal input chunks.',
     'The receiver expects the end marker to arrive before the submit byte.'
   ].join('\n')
   const lines = [header]
   let index = 0
   while (
-    Buffer.byteLength(`${lines.join('\n')}\nORCA_LONG_PROMPT_REPRO_END ${marker}`, 'utf8') <
+    Buffer.byteLength(`${lines.join('\n')}\nOCC_LONG_PROMPT_REPRO_END ${marker}`, 'utf8') <
     targetBytes
   ) {
     lines.push(
@@ -117,7 +117,7 @@ function buildLongSpec(sizeKb, marker) {
     )
     index += 1
   }
-  lines.push(`ORCA_LONG_PROMPT_REPRO_END ${marker}`)
+  lines.push(`OCC_LONG_PROMPT_REPRO_END ${marker}`)
   return lines.join('\n')
 }
 
@@ -150,14 +150,14 @@ async function tryCloseTerminal(cli, handle, cwd) {
     return
   }
   try {
-    await callOrca(cli, ['terminal', 'close', '--terminal', handle], { cwd })
+    await callOCC(cli, ['terminal', 'close', '--terminal', handle], { cwd })
   } catch {
     // Best-effort cleanup; the report is more useful than a close failure.
   }
 }
 
 async function parentMain() {
-  const cli = argValue('cli', process.env.ORCA_REPRO_CLI ?? 'orca')
+  const cli = argValue('cli', process.env.OCC_REPRO_CLI ?? 'occ')
   const mode = argValue('mode', DEFAULT_MODE)
   if (!new Set(['wire', 'codex-like']).has(mode)) {
     throw new Error('--mode must be wire or codex-like')
@@ -169,14 +169,14 @@ async function parentMain() {
   const discardReport = hasFlag('discard-report')
   const marker = `marker_${randomUUID().replace(/-/g, '')}`
   const spec = buildLongSpec(sizeKb, marker)
-  const tempDir = path.join(tmpdir(), `orca-orchestration-long-prompt-${process.pid}-${Date.now()}`)
+  const tempDir = path.join(tmpdir(), `occ-orchestration-long-prompt-${process.pid}-${Date.now()}`)
   await mkdir(tempDir, { recursive: true })
   const workerReportPath = path.join(tempDir, 'worker-report.json')
 
   console.log(`runtime: ${cli} status`)
-  await callOrca(cli, ['status'], { cwd })
+  await callOCC(cli, ['status'], { cwd })
 
-  const coordinator = await callOrca(
+  const coordinator = await callOCC(
     cli,
     [
       'terminal',
@@ -210,7 +210,7 @@ async function parentMain() {
     '--timeout-ms',
     String(timeoutMs)
   ].join(' ')
-  const worker = await callOrca(
+  const worker = await callOCC(
     cli,
     [
       'terminal',
@@ -231,7 +231,7 @@ async function parentMain() {
 
   let taskId = null
   try {
-    await callOrca(
+    await callOCC(
       cli,
       [
         'terminal',
@@ -245,7 +245,7 @@ async function parentMain() {
       ],
       { cwd }
     )
-    const task = await callOrca(
+    const task = await callOCC(
       cli,
       [
         'orchestration',
@@ -264,7 +264,7 @@ async function parentMain() {
       throw new Error('Could not create orchestration task')
     }
 
-    const dispatch = await callOrca(
+    const dispatch = await callOCC(
       cli,
       [
         'orchestration',
@@ -372,7 +372,7 @@ function parseInjectedIds(text) {
 }
 
 async function fakeWorkerMain() {
-  const cli = argValue('cli', process.env.ORCA_REPRO_CLI ?? 'orca')
+  const cli = argValue('cli', process.env.OCC_REPRO_CLI ?? 'occ')
   const mode = argValue('mode', DEFAULT_MODE)
   const reportPath = argValue('report')
   const marker = argValue('marker')
@@ -395,7 +395,7 @@ async function fakeWorkerMain() {
       return { attempted: false, reason: 'missing-dispatch-identifiers' }
     }
     try {
-      await callOrca(cli, [
+      await callOCC(cli, [
         'orchestration',
         'send',
         '--to',
@@ -446,7 +446,7 @@ async function fakeWorkerMain() {
     report.workerDone = await sendWorkerDone(ids, report)
     await writeFile(reportPath, JSON.stringify(report, null, 2))
     process.stdout.write(
-      `\nORCA_REPRO_REPORT ${report.contractOk ? 'ok' : 'failed'} ${reportPath}\n`
+      `\nOCC_REPRO_REPORT ${report.contractOk ? 'ok' : 'failed'} ${reportPath}\n`
     )
     process.exit(report.contractOk ? 0 : 7)
   }
@@ -479,7 +479,7 @@ terminals. The fake worker records whether orchestration dispatch delivered a
 long prompt in a safe agent-input contract.
 
 Options:
-  --cli <path>         OCC CLI command (default: ORCA_REPRO_CLI or orca)
+  --cli <path>         OCC CLI command (default: OCC_REPRO_CLI or occ)
   --worktree <path>   Worktree path for temporary terminals (default: cwd)
   --timeout-ms <n>    Wait budget for terminal/report operations
   --keep-terminals    Leave temporary terminals open for inspection

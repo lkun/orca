@@ -22,7 +22,7 @@ function claudeProjectDirName(cwd: string): string {
 describe('scanAiVaultSessions — non-ASCII scope paths', () => {
   it('lists Claude sessions when the workspace path is NFD and the transcript is NFC', async () => {
     // macOS workspace paths may be NFD while Claude records and encodes NFC (#10832).
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-nfc-scope-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-nfc-scope-'))
     tempRoots.push(root)
     const roots = isolatedScanRoots(root)
 
@@ -74,7 +74,7 @@ describe('scanAiVaultSessions — non-ASCII scope paths', () => {
 
   it('lists Claude sessions for a Windows workspace whose path has uppercase segments', async () => {
     // Claude preserves path case in bucket names; a lowercased comparison key cannot reproduce them.
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-win-scope-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-win-scope-'))
     tempRoots.push(root)
     const roots = isolatedScanRoots(root)
 

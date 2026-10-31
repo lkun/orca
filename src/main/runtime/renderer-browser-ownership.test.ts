@@ -1,7 +1,7 @@
-import './orca-runtime-test-lifecycle.spec'
+import './occ-runtime-test-lifecycle.spec'
 import { expect, it, vi } from 'vitest'
-import { OrcaRuntimeService, electronMocks } from './orca-runtime-test-mocks.spec'
-import { TEST_WORKTREE_ID, store } from './orca-runtime-test-fixtures.spec'
+import { OCCRuntimeService, electronMocks } from './occ-runtime-test-mocks.spec'
+import { TEST_WORKTREE_ID, store } from './occ-runtime-test-fixtures.spec'
 import type {
   RuntimeMobileSessionSnapshotTab,
   RuntimeMobileSessionTabsSnapshot
@@ -10,7 +10,7 @@ import type {
 it('preserves renderer browser ownership across headless reconciliation and close', async () => {
   const closeSessionTab = vi.fn()
   const closeTab = vi.fn().mockResolvedValue(undefined)
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: Test harness mocks partial OffscreenBrowserBackend.
   runtime.setOffscreenBrowserBackend({ closeTab, ownsTab: () => true } as never)
   const forgetTabs = vi.spyOn(runtime['clientSessionTabSelections'], 'forgetTabs')
@@ -162,7 +162,7 @@ it('preserves renderer browser ownership across headless reconciliation and clos
 })
 
 it('drops renderer browser rows once the serve desktop window closes', async () => {
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: Test harness mocks partial OffscreenBrowserBackend.
   runtime.setOffscreenBrowserBackend({ closeTab: vi.fn(), ownsTab: () => true } as never)
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: Test harness mocks partial AgentBrowserBridge.

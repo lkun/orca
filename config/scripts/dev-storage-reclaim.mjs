@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 
 export function startDevStorageReclaim({
   repoRoot,
@@ -7,7 +7,7 @@ export function startDevStorageReclaim({
   spawn = spawnProcess,
   report = console.error
 }) {
-  if (env.ORCA_SKIP_DEV_STORAGE_RECLAIM === '1') {
+  if (env.OCC_SKIP_DEV_STORAGE_RECLAIM === '1') {
     return
   }
   try {

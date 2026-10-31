@@ -11,14 +11,14 @@ import type { PluginService } from './plugin-service'
 const roots: string[] = []
 
 async function userDataWithInstalledPlugin(): Promise<string> {
-  const userDataPath = await mkdtemp(join(tmpdir(), 'orca-plugin-client-list-'))
+  const userDataPath = await mkdtemp(join(tmpdir(), 'occ-plugin-client-list-'))
   roots.push(userDataPath)
   const hash = 'a'.repeat(64)
   const pluginDir = join(getUserPluginsDir(userDataPath), 'acme.notes')
   await mkdir(join(pluginDir, hash), { recursive: true })
   await writeFile(join(pluginDir, 'current'), hash)
   await writeFile(
-    join(pluginDir, hash, 'orca-plugin.json'),
+    join(pluginDir, hash, 'occ-plugin.json'),
     JSON.stringify({
       manifestVersion: 2,
       execution: 'data',
@@ -26,7 +26,7 @@ async function userDataWithInstalledPlugin(): Promise<string> {
       publisher: 'acme',
       name: 'Notes',
       version: '1.0.0',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
       license: 'MIT'
     })
   )

@@ -9,7 +9,7 @@ import {
 import { applyWebSessionTabsSnapshot } from '../../src/renderer/src/runtime/web-session-tabs-sync/snapshot-api'
 import { shouldApplyWebSessionTabsSnapshot } from '../../src/renderer/src/runtime/web-session-tabs-sync/tracking-decisions'
 import type { WebSessionTabsSyncState } from '../../src/renderer/src/runtime/web-session-tabs-sync/state'
-import { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import { withDurableRuntimeStore } from '../../src/main/runtime/runtime-durable-store-fixture'
 
 vi.mock('../../src/renderer/src/store', () => ({
@@ -138,7 +138,7 @@ describe('remote terminal tab retirement publication', () => {
       },
       flushOrThrow
     })
-    const runtime = new OrcaRuntimeService(
+    const runtime = new OCCRuntimeService(
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: This retirement fixture implements the Store session and durability operations used by the runtime.
       store as never
     )

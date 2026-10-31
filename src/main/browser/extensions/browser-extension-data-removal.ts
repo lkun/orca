@@ -14,7 +14,7 @@ import { getBrowserExtensionSyncStorageStore } from './browser-extension-sync-st
 /** Where Chromium keeps chrome.storage.local, one folder per extension id (checked on disk). */
 const EXTENSION_SETTINGS_FOLDER = 'Local Extension Settings'
 /** Left in an uninstalled extension's open storage folder so the next launch deletes it. */
-const UNINSTALLED_MARKER = 'orca-uninstalled'
+const UNINSTALLED_MARKER = 'occ-uninstalled'
 const STORAGE_CLEAR_TIMEOUT_MS = 5_000
 /** Extensions each session loaded this run; Chromium keeps their storage open until quit. */
 const storageOpenedBySession = new WeakMap<Electron.Session, Set<string>>()

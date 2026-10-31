@@ -103,7 +103,7 @@ export function probeRemoteInstallCompleteCommand(
 
 export const MAX_REMOTE_INSTALL_GC_LISTING_ENTRIES = 64
 
-/** Scope both listing glob and validation regex by install model so orcad GC never even receives legacy relay directory names. */
+/** Scope both listing glob and validation regex by install model so occd GC never even receives legacy relay directory names. */
 export function listRemoteInstallBaseDirsCommand(
   host: RemoteHostPlatform,
   baseDir: string,
@@ -111,7 +111,7 @@ export function listRemoteInstallBaseDirsCommand(
 ): string {
   const namePattern = remoteInstallListingRegexSource(model)
   if (!isWindowsRemoteHost(host)) {
-    const statusPrefix = '__ORCA_RELAY_GC_FIND_STATUS__'
+    const statusPrefix = '__OCC_RELAY_GC_FIND_STATUS__'
     return [
       `base=${quotePosixShell(baseDir)}; [ -d "$base" ] || exit 0;`,
       `{ find "$base" -mindepth 1 -maxdepth 1 -type d -name '${model.dirPrefix}-*' -print; status=$?; printf '\n${statusPrefix}%s\n' "$status"; } |`,

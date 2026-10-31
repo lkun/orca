@@ -44,7 +44,7 @@ describe('plugin display text', () => {
         'name: must be one line without control, bidirectional or zero-width characters;'
       )
     })
-    expect(validatePluginFile('orca-plugin.json', themed('Dusk', 'Dusk\u2066'))).toEqual([
+    expect(validatePluginFile('occ-plugin.json', themed('Dusk', 'Dusk\u2066'))).toEqual([
       'description: must be one line without control, bidirectional or zero-width characters; contributes.themes[0].title: must be one line without control, bidirectional or zero-width characters'
     ])
   })
@@ -55,7 +55,7 @@ describe('plugin display text', () => {
       description: 'Gleam',
       releases: [{ name: 'Gleam' }]
     })
-    expect(validatePluginFile('orca-catalog.json', catalogFixture([entry]))).toEqual([
+    expect(validatePluginFile('occ-catalog.json', catalogFixture([entry]))).toEqual([
       'plugins[0].releases[0].name: must be one line without control, bidirectional or zero-width characters',
       'plugins[0].description: must be one line without control, bidirectional or zero-width characters'
     ])

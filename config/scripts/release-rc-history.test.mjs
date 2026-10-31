@@ -1,4 +1,4 @@
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -16,7 +16,7 @@ function git(cwd, args) {
 }
 
 function withGitRepo(run) {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-rc-history-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-rc-history-'))
   try {
     git(dir, ['init', '--initial-branch=main'])
     git(dir, ['config', 'user.name', 'Test Bot'])

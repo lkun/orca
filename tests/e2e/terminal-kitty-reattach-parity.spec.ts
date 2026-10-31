@@ -1,7 +1,7 @@
 // Require kitty flags in fresh xterm and the pane policy mirror after park/reveal.
 // Without replay-epilogue restore, xterm stays at 0 while the mirror adopts host flags.
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { parkHiddenTabBehindDecoy } from './helpers/terminal-hidden-parking'
 import {
   ensureTerminalVisible,
@@ -22,11 +22,11 @@ import {
 } from './helpers/terminal-pty-write-spy'
 import { waitForPtyShellEcho } from './terminal-pty-readiness'
 
-const PARKING_DELAY_MS = Number(process.env.ORCA_E2E_TERMINAL_PARKING_DELAY_MS) || 500
+const PARKING_DELAY_MS = Number(process.env.OCC_E2E_TERMINAL_PARKING_DELAY_MS) || 500
 const APP_FLAGS = 5
 
 test.use({
-  orcaAppExtraEnv: { ORCA_E2E_TERMINAL_PARKING_DELAY_MS: String(PARKING_DELAY_MS) }
+  occAppExtraEnv: { OCC_E2E_TERMINAL_PARKING_DELAY_MS: String(PARKING_DELAY_MS) }
 })
 
 async function readXtermKittyFlags(page: Page): Promise<number | null> {
@@ -74,42 +74,42 @@ async function activateTerminalTab(page: Page, tabId: string): Promise<void> {
 }
 
 test("park and reveal keep a live app's kitty flags in xterm and the mirror", async ({
-  orcaPage,
+  occPage,
   electronApp
 }) => {
   test.skip(process.platform === 'win32', 'ConPTY panes withhold the kitty protocol')
   await installTerminalPtyWriteSpy(electronApp)
-  await waitForSessionReady(orcaPage)
-  const worktreeId = await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
-  await waitForActiveTerminalManager(orcaPage, 30_000)
-  const tabId = await getActiveTabId(orcaPage)
+  await waitForSessionReady(occPage)
+  const worktreeId = await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
+  await waitForActiveTerminalManager(occPage, 30_000)
+  const tabId = await getActiveTabId(occPage)
   if (!tabId) {
     throw new Error('no active terminal tab')
   }
-  const ptyId = await waitForActivePanePtyId(orcaPage)
-  await waitForPtyShellEcho(orcaPage, ptyId, 15_000)
+  const ptyId = await waitForActivePanePtyId(occPage)
+  await waitForPtyShellEcho(occPage, ptyId, 15_000)
 
   try {
     // The app stays alive through the park, so nothing grounds its flags.
-    await sendToTerminal(orcaPage, ptyId, `printf '\\033[=${APP_FLAGS}u'; sleep 120\r`)
-    await expect.poll(() => readXtermKittyFlags(orcaPage)).toBe(APP_FLAGS)
-    await expectShiftEnterWrite(orcaPage, electronApp, '\x1b[13;2u')
+    await sendToTerminal(occPage, ptyId, `printf '\\033[=${APP_FLAGS}u'; sleep 120\r`)
+    await expect.poll(() => readXtermKittyFlags(occPage)).toBe(APP_FLAGS)
+    await expectShiftEnterWrite(occPage, electronApp, '\x1b[13;2u')
 
-    await parkHiddenTabBehindDecoy(orcaPage, worktreeId, tabId, {
+    await parkHiddenTabBehindDecoy(occPage, worktreeId, tabId, {
       parkDelayMs: PARKING_DELAY_MS
     })
-    await activateTerminalTab(orcaPage, tabId)
-    await waitForActivePanePtyId(orcaPage)
+    await activateTerminalTab(occPage, tabId)
+    await waitForActivePanePtyId(occPage)
 
     await expect
-      .poll(() => readXtermKittyFlags(orcaPage), {
+      .poll(() => readXtermKittyFlags(occPage), {
         timeout: 10_000,
         message: 'the revealed xterm did not get the live app kitty flags back'
       })
       .toBe(APP_FLAGS)
-    await expectShiftEnterWrite(orcaPage, electronApp, '\x1b[13;2u')
+    await expectShiftEnterWrite(occPage, electronApp, '\x1b[13;2u')
   } finally {
-    await sendToTerminal(orcaPage, ptyId, '\x03').catch(() => undefined)
+    await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
   }
 })

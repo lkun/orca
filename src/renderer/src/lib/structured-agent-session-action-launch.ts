@@ -12,7 +12,7 @@ import type { ProvisionalLaunchArgs } from './agent-session/structured-agent-ses
 import { insertUnifiedTabAfterAnchor } from './unified-tab-anchor-insertion'
 import { useAppStore } from '@/store'
 import type { OpenedAgentSessionTab } from './structured-agent-session-tab-open-through-layout-owner'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { sendLayoutCommandToOwner } from '@/runtime/layout-owner-command'
 import {
   declinedTerminalCanOpen,
@@ -139,7 +139,7 @@ export async function openTerminalForDeclinedChat(
   }
   const replacementEntityId = replacement.entityId
   // Switch point: main places and pins the tab in one step; a pin sent alone would re-sort it.
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     await placeReplacementThroughMain(worktreeId, replacement, current)
   } else {
     placeReplacementAfterSource(worktreeId, replacement, current)
@@ -182,7 +182,7 @@ export async function openTerminalForDeclinedChat(
     focusTerminalTabSurface(replacement.id)
   }
   // Switch-on, main's close lands later and shows the group's active tab: make it the terminal.
-  const showsFirst = foreground && ORCA_LAYOUT_OWNER_IS_MAIN
+  const showsFirst = foreground && OCC_LAYOUT_OWNER_IS_MAIN
   if (showsFirst) {
     showReplacement()
   }

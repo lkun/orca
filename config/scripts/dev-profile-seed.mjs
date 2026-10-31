@@ -39,8 +39,8 @@ export const SEEDED_PROFILE_STATE_DOMAINS = [
 const SEEDED_PROFILE_FILES = ['account-session.json.enc']
 // Why Local State: on Windows it holds the DPAPI-wrapped key that decrypts safeStorage secrets.
 const SEEDED_ROOT_FILES = ['Local State']
-const PROFILE_INDEX_FILE = 'orca-profile-index.json'
-const LEGACY_DATA_FILE = 'orca-data.json'
+const PROFILE_INDEX_FILE = 'occ-profile-index.json'
+const LEGACY_DATA_FILE = 'occ-data.json'
 const PROFILE_STATE_DATABASE_FILE = 'profile-state.db'
 const PROFILE_ID_PATTERN = /^[A-Za-z0-9._-]+$/
 export const SEED_RECEIPT_FILE = 'occ-dev-seed.json'
@@ -59,7 +59,7 @@ export function getDefaultSeedSource(env = process.env, platform = process.platf
   if (profileHasState(devProfile)) {
     return devProfile
   }
-  return path.join(getAppDataDir(env, platform), 'orca')
+  return path.join(getAppDataDir(env, platform), 'occ')
 }
 
 async function readProfileStateDatabaseDomains(databasePath) {
@@ -149,7 +149,7 @@ export async function seedDevProfile({ sourceDir, targetDir, report = console.er
     }
     writePrivateJson(path.join(targetDir, PROFILE_INDEX_FILE), index)
   } else {
-    // Pre-profile layout: OCC migrates a root orca-data.json itself.
+    // Pre-profile layout: OCC migrates a root occ-data.json itself.
     const domains = JSON.parse(readFileSync(path.join(sourceDir, LEGACY_DATA_FILE), 'utf8'))
     writePrivateJson(path.join(targetDir, LEGACY_DATA_FILE), pickSeededDomains(domains))
   }
@@ -218,7 +218,7 @@ async function main() {
   const repoRoot = path.resolve(import.meta.dirname, '../..')
   const targetDir = path.resolve(
     options.to ??
-      resolveDevProfile({ repoRoot, instanceKey: process.env.ORCA_DEV_INSTANCE_KEY }).userDataPath
+      resolveDevProfile({ repoRoot, instanceKey: process.env.OCC_DEV_INSTANCE_KEY }).userDataPath
   )
   const sourceDir = path.resolve(options.from ?? getDefaultSeedSource())
   if (options.reset && existsSync(targetDir)) {

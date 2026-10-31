@@ -6,7 +6,7 @@ import {
   serializeStableMobileRendererSnapshot,
   type MobileSnapshotByteBudget
 } from './terminal-snapshot-publication'
-import type { OrcaRuntimeService } from '../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../occ-runtime'
 import type { SerializedSnapshot } from './terminal-stream-types'
 
 /** Raw 512-KiB text can exceed the page's 640-KiB JSON frame cap: escaped ANSI bytes expand and overflow closes the stream before painting. */
@@ -31,7 +31,7 @@ function colourDenseScreen(rows: number): string {
 }
 
 /** Shrink with row count so the test proves trimming works, not merely that the loop terminates. */
-function denseRuntime(): Pick<OrcaRuntimeService, 'serializeTerminalBuffer'> {
+function denseRuntime(): Pick<OCCRuntimeService, 'serializeTerminalBuffer'> {
   return {
     serializeTerminalBuffer: vi.fn(
       async (_ptyId: string, options?: { scrollbackRows?: number }) => ({
@@ -85,7 +85,7 @@ function publishedPayloadBytes(serialized: NonNullable<SerializedSnapshot>): num
 const CWD = '/srv/checkouts/a-repository/packages/a-workspace/deeply/nested/leaf'
 
 /** Fit the old text-plus-four-fields measure exactly; omitted publication metadata then pushes the real frame over budget. */
-function exactlyAtRoundOnesBudgetRuntime(): Pick<OrcaRuntimeService, 'serializeTerminalBuffer'> {
+function exactlyAtRoundOnesBudgetRuntime(): Pick<OCCRuntimeService, 'serializeTerminalBuffer'> {
   const metaBytes = Buffer.byteLength(
     JSON.stringify({
       cwd: CWD,
@@ -115,7 +115,7 @@ function exactlyAtRoundOnesBudgetRuntime(): Pick<OrcaRuntimeService, 'serializeT
 }
 
 /** Keep every candidate oversized to exercise the exhausted trimming ladder. */
-function alwaysOversizeRuntime(): Pick<OrcaRuntimeService, 'serializeTerminalBuffer'> {
+function alwaysOversizeRuntime(): Pick<OCCRuntimeService, 'serializeTerminalBuffer'> {
   return {
     serializeTerminalBuffer: vi.fn(async () => ({
       data: 'x'.repeat(MOBILE_SNAPSHOT_BYTE_BUDGET + 1024),
@@ -242,7 +242,7 @@ describe('a snapshot that round one accepted at exactly the budget', () => {
 
 /** Keep renderer output sequence stable to test its trimming floor rather than its retry path. */
 function stableRendererRuntime(): Pick<
-  OrcaRuntimeService,
+  OCCRuntimeService,
   'getPtyOutputSequence' | 'serializeRendererTerminalBuffer'
 > {
   return {
@@ -301,7 +301,7 @@ describe('the publication fields the budget has to assume', () => {
   }
 
   /** A fixed-size screen leaves no trimming margin for undercounted metadata. */
-  function fixedScreenRuntime(data: string): Pick<OrcaRuntimeService, 'serializeTerminalBuffer'> {
+  function fixedScreenRuntime(data: string): Pick<OCCRuntimeService, 'serializeTerminalBuffer'> {
     return {
       serializeTerminalBuffer: vi.fn(async () => ({
         data,

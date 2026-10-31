@@ -68,15 +68,15 @@ describe('mergeSnapshotAndSessions', () => {
 
   it('includes browser-only workspaces in their repo', () => {
     const worktree = {
-      id: 'orca::/Users/me/browser-only',
-      repoId: 'orca',
+      id: 'occ::/Users/me/browser-only',
+      repoId: 'occ',
       displayName: 'browser-only'
     } as Worktree
     const browser = {
       id: 'browser-1',
       worktreeId: worktree.id,
       title: 'OCC docs',
-      url: 'https://docs.orca.dev',
+      url: 'https://docs.occ.dev',
       loading: false,
       faviconUrl: null,
       canGoBack: false,
@@ -88,15 +88,15 @@ describe('mergeSnapshotAndSessions', () => {
       null,
       [],
       baseCtx({
-        repoDisplayNameById: new Map([['orca', 'ORCA']]),
+        repoDisplayNameById: new Map([['occ', 'OCC']]),
         worktreeById: new Map([[worktree.id, worktree]]),
         browserTabsByWorktree: { [worktree.id]: [browser] }
       })
     )
 
     expect(out[0]).toMatchObject({
-      repoId: 'orca',
-      repoName: 'ORCA',
+      repoId: 'occ',
+      repoName: 'OCC',
       worktrees: [
         {
           worktreeId: worktree.id,
@@ -110,10 +110,10 @@ describe('mergeSnapshotAndSessions', () => {
 
   it('passes through snapshot worktrees with numeric metrics and hasLocalSamples', () => {
     const wt: WorktreeMemory = {
-      worktreeId: 'orca::/Users/me/Triton',
+      worktreeId: 'occ::/Users/me/Triton',
       worktreeName: 'Triton',
-      repoId: 'orca',
-      repoName: 'ORCA',
+      repoId: 'occ',
+      repoName: 'OCC',
       cpu: 1.5,
       memory: 100_000_000,
       history: [1, 2, 3],
@@ -122,8 +122,8 @@ describe('mergeSnapshotAndSessions', () => {
     const out = mergeSnapshotAndSessions(makeSnapshot([wt]), [], baseCtx())
     expect(out).toHaveLength(1)
     expect(out[0]).toMatchObject({
-      repoId: 'orca',
-      repoName: 'ORCA',
+      repoId: 'occ',
+      repoName: 'OCC',
       cpu: 1.5,
       memory: 100_000_000,
       hasRemoteChildren: false
@@ -144,10 +144,10 @@ describe('mergeSnapshotAndSessions', () => {
 
   it('dedups: a session present in both snapshot and daemon list renders once with numeric metrics', () => {
     const wt: WorktreeMemory = {
-      worktreeId: 'orca::/Users/me/Triton',
+      worktreeId: 'occ::/Users/me/Triton',
       worktreeName: 'Triton',
-      repoId: 'orca',
-      repoName: 'ORCA',
+      repoId: 'occ',
+      repoName: 'OCC',
       cpu: 0.1,
       memory: 50_000_000,
       history: [],
@@ -169,10 +169,10 @@ describe('mergeSnapshotAndSessions', () => {
   it('carries agent ownership onto the snapshot-derived row for the same session', () => {
     // Only daemon inventory proves ownership; copy it onto sampled rows before evaluating kill confirmation.
     const wt: WorktreeMemory = {
-      worktreeId: 'orca::/Users/me/Triton',
+      worktreeId: 'occ::/Users/me/Triton',
       worktreeName: 'Triton',
-      repoId: 'orca',
-      repoName: 'ORCA',
+      repoId: 'occ',
+      repoName: 'OCC',
       cpu: 0.1,
       memory: 50_000_000,
       history: [],
@@ -197,14 +197,14 @@ describe('mergeSnapshotAndSessions', () => {
 
   it('binds a deferred SSH row so its single-row kill cannot skip confirmation', () => {
     // Deferred SSH bindings must protect single-row kills as well as bulk orphan selection.
-    const sessionId = 'orca::/remote/Stingray@@deferred1'
+    const sessionId = 'occ::/remote/Stingray@@deferred1'
     const out = mergeSnapshotAndSessions(
       null,
-      [{ id: sessionId, cwd: '', title: 'orca/Stingray', agentOwnership: 'absent' as const }],
+      [{ id: sessionId, cwd: '', title: 'occ/Stingray', agentOwnership: 'absent' as const }],
       baseCtx({
-        tabsByWorktree: { 'orca::/remote/Stingray': [makeTab('tab-ssh')] },
+        tabsByWorktree: { 'occ::/remote/Stingray': [makeTab('tab-ssh')] },
         deferredSshSessionIdsByTabId: { 'tab-ssh': sessionId },
-        repoConnectionIdById: new Map([['orca', 'ssh-conn-1']])
+        repoConnectionIdById: new Map([['occ', 'ssh-conn-1']])
       })
     )
 
@@ -215,10 +215,10 @@ describe('mergeSnapshotAndSessions', () => {
 
   it('treats a snapshot row the daemon never listed as unknown ownership, not absent', () => {
     const wt: WorktreeMemory = {
-      worktreeId: 'orca::/Users/me/Triton',
+      worktreeId: 'occ::/Users/me/Triton',
       worktreeName: 'Triton',
-      repoId: 'orca',
-      repoName: 'ORCA',
+      repoId: 'occ',
+      repoName: 'OCC',
       cpu: 0.1,
       memory: 50_000_000,
       history: [],
@@ -234,25 +234,25 @@ describe('mergeSnapshotAndSessions', () => {
   it('@@ parse: an SSH-style session id resolves to its worktree group', () => {
     const ds: DaemonSession[] = [
       {
-        id: 'orca::/remote/Stingray@@abcd1234',
+        id: 'occ::/remote/Stingray@@abcd1234',
         cwd: '',
-        title: 'orca/Stingray',
+        title: 'occ/Stingray',
         agentOwnership: 'absent' as const
       }
     ]
     const ctx = baseCtx({
-      repoConnectionIdById: new Map([['orca', 'ssh-conn-1']])
+      repoConnectionIdById: new Map([['occ', 'ssh-conn-1']])
     })
     const out = mergeSnapshotAndSessions(null, ds, ctx)
     expect(out).toHaveLength(1)
     expect(out[0]).toMatchObject({
-      repoId: 'orca',
+      repoId: 'occ',
       hasRemoteChildren: true,
       cpu: null,
       memory: null
     })
     expect(out[0].worktrees[0]).toMatchObject({
-      worktreeId: 'orca::/remote/Stingray',
+      worktreeId: 'occ::/remote/Stingray',
       worktreeName: 'Stingray',
       hasLocalSamples: false,
       isRemote: true,
@@ -260,7 +260,7 @@ describe('mergeSnapshotAndSessions', () => {
       memory: null
     })
     expect(out[0].worktrees[0].sessions[0]).toMatchObject({
-      sessionId: 'orca::/remote/Stingray@@abcd1234',
+      sessionId: 'occ::/remote/Stingray@@abcd1234',
       hasLocalSamples: false,
       cpu: null,
       memory: null,
@@ -272,18 +272,18 @@ describe('mergeSnapshotAndSessions', () => {
     // Warm-reattached local sessions can lack samples; only execution-host evidence marks a row remote.
     const ds: DaemonSession[] = [
       {
-        id: 'orca::/local/Triton@@deadbeef',
+        id: 'occ::/local/Triton@@deadbeef',
         cwd: '/local/Triton',
-        title: 'orca/Triton',
+        title: 'occ/Triton',
         agentOwnership: 'absent' as const
       }
     ]
     const ctx = baseCtx({
-      repoConnectionIdById: new Map([['orca', null]])
+      repoConnectionIdById: new Map([['occ', null]])
     })
     const out = mergeSnapshotAndSessions(null, ds, ctx)
     expect(out[0]).toMatchObject({
-      repoId: 'orca',
+      repoId: 'occ',
       hasRemoteChildren: false
     })
     expect(out[0].worktrees[0]).toMatchObject({
@@ -296,39 +296,39 @@ describe('mergeSnapshotAndSessions', () => {
     const tabId = 'tab-xyz'
     const ds: DaemonSession[] = [
       {
-        id: 'orca::/wrong/path@@feedface',
+        id: 'occ::/wrong/path@@feedface',
         cwd: '',
-        title: 'orca',
+        title: 'occ',
         agentOwnership: 'absent' as const
       }
     ]
     const ctx = baseCtx({
       tabsByWorktree: {
-        'orca::/correct/path': [makeTab(tabId, 'My Tab')]
+        'occ::/correct/path': [makeTab(tabId, 'My Tab')]
       },
-      ptyIdsByTabId: { [tabId]: ['orca::/wrong/path@@feedface'] }
+      ptyIdsByTabId: { [tabId]: ['occ::/wrong/path@@feedface'] }
     })
     const out = mergeSnapshotAndSessions(null, ds, ctx)
-    expect(out[0].worktrees[0].worktreeId).toBe('orca::/correct/path')
+    expect(out[0].worktrees[0].worktreeId).toBe('occ::/correct/path')
     expect(out[0].worktrees[0].sessions[0].tabId).toBe(tabId)
     expect(out[0].worktrees[0].sessions[0].bound).toBe(true)
   })
 
   it('treats startup deferred reattach tab ptyId wake hints as bound sessions', () => {
     const tabId = 'tab-restored'
-    const sessionId = 'orca::/Users/me/Triton@@deferred'
+    const sessionId = 'occ::/Users/me/Triton@@deferred'
     const ds: DaemonSession[] = [
       {
         id: sessionId,
         cwd: '/Users/me/Triton',
-        title: 'orca/Triton',
+        title: 'occ/Triton',
         agentOwnership: 'absent' as const
       }
     ]
     const restoredTab = { ...makeTab(tabId, 'Restored'), ptyId: sessionId }
     const ctx = baseCtx({
       tabsByWorktree: {
-        'orca::/Users/me/Triton': [restoredTab]
+        'occ::/Users/me/Triton': [restoredTab]
       },
       ptyIdsByTabId: { [tabId]: [] }
     })
@@ -527,17 +527,17 @@ describe('mergeSnapshotAndSessions', () => {
   it('local-bound interaction state: numeric metrics + bound=true + tabId set', () => {
     const tabId = 'tab-1'
     const wt: WorktreeMemory = {
-      worktreeId: 'orca::/Users/me/Triton',
+      worktreeId: 'occ::/Users/me/Triton',
       worktreeName: 'Triton',
-      repoId: 'orca',
-      repoName: 'ORCA',
+      repoId: 'occ',
+      repoName: 'OCC',
       cpu: 0.1,
       memory: 1_000,
       history: [],
       sessions: [{ sessionId: 'pty-bound', paneKey: null, pid: 1, cpu: 0.1, memory: 1_000 }]
     }
     const ctx = baseCtx({
-      tabsByWorktree: { 'orca::/Users/me/Triton': [makeTab(tabId)] },
+      tabsByWorktree: { 'occ::/Users/me/Triton': [makeTab(tabId)] },
       ptyIdsByTabId: { [tabId]: ['pty-bound'] }
     })
     const out = mergeSnapshotAndSessions(makeSnapshot([wt]), [], ctx)
@@ -551,10 +551,10 @@ describe('mergeSnapshotAndSessions', () => {
 
   it('local-orphan interaction state: numeric metrics + bound=false + tabId null', () => {
     const wt: WorktreeMemory = {
-      worktreeId: 'orca::/Users/me/Triton',
+      worktreeId: 'occ::/Users/me/Triton',
       worktreeName: 'Triton',
-      repoId: 'orca',
-      repoName: 'ORCA',
+      repoId: 'occ',
+      repoName: 'OCC',
       cpu: 0,
       memory: 0,
       history: [],
@@ -570,9 +570,9 @@ describe('mergeSnapshotAndSessions', () => {
   it('remote-orphan interaction state: null metrics + bound=false', () => {
     const ds: DaemonSession[] = [
       {
-        id: 'orca::/remote/Wt@@deadbeef',
+        id: 'occ::/remote/Wt@@deadbeef',
         cwd: '',
-        title: 'orca/Wt',
+        title: 'occ/Wt',
         agentOwnership: 'absent' as const
       }
     ]
@@ -589,22 +589,22 @@ describe('mergeSnapshotAndSessions', () => {
 
   it('uses repoDisplayNameById to humanize new project groups when available', () => {
     const ds: DaemonSession[] = [
-      { id: 'stably-ai/orca::/remote/Wt@@1', cwd: '', title: '', agentOwnership: 'absent' as const }
+      { id: 'stably-ai/occ::/remote/Wt@@1', cwd: '', title: '', agentOwnership: 'absent' as const }
     ]
     const ctx = baseCtx({
-      repoDisplayNameById: new Map([['stably-ai/orca', 'ORCA']])
+      repoDisplayNameById: new Map([['stably-ai/occ', 'OCC']])
     })
     const out = mergeSnapshotAndSessions(null, ds, ctx)
-    expect(out[0].repoName).toBe('ORCA')
+    expect(out[0].repoName).toBe('OCC')
   })
 
   it('workspaceSessionReady=false suppresses bound flags so nothing looks bound prematurely', () => {
     const tabId = 'tab-1'
     const wt: WorktreeMemory = {
-      worktreeId: 'orca::/Users/me/Triton',
+      worktreeId: 'occ::/Users/me/Triton',
       worktreeName: 'Triton',
-      repoId: 'orca',
-      repoName: 'ORCA',
+      repoId: 'occ',
+      repoName: 'OCC',
       cpu: 0,
       memory: 0,
       history: [],
@@ -612,7 +612,7 @@ describe('mergeSnapshotAndSessions', () => {
     }
     const ctx = baseCtx({
       workspaceSessionReady: false,
-      tabsByWorktree: { 'orca::/Users/me/Triton': [makeTab(tabId)] },
+      tabsByWorktree: { 'occ::/Users/me/Triton': [makeTab(tabId)] },
       ptyIdsByTabId: { [tabId]: ['pty-1'] }
     })
     const out = mergeSnapshotAndSessions(makeSnapshot([wt]), [], ctx)
@@ -683,10 +683,10 @@ it('resolves a duplicated tab id to the first tab, as the replaced scan did', ()
   const first = makeTab('dup', 'First tab')
   const second = makeTab('dup', 'Second tab')
   const wt: WorktreeMemory = {
-    worktreeId: 'orca::/Users/me/Triton',
+    worktreeId: 'occ::/Users/me/Triton',
     worktreeName: 'Triton',
-    repoId: 'orca',
-    repoName: 'ORCA',
+    repoId: 'occ',
+    repoName: 'OCC',
     cpu: 0,
     memory: 0,
     history: [],
@@ -695,17 +695,17 @@ it('resolves a duplicated tab id to the first tab, as the replaced scan did', ()
   const out = mergeSnapshotAndSessions(
     makeSnapshot([wt]),
     [],
-    baseCtx({ tabsByWorktree: { 'orca::/Users/me/Triton': [first, second] } })
+    baseCtx({ tabsByWorktree: { 'occ::/Users/me/Triton': [first, second] } })
   )
   expect(out[0].worktrees[0].sessions[0].label).toBe('First tab')
 })
 
 it('keeps tab labels scoped to their own worktree', () => {
   const wt: WorktreeMemory = {
-    worktreeId: 'orca::/Users/me/Triton',
+    worktreeId: 'occ::/Users/me/Triton',
     worktreeName: 'Triton',
-    repoId: 'orca',
-    repoName: 'ORCA',
+    repoId: 'occ',
+    repoName: 'OCC',
     cpu: 0,
     memory: 0,
     history: [],
@@ -714,7 +714,7 @@ it('keeps tab labels scoped to their own worktree', () => {
   const out = mergeSnapshotAndSessions(
     makeSnapshot([wt]),
     [],
-    baseCtx({ tabsByWorktree: { 'orca::/Users/me/Other': [makeTab('shared', 'Elsewhere')] } })
+    baseCtx({ tabsByWorktree: { 'occ::/Users/me/Other': [makeTab('shared', 'Elsewhere')] } })
   )
   expect(out[0].worktrees[0].sessions[0].label).toBe('pid 5')
 })
@@ -722,10 +722,10 @@ it('keeps tab labels scoped to their own worktree', () => {
 // Duplicate sampled worktrees must retain first-match session attachment when replacing linear scans.
 it('attaches later daemon sessions to the first row of a duplicated worktree', () => {
   const wt = (name: string): WorktreeMemory => ({
-    worktreeId: 'orca::/Users/me/Triton',
+    worktreeId: 'occ::/Users/me/Triton',
     worktreeName: name,
-    repoId: 'orca',
-    repoName: 'ORCA',
+    repoId: 'occ',
+    repoName: 'OCC',
     cpu: 0,
     memory: 0,
     history: [],
@@ -733,13 +733,13 @@ it('attaches later daemon sessions to the first row of a duplicated worktree', (
   })
   const out = mergeSnapshotAndSessions(
     makeSnapshot([wt('first'), wt('second')]),
-    [{ id: 'orca::/Users/me/Triton@@late', cwd: '', title: '', agentOwnership: 'unknown' }],
+    [{ id: 'occ::/Users/me/Triton@@late', cwd: '', title: '', agentOwnership: 'unknown' }],
     baseCtx()
   )
   expect(out[0].worktrees).toHaveLength(2)
   expect(out[0].worktrees[0].worktreeName).toBe('first')
   expect(out[0].worktrees[0].sessions.map((s) => s.sessionId)).toEqual([
-    'orca::/Users/me/Triton@@late'
+    'occ::/Users/me/Triton@@late'
   ])
   expect(out[0].worktrees[1].sessions).toEqual([])
 })

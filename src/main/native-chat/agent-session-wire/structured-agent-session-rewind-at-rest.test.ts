@@ -116,7 +116,7 @@ beforeEach(async () => {
       ordinal: 1
     }
   }))
-  directory = await mkdtemp(join(tmpdir(), 'orca-rewind-rest-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-rewind-rest-'))
   store = await openTestAgentSessionRecordStore(directory)
   host = openHost()
 })

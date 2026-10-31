@@ -57,7 +57,7 @@ export async function readClaudePromptParentUuid(input: {
 
 /** Search the prompt's source session so rewinds across earlier forks still find it. */
 export async function resolveClaudeRewindFork(input: {
-  orcaSessionId: string
+  occSessionId: string
   rewindOperationId: string
   head: AgentSessionProviderHandle
   prompt: { sessionId: string; uuid: string }
@@ -71,7 +71,7 @@ export async function resolveClaudeRewindFork(input: {
     })
     if (parent !== undefined) {
       const fork = {
-        sessionId: claudeSessionIdForRewind(input.orcaSessionId, input.rewindOperationId),
+        sessionId: claudeSessionIdForRewind(input.occSessionId, input.rewindOperationId),
         sourceSessionId: input.prompt.sessionId,
         ...(parent ? { throughEntryId: parent } : {}),
         replacesSessionId: input.head.nativeId
@@ -99,7 +99,7 @@ export const claudeForkForRewind: NonNullable<
   }
   const router = getClaudeProfileRouter()
   const fork = await resolveClaudeRewindFork({
-    orcaSessionId: record.sessionId,
+    occSessionId: record.sessionId,
     rewindOperationId,
     head,
     prompt: beforeMessage,

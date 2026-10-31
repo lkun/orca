@@ -3,9 +3,9 @@ import { createHash } from 'node:crypto'
 import { windowsFsPath } from '../wsl/wsl-unc-drive-fs-path'
 import { readFile } from 'node:fs/promises'
 import type { Repo } from '../../shared/repo-types'
-import { getEffectiveHooks, hasHooksFile, hasUnrecognizedOrcaYamlKeys, loadHooks } from '../hooks'
+import { getEffectiveHooks, hasHooksFile, hasUnrecognizedOCCYamlKeys, loadHooks } from '../hooks'
 import { getEffectiveSetupRunPolicy } from '../effective-hook-config'
-import { getSetupConfig, getSetupTrustContent } from '../../shared/orca-hook-setup-config'
+import { getSetupConfig, getSetupTrustContent } from '../../shared/occ-hook-setup-config'
 import { isENOENT } from '../ipc/filesystem/filesystem-path-containment'
 import { isFolderRepo } from '../../shared/repo-kind'
 import { inspectSetupScriptImportCandidates } from '../../shared/setup-script-imports'
@@ -39,10 +39,10 @@ export class RuntimeRepositoryHooksCommands {
       hasHooksFile: hasFile,
       hooks,
       setupRunPolicy: getEffectiveSetupRunPolicy(repo),
-      source: hasFile ? ('orca.yaml' as const) : hooks ? ('legacy' as const) : null,
+      source: hasFile ? ('occ.yaml' as const) : hooks ? ('legacy' as const) : null,
       // Why: `hooks` drops defaultTabs, so clients gate the setup choice on this instead.
       setupConfig,
-      // Local-only setup runs the user's own script, which needs no orca.yaml trust.
+      // Local-only setup runs the user's own script, which needs no occ.yaml trust.
       setupTrust:
         setupConfig && setupConfig.source !== 'local'
           ? setupTrust(getSetupTrustContent(sharedHooks))
@@ -79,7 +79,7 @@ export class RuntimeRepositoryHooksCommands {
       status: 'ok' as const,
       hasHooks: has,
       hooks,
-      mayNeedUpdate: has && !hooks && hasUnrecognizedOrcaYamlKeys(repo.path)
+      mayNeedUpdate: has && !hooks && hasUnrecognizedOCCYamlKeys(repo.path)
     }
   }
 

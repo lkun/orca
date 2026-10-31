@@ -26,7 +26,7 @@ const { ensureRetiredWorktreeNamesBackfilled } = await import('./worktree-name-r
 const { WslTranscriptFsError } = await import('./native-chat/wsl-transcript-fs-gate')
 
 const FIRST = MARINE_CREATURES[0].toLowerCase()
-const DISTRO_ROOT = '\\\\wsl.localhost\\Ubuntu\\home\\ada\\orca\\workspaces'
+const DISTRO_ROOT = '\\\\wsl.localhost\\Ubuntu\\home\\ada\\occ\\workspaces'
 
 describe('retirement discovery on WSL', () => {
   beforeEach(() => {
@@ -63,7 +63,7 @@ describe('retirement discovery on WSL', () => {
 
   it('leaves no listing ungated when the workspace root is on the Windows side', async () => {
     await discoverRetiredWorktreeNames({
-      workspaceRoots: ['C:\\Users\\ada\\orca\\workspaces'],
+      workspaceRoots: ['C:\\Users\\ada\\occ\\workspaces'],
       home: '/nonexistent-home',
       env: {}
     })
@@ -75,14 +75,14 @@ describe('retirement discovery on WSL', () => {
     runWslTranscriptFsTaskMock.mockRejectedValue(
       new WslTranscriptFsError('timeout', 'filesystem access is taking too long')
     )
-    const hostHome = await mkdtemp(join(tmpdir(), 'orca-wsl-host-home-'))
+    const hostHome = await mkdtemp(join(tmpdir(), 'occ-wsl-host-home-'))
     try {
       await mkdir(
         join(
           hostHome,
           '.claude',
           'projects',
-          `--wsl-localhost-ubuntu-home-ada-orca-workspaces-${FIRST}`
+          `--wsl-localhost-ubuntu-home-ada-occ-workspaces-${FIRST}`
         ),
         { recursive: true }
       )
@@ -107,7 +107,7 @@ describe('retirement discovery on WSL', () => {
     // Only the home exists; walking past missing intermediate directories proves the route is up.
     const missing = new Set([
       DISTRO_ROOT,
-      '\\\\wsl.localhost\\Ubuntu\\home\\ada\\orca',
+      '\\\\wsl.localhost\\Ubuntu\\home\\ada\\occ',
       join(distroHome, '.claude', 'projects'),
       join(distroHome, '.claude')
     ])
@@ -153,10 +153,10 @@ describe('retirement discovery on WSL', () => {
 
   it('keeps a deleted WSL workspace name spent, so the next create cannot reuse its cwd', async () => {
     // The distro bucket outlives the deleted workspace and must keep its name retired.
-    const distroHome = await mkdtemp(join(tmpdir(), 'orca-wsl-distro-home-'))
-    const workspaceRoot = await mkdtemp(join(tmpdir(), 'orca-wsl-workspaces-'))
+    const distroHome = await mkdtemp(join(tmpdir(), 'occ-wsl-distro-home-'))
+    const workspaceRoot = await mkdtemp(join(tmpdir(), 'occ-wsl-workspaces-'))
     try {
-      await mkdir(join(distroHome, '.claude', 'projects', `-home-ada-orca-workspaces-${FIRST}`), {
+      await mkdir(join(distroHome, '.claude', 'projects', `-home-ada-occ-workspaces-${FIRST}`), {
         recursive: true
       })
 
@@ -179,9 +179,9 @@ describe('retirement discovery on WSL', () => {
   })
 
   it('reaches distro discovery from the real backfill, not only when called directly', async () => {
-    const distroHome = await mkdtemp(join(tmpdir(), 'orca-wsl-backfill-home-'))
+    const distroHome = await mkdtemp(join(tmpdir(), 'occ-wsl-backfill-home-'))
     try {
-      await mkdir(join(distroHome, '.claude', 'projects', `-home-ada-orca-workspaces-${FIRST}`), {
+      await mkdir(join(distroHome, '.claude', 'projects', `-home-ada-occ-workspaces-${FIRST}`), {
         recursive: true
       })
       getWslHomeAsyncMock.mockResolvedValue('\\\\wsl.localhost\\Ubuntu\\home\\ada')

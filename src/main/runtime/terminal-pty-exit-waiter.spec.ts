@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { createTranscriptPane, TRANSCRIPT_PANE_PTY_ID } from './agent-transcript-pane-test-harness'
 import { readRuntimeFixture } from './agent-transcript-replay-test-harness'
 import { deliverTerminalAgentLaunchPrompt } from './rpc/methods/agent-launch-terminal-prompt'
@@ -16,17 +16,17 @@ export function registerTerminalPtyExitWaiterTests(): void {
     ptysById: Map<string, { connected: boolean; lastExitCode: number | null }>
   }
 
-  function internals(runtime: OrcaRuntimeService): RuntimeInternals {
+  function internals(runtime: OCCRuntimeService): RuntimeInternals {
     return runtime as unknown as RuntimeInternals
   }
 
-  function registerLivePty(runtime: OrcaRuntimeService): void {
+  function registerLivePty(runtime: OCCRuntimeService): void {
     internals(runtime).recordPtyWorktree('pty-1', 'wt-1', { connected: true })
   }
 
   describe('PTY exit subscription', () => {
     it('fires on the backing PTY exit', () => {
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       registerLivePty(runtime)
       const listener = vi.fn()
 
@@ -41,7 +41,7 @@ export function registerTerminalPtyExitWaiterTests(): void {
     })
 
     it('does not retain listeners across subscription churn', () => {
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       registerLivePty(runtime)
       const listener = vi.fn()
 
@@ -55,7 +55,7 @@ export function registerTerminalPtyExitWaiterTests(): void {
     })
 
     it('fires immediately when the PTY already exited', () => {
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       registerLivePty(runtime)
       runtime.onPtyExit('pty-1', 0)
       const listener = vi.fn()
@@ -363,7 +363,7 @@ export function registerTerminalPtyExitWaiterTests(): void {
 
   // Disconnected without an exit code means lost contact, not process exit; false end events exhaust phone retries and lock its composer.
   describe('PTY exit subscription demands proof of exit, not loss of connection', () => {
-    function dropTheConnection(runtime: OrcaRuntimeService): void {
+    function dropTheConnection(runtime: OCCRuntimeService): void {
       const pty = internals(runtime).ptysById.get('pty-1')!
       pty.connected = false
       // Precondition: onPtyExit is the only writer of lastExitCode, and it never ran.
@@ -371,7 +371,7 @@ export function registerTerminalPtyExitWaiterTests(): void {
     }
 
     it('does not fire for a disconnected PTY that never reported an exit code', () => {
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       registerLivePty(runtime)
       dropTheConnection(runtime)
       const listener = vi.fn()
@@ -383,7 +383,7 @@ export function registerTerminalPtyExitWaiterTests(): void {
     })
 
     it('still fires once the host comes back and reports the real exit', () => {
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       registerLivePty(runtime)
       dropTheConnection(runtime)
       const listener = vi.fn()
@@ -398,7 +398,7 @@ export function registerTerminalPtyExitWaiterTests(): void {
     })
 
     it('fires immediately for a disconnected PTY that did report an exit code', () => {
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       registerLivePty(runtime)
       const pty = internals(runtime).ptysById.get('pty-1')!
       pty.connected = false
@@ -413,7 +413,7 @@ export function registerTerminalPtyExitWaiterTests(): void {
 
   const TARGET_LOOKUP_ERROR = new Error('identity_lookup_override')
 
-  class IdentityRuntime extends OrcaRuntimeService {
+  class IdentityRuntime extends OCCRuntimeService {
     readonly identityCalls: [string, number][] = []
 
     override createPreAllocatedTerminalHandle(): string {
@@ -436,13 +436,13 @@ export function registerTerminalPtyExitWaiterTests(): void {
     }
 
     protected override setPtyManagementTitleFromObservedTitle(
-      ...args: Parameters<OrcaRuntimeService['setPtyManagementTitleFromObservedTitle']>
+      ...args: Parameters<OCCRuntimeService['setPtyManagementTitleFromObservedTitle']>
     ): void {
       this.identityCalls.push(['management-title', args.length])
     }
 
     protected override recordPtyWorktree(
-      ...args: Parameters<OrcaRuntimeService['recordPtyWorktree']>
+      ...args: Parameters<OCCRuntimeService['recordPtyWorktree']>
     ) {
       this.identityCalls.push(['record', args.length])
       return super.recordPtyWorktree(...args)

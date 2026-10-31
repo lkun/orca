@@ -4,7 +4,7 @@ import { checkAgentCliVersion } from '../agent-cli-version-probe'
 import { readCodexCliVersion } from '../codex/codex-cli-installation-error'
 
 const { runProcess } = vi.hoisted(() => ({ runProcess: vi.fn() }))
-vi.mock('@orca/process-host', async (original) => ({
+vi.mock('@occ/process-host', async (original) => ({
   ...(await original<object>()),
   runProcess
 }))

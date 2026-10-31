@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { isDefinitiveAbsence } from '../../shared/definitive-filesystem-absence'
 import { dirname, join } from 'node:path'
-import { resolveOrcaManagedCodexHomePath } from './codex-home-paths'
+import { resolveOCCManagedCodexHomePath } from './codex-home-paths'
 import { normalizeCodexProjectPathForLookup } from './config-toml-trust'
 
 // Cache verified grants per home to avoid repeating launch-blocking RPCs.
@@ -30,7 +30,7 @@ type CodexTrustGrantLedgerFile = {
 
 // Reading grants must not create OCC's managed home.
 export function getCodexTrustGrantLedgerPath(): string {
-  return join(dirname(resolveOrcaManagedCodexHomePath()), 'trust-grant-ledger.json')
+  return join(dirname(resolveOCCManagedCodexHomePath()), 'trust-grant-ledger.json')
 }
 
 export function getCodexTrustGrantHomeKey(runtimeHomePath: string): string {

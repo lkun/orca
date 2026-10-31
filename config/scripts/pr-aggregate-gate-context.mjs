@@ -8,7 +8,7 @@ export const aggregateJob = aggregateWorkflow.jobs.verify
 export const aggregateShell = aggregateJob.steps.find(
   (step) => step.name === 'Require successful checks'
 )
-export const aggregateSelectors = PR_CHECK_JOBS.filter((job) => job !== 'orcad_browser')
+export const aggregateSelectors = PR_CHECK_JOBS.filter((job) => job !== 'occd_browser')
 export const aggregateRequiredJobs = aggregateJob.needs.filter((job) => job !== 'code_paths')
 export const aggregateVariable = (job) => job.replaceAll('-', '_').toUpperCase()
 

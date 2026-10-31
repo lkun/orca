@@ -23,13 +23,13 @@ function encodeUtf8(value: string): string {
 
 function buildPidRelayScript(command: string, args: string[], pidFilePath: string): string {
   const decode =
-    'function Read-OrcaValue([string]$Value) { [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($Value)) }'
-  const encodedArgs = args.map((arg) => `(Read-OrcaValue '${encodeUtf8(arg)}')`).join(',')
+    'function Read-OCCValue([string]$Value) { [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($Value)) }'
+  const encodedArgs = args.map((arg) => `(Read-OCCValue '${encodeUtf8(arg)}')`).join(',')
   return [
     decode,
-    `$Command = Read-OrcaValue '${encodeUtf8(command)}'`,
+    `$Command = Read-OCCValue '${encodeUtf8(command)}'`,
     `$Arguments = @(${encodedArgs})`,
-    `[IO.File]::WriteAllText((Read-OrcaValue '${encodeUtf8(pidFilePath)}'), [string]$PID)`,
+    `[IO.File]::WriteAllText((Read-OCCValue '${encodeUtf8(pidFilePath)}'), [string]$PID)`,
     '& $Command @Arguments',
     'if ($null -eq $LASTEXITCODE) { exit 0 }',
     'exit $LASTEXITCODE'
@@ -69,7 +69,7 @@ export function buildWindowsHostInteractiveLoginSpawn(
   args: string[]
 ): WindowsHostInteractiveLoginSpawn {
   const { spawnCmd, spawnArgs } = getSpawnArgsForWindows(command, args)
-  const pidFilePath = join(tmpdir(), `orca-interactive-login-${randomUUID()}.pid`)
+  const pidFilePath = join(tmpdir(), `occ-interactive-login-${randomUUID()}.pid`)
   const powershell = win32.join(
     process.env.SystemRoot ?? 'C:\\Windows',
     'System32',

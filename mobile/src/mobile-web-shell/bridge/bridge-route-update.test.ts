@@ -14,7 +14,7 @@ function sessionRoute(paneKey?: string): BridgeInitRoute {
 async function openedOnTheSession(): Promise<ReturnType<typeof createFakeBridgePortPair>> {
   const pair = createFakeBridgePortPair({
     route: sessionRoute(),
-    storage: { 'orca:hostDockWidth': '320' }
+    storage: { 'occ:hostDockWidth': '320' }
   })
   await pair.flush()
   return pair

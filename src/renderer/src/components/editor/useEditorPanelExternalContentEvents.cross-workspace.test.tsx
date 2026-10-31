@@ -8,7 +8,7 @@ import type { AppState } from '@/store'
 import type { OpenFile } from '@/store/slices/editor'
 import { makeWorktree } from '@/store/slices/worktrees-slice-test-fixtures'
 import { createEditorStore } from './editor-autosave-controller-test-fixture'
-import { ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT } from './editor-autosave'
+import { OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT } from './editor-autosave'
 import type { DiffContent, FileContent } from './editor-panel-content-types'
 import { useEditorPanelExternalContentEvents } from './useEditorPanelExternalContentEvents'
 
@@ -93,7 +93,7 @@ function openInTwoWorkspaces(): { a: OpenFile; b: OpenFile } {
 function discardInWorkspaceA(): void {
   act(() => {
     window.dispatchEvent(
-      new CustomEvent(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, {
+      new CustomEvent(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, {
         detail: { worktreeId: 'wt-1', worktreePath: '/repo', relativePath: 'notes.md' }
       })
     )

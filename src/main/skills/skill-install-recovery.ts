@@ -59,9 +59,9 @@ function isInstallJournal(value: unknown, canonicalPath: string): value is Skill
     journal.operation === 'install' &&
     typeof journal.phase === 'string' &&
     journal.canonicalPath === canonicalPath &&
-    ownedPath(journal.extractionPath, '.orca-skill-extract-') &&
-    ownedPath(journal.stagingPath, `.${name}.orca-staging-`) &&
-    ownedPath(journal.backupPath, `.${name}.orca-backup-`) &&
+    ownedPath(journal.extractionPath, '.occ-skill-extract-') &&
+    ownedPath(journal.stagingPath, `.${name}.occ-staging-`) &&
+    ownedPath(journal.backupPath, `.${name}.occ-backup-`) &&
     journal.extractionPath !== journal.stagingPath &&
     journal.extractionPath !== journal.backupPath &&
     journal.stagingPath !== journal.backupPath &&

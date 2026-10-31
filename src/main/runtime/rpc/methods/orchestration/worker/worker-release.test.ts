@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { createOrchestrationWorkerReleaseHarness } from './worker-release.test-support'
 
 describe('orchestration worker release', () => {
@@ -220,7 +220,7 @@ describe('orchestration worker release', () => {
   it('lets an explicit retain cancel a release while output capture is pending', async () => {
     h.setup()
     const { dispatchId } = await h.startSettledWorker()
-    const pendingRead = h.deferred<Awaited<ReturnType<OrcaRuntimeService['readTerminal']>>>()
+    const pendingRead = h.deferred<Awaited<ReturnType<OCCRuntimeService['readTerminal']>>>()
     vi.mocked(h.runtime.readTerminal).mockReturnValue(pendingRead.promise)
 
     const release = h.call('orchestration.workerRelease', { dispatch: dispatchId })
@@ -244,7 +244,7 @@ describe('orchestration worker release', () => {
   it('does not claim retention succeeded after terminal close was committed', async () => {
     h.setup()
     const { dispatchId } = await h.startSettledWorker()
-    const pendingClose = h.deferred<Awaited<ReturnType<OrcaRuntimeService['closeTerminal']>>>()
+    const pendingClose = h.deferred<Awaited<ReturnType<OCCRuntimeService['closeTerminal']>>>()
     vi.mocked(h.runtime.closeTerminal).mockReturnValue(pendingClose.promise)
 
     const release = h.call('orchestration.workerRelease', { dispatch: dispatchId })
@@ -325,7 +325,7 @@ describe('orchestration worker release', () => {
   it('re-proves process identity after archive capture before closing', async () => {
     h.setup()
     const { dispatchId } = await h.startSettledWorker()
-    const pendingRead = h.deferred<Awaited<ReturnType<OrcaRuntimeService['readTerminal']>>>()
+    const pendingRead = h.deferred<Awaited<ReturnType<OCCRuntimeService['readTerminal']>>>()
     vi.mocked(h.runtime.readTerminal).mockReturnValue(pendingRead.promise)
 
     const release = h.call('orchestration.workerRelease', { dispatch: dispatchId })

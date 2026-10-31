@@ -85,7 +85,7 @@ export function usePluginPageNavigation(onBack?: () => void): PluginPageNavigati
 /** The version plugins are gated against, for "Needs OCC X" checks; null until known. Why not
  *  the raw app version: main gates on pluginHostVersion, and a development build's package version
  *  lags the fields it already reads, so the two must agree. */
-export function useOrcaVersion(): string | null {
+export function useOCCVersion(): string | null {
   const [version, setVersion] = useState<string | null>(null)
   useEffect(() => {
     let stale = false

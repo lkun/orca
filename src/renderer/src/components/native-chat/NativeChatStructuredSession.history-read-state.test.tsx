@@ -172,7 +172,7 @@ afterEach(() => {
 
   /** Fail a loaded chat with an approval, goal, queued draft and background task still present. */
   function renderLoadedChatThenFailedRead(
-    reason: 'journalCorrupt' | 'journalUnavailable' | 'journalWrittenByNewerOrca'
+    reason: 'journalCorrupt' | 'journalUnavailable' | 'journalWrittenByNewerOCC'
   ): void {
     mocks.status = 'error'
     mocks.readRefusal = { code: 'agent_session_journal_unreadable', details: { reason } }
@@ -213,7 +213,7 @@ afterEach(() => {
 
   it.each([
     ['journalCorrupt', 'Unable to load this chat.'],
-    ['journalWrittenByNewerOrca', 'This chat was saved by a newer OCC. Update OCC to open it.']
+    ['journalWrittenByNewerOCC', 'This chat was saved by a newer OCC. Update OCC to open it.']
   ] as const)('a %s read after the transcript loaded leaves only its words', (reason, words) => {
     renderLoadedChatThenFailedRead(reason)
 

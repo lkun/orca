@@ -53,7 +53,7 @@ describe('window-bound region decisions', () => {
   it('compares against the actual incumbent despite a previous US placement cache', async () => {
     const { instance, path, probe } = resolver(50, 100)
     writeFileSync(
-      join(path, 'orca-relay-region-preference.json'),
+      join(path, 'occ-relay-region-preference.json'),
       JSON.stringify({ v: 2, directorUrl: DIRECTOR, region: 'us-central1', expiresAt: 999_999 })
     )
     expect(await instance.measureDecision(window)).toEqual({
@@ -93,7 +93,7 @@ describe('window-bound region decisions', () => {
   it('invalidates legacy placement caches on upgrade', async () => {
     const { instance, path, probe } = resolver(40, 100)
     writeFileSync(
-      join(path, 'orca-relay-region-preference.json'),
+      join(path, 'occ-relay-region-preference.json'),
       JSON.stringify({ v: 1, directorUrl: DIRECTOR, region: 'asia-east2', expiresAt: 999_999 })
     )
     expect(await instance.resolve()).toBe('us-central1')

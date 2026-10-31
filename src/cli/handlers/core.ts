@@ -2,8 +2,8 @@ import { spawn } from 'node:child_process'
 import { resolve } from 'node:path'
 import type { CommandHandler } from '../dispatch'
 import { formatCliStatus, formatStatus, printResult } from '../format'
-import { RuntimeClientError, serveOrcaApp } from '../runtime-client'
-import { stripElectronRunAsNode } from '../runtime/orca-app-executable'
+import { RuntimeClientError, serveOCCApp } from '../runtime-client'
+import { stripElectronRunAsNode } from '../runtime/occ-app-executable'
 import { resolveCliStatusCaller } from '../runtime/status-caller'
 import { getServeSuperviseValidationError } from '../runtime/serve-supervised-service'
 import { getOptionalServePort } from '../runtime/serve-port-flag'
@@ -53,7 +53,7 @@ export const CORE_HANDLERS: Record<string, CommandHandler> = {
         'Claude Agent Teams native panes are not supported on Windows.'
       )
     }
-    const paneKey = process.env.ORCA_PANE_KEY
+    const paneKey = process.env.OCC_PANE_KEY
     if (!paneKey) {
       throw new RuntimeClientError(
         'invalid_environment',
@@ -80,7 +80,7 @@ export const CORE_HANDLERS: Record<string, CommandHandler> = {
     )
   },
   open: async ({ client, json }) => {
-    const result = await client.openOrca()
+    const result = await client.openOCC()
     printResult(result, json, formatCliStatus)
   },
   serve: async ({ flags, json }) => {
@@ -93,15 +93,15 @@ export const CORE_HANDLERS: Record<string, CommandHandler> = {
           '--data-root expects a directory. Usage: occ serve --reclaim-stale-lock [--data-root <dir>] [--yes] [--json]'
         )
       }
-      // Why lazy: only this mode needs orcad's lock code, and every other command skips loading it.
-      const { printOrcadStaleLockReclaimResult, reclaimStaleOrcadInstanceLock } =
-        await import('../../main/orcad/orcad-stale-lock-reclaim.js')
-      const result = await reclaimStaleOrcadInstanceLock(
+      // Why lazy: only this mode needs occd's lock code, and every other command skips loading it.
+      const { printOCCdStaleLockReclaimResult, reclaimStaleOCCdInstanceLock } =
+        await import('../../main/occd/occd-stale-lock-reclaim.js')
+      const result = await reclaimStaleOCCdInstanceLock(
         typeof dataRoot === 'string' ? resolve(dataRoot) : resolveLaunchUserDataPath(),
         // This CLI's own binary is no command to give a user; `occ serve` is.
         { yes: flags.get('yes') === true, hintRuntime: null }
       )
-      printOrcadStaleLockReclaimResult(result, json)
+      printOCCdStaleLockReclaimResult(result, json)
       process.exitCode = result.exitCode
       return
     }
@@ -129,7 +129,7 @@ export const CORE_HANDLERS: Record<string, CommandHandler> = {
     }
     const port = getOptionalServePort(flags)
     const pairingAddressValue = flags.get('pairing-address')
-    const exitCode = await serveOrcaApp({
+    const exitCode = await serveOCCApp({
       json,
       port,
       pairingAddress: typeof pairingAddressValue === 'string' ? pairingAddressValue : null,

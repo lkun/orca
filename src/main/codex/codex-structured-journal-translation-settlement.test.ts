@@ -505,7 +505,7 @@ describe('codex journal translation', () => {
         mutations: [
           expect.objectContaining({
             kind: 'item',
-            identity: expect.objectContaining({ provider: 'orca' }),
+            identity: expect.objectContaining({ provider: 'occ' }),
             body: expect.objectContaining({
               kind: 'tool-call',
               state: 'failed',
@@ -590,9 +590,9 @@ describe('codex journal translation', () => {
     })
 
     const approval = tap.rows.at(-1)
-    expect(approval?.key).toBe('orca:codex-prompt%3Athread-abc%3Aitem-2')
+    expect(approval?.key).toBe('occ:codex-prompt%3Athread-abc%3Aitem-2')
     expect(approval?.body).toMatchObject({ kind: 'approval', detail: 'rm -rf build' })
-    expect(tap.bound).toEqual([['orca:codex-prompt%3Athread-abc%3Aitem-2', THREAD_ID, 'item-2']])
+    expect(tap.bound).toEqual([['occ:codex-prompt%3Athread-abc%3Aitem-2', THREAD_ID, 'item-2']])
   })
 
   it('journals one row per approval when a tool item asks twice', () => {
@@ -620,8 +620,8 @@ describe('codex journal translation', () => {
 
     const approvals = tap.rows.slice(-2)
     expect(approvals.map((row) => row.key)).toEqual([
-      'orca:codex-prompt%3Athread-abc%3Aapproval-a',
-      'orca:codex-prompt%3Athread-abc%3Aapproval-b'
+      'occ:codex-prompt%3Athread-abc%3Aapproval-a',
+      'occ:codex-prompt%3Athread-abc%3Aapproval-b'
     ])
     expect(approvals.every((row) => (row.body as { detail?: string }).detail === 'ls')).toBe(true)
     expect(tap.bound.map(([, , promptKey]) => promptKey)).toEqual(['approval-a', 'approval-b'])
@@ -647,8 +647,8 @@ describe('codex journal translation', () => {
     })
 
     expect(tap.rows.map((row) => row.key)).toEqual([
-      'orca:codex-prompt%3Athread-abc%3Aitem-3%3Aq1',
-      'orca:codex-prompt%3Athread-abc%3Aitem-3%3Aq2'
+      'occ:codex-prompt%3Athread-abc%3Aitem-3%3Aq1',
+      'occ:codex-prompt%3Athread-abc%3Aitem-3%3Aq2'
     ])
     expect(tap.bound.map(([, , promptKey]) => promptKey)).toEqual(['item-3', 'item-3'])
   })
@@ -673,7 +673,7 @@ describe('codex journal translation', () => {
 
     expect(tap.rows.map((row) => row.key)).toEqual([
       'codex:thread-abc:turn-1:0',
-      'orca:codex-item%3Athread-abc%3Aitem-1',
+      'occ:codex-item%3Athread-abc%3Aitem-1',
       'codex:thread-abc:turn-2:0'
     ])
   })
@@ -763,7 +763,7 @@ describe('codex journal translation', () => {
     translator.flush()
 
     expect(new Set(tap.rows.map((row) => row.key))).toEqual(
-      new Set(['orca:codex-item%3Athread-abc%3Aexec-1'])
+      new Set(['occ:codex-item%3Athread-abc%3Aexec-1'])
     )
     expect(tap.rows.every((row) => row.body.kind === 'tool-call')).toBe(true)
     expect(tap.rows.length).toBeLessThan(40)
@@ -794,13 +794,13 @@ describe('codex journal translation', () => {
     window.fire()
 
     const reduced = new Map(tap.rows.map((row) => [row.key, row.body]))
-    expect(reduced.get('orca:codex-item%3Athread-abc%3Ar-1')).toEqual({
+    expect(reduced.get('occ:codex-item%3Athread-abc%3Ar-1')).toEqual({
       kind: 'message',
       role: 'reasoning',
       blocks: [{ type: 'text', text: 'thinking' }],
       state: 'running'
     })
-    expect(reduced.get('orca:codex-item%3Athread-abc%3Apatch-1')).toMatchObject({
+    expect(reduced.get('occ:codex-item%3Athread-abc%3Apatch-1')).toMatchObject({
       kind: 'diff',
       path: 'src/app.ts',
       patch: { head: '@@ -1 +1 @@' }

@@ -15,7 +15,7 @@ const electronMocks = vi.hoisted(() => {
 })
 vi.mock('electron', () => electronMocks)
 
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { FLOATING_TERMINAL_WORKTREE_ID } from '../../shared/constants'
 import type { Repo } from '../../shared/repo-types'
 import type { Project } from '../../shared/project-types'
@@ -25,7 +25,7 @@ import { partialRuntimeStore } from './runtime-store-partial-fixture'
 const originalPlatform = process.platform
 
 function makeRuntime(repos: Repo[], projects: Project[] = []) {
-  const runtime = new OrcaRuntimeService(
+  const runtime = new OCCRuntimeService(
     partialRuntimeStore({
       getRepo: (id: string) => repos.find((repo) => repo.id === id),
       getRepos: () => repos,
@@ -43,7 +43,7 @@ function worktree(fields: Partial<ResolvedWorktree>): ResolvedWorktree {
   return fields as ResolvedWorktree
 }
 
-describe('OrcaRuntimeService.resolveAgentDetectionHost', () => {
+describe('OCCRuntimeService.resolveAgentDetectionHost', () => {
   beforeEach(() => {
     Object.defineProperty(process, 'platform', { value: 'win32' })
   })
@@ -95,7 +95,7 @@ describe('OrcaRuntimeService.resolveAgentDetectionHost', () => {
   })
 
   it('refuses a repository target without a store while retaining the untargeted default', async () => {
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     await expect(runtime.resolveAgentDetectionHost(undefined, local.id)).rejects.toThrow(
       'repo_not_found'
     )

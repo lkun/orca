@@ -12,7 +12,7 @@ export function migratePortugueseUiLanguageOnLoad(
   return {
     uiLanguage:
       settings?.uiLanguagePortugueseMigrationApplied !== true &&
-      settings?.uiLanguage === 'plugin:stablyai.orca-portuguese/pt-BR'
+      settings?.uiLanguage === 'plugin:stablyai.occ-portuguese/pt-BR'
         ? 'pt'
         : normalizeUiLanguage(settings?.uiLanguage),
     uiLanguagePortugueseMigrationApplied: true

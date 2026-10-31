@@ -36,7 +36,7 @@ const record = {
 describe('WSL host environment store', () => {
   let userDataPath: string
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-host-store-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-host-store-'))
     vi.spyOn(console, 'warn').mockImplementation(() => {})
   })
   afterEach(() => {
@@ -56,7 +56,7 @@ describe('WSL host environment store', () => {
     expect(environment).toMatchObject({
       id: 'wsl:ubuntu',
       name: 'Ubuntu (WSL)',
-      orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
+      occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
     })
     expect(environment.connectionDependency).toBeUndefined()
     expect(findWslHostDeployment(userDataPath, 'wsl:ubuntu')?.createdAt).toBe(100)
@@ -129,7 +129,7 @@ describe('WSL host environment store', () => {
     })
     expect(refreshed.pairingChanged).toBe(true)
     expect(findWslHostDeployment(userDataPath, 'wsl:ubuntu')?.pairingPublicKeyB64).toBe(rotatedKey)
-    expect(listEnvironments(userDataPath)[0]?.orcadDeployment).toMatchObject({ kind: 'wsl' })
+    expect(listEnvironments(userDataPath)[0]?.occdDeployment).toMatchObject({ kind: 'wsl' })
   })
 
   it('writes nothing when a refreshed pairing does not point at the bridge', () => {
@@ -149,7 +149,7 @@ describe('WSL host environment store', () => {
       })
     ).toThrow(/does not point at its bridge/)
     expect(findWslHostDeployment(userDataPath, 'wsl:ubuntu')).toEqual(before)
-    expect(listEnvironments(userDataPath)[0]?.orcadDeployment).toMatchObject({ localPort: 42000 })
+    expect(listEnvironments(userDataPath)[0]?.occdDeployment).toMatchObject({ localPort: 42000 })
   })
 
   it('stays a WSL host if a key rotation is interrupted between its two writes', () => {
@@ -170,7 +170,7 @@ describe('WSL host environment store', () => {
       pairingPublicKeyB64: Buffer.alloc(32, 9).toString('base64'),
       previousPairingPublicKeyB64: publicKeyB64
     })
-    expect(listEnvironments(userDataPath)[0]?.orcadDeployment).toMatchObject({ kind: 'wsl' })
+    expect(listEnvironments(userDataPath)[0]?.occdDeployment).toMatchObject({ kind: 'wsl' })
   })
 
   it('heals a crash between saving a moved bridge and its pairing, keeping the saved pairing', () => {
@@ -188,11 +188,11 @@ describe('WSL host environment store', () => {
     // refreshWslHostPairing's record write landed; its pairing write never did.
     writeWslHostDeployment(userDataPath, 'wsl:ubuntu', { ...saved, localPort: 42001 })
     const [crashed] = listEnvironments(userDataPath)
-    expect(crashed?.orcadDeployment).toBeUndefined()
+    expect(crashed?.occdDeployment).toBeUndefined()
 
     expect(reconcileWslHostBridgePorts(userDataPath)).toEqual(['wsl:ubuntu'])
     const [healed] = listEnvironments(userDataPath)
-    expect(healed?.orcadDeployment).toMatchObject({ kind: 'wsl', localPort: 42000 })
+    expect(healed?.occdDeployment).toMatchObject({ kind: 'wsl', localPort: 42000 })
     expect(healed && getPreferredPairingOffer(healed)).toEqual(
       crashed && getPreferredPairingOffer(crashed)
     )
@@ -204,7 +204,7 @@ describe('WSL host environment store', () => {
       localPort: 42002,
       remotePort: 6768
     })
-    expect(listEnvironments(userDataPath)[0]?.orcadDeployment).toMatchObject({ localPort: 42002 })
+    expect(listEnvironments(userDataPath)[0]?.occdDeployment).toMatchObject({ localPort: 42002 })
   })
 
   it('leaves a record written for a different pairing, or with no server, alone', () => {
@@ -243,8 +243,8 @@ describe('WSL host environment store', () => {
     expect(findWslHostDeployment(userDataPath, 'wsl:ubuntu')).toBeNull()
   })
 
-  // A golden image with a baked-in orcad key: each distro is its own host, with its own grant.
-  it('keeps two distros that carry the same orcad key as two hosts', () => {
+  // A golden image with a baked-in occd key: each distro is its own host, with its own grant.
+  it('keeps two distros that carry the same occd key as two hosts', () => {
     addWslHostEnvironment(userDataPath, {
       id: 'wsl:ubuntu',
       name: 'Ubuntu (WSL)',

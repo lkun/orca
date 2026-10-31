@@ -55,7 +55,7 @@ describe('the editor document mounted in the page', () => {
   it('injects one sheet for the page, held entirely under the host class', () => {
     mount()
     mount()
-    const sheets = document.querySelectorAll('#orca-rich-markdown-document-style')
+    const sheets = document.querySelectorAll('#occ-rich-markdown-document-style')
     expect(sheets).toHaveLength(1)
     const text = sheets[0]!.textContent ?? ''
     const selectors = [...text.matchAll(/(?:^|\})\s*([^{}]+)\{/g)].flatMap((match) =>

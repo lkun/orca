@@ -50,7 +50,7 @@ describe('skill discovery for a stopped WSL distro (E9)', () => {
   let hostRepo = ''
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-skill-wsl-stopped-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-skill-wsl-stopped-'))
     mocks.wslRepoRoot = join(root, 'wsl-repo')
     hostRepo = join(root, 'host-repo')
     for (const repoPath of [mocks.wslRepoRoot, hostRepo]) {

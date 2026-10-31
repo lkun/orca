@@ -6,8 +6,8 @@ import { execFileSync } from 'node:child_process'
 import { mkdirSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import { makeTerminalScrollbackSnapshotRef } from '../../../src/main/terminal-scrollback-snapshots'
-import { DEFAULT_LOCAL_ORCA_PROFILE_ID } from '../../../src/shared/orca-profiles'
-import { ORCAD_MIGRATION_MANIFEST_VERSION } from '../../../src/shared/orcad-migration/orcad-migration-manifest-validation'
+import { DEFAULT_LOCAL_OCC_PROFILE_ID } from '../../../src/shared/occ-profiles'
+import { OCCD_MIGRATION_MANIFEST_VERSION } from '../../../src/shared/occd-migration/occd-migration-manifest-validation'
 import { mutateStoppedProfileState } from './persisted-profile-state'
 
 export const MOVED_TAB = 'moved-tab-0001'
@@ -188,7 +188,7 @@ export function seedImportedMovedTab(
   } = {}
 ): void {
   const ref = makeTerminalScrollbackSnapshotRef(MOVED_TAB, MOVED_LEAF)
-  const roots = [userDataDir, path.join(userDataDir, 'profiles', DEFAULT_LOCAL_ORCA_PROFILE_ID)]
+  const roots = [userDataDir, path.join(userDataDir, 'profiles', DEFAULT_LOCAL_OCC_PROFILE_ID)]
   for (const root of roots) {
     mkdirSync(path.join(root, 'terminal-scrollback'), { recursive: true })
     writeFileSync(path.join(root, 'terminal-scrollback', `${ref}.bin`), history)
@@ -200,9 +200,9 @@ export function seedImportedMovedTab(
     Reflect.set(session, 'activeWorktreeId', null)
     if (options.importedByWslMove !== false) {
       // The receipt a committed WSL move leaves: it is what marks these panes as moved here.
-      state.orcadMigrationImportReceipts = [
+      state.occdMigrationImportReceipts = [
         {
-          version: ORCAD_MIGRATION_MANIFEST_VERSION,
+          version: OCCD_MIGRATION_MANIFEST_VERSION,
           migrationId: 'moved-history-move',
           manifestSha256: '0'.repeat(64),
           source: {

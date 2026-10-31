@@ -1,5 +1,5 @@
 import type { MessageType, OrchestrationDb } from '../../../../orchestration/db'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import { formatMessageBanner } from '../../../../orchestration/formatter'
 import { exposeMessages } from './mailbox-message-receipt'
@@ -13,7 +13,7 @@ type CheckParamsInput = z.infer<typeof CheckParams>
 
 export async function checkDirectMailbox(args: {
   params: CheckParamsInput
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   handle: string
   typeFilter: MessageType[] | undefined

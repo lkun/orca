@@ -5,7 +5,7 @@ import type {
   LegacyPrincipalRole
 } from '../orchestration/types'
 import { OrchestrationError } from '../orchestration/orchestration-error'
-import type { OrcaRuntimeService, OrchestrationCompatibilityCallerAuthority } from '../orca-runtime'
+import type { OCCRuntimeService, OrchestrationCompatibilityCallerAuthority } from '../occ-runtime'
 import { LEGACY_CONTRACT_VERSION } from '../orchestration/db'
 import type { RpcRequest } from './core'
 import {
@@ -23,7 +23,7 @@ export type LegacyPrincipalCandidate = {
 }
 
 export function resolveAttestedLegacyPrincipal(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   evidence?: OrchestrationCompatibilityEvidence
   candidate: LegacyPrincipalCandidate
   authority?: OrchestrationCompatibilityCallerAuthority
@@ -42,7 +42,7 @@ export function resolveAttestedLegacyPrincipal(args: {
 }
 
 export function verifyAttestedLegacyCandidate(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   evidence?: OrchestrationCompatibilityEvidence
   candidate: LegacyPrincipalCandidate
 }) {
@@ -69,7 +69,7 @@ export function verifyAttestedLegacyCandidate(args: {
 }
 
 export class LegacyCompatibilityAuthority {
-  constructor(private readonly runtime: OrcaRuntimeService) {}
+  constructor(private readonly runtime: OCCRuntimeService) {}
 
   resolveWorkerDispatch(
     request: RpcRequest,
@@ -203,7 +203,7 @@ export class LegacyCompatibilityAuthority {
     required = true
   ): LegacyCompatibilityPrincipalRow | undefined {
     const db = this.runtime.getOrchestrationDb()
-    const candidate = db.resolveLegacyCoordinatorCandidate({
+    const candidate = db.resolveLegacyCoordinatoccndidate({
       runId,
       terminalHandle: request.orchestrationCompatibilityEvidence?.terminalHandle,
       paneKey: request.orchestrationCompatibilityEvidence?.paneKey

@@ -13,7 +13,7 @@ function git(cwd: string, args: string[]): string {
 }
 
 async function createRepoWithTwoDirs(): Promise<string> {
-  const root = await mkdtemp(path.join(tmpdir(), 'orca-sparse-checkout-'))
+  const root = await mkdtemp(path.join(tmpdir(), 'occ-sparse-checkout-'))
   tempRoots.push(root)
   const repoPath = path.join(root, 'repo')
 

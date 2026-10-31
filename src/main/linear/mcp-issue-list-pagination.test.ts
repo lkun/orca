@@ -86,7 +86,7 @@ describe('list-issues pagination contract', () => {
     expect(result.issues).toHaveLength(1)
     expect(result.truncated).toBe(true)
     expect(result.meta.hasMore).toBe(true)
-    expect(result.meta.nextCursor).toMatch(/^orca\.linear\.v1\./)
+    expect(result.meta.nextCursor).toMatch(/^occ\.linear\.v1\./)
     expect(result.issues[0]?.priorityLabel).toBe('urgent')
   })
 
@@ -229,7 +229,7 @@ describe('list-issues pagination contract', () => {
       expect(result.meta.hasMore).toBe(true)
       expect(rawRequest).toHaveBeenCalledTimes(200)
       expect(result.issues).toHaveLength(200)
-      expect(result.meta.nextCursor).toMatch(/^orca\.linear\.v1\./)
+      expect(result.meta.nextCursor).toMatch(/^occ\.linear\.v1\./)
     } finally {
       vi.useRealTimers()
     }
@@ -269,7 +269,7 @@ describe('list-issues pagination contract', () => {
 
       expect(issued).toBe(2)
       expect(result.truncated).toBe(true)
-      expect(result.meta.nextCursor).toMatch(/^orca\.linear\.v1\./)
+      expect(result.meta.nextCursor).toMatch(/^occ\.linear\.v1\./)
     } finally {
       vi.useRealTimers()
     }

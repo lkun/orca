@@ -61,7 +61,7 @@ describe('readHookTrustEntries', () => {
         'trusted_hash = "sha256:USER"',
         '',
         `[hooks.state.'${key}']`,
-        'trusted_hash = "sha256:ORCA"',
+        'trusted_hash = "sha256:OCC"',
         ''
       ].join('\n'),
       'utf-8'
@@ -86,7 +86,7 @@ describe('readHookTrustEntries', () => {
         "trusted_hash = 'sha256:USER'",
         '',
         `[hooks.state.'${key}']`,
-        'trusted_hash = "sha256:ORCA"',
+        'trusted_hash = "sha256:OCC"',
         ''
       ].join('\n'),
       'utf-8'
@@ -131,13 +131,13 @@ describe('readHookTrustEntries', () => {
     const key = '/x/hooks.json:stop:0:0'
     const content = [
       `\uFEFF[hooks.state."${key}"]`,
-      'trusted_hash = "sha256:ORCA"',
+      'trusted_hash = "sha256:OCC"',
       '[other]',
       'value = true',
       ''
     ].join('\n')
 
-    expect(readHookTrustEntriesFromContent(content).get(key)?.trustedHash).toBe('sha256:ORCA')
+    expect(readHookTrustEntriesFromContent(content).get(key)?.trustedHash).toBe('sha256:OCC')
     expect(removeHookTrustEntriesFromContent(content, [key])).toBe('[other]\nvalue = true\n')
   })
 
@@ -205,8 +205,8 @@ describe('readHookTrustEntries', () => {
   })
 
   it('supports case-insensitive lookups for Windows hook trust keys read from config', () => {
-    const rawKey = 'C:\\Users\\rod\\AppData\\Roaming\\orca\\hooks.json:session_start:0:0'
-    const lookupKey = 'C:/Users/Rod/AppData/Roaming/orca/hooks.json:session_start:0:0'
+    const rawKey = 'C:\\Users\\rod\\AppData\\Roaming\\occ\\hooks.json:session_start:0:0'
+    const lookupKey = 'C:/Users/Rod/AppData/Roaming/occ/hooks.json:session_start:0:0'
     const original = [
       `[hooks.state.'${rawKey}']`,
       'enabled = true',

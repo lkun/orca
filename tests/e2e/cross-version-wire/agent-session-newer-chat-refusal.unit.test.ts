@@ -16,7 +16,7 @@ import {
   insertTestJournalRowJson,
   liveTestJournalRows,
   openTestJournalHostDatabase,
-  SAVED_BY_NEWER_ORCA
+  SAVED_BY_NEWER_OCC
 } from '../../../src/main/native-chat/agent-session-journal/journal-host-database-test-support'
 import { journalOpenRefusal } from '../../../src/main/native-chat/agent-session-journal/journal-open-failure'
 import {
@@ -61,7 +61,7 @@ let directory: string
 const journals = createTrackedJournalOpener()
 
 beforeAll(() => {
-  directory = mkdtempSync(join(tmpdir(), 'orca-newer-chat-xv-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-newer-chat-xv-'))
 })
 
 afterAll(async () => {
@@ -131,7 +131,7 @@ async function newerChatRefusal(): Promise<AgentSessionRefusalReference> {
     () => null,
     (error: unknown) => error
   )
-  expect(failure).toMatchObject(SAVED_BY_NEWER_ORCA)
+  expect(failure).toMatchObject(SAVED_BY_NEWER_OCC)
   await journals.closeAll()
   return journalOpenRefusal(failure)
 }
@@ -175,7 +175,7 @@ describe('a chat a newer OCC saved, across versions', () => {
     'old client against new host: the newest release words it as its own, never as damage',
     async () => {
       rmSync(directory, { recursive: true, force: true })
-      directory = mkdtempSync(join(tmpdir(), 'orca-newer-chat-xv-'))
+      directory = mkdtempSync(join(tmpdir(), 'occ-newer-chat-xv-'))
       const refusal = await newerChatRefusal()
       const released = await releasedReader(resolveBaselineReleaseRef())
       const damage = { code: refusal.code, details: { reason: 'journalCorrupt' } }
@@ -194,7 +194,7 @@ describe('a chat a newer OCC saved, across versions', () => {
     "this build keeps a newer build's %s and stays writable; a build before it deletes it",
     async (_value, body) => {
       rmSync(directory, { recursive: true, force: true })
-      directory = mkdtempSync(join(tmpdir(), 'orca-newer-chat-xv-'))
+      directory = mkdtempSync(join(tmpdir(), 'occ-newer-chat-xv-'))
       const { rows, newer } = await journalWithNewerRow({
         kind: 'item',
         itemId: 'codex:thread-1:turn-1:1',

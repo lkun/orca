@@ -258,7 +258,7 @@ describe('createExternalWatchEventHandler tombstone coalescing', () => {
     vi.stubGlobal('window', { api: { fs: { readFile } } })
     const { handleFsChanged, dispose } = createExternalWatchEventHandler(findTarget)
 
-    recordSelfWrite('/repo/notes.md', 'orca save')
+    recordSelfWrite('/repo/notes.md', 'occ save')
     handleFsChanged(payload([{ kind: 'update', absolutePath: '/repo/notes.md' }]))
     await vi.advanceTimersByTimeAsync(100)
 
@@ -278,11 +278,11 @@ describe('createExternalWatchEventHandler tombstone coalescing', () => {
       setExternalMutation
     })
     vi.mocked(getOpenFilesForExternalFileChange).mockReturnValue([fileNotes] as never)
-    const readFile = vi.fn().mockResolvedValue({ content: 'orca save', isBinary: false })
+    const readFile = vi.fn().mockResolvedValue({ content: 'occ save', isBinary: false })
     vi.stubGlobal('window', { api: { fs: { readFile } } })
     const { handleFsChanged, dispose } = createExternalWatchEventHandler(findTarget)
 
-    recordSelfWrite('/repo/notes.md', 'orca save')
+    recordSelfWrite('/repo/notes.md', 'occ save')
     handleFsChanged(payload([{ kind: 'update', absolutePath: '/repo/notes.md' }]))
     await vi.advanceTimersByTimeAsync(100)
 
@@ -494,11 +494,11 @@ describe('createExternalWatchEventHandler tombstone coalescing', () => {
       setExternalMutation
     })
     vi.mocked(getOpenFilesForExternalFileChange).mockReturnValue([dirtyFile] as never)
-    const readFile = vi.fn().mockResolvedValue({ content: 'orca save', isBinary: false })
+    const readFile = vi.fn().mockResolvedValue({ content: 'occ save', isBinary: false })
     vi.stubGlobal('window', { api: { fs: { readFile } } })
     const { handleFsChanged, dispose } = createExternalWatchEventHandler(findTarget)
 
-    recordSelfWrite('/repo/notes.md', 'orca save')
+    recordSelfWrite('/repo/notes.md', 'occ save')
     handleFsChanged(payload([{ kind: 'update', absolutePath: '/repo/notes.md' }]))
     await vi.advanceTimersByTimeAsync(100)
 
@@ -521,7 +521,7 @@ describe('createExternalWatchEventHandler tombstone coalescing', () => {
     vi.stubGlobal('window', { api: { fs: { readFile } } })
     const { handleFsChanged, dispose } = createExternalWatchEventHandler(findTarget)
 
-    recordSelfWrite('/repo/notes.md', 'orca save')
+    recordSelfWrite('/repo/notes.md', 'occ save')
     handleFsChanged(payload([{ kind: 'update', absolutePath: '/repo/notes.md' }]))
     await vi.advanceTimersByTimeAsync(100)
 
@@ -544,7 +544,7 @@ describe('createExternalWatchEventHandler tombstone coalescing', () => {
     vi.stubGlobal('window', { api: { fs: { readFile } } })
     const { handleFsChanged, dispose } = createExternalWatchEventHandler(findTarget)
 
-    recordSelfWrite('/repo/notes.md', 'orca save')
+    recordSelfWrite('/repo/notes.md', 'occ save')
     // Burst SSH echo payloads must share full-file reads instead of stacking network round trips.
     handleFsChanged(payload([{ kind: 'update', absolutePath: '/repo/notes.md' }]))
     handleFsChanged(payload([{ kind: 'update', absolutePath: '/repo/notes.md' }]))
@@ -579,12 +579,12 @@ describe('createExternalWatchEventHandler tombstone coalescing', () => {
     vi.stubGlobal('window', { api: { fs: { readFile } } })
     const { handleFsChanged, dispose } = createExternalWatchEventHandler(findTarget)
 
-    recordSelfWrite('/repo/notes.md', 'orca save')
+    recordSelfWrite('/repo/notes.md', 'occ save')
     handleFsChanged(payload([{ kind: 'update', absolutePath: '/repo/notes.md' }]))
     await vi.advanceTimersByTimeAsync(50)
     handleFsChanged(payload([{ kind: 'update', absolutePath: '/repo/notes.md' }]))
     await vi.advanceTimersByTimeAsync(50)
-    resolveEchoRead({ content: 'orca save', isBinary: false })
+    resolveEchoRead({ content: 'occ save', isBinary: false })
     await vi.advanceTimersByTimeAsync(100)
 
     expect(readFile).toHaveBeenCalledTimes(2)

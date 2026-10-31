@@ -1,7 +1,7 @@
 // Cover Add all import versus Settings re-adoption (P5/P6/P7/P9); picker list/filter/select lives in ssh-config-host-picker.spec.ts.
 
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
 import {
   buildSshConfigBody,
@@ -15,7 +15,7 @@ import {
   removeSshTargetsByPrefix,
   returnToAppShell,
   seedIsolatedSshConfig,
-  seedOrcaSshTargetMatchingAlias,
+  seedOCCSshTargetMatchingAlias,
   type SeededSshConfigHost
 } from './helpers/ssh-config-host-picker'
 
@@ -73,27 +73,27 @@ async function importPairThenDeleteAlias(
 }
 
 test.describe('SSH config host import (bulk + settings re-adopt)', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
   })
 
-  test.afterEach(async ({ orcaPage }) => {
-    await removeSshTargetsByPrefix(orcaPage, HOST_PREFIX).catch(() => undefined)
+  test.afterEach(async ({ occPage }) => {
+    await removeSshTargetsByPrefix(occPage, HOST_PREFIX).catch(() => undefined)
   })
 
   test('P5: already-in-OCC badge, disabled row, and Add all counts only new hosts', async ({
     electronApp,
-    orcaPage
+    occPage
   }) => {
     const hosts = await seedPairConfig(electronApp, HOST_PREFIX)
-    await seedOrcaSshTargetMatchingAlias(orcaPage, {
+    await seedOCCSshTargetMatchingAlias(occPage, {
       alias: hosts.alpha.alias,
       hostname: hosts.alpha.hostname,
       username: hosts.alpha.user,
       port: hosts.alpha.port
     })
 
-    const picker = await openSshConfigHostPicker(orcaPage)
+    const picker = await openSshConfigHostPicker(occPage)
     const alphaRow = configHostRow(picker, hosts.alpha)
     const bravoRow = configHostRow(picker, hosts.bravo)
 
@@ -111,30 +111,30 @@ test.describe('SSH config host import (bulk + settings re-adopt)', () => {
 
   test('P6: Add all N to OCC imports new hosts; re-open shows all in OCC', async ({
     electronApp,
-    orcaPage
+    occPage
   }) => {
     const hosts = await seedPairConfig(electronApp, HOST_PREFIX)
-    const picker = await openSshConfigHostPicker(orcaPage)
+    const picker = await openSshConfigHostPicker(occPage)
 
     await expect(configHostRow(picker, hosts.alpha)).toBeVisible()
     await expect(configHostRow(picker, hosts.bravo)).toBeVisible()
     await expect(picker.getByRole('button', { name: 'Add all 2 to OCC' })).toBeEnabled()
 
     await picker.getByRole('button', { name: 'Add all 2 to OCC' }).click()
-    await expect(orcaPage.getByText('Added 2 hosts to OCC.')).toBeVisible({ timeout: 15_000 })
-    await expect(orcaPage.getByRole('dialog', { name: 'Choose from ~/.ssh/config' })).toBeHidden({
+    await expect(occPage.getByText('Added 2 hosts to OCC.')).toBeVisible({ timeout: 15_000 })
+    await expect(occPage.getByRole('dialog', { name: 'Choose from ~/.ssh/config' })).toBeHidden({
       timeout: 10_000
     })
-    await expect(orcaPage.getByRole('dialog', { name: 'Add SSH host' })).toBeHidden({
+    await expect(occPage.getByRole('dialog', { name: 'Add SSH host' })).toBeHidden({
       timeout: 10_000
     })
 
-    const sshSection = await openSshHostSettings(orcaPage)
+    const sshSection = await openSshHostSettings(occPage)
     await expectSshHostListedInSettings(sshSection, hosts.alpha)
     await expectSshHostListedInSettings(sshSection, hosts.bravo)
 
-    await returnToAppShell(orcaPage)
-    const reopened = await openSshConfigHostPicker(orcaPage)
+    await returnToAppShell(occPage)
+    const reopened = await openSshConfigHostPicker(occPage)
     await expect(configHostRow(reopened, hosts.alpha)).toBeDisabled()
     await expect(
       configHostRow(reopened, hosts.alpha).getByText('In OCC', { exact: true })
@@ -148,16 +148,16 @@ test.describe('SSH config host import (bulk + settings re-adopt)', () => {
 
   test('P7: Add all does not re-adopt deleted config hosts (suppress tombstones)', async ({
     electronApp,
-    orcaPage
+    occPage
   }) => {
     const hosts = await importPairThenDeleteAlias(
-      orcaPage,
+      occPage,
       electronApp,
       HOST_PREFIX,
       `${HOST_PREFIX}-alpha`
     )
 
-    const picker = await openSshConfigHostPicker(orcaPage)
+    const picker = await openSshConfigHostPicker(occPage)
     // Suppressed aliases stay listed (re-pickable) but never count as new.
     const alphaRow = configHostRow(picker, hosts.alpha)
     await expect(alphaRow).toBeVisible()
@@ -171,8 +171,8 @@ test.describe('SSH config host import (bulk + settings re-adopt)', () => {
     await expect(picker.getByRole('button', { name: 'No new hosts to add' })).toBeDisabled()
     await expect(picker.getByRole('button', { name: /Add all \d+ to OCC/ })).toHaveCount(0)
 
-    await returnToAppShell(orcaPage)
-    const sshSection = await openSshHostSettings(orcaPage)
+    await returnToAppShell(occPage)
+    const sshSection = await openSshHostSettings(occPage)
     // Pane auto-syncs without reAdopt — deleted alpha must stay gone.
     await expectSshHostListedInSettings(sshSection, hosts.bravo)
     await expectSshHostAbsentFromSettings(sshSection, hosts.alpha)
@@ -180,33 +180,33 @@ test.describe('SSH config host import (bulk + settings re-adopt)', () => {
 
   test('P9: Sync keeps deleted config hosts; Restore removed hosts re-adopts them', async ({
     electronApp,
-    orcaPage
+    occPage
   }) => {
     const hosts = await importPairThenDeleteAlias(
-      orcaPage,
+      occPage,
       electronApp,
       HOST_PREFIX,
       `${HOST_PREFIX}-alpha`
     )
 
-    const sshSection = await openSshHostSettings(orcaPage)
+    const sshSection = await openSshHostSettings(occPage)
     await expectSshHostListedInSettings(sshSection, hosts.bravo)
     await expectSshHostAbsentFromSettings(sshSection, hosts.alpha)
 
     // Sync never lifts a removal, so bulk removal sticks.
     await sshSection.getByRole('button', { name: 'Sync ~/.ssh/config' }).click()
-    await expect(orcaPage.getByText(/already in sync|Synced \d+ servers?/i).first()).toBeVisible({
+    await expect(occPage.getByText(/already in sync|Synced \d+ servers?/i).first()).toBeVisible({
       timeout: 15_000
     })
     await expectSshHostAbsentFromSettings(sshSection, hosts.alpha)
 
     await sshSection.getByRole('button', { name: 'More SSH host actions' }).click()
     // The label carries the removed count once ~/.ssh/config is read; click waits for it to enable.
-    await orcaPage.getByRole('menuitem', { name: /^Restore removed hosts \(\d+\)…$/ }).click()
-    const restoreDialog = orcaPage.getByRole('dialog', { name: 'Restore removed hosts?' })
+    await occPage.getByRole('menuitem', { name: /^Restore removed hosts \(\d+\)…$/ }).click()
+    const restoreDialog = occPage.getByRole('dialog', { name: 'Restore removed hosts?' })
     await expect(restoreDialog.getByText(hosts.alpha.alias)).toBeVisible({ timeout: 15_000 })
     await restoreDialog.getByRole('button', { name: 'Restore' }).click()
-    await expect(orcaPage.getByText(/Synced \d+ servers?/i)).toBeVisible({ timeout: 15_000 })
+    await expect(occPage.getByText(/Synced \d+ servers?/i)).toBeVisible({ timeout: 15_000 })
 
     await expectSshHostListedInSettings(sshSection, hosts.alpha)
     await expectSshHostListedInSettings(sshSection, hosts.bravo)

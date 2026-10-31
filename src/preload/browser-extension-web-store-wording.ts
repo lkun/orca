@@ -4,14 +4,14 @@
  * Self-contained because executeInMainWorld serializes it without its closure. The
  * "Chrome Web Store" name stays.
  */
-export function adaptChromeWebStoreWordingForOrca(): void {
+export function adaptChromeWebStoreWordingForOCC(): void {
   const replacements: [RegExp, string][] = [
     [/\bAdd to Chrome\b/g, 'Add to OCC'],
     [/\bRemove from Chrome\b/g, 'Remove from OCC'],
     [/ has been removed from Chrome\./g, ' has been removed from OCC.']
   ]
   const SWITCH_BANNER_TEXT = 'Switch to Chrome to install extensions and themes'
-  const HIDDEN_BANNER_ATTRIBUTE = 'data-orca-hidden-switch-banner'
+  const HIDDEN_BANNER_ATTRIBUTE = 'data-occ-hidden-switch-banner'
   const rewrite = (value: string): string =>
     replacements.reduce((text, [pattern, next]) => text.replace(pattern, next), value)
   // Why the climb: the banner's box also holds its "Install Chrome" button, and the store reuses

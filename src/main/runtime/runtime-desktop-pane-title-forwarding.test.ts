@@ -1,4 +1,4 @@
-import './orca-runtime-test-lifecycle.spec'
+import './occ-runtime-test-lifecycle.spec'
 import { describe, expect, it, vi } from 'vitest'
 import {
   HEADLESS_LEAF_ID,
@@ -6,9 +6,9 @@ import {
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} from './orca-runtime-test-fixtures.spec'
-import { electronMocks, OrcaRuntimeService } from './orca-runtime-test-mocks.spec'
-import { createMobileCreateTestNotifier } from './orca-runtime-test-scenario-builders.spec'
+} from './occ-runtime-test-fixtures.spec'
+import { electronMocks, OCCRuntimeService } from './occ-runtime-test-mocks.spec'
+import { createMobileCreateTestNotifier } from './occ-runtime-test-scenario-builders.spec'
 import { RpcDispatcher } from './rpc/dispatcher'
 import { SESSION_TAB_METHODS } from './rpc/methods/session-tabs'
 import {
@@ -33,7 +33,7 @@ function desktopHostRuntime() {
   const { runtimeStore, getSession } = makeRuntimeStoreWithWorkspaceSession(
     makeWorkspaceSessionWithHeadlessTerminal()
   )
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   runtime.attachWindow(1)
   const setPaneTitle = vi.fn(() => true)
   const renameTerminal = vi.fn()
@@ -123,7 +123,7 @@ it('routes old-client chat tab renames to the owning record with or without an a
   try {
     for (const attached of [true, false]) {
       const desktop = desktopHostRuntime()
-      const runtime = attached ? desktop.runtime : new OrcaRuntimeService(null)
+      const runtime = attached ? desktop.runtime : new OCCRuntimeService(null)
       vi.spyOn(runtime, 'ensureStructuredAgentSessionHost').mockResolvedValue(undefined)
       const snapshot: RuntimeMobileSessionTabsSnapshot = {
         worktree: TEST_WORKTREE_ID,

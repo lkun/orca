@@ -64,7 +64,7 @@ describe('Windows private credential-file contract', () => {
     }
   })
   it('reads inherited private CLI files and rejects foreign access without changing their DACL', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-private-credential-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-private-credential-'))
     roots.push(dir)
     const path = join(dir, 'token')
     writeFileSync(path, 'fixture-only')
@@ -78,7 +78,7 @@ describe('Windows private credential-file contract', () => {
   })
   it('preserves the prior credential and leaves no staging bytes without enforced protection', () => {
     vi.spyOn(process, 'platform', 'get').mockReturnValue('win32')
-    const dir = mkdtempSync(join(tmpdir(), 'orca-private-publish-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-private-publish-'))
     roots.push(dir)
     const path = join(dir, 'token')
     writeFileSync(path, 'prior')

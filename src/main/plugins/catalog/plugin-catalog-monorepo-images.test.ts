@@ -7,7 +7,7 @@ import type {
 import { extractCatalogImages } from './plugin-catalog-image-extraction'
 import { fillMonorepoReleaseImages } from './plugin-catalog-monorepo-images'
 
-const CATALOG_URL = 'https://github.com/stablyai/orca-plugins.git'
+const CATALOG_URL = 'https://github.com/stablyai/occ-plugins.git'
 const be32 = (n: number) => [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255]
 function png(width: number, height: number): Buffer {
   const ihdr = [...Buffer.from('IHDR'), ...be32(width), ...be32(height), 8, 6, 0, 0, 0]
@@ -39,7 +39,7 @@ function catalog(url: string, images?: Record<string, unknown>): PluginMarketpla
     owner: 'stablyai',
     plugins: [
       {
-        id: 'stablyai.orca-midnight-theme',
+        id: 'stablyai.occ-midnight-theme',
         source: { kind: 'git', url, ref: 'main', path: 'plugins/midnight-theme' },
         categories: ['themes'],
         releases: [
@@ -48,7 +48,7 @@ function catalog(url: string, images?: Record<string, unknown>): PluginMarketpla
             commit: 'c'.repeat(40),
             contentHash: 'f'.repeat(64),
             execution: 'data',
-            minimumOrca: '1.4.245',
+            minimumOCC: '1.4.245',
             ...(images ? { images } : {})
           }
         ]
@@ -64,7 +64,7 @@ const manifest = {
   screenshots: [{ path: 'images/missing.png', alt: 'Gone' }]
 }
 const files: Record<string, Buffer> = {
-  'plugins/midnight-theme/orca-plugin.json': Buffer.from(JSON.stringify(manifest)),
+  'plugins/midnight-theme/occ-plugin.json': Buffer.from(JSON.stringify(manifest)),
   'plugins/midnight-theme/images/cover.png': cover
 }
 const read = async (path: string): Promise<Buffer | null> => files[path] ?? null

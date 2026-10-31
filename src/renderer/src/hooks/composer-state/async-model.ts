@@ -1,15 +1,15 @@
 import type * as React from 'react'
 import type { RefObject } from 'react'
 import type { GitHubWorkItem } from '../../../../shared/github/work-item-types'
-import type { OrcaHooks, SetupAgentStartupPolicy } from '../../../../shared/orca-yaml-hook-types'
+import type { OCCHooks, SetupAgentStartupPolicy } from '../../../../shared/occ-yaml-hook-types'
 import type { GitHubRepositoryIdentity } from '../../../../shared/github/pull-request-types'
 import type { WorkspaceCreateErrorDisplay } from '@/lib/workspace-create-error-format'
 import type { IssueCommandReadResult } from '@/runtime/runtime-hooks-client'
 import type { SmartSourceSelection } from './source-selection-decisions'
 
 export type ComposerAsyncModel = {
-  yamlHooks: OrcaHooks | null
-  setYamlHooks: React.Dispatch<React.SetStateAction<OrcaHooks | null>>
+  yamlHooks: OCCHooks | null
+  setYamlHooks: React.Dispatch<React.SetStateAction<OCCHooks | null>>
   checkedHooksContextKey: string | null
   setCheckedHooksContextKey: React.Dispatch<React.SetStateAction<string | null>>
   loadedIssueCommand: { contextKey: string; result: IssueCommandReadResult } | null

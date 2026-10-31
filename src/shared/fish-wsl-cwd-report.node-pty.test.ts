@@ -11,7 +11,7 @@ import { parseFileUriPath } from '../main/daemon/osc7-file-uri'
 const FISH = resolveFishBinary(3)
 const FISH_PATH = FISH.available ? FISH.path : ''
 const itWithFish = FISH.available ? it : it.skip
-const PROMPT_MARK = 'ORCAFISH> '
+const PROMPT_MARK = 'OCCFISH> '
 
 type Report = { hosted: boolean; folder: string }
 

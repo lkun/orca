@@ -7,7 +7,7 @@ import path from 'node:path'
 import { _electron as electron, type ElectronApplication } from '@stablyai/playwright-test'
 import { RuntimeClient } from '../../../src/cli/runtime/client'
 import { getE2ECompletedOnboardingProfile } from './e2e-completed-onboarding-profile'
-import { getOrcaElectronLaunchArgs } from './electron-launch-args'
+import { getOCCElectronLaunchArgs } from './electron-launch-args'
 import {
   cleanupE2EDaemons,
   closeElectronAppForE2E,
@@ -46,7 +46,7 @@ const PROFILE_REMOVAL: RmOptions = { recursive: true, force: true, maxRetries: 5
 
 /** CI diagnostics: the profile's logs outlive its deletion when this names a directory. */
 function preserveProfileLogs(userDataDir: string): void {
-  const target = process.env.ORCA_E2E_PRESERVE_PROFILE_LOGS_DIR
+  const target = process.env.OCC_E2E_PRESERVE_PROFILE_LOGS_DIR
   const logs = path.join(userDataDir, 'logs')
   if (target && existsSync(logs)) {
     cpSync(logs, path.join(target, path.basename(userDataDir)), { recursive: true })
@@ -100,17 +100,17 @@ export async function launchHeadlessPairedRuntimeHost(
   } = {}
 ): Promise<HeadlessPairedRuntimeHost> {
   const userDataDir = mkdtempSync(
-    path.join(options.userDataParent ?? os.tmpdir(), 'orca-e2e-headless-paired-')
+    path.join(options.userDataParent ?? os.tmpdir(), 'occ-e2e-headless-paired-')
   )
   const servePort = options.pinnedServePort === true ? await reserveFreeLoopbackPort() : 0
   let agentBrowserSocketDir: string | null = null
   let app: ElectronApplication | undefined
   try {
     agentBrowserSocketDir = options.agentBrowserSocketParent
-      ? mkdtempSync(path.join(options.agentBrowserSocketParent, 'orca-ab-'))
+      ? mkdtempSync(path.join(options.agentBrowserSocketParent, 'occ-ab-'))
       : null
     writeFileSync(
-      path.join(userDataDir, 'orca-data.json'),
+      path.join(userDataDir, 'occ-data.json'),
       `${JSON.stringify(getE2ECompletedOnboardingProfile(), null, 2)}\n`
     )
     const { ELECTRON_RUN_AS_NODE: _unused, ...cleanEnv } = process.env
@@ -119,9 +119,9 @@ export async function launchHeadlessPairedRuntimeHost(
       inheritedEnv: cleanEnv,
       launchEnv: {
         NODE_ENV: 'development',
-        ORCA_E2E_ENFORCE_SINGLE_INSTANCE_LOCK: '1',
-        ORCA_E2E_HEADLESS: '1',
-        ...(options.withoutBrowser ? { ORCA_E2E_HEADLESS_SERVE_WITHOUT_BROWSER: '1' } : {})
+        OCC_E2E_ENFORCE_SINGLE_INSTANCE_LOCK: '1',
+        OCC_E2E_HEADLESS: '1',
+        ...(options.withoutBrowser ? { OCC_E2E_HEADLESS_SERVE_WITHOUT_BROWSER: '1' } : {})
       },
       extraEnv: options.extraEnv ?? {},
       userDataDir
@@ -134,7 +134,7 @@ export async function launchHeadlessPairedRuntimeHost(
       electron.launch({
         ...(options.executablePath ? { executablePath: options.executablePath } : {}),
         args: [
-          ...(options.executablePath ? [] : getOrcaElectronLaunchArgs(mainPath, false)),
+          ...(options.executablePath ? [] : getOCCElectronLaunchArgs(mainPath, false)),
           '--serve',
           '--serve-json',
           '--serve-port',
@@ -164,7 +164,7 @@ export async function launchHeadlessPairedRuntimeHost(
       offer,
       userDataDir,
       env: isolation.env,
-      electronArgs: options.executablePath ? [] : getOrcaElectronLaunchArgs(mainPath, false),
+      electronArgs: options.executablePath ? [] : getOCCElectronLaunchArgs(mainPath, false),
       restartServeProcess: async (restartOptions = {}) => {
         if (options.pinnedServePort !== true) {
           throw new Error(

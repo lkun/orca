@@ -8,7 +8,7 @@ import {
 } from './host-challenge-answering.test-fixture.js'
 
 it('accepts independent proofs but consumes each challenge only once under concurrency', async () => {
-  const databaseUrl = process.env.ORCA_PUSH_TEST_DATABASE_URL
+  const databaseUrl = process.env.OCC_PUSH_TEST_DATABASE_URL
   if (databaseUrl && !process.env.CI && new URL(databaseUrl).port !== '55440') {
     throw new Error('isolated_postgres_port_required')
   }
@@ -16,7 +16,7 @@ it('accepts independent proofs but consumes each challenge only once under concu
     ? await openPushDatabase({ databaseUrl, dataDir: '', poolMax: 4 })
     : await openInMemoryPushDatabase()
   const host = createPushHostKeypair()
-  const origin = 'https://push.onorca.dev'
+  const origin = 'https://push.onocc.dev'
   const store = new PushHostChallengeStore(db, origin)
   const challenges = await Promise.all([
     store.issue(hostPublicKeyB64(host)),

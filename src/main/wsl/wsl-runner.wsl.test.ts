@@ -1,15 +1,15 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { runWslProcess } from './wsl-runner'
 import { invalidateWslGuestEnvironment } from './wsl-guest-environment'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { resolveWslExecutablePath } from './wsl-executable-path'
 
-/** Real distro/login/rc contract, gated on Windows and ORCA_REAL_WSL_RUNNER_TEST because it mutates ~/.profile. Run: ORCA_REAL_WSL_RUNNER_TEST=1 pnpm vitest run src/main/wsl/wsl-runner.wsl.test.ts */
-const DISTRO = process.env.ORCA_WSL_TEST_DISTRO ?? 'Ubuntu-24.04'
-const enabled = process.platform === 'win32' && process.env.ORCA_REAL_WSL_RUNNER_TEST === '1'
+/** Real distro/login/rc contract, gated on Windows and OCC_REAL_WSL_RUNNER_TEST because it mutates ~/.profile. Run: OCC_REAL_WSL_RUNNER_TEST=1 pnpm vitest run src/main/wsl/wsl-runner.wsl.test.ts */
+const DISTRO = process.env.OCC_WSL_TEST_DISTRO ?? 'Ubuntu-24.04'
+const enabled = process.platform === 'win32' && process.env.OCC_REAL_WSL_RUNNER_TEST === '1'
 const describeOnWsl = enabled ? describe : describe.skip
 
-const PROFILE = '/tmp/orca-wsl-runner-profile.bak'
+const PROFILE = '/tmp/occ-wsl-runner-profile.bak'
 
 async function guest(script: string): Promise<string> {
   const result = await runProcess({
@@ -41,11 +41,11 @@ describeOnWsl('runWslProcess against a real distro', () => {
       loginPath: 'preferred',
       distro: DISTRO,
       program: '/bin/echo',
-      args: ['orca-probe-ok'],
+      args: ['occ-probe-ok'],
       timeoutMs: 15_000
     })
     const elapsed = Date.now() - started
-    expect(result.stdout.trim()).toContain('orca-probe-ok')
+    expect(result.stdout.trim()).toContain('occ-probe-ok')
     expect(elapsed).toBeLessThan(20_000)
   }, 60_000)
 
@@ -66,10 +66,10 @@ describeOnWsl('runWslProcess against a real distro', () => {
       loginPath: 'preferred',
       distro: DISTRO,
       program: '/bin/echo',
-      args: ['ORCA_PAYLOAD'],
+      args: ['OCC_PAYLOAD'],
       timeoutMs: 60_000
     })
-    expect(result.stdout.trim()).toBe('ORCA_PAYLOAD')
+    expect(result.stdout.trim()).toBe('OCC_PAYLOAD')
   }, 90_000)
 
   it('a script with quotes and $ arrives byte-identical', async () => {
@@ -83,7 +83,7 @@ describeOnWsl('runWslProcess against a real distro', () => {
       loginPath: 'preferred',
       distro: DISTRO,
       script,
-      args: ['ORCA_ARG'],
+      args: ['OCC_ARG'],
       timeoutMs: 30_000
     })
     expect(
@@ -91,15 +91,15 @@ describeOnWsl('runWslProcess against a real distro', () => {
         .split('\n')
         .map((l) => l.trim())
         .filter(Boolean)
-    ).toEqual(['ORCA_ARG', "it's fine", 'x'])
+    ).toEqual(['OCC_ARG', "it's fine", 'x'])
   }, 60_000)
 
   it('propagated env crosses the boundary via WSLENV', async () => {
     const result = await runWslProcess({
       loginPath: 'preferred',
       distro: DISTRO,
-      script: 'printf %s "$ORCA_WSLENV_PROBE"',
-      env: { ORCA_WSLENV_PROBE: 'crossed' },
+      script: 'printf %s "$OCC_WSLENV_PROBE"',
+      env: { OCC_WSLENV_PROBE: 'crossed' },
       timeoutMs: 30_000
     })
     expect(result.stdout.trim()).toBe('crossed')

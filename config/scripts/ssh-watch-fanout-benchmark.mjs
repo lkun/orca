@@ -8,12 +8,12 @@ import { fileURLToPath } from 'node:url'
 import { createJiti } from 'jiti'
 
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url))
-const ITERATIONS = Number(process.env.ORCA_SSH_WATCH_BENCH_ITERATIONS ?? '200')
-const WARMUP = Number(process.env.ORCA_SSH_WATCH_BENCH_WARMUP ?? '30')
+const ITERATIONS = Number(process.env.OCC_SSH_WATCH_BENCH_ITERATIONS ?? '200')
+const WARMUP = Number(process.env.OCC_SSH_WATCH_BENCH_WARMUP ?? '30')
 
 for (const [name, value] of [
-  ['ORCA_SSH_WATCH_BENCH_ITERATIONS', ITERATIONS],
-  ['ORCA_SSH_WATCH_BENCH_WARMUP', WARMUP]
+  ['OCC_SSH_WATCH_BENCH_ITERATIONS', ITERATIONS],
+  ['OCC_SSH_WATCH_BENCH_WARMUP', WARMUP]
 ]) {
   if (!Number.isSafeInteger(value) || value <= 0) {
     throw new Error(`${name} must be a positive integer, received ${value}`)
@@ -67,7 +67,7 @@ assert.ok(REPO_PATHS.length > 0, 'Benchmark needs tracked paths')
 
 // Model multi-worktree host with explorer and base-directory watchers per root.
 function makeRoots(count) {
-  return Array.from({ length: count }, (_, index) => `/home/dev/worktrees/orca-${index}`)
+  return Array.from({ length: count }, (_, index) => `/home/dev/worktrees/occ-${index}`)
 }
 
 function makeEvents(roots, count) {

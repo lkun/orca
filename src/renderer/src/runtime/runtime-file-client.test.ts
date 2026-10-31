@@ -313,7 +313,7 @@ describe('runtime file client', () => {
       result: { content: 'base64', isBinary: true, isImage: true, mimeType: 'image/png' },
       _meta: { runtimeId: 'remote-runtime' }
     })
-    const storedPath = '/srv/orca/agent-session-attachments/abc/u1/shot.png'
+    const storedPath = '/srv/occ/agent-session-attachments/abc/u1/shot.png'
 
     await expect(
       readRuntimeFilePreview(
@@ -353,7 +353,7 @@ describe('runtime file client', () => {
       content: '',
       isBinary: true as const,
       mimeType: 'video/mp4',
-      mediaUrl: 'orca-media://file/t'
+      mediaUrl: 'occ-media://file/t'
     }
     const binaryRefusal = {
       id: 'rpc-1',
@@ -428,7 +428,7 @@ describe('runtime file client', () => {
           worktreeId: 'wt-1',
           pageOversizedBinary: true
         })
-      ).resolves.toMatchObject({ isImage: true, mediaUrl: 'orca-media://file/t' })
+      ).resolves.toMatchObject({ isImage: true, mediaUrl: 'occ-media://file/t' })
       expect(runtimeEnvironmentCall).not.toHaveBeenCalled()
     })
 

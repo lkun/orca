@@ -8,7 +8,7 @@ import type { ConnectorAccountTransport } from './connector-transport'
 /** What the connector needs from this OCC; the seam exists exactly while connectors are on. */
 export type ConnectorMachine = {
   runtime: 'desktop'
-  orcaVersion: string
+  occVersion: string
   hostName: string
   seam: () => ExternalConversationSeam | null
   conversationHost: () => ExternalConversationHost

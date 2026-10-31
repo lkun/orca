@@ -21,7 +21,7 @@ async function createInstalledPlugin(options: { worker: boolean }): Promise<{
   manifest: PluginManifest
   contentHash: string
 }> {
-  const userDataPath = await mkdtemp(join(tmpdir(), 'orca-plugin-service-integrity-'))
+  const userDataPath = await mkdtemp(join(tmpdir(), 'occ-plugin-service-integrity-'))
   roots.push(userDataPath)
   const pluginKey = 'samples.demo'
   const pluginDir = join(userDataPath, 'plugins', pluginKey)
@@ -33,7 +33,7 @@ async function createInstalledPlugin(options: { worker: boolean }): Promise<{
     publisher: 'samples',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     ...(options.worker ? { main: 'worker.js' } : {}),
     contributes: {
@@ -43,7 +43,7 @@ async function createInstalledPlugin(options: { worker: boolean }): Promise<{
     },
     capabilities: []
   })
-  await writeFile(join(stagingDir, 'orca-plugin.json'), JSON.stringify(manifest))
+  await writeFile(join(stagingDir, 'occ-plugin.json'), JSON.stringify(manifest))
   await writeFile(join(stagingDir, 'panel.html'), '<h1>Panel</h1>')
   await writeFile(join(stagingDir, 'payload.txt'), 'original')
   if (options.worker) {

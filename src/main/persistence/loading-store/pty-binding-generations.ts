@@ -1,7 +1,7 @@
 // In-memory generations advance on bind, retirement or rollback, including same-ID respawns; moves/removals do not.
 
 import type { ExecutionHostId } from '../../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type { StoreRuntimeState } from './store-runtime-state'
 
 type GenerationRuntime = Pick<StoreRuntimeState, 'ptyBindingGenerations'>
@@ -13,7 +13,7 @@ export function bumpPtyBindingGeneration(
   hostId: ExecutionHostId,
   leafId: string
 ): void {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     return
   }
   const key = generationKey(hostId, leafId)

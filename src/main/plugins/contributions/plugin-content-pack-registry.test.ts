@@ -17,7 +17,7 @@ afterEach(async () => {
 
 describe('PluginContentPackRegistry', () => {
   it('activates all contributions from a plugin atomically', async () => {
-    const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-content-pack-registry-'))
+    const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-content-pack-registry-'))
     roots.push(rootDir)
     await mkdir(join(rootDir, 'locales'))
     await Promise.all([
@@ -33,7 +33,7 @@ describe('PluginContentPackRegistry', () => {
       publisher: 'samples',
       name: 'Mixed Content',
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       contributes: {
         languagePacks: [
@@ -60,7 +60,7 @@ describe('PluginContentPackRegistry', () => {
   })
 
   it('rolls back valid packs when a VM recipe from the same plugin is invalid', async () => {
-    const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-content-pack-vm-'))
+    const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-content-pack-vm-'))
     roots.push(rootDir)
     await Promise.all([mkdir(join(rootDir, 'locales')), mkdir(join(rootDir, 'recipes'))])
     await Promise.all([
@@ -76,7 +76,7 @@ describe('PluginContentPackRegistry', () => {
       publisher: 'samples',
       name: 'Mixed Recipes',
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       contributes: {
         languagePacks: [{ locale: 'es', path: 'locales/valid.json' }],
@@ -107,7 +107,7 @@ describe('PluginContentPackRegistry', () => {
   })
 
   it('withholds content from a plugin killed during the awaited verification phase', async () => {
-    const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-content-pack-kill-race-'))
+    const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-content-pack-kill-race-'))
     roots.push(rootDir)
     await Promise.all([mkdir(join(rootDir, 'locales')), mkdir(join(rootDir, 'recipes'))])
     await Promise.all([
@@ -128,7 +128,7 @@ describe('PluginContentPackRegistry', () => {
       publisher: 'samples',
       name: 'Kill Race',
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       contributes: {
         languagePacks: [{ locale: 'es', path: 'locales/es.json' }],

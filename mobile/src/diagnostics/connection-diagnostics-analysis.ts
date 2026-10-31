@@ -12,7 +12,7 @@ import type {
 export type ConnectionDiagnosis = {
   likelyCause: string
   nextStep: string
-  reportability: 'none' | 'orca-relay'
+  reportability: 'none' | 'occ-relay'
 }
 
 type DiagnoseConnectionArgs = {
@@ -96,7 +96,7 @@ function diagnoseFailure(
     return {
       likelyCause: `${path} stopped answering authenticated health checks.`,
       nextStep: 'OCC closed the stale session and started recovery.',
-      reportability: relayLiveness ? 'orca-relay' : 'none'
+      reportability: relayLiveness ? 'occ-relay' : 'none'
     }
   }
 
@@ -105,7 +105,7 @@ function diagnoseFailure(
       likelyCause: 'The active Relay session closed unexpectedly.',
       nextStep: 'OCC started Relay recovery; the event history includes the cell close reason.',
       reportability:
-        failure?.code === 'relay-session-failed' && failure.path === 'relay' ? 'orca-relay' : 'none'
+        failure?.code === 'relay-session-failed' && failure.path === 'relay' ? 'occ-relay' : 'none'
     }
   }
 
@@ -159,7 +159,7 @@ export function getReportableConnectionIncidentId(args: DiagnoseConnectionArgs):
     return null
   }
   return diagnoseFailure(args, selected.entry, diagnosticEvidence(selected.entry)).reportability ===
-    'orca-relay'
+    'occ-relay'
     ? selected.entry.id
     : null
 }

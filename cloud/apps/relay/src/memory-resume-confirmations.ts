@@ -1,4 +1,4 @@
-import type { DeviceResumeConfirmed } from '@orca-cloud/relay-contract'
+import type { DeviceResumeConfirmed } from '@occ-cloud/relay-contract'
 import { RelayStoreError, type RelayCredentialStore, type RelayIdentity } from './credential-store.js'
 
 // Step 6: what a memory cell keeps instead of relay_connection_bases and relay_confirm_results.

@@ -3,7 +3,7 @@
 import { randomUUID } from 'node:crypto'
 import { rmSync } from 'node:fs'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { readTypingScaleCensus } from './typing-scale-census'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import { waitForActivePanePtyId, waitForActiveTerminalManager } from './helpers/terminal'
@@ -42,53 +42,53 @@ test.describe('Accumulated workspace-update typing latency bench', () => {
   // Workspace-update pressure without load PTYs: the reported stalls came from store publications, not terminal bytes.
   test('typing under accumulated workspace-update pressure', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
-    const typingPtyId = await waitForActivePanePtyId(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
+    const typingPtyId = await waitForActivePanePtyId(occPage)
 
     const runId = randomUUID()
-    const probePath = path.join(testRepoPath, `.orca-mwt-probe-${runId}.mjs`)
-    const sidecarPath = path.join(testRepoPath, `.orca-mwt-arrivals-${runId}.jsonl`)
+    const probePath = path.join(testRepoPath, `.occ-mwt-probe-${runId}.mjs`)
+    const sidecarPath = path.join(testRepoPath, `.occ-mwt-arrivals-${runId}.jsonl`)
     writeTypingEchoProbeScript(probePath, runId, sidecarPath)
     let orderTrafficStarted = false
     let statusTrafficStarted = false
     try {
-      const fixtureSummary = await seedAccumulatedWorkspaceFixture(orcaPage, {
-        worktrees: readPositiveInt('ORCA_TYPING_BENCH_METADATA_WORKTREES', 870),
-        repositories: readPositiveInt('ORCA_TYPING_BENCH_METADATA_REPOSITORIES', 27),
-        terminalTabs: readPositiveInt('ORCA_TYPING_BENCH_METADATA_TERMINAL_TABS', 1410),
-        unifiedTabs: readPositiveInt('ORCA_TYPING_BENCH_METADATA_UNIFIED_TABS', 2000),
-        panesPerTab: readPositiveInt('ORCA_TYPING_BENCH_METADATA_PANES', 1),
-        sleepingRecords: readPositiveInt('ORCA_TYPING_BENCH_METADATA_SLEEPERS', 857),
-        liveStatuses: readPositiveInt('ORCA_TYPING_BENCH_METADATA_LIVE_STATUSES', 177),
-        statusHistoryEntries: readPositiveInt('ORCA_TYPING_BENCH_METADATA_STATUS_HISTORY', 3)
+      const fixtureSummary = await seedAccumulatedWorkspaceFixture(occPage, {
+        worktrees: readPositiveInt('OCC_TYPING_BENCH_METADATA_WORKTREES', 870),
+        repositories: readPositiveInt('OCC_TYPING_BENCH_METADATA_REPOSITORIES', 27),
+        terminalTabs: readPositiveInt('OCC_TYPING_BENCH_METADATA_TERMINAL_TABS', 1410),
+        unifiedTabs: readPositiveInt('OCC_TYPING_BENCH_METADATA_UNIFIED_TABS', 2000),
+        panesPerTab: readPositiveInt('OCC_TYPING_BENCH_METADATA_PANES', 1),
+        sleepingRecords: readPositiveInt('OCC_TYPING_BENCH_METADATA_SLEEPERS', 857),
+        liveStatuses: readPositiveInt('OCC_TYPING_BENCH_METADATA_LIVE_STATUSES', 177),
+        statusHistoryEntries: readPositiveInt('OCC_TYPING_BENCH_METADATA_STATUS_HISTORY', 3)
       })
-      if (process.env.ORCA_TYPING_BENCH_METADATA_STATUS === '1') {
+      if (process.env.OCC_TYPING_BENCH_METADATA_STATUS === '1') {
         await startAccumulatedStatusTraffic(
           electronApp,
-          orcaPage,
-          readPositiveInt('ORCA_TYPING_BENCH_METADATA_STATUS_INTERVAL_MS', 100)
+          occPage,
+          readPositiveInt('OCC_TYPING_BENCH_METADATA_STATUS_INTERVAL_MS', 100)
         )
         statusTrafficStarted = true
       }
       if (ORDER_CHURN_MS > 0) {
-        expect(await startAccumulatedOrderTraffic(orcaPage, ORDER_CHURN_MS)).toBe(
+        expect(await startAccumulatedOrderTraffic(occPage, ORDER_CHURN_MS)).toBe(
           fixtureSummary.repositories
         )
         orderTrafficStarted = true
       }
-      await resetDeliveryDebug(orcaPage)
-      await startTypingProbe(orcaPage, typingPtyId, probePath, runId)
-      const measured = await measureTypingWindow(orcaPage, runId, sidecarPath)
-      const orderWorkload = orderTrafficStarted ? await stopAccumulatedOrderTraffic(orcaPage) : null
+      await resetDeliveryDebug(occPage)
+      await startTypingProbe(occPage, typingPtyId, probePath, runId)
+      const measured = await measureTypingWindow(occPage, runId, sidecarPath)
+      const orderWorkload = orderTrafficStarted ? await stopAccumulatedOrderTraffic(occPage) : null
       orderTrafficStarted = false
       const statusWorkload = statusTrafficStarted
-        ? await stopAccumulatedStatusTraffic(electronApp, orcaPage)
+        ? await stopAccumulatedStatusTraffic(electronApp, occPage)
         : null
       statusTrafficStarted = false
       writeBenchReport(
@@ -100,13 +100,13 @@ test.describe('Accumulated workspace-update typing latency bench', () => {
           ptyMetadata: false,
           statusTrafficModel: statusWorkload ? 'electron-ipc-burst-through-production-bridge' : null
         },
-        await readSchedulerDebug(orcaPage),
-        await readMainDeliveryDebug(orcaPage),
+        await readSchedulerDebug(occPage),
+        await readMainDeliveryDebug(occPage),
         undefined,
         null,
         statusWorkload,
         null,
-        await readTypingScaleCensus(orcaPage),
+        await readTypingScaleCensus(occPage),
         fixtureSummary,
         undefined,
         null,
@@ -120,13 +120,13 @@ test.describe('Accumulated workspace-update typing latency bench', () => {
       }
     } finally {
       if (orderTrafficStarted) {
-        await stopAccumulatedOrderTraffic(orcaPage).catch(() => null)
+        await stopAccumulatedOrderTraffic(occPage).catch(() => null)
       }
       if (statusTrafficStarted) {
-        await stopAccumulatedStatusTraffic(electronApp, orcaPage).catch(() => null)
+        await stopAccumulatedStatusTraffic(electronApp, occPage).catch(() => null)
       }
-      await cleanupAccumulatedWorkspaceFixture(orcaPage)
-      await stopPtysQuietly(orcaPage, [typingPtyId])
+      await cleanupAccumulatedWorkspaceFixture(occPage)
+      await stopPtysQuietly(occPage, [typingPtyId])
       rmSync(probePath, { force: true })
       rmSync(sidecarPath, { force: true })
     }

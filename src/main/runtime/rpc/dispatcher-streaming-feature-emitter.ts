@@ -1,11 +1,11 @@
 import type { FeatureInteractionId } from '../../../shared/feature-interactions'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import type { RpcEnvelopeMeta, RpcRequest } from './core'
 import { successResponse } from './errors'
 import { recordRuntimeFeatureInteraction } from './runtime-feature-interaction'
 
 export function createDispatcherStreamingFeatureEmitter(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   request: RpcRequest,
   meta: RpcEnvelopeMeta,
   reply: (response: string) => void

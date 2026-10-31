@@ -9,7 +9,7 @@ import type { RuntimeClientEvent } from '../../shared/runtime-client-events'
 import { makePaneKey } from '../../shared/stable-pane-id'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
 import { FOLDER_WORKSPACE_INSTANCE_SEPARATOR } from '../../shared/worktree/id'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 // Folder workspaces share a directory; retain ::workspace:<uuid> to distinguish their PTYs.
 const REPO_ID = 'repo-1'
@@ -83,7 +83,7 @@ function createRuntimeInternals(
     setWorkspaceSession: () => {},
     flushOrThrow: () => {}
   }) as never
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   runtime.setPtyController({
     write: () => true,
     kill: () => true,

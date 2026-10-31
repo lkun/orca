@@ -70,7 +70,7 @@ beforeEach(async ({ task }) => {
   const imported = task.name.includes('history items')
   const selections = task.name.includes('fallback')
   startupGate = Promise.withResolvers<void>()
-  root = await mkdtemp(join(tmpdir(), 'orca-claude-opening-send-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-claude-opening-send-'))
   resetHostTestOperationIds()
   const log = recordingStructuredAgentSessionLogger()
   claude = fakeClaude({

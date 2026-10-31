@@ -10,14 +10,14 @@ import {
 } from '@stablyai/playwright-test'
 
 import { getE2ECompletedOnboardingProfile } from './e2e-completed-onboarding-profile'
-import { getOrcaElectronLaunchArgs } from './electron-launch-args'
+import { getOCCElectronLaunchArgs } from './electron-launch-args'
 import { cleanupE2EDaemons, closeElectronAppForE2E } from './electron-process-shutdown'
 import {
   assertElectronResolvedIsolatedHome,
   createElectronHomeIsolation
 } from './electron-home-isolation'
 import { retryTransientMainEvaluate } from './electron-main-evaluate-retry'
-import { forwardElectronProcessLogs } from './orca-app'
+import { forwardElectronProcessLogs } from './occ-app'
 import {
   replaceRuntimePairingInPlace,
   type SameIdPairingReplacement
@@ -55,7 +55,7 @@ export type PairedWebClient = {
   dispose: () => Promise<void>
 }
 
-const DIRECT_SSH_PROBE_CANARY_TARGET_ID = '__orca_e2e_direct_ssh_probe_canary__'
+const DIRECT_SSH_PROBE_CANARY_TARGET_ID = '__occ_e2e_direct_ssh_probe_canary__'
 
 function readDirectSshAttemptTargetIds(probePath: string): string[] {
   try {
@@ -172,11 +172,11 @@ export async function launchPairedElectronClient(
 ): Promise<PairedElectronClient> {
   const reusedProfile = options.reuseUserDataDir !== undefined
   const userDataDir =
-    options.reuseUserDataDir ?? mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-paired-desktop-'))
+    options.reuseUserDataDir ?? mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-paired-desktop-'))
   const directSshProbePath = path.join(userDataDir, 'forbidden-local-ssh-connects.jsonl')
   if (!reusedProfile) {
     writeFileSync(
-      path.join(userDataDir, 'orca-data.json'),
+      path.join(userDataDir, 'occ-data.json'),
       `${JSON.stringify(getE2ECompletedOnboardingProfile(), null, 2)}\n`
     )
   }
@@ -190,12 +190,12 @@ export async function launchPairedElectronClient(
   })
   const mainPath = path.join(process.cwd(), 'out', 'main', 'index.js')
   const app = await electron.launch({
-    args: getOrcaElectronLaunchArgs(mainPath, false),
+    args: getOCCElectronLaunchArgs(mainPath, false),
     env: {
       ...homeIsolation.env,
       NODE_ENV: 'development',
-      ORCA_E2E_HEADLESS: '1',
-      ORCA_E2E_FORBID_LOCAL_SSH_CONNECT_PROBE: directSshProbePath
+      OCC_E2E_HEADLESS: '1',
+      OCC_E2E_FORBID_LOCAL_SSH_CONNECT_PROBE: directSshProbePath
     }
   })
 

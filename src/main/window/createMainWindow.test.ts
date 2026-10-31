@@ -203,7 +203,7 @@ describe('createMainWindow', () => {
     expect(openExternalMock).toHaveBeenCalledTimes(4)
 
     const allowBlankEvent = { preventDefault: vi.fn() }
-    const allowBlankPrefs = { partition: 'persist:orca-browser' }
+    const allowBlankPrefs = { partition: 'persist:occ-browser' }
     fire(
       'will-attach-webview',
       allowBlankEvent as never,
@@ -213,16 +213,16 @@ describe('createMainWindow', () => {
     expect(allowBlankEvent.preventDefault).not.toHaveBeenCalled()
     expect(allowBlankPrefs).toMatchObject({
       disableHtmlFullscreenWindowResize: true,
-      partition: 'persist:orca-browser',
+      partition: 'persist:occ-browser',
       preload: expect.stringMatching(/browser-window-close-preload\.js$/),
       sandbox: true
     })
 
     routePartitionAllowedMock.mockImplementation(
-      (partition) => partition === 'persist:orca-browser-v1-route-partition'
+      (partition) => partition === 'persist:occ-browser-v1-route-partition'
     )
     const allowRouteEvent = { preventDefault: vi.fn() }
-    const allowRoutePrefs = { partition: 'persist:orca-browser-v1-route-partition' }
+    const allowRoutePrefs = { partition: 'persist:occ-browser-v1-route-partition' }
     fire(
       'will-attach-webview',
       allowRouteEvent as never,
@@ -231,14 +231,14 @@ describe('createMainWindow', () => {
     )
     expect(allowRouteEvent.preventDefault).not.toHaveBeenCalled()
     expect(allowRoutePrefs).toMatchObject({
-      partition: 'persist:orca-browser-v1-route-partition',
+      partition: 'persist:occ-browser-v1-route-partition',
       sandbox: true
     })
     const denyRouteNavigationEvent = { preventDefault: vi.fn() }
     fire(
       'will-attach-webview',
       denyRouteNavigationEvent as never,
-      { partition: 'persist:orca-browser-v1-route-partition' } as never,
+      { partition: 'persist:occ-browser-v1-route-partition' } as never,
       { src: 'https://example.com/' } as never
     )
     expect(denyRouteNavigationEvent.preventDefault).toHaveBeenCalledOnce()
@@ -247,7 +247,7 @@ describe('createMainWindow', () => {
     fire(
       'will-attach-webview',
       denyInlineHtmlEvent as never,
-      { partition: 'persist:orca-browser' } as never,
+      { partition: 'persist:occ-browser' } as never,
       { src: 'data:text/html,<script>alert(1)</script>' } as never
     )
     expect(denyInlineHtmlEvent.preventDefault).toHaveBeenCalledTimes(1)
@@ -265,7 +265,7 @@ describe('createMainWindow', () => {
       preload: 'file:///tmp/untrusted-preload.js'
     }
     const hardenedPrefs = {
-      partition: 'persist:orca-browser',
+      partition: 'persist:occ-browser',
       preload: '/tmp/untrusted-preload.js'
     }
     fire(
@@ -331,7 +331,7 @@ describe('createMainWindow', () => {
 
     // Electron 43 does not inherit embedder arguments; inject a hostile stamp to prove the handler strips it.
     const guestPreferences = {
-      partition: 'persist:orca-browser',
+      partition: 'persist:occ-browser',
       additionalArguments: [...(stamped ?? [])]
     }
     windowHandlers['will-attach-webview'](

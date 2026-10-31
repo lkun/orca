@@ -16,7 +16,7 @@ const { basename, dirname, join, relative, resolve, sep } = require('node:path')
 const { pathToFileURL } = require('node:url')
 
 const MAC_TERMINAL_HOST_NAME = 'OCC Terminal Host'
-const MAC_TERMINAL_HOST_EXECUTABLE = 'orca-terminal-host'
+const MAC_TERMINAL_HOST_EXECUTABLE = 'occ-terminal-host'
 const macTerminalHostSignIgnore = [`/Contents/Helpers/${MAC_TERMINAL_HOST_NAME}\\.app(/|$)`]
 const NODE_PTY_FILES = [
   'package.json',
@@ -24,7 +24,7 @@ const NODE_PTY_FILES = [
   join('build', 'Release', 'pty.node'),
   join('build', 'Release', 'spawn-helper')
 ]
-// A helper that claimed any of these could take `orca:` links or documents from OCC.app.
+// A helper that claimed any of these could take `occ:` links or documents from OCC.app.
 const FORBIDDEN_INFO_KEYS = [
   'CFBundleURLTypes',
   'CFBundleDocumentTypes',

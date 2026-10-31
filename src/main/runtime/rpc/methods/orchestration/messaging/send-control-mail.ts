@@ -1,5 +1,5 @@
 import type { MessagePriority, MessageType, OrchestrationDb } from '../../../../orchestration/db'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import { encodeFederatedControlMessage } from '../../../../orchestration/federation-control-message'
 import { ORCHESTRATION_FEDERATION_CONTROL_MAIL_PROTOCOL_VERSION } from '../../../../../../shared/protocol-version'
@@ -14,7 +14,7 @@ type SendReceipt = <T extends object>(receipt: T) => T & { warnings?: SendRecipi
 /** Delivers coordinator control mail to a federated worker when `to` names its exact Dispatch. */
 export function sendFederatedControlMail(args: {
   params: SendParamsInput
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   from: string
   to: string

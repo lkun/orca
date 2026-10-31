@@ -19,9 +19,9 @@ afterEach(() => {
 })
 
 it('writes applied workspace-update conditions despite conflicting requested load flags', async () => {
-  vi.stubEnv('ORCA_TYPING_BENCH_CPU_WORKERS', '4')
-  vi.stubEnv('ORCA_TYPING_BENCH_PTY_METADATA', '1')
-  vi.stubEnv('ORCA_TYPING_BENCH_METADATA_STATUS', '1')
+  vi.stubEnv('OCC_TYPING_BENCH_CPU_WORKERS', '4')
+  vi.stubEnv('OCC_TYPING_BENCH_PTY_METADATA', '1')
+  vi.stubEnv('OCC_TYPING_BENCH_METADATA_STATUS', '1')
   vi.spyOn(console, 'log').mockImplementation(() => undefined)
   const { writeBenchReport } = await import('./multi-workspace-typing-bench')
   const measurement = buildPacedTypingMeasurement({

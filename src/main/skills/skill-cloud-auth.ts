@@ -1,7 +1,7 @@
 import type { SkillCloudOperation, SkillCloudOptions } from '../../shared/skill-cloud-contract'
-import { ensureActiveOrcaProfile } from '../orca-profiles/profile-index-store'
-import { getOrcaCloudAuthConfig } from '../orca-profiles/profile-cloud-auth-config'
-import { runWithFreshOrcaCloudSession } from '../orca-profiles/profile-cloud-session-refresh'
+import { ensureActiveOCCProfile } from '../occ-profiles/profile-index-store'
+import { getOCCCloudAuthConfig } from '../occ-profiles/profile-cloud-auth-config'
+import { runWithFreshOCCCloudSession } from '../occ-profiles/profile-cloud-session-refresh'
 import {
   allowsArtifactCloudAuthOverride,
   resolveArtifactCloudApiUrl
@@ -13,7 +13,7 @@ export async function runSkillCloudOperation<T>(input: {
   operation(token: string, apiUrl: string): Promise<T>
 }): Promise<SkillCloudOperation<T>> {
   const apiUrl = resolveArtifactCloudApiUrl(input.options.apiUrl)
-  const active = ensureActiveOrcaProfile(input.userDataPath)
+  const active = ensureActiveOCCProfile(input.userDataPath)
   const stamp = {
     profileId: active.profile.id,
     userId: active.profile.cloud?.userId,
@@ -21,7 +21,7 @@ export async function runSkillCloudOperation<T>(input: {
     organizationId: active.profile.cloud?.activeOrgId ?? ''
   }
   const assertCurrent = () => {
-    const current = ensureActiveOrcaProfile(input.userDataPath)
+    const current = ensureActiveOCCProfile(input.userDataPath)
     if (
       current.profile.id !== stamp.profileId ||
       current.profile.cloud?.userId !== stamp.userId ||
@@ -31,7 +31,7 @@ export async function runSkillCloudOperation<T>(input: {
       throw new Error('The signed-in OCC account changed during the skill request.')
     }
   }
-  const override = input.options.authToken?.trim() || process.env.ORCA_CLOUD_AUTH_TOKEN?.trim()
+  const override = input.options.authToken?.trim() || process.env.OCC_CLOUD_AUTH_TOKEN?.trim()
   if (override) {
     if (!allowsArtifactCloudAuthOverride()) {
       throw new Error('Skill authentication overrides are available only in development builds.')
@@ -40,11 +40,11 @@ export async function runSkillCloudOperation<T>(input: {
     assertCurrent()
     return { status: 'ok', value }
   }
-  const config = getOrcaCloudAuthConfig()
+  const config = getOCCCloudAuthConfig()
   if (!config.configured) {
     return { status: 'unconfigured', message: config.setupMessage }
   }
-  const result = await runWithFreshOrcaCloudSession(
+  const result = await runWithFreshOCCCloudSession(
     config.config,
     active,
     input.userDataPath,

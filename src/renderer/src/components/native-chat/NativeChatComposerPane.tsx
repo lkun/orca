@@ -125,7 +125,7 @@ export const NativeChatComposerPane = forwardRef<ComposerHandle, C.NativeChatCom
       completeItem,
       completeMention,
       dismiss,
-      handleDraftOrCaretChange
+      handleDraftoccretChange
     } = picker
     const mentionFiles = useNativeChatMentionFiles({
       query: autocomplete.mode === 'mention' ? autocomplete.query : null,
@@ -298,7 +298,7 @@ export const NativeChatComposerPane = forwardRef<ComposerHandle, C.NativeChatCom
       disabled,
       sendPty,
       sendStructured,
-      consumeOrcaCommand: resume.consume,
+      consumeOCCCommand: resume.consume,
       setDraft,
       setCaret
     })
@@ -355,7 +355,7 @@ export const NativeChatComposerPane = forwardRef<ComposerHandle, C.NativeChatCom
       setDraft,
       setCaret,
       setActiveSuggestion,
-      handleDraftOrCaretChange,
+      handleDraftoccretChange,
       flushDraftAppends,
       flushPendingAttachments: attachments.flushPendingAttachments
     })

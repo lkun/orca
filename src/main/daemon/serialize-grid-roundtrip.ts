@@ -3,7 +3,7 @@ import { Terminal } from '@xterm/headless'
 import { createRequire } from 'node:module'
 import { SerializeAddon } from '@xterm/addon-serialize'
 import { Unicode11Addon } from '@xterm/addon-unicode11'
-import { activateOrcaTerminalUnicodeProvider } from '../../shared/terminal-unicode-provider'
+import { activateOCCTerminalUnicodeProvider } from '../../shared/terminal-unicode-provider'
 import {
   readSavedCursorRegister,
   serializeWithAbsoluteCursor
@@ -28,9 +28,9 @@ export function loadOldSerializer(path: string): NamedSerializer {
   return loadSerializerBuild('old', path)
 }
 
-// ORCA_NEW_SERIALIZE_ADDON compares two arbitrary refs without reinstalling node_modules.
-export const NEW_SERIALIZER: NamedSerializer = process.env.ORCA_NEW_SERIALIZE_ADDON
-  ? loadSerializerBuild('new', process.env.ORCA_NEW_SERIALIZE_ADDON)
+// OCC_NEW_SERIALIZE_ADDON compares two arbitrary refs without reinstalling node_modules.
+export const NEW_SERIALIZER: NamedSerializer = process.env.OCC_NEW_SERIALIZE_ADDON
+  ? loadSerializerBuild('new', process.env.OCC_NEW_SERIALIZE_ADDON)
   : { name: 'new', create: () => new SerializeAddon() }
 
 export type { GridDiff } from './serialize-grid-cell-descriptors'
@@ -68,7 +68,7 @@ export function createFuzzTerminal(opts: {
     ...(opts.conpty ? { windowsPty: { backend: 'conpty', buildNumber: 19041 } } : {})
   })
   terminal.loadAddon(new Unicode11Addon())
-  activateOrcaTerminalUnicodeProvider(terminal)
+  activateOCCTerminalUnicodeProvider(terminal)
   return terminal
 }
 

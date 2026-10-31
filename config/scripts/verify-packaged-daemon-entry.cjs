@@ -162,7 +162,7 @@ async function runTerminalHostRoundTrip({
   const scratch = mkdtempSync(scratchPrefix)
   const socketPath = join(scratch, 'd.sock')
   const tokenPath = join(scratch, 'token')
-  const env = { ...process.env, ORCA_USER_DATA_PATH: join(scratch, 'user-data') }
+  const env = { ...process.env, OCC_USER_DATA_PATH: join(scratch, 'user-data') }
   delete env.ELECTRON_RUN_AS_NODE
   const daemon = spawn(
     command[0],
@@ -263,7 +263,7 @@ async function verifyPackagedMacTerminalHostBoots(appPath, { arch, required }) {
   }
   const stderr = []
   // Boot clone outside build tree so ancestor node_modules cannot satisfy missing packaged dependency.
-  const isolated = mkdtempSync(join(tmpdir(), 'orca-terminal-host-boot-'))
+  const isolated = mkdtempSync(join(tmpdir(), 'occ-terminal-host-boot-'))
   const clone = join(isolated, 'OCC Terminal Host.app')
   try {
     const cloned = spawnSync('/bin/cp', ['-cR', paths.bundle, clone], { encoding: 'utf8' })

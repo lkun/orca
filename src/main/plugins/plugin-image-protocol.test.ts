@@ -49,7 +49,7 @@ function png(width: number, height: number): Buffer {
 const sha = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex')
 
 async function temp(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-image-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-image-'))
   roots.push(root)
   return root
 }
@@ -77,10 +77,10 @@ describe('plugin image URLs', () => {
       slot: 'new-file-3'
     })
     for (const url of [
-      `orca-plugin-image://installed/acme.demo/${hash}/editor-x`,
-      'orca-plugin-image://sha/../etc',
-      'orca-plugin-image://installed/acme.demo/abc/icon',
-      'orca-plugin-image://installed/acme.demo/dev/main',
+      `occ-plugin-image://installed/acme.demo/${hash}/editor-x`,
+      'occ-plugin-image://sha/../etc',
+      'occ-plugin-image://installed/acme.demo/abc/icon',
+      'occ-plugin-image://installed/acme.demo/dev/main',
       'https://example.com/a.png'
     ]) {
       expect(parsePluginImageUrl(url), url).toBeNull()
@@ -103,7 +103,7 @@ describe('plugin image protocol', () => {
       publisher: 'acme',
       name: 'Demo',
       version: '1.0.0',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
       icon: 'images/icon.png'
     })
     const handler = createPluginImageRequestHandler({
@@ -145,7 +145,7 @@ describe('plugin image protocol', () => {
       publisher: 'acme',
       name: 'Draw',
       version: '1.0.0',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
       contributes: {
         customEditors: [
           {
@@ -203,7 +203,7 @@ describe('extractCatalogImages', () => {
       commit: 'c'.repeat(40),
       contentHash: 'f'.repeat(64),
       execution: 'data' as const,
-      minimumOrca: '1.4.0',
+      minimumOCC: '1.4.0',
       types: ['app-theme' as const],
       images: {
         cover: image('a/cover.png', sha(cover)),

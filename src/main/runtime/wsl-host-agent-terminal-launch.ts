@@ -1,4 +1,4 @@
-import { isWslHostOrcadProcess } from '../ipc/wsl-guest-windows-drive-path'
+import { isWslHostOCCdProcess } from '../ipc/wsl-guest-windows-drive-path'
 import { resolveGuestNativeAgentCommand } from '../codex-cli/command'
 import {
   isWindowsOnlyAgentCommand,
@@ -10,7 +10,7 @@ import {
   getTuiAgentLaunchCommand,
   TUI_AGENT_CONFIG
 } from '../../shared/tui-agent-config'
-import { getOrcaCliCommandNameForPlatform } from '../../shared/orca-cli-command-name'
+import { getOCCCliCommandNameForPlatform } from '../../shared/occ-cli-command-name'
 import { hasExplicitTuiLaunchCommand } from '../../shared/tui-agent-launch-command-override'
 import {
   quoteStartupArg,
@@ -37,7 +37,7 @@ type WslHostAgentCommandArgs = {
 }
 
 /**
- * On a WSL-host orcad, launch the stock agent by its distro path, or refuse when only a Windows copy
+ * On a WSL-host occd, launch the stock agent by its distro path, or refuse when only a Windows copy
  * exists, as chat does; a bare name would reach the Windows shim through PATH interop. The PTY env is
  * untouched. Unchanged off a WSL host, for remote launches, and under an explicit Command setting.
  */
@@ -88,7 +88,7 @@ export function resolveWslHostAgentResumeInputs<
 
 function appliesOnWslHost(args: WslHostAgentCommandArgs, probe: WslHostAgentProbe): boolean {
   return (
-    (probe.isWslHost ?? isWslHostOrcadProcess()) &&
+    (probe.isWslHost ?? isWslHostOCCdProcess()) &&
     !args.isRemote &&
     !hasExplicitTuiLaunchCommand({ agentCmdOverrides: args.cmdOverrides }, args.agent)
   )
@@ -112,10 +112,10 @@ function resolveWslHostStockProgram(
       throw windowsOnlyRefusal(required, name, agent)
     }
   }
-  // Wrapper launches (Agent Teams runs OCC's CLI as `orca` or `occ-ide`) keep their command.
+  // Wrapper launches (Agent Teams runs OCC's CLI as `occ` or `occ-ide`) keep their command.
   if (
     program !== config.detectCmd ||
-    getTuiAgentDetectCommands(config).includes(getOrcaCliCommandNameForPlatform(platform))
+    getTuiAgentDetectCommands(config).includes(getOCCCliCommandNameForPlatform(platform))
   ) {
     return null
   }

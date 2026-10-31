@@ -13,7 +13,7 @@ export type BrowserPopupEvent = {
   /** Sanitized to origin/host so auth query params never leak into UI state. */
   origin: string
   /** Whether OCC opened the target in OCC, opened it externally, or blocked it as unsafe. */
-  action: 'opened-in-orca' | 'opened-external' | 'blocked'
+  action: 'opened-in-occ' | 'opened-external' | 'blocked'
 }
 
 export type BrowserDownloadRequestedEvent = {

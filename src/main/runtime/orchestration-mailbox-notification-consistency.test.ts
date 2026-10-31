@@ -6,7 +6,7 @@ import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { ORCHESTRATION_CONTRACT_VERSION } from '../../shared/protocol-version'
 import { OrchestrationDb } from './orchestration/db'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import {
   checkBoundMailbox,
   createBoundRun,
@@ -107,7 +107,7 @@ describe('orchestration notification mailbox consistency', () => {
 
   it('reconciles the persisted production mismatch after runtime restart', async () => {
     vi.useFakeTimers()
-    const directory = mkdtempSync(join(tmpdir(), 'orca-mailbox-upgrade-restart-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-mailbox-upgrade-restart-'))
     temporaryDirectories.push(directory)
     const dbPath = join(directory, 'orchestration.db')
     const oldDb = new OrchestrationDb(dbPath)
@@ -289,7 +289,7 @@ describe('orchestration notification mailbox consistency', () => {
 
   it('does not submit or replay a pointer after ownership changes during Enter delay', async () => {
     vi.useFakeTimers()
-    const directory = mkdtempSync(join(tmpdir(), 'orca-mailbox-restart-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-mailbox-restart-'))
     temporaryDirectories.push(directory)
     const dbPath = join(directory, 'orchestration.db')
     const firstDb = new OrchestrationDb(dbPath)
@@ -322,7 +322,7 @@ describe('orchestration notification mailbox consistency', () => {
 
   it('does not replay Enter for an ambiguous staged pointer after restart', async () => {
     vi.useFakeTimers()
-    const directory = mkdtempSync(join(tmpdir(), 'orca-mailbox-staged-restart-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-mailbox-staged-restart-'))
     temporaryDirectories.push(directory)
     const dbPath = join(directory, 'orchestration.db')
     const firstDb = new OrchestrationDb(dbPath)
@@ -361,7 +361,7 @@ describe('orchestration notification mailbox consistency', () => {
 
   it('never resumes a staged Enter after the restored agent starts working', async () => {
     vi.useFakeTimers()
-    const directory = mkdtempSync(join(tmpdir(), 'orca-mailbox-working-restart-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-mailbox-working-restart-'))
     temporaryDirectories.push(directory)
     const dbPath = join(directory, 'orchestration.db')
     const firstDb = new OrchestrationDb(dbPath)
@@ -474,7 +474,7 @@ describe('orchestration notification mailbox consistency', () => {
   })
 
   // Main remints duplicate leaf ids at load, so equivalent-pane serialization applies only to window-owned layouts.
-  it.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
+  it.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)(
     'serializes equivalent panes while newer mail arrives during Enter delay',
     async () => {
       vi.useFakeTimers()
@@ -776,7 +776,7 @@ describe('orchestration notification mailbox consistency', () => {
 
   it('does not replay a successfully submitted actionable pointer after restart', async () => {
     vi.useFakeTimers()
-    const directory = mkdtempSync(join(tmpdir(), 'orca-mailbox-actionable-restart-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-mailbox-actionable-restart-'))
     temporaryDirectories.push(directory)
     const dbPath = join(directory, 'orchestration.db')
     const firstDb = new OrchestrationDb(dbPath)

@@ -14,8 +14,8 @@ import { mobileRelayMintFailureFromUnknown } from '../../../shared/mobile-relay-
 const encoder = new TextEncoder()
 
 type ControlFrame = { type: string } & Record<string, unknown>
-const HOST_PROOF_DOMAIN = 'orca-relay-host-proof/v1'
-const CHALLENGE_DOMAIN = 'orca-relay-host-challenge/v1'
+const HOST_PROOF_DOMAIN = 'occ-relay-host-proof/v1'
+const CHALLENGE_DOMAIN = 'occ-relay-host-challenge/v1'
 
 function concat(parts: readonly Uint8Array[]): Uint8Array {
   const output = new Uint8Array(parts.reduce((total, part) => total + part.byteLength, 0))
@@ -244,7 +244,7 @@ describe('RelayControlClient', () => {
         resolve({
           socket,
           authorization: String(request.headers.authorization),
-          capabilities: String(request.headers['x-orca-host-capabilities']),
+          capabilities: String(request.headers['x-occ-host-capabilities']),
           path: request.url ?? ''
         })
       )

@@ -113,7 +113,7 @@ function createHealRig(options: {
   buildInvocation: (systemCodexHomePath: string, timeoutMs: number) => CodexAppServerInvocation
   readLog: () => { serverStarts: number; threadIds: string[]; maxInFlight: number }
 } {
-  const root = mkdtempSync(join(tmpdir(), 'orca-codex-heal-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-codex-heal-'))
   tempRoots.push(root)
   const systemSessionsRoot = join(root, 'real-home', 'sessions')
   const stateDir = join(root, 'state')
@@ -803,7 +803,7 @@ describe('buildNativeHealInvocation', () => {
 
 describe('buildWslHealInvocation', () => {
   it('runs the distro codex on the guest home with the short-lived read-only args', () => {
-    const invocation = buildWslHealInvocation('Ubuntu', '/home/alice/.orca-home', 2_000)
+    const invocation = buildWslHealInvocation('Ubuntu', '/home/alice/.occ-home', 2_000)
 
     expect(invocation.cliPath).toBeNull()
     expect(invocation.env).toBeUndefined()
@@ -811,7 +811,7 @@ describe('buildWslHealInvocation', () => {
     expect(invocation.command.toLowerCase()).toMatch(/wsl\.exe$/)
     expect(invocation.args.slice(0, 4)).toEqual(['-d', 'Ubuntu', '--exec', 'sh'])
     const guestCommand = invocation.args.at(-1) ?? ''
-    expect(guestCommand).toContain('/home/alice/.orca-home')
+    expect(guestCommand).toContain('/home/alice/.occ-home')
     expect(guestCommand).toContain('features.plugins=false')
     expect(guestCommand).toContain('app-server')
   })

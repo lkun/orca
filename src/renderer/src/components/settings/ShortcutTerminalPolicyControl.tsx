@@ -52,7 +52,7 @@ export function ShortcutTerminalPolicyControl({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="orca-first">
+              <SelectItem value="occ-first">
                 {translate(
                   'auto.components.settings.ShortcutTerminalPolicyControl.63308571d8',
                   'OCC first'

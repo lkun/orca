@@ -24,12 +24,12 @@ import { runExclusivelyForCodexTrustConfig } from './codex-trust-config-mutation
 import { getRealHomeHookKeySourcePaths } from './codex-real-home-hooks-json'
 import { mutateRealHomeHooksPreservingUserTrust } from './codex-user-hook-trust-moves'
 
-const LEGACY_ORCA_PROFILE_NAME = 'orca-agent-status'
-const LEGACY_ORCA_PROFILE_BLOCK_START = '# BEGIN ORCA AGENT STATUS HOOKS'
-const LEGACY_ORCA_PROFILE_BLOCK_END = '# END ORCA AGENT STATUS HOOKS'
+const LEGACY_OCC_PROFILE_NAME = 'occ-agent-status'
+const LEGACY_OCC_PROFILE_BLOCK_START = '# BEGIN OCC AGENT STATUS HOOKS'
+const LEGACY_OCC_PROFILE_BLOCK_END = '# END OCC AGENT STATUS HOOKS'
 
 function getLegacyCodexProfileTomlPath(): string {
-  return join(getSystemCodexHomePath(), `${LEGACY_ORCA_PROFILE_NAME}.config.toml`)
+  return join(getSystemCodexHomePath(), `${LEGACY_OCC_PROFILE_NAME}.config.toml`)
 }
 
 export function cleanupLegacySystemManagedHooks(): Promise<void> {
@@ -110,8 +110,8 @@ async function sweepLegacySystemManagedHooks(): Promise<void> {
 
 export function stripLegacyManagedProfileBlock(content: string): string {
   const regions = findManagedTomlBlocks(content, {
-    startMarker: LEGACY_ORCA_PROFILE_BLOCK_START,
-    endMarker: LEGACY_ORCA_PROFILE_BLOCK_END
+    startMarker: LEGACY_OCC_PROFILE_BLOCK_START,
+    endMarker: LEGACY_OCC_PROFILE_BLOCK_END
   })
   // Orphan markers must not hide complete blocks or consume surrounding user text.
   const region = regions.find((candidate) => candidate.terminated) ?? regions[0]

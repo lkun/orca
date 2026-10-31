@@ -2,7 +2,7 @@ import type { OrchestrationDb } from '../orchestration-db'
 
 // Frozen literals, never the live prefix constant: a migration rewrites what that build wrote.
 const LEGACY_PREFIX = 'session:'
-const CURRENT_PREFIX = 'orca_session_id:'
+const CURRENT_PREFIX = 'occ_session_id:'
 
 // Rewrite address columns only; bodies, subjects and payload text retain their original content.
 const ADDRESS_COLUMNS = [
@@ -17,7 +17,7 @@ const KEYED_ADDRESS_COLUMNS = [
   ['structured_pointer_operations', 'mailbox_handle']
 ] as const
 
-/** Respell stored session: addresses as orca_session_id: so pre-upgrade mail, routing and replies remain reachable. */
+/** Respell stored session: addresses as occ_session_id: so pre-upgrade mail, routing and replies remain reachable. */
 export function migrateV43(this: OrchestrationDb, current: number): void {
   if (current >= 43) {
     return

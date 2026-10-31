@@ -2,8 +2,8 @@ import { hostname } from 'node:os'
 import { getAppEnvironment } from '../../shared/app-environment'
 import { admitConnectorAgent, CONNECTOR_AGENTS } from '../external-conversations/connector-agents'
 import { runtimeConversationHost } from '../external-conversations/external-conversation-seam'
-import { getOrcaCloudAuthConfig } from '../orca-profiles/profile-cloud-auth-config'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import { getOCCCloudAuthConfig } from '../occ-profiles/profile-cloud-auth-config'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import type { RuntimeStore } from '../runtime/runtime-store-contract'
 import { ConnectorCloud } from './connector-cloud'
 import { resolveConnectorOrigin } from './connector-origin'
@@ -15,12 +15,12 @@ export type ConnectorCloudStore = ConnectorPlacesStore &
 
 /** Desktop only: the connector acts as the desktop's OCC account; `occ serve` has no sign-in yet. */
 export function createDesktopConnectorCloud(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   store: ConnectorCloudStore,
   userDataPath: string,
   isFenced: () => boolean
 ): ConnectorCloud | null {
-  const auth = getOrcaCloudAuthConfig()
+  const auth = getOCCCloudAuthConfig()
   if (!auth.configured) {
     return null
   }
@@ -33,7 +33,7 @@ export function createDesktopConnectorCloud(
     mintFor: (account) => desktopConnectorTokenMint(auth.config, userDataPath, account),
     machine: {
       runtime: 'desktop',
-      orcaVersion: environment.getVersion(),
+      occVersion: environment.getVersion(),
       hostName: hostname(),
       seam: () => runtime.getExternalConversationSeam(),
       conversationHost: () => runtimeConversationHost(runtime),

@@ -151,12 +151,12 @@ describe('getHostedReviewForBranch', () => {
   it('routes local WSL project branch lookup through provider detection and the selected provider', async () => {
     getProjectSlugMock.mockResolvedValue(null)
     getRepoSlugMock.mockResolvedValue(null)
-    getBitbucketRepoSlugMock.mockResolvedValue({ workspace: 'team', repoSlug: 'orca' })
+    getBitbucketRepoSlugMock.mockResolvedValue({ workspace: 'team', repoSlug: 'occ' })
     getBitbucketPullRequestForBranchMock.mockResolvedValue({
       number: 22,
       title: 'Bitbucket WSL branch',
       state: 'open',
-      url: 'https://bitbucket.org/team/orca/pull-requests/22',
+      url: 'https://bitbucket.org/team/occ/pull-requests/22',
       status: 'pending',
       updatedAt: '2026-06-16T00:00:00.000Z',
       mergeable: 'UNKNOWN'
@@ -227,12 +227,12 @@ describe('getHostedReviewForBranch', () => {
   it('falls through to Bitbucket when origin is not GitLab or GitHub', async () => {
     getProjectSlugMock.mockResolvedValue(null)
     getRepoSlugMock.mockResolvedValue(null)
-    getBitbucketRepoSlugMock.mockResolvedValue({ workspace: 'team', repoSlug: 'orca' })
+    getBitbucketRepoSlugMock.mockResolvedValue({ workspace: 'team', repoSlug: 'occ' })
     getBitbucketPullRequestForBranchMock.mockResolvedValue({
       number: 11,
       title: 'Bitbucket branch',
       state: 'open',
-      url: 'https://bitbucket.org/team/orca/pull-requests/11',
+      url: 'https://bitbucket.org/team/occ/pull-requests/11',
       status: 'success',
       updatedAt: '2026-05-10T00:00:00.000Z',
       mergeable: 'UNKNOWN',
@@ -251,7 +251,7 @@ describe('getHostedReviewForBranch', () => {
       number: 11,
       title: 'Bitbucket branch',
       state: 'open',
-      url: 'https://bitbucket.org/team/orca/pull-requests/11',
+      url: 'https://bitbucket.org/team/occ/pull-requests/11',
       status: 'success',
       updatedAt: '2026-05-10T00:00:00.000Z',
       mergeable: 'UNKNOWN',
@@ -274,13 +274,13 @@ describe('getHostedReviewForBranch', () => {
     getGiteaRepoSlugMock.mockResolvedValue({
       host: 'git.example.com',
       owner: 'team',
-      repo: 'orca'
+      repo: 'occ'
     })
     getGiteaPullRequestForBranchMock.mockResolvedValue({
       number: 14,
       title: 'Gitea branch',
       state: 'open',
-      url: 'https://git.example.com/team/orca/pulls/14',
+      url: 'https://git.example.com/team/occ/pulls/14',
       status: 'pending',
       updatedAt: '2026-05-15T00:00:00.000Z',
       mergeable: 'MERGEABLE',
@@ -299,7 +299,7 @@ describe('getHostedReviewForBranch', () => {
       number: 14,
       title: 'Gitea branch',
       state: 'open',
-      url: 'https://git.example.com/team/orca/pulls/14',
+      url: 'https://git.example.com/team/occ/pulls/14',
       status: 'pending',
       updatedAt: '2026-05-15T00:00:00.000Z',
       mergeable: 'MERGEABLE',
@@ -322,13 +322,13 @@ describe('getHostedReviewForBranch', () => {
       host: 'dev.azure.com',
       organization: 'team',
       project: 'Project',
-      repository: 'orca'
+      repository: 'occ'
     })
     getAzureDevOpsPullRequestForBranchMock.mockResolvedValue({
       number: 21,
       title: 'Azure branch',
       state: 'open',
-      url: 'https://dev.azure.com/team/Project/_git/orca/pullrequest/21',
+      url: 'https://dev.azure.com/team/Project/_git/occ/pullrequest/21',
       status: 'success',
       updatedAt: '2026-05-16T00:00:00.000Z',
       mergeable: 'MERGEABLE',
@@ -347,7 +347,7 @@ describe('getHostedReviewForBranch', () => {
       number: 21,
       title: 'Azure branch',
       state: 'open',
-      url: 'https://dev.azure.com/team/Project/_git/orca/pullrequest/21',
+      url: 'https://dev.azure.com/team/Project/_git/occ/pullrequest/21',
       status: 'success',
       updatedAt: '2026-05-16T00:00:00.000Z',
       mergeable: 'MERGEABLE',

@@ -37,7 +37,7 @@ import { join } from 'node:path'
 import { registerMobileHandlers } from './mobile'
 import { NETWORK_EXPOSURE_FAILED_GUIDANCE } from '../runtime/network-exposure-guidance'
 import { createMobileRpcSurfaceRuntime } from '../runtime/runtime-rpc-mobile-method-allowlist-fixtures'
-import { OrcaRuntimeRpcServer } from '../runtime/runtime-rpc'
+import { OCCRuntimeRpcServer } from '../runtime/runtime-rpc'
 import { WebSocketTransport } from '../runtime/rpc/ws-transport'
 
 // Match production's IPv4-only widened listener.
@@ -795,7 +795,7 @@ describe('registerMobileHandlers', () => {
 describe('runtime pairing bind host', () => {
   const handlers = new Map<string, (...args: unknown[]) => unknown>()
 
-  const wsTransportOf = (server: OrcaRuntimeRpcServer): WebSocketTransport | undefined =>
+  const wsTransportOf = (server: OCCRuntimeRpcServer): WebSocketTransport | undefined =>
     (server['activeTransports'] as unknown[]).find(
       (transport): transport is WebSocketTransport => transport instanceof WebSocketTransport
     )
@@ -809,8 +809,8 @@ describe('runtime pairing bind host', () => {
     })
   })
 
-  const startServer = async (userDataPath: string): Promise<OrcaRuntimeRpcServer> => {
-    const server = new OrcaRuntimeRpcServer({
+  const startServer = async (userDataPath: string): Promise<OCCRuntimeRpcServer> => {
+    const server = new OCCRuntimeRpcServer({
       methods: [],
       runtime: createMobileRpcSurfaceRuntime().runtime,
       userDataPath,
@@ -822,7 +822,7 @@ describe('runtime pairing bind host', () => {
   }
 
   it('keeps a real listener on loopback for a local link and widens it only for an off-host one', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-mobile-ipc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-mobile-ipc-'))
     const server = await startServer(userDataPath)
 
     try {
@@ -855,7 +855,7 @@ describe('runtime pairing bind host', () => {
 
   // Authenticated local links must not cause the next launch to bind every interface.
   it('still binds loopback on the next launch after the local link has been used', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-mobile-ipc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-mobile-ipc-'))
     const server = await startServer(userDataPath)
     let deviceId: string
     try {
@@ -888,7 +888,7 @@ describe('runtime pairing bind host', () => {
   })
 
   it('binds all interfaces on the next launch after a network link has been used', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-mobile-ipc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-mobile-ipc-'))
     const server = await startServer(userDataPath)
     try {
       registerMobileHandlers(server)

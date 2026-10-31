@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { expect, it } from 'vitest'
 import { parse } from 'yaml'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 
 const workflow = parse(
   readFileSync(new URL('../../.github/workflows/cloud-verify.yml', import.meta.url), 'utf8')
@@ -13,7 +13,7 @@ const steps = workflow.jobs.security.steps
 const history = steps.find((step) => step.name === 'Fetch complete scan history')
 
 it('fetches both merge parents and deleted content without unrelated branches or tags', () => {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-cloud-history-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-cloud-history-'))
   const source = join(directory, 'source')
   const checkout = join(directory, 'checkout')
   const run = (program, args, cwd, env = process.env) => {

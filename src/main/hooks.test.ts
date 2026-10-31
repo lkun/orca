@@ -220,7 +220,7 @@ describe('runHook', () => {
       const { runHook } = await import('./hooks')
       const result = await runHook('setup', '\\\\wsl.localhost\\Ubuntu\\home\\jin\\feature', {
         ...makeRepo(),
-        path: 'C:\\Users\\jinwo\\git\\orca'
+        path: 'C:\\Users\\jinwo\\git\\occ'
       })
 
       expect(result).toEqual({ success: true, output: '' })
@@ -232,10 +232,10 @@ describe('runHook', () => {
           cwd: '/home/jin/feature',
           // WSL hooks must receive the credential guard inside the guest (#7652).
           env: expect.objectContaining({
-            ORCA_ROOT_PATH: '/mnt/c/Users/jinwo/git/orca',
-            ORCA_WORKTREE_PATH: '/home/jin/feature',
-            CONDUCTOR_ROOT_PATH: '/mnt/c/Users/jinwo/git/orca',
-            GHOSTX_ROOT_PATH: '/mnt/c/Users/jinwo/git/orca',
+            OCC_ROOT_PATH: '/mnt/c/Users/jinwo/git/occ',
+            OCC_WORKTREE_PATH: '/home/jin/feature',
+            CONDUCTOR_ROOT_PATH: '/mnt/c/Users/jinwo/git/occ',
+            GHOSTX_ROOT_PATH: '/mnt/c/Users/jinwo/git/occ',
             GIT_TERMINAL_PROMPT: '0',
             GCM_INTERACTIVE: 'never'
           })
@@ -276,10 +276,10 @@ describe('runHook', () => {
       const { runHook } = await import('./hooks')
       const result = await runHook(
         'setup',
-        'C:\\Users\\jinwo\\git\\orca-feature',
+        'C:\\Users\\jinwo\\git\\occ-feature',
         {
           ...makeRepo(),
-          path: 'C:\\Users\\jinwo\\git\\orca'
+          path: 'C:\\Users\\jinwo\\git\\occ'
         },
         undefined,
         { wslDistro: 'Ubuntu' }
@@ -291,12 +291,12 @@ describe('runHook', () => {
           distro: 'Ubuntu',
           loginPath: 'preferred',
           script: 'echo hello',
-          cwd: '/mnt/c/Users/jinwo/git/orca-feature',
+          cwd: '/mnt/c/Users/jinwo/git/occ-feature',
           env: expect.objectContaining({
-            ORCA_ROOT_PATH: '/mnt/c/Users/jinwo/git/orca',
-            ORCA_WORKTREE_PATH: '/mnt/c/Users/jinwo/git/orca-feature',
-            CONDUCTOR_ROOT_PATH: '/mnt/c/Users/jinwo/git/orca',
-            GHOSTX_ROOT_PATH: '/mnt/c/Users/jinwo/git/orca'
+            OCC_ROOT_PATH: '/mnt/c/Users/jinwo/git/occ',
+            OCC_WORKTREE_PATH: '/mnt/c/Users/jinwo/git/occ-feature',
+            CONDUCTOR_ROOT_PATH: '/mnt/c/Users/jinwo/git/occ',
+            GHOSTX_ROOT_PATH: '/mnt/c/Users/jinwo/git/occ'
           })
         })
       )
@@ -311,7 +311,7 @@ describe('runHook', () => {
 
   it('writes Windows-path setup runners for a project whose runtime targets WSL', async () => {
     gitExecFileSyncMock.mockReset()
-    gitExecFileSyncMock.mockReturnValue('/mnt/c/Users/jinwo/git/orca/.git/orca/setup-runner.sh\n')
+    gitExecFileSyncMock.mockReturnValue('/mnt/c/Users/jinwo/git/occ/.git/occ/setup-runner.sh\n')
 
     const fs = await import('node:fs')
     const mkdirSyncMock = vi.mocked(fs.mkdirSync)
@@ -329,18 +329,18 @@ describe('runHook', () => {
       const result = createSetupRunnerScript(
         {
           ...makeRepo(),
-          path: 'C:\\Users\\jinwo\\git\\orca'
+          path: 'C:\\Users\\jinwo\\git\\occ'
         },
-        'C:\\Users\\jinwo\\git\\orca-feature',
+        'C:\\Users\\jinwo\\git\\occ-feature',
         'echo hello',
         { wslDistro: 'Ubuntu' }
       )
 
       expect(gitExecFileSyncMock).toHaveBeenCalledWith(
-        ['rev-parse', '--git-path', 'orca/setup-runner.sh'],
+        ['rev-parse', '--git-path', 'occ/setup-runner.sh'],
         // The lookup is synchronous, so it runs host Git (as on main) rather than a blocking wsl.exe.
         {
-          cwd: 'C:\\Users\\jinwo\\git\\orca-feature',
+          cwd: 'C:\\Users\\jinwo\\git\\occ-feature',
           hostGit: true
         }
       )
@@ -388,7 +388,7 @@ describe('runHook', () => {
       const { runHook } = await import('./hooks')
       const result = await runHook('setup', '\\\\wsl.localhost\\Ubuntu\\home\\jin\\feature', {
         ...makeRepo(),
-        path: 'C:\\Users\\jinwo\\git\\orca'
+        path: 'C:\\Users\\jinwo\\git\\occ'
       })
 
       expect(result).toMatchObject({

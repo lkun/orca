@@ -17,7 +17,7 @@ afterEach(async () => {
 })
 
 async function themePlugin(files: { app?: unknown; terminal?: unknown }) {
-  const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-theme-registry-'))
+  const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-theme-registry-'))
   roots.push(rootDir)
   await writeFile(join(rootDir, 'app.json'), JSON.stringify(files.app ?? {}))
   await writeFile(join(rootDir, 'terminal.json'), JSON.stringify(files.terminal ?? {}))
@@ -27,7 +27,7 @@ async function themePlugin(files: { app?: unknown; terminal?: unknown }) {
     publisher: 'samples',
     name: 'Midnight',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     contributes: {
       themes: [{ id: 'midnight', title: 'Midnight', path: 'app.json' }],

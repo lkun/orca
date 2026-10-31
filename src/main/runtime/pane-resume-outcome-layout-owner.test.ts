@@ -1,18 +1,18 @@
 // Main publishes transient resume outcomes for attaching windows; plain starts and window-owned layouts publish none.
 import { describe, expect, it, vi } from 'vitest'
 import { LOCAL_EXECUTION_HOST_ID, type ExecutionHostId } from '../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import type { PaneResumeOutcome } from '../../shared/workspace-layout/workspace-layout-published'
 
 // Fragments stay side-effect ordered: mocks, then lifecycle, then fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('./orca-runtime-test-fixtures.spec')
+} = await import('./occ-runtime-test-fixtures.spec')
 
 const PANE = { worktreeId: TEST_WORKTREE_ID, tabId: 'host-tab', leafId: HEADLESS_LEAF_ID }
 const PANE_KEY = `${PANE.tabId}:${PANE.leafId}`
@@ -41,7 +41,7 @@ function resumablePaneRuntime(outcome: PaneResumeOutcome | undefined, recorded =
         : {}
     )
   )
-  const runtime = new OrcaRuntimeService(
+  const runtime = new OCCRuntimeService(
     Object.assign(fixture.runtimeStore, {
       getWorkspaceSessionHostIds: (): ExecutionHostId[] => [LOCAL_EXECUTION_HOST_ID]
     })
@@ -73,7 +73,7 @@ function resumablePaneRuntime(outcome: PaneResumeOutcome | undefined, recorded =
 }
 
 /** The pane as main publishes it to a paired desktop. */
-function publishedPane(runtime: InstanceType<typeof OrcaRuntimeService>) {
+function publishedPane(runtime: InstanceType<typeof OCCRuntimeService>) {
   const { snapshot, unsubscribe } = runtime.subscribeWorkspaceLayouts(() => {})
   unsubscribe()
   return snapshot
@@ -97,7 +97,7 @@ describe("main's start of a pane publishes its resume outcome", () => {
       )
       const pane = publishedPane(runtime)
       expect(pane?.ptyId).toBe('persisted-pty')
-      expect(pane?.resumeOutcome).toBe(ORCA_LAYOUT_OWNER_IS_MAIN ? outcome : undefined)
+      expect(pane?.resumeOutcome).toBe(OCC_LAYOUT_OWNER_IS_MAIN ? outcome : undefined)
       expect(JSON.stringify(getSession())).not.toContain('resumeOutcome')
     }
   )
@@ -116,7 +116,7 @@ describe("main's start of a pane publishes its resume outcome", () => {
 
     expect(publishedPane(runtime)?.ptyId).toBe('persisted-pty')
     expect(publishedPane(runtime)?.resumeOutcome).toBe(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? 'restored' : undefined
+      OCC_LAYOUT_OWNER_IS_MAIN ? 'restored' : undefined
     )
   })
 
@@ -133,7 +133,7 @@ describe("main's start of a pane publishes its resume outcome", () => {
     const { runtime, getSession, setSession, desktopStream } = resumablePaneRuntime('restored')
     await runtime.ensureRestoredPaneStarted(PANE)
     expect(publishedPane(runtime)?.resumeOutcome).toBe(
-      ORCA_LAYOUT_OWNER_IS_MAIN ? 'restored' : undefined
+      OCC_LAYOUT_OWNER_IS_MAIN ? 'restored' : undefined
     )
     const session = getSession()
     const layout = session.terminalLayoutsByTabId[PANE.tabId]!

@@ -2,7 +2,7 @@ import type { AgentStatusIpcPayload } from '../../shared/agent-status-types'
 import { isWslHookRelayConnectionId } from '../../shared/wsl-hook-relay-contract'
 
 // Encode connection and file in the engine’s single path string so local files cannot answer remote reads.
-const SSH_TRANSCRIPT_PATH_PREFIX = 'orca-ssh-transcript:'
+const SSH_TRANSCRIPT_PATH_PREFIX = 'occ-ssh-transcript:'
 
 export type SshTranscriptLocation = { connectionId: string; remotePath: string }
 

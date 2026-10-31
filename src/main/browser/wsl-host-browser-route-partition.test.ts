@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type {
   KnownRuntimeEnvironment,
-  OrcadDeploymentLink
+  OCCdDeploymentLink
 } from '../../shared/runtime-environments'
 
 const bindings = vi.hoisted(() => ({ filePath: '' }))
@@ -45,7 +45,7 @@ import { BrowserRoutePartitionBindingStore } from './browser-route-partition-bin
 import { resolveBrowserRoutePartitionBinding } from './browser-route-partition-migration'
 import {
   closePairedRuntimeBrowserClientHostEnvironment,
-  configurePairedRuntimeBrowserClientHostsForOrcaProfile,
+  configurePairedRuntimeBrowserClientHostsForOCCProfile,
   getPairedRuntimeBrowserClientRouteIdentity,
   startPairedRuntimeBrowserClientHost,
   type ClientHostRouteIdentity
@@ -55,14 +55,14 @@ import {
   wslHostBrowserRouteStorage
 } from './wsl-host-browser-route-partition'
 
-const ORCA_PROFILE = 'profile-a'
-const WSL_DEPLOYMENT: OrcadDeploymentLink = {
+const OCC_PROFILE = 'profile-a'
+const WSL_DEPLOYMENT: OCCdDeploymentLink = {
   kind: 'wsl',
   distro: 'Ubuntu',
   localPort: 9999,
   remotePort: 7777
 }
-const SSH_DEPLOYMENT: OrcadDeploymentLink = {
+const SSH_DEPLOYMENT: OCCdDeploymentLink = {
   sshTargetId: 'target-a',
   sshTargetGeneration: 1,
   localPort: 9999,
@@ -71,7 +71,7 @@ const SSH_DEPLOYMENT: OrcadDeploymentLink = {
 
 function environment(
   pairing: { revision: number; device: string },
-  orcadDeployment: OrcadDeploymentLink | null = WSL_DEPLOYMENT,
+  occdDeployment: OCCdDeploymentLink | null = WSL_DEPLOYMENT,
   id = 'wsl:Ubuntu'
 ): KnownRuntimeEnvironment {
   return {
@@ -83,7 +83,7 @@ function environment(
     runtimeId: null,
     pairingRevision: pairing.revision,
     pairedDeviceId: pairing.device,
-    ...(orcadDeployment ? { orcadDeployment } : {}),
+    ...(occdDeployment ? { occdDeployment } : {}),
     preferredEndpointId: 'endpoint-a',
     endpoints: [
       {
@@ -99,7 +99,7 @@ function environment(
 }
 
 function stableStorage(env: KnownRuntimeEnvironment) {
-  const result = wslHostBrowserRouteStorage(ORCA_PROFILE, env)
+  const result = wslHostBrowserRouteStorage(OCC_PROFILE, env)
   if (result.kind !== 'stable') {
     throw new Error(`expected a stable partition, got ${result.reason}`)
   }
@@ -127,7 +127,7 @@ async function pagePartition(
 ): Promise<string> {
   const identity = await liveRouteIdentity(env, authorityRuntimeId)
   const page = (authorityConnectionIdentity: string, executionHostIdentity: string) => ({
-    orcaProfileId: identity.orcaProfileId,
+    occProfileId: identity.occProfileId,
     browserProfileId,
     authorityConnectionIdentity,
     executionHostIdentity
@@ -163,7 +163,7 @@ async function pagePartition(
 let directory: string
 
 beforeEach(() => {
-  configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: ORCA_PROFILE })
+  configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: OCC_PROFILE })
   directory = realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'wsl-host-route-')))
   bindings.filePath = join(directory, 'bindings.json')
 })
@@ -172,7 +172,7 @@ afterEach(() => {
 })
 
 describe('WSL host browser route partition', () => {
-  it('is the partition the host pages later use, across an orcad relaunch and re-pair', async () => {
+  it('is the partition the host pages later use, across an occd relaunch and re-pair', async () => {
     const seeded = bindWslHostBrowserRoutePartition(
       stableStorage(environment({ revision: 10, device: 'a' })),
       'default'
@@ -223,17 +223,17 @@ describe('WSL host browser route partition', () => {
 
   it('reports no stable partition for an environment without a deployment link', () => {
     expect(
-      wslHostBrowserRouteStorage(ORCA_PROFILE, environment({ revision: 10, device: 'a' }))
+      wslHostBrowserRouteStorage(OCC_PROFILE, environment({ revision: 10, device: 'a' }))
     ).toMatchObject({ kind: 'stable' })
     expect(
-      wslHostBrowserRouteStorage(ORCA_PROFILE, environment({ revision: 10, device: 'a' }, null))
+      wslHostBrowserRouteStorage(OCC_PROFILE, environment({ revision: 10, device: 'a' }, null))
     ).toEqual({ kind: 'unavailable', reason: 'no-stable-partition' })
   })
 
   it('never resolves a managed SSH host, so its partitions stay untouched', () => {
     expect(
       wslHostBrowserRouteStorage(
-        ORCA_PROFILE,
+        OCC_PROFILE,
         environment({ revision: 10, device: 'a' }, SSH_DEPLOYMENT, 'ssh-managed')
       )
     ).toEqual({ kind: 'unavailable', reason: 'destination-not-wsl-host' })

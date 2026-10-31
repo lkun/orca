@@ -68,7 +68,7 @@ describe('filesystem-watcher real @parcel/watcher integration', () => {
     'emits fs:changed for a file created in a watched directory',
     async () => {
       // Canonicalize macOS /var temp aliases before comparing event paths.
-      tempDir = await realpath(await mkdtemp(join(tmpdir(), 'orca-fswatch-real-')))
+      tempDir = await realpath(await mkdtemp(join(tmpdir(), 'occ-fswatch-real-')))
       const sendMock = vi.fn()
       const sender = createWatcherSender(1, sendMock)
 
@@ -99,7 +99,7 @@ describe('filesystem-watcher real @parcel/watcher integration', () => {
 
   // Alias watchers must preserve subscribed path spelling even when native events report resolved roots.
   it('reports events under an aliased worktree root, not its resolved path', async () => {
-    const root = await createAliasedWatcherRoot('orca-fswatch-alias-')
+    const root = await createAliasedWatcherRoot('occ-fswatch-alias-')
     aliasedRoot = root
     await mkdir(join(root.realRoot, 'src'), { recursive: true })
 

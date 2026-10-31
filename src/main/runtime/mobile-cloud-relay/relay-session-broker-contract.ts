@@ -1,5 +1,5 @@
 import type WebSocket from 'ws'
-import type { OrcaCloudAuthConfig } from '../../orca-profiles/profile-cloud-auth-config'
+import type { OCCCloudAuthConfig } from '../../occ-profiles/profile-cloud-auth-config'
 import type {
   MobileRelayStatus,
   MobileRelayStatusPublisher
@@ -24,7 +24,7 @@ export type RelayAccessTokenRefresh =
   | { accessToken: null; hostCloseReason?: RelayHostCloseReason }
 
 export type RelaySessionBrokerOptions = {
-  authConfig: OrcaCloudAuthConfig
+  authConfig: OCCCloudAuthConfig
   accessToken: string
   identity: RelayIdentity
   keypair: E2EEKeypair

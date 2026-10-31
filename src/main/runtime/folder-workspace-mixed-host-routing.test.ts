@@ -16,14 +16,14 @@ import {
   FOLDER_KEY,
   GIT_KEY
 } from '../../shared/workspace-layout/workspace-layout-session.test-fixture'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { WorkspaceLayoutStream } from './workspace-layout-stream'
 import { collectLayoutEvents } from './workspace-layout-stream-events.test-fixture'
 import { partialRuntimeStore, storeRepo } from './runtime-store-partial-fixture'
 
 const mocks = vi.hoisted(() => ({ layoutOwnerIsMain: true }))
 vi.mock('../../shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return mocks.layoutOwnerIsMain
   }
 }))
@@ -51,7 +51,7 @@ function runtimeWithMixedFolder(
     onWorkspaceSessionWritten: () => () => {},
     applyLayoutCommand
   }
-  return { runtime: new OrcaRuntimeService(partialRuntimeStore(store)), applyLayoutCommand }
+  return { runtime: new OCCRuntimeService(partialRuntimeStore(store)), applyLayoutCommand }
 }
 
 const RATIOS = {

@@ -14,7 +14,7 @@ export function theme(input: PluginTemplateInput): PluginTemplate {
   return {
     description: 'App color theme (data only, no approval needed)',
     files: {
-      'orca-plugin.json': manifest(input, description, {
+      'occ-plugin.json': manifest(input, description, {
         execution: 'data',
         contributes: {
           themes: [{ id: `${input.id}-dark`, title: input.name, path: 'themes/dark.json' }]
@@ -48,7 +48,7 @@ export function terminalTheme(input: PluginTemplateInput): PluginTemplate {
   return {
     description: 'Terminal ANSI palette (data only, no approval needed)',
     files: {
-      'orca-plugin.json': manifest(input, 'A dark terminal palette.', {
+      'occ-plugin.json': manifest(input, 'A dark terminal palette.', {
         execution: 'data',
         contributes: {
           terminalThemes: [{ id: input.id, title: input.name, path: 'terminal/dark.json' }]
@@ -84,7 +84,7 @@ export function iconTheme(input: PluginTemplateInput): PluginTemplate {
   return {
     description: 'File and folder icon theme (data only, no approval needed)',
     files: {
-      'orca-plugin.json': manifest(input, 'File and folder icons.', {
+      'occ-plugin.json': manifest(input, 'File and folder icons.', {
         execution: 'data',
         contributes: {
           iconThemes: [{ id: input.id, title: input.name, path: 'icons/theme.json' }]
@@ -118,7 +118,7 @@ export function syntax(input: PluginTemplateInput): PluginTemplate {
   return {
     description: 'TextMate syntax highlighting for a file type (data only, no approval needed)',
     files: {
-      'orca-plugin.json': manifest(input, `Syntax highlighting for ${extension} files.`, {
+      'occ-plugin.json': manifest(input, `Syntax highlighting for ${extension} files.`, {
         execution: 'data',
         contributes: {
           syntaxes: [
@@ -169,7 +169,7 @@ export function languagePack(input: PluginTemplateInput): PluginTemplate {
   return {
     description: 'Interface translation (data only, no approval needed)',
     files: {
-      'orca-plugin.json': manifest(input, 'Translates OCC into Brazilian Portuguese.', {
+      'occ-plugin.json': manifest(input, 'Translates OCC into Brazilian Portuguese.', {
         execution: 'data',
         contributes: {
           languagePacks: [
@@ -180,7 +180,7 @@ export function languagePack(input: PluginTemplateInput): PluginTemplate {
       'locales/pt-BR.json': json({ common: { cancel: 'Cancelar', retry: 'Tentar novamente' } }),
       'README.md': readme(
         input,
-        'An OCC language pack. Keys mirror the English catalog of OCC; add translated strings to `locales/pt-BR.json`, or change the locale in `orca-plugin.json`.'
+        'An OCC language pack. Keys mirror the English catalog of OCC; add translated strings to `locales/pt-BR.json`, or change the locale in `occ-plugin.json`.'
       ),
       ...COMMON_FILES
     }

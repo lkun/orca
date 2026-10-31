@@ -1,5 +1,5 @@
 /**
- * One desktop moving one project into a WSL host backed by a real orcad profile store, with every
+ * One desktop moving one project into a WSL host backed by a real occd profile store, with every
  * step a kill point (wsl-move-store-host). Shared by the fault, update, lost-distro and
  * two-desktop tests. A test file mocks the journal itself and points its hook at `rig.at`.
  */
@@ -52,7 +52,7 @@ export type WslMoveRig = {
   userDataPath: string
   kill: WslMoveKillSwitch
   world: WslMoveWorld
-  /** The host's current store; an orcad restart replaces it. */
+  /** The host's current store; an occd restart replaces it. */
   host: Store
   /** False while the distro is unregistered: the host neither connects nor answers. */
   hostPresent: boolean
@@ -135,7 +135,7 @@ export function wslMoveRigRetentionStore(rig: WslMoveRig) {
   }
 }
 
-/** orcad stopped and started again over the same disk, as an update or a distro restart does. */
+/** occd stopped and started again over the same disk, as an update or a distro restart does. */
 export async function restartWslMoveRigHost(rig: WslMoveRig): Promise<void> {
   await rig.host.flushPendingOrThrowAsync().catch(() => {})
   rig.host = createStore()
@@ -144,10 +144,10 @@ export async function restartWslMoveRigHost(rig: WslMoveRig): Promise<void> {
 /** Startup, then the user's next move attempt reaching the host (which settles the old one). */
 export async function restartWslMoveRig(
   rig: WslMoveRig,
-  options: { hostUp: boolean; orcadRestarted: boolean }
+  options: { hostUp: boolean; occdRestarted: boolean }
 ): Promise<void> {
   rig.kill.dead = false
-  if (options.orcadRestarted) {
+  if (options.occdRestarted) {
     await restartWslMoveRigHost(rig)
   }
   await recoverInterruptedWslMoves(rig.userDataPath, () => {}, rig.world.deps.isDistroRegistered)
@@ -179,7 +179,7 @@ export function wslMoveRigOutcome(rig: WslMoveRig): WslMoveRigOutcome {
   const fence = resolveWslMoveFence(rig.userDataPath)
   const onHost = rig.host.getRepos().some((repo) => repo.id === 'repo-1')
   if (records.length === 0) {
-    const staged = rig.host.hasStagedOrcadMigrationCatalog()
+    const staged = rig.host.hasStagedOCCdMigrationCatalog()
     const owed = listWslMoveOwedHostAborts(rig.userDataPath).length > 0
     const clean =
       !onHost &&

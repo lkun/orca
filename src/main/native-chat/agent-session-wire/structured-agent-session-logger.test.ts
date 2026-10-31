@@ -136,7 +136,7 @@ describe('a failure that repeats', () => {
     report({ code: 'locked', attempt: 1 })
 
     expect(
-      written().map((span) => span.attributes['errorCause'] ?? span.attributes['error'])
+      written().map((span) => span.attributes['erroccuse'] ?? span.attributes['error'])
     ).toEqual([
       ['Error: EACCES: permission denied'],
       ['Error: EIO: i/o error'],
@@ -205,12 +205,12 @@ describe('what an Error leaves in the trace file', () => {
     logger.error('writing events failed', { scope: 'journal-event-sink', error: locked })
 
     const [corrupt, open, sqlite] = written()
-    expect(corrupt?.attributes['errorCause']).toEqual([
+    expect(corrupt?.attributes['erroccuse']).toEqual([
       'Error: read failed',
       'Error: third',
       'Error: fourth'
     ])
-    expect(open?.attributes['errorCause']).toEqual(['Error: EACCES: permission denied, open'])
+    expect(open?.attributes['erroccuse']).toEqual(['Error: EACCES: permission denied, open'])
     expect(JSON.stringify(written())).not.toContain('/private/payload')
     expect(sqlite?.attributes).toMatchObject({ errorCode: 'ERR_SQLITE_ERROR', errorErrcode: 5 })
     expect(sqlite?.exit).toMatchObject({ cause: expect.stringContaining('database is locked') })
@@ -222,7 +222,7 @@ describe('what an Error leaves in the trace file', () => {
       scope: 'x',
       error: new Error('x', { cause: Object.assign(new Error('no space'), { code: 'ENOSPC' }) })
     })
-    expect(written()[0]?.attributes['errorCause']).toEqual(['Error: no space [ENOSPC]'])
+    expect(written()[0]?.attributes['erroccuse']).toEqual(['Error: no space [ENOSPC]'])
   })
 })
 

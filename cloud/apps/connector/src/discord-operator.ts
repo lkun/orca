@@ -1,5 +1,5 @@
 import { parseArgs } from 'node:util'
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import { describeAccountHosts } from './connector-hosts.js'
 import { LINK_OPTIONS, linkIdentity, required } from './operator-link.js'
 
@@ -7,10 +7,10 @@ import { LINK_OPTIONS, linkIdentity, required } from './operator-link.js'
 const SNOWFLAKE = /^\d+$/
 
 export const DISCORD_OPERATOR_USAGE = `Usage:
-  link --guild <server id> --user <user id> --account <orca account id>
+  link --guild <server id> --user <user id> --account <occ account id>
        [--default-host <host id>] [--default-project <name or owner/name>]
        [--channel-project <channel id>=<name or owner/name>]…
-  hosts --account <orca account id>`
+  hosts --account <occ account id>`
 
 function snowflake(value: string | undefined, flag: string): string {
   if (!value || !SNOWFLAKE.test(value)) {

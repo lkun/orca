@@ -31,7 +31,7 @@ import { installMainWindowAgentStatusListeners } from '../../../../../startup/ma
 import { mainProcessState } from '../../../../../startup/main-process-state'
 import { agentHookServer } from '../../../../../agent-hooks/server'
 import { OrchestrationDb } from '../../../../orchestration/db'
-import { OrcaRuntimeService } from '../../../../orca-runtime'
+import { OCCRuntimeService } from '../../../../occ-runtime'
 import { ORCHESTRATION_WORKER_LIST_METHOD } from './worker-list-method'
 import { projectFleetWorkerPage } from './worker-observation'
 import type { HostWorktreeTarget } from '../../../../../../shared/worktree/host-qualified-identity'
@@ -61,8 +61,8 @@ function publishedHookRow(): AgentStatusIpcPayload {
 }
 
 /** A runtime whose only stubs are the pane-to-terminal lookups the real terminal registry owns. */
-function censusRuntime(): OrcaRuntimeService {
-  const runtime = new OrcaRuntimeService(null, undefined, {
+function censusRuntime(): OCCRuntimeService {
+  const runtime = new OCCRuntimeService(null, undefined, {
     getAgentStatusSnapshot: () => [publishedHookRow()]
   })
   vi.spyOn(runtime, 'getAgentStatusTerminalHandleForPaneKey').mockImplementation((paneKey) =>
@@ -192,7 +192,7 @@ describe('agent status identity across every producer and consumer path', () => 
     ])
     // The hook row names its worktree by id, so learn the id the runtime minted before publishing.
     let rows: AgentStatusIpcPayload[] = []
-    const runtime = new OrcaRuntimeService(censusStore() as never, undefined, {
+    const runtime = new OCCRuntimeService(censusStore() as never, undefined, {
       getAgentStatusSnapshot: () => rows
     })
 

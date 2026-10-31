@@ -190,7 +190,7 @@ function verdictOf(submissions: readonly AgentJournalSubmission[], clientMessage
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-codex-turn-end-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-codex-turn-end-'))
   openWaits.turnIds.length = 0
   openWaits.ended.length = 0
   openWaits.began = null
@@ -731,7 +731,7 @@ describe("a Stop pressed while Codex's turn/start is in flight", () => {
       (item) => item.body.kind === 'status' && item.body.text === 'Cancellation requested.'
     )
     expect(notes.map((note) => note.turnScope)).toEqual([{ kind: 'thread' }])
-    expect(notes[0]?.itemId).toMatch(/^orca:stop%3A\d{13}-/)
+    expect(notes[0]?.itemId).toMatch(/^occ:stop%3A\d{13}-/)
   })
 
   it('ends the child when its interrupt was refused and the turn has not opened by the end of its wait', async () => {

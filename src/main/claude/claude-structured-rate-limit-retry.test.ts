@@ -12,7 +12,7 @@ import { createClaudeJournalTranslator } from './claude-structured-journal-trans
 function apiRetry(attempt: number, observedAt: number) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     observedAt,
     message: {
       type: 'system',

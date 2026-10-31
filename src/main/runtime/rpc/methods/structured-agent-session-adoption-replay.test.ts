@@ -12,7 +12,7 @@ import { openTestAgentSessionRecordStore } from '../../agent-session-record-stor
 import type { StructuredAgentSessionAdapter } from '../../../native-chat/agent-session-wire/structured-agent-session-adapter'
 import { StructuredAgentSessionHost } from '../../../native-chat/agent-session-wire/structured-agent-session-host'
 import { setStructuredAgentSessionHost } from '../../../native-chat/agent-session-wire/structured-agent-session-registry'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import { registerBoundPty } from '../../bind-first-pane.test-fixture'
 import type { RpcRequest, RpcResponse } from '../core'
 import type { RpcDispatchStreamingOptions } from '../dispatcher-stream-options'
@@ -131,11 +131,11 @@ async function call(
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-adoption-rpc-replay-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-adoption-rpc-replay-'))
   // Why: the adopting create pre-trusts its folder in ~/.codex and OCC's managed Codex home.
   vi.stubEnv('HOME', join(root, 'home'))
   vi.stubEnv('USERPROFILE', join(root, 'home'))
-  vi.stubEnv('ORCA_USER_DATA_PATH', join(root, 'user-data'))
+  vi.stubEnv('OCC_USER_DATA_PATH', join(root, 'user-data'))
 })
 
 afterEach(async () => {
@@ -191,7 +191,7 @@ describe('committed adopting create RPC replay', () => {
     let selectedHome = originalHome
     const selectAccountHome = vi.fn(() => selectedHome)
     let writerVerdict: AgentProcessVerdict = 'live'
-    const runtime = new OrcaRuntimeService(
+    const runtime = new OCCRuntimeService(
       {
         getSettings: () => ({
           agentDefaultEnv: { codex: {} }

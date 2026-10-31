@@ -1,5 +1,5 @@
-import { runProcess } from '@orca/process-host'
-import type { ProcessResult, ProcessSpec } from '@orca/process-host/process-spec'
+import { runProcess } from '@occ/process-host'
+import type { ProcessResult, ProcessSpec } from '@occ/process-host/process-spec'
 import { buildWslExecArgs } from '../shared/wsl-login-shell-command'
 import { wslExeProcessSpec } from './wsl-exe-process'
 

@@ -42,7 +42,7 @@ export function authHeader(email: string, apiToken: string, _authType?: JiraAuth
   return `Basic ${Buffer.from(`${email}:${apiToken}`).toString('base64')}`
 }
 
-function describeErrorCause(error: unknown): string | undefined {
+function describeErroccuse(error: unknown): string | undefined {
   if (!error || typeof error !== 'object' || !('cause' in error)) {
     return undefined
   }
@@ -81,9 +81,9 @@ export async function jiraFetch(url: string, init: RequestInit): Promise<Respons
           'jira.transportErrorMessage',
           error instanceof Error ? error.message : String(error)
         )
-        const cause = describeErrorCause(error)
+        const cause = describeErroccuse(error)
         if (cause) {
-          span.setAttribute('jira.transportErrorCause', cause)
+          span.setAttribute('jira.transportErroccuse', cause)
         }
         throw error
       }

@@ -18,7 +18,7 @@ describe('HermesHookService', () => {
 
   beforeEach(() => {
     previousHermesHome = process.env.HERMES_HOME
-    homeDir = mkdtempSync(join(tmpdir(), 'orca-hermes-hooks-'))
+    homeDir = mkdtempSync(join(tmpdir(), 'occ-hermes-hooks-'))
     process.env.HERMES_HOME = homeDir
   })
 
@@ -84,7 +84,7 @@ describe('HermesHookService', () => {
         '  backend: local',
         '  client_env_passthrough:',
         '    - MY_VAR # mine',
-        '    - ORCA_TAB_ID',
+        '    - OCC_TAB_ID',
         'plugins:',
         '  enabled: [other]',
         ''
@@ -99,13 +99,13 @@ describe('HermesHookService', () => {
       backend: 'local',
       client_env_passthrough: [
         'MY_VAR',
-        'ORCA_TAB_ID',
-        'ORCA_AGENT_PANE',
-        'ORCA_AGENT_LAUNCH',
-        'ORCA_WORKTREE_ID',
-        'ORCA_AGENT_HOOK_ENDPOINT',
-        'ORCA_AGENT_HOOK_ENV',
-        'ORCA_AGENT_HOOK_VERSION'
+        'OCC_TAB_ID',
+        'OCC_AGENT_PANE',
+        'OCC_AGENT_LAUNCH',
+        'OCC_WORKTREE_ID',
+        'OCC_AGENT_HOOK_ENDPOINT',
+        'OCC_AGENT_HOOK_ENV',
+        'OCC_AGENT_HOOK_VERSION'
       ]
     })
     expect(installed).toContain('- MY_VAR # mine')
@@ -138,8 +138,8 @@ describe('HermesHookService', () => {
     const broken = profile('broken', '')
     rmSync(join(broken, 'config.yaml'))
     mkdirSync(join(broken, 'config.yaml'))
-    const work = profile('work', 'plugins:\n  enabled: [orca-status]\n')
-    const disabledConfig = 'plugins:\n  enabled: [orca-status]\n  disabled: [orca-status]\n'
+    const work = profile('work', 'plugins:\n  enabled: [occ-status]\n')
+    const disabledConfig = 'plugins:\n  enabled: [occ-status]\n  disabled: [occ-status]\n'
     const disabled = profile('off', disabledConfig)
     const service = new HermesHookService()
 
@@ -174,7 +174,7 @@ describe('HermesHookService', () => {
       readFileSync(join(homeDir, 'config.yaml'), 'utf-8')
     )
     const { terminal: original, ...originalRest } = parse(input)
-    expect(plugins.enabled).toEqual(['orca-status'])
+    expect(plugins.enabled).toEqual(['occ-status'])
     expect(rest).toEqual(originalRest)
     expect(terminal).toEqual(
       passesThrough
@@ -188,14 +188,14 @@ describe('HermesHookService', () => {
     const configPath = join(homeDir, 'config.yaml')
     writeFileSync(
       configPath,
-      'plugins:\n  disabled:\n    - keep\n    - orca-status # managed entry\n# End notes\n'
+      'plugins:\n  disabled:\n    - keep\n    - occ-status # managed entry\n# End notes\n'
     )
 
     expect(new HermesHookService().install().state).toBe('installed')
     const installed = readFileSync(configPath, 'utf-8')
     expect(parse(installed)).toEqual({
-      plugins: { disabled: ['keep'], enabled: ['orca-status'] },
-      terminal: { client_env_passthrough: expect.arrayContaining(['ORCA_AGENT_PANE']) }
+      plugins: { disabled: ['keep'], enabled: ['occ-status'] },
+      terminal: { client_env_passthrough: expect.arrayContaining(['OCC_AGENT_PANE']) }
     })
     expect(installed.split('# End notes')).toHaveLength(2)
   })
@@ -263,7 +263,7 @@ describe('HermesHookService', () => {
         req.on('end', () => {
           try {
             expect(req.url).toBe('/hook/hermes')
-            expect(req.headers['x-orca-agent-hook-token']).toBe('token-1')
+            expect(req.headers['x-occ-agent-hook-token']).toBe('token-1')
             res.writeHead(204)
             res.end()
             clearTimeout(timeout)
@@ -290,7 +290,7 @@ describe('HermesHookService', () => {
         const initPath = join(homeDir, 'plugins', _internals.HERMES_PLUGIN_NAME, '__init__.py')
         const script = [
           'import importlib.util',
-          `spec = importlib.util.spec_from_file_location("orca_status", ${JSON.stringify(initPath)})`,
+          `spec = importlib.util.spec_from_file_location("occ_status", ${JSON.stringify(initPath)})`,
           'mod = importlib.util.module_from_spec(spec)',
           'spec.loader.exec_module(mod)',
           'class Ctx:',
@@ -313,14 +313,14 @@ describe('HermesHookService', () => {
           {
             env: {
               ...process.env,
-              ORCA_AGENT_HOOK_PORT: String(address.port),
-              ORCA_AGENT_HOOK_TOKEN: 'token-1',
-              ORCA_AGENT_HOOK_ENDPOINT: '',
-              ORCA_PANE_KEY: PANE_KEY,
-              ORCA_TAB_ID: 'tab-1',
-              ORCA_WORKTREE_ID: 'wt-1',
-              ORCA_AGENT_HOOK_ENV: 'production',
-              ORCA_AGENT_HOOK_VERSION: '1'
+              OCC_AGENT_HOOK_PORT: String(address.port),
+              OCC_AGENT_HOOK_TOKEN: 'token-1',
+              OCC_AGENT_HOOK_ENDPOINT: '',
+              OCC_PANE_KEY: PANE_KEY,
+              OCC_TAB_ID: 'tab-1',
+              OCC_WORKTREE_ID: 'wt-1',
+              OCC_AGENT_HOOK_ENV: 'production',
+              OCC_AGENT_HOOK_VERSION: '1'
             },
             encoding: 'utf-8'
           },
@@ -397,15 +397,15 @@ describe('HermesHookService', () => {
       const endpointPath = join(homeDir, 'endpoint.env')
       writeFileSync(
         endpointPath,
-        `ORCA_AGENT_HOOK_PORT=${address.port}\nORCA_AGENT_HOOK_TOKEN=token-1\n`
+        `OCC_AGENT_HOOK_PORT=${address.port}\nOCC_AGENT_HOOK_TOKEN=token-1\n`
       )
       const initPath = join(homeDir, 'plugins', _internals.HERMES_PLUGIN_NAME, '__init__.py')
       const pane = (id: string) =>
-        `{"ORCA_AGENT_PANE": "tab-${id}:pane-${id}", "ORCA_AGENT_LAUNCH": "launch-${id}", "ORCA_TAB_ID": "tab-${id}", "ORCA_WORKTREE_ID": "wt-${id}", "ORCA_AGENT_HOOK_ENDPOINT": ${JSON.stringify(endpointPath)}}`
+        `{"OCC_AGENT_PANE": "tab-${id}:pane-${id}", "OCC_AGENT_LAUNCH": "launch-${id}", "OCC_TAB_ID": "tab-${id}", "OCC_WORKTREE_ID": "wt-${id}", "OCC_AGENT_HOOK_ENDPOINT": ${JSON.stringify(endpointPath)}}`
       const script = [
         'import importlib.util',
         'from agent.session_client_env import client_env_scope',
-        `spec = importlib.util.spec_from_file_location("orca_status", ${JSON.stringify(initPath)})`,
+        `spec = importlib.util.spec_from_file_location("occ_status", ${JSON.stringify(initPath)})`,
         'mod = importlib.util.module_from_spec(spec)',
         'spec.loader.exec_module(mod)',
         'class Ctx:',
@@ -432,14 +432,14 @@ describe('HermesHookService', () => {
             env: {
               ...process.env,
               PYTHONPATH: hermesRoot,
-              ORCA_AGENT_HOOK_PORT: String(address.port),
-              ORCA_AGENT_HOOK_TOKEN: 'token-1',
-              ORCA_AGENT_HOOK_ENDPOINT: '',
-              ORCA_PANE_KEY: 'tab-A:pane-A',
-              ORCA_AGENT_PANE: 'tab-A:pane-A',
-              ORCA_AGENT_LAUNCH_TOKEN: 'launch-A',
-              ORCA_TAB_ID: 'tab-A',
-              ORCA_WORKTREE_ID: 'wt-A'
+              OCC_AGENT_HOOK_PORT: String(address.port),
+              OCC_AGENT_HOOK_TOKEN: 'token-1',
+              OCC_AGENT_HOOK_ENDPOINT: '',
+              OCC_PANE_KEY: 'tab-A:pane-A',
+              OCC_AGENT_PANE: 'tab-A:pane-A',
+              OCC_AGENT_LAUNCH_TOKEN: 'launch-A',
+              OCC_TAB_ID: 'tab-A',
+              OCC_WORKTREE_ID: 'wt-A'
             },
             encoding: 'utf-8',
             timeout: 15_000
@@ -480,7 +480,7 @@ describe('HermesHookService', () => {
     const initPath = join(homeDir, 'plugins', _internals.HERMES_PLUGIN_NAME, '__init__.py')
     const script = [
       'import importlib.util, json',
-      `spec = importlib.util.spec_from_file_location("orca_status", ${JSON.stringify(initPath)})`,
+      `spec = importlib.util.spec_from_file_location("occ_status", ${JSON.stringify(initPath)})`,
       'mod = importlib.util.module_from_spec(spec)',
       'spec.loader.exec_module(mod)',
       'payload = mod._payload_for_event("post_tool_call", {',

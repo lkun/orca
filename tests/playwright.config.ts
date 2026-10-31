@@ -1,7 +1,7 @@
 import { defineConfig } from '@stablyai/playwright-test'
 import { resolveBuildSourceCommit } from '../config/scripts/build-source-commit.mjs'
 
-// Run ORCA_BACKGROUND_LAUNCH=1 pnpm run test:e2e to build/run; SKIP_BUILD=1 reuses the current E2E build.
+// Run OCC_BACKGROUND_LAUNCH=1 pnpm run test:e2e to build/run; SKIP_BUILD=1 reuses the current E2E build.
 // Headful pointer-capture runs require an isolated display. Global setup/teardown own the seeded repo; fixtures launch Electron.
 export default defineConfig({
   testDir: './e2e',
@@ -31,7 +31,7 @@ export default defineConfig({
       testMatch: '**/*.spec.ts',
       grepInvert: /@headful/,
       metadata: {
-        orcaHeadful: false
+        occHeadful: false
       }
     },
     {
@@ -39,7 +39,7 @@ export default defineConfig({
       testMatch: '**/*.spec.ts',
       grep: /@headful/,
       metadata: {
-        orcaHeadful: true
+        occHeadful: true
       }
     }
   ]

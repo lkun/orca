@@ -3,11 +3,11 @@ import { performance } from 'node:perf_hooks'
 import { structuredAgentSessionStartFailure } from '../../native-chat/agent-session-wire/structured-agent-session-failure-text'
 import { agentSessionFailureFact } from '../../../shared/agent-session-failure'
 import { agentSessionFailureWords } from '../../../shared/agent-session-failure-words'
-import { formatOrcaSessionAddress, isOrcaSessionId } from '../../../shared/orca-session-address'
+import { formatOCCSessionAddress, isOCCSessionId } from '../../../shared/occ-session-address'
 import type { StructuredAgentSessionRequestFailure } from '../../native-chat/agent-session-wire/structured-agent-session-request-failures'
 import { tuiAgentDisplayName } from '../../../shared/tui-agent-display-names'
 import { resolveStructuredWorkerIdentityForSession } from '../structured-worker-authority'
-import { canonicalOrcaSessionId } from './canonical-orca-session-id'
+import { canonicalOCCSessionId } from './canonical-occ-session-id'
 import { chatRequestError, isSenderOwnRejection } from './chat-worker-error-words'
 import type { OrchestrationDb } from './db'
 import type { DispatchContextRow } from './types'
@@ -19,9 +19,9 @@ type ChatWorkerDispatch = { dispatch: DispatchContextRow; from: string }
 /** The open Dispatch this session works, as a chat assignee or as a structured worker. */
 export function chatWorkerDispatches(sessionId: string, db: OrchestrationDb): ChatWorkerDispatch[] {
   const found: ChatWorkerDispatch[] = []
-  if (isOrcaSessionId(sessionId)) {
+  if (isOCCSessionId(sessionId)) {
     // A `/clear` successor keeps its root's address, so the Dispatch names the root.
-    const address = formatOrcaSessionAddress(canonicalOrcaSessionId(sessionId))
+    const address = formatOCCSessionAddress(canonicalOCCSessionId(sessionId))
     const dispatch = db.getActiveDispatchForTerminal(address)
     if (dispatch) {
       found.push({ dispatch, from: address })

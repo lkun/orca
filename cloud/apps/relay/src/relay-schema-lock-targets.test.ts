@@ -4,7 +4,7 @@ import {
   schemaLockTarget,
   sqlWithoutComments,
   takesRelationLock
-} from '@orca-cloud/postgres-schema'
+} from '@occ-cloud/postgres-schema'
 import { relayPostgresSchemaStatements } from './database.js'
 
 function lockTakingStatements(): string[] {

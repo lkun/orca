@@ -12,7 +12,7 @@ export function feedRow(overrides: Partial<WorkspaceRow> & Pick<WorkspaceRow, 'i
   return {
     hostId: 'local',
     kind: 'git',
-    repoId: 'orca',
+    repoId: 'occ',
     path: `/w/${overrides.id}`,
     branch: overrides.id,
     displayName: overrides.id,
@@ -36,17 +36,17 @@ export function feedRow(overrides: Partial<WorkspaceRow> & Pick<WorkspaceRow, 'i
 
 export const FEED_ROWS = {
   parent: feedRow({
-    id: 'orca::/w/parent',
+    id: 'occ::/w/parent',
     isPinned: true,
     instanceId: 'i-parent',
     manualOrder: 1
   }),
   child: feedRow({
-    id: 'orca::/w/child',
+    id: 'occ::/w/child',
     instanceId: 'i-child',
     manualOrder: 2,
     lineage: {
-      parentWorktreeId: 'orca::/w/parent',
+      parentWorktreeId: 'occ::/w/parent',
       worktreeInstanceId: 'i-child',
       parentWorktreeInstanceId: 'i-parent'
     }
@@ -65,8 +65,8 @@ export function feedKey(identity: string): HostScopedWorktreeKey {
 export function feedDomains(overrides: Partial<SidebarFeedDomains> = {}): SidebarFeedDomains {
   return {
     workspaces: new Map([
-      [feedKey('|orca::/w/parent'), FEED_ROWS.parent],
-      [feedKey('|orca::/w/child'), FEED_ROWS.child],
+      [feedKey('|occ::/w/parent'), FEED_ROWS.parent],
+      [feedKey('|occ::/w/child'), FEED_ROWS.child],
       [feedKey('ssh:gpu|lab::/w/gpu'), FEED_ROWS.remote]
     ]),
     activity: new Map(),
@@ -76,10 +76,10 @@ export function feedDomains(overrides: Partial<SidebarFeedDomains> = {}): Sideba
     pairedServerRows: new Map(),
     repoIcons: new Map(),
     desktop: {
-      desktopActive: { hostId: null, worktreeId: 'orca::/w/parent' },
-      pinnedWorkspaceIds: ['orca::/w/parent'],
+      desktopActive: { hostId: null, worktreeId: 'occ::/w/parent' },
+      pinnedWorkspaceIds: ['occ::/w/parent'],
       repoOrder: [
-        { hostId: 'local', repoId: 'orca' },
+        { hostId: 'local', repoId: 'occ' },
         { hostId: 'ssh:gpu', repoId: 'lab' }
       ],
       workspaceHostOrder: [],
@@ -109,7 +109,7 @@ function servedRepo(fields: Pick<ServedRepo, 'id' | 'path'> & Partial<ServedRepo
 
 export const SERVED_SECTIONS: ServedProjectSections = {
   repos: [
-    servedRepo({ id: 'orca', path: '/r/orca', badgeColor: '#f00' }),
+    servedRepo({ id: 'occ', path: '/r/occ', badgeColor: '#f00' }),
     servedRepo({ id: 'lab', path: '/r/lab', connectionId: 'gpu' })
   ],
   projects: [],
@@ -124,8 +124,8 @@ export function phoneView(overrides: Partial<MobileViewState> = {}): MobileViewS
 
 export function liveRow(overrides: Partial<Worktree> & Pick<Worktree, 'worktreeId'>): Worktree {
   return {
-    repoId: 'orca',
-    repo: 'orca',
+    repoId: 'occ',
+    repo: 'occ',
     branch: overrides.worktreeId,
     displayName: overrides.worktreeId,
     path: `/w/${overrides.worktreeId}`,

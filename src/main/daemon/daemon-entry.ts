@@ -196,7 +196,7 @@ async function main(): Promise<void> {
   process.on('SIGINT', () => void shutdown('SIGINT'))
 
   // Inject verdicts for e2e: fabricating macOS audit-session death requires privileged PAM teardown.
-  const e2eProbeFile = process.env.ORCA_E2E_LOGIN_SESSION_PROBE_FILE
+  const e2eProbeFile = process.env.OCC_E2E_LOGIN_SESSION_PROBE_FILE
   const readE2eVerdict = (): string => {
     try {
       return readFileSync(e2eProbeFile as string, 'utf8').trim()
@@ -316,8 +316,8 @@ async function main(): Promise<void> {
   }
 }
 
-// Tests and build-orcad.mjs load checks import this module without starting a daemon.
-const isDirectExecution = !process.env.VITEST && !process.env.ORCA_DAEMON_ENTRY_LOAD_CHECK
+// Tests and build-occd.mjs load checks import this module without starting a daemon.
+const isDirectExecution = !process.env.VITEST && !process.env.OCC_DAEMON_ENTRY_LOAD_CHECK
 if (isDirectExecution) {
   main().catch((err) => {
     console.error('[daemon] Fatal:', err)

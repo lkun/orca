@@ -1,5 +1,5 @@
 import {
-  canSourceOwnerOpenInOrca,
+  canSourceOwnerOpenInOCC,
   type HttpLinkActionDestinations
 } from '@/lib/http-link-destinations'
 import type { HttpLinkSourceOwner } from '@/lib/http-link-routing'
@@ -19,7 +19,7 @@ export function getTerminalFileOpenHint(showActions = true): string {
     : `${prefix}Ctrl+click to open, or Shift+Ctrl+click for default app`
 }
 
-export function getTerminalOrcaFileOpenHint(showActions = true): string {
+export function getTerminalOCCFileOpenHint(showActions = true): string {
   const prefix = showActions ? 'Click for actions or ' : ''
   return isMacPlatform()
     ? `${prefix}⌘+click to open in OCC`
@@ -32,7 +32,7 @@ export function getTerminalHtmlFileOpenHint(
   showActions = true
 ): string {
   return getTerminalUrlOpenHint({
-    openLinksInApp: destinations.primary === 'orca',
+    openLinksInApp: destinations.primary === 'occ',
     modifierInverts: true,
     showActions
   })
@@ -57,20 +57,20 @@ export function terminalUrlOpenHintOptionsFor(
   sourceOwner?: HttpLinkSourceOwner,
   canOpenOwnedBrowser = false
 ): TerminalUrlOpenHintOptions {
-  const sourceCanOpenInOrca = sourceOwner
-    ? canSourceOwnerOpenInOrca(sourceOwner, canOpenOwnedBrowser)
+  const sourceCanOpenInOCC = sourceOwner
+    ? canSourceOwnerOpenInOCC(sourceOwner, canOpenOwnedBrowser)
     : !settings?.activeRuntimeEnvironmentId?.trim()
   return {
     openLinksInApp: settings?.openLinksInApp === true,
-    modifierInverts: settings?.openLinksInAppModifierInverts === true && sourceCanOpenInOrca
+    modifierInverts: settings?.openLinksInAppModifierInverts === true && sourceCanOpenInOCC
   }
 }
 
 // With inversion, Shift means the other destination; name the resolved one instead of always promising the system browser.
 export function getTerminalUrlOpenHint(options: TerminalUrlOpenHintOptions = {}): string {
-  const invertsToOrca = options.modifierInverts === true && options.openLinksInApp !== true
+  const invertsToOCC = options.modifierInverts === true && options.openLinksInApp !== true
   const prefix = terminalLinkActionHintPrefix(options.showActions !== false)
-  if (invertsToOrca) {
+  if (invertsToOCC) {
     return isMacPlatform()
       ? `${prefix}⌘+click to open, or ⇧⌘+click to open in OCC`
       : `${prefix}Ctrl+click to open, or Shift+Ctrl+click to open in OCC`
@@ -85,7 +85,7 @@ export function getTerminalUrlSystemBrowserHint(): string {
 }
 
 // Invert the hint too when plain click already opens the system browser.
-export function getTerminalUrlOrcaBrowserHint(): string {
+export function getTerminalUrlOCCBrowserHint(): string {
   return isMacPlatform() ? '⇧⌘+click to open in OCC' : 'Shift+Ctrl+click to open in OCC'
 }
 

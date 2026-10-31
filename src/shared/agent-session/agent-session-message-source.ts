@@ -2,7 +2,7 @@
 
 import { z } from 'zod'
 import { normalizeAgentSessionConversationName } from './agent-session-conversation-name'
-import { isOrcaSessionId, type OrcaSessionId } from '../orca-session-address'
+import { isOCCSessionId, type OCCSessionId } from '../occ-session-address'
 import type { OrchestrationPartyIdentity } from '../orchestration-party-identity'
 import { openEnum, salvagedField, salvagedOptional, salvagingArray } from '../zod-salvage'
 
@@ -57,8 +57,8 @@ export function agentMessageSenderName(value: unknown): string | null {
   return normalizeAgentSessionConversationName(value)
 }
 
-const orcaSessionIdSchema = z.custom<OrcaSessionId>(
-  (value) => typeof value === 'string' && isOrcaSessionId(value)
+const occSessionIdSchema = z.custom<OCCSessionId>(
+  (value) => typeof value === 'string' && isOCCSessionId(value)
 )
 
 const mailNoticeSchema = z.object({
@@ -79,7 +79,7 @@ const senderSchema = z.object({
   party: z.object({
     address: z.string().min(1),
     terminalHandle: z.string().nullable(),
-    orcaSessionId: orcaSessionIdSchema.nullable()
+    occSessionId: occSessionIdSchema.nullable()
   }),
   relation: salvagedOptional('relation', z.enum(['worker', 'coordinator', 'none'])),
   name: z.unknown().transform(agentMessageSenderName)

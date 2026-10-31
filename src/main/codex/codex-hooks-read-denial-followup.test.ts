@@ -77,10 +77,10 @@ let previousUserDataPath: string | undefined
 
 beforeEach(() => {
   denials.reset()
-  fakeHomeDir = realFs.mkdtempSync(join(tmpdir(), 'orca-hooksread-home-'))
-  userDataDir = realFs.mkdtempSync(join(tmpdir(), 'orca-hooksread-data-'))
-  previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-  process.env.ORCA_USER_DATA_PATH = userDataDir
+  fakeHomeDir = realFs.mkdtempSync(join(tmpdir(), 'occ-hooksread-home-'))
+  userDataDir = realFs.mkdtempSync(join(tmpdir(), 'occ-hooksread-data-'))
+  previousUserDataPath = process.env.OCC_USER_DATA_PATH
+  process.env.OCC_USER_DATA_PATH = userDataDir
   homedirMock.mockReturnValue(fakeHomeDir)
   getPathMock.mockImplementation((name: string) => {
     if (name === 'userData') {
@@ -96,9 +96,9 @@ afterEach(() => {
   realFs.rmSync(fakeHomeDir, { recursive: true, force: true })
   realFs.rmSync(userDataDir, { recursive: true, force: true })
   if (previousUserDataPath === undefined) {
-    delete process.env.ORCA_USER_DATA_PATH
+    delete process.env.OCC_USER_DATA_PATH
   } else {
-    process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+    process.env.OCC_USER_DATA_PATH = previousUserDataPath
   }
   vi.clearAllMocks()
 })

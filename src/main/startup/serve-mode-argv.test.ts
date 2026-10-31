@@ -7,10 +7,10 @@ import {
 
 describe('serve-mode-argv', () => {
   it('detects --serve and bare serve subcommand', () => {
-    expect(argvRequestsServeMode(['orca', '--serve'])).toBe(true)
+    expect(argvRequestsServeMode(['occ', '--serve'])).toBe(true)
     expect(argvRequestsServeMode(['/AppRun', 'serve'])).toBe(true)
     expect(argvRequestsServeMode(['/AppRun', '--no-sandbox', 'serve', '--port', '8080'])).toBe(true)
-    expect(argvRequestsServeMode(['orca'])).toBe(false)
+    expect(argvRequestsServeMode(['occ'])).toBe(false)
   })
 
   it('does not treat serve as a subcommand when it is an option value', () => {
@@ -135,7 +135,7 @@ describe('serve-mode-argv', () => {
   it('leaves already-normalized argv unchanged', () => {
     // Exercise every value flag in mixed --serve argv emitted by the CLI; rewriting must preserve its port.
     const argv = [
-      'orca',
+      'occ',
       '--serve',
       '--serve-json',
       '--serve-port',
@@ -166,8 +166,8 @@ describe('serve-mode-argv', () => {
   })
 
   it('translates serve flags in the mixed `--serve --port` form', () => {
-    expect(normalizeServeModeArgv(['orca', '--serve', '--port', '9090', '--no-pairing'])).toEqual([
-      'orca',
+    expect(normalizeServeModeArgv(['occ', '--serve', '--port', '9090', '--no-pairing'])).toEqual([
+      'occ',
       '--serve',
       '--serve-port',
       '9090',
@@ -176,7 +176,7 @@ describe('serve-mode-argv', () => {
   })
 
   it('leaves a non-serve launch untouched', () => {
-    const argv = ['orca', '--no-sandbox', '/home/u/project']
+    const argv = ['occ', '--no-sandbox', '/home/u/project']
     expect(argvRequestsServeMode(argv)).toBe(false)
     expect(normalizeServeModeArgv(argv)).toEqual(argv)
   })

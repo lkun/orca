@@ -281,7 +281,7 @@ describe('findMovableClaudeSessions', () => {
   // WSL stores UNC and guest config paths, hooks report guest transcripts, and Windows sees only wsl.exe in the pane tree.
   it('finds WSL panes from the guest hook evidence the Windows process table cannot see', async () => {
     const guestHome = (id: string): string =>
-      `/home/dev/.local/share/orca/claude-profiles/${id}/home`
+      `/home/dev/.local/share/occ/claude-profiles/${id}/home`
     const wslAccount = (id: string): ClaudeManagedAccount => ({
       ...account(id, `\\\\wsl.localhost\\Ubuntu-24.04${guestHome(id).replace(/\//g, '\\')}`),
       managedAuthRuntime: 'wsl',

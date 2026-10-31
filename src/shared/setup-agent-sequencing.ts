@@ -13,9 +13,9 @@ import { quotePowerShellLiteral } from './powershell-native-argument'
 
 const DEFAULT_WAIT_TIMEOUT_SECONDS = 2 * 60 * 60
 export const SETUP_COMPLETE_MESSAGE = 'Setup finished; starting agent.'
-export const SETUP_AGENT_SEQUENCE_STARTUP_COMMAND_ENV = 'ORCA_SEQUENCED_STARTUP_COMMAND'
-export const SETUP_AGENT_SEQUENCE_STARTUP_SCRIPT_ENV = 'ORCA_SEQUENCED_STARTUP_SCRIPT'
-export const SETUP_AGENT_SEQUENCE_SETUP_SCRIPT_ENV = 'ORCA_SEQUENCED_SETUP_SCRIPT'
+export const SETUP_AGENT_SEQUENCE_STARTUP_COMMAND_ENV = 'OCC_SEQUENCED_STARTUP_COMMAND'
+export const SETUP_AGENT_SEQUENCE_STARTUP_SCRIPT_ENV = 'OCC_SEQUENCED_STARTUP_SCRIPT'
+export const SETUP_AGENT_SEQUENCE_SETUP_SCRIPT_ENV = 'OCC_SEQUENCED_SETUP_SCRIPT'
 
 export type SequencedSetupAgentCommands = {
   setupCommand: string
@@ -204,9 +204,9 @@ function buildWindowsSetupCommand(
     'Remove-Item -LiteralPath $marker, $tmp -Force -ErrorAction SilentlyContinue',
     '$processInfo = [System.Diagnostics.ProcessStartInfo]::new()',
     '$processInfo.FileName = $env:ComSpec',
-    '$processInfo.Arguments = \'/d /s /v:on /c ""!ORCA_SETUP_RUNNER!""\'',
+    '$processInfo.Arguments = \'/d /s /v:on /c ""!OCC_SETUP_RUNNER!""\'',
     '$processInfo.UseShellExecute = $false',
-    '$processInfo.EnvironmentVariables["ORCA_SETUP_RUNNER"] = $runner',
+    '$processInfo.EnvironmentVariables["OCC_SETUP_RUNNER"] = $runner',
     '$process = [System.Diagnostics.Process]::Start($processInfo)',
     '$process.WaitForExit()',
     '$setupStatus = $process.ExitCode',
@@ -230,12 +230,12 @@ function buildWindowsStartupCommand(
     // User startup may invoke policy-gated .ps1; apply relief in-payload to avoid the flagged command-line switch.
     // Silence/restore module-autoload progress so stderr stays clean. Stop routes nonterminating autoload errors
     // to a reporting catch; never rethrow and abort startup over a broken security module.
-    "$orcaProgress = $ProgressPreference; $ProgressPreference = 'SilentlyContinue'",
+    "$occProgress = $ProgressPreference; $ProgressPreference = 'SilentlyContinue'",
     'try { Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force -ErrorAction Stop } ' +
       'catch { [Console]::Error.WriteLine("OCC: could not relax the execution policy for this " + ' +
       '"session (" + $_.FullyQualifiedErrorId + "). A startup command that runs a .ps1 " + ' +
       '"may be blocked.") }',
-    '$ProgressPreference = $orcaProgress',
+    '$ProgressPreference = $occProgress',
     `$marker = ${quotePowerShellLiteral(markerPath)}`,
     'if ([string]::IsNullOrWhiteSpace($marker)) {',
     '  [Console]::Error.WriteLine("Missing setup marker path.")',

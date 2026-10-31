@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ORCAD_RECOVERY_CHANGED_STATE_CODE } from '../../shared/orcad-managed-runtime'
+import { OCCD_RECOVERY_CHANGED_STATE_CODE } from '../../shared/occd-managed-runtime'
 import { MANAGED_SERVER_RUNTIME_CAPABILITY } from '../../shared/protocol-version'
 import { RuntimeClientError } from '../runtime-client'
 import { MANAGED_SERVER_HANDLERS } from './managed-server'
@@ -110,7 +110,7 @@ describe('managed server CLI verbs', () => {
     const refusal = {
       outcome: 'refused',
       verdict: 'live',
-      code: 'orcad_stop_active_environment',
+      code: 'occd_stop_active_environment',
       reason:
         'This server is the default host for new projects. Choose another one under New projects open on before stopping it.'
     }
@@ -125,7 +125,7 @@ describe('managed server CLI verbs', () => {
     const call = client({
       outcome: 'deferred',
       candidateVersion: '2.0.0',
-      code: 'orcad_update_terminals_running',
+      code: 'occd_update_terminals_running',
       reason: 'Terminals are running.'
     })
     await expect(run('environment update', call, [])).rejects.toMatchObject({
@@ -189,7 +189,7 @@ describe('managed server CLI verbs', () => {
     })
     await expect(run('environment update', call, [])).rejects.toMatchObject({
       code: 'managed_server_in_progress',
-      message: expect.stringContaining('orca environment status')
+      message: expect.stringContaining('occ environment status')
     })
   })
 
@@ -249,7 +249,7 @@ describe('managed server CLI verbs', () => {
     const refusal = {
       outcome: 'refused',
       verdict: 'unverifiable',
-      code: ORCAD_RECOVERY_CHANGED_STATE_CODE,
+      code: OCCD_RECOVERY_CHANGED_STATE_CODE,
       reason: 'The launched build changed profile state. Recover to restore the prelaunch snapshot.'
     }
     await expect(run('environment recover', client(refusal), [])).rejects.toMatchObject({

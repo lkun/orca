@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type {
   KnownRuntimeEnvironment,
-  OrcadDeploymentLink
+  OCCdDeploymentLink
 } from '../../../shared/runtime-environments'
 import {
   emptyWslMoveBrowserCookieCopyCounts,
@@ -40,16 +40,16 @@ vi.mock('../../browser/browser-partition-cookie-copy', () => ({
 vi.mock('../../browser/browser-session-registry', () => ({ browserSessionRegistry: {} }))
 vi.mock('../../browser/browser-session-startup', () => ({ browserSessionsInitialized: vi.fn() }))
 vi.mock('../../browser/browser-route-partition-binding-runtime', () => ({
-  activeBrowserRoutePartitionOrcaProfileId: vi.fn(),
+  activeBrowserRoutePartitionOCCProfileId: vi.fn(),
   currentBrowserRoutePartitionBindingStore: vi.fn()
 }))
 vi.mock('../../browser/browser-route-partition-storage-dependencies', () => ({
   releaseEvictedBrowserRoutePartitionStorage: vi.fn()
 }))
 
-const LOCAL_DEFAULT = 'persist:orca-browser-default'
-const LOCAL_WORK = 'persist:orca-browser-work'
-const SSH_PARTITION = `persist:orca-browser-v1-${'5'.repeat(64)}`
+const LOCAL_DEFAULT = 'persist:occ-browser-default'
+const LOCAL_WORK = 'persist:occ-browser-work'
+const SSH_PARTITION = `persist:occ-browser-v1-${'5'.repeat(64)}`
 
 type Jar = Map<string, string>
 
@@ -77,13 +77,13 @@ function jarOf(partition: string): Jar {
 
 function hostPartition(storageScope: string, browserProfileId: string): string {
   const digest = createHash('sha256').update(`${storageScope}|${browserProfileId}`).digest('hex')
-  return `persist:orca-browser-v1-${digest}`
+  return `persist:occ-browser-v1-${digest}`
 }
 
 /** The moved-to WSL host's partition for one browser profile. */
 function hostPartitionOf(browserProfileId: string): string {
   const scope = deriveBrowserRoutePartitionStorageScope({
-    orcaProfileId: 'orca-profile-a',
+    occProfileId: 'occ-profile-a',
     environmentId: 'wsl:Ubuntu'
   })
   return hostPartition(scope, browserProfileId)
@@ -95,7 +95,7 @@ function dependencies(
   return {
     userDataPath,
     sessionsReady: () => desktop.sessionsReady,
-    orcaProfileId: () => 'orca-profile-a',
+    occProfileId: () => 'occ-profile-a',
     listEnvironments: () => desktop.environments,
     listBrowserProfiles: () => [
       { id: 'default', partition: LOCAL_DEFAULT },
@@ -137,7 +137,7 @@ const DEPLOYMENTS = {
     remotePort: 6768
   },
   unlinked: null
-} satisfies Record<string, OrcadDeploymentLink | null>
+} satisfies Record<string, OCCdDeploymentLink | null>
 
 /** A runtime environment as each host kind persists it; `unlinked` lost its deployment link. */
 function hostEnvironment(kind: keyof typeof DEPLOYMENTS, id: string): KnownRuntimeEnvironment {
@@ -150,7 +150,7 @@ function hostEnvironment(kind: keyof typeof DEPLOYMENTS, id: string): KnownRunti
     lastUsedAt: null,
     runtimeId: null,
     pairingRevision: 1,
-    ...(deployment ? { orcadDeployment: deployment } : {}),
+    ...(deployment ? { occdDeployment: deployment } : {}),
     preferredEndpointId: 'endpoint-a',
     endpoints: [
       {
@@ -388,28 +388,28 @@ describe('WSL move browser-cookies store', () => {
 
   it('previews the reason a move would start the host fresh', () => {
     const resolve = dependencies()
-    expect(previewWslMoveBrowserCookieCopy(resolve, 'orca-profile-a', wslHost())).toEqual({
+    expect(previewWslMoveBrowserCookieCopy(resolve, 'occ-profile-a', wslHost())).toEqual({
       kind: 'copy'
     })
-    expect(previewWslMoveBrowserCookieCopy(resolve, 'orca-profile-a', wslHost('unlinked'))).toEqual(
+    expect(previewWslMoveBrowserCookieCopy(resolve, 'occ-profile-a', wslHost('unlinked'))).toEqual(
       {
         kind: 'fresh-partition',
         reason: 'no-stable-partition'
       }
     )
-    expect(previewWslMoveBrowserCookieCopy(resolve, 'orca-profile-a', undefined)).toEqual({
+    expect(previewWslMoveBrowserCookieCopy(resolve, 'occ-profile-a', undefined)).toEqual({
       kind: 'fresh-partition',
       reason: 'destination-environment-missing'
     })
   })
 
   describe('before a move commits', () => {
-    function ensure(environments: KnownRuntimeEnvironment[], orcaProfileId: string | null = 'p') {
+    function ensure(environments: KnownRuntimeEnvironment[], occProfileId: string | null = 'p') {
       const resaveConnection = vi.fn()
       const result = ensureWslMoveDestinationBrowserLogins({
         resolveEnvironment: () => environments[resaveConnection.mock.calls.length] ?? wslHost(),
         resaveConnection,
-        orcaProfileId: () => orcaProfileId,
+        occProfileId: () => occProfileId,
         resolveHostStorage: wslHostBrowserRouteStorage
       })
       return { ...result, resaveConnection }
@@ -424,7 +424,7 @@ describe('WSL move browser-cookies store', () => {
     it('restores a lost deployment link from the live connection, so logins carry', () => {
       const { environment, notCarried, resaveConnection } = ensure([wslHost('unlinked'), wslHost()])
       expect(resaveConnection).toHaveBeenCalledOnce()
-      expect(environment.orcadDeployment).toEqual(DEPLOYMENTS.wsl)
+      expect(environment.occdDeployment).toEqual(DEPLOYMENTS.wsl)
       expect(notCarried).toBeUndefined()
     })
 

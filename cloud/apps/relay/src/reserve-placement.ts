@@ -1,4 +1,4 @@
-import type { RelayRegion } from '@orca-cloud/relay-contract'
+import type { RelayRegion } from '@occ-cloud/relay-contract'
 import { CELL_INTAKE_BURST, CELL_RESERVE_TTL_MS, type ReserveOutcome } from './cell-reserve-contract.js'
 
 // Directors estimate/pick from their own maps; cells decide bookings. Simulation drives this same pure logic.

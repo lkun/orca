@@ -70,7 +70,7 @@ export function registerJournalRowContextUsageTests(): void {
     })
 
   function row(ordinal: number): AgentJournalItemIdentity {
-    return { provider: 'orca', clientMessageId: `row-${ordinal}` }
+    return { provider: 'occ', clientMessageId: `row-${ordinal}` }
   }
 
   const turn = (turnId: string, contextUsage?: AgentSessionContextUsage): AgentJournalItemBody => ({
@@ -81,7 +81,7 @@ export function registerJournalRowContextUsageTests(): void {
   })
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-journal-context-usage-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-journal-context-usage-'))
     clock = 1_000
   })
 
@@ -149,7 +149,7 @@ export function registerJournalRowContextUsageTests(): void {
           mutations: [
             {
               kind: 'item',
-              itemId: 'orca:row-0',
+              itemId: 'occ:row-0',
               revision: 2,
               body: { ...turn('turn-0'), contextUsage: { window: { tokens: -1 } } }
             }
@@ -157,7 +157,7 @@ export function registerJournalRowContextUsageTests(): void {
         })
       )
       expect(parsed.ok && parsed.row.kind === 'lifecycle-batch' && parsed.row.mutations).toEqual([
-        { kind: 'item', itemId: 'orca:row-0', revision: 2, body: turn('turn-0') }
+        { kind: 'item', itemId: 'occ:row-0', revision: 2, body: turn('turn-0') }
       ])
     })
   })

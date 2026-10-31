@@ -3,10 +3,10 @@ import { classifyRuntimeEnvironmentHost } from '../../../shared/runtime-environm
 import type { KnownRuntimeEnvironment } from '../../../shared/runtime-environments'
 
 const UNREACHABLE_RE =
-  /could not connect to the remote orca runtime|remote orca runtime closed the connection|timed out (?:waiting for|while connecting to) the remote orca runtime/i
+  /could not connect to the remote occ runtime|remote occ runtime closed the connection|timed out (?:waiting for|while connecting to) the remote occ runtime/i
 
 export function withRuntimeUnreachableHint(
-  environment: Pick<KnownRuntimeEnvironment, 'orcadDeployment'>,
+  environment: Pick<KnownRuntimeEnvironment, 'occdDeployment'>,
   message: string,
   endpoint: string | null | undefined
 ): string {

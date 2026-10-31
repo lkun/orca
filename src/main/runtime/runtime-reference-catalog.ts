@@ -18,7 +18,7 @@ import { legacyWorkspaceAttachments } from '../../shared/workspace-attachment-le
 import { getWorkspaceReferenceIdentity } from '../../shared/workspace-reference-identity'
 import {
   isPathInsideOrEqual,
-  isWslUncPathForCallerLinuxPath,
+  isWslUncPathFoccllerLinuxPath,
   isWslUncPathForLinuxMountedPath
 } from '../../shared/cross-platform-path'
 import { parseWslUncPath } from '../../shared/wsl-paths'
@@ -192,7 +192,7 @@ export function selectReferenceWorkspace(
           linuxPath &&
           row.hostId === 'local' &&
           (isWslUncPathForLinuxMountedPath(row.path, path) ||
-            (distro && isWslUncPathForCallerLinuxPath(row.path, path, distro))))
+            (distro && isWslUncPathFoccllerLinuxPath(row.path, path, distro))))
     )
   } else if (selector.startsWith('branch:')) {
     matches = workspaces.filter(

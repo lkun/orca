@@ -1,11 +1,11 @@
 import { ArrowRight, BookOpen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useOrcaProfileAuthStatusRefresh } from '@/hooks/use-orca-profile-auth-status-refresh'
+import { useOCCProfileAuthStatusRefresh } from '@/hooks/use-occ-profile-auth-status-refresh'
 import { translate } from '@/i18n/i18n'
 import { isWebClientLocation } from '@/lib/web-client-location'
 import { useAppStore } from '@/store'
 import { SettingsSwitchRow } from './SettingsFormControls'
-import { OrcaSignInButton, OrcaSignInWaitNotice } from '../OrcaSignInProgress'
+import { OCCSignInButton, OCCSignInWaitNotice } from '../OCCSignInProgress'
 
 type HowToStep = { key: string; title: string; description: string }
 
@@ -14,12 +14,12 @@ export function ShareSkillsSettingsPane(): React.JSX.Element {
   const openSkillsSharedLinks = useAppStore((state) => state.openSkillsSharedLinks)
   const settings = useAppStore((state) => state.settings)
   const updateSettings = useAppStore((state) => state.updateSettings)
-  const authStatus = useAppStore((state) => state.orcaProfileAuthStatus)
+  const authStatus = useAppStore((state) => state.occProfileAuthStatus)
   const signedIn = authStatus?.state === 'connected'
   const isWebClient = isWebClientLocation()
   const agentSharingEnabled = settings?.agentSkillSharingEnabled === true
 
-  useOrcaProfileAuthStatusRefresh()
+  useOCCProfileAuthStatusRefresh()
 
   const steps: HowToStep[] = [
     {
@@ -131,13 +131,13 @@ export function ShareSkillsSettingsPane(): React.JSX.Element {
             </p>
           </div>
           {!isWebClient ? (
-            <OrcaSignInButton size="sm" disabled={authStatus?.configured !== true}>
+            <OCCSignInButton size="sm" disabled={authStatus?.configured !== true}>
               {authStatus?.state === 'reconnect-required'
                 ? translate('auto.components.settings.shareSkills.signInAgain', 'Sign in again')
                 : translate('auto.components.settings.shareSkills.signIn', 'Sign in to OCC')}
-            </OrcaSignInButton>
+            </OCCSignInButton>
           ) : null}
-          {!isWebClient ? <OrcaSignInWaitNotice className="basis-full" /> : null}
+          {!isWebClient ? <OCCSignInWaitNotice className="basis-full" /> : null}
         </section>
       ) : null}
 

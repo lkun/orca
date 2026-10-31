@@ -12,12 +12,12 @@ import { registerSparsePresetHandlers } from './repos/sparse-preset-handlers'
 import { registerRepoFolderPickerHandlers } from './repos/repo-folder-picker-handlers'
 import { registerRepoCloneHandlers } from './repos/repo-clone-lifecycle'
 import { registerBaseRefQueryHandlers } from './repos/base-ref-query-handlers'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 
 export function registerRepoHandlers(
   mainWindow: BrowserWindow,
   store: Store,
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
 ): void {
   // macOS window recreation re-registers these handlers.
   ipcMain.removeHandler('repos:list')

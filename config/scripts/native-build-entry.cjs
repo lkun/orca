@@ -7,7 +7,7 @@ const { join, relative, isAbsolute } = require('node:path')
 // Global pnpm store shares physical packages across worktrees; in-place build/Release rebuild can replace another running app’s binary.
 // Publish immutable build/<entry> per ABI atomically; patched node-pty/windows-process-tree loaders must compute same names (parity test).
 
-const ENTRY_PREFIX = 'orca-'
+const ENTRY_PREFIX = 'occ-'
 
 const NATIVE_BUILD_PACKAGES = {
   // Both use N-API: same platform/arch binary loads in Node and Electron.

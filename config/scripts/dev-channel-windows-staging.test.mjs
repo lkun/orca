@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 
 function readWorkflow(name) {
   return parse(readFileSync(new URL(`../../.github/workflows/${name}`, import.meta.url), 'utf8'))

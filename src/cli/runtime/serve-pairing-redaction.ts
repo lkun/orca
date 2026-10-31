@@ -1,4 +1,4 @@
-import type { ProcessSpec } from '@orca/process-host/process-spec'
+import type { ProcessSpec } from '@occ/process-host/process-spec'
 import type { superviseForegroundServe } from './serve-update-supervisor'
 import { createInterface } from 'node:readline'
 
@@ -9,7 +9,7 @@ export const PAIRING_HIDDEN_LINE =
 export function createPairingRedactor(): (line: string) => string | null {
   let inQr = false
   return (line) => {
-    if (line.startsWith('{') && line.includes('"orca_server_ready"')) {
+    if (line.startsWith('{') && line.includes('"occ_server_ready"')) {
       return redactReadyJson(line)
     }
     if (line.startsWith('Mobile pairing QR:')) {

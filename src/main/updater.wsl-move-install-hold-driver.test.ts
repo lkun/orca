@@ -1,6 +1,6 @@
 /**
  * #34813 end to end in-process: the real updater install path against a real move run of the WSL
- * move driver over a real orcad profile store (the fault-injection rig). An install attempted while
+ * move driver over a real occd profile store (the fault-injection rig). An install attempted while
  * the move runs is held with its message; once the move settles (moved, failed, cancelled or killed
  * mid-run and recovered on relaunch) the same staged update installs.
  */
@@ -277,7 +277,7 @@ describe('an app update while a real WSL project move runs (#34813)', () => {
     // The next launch starts with no move running and settles the interrupted one.
     await staged.mover.fixture.restartWslMoveRig(staged.mover.rig, {
       hostUp: true,
-      orcadRestarted: false
+      occdRestarted: false
     })
     expect(staged.mover.fixture.wslMoveRigOutcome(staged.mover.rig)).not.toBe('stuck')
     expect(staged.mover.moves.isAnyWslMoveRunning()).toBe(false)

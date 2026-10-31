@@ -1,7 +1,7 @@
 import type { BrowserExtensionMainWorldBridge } from './browser-extension-main-world'
 
 /** Main-only namespace listing a tab's frames with OCC's documentIds; never on `chrome`. */
-export const PRELOAD_DOCUMENT_TARGETS_NAMESPACE = 'orcaDocumentTargets'
+export const PRELOAD_DOCUMENT_TARGETS_NAMESPACE = 'occDocumentTargets'
 
 type ApiObject = Record<string, unknown>
 type ExtensionCallable = (...args: unknown[]) => unknown
@@ -36,7 +36,7 @@ export function installBrowserExtensionDocumentTargets(
   const tabs = isObject(chromeApi.tabs) ? chromeApi.tabs : null
   const nativeSendMessage = tabs?.sendMessage
   const nativeMessages = isObject(runtime.onMessage) ? runtime.onMessage : null
-  const probeKey = 'orcaDocumentTargetProbe'
+  const probeKey = 'occDocumentTargetProbe'
 
   /** frameId → OCC's documentId for the tab's current documents. */
   const framesOf = async (tabId: unknown): Promise<Map<number, string>> => {
@@ -44,7 +44,7 @@ export function installBrowserExtensionDocumentTargets(
     if (typeof tabId !== 'number') {
       return frames
     }
-    const reply = await bridge.call('orcaDocumentTargets', 'frames', [tabId]).catch(() => null)
+    const reply = await bridge.call('occDocumentTargets', 'frames', [tabId]).catch(() => null)
     if (reply?.ok && Array.isArray(reply.value)) {
       for (const entry of reply.value) {
         if (
@@ -58,7 +58,7 @@ export function installBrowserExtensionDocumentTargets(
     }
     return frames
   }
-  const withOrcaDocumentIds = (documents: Map<string, string>, results: unknown): unknown =>
+  const withOCCDocumentIds = (documents: Map<string, string>, results: unknown): unknown =>
     Array.isArray(results)
       ? results.map((result) =>
           isObject(result) &&
@@ -172,15 +172,15 @@ export function installBrowserExtensionDocumentTargets(
       }
     }
     const current = selected.length > 0 ? await framesOf(tabId) : frames
-    const nativeByOrca = new Map<string, string>()
-    for (const [frameId, orcaId] of selected) {
+    const nativeByOCC = new Map<string, string>()
+    for (const [frameId, occId] of selected) {
       const nativeId = resolved.get(frameId)
-      if (!nativeId || current.get(frameId) !== orcaId) {
-        throw new Error(`No matching document with id ${orcaId}`)
+      if (!nativeId || current.get(frameId) !== occId) {
+        throw new Error(`No matching document with id ${occId}`)
       }
-      nativeByOrca.set(orcaId, nativeId)
+      nativeByOCC.set(occId, nativeId)
     }
-    return nativeByOrca
+    return nativeByOCC
   }
 
   /** Null when the call goes to native untouched (and synchronously). */
@@ -202,13 +202,13 @@ export function installBrowserExtensionDocumentTargets(
       if (error || !documentIds) {
         return { args, documents: new Map(), error }
       }
-      const nativeByOrca = await nativeDocuments(tabId, documentIds, false)
+      const nativeByOCC = await nativeDocuments(tabId, documentIds, false)
       const nativeIds = documentIds.map((id) =>
-        typeof id === 'string' ? (nativeByOrca.get(id) ?? id) : id
+        typeof id === 'string' ? (nativeByOCC.get(id) ?? id) : id
       )
       return {
         args: [{ ...injection, target: { ...target, documentIds: nativeIds } }, ...args.slice(1)],
-        documents: new Map([...nativeByOrca].map(([orcaId, nativeId]) => [nativeId, orcaId]))
+        documents: new Map([...nativeByOCC].map(([occId, nativeId]) => [nativeId, occId]))
       }
     })()
   }
@@ -226,12 +226,12 @@ export function installBrowserExtensionDocumentTargets(
       if (error || typeof documentId !== 'string' || !isObject(options)) {
         return { args, documents: new Map(), error }
       }
-      const nativeByOrca = await nativeDocuments(tabId, [documentId], true)
+      const nativeByOCC = await nativeDocuments(tabId, [documentId], true)
       return {
         args: [
           tabId,
           args[1],
-          { ...options, documentId: nativeByOrca.get(documentId) ?? documentId },
+          { ...options, documentId: nativeByOCC.get(documentId) ?? documentId },
           ...args.slice(3)
         ],
         documents: new Map()
@@ -264,7 +264,7 @@ export function installBrowserExtensionDocumentTargets(
     if (!isCallable(native) || wrapped.has(native)) {
       return
     }
-    const replacement = function orcaDocumentTarget(...input: unknown[]): unknown {
+    const replacement = function occDocumentTarget(...input: unknown[]): unknown {
       const args = [...input]
       const callback = isCallable(args.at(-1)) ? args.pop() : undefined
       const prepared = retarget(args)
@@ -283,7 +283,7 @@ export function installBrowserExtensionDocumentTargets(
             try {
               native.call(owner, ...nativeArgs, (result: unknown) => {
                 calledBack = true
-                callback(mapsResults ? withOrcaDocumentIds(documents, result) : result)
+                callback(mapsResults ? withOCCDocumentIds(documents, result) : result)
               })
             } catch (error) {
               if (calledBack) {
@@ -302,7 +302,7 @@ export function installBrowserExtensionDocumentTargets(
           throw new Error(error)
         }
         const result: unknown = await native.apply(owner, nativeArgs)
-        return mapsResults ? withOrcaDocumentIds(documents, result) : result
+        return mapsResults ? withOCCDocumentIds(documents, result) : result
       })
     }
     wrapped.add(replacement)

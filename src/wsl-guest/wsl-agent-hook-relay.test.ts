@@ -79,7 +79,7 @@ describe('RelayAgentHookServer host-given coordinates (WSL relay)', () => {
     const post = (token: string) =>
       fetch(`http://127.0.0.1:${port}/claude/agent-view`, {
         method: 'POST',
-        headers: { 'content-type': 'application/json', 'x-orca-agent-hook-token': token },
+        headers: { 'content-type': 'application/json', 'x-occ-agent-hook-token': token },
         body: JSON.stringify(body)
       })
     expect((await post('wrong')).status).toBe(403)
@@ -177,10 +177,10 @@ describe('RelayAgentHookServer host-given coordinates (WSL relay)', () => {
 
       // Surviving agents re-source this endpoint file, so it must publish the actual fallback port.
       const published = parseEndpointFile(readFileSync(endpointFilePath, 'utf8'))
-      expect(published.ORCA_AGENT_HOOK_PORT).toBe(String(port))
-      expect(published.ORCA_AGENT_HOOK_PORT).not.toBe(String(occupiedPort))
-      expect(published.ORCA_AGENT_HOOK_TOKEN).toBe(token)
-      expect(published.ORCA_AGENT_HOOK_TOKEN).toBe('host-issued-token')
+      expect(published.OCC_AGENT_HOOK_PORT).toBe(String(port))
+      expect(published.OCC_AGENT_HOOK_PORT).not.toBe(String(occupiedPort))
+      expect(published.OCC_AGENT_HOOK_TOKEN).toBe(token)
+      expect(published.OCC_AGENT_HOOK_TOKEN).toBe('host-issued-token')
     } finally {
       await new Promise<void>((resolve) => occupant.close(() => resolve()))
     }
@@ -190,16 +190,16 @@ describe('RelayAgentHookServer host-given coordinates (WSL relay)', () => {
 describe('wsl hook relay endpoint contract', () => {
   it('derives the endpoint dir from guest home and the restart-stable instance key', () => {
     expect(wslHookRelayEndpointDir('/home/u', 'abc123')).toBe(
-      '/home/u/.orca-wsl/agent-hooks/instance-abc123'
+      '/home/u/.occ-wsl/agent-hooks/instance-abc123'
     )
     expect(wslHookRelayEndpointDir('/home/u/', 'abc123')).toBe(
-      '/home/u/.orca-wsl/agent-hooks/instance-abc123'
+      '/home/u/.occ-wsl/agent-hooks/instance-abc123'
     )
   })
 
   it('names the guest endpoint file endpoint.env regardless of host platform', () => {
     expect(wslHookRelayEndpointFilePath('/home/u', 'k1')).toBe(
-      '/home/u/.orca-wsl/agent-hooks/instance-k1/endpoint.env'
+      '/home/u/.occ-wsl/agent-hooks/instance-k1/endpoint.env'
     )
   })
 

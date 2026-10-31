@@ -57,7 +57,7 @@ export type OracleTarget = {
 
 export type { ExpectedLayout }
 
-const SETTLE_TIMEOUT_MS = Number(process.env.ORCA_LAYOUT_ORACLE_SETTLE_MS ?? 12_000)
+const SETTLE_TIMEOUT_MS = Number(process.env.OCC_LAYOUT_ORACLE_SETTLE_MS ?? 12_000)
 // Views emit no convergence event; re-read after runtime frames until they agree.
 const VIEW_CONVERGENCE_POLL_MS = 300
 // Today's quiet window (three reads, ~600 ms): no frame across this many gaps between reads.

@@ -20,7 +20,7 @@ const NATIVE_SEAM = 'src/platform/dictation-capture.ts'
 const DICTATION_GRANTS = ['native.audio.start', 'native.audio.read', 'native.audio.stop']
 
 // Native modules reach JSI; browser substitutes denied microphone and no-op wake lock.
-const NATIVE_AUDIO_MODULES = ['@orca/expo-two-way-audio', 'expo-keep-awake']
+const NATIVE_AUDIO_MODULES = ['@occ/expo-two-way-audio', 'expo-keep-awake']
 
 const SESSION_PATHNAME = '/h/[hostId]/session/[worktreeId]'
 const SESSION = 'app/h/[hostId]/session/[worktreeId].tsx'

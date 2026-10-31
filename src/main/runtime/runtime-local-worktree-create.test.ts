@@ -693,7 +693,7 @@ describe('runtime worktree naming through first work', () => {
       undefined
     )
     const { worktree } = await createWorktree(request, undefined, undefined, {}, true)
-    expect(writtenMeta[0]).toMatchObject({ orcaCreationSource: 'runtime' })
+    expect(writtenMeta[0]).toMatchObject({ occCreationSource: 'runtime' })
     const renamed = await renameCreatedWorktreeOnFirstWork(worktree, writtenMeta[0], mocks.git)
     expect(renamed).toMatchObject({ branch: 'refs/heads/fix-auth', displayName: 'Fix auth' })
   })

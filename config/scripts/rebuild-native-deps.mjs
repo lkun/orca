@@ -71,7 +71,7 @@ const NATIVE_MODULES = [
   'node-pty',
   'cpu-features',
   ...(rebuildPlatform === 'win32'
-    ? ['@orca/windows-registry', '@orca/windows-security', '@vscode/windows-process-tree']
+    ? ['@occ/windows-registry', '@occ/windows-security', '@vscode/windows-process-tree']
     : [])
 ]
 const onlyModules = NATIVE_MODULES.filter((m) => !ignoreModules.includes(m))
@@ -82,7 +82,7 @@ const sharedNativeBuild = sharedModules.size > 0 ? await import('./shared-native
 /** Whether this rebuild targets something other than the machine running it. */
 const isCrossHostRebuild = rebuildPlatform !== osPlatform() || rebuildArch !== process.arch
 const forceRebuild =
-  process.env.ORCA_FORCE_NATIVE_REBUILD === '1' || cliOptions.force || isCrossHostRebuild
+  process.env.OCC_FORCE_NATIVE_REBUILD === '1' || cliOptions.force || isCrossHostRebuild
 let modulesToRebuild = onlyModules
 
 warnAboutNodeModulesAboveSharedStore(projectDir)
@@ -180,7 +180,7 @@ try {
         'Close running OCC/Electron/dev processes for this worktree, then rerun `pnpm install` ' +
         'or `pnpm run rebuild:electron`.'
     )
-    if (isPostinstall() && process.env.ORCA_STRICT_NATIVE_REBUILD !== '1') {
+    if (isPostinstall() && process.env.OCC_STRICT_NATIVE_REBUILD !== '1') {
       console.error(
         '[rebuild] Continuing postinstall because the failure is a Windows file lock. ' +
           'The next dev/start command will re-check native modules.'
@@ -384,7 +384,7 @@ function runElectronPackageBinaryInstall() {
 }
 
 function continuePostinstallWithoutElectron() {
-  if (!isPostinstall() || process.env.ORCA_STRICT_ELECTRON_INSTALL === '1') {
+  if (!isPostinstall() || process.env.OCC_STRICT_ELECTRON_INSTALL === '1') {
     return false
   }
   console.error(
@@ -570,13 +570,13 @@ if (failures.length > 0) {
 }
 
 function loadNativeModule(moduleName) {
-  if (moduleName === '@orca/windows-registry') {
+  if (moduleName === '@occ/windows-registry') {
     const registry = projectRequire(moduleName)
     // Why: the package defers loading its .node addon until the first registry call.
     registry.getRegistryKey(registry.HK.CU, 'Environment')
     return
   }
-  if (moduleName === '@orca/windows-security') {
+  if (moduleName === '@occ/windows-security') {
     const security = projectRequire(moduleName)
     if (!security.currentUserSid() || !security.hasNativeExport('isolatedSpawnBreaksAwayFromJob')) throw new Error('stale build without the newest export; rebuild it')
     return

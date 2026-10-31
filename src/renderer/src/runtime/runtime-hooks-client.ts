@@ -1,4 +1,4 @@
-import type { OrcaHooks } from '../../../shared/orca-yaml-hook-types'
+import type { OCCHooks } from '../../../shared/occ-yaml-hook-types'
 import type { ExecutionHostId } from '../../../shared/execution-host'
 import type { SetupScriptImportCandidate } from '../../../shared/setup-script-imports'
 import { callRuntimeRpc } from './runtime-rpc-client'
@@ -17,7 +17,7 @@ function getHookInspectionTarget(hostId: ExecutionHostId): RuntimeClientTarget {
 export type HookCheckResult = {
   status?: 'ok' | 'error'
   hasHooks: boolean
-  hooks: OrcaHooks | null
+  hooks: OCCHooks | null
   mayNeedUpdate: boolean
   /** A background check refused because the repo's WSL distro is stopped or didn't answer. */
   unavailable?: 'wsl-distro-stopped' | 'wsl-distro-unverifiable'

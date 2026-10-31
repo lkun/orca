@@ -508,7 +508,7 @@ it('preserves stored keys and reducer aliases across an item revision and a tomb
 })
 
 const startWorker = {
-  party: { address: 'term_worker', terminalHandle: 'term_worker', orcaSessionId: null },
+  party: { address: 'term_worker', terminalHandle: 'term_worker', occSessionId: null },
   name: 'Worker',
   relation: 'worker'
 }
@@ -520,7 +520,7 @@ it.each([
   },
   { worker: { ...startWorker, name: 17 }, senders: [{ ...startWorker, name: null }] },
   {
-    worker: { ...startWorker, party: { ...startWorker.party, orcaSessionId: 'invalid' } },
+    worker: { ...startWorker, party: { ...startWorker.party, occSessionId: 'invalid' } },
     senders: []
   },
   { worker: null, senders: [] },

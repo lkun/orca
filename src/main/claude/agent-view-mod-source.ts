@@ -13,9 +13,9 @@ let viewRevision = 0
 
   async function post($, action, data = {}, session = identity) {
     if (!session) return {}
-    let port = await $.env.get('ORCA_AGENT_HOOK_PORT')
-    let token = await $.env.get('ORCA_AGENT_HOOK_TOKEN')
-    const endpoint = await $.env.get('ORCA_AGENT_HOOK_ENDPOINT')
+    let port = await $.env.get('OCC_AGENT_HOOK_PORT')
+    let token = await $.env.get('OCC_AGENT_HOOK_TOKEN')
+    const endpoint = await $.env.get('OCC_AGENT_HOOK_ENDPOINT')
     if (endpoint) {
       try {
         const file = parseEndpoint(await $.fs.read(endpoint))
@@ -26,7 +26,7 @@ let viewRevision = 0
     if (!token || !/^[0-9]+$/.test(String(port)) || Number(port) < 1 || Number(port) > 65535) return {}
     const response = await $.http.fetch('http://127.0.0.1:' + port + ${JSON.stringify(CLAUDE_AGENT_VIEW_PATH)}, {
       method: 'POST',
-      headers: { 'content-type': 'application/json', 'x-orca-agent-hook-token': token },
+      headers: { 'content-type': 'application/json', 'x-occ-agent-hook-token': token },
       body: JSON.stringify({ ...session, action, ...data })
     })
     if (!response.ok || !response.text) return {}
@@ -76,19 +76,19 @@ export function register(on) {
 
   on('session.start', async ($, event, next) => {
     const result = await next(event)
-    const targetPane = await $.env.get('ORCA_PANE_KEY')
+    const targetPane = await $.env.get('OCC_PANE_KEY')
     if (!event.isInteractive || event.surface !== 'terminal' || !targetPane) return result
     paneKey = targetPane
-    configDir = await $.env.get('CLAUDE_CONFIG_DIR') || await $.env.get('ORCA_CLAUDE_CONFIG_DIR')
+    configDir = await $.env.get('CLAUDE_CONFIG_DIR') || await $.env.get('OCC_CLAUDE_CONFIG_DIR')
     if (!configDir) return result
     endedSessionId = undefined
-    await $.command.register({ name: 'orca-agent-view', description: 'Open the agent selected in OCC', immediate: true })
+    await $.command.register({ name: 'occ-agent-view', description: 'Open the agent selected in OCC', immediate: true })
     void announce($)
     $.clock.every(5000, () => announce($))
     return result
   })
 
-  on('command.run', { command: 'orca-agent-view' }, async ($) => {
+  on('command.run', { command: 'occ-agent-view' }, async ($) => {
     try {
       const session = identity
       if (!session || session.sessionId !== await $.session.id()) return {}

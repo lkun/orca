@@ -12,7 +12,7 @@ const { existsSyncMock, userInfoMock, runProcessMock, ptyProbeMock } = vi.hoiste
 vi.mock('node:fs', () => ({ existsSync: existsSyncMock }))
 vi.mock('node:os', () => ({ userInfo: userInfoMock }))
 // Process-host owns encoding/signals/caps; this suite checks PAM argv and verdicts.
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: (...args: unknown[]) => Promise.resolve(runProcessMock(...args))
 }))
 vi.mock('./macos-login-session-pty-probe', async (importOriginal) => ({
@@ -30,7 +30,7 @@ import {
 const ACCEPTED_RESULT = {
   code: 0,
   signal: null,
-  stdout: 'ORCA_LOGIN_PREFLIGHT_OK',
+  stdout: 'OCC_LOGIN_PREFLIGHT_OK',
   stderr: '',
   timedOut: false
 }
@@ -56,14 +56,14 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
 
   beforeEach(() => {
     origPlatform = Object.getOwnPropertyDescriptor(process, 'platform')
-    origDisable = process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL
-    delete process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL
+    origDisable = process.env.OCC_DISABLE_MACOS_LOGIN_SHELL
+    delete process.env.OCC_DISABLE_MACOS_LOGIN_SHELL
     existsSyncMock.mockReturnValue(true)
     userInfoMock.mockReturnValue({ username: 'ada', homedir: '/Users/ada' })
     runProcessMock.mockResolvedValue({
       code: 0,
       signal: null,
-      stdout: 'ORCA_LOGIN_PREFLIGHT_OK',
+      stdout: 'OCC_LOGIN_PREFLIGHT_OK',
       stderr: '',
       timedOut: false
     })
@@ -76,9 +76,9 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
       Object.defineProperty(process, 'platform', origPlatform)
     }
     if (origDisable === undefined) {
-      delete process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL
+      delete process.env.OCC_DISABLE_MACOS_LOGIN_SHELL
     } else {
-      process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL = origDisable
+      process.env.OCC_DISABLE_MACOS_LOGIN_SHELL = origDisable
     }
     vi.restoreAllMocks()
     vi.clearAllMocks()
@@ -98,7 +98,7 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
         '-p',
         '-c',
         'export SHELL="$1"; shift; exec -l -- "$@"',
-        'orca-tcc-login',
+        'occ-tcc-login',
         '/bin/zsh',
         '/bin/zsh',
         '-l'
@@ -106,7 +106,7 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
     })
     expect(runProcessMock).toHaveBeenCalledWith({
       program: '/usr/bin/login',
-      args: ['-flpq', 'ada', '/usr/bin/printf', 'ORCA_LOGIN_PREFLIGHT_OK'],
+      args: ['-flpq', 'ada', '/usr/bin/printf', 'OCC_LOGIN_PREFLIGHT_OK'],
       // Detached daemons can outlive their worktree; probe from account home.
       cwd: '/Users/ada',
       maxOutputBytes: 1024,
@@ -295,7 +295,7 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
     runProcessMock.mockReturnValue({
       code: null,
       signal: 'SIGKILL' as const,
-      stdout: 'ORCA_LOGIN_PREFLIGHT_OK',
+      stdout: 'OCC_LOGIN_PREFLIGHT_OK',
       stderr: '',
       timedOut: true
     })
@@ -321,7 +321,7 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
     setPlatform('darwin')
     await prepareMacosTccLoginShell()
     expect(
-      wrapShellSpawnForMacosTccAttribution('/bin/bash', ['--rcfile', '/orca/bash/rcfile'])
+      wrapShellSpawnForMacosTccAttribution('/bin/bash', ['--rcfile', '/occ/bash/rcfile'])
     ).toEqual({
       file: '/usr/bin/login',
       args: [
@@ -333,11 +333,11 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
         '-p',
         '-c',
         'export SHELL="$1"; shift; exec -- "$@"',
-        'orca-tcc-login',
+        'occ-tcc-login',
         '/bin/bash',
         '/bin/bash',
         '--rcfile',
-        '/orca/bash/rcfile'
+        '/occ/bash/rcfile'
       ]
     })
   })
@@ -358,7 +358,7 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
         '-p',
         '-c',
         'export SHELL="$1"; shift; exec -l -- "$@"',
-        'orca-tcc-login',
+        'occ-tcc-login',
         '/opt/homebrew/bin/fish',
         '/bin/zsh',
         '-l'
@@ -380,7 +380,7 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
         '-p',
         '-c',
         'export SHELL="$1"; shift; exec -l -- "$@"',
-        'orca-tcc-login',
+        'occ-tcc-login',
         '/bin/zsh',
         '/bin/zsh',
         '-l'
@@ -408,7 +408,7 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
         '-p',
         '-c',
         'export SHELL="$1"; shift; exec -l -- "$@"',
-        'orca-tcc-login',
+        'occ-tcc-login',
         '/Applications/Custom Shell/bin/fish=debug',
         '/Applications/Custom Shell/bin/fish=debug',
         '--init-command',
@@ -490,7 +490,7 @@ describe('wrapShellSpawnForMacosTccAttribution', () => {
 
   it('falls back to the plain spawn when disabled via env', () => {
     setPlatform('darwin')
-    process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL = '1'
+    process.env.OCC_DISABLE_MACOS_LOGIN_SHELL = '1'
     expect(wrapShellSpawnForMacosTccAttribution('/bin/zsh', ['-l'])).toEqual({
       file: '/bin/zsh',
       args: ['-l']
@@ -509,14 +509,14 @@ describe('probeMacosLoginSessionAlive', () => {
 
   beforeEach(() => {
     origPlatform = Object.getOwnPropertyDescriptor(process, 'platform')
-    origDisable = process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL
-    delete process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL
+    origDisable = process.env.OCC_DISABLE_MACOS_LOGIN_SHELL
+    delete process.env.OCC_DISABLE_MACOS_LOGIN_SHELL
     existsSyncMock.mockReturnValue(true)
     userInfoMock.mockReturnValue({ username: 'ada', homedir: '/Users/ada' })
     runProcessMock.mockResolvedValue({
       code: 0,
       signal: null,
-      stdout: 'ORCA_LOGIN_PREFLIGHT_OK',
+      stdout: 'OCC_LOGIN_PREFLIGHT_OK',
       stderr: '',
       timedOut: false
     })
@@ -529,9 +529,9 @@ describe('probeMacosLoginSessionAlive', () => {
       Object.defineProperty(process, 'platform', origPlatform)
     }
     if (origDisable === undefined) {
-      delete process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL
+      delete process.env.OCC_DISABLE_MACOS_LOGIN_SHELL
     } else {
-      process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL = origDisable
+      process.env.OCC_DISABLE_MACOS_LOGIN_SHELL = origDisable
     }
     vi.restoreAllMocks()
     vi.clearAllMocks()
@@ -641,7 +641,7 @@ describe('probeMacosLoginSessionAlive', () => {
     runProcessMock.mockResolvedValue({
       code: 0,
       signal: null,
-      stdout: 'ORCA_LOGIN_PREFLIGHT_OK',
+      stdout: 'OCC_LOGIN_PREFLIGHT_OK',
       stderr: '',
       timedOut: false
     })
@@ -657,7 +657,7 @@ describe('probeMacosLoginSessionAlive', () => {
     setPlatform('linux')
     expect(await probeMacosLoginSessionAlive()).toBeNull()
     setPlatform('darwin')
-    process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL = '1'
+    process.env.OCC_DISABLE_MACOS_LOGIN_SHELL = '1'
     expect(await probeMacosLoginSessionAlive()).toBeNull()
     expect(runProcessMock).not.toHaveBeenCalled()
   })

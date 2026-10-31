@@ -25,7 +25,7 @@ export type GitObjectQuarantine = {
 }
 
 // Put tmp_objdir scratch stores inside objects on native/WSL/SSH hosts, matching Git quarantine layout and 2.35+ gc expiry.
-export const GIT_OBJECT_QUARANTINE_DIR_PREFIX = 'tmp_objdir-orca-merge-tree-'
+export const GIT_OBJECT_QUARANTINE_DIR_PREFIX = 'tmp_objdir-occ-merge-tree-'
 
 /** Decided by path syntax, not by platform: a Windows main process drives WSL Git. */
 export function pathApiForGitPath(value: string): typeof posix {

@@ -2,14 +2,14 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { settledWriteStub } from '../providers/settled-pty-write-stub'
 import { seedTerminalRestoreRecordsFromSpawnResult } from '../ipc/pty/pane/agent-session-owners'
 import { agentHookServer } from '../agent-hooks/server'
-import { OrcaRuntimeService } from './orca-runtime-test-mocks.spec'
+import { OCCRuntimeService } from './occ-runtime-test-mocks.spec'
 import {
   InMemoryOrchestrationMessages,
   bindSinglePtyRun,
   setInMemoryOrchestrationMessages,
   store,
   syncSinglePty
-} from './orca-runtime-test-fixtures.spec'
+} from './occ-runtime-test-fixtures.spec'
 
 type RestoredReport = Awaited<ReturnType<typeof agentHookServer.readRestoredAgentStatus>>
 
@@ -17,7 +17,7 @@ async function reattachQuietCoordinator(
   report: RestoredReport,
   { foreground = 'codex', probeDelayMs = 0 }: { foreground?: string; probeDelayMs?: number } = {}
 ) {
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   vi.spyOn(agentHookServer, 'readRestoredAgentStatus').mockResolvedValue(report)
   const db = new InMemoryOrchestrationMessages()
   const write = vi.fn().mockReturnValue(true)

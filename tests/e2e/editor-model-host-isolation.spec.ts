@@ -1,25 +1,25 @@
 import { randomUUID } from 'node:crypto'
 import { rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { getActiveWorktreeContext } from './helpers/markdown-editor-fixture'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import { buildOwnedEditorFileId } from '../../src/renderer/src/store/slices/editor/file-ids/editor-file-ids'
 
 test('keeps same-path host models and undo history separate', async ({
-  orcaPage,
+  occPage,
   registerPostElectronShutdownCleanup
 }, testInfo) => {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  const context = await getActiveWorktreeContext(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  const context = await getActiveWorktreeContext(occPage)
   const filePath = path.join(context.rootPath, `host-model-${randomUUID()}.txt`)
   await writeFile(filePath, 'LOCAL_MARKER', 'utf8')
   registerPostElectronShutdownCleanup(() => rm(filePath, { force: true }))
   const remoteId = buildOwnedEditorFileId(filePath, context.worktreeId, 'host-model-fixture')
 
   // Open through the user path so main owns both tabs; key the second runtime separately before redirecting its unselected tab to local transport.
-  const openedIds = await orcaPage.evaluate(
+  const openedIds = await occPage.evaluate(
     ({ filePath, worktreeId }) => {
       const store = window.__store
       if (!store) {
@@ -84,27 +84,27 @@ test('keeps same-path host models and undo history separate', async ({
   )
   expect(openedIds).toEqual({ localId: filePath, remoteId })
 
-  const editor = orcaPage.locator('.monaco-editor').first()
+  const editor = occPage.locator('.monaco-editor').first()
   await expect(editor).toBeVisible({ timeout: 25_000 })
-  const valueTail = () => orcaPage.evaluate(() => window.__monacoEditorE2E?.snapshot().valueTail)
+  const valueTail = () => occPage.evaluate(() => window.__monacoEditorE2E?.snapshot().valueTail)
   await expect.poll(valueTail).toBe('LOCAL_MARKER')
   await editor.click()
-  await orcaPage.keyboard.press('ControlOrMeta+End')
-  await orcaPage.keyboard.type('!')
+  await occPage.keyboard.press('ControlOrMeta+End')
+  await occPage.keyboard.type('!')
   await expect.poll(valueTail).toBe('LOCAL_MARKER!')
-  await orcaPage.evaluate((id) => window.__store?.getState().setActiveFile(id), remoteId)
+  await occPage.evaluate((id) => window.__store?.getState().setActiveFile(id), remoteId)
   await expect.poll(valueTail).toBe('REMOTE_MARKER')
-  await orcaPage.screenshot({ path: testInfo.outputPath('remote-before-undo.png') })
+  await occPage.screenshot({ path: testInfo.outputPath('remote-before-undo.png') })
   await editor.click()
-  await orcaPage.keyboard.press('ControlOrMeta+z')
-  await orcaPage.screenshot({ path: testInfo.outputPath('remote-after-undo.png') })
+  await occPage.keyboard.press('ControlOrMeta+z')
+  await occPage.screenshot({ path: testInfo.outputPath('remote-after-undo.png') })
   await expect.poll(valueTail).toBe('REMOTE_MARKER')
-  await orcaPage.keyboard.press('ControlOrMeta+End')
-  await orcaPage.keyboard.type('?')
+  await occPage.keyboard.press('ControlOrMeta+End')
+  await occPage.keyboard.type('?')
   await expect.poll(valueTail).toBe('REMOTE_MARKER?')
-  await orcaPage.keyboard.press('ControlOrMeta+z')
+  await occPage.keyboard.press('ControlOrMeta+z')
   await expect.poll(valueTail).toBe('REMOTE_MARKER')
-  await orcaPage.evaluate((id) => window.__store?.getState().setActiveFile(id), filePath)
+  await occPage.evaluate((id) => window.__store?.getState().setActiveFile(id), filePath)
   await expect.poll(valueTail).toBe('LOCAL_MARKER!')
-  await orcaPage.screenshot({ path: testInfo.outputPath('local-retained-edit.png') })
+  await occPage.screenshot({ path: testInfo.outputPath('local-retained-edit.png') })
 })

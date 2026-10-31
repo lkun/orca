@@ -23,14 +23,14 @@ describe('Hermes remote installer through a local filesystem adapter (no SSH)', 
   const service = new HermesHookService()
 
   beforeEach(() => {
-    directory = mkdtempSync(join(tmpdir(), 'orca-hermes-remote-adapter-'))
+    directory = mkdtempSync(join(tmpdir(), 'occ-hermes-remote-adapter-'))
     mkdirSync(join(directory, '.hermes'))
     configPath = join(directory, '.hermes', 'config.yaml')
   })
   afterEach(() => rmSync(directory, { recursive: true, force: true }))
 
   it('does not rewrite a configured CRLF file or an existing backup', async () => {
-    const initial = `# operator notes\r\nplugins:\r\n  enabled: [zeta, orca-status, alpha]\r\nterminal:\r\n  client_env_passthrough: [${HERMES_CLIENT_ENV_PASSTHROUGH.join(', ')}]\r\n`
+    const initial = `# operator notes\r\nplugins:\r\n  enabled: [zeta, occ-status, alpha]\r\nterminal:\r\n  client_env_passthrough: [${HERMES_CLIENT_ENV_PASSTHROUGH.join(', ')}]\r\n`
     writeFileSync(configPath, initial)
     writeFileSync(`${configPath}.bak`, 'recovery point')
     const before = statSync(configPath)
@@ -60,7 +60,7 @@ describe('Hermes remote installer through a local filesystem adapter (no SSH)', 
     const filesystem = createManagedHookLocalFilesystem()
     const rename = filesystem.ext_openssh_rename.bind(filesystem)
     filesystem.ext_openssh_rename = (source, destination, callback) => {
-      if (destination === join(directory, '.hermes', 'plugins', 'orca-status', 'plugin.yaml')) {
+      if (destination === join(directory, '.hermes', 'plugins', 'occ-status', 'plugin.yaml')) {
         writeFileSync(configPath, updated)
       }
       rename(source, destination, callback)
@@ -86,7 +86,7 @@ describe('Hermes remote installer through a local filesystem adapter (no SSH)', 
       expect(installed).toContain(`prompt: |${eol}  First${eol}  Second`)
       expect(parse(installed)).toEqual({
         ...parse(input),
-        plugins: { enabled: ['other', 'orca-status'] },
+        plugins: { enabled: ['other', 'occ-status'] },
         terminal: { client_env_passthrough: [...HERMES_CLIENT_ENV_PASSTHROUGH] }
       })
       const before = statSync(configPath)

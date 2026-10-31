@@ -23,7 +23,7 @@ function isSkillRootsUnsupported(error: unknown): boolean {
 }
 
 /** extraRoots replaces the entire process list, so include every OCC root. */
-function orcaSkillRoots(visuals: NativeChatVisualsLaunch): string[] {
+function occSkillRoots(visuals: NativeChatVisualsLaunch): string[] {
   return [visuals.skill.skillsRoot]
 }
 
@@ -35,7 +35,7 @@ async function setSkillRoots(
   try {
     await connection.request(
       SKILL_ROOTS_METHOD,
-      { extraRoots: orcaSkillRoots(visuals) },
+      { extraRoots: occSkillRoots(visuals) },
       { timeoutMs: CODEX_VISUALS_SETUP_BUDGET_MS }
     )
   } catch (error) {

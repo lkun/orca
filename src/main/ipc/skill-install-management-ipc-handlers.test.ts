@@ -36,7 +36,7 @@ import { registerSkillInstallManagementIpcHandlers } from './skill-install-manag
 
 type IpcHandler = (_event: unknown, value: unknown) => Promise<unknown>
 
-async function waitForCalls(count: number): Promise<void> {
+async function waitFocclls(count: number): Promise<void> {
   for (
     let attempt = 0;
     attempt < 100 && callRuntimeEnvironmentMock.mock.calls.length < count;
@@ -110,13 +110,13 @@ describe('skill install management IPC', () => {
       destination: { scope: 'global' }
     })
 
-    await waitForCalls(8)
+    await waitFocclls(8)
     expect(peakActive).toBe(8)
     pending.splice(0).forEach((resolve) => resolve())
-    await waitForCalls(16)
+    await waitFocclls(16)
     expect(peakActive).toBe(8)
     pending.splice(0).forEach((resolve) => resolve())
-    await waitForCalls(17)
+    await waitFocclls(17)
     expect(peakActive).toBe(8)
     pending.splice(0).forEach((resolve) => resolve())
 

@@ -3,7 +3,7 @@ const { existsSync, writeSync } = require('node:fs')
 const net = require('node:net')
 const path = require('node:path')
 
-const EVIDENCE_PREFIX = 'ORCA_NODE_PTY_CAPABILITY_EVIDENCE='
+const EVIDENCE_PREFIX = 'OCC_NODE_PTY_CAPABILITY_EVIDENCE='
 const EXPECTED_ROLES = new Set([
   'target-shell',
   'target-launcher-exited',
@@ -62,7 +62,7 @@ function buildGrandchildLaunch(channel, fixtureToken) {
   return {
     program: path.join(process.env.SystemRoot, 'System32', 'wscript.exe'),
     args: [
-      path.join(__dirname, 'real-orca-detached-launcher.vbs'),
+      path.join(__dirname, 'real-occ-detached-launcher.vbs'),
       process.execPath,
       __filename,
       '--grandchild-member',
@@ -75,13 +75,13 @@ function buildGrandchildLaunch(channel, fixtureToken) {
 
 // Prefer the public package extraResources stages; only packages that predate it ship the private out/ copy.
 function packagedProcessHostPath(resourcesDir) {
-  const packageDir = path.join(resourcesDir, 'node_modules', '@orca', 'process-host')
+  const packageDir = path.join(resourcesDir, 'node_modules', '@occ', 'process-host')
   if (existsSync(path.join(packageDir, 'package.json'))) {
     return packageDir
   }
   // A present package without its manifest is broken output, not an older layout.
   if (existsSync(packageDir)) {
-    throw new Error(`packaged @orca/process-host has no package.json: ${packageDir}`)
+    throw new Error(`packaged @occ/process-host has no package.json: ${packageDir}`)
   }
   return path.join(
     resourcesDir,
@@ -267,7 +267,7 @@ async function exercise(resourcesDir, fixtureExecutable) {
   }
 
   const fixtureToken = randomBytes(32).toString('hex')
-  const channel = `\\\\.\\pipe\\orca-pty-native-capability-${fixtureToken}`
+  const channel = `\\\\.\\pipe\\occ-pty-native-capability-${fixtureToken}`
   const fixtures = createFixtureServer(channel, fixtureToken)
   stage('fixture-listen:start')
   await waitForBarrier(fixtures.listening, 'fixture server listen')
@@ -436,7 +436,7 @@ async function main() {
     return
   }
   if (mode === '--exit-contract-fixture') {
-    process.stdout.write('ORCA_ONE_SHOT_EVIDENCE=flushed\n')
+    process.stdout.write('OCC_ONE_SHOT_EVIDENCE=flushed\n')
     setInterval(() => {}, 60_000)
     return
   }

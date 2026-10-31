@@ -1,7 +1,7 @@
 /** Aborted exit waits must release their captured context; unsignalled waits live until PTY exit.
  * Subscribe/multiplex now observe exits directly, avoiding a leaked waiter per reconnect on long-running agents. */
 import { describe, expect, it } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import type { RuntimeTerminalWait } from '../../shared/runtime-types'
 
 type RuntimeInternals = {
@@ -10,24 +10,24 @@ type RuntimeInternals = {
   terminalWaiters: { forPty: (ptyId: string) => unknown[] }
 }
 
-function internals(runtime: OrcaRuntimeService): RuntimeInternals {
+function internals(runtime: OCCRuntimeService): RuntimeInternals {
   return runtime as unknown as RuntimeInternals
 }
 
 // Register a resolvable live PTY so exit waits remain pending instead of answering early.
-function registerLivePty(runtime: OrcaRuntimeService, ptyId: string, handle: string): void {
+function registerLivePty(runtime: OCCRuntimeService, ptyId: string, handle: string): void {
   internals(runtime).recordPtyWorktree(ptyId, 'wt-live', { connected: true })
   internals(runtime).handleByPtyId.set(ptyId, handle)
 }
 
-function waiterCount(runtime: OrcaRuntimeService, handle: string): number {
+function waiterCount(runtime: OCCRuntimeService, handle: string): number {
   const ptyId = [...internals(runtime).handleByPtyId].find(([, mapped]) => mapped === handle)?.[0]
   return ptyId ? internals(runtime).terminalWaiters.forPty(ptyId).length : 0
 }
 
 describe('terminal.subscribe exit-waiter leak regression', () => {
   it('releases a signalled exit-waiter when the signal aborts', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     registerLivePty(runtime, 'pty-live', 'handle-live')
 
     const controller = new AbortController()
@@ -49,7 +49,7 @@ describe('terminal.subscribe exit-waiter leak regression', () => {
   })
 
   it('leaks an unsignalled exit-waiter across reconnects (documents the bug the fix prevents)', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     registerLivePty(runtime, 'pty-live', 'handle-live')
 
     // Three subscribes with no signal, as the pre-fix subscribe paths did.
@@ -63,7 +63,7 @@ describe('terminal.subscribe exit-waiter leak regression', () => {
   })
 
   it('does not leak when many signalled subscribes churn (reconnect simulation)', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     registerLivePty(runtime, 'pty-live', 'handle-live')
 
     for (let i = 0; i < 25; i += 1) {

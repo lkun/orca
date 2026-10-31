@@ -11,7 +11,7 @@ import { DEVICE_REGISTRY_FILENAME } from './mobile-pairing-files'
 let dir: string
 
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'orca-device-registry-quarantine-'))
+  dir = mkdtempSync(join(tmpdir(), 'occ-device-registry-quarantine-'))
 })
 
 afterEach(() => {

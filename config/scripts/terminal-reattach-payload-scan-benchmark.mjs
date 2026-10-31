@@ -17,7 +17,7 @@ const { hasCursorAgentReattachPayloadScreenSignal: signalSuffixRegex } = await j
   '../../src/renderer/src/components/terminal-pane/pty-connection/cursor-agent-reattach-screen.ts'
 )
 
-const ROUNDS = Number(process.env.ORCA_REATTACH_SCAN_BENCH_ROUNDS ?? '7')
+const ROUNDS = Number(process.env.OCC_REATTACH_SCAN_BENCH_ROUNDS ?? '7')
 const MIN_ITERATION_MS = 120
 
 function makeRng(seed) {

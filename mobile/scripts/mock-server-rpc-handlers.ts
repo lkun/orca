@@ -199,7 +199,7 @@ export function handleRequest(
             hideDefaultBranchWorkspace: false,
             filterRepoIds: [],
             collapsedGroups: [],
-            trustedOrcaHooks: {}
+            trustedOCCHooks: {}
           }
         })
       )
@@ -266,7 +266,7 @@ export function handleRequest(
       respond(
         success(request.id, {
           worktree: {
-            id: next?.worktreeId ?? `repo-1::/tmp/orca-mobile-repro/${name}`,
+            id: next?.worktreeId ?? `repo-1::/tmp/occ-mobile-repro/${name}`,
             worktreeId: next?.worktreeId
           }
         })

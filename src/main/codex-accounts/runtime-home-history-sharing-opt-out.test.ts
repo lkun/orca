@@ -118,7 +118,7 @@ describe('the Codex history-sharing opt-out (#24511)', () => {
       startWslCodexSessionBridgeInBackground: bridges.wsl
     }))
     vi.doMock('../wsl', () => ({ getDefaultWslDistro: () => 'Ubuntu', getWslHome: () => wslHome }))
-    const accountsRoot = join(wslHome, '.local', 'share', 'orca', 'codex-accounts')
+    const accountsRoot = join(wslHome, '.local', 'share', 'occ', 'codex-accounts')
     const wslAccount = (id: string) => ({
       id,
       email: `${id}@example.com`,

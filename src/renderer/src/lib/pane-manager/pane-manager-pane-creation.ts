@@ -71,7 +71,7 @@ export function publishManagedPaneCreated(
   pane: ManagedPaneInternal,
   spawnHints?: Parameters<NonNullable<PaneManagerOptions['onPaneCreated']>>[1]
 ): void {
-  // onPaneCreated binds PTY/status identity synchronously; later leaf replacement would fork ORCA_PANE_KEY from layout state.
+  // onPaneCreated binds PTY/status identity synchronously; later leaf replacement would fork OCC_PANE_KEY from layout state.
   host.identities.markPublished(pane.id)
   void host.options.onPaneCreated?.(toPublicPane(pane), spawnHints)
 }

@@ -43,8 +43,8 @@ export function getDefaultUserDataPath(
   platform: NodeJS.Platform = process.platform,
   homeDir = homedir()
 ): string {
-  if (process.env.ORCA_USER_DATA_PATH) {
-    return process.env.ORCA_USER_DATA_PATH
+  if (process.env.OCC_USER_DATA_PATH) {
+    return process.env.OCC_USER_DATA_PATH
   }
   return getPlatformUserDataPath(platform, homeDir)
 }

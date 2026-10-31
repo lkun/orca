@@ -82,18 +82,18 @@ export async function collectMobileWebAppRouteKeys(appDir, routeRoot = MOBILE_WE
 export const ROUTE_CONTEXT_SOURCE = `const keys = Object.keys(modules)
 function routeContext(id) {
   if (!Object.prototype.hasOwnProperty.call(modules, id)) {
-    throw new Error('[orca-mobile-web-app] no route module for ' + id)
+    throw new Error('[occ-mobile-web-app] no route module for ' + id)
   }
   return modules[id]
 }
 routeContext.keys = () => keys.slice()
 routeContext.resolve = (id) => {
   if (!Object.prototype.hasOwnProperty.call(modules, id)) {
-    throw new Error('[orca-mobile-web-app] cannot resolve route ' + id)
+    throw new Error('[occ-mobile-web-app] cannot resolve route ' + id)
   }
   return id
 }
-routeContext.id = 'orca-mobile-web-app-routes'`
+routeContext.id = 'occ-mobile-web-app-routes'`
 
 // ExpoRoot needs synchronous keys to build tree; defer only route modules through split import().
 // Lazy default hides synchronous unstable_settings/ErrorBoundary exports; assertRoutesCarryNoSynchronousExports fails build if any route adds them.

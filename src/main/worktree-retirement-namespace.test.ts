@@ -41,10 +41,10 @@ describe('recordRetirementNamespaceRegistry', () => {
       recordRetirementNamespaceRegistry(namespaces, `local:posix:/w/${index}`, registry('nautilus'))
     }
 
-    recordRetirementNamespaceRegistry(namespaces, 'local:posix:/w/0', registry('nautilus', 'orca'))
+    recordRetirementNamespaceRegistry(namespaces, 'local:posix:/w/0', registry('nautilus', 'occ'))
     recordRetirementNamespaceRegistry(namespaces, 'local:posix:/w/new', registry('seahorse'))
 
-    expect(namespaces['local:posix:/w/0']).toEqual(registry('nautilus', 'orca'))
+    expect(namespaces['local:posix:/w/0']).toEqual(registry('nautilus', 'occ'))
     expect(namespaces['local:posix:/w/1']).toBeUndefined()
   })
 

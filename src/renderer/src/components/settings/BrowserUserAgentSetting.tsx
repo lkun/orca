@@ -99,7 +99,7 @@ export function BrowserUserAgentSetting({
         <div className="text-[11px] text-muted-foreground">
           {translate(
             'settings.browser.userAgent.resetRequiredCommand',
-            'Reset it from the command line: orca browser identity set --mode <mode> --reset'
+            'Reset it from the command line: occ browser identity set --mode <mode> --reset'
           )}
         </div>
       </div>

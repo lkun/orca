@@ -28,7 +28,7 @@ describe('mobile tool-run sentence continuations', () => {
       nativeChatToolRunSentence(
         [
           { type: 'tool-call', name: 'read', input: {} },
-          { type: 'tool-call', name: 'Bash', input: { command: 'orca snapshot --page p1' } }
+          { type: 'tool-call', name: 'Bash', input: { command: 'occ snapshot --page p1' } }
         ],
         {},
         {

@@ -570,7 +570,7 @@ it('public metadata follows legacy-only commits, item recreation and epoch repla
   expect(journal.publicRead().normalizationKey).toBe(key)
   expect(ids).toHaveBeenCalledTimes(2)
   ids.mockRestore()
-  const identity = { provider: 'orca' as const, clientMessageId: 'u' }
+  const identity = { provider: 'occ' as const, clientMessageId: 'u' }
   await journal.appendTombstone(identity, { fence: 0 })
   expect(journal.publicRead().normalizationKey).toBe('')
   expect(journal.snapshot().items).toEqual([])

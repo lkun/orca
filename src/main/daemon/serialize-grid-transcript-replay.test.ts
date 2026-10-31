@@ -13,7 +13,7 @@ import {
 } from './serialize-grid-roundtrip'
 
 // Replay captured PTY streams with synthetic resizes and random snapshot boundaries.
-// ORCA_OLD_SERIALIZE_ADDON enables baseline comparisons; see serialize-grid.differential.fuzz.test.ts.
+// OCC_OLD_SERIALIZE_ADDON enables baseline comparisons; see serialize-grid.differential.fuzz.test.ts.
 // SERIALIZE_TRANSCRIPT_DIR adds local captures (<name>.txt + .meta.json); SERIALIZE_TRANSCRIPT_SEEDS defaults to 2.
 
 const FIXTURE_DIRS = [
@@ -21,7 +21,7 @@ const FIXTURE_DIRS = [
   join(__dirname, '__fixtures__/pty-transcripts')
 ]
 const EXTRA_DIR = process.env.SERIALIZE_TRANSCRIPT_DIR
-const OLD_ADDON_PATH = process.env.ORCA_OLD_SERIALIZE_ADDON
+const OLD_ADDON_PATH = process.env.OCC_OLD_SERIALIZE_ADDON
 const SEEDS = Math.max(1, Number(process.env.SERIALIZE_TRANSCRIPT_SEEDS) || 2)
 
 // Default-seed counts reproduce baseline serializer limitations; reduce counts as those faults are fixed.

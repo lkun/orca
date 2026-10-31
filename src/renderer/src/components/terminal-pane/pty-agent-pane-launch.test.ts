@@ -117,7 +117,7 @@ vi.mock('../../../../main/telemetry/client', () =>
 vi.mock('../../../../main/telemetry/classify-error', () =>
   import('../../../../main/ipc/pty/pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../../../main/cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../../../main/cli/linux-terminal-occ-cli-shim', () =>
   import('../../../../main/ipc/pty/pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../../../main/memory/pty-registry', () =>
@@ -276,9 +276,9 @@ describe('a pane that starts its own agent launch', () => {
     await spawnPane()
 
     const env = providerSpawn.mock.calls[0]?.[0]?.env ?? {}
-    expect(env.ORCA_AGENT_LAUNCH_TOKEN).toMatch(/.+/)
+    expect(env.OCC_AGENT_LAUNCH_TOKEN).toMatch(/.+/)
     expect(JSON.stringify(runtime.registerPty.mock.calls)).toContain(
-      JSON.stringify({ launchToken: env.ORCA_AGENT_LAUNCH_TOKEN, launchAgent: 'claude' })
+      JSON.stringify({ launchToken: env.OCC_AGENT_LAUNCH_TOKEN, launchAgent: 'claude' })
     )
   })
 

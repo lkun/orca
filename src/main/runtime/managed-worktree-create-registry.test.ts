@@ -1,7 +1,7 @@
 // Runtime creates must enter the host registry and name their workspace before announcement.
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../shared/sidebar-inputs-switch', () => ({ ORCA_SIDEBAR_INPUTS_IS_MAIN: true }))
+vi.mock('../../shared/sidebar-inputs-switch', () => ({ OCC_SIDEBAR_INPUTS_IS_MAIN: true }))
 vi.mock('electron', () => ({
   BrowserWindow: { fromId: vi.fn(() => null) },
   webContents: { fromId: vi.fn(() => null) },
@@ -43,7 +43,7 @@ vi.mock('../ipc/registered-worktree-roots-scoped-invalidation', () => ({
   invalidateAuthorizedRootsCacheForRepo: vi.fn()
 }))
 
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { partialRuntimeStore } from './runtime-store-partial-fixture'
 
 const gitRepo = {
@@ -67,8 +67,8 @@ type RuntimeInternals = {
   emitWorktreeLifecycle: (event: unknown) => void
 }
 
-function makeRuntime(repo: Record<string, unknown> = gitRepo): OrcaRuntimeService {
-  const runtime = new OrcaRuntimeService(
+function makeRuntime(repo: Record<string, unknown> = gitRepo): OCCRuntimeService {
+  const runtime = new OCCRuntimeService(
     partialRuntimeStore({
       getSettings: () => ({ disabledTuiAgents: ['codex'], workspaceDir: '/worktrees' }),
       getProjectHostSetups: () => []
@@ -94,7 +94,7 @@ function makeRuntime(repo: Record<string, unknown> = gitRepo): OrcaRuntimeServic
 
 type LocalCreateArgs = { onWorktreeMetadataPersisted: (created: { id: string }) => unknown }
 
-function creationsOf(runtime: OrcaRuntimeService): Record<string, unknown> {
+function creationsOf(runtime: OCCRuntimeService): Record<string, unknown> {
   if (!runtime.workspaceLifecycle) {
     throw new Error('the switch is mocked on')
   }

@@ -1,5 +1,5 @@
 import { useAppStore } from '@/store'
-import { ORCA_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { OCC_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import { AgentSkillSetupPanel } from '../settings/AgentSkillSetupPanel'
 import type { useMobileEmulatorAgentSetupState } from './use-mobile-emulator-agent-setup-state'
 import { translate } from '@/i18n/i18n'
@@ -31,9 +31,9 @@ export function MobileEmulatorAgentSetupGuideSteps({
         )}
         description={translate(
           'auto.components.emulator.pane.MobileEmulatorAgentSetupGuideSteps.64fb057667',
-          'Teaches agents the orca emulator commands for this worktree.'
+          'Teaches agents the occ emulator commands for this worktree.'
         )}
-        skillNames={[ORCA_CLI_SKILL_NAME]}
+        skillNames={[OCC_CLI_SKILL_NAME]}
         target={setup.skillRuntime.bundledSkillTarget}
         terminalRuntime={setup.skillRuntime.agentRuntime}
         installDisabled={Boolean(setup.skillRuntime.installDisabledReason)}

@@ -4,7 +4,7 @@ import type { SshHostServerStatusLine } from './ssh-host-server-status-copy'
 // Why a cap: a refusal can list every blocking tab; the whole text stays behind "Details".
 export const REFUSAL_INLINE_CHARS = 280
 
-// Main's refusal reason (orcad-migration-refusal-reason.ts) lists the blocking items after this lead.
+// Main's refusal reason (occd-migration-refusal-reason.ts) lists the blocking items after this lead.
 const REFUSAL_LEAD = /^This SSH host cannot move yet:\s*/
 
 /** A refusal Move anyway clears: say what stays on this computer, so moving is the obvious next step. */

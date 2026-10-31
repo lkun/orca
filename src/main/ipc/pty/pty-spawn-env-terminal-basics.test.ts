@@ -28,7 +28,7 @@ import { randomUUID } from 'node:crypto'
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 
 vi.mock('electron', () => import('./pty-ipc-mock-registry').then((m) => m.electronModuleMock()))
 vi.mock('fs', () => import('./pty-ipc-mock-registry').then((m) => m.fsModuleMock()))
@@ -58,7 +58,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -89,12 +89,12 @@ describe('registerPtyHandlers', () => {
             {},
             {
               isPackaged: false,
-              userDataPath: '/tmp/orca-user-data',
+              userDataPath: '/tmp/occ-user-data',
               selectedCodexHomePath: null,
               agentStatusHooksEnabled: false
             }
           )
-          expect(env.ORCA_CLI_BIN_DIR).toBe('/tmp/orca-user-data/cli/bin')
+          expect(env.OCC_CLI_BIN_DIR).toBe('/tmp/occ-user-data/cli/bin')
           expect(
             selectShellStartupFeatures({
               shellPath,
@@ -122,7 +122,7 @@ describe('registerPtyHandlers', () => {
           {},
           {
             isPackaged: true,
-            userDataPath: '/tmp/orca-user-data',
+            userDataPath: '/tmp/occ-user-data',
             selectedCodexHomePath: null,
             agentStatusHooksEnabled: true,
             launchCommand: `sleep 30 && ${agent}`
@@ -141,7 +141,7 @@ describe('registerPtyHandlers', () => {
         {},
         {
           isPackaged: true,
-          userDataPath: '/tmp/orca-user-data',
+          userDataPath: '/tmp/occ-user-data',
           selectedCodexHomePath: null,
           agentStatusHooksEnabled: true,
           disabledTuiAgents: ['pi']
@@ -159,7 +159,7 @@ describe('registerPtyHandlers', () => {
         {},
         {
           isPackaged: true,
-          userDataPath: '/tmp/orca-user-data',
+          userDataPath: '/tmp/occ-user-data',
           selectedCodexHomePath: null,
           launchCommand: 'omp',
           launchAgent: 'omp',
@@ -169,7 +169,7 @@ describe('registerPtyHandlers', () => {
       )
 
       expect(piBuildPtyEnvMock).not.toHaveBeenCalled()
-      expect(env.ORCA_OMP_FRESH_CONFIG).toBe('/tmp/orca-fresh-session.yml')
+      expect(env.OCC_OMP_FRESH_CONFIG).toBe('/tmp/occ-fresh-session.yml')
     })
 
     it('threads disabled Pi settings through a bare PTY spawn', async () => {
@@ -185,17 +185,17 @@ describe('registerPtyHandlers', () => {
     it('prepares fresh OMP settings even when status hooks are disabled', () => {
       const env = buildPtyHostEnv(
         'fresh-without-hooks',
-        { ORCA_OMP_FRESH_CONFIG: '/other-host/stale.yml' },
+        { OCC_OMP_FRESH_CONFIG: '/other-host/stale.yml' },
         {
           isPackaged: true,
-          userDataPath: '/tmp/orca-user-data',
+          userDataPath: '/tmp/occ-user-data',
           selectedCodexHomePath: null,
           agentStatusHooksEnabled: false,
           launchCommand: withFreshOmpLaunch('omp', 'posix')
         }
       )
-      expect(env.ORCA_OMP_FRESH_CONFIG).toBe('/tmp/orca-fresh-session.yml')
-      expect(env.ORCA_OMP_STATUS_EXTENSION).toBeUndefined()
+      expect(env.OCC_OMP_FRESH_CONFIG).toBe('/tmp/occ-fresh-session.yml')
+      expect(env.OCC_OMP_STATUS_EXTENSION).toBeUndefined()
     })
 
     it('routes headless browser launches through the owning OCC workspace', () => {
@@ -207,7 +207,7 @@ describe('registerPtyHandlers', () => {
           {},
           {
             isPackaged: true,
-            userDataPath: '/tmp/orca-user-data',
+            userDataPath: '/tmp/occ-user-data',
             selectedCodexHomePath: null,
             agentStatusHooksEnabled: false,
             routeBrowserOpensToClient: true
@@ -230,7 +230,7 @@ describe('registerPtyHandlers', () => {
         { BROWSER: 'custom-browser %s' },
         {
           isPackaged: true,
-          userDataPath: '/tmp/orca-user-data',
+          userDataPath: '/tmp/occ-user-data',
           selectedCodexHomePath: null,
           agentStatusHooksEnabled: false,
           routeBrowserOpensToClient: true
@@ -249,7 +249,7 @@ describe('registerPtyHandlers', () => {
           {},
           {
             isPackaged: true,
-            userDataPath: '/tmp/orca-user-data',
+            userDataPath: '/tmp/occ-user-data',
             selectedCodexHomePath: null,
             isWsl: true,
             agentStatusHooksEnabled: false,
@@ -274,7 +274,7 @@ describe('registerPtyHandlers', () => {
           {},
           {
             isPackaged: true,
-            userDataPath: '/tmp/orca-user-data',
+            userDataPath: '/tmp/occ-user-data',
             selectedCodexHomePath: null,
             agentStatusHooksEnabled: false,
             launchCommand: launchAgent,
@@ -308,7 +308,7 @@ describe('registerPtyHandlers', () => {
             {},
             {
               isPackaged: true,
-              userDataPath: '/tmp/orca-user-data',
+              userDataPath: '/tmp/occ-user-data',
               selectedCodexHomePath: null,
               agentStatusHooksEnabled: false,
               routeBrowserOpensToClient: true
@@ -334,7 +334,7 @@ describe('registerPtyHandlers', () => {
 
     it('passes the PTY-resolved Codex home to the WSL relay lane', () => {
       const runtimeHome =
-        '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\orca\\codex-runtime-home\\home'
+        '\\\\wsl.localhost\\Ubuntu\\home\\jin\\.local\\share\\occ\\codex-runtime-home\\home'
       const ensureForDistro = vi
         .spyOn(wslHookRelayManager, 'ensureForDistro')
         .mockImplementation(async () => {})
@@ -345,7 +345,7 @@ describe('registerPtyHandlers', () => {
           {},
           {
             isPackaged: true,
-            userDataPath: '/tmp/orca-user-data',
+            userDataPath: '/tmp/occ-user-data',
             selectedCodexHomePath: runtimeHome,
             isWsl: true,
             wslDistro: 'Ubuntu',
@@ -381,7 +381,7 @@ describe('registerPtyHandlers', () => {
           buildSpawnEnv: (id, baseEnv, context) =>
             buildPtyHostEnv(id, baseEnv, {
               isPackaged: true,
-              userDataPath: '/tmp/orca-user-data',
+              userDataPath: '/tmp/occ-user-data',
               selectedCodexHomePath: null,
               agentStatusHooksEnabled: false,
               isWsl: context?.isWsl,
@@ -396,7 +396,7 @@ describe('registerPtyHandlers', () => {
           terminalWindowsWslDistro: 'Ubuntu',
           env: {
             PATH: 'C:\\OCC\\bin;C:\\Users\\me\\AppData\\Local\\Microsoft\\WindowsApps',
-            WSLENV: 'ORCA_TERMINAL_HANDLE/u'
+            WSLENV: 'OCC_TERMINAL_HANDLE/u'
           }
         })
         const [file, , options] = spawnMock.mock.calls.at(-1)!
@@ -408,7 +408,7 @@ describe('registerPtyHandlers', () => {
         const forwardedKeys = options.env.WSLENV.split(':').map((entry) =>
           entry.split('/')[0]!.toLowerCase()
         )
-        expect(options.env.WSLENV).toContain('ORCA_TERMINAL_HANDLE/u')
+        expect(options.env.WSLENV).toContain('OCC_TERMINAL_HANDLE/u')
         expect(forwardedKeys).not.toContain('path')
       } finally {
         __resetPersistedWindowsPathCacheForTests()
@@ -447,7 +447,7 @@ describe('registerPtyHandlers', () => {
       await handlers.get('pty:spawn')!(null, {
         cols: 80,
         rows: 24,
-        env: { ORCA_PANE_KEY: paneKey },
+        env: { OCC_PANE_KEY: paneKey },
         tabId,
         leafId,
         worktreeId: 'wt-1'
@@ -468,14 +468,14 @@ describe('registerPtyHandlers', () => {
         const leafId = randomUUID()
         const paneKey = makePaneKey(tabId, leafId)
         const managedDir = buildJcodeRuntimeDir(paneKey)
-        const customDir = await mkdtemp(join(tmpdir(), 'orca-jcode-fallback-'))
+        const customDir = await mkdtemp(join(tmpdir(), 'occ-jcode-fallback-'))
         const env = { JCODE_RUNTIME_DIR: customDir }
         let managedFileCreated = false
         try {
           await mkdir(dirname(managedDir), { recursive: true })
           await writeFile(managedDir, '', { flag: 'wx' })
           managedFileCreated = true
-          const runtime = new OrcaRuntimeService()
+          const runtime = new OCCRuntimeService()
           const installed = vi.spyOn(runtime, 'setPtyController')
           handlers.clear()
           registerPtyHandlers(mainWindow, runtime)
@@ -491,7 +491,7 @@ describe('registerPtyHandlers', () => {
           }
           const spawnedEnv = spawnMock.mock.calls.at(-1)?.[2]?.env
           expect(spawnedEnv?.JCODE_RUNTIME_DIR).toBe(lane === 'host' ? customDir : undefined)
-          expect(spawnedEnv?.ORCA_PANE_KEY).toBe(paneKey)
+          expect(spawnedEnv?.OCC_PANE_KEY).toBe(paneKey)
           expect(env).toEqual({ JCODE_RUNTIME_DIR: customDir })
         } finally {
           if (managedFileCreated) {
@@ -521,11 +521,11 @@ describe('registerPtyHandlers', () => {
     it('strips an inherited agent session id so a pane never claims that session', async () => {
       // Inherited structured-session IDs must not make every pane claim the parent orchestration caller.
       const env = await spawnAndGetEnv(undefined, {
-        ORCA_AGENT_SESSION_ID: 'a0b1c2d3-0000-4000-8000-00000000abcd',
-        ORCA_STRUCTURED_SESSION: '1'
+        OCC_AGENT_SESSION_ID: 'a0b1c2d3-0000-4000-8000-00000000abcd',
+        OCC_STRUCTURED_SESSION: '1'
       })
-      expect(env.ORCA_AGENT_SESSION_ID).toBeUndefined()
-      expect(env.ORCA_STRUCTURED_SESSION).toBeUndefined()
+      expect(env.OCC_AGENT_SESSION_ID).toBeUndefined()
+      expect(env.OCC_STRUCTURED_SESSION).toBeUndefined()
     })
     it('strips an inherited Claude background job dir so pane agent hooks keep reporting', async () => {
       const env = await spawnAndGetEnv(undefined, { CLAUDE_JOB_DIR: '/tmp/claude-job' })
@@ -544,9 +544,9 @@ describe('registerPtyHandlers', () => {
       expect(env.COLORTERM).toBe('truecolor')
       expect(env.TERM_PROGRAM).toBe('OCC')
     })
-    it('hints inline-image support to agents via ORCA_IMAGE_PROTOCOL', async () => {
+    it('hints inline-image support to agents via OCC_IMAGE_PROTOCOL', async () => {
       const env = await spawnAndGetEnv()
-      expect(env.ORCA_IMAGE_PROTOCOL).toBe('kitty')
+      expect(env.OCC_IMAGE_PROTOCOL).toBe('kitty')
     })
     it('keeps indexed Git prompt guards in a local agent terminal env', async () => {
       const env = await spawnAndGetEnv(undefined, undefined, undefined, undefined, 'claude')
@@ -572,12 +572,12 @@ describe('registerPtyHandlers', () => {
       const env = await spawnAndGetEnv()
       expect(env.FORCE_HYPERLINK).toBe('1')
     })
-    it('surfaces ORCA_APP_VERSION as TERM_PROGRAM_VERSION for TUI feature gating', async () => {
-      const env = await spawnAndGetEnv(undefined, { ORCA_APP_VERSION: '1.2.3-test' })
+    it('surfaces OCC_APP_VERSION as TERM_PROGRAM_VERSION for TUI feature gating', async () => {
+      const env = await spawnAndGetEnv(undefined, { OCC_APP_VERSION: '1.2.3-test' })
       expect(env.TERM_PROGRAM_VERSION).toBe('1.2.3-test')
     })
-    it('falls back to a placeholder version when ORCA_APP_VERSION is unset', async () => {
-      const env = await spawnAndGetEnv(undefined, { ORCA_APP_VERSION: undefined })
+    it('falls back to a placeholder version when OCC_APP_VERSION is unset', async () => {
+      const env = await spawnAndGetEnv(undefined, { OCC_APP_VERSION: undefined })
       expect(env.TERM_PROGRAM_VERSION).toBe('0.0.0-dev')
     })
     it('injects the selected Codex home into OCC terminal PTYs', async () => {
@@ -585,8 +585,8 @@ describe('registerPtyHandlers', () => {
         spawnAndGetEnv(undefined, undefined, () => TEST_CODEX_HOME)
       )
       expect(env.CODEX_HOME).toBe(TEST_CODEX_HOME)
-      expect(env.ORCA_CODEX_HOME).toBe(TEST_CODEX_HOME)
-      expect(env.ORCA_CODEX_LAUNCH_PREFLIGHT).toBeUndefined()
+      expect(env.OCC_CODEX_HOME).toBe(TEST_CODEX_HOME)
+      expect(env.OCC_CODEX_LAUNCH_PREFLIGHT).toBeUndefined()
     })
     it('does not install the Codex launch preflight when Codex hooks are disabled', async () => {
       const env = await spawnAndGetEnv(
@@ -597,7 +597,7 @@ describe('registerPtyHandlers', () => {
       )
 
       expect(env.CODEX_HOME).toBe(TEST_CODEX_HOME)
-      expect(env.ORCA_CODEX_LAUNCH_PREFLIGHT).toBeUndefined()
+      expect(env.OCC_CODEX_LAUNCH_PREFLIGHT).toBeUndefined()
     })
     it('resumes an automatic Codex session from its prepared originating home', async () => {
       const selectedHome = vi.fn(() => '/managed/current/home')
@@ -636,7 +636,7 @@ describe('registerPtyHandlers', () => {
       )
       expect(selectedHome).not.toHaveBeenCalled()
       expect(env.CODEX_HOME).toBe('/managed/origin/home')
-      expect(env.ORCA_CODEX_HOME).toBe('/managed/origin/home')
+      expect(env.OCC_CODEX_HOME).toBe('/managed/origin/home')
     })
     it('blocks a shared-runtime resume when auth reconciliation fails', async () => {
       const selectedHome = vi.fn(() => {
@@ -698,7 +698,7 @@ describe('registerPtyHandlers', () => {
         rows: 24,
         command: 'codex resume session-a',
         env: { CODEX_HOME: '/custom/codex', REMOVE_ME: 'stale' },
-        envToDelete: ['CODEX_HOME', 'ORCA_CODEX_HOME', 'REMOVE_ME'],
+        envToDelete: ['CODEX_HOME', 'OCC_CODEX_HOME', 'REMOVE_ME'],
         launchAgent: 'codex',
         resumeProviderSession: {
           key: 'session_id',
@@ -710,7 +710,7 @@ describe('registerPtyHandlers', () => {
       const env = spawnMock.mock.calls.at(-1)![2].env as Record<string, string>
       expect(selectedHome).not.toHaveBeenCalled()
       expect(env.CODEX_HOME).toBe(systemHome)
-      expect(env.ORCA_CODEX_HOME).toBe(systemHome)
+      expect(env.OCC_CODEX_HOME).toBe(systemHome)
       expect(env.REMOVE_ME).toBeUndefined()
     })
     it('does not fall back to the selected account when automatic resume provenance is rejected', async () => {

@@ -7,7 +7,7 @@ function stubClient(platform: NodeJS.Platform, webClient = false): void {
   resetRendererAppPlatformCacheForTests()
   vi.stubGlobal('window', {
     api: { platform: { get: () => ({ platform }) } },
-    ...(webClient ? { __ORCA_WEB_CLIENT__: true } : {})
+    ...(webClient ? { __OCC_WEB_CLIENT__: true } : {})
   })
 }
 

@@ -4,7 +4,7 @@ import type { ExecutionHostId } from './execution-host'
 import type { Repo } from './repo-types'
 import type { WorkspaceSessionState } from './workspace-session-state-types'
 
-export const TWIN_WORKTREE_ID = 'repo::/work/orca'
+export const TWIN_WORKTREE_ID = 'repo::/work/occ'
 
 export type TwinRepoRow = Pick<Repo, 'id' | 'connectionId' | 'executionHostId'>
 export type TwinCatalogRow = {

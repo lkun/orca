@@ -161,13 +161,13 @@ export const HOST_LAUNCH_CASES: HostLaunchCase[] = [
 ]
 
 const HOST_ENV_KEYS = [
-  'ORCA_PANE_KEY',
-  'ORCA_TAB_ID',
-  'ORCA_WORKTREE_ID',
-  'ORCA_AGENT_LAUNCH_TOKEN',
-  'ORCA_TERMINAL_HANDLE'
+  'OCC_PANE_KEY',
+  'OCC_TAB_ID',
+  'OCC_WORKTREE_ID',
+  'OCC_AGENT_LAUNCH_TOKEN',
+  'OCC_TERMINAL_HANDLE'
 ]
-const FOLDER_ENV_KEYS = ['ORCA_WORKSPACE_ID', 'ORCA_PROJECT_GROUP_ID', 'ORCA_WORKSPACE_ROOT']
+const FOLDER_ENV_KEYS = ['OCC_WORKSPACE_ID', 'OCC_PROJECT_GROUP_ID', 'OCC_WORKSPACE_ROOT']
 
 export function expectedHostProvider(c: HostLaunchCase): Record<string, unknown> {
   // Windows shell metadata is consumed only by Windows main.
@@ -181,9 +181,9 @@ export function expectedHostProvider(c: HostLaunchCase): Record<string, unknown>
     env: {},
     ...provider,
     ...(c.os === 'win32' ? { terminalWindowsWslDistro } : {}),
-    orcaEnv:
+    occEnv:
       c.workspace.kind === 'folder'
         ? [...FOLDER_ENV_KEYS, ...HOST_ENV_KEYS]
-        : ['ORCA_WORKSPACE_ID', ...HOST_ENV_KEYS]
+        : ['OCC_WORKSPACE_ID', ...HOST_ENV_KEYS]
   }
 }

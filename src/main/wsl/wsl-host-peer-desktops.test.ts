@@ -1,14 +1,14 @@
 import { describe, expect, it, vi } from 'vitest'
-import { ORCAD_PEER_DESKTOPS_RUNTIME_CAPABILITY } from '../../shared/orcad-runtime-capabilities'
-import { ORCAD_PEER_DESKTOPS_METHOD } from '../../shared/orcad-peer-desktops-contract'
+import { OCCD_PEER_DESKTOPS_RUNTIME_CAPABILITY } from '../../shared/occd-runtime-capabilities'
+import { OCCD_PEER_DESKTOPS_METHOD } from '../../shared/occd-peer-desktops-contract'
 import { readWslHostPeerDesktops } from './wsl-host-peer-desktops'
 
-function server(peers: unknown, capabilities = [ORCAD_PEER_DESKTOPS_RUNTIME_CAPABILITY]) {
+function server(peers: unknown, capabilities = [OCCD_PEER_DESKTOPS_RUNTIME_CAPABILITY]) {
   return vi.fn(async (method: string) => {
     if (method === 'status.get') {
       return { runtimeId: 'r', capabilities }
     }
-    if (method === ORCAD_PEER_DESKTOPS_METHOD) {
+    if (method === OCCD_PEER_DESKTOPS_METHOD) {
       return { peers }
     }
     throw new Error(`unexpected ${method}`)
@@ -16,13 +16,13 @@ function server(peers: unknown, capabilities = [ORCAD_PEER_DESKTOPS_RUNTIME_CAPA
 }
 
 describe('readWslHostPeerDesktops', () => {
-  it('names the other Orcas connected now, asking as this installation', async () => {
+  it('names the other OCCs connected now, asking as this installation', async () => {
     const call = server([{ name: 'OCC Dev' }])
     await expect(readWslHostPeerDesktops(call, 'this-installation')).resolves.toEqual({
       kind: 'shared',
       names: ['OCC Dev']
     })
-    expect(call).toHaveBeenCalledWith(ORCAD_PEER_DESKTOPS_METHOD, {
+    expect(call).toHaveBeenCalledWith(OCCD_PEER_DESKTOPS_METHOD, {
       clientInstanceId: 'this-installation'
     })
   })

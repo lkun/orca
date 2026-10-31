@@ -3,7 +3,7 @@ import { OrchestrationError } from '../../../../orchestration/orchestration-erro
 import { readRunRemovedWork } from '../../../../orchestration/db/reset/removed-orchestration-work-read'
 import { assertCallerHandleMatchesEvidence, resolveOrchestrationCaller } from './run-scope'
 import { exposeRun } from './run-receipt'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationCallerIdentity } from '../../../../orchestration/orchestration-caller-identity'
 import type { RunRow } from '../../../../orchestration/types'
 import { currentDispatchAssigneeRun } from '../messaging/recipient-routing'
@@ -16,7 +16,7 @@ import {
 } from '../../../../../../shared/rpc-contract/orchestration-runs-params'
 
 function cancelBoundDispatchWaiters(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   caller: OrchestrationCallerIdentity,
   runId: string
 ): void {
@@ -29,7 +29,7 @@ function cancelBoundDispatchWaiters(
 
 /** Create a Run and bind it to the caller, as `run-create` does; one-step `worker-start` reuses it. */
 export function createBoundRun(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   caller: OrchestrationCallerIdentity,
   from: string,
   objective: string
@@ -38,7 +38,7 @@ export function createBoundRun(
     objective,
     coordinatorHandle: caller.terminalHandle,
     coordinatorPaneKey: caller.paneKey,
-    coordinatorOrcaSessionId: caller.orcaSessionId
+    coordinatorOCCSessionId: caller.occSessionId
   })
   // The earlier Run keeps this consumer, so only waiters that plain check now redirects end.
   runtime.cancelMessageWaiters(from)
@@ -105,7 +105,7 @@ export const ORCHESTRATION_RUN_METHODS = [
         runId: params.id,
         coordinatorHandle: caller.terminalHandle,
         coordinatorPaneKey: caller.paneKey,
-        coordinatorOrcaSessionId: caller.orcaSessionId,
+        coordinatorOCCSessionId: caller.occSessionId,
         takeoverLegacy: params.takeoverLegacy,
         legacyCoordinatorAuthority
       })

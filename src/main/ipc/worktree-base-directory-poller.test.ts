@@ -91,7 +91,7 @@ describe('worktree base directory poller', () => {
   })
 
   async function makeRoot(): Promise<string> {
-    const root = await mkdtemp(join(tmpdir(), 'orca-base-poller-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-base-poller-'))
     cleanups.push(() => rm(root, { recursive: true, force: true }))
     // Match production canonicalization because macOS /var-backed temp roots emit resolved event paths.
     return realpath(root)

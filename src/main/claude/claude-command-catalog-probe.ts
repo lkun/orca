@@ -3,7 +3,7 @@ import { assertJsonTextStructureWithinLimits } from '../../shared/json-text-stru
 import { runClaudeListing, type ClaudeModelCatalogProbeDeps } from './claude-model-catalog-probe'
 import { ClaudeSlashCommandCatalog } from './claude-slash-command-catalog'
 
-const REQUEST_ID = 'orca-command-discovery'
+const REQUEST_ID = 'occ-command-discovery'
 
 // initialize lists the live chat command surface without spending an API turn.
 const CLAUDE_COMMAND_LIST_STDIN = `${JSON.stringify({

@@ -6,7 +6,7 @@ import type { WorkspaceSessionState } from '../../../../shared/workspace-session
 import { SessionNotFoundError } from '../../../daemon/daemon-errors'
 import type { Store } from '../../../persistence'
 import type { IPtyProvider } from '../../../providers/pty-provider-contract'
-import { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import { adoptStablePane } from './adopt-stable'
 import * as providers from '../provider/registry'
 
@@ -64,8 +64,8 @@ function paneStore(): { store: Store; read: () => WorkspaceSessionState } {
   }
 }
 
-function runtimeOwning(store: Store): OrcaRuntimeService {
-  const runtime = new OrcaRuntimeService(store as never)
+function runtimeOwning(store: Store): OCCRuntimeService {
+  const runtime = new OCCRuntimeService(store as never)
   runtime.setPtyController({
     write: () => true,
     kill: () => true,
@@ -80,7 +80,7 @@ function runtimeOwning(store: Store): OrcaRuntimeService {
 }
 
 async function adoptAfterAttachRefusal(error: unknown): Promise<{
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   store: Store
   read: () => WorkspaceSessionState
   spawn: ReturnType<typeof vi.fn>

@@ -6,7 +6,7 @@ import { applyMobileColorScheme } from './mobile-theme'
 // Same choices as desktop's theme setting; System follows the phone.
 export type MobileAppearancePreference = 'system' | 'light' | 'dark'
 
-const APPEARANCE_KEY = 'orca:appearance'
+const APPEARANCE_KEY = 'occ:appearance'
 
 let preference: MobileAppearancePreference = 'system'
 // A choice made while the saved one is still loading wins over the stale read.

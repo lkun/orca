@@ -3,7 +3,7 @@
 import type { RpcDispatchStreamingOptions } from './dispatcher-stream-options'
 
 export type RpcCallerIdentity =
-  /** The `orca` CLI over the runtime socket, and the in-process bridges that relay it. */
+  /** The `occ` CLI over the runtime socket, and the in-process bridges that relay it. */
   | { kind: 'local-cli' }
   /** All local IPC windows share identity across reload and app restart. */
   | { kind: 'desktop' }
@@ -11,10 +11,10 @@ export type RpcCallerIdentity =
   | { kind: 'paired-device'; deviceId: string }
 
 export const DESKTOP_RPC_CALLER: RpcCallerIdentity = { kind: 'desktop' }
-/** Stamped by the owner-token runtime socket, which only the local `orca` CLI holds. */
+/** Stamped by the owner-token runtime socket, which only the local `occ` CLI holds. */
 export const LOCAL_CLI_RPC_CALLER: RpcCallerIdentity = { kind: 'local-cli' }
 
-/** The orca CLI agents run, locally or forwarded from a remote host; relayed devices are people. */
+/** The occ CLI agents run, locally or forwarded from a remote host; relayed devices are people. */
 export function isAgentRpcCaller(caller: RpcCallerIdentity | undefined): boolean {
   return caller?.kind === 'local-cli'
 }

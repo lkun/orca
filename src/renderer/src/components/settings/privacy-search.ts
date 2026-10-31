@@ -73,7 +73,7 @@ export const getPrivacyPaneSearchEntries = createLocalizedCatalog(() => [
       ),
       ...translateSearchKeyword(
         'auto.components.settings.privacy.search.69637f4dc4',
-        'orca_telemetry_disabled'
+        'occ_telemetry_disabled'
       ),
       ...translateSearchKeyword('auto.components.settings.privacy.search.5854a5c752', 'ci'),
       ...translateSearchKeyword(

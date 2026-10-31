@@ -96,7 +96,7 @@ export async function startMacOSNativeProviderSocket({
   isCurrent: (socketPath: string) => boolean
   providerProcess: MacOSProviderProcessOwner
 }): Promise<StartedMacOSProviderSocket> {
-  const socketDirectory = mkdtempSync(join(tmpdir(), 'orca-computer-use-'))
+  const socketDirectory = mkdtempSync(join(tmpdir(), 'occ-computer-use-'))
   chmodSync(socketDirectory, 0o700)
   const socketPath = join(socketDirectory, 'provider.sock')
   const socketToken = randomUUID()

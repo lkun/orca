@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 
 const workflow = parse(readFileSync('.github/workflows/adhoc-mac-build.yml', 'utf8'))
 const PINNED = '${{ needs.resolve-ref.outputs.sha }}'
@@ -61,14 +61,14 @@ afterAll(() => rmSync(directory, { recursive: true, force: true }))
 describe('adhoc build pins one commit for the whole run', () => {
   it('checks out the pinned commit in every job that builds from the repo', () => {
     const { jobs } = workflow
-    expect(jobs['orcad-template'].with.ref).toBe(PINNED)
-    const support = jobs['orcad-template-support'].steps.find((step) =>
+    expect(jobs['occd-template'].with.ref).toBe(PINNED)
+    const support = jobs['occd-template-support'].steps.find((step) =>
       step.uses?.startsWith('actions/checkout@')
     )
     expect(support.with.ref).toBe(PINNED)
     const vet = jobs['build-adhoc-mac-arch'].steps.find((step) => step.id === 'vetted')
     expect(vet.env.REQUESTED_REF).toBe(PINNED)
-    for (const name of ['orcad-template-support', 'orcad-template', 'build-adhoc-mac']) {
+    for (const name of ['occd-template-support', 'occd-template', 'build-adhoc-mac']) {
       expect([jobs[name].needs].flat(), name).toContain('resolve-ref')
     }
   })

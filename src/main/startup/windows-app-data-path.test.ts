@@ -23,7 +23,7 @@ function createHost(
   return {
     calls,
     paths,
-    getName: () => 'orca',
+    getName: () => 'occ',
     commandLine: { hasSwitch: (name) => switches.includes(name) },
     getPath: (name) => {
       calls.push(`get:${name}`)
@@ -86,7 +86,7 @@ describe('ensureWindowsAppDataPath', () => {
     const host = createHost('C:\\Users\\me\\AppData\\Roaming')
     ensureWindowsAppDataPath(host, { APPDATA: 'D:\\ignored' }, 'win32')
     expect(host.calls).toEqual(['get:appData', 'set:userData'])
-    expect(host.paths.get('userData')).toBe('C:\\Users\\me\\AppData\\Roaming\\orca')
+    expect(host.paths.get('userData')).toBe('C:\\Users\\me\\AppData\\Roaming\\occ')
   })
 
   it('leaves userData to an explicit --user-data-dir switch', () => {
@@ -97,7 +97,7 @@ describe('ensureWindowsAppDataPath', () => {
 
   it('creates and sets appData from the environment before userData when the lookup throws', () => {
     // Use real missing directories to prove profileless sessions get their fallback created.
-    const root = mkdtempSync(join(tmpdir(), 'orca-appdata-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-appdata-'))
     tempDirs.push(root)
     const missingAppData = join(root, 'missing', 'Roaming')
     const host = createHost(new Error('Failed to get appData path'))
@@ -106,7 +106,7 @@ describe('ensureWindowsAppDataPath', () => {
 
     expect(host.calls).toEqual(['get:appData', 'set:appData', 'set:userData'])
     expect(host.paths.get('appData')).toBe(missingAppData)
-    expect(host.paths.get('userData')).toBe(win32.join(missingAppData, 'orca'))
+    expect(host.paths.get('userData')).toBe(win32.join(missingAppData, 'occ'))
     expect(existsSync(missingAppData)).toBe(true)
   })
 
@@ -136,7 +136,7 @@ describe('startup ordering', () => {
       'runProfileStateRecoveryPreflight()',
       'maybeRedirectCliLaunch(',
       'configureDevUserDataPath(',
-      'configureOrcaUserDataPathEnv()',
+      'configureOCCUserDataPathEnv()',
       'startCrashpadCapture()'
     ]) {
       expect(body.indexOf(laterStep)).toBeGreaterThan(ensure)

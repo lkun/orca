@@ -20,7 +20,7 @@ function node(script: string): { command: string; args: string[] } {
 }
 
 function pidFile(): string {
-  const folder = mkdtempSync(join(tmpdir(), 'orca-catalog-probe-'))
+  const folder = mkdtempSync(join(tmpdir(), 'occ-catalog-probe-'))
   folders.push(folder)
   return join(folder, 'pid')
 }
@@ -126,7 +126,7 @@ describe('the shared catalog probe runner', () => {
 
   it('rejects a command that cannot start, saying its executable is missing', async () => {
     const failure = await runAgentModelCatalogListing(
-      { command: join(tmpdir(), 'orca-no-such-agent-binary'), args: [] },
+      { command: join(tmpdir(), 'occ-no-such-agent-binary'), args: [] },
       { site: 'test-listing' }
     ).catch((error: unknown) => error)
     expect(failure).toBeInstanceOf(AgentModelCatalogProbeError)

@@ -1,6 +1,6 @@
 import './unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import type { RpcRequest } from './core'
 import { RpcDispatcher } from './dispatcher'
 import { createAgentPromptSubmissionRuntime } from '../agent-prompt-submission-runtime-test-fixture'
@@ -16,11 +16,11 @@ function makeRequest(params: unknown): RpcRequest {
   return { id: 'request', authToken: 'token', method: 'terminal.send', params }
 }
 
-function makeRuntime(overrides: Partial<OrcaRuntimeService>): OrcaRuntimeService {
+function makeRuntime(overrides: Partial<OCCRuntimeService>): OCCRuntimeService {
   return {
     getRuntimeId: () => 'test-runtime',
     ...overrides
-  } as OrcaRuntimeService
+  } as OCCRuntimeService
 }
 
 describe('terminal agent prompt send RPC', () => {
@@ -46,7 +46,7 @@ describe('terminal agent prompt send RPC', () => {
         text: 'review this change',
         enter: true,
         agentPrompt: true,
-        client: { id: 'orca-cli', type: 'desktop' }
+        client: { id: 'occ-cli', type: 'desktop' }
       })
     )
 
@@ -83,7 +83,7 @@ describe('terminal agent prompt send RPC', () => {
         text: 'echo x',
         enter: true,
         agentPrompt: true,
-        client: { id: 'orca-cli', type: 'desktop' }
+        client: { id: 'occ-cli', type: 'desktop' }
       })
     )
 
@@ -116,7 +116,7 @@ describe('terminal agent prompt send RPC', () => {
         terminal: 'terminal-1',
         text: 'echo x',
         enter: true,
-        client: { id: 'orca-cli', type: 'desktop' }
+        client: { id: 'occ-cli', type: 'desktop' }
       }),
       { signal: controller.signal }
     )

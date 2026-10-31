@@ -12,8 +12,8 @@ import {
 } from './monaco-large-text-paste'
 
 // Override Monaco’s sandbox-blocked clipboard read through trusted IPC, matching terminal paste.
-export const ORCA_CONTEXT_MENU_PASTE_PRIORITY = 10001
-export const ORCA_CONTEXT_MENU_PASTE_NAME = 'orca-ipc-paste'
+export const OCC_CONTEXT_MENU_PASTE_PRIORITY = 10001
+export const OCC_CONTEXT_MENU_PASTE_NAME = 'occ-ipc-paste'
 
 type PasteCapableEditor = MonacoPasteEditor &
   Pick<editor.ICodeEditor, 'getModel' | 'hasTextFocus' | 'getOption' | 'trigger'>
@@ -25,7 +25,7 @@ type ClipboardPasteMetadata = {
   mode?: string | null
 } | null
 
-export type OrcaContextMenuPasteDeps = {
+export type OCCContextMenuPasteDeps = {
   getFocusedEditor: () => PasteCapableEditor | null
   readClipboardText: (options?: ReadClipboardTextOptions) => Promise<string>
   getClipboardMetadata: (text: string) => ClipboardPasteMetadata
@@ -35,7 +35,7 @@ export type OrcaContextMenuPasteDeps = {
   onReadError?: (error: unknown) => void
 }
 
-export type OrcaContextMenuPasteOutcome =
+export type OCCContextMenuPasteOutcome =
   | { status: 'pasted'; mode: 'native' | 'chunked' }
   | { status: 'noop'; reason: 'empty' | 'read-failed' | 'too-large' | 'target-lost' }
 
@@ -58,9 +58,9 @@ function resolvePasteMetadata(
 }
 
 /** Return false to yield to Monaco; a truthy Promise claims IPC paste and prevents its blocked default from running. */
-export function runOrcaContextMenuPaste(
-  deps: OrcaContextMenuPasteDeps
-): false | Promise<OrcaContextMenuPasteOutcome> {
+export function runOCCContextMenuPaste(
+  deps: OCCContextMenuPasteDeps
+): false | Promise<OCCContextMenuPasteOutcome> {
   const editorInstance = deps.getFocusedEditor()
   // Claim only the focused text editor so other surfaces retain their paste behavior.
   if (!editorInstance || !editorInstance.getModel() || !editorInstance.hasTextFocus()) {
@@ -72,14 +72,14 @@ export function runOrcaContextMenuPaste(
   }
 
   const snapshot = snapshotMonacoPasteTarget(editorInstance)
-  return snapshot ? performOrcaContextMenuPaste(editorInstance, snapshot, deps) : false
+  return snapshot ? performOCCContextMenuPaste(editorInstance, snapshot, deps) : false
 }
 
-async function performOrcaContextMenuPaste(
+async function performOCCContextMenuPaste(
   editorInstance: PasteCapableEditor,
   snapshot: MonacoPasteSnapshot,
-  deps: OrcaContextMenuPasteDeps
-): Promise<OrcaContextMenuPasteOutcome> {
+  deps: OCCContextMenuPasteDeps
+): Promise<OCCContextMenuPasteOutcome> {
   let text: string
   try {
     text = await deps.readClipboardText({ maxBytes: MONACO_PASTE_MAX_BYTES })

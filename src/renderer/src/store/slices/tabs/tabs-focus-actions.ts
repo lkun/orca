@@ -7,13 +7,13 @@ import {
 } from '../tab-group-state'
 import type { Tab } from '../../../../../shared/tab-types'
 import type { AppState } from '../../types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import { withPreviewEnded } from './tab-preview-flag'
 import { endsPreviewHere, promotePreviewTabsThroughLayoutOwner } from './preview-tab-promotion'
 
 /** Activation ends a preview unless it preserves it; main's frame ends one main owns. */
 function withPreviewOnActivation(tab: Tab, preservePreview: boolean, endsHere: boolean): Tab {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     return { ...tab, isPreview: preservePreview ? tab.isPreview : false }
   }
   return preservePreview || !endsHere ? tab : withPreviewEnded(tab)
@@ -120,13 +120,13 @@ export function createTabsFocusActions(
           return state
         }
         const { tab, worktreeId } = found
-        if (ORCA_LAYOUT_OWNER_IS_MAIN && tab.isPreview && !opts?.preservePreview) {
+        if (OCC_LAYOUT_OWNER_IS_MAIN && tab.isPreview && !opts?.preservePreview) {
           promoted.push(tab)
         }
         return tabActivationPatch(state, tab, worktreeId, opts, endsPreviewHere(state, worktreeId))
       })
       // Switch point: main makes the activated preview permanent; its frame clears the flag.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN && promoted.length > 0) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN && promoted.length > 0) {
         promotePreviewTabsThroughLayoutOwner(get(), set, promoted)
       }
     }

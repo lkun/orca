@@ -7,7 +7,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { AddressInfo } from 'node:net'
 import type { ElectronApplication, FrameLocator, Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   readPanelNavigationObserver,
   startPanelNavigationObserver,
@@ -79,7 +79,7 @@ async function startPermissiveProbeServer(): Promise<ProbeServer> {
 }
 
 async function materializeHostilePlugin(origin: string): Promise<string> {
-  const tempRoot = await mkdtemp(join(tmpdir(), 'orca-hostile-panel-e2e-'))
+  const tempRoot = await mkdtemp(join(tmpdir(), 'occ-hostile-panel-e2e-'))
   const pluginRoot = join(tempRoot, 'hostile-panel')
   await cp(join(process.cwd(), 'examples', 'plugins', 'hostile-panel'), pluginRoot, {
     recursive: true
@@ -191,34 +191,34 @@ async function inspectElectronFrameProcesses(
 
 test('contains hostile panel network and navigation probes', async ({
   electronApp,
-  orcaPage
+  occPage
 }, testInfo) => {
   testInfo.annotations.push({ type: 'maturity', description: 'experimental' })
   const server = await startPermissiveProbeServer()
   const pluginRoot = await materializeHostilePlugin(server.origin)
   const tempRoot = join(pluginRoot, '..')
-  const appUrl = orcaPage.url()
+  const appUrl = occPage.url()
   const browserEvents: string[] = []
   const panelDocuments: PanelDocumentSnapshot[] = []
   const replacedNavigations: { destinations: string[]; probe: string }[] = []
   let navigationObservation: PanelNavigationObservation | null = null
   let navigationProbeStarted = false
-  orcaPage.on('console', (message) => {
+  occPage.on('console', (message) => {
     browserEvents.push(`console:${message.type()}:${message.text()}`)
   })
-  orcaPage.on('pageerror', (error) => {
+  occPage.on('pageerror', (error) => {
     browserEvents.push(`pageerror:${error.message}`)
   })
-  orcaPage.on('framenavigated', (frame) => {
+  occPage.on('framenavigated', (frame) => {
     browserEvents.push(`framenavigated:${frame.url()}`)
   })
   try {
-    const panel = await installApprovedPanel(orcaPage, pluginRoot)
-    await openPanel(orcaPage, panel)
+    const panel = await installApprovedPanel(occPage, pluginRoot)
+    await openPanel(occPage, panel)
 
-    const iframe = orcaPage.locator(`iframe[title="${panel.title}"]`)
+    const iframe = occPage.locator(`iframe[title="${panel.title}"]`)
     await expect(iframe).toHaveAttribute('sandbox', 'allow-scripts')
-    const frame = orcaPage.frameLocator(`iframe[title="${panel.title}"]`)
+    const frame = occPage.frameLocator(`iframe[title="${panel.title}"]`)
     await expect(frame.locator('meta[http-equiv="Content-Security-Policy"]')).toHaveAttribute(
       'content',
       /connect-src 'none'.*img-src data:/
@@ -244,11 +244,11 @@ test('contains hostile panel network and navigation probes', async ({
     }
 
     const bridgeErrorCode = await frame.locator('html').evaluate(async () => {
-      const orca: unknown = 'orca' in window ? window.orca : null
-      const host: unknown = typeof orca === 'object' && orca && 'host' in orca ? orca.host : null
+      const occ: unknown = 'occ' in window ? window.occ : null
+      const host: unknown = typeof occ === 'object' && occ && 'host' in occ ? occ.host : null
       const call: unknown = typeof host === 'object' && host && 'call' in host ? host.call : null
       if (typeof call !== 'function') {
-        return 'missing_window_orca'
+        return 'missing_window_occ'
       }
       try {
         await call('invalid.hostileAction', {})
@@ -263,7 +263,7 @@ test('contains hostile panel network and navigation probes', async ({
     expect(bridgeErrorCode).toBe('unknown_method')
 
     expect(server.requests).toEqual([])
-    expect(orcaPage.url()).toBe(appUrl)
+    expect(occPage.url()).toBe(appUrl)
     await expect(iframe).toBeVisible()
 
     await startPanelNavigationObserver(electronApp, appUrl)
@@ -336,7 +336,7 @@ test('contains hostile panel network and navigation probes', async ({
         )
       }
       expect(server.requests).toEqual([])
-      expect(orcaPage.url()).toBe(appUrl)
+      expect(occPage.url()).toBe(appUrl)
     }
     const guardDestination = `${server.origin}/frame-guard-navigation`
     await iframe.evaluate((element, destination) => {
@@ -364,7 +364,7 @@ test('contains hostile panel network and navigation probes', async ({
       'source:meta-refresh-navigation'
     )
     expect(server.requests).toEqual([])
-    expect(orcaPage.url()).toBe(appUrl)
+    expect(occPage.url()).toBe(appUrl)
 
     navigationObservation = await readPanelNavigationObserver(electronApp)
     const attemptedProbeNavigations = navigationObservation.willFrameNavigations.filter(({ url }) =>
@@ -413,17 +413,17 @@ test('contains hostile panel network and navigation probes', async ({
 
 test('detects and suspends a busy-looping panel in an isolated renderer', async ({
   electronApp,
-  orcaPage
+  occPage
 }, testInfo) => {
   testInfo.annotations.push({ type: 'maturity', description: 'experimental' })
   const server = await startPermissiveProbeServer()
   const pluginRoot = await materializeHostilePlugin(server.origin)
   const tempRoot = join(pluginRoot, '..')
-  const appUrl = orcaPage.url()
+  const appUrl = occPage.url()
   let frameProcesses: ElectronFrameProcess[] = []
   try {
-    const panel = await installApprovedPanel(orcaPage, pluginRoot)
-    await openPanel(orcaPage, panel)
+    const panel = await installApprovedPanel(occPage, pluginRoot)
+    await openPanel(occPage, panel)
 
     await expect
       .poll(
@@ -442,19 +442,19 @@ test('detects and suspends a busy-looping panel in an isolated renderer', async 
     expect(panelFrame?.processId).not.toBe(mainFrame?.processId)
     expect(panelFrame?.osProcessId).not.toBe(mainFrame?.osProcessId)
 
-    const iframe = orcaPage.locator(`iframe[title="${panel.title}"]`)
+    const iframe = occPage.locator(`iframe[title="${panel.title}"]`)
     await iframe.evaluate((element) => {
       const panelWindow = (element as HTMLIFrameElement).contentWindow
-      panelWindow?.postMessage({ type: 'orca-hostile-busy-probe' }, '*')
+      panelWindow?.postMessage({ type: 'occ-hostile-busy-probe' }, '*')
     })
 
     await expect(
-      orcaPage.getByText('This plugin panel stopped responding and was suspended.')
+      occPage.getByText('This plugin panel stopped responding and was suspended.')
     ).toBeVisible({ timeout: 20_000 })
     await expect(
-      orcaPage.getByRole('button', { name: new RegExp(`${panel.title}.*Error`) })
+      occPage.getByRole('button', { name: new RegExp(`${panel.title}.*Error`) })
     ).toBeVisible()
-    expect(orcaPage.url()).toBe(appUrl)
+    expect(occPage.url()).toBe(appUrl)
     expect(server.requests).toEqual([])
   } finally {
     await testInfo.attach('hostile-panel-frame-processes', {

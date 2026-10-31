@@ -50,7 +50,7 @@ beforeEach(async () => {
     request.on('end', () => {
       response.writeHead(200, { 'content-type': 'application/json' })
       response.flushHeaders()
-      if (answer && (!signingOnly || !body.includes('OrcaLinearDescriptionImages'))) {
+      if (answer && (!signingOnly || !body.includes('OCCLinearDescriptionImages'))) {
         response.end(
           JSON.stringify({
             data: { issue: { id: issue.id, sharedAccess: { sharedWithUsers: [] }, reactions: [] } }
@@ -63,7 +63,7 @@ beforeEach(async () => {
     })
   })
   await new Promise<void>((resolve) =>
-    server.listen(Number(process.env.ORCA_E2E_LINEAR_HTTP_PORT ?? 0), '127.0.0.1', resolve)
+    server.listen(Number(process.env.OCC_E2E_LINEAR_HTTP_PORT ?? 0), '127.0.0.1', resolve)
   )
   const address = server.address()
   if (!address || typeof address === 'string') {

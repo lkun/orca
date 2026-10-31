@@ -24,7 +24,7 @@ export class PackRefsLockOwnership {
   constructor(gitCommonDir: string) {
     const path = isWindowsAbsolutePathLike(gitCommonDir) ? win32 : posix
     this.lockPath = path.join(gitCommonDir, 'packed-refs.lock')
-    this.markerPath = path.join(gitCommonDir, 'packed-refs.orca-owner')
+    this.markerPath = path.join(gitCommonDir, 'packed-refs.occ-owner')
   }
 
   async claim(now = Date.now()): Promise<PackRefsLockClaim> {

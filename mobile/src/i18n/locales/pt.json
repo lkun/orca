@@ -285,7 +285,7 @@
       "plan": "Plano",
       "stoppedManually": "Interrompido manualmente"
     },
-    "orcaStop": {
+    "occStop": {
       "canContinue": "Você pode continuar nesta conversa.",
       "crash": "O OCC ({{machine}}) parou inesperadamente enquanto esta resposta estava em andamento.",
       "quit": "O OCC ({{machine}}) foi fechado enquanto esta resposta estava em andamento.",
@@ -950,7 +950,7 @@
     },
     "setupHookTrustDrawer": {
       "alwaysTrustAndRun": "Sempre confiar e executar",
-      "description": "O orca.yaml deste repositório é executado antes de o espaço de trabalho iniciar. Só o execute se você confiar neste repositório.",
+      "description": "O occ.yaml deste repositório é executado antes de o espaço de trabalho iniciar. Só o execute se você confiar neste repositório.",
       "dontRun": "Não executar",
       "newScriptLabel": "Novo script de configuração",
       "runHooks": "Executar hooks",
@@ -2640,7 +2640,7 @@
       "cannotRunHere": "O OCC não pode executar este agente em um chat aqui.",
       "capacity": "O OCC no computador que executa este chat atingiu um limite de requisições. Atualize o OCC lá e tente novamente.",
       "chatNotFound": "O OCC não consegue encontrar este chat.",
-      "chatSavedByNewerOrca": "Este chat foi salvo por uma versão mais recente do OCC.",
+      "chatSavedByNewerOCC": "Este chat foi salvo por uma versão mais recente do OCC.",
       "clearAfterAnswer": "Responda à pergunta ou ao pedido de aprovação do agente e execute /clear.",
       "clearAfterRetry": "Tente enviar sua mensagem anterior novamente e execute /clear.",
       "clearAfterSending": "Sua mensagem anterior ainda está sendo enviada. Execute /clear após o envio.",
@@ -2686,7 +2686,7 @@
       "restartFailed": "Não foi possível reiniciar o agente.",
       "runClearWhenDone": "Execute /clear quando terminar.",
       "runCompactWhenDone": "Execute /compact quando terminar.",
-      "savedByNewerOrca": "Os chats foram salvos por uma versão mais recente do OCC.",
+      "savedByNewerOCC": "Os chats foram salvos por uma versão mais recente do OCC.",
       "sendOutcomeLost": "O OCC não conseguiu confirmar que sua mensagem chegou ao agente. Verifique o chat e envie-a novamente, se necessário.",
       "settleEarlierMessage": "Aguarde o envio da sua mensagem anterior ou tente enviá-la novamente.",
       "shortenMessage": "Encurte ou divida a mensagem e envie novamente.",
@@ -2698,8 +2698,8 @@
       "turnActive": "O agente ainda está respondendo.",
       "unreachable": "O OCC não conseguiu se conectar ao agente.",
       "unsupported": "Isto exige uma versão mais recente do OCC no computador que executa este chat. Atualize o OCC lá e tente novamente.",
-      "updateOrcaToKeepUsing": "Atualize o OCC para continuar usando-os.",
-      "updateOrcaToOpenChat": "Atualize o OCC para abri-lo.",
+      "updateOCCToKeepUsing": "Atualize o OCC para continuar usando-os.",
+      "updateOCCToOpenChat": "Atualize o OCC para abri-lo.",
       "waitForBackgroundTasks": "Aguarde a conclusão das tarefas em segundo plano.",
       "waitForCommand": "Aguarde a conclusão do /compact ou /clear.",
       "waitForStart": "Aguarde o agente terminar de iniciar.",
@@ -3732,7 +3732,7 @@
       "projectSubtitle": "Projeto do GitHub · {{repository}}{{itemNumber}}",
       "pullRequest": "Pull request",
       "reopenItem": "Reabrir item",
-      "repositoryNotInOrca": "Repositório não está no OCC",
+      "repositoryNotInOCC": "Repositório não está no OCC",
       "status": "Status",
       "type": "Tipo",
       "workspaceCreationRequirement": "Espaços de trabalho só podem ser criados a partir de issues e pull requests do GitHub."
@@ -3979,7 +3979,7 @@
       "setupTitle": "Executar script de configuração?",
       "skipSetupAndCreate": "Pular configuração e criar",
       "trustFailed": "Falha ao marcar o script de configuração como confiável.",
-      "trustSubtitle": "O orca.yaml deste repositório é executado no seu computador antes de iniciar o espaço de trabalho. Execute-o apenas se você confiar neste repositório."
+      "trustSubtitle": "O occ.yaml deste repositório é executado no seu computador antes de iniciar o espaço de trabalho. Execute-o apenas se você confiar neste repositório."
     },
     "worktreeCreateRetry": {
       "createFailed": "Falha ao criar espaço de trabalho"

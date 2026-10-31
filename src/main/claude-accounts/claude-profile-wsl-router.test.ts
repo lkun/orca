@@ -107,8 +107,8 @@ function fixture() {
       writeFileSync(join(profileHome, '..', 'profile.json'), '{}')
     }
   })
-  const profileHome = join(guest.home, '.local/share/orca/claude-profiles/a/home')
-  const pointer = join(guest.home, '.local/share/orca/claude-profiles/selected-wsl-orca-dev')
+  const profileHome = join(guest.home, '.local/share/occ/claude-profiles/a/home')
+  const pointer = join(guest.home, '.local/share/occ/claude-profiles/selected-wsl-occ-dev')
   return { settings, wsl, setup, router, profileHome, pointer, account }
 }
 
@@ -182,9 +182,9 @@ describe.skipIf(!posixHost)('ClaudeWslProfileRouter', () => {
       wslDistro: 'Ubuntu',
       wslLinuxConfigDir: f.profileHome,
       envPatch: {
-        ORCA_CLAUDE_PROFILE_POINTER: '~/.local/share/orca/claude-profiles/selected-wsl-orca-dev',
+        OCC_CLAUDE_PROFILE_POINTER: '~/.local/share/occ/claude-profiles/selected-wsl-occ-dev',
         CLAUDE_CONFIG_DIR: f.profileHome,
-        ORCA_CLAUDE_INJECTED_CONFIG_DIR: f.profileHome
+        OCC_CLAUDE_INJECTED_CONFIG_DIR: f.profileHome
       }
     })
     expect(f.setup.calls).toBe(2)
@@ -251,7 +251,7 @@ describe.skipIf(!posixHost)('ClaudeWslProfileRouter', () => {
     // The setup stub always writes account a's folder, even when preparing b.
     mkdirSync(f.profileHome, { recursive: true })
     const home = await f.router.prepareAccount('Ubuntu', 'b')
-    expect(home).toBe(join(guest.home, '.local/share/orca/claude-profiles/b/home'))
+    expect(home).toBe(join(guest.home, '.local/share/occ/claude-profiles/b/home'))
     expect(f.setup.calls).toBe(1)
     mkdirSync(home, { recursive: true })
     symlinkSync(sharedHistory, join(home, 'projects'))
@@ -378,7 +378,7 @@ describe.skipIf(!posixHost)('ClaudeWslProfileRouter', () => {
     const prepared = await f.router.preparation('Ubuntu')
     expect(prepared.wslLinuxConfigDir).toBe(join(guest.home, '.claude'))
     expect(prepared.envPatch).toEqual({
-      ORCA_CLAUDE_PROFILE_POINTER: '~/.local/share/orca/claude-profiles/selected-wsl-orca-dev'
+      OCC_CLAUDE_PROFILE_POINTER: '~/.local/share/occ/claude-profiles/selected-wsl-occ-dev'
     })
     expect(await f.router.runningDistros()).toEqual(['Ubuntu'])
   })
@@ -391,7 +391,7 @@ it.skipIf(!posixHost)(
     roots.push(root)
     const home = join(root, 'home')
     mkdirSync(join(home, '.claude', 'projects'), { recursive: true })
-    const profileHome = join(home, '.local/share/orca/claude-profiles/a/home')
+    const profileHome = join(home, '.local/share/occ/claude-profiles/a/home')
     mkdirSync(profileHome, { recursive: true })
     const helper = join(root, 'claude-profile-wsl.cjs')
     await build({

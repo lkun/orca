@@ -2,18 +2,18 @@
 import { expect, it, vi } from 'vitest'
 import { HEADLESS_RUNTIME_WINDOW_ID } from '../../../../shared/runtime-types'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-await import('../../orca-runtime-test-mocks.spec')
-await import('../../orca-runtime-test-lifecycle.spec')
+await import('../../occ-runtime-test-mocks.spec')
+await import('../../occ-runtime-test-lifecycle.spec')
 const { HEADLESS_LEAF_ID, TEST_WORKTREE_ID, TEST_WORKTREE_PATH } =
-  await import('../../orca-runtime-test-fixtures.spec')
-const { OrcaRuntimeService } = await import('../../orca-runtime-test-mocks.spec')
+  await import('../../occ-runtime-test-fixtures.spec')
+const { OCCRuntimeService } = await import('../../occ-runtime-test-mocks.spec')
 const {
   makeHeadlessTerminalLayout,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('../../orca-runtime-test-fixtures.spec')
+} = await import('../../occ-runtime-test-fixtures.spec')
 
 const TAB = '44444444-4444-4444-8444-444444444444'
 // A daemon session id names its worktree, so a record can exist before registration.
@@ -41,7 +41,7 @@ it('gives a restored pane one handle: none before its adoption registers, then t
       terminalPtyIncarnationsByPaneKey: { [`${TAB}:${HEADLESS_LEAF_ID}`]: 'inc-restored' }
     })
   )
-  const runtime = new OrcaRuntimeService(harness.runtimeStore)
+  const runtime = new OCCRuntimeService(harness.runtimeStore)
   runtime.setPtyController({
     write: () => true,
     kill: () => true,

@@ -14,7 +14,7 @@ afterEach(async () => {
 })
 
 async function tempPluginsDir(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-discovery-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-discovery-'))
   roots.push(root)
   return root
 }
@@ -30,13 +30,13 @@ describe('project repositories', () => {
       publisher: 'acme',
       name: 'Repo panel',
       version: '1.0.0',
-      engines: { orca: `>=${PLUGIN_SCHEMA_NEWEST_SINCE}` },
+      engines: { occ: `>=${PLUGIN_SCHEMA_NEWEST_SINCE}` },
       contributes: { panels: [{ id: 'p', title: 'P', entry: 'p.html' }] }
     })
     // Every place a repository might plausibly drop a plugin for OCC to pick up.
-    for (const dir of [worktree, join(worktree, '.orca', 'plugins', 'acme.repo-panel')]) {
+    for (const dir of [worktree, join(worktree, '.occ', 'plugins', 'acme.repo-panel')]) {
       await mkdir(dir, { recursive: true })
-      await writeFile(join(dir, 'orca-plugin.json'), manifest)
+      await writeFile(join(dir, 'occ-plugin.json'), manifest)
       await writeFile(join(dir, 'p.html'), '<p>repo</p>')
     }
     const discover = (devPluginPaths: string[]) =>
@@ -73,7 +73,7 @@ describe('installed plugin discovery identity', () => {
       await writeFile(join(pluginsDir, key, 'current'), hash)
       await writeFile(join(versionDir, 'main.mjs'), 'export default () => {}')
       await writeFile(
-        join(versionDir, 'orca-plugin.json'),
+        join(versionDir, 'occ-plugin.json'),
         JSON.stringify({
           manifestVersion: 2,
           execution: 'trusted-worker',
@@ -81,7 +81,7 @@ describe('installed plugin discovery identity', () => {
           publisher: 'samples',
           name: 'Worker',
           version: '1.0.0',
-          engines: { orca: `>=${PLUGIN_SCHEMA_NEWEST_SINCE}` },
+          engines: { occ: `>=${PLUGIN_SCHEMA_NEWEST_SINCE}` },
           pluginApi: 1,
           main: 'main.mjs'
         })
@@ -112,14 +112,14 @@ describe('installed plugin discovery identity', () => {
     await mkdir(versionDir, { recursive: true })
     await writeFile(join(pluginsDir, installedKey, 'current'), hash)
     await writeFile(
-      join(versionDir, 'orca-plugin.json'),
+      join(versionDir, 'occ-plugin.json'),
       JSON.stringify({
         manifestVersion: 1,
         id: 'different',
         publisher: 'samples',
         name: 'Different',
         version: '1.0.0',
-        engines: { orca: '>=1.0.0' },
+        engines: { occ: '>=1.0.0' },
         pluginApi: 1,
         contributes: { panels: [], commands: [], events: [] },
         capabilities: []
@@ -140,7 +140,7 @@ describe('installed plugin discovery identity', () => {
     await mkdir(versionDir, { recursive: true })
     await writeFile(join(pluginsDir, 'acme.future', 'current'), hash)
     await writeFile(
-      join(versionDir, 'orca-plugin.json'),
+      join(versionDir, 'occ-plugin.json'),
       JSON.stringify({
         manifestVersion: 2,
         execution: 'data',
@@ -148,7 +148,7 @@ describe('installed plugin discovery identity', () => {
         publisher: 'acme',
         name: 'Future',
         version: '1.0.0',
-        engines: { orca: '>=9.0.0' },
+        engines: { occ: '>=9.0.0' },
         pluginApi: 1,
         contributes: { widgets: [{ id: 'clock' }] }
       })
@@ -166,15 +166,15 @@ describe('installed plugin discovery identity', () => {
     const pluginsDir = await tempPluginsDir()
     const devDir = await tempPluginsDir()
     const hash = 'c'.repeat(64)
-    const versionDir = join(pluginsDir, 'stablyai.orca-excalidraw', hash)
+    const versionDir = join(pluginsDir, 'stablyai.occ-excalidraw', hash)
     const manifest = JSON.stringify({
       manifestVersion: 2,
-      id: 'orca-excalidraw',
+      id: 'occ-excalidraw',
       publisher: 'stablyai',
       name: 'Excalidraw',
       version: '1.0.0',
       execution: 'sandboxed-ui',
-      engines: { orca: '>=1.4.244' },
+      engines: { occ: '>=1.4.244' },
       contributes: {
         customEditors: [
           {
@@ -190,10 +190,10 @@ describe('installed plugin discovery identity', () => {
     })
     for (const dir of [versionDir, devDir]) {
       await mkdir(join(dir, 'editor'), { recursive: true })
-      await writeFile(join(dir, 'orca-plugin.json'), manifest)
+      await writeFile(join(dir, 'occ-plugin.json'), manifest)
       await writeFile(join(dir, 'editor', 'index.html'), '<p>editor</p>')
     }
-    await writeFile(join(pluginsDir, 'stablyai.orca-excalidraw', 'current'), hash)
+    await writeFile(join(pluginsDir, 'stablyai.occ-excalidraw', 'current'), hash)
 
     const [installed] = await discoverPlugins({
       pluginsDir,
@@ -201,14 +201,14 @@ describe('installed plugin discovery identity', () => {
       hostVersion: '1.4.245'
     })
     expect(installed && 'error' in installed ? installed.error : null).toBeNull()
-    expect(installed?.pluginKey).toBe('stablyai.orca-excalidraw')
+    expect(installed?.pluginKey).toBe('stablyai.occ-excalidraw')
 
     const [dev] = await discoverPlugins({
       pluginsDir: await tempPluginsDir(),
       devPluginPaths: [devDir],
       hostVersion: '1.4.245'
     })
-    expect(dev && 'error' in dev ? dev.error : '').toContain('engines.orca: must be at least')
+    expect(dev && 'error' in dev ? dev.error : '').toContain('engines.occ: must be at least')
 
     // An older host still names the version gap rather than a schema error.
     const [old] = await discoverPlugins({ pluginsDir, devPluginPaths: [], hostVersion: '1.4.200' })
@@ -248,14 +248,14 @@ describe('declarative plugin discovery identity', () => {
     const devRoot = await tempPluginsDir()
     await mkdir(join(devRoot, 'recipes'))
     await writeFile(
-      join(devRoot, 'orca-plugin.json'),
+      join(devRoot, 'occ-plugin.json'),
       JSON.stringify({
         manifestVersion: 1,
         id: 'recipes',
         publisher: 'samples',
         name: 'Recipes',
         version: '1.0.0',
-        engines: { orca: '>=1.0.0' },
+        engines: { occ: '>=1.0.0' },
         pluginApi: 1,
         contributes: { vmRecipes: [{ path: 'recipes/cloud.json' }] },
         capabilities: []

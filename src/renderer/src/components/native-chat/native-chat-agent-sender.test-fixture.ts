@@ -23,7 +23,7 @@ export const from: AgentMessageSource = {
   orchestration: null,
   senders: ['Build cards', 'Other sender'].map((name, i) => ({
     name,
-    party: { address: `term_${i}`, terminalHandle: `term_${i}`, orcaSessionId: null }
+    party: { address: `term_${i}`, terminalHandle: `term_${i}`, occSessionId: null }
   }))
 }
 

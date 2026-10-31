@@ -117,7 +117,7 @@ export type RuntimeEnsureAgentSessionRequest =
       presentation?: RuntimeTerminalPresentation
       placement?: { tabId?: string; leafId?: string }
       spawnIntent?: SpawnIntent
-      /** Account routing env a desktop prepared for a host with no account services (WSL orcad). */
+      /** Account routing env a desktop prepared for a host with no account services (WSL occd). */
       accountEnv?: Record<string, string>
     }
 
@@ -140,7 +140,7 @@ export type RuntimeCreateAgentSessionRequest = {
   presentation?: RuntimeTerminalPresentation
   placement?: { tabId?: string; leafId?: string }
   viewMode?: 'terminal' | 'chat'
-  /** Account routing env a desktop prepared for a host with no account services (WSL orcad). */
+  /** Account routing env a desktop prepared for a host with no account services (WSL occd). */
   accountEnv?: Record<string, string>
 }
 

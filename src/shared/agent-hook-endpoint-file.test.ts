@@ -6,16 +6,16 @@ import { parseAgentHookEndpointFile } from './agent-hook-endpoint-file'
 import { getEndpointFileName, writeEndpointFile } from './agent-hook-listener/endpoint-publication'
 
 const ENDPOINT_LINES = [
-  'ORCA_AGENT_HOOK_PORT=12345',
-  'ORCA_AGENT_HOOK_TOKEN=token-123',
-  'ORCA_AGENT_HOOK_ENV=production',
-  'ORCA_AGENT_HOOK_VERSION=1'
+  'OCC_AGENT_HOOK_PORT=12345',
+  'OCC_AGENT_HOOK_TOKEN=token-123',
+  'OCC_AGENT_HOOK_ENV=production',
+  'OCC_AGENT_HOOK_VERSION=1'
 ]
 const REQUIRED_FIELDS = [
-  'ORCA_AGENT_HOOK_PORT',
-  'ORCA_AGENT_HOOK_TOKEN',
-  'ORCA_AGENT_HOOK_ENV',
-  'ORCA_AGENT_HOOK_VERSION'
+  'OCC_AGENT_HOOK_PORT',
+  'OCC_AGENT_HOOK_TOKEN',
+  'OCC_AGENT_HOOK_ENV',
+  'OCC_AGENT_HOOK_VERSION'
 ]
 const ENDPOINT = { port: '12345', token: 'token-123', env: 'production', version: '1' }
 
@@ -24,10 +24,10 @@ describe('agent hook endpoint files', () => {
     expect(
       parseAgentHookEndpointFile(
         [
-          'ORCA_AGENT_HOOK_PORT=12345',
-          'ORCA_AGENT_HOOK_TOKEN=token-123',
-          'ORCA_AGENT_HOOK_ENV=production',
-          'ORCA_AGENT_HOOK_VERSION=1'
+          'OCC_AGENT_HOOK_PORT=12345',
+          'OCC_AGENT_HOOK_TOKEN=token-123',
+          'OCC_AGENT_HOOK_ENV=production',
+          'OCC_AGENT_HOOK_VERSION=1'
         ].join('\n')
       )
     ).toEqual({
@@ -42,10 +42,10 @@ describe('agent hook endpoint files', () => {
     expect(
       parseAgentHookEndpointFile(
         [
-          'set ORCA_AGENT_HOOK_PORT=54321',
-          'set ORCA_AGENT_HOOK_TOKEN=token-abc',
-          'set ORCA_AGENT_HOOK_ENV=development',
-          'set ORCA_AGENT_HOOK_VERSION=1'
+          'set OCC_AGENT_HOOK_PORT=54321',
+          'set OCC_AGENT_HOOK_TOKEN=token-abc',
+          'set OCC_AGENT_HOOK_ENV=development',
+          'set OCC_AGENT_HOOK_VERSION=1'
         ].join('\r\n')
       )
     ).toEqual({
@@ -75,7 +75,7 @@ describe('agent hook endpoint files', () => {
   })
 
   it('parses the endpoint bytes published by the platform writer', () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-hook-endpoint-parser-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-hook-endpoint-parser-'))
     try {
       const path = join(directory, getEndpointFileName())
       expect(

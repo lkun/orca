@@ -48,7 +48,7 @@ let now: number
 let initialAttach: ReturnType<typeof hostTestAttachParams>
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-claude-stop-exit-ends-record-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-claude-stop-exit-ends-record-'))
   resetHostTestOperationIds()
   now = NOW
   log = recordingStructuredAgentSessionLogger()

@@ -1,7 +1,7 @@
 import { useActiveProjectSkillRuntime } from '@/hooks/useActiveProjectSkillRuntime'
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import { ORCA_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { OCC_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import {
   GLOBAL_AGENT_SKILL_SOURCE_KINDS,
   useInstalledAgentSkill
@@ -9,7 +9,7 @@ import {
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { translate } from '@/i18n/i18n'
 
-// Why: OCC terminals already provide the `orca` command, so agent control only needs the skill.
+// Why: OCC terminals already provide the `occ` command, so agent control only needs the skill.
 export function useMobileEmulatorAgentSetupState(enabled = true): {
   skillRuntime: ReturnType<typeof useActiveProjectSkillRuntime>
   cliSkillError: string | null
@@ -29,7 +29,7 @@ export function useMobileEmulatorAgentSetupState(enabled = true): {
     loading: cliSkillLoading,
     error: cliSkillError,
     refresh: refreshCliSkill
-  } = useInstalledAgentSkill(ORCA_CLI_SKILL_NAME, {
+  } = useInstalledAgentSkill(OCC_CLI_SKILL_NAME, {
     enabled,
     runtimeTarget: skillRuntime.discoveryRuntimeTarget,
     discoveryTarget: skillRuntime.discoveryTarget,

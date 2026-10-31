@@ -4,10 +4,10 @@ import { writeStartupDiagnosticLine, type StartupDiagnosticSink } from './startu
 
 export const SINGLE_INSTANCE_LOCK_FAILURE_MESSAGE =
   '[single-instance] Another OCC instance is already running for this userData profile; exiting this launch after requesting the existing window. If no OCC process is running, this may be an Electron/macOS single-instance lock failure.'
-export const SINGLE_INSTANCE_LOCK_BYPASS_ENV = 'ORCA_BYPASS_SINGLE_INSTANCE_LOCK'
-export const SINGLE_INSTANCE_LOCK_E2E_ENFORCE_ENV = 'ORCA_E2E_ENFORCE_SINGLE_INSTANCE_LOCK'
+export const SINGLE_INSTANCE_LOCK_BYPASS_ENV = 'OCC_BYPASS_SINGLE_INSTANCE_LOCK'
+export const SINGLE_INSTANCE_LOCK_E2E_ENFORCE_ENV = 'OCC_E2E_ENFORCE_SINGLE_INSTANCE_LOCK'
 export const SINGLE_INSTANCE_LOCK_BYPASS_MESSAGE =
-  '[single-instance] ORCA_BYPASS_SINGLE_INSTANCE_LOCK=1 is set; bypassing the packaged macOS single-instance lock for diagnostics. Do not use this with another OCC instance running for the same profile.'
+  '[single-instance] OCC_BYPASS_SINGLE_INSTANCE_LOCK=1 is set; bypassing the packaged macOS single-instance lock for diagnostics. Do not use this with another OCC instance running for the same profile.'
 export { SINGLE_INSTANCE_ALREADY_RUNNING_EXIT_CODE } from '../../shared/single-instance-exit-code'
 
 // Supervisor duplicate serve launches must not activate desktop; recognize CLI-form argv too (#12677, #11935). Missing argv preserves activation.
@@ -53,7 +53,7 @@ export function shouldSkipSingleInstanceLock(options: {
   return (
     options.isDev &&
     !options.isServeMode &&
-    Boolean(env.ORCA_E2E_USER_DATA_DIR) &&
+    Boolean(env.OCC_E2E_USER_DATA_DIR) &&
     env[SINGLE_INSTANCE_LOCK_E2E_ENFORCE_ENV] !== '1'
   )
 }
@@ -65,7 +65,7 @@ export function singleInstanceLockFailureMessage(options: {
   if (!options.isDevDesktop) {
     return SINGLE_INSTANCE_LOCK_FAILURE_MESSAGE
   }
-  return `[single-instance] Another OCC dev instance is already running on the profile at ${options.userDataPath}; exiting this launch after passing it this launch's request. To run another dev copy at the same time, give it its own profile: \`pnpm dev --worktree-profile\` (the default in linked worktrees) or ORCA_DEV_USER_DATA_PATH=<another directory> pnpm dev`
+  return `[single-instance] Another OCC dev instance is already running on the profile at ${options.userDataPath}; exiting this launch after passing it this launch's request. To run another dev copy at the same time, give it its own profile: \`pnpm dev --worktree-profile\` (the default in linked worktrees) or OCC_DEV_USER_DATA_PATH=<another directory> pnpm dev`
 }
 
 export function logSingleInstanceLockFailure(

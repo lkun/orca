@@ -36,7 +36,7 @@ import { reattachSentinelMatches, selectCreatedTabId } from './reattach-proof.mj
 
 const SORTABLE_TAB = '[data-testid="sortable-tab"]'
 // Canary readback rejects a fresh shell after relaunch.
-const SENTINEL_ENV = 'ORCA_CRASH_SENTINEL'
+const SENTINEL_ENV = 'OCC_CRASH_SENTINEL'
 
 function log(step, msg) {
   console.log(`[win-crash-survival-e2e] ${step}: ${msg}`)
@@ -56,8 +56,8 @@ async function main() {
   }
 
   const runId = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
-  const canary = `ORCA-CRASH-SENTINEL-${runId}`
-  const runDir = mkdtempSync(path.join(tmpdir(), `orca-win-crash-e2e-${runId}-`))
+  const canary = `OCC-CRASH-SENTINEL-${runId}`
+  const runDir = mkdtempSync(path.join(tmpdir(), `occ-win-crash-e2e-${runId}-`))
   const userDataDir = path.join(runDir, 'userData')
   const shellPidFile = path.join(runDir, 'shell.pid')
   const reattachFile = path.join(runDir, 'reattach.txt')
@@ -65,7 +65,7 @@ async function main() {
   log('setup', `runId=${runId} runDir=${runDir} profile=${opts.expect} exe=${opts.exePath}`)
 
   const ctx = { session: null }
-  const diagDir = process.env.ORCA_E2E_DIAG_DIR || path.join(runDir, 'diag')
+  const diagDir = process.env.OCC_E2E_DIAG_DIR || path.join(runDir, 'diag')
   let passed = false
   try {
     passed = await runProof(ctx, { opts, canary, runDir, userDataDir, shellPidFile, reattachFile })

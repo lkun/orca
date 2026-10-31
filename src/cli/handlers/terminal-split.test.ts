@@ -8,7 +8,7 @@ function splitClient(
   call: RuntimeClient['call'],
   capabilities: NonNullable<CliStatusResult['runtime']['capabilities']>
 ): RuntimeClient {
-  const client = new RuntimeClient('/tmp/orca-split-test', 60_000, null, null)
+  const client = new RuntimeClient('/tmp/occ-split-test', 60_000, null, null)
   vi.spyOn(client, 'call').mockImplementation(call)
   vi.spyOn(client, 'getCliStatus').mockResolvedValue({
     id: 'status',

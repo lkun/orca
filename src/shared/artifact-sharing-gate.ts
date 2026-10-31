@@ -5,7 +5,7 @@ export const ARTIFACT_SHARING_DISABLED_CODE = 'artifact_sharing_disabled'
 
 // The gate has no caller identity and also denies human CLI sharing; wording must describe device-wide permission.
 export const ARTIFACT_SHARING_DISABLED_MESSAGE =
-  'Publishing artifacts is off for this device. Nothing running here — agents or the orca CLI — can mint public artifact links until you allow it.'
+  'Publishing artifacts is off for this device. Nothing running here — agents or the occ CLI — can mint public artifact links until you allow it.'
 
 export const ARTIFACT_SHARING_DISABLED_NEXT_STEPS: readonly string[] = [
   'Open Settings → Artifacts in the OCC desktop app on this device.',

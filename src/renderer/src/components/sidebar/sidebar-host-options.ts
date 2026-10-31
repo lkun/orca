@@ -15,7 +15,7 @@ import {
 } from '../../../../shared/execution-host-registry'
 
 import { getExecutionHostHealthLabel } from '@/lib/runtime-host-copy'
-import { pickerExecutionHosts } from '../../../../shared/managed-orcad-execution-host'
+import { pickerExecutionHosts } from '../../../../shared/managed-occd-execution-host'
 import { getCheckedHostRows } from '../../../../shared/workspace-view/workspace-host-visibility'
 import type { RuntimeCompatVerdict } from '../../../../shared/protocol-compat'
 import type { SshConnectionState, SshConnectionStatus } from '../../../../shared/ssh-types'
@@ -75,7 +75,7 @@ export function buildSidebarHostOptions(args: {
   runtimeStatusByEnvironmentId?: ReadonlyMap<string, RuntimeEnvironmentStatus>
   runtimeEnvironments?: readonly Pick<
     PublicKnownRuntimeEnvironment,
-    'id' | 'name' | 'source' | 'orcadDeployment'
+    'id' | 'name' | 'source' | 'occdDeployment'
   >[]
   // Apply display-label overrides consistently across sidebar host controls.
   hostLabelOverrides?: ReadonlyMap<ExecutionHostId, string>
@@ -100,7 +100,7 @@ export function buildSidebarHostOptions(args: {
     if (isWslHostRuntimeEnvironment(environment)) {
       wslDistroByHostId.set(toRuntimeExecutionHostId(environment.id), {
         environmentId: environment.id,
-        distro: environment.orcadDeployment.distro
+        distro: environment.occdDeployment.distro
       })
     }
   }

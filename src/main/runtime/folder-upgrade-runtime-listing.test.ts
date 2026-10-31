@@ -25,7 +25,7 @@ vi.mock('./repo-worktree-admin-fingerprint', () => ({
   readRepoWorktreeAdminFingerprint: vi.fn(async () => null)
 }))
 
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import type { HostWorktreeTarget } from '../../shared/worktree/host-qualified-identity'
 import {
   partialRuntimeStore,
@@ -40,7 +40,7 @@ const FOLDER_PATH = 'D:\\project\\a'
 const GIT_PATH = 'D:/project/a'
 const FOLDER_WORKTREE_ID = `${REPO_ID}::${FOLDER_PATH}`
 
-function makeRuntime(): OrcaRuntimeService {
+function makeRuntime(): OCCRuntimeService {
   const metaById: Record<string, WorktreeMeta> = {
     [FOLDER_WORKTREE_ID]: storeWorktreeMeta({
       displayName: 'Draft',
@@ -82,7 +82,7 @@ function makeRuntime(): OrcaRuntimeService {
     }),
     getProjects: () => []
   }
-  return new OrcaRuntimeService(partialRuntimeStore(store))
+  return new OCCRuntimeService(partialRuntimeStore(store))
 }
 
 describe('folder-upgraded checkout in runtime listings', () => {

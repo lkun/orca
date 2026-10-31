@@ -21,7 +21,7 @@ const OLD_FETCH = globalThis.fetch
 
 describe('Azure DevOps pull request creation', () => {
   beforeEach(() => {
-    process.env = { ...OLD_ENV, ORCA_AZURE_DEVOPS_TOKEN: 'pat-token' }
+    process.env = { ...OLD_ENV, OCC_AZURE_DEVOPS_TOKEN: 'pat-token' }
     gitExecFileAsyncMock.mockReset()
     gitExecFileAsyncMock.mockResolvedValue({
       stdout: 'https://dev.azure.com/acme/Project/_git/repo\n',

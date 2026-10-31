@@ -7,7 +7,7 @@ import { join } from 'node:path'
 const MAX_POSIX_ROOT_LENGTH = 50
 const RUN_DIRECTORY = /^ov([0-9a-z]+)$/
 // Only directories carrying it are ours to sweep; a bare `ov…` name could belong to anyone.
-const MARKER = '.orca-vitest-run'
+const MARKER = '.occ-vitest-run'
 
 function isAlive(pid) {
   try {

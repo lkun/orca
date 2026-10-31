@@ -1,9 +1,9 @@
 import type { StructuredAgentId } from '../../../shared/agent-session-provider-handle'
 import { structuredAgentRuntimeMetadata } from '../structured-agent-runtime-metadata'
-import { getProfileUserDataPath } from '../../orca-profiles/profile-storage-paths'
-import { OrcaRuntimeWithStructuredSessionCliWriterHost } from './structured-session-cli-writer-host'
+import { getProfileUserDataPath } from '../../occ-profiles/profile-storage-paths'
+import { OCCRuntimeWithStructuredSessionCliWriterHost } from './structured-session-cli-writer-host'
 
-export abstract class OrcaRuntimeWithStructuredSessionAccountHome extends OrcaRuntimeWithStructuredSessionCliWriterHost {
+export abstract class OCCRuntimeWithStructuredSessionAccountHome extends OCCRuntimeWithStructuredSessionCliWriterHost {
   /** Resolve account home through this host's agent registration; null means unregistered and create refuses. */
   protected structuredAgentAccountHomeResolver(
     agent: StructuredAgentId,

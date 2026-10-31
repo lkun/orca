@@ -1,7 +1,7 @@
 // Validated guest IPC synchronously dispatches panel events because browser keystrokes bypass DOM; shared close handlers record reclaim before webview teardown.
-export const FLOATING_WORKSPACE_GUEST_CLOSE_EVENT = 'orca:floating-workspace-guest-close'
+export const FLOATING_WORKSPACE_GUEST_CLOSE_EVENT = 'occ:floating-workspace-guest-close'
 export const FLOATING_WORKSPACE_GUEST_SELECT_INDEX_EVENT =
-  'orca:floating-workspace-guest-select-index'
+  'occ:floating-workspace-guest-select-index'
 
 export type FloatingWorkspaceGuestCloseDetail = {
   /** The floating browser guest's owning source page id (Tab.entityId). */

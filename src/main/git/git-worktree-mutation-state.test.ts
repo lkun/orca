@@ -12,7 +12,7 @@ let repo = ''
 
 describe('Git worktree mutation tracking', () => {
   beforeEach(async () => {
-    root = await realpath(await mkdtemp(join(tmpdir(), 'orca-git-mutation-')))
+    root = await realpath(await mkdtemp(join(tmpdir(), 'occ-git-mutation-')))
     repo = join(root, 'repo')
     await mkdir(join(repo, '.git'), { recursive: true })
   })

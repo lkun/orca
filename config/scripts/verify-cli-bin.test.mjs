@@ -24,14 +24,14 @@ function makeProjectWithCli(
   content,
   { mode = 0o755, rootPackageType, writeOutPackageJson = true } = {}
 ) {
-  const projectDir = mkdtempSync(path.join(tmpdir(), 'orca-cli-bin-'))
+  const projectDir = mkdtempSync(path.join(tmpdir(), 'occ-cli-bin-'))
   roots.push(projectDir)
   const cliPath = path.join(projectDir, 'out', 'cli', 'index.js')
   const outPackageJsonPath = path.join(projectDir, 'out', 'package.json')
   mkdirSync(path.dirname(cliPath), { recursive: true })
   writeFileSync(
     path.join(projectDir, 'package.json'),
-    JSON.stringify({ bin: { orca: './out/cli/index.js' }, type: rootPackageType }),
+    JSON.stringify({ bin: { occ: './out/cli/index.js' }, type: rootPackageType }),
     'utf8'
   )
   if (writeOutPackageJson) {
@@ -62,11 +62,11 @@ describe('verifyPackageCliBin', () => {
   it('rejects an empty package bin target', () => {
     const { projectDir } = makeProjectWithCli('')
 
-    expect(() => verifyPackageCliBin({ projectDir })).toThrow('bin.orca target is empty')
+    expect(() => verifyPackageCliBin({ projectDir })).toThrow('bin.occ target is empty')
   })
 
   it('rejects package bin targets without a Node shebang', () => {
-    const { projectDir } = makeProjectWithCli('console.log("orca")\n')
+    const { projectDir } = makeProjectWithCli('console.log("occ")\n')
 
     expect(() => verifyPackageCliBin({ projectDir })).toThrow('Node shebang')
   })
@@ -83,7 +83,7 @@ describe('verifyPackageCliBin', () => {
     verifyPackageCliBin({ projectDir, fixPackageJson: true, runHelp: true })
 
     expect(JSON.parse(readFileSync(outPackageJsonPath, 'utf8'))).toEqual({
-      name: 'orca-compiled-output',
+      name: 'occ-compiled-output',
       type: 'commonjs',
       private: true
     })
@@ -91,7 +91,7 @@ describe('verifyPackageCliBin', () => {
 
   it('stamps the build commit the CLI pins official skill installs to', () => {
     const { projectDir, outPackageJsonPath } = makeProjectWithCli(
-      '#!/usr/bin/env node\nconsole.log("orca")\n',
+      '#!/usr/bin/env node\nconsole.log("occ")\n',
       { writeOutPackageJson: false }
     )
 
@@ -103,7 +103,7 @@ describe('verifyPackageCliBin', () => {
 
   it('rejects a CLI package boundary that is not CommonJS', () => {
     const { projectDir, outPackageJsonPath } = makeProjectWithCli(
-      '#!/usr/bin/env node\nconsole.log("orca")\n'
+      '#!/usr/bin/env node\nconsole.log("occ")\n'
     )
     writeFileSync(outPackageJsonPath, JSON.stringify({ type: 'module' }), 'utf8')
 
@@ -112,7 +112,7 @@ describe('verifyPackageCliBin', () => {
 
   it.skipIf(process.platform === 'win32')('can repair the POSIX executable bit', () => {
     const { projectDir, cliPath } = makeProjectWithCli(
-      '#!/usr/bin/env node\nconsole.log("orca")\n',
+      '#!/usr/bin/env node\nconsole.log("occ")\n',
       { mode: 0o644 }
     )
 
@@ -124,7 +124,7 @@ describe('verifyPackageCliBin', () => {
 
   it('repairs both the package boundary and POSIX executable bit together', () => {
     const { projectDir, cliPath, outPackageJsonPath } = makeProjectWithCli(
-      '#!/usr/bin/env node\nconsole.log("orca")\n',
+      '#!/usr/bin/env node\nconsole.log("occ")\n',
       { mode: 0o644, writeOutPackageJson: false }
     )
 

@@ -13,10 +13,10 @@ vi.mock('./client', () => ({
 import { resolveGitHubPrStartPoint } from './pr-start-point'
 import { reviewHeadRemoteRefComponent } from '../../shared/review-head-tracking-ref'
 
-const ORIGIN_URL = 'git@github.com:acme/orca.git'
+const ORIGIN_URL = 'git@github.com:acme/occ.git'
 const ORIGIN_COMPONENT = reviewHeadRemoteRefComponent('origin', ORIGIN_URL)
 const durablePrLocalRef = (prNumber: number): string =>
-  `refs/orca/pull/${ORIGIN_COMPONENT}/${prNumber}`
+  `refs/occ/pull/${ORIGIN_COMPONENT}/${prNumber}`
 const durablePrRev = (prNumber: number): string => `${durablePrLocalRef(prNumber)}^{commit}`
 const remoteGetUrl = (args: string[]): { stdout: string; stderr: string } | null =>
   args[0] === 'remote' && args[1] === 'get-url' ? { stdout: `${ORIGIN_URL}\n`, stderr: '' } : null
@@ -36,9 +36,9 @@ describe('resolveGitHubPrStartPoint', () => {
   it('falls back to the GitHub PR head ref when a direct branch fetch fails', async () => {
     getPullRequestPushTargetMock.mockResolvedValue({
       pushTarget: {
-        remoteName: 'pr-contributor-orca',
+        remoteName: 'pr-contributor-occ',
         branchName: 'fix-issue-6933',
-        remoteUrl: 'git@github.com:contributor/orca.git'
+        remoteUrl: 'git@github.com:contributor/occ.git'
       }
     })
     const fetchRemoteTrackingRef = vi.fn(async (_remote: string, branch: string) => {
@@ -77,9 +77,9 @@ describe('resolveGitHubPrStartPoint', () => {
       headSha: 'def456',
       branchNameOverride: 'fix-issue-6933',
       pushTarget: {
-        remoteName: 'pr-contributor-orca',
+        remoteName: 'pr-contributor-occ',
         branchName: 'fix-issue-6933',
-        remoteUrl: 'git@github.com:contributor/orca.git'
+        remoteUrl: 'git@github.com:contributor/occ.git'
       }
     })
   })
@@ -372,9 +372,9 @@ describe('resolveGitHubPrStartPoint', () => {
     })
     getPullRequestPushTargetMock.mockResolvedValue({
       pushTarget: {
-        remoteName: 'pr-contributor-orca',
+        remoteName: 'pr-contributor-occ',
         branchName: 'contributor/fix',
-        remoteUrl: 'git@github.com:contributor/orca.git'
+        remoteUrl: 'git@github.com:contributor/occ.git'
       }
     })
     const fetchRemoteTrackingRef = vi.fn(async () => {})
@@ -423,9 +423,9 @@ describe('resolveGitHubPrStartPoint', () => {
       headSha: 'abc123',
       branchNameOverride: 'contributor/fix',
       pushTarget: {
-        remoteName: 'pr-contributor-orca',
+        remoteName: 'pr-contributor-occ',
         branchName: 'contributor/fix',
-        remoteUrl: 'git@github.com:contributor/orca.git'
+        remoteUrl: 'git@github.com:contributor/occ.git'
       }
     })
   })
@@ -433,9 +433,9 @@ describe('resolveGitHubPrStartPoint', () => {
   it('surfaces maintainerCanModify=false for a fork PR so the caller can warn', async () => {
     getPullRequestPushTargetMock.mockResolvedValue({
       pushTarget: {
-        remoteName: 'pr-contributor-orca',
+        remoteName: 'pr-contributor-occ',
         branchName: 'contributor/fix',
-        remoteUrl: 'git@github.com:contributor/orca.git'
+        remoteUrl: 'git@github.com:contributor/occ.git'
       },
       maintainerCanModify: false
     })
@@ -467,9 +467,9 @@ describe('resolveGitHubPrStartPoint', () => {
       headSha: 'abc123',
       branchNameOverride: 'contributor/fix',
       pushTarget: {
-        remoteName: 'pr-contributor-orca',
+        remoteName: 'pr-contributor-occ',
         branchName: 'contributor/fix',
-        remoteUrl: 'git@github.com:contributor/orca.git'
+        remoteUrl: 'git@github.com:contributor/occ.git'
       },
       maintainerCanModify: false
     })

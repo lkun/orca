@@ -1,13 +1,13 @@
 import { app, type BrowserWindow } from 'electron'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { placeUnshownLiveTerminalsBestEffort } from '../runtime/terminal/adoption/unshown-live-terminal-placement'
 import {
   getCanonicalUserDataPath,
   migrateMobilePairingDataToCanonicalUserDataPath
 } from '../persistence'
-import { OrcaRuntimeRpcServer } from '../runtime/runtime-rpc'
+import { OCCRuntimeRpcServer } from '../runtime/runtime-rpc'
 import { WS_BIND_HOST_LOOPBACK } from '../runtime/runtime-rpc/runtime-rpc-pairing-types'
-import { isOrcadSidecarLaunch } from '../window/foreground-activation-policy'
+import { isOCCdSidecarLaunch } from '../window/foreground-activation-policy'
 import { registerMobileHandlers } from '../ipc/mobile'
 import { createRuntimeEnvironmentMobileRelayHosts } from '../ipc/runtime-environments/runtime-environment-mobile-relay-hosts'
 import { getLocalPtyProvider } from '../ipc/pty/provider/registry'
@@ -76,35 +76,35 @@ function settleDesktopActivation(): void {
 function e2eHeadlessServeWithoutBrowser(): boolean {
   return (
     !app.isPackaged &&
-    process.env.ORCA_E2E_HEADLESS === '1' &&
-    process.env.ORCA_E2E_HEADLESS_SERVE_WITHOUT_BROWSER === '1'
+    process.env.OCC_E2E_HEADLESS === '1' &&
+    process.env.OCC_E2E_HEADLESS_SERVE_WITHOUT_BROWSER === '1'
   )
 }
 
 function installRuntimeRpc(
   runtime: RuntimeService,
   serveOptions: ReturnType<typeof getServeOptions> | null
-): OrcaRuntimeRpcServer {
+): OCCRuntimeRpcServer {
   // Migrate pairing credentials from late-resolved userData before switching to the canonical path.
   migrateMobilePairingDataToCanonicalUserDataPath(app.getPath('userData'))
   // Use OS-assigned ports for concurrent E2E Electron instances to avoid EADDRINUSE.
-  const isE2E = Boolean(process.env.ORCA_E2E_USER_DATA_DIR)
-  const requestedE2EWsPort = process.env.ORCA_E2E_RUNTIME_WS_PORT
+  const isE2E = Boolean(process.env.OCC_E2E_USER_DATA_DIR)
+  const requestedE2EWsPort = process.env.OCC_E2E_RUNTIME_WS_PORT
   const e2eWsPort = requestedE2EWsPort === undefined ? 0 : Number(requestedE2EWsPort)
   if (isE2E && (!Number.isInteger(e2eWsPort) || e2eWsPort < 0 || e2eWsPort > 65_535)) {
-    throw new Error(`Invalid ORCA_E2E_RUNTIME_WS_PORT value: ${requestedE2EWsPort}`)
+    throw new Error(`Invalid OCC_E2E_RUNTIME_WS_PORT value: ${requestedE2EWsPort}`)
   }
   // STA-1511: separate dev port from packaged OCC so pairing/repro URLs do not fall back unpredictably.
   const devWsPort = !app.isPackaged && !isE2E ? 6769 : undefined
-  const runtimeRpc = new OrcaRuntimeRpcServer({
+  const runtimeRpc = new OCCRuntimeRpcServer({
     runtime,
     // Pairing must use pre-setName canonical userData or restarts can lose devices.
     userDataPath: getCanonicalUserDataPath(),
     enableWebSocket: true,
     // STA-2370: desktop stays loopback until pairing; serve explicitly opts into remote access and E2E needs harness-wide bind.
     exposeNetworkByDefault: Boolean(serveOptions) || isE2E,
-    // orcad reaches its browser sidecar only over the Unix socket / named pipe; keep its WS off the network (#31895).
-    ...(isOrcadSidecarLaunch() ? { pinnedBindHost: WS_BIND_HOST_LOOPBACK } : {}),
+    // occd reaches its browser sidecar only over the Unix socket / named pipe; keep its WS off the network (#31895).
+    ...(isOCCdSidecarLaunch() ? { pinnedBindHost: WS_BIND_HOST_LOOPBACK } : {}),
     ...(isE2E ? { wsPort: e2eWsPort } : {}),
     ...(devWsPort !== undefined ? { wsPort: devWsPort } : {}),
     ...(serveOptions?.wsPort !== undefined
@@ -147,7 +147,7 @@ function installRuntimeRpc(
 
 async function launchServeMode(
   runtime: RuntimeService,
-  runtimeRpc: OrcaRuntimeRpcServer,
+  runtimeRpc: OCCRuntimeRpcServer,
   serveOptions: NonNullable<ReturnType<typeof getServeOptions>>
 ): Promise<void> {
   // Headless serve has no first paint to prioritize; apply persisted proxy before relay/CLI/RPC fetchers.
@@ -173,7 +173,7 @@ async function launchServeMode(
   await runtime.refreshRestoredOrchestrationAuthority()
   await runtime.reconcileLegacyWorkerTerminals()
   // Main places unshown live terminals before any client attaches.
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     await placeUnshownLiveTerminalsBestEffort(runtime)
   }
   // Headless hosts need display-backed offscreen WebContents; advertise browser capability only when usable.
@@ -214,7 +214,7 @@ async function launchServeMode(
 }
 
 async function launchDesktopMode(
-  runtimeRpc: OrcaRuntimeRpcServer,
+  runtimeRpc: OCCRuntimeRpcServer,
   shellPathReady: Promise<void>,
   desktopWindow: BrowserWindow | null,
   openMainWindow: MainProcessRuntimeLaunchOptions['openMainWindow']

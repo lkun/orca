@@ -82,12 +82,12 @@ describe('WSL holder release on uninstall', () => {
     )
     expect(release).toBeGreaterThan(-1)
     // Killed first, so no running OCC can respawn a holder behind the release.
-    expect(release).toBeGreaterThan(realUninstall.indexOf('orca-terminal-daemon.exe'))
+    expect(release).toBeGreaterThan(realUninstall.indexOf('occ-terminal-daemon.exe'))
     expect(hooks.split(WSL_HOLDER_UNINSTALL_FLAG)).toHaveLength(2)
   })
 
   it('exits 0 with no holder records, and opens no window, lock or IPC', async () => {
-    electron.userDataPath = mkdtempSync(join(tmpdir(), 'orca-uninstall-no-holders-'))
+    electron.userDataPath = mkdtempSync(join(tmpdir(), 'occ-uninstall-no-holders-'))
     electron.exit.mockClear()
     try {
       expect(runWslHolderUninstallPreflight(['OCC.exe', WSL_HOLDER_UNINSTALL_FLAG])).toBe(true)
@@ -123,7 +123,7 @@ describe('WSL holder release on uninstall', () => {
       new URL('../../../config/nsis/occ-installer-hooks.nsh', import.meta.url),
       'utf8'
     )
-    const launch = hooks.indexOf(`--orca-uninstall-release-wsl-holders'`)
+    const launch = hooks.indexOf(`--occ-uninstall-release-wsl-holders'`)
     const gate = hooks.lastIndexOf('${if} $1 == "1"', launch)
     expect(gate).toBeGreaterThan(-1)
     expect(hooks.slice(0, gate)).toMatch(

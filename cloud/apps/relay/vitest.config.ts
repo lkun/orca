@@ -9,14 +9,14 @@ const sourceDirectory = fileURLToPath(new URL('src', import.meta.url))
 const sharedPostgresTests = readdirSync(sourceDirectory)
   .filter((entry) => entry.endsWith('.test.ts'))
   .filter((entry) =>
-    readFileSync(join(sourceDirectory, entry), 'utf8').includes('ORCA_RELAY_TEST_POSTGRES_URL')
+    readFileSync(join(sourceDirectory, entry), 'utf8').includes('OCC_RELAY_TEST_POSTGRES_URL')
   )
   .map((entry) => `src/${entry}`)
 
 const timeouts = { testTimeout: 15_000, hookTimeout: 15_000 }
 
 export default defineConfig({
-  cacheDir: process.env.ORCA_RELAY_TEST_CACHE_DIR,
+  cacheDir: process.env.OCC_RELAY_TEST_CACHE_DIR,
   test: {
     projects: [
       {

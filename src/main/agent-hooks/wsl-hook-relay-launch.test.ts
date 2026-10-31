@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { execFileSync } from 'node:child_process'
-import type * as ProcessHost from '@orca/process-host'
+import type * as ProcessHost from '@occ/process-host'
 import { chmodSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
@@ -10,7 +10,7 @@ const { spawnProcessMock } = vi.hoisted(() => ({
   spawnProcessMock: vi.fn((..._args: unknown[]) => ({ pid: 1 }))
 }))
 
-vi.mock('@orca/process-host', async (importOriginal) => ({
+vi.mock('@occ/process-host', async (importOriginal) => ({
   ...(await importOriginal<typeof ProcessHost>()),
   spawnProcess: spawnProcessMock
 }))
@@ -23,12 +23,12 @@ import {
   resolveWslHookRelayBundle,
   spawnWslRelayProcess
 } from './wsl-hook-relay-launch'
-import { orcadPosixNodeRuntimeGlobs } from '../managed-server/install/orcad-node-runtime-globs'
+import { occdPosixNodeRuntimeGlobs } from '../managed-server/install/occd-node-runtime-globs'
 
 describe('spawnWslRelayProcess', () => {
   it('launches from the system directory instead of the current worktree', () => {
     const systemRoot = mkdtempSync(join(tmpdir(), 'wsl-relay-launch-'))
-    const env = { ORCA_AGENT_HOOK_PORT: '1234' }
+    const env = { OCC_AGENT_HOOK_PORT: '1234' }
     vi.stubEnv('SystemRoot', systemRoot)
     resetWslInteropSpawnDirectoryCache()
     try {
@@ -42,7 +42,7 @@ describe('spawnWslRelayProcess', () => {
           '--exec',
           'sh',
           '-c',
-          'exec sh "$HOME/.orca-wsl/hook-relay/1.2.3/launch.sh"'
+          'exec sh "$HOME/.occ-wsl/hook-relay/1.2.3/launch.sh"'
         ],
         env,
         stdio: 'pipe',
@@ -57,22 +57,22 @@ describe('spawnWslRelayProcess', () => {
 })
 
 describe('buildGuestLaunchScript', () => {
-  it('falls back to orcad pinned runtimes only after every system node candidate', () => {
+  it('falls back to occd pinned runtimes only after every system node candidate', () => {
     const forLine = buildGuestLaunchScript('1.2.3')
       .split('\n')
       .find((line) => line.startsWith('for c in '))
-    const [orcadRuntime, orcadMachineRuntimes] = orcadPosixNodeRuntimeGlobs()
-    expect(forLine).toContain(`"$HOME/.local/bin/node" ${orcadRuntime} ${orcadMachineRuntimes}; do`)
+    const [occdRuntime, occdMachineRuntimes] = occdPosixNodeRuntimeGlobs()
+    expect(forLine).toContain(`"$HOME/.local/bin/node" ${occdRuntime} ${occdMachineRuntimes}; do`)
   })
 
   it.skipIf(process.platform === 'win32')(
-    'expands the orcad runtime globs to the store and machine-home runtimes',
+    'expands the occd runtime globs to the store and machine-home runtimes',
     () => {
       const home = mkdtempSync(join(tmpdir(), 'wsl-relay-home-'))
       try {
         const runtimes = [
-          join(home, '.orca-remote/runtimes/node-aaa/bin/node'),
-          join(home, '.orca-remote/hosts/machine1/.orca-remote/runtimes/node-bbb/bin/node')
+          join(home, '.occ-remote/runtimes/node-aaa/bin/node'),
+          join(home, '.occ-remote/hosts/machine1/.occ-remote/runtimes/node-bbb/bin/node')
         ]
         for (const runtime of runtimes) {
           mkdirSync(join(runtime, '..'), { recursive: true })
@@ -83,7 +83,7 @@ describe('buildGuestLaunchScript', () => {
           'sh',
           [
             '-c',
-            `for c in ${orcadPosixNodeRuntimeGlobs().join(' ')}; do [ -x "$c" ] && echo "$c"; done`
+            `for c in ${occdPosixNodeRuntimeGlobs().join(' ')}; do [ -x "$c" ] && echo "$c"; done`
           ],
           { env: { HOME: home, PATH: '/usr/bin:/bin' }, encoding: 'utf8' }
         )
@@ -98,7 +98,7 @@ describe('buildGuestLaunchScript', () => {
 describe('resolveWslHookRelayBundle', () => {
   it('stamps the launcher revision so a launcher change gets a fresh guest dir', () => {
     const relayRoot = mkdtempSync(join(tmpdir(), 'wsl-relay-bundle-'))
-    vi.stubEnv('ORCA_RELAY_PATH', relayRoot)
+    vi.stubEnv('OCC_RELAY_PATH', relayRoot)
     try {
       mkdirSync(join(relayRoot, 'wsl'))
       writeFileSync(join(relayRoot, 'wsl', 'wsl-agent-hook-relay.js'), '')

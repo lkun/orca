@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from 'node
 import { createServer } from 'node:net'
 import { userInfo } from 'node:os'
 import { join, posix } from 'node:path'
-import { runProcess, spawnProcess } from '@orca/process-host'
+import { runProcess, spawnProcess } from '@occ/process-host'
 import {
   forbiddenToolShimScript,
   forbiddenToolsFor,
@@ -88,7 +88,7 @@ export async function startLocalSshdTarget(
   cell: LocalSshdHostileHostCell
 ): Promise<LocalSshdHostileHostTarget> {
   // Keep sockets under /tmp: macOS sun_path is limited to104 bytes.
-  const tempDir = await mkdtemp(join(await realpath('/tmp'), 'orca-hh-'))
+  const tempDir = await mkdtemp(join(await realpath('/tmp'), 'occ-hh-'))
   try {
     const home = join(tempDir, 'home')
     const shimDir = join(tempDir, 'bin')
@@ -99,14 +99,14 @@ export async function startLocalSshdTarget(
     await mkdir(home, { mode: 0o700 })
     await mkdir(shimDir)
     await writeFile(
-      join(shimDir, 'orca-forbidden-tool'),
+      join(shimDir, 'occ-forbidden-tool'),
       forbiddenToolShimScript(forbiddenToolLog),
       {
         mode: 0o755
       }
     )
     for (const tool of forbiddenToolsFor(cell)) {
-      await symlink('orca-forbidden-tool', join(shimDir, tool))
+      await symlink('occ-forbidden-tool', join(shimDir, tool))
     }
     await run('ssh-keygen', ['-t', 'ed25519', '-N', '', '-q', '-f', identityFile])
     await run('ssh-keygen', ['-t', 'ed25519', '-N', '', '-q', '-f', hostKey])
@@ -168,7 +168,7 @@ export async function stopLocalSshdTarget(target: LocalSshdHostileHostTarget): P
     target.sshd.kill('SIGTERM')
     await exited
   }
-  // Daemonized orcad outlives sshd; its temp-home argv identifies cleanup targets.
+  // Daemonized occd outlives sshd; its temp-home argv identifies cleanup targets.
   await runProcess({ program: 'pkill', args: ['-TERM', '-f', target.tempDir], timeoutMs: 10_000 })
   if (!(await waitForNoProcessMatching(target.tempDir, 10_000))) {
     await runProcess({ program: 'pkill', args: ['-KILL', '-f', target.tempDir], timeoutMs: 10_000 })

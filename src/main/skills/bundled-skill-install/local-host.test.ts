@@ -13,7 +13,7 @@ import {
 import { localBundledSkillInput } from './local-host'
 
 const HOME = resolve('/', 'home', 'u')
-const USER_DATA = resolve('/', 'data', 'orca')
+const USER_DATA = resolve('/', 'data', 'occ')
 
 afterEach(() => {
   detectMock.mockReset()
@@ -27,7 +27,7 @@ describe('localBundledSkillInput', () => {
       destination: { scope: 'global', homeDirectory: HOME },
       agents: [],
       claudeConfigDirectory: join(HOME, '.claude'),
-      selection: { names: ['orca-cli'], force: 'all', installedOnly: true }
+      selection: { names: ['occ-cli'], force: 'all', installedOnly: true }
     })
     expect(detectMock).not.toHaveBeenCalled()
     expect(input).toMatchObject({
@@ -35,7 +35,7 @@ describe('localBundledSkillInput', () => {
       agents: [],
       providerRootOverrides: { claude: join(HOME, '.claude', 'skills') },
       stateDirectory: join(USER_DATA, 'skill-installs'),
-      names: ['orca-cli'],
+      names: ['occ-cli'],
       force: 'all',
       installedOnly: true
     })

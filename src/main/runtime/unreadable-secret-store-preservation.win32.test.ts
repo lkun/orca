@@ -22,7 +22,7 @@ function canDenyReads(): boolean {
   if (process.platform !== 'win32') {
     return false
   }
-  const probeRoot = mkdtempSync(join(tmpdir(), 'orca-deny-probe-'))
+  const probeRoot = mkdtempSync(join(tmpdir(), 'occ-deny-probe-'))
   const probe = join(probeRoot, 'probe.json')
   try {
     writeFileSync(probe, '{}')
@@ -70,7 +70,7 @@ describeOnWindows('a secure store that exists but cannot be read', () => {
   let root: string
 
   beforeAll(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-unreadable-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-unreadable-'))
   })
 
   afterAll(() => {
@@ -209,18 +209,18 @@ describeOnWindows('a secure store that exists but cannot be read', () => {
         decryptString: (buffer: Buffer) => buffer.toString()
       }
     }))
-    const { readOrcaCloudSession, getOrcaCloudSessionPath } =
-      await import('./../orca-profiles/profile-cloud-session-store')
+    const { readOCCCloudSession, getOCCCloudSessionPath } =
+      await import('./../occ-profiles/profile-cloud-session-store')
     const dir = join(root, 'profiles')
     mkdirSync(dir, { recursive: true })
-    const filePath = getOrcaCloudSessionPath('profile-1', dir)
+    const filePath = getOCCCloudSessionPath('profile-1', dir)
     mkdirSync(join(filePath, '..'), { recursive: true })
     const original = JSON.stringify({ version: 1, format: 'dev-plaintext-v1', savedAt: 1 })
     writeFileSync(filePath, original)
     const locked = makeUnreadable(filePath)
 
     // The status the delete path keys off: `unreadable`, never `decrypt-failed`.
-    expect(readOrcaCloudSession('profile-1', dir).status).toBe('unreadable')
+    expect(readOCCCloudSession('profile-1', dir).status).toBe('unreadable')
 
     expectUntouched(filePath, locked)
     vi.doUnmock('electron')

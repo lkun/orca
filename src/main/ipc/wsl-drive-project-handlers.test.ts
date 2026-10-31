@@ -75,7 +75,7 @@ describe('WSL drive project IPC', () => {
 describe('readWorktreeLinks', () => {
   let commonDir: string
   beforeEach(() => {
-    commonDir = mkdtempSync(join(tmpdir(), 'orca-wsl-drive-links-'))
+    commonDir = mkdtempSync(join(tmpdir(), 'occ-wsl-drive-links-'))
   })
   afterEach(() => rmSync(commonDir, { recursive: true, force: true }))
 

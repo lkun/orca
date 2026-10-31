@@ -65,7 +65,7 @@ it('keeps a minted worker start unknown after one preamble handover without an e
   const dispatchId = String(receipt.dispatchId)
   expect(db.getWorkerDispatch(dispatchId)?.state).toBe('start_unknown')
   const worker = codex.connections.at(-1)!
-  const sessionId = db.getDispatchContextById(dispatchId)?.assignee_orca_session_id
+  const sessionId = db.getDispatchContextById(dispatchId)?.assignee_occ_session_id
   if (!sessionId) {
     throw new Error('minted worker session missing')
   }

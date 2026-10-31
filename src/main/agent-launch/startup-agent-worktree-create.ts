@@ -4,13 +4,13 @@ import type { AgentLaunchPrompt } from '../../shared/agent-launch-intent'
 import { getRepoSshConnectionId } from '../../shared/execution-host'
 import type { TuiAgent } from '../../shared/tui-agent'
 import type { CreateWorktreeResult } from '../../shared/worktree/create-types'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import type { RuntimeManagedWorktreeCreateArgs } from '../runtime/runtime-managed-worktree-create-types'
 import { executeAgentLaunch, type AgentLaunchExecution } from './agent-launch-executor'
 import { AgentLaunchStartupAgentNotCreatedError } from './agent-launch-legacy-host'
 
 type StartupAgentCreateRuntime = AgentLaunchExecution['runtime'] &
-  Pick<OrcaRuntimeService, 'createManagedWorktree' | 'showRepo' | 'resolveStartupDraftAgent'>
+  Pick<OCCRuntimeService, 'createManagedWorktree' | 'showRepo' | 'resolveStartupDraftAgent'>
 
 type StartupAgentLaunch = {
   agent: TuiAgent

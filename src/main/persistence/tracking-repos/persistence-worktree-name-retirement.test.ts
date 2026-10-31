@@ -58,13 +58,13 @@ async function reloadStore() {
   // Reinstall this test’s userData path after resetModules before initializing Store.
   installFakeAppEnvironment({ getPath: () => testState.dir })
   initDataPath()
-  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
 }
 
 async function createStore(persisted: Record<string, unknown> = {}) {
   mkdirSync(testState.dir, { recursive: true })
   writeFileSync(
-    join(testState.dir, 'orca-data.json'),
+    join(testState.dir, 'occ-data.json'),
     JSON.stringify({ ...getDefaultPersistedState(testState.dir), ...persisted }),
     'utf-8'
   )
@@ -78,7 +78,7 @@ async function createStore(persisted: Record<string, unknown> = {}) {
 beforeEach(() => {
   hasCreatedStoreInCase = false
   resetRetirementCollisionKeyCacheForTests()
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-worktree-name-retirement-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-worktree-name-retirement-'))
 })
 
 afterEach(async () => {
@@ -274,7 +274,7 @@ describe('worktree name retirement registry', () => {
     // Legacy namespace keys used target-row IDs instead of endpoint identity.
     const store = await createStore({
       retiredWorktreeNamesByNamespace: {
-        'ssh:ssh-old:posix:/remote/repos/a-orca-retirement-probe': {
+        'ssh:ssh-old:posix:/remote/repos/a-occ-retirement-probe': {
           exhaustedTiers: 0,
           names: ['nautilus']
         }
@@ -575,7 +575,7 @@ describe('worktree name retirement registry', () => {
 
   it('drops names a persisted watermark already covers', async () => {
     const store = await createStore({
-      retiredWorktreeNamesByRepo: { [REPO]: { exhaustedTiers: 2, names: ['nautilus', 'orca-2'] } }
+      retiredWorktreeNamesByRepo: { [REPO]: { exhaustedTiers: 2, names: ['nautilus', 'occ-2'] } }
     })
 
     expect(store.getRetiredWorktreeNameRegistry(REPO)).toEqual({ exhaustedTiers: 2, names: [] })

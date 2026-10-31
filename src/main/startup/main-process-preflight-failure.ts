@@ -6,7 +6,7 @@ import { mainProcessState as state } from './main-process-state'
 import { SINGLE_INSTANCE_ALREADY_RUNNING_EXIT_CODE } from './single-instance-lock'
 import { acquireDesktopProfileInstanceLock } from './desktop-profile-instance-lock'
 
-/** False when orcad holds the profile; unlike a second desktop, nothing else would say why. */
+/** False when occd holds the profile; unlike a second desktop, nothing else would say why. */
 export function acquireDesktopProfileLockOrExplain(userDataPath: string): boolean {
   const profileLock = acquireDesktopProfileInstanceLock(userDataPath)
   if (profileLock.state !== 'held') {

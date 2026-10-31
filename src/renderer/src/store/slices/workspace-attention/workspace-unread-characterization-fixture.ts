@@ -6,7 +6,7 @@ import { createTestStore, makeTab, makeWorktree, TEST_REPO } from '../store-test
 import { createTabsSliceMockApi } from '../tabs-slice-test-harness'
 import { createUnreadBadgeCountSelector } from '@/lib/unread-badge-count-selector'
 import {
-  resetFloatingWorkspaceUnreadSelectorCacheForTest,
+  resetFloatingWorkspaceUnreadSelectocccheForTest,
   selectFloatingWorkspaceHasUnread
 } from '@/store/selectors'
 import { startOnScreenAttentionScan } from '@/hooks/on-screen-attention-scan'
@@ -202,7 +202,7 @@ const dockCount = (s: AppState): number => createUnreadBadgeCountSelector()(s)
 /** One compact line per observable, so a scenario step reads as a diffable block. */
 export function observe(store: AttentionStore, persists: () => PersistCall[]): string[] {
   const s = store.getState()
-  resetFloatingWorkspaceUnreadSelectorCacheForTest()
+  resetFloatingWorkspaceUnreadSelectocccheForTest()
   const rows = Object.values(s.worktreesByRepo)
     .flat()
     .map(

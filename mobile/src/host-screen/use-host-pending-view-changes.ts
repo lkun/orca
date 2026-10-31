@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../../src/shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../src/shared/sidebar-inputs-switch'
 import type { RpcClient } from '../transport/rpc-client'
 import type { MobileViewPatch, WorkspaceViewSettings } from '../worktree/workspace-view-settings'
 import { hostViewSettingsWrite } from './host-screen-operations'
@@ -154,6 +154,6 @@ function useHostPendingViewChanges(client: RpcClient | null): HostPendingViewCha
 
 export const useSwitchedHostPendingViewChanges: (
   client: RpcClient | null
-) => HostPendingViewChanges | null = ORCA_SIDEBAR_INPUTS_IS_MAIN
+) => HostPendingViewChanges | null = OCC_SIDEBAR_INPUTS_IS_MAIN
   ? useHostPendingViewChanges
   : () => null

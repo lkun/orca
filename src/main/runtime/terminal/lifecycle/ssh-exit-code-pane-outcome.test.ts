@@ -1,13 +1,13 @@
 // Main matches window SSH exit-code rules: negative and failed exits retain recoverable panes; clean exits close them (L80 ruling 2).
 import { describe, expect, it, vi } from 'vitest'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
-await import('../../orca-runtime-test-mocks.spec')
-await import('../../orca-runtime-test-lifecycle.spec')
-const { makePaneKey } = await import('../../orca-runtime-test-mocks.spec')
+await import('../../occ-runtime-test-mocks.spec')
+await import('../../occ-runtime-test-lifecycle.spec')
+const { makePaneKey } = await import('../../occ-runtime-test-mocks.spec')
 const { HEADLESS_LEAF_ID, TEST_WORKTREE_ID, createRuntimeWithSshLease } =
-  await import('../../orca-runtime-test-fixtures.spec')
+  await import('../../occ-runtime-test-fixtures.spec')
 const { registerBoundPty } = await import('../../bind-first-pane.test-fixture')
 const { boundSessionOf } = await import('../../profile-session-store.test-fixture')
 

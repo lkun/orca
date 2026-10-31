@@ -3,7 +3,7 @@ import type {
   PluginMarketplaceHostListing,
   PluginMarketplaceHostSourceState
 } from '../../../../../preload/api-types'
-import { satisfiesOrcaEngineRange } from '../../../../../shared/plugins/manifest/plugin-manifest'
+import { satisfiesOCCEngineRange } from '../../../../../shared/plugins/manifest/plugin-manifest'
 import {
   pluginCatalogReleaseTypes,
   type PluginCatalogType
@@ -29,7 +29,7 @@ export type PluginListEntry = {
   /** What the catalog says this release contributes; empty when unknown. */
   types: readonly PluginCatalogType[]
   /** Oldest OCC the catalog release supports, e.g. "1.6.0". */
-  minimumOrca: string | null
+  minimumOCC: string | null
   /** A newer catalog version than the installed one that this OCC can run, if any. */
   updateVersion: string | null
   /** Catalog release to reinstall over an installed copy that can't load: same version, other bytes. */
@@ -102,26 +102,26 @@ function catalogVersion(listing: PluginMarketplaceHostListing): string | null {
 }
 
 /** The minimum OCC a release needs when this OCC is older; null when it runs or either is unknown. */
-export function needsNewerOrca(
-  minimumOrca: string | null | undefined,
-  orcaVersion: string | null
+export function needsNewerOCC(
+  minimumOCC: string | null | undefined,
+  occVersion: string | null
 ): string | null {
-  return minimumOrca && orcaVersion && !satisfiesOrcaEngineRange(orcaVersion, `>=${minimumOrca}`)
-    ? minimumOrca
+  return minimumOCC && occVersion && !satisfiesOCCEngineRange(occVersion, `>=${minimumOCC}`)
+    ? minimumOCC
     : null
 }
 
 function newerCatalogVersion(
   plugin: PluginHostListEntry,
   listing: PluginMarketplaceHostListing | null,
-  orcaVersion: string | null
+  occVersion: string | null
 ): string | null {
   const version = listing ? catalogVersion(listing) : null
   if (!version || plugin.source?.kind !== 'marketplace') {
     return null
   }
   // Why: an update this OCC can't run isn't one to offer; OCC itself needs updating first.
-  if (needsNewerOrca(listing?.release?.minimumOrca, orcaVersion)) {
+  if (needsNewerOCC(listing?.release?.minimumOCC, occVersion)) {
     return null
   }
   return compareAppVersions(version, plugin.version) > 0 ? version : null
@@ -130,14 +130,14 @@ function newerCatalogVersion(
 function reinstallCatalogVersion(
   plugin: PluginHostListEntry,
   listing: PluginMarketplaceHostListing | null,
-  orcaVersion: string | null
+  occVersion: string | null
 ): string | null {
   const release = listing?.release
   if (plugin.status !== 'invalid' || plugin.source?.kind !== 'marketplace' || !release) {
     return null
   }
   // Why bytes, not version: reinstalling the same bytes would fail the same way.
-  return needsNewerOrca(release.minimumOrca, orcaVersion) ||
+  return needsNewerOCC(release.minimumOCC, occVersion) ||
     release.contentHash === plugin.source.contentHash
     ? null
     : release.version
@@ -148,15 +148,15 @@ export function pluginListEntryFromInstalled(
   listing: PluginMarketplaceHostListing | null = null,
   {
     catalogIds = [],
-    orcaVersion = null,
+    occVersion = null,
     autoUpdates = null
   }: {
     catalogIds?: readonly string[]
-    orcaVersion?: string | null
+    occVersion?: string | null
     autoUpdates?: PluginAutoUpdateState | null
   } = {}
 ): PluginListEntry {
-  const updateVersion = newerCatalogVersion(plugin, listing, orcaVersion)
+  const updateVersion = newerCatalogVersion(plugin, listing, occVersion)
   return {
     pluginKey: plugin.pluginKey,
     name: sanitizePluginDisplayText(plugin.name) || pluginDisplayNameFromKey(plugin.pluginKey),
@@ -166,9 +166,9 @@ export function pluginListEntryFromInstalled(
     official: plugin.official,
     categories: listing?.categories ?? [],
     types: listing?.release ? pluginCatalogReleaseTypes(listing.release) : (plugin.types ?? []),
-    minimumOrca: listing?.release?.minimumOrca ?? null,
+    minimumOCC: listing?.release?.minimumOCC ?? null,
     updateVersion,
-    reinstallVersion: updateVersion ? null : reinstallCatalogVersion(plugin, listing, orcaVersion),
+    reinstallVersion: updateVersion ? null : reinstallCatalogVersion(plugin, listing, occVersion),
     catalogIds,
     updatable: plugin.source?.kind === 'marketplace' && listing !== null,
     autoUpdate: entryAutoUpdate(plugin, updateVersion, autoUpdates),
@@ -198,7 +198,7 @@ export function pluginListEntryFromListing(
     official: listing.official,
     categories: listing.categories,
     types: listing.release ? pluginCatalogReleaseTypes(listing.release) : [],
-    minimumOrca: listing.release?.minimumOrca ?? null,
+    minimumOCC: listing.release?.minimumOCC ?? null,
     updateVersion: null,
     catalogIds,
     updatable: false,
@@ -252,11 +252,11 @@ export function buildPluginListEntries(
   listings: readonly PluginMarketplaceHostListing[],
   {
     sources = [],
-    orcaVersion = null,
+    occVersion = null,
     autoUpdates = null
   }: {
     sources?: readonly PluginMarketplaceHostSourceState[]
-    orcaVersion?: string | null
+    occVersion?: string | null
     autoUpdates?: PluginAutoUpdateState | null
   } = {}
 ): { installed: PluginListEntry[]; available: PluginListEntry[] } {
@@ -277,7 +277,7 @@ export function buildPluginListEntries(
       )
       const entry = pluginListEntryFromInstalled(plugin, listing, {
         catalogIds: catalogIdsOf(plugin.pluginKey),
-        orcaVersion,
+        occVersion,
         autoUpdates
       })
       const own = ownCatalog && plugin.source?.marketplace ? listing : null

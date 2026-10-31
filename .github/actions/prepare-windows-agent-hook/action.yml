@@ -1,5 +1,5 @@
 name: Prepare the Windows agent hook
-description: Compiles native/windows-agent-hook into native/windows-agent-hook/.build/orca-agent-hook.exe, which electron-builder --win refuses to package without.
+description: Compiles native/windows-agent-hook into native/windows-agent-hook/.build/occ-agent-hook.exe, which electron-builder --win refuses to package without.
 
 runs:
   using: composite

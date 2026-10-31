@@ -10,7 +10,7 @@ import {
   hasSkillCopyNeedingAttention
 } from './skill-freshness-display-status'
 
-const SKILL_NAME = 'orca-cli'
+const SKILL_NAME = 'occ-cli'
 const SHARED = `/home/u/.agents/skills/${SKILL_NAME}`
 const CLAUDE = `/home/u/.claude/skills/${SKILL_NAME}`
 

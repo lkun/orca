@@ -56,8 +56,8 @@ describe('dev-electron-bundle-cache', () => {
 
   it('protects a live bundle whose path contains spaces', () => {
     // The old \S* extractor missed spaces and deleted live bundles.
-    const spaced = '/Users/me/My Projects/orca/out/electron-dev/aaaaaaaaaaaa'
-    const other = '/Users/me/My Projects/orca/out/electron-dev/bbbbbbbbbbbb'
+    const spaced = '/Users/me/My Projects/occ/out/electron-dev/aaaaaaaaaaaa'
+    const other = '/Users/me/My Projects/occ/out/electron-dev/bbbbbbbbbbbb'
     expect(
       selectStaleDevBundleDirs({
         bundles: [settled(spaced), settled(other)],

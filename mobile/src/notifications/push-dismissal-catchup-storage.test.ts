@@ -42,7 +42,7 @@ vi.mock('../transport/host-store', () => ({
 
 const publicKeyB64 = Buffer.alloc(32, 1).toString('base64')
 const hostFingerprint = deriveHostFingerprint(publicKeyB64)!
-const ledgerKey = 'orca:pushDismissalWatermarks:v1'
+const ledgerKey = 'occ:pushDismissalWatermarks:v1'
 
 function payload(index: number) {
   return {

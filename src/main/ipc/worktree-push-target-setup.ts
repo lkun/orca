@@ -101,7 +101,7 @@ export async function prepareWorktreePushTargetWithExec(
         // Rewrite -t's literal refspec to the trailing-* form that tolerates deleted branches.
         await ensureRemoteTracksBranchNarrowly(execGit, repoPath, remoteName, target.branchName)
         // Git config provenance survives store purge and is removed with the remote.
-        await execGit(['config', `remote.${remoteName}.orca-created`, 'true'], repoPath)
+        await execGit(['config', `remote.${remoteName}.occ-created`, 'true'], repoPath)
       } catch (error) {
         // Failed provenance setup must roll back or cleanup cannot reclaim the half-configured remote.
         await execGit(['remote', 'remove', remoteName], repoPath).catch(() => {})

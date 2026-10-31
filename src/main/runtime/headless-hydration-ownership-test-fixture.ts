@@ -1,7 +1,7 @@
 import { afterEach, vi } from 'vitest'
-import './orca-runtime-test-lifecycle.spec'
-import { OrcaRuntimeService } from './orca-runtime'
-import { store, syncSinglePty } from './orca-runtime-test-fixtures.spec'
+import './occ-runtime-test-lifecycle.spec'
+import { OCCRuntimeService } from './occ-runtime'
+import { store, syncSinglePty } from './occ-runtime-test-fixtures.spec'
 
 export const PTY_ID = 'pty-hydration-owner'
 export const SIZE = { cols: 80, rows: 24 }
@@ -11,7 +11,7 @@ export const RETIRED_SNAPSHOT = {
   ...SIZE
 }
 
-export class HydrationRuntime extends OrcaRuntimeService {
+export class HydrationRuntime extends OCCRuntimeService {
   model() {
     return this.modelFor(PTY_ID)
   }
@@ -57,7 +57,7 @@ export class HydrationRuntime extends OrcaRuntimeService {
 const runtimes: HydrationRuntime[] = []
 
 export function createHydrationRuntime(
-  deps?: ConstructorParameters<typeof OrcaRuntimeService>[2]
+  deps?: ConstructorParameters<typeof OCCRuntimeService>[2]
 ): HydrationRuntime {
   const runtime = new HydrationRuntime(store, undefined, deps)
   syncSinglePty(runtime, PTY_ID)

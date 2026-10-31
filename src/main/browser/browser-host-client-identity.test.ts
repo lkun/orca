@@ -8,7 +8,7 @@ import {
 } from './browser-host-client-identity'
 
 function profileDirectory(): string {
-  return mkdtempSync(join(tmpdir(), 'orca-host-identity-'))
+  return mkdtempSync(join(tmpdir(), 'occ-host-identity-'))
 }
 
 describe('browser host client identity', () => {

@@ -56,7 +56,7 @@ export function legacyRelayEndpointListCommand(remoteHome: string, sockName: str
   ].join('\n')
 }
 
-/** Use the relay's own version/hash. Short /tmp sockets still keep relay.js and credentials in the matching ~/.orca-remote/relay-<version>/. */
+/** Use the relay's own version/hash. Short /tmp sockets still keep relay.js and credentials in the matching ~/.occ-remote/relay-<version>/. */
 export function posixLegacyRelayConnectCommand(
   remoteHome: string,
   nodePath: string,

@@ -1,4 +1,4 @@
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { closeTerminalImePaneArena, openTerminalImePaneArena } from './terminal-ime-pane-arena'
 import { setImeComposition } from './terminal-ime-cdp-composition'
 import { writeToActiveTerminal } from './terminal-ime-midline-occlusion-probe'
@@ -23,12 +23,12 @@ function measurePreeditEdges(): number[] {
 }
 
 test('paints the selected clause in the theme selection colors without moving any cell', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
-  const arena = await openTerminalImePaneArena(orcaPage)
+  const arena = await openTerminalImePaneArena(occPage)
   let completed = false
   try {
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       const state = window.__store!.getState()
       const terminal = window.__paneManagers!.get(state.activeTabId!)!.getActivePane()!.terminal
       terminal.options.theme = {
@@ -37,20 +37,20 @@ test('paints the selected clause in the theme selection colors without moving an
         selectionForeground: '#ffffff'
       }
     })
-    await writeToActiveTerminal(orcaPage, '\x1b[2J\x1b[H')
+    await writeToActiveTerminal(occPage, '\x1b[2J\x1b[H')
     const text = '今日はいい天気です'
     await setImeComposition(arena.session, text)
     await expect(
-      orcaPage.locator('.composition-view.active .xterm-composition-preedit')
+      occPage.locator('.composition-view.active .xterm-composition-preedit')
     ).toHaveText(`‎${text}‎`)
-    const unselected = await orcaPage.evaluate(measurePreeditEdges)
+    const unselected = await occPage.evaluate(measurePreeditEdges)
 
     await setImeComposition(arena.session, text, { start: 3, end: 9 })
-    const clause = orcaPage.locator('.xterm-composition-preedit-selected')
+    const clause = occPage.locator('.xterm-composition-preedit-selected')
     await expect(clause).toHaveText('いい天気です')
     await expect(clause).toHaveCSS('background-color', 'rgb(115, 87, 217)')
     await expect(clause).toHaveCSS('color', 'rgb(255, 255, 255)')
-    const selected = await orcaPage.evaluate(measurePreeditEdges)
+    const selected = await occPage.evaluate(measurePreeditEdges)
     // Chromium snaps each inline box the selection adds to 1/64px layout units.
     expect(selected).toHaveLength(unselected.length)
     selected.forEach((edge, index) => expect(edge).toBeCloseTo(unselected[index], 1))

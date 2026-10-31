@@ -26,7 +26,7 @@ vi.mock('electron', () => ({
 
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import {
   registerRendererShutdownCheckpointHandler,
   SHUTDOWN_CHECKPOINT_FLUSH_DEADLINE_MS
@@ -40,7 +40,7 @@ import {
 const AWAIT_CHANNEL = 'app:await-before-unload-checkpoint'
 
 const windowSave = (state: Partial<WorkspaceSessionState>): unknown =>
-  ORCA_LAYOUT_OWNER_IS_MAIN ? expect.any(Object) : state
+  OCC_LAYOUT_OWNER_IS_MAIN ? expect.any(Object) : state
 
 describe('registerRendererShutdownCheckpointHandler', () => {
   beforeEach(() => {
@@ -132,7 +132,7 @@ describe('registerRendererShutdownCheckpointHandler', () => {
     const store = {
       getWorkspaceSession: vi.fn(() => getDefaultWorkspaceSession()),
       stageWorkspaceSessionBeforeUnload: vi.fn(),
-      getSshTarget: vi.fn(() => ({ orcadFence: { environmentId: 'env-1' } })),
+      getSshTarget: vi.fn(() => ({ occdFence: { environmentId: 'env-1' } })),
       updateUI: vi.fn(),
       flushPendingOrThrowAsync: vi.fn(() => Promise.resolve())
     }

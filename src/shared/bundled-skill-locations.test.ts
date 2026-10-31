@@ -5,7 +5,7 @@ import { bundledSkillLocation, collapseHomePath } from './bundled-skill-location
 function op(extra: Partial<BundledSkillOp>): BundledSkillOp {
   return {
     kind: 'keep',
-    path: '/home/u/.agents/skills/orca-cli',
+    path: '/home/u/.agents/skills/occ-cli',
     role: 'shared',
     agents: ['codex'],
     observed: { kind: 'absent' },
@@ -28,7 +28,7 @@ describe('collapseHomePath', () => {
 describe('bundledSkillLocation', () => {
   it('describes shared updates, kept agent links, and edited locations', () => {
     expect(bundledSkillLocation(op({ kind: 'update' }), '/home/u')).toMatchObject({
-      displayPath: '~/.agents/skills/orca-cli',
+      displayPath: '~/.agents/skills/occ-cli',
       place: { kind: 'shared' },
       state: 'update'
     })
@@ -37,8 +37,8 @@ describe('bundledSkillLocation', () => {
         op({
           role: 'agent',
           agents: ['claude'],
-          path: '/home/u/.claude/skills/orca-cli',
-          observed: { kind: 'link', target: '../../.agents/skills/orca-cli' }
+          path: '/home/u/.claude/skills/occ-cli',
+          observed: { kind: 'link', target: '../../.agents/skills/occ-cli' }
         }),
         '/home/u'
       )

@@ -51,7 +51,7 @@ function stopExplanation(
     return null
   }
   const identity = parseAgentJournalItemKey(item.itemId)
-  const clientMessageId = identity?.provider === 'orca' ? identity.clientMessageId : ''
+  const clientMessageId = identity?.provider === 'occ' ? identity.clientMessageId : ''
   if (clientMessageId.startsWith(STALE_SESSION_ROW_PREFIX)) {
     return 'owner-death'
   }
@@ -151,7 +151,7 @@ function cutTurnNotice(
   }
   const notice: AgentJournalRenderItem = {
     itemId: agentJournalItemKey({
-      provider: 'orca',
+      provider: 'occ',
       clientMessageId: `${CUT_TURN_NOTICE_ROW}${turnItem.itemId}`
     }),
     revision: 0,

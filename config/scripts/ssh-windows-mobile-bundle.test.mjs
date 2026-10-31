@@ -1,7 +1,7 @@
 import { copyFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { expect, it } from 'vitest'
 import { parse } from 'yaml'
 import { compileAggregateExpression } from './pr-aggregate-gate-context.mjs'
@@ -65,7 +65,7 @@ it.each(['success', 'failure', 'skipped', ''])(
     expect(fallback['continue-on-error']).toBeUndefined()
     expect(verify['continue-on-error']).toBeUndefined()
     const template = consumer.steps.findIndex((step) =>
-      step.run?.includes('build-orcad-template.mjs')
+      step.run?.includes('build-occd-template.mjs')
     )
     expect(consumer.steps.indexOf(download)).toBeLessThan(consumer.steps.indexOf(fallback))
     expect(consumer.steps.indexOf(fallback)).toBeLessThan(consumer.steps.indexOf(verify))

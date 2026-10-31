@@ -21,9 +21,9 @@ import {
 
 // These cases exercise foreground behavior against Electron mocks.
 beforeEach(() => {
-  vi.stubEnv('ORCA_BACKGROUND_LAUNCH', undefined)
-  vi.stubEnv('ORCA_E2E_HEADLESS', undefined)
-  vi.stubEnv('ORCA_E2E_HEADFUL', undefined)
+  vi.stubEnv('OCC_BACKGROUND_LAUNCH', undefined)
+  vi.stubEnv('OCC_E2E_HEADLESS', undefined)
+  vi.stubEnv('OCC_E2E_HEADFUL', undefined)
 })
 afterEach(() => vi.unstubAllEnvs())
 
@@ -88,7 +88,7 @@ describe('createMainWindow', () => {
     'keeps explicit background startup hidden through ready/load/fallback on %s',
     (platform) => {
       vi.useFakeTimers()
-      vi.stubEnv('ORCA_BACKGROUND_LAUNCH', '1')
+      vi.stubEnv('OCC_BACKGROUND_LAUNCH', '1')
       const { browserWindowInstance, windowHandlers } = createStartupRevealWindowFixture()
       const showInactive = vi.fn()
       Object.assign(browserWindowInstance, { showInactive })
@@ -217,8 +217,8 @@ describe('createMainWindow', () => {
 
   it('keeps the headless E2E window hidden when the Windows fallback fires', () => {
     vi.useFakeTimers()
-    const previousHeadless = process.env.ORCA_E2E_HEADLESS
-    process.env.ORCA_E2E_HEADLESS = '1'
+    const previousHeadless = process.env.OCC_E2E_HEADLESS
+    process.env.OCC_E2E_HEADLESS = '1'
     const { browserWindowInstance } = createStartupRevealWindowFixture()
 
     try {
@@ -231,9 +231,9 @@ describe('createMainWindow', () => {
       })
     } finally {
       if (previousHeadless === undefined) {
-        delete process.env.ORCA_E2E_HEADLESS
+        delete process.env.OCC_E2E_HEADLESS
       } else {
-        process.env.ORCA_E2E_HEADLESS = previousHeadless
+        process.env.OCC_E2E_HEADLESS = previousHeadless
       }
     }
   })
@@ -268,8 +268,8 @@ describe('createMainWindow', () => {
 
   it('keeps the headless E2E window hidden when the Linux fallback fires', () => {
     vi.useFakeTimers()
-    const previousHeadless = process.env.ORCA_E2E_HEADLESS
-    process.env.ORCA_E2E_HEADLESS = '1'
+    const previousHeadless = process.env.OCC_E2E_HEADLESS
+    process.env.OCC_E2E_HEADLESS = '1'
     const { browserWindowInstance } = createStartupRevealWindowFixture()
 
     try {
@@ -282,9 +282,9 @@ describe('createMainWindow', () => {
       })
     } finally {
       if (previousHeadless === undefined) {
-        delete process.env.ORCA_E2E_HEADLESS
+        delete process.env.OCC_E2E_HEADLESS
       } else {
-        process.env.ORCA_E2E_HEADLESS = previousHeadless
+        process.env.OCC_E2E_HEADLESS = previousHeadless
       }
     }
   })

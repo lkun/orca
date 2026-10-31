@@ -86,7 +86,7 @@ describe('a bridge WSL pane keeps its shell folder across quit', () => {
       readFileSync(join(historyDir(), getHistorySessionDirName(id), 'checkpoint.json'), 'utf-8')
     ).cwd
   const openBridgePane = (adapter: DaemonPtyAdapter, sessionId: string, cwd = WSL_CWD) =>
-    adapter.spawn({ cols: 80, rows: 24, cwd, env: { ORCA_PANE_KEY: PANE_KEY }, sessionId })
+    adapter.spawn({ cols: 80, rows: 24, cwd, env: { OCC_PANE_KEY: PANE_KEY }, sessionId })
 
   it("saves the shell's folder in quit's final checkpoint, never booting the distro", async () => {
     const app = launch()

@@ -6,7 +6,7 @@ import { guardedLookup, linkPreviewTarget } from './link-preview-address-guard'
 const MAX_REDIRECTS = 4
 const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308])
 const USER_AGENT =
-  'Mozilla/5.0 (compatible; OrcaLinkPreview/1.0; +https://github.com/stablyai/orca)'
+  'Mozilla/5.0 (compatible; OCCLinkPreview/1.0; +https://github.com/stablyai/occ)'
 
 export type LinkPreviewResource = {
   /** The URL that answered, after redirects. */

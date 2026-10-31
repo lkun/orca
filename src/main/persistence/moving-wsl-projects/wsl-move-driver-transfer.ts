@@ -3,15 +3,15 @@
  * the scrollback snapshots and blobs, then ask for the commit. Each step is journaled before the
  * next starts, and the commit is requested only from `blobs-transferred` (#29825's contract).
  */
-import type { OrcadMigrationBlobDescriptor } from '../../../shared/orcad-migration/orcad-migration-blob-transfer'
-import type { OrcadMigrationCatalogState } from '../../../shared/orcad-migration/orcad-migration-manifest'
+import type { OCCdMigrationBlobDescriptor } from '../../../shared/occd-migration/occd-migration-blob-transfer'
+import type { OCCdMigrationCatalogState } from '../../../shared/occd-migration/occd-migration-manifest'
 import type { WslMoveCutover, WslMoveCutoverPhase } from '../../../shared/wsl-move/wsl-move-cutover'
 import {
-  transferOrcadMigrationBlobs,
-  type OrcadMigrationBlobSource
-} from '../../ssh/orcad-migration-blob-coordinator'
-import { resolveDurableOrcadCatalogMutation } from '../../ssh/orcad-catalog-durable-mutation'
-import { transferOrcadMigrationSnapshots } from '../../ssh/orcad-migration-snapshot-coordinator'
+  transferOCCdMigrationBlobs,
+  type OCCdMigrationBlobSource
+} from '../../ssh/occd-migration-blob-coordinator'
+import { resolveDurableOCCdCatalogMutation } from '../../ssh/occd-catalog-durable-mutation'
+import { transferOCCdMigrationSnapshots } from '../../ssh/occd-migration-snapshot-coordinator'
 import { writeWslMoveCutover } from './wsl-move-cutover-journal'
 import type { WslMoveDriverDeps, WslMoveHost, WslMoveManifestExport } from './wsl-move-driver-ports'
 import { assertWslMoveCommitRequestAllowed } from './wsl-move-reset'
@@ -36,7 +36,7 @@ export function advanceWslMove(
 /** The move's bytes as progress shows them: the terminal history sent while staging, then the blobs. */
 export function wslMoveCopyBytes(
   quiesced: Pick<WslMoveCutover, 'manifest'>,
-  blobs: readonly Pick<OrcadMigrationBlobDescriptor, 'byteLength'>[]
+  blobs: readonly Pick<OCCdMigrationBlobDescriptor, 'byteLength'>[]
 ): { snapshotBytes: number; bytesTotal: number } {
   const snapshots = quiesced.manifest.payload.dormantState?.terminalScrollbackSnapshots ?? []
   const snapshotBytes = snapshots.reduce((sum, snapshot) => sum + snapshot.byteLength, 0)
@@ -52,7 +52,7 @@ export async function stageWslMove(
   quiesced: WslMoveCutover
 ): Promise<WslMoveCutover> {
   const { catalog } = host
-  const state = await resolveDurableOrcadCatalogMutation(
+  const state = await resolveDurableOCCdCatalogMutation(
     () => catalog.stage(quiesced.manifest),
     () => catalog.readState(quiesced.manifest),
     (observed) => observed.state !== 'absent'
@@ -63,7 +63,7 @@ export async function stageWslMove(
   }
   assertSameMigration(quiesced, state)
   const staged = advanceWslMove(deps, quiesced, 'destination-staged')
-  await transferOrcadMigrationSnapshots({
+  await transferOCCdMigrationSnapshots({
     source: deps.snapshots,
     manifest: staged.manifest,
     state,
@@ -78,7 +78,7 @@ export async function collectWslMoveBlobs(
   cutover: WslMoveCutover,
   worktrees: WslMoveManifestExport['worktrees'],
   slept: WslMoveSleptScrollback
-): Promise<{ descriptors: OrcadMigrationBlobDescriptor[]; source: OrcadMigrationBlobSource }> {
+): Promise<{ descriptors: OCCdMigrationBlobDescriptor[]; source: OCCdMigrationBlobSource }> {
   const panes = wslMoveTerminalHistoryBlobs(slept, cutover.manifest)
   const history = await deps.shellHistory(cutover.manifest.source.distro, worktrees)
   const descriptors = [...panes.descriptors, ...history.descriptors]
@@ -99,7 +99,7 @@ export async function sendWslMoveBlobs(
   staged: WslMoveCutover,
   blobs: Awaited<ReturnType<typeof collectWslMoveBlobs>>
 ): Promise<void> {
-  await transferOrcadMigrationBlobs({
+  await transferOCCdMigrationBlobs({
     source: blobs.source,
     manifest: staged.manifest,
     blobs: blobs.descriptors,
@@ -119,7 +119,7 @@ export async function commitWslMove(
   deps: TransferDeps,
   host: WslMoveHost,
   transferred: WslMoveCutover,
-  expectedBlobs: readonly OrcadMigrationBlobDescriptor[]
+  expectedBlobs: readonly OCCdMigrationBlobDescriptor[]
 ): Promise<WslMoveCutover> {
   assertWslMoveCommitRequestAllowed(transferred)
   const state = await host.commitWithBlobs(transferred.manifest, expectedBlobs)
@@ -136,7 +136,7 @@ export async function commitWslMove(
   return advanceWslMove(deps, transferred, 'destination-committed')
 }
 
-function assertSameMigration(cutover: WslMoveCutover, state: OrcadMigrationCatalogState): void {
+function assertSameMigration(cutover: WslMoveCutover, state: OCCdMigrationCatalogState): void {
   if (
     state.migrationId !== cutover.migrationId ||
     state.manifestSha256 !== cutover.manifestSha256

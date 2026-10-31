@@ -6,12 +6,12 @@ it.each(['posix', 'powershell', 'cmd'] as const)(
   'preserves existing plugin arguments and prompts in %s',
   (shell: AgentStartupShell) => {
     const command = 'claude --plugin-dir user-plugin --resume session -- "my prompt"'
-    const result = withClaudeAgentViewPlugin(command, 'orca plugin', shell)
+    const result = withClaudeAgentViewPlugin(command, 'occ plugin', shell)
     const parsed = tokenizeStartupCommand(result, shell)
     expect(parsed.ok && parsed.tokens).toEqual([
       'claude',
       '--plugin-dir',
-      'orca plugin',
+      'occ plugin',
       '--plugin-dir',
       'user-plugin',
       '--resume',
@@ -25,6 +25,6 @@ it.each(['posix', 'powershell', 'cmd'] as const)(
 it.each(['ssh host claude', 'bash -c claude', 'echo /bin/claude', 'claude && echo done'])(
   'leaves shell syntax and ambiguous executables unchanged: %s',
   (command) => {
-    expect(withClaudeAgentViewPlugin(command, '/orca/plugin', 'posix')).toBe(command)
+    expect(withClaudeAgentViewPlugin(command, '/occ/plugin', 'posix')).toBe(command)
   }
 )

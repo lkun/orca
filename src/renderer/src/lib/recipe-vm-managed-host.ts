@@ -1,12 +1,12 @@
 import { isRuntimeOwnedSshTargetId, parseExecutionHostId } from '../../../shared/execution-host'
 import {
-  getManagedOrcadSshTargetId,
-  type ManagedOrcadEnvironmentSummary
-} from '../../../shared/managed-orcad-execution-host'
+  getManagedOCCdSshTargetId,
+  type ManagedOCCdEnvironmentSummary
+} from '../../../shared/managed-occd-execution-host'
 
 /** The hidden SSH target of the recipe VM whose managed server is `hostId`, or null. */
 export function getRecipeVmSshTargetForHost(
-  environments: readonly ManagedOrcadEnvironmentSummary[],
+  environments: readonly ManagedOCCdEnvironmentSummary[],
   hostId: string | null | undefined
 ): string | null {
   const host = parseExecutionHostId(hostId)
@@ -14,6 +14,6 @@ export function getRecipeVmSshTargetForHost(
     return null
   }
   const environment = environments.find((entry) => entry.id === host.environmentId)
-  const targetId = environment ? getManagedOrcadSshTargetId(environment) : null
+  const targetId = environment ? getManagedOCCdSshTargetId(environment) : null
   return targetId && isRuntimeOwnedSshTargetId(targetId) ? targetId : null
 }

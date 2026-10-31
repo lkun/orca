@@ -11,7 +11,7 @@ import { PluginLanguagePackRegistry } from './plugin-language-pack-registry'
 const roots: string[] = []
 
 async function pluginWithCatalog(catalog: unknown): Promise<ValidDiscoveredPlugin> {
-  const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-language-registry-'))
+  const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-language-registry-'))
   roots.push(rootDir)
   await mkdir(join(rootDir, 'locales'))
   await writeFile(join(rootDir, 'locales', 'pt-BR.json'), JSON.stringify(catalog))
@@ -21,7 +21,7 @@ async function pluginWithCatalog(catalog: unknown): Promise<ValidDiscoveredPlugi
     publisher: 'samples',
     name: 'Portuguese',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     contributes: {
       languagePacks: [{ locale: 'pt-BR', path: 'locales/pt-BR.json' }]
@@ -52,7 +52,7 @@ describe('PluginLanguagePackRegistry', () => {
     expect(registry.list()).toEqual([
       {
         id: 'plugin:samples.portuguese/pt-BR',
-        resourceLanguage: 'pt-BR-x-orcapk-73616d70-6c65732e-706f7274-75677565-73652f70-742d4252',
+        resourceLanguage: 'pt-BR-x-occpk-73616d70-6c65732e-706f7274-75677565-73652f70-742d4252',
         pluginKey: 'samples.portuguese',
         locale: 'pt-BR',
         catalog: { common: { save: 'Salvar' } },

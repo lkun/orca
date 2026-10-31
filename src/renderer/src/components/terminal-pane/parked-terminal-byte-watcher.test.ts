@@ -362,7 +362,7 @@ describe('startParkedTerminalByteWatcher', () => {
   it('observes GitHub PR links across chunk boundaries', async () => {
     const { dispose } = await startWatcher()
 
-    emit('PR: https://github.com/occ-dev/orca/pull/42')
+    emit('PR: https://github.com/occ-dev/occ/pull/42')
     expect(mockStoreState.observeTerminalGitHubPullRequestLink).not.toHaveBeenCalled()
 
     emit('1\r\ndone')
@@ -370,9 +370,9 @@ describe('startParkedTerminalByteWatcher', () => {
     expect(mockStoreState.observeTerminalGitHubPullRequestLink).toHaveBeenCalledWith(
       WORKTREE_ID,
       expect.objectContaining({
-        url: 'https://github.com/occ-dev/orca/pull/421',
+        url: 'https://github.com/occ-dev/occ/pull/421',
         number: 421,
-        slug: { owner: 'occ-dev', repo: 'orca', host: 'github.com' }
+        slug: { owner: 'occ-dev', repo: 'occ', host: 'github.com' }
       }),
       expect.objectContaining({ tabId: TAB_ID, ptyId: PTY_ID })
     )
@@ -847,7 +847,7 @@ describe('startParkedTerminalByteWatcher', () => {
       expect(ptyWrite).not.toHaveBeenCalled()
 
       // PR links already arrive as facts; byte-scanning would observe each twice.
-      emit('PR: https://github.com/occ-dev/orca/pull/42\r\n')
+      emit('PR: https://github.com/occ-dev/occ/pull/42\r\n')
       expect(mockStoreState.observeTerminalGitHubPullRequestLink).not.toHaveBeenCalled()
       dispose()
     })
@@ -894,8 +894,8 @@ describe('startParkedTerminalByteWatcher', () => {
       const { dispose } = await startWatcher()
 
       const link = {
-        url: 'https://github.com/occ-dev/orca/pull/421',
-        slug: { owner: 'occ-dev', repo: 'orca' },
+        url: 'https://github.com/occ-dev/occ/pull/421',
+        slug: { owner: 'occ-dev', repo: 'occ' },
         number: 421
       }
       await dispatchFacts([{ kind: 'pr-link', link }])

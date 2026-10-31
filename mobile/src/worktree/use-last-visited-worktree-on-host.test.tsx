@@ -2,7 +2,7 @@ import type * as PageStorage from '../mobile-web-shell/bridge/page-async-storage
 import type * as Visits from './last-visited-worktree-by-host'
 import { describe, expect, it, vi } from 'vitest'
 
-const KEY = 'orca:last-visited-worktree'
+const KEY = 'occ:last-visited-worktree'
 const HOST = 'host-1'
 
 /** The app's own store, which every page's writes reach and every page load copies. */

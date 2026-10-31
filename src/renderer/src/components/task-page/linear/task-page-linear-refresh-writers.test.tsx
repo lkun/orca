@@ -355,7 +355,7 @@ it('real board drop updates selected fallback and rolls it back through domain s
       {
         preventDefault() {},
         stopPropagation() {},
-        dataTransfer: { types: ['application/x-orca-linear-issue-id'], getData: () => 'same-uuid' }
+        dataTransfer: { types: ['application/x-occ-linear-issue-id'], getData: () => 'same-uuid' }
       } as unknown as React.DragEvent<HTMLElement>
     )
   })

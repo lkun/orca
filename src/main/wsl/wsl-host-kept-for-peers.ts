@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { writeSecureJsonFileWithinLimit } from '../../shared/bounded-secure-json-file'
 import { readNodeFileSyncWithinLimit } from '../../shared/node-bounded-file-reader'
 
-const KEPT_FILE = 'orca-wsl-hosts-kept-for-peers.json'
+const KEPT_FILE = 'occ-wsl-hosts-kept-for-peers.json'
 const MAX_KEPT_FILE_BYTES = 64 * 1024
 
 const KeptListSchema = z.object({

@@ -166,9 +166,9 @@ export function dropAgentLaunch(args: ResumeSpawnArgs): void {
     args.env = Object.fromEntries(
       Object.entries(args.env).filter(
         ([key, value]) =>
-          key !== 'ORCA_AGENT_LAUNCH_TOKEN' &&
-          key !== 'ORCA_SEQUENCED_STARTUP_COMMAND' &&
-          key !== 'ORCA_SEQUENCED_STARTUP_SCRIPT' &&
+          key !== 'OCC_AGENT_LAUNCH_TOKEN' &&
+          key !== 'OCC_SEQUENCED_STARTUP_COMMAND' &&
+          key !== 'OCC_SEQUENCED_STARTUP_SCRIPT' &&
           agentEnv[key] !== value
       )
     )

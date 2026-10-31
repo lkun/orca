@@ -26,14 +26,14 @@ export function useMobileTasksClientSettingsActions(model: ProjectRepositoryReso
     setGithubSourceFallbacks,
     setGithubCountedTotalPages,
     setItems,
-    setOrcaYamlTrustPrompt,
+    setOCCYamlTrustPrompt,
     setSetupPrompt,
     setShowWorkspaceAdvanced,
     setShowWorkspaceAgentPicker,
     setShowWorkspaceBaseBranchPicker,
     setShowWorkspaceCreateRepoPicker,
     setShowWorkspaceSparsePicker,
-    setTrustedOrcaHooks,
+    setTrustedOCCHooks,
     setWorkspaceAgent,
     setWorkspaceAgentOverridden,
     setWorkspaceBaseBranch,
@@ -60,7 +60,7 @@ export function useMobileTasksClientSettingsActions(model: ProjectRepositoryReso
     setWorkspaceSshState,
     taskResumeRef,
     taskUiReady,
-    trustedOrcaHooks
+    trustedOCCHooks
   } = model
   // Commit stale-client guards before task-loading passive effects run.
   const resetGitHubItemsState = useCallback(() => {
@@ -183,17 +183,17 @@ export function useMobileTasksClientSettingsActions(model: ProjectRepositoryReso
       if (!client) {
         return
       }
-      setTrustedOrcaHooks(
+      setTrustedOCCHooks(
         await persistSetupHookTrustApproval({
           client,
-          trust: trustedOrcaHooks,
+          trust: trustedOCCHooks,
           repoId,
           contentHash,
           alwaysTrust
         })
       )
     },
-    [client, trustedOrcaHooks]
+    [client, trustedOCCHooks]
   )
 
   const resetWorkspaceCreateState = useCallback((): void => {
@@ -227,7 +227,7 @@ export function useMobileTasksClientSettingsActions(model: ProjectRepositoryReso
     setShowWorkspaceBaseBranchPicker(false)
     setShowWorkspaceSparsePicker(false)
     setSetupPrompt(null)
-    setOrcaYamlTrustPrompt(null)
+    setOCCYamlTrustPrompt(null)
   }, [])
   return Object.assign(model, {
     resetGitHubItemsState,

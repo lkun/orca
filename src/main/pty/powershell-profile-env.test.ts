@@ -25,7 +25,7 @@ let root: string
 
 // Isolate all-users profiles under $PSHOME from the developer's real files.
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-ps-profile-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-ps-profile-'))
   vi.stubEnv('SystemRoot', join(root, 'Windows'))
   vi.stubEnv('ProgramFiles', join(root, 'pf'))
 })

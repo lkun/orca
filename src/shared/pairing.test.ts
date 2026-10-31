@@ -94,7 +94,7 @@ describe('pairing offer', () => {
   it('round-trips a TLS reverse-proxy endpoint with an explicit port and path', () => {
     const proxiedOffer = {
       ...offer,
-      endpoint: 'wss://proxy.example:443/orca/runtime'
+      endpoint: 'wss://proxy.example:443/occ/runtime'
     }
 
     expect(decodePairingOffer(encodePairingOffer(proxiedOffer))).toEqual(proxiedOffer)
@@ -104,7 +104,7 @@ describe('pairing offer', () => {
     expect(() => decodePairingOffer('https://example.com#abc')).toThrow('Invalid pairing URL')
   })
 
-  it('rejects orca URLs outside the exact pairing route', () => {
+  it('rejects occ URLs outside the exact pairing route', () => {
     const url = encodePairingOffer(offer)
     const code = new URLSearchParams(url.slice(url.indexOf('?') + 1)).get('code')!
 

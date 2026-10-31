@@ -123,7 +123,7 @@ describe('native cookie import preserves destination cookies', () => {
   let targetCookiesPath: string
 
   beforeEach(() => {
-    tmpDir = mkdtempSync(join(tmpdir(), 'orca-cookie-import-scope-'))
+    tmpDir = mkdtempSync(join(tmpdir(), 'occ-cookie-import-scope-'))
     sourceCookiesPath = join(tmpDir, 'Chrome', 'Default', 'Network', 'Cookies')
     targetCookiesPath = join(tmpDir, 'userData', 'Partitions', 'test', 'Network', 'Cookies')
     cookiesRemoveMock = vi.fn().mockResolvedValue(undefined)

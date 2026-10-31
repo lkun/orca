@@ -4,11 +4,11 @@ import {
   DelegatedMobileDeviceSyncParamsSchema
 } from '../../../../shared/delegated-mobile-device-contract'
 import {
-  ORCAD_DECLARE_CLIENT_METHOD,
-  ORCAD_PEER_DESKTOPS_METHOD,
-  OrcadDeclareClientParamsSchema,
-  OrcadPeerDesktopsParamsSchema
-} from '../../../../shared/orcad-peer-desktops-contract'
+  OCCD_DECLARE_CLIENT_METHOD,
+  OCCD_PEER_DESKTOPS_METHOD,
+  OCCdDeclareClientParamsSchema,
+  OCCdPeerDesktopsParamsSchema
+} from '../../../../shared/occd-peer-desktops-contract'
 import { RegisterDeviceKeyParamsSchema } from '../../../../shared/device-key-registration-contract'
 import { REGISTER_DEVICE_KEY_METHOD } from '../../../../shared/device-key-capability'
 import {
@@ -51,10 +51,10 @@ export const PAIRING_METHODS = [
     }
   }),
   defineMethod({
-    name: ORCAD_PEER_DESKTOPS_METHOD,
+    name: OCCD_PEER_DESKTOPS_METHOD,
     // Paired desktops lack pairing-admin; they learn only other desktops' names, never credentials.
     permission: 'workspace',
-    params: OrcadPeerDesktopsParamsSchema,
+    params: OCCdPeerDesktopsParamsSchema,
     handler: (params, ctx) => {
       if (!ctx.peerDesktops) {
         throw new Error('runtime_device_required')
@@ -63,9 +63,9 @@ export const PAIRING_METHODS = [
     }
   }),
   defineMethod({
-    name: ORCAD_DECLARE_CLIENT_METHOD,
+    name: OCCD_DECLARE_CLIENT_METHOD,
     permission: 'workspace',
-    params: OrcadDeclareClientParamsSchema,
+    params: OCCdDeclareClientParamsSchema,
     handler: (params, ctx) => {
       if (!ctx.peerDesktops) {
         throw new Error('runtime_device_required')

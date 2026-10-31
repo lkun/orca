@@ -1,5 +1,5 @@
 // Exercise legacy framing with real sockets, timers and NaCl against half-open mobile/Tailscale paths (#5049).
-// ORCA_MOBILE_LIVE_REPRO=1 enables the short case; ORCA_MOBILE_LIVE_REPRO_FULL=1 adds the roughly eight-minute recovery loop.
+// OCC_MOBILE_LIVE_REPRO=1 enables the short case; OCC_MOBILE_LIVE_REPRO_FULL=1 adds the roughly eight-minute recovery loop.
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { randomBytes } from 'node:crypto'
 import nacl from 'tweetnacl'
@@ -14,8 +14,8 @@ vi.mock('expo-crypto', () => ({
 vi.mock('./direct-e2ee-framing-policy', () => import('./legacy-direct-framing-test-policy'))
 
 const RUN_LIVE =
-  process.env.ORCA_MOBILE_LIVE_REPRO === '1' || !!process.env.ORCA_MOBILE_LIVE_REPRO_FULL
-const RUN_FULL = process.env.ORCA_MOBILE_LIVE_REPRO_FULL === '1'
+  process.env.OCC_MOBILE_LIVE_REPRO === '1' || !!process.env.OCC_MOBILE_LIVE_REPRO_FULL
+const RUN_FULL = process.env.OCC_MOBILE_LIVE_REPRO_FULL === '1'
 
 const AUTH_TOKEN = 'repro-device-token'
 

@@ -10,7 +10,7 @@ const { spawnMock } = vi.hoisted(() => ({ spawnMock: vi.fn() }))
 
 vi.mock('child_process', () => ({ spawn: spawnMock, spawnSync: vi.fn() }))
 
-import { serveOrcaApp } from './launch'
+import { serveOCCApp } from './launch'
 
 class FakeChildProcess extends EventEmitter {
   stdout = new PassThrough()
@@ -18,25 +18,25 @@ class FakeChildProcess extends EventEmitter {
   pid = 5100
 }
 
-describe('serveOrcaApp --supervise', () => {
+describe('serveOCCApp --supervise', () => {
   let root: string
 
   beforeEach(async () => {
     spawnMock.mockReset()
-    root = await mkdtemp(join(tmpdir(), 'orca-serve-supervise-'))
-    const executable = join(root, 'orca')
+    root = await mkdtemp(join(tmpdir(), 'occ-serve-supervise-'))
+    const executable = join(root, 'occ')
     await writeFile(executable, '')
-    process.env.ORCA_APP_EXECUTABLE = executable
-    process.env.ORCA_SERVE_RUNTIME = 'electron'
-    process.env.ORCA_USER_DATA_PATH = join(root, 'profile')
+    process.env.OCC_APP_EXECUTABLE = executable
+    process.env.OCC_SERVE_RUNTIME = 'electron'
+    process.env.OCC_USER_DATA_PATH = join(root, 'profile')
     vi.spyOn(process.stderr, 'write').mockImplementation(() => true)
   })
 
   afterEach(async () => {
     vi.restoreAllMocks()
-    delete process.env.ORCA_APP_EXECUTABLE
-    delete process.env.ORCA_SERVE_RUNTIME
-    delete process.env.ORCA_USER_DATA_PATH
+    delete process.env.OCC_APP_EXECUTABLE
+    delete process.env.OCC_SERVE_RUNTIME
+    delete process.env.OCC_USER_DATA_PATH
     await rm(root, { recursive: true, force: true })
   })
 
@@ -55,7 +55,7 @@ describe('serveOrcaApp --supervise', () => {
       return child
     })
 
-    await expect(serveOrcaApp({ supervise: true })).resolves.toBe(0)
+    await expect(serveOCCApp({ supervise: true })).resolves.toBe(0)
     expect(spawnMock).toHaveBeenCalledTimes(2)
     expect(children[1].kill).toHaveBeenCalledWith('SIGTERM')
     expect(readServeSupervisorBrake(join(root, 'profile'))?.failures).toHaveLength(1)
@@ -64,7 +64,7 @@ describe('serveOrcaApp --supervise', () => {
 
   it('starts the server from the app, not the copy, once relocated outside it', async () => {
     const appRoot = join(root, 'OCC.app', 'Contents', 'Resources', 'app.asar.unpacked')
-    process.env.ORCA_SERVE_SUPERVISOR_APP_ROOT = appRoot
+    process.env.OCC_SERVE_SUPERVISOR_APP_ROOT = appRoot
     try {
       const child = new FakeChildProcess()
       child.kill.mockImplementation((signal: NodeJS.Signals) =>
@@ -74,11 +74,11 @@ describe('serveOrcaApp --supervise', () => {
         queueMicrotask(() => process.emit('SIGTERM', 'SIGTERM'))
         return child
       })
-      await expect(serveOrcaApp({ supervise: true })).resolves.toBe(0)
+      await expect(serveOCCApp({ supervise: true })).resolves.toBe(0)
       expect(spawnMock.mock.calls[0][2]).toMatchObject({ cwd: appRoot })
-      expect(spawnMock.mock.calls[0][2].env).not.toHaveProperty('ORCA_SERVE_SUPERVISOR_APP_ROOT')
+      expect(spawnMock.mock.calls[0][2].env).not.toHaveProperty('OCC_SERVE_SUPERVISOR_APP_ROOT')
     } finally {
-      delete process.env.ORCA_SERVE_SUPERVISOR_APP_ROOT
+      delete process.env.OCC_SERVE_SUPERVISOR_APP_ROOT
     }
   })
 
@@ -91,7 +91,7 @@ describe('serveOrcaApp --supervise', () => {
       })
       return child
     })
-    await expect(serveOrcaApp({ supervise: true })).resolves.toBe(0)
+    await expect(serveOCCApp({ supervise: true })).resolves.toBe(0)
     expect(spawnMock).toHaveBeenCalledTimes(1)
   })
 
@@ -104,7 +104,7 @@ describe('serveOrcaApp --supervise', () => {
       process.emit('SIGTERM', 'SIGTERM')
       return child
     })
-    await expect(serveOrcaApp({ supervise: true })).resolves.toBe(0)
+    await expect(serveOCCApp({ supervise: true })).resolves.toBe(0)
     expect(child.kill).toHaveBeenCalledWith('SIGTERM')
     expect(spawnMock).toHaveBeenCalledTimes(1)
   })
@@ -115,7 +115,7 @@ describe('serveOrcaApp --supervise', () => {
       queueMicrotask(() => child.emit('exit', 1, null))
       return child
     })
-    await expect(serveOrcaApp({})).resolves.toBe(1)
+    await expect(serveOCCApp({})).resolves.toBe(1)
     expect(spawnMock).toHaveBeenCalledTimes(1)
   })
 })

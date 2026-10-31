@@ -83,7 +83,7 @@ function mountPage(
     postMessage: (json: string) => void
     onmessage: ((event: { data: string }) => void) | null
   } = { postMessage: (json) => posted.push(json), onmessage: null }
-  Object.defineProperty(globalThis, 'orcaBridge', { value: channel, configurable: true })
+  Object.defineProperty(globalThis, 'occBridge', { value: channel, configurable: true })
   const client = createShellPageClient()
   if (client === null) {
     throw new Error('no channel installed')
@@ -143,7 +143,7 @@ afterEach(() => {
   for (const client of clients.splice(0)) {
     client.close()
   }
-  Reflect.deleteProperty(globalThis, 'orcaBridge')
+  Reflect.deleteProperty(globalThis, 'occBridge')
 })
 
 describe('a worktree row in the host-area page', () => {

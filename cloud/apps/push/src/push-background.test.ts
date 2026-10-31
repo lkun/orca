@@ -65,7 +65,7 @@ it('reports a sweep that is still running a full interval after it started', asy
     expect(h.warn).not.toHaveBeenCalled()
     await vi.advanceTimersByTimeAsync(1)
     expect(h.warn).toHaveBeenCalledWith(
-      JSON.stringify({ event: 'orca_push_prune_overdue', target: 'deliveries' })
+      JSON.stringify({ event: 'occ_push_prune_overdue', target: 'deliveries' })
     )
   } finally {
     finish({ deleted: 0, saturated: false })
@@ -81,7 +81,7 @@ it('releases a failed sweep so the next scheduled sweep can recover', async () =
   await vi.advanceTimersByTimeAsync(60_000)
   expect(h.deliveries).toHaveBeenCalledTimes(1)
   expect(h.warn).toHaveBeenCalledWith(
-    JSON.stringify({ event: 'orca_push_prune_failed', target: 'deliveries', error: 'Error' })
+    JSON.stringify({ event: 'occ_push_prune_failed', target: 'deliveries', error: 'Error' })
   )
   await vi.advanceTimersByTimeAsync(60_000)
   expect(h.deliveries).toHaveBeenCalledTimes(2)

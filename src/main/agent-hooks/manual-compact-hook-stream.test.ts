@@ -109,8 +109,8 @@ describe('manual Claude compact hook stream', () => {
     servers.push(server)
     await server.start({ env: 'production' })
     const env = server.buildPtyEnv()
-    const port = Number(env.ORCA_AGENT_HOOK_PORT)
-    const token = env.ORCA_AGENT_HOOK_TOKEN
+    const port = Number(env.OCC_AGENT_HOOK_PORT)
+    const token = env.OCC_AGENT_HOOK_TOKEN
     const events: string[] = []
     const unsubscribe = server.subscribeEnrichedStatus((event) => {
       events.push(`${event.hookEventName}:${event.payload.state}`)
@@ -149,8 +149,8 @@ describe('manual Claude compact hook stream', () => {
     servers.push(server)
     await server.start({ env: 'production' })
     const env = server.buildPtyEnv()
-    const port = Number(env.ORCA_AGENT_HOOK_PORT)
-    const token = env.ORCA_AGENT_HOOK_TOKEN!
+    const port = Number(env.OCC_AGENT_HOOK_PORT)
+    const token = env.OCC_AGENT_HOOK_TOKEN!
     seedHydratedStuckPane(server, Date.now() - 60_000)
     expect(server.getStatusSnapshot()[0]).toMatchObject({ state: 'working' })
 
@@ -180,8 +180,8 @@ describe('manual Claude compact hook stream', () => {
     servers.push(server)
     await server.start({ env: 'production' })
     const env = server.buildPtyEnv()
-    const port = Number(env.ORCA_AGENT_HOOK_PORT)
-    const token = env.ORCA_AGENT_HOOK_TOKEN!
+    const port = Number(env.OCC_AGENT_HOOK_PORT)
+    const token = env.OCC_AGENT_HOOK_TOKEN!
     seedHydratedStuckPane(server, Date.now() - 60_000)
     // A child observed by this runtime represents live work a compact must not retire.
     await postHook(
@@ -208,7 +208,7 @@ describe('manual Claude compact hook stream', () => {
     const main = new AgentHookServer()
     const forwarded: AgentHookRelayEnvelope[] = []
     const emitted: string[] = []
-    const endpointDir = mkdtempSync(join(tmpdir(), 'orca-compact-relay-'))
+    const endpointDir = mkdtempSync(join(tmpdir(), 'occ-compact-relay-'))
     temporaryPaths.push(endpointDir)
     const relay = new RelayAgentHookServer({
       endpointDir,
@@ -251,7 +251,7 @@ describe('manual Claude compact hook stream', () => {
   it('forwards the completion from a relay whose cache is cold, and the client still guards it', async () => {
     const main = new AgentHookServer()
     const forwarded: AgentHookRelayEnvelope[] = []
-    const endpointDir = mkdtempSync(join(tmpdir(), 'orca-compact-cold-'))
+    const endpointDir = mkdtempSync(join(tmpdir(), 'occ-compact-cold-'))
     temporaryPaths.push(endpointDir)
     // A restarted relay may see compact completion first because its cache is empty.
     const relay = new RelayAgentHookServer({
@@ -279,7 +279,7 @@ describe('manual Claude compact hook stream', () => {
 
   it('does not resurrect a retired pane when the cold relay replays its completion', async () => {
     const main = new AgentHookServer()
-    const endpointDir = mkdtempSync(join(tmpdir(), 'orca-compact-cold-replay-'))
+    const endpointDir = mkdtempSync(join(tmpdir(), 'occ-compact-cold-replay-'))
     temporaryPaths.push(endpointDir)
     const relay = new RelayAgentHookServer({
       endpointDir,

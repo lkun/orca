@@ -210,7 +210,7 @@ function detectTerminalComposer(
 }
 
 // Why: dsh-tui 0.17 boxes its single-line launchpad composer (`│ ❯ draft │`) under a `╭─╮` top.
-// Why String.raw: the orcad bundle must stay ASCII, and the formatter unescapes regex literals.
+// Why String.raw: the occd bundle must stay ASCII, and the formatter unescapes regex literals.
 const BOXED_COMPOSER_TOP = new RegExp(String.raw`^\s*\u256D\u2500{8,}\u256E\s*$`)
 const BOXED_COMPOSER_ROW = new RegExp(String.raw`^\s*\u2502 \u276F `)
 const BOXED_COMPOSER_RIGHT_EDGE = new RegExp(String.raw`\u2502\s*$`)

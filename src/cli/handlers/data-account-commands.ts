@@ -59,7 +59,7 @@ export async function addDataAccount(
       '--integration requires an OpenCode integration ID or name.'
     )
   }
-  const directory = mkdtempSync(join(tmpdir(), `orca-account-add-${provider}-`))
+  const directory = mkdtempSync(join(tmpdir(), `occ-account-add-${provider}-`))
   const session: InteractiveLoginSession = {
     child: null,
     registering: false,

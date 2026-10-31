@@ -26,7 +26,7 @@ type Published = {
 
 const RUNNING_SHELL = { id: 'shell-1', type: 'shell', status: 'running' }
 /** Not a hook: current Claude sends none on a cancel, so OCC infers it from the keystroke. */
-const ORCA_INFERRED_INTERRUPT = { orca_inferred_interrupt: true }
+const OCC_INFERRED_INTERRUPT = { occ_inferred_interrupt: true }
 const RUNNING_AGENT = { id: 'agent-1', type: 'subagent', status: 'running' }
 const AGENT_TASK: AgentSessionBackgroundTask = { id: 'agent-1', kind: 'agent', state: 'working' }
 const SHELL_TASK: AgentSessionBackgroundTask = { id: 'shell-1', kind: 'command', state: 'working' }
@@ -250,7 +250,7 @@ const STORIES: Story[] = [
     claude: {
       events: [
         { hook_event_name: 'UserPromptSubmit', prompt: 'go' },
-        ORCA_INFERRED_INTERRUPT,
+        OCC_INFERRED_INTERRUPT,
         { hook_event_name: 'Stop', background_tasks: [RUNNING_SHELL] }
       ],
       expect: {
@@ -287,7 +287,7 @@ const STORIES: Story[] = [
     claude: {
       events: [
         { hook_event_name: 'UserPromptSubmit', prompt: 'go' },
-        ORCA_INFERRED_INTERRUPT,
+        OCC_INFERRED_INTERRUPT,
         { hook_event_name: 'Stop' }
       ],
       expect: { state: 'done', mainAgent: { state: 'done', outcome: 'cancellation' } }
@@ -295,7 +295,7 @@ const STORIES: Story[] = [
     codex: {
       events: [
         { hook_event_name: 'UserPromptSubmit', prompt: 'go' },
-        ORCA_INFERRED_INTERRUPT,
+        OCC_INFERRED_INTERRUPT,
         { hook_event_name: 'Stop' }
       ],
       expect: { state: 'done', mainAgent: { state: 'done', outcome: 'cancellation' } }
@@ -324,7 +324,7 @@ const STORIES: Story[] = [
         { hook_event_name: 'UserPromptSubmit', prompt: 'start it' },
         { hook_event_name: 'Stop', background_tasks: [RUNNING_SHELL] },
         { hook_event_name: 'UserPromptSubmit', prompt: 'now this' },
-        ORCA_INFERRED_INTERRUPT
+        OCC_INFERRED_INTERRUPT
       ],
       expect: {
         state: 'working',
@@ -341,7 +341,7 @@ const STORIES: Story[] = [
         { hook_event_name: 'SubagentStart', agent_id: 'agent-1' },
         { hook_event_name: 'Stop', background_tasks: [RUNNING_AGENT] },
         { hook_event_name: 'UserPromptSubmit', prompt: 'and this' },
-        ORCA_INFERRED_INTERRUPT
+        OCC_INFERRED_INTERRUPT
       ],
       expect: { state: 'working', mainAgent: { state: 'done', outcome: 'cancellation' } }
     },
@@ -381,7 +381,7 @@ describe('mainAgent status parity across lanes', () => {
   ): ParsedAgentStatusPayload {
     let last: ParsedAgentStatusPayload | null = null
     for (const payload of events) {
-      if (payload === ORCA_INFERRED_INTERRUPT) {
+      if (payload === OCC_INFERRED_INTERRUPT) {
         if (source === 'codex') {
           markCodexLeadTurnInterrupted(state, PANE_KEY)
           continue

@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../occ-runtime'
 import { MOBILE_SNAPSHOT_BYTE_BUDGET } from '../../../scrollback-limits'
 import { buildSnapshotFrameMeta } from './terminal-snapshot-payload'
 import { serializeBudgetedMobileSnapshot } from './terminal-snapshot-publication'
-import { isMovedPaneHistorySessionId } from '../../../../../shared/orcad-migration/orcad-migration-terminal-history'
+import { isMovedPaneHistorySessionId } from '../../../../../shared/occd-migration/occd-migration-terminal-history'
 
-function historyRuntime(bytesPerRow: number): Pick<OrcaRuntimeService, 'serializeTerminalBuffer'> {
+function historyRuntime(bytesPerRow: number): Pick<OCCRuntimeService, 'serializeTerminalBuffer'> {
   return {
     serializeTerminalBuffer: vi.fn(
       async (_ptyId: string, options?: { scrollbackRows?: number }) => ({

@@ -17,7 +17,7 @@ let keyState: 'available' | 'unavailable' | 'decrypt-fails' = 'available'
 vi.mock('electron', () => ({
   app: {
     getPath: () => tmpdir(),
-    getName: () => 'orca-test',
+    getName: () => 'occ-test',
     getVersion: () => '0.0.0-test',
     isPackaged: false,
     on: () => {},
@@ -83,7 +83,7 @@ const sealed = (value: string) => Buffer.from(`encrypted:${value}`, 'utf8').toSt
 it.each([false, true])(
   'rejects reused input before Store context installation (secret=%s)',
   (hasSecret) => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-consumed-startup-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-consumed-startup-'))
     directories.push(directory)
     const authority = new ProfileStateSqliteAuthority(join(directory, 'profile-state.db'), 'once')
     if (hasSecret) {
@@ -96,7 +96,7 @@ it.each([false, true])(
       )
     }
     const options = {
-      dataFile: join(directory, 'orca-data.json'),
+      dataFile: join(directory, 'occ-data.json'),
       profileStateAuthority: authority,
       initialAuthorityState: authority.readInitialState()
     }
@@ -118,9 +118,9 @@ describe.each(['serialized', 'parsed'] as const)(
     it.each(['available', 'unavailable', 'decrypt-fails'] as const)(
       'preserves every protected slot through an unrelated save when keys are %s',
       async (failure) => {
-        const directory = mkdtempSync(join(tmpdir(), 'orca-startup-secrets-'))
+        const directory = mkdtempSync(join(tmpdir(), 'occ-startup-secrets-'))
         directories.push(directory)
-        const dataFile = join(directory, 'orca-data.json')
+        const dataFile = join(directory, 'occ-data.json')
         const databaseFile = join(directory, 'profile-state.db')
         function open() {
           const authority = new ProfileStateSqliteAuthority(databaseFile, 'startup-secrets')

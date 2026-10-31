@@ -5,7 +5,7 @@ import { SSH_RUNTIME_DURATION_BUCKETS } from './telemetry-ssh-runtime-event-sche
 
 export const SSH_HOST_SERVER_OUTCOME_VALUES = ['managed', 'deployed', 'converted', 'relay'] as const
 
-/** Why orcad can't run on a host; mirrors main's OrcadHostUnavailableReason. */
+/** Why occd can't run on a host; mirrors main's OCCdHostUnavailableReason. */
 const UNAVAILABLE_REASONS = [
   // The host refuses port forwarding and can't run the stdio bridge either.
   'ssh_tunnel_unavailable',
@@ -40,7 +40,7 @@ export const SSH_HOST_SERVER_REASON_VALUES = [
   'other'
 ] as const
 
-/** A conversion refusal's code without its `orcad_migration_` prefix. */
+/** A conversion refusal's code without its `occd_migration_` prefix. */
 export const SSH_HOST_SERVER_REFUSAL_VALUES = [
   'none',
   'already_managed',
@@ -55,7 +55,7 @@ export const SSH_HOST_SERVER_REFUSAL_VALUES = [
   'other'
 ] as const
 
-/** A deploy's deferral code without its `orcad_` prefix, or why orcad can't run on the host. */
+/** A deploy's deferral code without its `occd_` prefix, or why occd can't run on the host. */
 export const SSH_HOST_SERVER_FAILURE_VALUES = [
   ...UNAVAILABLE_REASONS,
   'activation_recovery_required',
@@ -111,7 +111,7 @@ export const sshHostServerDecidedSchema = z
     transport: z.enum(SSH_HOST_SERVER_TRANSPORT_VALUES),
     reason: z.enum(SSH_HOST_SERVER_REASON_VALUES),
     refusal: z.enum(SSH_HOST_SERVER_REFUSAL_VALUES),
-    // True when a recorded "orcad can't run here" sent the host to the relay without a try.
+    // True when a recorded "occd can't run here" sent the host to the relay without a try.
     recorded: z.boolean(),
     ...hostFields,
     duration_bucket: z.enum(SSH_RUNTIME_DURATION_BUCKETS)

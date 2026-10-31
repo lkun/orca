@@ -13,7 +13,7 @@ import {
 import { buildOrphanTerminalCleanupPatch } from './terminal-orphan-helpers'
 import { createStoreCascadesMockApi } from './store-cascades-test-harness'
 import { drawTabsFromMain, type TabsDrawnFromMain } from './tabs-drawn-from-main.test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
 const mockUnregisterPtyDataHandlers = vi.hoisted(() => vi.fn<() => unknown[]>(() => []))
 const mockRestorePtyDataHandlersAfterFailedShutdown = vi.hoisted(() => vi.fn())
@@ -54,8 +54,8 @@ afterEach(() => {
   main = undefined
 })
 
-const itSwitchOff = it.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)
-const itSwitchOn = it.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)
+const itSwitchOff = it.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)
+const itSwitchOn = it.runIf(OCC_LAYOUT_OWNER_IS_MAIN)
 
 describe('setActiveWorktree', () => {
   beforeEach(() => {

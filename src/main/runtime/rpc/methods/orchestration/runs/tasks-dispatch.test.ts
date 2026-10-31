@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { RpcContext } from '../../../core'
 import { createOrchestrationRpcHarness } from '../rpc-test-harness'
 import type { OrchestrationDb } from '../../../../orchestration/db'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { buildInjectRejectionMessage } from '../../../../../../shared/orchestration-dispatch-refusal-contract'
 import { createRootDispatch } from '../../../../orchestration/db/root-dispatch-test-fixture'
 import { dispatchPreambleSendOptions } from '../../../../orchestration/preamble'
@@ -11,7 +11,7 @@ describe('orchestration RPC methods', () => {
   const h = createOrchestrationRpcHarness()
   const { coordinatorPaneKey, findMethod } = h
   let db: OrchestrationDb
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
   let ctx: RpcContext
 
   function setup(withBoundRun = true): void {
@@ -364,7 +364,7 @@ describe('orchestration RPC methods', () => {
 
       expect(runtime.getTerminalOrchestrationCliCommand).toHaveBeenCalledWith('term_wsl')
       expect(result.preamble).toContain('occ-ide orchestration send')
-      expect(result.preamble).not.toMatch(/(^|\s)orca orchestration/m)
+      expect(result.preamble).not.toMatch(/(^|\s)occ orchestration/m)
     })
 
     it('injects preamble through the agent prompt path instead of raw terminal send', async () => {

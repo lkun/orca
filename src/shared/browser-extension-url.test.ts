@@ -4,15 +4,15 @@ import {
   normalizeBrowserGuestSrc,
   resolveBrowserExtensionRequestedUrl
 } from './browser-extension-url'
-import { ORCA_BROWSER_BLANK_URL } from './constants'
+import { OCC_BROWSER_BLANK_URL } from './constants'
 
 const CALLER = 'a'.repeat(32)
 const OTHER = 'b'.repeat(32)
 
 describe('resolveBrowserExtensionRequestedUrl', () => {
   it.each([
-    [undefined, { kind: 'blank', url: ORCA_BROWSER_BLANK_URL }],
-    ['about:blank', { kind: 'blank', url: ORCA_BROWSER_BLANK_URL }],
+    [undefined, { kind: 'blank', url: OCC_BROWSER_BLANK_URL }],
+    ['about:blank', { kind: 'blank', url: OCC_BROWSER_BLANK_URL }],
     [
       'popup/index.html?x=1',
       {

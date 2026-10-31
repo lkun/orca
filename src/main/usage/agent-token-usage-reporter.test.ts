@@ -35,7 +35,7 @@ function captures() {
   return telemetry.mock.capture.mock.calls.map(([message]) => message.properties)
 }
 beforeEach(() => {
-  directory = mkdtempSync(join(tmpdir(), 'orca-token-usage-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-token-usage-'))
   file = join(directory, 'tokens.json')
   telemetry = setupTelemetryClientTest()
   reporters = []

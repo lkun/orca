@@ -64,12 +64,12 @@ export function normalizePersistedState(state: CodexUsagePersistedState): CodexU
 }
 
 export function initCodexUsagePath(): void {
-  _codexUsageFile = join(app.getPath('userData'), 'orca-codex-usage.json')
+  _codexUsageFile = join(app.getPath('userData'), 'occ-codex-usage.json')
 }
 
 function getCodexUsageFile(): string {
   if (!_codexUsageFile) {
-    _codexUsageFile = join(app.getPath('userData'), 'orca-codex-usage.json')
+    _codexUsageFile = join(app.getPath('userData'), 'occ-codex-usage.json')
   }
   return _codexUsageFile
 }

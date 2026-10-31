@@ -21,12 +21,12 @@ import {
 } from './codex-hook-definition'
 import {
   type CodexHookHome,
-  findStopgapOrcaHashes,
+  findStopgapOCCHashes,
   getRealHomeCodexHookHome,
-  isKnownOrcaHash,
-  readKnownOrcaHashes
-} from './codex-hook-orca-approvals'
-import { getOrcaUserDataPath } from './codex-home-paths'
+  isKnownOCCHash,
+  readKnownOCCHashes
+} from './codex-hook-occ-approvals'
+import { getOCCUserDataPath } from './codex-home-paths'
 import { mutateRealHomeHooksPreservingUserTrust } from './codex-user-hook-trust-moves'
 import { sweepRealHomeCodexHook } from './codex-real-home-hook-sweep'
 import { runExclusivelyForCodexTrustConfig } from './codex-trust-config-mutation-queue'
@@ -123,12 +123,12 @@ function reconcilePass(
     hooks,
     sourcePath: sourcePaths[0],
     material: { events, command: material.command },
-    isOrcaCommand: createManagedCommandMatcher(getCodexManagedScriptFileName()),
+    isOCCCommand: createManagedCommandMatcher(getCodexManagedScriptFileName()),
     convertOlderForms: args.convertOlderForms
   })
   const writeHooks = (nextHooks: Record<string, HookDefinition[]>): void => {
     if (pristineBackup) {
-      backupRealHomeHooksJsonOnce(getOrcaUserDataPath(), previousRaw)
+      backupRealHomeHooksJsonOnce(getOCCUserDataPath(), previousRaw)
     }
     assertHooksJsonGeneration(hooksJsonPath, hooksWritePath, previousRaw)
     writeHooksJson(hooksWritePath, { ...config, hooks: nextHooks }, { preserveMode: true })
@@ -146,16 +146,16 @@ function reconcilePass(
   }
 
   const trustStates = readHookTrustEntries(tomlPath)
-  const knownOrcaHashes = readKnownOrcaHashes(home, material.command)
+  const knownOCCHashes = readKnownOCCHashes(home, material.command)
   // Preserve installed approvals while waiting for Codex to report hashes.
   const hashes =
     args.hashes ??
-    findStopgapOrcaHashes({
+    findStopgapOCCHashes({
       trustStates,
       hooks,
       keySourcePaths: sourcePaths,
       command: material.command,
-      knownOrcaHashes
+      knownOCCHashes
     })
   const approvals = sourcePaths.flatMap((keySource) =>
     plan.managedEntries.flatMap((entry) => {
@@ -167,7 +167,7 @@ function reconcilePass(
     })
   )
   const findStale = (states: ReadonlyMap<string, CodexHookTrustState>): string[] =>
-    findStaleOrcaApprovals(states, events, sourcePaths, knownOrcaHashes, plan)
+    findStaleOCCApprovals(states, events, sourcePaths, knownOCCHashes, plan)
   const changed = plan.changedLabels.size > 0
   if (
     !changed &&
@@ -199,11 +199,11 @@ function reconcilePass(
 }
 
 // Preserve held and untouched slots; stale approvals must carry a known OCC hash.
-function findStaleOrcaApprovals(
+function findStaleOCCApprovals(
   trustStates: ReadonlyMap<string, CodexHookTrustState>,
   events: CodexManagedHookInstallMaterial['events'],
   sourcePaths: readonly string[],
-  knownOrcaHashes: readonly CodexHookHashes[],
+  knownOCCHashes: readonly CodexHookHashes[],
   plan: SettlePlan
 ): string[] {
   const plannedLabels = new Set(events.map((eventName) => CODEX_EVENT_LABEL[eventName]))
@@ -221,7 +221,7 @@ function findStaleOrcaApprovals(
       !plan.untouchedLabels.has(parts.eventLabel) &&
       !held.has(normalizeHookTrustKeyForLookup(key)) &&
       sourcePaths.some((sourcePath) => codexHookSourcePathsEqual(parts.sourcePath, sourcePath)) &&
-      isKnownOrcaHash(knownOrcaHashes, parts.eventLabel, state.trustedHash)
+      isKnownOCCHash(knownOCCHashes, parts.eventLabel, state.trustedHash)
       ? [key]
       : []
   })

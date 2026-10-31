@@ -38,7 +38,7 @@ describe('localizeKeybindingDefinition', () => {
 
     const plugin: KeybindingDefinition = {
       ...quickOpen,
-      id: 'plugin:orca-samples.tasks/open',
+      id: 'plugin:occ-samples.tasks/open',
       title: 'Open Tasks — Tasks',
       group: 'Plugins'
     }

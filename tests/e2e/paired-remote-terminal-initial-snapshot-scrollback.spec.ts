@@ -1,8 +1,8 @@
-// #20158: subscribe after more than one screen of output and require full scrollback; desktop and orcad SSH share this snapshot path.
+// #20158: subscribe after more than one screen of output and require full scrollback; desktop and occd SSH share this snapshot path.
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   createRuntimeDesktopPairingOffer,
   launchPairedElectronClient
@@ -17,7 +17,7 @@ import {
 import { quotePosixShell } from '../../src/shared/shell-argument-quoting'
 
 const LINE_COUNT = 300
-const scratch = mkdtempSync(path.join(os.tmpdir(), 'orca-initial-scrollback-'))
+const scratch = mkdtempSync(path.join(os.tmpdir(), 'occ-initial-scrollback-'))
 const fixturePath = path.join(scratch, 'history-terminal.mjs')
 writeFileSync(
   fixturePath,
@@ -42,17 +42,17 @@ function fixtureCommand(): string {
 }
 
 test('a desktop client opening a remote terminal receives its scrollback, not just the screen', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(300_000)
-  const worktreeId = await orcaPage.evaluate(() => {
+  const worktreeId = await occPage.evaluate(() => {
     const id = window.__store?.getState().activeWorktreeId
     if (!id) {
       throw new Error('host has no active worktree')
     }
     return id
   })
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   const client = await launchPairedElectronClient(offer, testInfo, 'initial-scrollback')
   let terminal: string | null = null
   try {

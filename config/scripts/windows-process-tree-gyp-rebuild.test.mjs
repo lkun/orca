@@ -64,7 +64,7 @@ describe('windows-process-tree node-gyp rebuild', () => {
     { moduleName: 'node-pty', platform: 'win32', arch: 'arm64', ci: '' },
     { moduleName: 'node-pty', platform: 'win32', arch: 'arm64', ci: 'false' },
     { moduleName: 'node-pty', platform: 'win32', arch: 'arm64', ci: '1' },
-    { moduleName: '@orca/windows-registry', platform: 'win32', arch: 'arm64', ci: 'true' },
+    { moduleName: '@occ/windows-registry', platform: 'win32', arch: 'arm64', ci: 'true' },
     { moduleName: '@vscode/windows-process-tree', platform: 'win32', arch: 'arm64', ci: 'true' }
   ])('keeps the five-minute bound for $moduleName on $platform/$arch with CI=$ci', (host) => {
     expect(nodeGypRebuildTimeoutMs(host.moduleName, host)).toBe(300_000)

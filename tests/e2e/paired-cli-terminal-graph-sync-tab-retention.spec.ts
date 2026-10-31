@@ -9,7 +9,7 @@ import {
   toWebTerminalSurfaceTabId,
   WEB_TERMINAL_SURFACE_TAB_PREFIX
 } from '../../src/shared/terminal-surface-id'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   createRuntimeDesktopPairingOffer,
   launchPairedElectronClient,
@@ -89,11 +89,11 @@ type RetentionFixture = {
 }
 
 async function prepareRetentionFixture(
-  orcaPage: Page,
+  occPage: Page,
   client: PairedElectronClient
 ): Promise<RetentionFixture> {
   const call = createPairedRuntimeCall(client.page, client.environmentId)
-  const { worktreeId, unrelatedWorktreeId } = await orcaPage.evaluate(() => {
+  const { worktreeId, unrelatedWorktreeId } = await occPage.evaluate(() => {
     const state = window.__store?.getState()
     const active = state?.activeWorktreeId
     if (!state || !active) {
@@ -121,7 +121,7 @@ async function prepareRetentionFixture(
     .toBe(true)
 
   // Require renderer publication before CLI create so a headless epoch cannot protect the tab.
-  const rendererTabId = await createHostRendererTerminalTab(orcaPage, worktreeId)
+  const rendererTabId = await createHostRendererTerminalTab(occPage, worktreeId)
   const rendererOwned = await readHostInventoryWhenTabAppears(
     call,
     worktreeId,
@@ -144,24 +144,24 @@ async function prepareRetentionFixture(
 // Measure one CLI create and renderer sync with inventory/process and unrelated-workspace checks.
 // Only precedingHostTerminal differs: false makes the target the repo’s first host-admitted tab, the original missing-fence case.
 async function runCliTerminalRetentionJourney(
-  orcaPage: Page,
+  occPage: Page,
   testInfo: TestInfo,
   clientName: string,
   precedingHostTerminal: boolean
 ): Promise<void> {
   const client = await launchPairedElectronClient(
-    await createRuntimeDesktopPairingOffer(orcaPage),
+    await createRuntimeDesktopPairingOffer(occPage),
     testInfo,
     clientName
   )
   const hostPageErrors: string[] = []
   const clientPageErrors: string[] = []
-  orcaPage.on('pageerror', (error) => hostPageErrors.push(String(error)))
+  occPage.on('pageerror', (error) => hostPageErrors.push(String(error)))
   client.page.on('pageerror', (error) => clientPageErrors.push(String(error)))
   const createdHandles: string[] = []
   let call: RuntimeRpcCall | null = null
   try {
-    const fixture = await prepareRetentionFixture(orcaPage, client)
+    const fixture = await prepareRetentionFixture(occPage, client)
     call = fixture.call
     const { unrelatedWorktreeId, worktreeId } = fixture
     const baselineStrip = await readClientTerminalStrip(client.page, worktreeId)
@@ -187,7 +187,7 @@ async function runCliTerminalRetentionJourney(
     createdHandles.push(cli.handle)
     const unrelated = preceding ?? (await createUnrelated())
 
-    const secondRendererTabId = await createHostRendererTerminalTab(orcaPage, worktreeId)
+    const secondRendererTabId = await createHostRendererTerminalTab(occPage, worktreeId)
 
     // Judge the same inventory frame that adds the renderer tab and could drop the CLI tab.
     const afterSync = await readHostInventoryWhenTabAppears(
@@ -247,17 +247,17 @@ async function runCliTerminalRetentionJourney(
 }
 
 test('keeps a host-created CLI terminal when an earlier host-created terminal exists', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(600_000)
-  await runCliTerminalRetentionJourney(orcaPage, testInfo, 'cli-terminal-graph-sync', true)
+  await runCliTerminalRetentionJourney(occPage, testInfo, 'cli-terminal-graph-sync', true)
 })
 
 // The real CLI omits clientMutationId: its first host-admitted tab must establish persistence authority.
 // Reverting store.ts/pty.ts fails at host inventory retention.
 test('keeps a host-created CLI terminal that is the first one on the host', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(600_000)
-  await runCliTerminalRetentionJourney(orcaPage, testInfo, 'cli-terminal-graph-sync-first', false)
+  await runCliTerminalRetentionJourney(occPage, testInfo, 'cli-terminal-graph-sync-first', false)
 })

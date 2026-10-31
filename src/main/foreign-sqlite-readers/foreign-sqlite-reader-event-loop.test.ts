@@ -96,7 +96,7 @@ function describeArm(label: string, arm: Measured<unknown>): string {
 }
 
 beforeAll(async () => {
-  root = mkdtempSync(join(tmpdir(), 'orca-foreign-sqlite-event-loop-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-foreign-sqlite-event-loop-'))
   writeLargeWalFixture()
   workerEntryPath = join(root, 'foreign-sqlite-reader-entry.cjs')
   // Bundle the production reader source because Worker requires emitted JavaScript.

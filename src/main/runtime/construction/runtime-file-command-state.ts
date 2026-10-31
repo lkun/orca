@@ -2,10 +2,10 @@ import { LOCAL_EXECUTION_HOST_ID, type ExecutionHostId } from '../../../shared/e
 import type { GitAdmissionTier } from '../../git/command-runner/git-exec-options'
 import type { LocalProjectGhExecOptions } from '../../project-runtime-git-options'
 import type { RuntimeTerminalAgentStatus } from '../../../shared/runtime-terminal-contracts'
-import { OrcaRuntimeWithPreservedBranchCleanup } from './runtime-host-services'
-import { RuntimeFileCommands } from '../orca-runtime-files'
+import { OCCRuntimeWithPreservedBranchCleanup } from './runtime-host-services'
+import { RuntimeFileCommands } from '../occ-runtime-files'
 import { createRuntimeFileWatcherRemoval } from '../runtime-file-watcher-removal'
-import { RuntimeGitCommands } from '../orca-runtime-git'
+import { RuntimeGitCommands } from '../occ-runtime-git'
 import { RuntimeHostedReviewCommands } from '../runtime-hosted-review-commands'
 import { RuntimeGitHubRepositoryQueryCommands } from '../runtime-github-repository-query-commands'
 import { RuntimeGitLabQueryCommands } from '../runtime-gitlab-query-commands'
@@ -35,7 +35,7 @@ import type { LayoutApplyReply } from '../../../shared/workspace-layout/workspac
 import type { WindowLayoutCommand } from '../runtime-layout-apply'
 import { createRuntimeEditorFileOpener } from '../files/editor-open-through-layout-owner'
 
-export abstract class OrcaRuntimeWithFileCommands extends OrcaRuntimeWithPreservedBranchCleanup {
+export abstract class OCCRuntimeWithFileCommands extends OCCRuntimeWithPreservedBranchCleanup {
   protected abstract hydrateHeadlessMobileSessionTabsFromWorkspaceSession(
     worktreeId?: string,
     options?: { force?: boolean }

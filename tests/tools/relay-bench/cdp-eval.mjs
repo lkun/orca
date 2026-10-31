@@ -3,7 +3,7 @@ import WebSocket from 'ws'
 import { requirePort } from './relay-bench-invocation.mjs'
 
 const USAGE = 'node cdp-eval.mjs <port> <js-expression-returning-promise>'
-// Why any port: `pnpm dev` picks a per-worktree renderer port (see the ORCA_DEV_INSTANCE line).
+// Why any port: `pnpm dev` picks a per-worktree renderer port (see the OCC_DEV_INSTANCE line).
 const RENDERER_ORIGIN = /^http:\/\/localhost:\d+\//
 const OPEN_TIMEOUT_MS = 5_000
 

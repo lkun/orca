@@ -57,7 +57,7 @@ async function stagedRig(
     runtime?: boolean
   } = {}
 ) {
-  const root = await mkdtemp(join(tmpdir(), 'orca-naming-task-test-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-naming-task-test-'))
   folders.push(root)
   const base = acpLaunchSpecFor(options.antigravity ? 'antigravity' : 'grok')
   if (!base) {

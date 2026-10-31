@@ -1,7 +1,7 @@
 /** Chromium stops painting display:none guests; every remote viewer needs host paint retention.
  * Renderer coverage: tests/e2e/host-guest-paint-retention-remote-viewer. */
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import {
   createScreencastHarness,
   HARNESS_PAGE_ID as PAGE
@@ -47,7 +47,7 @@ describe('browser screencast remote viewer signal', () => {
     const browserRemoteViewersChanged = vi.fn()
     runtime.setNotifier({
       browserRemoteViewersChanged
-    } as unknown as Parameters<OrcaRuntimeService['setNotifier']>[0])
+    } as unknown as Parameters<OCCRuntimeService['setNotifier']>[0])
 
     const first = subscribe({ connectionId: 'conn-a', clientKind: 'runtime' })
     await first.streaming()

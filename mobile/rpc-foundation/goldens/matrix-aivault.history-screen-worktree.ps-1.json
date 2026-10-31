@@ -718,7 +718,7 @@
         "View": 4
       },
       "labels": ["Back", "Refresh agent sessions"],
-      "text": ["Agent Session History", "orca-history"]
+      "text": ["Agent Session History", "occ-history"]
     },
     "ddb026ba4968": {
       "name": "aiVault.listSessions#1",

@@ -15,8 +15,8 @@ vi.mock('../native-chat/agent-session-wire/structured-agent-session-registry', (
   getStructuredAgentSessionHost: () => hostRef.current
 }))
 
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-const { TEST_REPO_ID, TEST_WORKTREE_ID, store } = await import('./orca-runtime-test-fixtures.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+const { TEST_REPO_ID, TEST_WORKTREE_ID, store } = await import('./occ-runtime-test-fixtures.spec')
 
 function record(
   sessionId: string,
@@ -69,7 +69,7 @@ function installHost(records: ReturnType<typeof record>[], detached: string[] = 
 
 function createRuntime(rows: Repo[]) {
   let current = rows
-  const runtime = new OrcaRuntimeService({
+  const runtime = new OCCRuntimeService({
     ...store,
     getRepo: (id: string) => current.find((row) => row.id === id),
     getRepos: () => current,

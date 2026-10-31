@@ -354,8 +354,8 @@ describe('relay inbound payload disposal', () => {
       const socket = new RetentionSocket()
       const relay = {
         v: 1 as const,
-        directorUrl: 'https://relay.onorca.dev',
-        cellUrl: 'https://relay-c1.onorca.dev',
+        directorUrl: 'https://relay.onocc.dev',
+        cellUrl: 'https://relay-c1.onocc.dev',
         assignmentEpoch: 7,
         relayHostId: 'AbCdEf0123_-xyZ9',
         inviteToken: 'abcdefghijklmnopqrstuvwxyzABCDEFGH012345678',

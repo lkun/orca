@@ -17,7 +17,7 @@ import {
   closeTestJournalHostDatabases,
   insertTestJournalRowJson,
   openTestJournalHostDatabase,
-  SAVED_BY_NEWER_ORCA
+  SAVED_BY_NEWER_OCC
 } from '../native-chat/agent-session-journal/journal-host-database-test-support'
 import * as journalFactory from '../native-chat/agent-session-journal/journal-store-factory'
 import { publishJournalSessionEpoch } from '../native-chat/agent-session-journal/journal-row-table'
@@ -37,7 +37,7 @@ import {
   seedTestAgentSessionRecordStore,
   seedTestAgentSessionStoreFromNewerBuild
 } from './agent-session-record-store-test-harness'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import {
   ensureStructuredAgentSessionHost,
   stopStructuredAgentSessionRuntime
@@ -72,7 +72,7 @@ const CLEARED = 'chat-s-0003'
 let root: string
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-startup-tab-restore-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-startup-tab-restore-'))
 })
 
 afterEach(async () => {
@@ -193,7 +193,7 @@ function startupRuntime(options: { afterInstall?: () => void; profileChats?: str
       }))
     }
   }
-  class StartupRuntime extends OrcaRuntimeService {
+  class StartupRuntime extends OCCRuntimeService {
     protected override hasPersistedStructuredAgentSessionStore() {
       return true
     }
@@ -484,7 +484,7 @@ describe('restoring the chat tabs open at quit', () => {
         for (const sessionId of [CHAT_A, CHAT_B]) {
           await expect(
             getStructuredAgentSessionHost()!.journalSnapshot(sessionId)
-          ).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
+          ).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
         }
         expect(log.entries.map((entry) => entry.fields.scope)).not.toContain('lease-reconcile')
       } else {

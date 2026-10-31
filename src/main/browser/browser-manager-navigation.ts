@@ -262,7 +262,7 @@ export abstract class BrowserManagerNavigation extends BrowserManagerVisibility 
     const opened = Boolean(options.webContents || options.nativeWindow)
     this.forwardOrQueuePopupEvent(openerGuest.id, {
       origin: safeOrigin(targetUrl),
-      action: opened ? 'opened-in-orca' : 'blocked'
+      action: opened ? 'opened-in-occ' : 'blocked'
     })
     const ownerTabId = this.resolveBrowserTabIdForGuestWebContentsId(openerGuest.id)
     if (opened && ownerTabId) {

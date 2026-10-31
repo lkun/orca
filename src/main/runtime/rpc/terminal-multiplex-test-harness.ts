@@ -1,7 +1,7 @@
 import { vi } from 'vitest'
 import { RpcDispatcher } from './dispatcher'
 import type { RpcRequest } from './core'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import { TERMINAL_METHODS } from './methods/terminal'
 import type { RuntimeTerminalWait } from '../../../shared/runtime-types'
 import { createSubscriptionRegistryDouble } from './subscription-registry-test-double'
@@ -15,7 +15,7 @@ import {
 export const SET_OUTPUT_PAUSED_OPCODE = 16 as TerminalStreamOpcode
 export const WRITE_UNAVAILABLE_OPCODE = 17 as TerminalStreamOpcode
 
-export function stubRuntime(overrides: Partial<OrcaRuntimeService> = {}): OrcaRuntimeService {
+export function stubRuntime(overrides: Partial<OCCRuntimeService> = {}): OCCRuntimeService {
   // Admission registers even streams that never reach a PTY.
   const registry = createSubscriptionRegistryDouble()
   const serializeAuthoritativeTerminalBuffer =
@@ -45,7 +45,7 @@ export function stubRuntime(overrides: Partial<OrcaRuntimeService> = {}): OrcaRu
     getPtyOutputSequence: vi.fn().mockReturnValue(0),
     registerOwnedSubscriptionCleanup: registry.registerOwnedSubscriptionCleanup,
     ...overrides
-  } as OrcaRuntimeService
+  } as OCCRuntimeService
 }
 
 export function makeRequest(method: string, params?: unknown): RpcRequest {
@@ -53,7 +53,7 @@ export function makeRequest(method: string, params?: unknown): RpcRequest {
 }
 
 export function startDesktopMultiplexSubscribe(
-  overrides: Partial<OrcaRuntimeService> = {},
+  overrides: Partial<OCCRuntimeService> = {},
   trace?: string[],
   sendBinaryOverride?: (bytes: Uint8Array<ArrayBufferLike>) => boolean | void
 ) {

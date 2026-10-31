@@ -115,7 +115,7 @@ it('reports a newer-OCC send refusal with its reason', async () => {
   const deps = dependencies('accepted')
   const refusal = {
     code: 'agent_session_journal_unreadable',
-    details: { reason: 'journalWrittenByNewerOrca' }
+    details: { reason: 'journalWrittenByNewerOCC' }
   } as const
   deps.send.mockResolvedValue({ ok: false, refusal: { ...refusal, message: 'Update OCC.' } })
 

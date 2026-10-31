@@ -1,8 +1,8 @@
-// Shared desktop/web/mobile visual grammar: ::orca-visual{file="chart.html" title="Usage"}. Must occupy a whole case-sensitive line,
+// Shared desktop/web/mobile visual grammar: ::occ-visual{file="chart.html" title="Usage"}. Must occupy a whole case-sensitive line,
 // with up to three leading spaces/trailing horizontal whitespace or CR. Attributes use lowercase keys and unescaped quoted values
 // (no quote/backslash/control characters). file is required; title optional; reject duplicate keys, ignore unknown keys for newer agents.
 
-export const NATIVE_CHAT_VISUAL_DIRECTIVE_MARKER = '::orca-visual{'
+export const NATIVE_CHAT_VISUAL_DIRECTIVE_MARKER = '::occ-visual{'
 
 /** Longest line the grammar considers. Bounds parsing and the streaming-tail check. */
 export const NATIVE_CHAT_VISUAL_DIRECTIVE_MAX_LINE_LENGTH = 512

@@ -155,7 +155,7 @@ export async function readRecordedAcpOptions(
   catalog: AgentSessionModelCatalogResult,
   saved: Record<string, string>
 ) {
-  const root = await mkdtemp(join(tmpdir(), 'orca-36455-declaration-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-36455-declaration-'))
   const record = agentSessionRecordFixture({
     sessionId: 'recorded-live-options',
     provider: agent,

@@ -10,7 +10,7 @@ type SymlinkCleanupMarker = {
 }
 
 function markerPath(configPath: string): string {
-  return `${configPath}.orca-cleaned-symlink`
+  return `${configPath}.occ-cleaned-symlink`
 }
 
 function hash(contents: string): string {

@@ -57,7 +57,7 @@ export async function initDaemonPtyProvider(
 ): Promise<void> {
   logDaemonMilestone('daemon-init-start')
   // Exercise startup-gate timeout by making daemon init deterministically outlast it.
-  const e2eInitDelayMs = Number(process.env.ORCA_E2E_DAEMON_INIT_DELAY_MS)
+  const e2eInitDelayMs = Number(process.env.OCC_E2E_DAEMON_INIT_DELAY_MS)
   if (Number.isFinite(e2eInitDelayMs) && e2eInitDelayMs > 0) {
     await new Promise((resolve) => setTimeout(resolve, e2eInitDelayMs))
   }

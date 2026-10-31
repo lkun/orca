@@ -9,11 +9,11 @@ import { applyCommandToSession } from '../persistence/terminal-topology/terminal
 import type { PersistedUIState } from '../../shared/persisted-ui-state-types'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
 import type { Store } from '../persistence'
-import { isFrozenOrcadSourceSessionPartition } from '../ssh/orcad-retained-source'
+import { isFrozenOCCdSourceSessionPartition } from '../ssh/occd-retained-source'
 import { isWslMoveWindowWriteHeld } from '../persistence/moving-wsl-projects/wsl-move-window-write-hold'
 import { windowViewSaveForMain, type ReconnectFactsFor } from '../persistence/window-save-view'
 import { reportWindowSaveDrift } from '../persistence/window-save-divergence'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { formatShutdownCheckpointFailureReason } from '../../shared/renderer-shutdown-events'
 
 type StageBeforeUnloadSyncArgs = {
@@ -106,9 +106,9 @@ export function registerRendererShutdownCheckpointHandler(
       // A window a WSL move rewrote under is stale; main reloads it and keeps what is on disk.
       const sessions = isWslMoveWindowWriteHeld() ? [] : args.sessions
       for (const { state, hostId } of sessions) {
-        if (!isFrozenOrcadSourceSessionPartition(store, hostId)) {
+        if (!isFrozenOCCdSourceSessionPartition(store, hostId)) {
           store.stageWorkspaceSessionBeforeUnload(
-            ORCA_LAYOUT_OWNER_IS_MAIN
+            OCC_LAYOUT_OWNER_IS_MAIN
               ? stagedSessionForMain(store, state, hostId, quitResumeRecordsFor, reconnectFactsFor)
               : state,
             hostId

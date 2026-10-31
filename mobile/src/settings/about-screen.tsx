@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ChevronLeft, Globe } from 'lucide-react-native'
 import Svg, { Path } from 'react-native-svg'
-import { OrcaLogo } from '../components/OrcaLogo'
+import { OCCLogo } from '../components/OCCLogo'
 import { useMobileTranslation } from '../i18n/use-mobile-translation'
 import { colors, radii, spacing, typography } from '../theme/mobile-theme'
 import { themedStyleSheet } from '../theme/themed-styles'
@@ -60,7 +60,7 @@ export default function AboutScreen({
       </View>
 
       <View style={styles.brand}>
-        <OrcaLogo size={28} />
+        <OCCLogo size={28} />
         <Text style={styles.brandName}>OCC</Text>
         <Text style={styles.brandSub}>
           {t('settings.aboutScreen.tagline', 'Open-source agent IDE for 100x builders')}
@@ -72,30 +72,30 @@ export default function AboutScreen({
           style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
           accessibilityRole="button"
           accessibilityLabel={t('settings.aboutScreen.website', 'OCC website')}
-          onPress={() => openLink('https://onOrca.dev')}
+          onPress={() => openLink('https://onOCC.dev')}
         >
           <Globe size={16} color={colors.textSecondary} />
-          <Text style={styles.rowValue}>onOrca.dev</Text>
+          <Text style={styles.rowValue}>onOCC.dev</Text>
         </Pressable>
         <View style={styles.separator} />
         <Pressable
           style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
           accessibilityRole="button"
           accessibilityLabel={t('settings.aboutScreen.sourceCode', 'OCC source code')}
-          onPress={() => openLink('https://github.com/stablyai/orca')}
+          onPress={() => openLink('https://github.com/stablyai/occ')}
         >
           <GithubIcon />
-          <Text style={styles.rowValue}>stablyai/orca</Text>
+          <Text style={styles.rowValue}>stablyai/occ</Text>
         </Pressable>
         <View style={styles.separator} />
         <Pressable
           style={({ pressed }) => [styles.row, pressed && styles.rowPressed]}
           accessibilityRole="button"
           accessibilityLabel={t('settings.aboutScreen.socialProfile', 'OCC on X')}
-          onPress={() => openLink('https://x.com/orca_build')}
+          onPress={() => openLink('https://x.com/occ_build')}
         >
           <XIcon />
-          <Text style={styles.rowValue}>@orca_build</Text>
+          <Text style={styles.rowValue}>@occ_build</Text>
         </Pressable>
       </View>
 

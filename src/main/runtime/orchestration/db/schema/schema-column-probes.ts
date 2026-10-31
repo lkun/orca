@@ -8,12 +8,12 @@ export function hasColumn(this: OrchestrationDb, table: string, column: string):
 
 export function createMailboxDeliveryIndexesIfPossible(this: OrchestrationDb): void {
   if (
-    ['assignee_orca_session_id', 'status', 'completed_at'].every((column) =>
+    ['assignee_occ_session_id', 'status', 'completed_at'].every((column) =>
       this.hasColumn('dispatch_contexts', column)
     )
   ) {
     this.db.exec(`CREATE INDEX IF NOT EXISTS idx_dispatch_session_presentation
-      ON dispatch_contexts(status, completed_at) WHERE assignee_orca_session_id IS NOT NULL`)
+      ON dispatch_contexts(status, completed_at) WHERE assignee_occ_session_id IS NOT NULL`)
   }
   if (this.hasColumn('deliveries', 'mailbox_handle')) {
     this.db.exec(OUTSTANDING_MAILBOX_INDEX_SQL)

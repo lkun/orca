@@ -11,9 +11,9 @@ vi.mock('../native-chat/agent-session-wire/structured-agent-session-registry', (
   getStructuredAgentSessionHost: () => hostRef.current
 }))
 
-const { OrcaRuntimeWithGetOrchestrationDispatchAuthority } =
+const { OCCRuntimeWithGetOrchestrationDispatchAuthority } =
   await import('./terminal/output/terminal-orchestration-authority')
-const { OrcaRuntimeWithVerifyOrchestrationCompatibilityCaller } =
+const { OCCRuntimeWithVerifyOrchestrationCompatibilityCaller } =
   await import('./orchestration/terminal-authority/verify-orchestration-compatibility-caller')
 const {
   mintStructuredWorkerHandle,
@@ -25,10 +25,10 @@ const {
 const SESSION_ID = 'a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d'
 
 const getAuthority =
-  OrcaRuntimeWithGetOrchestrationDispatchAuthority.prototype.getOrchestrationDispatchAuthority
+  OCCRuntimeWithGetOrchestrationDispatchAuthority.prototype.getOrchestrationDispatchAuthority
 // Use the production prototype methods; stubbing the implementation would not exercise attestation.
 const verifyCaller =
-  OrcaRuntimeWithVerifyOrchestrationCompatibilityCaller.prototype
+  OCCRuntimeWithVerifyOrchestrationCompatibilityCaller.prototype
     .verifyOrchestrationCompatibilityCaller
 
 function registerStructuredWorker(): string {

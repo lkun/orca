@@ -1,4 +1,4 @@
-/** Share flags between main launch scripts and Windows relay/orcad one-shot modes that escape the SSH job; separators/report markers remain program-specific. */
+/** Share flags between main launch scripts and Windows relay/occd one-shot modes that escape the SSH job; separators/report markers remain program-specific. */
 
 export const WINDOWS_BREAKAWAY_LAUNCH_FLAG = '--windows-breakaway-launch'
 export const WINDOWS_BREAKAWAY_STDOUT_FLAG = '--stdout-file'
@@ -17,12 +17,12 @@ export type WindowsBreakawayLaunchContract = {
   reportMarker: string
 }
 
-export const ORCAD_WINDOWS_BREAKAWAY_CONTRACT: WindowsBreakawayLaunchContract = {
-  argsFlag: '--orcad-args',
-  reportMarker: 'ORCA_ORCAD_LAUNCH'
+export const OCCD_WINDOWS_BREAKAWAY_CONTRACT: WindowsBreakawayLaunchContract = {
+  argsFlag: '--occd-args',
+  reportMarker: 'OCC_OCCD_LAUNCH'
 }
 
-/** Unavailable means missing/old addon or denied breakaway; legacy relay scripts may fall back to WMI, while orcad refuses. */
+/** Unavailable means missing/old addon or denied breakaway; legacy relay scripts may fall back to WMI, while occd refuses. */
 export const WINDOWS_BREAKAWAY_EXIT_CODES = {
   launched: 0,
   failed: 1,

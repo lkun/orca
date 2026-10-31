@@ -210,9 +210,9 @@ export const AGENT_HOOK_REQUEST_REPLAY_METHOD = 'agent_hook.requestReplay' as co
 export const AGENT_HOOK_INSTALL_PLUGINS_METHOD = 'agent_hook.installPlugins' as const
 
 /** Read each WSL relay start; 0 disables remote hooks. */
-export const ORCA_FEATURE_REMOTE_AGENT_HOOKS_ENV = 'ORCA_FEATURE_REMOTE_AGENT_HOOKS' as const
+export const OCC_FEATURE_REMOTE_AGENT_HOOKS_ENV = 'OCC_FEATURE_REMOTE_AGENT_HOOKS' as const
 
 export function isWslAgentHookRelayEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
-  const raw = env[ORCA_FEATURE_REMOTE_AGENT_HOOKS_ENV]
+  const raw = env[OCC_FEATURE_REMOTE_AGENT_HOOKS_ENV]
   return raw === undefined || !['', '0'].includes(raw.trim())
 }

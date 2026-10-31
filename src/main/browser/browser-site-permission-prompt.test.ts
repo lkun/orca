@@ -106,7 +106,7 @@ async function answerLatest(value: unknown): Promise<void> {
 describe('browser site permission prompts', () => {
   beforeEach(() => {
     vi.useFakeTimers()
-    configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'orca-site-permissions-')))
+    configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'occ-site-permissions-')))
     renderer = mockRenderer()
     mocks.resolvePagePromptTarget.mockReset()
     mocks.resolvePagePromptTarget.mockReturnValue({
@@ -247,14 +247,14 @@ describe('browser site permission prompts', () => {
   })
 
   it('remembers answers across a restart', async () => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-site-permissions-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-site-permissions-'))
     configureBrowserSitePermissionStore(directory)
     const call = ask(['midi'])
     await answerLatest('allow')
     await call
 
     // Switch directories to evict the cache and verify the next read comes from disk.
-    configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'orca-site-permissions-')))
+    configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'occ-site-permissions-')))
     expect(listBrowserSitePermissions('default')).toEqual([])
     configureBrowserSitePermissionStore(directory)
     expect(listBrowserSitePermissions('default')).toEqual([

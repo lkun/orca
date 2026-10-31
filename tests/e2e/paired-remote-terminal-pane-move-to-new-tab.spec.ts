@@ -2,7 +2,7 @@ import type {
   RuntimeMobileSessionTabsResult,
   RuntimeTerminalListResult
 } from '../../src/shared/runtime-types'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import {
   createRuntimeDesktopPairingOffer,
@@ -215,15 +215,15 @@ test('a pane moved to a new tab on a paired server workspace stays in its new ta
 // A server with a desktop window keeps its layout in that window and refuses the move; this
 // desktop must put the pane back at once, terminal intact, not keep a tab the server never had.
 test('a pane move the server refuses goes back into its split, terminal intact', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   // Why: launches a second, paired Electron client next to the server's own window.
   test.setTimeout(200_000)
-  const worktreeId = await orcaPage.evaluate(() => window.__store?.getState().activeWorktreeId)
+  const worktreeId = await occPage.evaluate(() => window.__store?.getState().activeWorktreeId)
   if (!worktreeId) {
     throw new Error('Window host has no active seeded workspace')
   }
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   const desktop = await launchPairedElectronClient(offer, testInfo, 'refused pane move')
   const page = desktop.page
   try {

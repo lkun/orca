@@ -2,7 +2,7 @@
 import { runtimeEnvironmentIdUnlessTwin } from '@/lib/resolve-owner'
 import { layoutFrameTerminalTab } from '@/runtime/layout-frame-terminal-panes'
 import type { AppState } from '@/store'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
 /** Window binds when ownership is local/paired fallback; held means main knows the pane, missing prevents restart. */
 export function restartPaneOwner(
@@ -11,7 +11,7 @@ export function restartPaneOwner(
   tabId: string,
   leafId: string
 ): 'window' | 'held' | 'missing' {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN || runtimeEnvironmentIdUnlessTwin(state, worktreeId) !== null) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN || runtimeEnvironmentIdUnlessTwin(state, worktreeId) !== null) {
     return 'window'
   }
   const panes = layoutFrameTerminalTab(worktreeId, tabId)?.terminal?.panes ?? []

@@ -8,7 +8,7 @@ import { getConnectionIdForFile } from '@/lib/connection-context'
 import { makeWorktree, TEST_REPO } from '@/store/slices/worktrees-slice-test-fixtures'
 import type { OpenFile } from '@/store/slices/editor'
 import type * as RuntimeFileReadClient from '@/runtime/runtime-file-read-client'
-import { openAiVaultSessionLogInOrca } from '../right-sidebar/ai-vault-session-log-open'
+import { openAiVaultSessionLogInOCC } from '../right-sidebar/ai-vault-session-log-open'
 import { useEditorPanelContentState } from './useEditorPanelContentState'
 import type { FileContent } from './editor-panel-content-types'
 
@@ -131,7 +131,7 @@ describe('History conversation resources through editor content and tailing', ()
       await act(async () => root?.render(<HookProbe activeFile={file} openFiles={[file]} />))
       expect(latestFileContents[file.id]).toMatchObject({ content: '{"title":"Summary"}' })
 
-      await openAiVaultSessionLogInOrca({
+      await openAiVaultSessionLogInOCC({
         agent: 'grok',
         filePath: metadataPath,
         executionHostId: 'local'

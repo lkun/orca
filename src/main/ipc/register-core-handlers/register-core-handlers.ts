@@ -1,5 +1,5 @@
 import { app } from 'electron'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { registerAppHandlers } from '../app'
 import { registerWslMoveWiring } from '../wsl-move-driver-wiring'
 import { registerWslDriveProjectHandlers } from '../wsl-drive-project-handlers'
@@ -7,7 +7,7 @@ import { installProjectRuntimeGitRouter } from '../../project-runtime-git-router
 import { registerCliHandlers } from '../cli'
 import { registerPreflightHandlers } from '../preflight'
 import type { Store } from '../../persistence/loading-store/store'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import type { StatsCollector } from '../../stats/collector'
 import { registerFilesystemHandlers } from '../filesystem/filesystem'
 import type { CommitMessageAgentEnvironmentResolvers } from '../../text-generation/commit-message-agent-environment'
@@ -66,7 +66,7 @@ import { registerEmulatorFrameStreamHandlers } from '../emulator-frame-stream'
 import { registerEmulatorVideoStreamHandlers } from '../emulator-video-stream'
 import { registerSpeechHandlers } from '../speech'
 import { registerTerminalRenderDesyncEvidenceHandler } from '../terminal-render-desync-evidence'
-import { registerOrcaProfileHandlers } from '../orca-profiles'
+import { registerOCCProfileHandlers } from '../occ-profiles'
 import { registerCodexAccountHandlers } from '../codex-accounts'
 import { registerAgentHookHandlers } from '../agent-hooks'
 import { registerCodexConfigSyncHandlers } from '../codex-config-sync'
@@ -119,7 +119,7 @@ let registered = false
 const RELAUNCH_DISMISSAL_CLOSE_TIMEOUT_MS = 2_000
 
 async function closeNotificationDismissalsBeforeRelaunch(
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
 ): Promise<void> {
   const result = await settleWithinMs(
     runtime.closeNotificationDismissals(),
@@ -132,9 +132,9 @@ async function closeNotificationDismissalsBeforeRelaunch(
 
 type CoreHandlerLifecycleOptions = {
   onBeforeRelaunch?: () => void | Promise<void>
-  onOrcaProfileAuthMutation?: () => void
-  onBeforeOrcaProfileSignOut?: () => void
-  onAfterOrcaProfileSignOut?: () => void
+  onOCCProfileAuthMutation?: () => void
+  onBeforeOCCProfileSignOut?: () => void
+  onAfterOCCProfileSignOut?: () => void
   getAdditionalAiVaultCodexHomePaths?: () => readonly string[]
   prepareAiVaultSessionResume?: (
     args: AiVaultPrepareSessionResumeArgs
@@ -143,7 +143,7 @@ type CoreHandlerLifecycleOptions = {
 
 export function registerCoreHandlers(
   store: Store,
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   stats: StatsCollector,
   claudeUsage: ClaudeUsageStore,
   codexUsage: CodexUsageStore,
@@ -174,7 +174,7 @@ export function registerCoreHandlers(
 
   registerAppHandlers(store, {
     quitResumeRecordsFor: (session) => runtime.quitResumeRecordsFor(session),
-    ...(ORCA_LAYOUT_OWNER_IS_MAIN
+    ...(OCC_LAYOUT_OWNER_IS_MAIN
       ? {
           reconnectFactsFor: (session, partition) =>
             runtime.shutdownReconnectFactsFor(session, partition)
@@ -237,11 +237,11 @@ export function registerCoreHandlers(
     registerPluginHandlers(store, pluginService, runtime, marketplaceServices)
   }
   registerTelemetryHandlers(store)
-  registerOrcaProfileHandlers(store, {
+  registerOCCProfileHandlers(store, {
     onBeforeRelaunch: lifecycleOptions.onBeforeRelaunch,
-    onAuthMutation: lifecycleOptions.onOrcaProfileAuthMutation,
-    onBeforeSignOut: lifecycleOptions.onBeforeOrcaProfileSignOut,
-    onAfterSignOut: lifecycleOptions.onAfterOrcaProfileSignOut
+    onAuthMutation: lifecycleOptions.onOCCProfileAuthMutation,
+    onBeforeSignOut: lifecycleOptions.onBeforeOCCProfileSignOut,
+    onAfterSignOut: lifecycleOptions.onAfterOCCProfileSignOut
   })
   registerBrowserHandlers()
   registerShellHandlers(store)

@@ -13,7 +13,7 @@ afterEach(async () => {
 })
 
 async function drawPlugin(): Promise<ValidDiscoveredPlugin> {
-  const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-new-file-'))
+  const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-new-file-'))
   roots.push(rootDir)
   await writeFile(join(rootDir, 'empty.draw'), '{"elements":[]}\n')
   return {
@@ -29,7 +29,7 @@ async function drawPlugin(): Promise<ValidDiscoveredPlugin> {
       publisher: 'acme',
       name: 'Draw',
       version: '1.0.0',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
       contributes: {
         newFiles: [
           { id: 'scene', title: 'New scene', extension: '.draw', template: 'empty.draw' },

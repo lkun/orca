@@ -148,7 +148,7 @@ async function owesWork(): Promise<boolean> {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-codex-interrupt-order-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-codex-interrupt-order-'))
   answers = 0
   interrupts = 0
   opened = new Set()

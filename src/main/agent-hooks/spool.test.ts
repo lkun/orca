@@ -33,12 +33,12 @@ describe('agent hook spool', () => {
     expect(spoolLine).toBeDefined()
     expect(spoolLine!.match(/printf/g)).toHaveLength(1)
     expect(spoolLine).toContain(
-      '"$spool_now" "$(spool_json_escape "${orca_agent_process:-}")" "$payload"'
+      '"$spool_now" "$(spool_json_escape "${occ_agent_process:-}")" "$payload"'
     )
   })
 
   it('waits for a newline before replaying a complete-looking final record', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-spool-unterminated-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-spool-unterminated-'))
     const spool = join(dir, 'spool')
     mkdirSync(spool)
     const file = join(spool, 'pane-live.jsonl')
@@ -67,7 +67,7 @@ describe('agent hook spool', () => {
   })
 
   it('does not let historical empty pane files starve newer records', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-spool-empty-files-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-spool-empty-files-'))
     const spool = join(dir, 'spool')
     mkdirSync(spool)
     for (let index = 0; index < AGENT_HOOK_SPOOL_MAX_FILES; index += 1) {
@@ -91,7 +91,7 @@ describe('agent hook spool', () => {
   })
 
   it('rejects stale launch tokens before ingest and truncates in place', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-spool-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-spool-'))
     const spool = join(dir, 'spool')
     mkdirSync(spool)
     const file = join(spool, 'pane-1.jsonl')
@@ -114,7 +114,7 @@ describe('agent hook spool', () => {
   })
 
   it('ingests a record with the matching launch token', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-spool-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-spool-'))
     const spool = join(dir, 'spool')
     mkdirSync(spool)
     const file = join(spool, 'pane-1.jsonl')
@@ -135,7 +135,7 @@ describe('agent hook spool', () => {
   })
 
   it('replays a spooled Codex SubagentStop through the server after restart', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-spool-e2e-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-spool-e2e-'))
     const paneKey = makePaneKey('tab-spool', '00000000-0000-4000-8000-000000000001')
     const launchToken = 'generation-token'
     const first = new AgentHookServer()
@@ -178,7 +178,7 @@ describe('agent hook spool', () => {
   })
 
   it('rejects a stale remote replay against the hydrated launch-token fence', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-spool-remote-fence-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-spool-remote-fence-'))
     const paneKey = makePaneKey('tab-remote-fence', '00000000-0000-4000-8000-000000000003')
     const first = new AgentHookServer()
     const second = new AgentHookServer()
@@ -219,13 +219,13 @@ describe('agent hook spool', () => {
   })
 
   it('spools when the endpoint is present but the receiver is unavailable', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-spool-failure-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-spool-failure-'))
     const endpointDir = join(dir, 'agent-hooks')
     mkdirSync(endpointDir, { recursive: true })
     const endpoint = join(endpointDir, 'endpoint.env')
     writeFileSync(
       endpoint,
-      'ORCA_AGENT_HOOK_PORT=9\nORCA_AGENT_HOOK_TOKEN=stale\nORCA_AGENT_HOOK_ENV=production\nORCA_AGENT_HOOK_VERSION=1\n'
+      'OCC_AGENT_HOOK_PORT=9\nOCC_AGENT_HOOK_TOKEN=stale\nOCC_AGENT_HOOK_ENV=production\nOCC_AGENT_HOOK_VERSION=1\n'
     )
     const script = join(dir, 'codex-hook.sh')
     writeFileSync(script, codexInternals.getManagedScript('posix'))
@@ -234,10 +234,10 @@ describe('agent hook spool', () => {
       input: '{"hook_event_name":"SubagentStop","agent_id":"child"}\n',
       env: {
         ...process.env,
-        ORCA_AGENT_HOOK_ENDPOINT: endpoint,
-        ORCA_PANE_KEY: 'tab-failure:0',
-        ORCA_TAB_ID: 'tab-failure',
-        ORCA_AGENT_LAUNCH_TOKEN: 'generation-token',
+        OCC_AGENT_HOOK_ENDPOINT: endpoint,
+        OCC_PANE_KEY: 'tab-failure:0',
+        OCC_TAB_ID: 'tab-failure',
+        OCC_AGENT_LAUNCH_TOKEN: 'generation-token',
         CLAUDE_JOB_DIR: ''
       },
       timeout: 5000
@@ -250,22 +250,22 @@ describe('agent hook spool', () => {
   })
 
   it('keeps a Claude hook attributed when CLAUDE_CODE_SUBPROCESS_ENV_SCRUB drops the pane key', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-spool-scrubbed-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-spool-scrubbed-'))
     const endpointDir = join(dir, 'agent-hooks')
     mkdirSync(endpointDir, { recursive: true })
     const endpoint = join(endpointDir, 'endpoint.env')
-    writeFileSync(endpoint, 'ORCA_AGENT_HOOK_PORT=9\nORCA_AGENT_HOOK_TOKEN=stale\n')
+    writeFileSync(endpoint, 'OCC_AGENT_HOOK_PORT=9\nOCC_AGENT_HOOK_TOKEN=stale\n')
     const script = join(dir, 'claude-hook.sh')
     writeFileSync(script, getClaudeManagedScript('posix'))
     const env: NodeJS.ProcessEnv = {
       ...process.env,
-      ORCA_AGENT_HOOK_ENDPOINT: endpoint,
-      ORCA_AGENT_PANE: 'tab-scrubbed:0',
-      ORCA_AGENT_LAUNCH: 'generation-token'
+      OCC_AGENT_HOOK_ENDPOINT: endpoint,
+      OCC_AGENT_PANE: 'tab-scrubbed:0',
+      OCC_AGENT_LAUNCH: 'generation-token'
     }
     // Claude's scrub removes every *KEY/*TOKEN name; only the scrub-safe aliases reach the hook.
-    delete env.ORCA_PANE_KEY
-    delete env.ORCA_AGENT_LAUNCH_TOKEN
+    delete env.OCC_PANE_KEY
+    delete env.OCC_AGENT_LAUNCH_TOKEN
     delete env.CLAUDE_JOB_DIR
     execFileSync('/bin/sh', [script], {
       input: '{"hook_event_name":"Stop","session_id":"claude-session"}\n',
@@ -281,7 +281,7 @@ describe('agent hook spool', () => {
   })
 
   it('does not mark a non-terminal downtime replay as runtime-observed', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-spool-observed-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-spool-observed-'))
     const paneKey = makePaneKey('tab-observed', '00000000-0000-4000-8000-000000000002')
     const launchToken = 'observed-generation'
     const first = new AgentHookServer()

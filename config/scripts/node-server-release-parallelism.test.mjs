@@ -37,9 +37,9 @@ it.each([
 })
 
 it('uses the shared page for qualification and builds locally only when its producer is skipped', () => {
-  const download = persistence.steps.find((step) => step.with?.name === 'orcad-mobile-web-bundle')
+  const download = persistence.steps.find((step) => step.with?.name === 'occd-mobile-web-bundle')
   const build = persistence.steps.find((step) => step.uses?.includes('build-mobile-web-bundle'))
-  const serverBuild = persistence.steps.find((step) => step.run === 'pnpm build:orcad')
+  const serverBuild = persistence.steps.find((step) => step.run === 'pnpm build:occd')
   expect(download.uses).toBe('actions/download-artifact@v8')
   expect(download.with.path).toBe('out/mobile-web')
   expect(persistence.steps.indexOf(download)).toBeLessThan(persistence.steps.indexOf(serverBuild))
@@ -133,11 +133,11 @@ it.each(['persistence', 'linux_glibc_floor', 'linux_musl'])(
 it('configures native preparation before shared-page download and unconditional cleanup', () => {
   for (const name of ['persistence', 'linux_glibc_floor', 'linux_musl']) {
     const job = workflow.jobs[name]
-    const download = job.steps.findIndex((step) => step.with?.name === 'orcad-mobile-web-bundle')
+    const download = job.steps.findIndex((step) => step.with?.name === 'occd-mobile-web-bundle')
     const prepare = job.steps.findIndex(
       (step) =>
-        step.uses?.includes('prepare-orcad-prebuilds') ||
-        step.run?.includes('pnpm build:orcad-prebuilds')
+        step.uses?.includes('prepare-occd-prebuilds') ||
+        step.run?.includes('pnpm build:occd-prebuilds')
     )
     expect(job.needs).toEqual(['changes', 'mobile_web_bundle'])
     expect(prepare).toBeGreaterThan(-1)

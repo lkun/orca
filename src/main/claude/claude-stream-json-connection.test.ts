@@ -4,8 +4,8 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { providerDiagnosticOf } from '../../shared/agent-session-failure'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { spawnProcess } from '@orca/process-host'
-import type { SpawnedProcess, ProcessSpec } from '@orca/process-host/process-spec'
+import { spawnProcess } from '@occ/process-host'
+import type { SpawnedProcess, ProcessSpec } from '@occ/process-host/process-spec'
 
 import { query, type CanUseTool, type Options } from '@anthropic-ai/claude-agent-sdk'
 import {
@@ -71,8 +71,8 @@ function scriptScenario(
     cwd: dir,
     env: {
       PATH: process.env.PATH ?? '',
-      ORCA_SDK_CONTRACT_SCENARIO_PATH: scenarioPath,
-      ORCA_SDK_CONTRACT_REPORT_PATH: reportPath
+      OCC_SDK_CONTRACT_SCENARIO_PATH: scenarioPath,
+      OCC_SDK_CONTRACT_REPORT_PATH: reportPath
     },
     readReport: () => JSON.parse(readFileSync(reportPath, 'utf8')) as ScriptedCliReport
   }
@@ -116,7 +116,7 @@ async function open(
 
 function launchedArgv(spec: ProcessSpec | undefined): string[] {
   const argv = [spec?.program ?? '', ...(spec?.args ?? [])]
-  return spec?.env?.ORCA_PROVIDER_SUPERVISOR_SPEC ? argv.slice(argv.indexOf('--') + 1) : argv
+  return spec?.env?.OCC_PROVIDER_SUPERVISOR_SPEC ? argv.slice(argv.indexOf('--') + 1) : argv
 }
 
 function childEnv(): Record<string, string | undefined> {
@@ -175,15 +175,15 @@ describe('Claude stream-json connection', () => {
     vi.stubEnv('NODE_OPTIONS', '--require=/tmp/inject.js')
     // Clear inherited overrides to exercise the SDK default.
     vi.stubEnv('CLAUDE_CODE_ENTRYPOINT', undefined)
-    vi.stubEnv('ORCA_CONNECTION_MARKER', 'inherited')
-    vi.stubEnv('ORCA_AGENT_SESSION_ID', 'a0b1c2d3-0000-4000-8000-00000000abcd')
+    vi.stubEnv('OCC_CONNECTION_MARKER', 'inherited')
+    vi.stubEnv('OCC_AGENT_SESSION_ID', 'a0b1c2d3-0000-4000-8000-00000000abcd')
     const scenario = scriptScenario([HOLD_OPEN])
     const connection = await open(
       launchFor(scenario, {
-        ORCA_AGENT_SESSION_ID: 'f7a1c0de-1111-4222-8333-444455556666',
+        OCC_AGENT_SESSION_ID: 'f7a1c0de-1111-4222-8333-444455556666',
         CLAUDE_CONFIG_DIR: '/accounts/managed/home',
         ANTHROPIC_AUTH_TOKEN: 'configured-token',
-        ORCA_AGENT_SESSION_SPAWN_TOKEN: 'spawn-9',
+        OCC_AGENT_SESSION_SPAWN_TOKEN: 'spawn-9',
         CLAUDE_CODE_CHILD_SESSION: 'configured-child-session',
         CLAUDE_CODE_SESSION_ID: 'configured-session',
         CLAUDE_CODE_BRIDGE_SESSION_ID: 'configured-bridge-session'
@@ -196,9 +196,9 @@ describe('Claude stream-json connection', () => {
     // Credential lookup keys on the literal config-dir string.
     expect(env.CLAUDE_CONFIG_DIR).toBe('/accounts/managed/home')
     expect(env.ANTHROPIC_AUTH_TOKEN).toBe('configured-token')
-    expect(env.ORCA_AGENT_SESSION_SPAWN_TOKEN).toBe('spawn-9')
-    expect(env.ORCA_CONNECTION_MARKER).toBe('inherited')
-    expect(env.ORCA_AGENT_SESSION_ID).toBe('f7a1c0de-1111-4222-8333-444455556666')
+    expect(env.OCC_AGENT_SESSION_SPAWN_TOKEN).toBe('spawn-9')
+    expect(env.OCC_CONNECTION_MARKER).toBe('inherited')
+    expect(env.OCC_AGENT_SESSION_ID).toBe('f7a1c0de-1111-4222-8333-444455556666')
     expect(env.ANTHROPIC_API_KEY).toBeUndefined()
     expect(env.CLAUDE_CODE_CHILD_SESSION).toBeUndefined()
     expect(env.CLAUDE_CODE_SESSION_ID).toBeUndefined()
@@ -241,21 +241,21 @@ describe('Claude stream-json connection', () => {
   })
 
   it("strips the launch's inherited keys after OCC's own env is merged in", async () => {
-    vi.stubEnv('ORCA_PANE_KEY', 'tab-1:pane-1')
-    vi.stubEnv('ORCA_AGENT_HOOK_PORT', '4242')
-    vi.stubEnv('ORCA_CONNECTION_MARKER', 'inherited')
+    vi.stubEnv('OCC_PANE_KEY', 'tab-1:pane-1')
+    vi.stubEnv('OCC_AGENT_HOOK_PORT', '4242')
+    vi.stubEnv('OCC_CONNECTION_MARKER', 'inherited')
     const scenario = scriptScenario([HOLD_OPEN])
     await open({
-      ...launchFor(scenario, { ORCA_AGENT_SESSION_ID: 'f7a1c0de-1111-4222-8333-444455556666' }),
-      envToDelete: ['ORCA_PANE_KEY', 'ORCA_AGENT_HOOK_PORT']
+      ...launchFor(scenario, { OCC_AGENT_SESSION_ID: 'f7a1c0de-1111-4222-8333-444455556666' }),
+      envToDelete: ['OCC_PANE_KEY', 'OCC_AGENT_HOOK_PORT']
     })
 
     await until(() => readReportSafely(scenario), 'the scripted CLI report')
     const env = childEnv()
-    expect(env.ORCA_PANE_KEY).toBeUndefined()
-    expect(env.ORCA_AGENT_HOOK_PORT).toBeUndefined()
-    expect(env.ORCA_CONNECTION_MARKER).toBe('inherited')
-    expect(env.ORCA_AGENT_SESSION_ID).toBe('f7a1c0de-1111-4222-8333-444455556666')
+    expect(env.OCC_PANE_KEY).toBeUndefined()
+    expect(env.OCC_AGENT_HOOK_PORT).toBeUndefined()
+    expect(env.OCC_CONNECTION_MARKER).toBe('inherited')
+    expect(env.OCC_AGENT_SESSION_ID).toBe('f7a1c0de-1111-4222-8333-444455556666')
   })
 
   it('leaves the default CLI home unpinned so macOS Keychain OAuth keeps working', async () => {
@@ -267,14 +267,14 @@ describe('Claude stream-json connection', () => {
   })
 
   it("drops a CLAUDE_CONFIG_DIR from OCC's own process env: only the launch may name a home", async () => {
-    vi.stubEnv('CLAUDE_CONFIG_DIR', '/orca/process/claude')
-    vi.stubEnv('ORCA_CONNECTION_MARKER', 'inherited')
+    vi.stubEnv('CLAUDE_CONFIG_DIR', '/occ/process/claude')
+    vi.stubEnv('OCC_CONNECTION_MARKER', 'inherited')
     const scenario = scriptScenario([HOLD_OPEN])
     await open(launchFor(scenario))
 
     await until(() => readReportSafely(scenario), 'the scripted CLI report')
     expect(childEnv().CLAUDE_CONFIG_DIR).toBeUndefined()
-    expect(childEnv().ORCA_CONNECTION_MARKER).toBe('inherited')
+    expect(childEnv().OCC_CONNECTION_MARKER).toBe('inherited')
 
     await open(launchFor(scenario, { CLAUDE_CONFIG_DIR: '/accounts/managed/home' }))
     expect(childEnv().CLAUDE_CONFIG_DIR).toBe('/accounts/managed/home')
@@ -581,7 +581,7 @@ describe('Claude stream-json connection', () => {
     const scenario = scriptScenario([{ stderr: 'claude: not signed in\n' }, { exit: 1 }])
     const connection = await open({
       ...launchFor(scenario),
-      env: { ...launchFor(scenario).env, ORCA_SDK_CONTRACT_IGNORE_CONTROL_REQUESTS: '1' }
+      env: { ...launchFor(scenario).env, OCC_SDK_CONTRACT_IGNORE_CONTROL_REQUESTS: '1' }
     })
 
     await expect(connection.initializationResult()).rejects.toThrow()
@@ -644,7 +644,7 @@ describe('Claude stream-json connection', () => {
       const connection = await open(
         {
           ...launchFor(scenario),
-          env: { ...launchFor(scenario).env, ORCA_SDK_CONTRACT_DESCENDANT: '1' }
+          env: { ...launchFor(scenario).env, OCC_SDK_CONTRACT_DESCENDANT: '1' }
         },
         { onExit: (error) => (exit = error) }
       )
@@ -752,7 +752,7 @@ describe('Claude stream-json connection', () => {
     const scenario = scriptScenario([HOLD_OPEN])
     const connection = await open({
       ...launchFor(scenario),
-      env: { ...launchFor(scenario).env, ORCA_SDK_CONTRACT_IGNORE_SIGTERM: '1' }
+      env: { ...launchFor(scenario).env, OCC_SDK_CONTRACT_IGNORE_SIGTERM: '1' }
     })
 
     // Cross the displayed start-time second before lstart verification.

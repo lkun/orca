@@ -1,4 +1,4 @@
-/** Admit, refuse duplicate orcad ownership, connect (possibly booting), then persist the environment and WSL record. */
+/** Admit, refuse duplicate occd ownership, connect (possibly booting), then persist the environment and WSL record. */
 import { errorMessage } from '../../shared/error-message'
 import { addWslHostEnvironment } from '../../shared/runtime-environment-wsl-host-store'
 import type { WslHostDeploymentRecord } from '../../shared/wsl-host-deployment-store'
@@ -6,9 +6,9 @@ import { wslHostEnvironmentLabel, type WslHostAddResult } from '../../shared/wsl
 import { admitWslHostDistro, wslHostAddRefusal, wslHostRunRefusal } from './wsl-host-add-admission'
 import { abandonWslHostAdd, connectForWslHostAdd } from './wsl-host-first-connect'
 import type { WslHostConnector, WslHostServiceDependencies } from './wsl-host-service'
-import { wslHostSshManagedRefusal } from './wsl-host-ssh-orcad-conflict'
-import type { WslOrcadConnection } from './wsl-orcad-connection'
-import { defaultWslOrcadEnvironmentId } from './wsl-orcad-deploy'
+import { wslHostSshManagedRefusal } from './wsl-host-ssh-occd-conflict'
+import type { WslOCCdConnection } from './wsl-occd-connection'
+import { defaultWslOCCdEnvironmentId } from './wsl-occd-deploy'
 
 /** What registration reads from and reports to the service that owns the hosts. */
 export type WslHostRegistrationContext = {
@@ -19,7 +19,7 @@ export type WslHostRegistrationContext = {
   disableGeneration: () => number
   recordForDistro: (distro: string) => WslHostDeploymentRecord | null
   recordForEnvironment: (environmentId: string) => WslHostDeploymentRecord | null
-  setReady: (record: WslHostDeploymentRecord, connection: WslOrcadConnection) => void
+  setReady: (record: WslHostDeploymentRecord, connection: WslOCCdConnection) => void
 }
 
 export async function registerWslHost(
@@ -43,12 +43,12 @@ export async function registerWslHost(
   const { distro } = admission
   const userDataPath = context.deps.userDataPath()
   const sharing = await wslHostSshManagedRefusal(distro.name, userDataPath, (name) =>
-    context.wsl().readOrcadPublicKey(name)
+    context.wsl().readOCCdPublicKey(name)
   )
   if (sharing) {
     return sharing
   }
-  const environmentId = defaultWslOrcadEnvironmentId(distro.name)
+  const environmentId = defaultWslOCCdEnvironmentId(distro.name)
   const connected = await connectForWslHostAdd(context.wsl(), distro.name, () =>
     generation === context.disableGeneration()
       ? wslHostRunRefusal(context.deps)

@@ -50,7 +50,7 @@ describe('mailbox delivery recheck arms only for delivery work', () => {
   })
 
   it('retries pending mail once the pane falls quiet', async () => {
-    const db = createDatabase('orca-recheck-quiet-')
+    const db = createDatabase('occ-recheck-quiet-')
     const { runtime, write } = createRuntime(db)
     const run = createBoundRun(db, 'Quiet Run')
     insertDirectRunMessage(db, run.id, 'Worker heartbeat')
@@ -69,7 +69,7 @@ describe('mailbox delivery recheck arms only for delivery work', () => {
   it.each(['reserved before a restart', 'new'] as const)(
     'delivers %s mail once after a post-quiet final-frame hold',
     async (kind) => {
-      const db = createDatabase('orca-recheck-final-frame-')
+      const db = createDatabase('occ-recheck-final-frame-')
       let rows: AgentStatusIpcPayload[] = []
       const { runtime, write } = createRuntime(db, { getAgentStatusSnapshot: () => rows })
       const run = createBoundRun(db, 'Final frame Run')
@@ -98,7 +98,7 @@ describe('mailbox delivery recheck arms only for delivery work', () => {
 
   // Recognition finishing only publishes a snapshot, so pending mail needs a retry past the quiet window.
   it('delivers once foreground recognition resolves after the quiet retry', async () => {
-    const db = createDatabase('orca-recheck-recognition-')
+    const db = createDatabase('occ-recheck-recognition-')
     const { runtime } = createRuntime(db, { launchAgent: null })
     const write = vi.fn((_ptyId: string, _data: string) => true)
     let recognize: (process: string) => void = () => {}
@@ -124,7 +124,7 @@ describe('mailbox delivery recheck arms only for delivery work', () => {
   })
 
   it('arms no retry for an empty mailbox without an output clock', async () => {
-    const db = createDatabase('orca-recheck-no-clock-')
+    const db = createDatabase('occ-recheck-no-clock-')
     const { runtime } = createRuntime(db)
     createBoundRun(db, 'Empty Run')
     await runtime.listTerminals()
@@ -136,7 +136,7 @@ describe('mailbox delivery recheck arms only for delivery work', () => {
   })
 
   it('arms no retry for an empty mailbox behind a draft hold', async () => {
-    const db = createDatabase('orca-recheck-hold-')
+    const db = createDatabase('occ-recheck-hold-')
     const { runtime } = createRuntime(db, {
       getAgentStatusSnapshot: () => [hookRow('claude', 'done')],
       checkHookAgentPresence: async () => 'live',

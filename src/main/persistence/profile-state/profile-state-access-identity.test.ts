@@ -6,7 +6,7 @@ const native = vi.hoisted(() => ({
   creationTime: vi.fn(),
   runProcessSync: vi.fn()
 }))
-vi.mock('@orca/process-host', () => ({ runProcessSync: native.runProcessSync }))
+vi.mock('@occ/process-host', () => ({ runProcessSync: native.runProcessSync }))
 vi.mock('../../windows-native-registry', () => ({
   WINDOWS_REG_SZ: 1,
   loadWindowsNativeRegistry: () => ({ HK: { LM: 123 }, getRegistryKey: native.registry })

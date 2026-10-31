@@ -1,7 +1,7 @@
 import type { AgentMessageSource } from './agent-session-message-source'
 import type { NativeChatBlock } from '../native-chat-types'
 import { nativeChatProseToMarkdown } from '../native-chat/transcript/native-chat-prose'
-import { orcaDispatchTaskBodyOffset } from '../orca-dispatch-status-prompt'
+import { occDispatchTaskBodyOffset } from '../occ-dispatch-status-prompt'
 
 const taskBodies = new WeakMap<readonly NativeChatBlock[], string | undefined>()
 
@@ -22,7 +22,7 @@ export function agentMessageDisplayText(
   }
   const texts = blocks.filter((block) => block.type === 'text')
   const text = texts.length === 1 ? texts[0].text : undefined
-  const offset = text === undefined ? undefined : orcaDispatchTaskBodyOffset(text)
+  const offset = text === undefined ? undefined : occDispatchTaskBodyOffset(text)
   const body = offset === undefined ? undefined : text?.slice(offset)
   taskBodies.set(blocks, body)
   return body

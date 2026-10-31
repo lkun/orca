@@ -15,7 +15,7 @@ import {
   wslMoveReleasedSessionFocusPatch,
   wslMoveSessionGlobalsPatch
 } from './wsl-move-session-rewrite'
-import { prepareOrcadMigrationWorkspaceSession } from '../migrating-orcad-catalog/orcad-destination-workspace-session'
+import { prepareOCCdMigrationWorkspaceSession } from '../migrating-occd-catalog/occd-destination-workspace-session'
 
 const HOST = toRuntimeExecutionHostId('wsl:Ubuntu')
 const scope = wslMoveRewriteScope({
@@ -348,7 +348,7 @@ describe('WSL move carried session focus', () => {
         activeTabId: 'host-tab'
       }
     }
-    const prepared = prepareOrcadMigrationWorkspaceSession(carried, host)
+    const prepared = prepareOCCdMigrationWorkspaceSession(carried, host)
     expect(prepared.merged).toMatchObject({
       activeRepoId: 'repo-on-host',
       activeWorktreeId: 'repo-on-host::/home/dev/other',

@@ -13,17 +13,17 @@ import { findNewestCodexStateDbPath, readCodexStateDbBackfillStatus } from './co
 // A real binary must prove thread/read inserts unindexed rollouts; mocked RPC success cannot.
 
 const execFileAsync = promisify(execFile)
-const binary = process.env.ORCA_CODEX_CONTRACT_BINARY
-const expectedVersion = process.env.ORCA_CODEX_CONTRACT_VERSION
+const binary = process.env.OCC_CODEX_CONTRACT_BINARY
+const expectedVersion = process.env.OCC_CODEX_CONTRACT_VERSION
 const describeCodexContract = binary ? describe : describe.skip
 
 // CI-required contracts must fail rather than silently skip when the binary is missing.
-describe.runIf(process.env.ORCA_CODEX_CONTRACT_REQUIRED === '1' && !binary)(
+describe.runIf(process.env.OCC_CODEX_CONTRACT_REQUIRED === '1' && !binary)(
   'codex binary index-heal contract prerequisites',
   () => {
     it('was given a Codex binary to run against', () => {
       expect.fail(
-        'ORCA_CODEX_CONTRACT_REQUIRED=1 but ORCA_CODEX_CONTRACT_BINARY is unset, so the contract would have silently skipped'
+        'OCC_CODEX_CONTRACT_REQUIRED=1 but OCC_CODEX_CONTRACT_BINARY is unset, so the contract would have silently skipped'
       )
     })
   }
@@ -57,7 +57,7 @@ describeCodexContract(
 
     // Complete one-shot backfill before adding rollouts, matching the account bridge's repair case.
     async function createBackfilledCodexHome(): Promise<string> {
-      const home = mkdtempSync(join(tmpdir(), 'orca-codex-heal-contract-'))
+      const home = mkdtempSync(join(tmpdir(), 'occ-codex-heal-contract-'))
       disposableHomes.push(home)
       mkdirSync(join(home, 'sessions'), { recursive: true })
       // An empty-tree session stamps backfill complete without thread/read.

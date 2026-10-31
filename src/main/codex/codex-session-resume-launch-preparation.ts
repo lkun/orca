@@ -14,7 +14,7 @@ import { codexHookService } from './hook-service'
 import { reconcileCodexHooksForLaunch } from './codex-hook-reconcile'
 import { ensureCodexDaemonSocketGuard } from './codex-config-mirror'
 import { isAgentStatusHooksEnabledForAgent } from '../agent-hooks/managed-agent-hook-controls'
-import { getOrcaManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
+import { getOCCManagedCodexHomePath, getSystemCodexHomePath } from './codex-home-paths'
 import { normalizeRuntimePathForComparison } from '../../shared/cross-platform-path'
 import type { CodexRuntimeHomeService } from '../codex-accounts/runtime-home-service'
 import type { GlobalSettings } from '../../shared/global-settings-types'
@@ -70,7 +70,7 @@ export function createCodexSessionResumeLaunchPreparation(deps: {
       trustedCodexHomes: trustedHomes,
       getSelectedAccountCodexHome: () => selectedAccountCodexHome,
       systemCodexHomePath: systemHomePath,
-      sharedRuntimeCodexHomePath: getOrcaManagedCodexHomePath(),
+      sharedRuntimeCodexHomePath: getOCCManagedCodexHomePath(),
       resolveVerifiedResumeHome: async (sessionSource) => {
         let migrated = { useRealCodexHome: false }
         try {
@@ -117,7 +117,7 @@ export function createCodexSessionResumeLaunchPreparation(deps: {
           ...preparation,
           reconcileSharedRuntimeAuth:
             normalizeRuntimePathForComparison(preparation.codexHomePath) ===
-            normalizeRuntimePathForComparison(getOrcaManagedCodexHomePath())
+            normalizeRuntimePathForComparison(getOCCManagedCodexHomePath())
         }
       : preparation
   }

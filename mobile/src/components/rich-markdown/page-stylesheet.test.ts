@@ -4,7 +4,7 @@ import { richMarkdownEditorStyle } from './document-style'
 
 // Scope all editor selectors to mount host: native :root/*/html/body rules otherwise restyle whole RN Web app after editor unmount.
 // Move globals onto host, including theme variables/color/font/box model; unlike terminal, editor owns these page rules rather than delegating to app seam.
-const PREFIX = '.orca-rich-markdown-document-host'
+const PREFIX = '.occ-rich-markdown-document-host'
 
 /** Every selector in a sheet, one per entry, as the rewrite leaves them. */
 function selectorsOf(css: string): string[] {

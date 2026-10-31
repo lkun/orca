@@ -9,7 +9,7 @@ export function createDevServeConfig(
   env: NodeJS.ProcessEnv = process.env
 ): UserConfig {
   // run-electron-vite-dev.mjs probes a per-worktree port and reports it; strict keeps that report true.
-  const rendererPort = Number.parseInt(env.ORCA_DEV_RENDERER_PORT ?? '', 10)
+  const rendererPort = Number.parseInt(env.OCC_DEV_RENDERER_PORT ?? '', 10)
   const hasPort = Number.isInteger(rendererPort)
   // Only the dev wrapper sets runtime keys; without them there is nothing to strip.
   const stripsRuntimeEnv = Boolean(env[DEV_RUNTIME_ENV_KEYS])
@@ -38,7 +38,7 @@ export function createDevServeConfig(
         build: {
           ...config.main?.build,
           minify: false,
-          sourcemap: env.ORCA_DEV_MAIN_SOURCEMAPS === '0' ? false : config.main?.build?.sourcemap
+          sourcemap: env.OCC_DEV_MAIN_SOURCEMAPS === '0' ? false : config.main?.build?.sourcemap
         }
       }
     },

@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { basename, dirname, join } from 'node:path'
 import { PassThrough } from 'node:stream'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { PipedProcessSpawner } from '@orca/process-host/process-spec'
+import type { PipedProcessSpawner } from '@occ/process-host/process-spec'
 import { createFakePipedChild } from '../../shared/__fixtures__/fake-spawned-child'
 import { PROVIDER_SUPERVISOR_MAX_STOP_MS } from './provider-process-supervisor'
 import { PROVIDER_SPAWN_FAILURE_MARKER } from './provider-spawn-failure-report'
@@ -226,7 +226,7 @@ describe('managed provider process', () => {
   it.each(['win32', 'linux'] as const)(
     'names a deleted working folder, not the CLI, when a real %s spawn fails there',
     async (platform) => {
-      const parent = mkdtempSync(join(tmpdir(), 'orca-provider-cwd-'))
+      const parent = mkdtempSync(join(tmpdir(), 'occ-provider-cwd-'))
       try {
         // Found on PATH, so only the missing folder can fail the spawn.
         const managed = spawnManagedProviderProcess(
@@ -250,7 +250,7 @@ describe('managed provider process', () => {
   it("never blames the agent's CLI when the supervisor binary itself is gone", () => {
     const execPath = process.execPath
     // OCC's binary replaced mid-update: the supervisor spawn finds no such file.
-    const gone = join(tmpdir(), 'orca-updated-away', 'OCC')
+    const gone = join(tmpdir(), 'occ-updated-away', 'OCC')
     Object.defineProperty(process, 'execPath', { configurable: true, value: gone })
     try {
       const fixture = fakeChild(null)

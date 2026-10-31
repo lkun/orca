@@ -74,7 +74,7 @@ class PublishedRateLimits extends RateLimitService {
 }
 
 export function accountStreamFixture() {
-  const root = fs.mkdtempSync(join(tmpdir(), 'orca-pr35392-stream-'))
+  const root = fs.mkdtempSync(join(tmpdir(), 'occ-pr35392-stream-'))
   installFakeAppEnvironment({ getPath: () => root })
   const service = getManagedDataAccountService()
   const directory = join(root, 'managed-data-accounts')

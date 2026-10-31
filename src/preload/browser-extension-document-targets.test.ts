@@ -10,8 +10,8 @@ import {
 const DISCARDED_TAB = PRELOAD_FIRST_DISCARDED_TAB_ID + 3
 const REPLACED_TAB = PRELOAD_FIRST_DISCARDED_TAB_ID + 4
 
-const ORCA_TOP = 'A'.repeat(32)
-const ORCA_AD = 'B'.repeat(32)
+const OCC_TOP = 'A'.repeat(32)
+const OCC_AD = 'B'.repeat(32)
 const CHROMIUM_TOP = 'C'.repeat(32)
 const CHROMIUM_AD = 'D'.repeat(32)
 
@@ -55,13 +55,13 @@ function navigatingDocumentTarget(navigateOnLookup = 1) {
         for (const listener of listeners) {
           listener(
             {
-              orcaDocumentTargetProbe: {
+              occDocumentTargetProbe: {
                 ...(message &&
                 typeof message === 'object' &&
-                'orcaDocumentTargetProbe' in message &&
-                message.orcaDocumentTargetProbe &&
-                typeof message.orcaDocumentTargetProbe === 'object'
-                  ? message.orcaDocumentTargetProbe
+                'occDocumentTargetProbe' in message &&
+                message.occDocumentTargetProbe &&
+                typeof message.occDocumentTargetProbe === 'object'
+                  ? message.occDocumentTargetProbe
                   : {}),
                 response: true
               }
@@ -125,13 +125,13 @@ function install(permissions: string[], nativeScripting = true) {
       options?: { frameId?: number; documentId?: string },
       _callback?: () => void
     ): Promise<string | boolean> => {
-      if (message && typeof message === 'object' && 'orcaDocumentTargetProbe' in message) {
+      if (message && typeof message === 'object' && 'occDocumentTargetProbe' in message) {
         const frameId = options?.frameId ?? 0
-        const probe = message.orcaDocumentTargetProbe
+        const probe = message.occDocumentTargetProbe
         for (const listener of nativeListeners) {
           listener(
             {
-              orcaDocumentTargetProbe: {
+              occDocumentTargetProbe: {
                 ...(typeof probe === 'object' ? probe : {}),
                 response: true
               }
@@ -166,8 +166,8 @@ function install(permissions: string[], nativeScripting = true) {
       return {
         ok: true as const,
         value: [
-          { frameId: 0, documentId: ORCA_TOP },
-          { frameId: 42, documentId: ORCA_AD }
+          { frameId: 0, documentId: OCC_TOP },
+          { frameId: 42, documentId: OCC_AD }
         ]
       }
     },
@@ -256,12 +256,12 @@ describe('OCC documentIds in native scripting targets', () => {
   it("preserves a native document constraint for OCC's document ids", async () => {
     const { chrome, executeScript, calls } = install(['webNavigation', 'scripting'])
     const results = await chrome.scripting.executeScript({
-      target: { tabId: 3, documentIds: [ORCA_AD] },
+      target: { tabId: 3, documentIds: [OCC_AD] },
       func: () => 1
     })
     expect(executeScript).toHaveBeenCalledTimes(2)
     expect(executeScript.mock.calls[1][0].target).toEqual({ tabId: 3, documentIds: [CHROMIUM_AD] })
-    expect(results).toEqual([{ frameId: 42, documentId: ORCA_AD, result: 42 }])
+    expect(results).toEqual([{ frameId: 42, documentId: OCC_AD, result: 42 }])
     expect(calls).toEqual([[3], [3]])
   })
 
@@ -272,7 +272,7 @@ describe('OCC documentIds in native scripting targets', () => {
 
     const done = await new Promise((resolve) =>
       chrome.scripting.insertCSS(
-        { target: { tabId: 3, documentIds: [ORCA_TOP] }, css: 'a{}' },
+        { target: { tabId: 3, documentIds: [OCC_TOP] }, css: 'a{}' },
         () => resolve('called back')
       )
     )
@@ -282,7 +282,7 @@ describe('OCC documentIds in native scripting targets', () => {
       css: 'a{}'
     })
 
-    await chrome.tabs.sendMessage(3, 'ping', { documentId: ORCA_AD })
+    await chrome.tabs.sendMessage(3, 'ping', { documentId: OCC_AD })
     expect(sendMessage).toHaveBeenCalledWith(3, 'ping', { documentId: CHROMIUM_AD })
   })
 
@@ -295,7 +295,7 @@ describe('OCC documentIds in native scripting targets', () => {
       )
       executeScript.mockRejectedValueOnce(new Error('Requires scripting permission'))
 
-      await expect(chrome.tabs.sendMessage(3, 'ping', { documentId: ORCA_AD })).resolves.toBe(
+      await expect(chrome.tabs.sendMessage(3, 'ping', { documentId: OCC_AD })).resolves.toBe(
         'pong'
       )
 
@@ -315,7 +315,7 @@ describe('OCC documentIds in native scripting targets', () => {
     })
 
     await expect(
-      chrome.tabs.sendMessage(3, 'real payload', { documentId: ORCA_TOP })
+      chrome.tabs.sendMessage(3, 'real payload', { documentId: OCC_TOP })
     ).resolves.toBe('dynamic receiver response')
 
     expect(sendMessage).toHaveBeenCalledTimes(1)
@@ -332,7 +332,7 @@ describe('OCC documentIds in native scripting targets', () => {
 
     await expect(
       chrome.scripting.executeScript({
-        target: { tabId: 3, documentIds: [ORCA_TOP] }
+        target: { tabId: 3, documentIds: [OCC_TOP] }
       })
     ).resolves.toEqual([{ frameId: 0, documentId: 'replacement-document', result: 1 }])
   })
@@ -342,7 +342,7 @@ describe('OCC documentIds in native scripting targets', () => {
     sendMessage.mockRejectedValueOnce(new Error('Receiving end does not exist'))
     const callback = vi.fn()
     const error = await new Promise((resolve) => {
-      chrome.tabs.sendMessage(3, 'private payload', { documentId: ORCA_TOP }, () => {
+      chrome.tabs.sendMessage(3, 'private payload', { documentId: OCC_TOP }, () => {
         callback()
         resolve(chrome.runtime.lastError)
       })

@@ -50,7 +50,7 @@ async function pendingPrompt(
   inLiveTurn = false,
   subject?: AgentJournalApprovalSubject
 ): Promise<{ journal: AgentSessionJournal; itemId: string }> {
-  root = await mkdtemp(join(tmpdir(), 'orca-prompt-cancel-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-prompt-cancel-'))
   const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
   const turn = inLiveTurn
     ? await journal.appendItem(

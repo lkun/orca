@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { GitWorktreeInfo } from '../shared/worktree/types'
 import { verifyProvisionedRootCheckout } from './provisioned-root-checkout'
 
-const projectRoot = '/workspace/orca'
+const projectRoot = '/workspace/occ'
 
 function gitWorktree(path: string, overrides: Partial<GitWorktreeInfo> = {}): GitWorktreeInfo {
   return {
@@ -80,11 +80,11 @@ describe('verifyProvisionedRootCheckout', () => {
   it('compares Windows checkout roots using runtime path semantics', () => {
     expect(
       verifyProvisionedRootCheckout({
-        worktrees: [gitWorktree('c:/workspace/orca/')],
+        worktrees: [gitWorktree('c:/workspace/occ/')],
         sparseCheckoutEnabled: false,
         projectRoot: 'C:\\Workspace\\OCC',
         request: { name: 'fix-sandbox' }
       }).path
-    ).toBe('c:/workspace/orca/')
+    ).toBe('c:/workspace/occ/')
   })
 })

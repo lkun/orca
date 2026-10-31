@@ -18,8 +18,8 @@ export function taskNotFoundRefusal(
     data: {
       ...detail,
       nextSteps: [
-        'Run orca orchestration task-list --json in the bound Run to find the intended Task id.',
-        'If the Task does not exist yet, create it with orca orchestration task-create --spec <text> --json.'
+        'Run occ orchestration task-list --json in the bound Run to find the intended Task id.',
+        'If the Task does not exist yet, create it with occ orchestration task-create --spec <text> --json.'
       ]
     }
   }
@@ -49,22 +49,22 @@ function taskNotStartableNextSteps(detail: TaskNotStartableDetail): string[] {
   if (detail.retryOf && detail.failureCount !== undefined) {
     return [
       `Do not retry this Task or start a replacement for it: it failed ${detail.failureCount} times. Report the failure to the user.`,
-      `Read what the last attempt showed with orca orchestration worker-read --dispatch ${detail.retryOf} --json. If its terminal is still open, it stays for the user until orca orchestration worker-release --dispatch ${detail.retryOf} --json.`
+      `Read what the last attempt showed with occ orchestration worker-read --dispatch ${detail.retryOf} --json. If its terminal is still open, it stays for the user until occ orchestration worker-release --dispatch ${detail.retryOf} --json.`
     ]
   }
   if (detail.retryOf) {
     return [
-      `--retry-of must name the latest settled Dispatch of a failed or blocked Task; check orca orchestration dispatch-show --task ${detail.taskId} --json and orca orchestration worker-show --dispatch ${detail.retryOf} --json.`
+      `--retry-of must name the latest settled Dispatch of a failed or blocked Task; check occ orchestration dispatch-show --task ${detail.taskId} --json and occ orchestration worker-show --dispatch ${detail.retryOf} --json.`
     ]
   }
   if (detail.unmetDependencies.length > 0) {
     return [
-      `Dependencies ${detail.unmetDependencies.join(', ')} are not completed. Wait for running ones with orca orchestration check --wait --json; retry or unblock failed ones before dispatching again.`
+      `Dependencies ${detail.unmetDependencies.join(', ')} are not completed. Wait for running ones with occ orchestration check --wait --json; retry or unblock failed ones before dispatching again.`
     ]
   }
   if (detail.status === 'dispatched') {
     return [
-      `The Task already has an active Dispatch; inspect it with orca orchestration dispatch-show --task ${detail.taskId} --json.`
+      `The Task already has an active Dispatch; inspect it with occ orchestration dispatch-show --task ${detail.taskId} --json.`
     ]
   }
   return [

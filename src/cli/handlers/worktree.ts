@@ -134,9 +134,9 @@ export const WORKTREE_HANDLERS: Record<string, CommandHandler> = {
     const branchNameOverride = getPresentStringFlag(flags, 'branch')
     const reviewLinks = getReviewTargetLinkFlags(flags)
     const callerTerminalHandle =
-      typeof process.env.ORCA_TERMINAL_HANDLE === 'string' &&
-      process.env.ORCA_TERMINAL_HANDLE.length > 0
-        ? process.env.ORCA_TERMINAL_HANDLE
+      typeof process.env.OCC_TERMINAL_HANDLE === 'string' &&
+      process.env.OCC_TERMINAL_HANDLE.length > 0
+        ? process.env.OCC_TERMINAL_HANDLE
         : undefined
     const explicitParent = await resolveCreateParentSelector(flags, cwd, client)
     const explicitParentWorktree = explicitParent.parentWorktree
@@ -159,7 +159,7 @@ export const WORKTREE_HANDLERS: Record<string, CommandHandler> = {
       needsCwdRepoInference
     ) {
       try {
-        // Cwd preserves parent/repo inference when agent shells lose ORCA_TERMINAL_HANDLE.
+        // Cwd preserves parent/repo inference when agent shells lose OCC_TERMINAL_HANDLE.
         cwdParentWorktree = await resolveCurrentWorktreeSelection(cwd, client)
       } catch {
         cwdParentWorktree = undefined
@@ -295,7 +295,7 @@ export const WORKTREE_HANDLERS: Record<string, CommandHandler> = {
     printResult(result, json, (value) =>
       // Hosts that predate waiting answer on acceptance.
       value.removing
-        ? 'removed: false\nOrca is still deleting the checkout in the background.'
+        ? 'removed: false\nOCC is still deleting the checkout in the background.'
         : value.removed === true
           ? 'removed: true'
           : 'Removal is not confirmed.'

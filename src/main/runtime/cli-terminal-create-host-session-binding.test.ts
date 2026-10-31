@@ -2,7 +2,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { ClaudeAgentTeamsService } from './claude-agent-teams-service'
 import * as launchPlan from './terminal/launch/agent-teams-launch-plan'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import type { RuntimePtyController } from './runtime-pty-controller-contract'
 import './rpc/unused-default-rpc-methods.test-fixture'
 import {
@@ -24,7 +24,7 @@ vi.mock('electron', () => ({
 }))
 
 function createRuntimeWithAttachedWindow() {
-  const runtime = new OrcaRuntimeService()
+  const runtime = new OCCRuntimeService()
   vi.spyOn(
     runtime as unknown as {
       resolveTerminalWorkspaceLaunchScope: (selector: string) => Promise<unknown>
@@ -89,7 +89,7 @@ describe('host-initiated terminal creation under an attached window', () => {
         leaderHandle: 'shared-handle',
         baseEnv: {},
         shimDir: '/shim',
-        shimBin: '/orca'
+        shimBin: '/occ'
       })
       Object.assign(runtime, { claudeAgentTeams: teams })
       const signal = new AbortController()
@@ -98,7 +98,7 @@ describe('host-initiated terminal creation under an attached window', () => {
       const prepare = vi
         .spyOn(launchPlan, 'buildRuntimeAgentTeamsLaunchPlan')
         .mockImplementation(async (args) => {
-          const env = args.createTeamEnv('/shim', '/orca')
+          const env = args.createTeamEnv('/shim', '/occ')
           if (failure === 'cancelled') {
             signal.abort()
           }
@@ -150,7 +150,7 @@ describe('host-initiated terminal creation under an attached window', () => {
       leaderHandle: 'shared-handle',
       baseEnv: {},
       shimDir: '/shim',
-      shimBin: '/orca'
+      shimBin: '/occ'
     })
     Object.assign(runtime, { claudeAgentTeams: teams })
     const allocation = vi.spyOn(teams, 'createLaunchEnv')
@@ -158,7 +158,7 @@ describe('host-initiated terminal creation under an attached window', () => {
     const prepare = vi
       .spyOn(launchPlan, 'buildRuntimeAgentTeamsLaunchPlan')
       .mockImplementation(async (args) => ({
-        plan: { env: args.createTeamEnv('/shim', '/orca'), command: 'claude' },
+        plan: { env: args.createTeamEnv('/shim', '/occ'), command: 'claude' },
         effectiveLaunchConfig: args.launchConfig
       }))
     runtime.setPtyController({
@@ -193,7 +193,7 @@ describe('host-initiated terminal creation under an attached window', () => {
       expect(allocatedId).not.toBe(existing.teamId)
       expect(spawn).toHaveBeenCalledExactlyOnceWith(
         expect.objectContaining({
-          env: expect.objectContaining({ ORCA_AGENT_TEAMS_TEAM_ID: allocatedId })
+          env: expect.objectContaining({ OCC_AGENT_TEAMS_TEAM_ID: allocatedId })
         })
       )
       expect(result).toMatchObject({ ptyId: 'repo-1::/tmp/wt-cli@@a1b2c3d4', isReattach: true })

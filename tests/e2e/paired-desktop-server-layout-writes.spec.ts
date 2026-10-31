@@ -1,4 +1,4 @@
-// H5c-2: with ORCA_LAYOUT_OWNER=main, desktop close/rename/split/create must update windowless server layout, session tabs and drawn frames; close must also stop its PTY.
+// H5c-2: with OCC_LAYOUT_OWNER=main, desktop close/rename/split/create must update windowless server layout, session tabs and drawn frames; close must also stop its PTY.
 import { existsSync } from 'node:fs'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
@@ -10,7 +10,7 @@ import {
   toWebTerminalSurfaceTabId
 } from '../../src/shared/terminal-surface-id'
 import { LAYOUT_INTENTS_RUNTIME_CAPABILITY } from '../../src/shared/workspace-layout/layout-intents-capability'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   launchHeadlessPairedRuntimeHost,
   type HeadlessPairedRuntimeHost
@@ -31,7 +31,7 @@ import {
 } from './helpers/paired-desktop-server-terminal-tab'
 
 const LAYOUT_OWNER_BUILD = existsSync(
-  path.join(process.cwd(), 'out', 'main', 'ORCA_LAYOUT_OWNER_MAIN')
+  path.join(process.cwd(), 'out', 'main', 'OCC_LAYOUT_OWNER_MAIN')
 )
 
 function desktopTab(page: Page, webTabId: string) {
@@ -83,7 +83,7 @@ async function serverLivePtyIds(host: HeadlessPairedRuntimeHost, worktreeId: str
 }
 
 test.describe('paired desktop writes to a switch-on server’s workspace land in its main', () => {
-  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (ORCA_LAYOUT_OWNER=main)')
+  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (OCC_LAYOUT_OWNER=main)')
 
   test('close, rename, split and create change the server’s layout, drawn from its frames', async ({
     testRepoPath

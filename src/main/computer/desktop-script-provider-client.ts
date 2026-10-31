@@ -224,7 +224,7 @@ export class DesktopScriptProviderClient {
   }
 
   private async callOneShotBridge(request: BridgeRequest): Promise<BridgeResponse> {
-    const operationDirectory = await mkdtemp(join(tmpdir(), 'orca-computer-use-'))
+    const operationDirectory = await mkdtemp(join(tmpdir(), 'occ-computer-use-'))
     const operationPath = join(operationDirectory, 'operation.json')
     try {
       await writeFile(operationPath, JSON.stringify(request), { encoding: 'utf8', mode: 0o600 })

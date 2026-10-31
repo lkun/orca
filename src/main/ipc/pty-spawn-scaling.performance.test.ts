@@ -4,7 +4,7 @@ import * as runtimePreflight from './pty/runtime/spawn-preflight'
 import * as ipcPreflight from './pty/ipc/spawn-preflight'
 import type { RuntimeStore } from '../runtime/runtime-store-contract'
 import type * as JcodeRuntimeDir from '../../shared/jcode-runtime-dir'
-import { OrcaRuntimeService } from '../runtime/orca-runtime'
+import { OCCRuntimeService } from '../runtime/occ-runtime'
 import type { TerminalCreateOptions } from '../runtime/runtime-terminal-contracts'
 import type { TerminalPaneLayoutNode } from '../../shared/terminal-tab-types'
 import { setupPtyIpcSuite } from './pty/pty-ipc-test-harness'
@@ -12,7 +12,7 @@ import { registerPtyHandlers } from './pty/register-handlers'
 import { createPaneBindingStore, launchRacePane } from './pty/pty-launch-race-test-fixture'
 import { clearProviderPtyState } from './pty/provider/state-cleanup'
 import * as reservations from './pty/pane/spawn-reservation'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { makePaneKey } from '../../shared/stable-pane-id'
 
 vi.mock('electron', () => import('./pty/pty-ipc-mock-registry').then((m) => m.electronModuleMock()))
@@ -46,7 +46,7 @@ vi.mock('../telemetry/client', () =>
 vi.mock('../telemetry/classify-error', () =>
   import('./pty/pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty/pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../memory/pty-registry', () =>
@@ -72,7 +72,7 @@ vi.mock('../../shared/jcode-runtime-dir', async (importOriginal) => {
 
 const consumeExited = adoption.consumeExitedPaneOperation
 const N = 4
-const treePasses = ORCA_LAYOUT_OWNER_IS_MAIN ? 2 : 1
+const treePasses = OCC_LAYOUT_OWNER_IS_MAIN ? 2 : 1
 const snapshot = 'final output\r\n'.repeat(256)
 
 function gate() {
@@ -198,7 +198,7 @@ describe('shared terminal spawn operation/retention scaling contract', () => {
         }
       }
     }
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     Object.assign(runtime, {
       store,
       resolveTerminalWorkspaceLaunchScope: async (selector: string) => {

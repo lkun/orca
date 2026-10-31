@@ -1,5 +1,5 @@
 import type { SshPendingPtyKill } from './ssh-pending-pty-kill'
-import type { OrcadSshProvisioningIntent } from './orcad-ssh-provisioning'
+import type { OCCdSshProvisioningIntent } from './occd-ssh-provisioning'
 import type { NodeDistMirrorAttempt } from './node-dist-mirror'
 
 export const MIN_SSH_RELAY_GRACE_PERIOD_SECONDS = 60
@@ -23,7 +23,7 @@ export type SshRemoteRuntimeResolution = {
   refusedAt?: number
   glibc: string | null
   runtimeSha256: string
-  orcaMajor: number
+  occMajor: number
 }
 
 /** Who created a hidden target as an implementation detail, and so owns its lifecycle. */
@@ -80,8 +80,8 @@ export type SshTarget = {
   /** Main-owned registration incarnation fences automation reuse after create/re-create/re-adopt; connect state never advances it. */
   generation?: number
   /** Main-owned provisioning intent; never fall back to a relay while it exists. */
-  orcadProvisioning?: OrcadSshProvisioningIntent
-  /** Main-owned: managed orcad can't run on this host; retried once this app version changes. */
+  occdProvisioning?: OCCdSshProvisioningIntent
+  /** Main-owned: managed occd can't run on this host; retried once this app version changes. */
   managedServerUnavailable?: { reason: string; appVersion: string }
   /** Retired with the move offer (hosts convert on connect); kept so a downgraded build doesn't re-offer. */
   managedServerMoveOffered?: { appVersion: string }
@@ -91,7 +91,7 @@ export type SshTarget = {
   managedServerUpdateFailure?: { reason: string; appVersion: string }
   /** Main-owned: the user stopped and removed this host's server; only an explicit Connect deploys again. */
   managedServerRemoved?: { removedAt: string }
-  orcadFence?: {
+  occdFence?: {
     environmentId: string
     /** The retained source holds projects no move took: the host is unserved until moved again. */
     sourceChangedAt?: string
@@ -103,8 +103,8 @@ export type SshTargetCreateInput = Omit<
   SshTarget,
   | 'id'
   | 'generation'
-  | 'orcadProvisioning'
-  | 'orcadFence'
+  | 'occdProvisioning'
+  | 'occdFence'
   | 'managedServerUnavailable'
   | 'managedServerMoveOffered'
   | 'managedServerLeaveBehind'
@@ -163,7 +163,7 @@ export type SshConfigHostSummary = {
   proxyCommand?: string
   jumpHost?: string
   /** True when an OCC SSH target already uses this config alias. */
-  alreadyInOrca: boolean
+  alreadyInOCC: boolean
   /** Deleted alias remains explicitly selectable; passive/Add all import excludes it until re-adoption or save. */
   previouslyRemoved?: boolean
 }
@@ -285,11 +285,11 @@ export type SshManagedServerLinkedProject = {
   automations: number
 }
 
-/** A managed server that did not answer and was not proven serving, with why (and orcad.log's tail). */
+/** A managed server that did not answer and was not proven serving, with why (and occd.log's tail). */
 export type SshManagedServerServingNote = { state: 'unverifiable'; detail: string }
 
 export const SSH_MANAGED_SERVER_RELAY_REASONS = [
-  'orcad_unavailable',
+  'occd_unavailable',
   'relay_terminals_live',
   'relay_terminals_unverifiable',
   'source_changed',
@@ -318,7 +318,7 @@ export type SshManagedServerStatus =
       launchSessionEnded?: true
     }
   | { kind: 'setting-up'; phase: (typeof SSH_MANAGED_SERVER_PHASES)[number] }
-  /** `detail` names the blocker for a refusal, or why orcad can't run on the host. */
+  /** `detail` names the blocker for a refusal, or why occd can't run on the host. */
   | {
       kind: 'relay'
       reason: SshManagedServerRelayReason

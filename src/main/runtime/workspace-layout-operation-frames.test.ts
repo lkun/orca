@@ -30,7 +30,7 @@ import { WorkspaceLayoutStream, type LayoutOperationCommit } from './workspace-l
 
 const layoutOwner = vi.hoisted(() => ({ isMain: true }))
 vi.mock('../../shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return layoutOwner.isMain
   }
 }))
@@ -48,7 +48,7 @@ const directories: string[] = []
 
 /** Tabs `tab-<workspace>-<n>` in each workspace, its panes unbound until a test binds one. */
 async function storeWith(tabs: Record<string, number>): Promise<Store> {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-operation-frames-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-operation-frames-'))
   directories.push(directory)
   const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   const sessions = new Map<ExecutionHostId, WindowSession>()

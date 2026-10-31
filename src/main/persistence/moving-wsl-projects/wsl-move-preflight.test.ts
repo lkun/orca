@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ORCAD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY } from '../../../shared/orcad-runtime-capabilities'
+import { OCCD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY } from '../../../shared/occd-runtime-capabilities'
 import {
   preflightWslMovePaths,
   wslMoveHostReadiness,
@@ -99,7 +99,7 @@ describe('preflightWslMovePaths outside git', () => {
 describe('wslMoveHostReadiness', () => {
   it('asks for a host update until the host parses WSL moves', () => {
     expect(wslMoveHostReadiness([])).toBe('update-host')
-    expect(wslMoveHostReadiness([ORCAD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY])).toBe(
+    expect(wslMoveHostReadiness([OCCD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY])).toBe(
       'ready'
     )
   })

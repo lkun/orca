@@ -2,10 +2,10 @@ import type { IncomingMessage } from 'node:http'
 import { request } from 'node:https'
 import type { OpenSpeechDownloadRequest } from './speech-model-download-response'
 
-/** orcad uses direct Node HTTPS without proxy support; surface 3xx as redirects so the shared downloader re-requests them. */
+/** occd uses direct Node HTTPS without proxy support; surface 3xx as redirects so the shared downloader re-requests them. */
 export const openNodeSpeechDownloadRequest: OpenSpeechDownloadRequest = (url) => {
   const outgoing = request(url, { method: 'GET' })
-  // Keep this after detach: abort can emit an otherwise unhandled error and crash orcad.
+  // Keep this after detach: abort can emit an otherwise unhandled error and crash occd.
   outgoing.on('error', () => {})
   return {
     setHeader: (name, value) => {

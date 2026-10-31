@@ -72,11 +72,11 @@ function calledMethods(): { method: string; params: unknown }[] {
 }
 
 describe('drop staging ignore file', () => {
-  it('writes `.orca/drops/.gitignore` the first time a drop creates the folder', async () => {
+  it('writes `.occ/drops/.gitignore` the first time a drop creates the folder', async () => {
     stageOneFile()
     runtimeEnvironmentCall
-      .mockResolvedValueOnce(notFoundResponse('stat-orca-miss'))
-      .mockResolvedValueOnce(okResponse('create-orca'))
+      .mockResolvedValueOnce(notFoundResponse('stat-occ-miss'))
+      .mockResolvedValueOnce(okResponse('create-occ'))
       .mockResolvedValueOnce(notFoundResponse('stat-drops-miss'))
       .mockResolvedValueOnce(okResponse('create-drops'))
       .mockResolvedValueOnce(notFoundResponse('stat-ignore-miss'))
@@ -88,12 +88,12 @@ describe('drop staging ignore file', () => {
     const { results } = await importExternalPathsToRuntime(
       SSH_CONTEXT,
       ['/Users/me/shot.png'],
-      '/remote/repo/.orca/drops',
+      '/remote/repo/.occ/drops',
       { ensureDestinationDir: true }
     )
 
     expect(results).toEqual([
-      expect.objectContaining({ status: 'imported', destPath: '/remote/repo/.orca/drops/shot.png' })
+      expect.objectContaining({ status: 'imported', destPath: '/remote/repo/.occ/drops/shot.png' })
     ])
     const writes = calledMethods().filter((call) => call.method === 'files.write')
     expect(writes).toEqual([
@@ -101,7 +101,7 @@ describe('drop staging ignore file', () => {
         method: 'files.write',
         params: expect.objectContaining({
           worktree: 'id:wt-1',
-          relativePath: '.orca/drops/.gitignore',
+          relativePath: '.occ/drops/.gitignore',
           content: '*\n',
           expectedExecutionHostId: 'ssh:target-1',
           expectedSshTargetId: 'target-1',
@@ -121,7 +121,7 @@ describe('drop staging ignore file', () => {
     })
     let stale = false
     runtimeEnvironmentCall
-      .mockResolvedValueOnce(statResponse('stat-orca-hit'))
+      .mockResolvedValueOnce(statResponse('stat-occ-hit'))
       .mockResolvedValueOnce(statResponse('stat-drops-hit'))
       .mockResolvedValueOnce(notFoundResponse('stat-ignore-miss'))
       .mockImplementationOnce(async () => {
@@ -135,7 +135,7 @@ describe('drop staging ignore file', () => {
     })
 
     await expect(
-      importExternalPathsToRuntime(CONTEXT, ['/Users/me/link.png'], '/remote/repo/.orca/drops', {
+      importExternalPathsToRuntime(CONTEXT, ['/Users/me/link.png'], '/remote/repo/.occ/drops', {
         assertCurrent
       })
     ).rejects.toThrow('runtime owner generation changed')

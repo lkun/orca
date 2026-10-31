@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 import type { AppState } from '../types'
 import {
@@ -108,7 +108,7 @@ function remoteBackedBrowserTab(): Partial<AppState> {
 /** A layout-owner build's close is main's: the window sent it, and main's frame drew it. */
 function expectMainClosed(command: 'closeBrowserPage' | 'closeTabs'): void {
   expect(layoutApplyTestTransport.sent.map((sent) => sent.type)).toEqual(
-    ORCA_LAYOUT_OWNER_IS_MAIN ? [command] : []
+    OCC_LAYOUT_OWNER_IS_MAIN ? [command] : []
   )
 }
 

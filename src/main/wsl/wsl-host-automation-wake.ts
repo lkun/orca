@@ -2,7 +2,7 @@
  * E9: a WSL host's automations run inside its distro, so a stopped distro misses them. While a host
  * is connected (and after this desktop changes its automations) the desktop learns its enabled
  * schedules and keeps them across restarts; when the soonest run comes due with the host off, this
- * boots the distro once and orcad's startup catch-up fires the run. A due run is the user's own
+ * boots the distro once and occd's startup catch-up fires the run. A due run is the user's own
  * standing request, so it is the one non-interactive wake. Nothing here boots a distro to check.
  */
 import { readFileSync, writeFileSync } from 'node:fs'
@@ -18,7 +18,7 @@ export type WslHostAutomationSchedule = {
 
 export type WslHostAutomationDue = {
   nextRunAt: number
-  /** Past this, orcad would only record the run as missed, so a wake is pointless. */
+  /** Past this, occd would only record the run as missed, so a wake is pointless. */
   wakeUntil: number
   /** Every enabled schedule, so the next due time survives a run handled while off. */
   schedules: WslHostAutomationSchedule[]
@@ -41,7 +41,7 @@ export type WslHostAutomationWakeDeps = {
 
 // Re-arm at least this often, so a clock change or sleep can't strand a far-off timer.
 const MAX_TIMER_MS = 60 * 60 * 1000
-// orcad's own tick jitter allowance on top of each automation's grace.
+// occd's own tick jitter allowance on top of each automation's grace.
 const GRACE_SLACK_MS = 2 * 60 * 1000
 
 /** The soonest enabled run and the schedules behind it, or null when nothing is scheduled. */

@@ -15,7 +15,7 @@ afterEach(async () => {
 })
 
 async function fixture() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-ls-remote-test-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-ls-remote-test-'))
   roots.push(root)
   const repository = join(root, 'source')
   const config = join(root, 'config')

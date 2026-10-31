@@ -115,7 +115,7 @@ export function BrowserToolbarZoomRow({
   )
 }
 
-const MATCH_ORCA_VALUE = 'orca'
+const MATCH_OCC_VALUE = 'occ'
 
 export function BrowserToolbarAppearanceSub({
   browserPageId,
@@ -135,14 +135,14 @@ export function BrowserToolbarAppearanceSub({
       <DropdownMenuPortal>
         <DropdownMenuSubContent data-browser-page-menu-id={browserPageId}>
           <DropdownMenuRadioGroup
-            value={display?.colorScheme ?? MATCH_ORCA_VALUE}
+            value={display?.colorScheme ?? MATCH_OCC_VALUE}
             onValueChange={(value) =>
               onSetColorScheme(isBrowserSiteColorScheme(value) ? value : null)
             }
           >
-            <DropdownMenuRadioItem value={MATCH_ORCA_VALUE}>
+            <DropdownMenuRadioItem value={MATCH_OCC_VALUE}>
               {translate(
-                'auto.components.browser.pane.BrowserToolbarMenu.appearanceMatchOrca',
+                'auto.components.browser.pane.BrowserToolbarMenu.appearanceMatchOCC',
                 'Match OCC'
               )}
             </DropdownMenuRadioItem>

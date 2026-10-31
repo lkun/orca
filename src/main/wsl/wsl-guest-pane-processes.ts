@@ -1,4 +1,4 @@
-/** Windows sees only wsl.exe and bridge bash lacks OSC 7; inherited ORCA_PANE_KEY identifies shell folders inside the guest. */
+/** Windows sees only wsl.exe and bridge bash lacks OSC 7; inherited OCC_PANE_KEY identifies shell folders inside the guest. */
 import { isShellProcess } from '../../shared/shell-process-detection'
 import {
   isWslDistroRunning,
@@ -15,20 +15,20 @@ export type WslGuestProcessRow = {
   cwd?: string
 }
 
-const BEGIN = 'ORCA_PANE_PROCESSES_BEGIN'
-const END = 'ORCA_PANE_PROCESSES_END'
+const BEGIN = 'OCC_PANE_PROCESSES_BEGIN'
+const END = 'OCC_PANE_PROCESSES_END'
 
 /** Fenced tab-separated pid/ppid/comm/pane-key/cwd rows, using POSIX sh/BusyBox. One grep avoids per-process forks; stat fields follow the last `)` because comm may contain spaces/parens. */
 export const WSL_GUEST_PANE_PROCESS_SCRIPT = [
   `echo ${BEGIN}`,
-  "for e in $(grep -l -s 'ORCA_PANE_KEY=' /proc/[0-9]*/environ); do",
+  "for e in $(grep -l -s 'OCC_PANE_KEY=' /proc/[0-9]*/environ); do",
   '  d=${e%/environ}',
   '  p=${d#/proc/}',
   '  s=$(cat "$d/stat" 2>/dev/null) || continue',
   '  r=${s##*) }',
   '  set -- $r',
   '  c=$(cat "$d/comm" 2>/dev/null)',
-  `  k=$(tr '\\0' '\\n' < "$e" 2>/dev/null | sed -n 's/^ORCA_PANE_KEY=//p' | head -n 1)`,
+  `  k=$(tr '\\0' '\\n' < "$e" 2>/dev/null | sed -n 's/^OCC_PANE_KEY=//p' | head -n 1)`,
   '  w=$(readlink "$d/cwd" 2>/dev/null)',
   `  printf '%s\\t%s\\t%s\\t%s\\t%s\\n' "$p" "$2" "$c" "$k" "$w"`,
   'done',

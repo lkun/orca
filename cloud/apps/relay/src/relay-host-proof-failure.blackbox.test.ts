@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import { createServer, type Server } from 'node:http'
 import { createServer as createNetServer } from 'node:net'
 import { exportJWK, generateKeyPair, SignJWT } from 'jose'
-import { RELAY_CLOSE_CODE } from '@orca-cloud/relay-contract'
+import { RELAY_CLOSE_CODE } from '@occ-cloud/relay-contract'
 import nacl from 'tweetnacl'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import WebSocket from 'ws'
@@ -61,7 +61,7 @@ describe('relay host proof failures', () => {
       publicUrl: relayUrl,
       cellUrl: relayUrl,
       authIssuer: issuer,
-      authAudience: 'orca-relay',
+      authAudience: 'occ-relay',
       jwksUrl: issuer,
       assignmentSigningKey: new Uint8Array(32),
       role: 'cell',
@@ -111,7 +111,7 @@ describe('relay host proof failures', () => {
     })
       .setProtectedHeader({ alg: 'ES256', kid: 'test-key' })
       .setIssuer(issuer)
-      .setAudience('orca-relay')
+      .setAudience('occ-relay')
       .setSubject('user-1')
       .setIssuedAt()
       .setExpirationTime('5m')
@@ -143,7 +143,7 @@ describe('relay host proof failures', () => {
     expect(
       warn.mock.calls.map((call) => String(call[0]))
     ).toContain(
-      '[orca-relay] host hello proof failed: Connection terminated due to connection timeout'
+      '[occ-relay] host hello proof failed: Connection terminated due to connection timeout'
     )
     await new Promise<void>((resolve) => setImmediate(resolve))
     expect(unhandled).toEqual([])

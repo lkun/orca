@@ -79,7 +79,7 @@ type Ssh2HostKeyVerificationHost = {
 type Ssh2HostKeyVerdict = {
   rejection: HostKeyVerificationError | null
   /** OCC's own store holds a key for this endpoint, which system OpenSSH never consults. */
-  pinnedByOrcaStore: boolean
+  pinnedByOCCStore: boolean
 }
 
 /** Installs the host verifier and key-type order on `config` before ssh2 dials. */
@@ -121,7 +121,7 @@ export async function installSsh2HostKeyVerification(
   // Keep denial attempt-local and retain original ssh2 error codes so stale attempts and transient failures stay distinguishable.
   const verdict: Ssh2HostKeyVerdict = {
     rejection: null,
-    pinnedByOrcaStore: storedKeyTypes.length > 0
+    pinnedByOCCStore: storedKeyTypes.length > 0
   }
 
   // Accepted server fingerprints isolate shared-home relay locks across hosts; preserve mixed-version format and leave hostHash unset.

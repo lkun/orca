@@ -21,14 +21,14 @@ export function codexGoalJournalIdentity(
   occurrence: string
 ): AgentJournalItemIdentity {
   return {
-    provider: 'orca',
+    provider: 'occ',
     clientMessageId: `${GOAL_IDENTITY_PREFIX}:${thread}:${signature}:${occurrence}`
   }
 }
 
 export function parseCodexGoalJournalItemId(itemId: string): CodexGoalJournalState | null {
   const identity = parseAgentJournalItemKey(itemId)
-  if (identity?.provider !== 'orca') {
+  if (identity?.provider !== 'occ') {
     return null
   }
   const [prefix, thread, signature, occurrence, ...rest] = identity.clientMessageId.split(':')

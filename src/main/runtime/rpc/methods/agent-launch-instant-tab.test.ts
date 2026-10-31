@@ -47,7 +47,7 @@ vi.mock('./agent-launch-terminal-prompt', () => ({ deliverTerminalAgentLaunchPro
 // Every case runs in both builds: the window shows the tab, or (layout owner) main writes it.
 const layoutOwner = vi.hoisted(() => ({ isMain: false }))
 vi.mock('../../../../shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return layoutOwner.isMain
   }
 }))

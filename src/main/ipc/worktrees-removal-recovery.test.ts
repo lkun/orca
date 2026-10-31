@@ -374,7 +374,7 @@ describe('registerWorktreeHandlers', () => {
   it.each(['unproven', 'removal-fails'] as const)(
     'keeps desktop orphan cleanup retryable when the directory is %s',
     async (mode) => {
-      const parentDir = await mkdtemp(join(tmpdir(), 'orca-ipc-orphan-retention-'))
+      const parentDir = await mkdtemp(join(tmpdir(), 'occ-ipc-orphan-retention-'))
       const repoPath = join(parentDir, 'repo')
       const orphanPath = join(parentDir, 'orphan')
       const worktreeId = `repo-1::${orphanPath}`
@@ -430,7 +430,7 @@ describe('registerWorktreeHandlers', () => {
   it.skipIf(ORIGINAL_PLATFORM !== 'win32')(
     'force-deletes a real registered Windows long-path checkout through desktop Delete',
     async () => {
-      const parentDir = await diskFs.realpath(await mkdtemp(join(tmpdir(), 'orca-ipc-long-path-')))
+      const parentDir = await diskFs.realpath(await mkdtemp(join(tmpdir(), 'occ-ipc-long-path-')))
       const repoPath = join(parentDir, 'repo')
       const worktreePath = join(parentDir, 'feature-wt')
       const worktreeId = `repo-1::${worktreePath}`
@@ -488,7 +488,7 @@ describe('registerWorktreeHandlers', () => {
   )
 
   it('cleans a prunable Git-file row before archive or checkout teardown', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-prunable-ipc-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-prunable-ipc-'))
     const markerPath = join(root, '.git')
     await writeFile(markerPath, 'gitdir: /preserved/admin\n')
     const worktreeId = `repo-1::${markerPath}`

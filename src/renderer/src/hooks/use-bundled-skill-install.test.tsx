@@ -30,7 +30,7 @@ vi.mock('./installed-agent-skill-discovery', () => ({
   notifyInstalledAgentSkillsChanged: vi.fn()
 }))
 
-const PLAN = planOf([sharedEntry('orca-cli', 'write')])
+const PLAN = planOf([sharedEntry('occ-cli', 'write')])
 
 let root: Root | null = null
 let latest: BundledSkillInstall | null = null
@@ -74,7 +74,7 @@ describe('useBundledSkillInstall', () => {
 
     let outcome: Awaited<ReturnType<BundledSkillInstall['install']>> = { kind: 'idle' }
     await act(async () => {
-      outcome = await hook.install(['orca-cli'])
+      outcome = await hook.install(['occ-cli'])
     })
 
     expect(outcome).toBeNull()
@@ -92,7 +92,7 @@ describe('useBundledSkillInstall', () => {
     const hook = await renderHarness()
     let first: Promise<unknown> = Promise.resolve()
     await act(async () => {
-      first = hook.install(['orca-cli'])
+      first = hook.install(['occ-cli'])
     })
     expect(latest?.state.kind).toBe('installing')
 
@@ -103,12 +103,12 @@ describe('useBundledSkillInstall', () => {
     expect(latest?.state.kind).toBe('idle')
 
     await act(async () => {
-      await latest?.install(['orca-cli'])
+      await latest?.install(['occ-cli'])
     })
     expect(mocks.execute).toHaveBeenLastCalledWith(
       { kind: 'environment', environmentId: 'env-2' },
       PLAN.planDigest,
-      { names: ['orca-cli'] }
+      { names: ['occ-cli'] }
     )
     expect(latest?.state.kind).toBe('done')
 
@@ -129,12 +129,12 @@ describe('useBundledSkillInstall', () => {
     mocks.plan.mockReturnValueOnce(new Promise(() => {}))
     const hook = await renderHarness()
     await act(async () => {
-      void hook.install(['orca-cli'])
+      void hook.install(['occ-cli'])
     })
 
     let repeat: Awaited<ReturnType<BundledSkillInstall['install']>> = { kind: 'idle' }
     await act(async () => {
-      repeat = (await latest?.install(['orca-cli'])) ?? null
+      repeat = (await latest?.install(['occ-cli'])) ?? null
     })
 
     expect(repeat).toBeNull()
@@ -148,7 +148,7 @@ describe('useBundledSkillInstall', () => {
     const hook = await renderHarness()
 
     await act(async () => {
-      await hook.install(['orca-cli'])
+      await hook.install(['occ-cli'])
     })
 
     expect(latest?.state).toEqual({ kind: 'failed', message: 'runtime unreachable' })
@@ -159,7 +159,7 @@ describe('useBundledSkillInstall', () => {
     const hook = await renderHarness()
 
     await act(async () => {
-      await hook.install(['orca-cli', 'orchestration'])
+      await hook.install(['occ-cli', 'orchestration'])
     })
     expect(latest?.state.kind).toBe('failed')
 
@@ -169,7 +169,7 @@ describe('useBundledSkillInstall', () => {
 
     expect(mocks.plan).toHaveBeenLastCalledWith(
       { kind: 'local' },
-      { names: ['orca-cli', 'orchestration'] }
+      { names: ['occ-cli', 'orchestration'] }
     )
     expect(latest?.state.kind).toBe('done')
   })

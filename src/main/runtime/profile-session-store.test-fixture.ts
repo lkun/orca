@@ -4,7 +4,7 @@ import { getDefaultWorkspaceSession } from '../../shared/constants'
 import type { LayoutCommand } from '../../shared/workspace-layout/workspace-layout-command-types'
 import { resolveHostId } from '../persistence/loading-store/session-host-partitions'
 import { applyCommandToSession } from '../persistence/terminal-topology/terminal-pane-admission'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import type { RuntimeStore } from './runtime-store-contract'
 
 export type SessionStore = {
@@ -71,7 +71,7 @@ export function forgetInstalledPaneSession(
   }
 }
 
-export function storeOf(runtime: OrcaRuntimeService): SessionStore | null {
+export function storeOf(runtime: OCCRuntimeService): SessionStore | null {
   return runtime['store'] ?? null
 }
 
@@ -123,7 +123,7 @@ export function asProfileSessionStore(
 
 /** The session main's layout reads from the runtime's store, as bindPaneFirst left it. */
 export function boundSessionOf(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   hostId = 'local'
 ): WorkspaceSessionState {
   return storeOf(runtime)?.getWorkspaceSession?.(hostId) ?? getDefaultWorkspaceSession()

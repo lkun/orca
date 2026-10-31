@@ -5,7 +5,7 @@ import { homedir } from 'node:os'
 import { promisify } from 'node:util'
 import { buildPosixCommandPathLookupScript } from '../../shared/posix-command-path-lookup'
 import { getSystemCliInstallDirectories } from '../../shared/system-cli-install-dirs'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   beginLocalCommandSelection,
   isCommandOnLocalPath,
@@ -17,7 +17,7 @@ import type { WslPreflightTarget } from './preflight-wsl-agent-detection'
 
 const execFileAsync = promisify(execFile)
 export const PREFLIGHT_COMMAND_TIMEOUT_MS = 5000
-const WSL_COMMAND_PATH_SENTINEL = '__ORCA_PREFLIGHT_COMMAND_PATH__'
+const WSL_COMMAND_PATH_SENTINEL = '__OCC_PREFLIGHT_COMMAND_PATH__'
 
 export type PreflightCommandResult = { stdout: string; stderr: string }
 

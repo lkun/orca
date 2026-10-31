@@ -25,7 +25,7 @@ import {
 import {
   admitProcessTreeKill,
   setProcessTreeKillGate
-} from '@orca/process-host/process-tree-kill-gate'
+} from '@occ/process-host/process-tree-kill-gate'
 import { terminateWindowsProcessTree } from '../windows-process-tree-kill'
 import { installMainProcessTreeKillGate } from '../own-chromium-tree-kill-guard'
 import { _resetTracerForTests, setActiveSink } from '../observability/tracer'

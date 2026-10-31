@@ -110,7 +110,7 @@ process.once('exit', () => {
 
 /** One isolated agent: its own script copy, ledger, and control file. */
 export function createMailPaneAgent(options: MailPaneAgentOptions = {}): MailPaneAgent {
-  const dir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-mail-agent-'))
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-mail-agent-'))
   agentDirs.push(dir)
   // Named like an npm shim (`node …/bin/codex`) so launch and foreground identity recognize the agent.
   const { executable = 'codex' } = options

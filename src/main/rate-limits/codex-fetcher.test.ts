@@ -1,7 +1,7 @@
 import { EventEmitter } from 'node:events'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type * as RunProcess from '@orca/process-host'
+import type * as RunProcess from '@occ/process-host'
 
 const {
   childSpawnMock,
@@ -32,7 +32,7 @@ vi.mock('node:child_process', () => ({
 }))
 
 // Observe spawn requests before npm-shim resolution.
-vi.mock('@orca/process-host', async (importOriginal) => ({
+vi.mock('@occ/process-host', async (importOriginal) => ({
   ...(await importOriginal<typeof RunProcess>()),
   spawnProcess: (spec: { program: string; args?: readonly string[] }) =>
     childSpawnMock(spec.program, spec.args ?? [], spec)
@@ -684,7 +684,7 @@ describe('fetchCodexRateLimits', () => {
 
     try {
       const resultPromise = fetchCodexRateLimits({
-        codexHomePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\orca\\account\\home'
+        codexHomePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\occ\\account\\home'
       })
       await vi.advanceTimersByTimeAsync(1)
       await vi.advanceTimersByTimeAsync(1)
@@ -694,22 +694,22 @@ describe('fetchCodexRateLimits', () => {
       expect(spawnFile).toBe('wsl.exe')
       expect(spawnArgs.slice(0, 5)).toEqual(['-d', 'Ubuntu', '--exec', 'sh', '-c'])
       const shellCommand = spawnArgs.at(-1) as string
-      expect(shellCommand).toContain('_orca_wsl_shell=$(getent passwd')
-      expect(shellCommand).toContain('bash|zsh|ksh|mksh|ash) exec "$_orca_wsl_shell" -ilc')
+      expect(shellCommand).toContain('_occ_wsl_shell=$(getent passwd')
+      expect(shellCommand).toContain('bash|zsh|ksh|mksh|ash) exec "$_occ_wsl_shell" -ilc')
       expect(shellCommand).toContain(
-        'exec 3<&0\nexec 4>&1\nexec </dev/null\nexec >/dev/null\n_orca_wsl_shell='
+        'exec 3<&0\nexec 4>&1\nexec </dev/null\nexec >/dev/null\n_occ_wsl_shell='
       )
-      expect(shellCommand).toContain('mkdir -p "$orca_rate_limit_cwd"')
-      expect(shellCommand).toContain('cd "$orca_rate_limit_cwd"')
+      expect(shellCommand).toContain('mkdir -p "$occ_rate_limit_cwd"')
+      expect(shellCommand).toContain('cd "$occ_rate_limit_cwd"')
       expect(shellCommand).toContain(
-        "export CODEX_HOME='\\''/home/alice/.local/share/orca/account/home'\\''"
+        "export CODEX_HOME='\\''/home/alice/.local/share/occ/account/home'\\''"
       )
       expect(shellCommand).toContain(
         "exec codex '\\''-c'\\'' '\\''approval_policy=never'\\'' '\\''-c'\\'' '\\''features.plugins=false'\\'' '\\''-s'\\'' '\\''read-only'\\'' '\\''-a'\\'' '\\''never'\\'' '\\''app-server'\\'' <&3 >&4 3<&- 4>&-"
       )
       expect(shellCommand.match(/<&3 >&4 3<&- 4>&-/g)).toHaveLength(3)
       expect(shellCommand.match(/exec codex [^\n]+<&3 >&4 3<&- 4>&-/g)).toHaveLength(3)
-      expect(shellCommand).not.toContain('_orca_codex')
+      expect(shellCommand).not.toContain('_occ_codex')
       expect(shellCommand).not.toContain('wsl-codex-path')
       expect(spawnOptions).toEqual(
         expect.objectContaining({
@@ -799,7 +799,7 @@ describe('fetchCodexRateLimits', () => {
 
     try {
       const resultPromise = fetchCodexRateLimits({
-        codexHomePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\orca\\account\\home'
+        codexHomePath: '\\\\wsl.localhost\\Ubuntu\\home\\alice\\.local\\share\\occ\\account\\home'
       })
       await vi.advanceTimersByTimeAsync(0)
       rpcChild.emit('close')

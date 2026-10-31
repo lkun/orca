@@ -1,6 +1,6 @@
 import { rmSync, writeFileSync } from 'node:fs'
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
 import { getLargeDiffRenderLimit } from '../../src/shared/large-diff-render-limit'
 import { MAX_AUTOMATIC_DIFF_CHANGED_LINES } from '../../src/renderer/src/components/editor/combined-diff-on-demand-load'
@@ -10,8 +10,8 @@ import {
   createIsolatedStagedLocaleDiffRepo
 } from './large-diff-repro-fixtures'
 
-async function addAndActivateRepo(orcaPage: Page, repoPath: string): Promise<string> {
-  const repoId = await orcaPage.evaluate(async (pathToRepo: string) => {
+async function addAndActivateRepo(occPage: Page, repoPath: string): Promise<string> {
+  const repoId = await occPage.evaluate(async (pathToRepo: string) => {
     const store = window.__store
     if (!store) {
       throw new Error('window.__store is not available')
@@ -29,7 +29,7 @@ async function addAndActivateRepo(orcaPage: Page, repoPath: string): Promise<str
   await expect
     .poll(
       () =>
-        orcaPage.evaluate(async (targetRepoId: string) => {
+        occPage.evaluate(async (targetRepoId: string) => {
           const store = window.__store
           if (!store) {
             return 0
@@ -44,7 +44,7 @@ async function addAndActivateRepo(orcaPage: Page, repoPath: string): Promise<str
     )
     .toBeGreaterThan(0)
 
-  const worktreeId = await orcaPage.evaluate(
+  const worktreeId = await occPage.evaluate(
     ({ targetRepoId, pathToRepo }) => {
       const store = window.__store
       if (!store) {
@@ -71,22 +71,22 @@ test.describe('Large diff freeze repro', () => {
   test.describe.configure({ mode: 'serial' })
   test.use({ seedTestRepo: false })
   test('defers a large combined diff until the user loads it', async ({
-    orcaPage,
+    occPage,
     registerPostElectronShutdownCleanup
   }) => {
-    await waitForSessionReady(orcaPage)
+    await waitForSessionReady(occPage)
     const fixture = createIsolatedLargeDiffRepo()
     // Why: Windows keeps the watched fixture repo locked until Electron exits.
     registerPostElectronShutdownCleanup(async () => {
       rmSync(fixture.repoPath, { recursive: true, force: true })
     })
 
-    const worktreeId = await addAndActivateRepo(orcaPage, fixture.repoPath)
+    const worktreeId = await addAndActivateRepo(occPage, fixture.repoPath)
     writeFileSync(
       fixture.absolutePath,
       buildLargeTypeScriptFile(MAX_AUTOMATIC_DIFF_CHANGED_LINES + 1)
     )
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       async ({ wId, repoPath, relativePath }) => {
         const store = window.__store
         if (!store) {
@@ -114,24 +114,24 @@ test.describe('Large diff freeze repro', () => {
       { wId: worktreeId, repoPath: fixture.repoPath, relativePath: fixture.relativePath }
     )
 
-    const prompt = orcaPage.getByTestId('large-diff-load-prompt')
+    const prompt = occPage.getByTestId('large-diff-load-prompt')
     await expect(prompt).toBeVisible()
     await expect(prompt).toContainText('Large diffs are not rendered by default.')
-    await expect(orcaPage.locator('.monaco-diff-editor')).toHaveCount(0)
+    await expect(occPage.locator('.monaco-diff-editor')).toHaveCount(0)
 
     await prompt.getByRole('button', { name: 'Load diff' }).click()
 
     await expect(prompt).toHaveCount(0)
-    await expect(orcaPage.locator('.monaco-diff-editor')).toHaveCount(1, { timeout: 30_000 })
+    await expect(occPage.locator('.monaco-diff-editor')).toHaveCount(1, { timeout: 30_000 })
   })
 
-  test('opening a large single-file diff keeps the renderer responsive', async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
+  test('opening a large single-file diff keeps the renderer responsive', async ({ occPage }) => {
+    await waitForSessionReady(occPage)
     const fixture = createIsolatedLargeDiffRepo()
-    const lineCount = Number(process.env.ORCA_LARGE_DIFF_REPRO_LINES ?? '60000')
+    const lineCount = Number(process.env.OCC_LARGE_DIFF_REPRO_LINES ?? '60000')
     if (!Number.isFinite(lineCount) || lineCount < 0) {
       throw new Error(
-        `Invalid ORCA_LARGE_DIFF_REPRO_LINES: ${process.env.ORCA_LARGE_DIFF_REPRO_LINES}`
+        `Invalid OCC_LARGE_DIFF_REPRO_LINES: ${process.env.OCC_LARGE_DIFF_REPRO_LINES}`
       )
     }
     const modifiedContent = buildLargeTypeScriptFile(lineCount)
@@ -141,9 +141,9 @@ test.describe('Large diff freeze repro', () => {
     }).limited
 
     try {
-      const worktreeId = await addAndActivateRepo(orcaPage, fixture.repoPath)
+      const worktreeId = await addAndActivateRepo(occPage, fixture.repoPath)
       writeFileSync(fixture.absolutePath, modifiedContent)
-      const measurement = await orcaPage.evaluate(
+      const measurement = await occPage.evaluate(
         async ({ wId, absolutePath, relativePath, expectFallback }) => {
           const store = window.__store
           if (!store) {
@@ -216,14 +216,14 @@ test.describe('Large diff freeze repro', () => {
   })
 
   test('opening stale unstaged combined diffs after staging keeps the renderer responsive', async ({
-    orcaPage
+    occPage
   }) => {
-    await waitForSessionReady(orcaPage)
+    await waitForSessionReady(occPage)
     const fixture = createIsolatedStagedLocaleDiffRepo()
 
     try {
-      const worktreeId = await addAndActivateRepo(orcaPage, fixture.repoPath)
-      const measurement = await orcaPage.evaluate(
+      const worktreeId = await addAndActivateRepo(occPage, fixture.repoPath)
+      const measurement = await occPage.evaluate(
         async ({ wId, repoPath, expectedPaths }) => {
           const store = window.__store
           if (!store) {

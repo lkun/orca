@@ -13,7 +13,7 @@ import {
 const __dirname = import.meta.dirname
 const ROOT = join(__dirname, '..', '..')
 // Why: lets a contract test build into a temp tree instead of clobbering a developer's out/relay.
-const OUT_ROOT = process.env.ORCA_WSL_GUEST_OUT_ROOT ?? join(ROOT, 'out', 'relay')
+const OUT_ROOT = process.env.OCC_WSL_GUEST_OUT_ROOT ?? join(ROOT, 'out', 'relay')
 const RELAY_VERSION = '0.1.0'
 
 const outDir = join(OUT_ROOT, 'wsl')

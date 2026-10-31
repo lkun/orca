@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { spawn, spawnSync } from 'node:child_process'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { buildPosixAgentHookPostCommand } from './hook-post-command'
 import { createServer, type Server, type Socket } from 'node:net'
 import {
@@ -23,7 +23,7 @@ const { homedirMock } = vi.hoisted(() => ({
 
 vi.mock('electron', () => ({
   app: {
-    getPath: () => '/tmp/orca-user-data'
+    getPath: () => '/tmp/occ-user-data'
   }
 }))
 
@@ -101,13 +101,13 @@ const JSON_INSTALLERS = [
   {
     agent: 'grok',
     timeout: MANAGED_HOOK_TIMEOUT_SECONDS,
-    configPath: `${REMOTE_HOME}/.grok/hooks/orca-status.json`,
+    configPath: `${REMOTE_HOME}/.grok/hooks/occ-status.json`,
     install: (sftp: SFTPWrapper) => new GrokHookService().installRemote(sftp, REMOTE_HOME)
   },
   {
     agent: 'copilot',
     timeout: 5,
-    configPath: `${REMOTE_HOME}/.copilot/hooks/orca.json`,
+    configPath: `${REMOTE_HOME}/.copilot/hooks/occ.json`,
     install: (sftp: SFTPWrapper) => new CopilotHookService().installRemote(sftp, REMOTE_HOME)
   },
   {
@@ -124,7 +124,7 @@ const JSON_INSTALLERS = [
   }
 ] as const
 
-const MANAGED_HOOKS_DIR_NEEDLE = '/.orca/agent-hooks/'
+const MANAGED_HOOKS_DIR_NEEDLE = '/.occ/agent-hooks/'
 // Claude's statusLine schema has no timeout field and cannot block agent turns.
 const STATUSLINE_SCRIPT_NEEDLE = '-statusline.'
 
@@ -173,7 +173,7 @@ describe('managed agent hook timeouts', () => {
   it.skipIf(process.platform === 'win32').each(['raw-json-v1', ''])(
     'scopes the C numeric locale to the custom curl command for transport %s',
     (transport) => {
-      const tmpDir = mkdtempSync(join(tmpdir(), 'orca-custom-curl-locale-'))
+      const tmpDir = mkdtempSync(join(tmpdir(), 'occ-custom-curl-locale-'))
       try {
         const curlPath = join(tmpDir, 'curl with spaces')
         const observed = join(tmpDir, 'curl-locale')
@@ -181,15 +181,15 @@ describe('managed agent hook timeouts', () => {
         const payloadPath = join(tmpDir, 'custom-curl-payload')
         writeFileSync(
           curlPath,
-          '#!/bin/sh\nprintf "%s|%s" "$LC_ALL" "$LC_NUMERIC" > "$ORCA_TEST_CURL_LOCALE"\ncat > "$ORCA_TEST_CURL_PAYLOAD"\n'
+          '#!/bin/sh\nprintf "%s|%s" "$LC_ALL" "$LC_NUMERIC" > "$OCC_TEST_CURL_LOCALE"\ncat > "$OCC_TEST_CURL_PAYLOAD"\n'
         )
         chmodSync(curlPath, 0o755)
         const payload = '{"prompt":"漢字 $HOME & quoted"}'
         const command = [
-          'payload="$ORCA_TEST_PAYLOAD"',
-          'curl_bin="$ORCA_TEST_CURL_BIN"',
+          'payload="$OCC_TEST_PAYLOAD"',
+          'curl_bin="$OCC_TEST_CURL_BIN"',
           ...buildPosixAgentHookPostCommand('codex', { curlCommand: '"$curl_bin"' }),
-          'printf "%s|%s" "$LC_ALL" "$LC_NUMERIC" > "$ORCA_TEST_SHELL_LOCALE"'
+          'printf "%s|%s" "$LC_ALL" "$LC_NUMERIC" > "$OCC_TEST_SHELL_LOCALE"'
         ].join('\n')
         const result = runProcessSync({
           program: '/bin/sh',
@@ -198,14 +198,14 @@ describe('managed agent hook timeouts', () => {
             PATH: '/usr/bin:/bin',
             LC_ALL: 'de_DE.UTF-8',
             LC_NUMERIC: 'de_DE.UTF-8',
-            ORCA_AGENT_HOOK_TRANSPORT: transport,
-            ORCA_AGENT_HOOK_PORT: '1234',
-            ORCA_AGENT_HOOK_TOKEN: 'token',
-            ORCA_TEST_CURL_BIN: curlPath,
-            ORCA_TEST_CURL_LOCALE: observed,
-            ORCA_TEST_SHELL_LOCALE: shellObserved,
-            ORCA_TEST_CURL_PAYLOAD: payloadPath,
-            ORCA_TEST_PAYLOAD: payload
+            OCC_AGENT_HOOK_TRANSPORT: transport,
+            OCC_AGENT_HOOK_PORT: '1234',
+            OCC_AGENT_HOOK_TOKEN: 'token',
+            OCC_TEST_CURL_BIN: curlPath,
+            OCC_TEST_CURL_LOCALE: observed,
+            OCC_TEST_SHELL_LOCALE: shellObserved,
+            OCC_TEST_CURL_PAYLOAD: payloadPath,
+            OCC_TEST_PAYLOAD: payload
           },
           timeoutMs: 5000
         })
@@ -254,11 +254,11 @@ describe('managed agent hook timeouts', () => {
     const config = fs.files.get(`${REMOTE_HOME}/.kimi-code/config.toml`)!
     const timeoutLines = config.match(new RegExp(`timeout = ${MANAGED_HOOK_TIMEOUT_SECONDS}`, 'g'))
     expect(timeoutLines?.length ?? 0).toBeGreaterThan(0)
-    expect(config).toContain('/home/dev/.orca/agent-hooks/kimi-hook.sh')
+    expect(config).toContain('/home/dev/.occ/agent-hooks/kimi-hook.sh')
   })
 
   it('writes a config-level timeout on local Droid hooks', () => {
-    const homeDir = mkdtempSync(join(tmpdir(), 'orca-droid-hook-timeout-'))
+    const homeDir = mkdtempSync(join(tmpdir(), 'occ-droid-hook-timeout-'))
     homedirMock.mockReturnValue(homeDir)
     try {
       const status = new DroidHookService().install()
@@ -281,7 +281,7 @@ describe('managed agent hook timeouts', () => {
   it.skipIf(process.platform === 'win32')(
     'passes timeout budgets to curl from every generated POSIX wrapper',
     async () => {
-      const captureDir = mkdtempSync(join(tmpdir(), 'orca-hook-curl-args-'))
+      const captureDir = mkdtempSync(join(tmpdir(), 'occ-hook-curl-args-'))
       const capturePath = join(captureDir, 'curl-args')
       const localePath = join(captureDir, 'curl-locale')
       try {
@@ -307,7 +307,7 @@ describe('managed agent hook timeouts', () => {
               [
                 '-c',
                 [
-                  'curl() { printf "%s|%s" "$LC_ALL" "$LC_NUMERIC" > "$ORCA_TEST_CURL_LOCALE"; printf "%s\\n" "$@" > "$ORCA_TEST_CURL_ARGS"; command -p cat >/dev/null; }',
+                  'curl() { printf "%s|%s" "$LC_ALL" "$LC_NUMERIC" > "$OCC_TEST_CURL_LOCALE"; printf "%s\\n" "$@" > "$OCC_TEST_CURL_ARGS"; command -p cat >/dev/null; }',
                   content
                 ].join('\n')
               ],
@@ -317,17 +317,17 @@ describe('managed agent hook timeouts', () => {
                 timeout: 5_000,
                 env: {
                   ...process.env,
-                  ORCA_AGENT_HOOK_ENDPOINT: '',
-                  ORCA_AGENT_HOOK_TRANSPORT: '',
-                  ORCA_AGENT_HOOK_PORT: '1',
-                  ORCA_AGENT_HOOK_TOKEN: 'test-token',
-                  ORCA_PANE_KEY: 'pane-1',
+                  OCC_AGENT_HOOK_ENDPOINT: '',
+                  OCC_AGENT_HOOK_TRANSPORT: '',
+                  OCC_AGENT_HOOK_PORT: '1',
+                  OCC_AGENT_HOOK_TOKEN: 'test-token',
+                  OCC_PANE_KEY: 'pane-1',
                   CLAUDE_JOB_DIR: '',
                   DEVIN_PROJECT_DIR: '',
                   LC_ALL: 'de_DE.UTF-8',
                   LC_NUMERIC: 'de_DE.UTF-8',
-                  ORCA_TEST_CURL_LOCALE: localePath,
-                  ORCA_TEST_CURL_ARGS: capturePath
+                  OCC_TEST_CURL_LOCALE: localePath,
+                  OCC_TEST_CURL_ARGS: capturePath
                 }
               }
             )
@@ -368,9 +368,9 @@ describe('managed agent hook timeouts', () => {
       async () => {
         const { sftp, fs } = createFakeSftp()
         await new GeminiHookService().installRemote(sftp, REMOTE_HOME)
-        const wrapperBody = fs.files.get(`${REMOTE_HOME}/.orca/agent-hooks/gemini-hook.sh`)!
+        const wrapperBody = fs.files.get(`${REMOTE_HOME}/.occ/agent-hooks/gemini-hook.sh`)!
 
-        tempDir = mkdtempSync(join(tmpdir(), 'orca-hook-lc-numeric-'))
+        tempDir = mkdtempSync(join(tmpdir(), 'occ-hook-lc-numeric-'))
         const binDir = join(tempDir, 'bin')
         mkdirSync(binDir)
         const observed = join(tempDir, 'lc-numeric')
@@ -389,7 +389,7 @@ describe('managed agent hook timeouts', () => {
             'sh',
             [
               '-c',
-              `trap 'printf "%s|%s" "$LC_ALL" "$LC_NUMERIC" > "$ORCA_TEST_SHELL_LOCALE"' EXIT; . "$1"`,
+              `trap 'printf "%s|%s" "$LC_ALL" "$LC_NUMERIC" > "$OCC_TEST_SHELL_LOCALE"' EXIT; . "$1"`,
               'hook',
               scriptPath
             ],
@@ -399,13 +399,13 @@ describe('managed agent hook timeouts', () => {
                 PATH: `${binDir}:${process.env.PATH ?? ''}`,
                 LC_ALL: 'de_DE.UTF-8',
                 LC_NUMERIC: 'de_DE.UTF-8',
-                ORCA_TEST_SHELL_LOCALE: shellObserved,
-                ORCA_AGENT_HOOK_ENDPOINT: '',
-                ORCA_AGENT_HOOK_PORT: '9',
-                ORCA_AGENT_HOOK_TOKEN: 'test-token',
-                ORCA_PANE_KEY: 'pane-1',
-                ORCA_TAB_ID: 'tab-1',
-                ORCA_WORKTREE_ID: 'wt-1'
+                OCC_TEST_SHELL_LOCALE: shellObserved,
+                OCC_AGENT_HOOK_ENDPOINT: '',
+                OCC_AGENT_HOOK_PORT: '9',
+                OCC_AGENT_HOOK_TOKEN: 'test-token',
+                OCC_PANE_KEY: 'pane-1',
+                OCC_TAB_ID: 'tab-1',
+                OCC_WORKTREE_ID: 'wt-1'
               },
               stdio: ['pipe', 'ignore', 'ignore']
             }
@@ -464,12 +464,12 @@ describe('managed agent hook timeouts', () => {
         const child = spawn('sh', [scriptPath], {
           env: {
             ...process.env,
-            ORCA_AGENT_HOOK_ENDPOINT: '',
-            ORCA_AGENT_HOOK_PORT: String(port),
-            ORCA_AGENT_HOOK_TOKEN: 'test-token',
-            ORCA_PANE_KEY: 'pane-1',
-            ORCA_TAB_ID: 'tab-1',
-            ORCA_WORKTREE_ID: 'wt-1',
+            OCC_AGENT_HOOK_ENDPOINT: '',
+            OCC_AGENT_HOOK_PORT: String(port),
+            OCC_AGENT_HOOK_TOKEN: 'test-token',
+            OCC_PANE_KEY: 'pane-1',
+            OCC_TAB_ID: 'tab-1',
+            OCC_WORKTREE_ID: 'wt-1',
             CLAUDE_JOB_DIR: ''
           },
           stdio: ['pipe', 'ignore', 'ignore']
@@ -496,9 +496,9 @@ describe('managed agent hook timeouts', () => {
       async () => {
         const { sftp, fs } = createFakeSftp()
         await new CodexHookService().installRemote(sftp, REMOTE_HOME)
-        const wrapperBody = fs.files.get(`${REMOTE_HOME}/.orca/agent-hooks/codex-hook.sh`)!
+        const wrapperBody = fs.files.get(`${REMOTE_HOME}/.occ/agent-hooks/codex-hook.sh`)!
 
-        tempDir = mkdtempSync(join(tmpdir(), 'orca-hook-timeout-'))
+        tempDir = mkdtempSync(join(tmpdir(), 'occ-hook-timeout-'))
         const scriptPath = join(tempDir, 'codex-hook.sh')
         writeFileSync(scriptPath, wrapperBody, 'utf8')
         chmodSync(scriptPath, 0o755)

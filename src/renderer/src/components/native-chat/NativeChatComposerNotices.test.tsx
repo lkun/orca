@@ -101,7 +101,7 @@ describe('nativeChatNoticeFromError', () => {
       errorText: 'Pasted text is too large for this message.'
     })
     expect(
-      nativeChatNoticeFromError(error, 'Paste failed.', { localErrorIsOrcaWords: true })
+      nativeChatNoticeFromError(error, 'Paste failed.', { localErrorIsOCCWords: true })
     ).toEqual({ text: 'Pasted text is too large for this message.' })
   })
 

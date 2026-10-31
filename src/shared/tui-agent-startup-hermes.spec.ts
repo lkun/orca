@@ -70,7 +70,7 @@ describe('hermes startup plans', () => {
     expect(script).not.toContain('override')
     expect(script).not.toContain("'--cli'")
     expect(script.match(/'--tui'/g)).toHaveLength(1)
-    expect(plan?.env?.ORCA_HERMES_STARTUP_QUERY).toBe('automation prompt')
+    expect(plan?.env?.OCC_HERMES_STARTUP_QUERY).toBe('automation prompt')
   })
 
   it('selects the final Hermes executable token in a wrapper', () => {
@@ -157,7 +157,7 @@ describe('hermes startup plans', () => {
     })
 
     expect(unwrapPowerShellScript(plan?.launchCommand)).toContain(
-      "& 'hermes' 'chat' \"--query=$orcaHermesNativeQuery\" '--tui'"
+      "& 'hermes' 'chat' \"--query=$occHermesNativeQuery\" '--tui'"
     )
   })
 

@@ -25,7 +25,7 @@ function manifest(options: { main?: string; capabilities?: PluginManifest['capab
     publisher: 'samples',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     main: options.main ?? 'worker.js',
     contributes: {
@@ -38,9 +38,9 @@ function manifest(options: { main?: string; capabilities?: PluginManifest['capab
 }
 
 async function pluginRoot(pluginManifest = manifest()): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-reconcile-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-reconcile-'))
   roots.push(root)
-  await writeFile(join(root, 'orca-plugin.json'), JSON.stringify(pluginManifest))
+  await writeFile(join(root, 'occ-plugin.json'), JSON.stringify(pluginManifest))
   await writeFile(join(root, 'worker.js'), 'export default async function () {}')
   await writeFile(join(root, 'worker-v2.js'), 'export default async function () {}')
   await writeFile(join(root, 'panel.html'), '<h1>Panel</h1>')
@@ -81,7 +81,7 @@ async function createHarness(root: string) {
     getDevPluginPaths: () => devPaths,
     getPluginKillListEntry: (key) =>
       killed && key === pluginKey
-        ? { pluginKey, reason: 'Security incident', advisoryUrl: 'https://orca.example/advisory' }
+        ? { pluginKey, reason: 'Security incident', advisoryUrl: 'https://occ.example/advisory' }
         : null,
     workerFactory: factory
   })
@@ -125,7 +125,7 @@ describe('PluginService worker reconciliation', () => {
         publisher: 'samples',
         name: id,
         version: '1.0.0',
-        engines: { orca: '>=1.0.0' },
+        engines: { occ: '>=1.0.0' },
         pluginApi: 1,
         main: 'worker.js',
         contributes: {
@@ -203,7 +203,7 @@ describe('PluginService worker reconciliation', () => {
       publisher: 'samples',
       name: 'Demo',
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       contributes: {
         commands: [{ id: 'tasks', title: 'Tasks', action: 'view.tasks' }]
@@ -306,7 +306,7 @@ describe('PluginService worker reconciliation', () => {
     const harness = await createHarness(root)
     await activate(harness.service)
     await writeFile(
-      join(root, 'orca-plugin.json'),
+      join(root, 'occ-plugin.json'),
       JSON.stringify(manifest({ capabilities: [{ kind: 'storage:own' }] }))
     )
 
@@ -323,7 +323,7 @@ describe('PluginService worker reconciliation', () => {
     const harness = await createHarness(root)
     await activate(harness.service)
     await writeFile(
-      join(root, 'orca-plugin.json'),
+      join(root, 'occ-plugin.json'),
       JSON.stringify(manifest({ main: 'worker-v2.js' }))
     )
 
@@ -365,7 +365,7 @@ describe('PluginService worker reconciliation', () => {
     services.push(service)
     await activate(service)
     await writeFile(
-      join(root, 'orca-plugin.json'),
+      join(root, 'occ-plugin.json'),
       JSON.stringify(manifest({ main: 'worker-v2.js' }))
     )
 

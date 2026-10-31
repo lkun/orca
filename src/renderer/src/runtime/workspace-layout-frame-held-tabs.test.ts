@@ -27,7 +27,7 @@ import {
   runtimeMobileSessionSyncKeysEqual
 } from './sync-runtime-graph/sync-key'
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('sonner', () => ({ toast: { info: vi.fn(), success: vi.fn(), error: vi.fn() } }))
 vi.mock('@/lib/agent-status', async (importOriginal) => {
   const actual = await importOriginal<typeof AgentStatusModule>()
@@ -285,8 +285,8 @@ describe('a change main applies first, with frames flowing', () => {
     const { store, sync, answer } = await boot()
     const file = {
       ...store.getState().openFiles[0]!,
-      id: '/Users/dev/orca/src/peek.ts',
-      filePath: '/Users/dev/orca/src/peek.ts',
+      id: '/Users/dev/occ/src/peek.ts',
+      filePath: '/Users/dev/occ/src/peek.ts',
       relativePath: 'src/peek.ts',
       isPreview: true
     }

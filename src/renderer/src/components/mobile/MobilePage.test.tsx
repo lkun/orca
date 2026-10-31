@@ -10,7 +10,7 @@ import type { MobileRelayMintFailure } from '../../../../shared/mobile-relay-min
 
 type StoreState = {
   closeMobilePage: () => void
-  orcaProfileAuthStatus: { state: 'connected' | 'local' }
+  occProfileAuthStatus: { state: 'connected' | 'local' }
   settings: {
     showMobileButton: boolean
     mobilePairingConnectionMode?: MobilePairingConnectionMode
@@ -18,7 +18,7 @@ type StoreState = {
     mobilePairingCustomAddresses?: string[]
   }
   updateSettings: () => Promise<void>
-  fetchOrcaProfileAuthStatus: () => Promise<unknown>
+  fetchOCCProfileAuthStatus: () => Promise<unknown>
 }
 
 const mocks = vi.hoisted(() => ({
@@ -158,10 +158,10 @@ describe('MobilePage pairing connection mode', () => {
     _resetPairedMobileDevicesCacheForTests()
     mocks.storeState = {
       closeMobilePage: vi.fn(),
-      orcaProfileAuthStatus: { state: 'connected' },
+      occProfileAuthStatus: { state: 'connected' },
       settings: { showMobileButton: true },
       updateSettings: vi.fn().mockResolvedValue(undefined),
-      fetchOrcaProfileAuthStatus: vi.fn().mockResolvedValue(null)
+      fetchOCCProfileAuthStatus: vi.fn().mockResolvedValue(null)
     }
     Object.defineProperty(window, 'api', {
       configurable: true,
@@ -193,7 +193,7 @@ describe('MobilePage pairing connection mode', () => {
 
     await user.click(screen.getByRole('button', { name: 'Open Android install guide' }))
 
-    expect(window.api.shell.openUrl).toHaveBeenCalledWith('https://www.onorca.dev/docs/android-apk')
+    expect(window.api.shell.openUrl).toHaveBeenCalledWith('https://www.onocc.dev/docs/android-apk')
   })
 
   it('defaults signed-in pairing to Anywhere and remints when same-network is selected', async () => {
@@ -264,7 +264,7 @@ describe('MobilePage pairing connection mode', () => {
   })
 
   it('preselects LAN and mints a local-only QR on a signed-out desktop', async () => {
-    mocks.storeState.orcaProfileAuthStatus = { state: 'local' }
+    mocks.storeState.occProfileAuthStatus = { state: 'local' }
     await openPairingStep()
 
     await waitFor(() => expect(getPairingQR).toHaveBeenCalledWith({ connectionMode: 'local-only' }))
@@ -273,7 +273,7 @@ describe('MobilePage pairing connection mode', () => {
   })
 
   it('does not remint when switching from Local to Anywhere while signed out', async () => {
-    mocks.storeState.orcaProfileAuthStatus = { state: 'local' }
+    mocks.storeState.occProfileAuthStatus = { state: 'local' }
     const user = userEvent.setup()
     await openPairingStep()
 
@@ -289,7 +289,7 @@ describe('MobilePage pairing connection mode', () => {
   })
 
   it('does not mint on address change while signed out with Anywhere selected', async () => {
-    mocks.storeState.orcaProfileAuthStatus = { state: 'local' }
+    mocks.storeState.occProfileAuthStatus = { state: 'local' }
     const user = userEvent.setup()
     await openPairingStep()
     await user.click(screen.getByRole('button', { name: 'OCC Relay' }))
@@ -303,7 +303,7 @@ describe('MobilePage pairing connection mode', () => {
   })
 
   it('mints a Relay QR when signing in with Anywhere selected', async () => {
-    mocks.storeState.orcaProfileAuthStatus = { state: 'local' }
+    mocks.storeState.occProfileAuthStatus = { state: 'local' }
     const user = userEvent.setup()
     const { rerender } = render(<MobilePage />)
     await waitFor(() => expect(screen.getByTestId('stage')).toHaveTextContent('intro'))
@@ -323,7 +323,7 @@ describe('MobilePage pairing connection mode', () => {
         })
     )
 
-    mocks.storeState.orcaProfileAuthStatus = { state: 'connected' }
+    mocks.storeState.occProfileAuthStatus = { state: 'connected' }
     rerender(<MobilePage />)
     await waitFor(() => expect(getPairingQR).toHaveBeenCalledWith({ connectionMode: 'automatic' }))
     expect(screen.getByTestId('pairing-qr')).toHaveTextContent('none')

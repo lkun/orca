@@ -9,7 +9,7 @@ import { useAppStore } from '@/store'
 import type { AppState } from '@/store/types'
 import { makeOpenFile } from '../../store/slices/store-session-test-harness'
 import { makeWorktree, TEST_REPO } from '../../store/slices/worktrees-slice-test-fixtures'
-import { ORCA_WORKTREE_FILE_CHANGE_EVENT } from '@/hooks/worktree-file-change-event'
+import { OCC_WORKTREE_FILE_CHANGE_EVENT } from '@/hooks/worktree-file-change-event'
 import { useGitStatusPolling } from './useGitStatusPolling'
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true
@@ -119,10 +119,10 @@ describe('useGitStatusPolling rerender stability', () => {
     await flushMicrotasks()
 
     // Assert subscription first so an unhandled event cannot make this test vacuous.
-    expect(addSpy).toHaveBeenCalledWith(ORCA_WORKTREE_FILE_CHANGE_EVENT, expect.any(Function))
+    expect(addSpy).toHaveBeenCalledWith(OCC_WORKTREE_FILE_CHANGE_EVENT, expect.any(Function))
 
     window.dispatchEvent(
-      new CustomEvent(ORCA_WORKTREE_FILE_CHANGE_EVENT, {
+      new CustomEvent(OCC_WORKTREE_FILE_CHANGE_EVENT, {
         detail: {
           payload: {
             worktreePath: WORKTREE_PATH,
@@ -154,7 +154,7 @@ describe('useGitStatusPolling rerender stability', () => {
     // Why: a nudge pushed back on every event would never fire under continuous agent writes.
     for (let elapsed = 0; elapsed < 4_000; elapsed += 50) {
       window.dispatchEvent(
-        new CustomEvent(ORCA_WORKTREE_FILE_CHANGE_EVENT, {
+        new CustomEvent(OCC_WORKTREE_FILE_CHANGE_EVENT, {
           detail: {
             payload: {
               worktreePath: WORKTREE_PATH,

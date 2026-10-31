@@ -3,7 +3,7 @@ import type {
   BundledSkillPlan,
   BundledSkillPlanRequest
 } from '../../../shared/bundled-skill-plan'
-import { BUNDLED_ORCA_SKILL_CAPABILITY } from '../../../shared/skill-install-capability'
+import { BUNDLED_OCC_SKILL_CAPABILITY } from '../../../shared/skill-install-capability'
 import type { BundledSkillTarget } from '@/lib/bundled-skill-target'
 import { callRuntimeRpc, runtimeEnvironmentSupportsCapability } from './runtime-rpc-client'
 
@@ -34,14 +34,14 @@ export async function planBundledSkillsOnTarget(
   if (
     !(await runtimeEnvironmentSupportsCapability(
       target.environmentId,
-      BUNDLED_ORCA_SKILL_CAPABILITY
+      BUNDLED_OCC_SKILL_CAPABILITY
     ))
   ) {
     return { kind: 'unsupported', reason: 'update-server' }
   }
   const plan = await callRuntimeRpc<BundledSkillPlan>(
     { kind: 'environment', environmentId: target.environmentId },
-    'skills.planBundledOrca',
+    'skills.planBundledOCC',
     request,
     { timeoutMs: BUNDLED_SKILL_PLAN_TIMEOUT_MS }
   )
@@ -65,7 +65,7 @@ export function executeBundledSkillsOnTarget(
   }
   return callRuntimeRpc<BundledSkillInstallResult>(
     { kind: 'environment', environmentId: target.environmentId },
-    'skills.executeBundledOrca',
+    'skills.executeBundledOCC',
     { planDigest, request },
     { timeoutMs: BUNDLED_SKILL_EXECUTE_TIMEOUT_MS }
   )

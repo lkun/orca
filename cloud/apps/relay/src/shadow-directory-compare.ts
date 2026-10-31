@@ -1,4 +1,4 @@
-import { RELAY_PROTOCOL_LIMITS } from '@orca-cloud/relay-contract'
+import { RELAY_PROTOCOL_LIMITS } from '@occ-cloud/relay-contract'
 import { relayHostLogDigest } from './relay-host-log-digest.js'
 import type { ShadowSeatDirectory } from './shadow-seat-directory.js'
 
@@ -213,7 +213,7 @@ export class ShadowDirectoryCompare {
       const [route, verdictClass, explained] = key.split('\u0000')
       this.log(
         JSON.stringify({
-          event: 'orca_relay_shadow_compare',
+          event: 'occ_relay_shadow_compare',
           route,
           class: verdictClass,
           explained: explained === 'true',
@@ -241,7 +241,7 @@ export class ShadowDirectoryCompare {
     const seats = this.directory.seatsOf(identity.userId, identity.relayHostId)
     this.log(
       JSON.stringify({
-        event: 'orca_relay_shadow_compare_unexplained',
+        event: 'occ_relay_shadow_compare_unexplained',
         route,
         class: verdict.class,
         host: relayHostLogDigest(identity.relayHostId),

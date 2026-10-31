@@ -3,7 +3,7 @@ import { createServer, type Server } from 'node:http'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type * as osModule from 'node:os'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { removeTreeSync } from '../../shared/windows-transient-lock-removal'
 import { parseClaudeStatusLineBody } from '../../shared/claude-statusline-rate-limits'
@@ -12,7 +12,7 @@ const { homedirMock } = vi.hoisted(() => ({
   homedirMock: vi.fn<() => string>()
 }))
 
-vi.mock('electron', () => ({ app: { getPath: () => '/tmp/orca-user-data' } }))
+vi.mock('electron', () => ({ app: { getPath: () => '/tmp/occ-user-data' } }))
 
 vi.mock('os', async (importOriginal) => {
   const actual = await importOriginal<typeof osModule>()
@@ -115,7 +115,7 @@ describe.skipIf(process.platform !== 'win32')('Claude statusLine delivery on Win
     server = listener.server
     const baseEnv = Object.fromEntries(
       // Isolate live OCC endpoints and inherited daemon-worker guards.
-      Object.entries(process.env).filter(([key]) => !/^(ORCA|CLAUDE)_/.test(key))
+      Object.entries(process.env).filter(([key]) => !/^(OCC|CLAUDE)_/.test(key))
     )
     const run = (program: string, args: string[], paneId: number) =>
       runProcess({
@@ -130,21 +130,21 @@ describe.skipIf(process.platform !== 'win32')('Claude statusLine delivery on Win
           // Keep throttle stamps inside the fixture.
           TEMP: home,
           TMP: home,
-          ORCA_BACKGROUND_LAUNCH: '1',
-          ORCA_AGENT_HOOK_PORT: String(listener.port),
-          ORCA_AGENT_HOOK_TOKEN: HOOK_TOKEN,
-          ORCA_PANE_KEY: `tab-1:00000000-0000-4000-8000-00000000000${paneId}`
+          OCC_BACKGROUND_LAUNCH: '1',
+          OCC_AGENT_HOOK_PORT: String(listener.port),
+          OCC_AGENT_HOOK_TOKEN: HOOK_TOKEN,
+          OCC_PANE_KEY: `tab-1:00000000-0000-4000-8000-00000000000${paneId}`
         }
       })
     return { command, posts: listener.posts, run }
   }
 
   it('upgrades the runtime-home entry to one Windows PowerShell 5.1 and Git Bash both post through', async () => {
-    const { command, posts, run } = await installInto('orca-claude-statusline-run-', {
+    const { command, posts, run } = await installInto('occ-claude-statusline-run-', {
       statusLine: { type: 'command', command: LEGACY_COMMAND }
     })
     expect(command).toBe(
-      join(home, '.orca', 'agent-hooks', 'claude-statusline.cmd').replaceAll('\\', '/')
+      join(home, '.occ', 'agent-hooks', 'claude-statusline.cmd').replaceAll('\\', '/')
     )
 
     const legacy = await run(powershellPath(), [...POWERSHELL_ARGS, LEGACY_COMMAND], 0)
@@ -172,7 +172,7 @@ describe.skipIf(process.platform !== 'win32')('Claude statusLine delivery on Win
   }, 60_000)
 
   it('starts no PowerShell per tick for a profile path with a space', async () => {
-    const { command, posts, run } = await installInto('orca claude statusline space ')
+    const { command, posts, run } = await installInto('occ claude statusline space ')
     expect(command).toBe(LEGACY_COMMAND)
 
     const result = await run(findGitBash(), ['-xc', command], 1)

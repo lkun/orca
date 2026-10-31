@@ -20,7 +20,7 @@ afterEach(async () => {
 })
 
 it('gives each process its own temp folder, removed at exit, and clears an earlier run at the first start', async () => {
-  const dataDirectory = await mkdtemp(join(tmpdir(), 'orca-acp-temp-'))
+  const dataDirectory = await mkdtemp(join(tmpdir(), 'occ-acp-temp-'))
   ownedDirectories.add(dataDirectory)
   const root = join(dataDirectory, 'acp-temp', 'grok')
   const leftover = join(root, 'run-earlier-host', 'bundle')

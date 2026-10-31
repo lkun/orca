@@ -64,7 +64,7 @@ const storeArgs = {
     expectedEnvironmentRuntimeId: 'runtime-a'
   }
 }
-const storedPath = '/srv/agent-session-attachments/u1/orca-paste-1.png'
+const storedPath = '/srv/agent-session-attachments/u1/occ-paste-1.png'
 
 let root: Root | null = null
 

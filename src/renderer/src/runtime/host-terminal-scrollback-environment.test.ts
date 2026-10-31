@@ -5,7 +5,7 @@ import {
   startHostTerminalScrollbackHydration,
   type HostTerminalScrollbackHydrationDeps
 } from './host-terminal-scrollback-hydration'
-import type { OrcadDeploymentLink } from '../../../shared/runtime-environments'
+import type { OCCdDeploymentLink } from '../../../shared/runtime-environments'
 
 vi.mock('@/store', () => ({ useAppStore: { getState: vi.fn() } }))
 vi.mock('../web/preload-api/web-runtime-session', () => ({
@@ -13,11 +13,11 @@ vi.mock('../web/preload-api/web-runtime-session', () => ({
 }))
 
 const PORTS = { localPort: 6768, remotePort: 6768 }
-const ENVIRONMENTS: { id: string; orcadDeployment?: OrcadDeploymentLink }[] = [
-  { id: 'env-wsl', orcadDeployment: { ...PORTS, kind: 'wsl', distro: 'Ubuntu' } },
+const ENVIRONMENTS: { id: string; occdDeployment?: OCCdDeploymentLink }[] = [
+  { id: 'env-wsl', occdDeployment: { ...PORTS, kind: 'wsl', distro: 'Ubuntu' } },
   {
-    id: 'env-ssh-orcad',
-    orcadDeployment: { ...PORTS, kind: 'ssh', sshTargetId: 't', sshTargetGeneration: 1 }
+    id: 'env-ssh-occd',
+    occdDeployment: { ...PORTS, kind: 'ssh', sshTargetId: 't', sshTargetGeneration: 1 }
   },
   { id: 'env-paired-web' }
 ]
@@ -26,7 +26,7 @@ const owner = (environmentId: string | null) => ({ kind: 'resolved' as const, en
 describe('which host serves a pane its stored scrollback', () => {
   it('is only a WSL host', () => {
     expect(hostScrollbackEnvironmentId(owner('env-wsl'), ENVIRONMENTS)).toBe('env-wsl')
-    expect(hostScrollbackEnvironmentId(owner('env-ssh-orcad'), ENVIRONMENTS)).toBeNull()
+    expect(hostScrollbackEnvironmentId(owner('env-ssh-occd'), ENVIRONMENTS)).toBeNull()
     expect(hostScrollbackEnvironmentId(owner('env-paired-web'), ENVIRONMENTS)).toBeNull()
     expect(hostScrollbackEnvironmentId(owner(null), ENVIRONMENTS)).toBeNull()
     expect(hostScrollbackEnvironmentId({ kind: 'ambiguous' }, ENVIRONMENTS)).toBeNull()
@@ -35,7 +35,7 @@ describe('which host serves a pane its stored scrollback', () => {
     expect(hostScrollbackEnvironmentId(owner('env-wsl'), [])).toBeNull()
   })
 
-  it.each(['env-ssh-orcad', 'env-paired-web'])(
+  it.each(['env-ssh-occd', 'env-paired-web'])(
     'holds no %s tab for a placeholder and asks that host nothing',
     (environmentId) => {
       resetHostTerminalScrollbackHydrationForTests()

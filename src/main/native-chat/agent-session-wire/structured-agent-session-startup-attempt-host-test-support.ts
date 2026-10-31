@@ -142,7 +142,7 @@ export function registerStartupAttemptHostTests(): void {
     vi.useFakeTimers({
       toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval']
     })
-    root = await mkdtemp(join(tmpdir(), 'orca-startup-attempt-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-startup-attempt-'))
     resetHostTestOperationIds()
     providerStarted.mockReset()
     recordLiveListing.mockReset()

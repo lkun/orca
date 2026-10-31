@@ -1,9 +1,9 @@
 import { mkdir, mkdtemp, readFile, realpath, rm, writeFile } from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
-import { runProcess } from '@orca/process-host'
-import { windowsPowerShellPath } from '@orca/process-host/windows-system-binary'
-import { test, expect } from './helpers/orca-app'
+import { runProcess } from '@occ/process-host'
+import { windowsPowerShellPath } from '@occ/process-host/windows-system-binary'
+import { test, expect } from './helpers/occ-app'
 
 test.use({ seedTestRepo: false })
 
@@ -30,12 +30,12 @@ test.describe('file explorer Copy on Windows', () => {
   test.skip(process.platform !== 'win32', 'Exercises the Windows CF_HDROP clipboard path')
 
   test('puts a file Explorer can paste on the clipboard', async ({
-    orcaPage: page,
+    occPage: page,
     electronApp,
     registerPostElectronShutdownCleanup
   }) => {
     // Native realpath: runners hand out an 8.3 temp path, but the app copies the long one.
-    const folder = await realpath(await mkdtemp(path.join(os.tmpdir(), 'orca-copy-file-')))
+    const folder = await realpath(await mkdtemp(path.join(os.tmpdir(), 'occ-copy-file-')))
     registerPostElectronShutdownCleanup(() => rm(folder, { recursive: true, force: true }))
     const source = path.join(folder, 'workspace')
     const pasteTarget = path.join(folder, 'paste-target')
@@ -48,7 +48,7 @@ test.describe('file explorer Copy on Windows', () => {
     }, source)
     await page.getByRole('option').filter({ hasText: 'workspace' }).click()
     await page
-      .locator('[data-orca-explorer-shell]')
+      .locator('[data-occ-explorer-shell]')
       .getByRole('button', { name: FILE_NAME, exact: true })
       .click({ button: 'right' })
     await page.getByRole('menuitem', { name: 'Copy', exact: true }).click()

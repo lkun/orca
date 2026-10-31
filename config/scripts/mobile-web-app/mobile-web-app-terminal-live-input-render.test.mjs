@@ -52,7 +52,7 @@ beforeAll(async () => {
   const cspHeader = await readShellCsp()
   bridgeVersion = await readBridgeProtocolVersion()
   faultGrant = await readBridgeFaultGrant()
-  scratch = await mkdtemp(join(tmpdir(), 'orca-mobile-web-live-input-'))
+  scratch = await mkdtemp(join(tmpdir(), 'occ-mobile-web-live-input-'))
   const appDir = join(scratch, 'app')
   const routeDir = join(appDir, MOBILE_WEB_APP_ROUTE_ROOT)
   await mkdir(routeDir, { recursive: true })
@@ -74,7 +74,7 @@ beforeAll(async () => {
   const served = await createBundleServer({ outDir: built.outDir, cspHeader })
   server = served.server
   origin = served.origin
-  const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+  const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
   browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
 }, 600_000)
 
@@ -112,17 +112,17 @@ async function openProbe({ userAgent } = {}) {
     }
   })
   await page.goto(`${origin}/`, { waitUntil: 'load' })
-  await page.waitForFunction(() => document.documentElement.dataset.orcaWebEntry === 'mounted', {
+  await page.waitForFunction(() => document.documentElement.dataset.occWebEntry === 'mounted', {
     timeout: 60_000,
     polling: 250
   })
   await page.waitForFunction(
     () =>
-      globalThis.__orcaLiveInputProbe !== undefined ||
-      (globalThis.__orcaRenderCheckFaults ?? []).length > 0,
+      globalThis.__occLiveInputProbe !== undefined ||
+      (globalThis.__occRenderCheckFaults ?? []).length > 0,
     { timeout: 60_000, polling: 100 }
   )
-  const faults = await page.evaluate(() => globalThis.__orcaRenderCheckFaults ?? [])
+  const faults = await page.evaluate(() => globalThis.__occRenderCheckFaults ?? [])
   return { errors, faults, page }
 }
 
@@ -130,7 +130,7 @@ const fieldValue = (page) =>
   page.evaluate((id) => document.getElementById(id)?.value ?? null, LIVE_INPUT_FIELD_ID)
 
 async function typeIntoField(page, text) {
-  await page.evaluate((typed) => globalThis.__orcaLiveInputProbe.type(typed), text)
+  await page.evaluate((typed) => globalThis.__occLiveInputProbe.type(typed), text)
   await page.waitForFunction(
     ([id, typed]) => document.getElementById(id)?.value === typed,
     [LIVE_INPUT_FIELD_ID, text],
@@ -158,7 +158,7 @@ describeRender(
       }, LIVE_INPUT_FIELD_ID)
       expect(await fieldValue(page)).toBe('ime-preedit')
 
-      await page.evaluate(() => globalThis.__orcaLiveInputProbe.clear())
+      await page.evaluate(() => globalThis.__occLiveInputProbe.clear())
 
       expect(await fieldValue(page)).toBe('')
       expect(errors).toEqual([])
@@ -179,12 +179,12 @@ describeRender(
       await page.keyboard.press('Enter')
 
       await page.waitForFunction(
-        () => (globalThis.__orcaLiveInputProbe.sent() ?? []).includes('\r'),
+        () => (globalThis.__occLiveInputProbe.sent() ?? []).includes('\r'),
         undefined,
         { timeout: 30_000, polling: 100 }
       )
       // Require exact output once: RN-Web cancels submitted keydown, so page line-break binding must not send second CR.
-      expect(await page.evaluate(() => globalThis.__orcaLiveInputProbe.sent())).toEqual([
+      expect(await page.evaluate(() => globalThis.__occLiveInputProbe.sent())).toEqual([
         'l',
         's',
         '\r'
@@ -214,11 +214,11 @@ describeRender(
 
       // Commit held composition before CR, matching native keystroke order.
       await page.waitForFunction(
-        () => globalThis.__orcaLiveInputProbe.sent().includes('\r'),
+        () => globalThis.__occLiveInputProbe.sent().includes('\r'),
         undefined,
         { timeout: 30_000, polling: 100 }
       )
-      expect(await page.evaluate(() => globalThis.__orcaLiveInputProbe.sent())).toEqual([
+      expect(await page.evaluate(() => globalThis.__occLiveInputProbe.sent())).toEqual([
         'ls',
         '\r'
       ])
@@ -238,15 +238,15 @@ describeRender(
         { timeout: 30_000, polling: 100 }
       )
 
-      await page.evaluate(() => globalThis.__orcaLiveInputProbe.accessory({ bytes: '\r' }))
+      await page.evaluate(() => globalThis.__occLiveInputProbe.accessory({ bytes: '\r' }))
 
       // Exactly one branch sends control: hook sends or defers to caller, never both.
       await page.waitForFunction(
-        () => (globalThis.__orcaLiveInputProbe.sent() ?? []).includes('\r'),
+        () => (globalThis.__occLiveInputProbe.sent() ?? []).includes('\r'),
         undefined,
         { timeout: 30_000, polling: 100 }
       )
-      expect(await page.evaluate(() => globalThis.__orcaLiveInputProbe.sent())).toEqual([
+      expect(await page.evaluate(() => globalThis.__occLiveInputProbe.sent())).toEqual([
         'l',
         's',
         '\r'
@@ -262,7 +262,7 @@ describeRender(
       await typeIntoField(page, 'ab')
 
       const result = await page.evaluate(() =>
-        globalThis.__orcaLiveInputProbe.accessory({ bytes: '\u007f', localEdit: 'backspace' })
+        globalThis.__occLiveInputProbe.accessory({ bytes: '\u007f', localEdit: 'backspace' })
       )
 
       expect(result).toEqual({ kind: 'handled' })
@@ -272,7 +272,7 @@ describeRender(
         { timeout: 30_000, polling: 100 }
       )
       // Require one DEL on wire so local field edit cannot silently diverge from PTY.
-      expect(await page.evaluate(() => globalThis.__orcaLiveInputProbe.sent())).toEqual([
+      expect(await page.evaluate(() => globalThis.__occLiveInputProbe.sent())).toEqual([
         'ab',
         '\u007f'
       ])
@@ -284,16 +284,16 @@ describeRender(
       const { errors, page } = await openProbe()
       await page.focus(`#${LIVE_INPUT_FIELD_ID}`)
       await page.keyboard.type('abcdef')
-      const sentBeforeSelection = await page.evaluate(() => globalThis.__orcaLiveInputProbe.sent())
+      const sentBeforeSelection = await page.evaluate(() => globalThis.__occLiveInputProbe.sent())
       await page.evaluate((id) => {
         document.getElementById(id).setSelectionRange(3, 3)
       }, LIVE_INPUT_FIELD_ID)
-      expect(await page.evaluate(() => globalThis.__orcaLiveInputProbe.sent())).toEqual(
+      expect(await page.evaluate(() => globalThis.__occLiveInputProbe.sent())).toEqual(
         sentBeforeSelection
       )
       expect(
         await page.evaluate(() =>
-          globalThis.__orcaLiveInputProbe.accessory({ bytes: '\x1b[3~', localEdit: 'delete' })
+          globalThis.__occLiveInputProbe.accessory({ bytes: '\x1b[3~', localEdit: 'delete' })
         )
       ).toEqual({ kind: 'handled' })
       expect(await fieldValue(page)).toBe('abcef')
@@ -307,7 +307,7 @@ describeRender(
       // Android WebView Latin keyboard keeps composing region mid-word; native Android reports no range and forwards ASCII immediately.
       const ANDROID_WEBVIEW_USER_AGENT =
         'Mozilla/5.0 (Linux; Android 16; Pixel 9 Pro Build/BP2A; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/140.0.0.0 Mobile Safari/537.36'
-      const sent = (page) => page.evaluate(() => globalThis.__orcaLiveInputProbe.sent())
+      const sent = (page) => page.evaluate(() => globalThis.__occLiveInputProbe.sent())
 
       async function compose(input, text) {
         await input.send('Input.imeSetComposition', {
@@ -365,7 +365,7 @@ describeRender(
         await waitForField(page, 'the')
 
         await page.waitForFunction(
-          () => globalThis.__orcaLiveInputProbe.sent().length === 4,
+          () => globalThis.__occLiveInputProbe.sent().length === 4,
           undefined,
           {
             timeout: 30_000,
@@ -413,7 +413,7 @@ describeRender(
           BUFFERED_FIELD_ID,
           { timeout: 30_000, polling: 100 }
         )
-        expect(await page.evaluate(() => globalThis.__orcaLiveInputProbe.bufferedSent())).toEqual([
+        expect(await page.evaluate(() => globalThis.__occLiveInputProbe.bufferedSent())).toEqual([
           'ls -la'
         ])
         expect(errors).toEqual([])
@@ -439,11 +439,11 @@ describeRender(
         await page.keyboard.press('Enter')
 
         await page.waitForFunction(
-          () => (globalThis.__orcaLiveInputProbe.bufferedSent() ?? []).length > 0,
+          () => (globalThis.__occLiveInputProbe.bufferedSent() ?? []).length > 0,
           undefined,
           { timeout: 30_000, polling: 100 }
         )
-        expect(await page.evaluate(() => globalThis.__orcaLiveInputProbe.bufferedSent())).toEqual([
+        expect(await page.evaluate(() => globalThis.__occLiveInputProbe.bufferedSent())).toEqual([
           'ls -la'
         ])
         expect(await bufferedValue(page)).toBe('')
@@ -454,17 +454,17 @@ describeRender(
       it("leaves the draft alone when the key bar's Enter chip fires", async () => {
         // Buffered mode leaves live handles empty: accessory declines and chip sends one terminal CR without claiming buffered draft.
         const { errors, page } = await openProbe()
-        await page.evaluate(() => globalThis.__orcaLiveInputProbe.setLiveInputEnabled(false))
+        await page.evaluate(() => globalThis.__occLiveInputProbe.setLiveInputEnabled(false))
         await page.focus(`#${BUFFERED_FIELD_ID}`)
         await page.keyboard.type('ls -la')
 
         const result = await page.evaluate(() =>
-          globalThis.__orcaLiveInputProbe.accessory({ bytes: '\r' })
+          globalThis.__occLiveInputProbe.accessory({ bytes: '\r' })
         )
 
         expect(result).toEqual({ kind: 'allow-raw' })
-        expect(await page.evaluate(() => globalThis.__orcaLiveInputProbe.sent())).toEqual(['\r'])
-        expect(await page.evaluate(() => globalThis.__orcaLiveInputProbe.bufferedSent())).toEqual(
+        expect(await page.evaluate(() => globalThis.__occLiveInputProbe.sent())).toEqual(['\r'])
+        expect(await page.evaluate(() => globalThis.__occLiveInputProbe.bufferedSent())).toEqual(
           []
         )
         expect(await bufferedValue(page)).toBe('ls -la')

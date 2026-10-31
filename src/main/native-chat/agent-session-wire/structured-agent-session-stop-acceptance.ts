@@ -12,7 +12,7 @@ import { isTuiAgent } from '../../../shared/tui-agent-config'
 import { CommandReceiptExistsError } from '../agent-session-journal/command-receipt-transaction'
 import {
   classifyJournalOpenFailure,
-  isJournalWrittenByNewerOrca,
+  isJournalWrittenByNewerOCC,
   journalOpenRefusal
 } from '../agent-session-journal/journal-open-failure'
 import type { JournalStopAcceptanceInput } from '../agent-session-journal/journal-stop-acceptance'
@@ -145,7 +145,7 @@ export function stopNotSaved(
   if (
     isAgentSessionRefusalError(error) ||
     classifyJournalOpenFailure(error) === 'journalCorrupt' ||
-    isJournalWrittenByNewerOrca(error)
+    isJournalWrittenByNewerOCC(error)
   ) {
     return { ok: false, refusal: journalOpenRefusal(error) }
   }

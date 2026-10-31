@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
 import type { TerminalLayoutSnapshot, TerminalTab } from '../../shared/terminal-tab-types'
 import { makePaneKey } from '../../shared/stable-pane-id'
 import { spawnSurfaceClaimSequence } from './pty-recorded-surface-topology'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { bindPaneFirst } from './bind-first-pane.test-fixture'
 import { partialRuntimeStore } from './runtime-store-partial-fixture'
 
@@ -101,16 +101,16 @@ export function registerTerminalListSurfaceLostOrphanTests(): void {
     return { tabId, worktreeId: WORKTREE_ID, title: '', activeLeafId, layout: null }
   }
 
-  const storesByRuntime = new WeakMap<OrcaRuntimeService, ReturnType<typeof makeStore>>()
+  const storesByRuntime = new WeakMap<OCCRuntimeService, ReturnType<typeof makeStore>>()
 
   function pane(tabId: string, leafId: string, ptyId: string) {
     return { worktreeId: WORKTREE_ID, tabId, leafId, ptyId }
   }
 
   /** Both PTYs stay live on the host throughout; only the graph changes. */
-  function makeRuntime(session?: WorkspaceSessionState): OrcaRuntimeService {
+  function makeRuntime(session?: WorkspaceSessionState): OCCRuntimeService {
     const store = makeStore(session)
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+    const runtime = new OCCRuntimeService(partialRuntimeStore(store))
     storesByRuntime.set(runtime, store)
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the stub carries the four controller members this suite drives; both PTYs stay live throughout.
     runtime.setPtyController({
@@ -136,8 +136,8 @@ export function registerTerminalListSurfaceLostOrphanTests(): void {
   }
 
   /** The restart republishes a graph that kept one pane and dropped the other. */
-  function dropOnePane(runtime: OrcaRuntimeService): void {
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  function dropOnePane(runtime: OCCRuntimeService): void {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       unbindDroppedPane(runtime)
     }
     runtime.syncWindowGraph(1, {
@@ -147,7 +147,7 @@ export function registerTerminalListSurfaceLostOrphanTests(): void {
   }
 
   /** Layout-owner builds: main's layout closes the dropped pane's tab. */
-  function unbindDroppedPane(runtime: OrcaRuntimeService): void {
+  function unbindDroppedPane(runtime: OCCRuntimeService): void {
     const store = storesByRuntime.get(runtime)!
     const session = store.getWorkspaceSession()
     const { 'tab-dropped': _dropped, ...layouts } = session.terminalLayoutsByTabId
@@ -205,7 +205,7 @@ export function registerTerminalListSurfaceLostOrphanTests(): void {
       const byPty = new Map(terminals.map((terminal) => [terminal.ptyId, terminal]))
       // Window-owned panes retain recorded names to rebind without forking; main-owned layout has already removed the pane.
       expect(byPty.get(DROPPED_PTY)?.recordedPaneKey).toBe(
-        ORCA_LAYOUT_OWNER_IS_MAIN ? undefined : makePaneKey('tab-dropped', DROPPED_LEAF)
+        OCC_LAYOUT_OWNER_IS_MAIN ? undefined : makePaneKey('tab-dropped', DROPPED_LEAF)
       )
       expect(byPty.get(KEPT_PTY)).not.toHaveProperty('recordedPaneKey')
     })
@@ -225,7 +225,7 @@ export function registerTerminalListSurfaceLostOrphanTests(): void {
       const runtime = makeRuntime()
       dropOnePane(runtime)
       // Spawn may claim a pane before its first graph statement (#7587); silence cannot retract it, and main-owned bindings outrank graphs.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         bindPaneFirst(runtime, pane('tab-dropped', DROPPED_LEAF, DROPPED_PTY))
       } else {
         // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: recordPtyWorktree is protected; reaching it is the only way to stamp a pane the graph never published.
@@ -265,7 +265,7 @@ export function registerTerminalListSurfaceLostOrphanTests(): void {
       }
     })
 
-    it.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
+    it.runIf(OCC_LAYOUT_OWNER_IS_MAIN)(
       "keeps a pane main's layout still binds attached when a window graph drops it",
       async () => {
         const runtime = makeRuntime()

@@ -74,22 +74,22 @@ function linkCodexHomeToDotfiles(): string {
 
 beforeEach(() => {
   // Resolve macOS /var symlinks so only the fixture home supplies alternate spellings.
-  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'orca-real-home-spellings-')))
+  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'occ-real-home-spellings-')))
   home = join(root, 'home')
   mkdirSync(home)
   userDataDir = join(root, 'user-data')
   mkdirSync(userDataDir)
-  previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-  process.env.ORCA_USER_DATA_PATH = userDataDir
+  previousUserDataPath = process.env.OCC_USER_DATA_PATH
+  process.env.OCC_USER_DATA_PATH = userDataDir
   homedirMock.mockReturnValue(home)
 })
 
 afterEach(() => {
   rmSync(root, { recursive: true, force: true })
   if (previousUserDataPath === undefined) {
-    delete process.env.ORCA_USER_DATA_PATH
+    delete process.env.OCC_USER_DATA_PATH
   } else {
-    process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+    process.env.OCC_USER_DATA_PATH = previousUserDataPath
   }
   vi.clearAllMocks()
   vi.restoreAllMocks()
@@ -145,8 +145,8 @@ describe('both spellings of a symlinked ~/.codex', () => {
 
   it("moves user approvals under both keys when OCC's copy leaves a user group", async () => {
     const resolvedHooks = linkCodexHomeToDotfiles()
-    const orca = { type: 'command', command: getCodexManagedHookInstallMaterial().command }
-    const userGroup = { hooks: [orca, { type: 'command', command: 'after.sh' }] }
+    const occ = { type: 'command', command: getCodexManagedHookInstallMaterial().command }
+    const userGroup = { hooks: [occ, { type: 'command', command: 'after.sh' }] }
     writeFileSync(hooksPath(), `${JSON.stringify({ hooks: { Stop: [userGroup] } }, null, 2)}\n`)
     const afterAt = (sourcePath: string, handlerIndex: number): CodexTrustEntry => ({
       sourcePath,

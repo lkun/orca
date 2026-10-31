@@ -3,7 +3,7 @@ import type { PendingPrompt } from '../../shared/agent-pending-prompt'
 import type { AgentStatusHooksSettings } from '../../shared/agent-status-hooks-setting'
 import type { AgentStatusIpcPayload } from '../../shared/agent-status-ipc-payload'
 import type { ExternalConversationLink } from '../../shared/external-conversation-link'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { admitConnectorAgent } from './connector-agents'
 import { cancelConversation, type CancelTerminal } from './external-conversation-cancel'
 import { ConversationChain } from './external-conversation-chain'
@@ -52,7 +52,7 @@ export type ExternalConversationHost = {
 
 export type ConversationTerminal = FollowUpTerminal & ReopenTerminal & CancelTerminal
 
-export function runtimeConversationHost(runtime: OrcaRuntimeService): ExternalConversationHost {
+export function runtimeConversationHost(runtime: OCCRuntimeService): ExternalConversationHost {
   return { launcher: runtimeConversationLauncher(runtime), terminal: runtime }
 }
 

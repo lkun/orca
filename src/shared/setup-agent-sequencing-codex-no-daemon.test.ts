@@ -19,7 +19,7 @@ afterEach(() => {
 })
 
 function prepareGate(startupCommand: string) {
-  const root = mkdtempSync(join(tmpdir(), 'orca-gate-codex-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-gate-codex-'))
   roots.push(root)
   const bin = join(root, 'bin')
   mkdirSync(bin)
@@ -67,7 +67,7 @@ describe.skipIf(process.platform === 'win32')('sequenced setup gate runs codex',
   it.each([
     ['an old binary', 'codex --yolo', '--no-alt-screen', {}],
     ['a subcommand that needs the shared server', 'codex agents', '--no-daemon', {}],
-    ['the opt-out', 'codex --yolo', '--no-daemon', { ORCA_CODEX_ISOLATE: '0' }]
+    ['the opt-out', 'codex --yolo', '--no-daemon', { OCC_CODEX_ISOLATE: '0' }]
   ])('unchanged for %s', (_case, command, help, env) => {
     expect(runGate(command, help, env)).toBe(`ARGV:${command.slice('codex '.length)}\n`)
   })

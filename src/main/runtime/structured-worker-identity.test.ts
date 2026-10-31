@@ -313,7 +313,7 @@ describe('structured worker identity registry', () => {
 
 describe('structured workers stay outside the PTY-only fail-closed paths', () => {
   it('keeps the selector shut by never letting a structured pane key reach a hook status', () => {
-    // Production spawn must omit ORCA_PANE_KEY: adding it would enable hook-based provider selection for structured workers.
+    // Production spawn must omit OCC_PANE_KEY: adding it would enable hook-based provider selection for structured workers.
     const handle = mintStructuredWorkerHandle()
     structuredWorkerIdentities.register({
       handle,
@@ -327,8 +327,8 @@ describe('structured workers stay outside the PTY-only fail-closed paths', () =>
     try {
       const env = sealedChildEnv(SESSION_ID)
       // Verify worker registration succeeded so absent pane key cannot pass for the wrong reason.
-      expect(env.ORCA_TERMINAL_HANDLE).toBe(handle)
-      expect(Object.keys(env)).not.toContain('ORCA_PANE_KEY')
+      expect(env.OCC_TERMINAL_HANDLE).toBe(handle)
+      expect(Object.keys(env)).not.toContain('OCC_PANE_KEY')
     } finally {
       structuredWorkerIdentities.forget(handle)
     }

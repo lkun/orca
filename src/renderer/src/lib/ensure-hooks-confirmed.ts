@@ -1,9 +1,9 @@
 import type { AppState } from '@/store/types'
-import type { OrcaHooks } from '../../../shared/orca-yaml-hook-types'
+import type { OCCHooks } from '../../../shared/occ-yaml-hook-types'
 import { resolveHookCommandSourcePolicy } from '../../../shared/hook-command-source-policy'
-import { getSetupTrustContent } from '../../../shared/orca-hook-setup-config'
-import { canUseRepoWideTrust } from '../../../shared/orca-hook-trust-entries'
-import { hashOrcaHookScript, type OrcaHookScriptKind } from './orca-hook-trust'
+import { getSetupTrustContent } from '../../../shared/occ-hook-setup-config'
+import { canUseRepoWideTrust } from '../../../shared/occ-hook-trust-entries'
+import { hashOCCHookScript, type OCCHookScriptKind } from './occ-hook-trust'
 import {
   checkRuntimeHooks,
   readRuntimeIssueCommand,
@@ -16,7 +16,7 @@ import {
   type ExecutionHostId
 } from '../../../shared/execution-host'
 
-export type HookScriptKind = OrcaHookScriptKind
+export type HookScriptKind = OCCHookScriptKind
 
 const NEVER_CANCEL_TRUST_CHECK = (): boolean => false
 
@@ -33,7 +33,7 @@ export function __resetTrustPromptChainForTests(): void {
   trustPromptChain = Promise.resolve()
 }
 
-function getVmRecipeTrustContent(yamlHooks: OrcaHooks | null): string {
+function getVmRecipeTrustContent(yamlHooks: OCCHooks | null): string {
   return (yamlHooks?.environmentRecipes ?? [])
     .map((recipe) =>
       [
@@ -96,15 +96,15 @@ async function confirmScriptContent(
   if (isCancelled()) {
     return 'skip'
   }
-  if (canUseRepoWideTrust(state.trustedOrcaHooks, state.repos, repoId) || !scriptContent) {
+  if (canUseRepoWideTrust(state.trustedOCCHooks, state.repos, repoId) || !scriptContent) {
     return 'run'
   }
 
-  const contentHash = await hashOrcaHookScript(scriptContent)
+  const contentHash = await hashOCCHookScript(scriptContent)
   if (isCancelled()) {
     return 'skip'
   }
-  const existingHash = state.trustedOrcaHooks[repoId]?.[scriptKind]?.contentHash
+  const existingHash = state.trustedOCCHooks[repoId]?.[scriptKind]?.contentHash
   if (existingHash === contentHash) {
     return 'run'
   }
@@ -122,7 +122,7 @@ async function confirmScriptContent(
       settled = true
       resolve(decision)
     }
-    state.openModal('confirm-orca-yaml-hooks', {
+    state.openModal('confirm-occ-yaml-hooks', {
       repoId,
       repoName,
       scriptKind,
@@ -231,14 +231,14 @@ export async function ensureHooksConfirmed(
       return 'skip'
     }
     const state = typeof stateOrGetter === 'function' ? stateOrGetter() : stateOrGetter
-    if (canUseRepoWideTrust(state.trustedOrcaHooks, state.repos, repoId)) {
+    if (canUseRepoWideTrust(state.trustedOCCHooks, state.repos, repoId)) {
       return 'run'
     }
 
     let scriptContent = ''
     try {
       if (scriptKind === 'issueCommand') {
-        // Only shared orca.yaml needs repo trust; user-owned overrides do not. Pass hostId to disambiguate same-ID repos, as checkRuntimeHooks does.
+        // Only shared occ.yaml needs repo trust; user-owned overrides do not. Pass hostId to disambiguate same-ID repos, as checkRuntimeHooks does.
         // A launch is a user act: it may start the repo's stopped WSL distro.
         const result = await readRuntimeIssueCommand(
           hookRepoOwnerHostId(state, repoId, hostId, runtimeOwnerEnvironmentId),
@@ -274,7 +274,7 @@ export async function ensureHooksConfirmed(
         if (result.status === 'error') {
           return 'skip'
         }
-        const yamlHooks = (result.hooks as OrcaHooks | null) ?? null
+        const yamlHooks = (result.hooks as OCCHooks | null) ?? null
         scriptContent =
           scriptKind === 'setup'
             ? getSetupTrustContent(yamlHooks)

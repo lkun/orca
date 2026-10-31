@@ -2,7 +2,7 @@ import type { EditorGet, EditorSet } from '../types/editor-set-get'
 import type { EditorSlice } from '../types/editor-slice'
 import { isEditorTabContentType } from '../tabs/editor-tab-content-type'
 import type { Tab } from '../../../../../../shared/tab-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
 import { withPreviewEnded } from '../../tabs/tab-preview-flag'
 import { previewEditorTabsOf } from '../tabs/editor-tab-layout-owner'
 import {
@@ -109,7 +109,7 @@ export function createOpenFileMutations(
         ) {
           return s
         }
-        if (ORCA_LAYOUT_OWNER_IS_MAIN && needsPreviewClear) {
+        if (OCC_LAYOUT_OWNER_IS_MAIN && needsPreviewClear) {
           promoted.push(...previewEditorTabsOf(s.unifiedTabsByWorktree, fileId))
         }
         return {
@@ -143,7 +143,7 @@ export function createOpenFileMutations(
         }
       })
       // Switch point: main makes the edited preview tabs permanent.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN && promoted.length > 0) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN && promoted.length > 0) {
         promotePreviewTabsThroughLayoutOwner(get(), set, promoted)
       }
     },

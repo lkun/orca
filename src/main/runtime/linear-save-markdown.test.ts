@@ -70,7 +70,7 @@ beforeEach(async () => {
             : {})
         }
         response.end(JSON.stringify({ data: { issueUpdate: { success: true, issue: stored } } }))
-      } else if (/query (?:OrcaAgentLinearIssue|OrcaLinearIssueByUuid)\(/.test(payload.query)) {
+      } else if (/query (?:OCCAgentLinearIssue|OCCLinearIssueByUuid)\(/.test(payload.query)) {
         response.end(JSON.stringify({ data: { issue: stored } }))
       } else {
         response.end(JSON.stringify({ errors: [{ message: 'Unexpected query' }] }))
@@ -148,12 +148,12 @@ it.each([
   expect(mutations).toHaveLength(1)
   expect(mutations[0]?.variables).toEqual({ id: stored.id, input: { description: requested } })
   expect(sent.map(({ query }) => query.match(/(?:query|mutation)\s+(\w+)/)?.[1])).toEqual([
-    'OrcaAgentLinearIssue',
-    'OrcaLinearIssueByUuid',
+    'OCCAgentLinearIssue',
+    'OCCLinearIssueByUuid',
     'updateIssue',
-    'OrcaLinearIssueByUuid',
-    'OrcaAgentLinearIssue',
-    'OrcaLinearIssueByUuid'
+    'OCCLinearIssueByUuid',
+    'OCCAgentLinearIssue',
+    'OCCLinearIssueByUuid'
   ])
 })
 

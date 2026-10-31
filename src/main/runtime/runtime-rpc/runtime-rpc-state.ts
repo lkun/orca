@@ -1,6 +1,6 @@
 import { randomBytes } from 'node:crypto'
 import type { RuntimeTransportMetadata } from '../../../shared/runtime-bootstrap'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import { RpcDispatcher } from '../rpc/dispatcher'
 import { ALL_RPC_METHODS } from '../rpc/methods'
 import type { RpcTransport } from '../rpc/transport'
@@ -27,14 +27,14 @@ import {
 import type {
   MobilePairingOffer,
   MobileRelayPairingProvider,
-  OrcaRuntimeRpcServerOptions,
+  OCCRuntimeRpcServerOptions,
   PairingOfferUnavailable
 } from './runtime-rpc-pairing-types'
 import { DEFAULT_WS_PORT } from './runtime-rpc-pairing-types'
 import { DeclaredDesktopClients } from '../declared-desktop-clients'
 
 export class RuntimeRpcState {
-  protected readonly runtime: OrcaRuntimeService
+  protected readonly runtime: OCCRuntimeService
   protected readonly dispatcher: RpcDispatcher
   protected readonly userDataPath: string
   protected readonly pid: number
@@ -120,7 +120,7 @@ export class RuntimeRpcState {
     longPollCap = LONG_POLL_CAP,
     metadataOwnershipPollMs = RUNTIME_METADATA_OWNERSHIP_POLL_MS,
     methods
-  }: OrcaRuntimeRpcServerOptions) {
+  }: OCCRuntimeRpcServerOptions) {
     this.runtime = runtime
     this.dispatcher = new RpcDispatcher({ runtime, methods: methods ?? ALL_RPC_METHODS })
     this.userDataPath = userDataPath

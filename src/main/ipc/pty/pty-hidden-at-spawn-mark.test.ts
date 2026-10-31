@@ -3,7 +3,7 @@ import { existsSyncMock, accessSyncMock, spawnMock } from './pty-ipc-mock-regist
 import { posixOnlyIt, makeDeferred } from './pty-ipc-test-constants'
 import { setupPtyIpcSuite } from './pty-ipc-test-harness'
 import { isHiddenRendererPty } from './delivery/pty-hidden-delivery-gate'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { registerPtyHandlers } from './register-handlers'
 import { join } from 'node:path'
 // Wrapper roots are content-addressed.
@@ -37,7 +37,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -199,7 +199,7 @@ describe('registerPtyHandlers', () => {
     it('answers DA1 from the model on the first chunk of a hidden-at-spawn PTY', async () => {
       // Exercise real runtime parsing/reply while renderer delivery drops the first query chunk.
       const daemon = installObservableDaemonTestProvider()
-      const runtime = new OrcaRuntimeService({
+      const runtime = new OCCRuntimeService({
         getRepo: () => undefined,
         getRepos: () => [],
         addRepo: () => {},
@@ -414,9 +414,9 @@ describe('registerPtyHandlers', () => {
         expect.objectContaining({
           cwd: '/tmp',
           env: expect.objectContaining({
-            ORCA_OPENCODE_CONFIG_DIR: '/tmp/orca-opencode-config',
+            OCC_OPENCODE_CONFIG_DIR: '/tmp/occ-opencode-config',
             // No `ready`: the fallback shell carries an overlay, not a startup command.
-            ORCA_SHELL_FEATURES: 'overlay,history,markers',
+            OCC_SHELL_FEATURES: 'overlay,history,markers',
             ZDOTDIR: join(getShellReadyWrapperRoot(), 'zsh')
           })
         })

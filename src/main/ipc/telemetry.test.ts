@@ -188,7 +188,7 @@ describe('telemetry IPC handlers', () => {
     registerWith({ installId: 'x', existedBeforeTelemetryRelease: false, optedIn: true })
     const handler = handlers.get('telemetry:track')!
     handler({}, 'agent_dashboard_enabled', { enabled: true })
-    handler({}, 'app_starred_orca', { source: 'settings' })
+    handler({}, 'app_starred_occ', { source: 'settings' })
     handler({}, 'star_nag_outcome', {
       outcome: 'shown',
       source: 'threshold',

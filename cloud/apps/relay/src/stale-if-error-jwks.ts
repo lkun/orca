@@ -17,7 +17,7 @@ export type RelayJWKSet = JWTVerifyGetKey & {
 }
 
 // Auth rotates without key overlap: 10min cache + 5min token + 60s grace expires legitimate stale-key tokens by ~16min.
-// 30min caps trust in rotated/leaked keys during outages or isolation; restart purges cache and fails closed until fetch succeeds (orca-relay-operations.md).
+// 30min caps trust in rotated/leaked keys during outages or isolation; restart purges cache and fails closed until fetch succeeds (occ-relay-operations.md).
 export const RELAY_JWKS_MAX_STALE_MS = 30 * 60 * 1000
 // After a failed fetch, verifies use the stale set without waiting on another fetch's timeout.
 const FETCH_RETRY_AFTER_MS = 30 * 1000

@@ -7,16 +7,16 @@ import {
 
 // Wrapper code also runs in plain-node daemon forks; select user data through env without importing Electron.
 export function setTestUserDataPath(path: string): void {
-  process.env.ORCA_USER_DATA_PATH = path
+  process.env.OCC_USER_DATA_PATH = path
 }
 
 export function restoreUserDataPathAfterEach(): void {
-  const original = process.env.ORCA_USER_DATA_PATH
+  const original = process.env.OCC_USER_DATA_PATH
   afterEach(() => {
     if (original === undefined) {
-      delete process.env.ORCA_USER_DATA_PATH
+      delete process.env.OCC_USER_DATA_PATH
     } else {
-      process.env.ORCA_USER_DATA_PATH = original
+      process.env.OCC_USER_DATA_PATH = original
     }
   })
 }

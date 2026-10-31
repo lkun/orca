@@ -2,7 +2,7 @@
 import { Editor, type JSONContent } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import { afterEach, expect, it } from 'vitest'
-import { createOrcaDetailsExtensions } from './rich-markdown-details-extension'
+import { createOCCDetailsExtensions } from './rich-markdown-details-extension'
 import { revealMarkdownNavigationDetails } from './markdown-navigation-details'
 
 const editors: Editor[] = []
@@ -28,7 +28,7 @@ function mountDetails(): Editor {
   document.body.append(element)
   const editor = new Editor({
     element,
-    extensions: [StarterKit, ...createOrcaDetailsExtensions()],
+    extensions: [StarterKit, ...createOCCDetailsExtensions()],
     content: {
       type: 'doc',
       content: [

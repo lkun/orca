@@ -7,14 +7,14 @@ import type { WorkspaceSessionState } from '../../shared/workspace-session-state
 import { applyCommandToSession } from '../persistence/terminal-topology/terminal-pane-admission'
 
 // Preserve side-effect order: mocks, lifecycle, fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('./orca-runtime-test-fixtures.spec')
+} = await import('./occ-runtime-test-fixtures.spec')
 
 const PANE_KEY = `host-tab:${HEADLESS_LEAF_ID}`
 const SESSION = { key: 'session_id' as const, id: 'codex-session-1' }
@@ -37,7 +37,7 @@ function makeRuntime() {
       return { ok: true, result: {} }
     }
   )
-  const runtime = new OrcaRuntimeService(Object.assign(runtimeStore, { applyLayoutCommand }))
+  const runtime = new OCCRuntimeService(Object.assign(runtimeStore, { applyLayoutCommand }))
   runtime.syncWindowGraph(0, { tabs: [], leaves: [] })
   return { runtime, getSession, applyLayoutCommand }
 }
@@ -57,7 +57,7 @@ function codexRow(overrides: Partial<AgentStatusIpcPayload> = {}): AgentStatusIp
   }
 }
 
-async function settled(runtime: InstanceType<typeof OrcaRuntimeService>): Promise<void> {
+async function settled(runtime: InstanceType<typeof OCCRuntimeService>): Promise<void> {
   await runtime['hookStatusResumeWrites']
 }
 
@@ -140,7 +140,7 @@ describe('main records a held pane’s resume record from its hook status', () =
     const { runtimeStore } = makeRuntimeStoreWithWorkspaceSession(
       makeWorkspaceSessionWithHeadlessTerminal()
     )
-    const runtime = new OrcaRuntimeService(runtimeStore, undefined, {
+    const runtime = new OCCRuntimeService(runtimeStore, undefined, {
       getAgentProviderSessionSnapshot: () => rows
     })
 

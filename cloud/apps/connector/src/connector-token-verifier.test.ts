@@ -23,7 +23,7 @@ beforeAll(async () => {
 
 async function sign(
   payload: JWTPayload = CLAIMS,
-  { audience = 'orca-connector', issuer = AUTH_ISSUER, expiresIn = '5m', key = privateKey } = {}
+  { audience = 'occ-connector', issuer = AUTH_ISSUER, expiresIn = '5m', key = privateKey } = {}
 ): Promise<string> {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: 'ES256', kid: 'k1' })
@@ -45,7 +45,7 @@ describe('connector token verifier', () => {
   it('refuses tokens meant for something else, expired, or signed by another key', async () => {
     const otherKey = (await generateKeyPair('ES256')).privateKey
     const refused = [
-      await sign(CLAIMS, { audience: 'orca-relay' }),
+      await sign(CLAIMS, { audience: 'occ-relay' }),
       await sign({ ...CLAIMS, purpose: 'host-control' }),
       await sign(CLAIMS, { issuer: 'https://elsewhere.example' }),
       await sign(CLAIMS, { expiresIn: '-1s' }),

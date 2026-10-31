@@ -12,7 +12,7 @@ import {
   type NetworkInterface
 } from '../runtime/pairing-network-interfaces'
 import { resolveAdvertisedPairingHostname } from '../runtime/pairing-endpoint'
-import type { OrcaRuntimeRpcServer } from '../runtime/runtime-rpc'
+import type { OCCRuntimeRpcServer } from '../runtime/runtime-rpc'
 import type { MobileRelayStatusDetail } from '../../shared/mobile-relay-status'
 import { encodeMobilePairingQr, type MobilePairingQrResult } from '../runtime/mobile-pairing-qr'
 import { getWindowsDefaultRouteInterfaceNames } from '../runtime/windows-default-route-interfaces'
@@ -51,7 +51,7 @@ export type MobileHandlerDependencies = {
 }
 
 export function registerMobileHandlers(
-  rpcServer: OrcaRuntimeRpcServer,
+  rpcServer: OCCRuntimeRpcServer,
   dependencies: MobileHandlerDependencies = {}
 ): void {
   const firewallEnvironment = dependencies.firewallEnvironment ?? {

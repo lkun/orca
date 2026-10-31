@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { SshTarget } from '../../shared/ssh-types'
 import {
-  OrcadHostUnsupportedError,
-  OrcadStdioBridgeUnavailableError
-} from '../orcad/orcad-host-unavailable'
-import type { ManagedOrcadAutoUpdateOutcome } from '../managed-server/lifecycle/orcad-managed-auto-update'
+  OCCdHostUnsupportedError,
+  OCCdStdioBridgeUnavailableError
+} from '../occd/occd-host-unavailable'
+import type { ManagedOCCdAutoUpdateOutcome } from '../managed-server/lifecycle/occd-managed-auto-update'
 import type { HostServerConnectEvent } from './ssh-host-server-connect-events'
 import {
   resolveHostServerOnConnect,
@@ -54,7 +54,7 @@ describe('connect-decision telemetry', () => {
         managedEnvironmentId: () => 'env-9',
         isFencedBeforeStaging: () => true,
         ensureTunnel: async () => {
-          throw new OrcadStdioBridgeUnavailableError('no bridge')
+          throw new OCCdStdioBridgeUnavailableError('no bridge')
         }
       })
     )
@@ -73,14 +73,14 @@ describe('connect-decision telemetry', () => {
         convert: async () => ({
           outcome: 'refused',
           verdict: 'live',
-          code: 'orcad_migration_preflight_blocked',
+          code: 'occd_migration_preflight_blocked',
           reason: 'An automation still runs on this host.'
         })
       })
     )
     expect(decided(events)).toMatchObject({
       reason: 'refused',
-      refusal: 'orcad_migration_preflight_blocked'
+      refusal: 'occd_migration_preflight_blocked'
     })
     expect(events).toContainEqual(
       expect.objectContaining({ kind: 'conversion', phase: 'failed', failure: 'refused' })
@@ -95,8 +95,8 @@ describe('connect-decision telemetry', () => {
         deploy: async () => ({
           outcome: 'deferred',
           candidateVersion: '1.0.0',
-          code: 'orcad_activation_no_readiness',
-          reason: 'No readiness line.\nLast lines of orcad.log:\nboom'
+          code: 'occd_activation_no_readiness',
+          reason: 'No readiness line.\nLast lines of occd.log:\nboom'
         })
       })
     )
@@ -105,7 +105,7 @@ describe('connect-decision telemetry', () => {
         kind: 'deploy_failed',
         context: 'deploy',
         failure: 'deferred',
-        code: 'orcad_activation_no_readiness'
+        code: 'occd_activation_no_readiness'
       })
     )
     expect(decided(deferred)).toMatchObject({ outcome: 'relay', reason: 'deferred' })
@@ -114,7 +114,7 @@ describe('connect-decision telemetry', () => {
       deps({
         isEmptyHost: () => true,
         deploy: async () => {
-          throw new OrcadHostUnsupportedError('no build for this host')
+          throw new OCCdHostUnsupportedError('no build for this host')
         }
       })
     )
@@ -128,7 +128,7 @@ describe('connect-decision telemetry', () => {
         convert: async () => ({
           outcome: 'deferred',
           candidateVersion: '1.0.0',
-          code: 'orcad_update_terminals_running',
+          code: 'occd_update_terminals_running',
           reason: 'Terminals are running.'
         })
       })
@@ -144,13 +144,13 @@ describe('connect-decision telemetry', () => {
 
   it('shows a deferral reason, log tail included, under the SSH host', async () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined)
-    const reason = 'No readiness line.\nLast lines of orcad.log:\nError: EADDRINUSE'
+    const reason = 'No readiness line.\nLast lines of occd.log:\nError: EADDRINUSE'
     const d = deps({
       isEmptyHost: () => true,
       deploy: async () => ({
         outcome: 'deferred',
         candidateVersion: '1.0.0',
-        code: 'orcad_activation_no_readiness',
+        code: 'occd_activation_no_readiness',
         reason
       })
     })
@@ -185,11 +185,11 @@ describe('connect-decision telemetry', () => {
   it('names what a managed host update on connect did', async () => {
     const managed = (overrides: Partial<HostServerOnConnectDeps>) =>
       eventsOf(deps({ managedEnvironmentId: () => 'env-9', ...overrides }))
-    const outcomes: [ManagedOrcadAutoUpdateOutcome, string][] = [
+    const outcomes: [ManagedOCCdAutoUpdateOutcome, string][] = [
       [{ outcome: 'skipped', reason: 'current' }, 'connected'],
       [{ outcome: 'updated', activeVersion: '0.1.0+b' }, 'updated'],
       [
-        { outcome: 'deferred', code: 'orcad_update_terminals_running', reason: 'r' },
+        { outcome: 'deferred', code: 'occd_update_terminals_running', reason: 'r' },
         'update_deferred'
       ],
       [{ outcome: 'failed', reason: 'r' }, 'update_failed'],

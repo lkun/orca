@@ -84,7 +84,7 @@ vi.mock('../transport/mobile-relay-pairing-recovery', () => ({
 vi.mock('../transport/client-context', () => ({
   RpcClientProvider: ({ children }: { children: ReactNode }) => children
 }))
-vi.mock('../components/OrcaLogo', () => ({ OrcaLogo: () => null }))
+vi.mock('../components/OCCLogo', () => ({ OCCLogo: () => null }))
 vi.mock('../layout/side-safe-area', () => ({
   SideSafeArea: ({ children }: { children: ReactNode }) => children
 }))

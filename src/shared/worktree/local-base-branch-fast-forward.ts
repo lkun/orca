@@ -138,7 +138,7 @@ export async function fastForwardLocalBaseBranch(
           [
             'update-ref',
             '-m',
-            `orca: fast-forward to ${remoteTrackingRef}`,
+            `occ: fast-forward to ${remoteTrackingRef}`,
             fullRef,
             remoteOid,
             localOid

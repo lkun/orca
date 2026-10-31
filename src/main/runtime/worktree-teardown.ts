@@ -1,5 +1,5 @@
 import type { IPtyProvider } from '../providers/pty-provider-contract'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import {
   isUnstoppedPtyRemovalError,
   RUNNING_AGENT_SESSION_REMOVAL_PREFIX,
@@ -36,7 +36,7 @@ import {
 } from './unstopped-pty-verification'
 
 export type WorktreeTeardownRuntime = StructuredWorktreeSweepRuntime &
-  Pick<OrcaRuntimeService, 'stopTerminalsForWorktree' | 'getPtyLivenessVerdict'>
+  Pick<OCCRuntimeService, 'stopTerminalsForWorktree' | 'getPtyLivenessVerdict'>
 
 export type WorktreeTeardownDeps = {
   runtime?: WorktreeTeardownRuntime

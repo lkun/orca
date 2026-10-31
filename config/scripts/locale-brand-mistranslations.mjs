@@ -137,7 +137,7 @@ export const BRAND_MISTRANSLATIONS = {
     Codex: ['códice', 'Códice'],
     Gemini: ['Géminis'],
     Claude: ['claudia', 'Claudia'],
-    OCC: ['orca', 'Orcas', 'orcas'],
+    OCC: ['occ', 'OCCs', 'occs'],
     OpenCode: ['código abierto', 'Código abierto'],
     OpenClaude: ['Openclaude'],
     Antigravity: ['antigravedad', 'Antigravedad'],

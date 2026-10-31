@@ -38,7 +38,7 @@ export function writeLinkedIssueEchoGenerator(scriptPath: string, emitPayload: s
       "process.stdin.on('end', () => {",
       "  const prompt = Buffer.concat(chunks).toString('utf8')",
       // Capture the whole line: a zero-digit match would hide an unexpanded {linkedIssue} token as empty.
-      '  const match = prompt.match(/ORCA_E2E_ISSUE=([^\\r\\n]*)/)',
+      '  const match = prompt.match(/OCC_E2E_ISSUE=([^\\r\\n]*)/)',
       "  const issue = match ? match[1] || 'empty' : 'missing'",
       ...emitPayload,
       '})'

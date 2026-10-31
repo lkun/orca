@@ -1,7 +1,7 @@
 export function getOmpModelCommandSourceLines(): string[] {
   return [
     "  if (isOmpRuntime() && typeof pi.registerCommand === 'function' && typeof pi.setModel === 'function') {",
-    "    pi.registerCommand('orca-model', {",
+    "    pi.registerCommand('occ-model', {",
     "      description: 'Switch the model selected in OCC',",
     '      handler: async (selector, ctx) => {',
     '        const models = ctx.modelRegistry.getAvailable()',

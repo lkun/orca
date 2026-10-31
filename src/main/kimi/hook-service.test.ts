@@ -22,7 +22,7 @@ let originalKimiHome: string | undefined
 let originalUserProfile: string | undefined
 
 beforeEach(() => {
-  home = mkdtempSync(join(tmpdir(), 'orca-kimi-hook-'))
+  home = mkdtempSync(join(tmpdir(), 'occ-kimi-hook-'))
   originalHome = process.env.HOME
   originalKimiHome = process.env.KIMI_CODE_HOME
   originalUserProfile = process.env.USERPROFILE
@@ -52,7 +52,7 @@ afterEach(() => {
 
 const configPath = (): string => join(home, '.kimi-code', 'config.toml')
 const scriptPath = (fileName = 'kimi-hook.sh'): string =>
-  join(home, '.orca', 'agent-hooks', fileName)
+  join(home, '.occ', 'agent-hooks', fileName)
 const supportsPosixFileModes = process.platform !== 'win32'
 
 describe('KimiHookService', () => {
@@ -71,10 +71,10 @@ describe('KimiHookService', () => {
     })
 
     it('registers the .cmd by bare forward-slash path, else the encoded launcher', () => {
-      expect(getManagedCommand('C:\\Users\\alice\\.orca\\agent-hooks\\kimi-hook.cmd')).toBe(
-        'C:/Users/alice/.orca/agent-hooks/kimi-hook.cmd'
+      expect(getManagedCommand('C:\\Users\\alice\\.occ\\agent-hooks\\kimi-hook.cmd')).toBe(
+        'C:/Users/alice/.occ/agent-hooks/kimi-hook.cmd'
       )
-      const spacedPath = 'C:\\Users\\Bob Smith\\.orca\\agent-hooks\\kimi-hook.cmd'
+      const spacedPath = 'C:\\Users\\Bob Smith\\.occ\\agent-hooks\\kimi-hook.cmd'
       expect(getManagedCommand(spacedPath)).toBe(wrapWindowsHookCommand(spacedPath))
     })
 
@@ -151,7 +151,7 @@ describe('KimiHookService', () => {
 
     service.install()
     const reinstalled = readFileSync(configPath(), 'utf-8')
-    expect((reinstalled.match(/orca-managed-kimi-hooks \(/g) ?? []).length).toBe(1)
+    expect((reinstalled.match(/occ-managed-kimi-hooks \(/g) ?? []).length).toBe(1)
 
     const removed = service.remove()
     expect(removed.state).toBe('not_installed')

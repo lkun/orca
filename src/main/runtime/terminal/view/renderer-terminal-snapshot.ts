@@ -1,8 +1,8 @@
-import { OrcaRuntimeWithRestoreLivePairedRendererSessionOwnedMobileTerminals } from '../../session-tabs/renderer-session-terminal-rescue'
+import { OCCRuntimeWithRestoreLivePairedRendererSessionOwnedMobileTerminals } from '../../session-tabs/renderer-session-terminal-rescue'
 import type { TerminalOscLinkRange } from '../../../../shared/terminal-osc-link-ranges'
 import type { RuntimeLeafRecord } from '../../runtime-terminal-state-records'
 
-export abstract class OrcaRuntimeWithWaitForLeafPtyId extends OrcaRuntimeWithRestoreLivePairedRendererSessionOwnedMobileTerminals {
+export abstract class OCCRuntimeWithWaitForLeafPtyId extends OCCRuntimeWithRestoreLivePairedRendererSessionOwnedMobileTerminals {
   protected abstract issueHandle(leaf: RuntimeLeafRecord): string
 
   // Wait for pre-spawn subscriptions to gain a PTY so phone-fit can attach instead of ending on bare history.

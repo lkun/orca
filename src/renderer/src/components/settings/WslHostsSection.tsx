@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FolderInput, Plus, TerminalSquare, Trash2 } from 'lucide-react'
 import {
-  ORCAD_HOST_NEWER_DEFERRAL_CODE,
+  OCCD_HOST_NEWER_DEFERRAL_CODE,
   type WslHostConnectIntent,
   type WslHostStatus
 } from '../../../../shared/wsl-host-types'
@@ -177,7 +177,7 @@ export function WslHostsSection({
             const deferred = unavailableLabel ? null : status?.deferredUpdate
             const connectDisabled =
               unavailableLabel !== null || connectingId !== null || status?.state === 'connecting'
-            const distro = environment.orcadDeployment.distro
+            const distro = environment.occdDeployment.distro
             const moveLine = unavailableLabel
               ? null
               : wslMoveOrchestratorLine(wslMoveOrchestratorRecordFor(moveRecords, distro))
@@ -211,7 +211,7 @@ export function WslHostsSection({
                 footer={moveLine ? <WslMoveOrchestratorStatusLine distro={distro} /> : undefined}
                 primaryAction={
                   // A newer OCC's host refuses Update; Force stays in the menu.
-                  deferred && deferred.code !== ORCAD_HOST_NEWER_DEFERRAL_CODE ? (
+                  deferred && deferred.code !== OCCD_HOST_NEWER_DEFERRAL_CODE ? (
                     <Button
                       type="button"
                       size="xs"
@@ -247,7 +247,7 @@ export function WslHostsSection({
                       </DropdownMenuItem>
                     ) : null}
                     {deferred &&
-                    deferred.code !== ORCAD_HOST_NEWER_DEFERRAL_CODE &&
+                    deferred.code !== OCCD_HOST_NEWER_DEFERRAL_CODE &&
                     !(ready && !unavailableLabel) ? (
                       <DropdownMenuItem
                         disabled={connectDisabled}
@@ -258,7 +258,7 @@ export function WslHostsSection({
                     ) : null}
                     {unavailableLabel || !acceptsNewWork ? null : (
                       <DropdownMenuItem
-                        onSelect={() => openWslMoveDialogFor(environment.orcadDeployment.distro)}
+                        onSelect={() => openWslMoveDialogFor(environment.occdDeployment.distro)}
                       >
                         <FolderInput />
                         {translate('wslMove.entry.hostRow', 'Move projects from this distro…')}

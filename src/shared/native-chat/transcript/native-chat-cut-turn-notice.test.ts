@@ -87,7 +87,7 @@ function hostRow(
   body: AgentJournalItemBody,
   scope: AgentJournalTurnScope | null
 ) {
-  return item(agentJournalItemKey({ provider: 'orca', clientMessageId }), body, scope)
+  return item(agentJournalItemKey({ provider: 'occ', clientMessageId }), body, scope)
 }
 
 /** What the crash path's exit row says, from its fact. */

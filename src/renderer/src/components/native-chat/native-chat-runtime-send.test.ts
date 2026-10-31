@@ -322,11 +322,11 @@ describe('sendNativeChatMessageWithImageAttachments', () => {
 
   it('escapes a pasted image path with spaces, so an attachment agent sees one path', () => {
     sendNativeChatMessageWithImageAttachments('codex', PTY, '', [
-      '/Users/me/Library/Application Support/orca/native-chat-pastes/orca-paste-1-ab.png'
+      '/Users/me/Library/Application Support/occ/native-chat-pastes/occ-paste-1-ab.png'
     ])
     expectWriteOrder(sendRuntimePtyInput.mock.calls, [
       NATIVE_CHAT_CLEAR_UNSUBMITTED_INPUT,
-      '\x1b[200~/Users/me/Library/Application\\ Support/orca/native-chat-pastes/orca-paste-1-ab.png\x1b[201~'
+      '\x1b[200~/Users/me/Library/Application\\ Support/occ/native-chat-pastes/occ-paste-1-ab.png\x1b[201~'
     ])
   })
 
@@ -355,14 +355,14 @@ describe('sendNativeChatMessageWithImageAttachments', () => {
 
   it('clears the line, then bracket-pastes image paths before prompt text', () => {
     const handle = sendNativeChatMessageWithImageAttachments('claude', PTY, 'what do you see?', [
-      '/tmp/orca-paste-image.png'
+      '/tmp/occ-paste-image.png'
     ])
 
     expect(handle.settleAfterMs).toBe(
       NATIVE_CHAT_IMAGE_ATTACHMENT_SETTLE_MS + NATIVE_CHAT_SUBMIT_DELAY_MS
     )
 
-    const framedImageWithSeparator = '\x1b[200~/tmp/orca-paste-image.png\x1b[201~ '
+    const framedImageWithSeparator = '\x1b[200~/tmp/occ-paste-image.png\x1b[201~ '
     expectWriteOrder(sendRuntimePtyInput.mock.calls, [
       NATIVE_CHAT_CLEAR_UNSUBMITTED_INPUT,
       framedImageWithSeparator
@@ -378,14 +378,14 @@ describe('sendNativeChatMessageWithImageAttachments', () => {
 
   it('does not append a trailing separator on an attachment-only send', () => {
     const handle = sendNativeChatMessageWithImageAttachments('claude', PTY, '', [
-      '/tmp/orca-paste-image.png'
+      '/tmp/occ-paste-image.png'
     ])
 
     expect(handle.settleAfterMs).toBe(NATIVE_CHAT_SUBMIT_DELAY_MS)
 
     expectWriteOrder(sendRuntimePtyInput.mock.calls, [
       NATIVE_CHAT_CLEAR_UNSUBMITTED_INPUT,
-      '\x1b[200~/tmp/orca-paste-image.png\x1b[201~'
+      '\x1b[200~/tmp/occ-paste-image.png\x1b[201~'
     ])
 
     vi.advanceTimersByTime(NATIVE_CHAT_SUBMIT_DELAY_MS - 1)
@@ -397,11 +397,11 @@ describe('sendNativeChatMessageWithImageAttachments', () => {
   })
 
   it('treats whitespace-only prompt input as attachment-only', () => {
-    sendNativeChatMessageWithImageAttachments('claude', PTY, '   ', ['/tmp/orca-paste-image.png'])
+    sendNativeChatMessageWithImageAttachments('claude', PTY, '   ', ['/tmp/occ-paste-image.png'])
 
     expectWriteOrder(sendRuntimePtyInput.mock.calls, [
       NATIVE_CHAT_CLEAR_UNSUBMITTED_INPUT,
-      '\x1b[200~/tmp/orca-paste-image.png\x1b[201~'
+      '\x1b[200~/tmp/occ-paste-image.png\x1b[201~'
     ])
   })
 
@@ -417,14 +417,14 @@ describe('sendNativeChatMessageWithImageAttachments', () => {
 
   it('cancels deferred prompt and Enter writes after the attachment path', () => {
     const handle = sendNativeChatMessageWithImageAttachments('claude', PTY, 'describe', [
-      '/tmp/orca-paste-image.png'
+      '/tmp/occ-paste-image.png'
     ])
     handle.cancel()
     vi.runAllTimers()
 
     expectWriteOrder(sendRuntimePtyInput.mock.calls, [
       NATIVE_CHAT_CLEAR_UNSUBMITTED_INPUT,
-      '\x1b[200~/tmp/orca-paste-image.png\x1b[201~ ',
+      '\x1b[200~/tmp/occ-paste-image.png\x1b[201~ ',
       NATIVE_CHAT_CLEAR_UNSUBMITTED_INPUT
     ])
     expect(sendRuntimePtyInput.mock.calls.some((call) => call[1] === NATIVE_CHAT_SUBMIT)).toBe(

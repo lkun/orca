@@ -18,7 +18,7 @@ vi.mock('child_process', () => ({
   exec: (cmd: string, opts: unknown, cb: (err: Error | null, out: { stdout: string }) => void) =>
     execMock(cmd, opts, cb)
 }))
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: (spec: { program: string }) => runProcessMock(spec)
 }))
 vi.mock('node:fs', async (importOriginal) => {
@@ -26,7 +26,7 @@ vi.mock('node:fs', async (importOriginal) => {
   return {
     ...actual,
     existsSync: (path: string) =>
-      path.endsWith('orca-process-footprint') ? helperPresent.value : actual.existsSync(path)
+      path.endsWith('occ-process-footprint') ? helperPresent.value : actual.existsSync(path)
   }
 })
 vi.mock('./pty-registry', () => ({ listRegisteredPtys: listRegisteredPtysMock }))
@@ -110,7 +110,7 @@ describe('darwin memory footprint', () => {
     helperPresent.value = true
     runProcessMock.mockImplementation((spec: { program: string }) =>
       Promise.resolve(
-        spec.program.endsWith('orca-process-footprint')
+        spec.program.endsWith('occ-process-footprint')
           ? {
               code: 0,
               signal: null,

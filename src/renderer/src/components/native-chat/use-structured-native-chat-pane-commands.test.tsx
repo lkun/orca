@@ -214,7 +214,7 @@ describe('a structured chat tab', () => {
     store.groupsByWorktree['worktree-1'] = [{ id: 'group-1' }]
     handOff.capability.mockResolvedValue(true)
     items.list = []
-    callRuntimeRpc.mockReset().mockResolvedValue({ orcaSessionId: `orca_session_id:${SESSION}` })
+    callRuntimeRpc.mockReset().mockResolvedValue({ occSessionId: `occ_session_id:${SESSION}` })
     Object.assign(window, {
       api: { ui: { writeClipboardText: vi.fn().mockResolvedValue(undefined) } }
     })

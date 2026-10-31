@@ -8,7 +8,7 @@ import { parseWorkspaceSession } from '../../src/shared/workspace-session-schema
 import type { TerminalTab } from '../../src/shared/terminal-tab-types'
 import type { Worktree } from '../../src/shared/worktree/types'
 import { OrchestrationDb } from '../../src/main/runtime/orchestration/db'
-import { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import type { RpcContext } from '../../src/main/runtime/rpc/core'
 import { ORCHESTRATION_METHODS } from '../../src/main/runtime/rpc/methods/orchestration'
 import { closeTerminalTab } from '@/components/terminal/terminal-tab-actions'
@@ -246,7 +246,7 @@ function orchestrationMethod<N extends OrchestrationMethod['name']>(
 
 async function releaseCompletedWorker(terminalState: 'running' | 'exited'): Promise<void> {
   const db = new OrchestrationDb(':memory:')
-  const runtime = new OrcaRuntimeService()
+  const runtime = new OCCRuntimeService()
   runtime.setOrchestrationDb(db)
   const coordinatorPaneKey = 'coordinator-tab:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
   const run = db.createRun({
@@ -286,7 +286,7 @@ async function releaseCompletedWorker(terminalState: 'running' | 'exited'): Prom
     status: 'running',
     exitCode: null
   })
-  vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('orca')
+  vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('occ')
   vi.spyOn(runtime, 'sendTerminalAgentPrompt').mockResolvedValue({
     handle: TERMINAL_HANDLE,
     accepted: true,

@@ -5,7 +5,7 @@ import { agentSessionFailureFact } from '../../../shared/agent-session-failure'
 import { agentSessionFailureWords } from '../../../shared/agent-session-failure-words'
 import { agentSessionSendBodyFingerprint } from '../../../shared/structured-agent-session-send-mutation'
 import { codexProviderHandle } from '../../../shared/agent-session-provider-handle-encoding'
-import { formatOrcaSessionAddress } from '../../../shared/orca-session-address'
+import { formatOCCSessionAddress } from '../../../shared/occ-session-address'
 import { openTestJournalHostDatabase } from '../../native-chat/agent-session-journal/journal-host-database-test-support'
 import { StructuredAgentSessionJournalProjections } from '../../native-chat/agent-session-wire/structured-agent-session-status-journal-projection'
 import { hostTestMessage } from '../../native-chat/agent-session-wire/structured-agent-session-host-test-data'
@@ -177,7 +177,7 @@ it.each([100, 1000])(
     expect(r.mail()).toHaveLength(1)
     expect(r.mail()[0]?.body).toBe(
       [
-        `Worker ${formatOrcaSessionAddress(SESSION)} hit an error while running task "work" (${r.dispatch().task_id}).`,
+        `Worker ${formatOCCSessionAddress(SESSION)} hit an error while running task "work" (${r.dispatch().task_id}).`,
         'Error: exact legacy failure',
         'The task is still assigned to this chat, which keeps its history.'
       ].join('\n')

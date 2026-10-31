@@ -57,7 +57,7 @@ export function scaleJournal(root: string, sessionId: string) {
 }
 
 export async function scaleDirectory() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-session-scale-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-session-scale-'))
   roots.push(root)
   return root
 }

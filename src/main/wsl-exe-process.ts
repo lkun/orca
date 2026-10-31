@@ -1,4 +1,4 @@
-import type { ProcessResult, ProcessSpec } from '@orca/process-host/process-spec'
+import type { ProcessResult, ProcessSpec } from '@occ/process-host/process-spec'
 import { resolveWslInteropSpawnCwd } from './wsl-interop-spawn-directory'
 
 export function wslExeProcessSpec(

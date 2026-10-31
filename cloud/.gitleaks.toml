@@ -23,4 +23,4 @@ regexes = ['''^dGhlIHNhbXBsZSBub25jZQ==$''']
 [[allowlists]]
 description = "Connector Discord env var names"
 regexTarget = "secret"
-regexes = ['''^ORCA_CONNECTOR_DISCORD_[A-Z_]+$''']
+regexes = ['''^OCC_CONNECTOR_DISCORD_[A-Z_]+$''']

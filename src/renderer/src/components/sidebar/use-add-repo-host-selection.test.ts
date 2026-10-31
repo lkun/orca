@@ -362,14 +362,14 @@ describe('useAddRepoHostSelection', () => {
     mocks.stateValues = ['runtime:env-vm', false]
     mocks.hostOptions.push({
       id: 'runtime:env-vm',
-      label: 'orca VM abc12345',
+      label: 'occ VM abc12345',
       detail: 'Runtime',
       kind: 'runtime',
       health: 'available',
       presence: 'project'
     })
     mocks.storeState.runtimeEnvironments = [
-      { id: 'env-vm', name: 'orca VM abc12345', source: 'ephemeral-vm' }
+      { id: 'env-vm', name: 'occ VM abc12345', source: 'ephemeral-vm' }
     ]
     const setStep = vi.fn()
     const { useAddRepoHostSelection } = await import('./use-add-repo-host-selection')

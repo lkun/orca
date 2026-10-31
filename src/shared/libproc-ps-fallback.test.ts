@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const { runProcess, execFile } = vi.hoisted(() => ({ runProcess: vi.fn(), execFile: vi.fn() }))
-vi.mock('@orca/process-host', () => ({ runProcess }))
+vi.mock('@occ/process-host', () => ({ runProcess }))
 vi.mock('node:child_process', () => ({ execFile }))
 
 import { setLibprocAddonForTests, type LibprocAddon } from './libproc-addon'

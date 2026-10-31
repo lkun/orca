@@ -21,7 +21,7 @@ import {
 
 let dir: string
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'orca-agy-vault-test-'))
+  dir = mkdtempSync(join(tmpdir(), 'occ-agy-vault-test-'))
   setSecretStore({
     isEncryptionAvailable: () => true,
     describeProtectionGap: () => null,

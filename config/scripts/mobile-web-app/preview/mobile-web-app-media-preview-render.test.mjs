@@ -42,7 +42,7 @@ beforeAll(async () => {
   if (!bundles) {
     return
   }
-  scratch = await mkdtemp(join(tmpdir(), 'orca-mobile-media-render-'))
+  scratch = await mkdtemp(join(tmpdir(), 'occ-mobile-media-render-'))
   const built = await buildMobileWebAppBundle({ outDir: join(scratch, 'bundle') })
   policy = await readShellCsp()
   version = await readBridgeProtocolVersion()
@@ -56,7 +56,7 @@ beforeAll(async () => {
   })
   server = served.server
   origin = served.origin
-  const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+  const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
   browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
 }, 120_000)
 afterAll(async () => {

@@ -5,7 +5,7 @@ import {
   PLUGIN_ID_MAX_LENGTH,
   parsePluginManifest,
   pluginManifestSchema,
-  satisfiesOrcaEngineRange
+  satisfiesOCCEngineRange
 } from './plugin-manifest'
 
 function manifest(overrides: Record<string, unknown> = {}): Record<string, unknown> {
@@ -15,7 +15,7 @@ function manifest(overrides: Record<string, unknown> = {}): Record<string, unkno
     publisher: 'samples',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     contributes: { panels: [], commands: [], events: [] },
     capabilities: [],
@@ -66,7 +66,7 @@ describe('pluginManifestSchema boundaries', () => {
       ...manifest({ capabilities: [{ kind: 'storage' }] }),
       manifestVersion: 2,
       execution: 'data',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` }
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` }
     })
 
     expect(result.ok).toBe(false)
@@ -109,14 +109,14 @@ describe('pluginManifestSchema boundaries', () => {
   })
 
   it('accepts a $schema URL in v2 manifests only as an ignored hint', () => {
-    const $schema = 'https://example.com/orca-plugin.schema.json'
+    const $schema = 'https://example.com/occ-plugin.schema.json'
     const v2 = parsePluginManifest(
       manifest({
         manifestVersion: 2,
         execution: 'data',
         contributes: {},
         pluginApi: undefined,
-        engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+        engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
         $schema
       })
     )
@@ -166,7 +166,7 @@ describe('pluginManifestSchema boundaries', () => {
   })
 })
 
-describe('satisfiesOrcaEngineRange', () => {
+describe('satisfiesOCCEngineRange', () => {
   it.each([
     ['1.5.0', '>=1.5.0', true],
     ['1.5.1', '>=1.5.0', true],
@@ -176,6 +176,6 @@ describe('satisfiesOrcaEngineRange', () => {
     ['1.5.0+build.7', '>=1.5.0', true],
     ['1.5.0+build-7', '>=1.5.0', true]
   ])('%s against %s is %s', (host, range, expected) => {
-    expect(satisfiesOrcaEngineRange(host, range)).toBe(expected)
+    expect(satisfiesOCCEngineRange(host, range)).toBe(expected)
   })
 })

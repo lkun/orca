@@ -38,7 +38,7 @@ function createdPullRequestResponse(): Response {
 
 describe('Bitbucket pull request creation', () => {
   beforeEach(() => {
-    process.env = { ...OLD_ENV, ORCA_BITBUCKET_ACCESS_TOKEN: 'bb-token' }
+    process.env = { ...OLD_ENV, OCC_BITBUCKET_ACCESS_TOKEN: 'bb-token' }
     gitExecFileAsyncMock.mockReset()
     gitExecFileAsyncMock.mockResolvedValue({
       stdout: 'https://bitbucket.org/team/repo.git\n',

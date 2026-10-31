@@ -1,7 +1,7 @@
 /** Host-resolved OCC session identity comes from the injected environment, never flags. Terminal agents lack it;
  * occ status --json publishes it as caller. */
 export type OrchestrationCallerSession = {
-  orcaSessionId: string
+  occSessionId: string
   live: boolean
 }
 
@@ -18,7 +18,7 @@ export type CliStatusCaller = OrchestrationCallerSession | OrchestrationCallerRe
 export type OrchestrationCallerShowResult = { caller: OrchestrationCallerSession | null }
 
 /** `orchestration.sessionAddress`: a session's OCC session ID, its `/clear` root's. */
-export type OrchestrationSessionAddressResult = { orcaSessionId: string }
+export type OrchestrationSessionAddressResult = { occSessionId: string }
 
 /** Where a party is now: a chat at its `/clear` lineage's live session, or a terminal. */
 export type OrchestrationPartyLocation =

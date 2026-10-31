@@ -1,7 +1,7 @@
 /** Fan out authority changes within the renderer without coupling every publisher to the Automations page. */
 import type { AutomationsChangedPayload } from '../../../shared/runtime-client-events'
 
-export const AUTOMATIONS_CHANGED_EVENT = 'orca:automations-changed'
+export const AUTOMATIONS_CHANGED_EVENT = 'occ:automations-changed'
 
 /** `environmentId` names the runtime authority that published; absent means desktop. */
 export type AutomationsChangedWindowDetail = AutomationsChangedPayload & {

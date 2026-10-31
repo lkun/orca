@@ -14,7 +14,7 @@ import {
 
 const { createPostHogClient } = vi.hoisted(() => {
   // Official-build identity is read at import; set it before client.ts loads.
-  Object.assign(globalThis, { ORCA_BUILD_IDENTITY: 'stable', ORCA_POSTHOG_WRITE_KEY: 'test-key' })
+  Object.assign(globalThis, { OCC_BUILD_IDENTITY: 'stable', OCC_POSTHOG_WRITE_KEY: 'test-key' })
   return { createPostHogClient: vi.fn() }
 })
 vi.mock('./posthog-transport', async (importOriginal) => ({
@@ -34,8 +34,8 @@ async function settle(done: () => boolean = () => false): Promise<void> {
 const scheduleClientStart = vi.fn<(start: () => void) => void>()
 
 afterAll(() => {
-  Reflect.deleteProperty(globalThis, 'ORCA_BUILD_IDENTITY')
-  Reflect.deleteProperty(globalThis, 'ORCA_POSTHOG_WRITE_KEY')
+  Reflect.deleteProperty(globalThis, 'OCC_BUILD_IDENTITY')
+  Reflect.deleteProperty(globalThis, 'OCC_POSTHOG_WRITE_KEY')
 })
 
 describe('deferred PostHog client start', () => {

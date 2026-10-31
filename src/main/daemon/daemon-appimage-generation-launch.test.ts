@@ -11,14 +11,14 @@ import {
 const { resolveIdentity } = vi.hoisted(() => ({ resolveIdentity: vi.fn() }))
 vi.mock('../appimage-runtime-identity', () => ({ resolveAppImageRuntimeIdentity: resolveIdentity }))
 
-const APPDIR = '/tmp/.mount_orcaAbC'
+const APPDIR = '/tmp/.mount_occAbC'
 const ENTRY_IN_APPDIR = 'resources/app.asar.unpacked/out/main/daemon-entry.js'
 let root = ''
 let appImagePath = ''
 let cacheRootPath = ''
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-generation-launch-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-generation-launch-'))
   appImagePath = join(root, 'OCC.AppImage')
   cacheRootPath = join(root, 'cache')
   writeFileSync(appImagePath, 'appimage')
@@ -50,7 +50,7 @@ function extractGeneration(options: { node?: boolean; version?: string } = {}): 
   writeFileSync(entry, '')
   writeFileSync(
     join(generation, 'resources', 'app.asar.unpacked', 'out', 'package.json'),
-    JSON.stringify({ name: 'orca-compiled-output', version: options.version ?? '1.4.226' })
+    JSON.stringify({ name: 'occ-compiled-output', version: options.version ?? '1.4.226' })
   )
   if (options.node !== false) {
     const node = join(generation, 'resources', 'node-runtime', 'bin', 'node')

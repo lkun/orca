@@ -41,7 +41,7 @@ export function registerJournalAtomicTerminalSettlementTests(): void {
   }
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-atomic-settlement-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-atomic-settlement-'))
     journal = await open()
   })
 
@@ -71,13 +71,13 @@ export function registerJournalAtomicTerminalSettlementTests(): void {
       fence: 7
     })
     const turn = await journal.appendItem(
-      { provider: 'orca', clientMessageId: 'turn' },
+      { provider: 'occ', clientMessageId: 'turn' },
       { kind: 'turn', turnId: 'turn', state: 'running', startedAt: 900 },
       { fence: 7, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
     )
     for (let index = 0; index < count; index++) {
       await journal.appendItem(
-        { provider: 'orca', clientMessageId: `call-${index}` },
+        { provider: 'occ', clientMessageId: `call-${index}` },
         {
           kind: 'tool-call',
           name: 'Write',
@@ -248,7 +248,7 @@ export function registerJournalAtomicTerminalSettlementTests(): void {
       const mutations: JournalLifecycleMutationInput[] = calls.map((item, index) => ({
         kind: 'item',
         observedAt: index + 1,
-        identity: { provider: 'orca', clientMessageId: `call-${index}` },
+        identity: { provider: 'occ', clientMessageId: `call-${index}` },
         body: {
           kind: 'tool-call',
           name: 'Write',
@@ -334,7 +334,7 @@ export function registerJournalAtomicTerminalSettlementTests(): void {
     })
 
     it('uses an ordinary recovered tombstone when the settlement namespace exceeds the batch cap', async () => {
-      const identity = { provider: 'orca' as const, clientMessageId: 'remove-item' }
+      const identity = { provider: 'occ' as const, clientMessageId: 'remove-item' }
       await journal.appendItem(
         identity,
         { kind: 'status', text: 'remove me' },
@@ -378,7 +378,7 @@ export function registerJournalAtomicTerminalSettlementTests(): void {
           await journal.appendStopEvent({ reason: 'user-stop' }, 7)
         }
         await journal.appendItem(
-          { provider: 'orca', clientMessageId: 'oversized-call' },
+          { provider: 'occ', clientMessageId: 'oversized-call' },
           {
             kind: 'tool-call',
             name: 'Write',

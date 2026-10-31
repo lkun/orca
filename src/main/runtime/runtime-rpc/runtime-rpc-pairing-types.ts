@@ -1,4 +1,4 @@
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import type { RpcAnyMethodDeclaration } from '../rpc/core'
 import type { DeviceRegistry } from '../device-registry'
 import type { E2EEKeypair } from '../e2ee-keypair'
@@ -28,8 +28,8 @@ export function formatWsEndpoint(host: string, port: number): string {
   return `ws://${host.includes(':') ? `[${host}]` : host}:${port}`
 }
 
-export type OrcaRuntimeRpcServerOptions = {
-  runtime: OrcaRuntimeService
+export type OCCRuntimeRpcServerOptions = {
+  runtime: OCCRuntimeService
   userDataPath: string
   pid?: number
   platform?: NodeJS.Platform

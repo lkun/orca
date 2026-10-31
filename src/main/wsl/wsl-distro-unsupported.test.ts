@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { classifyOrcadHostUnavailable } from '../orcad/orcad-host-unavailable'
-import { OrcadHostGlibcUnsupportedError } from '../managed-server/lifecycle/orcad-runtime-target'
-import { RemoteNodeRuntimeSelfTestError } from '../ssh/orcad-remote-node-runtime-report'
+import { classifyOCCdHostUnavailable } from '../occd/occd-host-unavailable'
+import { OCCdHostGlibcUnsupportedError } from '../managed-server/lifecycle/occd-runtime-target'
+import { RemoteNodeRuntimeSelfTestError } from '../ssh/occd-remote-node-runtime-report'
 import {
   isWslDistroNotFoundFailure,
   WslDistroNotRegisteredError,
@@ -20,10 +20,10 @@ describe('distros that cannot host OCC', () => {
   })
 
   it('classifies both refusals as an unsupported host, as the SSH path records them', () => {
-    expect(classifyOrcadHostUnavailable(new WslDistroVersion1Error('Legacy'))).toBe(
+    expect(classifyOCCdHostUnavailable(new WslDistroVersion1Error('Legacy'))).toBe(
       'unsupported_host'
     )
-    expect(classifyOrcadHostUnavailable(new WslDistroNotRegisteredError('Gone'))).toBe(
+    expect(classifyOCCdHostUnavailable(new WslDistroNotRegisteredError('Gone'))).toBe(
       'unsupported_host'
     )
   })
@@ -41,8 +41,8 @@ describe('distros that cannot host OCC', () => {
   })
 
   it('adds the glibc fix for a distro, leaving the shared refusal SSH shows as it was', () => {
-    const error = new OrcadHostGlibcUnsupportedError('linux-arm64-glibc', '2.27')
-    expect(error.name).toBe('OrcadHostUnsupportedError')
+    const error = new OCCdHostGlibcUnsupportedError('linux-arm64-glibc', '2.27')
+    expect(error.name).toBe('OCCdHostUnsupportedError')
     expect(error.message).toBe('No OCC runtime supports linux-arm64-glibc with glibc 2.27.')
     expect(wslUnsupportedDistroFixMessage(error)).toBe(
       'No OCC runtime supports linux-arm64-glibc with glibc 2.27. Use a Linux release with ' +

@@ -45,7 +45,7 @@ vi.mock('fs', () => ({
 
 vi.mock('electron', () => ({
   app: {
-    getPath: vi.fn(() => '/tmp/orca-user-data')
+    getPath: vi.fn(() => '/tmp/occ-user-data')
   }
 }))
 
@@ -228,7 +228,7 @@ describe('LocalPtyProvider', () => {
       Object.defineProperty(process, 'platform', { value: 'win32' })
       delete process.env.USERPROFILE
       process.env.HOMEDRIVE = 'D:'
-      process.env.HOMEPATH = '\\Users\\orca'
+      process.env.HOMEPATH = '\\Users\\occ'
 
       try {
         await provider.spawn({ cols: 80, rows: 24 })
@@ -256,7 +256,7 @@ describe('LocalPtyProvider', () => {
       expect(spawnMock).toHaveBeenCalledWith(
         expect.any(String),
         expect.any(Array),
-        expect.objectContaining({ cwd: 'D:\\Users\\orca' })
+        expect.objectContaining({ cwd: 'D:\\Users\\occ' })
       )
     })
   })

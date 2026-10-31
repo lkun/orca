@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const { runProcess } = vi.hoisted(() => ({ runProcess: vi.fn() }))
-vi.mock('@orca/process-host', () => ({ runProcess }))
+vi.mock('@occ/process-host', () => ({ runProcess }))
 
 import { captureDarwinProcessTable } from './darwin-process-table-capture'
 import {

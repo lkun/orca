@@ -89,7 +89,7 @@ export function handleNativeChatWebLink(
     ...buildHttpLinkActions(deps.destinations, open, {
       ...deps,
       url,
-      openInSourceGroup: () => openNativeChatWebLink(url, deps, 'orca', true)
+      openInSourceGroup: () => openNativeChatWebLink(url, deps, 'occ', true)
     })
   })
   return true

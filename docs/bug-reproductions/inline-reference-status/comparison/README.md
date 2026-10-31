@@ -1,6 +1,6 @@
 # Stale-reference animation options
 
-[View the temporary image comparison Gist](https://gist.github.com/OrcaWin/5e39ef4c8975d13bda6a2c79a6c904a7).
+[View the temporary image comparison Gist](https://gist.github.com/OCCWin/5e39ef4c8975d13bda6a2c79a6c904a7).
 These captures record the options reviewed before implementation. **Option C,
 metadata-only shimmer, was selected.**
 

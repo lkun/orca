@@ -3,7 +3,7 @@ import { performance } from 'node:perf_hooks'
 import { join } from 'node:path'
 import { DatabaseSync } from 'node:sqlite'
 import pg from 'pg'
-import { RELAY_REGIONS } from '@orca-cloud/relay-contract'
+import { RELAY_REGIONS } from '@occ-cloud/relay-contract'
 import {
   emptyPostgresPoolPressureCounts,
   isPostgresPoolConnectFailure,
@@ -120,7 +120,7 @@ export async function commitWithFinalWrite(
 // relay_confirmable_splices, relay_cell_drain_attempts and relay_migration_leases are no longer
 // created; nothing ever wrote them. Databases that have them keep them empty until a drop is safe:
 // an older image still creates them at boot, and a drop racing that CREATE can fail its schema step.
-// Account erasure in orca-cloud must be deployed with retired-table support (orca-cloud#493) first.
+// Account erasure in occ-cloud must be deployed with retired-table support (occ-cloud#493) first.
 const SCHEMA = `
 CREATE TABLE IF NOT EXISTS relay_invites (
   user_id TEXT NOT NULL,
@@ -1080,7 +1080,7 @@ const POSTGRES_IDLE_SESSION_TIMEOUT_MS = 30_000
 export function relayPostgresStatementTimeoutMs(
   env: NodeJS.ProcessEnv = process.env
 ): number {
-  const configured = env.ORCA_RELAY_POSTGRES_STATEMENT_TIMEOUT_MS
+  const configured = env.OCC_RELAY_POSTGRES_STATEMENT_TIMEOUT_MS
   if (configured === undefined || configured === '') return POSTGRES_STATEMENT_TIMEOUT_MS
   const milliseconds = Number(configured)
   // 0 is PostgreSQL's "no timeout"; refusing it keeps the deadline this exists
@@ -1094,7 +1094,7 @@ export function relayPostgresStatementTimeoutMs(
 export function relayPostgresReadTimeoutMarginMs(
   env: NodeJS.ProcessEnv = process.env
 ): number {
-  const configured = env.ORCA_RELAY_POSTGRES_READ_TIMEOUT_MARGIN_MS
+  const configured = env.OCC_RELAY_POSTGRES_READ_TIMEOUT_MARGIN_MS
   if (configured === undefined || configured === '') return POSTGRES_READ_TIMEOUT_MARGIN_MS
   const milliseconds = Number(configured)
   if (!Number.isInteger(milliseconds) || milliseconds < 1) {
@@ -1304,7 +1304,7 @@ export class PostgresDatabase implements RelayDatabase {
           if (retryablePostgresTransactionError(error) && options.reportRetries !== false) {
             console.warn(
               JSON.stringify({
-                event: 'orca_relay_postgres_transaction_exhausted',
+                event: 'occ_relay_postgres_transaction_exhausted',
                 code: String((error as { code?: unknown }).code),
                 attempts: attempt,
                 phase: postgresTransactionErrorPhase(error)
@@ -1316,7 +1316,7 @@ export class PostgresDatabase implements RelayDatabase {
         if (options.reportRetries !== false) {
           console.warn(
             JSON.stringify({
-              event: 'orca_relay_postgres_transaction_retry',
+              event: 'occ_relay_postgres_transaction_retry',
               code: String((error as { code?: unknown }).code),
               attempt,
               phase: postgresTransactionErrorPhase(error)
@@ -1427,7 +1427,7 @@ function reportPostgresIdleSessionTimeoutOnce(pool: Pick<pg.Pool, 'on'>): void {
       .then((result: pg.QueryResult) => {
         console.log(
           JSON.stringify({
-            event: 'orca_relay_postgres_session_settings',
+            event: 'occ_relay_postgres_session_settings',
             idleSessionTimeout: String(result.rows[0]?.value)
           })
         )
@@ -1440,7 +1440,7 @@ export function absorbPostgresIdleClientErrors(pool: Pick<pg.Pool, 'on'>): void 
   pool.on('error', () => {
     // Why: node-postgres removes failed idle clients itself; leaving `error`
     // unhandled would crash the cell and turn a SQL outage into autoheal churn.
-    console.warn('[orca-relay] idle PostgreSQL client failed')
+    console.warn('[occ-relay] idle PostgreSQL client failed')
   })
 }
 
@@ -1554,7 +1554,7 @@ export async function openRelayDatabase(input: RelayDatabaseOpenInput): Promise<
     )
   } else {
     mkdirSync(input.dataDir, { recursive: true })
-    const sqlite = new DatabaseSync(join(input.dataDir, 'orca-relay.sqlite'))
+    const sqlite = new DatabaseSync(join(input.dataDir, 'occ-relay.sqlite'))
     sqlite.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;')
     database = new SqliteDatabase(sqlite)
   }

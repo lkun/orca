@@ -1,7 +1,7 @@
-/** Desktop and occ serve share the app’s platform recognizer addon; orcad slots omit the ~70 MB package. */
+/** Desktop and occ serve share the app’s platform recognizer addon; occd slots omit the ~70 MB package. */
 
-/** Set by `occ serve` for orcad: the directory of the app's recognizer package. */
-export const SPEECH_RECOGNIZER_DIR_ENV = 'ORCA_SPEECH_RECOGNIZER_DIR'
+/** Set by `occ serve` for occd: the directory of the app's recognizer package. */
+export const SPEECH_RECOGNIZER_DIR_ENV = 'OCC_SPEECH_RECOGNIZER_DIR'
 
 export function speechRecognizerPackageName(platform: string, arch: string): string {
   return platform === 'win32' && arch === 'x64'

@@ -68,7 +68,7 @@ describe('toEditorModelUri', () => {
 
   it('never collapses a real folder shaped like an owner', () => {
     const owner = '["hub-a","ssh:target"]'
-    for (const realPath of ['/.orca-owner/0123456789abcdef/repo/a.ts', '/vscode-remote:/a.ts']) {
+    for (const realPath of ['/.occ-owner/0123456789abcdef/repo/a.ts', '/vscode-remote:/a.ts']) {
       expect(toEditorModelUri(realPath, owner)).not.toBe(toEditorModelUri('/repo/a.ts', owner))
       expect(URI.parse(toEditorModelUri(realPath, owner)).path).toBe(realPath)
     }

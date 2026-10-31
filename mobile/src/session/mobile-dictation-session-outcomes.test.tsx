@@ -27,7 +27,7 @@ vi.mock('react-native', () => ({
   AppState: { currentState: 'active', addEventListener: () => ({ remove: () => {} }) },
   Platform: { OS: 'ios' }
 }))
-vi.mock('@orca/expo-two-way-audio', () => ({
+vi.mock('@occ/expo-two-way-audio', () => ({
   addExpoTwoWayAudioEventListener: (name: string, listener: (event: { data: string }) => void) => {
     seen.audioListeners.set(name, listener)
     return { remove: () => seen.audioListeners.delete(name) }

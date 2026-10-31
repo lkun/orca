@@ -164,7 +164,7 @@ describe('SidebarFeedbackDialog environment prefill', () => {
     await waitFor(() => expect(textarea.value).toContain('OCC: 1.4.178-rc.2'))
 
     fireEvent.change(textarea, {
-      target: { value: '---\nOrca: custom build\nOS: edited' }
+      target: { value: '---\nOCC: custom build\nOS: edited' }
     })
 
     expect((screen.getByRole('button', { name: 'Send' }) as HTMLButtonElement).disabled).toBe(true)

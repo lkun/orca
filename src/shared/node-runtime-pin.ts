@@ -26,8 +26,8 @@ export const COMPAT_SERVER_TARGET_BASES: Record<CompatServerTarget, ServerTarget
   'linux-x64-glibc217': 'linux-x64-glibc'
 }
 
-// Include every target for Windows SSH node-pty/ConPTY slots (D5), although managed orcad launch remains POSIX-only (orcad-remote-host-support.ts).
-export const ORCAD_TEMPLATE_TARGETS: readonly ServerTarget[] = SERVER_TARGETS
+// Include every target for Windows SSH node-pty/ConPTY slots (D5), although managed occd launch remains POSIX-only (occd-remote-host-support.ts).
+export const OCCD_TEMPLATE_TARGETS: readonly ServerTarget[] = SERVER_TARGETS
 
 export type NodeRuntimePin = {
   version: string

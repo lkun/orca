@@ -12,9 +12,9 @@ import { tmpdir, userInfo } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import {
-  ORCAD_WSL_HOLDER_BLOCKED_FILENAME,
-  ORCAD_WSL_HOLDER_RELEASE_FILENAME
-} from '../../shared/orcad-idle-exit'
+  OCCD_WSL_HOLDER_BLOCKED_FILENAME,
+  OCCD_WSL_HOLDER_RELEASE_FILENAME
+} from '../../shared/occd-idle-exit'
 import {
   buildWslDistroHolderScript,
   WSL_DISTRO_HOLDER_BLOCKED_NAMES_MAX,
@@ -30,8 +30,8 @@ let children: ChildProcess[]
 const me = userInfo().uid
 
 beforeEach(() => {
-  home = mkdtempSync(join(tmpdir(), 'orca-holder-script-'))
-  mkdirSync(join(home, '.orca'))
+  home = mkdtempSync(join(tmpdir(), 'occ-holder-script-'))
+  mkdirSync(join(home, '.occ'))
   proc = join(home, 'proc')
   mkdirSync(proc)
   children = []
@@ -78,7 +78,7 @@ function within(ms: number, promise: Promise<number | null>): Promise<number | n
 /** Waits that end when the holder exits; generous so a loaded machine cannot fail them. */
 const RELEASE_BOUND_MS = 15_000
 
-const releasePath = (): string => join(home, '.orca', ORCAD_WSL_HOLDER_RELEASE_FILENAME)
+const releasePath = (): string => join(home, '.occ', OCCD_WSL_HOLDER_RELEASE_FILENAME)
 
 /** One fake /proc entry, as the kernel writes its status file. */
 function fakeProcess(
@@ -95,9 +95,9 @@ function fakeProcess(
   return dir
 }
 
-const blockedPath = (): string => join(home, '.orca', ORCAD_WSL_HOLDER_BLOCKED_FILENAME)
+const blockedPath = (): string => join(home, '.occ', OCCD_WSL_HOLDER_BLOCKED_FILENAME)
 
-/** A holder that already ran its start-up `rm -f`, then a request from an orcad that has exited. */
+/** A holder that already ran its start-up `rm -f`, then a request from an occd that has exited. */
 /**
  * A holder past its start-up cleanup: it clears stale notes as it starts, so once this sentinel is
  * gone its `rm -f` of the request is done and a request written next survives (a timed wait
@@ -114,15 +114,15 @@ async function startHolderReady(
   return holder
 }
 
-/** A holder past its start-up cleanup, then a request from an orcad that has exited. */
+/** A holder past its start-up cleanup, then a request from an occd that has exited. */
 async function holderWithRequest(options: { procReadable?: boolean; path?: string } = {}) {
   const holder = await startHolderReady(
     { HOME: home, PATH: options.path ?? process.env.PATH },
     options
   )
-  const orcad = track(spawn('/bin/sh', ['-c', 'exit 0'], { stdio: 'ignore' }))
-  await new Promise((resolve) => orcad.once('exit', resolve))
-  writeFileSync(releasePath(), `${orcad.pid}\n`)
+  const occd = track(spawn('/bin/sh', ['-c', 'exit 0'], { stdio: 'ignore' }))
+  await new Promise((resolve) => occd.once('exit', resolve))
+  writeFileSync(releasePath(), `${occd.pid}\n`)
   return holder
 }
 
@@ -139,24 +139,24 @@ describe.skipIf(process.platform === 'win32')('WSL distro holder script', () => 
     expect(existsSync(releasePath())).toBe(false)
   })
 
-  it('waits for the requesting orcad to exit, then claims the request and ends', async () => {
+  it('waits for the requesting occd to exit, then claims the request and ends', async () => {
     const holder = await startHolderReady()
-    const orcad = track(spawn('/bin/sh', ['-c', 'sleep 30'], { stdio: 'ignore' }))
-    writeFileSync(releasePath(), `${orcad.pid}\n`)
+    const occd = track(spawn('/bin/sh', ['-c', 'sleep 30'], { stdio: 'ignore' }))
+    writeFileSync(releasePath(), `${occd.pid}\n`)
 
     expect(await within(2_500, holder.exited)).toBe('running')
-    orcad.kill('SIGKILL')
+    occd.kill('SIGKILL')
     expect(await within(RELEASE_BOUND_MS, holder.exited)).toBe(0)
     expect(existsSync(releasePath())).toBe(false)
   })
 
-  it('keeps holding when a starting orcad withdrew the request first', async () => {
+  it('keeps holding when a starting occd withdrew the request first', async () => {
     const holder = await startHolderReady()
-    const orcad = track(spawn('/bin/sh', ['-c', 'sleep 30'], { stdio: 'ignore' }))
-    writeFileSync(releasePath(), `${orcad.pid}\n`)
+    const occd = track(spawn('/bin/sh', ['-c', 'sleep 30'], { stdio: 'ignore' }))
+    writeFileSync(releasePath(), `${occd.pid}\n`)
     await within(1_500, holder.exited)
     rmSync(releasePath())
-    orcad.kill('SIGKILL')
+    occd.kill('SIGKILL')
     expect(await within(3_000, holder.exited)).toBe('running')
   })
 
@@ -201,9 +201,9 @@ describe.skipIf(process.platform === 'win32')('WSL distro holder script', () => 
     fakeProcess(pid++, { uid: me + 1 })
     const holder = await startHolderReady()
     fakeProcess(pid++, { name: 'sleep', ppid: holder.child.pid })
-    const orcad = track(spawn('/bin/sh', ['-c', 'exit 0'], { stdio: 'ignore' }))
-    await new Promise((resolve) => orcad.once('exit', resolve))
-    writeFileSync(releasePath(), `${orcad.pid}\n`)
+    const occd = track(spawn('/bin/sh', ['-c', 'exit 0'], { stdio: 'ignore' }))
+    await new Promise((resolve) => occd.once('exit', resolve))
+    writeFileSync(releasePath(), `${occd.pid}\n`)
     expect(await within(RELEASE_BOUND_MS, holder.exited)).toBe(0)
   })
 

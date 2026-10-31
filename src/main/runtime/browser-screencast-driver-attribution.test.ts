@@ -1,7 +1,7 @@
 import './rpc/unused-default-rpc-methods.test-fixture'
 /** Shared screencast subscriptions must not give desktop/web/CLI viewers a phone's input lock. */
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import { RpcDispatcher } from './rpc/dispatcher'
 import { BROWSER_SCREENCAST_METHODS } from './rpc/methods/browser-screencast'
 import {
@@ -107,7 +107,7 @@ describe('browser.screencast RPC wiring', () => {
         getRuntimeId: () => 'test-runtime',
         browserScreencast,
         cleanupSubscription: vi.fn()
-      } as unknown as OrcaRuntimeService
+      } as unknown as OCCRuntimeService
       const dispatcher = new RpcDispatcher({ runtime, methods: BROWSER_SCREENCAST_METHODS })
 
       await dispatcher.dispatchStreaming(

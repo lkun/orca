@@ -46,7 +46,7 @@ export function clearPairedTerminalTabCloseIntents(
 }
 
 /** Only the closes owed to a server the catalog still lists; the rest can never be sent. */
-export function retainPairedTerminalTabCloseIntentsForCatalog(
+export function retainPairedTerminalTabCloseIntentsFocctalog(
   intents: PairedTerminalTabCloseIntentsByEnvironment,
   catalog: { hydrated: boolean; environmentIds: readonly string[] }
 ): PairedTerminalTabCloseIntentsByEnvironment {

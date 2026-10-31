@@ -4,7 +4,7 @@ const { listEnvironmentsMock, resolveEnvironmentMock, getDefaultUserDataPathMock
   () => ({
     listEnvironmentsMock: vi.fn(),
     resolveEnvironmentMock: vi.fn(),
-    getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data')
+    getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data')
   })
 )
 
@@ -150,7 +150,7 @@ describe('resolveHostFlagEnvironmentId', () => {
     ).rejects.toThrow('name different OCC servers')
   })
 
-  it('names the ambient variable when ORCA_ENVIRONMENT is the conflicting selector', async () => {
+  it('names the ambient variable when OCC_ENVIRONMENT is the conflicting selector', async () => {
     listEnvironmentsMock.mockReturnValue([environment('env-1')])
     resolveEnvironmentMock.mockReturnValue(environment('env-2'))
 
@@ -159,9 +159,9 @@ describe('resolveHostFlagEnvironmentId', () => {
         listSshTargets: listSshTargetsMock,
         verifySshTargets: listSshTargetsMock,
         pairingCode: null,
-        environmentSelector: { value: 'staging', label: 'ORCA_ENVIRONMENT' }
+        environmentSelector: { value: 'staging', label: 'OCC_ENVIRONMENT' }
       })
-    ).rejects.toThrow('ORCA_ENVIRONMENT staging name different OCC servers')
+    ).rejects.toThrow('OCC_ENVIRONMENT staging name different OCC servers')
   })
 
   it('hands an agent the known environment ids to retry with', async () => {
@@ -175,7 +175,7 @@ describe('resolveHostFlagEnvironmentId', () => {
     })
   })
 
-  it('accepts ORCA_ENVIRONMENT naming the runtime host in another case', async () => {
+  it('accepts OCC_ENVIRONMENT naming the runtime host in another case', async () => {
     listEnvironmentsMock.mockReturnValue([environment('env-1', 'Build')])
     resolveEnvironmentMock.mockImplementation(() => {
       throw new Error('Unknown environment: build')
@@ -186,7 +186,7 @@ describe('resolveHostFlagEnvironmentId', () => {
         listSshTargets: listSshTargetsMock,
         verifySshTargets: listSshTargetsMock,
         pairingCode: null,
-        environmentSelector: { value: 'build', label: 'ORCA_ENVIRONMENT' }
+        environmentSelector: { value: 'build', label: 'OCC_ENVIRONMENT' }
       })
     ).resolves.toBe('env-1')
     resolveEnvironmentMock.mockReset()

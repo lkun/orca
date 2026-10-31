@@ -16,7 +16,7 @@ describe('sweepOrphanedRuntimeSockets', () => {
   it.runIf(process.platform !== 'win32')(
     'sweeps dead-pid sockets while retaining own, alive, and non-matching entries',
     () => {
-      const userDataPath = mkdtempSync(join(tmpdir(), 'orca-sweep-'))
+      const userDataPath = mkdtempSync(join(tmpdir(), 'occ-sweep-'))
 
       const ownPidSocket = join(userDataPath, `o-${SYNTHETIC_OWN_PID}-aaaa.sock`)
       const aliveSocket = join(userDataPath, `o-${process.pid}-bbbb.sock`)
@@ -38,7 +38,7 @@ describe('sweepOrphanedRuntimeSockets', () => {
   )
 
   it('tolerates a non-existent userData directory', () => {
-    const userDataPath = join(tmpdir(), `orca-sweep-missing-${Date.now()}`)
+    const userDataPath = join(tmpdir(), `occ-sweep-missing-${Date.now()}`)
 
     expect(() => sweepOrphanedRuntimeSockets(userDataPath, SYNTHETIC_OWN_PID)).not.toThrow()
   })

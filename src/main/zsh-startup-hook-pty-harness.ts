@@ -12,8 +12,8 @@ export const ZSH_PATH = hasZsh
   : ''
 
 export const MARKERS = {
-  identity: /\]777;orca-shell-start:\d+/,
-  ready: ']777;orca-shell-ready',
+  identity: /\]777;occ-shell-start:\d+/,
+  ready: ']777;occ-shell-ready',
   promptStart: ']133;A',
   commandStart: ']133;C',
   commandDone: /\]133;D;\d+/
@@ -56,8 +56,8 @@ function parseValues(resultPath: string): Record<string, string> {
 
 /** A second-prompt sentinel proves readiness; initial output quiescence only gates the first input. */
 export async function runZshPty(options: ZshPtyOptions): Promise<ZshPtyRun> {
-  const sentinel = '@@ORCA-PTY-READY@@'
-  const workDir = mkdtempSync(join(tmpdir(), 'orca-zsh-pty-'))
+  const sentinel = '@@OCC-PTY-READY@@'
+  const workDir = mkdtempSync(join(tmpdir(), 'occ-zsh-pty-'))
   const resultPath = join(workDir, 'probe.txt')
   const timeoutMs = options.timeoutMs ?? 20_000
 
@@ -69,7 +69,7 @@ export async function runZshPty(options: ZshPtyOptions): Promise<ZshPtyRun> {
     env: {
       ...options.env,
       // Keep the sentinel in env so it survives the user's prompt replacement.
-      ORCA_PTY_SENTINEL: sentinel
+      OCC_PTY_SENTINEL: sentinel
     }
   })
 
@@ -127,7 +127,7 @@ export async function runZshPty(options: ZshPtyOptions): Promise<ZshPtyRun> {
       return { output, values: parseValues(resultPath), exitedBeforePrompt: true }
     }
     // Replace the second prompt, after deferred init; PS1 works in both zsh and sh emulation.
-    proc.write(`PS1="$ORCA_PTY_SENTINEL"\r`)
+    proc.write(`PS1="$OCC_PTY_SENTINEL"\r`)
     // A .zshenv exit is an observable outcome, not a prompt timeout.
     await Promise.race([ready, exited, timedOut])
     if (hasExited) {
@@ -156,7 +156,7 @@ export async function runZshPty(options: ZshPtyOptions): Promise<ZshPtyRun> {
 }
 
 export function makeZshHome(files: Record<string, string>): string {
-  const home = mkdtempSync(join(tmpdir(), 'orca-zsh-home-'))
+  const home = mkdtempSync(join(tmpdir(), 'occ-zsh-home-'))
   for (const [name, content] of Object.entries(files)) {
     writeFileSync(join(home, name), content)
   }

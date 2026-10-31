@@ -1,5 +1,5 @@
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 
 // Assert real pane geometry: jsdom cannot detect group bodies and anchored panes collapsing to zero height.
 
@@ -8,7 +8,7 @@ const FLOATING_WORKTREE_ID = 'global-floating-terminal'
 const PANEL_SELECTOR = '[data-floating-terminal-panel]'
 const OPEN_PANEL_SELECTOR = `${PANEL_SELECTOR}[aria-hidden="false"]`
 const GROUP_BODY_SELECTOR = '[data-tab-group-body-id]'
-const TOGGLE_EVENT = 'orca-toggle-floating-terminal'
+const TOGGLE_EVENT = 'occ-toggle-floating-terminal'
 // The default panel is 560px tall with a 36px titlebar; anything near zero is the regression.
 const MIN_PANE_EDGE_PX = 100
 
@@ -94,12 +94,12 @@ async function openFloatingPanel(page: Page): Promise<void> {
 }
 
 test('floating panel group bodies and panes own real pixels, single group and split', async ({
-  orcaPage
+  occPage
 }) => {
-  const [first, second] = await seedFloatingSimulatorTabs(orcaPage)
-  await openFloatingPanel(orcaPage)
+  const [first, second] = await seedFloatingSimulatorTabs(occPage)
+  await openFloatingPanel(occPage)
 
-  const openPanel = orcaPage.locator(OPEN_PANEL_SELECTOR).first()
+  const openPanel = occPage.locator(OPEN_PANEL_SELECTOR).first()
   const soleBody = openPanel.locator(GROUP_BODY_SELECTOR)
   await expect(soleBody).toHaveCount(1)
   const soleBox = await soleBody.boundingBox()
@@ -113,7 +113,7 @@ test('floating panel group bodies and panes own real pixels, single group and sp
   expect(paneBox!.height).toBeGreaterThan(MIN_PANE_EDGE_PX)
 
   // Move Tab to Split → Right (the context-menu path dispatches this same store action).
-  const moved = await orcaPage.evaluate(
+  const moved = await occPage.evaluate(
     ({ tabId, groupId }) => {
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: `__store` is the dev/e2e store handle OCC injects on window; the cast only names it.
       const store = (window as E2EWindow).__store
@@ -141,6 +141,6 @@ test('floating panel group bodies and panes own real pixels, single group and sp
   const firstBodyBox = await firstBody.boundingBox()
   expect(firstBodyBox).not.toBeNull()
   // Click body coordinates because its anchored overlay owns the same focus-group pointer handler.
-  await orcaPage.mouse.click(firstBodyBox!.x + 20, firstBodyBox!.y + 20)
+  await occPage.mouse.click(firstBodyBox!.x + 20, firstBodyBox!.y + 20)
   await expect(openPanel.locator(`[data-tab-id="${first.id}"]`)).toBeVisible()
 })

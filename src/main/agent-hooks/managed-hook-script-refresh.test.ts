@@ -26,16 +26,16 @@ beforeEach(() => {
   vi.stubEnv('COPILOT_HOME', undefined)
   vi.stubEnv('KIRO_HOME', undefined)
   vi.stubEnv('XDG_CONFIG_HOME', undefined)
-  previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-  isolatedUserDataDir = mkdtempSync(join(tmpdir(), 'orca-hook-refresh-user-data-'))
-  process.env.ORCA_USER_DATA_PATH = isolatedUserDataDir
+  previousUserDataPath = process.env.OCC_USER_DATA_PATH
+  isolatedUserDataDir = mkdtempSync(join(tmpdir(), 'occ-hook-refresh-user-data-'))
+  process.env.OCC_USER_DATA_PATH = isolatedUserDataDir
 })
 
 afterEach(() => {
   if (previousUserDataPath === undefined) {
-    delete process.env.ORCA_USER_DATA_PATH
+    delete process.env.OCC_USER_DATA_PATH
   } else {
-    process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+    process.env.OCC_USER_DATA_PATH = previousUserDataPath
   }
   rmSync(isolatedUserDataDir, { recursive: true, force: true })
   vi.unstubAllEnvs()
@@ -53,7 +53,7 @@ vi.mock('../codex/codex-hook-hash-lookup', async (importOriginal) => ({
 
 vi.mock('electron', () => ({
   app: {
-    getPath: () => '/tmp/orca-user-data'
+    getPath: () => '/tmp/occ-user-data'
   }
 }))
 
@@ -87,8 +87,8 @@ async function withPlatform<T>(platform: NodeJS.Platform, run: () => T | Promise
 const STALE_WINDOWS_HOOK = [
   '@echo off',
   'setlocal',
-  'if "%ORCA_AGENT_HOOK_PORT%"=="" goto :orca_agent_hook_drain_stdin',
-  ':orca_agent_hook_drain_stdin',
+  'if "%OCC_AGENT_HOOK_PORT%"=="" goto :occ_agent_hook_drain_stdin',
+  ':occ_agent_hook_drain_stdin',
   '"%SystemRoot%\\System32\\more.com" >nul 2>nul',
   'exit /b 0',
   ''
@@ -96,7 +96,7 @@ const STALE_WINDOWS_HOOK = [
 
 describe('refreshManagedScriptIfPresent', () => {
   it('rewrites an existing script and refuses to create a missing one', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-hook-refresh-unit-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-hook-refresh-unit-'))
     try {
       const present = join(dir, 'present.cmd')
       writeFileSync(present, 'stale')
@@ -125,19 +125,19 @@ describe('refreshManagedScriptIfPresent', () => {
 
 describe('managed hook script refresh', () => {
   it('brings a stale leaking script current without touching agent config', async () => {
-    const home = mkdtempSync(join(tmpdir(), 'orca-hook-refresh-'))
+    const home = mkdtempSync(join(tmpdir(), 'occ-hook-refresh-'))
     homedirMock.mockReturnValue(home)
     try {
       // Simulate a prior install whose CLI and provider config directory are now absent.
-      const hooksDir = join(home, '.orca', 'agent-hooks')
+      const hooksDir = join(home, '.occ', 'agent-hooks')
       mkdirSync(hooksDir, { recursive: true })
       writeFileSync(join(hooksDir, 'claude-hook.cmd'), STALE_WINDOWS_HOOK)
 
       await withPlatform('win32', () => new ClaudeHookService().refreshManagedScripts())
 
       const refreshed = readFileSync(join(hooksDir, 'claude-hook.cmd'), 'utf8')
-      expect(refreshed).toContain('if "%ORCA_AGENT_HOOK_PORT%"=="" exit /b 0')
-      expect(refreshed).not.toContain('if "%ORCA_AGENT_HOOK_PORT%"=="" goto')
+      expect(refreshed).toContain('if "%OCC_AGENT_HOOK_PORT%"=="" exit /b 0')
+      expect(refreshed).not.toContain('if "%OCC_AGENT_HOOK_PORT%"=="" goto')
       expect(existsSync(join(home, '.claude'))).toBe(false)
       expect(existsSync(join(hooksDir, 'claude-statusline.cmd'))).toBe(false)
     } finally {
@@ -149,10 +149,10 @@ describe('managed hook script refresh', () => {
   it.skipIf(process.platform === 'win32')(
     'refreshes existing POSIX hook and statusline locale handling without a CLI config',
     async () => {
-      const home = mkdtempSync(join(tmpdir(), 'orca-hook-locale-refresh-'))
+      const home = mkdtempSync(join(tmpdir(), 'occ-hook-locale-refresh-'))
       homedirMock.mockReturnValue(home)
       try {
-        const hooksDir = join(home, '.orca', 'agent-hooks')
+        const hooksDir = join(home, '.occ', 'agent-hooks')
         mkdirSync(hooksDir, { recursive: true })
         for (const name of ['claude-hook.sh', 'claude-statusline.sh']) {
           writeFileSync(join(hooksDir, name), '#!/bin/sh\ncurl --connect-timeout 0.5\n')
@@ -164,7 +164,7 @@ describe('managed hook script refresh', () => {
             '/bin/sh',
             [
               '-c',
-              'curl() { printf "%s|%s" "$LC_ALL" "$LC_NUMERIC" > "$ORCA_TEST_CURL_LOCALE"; command -p cat >/dev/null; }; . "$1"',
+              'curl() { printf "%s|%s" "$LC_ALL" "$LC_NUMERIC" > "$OCC_TEST_CURL_LOCALE"; command -p cat >/dev/null; }; . "$1"',
               'hook',
               join(hooksDir, name)
             ],
@@ -178,11 +178,11 @@ describe('managed hook script refresh', () => {
                 LC_NUMERIC: 'de_DE.UTF-8',
                 TMPDIR: home,
                 CLAUDE_JOB_DIR: '',
-                ORCA_AGENT_HOOK_ENDPOINT: '',
-                ORCA_AGENT_HOOK_PORT: '1',
-                ORCA_AGENT_HOOK_TOKEN: 'test-token',
-                ORCA_PANE_KEY: 'pane-1',
-                ORCA_TEST_CURL_LOCALE: observed
+                OCC_AGENT_HOOK_ENDPOINT: '',
+                OCC_AGENT_HOOK_PORT: '1',
+                OCC_AGENT_HOOK_TOKEN: 'test-token',
+                OCC_PANE_KEY: 'pane-1',
+                OCC_TEST_CURL_LOCALE: observed
               }
             }
           )
@@ -202,7 +202,7 @@ describe('managed hook script refresh', () => {
   )
 
   it('restores every installed shared launcher through its registered refresher', async () => {
-    const home = mkdtempSync(join(tmpdir(), 'orca-hook-refresh-coverage-'))
+    const home = mkdtempSync(join(tmpdir(), 'occ-hook-refresh-coverage-'))
     homedirMock.mockReturnValue(home)
     const previousGrokHome = process.env.GROK_HOME
     const previousKimiHome = process.env.KIMI_CODE_HOME
@@ -216,7 +216,7 @@ describe('managed hook script refresh', () => {
           await install()
         }
       })
-      const hooksDir = join(home, '.orca', 'agent-hooks')
+      const hooksDir = join(home, '.occ', 'agent-hooks')
       const files = readdirSync(hooksDir)
       expect(files.length).toBeGreaterThan(0)
       const installed = new Map(
@@ -227,7 +227,7 @@ describe('managed hook script refresh', () => {
       const homeEntries = readdirSync(home, { recursive: true, encoding: 'utf8' }).sort()
       const configs = new Map(
         homeEntries
-          .filter((file) => !file.startsWith(join('.orca', 'agent-hooks') + sep))
+          .filter((file) => !file.startsWith(join('.occ', 'agent-hooks') + sep))
           .filter((file) => statSync(join(home, file)).isFile())
           .map((file) => [file, readFileSync(join(home, file))])
       )
@@ -253,7 +253,7 @@ describe('managed hook script refresh', () => {
       for (const file of files) {
         expect(
           refresherAgents.some((agent) => file.startsWith(`${agent}-`)),
-          `${file} is written to ~/.orca/agent-hooks but no refresher owns it`
+          `${file} is written to ~/.occ/agent-hooks but no refresher owns it`
         ).toBe(true)
       }
       for (const agent of refresherAgents) {
@@ -284,7 +284,7 @@ describe('managed hook script refresh', () => {
   })
 
   it('creates nothing anywhere when no managed scripts exist', async () => {
-    const home = mkdtempSync(join(tmpdir(), 'orca-hook-refresh-empty-'))
+    const home = mkdtempSync(join(tmpdir(), 'occ-hook-refresh-empty-'))
     homedirMock.mockReturnValue(home)
     try {
       await withPlatform('win32', async () => {

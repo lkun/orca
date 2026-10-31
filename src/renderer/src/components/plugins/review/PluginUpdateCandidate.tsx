@@ -23,7 +23,7 @@ export type UpdateCandidate = {
   preview: PluginMarketplaceHostInstallPreview | null
   error: boolean
   /** Oldest OCC the update runs on, when this OCC is older. */
-  needsOrca: string | null
+  needsOCC: string | null
 }
 
 /** The installed repository when main found the catalog now points the update somewhere else. */
@@ -191,7 +191,7 @@ export function CandidateRow({
   /** Set when the update needs its own approval; it replaces the checkbox. */
   onReview?: () => void
 }): React.JSX.Element {
-  const { entry, preview, error, needsOrca } = candidate
+  const { entry, preview, error, needsOCC } = candidate
   const { capabilities: requestedAdded, warnings } = preview
     ? updateChanges(preview)
     : { capabilities: [], warnings: [] }
@@ -232,13 +232,13 @@ export function CandidateRow({
         {translate('auto.components.settings.PluginUpdateAllDialog.current', 'Already installed')}
       </p>
     )
-  } else if (needsOrca) {
+  } else if (needsOCC) {
     note = (
       <p className="text-xs text-status-warning-text">
         {translate(
-          'auto.components.settings.PluginUpdateAllDialog.needsOrca',
+          'auto.components.settings.PluginUpdateAllDialog.needsOCC',
           'Needs OCC {{value0}} or later',
-          { value0: needsOrca }
+          { value0: needsOCC }
         )}
       </p>
     )

@@ -1,6 +1,6 @@
 /** Plugin images reach the renderer only through this scheme, served by main from bytes it has
  *  verified; the renderer never loads a plugin or catalog image from anywhere else. */
-export const PLUGIN_IMAGE_SCHEME = 'orca-plugin-image'
+export const PLUGIN_IMAGE_SCHEME = 'occ-plugin-image'
 
 export type PluginImageReference =
   /** Bytes main verified and cached by hash (catalog images, preview images). */

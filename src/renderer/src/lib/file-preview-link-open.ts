@@ -2,7 +2,7 @@ import { resolveBrowserLinkSession } from './browser-link-session'
 import { activateAndRevealWorkspace } from './worktree-activation'
 import type { AppState } from '@/store/types'
 import { LOCAL_EXECUTION_HOST_ID, type ExecutionHostId } from '../../../shared/execution-host'
-import { ORCA_BROWSER_BLANK_URL } from '../../../shared/constants'
+import { OCC_BROWSER_BLANK_URL } from '../../../shared/constants'
 import type { WorkspaceFilePreviewPlan } from './file-preview'
 import type { BrowserLinkOpenContext, BrowserOpenOutcome } from './browser-link-destination'
 import { openLocalBrowserLink } from './browser-link-open'
@@ -73,7 +73,7 @@ export async function openPlannedFileBrowserLink(
           ? { kind: 'document', docLocation }
           : { kind: 'local-file', url: plan.url }
     },
-    url: plan.status === 'doc-preview' ? ORCA_BROWSER_BLANK_URL : plan.url,
+    url: plan.status === 'doc-preview' ? OCC_BROWSER_BLANK_URL : plan.url,
     options: plan.status === 'doc-preview' ? { docLocation } : { title: plan.title },
     reveal: () => {
       activateAndRevealWorkspace(params.worktreeId, {

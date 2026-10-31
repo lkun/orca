@@ -8,7 +8,7 @@ import { readDeviceUiLocaleTags, resolveUiLocaleFromTags } from './system-ui-loc
 // Same values as desktop's built-in uiLanguage; System follows the phone's (or per-app) language.
 export type MobileUiLanguagePreference = typeof UI_LANGUAGE_SYSTEM | SupportedUiLocale
 
-const UI_LANGUAGE_KEY = 'orca:uiLanguage'
+const UI_LANGUAGE_KEY = 'occ:uiLanguage'
 
 let preference: MobileUiLanguagePreference = UI_LANGUAGE_SYSTEM
 // A choice made while the saved one is still loading wins over the stale read.

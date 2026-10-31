@@ -129,7 +129,7 @@ export function remoteSnapshot(grant: PreviewGrant, remote: RemoteFilePreviewAdd
   return grant.stat.snapshot
 }
 
-/** The grant behind an orca-media URL, only for the renderer that minted it. */
+/** The grant behind an occ-media URL, only for the renderer that minted it. */
 export function previewGrantForSender(
   url: string,
   senderId: number

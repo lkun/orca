@@ -31,8 +31,8 @@ if [ ! -f "$APPIMAGE" ]; then
   echo "If you moved the AppImage, re-run CLI registration from OCC Settings." >&2
   exit 1
 fi
-export ORCA_NODE_OPTIONS="\${NODE_OPTIONS-}"
-export ORCA_NODE_REPL_EXTERNAL_MODULE="\${NODE_REPL_EXTERNAL_MODULE-}"
+export OCC_NODE_OPTIONS="\${NODE_OPTIONS-}"
+export OCC_NODE_REPL_EXTERNAL_MODULE="\${NODE_REPL_EXTERNAL_MODULE-}"
 unset NODE_OPTIONS
 unset NODE_REPL_EXTERNAL_MODULE
 # Why: AppImage mount paths change on each launch; $APPDIR is the runtime mount.

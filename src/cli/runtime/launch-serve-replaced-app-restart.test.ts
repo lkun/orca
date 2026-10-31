@@ -26,7 +26,7 @@ vi.mock('./serve-install-hold', async (importOriginal) => ({
   readServeInstallEvidence: async () => ({ kind: 'clear' })
 }))
 
-import { serveOrcaApp } from './launch'
+import { serveOCCApp } from './launch'
 
 class FakeChild extends EventEmitter {
   kill = vi.fn()
@@ -40,9 +40,9 @@ const NEW = '1.0.61'
 const ENV_KEYS = [
   'XPC_SERVICE_NAME',
   'ELECTRON_RUN_AS_NODE',
-  'ORCA_SERVE_RUNTIME',
-  'ORCA_USER_DATA_PATH',
-  'ORCA_APP_EXECUTABLE'
+  'OCC_SERVE_RUNTIME',
+  'OCC_USER_DATA_PATH',
+  'OCC_APP_EXECUTABLE'
 ] as const
 
 function overrideProperty(key: 'platform' | 'execPath', value: string): () => void {
@@ -65,7 +65,7 @@ async function installApp(dir: string, version: string): Promise<void> {
   )
 }
 
-describe('serveOrcaApp restarts from a replaced app before any server starts', () => {
+describe('serveOCCApp restarts from a replaced app before any server starts', () => {
   let root: string
   let app: string
   let handoffPath: string
@@ -80,16 +80,16 @@ describe('serveOrcaApp restarts from a replaced app before any server starts', (
   })
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-serve-replaced-app-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-serve-replaced-app-'))
     app = join(root, 'OCC.app')
     await installApp(app, NEW)
     for (const key of ENV_KEYS) {
       savedEnv[key] = process.env[key]
     }
     process.env.ELECTRON_RUN_AS_NODE = '1'
-    process.env.ORCA_SERVE_RUNTIME = 'electron'
-    process.env.ORCA_USER_DATA_PATH = join(root, 'profile')
-    delete process.env.ORCA_APP_EXECUTABLE
+    process.env.OCC_SERVE_RUNTIME = 'electron'
+    process.env.OCC_USER_DATA_PATH = join(root, 'profile')
+    delete process.env.OCC_APP_EXECUTABLE
     delete process.env.XPC_SERVICE_NAME
     await mkdir(join(root, 'profile'), { recursive: true })
     handoffPath = getServeUpdateHandoffPath(join(root, 'profile'))
@@ -130,7 +130,7 @@ describe('serveOrcaApp restarts from a replaced app before any server starts', (
     const old = new FakeChild(4101)
     const replacement = new FakeChild(4102)
     spawnMock.mockReturnValueOnce(old).mockReturnValueOnce(replacement)
-    const code = serveOrcaApp({ json: true })
+    const code = serveOCCApp({ json: true })
     await vi.waitFor(() => expect(spawnMock).toHaveBeenCalledOnce())
     await writeFile(handoffPath, JSON.stringify(requested(old.pid)))
     old.emit('exit', 0, null)
@@ -163,7 +163,7 @@ describe('serveOrcaApp restarts from a replaced app before any server starts', (
     await writeFile(handoffPath, JSON.stringify(requested(4101)))
     const replacement = new FakeChild(4102)
     spawnMock.mockReturnValueOnce(replacement)
-    const code = serveOrcaApp({ json: true })
+    const code = serveOCCApp({ json: true })
     await vi.waitFor(() => expect(spawnMock).toHaveBeenCalledOnce())
     replacement.emit('exit', 0, null)
     await code
@@ -171,7 +171,7 @@ describe('serveOrcaApp restarts from a replaced app before any server starts', (
   })
 
   it('does not restart when serving an executable other than its own', async () => {
-    process.env.ORCA_APP_EXECUTABLE = join(app, 'Contents', 'MacOS', 'OCC')
+    process.env.OCC_APP_EXECUTABLE = join(app, 'Contents', 'MacOS', 'OCC')
     restore.push(overrideProperty('execPath', join(root, 'node')))
     const { code, replacement } = await exitForUpdate()
     await vi.waitFor(() => expect(spawnMock).toHaveBeenCalledTimes(2))
@@ -203,12 +203,12 @@ describe('serveOrcaApp restarts from a replaced app before any server starts', (
     await writeFile(handoffPath, JSON.stringify(requested(4101)))
     const replacement = new FakeChild(4102)
     spawnMock.mockReturnValueOnce(replacement)
-    const code = serveOrcaApp({ json: true })
+    const code = serveOCCApp({ json: true })
     if (swapDuringWait) {
       await swapInstall(NEW)
     }
     await vi.waitFor(() => expect(spawnMock).toHaveBeenCalledOnce())
-    replacement.emit('message', { type: 'orca:serve-ready', version: NEW, runtimeId: 'new' })
+    replacement.emit('message', { type: 'occ:serve-ready', version: NEW, runtimeId: 'new' })
     await vi.waitFor(async () => expect(await readServeUpdateHandoff(handoffPath)).toBeNull())
     replacement.emit('exit', 0, null)
     await expect(code).resolves.toBe(0)
@@ -231,7 +231,7 @@ describe('serveOrcaApp restarts from a replaced app before any server starts', (
     const crashed = new FakeChild(4101)
     const next = new FakeChild(4102)
     spawnMock.mockReturnValueOnce(crashed).mockReturnValueOnce(next)
-    const service = serveOrcaApp({ supervise: true })
+    const service = serveOCCApp({ supervise: true })
     await vi.waitFor(() => expect(spawnMock).toHaveBeenCalledOnce())
     await swapInstall(NEW)
     crashed.emit('exit', 1, null)

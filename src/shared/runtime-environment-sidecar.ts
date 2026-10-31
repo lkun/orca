@@ -18,7 +18,7 @@ import {
 import { hardenExistingSecureFile } from './secure-file'
 
 // Shipped builds strip unknown environment fields on routine writes; preserve newer state in this untouched sidecar.
-const SIDECAR_FILE = 'orca-environment-sidecar.json'
+const SIDECAR_FILE = 'occ-environment-sidecar.json'
 const MAX_SIDECAR_FILE_BYTES = 1024 * 1024
 
 const SidecarBindingSchema = z.object({
@@ -35,15 +35,15 @@ const SidecarEntrySchema = z.object({
   binding: SidecarBindingSchema,
   // The store state a two-file rebind is moving to; the entry stays current through a crash between them.
   pendingBinding: SidecarBindingSchema.optional(),
-  // A verified link’s runtime ID until stored; differing IDs mean restart because orcad mints one each start (#32957).
+  // A verified link’s runtime ID until stored; differing IDs mean restart because occd mints one each start (#32957).
   runtimeId: z.string().min(1).optional(),
   sshAccess: SidecarSshAccessSchema.optional(),
   pendingSshAccessOperation: RuntimeSshAccessOperationSchema.optional(),
   // The managed SSH deployment's tunnel, without a `kind` so older builds read it unchanged.
   // WSL deployments live in wsl-host-deployment-store instead.
-  orcadDeployment: RuntimeSshTunnelLinkSchema.optional(),
+  occdDeployment: RuntimeSshTunnelLinkSchema.optional(),
   // A rollback to a snapshot older than this would discard the migrated catalog.
-  orcadMigratedAt: z.string().datetime().optional(),
+  occdMigratedAt: z.string().datetime().optional(),
   // Keeps the overlaid pairing revision monotonic after the access that raised it is removed.
   pairingRevisionFloor: z.number().finite().optional(),
   reconciliation: RuntimeEnvironmentReconciliationRecordSchema.optional()
@@ -144,8 +144,8 @@ function currentEntry(
   }
   // A rebind stopped after its store write: the stored endpoint already names the new tunnel port.
   const localPort = getPreferredLoopbackRuntimePort(environment)
-  return entry.orcadDeployment && localPort !== null
-    ? { ...entry, orcadDeployment: { ...entry.orcadDeployment, localPort } }
+  return entry.occdDeployment && localPort !== null
+    ? { ...entry, occdDeployment: { ...entry.occdDeployment, localPort } }
     : entry
 }
 
@@ -183,8 +183,8 @@ export function overlayRuntimeEnvironmentSidecar(
     ...(current.pendingSshAccessOperation
       ? { pendingSshAccessOperation: current.pendingSshAccessOperation }
       : {}),
-    ...(current.orcadDeployment ? { orcadDeployment: current.orcadDeployment } : {}),
-    ...(current.orcadMigratedAt ? { orcadMigratedAt: current.orcadMigratedAt } : {}),
+    ...(current.occdDeployment ? { occdDeployment: current.occdDeployment } : {}),
+    ...(current.occdMigratedAt ? { occdMigratedAt: current.occdMigratedAt } : {}),
     ...(current.reconciliation ? { reconciliation: current.reconciliation } : {})
   })
   return overlaid.success ? overlaid.data : base
@@ -229,8 +229,8 @@ export function writeRuntimeEnvironmentSidecarEntry(
     ((entry.runtimeId !== undefined && environment.runtimeId === null) ||
       entry.sshAccess !== undefined ||
       entry.pendingSshAccessOperation !== undefined ||
-      entry.orcadDeployment !== undefined ||
-      entry.orcadMigratedAt !== undefined ||
+      entry.occdDeployment !== undefined ||
+      entry.occdMigratedAt !== undefined ||
       entry.reconciliation !== undefined ||
       (entry.pairingRevisionFloor ?? basePairingRevision) > basePairingRevision)
   if (entry && hasState) {

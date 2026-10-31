@@ -3,7 +3,7 @@ import { mkdtempSync, realpathSync, rmSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { loadWorktreesUntilPathsPresent } from './helpers/worktree-registration'
 import {
   ensureTerminalVisible,
@@ -23,12 +23,12 @@ import {
 // Reload between rounds at production parking timings: tabs exist in session but never mounted, matching worktree counts beyond hot retention.
 
 // Use three tabs to match the motivating 449-worktree profile’s median 2–3 tabs.
-const TABS_PER_WORKTREE = Number(process.env.ORCA_SWITCH_TABS ?? '3')
+const TABS_PER_WORKTREE = Number(process.env.OCC_SWITCH_TABS ?? '3')
 const SCROLLBACK_LINES = 1_500
 // Budget: a switch has to look instant. Anything over this reads as a stall.
-const FIRST_PAINT_BUDGET_MS = Number(process.env.ORCA_SWITCH_BUDGET_MS ?? '250')
+const FIRST_PAINT_BUDGET_MS = Number(process.env.OCC_SWITCH_BUDGET_MS ?? '250')
 // Repeat because single cold-reveal noise is tens of milliseconds, the same scale as the change.
-const SWITCH_SAMPLE_COUNT = Number(process.env.ORCA_SWITCH_ROUNDS ?? '5')
+const SWITCH_SAMPLE_COUNT = Number(process.env.OCC_SWITCH_ROUNDS ?? '5')
 
 type SwitchSample = {
   activationMs: number | null
@@ -273,13 +273,13 @@ async function publish(testInfo: TestInfo, name: string, body: string): Promise<
 }
 
 // Visit eight extras to outgrow four-worktree hot retention plus last-active exemption, forcing a cold target.
-const FILLER_WORKTREE_COUNT = Number(process.env.ORCA_SWITCH_FILLER_WORKTREES ?? '8')
+const FILLER_WORKTREE_COUNT = Number(process.env.OCC_SWITCH_FILLER_WORKTREES ?? '8')
 
 async function addFillerWorktrees(
   page: Page,
   testRepoPath: string
 ): Promise<{ ids: string[]; cleanup: () => void }> {
-  const parent = realpathSync(mkdtempSync(path.join(os.tmpdir(), 'orca-switch-paint-')))
+  const parent = realpathSync(mkdtempSync(path.join(os.tmpdir(), 'occ-switch-paint-')))
   const paths = Array.from({ length: FILLER_WORKTREE_COUNT }, (_, index) =>
     path.join(parent, `filler-${index}`)
   )
@@ -350,30 +350,30 @@ function median(values: readonly number[]): number {
 // Linux needs a mapped window for animation frames after reload; run on an isolated display.
 test.describe('Worktree switch first paint @headful', () => {
   test.skip(
-    process.env.ORCA_BACKGROUND_LAUNCH === '1',
+    process.env.OCC_BACKGROUND_LAUNCH === '1',
     'First-paint measurement requires a mapped window'
   )
   test('repaints an unmounted worktree within the switch budget', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
     test.setTimeout(900_000)
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
 
-    const worktreeIds = await getAllWorktreeIds(orcaPage)
+    const worktreeIds = await getAllWorktreeIds(occPage)
     expect(worktreeIds.length).toBeGreaterThanOrEqual(2)
     const [primaryId, targetId] = worktreeIds
-    const filler = await addFillerWorktrees(orcaPage, testRepoPath)
+    const filler = await addFillerWorktrees(occPage, testRepoPath)
 
     const samples: SwitchSample[] = []
     const lines: string[] = []
     try {
-      const targetTabIds = await ensureTabs(orcaPage, targetId, 'WTB')
+      const targetTabIds = await ensureTabs(occPage, targetId, 'WTB')
 
       // Seed persisted tabs without mounting them, matching 846 tabs/449 worktrees.
-      await orcaPage.evaluate(
+      await occPage.evaluate(
         ({ ids, perWorktree }) => {
           const state = window.__store!.getState()
           for (const id of ids) {
@@ -388,23 +388,23 @@ test.describe('Worktree switch first paint @headful', () => {
 
       for (let round = 0; round < SWITCH_SAMPLE_COUNT; round += 1) {
         // Persist primary as active before reload so target returns session-only, never mounted in this renderer.
-        await switchToWorktree(orcaPage, primaryId)
-        await ensureTerminalVisible(orcaPage)
-        await orcaPage.waitForTimeout(2_500)
-        await orcaPage.reload()
-        await waitForSessionReady(orcaPage)
-        await waitForActiveWorktree(orcaPage)
-        await ensureTerminalVisible(orcaPage)
-        await orcaPage.waitForTimeout(2_500)
-        const unmounted = await waitForUnmountedTabs(orcaPage, targetTabIds)
+        await switchToWorktree(occPage, primaryId)
+        await ensureTerminalVisible(occPage)
+        await occPage.waitForTimeout(2_500)
+        await occPage.reload()
+        await waitForSessionReady(occPage)
+        await waitForActiveWorktree(occPage)
+        await ensureTerminalVisible(occPage)
+        await occPage.waitForTimeout(2_500)
+        const unmounted = await waitForUnmountedTabs(occPage, targetTabIds)
         expect(unmounted, 'target worktree was already mounted before the switch').toBe(true)
 
-        const sample = await measureSwitch(orcaPage, targetId, targetTabIds)
+        const sample = await measureSwitch(occPage, targetId, targetTabIds)
         samples.push(sample)
         lines.push(report(`round ${round + 1} (target unmounted=${unmounted})`, sample))
 
         // Require skipped hidden tabs to warm afterward so faster reveal does not make the next tab switch cold.
-        const warmedTabIds = await waitForMountedTabs(orcaPage, targetTabIds)
+        const warmedTabIds = await waitForMountedTabs(occPage, targetTabIds)
         expect(warmedTabIds, 'deferred tabs never joined the warm working set').toEqual(
           [...targetTabIds].sort()
         )

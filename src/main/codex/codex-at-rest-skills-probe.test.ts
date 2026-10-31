@@ -142,7 +142,7 @@ describe('a resting Codex chat lists the skills Codex would load', () => {
       CODEX_HOME: '/home/me/.codex',
       CUSTOM_AGENT_ENV: 'configured'
     })
-    expect(invocations[0]?.envToDelete).toEqual(['ORCA_CHAT_SCRATCH_DIR', 'ORCA_CHAT_VISUALS_DIR'])
+    expect(invocations[0]?.envToDelete).toEqual(['OCC_CHAT_SCRATCH_DIR', 'OCC_CHAT_VISUALS_DIR'])
     expect(settling).toHaveLength(1)
     prefixArgs = ['run', '--profile', 'other', '--', 'codex']
     catalog.retireContext()

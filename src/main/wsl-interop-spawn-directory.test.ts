@@ -11,13 +11,13 @@ import {
 const createdRoots: string[] = []
 
 function makeExistingDirectory(): string {
-  const dir = mkdtempSync(join(tmpdir(), 'orca-wsl-spawn-cwd-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-wsl-spawn-cwd-'))
   createdRoots.push(dir)
   return dir
 }
 
 const ENV_KEYS = [
-  'ORCA_USER_DATA_PATH',
+  'OCC_USER_DATA_PATH',
   'USERPROFILE',
   'HOMEDRIVE',
   'HOMEPATH',
@@ -54,7 +54,7 @@ describe('resolveWslInteropSpawnCwd', () => {
   it('names the system root, never the profile or the user folder', () => {
     const systemRoot = makeExistingDirectory()
     process.env.SystemRoot = systemRoot
-    process.env.ORCA_USER_DATA_PATH = makeExistingDirectory()
+    process.env.OCC_USER_DATA_PATH = makeExistingDirectory()
     process.env.USERPROFILE = makeExistingDirectory()
 
     expect(resolveWslInteropSpawnCwd()).toBe(systemRoot)
@@ -63,14 +63,14 @@ describe('resolveWslInteropSpawnCwd', () => {
   it('never falls back to the profile or user folder when no system directory resolves', () => {
     const profile = makeExistingDirectory()
     const userFolder = makeExistingDirectory()
-    process.env.ORCA_USER_DATA_PATH = profile
+    process.env.OCC_USER_DATA_PATH = profile
     process.env.USERPROFILE = userFolder
 
     expect([profile, userFolder]).not.toContain(resolveWslInteropSpawnCwd())
   })
 
   it('skips a candidate that does not resolve instead of naming it', () => {
-    process.env.SystemRoot = join(tmpdir(), 'orca-wsl-spawn-cwd-never-created')
+    process.env.SystemRoot = join(tmpdir(), 'occ-wsl-spawn-cwd-never-created')
     const windir = makeExistingDirectory()
     process.env.windir = windir
 

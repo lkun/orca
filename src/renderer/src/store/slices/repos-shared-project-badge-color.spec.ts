@@ -10,31 +10,31 @@ import { clearRuntimeCompatibilityCacheForTests } from '../../runtime/runtime-rp
 
 export function registerReposSharedProjectBadgeColorTests(): void {
   // Same-name local Mac/remote project; only local repo carries chosen color, matching report.
-  const SHARED_PROJECT_ID = 'github:stablyai/orca'
+  const SHARED_PROJECT_ID = 'github:stablyai/occ'
   const LOCAL_GREEN = '#22c55e'
   const REMOTE_NEUTRAL = '#737373'
 
   const localRepo: Repo = {
     id: 'local-repo',
-    path: '/local/orca',
-    displayName: 'orca',
+    path: '/local/occ',
+    displayName: 'occ',
     badgeColor: LOCAL_GREEN,
-    upstream: { owner: 'stablyai', repo: 'orca' },
+    upstream: { owner: 'stablyai', repo: 'occ' },
     addedAt: 1
   }
 
   const remoteRepo: Repo = {
     id: 'remote-repo',
-    path: '/srv/orca',
-    displayName: 'orca',
+    path: '/srv/occ',
+    displayName: 'occ',
     badgeColor: REMOTE_NEUTRAL,
-    upstream: { owner: 'stablyai', repo: 'orca' },
+    upstream: { owner: 'stablyai', repo: 'occ' },
     addedAt: 1
   }
 
   const localProject: Project = {
     id: SHARED_PROJECT_ID,
-    displayName: 'orca',
+    displayName: 'occ',
     badgeColor: LOCAL_GREEN,
     sourceRepoIds: ['local-repo'],
     createdAt: 1,
@@ -43,7 +43,7 @@ export function registerReposSharedProjectBadgeColorTests(): void {
 
   const remoteProject: Project = {
     id: SHARED_PROJECT_ID,
-    displayName: 'orca',
+    displayName: 'occ',
     badgeColor: REMOTE_NEUTRAL,
     sourceRepoIds: ['remote-repo'],
     createdAt: 2,
@@ -57,7 +57,7 @@ export function registerReposSharedProjectBadgeColorTests(): void {
       hostId: 'local',
       repoId,
       path,
-      displayName: 'orca',
+      displayName: 'occ',
       setupState: 'ready',
       setupMethod: 'imported-existing-folder',
       createdAt: 1,
@@ -81,7 +81,7 @@ export function registerReposSharedProjectBadgeColorTests(): void {
       return { projects: [remoteProject] }
     }
     if (method === 'projectHostSetup.list') {
-      return { setups: [setup(SHARED_PROJECT_ID, 'remote-repo', '/srv/orca')] }
+      return { setups: [setup(SHARED_PROJECT_ID, 'remote-repo', '/srv/occ')] }
     }
     return {}
   }
@@ -102,7 +102,7 @@ export function registerReposSharedProjectBadgeColorTests(): void {
       ...updates
     }))
     projectsList.mockResolvedValue([localProject])
-    listHostSetups.mockResolvedValue([setup(SHARED_PROJECT_ID, 'local-repo', '/local/orca')])
+    listHostSetups.mockResolvedValue([setup(SHARED_PROJECT_ID, 'local-repo', '/local/occ')])
     runtimeEnvironmentsList.mockResolvedValue([{ id: 'env-1', name: 'awin' }])
     runtimeEnvironmentCall.mockImplementation((args: RuntimeEnvironmentCallRequest) => ({
       id: `rpc-${args.method}`,

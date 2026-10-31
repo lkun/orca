@@ -47,8 +47,8 @@ function allowAsking(): void {
 }
 
 beforeEach(() => {
-  userData = mkdtempSync(join(tmpdir(), 'orca-codex-hash-lookup-'))
-  vi.stubEnv('ORCA_USER_DATA_PATH', userData)
+  userData = mkdtempSync(join(tmpdir(), 'occ-codex-hash-lookup-'))
+  vi.stubEnv('OCC_USER_DATA_PATH', userData)
   mocks.codexPath = join(userData, 'codex')
   writeFileSync(mocks.codexPath, 'codex 0.150.1')
   mocks.probeCodexVersion.mockResolvedValue('codex-cli 0.150.1')

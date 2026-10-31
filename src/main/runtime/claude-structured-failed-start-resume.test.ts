@@ -1,7 +1,7 @@
 // Unproven first starts have no transcript: retry the same provider id fresh until a start proves its root.
 
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { claudeSessionIdForOrcaSession } from '../claude/structured/claude-structured-session-id'
+import { claudeSessionIdForOCCSession } from '../claude/structured/claude-structured-session-id'
 import { waitForStructuredAgentSessionRecovery } from './structured-agent-session-runtime'
 import { createScriptedClaudeRuntime } from './structured-claude-scripted-runtime-test-support'
 
@@ -38,7 +38,7 @@ describe('a Claude chat whose first start died before initialize', () => {
     await vi.waitFor(() =>
       expect(host.collaboratorsForTests().sessions.get(SESSION)?.child?.phase).toBe('ready')
     )
-    const providerSessionId = claudeSessionIdForOrcaSession(SESSION)
+    const providerSessionId = claudeSessionIdForOCCSession(SESSION)
     // No transcript exists to resume.
     expect(claude.child(SESSION).launch.options).toMatchObject({ sessionId: providerSessionId })
     expect(claude.child(SESSION).launch.options.resume).toBeUndefined()

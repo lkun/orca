@@ -2,7 +2,7 @@ export const AWAIT_CLICK_SCRIPT = `(async function() {
   // Async returns an intrinsic Promise Electron unwraps even when Zone.js replaces global Promise.
   return await new Promise(function(resolve, reject) {
     'use strict';
-    var grab = window.__orcaGrab;
+    var grab = window.__occGrab;
     if (!grab) {
       reject(new Error('Grab not armed'));
       return;
@@ -32,20 +32,20 @@ export const AWAIT_CLICK_SCRIPT = `(async function() {
       // Keep the selected element outlined while the renderer shows its copy menu.
       grab.freezeHighlight(payload.page.capturedAt);
       // The marker opens the action menu instead of auto-copying.
-      resolve(e.type === 'contextmenu' ? { __orcaContextMenu: true, payload: payload } : payload);
+      resolve(e.type === 'contextmenu' ? { __occContextMenu: true, payload: payload } : payload);
     };
 
     grab.cancelAwait = function() {
       grab.cleanup();
       // Resolve cancellation to avoid guest-console errors during normal teardown.
-      resolve({ __orcaCancelled: true });
+      resolve({ __occCancelled: true });
     };
   });
 })()`
 
 export const FINALIZE_SCRIPT = `(function() {
   'use strict';
-  var grab = window.__orcaGrab;
+  var grab = window.__occGrab;
   if (!grab) return null;
   var el = grab.getCurrentElement();
   if (!el) return null;
@@ -63,7 +63,7 @@ export const FINALIZE_SCRIPT = `(function() {
 // Extract without ending grab mode, so shortcut copy can keep selecting.
 export const EXTRACT_HOVER_SCRIPT = `(function() {
   'use strict';
-  var grab = window.__orcaGrab;
+  var grab = window.__occGrab;
   if (!grab) return null;
   var el = grab.getCurrentElement();
   if (!el) return null;
@@ -76,7 +76,7 @@ export const EXTRACT_HOVER_SCRIPT = `(function() {
 
 export const TEARDOWN_SCRIPT = `(function() {
   'use strict';
-  var grab = window.__orcaGrab;
+  var grab = window.__occGrab;
   if (!grab) return true;
   // Settle the outstanding executeJavaScript call before removing grab state.
   if (grab.cancelAwait) {

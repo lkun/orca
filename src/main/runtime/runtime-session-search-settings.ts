@@ -2,7 +2,7 @@ import { resolveAiVaultSearchSettings } from '../../shared/ai-vault-search-setti
 import type { GlobalSettings } from '../../shared/global-settings-types'
 import type { RuntimeStore } from './runtime-store-contract'
 
-/** After persistence, reach the host-owned index: desktop scanner child or orcad instance. Hosts without one still save without reconstruction. */
+/** After persistence, reach the host-owned index: desktop scanner child or occd instance. Hosts without one still save without reconstruction. */
 export type SessionSearchSettingsApply = (
   before: Pick<GlobalSettings, 'aiVaultSearch'>,
   after: Pick<GlobalSettings, 'aiVaultSearch'>

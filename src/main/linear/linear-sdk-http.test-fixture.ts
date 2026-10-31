@@ -27,7 +27,7 @@ export async function serveLinearHttp(
   })
   await new Promise<void>((resolve, reject) => {
     server.once('error', reject)
-    server.listen(Number(process.env.ORCA_E2E_LINEAR_HTTP_PORT ?? 0), '127.0.0.1', resolve)
+    server.listen(Number(process.env.OCC_E2E_LINEAR_HTTP_PORT ?? 0), '127.0.0.1', resolve)
   })
   const address = server.address()
   if (!address || typeof address === 'string') {

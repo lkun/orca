@@ -197,7 +197,7 @@ describe('registerWorktreeHandlers', () => {
   })
 
   it('force-removes a legacy OCC-created orphaned worktree directory after Git tracking is gone', async () => {
-    const parentDir = await mkdtemp(join(tmpdir(), 'orca-ipc-orphan-'))
+    const parentDir = await mkdtemp(join(tmpdir(), 'occ-ipc-orphan-'))
     const repoPath = join(parentDir, 'repo')
     const orphanPath = join(parentDir, 'orphan')
     const adminWorktreePath = join(repoPath, '.git', 'worktrees', 'orphan')
@@ -246,7 +246,7 @@ describe('registerWorktreeHandlers', () => {
   })
 
   it('prompts for force before removing an OCC-created orphaned worktree directory', async () => {
-    const parentDir = await mkdtemp(join(tmpdir(), 'orca-ipc-orphan-'))
+    const parentDir = await mkdtemp(join(tmpdir(), 'occ-ipc-orphan-'))
     const repoPath = join(parentDir, 'repo')
     const orphanPath = join(parentDir, 'orphan')
     const adminWorktreePath = join(repoPath, '.git', 'worktrees', 'orphan')
@@ -266,7 +266,7 @@ describe('registerWorktreeHandlers', () => {
     store.getRepos.mockReturnValue([repo])
     mockKnownFeatureWorktree(join(parentDir, 'real-feature'), repoPath)
     store.getWorktreeMeta.mockReturnValue(
-      makeWorktreeMeta({ orcaCreatedAt: Date.now(), orcaCreationSource: 'runtime' })
+      makeWorktreeMeta({ occCreatedAt: Date.now(), occCreationSource: 'runtime' })
     )
 
     try {
@@ -285,7 +285,7 @@ describe('registerWorktreeHandlers', () => {
   })
 
   it('refuses an OCC-created unregistered directory with no git marker, even forced, until the user removes it', async () => {
-    const parentDir = await mkdtemp(join(tmpdir(), 'orca-ipc-leftover-'))
+    const parentDir = await mkdtemp(join(tmpdir(), 'occ-ipc-leftover-'))
     const repoPath = join(parentDir, 'repo')
     const leftoverPath = join(parentDir, 'leftover')
     const worktreeId = `repo-1::${leftoverPath}`
@@ -301,7 +301,7 @@ describe('registerWorktreeHandlers', () => {
     })
     mockKnownFeatureWorktree(join(parentDir, 'real-feature'), repoPath)
     store.getWorktreeMeta.mockReturnValue(
-      makeWorktreeMeta({ orcaCreatedAt: Date.now(), orcaCreationSource: 'runtime' })
+      makeWorktreeMeta({ occCreatedAt: Date.now(), occCreationSource: 'runtime' })
     )
     gitExecFileAsyncMock.mockImplementation(async (args: string[]) => {
       if (args[0] === 'status') {
@@ -335,7 +335,7 @@ describe('registerWorktreeHandlers', () => {
   })
 
   it('rejects an OCC-created unregistered local directory with a git directory', async () => {
-    const parentDir = await mkdtemp(join(tmpdir(), 'orca-ipc-standalone-'))
+    const parentDir = await mkdtemp(join(tmpdir(), 'occ-ipc-standalone-'))
     const repoPath = join(parentDir, 'repo')
     const standalonePath = join(parentDir, 'standalone')
     await mkdir(join(standalonePath, '.git'), { recursive: true })
@@ -349,7 +349,7 @@ describe('registerWorktreeHandlers', () => {
     })
     mockKnownFeatureWorktree(join(parentDir, 'real-feature'), repoPath)
     store.getWorktreeMeta.mockReturnValue(
-      makeWorktreeMeta({ orcaCreatedAt: Date.now(), orcaCreationSource: 'runtime' })
+      makeWorktreeMeta({ occCreatedAt: Date.now(), occCreationSource: 'runtime' })
     )
 
     try {
@@ -369,7 +369,7 @@ describe('registerWorktreeHandlers', () => {
   })
 
   it('does not inspect or delete a local path for an SSH orphan this process does not serve', async () => {
-    const localPath = await mkdtemp(join(tmpdir(), 'orca-ipc-ssh-missing-fs-'))
+    const localPath = await mkdtemp(join(tmpdir(), 'occ-ipc-ssh-missing-fs-'))
     const repo = {
       id: 'repo-ssh-missing-fs',
       path: '/remote/repo',
@@ -380,7 +380,7 @@ describe('registerWorktreeHandlers', () => {
     }
     store.getRepo.mockReturnValue(repo)
     store.getWorktreeMeta.mockReturnValue(
-      makeWorktreeMeta({ orcaCreatedAt: Date.now(), orcaCreationSource: 'ssh' })
+      makeWorktreeMeta({ occCreatedAt: Date.now(), occCreationSource: 'ssh' })
     )
 
     try {

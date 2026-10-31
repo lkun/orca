@@ -59,7 +59,7 @@ function fakeHosts(
     id: string
     name: string
     snapshot: RuntimeHostStatusSnapshot
-    orcadDeployment?: { sshTargetId: string } | { kind: 'wsl' }
+    occdDeployment?: { sshTargetId: string } | { kind: 'wsl' }
     runtimeId?: string | null
     pairedDeviceId?: string
     stoppedOnDesktop?: true
@@ -81,7 +81,7 @@ function fakeHosts(
         ({
           id,
           name,
-          orcadDeployment,
+          occdDeployment,
           runtimeId,
           pairedDeviceId,
           stoppedOnDesktop,
@@ -89,7 +89,7 @@ function fakeHosts(
         }) => ({
           id,
           name,
-          orcadDeployment,
+          occdDeployment,
           stoppedOnDesktop,
           unavailableOnDesktop,
           pairingRevision: state.pairingRevision,
@@ -179,9 +179,9 @@ describe('mobile relay host catalog', () => {
     const { hosts, state } = fakeHosts([
       {
         id: 'managed',
-        name: 'orcad on devbox',
+        name: 'occd on devbox',
         snapshot: snapshot('managed', 'live'),
-        orcadDeployment: { sshTargetId: 'devbox' }
+        occdDeployment: { sshTargetId: 'devbox' }
       }
     ])
     state.sshTargetLabels.set('devbox', 'Dev Box')
@@ -197,7 +197,7 @@ describe('mobile relay host catalog', () => {
       id: 'wsl:ubuntu',
       name: 'Ubuntu (WSL)',
       snapshot: snapshot('wsl:ubuntu', 'unreachable'),
-      orcadDeployment: { kind: 'wsl' as const }
+      occdDeployment: { kind: 'wsl' as const }
     }
     const unconfirmed = {
       hostId: 'runtime:wsl%3Aubuntu',
@@ -220,9 +220,9 @@ describe('mobile relay host catalog', () => {
     const { hosts, state } = fakeHosts([
       {
         id: 'managed',
-        name: 'orcad on devbox',
+        name: 'occd on devbox',
         snapshot: snapshot('managed', 'live'),
-        orcadDeployment: { sshTargetId: 'devbox' }
+        occdDeployment: { sshTargetId: 'devbox' }
       },
       { id: 'other', name: 'Box', snapshot: snapshot('other', 'live') }
     ])

@@ -7,24 +7,24 @@ describe('pluginInstallSourceSchema marketplace provenance', () => {
       pluginInstallSourceSchema.parse({
         kind: 'marketplace',
         marketplace: {
-          url: 'https://github.com/stablyai/orca-plugins.git',
+          url: 'https://github.com/stablyai/occ-plugins.git',
           ref: 'main',
           resolvedCommit: 'a'.repeat(40)
         },
         plugin: {
-          url: 'git@github.com:stablyai/orca-skills.git',
+          url: 'git@github.com:stablyai/occ-skills.git',
           ref: 'v1.0.0'
         }
       })
     ).toEqual({
       kind: 'marketplace',
       marketplace: {
-        url: 'https://github.com/stablyai/orca-plugins.git',
+        url: 'https://github.com/stablyai/occ-plugins.git',
         ref: 'main',
         resolvedCommit: 'a'.repeat(40)
       },
       plugin: {
-        url: 'git@github.com:stablyai/orca-skills.git',
+        url: 'git@github.com:stablyai/occ-skills.git',
         ref: 'v1.0.0'
       }
     })
@@ -34,12 +34,12 @@ describe('pluginInstallSourceSchema marketplace provenance', () => {
     const source = {
       kind: 'marketplace',
       marketplace: {
-        url: 'https://github.com/stablyai/orca-plugins.git',
+        url: 'https://github.com/stablyai/occ-plugins.git',
         ref: 'main',
         resolvedCommit: 'a'.repeat(40)
       },
       plugin: {
-        url: 'https://github.com/stablyai/orca-skills.git',
+        url: 'https://github.com/stablyai/occ-skills.git',
         ref: 'v1.0.0'
       }
     }
@@ -67,9 +67,9 @@ describe('pluginInstallSourceSchema marketplace provenance', () => {
 
 describe('isAllowedPluginGitUrl', () => {
   it.each([
-    'https://github.com/stablyai/orca-plugins.git',
-    'ssh://git@github.com/stablyai/orca-plugins.git',
-    'git@github.com:stablyai/orca-plugins.git'
+    'https://github.com/stablyai/occ-plugins.git',
+    'ssh://git@github.com/stablyai/occ-plugins.git',
+    'git@github.com:stablyai/occ-plugins.git'
   ])('accepts %s', (url) => {
     expect(isAllowedPluginGitUrl(url)).toBe(true)
   })

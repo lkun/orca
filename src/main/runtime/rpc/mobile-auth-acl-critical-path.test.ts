@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { WebSocket } from 'ws'
 
-import { runProcess, runProcessSync } from '@orca/process-host'
+import { runProcess, runProcessSync } from '@occ/process-host'
 import {
   resetWindowsSecurityLoadForTests,
   setWindowsSecurityForTests
@@ -16,7 +16,7 @@ import { DeviceRegistry, type DeviceEntry } from '../device-registry'
 import { decrypt, deriveSharedKey, encrypt, generateKeyPair } from '../../../shared/e2ee-crypto'
 import { MobileSocketWiring, type MobileSocketTransport } from './mobile-socket-wiring'
 
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: vi.fn(),
   runProcessSync: vi.fn()
 }))
@@ -61,7 +61,7 @@ describe('mobile auth critical path', () => {
   beforeEach(() => {
     timeline.length = 0
     Object.defineProperty(process, 'platform', { configurable: true, value: 'win32' })
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-auth-acl-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-auth-acl-'))
     vi.mocked(runProcessSync).mockReset()
     vi.mocked(runProcess).mockReset()
     const fake = createFakeWindowsSecurity()

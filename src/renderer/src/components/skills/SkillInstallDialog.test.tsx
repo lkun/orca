@@ -120,7 +120,7 @@ function installApi(previewInstall: ReturnType<typeof vi.fn>) {
 
 async function inspectSkill(expectedDescription = 'A private skill'): Promise<void> {
   fireEvent.change(screen.getByLabelText('OCC skill link'), {
-    target: { value: 'https://app.orca.dev/skills/share/share_1' }
+    target: { value: 'https://app.occ.dev/skills/share/share_1' }
   })
   fireEvent.click(screen.getByRole('button', { name: 'Inspect skill' }))
   await screen.findByText(expectedDescription)
@@ -424,7 +424,7 @@ describe('SkillInstallDialog', () => {
     ])
     await user.type(
       screen.getByRole('textbox', { name: 'OCC skill link' }),
-      'https://app.orca.dev/skills/share/share_1'
+      'https://app.occ.dev/skills/share/share_1'
     )
     await user.keyboard('{Enter}')
     await screen.findByText('A private skill')
@@ -441,7 +441,7 @@ describe('SkillInstallDialog', () => {
     render(<SkillInstallDialog open onOpenChange={() => undefined} />)
 
     fireEvent.change(screen.getByLabelText('OCC skill link'), {
-      target: { value: 'https://app.orca.dev/skills/share/share_1' }
+      target: { value: 'https://app.occ.dev/skills/share/share_1' }
     })
     fireEvent.click(screen.getByRole('button', { name: 'Inspect skill' }))
 
@@ -612,7 +612,7 @@ describe('SkillInstallDialog', () => {
     const skills = installApi(previewInstall)
     Object.defineProperty(window, 'api', { configurable: true, value: { skills } })
     const changed = vi.fn()
-    window.addEventListener('orca:installed-agent-skills-changed', changed)
+    window.addEventListener('occ:installed-agent-skills-changed', changed)
     render(<SkillInstallDialog open onOpenChange={() => undefined} />)
     await inspectSkill()
 
@@ -620,7 +620,7 @@ describe('SkillInstallDialog', () => {
 
     await screen.findByText('Installed and verified.')
     expect(changed).toHaveBeenCalledOnce()
-    window.removeEventListener('orca:installed-agent-skills-changed', changed)
+    window.removeEventListener('occ:installed-agent-skills-changed', changed)
   })
 
   it('cancels an active destination-owned install and renders the structured result', async () => {
@@ -657,7 +657,7 @@ describe('SkillInstallDialog', () => {
         name: 'private-skill',
         packageDigest: DIGEST,
         placements: [],
-        errorCategory: 'skill-install-cancelled',
+        errocctegory: 'skill-install-cancelled',
         failure: { category: 'cancelled', code: 'skill-install-cancelled', retryable: true }
       }
     })
@@ -711,7 +711,7 @@ describe('SkillInstallDialog', () => {
             path: '/redacted-in-ui',
             topology: 'provider-alias',
             status: 'failed',
-            errorCategory: 'skill-placement-permission-denied'
+            errocctegory: 'skill-placement-permission-denied'
           }
         ]
       }

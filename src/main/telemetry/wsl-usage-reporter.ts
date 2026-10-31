@@ -123,7 +123,7 @@ function readWslHostDistros(userDataPath: string): Map<string, string> {
     return new Map(
       listEnvironments(userDataPath)
         .filter(isWslHostRuntimeEnvironment)
-        .map((environment) => [environment.id, environment.orcadDeployment.distro])
+        .map((environment) => [environment.id, environment.occdDeployment.distro])
     )
   } catch {
     return new Map()

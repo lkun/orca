@@ -4,9 +4,9 @@ function pathSeparatorFor(pathValue: string): '/' | '\\' {
   return pathValue.includes('\\') ? '\\' : '/'
 }
 
-/** Use ~ only for recognized OS home layouts; suffix-matching arbitrary orca/projects paths would mislabel them. */
+/** Use ~ only for recognized OS home layouts; suffix-matching arbitrary occ/projects paths would mislabel them. */
 function isHomeProjectsFallback(pathValue: string): boolean {
-  return /^(?:\/(?:Users|home)\/[^/]+|[A-Za-z]:[\\/]Users[\\/][^\\/]+)[\\/]orca[\\/]projects$/.test(
+  return /^(?:\/(?:Users|home)\/[^/]+|[A-Za-z]:[\\/]Users[\\/][^\\/]+)[\\/]occ[\\/]projects$/.test(
     pathValue
   )
 }
@@ -40,7 +40,7 @@ export function getDefaultCreateProjectParent(homeDir: string): string {
   if (!trimmedHomeDir) {
     return ''
   }
-  return joinCreateProjectPath(joinCreateProjectPath(trimmedHomeDir, 'orca'), 'projects')
+  return joinCreateProjectPath(joinCreateProjectPath(trimmedHomeDir, 'occ'), 'projects')
 }
 
 export function getCreateProjectDefaultParentAutoFill({
@@ -95,7 +95,7 @@ export function formatCreateProjectParentSummary({
     !isRemoteHost &&
     isHomeProjectsFallback(trimmedParent)
   ) {
-    return '~/orca/projects'
+    return '~/occ/projects'
   }
   return trimmedParent
 }

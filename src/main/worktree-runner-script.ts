@@ -16,7 +16,7 @@ import { buildPosixRunnerScript, buildWindowsRunnerScript } from './setup-runner
 import type { HookRuntimeTarget } from './hook-runtime-target'
 import type { Repo } from '../shared/repo-types'
 import type { WorktreeSetupLaunch } from '../shared/worktree/launch-types'
-import type { SetupAgentStartupPolicy } from '../shared/orca-yaml-hook-types'
+import type { SetupAgentStartupPolicy } from '../shared/occ-yaml-hook-types'
 import type { ProjectExecutionRuntimeResolution } from '../shared/project-execution-runtime'
 import type { SetupRunnerShell } from '../shared/setup-runner-command'
 
@@ -87,7 +87,7 @@ function createWorktreeRunnerScript(args: {
       : undefined
   // Linked worktrees have .git files; resolve the per-worktree gitdir through Git.
   const runnerExtension = runnerShell.family === 'cmd' ? 'cmd' : 'sh'
-  const gitRelPath = `orca/${runnerBaseName}.${runnerExtension}`
+  const gitRelPath = `occ/${runnerBaseName}.${runnerExtension}`
   // With the D1c Git router, read the link: if WSL Git made the worktree, host Git can't.
   const fromLink = isLocalGitRuntimeRouterInstalled()
     ? readWorktreeGitPath(worktreePath, gitRelPath, knownWslAutomountRoots())

@@ -23,7 +23,7 @@ import { promptEditor } from '@/components/native-chat/native-chat-prompt-editor
 import { expect, it, vi } from 'vitest'
 import { useAppStore } from '@/store/index'
 import { getStructuredLaunchStateBySessionId } from './launch/structured-agent-session-launch-registry'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import {
   clearNativeChatComposerDraftsForTests,
   hydrateNativeChatComposerDrafts,
@@ -36,7 +36,7 @@ import { promptTextContent } from '@/components/native-chat/native-chat-prompt-d
 import { openStructuredAgentSessionProvisionalTab } from '../structured-agent-session-launch-surface'
 
 it
-  .runIf(ORCA_LAYOUT_OWNER_IS_MAIN)
+  .runIf(OCC_LAYOUT_OWNER_IS_MAIN)
   .each(['discarded-inventory', 'refused-close', 'excluded-close'] as const)(
   'keeps fresh END on the actually drawn destination after %s, then retires on accepted removal',
   async (schedule) => {
@@ -92,7 +92,7 @@ it
   }
 )
 
-it.runIf(ORCA_LAYOUT_OWNER_IS_MAIN).each(['fresh', 'restored', 'newer-seed'] as const)(
+it.runIf(OCC_LAYOUT_OWNER_IS_MAIN).each(['fresh', 'restored', 'newer-seed'] as const)(
   'settles actual no-surface open without retiring another occurrence: %s',
   async (kind) => {
     const uuid = '11111111-2222-4333-8444-555555555555'
@@ -172,7 +172,7 @@ it.each(['remove', 'replace', 'final-retained'] as const)(
         expect(observedInput.current!.selectionStart).toBe(0)
       }
     })
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       const model = layoutApplyTestTransport.mainModel
       if (!model) {
         throw new Error('Expected main model')
@@ -225,7 +225,7 @@ it.each(['remove', 'replace', 'final-retained'] as const)(
     expect(readNativeChatComposerDraft(scope)).toBe(original)
     if (kind !== 'final-retained') {
       // Reopen the retained ordinary conversation through the existing API.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         layoutApplyTestTransport.emitFrame({
           type: 'workspace',
           key: 'wt-1',
@@ -378,7 +378,7 @@ it.each([10, 100])(
             isActive: false
           }))
     })
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       const layout = publishedLayoutsOf(layoutApplyTestTransport.mainModel!)['wt-1']!
       const emit = (next: typeof layout) =>
         layoutApplyTestTransport.emitFrame({ type: 'workspace', key: 'wt-1', layout: next })
@@ -415,7 +415,7 @@ it.each([10, 100])(
   }
 )
 
-it.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
+it.runIf(OCC_LAYOUT_OWNER_IS_MAIN)(
   'parks a live fresh destination across group/title changes and cache unpublish until actual attachment',
   async () => {
     const handle = openPositionDraft(),
@@ -450,7 +450,7 @@ it.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)(
   }
 )
 
-it.runIf(!ORCA_LAYOUT_OWNER_IS_MAIN)(
+it.runIf(!OCC_LAYOUT_OWNER_IS_MAIN)(
   'uses one addressed retirement for actual local close and makes a duplicate close inert',
   async () => {
     const handle = openPositionDraft()

@@ -1,4 +1,4 @@
-/** Told when node-pty fails to load in this process; orcad drops its slot's startup qualification. */
+/** Told when node-pty fails to load in this process; occd drops its slot's startup qualification. */
 const listeners = new Set<(error: unknown) => void>()
 
 export function onNodePtyLoadFailure(listener: (error: unknown) => void): () => void {

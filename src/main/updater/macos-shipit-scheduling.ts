@@ -12,7 +12,7 @@ export function configureMacShipItScheduling(): void {
   }
   let reason = 'load_failed'
   try {
-    const addon: unknown = requireNative(join(process.resourcesPath, 'orca_shipit_scheduling.node'))
+    const addon: unknown = requireNative(join(process.resourcesPath, 'occ_shipit_scheduling.node'))
     reason = 'missing_export'
     if (
       typeof addon !== 'object' ||

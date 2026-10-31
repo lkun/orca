@@ -11,7 +11,7 @@ import {
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import * as currentProcessHost from '@orca/process-host'
+import * as currentProcessHost from '@occ/process-host'
 import { importReleaseCheckoutModule } from './release-checkout'
 import { extractReleaseCheckoutTree } from './release-checkout-tree'
 
@@ -43,7 +43,7 @@ const RELEASE_SKELETON: Record<string, string> = Object.fromEntries(
 )
 
 function commitRelease(files: Record<string, string>): { repo: string; commit: string } {
-  const repo = temporaryDirectory('orca-cross-version-release-repo-')
+  const repo = temporaryDirectory('occ-cross-version-release-repo-')
   for (const [path, source] of Object.entries({ ...RELEASE_SKELETON, ...files })) {
     mkdirSync(join(repo, path, '..'), { recursive: true })
     writeFileSync(join(repo, path), source)
@@ -73,12 +73,12 @@ function commitRelease(files: Record<string, string>): { repo: string; commit: s
 
 const RELEASE_PROCESS_HOST = {
   'src/packages/process-host/package.json': JSON.stringify({
-    name: '@orca/process-host',
+    name: '@occ/process-host',
     type: 'commonjs',
     exports: {
-      '.': { 'orca-source': './src/run-process.ts', default: './dist/run-process.js' },
+      '.': { 'occ-source': './src/run-process.ts', default: './dist/run-process.js' },
       './process-spec': {
-        'orca-source': './src/process-spec.ts',
+        'occ-source': './src/process-spec.ts',
         default: './dist/process-spec.js'
       }
     }
@@ -93,15 +93,15 @@ const RELEASE_PROCESS_HOST = {
     "export const describeSpec = () => 'release process-spec'\n",
   'src/packages/process-host/src/run-process.test.ts': 'throw new Error("stale spec")\n',
   'src/packages/release-tool/package.json': JSON.stringify({
-    name: '@orca/release-tool',
+    name: '@occ/release-tool',
     type: 'module',
     exports: {
-      '.': { 'orca-source': './src/index.mjs', default: './dist/index.js' },
+      '.': { 'occ-source': './src/index.mjs', default: './dist/index.js' },
       './private': { default: './dist/private.js' }
     }
   }),
   'src/packages/release-tool/src/index.mjs':
-    "import { runProcess } from '@orca/process-host'\nexport const tool = () => `tool:${runProcess()}`\n",
+    "import { runProcess } from '@occ/process-host'\nexport const tool = () => `tool:${runProcess()}`\n",
   'src/packages/release-tool/src/index.test.mjs': 'throw new Error("stale spec")\n'
 }
 
@@ -112,31 +112,31 @@ describe('release checkout workspace packages', () => {
       'pnpm-workspace.yaml': "packages:\n  - src/packages/*\n  - '!src/packages/ignored'\n",
       ...RELEASE_PROCESS_HOST,
       'src/main/consumer.ts': [
-        "import { runProcess, releaseOnlyExport } from '@orca/process-host'",
-        "import * as spec from '@orca/process-host/process-spec'",
-        'export { describeSpec as reexported } from "@orca/process-host/process-spec"',
+        "import { runProcess, releaseOnlyExport } from '@occ/process-host'",
+        "import * as spec from '@occ/process-host/process-spec'",
+        'export { describeSpec as reexported } from "@occ/process-host/process-spec"',
         'export const staticRun = runProcess()',
         'export const releaseOnly = releaseOnlyExport()',
         'export const specValue = spec.describeSpec()',
-        "export const lazyRun = async () => (await import('@orca/process-host')).runProcess()",
+        "export const lazyRun = async () => (await import('@occ/process-host')).runProcess()",
         ''
       ].join('\n'),
       'src/main/esm-consumer.mjs': [
-        "import { describeSpec } from '@orca/process-host/process-spec'",
-        "import { tool } from '@orca/release-tool'",
+        "import { describeSpec } from '@occ/process-host/process-spec'",
+        "import { tool } from '@occ/release-tool'",
         'export const esm = `${describeSpec()}|${tool()}`',
         ''
       ].join('\n'),
       'src/main/commonjs-consumer.cjs':
-        "module.exports = () => require('@orca/process-host/process-spec')\n",
+        "module.exports = () => require('@occ/process-host/process-spec')\n",
       'src/renderer/src/lib/view.ts': [
         "import { label } from '@/lib/label'",
-        "export const view = async () => `${label}:${(await import('@orca/process-host')).runProcess()}`",
+        "export const view = async () => `${label}:${(await import('@occ/process-host')).runProcess()}`",
         ''
       ].join('\n'),
       'src/renderer/src/lib/label.ts': "export const label = 'renderer'\n"
     })
-    const staging = temporaryDirectory('orca-cross-version-release-staging-')
+    const staging = temporaryDirectory('occ-cross-version-release-staging-')
 
     await extractReleaseCheckoutTree(repo, staging, commit)
     const checkout = { ref: 'v0.0.0-synthetic', commit, label: 'v0.0.0-synthetic', root: staging }
@@ -168,7 +168,7 @@ describe('release checkout workspace packages', () => {
     expect(existsSync(join(staging, 'node_modules'))).toBe(false)
   })
 
-  it.each(['@orca/process-host/internal', '@orca/release-tool/private', '@orca/not-in-release'])(
+  it.each(['@occ/process-host/internal', '@occ/release-tool/private', '@occ/not-in-release'])(
     'fails extraction rather than loading the current tree for %s',
     async (specifier) => {
       const { repo, commit } = commitRelease({
@@ -176,7 +176,7 @@ describe('release checkout workspace packages', () => {
         ...RELEASE_PROCESS_HOST,
         'src/main/private.ts': `import { x } from '${specifier}'\nexport { x }\n`
       })
-      const staging = temporaryDirectory('orca-cross-version-release-staging-')
+      const staging = temporaryDirectory('occ-cross-version-release-staging-')
 
       const failure = await extractReleaseCheckoutTree(repo, staging, commit).then(
         () => null,
@@ -184,14 +184,14 @@ describe('release checkout workspace packages', () => {
       )
 
       expect(failure).toMatch(/src[/\\]main[/\\]private\.ts: /)
-      expect(failure).toContain(`No public orca-source export for ${specifier}`)
+      expect(failure).toContain(`No public occ-source export for ${specifier}`)
     }
   )
 
   it('extracts a release that predates workspace packages unchanged', async () => {
     const source = "import { lock } from 'proper-lockfile'\nexport const locker = typeof lock\n"
     const { repo, commit } = commitRelease({ 'src/main/old.ts': source })
-    const staging = temporaryDirectory('orca-cross-version-release-staging-')
+    const staging = temporaryDirectory('occ-cross-version-release-staging-')
 
     await extractReleaseCheckoutTree(repo, staging, commit)
 
@@ -206,7 +206,7 @@ describe('release checkout workspace packages', () => {
       'src/relay/relay.ts': source,
       'src/wsl-guest/protocol.ts': "export const RELAY_SENTINEL = 'sentinel'\n"
     })
-    const staging = temporaryDirectory('orca-cross-version-release-staging-')
+    const staging = temporaryDirectory('occ-cross-version-release-staging-')
 
     await extractReleaseCheckoutTree(repo, staging, commit)
 

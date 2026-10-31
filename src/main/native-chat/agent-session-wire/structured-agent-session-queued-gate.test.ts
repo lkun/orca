@@ -47,7 +47,7 @@ describe('the one queue gate', () => {
     const draftId = queued.value.queued.messageId
     const journal = host.collaboratorsForTests().sessions.get(SESSION)!.journal
     await journal.appendItem(
-      { provider: 'orca', clientMessageId: 'prompt-1' },
+      { provider: 'occ', clientMessageId: 'prompt-1' },
       {
         kind: 'approval',
         title: 'Allow the tool?',
@@ -71,7 +71,7 @@ describe('the one queue gate', () => {
     expect(snapshot).not.toHaveBeenCalled()
     snapshot.mockRestore()
     await journal.appendItem(
-      { provider: 'orca', clientMessageId: 'prompt-1' },
+      { provider: 'occ', clientMessageId: 'prompt-1' },
       {
         kind: 'approval',
         title: 'Allow the tool?',

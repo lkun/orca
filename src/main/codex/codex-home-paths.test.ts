@@ -111,10 +111,10 @@ beforeEach(() => {
   fsMockState.failSymlink = false
   fsMockState.trackedReadCount = 0
   fsMockState.trackedReadPath = null
-  fakeHomeDir = mkdtempSync(join(tmpdir(), 'orca-codex-resource-home-'))
-  userDataDir = mkdtempSync(join(tmpdir(), 'orca-codex-resource-user-data-'))
-  previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-  process.env.ORCA_USER_DATA_PATH = userDataDir
+  fakeHomeDir = mkdtempSync(join(tmpdir(), 'occ-codex-resource-home-'))
+  userDataDir = mkdtempSync(join(tmpdir(), 'occ-codex-resource-user-data-'))
+  previousUserDataPath = process.env.OCC_USER_DATA_PATH
+  process.env.OCC_USER_DATA_PATH = userDataDir
   homedirMock.mockReturnValue(fakeHomeDir)
   getPathMock.mockImplementation((name: string) => {
     if (name === 'userData') {
@@ -129,31 +129,31 @@ afterEach(() => {
   rmSync(fakeHomeDir, { recursive: true, force: true })
   rmSync(userDataDir, { recursive: true, force: true })
   if (previousUserDataPath === undefined) {
-    delete process.env.ORCA_USER_DATA_PATH
+    delete process.env.OCC_USER_DATA_PATH
   } else {
-    process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+    process.env.OCC_USER_DATA_PATH = previousUserDataPath
   }
   vi.clearAllMocks()
 })
 
 describe('syncSystemCodexResourcesIntoManagedHome', () => {
-  it('uses ORCA_USER_DATA_PATH when Electron cannot be required', async () => {
+  it('uses OCC_USER_DATA_PATH when Electron cannot be required', async () => {
     vi.resetModules()
     vi.doMock('electron', () => {
       throw new Error('electron unavailable in packaged CLI')
     })
-    const previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-    process.env.ORCA_USER_DATA_PATH = userDataDir
+    const previousUserDataPath = process.env.OCC_USER_DATA_PATH
+    process.env.OCC_USER_DATA_PATH = userDataDir
     try {
-      const { getOrcaManagedCodexHomePath: getCliSafeManagedPath } =
+      const { getOCCManagedCodexHomePath: getCliSafeManagedPath } =
         await import('./codex-home-paths')
 
       expect(getCliSafeManagedPath()).toBe(join(userDataDir, 'codex-runtime-home', 'home'))
     } finally {
       if (previousUserDataPath === undefined) {
-        delete process.env.ORCA_USER_DATA_PATH
+        delete process.env.OCC_USER_DATA_PATH
       } else {
-        process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+        process.env.OCC_USER_DATA_PATH = previousUserDataPath
       }
       mockElectronAppPaths()
       vi.resetModules()
@@ -253,20 +253,20 @@ describe('syncSystemCodexResourcesIntoManagedHome', () => {
 
     // Codex loads sorted paths and later network/host_executable rules win, so account files must sort last.
     expect(readdirSync(perAccountRulesPath).sort()).toEqual([
-      '_orca-global-default.rules',
+      '_occ-global-default.rules',
       'default.rules'
     ])
     expect(readFileSync(join(perAccountRulesPath, 'default.rules'), 'utf-8')).toBe(
       'account approval\n'
     )
-    expect(readFileSync(join(perAccountRulesPath, '_orca-global-default.rules'), 'utf-8')).toBe(
+    expect(readFileSync(join(perAccountRulesPath, '_occ-global-default.rules'), 'utf-8')).toBe(
       'global\n'
     )
 
     rmSync(join(systemRulesPath, 'default.rules'))
     syncSystemCodexResourcesIntoManagedHome(dirname(perAccountRulesPath))
 
-    expect(existsSync(join(perAccountRulesPath, '_orca-global-default.rules'))).toBe(false)
+    expect(existsSync(join(perAccountRulesPath, '_occ-global-default.rules'))).toBe(false)
     expect(readFileSync(join(perAccountRulesPath, 'default.rules'), 'utf-8')).toBe(
       'account approval\n'
     )
@@ -285,7 +285,7 @@ describe('syncSystemCodexResourcesIntoManagedHome', () => {
 
     syncSystemCodexResourcesIntoManagedHome()
 
-    expect(existsSync(join(systemRulesPath, '_orca-global-default.rules'))).toBe(false)
+    expect(existsSync(join(systemRulesPath, '_occ-global-default.rules'))).toBe(false)
   })
 
   it('refreshes owned fallback copies when symlinks are unavailable', () => {
@@ -385,7 +385,7 @@ describe('syncSystemCodexResourcesIntoManagedHome', () => {
       mkdirSync(managedHomePath, { recursive: true })
       writeFileSync(systemAgentsPath, 'system\n')
       symlinkSync(systemAgentsPath, runtimeAgentsPath)
-      mkdirSync(join(managedHomePath, '.orca-resource-copies', 'AGENTS.md.json'), {
+      mkdirSync(join(managedHomePath, '.occ-resource-copies', 'AGENTS.md.json'), {
         recursive: true
       })
 
@@ -401,7 +401,7 @@ describe('syncSystemCodexResourcesIntoManagedHome', () => {
     const managedHomePath = join(userDataDir, 'wsl-runtime-home')
     writeFileSync(join(systemHomePath, 'AGENTS.md'), 'system\n')
     mkdirSync(managedHomePath, { recursive: true })
-    writeFileSync(join(managedHomePath, '.orca-resource-copies'), 'blocks marker directory\n')
+    writeFileSync(join(managedHomePath, '.occ-resource-copies'), 'blocks marker directory\n')
 
     syncCodexGlobalInstructionsIntoManagedHome({ systemHomePath, managedHomePath })
 

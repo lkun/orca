@@ -1,7 +1,7 @@
 import type { Terminal } from '@xterm/xterm'
 import { Unicode11Addon } from '@xterm/addon-unicode11'
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
-import { activateOrcaTerminalUnicodeProvider } from '../../../../shared/terminal-unicode-provider'
+import { activateOCCTerminalUnicodeProvider } from '../../../../shared/terminal-unicode-provider'
 import { installWindowsCtrlAltChordRepair } from '@/lib/pane-manager/terminal-windows-ctrl-alt-chord-classification'
 import { attachTerminalMouseWheelMultiplier } from '@/lib/pane-manager/pane-terminal-mouse-wheel'
 import { configureLazyArabicShapingJoiner } from '@/lib/pane-manager/terminal-arabic-shaping-joiner'
@@ -17,7 +17,7 @@ export function installPreviewTerminalCompatibility(
 ): () => void {
   // Load Unicode 11 before its width shim and any replay; earlier writes bake wide characters into default v6 widths.
   terminal.loadAddon(new Unicode11Addon())
-  activateOrcaTerminalUnicodeProvider(terminal)
+  activateOCCTerminalUnicodeProvider(terminal)
   installWindowsCtrlAltChordRepair(terminal)
   installPreviewTerminalLinks(terminal)
   syncPreviewTerminalLigatures(terminal, deps.getSettings())

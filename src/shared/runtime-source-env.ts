@@ -1,8 +1,8 @@
 // Which OCC runtime launched a process. Kept separate from the orchestration compatibility stamp,
 // whose WSL/SSH union carries caller attestation and must stay untouched.
-export const RUNTIME_SOURCE_ID_ENV = 'ORCA_RUNTIME_SOURCE_ID'
-export const RUNTIME_SOURCE_INCARNATION_ENV = 'ORCA_RUNTIME_SOURCE_INCARNATION'
-export const RUNTIME_SOURCE_PROFILE_PATH_ENV = 'ORCA_RUNTIME_SOURCE_PROFILE_PATH'
+export const RUNTIME_SOURCE_ID_ENV = 'OCC_RUNTIME_SOURCE_ID'
+export const RUNTIME_SOURCE_INCARNATION_ENV = 'OCC_RUNTIME_SOURCE_INCARNATION'
+export const RUNTIME_SOURCE_PROFILE_PATH_ENV = 'OCC_RUNTIME_SOURCE_PROFILE_PATH'
 
 export type RuntimeSourceStamp = {
   /** The launching profile's installation id; survives restarts. */

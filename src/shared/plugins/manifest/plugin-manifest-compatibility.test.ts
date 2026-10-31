@@ -4,7 +4,7 @@ import { pluginManifestCompatibilityError } from './plugin-manifest-compatibilit
 describe('pluginManifestCompatibilityError', () => {
   it('names the OCC a newer plugin needs', () => {
     expect(
-      pluginManifestCompatibilityError({ engines: { orca: '>=9.1.0' }, novel: true }, '1.4.0')
+      pluginManifestCompatibilityError({ engines: { occ: '>=9.1.0' }, novel: true }, '1.4.0')
     ).toBe('requires OCC >=9.1.0 (this is 1.4.0)')
   })
 
@@ -15,14 +15,14 @@ describe('pluginManifestCompatibilityError', () => {
   })
 
   it('reads the leading floor of a range grammar it does not know', () => {
-    expect(pluginManifestCompatibilityError({ engines: { orca: '>=9.0.0 <10' } }, '1.4.0')).toBe(
+    expect(pluginManifestCompatibilityError({ engines: { occ: '>=9.0.0 <10' } }, '1.4.0')).toBe(
       'requires OCC >=9.0.0 <10 (this is 1.4.0)'
     )
   })
 
   it('leaves ordinary mistakes to the schema', () => {
-    expect(pluginManifestCompatibilityError({ engines: { orca: '>=1.0.0' } }, '1.4.0')).toBeNull()
-    expect(pluginManifestCompatibilityError({ engines: { orca: '^9.0.0' } }, '1.4.0')).toBeNull()
+    expect(pluginManifestCompatibilityError({ engines: { occ: '>=1.0.0' } }, '1.4.0')).toBeNull()
+    expect(pluginManifestCompatibilityError({ engines: { occ: '^9.0.0' } }, '1.4.0')).toBeNull()
     expect(pluginManifestCompatibilityError({ manifestVersion: 2 }, '1.4.0')).toBeNull()
     expect(pluginManifestCompatibilityError('not a manifest', '1.4.0')).toBeNull()
   })

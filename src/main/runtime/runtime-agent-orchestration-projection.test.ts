@@ -8,7 +8,7 @@ import {
   releaseAgentSessionRecordStore
 } from './agent-session-record-store-slot'
 import { recordingStructuredAgentSessionLogger } from '../native-chat/agent-session-wire/structured-agent-session-logger-test-support'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import './rpc/unused-default-rpc-methods.test-fixture'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { agentSessionConversationView } from '../../shared/agent-session-conversation-view'
@@ -21,14 +21,14 @@ import {
   SESSION_Y,
   sessionRecord
 } from './rpc/orchestration-session-caller-test-fixture'
-import { formatOrcaSessionAddress } from '../../shared/orca-session-address'
+import { formatOCCSessionAddress } from '../../shared/occ-session-address'
 import type { AgentSessionRecordReader } from './orchestration/structured-session-lineage'
 
 const hostRef = vi.hoisted((): { current: unknown } => ({ current: null }))
 vi.mock('../native-chat/agent-session-wire/structured-agent-session-registry', () => ({
   getStructuredAgentSessionHost: () => hostRef.current
 }))
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import {
   structuredAgentSessionPaneKey,
   structuredAgentSessionTabId
@@ -51,8 +51,8 @@ import {
   structuredWorkerProcessIncarnation
 } from './structured-worker-identity'
 
-const COORDINATOR_CHAT = testOrcaSessionId('1b6f0c3a-7d2e-4a91-8c55-2e9d4b7a0f13')
-const WORKER_CHAT = testOrcaSessionId('9c3e5a17-4b2d-4f60-8e91-0d7a6c2b5e48')
+const COORDINATOR_CHAT = testOCCSessionId('1b6f0c3a-7d2e-4a91-8c55-2e9d4b7a0f13')
+const WORKER_CHAT = testOCCSessionId('9c3e5a17-4b2d-4f60-8e91-0d7a6c2b5e48')
 const TERMINAL_WORKER_HANDLE = 'term_worker'
 const TERMINAL_WORKER_PANE = 'tab_w:11111111-1111-4111-8111-111111111111'
 
@@ -77,14 +77,14 @@ describe('RuntimeAgentOrchestrationProjection chat lineage', () => {
       objective: 'chat run',
       coordinatorHandle: null,
       coordinatorPaneKey: null,
-      coordinatorOrcaSessionId: COORDINATOR_CHAT
+      coordinatorOCCSessionId: COORDINATOR_CHAT
     })
     const chatWorker = {
       handle: mintStructuredWorkerHandle(),
       sessionId: WORKER_CHAT,
       paneKey: mintStructuredWorkerPaneKey(WORKER_CHAT)
     }
-    const creator = { kind: 'session', orcaSessionId: COORDINATOR_CHAT } as const
+    const creator = { kind: 'session', occSessionId: COORDINATOR_CHAT } as const
     db.createDispatchContext({
       taskId: db.createTask({ runId: run.id, spec: 'chat worker' }).id,
       assigneeHandle: chatWorker.handle,
@@ -163,7 +163,7 @@ it('publishes ordinary RPC assignments without registering display authority and
     const response = await h.dispatch(
       orchestrationRequest(
         'orchestration.dispatch',
-        { task: task.id, to: formatOrcaSessionAddress(SESSION_Y) },
+        { task: task.id, to: formatOCCSessionAddress(SESSION_Y) },
         { sessionId: SESSION_X }
       )
     )
@@ -175,13 +175,13 @@ it('publishes ordinary RPC assignments without registering display authority and
       taskTitle: 'existing chat task'
     })
     h.db.db
-      .prepare('UPDATE runs SET coordinator_orca_session_id = ? WHERE id = ?')
+      .prepare('UPDATE runs SET coordinator_occ_session_id = ? WHERE id = ?')
       .run(COORDINATOR_CHAT, runId)
     expect(projection.buildByPaneKey()?.[chatRow(SESSION_Y)]?.parentPaneKey).toBe(
       chatRow(SESSION_X)
     )
     h.db.db
-      .prepare('UPDATE runs SET coordinator_orca_session_id = ? WHERE id = ?')
+      .prepare('UPDATE runs SET coordinator_occ_session_id = ? WHERE id = ?')
       .run(SESSION_X, runId)
     // A callback does not have to populate mailbox authority before the public relationship exists.
     h.runtime.onStructuredSessionStatusForMail({ sessionId: SESSION_Y, status: 'attention' })
@@ -189,7 +189,7 @@ it('publishes ordinary RPC assignments without registering display authority and
       chatRow(SESSION_X)
     )
     h.db.db
-      .prepare('UPDATE dispatch_contexts SET creator_orca_session_id = NULL WHERE id = ?')
+      .prepare('UPDATE dispatch_contexts SET creator_occ_session_id = NULL WHERE id = ?')
       .run(dispatchId)
     const terminal = 'offline:11111111-1111-4111-8111-111111111111'
     h.db.db
@@ -200,7 +200,7 @@ it('publishes ordinary RPC assignments without registering display authority and
     expect(projection.buildByPaneKey()?.[chatRow(SESSION_Y)]?.parentPaneKey).toBe(terminal)
     h.db.db
       .prepare(
-        'UPDATE runs SET coordinator_orca_session_id_generation = consumer_generation WHERE id = ?'
+        'UPDATE runs SET coordinator_occ_session_id_generation = consumer_generation WHERE id = ?'
       )
       .run(runId)
     expect(projection.buildByPaneKey()?.[chatRow(SESSION_Y)]?.parentPaneKey).toBe(
@@ -208,7 +208,7 @@ it('publishes ordinary RPC assignments without registering display authority and
     )
     h.db.db
       .prepare(
-        'UPDATE runs SET coordinator_orca_session_id_generation = NULL, coordinator_handle = ?, coordinator_pane_key = ? WHERE id = ?'
+        'UPDATE runs SET coordinator_occ_session_id_generation = NULL, coordinator_handle = ?, coordinator_pane_key = ? WHERE id = ?'
       )
       .run(mintStructuredWorkerHandle(), mintStructuredWorkerPaneKey(SESSION_X), runId)
     expect(projection.buildByPaneKey()?.[chatRow(SESSION_Y)]?.parentPaneKey).toBeUndefined()
@@ -229,18 +229,18 @@ it.each([20, 200])(
         objective: 'shared ancestry',
         coordinatorHandle: null,
         coordinatorPaneKey: null,
-        coordinatorOrcaSessionId: SESSION_X
+        coordinatorOCCSessionId: SESSION_X
       })
       for (let i = 0; i < n; i++) {
         db.createDispatchContext({
           taskId: db.createTask({ runId: run.id, spec: 'shared task' }).id,
           assigneeHandle: `ordinary-${i}`,
-          creator: { kind: 'session', orcaSessionId: SESSION_X },
+          creator: { kind: 'session', occSessionId: SESSION_X },
           maxDepth: 9999
         })
         db.db
           .prepare(
-            'UPDATE dispatch_contexts SET assignee_orca_session_id = ? WHERE assignee_handle = ?'
+            'UPDATE dispatch_contexts SET assignee_occ_session_id = ? WHERE assignee_handle = ?'
           )
           .run(`worker-${i}`, `ordinary-${i}`)
       }
@@ -411,11 +411,11 @@ it.each([20, 200])(
         objective: 'null-address history',
         coordinatorHandle: null,
         coordinatorPaneKey: null,
-        coordinatorOrcaSessionId: SESSION_X
+        coordinatorOCCSessionId: SESSION_X
       })
       const task = db.createTask({ runId: run.id, spec: 'null-address selection' })
       const insert = db.db.prepare(`INSERT INTO dispatch_contexts
-      (id, run_id, task_id, assignee_orca_session_id, status, completed_at)
+      (id, run_id, task_id, assignee_occ_session_id, status, completed_at)
       WITH RECURSIVE seq(n) AS (VALUES(1) UNION ALL SELECT n+1 FROM seq WHERE n < ?)
       SELECT ? || n, ?, ?, ?, 'completed', '2020-01-01T00:00:00Z' FROM seq`)
       for (let i = 0; i < n; i++) {
@@ -427,7 +427,7 @@ it.each([20, 200])(
         })
         db.db
           .prepare(
-            'UPDATE dispatch_contexts SET assignee_handle = NULL, assignee_pane_key = NULL, assignee_orca_session_id = ? WHERE id = ?'
+            'UPDATE dispatch_contexts SET assignee_handle = NULL, assignee_pane_key = NULL, assignee_occ_session_id = ? WHERE id = ?'
           )
           .run(`null-session-${i}`, dispatch.id)
         insert.run(n, `expired-${i}-`, run.id, task.id, `null-session-${i}`)
@@ -453,7 +453,7 @@ it.each([20, 200])(
         trace.mock.calls.filter(
           ([q]) =>
             q.includes('rowid AS n') &&
-            q.includes('assignee_orca_session_id') &&
+            q.includes('assignee_occ_session_id') &&
             q.includes("AND status IN ('pending', 'dispatched')")
         )
       ).toHaveLength(0)
@@ -469,7 +469,7 @@ it.each([20, 200])(
         maxDepth: 99
       })
       db.db
-        .prepare('UPDATE dispatch_contexts SET assignee_orca_session_id = ? WHERE id = ?')
+        .prepare('UPDATE dispatch_contexts SET assignee_occ_session_id = ? WHERE id = ?')
         .run('null-session-0', handled.id)
       const newer = db.createDispatchContext({
         taskId: db.createTask({ runId: run.id, spec: 'active selection' }).id,
@@ -521,7 +521,7 @@ it('selects indexed active/latest per address with exact ISO/SQLite recency and 
       })
       db.db
         .prepare(
-          'UPDATE dispatch_contexts SET assignee_handle = ?, assignee_orca_session_id = ?, status = ?, completed_at = ? WHERE id = ?'
+          'UPDATE dispatch_contexts SET assignee_handle = ?, assignee_occ_session_id = ?, status = ?, completed_at = ? WHERE id = ?'
         )
         .run(handle, session, status, completed, row.id)
       return row.id
@@ -607,7 +607,7 @@ it('selects indexed active/latest per address with exact ISO/SQLite recency and 
     for (const index of [
       'idx_dispatch_active_assignee_handle (assignee_handle=?)',
       'idx_dispatch_assignee_handle (assignee_handle=?)',
-      'idx_dispatch_assignee_orca_session_id (assignee_orca_session_id=?)',
+      'idx_dispatch_assignee_occ_session_id (assignee_occ_session_id=?)',
       'idx_dispatch_session_presentation (status=? AND completed_at>?)'
     ]) {
       expect(planText).toContain(index)
@@ -632,7 +632,7 @@ it('selects indexed active/latest per address with exact ISO/SQLite recency and 
     const plan = JSON.stringify(
       db.db
         .prepare(
-          "EXPLAIN QUERY PLAN SELECT rowid FROM dispatch_contexts INDEXED BY idx_dispatch_session_presentation WHERE assignee_orca_session_id IS NOT NULL AND status = 'completed' AND completed_at >= ?"
+          "EXPLAIN QUERY PLAN SELECT rowid FROM dispatch_contexts INDEXED BY idx_dispatch_session_presentation WHERE assignee_occ_session_id IS NOT NULL AND status = 'completed' AND completed_at >= ?"
         )
         .all('2026-10-26')
     )
@@ -670,7 +670,7 @@ it('selects indexed active/latest per address with exact ISO/SQLite recency and 
   }
 })
 
-it.skipIf(process.env.ORCA_LINEAGE_BENCH !== '1')(
+it.skipIf(process.env.OCC_LINEAGE_BENCH !== '1')(
   'benchmarks retained-history ranges and first derived-index creation (admitted machines only)',
   () => {
     for (const nullAddress of [false, true]) {
@@ -689,7 +689,7 @@ it.skipIf(process.env.ORCA_LINEAGE_BENCH !== '1')(
 )
 
 it('reads reopened/backfilled assignments and committed clear facts from the already opened store before host installation', async () => {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-lineage-contract-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-lineage-contract-'))
   const root = sessionRecord(SESSION_X)
   const successor = COORDINATOR_CHAT
   await seedTestAgentSessionRecordStore(directory, {
@@ -723,7 +723,7 @@ it('reads reopened/backfilled assignments and committed clear facts from the alr
       objective: 'cold public display',
       coordinatorHandle: null,
       coordinatorPaneKey: null,
-      coordinatorOrcaSessionId: SESSION_X
+      coordinatorOCCSessionId: SESSION_X
     })
     const privateHandles: string[] = []
     const privatePanes: string[] = []
@@ -737,14 +737,14 @@ it('reads reopened/backfilled assignments and committed clear facts from the alr
         assigneeHandle: handle,
         assigneePaneKey: pane,
         processIncarnation: structuredWorkerProcessIncarnation(id),
-        creator: { kind: 'session', orcaSessionId: SESSION_X },
+        creator: { kind: 'session', occSessionId: SESSION_X },
         maxDepth: 99
       })
     }
-    db.db.exec('UPDATE dispatch_contexts SET assignee_orca_session_id = NULL')
+    db.db.exec('UPDATE dispatch_contexts SET assignee_occ_session_id = NULL')
     db.close()
     db = new OrchestrationDb(path)
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     hostRef.current = null
     const before = runtime['agentOrchestrationProjection'].buildByPaneKey()

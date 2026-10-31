@@ -7,7 +7,7 @@ import { agentSessionConversationView } from '../../../../shared/agent-session-c
 /** An absent structured host cannot issue a close; receipts must not claim closed_agent_terminal and falsely tell coordinators its tab is gone. */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import { OrchestrationDb } from '../../orchestration/db'
 import { setStructuredAgentSessionHost } from '../../../native-chat/agent-session-wire/structured-agent-session-registry'
 import {
@@ -24,13 +24,13 @@ const WORKTREE = 'repo::worktree'
 
 describe('worker-stop on a structured worker this runtime cannot reach', () => {
   let db: OrchestrationDb
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
 
   beforeEach(() => {
     structuredWorkerIdentities.clear()
     setStructuredAgentSessionHost(null)
     db = new OrchestrationDb(':memory:')
-    runtime = new OrcaRuntimeService()
+    runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     // The install is what release already does; here it is a no-op so the host stays absent.
     vi.spyOn(runtime, 'ensureStructuredAgentSessionHost').mockResolvedValue(undefined)

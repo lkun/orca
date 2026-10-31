@@ -8,8 +8,8 @@ if (process.env.NODE_ENV !== 'test') {
   throw new Error('fault injection entry is test-only')
 }
 
-const pattern = process.env.ORCA_RELAY_TEST_FAULT_SQL
-const clockFile = process.env.ORCA_RELAY_TEST_CLOCK_FILE
+const pattern = process.env.OCC_RELAY_TEST_FAULT_SQL
+const clockFile = process.env.OCC_RELAY_TEST_CLOCK_FILE
 if (!pattern && !clockFile) throw new Error('a test fault configuration is required')
 
 const config = loadRelayConfig()
@@ -48,7 +48,7 @@ const now = clockFile
 const { server, sessions, assignments } = createRelayServer(config, database, { now })
 await reconcileCellAdmissionAtStartup(config, assignments)
 server.listen(config.port, () => {
-  console.log(`[orca-relay] listening on ${config.publicUrl} (port ${config.port})`)
+  console.log(`[occ-relay] listening on ${config.publicUrl} (port ${config.port})`)
 })
 
 const shutdown = (): void => {

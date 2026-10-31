@@ -1,39 +1,39 @@
 import { getAppEnvironment } from '../../../shared/app-environment'
 import {
-  getManagedOrcadFenceEnvironmentId,
-  managedOrcadServerName
-} from '../../../shared/managed-orcad-ssh-owner'
+  getManagedOCCdFenceEnvironmentId,
+  managedOCCdServerName
+} from '../../../shared/managed-occd-ssh-owner'
 import { listEnvironments } from '../../../shared/runtime-environment-store'
-import { findOrcadMigrationSourceCutoverForTarget } from '../../ssh/orcad-migration-cutover-journal'
-import { abandonOrcadConversion } from '../../ssh/orcad-conversion-abandon'
-import { retainOrcadMigrationSource } from '../../ssh/orcad-migration-source-retention'
-import { enableMovedOrcadAutomationsForTarget } from '../../ssh/orcad-migration-moved-automations'
-import { hasOrcadTemplate } from '../../orcad/orcad-artifact-materializer'
-import { isOrcadHostUnavailableFixableOnHost } from '../../orcad/orcad-host-unavailable'
+import { findOCCdMigrationSourceCutoverForTarget } from '../../ssh/occd-migration-cutover-journal'
+import { abandonOCCdConversion } from '../../ssh/occd-conversion-abandon'
+import { retainOCCdMigrationSource } from '../../ssh/occd-migration-source-retention'
+import { enableMovedOCCdAutomationsForTarget } from '../../ssh/occd-migration-moved-automations'
+import { hasOCCdTemplate } from '../../occd/occd-artifact-materializer'
+import { isOCCdHostUnavailableFixableOnHost } from '../../occd/occd-host-unavailable'
 import { managedServerUpdateDeps } from '../../ssh/managed-server-update-deps'
-import { ensureOrcadManagedTunnel } from '../../managed-server/lifecycle/orcad-managed-tunnel'
-import { verifyOrcadManagedServing } from '../../managed-server/lifecycle/orcad-managed-serving-verify'
-import { convertSshTargetToManagedOrcad } from '../../managed-server/lifecycle/orcad-runtime-conversion'
+import { ensureOCCdManagedTunnel } from '../../managed-server/lifecycle/occd-managed-tunnel'
+import { verifyOCCdManagedServing } from '../../managed-server/lifecycle/occd-managed-serving-verify'
+import { convertSshTargetToManagedOCCd } from '../../managed-server/lifecycle/occd-runtime-conversion'
 import {
-  orcadMigrationDestinationFor,
-  orcadServerAutomationEnablerFor,
-  orcadServerFolderCatalogFor,
-  orcadServerRepositoriesFor
-} from '../../managed-server/lifecycle/orcad-runtime-conversion-wiring'
-import { createManagedOrcadEnvironment } from '../../managed-server/lifecycle/orcad-runtime-deployment'
+  occdMigrationDestinationFor,
+  occdServerAutomationEnablerFor,
+  occdServerFolderCatalogFor,
+  occdServerRepositoriesFor
+} from '../../managed-server/lifecycle/occd-runtime-conversion-wiring'
+import { createManagedOCCdEnvironment } from '../../managed-server/lifecycle/occd-runtime-deployment'
 import type { HostServerOnConnectDeps } from '../../ssh/ssh-host-server-on-connect'
 import {
   censusSshHostRelaysBeforeSession,
   relayTerminalsOnConnect
 } from '../../ssh/legacy-relay/ssh-host-relay-terminals-on-connect'
-import { requireManagedOrcadInfrastructure } from '../../managed-server/lifecycle/orcad-managed-runtime-context'
+import { requireManagedOCCdInfrastructure } from '../../managed-server/lifecycle/occd-managed-runtime-context'
 import { censusHostRelayTerminalsFor } from '../../ssh/legacy-relay/ssh-host-relay-census-for-target'
 import { setSshHostServerStatus } from '../../ssh/ssh-host-server-status'
 import { trackSshHostServerEvent } from '../../ssh/ssh-host-server-telemetry'
 import { knownSshHostPlatform } from '../../ssh/ssh-host-platform-memo'
-import { knownOrcadTunnelTransport } from '../../ssh/orcad-tunnel-transport-memo'
+import { knownOCCdTunnelTransport } from '../../ssh/occd-tunnel-transport-memo'
 import { getSshTargetRegistryStore } from '../../ssh/targets/ssh-target-registry'
-import { releaseUnreachableOrcadSetup } from '../../ssh/orcad-unreachable-setup-release'
+import { releaseUnreachableOCCdSetup } from '../../ssh/occd-unreachable-setup-release'
 import { getCurrentMainWindow } from './ssh-ipc-context'
 import { broadcastSshState } from './ssh-renderer-broadcast'
 import { connectInFlight } from './ssh-connect-attempt-registry'
@@ -42,57 +42,57 @@ import { isBridgeableLease } from '../../ssh/legacy-relay/legacy-relay-bridge-le
 
 export function hostServerOnConnectDeps(userDataPath: string): HostServerOnConnectDeps {
   const registry = getSshTargetRegistryStore()!
-  const claims = registry.getOrcadRuntimeClaims()
-  const store = registry.getOrcadMigrationSource()
+  const claims = registry.getOCCdRuntimeClaims()
+  const store = registry.getOCCdMigrationSource()
   const appVersion = getAppEnvironment().getVersion()
   const isRegistered = (environmentId: string): boolean =>
     listEnvironments(userDataPath).some((entry) => entry.id === environmentId)
   return {
     // A fence alone may be unfinished setup; only registered servers count.
     managedEnvironmentId: (target) => {
-      const environmentId = getManagedOrcadFenceEnvironmentId(target)
+      const environmentId = getManagedOCCdFenceEnvironmentId(target)
       return environmentId && isRegistered(environmentId) ? environmentId : null
     },
     ensureTunnel: async (environmentId) => {
-      await ensureOrcadManagedTunnel(userDataPath, environmentId)
+      await ensureOCCdManagedTunnel(userDataPath, environmentId)
     },
-    ensureServing: (environmentId) => verifyOrcadManagedServing(userDataPath, environmentId),
+    ensureServing: (environmentId) => verifyOCCdManagedServing(userDataPath, environmentId),
     retainCommittedSource: async (target) => {
-      const head = findOrcadMigrationSourceCutoverForTarget(userDataPath, target.id)
+      const head = findOCCdMigrationSourceCutoverForTarget(userDataPath, target.id)
       if (head?.phase !== 'destination-committed') {
         return 0
       }
-      await retainOrcadMigrationSource(userDataPath, head.migrationId, store)
+      await retainOCCdMigrationSource(userDataPath, head.migrationId, store)
       // Retry what earlier connects could not reach the server to re-enable.
       const environment = listEnvironments(userDataPath).find(
         (entry) => entry.id === head.destinationEnvironmentId
       )
       return environment
-        ? enableMovedOrcadAutomationsForTarget(
+        ? enableMovedOCCdAutomationsForTarget(
             userDataPath,
             target.id,
-            orcadServerAutomationEnablerFor(environment)
+            occdServerAutomationEnablerFor(environment)
           )
         : 0
     },
-    hasTemplate: hasOrcadTemplate,
+    hasTemplate: hasOCCdTemplate,
     recordedUnavailable: (target) =>
       target.managedServerUnavailable?.appVersion === appVersion
         ? target.managedServerUnavailable.reason
         : null,
     recordUnavailable: (target, reason) => {
-      if (!isOrcadHostUnavailableFixableOnHost(reason)) {
+      if (!isOCCdHostUnavailableFixableOnHost(reason)) {
         registry.updateTarget(target.id, { managedServerUnavailable: { reason, appVersion } })
       }
     },
     ...managedServerUpdateDeps(userDataPath),
     isEmptyHost: (target) => {
       // An interrupted empty-host deploy passes its own claim, recorded by its provisioning intent.
-      const environmentId = getManagedOrcadFenceEnvironmentId(target)
+      const environmentId = getManagedOCCdFenceEnvironmentId(target)
       return claims.preflight(
         target.id,
         environmentId
-          ? { environmentId, recorded: target.orcadProvisioning !== undefined }
+          ? { environmentId, recorded: target.occdProvisioning !== undefined }
           : undefined
       ).claimable
     },
@@ -102,13 +102,13 @@ export function hostServerOnConnectDeps(userDataPath: string): HostServerOnConne
         targetId: target.id,
         censusHost: async () =>
           censusSshHostRelaysBeforeSession(
-            await requireManagedOrcadInfrastructure().connectionManager.connect(target),
+            await requireManagedOCCdInfrastructure().connectionManager.connect(target),
             target.id
           )
       }),
     deploy: (target) =>
-      createManagedOrcadEnvironment(userDataPath, {
-        name: target.orcadProvisioning?.name ?? managedOrcadServerName(target),
+      createManagedOCCdEnvironment(userDataPath, {
+        name: target.occdProvisioning?.name ?? managedOCCdServerName(target),
         sshTargetId: target.id
       }),
     convert: async (target, hostProof) => {
@@ -116,18 +116,18 @@ export function hostServerOnConnectDeps(userDataPath: string): HostServerOnConne
       if (hostProof?.bridged) {
         await startLegacyRelayBridge(target.id)
       }
-      const converted = await convertSshTargetToManagedOrcad(userDataPath, {
+      const converted = await convertSshTargetToManagedOCCd(userDataPath, {
         sshTargetId: target.id,
-        name: managedOrcadServerName(target),
+        name: managedOCCdServerName(target),
         // The connect's own census already answered; a conversion before any session reuses it.
         censusHost: (host) =>
           hostProof ? Promise.resolve(hostProof) : censusHostRelayTerminalsFor(host)(),
         isBridgedPaneLease: isBridgeableLease,
         // Releasing the direct session here would cancel the connect that requested conversion.
-        destinationFor: orcadMigrationDestinationFor,
-        serverRepositoriesFor: orcadServerRepositoriesFor,
-        serverFolderCatalogFor: orcadServerFolderCatalogFor,
-        serverAutomationEnablerFor: orcadServerAutomationEnablerFor
+        destinationFor: occdMigrationDestinationFor,
+        serverRepositoriesFor: occdServerRepositoriesFor,
+        serverFolderCatalogFor: occdServerFolderCatalogFor,
+        serverAutomationEnablerFor: occdServerAutomationEnablerFor
       })
       if (converted.outcome === 'converted' || converted.outcome === 'refused') {
         // Move-anyway consent covers one attempt; retain it on failure so held-fence verification can resume.
@@ -137,15 +137,15 @@ export function hostServerOnConnectDeps(userDataPath: string): HostServerOnConne
     },
     abandonDeploy: async (target) => {
       const environmentId =
-        getManagedOrcadFenceEnvironmentId(target) ??
-        getManagedOrcadFenceEnvironmentId(registry.getTarget(target.id))
+        getManagedOCCdFenceEnvironmentId(target) ??
+        getManagedOCCdFenceEnvironmentId(registry.getTarget(target.id))
       if (environmentId && !isRegistered(environmentId)) {
         claims.release(target.id, environmentId)
         await claims.flush()
       }
     },
     hasUnfinishedConversion: (target) => {
-      const head = findOrcadMigrationSourceCutoverForTarget(userDataPath, target.id)
+      const head = findOCCdMigrationSourceCutoverForTarget(userDataPath, target.id)
       return (
         head !== null &&
         !head.supersedesMigrationId &&
@@ -153,24 +153,24 @@ export function hostServerOnConnectDeps(userDataPath: string): HostServerOnConne
       )
     },
     abandonConversion: async (target) => {
-      await abandonOrcadConversion({
+      await abandonOCCdConversion({
         userDataPath,
         store,
         claims,
         targetId: target.id,
-        destinationFor: orcadMigrationDestinationFor
+        destinationFor: occdMigrationDestinationFor
       })
     },
     isFencedBeforeStaging: (target) =>
-      findOrcadMigrationSourceCutoverForTarget(userDataPath, target.id)?.phase === 'source-fenced',
+      findOCCdMigrationSourceCutoverForTarget(userDataPath, target.id)?.phase === 'source-fenced',
     releaseUnreachableSetup: (target) =>
-      releaseUnreachableOrcadSetup({ userDataPath, claims, targetId: target.id }),
+      releaseUnreachableOCCdSetup({ userDataPath, claims, targetId: target.id }),
     // Read at report time: a deploy or conversion learns the platform while the decision runs.
     report: (target, event) =>
       trackSshHostServerEvent(
         event,
         knownSshHostPlatform(target.id),
-        knownOrcadTunnelTransport(target.id)
+        knownOCCdTunnelTransport(target.id)
       ),
     progress: (target, phase) => {
       // Cancelled decisions keep running; their progress must not revive connection status.

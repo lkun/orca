@@ -1,14 +1,14 @@
 /** Default writes preserve queue, completion timing and per-send PTY lookup; only opted-in sends use submission settlement. */
 
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { settledWriteStub } from '../providers/settled-pty-write-stub'
 
 const PTY = 'pty-default-path'
 const HANDLE = 'term_default_path'
 
-function dispatchRuntime(): OrcaRuntimeService {
-  const runtime = new OrcaRuntimeService()
+function dispatchRuntime(): OCCRuntimeService {
+  const runtime = new OCCRuntimeService()
   const write = vi.fn(() => true)
   runtime.setPtyController({
     write,

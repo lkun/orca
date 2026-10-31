@@ -191,7 +191,7 @@ describe('AgentBrowserBridge', () => {
   it('refuses to upload a path that is not an existing file', async () => {
     succeedWith({ uploaded: 1 })
 
-    await expect(bridge.upload('@e19', ['/nonexistent/orca-upload.txt'])).rejects.toMatchObject({
+    await expect(bridge.upload('@e19', ['/nonexistent/occ-upload.txt'])).rejects.toMatchObject({
       code: 'invalid_argument'
     })
     expect(agentBrowserCommandsIn(stdinWrites)).toEqual([])
@@ -334,7 +334,7 @@ describe('AgentBrowserBridge', () => {
         await expect(run(b)).rejects.toMatchObject({
           code: 'browser_target_ambiguous'
         })
-        expect(sessionNamesUsed()).not.toContain('orca-tab-tab-b')
+        expect(sessionNamesUsed()).not.toContain('occ-tab-tab-b')
       }
     )
 
@@ -348,7 +348,7 @@ describe('AgentBrowserBridge', () => {
 
       await b.keyboardInsertText('x', undefined, undefined)
 
-      expect(sessionNamesUsed()).toContain('orca-tab-tab-a')
+      expect(sessionNamesUsed()).toContain('occ-tab-tab-a')
     })
 
     it('throws browser_no_tab for inserttext when no live tab exists', async () => {
@@ -365,7 +365,7 @@ describe('AgentBrowserBridge', () => {
 
       await b.snapshot(undefined, undefined)
 
-      expect(sessionNamesUsed()).toContain('orca-tab-tab-b')
+      expect(sessionNamesUsed()).toContain('occ-tab-tab-b')
     })
   })
 })

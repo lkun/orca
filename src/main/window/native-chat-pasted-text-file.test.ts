@@ -17,7 +17,7 @@ import { AgentSessionAttachmentStore } from '../native-chat/agent-session-attach
 describe('a long paste saved as a file', () => {
   let root: string
   beforeEach(() => {
-    root = mkdtempSync(path.join(tmpdir(), 'orca-pasted-text-'))
+    root = mkdtempSync(path.join(tmpdir(), 'occ-pasted-text-'))
     installFakeAppEnvironment({ getPath: () => root })
     mocks.upload.mockReset()
   })
@@ -35,7 +35,7 @@ describe('a long paste saved as a file', () => {
   })
 
   it("goes to the chat's store on its paired server, under a text paste's name", async () => {
-    mocks.upload.mockResolvedValue('/srv/agent-session-attachments/u1/orca-paste-1-a.txt')
+    mocks.upload.mockResolvedValue('/srv/agent-session-attachments/u1/occ-paste-1-a.txt')
     const target = {
       sessionId: 'session-1',
       expectedEnvironmentPairingRevision: 7,
@@ -47,9 +47,9 @@ describe('a long paste saved as a file', () => {
         runtimeEnvironmentId: 'env-1',
         agentSessionAttachment: target
       })
-    ).resolves.toBe('/srv/agent-session-attachments/u1/orca-paste-1-a.txt')
+    ).resolves.toBe('/srv/agent-session-attachments/u1/occ-paste-1-a.txt')
     const [sentTarget, environmentId, , buffer, name] = mocks.upload.mock.calls[0] ?? []
     expect([sentTarget, environmentId, buffer.toString('utf8')]).toEqual([target, 'env-1', 'diff'])
-    expect(name).toMatch(/^orca-paste-\d+-.+\.txt$/)
+    expect(name).toMatch(/^occ-paste-\d+-.+\.txt$/)
   })
 })

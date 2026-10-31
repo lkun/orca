@@ -12,7 +12,7 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { ORCA_LINEAR_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { OCC_LINEAR_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import { translate } from '@/i18n/i18n'
 
 type AgentSkillSetupPanelProps = ComponentProps<typeof AgentSkillSetupPanel>
@@ -115,7 +115,7 @@ export function LinearAgentSkillSetupDialog({
                 'Enable Linear ticket access'
               )}
               description={missingLabel}
-              skillNames={[ORCA_LINEAR_SKILL_NAME]}
+              skillNames={[OCC_LINEAR_SKILL_NAME]}
               installedSkillNames={[updateSkillName]}
               terminalRuntime={terminalRuntime}
               installed={installed}

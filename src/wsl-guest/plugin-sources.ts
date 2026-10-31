@@ -5,17 +5,17 @@ export type PluginSources = {
   opencodePluginSource?: string
   /** Source body of OpenCode 2's status plugin. */
   opencode2PluginSource?: string
-  /** Source body of Pi's `orca-agent-status.ts` to drop into <overlay>/extensions/. */
+  /** Source body of Pi's `occ-agent-status.ts` to drop into <overlay>/extensions/. */
   piExtensionSource?: string
-  /** Source body of OMP's `orca-agent-status.ts` to drop into <overlay>/extensions/. */
+  /** Source body of OMP's `occ-agent-status.ts` to drop into <overlay>/extensions/. */
   ompExtensionSource?: string
-  /** Source body of Prime Agent's `orca-agent-status.ts` to install in its real agent dir. */
+  /** Source body of Prime Agent's `occ-agent-status.ts` to install in its real agent dir. */
   primeAgentExtensionSource?: string
 }
 /** Result of installing Pi-compatible status into a real agent home or OMP fallback path. */
 export type MaterializePiResult = {
   /** Real agent dir when extensions were installed there. Absent for OMP status-only fallback. */
   sourceAgentDir?: string
-  /** Absolute path to orca-agent-status.ts (real home or relay-managed fallback). */
+  /** Absolute path to occ-agent-status.ts (real home or relay-managed fallback). */
   statusExtensionPath?: string
 }

@@ -81,7 +81,7 @@ async function launch(profileDirectory: string): Promise<void> {
 
 async function hostingIdentity(): Promise<string> {
   const runtime = await import('./paired-runtime-browser-client-host-runtime')
-  runtime.configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: 'profile-a' })
+  runtime.configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: 'profile-a' })
   await runtime.startPairedRuntimeBrowserClientHost({
     environment: pairedEnvironment('environment-a'),
     authorityRuntimeId: 'runtime-a'
@@ -109,7 +109,7 @@ afterEach(() => {
 
 describe('client host hosting identity wiring', () => {
   it('attaches under the same identity after the desktop relaunches', async () => {
-    const profileDirectory = mkdtempSync(join(tmpdir(), 'orca-host-wiring-'))
+    const profileDirectory = mkdtempSync(join(tmpdir(), 'occ-host-wiring-'))
 
     expect(await hostingIdentityForLaunch(profileDirectory)).toBe(
       await hostingIdentityForLaunch(profileDirectory)
@@ -118,12 +118,12 @@ describe('client host hosting identity wiring', () => {
 
   it('attaches under a different identity for a different OCC profile', async () => {
     expect(
-      await hostingIdentityForLaunch(mkdtempSync(join(tmpdir(), 'orca-host-wiring-')))
-    ).not.toBe(await hostingIdentityForLaunch(mkdtempSync(join(tmpdir(), 'orca-host-wiring-'))))
+      await hostingIdentityForLaunch(mkdtempSync(join(tmpdir(), 'occ-host-wiring-')))
+    ).not.toBe(await hostingIdentityForLaunch(mkdtempSync(join(tmpdir(), 'occ-host-wiring-'))))
   })
 
   it('attaches under the identity already stamped into the first window', async () => {
-    await launch(mkdtempSync(join(tmpdir(), 'orca-host-wiring-')))
+    await launch(mkdtempSync(join(tmpdir(), 'occ-host-wiring-')))
 
     // Windows receive the hosting id before pairing; the lease must reuse it.
     const { getBrowserClientHostId } = await import('./browser-client-host-id')

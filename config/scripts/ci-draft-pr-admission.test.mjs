@@ -16,7 +16,7 @@ function admitted(condition, draft, needs = {}, eventName = 'pull_request') {
     compileAggregateExpression(condition ?? 'true', ['github', 'needs', 'inputs'])({
       github: {
         event_name: eventName,
-        repository: 'stablyai/orca',
+        repository: 'stablyai/occ',
         event: { pull_request: { draft } }
       },
       needs,

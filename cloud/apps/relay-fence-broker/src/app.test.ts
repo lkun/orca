@@ -9,11 +9,11 @@ import type {
 const commit = 'a'.repeat(40)
 const config: RelayFenceBrokerConfig = {
   port: 8080,
-  project: 'onorca-cloud',
-  stateBucket: 'onorca-cloud-terraform-state',
+  project: 'onocc-cloud',
+  stateBucket: 'onocc-cloud-terraform-state',
   leaseObject: 'terraform/state/relay-fence-broker/production.lock',
-  directorOrigin: 'https://relay.onorca.dev',
-  adminAudience: 'https://relay.onorca.dev/v1/admin/drain',
+  directorOrigin: 'https://relay.onocc.dev',
+  adminAudience: 'https://relay.onocc.dev/v1/admin/drain',
   requesterServiceAccount: 'requester@example.com',
   runtimeServiceAccount: 'runtime@example.com',
   sourceCellId: 'production-gce-c3',

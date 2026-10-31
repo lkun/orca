@@ -16,7 +16,7 @@ import type { StructuredChatNamingFailure } from './structured-agent-session-hos
 const journals = createTrackedJournalOpener()
 let directory: string
 beforeEach(async () => {
-  directory = await mkdtemp(join(tmpdir(), 'orca-conversation-name-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-conversation-name-'))
 })
 afterEach(async () => {
   await journals.closeAll()

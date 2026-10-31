@@ -18,7 +18,7 @@ vi.mock('../codex-cli/command', () => ({ resolveCodexCommand: () => 'codex' }))
 
 import { runCodexLoginSession, type CodexLoginSpawnRequest } from './codex-login-session'
 
-const AUTH_URL = 'https://auth.openai.com/oauth/authorize?client_id=orca&state=abc'
+const AUTH_URL = 'https://auth.openai.com/oauth/authorize?client_id=occ&state=abc'
 const PRINTED = `If your browser did not open, navigate to this URL to authenticate:\n\n${AUTH_URL}\n`
 const WSL_HOME = '\\\\wsl.localhost\\Ubuntu\\home\\alice\\managed-home'
 // codex login's real stderr: a warning and the server line precede the link.

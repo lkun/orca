@@ -31,7 +31,7 @@ const EXIT_REASON = 'Claude Code is not signed in. Sign in with the Claude CLI'
 // Internal exit diagnostics must not reach the failure row.
 const EXIT_TEXT = 'Codex stopped before it finished starting. Send your message to try again.'
 const START_ROW = agentJournalItemKey({
-  provider: 'orca',
+  provider: 'occ',
   clientMessageId: 'start-failure:generation-6'
 })
 
@@ -101,7 +101,7 @@ async function startRows(): Promise<string[]> {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-start-failure-writer-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-start-failure-writer-'))
   resetHostTestOperationIds()
   generation = 0
   frames = []

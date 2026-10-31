@@ -23,7 +23,7 @@ vi.mock('@/runtime/runtime-file-read-client', async (importOriginal) => ({
   ...(await importOriginal<typeof RuntimeFileReadClient>()),
   readRuntimeFileContent: mocks.readRuntimeFileContent
 }))
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 // Use main-owned layout frames and move acknowledgments.
 vi.mock('@/runtime/runtime-rpc-client', async (importOriginal) =>
   (

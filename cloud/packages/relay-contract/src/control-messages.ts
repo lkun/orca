@@ -45,9 +45,9 @@ export const HostChallengeAckSchema = z
   .strict()
 
 // Advertise via upgrade header: strict deployed HostHelloSchema rejects new hello keys.
-export const RELAY_HOST_CAPABILITIES_HEADER = 'x-orca-host-capabilities'
+export const RELAY_HOST_CAPABILITIES_HEADER = 'x-occ-host-capabilities'
 // Echo director assignment lease on upgrade; older cells ignore unknown headers, current cells shadow-check.
-export const RELAY_ASSIGNMENT_LEASE_HEADER = 'x-orca-relay-assignment-lease'
+export const RELAY_ASSIGNMENT_LEASE_HEADER = 'x-occ-relay-assignment-lease'
 // Advertise before sending pendingConns details: legacy strict parsers would reject the entire ack.
 export const RELAY_HOST_CAPABILITY_PENDING_CONN_DETAILS = 'pending-conn-details'
 export const RELAY_HOST_CAPABILITY_IDLE_REGIONAL_REHOME = 'idle-regional-rehome-v1'

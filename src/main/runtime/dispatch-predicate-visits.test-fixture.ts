@@ -31,8 +31,8 @@ export function traceDispatchPredicateVisits(
   const observed = new WeakSet<object>()
   const trace = vi.spyOn(db, 'prepare').mockImplementation((query) => {
     let instrumented = query.replaceAll(
-      'WHERE assignee_orca_session_id IS NOT NULL',
-      `WHERE assignee_orca_session_id IS NOT NULL AND ${functions.candidate}(rowid)`
+      'WHERE assignee_occ_session_id IS NOT NULL',
+      `WHERE assignee_occ_session_id IS NOT NULL AND ${functions.candidate}(rowid)`
     )
     if (functions.latest && query.includes('rowid AS n')) {
       instrumented = instrumented.replace(
@@ -122,7 +122,7 @@ export function seedCoarsePresentationDispatches(
   const task = db.createTask({ runId, spec: 'coarse-only history' })
   db.db
     .prepare(`INSERT INTO dispatch_contexts
-    (id, run_id, task_id, assignee_handle, assignee_orca_session_id, status, completed_at)
+    (id, run_id, task_id, assignee_handle, assignee_occ_session_id, status, completed_at)
     WITH RECURSIVE seq(n) AS (VALUES(1) UNION ALL SELECT n+1 FROM seq WHERE n < ?)
     SELECT ? || n, ?, ?, CASE WHEN n % 2 = 1 THEN ? || n WHEN n % 4 = 0 THEN '' ELSE NULL END,
       ? || n, 'completed', ? FROM seq`)

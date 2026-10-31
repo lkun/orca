@@ -72,7 +72,7 @@ describe('buildPaletteFilterModel', () => {
       ['r2', 'OCC (builder)', 1],
       ['r3', 'Solo', 1]
     ])
-    expect(model.repositories[0]?.searchText).toContain('orca')
+    expect(model.repositories[0]?.searchText).toContain('occ')
     expect(model.repositories[0]?.searchText).toContain(path.join('/repos', 'r1'))
   })
 
@@ -269,7 +269,7 @@ describe('palette host filter on an SSH host merged with its managed server', ()
       {
         id: 'env1',
         name: 'Omarchy',
-        orcadDeployment: {
+        occdDeployment: {
           sshTargetId: 'tgt',
           sshTargetGeneration: 1,
           localPort: 7001,

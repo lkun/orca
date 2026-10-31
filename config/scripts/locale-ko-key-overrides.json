@@ -1236,7 +1236,7 @@
     "ko": "pnpm test --filter mobile"
   },
   "auto.components.mobile.slides.TerminalSlide.e0f98be657": {
-    "ko": "orca/feat-mobile-page"
+    "ko": "occ/feat-mobile-page"
   },
   "auto.components.mobile.slides.TerminalSlide.e4befee569": {
     "ko": "셸"
@@ -1742,8 +1742,8 @@
   "auto.components.settings.DefaultWindowsProjectRuntimeSetting.wslUnavailable": {
     "ko": "WSL을 사용할 수 없습니다. WSL을 상속하는 프로젝트는 복구가 필요합니다."
   },
-  "auto.components.settings.DevToolsPane.orcaCloudDescription": {
-    "ko": "자사 클라우드 로그인의 개발자 전용 미리보기. 프로덕션에서는 숨겨집니다. 개발 환경에서는 ORCA_CLOUD_API_URL과 ORCA_CLOUD_CLIENT_ID가 설정되면 사이드바 계정 전환기에도 표시됩니다."
+  "auto.components.settings.DevToolsPane.occCloudDescription": {
+    "ko": "자사 클라우드 로그인의 개발자 전용 미리보기. 프로덕션에서는 숨겨집니다. 개발 환경에서는 OCC_CLOUD_API_URL과 OCC_CLOUD_CLIENT_ID가 설정되면 사이드바 계정 전환기에도 표시됩니다."
   },
   "auto.components.settings.DeveloperPermissionsPane.16381e040a": {
     "ko": "마이크"
@@ -1920,10 +1920,10 @@
     "ko": "템플릿"
   },
   "auto.components.settings.RepositoryHooksSection.a3fc966677": {
-    "ko": "# 예: pnpm install cp \"$ORCA_ROOT_PATH/.env\" \"$ORCA_WORKTREE_PATH/.env\""
+    "ko": "# 예: pnpm install cp \"$OCC_ROOT_PATH/.env\" \"$OCC_WORKTREE_PATH/.env\""
   },
   "auto.components.settings.RepositoryHooksSection.b20c5df6ca": {
-    "ko": "이 repo의 공유 설정, 아카이브 또는 이슈 자동화 기본값을 사용하려면 `orca.yaml` 파일을 추가하세요. 예제 템플릿:"
+    "ko": "이 repo의 공유 설정, 아카이브 또는 이슈 자동화 기본값을 사용하려면 `occ.yaml` 파일을 추가하세요. 예제 템플릿:"
   },
   "auto.components.settings.RepositoryHooksSection.c5a55a2d2e": {
     "ko": "고급"
@@ -2781,7 +2781,7 @@
     "ko": "런타임"
   },
   "auto.components.settings.mobile.emulator.search.d4b7833894": {
-    "ko": "orca cli"
+    "ko": "occ cli"
   },
   "auto.components.settings.mobile.emulator.search.ea1f51b980": {
     "ko": "Xcode, simctl, serve-sim 및 에뮬레이터 장치가 준비되었는지 확인하세요."
@@ -3521,7 +3521,7 @@
   "auto.components.sidebar.NonGitFolderDialog.c49fb13492": {
     "ko": "이 호스트에 폴더를 추가하지 못했습니다."
   },
-  "auto.components.sidebar.OrcaYamlTrustDialog.43b7bec4cd": {
+  "auto.components.sidebar.OCCYamlTrustDialog.43b7bec4cd": {
     "ko": "실행 안 함"
   },
   "auto.components.sidebar.PendingWorktreeRow.af21e953d1": {
@@ -3792,7 +3792,7 @@
     "ko": "사용량 개요 새로고침"
   },
   "auto.components.stats.share.card.utils.19f4b4dc75": {
-    "ko": "github.com/stablyai/orca"
+    "ko": "github.com/stablyai/occ"
   },
   "auto.components.stats.share.card.utils.7080aeaebb": {
     "ko": "추론"
@@ -5136,7 +5136,7 @@
     "ko": "저장소 명령"
   },
   "auto.components.settings.repository.search.d42d1e49c0": {
-    "ko": "orca.yaml과 선택적인 로컬 재정의로 설정하는 파일 기반의 연결된 이슈 명령입니다."
+    "ko": "occ.yaml과 선택적인 로컬 재정의로 설정하는 파일 기반의 연결된 이슈 명령입니다."
   },
   "auto.components.settings.repository.search.cdfe398068": {
     "ko": "설정 스크립트 실행 시기"
@@ -5193,7 +5193,7 @@
     "ko": "명령 검색"
   },
   "settings.browser.userAgent.resetRequiredCommand": {
-    "ko": "명령줄에서 재설정하세요: orca browser identity set --mode <mode> --reset"
+    "ko": "명령줄에서 재설정하세요: occ browser identity set --mode <mode> --reset"
   },
   "auto.components.settings.BrowserUseEnableSwitch.aea3f45349": {
     "ko": "에이전트 브라우저 사용 활성화"
@@ -5219,13 +5219,13 @@
   "auto.components.settings.BrowserLinkRoutingModifierSetting.titleSystem": {
     "ko": "Shift를 누른 채 클릭하면 웹 브라우저에서 열기"
   },
-  "auto.components.settings.BrowserLinkRoutingModifierSetting.titleOrca": {
+  "auto.components.settings.BrowserLinkRoutingModifierSetting.titleOCC": {
     "ko": "Shift를 누른 채 클릭하면 OCC에서 열기"
   },
   "auto.components.settings.BrowserLinkRoutingModifierSetting.descriptionSystem": {
     "ko": "링크가 OCC에서 열리므로, {{chord}}+클릭 시 시스템 기본 브라우저에서 대신 열립니다."
   },
-  "auto.components.settings.BrowserLinkRoutingModifierSetting.descriptionOrca": {
+  "auto.components.settings.BrowserLinkRoutingModifierSetting.descriptionOCC": {
     "ko": "링크가 시스템 기본 브라우저에서 열립니다. 활성화하면 {{chord}}+클릭 시 OCC 내장 브라우저에서 대신 열립니다."
   },
   "auto.components.settings.BrowserTerminalLinkActionsSetting.actionsLabel": {
@@ -5400,10 +5400,10 @@
     "ko": "계속"
   },
   "auto.components.settings.SshTargetForm.allowRemoteCliControl": {
-    "ko": "이 호스트의 orca CLI가 OCC를 제어하도록 허용"
+    "ko": "이 호스트의 occ CLI가 OCC를 제어하도록 허용"
   },
   "auto.components.settings.SshTargetForm.allowRemoteCliControlHelp": {
-    "ko": "새 호스트에서는 기본적으로 켜져 있습니다. 이 호스트에서 실행한 orca 명령이 이 호스트의 작업 공간에서만, 연결되어 있는 동안에만 이 데스크톱의 OCC 브라우저 탭을 열고 조작할 수 있게 하고, 이 호스트에서 이전 버전의 OCC가 시작한 터미널이 자신이 감독받는 작업에 대해 오케스트레이션 명령(check, inbox, send, ask, reply)을 실행할 수 있게 합니다. 파일, 클립보드, 쿠키는 읽을 수 없습니다. 끄면 이 호스트 자체의 OCC 서버에만 접근합니다."
+    "ko": "새 호스트에서는 기본적으로 켜져 있습니다. 이 호스트에서 실행한 occ 명령이 이 호스트의 작업 공간에서만, 연결되어 있는 동안에만 이 데스크톱의 OCC 브라우저 탭을 열고 조작할 수 있게 하고, 이 호스트에서 이전 버전의 OCC가 시작한 터미널이 자신이 감독받는 작업에 대해 오케스트레이션 명령(check, inbox, send, ask, reply)을 실행할 수 있게 합니다. 파일, 클립보드, 쿠키는 읽을 수 없습니다. 끄면 이 호스트 자체의 OCC 서버에만 접근합니다."
   },
   "auto.components.settings.AdvancedNetworkSettingsSection.3e431564b5": {
     "ko": "localhost, 127.0.0.1, *.internal"
@@ -5423,8 +5423,8 @@
   "auto.components.settings.linear.agent.skill.search.linear": {
     "ko": "Linear"
   },
-  "auto.components.settings.linear.agent.skill.search.orcaLinear": {
-    "ko": "orca-linear"
+  "auto.components.settings.linear.agent.skill.search.occLinear": {
+    "ko": "occ-linear"
   },
   "auto.components.settings.bitbucket.integration.card.accountUnknown": {
     "ko": "Bitbucket Cloud"
@@ -5471,10 +5471,10 @@
   "auto.components.settings.privacy.search.2b5a5c312f": {
     "ko": "PostHog"
   },
-  "auto.components.settings.orcaAccount.keywordRelay": {
+  "auto.components.settings.occAccount.keywordRelay": {
     "ko": "릴레이"
   },
-  "auto.components.settings.orcaAccount.keywordCloud": {
+  "auto.components.settings.occAccount.keywordCloud": {
     "ko": "클라우드"
   },
   "auto.components.skills.SkillFreshnessStatusPill.needsAttention": {
@@ -5607,13 +5607,13 @@
     "ko": "필요하면 기본 명령을 재정의할 수 있습니다. 연결된 이슈 또는 PR의 URL에는 <artifactUrl>{{artifact_url}}</artifactUrl> 변수를 사용하세요."
   },
   "auto.components.settings.RepositoryHooksSection.issueCommandSharedDefault": {
-    "ko": "비워 두면 <yaml>orca.yaml</yaml>에 지정된 저장소 기본값을 사용합니다."
+    "ko": "비워 두면 <yaml>occ.yaml</yaml>에 지정된 저장소 기본값을 사용합니다."
   },
   "auto.components.settings.RepositoryHooksSection.issueCommandOptionalDefault": {
-    "ko": "비워 두면 <yaml>orca.yaml</yaml>에 지정된 저장소 기본값이 있는 경우 사용합니다."
+    "ko": "비워 두면 <yaml>occ.yaml</yaml>에 지정된 저장소 기본값이 있는 경우 사용합니다."
   },
   "auto.components.settings.RepositoryHooksSection.commandSourceDescription": {
-    "ko": "<yaml>orca.yaml</yaml>의 명령과 로컬 명령이 모두 있으면 실행할 명령을 선택하세요."
+    "ko": "<yaml>occ.yaml</yaml>의 명령과 로컬 명령이 모두 있으면 실행할 명령을 선택하세요."
   },
   "auto.components.settings.SshPane.syncedServerSingular": {
     "ko": "서버 {{count}}개를 동기화했습니다."

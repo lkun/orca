@@ -1,7 +1,7 @@
 // Setup and preamble readiness share the caller's deadline; a slow setup must not buy another full timeout.
 
 import { afterEach, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import type { OrchestrationDb } from '../../orchestration/db'
 
 const preambleBudgets: (number | undefined)[] = []
@@ -65,7 +65,7 @@ it('leaves the preamble only what the setup gate did not use of the caller’s t
     showManagedTerminalWorkspace: async () => ({ id: 'wt_1' }),
     getNestedWorkerMaxDepth: () => 3,
     getRuntimeId: () => 'epoch-1',
-    getTerminalOrchestrationCliCommand: () => 'orca',
+    getTerminalOrchestrationCliCommand: () => 'occ',
     getStructuredAgentSessionCreateSupport: async () => ({ supported: true }),
     getOrchestrationDispatchAuthority: () => ({ paneKey: 'pane', processIncarnation: 'inc' }),
     getTerminalProcessIncarnation: () => 'inc',
@@ -95,7 +95,7 @@ it('leaves the preamble only what the setup gate did not use of the caller’s t
       detail: 'structured by default'
     } as const,
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the start path reaches only these runtime members.
-    runtime: runtime as unknown as OrcaRuntimeService,
+    runtime: runtime as unknown as OCCRuntimeService,
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the start path reaches only these db members.
     db: db as unknown as OrchestrationDb,
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: only the run id is read.

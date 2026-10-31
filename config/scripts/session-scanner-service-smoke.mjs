@@ -1,9 +1,9 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { describeProcessFailure } from './process-failure-message.mjs'
-import { ORCAD_SESSION_SCANNER_SERVICE_ENTRY } from '../../src/shared/orcad-artifacts.ts'
+import { OCCD_SESSION_SCANNER_SERVICE_ENTRY } from '../../src/shared/occd-artifacts.ts'
 import { AI_VAULT_SERVICE_PROTOCOL_VERSION } from '../../src/main/ai-vault/session-scanner-service-protocol.ts'
 
 // Probe forks with shipped runtime’s execPath; judge exit code, never matched output.
@@ -46,11 +46,11 @@ child.send({ type: 'init', protocol: Number(protocol) })
 
 /**
  * Fork the built session scanner child and list a seeded Claude session through it.
- * @param outDir - orcad output directory holding the entry.
+ * @param outDir - occd output directory holding the entry.
  * @param options.runtimePath - Node to run under; the build's own Node when omitted.
  */
 export function smokeSessionScannerService(outDir, { runtimePath, timeoutMs = 60_000 } = {}) {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-session-scanner-smoke-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-session-scanner-smoke-'))
   try {
     const home = join(directory, 'home')
     const project = join(home, '.claude', 'projects', 'smoke-project')
@@ -71,11 +71,11 @@ export function smokeSessionScannerService(outDir, { runtimePath, timeoutMs = 60
       program: runtimePath ?? process.execPath,
       args: [
         probe,
-        resolve(outDir, ORCAD_SESSION_SCANNER_SERVICE_ENTRY),
+        resolve(outDir, OCCD_SESSION_SCANNER_SERVICE_ENTRY),
         home,
         String(AI_VAULT_SERVICE_PROTOCOL_VERSION)
       ],
-      env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' },
+      env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' },
       timeoutMs,
       maxOutputBytes: 64 * 1024
     })

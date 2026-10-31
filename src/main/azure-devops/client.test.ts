@@ -32,7 +32,7 @@ const OLD_FETCH = globalThis.fetch
 
 describe('Azure DevOps client', () => {
   beforeEach(() => {
-    process.env = { ...OLD_ENV, ORCA_AZURE_DEVOPS_TOKEN: 'pat-token' }
+    process.env = { ...OLD_ENV, OCC_AZURE_DEVOPS_TOKEN: 'pat-token' }
     gitExecFileAsyncMock.mockReset()
     _resetAzureDevOpsRepoRefCache()
     _resetAzureDevOpsApiVersionCache()
@@ -46,7 +46,7 @@ describe('Azure DevOps client', () => {
   })
 
   it('authenticates against an on-prem Server that requires -preview api-versions (STA-3494)', async () => {
-    process.env.ORCA_AZURE_DEVOPS_API_BASE_URL = 'https://ado.example.com:8443/tfs/MyCollection'
+    process.env.OCC_AZURE_DEVOPS_API_BASE_URL = 'https://ado.example.com:8443/tfs/MyCollection'
     const versions: (string | null)[] = []
     globalThis.fetch = vi.fn(async (input: string | URL | Request) => {
       const url = new URL(String(input))

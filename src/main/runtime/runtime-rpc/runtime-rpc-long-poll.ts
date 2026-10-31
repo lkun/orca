@@ -1,5 +1,5 @@
 import type { RpcRequest } from '../rpc/core'
-import { ORCA_SESSION_ADDRESS_PREFIX } from '../../../shared/orca-session-address'
+import { OCC_SESSION_ADDRESS_PREFIX } from '../../../shared/occ-session-address'
 
 export const KEEPALIVE_INTERVAL_MS = 10_000
 
@@ -45,7 +45,7 @@ export function classifyRuntimeLongPoll(request: RpcRequest): RuntimeLongPollCla
     request.params.inject === true &&
     'to' in request.params &&
     typeof request.params.to === 'string' &&
-    request.params.to.startsWith(ORCA_SESSION_ADDRESS_PREFIX)
+    request.params.to.startsWith(OCC_SESSION_ADDRESS_PREFIX)
   ) {
     return 'wait'
   }

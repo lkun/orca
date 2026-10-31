@@ -55,7 +55,7 @@ describe('the move driver reaching its WSL host', () => {
   }
 
   beforeEach(() => {
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-move-host-connect-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-move-host-connect-'))
     removal.pending = false
     vi.spyOn(console, 'warn').mockImplementation(() => {})
   })

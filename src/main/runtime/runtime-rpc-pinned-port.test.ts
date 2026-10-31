@@ -4,8 +4,8 @@ import { createServer, type Server } from 'node:net'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeService } from './occ-runtime'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import { PinnedPortUnavailableError } from './rpc/ws-transport'
 
 const holders: Server[] = []
@@ -27,11 +27,11 @@ afterEach(async () => {
   )
 })
 
-function serveServer(wsPort: number, requirePinnedWsPort: boolean): OrcaRuntimeRpcServer {
-  return new OrcaRuntimeRpcServer({
+function serveServer(wsPort: number, requirePinnedWsPort: boolean): OCCRuntimeRpcServer {
+  return new OCCRuntimeRpcServer({
     methods: [],
-    runtime: new OrcaRuntimeService(),
-    userDataPath: mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-pinned-')),
+    runtime: new OCCRuntimeService(),
+    userDataPath: mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-pinned-')),
     enableWebSocket: true,
     exposeNetworkByDefault: true,
     wsPort,

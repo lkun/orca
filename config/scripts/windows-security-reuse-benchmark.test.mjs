@@ -15,7 +15,7 @@ import { runInNewContext } from 'node:vm'
 import { afterEach, expect, it, vi } from 'vitest'
 import { parse } from 'yaml'
 import { NODE_RUNTIME_PIN } from '../../src/shared/node-runtime-pin.ts'
-import { sha256Of } from './orcad-prebuild-slot-contents.mjs'
+import { sha256Of } from './occd-prebuild-slot-contents.mjs'
 import { peImage } from './windows-pe-image-fixture.mjs'
 import {
   assertSecurityComparisonHost,
@@ -45,9 +45,9 @@ afterEach(() => {
 })
 const digest = (bytes) => createHash('sha256').update(bytes).digest('hex')
 function fixture(arch = 'x64') {
-  const root = mkdtempSync(join(tmpdir(), 'orca-security-qualification-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-security-qualification-'))
   directories.push(root)
-  const candidate = join(root, 'native/windows-security/build/Release/orca_windows_security.node')
+  const candidate = join(root, 'native/windows-security/build/Release/occ_windows_security.node')
   mkdirSync(dirname(candidate), { recursive: true })
   writeFileSync(candidate, peImage({ arch }))
   mkdirSync(join(root, 'native/windows-security/src'))
@@ -58,7 +58,7 @@ function fixture(arch = 'x64') {
   const receiptFile = join(root, 'sample.json')
   const run = vi.fn((spec) => {
     if (spec.args.includes('rebuild')) {
-      const built = join(spec.cwd, 'build/Release/orca_windows_security.node')
+      const built = join(spec.cwd, 'build/Release/occ_windows_security.node')
       mkdirSync(dirname(built), { recursive: true })
       writeFileSync(built, peImage({ arch }))
     }
@@ -276,7 +276,7 @@ it('keeps the existing manual default and runs the security mode on only its two
     )
   }
   expect(steps.at(-1).if).toBe('always()')
-  expect(workflow.env.ORCA_BACKGROUND_LAUNCH).toBe('1')
+  expect(workflow.env.OCC_BACKGROUND_LAUNCH).toBe('1')
 })
 
 function hostedFixture(arch = 'x64', failure) {

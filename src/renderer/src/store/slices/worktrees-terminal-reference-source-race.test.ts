@@ -35,16 +35,16 @@ it.each([
     addedAt: 0,
     badgeColor: '',
     gitRemoteIdentity: {
-      canonicalKey: 'github.com/acme/orca',
+      canonicalKey: 'github.com/acme/occ',
       remoteName: 'origin',
-      remoteUrl: 'https://github.com/acme/orca.git'
+      remoteUrl: 'https://github.com/acme/occ.git'
     }
   }
   const review: HostedReviewInfo = {
     provider: 'github',
     number: 42,
     title: 'Review',
-    url: 'https://github.com/acme/orca/pull/42',
+    url: 'https://github.com/acme/occ/pull/42',
     state: 'open',
     status: 'success',
     mergeable: 'MERGEABLE',
@@ -60,7 +60,7 @@ it.each([
   store.getState().observeTerminalGitHubPullRequestLink(workspace.id, {
     number: 42,
     url: review.url,
-    slug: { owner: 'acme', repo: 'orca' }
+    slug: { owner: 'acme', repo: 'occ' }
   })
   for (let i = 0; i < 20; i++) {
     await Promise.resolve()

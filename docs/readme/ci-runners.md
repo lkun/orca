@@ -11,7 +11,7 @@ Enterprise plan allows 1,000 concurrent jobs (50 macOS). Use Blacksmith only for
 
 PR checks run entirely on hosted runners. Unit tests
 run as 12 shards on `ubuntu-24.04-arm`, which match the old five 8-vCPU
-Blacksmith shards; `ORCA_UNIT_FULL_SHARD_COUNT` tunes the count. Preflight (lint
+Blacksmith shards; `OCC_UNIT_FULL_SHARD_COUNT` tunes the count. Preflight (lint
 and typecheck) also runs on hosted ARM: shards, packaging and the layout oracle
 do not wait for it, so its slower runner stays off the gate's critical path.
 The layout oracle and advisory e2e lanes run on `ubuntu-24.04`. Git

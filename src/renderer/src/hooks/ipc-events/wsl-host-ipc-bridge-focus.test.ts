@@ -47,7 +47,7 @@ function seed(experimentalWslHosts: boolean, activeWorktreeId: string): void {
         runtimeId: null,
         preferredEndpointId: 'ws',
         endpoints: [],
-        orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
+        occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
       }
     ],
     tabsByWorktree: { [WSL_WORKTREE]: [makeTab({ id: 'tab-1', worktreeId: WSL_WORKTREE })] }

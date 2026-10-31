@@ -2,7 +2,7 @@ import { openSidebarWorkspaceComposer } from './helpers/sidebar-project-dialog'
 import { mkdirSync, writeFileSync, realpathSync } from 'node:fs'
 import path from 'node:path'
 import type { ElectronApplication, Page, TestInfo } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { removeWorktreeViaStore } from './helpers/dead-terminal'
 import {
   ensureTerminalVisible,
@@ -20,20 +20,20 @@ import {
 import { compareTerminalScreenshots, type ScreenshotDiffSummary } from './terminal-screenshot-diff'
 import { getDefaultRepoHookSettings } from '../../src/shared/constants'
 
-const RUN_REPRO = process.env.ORCA_E2E_CODEX_SKILL_PREVIEW_REPRO === '1'
-const EXPECT_NO_ARTIFACTS = process.env.ORCA_E2E_EXPECT_NO_CODEX_SKILL_PREVIEW_ARTIFACTS === '1'
+const RUN_REPRO = process.env.OCC_E2E_CODEX_SKILL_PREVIEW_REPRO === '1'
+const EXPECT_NO_ARTIFACTS = process.env.OCC_E2E_EXPECT_NO_CODEX_SKILL_PREVIEW_ARTIFACTS === '1'
 const FULLSCREEN_MIN_SIZE = { width: 1200, height: 760 }
 const MIN_REPRO_DIFF_RATIO = 0.006
 const MAX_CLEAN_DIFF_RATIO = 0.0015
-const ORCA_REPO_PATH = realpathSync(process.cwd())
+const OCC_REPO_PATH = realpathSync(process.cwd())
 const ARTIFACT_DIR = path.join(process.cwd(), '.tmp', 'codex-skill-preview-real-flow')
 
 const CODEX_READY_RE = /Ask Codex|OpenAI Codex/i
 const CODEX_TRUST_PROMPT_RE =
   /Do you trust|trust this folder|Trust this|Working with untrusted contents/i
 const CODEX_UPDATE_PROMPT_RE = /update available|install update|Skip for now|Skip until next/i
-const CODEX_SKILL_PREVIEW_RE = /Press enter to insert|esc to close|electron|orca-cli|orca-emulator/i
-const SETUP_PANE_ACTIVITY_RE = /install-orca-skills|pnpm|Progress:|Packages:|Lockfile/i
+const CODEX_SKILL_PREVIEW_RE = /Press enter to insert|esc to close|electron|occ-cli|occ-emulator/i
+const SETUP_PANE_ACTIVITY_RE = /install-occ-skills|pnpm|Progress:|Packages:|Lockfile/i
 const CLEAN_SKILL_ROW_RE = /^  [A-Za-z][A-Za-z0-9 .-]{1,32}\s+\[Skill\]\s/
 const CODEX_READY_SETTLE_MS = 3_500
 const SETUP_CHANGES_AFTER_PREVIEW = 3
@@ -105,7 +105,7 @@ async function setStableFullscreenWindow(
   await page.waitForTimeout(1_200)
 }
 
-async function addRealOrcaRepo(page: Page, repoPath: string): Promise<string> {
+async function addRealOCCRepo(page: Page, repoPath: string): Promise<string> {
   return page.evaluate(
     async ({ repoPath, defaultHookSettings }) => {
       await window.api.repos.add({ path: repoPath }).catch((error: unknown) => {
@@ -567,45 +567,45 @@ test.describe('Codex skill preview terminal artifact repro @headful', () => {
 
   const createdWorktreeIds: string[] = []
 
-  test.skip(!RUN_REPRO, 'Set ORCA_E2E_CODEX_SKILL_PREVIEW_REPRO=1 to run this repro.')
+  test.skip(!RUN_REPRO, 'Set OCC_E2E_CODEX_SKILL_PREVIEW_REPRO=1 to run this repro.')
 
-  test.afterEach(async ({ orcaPage }) => {
+  test.afterEach(async ({ occPage }) => {
     for (const id of createdWorktreeIds) {
-      await removeWorktreeViaStore(orcaPage, id)
+      await removeWorktreeViaStore(occPage, id)
     }
     createdWorktreeIds.length = 0
   })
 
   test('captures the real OCC repo manual-split Codex skill preview overpaint before any click', async ({
     electronApp,
-    orcaPage
+    occPage
   }, testInfo) => {
     test.setTimeout(240_000)
     test.skip(process.platform === 'win32', 'Codex skill preview repro uses POSIX shell commands')
 
-    await setStableFullscreenWindow(electronApp, orcaPage)
-    await waitForSessionReady(orcaPage)
-    await addRealOrcaRepo(orcaPage, ORCA_REPO_PATH)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await setStableFullscreenWindow(electronApp, occPage)
+    await waitForSessionReady(occPage)
+    await addRealOCCRepo(occPage, OCC_REPO_PATH)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
 
     const workspaceName = `codex-skill-preview-${Date.now()}`
-    const worktreeId = await createWorkspaceThroughComposer(orcaPage, workspaceName)
+    const worktreeId = await createWorkspaceThroughComposer(occPage, workspaceName)
     createdWorktreeIds.push(worktreeId)
 
-    await ensureTerminalVisible(orcaPage, 30_000)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
-    await splitActiveTerminalPane(orcaPage, 'vertical')
-    await waitForPaneCount(orcaPage, 2, 60_000)
-    await waitForPaneIdentitySnapshot(orcaPage, 2)
-    const webglActive = await forceTerminalWebgl(orcaPage)
+    await ensureTerminalVisible(occPage, 30_000)
+    await waitForActiveTerminalManager(occPage, 30_000)
+    await splitActiveTerminalPane(occPage, 'vertical')
+    await waitForPaneCount(occPage, 2, 60_000)
+    await waitForPaneIdentitySnapshot(occPage, 2)
+    const webglActive = await forceTerminalWebgl(occPage)
     test.skip(!webglActive, 'Codex skill preview artifact repro needs WebGL rendering')
 
-    const leftPane = await focusLeftTerminalPane(orcaPage)
-    const rightPane = await getRightTerminalPane(orcaPage)
+    const leftPane = await focusLeftTerminalPane(occPage)
+    const rightPane = await getRightTerminalPane(occPage)
     await sendToTerminal(
-      orcaPage,
+      occPage,
       rightPane.ptyId,
       'for i in $(seq 1 120); do printf "Progress: split output %s\\n" "$i"; sleep 1; done\r'
     )
@@ -615,41 +615,41 @@ test.describe('Codex skill preview terminal artifact repro @headful', () => {
     expect(leftPane.appliedPtySize).toEqual({ cols: leftPane.cols, rows: leftPane.rows })
     expect(leftPane.isUserScrolling).toBe(false)
     await waitForPaneContent(
-      orcaPage,
+      occPage,
       rightPane.tabId,
       rightPane.ptyId,
       SETUP_PANE_ACTIVITY_RE,
       60_000
     )
-    await dismissCodexPromptsIfPresent(orcaPage, leftPane)
-    await waitForPaneContent(orcaPage, leftPane.tabId, leftPane.ptyId, CODEX_READY_RE, 60_000)
+    await dismissCodexPromptsIfPresent(occPage, leftPane)
+    await waitForPaneContent(occPage, leftPane.tabId, leftPane.ptyId, CODEX_READY_RE, 60_000)
     await waitForPaneContent(
-      orcaPage,
+      occPage,
       leftPane.tabId,
       leftPane.ptyId,
       /usage limit reset|YOLO mode|permissions/i,
       15_000
     )
-    await orcaPage.waitForTimeout(CODEX_READY_SETTLE_MS)
-    await waitForPaneVisibleContentChanges(orcaPage, rightPane, 1, 8_000)
+    await occPage.waitForTimeout(CODEX_READY_SETTLE_MS)
+    await waitForPaneVisibleContentChanges(occPage, rightPane, 1, 8_000)
 
-    await focusLeftTerminalPane(orcaPage)
-    await orcaPage.keyboard.type('test $e', { delay: 70 })
+    await focusLeftTerminalPane(occPage)
+    await occPage.keyboard.type('test $e', { delay: 70 })
     await waitForPaneContent(
-      orcaPage,
+      occPage,
       leftPane.tabId,
       leftPane.ptyId,
       CODEX_SKILL_PREVIEW_RE,
       30_000
     )
     const setupChangesAfterPreview = await waitForPaneVisibleContentChanges(
-      orcaPage,
+      occPage,
       rightPane,
       SETUP_CHANGES_AFTER_PREVIEW,
       12_000
     )
 
-    const evidence = await captureClickEvidence(orcaPage, leftPane, testInfo)
+    const evidence = await captureClickEvidence(occPage, leftPane, testInfo)
     const overpaintedSkillRows = getOverpaintedSkillRows(evidence.beforeContent)
     const detectedArtifact =
       overpaintedSkillRows.length >= 2 || evidence.diffRatio >= MIN_REPRO_DIFF_RATIO
@@ -662,7 +662,7 @@ test.describe('Codex skill preview terminal artifact repro @headful', () => {
         leftPane: evidence.leftPane,
         setupChangesAfterPreview,
         overpaintedSkillRows,
-        repoPath: ORCA_REPO_PATH
+        repoPath: OCC_REPO_PATH
       })
     })
 

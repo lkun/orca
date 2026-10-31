@@ -7,7 +7,7 @@ import { getDaemonPidPath, serializeDaemonPidFile } from './daemon-spawner'
 
 let runtimeDir: string
 beforeEach(() => {
-  runtimeDir = mkdtempSync(join(tmpdir(), 'orca-legacy-liveness-'))
+  runtimeDir = mkdtempSync(join(tmpdir(), 'occ-legacy-liveness-'))
   writeFileSync(
     getDaemonPidPath(runtimeDir, 50),
     serializeDaemonPidFile({ pid: 424242, startedAtMs: Date.parse('2026-01-01T00:00:00Z') })

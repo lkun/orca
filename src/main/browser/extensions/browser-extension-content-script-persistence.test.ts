@@ -69,11 +69,11 @@ vi.mock('electron', () => ({
                 complete(callback)
               },
               getRegisteredContentScripts(
-                filterOrCallback: { ids?: string[] } | ((value: Script[]) => void),
+                filteroccllback: { ids?: string[] } | ((value: Script[]) => void),
                 callback?: (value: Script[]) => void
               ) {
-                const filter = typeof filterOrCallback === 'function' ? {} : filterOrCallback
-                const done = typeof filterOrCallback === 'function' ? filterOrCallback : callback
+                const filter = typeof filteroccllback === 'function' ? {} : filteroccllback
+                const done = typeof filteroccllback === 'function' ? filteroccllback : callback
                 done?.(
                   [...mocks.scripts.values()]
                     .filter((script) => !filter.ids || filter.ids.includes(script.id))
@@ -93,7 +93,7 @@ vi.mock('electron', () => ({
 vi.mock('./browser-extension-profile-data-directory', () => ({
   getBrowserExtensionProfileDataDirectory: () => mocks.directory
 }))
-mocks.directory = mkdtempSync(join(tmpdir(), 'orca-content-script-persistence-'))
+mocks.directory = mkdtempSync(join(tmpdir(), 'occ-content-script-persistence-'))
 
 const registry = await import('./browser-extension-namespace-registry')
 const { registerScriptingNamespaces } = await import('./api/scripting')

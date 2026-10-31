@@ -69,8 +69,8 @@ describe('detectWslCommandsOnPath', () => {
       environmentResolved: true,
       code: 0,
       stdout:
-        '__ORCA_AGENT_PATH__claude\t/usr/bin/claude\n' +
-        '__ORCA_AGENT_PATH__codex\t/home/user/.local/bin/codex\n',
+        '__OCC_AGENT_PATH__claude\t/usr/bin/claude\n' +
+        '__OCC_AGENT_PATH__codex\t/home/user/.local/bin/codex\n',
       stderr: '',
       timedOut: false
     })
@@ -84,7 +84,7 @@ describe('detectWslCommandsOnPath', () => {
     runWslProcessMock.mockResolvedValue({
       environmentResolved: true,
       code: 0,
-      stdout: '__ORCA_AGENT_PATH__claude\tclaude\n' + '__ORCA_AGENT_PATH__codex\tC:\\spoof\n',
+      stdout: '__OCC_AGENT_PATH__claude\tclaude\n' + '__OCC_AGENT_PATH__codex\tC:\\spoof\n',
       stderr: '',
       timedOut: false
     })
@@ -101,7 +101,7 @@ describe('detectWslCommandsOnPath', () => {
       code: 0,
       stdout:
         'Welcome to Ubuntu! Run a command as administrator (user "root")...\n' +
-        '__ORCA_AGENT_PATH__claude\t/home/user/.nvm/versions/node/v20/bin/claude\n',
+        '__OCC_AGENT_PATH__claude\t/home/user/.nvm/versions/node/v20/bin/claude\n',
       stderr: '',
       timedOut: false
     })
@@ -132,7 +132,7 @@ it('does not veto a guest binary on an ordinary Linux mount under /mnt', async (
   runWslProcessMock.mockResolvedValue({
     environmentResolved: true,
     code: 0,
-    stdout: '__ORCA_AGENT_PATH__claude\t/mnt/d/tools/claude\n',
+    stdout: '__OCC_AGENT_PATH__claude\t/mnt/d/tools/claude\n',
     stderr: '',
     timedOut: false
   })
@@ -145,7 +145,7 @@ it('still counts a genuine guest install', async () => {
   runWslProcessMock.mockResolvedValue({
     environmentResolved: true,
     code: 0,
-    stdout: '__ORCA_AGENT_PATH__claude\t/home/alice/.nvm/versions/node/v20.1.0/bin/claude\n',
+    stdout: '__OCC_AGENT_PATH__claude\t/home/alice/.nvm/versions/node/v20.1.0/bin/claude\n',
     stderr: '',
     timedOut: false
   })
@@ -160,7 +160,7 @@ describe('the detection script itself, run by a real POSIX shell', () => {
   let home: string
 
   beforeEach(() => {
-    home = mkdtempSync(join(tmpdir(), 'orca-wsl-detect-'))
+    home = mkdtempSync(join(tmpdir(), 'occ-wsl-detect-'))
   })
   afterEach(() => {
     rmSync(home, { recursive: true, force: true })
@@ -181,7 +181,7 @@ describe('the detection script itself, run by a real POSIX shell', () => {
       stderr: '',
       timedOut: false
     })
-    await detectWslCommandsOnPath({ distro: 'Ubuntu' }, ['orca-fake-cli', 'nosuchtool'])
+    await detectWslCommandsOnPath({ distro: 'Ubuntu' }, ['occ-fake-cli', 'nosuchtool'])
     const script = String(runWslProcessMock.mock.calls.at(-1)?.[0].script)
     const options: ExecFileSyncOptions = {
       encoding: 'utf8',
@@ -192,30 +192,30 @@ describe('the detection script itself, run by a real POSIX shell', () => {
 
   itPosix('finds an nvm-installed binary the login PATH would have shown', async () => {
     // Version-manager fallback must recover a CLI absent from login PATH (#9725).
-    plant('.nvm/versions/node/v20.1.0/bin', 'orca-fake-cli')
+    plant('.nvm/versions/node/v20.1.0/bin', 'occ-fake-cli')
     const out = await runScript()
-    expect(out).toContain('__ORCA_AGENT_PATH__orca-fake-cli')
-    expect(out).toContain('.nvm/versions/node/v20.1.0/bin/orca-fake-cli')
+    expect(out).toContain('__OCC_AGENT_PATH__occ-fake-cli')
+    expect(out).toContain('.nvm/versions/node/v20.1.0/bin/occ-fake-cli')
   })
 
   itPosix('finds a ~/.local/bin install', async () => {
-    plant('.local/bin', 'orca-fake-cli')
-    expect(await runScript()).toContain('__ORCA_AGENT_PATH__orca-fake-cli')
+    plant('.local/bin', 'occ-fake-cli')
+    expect(await runScript()).toContain('__OCC_AGENT_PATH__occ-fake-cli')
   })
 
   itPosix('still reports nothing for a command that is genuinely absent', async () => {
-    plant('.local/bin', 'orca-fake-cli')
+    plant('.local/bin', 'occ-fake-cli')
     expect(await runScript()).not.toContain('nosuchtool')
   })
 
   itPosix('finds a CLI when $HOME contains a space', async () => {
     // HOME with spaces must remain one path throughout fallback glob expansion.
-    const spaced = mkdtempSync(join(tmpdir(), 'orca has space-'))
+    const spaced = mkdtempSync(join(tmpdir(), 'occ has space-'))
     const previous = home
     home = spaced
     try {
-      plant('.nvm/versions/node/v20.1.0/bin', 'orca-fake-cli')
-      expect(await runScript()).toContain(`${spaced}/.nvm/versions/node/v20.1.0/bin/orca-fake-cli`)
+      plant('.nvm/versions/node/v20.1.0/bin', 'occ-fake-cli')
+      expect(await runScript()).toContain(`${spaced}/.nvm/versions/node/v20.1.0/bin/occ-fake-cli`)
     } finally {
       home = previous
       rmSync(spaced, { recursive: true, force: true })
@@ -224,8 +224,8 @@ describe('the detection script itself, run by a real POSIX shell', () => {
 
   itPosix('does not report a directory as an installed CLI', async () => {
     // Directories pass -x but would fail to launch with EISDIR.
-    mkdirSync(join(home, '.local/bin/orca-fake-cli'), { recursive: true })
-    expect(await runScript()).not.toContain('__ORCA_AGENT_PATH__orca-fake-cli')
+    mkdirSync(join(home, '.local/bin/occ-fake-cli'), { recursive: true })
+    expect(await runScript()).not.toContain('__OCC_AGENT_PATH__occ-fake-cli')
   })
 
   itPosix.each([
@@ -234,8 +234,8 @@ describe('the detection script itself, run by a real POSIX shell', () => {
     '.fnm/aliases/default/bin',
     '.local/share/mise/shims'
   ])('covers %s, which the native fallback also probes', async (dir) => {
-    plant(dir, 'orca-fake-cli')
-    expect(await runScript()).toContain('__ORCA_AGENT_PATH__orca-fake-cli')
+    plant(dir, 'occ-fake-cli')
+    expect(await runScript()).toContain('__OCC_AGENT_PATH__occ-fake-cli')
   })
 })
 
@@ -244,7 +244,7 @@ describe('the PATH walk, run by a real POSIX shell', () => {
 
   itPosix('finds the guest install behind a Windows binary that shadows it', async () => {
     // Skip Windows components during the walk so an interop binary cannot hide a later guest install.
-    const root = mkdtempSync(join(tmpdir(), 'orca-walk-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-walk-'))
     try {
       const win = join(root, 'winmnt/c/npm')
       const nvm = join(root, 'home/.nvm/bin')
@@ -260,7 +260,7 @@ describe('the PATH walk, run by a real POSIX shell', () => {
         { kind: 'literal', value: 'claude' },
         { skipWindowsMountDirs: true }
         // Substitute synthetic Windows-mount evidence for /proc/mounts.
-      ).replace(/_orca_win_mounts=\$\([^)]*\)/, `_orca_win_mounts=${join(root, 'winmnt')}`)
+      ).replace(/_occ_win_mounts=\$\([^)]*\)/, `_occ_win_mounts=${join(root, 'winmnt')}`)
       const options: ExecFileSyncOptions = {
         encoding: 'utf8',
         env: { PATH: `${win}:${nvm}:/usr/bin:/bin` }
@@ -279,7 +279,7 @@ describe('the mount table read, counted against a real shell', () => {
   const itPosix = process.platform === 'win32' ? it.skip : it
 
   const runWithCountingAwk = async (commands: string[]): Promise<number> => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-awk-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-awk-'))
     try {
       const counter = join(root, 'count')
       const bin = join(root, 'bin')
@@ -321,7 +321,7 @@ describe('the mount table read, counted against a real shell', () => {
 
   itPosix('applies the memoised mount list to every command, not just the first', async () => {
     // Fork counts alone miss a clobbered mount cache; all later agents must still skip Windows mounts.
-    const root = mkdtempSync(join(tmpdir(), 'orca-memo-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-memo-'))
     try {
       const win = join(root, 'winmnt/c/npm')
       const guest = join(root, 'home/bin')
@@ -344,16 +344,16 @@ describe('the mount table read, counted against a real shell', () => {
       })
       await detectWslCommandsOnPath({ distro: 'Ubuntu' }, ['claude', 'codex'])
       const script = String(runWslProcessMock.mock.calls.at(-1)?.[0].script).replace(
-        /_orca_win_mounts=\$\([^)]*\)/,
-        `_orca_win_mounts=${join(root, 'winmnt')}`
+        /_occ_win_mounts=\$\([^)]*\)/,
+        `_occ_win_mounts=${join(root, 'winmnt')}`
       )
       const options: ExecFileSyncOptions = {
         encoding: 'utf8',
         env: { PATH: `${win}:${guest}:/usr/bin:/bin`, HOME: root }
       }
       const out = String(execFileSync('/bin/sh', ['-c', script], options))
-      expect(out).toContain(`__ORCA_AGENT_PATH__claude\t${join(guest, 'claude')}`)
-      expect(out).toContain(`__ORCA_AGENT_PATH__codex\t${join(guest, 'codex')}`)
+      expect(out).toContain(`__OCC_AGENT_PATH__claude\t${join(guest, 'claude')}`)
+      expect(out).toContain(`__OCC_AGENT_PATH__codex\t${join(guest, 'codex')}`)
     } finally {
       rmSync(root, { recursive: true, force: true })
     }

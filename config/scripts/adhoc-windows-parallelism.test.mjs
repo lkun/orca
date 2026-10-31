@@ -13,13 +13,13 @@ const bundleWorkflow = parse(readFileSync('.github/workflows/release-javascript.
 
 function qualification(template = 'success', ships = 'true') {
   return {
-    github: { repository: 'stablyai/orca' },
+    github: { repository: 'stablyai/occ' },
     needs: {
       'resolve-ref': { result: 'success', outputs: { sha: 'a'.repeat(40) } },
-      'orcad-template-support': { result: 'success', outputs: { ships } },
+      'occd-template-support': { result: 'success', outputs: { ships } },
       'release-javascript': { result: 'success' },
       'prepare-adhoc-mac-release': { result: 'success' },
-      'orcad-template': { result: template }
+      'occd-template': { result: template }
     }
   }
 }
@@ -27,18 +27,18 @@ function qualification(template = 'success', ships = 'true') {
 describe('adhoc Windows compilation overlaps Mac without publishing early', () => {
   it('starts Windows during qualification without a Mac dependency', () => {
     expect(mac.needs).toEqual(
-      expect.arrayContaining([...windows.needs, 'orcad-template', 'prepare-adhoc-mac-release'])
+      expect.arrayContaining([...windows.needs, 'occd-template', 'prepare-adhoc-mac-release'])
     )
     expect(windows.needs).not.toContain('build-adhoc-mac')
     expect(windows.with.stage_only).toBe(true)
     expect(windows.with.fast_release).toBe(true)
     expect(windows.with.ref).toBe('${{ needs.resolve-ref.outputs.sha }}')
-    expect(windows.with.tag).toBe('v${{ needs.orcad-template-support.outputs.version }}')
+    expect(windows.with.tag).toBe('v${{ needs.occd-template-support.outputs.version }}')
     expect(windows.with.version).toBe(final.outputs.version)
-    expect(windows.with.orcad_template).toBe(
-      "${{ needs.orcad-template-support.outputs.ships == 'true' }}"
+    expect(windows.with.occd_template).toBe(
+      "${{ needs.occd-template-support.outputs.ships == 'true' }}"
     )
-    const identity = jobs['orcad-template-support']
+    const identity = jobs['occd-template-support']
     expect(identity.outputs.version).toBe('${{ steps.adhoc.outputs.version }}')
     expect(identity.steps.filter((step) => step.id === 'adhoc')).toHaveLength(1)
     expect(mac.steps.some((step) => step.id === 'adhoc')).toBe(false)
@@ -50,11 +50,11 @@ describe('adhoc Windows compilation overlaps Mac without publishing early', () =
 
   it('builds portable JavaScript alongside qualification and restores it on both platforms', () => {
     const bundle = jobs['release-javascript']
-    expect(bundle.needs).not.toContain('orcad-template')
+    expect(bundle.needs).not.toContain('occd-template')
     expect(bundle.with.ref).toBe('${{ needs.resolve-ref.outputs.sha }}')
     expect(bundle.with.dev_build).toBe(true)
     expect(bundle.secrets).toBeUndefined()
-    expect(jobs['orcad-template'].uses).toBe('./.github/workflows/qualified-orcad-template.yml')
+    expect(jobs['occd-template'].uses).toBe('./.github/workflows/qualified-occd-template.yml')
     for (const job of [mac, windows]) {
       expect(job.needs).toContain('release-javascript')
       const evaluate = compileAggregateExpression(job.if, ['needs', 'github'])
@@ -113,7 +113,7 @@ describe('adhoc Windows compilation overlaps Mac without publishing early', () =
     const context = qualification(result, ships)
     expect(run(context).coerceString()).toBe(String(allowed))
     expect(run(context, true).coerceString()).toBe('false')
-    context.needs['orcad-template-support'].result = 'failure'
+    context.needs['occd-template-support'].result = 'failure'
     expect(run(context).coerceString()).toBe('false')
   })
 
@@ -122,10 +122,10 @@ describe('adhoc Windows compilation overlaps Mac without publishing early', () =
     (result) => {
       const run = compileAggregateExpression(publish.if)
       const needs = {
-        'orcad-template-support': { result: 'success' },
+        'occd-template-support': { result: 'success' },
         'build-adhoc-win': { result: 'success' }
       }
-      expect(publish.needs).toEqual(['orcad-template-support', 'build-adhoc-win'])
+      expect(publish.needs).toEqual(['occd-template-support', 'build-adhoc-win'])
       expect(publish.with.wait_for_mac_job).toBe('build-adhoc-mac')
       expect(run({ needs }).coerceString()).toBe('true')
       expect(run({ needs }, true).coerceString()).toBe('false')

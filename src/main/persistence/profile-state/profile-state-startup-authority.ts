@@ -6,7 +6,7 @@ import type {
 } from './profile-state-store-factory'
 import { createLiveProfileStateStore } from './profile-state-live-store-factory'
 
-export type ProfileStateStartupRuntime = 'desktop' | 'orcad'
+export type ProfileStateStartupRuntime = 'desktop' | 'occd'
 
 export type ProfileStateStartupAuthorityOptions = Omit<
   ProfileStateStoreFactoryOptions,
@@ -21,21 +21,21 @@ export type ProfileStateStartupAuthorityOptions = Omit<
 }
 
 export class ProfileStateStartupAuthorityError extends Error {
-  readonly code = 'orcad-sqlite-authority-unsupported' as const
+  readonly code = 'occd-sqlite-authority-unsupported' as const
 
   constructor() {
     super(
-      'orcad requires SQLite database and backup support. Launch it through its pinned Node runtime.'
+      'occd requires SQLite database and backup support. Launch it through its pinned Node runtime.'
     )
     this.name = 'ProfileStateStartupAuthorityError'
   }
 }
 
-/** Desktop and orcad share the validated authority boundary. */
+/** Desktop and occd share the validated authority boundary. */
 export async function createProfileStateStoreForStartup(
   options: ProfileStateStartupAuthorityOptions
 ): Promise<ProfileStateStoreFactoryResult> {
-  if (options.runtime === 'orcad' && !isProfileStateSqliteAvailable()) {
+  if (options.runtime === 'occd' && !isProfileStateSqliteAvailable()) {
     throw new ProfileStateStartupAuthorityError()
   }
   return createLiveProfileStateStore(options, {

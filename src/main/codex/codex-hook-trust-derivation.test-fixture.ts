@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { computeOrcaCodexHookHashes } from './codex-hook-definition'
+import { computeOCCCodexHookHashes } from './codex-hook-definition'
 import type * as TrustDerivation from './codex-hook-trust-derivation'
 
 export const CODEX_VERSION_FOR_TESTS = 'codex-cli 0.150.1'
@@ -14,7 +14,7 @@ export function answeringCodexForTests(actual: typeof TrustDerivation): typeof T
       async (_codexPath: string, command: string, codexVersion: string) => ({
         kind: 'hashes' as const,
         codexVersion,
-        hashes: computeOrcaCodexHookHashes(command)
+        hashes: computeOCCCodexHookHashes(command)
       })
     )
   }

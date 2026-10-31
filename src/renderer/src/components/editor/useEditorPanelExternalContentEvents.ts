@@ -3,9 +3,9 @@ import { useAppStore } from '@/store'
 import { getConnectionIdForFile } from '@/lib/connection-context'
 import type { OpenFile } from '@/store/slices/editor'
 import {
-  ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT,
-  ORCA_EDITOR_FILE_CACHE_STALE_EVENT,
-  ORCA_EDITOR_FILE_SAVED_EVENT,
+  OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT,
+  OCC_EDITOR_FILE_CACHE_STALE_EVENT,
+  OCC_EDITOR_FILE_SAVED_EVENT,
   type EditorFileSavedDetail,
   type EditorPathMutationTarget
 } from './editor-autosave'
@@ -155,10 +155,10 @@ export function useEditorPanelExternalContentEvents({
         invalidateDiffContent(invalidatedDiffFileIds)
       }
     }
-    window.addEventListener(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, handler as EventListener)
+    window.addEventListener(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, handler as EventListener)
     return () => {
       reloads.dispose()
-      window.removeEventListener(ORCA_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, handler as EventListener)
+      window.removeEventListener(OCC_EDITOR_EXTERNAL_FILE_CHANGE_EVENT, handler as EventListener)
     }
   }, [
     activeContentFileIdRef,
@@ -225,11 +225,11 @@ export function useEditorPanelExternalContentEvents({
         }
       }
     }
-    window.addEventListener(ORCA_EDITOR_FILE_SAVED_EVENT, handler)
-    window.addEventListener(ORCA_EDITOR_FILE_CACHE_STALE_EVENT, onCacheStale)
+    window.addEventListener(OCC_EDITOR_FILE_SAVED_EVENT, handler)
+    window.addEventListener(OCC_EDITOR_FILE_CACHE_STALE_EVENT, onCacheStale)
     return () => {
-      window.removeEventListener(ORCA_EDITOR_FILE_SAVED_EVENT, handler)
-      window.removeEventListener(ORCA_EDITOR_FILE_CACHE_STALE_EVENT, onCacheStale)
+      window.removeEventListener(OCC_EDITOR_FILE_SAVED_EVENT, handler)
+      window.removeEventListener(OCC_EDITOR_FILE_CACHE_STALE_EVENT, onCacheStale)
     }
   }, [
     activeContentFileIdRef,

@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const { runProcess } = vi.hoisted(() => ({ runProcess: vi.fn() }))
-vi.mock('@orca/process-host', () => ({ runProcess }))
+vi.mock('@occ/process-host', () => ({ runProcess }))
 vi.mock('./darwin-terminal-names', () => ({
   nameDarwinTerminalDevices: async (devices: ReadonlySet<string>) =>
     new Map([...devices].filter((device) => device === '16/4').map((device) => [device, 'ttys004']))

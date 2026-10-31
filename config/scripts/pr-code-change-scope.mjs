@@ -32,7 +32,7 @@ export const PR_CHECK_JOBS = [
   'xterm_patch_sync',
   'shell_contracts',
   'test',
-  'orcad_browser',
+  'occd_browser',
   'mobile_web_app',
   'cross-version-wire',
   'managed_hook_node18',
@@ -79,7 +79,7 @@ const CODEX_INDEX_HEAL_CONTRACT_PREFIXES = [
   'src/main/codex/codex-hook-trust-',
   'src/main/codex/codex-hook-approval-first-write',
   'src/main/codex/codex-hook-hash-lookup',
-  'src/main/codex/codex-hook-orca-approvals',
+  'src/main/codex/codex-hook-occ-approvals',
   'src/main/codex/codex-hook-reconcile',
   'src/main/codex/codex-hook-local-install',
   'src/main/codex/codex-hook-user-mirroring',
@@ -125,11 +125,11 @@ const XTERM_PREFIXES = [
   'config/scripts/regenerate-xterm-patches'
 ]
 
-const ORCAD_BROWSER_PREFIXES = [
-  'src/main/orcad/external-chromium-',
-  'src/main/orcad/orcad-browser-provider',
-  'src/main/orcad/orcad-agent-browser-binary',
-  'src/main/orcad/electron-serve-browser-process'
+const OCCD_BROWSER_PREFIXES = [
+  'src/main/occd/external-chromium-',
+  'src/main/occd/occd-browser-provider',
+  'src/main/occd/occd-agent-browser-binary',
+  'src/main/occd/electron-serve-browser-process'
 ]
 
 // Include page build/verification/manifest/packaging, entry/routes/imported mobile sources and render-check shell policy.
@@ -163,7 +163,7 @@ const MOBILE_WEB_APP_PREFIXES = [
   'mobile/packages/',
   'mobile/package.json',
   'mobile/pnpm-lock.yaml',
-  'mobile/modules/orca-mobile-web-shell/',
+  'mobile/modules/occ-mobile-web-shell/',
   // Chat visuals on both mobile surfaces are built from it; their in-page links check runs here.
   'src/shared/native-chat/native-chat-visual-shell'
 ]
@@ -304,7 +304,7 @@ const NATIVE_CACHE_FILES = new Set([
   'src/shared/zip-extractor-command.ts',
   'config/scripts/space-sharing-copy.mjs',
   'config/scripts/native-dependency-lock-digest.mjs',
-  'config/scripts/orcad-prebuild-node-gyp.mjs',
+  'config/scripts/occd-prebuild-node-gyp.mjs',
   'config/scripts/msbuild-file-tracking.mjs'
 ])
 
@@ -546,8 +546,8 @@ function jobDetector(job) {
       return (files) => files.some((file) => matchesPrefix(file, XTERM_PREFIXES))
     case 'shell_contracts':
       return (files) => files.some((file) => matchesPrefix(file, SHELL_PREFIXES))
-    case 'orcad_browser':
-      return (files) => files.some((file) => matchesPrefix(file, ORCAD_BROWSER_PREFIXES))
+    case 'occd_browser':
+      return (files) => files.some((file) => matchesPrefix(file, OCCD_BROWSER_PREFIXES))
     // Handle inside map too: default detector otherwise runs this job on every desktop-relevant PR.
     case 'mobile_web_app':
       return changesMobileWebApp

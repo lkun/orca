@@ -48,10 +48,10 @@ it.each(['{}', '', 'not-json', 'null'])(
       env: {
         get: async (key: string) =>
           ({
-            ORCA_PANE_KEY: 'tab:11111111-1111-4111-8111-111111111111',
-            ORCA_AGENT_HOOK_PORT: '1234',
-            ORCA_AGENT_HOOK_TOKEN: 'test-token',
-            ORCA_CLAUDE_CONFIG_DIR: '/test/.claude',
+            OCC_PANE_KEY: 'tab:11111111-1111-4111-8111-111111111111',
+            OCC_AGENT_HOOK_PORT: '1234',
+            OCC_AGENT_HOOK_TOKEN: 'test-token',
+            OCC_CLAUDE_CONFIG_DIR: '/test/.claude',
             CLAUDE_CONFIG_DIR: '/test/actual-claude-config'
           })[key]
       },
@@ -62,7 +62,7 @@ it.each(['{}', '', 'not-json', 'null'])(
               {
                 context: 'Chat',
                 bindings: {
-                  'Alt+Control+G': 'command:orca-agent-view'
+                  'Alt+Control+G': 'command:occ-agent-view'
                 }
               }
             ]

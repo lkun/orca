@@ -113,7 +113,7 @@ describe('useNativeChatComposerAttachments', () => {
     {
       name: 'kept local pastes',
       scope: 'agent-session:paste',
-      images: [{ id: 'paste', path: '/state/native-chat-pastes/orca-paste-1-a.png' }],
+      images: [{ id: 'paste', path: '/state/native-chat-pastes/occ-paste-1-a.png' }],
       check: 'paste'
     },
     {
@@ -245,7 +245,7 @@ describe('useNativeChatComposerAttachments', () => {
     const image = { id: 'old', path: '/state/agent-session-attachments/upload/shot.png' }
     const storage = draftStorage.createMemoryNativeChatComposerDraftStorage()
     storage.drafts.set(scope, { text: '', images: [image, { ...image, id: 'edit' }], savedAt: 1 })
-    const paste = { id: 'paste', path: '/state/native-chat-pastes/orca-paste-1-a.png' }
+    const paste = { id: 'paste', path: '/state/native-chat-pastes/occ-paste-1-a.png' }
     storage.drafts.set('pty-1', { text: '', images: [image, paste], savedAt: 1 })
     draftStorage.setNativeChatComposerDraftStorageForTests(storage)
     publishOwner(scope, undefined)
@@ -349,22 +349,22 @@ describe('useNativeChatComposerAttachments', () => {
     const first = await renderProbe('pty-1')
 
     await act(async () => {
-      first.latest().attachResolvedPaths(['/tmp/orca-native-chat-attach-test.png'])
+      first.latest().attachResolvedPaths(['/tmp/occ-native-chat-attach-test.png'])
     })
 
     // Attach only on submit so chip removal cannot leave stale image paths in TUI input.
     expect(first.latest().imageAttachments).toMatchObject([
-      { path: '/tmp/orca-native-chat-attach-test.png' }
+      { path: '/tmp/occ-native-chat-attach-test.png' }
     ])
     expect(readNativeChatAttachmentCache('pty-1')).toMatchObject([
-      { path: '/tmp/orca-native-chat-attach-test.png' }
+      { path: '/tmp/occ-native-chat-attach-test.png' }
     ])
 
     act(() => first.root.unmount())
     const second = await renderProbe('pty-1')
 
     expect(second.latest().imageAttachments).toMatchObject([
-      { path: '/tmp/orca-native-chat-attach-test.png' }
+      { path: '/tmp/occ-native-chat-attach-test.png' }
     ])
     act(() => second.root.unmount())
   })
@@ -541,7 +541,7 @@ describe('useNativeChatComposerAttachments', () => {
   it('removes an attached image chip cleanly', async () => {
     const probe = await renderProbe('pty-1')
     await act(async () => {
-      probe.latest().attachResolvedPaths(['/tmp/orca-native-chat-remove-test.png'])
+      probe.latest().attachResolvedPaths(['/tmp/occ-native-chat-remove-test.png'])
     })
     const id = probe.latest().imageAttachments[0]?.id
     expect(id).toBeDefined()

@@ -12,13 +12,13 @@ import {
 // Why the format in the file name: a later breaking format publishes beside v2, so a URL an author
 // pinned never changes meaning under them.
 export const PLUGIN_SCHEMA_DIRECTORY = 'docs/schemas/plugins'
-export const PLUGIN_MANIFEST_SCHEMA_FILE = 'orca-plugin.v2.schema.json'
-export const PLUGIN_CATALOG_SCHEMA_FILE = 'orca-catalog.v2.schema.json'
+export const PLUGIN_MANIFEST_SCHEMA_FILE = 'occ-plugin.v2.schema.json'
+export const PLUGIN_CATALOG_SCHEMA_FILE = 'occ-catalog.v2.schema.json'
 /** Git ref for published schemas; switch to the first v2 release tag when it ships. */
 export const PLUGIN_SCHEMA_GIT_REF = 'main'
-export const PLUGIN_SCHEMA_BASE_URL = `https://raw.githubusercontent.com/stablyai/orca/${PLUGIN_SCHEMA_GIT_REF}/${PLUGIN_SCHEMA_DIRECTORY}/`
+export const PLUGIN_SCHEMA_BASE_URL = `https://raw.githubusercontent.com/stablyai/occ/${PLUGIN_SCHEMA_GIT_REF}/${PLUGIN_SCHEMA_DIRECTORY}/`
 /** The starter plugin authors copy; it carries the schema so completion works offline. */
-const PLUGIN_TEMPLATE_DIRECTORY = 'examples/plugins/orca-gleam-syntax'
+const PLUGIN_TEMPLATE_DIRECTORY = 'examples/plugins/occ-gleam-syntax'
 
 export type PluginJsonSchema = z.core.JSONSchema.BaseSchema
 
@@ -43,7 +43,7 @@ export function pluginManifestJsonSchema(): PluginJsonSchema {
     pluginManifestV2Object,
     PLUGIN_MANIFEST_SCHEMA_FILE,
     'OCC plugin manifest',
-    'The orca-plugin.json file at the root of an OCC plugin (manifest format 2).'
+    'The occ-plugin.json file at the root of an OCC plugin (manifest format 2).'
   )
 }
 
@@ -66,10 +66,10 @@ export function pluginSchemaGeneratedFiles(): Record<string, string> {
     [`${PLUGIN_TEMPLATE_DIRECTORY}/${PLUGIN_MANIFEST_SCHEMA_FILE}`]: manifestJson,
     [`${PLUGIN_SCHEMA_DIRECTORY}/${PLUGIN_CATALOG_SCHEMA_FILE}`]: `${JSON.stringify(catalog, null, 2)}\n`,
     'docs/reference/plugin-manifest.md': renderPluginSchemaReference(manifest, {
-      file: 'orca-plugin.json',
+      file: 'occ-plugin.json',
       schemaFile: PLUGIN_MANIFEST_SCHEMA_FILE,
       sinceNote:
-        '`Since` is the first OCC release that reads the field; raise `engines.orca` when you use a newer one.',
+        '`Since` is the first OCC release that reads the field; raise `engines.occ` when you use a newer one.',
       appendix: PLUGIN_MANIFEST_POLICY_NOTES
     }),
     'docs/reference/plugin-catalog.md': renderPluginSchemaReference(catalog, {

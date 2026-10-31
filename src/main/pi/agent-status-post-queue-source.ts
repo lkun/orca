@@ -6,9 +6,9 @@ export function getPiAgentStatusPostQueueSourceLines(kind: PiAgentKind): string[
     'type HookPostQueue = { activePost: HookPost | null; pendingPost: HookPost | null; latestPost: HookPost | null; finalPosts: HookPost[]; finalRetryTimer: ReturnType<typeof setTimeout> | null; postRevision: number; retryTimer: ReturnType<typeof setTimeout> | null }',
     ...(kind === 'pi'
       ? [
-          'declare global { var __orcaPiStatusPostQueue: HookPostQueue | undefined }',
+          'declare global { var __occPiStatusPostQueue: HookPostQueue | undefined }',
           // Reloaded registrations and old continuations must share one serialized queue.
-          'const postQueue: HookPostQueue = globalThis.__orcaPiStatusPostQueue ??= { activePost: null, pendingPost: null, latestPost: null, finalPosts: [], finalRetryTimer: null, postRevision: 0, retryTimer: null }'
+          'const postQueue: HookPostQueue = globalThis.__occPiStatusPostQueue ??= { activePost: null, pendingPost: null, latestPost: null, finalPosts: [], finalRetryTimer: null, postRevision: 0, retryTimer: null }'
         ]
       : [
           'const postQueue: HookPostQueue = { activePost: null, pendingPost: null, latestPost: null, finalPosts: [], finalRetryTimer: null, postRevision: 0, retryTimer: null }'
@@ -66,7 +66,7 @@ export function getPiAgentStatusPostQueueSourceLines(kind: PiAgentKind): string[
     '      if (next.final) {',
     '        if (next.attempts >= 3) {',
     '          postQueue.finalPosts.shift()',
-    "          console.warn('[orca-pi-status] hook delivery failed after retries:', next.hookEventName)",
+    "          console.warn('[occ-pi-status] hook delivery failed after retries:', next.hookEventName)",
     '          return',
     '        }',
     '        postQueue.finalRetryTimer = setTimeout(() => {',
@@ -78,7 +78,7 @@ export function getPiAgentStatusPostQueueSourceLines(kind: PiAgentKind): string[
     '      }',
     '      if (!next.ompRuntime || next.revision !== postQueue.postRevision) return',
     '      if (next.attempts >= 3) {',
-    "        console.warn('[orca-pi-status] hook delivery failed after retries:', next.hookEventName)",
+    "        console.warn('[occ-pi-status] hook delivery failed after retries:', next.hookEventName)",
     '        return',
     '      }',
     '      const delay = 250 * 2 ** next.attempts++',

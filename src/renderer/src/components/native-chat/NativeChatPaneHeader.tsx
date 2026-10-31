@@ -11,8 +11,8 @@ import { NativeChatResumeInCliButton } from './NativeChatResumeInCliButton'
 import type { NativeChatStructuredViewProps } from './native-chat-view-types'
 import type { NativeChatHandOff } from './use-native-chat-hand-off'
 
-const HEADER_STYLE: React.CSSProperties & Record<'--orca-pane-title-bg', string> = {
-  '--orca-pane-title-bg': 'var(--chat-canvas)'
+const HEADER_STYLE: React.CSSProperties & Record<'--occ-pane-title-bg', string> = {
+  '--occ-pane-title-bg': 'var(--chat-canvas)'
 }
 
 export type NativeChatHeaderHandOff = { open: () => void; disabled: boolean }

@@ -50,14 +50,14 @@ describe('browser settings persistence', () => {
       renderer.root.findByType(PickerModal).props.onSelect('phone-browser')
     })
     await act(async () => {
-      resolveLoad('orca-browser')
+      resolveLoad('occ-browser')
     })
     expect(renderer.root.findByType(PickerModal).props.selected).toBe('phone-browser')
     expect(JSON.stringify(renderer.toJSON())).toContain('Phone browser')
   })
 
   it('restores the saved destination when changing the destination fails', async () => {
-    vi.mocked(loadTerminalLinkOpenMode).mockResolvedValue('orca-browser')
+    vi.mocked(loadTerminalLinkOpenMode).mockResolvedValue('occ-browser')
     vi.mocked(saveTerminalLinkOpenMode).mockRejectedValue(new Error('storage unavailable'))
     await act(async () => {
       renderer = create(createElement(BrowserSettingsScreen))
@@ -65,7 +65,7 @@ describe('browser settings persistence', () => {
     await act(async () => {
       renderer.root.findByType(PickerModal).props.onSelect('phone-browser')
     })
-    expect(renderer.root.findByType(PickerModal).props.selected).toBe('orca-browser')
+    expect(renderer.root.findByType(PickerModal).props.selected).toBe('occ-browser')
     expect(JSON.stringify(renderer.toJSON())).toContain('Could not save browser preferences')
   })
 
@@ -82,7 +82,7 @@ describe('browser settings persistence', () => {
       renderer = create(createElement(BrowserSettingsScreen))
     })
     await act(async () => {
-      renderer.root.findByType(PickerModal).props.onSelect('orca-browser')
+      renderer.root.findByType(PickerModal).props.onSelect('occ-browser')
     })
     await act(async () => resolveLoad('phone-browser'))
     expect(renderer.root.findByType(PickerModal).props.selected).toBe('phone-browser')

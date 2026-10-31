@@ -11,7 +11,7 @@ import {
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { spawnSync } from 'node:child_process'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import {
   shouldReuseCompiledWindowsRustExecutable,
@@ -50,8 +50,8 @@ beforeAll(() => {
   if (process.platform !== 'win32') {
     return
   }
-  sharedLauncherRoot = mkdtempSync(join(tmpdir(), 'orca cli launcher build '))
-  sharedLauncherPath = join(sharedLauncherRoot, 'orca.exe')
+  sharedLauncherRoot = mkdtempSync(join(tmpdir(), 'occ cli launcher build '))
+  sharedLauncherPath = join(sharedLauncherRoot, 'occ.exe')
   const result = runProcessSync({
     program: process.execPath,
     args: ['config/scripts/build-windows-cli-launcher.mjs'],
@@ -63,7 +63,7 @@ beforeAll(() => {
     throw new Error(`${result.stdout}\n${result.stderr}`)
   }
   copyFileSync(
-    join(projectRoot, 'native', 'windows-cli-launcher', '.build', 'orca.exe'),
+    join(projectRoot, 'native', 'windows-cli-launcher', '.build', 'occ.exe'),
     sharedLauncherPath
   )
 }, 300_000)
@@ -84,11 +84,11 @@ function copySharedLauncher(target) {
 
 describe('Windows CLI launcher', () => {
   itWindows('reuses the hook host target while invalidating changed inputs', () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-hook-target-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-hook-target-'))
     try {
       const hookScript = join('config', 'scripts', 'build-windows-agent-hook.mjs')
       const crate = join('native', 'windows-agent-hook')
-      const outputFile = join(crate, '.build', 'orca-agent-hook.exe')
+      const outputFile = join(crate, '.build', 'occ-agent-hook.exe')
       const outputPath = join(root, outputFile)
       const fingerprintPath = `${outputPath}.sha256`
       // Why the default output: it reuses a warm canonical prebuild; Cargo runs only when that is missing or stale.
@@ -171,7 +171,7 @@ describe('Windows CLI launcher', () => {
   })
 
   it('reuses restored builds only while all embedded inputs and the release version match', () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-cli-launcher-reuse-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-cli-launcher-reuse-'))
     try {
       const inputs = ['main.rs', 'build.rs', 'Cargo.toml', 'app.manifest', 'icon.ico'].map(
         (name) => {
@@ -180,7 +180,7 @@ describe('Windows CLI launcher', () => {
           return path
         }
       )
-      const outputPath = join(root, 'orca.exe')
+      const outputPath = join(root, 'occ.exe')
       const fingerprint = windowsRustExecutableFingerprint(inputs, '1.4.214')
       expect(shouldReuseCompiledWindowsRustExecutable(outputPath, fingerprint)).toBe(false)
       writeFileSync(outputPath, 'binary')
@@ -228,9 +228,9 @@ describe('Windows CLI launcher', () => {
   itWindows(
     'embeds publisher, release version, icon and an unelevated application manifest',
     () => {
-      const root = mkdtempSync(join(tmpdir(), 'orca launcher metadata '))
+      const root = mkdtempSync(join(tmpdir(), 'occ launcher metadata '))
       try {
-        const launcherPath = join(root, 'orca.exe')
+        const launcherPath = join(root, 'occ.exe')
         expect(sharedLauncherBuild).not.toBeNull()
         expect(
           sharedLauncherBuild.status,
@@ -243,9 +243,9 @@ describe('Windows CLI launcher', () => {
             '-NoProfile',
             '-NonInteractive',
             '-Command',
-            '[Diagnostics.FileVersionInfo]::GetVersionInfo($env:ORCA_TEST_LAUNCHER) | ConvertTo-Json -Compress'
+            '[Diagnostics.FileVersionInfo]::GetVersionInfo($env:OCC_TEST_LAUNCHER) | ConvertTo-Json -Compress'
           ],
-          { encoding: 'utf8', env: { ...process.env, ORCA_TEST_LAUNCHER: launcherPath } }
+          { encoding: 'utf8', env: { ...process.env, OCC_TEST_LAUNCHER: launcherPath } }
         )
         expect(inspect.status, inspect.stderr).toBe(0)
         const info = JSON.parse(inspect.stdout)
@@ -271,11 +271,11 @@ describe('Windows CLI launcher', () => {
   )
 
   itCrossHost('fails closed when the Windows launcher cannot be compiled on this host', () => {
-    const outputRoot = mkdtempSync(join(tmpdir(), 'orca cross-host launcher '))
+    const outputRoot = mkdtempSync(join(tmpdir(), 'occ cross-host launcher '))
     try {
       const result = spawnSync(
         process.execPath,
-        ['config/scripts/build-windows-cli-launcher.mjs', '--output', join(outputRoot, 'orca.exe')],
+        ['config/scripts/build-windows-cli-launcher.mjs', '--output', join(outputRoot, 'occ.exe')],
         { cwd: projectRoot, encoding: 'utf8' }
       )
 
@@ -288,10 +288,10 @@ describe('Windows CLI launcher', () => {
   })
 
   itWindows('preserves a multiline argument from PowerShell through the native launcher', () => {
-    const appRoot = mkdtempSync(join(tmpdir(), 'orca cli launcher '))
+    const appRoot = mkdtempSync(join(tmpdir(), 'occ cli launcher '))
     try {
       const resourcesPath = join(appRoot, 'resources')
-      const launcherPath = join(resourcesPath, 'bin', 'orca.exe')
+      const launcherPath = join(resourcesPath, 'bin', 'occ.exe')
       const cliPath = join(resourcesPath, 'app.asar.unpacked', 'out', 'cli', 'index.js')
       mkdirSync(join(resourcesPath, 'bin'), { recursive: true })
       mkdirSync(dirname(cliPath), { recursive: true })
@@ -302,7 +302,7 @@ describe('Windows CLI launcher', () => {
   argv: process.argv.slice(2),
   electronRunAsNode: process.env.ELECTRON_RUN_AS_NODE,
   nodeOptions: process.env.NODE_OPTIONS ?? null,
-  orcaNodeOptions: process.env.ORCA_NODE_OPTIONS ?? null
+  occNodeOptions: process.env.OCC_NODE_OPTIONS ?? null
 }))\n`,
         'utf8'
       )
@@ -316,15 +316,15 @@ describe('Windows CLI launcher', () => {
           '-NoProfile',
           '-NonInteractive',
           '-Command',
-          '& $env:ORCA_TEST_LAUNCHER orchestration send --body $env:ORCA_TEST_BODY --json'
+          '& $env:OCC_TEST_LAUNCHER orchestration send --body $env:OCC_TEST_BODY --json'
         ],
         {
           encoding: 'utf8',
           env: {
             ...process.env,
             NODE_OPTIONS: '--no-warnings',
-            ORCA_TEST_BODY: body,
-            ORCA_TEST_LAUNCHER: launcherPath
+            OCC_TEST_BODY: body,
+            OCC_TEST_LAUNCHER: launcherPath
           }
         }
       )
@@ -334,14 +334,14 @@ describe('Windows CLI launcher', () => {
         argv: ['orchestration', 'send', '--body', body, '--json'],
         electronRunAsNode: '1',
         nodeOptions: null,
-        orcaNodeOptions: '--no-warnings'
+        occNodeOptions: '--no-warnings'
       })
     } finally {
       removeFixtureTree(appRoot)
     }
   })
 
-  it('cross-compiles only the architectures the orcad template ships', () => {
+  it('cross-compiles only the architectures the occd template ships', () => {
     expect(windowsRustExecutableTarget(undefined)).toBeNull()
     expect(windowsRustExecutableTarget('x64')).toBe('x86_64-pc-windows-msvc')
     expect(windowsRustExecutableTarget('arm64')).toBe('aarch64-pc-windows-msvc')
@@ -349,26 +349,26 @@ describe('Windows CLI launcher', () => {
   })
 
   itWindows('runs a server profile CLI on pinned Node with argv and profile intact', () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca server launcher '))
+    const root = mkdtempSync(join(tmpdir(), 'occ server launcher '))
     try {
       const profile = join(root, 'server profile')
-      const launcherPath = join(profile, 'cli', 'bin', 'orca.exe')
+      const launcherPath = join(profile, 'cli', 'bin', 'occ.exe')
       const cliPath = join(root, 'server slot', 'out', 'cli', 'index.js')
       mkdirSync(dirname(cliPath), { recursive: true })
       writeFileSync(
         cliPath,
         `process.stdout.write(JSON.stringify({
   argv: process.argv.slice(2),
-  profile: process.env.ORCA_USER_DATA_PATH,
+  profile: process.env.OCC_USER_DATA_PATH,
   electronRunAsNode: process.env.ELECTRON_RUN_AS_NODE ?? null,
   nodeOptions: process.env.NODE_OPTIONS ?? null,
-  desktopMarker: process.env.ORCA_WINDOWS_PACKAGED_CLI_LAUNCHER ?? null
+  desktopMarker: process.env.OCC_WINDOWS_PACKAGED_CLI_LAUNCHER ?? null
 }))\n`,
         'utf8'
       )
       copySharedLauncher(launcherPath)
       writeFileSync(
-        join(dirname(launcherPath), 'orca-launcher.cfg'),
+        join(dirname(launcherPath), 'occ-launcher.cfg'),
         `node=${process.execPath}\ncli=${cliPath}\nuser-data=${profile}\n`
       )
 
@@ -376,9 +376,9 @@ describe('Windows CLI launcher', () => {
         ...process.env,
         ELECTRON_RUN_AS_NODE: '1',
         NODE_OPTIONS: '--require C:\\missing\\preload.js',
-        ORCA_USER_DATA_PATH: 'C:\\another\\owner',
-        ORCA_WINDOWS_PACKAGED_CLI_LAUNCHER: '1',
-        ORCA_TEST_LAUNCHER: launcherPath
+        OCC_USER_DATA_PATH: 'C:\\another\\owner',
+        OCC_WINDOWS_PACKAGED_CLI_LAUNCHER: '1',
+        OCC_TEST_LAUNCHER: launcherPath
       }
       const expected = (body) => ({
         argv: ['orchestration', 'send', '--body', body, '--json'],
@@ -395,9 +395,9 @@ describe('Windows CLI launcher', () => {
           '-NoProfile',
           '-NonInteractive',
           '-Command',
-          '& $env:ORCA_TEST_LAUNCHER orchestration send --body $env:ORCA_TEST_BODY --json'
+          '& $env:OCC_TEST_LAUNCHER orchestration send --body $env:OCC_TEST_BODY --json'
         ],
-        { encoding: 'utf8', env: { ...inherited, ORCA_TEST_BODY: shellBody } }
+        { encoding: 'utf8', env: { ...inherited, OCC_TEST_BODY: shellBody } }
       )
       expect(powershell.status, powershell.stderr).toBe(0)
       expect(JSON.parse(powershell.stdout)).toEqual(expected(shellBody))
@@ -415,10 +415,10 @@ describe('Windows CLI launcher', () => {
   })
 
   itWindows('survives an inherited environment block containing PATH and Path', () => {
-    const appRoot = mkdtempSync(join(tmpdir(), 'orca duplicate path launcher '))
+    const appRoot = mkdtempSync(join(tmpdir(), 'occ duplicate path launcher '))
     try {
       const resourcesPath = join(appRoot, 'resources')
-      const launcherPath = join(resourcesPath, 'bin', 'orca.exe')
+      const launcherPath = join(resourcesPath, 'bin', 'occ.exe')
       const cliPath = join(resourcesPath, 'app.asar.unpacked', 'out', 'cli', 'index.js')
       const outputPath = join(appRoot, 'child-result.json')
       const harnessSourcePath = join(
@@ -434,7 +434,7 @@ describe('Windows CLI launcher', () => {
       copyFileSync(process.execPath, join(appRoot, 'OCC.exe'))
       writeFileSync(
         cliPath,
-        `require('node:fs').writeFileSync(process.env.ORCA_TEST_OUTPUT, JSON.stringify({
+        `require('node:fs').writeFileSync(process.env.OCC_TEST_OUTPUT, JSON.stringify({
   electronRunAsNode: process.env.ELECTRON_RUN_AS_NODE,
   pathKeys: Object.keys(process.env).filter((key) => key.toLowerCase() === 'path')
 }))\n`,

@@ -44,7 +44,7 @@ let journal: AgentSessionJournal
 const journals = createTrackedJournalOpener()
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-bounded-frames-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-bounded-frames-'))
   journal = await journals.open({
     identity: {
       sessionId: SESSION,

@@ -31,7 +31,7 @@ function writeSettings(settings: Record<string, unknown>): void {
 
 describe('plugin system default-on migration', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
   })
 
   afterEach(async () => {

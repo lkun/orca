@@ -12,7 +12,7 @@ import {
 import { listWorktrees } from './worktree'
 import { resetWslLinkedWorktreeGitRoutingForTests } from './wsl-linked-worktree-git-routing'
 
-const distro = process.env.ORCA_TEST_WSL_DISTRO?.trim()
+const distro = process.env.OCC_TEST_WSL_DISTRO?.trim()
 const fixtureRoots: string[] = []
 const wslFixtureRoots: string[] = []
 
@@ -29,7 +29,7 @@ afterEach(async () => {
     fixtureRoots.splice(0).map((path) => rm(path, { recursive: true, force: true }))
   )
   for (const path of wslFixtureRoots.splice(0)) {
-    if (!/^\/tmp\/orca-wsl-native-[A-Za-z0-9]+$/.test(path)) {
+    if (!/^\/tmp\/occ-wsl-native-[A-Za-z0-9]+$/.test(path)) {
       throw new Error(`Refusing to remove unexpected WSL fixture path: ${path}`)
     }
     wslExec(['rm', '-rf', '--', path])
@@ -128,7 +128,7 @@ describe.runIf(process.platform === 'win32' && Boolean(distro))(
     })
 
     it('keeps WSL-native repositories on WSL Git', async () => {
-      const linuxRoot = wslExec(['mktemp', '-d', '/tmp/orca-wsl-native-XXXXXX']).trim()
+      const linuxRoot = wslExec(['mktemp', '-d', '/tmp/occ-wsl-native-XXXXXX']).trim()
       wslFixtureRoots.push(linuxRoot)
       const windowsRoot = toWindowsWslPath(linuxRoot, distro!)
 

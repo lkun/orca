@@ -36,7 +36,7 @@ afterEach(async () => {
 })
 
 async function makeFixture() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-cli-appimage-ownership-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-cli-appimage-ownership-'))
   created.push(root)
   const appImagePath = join(root, 'OCC.AppImage')
   const cacheRootPath = join(root, 'cache')
@@ -241,7 +241,7 @@ describe.skipIf(process.platform === 'win32')('AppImage CLI ownership', () => {
       'Refusing to replace non-OCC command'
     )
     await expect(readlink(fixture.commandPath)).resolves.toBe(foreignTarget)
-    expect((await readdir(fixture.commandDirectory)).some((name) => name.includes('.orca-'))).toBe(
+    expect((await readdir(fixture.commandDirectory)).some((name) => name.includes('.occ-'))).toBe(
       false
     )
   })

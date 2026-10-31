@@ -14,7 +14,7 @@ import {
   addSiblingWorktree,
   initGitRepo,
   mkTempProject,
-  readExtractorCallCount,
+  readExtractoccllCount,
   readSharedDistMarker,
   runInstallScript,
   sharedCacheRoot,
@@ -46,7 +46,7 @@ describe('install-electron-package-binary', () => {
 
       expect(result.status, result.stderr).toBe(0)
       expect(readFileSync(join(projectDir, 'electron-get.log'), 'utf8')).toMatch(
-        /cacheRoot=.*orca-electron-.*cache/
+        /cacheRoot=.*occ-electron-.*cache/
       )
       expect(readFileSync(join(projectDir, 'electron-get.log'), 'utf8')).toContain('force=true')
       expect(readFileSync(join(projectDir, 'node_modules', 'electron', 'path.txt'), 'utf8')).toBe(
@@ -100,7 +100,7 @@ describe('install-electron-package-binary', () => {
       writeFakeExtractor(projectDir, { createExecutable: true })
 
       const result = runInstallScript(projectDir, {
-        ORCA_ELECTRON_PACKAGE_CACHE_ROOT: cacheRoot
+        OCC_ELECTRON_PACKAGE_CACHE_ROOT: cacheRoot
       })
 
       expect(result.status, result.stderr).toBe(0)
@@ -226,7 +226,7 @@ describe('install-electron-package-binary', () => {
       writeFakeExtractor(projectDir, { createExecutable: true })
 
       const result = runInstallScript(projectDir, {
-        ORCA_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
+        OCC_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
       })
 
       expect(result.status, result.stderr).toBe(0)
@@ -254,8 +254,8 @@ describe('install-electron-package-binary', () => {
       writeFileSync(join(cacheRoot, 'preserved.marker'), 'keep me')
 
       const result = runInstallScript(projectDir, {
-        ORCA_ELECTRON_PACKAGE_CACHE_ROOT: cacheRoot,
-        ORCA_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
+        OCC_ELECTRON_PACKAGE_CACHE_ROOT: cacheRoot,
+        OCC_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
       })
 
       expect(result.status, result.stderr).toBe(0)
@@ -280,7 +280,7 @@ describe('install-electron-package-binary', () => {
       writeFakeExtractor(projectDir, { createExecutable: true })
 
       const result = runInstallScript(projectDir, {
-        ORCA_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
+        OCC_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
       })
 
       expect(result.status, result.stderr).toBe(0)
@@ -307,7 +307,7 @@ describe('install-electron-package-binary', () => {
       writeFakeExtractor(projectDir, { createExecutable: true })
 
       const result = runInstallScript(projectDir, {
-        ORCA_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
+        OCC_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
       })
 
       expect(result.status, result.stderr).toBe(0)
@@ -332,7 +332,7 @@ describe('install-electron-package-binary', () => {
       writeFakeExtractor(projectDir, { createExecutable: true })
 
       const result = runInstallScript(projectDir, {
-        ORCA_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
+        OCC_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
       })
 
       expect(result.status).toBe(1)
@@ -353,12 +353,12 @@ describe('install-electron-package-binary', () => {
       writeFakeExtractor(projectDir, { createExecutable: true })
 
       const result = runInstallScript(projectDir, {
-        ORCA_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,nope'
+        OCC_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,nope'
       })
 
       expect(result.status).toBe(1)
       expect(result.stderr).toContain(
-        'ORCA_ELECTRON_PACKAGE_RETRY_DELAYS_MS must contain non-negative integers'
+        'OCC_ELECTRON_PACKAGE_RETRY_DELAYS_MS must contain non-negative integers'
       )
       expect(existsSync(join(projectDir, 'electron-get.log'))).toBe(false)
     } finally {
@@ -378,7 +378,7 @@ describe('install-electron-package-binary', () => {
       writeFakeExtractor(projectDir, { createExecutable: true })
 
       const result = runInstallScript(projectDir, {
-        ORCA_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
+        OCC_ELECTRON_PACKAGE_RETRY_DELAYS_MS: '0,0'
       })
 
       expect(result.status).toBe(1)
@@ -458,7 +458,7 @@ describe('install-electron-package-binary', () => {
       const siblingDistDir = join(siblingDir, 'node_modules/electron/dist')
 
       expect(result.status, result.stderr).toBe(0)
-      expect(readExtractorCallCount(siblingDir)).toBe(0)
+      expect(readExtractoccllCount(siblingDir)).toBe(0)
       expect(existsSync(join(siblingDir, 'electron-get.log'))).toBe(false)
       expect(lstatSync(siblingDistDir).isDirectory()).toBe(true)
       expect(lstatSync(siblingDistDir).isSymbolicLink()).toBe(false)
@@ -493,7 +493,7 @@ describe('install-electron-package-binary', () => {
       const distDir = join(projectDir, 'node_modules/electron/dist')
 
       expect(result.status, result.stderr).toBe(0)
-      expect(readExtractorCallCount(projectDir)).toBe(0)
+      expect(readExtractoccllCount(projectDir)).toBe(0)
       expect(existsSync(join(projectDir, 'electron-get.log'))).toBe(false)
       expect(readFileSync(join(entryPath, 'version'), 'utf8')).toBe('v41.5.0')
       expect(readFileSync(join(entryPath, 'electron'), 'utf8')).toBe('existing executable')
@@ -523,7 +523,7 @@ describe('install-electron-package-binary', () => {
 
       expect(result.status, result.stderr).toBe(0)
       expect(result.stderr).not.toContain('Failed to install Electron package binary')
-      expect(readExtractorCallCount(projectDir)).toBe(1)
+      expect(readExtractoccllCount(projectDir)).toBe(1)
       expect(readFileSync(join(distDir, 'version'), 'utf8')).toBe('v41.5.0')
       expect(readFileSync(join(projectDir, 'node_modules/electron/path.txt'), 'utf8')).toBe(
         'electron'

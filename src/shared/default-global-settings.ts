@@ -164,7 +164,7 @@ export function buildDefaultSettings(args: {
     showPinnedWorktreesInGroups: false,
     ctrlTabOrderMode: 'mru',
     // Why: OCC-first keeps core shortcuts working from a focused terminal; TUI-ownership users opt in.
-    terminalShortcutPolicy: 'orca-first',
+    terminalShortcutPolicy: 'occ-first',
     floatingTerminalEnabled: true,
     browserClientHostedRemoteEnabled: true,
     floatingTerminalDefaultedForAllUsers: true,

@@ -1,4 +1,4 @@
-import { ORCA_BROWSER_BLANK_URL } from './constants'
+import { OCC_BROWSER_BLANK_URL } from './constants'
 import { normalizeBrowserNavigationUrl } from './browser-url'
 
 const CHROME_EXTENSION_ID_PATTERN = /^[a-p]{32}$/
@@ -52,7 +52,7 @@ export function resolveBrowserExtensionRequestedUrl(
   callerExtensionId: string
 ): BrowserExtensionRequestedUrl | null {
   if (rawUrl === undefined || rawUrl.trim() === '' || rawUrl === 'about:blank') {
-    return { kind: 'blank', url: ORCA_BROWSER_BLANK_URL }
+    return { kind: 'blank', url: OCC_BROWSER_BLANK_URL }
   }
   let absolute: URL
   try {

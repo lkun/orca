@@ -12,7 +12,7 @@ afterEach(() => {
 })
 
 function resourcesWith(packageName: string): string {
-  const resources = mkdtempSync(join(tmpdir(), 'orca-serve-speech-'))
+  const resources = mkdtempSync(join(tmpdir(), 'occ-serve-speech-'))
   roots.push(resources)
   const dir = join(resources, 'node_modules', packageName)
   mkdirSync(dir, { recursive: true })
@@ -35,8 +35,8 @@ describe("finding the app's speech recognizer (#31174)", () => {
     ).toBeUndefined()
   })
 
-  // A loaded addon is locked on Windows; orcad holding the app's copy would block app updates.
-  it('never hands orcad the recognizer on Windows', () => {
+  // A loaded addon is locked on Windows; occd holding the app's copy would block app updates.
+  it('never hands occd the recognizer on Windows', () => {
     const resources = resourcesWith('sherpa-onnx-win-x64')
     expect(
       findAppSpeechRecognizerDir(join(resources, 'app.asar.unpacked'), 'win32', 'x64')

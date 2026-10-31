@@ -3,8 +3,8 @@ import type {
   RuntimeMobileSessionBrowserTab,
   RuntimeMobileSessionTabsSnapshot
 } from '../../shared/runtime-types'
-import { OrcaRuntimeWithCloseStructuredAgentSessionTab } from './session-tabs/structured-session-tab-close'
-import { OrcaRuntimeWithReconcileHeadlessMobileSessionBrowserTabs } from './session-lifecycle/projection/reconcile-headless-mobile-session-browser-tabs'
+import { OCCRuntimeWithCloseStructuredAgentSessionTab } from './session-tabs/structured-session-tab-close'
+import { OCCRuntimeWithReconcileHeadlessMobileSessionBrowserTabs } from './session-lifecycle/projection/reconcile-headless-mobile-session-browser-tabs'
 
 const rendererPage: RuntimeMobileSessionBrowserTab = {
   type: 'browser',
@@ -57,7 +57,7 @@ function reconcile(
 ): RuntimeMobileSessionTabsSnapshot | undefined {
   const storeMobileSessionSnapshot = vi.fn()
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: Test invokes protected reconciliation method on class prototype.
-  const proto = OrcaRuntimeWithReconcileHeadlessMobileSessionBrowserTabs.prototype as unknown as {
+  const proto = OCCRuntimeWithReconcileHeadlessMobileSessionBrowserTabs.prototype as unknown as {
     reconcileHeadlessMobileSessionBrowserTabs(
       worktreeId: string,
       existing: RuntimeMobileSessionTabsSnapshot
@@ -154,7 +154,7 @@ it('does not republish when a client row merely sits before a renderer row', () 
 
 it('keeps the renderer publication epoch when selecting a client-hosted browser tab', () => {
   const storeMobileSessionSnapshot = vi.fn()
-  const runtime = OrcaRuntimeWithCloseStructuredAgentSessionTab.prototype as unknown as {
+  const runtime = OCCRuntimeWithCloseStructuredAgentSessionTab.prototype as unknown as {
     markHeadlessBrowserSessionTabActive(
       worktreeId: string,
       browserPageId: string,

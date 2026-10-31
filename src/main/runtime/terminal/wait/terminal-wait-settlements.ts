@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithBindPtyIncarnationHandle } from '../identity/terminal-handle-bindings'
+import { OCCRuntimeWithBindPtyIncarnationHandle } from '../identity/terminal-handle-bindings'
 import type { RuntimePtyWorktreeRecord } from '../../runtime-terminal-state-records'
 import {
   buildPtyTerminalWaitBlockedResult,
@@ -14,23 +14,23 @@ import {
   type TuiIdleVerdict
 } from '../../tui-idle-evidence'
 import { ptyTuiIdleEvidence } from '../../tui-idle-evidence-source'
-import { TUI_IDLE_QUIESCENCE_MS } from '../../orca-runtime-postlude'
+import { TUI_IDLE_QUIESCENCE_MS } from '../../occ-runtime-postlude'
 import { USER_INPUT_HOLD_CAP_MS } from '../../claude-open-dialog-hold'
 import { detectTerminalComposerDraft } from '../../../../shared/terminal-composer-draft'
 import { isMailboxTerminalTakingInput } from '../../orchestration/mailbox-owner'
 
-import type { OrcaRuntimeWithResolveWaiter } from '../../orca-runtime-resolve-waiter'
+import type { OCCRuntimeWithResolveWaiter } from '../../occ-runtime-resolve-waiter'
 
 const DIALOG_HOLD_RECHECK_MS = 2000
 
-export abstract class OrcaRuntimeWithResolveExitWaiters extends OrcaRuntimeWithBindPtyIncarnationHandle {
+export abstract class OCCRuntimeWithResolveExitWaiters extends OCCRuntimeWithBindPtyIncarnationHandle {
   protected abstract resolveWaiter(
-    ...args: Parameters<OrcaRuntimeWithResolveWaiter['resolveWaiter']>
-  ): ReturnType<OrcaRuntimeWithResolveWaiter['resolveWaiter']>
+    ...args: Parameters<OCCRuntimeWithResolveWaiter['resolveWaiter']>
+  ): ReturnType<OCCRuntimeWithResolveWaiter['resolveWaiter']>
 
   protected abstract removeWaiter(
-    ...args: Parameters<OrcaRuntimeWithResolveWaiter['removeWaiter']>
-  ): ReturnType<OrcaRuntimeWithResolveWaiter['removeWaiter']>
+    ...args: Parameters<OCCRuntimeWithResolveWaiter['removeWaiter']>
+  ): ReturnType<OCCRuntimeWithResolveWaiter['removeWaiter']>
 
   protected resolvePtyExitWaiters(pty: RuntimePtyWorktreeRecord, ptyId: string): void {
     for (const waiter of this.terminalWaiters.forPty(ptyId)) {

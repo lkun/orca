@@ -20,8 +20,8 @@ export const XTERM_HTML = [
 // Seed scale/visibility in page source before document startup can read them.
 export function xtermWebViewSource(start: { textScale: number; shown: boolean }) {
   const startValues =
-    `window.__orcaTerminalTextScale = ${JSON.stringify(start.textScale)};\n` +
-    `window.__orcaTerminalShown = ${JSON.stringify(start.shown)};\n`
+    `window.__occTerminalTextScale = ${JSON.stringify(start.textScale)};\n` +
+    `window.__occTerminalShown = ${JSON.stringify(start.shown)};\n`
   return {
     html: [
       TERMINAL_HTML_DOCUMENT_SHELL,

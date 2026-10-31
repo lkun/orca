@@ -161,11 +161,11 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/origin/main',
         branchName: 'native-chat-does-not-auto-open',
         repoRemoteName: 'origin',
-        repoRemoteUrl: 'git@github.com:stablyai/orca.git',
+        repoRemoteUrl: 'git@github.com:stablyai/occ.git',
         upstreamName: 'origin/native-chat-does-not-auto-open'
       })
     ).toBe(
-      'https://github.com/stablyai/orca/compare/main...native-chat-does-not-auto-open?expand=1'
+      'https://github.com/stablyai/occ/compare/main...native-chat-does-not-auto-open?expand=1'
     )
   })
 
@@ -175,14 +175,14 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/upstream/main',
         branchName: 'feature/fork-head',
         repoRemoteName: 'upstream',
-        repoRemoteUrl: 'https://github.com/stablyai/orca.git',
+        repoRemoteUrl: 'https://github.com/stablyai/occ.git',
         pushTarget: {
           remoteName: 'fork',
           branchName: 'feature/fork-head',
-          remoteUrl: 'git@github.com:contributor/orca.git'
+          remoteUrl: 'git@github.com:contributor/occ.git'
         }
       })
-    ).toBe('https://github.com/stablyai/orca/compare/main...contributor:feature/fork-head?expand=1')
+    ).toBe('https://github.com/stablyai/occ/compare/main...contributor:feature/fork-head?expand=1')
   })
 
   it('keeps slashes literal in a GitHub compare URL for a slash-containing branch name', () => {
@@ -191,11 +191,11 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/origin/main',
         branchName: 'slashdevcorpse/identifying-pwsh.exe-error',
         repoRemoteName: 'origin',
-        repoRemoteUrl: 'git@github.com:stablyai/orca.git',
+        repoRemoteUrl: 'git@github.com:stablyai/occ.git',
         upstreamName: 'origin/slashdevcorpse/identifying-pwsh.exe-error'
       })
     ).toBe(
-      'https://github.com/stablyai/orca/compare/main...slashdevcorpse/identifying-pwsh.exe-error?expand=1'
+      'https://github.com/stablyai/occ/compare/main...slashdevcorpse/identifying-pwsh.exe-error?expand=1'
     )
   })
 
@@ -205,12 +205,12 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/origin/release/next',
         branchName: 'feature/gitlab',
         repoRemoteName: 'origin',
-        repoRemoteUrl: 'git@gitlab.company.test:group/sub/orca.git',
+        repoRemoteUrl: 'git@gitlab.company.test:group/sub/occ.git',
         provider: 'gitlab',
         upstreamName: 'origin/feature/gitlab'
       })
     ).toBe(
-      'https://gitlab.company.test/group/sub/orca/-/merge_requests/new?merge_request%5Bsource_branch%5D=feature%2Fgitlab&merge_request%5Btarget_branch%5D=release%2Fnext'
+      'https://gitlab.company.test/group/sub/occ/-/merge_requests/new?merge_request%5Bsource_branch%5D=feature%2Fgitlab&merge_request%5Btarget_branch%5D=release%2Fnext'
     )
   })
 
@@ -220,17 +220,17 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/upstream/main',
         branchName: 'feature/fork-head',
         repoRemoteName: 'upstream',
-        repoRemoteUrl: 'git@gitlab.company.test:group/sub/orca.git',
+        repoRemoteUrl: 'git@gitlab.company.test:group/sub/occ.git',
         provider: 'gitlab',
         pushTarget: {
           remoteName: 'fork',
           branchName: 'feature/fork-head',
-          remoteUrl: 'git@gitlab.company.test:contributor/orca.git'
+          remoteUrl: 'git@gitlab.company.test:contributor/occ.git'
         }
       })
-      // On the fork project — not group/sub/orca, where source_branch would 404.
+      // On the fork project — not group/sub/occ, where source_branch would 404.
     ).toBe(
-      'https://gitlab.company.test/contributor/orca/-/merge_requests/new?merge_request%5Bsource_branch%5D=feature%2Ffork-head&merge_request%5Btarget_branch%5D=main'
+      'https://gitlab.company.test/contributor/occ/-/merge_requests/new?merge_request%5Bsource_branch%5D=feature%2Ffork-head&merge_request%5Btarget_branch%5D=main'
     )
   })
 
@@ -268,11 +268,11 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/origin/main',
         branchName: 'feature/gitea',
         repoRemoteName: 'origin',
-        repoRemoteUrl: 'ssh://git@gitea.company.test/team/orca.git',
+        repoRemoteUrl: 'ssh://git@gitea.company.test/team/occ.git',
         provider: 'gitea',
         upstreamName: 'origin/feature/gitea'
       })
-    ).toBe('https://gitea.company.test/team/orca/compare/main...feature/gitea')
+    ).toBe('https://gitea.company.test/team/occ/compare/main...feature/gitea')
   })
 
   it('suppresses the link when the branch tracks a fork remote with no resolvable push URL', () => {
@@ -282,8 +282,8 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/origin/main',
         branchName: 'quick-commands',
         repoRemoteName: 'origin',
-        repoRemoteUrl: 'https://github.com/stablyai/orca.git',
-        upstreamName: 'pr-devajmeireles-orca/quick-commands'
+        repoRemoteUrl: 'https://github.com/stablyai/occ.git',
+        upstreamName: 'pr-devajmeireles-occ/quick-commands'
       })
     ).toBeNull()
   })
@@ -294,10 +294,10 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/origin/main',
         branchName: 'local-wip-name',
         repoRemoteName: 'origin',
-        repoRemoteUrl: 'git@github.com:stablyai/orca.git',
+        repoRemoteUrl: 'git@github.com:stablyai/occ.git',
         upstreamName: 'origin/feature/pushed-name'
       })
-    ).toBe('https://github.com/stablyai/orca/compare/main...feature/pushed-name?expand=1')
+    ).toBe('https://github.com/stablyai/occ/compare/main...feature/pushed-name?expand=1')
   })
 
   it('still qualifies the fork head when OCC resolved the fork push URL', () => {
@@ -306,15 +306,15 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/origin/main',
         branchName: 'quick-commands',
         repoRemoteName: 'origin',
-        repoRemoteUrl: 'https://github.com/stablyai/orca.git',
-        upstreamName: 'pr-devajmeireles-orca/quick-commands',
+        repoRemoteUrl: 'https://github.com/stablyai/occ.git',
+        upstreamName: 'pr-devajmeireles-occ/quick-commands',
         pushTarget: {
-          remoteName: 'pr-devajmeireles-orca',
+          remoteName: 'pr-devajmeireles-occ',
           branchName: 'quick-commands',
-          remoteUrl: 'git@github.com:devajmeireles/orca.git'
+          remoteUrl: 'git@github.com:devajmeireles/occ.git'
         }
       })
-    ).toBe('https://github.com/stablyai/orca/compare/main...devajmeireles:quick-commands?expand=1')
+    ).toBe('https://github.com/stablyai/occ/compare/main...devajmeireles:quick-commands?expand=1')
   })
 
   it('does not guess a provider for unknown hosts without a provider hint', () => {
@@ -323,7 +323,7 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/origin/main',
         branchName: 'feature/unknown',
         repoRemoteName: 'origin',
-        repoRemoteUrl: 'git@git.company.test:team/orca.git',
+        repoRemoteUrl: 'git@git.company.test:team/occ.git',
         upstreamName: 'origin/feature/unknown'
       })
     ).toBeNull()
@@ -336,7 +336,7 @@ describe('buildSourceControlManualReviewUrl', () => {
         baseRef: 'refs/remotes/origin/main',
         branchName: 'codex-runtime-home-refactor-design',
         repoRemoteName: 'origin',
-        repoRemoteUrl: 'git@github.com:stablyai/orca.git',
+        repoRemoteUrl: 'git@github.com:stablyai/occ.git',
         upstreamName: null
       })
     ).toBeNull()

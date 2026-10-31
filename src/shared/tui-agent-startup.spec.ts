@@ -194,7 +194,7 @@ describe('tui agent startup plans', () => {
         shell: testCase.shell
       })?.launchConfig.agentCommand
     )
-    expect(plan?.env?.ORCA_HERMES_STARTUP_QUERY).toBe(prompt)
+    expect(plan?.env?.OCC_HERMES_STARTUP_QUERY).toBe(prompt)
     const script =
       testCase.shell === 'posix'
         ? unwrapPosixShellScript(plan?.launchCommand)
@@ -202,16 +202,16 @@ describe('tui agent startup plans', () => {
     expect(script).toContain("'hermes' 'chat'")
     expect(script).toContain('--query=')
     expect(testCase.shell === 'posix' ? plan?.launchCommand : script).toContain(
-      'ORCA_HERMES_STARTUP_QUERY'
+      'OCC_HERMES_STARTUP_QUERY'
     )
     expect(script).toContain("'--yolo' '--tui'")
     expect(script).toContain(
       testCase.shell === 'posix'
-        ? '--query=${__orca_hermes_startup_query}'
-        : 'Remove-Item Env:ORCA_HERMES_STARTUP_QUERY'
+        ? '--query=${__occ_hermes_startup_query}'
+        : 'Remove-Item Env:OCC_HERMES_STARTUP_QUERY'
     )
     if (testCase.shell === 'posix') {
-      expect(plan?.launchCommand).toContain('unset ORCA_HERMES_STARTUP_QUERY')
+      expect(plan?.launchCommand).toContain('unset OCC_HERMES_STARTUP_QUERY')
     }
   })
 
@@ -284,8 +284,8 @@ describe('tui agent startup plans', () => {
     expect(plan?.launchCommand).toBe('occ-ide claude-teams')
   })
 
-  it('uses the plain orca shim for Claude Agent Teams on Linux SSH remotes', () => {
-    // Remote Linux deploys orca, never local-only occ-ide; using the renamed desktop wrapper breaks relay launches (#6500).
+  it('uses the plain occ shim for Claude Agent Teams on Linux SSH remotes', () => {
+    // Remote Linux deploys occ, never local-only occ-ide; using the renamed desktop wrapper breaks relay launches (#6500).
     const plan = buildAgentStartupPlan({
       agent: 'claude-agent-teams',
       prompt: '',
@@ -295,7 +295,7 @@ describe('tui agent startup plans', () => {
       allowEmptyPromptLaunch: true
     })
 
-    expect(plan?.launchCommand).toBe('orca claude-teams')
+    expect(plan?.launchCommand).toBe('occ claude-teams')
   })
 
   it('keeps the Windows occ.cmd shim for Claude Agent Teams on SSH remotes', () => {
@@ -708,7 +708,7 @@ describe('tui agent startup plans', () => {
         cmdOverrides: {},
         platform: 'win32'
       })?.launchCommand
-    ).toBe('pi; Remove-Item Env:ORCA_PI_PREFILL -ErrorAction SilentlyContinue')
+    ).toBe('pi; Remove-Item Env:OCC_PI_PREFILL -ErrorAction SilentlyContinue')
 
     expect(
       buildAgentDraftLaunchPlan({
@@ -718,11 +718,11 @@ describe('tui agent startup plans', () => {
         platform: 'win32',
         shell: 'cmd'
       })?.launchCommand
-    ).toBe('pi & set "ORCA_PI_PREFILL="')
+    ).toBe('pi & set "OCC_PI_PREFILL="')
   })
 
-  it('returns an OMP draft plan with ORCA_OMP_PREFILL (OMP-scoped, not Pi-shared)', () => {
-    // OMP’s managed extension reads ORCA_OMP_PREFILL; sharing Pi’s var would lose drafts or replay stale Pi text.
+  it('returns an OMP draft plan with OCC_OMP_PREFILL (OMP-scoped, not Pi-shared)', () => {
+    // OMP’s managed extension reads OCC_OMP_PREFILL; sharing Pi’s var would lose drafts or replay stale Pi text.
     const plan = buildAgentDraftLaunchPlan({
       agent: 'omp',
       draft: 'fix the omp regression',
@@ -731,7 +731,7 @@ describe('tui agent startup plans', () => {
     })
 
     expect(plan).not.toBeNull()
-    expect(plan?.env).toEqual({ ORCA_OMP_PREFILL: 'fix the omp regression' })
+    expect(plan?.env).toEqual({ OCC_OMP_PREFILL: 'fix the omp regression' })
     expect(plan?.expectedProcess).toBe('omp')
     expect(plan?.launchConfig.agentCommand).toBe('omp')
   })
@@ -801,15 +801,15 @@ describe('tui agent startup plans', () => {
       agent: 'pi',
       draft: 'prefill text',
       cmdOverrides: {},
-      agentEnv: { ORCA_AGENT_MODE: 'managed' },
+      agentEnv: { OCC_AGENT_MODE: 'managed' },
       platform: 'linux'
     })
 
-    expect(plan?.env).toEqual({ ORCA_AGENT_MODE: 'managed', ORCA_PI_PREFILL: 'prefill text' })
+    expect(plan?.env).toEqual({ OCC_AGENT_MODE: 'managed', OCC_PI_PREFILL: 'prefill text' })
     expect(plan?.launchConfig).toEqual({
       agentCommand: 'pi',
       agentArgs: '',
-      agentEnv: { ORCA_AGENT_MODE: 'managed' }
+      agentEnv: { OCC_AGENT_MODE: 'managed' }
     })
   })
 

@@ -224,7 +224,7 @@ describe('resolveHostCodexHomePathForLaunchReadOnly', () => {
       managedAccountSettings(managedHomePath)
     )
     // Change ownership after construction so its initial sync cannot clear the selection.
-    writeFileSync(join(managedHomePath, '.orca-managed-home'), 'someone-else\n', 'utf-8')
+    writeFileSync(join(managedHomePath, '.occ-managed-home'), 'someone-else\n', 'utf-8')
 
     const readOnlyHome = service.resolveHostCodexHomePathForLaunchReadOnly()
     expect(readOnlyHome).toBeNull()
@@ -248,7 +248,7 @@ describe('resolveHostCodexHomePathForLaunchReadOnly', () => {
     const { ManagedCodexHomeTemporarilyUnavailableError } =
       await import('./host-codex-managed-home-ownership')
     expect(service.resolveHostCodexHomePathForLaunchReadOnly()).toBe(managedHomePath)
-    const markerPath = join(realpathSync(managedHomePath), '.orca-managed-home')
+    const markerPath = join(realpathSync(managedHomePath), '.occ-managed-home')
     lstatFaults.hold(markerPath)
 
     expect(() => service.resolveHostCodexHomePathForLaunchReadOnly()).toThrow(

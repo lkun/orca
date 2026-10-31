@@ -1,6 +1,6 @@
 import { applyRemoteViewerLaunchEnv } from '../remote-viewer-launch-env'
 import type { ResolvedWorktree } from '../runtime-worktree-path-identity'
-import { OrcaRuntimeWithRemoveManagedWorktree } from './workspace-removal'
+import { OCCRuntimeWithRemoveManagedWorktree } from './workspace-removal'
 import type {
   RemoveManagedWorktreeOptions,
   RuntimeWorktreeRemovalTarget
@@ -40,7 +40,7 @@ import {
   waitForPendingWorktreeRemoval
 } from '../../worktree-background-removal'
 import { interruptedLocalWorktreeRemovalJob } from '../runtime-interrupted-local-worktree-removal'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { retryFailedRemovalUnlessRegistered } from '../../worktree-removal-leftover'
 import type { GitWorktreeInfo } from '../../../shared/worktree/types'
 import {
@@ -49,7 +49,7 @@ import {
 } from '../runtime-agent-terminal-startup'
 import { removeWorktreeMetaRow } from '../../persistence/host-qualified-worktree-meta'
 
-export abstract class OrcaRuntimeWithResolveWorktreeRemovalTarget extends OrcaRuntimeWithRemoveManagedWorktree {
+export abstract class OCCRuntimeWithResolveWorktreeRemovalTarget extends OCCRuntimeWithRemoveManagedWorktree {
   protected abstract resolveExplicitWorktreeIdScoped(
     worktreeId: string,
     requiredHostId?: ExecutionHostId
@@ -237,7 +237,7 @@ export abstract class OrcaRuntimeWithResolveWorktreeRemovalTarget extends OrcaRu
 
   async renameTerminal(handle: string, title: string | null): Promise<RuntimeTerminalRename> {
     // Switch point: a terminal main owns is renamed in main's layout, with or without a window.
-    const mainRename = ORCA_LAYOUT_OWNER_IS_MAIN
+    const mainRename = OCC_LAYOUT_OWNER_IS_MAIN
       ? await this.renameTerminalInMainLayout(handle, title)
       : null
     if (mainRename) {
@@ -288,7 +288,7 @@ export abstract class OrcaRuntimeWithResolveWorktreeRemovalTarget extends OrcaRu
   /** Names one pane of a split; the tab's own name is untouched. */
   async setPaneTitle(handle: string, title: string | null): Promise<RuntimeTerminalSetPaneTitle> {
     // Switch point: a pane main owns is named in main's layout, with or without a window.
-    const mainTitle = ORCA_LAYOUT_OWNER_IS_MAIN
+    const mainTitle = OCC_LAYOUT_OWNER_IS_MAIN
       ? await this.setPaneTitleInMainLayout(handle, title)
       : null
     if (mainTitle) {

@@ -61,6 +61,6 @@ export function selectActiveTerminalChromeState(
   return selected
 }
 
-export function resetActiveTerminalChromeStateSelectorCacheForTest(): void {
+export function resetActiveTerminalChromeStateSelectocccheForTest(): void {
   activeTerminalChromeCache = null
 }

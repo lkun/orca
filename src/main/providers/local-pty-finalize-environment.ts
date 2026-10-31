@@ -1,7 +1,7 @@
 import { win32 as pathWin32 } from 'node:path'
 import { shouldUseShellReadyStartupDelivery } from '../../shared/codex-startup-delivery'
 import { expandWindowsPathEnvironmentVariables } from '../../shared/windows-environment-expansion'
-import { dropInheritedOrcaFishHistory } from '../fish-history-session'
+import { dropInheritedOCCFishHistory } from '../fish-history-session'
 import { dropIncoherentCondaActivationEnv } from '../pty/conda-activation-env'
 import { stripLegacyTerminalShimEnv } from '../pty/legacy-terminal-shim-dir'
 import {
@@ -21,7 +21,7 @@ import {
   type HistoryInjectionResult
 } from '../terminal-history'
 import { addWslEnvKeys } from '../wsl-env'
-import { dropInheritedOrcaHistFile } from '../worktree-history-file-path'
+import { dropInheritedOCCHistFile } from '../worktree-history-file-path'
 import { promoteAgentTeamsShimPath } from './local-pty-launch-helpers'
 import type { LocalPtyLaunchPlan } from './local-pty-launch-plan'
 import type { LocalPtyProviderOptions } from './local-pty-provider-types'
@@ -78,11 +78,11 @@ export function finalizeLocalPtySpawnEnvironment(args: {
     logHistoryInjection(worktreeId, historyResult)
   } else {
     // History-off bypasses injectHistoryEnv, so clear inherited OCC history explicitly (#11146).
-    delete env.ORCA_HISTFILE
+    delete env.OCC_HISTFILE
     // Exported fish_history must not select the launching workspace history when isolation is off.
-    dropInheritedOrcaFishHistory(env)
+    dropInheritedOCCFishHistory(env)
     // Exported HISTFILE must not select the launching workspace history when isolation is off.
-    dropInheritedOrcaHistFile(env)
+    dropInheritedOCCHistFile(env)
   }
 
   if (!plan.wslInfo && process.platform !== 'win32') {
@@ -96,7 +96,7 @@ export function finalizeLocalPtySpawnEnvironment(args: {
         startupCommandDelivery: spawn.startupCommandDelivery
       })
     // Only this shell launch config may choose OCC-owned features.
-    delete env.ORCA_SHELL_FEATURES
+    delete env.OCC_SHELL_FEATURES
     delete env[POSIX_SHELL_STARTUP_COMMAND_ENV]
     const userShellArgs = !spawn.command && !spawn.launchAgent ? spawn.terminalShellArgs : undefined
     // Capture before launch config prefixes XDG_DATA_DIRS.

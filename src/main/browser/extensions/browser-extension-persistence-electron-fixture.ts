@@ -1,7 +1,7 @@
 import { app, BaseWindow, BrowserWindow, protocol, session } from 'electron'
 import { renameSync, writeFileSync } from 'node:fs'
 import { createServer } from 'node:http'
-import { ORCA_BROWSER_PARTITION } from '../../../shared/constants'
+import { OCC_BROWSER_PARTITION } from '../../../shared/constants'
 import { applyBackgroundActivationPolicy } from '../../window/foreground-activation-policy'
 import { browserManager } from '../browser-manager'
 import { browserSessionRegistry } from '../browser-session-registry'
@@ -16,14 +16,14 @@ import { buildBrowserExtensionPageContextMenu } from './browser-extension-contex
 import { recordActiveBrowserPage } from './browser-extension-tab-model'
 import { trackBrowserExtensionMainWindow } from './browser-extension-window-model'
 
-const statusPath = process.env.ORCA_EXTENSION_FIXTURE_STATUS
-const extensionDirectory = process.env.ORCA_EXTENSION_FIXTURE_DIR
-const phase = process.env.ORCA_EXTENSION_FIXTURE_PHASE
+const statusPath = process.env.OCC_EXTENSION_FIXTURE_STATUS
+const extensionDirectory = process.env.OCC_EXTENSION_FIXTURE_DIR
+const phase = process.env.OCC_EXTENSION_FIXTURE_PHASE
 if (
   !statusPath ||
   !extensionDirectory ||
   (phase !== 'first' && phase !== 'second') ||
-  process.env.ORCA_BACKGROUND_LAUNCH !== '1'
+  process.env.OCC_BACKGROUND_LAUNCH !== '1'
 ) {
   throw new Error(
     'Persistence fixture requires a status path, an extension, a phase and background launch'
@@ -64,16 +64,16 @@ process.on('uncaughtException', fail)
 process.on('unhandledRejection', fail)
 
 function capture(message: string): void {
-  if (message.startsWith('ORCA_EXT_ERROR ')) {
+  if (message.startsWith('OCC_EXT_ERROR ')) {
     fail(message)
     return
   }
   for (const [prefix, key] of [
-    ['ORCA_EXT_SETUP ', 'setup'],
-    ['ORCA_EXT_WEBREQUEST ', 'webRequest'],
-    ['ORCA_EXT_CONTENT_SCRIPT ', 'contentScript'],
-    ['ORCA_EXT_COMMAND ', 'commands'],
-    ['ORCA_EXT_SYNC ', 'sync']
+    ['OCC_EXT_SETUP ', 'setup'],
+    ['OCC_EXT_WEBREQUEST ', 'webRequest'],
+    ['OCC_EXT_CONTENT_SCRIPT ', 'contentScript'],
+    ['OCC_EXT_COMMAND ', 'commands'],
+    ['OCC_EXT_SYNC ', 'sync']
   ] as const) {
     if (message.startsWith(prefix)) {
       const value: unknown = JSON.parse(message.slice(prefix.length))
@@ -110,7 +110,7 @@ async function openTab(url: string): Promise<Electron.WebContents> {
   })
   await host.loadURL(
     `data:text/html,${encodeURIComponent(
-      `<webview partition="${ORCA_BROWSER_PARTITION}" src="${url}"></webview>`
+      `<webview partition="${OCC_BROWSER_PARTITION}" src="${url}"></webview>`
     )}`
   )
   return attached
@@ -129,7 +129,7 @@ async function run(): Promise<void> {
   initializeBrowserExtensionSupport({ enabled: true })
   const profile = browserSessionRegistry.getDefaultProfile()
   session
-    .fromPartition(ORCA_BROWSER_PARTITION)
+    .fromPartition(OCC_BROWSER_PARTITION)
     .serviceWorkers.on('console-message', (_event, details) => capture(details.message))
 
   if (phase === 'first') {

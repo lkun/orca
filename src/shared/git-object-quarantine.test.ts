@@ -42,7 +42,7 @@ describe('createGitObjectQuarantine', () => {
   let objects: string
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-object-quarantine-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-object-quarantine-'))
     objects = join(root, 'objects')
     mkdirSync(join(objects, 'pack'), { recursive: true })
   })

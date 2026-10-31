@@ -1,6 +1,6 @@
 import { expect, it, vi } from 'vitest'
 import { createTiptapMarkedFacade } from './tiptap-marked-facade'
-import { createOrcaDetailsExtensions } from './rich-markdown-details-extension'
+import { createOCCDetailsExtensions } from './rich-markdown-details-extension'
 import {
   createMarkdownTokenizerStart,
   createMarkdownTokenizerStartCursor,
@@ -121,7 +121,7 @@ it('recognizes a suffix-start directive skipped by an earlier line-start search'
 })
 
 function getDetailsTokenizerStart() {
-  const tokenizer = createOrcaDetailsExtensions()[0].config.markdownTokenizer
+  const tokenizer = createOCCDetailsExtensions()[0].config.markdownTokenizer
   if (!tokenizer || typeof tokenizer === 'function' || typeof tokenizer.start !== 'function') {
     throw new Error('Details tokenizer must expose its start hint')
   }

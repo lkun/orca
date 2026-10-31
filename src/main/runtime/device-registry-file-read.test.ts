@@ -6,7 +6,7 @@ import { DeviceRegistry } from './device-registry'
 import { DEVICE_REGISTRY_FILENAME } from './mobile-pairing-files'
 
 function registryWith(rows: unknown[]): { userDataPath: string; registry: DeviceRegistry } {
-  const userDataPath = mkdtempSync(join(tmpdir(), 'orca-device-registry-read-'))
+  const userDataPath = mkdtempSync(join(tmpdir(), 'occ-device-registry-read-'))
   writeFileSync(join(userDataPath, DEVICE_REGISTRY_FILENAME), JSON.stringify(rows))
   return { userDataPath, registry: new DeviceRegistry(userDataPath) }
 }

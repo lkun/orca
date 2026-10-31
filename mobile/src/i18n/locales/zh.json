@@ -281,7 +281,7 @@
       "plan": "计划",
       "stoppedManually": "已手动停止"
     },
-    "orcaStop": {
+    "occStop": {
       "canContinue": "您可以在此对话中继续。",
       "crash": "此回复进行期间，{{machine}} 上的 OCC 意外停止。",
       "quit": "此回复进行期间，{{machine}} 上的 OCC 已关闭。",
@@ -904,7 +904,7 @@
     },
     "setupHookTrustDrawer": {
       "alwaysTrustAndRun": "始终信任并运行",
-      "description": "此仓库的 orca.yaml 会在工作区启动前运行。请仅在信任此仓库时运行。",
+      "description": "此仓库的 occ.yaml 会在工作区启动前运行。请仅在信任此仓库时运行。",
       "dontRun": "不运行",
       "newScriptLabel": "新设置脚本",
       "runHooks": "运行钩子",
@@ -2560,7 +2560,7 @@
       "cannotRunHere": "OCC 无法在此处以聊天方式运行此智能体。",
       "capacity": "运行此聊天的计算机上的 OCC 已达到请求上限。请在那台计算机上更新 OCC，然后重试。",
       "chatNotFound": "OCC 找不到此聊天。",
-      "chatSavedByNewerOrca": "此聊天由更新版本的 OCC 保存。",
+      "chatSavedByNewerOCC": "此聊天由更新版本的 OCC 保存。",
       "clearAfterAnswer": "请先回答智能体的问题或审批，然后再运行 /clear。",
       "clearAfterRetry": "请先重试您之前的消息，然后再运行 /clear。",
       "clearAfterSending": "您之前的消息仍在发送中。发送完成后再运行 /clear。",
@@ -2606,7 +2606,7 @@
       "restartFailed": "智能体无法重新启动。",
       "runClearWhenDone": "完成后再运行 /clear。",
       "runCompactWhenDone": "完成后再运行 /compact。",
-      "savedByNewerOrca": "这些聊天由更新版本的 OCC 保存。",
+      "savedByNewerOCC": "这些聊天由更新版本的 OCC 保存。",
       "sendOutcomeLost": "OCC 无法确认你的消息已送达智能体。请查看聊天，如有需要请重新发送。",
       "settleEarlierMessage": "请等待之前的消息送达，或重试该消息。",
       "shortenMessage": "请缩短或拆分后再发送。",
@@ -2618,8 +2618,8 @@
       "turnActive": "智能体仍在回复。",
       "unreachable": "OCC 无法连接到智能体。",
       "unsupported": "运行此聊天的计算机需要更新版本的 OCC。请在该计算机上更新 OCC 后重试。",
-      "updateOrcaToKeepUsing": "请更新 OCC 以继续使用这些聊天。",
-      "updateOrcaToOpenChat": "请更新 OCC 以打开它。",
+      "updateOCCToKeepUsing": "请更新 OCC 以继续使用这些聊天。",
+      "updateOCCToOpenChat": "请更新 OCC 以打开它。",
       "waitForBackgroundTasks": "请等待后台任务完成。",
       "waitForCommand": "请等待 /compact 或 /clear 完成。",
       "waitForStart": "请等待智能体完成启动。",
@@ -3624,7 +3624,7 @@
       "projectSubtitle": "GitHub 项目 · {{repository}}{{itemNumber}}",
       "pullRequest": "PR",
       "reopenItem": "重新打开条目",
-      "repositoryNotInOrca": "仓库不在 OCC 中",
+      "repositoryNotInOCC": "仓库不在 OCC 中",
       "status": "状态",
       "type": "类型",
       "workspaceCreationRequirement": "只能从 GitHub 议题和 PR 创建工作区。"
@@ -3869,7 +3869,7 @@
       "setupTitle": "运行设置脚本？",
       "skipSetupAndCreate": "跳过设置脚本并创建",
       "trustFailed": "无法将设置脚本设为可信。",
-      "trustSubtitle": "工作区启动前，此仓库的 orca.yaml 会在您的电脑上运行。请仅在信任此仓库时运行。"
+      "trustSubtitle": "工作区启动前，此仓库的 occ.yaml 会在您的电脑上运行。请仅在信任此仓库时运行。"
     },
     "worktreeCreateRetry": {
       "createFailed": "创建工作区失败"

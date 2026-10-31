@@ -59,7 +59,7 @@ describe('pull request state mutations', () => {
   })
 
   it('reopens pull requests through the gh PR command', async () => {
-    getOwnerRepoMock.mockResolvedValueOnce({ owner: 'stablyai', repo: 'orca' })
+    getOwnerRepoMock.mockResolvedValueOnce({ owner: 'stablyai', repo: 'occ' })
     ghExecFileAsyncMock.mockResolvedValueOnce({ stdout: '', stderr: '' })
 
     await expect(updatePRState('/repo-root', 3977, { state: 'open' })).resolves.toEqual({
@@ -67,7 +67,7 @@ describe('pull request state mutations', () => {
     })
 
     expect(ghExecFileAsyncMock).toHaveBeenCalledWith(
-      ['pr', 'reopen', '3977', '--repo', 'stablyai/orca'],
+      ['pr', 'reopen', '3977', '--repo', 'stablyai/occ'],
       { cwd: '/repo-root', host: 'github.com' }
     )
     expect(acquireMock).toHaveBeenCalledTimes(1)
@@ -75,7 +75,7 @@ describe('pull request state mutations', () => {
   })
 
   it('closes pull requests through the gh PR command', async () => {
-    getOwnerRepoMock.mockResolvedValueOnce({ owner: 'stablyai', repo: 'orca' })
+    getOwnerRepoMock.mockResolvedValueOnce({ owner: 'stablyai', repo: 'occ' })
     ghExecFileAsyncMock.mockResolvedValueOnce({ stdout: '', stderr: '' })
 
     await expect(updatePRState('/repo-root', 3977, { state: 'closed' })).resolves.toEqual({
@@ -83,13 +83,13 @@ describe('pull request state mutations', () => {
     })
 
     expect(ghExecFileAsyncMock).toHaveBeenCalledWith(
-      ['pr', 'close', '3977', '--repo', 'stablyai/orca'],
+      ['pr', 'close', '3977', '--repo', 'stablyai/occ'],
       { cwd: '/repo-root', host: 'github.com' }
     )
   })
 
   it('reopens SSH-backed pull requests without local cwd options', async () => {
-    getOwnerRepoMock.mockResolvedValueOnce({ owner: 'stablyai', repo: 'orca' })
+    getOwnerRepoMock.mockResolvedValueOnce({ owner: 'stablyai', repo: 'occ' })
     ghExecFileAsyncMock.mockResolvedValueOnce({ stdout: '', stderr: '' })
 
     await expect(
@@ -99,19 +99,19 @@ describe('pull request state mutations', () => {
     })
 
     expect(ghExecFileAsyncMock).toHaveBeenCalledWith(
-      ['pr', 'reopen', '3977', '--repo', 'stablyai/orca'],
+      ['pr', 'reopen', '3977', '--repo', 'stablyai/occ'],
       { host: 'github.com' }
     )
   })
 
   it('marks pull requests ready for review through gh', async () => {
-    getOwnerRepoMock.mockResolvedValueOnce({ owner: 'stablyai', repo: 'orca' })
+    getOwnerRepoMock.mockResolvedValueOnce({ owner: 'stablyai', repo: 'occ' })
     ghExecFileAsyncMock.mockResolvedValueOnce({ stdout: '', stderr: '' })
 
     await expect(markPRReadyForReview('/repo-root', 3977)).resolves.toEqual({ ok: true })
 
     expect(ghExecFileAsyncMock).toHaveBeenCalledWith(
-      ['pr', 'ready', '3977', '--repo', 'stablyai/orca'],
+      ['pr', 'ready', '3977', '--repo', 'stablyai/occ'],
       { cwd: '/repo-root', host: 'github.com' }
     )
     expect(acquireMock).toHaveBeenCalledTimes(1)

@@ -2,7 +2,7 @@ import { realpathSync, statSync } from 'node:fs'
 import { mkdir, mkdtemp, readdir, realpath, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { removeTree } from '../../shared/windows-transient-lock-removal'
 import { withCliRuntimeOnPath } from '../codex-cli/command'
 import { CODEX_SHORT_LIVED_PROBE_APP_SERVER_ARGS } from '../codex-cli/codex-read-only-app-server-args'
@@ -34,9 +34,9 @@ const VERSION_TIMEOUT_MS = 30_000
 const DERIVE_TIMEOUT_MS = 30_000
 // Shift a copy to verify that Codex hashes do not depend on position.
 const SCRATCH_DUMMY_HOOK = { type: 'command', command: 'exit 0' }
-const SCRATCH_ORCA_GROUP_INDEXES = [0, 2] as const
+const SCRATCH_OCC_GROUP_INDEXES = [0, 2] as const
 const SCRATCH_DUMMY_GROUP_INDEX = 1
-const SCRATCH_PREFIXES = ['orca-codex-hook-trust-', 'orca-codex-version-'] as const
+const SCRATCH_PREFIXES = ['occ-codex-hook-trust-', 'occ-codex-version-'] as const
 // An hour exceeds any probe's lifetime; older scratch homes were abandoned.
 const STALE_SCRATCH_MS = 60 * 60_000
 
@@ -96,8 +96,8 @@ export async function deriveCodexHookHashes(
 export function buildScratchHooksJson(hookCommand: string, positionCopy: boolean): string {
   const hooks = Object.fromEntries(
     CODEX_EVENTS.map((eventName) => {
-      const orca = { hooks: [buildCodexManagedHook(hookCommand, eventName)] }
-      return [eventName, positionCopy ? [orca, { hooks: [SCRATCH_DUMMY_HOOK] }, orca] : [orca]]
+      const occ = { hooks: [buildCodexManagedHook(hookCommand, eventName)] }
+      return [eventName, positionCopy ? [occ, { hooks: [SCRATCH_DUMMY_HOOK] }, occ] : [occ]]
     })
   )
   return `${JSON.stringify({ hooks }, null, 2)}\n`
@@ -181,12 +181,12 @@ export function readCodexHookHashes(
   const hashes: Partial<Record<CodexEventLabel, string | null>> = {}
   for (const eventName of CODEX_EVENTS) {
     const label = CODEX_EVENT_LABEL[eventName]
-    const primary = listed(scratch.homeHooksPath, label, SCRATCH_ORCA_GROUP_INDEXES[0])
+    const primary = listed(scratch.homeHooksPath, label, SCRATCH_OCC_GROUP_INDEXES[0])
     if (!primary) {
       continue
     }
     const copies = [
-      listed(scratch.homeHooksPath, label, SCRATCH_ORCA_GROUP_INDEXES[1]),
+      listed(scratch.homeHooksPath, label, SCRATCH_OCC_GROUP_INDEXES[1]),
       listed(scratch.projectHooksPath, label, 0)
     ]
     if (copies.some((copy) => copy && copy.currentHash !== primary.currentHash)) {

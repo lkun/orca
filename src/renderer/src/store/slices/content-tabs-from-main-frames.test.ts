@@ -1,7 +1,7 @@
 // Layout-owner browser/chat/simulator commands draw only from main’s answers; refusals preserve tabs. With switch off, window draws without sending main.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type * as AgentStatusModule from '@/lib/agent-status'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import type { RuntimeMobileSessionTabsResult } from '../../../../shared/runtime-types'
 import { structuredAgentSessionTabId } from '../../../../shared/structured-agent-session-projection'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
@@ -146,7 +146,7 @@ async function openHeld(open: () => string): Promise<string> {
   return entityId
 }
 
-describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('content tabs drawn from main’s frames', () => {
+describe.runIf(OCC_LAYOUT_OWNER_IS_MAIN)('content tabs drawn from main’s frames', () => {
   it('shows a browser tab, its label and page only once main’s frame drew it, then selects it', async () => {
     const id = await openHeld(
       () => store.getState().createBrowserTab(WT, 'https://example.com/', { title: 'Example' }).id
@@ -353,7 +353,7 @@ describe.runIf(ORCA_LAYOUT_OWNER_IS_MAIN)('content tabs drawn from main’s fram
   })
 })
 
-describe.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)('content tabs with the switch off', () => {
+describe.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)('content tabs with the switch off', () => {
   it('draws browser, chat and simulator tabs at once and sends nothing', () => {
     const id = store.getState().createBrowserTab(WT, 'https://example.com/').id
     openStructuredAgentSessionProvisionalTab({

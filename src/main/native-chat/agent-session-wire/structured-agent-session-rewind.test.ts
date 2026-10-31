@@ -65,7 +65,7 @@ beforeEach(async () => {
   rewind.mockReset().mockResolvedValue({ ok: true })
   recoverRewind.mockReset().mockResolvedValue({ ok: true })
   acquires = []
-  directory = await mkdtemp(join(tmpdir(), 'orca-rewind-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-rewind-'))
   store = await openTestAgentSessionRecordStore(directory)
   adapter = startsWhenPublished(
     {
@@ -392,7 +392,7 @@ describe('host rewind', () => {
   it('refuses a rewind racing an active turn before provider execution', async () => {
     const target = await seed()
     sink.appendItem(
-      { provider: 'orca', clientMessageId: 'active' },
+      { provider: 'occ', clientMessageId: 'active' },
       { kind: 'status', text: 'working', turnLifecycle: { turnId: 'active', state: 'running' } },
       { turnScope: AGENT_JOURNAL_THREAD_SCOPE }
     )
@@ -564,7 +564,7 @@ describe('host rewind', () => {
       recordId: `turn-lifecycle:${turnId}`
     })
     const goalRow = {
-      provider: 'orca' as const,
+      provider: 'occ' as const,
       clientMessageId: `codex-goal:${'a'.repeat(64)}:${'b'.repeat(64)}:${'c'.repeat(64)}`
     }
     const goalBody = {
@@ -632,7 +632,7 @@ describe('host rewind', () => {
       turnId,
       ordinal: 0
     })
-    const newerRow = { provider: 'orca' as const, clientMessageId: 'newer-card' }
+    const newerRow = { provider: 'occ' as const, clientMessageId: 'newer-card' }
     const newerBody: AgentJournalItemBody = JSON.parse(
       JSON.stringify({ kind: 'plan-card', steps: [{ text: 'by a newer build' }] })
     )
@@ -748,7 +748,7 @@ describe('host rewind', () => {
       ordinal: 0
     })
     const goalRow = {
-      provider: 'orca' as const,
+      provider: 'occ' as const,
       clientMessageId: `codex-goal:${'1'.repeat(64)}:${'2'.repeat(64)}:${'3'.repeat(64)}`
     }
     const goalBody = {

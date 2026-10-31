@@ -59,7 +59,7 @@ const openReview: HostedReviewInfo = {
   number: 7,
   title: 'Open PR',
   state: 'open',
-  url: 'https://github.com/acme/orca/pull/7',
+  url: 'https://github.com/acme/occ/pull/7',
   status: 'success',
   updatedAt: '2026-07-31T00:00:00.000Z',
   mergeable: 'MERGEABLE'

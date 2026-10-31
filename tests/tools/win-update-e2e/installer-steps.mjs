@@ -28,7 +28,7 @@ export function resolveInstaller({ localPath, releaseTag, assetPattern }) {
   if (!releaseTag) {
     throw new Error('resolveInstaller: neither localPath nor releaseTag provided')
   }
-  const outDir = mkdtempSync(path.join(tmpdir(), 'orca-e2e-installer-'))
+  const outDir = mkdtempSync(path.join(tmpdir(), 'occ-e2e-installer-'))
   const result = spawnSync(
     'gh',
     ['release', 'download', releaseTag, '--pattern', assetPattern, '--dir', outDir],

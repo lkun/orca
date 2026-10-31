@@ -36,7 +36,7 @@ describe('WSL host row status', () => {
         {
           id: 'wsl:ubuntu',
           name: 'Ubuntu (WSL)',
-          orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
+          occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
         }
       ],
       wslHostStatuses: { 'wsl:ubuntu': status('distro-stopped') }
@@ -61,7 +61,7 @@ describe('WSL host row status', () => {
         {
           id: 'wsl:ubuntu',
           name: 'Ubuntu (WSL)',
-          orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
+          occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
         }
       ],
       wslHostStatuses: { 'wsl:ubuntu': status('ready') },
@@ -86,7 +86,7 @@ describe('WSL host row status', () => {
         {
           id: 'wsl:ubuntu',
           name: 'Ubuntu (WSL)',
-          orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
+          occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
         }
       ],
       wslHostsEnabled: false,

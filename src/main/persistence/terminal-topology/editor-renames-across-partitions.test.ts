@@ -12,7 +12,7 @@ import {
 import { commitLayoutCommandsAcrossPartitions } from './layout-command-commit'
 import type { TerminalTopologyCommitContext } from './terminal-topology-commit'
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const SSH: ExecutionHostId = 'ssh:target-1'
 

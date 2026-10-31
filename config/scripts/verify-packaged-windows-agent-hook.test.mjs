@@ -12,11 +12,11 @@ const { verifyPackagedWindowsAgentHook } = createRequire(import.meta.url)(
 const roots = []
 
 function resourcesWith(image) {
-  const resourcesDir = mkdtempSync(join(tmpdir(), 'orca-agent-hook-package-'))
+  const resourcesDir = mkdtempSync(join(tmpdir(), 'occ-agent-hook-package-'))
   roots.push(resourcesDir)
   if (image) {
     mkdirSync(join(resourcesDir, 'bin'))
-    writeFileSync(join(resourcesDir, 'bin', 'orca-agent-hook.exe'), image)
+    writeFileSync(join(resourcesDir, 'bin', 'occ-agent-hook.exe'), image)
   }
   return resourcesDir
 }

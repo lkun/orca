@@ -25,7 +25,7 @@ export async function recordMainProcessWslDiagnostics(
 ): Promise<void> {
   await app.evaluate((_electron, logFile) => {
     // Never patch fs or capture stacks in an app that is not in e2e mode.
-    if (!process.env.ORCA_E2E_USER_DATA_DIR || !process.env.ORCA_E2E_SPAWN_LOG) {
+    if (!process.env.OCC_E2E_USER_DATA_DIR || !process.env.OCC_E2E_SPAWN_LOG) {
       throw new Error('WSL boot diagnostics need an e2e-mode app with the spawn log named')
     }
     const fs = process.mainModule?.require('node:fs')
@@ -33,7 +33,7 @@ export async function recordMainProcessWslDiagnostics(
     if (!fs || !proto) {
       throw new Error('Cannot hook child_process in the main process')
     }
-    if (proto.spawn.orcaE9SpawnLog) {
+    if (proto.spawn.occE9SpawnLog) {
       return
     }
     const append = (file: string, args: unknown[]): void => {
@@ -58,7 +58,7 @@ export async function recordMainProcessWslDiagnostics(
       append(String(options?.file ?? ''), options?.args ?? [])
       return original.call(this, options)
     }
-    logged.orcaE9SpawnLog = true
+    logged.occE9SpawnLog = true
     proto.spawn = logged
 
     // Every daemon or local PTY spawn with a worktree logs this line first (logHistoryInjection).

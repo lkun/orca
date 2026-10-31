@@ -46,7 +46,7 @@ afterEach(() => {
 })
 
 const LOCAL_TREE = [
-  '1:project:orca',
+  '1:project:occ',
   '2:workspace:parent',
   '3:chat:in-parent',
   '3:workspace:child',
@@ -87,7 +87,7 @@ it('keeps every checkbox in the left column and indents what follows it 18px a l
 it('reads levels apart by weight, with no row dividers or bands', () => {
   render({ candidates: seedTree() })
 
-  expect(itemOf(nodeBox('orca')).querySelector('.font-semibold')?.textContent).toBe('orca')
+  expect(itemOf(nodeBox('occ')).querySelector('.font-semibold')?.textContent).toBe('occ')
   expect(itemOf(nodeBox('parent')).querySelector('.font-medium')?.textContent).toBe('parent')
   const rows = container.querySelectorAll(
     '[role="treeitem"], [role="treeitem"] *:not([role="checkbox"])'
@@ -157,12 +157,12 @@ it('gives each machine its own branch when chats span hosts', () => {
   // The child is on another host, so it does not nest under the local parent.
   expect(treeOutline()).toEqual([
     `1:machine:${machine}`,
-    '2:project:orca',
+    '2:project:occ',
     '3:workspace:child',
     '4:chat:in-child',
     '4:chat:also-in-child',
     `1:machine:${local}`,
-    '2:project:orca',
+    '2:project:occ',
     '3:workspace:parent',
     '4:chat:in-parent',
     '3:workspace:other',
@@ -245,7 +245,7 @@ it('disambiguates only colliding unknown folders with linear display work on ren
       candidate(
         `lost-${index}`,
         worktree('main', {
-          id: `repo-1::/Users/test/projects/organization/orca/workspaces/client-${index}/main`
+          id: `repo-1::/Users/test/projects/organization/occ/workspaces/client-${index}/main`
         })
       )
     )
@@ -258,7 +258,7 @@ it('disambiguates only colliding unknown folders with linear display work on ren
     expect(work).toBeLessThanOrEqual(6 * size)
     operations.push(work)
     for (const index of [0, 1]) {
-      const parent = `/Users/test/projects/organization/orca/workspaces/client-${index}`
+      const parent = `/Users/test/projects/organization/occ/workspaces/client-${index}`
       const detail = container.querySelector(`[title="${parent}"]`)
       expect(detail?.textContent).toBe(parent)
       expect(detail?.lastElementChild?.textContent).toBe(`/workspaces/client-${index}`)

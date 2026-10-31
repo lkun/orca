@@ -12,7 +12,7 @@ import { holdForStoppedWslDistro, wslRestoreStartArgs } from './wsl-distro-stopp
 import { parseWslDistroHold } from '../../../../../shared/wsl-distro-stopped-hold'
 import { NEWER_DAEMON_HOLD_ERROR } from '../../../../../shared/newer-daemon-hold'
 import { PANE_NOT_LIVE_ERROR } from '../../../../../shared/pane-attach-only-view'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import { holdInPlaceResumeUntilSettled } from './in-place-resume-hold'
 import { mainStartsPane, startMainPaneOnFirstView } from './main-starts-pane'
 import { attachResumeCheck } from './main-pane-resume-banner'
@@ -298,7 +298,7 @@ function connectDeferredSessionReattach(
     }
   })
   // Switch point: main clears the gone terminal's binding before this reattach's fresh start.
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     holdInPlaceResumeUntilSettled(() => !session.disposed, coldRestoreStartup, outcome)
   }
   return outcome

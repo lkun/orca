@@ -13,7 +13,7 @@ import { migrateForkRemoteRefspecsWithExec } from './worktree-push-target-refspe
 const execFileAsync = promisify(execFile)
 
 const REPO_ID = 'repo-1'
-const FORK_REMOTE = 'pr-contributor-orca'
+const FORK_REMOTE = 'pr-contributor-occ'
 const TRACKED_BRANCH = 'contributor/fix'
 const OTHER_FORK_BRANCHES = Array.from({ length: 12 }, (_, i) => `contributor/unrelated-${i}`)
 
@@ -30,7 +30,7 @@ const execGit: GitRemoteExec = (args, cwd) => execFileAsync('git', args, { cwd }
 
 async function setIdentity(cwd: string): Promise<void> {
   await git(['config', 'user.name', 'OCC Test'], cwd)
-  await git(['config', 'user.email', 'orca@example.test'], cwd)
+  await git(['config', 'user.email', 'occ@example.test'], cwd)
   await git(['config', 'commit.gpgSign', 'false'], cwd)
   await git(['config', 'core.hooksPath', '.git/no-hooks'], cwd)
 }
@@ -57,7 +57,7 @@ function storeOf(entries: Record<string, GitPushTarget | undefined>): WorktreePu
 
 beforeEach(async () => {
   // macOS temp aliases must match Git's canonical paths.
-  scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'orca-fork-refspec-')))
+  scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'occ-fork-refspec-')))
   repoPath = join(scratchDir, 'repo')
   forkPath = join(scratchDir, 'fork')
   await mkdir(repoPath, { recursive: true })

@@ -75,7 +75,7 @@ export async function rePairPairedElectronClient(
     process.env.GITHUB_ACTIONS === 'true' &&
     process.platform === 'linux' &&
     process.env.DISPLAY &&
-    process.env.ORCA_BACKGROUND_LAUNCH !== '1'
+    process.env.OCC_BACKGROUND_LAUNCH !== '1'
   ) {
     await revealPairedClientWindow(client)
   }

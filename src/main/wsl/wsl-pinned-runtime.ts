@@ -8,11 +8,11 @@ import {
   nodeRuntimeStoreDir,
   posixNodeRuntimeExecutable,
   probeRemoteNodeRuntimeCommand
-} from '../managed-server/install/orcad-remote-node-runtime'
+} from '../managed-server/install/occd-remote-node-runtime'
 import {
   REMOTE_NODE_RUNTIME_READY,
   assertRemoteNodeRuntimePromoted
-} from '../ssh/orcad-remote-node-runtime-report'
+} from '../ssh/occd-remote-node-runtime-report'
 import { getRemoteHostPlatform } from '../ssh/ssh-remote-platform'
 import { isGlibcBelow, PINNED_NODE_GLIBC_FLOOR } from '../ssh/pinned-runtime-host-target'
 import type { WslSpec } from './wsl-runner'
@@ -46,7 +46,7 @@ export async function ensureWslPinnedRuntime(
     throw new Error('WSL did not provide an absolute home directory.')
   }
   const host = getRemoteHostPlatform(arch === 'x86_64' ? 'linux-x64' : 'linux-arm64')
-  const runtimeDir = nodeRuntimeStoreDir(host, `${home}/.cache/orca`, target)
+  const runtimeDir = nodeRuntimeStoreDir(host, `${home}/.cache/occ`, target)
   const executable = posixNodeRuntimeExecutable(host, runtimeDir)
   const probe = await run({
     script: probeRemoteNodeRuntimeCommand(host, runtimeDir, target),

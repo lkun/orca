@@ -36,7 +36,7 @@ const BASE_LOCALE_KEY_OVERRIDES = {
     zh: '打开工作树面板',
     ja: 'ワークツリーパレットを開く'
   },
-  'menu.exploreOrca': { ko: 'OCC 둘러보기', zh: '探索 OCC', ja: 'OCC を探索' },
+  'menu.exploreOCC': { ko: 'OCC 둘러보기', zh: '探索 OCC', ja: 'OCC を探索' },
   'worktreeJumpPalette.matchLabel.issue': { ko: '이슈', zh: '议题', ja: 'Issue' },
   'worktreeJumpPalette.matchLabel.comment': { ko: '댓글', zh: '评论', ja: 'コメント' },
   'auto.hooks.useSettingsNavigationMetadata.13241992bd': {

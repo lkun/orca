@@ -14,7 +14,7 @@ import {
 } from 'node:fs'
 import { homedir, tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import {
   buildWindowsAgentHookPostCommand,
   buildWindowsAgentHookCurlPostCommand,
@@ -38,7 +38,7 @@ let tmpDir: string
 let configPath: string
 
 beforeEach(() => {
-  tmpDir = mkdtempSync(join(tmpdir(), 'orca-installer-utils-test-'))
+  tmpDir = mkdtempSync(join(tmpdir(), 'occ-installer-utils-test-'))
   configPath = join(tmpDir, 'settings.json')
 })
 
@@ -274,14 +274,14 @@ describe('createManagedCommandMatcher', () => {
   })
 
   it('matches encoded Windows launcher commands by decoding their script path', () => {
-    const command = wrapWindowsHookCommand('C:\\Users\\alice\\.orca\\agent-hooks\\claude-hook.cmd')
+    const command = wrapWindowsHookCommand('C:\\Users\\alice\\.occ\\agent-hooks\\claude-hook.cmd')
     expect(match(command)).toBe(true)
   })
 
   it('matches the pre-default-form launcher so upgrades replace it instead of duplicating', () => {
     expect(
       match(
-        'if [ -z "$HOME" ]; then :; else if [ -f "$HOME/.orca/agent-hooks/claude-hook.sh" ]; then /bin/sh "$HOME/.orca/agent-hooks/claude-hook.sh"; fi; fi'
+        'if [ -z "$HOME" ]; then :; else if [ -f "$HOME/.occ/agent-hooks/claude-hook.sh" ]; then /bin/sh "$HOME/.occ/agent-hooks/claude-hook.sh"; fi; fi'
       )
     ).toBe(true)
   })
@@ -290,11 +290,11 @@ describe('createManagedCommandMatcher', () => {
     const matchPosix = createManagedCommandMatcher('copilot-hook.sh')
     const matchPowerShell = createManagedCommandMatcher('copilot-hook.ps1')
 
-    expect(matchPosix("& 'C:\\Users\\alice\\.orca\\agent-hooks\\copilot-hook.ps1'")).toBe(true)
+    expect(matchPosix("& 'C:\\Users\\alice\\.occ\\agent-hooks\\copilot-hook.ps1'")).toBe(true)
     expect(
-      matchPosix(wrapWindowsHookCommand('C:\\Users\\alice\\.orca\\agent-hooks\\copilot-hook.ps1'))
+      matchPosix(wrapWindowsHookCommand('C:\\Users\\alice\\.occ\\agent-hooks\\copilot-hook.ps1'))
     ).toBe(true)
-    expect(matchPowerShell("/bin/sh '/home/alice/.orca/agent-hooks/copilot-hook.sh'")).toBe(true)
+    expect(matchPowerShell("/bin/sh '/home/alice/.occ/agent-hooks/copilot-hook.sh'")).toBe(true)
   })
 })
 
@@ -358,7 +358,7 @@ describe('removeManagedCommands', () => {
                 'C:\\Windows\\System32\\cmd.exe',
                 '/d',
                 '/c',
-                'C:\\Users\\alice\\.orca\\agent-hooks\\copilot-hook.cmd'
+                'C:\\Users\\alice\\.occ\\agent-hooks\\copilot-hook.cmd'
               ]
             },
             { type: 'command', command: 'echo keep me' }
@@ -423,7 +423,7 @@ describe('hookDefinitionHasManagedCommand', () => {
             {
               type: 'command',
               command: 'C:\\Windows\\System32\\conhost.exe',
-              args: ['--headless', 'C:\\Users\\alice\\.orca\\agent-hooks\\copilot-hook.cmd']
+              args: ['--headless', 'C:\\Users\\alice\\.occ\\agent-hooks\\copilot-hook.cmd']
             }
           ]
         },
@@ -449,9 +449,9 @@ describe('hookDefinitionHasManagedCommand', () => {
 })
 
 describe('getSharedManagedScriptPath', () => {
-  it("returns ~/.orca/agent-hooks/<scriptFileName> rooted at the user's home", () => {
+  it("returns ~/.occ/agent-hooks/<scriptFileName> rooted at the user's home", () => {
     expect(getSharedManagedScriptPath('claude-hook.sh')).toBe(
-      join(homedir(), '.orca', 'agent-hooks', 'claude-hook.sh')
+      join(homedir(), '.occ', 'agent-hooks', 'claude-hook.sh')
     )
   })
 })
@@ -495,14 +495,14 @@ describe('wrapPosixHookCommand', () => {
     () => {
       const scriptPath = join(tmpDir, 'env-hook.sh')
       const event = "UserPromptSubmit ' $HOME ;"
-      writeFileSync(scriptPath, '#!/bin/sh\nprintf "%s" "$ORCA_COPILOT_HOOK_EVENT"\n', {
+      writeFileSync(scriptPath, '#!/bin/sh\nprintf "%s" "$OCC_COPILOT_HOOK_EVENT"\n', {
         mode: 0o755
       })
-      const command = wrapPosixHookCommand(scriptPath, { ORCA_COPILOT_HOOK_EVENT: event })
+      const command = wrapPosixHookCommand(scriptPath, { OCC_COPILOT_HOOK_EVENT: event })
       const result = runProcessSync({
         program: '/bin/sh',
-        args: ['-c', `${command}; printf '\n%s' "$ORCA_COPILOT_HOOK_EVENT"`],
-        env: { ...process.env, ORCA_COPILOT_HOOK_EVENT: 'parent-value' },
+        args: ['-c', `${command}; printf '\n%s' "$OCC_COPILOT_HOOK_EVENT"`],
+        env: { ...process.env, OCC_COPILOT_HOOK_EVENT: 'parent-value' },
         timeoutMs: 5000
       })
       expect(result.code).toBe(0)
@@ -606,35 +606,35 @@ function decodeWindowsHookCommand(command: string): string {
 
 describe('wrapWindowsHookCommand', () => {
   it('invokes the .cmd through an encoded PowerShell command', () => {
-    const command = wrapWindowsHookCommand('C:\\Users\\alice\\.orca\\agent-hooks\\codex-hook.cmd')
+    const command = wrapWindowsHookCommand('C:\\Users\\alice\\.occ\\agent-hooks\\codex-hook.cmd')
     expect(command).toMatch(qualifiedWindowsPowerShellCommand)
     expect(command).not.toMatch(/^powershell\b/i)
     const decoded = decodeWindowsHookCommand(command)
     expect(decoded).toMatch(/^\$ProgressPreference='SilentlyContinue'; try \{ Set-ExecutionPolicy/)
     expect(decoded).toContain(
-      "Test-Path -LiteralPath 'C:\\Users\\alice\\.orca\\agent-hooks\\codex-hook.cmd' -PathType Leaf"
+      "Test-Path -LiteralPath 'C:\\Users\\alice\\.occ\\agent-hooks\\codex-hook.cmd' -PathType Leaf"
     )
     expect(decoded).toContain(
-      "& 'C:\\Users\\alice\\.orca\\agent-hooks\\codex-hook.cmd'; exit $LASTEXITCODE"
+      "& 'C:\\Users\\alice\\.occ\\agent-hooks\\codex-hook.cmd'; exit $LASTEXITCODE"
     )
     expect(decoded).toContain('[Console]::In.ReadToEnd() | Out-Null; exit 0')
   })
 
   it('doubles typographic single quotes in the script path literal', () => {
     const decoded = decodeWindowsHookCommand(
-      wrapWindowsHookCommand('C:\\Users\\O\u2019Brien\\.orca\\agent-hooks\\codex-hook.cmd')
+      wrapWindowsHookCommand('C:\\Users\\O\u2019Brien\\.occ\\agent-hooks\\codex-hook.cmd')
     )
     expect(decoded).toContain(
-      "Test-Path -LiteralPath 'C:\\Users\\O\u2019\u2019Brien\\.orca\\agent-hooks\\codex-hook.cmd'"
+      "Test-Path -LiteralPath 'C:\\Users\\O\u2019\u2019Brien\\.occ\\agent-hooks\\codex-hook.cmd'"
     )
   })
 
   it('scopes environment variables inside the encoded launcher', () => {
     const command = wrapWindowsHookCommand('C:\\hooks\\copilot-hook.ps1', {
-      ORCA_COPILOT_HOOK_EVENT: 'UserPromptSubmit'
+      OCC_COPILOT_HOOK_EVENT: 'UserPromptSubmit'
     })
     expect(decodeWindowsHookCommand(command)).toContain(
-      "$env:ORCA_COPILOT_HOOK_EVENT = 'UserPromptSubmit'; if (Test-Path"
+      "$env:OCC_COPILOT_HOOK_EVENT = 'UserPromptSubmit'; if (Test-Path"
     )
   })
 
@@ -656,18 +656,18 @@ describe('wrapWindowsHookCommand', () => {
   })
 
   it('keeps cmd.exe percent expansion and caret escapes out of the command line', () => {
-    const cmd = wrapWindowsHookCommand('C:\\Users\\%ORCA_TEST%\\a^b\\codex-hook.cmd')
-    expect(cmd).not.toContain('%ORCA_TEST%')
+    const cmd = wrapWindowsHookCommand('C:\\Users\\%OCC_TEST%\\a^b\\codex-hook.cmd')
+    expect(cmd).not.toContain('%OCC_TEST%')
     expect(cmd).not.toContain('^')
     expect(decodeWindowsHookCommand(cmd)).toContain(
-      "Test-Path -LiteralPath 'C:\\Users\\%ORCA_TEST%\\a^b\\codex-hook.cmd' -PathType Leaf"
+      "Test-Path -LiteralPath 'C:\\Users\\%OCC_TEST%\\a^b\\codex-hook.cmd' -PathType Leaf"
     )
   })
 
   it.skipIf(process.platform !== 'win32')(
     'executes a script path containing a cmd.exe caret literally',
     () => {
-      const scriptDir = join(tmpDir, 'home with ^ caret', '.orca', 'agent-hooks')
+      const scriptDir = join(tmpDir, 'home with ^ caret', '.occ', 'agent-hooks')
       mkdirSync(scriptDir, { recursive: true })
       const scriptPath = join(scriptDir, 'codex-hook.cmd')
       writeFileSync(scriptPath, '@echo off\r\nexit /b 7\r\n', 'utf-8')
@@ -675,7 +675,7 @@ describe('wrapWindowsHookCommand', () => {
       const result = runProcessSync({
         program: 'cmd.exe',
         args: ['/d', '/c', wrapWindowsHookCommand(scriptPath)],
-        env: { ...process.env, ORCA_WRAP_TEST: 'expanded' },
+        env: { ...process.env, OCC_WRAP_TEST: 'expanded' },
         timeoutMs: 5000
       })
 
@@ -696,8 +696,8 @@ describe('wrapRuntimeHomeHookCommand', () => {
     expect(command).toContain('case "${OSTYPE-}" in msys*|cygwin*|win32*)')
     expect(command).toContain('case "${HOME-}" in *\\&*|*\\^*|*\\(*|*\\)*|*\\;*|*,*|*=*|*%*|*\\!*)')
     expect(command).not.toContain('uname')
-    expect(command).toContain('"${HOME-}/.orca/agent-hooks/claude-hook.cmd"')
-    expect(command).toContain('/bin/sh "${HOME-}/.orca/agent-hooks/claude-hook.sh"')
+    expect(command).toContain('"${HOME-}/.occ/agent-hooks/claude-hook.cmd"')
+    expect(command).toContain('/bin/sh "${HOME-}/.occ/agent-hooks/claude-hook.sh"')
     expect(command).not.toMatch(/[A-Z]:[\\/]|\/Users\/|\/home\//)
   })
 
@@ -732,8 +732,8 @@ describe('wrapRuntimeHomeHookCommand', () => {
   it('executes the destination HOME script for the current runtime', () => {
     const sourceHome = join(tmpDir, 'source profile')
     const destinationHome = join(tmpDir, "destination $HOME ' & profile")
-    const sourceScriptDir = join(sourceHome, '.orca', 'agent-hooks')
-    const destinationScriptDir = join(destinationHome, '.orca', 'agent-hooks')
+    const sourceScriptDir = join(sourceHome, '.occ', 'agent-hooks')
+    const destinationScriptDir = join(destinationHome, '.occ', 'agent-hooks')
     mkdirSync(sourceScriptDir, { recursive: true })
     mkdirSync(destinationScriptDir, { recursive: true })
     const windowsExitCode = process.platform === 'win32' ? 7 : 9
@@ -769,7 +769,7 @@ describe('wrapRuntimeHomeHookCommand', () => {
 
   it.skipIf(process.platform !== 'win32')('keeps common Windows profiles on the fast path', () => {
     const destinationHome = join(tmpDir, 'destination 国際 profile')
-    const scriptDir = join(destinationHome, '.orca', 'agent-hooks')
+    const scriptDir = join(destinationHome, '.occ', 'agent-hooks')
     mkdirSync(scriptDir, { recursive: true })
     writeFileSync(join(scriptDir, 'claude-hook.cmd'), '@echo off\r\nexit /b 7\r\n', 'utf-8')
     const result = runProcessSync({
@@ -801,7 +801,7 @@ describe('wrapRuntimeHomeHookCommand', () => {
       program: shell,
       args: [
         '-c',
-        wrapRuntimeHomeHookCommand('missing-orca-hook', { neutralJsonWhenMissing: true })
+        wrapRuntimeHomeHookCommand('missing-occ-hook', { neutralJsonWhenMissing: true })
       ],
       env: { ...process.env, HOME: tmpDir.replaceAll('\\', '/') },
       input: 'x'.repeat(1_000_000),
@@ -821,8 +821,8 @@ describe('buildWindowsAgentHookPostCommand', () => {
     expect(command).toContain('"%SystemRoot%\\System32\\curl.exe" -sS -X POST')
     expect(command).toContain('--connect-timeout 0.5 --max-time 1.5')
     expect(command).toContain('-H "Content-Type: application/x-www-form-urlencoded"')
-    expect(command).toContain('-H "X-OCC-Agent-Hook-Token: %ORCA_AGENT_HOOK_TOKEN%"')
-    expect(command).toContain('--data-urlencode "paneKey=%ORCA_PANE_KEY%"')
+    expect(command).toContain('-H "X-OCC-Agent-Hook-Token: %OCC_AGENT_HOOK_TOKEN%"')
+    expect(command).toContain('--data-urlencode "paneKey=%OCC_PANE_KEY%"')
     expect(command).toContain('--data-urlencode "payload@-"')
     expect(command).toContain('/hook/codex')
     expect(command).not.toContain('powershell')
@@ -849,8 +849,8 @@ describe('buildPosixAgentHookPostCommand', () => {
       const payloadPath = join(tmpDir, 'curl-payload')
       const payload = '{"prompt":"漢字 $HOME & quoted"}'
       const command = [
-        'curl() { printf "%s\n" "$@" > "$ORCA_TEST_CURL_ARGS"; cat > "$ORCA_TEST_CURL_PAYLOAD"; }',
-        'payload="$ORCA_TEST_PAYLOAD"',
+        'curl() { printf "%s\n" "$@" > "$OCC_TEST_CURL_ARGS"; cat > "$OCC_TEST_CURL_PAYLOAD"; }',
+        'payload="$OCC_TEST_PAYLOAD"',
         ...buildPosixAgentHookPostCommand('claude')
       ].join('\n')
       const result = runProcessSync({
@@ -858,18 +858,18 @@ describe('buildPosixAgentHookPostCommand', () => {
         args: ['-c', command],
         env: {
           PATH: '/usr/bin:/bin',
-          ORCA_AGENT_HOOK_TRANSPORT: transport,
-          ORCA_AGENT_HOOK_PORT: '1234',
-          ORCA_AGENT_HOOK_TOKEN: 'token',
-          ORCA_PANE_KEY: 'tab:leaf',
-          ORCA_TAB_ID: 'tab',
-          ORCA_AGENT_LAUNCH_TOKEN: 'launch',
-          ORCA_WORKTREE_ID: 'folder:/path & space',
-          ORCA_AGENT_HOOK_ENV: 'prod',
-          ORCA_AGENT_HOOK_VERSION: '1',
-          ORCA_TEST_CURL_ARGS: argsPath,
-          ORCA_TEST_CURL_PAYLOAD: payloadPath,
-          ORCA_TEST_PAYLOAD: payload
+          OCC_AGENT_HOOK_TRANSPORT: transport,
+          OCC_AGENT_HOOK_PORT: '1234',
+          OCC_AGENT_HOOK_TOKEN: 'token',
+          OCC_PANE_KEY: 'tab:leaf',
+          OCC_TAB_ID: 'tab',
+          OCC_AGENT_LAUNCH_TOKEN: 'launch',
+          OCC_WORKTREE_ID: 'folder:/path & space',
+          OCC_AGENT_HOOK_ENV: 'prod',
+          OCC_AGENT_HOOK_VERSION: '1',
+          OCC_TEST_CURL_ARGS: argsPath,
+          OCC_TEST_CURL_PAYLOAD: payloadPath,
+          OCC_TEST_PAYLOAD: payload
         },
         timeoutMs: 5000
       })
@@ -903,11 +903,11 @@ describe('buildWindowsAgentHookCurlPostCommand', () => {
 
     expect(command).not.toMatch(/powershell/i)
     expect(command).toContain('%SystemRoot%\\System32\\curl.exe')
-    expect(command).toContain('http://127.0.0.1:%ORCA_AGENT_HOOK_PORT%/hook/codex')
+    expect(command).toContain('http://127.0.0.1:%OCC_AGENT_HOOK_PORT%/hook/codex')
     expect(command).toContain('-H "Content-Type: application/x-www-form-urlencoded"')
-    expect(command).toContain('-H "X-OCC-Agent-Hook-Token: %ORCA_AGENT_HOOK_TOKEN%"')
-    expect(command).toContain('--data-urlencode "paneKey=%ORCA_PANE_KEY%"')
-    expect(command).toContain('--data-urlencode "worktreeId=%ORCA_WORKTREE_ID%"')
+    expect(command).toContain('-H "X-OCC-Agent-Hook-Token: %OCC_AGENT_HOOK_TOKEN%"')
+    expect(command).toContain('--data-urlencode "paneKey=%OCC_PANE_KEY%"')
+    expect(command).toContain('--data-urlencode "worktreeId=%OCC_WORKTREE_ID%"')
     // payload@- preserves stdin’s UTF-8 bytes without code-page conversion.
     expect(command).toContain('--data-urlencode "payload@-"')
     expect(command).toContain('--connect-timeout 0.5 --max-time 1.5')

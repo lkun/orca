@@ -4,9 +4,9 @@ import type {
   RuntimeMobileSessionTabsSnapshot
 } from '../../shared/runtime-types'
 
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
-const { store, TEST_WORKTREE_ID } = await import('./orca-runtime-test-fixtures.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
+const { store, TEST_WORKTREE_ID } = await import('./occ-runtime-test-fixtures.spec')
 const { committingSpawn } = await import('./bind-first-pane.test-fixture')
 
 const retired = {
@@ -26,10 +26,10 @@ type RuntimeInternals = {
 }
 
 function seedRuntimeWithStoredProof(): {
-  runtime: InstanceType<typeof OrcaRuntimeService>
+  runtime: InstanceType<typeof OCCRuntimeService>
   internals: RuntimeInternals
 } {
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   runtime.setPtyController({
     // As the PTY host's spawn commit: the new pane is bound before the terminal registers.
     spawn: vi.fn(committingSpawn(runtime, async () => ({ id: 'pty-runtime-fallback' }))),

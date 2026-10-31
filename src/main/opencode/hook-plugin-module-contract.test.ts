@@ -27,16 +27,16 @@ describe('OpenCode status plugin module contract', () => {
       server?: (ctx: unknown) => Promise<PluginHooks>
       setup?: (ctx: unknown) => Promise<() => Promise<void>>
     }
-    OrcaOpenCodeStatusPlugin?: (ctx: unknown) => Promise<PluginHooks>
+    OCCOpenCodeStatusPlugin?: (ctx: unknown) => Promise<PluginHooks>
   }
 
   // Isolate endpoint-file and environment inputs so tests cannot post to a live OCC session.
   const ENV_KEYS = [
-    'ORCA_OPENCODE_PLUGIN_API',
-    'ORCA_PANE_KEY',
-    'ORCA_AGENT_HOOK_ENDPOINT',
-    'ORCA_AGENT_HOOK_PORT',
-    'ORCA_AGENT_HOOK_TOKEN'
+    'OCC_OPENCODE_PLUGIN_API',
+    'OCC_PANE_KEY',
+    'OCC_AGENT_HOOK_ENDPOINT',
+    'OCC_AGENT_HOOK_PORT',
+    'OCC_AGENT_HOOK_TOKEN'
   ] as const
 
   let tempDir: string
@@ -44,18 +44,18 @@ describe('OpenCode status plugin module contract', () => {
   let savedEnv: Record<string, string | undefined>
 
   beforeEach(() => {
-    tempDir = mkdtempSync(join(tmpdir(), 'orca-opencode-plugin-contract-'))
+    tempDir = mkdtempSync(join(tmpdir(), 'occ-opencode-plugin-contract-'))
     savedFetch = globalThis.fetch
     savedEnv = {}
     for (const key of ENV_KEYS) {
       savedEnv[key] = process.env[key]
     }
     // An inherited major selector can disable the generated plugin.
-    delete process.env.ORCA_OPENCODE_PLUGIN_API
-    delete process.env.ORCA_OPENCODE_AGENT
-    delete process.env.ORCA_AGENT_HOOK_ENDPOINT
-    process.env.ORCA_AGENT_HOOK_PORT = '59999'
-    process.env.ORCA_AGENT_HOOK_TOKEN = 'test-token'
+    delete process.env.OCC_OPENCODE_PLUGIN_API
+    delete process.env.OCC_OPENCODE_AGENT
+    delete process.env.OCC_AGENT_HOOK_ENDPOINT
+    process.env.OCC_AGENT_HOOK_PORT = '59999'
+    process.env.OCC_AGENT_HOOK_TOKEN = 'test-token'
   })
 
   afterEach(() => {
@@ -93,7 +93,7 @@ describe('OpenCode status plugin module contract', () => {
     // Bypass ESM caching between cases.
     const pluginPath = join(
       tempDir,
-      `orca-opencode-status-${Math.random().toString(36).slice(2)}.mjs`
+      `occ-opencode-status-${Math.random().toString(36).slice(2)}.mjs`
     )
     writeFileSync(pluginPath, source)
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: Runtime validation or the local test fixture establishes the asserted shape.
@@ -101,14 +101,14 @@ describe('OpenCode status plugin module contract', () => {
   }
 
   it('selects the same factory for a v1 execution host', async () => {
-    process.env.ORCA_OPENCODE_PLUGIN_API = 'v1'
+    process.env.OCC_OPENCODE_PLUGIN_API = 'v1'
     const module = await loadPluginModule()
     expect(module.default).toBeTypeOf('function')
-    expect(module.default).toBe(module.OrcaOpenCodeStatusPlugin)
+    expect(module.default).toBe(module.OCCOpenCodeStatusPlugin)
   })
 
   it('reports a session lifecycle event through the hook endpoint when driven via the default export', async () => {
-    process.env.ORCA_PANE_KEY = 'tab-1:leaf-1'
+    process.env.OCC_PANE_KEY = 'tab-1:leaf-1'
     const posts = captureHookPosts()
 
     const module = await loadPluginModule()
@@ -138,7 +138,7 @@ describe('OpenCode status plugin module contract', () => {
   })
 
   it('keeps OpenCode 2 busy across steps until the session becomes idle', async () => {
-    process.env.ORCA_PANE_KEY = 'tab-1:leaf-1'
+    process.env.OCC_PANE_KEY = 'tab-1:leaf-1'
     const posts = captureHookPosts()
 
     const module = await loadPluginModule(_internals.getOpenCode2PluginSource())
@@ -172,7 +172,7 @@ describe('OpenCode status plugin module contract', () => {
   })
 
   it('maps OpenCode 2 permission.v2 events to the existing permission card contract', async () => {
-    process.env.ORCA_PANE_KEY = 'tab-1:leaf-1'
+    process.env.OCC_PANE_KEY = 'tab-1:leaf-1'
     const posts = captureHookPosts()
 
     const module = await loadPluginModule(_internals.getOpenCode2PluginSource())
@@ -205,7 +205,7 @@ describe('OpenCode status plugin module contract', () => {
   })
 
   it('forwards admitted prompts and completed streamed text once', async () => {
-    process.env.ORCA_PANE_KEY = 'tab-1:leaf-1'
+    process.env.OCC_PANE_KEY = 'tab-1:leaf-1'
     const posts = captureHookPosts()
 
     const module = await loadPluginModule(_internals.getOpenCode2PluginSource())
@@ -248,7 +248,7 @@ describe('OpenCode status plugin module contract', () => {
   })
 
   it('maps question.v2 blockers and replies through the waiting lifecycle', async () => {
-    process.env.ORCA_PANE_KEY = 'tab-1:leaf-1'
+    process.env.OCC_PANE_KEY = 'tab-1:leaf-1'
     const posts = captureHookPosts()
 
     const module = await loadPluginModule(_internals.getOpenCode2PluginSource())

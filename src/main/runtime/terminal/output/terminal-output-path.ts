@@ -1,8 +1,8 @@
-import type { ApplyLayoutResult, DriverState, PtyLayoutTarget } from '../../orca-runtime-core'
-import { OrcaRuntimeWithGetOrchestrationDispatchAuthority } from './terminal-orchestration-authority'
+import type { ApplyLayoutResult, DriverState, PtyLayoutTarget } from '../../occ-runtime-core'
+import { OCCRuntimeWithGetOrchestrationDispatchAuthority } from './terminal-orchestration-authority'
 import { clampTerminalViewport } from '../../../../shared/terminal-viewport'
 
-export abstract class OrcaRuntimeWithHasRecentTerminalOutputPath extends OrcaRuntimeWithGetOrchestrationDispatchAuthority {
+export abstract class OCCRuntimeWithHasRecentTerminalOutputPath extends OCCRuntimeWithGetOrchestrationDispatchAuthority {
   protected abstract enqueueLayout(
     ptyId: string,
     target: PtyLayoutTarget

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi, type MockInstance } from 'vitest'
 import { openRelayDatabaseAtBoot } from './boot-database-open.js'
 import type { RelayDatabase } from './database.js'
 
-const input = { dataDir: '/tmp/orca-relay-boot', databaseUrl: 'postgres://relay@localhost/relay' }
+const input = { dataDir: '/tmp/occ-relay-boot', databaseUrl: 'postgres://relay@localhost/relay' }
 // The message the fleet actually saw: pg-pool reports the connect timeout with
 // no SQLSTATE, so the classifier has only this text to go on.
 const connectTimeout = (): Error => new Error('Connection terminated due to connection timeout')
@@ -34,9 +34,9 @@ describe('relay boot database open', () => {
     expect(open).toHaveBeenCalledTimes(3)
     expect(open).toHaveBeenCalledWith(input)
     expect(loggedEvents(warn)).toEqual([
-      'orca_relay_boot_database_retry',
-      'orca_relay_boot_database_retry',
-      'orca_relay_boot_database_recovered'
+      'occ_relay_boot_database_retry',
+      'occ_relay_boot_database_retry',
+      'occ_relay_boot_database_recovered'
     ])
     expect(JSON.parse(String(warn.mock.calls[0]?.[0]))).toMatchObject({
       attempt: 1,
@@ -53,7 +53,7 @@ describe('relay boot database open', () => {
 
     await expect(openRelayDatabaseAtBoot(input, open)).rejects.toBe(denied)
     expect(open).toHaveBeenCalledTimes(1)
-    expect(loggedEvents(warn)).toEqual(['orca_relay_boot_database_failed'])
+    expect(loggedEvents(warn)).toEqual(['occ_relay_boot_database_failed'])
     expect(JSON.parse(String(warn.mock.calls[0]?.[0]))).toMatchObject({
       attempts: 1,
       retryable: false,
@@ -72,7 +72,7 @@ describe('relay boot database open', () => {
 
       await expect(openRelayDatabaseAtBoot(input, open)).rejects.toBe(contention)
       expect(open).toHaveBeenCalledTimes(1)
-      expect(loggedEvents(warn)).toEqual(['orca_relay_boot_database_failed'])
+      expect(loggedEvents(warn)).toEqual(['occ_relay_boot_database_failed'])
       expect(JSON.parse(String(warn.mock.calls[0]?.[0]))).toMatchObject({
         attempts: 1,
         retryable: false,
@@ -113,8 +113,8 @@ describe('relay boot database open', () => {
     expect(Date.now()).toBeLessThanOrEqual(45_000)
     expect(open.mock.calls.length).toBeGreaterThan(1)
     const events = loggedEvents(warn)
-    expect(events.at(-1)).toBe('orca_relay_boot_database_failed')
-    expect(events.filter((event) => event === 'orca_relay_boot_database_retry')).toHaveLength(
+    expect(events.at(-1)).toBe('occ_relay_boot_database_failed')
+    expect(events.filter((event) => event === 'occ_relay_boot_database_retry')).toHaveLength(
       open.mock.calls.length - 1
     )
     expect(JSON.parse(String(warn.mock.calls.at(-1)?.[0]))).toMatchObject({

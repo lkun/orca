@@ -1,10 +1,10 @@
-import type { PipedChildProcess } from '@orca/process-host/process-spec'
+import type { PipedChildProcess } from '@occ/process-host/process-spec'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { relayBundleCandidates } from '../ssh/relay-bundle-paths'
 import { withWslGuestLauncherRevision } from '../wsl/wsl-guest-launcher-revision'
-import { orcadPosixNodeRuntimeGlobs } from '../managed-server/install/orcad-node-runtime-globs'
+import { occdPosixNodeRuntimeGlobs } from '../managed-server/install/occd-node-runtime-globs'
 
 import type { MultiplexerTransport } from '../ssh/ssh-channel-multiplexer'
 import {
@@ -12,7 +12,7 @@ import {
   type waitForWslRelaySentinel,
   type WslRelayStartupFailure
 } from './wsl-hook-relay-sentinel'
-import { addOrcaWslInteropEnv } from '../pty/wsl-orca-env'
+import { addOCCWslInteropEnv } from '../pty/wsl-occ-env'
 import { runWslProcess } from '../wsl/wsl-runner'
 import { resolveWslExecutablePath } from '../wsl/wsl-executable-path'
 import { buildWslExecArgs } from '../../shared/wsl-login-shell-command'
@@ -54,15 +54,15 @@ function guestRelayDirExpr(version: string): string {
 /** Probe candidate Node versions: noninteractive sh may miss a newer nvm installation. */
 export function buildGuestLaunchScript(version: string): string {
   const dir = guestRelayDirExpr(version)
-  // A WSL host distro may have no system node but usually has orcad's pinned runtime.
-  const [orcadRuntime, orcadMachineRuntimes] = orcadPosixNodeRuntimeGlobs()
+  // A WSL host distro may have no system node but usually has occd's pinned runtime.
+  const [occdRuntime, occdMachineRuntimes] = occdPosixNodeRuntimeGlobs()
   return [
     '#!/bin/sh',
     `d="${dir}"`,
     `v="$(cat "$d/${WSL_HOOK_RELAY_VERSION_FILE}" 2>/dev/null || true)"`,
     `[ -n "$${WSL_HOOK_RELAY_VERSION_ENV}" ] && [ "$v" = "$${WSL_HOOK_RELAY_VERSION_ENV}" ] || exit ${WSL_HOOK_RELAY_STALE_EXIT_CODE}`,
     'n=""',
-    `for c in "$(command -v node 2>/dev/null || true)" "$HOME/.nvm/versions/node"/*/bin/node /usr/local/bin/node /usr/bin/node "$HOME/.local/bin/node" ${orcadRuntime} ${orcadMachineRuntimes}; do`,
+    `for c in "$(command -v node 2>/dev/null || true)" "$HOME/.nvm/versions/node"/*/bin/node /usr/local/bin/node /usr/bin/node "$HOME/.local/bin/node" ${occdRuntime} ${occdMachineRuntimes}; do`,
     '  [ -n "$c" ] && [ -x "$c" ] || continue',
     `  if "$c" -e 'process.exit(Number(process.versions.node.split(".")[0])>=18?0:1)' 2>/dev/null; then`,
     '    n="$c"',
@@ -83,13 +83,13 @@ export function buildGuestInstallScript(bundleJs: Buffer, version: string): stri
     'umask 077',
     `d="${guestRelayDirExpr(version)}"`,
     'mkdir -p "$d"',
-    `base64 -d > "$d/bundle.$$.tmp" << 'ORCA_EOF_BUNDLE'`,
+    `base64 -d > "$d/bundle.$$.tmp" << 'OCC_EOF_BUNDLE'`,
     b64.trimEnd(),
-    'ORCA_EOF_BUNDLE',
+    'OCC_EOF_BUNDLE',
     `mv "$d/bundle.$$.tmp" "$d/${WSL_HOOK_RELAY_BUNDLE_NAME}"`,
-    `cat > "$d/launch.$$.tmp" << 'ORCA_EOF_LAUNCH'`,
+    `cat > "$d/launch.$$.tmp" << 'OCC_EOF_LAUNCH'`,
     buildGuestLaunchScript(version).trimEnd(),
-    'ORCA_EOF_LAUNCH',
+    'OCC_EOF_LAUNCH',
     'mv "$d/launch.$$.tmp" "$d/launch.sh"',
     'chmod 700 "$d/launch.sh"',
     // Publish the version marker after the bundle and launcher are ready.
@@ -224,15 +224,15 @@ export function buildWslRelaySpawnEnv(
   const env: NodeJS.ProcessEnv = {
     ...process.env,
     WSL_UTF8: '1',
-    ORCA_AGENT_HOOK_PORT: coords.ORCA_AGENT_HOOK_PORT,
-    ORCA_AGENT_HOOK_TOKEN: coords.ORCA_AGENT_HOOK_TOKEN,
-    ORCA_AGENT_HOOK_ENV: coords.ORCA_AGENT_HOOK_ENV,
-    ORCA_AGENT_HOOK_VERSION: coords.ORCA_AGENT_HOOK_VERSION,
+    OCC_AGENT_HOOK_PORT: coords.OCC_AGENT_HOOK_PORT,
+    OCC_AGENT_HOOK_TOKEN: coords.OCC_AGENT_HOOK_TOKEN,
+    OCC_AGENT_HOOK_ENV: coords.OCC_AGENT_HOOK_ENV,
+    OCC_AGENT_HOOK_VERSION: coords.OCC_AGENT_HOOK_VERSION,
     [WSL_HOOK_RELAY_VERSION_ENV]: bundleVersion,
     [WSL_HOOK_RELAY_INSTANCE_ENV]: instanceKey
   }
   // The guest derives its endpoint path; do not translate the Windows endpoint through WSLENV.
-  delete env.ORCA_AGENT_HOOK_ENDPOINT
-  addOrcaWslInteropEnv(env as Record<string, string>)
+  delete env.OCC_AGENT_HOOK_ENDPOINT
+  addOCCWslInteropEnv(env as Record<string, string>)
   return env
 }

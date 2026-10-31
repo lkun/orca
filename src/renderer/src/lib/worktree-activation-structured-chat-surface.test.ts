@@ -25,8 +25,8 @@ afterEach(() => {
 })
 
 const setup = {
-  runnerScriptPath: '/tmp/repo/.git/orca/setup-runner.sh',
-  envVars: { ORCA_WORKTREE_PATH: '/tmp/worktrees/wt-1' }
+  runnerScriptPath: '/tmp/repo/.git/occ/setup-runner.sh',
+  envVars: { OCC_WORKTREE_PATH: '/tmp/worktrees/wt-1' }
 }
 
 // Returned setup scripts must not force Terminal 1 beside a new native chat.

@@ -4,7 +4,7 @@ import { act, type ReactNode } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_LINEAR_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { OCC_LINEAR_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import { getLinearUsageExamples } from '@/lib/linear-usage-examples'
 import { LinearAgentSkillPane } from './LinearAgentSkillPane'
 
@@ -13,7 +13,7 @@ const mocks = vi.hoisted(() => ({
   runtime: 'native' as 'native' | 'wsl',
   skillInstalled: true,
   skillUnverifiable: false,
-  updateSkillName: 'orca-linear',
+  updateSkillName: 'occ-linear',
   linearConnected: true,
   visibleTaskProviders: ['github', 'linear'] as string[],
   openSettingsPage: vi.fn(),
@@ -125,7 +125,7 @@ describe('LinearAgentSkillPane', () => {
     mocks.runtime = 'native'
     mocks.skillInstalled = true
     mocks.skillUnverifiable = false
-    mocks.updateSkillName = 'orca-linear'
+    mocks.updateSkillName = 'occ-linear'
     mocks.linearConnected = true
     mocks.visibleTaskProviders = ['github', 'linear']
     mocks.openSettingsPage.mockClear()
@@ -194,7 +194,7 @@ describe('LinearAgentSkillPane', () => {
     expect(examples).toHaveLength(5)
     for (const example of examples) {
       expect(markup).toContain(example.title)
-      expect(example.prompt).toContain('/orca-linear')
+      expect(example.prompt).toContain('/occ-linear')
       expect(example.prompt).not.toContain('{{value0}}')
     }
   })
@@ -218,14 +218,14 @@ describe('LinearAgentSkillPane', () => {
     )
   })
 
-  it('passes the orca-linear install/update skills and freshness on a local runtime', async () => {
+  it('passes the occ-linear install/update skills and freshness on a local runtime', async () => {
     await renderPane()
 
     expect(mocks.panelProps.at(-1)).toEqual(
       expect.objectContaining({
-        skillNames: [ORCA_LINEAR_SKILL_NAME],
-        installedSkillNames: [ORCA_LINEAR_SKILL_NAME],
-        freshnessSkillName: ORCA_LINEAR_SKILL_NAME
+        skillNames: [OCC_LINEAR_SKILL_NAME],
+        installedSkillNames: [OCC_LINEAR_SKILL_NAME],
+        freshnessSkillName: OCC_LINEAR_SKILL_NAME
       })
     )
   })

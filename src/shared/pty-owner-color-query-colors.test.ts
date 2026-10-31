@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest'
 import {
-  ORCA_DEFAULT_COLOR_QUERY_REPLY_COLORS,
+  OCC_DEFAULT_COLOR_QUERY_REPLY_COLORS,
   normalizeColorQueryReplyColors,
   resolvePtyOwnerColorQueryColors
 } from './pty-owner-color-query-colors'
@@ -14,9 +14,9 @@ it('prefers host colours, then spawn colours, then the default, skipping unusabl
   expect(resolvePtyOwnerColorQueryColors(null, spawn)).toEqual(spawn)
   expect(resolvePtyOwnerColorQueryColors(unusable, spawn)).toEqual(spawn)
   expect(resolvePtyOwnerColorQueryColors(null, unusable)).toBe(
-    ORCA_DEFAULT_COLOR_QUERY_REPLY_COLORS
+    OCC_DEFAULT_COLOR_QUERY_REPLY_COLORS
   )
-  expect(resolvePtyOwnerColorQueryColors(undefined, {})).toBe(ORCA_DEFAULT_COLOR_QUERY_REPLY_COLORS)
+  expect(resolvePtyOwnerColorQueryColors(undefined, {})).toBe(OCC_DEFAULT_COLOR_QUERY_REPLY_COLORS)
 })
 
 it('keeps only a wire pair that answers both slots', () => {

@@ -51,11 +51,11 @@ describe('CliInstaller', () => {
     expect(userPath).toContain(join(fixture.root, 'Programs', 'OCC', 'bin'))
 
     const wrapperContent = await readFile(installPath, 'utf8')
-    expect(wrapperContent).toContain('ORCA_LAUNCHER=')
+    expect(wrapperContent).toContain('OCC_LAUNCHER=')
     expect(wrapperContent).toContain('occ.cmd')
     const launcherContent = await readFile(installed.launcherPath as string, 'utf8')
-    expect(launcherContent).toContain(`set "ORCA_USER_DATA_PATH=${fixture.userDataPath}"`)
-    expect(launcherContent).toContain('set "ORCA_APP_EXECUTABLE=%ELECTRON%"')
+    expect(launcherContent).toContain(`set "OCC_USER_DATA_PATH=${fixture.userDataPath}"`)
+    expect(launcherContent).toContain('set "OCC_APP_EXECUTABLE=%ELECTRON%"')
 
     const removed = await installer.remove()
     expect(removed.state).toBe('not_installed')
@@ -204,7 +204,7 @@ describe('CliInstaller', () => {
   it('keeps a bundled Windows launcher installed when the user PATH read is unknown', async () => {
     const fixture = await makeFixture()
     const resourcesPath = join(fixture.root, 'resources')
-    const bundledLauncher = join(resourcesPath, 'bin', 'orca.exe')
+    const bundledLauncher = join(resourcesPath, 'bin', 'occ.exe')
     await mkdir(dirname(bundledLauncher), { recursive: true })
     await writeFile(bundledLauncher, 'native launcher', 'utf8')
 
@@ -232,7 +232,7 @@ describe('CliInstaller', () => {
     const fixture = await makeFixture()
     const localAppDataPath = join(fixture.root, 'AppData', 'Local')
     const resourcesPath = join(fixture.root, 'D Custom OCC', 'resources')
-    const bundledLauncher = join(resourcesPath, 'bin', 'orca.exe')
+    const bundledLauncher = join(resourcesPath, 'bin', 'occ.exe')
     const bundledContent = 'native launcher'
     await mkdir(dirname(bundledLauncher), { recursive: true })
     await writeFile(bundledLauncher, bundledContent, 'utf8')

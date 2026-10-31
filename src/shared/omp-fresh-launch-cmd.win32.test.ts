@@ -2,16 +2,16 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { buildAgentStartupPlan } from './tui-agent-startup'
 
-// The setup gate hands the line to cmd as `<wait> && %ORCA_SEQUENCED_STARTUP_COMMAND%`; cmd expands once.
+// The setup gate hands the line to cmd as `<wait> && %OCC_SEQUENCED_STARTUP_COMMAND%`; cmd expands once.
 it.skipIf(process.platform !== 'win32')(
   'guards OMP alike when typed or read from a variable',
   async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca omp & (cmd) '))
+    const root = await mkdtemp(join(tmpdir(), 'occ omp & (cmd) '))
     try {
-      const config = join(root, 'fresh %ORCA_EXPANSION_PROBE% & settings!.yml')
+      const config = join(root, 'fresh %OCC_EXPANSION_PROBE% & settings!.yml')
       const capture = join(root, 'argv.json')
       const script =
         'require("fs").writeFileSync(process.env.CAPTURE, JSON.stringify(process.argv.slice(2)))'
@@ -26,7 +26,7 @@ it.skipIf(process.platform !== 'win32')(
         shell: 'cmd'
       })
       const launch = plan?.launchCommand ?? ''
-      for (const line of [launch, 'ver >nul && %ORCA_SEQUENCED_STARTUP_COMMAND%']) {
+      for (const line of [launch, 'ver >nul && %OCC_SEQUENCED_STARTUP_COMMAND%']) {
         for (const present of [true, false]) {
           await rm(config, { force: true })
           await rm(capture, { force: true })
@@ -41,9 +41,9 @@ it.skipIf(process.platform !== 'win32')(
             env: {
               ...process.env,
               CAPTURE: capture,
-              ORCA_EXPANSION_PROBE: 'unexpected',
-              ORCA_OMP_FRESH_CONFIG: config,
-              ORCA_SEQUENCED_STARTUP_COMMAND: launch
+              OCC_EXPANSION_PROBE: 'unexpected',
+              OCC_OMP_FRESH_CONFIG: config,
+              OCC_SEQUENCED_STARTUP_COMMAND: launch
             },
             input: `${line}\r\nexit %errorlevel%\r\n`
           })

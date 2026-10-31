@@ -52,11 +52,11 @@ function makeAutomation(overrides: Partial<Automation> = {}): Automation {
     updatedAt: 1,
     runContext: {
       kind: 'workspace-run',
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: 'runtime:gpu',
       projectHostSetupId: 'setup-gpu',
       repoId: 'repo-1',
-      path: '/srv/orca'
+      path: '/srv/occ'
     },
     ...overrides
   }
@@ -129,7 +129,7 @@ describe('automation host client', () => {
   it('encodes exact machine selectors for the create wire input', () => {
     const automation = makeAutomation({
       workspaceMode: 'existing',
-      workspaceId: 'repo-1::/srv/orca'
+      workspaceId: 'repo-1::/srv/occ'
     })
     const input: AutomationCreateInput = {
       name: automation.name,
@@ -148,7 +148,7 @@ describe('automation host client', () => {
 
     expect(toRuntimeAutomationCreateInput(input)).toMatchObject({
       repo: 'id:repo-1',
-      workspace: 'id:repo-1::/srv/orca'
+      workspace: 'id:repo-1::/srv/occ'
     })
     // A per-run workspace states no workspace selector at all.
     expect(
@@ -160,11 +160,11 @@ describe('automation host client', () => {
     const automation = makeAutomation({
       runContext: {
         kind: 'workspace-run',
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         hostId: 'ssh:devbox',
         projectHostSetupId: 'setup-devbox',
         repoId: 'repo-1',
-        path: '/srv/orca'
+        path: '/srv/occ'
       }
     })
     const sourceTarget = { kind: 'environment' as const, environmentId: 'gpu' }
@@ -199,7 +199,7 @@ describe('getAutomationListedTargetFromHostId', () => {
 
   // #32415: a web run link names 'local', but the catalog lists the server only as its runtime.
   it('lists a paired web client local and SSH hosts under its server', () => {
-    Object.assign(globalThis, { __ORCA_WEB_CLIENT__: true })
+    Object.assign(globalThis, { __OCC_WEB_CLIENT__: true })
     try {
       for (const hostId of ['local', 'ssh:box', undefined]) {
         expect(getAutomationListedTargetFromHostId(hostId, state)).toEqual({
@@ -208,7 +208,7 @@ describe('getAutomationListedTargetFromHostId', () => {
         })
       }
     } finally {
-      Reflect.deleteProperty(globalThis, '__ORCA_WEB_CLIENT__')
+      Reflect.deleteProperty(globalThis, '__OCC_WEB_CLIENT__')
     }
   })
 

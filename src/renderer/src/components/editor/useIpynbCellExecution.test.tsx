@@ -134,8 +134,8 @@ describe('notebook cell execution', () => {
     [
       'a managed SSH workspace owned by its server',
       ownerRows(
-        { executionHostId: 'runtime:env-orcad' },
-        { hostId: 'runtime:env-orcad', runtimeOwnerEnvironmentId: 'env-orcad' }
+        { executionHostId: 'runtime:env-occd' },
+        { hostId: 'runtime:env-occd', runtimeOwnerEnvironmentId: 'env-occd' }
       )
     ],
     [

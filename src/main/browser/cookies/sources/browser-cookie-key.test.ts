@@ -2,7 +2,7 @@ import { pbkdf2Sync } from 'node:crypto'
 import { beforeEach, expect, it, vi } from 'vitest'
 
 const { runProcessSyncMock } = vi.hoisted(() => ({ runProcessSyncMock: vi.fn() }))
-vi.mock('@orca/process-host', () => ({ runProcessSync: runProcessSyncMock }))
+vi.mock('@occ/process-host', () => ({ runProcessSync: runProcessSyncMock }))
 
 import { getLinuxEncryptionKey } from './browser-cookie-key'
 

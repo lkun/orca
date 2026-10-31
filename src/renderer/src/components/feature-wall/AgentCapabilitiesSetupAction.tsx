@@ -119,7 +119,7 @@ export function AgentCapabilitiesSetupAction(props: {
           }
         )
       }
-      // COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+      // COMPAT(wsl-bridge): removed when WSL runs as an occd host.
       if (legacyWsl) {
         const command = buildAgentFeatureSkillInstallCommand(result.skillNames)
         await window.api.ui.writeClipboardText(
@@ -168,7 +168,7 @@ export function AgentCapabilitiesSetupAction(props: {
 
   return (
     <div className="space-y-5">
-      {/* COMPAT(wsl-bridge): removed when WSL runs as an orcad host. */}
+      {/* COMPAT(wsl-bridge): removed when WSL runs as an occd host. */}
       {wslSetup ? (
         <FeatureSetupInlineTerminal
           command={wslSetup.command}
@@ -309,7 +309,7 @@ function AgentCapabilitySetupControls(props: {
             {props.setupBusyLabel ??
               (props.installAction?.kind === 'replace'
                 ? translate(
-                    'auto.components.settings.AgentSkillSetupPanel.replaceWithOrcaCopy',
+                    'auto.components.settings.AgentSkillSetupPanel.replaceWithOCCCopy',
                     "Replace with OCC's copy"
                   )
                 : props.installAction?.kind === 'run' && props.installAction.changes

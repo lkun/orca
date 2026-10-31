@@ -5,7 +5,7 @@ import type { Worktree } from './types'
 import { resolveConfiguredWorktreeBasePaths } from './configured-worktree-base-path'
 import { createWorktreeVisibilitySourceMatcher } from './visibility-sources'
 import {
-  buildKnownOrcaWorkspaceLayouts,
+  buildKnownOCCWorkspaceLayouts,
   toDetectedWorktree,
   EXTERNAL_WORKTREE_VISIBILITY_ROLLOUT_AT
 } from './ownership'
@@ -50,7 +50,7 @@ function makeWorktree(path: string): Worktree {
 
 function makeSettings(overrides: Partial<GlobalSettings> = {}): GlobalSettings {
   return {
-    workspaceDir: '/orca/workspaces',
+    workspaceDir: '/occ/workspaces',
     nestWorkspaces: true,
     workspaceDirHistory: [],
     ...overrides
@@ -62,7 +62,7 @@ function detect(repo: Repo, path: string, settings = makeSettings()) {
     repo,
     settings,
     worktree: makeWorktree(path),
-    knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo)
+    knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo)
   })
 }
 
@@ -91,7 +91,7 @@ describe('a configured worktree base that collides with a built-in visibility so
       externalWorktreeVisibility: 'hide',
       worktreeVisibilitySourcePreferences: { builtIn: { claude: 'show' } }
     })
-    const linkedCheckout = '/orca/workspaces/OrbisCXM/feature-x'
+    const linkedCheckout = '/occ/workspaces/OrbisCXM/feature-x'
     const settings = makeSettings()
 
     expect(
@@ -99,7 +99,7 @@ describe('a configured worktree base that collides with a built-in visibility so
         repo,
         settings,
         worktree: makeWorktree(`${linkedCheckout}/.claude/worktrees/agent-a04ccaaa`),
-        knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo),
+        knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo),
         worktreeVisibilitySourceMatcher: createWorktreeVisibilitySourceMatcher(
           [repo.path, linkedCheckout],
           [],
@@ -185,7 +185,7 @@ describe('agent scratch stays hidden for repos that did not configure that base 
         repo,
         settings,
         worktree: makeWorktree(`${nestedCheckout}/.claude/worktrees/agent-a04ccaaa`),
-        knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repo),
+        knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repo),
         worktreeVisibilitySourceMatcher: createWorktreeVisibilitySourceMatcher(
           [repo.path, nestedCheckout],
           [],

@@ -157,7 +157,7 @@ export const NEVER_TRANSLATE_VALUES = new Set([
   '/home/user',
   '/home/user/project',
   '/path/to/destination',
-  '.orca/issue-command',
+  '.occ/issue-command',
   'PLAN.md',
   'feat/mobile-page',
   'sk-...',
@@ -209,11 +209,11 @@ export const NEVER_TRANSLATE_VALUES = new Set([
   '/signup',
   'npm run dev',
   'nbformat',
-  'orca.yaml',
+  'occ.yaml',
   'upstream',
   'LIN-329',
   'GH #1799',
-  'orca · zsh'
+  'occ · zsh'
 ])
 
 export const NATIVE_PICKER_LABELS = {
@@ -514,8 +514,8 @@ export function repairCatalog(enCatalog, localeCatalog, locale) {
 
   if (localeCatalog.menu) {
     if (locale === 'zh') {
-      if (localeCatalog.menu.exploreOrca !== '探索 OCC') {
-        localeCatalog.menu.exploreOrca = '探索 OCC'
+      if (localeCatalog.menu.exploreOCC !== '探索 OCC') {
+        localeCatalog.menu.exploreOCC = '探索 OCC'
         repaired += 1
       }
       if (localeCatalog.menu.gettingStarted !== 'OCC 入门') {
@@ -524,8 +524,8 @@ export function repairCatalog(enCatalog, localeCatalog, locale) {
       }
     }
     if (locale === 'ko') {
-      if (localeCatalog.menu.exploreOrca !== 'OCC 둘러보기') {
-        localeCatalog.menu.exploreOrca = 'OCC 둘러보기'
+      if (localeCatalog.menu.exploreOCC !== 'OCC 둘러보기') {
+        localeCatalog.menu.exploreOCC = 'OCC 둘러보기'
         repaired += 1
       }
       if (localeCatalog.menu.gettingStarted !== 'OCC 시작하기') {

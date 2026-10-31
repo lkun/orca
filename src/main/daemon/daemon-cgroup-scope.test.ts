@@ -16,13 +16,13 @@ import {
 describe('daemonScopeUnitName', () => {
   it('prefixes the launch nonce so the unit is traceable back to a launch', () => {
     expect(daemonScopeUnitName('c0ffee12-3456-7890-abcd-ef0123456789')).toBe(
-      'orca-daemon-c0ffee12-3456-7890-abcd-ef0123456789.scope'
+      'occ-daemon-c0ffee12-3456-7890-abcd-ef0123456789.scope'
     )
   })
 
   it('sanitizes characters systemd unit names reject', () => {
     expect(daemonScopeUnitName('weird nonce/with:stuff')).toBe(
-      'orca-daemon-weird-nonce-with:stuff.scope'
+      'occ-daemon-weird-nonce-with:stuff.scope'
     )
   })
 })
@@ -207,7 +207,7 @@ describe('buildDurableDaemonScopeCommand', () => {
     expect(result.args).toEqual([
       '--user',
       '--scope',
-      '--unit=orca-daemon-nonce-1.scope',
+      '--unit=occ-daemon-nonce-1.scope',
       '--property=TimeoutStopSec=5s',
       '--collect',
       '--quiet',
@@ -284,31 +284,31 @@ describe('detectOwnCgroupScopeUnit', () => {
     expect(detectOwnCgroupScopeUnit('linux', '/definitely/absent/cgroup')).toBeNull()
   })
 
-  it('parses a v2 unified-hierarchy line naming an orca-daemon scope', () => {
-    const path = writeCgroupFixture('0::/user.slice/user-1000.slice/orca-daemon-abc123.scope\n')
-    expect(detectOwnCgroupScopeUnit('linux', path)).toBe('orca-daemon-abc123.scope')
+  it('parses a v2 unified-hierarchy line naming an occ-daemon scope', () => {
+    const path = writeCgroupFixture('0::/user.slice/user-1000.slice/occ-daemon-abc123.scope\n')
+    expect(detectOwnCgroupScopeUnit('linux', path)).toBe('occ-daemon-abc123.scope')
   })
 
-  it('parses a v1 systemd-controller line naming an orca-daemon scope', () => {
+  it('parses a v1 systemd-controller line naming an occ-daemon scope', () => {
     const path = writeCgroupFixture(
-      '1:name=systemd:/user.slice/user-1000.slice/orca-daemon-def456.scope\n'
+      '1:name=systemd:/user.slice/user-1000.slice/occ-daemon-def456.scope\n'
     )
-    expect(detectOwnCgroupScopeUnit('linux', path)).toBe('orca-daemon-def456.scope')
+    expect(detectOwnCgroupScopeUnit('linux', path)).toBe('occ-daemon-def456.scope')
   })
 
   it('returns null for a plain service-unit cgroup — the un-isolated case this fix targets', () => {
-    const path = writeCgroupFixture('0::/system.slice/orca-serve@factory.service\n')
+    const path = writeCgroupFixture('0::/system.slice/occ-serve@factory.service\n')
     expect(detectOwnCgroupScopeUnit('linux', path)).toBeNull()
   })
 
-  it('returns null for a scope unit that is not an orca-daemon one', () => {
+  it('returns null for a scope unit that is not an occ-daemon one', () => {
     const path = writeCgroupFixture('0::/user.slice/user-1000.slice/some-other-app.scope\n')
     expect(detectOwnCgroupScopeUnit('linux', path)).toBeNull()
   })
 
-  it('recognizes a legacy app-orca scope so an adopted daemon can migrate it', () => {
-    const path = writeCgroupFixture('0::/user.slice/user-1000.slice/app-orca-1420296.scope\n')
-    expect(detectOwnCgroupScopeUnit('linux', path)).toBe('app-orca-1420296.scope')
+  it('recognizes a legacy app-occ scope so an adopted daemon can migrate it', () => {
+    const path = writeCgroupFixture('0::/user.slice/user-1000.slice/app-occ-1420296.scope\n')
+    expect(detectOwnCgroupScopeUnit('linux', path)).toBe('app-occ-1420296.scope')
   })
 })
 
@@ -316,13 +316,13 @@ describe('legacy daemon scope migration', () => {
   it('reads every process in the legacy scope, including detached descendants', () => {
     const root = mkdtempSync(join(tmpdir(), 'legacy-scope-migration-'))
     const procDir = join(root, 'proc', '321')
-    const cgroupDir = join(root, 'sys', 'user.slice', 'app-orca-1420296.scope')
+    const cgroupDir = join(root, 'sys', 'user.slice', 'app-occ-1420296.scope')
     mkdirSync(join(procDir), { recursive: true })
     mkdirSync(cgroupDir, { recursive: true })
-    writeFileSync(join(procDir, 'cgroup'), '0::/user.slice/app-orca-1420296.scope\n')
+    writeFileSync(join(procDir, 'cgroup'), '0::/user.slice/app-occ-1420296.scope\n')
     writeFileSync(join(cgroupDir, 'cgroup.procs'), '321\n400\n401\n')
     expect(readLegacyDaemonScopeProcesses(321, join(root, 'proc'), join(root, 'sys'))).toEqual({
-      unit: 'app-orca-1420296.scope',
+      unit: 'app-occ-1420296.scope',
       pids: [321, 400, 401]
     })
     rmSync(root, { recursive: true, force: true })
@@ -345,7 +345,7 @@ describe('legacy daemon scope migration', () => {
         'org.freedesktop.systemd1.Manager',
         'StartTransientUnit',
         'ssa(sv)a(sa(sv))',
-        'orca-daemon-new-nonce.scope',
+        'occ-daemon-new-nonce.scope',
         'fail',
         '1',
         'PIDs',
@@ -366,7 +366,7 @@ describe('legacy daemon scope migration', () => {
       'disabled-address',
       [321],
       {
-        XDG_RUNTIME_DIR: '/run/orca_serve/factory',
+        XDG_RUNTIME_DIR: '/run/occ_serve/factory',
         DBUS_SESSION_BUS_ADDRESS: 'disabled:'
       },
       runtimeDir
@@ -382,7 +382,7 @@ describe('legacy daemon scope migration', () => {
       env: { XDG_RUNTIME_DIR: runtimeDir },
       platform: 'linux',
       canonicalRuntimeDir: runtimeDir,
-      readProcesses: () => ({ unit: 'app-orca-1420296.scope', pids: [321, 400] }),
+      readProcesses: () => ({ unit: 'app-occ-1420296.scope', pids: [321, 400] }),
       systemdBootPath: fakeSystemdBootPath(),
       runVersionProbe: () => ({ code: 0, timedOut: false }),
       runMigration: runMigration,
@@ -395,7 +395,7 @@ describe('legacy daemon scope migration', () => {
         env: { XDG_RUNTIME_DIR: runtimeDir },
         platform: 'linux',
         canonicalRuntimeDir: runtimeDir,
-        readProcesses: () => ({ unit: 'app-orca-1420296.scope', pids: [321, 400] }),
+        readProcesses: () => ({ unit: 'app-occ-1420296.scope', pids: [321, 400] }),
         systemdBootPath: fakeSystemdBootPath(),
         runVersionProbe: () => ({ code: 0, timedOut: false }),
         runMigration: () => ({ code: 1, timedOut: false }),
@@ -454,7 +454,7 @@ describe('durable scope launch environment and lifetime (#25580, #24201)', () =>
         env: { XDG_RUNTIME_DIR: runtimeDir },
         platform: 'linux',
         canonicalRuntimeDir: runtimeDir,
-        readProcesses: () => ({ unit: 'app-orca-1.scope', pids: [321] }),
+        readProcesses: () => ({ unit: 'app-occ-1.scope', pids: [321] }),
         systemdBootPath: fakeSystemdBootPath(),
         runVersionProbe: () => ({ code: 0, timedOut: false }),
         runMigration: runMigration,

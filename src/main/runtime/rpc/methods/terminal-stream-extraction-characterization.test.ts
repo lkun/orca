@@ -9,7 +9,7 @@ import { sendSnapshotFrames } from './terminal/terminal-snapshot-publication'
 import { publishMultiplexInitialSnapshot } from './terminal/terminal-multiplex-initial-snapshot'
 import { initializeMultiplexStream } from './terminal/terminal-multiplex-stream-initialization'
 import type { TerminalMultiplexConnection } from './terminal/terminal-multiplex-connection'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import type { TerminalMultiplexStream } from './terminal/terminal-stream-types'
 import { EMPTY_TERMINAL_REPLY_QUERY_SCAN_STATE } from '../../../../shared/terminal-reply-query-scan'
 import { TERMINAL_MULTIPLEX_ACK_STREAM_INITIAL_WINDOW_BYTES } from '../../../../shared/terminal-multiplex-flow-control'
@@ -177,7 +177,7 @@ describe('terminal stream extraction characterization', () => {
       getTerminalSize: vi.fn(() => ({ cols: 80, rows: 24 })),
       getMobileDisplayMode: vi.fn(() => 'fit'),
       getLayout: vi.fn(() => null)
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
     const state = {
       runtime,
       streams: new Map([[stream.streamId, stream]]),

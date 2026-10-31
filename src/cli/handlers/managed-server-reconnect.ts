@@ -1,5 +1,5 @@
 // Updates can close this connection mid-call; report the outcome from status after the runtime returns.
-import type { OrcadManagedRuntimeStatus } from '../../shared/orcad-managed-runtime'
+import type { OCCdManagedRuntimeStatus } from '../../shared/occd-managed-runtime'
 import type { HandlerContext } from '../dispatch'
 import { printResult } from '../format'
 import { RuntimeClientError, type RuntimeRpcSuccess } from '../runtime-client'
@@ -14,9 +14,9 @@ export async function reportAfterClosedConnection(
 ): Promise<void> {
   for (let attempt = 0; attempt < STATUS_ATTEMPTS; attempt++) {
     await sleep(STATUS_RETRY_MS)
-    let response: RuntimeRpcSuccess<OrcadManagedRuntimeStatus>
+    let response: RuntimeRpcSuccess<OCCdManagedRuntimeStatus>
     try {
-      response = await client.call<OrcadManagedRuntimeStatus>('managedServer.status', selector)
+      response = await client.call<OCCdManagedRuntimeStatus>('managedServer.status', selector)
     } catch {
       continue
     }

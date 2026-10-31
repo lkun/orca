@@ -2,8 +2,8 @@ import { z } from 'zod'
 
 export const CLAUDE_AGENT_VIEW_PATH = '/claude/agent-view'
 export const CLAUDE_AGENT_VIEW_RELAY_METHOD = 'agent_hook.claudeAgentView'
-export const CLAUDE_AGENT_VIEW_COMMAND = 'orca-agent-view'
-export const CLAUDE_AGENT_VIEW_PLUGIN = 'orca-agent-view'
+export const CLAUDE_AGENT_VIEW_COMMAND = 'occ-agent-view'
+export const CLAUDE_AGENT_VIEW_PLUGIN = 'occ-agent-view'
 export const CLAUDE_AGENT_VIEW_SUBSCRIBE = 'terminal.subscribeClaudeAgentViews'
 
 export const ClaudeAgentViewObservation = z.object({

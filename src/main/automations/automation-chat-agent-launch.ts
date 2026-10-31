@@ -1,5 +1,5 @@
 import type { Automation, AutomationRun } from '../../shared/automations-types'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { launchAgentOnHost } from '../runtime/rpc/methods/agent-launch'
 import { reuseAutomationChat } from './automation-chat-session-reuse'
 import { buildHeadlessAutomationWorkspaceName } from './headless-workspace-create'
@@ -29,7 +29,7 @@ export type AutomationChatLaunchRequest = {
 }
 
 export async function launchAutomationChatAgent(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   request: AutomationChatLaunchRequest
 ): Promise<AutomationChatAgentLaunch> {
   try {
@@ -46,7 +46,7 @@ export async function launchAutomationChatAgent(
 }
 
 async function launchChat(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   request: AutomationChatLaunchRequest
 ): Promise<AutomationChatAgentLaunch> {
   const { automation, run, target } = request

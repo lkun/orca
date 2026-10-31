@@ -3,40 +3,40 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { z } from 'zod'
 import {
-  ORCAD_UPDATE_ADMISSION_FENCE_MS,
-  OrcadTerminalCensusParamsSchema
-} from '../../shared/orcad-terminal-census'
+  OCCD_UPDATE_ADMISSION_FENCE_MS,
+  OCCdTerminalCensusParamsSchema
+} from '../../shared/occd-terminal-census'
 import { spawnWorktreeTarget } from '../../shared/worktree/host-qualified-identity'
-import { ORCAD_TERMINAL_CENSUS_METHODS } from './rpc/methods/orcad-terminal-census'
+import { OCCD_TERMINAL_CENSUS_METHODS } from './rpc/methods/occd-terminal-census'
 import { TERMINAL_UPDATE_ADMISSION_CLOSED_MESSAGE } from './terminal/stop/terminal-update-admission'
 
 const { collect, listLiveDaemonPtyIds } = vi.hoisted(() => ({
   collect: vi.fn(),
   listLiveDaemonPtyIds: vi.fn<() => Promise<string[] | null>>()
 }))
-vi.mock('../orcad/orcad-terminal-census', () => ({ collectOrcadTerminalCensus: collect }))
+vi.mock('../occd/occd-terminal-census', () => ({ collectOCCdTerminalCensus: collect }))
 vi.mock('../daemon/daemon-provider-state', () => ({ listLiveDaemonPtyIds }))
 
 // Fragments stay side-effect ordered: mocks, then lifecycle, then fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
-const { TEST_WORKTREE_ID, store } = await import('./orca-runtime-test-fixtures.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
+const { TEST_WORKTREE_ID, store } = await import('./occ-runtime-test-fixtures.spec')
 
 const idle = { liveSessions: 0, startedSinceActivation: 0, daemonProtocolVersion: 7 }
 const target = spawnWorktreeTarget(TEST_WORKTREE_ID, null)
 
-type CensusRequest = Omit<z.input<typeof OrcadTerminalCensusParamsSchema>, 'activatedAt'>
+type CensusRequest = Omit<z.input<typeof OCCdTerminalCensusParamsSchema>, 'activatedAt'>
 
-function census(runtime: InstanceType<typeof OrcaRuntimeService>, params: CensusRequest) {
+function census(runtime: InstanceType<typeof OCCRuntimeService>, params: CensusRequest) {
   // Parsed as the server parses it, so a field the server does not know is dropped here too.
-  const parsed = OrcadTerminalCensusParamsSchema.parse({ activatedAt: 1, ...params })
-  return ORCAD_TERMINAL_CENSUS_METHODS[0]!.handler(parsed, { runtime })
+  const parsed = OCCdTerminalCensusParamsSchema.parse({ activatedAt: 1, ...params })
+  return OCCD_TERMINAL_CENSUS_METHODS[0]!.handler(parsed, { runtime })
 }
 
 // What the SSH and WSL updates send as the last count before the stop.
 const updateRecount: CensusRequest = {
   releaseFinishedAutomationTerminals: true,
-  closeAdmissionForMs: ORCAD_UPDATE_ADMISSION_FENCE_MS
+  closeAdmissionForMs: OCCD_UPDATE_ADMISSION_FENCE_MS
 }
 
 afterEach(() => {
@@ -47,7 +47,7 @@ afterEach(() => {
 describe("an update's last terminal census", () => {
   it('refuses every new terminal until the stop, with a retryable message', async () => {
     collect.mockResolvedValue(idle)
-    const runtime = new OrcaRuntimeService(store)
+    const runtime = new OCCRuntimeService(store)
     await expect(census(runtime, updateRecount)).resolves.toMatchObject({
       liveSessions: 0,
       admissionClosedUntil: expect.any(Number)
@@ -64,7 +64,7 @@ describe("an update's last terminal census", () => {
 
   it('counts only after a spawn admitted before it has finished starting', async () => {
     collect.mockResolvedValue({ ...idle, liveSessions: 1 })
-    const runtime = new OrcaRuntimeService(store)
+    const runtime = new OCCRuntimeService(store)
     const releaseSpawn = await runtime.acquireWorktreeTerminalSpawn(target)
 
     const counted = census(runtime, updateRecount)
@@ -77,7 +77,7 @@ describe("an update's last terminal census", () => {
 
   it('still lets a client reattach a session the daemon runs, but not one it cannot vouch for', async () => {
     collect.mockResolvedValue({ ...idle, liveSessions: 1 })
-    const runtime = new OrcaRuntimeService(store)
+    const runtime = new OCCRuntimeService(store)
     await census(runtime, updateRecount)
 
     listLiveDaemonPtyIds.mockResolvedValue(['pty-live'])
@@ -97,7 +97,7 @@ describe("an update's last terminal census", () => {
 
   it('reopens admission when a deferred update asks with 0, and a plain census never closes it', async () => {
     collect.mockResolvedValue(idle)
-    const runtime = new OrcaRuntimeService(store)
+    const runtime = new OCCRuntimeService(store)
     await expect(census(runtime, { releaseFinishedAutomationTerminals: true })).resolves.toEqual(
       idle
     )

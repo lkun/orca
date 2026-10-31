@@ -13,7 +13,7 @@ import {
   structuredAgentSessionPaneKey,
   structuredAgentSessionTabId
 } from '../../shared/structured-agent-session-projection'
-import { formatOrcaSessionAddress, isOrcaSessionId } from '../../shared/orca-session-address'
+import { formatOCCSessionAddress, isOCCSessionId } from '../../shared/occ-session-address'
 import { peekOpenedAgentSessionRecordStore } from './agent-session-record-store-slot'
 import type { OrchestrationDb } from './orchestration/db'
 import { structuredSessionMailReach } from './orchestration/structured-session-mail-address'
@@ -101,8 +101,8 @@ export function createReferenceAgentIndex(
         ...record.providerHandleChain.map(({ handle }) => handle.nativeId)
       ],
       liveness: local ? observeStructuredSession(record.sessionId).status : 'unverifiable',
-      ...(reachable && isOrcaSessionId(record.sessionId)
-        ? { mailbox: formatOrcaSessionAddress(record.sessionId) }
+      ...(reachable && isOCCSessionId(record.sessionId)
+        ? { mailbox: formatOCCSessionAddress(record.sessionId) }
         : {})
     })
   }

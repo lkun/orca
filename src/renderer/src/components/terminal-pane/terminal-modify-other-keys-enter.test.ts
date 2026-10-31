@@ -40,7 +40,7 @@ function resolveForPane(event: TerminalShortcutEvent, modes: TerminalKittyKeyboa
     undefined,
     undefined,
     () => false,
-    'orca-first',
+    'occ-first',
     undefined,
     () => modes.modifyOtherKeys
   )

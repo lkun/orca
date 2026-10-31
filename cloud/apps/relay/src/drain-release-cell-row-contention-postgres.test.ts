@@ -21,7 +21,7 @@ import {
 
 // Reproduce Asia source-row release locks during reconnect placement: fleet locking fell to ~9/s at 6 releases/s and ~5/s at 18/s. Assert/report target-only locking avoids that contention.
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 // asia-east2 cell to the us-central1 database, measured in production.

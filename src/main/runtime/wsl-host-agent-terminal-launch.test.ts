@@ -110,7 +110,7 @@ describe.skipIf(process.platform === 'win32')('resolveWslHostAgentLaunchInputs',
     expect(launch('kiro', nativeBin).cmdOverrides.kiro).toBe(`'${native}' chat --tui`)
   })
 
-  // orcad's PATH lacks the interactive shell's nvm/~/.local entries; the install-dir search still finds them.
+  // occd's PATH lacks the interactive shell's nvm/~/.local entries; the install-dir search still finds them.
   it('finds a distro install that only the interactive shell PATH would list', () => {
     fakeExecutable(windowsBin, 'codex')
     const nvm = fakeExecutable(join(home, '.nvm', 'versions', 'node', 'v22.0.0', 'bin'), 'codex')
@@ -191,7 +191,7 @@ describe.skipIf(process.platform === 'win32')('WSL-host agent terminal launch', 
   const original = process.platform
   beforeEach(() => {
     Object.defineProperty(process, 'platform', { configurable: true, value: 'linux' })
-    vi.stubEnv('ORCA_WSL_ORCAD_HOST', '1')
+    vi.stubEnv('OCC_WSL_OCCD_HOST', '1')
     vi.stubEnv('WSL_DISTRO_NAME', 'Ubuntu')
   })
   afterEach(() => {

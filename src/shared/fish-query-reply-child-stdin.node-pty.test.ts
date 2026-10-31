@@ -12,7 +12,7 @@ import { PtyStartupIngress } from './pty-startup-ingress'
 const FISH = resolveFishBinary(4)
 const itWithFish = FISH.available ? it : it.skip
 
-const PROMPT_MARK = 'ORCA13892> '
+const PROMPT_MARK = 'OCC13892> '
 
 /* oxlint-disable no-control-regex -- terminal query grammars are control sequences */
 /** Anchored at an ESC, first match wins; reply values match xterm.js's. */
@@ -67,7 +67,7 @@ describe('a held query reply never reaches the next child process (#13892)', () 
   itWithFish(
     'answers OSC 11 in the query turn so the reply cannot land in the child’s stdin',
     async () => {
-      configHome = mkdtempSync(path.join(tmpdir(), 'orca-fish-13892-'))
+      configHome = mkdtempSync(path.join(tmpdir(), 'occ-fish-13892-'))
       mkdirSync(path.join(configHome, 'fish'), { recursive: true })
       writeFileSync(
         path.join(configHome, 'fish/config.fish'),
@@ -104,8 +104,8 @@ describe('a held query reply never reaches the next child process (#13892)', () 
           LANG: 'en_US.UTF-8',
           XDG_CONFIG_HOME: configHome,
           XDG_DATA_HOME: path.join(configHome, 'data'),
-          ORCA_NODE_BIN: process.execPath,
-          ORCA_CHILD_SCRIPT: childScript
+          OCC_NODE_BIN: process.execPath,
+          OCC_CHILD_SCRIPT: childScript
         }
       })
 
@@ -175,7 +175,7 @@ describe('a held query reply never reaches the next child process (#13892)', () 
         // Queue type-ahead while sleep owns the tty so fish’s prompt re-query and child handoff happen together.
         term.write('sleep 0.4\r')
         await sleep(150)
-        term.write('"$ORCA_NODE_BIN" "$ORCA_CHILD_SCRIPT"\r')
+        term.write('"$OCC_NODE_BIN" "$OCC_CHILD_SCRIPT"\r')
         await sleep(1_500)
         expect(oscQueryCount).toBeGreaterThan(oscQueriesBeforeHandoff)
 

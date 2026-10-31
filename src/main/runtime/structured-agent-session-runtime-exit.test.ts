@@ -37,7 +37,7 @@ describe('structured session runtime provider-exit wiring', () => {
   })
 
   it('does not respawn after a provider exit, and the next message starts a new child', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-runtime-provider-exit-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-runtime-provider-exit-'))
     operations = 0
     const connections: {
       connection: CodexAppServerConnection
@@ -136,7 +136,7 @@ describe('structured session runtime provider-exit wiring', () => {
   })
 
   it('does not reacquire when the production exit callback comes from a requested close', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-runtime-requested-close-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-runtime-requested-close-'))
     operations = 0
     const connections: {
       connection: CodexAppServerConnection
@@ -236,7 +236,7 @@ describe('structured session runtime provider-exit wiring', () => {
   })
 
   it('waits for a start a send began before tearing down the runtime', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-runtime-recovery-shutdown-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-runtime-recovery-shutdown-'))
     let releaseRecovery!: () => void
     const recoveryReleased = new Promise<void>((resolve) => {
       releaseRecovery = resolve
@@ -341,7 +341,7 @@ describe('structured session runtime provider-exit wiring', () => {
   })
   it('drains a final exit callback delivered by the adapter backstop and keeps the retry real', async () => {
     // First close is unproven and leaves the session indexed; closeAll later supplies the exit callback after host teardown.
-    root = await mkdtemp(join(tmpdir(), 'orca-runtime-backstop-exit-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-runtime-backstop-exit-'))
     operations = 0
     const connections: {
       connection: CodexAppServerConnection

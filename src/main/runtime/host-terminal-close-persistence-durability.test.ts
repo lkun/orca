@@ -8,7 +8,7 @@ import type { WorkspaceSessionState } from '../../shared/workspace-session-state
 import { createStore, testState } from '../persistence/persistence-test-harness'
 
 vi.mock('electron', () => ({
-  app: { getPath: () => testStateDirRef.dir, getName: () => 'orca', getVersion: () => '0.0.0' },
+  app: { getPath: () => testStateDirRef.dir, getName: () => 'occ', getVersion: () => '0.0.0' },
   BrowserWindow: { fromId: () => null, getAllWindows: () => [] },
   webContents: { fromId: () => null },
   ipcMain: { on: () => {}, handle: () => {}, removeListener: () => {} },
@@ -44,7 +44,7 @@ async function makeStore() {
 
 describe('host-created terminal close durability', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-close-durability-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-close-durability-'))
     testStateDirRef.dir = testState.dir
   })
 
@@ -94,7 +94,7 @@ describe('host-created terminal close durability', () => {
 /** Census every fence-advancing seam to catch newly introduced create-time arming. */
 describe('topology fence census', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-fence-census-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-fence-census-'))
     testStateDirRef.dir = testState.dir
   })
 

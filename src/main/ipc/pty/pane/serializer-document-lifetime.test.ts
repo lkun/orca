@@ -2,7 +2,7 @@ import { EventEmitter } from 'node:events'
 import type { WebContents } from 'electron'
 import { Terminal } from '@xterm/headless'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import { makePaneKey } from '../../../../shared/stable-pane-id'
 import {
   declarePendingPaneSerializer,
@@ -47,7 +47,7 @@ describe('pending pane serializer document ownership', () => {
         writes = writes.then(() => new Promise<void>((resolve) => terminal.write(data, resolve)))
       }
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: provider-history seeding reads only seedHeadlessTerminal from this runtime seam.
-      const runtime = { seedHeadlessTerminal } as unknown as OrcaRuntimeService
+      const runtime = { seedHeadlessTerminal } as unknown as OCCRuntimeService
       try {
         seedHeadlessTerminalFromSpawnResult(
           runtime,

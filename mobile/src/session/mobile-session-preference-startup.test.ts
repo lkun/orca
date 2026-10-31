@@ -122,13 +122,13 @@ describe('saved session settings before the first render', () => {
   it('waits for all terminal reads and keeps readiness while Settings changes apply in place', async () => {
     const scale = deferred<string | null>()
     vi.mocked(AsyncStorage.getItem).mockImplementation(async (key) => {
-      if (key === 'orca:terminalTextScale') {
+      if (key === 'occ:terminalTextScale') {
         return scale.promise
       }
-      if (key === 'orca:terminalAutocompleteEnabled') {
+      if (key === 'occ:terminalAutocompleteEnabled') {
         return 'true'
       }
-      if (key === 'orca:terminalLinkOpenMode') {
+      if (key === 'occ:terminalLinkOpenMode') {
         return 'phone-browser'
       }
       return null
@@ -152,7 +152,7 @@ describe('saved session settings before the first render', () => {
 
     const nextScale = deferred<string | null>()
     vi.mocked(AsyncStorage.getItem).mockImplementation((key) =>
-      key === 'orca:terminalTextScale' ? nextScale.promise : Promise.resolve(null)
+      key === 'occ:terminalTextScale' ? nextScale.promise : Promise.resolve(null)
     )
     act(() => {
       for (const [effect, cleanup] of focusEffects.callbacks) {
@@ -170,7 +170,7 @@ describe('saved session settings before the first render', () => {
     const keys = deferred<string | null>()
     const layout = deferred<string | null>()
     vi.mocked(AsyncStorage.getItem).mockImplementation((key) =>
-      key === 'orca:custom-accessory-keys' ? keys.promise : layout.promise
+      key === 'occ:custom-accessory-keys' ? keys.promise : layout.promise
     )
     const scope = sessionScope()
     let ready = false
@@ -212,7 +212,7 @@ describe('saved session settings before the first render', () => {
     scope.setTerminalTextScale.mockClear()
     const scale = deferred<string | null>()
     vi.mocked(AsyncStorage.getItem).mockImplementation((key) =>
-      key === 'orca:terminalTextScale' ? scale.promise : Promise.resolve(null)
+      key === 'occ:terminalTextScale' ? scale.promise : Promise.resolve(null)
     )
     act(() => {
       for (const [effect, cleanup] of focusEffects.callbacks) {
@@ -233,7 +233,7 @@ describe('saved session settings before the first render', () => {
     const newer = deferred<string | null>()
     let reads = 0
     vi.mocked(AsyncStorage.getItem).mockImplementation((key) => {
-      if (key === 'orca:terminal-accessory-layout') {
+      if (key === 'occ:terminal-accessory-layout') {
         return ++reads === 1 ? older.promise : newer.promise
       }
       return Promise.resolve(null)
@@ -368,7 +368,7 @@ it('reloads custom visibility and order plus D-pad state when returning from Man
   let storedKeys = [{ id: 'one', label: 'One', bytes: '1', enter: false, visible: true }]
   let padEnabled = true
   vi.mocked(AsyncStorage.getItem).mockImplementation(async (key) =>
-    key === 'orca:custom-accessory-keys'
+    key === 'occ:custom-accessory-keys'
       ? JSON.stringify(storedKeys)
       : JSON.stringify({
           version: 2,
@@ -401,7 +401,7 @@ it('reloads custom visibility and order plus D-pad state when returning from Man
 it('finishes custom-key hydration when side-rail geometry arrives during the read', async () => {
   const customRead = deferred<string | null>()
   vi.mocked(AsyncStorage.getItem).mockImplementation((key) =>
-    key === 'orca:custom-accessory-keys' ? customRead.promise : Promise.resolve(null)
+    key === 'occ:custom-accessory-keys' ? customRead.promise : Promise.resolve(null)
   )
   const scope = sessionScope()
   let ready = false
@@ -422,9 +422,9 @@ it('finishes custom-key hydration when side-rail geometry arrives during the rea
 })
 
 it('refreshes a mounted terminal from native shortcut settings without router focus, remount or draft writes', async () => {
-  const layoutKey = 'orca:terminal-accessory-layout'
-  const customKey = 'orca:custom-accessory-keys'
-  const draftKey = 'orca:terminalDrafts:host-a:wt-1'
+  const layoutKey = 'occ:terminal-accessory-layout'
+  const customKey = 'occ:custom-accessory-keys'
+  const draftKey = 'occ:terminalDrafts:host-a:wt-1'
   const layout = (ids: string[], pad: boolean) =>
     JSON.stringify({
       version: 2,
@@ -522,7 +522,7 @@ describe('session custom shortcuts after saved settings change', () => {
 
   function storeCustomKeys(read: () => Promise<string | null>) {
     vi.mocked(AsyncStorage.getItem).mockImplementation((key) =>
-      key === 'orca:custom-accessory-keys' ? read() : Promise.resolve(null)
+      key === 'occ:custom-accessory-keys' ? read() : Promise.resolve(null)
     )
   }
 

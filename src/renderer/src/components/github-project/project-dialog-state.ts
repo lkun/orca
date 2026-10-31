@@ -14,7 +14,7 @@ type SlugProjectDialogState = {
   }
 }
 
-type RepoNotInOrcaDialogState = {
+type RepoNotInOCCDialogState = {
   owner: string
   repo: string
   host?: string
@@ -55,20 +55,20 @@ export function resolveRepoBackedProjectDialogState<T extends RepoBackedProjectD
 
 export function resolveMissingRepoProjectDialogState<
   TSlugDialog extends SlugProjectDialogState,
-  TRepoNotInOrca extends RepoNotInOrcaDialogState
+  TRepoNotInOCC extends RepoNotInOCCDialogState
 >(args: {
   slugIndexReady: boolean
   slugDialog: TSlugDialog | null
-  repoNotInOrca: TRepoNotInOrca | null
+  repoNotInOCC: TRepoNotInOCC | null
   lookupSlug: LookupSlug
   selectedRepoIds: ReadonlySet<string>
 }): {
   slugDialog: TSlugDialog | null
-  repoNotInOrca: TRepoNotInOrca | null
+  repoNotInOCC: TRepoNotInOCC | null
 } {
-  const { lookupSlug, repoNotInOrca, selectedRepoIds, slugDialog, slugIndexReady } = args
+  const { lookupSlug, repoNotInOCC, selectedRepoIds, slugDialog, slugIndexReady } = args
   if (!slugIndexReady) {
-    return { slugDialog: null, repoNotInOrca: null }
+    return { slugDialog: null, repoNotInOCC: null }
   }
   return {
     slugDialog:
@@ -82,16 +82,16 @@ export function resolveMissingRepoProjectDialogState<
       })
         ? null
         : slugDialog,
-    repoNotInOrca:
-      repoNotInOrca &&
+    repoNotInOCC:
+      repoNotInOCC &&
       shouldCloseFallbackDialog({
         lookupSlug,
         selectedRepoIds,
-        owner: repoNotInOrca.owner,
-        repo: repoNotInOrca.repo,
-        host: repoNotInOrca.host
+        owner: repoNotInOCC.owner,
+        repo: repoNotInOCC.repo,
+        host: repoNotInOCC.host
       })
         ? null
-        : repoNotInOrca
+        : repoNotInOCC
   }
 }

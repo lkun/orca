@@ -26,11 +26,11 @@ async function withClaudeHookServer(
   try {
     const env = server.buildPtyEnv()
     await run(async (payload) => {
-      const response = await fetch(`http://127.0.0.1:${env.ORCA_AGENT_HOOK_PORT}/hook/claude`, {
+      const response = await fetch(`http://127.0.0.1:${env.OCC_AGENT_HOOK_PORT}/hook/claude`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+          'X-OCC-Agent-Hook-Token': env.OCC_AGENT_HOOK_TOKEN
         },
         body: JSON.stringify(buildBody(payload))
       })
@@ -41,7 +41,7 @@ async function withClaudeHookServer(
   }
 }
 
-const COMMAND = { command: 'rm -rf /tmp/orca-28186-permission-target' }
+const COMMAND = { command: 'rm -rf /tmp/occ-28186-permission-target' }
 
 describe('Claude permission wait after the approved tool fails', () => {
   it('clears the wait when PostToolUseFailure names the waiting request', async () => {

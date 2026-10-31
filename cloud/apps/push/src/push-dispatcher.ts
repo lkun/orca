@@ -39,7 +39,7 @@ export class PushDispatcher {
     if (outcome.status !== 'sent') {
       console.warn(
         JSON.stringify({
-          event: 'orca_push_delivery_failed',
+          event: 'occ_push_delivery_failed',
           platform: device.platform,
           status: outcome.status,
           reason: outcome.reason,

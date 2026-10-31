@@ -1,5 +1,5 @@
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { getActiveTabId, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   execInTerminal,
@@ -69,7 +69,7 @@ async function enableTerminalAccessibilityDom(page: Page, tabId: string): Promis
 
 test.describe('cold worktree activation deferral', () => {
   test('mounts only the visible tab cold and reveals deferred tabs on demand', async ({
-    orcaPage: page
+    occPage: page
   }) => {
     test.setTimeout(180_000)
     await waitForSessionReady(page)

@@ -106,7 +106,7 @@ export async function withPlatform<T>(platform: NodeJS.Platform, fn: () => Promi
 }
 
 export function dataFile(): string {
-  return join(testState.dir, 'orca-data.json')
+  return join(testState.dir, 'occ-data.json')
 }
 
 export function writeDataFile(data: unknown): void {

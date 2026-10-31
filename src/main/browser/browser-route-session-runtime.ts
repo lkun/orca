@@ -4,7 +4,7 @@ import { session, webContents } from 'electron'
 import { setBrowserClientRouteWebContentsProbe } from './browser-client-download-routing'
 import type { BrowserRoutePartitionBindingStore } from './browser-route-partition-binding-store'
 import {
-  configureBrowserRoutePartitionBindingsForOrcaProfile,
+  configureBrowserRoutePartitionBindingsForOCCProfile,
   currentBrowserRoutePartitionBindingStore
 } from './browser-route-partition-binding-runtime'
 import { releaseEvictedBrowserRoutePartitionStorage } from './browser-route-partition-storage-dependencies'
@@ -108,9 +108,9 @@ setBrowserClientRouteWebContentsProbe((webContentsId) => {
   )
 })
 
-export function configureRouteSessionsForOrcaProfile(options: {
-  orcaProfileId: string
+export function configureRouteSessionsForOCCProfile(options: {
+  occProfileId: string
   profileDirectory: string
 }): void {
-  configureBrowserRoutePartitionBindingsForOrcaProfile(options)
+  configureBrowserRoutePartitionBindingsForOCCProfile(options)
 }

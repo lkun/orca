@@ -121,7 +121,7 @@ describe('structured worker session', () => {
     installHost()
     let envAtSpawn: Record<string, string> | undefined
     createSpy.mockImplementation(async (args: { envelope: { sessionId: string } }) => {
-      // Register worker identity before attach reads the child environment, or ORCA_TERMINAL_HANDLE is absent.
+      // Register worker identity before attach reads the child environment, or OCC_TERMINAL_HANDLE is absent.
       envAtSpawn = sealedChildEnv(args.envelope.sessionId)
       return { ok: true, value: { sessionId: args.envelope.sessionId } }
     })
@@ -132,9 +132,9 @@ describe('structured worker session', () => {
       dispatchId: 'd_spawn',
       onJournalActivity: () => {}
     })
-    expect(envAtSpawn?.ORCA_TERMINAL_HANDLE).toBe(created.identity.handle)
+    expect(envAtSpawn?.OCC_TERMINAL_HANDLE).toBe(created.identity.handle)
     // This app's own launcher by absolute path, so a login shell's profile cannot swap in a global.
-    expect(envAtSpawn?.ORCA_CLI_COMMAND).toBe(
+    expect(envAtSpawn?.OCC_CLI_COMMAND).toBe(
       join(
         getAppEnvironment().getPath('userData'),
         'cli',
@@ -142,7 +142,7 @@ describe('structured worker session', () => {
         process.platform === 'win32' ? 'occ-dev.cmd' : 'occ-dev'
       )
     )
-    expect(envAtSpawn?.ORCA_PANE_KEY).toBeUndefined()
+    expect(envAtSpawn?.OCC_PANE_KEY).toBeUndefined()
     releaseStructuredWorkerSession(created.identity.sessionId)
   })
 
@@ -317,7 +317,7 @@ describe('structured worker dispatch preamble', () => {
     kind: 'agent',
     senders: [
       {
-        party: { address: 'term_coord', terminalHandle: 'term_coord', orcaSessionId: null },
+        party: { address: 'term_coord', terminalHandle: 'term_coord', occSessionId: null },
         name: 'Coordinator'
       }
     ],

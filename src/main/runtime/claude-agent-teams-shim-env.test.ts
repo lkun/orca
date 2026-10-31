@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join, relative } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { installFakeAppEnvironment } from '../../../config/scripts/vitest-host-ports-setup'
-import { getOrcaCliCommandNameForPlatform } from '../../shared/orca-cli-command-name'
+import { getOCCCliCommandNameForPlatform } from '../../shared/occ-cli-command-name'
 import {
   buildClaudeAgentTeamsLaunchPlan,
   ensureClaudeAgentTeamsShimDir,
@@ -23,7 +23,7 @@ afterEach(async () => {
 
 describe('claude agent teams shim env', () => {
   it('writes a private tmux shim that calls the OCC shim command', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-shim-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-agent-teams-shim-'))
     roots.push(root)
 
     await ensureClaudeAgentTeamsShimDir(root)
@@ -32,7 +32,7 @@ describe('claude agent teams shim env', () => {
   })
 
   it('builds native shim env only for direct Claude commands', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-cli-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-agent-teams-cli-'))
     roots.push(root)
     vi.stubEnv('HOME', root)
     vi.stubEnv('USERPROFILE', root)
@@ -52,7 +52,7 @@ describe('claude agent teams shim env', () => {
         capturedShimBin = shimBin
         return {
           PATH: `${shimDir}:/usr/bin`,
-          TMUX: '/tmp/orca/fake,0,0',
+          TMUX: '/tmp/occ/fake,0,0',
           TMUX_PANE: '%1'
         }
       }
@@ -85,7 +85,7 @@ describe('claude agent teams shim env', () => {
   })
 
   it('resolves the dev CLI wrapper for the tmux callback binary', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-cli-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-agent-teams-cli-'))
     roots.push(root)
     const cliName = process.platform === 'win32' ? 'occ-dev.cmd' : 'occ-dev'
     const cliPath = join(root, cliName)
@@ -100,11 +100,11 @@ describe('claude agent teams shim env', () => {
   it.skipIf(process.platform === 'win32')(
     "prefers a headless host's CLI launcher over a GUI binary earlier on PATH",
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-cli-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-agent-teams-cli-'))
       roots.push(root)
       // Why: an AppImage puts its Electron binary, named like the CLI, first on PATH.
-      const electron = join(root, getOrcaCliCommandNameForPlatform(process.platform))
-      const launcher = join(root, 'cli', 'bin', 'orca')
+      const electron = join(root, getOCCCliCommandNameForPlatform(process.platform))
+      const launcher = join(root, 'cli', 'bin', 'occ')
       await mkdir(dirname(launcher), { recursive: true })
       for (const path of [electron, launcher]) {
         await writeFile(path, '#!/usr/bin/env sh\n', 'utf8')
@@ -113,21 +113,21 @@ describe('claude agent teams shim env', () => {
       installFakeAppEnvironment({ getCliLauncherPath: () => launcher })
 
       expect(resolveClaudeAgentTeamsShimBin({ PATH: root })).toBe(launcher)
-      // An older leader pane re-running `orca claude-teams` carries its stale team env.
+      // An older leader pane re-running `occ claude-teams` carries its stale team env.
       expect(
         resolveClaudeAgentTeamsShimBin({
           PATH: root,
-          ORCA_AGENT_TEAMS_TEAM_ID: 'team-old',
-          ORCA_AGENT_TEAMS_SHIM_BIN: electron
+          OCC_AGENT_TEAMS_TEAM_ID: 'team-old',
+          OCC_AGENT_TEAMS_SHIM_BIN: electron
         })
       ).toBe(launcher)
     }
   )
 
   it('refuses to resolve a CLI through relative PATH entries or a bare override', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-cli-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-agent-teams-cli-'))
     roots.push(root)
-    for (const name of ['orca', 'occ-ide', 'occ.cmd']) {
+    for (const name of ['occ', 'occ-ide', 'occ.cmd']) {
       const path = join(root, name)
       await writeFile(path, '#!/usr/bin/env sh\n', 'utf8')
       if (process.platform !== 'win32') {
@@ -140,17 +140,17 @@ describe('claude agent teams shim env', () => {
     expect(resolveClaudeAgentTeamsShimBin({ PATH: '.' })).toBeNull()
     expect(resolveClaudeAgentTeamsShimBin({ PATH: '' })).toBeNull()
     expect(
-      resolveClaudeAgentTeamsShimBin({ PATH: '.', ORCA_AGENT_TEAMS_SHIM_BIN: 'orca' })
+      resolveClaudeAgentTeamsShimBin({ PATH: '.', OCC_AGENT_TEAMS_SHIM_BIN: 'occ' })
     ).toBeNull()
-    expect(resolveClaudeAgentTeamsShimBin({ PATH: root, ORCA_AGENT_TEAMS_SHIM_BIN: 'orca' })).toBe(
-      join(root, 'orca')
+    expect(resolveClaudeAgentTeamsShimBin({ PATH: root, OCC_AGENT_TEAMS_SHIM_BIN: 'occ' })).toBe(
+      join(root, 'occ')
     )
   })
 
   it.skipIf(process.platform !== 'win32')(
     'resolves through the Windows `Path` env spelling',
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-cli-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-agent-teams-cli-'))
       roots.push(root)
       const cliPath = join(root, 'occ.cmd')
       await writeFile(cliPath, '@echo off\r\n', 'utf8')
@@ -178,15 +178,15 @@ describe('claude agent teams shim env', () => {
   })
 
   it.skipIf(process.platform === 'win32')(
-    'never runs a cwd-resolved orca when the shim bin is unqualified',
+    'never runs a cwd-resolved occ when the shim bin is unqualified',
     async () => {
-      const root = await mkdtemp(join(tmpdir(), 'orca-agent-teams-shim-'))
+      const root = await mkdtemp(join(tmpdir(), 'occ-agent-teams-shim-'))
       roots.push(root)
       await ensureClaudeAgentTeamsShimDir(root)
-      const cwd = await mkdtemp(join(tmpdir(), 'orca-agent-teams-cwd-'))
+      const cwd = await mkdtemp(join(tmpdir(), 'occ-agent-teams-cwd-'))
       roots.push(cwd)
       const marker = join(cwd, 'hijacked')
-      for (const name of ['orca', 'occ-ide']) {
+      for (const name of ['occ', 'occ-ide']) {
         const decoy = join(cwd, name)
         await writeFile(decoy, `#!/usr/bin/env sh\ntouch ${JSON.stringify(marker)}\n`, 'utf8')
         await chmod(decoy, 0o755)
@@ -202,12 +202,12 @@ describe('claude agent teams shim env', () => {
       expect(hijack.stderr).toContain('absolute path')
       expect(existsSync(marker)).toBe(false)
 
-      const cli = join(cwd, 'fake-orca')
+      const cli = join(cwd, 'fake-occ')
       await writeFile(cli, '#!/usr/bin/env sh\necho "ran $*"\n', 'utf8')
       await chmod(cli, 0o755)
       const qualified = spawnSync(join(root, 'tmux'), ['list-panes'], {
         cwd,
-        env: { PATH: `.:${process.env.PATH ?? ''}`, ORCA_AGENT_TEAMS_SHIM_BIN: cli },
+        env: { PATH: `.:${process.env.PATH ?? ''}`, OCC_AGENT_TEAMS_SHIM_BIN: cli },
         encoding: 'utf8'
       })
 
@@ -219,10 +219,10 @@ describe('claude agent teams shim env', () => {
   it('writes a Windows shim that rejects an unqualified shim bin', () => {
     const script = windowsClaudeAgentTeamsShimScript()
 
-    expect(script).not.toMatch(/^set "ORCA_AGENT_TEAMS_SHIM_BIN=orca/m)
-    expect(script).toContain('if "%ORCA_SHIM_BIN:~1,1%"==":" goto :run')
+    expect(script).not.toMatch(/^set "OCC_AGENT_TEAMS_SHIM_BIN=occ/m)
+    expect(script).toContain('if "%OCC_SHIM_BIN:~1,1%"==":" goto :run')
     // call would expand tmux %2 pane args as batch parameters.
-    expect(script).toContain('\r\n"%ORCA_SHIM_BIN%" agent-teams-tmux %*\r\n')
+    expect(script).toContain('\r\n"%OCC_SHIM_BIN%" agent-teams-tmux %*\r\n')
     expect(script).toContain('exit /b 127')
   })
 })

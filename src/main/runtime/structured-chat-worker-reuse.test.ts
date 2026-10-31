@@ -2,8 +2,8 @@ import './rpc/unused-default-rpc-methods.test-fixture'
 // A finished structured worker takes follow-up work in its own chat only through worker-start --terminal <handle>.
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_SESSION_ADDRESS_PREFIX } from '../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { OCC_SESSION_ADDRESS_PREFIX } from '../../shared/occ-session-address'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import { idOf } from './rpc/orchestration-session-caller-test-fixture'
 import {
   COORDINATOR,
@@ -93,7 +93,7 @@ async function finishedStructuredWorker(taskId: string, settle: 'done' | 'abando
       }
     })
   const started = db.createStartingWorkerDispatch({
-    creator: { kind: 'session', orcaSessionId: testOrcaSessionId(COORDINATOR) },
+    creator: { kind: 'session', occSessionId: testOCCSessionId(COORDINATOR) },
     maxDepth: 9,
     taskId,
     startOptions: {}
@@ -165,11 +165,11 @@ describe('a finished structured worker', () => {
     const task = turnText(worker.turns[0]!)
     expect(task).toContain(dispatchId)
     expect(task).toContain(
-      `Your OCC session ID is: ${ORCA_SESSION_ADDRESS_PREFIX}${identity.sessionId}`
+      `Your OCC session ID is: ${OCC_SESSION_ADDRESS_PREFIX}${identity.sessionId}`
     )
     expect(db.getDispatchContextById(dispatchId)).toMatchObject({
       assignee_handle: identity.handle,
-      assignee_orca_session_id: identity.sessionId
+      assignee_occ_session_id: identity.sessionId
     })
     expect(db.getWorkerTerminalResourceByOwner(dispatchId)).toMatchObject({
       id: resource!.id,

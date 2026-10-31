@@ -1,4 +1,4 @@
-// COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+// COMPAT(wsl-bridge): removed when WSL runs as an occd host.
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
 import {
   deriveGlobalWindowsRuntimeDefaultFromLegacySettings,
@@ -87,7 +87,7 @@ function forceEnglishGitMessages(command: string): string {
   return NPX_SKILLS_ADD_COMMAND.test(trimmedCommand) ? `env LC_ALL=C ${trimmedCommand}` : command
 }
 
-type SkillCommandTarget = 'copied-command' | 'orca-setup-terminal'
+type SkillCommandTarget = 'copied-command' | 'occ-setup-terminal'
 
 /** Adapt clipboard commands for setup terminals: Windows may need npx preflight; WSL wrappers must become native bash for daemon-forced wsl.exe. */
 export function buildSkillSetupTerminalCommand(
@@ -112,7 +112,7 @@ export function buildSkillSetupTerminalCommand(
   return wrapWindowsSkillCommandWithNpxPrerequisite(
     copiedCommand,
     currentPlatform,
-    'orca-setup-terminal'
+    'occ-setup-terminal'
   )
 }
 

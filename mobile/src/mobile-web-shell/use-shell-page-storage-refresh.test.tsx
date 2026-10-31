@@ -128,7 +128,7 @@ it.each(TERMINAL_SHORTCUT_STORAGE_KEYS)(
     writeMirroredStorage(key, 'page-local-edit')
     await act(async () => store.pending.shift()!())
     expect(publish).toHaveBeenCalledTimes(completed)
-    const unrelated = persistMirrored('orca:hostDockWidth', '450')
+    const unrelated = persistMirrored('occ:hostDockWidth', '450')
     await act(async () => {
       store.pending.shift()!()
       await unrelated

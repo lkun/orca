@@ -112,7 +112,7 @@ describe('getPRForBranch', () => {
   ] as const)(
     'preserves REST %s eligibility when exact GraphQL lookup fails (mergeable=%s)',
     async (mergeable_state, mergeable, autoMergeAvailable) => {
-      getOwnerRepoMock.mockResolvedValue({ owner: 'stablyai', repo: 'orca' })
+      getOwnerRepoMock.mockResolvedValue({ owner: 'stablyai', repo: 'occ' })
       ghExecFileAsyncMock
         .mockRejectedValueOnce(new Error('network unavailable'))
         .mockResolvedValueOnce({
@@ -120,7 +120,7 @@ describe('getPRForBranch', () => {
             number: 31259,
             title: 'fix(i18n): restore localized editor safety copy',
             state: 'open',
-            html_url: 'https://github.com/stablyai/orca/pull/31259',
+            html_url: 'https://github.com/stablyai/occ/pull/31259',
             updated_at: '2026-10-21T16:31:00Z',
             draft: false,
             mergeable,
@@ -158,7 +158,7 @@ describe('getPRForBranch', () => {
   )
 
   it('does not infer auto-merge eligibility from a branch list result when exact lookup fails', async () => {
-    getOwnerRepoMock.mockResolvedValue({ owner: 'stablyai', repo: 'orca' })
+    getOwnerRepoMock.mockResolvedValue({ owner: 'stablyai', repo: 'occ' })
     ghExecFileAsyncMock
       .mockResolvedValueOnce({
         stdout: JSON.stringify([
@@ -166,7 +166,7 @@ describe('getPRForBranch', () => {
             number: 31259,
             title: 'fix(i18n): restore localized editor safety copy',
             state: 'open',
-            html_url: 'https://github.com/stablyai/orca/pull/31259',
+            html_url: 'https://github.com/stablyai/occ/pull/31259',
             updated_at: '2026-10-21T16:31:00Z',
             draft: false,
             auto_merge: null,
@@ -225,10 +225,10 @@ describe('getPRForBranch', () => {
   it('resolves fork PRs from the upstream PR repo with the origin head owner', async () => {
     resolvePRRepositoryCandidatesMock.mockResolvedValueOnce({
       candidates: [
-        { owner: 'stablyai', repo: 'orca' },
-        { owner: 'fork', repo: 'orca' }
+        { owner: 'stablyai', repo: 'occ' },
+        { owner: 'fork', repo: 'occ' }
       ],
-      headRepo: { owner: 'fork', repo: 'orca' }
+      headRepo: { owner: 'fork', repo: 'occ' }
     })
     ghExecFileAsyncMock.mockResolvedValueOnce({
       stdout: JSON.stringify([
@@ -236,7 +236,7 @@ describe('getPRForBranch', () => {
           number: 1738,
           title: 'Fork PR',
           state: 'open',
-          html_url: 'https://github.com/stablyai/orca/pull/1738',
+          html_url: 'https://github.com/stablyai/occ/pull/1738',
           updated_at: '2026-03-28T00:00:00Z',
           draft: false,
           mergeable_state: 'clean',
@@ -251,15 +251,15 @@ describe('getPRForBranch', () => {
     expect(ghExecFileAsyncMock).toHaveBeenCalledWith(
       [
         'api',
-        'repos/stablyai/orca/pulls?head=fork%3Afeature%2Ftest&state=all&per_page=1',
+        'repos/stablyai/occ/pulls?head=fork%3Afeature%2Ftest&state=all&per_page=1',
         '--include'
       ],
       { cwd: '/repo-root' }
     )
     expect(pr).toMatchObject({
       number: 1738,
-      prRepo: { owner: 'stablyai', repo: 'orca' },
-      headRepo: { owner: 'fork', repo: 'orca' }
+      prRepo: { owner: 'stablyai', repo: 'occ' },
+      headRepo: { owner: 'fork', repo: 'occ' }
     })
   })
 

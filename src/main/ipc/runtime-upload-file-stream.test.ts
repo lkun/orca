@@ -97,7 +97,7 @@ function unstagedArgs(sourceRootPath: string, entryPath?: string) {
 }
 
 beforeEach(async () => {
-  workDir = await mkdtemp(join(tmpdir(), 'orca-upload-stream-'))
+  workDir = await mkdtemp(join(tmpdir(), 'occ-upload-stream-'))
   callRuntimeEnvironment.mockReset()
   callRuntimeEnvironment.mockResolvedValue({ id: 'x', ok: true, result: {}, _meta: {} })
 })

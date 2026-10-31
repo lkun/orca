@@ -23,7 +23,7 @@ describe('a resume launch seeds the pane identity', () => {
   beforeEach(() => {
     _internals.resetCachesForTests()
     getCohortAtEmitMock.mockReturnValue({})
-    userDataPath = mkdtempSync(join(tmpdir(), 'orca-launch-resume-identity-'))
+    userDataPath = mkdtempSync(join(tmpdir(), 'occ-launch-resume-identity-'))
   })
 
   afterEach(() => {

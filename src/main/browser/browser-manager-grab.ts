@@ -87,7 +87,7 @@ export abstract class BrowserManagerGrab extends BrowserManagerViewport {
     rect: BrowserGrabRect,
     guest: Electron.WebContents
   ): Promise<BrowserGrabScreenshot | null> {
-    const releasePaint = this.holdPaintForCapture(guest.id)
+    const releasePaint = this.holdPaintFoccpture(guest.id)
     try {
       return await captureGrabSelectionScreenshot(rect, guest)
     } finally {

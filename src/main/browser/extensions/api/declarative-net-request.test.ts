@@ -19,7 +19,7 @@ vi.mock('../browser-extension-tab-model', () => ({
     mocks.tabs.has(id) ? { contents: { id, session: currentSession } } : null
 }))
 
-mocks.userData = mkdtempSync(join(tmpdir(), 'orca-dnr-api-'))
+mocks.userData = mkdtempSync(join(tmpdir(), 'occ-dnr-api-'))
 let currentSession: Electron.Session | null = null
 
 const registry = await import('../browser-extension-namespace-registry')
@@ -49,7 +49,7 @@ const block = (id: number, urlFilter: string) => ({
   action: { type: 'block' }
 })
 
-const extensionDir = mkdtempSync(join(tmpdir(), 'orca-dnr-api-extension-'))
+const extensionDir = mkdtempSync(join(tmpdir(), 'occ-dnr-api-extension-'))
 writeFileSync(join(extensionDir, 'a.json'), JSON.stringify([block(1, '||a.example^')]))
 writeFileSync(
   join(extensionDir, 'b.json'),
@@ -266,7 +266,7 @@ describe('live DNR permission changes and precedence', () => {
   it('keeps install precedence when an older extension reloads or another profile loads in reverse order', async () => {
     const store = getBrowserExtensionInstallStore()
     const make = (id: string, target: string): Electron.Extension => {
-      const path = mkdtempSync(join(tmpdir(), 'orca-dnr-precedence-'))
+      const path = mkdtempSync(join(tmpdir(), 'occ-dnr-precedence-'))
       writeFileSync(
         join(path, 'rules.json'),
         JSON.stringify([

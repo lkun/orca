@@ -141,7 +141,7 @@ export const AGENT_SESSION_REFUSAL_REASONS = {
     /** Any other failed open, which can clear. */
     'journalUnavailable',
     /** A newer OCC wrote the journal, or this chat's rows; only an update writes past it. */
-    'journalWrittenByNewerOrca'
+    'journalWrittenByNewerOCC'
   ],
   structured_agent_session_unsupported: [
     'clientCapabilityMissing',

@@ -146,7 +146,7 @@ it('holds a link in an isolated partition until its workspace profile is minted'
   expect(pending?.sessionProfileId).toBeTruthy()
   expect(pending?.sessionProfileId).not.toBe('default')
   expect(pending?.sessionPartition).toBe(
-    `persist:orca-browser-unminted-${pending?.sessionProfileId}`
+    `persist:occ-browser-unminted-${pending?.sessionProfileId}`
   )
   expect(store.getState().managedBrowserProfileStatusById[pending?.sessionProfileId ?? '']).toBe(
     'pending'

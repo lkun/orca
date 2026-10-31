@@ -10,7 +10,7 @@ import { isRemovableSkillPlacement } from './skill-removable-placement'
 const roots: string[] = []
 
 async function fixture() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-skill-copy-drift-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-skill-copy-drift-'))
   roots.push(root)
   const canonicalPath = join(root, 'canonical', 'private-skill')
   const providerRoot = join(root, 'provider')
@@ -71,7 +71,7 @@ describe('independent skill placement copy drift', () => {
     expect(result).toMatchObject({
       topology: 'independent-copy',
       status: 'skipped',
-      errorCategory: 'skill-placement-modified-copy'
+      errocctegory: 'skill-placement-modified-copy'
     })
     expect(await readFile(join(value.placementPath, 'local.md'), 'utf8')).toBe('local change')
   })

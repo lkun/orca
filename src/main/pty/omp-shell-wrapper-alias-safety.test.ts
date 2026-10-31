@@ -10,7 +10,7 @@ const zshAvailable = existsSync('/bin/zsh')
 const bashAvailable = existsSync('/bin/bash')
 
 function expectAliasedOmpNameSurvives(shell: string, enableAliases: string): void {
-  const root = mkdtempSync(join(tmpdir(), 'orca-omp-alias-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-omp-alias-'))
   roots.push(root)
   const bin = join(root, 'bin')
   mkdirSync(bin)
@@ -38,7 +38,7 @@ function expectAliasedOmpNameSurvives(shell: string, enableAliases: string): voi
       env: {
         ...process.env,
         PATH: `${bin}${delimiter}${process.env.PATH ?? ''}`,
-        ORCA_OMP_STATUS_EXTENSION: extension
+        OCC_OMP_STATUS_EXTENSION: extension
       }
     }
   )
@@ -67,7 +67,7 @@ describe.skipIf(process.platform === 'win32')('omp wrapper under a user alias na
 
 describe.skipIf(process.platform === 'win32' || !zshAvailable)('OMP wrapper global aliases', () => {
   it.each(['--help', '-v', 'models'])('parses with hostile global alias %s', (token) => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-omp-global-alias-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-omp-global-alias-'))
     roots.push(root)
     const startup = join(root, 'startup.zsh')
     writeFileSync(
@@ -75,7 +75,7 @@ describe.skipIf(process.platform === 'win32' || !zshAvailable)('OMP wrapper glob
       [
         `alias -g -- ${token}='${token} 2>&1 | cat'`,
         getPosixOmpShellWrapper(),
-        `if ! __orca_omp_should_skip_extension '${token}'; then exit 1; fi`,
+        `if ! __occ_omp_should_skip_extension '${token}'; then exit 1; fi`,
         'printf "parsed\\n"',
         `alias -g -- '${token}'`
       ].join('\n')

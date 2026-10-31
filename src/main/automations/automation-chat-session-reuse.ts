@@ -1,4 +1,4 @@
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import type {
   AutomationChatLaunchRequest,
   AutomationChatAgentLaunch
@@ -14,7 +14,7 @@ import {
 import { automationRunAcceptedTarget } from './automation-agent-run-result'
 
 export async function reuseAutomationChat(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   { automation, run, runs }: AutomationChatLaunchRequest
 ): Promise<AutomationChatAgentLaunch | null> {
   let preparationError: { error: unknown } | undefined

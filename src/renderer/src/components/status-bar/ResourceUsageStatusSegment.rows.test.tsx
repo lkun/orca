@@ -158,7 +158,7 @@ describe('resource manager row presentation', () => {
             id: 'browser-1',
             worktreeId: 'wt-1',
             title: 'OCC docs',
-            url: 'https://docs.orca.dev',
+            url: 'https://docs.occ.dev',
             loading: false,
             faviconUrl: null,
             canGoBack: false,

@@ -16,7 +16,7 @@ describe('isENOENT across the SSH relay boundary', () => {
   it('recognises an error rebuilt from the relay with a numeric transport code', () => {
     // Relay response reconstruction preserves the message and replaces the code.
     const fromRelay = new Error(
-      "ENOENT: no such file or directory, lstat '/home/neil/projects/orca-test1234'"
+      "ENOENT: no such file or directory, lstat '/home/neil/projects/occ-test1234'"
     )
     Object.defineProperty(fromRelay, 'code', { value: -32000 })
 
@@ -27,7 +27,7 @@ describe('isENOENT across the SSH relay boundary', () => {
 
   it('recognises it through the IPC wrapper the renderer sees', () => {
     const throughIpc = new Error(
-      "Error invoking remote method 'worktrees:create': Error: ENOENT: no such file or directory, lstat '/home/neil/projects/orca-test1234-3'"
+      "Error invoking remote method 'worktrees:create': Error: ENOENT: no such file or directory, lstat '/home/neil/projects/occ-test1234-3'"
     )
 
     expect(isENOENT(throughIpc)).toBe(true)

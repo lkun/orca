@@ -56,7 +56,7 @@ function scopePath(pid) {
 async function startCycle(cycle, ownership = 'exclusive') {
   const nonce = `${prefix}-${cycle}`
   const resultPath = `/tmp/${nonce}`
-  const unit = `orca-daemon-${nonce}.scope`
+  const unit = `occ-daemon-${nonce}.scope`
   scopes.push(unit)
   const runtime = spawn(
     process.execPath,
@@ -89,7 +89,7 @@ async function startCycle(cycle, ownership = 'exclusive') {
 }
 
 async function main() {
-  const canaryUnit = `orca-canary-${prefix}.scope`
+  const canaryUnit = `occ-canary-${prefix}.scope`
   scopes.push(canaryUnit)
   const canary = spawn(
     'systemd-run',
@@ -188,7 +188,7 @@ async function main() {
     await runTerminalScopeCases(bundlePath, prefix, mode)
     assert.ok(stat(canary.pid), 'unrelated canary was killed')
   } finally {
-    for (const unit of [...scopes, `orca-daemon-${prefix}-*`, 'orca_ptys_*']) {
+    for (const unit of [...scopes, `occ-daemon-${prefix}-*`, 'occ_ptys_*']) {
       try {
         execFileSync('systemctl', ['--user', '--signal=SIGKILL', 'kill', unit], { stdio: 'ignore' })
       } catch {}

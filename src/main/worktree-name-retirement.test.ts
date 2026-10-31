@@ -118,7 +118,7 @@ describe('getRetiredNameRegistryForRepo', () => {
 
 describe('ensureRetiredWorktreeNamesBackfilled', () => {
   it('awaits the historical workspace scan before returning names to a client', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-retirement-backfill-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-retirement-backfill-'))
     const workspaceRoot = join(root, 'workspaces')
     await mkdir(join(workspaceRoot, FIRST), { recursive: true })
     const merged: { repoId: string; names: string[] }[] = []
@@ -164,7 +164,7 @@ describe('ensureRetiredWorktreeNamesBackfilled', () => {
   })
 
   it('skips a runtime-owned repo, which has no connectionId but is still not local', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-retirement-runtime-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-retirement-runtime-'))
     const workspaceRoot = join(root, 'workspaces')
     await mkdir(join(workspaceRoot, FIRST), { recursive: true })
     const merged: string[] = []
@@ -193,7 +193,7 @@ describe('ensureRetiredWorktreeNamesBackfilled', () => {
   })
 
   it('still backfills a plain local repo, so the skip is scoped to non-local hosts', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-retirement-local-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-retirement-local-'))
     const workspaceRoot = join(root, 'workspaces')
     await mkdir(join(workspaceRoot, FIRST), { recursive: true })
     const merged: string[] = []

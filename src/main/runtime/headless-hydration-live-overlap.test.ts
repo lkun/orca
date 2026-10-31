@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import { deferred } from './orca-runtime-test-fixtures.spec'
+import { deferred } from './occ-runtime-test-fixtures.spec'
 import { createHydrationRuntime, PTY_ID, SIZE } from './headless-hydration-ownership-test-fixture'
 
 it('does not replay live bytes the renderer seed already painted', async () => {

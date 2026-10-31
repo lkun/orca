@@ -58,7 +58,7 @@ describe('dead-man trip slots', () => {
     vi.spyOn(console, 'log').mockImplementation(() => undefined)
     vi.spyOn(console, 'warn').mockImplementation(() => undefined)
     vi.spyOn(console, 'error').mockImplementation(() => undefined)
-    const dataDir = mkdtempSync(join(tmpdir(), 'orca-relay-dead-man-slots-'))
+    const dataDir = mkdtempSync(join(tmpdir(), 'occ-relay-dead-man-slots-'))
     cleanup.push(() => rmSync(dataDir, { recursive: true, force: true }))
     const database = await openRelayDatabase({ dataDir })
     cleanup.push(() => database.close())
@@ -84,8 +84,8 @@ describe('dead-man trip slots', () => {
     now += reserveDeadManWindowMs(reserve.config.cellId) + 1_000
     await ticks(2)
     expect(reserve.relay.sessions.inReserveMode()).toBe(true)
-    expect(logged('orca_relay_cell_reserve_dead_man_held')).toHaveLength(1)
-    expect(logged('orca_relay_cell_reserve_dead_man_tripped')).toEqual([])
+    expect(logged('occ_relay_cell_reserve_dead_man_held')).toHaveLength(1)
+    expect(logged('occ_relay_cell_reserve_dead_man_tripped')).toEqual([])
     // Not flipped: no re-registration, and its row keeps the database path off it.
     expect(await reserve.controlLeases()).toEqual([])
     expect((await reserve.admitEffectiveRow())?.mode).toBe('reserve')
@@ -107,7 +107,7 @@ describe('dead-man trip slots', () => {
     await peer.rearm(now)
     now += DEAD_MAN_SLOT_CLAIM_RETRY_MS
     await until(() => !reserve.relay.sessions.inReserveMode())
-    expect(logged('orca_relay_cell_reserve_dead_man_tripped')).toHaveLength(1)
+    expect(logged('occ_relay_cell_reserve_dead_man_tripped')).toHaveLength(1)
     expect((await reserve.admitEffectiveRow())?.mode).toBe('db')
     await until(async () => (await reserve.controlLeases()).length === 1)
     expect(seated.socket.readyState).toBe(WebSocket.OPEN)
@@ -123,7 +123,7 @@ describe('dead-man trip slots', () => {
       await ticks(1)
     }
     expect(reserve.relay.sessions.inReserveMode()).toBe(true)
-    expect(logged('orca_relay_cell_reserve_dead_man_tripped')).toEqual([])
+    expect(logged('occ_relay_cell_reserve_dead_man_tripped')).toEqual([])
     expect(await reserve.controlLeases()).toEqual([])
     expect(seated.socket.readyState).toBe(WebSocket.OPEN)
   }, 30_000)

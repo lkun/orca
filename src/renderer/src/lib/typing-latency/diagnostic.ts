@@ -1,4 +1,4 @@
-/** Run window.__orcaTypingDiagnostic.start(), type ~20s, report(), then stop() on the affected machine. Census links echo lag to rows/listeners/settings/focused agent; input instrumentation exists only between start/stop. */
+/** Run window.__occTypingDiagnostic.start(), type ~20s, report(), then stop() on the affected machine. Census links echo lag to rows/listeners/settings/focused agent; input instrumentation exists only between start/stop. */
 import {
   detachPaneEcho,
   discardUndispatchedKeystroke,
@@ -90,7 +90,7 @@ function readTrustedEventTime(event: Event, handledAt: number): number | null {
 
 function startProbe(): string {
   if (active) {
-    return 'Typing diagnostic already running. Type for ~20s, then run __orcaTypingDiagnostic.report().'
+    return 'Typing diagnostic already running. Type for ~20s, then run __occTypingDiagnostic.report().'
   }
   cacheAppVersion()
 
@@ -172,7 +172,7 @@ function startProbe(): string {
 
   active = state
   lastState = state
-  return `Typing diagnostic started on ${state.panes.length} pane(s). Click into the agent terminal, type normally for ~20 seconds, then run __orcaTypingDiagnostic.report().`
+  return `Typing diagnostic started on ${state.panes.length} pane(s). Click into the agent terminal, type normally for ~20 seconds, then run __occTypingDiagnostic.report().`
 }
 
 function stopProbe(): string {
@@ -191,7 +191,7 @@ function stopProbe(): string {
     state.unmatchedKeystrokes += detachPaneEcho(entry)
   }
   state.panes = []
-  return 'Typing diagnostic stopped. Run __orcaTypingDiagnostic.report() to read the last samples.'
+  return 'Typing diagnostic stopped. Run __occTypingDiagnostic.report() to read the last samples.'
 }
 
 function reportProbe(): TypingLatencyReport {
@@ -203,7 +203,7 @@ function reportProbe(): TypingLatencyReport {
     }
   }
   const report = buildTypingLatencyReport(active ?? lastState, active !== null, cachedAppVersion)
-  console.log('[orca] typing latency diagnostic', report)
+  console.log('[occ] typing latency diagnostic', report)
   return report
 }
 
@@ -213,15 +213,15 @@ export type TypingDiagnosticBridge = {
   report: () => TypingLatencyReport
 }
 
-type TypingDiagnosticWindow = Window & { __orcaTypingDiagnostic?: TypingDiagnosticBridge }
+type TypingDiagnosticWindow = Window & { __occTypingDiagnostic?: TypingDiagnosticBridge }
 
 export function installTypingLatencyDiagnostic(): void {
   if (typeof window === 'undefined') {
     return
   }
   const target = window as TypingDiagnosticWindow
-  if (target.__orcaTypingDiagnostic) {
+  if (target.__occTypingDiagnostic) {
     return
   }
-  target.__orcaTypingDiagnostic = { start: startProbe, stop: stopProbe, report: reportProbe }
+  target.__occTypingDiagnostic = { start: startProbe, stop: stopProbe, report: reportProbe }
 }

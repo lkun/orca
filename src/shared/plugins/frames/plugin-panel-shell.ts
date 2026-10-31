@@ -21,11 +21,11 @@ export const PLUGIN_PANEL_CSP =
   "style-src 'unsafe-inline'; img-src data:; font-src data:; base-uri 'none'; form-action 'none'"
 
 /** Renderer fills theme/tokens before mounting srcdoc; main cannot know the active presentation values. */
-export const PANEL_SHELL_TOKENS_PLACEHOLDER = '/*__ORCA_PANEL_TOKENS__*/'
-export const PANEL_SHELL_COLOR_SCHEME_PLACEHOLDER = '__ORCA_COLOR_SCHEME__'
-const PANEL_SHELL_TOKENS_STYLE_ID = 'orca-design-tokens'
+export const PANEL_SHELL_TOKENS_PLACEHOLDER = '/*__OCC_PANEL_TOKENS__*/'
+export const PANEL_SHELL_COLOR_SCHEME_PLACEHOLDER = '__OCC_COLOR_SCHEME__'
+const PANEL_SHELL_TOKENS_STYLE_ID = 'occ-design-tokens'
 
-/** Curated design-token subset injected into panel documents as `--orca-<name>`. Deliberately
+/** Curated design-token subset injected into panel documents as `--occ-<name>`. Deliberately
  *  NOT all of main.css (~257 custom properties): freezing every token as
  *  public API would lock future refactors. Grow additively; renaming or
  *  dropping an entry here is a plugin-facing breaking change. */
@@ -54,7 +54,7 @@ export const PANEL_DESIGN_TOKEN_ALLOWLIST = [
 
 export type PluginFrameSurface = 'panel' | 'editor'
 
-/** The frozen `window.orca` every frame gets before plugin code runs: the public frame API.
+/** The frozen `window.occ` every frame gets before plugin code runs: the public frame API.
  *  The envelope underneath is internal. `api` and `has` start from this host's table, so they work
  *  synchronously; `hello` confirms them and carries the theme. */
 function frameApiScript(surface: PluginFrameSurface): string {
@@ -78,7 +78,7 @@ function frameApiScript(surface: PluginFrameSurface): string {
   var methods = C.methods.slice()
   var latest = null
   var waiting = []
-  function post(message) { parent.postMessage(Object.assign({ orca: C.protocol }, message), '*') }
+  function post(message) { parent.postMessage(Object.assign({ occ: C.protocol }, message), '*') }
   function failure(error) {
     var e = new Error(String(error && error.message || 'host call failed'))
     e.code = C.codes.indexOf(error && error.code) >= 0 ? error.code : 'action_failed'
@@ -93,7 +93,7 @@ function frameApiScript(surface: PluginFrameSurface): string {
     }) : []
   }
   function on(name, fn) {
-    if (typeof fn !== 'function') throw new TypeError('orca.on needs a handler')
+    if (typeof fn !== 'function') throw new TypeError('occ.on needs a handler')
     var set = listeners.get(name) || new Set()
     listeners.set(name, set)
     var entry = function (payload) { return fn(payload) }
@@ -129,7 +129,7 @@ function frameApiScript(surface: PluginFrameSurface): string {
   }
   window.addEventListener('message', function (event) {
     var m = event.data
-    if (event.source !== parent || !m || m.orca !== C.protocol) return
+    if (event.source !== parent || !m || m.occ !== C.protocol) return
     if (m.kind === 'res') {
       var settle = pending.get(m.id)
       if (settle) { pending.delete(m.id); settle(m) }
@@ -155,16 +155,16 @@ function frameApiScript(surface: PluginFrameSurface): string {
       })
     }
   })
-  var orca = {
+  var occ = {
     host: Object.freeze({
       call: call,
       has: function (method) { return methods.indexOf(method) >= 0 }
     }),
     on: on
   }
-  Object.defineProperty(orca, 'api', { get: function () { return api }, enumerable: true })
+  Object.defineProperty(occ, 'api', { get: function () { return api }, enumerable: true })
   if (C.surface === 'editor') {
-    orca.document = Object.freeze({
+    occ.document = Object.freeze({
       get: function () {
         return latest ? Promise.resolve(latest) : new Promise(function (resolve) { waiting.push(resolve) })
       },
@@ -185,7 +185,7 @@ function frameApiScript(surface: PluginFrameSurface): string {
       } })
     }, true)
   }
-  Object.defineProperty(window, 'orca', { value: Object.freeze(orca), writable: false, configurable: false })
+  Object.defineProperty(window, 'occ', { value: Object.freeze(occ), writable: false, configurable: false })
   post({ kind: 'evt', event: E.ready, payload: { protocol: C.protocol } })
 })(${config})
 `

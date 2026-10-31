@@ -5,9 +5,9 @@ import { join } from 'node:path'
 import { EventEmitter } from 'node:events'
 import type WebSocket from 'ws'
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { OrchestrationDb } from './orchestration/db'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import { DeviceRegistry } from './device-registry'
 import { ORCHESTRATION_CHECK_METHODS } from './rpc/methods/orchestration/messaging/check-methods'
 import { ORCHESTRATION_ASK_METHODS } from './rpc/methods/orchestration/messaging/ask-methods'
@@ -38,15 +38,15 @@ class FakeWebSocket extends EventEmitter {
   readyState = this.OPEN
 }
 
-describe('OrcaRuntimeRpcServer', () => {
+describe('OCCRuntimeRpcServer', () => {
   it('caps WebSocket long-polls and aborts them when the socket closes', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService()
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService()
     const db = new OrchestrationDb(':memory:')
     runtime.setOrchestrationDb(db)
     // A consuming check now requires a live pane; these transport tests only need it to block.
     vi.spyOn(runtime, 'getTerminalPaneKey').mockImplementation((handle) => `tab_${handle}:leaf`)
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       runtime,
       methods: [...ORCHESTRATION_CHECK_METHODS, ...ORCHESTRATION_ASK_METHODS],
       userDataPath,
@@ -120,15 +120,15 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('applies the ask sub-cap on the WebSocket path and releases both counters on close', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
-    const runtime = new OrcaRuntimeService()
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
+    const runtime = new OCCRuntimeService()
     const db = new OrchestrationDb(':memory:')
     runtime.setOrchestrationDb(db)
     // A consuming check now requires a live pane; these transport tests only need it to block.
     vi.spyOn(runtime, 'getTerminalPaneKey').mockImplementation((handle) => `tab_${handle}:leaf`)
     seedSupervisedAskWorkers(db, ['term_w0', 'term_w1', 'term_w2'])
     // Cap 4 reserves half for waits; shed the third ask.
-    const server = new OrcaRuntimeRpcServer({
+    const server = new OCCRuntimeRpcServer({
       runtime,
       methods: [...ORCHESTRATION_CHECK_METHODS, ...ORCHESTRATION_ASK_METHODS],
       userDataPath,
@@ -214,12 +214,12 @@ describe('OrcaRuntimeRpcServer', () => {
   })
 
   it('shares one socket close listener across concurrent WebSocket dispatches', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-'))
     const runtime = {
       configureNotificationDismissalStore: () => {},
       getRuntimeId: () => 'test-runtime'
-    } as unknown as OrcaRuntimeService
-    const server = new OrcaRuntimeRpcServer({
+    } as unknown as OCCRuntimeService
+    const server = new OCCRuntimeRpcServer({
       runtime,
       methods: [],
       userDataPath,

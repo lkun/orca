@@ -5,7 +5,7 @@ import { detectRuntimeMachineName, type RuntimeMachineName } from './runtime-mac
 
 // Mock shared scutil lookup: runner load can make one live probe time out while another succeeds, yielding a flaky comparison.
 const runProcessMock = vi.hoisted(() => vi.fn())
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 
 const originalPlatform = Object.getOwnPropertyDescriptor(process, 'platform')!
 

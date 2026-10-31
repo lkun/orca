@@ -1,6 +1,6 @@
 import { basename, win32 as pathWin32 } from 'node:path'
 
-export const POSIX_SHELL_STARTUP_COMMAND_ENV = 'ORCA_POSIX_SHELL_STARTUP_COMMAND'
+export const POSIX_SHELL_STARTUP_COMMAND_ENV = 'OCC_POSIX_SHELL_STARTUP_COMMAND'
 
 export function supportsPosixShellStartupCommand(shellPath: string): boolean {
   const shellName = pathWin32.basename(basename(shellPath)).toLowerCase()
@@ -9,33 +9,33 @@ export function supportsPosixShellStartupCommand(shellPath: string): boolean {
 
 export function getBashStartupCommandPromptBlock(): string {
   return `if [[ \${${POSIX_SHELL_STARTUP_COMMAND_ENV}+present} == present ]]; then
-  __orca_remove_startup_command_prompt_hook() {
-    local __orca_item
-    local -a __orca_remaining=()
+  __occ_remove_startup_command_prompt_hook() {
+    local __occ_item
+    local -a __occ_remaining=()
     if (( BASH_VERSINFO[0] > 5 || (BASH_VERSINFO[0] == 5 && BASH_VERSINFO[1] >= 1) )); then
-      for __orca_item in "\${PROMPT_COMMAND[@]+"\${PROMPT_COMMAND[@]}"}"; do
-        [[ "$__orca_item" == "__orca_run_startup_command" ]] || __orca_remaining+=("$__orca_item")
+      for __occ_item in "\${PROMPT_COMMAND[@]+"\${PROMPT_COMMAND[@]}"}"; do
+        [[ "$__occ_item" == "__occ_run_startup_command" ]] || __occ_remaining+=("$__occ_item")
       done
-      PROMPT_COMMAND=("\${__orca_remaining[@]+"\${__orca_remaining[@]}"}")
+      PROMPT_COMMAND=("\${__occ_remaining[@]+"\${__occ_remaining[@]}"}")
     else
-      for __orca_item in "\${__orca_prompt_command_suffix[@]+"\${__orca_prompt_command_suffix[@]}"}"; do
-        [[ "$__orca_item" == "__orca_run_startup_command" ]] || __orca_remaining+=("$__orca_item")
+      for __occ_item in "\${__occ_prompt_command_suffix[@]+"\${__occ_prompt_command_suffix[@]}"}"; do
+        [[ "$__occ_item" == "__occ_run_startup_command" ]] || __occ_remaining+=("$__occ_item")
       done
-      __orca_prompt_command_suffix=("\${__orca_remaining[@]+"\${__orca_remaining[@]}"}")
+      __occ_prompt_command_suffix=("\${__occ_remaining[@]+"\${__occ_remaining[@]}"}")
     fi
   }
-  __orca_run_startup_command() {
-    local __orca_command="$${POSIX_SHELL_STARTUP_COMMAND_ENV}" __orca_status
+  __occ_run_startup_command() {
+    local __occ_command="$${POSIX_SHELL_STARTUP_COMMAND_ENV}" __occ_status
     unset ${POSIX_SHELL_STARTUP_COMMAND_ENV}
-    __orca_remove_startup_command_prompt_hook
-    unset -f __orca_remove_startup_command_prompt_hook
-    builtin history -s "$__orca_command" 2>/dev/null || true
-    builtin printf '%s\n' "$__orca_command"
-    eval "$__orca_command"
-    __orca_status=$?
-    unset -f __orca_run_startup_command
-    return "$__orca_status"
+    __occ_remove_startup_command_prompt_hook
+    unset -f __occ_remove_startup_command_prompt_hook
+    builtin history -s "$__occ_command" 2>/dev/null || true
+    builtin printf '%s\n' "$__occ_command"
+    eval "$__occ_command"
+    __occ_status=$?
+    unset -f __occ_run_startup_command
+    return "$__occ_status"
   }
-  __orca_append_prompt_command "__orca_run_startup_command"
+  __occ_append_prompt_command "__occ_run_startup_command"
 fi`
 }

@@ -11,7 +11,7 @@ import {
 import { createRequire } from 'node:module'
 import os from 'node:os'
 import { dirname, join } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { setAppEnvironment } from '../../shared/app-environment'
 import { buildInstallFixture } from './daemon-host-relocation.test-fixture'
@@ -26,7 +26,7 @@ const originalExecPath = process.execPath
 const originalResourcesPath = process.resourcesPath
 const originalLocalAppData = process.env.LOCALAPPDATA
 const originalElectronVersion = Object.getOwnPropertyDescriptor(process.versions, 'electron')
-const packageRel = join('resources', 'node_modules', '@orca', 'process-host')
+const packageRel = join('resources', 'node_modules', '@occ', 'process-host')
 let tempDir: string
 let installDir: string
 let hostRoot: string
@@ -90,10 +90,10 @@ describe('relocated process-host package', () => {
     expect(existsSync(join(copiedPackage, 'dist', 'run-process.d.ts'))).toBe(true)
     expect(existsSync(join(copiedPackage, 'src'))).toBe(false)
     const entry = join(root, 'resources', 'app.asar.unpacked', 'out', 'main', 'daemon-entry.js')
-    expect(createRequire(entry).resolve('@orca/process-host')).toBe(
+    expect(createRequire(entry).resolve('@occ/process-host')).toBe(
       realpathSync(join(copiedPackage, 'dist', 'run-process.js'))
     )
-    expect(createRequire(entry).resolve('@orca/process-host/spawn-observer')).toBe(
+    expect(createRequire(entry).resolve('@occ/process-host/spawn-observer')).toBe(
       realpathSync(join(copiedPackage, 'dist', 'spawn-observer.js'))
     )
   })
@@ -223,7 +223,7 @@ describe('relocated process-host package', () => {
 
   it('runs emitted bare imports from the relocated entry after removing the install tree', () => {
     const require = createRequire(import.meta.url)
-    const actualPackage = dirname(dirname(require.resolve('@orca/process-host')))
+    const actualPackage = dirname(dirname(require.resolve('@occ/process-host')))
     const installedPackage = join(installDir, packageRel)
     cpSync(join(actualPackage, 'package.json'), join(installedPackage, 'package.json'))
     cpSync(join(actualPackage, 'dist'), join(installedPackage, 'dist'), {
@@ -235,8 +235,8 @@ describe('relocated process-host package', () => {
     writeFileSync(
       join(mainDir, 'chunks', 'a.js'),
       `module.exports = {
-      runner: require('@orca/process-host'),
-      observer: require('@orca/process-host/spawn-observer')
+      runner: require('@occ/process-host'),
+      observer: require('@occ/process-host/spawn-observer')
     }`
     )
     writeFileSync(
@@ -264,14 +264,14 @@ describe('relocated process-host package', () => {
       throw new Error('fixture host was not materialized')
     }
     const result = runProcessSync({
-      program: process.env.ORCA_TEST_NODE_EXECUTABLE ?? originalExecPath,
+      program: process.env.OCC_TEST_NODE_EXECUTABLE ?? originalExecPath,
       args: [host.entryPath],
       cwd: tempDir,
       env: {
         ...process.env,
         NODE_PATH: undefined,
         NODE_OPTIONS: undefined,
-        ORCA_BACKGROUND_LAUNCH: '1'
+        OCC_BACKGROUND_LAUNCH: '1'
       },
       timeoutMs: 15_000
     })
@@ -282,8 +282,8 @@ describe('relocated process-host package', () => {
 })
 
 describe('relocated Windows registry package', () => {
-  const registryRel = join('resources', 'node_modules', '@orca', 'windows-registry')
-  const required = ['package.json', 'index.js', 'build/Release/orca_windows_registry.node']
+  const registryRel = join('resources', 'node_modules', '@occ', 'windows-registry')
+  const required = ['package.json', 'index.js', 'build/Release/occ_windows_registry.node']
 
   it('mirrors the registry package under the name shipped by Windows packaging', () => {
     const require = createRequire(import.meta.url)
@@ -304,7 +304,7 @@ describe('relocated Windows registry package', () => {
     const entryPath = join(root, 'resources', 'app.asar.unpacked', 'out', 'main', 'daemon-entry.js')
     const script = `
       const assert = require('node:assert/strict')
-      const registry = require('node:module').createRequire(process.argv[1])('@orca/windows-registry')
+      const registry = require('node:module').createRequire(process.argv[1])('@occ/windows-registry')
       assert.equal(registry.HK.CU, 0x80000001)
       assert.throws(() => registry.getRegistryKey(registry.HK.CU, 'Environment'), {
         code: 'ERR_DLOPEN_FAILED'
@@ -313,14 +313,14 @@ describe('relocated Windows registry package', () => {
     `
     rmSync(installDir, { recursive: true, force: true })
     const result = runProcessSync({
-      program: process.env.ORCA_TEST_NODE_EXECUTABLE ?? originalExecPath,
+      program: process.env.OCC_TEST_NODE_EXECUTABLE ?? originalExecPath,
       args: ['-e', script, entryPath],
       cwd: tempDir,
       env: {
         ...process.env,
         NODE_PATH: undefined,
         NODE_OPTIONS: undefined,
-        ORCA_BACKGROUND_LAUNCH: '1'
+        OCC_BACKGROUND_LAUNCH: '1'
       },
       timeoutMs: 15_000
     })
@@ -328,7 +328,7 @@ describe('relocated Windows registry package', () => {
     expect(result.code).toBe(0)
     expect(result.stdout).toBe('registry-root-and-native-path-resolve')
     expect(
-      existsSync(join(root, registryRel, 'build', 'Release', 'orca_windows_registry.pdb'))
+      existsSync(join(root, registryRel, 'build', 'Release', 'occ_windows_registry.pdb'))
     ).toBe(false)
     expect(existsSync(join(root, registryRel, 'build', 'Release', 'obj'))).toBe(false)
   })
@@ -360,7 +360,7 @@ describe('relocated Windows registry package', () => {
   it.skipIf(originalPlatform !== 'win32')(
     'reads the Windows registry from the mirror with the built addon',
     () => {
-      const addonRel = 'build/Release/orca_windows_registry.node'
+      const addonRel = 'build/Release/occ_windows_registry.node'
       cpSync(
         join(import.meta.dirname, '../../../native/windows-registry', addonRel),
         join(installDir, registryRel, addonRel)
@@ -376,12 +376,12 @@ describe('relocated Windows registry package', () => {
       )
       rmSync(installDir, { recursive: true, force: true })
       const result = runProcessSync({
-        program: process.env.ORCA_TEST_NODE_EXECUTABLE ?? originalExecPath,
+        program: process.env.OCC_TEST_NODE_EXECUTABLE ?? originalExecPath,
         args: [
           '-e',
           String.raw`
         const assert = require('node:assert/strict')
-        const registry = require('node:module').createRequire(process.argv[1])('@orca/windows-registry')
+        const registry = require('node:module').createRequire(process.argv[1])('@occ/windows-registry')
         const values = registry.getRegistryKey(registry.HK.LM, 'SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion')
         assert.match(values.ProductName.value, /Windows/)
         process.stdout.write('registry-native-read')
@@ -393,7 +393,7 @@ describe('relocated Windows registry package', () => {
           ...process.env,
           NODE_PATH: undefined,
           NODE_OPTIONS: undefined,
-          ORCA_BACKGROUND_LAUNCH: '1'
+          OCC_BACKGROUND_LAUNCH: '1'
         },
         timeoutMs: 15_000
       })

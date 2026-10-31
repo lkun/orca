@@ -7,10 +7,10 @@ import path from 'node:path'
 import os from 'node:os'
 import { prepareDockerSshHostImage } from './helpers/docker-ssh-host-image'
 
-export const E2E_TEST_REPO_PATH_FILE_ENV = 'ORCA_E2E_TEST_REPO_PATH_FILE'
+export const E2E_TEST_REPO_PATH_FILE_ENV = 'OCC_E2E_TEST_REPO_PATH_FILE'
 const RUN_TEST_REPO_PATH_FILE =
   process.env[E2E_TEST_REPO_PATH_FILE_ENV] ??
-  path.join(os.tmpdir(), `orca-e2e-test-repo-path-${randomUUID()}.txt`)
+  path.join(os.tmpdir(), `occ-e2e-test-repo-path-${randomUUID()}.txt`)
 
 export function workerTestRepositoryPathFile(runPathFile: string, workerIndex?: string): string {
   if (workerIndex === undefined) {
@@ -70,7 +70,7 @@ export default function globalSetup(): void {
     })
     console.error('[e2e] CLI build complete.')
   }
-  if (process.env.ORCA_E2E_WEB_CLIENT === '1') {
+  if (process.env.OCC_E2E_WEB_CLIENT === '1') {
     if (process.env.SKIP_BUILD && existsSync(outWeb)) {
       console.error('[e2e] SKIP_BUILD set and web client exists — skipping web build')
     } else {
@@ -85,7 +85,7 @@ export default function globalSetup(): void {
       console.error('[e2e] Web client build complete.')
     }
   }
-  if (process.env.ORCA_E2E_SSH_DOCKER === '1') {
+  if (process.env.OCC_E2E_SSH_DOCKER === '1') {
     console.error('[e2e] Preparing Docker OpenSSH fixture image...')
     prepareDockerSshHostImage(root)
   }
@@ -98,7 +98,7 @@ export default function globalSetup(): void {
 // Shared by global setup and worker fallbacks so both seed paths stay identical.
 export function seedTestRepository(): string {
   // Resolve macOS /var symlinks like git does when registering repo.path.
-  const testRepoDir = realpathSync(mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-repo-')))
+  const testRepoDir = realpathSync(mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-repo-')))
 
   execSync('git init', { cwd: testRepoDir, stdio: 'pipe' })
   execSync('git config user.email "e2e@test.local"', { cwd: testRepoDir, stdio: 'pipe' })
@@ -111,7 +111,7 @@ export function seedTestRepository(): string {
   writeFileSync(path.join(testRepoDir, 'CLAUDE.md'), '# CLAUDE.md\n\nTest instructions for E2E.\n')
   writeFileSync(
     path.join(testRepoDir, 'package.json'),
-    `${JSON.stringify({ name: 'orca-e2e-test', version: '0.0.0', private: true }, null, 2)}\n`
+    `${JSON.stringify({ name: 'occ-e2e-test', version: '0.0.0', private: true }, null, 2)}\n`
   )
   writeFileSync(path.join(testRepoDir, '.gitignore'), 'node_modules/\n')
   mkdirSync(path.join(testRepoDir, 'src'), { recursive: true })
@@ -127,7 +127,7 @@ export function seedTestRepository(): string {
   })
 
   // Seed a second worktree so retention/switching specs run; UUIDs keep concurrent workers apart.
-  const worktreeDir = path.join(testRepoDir, '..', `orca-e2e-worktree-${randomUUID()}`)
+  const worktreeDir = path.join(testRepoDir, '..', `occ-e2e-worktree-${randomUUID()}`)
   execSync(`${isolatedGit} worktree add "${worktreeDir}" -b e2e-secondary`, {
     cwd: testRepoDir,
     stdio: 'pipe'

@@ -11,7 +11,7 @@ export type AgentSkillSetupPanelProps = {
   description: ReactNode
   skillNames: readonly string[]
   target?: BundledSkillTarget | null
-  // COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+  // COMPAT(wsl-bridge): removed when WSL runs as an occd host.
   terminalRuntime?: LocalAgentRuntime
   // An installed copy may use another name (the legacy Linear skill).
   installedSkillNames?: readonly string[]

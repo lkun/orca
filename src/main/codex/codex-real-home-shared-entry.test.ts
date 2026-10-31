@@ -30,7 +30,7 @@ import {
   reconcileCodexHooks,
   startCodexHooks
 } from './codex-hook-reconcile'
-import { getOrcaManagedCodexHomePath } from './codex-home-paths'
+import { getOCCManagedCodexHomePath } from './codex-home-paths'
 import { resolveStartupManagedHookAction } from '../agent-hooks/managed-agent-hook-controls'
 
 const homes = setupCodexHookHomes(homedirMock, getPathMock)
@@ -138,7 +138,7 @@ describe('the shared real-home Codex entry', () => {
     expect(resolveStartupManagedHookAction(settings)).toBe('skip')
     await reconcileWithHooksOff()
     await new CodexHookService().prepareRuntimeHomeForLaunch(
-      getOrcaManagedCodexHomePath(),
+      getOCCManagedCodexHomePath(),
       undefined,
       () => false,
       false

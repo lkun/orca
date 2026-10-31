@@ -57,7 +57,7 @@ export function encodeProfileStateWriterError(
     return { code: error.code, message: error.message, outcome, domain: error.domain }
   }
   if (error instanceof ProfileStateDatabaseOpenError) {
-    const cause = encodeOpenErrorCause(error.cause)
+    const cause = encodeOpenErroccuse(error.cause)
     return { code: error.code, message: error.message, outcome, ...(cause ? { cause } : {}) }
   }
   if (
@@ -102,7 +102,7 @@ export function decodeProfileStateWriterError(data: ProfileStateWriterErrorData)
 }
 
 // Preserve SQLite causes to distinguish lock races from damage (#27333); these messages exclude user data.
-function encodeOpenErrorCause(cause: unknown): ProfileStateWriterErrorData['cause'] {
+function encodeOpenErroccuse(cause: unknown): ProfileStateWriterErrorData['cause'] {
   if (!(cause instanceof Error)) {
     return undefined
   }

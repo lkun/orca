@@ -47,9 +47,9 @@ export const REAL_PNX_CMD = crlf([
 ])
 
 const VITEST_NODE_PATH = [
-  'C:\\Users\\neil\\orca\\orca\\node_modules\\.pnpm\\vitest@4.1.11\\node_modules\\vitest\\node_modules',
-  'C:\\Users\\neil\\orca\\orca\\node_modules\\.pnpm\\vitest@4.1.11\\node_modules',
-  'C:\\Users\\neil\\orca\\orca\\node_modules\\.pnpm\\node_modules'
+  'C:\\Users\\neil\\occ\\occ\\node_modules\\.pnpm\\vitest@4.1.11\\node_modules\\vitest\\node_modules',
+  'C:\\Users\\neil\\occ\\occ\\node_modules\\.pnpm\\vitest@4.1.11\\node_modules',
+  'C:\\Users\\neil\\occ\\occ\\node_modules\\.pnpm\\node_modules'
 ].join(';')
 
 export const REAL_VITEST_CMD = crlf([

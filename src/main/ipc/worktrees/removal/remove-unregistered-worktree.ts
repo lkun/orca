@@ -9,7 +9,7 @@ import type { LocalProjectWorktreeGitOptions } from '../../../project-runtime-gi
 import { preservedBranchCleanupScopeKey } from '../../../../shared/preserved-branch-cleanup'
 import {
   assertWorktreeDoesNotContainRegisteredWorktree,
-  canCleanupUnregisteredOrcaWorktreeDirectory,
+  canCleanupUnregisteredOCCWorktreeDirectory,
   canSafelyRemoveOrphanedWorktreeDirectory,
   isDangerousWorktreeRemovalPath,
   ORPHANED_WORKTREE_DIRECTORY_MESSAGE,
@@ -51,7 +51,7 @@ export async function removeUnregisteredWorktree(
   const removalHome = resolveWorktreeRemovalHomeForHost(removalHostId)
   let canCleanOrphanedDirectory = false
   if (
-    canCleanupUnregisteredOrcaWorktreeDirectory({
+    canCleanupUnregisteredOCCWorktreeDirectory({
       meta: removedMeta
     })
   ) {

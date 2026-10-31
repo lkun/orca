@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process'
 import type * as ChildProcess from 'node:child_process'
-import { quoteWindowsArgument } from '@orca/process-host/windows-command-line'
+import { quoteWindowsArgument } from '@occ/process-host/windows-command-line'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   cancelGenerateCommitMessageLocal,

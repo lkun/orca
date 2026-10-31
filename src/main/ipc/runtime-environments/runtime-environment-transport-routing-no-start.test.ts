@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { OrcadDeploymentLink } from '../../../shared/runtime-environments'
+import type { OCCdDeploymentLink } from '../../../shared/runtime-environments'
 
-type Environment = { id: string; createdAt: number; orcadDeployment?: OrcadDeploymentLink }
+type Environment = { id: string; createdAt: number; occdDeployment?: OCCdDeploymentLink }
 
 const mocks = vi.hoisted(() => ({
   environments: new Map<string, Environment>(),
@@ -51,12 +51,12 @@ describe("a no-start caller's status probe", () => {
     mocks.environments.set('wsl:ubuntu', {
       id: 'wsl:ubuntu',
       createdAt: 1,
-      orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 1, remotePort: 2 }
+      occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 1, remotePort: 2 }
     })
     mocks.environments.set('ssh-managed', {
       id: 'ssh-managed',
       createdAt: 1,
-      orcadDeployment: { sshTargetId: 't', sshTargetGeneration: 1, localPort: 1, remotePort: 2 }
+      occdDeployment: { sshTargetId: 't', sshTargetGeneration: 1, localPort: 1, remotePort: 2 }
     })
     mocks.resolveManaged.mockReset()
     mocks.wslCheck.mockReset()

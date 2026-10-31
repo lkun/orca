@@ -2,7 +2,7 @@ import { mkdtempSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { OrcaRuntimeRpcServer } from './runtime-rpc'
+import { OCCRuntimeRpcServer } from './runtime-rpc'
 import { DeviceRegistry } from './device-registry'
 import { createMobileRpcSurfaceRuntime } from './runtime-rpc-mobile-method-allowlist-fixtures'
 import { MOBILE_RPC_METHOD_ALLOWLIST } from './runtime-rpc/runtime-rpc-mobile-method-allowlist'
@@ -22,9 +22,9 @@ describe('an unknown method reaching a mobile-scoped device', () => {
     scope: 'mobile' | 'runtime',
     method: string
   ): Promise<Record<string, unknown>> => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-rpc-scope-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-rpc-scope-'))
     const { runtime } = createMobileRpcSurfaceRuntime()
-    const server = new OrcaRuntimeRpcServer({ runtime, userDataPath, enableWebSocket: false })
+    const server = new OCCRuntimeRpcServer({ runtime, userDataPath, enableWebSocket: false })
     server['deviceRegistry'] = new DeviceRegistry(userDataPath)
     const device = server['deviceRegistry']!.addDevice('peer', scope)
     const replies: Record<string, unknown>[] = []

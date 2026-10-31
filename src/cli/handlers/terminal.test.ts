@@ -16,7 +16,7 @@ function terminalClient(
   call: RuntimeClient['call'],
   runtime?: CliStatusResult['runtime']
 ): RuntimeClient {
-  const client = new RuntimeClient('/tmp/orca-terminal-test', 60_000, null, null)
+  const client = new RuntimeClient('/tmp/occ-terminal-test', 60_000, null, null)
   vi.spyOn(client, 'call').mockImplementation(call)
   if (runtime) {
     vi.spyOn(client, 'getCliStatus').mockResolvedValue({
@@ -365,7 +365,7 @@ describe('terminal send CLI', () => {
         enter: true,
         interrupt: false,
         agentPrompt: true,
-        client: { id: 'orca-cli', type: 'desktop' }
+        client: { id: 'occ-cli', type: 'desktop' }
       },
       { terminalPromptPreflight: { runtimeId: 'runtime-current' } }
     )
@@ -476,14 +476,14 @@ describe('terminal send CLI', () => {
       text: 'x',
       enter: false,
       interrupt: false,
-      client: { id: 'orca-cli', type: 'desktop' }
+      client: { id: 'occ-cli', type: 'desktop' }
     })
     expect(call).toHaveBeenNthCalledWith(2, 'terminal.send', {
       terminal: 'term-1',
       text: undefined,
       enter: true,
       interrupt: false,
-      client: { id: 'orca-cli', type: 'desktop' }
+      client: { id: 'occ-cli', type: 'desktop' }
     })
   })
 

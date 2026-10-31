@@ -1,7 +1,7 @@
 import { mkdirSync } from 'node:fs'
 import path from 'node:path'
 import type { Locator, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   resolveActiveTabId,
@@ -105,20 +105,20 @@ async function expectKeyboardOutput(page: Page, tab: Locator, marker: string): P
 for (const entry of ['menu', 'double-click'] as const) {
   for (const exit of ['Enter', 'Escape', 'empty'] as const) {
     test(`${entry} rename ${exit} returns floating keyboard input to the terminal`, async ({
-      orcaPage
+      occPage
     }) => {
-      const { first, second } = await openFloatingTerminals(orcaPage)
-      await expectKeyboardOutput(orcaPage, first, 'ORCA_RENAME_BASELINE')
-      await orcaPage.keyboard.press(nextTabChord)
+      const { first, second } = await openFloatingTerminals(occPage)
+      await expectKeyboardOutput(occPage, first, 'OCC_RENAME_BASELINE')
+      await occPage.keyboard.press(nextTabChord)
       await expect(second).toHaveAttribute('data-active', 'true')
       await first.click()
 
-      const input = await beginRename(orcaPage, first, entry)
+      const input = await beginRename(occPage, first, entry)
       await input.fill('')
       if (exit !== 'empty') {
         await input.pressSequentially('Renamed terminal', { delay: 60 })
       }
-      await orcaPage.keyboard.press(exit === 'Escape' ? 'Escape' : 'Enter')
+      await occPage.keyboard.press(exit === 'Escape' ? 'Escape' : 'Enter')
       await expect(input).toHaveCount(0)
       await (exit === 'empty'
         ? expect(first).not.toHaveAttribute('data-tab-title', 'Rename target')
@@ -127,71 +127,71 @@ for (const entry of ['menu', 'double-click'] as const) {
             exit === 'Escape' ? 'Rename target' : 'Renamed terminal'
           ))
       await expect(
-        orcaPage.locator(`${OPEN_PANEL_SELECTOR} .xterm-helper-textarea:focus`)
+        occPage.locator(`${OPEN_PANEL_SELECTOR} .xterm-helper-textarea:focus`)
       ).toHaveCount(1)
-      await expectKeyboardOutput(orcaPage, first, 'ORCA_RENAME_RECOVERED')
-      await orcaPage.keyboard.press(nextTabChord)
+      await expectKeyboardOutput(occPage, first, 'OCC_RENAME_RECOVERED')
+      await occPage.keyboard.press(nextTabChord)
       await expect(second).toHaveAttribute('data-active', 'true')
-      await expectKeyboardOutput(orcaPage, second, 'ORCA_RENAME_SWITCHED')
+      await expectKeyboardOutput(occPage, second, 'OCC_RENAME_SWITCHED')
     })
   }
 }
 
 test('blur commits without taking keyboard input back from another floating tab', async ({
-  orcaPage
+  occPage
 }) => {
-  const { first, second } = await openFloatingTerminals(orcaPage)
-  const input = await beginRename(orcaPage, first, 'double-click')
+  const { first, second } = await openFloatingTerminals(occPage)
+  const input = await beginRename(occPage, first, 'double-click')
   await input.fill('Blur committed')
   await second.click()
   await expect(input).toHaveCount(0)
   await expect(first).toHaveAttribute('data-tab-title', 'Blur committed')
   await expect(second).toHaveAttribute('data-active', 'true')
-  await expectKeyboardOutput(orcaPage, second, 'ORCA_RENAME_BLUR')
+  await expectKeyboardOutput(occPage, second, 'OCC_RENAME_BLUR')
 })
 
 test('renaming an inactive floating tab does not activate or focus its terminal', async ({
-  orcaPage
+  occPage
 }) => {
-  const { first, second } = await openFloatingTerminals(orcaPage)
-  const input = await beginRename(orcaPage, second, 'menu')
+  const { first, second } = await openFloatingTerminals(occPage)
+  const input = await beginRename(occPage, second, 'menu')
   await expect(first).toHaveAttribute('data-active', 'true')
   await input.fill('Inactive renamed')
-  await orcaPage.keyboard.press('Enter')
+  await occPage.keyboard.press('Enter')
   await expect(second).toHaveAttribute('data-tab-title', 'Inactive renamed')
-  await settleDeferredFocus(orcaPage)
+  await settleDeferredFocus(occPage)
   await expect(first).toHaveAttribute('data-active', 'true')
   const secondId = await second.getAttribute('data-tab-id')
   await expect(
-    orcaPage.locator(`[data-terminal-tab-id="${secondId}"] .xterm-helper-textarea:focus`)
+    occPage.locator(`[data-terminal-tab-id="${secondId}"] .xterm-helper-textarea:focus`)
   ).toHaveCount(0)
 })
 
-test('blur preserves focus in the worktree search dialog', async ({ orcaPage }) => {
-  const { first } = await openFloatingTerminals(orcaPage)
-  const input = await beginRename(orcaPage, first, 'double-click')
+test('blur preserves focus in the worktree search dialog', async ({ occPage }) => {
+  const { first } = await openFloatingTerminals(occPage)
+  const input = await beginRename(occPage, first, 'double-click')
   await input.fill('Search committed')
-  await orcaPage
+  await occPage
     .getByRole('button', { name: 'Search worktrees and browser tabs', exact: true })
     .click()
   await expect(input).toHaveCount(0)
   await expect(first).toHaveAttribute('data-tab-title', 'Search committed')
-  const search = orcaPage.getByRole('dialog').locator('input').first()
+  const search = occPage.getByRole('dialog').locator('input').first()
   await expect(search).toBeFocused()
-  await settleDeferredFocus(orcaPage)
-  await orcaPage.keyboard.type('search owns input')
+  await settleDeferredFocus(occPage)
+  await occPage.keyboard.type('search owns input')
   await expect(search).toHaveValue('search owns input')
 })
 
 for (const change of ['hide', 'close'] as const) {
   test(`a ${change} at rename completion cancels the deferred floating focus return`, async ({
-    orcaPage
+    occPage
   }) => {
-    const { first } = await openFloatingTerminals(orcaPage)
+    const { first } = await openFloatingTerminals(occPage)
     const tabId = await first.getAttribute('data-tab-id')
-    const input = await beginRename(orcaPage, first, 'menu')
+    const input = await beginRename(occPage, first, 'menu')
     await input.fill('Exiting tab')
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ tabId, change }) => {
         // Run after React handles Enter, but before any queued animation frame.
         document.addEventListener(
@@ -209,29 +209,29 @@ for (const change of ['hide', 'close'] as const) {
       },
       { tabId, change }
     )
-    await orcaPage.keyboard.press('Enter')
+    await occPage.keyboard.press('Enter')
     await expect(input).toBeHidden()
-    await settleDeferredFocus(orcaPage)
+    await settleDeferredFocus(occPage)
     await expect(
-      orcaPage.locator(`[data-terminal-tab-id="${tabId}"] .xterm-helper-textarea:focus`)
+      occPage.locator(`[data-terminal-tab-id="${tabId}"] .xterm-helper-textarea:focus`)
     ).toHaveCount(0)
   })
 }
 
 for (const workspace of ['git', 'folder'] as const) {
   test(`keyboard rename in a ${workspace} workspace returns input to the selected split leaf`, async ({
-    orcaPage,
+    occPage,
     electronApp
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
     if (workspace === 'folder') {
       const folderPath = path.join(
         await electronApp.evaluate(({ app }) => app.getPath('home')),
         'rename-folder'
       )
       mkdirSync(folderPath)
-      await orcaPage.evaluate(async (folderPath) => {
+      await occPage.evaluate(async (folderPath) => {
         const state = window.__store!.getState()
         await state.updateSettingsOrThrow({ defaultTuiAgent: 'blank' })
         const group = await window.api.projectGroups.create({
@@ -246,39 +246,39 @@ for (const workspace of ['git', 'folder'] as const) {
         )
         state.openModal('worktree-palette')
       }, folderPath)
-      const palette = orcaPage.getByRole('dialog', { name: 'Jump to...' })
+      const palette = occPage.getByRole('dialog', { name: 'Jump to...' })
       await palette.getByRole('combobox').fill('Rename folder')
       await palette.getByRole('combobox').press('Enter')
       await expect(palette).toHaveCount(0)
     }
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage)
-    await splitActiveTerminalPane(orcaPage, 'horizontal')
-    await waitForPaneIdentitySnapshot(orcaPage, 2)
-    const tabId = await resolveActiveTabId(orcaPage)
-    const tab = orcaPage.locator(`[data-testid="sortable-tab"][data-tab-id="${tabId}"]`)
-    const panes = orcaPage.locator(`[data-terminal-tab-id="${tabId}"] .pane[data-leaf-id]`)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage)
+    await splitActiveTerminalPane(occPage, 'horizontal')
+    await waitForPaneIdentitySnapshot(occPage, 2)
+    const tabId = await resolveActiveTabId(occPage)
+    const tab = occPage.locator(`[data-testid="sortable-tab"][data-tab-id="${tabId}"]`)
+    const panes = occPage.locator(`[data-terminal-tab-id="${tabId}"] .pane[data-leaf-id]`)
     await panes.first().locator('.xterm-screen').click()
     await panes.last().locator('.xterm-screen').click()
     const leafId = await panes.last().getAttribute('data-leaf-id')
     expect(leafId).toBeTruthy()
     await expect
       .poll(() =>
-        orcaPage.evaluate(
+        occPage.evaluate(
           (id) => (id ? window.__store?.getState().terminalLayoutsByTabId[id]?.activeLeafId : null),
           tabId
         )
       )
       .toBe(leafId)
-    const input = await beginRename(orcaPage, tab, 'menu')
+    const input = await beginRename(occPage, tab, 'menu')
     await input.fill('Split renamed')
-    await orcaPage.keyboard.press('Enter')
+    await occPage.keyboard.press('Enter')
     await expect(input).toHaveCount(0)
     await expect(
-      orcaPage.locator(`[data-leaf-id="${leafId}"] .xterm-helper-textarea`)
+      occPage.locator(`[data-leaf-id="${leafId}"] .xterm-helper-textarea`)
     ).toBeFocused()
-    await expectKeyboardOutput(orcaPage, tab, 'ORCA_RENAME_SPLIT')
-    await orcaPage.screenshot({ path: testInfo.outputPath('split-rename-focus.png') })
+    await expectKeyboardOutput(occPage, tab, 'OCC_RENAME_SPLIT')
+    await occPage.screenshot({ path: testInfo.outputPath('split-rename-focus.png') })
     expect(
       await electronApp.evaluate(({ BrowserWindow }) =>
         BrowserWindow.getAllWindows().every((window) => !window.isVisible())

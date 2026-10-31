@@ -22,8 +22,8 @@ import type { AgentStatusIpcPayload } from '../../shared/agent-status-types'
 
 let root: string
 beforeEach(async () => {
-  root = await realpath(await mkdtemp(join(tmpdir(), 'orca-source-admission-')))
-  vi.stubEnv('ORCA_USER_DATA_PATH', join(root, 'user-data'))
+  root = await realpath(await mkdtemp(join(tmpdir(), 'occ-source-admission-')))
+  vi.stubEnv('OCC_USER_DATA_PATH', join(root, 'user-data'))
 })
 afterEach(async () => {
   vi.unstubAllEnvs()
@@ -545,7 +545,7 @@ it('checks canonical provider metadata during the existing import, including Cod
 })
 
 it('materializes legacy Codex into the system home and pins a verified selected account alias', async () => {
-  const legacy = codexHomes.getOrcaManagedCodexHomePath()
+  const legacy = codexHomes.getOCCManagedCodexHomePath()
   const system = join(root, 'system')
   const historyOnly = join(root, 'history-only')
   const selected = join(root, 'codex-accounts', 'selected', 'home')

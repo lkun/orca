@@ -88,7 +88,7 @@ export function useMarkupMode({
       }
       // Return to idle on capture failure; no overlay exists to offer recovery.
       reportError(
-        'auto.components.browser-pane.markup.errorCapture',
+        'auto.components.browser-pane.markup.erroccpture',
         'Could not capture the page to draw on.'
       )
       reset()

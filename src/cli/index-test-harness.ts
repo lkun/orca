@@ -3,13 +3,13 @@ import { afterEach, beforeEach, vi, type Mock } from 'vitest'
 export type RuntimeClientModuleMocks = {
   callMock: Mock
   runtimeClientConstructorMock: Mock
-  serveOrcaAppMock: Mock
+  serveOCCAppMock: Mock
   getDefaultUserDataPathMock: Mock
 }
 
 export type WorktreeAwarenessMocks = {
   callMock: Mock
-  serveOrcaAppMock: Mock
+  serveOCCAppMock: Mock
   getDefaultUserDataPathMock: Mock
   addEnvironmentFromPairingCodeMock: Mock
   listEnvironmentsMock: Mock
@@ -24,7 +24,7 @@ export async function createRuntimeClientModuleMock(mocks: RuntimeClientModuleMo
     readonly isRemote: boolean
     call = mocks.callMock
     getCliStatus = vi.fn()
-    openOrca = vi.fn()
+    openOCC = vi.fn()
 
     constructor(
       _userDataPath?: string,
@@ -35,10 +35,10 @@ export async function createRuntimeClientModuleMock(mocks: RuntimeClientModuleMo
       mocks.runtimeClientConstructorMock(remotePairingCode, environmentSelector)
       const effectivePairingCode =
         remotePairingCode === undefined
-          ? (process.env.ORCA_PAIRING_CODE ?? process.env.ORCA_REMOTE_PAIRING)
+          ? (process.env.OCC_PAIRING_CODE ?? process.env.OCC_REMOTE_PAIRING)
           : remotePairingCode
       const effectiveEnvironment =
-        environmentSelector === undefined ? process.env.ORCA_ENVIRONMENT : environmentSelector
+        environmentSelector === undefined ? process.env.OCC_ENVIRONMENT : environmentSelector
       if (effectivePairingCode && effectiveEnvironment) {
         throw new RuntimeClientError(
           'invalid_argument',
@@ -53,7 +53,7 @@ export async function createRuntimeClientModuleMock(mocks: RuntimeClientModuleMo
     RuntimeClient,
     RuntimeClientError,
     RuntimeRpcFailureError,
-    serveOrcaApp: mocks.serveOrcaAppMock,
+    serveOCCApp: mocks.serveOCCAppMock,
     getDefaultUserDataPath: mocks.getDefaultUserDataPathMock
   }
 }
@@ -105,25 +105,25 @@ export function pairRuntimeEnvironment(listEnvironmentsMock: Mock, id: string, n
 }
 
 export function useWorktreeAwarenessEnvironment(mocks: WorktreeAwarenessMocks): void {
-  const originalTerminalHandle = process.env.ORCA_TERMINAL_HANDLE
-  const originalUserDataPath = process.env.ORCA_USER_DATA_PATH
-  const originalDevCliInvocation = process.env.ORCA_DEV_CLI_INVOCATION
-  const originalPairingCode = process.env.ORCA_PAIRING_CODE
-  const originalRemotePairing = process.env.ORCA_REMOTE_PAIRING
-  const originalEnvironment = process.env.ORCA_ENVIRONMENT
-  const originalWorkspaceId = process.env.ORCA_WORKSPACE_ID
-  const originalWorktreeId = process.env.ORCA_WORKTREE_ID
+  const originalTerminalHandle = process.env.OCC_TERMINAL_HANDLE
+  const originalUserDataPath = process.env.OCC_USER_DATA_PATH
+  const originalDevCliInvocation = process.env.OCC_DEV_CLI_INVOCATION
+  const originalPairingCode = process.env.OCC_PAIRING_CODE
+  const originalRemotePairing = process.env.OCC_REMOTE_PAIRING
+  const originalEnvironment = process.env.OCC_ENVIRONMENT
+  const originalWorkspaceId = process.env.OCC_WORKSPACE_ID
+  const originalWorktreeId = process.env.OCC_WORKTREE_ID
 
   beforeEach(() => {
     mocks.callMock.mockReset()
-    delete process.env.ORCA_TERMINAL_HANDLE
-    delete process.env.ORCA_USER_DATA_PATH
-    delete process.env.ORCA_DEV_CLI_INVOCATION
-    delete process.env.ORCA_WORKSPACE_ID
-    delete process.env.ORCA_WORKTREE_ID
+    delete process.env.OCC_TERMINAL_HANDLE
+    delete process.env.OCC_USER_DATA_PATH
+    delete process.env.OCC_DEV_CLI_INVOCATION
+    delete process.env.OCC_WORKSPACE_ID
+    delete process.env.OCC_WORKTREE_ID
     // Prevent claude-teams tests from leaking senderPaneKey into later assertions.
-    delete process.env.ORCA_PANE_KEY
-    mocks.serveOrcaAppMock.mockReset()
+    delete process.env.OCC_PANE_KEY
+    mocks.serveOCCAppMock.mockReset()
     mocks.getDefaultUserDataPathMock.mockClear()
     mocks.addEnvironmentFromPairingCodeMock.mockReset()
     mocks.listEnvironmentsMock.mockReset()
@@ -153,44 +153,44 @@ export function useWorktreeAwarenessEnvironment(mocks: WorktreeAwarenessMocks): 
   afterEach(() => {
     vi.restoreAllMocks()
     if (originalTerminalHandle === undefined) {
-      delete process.env.ORCA_TERMINAL_HANDLE
+      delete process.env.OCC_TERMINAL_HANDLE
     } else {
-      process.env.ORCA_TERMINAL_HANDLE = originalTerminalHandle
+      process.env.OCC_TERMINAL_HANDLE = originalTerminalHandle
     }
     if (originalUserDataPath === undefined) {
-      delete process.env.ORCA_USER_DATA_PATH
+      delete process.env.OCC_USER_DATA_PATH
     } else {
-      process.env.ORCA_USER_DATA_PATH = originalUserDataPath
+      process.env.OCC_USER_DATA_PATH = originalUserDataPath
     }
     if (originalDevCliInvocation === undefined) {
-      delete process.env.ORCA_DEV_CLI_INVOCATION
+      delete process.env.OCC_DEV_CLI_INVOCATION
     } else {
-      process.env.ORCA_DEV_CLI_INVOCATION = originalDevCliInvocation
+      process.env.OCC_DEV_CLI_INVOCATION = originalDevCliInvocation
     }
     if (originalPairingCode === undefined) {
-      delete process.env.ORCA_PAIRING_CODE
+      delete process.env.OCC_PAIRING_CODE
     } else {
-      process.env.ORCA_PAIRING_CODE = originalPairingCode
+      process.env.OCC_PAIRING_CODE = originalPairingCode
     }
     if (originalRemotePairing === undefined) {
-      delete process.env.ORCA_REMOTE_PAIRING
+      delete process.env.OCC_REMOTE_PAIRING
     } else {
-      process.env.ORCA_REMOTE_PAIRING = originalRemotePairing
+      process.env.OCC_REMOTE_PAIRING = originalRemotePairing
     }
     if (originalEnvironment === undefined) {
-      delete process.env.ORCA_ENVIRONMENT
+      delete process.env.OCC_ENVIRONMENT
     } else {
-      process.env.ORCA_ENVIRONMENT = originalEnvironment
+      process.env.OCC_ENVIRONMENT = originalEnvironment
     }
     if (originalWorkspaceId === undefined) {
-      delete process.env.ORCA_WORKSPACE_ID
+      delete process.env.OCC_WORKSPACE_ID
     } else {
-      process.env.ORCA_WORKSPACE_ID = originalWorkspaceId
+      process.env.OCC_WORKSPACE_ID = originalWorkspaceId
     }
     if (originalWorktreeId === undefined) {
-      delete process.env.ORCA_WORKTREE_ID
+      delete process.env.OCC_WORKTREE_ID
     } else {
-      process.env.ORCA_WORKTREE_ID = originalWorktreeId
+      process.env.OCC_WORKTREE_ID = originalWorktreeId
     }
   })
 }

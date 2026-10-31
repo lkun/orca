@@ -22,7 +22,7 @@ export const PLUGIN_COMMAND_ALIAS_ACTION_IDS = [
 
 export type PluginCommandAliasActionId = (typeof PLUGIN_COMMAND_ALIAS_ACTION_IDS)[number]
 
-/** The release each action arrived in; engines.orca must cover every one a plugin uses. */
+/** The release each action arrived in; engines.occ must cover every one a plugin uses. */
 export const PLUGIN_COMMAND_ACTION_SINCE: Record<PluginCommandAliasActionId, string> = {
   'worktree.history.back': PLUGIN_SCHEMA_SINCE_V1,
   'worktree.history.forward': PLUGIN_SCHEMA_SINCE_V1,

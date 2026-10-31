@@ -5,7 +5,7 @@ import { pluginEnvelopeSchema } from './plugin-protocol'
 /** Hand-rolled pong reading avoids Zod’s ~90x rejection cost; pin exact schema acceptance parity. */
 
 const pong = (payload: unknown, extra: Record<string, unknown> = {}): unknown => ({
-  orca: 1,
+  occ: 1,
   kind: 'evt',
   event: FRAME_EVENTS.pong,
   payload,
@@ -29,10 +29,10 @@ const CASES: unknown[] = [
   pong('7'),
   pong(null),
   pong(undefined),
-  pong(7, { orca: 2 }),
+  pong(7, { occ: 2 }),
   pong(7, { kind: 'req' }),
-  { orca: 1, kind: 'evt', event: 'ping', payload: 7 },
-  { type: 'orca-panel-pong', pingId: 7 },
+  { occ: 1, kind: 'evt', event: 'ping', payload: 7 },
+  { type: 'occ-panel-pong', pingId: 7 },
   'pong',
   null,
   undefined,

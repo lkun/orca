@@ -78,26 +78,26 @@ describe('a sleeping bridge WSL pane keeps its shell folder across reloads and r
 
   it('after a renderer reload re-spawns it with its environment', async () => {
     adapter = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
-    const { id } = await spawnPane(adapter, 'repo::/repo@@s1', { ORCA_PANE_KEY: PANE_KEY })
-    await spawnPane(adapter, id, { ORCA_PANE_KEY: PANE_KEY })
+    const { id } = await spawnPane(adapter, 'repo::/repo@@s1', { OCC_PANE_KEY: PANE_KEY })
+    await spawnPane(adapter, id, { OCC_PANE_KEY: PANE_KEY })
     await adapter.shutdown(id, { immediate: true, keepHistory: true })
     expect(checkpointCwd(id)).toBe(`${WSL_CWD}\\deep\\er`)
   })
 
   it('after a relaunch adopts it and the window re-spawns it with its environment', async () => {
     const before = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
-    const { id } = await spawnPane(before, 'repo::/repo@@s2', { ORCA_PANE_KEY: PANE_KEY })
+    const { id } = await spawnPane(before, 'repo::/repo@@s2', { OCC_PANE_KEY: PANE_KEY })
     await before.disconnectOnly()
     adapter = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
     await adapter.reconcileOnStartup(new Set(['repo::/repo']))
-    await spawnPane(adapter, id, { ORCA_PANE_KEY: PANE_KEY })
+    await spawnPane(adapter, id, { OCC_PANE_KEY: PANE_KEY })
     await adapter.shutdown(id, { immediate: true, keepHistory: true })
     expect(checkpointCwd(id)).toBe(`${WSL_CWD}\\deep\\er`)
   })
 
   it('after a relaunch adopts it and the window re-spawns it without its environment', async () => {
     const before = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
-    const { id } = await spawnPane(before, 'repo::/repo@@s3', { ORCA_PANE_KEY: PANE_KEY })
+    const { id } = await spawnPane(before, 'repo::/repo@@s3', { OCC_PANE_KEY: PANE_KEY })
     await before.disconnectOnly()
     adapter = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
     await adapter.reconcileOnStartup(new Set(['repo::/repo']))
@@ -108,17 +108,17 @@ describe('a sleeping bridge WSL pane keeps its shell folder across reloads and r
 
   it('after a relaunch whose window re-spawns it with its environment before adoption', async () => {
     const before = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
-    const { id } = await spawnPane(before, 'repo::/repo@@s4', { ORCA_PANE_KEY: PANE_KEY })
+    const { id } = await spawnPane(before, 'repo::/repo@@s4', { OCC_PANE_KEY: PANE_KEY })
     await before.disconnectOnly()
     adapter = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
-    await spawnPane(adapter, id, { ORCA_PANE_KEY: PANE_KEY })
+    await spawnPane(adapter, id, { OCC_PANE_KEY: PANE_KEY })
     await adapter.shutdown(id, { immediate: true, keepHistory: true })
     expect(checkpointCwd(id)).toBe(`${WSL_CWD}\\deep\\er`)
   })
 
   it('after a relaunch whose window re-spawns it without its environment before adoption', async () => {
     const before = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
-    const { id } = await spawnPane(before, 'repo::/repo@@s5', { ORCA_PANE_KEY: PANE_KEY })
+    const { id } = await spawnPane(before, 'repo::/repo@@s5', { OCC_PANE_KEY: PANE_KEY })
     await before.disconnectOnly()
     adapter = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
     await spawnPane(adapter, id, undefined)
@@ -129,10 +129,10 @@ describe('a sleeping bridge WSL pane keeps its shell folder across reloads and r
   it('when slept again after a wake, at the folder it moved to', async () => {
     vi.spyOn(startupCwdProbe, 'probeRecoveredStartupCwdDirectory').mockResolvedValue(true)
     adapter = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
-    const { id } = await spawnPane(adapter, 'repo::/repo@@s6', { ORCA_PANE_KEY: PANE_KEY })
+    const { id } = await spawnPane(adapter, 'repo::/repo@@s6', { OCC_PANE_KEY: PANE_KEY })
     await adapter.shutdown(id, { immediate: true, keepHistory: true })
     readRows.mockResolvedValue(shellIn('/home/jin/repo/other'))
-    await spawnPane(adapter, id, { ORCA_PANE_KEY: PANE_KEY })
+    await spawnPane(adapter, id, { OCC_PANE_KEY: PANE_KEY })
     await adapter.shutdown(id, { immediate: true, keepHistory: true })
     expect(checkpointCwd(id)).toBe(`${WSL_CWD}\\other`)
   })
@@ -140,9 +140,9 @@ describe('a sleeping bridge WSL pane keeps its shell folder across reloads and r
   it('when a woken pane is slept by a relaunched app that only adopted it', async () => {
     vi.spyOn(startupCwdProbe, 'probeRecoveredStartupCwdDirectory').mockResolvedValue(true)
     const before = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
-    const { id } = await spawnPane(before, 'repo::/repo@@s7', { ORCA_PANE_KEY: PANE_KEY })
+    const { id } = await spawnPane(before, 'repo::/repo@@s7', { OCC_PANE_KEY: PANE_KEY })
     await before.shutdown(id, { immediate: true, keepHistory: true })
-    await spawnPane(before, id, { ORCA_PANE_KEY: PANE_KEY })
+    await spawnPane(before, id, { OCC_PANE_KEY: PANE_KEY })
     await before.disconnectOnly()
     adapter = new DaemonPtyAdapter({ socketPath, tokenPath, historyPath: historyDir() })
     await adapter.reconcileOnStartup(new Set(['repo::/repo']))

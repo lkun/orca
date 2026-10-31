@@ -1,13 +1,13 @@
-import type { OrcaRuntimeWithMarkPtyLivenessUnverifiable as MarkPtyLivenessUnverifiable } from '../terminal/layout/terminal-input-floor'
-import type { OrcaRuntimeWithStopTerminalsForWorktree as StopTerminalsForWorktree } from '../terminal/stop/worktree-terminal-stop'
-import type { OrcaRuntimeWithStopTerminalsForProject as StopTerminalsForProject } from '../terminal/stop/project-terminal-stop'
-import type { OrcaRuntimeWithGetRuntimeId as GetRuntimeId } from '../workspaces/session-hosts/get-runtime-id'
-import type { OrcaRuntimeWithHasExactPersistedTerminalSurfaceIdentity as HasExactPersistedTerminalSurfaceIdentity } from '../workspaces/persisted-surfaces/has-exact-persisted-terminal-surface-identity'
-import type { OrcaRuntimeWithAutomationOperations as AutomationOperations } from '../workspaces/persisted-surfaces/automation-operations'
-import type { OrcaRuntimeWithOnPtyExit as OnPtyExit } from '../terminal/lifecycle/pty-exit-lifecycle'
-import type { OrcaRuntimeWithResolveWorktreeRemovalTarget as ResolveWorktreeRemovalTarget } from '../workspaces/workspace-removal-target'
-import type { OrcaRuntimeWithReconcileHeadlessMobileSessionBrowserTabs as ReconcileHeadlessMobileSessionBrowserTabs } from '../session-lifecycle/projection/reconcile-headless-mobile-session-browser-tabs'
-import type { OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree as ResolveBrowserNetworkExecutionHostForWorktree } from '../terminal/launch/terminal-workspace-scope'
+import type { OCCRuntimeWithMarkPtyLivenessUnverifiable as MarkPtyLivenessUnverifiable } from '../terminal/layout/terminal-input-floor'
+import type { OCCRuntimeWithStopTerminalsForWorktree as StopTerminalsForWorktree } from '../terminal/stop/worktree-terminal-stop'
+import type { OCCRuntimeWithStopTerminalsForProject as StopTerminalsForProject } from '../terminal/stop/project-terminal-stop'
+import type { OCCRuntimeWithGetRuntimeId as GetRuntimeId } from '../workspaces/session-hosts/get-runtime-id'
+import type { OCCRuntimeWithHasExactPersistedTerminalSurfaceIdentity as HasExactPersistedTerminalSurfaceIdentity } from '../workspaces/persisted-surfaces/has-exact-persisted-terminal-surface-identity'
+import type { OCCRuntimeWithAutomationOperations as AutomationOperations } from '../workspaces/persisted-surfaces/automation-operations'
+import type { OCCRuntimeWithOnPtyExit as OnPtyExit } from '../terminal/lifecycle/pty-exit-lifecycle'
+import type { OCCRuntimeWithResolveWorktreeRemovalTarget as ResolveWorktreeRemovalTarget } from '../workspaces/workspace-removal-target'
+import type { OCCRuntimeWithReconcileHeadlessMobileSessionBrowserTabs as ReconcileHeadlessMobileSessionBrowserTabs } from '../session-lifecycle/projection/reconcile-headless-mobile-session-browser-tabs'
+import type { OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree as ResolveBrowserNetworkExecutionHostForWorktree } from '../terminal/launch/terminal-workspace-scope'
 
 export type GetPtyLivenessVerdictArgs = Parameters<
   MarkPtyLivenessUnverifiable['getPtyLivenessVerdict']

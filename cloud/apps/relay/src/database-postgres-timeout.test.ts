@@ -53,7 +53,7 @@ import { applyPostgresSchema } from './postgres-schema-startup.js'
 
 const SCHEMA_POOL = {
   max: 1,
-  application_name: 'orca-relay/director/director/schema',
+  application_name: 'occ-relay/director/director/schema',
   connectionTimeoutMillis: 2_000,
   // Why: DDL must not inherit the request deadline.
   statement_timeout: 0,
@@ -72,7 +72,7 @@ describe('PostgreSQL relay deadlines', () => {
     fakes.query.mockClear()
     fakes.release.mockClear()
     fakes.end.mockClear()
-    delete process.env.ORCA_RELAY_POSTGRES_STATEMENT_TIMEOUT_MS
+    delete process.env.OCC_RELAY_POSTGRES_STATEMENT_TIMEOUT_MS
   })
 
   it('bounds pool acquisition, statements, locks, and abandoned transactions', async () => {
@@ -80,14 +80,14 @@ describe('PostgreSQL relay deadlines', () => {
       databaseUrl: 'postgresql://relay:secret@127.0.0.1:5432/relay',
       dataDir: './unused',
       poolMax: 3,
-      applicationName: 'orca-relay/director/director'
+      applicationName: 'occ-relay/director/director'
     })
 
     expect(fakes.configs).toEqual([
       expect.objectContaining(SCHEMA_POOL),
       expect.objectContaining({
         max: 3,
-        application_name: 'orca-relay/director/director',
+        application_name: 'occ-relay/director/director',
         connectionTimeoutMillis: 2_000,
         statement_timeout: 5_000,
         // A lost reply ends at the statement deadline plus 10 s, on this pool only.
@@ -109,7 +109,7 @@ describe('PostgreSQL relay deadlines', () => {
       databaseUrl: 'postgresql://relay:secret@127.0.0.1:5432/relay',
       dataDir: './unused',
       poolMax: 3,
-      applicationName: 'orca-relay/director/director'
+      applicationName: 'occ-relay/director/director'
     })
 
     expect(fakes.lifecycle).toEqual([
@@ -165,7 +165,7 @@ describe('PostgreSQL relay deadlines', () => {
   })
 
   it('takes the serving statement deadline from the environment', async () => {
-    process.env.ORCA_RELAY_POSTGRES_STATEMENT_TIMEOUT_MS = '2500'
+    process.env.OCC_RELAY_POSTGRES_STATEMENT_TIMEOUT_MS = '2500'
 
     const database = await openRelayDatabase({
       databaseUrl: 'postgresql://relay:secret@127.0.0.1:5432/relay',
@@ -183,7 +183,7 @@ describe('PostgreSQL relay deadlines', () => {
     'refuses %s as a statement deadline instead of running unbounded',
     (value) => {
       expect(() =>
-        relayPostgresStatementTimeoutMs({ ORCA_RELAY_POSTGRES_STATEMENT_TIMEOUT_MS: value })
+        relayPostgresStatementTimeoutMs({ OCC_RELAY_POSTGRES_STATEMENT_TIMEOUT_MS: value })
       ).toThrow('invalid_statement_timeout')
     }
   )
@@ -191,11 +191,11 @@ describe('PostgreSQL relay deadlines', () => {
   it('takes the read timeout margin from the environment, defaulting to 10 s', () => {
     expect(relayPostgresReadTimeoutMarginMs({})).toBe(10_000)
     expect(
-      relayPostgresReadTimeoutMarginMs({ ORCA_RELAY_POSTGRES_READ_TIMEOUT_MARGIN_MS: '4000' })
+      relayPostgresReadTimeoutMarginMs({ OCC_RELAY_POSTGRES_READ_TIMEOUT_MARGIN_MS: '4000' })
     ).toBe(4_000)
     for (const value of ['0', '-1', '2.5', 'soon']) {
       expect(() =>
-        relayPostgresReadTimeoutMarginMs({ ORCA_RELAY_POSTGRES_READ_TIMEOUT_MARGIN_MS: value })
+        relayPostgresReadTimeoutMarginMs({ OCC_RELAY_POSTGRES_READ_TIMEOUT_MARGIN_MS: value })
       ).toThrow('invalid_read_timeout_margin')
     }
   })
@@ -203,7 +203,7 @@ describe('PostgreSQL relay deadlines', () => {
   it.each([undefined, ''])('defaults to 5s when the environment says %s', (value) => {
     expect(
       relayPostgresStatementTimeoutMs(
-        value === undefined ? {} : { ORCA_RELAY_POSTGRES_STATEMENT_TIMEOUT_MS: value }
+        value === undefined ? {} : { OCC_RELAY_POSTGRES_STATEMENT_TIMEOUT_MS: value }
       )
     ).toBe(5_000)
   })
@@ -231,7 +231,7 @@ describe('PostgreSQL relay deadlines', () => {
     expect(result).toBe('committed')
     expect(attempts).toBe(2)
     expect(console.warn).toHaveBeenCalledWith(
-      expect.stringContaining('"event":"orca_relay_postgres_transaction_retry"')
+      expect.stringContaining('"event":"occ_relay_postgres_transaction_retry"')
     )
     expect(console.warn).toHaveBeenCalledWith(expect.stringContaining('"code":"57014"'))
     await database.close()
@@ -276,7 +276,7 @@ describe('PostgreSQL schema startup', () => {
     expect(query).toHaveBeenCalledTimes(1)
     expect(pause).not.toHaveBeenCalled()
     expect(JSON.parse(errors[0] ?? '{}')).toMatchObject({
-      event: 'orca_relay_postgres_schema_lock_timeout',
+      event: 'occ_relay_postgres_schema_lock_timeout',
       code: '55P03',
       statement: 'CREATE INDEX IF NOT EXISTS i ON t(c)'
     })
@@ -473,7 +473,7 @@ describe('PostgreSQL schema startup', () => {
     expect(delays).toEqual([100])
     expect(console.warn).toHaveBeenLastCalledWith(
       JSON.stringify({
-        event: 'orca_relay_postgres_schema_retry_exhausted',
+        event: 'occ_relay_postgres_schema_retry_exhausted',
         code: '57014',
         attempts: 2
       })

@@ -1,6 +1,6 @@
 import os from 'node:os'
 
-export const DEV_RUNTIME_ENV_KEYS = 'ORCA_DEV_RUNTIME_ENV_KEYS'
+export const DEV_RUNTIME_ENV_KEYS = 'OCC_DEV_RUNTIME_ENV_KEYS'
 
 // Measured idle electron-vite RSS 4.6GB -> 3.0GB with no HMR or startup regression.
 const DEV_THREADS = '4'

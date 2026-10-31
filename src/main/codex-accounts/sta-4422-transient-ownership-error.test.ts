@@ -134,7 +134,7 @@ describe('STA-4422 Codex sessions keep logging out', () => {
     expect(store.updateSettings).not.toHaveBeenCalled()
 
     // Hold the lock across retries so a one-shot fault cannot hide an unsafe fallback.
-    const markerPath = join(realpathSync(managedHomePath), '.orca-managed-home')
+    const markerPath = join(realpathSync(managedHomePath), '.occ-managed-home')
     lstatFaults.hold(markerPath)
 
     const duringLock = service.prepareForRateLimitFetch()
@@ -176,7 +176,7 @@ describe('STA-4422 Codex sessions keep logging out', () => {
       'account-1',
       createCodexAuthJson('user@example.com', 'acct-1', 'refresh-1')
     )
-    writeFileSync(join(managedHomePath, '.orca-managed-home'), 'someone-else\n', 'utf-8')
+    writeFileSync(join(managedHomePath, '.occ-managed-home'), 'someone-else\n', 'utf-8')
     const store = createStore(
       createSettings({
         realHomeRoutable: true,

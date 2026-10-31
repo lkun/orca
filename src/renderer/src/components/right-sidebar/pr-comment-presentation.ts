@@ -6,7 +6,7 @@ export type PRCommentPresentationVariant = 'flat' | 'cards' | 'focus'
 
 export const DEFAULT_PR_COMMENT_PRESENTATION_VARIANT: PRCommentPresentationVariant = 'cards'
 
-const STORAGE_KEY = 'orca:pr-comment-presentation'
+const STORAGE_KEY = 'occ:pr-comment-presentation'
 
 export type PRCommentPresentationClasses = {
   variant: PRCommentPresentationVariant
@@ -126,7 +126,7 @@ function isVariant(value: string | null): value is PRCommentPresentationVariant 
   return value === 'flat' || value === 'cards' || value === 'focus'
 }
 
-/** Dev override: localStorage.setItem('orca:pr-comment-presentation', 'cards' | 'flat' | 'focus'). */
+/** Dev override: localStorage.setItem('occ:pr-comment-presentation', 'cards' | 'flat' | 'focus'). */
 export function resolvePRCommentPresentationVariant(): PRCommentPresentationVariant {
   if (typeof window === 'undefined') {
     return DEFAULT_PR_COMMENT_PRESENTATION_VARIANT

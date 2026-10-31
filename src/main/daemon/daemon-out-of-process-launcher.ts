@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { getAppEnvironment } from '../../shared/app-environment'
-import { childProcessHasExited } from '@orca/process-host/process-tree-termination'
+import { childProcessHasExited } from '@occ/process-host/process-tree-termination'
 import type { DaemonReplaceReason } from '../../shared/daemon-lifecycle-telemetry'
 import { DaemonClient } from './client'
 import {

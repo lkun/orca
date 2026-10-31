@@ -31,11 +31,11 @@ describe('the WSL move gate with the stub agent hook events', () => {
 
   async function hook(event: string, prompt = ''): Promise<void> {
     const env = server.buildPtyEnv()
-    const response = await fetch(`http://127.0.0.1:${env.ORCA_AGENT_HOOK_PORT}/hook/codex`, {
+    const response = await fetch(`http://127.0.0.1:${env.OCC_AGENT_HOOK_PORT}/hook/codex`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-OCC-Agent-Hook-Token': env.ORCA_AGENT_HOOK_TOKEN
+        'X-OCC-Agent-Hook-Token': env.OCC_AGENT_HOOK_TOKEN
       },
       body: JSON.stringify({
         paneKey: PANE,

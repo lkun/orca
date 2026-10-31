@@ -101,9 +101,9 @@ describe('electronHttpClient proxy authentication', () => {
   it('keeps Electron fetch for non-HTTP URLs', async () => {
     setElectronProxyCredentialsForSession(mocks.defaultSession, PROXY)
 
-    await electronHttpClient.fetch('orca-asset://icon.png')
+    await electronHttpClient.fetch('occ-asset://icon.png')
 
-    expect(mocks.netFetch).toHaveBeenCalledWith('orca-asset://icon.png', undefined)
+    expect(mocks.netFetch).toHaveBeenCalledWith('occ-asset://icon.png', undefined)
     expect(mocks.netRequest).not.toHaveBeenCalled()
   })
 

@@ -4,7 +4,7 @@ import { runInNewContext } from 'node:vm'
 import { transformSync } from 'esbuild'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { BoundedLiveFreezeHistory } from './live-freeze-bounded-history.mjs'
-import { resolveOrcaCliInvocation } from './live-remote-freeze-rpc.mjs'
+import { resolveOCCCliInvocation } from './live-remote-freeze-rpc.mjs'
 
 const { code } = transformSync(
   readFileSync(new URL('./live-remote-status-watchdog.mjs', import.meta.url), 'utf8'),
@@ -24,7 +24,7 @@ function createWatchdog(options = {}) {
   const dependencies = {
     'node:child_process': { spawn },
     './live-freeze-bounded-history.mjs': { BoundedLiveFreezeHistory },
-    './live-remote-freeze-rpc.mjs': { resolveOrcaCliInvocation }
+    './live-remote-freeze-rpc.mjs': { resolveOCCCliInvocation }
   }
   const module = { exports: {} }
   runInNewContext(code, {
@@ -42,7 +42,7 @@ function createWatchdog(options = {}) {
     clearInterval
   })
   const watch = module.exports.startStatusWatchdog({
-    cliCommand: 'fixture-orca',
+    cliCommand: 'fixture-occ',
     intervalMs: 100,
     timeoutMs: 50,
     ...options
@@ -84,7 +84,7 @@ describe('startStatusWatchdog', () => {
       longestUnhealthyWindowMs: 150,
       durationMs: 255
     })
-    expect(spawn).toHaveBeenCalledWith('fixture-orca', ['status', '--json'], {
+    expect(spawn).toHaveBeenCalledWith('fixture-occ', ['status', '--json'], {
       env: undefined,
       stdio: ['ignore', 'pipe', 'pipe']
     })

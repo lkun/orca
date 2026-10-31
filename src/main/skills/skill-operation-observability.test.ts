@@ -119,7 +119,7 @@ function bundleResult(): SkillBundleInstallResult {
           }
         ],
         conflict: { kind: 'modified', existingDigest: 'f'.repeat(64) },
-        errorCategory: PRIVATE_VALUES.manifest
+        errocctegory: PRIVATE_VALUES.manifest
       }
     ]
   }
@@ -137,7 +137,7 @@ beforeEach(() => {
     flush() {},
     close() {}
   }
-  directory = mkdtempSync(join(tmpdir(), 'orca-skill-observability-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-skill-observability-'))
   setActiveSink(sink)
 })
 
@@ -181,7 +181,7 @@ describe('skill operation observability', () => {
       platform: 'darwin',
       arch: 'arm64',
       osRelease: 'test',
-      orcaChannel: 'dev'
+      occChannel: 'dev'
     })
 
     expect(bundle.payload).toContain('skill-install-unknown')

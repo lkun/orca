@@ -15,7 +15,7 @@ describe('getStatus shared symlink exclusion', () => {
   let worktree: string
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-status-shared-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-status-shared-'))
     primary = join(root, 'primary')
     worktree = join(root, 'worktree')
     mkdirSync(primary)

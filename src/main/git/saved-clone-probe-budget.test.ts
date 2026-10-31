@@ -5,11 +5,11 @@ import { reuseSavedCloneTarget } from './saved-clone-target'
 
 vi.mock('../repo-git-remote-identity', () => ({ runGitProbeOnHost: vi.fn() }))
 
-const url = 'https://gitlab.example.com/team/orca.git'
+const url = 'https://gitlab.example.com/team/occ.git'
 const project: Repo = {
   id: 'saved',
-  path: '/repos/orca',
-  displayName: 'orca',
+  path: '/repos/occ',
+  displayName: 'occ',
   badgeColor: '#fff',
   addedAt: 1,
   kind: 'git'

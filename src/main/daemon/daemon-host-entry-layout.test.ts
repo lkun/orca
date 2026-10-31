@@ -102,7 +102,7 @@ describe('daemon-host entry layout after source removal', () => {
         installDir,
         'resources',
         'node_modules',
-        '@orca',
+        '@occ',
         'process-host',
         'dist',
         'run-process.js'

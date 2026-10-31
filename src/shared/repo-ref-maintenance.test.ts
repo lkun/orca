@@ -18,7 +18,7 @@ const THRESHOLD = 5
 const roots: string[] = []
 
 async function refsDirectoryWith(looseRefs: number): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-ref-maintenance-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-ref-maintenance-'))
   roots.push(root)
   const refs = join(root, 'refs', 'remotes', 'origin')
   await mkdir(refs, { recursive: true })
@@ -30,7 +30,7 @@ async function refsDirectoryWith(looseRefs: number): Promise<string> {
 
 /** More directories than `countLooseRefs` will visit, but very few files. */
 async function saturatingRefsDirectory(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-ref-maintenance-wide-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-ref-maintenance-wide-'))
   roots.push(root)
   const refs = join(root, 'refs')
   for (let index = 0; index < 4200; index += 1) {

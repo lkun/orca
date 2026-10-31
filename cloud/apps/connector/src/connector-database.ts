@@ -3,7 +3,7 @@ import {
   openInMemoryCloudDatabase,
   type CloudDatabase,
   type OpenCloudDatabaseInput
-} from '@orca-cloud/cloud-database'
+} from '@occ-cloud/cloud-database'
 import { connectorSchemaChanges } from './connector-schema-changes.js'
 import { connectorSchemaStatements } from './connector-schema.js'
 import { discordSchemaStatements } from './discord-schema.js'

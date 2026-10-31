@@ -1,4 +1,4 @@
-// Opt in: ORCA_WORKTREE_PREPARATION_CANCEL_BENCH=1 pnpm exec vitest run --config config/vitest.config.ts src/main/git/worktree-preparation-cancel-latency.bench.test.ts
+// Opt in: OCC_WORKTREE_PREPARATION_CANCEL_BENCH=1 pnpm exec vitest run --config config/vitest.config.ts src/main/git/worktree-preparation-cancel-latency.bench.test.ts
 //
 // Compare fresh-checkout latency while obsolete preparations keep running or are aborted.
 import { execFileSync } from 'node:child_process'
@@ -17,12 +17,12 @@ import {
   prepareWorktreeCreateCheckout
 } from './worktree-create-preparation'
 
-const describeBench = process.env.ORCA_WORKTREE_PREPARATION_CANCEL_BENCH ? describe : describe.skip
-const FILE_COUNT = Number(process.env.ORCA_WORKTREE_PREPARATION_CANCEL_BENCH_FILES ?? 6000)
+const describeBench = process.env.OCC_WORKTREE_PREPARATION_CANCEL_BENCH ? describe : describe.skip
+const FILE_COUNT = Number(process.env.OCC_WORKTREE_PREPARATION_CANCEL_BENCH_FILES ?? 6000)
 const FILE_BYTES = 48 * 1024
-const TRIALS = Number(process.env.ORCA_WORKTREE_PREPARATION_CANCEL_BENCH_TRIALS ?? 5)
+const TRIALS = Number(process.env.OCC_WORKTREE_PREPARATION_CANCEL_BENCH_TRIALS ?? 5)
 const OBSOLETE_COUNTS = [1, 3]
-const RESULT_PATH = process.env.ORCA_WORKTREE_PREPARATION_CANCEL_BENCH_RESULT
+const RESULT_PATH = process.env.OCC_WORKTREE_PREPARATION_CANCEL_BENCH_RESULT
 
 type Variant = 'running' | 'aborted'
 type Sample = { variant: Variant; obsolete: number; freshCheckoutMs: number }
@@ -90,7 +90,7 @@ function median(values: number[]): number {
 
 describeBench('obsolete preparation cancellation latency', () => {
   beforeAll(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-preparation-cancel-bench-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-preparation-cancel-bench-'))
     repoPath = join(root, 'repo')
     preparationRoot = join(root, WORKTREE_CREATE_PREPARATION_DIRECTORY)
     await mkdir(preparationRoot, { recursive: true })

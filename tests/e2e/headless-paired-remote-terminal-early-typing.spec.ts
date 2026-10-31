@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { launchPairedWebClient, type PairedWebClient } from './helpers/paired-electron-client'
 import { focusActiveTerminalInput } from './helpers/terminal'
@@ -51,11 +51,11 @@ test("keys typed before a new remote terminal's first prompt are all delivered, 
   if (!home) {
     throw new Error('The headless host launched without an isolated HOME')
   }
-  const release = path.join(home, '.orca-e2e-release-rc')
+  const release = path.join(home, '.occ-e2e-release-rc')
   mkdirSync(home, { recursive: true })
   // Each shell waits in its rc file for the release file (bounded at ~120s, past the 60s bind wait).
   const rc = [
-    'for _ in $(seq 2400); do [ -f "$HOME/.orca-e2e-release-rc" ] && break; sleep 0.05; done',
+    'for _ in $(seq 2400); do [ -f "$HOME/.occ-e2e-release-rc" ] && break; sleep 0.05; done',
     `PS1='${PROMPT}'`
   ].join('\n')
   writeFileSync(path.join(home, '.bash_profile'), `${rc}\n`)

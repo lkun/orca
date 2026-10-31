@@ -30,7 +30,7 @@ describe('prepareClaudeSignInBrowser', () => {
         linuxPath: null,
         wslDistro: null
       })
-      expect(browser?.path).toBe(join(home, '.orca-sign-in-browser'))
+      expect(browser?.path).toBe(join(home, '.occ-sign-in-browser'))
       expect(statSync(browser!.path).mode & 0o700).toBe(0o700)
       const next = browser!.nextLink(new AbortController().signal)
       execFileSync(browser!.path, [LINK])
@@ -61,8 +61,8 @@ describe('prepareClaudeSignInBrowser', () => {
       linuxPath: '/home/u/claude-profiles/a/home',
       wslDistro: 'Ubuntu'
     })
-    expect(browser?.path).toBe('/home/u/claude-profiles/a/home/.orca-sign-in-browser')
-    expect(existsSync(join(home, '.orca-sign-in-browser'))).toBe(true)
+    expect(browser?.path).toBe('/home/u/claude-profiles/a/home/.occ-sign-in-browser')
+    expect(existsSync(join(home, '.occ-sign-in-browser'))).toBe(true)
   })
 
   it('refuses to catch a Windows host login, whose Claude cannot run the stand-in', async () => {

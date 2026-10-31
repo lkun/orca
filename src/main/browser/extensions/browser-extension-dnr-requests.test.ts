@@ -29,7 +29,7 @@ vi.mock('./browser-extension-tab-model', () => ({
   resolveBrowserExtensionTab: (id: number) => (mocks.tabs.has(id) ? { contents: { id } } : null)
 }))
 
-mocks.userData = mkdtempSync(join(tmpdir(), 'orca-dnr-requests-'))
+mocks.userData = mkdtempSync(join(tmpdir(), 'occ-dnr-requests-'))
 
 const { browserExtensionDnrRequestDecider: decider } =
   await import('./browser-extension-dnr-requests')
@@ -46,7 +46,7 @@ const TAB = 5
 type Rule = { id: number; priority?: number; condition: object; action: object }
 
 function blocker(rules: Rule[], manifest: Record<string, unknown> = {}): Electron.Extension {
-  const path = mkdtempSync(join(tmpdir(), 'orca-dnr-extension-'))
+  const path = mkdtempSync(join(tmpdir(), 'occ-dnr-extension-'))
   writeFileSync(join(path, 'rules.json'), JSON.stringify(rules))
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the DNR code reads only id, version, path and manifest.
   return {

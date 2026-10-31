@@ -132,7 +132,7 @@ function closeTab(force?: boolean) {
 describe('a confirmed close of a pinned server tab', () => {
   beforeEach(() => {
     mocks.isWebRuntimeSessionActive.mockReturnValue(true)
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     const intents = createPairedTerminalTabCloseIntentTestStore()
     mocks.getState.mockImplementation(() => ({
       settings: { activeRuntimeEnvironmentId: ENVIRONMENT_ID },

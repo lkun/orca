@@ -59,7 +59,7 @@ describe('formatClientEnvironmentInfo', () => {
 describe('environment footer helpers', () => {
   it('builds a marked footer and detects when one is already present', () => {
     const footer = formatClientEnvironmentFooter(SAMPLE)
-    expect(footer.startsWith('---\nOrca:')).toBe(true)
+    expect(footer.startsWith('---\nOCC:')).toBe(true)
     expect(hasClientEnvironmentFooter(`oops\n\n${footer}`)).toBe(true)
     expect(hasClientEnvironmentFooter('oops')).toBe(false)
   })

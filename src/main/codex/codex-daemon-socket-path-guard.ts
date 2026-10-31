@@ -13,7 +13,7 @@ import { parseTomlTableHeaderPath } from './config-toml-key-path'
 
 // Codex >=0.157 auto-starts a daemon; long managed homes exceed its socket's sun_path limit.
 const DAEMON_SOCKET_SEGMENTS = ['app-server-control', 'app-server-control.sock']
-export const CODEX_DAEMON_OVERRIDE_MARKER = '# orca: CODEX_HOME too long for the daemon socket'
+export const CODEX_DAEMON_OVERRIDE_MARKER = '# occ: CODEX_HOME too long for the daemon socket'
 const DAEMON_OVERRIDE_RAW = `false ${CODEX_DAEMON_OVERRIDE_MARKER}`
 
 export function codexDaemonSocketPath(homePath: string, platform = process.platform): string {

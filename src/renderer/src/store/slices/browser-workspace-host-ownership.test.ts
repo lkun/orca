@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { isLocalBrowserPageOwner } from './browser'
 import type { AppState } from '../types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 import {
   createBrowserMockApi,
@@ -142,26 +142,26 @@ describe('createBrowserSlice runtime guard', () => {
 
     const tab = store.getState().createBrowserTab('wt-1', 'https://example.com', {
       sessionProfileId: 'profile-isolated',
-      sessionPartition: 'persist:orca-browser-session-profile-isolated'
+      sessionPartition: 'persist:occ-browser-session-profile-isolated'
     })
     await main.settle()
 
     expect(layoutApplyTestTransport.sentOfType('openBrowserTab')).toEqual(
-      ORCA_LAYOUT_OWNER_IS_MAIN
+      OCC_LAYOUT_OWNER_IS_MAIN
         ? [
             expect.objectContaining({
               browserTabId: tab.id,
               profileId: 'profile-isolated',
-              sessionPartition: 'persist:orca-browser-session-profile-isolated'
+              sessionPartition: 'persist:occ-browser-session-profile-isolated'
             })
           ]
         : []
     )
 
     expect(tab.sessionProfileId).toBe('profile-isolated')
-    expect(tab.sessionPartition).toBe('persist:orca-browser-session-profile-isolated')
+    expect(tab.sessionPartition).toBe('persist:occ-browser-session-profile-isolated')
     expect(store.getState().browserTabsByWorktree['wt-1']?.[0]?.sessionPartition).toBe(
-      'persist:orca-browser-session-profile-isolated'
+      'persist:occ-browser-session-profile-isolated'
     )
   })
 
@@ -169,7 +169,7 @@ describe('createBrowserSlice runtime guard', () => {
     const { store, main } = await createTestStoreDrawnFromMain()
     const tab = store.getState().createBrowserTab('wt-1', 'https://example.com', {
       sessionProfileId: null,
-      sessionPartition: 'persist:orca-browser'
+      sessionPartition: 'persist:occ-browser'
     })
     await main.settle()
 
@@ -178,18 +178,18 @@ describe('createBrowserSlice runtime guard', () => {
       .switchBrowserTabProfile(
         tab.id,
         'profile-isolated',
-        'persist:orca-browser-session-profile-isolated'
+        'persist:occ-browser-session-profile-isolated'
       )
     await main.settle()
 
     // A layout-owner build's main records the switch; its frame draws the record.
     expect(layoutApplyTestTransport.sentOfType('setBrowserTabProfile')).toEqual(
-      ORCA_LAYOUT_OWNER_IS_MAIN
+      OCC_LAYOUT_OWNER_IS_MAIN
         ? [
             expect.objectContaining({
               browserTabId: tab.id,
               profileId: 'profile-isolated',
-              sessionPartition: 'persist:orca-browser-session-profile-isolated'
+              sessionPartition: 'persist:occ-browser-session-profile-isolated'
             })
           ]
         : []
@@ -198,7 +198,7 @@ describe('createBrowserSlice runtime guard', () => {
     expect(store.getState().browserTabsByWorktree['wt-1']?.[0]).toEqual(
       expect.objectContaining({
         sessionProfileId: 'profile-isolated',
-        sessionPartition: 'persist:orca-browser-session-profile-isolated'
+        sessionPartition: 'persist:occ-browser-session-profile-isolated'
       })
     )
   })

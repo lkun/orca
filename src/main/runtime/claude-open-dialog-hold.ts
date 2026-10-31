@@ -5,7 +5,7 @@ export const USER_INPUT_HOLD_CAP_MS = 10 * 60_000
 // A dialog is painted at the bottom of the screen; older rows are scrollback.
 const DIALOG_REGION_LINES = 14
 const DIALOG_FOOTER_RE = /Enter to select|Esc to cancel/
-// Why String.raw: the orcad bundle must stay ASCII, and the formatter unescapes regex literals.
+// Why String.raw: the occd bundle must stay ASCII, and the formatter unescapes regex literals.
 const CURSORED_OPTION_RE = new RegExp(String.raw`^\s*\u276F \d+\. `)
 const OPTION_RE = /^\s+\d+\. /
 

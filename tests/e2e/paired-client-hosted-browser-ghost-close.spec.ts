@@ -1,7 +1,7 @@
 import { readdirSync, existsSync } from 'node:fs'
 import { mutateStoppedProfileState } from './helpers/persisted-profile-state'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { readHostBrowserPageIds } from './helpers/host-session-tabs'
 import { cleanupE2EDaemons, closeElectronAppForE2E } from './helpers/electron-process-shutdown'
@@ -71,7 +71,7 @@ function forgetPersistedClientHostedPages(userDataDir: string): number {
 }
 
 // Require the restored ghost row’s real X to dismiss it after session.tabs.close returns tab_not_found.
-// This pins client fallback; server-side browser ghost retirement is independently covered by orca-runtime-browser-ghost-session-row-close.test.ts.
+// This pins client fallback; server-side browser ghost retirement is independently covered by occ-runtime-browser-ghost-session-row-close.test.ts.
 test('closes a restored client-hosted row whose runtime has no record of it', async ({
   testRepoPath
 }, testInfo) => {

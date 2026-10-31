@@ -59,7 +59,7 @@ describe('SshConnection', () => {
     const wrapped = clientInstances[0].lastExecCommand!
     // sshd passes commands through the login shell first; raw newlines break csh/tcsh before /bin/sh (#8701).
     expect(wrapped).not.toContain('\n')
-    expect(wrapped).toMatch(/^exec \/bin\/sh -c '.*printf %b .*' orca-command /)
+    expect(wrapped).toMatch(/^exec \/bin\/sh -c '.*printf %b .*' occ-command /)
     expect(wrapped).not.toContain('base64')
   })
 

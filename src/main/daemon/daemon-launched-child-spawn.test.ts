@@ -8,8 +8,8 @@ import {
 } from '../memory/host-malloc-tunables'
 
 const { spawn, fork } = vi.hoisted(() => ({ spawn: vi.fn(), fork: vi.fn() }))
-vi.mock('@orca/process-host', () => ({ spawnProcess: spawn }))
-vi.mock('@orca/process-host/fork-process', () => ({ forkProcess: fork }))
+vi.mock('@occ/process-host', () => ({ spawnProcess: spawn }))
+vi.mock('@occ/process-host/fork-process', () => ({ forkProcess: fork }))
 vi.mock('../../shared/app-environment', () => ({
   getAppEnvironment: () => ({ getVersion: () => '1.0.0' })
 }))
@@ -18,10 +18,10 @@ vi.mock('./daemon-launch-paths', () => ({ daemonLogArgs: () => [] }))
 const options = {
   entryPath: '/app/daemon-entry.js',
   forkEntryPath: '/app/daemon-entry.js',
-  userDataPath: '/tmp/orca',
-  socketPath: '/tmp/orca/daemon.sock',
-  tokenPath: '/tmp/orca/token',
-  pidPath: '/tmp/orca/pid',
+  userDataPath: '/tmp/occ',
+  socketPath: '/tmp/occ/daemon.sock',
+  tokenPath: '/tmp/occ/token',
+  pidPath: '/tmp/occ/pid',
   launchNonce: 'scope-owner',
   macosLoginSessionWatch: false
 }
@@ -37,7 +37,7 @@ describe('daemon launch scope ownership', () => {
         program: 'systemd-run',
         args: expect.arrayContaining([
           '--scope',
-          '--unit=orca-daemon-scope-owner.scope',
+          '--unit=occ-daemon-scope-owner.scope',
           '--property=TimeoutStopSec=5s',
           '--fresh-daemon-scope'
         ])
@@ -160,7 +160,7 @@ describe('daemon launch environment', () => {
 describe('daemon malloc tunables', () => {
   afterEach(() => resetHostMallocTunablesForTests())
 
-  it('hands an orcad launch’s claimed tunables to the daemon on both launch paths', () => {
+  it('hands an occd launch’s claimed tunables to the daemon on both launch paths', () => {
     claimHostMallocTunables(Object.fromEntries(hostMallocTunablesLaunchEnv()))
     spawnDaemonChildProcess(options, true)
     spawnDaemonChildProcess(options, false)

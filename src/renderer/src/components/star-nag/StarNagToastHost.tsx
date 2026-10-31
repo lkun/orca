@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { translate } from '@/i18n/i18n'
 
-const ORCA_REPO_URL = 'https://github.com/stablyai/orca'
+const OCC_REPO_URL = 'https://github.com/stablyai/occ'
 type StarNagMode = 'gh' | 'web'
 type StarNagToastStatus = 'idle' | 'busy' | 'starred' | 'opened'
 
@@ -49,7 +49,7 @@ function StarNagToast({
     setDismissSuppressed(true)
     if (mode === 'web') {
       try {
-        await window.api.shell.openUrl(ORCA_REPO_URL)
+        await window.api.shell.openUrl(OCC_REPO_URL)
         await window.api.starNag.openWeb()
         markResolved()
         setStatus('opened')
@@ -61,7 +61,7 @@ function StarNagToast({
     }
     let ok = false
     try {
-      ok = await window.api.starNag.starOrca()
+      ok = await window.api.starNag.starOCC()
     } catch {
       ok = false
     }

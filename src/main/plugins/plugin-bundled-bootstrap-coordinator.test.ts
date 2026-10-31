@@ -4,7 +4,7 @@ import { PluginBundledBootstrapCoordinator } from './plugin-bundled-bootstrap-co
 
 const unchanged: PluginBundledBootstrapResult = {
   installed: [],
-  unchanged: ['stablyai.orca-theme'],
+  unchanged: ['stablyai.occ-theme'],
   retired: [],
   errors: []
 }
@@ -16,7 +16,7 @@ describe('PluginBundledBootstrapCoordinator', () => {
       .fn()
       .mockResolvedValueOnce(unchanged)
       .mockResolvedValueOnce({
-        installed: ['stablyai.orca-theme'],
+        installed: ['stablyai.occ-theme'],
         unchanged: [],
         retired: [],
         errors: []
@@ -24,7 +24,7 @@ describe('PluginBundledBootstrapCoordinator', () => {
       .mockResolvedValueOnce({
         installed: [],
         unchanged: [],
-        retired: ['stablyai.orca-theme'],
+        retired: ['stablyai.occ-theme'],
         errors: []
       })
     const refreshPlugins = vi.fn().mockResolvedValue(undefined)

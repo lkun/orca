@@ -1,7 +1,7 @@
 @echo off
 setlocal
 set "SCRIPT_DIR=%~dp0"
-set "LAUNCHER=%SCRIPT_DIR%orca.exe"
+set "LAUNCHER=%SCRIPT_DIR%occ.exe"
 
 if not exist "%LAUNCHER%" (
   echo Unable to locate the native OCC CLI launcher at "%LAUNCHER%" 1>&2

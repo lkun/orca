@@ -41,7 +41,7 @@ export async function runBrowserExtensionNativePage(options: {
     return await Promise.race([
       (async () => {
         await window.loadURL(
-          `${getChromeExtensionOrigin(extensionId)}/manifest.json?orca-native-page=1`
+          `${getChromeExtensionOrigin(extensionId)}/manifest.json?occ-native-page=1`
         )
         signal?.throwIfAborted()
         return window.webContents.executeJavaScript(code)

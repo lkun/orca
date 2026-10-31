@@ -6,7 +6,7 @@ import {
   setupMainOwnedWorkspace
 } from '../main-owned-workspace-runtime-fixture'
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 const WT = `id:${WORKTREE_ID}`
 
@@ -83,7 +83,7 @@ describe("a client's tab move in a workspace main owns", () => {
 
   /** The client was shown a row main holds no tab for (drawn before main's frame) at the group's front. */
   function showUnheldRow(runtime: unknown): void {
-    // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the move reads only this member, which OrcaRuntimeService implements.
+    // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the move reads only this member, which OCCRuntimeService implements.
     const rowsOf = runtime as {
       toMobileSessionTabsResult: (shown: unknown) => {
         tabGroups?: { id: string; tabOrder: string[] }[]

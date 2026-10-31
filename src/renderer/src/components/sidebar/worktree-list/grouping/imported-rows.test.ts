@@ -14,7 +14,7 @@ const k = (id: string): string => composeWorktreeHostIdentity(undefined, id)
 const repo: Repo = {
   id: 'repo-1',
   path: '/repo',
-  displayName: 'orca',
+  displayName: 'occ',
   badgeColor: '#000',
   addedAt: 1
 }

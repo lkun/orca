@@ -17,7 +17,7 @@ import {
   loadWslMoveFence,
   resetWslMoveFenceForTests
 } from '../persistence/moving-wsl-projects/wsl-move-scope-guard'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import type { ResolvedWorktree } from './runtime-worktree-path-identity'
 import type { ResolvedWorktreeSnapshot } from './runtime-resolved-worktree-cache'
 import { runtimeHiddenRepos } from './runtime-visible-catalog'
@@ -64,7 +64,7 @@ const resolved = (id: string, path: string, hostId: Repo['executionHostId']): Re
   git: { path, head: 'abc', branch: 'main', isBare: false, isMainWorktree: true }
 })
 
-class MovedProjectRuntime extends OrcaRuntimeService {
+class MovedProjectRuntime extends OCCRuntimeService {
   protected override async listResolvedWorktreeSnapshot(): Promise<ResolvedWorktreeSnapshot> {
     return {
       worktrees: [resolved(MOVED, UNC, undefined), resolved(ON_HOST, '/home/dev/repo-1', HOST_ID)],

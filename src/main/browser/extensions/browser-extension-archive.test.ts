@@ -13,7 +13,7 @@ let parent: string
 let target: string
 
 beforeEach(() => {
-  parent = mkdtempSync(join(tmpdir(), 'orca-extension-archive-'))
+  parent = mkdtempSync(join(tmpdir(), 'occ-extension-archive-'))
   target = join(parent, 'target')
 })
 afterEach(() => {

@@ -1,5 +1,5 @@
 import type { TuiAgent } from '../../../../../../shared/tui-agent'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../../../../../shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../../../../shared/sidebar-inputs-switch'
 import type {
   CreateWorktreeArgs,
   CreateWorktreeResult
@@ -150,7 +150,7 @@ export function buildRuntimeWorktreeCreateParams(
     // Why: the host defaults a bare `parentWorkspace` to CLI provenance; app picks are manual.
     ...(attempt.parentWorkspace ? { parentWorkspaceOrigin: 'manual' } : {}),
     // Switch point: a host lists the window's creation under its id only on the dark path.
-    ...(ORCA_SIDEBAR_INPUTS_IS_MAIN && request.creationId
+    ...(OCC_SIDEBAR_INPUTS_IS_MAIN && request.creationId
       ? { creationId: request.creationId }
       : {}),
     ...(options?.startupDraft ? { startupDraft: options.startupDraft } : {}),

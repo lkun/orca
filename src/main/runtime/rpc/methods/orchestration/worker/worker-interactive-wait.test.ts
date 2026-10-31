@@ -2,7 +2,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../../../orca-runtime'
+import { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationDb } from '../../../../orchestration/db'
 import { ORCHESTRATION_METHODS } from '../../orchestration'
 import { createRootDispatch } from '../../../../orchestration/db/root-dispatch-test-fixture'
@@ -40,7 +40,7 @@ describe('worker-show interactive wait (STA-3714, STA-4513)', () => {
   afterEach(() => db?.close())
 
   async function showWorkerPaneServing(paneOutput: string, opts?: { breakIdentity?: boolean }) {
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     const internals = runtime as unknown as {
       resolveTerminalWorkspaceLaunchScope: (selector: string) => Promise<unknown>
     }

@@ -68,7 +68,7 @@ describe('a fetched catalog that drops a repo registration', () => {
       source: 'git',
       worktrees: [serverRow('old'), localRow].map((row) => ({
         ...row,
-        ownership: 'orca-managed' as const,
+        ownership: 'occ-managed' as const,
         selectedCheckout: true,
         visible: true
       }))

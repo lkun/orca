@@ -189,12 +189,12 @@ describe('formatBrowserAnnotationsAsMarkdown', () => {
 
   it('lists pasted image paths after the feedback so the agent can open them', () => {
     const markdown = formatBrowserAnnotationsAsMarkdown([
-      makeAnnotation({ imagePaths: ['/tmp/orca-paste-1.png', 'C:\\Users\\A B\\orca-paste-2.png'] })
+      makeAnnotation({ imagePaths: ['/tmp/occ-paste-1.png', 'C:\\Users\\A B\\occ-paste-2.png'] })
     ])
     expect(markdown.split('\n').slice(-3)).toEqual([
       '**Images (open these files):**',
-      '- `/tmp/orca-paste-1.png`',
-      '- `C:\\Users\\A B\\orca-paste-2.png`'
+      '- `/tmp/occ-paste-1.png`',
+      '- `C:\\Users\\A B\\occ-paste-2.png`'
     ])
   })
 

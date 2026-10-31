@@ -17,7 +17,7 @@ const ENVIRONMENTS = [{ id: '03ef704c-b180-4b10-998d-e28fbd5de9a3', name: 'awin'
 afterEach(() => vi.restoreAllMocks())
 
 function clientWithCall(call: RuntimeClient['call']): RuntimeClient {
-  const client = new RuntimeClient('/tmp/orca-host-alternatives-test', 60_000, null, null)
+  const client = new RuntimeClient('/tmp/occ-host-alternatives-test', 60_000, null, null)
   vi.spyOn(client, 'call').mockImplementation(call)
   return client
 }

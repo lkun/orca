@@ -43,7 +43,7 @@ export function MobilePane(): React.JSX.Element {
   const [refreshingNetworkInterfaces, setRefreshingNetworkInterfaces] = useState(false)
   const [codeCopied, setCodeCopied] = useState(false)
   const [deviceCountAtQr, setDeviceCountAtQr] = useState<number | null>(null)
-  const signedIn = useAppStore((state) => state.orcaProfileAuthStatus?.state === 'connected')
+  const signedIn = useAppStore((state) => state.occProfileAuthStatus?.state === 'connected')
   const settingsSearchQuery = useAppStore((state) => state.settingsSearchQuery)
   const [connectionMode, setConnectionMode] = useMobilePairingConnectionMode()
   const [rotateNextQr, setRotateNextQr] = useState(false)
@@ -204,7 +204,7 @@ export function MobilePane(): React.JSX.Element {
           if (result.reason === 'relay_mint_failed' && result.relayFailure) {
             setRelayMintFailure(result.relayFailure)
             // Reread likely revoked auth so guidance can offer sign-in rather than futile retries.
-            void useAppStore.getState().fetchOrcaProfileAuthStatus()
+            void useAppStore.getState().fetchOCCProfileAuthStatus()
           } else {
             setRelayMintFailure(null)
             // Prefer host-provided guidance across all unavailable paths.

@@ -19,7 +19,7 @@ const fallback = action.runs.steps.find(
 )
 
 function execute({ auditStatus = 0, checksum = 'ab'.repeat(64) } = {}) {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-pnpm-action-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-pnpm-action-'))
   const bin = join(directory, 'bin')
   const marker = join(directory, 'executed')
   const output = join(directory, 'path')

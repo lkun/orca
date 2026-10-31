@@ -122,12 +122,12 @@ export type AgentSessionAttachmentClipboardTarget = Omit<
   'environmentId'
 >
 
-/** `orca-paste-…png`, the name every pasted image gets, so it reads as "Pasted image". */
+/** `occ-paste-…png`, the name every pasted image gets, so it reads as "Pasted image". */
 export function agentSessionPastedImageName(now: number, unique: string): string {
-  return `orca-paste-${now}-${unique}.png`
+  return `occ-paste-${now}-${unique}.png`
 }
 
-/** `orca-paste-…txt`, the name a long text paste saved as a file gets, so it reads as "Pasted text". */
+/** `occ-paste-…txt`, the name a long text paste saved as a file gets, so it reads as "Pasted text". */
 export function agentSessionPastedTextName(now: number, unique: string): string {
-  return `orca-paste-${now}-${unique}.txt`
+  return `occ-paste-${now}-${unique}.txt`
 }

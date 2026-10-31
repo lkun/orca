@@ -84,7 +84,7 @@ describe('useMobileStructuredAgentTurnTiming', () => {
     vi.useFakeTimers()
     vi.setSystemTime(CLIENT_NOW)
     const items = [
-      user('orca:first', 1),
+      user('occ:first', 1),
       lifecycle(
         't1',
         2,
@@ -110,7 +110,7 @@ describe('useMobileStructuredAgentTurnTiming', () => {
     })
     expect(timing?.workingStartedAt).toBe(CLIENT_NOW - 2_500)
     expect([...timing!.settledTurns]).toEqual([
-      ['orca:first', { startedAt: HOST_START, workedSeconds: 61, verdict: 'interruption' }],
+      ['occ:first', { startedAt: HOST_START, workedSeconds: 61, verdict: 'interruption' }],
       ['u2', null]
     ])
 

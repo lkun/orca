@@ -2,7 +2,7 @@ import { createServer } from 'node:http'
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { expect } from 'vitest'
 
 export async function runVendorHook(
@@ -17,7 +17,7 @@ export async function runVendorHook(
     request.on('end', () => response.end('{}'))
   })
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
-  const dir = mkdtempSync(join(tmpdir(), 'orca-vendor-hook-'))
+  const dir = mkdtempSync(join(tmpdir(), 'occ-vendor-hook-'))
   try {
     const address = server.address()
     if (!address || typeof address === 'string') {
@@ -40,13 +40,13 @@ export async function runVendorHook(
         GROK_HOOK_EVENT: '',
         DEVIN_SESSION_ID: '',
         DEVIN_PROJECT_DIR: '',
-        ORCA_CURSOR_HOOK_RESPONSE: '',
-        ORCA_AGENT_HOOK_TRANSPORT: '',
+        OCC_CURSOR_HOOK_RESPONSE: '',
+        OCC_AGENT_HOOK_TRANSPORT: '',
         CLAUDE_JOB_DIR: '',
-        ORCA_AGENT_HOOK_ENDPOINT: endpointPath,
-        ORCA_AGENT_HOOK_PORT: delivery === 'http' ? String(address.port) : '',
-        ORCA_AGENT_HOOK_TOKEN: 'test-token',
-        ORCA_PANE_KEY: 'tab:leaf',
+        OCC_AGENT_HOOK_ENDPOINT: endpointPath,
+        OCC_AGENT_HOOK_PORT: delivery === 'http' ? String(address.port) : '',
+        OCC_AGENT_HOOK_TOKEN: 'test-token',
+        OCC_PANE_KEY: 'tab:leaf',
         ...hookEnv
       }
     })

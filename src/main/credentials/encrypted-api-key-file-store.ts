@@ -11,7 +11,7 @@ import type { SecretAtRestProtection } from '../../shared/secret-at-rest-protect
 import { ApiKeyFileUnreadableError } from './api-key-file-unreadable-error'
 
 type EncryptedApiKeyFileStore = {
-  /** Envelope location and prefix used by orcad's plaintext migration. */
+  /** Envelope location and prefix used by occd's plaintext migration. */
   envelopeFile: () => { path: string; envelopePrefix: string }
   protection: () => SecretAtRestProtection | null
   has: () => boolean
@@ -39,12 +39,12 @@ export function createEncryptedApiKeyFileStore({
     payload: Buffer
   }
 
-  function getOrcaDir(): string {
-    return join(homedir(), '.orca')
+  function getOCCDir(): string {
+    return join(homedir(), '.occ')
   }
 
   function getApiKeyPath(): string {
-    return join(getOrcaDir(), fileName)
+    return join(getOCCDir(), fileName)
   }
 
   function encodeApiKeyEnvelope(kind: ApiKeyEnvelope['kind'], payload: Buffer): string {

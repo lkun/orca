@@ -12,7 +12,7 @@ import { reconcileOrphanedPrRemotesWithExec } from './worktree-push-target-recon
 const execFileAsync = promisify(execFile)
 
 const REPO_ID = 'repo-1'
-const FORK_REMOTE = 'pr-contributor-orca'
+const FORK_REMOTE = 'pr-contributor-occ'
 
 let scratchDir = ''
 let repoPath = ''
@@ -49,13 +49,13 @@ function storeOf(entries: Record<string, GitPushTarget | undefined>): WorktreePu
 
 beforeEach(async () => {
   // macOS temp aliases must match Git's canonical paths.
-  scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'orca-pr-remote-reconcile-')))
+  scratchDir = await realpath(await mkdtemp(join(tmpdir(), 'occ-pr-remote-reconcile-')))
   repoPath = join(scratchDir, 'repo')
   forkPath = join(scratchDir, 'fork')
   await mkdir(repoPath, { recursive: true })
   await git(['init', '-q'], repoPath)
   await git(['config', 'user.name', 'OCC Test'], repoPath)
-  await git(['config', 'user.email', 'orca@example.test'], repoPath)
+  await git(['config', 'user.email', 'occ@example.test'], repoPath)
   await git(['config', 'commit.gpgSign', 'false'], repoPath)
   await git(['config', 'core.hooksPath', '.git/no-hooks'], repoPath)
   await writeFile(join(repoPath, 'seed.txt'), 'seed\n')
@@ -64,7 +64,7 @@ beforeEach(async () => {
 
   await git(['clone', '-q', repoPath, forkPath], scratchDir)
   await git(['config', 'user.name', 'OCC Test'], forkPath)
-  await git(['config', 'user.email', 'orca@example.test'], forkPath)
+  await git(['config', 'user.email', 'occ@example.test'], forkPath)
   await git(['config', 'commit.gpgSign', 'false'], forkPath)
   await git(['config', 'core.hooksPath', '.git/no-hooks'], forkPath)
   await git(['checkout', '-qb', 'contributor/fix'], forkPath)

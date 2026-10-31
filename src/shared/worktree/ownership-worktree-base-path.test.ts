@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { GlobalSettings } from '../global-settings-types'
 import type { Repo } from '../repo-types'
 import type { Worktree } from './types'
-import { buildKnownOrcaWorkspaceLayouts, classifyWorktreeOwnership } from './ownership'
+import { buildKnownOCCWorkspaceLayouts, classifyWorktreeOwnership } from './ownership'
 
 function makeRepo(overrides: Partial<Repo> = {}): Repo {
   return {
@@ -35,11 +35,11 @@ describe('repo-specific worktree ownership layouts', () => {
     const repoA = makeRepo({ path: '/projects/a/repo', worktreeBasePath: '../worktrees' })
     const repoB = makeRepo({ path: '/projects/b/repo', worktreeBasePath: '../worktrees' })
 
-    expect(buildKnownOrcaWorkspaceLayouts(settings, repoA)[0]).toEqual({
+    expect(buildKnownOCCWorkspaceLayouts(settings, repoA)[0]).toEqual({
       path: '/projects/a/worktrees',
       nestWorkspaces: true
     })
-    expect(buildKnownOrcaWorkspaceLayouts(settings, repoB)[0]).toEqual({
+    expect(buildKnownOCCWorkspaceLayouts(settings, repoB)[0]).toEqual({
       path: '/projects/b/worktrees',
       nestWorkspaces: true
     })
@@ -48,7 +48,7 @@ describe('repo-specific worktree ownership layouts', () => {
         repo: repoA,
         settings,
         worktree: makeWorktree('/projects/a/worktrees/repo/feature'),
-        knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repoA)
+        knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repoA)
       })
     ).toBe('external')
     expect(
@@ -56,7 +56,7 @@ describe('repo-specific worktree ownership layouts', () => {
         repo: repoB,
         settings,
         worktree: makeWorktree('/projects/a/worktrees/repo/feature'),
-        knownOrcaLayouts: buildKnownOrcaWorkspaceLayouts(settings, repoB)
+        knownOCCLayouts: buildKnownOCCWorkspaceLayouts(settings, repoB)
       })
     ).toBe('external')
   })
@@ -64,13 +64,13 @@ describe('repo-specific worktree ownership layouts', () => {
   it('classifies worktrees under a dotted Linux base exactly where creation collapses it', () => {
     const repo = makeRepo({
       path: '\\\\wsl.localhost\\Ubuntu-24.04\\home\\jin\\src\\repo',
-      worktreeBasePath: '/home/jin/src/../.orca-worktrees'
+      worktreeBasePath: '/home/jin/src/../.occ-worktrees'
     })
     const settings = makeSettings({ workspaceDir: 'C:\\global' })
-    const layouts = buildKnownOrcaWorkspaceLayouts(settings, repo)
+    const layouts = buildKnownOCCWorkspaceLayouts(settings, repo)
 
     expect(layouts[0]).toEqual({
-      path: '//wsl.localhost/Ubuntu-24.04/home/jin/.orca-worktrees',
+      path: '//wsl.localhost/Ubuntu-24.04/home/jin/.occ-worktrees',
       nestWorkspaces: true
     })
     expect(
@@ -78,9 +78,9 @@ describe('repo-specific worktree ownership layouts', () => {
         repo,
         settings,
         worktree: makeWorktree(
-          '\\\\wsl.localhost\\Ubuntu-24.04\\home\\jin\\.orca-worktrees\\repo\\feature'
+          '\\\\wsl.localhost\\Ubuntu-24.04\\home\\jin\\.occ-worktrees\\repo\\feature'
         ),
-        knownOrcaLayouts: layouts
+        knownOCCLayouts: layouts
       })
     ).toBe('external')
   })
@@ -90,12 +90,12 @@ describe('repo-specific worktree ownership layouts', () => {
     const relativeSettings = makeSettings({ workspaceDir: '../worktrees' })
     const absoluteSettings = makeSettings({ workspaceDir: '/local/worktrees' })
 
-    expect(buildKnownOrcaWorkspaceLayouts(relativeSettings, repo)[0]).toEqual({
+    expect(buildKnownOCCWorkspaceLayouts(relativeSettings, repo)[0]).toEqual({
       path: '/remote/worktrees',
       nestWorkspaces: true
     })
     expect(
-      buildKnownOrcaWorkspaceLayouts(absoluteSettings, repo).some(
+      buildKnownOCCWorkspaceLayouts(absoluteSettings, repo).some(
         (layout) => layout.path === '/local/worktrees'
       )
     ).toBe(false)

@@ -64,7 +64,7 @@ function itemStep(
 }
 
 async function rig(watermarks: Partial<StructuredAgentSessionSinkWatermarks> = {}) {
-  const root = await mkdtemp(join(tmpdir(), 'orca-transition-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-transition-'))
   roots.push(root)
   const journal: AgentSessionJournal = await journals.open({
     identity: {

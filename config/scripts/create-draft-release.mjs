@@ -259,7 +259,7 @@ export async function createDraftRelease({
 async function main() {
   const tag = process.argv[2]
   const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN
-  const repo = process.env.GITHUB_REPOSITORY || 'stablyai/orca'
+  const repo = process.env.GITHUB_REPOSITORY || 'stablyai/occ'
   const targetCommitish = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim()
   await createDraftRelease({ repo, tag, token, targetCommitish })
 }

@@ -1,5 +1,5 @@
 /** Use graph-sequenced evidence: self-consistency cannot prove attachment, while pending spawns and lost graphs cannot prove detachment (#18191, #7587). */
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { parsePaneKey } from '../../shared/stable-pane-id'
 import type { RuntimePtyWorktreeRecord } from './runtime-terminal-state-records'
 import type { PtyPane } from './terminal/surface/pty-pane-query'
@@ -23,7 +23,7 @@ export function recordPtySurfaceClaim(
   paneKey: string | null,
   graphSequence: number
 ): void {
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     return
   }
   // Replaying a claim adds no evidence but must preserve its existing graph standing.
@@ -43,7 +43,7 @@ export function recordPtySurface(
   paneKey: string,
   graphSequence: number
 ): void {
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     return
   }
   pty.tabId = tabId
@@ -52,7 +52,7 @@ export function recordPtySurface(
 
 /** Drops a PTY's surface claim; layout-owner builds keep none. */
 export function forgetPtySurface(pty: RecordedPtySurface): void {
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     return
   }
   pty.tabId = null

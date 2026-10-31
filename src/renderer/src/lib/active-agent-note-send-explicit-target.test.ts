@@ -112,7 +112,7 @@ describe('active agent note send', () => {
         terminal: 'term-2',
         text: `${PASTE_BEGIN}notes${PASTE_END}`,
         requireAgentStatus: 'sendable',
-        client: { id: 'orca-desktop', type: 'desktop' }
+        client: { id: 'occ-desktop', type: 'desktop' }
       },
       { timeoutMs: 15000 }
     )
@@ -123,7 +123,7 @@ describe('active agent note send', () => {
         terminal: 'term-2',
         enter: true,
         requireAgentStatus: 'sendable',
-        client: { id: 'orca-desktop', type: 'desktop' }
+        client: { id: 'occ-desktop', type: 'desktop' }
       },
       { timeoutMs: 15000 }
     )

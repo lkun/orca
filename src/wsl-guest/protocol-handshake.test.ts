@@ -9,9 +9,9 @@ import {
 } from './protocol'
 
 describe('handshake framing', () => {
-  it('round-trips an orca-relay-handshake envelope through the existing framing', () => {
+  it('round-trips an occ-relay-handshake envelope through the existing framing', () => {
     const sent = encodeHandshakeFrame({
-      type: 'orca-relay-handshake',
+      type: 'occ-relay-handshake',
       version: '0.1.0+deadbeef'
     })
     expect(sent[0]).toBe(MessageType.Handshake)
@@ -24,24 +24,24 @@ describe('handshake framing', () => {
     expect(frames).toHaveLength(1)
     expect(frames[0].type).toBe(MessageType.Handshake)
     const msg = parseHandshakeMessage(frames[0].payload)
-    expect(msg).toEqual({ type: 'orca-relay-handshake', version: '0.1.0+deadbeef' })
+    expect(msg).toEqual({ type: 'occ-relay-handshake', version: '0.1.0+deadbeef' })
   })
 
-  it('round-trips an orca-relay-handshake-ok reply', () => {
+  it('round-trips an occ-relay-handshake-ok reply', () => {
     const sent = encodeHandshakeFrame({
-      type: 'orca-relay-handshake-ok',
+      type: 'occ-relay-handshake-ok',
       version: '0.1.0+deadbeef'
     })
     const frames: DecodedFrame[] = []
     const decoder = new FrameDecoder((f) => frames.push(f))
     decoder.feed(sent)
     const msg = parseHandshakeMessage(frames[0].payload)
-    expect(msg).toEqual({ type: 'orca-relay-handshake-ok', version: '0.1.0+deadbeef' })
+    expect(msg).toEqual({ type: 'occ-relay-handshake-ok', version: '0.1.0+deadbeef' })
   })
 
-  it('round-trips an orca-relay-handshake-mismatch reply', () => {
+  it('round-trips an occ-relay-handshake-mismatch reply', () => {
     const sent = encodeHandshakeFrame({
-      type: 'orca-relay-handshake-mismatch',
+      type: 'occ-relay-handshake-mismatch',
       expected: '0.1.0+aaa',
       got: '0.1.0+bbb'
     })
@@ -50,14 +50,14 @@ describe('handshake framing', () => {
     decoder.feed(sent)
     const msg = parseHandshakeMessage(frames[0].payload)
     expect(msg).toEqual({
-      type: 'orca-relay-handshake-mismatch',
+      type: 'occ-relay-handshake-mismatch',
       expected: '0.1.0+aaa',
       got: '0.1.0+bbb'
     })
   })
 
   it('rejects payloads with unknown type', () => {
-    const bogus = Buffer.from(JSON.stringify({ type: 'orca-something-else', version: 'x' }))
+    const bogus = Buffer.from(JSON.stringify({ type: 'occ-something-else', version: 'x' }))
     expect(() => parseHandshakeMessage(bogus)).toThrow(/Unknown handshake type/)
   })
 
@@ -69,7 +69,7 @@ describe('handshake framing', () => {
 
   // Validate versions before pre-auth readers interpolate them into diagnostics.
   it('rejects a version that is not a string on both arms that carry one', () => {
-    for (const type of ['orca-relay-handshake', 'orca-relay-handshake-ok']) {
+    for (const type of ['occ-relay-handshake', 'occ-relay-handshake-ok']) {
       for (const version of [{ toString: 1 }, 7, null, undefined, ['0.1.0']]) {
         const payload = Buffer.from(JSON.stringify({ type, version }))
         expect(
@@ -81,7 +81,7 @@ describe('handshake framing', () => {
   })
 
   it('rejects a mismatch reply whose expected or got is not a string', () => {
-    const type = 'orca-relay-handshake-mismatch'
+    const type = 'occ-relay-handshake-mismatch'
     expect(() =>
       parseHandshakeMessage(Buffer.from(JSON.stringify({ type, expected: {}, got: 'b' })))
     ).toThrow(/Handshake field expected is not a string/)
@@ -91,7 +91,7 @@ describe('handshake framing', () => {
   })
 
   it('rejects payloads that are not objects', () => {
-    for (const payload of ['null', '"orca-relay-handshake"', '42']) {
+    for (const payload of ['null', '"occ-relay-handshake"', '42']) {
       expect(() => parseHandshakeMessage(Buffer.from(payload)), payload).toThrow(
         /Handshake payload is not an object/
       )
@@ -102,7 +102,7 @@ describe('handshake framing', () => {
   it('rejects a present endpointCredential that is not a string', () => {
     for (const endpointCredential of [{ toString: 1 }, 7, null, ['secret'], true]) {
       const payload = Buffer.from(
-        JSON.stringify({ type: 'orca-relay-handshake', version: '0.1.0', endpointCredential })
+        JSON.stringify({ type: 'occ-relay-handshake', version: '0.1.0', endpointCredential })
       )
       expect(
         () => parseHandshakeMessage(payload),
@@ -113,13 +113,13 @@ describe('handshake framing', () => {
 
   // Missing credentials are valid for unauthenticated endpoints; preserve absence.
   it('still accepts a handshake with no endpointCredential, and one with a string', () => {
-    const bare = Buffer.from(JSON.stringify({ type: 'orca-relay-handshake', version: '0.1.0' }))
-    expect(parseHandshakeMessage(bare)).toEqual({ type: 'orca-relay-handshake', version: '0.1.0' })
+    const bare = Buffer.from(JSON.stringify({ type: 'occ-relay-handshake', version: '0.1.0' }))
+    expect(parseHandshakeMessage(bare)).toEqual({ type: 'occ-relay-handshake', version: '0.1.0' })
     const withCredential = Buffer.from(
-      JSON.stringify({ type: 'orca-relay-handshake', version: '0.1.0', endpointCredential: 'sec' })
+      JSON.stringify({ type: 'occ-relay-handshake', version: '0.1.0', endpointCredential: 'sec' })
     )
     expect(parseHandshakeMessage(withCredential)).toEqual({
-      type: 'orca-relay-handshake',
+      type: 'occ-relay-handshake',
       version: '0.1.0',
       endpointCredential: 'sec'
     })
@@ -127,20 +127,20 @@ describe('handshake framing', () => {
 
   it('still accepts a credential-mismatch reply, which carries no fields', () => {
     const payload = Buffer.from(
-      JSON.stringify({ type: 'orca-relay-handshake-credential-mismatch' })
+      JSON.stringify({ type: 'occ-relay-handshake-credential-mismatch' })
     )
     expect(parseHandshakeMessage(payload)).toEqual({
-      type: 'orca-relay-handshake-credential-mismatch'
+      type: 'occ-relay-handshake-credential-mismatch'
     })
   })
 
   it('carries the optional informational runtime on handshake-ok', () => {
     const runtime = { kind: 'pinned-node', version: '24.21.0' }
     const payload = Buffer.from(
-      JSON.stringify({ type: 'orca-relay-handshake-ok', version: '0.1.0', runtime })
+      JSON.stringify({ type: 'occ-relay-handshake-ok', version: '0.1.0', runtime })
     )
     expect(parseHandshakeMessage(payload)).toEqual({
-      type: 'orca-relay-handshake-ok',
+      type: 'occ-relay-handshake-ok',
       version: '0.1.0',
       runtime
     })
@@ -150,7 +150,7 @@ describe('handshake framing', () => {
     'refuses a present-but-malformed runtime %j',
     (runtime) => {
       const payload = Buffer.from(
-        JSON.stringify({ type: 'orca-relay-handshake-ok', version: '0.1.0', runtime })
+        JSON.stringify({ type: 'occ-relay-handshake-ok', version: '0.1.0', runtime })
       )
       expect(() => parseHandshakeMessage(payload)).toThrow('runtime')
     }

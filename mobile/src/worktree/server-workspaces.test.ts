@@ -26,7 +26,7 @@ function row(worktreeId: string, hostId: MobileRelayHost['hostId'] = host.hostId
     worktreeId,
     repoId: 'repo-1',
     hostId,
-    repo: 'orca',
+    repo: 'occ',
     branch: 'main',
     displayName: worktreeId,
     path: `/srv/${worktreeId}`,

@@ -32,7 +32,7 @@ export function getLinkRoutingModifierTitle(openLinksInApp: boolean): string {
         'Hold Shift to open in your web browser'
       )
     : translate(
-        'auto.components.settings.BrowserLinkRoutingModifierSetting.titleOrca',
+        'auto.components.settings.BrowserLinkRoutingModifierSetting.titleOCC',
         'Hold Shift to open in OCC'
       )
 }
@@ -53,7 +53,7 @@ export function getLinkRoutingModifierDescription({
         { chord }
       )
     : translate(
-        'auto.components.settings.BrowserLinkRoutingModifierSetting.descriptionOrca',
+        'auto.components.settings.BrowserLinkRoutingModifierSetting.descriptionOCC',
         "Links open in your system browser. When enabled, {{chord}}+click opens one in OCC's built-in browser instead.",
         { chord }
       )

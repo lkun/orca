@@ -39,18 +39,18 @@ import {
 function getManagedScript(target: 'local' | 'posix' = 'local'): string {
   if (target === 'local' && process.platform === 'win32') {
     // Windows stdin is drained or null; post JCODE_HOOK_PAYLOAD through a temp file instead.
-    const payloadFile = '%ORCA_JCODE_PAYLOAD_FILE%'
+    const payloadFile = '%OCC_JCODE_PAYLOAD_FILE%'
     return [
       '@echo off',
       // Delayed expansion keeps JSON quotes and & out of cmd parsing.
       'setlocal EnableDelayedExpansion',
       // Refresh endpoint credentials for PTYs surviving an OCC restart.
-      'if defined ORCA_AGENT_HOOK_ENDPOINT if exist "%ORCA_AGENT_HOOK_ENDPOINT%" call "%ORCA_AGENT_HOOK_ENDPOINT%" 2>nul',
+      'if defined OCC_AGENT_HOOK_ENDPOINT if exist "%OCC_AGENT_HOOK_ENDPOINT%" call "%OCC_AGENT_HOOK_ENDPOINT%" 2>nul',
       // Guard before reading: abandoned Windows stdin can hang forever outside OCC (#11549).
       ...buildWindowsHookEnvironmentGuardLines(),
       // Drain pre_tool input before POST so jcode cannot block writing a payload larger than the pipe.
       `if "%JCODE_HOOK_EVENT%"=="pre_tool" ${WINDOWS_HOOK_STDIN_DRAIN_COMMAND}`,
-      `set "ORCA_JCODE_PAYLOAD_FILE=%TEMP%\\orca-jcode-hook-%RANDOM%%RANDOM%.json"`,
+      `set "OCC_JCODE_PAYLOAD_FILE=%TEMP%\\occ-jcode-hook-%RANDOM%%RANDOM%.json"`,
       `>"${payloadFile}" echo(!JCODE_HOOK_PAYLOAD!`,
       // Input redirection avoids spawning cmd's extra pipeline shells on every event.
       `<"${payloadFile}" ${buildWindowsAgentHookPostCommand('jcode', [
@@ -67,26 +67,26 @@ function getManagedScript(target: 'local' | 'posix' = 'local'): string {
   return [
     '#!/bin/sh',
     // Refresh surviving PTYs; silence sourcing failures from endpoint races or CRLF damage.
-    'if [ -n "$ORCA_AGENT_HOOK_ENDPOINT" ] && [ -r "$ORCA_AGENT_HOOK_ENDPOINT" ]; then',
-    '  . "$ORCA_AGENT_HOOK_ENDPOINT" 2>/dev/null || :',
+    'if [ -n "$OCC_AGENT_HOOK_ENDPOINT" ] && [ -r "$OCC_AGENT_HOOK_ENDPOINT" ]; then',
+    '  . "$OCC_AGENT_HOOK_ENDPOINT" 2>/dev/null || :',
     'fi',
     // Drain gated input before every exit path so jcode cannot block mid-write.
     'if [ "$JCODE_HOOK_EVENT" = pre_tool ]; then',
     `  ${POSIX_HOOK_STDIN_DRAIN_COMMAND}`,
     'fi',
-    'if [ -z "$ORCA_AGENT_HOOK_PORT" ] || [ -z "$ORCA_AGENT_HOOK_TOKEN" ] || [ -z "$ORCA_PANE_KEY" ]; then',
+    'if [ -z "$OCC_AGENT_HOOK_PORT" ] || [ -z "$OCC_AGENT_HOOK_TOKEN" ] || [ -z "$OCC_PANE_KEY" ]; then',
     '  exit 0',
     'fi',
     // Forward jcode's JSON payload verbatim; rebuilding arbitrary text in shell is unsafe.
     'payload="$JCODE_HOOK_PAYLOAD"',
-    'orca_post_jcode_event() {',
+    'occ_post_jcode_event() {',
     ...buildPosixAgentHookPostCommand('jcode').map((line) => `  ${line}`),
     '}',
     // Detach the observer POST: jcode waits for gate stderr EOF before releasing the tool.
     'if [ "$JCODE_HOOK_EVENT" = pre_tool ]; then',
-    '  orca_post_jcode_event >/dev/null 2>&1 &',
+    '  occ_post_jcode_event >/dev/null 2>&1 &',
     'else',
-    '  orca_post_jcode_event >/dev/null 2>&1 || :',
+    '  occ_post_jcode_event >/dev/null 2>&1 || :',
     'fi',
     'exit 0',
     ''
@@ -193,7 +193,7 @@ export class JcodeHookService {
     // Remote hook execution assumes POSIX; Windows remotes are unsupported.
     const remoteConfigPath = getJcodeRemoteConfigPath(remoteHome)
     const remoteScriptFileName = getJcodePosixManagedScriptFileName()
-    const remoteScriptPath = `${remoteHome.replace(/\/+$/, '')}/.orca/agent-hooks/${remoteScriptFileName}`
+    const remoteScriptPath = `${remoteHome.replace(/\/+$/, '')}/.occ/agent-hooks/${remoteScriptFileName}`
     try {
       const body = await readTextFileRemote(sftp, remoteConfigPath)
       const content = body === null ? '' : body

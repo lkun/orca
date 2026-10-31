@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { removeTreeSync } from '../../windows-transient-lock-removal'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { WINDOWS_ARGUMENT_CORPUS } from '../../../packages/process-host/src/__fixtures__/windows-argument-corpus'
 import { npmProgNodeShim } from '../../../packages/process-host/src/__fixtures__/windows-cmd-shim-bodies'
 
@@ -15,7 +15,7 @@ describeOnWindows('resolved .cmd shim spawn', () => {
   let shim: string
 
   beforeAll(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-shim-spawn-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-shim-spawn-'))
     shim = join(dir, 'echoargs.cmd')
     writeFileSync(shim, npmProgNodeShim('echoargs.js'))
     writeFileSync(

@@ -2,7 +2,7 @@
 // Mirror ssh-host-form-modal.spec.ts; Bitbucket’s seeded baseline is component-tested.
 
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { dismissTransientAnnouncement } from './helpers/ssh-config-host-picker'
 import { waitForSessionReady } from './helpers/store'
 
@@ -27,15 +27,15 @@ async function clickBackdrop(page: Page): Promise<void> {
 }
 
 test.describe('Settings integrations connect dialogs', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await openIntegrationsSettings(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await openIntegrationsSettings(occPage)
   })
 
   test('Linear API key draft survives a backdrop click but clears on cancel', async ({
-    orcaPage
+    occPage
   }) => {
-    const card = orcaPage.locator('[data-settings-section="integrations-linear"]')
+    const card = occPage.locator('[data-settings-section="integrations-linear"]')
     // Why: the button label depends on connection state; a fresh profile is disconnected.
     const openButton = card.getByRole('button', {
       name: /^(Add Linear access|Add workspace access)$/
@@ -43,12 +43,12 @@ test.describe('Settings integrations connect dialogs', () => {
     await expect(openButton).toBeVisible({ timeout: 15_000 })
     await openButton.click()
 
-    const dialog = orcaPage.getByRole('dialog', { name: 'Add Linear access' })
+    const dialog = occPage.getByRole('dialog', { name: 'Add Linear access' })
     await expect(dialog).toBeVisible()
     const keyInput = dialog.locator('input[type="password"]')
     await keyInput.fill('lin_api_e2e_secret')
 
-    await clickBackdrop(orcaPage)
+    await clickBackdrop(occPage)
     // Require settled open state after any exit animation.
     await expect(dialog).toHaveAttribute('data-state', 'open')
     await expect(keyInput).toHaveValue('lin_api_e2e_secret')
@@ -63,19 +63,19 @@ test.describe('Settings integrations connect dialogs', () => {
     await expect(dialog).toBeHidden()
   })
 
-  test('Jira site URL draft survives a backdrop click', async ({ orcaPage }) => {
-    const card = orcaPage.locator('[data-settings-section="integrations-jira"]')
+  test('Jira site URL draft survives a backdrop click', async ({ occPage }) => {
+    const card = occPage.locator('[data-settings-section="integrations-jira"]')
     // Why: the button label depends on connection state; a fresh profile is disconnected.
     const openButton = card.getByRole('button', { name: /^(Connect Jira|Add Jira site)$/ })
     await expect(openButton).toBeVisible({ timeout: 15_000 })
     await openButton.click()
 
-    const dialog = orcaPage.getByRole('dialog', { name: 'Connect Jira site' })
+    const dialog = occPage.getByRole('dialog', { name: 'Connect Jira site' })
     await expect(dialog).toBeVisible()
     const siteUrlInput = dialog.locator('input[placeholder="https://example.atlassian.net"]')
     await siteUrlInput.fill('https://acme.atlassian.net')
 
-    await clickBackdrop(orcaPage)
+    await clickBackdrop(occPage)
     // Require settled open state after any exit animation.
     await expect(dialog).toHaveAttribute('data-state', 'open')
     await expect(siteUrlInput).toHaveValue('https://acme.atlassian.net')

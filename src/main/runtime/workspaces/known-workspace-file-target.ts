@@ -1,9 +1,9 @@
 import type { RuntimeWorkspaceCatalog } from './workspace-catalog'
-import type { OrcaRuntimeWithListManagedWorktrees } from './managed-workspace-operations'
-import type { OrcaRuntimeWithTransitionGraphReloadToTerminalState } from '../session-graph/session-graph-authority'
-import type { OrcaRuntimeWithBindPtyIncarnationHandle } from '../terminal/identity/terminal-handle-bindings'
-import type { OrcaRuntimeWithInvalidateAllHandlesForPty } from '../terminal/lifecycle/pty-handle-invalidation'
-import { OrcaRuntimeWithPersistHeadlessTerminalTitle } from './workspace-file-session-targets'
+import type { OCCRuntimeWithListManagedWorktrees } from './managed-workspace-operations'
+import type { OCCRuntimeWithTransitionGraphReloadToTerminalState } from '../session-graph/session-graph-authority'
+import type { OCCRuntimeWithBindPtyIncarnationHandle } from '../terminal/identity/terminal-handle-bindings'
+import type { OCCRuntimeWithInvalidateAllHandlesForPty } from '../terminal/lifecycle/pty-handle-invalidation'
+import { OCCRuntimeWithPersistHeadlessTerminalTitle } from './workspace-file-session-targets'
 import {
   getConnectionExecutionHostId,
   LOCAL_EXECUTION_HOST_ID,
@@ -17,7 +17,7 @@ import { randomUUID } from 'node:crypto'
 import type { PtyIncarnationId } from '../../../shared/pty-incarnation'
 import { forgetPtySurface } from '../pty-recorded-surface-topology'
 
-export abstract class OrcaRuntimeWithResolveKnownWorkspaceFileTarget extends OrcaRuntimeWithPersistHeadlessTerminalTitle {
+export abstract class OCCRuntimeWithResolveKnownWorkspaceFileTarget extends OCCRuntimeWithPersistHeadlessTerminalTitle {
   protected abstract deliverPendingMessagesForPty(ptyId: string): void
 
   protected abstract listResolvedWorktrees(
@@ -25,36 +25,36 @@ export abstract class OrcaRuntimeWithResolveKnownWorkspaceFileTarget extends Orc
   ): ReturnType<RuntimeWorkspaceCatalog['listResolvedWorktrees']>
   protected abstract buildRuntimeVisibilitySourceMatchersByRepoId(
     ...args: Parameters<
-      OrcaRuntimeWithListManagedWorktrees['buildRuntimeVisibilitySourceMatchersByRepoId']
+      OCCRuntimeWithListManagedWorktrees['buildRuntimeVisibilitySourceMatchersByRepoId']
     >
-  ): ReturnType<OrcaRuntimeWithListManagedWorktrees['buildRuntimeVisibilitySourceMatchersByRepoId']>
+  ): ReturnType<OCCRuntimeWithListManagedWorktrees['buildRuntimeVisibilitySourceMatchersByRepoId']>
   protected abstract isRuntimeWorktreeVisible(
-    ...args: Parameters<OrcaRuntimeWithListManagedWorktrees['isRuntimeWorktreeVisible']>
-  ): ReturnType<OrcaRuntimeWithListManagedWorktrees['isRuntimeWorktreeVisible']>
+    ...args: Parameters<OCCRuntimeWithListManagedWorktrees['isRuntimeWorktreeVisible']>
+  ): ReturnType<OCCRuntimeWithListManagedWorktrees['isRuntimeWorktreeVisible']>
   protected abstract resolveFolderWorkspaceConnectionId(
     ...args: Parameters<
-      OrcaRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceConnectionId']
+      OCCRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceConnectionId']
     >
   ): ReturnType<
-    OrcaRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceConnectionId']
+    OCCRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceConnectionId']
   >
   protected abstract invalidatePtyIncarnationHandle(
-    ...args: Parameters<OrcaRuntimeWithBindPtyIncarnationHandle['invalidatePtyIncarnationHandle']>
-  ): ReturnType<OrcaRuntimeWithBindPtyIncarnationHandle['invalidatePtyIncarnationHandle']>
+    ...args: Parameters<OCCRuntimeWithBindPtyIncarnationHandle['invalidatePtyIncarnationHandle']>
+  ): ReturnType<OCCRuntimeWithBindPtyIncarnationHandle['invalidatePtyIncarnationHandle']>
   protected abstract invalidateAllHandlesForPty(
-    ...args: Parameters<OrcaRuntimeWithInvalidateAllHandlesForPty['invalidateAllHandlesForPty']>
-  ): ReturnType<OrcaRuntimeWithInvalidateAllHandlesForPty['invalidateAllHandlesForPty']>
+    ...args: Parameters<OCCRuntimeWithInvalidateAllHandlesForPty['invalidateAllHandlesForPty']>
+  ): ReturnType<OCCRuntimeWithInvalidateAllHandlesForPty['invalidateAllHandlesForPty']>
   protected abstract isTerminalHandleAdoptionBlocked(
     ...args: Parameters<
-      OrcaRuntimeWithInvalidateAllHandlesForPty['isTerminalHandleAdoptionBlocked']
+      OCCRuntimeWithInvalidateAllHandlesForPty['isTerminalHandleAdoptionBlocked']
     >
-  ): ReturnType<OrcaRuntimeWithInvalidateAllHandlesForPty['isTerminalHandleAdoptionBlocked']>
+  ): ReturnType<OCCRuntimeWithInvalidateAllHandlesForPty['isTerminalHandleAdoptionBlocked']>
   protected abstract replaceSyntheticTerminalHandlesForRestoredPty(
     ...args: Parameters<
-      OrcaRuntimeWithInvalidateAllHandlesForPty['replaceSyntheticTerminalHandlesForRestoredPty']
+      OCCRuntimeWithInvalidateAllHandlesForPty['replaceSyntheticTerminalHandlesForRestoredPty']
     >
   ): ReturnType<
-    OrcaRuntimeWithInvalidateAllHandlesForPty['replaceSyntheticTerminalHandlesForRestoredPty']
+    OCCRuntimeWithInvalidateAllHandlesForPty['replaceSyntheticTerminalHandlesForRestoredPty']
   >
 
   protected async resolveKnownWorkspaceFileTarget(
@@ -145,7 +145,7 @@ export abstract class OrcaRuntimeWithResolveKnownWorkspaceFileTarget extends Orc
     this.clientSessionTabSelections.forgetClient(clientNavigationId)
   }
 
-  // Allocate before spawn so ORCA_TERMINAL_HANDLE lets agents self-identify; lazy RPC allocation reuses it.
+  // Allocate before spawn so OCC_TERMINAL_HANDLE lets agents self-identify; lazy RPC allocation reuses it.
   preAllocateHandleForPty(ptyId: string): string {
     const existing = this.handleByPtyId.get(ptyId)
     if (existing) {

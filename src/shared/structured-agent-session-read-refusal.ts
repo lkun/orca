@@ -32,6 +32,6 @@ export function isFinalAgentSessionReadRefusal(
   return (
     refusal?.code === 'agent_session_journal_unreadable' &&
     (refusal.details?.reason === 'journalCorrupt' ||
-      refusal.details?.reason === 'journalWrittenByNewerOrca')
+      refusal.details?.reason === 'journalWrittenByNewerOCC')
   )
 }

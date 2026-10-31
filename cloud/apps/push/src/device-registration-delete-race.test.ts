@@ -2,7 +2,7 @@ import { expect, it, vi } from 'vitest'
 import { openPushDatabase, type PushDatabase } from './push-database.js'
 import { PushDeviceRegistryStore } from './device-registry-store.js'
 
-const databaseUrl = process.env.ORCA_PUSH_TEST_DATABASE_URL
+const databaseUrl = process.env.OCC_PUSH_TEST_DATABASE_URL
 it.skipIf(!databaseUrl)(
   'serializes deletion with a registration that has already read its row',
   async () => {

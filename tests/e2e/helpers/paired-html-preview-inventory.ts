@@ -123,7 +123,7 @@ export async function readDocPreviewRenderedText(
   selector: string
 ): Promise<string | null> {
   return page.evaluate(async (targetSelector) => {
-    const guest = document.querySelector('webview[src^="orca-preview://"]') as {
+    const guest = document.querySelector('webview[src^="occ-preview://"]') as {
       executeJavaScript?: (code: string) => Promise<unknown>
     } | null
     if (!guest?.executeJavaScript) {
@@ -148,7 +148,7 @@ export async function readDocPreviewElementCenter(
   selector: string
 ): Promise<{ x: number; y: number } | null> {
   return page.evaluate(async (targetSelector) => {
-    const guest = document.querySelector('webview[src^="orca-preview://"]') as
+    const guest = document.querySelector('webview[src^="occ-preview://"]') as
       | (HTMLElement & { executeJavaScript?: (code: string) => Promise<unknown> })
       | null
     if (!guest?.executeJavaScript) {
@@ -212,7 +212,7 @@ export async function readDocPreviewGuestRects(
   page: Page
 ): Promise<{ src: string; width: number; height: number; hiddenAncestor: boolean }[]> {
   return page.evaluate(() =>
-    [...document.querySelectorAll('webview[src^="orca-preview://"]')].map((node) => {
+    [...document.querySelectorAll('webview[src^="occ-preview://"]')].map((node) => {
       const element = node as HTMLElement
       const rect = element.getBoundingClientRect()
       return {
@@ -227,6 +227,6 @@ export async function readDocPreviewGuestRects(
 
 export async function readDocPreviewGuestUrl(page: Page): Promise<string | null> {
   return page.evaluate(
-    () => document.querySelector('webview[src^="orca-preview://"]')?.getAttribute('src') ?? null
+    () => document.querySelector('webview[src^="occ-preview://"]')?.getAttribute('src') ?? null
   )
 }

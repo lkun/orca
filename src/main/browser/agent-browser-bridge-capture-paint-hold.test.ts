@@ -88,10 +88,10 @@ describe('AgentBrowserBridge', () => {
       releases.push(release)
       return release
     })
-    const holdPaintForCapture = vi.fn(() => () => {})
+    const holdPaintFoccpture = vi.fn(() => () => {})
     const printToPDF = vi.fn(async () => Buffer.from('pdf'))
     const b = new AgentBrowserBridge(
-      mockBrowserManager(undefined, undefined, { holdGuestActive, holdPaintForCapture })
+      mockBrowserManager(undefined, undefined, { holdGuestActive, holdPaintFoccpture })
     )
     b.setActiveTab(100)
     webContentsFromIdMock.mockReturnValue({ ...mockWebContents(100), printToPDF })
@@ -103,7 +103,7 @@ describe('AgentBrowserBridge', () => {
     await b.exec('get title')
     await expect(b.pdf()).resolves.toEqual({ data: Buffer.from('pdf').toString('base64') })
 
-    expect(holdPaintForCapture).not.toHaveBeenCalled()
+    expect(holdPaintFoccpture).not.toHaveBeenCalled()
     expect(holdGuestActive.mock.calls).toEqual([[100], [100], [100], [100], [100]])
     expect(releases.map((release) => release.mock.calls.length)).toEqual([1, 1, 1, 1, 1])
   })
@@ -210,9 +210,9 @@ describe('AgentBrowserBridge', () => {
     )
 
     const release = vi.fn()
-    const holdPaintForCapture = vi.fn(() => release)
+    const holdPaintFoccpture = vi.fn(() => release)
     const b = new AgentBrowserBridge(
-      mockBrowserManager(undefined, undefined, { holdPaintForCapture })
+      mockBrowserManager(undefined, undefined, { holdPaintFoccpture })
     )
     b.setActiveTab(100)
 
@@ -227,7 +227,7 @@ describe('AgentBrowserBridge', () => {
       captureBeyondViewport: true,
       clip: { x: 0, y: 0, width: 601, height: 901, scale: 1 }
     })
-    expect(holdPaintForCapture).toHaveBeenCalledWith(100)
+    expect(holdPaintFoccpture).toHaveBeenCalledWith(100)
     expect(release).toHaveBeenCalledTimes(1)
     const screenshotCall = execFileMock.mock.calls.find((call: unknown[]) =>
       (call[1] as string[]).includes('screenshot')

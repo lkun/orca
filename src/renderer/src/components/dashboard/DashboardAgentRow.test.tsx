@@ -358,7 +358,7 @@ describe('DashboardAgentRow', () => {
   it('reserves a real working tool line before tool metadata arrives', () => {
     const emptyToolMarkup = renderRow(makeAgent())
     const activeToolMarkup = renderRow(
-      makeAgent({}, { toolName: 'ListDir', toolInput: '/Users/nwparker/orca' })
+      makeAgent({}, { toolName: 'ListDir', toolInput: '/Users/nwparker/occ' })
     )
 
     // Antigravity working hooks can omit tool metadata; preserve the second-line slot to prevent height jumps.

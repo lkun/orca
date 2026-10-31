@@ -5,7 +5,7 @@ import type { DaemonPtySpawnContext } from './daemon-pty-spawn-request'
 import { coldRestorePayloadFromInfo } from './cold-restore-payload-cache'
 import type { CreateOrAttachResult } from './types'
 import type { PtySpawnResult } from '../providers/pty-provider-contract'
-import { OrcaRuntimeWithRegisterPty } from '../runtime/terminal/lifecycle/pty-registration'
+import { OCCRuntimeWithRegisterPty } from '../runtime/terminal/lifecycle/pty-registration'
 import type { PtyRegistrationClaim } from '../runtime/runtime-terminal-state-records'
 import { executePtySpawn } from '../ipc/pty/spawn-execute'
 import { formatTerminalStartFailure } from '../../shared/terminal-start-failure'
@@ -119,12 +119,12 @@ it.each([
     } as const
     const pending = new Map<string, PtyRegistrationClaim>()
     const runtime: Pick<
-      OrcaRuntimeWithRegisterPty,
+      OCCRuntimeWithRegisterPty,
       | 'beginPtyRegistration'
       | 'cancelPendingPtyRegistration'
       | 'assertPtyRegistrationAllowed'
       | 'narrowPtyRegistration'
-    > = Object.assign(Object.create(OrcaRuntimeWithRegisterPty.prototype), {
+    > = Object.assign(Object.create(OCCRuntimeWithRegisterPty.prototype), {
       pendingPtyRegistrationIncarnations: pending,
       ptyLivenessVerdictByPtyId: new Map([
         [id, { verdict: { status: 'exited', incarnationId, cause } }]

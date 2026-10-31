@@ -13,7 +13,7 @@ import {
 let scratchDir = ''
 
 beforeEach(async () => {
-  scratchDir = await mkdtemp(join(tmpdir(), 'orca-worktree-trash-'))
+  scratchDir = await mkdtemp(join(tmpdir(), 'occ-worktree-trash-'))
 })
 
 afterEach(async () => {
@@ -74,10 +74,10 @@ describe('sweepStaleWorktreeTrash', () => {
 })
 
 describe('collectWorktreeTrashSweepRoots', () => {
-  const settings = { workspaceDir: '/home/dev/orca/workspaces', nestWorkspaces: true }
+  const settings = { workspaceDir: '/home/dev/occ/workspaces', nestWorkspaces: true }
 
   function repo(overrides: Partial<Repo>): Repo {
-    return { id: 'repo-1', path: '/home/dev/code/orca', ...overrides } as unknown as Repo
+    return { id: 'repo-1', path: '/home/dev/code/occ', ...overrides } as unknown as Repo
   }
 
   it('collects one root per local git repo', () => {
@@ -86,7 +86,7 @@ describe('collectWorktreeTrashSweepRoots', () => {
         [repo({}), repo({ id: 'repo-2', path: '/code/other' })],
         settings
       )
-    ).toEqual(['/home/dev/orca/workspaces'])
+    ).toEqual(['/home/dev/occ/workspaces'])
   })
 
   it('honours a repo-specific worktree base path', () => {
@@ -111,10 +111,10 @@ describe('collectWorktreeTrashSweepRoots', () => {
       expect(
         collectWorktreeTrashSweepRoots(
           [
-            repo({ path: '\\\\wsl.localhost\\Ubuntu\\home\\dev\\orca' }),
+            repo({ path: '\\\\wsl.localhost\\Ubuntu\\home\\dev\\occ' }),
             repo({
               id: 'repo-2',
-              path: 'C:\\code\\orca',
+              path: 'C:\\code\\occ',
               worktreeBasePath: '\\\\wsl.localhost\\Ubuntu\\home\\dev\\trees'
             })
           ],

@@ -1,9 +1,9 @@
 // Never end work automatically; missing daemon evidence blocks rather than guessing a pane is restorable.
 import type { AgentStatusState } from '../../../shared/agent-status-types'
 import {
-  MAX_ORCAD_MIGRATION_SCROLLBACK_SNAPSHOTS,
-  MAX_ORCAD_MIGRATION_SCROLLBACK_TOTAL_BYTES
-} from '../../../shared/orcad-migration/orcad-migration-scrollback'
+  MAX_OCCD_MIGRATION_SCROLLBACK_SNAPSHOTS,
+  MAX_OCCD_MIGRATION_SCROLLBACK_TOTAL_BYTES
+} from '../../../shared/occd-migration/occd-migration-scrollback'
 import { TERMINAL_SCROLLBACK_STORE_BYTE_LIMIT } from '../../../shared/terminal-scrollback-limits'
 
 export type WslMovePaneFacts = {
@@ -87,8 +87,8 @@ export function assessWslMoveTerminals(inputs: WslMoveGateInputs): WslMoveGateVe
   // Report all cap violations together so clearing one pane cannot reveal another hidden blocker.
   const total = [...scrollbackByPane.values()].reduce((sum, bytes) => sum + bytes, 0)
   if (
-    total > MAX_ORCAD_MIGRATION_SCROLLBACK_TOTAL_BYTES ||
-    scrollbackByPane.size > MAX_ORCAD_MIGRATION_SCROLLBACK_SNAPSHOTS
+    total > MAX_OCCD_MIGRATION_SCROLLBACK_TOTAL_BYTES ||
+    scrollbackByPane.size > MAX_OCCD_MIGRATION_SCROLLBACK_SNAPSHOTS
   ) {
     for (const paneKey of scrollbackByPane.keys()) {
       block('scrollback-too-large', paneKey, ['clear-scrollback'])

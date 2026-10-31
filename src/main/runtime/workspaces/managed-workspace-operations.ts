@@ -1,6 +1,6 @@
-import type { OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree } from '../terminal/launch/terminal-workspace-scope'
-import { OrcaRuntimeWithRestoreStructuredAgentSessionTabsOnce } from '../session-tabs/structured-session-tab-restoration'
-import { DEFAULT_WORKTREE_LIST_LIMIT } from '../orca-runtime-postlude'
+import type { OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree } from '../terminal/launch/terminal-workspace-scope'
+import { OCCRuntimeWithRestoreStructuredAgentSessionTabsOnce } from '../session-tabs/structured-session-tab-restoration'
+import { DEFAULT_WORKTREE_LIST_LIMIT } from '../occ-runtime-postlude'
 import type {
   RuntimeWorktreeListResult,
   RuntimeWorktreeTerminalSleepResult
@@ -43,19 +43,19 @@ import type { RestoredPane } from '../terminal/recovery/restored-pane-start'
 import type { SleepingAgentSessionRecord } from '../../../shared/agent-session-resume'
 
 import { WorkspaceLifecycleQueue } from './workspace-lifecycle-queue'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../../shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../shared/sidebar-inputs-switch'
 
-export abstract class OrcaRuntimeWithListManagedWorktrees extends OrcaRuntimeWithRestoreStructuredAgentSessionTabsOnce {
+export abstract class OCCRuntimeWithListManagedWorktrees extends OCCRuntimeWithRestoreStructuredAgentSessionTabsOnce {
   protected abstract resolveTerminalWorkspaceLaunchTarget(
     ...args: Parameters<
-      OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['resolveTerminalWorkspaceLaunchTarget']
+      OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['resolveTerminalWorkspaceLaunchTarget']
     >
   ): ReturnType<
-    OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['resolveTerminalWorkspaceLaunchTarget']
+    OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['resolveTerminalWorkspaceLaunchTarget']
   >
 
   // Switch point: only a build where main produces the sidebar's inputs queues lifecycle commands.
-  readonly workspaceLifecycle = ORCA_SIDEBAR_INPUTS_IS_MAIN ? new WorkspaceLifecycleQueue() : null
+  readonly workspaceLifecycle = OCC_SIDEBAR_INPUTS_IS_MAIN ? new WorkspaceLifecycleQueue() : null
 
   listManagedWorktrees(
     repoSelector?: string,

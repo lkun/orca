@@ -12,7 +12,7 @@ const record: WslHostDeploymentRecord = {
 }
 const deferredUpdate = {
   candidateVersion: '1.5.0+ab',
-  code: 'orcad_activation_policy_refused',
+  code: 'occd_activation_policy_refused',
   reason: 'rolled back',
   forceable: true
 }

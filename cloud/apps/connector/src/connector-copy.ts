@@ -51,7 +51,7 @@ export function connectorCopy(style: CopyStyle) {
   return {
     paused: `OCC for ${appName} is paused.`,
     unlinked: `Your ${appName} account isn’t linked to OCC yet. Ask an admin to link you.`,
-    updateOrca: 'Update OCC and turn on connectors, then send again.',
+    updateOCC: 'Update OCC and turn on connectors, then send again.',
     askPlace: (options: PlaceOption[]) => {
       const listed = [
         ...new Set(options.map((option) => `${option.project} on ${option.hostName}`))
@@ -79,7 +79,7 @@ export function connectorCopy(style: CopyStyle) {
         const line = refusal.get(reason)?.(machine)
         if (line === undefined) {
           console.warn(
-            JSON.stringify({ event: 'orca_connector_unknown_refusal', source: appName, reason })
+            JSON.stringify({ event: 'occ_connector_unknown_refusal', source: appName, reason })
           )
         }
         return line ?? `Your OCC on ${machine} couldn’t take this.`
@@ -140,7 +140,7 @@ export function noticeText(copy: ConnectorCopy, notice: Notice): string {
     case 'unlinked':
       return copy.unlinked
     case 'update':
-      return copy.updateOrca
+      return copy.updateOCC
     case 'ask':
       return copy.askPlace(notice.options)
     case 'only_owner':

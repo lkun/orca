@@ -317,7 +317,7 @@ export function useDiffCommentDecorator({
           continue
         }
         const dom = document.createElement('div')
-        dom.className = 'orca-diff-comment-inline'
+        dom.className = 'occ-diff-comment-inline'
         // Stop editor selection/focus theft while allowing card button clicks.
         const disposeMouseDownStopper = installDiffCommentZoneMouseDownStopper(dom)
 

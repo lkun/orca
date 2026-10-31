@@ -1,5 +1,5 @@
 import { resolve, relative, isAbsolute, posix, sep, win32 } from 'node:path'
-import type { GlobalSettings, OrcaWorkspaceLayout } from '../../shared/global-settings-types'
+import type { GlobalSettings, OCCWorkspaceLayout } from '../../shared/global-settings-types'
 import type { Repo } from '../../shared/repo-types'
 import { isWindowsAbsolutePathLike, resolveRuntimePath } from '../../shared/cross-platform-path'
 import { isWslUncPath, resolveWslRepoWorktreeBasePath } from '../../shared/wsl-paths'
@@ -178,7 +178,7 @@ function workspaceRootForMirrorHome(
 ): string {
   // Desktop absolute roots must mirror into WSL; repo-relative roots already resolve inside the distro.
   return wslHome
-    ? win32.join(wslHome, 'orca', 'workspaces')
+    ? win32.join(wslHome, 'occ', 'workspaces')
     : resolveWorkspaceDirForRepo(repoPath, workspaceDir)
 }
 
@@ -216,7 +216,7 @@ export function getWorktreePathSettings(
 export function getWorktreeCreationLayout(
   repo: WorktreeBasePathRepo,
   settings: WorktreePathSettings
-): OrcaWorkspaceLayout {
+): OCCWorkspaceLayout {
   return {
     path: getEffectiveWorktreeBasePath(repo, settings),
     nestWorkspaces: settings.nestWorkspaces

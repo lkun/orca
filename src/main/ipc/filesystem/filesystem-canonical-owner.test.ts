@@ -305,9 +305,9 @@ describe('workspace-directory fallback', () => {
   })
 
   it.each([
-    ['bare name', 'orca-ws'],
+    ['bare name', 'occ-ws'],
     ['parent traversal', '..'],
-    ['relative traversal', '../orca-ws']
+    ['relative traversal', '../occ-ws']
   ])('grants nothing for a repo-relative %s with no repo to anchor it', async (_case, dir) => {
     // `resolve` would anchor these to the main-process cwd, granting an unrelated tree.
     expect(await getAllowedRoots(storeFor([], [], [], { workspaceDir: dir }))).toEqual([])
@@ -331,13 +331,13 @@ describe('workspace-directory fallback', () => {
   )
 
   it.each([
-    ['POSIX absolute on POSIX', posix, '/orca-ws', true],
-    ['relative on POSIX', posix, '../orca-ws', false],
-    ['Windows drive on POSIX', posix, 'C:\\orca-ws', false],
+    ['POSIX absolute on POSIX', posix, '/occ-ws', true],
+    ['relative on POSIX', posix, '../occ-ws', false],
+    ['Windows drive on POSIX', posix, 'C:\\occ-ws', false],
     ['Windows UNC on POSIX', posix, '\\\\wsl$\\Ubuntu\\home\\me\\ws', false],
-    ['POSIX absolute on Windows', win32, '/orca-ws', true],
-    ['relative on Windows', win32, '..\\orca-ws', false],
-    ['Windows drive on Windows', win32, 'C:\\orca-ws', true],
+    ['POSIX absolute on Windows', win32, '/occ-ws', true],
+    ['relative on Windows', win32, '..\\occ-ws', false],
+    ['Windows drive on Windows', win32, 'C:\\occ-ws', true],
     ['Windows UNC on Windows', win32, '\\\\wsl$\\Ubuntu\\home\\me\\ws', true]
   ])(
     'grants an unanchored %s workspace directory only when that host reads it as absolute',

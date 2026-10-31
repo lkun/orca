@@ -10,7 +10,7 @@ import {
   agentSessionLeaseFixture,
   agentSessionRecordFixture
 } from '../../../shared/agent-session-record.test-fixture'
-import { testOrcaSessionId } from '../../../shared/orca-session-address-test-fixture'
+import { testOCCSessionId } from '../../../shared/occ-session-address-test-fixture'
 import { orchestrationSenderName } from './orchestration-sender-name'
 import * as relations from './agent-message-relation'
 import * as lineage from './structured-session-lineage'
@@ -29,7 +29,7 @@ describe('who delivered mail is from', () => {
         { id: 'm1', from_handle: 'term_a', run_id: 'r1', type: 'status', payload: null },
         {
           id: 'm2',
-          from_handle: `orca_session_id:${SESSION}`,
+          from_handle: `occ_session_id:${SESSION}`,
           run_id: 'r2',
           type: 'status',
           payload: null
@@ -42,14 +42,14 @@ describe('who delivered mail is from', () => {
       kind: 'agent',
       senders: [
         {
-          party: { address: 'term_a', terminalHandle: 'term_a', orcaSessionId: null },
+          party: { address: 'term_a', terminalHandle: 'term_a', occSessionId: null },
           name: 'Build tab'
         },
         {
           party: {
-            address: `orca_session_id:${SESSION}`,
+            address: `occ_session_id:${SESSION}`,
             terminalHandle: null,
-            orcaSessionId: SESSION
+            occSessionId: SESSION
           },
           name: null
         }
@@ -60,7 +60,7 @@ describe('who delivered mail is from', () => {
         dispatchId: null,
         messages: [
           { messageId: 'm1', runId: 'r1', from: 'term_a' },
-          { messageId: 'm2', runId: 'r2', from: `orca_session_id:${SESSION}` },
+          { messageId: 'm2', runId: 'r2', from: `occ_session_id:${SESSION}` },
           { messageId: 'm3', runId: 'r1', from: 'term_a' }
         ]
       }
@@ -183,12 +183,12 @@ it.each([100, 1000])(
   'bounds real canonical record work for repeated/distinct/unknown notices with %i workers',
   (n) => {
     const db = new OrchestrationDb(':memory:')
-    const coordinator = testOrcaSessionId('coordinator')
-    const sessions = Array.from({ length: n }, (_, i) => testOrcaSessionId(`worker-${i}`))
+    const coordinator = testOCCSessionId('coordinator')
+    const sessions = Array.from({ length: n }, (_, i) => testOCCSessionId(`worker-${i}`))
     const base = agentSessionConversationView(
       agentSessionRecordFixture(agentSessionLeaseFixture({ sessionId: coordinator }))
     )
-    const successor = testOrcaSessionId('cleared-worker')
+    const successor = testOCCSessionId('cleared-worker')
     const records: AgentSessionConversationView[] = sessions.map((sessionId, i) => ({
       ...base,
       sessionId,
@@ -229,13 +229,13 @@ it.each([100, 1000])(
         objective: 'cost',
         coordinatorHandle: null,
         coordinatorPaneKey: null,
-        coordinatorOrcaSessionId: coordinator
+        coordinatorOCCSessionId: coordinator
       })
       const dispatches = sessions.slice(0, 10).map((session) =>
         db.createDispatchContext({
           taskId: db.createTask({ runId: run.id, spec: 'work' }).id,
-          assigneeHandle: `orca_session_id:${session}`,
-          creator: { kind: 'session', orcaSessionId: coordinator },
+          assigneeHandle: `occ_session_id:${session}`,
+          creator: { kind: 'session', occSessionId: coordinator },
           maxDepth: 8
         })
       )
@@ -245,7 +245,7 @@ it.each([100, 1000])(
         relation.mockClear()
         const batch: MailSourceMessage[] = Array.from({ length: n }, (_, i) => ({
           id: `m${i}`,
-          from_handle: `orca_session_id:${!distinct || i % 10 === 0 ? successor : sessions[i % 10]}`,
+          from_handle: `occ_session_id:${!distinct || i % 10 === 0 ? successor : sessions[i % 10]}`,
           run_id: evidence === 'unknown' ? 'missing' : run.id,
           type: 'worker_done',
           payload: JSON.stringify({ dispatchId: dispatches[distinct ? i % 10 : 0].id })
@@ -262,7 +262,7 @@ it.each([100, 1000])(
         visits = 0
         const source = structuredMailSource({
           db,
-          mailboxHandle: `orca_session_id:${coordinator}`,
+          mailboxHandle: `occ_session_id:${coordinator}`,
           dispatchId: null,
           batch,
           senderName: (party, report) =>
@@ -283,7 +283,7 @@ it.each([100, 1000])(
         expect(visits).toBe((evidence === 'unknown' ? 1 : 8 * groups) * records.length)
         expect(relation).toHaveBeenCalledTimes(groups)
         expect(batchReads).toBe(2 * n)
-        expect(source.senders[0].party.orcaSessionId).toBe(sessions[0])
+        expect(source.senders[0].party.occSessionId).toBe(sessions[0])
         expect(source.senders.map((sender) => [sender.name, sender.relation])).toEqual(
           Array.from({ length: groups }, (_, i) => [
             `Worker ${i}`,

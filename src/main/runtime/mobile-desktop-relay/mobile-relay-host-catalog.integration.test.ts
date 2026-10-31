@@ -12,8 +12,8 @@ import {
   runtimeEnvironmentStatusFromSnapshot,
   type RuntimeHostStatusSnapshot
 } from '../../../shared/runtime-host-status'
-import { OrcaRuntimeService } from '../orca-runtime'
-import { OrcaRuntimeRpcServer } from '../runtime-rpc'
+import { OCCRuntimeService } from '../occ-runtime'
+import { OCCRuntimeRpcServer } from '../runtime-rpc'
 import {
   authenticateMobileWsSession,
   createEncryptedWsResponseReader,
@@ -50,10 +50,10 @@ describe('mobile relay hosts: phone -> desktop lists the servers it shows', () =
   })
 
   async function startRuntime() {
-    const runtime = new OrcaRuntimeService(partialRuntimeStore(makeStore()))
-    const server = new OrcaRuntimeRpcServer({
+    const runtime = new OCCRuntimeService(partialRuntimeStore(makeStore()))
+    const server = new OCCRuntimeRpcServer({
       runtime,
-      userDataPath: mkdtempSync(join(tmpdir(), 'orca-relay-hosts-')),
+      userDataPath: mkdtempSync(join(tmpdir(), 'occ-relay-hosts-')),
       enableWebSocket: true,
       wsPort: 0
     })
@@ -62,7 +62,7 @@ describe('mobile relay hosts: phone -> desktop lists the servers it shows', () =
     return server
   }
 
-  function pairingUrl(server: OrcaRuntimeRpcServer, scope: 'mobile' | 'runtime'): string {
+  function pairingUrl(server: OCCRuntimeRpcServer, scope: 'mobile' | 'runtime'): string {
     const offer = server.createPairingOffer({ address: '127.0.0.1', name: scope, scope })
     if (!offer.available) {
       throw new Error('pairing unavailable')

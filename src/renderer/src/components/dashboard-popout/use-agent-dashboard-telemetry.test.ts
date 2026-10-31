@@ -158,7 +158,7 @@ describe('dashboard visible-use telemetry', () => {
     expect(renders).toBe(1)
   })
 
-  it.each(['pending_banner', 'user_opt_out', 'do_not_track', 'orca_disabled', 'ci'] as const)(
+  it.each(['pending_banner', 'user_opt_out', 'do_not_track', 'occ_disabled', 'ci'] as const)(
     'creates no timer or daily-use attempts while blocked by %s',
     async (reason) => {
       getConsentState.mockResolvedValue(

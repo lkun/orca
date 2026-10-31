@@ -37,7 +37,7 @@ describe('classifyDaemonSpawnerPath', () => {
       )
     ).toBe('other')
     expect(
-      classifyDaemonSpawnerPath('/tmp/OrcaA.app/Contents/MacOS/OCC', alwaysExists, null)
+      classifyDaemonSpawnerPath('/tmp/OCCA.app/Contents/MacOS/OCC', alwaysExists, null)
     ).toBe('other')
   })
 
@@ -50,7 +50,7 @@ describe('classifyDaemonSpawnerPath', () => {
 
   it("classifies OCC's private stable copy from the recorded spawner path", () => {
     const prefix = '/Users/alice/Library/Application Support/OCC/daemon-host/macos/terminal-host-'
-    const copy = `${prefix}0f3c/app.noindex/OCC Terminal Host.app/Contents/MacOS/orca-terminal-host`
+    const copy = `${prefix}0f3c/app.noindex/OCC Terminal Host.app/Contents/MacOS/occ-terminal-host`
     expect(classifyDaemonSpawnerPath(copy, alwaysExists, prefix)).toBe('stable-copy')
     expect(classifyDaemonSpawnerPath(copy, () => false, prefix)).toBe('missing')
     expect(classifyDaemonSpawnerPath(copy, alwaysExists, null)).toBe('other')

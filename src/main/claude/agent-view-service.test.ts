@@ -23,14 +23,14 @@ afterEach(async () => {
 it.each([{}, { claudeSubagentNavigationEnabled: true }])(
   'prepares navigation automatically, serializing config changes and respecting shortcut removals: %j',
   async (enabled) => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-agent-view-service-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-agent-view-service-'))
     roots.push(root)
     const config = join(root, 'default')
     vi.stubEnv('CLAUDE_CONFIG_DIR', config)
     const profile = join(root, 'account')
     const reconcileConfig = vi.fn(reconcileClaudeAgentViewConfig)
     const ensurePlugin = vi.fn(ensureClaudeAgentViewPluginAsync)
-    const service = new ClaudeAgentViewService(join(root, 'orca'), {
+    const service = new ClaudeAgentViewService(join(root, 'occ'), {
       reconcileConfig,
       ensurePlugin,
       listProfiles: async () => [profile],
@@ -40,17 +40,17 @@ it.each([{}, { claudeSubagentNavigationEnabled: true }])(
     expect(reconcileConfig).toHaveBeenCalledTimes(2)
     expect(ensurePlugin).toHaveBeenCalledOnce()
     expect(service.read(config)?.pluginDir).toBeTruthy()
-    expect(service.read(config)?.pluginDir).toBe(ensureClaudeAgentViewPlugin(join(root, 'orca')))
+    expect(service.read(config)?.pluginDir).toBe(ensureClaudeAgentViewPlugin(join(root, 'occ')))
     await writeFile(join(profile, 'keybindings.json'), '{"bindings":[]}')
     await service.reconcile({ claudeSubagentNavigationEnabled: false })
     expect(service.read(config)).toBeUndefined()
     expect(
       claudeAgentViewChord(await readFile(join(config, 'keybindings.json'), 'utf8'))
     ).toBeUndefined()
-    expect(JSON.parse(await readFile(join(config, 'orca-agent-view.json'), 'utf8')).setup).toBe(
+    expect(JSON.parse(await readFile(join(config, 'occ-agent-view.json'), 'utf8')).setup).toBe(
       'pending'
     )
-    expect(JSON.parse(await readFile(join(profile, 'orca-agent-view.json'), 'utf8')).setup).toBe(
+    expect(JSON.parse(await readFile(join(profile, 'occ-agent-view.json'), 'utf8')).setup).toBe(
       'attempted'
     )
     await reconcileClaudeAgentViewConfig(join(config, 'settings.json'), false)
@@ -76,7 +76,7 @@ it.each([{}, { claudeSubagentNavigationEnabled: true }])(
 it.each(['edited', 'reused', 'malformed'] as const)(
   'preserves user bindings through disabling and restart: %s',
   async (kind) => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-agent-view-disable-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-agent-view-disable-'))
     roots.push(root)
     const settings = join(root, 'settings.json')
     const bindings = join(root, 'keybindings.json')
@@ -90,7 +90,7 @@ it.each(['edited', 'reused', 'malformed'] as const)(
                 context: 'Chat',
                 bindings: {
                   [kind === 'edited' ? 'ctrl+x' : 'ctrl+alt+g']:
-                    kind === 'edited' ? 'command:orca-agent-view' : 'command:user'
+                    kind === 'edited' ? 'command:occ-agent-view' : 'command:user'
                 }
               }
             ]
@@ -101,7 +101,7 @@ it.each(['edited', 'reused', 'malformed'] as const)(
     if (kind === 'malformed') {
       await writeFile(
         bindings,
-        '{ // repaired\n "bindings": [{"context":"Chat", "bindings":{"ctrl+alt+g":"command:orca-agent-view"}}]}'
+        '{ // repaired\n "bindings": [{"context":"Chat", "bindings":{"ctrl+alt+g":"command:occ-agent-view"}}]}'
       )
       await reconcileClaudeAgentViewConfig(settings, false)
       expect(claudeAgentViewChord(await readFile(bindings, 'utf8'))).toBeUndefined()
@@ -118,9 +118,9 @@ it.each(['edited', 'reused', 'malformed'] as const)(
 )
 
 it('keeps reconciliation ordered and prevents a stale enable from republishing its plugin root', async () => {
-  const config = join(tmpdir(), 'orca-agent-view-ordered-config')
+  const config = join(tmpdir(), 'occ-agent-view-ordered-config')
   vi.stubEnv('CLAUDE_CONFIG_DIR', config)
-  const userData = join(tmpdir(), 'orca-agent-view-ordered-data')
+  const userData = join(tmpdir(), 'occ-agent-view-ordered-data')
   let release = () => {}
   const gate = new Promise<void>((resolve) => {
     release = resolve
@@ -152,16 +152,16 @@ it.each([
   { agentStatusHooksEnabled: false },
   { disabledTuiAgents: ['claude' as const] }
 ])('cleans disabled navigation without probing a login shell: %j', async (settings) => {
-  const config = join(tmpdir(), 'orca-agent-view-disabled-config')
-  const custom = join(tmpdir(), 'orca-agent-view-custom-config')
-  const profile = join(tmpdir(), 'orca-agent-view-account-config')
+  const config = join(tmpdir(), 'occ-agent-view-disabled-config')
+  const custom = join(tmpdir(), 'occ-agent-view-custom-config')
+  const profile = join(tmpdir(), 'occ-agent-view-account-config')
   vi.stubEnv('CLAUDE_CONFIG_DIR', config)
   const loginEnv = vi.fn<typeof resolveLoginShellEnvironment>((options) =>
     options?.cachedOnly ? Promise.resolve({}) : new Promise<NodeJS.ProcessEnv>(() => {})
   )
   const reconcileConfig = vi.fn(async () => {})
   const ensurePlugin = vi.fn(async () => 'unused')
-  const service = new ClaudeAgentViewService(join(tmpdir(), 'orca-agent-view-disabled-data'), {
+  const service = new ClaudeAgentViewService(join(tmpdir(), 'occ-agent-view-disabled-data'), {
     reconcileConfig,
     ensurePlugin,
     loginEnv,
@@ -179,7 +179,7 @@ it.each([
 })
 
 it('cleans an owned shortcut in a cached login-shell config on a fresh disabled service', async () => {
-  const root = await mkdtemp(join(tmpdir(), 'orca-agent-view-cached-home-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-agent-view-cached-home-'))
   roots.push(root)
   const config = join(root, 'process-config')
   const cachedConfig = join(root, 'shell-config')
@@ -190,7 +190,7 @@ it('cleans an owned shortcut in a cached login-shell config on a fresh disabled 
   const bindings = join(cachedConfig, 'keybindings.json')
   expect(claudeAgentViewChord(await readFile(bindings, 'utf8'))).toBe('ctrl+alt+g')
   const loginEnv = vi.fn(resolveLoginShellEnvironment)
-  const service = new ClaudeAgentViewService(join(root, 'orca'), {
+  const service = new ClaudeAgentViewService(join(root, 'occ'), {
     reconcileConfig: reconcileClaudeAgentViewConfig,
     ensurePlugin: ensureClaudeAgentViewPluginAsync,
     listProfiles: async () => [],
@@ -198,7 +198,7 @@ it('cleans an owned shortcut in a cached login-shell config on a fresh disabled 
   })
   await service.reconcile({ claudeSubagentNavigationEnabled: false })
   expect(claudeAgentViewChord(await readFile(bindings, 'utf8'))).toBeUndefined()
-  expect(JSON.parse(await readFile(join(cachedConfig, 'orca-agent-view.json'), 'utf8')).setup).toBe(
+  expect(JSON.parse(await readFile(join(cachedConfig, 'occ-agent-view.json'), 'utf8')).setup).toBe(
     'pending'
   )
   expect(loginEnv.mock.calls).toEqual([[{ cachedOnly: true }]])
@@ -219,14 +219,14 @@ it.each([
   }
 ])('bypasses pending setup for an ineligible launch: %j', async (launch) => {
   vi.useFakeTimers()
-  const config = join(tmpdir(), 'orca-agent-view-ineligible-config')
+  const config = join(tmpdir(), 'occ-agent-view-ineligible-config')
   let release = () => {}
   const gate = new Promise<void>((resolve) => {
     release = resolve
   })
-  const service = new ClaudeAgentViewService(join(tmpdir(), 'orca-agent-view-ineligible-data'), {
+  const service = new ClaudeAgentViewService(join(tmpdir(), 'occ-agent-view-ineligible-data'), {
     reconcileConfig: () => gate,
-    ensurePlugin: async () => join(tmpdir(), 'orca-agent-view-ineligible-plugin'),
+    ensurePlugin: async () => join(tmpdir(), 'occ-agent-view-ineligible-plugin'),
     loginEnv: async () => ({ CLAUDE_CONFIG_DIR: config }),
     listProfiles: async () => []
   })
@@ -251,14 +251,14 @@ it.each([
   { launchAgent: 'claude' as const, settings: { claudeSubagentNavigationEnabled: true } }
 ])('bounds an enabled Claude launch waiting on stalled setup: %j', async (launch) => {
   vi.useFakeTimers()
-  const config = join(tmpdir(), 'orca-agent-view-stalled-config')
+  const config = join(tmpdir(), 'occ-agent-view-stalled-config')
   let release = () => {}
   const gate = new Promise<void>((resolve) => {
     release = resolve
   })
-  const service = new ClaudeAgentViewService(join(tmpdir(), 'orca-agent-view-stalled-data'), {
+  const service = new ClaudeAgentViewService(join(tmpdir(), 'occ-agent-view-stalled-data'), {
     reconcileConfig: () => gate,
-    ensurePlugin: async () => join(tmpdir(), 'orca-agent-view-stalled-plugin'),
+    ensurePlugin: async () => join(tmpdir(), 'occ-agent-view-stalled-plugin'),
     loginEnv: async () => ({ CLAUDE_CONFIG_DIR: config }),
     listProfiles: async () => []
   })

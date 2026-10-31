@@ -35,7 +35,7 @@ import { deleteAiVaultSessionFile as deleteWithRemover } from './session-delete'
 const deleteAiVaultSessionFile = (args: Parameters<typeof deleteWithRemover>[0]) =>
   deleteWithRemover(args, (removal) => trashItemMock(removal.path))
 
-const HOME = join('/tmp', 'orca-ai-vault-delete-exec-fixture-home')
+const HOME = join('/tmp', 'occ-ai-vault-delete-exec-fixture-home')
 const GEMINI_ROOT = join(HOME, '.gemini', 'tmp')
 const CLAUDE_ROOT = join(HOME, '.claude', 'projects')
 const ROVO_ROOT = join(HOME, '.rovodev', 'sessions')

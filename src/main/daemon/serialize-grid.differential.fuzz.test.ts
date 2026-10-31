@@ -18,8 +18,8 @@ import {
 } from './serialize-grid-roundtrip'
 
 // I1: unchanged bytes outside overlong lines and trailing background rows; I2: faithful replay; I3: no regression.
-// Set ORCA_OLD_SERIALIZE_ADDON to a build from config/scripts/build-serialize-addon-at-ref.mjs.
-// ORCA_NEW_SERIALIZE_ADDON overrides the installed build.
+// Set OCC_OLD_SERIALIZE_ADDON to a build from config/scripts/build-serialize-addon-at-ref.mjs.
+// OCC_NEW_SERIALIZE_ADDON overrides the installed build.
 // SERIALIZE_FUZZ_ITERATIONS sets cases/category (default 40); SERIALIZE_FUZZ_SEED selects one seed.
 // SERIALIZE_FUZZ_CATEGORY selects normal, alt, or conpty; SERIALIZE_FUZZ_REPORT prints minimized failures.
 
@@ -30,7 +30,7 @@ const CATEGORIES = ALL_CATEGORIES.filter(
 )
 const FIXED_SEED = readPositiveIntEnv('SERIALIZE_FUZZ_SEED')
 const ITERATIONS = FIXED_SEED !== null ? 1 : (readPositiveIntEnv('SERIALIZE_FUZZ_ITERATIONS') ?? 40)
-const OLD_ADDON_PATH = process.env.ORCA_OLD_SERIALIZE_ADDON
+const OLD_ADDON_PATH = process.env.OCC_OLD_SERIALIZE_ADDON
 const REPORT = process.env.SERIALIZE_FUZZ_REPORT === '1'
 
 function readPositiveIntEnv(name: string): number | null {
@@ -233,8 +233,8 @@ describe('serialize grid round-trip fuzz', () => {
     expect(regressed).toEqual([])
   })
 
-  // The pin describes the installed build; an ORCA_NEW_SERIALIZE_ADDON override is judged by I3 instead.
-  it.skipIf(Boolean(process.env.ORCA_NEW_SERIALIZE_ADDON))(
+  // The pin describes the installed build; an OCC_NEW_SERIALIZE_ADDON override is judged by I3 instead.
+  it.skipIf(Boolean(process.env.OCC_NEW_SERIALIZE_ADDON))(
     'I2 on a fixed seed range: only the pinned pre-existing divergences remain',
     async () => {
       const failing: Record<SerializeFuzzCategory, number[]> = { normal: [], alt: [], conpty: [] }

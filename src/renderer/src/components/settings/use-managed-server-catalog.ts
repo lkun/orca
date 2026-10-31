@@ -1,42 +1,42 @@
 import { useCallback, useEffect, useState } from 'react'
 import { toast } from 'sonner'
-import type { OrcadManagedPendingMigrationRow } from '../../../../shared/orcad-managed-runtime'
+import type { OCCdManagedPendingMigrationRow } from '../../../../shared/occd-managed-runtime'
 import {
-  getOrcadSshDeployment,
+  getOCCdSshDeployment,
   type PublicKnownRuntimeEnvironment
 } from '../../../../shared/runtime-environments'
 import type { SshTarget } from '../../../../shared/ssh-types'
-import type { ManagedOrcadPreloadApi } from '../../../../preload/api/managed-orcad-api'
+import type { ManagedOCCdPreloadApi } from '../../../../preload/api/managed-occd-api'
 import { useMountedRef } from '@/hooks/useMountedRef'
 import { isWebClientLocation } from '@/lib/web-client-location'
 import { managedServerOutcomeLabel } from './managed-server-copy'
 
 export type ManagedServerCatalog = {
   /** Absent in the web client, which can't reach SSH hosts. */
-  api: ManagedOrcadPreloadApi | undefined
+  api: ManagedOCCdPreloadApi | undefined
   targets: SshTarget[]
   /** SSH hosts that don't already run, or move to, a managed server. */
   emptyTargets: SshTarget[]
-  pending: OrcadManagedPendingMigrationRow[]
+  pending: OCCdManagedPendingMigrationRow[]
   loadFailed: boolean
   resumingId: string | null
   reload: () => Promise<void>
-  resume: (row: OrcadManagedPendingMigrationRow) => Promise<void>
+  resume: (row: OCCdManagedPendingMigrationRow) => Promise<void>
 }
 
 /** Web fallback stubs cannot manage SSH hosts. */
-export function getManagedOrcadApi(): ManagedOrcadPreloadApi | undefined {
-  return isWebClientLocation() ? undefined : window.api.runtimeEnvironments.managedOrcad
+export function getManagedOCCdApi(): ManagedOCCdPreloadApi | undefined {
+  return isWebClientLocation() ? undefined : window.api.runtimeEnvironments.managedOCCd
 }
 
 export function useManagedServerCatalog(
   environments: PublicKnownRuntimeEnvironment[],
   onChanged: () => void
 ): ManagedServerCatalog {
-  const api = getManagedOrcadApi()
+  const api = getManagedOCCdApi()
   const mountedRef = useMountedRef()
   const [targets, setTargets] = useState<SshTarget[]>([])
-  const [pending, setPending] = useState<OrcadManagedPendingMigrationRow[]>([])
+  const [pending, setPending] = useState<OCCdManagedPendingMigrationRow[]>([])
   const [resumingId, setResumingId] = useState<string | null>(null)
   const [loadFailed, setLoadFailed] = useState(false)
 
@@ -61,14 +61,14 @@ export function useManagedServerCatalog(
 
   // Running or migrating servers already occupy the host.
   const busyTargetIds = new Set([
-    ...environments.map((environment) => getOrcadSshDeployment(environment)?.sshTargetId),
+    ...environments.map((environment) => getOCCdSshDeployment(environment)?.sshTargetId),
     ...pending.map((row) => row.sshTargetId)
   ])
   const emptyTargets = targets.filter(
-    (target) => !target.orcadFence && !busyTargetIds.has(target.id)
+    (target) => !target.occdFence && !busyTargetIds.has(target.id)
   )
 
-  const resume = async (row: OrcadManagedPendingMigrationRow): Promise<void> => {
+  const resume = async (row: OCCdManagedPendingMigrationRow): Promise<void> => {
     if (!api || resumingId) {
       return
     }

@@ -1,10 +1,10 @@
 // Real `claude` / `codex` logins as a remote client's sign-in drives them. Opt in with
-// ORCA_REAL_CLAUDE_CLI_TEST=1 or ORCA_REAL_CODEX_CLI_TEST=1. Each runs in a throwaway folder and
+// OCC_REAL_CLAUDE_CLI_TEST=1 or OCC_REAL_CODEX_CLI_TEST=1. Each runs in a throwaway folder and
 // never signs in: Claude is sent a bogus code, and the Codex login is cancelled at its prompt.
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { describe, expect, it } from 'vitest'
 import { runClaudeCommandProcess } from './claude-command-process'
 import {
@@ -14,15 +14,15 @@ import {
 import { runCodexLoginSession } from '../codex-accounts/codex-login-session'
 import type { HostAccountSignInPrompt } from '../../shared/host-account-sign-in-types'
 
-const claudeEnabled = process.env.ORCA_REAL_CLAUDE_CLI_TEST === '1'
-const codexEnabled = process.env.ORCA_REAL_CODEX_CLI_TEST === '1'
+const claudeEnabled = process.env.OCC_REAL_CLAUDE_CLI_TEST === '1'
+const codexEnabled = process.env.OCC_REAL_CODEX_CLI_TEST === '1'
 const posixHost = process.platform !== 'win32'
 
 describe('host sign-in against the real CLIs', () => {
   it.skipIf(!claudeEnabled || !posixHost)(
     'Claude prints its pasted-code link with piped stdin and refuses a bogus code',
     async () => {
-      const folder = mkdtempSync(join(tmpdir(), 'orca-host-sign-in-claude-'))
+      const folder = mkdtempSync(join(tmpdir(), 'occ-host-sign-in-claude-'))
       const prompts: HostAccountSignInPrompt[] = []
       try {
         const error = await runClaudePastedCodeLogin(
@@ -54,7 +54,7 @@ describe('host sign-in against the real CLIs', () => {
   it.skipIf(!codexEnabled || !posixHost)(
     'Codex device auth prints its page and code, and cancel stops it',
     async () => {
-      const home = mkdtempSync(join(tmpdir(), 'orca-host-sign-in-codex-'))
+      const home = mkdtempSync(join(tmpdir(), 'occ-host-sign-in-codex-'))
       const handle: { cancel: (() => boolean) | null } = { cancel: null }
       const prompted = Promise.withResolvers<{ url: string; userCode: string }>()
       try {

@@ -12,7 +12,7 @@ import {
 import { useNativeChatVisualOwner } from './native-chat-visual-owner'
 import { nativeChatToolRunCategory } from '../../../../shared/native-chat/tools/native-chat-tool-icon'
 import { nativeChatFullCommand } from '../../../../shared/native-chat/tools/native-chat-tool-input-text'
-import { parseOrcaBrowserCommand } from '../../../../shared/orca-browser-cli-commands'
+import { parseOCCBrowserCommand } from '../../../../shared/occ-browser-cli-commands'
 import type { NativeChatToolCallBlock } from '../../../../shared/native-chat-types'
 
 // Without `--page` a run only knows the worktree's latest agent page, so each run keeps the
@@ -33,7 +33,7 @@ export function NativeChatBrowserRunPageButton({
   const lastCommand = nativeChatFullCommand(lastCall?.input) ?? ''
   return (
     <BrowserPageButton
-      pageId={parseOrcaBrowserCommand(lastCommand)?.pageId ?? null}
+      pageId={parseOCCBrowserCommand(lastCommand)?.pageId ?? null}
       runCallId={lastCall?.callId ?? null}
     />
   )

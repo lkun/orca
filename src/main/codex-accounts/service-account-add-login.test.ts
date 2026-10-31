@@ -131,7 +131,7 @@ describe('CodexAccountService config sync', () => {
         const loginHome = options.env.CODEX_HOME
         expect(loginHome).toBeTruthy()
         const entries = readHookTrustEntries(join(loginHome!, 'config.toml'))
-        for (const key of fixture.orcaKeys) {
+        for (const key of fixture.occKeys) {
           expect(entries.has(key)).toBe(false)
         }
         expect(entries.has(fixture.userKey)).toBe(false)
@@ -234,8 +234,8 @@ describe('CodexAccountService config sync', () => {
     const spawnMock = vi.fn(
       (_command: string, _args: string[], options: { env: NodeJS.ProcessEnv }) => {
         const loginHome = options.env.CODEX_HOME
-        expect(loginHome).toMatch(/[\\/]account-1[\\/]home[\\/]\.orca-reauth-login$/)
-        expect(readFileSync(join(managedHomePath, '.orca-managed-home'), 'utf-8')).toBe(
+        expect(loginHome).toMatch(/[\\/]account-1[\\/]home[\\/]\.occ-reauth-login$/)
+        expect(readFileSync(join(managedHomePath, '.occ-managed-home'), 'utf-8')).toBe(
           'account-1\n'
         )
         expect(readFileSync(join(loginHome!, 'config.toml'), 'utf-8')).toBe(canonicalConfig)
@@ -367,7 +367,7 @@ describe('CodexAccountService config sync', () => {
       ),
       managedHomeRuntime: 'wsl' as const,
       wslDistro: 'Ubuntu',
-      wslLinuxHomePath: '/home/test/.local/share/orca/codex-accounts/account-wsl/home',
+      wslLinuxHomePath: '/home/test/.local/share/occ/codex-accounts/account-wsl/home',
       providerAccountId: 'provider-wsl',
       workspaceLabel: null,
       workspaceAccountId: 'provider-wsl',

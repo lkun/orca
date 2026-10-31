@@ -1,5 +1,5 @@
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
 
 // 16px tolerates subpixel overhang but still rejects the old ~104px pr-[6.5rem] reservation.
@@ -67,14 +67,14 @@ async function attachTriggerScreenshot(
 }
 
 test.describe('Pet status segment layout', () => {
-  test('does not reserve empty space after its label', async ({ orcaPage }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await enableExperimentalPet(orcaPage)
+  test('does not reserve empty space after its label', async ({ occPage }, testInfo) => {
+    await waitForSessionReady(occPage)
+    await enableExperimentalPet(occPage)
 
     for (const { name, size } of VIEWPORTS) {
-      await orcaPage.setViewportSize(size)
-      await assertPetTriggerFitsLabel(orcaPage)
-      await attachTriggerScreenshot(orcaPage, testInfo, name)
+      await occPage.setViewportSize(size)
+      await assertPetTriggerFitsLabel(occPage)
+      await attachTriggerScreenshot(occPage, testInfo, name)
     }
   })
 })

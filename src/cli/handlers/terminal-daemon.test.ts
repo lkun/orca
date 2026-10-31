@@ -9,7 +9,7 @@ const live = {
     state: 'on' as const,
     limit: 200,
     mechanism: 'systemd-slice' as const,
-    unit: 'orca_ptys_1.slice'
+    unit: 'occ_ptys_1.slice'
   }
 }
 

@@ -10,10 +10,10 @@ import type {
   ArtifactWriteRequest
 } from '../../shared/artifacts'
 import { assertArtifactSharingAllowed } from '../../shared/artifact-sharing-gate'
-import { ensureActiveOrcaProfile } from '../orca-profiles/profile-index-store'
-import { getOrcaCloudAuthConfig } from '../orca-profiles/profile-cloud-auth-config'
-import { prepareArtifactCloudUse } from '../orca-profiles/profile-artifact-cloud-cleanup'
-import { runWithFreshOrcaCloudSession } from '../orca-profiles/profile-cloud-session-refresh'
+import { ensureActiveOCCProfile } from '../occ-profiles/profile-index-store'
+import { getOCCCloudAuthConfig } from '../occ-profiles/profile-cloud-auth-config'
+import { prepareArtifactCloudUse } from '../occ-profiles/profile-artifact-cloud-cleanup'
+import { runWithFreshOCCCloudSession } from '../occ-profiles/profile-cloud-session-refresh'
 import {
   allowsArtifactCloudAuthOverride,
   resolveArtifactCloudApiUrl
@@ -26,10 +26,10 @@ import {
   refreshArtifactShareRecordExpiration,
   removeArtifactShareRecords
 } from './artifact-share-record-store'
-import type { ActiveOrcaProfileState } from '../orca-profiles/profile-index-store'
+import type { ActiveOCCProfileState } from '../occ-profiles/profile-index-store'
 import { artifactRequest, artifactWriteBody } from './artifact-cloud-request'
 import { ArtifactPublisher } from './artifact-publisher'
-import { OrcaCloudRequestError } from '../orca-profiles/profile-cloud-client'
+import { OCCCloudRequestError } from '../occ-profiles/profile-cloud-client'
 
 type ArtifactAuthContext = {
   profileId: string
@@ -50,7 +50,7 @@ async function deleteArtifactRequest(
     })
   } catch (error) {
     if (
-      !(error instanceof OrcaCloudRequestError) ||
+      !(error instanceof OCCCloudRequestError) ||
       error.statusCode !== 404 ||
       error.errorCode !== 'artifact_not_found'
     ) {
@@ -64,7 +64,7 @@ function tokenFingerprint(token: string): string {
 }
 
 function authContext(
-  active: ActiveOrcaProfileState,
+  active: ActiveOCCProfileState,
   scope: ArtifactShareScope,
   userDataPath: string,
   expectedCloud?: { userId: string; profileId: string; organizationId: string }
@@ -74,7 +74,7 @@ function authContext(
     profileId: active.profile.id,
     scope,
     assertCurrent: () => {
-      const current = ensureActiveOrcaProfile(userDataPath)
+      const current = ensureActiveOCCProfile(userDataPath)
       const cloudCurrent =
         !expectedCloud ||
         (current.profile.cloud?.userId === expectedCloud.userId &&
@@ -94,7 +94,7 @@ function authContext(
 }
 
 function storedSessionAuthContext(
-  active: ActiveOrcaProfileState,
+  active: ActiveOCCProfileState,
   apiOrigin: string,
   userDataPath: string
 ): ArtifactAuthContext {
@@ -119,7 +119,7 @@ function storedSessionAuthContext(
 }
 
 function explicitTokenAuthContext(
-  active: ActiveOrcaProfileState,
+  active: ActiveOCCProfileState,
   apiOrigin: string,
   token: string,
   userDataPath: string
@@ -273,7 +273,7 @@ export class ArtifactCloudService {
     operation: (token: string, apiUrl: string, auth: ArtifactAuthContext) => Promise<T>
   ): Promise<ArtifactCloudOperation<T>> {
     const apiUrl = resolveArtifactCloudApiUrl(options.apiUrl)
-    const active = ensureActiveOrcaProfile(this.userDataPath)
+    const active = ensureActiveOCCProfile(this.userDataPath)
     prepareArtifactCloudUse(active.profile, this.userDataPath)
     if (options.authToken?.trim()) {
       if (!allowsArtifactCloudAuthOverride()) {
@@ -290,11 +290,11 @@ export class ArtifactCloudService {
         value
       }
     }
-    const config = getOrcaCloudAuthConfig()
+    const config = getOCCCloudAuthConfig()
     if (!config.configured) {
       return { status: 'unconfigured', message: config.setupMessage }
     }
-    const result = await runWithFreshOrcaCloudSession(
+    const result = await runWithFreshOCCCloudSession(
       config.config,
       active,
       this.userDataPath,

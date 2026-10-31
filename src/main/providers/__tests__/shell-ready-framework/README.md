@@ -20,7 +20,7 @@ source "$HOME/.config/zsh/env"
 EOF
 
     # Run: check discovered ZDOTDIR
-    zsh -c 'env | grep -E "^(ORCA_|ZDOTDIR|HOME)=" | sort'
+    zsh -c 'env | grep -E "^(OCC_|ZDOTDIR|HOME)=" | sort'
   `)
 
   expect(stdout).toMatchInlineSnapshot(`
@@ -80,7 +80,7 @@ source "$HOME/.config/zsh/env"
 EOF
 
 # Run command (after # Run: marker):
-zsh -c 'env | grep -E "^(ORCA_|ZDOTDIR|HOME)=" | sort'
+zsh -c 'env | grep -E "^(OCC_|ZDOTDIR|HOME)=" | sort'
 ```
 
 **Note**: The test framework applies OCC's wrapper configuration (sets `ZDOTDIR` to wrapper directory, etc.). When running manually, you'll see different output unless you also configure the wrapper environment.

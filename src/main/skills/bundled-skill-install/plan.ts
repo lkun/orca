@@ -124,9 +124,9 @@ async function recoverySiblings(
   }
 }
 
-type PlannedTarget = { op: BundledSkillOp; holdsOrcaCopy: boolean }
+type PlannedTarget = { op: BundledSkillOp; holdsOCCCopy: boolean }
 
-const ORCA_COPY_CLASSES = new Set<BundledSkillFolderClass>(['current', 'released', 'edited'])
+const OCC_COPY_CLASSES = new Set<BundledSkillFolderClass>(['current', 'released', 'edited'])
 
 async function planTarget(
   context: SkillContext,
@@ -214,11 +214,11 @@ async function planTarget(
       : files('replace')
   }
 
-  const holdsOrcaCopy = Boolean(restoreFrom) || ORCA_COPY_CLASSES.has(folderClass)
+  const holdsOCCCopy = Boolean(restoreFrom) || OCC_COPY_CLASSES.has(folderClass)
   const op = await decide()
   const writes = op.kind !== 'keep' && op.kind !== 'leave'
   if (!writes && op.cleanup.length === 0) {
-    return { op, holdsOrcaCopy }
+    return { op, holdsOCCCopy }
   }
   const blocked = (await hasPendingCloudTransaction(stateDirectory, stateKeys))
     ? 'busy'
@@ -226,9 +226,9 @@ async function planTarget(
       ? null
       : 'unwritable'
   if (!blocked) {
-    return { op, holdsOrcaCopy }
+    return { op, holdsOCCCopy }
   }
-  return { op: { ...(writes ? leave(blocked, false) : op), cleanup: [] }, holdsOrcaCopy }
+  return { op: { ...(writes ? leave(blocked, false) : op), cleanup: [] }, holdsOCCCopy }
 }
 
 async function planSkill(
@@ -269,7 +269,7 @@ async function planSkill(
       ops: targets.map((target) => target.op)
     }
   }
-  if (!targets.some((target) => target.holdsOrcaCopy)) {
+  if (!targets.some((target) => target.holdsOCCCopy)) {
     return null
   }
   // Only repair an existing agent link into an empty shared slot; other updates must not create a new shared copy.

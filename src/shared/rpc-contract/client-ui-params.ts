@@ -233,7 +233,7 @@ export const UiUpdateFields = z
     _sortBySmartMigrated: z.boolean().optional(),
     _inlineAgentsDefaultedForExperiment: z.boolean().optional(),
     _inlineAgentsDefaultedForAllUsers: z.boolean().optional(),
-    trustedOrcaHooks: z.record(z.string(), z.unknown()).optional(),
+    trustedOCCHooks: z.record(z.string(), z.unknown()).optional(),
     setupScriptPromptDismissedRepoIds: StringArray.optional(),
     // Declare renderer one-shot dismissals to avoid whole-payload rejections for paired clients.
     setupGuideSidebarDismissed: z.boolean().optional(),

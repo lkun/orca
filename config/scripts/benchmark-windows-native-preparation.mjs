@@ -16,7 +16,7 @@ import { tmpdir } from 'node:os'
 import { dirname, join, relative, resolve, sep } from 'node:path'
 import { performance } from 'node:perf_hooks'
 import { pathToFileURL } from 'node:url'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { buildCounterbalancedSchedule } from './counterbalanced-benchmark-schedule.mjs'
 import { summarizeBenchmarkSamples } from './benchmark-sample-summary.mjs'
 import { resolvePnpmCliInvocation } from './pnpm-cli-invocation.mjs'
@@ -29,8 +29,8 @@ import {
 
 const addonNames = [
   'node-pty',
-  '@orca/windows-registry',
-  '@orca/windows-security',
+  '@occ/windows-registry',
+  '@occ/windows-security',
   '@vscode/windows-process-tree'
 ]
 const candidate = 'initialize-windows-native-toolchain.mjs'
@@ -158,8 +158,8 @@ function binaryReceipt(snapshot) {
     join(dirname(require.resolve('node-pty/package.json')), 'build/Release/conpty.node'),
     join(dirname(require.resolve('node-pty/package.json')), 'build/Release/conpty/conpty.dll'),
     join(dirname(require.resolve('node-pty/package.json')), 'build/Release/conpty/OpenConsole.exe'),
-    join(snapshot, 'native/windows-registry/build/Release/orca_windows_registry.node'),
-    join(snapshot, 'native/windows-security/build/Release/orca_windows_security.node'),
+    join(snapshot, 'native/windows-registry/build/Release/occ_windows_registry.node'),
+    join(snapshot, 'native/windows-security/build/Release/occ_windows_security.node'),
     join(
       dirname(require.resolve('@vscode/windows-process-tree/package.json')),
       'build/Release/windows_process_tree.node'
@@ -189,14 +189,14 @@ export async function benchmarkWindowsNativePreparation(
   const output = join(root, '.build/windows-native-benchmark')
   mkdirSync(output, { recursive: true })
   const temporary = mkdtempSync(
-    join(process.env.RUNNER_TEMP || tmpdir(), 'orca-native-comparison-')
+    join(process.env.RUNNER_TEMP || tmpdir(), 'occ-native-comparison-')
   )
   const archive = join(temporary, 'source.tar')
   const headers = join(temporary, 'headers')
   const pnpm = resolvePnpmCliInvocation()
   const environment = {
     ...process.env,
-    ORCA_BACKGROUND_LAUNCH: '1',
+    OCC_BACKGROUND_LAUNCH: '1',
     npm_config_devdir: headers,
     npm_package_config_node_gyp_devdir: headers
   }
@@ -407,7 +407,7 @@ export async function benchmarkWindowsNativePreparation(
         ]
         const result = await command(stage, process.execPath, args, snapshot, {
           ...environment,
-          ORCA_NATIVE_BENCHMARK_TRACE: traceFile
+          OCC_NATIVE_BENCHMARK_TRACE: traceFile
         })
         assertNoHeaderDownloads(result)
         const receipt = JSON.parse(readFileSync(traceFile, 'utf8'))

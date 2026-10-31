@@ -4,7 +4,7 @@
 let addon = null
 function getAddon() {
   if (!addon) {
-    addon = require('./build/Release/orca_windows_security.node')
+    addon = require('./build/Release/occ_windows_security.node')
   }
   return addon
 }

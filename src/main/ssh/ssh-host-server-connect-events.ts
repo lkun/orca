@@ -1,11 +1,11 @@
 /** Carry classified codes only; telemetry maps them to enums without host names, paths or messages. */
 import type {
-  OrcadManagedConversionResult,
-  OrcadManagedDeployResult
-} from '../../shared/orcad-managed-runtime'
+  OCCdManagedConversionResult,
+  OCCdManagedDeployResult
+} from '../../shared/occd-managed-runtime'
 import type { SshTarget } from '../../shared/ssh-types'
 import type { HostServerOnConnectResult } from './ssh-host-server-on-connect'
-import { classifyOrcadHostUnavailable } from '../orcad/orcad-host-unavailable'
+import { classifyOCCdHostUnavailable } from '../occd/occd-host-unavailable'
 
 export type HostServerConnectEvent =
   | {
@@ -80,7 +80,7 @@ export function decidedEvent(
     }
     return { kind: 'decided', outcome: 'managed', reason: trace.update ?? 'connected', ...base }
   }
-  if (result.reason === 'orcad_unavailable') {
+  if (result.reason === 'occd_unavailable') {
     // Why the detail: for this reason it is always a classified code, never a message.
     return { kind: 'decided', outcome: 'relay', reason: result.detail ?? 'other', ...base }
   }
@@ -94,7 +94,7 @@ export function decidedEvent(
 }
 
 function hostServerFailureCode(error: unknown): string | null {
-  const unavailable = classifyOrcadHostUnavailable(error)
+  const unavailable = classifyOCCdHostUnavailable(error)
   if (unavailable) {
     return unavailable
   }
@@ -152,7 +152,7 @@ export function reportHostServerDeploy(
   report: HostServerReport,
   target: SshTarget,
   trace: HostServerDecisionTrace,
-  result: OrcadManagedDeployResult
+  result: OCCdManagedDeployResult
 ): void {
   if (result.outcome === 'deferred') {
     reportHostServerEvent(report, target, {
@@ -169,7 +169,7 @@ export function reportHostServerConversion(
   report: HostServerReport,
   target: SshTarget,
   trace: HostServerDecisionTrace,
-  result: OrcadManagedConversionResult
+  result: OCCdManagedConversionResult
 ): void {
   const durationMs = sinceMs(trace.conversionStartedAt)
   if (result.outcome === 'converted') {

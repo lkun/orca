@@ -20,7 +20,7 @@ let root: string
 let journal: AgentSessionJournal
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-send-idempotency-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-send-idempotency-'))
   journal = await journals.open({
     identity: {
       sessionId: 'session-1',

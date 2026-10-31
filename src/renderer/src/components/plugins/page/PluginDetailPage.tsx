@@ -3,7 +3,7 @@ import { BadgeCheck, ChevronLeft } from 'lucide-react'
 import { translate } from '@/i18n/i18n'
 import { pluginOfficialLabel } from '../presentation/plugin-official-label'
 import { Button } from '../../ui/button'
-import { needsNewerOrca, type PluginListEntry } from '../list/plugin-list-entries'
+import { needsNewerOCC, type PluginListEntry } from '../list/plugin-list-entries'
 import { PluginDetailAlert as Alert } from './PluginDetailAlert'
 import { usePluginPageAction } from './PluginPageAction'
 import { PluginPageHero, PluginScreenshots } from './PluginPageHero'
@@ -23,7 +23,7 @@ import { PluginNotOfficialWarning } from '../review/PluginNotOfficialWarning'
 type PluginDetailPageProps = {
   entry: PluginListEntry
   busy: boolean
-  orcaVersion: string | null
+  occVersion: string | null
   logsState: PluginLogsState | undefined
   handlers: InstalledRowHandlers
   fetchPreview: (listing: NonNullable<PluginListEntry['listing']>) => Promise<PluginPagePreview>
@@ -57,7 +57,7 @@ function sourceLabel(entry: PluginListEntry): string {
 export function PluginDetailPage({
   entry,
   busy,
-  orcaVersion,
+  occVersion,
   logsState,
   handlers,
   fetchPreview,
@@ -70,7 +70,7 @@ export function PluginDetailPage({
   const model = usePluginPageModel({ entry, fetchPreview, refreshing })
   const { plugin, listing, preview, stale } = model
   const palettes = usePluginArtPalettes(entry.pluginKey, listing?.release?.themePreview)
-  const tooNew = needsNewerOrca(entry.minimumOrca, orcaVersion) !== null
+  const tooNew = needsNewerOCC(entry.minimumOCC, occVersion) !== null
   // Why: a fetched manifest names the plugin exactly; older catalogs only give its key.
   const name = plugin?.name ?? preview?.manifest.name ?? entry.name
   const action = usePluginPageAction({
@@ -189,17 +189,17 @@ export function PluginDetailPage({
       <Alert
         tone="warning"
         title={translate(
-          'auto.components.settings.PluginDetailPage.needsOrcaTitle',
+          'auto.components.settings.PluginDetailPage.needsOCCTitle',
           'Needs OCC {{value0}} or later',
           {
-            value0: entry.minimumOrca ?? ''
+            value0: entry.minimumOCC ?? ''
           }
         )}
         body={translate(
-          'auto.components.settings.PluginDetailPage.needsOrcaBody',
+          'auto.components.settings.PluginDetailPage.needsOCCBody',
           'You have OCC {{value0}}.',
           {
-            value0: orcaVersion ?? ''
+            value0: occVersion ?? ''
           }
         )}
       />

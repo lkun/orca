@@ -158,14 +158,14 @@ function resolveModifierRouting(
   modifierHeld: boolean,
   openLinksInApp: boolean,
   modifierInverts: boolean
-): { wantsOrca: boolean; wantsSystemBrowser: boolean } {
+): { wantsOCC: boolean; wantsSystemBrowser: boolean } {
   if (!modifierHeld) {
-    return { wantsOrca: false, wantsSystemBrowser: false }
+    return { wantsOCC: false, wantsSystemBrowser: false }
   }
   if (!modifierInverts) {
-    return { wantsOrca: false, wantsSystemBrowser: true }
+    return { wantsOCC: false, wantsSystemBrowser: true }
   }
-  return { wantsOrca: !openLinksInApp, wantsSystemBrowser: openLinksInApp }
+  return { wantsOCC: !openLinksInApp, wantsSystemBrowser: openLinksInApp }
 }
 
 function reportHttpLinkBrowserOpenFailure(error: unknown): void {
@@ -221,14 +221,14 @@ function executeHttpLink(
     openLinksInApp,
     state?.settings?.openLinksInAppModifierInverts === true
   )
-  const wantsOrca =
+  const wantsOCC =
     !forceSystemBrowser &&
     !modifier.wantsSystemBrowser &&
     Boolean(worktreeId) &&
-    (forceInApp || openLinksInApp || modifier.wantsOrca)
+    (forceInApp || openLinksInApp || modifier.wantsOCC)
 
   if (
-    wantsOrca &&
+    wantsOCC &&
     allowRemoteInApp &&
     worktreeId &&
     (effectiveSourceOwner?.kind === 'runtime' ||
@@ -261,7 +261,7 @@ function executeHttpLink(
     return
   }
 
-  if (wantsOrca && sourceIsLocal && worktreeId && state) {
+  if (wantsOCC && sourceIsLocal && worktreeId && state) {
     const getState = () => storeAccessor?.() ?? state
     const reveal = captureBrowserLinkReveal(getState, storeSubscriber, opts.linkContext?.canReveal)
     const openLocal = (chosenUrl: string): void => {

@@ -1,6 +1,6 @@
 import { join, resolve } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
-import { DEFAULT_MAX_OUTPUT_BYTES } from '@orca/process-host/process-spec'
+import { runProcessSync } from '@occ/process-host'
+import { DEFAULT_MAX_OUTPUT_BYTES } from '@occ/process-host/process-spec'
 import { describe, expect, it, vi } from 'vitest'
 
 import { auditToolEntry, runAuditTool } from './run-audit-tool.mjs'

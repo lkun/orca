@@ -86,7 +86,7 @@ function buildAppIfNeeded() {
 }
 
 function createGitRepo() {
-  const repoDir = mkdtempSync(path.join(tmpdir(), 'orca-wayland-gpu-repo-'))
+  const repoDir = mkdtempSync(path.join(tmpdir(), 'occ-wayland-gpu-repo-'))
   run('git', ['init'], { cwd: repoDir, stdio: 'pipe' })
   run('git', ['config', 'user.email', 'wayland-gpu@test.local'], { cwd: repoDir, stdio: 'pipe' })
   run('git', ['config', 'user.name', 'Wayland GPU Test'], { cwd: repoDir, stdio: 'pipe' })
@@ -145,7 +145,7 @@ async function runValidation(mode) {
   buildAppIfNeeded()
 
   const repoPath = createGitRepo()
-  const userDataPath = mkdtempSync(path.join(tmpdir(), 'orca-wayland-gpu-userdata-'))
+  const userDataPath = mkdtempSync(path.join(tmpdir(), 'occ-wayland-gpu-userdata-'))
   // E2E flag disables Linux GPU and invalidates repro; explicitly confine Codex/Node homes to disposable profile instead.
   const isolatedHome = path.join(userDataPath, 'home')
   mkdirSync(isolatedHome, { recursive: true })
@@ -197,13 +197,13 @@ async function runValidation(mode) {
       ELECTRON_RUN_AS_NODE: _unused,
       DISPLAY: _display,
       CODEX_HOME: _codexHome,
-      ORCA_CODEX_HOME: _orcaCodexHome,
+      OCC_CODEX_HOME: _occCodexHome,
       ...env
     } = process.env
     void _unused
     void _display
     void _codexHome
-    void _orcaCodexHome
+    void _occCodexHome
     logPhase('launch.start')
     app = await runWithTimeout(
       'Electron launch',
@@ -213,8 +213,8 @@ async function runValidation(mode) {
           env: {
             ...env,
             NODE_ENV: 'development',
-            ORCA_BACKGROUND_LAUNCH: '1',
-            ORCA_DEV_USER_DATA_PATH: userDataPath,
+            OCC_BACKGROUND_LAUNCH: '1',
+            OCC_DEV_USER_DATA_PATH: userDataPath,
             HOME: isolatedHome,
             USERPROFILE: isolatedHome,
             ELECTRON_ENABLE_LOGGING: '1',
@@ -229,7 +229,7 @@ async function runValidation(mode) {
     app.process().stderr?.on('data', (chunk) => {
       const text = chunk.toString()
       stderrLines.push(...text.split(/\r?\n/).filter(Boolean))
-      if (process.env.ORCA_WAYLAND_GPU_VERBOSE === '1') {
+      if (process.env.OCC_WAYLAND_GPU_VERBOSE === '1') {
         process.stderr.write(text)
       }
     })

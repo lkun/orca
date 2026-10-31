@@ -11,7 +11,7 @@ const mocks = vi.hoisted(() => ({
   fetchAuthStatus: vi.fn(),
   openArtifactsPage: vi.fn(),
   state: {
-    orcaProfileAuthStatus: {
+    occProfileAuthStatus: {
       configured: true,
       state: 'connected'
     } as Record<string, unknown> | null,
@@ -31,8 +31,8 @@ vi.mock('@/store', () => ({
   useAppStore: (selector: (state: Record<string, unknown>) => unknown) =>
     selector({
       ...mocks.state,
-      connectCurrentOrcaProfile: mocks.connect,
-      fetchOrcaProfileAuthStatus: mocks.fetchAuthStatus,
+      connectCurrentOCCProfile: mocks.connect,
+      fetchOCCProfileAuthStatus: mocks.fetchAuthStatus,
       openArtifactsPage: mocks.openArtifactsPage
     })
 }))
@@ -44,7 +44,7 @@ describe('ArtifactsSettingsPane', () => {
     mocks.connect.mockReset()
     mocks.fetchAuthStatus.mockReset()
     mocks.openArtifactsPage.mockReset()
-    mocks.state.orcaProfileAuthStatus = { configured: true, state: 'connected' }
+    mocks.state.occProfileAuthStatus = { configured: true, state: 'connected' }
     mocks.state.isWebClient = false
   })
 
@@ -63,7 +63,7 @@ describe('ArtifactsSettingsPane', () => {
 
   it('offers sign in for a local profile', async () => {
     const user = userEvent.setup()
-    mocks.state.orcaProfileAuthStatus = { configured: true, state: 'local' }
+    mocks.state.occProfileAuthStatus = { configured: true, state: 'local' }
     render(<ArtifactsSettingsPane settings={getDefaultSettings('/tmp')} updateSettings={vi.fn()} />)
 
     expect(screen.getByText('Sign in to share artifacts')).toBeInTheDocument()
@@ -72,14 +72,14 @@ describe('ArtifactsSettingsPane', () => {
   })
 
   it('keeps sign in clickable while reconnect is required', () => {
-    mocks.state.orcaProfileAuthStatus = { configured: true, state: 'reconnect-required' }
+    mocks.state.occProfileAuthStatus = { configured: true, state: 'reconnect-required' }
     render(<ArtifactsSettingsPane settings={getDefaultSettings('/tmp')} updateSettings={vi.fn()} />)
 
     expect(screen.getByRole('button', { name: 'Sign in again' })).toBeEnabled()
   })
 
   it('loads missing account status and disables sign in until configured', () => {
-    mocks.state.orcaProfileAuthStatus = null
+    mocks.state.occProfileAuthStatus = null
     render(<ArtifactsSettingsPane settings={getDefaultSettings('/tmp')} updateSettings={vi.fn()} />)
 
     expect(mocks.fetchAuthStatus).toHaveBeenCalledOnce()
@@ -101,7 +101,7 @@ describe('ArtifactsSettingsPane', () => {
     await user.click(toggle)
     expect(updateSettings).toHaveBeenCalledWith({ showArtifactsButton: true })
 
-    expect(screen.queryByText(/orca artifacts share/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/occ artifacts share/)).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Copy command' })).not.toBeInTheDocument()
 
     const openButton = screen.getByRole('button', { name: /Open Artifacts/ })

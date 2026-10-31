@@ -113,7 +113,7 @@ describe('registerWorktreeHandlers', () => {
   it.each(['command', ' '])(
     'preserves local file writes with an unavailable runtime: %j',
     async (content) => {
-      const root = mkdtempSync(join(tmpdir(), 'orca-runtime-ignore-'))
+      const root = mkdtempSync(join(tmpdir(), 'occ-runtime-ignore-'))
       const repo = {
         id: 'repo-1',
         path: root,
@@ -121,8 +121,8 @@ describe('registerWorktreeHandlers', () => {
         badgeColor: '#000',
         addedAt: 0
       }
-      mkdirSync(join(root, '.orca'))
-      writeFileSync(join(root, '.orca', 'issue-command'), 'old command\n')
+      mkdirSync(join(root, '.occ'))
+      writeFileSync(join(root, '.occ', 'issue-command'), 'old command\n')
       store.getRepo.mockReturnValue(repo)
       store.getRepos.mockReturnValue([repo])
       const resolver = vi
@@ -133,10 +133,10 @@ describe('registerWorktreeHandlers', () => {
       try {
         await handlers['hooks:writeIssueCommand'](null, { repoId: repo.id, content })
         if (content.trim()) {
-          expect(readFileSync(join(root, '.orca', 'issue-command'), 'utf8')).toBe('command\n')
-          expect(readFileSync(join(root, '.gitignore'), 'utf8')).toBe('.orca\n')
+          expect(readFileSync(join(root, '.occ', 'issue-command'), 'utf8')).toBe('command\n')
+          expect(readFileSync(join(root, '.gitignore'), 'utf8')).toBe('.occ\n')
         } else {
-          expect(existsSync(join(root, '.orca', 'issue-command'))).toBe(false)
+          expect(existsSync(join(root, '.occ', 'issue-command'))).toBe(false)
           expect(existsSync(join(root, '.gitignore'))).toBe(false)
           expect(resolver).not.toHaveBeenCalled()
         }
@@ -187,7 +187,7 @@ describe('registerWorktreeHandlers', () => {
     await expect(
       handlers['hooks:writeIssueCommand'](null, {
         repoId: 'repo-ssh',
-        content: 'orca issue command'
+        content: 'occ issue command'
       })
     ).rejects.toThrow('Remote filesystem unavailable')
   })

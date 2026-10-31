@@ -59,7 +59,7 @@ function envelope(
 }
 
 async function openChat(child: ReturnType<typeof codexScriptedChild>) {
-  root = await mkdtemp(join(tmpdir(), 'orca-goal-stop-settings-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-goal-stop-settings-'))
   child.holdHandshakes = false
   const host = await ensureStructuredAgentSessionHost({
     logger: createStructuredAgentSessionLogger(),

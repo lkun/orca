@@ -31,8 +31,8 @@ import {
 } from './agent-session-record-store-test-harness'
 import { OrchestrationDb } from './orchestration/db'
 import { structuredSessionMailReach } from './orchestration/structured-session-mail-address'
-import { resolveOrcaSessionParty } from './orchestration/orchestration-party'
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { resolveOCCSessionParty } from './orchestration/orchestration-party'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import {
   mintStructuredWorkerHandle,
   mintStructuredWorkerPaneKey,
@@ -207,8 +207,8 @@ describe('real conversation inventory work', () => {
   })
 
   it('keeps global worker identity separate from candidate inventory and retains closure/loop outcomes', async () => {
-    const rootId = testOrcaSessionId('global-root')
-    const successor = testOrcaSessionId('visible-successor')
+    const rootId = testOCCSessionId('global-root')
+    const successor = testOCCSessionId('visible-successor')
     const globalRoot = await scaleDirectory()
     const candidateRoot = await scaleDirectory()
     const rows = [
@@ -251,7 +251,7 @@ describe('real conversation inventory work', () => {
         creator: { kind: 'system' },
         maxDepth: Number.MAX_SAFE_INTEGER
       })
-      expect(db.getDispatchContextById(dispatch.id)?.assignee_orca_session_id).toBe(rootId)
+      expect(db.getDispatchContextById(dispatch.id)?.assignee_occ_session_id).toBe(rootId)
       const reader = conversationRecordReader(candidateStore)
       const found = () =>
         [...createReferenceAgentIndex(referenceRuntime, db, reader).values()].flat()
@@ -270,11 +270,11 @@ describe('real conversation inventory work', () => {
         worktreeId: 'workspace-1',
         hostScope: { kind: 'local', hostId: 'local' }
       })
-      expect(resolveOrcaSessionParty(successor, db)).toMatchObject({
-        orcaSessionId: rootId,
+      expect(resolveOCCSessionParty(successor, db)).toMatchObject({
+        occSessionId: rootId,
         terminalHandle: handle
       })
-      expect(found()[0]?.mailbox).toBe(`orca_session_id:${successor}`)
+      expect(found()[0]?.mailbox).toBe(`occ_session_id:${successor}`)
       expect(
         structuredSessionMailReach(reader, candidateStore.getConversation('closed-chat')!, db)
       ).toEqual({ kind: 'ended', reason: 'closed' })
@@ -291,8 +291,8 @@ describe('real conversation inventory work', () => {
 
   it('uses the opened cold inventory without importing its predecessor into absent global identity', async () => {
     const root = await scaleDirectory()
-    const predecessor = testOrcaSessionId('cold-root')
-    const successor = testOrcaSessionId('cold-successor')
+    const predecessor = testOCCSessionId('cold-root')
+    const successor = testOCCSessionId('cold-successor')
     await seedTestAgentSessionRecordStore(root, {
       records: [clearedRecord(predecessor, successor), scaleRecord(successor)],
       sessionTabs: [{ tabId: 'cold-tab', sessionId: successor }]
@@ -324,13 +324,13 @@ describe('real conversation inventory work', () => {
         expect([...index.values()].flat()).toMatchObject([
           {
             sessionId: successor,
-            mailbox: `orca_session_id:${successor}`,
+            mailbox: `occ_session_id:${successor}`,
             liveness: 'unverifiable'
           }
         ])
       }
-      expect(resolveOrcaSessionParty(successor, db)).toMatchObject({
-        orcaSessionId: successor,
+      expect(resolveOCCSessionParty(successor, db)).toMatchObject({
+        occSessionId: successor,
         terminalHandle: null
       })
     } finally {

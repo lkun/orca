@@ -2,7 +2,7 @@ import { classifyTerminalCreationFailure } from '../../../../shared/terminal-sta
 import type { PtyRegistrationClaim } from '../../../runtime/runtime-terminal-state-records'
 import { PaneOwnerContentionError } from './pane-spawn-operation'
 import type { Store } from '../../../persistence'
-import type { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import type { IPtyProvider, PtySpawnResult } from '../../../providers/pty-provider-contract'
 import {
   isCurrentPtyExit,
@@ -19,7 +19,7 @@ import { retirePersistedStablePaneOwner } from './stable-owner'
 
 /** Track before saving; failed save/stop must not make a potentially live process disappear from ownership. */
 export function admitPtySpawnOwnership(
-  runtime: OrcaRuntimeService | undefined,
+  runtime: OCCRuntimeService | undefined,
   result: PtySpawnResult
 ): void {
   if (result.isReattach || result.agentSessionEnsure?.disposition === 'adopted') {
@@ -39,7 +39,7 @@ export function admitPtySpawnOwnership(
 
 /** Read incarnation-scoped early-exit proof without throwing; registration reports refusal itself. */
 function exitedBeforeAdmission(
-  runtime: OrcaRuntimeService | undefined,
+  runtime: OCCRuntimeService | undefined,
   result: PtySpawnResult
 ): boolean {
   try {
@@ -57,8 +57,8 @@ export async function discardUnpersistedPtySpawn(
   provider: IPtyProvider,
   result: PtySpawnResult,
   runtime:
-    | (Pick<OrcaRuntimeService, 'markPtyLivenessUnverifiable'> &
-        Partial<Pick<OrcaRuntimeService, 'intentionalPtyStops'>>)
+    | (Pick<OCCRuntimeService, 'markPtyLivenessUnverifiable'> &
+        Partial<Pick<OCCRuntimeService, 'intentionalPtyStops'>>)
     | undefined
 ): Promise<void> {
   if (
@@ -112,11 +112,11 @@ export async function discardUnpersistedPtySpawn(
 
 // Successful registration must remain synchronous through spawn publication.
 export function registerPersistedPtySpawn(
-  runtime: OrcaRuntimeService | undefined,
+  runtime: OCCRuntimeService | undefined,
   store: Store | undefined,
   claim: PtyRegistrationClaim | undefined,
   result: PtySpawnResult | undefined,
-  ...args: Parameters<OrcaRuntimeService['registerPty']>
+  ...args: Parameters<OCCRuntimeService['registerPty']>
 ): Promise<never> | undefined {
   try {
     if (claim && !runtime?.narrowPtyRegistration(args[0], claim, args[3]?.incarnationId)) {

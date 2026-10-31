@@ -34,8 +34,8 @@ const GUIDE_REFERENCES = {
     'placement-and-remote.md',
     'recovery-and-cleanup.md'
   ],
-  'orca-cli': ['artifacts.md', 'automations.md', 'browser.md', 'plugins.md', 'skill-sharing.md'],
-  'orca-per-workspace-env': [
+  'occ-cli': ['artifacts.md', 'automations.md', 'browser.md', 'plugins.md', 'skill-sharing.md'],
+  'occ-per-workspace-env': [
     'docker-ssh.md',
     'failure-modes.md',
     'provider-vercel.md',
@@ -48,7 +48,7 @@ const GUIDE_REFERENCE_PATHS = Object.entries(GUIDE_REFERENCES).flatMap(([guide, 
 )
 
 async function createFixture() {
-  const root = await mkdtemp(path.join(tmpdir(), 'orca-bundled-skill-guides-'))
+  const root = await mkdtemp(path.join(tmpdir(), 'occ-bundled-skill-guides-'))
   temporaryDirectories.push(root)
   await Promise.all([
     cp(path.join(projectDir, 'skill-guides'), path.join(root, 'skill-guides'), {
@@ -93,28 +93,28 @@ describe('bundled skill guide generator', () => {
     'resolves the documented cleanup path from custom, XDG, and home settings',
     async () => {
       const source = await readFile(
-        path.join(projectDir, 'skill-guides', 'orca-per-workspace-env.md'),
+        path.join(projectDir, 'skill-guides', 'occ-per-workspace-env.md'),
         'utf8'
       )
-      const assignments = [...source.matchAll(/`(orca_user_data_path=[^`\r\n]+)`/gu)].map(
+      const assignments = [...source.matchAll(/`(occ_user_data_path=[^`\r\n]+)`/gu)].map(
         (match) => match[1]
       )
       expect(assignments).toHaveLength(1)
-      const script = `${assignments[0]}\nprintf '%s' "$orca_user_data_path"`
-      const root = await mkdtemp(path.join(tmpdir(), 'orca-guide-cleanup-precedence-'))
+      const script = `${assignments[0]}\nprintf '%s' "$occ_user_data_path"`
+      const root = await mkdtemp(path.join(tmpdir(), 'occ-guide-cleanup-precedence-'))
       temporaryDirectories.push(root)
       const home = path.join(root, 'isolated home')
       const xdg = path.join(root, 'xdg config')
       const custom = path.join(root, 'custom runtime data')
-      const homeDefault = path.join(home, '.config', 'orca')
-      const xdgDefault = path.join(xdg, 'orca')
+      const homeDefault = path.join(home, '.config', 'occ')
+      const xdgDefault = path.join(xdg, 'occ')
       const cases = [
         [{}, homeDefault],
         [{ XDG_CONFIG_HOME: xdg }, xdgDefault],
-        [{ ORCA_USER_DATA_PATH: custom, XDG_CONFIG_HOME: xdg }, custom],
-        [{ ORCA_USER_DATA_PATH: '', XDG_CONFIG_HOME: xdg }, xdgDefault],
+        [{ OCC_USER_DATA_PATH: custom, XDG_CONFIG_HOME: xdg }, custom],
+        [{ OCC_USER_DATA_PATH: '', XDG_CONFIG_HOME: xdg }, xdgDefault],
         [{ XDG_CONFIG_HOME: '' }, homeDefault],
-        [{ ORCA_USER_DATA_PATH: '', XDG_CONFIG_HOME: '' }, homeDefault]
+        [{ OCC_USER_DATA_PATH: '', XDG_CONFIG_HOME: '' }, homeDefault]
       ]
 
       for (const [environment, expected] of cases) {
@@ -122,7 +122,7 @@ describe('bundled skill guide generator', () => {
           'bash',
           ['--noprofile', '--norc', '-u', '-c', script],
           {
-            env: { HOME: home, ORCA_BACKGROUND_LAUNCH: '1', ...environment }
+            env: { HOME: home, OCC_BACKGROUND_LAUNCH: '1', ...environment }
           }
         )
         expect(stdout).toBe(expected)
@@ -138,14 +138,14 @@ describe('bundled skill guide generator', () => {
         path.join(
           projectDir,
           'skill-guides',
-          'orca-per-workspace-env',
+          'occ-per-workspace-env',
           'references',
           'provider-vercel.md'
         ),
         'utf8'
       )
-      const startMarker = 'recipe_id="${ORCA_RECIPE_ID:-vercel-sandbox}"'
-      const endMarker = 'name="orca-${recipe_id:0:max_recipe_id_length}-${instance_id}"'
+      const startMarker = 'recipe_id="${OCC_RECIPE_ID:-vercel-sandbox}"'
+      const endMarker = 'name="occ-${recipe_id:0:max_recipe_id_length}-${instance_id}"'
       const start = source.indexOf(startMarker)
       const endStart = source.indexOf(endMarker, start)
       expect(start).toBeGreaterThanOrEqual(0)
@@ -154,11 +154,11 @@ describe('bundled skill guide generator', () => {
       const renderName = async (recipeId, instanceId) =>
         (
           await execFileAsync('bash', ['-u', '-c', script], {
-            env: { ...process.env, ORCA_RECIPE_ID: recipeId, ORCA_VM_INSTANCE_ID: instanceId }
+            env: { ...process.env, OCC_RECIPE_ID: recipeId, OCC_VM_INSTANCE_ID: instanceId }
           })
         ).stdout
 
-      const instanceId = 'orca-123e4567-e89b-12d3-a456-426614174000'
+      const instanceId = 'occ-123e4567-e89b-12d3-a456-426614174000'
       const dotted = await renderName('provider.cloud_sandbox', instanceId)
       const maximum = await renderName(`a${'.'.repeat(63)}`, instanceId)
       const longInstanceId = 'i'.repeat(100)
@@ -167,7 +167,7 @@ describe('bundled skill guide generator', () => {
         longInstanceId
       )
 
-      expect(dotted).toBe(`orca-provider-cloud_sandbox-${instanceId}`)
+      expect(dotted).toBe(`occ-provider-cloud_sandbox-${instanceId}`)
       expect(maximum).toMatch(/^[a-zA-Z0-9_-]{1,128}$/u)
       expect(capped).toHaveLength(128)
       expect(capped.endsWith(`-${longInstanceId}`)).toBe(true)
@@ -342,7 +342,7 @@ describe('bundled skill guide generator', () => {
 
   it('rejects non-Markdown and empty bundled references', async () => {
     const root = await createFixture()
-    const referenceRoot = path.join(root, 'skill-guides', 'orca-cli', 'references')
+    const referenceRoot = path.join(root, 'skill-guides', 'occ-cli', 'references')
 
     await writeFile(path.join(referenceRoot, 'notes.txt'), 'not a reference\n')
     await expect(buildArtifacts(root)).rejects.toThrow('Guide references must be Markdown files')
@@ -375,8 +375,8 @@ describe('guide reference routing', () => {
 
   it('routes every shipped reference from its own guide, in both directions', async () => {
     const owners = await guidesWithReferences()
-    // A vacuous loop would pass forever; orca-cli is a guide that owns references today.
-    expect(owners.map((owner) => owner.name)).toContain('orca-cli')
+    // A vacuous loop would pass forever; occ-cli is a guide that owns references today.
+    expect(owners.map((owner) => owner.name)).toContain('occ-cli')
 
     const mismatches = []
     for (const owner of owners) {

@@ -11,7 +11,7 @@ const base = {
   id: 'notes',
   publisher: 'acme',
   name: 'Notes',
-  engines: { orca: '>=1.0.0' },
+  engines: { occ: '>=1.0.0' },
   pluginApi: 1
 }
 const before = pluginManifestSchema.parse({ ...base, version: '1.0.0' })

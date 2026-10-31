@@ -44,7 +44,7 @@ const desktop = generateKeyPair()
 const RELAY_HOST_ID = 'AbCdEf0123_-xyZ9'
 
 function harness(relay?: (deviceId: string) => MobileSocketTransportMetadata) {
-  const registry = new DeviceRegistry(mkdtempSync(join(tmpdir(), 'orca-web-session-')))
+  const registry = new DeviceRegistry(mkdtempSync(join(tmpdir(), 'occ-web-session-')))
   const transport = new FakeTransport()
   const ready: AuthenticatedMobileSocket[] = []
   const wiring = new MobileSocketWiring({

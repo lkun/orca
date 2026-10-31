@@ -1,4 +1,4 @@
-// H5b: with ORCA_LAYOUT_OWNER=main, draw the paired server’s layout stream with matching tab/pane ids/order and session-tab bindings across server changes/restart.
+// H5b: with OCC_LAYOUT_OWNER=main, draw the paired server’s layout stream with matching tab/pane ids/order and session-tab bindings across server changes/restart.
 import { existsSync, rmSync } from 'node:fs'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
@@ -7,7 +7,7 @@ import {
   toWebTerminalSurfaceTabId
 } from '../../src/shared/terminal-surface-id'
 import { LAYOUT_INTENTS_RUNTIME_CAPABILITY } from '../../src/shared/workspace-layout/layout-intents-capability'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import {
   createHostCliTerminal,
@@ -27,7 +27,7 @@ import {
 import { expectFrameDrawnTreeMatchesServer } from './helpers/paired-desktop-server-layout'
 
 const LAYOUT_OWNER_BUILD = existsSync(
-  path.join(process.cwd(), 'out', 'main', 'ORCA_LAYOUT_OWNER_MAIN')
+  path.join(process.cwd(), 'out', 'main', 'OCC_LAYOUT_OWNER_MAIN')
 )
 
 const scratch = createRetentionFixtureDirectory()
@@ -76,7 +76,7 @@ async function readPaneText(page: Page, webTabId: string, leafId: string): Promi
 }
 
 test.describe('paired desktop draws a switch-on server from its layout frames', () => {
-  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (ORCA_LAYOUT_OWNER=main)')
+  test.skip(!LAYOUT_OWNER_BUILD, 'Needs a layout-owner build (OCC_LAYOUT_OWNER=main)')
 
   test('frames draw the server workspace; handles attach; restart and server changes keep it', async ({
     testRepoPath

@@ -129,7 +129,7 @@ describe('composer catalog authority', () => {
     ])
     expect(rows('r')[0]).toMatchObject({ name: 'review' })
     expect(rows('resume')[0]).toMatchObject({
-      orcaOwned: true,
+      occOwned: true,
       description: 'Open Agent Session History',
       skillCollision: false
     })
@@ -245,7 +245,7 @@ describe('OpenCode chat skills', () => {
       '',
       '/',
       result.current.sessionSkills
-    ).filter((item) => !(item.kind === 'command' && (item.orcaOwned || hostRows.has(item.name))))
+    ).filter((item) => !(item.kind === 'command' && (item.occOwned || hostRows.has(item.name))))
   }
   const rows = (...args: Parameters<typeof items>) =>
     items(...args).map((item) => `${item.kind}:${item.name}`)

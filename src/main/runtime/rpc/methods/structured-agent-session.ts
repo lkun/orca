@@ -69,7 +69,7 @@ import {
 import { sendStructuredAgentSessionForClient } from './structured-agent-session-send-compatibility'
 import { getStructuredAgentSessionHost } from '../../../native-chat/agent-session-wire/structured-agent-session-registry'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import {
   noteStructuredAgentSessionClose,
   refusingStructuredAgentSessionCreatesClosedFirst
@@ -120,7 +120,7 @@ export const STRUCTURED_AGENT_SESSION_METHODS = [
     requires: ['accounts'],
     permission: 'workspace',
     params: CreateParams,
-    handler: ORCA_LAYOUT_OWNER_IS_MAIN
+    handler: OCC_LAYOUT_OWNER_IS_MAIN
       ? refusingStructuredAgentSessionCreatesClosedFirst(handleStructuredAgentSessionCreate)
       : handleStructuredAgentSessionCreate
   }),
@@ -151,7 +151,7 @@ export const STRUCTURED_AGENT_SESSION_METHODS = [
     handler: async (params, ctx) => {
       requireStructuredCapability(ctx)
       // Record close before requiring host so even failed closes fence racing creates.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         noteStructuredAgentSessionClose(
           params.sessionId,
           (getStructuredAgentSessionHost()?.deps.store.getConversation(params.sessionId) ??

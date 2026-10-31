@@ -40,7 +40,7 @@ export async function loadMobileStructuredOptions(): Promise<
   if (!source) {
     throw new Error('Phone hook source was not compiled')
   }
-  const dir = await mkdtemp(join(tmpdir(), 'orca-pr32334-phone-options-'))
+  const dir = await mkdtemp(join(tmpdir(), 'occ-pr32334-phone-options-'))
   const file = join(dir, 'phone-options.cjs')
   try {
     await writeFile(file, source)

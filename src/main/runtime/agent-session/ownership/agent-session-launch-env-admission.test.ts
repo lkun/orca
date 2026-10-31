@@ -40,7 +40,7 @@ function request(overrides: Partial<AgentSessionReserveRequest> = {}): AgentSess
 }
 
 beforeEach(async () => {
-  directory = await mkdtemp(join(tmpdir(), 'orca-agent-session-launch-env-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-agent-session-launch-env-'))
 })
 
 afterEach(async () => {

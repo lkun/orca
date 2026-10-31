@@ -279,7 +279,7 @@ describe('runner execFile timeout handling', () => {
     mockWedgedCliSpawn(child)
     const processKill = mockProcessGroupSignals()
     try {
-      const promise = ghExecFileAsync(['api', 'repos/stablyai/orca/issues/5388'], {
+      const promise = ghExecFileAsync(['api', 'repos/stablyai/occ/issues/5388'], {
         cwd: '/repo'
       })
       const rejection = expect(promise).rejects.toThrow('gh timed out.')
@@ -299,7 +299,7 @@ describe('runner execFile timeout handling', () => {
     mockWedgedCliSpawn(child)
     const processKill = mockProcessGroupSignals()
     try {
-      const promise = glabExecFileAsync(['api', 'projects/stablyai%2Forca/issues'], {
+      const promise = glabExecFileAsync(['api', 'projects/stablyai%2Focc/issues'], {
         cwd: '/repo'
       })
       const rejection = expect(promise).rejects.toThrow('glab timed out.')
@@ -346,7 +346,7 @@ describe('runner execFile timeout handling', () => {
     const processKill = mockProcessGroupSignals()
     try {
       const controller = new AbortController()
-      const promise = ghExecFileAsync(['api', 'repos/stablyai/orca/issues/5388'], {
+      const promise = ghExecFileAsync(['api', 'repos/stablyai/occ/issues/5388'], {
         cwd: '/repo',
         signal: controller.signal
       })
@@ -368,7 +368,7 @@ describe('runner execFile timeout handling', () => {
     mockWedgedCliSpawn(child)
     const processKill = mockProcessGroupSignals()
     try {
-      const promise = ghExecFileAsync(['api', 'repos/stablyai/orca/issues/5388'], {
+      const promise = ghExecFileAsync(['api', 'repos/stablyai/occ/issues/5388'], {
         cwd: '/repo',
         timeout: 1234
       })
@@ -400,12 +400,12 @@ describe('runner execFile timeout handling', () => {
 
     await ghExecFileAsync(['api', 'user'], {
       cwd: '/repo',
-      env: { ...process.env, GH_PROMPT_DISABLED: '0', ORCA_TEST_ENV: 'kept' },
+      env: { ...process.env, GH_PROMPT_DISABLED: '0', OCC_TEST_ENV: 'kept' },
       timeout: 1234
     })
 
     expect(capturedEnv?.GH_PROMPT_DISABLED).toBe('0')
-    expect(capturedEnv?.ORCA_TEST_ENV).toBe('kept')
+    expect(capturedEnv?.OCC_TEST_ENV).toBe('kept')
   })
 
   it('runs git non-interactively so a prompt fails fast instead of hanging', async () => {
@@ -453,7 +453,7 @@ describe('runner execFile timeout handling', () => {
       const gitCall = execFileMock.mock.calls.find((call) => String(call[1]?.[5]).includes("'git'"))
       const shellCommand = gitCall?.[1]?.[5] as string
       expect(shellCommand).toContain('getent passwd')
-      expect(shellCommand).toContain('exec "$_orca_wsl_shell" -ilc')
+      expect(shellCommand).toContain('exec "$_occ_wsl_shell" -ilc')
       expect(shellCommand).toContain('/mnt/c/repo')
       expect(shellCommand).toContain("'git'")
       expect(shellCommand).toContain('status')

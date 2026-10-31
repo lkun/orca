@@ -12,8 +12,8 @@ const identities = [
     provider: 'gitlab',
     projectId: '123',
     namespace: 'acme/team',
-    project: 'orca',
-    webUrl: 'https://gitlab.example.com/acme/team/orca'
+    project: 'occ',
+    webUrl: 'https://gitlab.example.com/acme/team/occ'
   },
   {
     provider: 'linear',
@@ -60,7 +60,7 @@ describe('task provider identity RPC validation', () => {
   })
 
   it('preserves unknown fields and never infers GitHub from owner/repo', () => {
-    const identity = { provider: 'gitlab', owner: 'acme', repo: 'orca', futureField: 'value' }
+    const identity = { provider: 'gitlab', owner: 'acme', repo: 'occ', futureField: 'value' }
     expect(TaskProviderIdentity.parse(identity)).toEqual(identity)
   })
 
@@ -113,7 +113,7 @@ describe('github identity blank fields', () => {
   // The normalizer treats a blank owner or repo as no identity, so the schema must agree.
   it.each(['', '   ', '\t'])('rejects a blank owner %j', (owner) => {
     expect(
-      TaskProviderIdentity.safeParse({ provider: 'github', owner, repo: 'orca' }).success
+      TaskProviderIdentity.safeParse({ provider: 'github', owner, repo: 'occ' }).success
     ).toBe(false)
   })
 
@@ -125,7 +125,7 @@ describe('github identity blank fields', () => {
 
   it('still accepts a populated identity', () => {
     expect(
-      TaskProviderIdentity.safeParse({ provider: 'github', owner: 'stablyai', repo: 'orca' })
+      TaskProviderIdentity.safeParse({ provider: 'github', owner: 'stablyai', repo: 'occ' })
         .success
     ).toBe(true)
   })
@@ -134,7 +134,7 @@ describe('github identity blank fields', () => {
     const parsed = TaskProviderIdentity.safeParse({
       provider: 'github',
       owner: ' stablyai ',
-      repo: 'orca'
+      repo: 'occ'
     })
     expect(parsed.success && parsed.data?.owner).toBe(' stablyai ')
   })

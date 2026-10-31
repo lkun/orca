@@ -54,7 +54,7 @@ function lineage(instanceId: string): WorktreeLineage {
 function createTwinStore(state: Record<string, unknown> = {}) {
   mkdirSync(testState.dir, { recursive: true })
   writeFileSync(
-    join(testState.dir, 'orca-data.json'),
+    join(testState.dir, 'occ-data.json'),
     JSON.stringify({ ...getDefaultPersistedState(testState.dir), repos: twinRepos, ...state }),
     'utf-8'
   )
@@ -62,7 +62,7 @@ function createTwinStore(state: Record<string, unknown> = {}) {
 }
 
 beforeEach(() => {
-  testState.dir = mkdtempSync(join(tmpdir(), 'orca-worktree-meta-twins-'))
+  testState.dir = mkdtempSync(join(tmpdir(), 'occ-worktree-meta-twins-'))
 })
 
 afterEach(async () => {

@@ -54,7 +54,7 @@ function message(
 ) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     ...(type === 'user' && parentToolUseId === null ? { startsTurn: true as const } : {}),
     message: {
       type,
@@ -70,7 +70,7 @@ function message(
 function streamEvent(uuid: string, event: Record<string, unknown>) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     message: {
       type: 'stream_event',
       uuid,
@@ -84,7 +84,7 @@ function streamEvent(uuid: string, event: Record<string, unknown>) {
 function resultFrame(subtype: string, fields: Record<string, unknown>) {
   return {
     type: 'message' as const,
-    sessionId: 'orca-session',
+    sessionId: 'occ-session',
     message: {
       type: 'result',
       subtype,
@@ -126,7 +126,7 @@ function streamedTextTurn(input: {
     ),
     final: {
       type: 'message' as const,
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: {
         type: 'assistant',
         uuid: input.finalUuid,
@@ -179,7 +179,7 @@ const JOURNAL_IDENTITY: AgentSessionJournalIdentity = {
 let journalRoot = ''
 
 beforeEach(async () => {
-  journalRoot = await mkdtemp(join(tmpdir(), 'orca-claude-journal-translation-'))
+  journalRoot = await mkdtemp(join(tmpdir(), 'occ-claude-journal-translation-'))
 })
 
 afterEach(async () => {
@@ -328,10 +328,10 @@ describe('Claude structured journal translation', () => {
       questionIds: []
     })
 
-    translator.handle({ type: 'prompt', sessionId: 'orca-session', prompt: approval })
+    translator.handle({ type: 'prompt', sessionId: 'occ-session', prompt: approval })
     translator.handle({
       type: 'prompt-cancelled',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       promptKey: approval.promptKey
     })
     await expect(deferred.drained()).resolves.toEqual({ ok: true })
@@ -361,7 +361,7 @@ describe('Claude structured journal translation', () => {
 
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       startsTurn: true,
       message: {
         type: 'user',
@@ -421,7 +421,7 @@ describe('Claude structured journal translation', () => {
     const liveTranslator = createClaudeJournalTranslator({ sink: live.sink })
     const replay = {
       type: 'message' as const,
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: {
         type: 'user',
         uuid: 'picker-command-1',
@@ -575,7 +575,7 @@ describe('Claude structured journal translation', () => {
       state.items.map((item) => [agentJournalItemKey(item.identity), item.body])
     )
     expect(keyed.has('claude:claude-session:user-1')).toBe(false)
-    expect(keyed.get('orca:claude-tool%3Aclaude-session%3Atool-1')).toMatchObject({
+    expect(keyed.get('occ:claude-tool%3Aclaude-session%3Atool-1')).toMatchObject({
       kind: 'tool-call',
       name: 'Bash',
       callId: 'tool-1',
@@ -604,7 +604,7 @@ describe('Claude structured journal translation', () => {
 
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: { type: 'result', session_id: 'claude-session', uuid: 'result-1' }
     })
     expect(state.tombstones).toEqual([])
@@ -659,7 +659,7 @@ describe('Claude structured journal translation', () => {
     )
 
     expect(state.items.map((item) => agentJournalItemKey(item.identity))).toEqual([
-      'orca:claude-tool%3Aclaude-session%3Atool-1'
+      'occ:claude-tool%3Aclaude-session%3Atool-1'
     ])
     expect(state.items[0]?.body).toMatchObject({
       kind: 'tool-call',
@@ -686,32 +686,32 @@ describe('Claude structured journal translation', () => {
 
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: { type: 'system', subtype: 'local_command_output', summary: 'x'.repeat(100_000) }
     })
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: { type: 'system', subtype: 'hook_response', hook_name: 'PostToolUse' }
     })
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: { type: 'system', subtype: 'command_started', command: '/compact' }
     })
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: { type: 'result', usage: { input_tokens: 12 }, total_cost_usd: 0.01 }
     })
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: { type: 'tool_progress', tool_use_id: 'tool-1', elapsed_time_seconds: 2 }
     })
     translator.handle({
       type: 'message',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       message: { type: 'prompt_suggestion', suggestion: '/compact' }
     })
     translator.handle(
@@ -721,7 +721,7 @@ describe('Claude structured journal translation', () => {
     )
     translator.handle({
       type: 'provider-frame',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       kind: 'control_request:future_control',
       payload: { subtype: 'future_control' }
     })
@@ -765,14 +765,14 @@ describe('Claude structured journal translation', () => {
       input: { command: 'git status' },
       questionIds: []
     })
-    translator.handle({ type: 'prompt', sessionId: 'orca-session', prompt: approval })
+    translator.handle({ type: 'prompt', sessionId: 'occ-session', prompt: approval })
     expect(state.items.at(-1)?.body).toMatchObject({
       kind: 'approval',
       title: 'Allow Bash?',
       options: expect.arrayContaining([{ id: 'allow', label: 'Allow' }])
     })
     expect(bindings[0]).toEqual([
-      'orca:claude-prompt%3Aorca-session%3Apermission-1',
+      'occ:claude-prompt%3Aocc-session%3Apermission-1',
       'permission-1'
     ])
 
@@ -790,7 +790,7 @@ describe('Claude structured journal translation', () => {
       },
       questionIds: ['Library?', 'Ship?']
     })
-    translator.handle({ type: 'prompt', sessionId: 'orca-session', prompt: questions })
+    translator.handle({ type: 'prompt', sessionId: 'occ-session', prompt: questions })
     expect(state.items.filter((item) => item.body.kind === 'question')).toHaveLength(1)
     expect(state.items.at(-1)?.body).toMatchObject({
       kind: 'question',
@@ -800,7 +800,7 @@ describe('Claude structured journal translation', () => {
       ]
     })
     expect(bindings.at(-1)).toEqual([
-      'orca:claude-prompt%3Aorca-session%3Aquestions-1',
+      'occ:claude-prompt%3Aocc-session%3Aquestions-1',
       'questions-1'
     ])
 
@@ -821,7 +821,7 @@ describe('Claude structured journal translation', () => {
       },
       questionIds: ['Libraries?']
     })
-    translator.handle({ type: 'prompt', sessionId: 'orca-session', prompt: multiSelect })
+    translator.handle({ type: 'prompt', sessionId: 'occ-session', prompt: multiSelect })
     expect(state.items.at(-1)?.body).toMatchObject({
       kind: 'question',
       question: '1 grouped question from Claude',
@@ -839,7 +839,7 @@ describe('Claude structured journal translation', () => {
 
     translator.handle({
       type: 'prompt-cancelled',
-      sessionId: 'orca-session',
+      sessionId: 'occ-session',
       promptKey: 'questions-1'
     })
     expect(state.items.at(-1)?.body).toMatchObject({

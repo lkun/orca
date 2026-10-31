@@ -63,8 +63,8 @@ describe.skipIf(process.platform !== 'win32')('node-pty Windows input errors', (
       ).not.toThrow()
       await waitForExit(terminal)
       await new Promise((resolve) => setTimeout(resolve, 1_500))
-      witness.write('echo ORCA_CONPTY_WITNESS\r')
-      await waitForOutput(witness, 'ORCA_CONPTY_WITNESS')
+      witness.write('echo OCC_CONPTY_WITNESS\r')
+      await waitForOutput(witness, 'OCC_CONPTY_WITNESS')
       expect(uncaught).toEqual([])
     } finally {
       try {

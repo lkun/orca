@@ -1,4 +1,4 @@
-// Keep Electron imports out: both desktop and orcad bundle these account services.
+// Keep Electron imports out: both desktop and occd bundle these account services.
 import { getClaudeAgentViewService } from './claude/agent-view-service'
 import type { Store } from './persistence'
 import { RateLimitService } from './rate-limits/service'

@@ -113,7 +113,7 @@ beforeAll(async () => {
   const served = await createBundleServer({ outDir, cspHeader })
   server = served.server
   origin = served.origin
-  const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+  const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
   browser = await chromium.launch({
     headless: true,
     ...(executablePath ? { executablePath } : {})
@@ -162,9 +162,9 @@ async function openPane({ grants }) {
   })
   // The page reports a CSP violation as a document event; the header is the shell's own.
   await page.addInitScript(() => {
-    globalThis.__orcaRenderCheckCsp = []
+    globalThis.__occRenderCheckCsp = []
     document.addEventListener('securitypolicyviolation', (event) => {
-      globalThis.__orcaRenderCheckCsp.push({
+      globalThis.__occRenderCheckCsp.push({
         directive: event.violatedDirective,
         blockedUri: event.blockedURI
       })
@@ -177,7 +177,7 @@ async function openPane({ grants }) {
     context,
     consoleErrors,
     foreignRequests,
-    csp: () => page.evaluate(() => globalThis.__orcaRenderCheckCsp)
+    csp: () => page.evaluate(() => globalThis.__occRenderCheckCsp)
   }
 }
 
@@ -210,11 +210,11 @@ async function encodeNoiseJpeg(page, { width, height, seed }) {
 function emitFrame(page, { b64, frameSeq, width, height, pageScaleFactor = 1 }) {
   return page.evaluate(
     ({ b64, frameSeq, width, height, pageScaleFactor, source }) => {
-      const subscription = globalThis.__orcaRenderCheckSubscribes.at(-1)
+      const subscription = globalThis.__occRenderCheckSubscribes.at(-1)
       if (!subscription) {
         return 'no-subscription'
       }
-      return globalThis.__orcaRenderCheckEmitBinary(subscription.id, {
+      return globalThis.__occRenderCheckEmitBinary(subscription.id, {
         b64,
         format: 'jpeg',
         frameSeq,
@@ -284,8 +284,8 @@ describePane('the browser pane in a page', () => {
   it('subscribes over the binary lane and paints the frame it is handed', async () => {
     const view = await openPane({ grants: [faultGrant, BINARY_GRANT] })
     try {
-      await view.page.waitForFunction(() => globalThis.__orcaRenderCheckSubscribes.length > 0)
-      const subscribes = await view.page.evaluate(() => globalThis.__orcaRenderCheckSubscribes)
+      await view.page.waitForFunction(() => globalThis.__occRenderCheckSubscribes.length > 0)
+      const subscribes = await view.page.evaluate(() => globalThis.__occRenderCheckSubscribes)
       expect(subscribes).toHaveLength(1)
       expect(subscribes[0]).toMatchObject({ method: SCREENCAST, wantsBinary: true })
 
@@ -310,7 +310,7 @@ describePane('the browser pane in a page', () => {
   it('flips the double buffer on the second frame', async () => {
     const view = await openPane({ grants: [faultGrant, BINARY_GRANT] })
     try {
-      await view.page.waitForFunction(() => globalThis.__orcaRenderCheckSubscribes.length > 0)
+      await view.page.waitForFunction(() => globalThis.__occRenderCheckSubscribes.length > 0)
       const first = await encodeNoiseJpeg(view.page, { ...FRAME, seed: 7 })
       await emitFrame(view.page, { b64: first, frameSeq: 1, ...FRAME })
       await waitForPaint(view.page, 1)
@@ -336,7 +336,7 @@ describePane('the browser pane in a page', () => {
   it('drops an over-cap frame, keeps the stream, and paints the next one', async () => {
     const view = await openPane({ grants: [faultGrant, BINARY_GRANT] })
     try {
-      await view.page.waitForFunction(() => globalThis.__orcaRenderCheckSubscribes.length > 0)
+      await view.page.waitForFunction(() => globalThis.__occRenderCheckSubscribes.length > 0)
       const small = await encodeNoiseJpeg(view.page, { ...FRAME, seed: 3 })
       await emitFrame(view.page, { b64: small, frameSeq: 1, ...FRAME })
       await waitForPaint(view.page, 1)
@@ -355,8 +355,8 @@ describePane('the browser pane in a page', () => {
       expect(await emitFrame(view.page, { b64: next, frameSeq: 3, ...FRAME })).toBe('posted')
       await waitForLayerFlip(view.page, staleIndex)
 
-      expect(await view.page.evaluate(() => globalThis.__orcaRenderCheckDroppedFrames)).toEqual([2])
-      expect(await view.page.evaluate(() => globalThis.__orcaRenderCheckSubscribes.length)).toBe(1)
+      expect(await view.page.evaluate(() => globalThis.__occRenderCheckDroppedFrames)).toEqual([2])
+      expect(await view.page.evaluate(() => globalThis.__occRenderCheckSubscribes.length)).toBe(1)
       expect(await view.csp()).toEqual([])
       expect(view.consoleErrors).toEqual([])
     } finally {
@@ -370,7 +370,7 @@ describePane('the browser pane in a page', () => {
       await view.page.waitForFunction(() =>
         document.body.innerText.includes('Update the OCC app to stream browser tabs here.')
       )
-      expect(await view.page.evaluate(() => globalThis.__orcaRenderCheckSubscribes)).toEqual([])
+      expect(await view.page.evaluate(() => globalThis.__occRenderCheckSubscribes)).toEqual([])
       expect(view.consoleErrors).toEqual([])
       expect(await view.csp()).toEqual([])
       expect(view.foreignRequests).toEqual([])
@@ -383,7 +383,7 @@ describePane('the browser pane in a page', () => {
     // Thirty ~200KB frames exceed 4MiB window but each fits message cap; missing/ignored acks must cause drops.
     const view = await openPane({ grants: [faultGrant, BINARY_GRANT] })
     try {
-      await view.page.waitForFunction(() => globalThis.__orcaRenderCheckSubscribes.length > 0)
+      await view.page.waitForFunction(() => globalThis.__occRenderCheckSubscribes.length > 0)
       const b64 = await encodeNoiseJpeg(view.page, { ...FRAME, seed: 55 })
       const cumulative = b64.length * 30
       expect(cumulative).toBeGreaterThan(windowCaps.maxUnackedBytes)
@@ -394,9 +394,9 @@ describePane('the browser pane in a page', () => {
       }
 
       expect(new Set(outcomes)).toEqual(new Set(['posted']))
-      expect(await view.page.evaluate(() => globalThis.__orcaRenderCheckDroppedFrames)).toEqual([])
+      expect(await view.page.evaluate(() => globalThis.__occRenderCheckDroppedFrames)).toEqual([])
       // And the acks are real rather than the window merely being generous.
-      const acks = await view.page.evaluate(() => globalThis.__orcaRenderCheckAcks)
+      const acks = await view.page.evaluate(() => globalThis.__occRenderCheckAcks)
       expect(acks.length).toBeGreaterThan(0)
       expect(await view.csp()).toEqual([])
       expect(view.consoleErrors).toEqual([])
@@ -408,7 +408,7 @@ describePane('the browser pane in a page', () => {
   it('issues one mouseClick with the geometry the native pane would send', async () => {
     const view = await openPane({ grants: [faultGrant, BINARY_GRANT] })
     try {
-      await view.page.waitForFunction(() => globalThis.__orcaRenderCheckSubscribes.length > 0)
+      await view.page.waitForFunction(() => globalThis.__occRenderCheckSubscribes.length > 0)
       const b64 = await encodeNoiseJpeg(view.page, { ...FRAME, seed: 21 })
       await emitFrame(view.page, { b64, frameSeq: 1, ...FRAME })
       await waitForPaint(view.page, 1)
@@ -422,9 +422,9 @@ describePane('the browser pane in a page', () => {
         return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 }
       })
       await view.page.mouse.click(box.x, box.y)
-      await view.page.waitForFunction(() => globalThis.__orcaRenderCheckRequests.length > 0)
+      await view.page.waitForFunction(() => globalThis.__occRenderCheckRequests.length > 0)
 
-      const requests = await view.page.evaluate(() => globalThis.__orcaRenderCheckRequests)
+      const requests = await view.page.evaluate(() => globalThis.__occRenderCheckRequests)
       // One request proves double’s click reply prevented move/down/up fallback (four requests).
       expect(requests).toHaveLength(1)
       expect(requests[0].method).toBe('browser.mouseClick')
@@ -446,7 +446,7 @@ describePane('the browser pane in a page', () => {
   it('maps a tap through the page scale the frame was painted at', async () => {
     const view = await openPane({ grants: [faultGrant, BINARY_GRANT] })
     try {
-      await view.page.waitForFunction(() => globalThis.__orcaRenderCheckSubscribes.length > 0)
+      await view.page.waitForFunction(() => globalThis.__occRenderCheckSubscribes.length > 0)
       const b64 = await encodeNoiseJpeg(view.page, { ...FRAME, seed: 22 })
       await emitFrame(view.page, {
         b64,
@@ -464,9 +464,9 @@ describePane('the browser pane in a page', () => {
         return { x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 }
       })
       await view.page.mouse.click(box.x, box.y)
-      await view.page.waitForFunction(() => globalThis.__orcaRenderCheckRequests.length > 0)
+      await view.page.waitForFunction(() => globalThis.__occRenderCheckRequests.length > 0)
 
-      const requests = await view.page.evaluate(() => globalThis.__orcaRenderCheckRequests)
+      const requests = await view.page.evaluate(() => globalThis.__occRenderCheckRequests)
       expect(requests[0].method).toBe('browser.mouseClick')
       // Scaled 980 CSS px layout maps from 712-device-px frame height; allow three CSS px since one device pixel is 2.5 CSS px plus fractional width.
       expect(Math.abs(requests[0].params.x - 980 / 2)).toBeLessThanOrEqual(3)

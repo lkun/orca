@@ -8,7 +8,7 @@ import {
   parseHostPluginManifest,
   parsePluginManifest,
   qualifiedPluginKey,
-  satisfiesOrcaEngineRange,
+  satisfiesOCCEngineRange,
   type PluginManifest
 } from '../../shared/plugins/manifest/plugin-manifest'
 import {
@@ -112,11 +112,11 @@ async function readManifestDir(
     installedPublisher ?? localPluginPublisher(parsed.manifest.publisher)
   )
   const pluginKey = qualifiedPluginKey(manifest)
-  if (!satisfiesOrcaEngineRange(hostVersion, manifest.engines.orca)) {
+  if (!satisfiesOCCEngineRange(hostVersion, manifest.engines.occ)) {
     return {
       pluginKey,
       rootDir,
-      error: `requires OCC ${manifest.engines.orca} (this is ${hostVersion})`,
+      error: `requires OCC ${manifest.engines.occ} (this is ${hostVersion})`,
       isDev
     }
   }

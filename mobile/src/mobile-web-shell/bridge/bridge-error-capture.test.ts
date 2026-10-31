@@ -11,10 +11,10 @@ import {
   BRIDGE_MAX_ERROR_MESSAGE_CHARS,
   BRIDGE_TRUNCATION_MARK,
   BRIDGE_UNREADABLE_ERROR_MESSAGE,
-  BridgeErrorCaptureSchema,
+  BridgeErroccptureSchema,
   captureBridgeError,
   reconstructBridgeError,
-  type BridgeErrorCapture
+  type BridgeErroccpture
 } from './bridge-error-capture'
 
 class RpcTimeoutError extends Error {
@@ -26,8 +26,8 @@ class RpcTimeoutError extends Error {
   }
 }
 
-function overTheWire(capture: BridgeErrorCapture): BridgeErrorCapture {
-  const parsed = BridgeErrorCaptureSchema.safeParse(JSON.parse(JSON.stringify(capture)))
+function overTheWire(capture: BridgeErroccpture): BridgeErroccpture {
+  const parsed = BridgeErroccptureSchema.safeParse(JSON.parse(JSON.stringify(capture)))
   if (!parsed.success) {
     throw new Error(`capture did not survive its own schema: ${parsed.error.message}`)
   }
@@ -178,7 +178,7 @@ describe('captureBridgeError', () => {
   it('follows the cause chain exactly as deep as the recorder does', () => {
     const capture = captureBridgeError(causeChain(BRIDGE_MAX_CAUSE_DEPTH + 2))
     let level = 0
-    let node: BridgeErrorCapture | undefined = capture.cause
+    let node: BridgeErroccpture | undefined = capture.cause
     while (node !== undefined) {
       level += 1
       node = node.cause
@@ -195,23 +195,23 @@ describe('captureBridgeError', () => {
   })
 })
 
-describe('BridgeErrorCaptureSchema', () => {
+describe('BridgeErroccptureSchema', () => {
   it('accepts a chain of exactly the cause depth', () => {
-    expect(BridgeErrorCaptureSchema.safeParse(captureBridgeError(causeChain(20))).success).toBe(
+    expect(BridgeErroccptureSchema.safeParse(captureBridgeError(causeChain(20))).success).toBe(
       true
     )
   })
 
   it('truncates a chain deeper than the capture can produce rather than losing the error', () => {
     const deepest = captureBridgeError(causeChain(20))
-    let node: BridgeErrorCapture = deepest
+    let node: BridgeErroccpture = deepest
     let depth = 0
     while (node.cause !== undefined) {
       node = node.cause
       depth += 1
     }
     node.cause = { category: 'Error', message: 'too deep', isRpcDeliveryUnknown: false }
-    const parsed = BridgeErrorCaptureSchema.safeParse(deepest)
+    const parsed = BridgeErroccptureSchema.safeParse(deepest)
     expect(depth).toBe(BRIDGE_MAX_CAUSE_DEPTH)
     expect(parsed.success && parsed.data.cause?.cause?.cause?.cause?.cause).toBeUndefined()
     expect(parsed.success && parsed.data.cause?.cause?.cause?.cause?.message).toBe('level-5')

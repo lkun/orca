@@ -112,24 +112,24 @@ function run() {
   const brokenInv = { ...inv, nodePty: { exists: false, conptyNode: null } }
   check('missing node-pty warns', resolveTierFileSet(brokenInv, 'full').warnings.length > 0)
 
-  const appDir = 'C:\\Users\\me\\AppData\\Local\\Programs\\orca'
+  const appDir = 'C:\\Users\\me\\AppData\\Local\\Programs\\occ'
   const modules = [
-    'C:\\Users\\me\\AppData\\Local\\Programs\\orca\\OCC.exe',
+    'C:\\Users\\me\\AppData\\Local\\Programs\\occ\\OCC.exe',
     'C:\\Windows\\System32\\kernel32.dll',
-    'C:\\Users\\me\\AppData\\Local\\orca-daemon-host\\OCC.exe'
+    'C:\\Users\\me\\AppData\\Local\\occ-daemon-host\\OCC.exe'
   ]
   const resident = findAppDirResidentModules(modules, appDir)
   check('detects app-dir module', resident.length === 1)
-  check('detects the right module', resident[0].toLowerCase().includes('programs\\orca\\orca.exe'))
-  // Sibling-prefix must NOT match (C:\...\orca vs C:\...\orca-daemon-host).
+  check('detects the right module', resident[0].toLowerCase().includes('programs\\occ\\occ.exe'))
+  // Sibling-prefix must NOT match (C:\...\occ vs C:\...\occ-daemon-host).
   check(
     'sibling prefix not matched',
-    findAppDirResidentModules(['C:\\a\\orca-daemon-host\\x.dll'], 'C:\\a\\orca').length === 0
+    findAppDirResidentModules(['C:\\a\\occ-daemon-host\\x.dll'], 'C:\\a\\occ').length === 0
   )
   // Forward/back-slash + case normalization.
   check(
     'slash + case normalized',
-    findAppDirResidentModules(['c:/a/ORCA/x.dll'], 'C:\\A\\orca').length === 1
+    findAppDirResidentModules(['c:/a/OCC/x.dll'], 'C:\\A\\occ').length === 1
   )
   check(
     'relocated host has zero app-dir modules',

@@ -1,4 +1,4 @@
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import {
   discardStructuredWorkerSession,
   releaseStructuredWorkerSession
@@ -8,7 +8,7 @@ import type { createStructuredWorkerSessionForWorktree } from './worker-topology
 /** Best-effort structured cleanup hides durable/live chat tabs without replacing the original error.
  * Keep created PTYs: their custody rows let the coordinator decide when worker-release should close them. */
 export async function tearDownFailedWorkerStart(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   structuredSession: Awaited<ReturnType<typeof createStructuredWorkerSessionForWorktree>> | null
   dispatchId: string
 }): Promise<void> {

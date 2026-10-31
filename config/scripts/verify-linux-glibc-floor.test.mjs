@@ -119,7 +119,7 @@ describe('verify-linux-glibc-floor parsing', () => {
 describe('floor profiles', () => {
   const needs = (...names) => names.map((name) => ({ library: 'libc.so.6', name, weak: false }))
   const flagged = (list, floor) =>
-    findFloorViolations(list, '/opt/orcad/pty.node', floor).map((v) => v.name)
+    findFloorViolations(list, '/opt/occd/pty.node', floor).map((v) => v.name)
 
   it('keeps the desktop default at Ubuntu 20.04', () => {
     expect(DESKTOP_GLIBC_FLOOR.label).toContain('glibc 2.31')
@@ -206,7 +206,7 @@ describe('DT_NEEDED provider check', () => {
 
 describe('collectNativeBinaries', () => {
   it('collects only ELF .node/.so/executable files, skipping non-ELF and symlinks', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-glibc-collect-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-glibc-collect-'))
     try {
       await mkdir(join(root, 'nested'), { recursive: true })
       await writeFile(join(root, 'addon.node'), ELF_HEADER)
@@ -278,7 +278,7 @@ describe.skipIf(process.platform === 'win32')('verifyLinuxGlibcFloor', () => {
   }
 
   it('throws listing binaries over the floor (glibc, DT_RELR marker, and libstdc++)', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-glibc-over-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-glibc-over-'))
     try {
       const objdumpPath = await writeStubObjdump(root)
       await mkdir(join(root, 'app', 'resources'), { recursive: true })
@@ -303,7 +303,7 @@ describe.skipIf(process.platform === 'win32')('verifyLinuxGlibcFloor', () => {
   })
 
   it('throws when a pinned binary imports openpty without libutil.so.1 in DT_NEEDED', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-glibc-noutil-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-glibc-noutil-'))
     try {
       const objdumpPath = await writeStubObjdump(root)
       await mkdir(join(root, 'app'), { recursive: true })
@@ -319,7 +319,7 @@ describe.skipIf(process.platform === 'win32')('verifyLinuxGlibcFloor', () => {
   })
 
   it('passes weak/at-floor needs and the exempt sherpa-onnx libstdc++ prebuilt', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-glibc-under-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-glibc-under-'))
     try {
       const objdumpPath = await writeStubObjdump(root)
       const sherpaDir = join(root, 'app', 'node_modules', 'sherpa-onnx-linux-x64')
@@ -336,7 +336,7 @@ describe.skipIf(process.platform === 'win32')('verifyLinuxGlibcFloor', () => {
   })
 
   it('applies the floor profile it is given and names it in the failure', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-glibc-profile-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-glibc-profile-'))
     try {
       const objdumpPath = await writeStubObjdump(root)
       await mkdir(join(root, 'app'), { recursive: true })
@@ -354,7 +354,7 @@ describe.skipIf(process.platform === 'win32')('verifyLinuxGlibcFloor', () => {
   })
 
   it('fails closed when objdump cannot read a binary (non-zero exit)', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-glibc-closed-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-glibc-closed-'))
     try {
       const objdumpPath = await writeStubObjdump(root)
       await mkdir(join(root, 'app'), { recursive: true })
@@ -369,7 +369,7 @@ describe.skipIf(process.platform === 'win32')('verifyLinuxGlibcFloor', () => {
   })
 
   it('is a no-op (no objdump needed) when there are no native binaries', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-glibc-empty-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-glibc-empty-'))
     try {
       await mkdir(join(root, 'app'), { recursive: true })
       await writeFile(join(root, 'app', 'readme.txt'), 'no binaries here')
@@ -396,7 +396,7 @@ function elfHeader(machine) {
 
 describe('bundled native binary architecture', () => {
   it('reads e_machine from a little-endian ELF', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-elf-arch-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-elf-arch-'))
     const file = join(dir, 'pty.node')
     await writeFile(file, elfHeader(0xb7))
     expect(readElfMachine(file)).toBe(0xb7)
@@ -405,7 +405,7 @@ describe('bundled native binary architecture', () => {
 
   // Catch wrong-arch source build despite valid symbol floors; retain intentionally vendored foreign-arch watcher judged by its own path.
   it('accepts a per-arch vendored package that matches its own path', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-elf-arch-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-elf-arch-'))
     const pkg = join(dir, '@parcel', 'watcher-linux-arm64-glibc')
     await mkdir(pkg, { recursive: true })
     const file = join(pkg, 'watcher.node')
@@ -417,7 +417,7 @@ describe('bundled native binary architecture', () => {
 
   // But a path that names an arch must actually hold it — this is the Pi 5 failure.
   it('flags a binary that contradicts the architecture its own path names', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-elf-arch-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-elf-arch-'))
     const nested = join(dir, 'bin', 'linux-arm64-148')
     await mkdir(nested, { recursive: true })
     const file = join(nested, 'node-pty.node')
@@ -430,7 +430,7 @@ describe('bundled native binary architecture', () => {
 
   // Release arm64 slices live in `linux-arm64-unpacked`; bundled ripgrep ships linux-x64 beside it.
   it('reads arch tokens only below the slice root', async () => {
-    const root = join(await mkdtemp(join(tmpdir(), 'orca-elf-arch-')), 'linux-arm64-unpacked')
+    const root = join(await mkdtemp(join(tmpdir(), 'occ-elf-arch-')), 'linux-arm64-unpacked')
     const dir = join(root, 'resources', 'ripgrep', 'linux-x64')
     await mkdir(dir, { recursive: true })
     const file = join(dir, 'rg')
@@ -440,7 +440,7 @@ describe('bundled native binary architecture', () => {
   })
 
   it('flags an x86-64 binary in an arm64 slice', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-elf-arch-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-elf-arch-'))
     const file = join(dir, 'pty.node')
     await writeFile(file, elfHeader(0x3e))
     expect(findArchViolation(file, 'arm64')).toMatchObject({ actual: 'x64' })
@@ -448,7 +448,7 @@ describe('bundled native binary architecture', () => {
   })
 
   it('accepts a matching architecture', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-elf-arch-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-elf-arch-'))
     const file = join(dir, 'pty.node')
     await writeFile(file, elfHeader(0x3e))
     expect(findArchViolation(file, 'x64')).toBeNull()
@@ -456,7 +456,7 @@ describe('bundled native binary architecture', () => {
   })
 
   it('stays silent when no target architecture is supplied', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-elf-arch-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-elf-arch-'))
     const file = join(dir, 'pty.node')
     await writeFile(file, elfHeader(0x3e))
     expect(findArchViolation(file, undefined)).toBeNull()
@@ -464,7 +464,7 @@ describe('bundled native binary architecture', () => {
   })
 
   it('ignores a file that is not a readable little-endian ELF', async () => {
-    const dir = await mkdtemp(join(tmpdir(), 'orca-elf-arch-'))
+    const dir = await mkdtemp(join(tmpdir(), 'occ-elf-arch-'))
     const file = join(dir, 'not-elf.node')
     await writeFile(file, Buffer.from('not an elf at all'))
     expect(readElfMachine(file)).toBeNull()

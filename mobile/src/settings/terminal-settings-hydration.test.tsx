@@ -15,7 +15,7 @@ const storage = vi.hoisted(
 vi.mock('@react-native-async-storage/async-storage', () => ({
   default: {
     getItem: vi.fn(async (key: string) => {
-      if (key === 'orca:terminalTextScale' && storage.firstTextRead) {
+      if (key === 'occ:terminalTextScale' && storage.firstTextRead) {
         const pending = storage.firstTextRead
         storage.firstTextRead = undefined
         return pending
@@ -88,8 +88,8 @@ describe('terminal settings text-size hydration', () => {
       picker().props.onSelect('larger')
     })
     expect(picker().props.selected).toBe('larger')
-    expect(AsyncStorage.setItem).toHaveBeenCalledWith('orca:terminalTextScale', '1.5')
-    expect(storage.values.get('orca:terminalTextScale')).toBe('1.5')
+    expect(AsyncStorage.setItem).toHaveBeenCalledWith('occ:terminalTextScale', '1.5')
+    expect(storage.values.get('occ:terminalTextScale')).toBe('1.5')
 
     await act(async () => {
       resolveInitialRead('0.75')
@@ -99,7 +99,7 @@ describe('terminal settings text-size hydration', () => {
   })
 
   it('still hydrates the saved size when the user has not edited it', async () => {
-    storage.values.set('orca:terminalTextScale', '0.75')
+    storage.values.set('occ:terminalTextScale', '0.75')
     await act(async () => {
       renderer = create(createElement(TerminalSettingsScreen))
     })

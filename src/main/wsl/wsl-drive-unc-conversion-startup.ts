@@ -7,12 +7,12 @@
 import {
   prepareProfileProjectDomainChanges,
   type ProfileProjectDomainChanges
-} from '../orca-profiles/profile-project-domain-changes'
+} from '../occ-profiles/profile-project-domain-changes'
 import {
   readProfileProjectTransferState,
   writeProfileProjectDomainChanges
-} from '../orca-profiles/profile-project-domain-state'
-import { migrateProfileProjectTransferParticipant } from '../orca-profiles/profile-project-transfer-migration'
+} from '../occ-profiles/profile-project-domain-state'
+import { migrateProfileProjectTransferParticipant } from '../occ-profiles/profile-project-transfer-migration'
 import {
   listWslDriveUncConversionsForProfile,
   removeWslDriveUncConversion,

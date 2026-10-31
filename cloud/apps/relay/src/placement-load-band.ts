@@ -89,7 +89,7 @@ export class PlacementLoadBand {
     if (now - this.summaryStartedAt < PLACEMENT_LOAD_BAND_SUMMARY_MS) return
     this.log(
       JSON.stringify({
-        event: 'orca_relay_placement_load_band',
+        event: 'occ_relay_placement_load_band',
         windowMs: now - this.summaryStartedAt,
         ...summary
       })

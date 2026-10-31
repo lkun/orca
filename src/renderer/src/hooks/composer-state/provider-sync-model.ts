@@ -1,5 +1,5 @@
 import type { RefObject } from 'react'
-import type { OrcaHooks, SetupAgentStartupPolicy } from '../../../../shared/orca-yaml-hook-types'
+import type { OCCHooks, SetupAgentStartupPolicy } from '../../../../shared/occ-yaml-hook-types'
 import type { HookCheckResult } from '@/runtime/runtime-hooks-client'
 
 export type ComposerProviderSyncModel = {
@@ -14,5 +14,5 @@ export type ComposerProviderSyncModel = {
     targetRepoId: string,
     options?: { background?: boolean }
   ) => Promise<HookCheckResult>
-  commitHookCheckIfCurrent: (targetContextKey: string, hooks: OrcaHooks | null) => boolean
+  commitHookCheckIfCurrent: (targetContextKey: string, hooks: OCCHooks | null) => boolean
 }

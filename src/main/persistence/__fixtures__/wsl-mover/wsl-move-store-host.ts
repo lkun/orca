@@ -1,18 +1,18 @@
 /**
- * A WSL host for the move driver backed by a real orcad profile store, so staging claims, blob
+ * A WSL host for the move driver backed by a real occd profile store, so staging claims, blob
  * staging, the commit's blob check and receipts are the production code. Every mutation passes a
  * kill point before it lands and after it is durable (a lost reply). A kill stops the whole desktop
  * process: from then on every call throws, so no catch handler can tidy up what a crash would leave.
  */
 import type {
-  OrcadMigrationCatalogState,
-  OrcadMigrationManifest
-} from '../../../../shared/orcad-migration/orcad-migration-manifest'
-import { ORCAD_MIGRATION_BLOB_KIND_CONTRACTS } from '../../../../shared/orcad-migration/orcad-migration-blob-transfer'
+  OCCdMigrationCatalogState,
+  OCCdMigrationManifest
+} from '../../../../shared/occd-migration/occd-migration-manifest'
+import { OCCD_MIGRATION_BLOB_KIND_CONTRACTS } from '../../../../shared/occd-migration/occd-migration-blob-transfer'
 import {
-  ORCAD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
-  ORCAD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY
-} from '../../../../shared/orcad-runtime-capabilities'
+  OCCD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
+  OCCD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY
+} from '../../../../shared/occd-runtime-capabilities'
 import type { Store } from '../../loading-store/store'
 import type { WslMoveHost } from '../../moving-wsl-projects/wsl-move-driver-ports'
 
@@ -47,13 +47,13 @@ export function passWslMoveKillPoint(kill: WslMoveKillSwitch, name: string): voi
 
 /** Every capability a current WSL host advertises for a move. */
 export const WSL_MOVE_STORE_HOST_CAPABILITIES: readonly string[] = [
-  ORCAD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY,
-  ORCAD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
-  ...Object.values(ORCAD_MIGRATION_BLOB_KIND_CONTRACTS).map((contract) => contract.capability)
+  OCCD_MIGRATION_LOCAL_WSL_SOURCE_RUNTIME_CAPABILITY,
+  OCCD_MIGRATION_BLOB_CHANNEL_RUNTIME_CAPABILITY,
+  ...Object.values(OCCD_MIGRATION_BLOB_KIND_CONTRACTS).map((contract) => contract.capability)
 ]
 
 export type WslMoveStoreHostOptions = {
-  /** The host's current store; an orcad restart swaps it for one reopened from disk. */
+  /** The host's current store; an occd restart swaps it for one reopened from disk. */
   store: () => Store
   kill: WslMoveKillSwitch
   /** Points named `<prefix>stage:before` etc., so two desktops on one host stay apart. */
@@ -81,9 +81,9 @@ export function createWslMoveStoreHost(options: WslMoveStoreHostOptions): WslMov
     at(`${name}:lost-reply`)
     return result
   }
-  const read = (manifest: OrcadMigrationManifest): OrcadMigrationCatalogState => {
+  const read = (manifest: OCCdMigrationManifest): OCCdMigrationCatalogState => {
     at('read-state')
-    return store().getOrcadMigrationCatalogState(manifest)
+    return store().getOCCdMigrationCatalogState(manifest)
   }
   return {
     environmentId: options.environmentId ?? 'wsl:Ubuntu',
@@ -91,30 +91,30 @@ export function createWslMoveStoreHost(options: WslMoveStoreHostOptions): WslMov
     capabilities: WSL_MOVE_STORE_HOST_CAPABILITIES,
     catalog: {
       readState: async (manifest) => read(manifest),
-      stage: (manifest) => mutate('stage', () => store().stageOrcadMigrationCatalog(manifest)),
+      stage: (manifest) => mutate('stage', () => store().stageOCCdMigrationCatalog(manifest)),
       commit: (manifest) =>
-        mutate('commit', () => store().commitStagedOrcadMigrationCatalog(manifest)),
+        mutate('commit', () => store().commitStagedOCCdMigrationCatalog(manifest)),
       abort: async (manifest) => ({
-        ...(await mutate('abort', () => store().abortStagedOrcadMigrationCatalog(manifest))),
+        ...(await mutate('abort', () => store().abortStagedOCCdMigrationCatalog(manifest))),
         durableAbsent: true
       }),
       abortByReference: (manifest) =>
         mutate('abort-by-reference', () =>
-          store().abortStagedOrcadMigrationCatalogByReference({
+          store().abortStagedOCCdMigrationCatalogByReference({
             migrationId: manifest.migrationId,
             manifestSha256: manifest.manifestSha256
           })
         ),
       stageChunk: (request) =>
-        mutate('snapshot-chunk', () => store().stageOrcadMigrationSnapshotChunk(request))
+        mutate('snapshot-chunk', () => store().stageOCCdMigrationSnapshotChunk(request))
     },
     commitWithBlobs: (manifest, expectedBlobs) =>
       mutate('commit', () =>
-        store().commitStagedOrcadMigrationCatalog(manifest, { expectedBlobs })
+        store().commitStagedOCCdMigrationCatalog(manifest, { expectedBlobs })
       ),
     blobs: {
       stageChunk: (request) =>
-        mutate(`blob:${request.blob.blobKind}`, () => store().stageOrcadMigrationBlobChunk(request))
+        mutate(`blob:${request.blob.blobKind}`, () => store().stageOCCdMigrationBlobChunk(request))
     },
     readHolding: async () => {
       at('read-holding')

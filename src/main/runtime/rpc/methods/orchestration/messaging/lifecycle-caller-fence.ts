@@ -1,5 +1,5 @@
 import type { OrchestrationCompatibilityEvidence } from '../../../../../../shared/orchestration-compatibility-evidence'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import { isEquivalentPaneKey } from '../../../../orchestration/db/pane-key-match'
@@ -7,7 +7,7 @@ import { isEquivalentPaneKey } from '../../../../orchestration/db/pane-key-match
 /** Refuse reports/questions from a different live orchestration party; absent/stale/foreign/scrubbed env proves nothing.
  * Accepted limit: tmux inherits its starting pane's env, so a worker in a coordinator/worker-owned tmux server is refused. */
 export function assertLifecycleCallerIsNotAnotherParty(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   args: {
     from: string
     fromPaneKey: string | undefined

@@ -12,7 +12,7 @@ import { runtimeEnvironmentIdOrLocalUnlessTwin } from '@/lib/worktree-runtime-ow
 import { closeRemoteBrowserPageInOwningEnvironment } from './browser-remote-close'
 import { releaseDocPreviewGrant } from '@/lib/doc-preview-grants'
 import { isLocalBrowserPageOwner } from './browser-host-state'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
 import { sendBrowserLayoutCommand } from './browser-layout-owner-commands'
 
 export function createBrowserPageConversionActions(
@@ -128,7 +128,7 @@ export function createBrowserPageConversionActions(
         return newPage
       }
       // Switch point: main puts the new page in the old one's place; the page shows once it did.
-      const sentPlan = ORCA_LAYOUT_OWNER_IS_MAIN
+      const sentPlan = OCC_LAYOUT_OWNER_IS_MAIN
         ? planBrowserPageConversion(get(), pageId, target, options)
         : null
       if (

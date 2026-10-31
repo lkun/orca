@@ -7,14 +7,14 @@ import {
   normalizeExecutionHostId,
   parseExecutionHostId
 } from '../../../shared/execution-host'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { enrichRepoGitUsernames } from '../../repo-git-username-enrichment'
 import { enrichMissingRepoGitRemoteIdentities } from '../../repo-git-remote-identity-enrichment'
 import { invalidateAuthorizedRootsCache } from '../registered-worktree-roots-cache'
 import { notifyReposChanged } from './repos-changed-notification'
 import { scheduleCurrentWorktreeBaseDirectoryWatcherSync } from '../worktree-base-directory-watcher'
 import { ProjectUpdateIpcArgs, parseProjectGroupIpcArgs } from './repo-ipc-arg-schemas'
-import { visibleProjectHostSetups, visibleRepos } from '../../ssh/orcad-retained-source'
+import { visibleProjectHostSetups, visibleRepos } from '../../ssh/occd-retained-source'
 import {
   assertWslMoveProjectWritable,
   assertWslMoveReposWritable,
@@ -25,7 +25,7 @@ import { listWslMovedProjects } from '../../persistence/moving-wsl-projects/wsl-
 export function registerRepoCatalogHandlers(
   mainWindow: BrowserWindow,
   store: Store,
-  runtime: Pick<OrcaRuntimeService, 'removeProject'>
+  runtime: Pick<OCCRuntimeService, 'removeProject'>
 ): void {
   // Enrichment deduplicates by callback identity; per-call closures accumulate broadcasts during slow sweeps.
   const broadcastReposChanged = (): void => notifyReposChanged(mainWindow)

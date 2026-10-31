@@ -25,7 +25,7 @@ runs:
       uses: actions/cache/restore@v5
       continue-on-error: true
       with:
-        path: ${{ runner.temp }}/orca-package-fixtures/${{ inputs.fixture }}.tar
+        path: ${{ runner.temp }}/occ-package-fixtures/${{ inputs.fixture }}.tar
         key: linux-package-fixture-v1-${{ runner.os }}-${{ runner.arch }}-linux-amd64-${{ inputs.fixture }}-${{ hashFiles(format('config/docker/{0}/**', inputs.fixture), '.github/actions/prepare-linux-package-fixture/action.yml', '.github/actions/prepare-linux-package-fixture/load-fixture.sh') }}
 
     - name: Load or seed fixture build cache
@@ -43,5 +43,5 @@ runs:
       uses: actions/cache/save@v5
       continue-on-error: true
       with:
-        path: ${{ runner.temp }}/orca-package-fixtures/${{ inputs.fixture }}.tar
+        path: ${{ runner.temp }}/occ-package-fixtures/${{ inputs.fixture }}.tar
         key: ${{ steps.cache.outputs.cache-primary-key }}

@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
@@ -19,7 +19,7 @@ const record = (entry) => {
     const { events = [] } = await chrome.storage.local.get('events');
     events.push({ ...entry, version: chrome.runtime.getManifest().version });
     await chrome.storage.local.set({ events });
-    console.log('ORCA_EXT_LIFECYCLE ' + JSON.stringify(events));
+    console.log('OCC_EXT_LIFECYCLE ' + JSON.stringify(events));
   });
 };
 chrome.runtime.onInstalled.addListener((details) => record({ event: 'onInstalled', details }));
@@ -92,10 +92,10 @@ async function runPhase(phase: Phase): Promise<FixtureStatus> {
     args,
     env: {
       ...env,
-      ORCA_BACKGROUND_LAUNCH: '1',
-      ORCA_EXTENSION_FIXTURE_STATUS: join(root, `status-${phase}.json`),
-      ORCA_EXTENSION_FIXTURE_DIR: extensionDir,
-      ORCA_EXTENSION_FIXTURE_PHASE: phase
+      OCC_BACKGROUND_LAUNCH: '1',
+      OCC_EXTENSION_FIXTURE_STATUS: join(root, `status-${phase}.json`),
+      OCC_EXTENSION_FIXTURE_DIR: extensionDir,
+      OCC_EXTENSION_FIXTURE_PHASE: phase
     },
     stdio: ['ignore', 'pipe', 'pipe']
   })
@@ -118,7 +118,7 @@ async function runPhase(phase: Phase): Promise<FixtureStatus> {
 }
 
 beforeAll(async () => {
-  root = mkdtempSync(join(tmpdir(), 'orca-browser-extension-lifecycle-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-browser-extension-lifecycle-'))
   extensionDir = join(root, 'extension')
   mkdirSync(extensionDir)
   writeManifest('1.0.0')

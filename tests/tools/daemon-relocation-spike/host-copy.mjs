@@ -11,7 +11,7 @@ function destPath(hostRoot, destRel) {
   return join(hostRoot, ...destRel.split('/'))
 }
 
-// Return copied host/entry/native paths and skipped inputs. nodePtyNativeDir supports builds reading ORCA_NODE_PTY_NATIVE_DIR; current patch ignores it.
+// Return copied host/entry/native paths and skipped inputs. nodePtyNativeDir supports builds reading OCC_NODE_PTY_NATIVE_DIR; current patch ignores it.
 export function copyHost(inv, plan, workDir) {
   const hostRoot = join(workDir, HOST_SUBDIR)
   mkdirSync(hostRoot, { recursive: true })

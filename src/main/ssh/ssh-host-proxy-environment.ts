@@ -11,7 +11,7 @@ import { isSshSessionLimitError } from './ssh-session-limit-error'
 type ProxyEnvironmentTransport = Parameters<typeof execCommand>[0]
 
 const PROBE_TIMEOUT_MS = 8_000
-const MARKER = '__ORCA_HOST_PROXY_ENV__'
+const MARKER = '__OCC_HOST_PROXY_ENV__'
 
 // Values travel as hex of their UTF-8 bytes, so newlines and console code pages cannot alter them.
 const POSIX_PROBE = PROXY_ENVIRONMENT_KEYS.map(
@@ -26,7 +26,7 @@ const POWERSHELL_PROBE = [
   `Write-Output ('${MARKER} ' + $k + '=' + $h) } }`
 ].join(' ')
 
-/** Reads the proxy variables an SSH exec session gets, the environment processes launched over SSH (such as orcad) run with. */
+/** Reads the proxy variables an SSH exec session gets, the environment processes launched over SSH (such as occd) run with. */
 export async function readSshHostProxyEnvironment(
   conn: ProxyEnvironmentTransport,
   signal?: AbortSignal

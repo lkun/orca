@@ -3,11 +3,11 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { OrchestrationDb } from './orchestration/db'
 import type { DispatchContextRow } from './orchestration/types'
 import { createRootDispatch } from './orchestration/db/root-dispatch-test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 
 const TAB_ID = '11111111-1111-4111-8111-111111111111'
 const LEAF_ID = '22222222-2222-4222-8222-222222222222'
@@ -18,7 +18,7 @@ const WORKTREE_ID = 'repo-audit::/tmp/audit'
 
 const directories: string[] = []
 
-class ExitProvenanceRuntime extends OrcaRuntimeService {
+class ExitProvenanceRuntime extends OCCRuntimeService {
   exitEvidence() {
     const pty = this.ptysById.get(PTY_ID)
     if (!pty) {
@@ -250,7 +250,7 @@ describe('STA-4603/STA-4536 exit provenance', () => {
 
   it('marks the intent from the real close path, not just from the helper', async () => {
     const db = createDb()
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     runtime.setOrchestrationDb(db)
     // stopAndWait reports verified user stops with synthetic 0, indistinguishable from finish by code alone.
     runtime.setPtyController({
@@ -314,7 +314,7 @@ describe('STA-4603/STA-4536 exit provenance', () => {
   })
 
   describe.each(['registration', 'spawn'] as const)('incarnation replacement via %s', (path) => {
-    function announce(runtime: OrcaRuntimeService, incarnationId?: string): void {
+    function announce(runtime: OCCRuntimeService, incarnationId?: string): void {
       if (path === 'registration') {
         runtime.registerPty(PTY_ID, WORKTREE_ID, null, {
           tabId: TAB_ID,
@@ -361,7 +361,7 @@ describe('STA-4603/STA-4536 exit provenance', () => {
       expect(summary.exitCause).toBeUndefined()
       const clearedEvidence = { code: null, cause: null }
       expect(runtime.exitEvidence()).toEqual(
-        ORCA_LAYOUT_OWNER_IS_MAIN ? [clearedEvidence] : [clearedEvidence, clearedEvidence]
+        OCC_LAYOUT_OWNER_IS_MAIN ? [clearedEvidence] : [clearedEvidence, clearedEvidence]
       )
       await runtime.onPtyExit(PTY_ID, -1, 'audit-incarnation', {
         cause: { kind: 'unknown', reason: 'stop_unverified' }
@@ -392,7 +392,7 @@ describe('STA-4603/STA-4536 exit provenance', () => {
       }
     )
 
-    it.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN && path === 'registration')(
+    it.skipIf(OCC_LAYOUT_OWNER_IS_MAIN && path === 'registration')(
       'retains stop evidence without a known predecessor incarnation',
       async () => {
         const runtime = createRuntime(createDb(), null)

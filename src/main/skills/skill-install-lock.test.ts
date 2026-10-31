@@ -25,7 +25,7 @@ async function readPublishedOwner(lockPath: string): Promise<Record<string, unkn
 
 describe('skill install lock', () => {
   it.each([0, -1])('rejects a non-positive owner pid (%s)', async (pid) => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-test-'))
     roots.push(root)
     const ownerPath = join(root, 'owner.json')
     await writeFile(ownerPath, JSON.stringify({ token: 'invalid-pid', pid, createdAt: Date.now() }))
@@ -34,7 +34,7 @@ describe('skill install lock', () => {
   })
 
   it('reclaims a fresh legacy lock whose process was killed', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-test-'))
     roots.push(root)
     const lockPath = skillInstallLockPath(join(root, 'state'), join(root, 'skills', 'alpha'))
     await mkdir(dirname(lockPath), { recursive: true })
@@ -51,7 +51,7 @@ describe('skill install lock', () => {
   })
 
   it('reclaims a lock after its release deletion fails', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-test-'))
     roots.push(root)
     const lockPath = skillInstallLockPath(join(root, 'state'), join(root, 'skills', 'alpha'))
     const release = await acquireSkillInstallLock({
@@ -73,7 +73,7 @@ describe('skill install lock', () => {
   })
 
   it('publishes a complete candidate atomically when acquisitions overlap', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-test-'))
     roots.push(root)
     const lockPath = skillInstallLockPath(join(root, 'state'), join(root, 'skills', 'alpha'))
     let ownerWritten!: () => void
@@ -129,7 +129,7 @@ describe('skill install lock', () => {
   })
 
   it('does not publish a lock when writing its owner fails', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-test-'))
     roots.push(root)
     const lockPath = skillInstallLockPath(join(root, 'state'), join(root, 'skills', 'alpha'))
 
@@ -148,7 +148,7 @@ describe('skill install lock', () => {
   })
 
   it('retries when the current owner releases after a contended rename', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-test-'))
     roots.push(root)
     const lockPath = skillInstallLockPath(join(root, 'state'), join(root, 'skills', 'alpha'))
     const firstRelease = await acquireSkillInstallLock({ path: lockPath })
@@ -174,7 +174,7 @@ describe('skill install lock', () => {
   })
 
   it('reclaims abandoned legacy owner files at startup', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-test-'))
     roots.push(root)
     const stateDirectory = join(root, 'state')
     const lockPath = skillInstallLockPath(stateDirectory, join(root, 'skills', 'alpha'))
@@ -193,7 +193,7 @@ describe('skill install lock', () => {
   })
 
   it('reclaims dead locks, abandoned candidates, and completed releases at startup', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-test-'))
     roots.push(root)
     const stateDirectory = join(root, 'state')
     const deadPath = skillInstallLockPath(stateDirectory, join(root, 'skills', 'alpha'))
@@ -228,7 +228,7 @@ describe('skill install lock', () => {
   })
 
   it('continues startup recovery past a non-empty released lock', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-test-'))
     roots.push(root)
     const stateDirectory = join(root, 'state')
     const lockDirectory = join(stateDirectory, 'locks')
@@ -254,7 +254,7 @@ describe('skill install lock', () => {
   })
 
   it('frees the canonical lock before release cleanup finishes', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-lock-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-lock-test-'))
     roots.push(root)
     const stateDirectory = join(root, 'state')
     const lockPath = skillInstallLockPath(stateDirectory, join(root, 'skills', 'alpha'))

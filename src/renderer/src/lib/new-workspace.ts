@@ -44,7 +44,7 @@ export function canUseIssueCommandForLinkedItemProvider(
 // Linked work items without user prompt or issueCommand still need an actionable default task.
 export const DEFAULT_ISSUE_COMMAND_TEMPLATE = 'Complete {{artifact_url}}'
 
-/** Prefer artifact_url while retaining issue substitutions for unmigrated orca.yaml/.orca/issue-command templates. */
+/** Prefer artifact_url while retaining issue substitutions for unmigrated occ.yaml/.occ/issue-command templates. */
 export function renderIssueCommandTemplate(
   template: string,
   vars: { issueNumber: number | null; artifactUrl: string | null }

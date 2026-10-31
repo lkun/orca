@@ -17,10 +17,10 @@ it('uses the built-in theme until the plugin theme is defined, then switches to 
   expect(result.current).toBe('vs-dark')
 
   const data = { base: 'vs-dark' as const, inherit: true, rules: [], colors: {} }
-  usePluginMonacoThemeStore.setState({ theme: { name: 'orca-plugin-test', data } })
+  usePluginMonacoThemeStore.setState({ theme: { name: 'occ-plugin-test', data } })
   rerender()
-  await waitFor(() => expect(result.current).toBe('orca-plugin-test'))
-  expect(defineTheme).toHaveBeenCalledWith('orca-plugin-test', data)
+  await waitFor(() => expect(result.current).toBe('occ-plugin-test'))
+  expect(defineTheme).toHaveBeenCalledWith('occ-plugin-test', data)
 
   usePluginMonacoThemeStore.setState({ theme: null })
   rerender()

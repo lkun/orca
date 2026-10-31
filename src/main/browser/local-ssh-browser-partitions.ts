@@ -6,7 +6,7 @@ import {
   deriveLocalSshBrowserRoutePartitionStorageScope
 } from './browser-route-identity'
 import {
-  activeBrowserRoutePartitionOrcaProfileId,
+  activeBrowserRoutePartitionOCCProfileId,
   currentBrowserRoutePartitionBindingStore
 } from './browser-route-partition-binding-runtime'
 import {
@@ -26,7 +26,7 @@ import {
   retainLocalSshBrowserRoute
 } from './local-ssh-browser-route'
 
-const AUTHORITY_CONNECTION_IDENTITY_TAG = 'orca-local-ssh-browser'
+const AUTHORITY_CONNECTION_IDENTITY_TAG = 'occ-local-ssh-browser'
 const AUTHORITY_CONNECTION_IDENTITY_VERSION = 1
 
 type PreparedLocalSshPartition = {
@@ -48,11 +48,11 @@ const preparedByPartition = new Map<string, PreparedLocalSshPartition>()
 const partitionBySession = new WeakMap<Session, string>()
 
 // Keep the identity stable across restarts to preserve cookies.
-export function localSshBrowserAuthorityConnectionIdentity(orcaProfileId: string): string {
+export function localSshBrowserAuthorityConnectionIdentity(occProfileId: string): string {
   return JSON.stringify([
     AUTHORITY_CONNECTION_IDENTITY_TAG,
     AUTHORITY_CONNECTION_IDENTITY_VERSION,
-    orcaProfileId
+    occProfileId
   ])
 }
 
@@ -118,8 +118,8 @@ async function prepareFresh(
   input: { targetId: string; browserProfileId: string; skipProbe?: boolean },
   storage: PendingLocalSshPartition['storage']
 ): Promise<PreparedLocalSshPartition> {
-  const orcaProfileId = activeBrowserRoutePartitionOrcaProfileId()
-  if (!orcaProfileId) {
+  const occProfileId = activeBrowserRoutePartitionOCCProfileId()
+  if (!occProfileId) {
     throw new Error('browser_local_route_profile_unavailable')
   }
   browserSessionRegistry.requireRouteBrowserProfile(input.browserProfileId)
@@ -135,9 +135,9 @@ async function prepareFresh(
     }
   }
   const derived = deriveBrowserRoutePartition({
-    orcaProfileId,
+    occProfileId,
     browserProfileId: input.browserProfileId,
-    authorityConnectionIdentity: localSshBrowserAuthorityConnectionIdentity(orcaProfileId),
+    authorityConnectionIdentity: localSshBrowserAuthorityConnectionIdentity(occProfileId),
     executionHostIdentity: sshExecutionHostStorageIdentity(input.targetId)
   })
   const bindings = currentBrowserRoutePartitionBindingStore({
@@ -148,7 +148,7 @@ async function prepareFresh(
     const evicted = bindings.set(
       derived.partition,
       derived.bindingFingerprint,
-      deriveLocalSshBrowserRoutePartitionStorageScope({ orcaProfileId, targetId: input.targetId })
+      deriveLocalSshBrowserRoutePartitionStorageScope({ occProfileId, targetId: input.targetId })
     )
     if (evicted.length > 0) {
       void releaseEvictedBrowserRoutePartitionStorage(

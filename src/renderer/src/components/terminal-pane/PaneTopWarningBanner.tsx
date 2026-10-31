@@ -12,14 +12,14 @@ function layoutPaneTopBanners(pane: HTMLElement, leaving?: HTMLElement): void {
     if (banner === leaving) {
       continue
     }
-    banner.style.setProperty('--orca-pane-top-banner-offset', `${offset}px`)
+    banner.style.setProperty('--occ-pane-top-banner-offset', `${offset}px`)
     offset += banner.offsetHeight
     count += 1
   }
   if (count === 0) {
-    pane.style.removeProperty('--orca-pane-top-banner-height')
+    pane.style.removeProperty('--occ-pane-top-banner-height')
   } else {
-    pane.style.setProperty('--orca-pane-top-banner-height', `${offset}px`)
+    pane.style.setProperty('--occ-pane-top-banner-height', `${offset}px`)
   }
 }
 

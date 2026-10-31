@@ -44,12 +44,12 @@ test.describe('Source Control Create PR intent worktree switching', () => {
   test.describe.configure({ mode: 'serial' })
 
   test('keeps Create PR intent running after switching worktrees', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
     const { primaryWorktreeId, prWorktreeId, prWorktreePath, primaryBranch } =
-      await seedCreatePrComposer(orcaPage)
+      await seedCreatePrComposer(occPage)
 
     const screenshotDir = path.join(
       process.cwd(),
@@ -62,7 +62,7 @@ test.describe('Source Control Create PR intent worktree switching', () => {
       contentType: 'text/plain'
     })
 
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ prWorktreeId, primaryBranch }) => {
         const store =
           window.__store ??
@@ -141,7 +141,7 @@ test.describe('Source Control Create PR intent worktree switching', () => {
             return {
               ok: true as const,
               number: 74,
-              url: 'https://github.com/acme/orca/pull/74'
+              url: 'https://github.com/acme/occ/pull/74'
             }
           },
           gitStatusByWorktree: {
@@ -162,8 +162,8 @@ test.describe('Source Control Create PR intent worktree switching', () => {
       { prWorktreeId, primaryBranch }
     )
 
-    await openSourceControl(orcaPage, prWorktreeId)
-    const createPr = orcaPage.getByRole('button', { name: 'Create PR' }).first()
+    await openSourceControl(occPage, prWorktreeId)
+    const createPr = occPage.getByRole('button', { name: 'Create PR' }).first()
     await expect(createPr).toBeVisible({ timeout: 10_000 })
     await expect(createPr).toBeEnabled()
     await createPr.click()
@@ -171,7 +171,7 @@ test.describe('Source Control Create PR intent worktree switching', () => {
     await expect
       .poll(
         () =>
-          orcaPage.evaluate(
+          occPage.evaluate(
             () =>
               (window as unknown as { __createPRIntentPushStarted: boolean })
                 .__createPRIntentPushStarted
@@ -179,12 +179,12 @@ test.describe('Source Control Create PR intent worktree switching', () => {
         { timeout: 10_000 }
       )
       .toBe(true)
-    await openSourceControl(orcaPage, primaryWorktreeId)
+    await openSourceControl(occPage, primaryWorktreeId)
 
     await expect
       .poll(
         () =>
-          orcaPage.evaluate(
+          occPage.evaluate(
             () =>
               (window as unknown as { __createPRIntentPayloads: unknown[] })
                 .__createPRIntentPayloads.length
@@ -193,7 +193,7 @@ test.describe('Source Control Create PR intent worktree switching', () => {
       )
       .toBe(1)
 
-    const completedWhileSwitchedEvidence = await orcaPage.evaluate(() => {
+    const completedWhileSwitchedEvidence = await occPage.evaluate(() => {
       const state = window.__store?.getState()
       return {
         activeWorktreeId: state?.activeWorktreeId,
@@ -203,8 +203,8 @@ test.describe('Source Control Create PR intent worktree switching', () => {
     expect(completedWhileSwitchedEvidence.activeWorktreeId).toBe(primaryWorktreeId)
     expect(completedWhileSwitchedEvidence.rightSidebarTab).toBe('source-control')
 
-    await openSourceControl(orcaPage, prWorktreeId)
-    const payloads = await orcaPage.evaluate(
+    await openSourceControl(occPage, prWorktreeId)
+    const payloads = await occPage.evaluate(
       () =>
         (
           window as unknown as {
@@ -223,7 +223,7 @@ test.describe('Source Control Create PR intent worktree switching', () => {
         worktreePath: prWorktreePath
       }
     })
-    await orcaPage.screenshot({
+    await occPage.screenshot({
       path: path.join(screenshotDir, '01-create-pr-intent-completed-after-switch.png')
     })
     await writeEvidence(testInfo, screenshotDir, 'create-pr-intent-switch-evidence.json', {
@@ -235,13 +235,13 @@ test.describe('Source Control Create PR intent worktree switching', () => {
   })
 
   test('carries unavailable dirty intent through push to the final create preflight', async ({
-    orcaPage,
+    occPage,
     registerPostElectronShutdownCleanup
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    const { prWorktreeId, prWorktreePath } = await seedCreatePrComposer(orcaPage)
-    const remoteRoot = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-create-pr-remote-'))
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    const { prWorktreeId, prWorktreePath } = await seedCreatePrComposer(occPage)
+    const remoteRoot = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-create-pr-remote-'))
     const remotePath = path.join(remoteRoot, 'origin.git')
     execFileSync('git', ['init', '--bare', remotePath])
     // Why: the seeded worktree may already define origin, so make the add idempotent.
@@ -254,7 +254,7 @@ test.describe('Source Control Create PR intent worktree switching', () => {
     createStagedCommitMessageChange(prWorktreePath)
 
     const finalCreateError = 'Unavailable lookup intent reached final create preflight'
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ prWorktreeId, finalCreateError }) => {
         const store =
           window.__store ??
@@ -281,9 +281,9 @@ test.describe('Source Control Create PR intent worktree switching', () => {
               ? {
                   ...repo,
                   gitRemoteIdentity: {
-                    canonicalKey: 'github.com/acme/orca',
+                    canonicalKey: 'github.com/acme/occ',
                     remoteName: 'origin',
-                    remoteUrl: 'https://github.com/acme/orca.git'
+                    remoteUrl: 'https://github.com/acme/occ.git'
                   }
                 }
               : repo
@@ -318,21 +318,21 @@ test.describe('Source Control Create PR intent worktree switching', () => {
       { prWorktreeId, finalCreateError }
     )
 
-    await openSourceControl(orcaPage, prWorktreeId)
-    await expect(orcaPage.getByText('e2e-commit-message-generation.txt')).toBeVisible({
+    await openSourceControl(occPage, prWorktreeId)
+    await expect(occPage.getByText('e2e-commit-message-generation.txt')).toBeVisible({
       timeout: 10_000
     })
-    await orcaPage
+    await occPage
       .getByRole('textbox', { name: 'Commit message' })
       .fill('Exercise unavailable Create PR intent')
-    const createPr = orcaPage.getByRole('button', { name: 'Create PR' }).first()
+    const createPr = occPage.getByRole('button', { name: 'Create PR' }).first()
     await expect(createPr).toBeEnabled()
     await createPr.click()
 
     await expect
       .poll(
         () =>
-          orcaPage.evaluate(
+          occPage.evaluate(
             () =>
               (window as unknown as { __unavailableIntentPushFinished: boolean })
                 .__unavailableIntentPushFinished
@@ -340,6 +340,6 @@ test.describe('Source Control Create PR intent worktree switching', () => {
         { timeout: 10_000 }
       )
       .toBe(true)
-    await expect(orcaPage.getByText(finalCreateError)).toBeVisible({ timeout: 10_000 })
+    await expect(occPage.getByText(finalCreateError)).toBeVisible({ timeout: 10_000 })
   })
 })

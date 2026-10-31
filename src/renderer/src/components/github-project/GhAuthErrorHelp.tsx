@@ -30,7 +30,7 @@ function refreshCommandForHost(host: string | null | undefined): string {
 // Environment cleanup commands differ between PowerShell on Windows and bash/zsh on macOS/Linux.
 const IS_WINDOWS = typeof navigator !== 'undefined' && /Win(dows|32|64)/i.test(navigator.userAgent)
 
-export function reloadOrcaRenderer(): void {
+export function reloadOCCRenderer(): void {
   void window.api.app.reload().catch((error) => {
     console.error(
       '[github-projects] Renderer reload refused:',
@@ -354,7 +354,7 @@ export function GhAuthErrorHelp({
           {/* Reload diagnostics after refreshing credentials in a terminal. */}
           <button
             type="button"
-            onClick={reloadOrcaRenderer}
+            onClick={reloadOCCRenderer}
             className="inline-flex items-center gap-1 rounded border border-amber-500/30 px-1.5 py-0.5 text-[11px] hover:bg-amber-500/20"
           >
             <RotateCw className="size-3" />{' '}
@@ -392,7 +392,7 @@ export function GhAuthErrorHelp({
           </Button>
         ) : null}
         {/* Reload diagnostics after refreshing credentials in a terminal. */}
-        <Button size="sm" variant="outline" onClick={reloadOrcaRenderer}>
+        <Button size="sm" variant="outline" onClick={reloadOCCRenderer}>
           <RotateCw className="mr-1 size-3.5" />{' '}
           {translate('auto.components.github.project.GhAuthErrorHelp.7e800068d8', 'Reload')}
         </Button>

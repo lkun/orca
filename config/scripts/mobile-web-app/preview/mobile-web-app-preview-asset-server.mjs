@@ -1,7 +1,7 @@
 import { createServer } from 'node:https'
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 
 // Real TLS listener starts before page: Chrome sandboxed-srcdoc target’s first parser image can race route interception and escape measurement.
 // Loopback HTTPS exercises img-src scheme gate like remote HTTPS without DNS dependency.

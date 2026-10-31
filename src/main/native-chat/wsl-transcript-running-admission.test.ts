@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 
 const mocks = vi.hoisted(() => ({
   runProcess: vi.fn(),
@@ -7,7 +7,7 @@ const mocks = vi.hoisted(() => ({
   readFsProcess: vi.fn(async (..._args: unknown[]) => Buffer.from('x'))
 }))
 
-vi.mock('@orca/process-host', () => ({ runProcess: mocks.runProcess }))
+vi.mock('@occ/process-host', () => ({ runProcess: mocks.runProcess }))
 vi.mock('./wsl-transcript-fs-process-dispatch', async (importOriginal) => ({
   ...(await importOriginal<object>()),
   runWslTranscriptFsProcess: mocks.runFsProcess,

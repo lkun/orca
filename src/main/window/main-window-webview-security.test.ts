@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_BROWSER_GUEST_WEB_PREFERENCES } from '../../shared/browser-guest-web-preferences'
+import { OCC_BROWSER_GUEST_WEB_PREFERENCES } from '../../shared/browser-guest-web-preferences'
 
 const mocks = vi.hoisted(() => ({
   attachGuestPolicies: vi.fn(),
@@ -104,7 +104,7 @@ describe('main window webview security', () => {
     mocks.isAllowedPartition.mockReturnValue(true)
     const params = { src: 'https://example.com', preload: 'attacker.js' }
     const preferences: Record<string, unknown> = {
-      partition: 'persist:orca-browser',
+      partition: 'persist:occ-browser',
       preload: 'attacker.js',
       preloadURL: 'attacker.js',
       sandbox: false
@@ -118,8 +118,8 @@ describe('main window webview security', () => {
 
     expect(params).not.toHaveProperty('preload')
     expect(preferences).toMatchObject({
-      ...ORCA_BROWSER_GUEST_WEB_PREFERENCES,
-      partition: 'persist:orca-browser',
+      ...OCC_BROWSER_GUEST_WEB_PREFERENCES,
+      partition: 'persist:occ-browser',
       contextIsolation: true,
       nodeIntegration: false,
       nodeIntegrationInSubFrames: true,
@@ -134,7 +134,7 @@ describe('main window webview security', () => {
     const { handlers } = installOnFakeWindow()
     mocks.isAllowedPartition.mockReturnValue(true)
     const preferences: Record<string, unknown> = {
-      partition: 'persist:orca-browser-work',
+      partition: 'persist:occ-browser-work',
       nodeIntegrationInSubFrames: false
     }
     handlers['will-attach-webview']?.(
@@ -147,7 +147,7 @@ describe('main window webview security', () => {
   })
 })
 
-describe('orca-preview scheme admission', () => {
+describe('occ-preview scheme admission', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     revokeAllDocPreviewGrants()
@@ -206,7 +206,7 @@ describe('orca-preview scheme admission', () => {
   it('keeps the preview preload off a browsing attach', () => {
     const { handlers } = installOnFakeWindow()
     mocks.isAllowedPartition.mockReturnValue(true)
-    const preferences: Record<string, unknown> = { partition: 'persist:orca-browser' }
+    const preferences: Record<string, unknown> = { partition: 'persist:occ-browser' }
 
     handlers['will-attach-webview']?.(
       { preventDefault: vi.fn() } as never,
@@ -225,7 +225,7 @@ describe('orca-preview scheme admission', () => {
     handlers['will-attach-webview']?.(
       { preventDefault } as never,
       { partition: DOC_PREVIEW_PARTITION } as never,
-      { src: `orca-preview://${'0'.repeat(32)}/index.html` } as never
+      { src: `occ-preview://${'0'.repeat(32)}/index.html` } as never
     )
 
     expect(preventDefault).toHaveBeenCalledOnce()
@@ -240,7 +240,7 @@ describe('orca-preview scheme admission', () => {
 
     handlers['will-attach-webview']?.(
       { preventDefault } as never,
-      { partition: 'persist:orca-browser' } as never,
+      { partition: 'persist:occ-browser' } as never,
       { src: buildDocPreviewUrl(grant.id, 'index.html') } as never
     )
 

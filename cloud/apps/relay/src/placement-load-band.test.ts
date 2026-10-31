@@ -127,7 +127,7 @@ describe('PlacementLoadBand', () => {
     for (let second = 0; second <= 60; second += 1) band.pick(ranked, second * 1_000)
     expect(lines).toHaveLength(1)
     expect(lines[0]).toMatchObject({
-      event: 'orca_relay_placement_load_band',
+      event: 'occ_relay_placement_load_band',
       windowMs: 60_000,
       picks: 61,
       bandSizeMax: 1

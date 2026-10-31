@@ -20,7 +20,7 @@ import {
 } from './installed-agent-skills-change-event'
 import { useActiveProjectSkillRuntime } from './useActiveProjectSkillRuntime'
 import { useAppStore } from '@/store'
-import { getManagedOrcadSshTargetId } from '../../../shared/managed-orcad-execution-host'
+import { getManagedOCCdSshTargetId } from '../../../shared/managed-occd-execution-host'
 
 /** `unknown`: the owning host's check failed. */
 export type BundledSkillInstallActionState =
@@ -52,7 +52,7 @@ export function useBundledSkillInstallAction(
       return null
     }
     const environment = state.runtimeEnvironments.find((entry) => entry.id === target.environmentId)
-    return environment && getManagedOrcadSshTargetId(environment) ? 'connect-host' : 'unknown'
+    return environment && getManagedOCCdSshTargetId(environment) ? 'connect-host' : 'unknown'
   })
   const namesKey = skillNames.join(',')
   const planKey = options.enabled && targetKey && !unavailable ? `${targetKey}|${namesKey}` : null

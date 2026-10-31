@@ -27,7 +27,7 @@ function mayAutoOpen(
 }
 
 beforeEach(async () => {
-  home = await mkdtemp(join(tmpdir(), 'orca-claude-diff-panel-'))
+  home = await mkdtemp(join(tmpdir(), 'occ-claude-diff-panel-'))
   configDir = join(home, '.claude')
   await mkdir(configDir)
 })

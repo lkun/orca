@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../../src/shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../src/shared/sidebar-inputs-switch'
 import { getCachedWorktrees } from '../cache/worktree-cache'
 import { loadPinnedIds } from '../storage/preferences'
 import { loadHosts, updateLastConnected } from '../transport/host-store'
@@ -38,7 +38,7 @@ export function useHostScreenIdentity(args: {
 
   // Cache pins locally only without the feed; view settings come from ui.get.
   useEffect(() => {
-    if (!hostId || ORCA_SIDEBAR_INPUTS_IS_MAIN) {
+    if (!hostId || OCC_SIDEBAR_INPUTS_IS_MAIN) {
       return
     }
     let stale = false

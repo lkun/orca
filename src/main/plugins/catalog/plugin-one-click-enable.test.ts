@@ -15,7 +15,7 @@ function installed(execution: 'data' | 'declarative', contributes: Record<string
       publisher: 'acme',
       name: 'Demo',
       version: '1.0.0',
-      engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+      engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
       contributes
     }),
     consentFingerprint: 'sha256-installed',

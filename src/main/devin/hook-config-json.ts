@@ -83,7 +83,7 @@ export function parseDevinHooksConfigText(
 }
 
 /** Devin imports Claude hooks by default, so surface that overlap explicitly. */
-export function readConfigFromOrcaOverlapDetail(
+export function readConfigFromOCCOverlapDetail(
   config: HooksConfig & { read_config_from?: unknown }
 ): string | null {
   if (!isClaudeConfigImportEnabled(config.read_config_from)) {

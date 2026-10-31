@@ -25,48 +25,48 @@ export function registerReposRuntimeProjectGroupTests(): void {
 
     it('keeps runtime copies of a grouped canonical project in the same project group', async () => {
       const gitRemoteIdentity = {
-        canonicalKey: 'github.com/stablyai/orca',
+        canonicalKey: 'github.com/stablyai/occ',
         remoteName: 'origin',
-        remoteUrl: 'https://github.com/stablyai/orca.git'
+        remoteUrl: 'https://github.com/stablyai/occ.git'
       }
-      const localOrca: Repo = {
-        id: 'local-orca',
-        path: '/Users/alice/stably/orca',
-        displayName: 'orca',
+      const localOCC: Repo = {
+        id: 'local-occ',
+        path: '/Users/alice/stably/occ',
+        displayName: 'occ',
         badgeColor: '#000',
         addedAt: 1,
         executionHostId: 'local',
         gitRemoteIdentity,
-        projectGroupId: 'group-orca'
+        projectGroupId: 'group-occ'
       }
-      const runtimeOrca: Repo = {
-        id: 'runtime-orca',
-        path: '/vercel/sandbox/orca',
-        displayName: 'orca',
+      const runtimeOCC: Repo = {
+        id: 'runtime-occ',
+        path: '/vercel/sandbox/occ',
+        displayName: 'occ',
         badgeColor: '#111',
         addedAt: 2,
         gitRemoteIdentity
       }
       runtimeEnvironmentCall.mockResolvedValue({
-        id: 'rpc-runtime-orca',
+        id: 'rpc-runtime-occ',
         ok: true,
-        result: { repos: [runtimeOrca] },
+        result: { repos: [runtimeOCC] },
         _meta: { runtimeId: 'runtime-remote' }
       })
       const store = createTestStore()
       store.setState({
         settings: { activeRuntimeEnvironmentId: 'env-1' } as never,
-        repos: [localOrca]
+        repos: [localOCC]
       })
 
       await store.getState().fetchRepos(catalogOwner(store))
 
       expect(store.getState().repos).toEqual([
-        localOrca,
+        localOCC,
         {
-          ...runtimeOrca,
+          ...runtimeOCC,
           executionHostId: 'runtime:env-1',
-          projectGroupId: 'group-orca'
+          projectGroupId: 'group-occ'
         }
       ])
     })

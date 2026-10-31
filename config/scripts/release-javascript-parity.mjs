@@ -94,7 +94,7 @@ export function annotateJavascriptParityFiles(root, files) {
     if (manifest) {
       content = JSON.stringify(normalizeManifestSourcePaths(JSON.parse(content)))
     }
-    if (file.path === 'renderer/.orca-web-client-files.json') {
+    if (file.path === 'renderer/.occ-web-client-files.json') {
       const members = JSON.parse(content)
       assert(Array.isArray(members) && members.every((member) => typeof member === 'string'))
       // Asset aliases can change the order of this file inventory after hash normalization.

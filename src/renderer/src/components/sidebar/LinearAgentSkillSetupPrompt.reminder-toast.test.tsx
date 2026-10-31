@@ -15,7 +15,7 @@ import {
 } from './linear-agent-skill-setup-reminder-toast'
 import { getExistingLinearAgentSkillSetupReminderState } from './linear-agent-skill-setup-reminders'
 
-const HOST_DISMISS_STORAGE_KEY = 'orca.linearTicketsSkill.setupDismissed.host'
+const HOST_DISMISS_STORAGE_KEY = 'occ.linearTicketsSkill.setupDismissed.host'
 
 const wslFedoraProps = {
   linked: true,
@@ -190,7 +190,7 @@ describe('LinearAgentSkillSetupPrompt reminder toast', () => {
     expect(toast.warning).toHaveBeenCalledWith(
       'Linear skill is missing',
       expect.objectContaining({
-        id: 'linear-agent-skill-setup-orca.linearTicketsSkill.setupDismissed.host',
+        id: 'linear-agent-skill-setup-occ.linearTicketsSkill.setupDismissed.host',
         description:
           'Install the Linear skill to enable your agents to read and edit Linear tasks through the OCC CLI.',
         action: {
@@ -250,7 +250,7 @@ describe('LinearAgentSkillSetupPrompt reminder toast', () => {
     )
     expect(document.body.textContent).toContain('Mock install')
     expect(toast.dismiss).toHaveBeenCalledWith(
-      'linear-agent-skill-setup-orca.linearTicketsSkill.setupDismissed.host'
+      'linear-agent-skill-setup-occ.linearTicketsSkill.setupDismissed.host'
     )
   })
 
@@ -276,7 +276,7 @@ describe('LinearAgentSkillSetupPrompt reminder toast', () => {
 
     expect(getExistingLinearAgentSkillSetupReminderState(HOST_DISMISS_STORAGE_KEY)).toBeUndefined()
     expect(toast.dismiss).toHaveBeenCalledWith(
-      'linear-agent-skill-setup-orca.linearTicketsSkill.setupDismissed.host'
+      'linear-agent-skill-setup-occ.linearTicketsSkill.setupDismissed.host'
     )
   })
 
@@ -305,7 +305,7 @@ describe('LinearAgentSkillSetupPrompt reminder toast', () => {
 
     expect(window.localStorage.getItem(HOST_DISMISS_STORAGE_KEY)).toBe('1')
     expect(toast.dismiss).toHaveBeenCalledWith(
-      'linear-agent-skill-setup-orca.linearTicketsSkill.setupDismissed.host'
+      'linear-agent-skill-setup-occ.linearTicketsSkill.setupDismissed.host'
     )
   })
 })

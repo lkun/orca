@@ -75,7 +75,7 @@ describe('runtime transport timeout validation', () => {
 // These fixtures create Unix domain sockets rather than Windows named pipes.
 describe.skipIf(process.platform === 'win32')('runtime transport', () => {
   it('rejects a responding replacement runtime with retry advice in human output', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-transport-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-transport-'))
     roots.push(userDataPath)
     const endpoint = join(userDataPath, 'runtime.sock')
     const server = createServer((socket) => {
@@ -116,7 +116,7 @@ describe.skipIf(process.platform === 'win32')('runtime transport', () => {
   it.each(['preflight', 'mutation'] as const)(
     'reports a timeout during %s truthfully',
     async (phase) => {
-      const directory = mkdtempSync(join(tmpdir(), 'orca-removal-timeout-'))
+      const directory = mkdtempSync(join(tmpdir(), 'occ-removal-timeout-'))
       roots.push(directory)
       const endpoint = join(directory, 'runtime.sock')
       const received = Promise.withResolvers<void>()
@@ -185,7 +185,7 @@ describe.skipIf(process.platform === 'win32')('runtime transport', () => {
     'after-send',
     'prepare'
   ] as const)('selects the local wire request without replay: %s', async (mode) => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-selection-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-selection-'))
     roots.push(root)
     const endpoint = join(root, 'runtime.sock')
     const requests: { id: string; method: string; params?: unknown }[] = []
@@ -297,7 +297,7 @@ describe.skipIf(process.platform === 'win32')('runtime transport', () => {
   })
 
   it('refreshes the per-call timeout when the runtime sends keepalive frames', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-transport-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-transport-'))
     roots.push(userDataPath)
     const endpoint = join(userDataPath, 'runtime.sock')
     let acceptRequest!: (request: { id: string; peer: Socket }) => void
@@ -350,7 +350,7 @@ describe.skipIf(process.platform === 'win32')('runtime transport', () => {
   })
 
   it('rejects promptly when the runtime closes the socket before responding', async () => {
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-runtime-transport-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-runtime-transport-'))
     roots.push(userDataPath)
     const endpoint = join(userDataPath, 'runtime.sock')
     const server = createServer((socket) => {

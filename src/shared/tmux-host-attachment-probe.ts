@@ -1,6 +1,6 @@
 import { stat } from 'node:fs/promises'
 import { readAgentProcess } from './agent-process-presence-probe'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { runPsInProcess } from './libproc-process-table'
 import {
   PS_ARGS,

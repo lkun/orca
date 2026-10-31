@@ -27,7 +27,7 @@ export function runProfileStateRecoveryPreflight(argv: readonly string[] = proce
   if (index === -1) {
     return false
   }
-  process.env.ORCA_BACKGROUND_LAUNCH = '1'
+  process.env.OCC_BACKGROUND_LAUNCH = '1'
   applyBackgroundActivationPolicy()
   const response =
     !argv.includes('--serve') || argv.lastIndexOf(PROFILE_STATE_RECOVERY_FLAG) !== index
@@ -112,7 +112,7 @@ function runRecoveryRequest(payload: string | undefined): ProfileStateRecoveryRe
     }
     const userDataPath = realpathSync(parsed.data.userDataPath)
     app.setPath('userData', userDataPath)
-    process.env.ORCA_USER_DATA_PATH = userDataPath
+    process.env.OCC_USER_DATA_PATH = userDataPath
     const maintenance = acquireProfileStateMaintenance(userDataPath)
     try {
       // Force Electron's lock even when ordinary dev or diagnostic launches would bypass it.

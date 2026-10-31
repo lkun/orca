@@ -39,7 +39,7 @@ function downloadedEvent(packageType: LinuxRootPackageType): Record<string, unkn
     packageType === 'deb' ? 'occ-ide_1.0.61_amd64.deb' : 'occ-ide-1.0.61.x86_64.rpm'
   return {
     version: '1.0.61',
-    downloadedFile: join(tmpdir(), 'orca-updater', 'pending', fileName),
+    downloadedFile: join(tmpdir(), 'occ-updater', 'pending', fileName),
     files: [{ url: fileName, sha512: packageSha512 }]
   }
 }
@@ -223,7 +223,7 @@ describe('updater Linux root packages', () => {
 
     await reachDownloaded(updater, {
       version: '1.0.61',
-      downloadedFile: join(tmpdir(), 'orca-updater', 'pending', 'occ-ide_1.0.61_amd64.deb'),
+      downloadedFile: join(tmpdir(), 'occ-updater', 'pending', 'occ-ide_1.0.61_amd64.deb'),
       files: [{ url: 'occ-ide_1.0.61_amd64.deb', sha512: packageSha512 }]
     })
     expect(lastStatus(send)).toEqual({

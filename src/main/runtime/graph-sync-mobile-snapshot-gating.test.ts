@@ -5,7 +5,7 @@ import type {
   RuntimeMobileSessionTabsSnapshot
 } from '../../shared/runtime-types'
 import type { WorkspaceSessionState } from '../../shared/workspace-session-state-types'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import * as mobileSessionTerminalProjection from './mobile-session-terminal-projection'
 
 const WT = 'repo-1::/tmp/worktree-a'
@@ -65,7 +65,7 @@ function makeTerminalTab(id: string, ptyId: string | null) {
 
 function createRuntime(initialSession: WorkspaceSessionState) {
   let session = initialSession
-  const runtime = new OrcaRuntimeService({
+  const runtime = new OCCRuntimeService({
     ...storeBase,
     getWorkspaceSession: () => session,
     setWorkspaceSession: (next: WorkspaceSessionState) => {

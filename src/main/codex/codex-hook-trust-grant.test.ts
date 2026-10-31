@@ -28,7 +28,7 @@ import {
 } from './config-toml-trust'
 
 // Unavailable wsl.exe leaves guest grants unstamped.
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: vi.fn(async () => ({
     code: 1,
     signal: null,
@@ -43,13 +43,13 @@ let runtimeHomeDir: string
 let previousUserDataPath: string | undefined
 
 beforeEach(() => {
-  userDataDir = mkdtempSync(join(tmpdir(), 'orca-trust-grant-userdata-'))
+  userDataDir = mkdtempSync(join(tmpdir(), 'occ-trust-grant-userdata-'))
   runtimeHomeDir = join(userDataDir, 'codex-runtime-home', 'home')
   // Create hooks.json before granting trust to match production canonical-path resolution.
   mkdirSync(runtimeHomeDir, { recursive: true })
   writeFileSync(join(runtimeHomeDir, 'hooks.json'), '{"hooks":{}}\n', 'utf-8')
-  previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-  process.env.ORCA_USER_DATA_PATH = userDataDir
+  previousUserDataPath = process.env.OCC_USER_DATA_PATH
+  process.env.OCC_USER_DATA_PATH = userDataDir
   codexAppServerCapabilityCache.clear()
   _internals.resetDiagnostics()
 })
@@ -60,15 +60,15 @@ afterEach(() => {
   setCodexTrustGrantTelemetry(() => {})
   codexAppServerCapabilityCache.clear()
   if (previousUserDataPath === undefined) {
-    delete process.env.ORCA_USER_DATA_PATH
+    delete process.env.OCC_USER_DATA_PATH
   } else {
-    process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+    process.env.OCC_USER_DATA_PATH = previousUserDataPath
   }
-  delete process.env.ORCA_DISABLE_CODEX_TRUST_RPC
+  delete process.env.OCC_DISABLE_CODEX_TRUST_RPC
   rmSync(userDataDir, { recursive: true, force: true })
 })
 
-const MANAGED_COMMAND = "/bin/sh '/tmp/orca/codex-hook.sh'"
+const MANAGED_COMMAND = "/bin/sh '/tmp/occ/codex-hook.sh'"
 
 function managedEntry(eventLabel: CodexTrustEntry['eventLabel']): CodexTrustEntry {
   return {
@@ -354,7 +354,7 @@ describe('grantManagedCodexHookTrust', () => {
     _internals.setGrantSessionRunner(async () => grantedSessionResult(entries))
 
     expect(await grantManagedCodexHookTrust(buildPlan(entries))).toMatchObject({ lane: 'rpc' })
-    process.env.ORCA_DISABLE_CODEX_TRUST_RPC = '1'
+    process.env.OCC_DISABLE_CODEX_TRUST_RPC = '1'
     expect(await grantManagedCodexHookTrust(buildPlan(entries))).toMatchObject({
       lane: 'fallback',
       reason: 'disabled'
@@ -401,7 +401,7 @@ describe('grantManagedCodexHookTrust', () => {
   })
 
   it('honors the ops kill switch env flag', async () => {
-    process.env.ORCA_DISABLE_CODEX_TRUST_RPC = '1'
+    process.env.OCC_DISABLE_CODEX_TRUST_RPC = '1'
     const entries = [managedEntry('session_start')]
     const runner = vi.fn(async () => grantedSessionResult(entries))
     _internals.setGrantSessionRunner(runner)

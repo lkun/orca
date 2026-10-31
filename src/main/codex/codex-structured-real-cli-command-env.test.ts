@@ -8,9 +8,9 @@ import { openCodexThread } from './codex-structured-thread-open'
 import { codexStructuredPermissionPolicy } from '../../shared/codex-permission-policy'
 
 // The probe is a POSIX shell command.
-const enabled = process.env.ORCA_REAL_CODEX_CLI_TEST === '1' && process.platform !== 'win32'
+const enabled = process.env.OCC_REAL_CODEX_CLI_TEST === '1' && process.platform !== 'win32'
 const SESSION_ID = 'codex_real_command_env'
-const PROBE = 'printf "probe[%s]" "$ORCA_AGENT_SESSION_ID"'
+const PROBE = 'printf "probe[%s]" "$OCC_AGENT_SESSION_ID"'
 
 async function probeIdentity(
   base: string,
@@ -24,7 +24,7 @@ async function probeIdentity(
       command: resolveCodexCommand(),
       args: ['app-server'],
       cwd,
-      env: { HOME: base, CODEX_HOME: join(base, 'codex-home'), ORCA_AGENT_SESSION_ID: SESSION_ID }
+      env: { HOME: base, CODEX_HOME: join(base, 'codex-home'), OCC_AGENT_SESSION_ID: SESSION_ID }
     },
     {
       onNotification: (method, params) => {
@@ -58,7 +58,7 @@ async function probeIdentity(
 
 describe.skipIf(!enabled)('Codex real app-server command env', () => {
   it('keeps the chat identity in commands under inherit = "core", on start and resume', async () => {
-    const base = mkdtempSync(join(tmpdir(), 'orca-real-codex-env-'))
+    const base = mkdtempSync(join(tmpdir(), 'occ-real-codex-env-'))
     try {
       mkdirSync(join(base, 'workspace'), { recursive: true })
       mkdirSync(join(base, 'codex-home'), { recursive: true })
@@ -66,7 +66,7 @@ describe.skipIf(!enabled)('Codex real app-server command env', () => {
         join(base, 'codex-home', 'config.toml'),
         '[shell_environment_policy]\ninherit = "core"\n'
       )
-      const commandEnv = { ORCA_AGENT_SESSION_ID: SESSION_ID }
+      const commandEnv = { OCC_AGENT_SESSION_ID: SESSION_ID }
       expect((await probeIdentity(base, { resumeThreadId: null })).seen).toBe('')
       const started = await probeIdentity(base, { resumeThreadId: null, commandEnv })
       expect(started.seen).toBe(SESSION_ID)

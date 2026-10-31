@@ -123,7 +123,7 @@ function statsInsideEntries(): string[] {
 }
 
 beforeEach(() => {
-  userDataDir = mkdtempSync(join(tmpdir(), 'orca-history-gc-calls-'))
+  userDataDir = mkdtempSync(join(tmpdir(), 'occ-history-gc-calls-'))
   historyRoot = join(userDataDir, 'terminal-history')
   mkdirSync(historyRoot, { recursive: true })
   installFakeAppEnvironment({ getPath: () => userDataDir })

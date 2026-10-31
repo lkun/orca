@@ -4,7 +4,7 @@ import { join } from 'node:path'
 
 export function createWatcherCanaryDirectory(): string | null {
   try {
-    return mkdtempSync(join(tmpdir(), 'orca-watcher-canary-'))
+    return mkdtempSync(join(tmpdir(), 'occ-watcher-canary-'))
   } catch (error) {
     // Read-only temp storage must not disable the watcher; the canary is diagnostic.
     console.warn('[parcel-watcher-process] canary directory unavailable:', error)

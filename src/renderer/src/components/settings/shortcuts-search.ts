@@ -25,7 +25,7 @@ export const getTerminalShortcutPolicySearchEntry = createLocalizedCatalog(
       ...translateSearchKeyword('auto.components.settings.shortcuts.search.0ecfc47434', 'conflict'),
       ...translateSearchKeyword(
         'auto.components.settings.shortcuts.search.afda131738',
-        'orca first'
+        'occ first'
       ),
       ...translateSearchKeyword(
         'auto.components.settings.shortcuts.search.4811a8264a',

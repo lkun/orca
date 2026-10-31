@@ -3,7 +3,7 @@ export type TerminalSpawnAdmissionMode = 'observe' | 'enforce'
 export const TERMINAL_SPAWN_ADMISSION_ARG = '--spawn-admission'
 
 // Rollback switch: `observe` makes newly launched daemons count decisions without pacing.
-export const TERMINAL_SPAWN_ADMISSION_ENV_VAR = 'ORCA_TERMINAL_SPAWN_ADMISSION'
+export const TERMINAL_SPAWN_ADMISSION_ENV_VAR = 'OCC_TERMINAL_SPAWN_ADMISSION'
 
 /** The mode a launcher passes its daemon: enforce, unless the env var asks for `observe`. */
 export function resolveTerminalSpawnAdmissionMode(

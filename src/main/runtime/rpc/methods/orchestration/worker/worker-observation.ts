@@ -12,7 +12,7 @@ import type {
   FederatedDispatchRow,
   WorkerDispatchRow
 } from '../../../../orchestration/types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
 
 /** Recover live handles by recorded process incarnation so stale durable handles cannot hide and leak running workers. */
 export async function inspectWorkerTerminal(
@@ -105,7 +105,7 @@ export async function inspectWorkerTerminal(
       }
     }
     // Switch point: main's rows carry the host's verdict; `connected` alone is the old word.
-    if (ORCA_LAYOUT_OWNER_IS_MAIN && terminal.verdict === 'unverifiable') {
+    if (OCC_LAYOUT_OWNER_IS_MAIN && terminal.verdict === 'unverifiable') {
       return {
         terminal,
         exact,
@@ -119,7 +119,7 @@ export async function inspectWorkerTerminal(
       terminal,
       exact,
       status:
-        ORCA_LAYOUT_OWNER_IS_MAIN && terminal.verdict
+        OCC_LAYOUT_OWNER_IS_MAIN && terminal.verdict
           ? terminal.verdict
           : terminal.connected === false
             ? 'exited'

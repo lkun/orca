@@ -9,7 +9,7 @@ import type { StructuredAgentLaunchSettlement } from '@/lib/structured-agent-lau
 import type { AgentSessionLaunchVerdict } from '@/lib/agent-session-launch-plan'
 import type { AiVaultSession } from '../../../../shared/ai-vault-types'
 import { LOCAL_EXECUTION_HOST_ID } from '../../../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
 import {
   structuredAgentSessionPaneKey,
@@ -84,7 +84,7 @@ vi.mock('@/lib/activate-ai-vault-structured-session', async (importOriginal) => 
       if (tabs.some((tab) => tab.entityId === s.sessionId)) {
         return true
       }
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         // Switch-on, the host's republished chat reaches the window as main's frame.
         await layoutApplyTestTransport.call({
           command: {

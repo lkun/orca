@@ -117,7 +117,7 @@ describe('converting a WSL project on a Windows drive to Windows Git', () => {
         'C:/src/app-feature/.git',
         // Windows Git reaches a worktree inside the distro over UNC; that link is its own.
         '//wsl.localhost/Ubuntu/home/me/trees/app-unc/.git',
-        '/home/me/orca/workspaces/app/fix/.git',
+        '/home/me/occ/workspaces/app/fix/.git',
         '/mnt/c/src/app-wsl/.git'
       ]
     })
@@ -129,7 +129,7 @@ describe('converting a WSL project on a Windows drive to Windows Git', () => {
         {
           kind: 'wsl-authored-worktrees',
           repoId: 'r1',
-          paths: ['/home/me/orca/workspaces/app/fix', '/mnt/c/src/app-wsl']
+          paths: ['/home/me/occ/workspaces/app/fix', '/mnt/c/src/app-wsl']
         }
       ]
     })

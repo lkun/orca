@@ -39,7 +39,7 @@ vi.mock('electron', () => ({
   app: { getPath: appGetPathMock },
   session: { fromPartition: sessionFromPartitionMock }
 }))
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcessSync: runProcessSyncMock
 }))
 vi.mock('../browser-session-registry', () => ({
@@ -68,7 +68,7 @@ vi.mock('../chromium-cookie-snapshot', async (importOriginal) => {
       const tempRoot = snapshotRootMock()
       const snapshot = actual.createChromiumCookieSnapshot(sourcePath, { tempRoot })
       snapshotPopulations.push(
-        readdirSync(tempRoot).filter((name) => name.startsWith('orca-cookie-import-')).length
+        readdirSync(tempRoot).filter((name) => name.startsWith('occ-cookie-import-')).length
       )
       return {
         ...snapshot,
@@ -131,7 +131,7 @@ describe('Chromium import snapshot ownership', () => {
   let platformSpy: ReturnType<typeof vi.spyOn>
 
   beforeEach(() => {
-    root = mkdtempSync(join(tmpdir(), 'orca-cookie-snapshot-owner-test-'))
+    root = mkdtempSync(join(tmpdir(), 'occ-cookie-snapshot-owner-test-'))
     snapshotRoot = root
     sourcePath = join(root, 'Chrome', 'Default', 'Network', 'Cookies')
     targetPath = join(root, 'userData', 'Partitions', 'test', 'Network', 'Cookies')
@@ -179,7 +179,7 @@ describe('Chromium import snapshot ownership', () => {
   })
 
   function snapshotDirectories() {
-    return readdirSync(snapshotRoot).filter((name) => name.startsWith('orca-cookie-import-'))
+    return readdirSync(snapshotRoot).filter((name) => name.startsWith('occ-cookie-import-'))
   }
 
   function expectRefusalCleanup() {

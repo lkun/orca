@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type {
   HookCommandSourcePolicy,
-  OrcaHooks,
+  OCCHooks,
   RepoHookSettings,
   SetupAgentStartupPolicy,
   SetupRunPolicy
-} from '../../../../../../shared/orca-yaml-hook-types'
+} from '../../../../../../shared/occ-yaml-hook-types'
 import type { Repo } from '../../../../../../shared/repo-types'
 import { getRepoExecutionHostId } from '../../../../../../shared/execution-host'
 import { resolveHookCommandSourcePolicy } from '../../../../../../shared/hook-command-source-policy'
@@ -32,7 +32,7 @@ import { useRepositoryIssueCommand } from '../../use-repository-issue-command'
 
 type RepositoryHooksSectionProps = {
   repo: Repo
-  yamlHooks: OrcaHooks | null
+  yamlHooks: OCCHooks | null
   hasHooksFile: boolean
   hooksInspectionReady: boolean
   mayNeedUpdate: boolean
@@ -114,7 +114,7 @@ export function RepositoryHooksSection({
         <p className="text-xs text-muted-foreground">
           {translate(
             'auto.components.settings.RepositoryHooksSection.8567127a40',
-            'Scripts that run when worktrees are created or archived. Local scripts are stored on this machine; `orca.yaml` scripts are shared with your team.'
+            'Scripts that run when worktrees are created or archived. Local scripts are stored on this machine; `occ.yaml` scripts are shared with your team.'
           )}
         </p>
       </div>
@@ -134,8 +134,8 @@ export function RepositoryHooksSection({
           'command',
           'local',
           'local settings scripts',
-          'orca.yaml',
-          'orca.yaml hooks',
+          'occ.yaml',
+          'occ.yaml hooks',
           'hook'
         ]}
       >
@@ -187,8 +187,8 @@ export function RepositoryHooksSection({
           'command',
           'local',
           'local settings scripts',
-          'orca.yaml',
-          'orca.yaml hooks',
+          'occ.yaml',
+          'occ.yaml hooks',
           'hook'
         ]}
       >
@@ -228,13 +228,13 @@ export function RepositoryHooksSection({
         title={translate('auto.components.settings.RepositoryHooksSection.c9bc1bfd8f', 'Advanced')}
         description={translate(
           'auto.components.settings.RepositoryHooksSection.610d90fdbd',
-          'Command source and orca.yaml details.'
+          'Command source and occ.yaml details.'
         )}
         forceVisible={forceVisible}
         keywords={[
           'advanced',
           'command source',
-          'orca.yaml',
+          'occ.yaml',
           'shared',
           'local',
           'both',

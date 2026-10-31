@@ -33,8 +33,8 @@ export class GrokFixtureReplay {
 
   attach(agent: AcpScriptedAgent): void {
     this.agent = agent
-    agent.on('session/prompt', (frame) => this.orcaSent('session/prompt', frame))
-    agent.on('session/cancel', (frame) => this.orcaSent('session/cancel', frame))
+    agent.on('session/prompt', (frame) => this.occSent('session/prompt', frame))
+    agent.on('session/cancel', (frame) => this.occSent('session/cancel', frame))
   }
 
   get awaiting(): string | null {
@@ -48,7 +48,7 @@ export class GrokFixtureReplay {
     return next.direction === 'out' ? (next.message.method ?? 'reply') : 'agent'
   }
 
-  private orcaSent(method: string, frame: FakeFrame): void {
+  private occSent(method: string, frame: FakeFrame): void {
     const recorded = this.frames[this.cursor]
     expect(recorded?.direction).toBe('out')
     expect(recorded?.message.method).toBe(method)

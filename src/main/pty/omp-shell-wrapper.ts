@@ -40,63 +40,63 @@ export function getPosixOmpShellWrapper(): string {
   return `# Why: OMP does not auto-load OCC's managed status extension; wrap only
 # interactive launch invocations so subcommands such as \`omp config\` keep
 # their normal argv shape.
-__orca_omp_should_skip_extension() {
+__occ_omp_should_skip_extension() {
   case "\${1:-}" in
     'help'|'--help'|'-h'|'--version'|'-v') return 0 ;;
     ${subcommands}) return 0 ;;
   esac
   return 1
 }
-__orca_omp_cwd_is_usable() {
-  local __orca_physical_cwd
+__occ_omp_cwd_is_usable() {
+  local __occ_physical_cwd
   [[ -x . ]] || return 1
   if [[ -n "\${PWD:-}" && -d "\${PWD:-}" ]]; then
     [[ "\${PWD}" -ef . ]]
   else
     # Why compare the path: shell builtins can print a cached path for a deleted cwd.
-    __orca_physical_cwd="$(builtin pwd -P 2>/dev/null)" || return 1
-    [[ -d "$__orca_physical_cwd" && "$__orca_physical_cwd" -ef . ]]
+    __occ_physical_cwd="$(builtin pwd -P 2>/dev/null)" || return 1
+    [[ -d "$__occ_physical_cwd" && "$__occ_physical_cwd" -ef . ]]
   fi
 }
-__orca_omp_invoke() {
-  local __orca_use_extension="$1"
+__occ_omp_invoke() {
+  local __occ_use_extension="$1"
   shift
-  if [[ $__orca_use_extension -eq 1 && -n "\${ORCA_OMP_STATUS_EXTENSION:-}" && -f "\${ORCA_OMP_STATUS_EXTENSION}" ]]; then
+  if [[ $__occ_use_extension -eq 1 && -n "\${OCC_OMP_STATUS_EXTENSION:-}" && -f "\${OCC_OMP_STATUS_EXTENSION}" ]]; then
     if [[ "\${1:-}" == "launch" ]]; then
       shift
-      command omp launch --extension "\${ORCA_OMP_STATUS_EXTENSION}" "$@"
+      command omp launch --extension "\${OCC_OMP_STATUS_EXTENSION}" "$@"
     else
-      command omp --extension "\${ORCA_OMP_STATUS_EXTENSION}" "$@"
+      command omp --extension "\${OCC_OMP_STATUS_EXTENSION}" "$@"
     fi
   else
     command omp "$@"
   fi
 }
-__orca_omp() {
-  local __orca_use_extension=1
-  __orca_omp_should_skip_extension "\${1:-}" && __orca_use_extension=0
-  if ! __orca_omp_cwd_is_usable; then
-    local __orca_logical_cwd="\${PWD:-\${ORCA_WORKTREE_PATH:-\${ORCA_ROOT_PATH:-}}}"
+__occ_omp() {
+  local __occ_use_extension=1
+  __occ_omp_should_skip_extension "\${1:-}" && __occ_use_extension=0
+  if ! __occ_omp_cwd_is_usable; then
+    local __occ_logical_cwd="\${PWD:-\${OCC_WORKTREE_PATH:-\${OCC_ROOT_PATH:-}}}"
     # Why: a restored shell can retain the deleted directory inode after its path is recreated.
     (
-      if [[ -z "$__orca_logical_cwd" ]]; then
+      if [[ -z "$__occ_logical_cwd" ]]; then
         printf 'OCC: OMP cannot start because no terminal working directory is available. Open a new terminal in an existing directory.\\n' >&2
         return 1
       fi
-      if ! builtin cd -P -- "$__orca_logical_cwd" 2>/dev/null; then
-        printf 'OCC: OMP cannot access the terminal working directory "%s". Open a new terminal in an existing directory.\\n' "$__orca_logical_cwd" >&2
+      if ! builtin cd -P -- "$__occ_logical_cwd" 2>/dev/null; then
+        printf 'OCC: OMP cannot access the terminal working directory "%s". Open a new terminal in an existing directory.\\n' "$__occ_logical_cwd" >&2
         return 1
       fi
-      __orca_omp_invoke "$__orca_use_extension" "$@"
+      __occ_omp_invoke "$__occ_use_extension" "$@"
     )
   else
-    __orca_omp_invoke "$__orca_use_extension" "$@"
+    __occ_omp_invoke "$__occ_use_extension" "$@"
   fi
 }
-if [[ -n "\${ORCA_OMP_STATUS_EXTENSION:-}" ]]; then
+if [[ -n "\${OCC_OMP_STATUS_EXTENSION:-}" ]]; then
   # Why the function reserved word: it suppresses alias expansion of the name, which
   # an \`alias omp\` otherwise rewrites at parse time, aborting the rest of the file.
-  function omp { __orca_omp "$@"; }
+  function omp { __occ_omp "$@"; }
 fi
 `
 }
@@ -106,34 +106,34 @@ export function getPowerShellOmpShellWrapper(): string {
   return `# Why: OMP does not auto-load OCC's managed status extension; wrap only
 # interactive launch invocations so subcommands such as \`omp config\` keep
 # their normal argv shape.
-function Global:__OrcaOmpShouldSkipExtension {
+function Global:__OCCOmpShouldSkipExtension {
     param([string]$Name)
     $skip = @("help", "--help", "-h", "--version", "-v") + @(${subcommands})
     return $skip -contains $Name
 }
-if ($env:ORCA_OMP_STATUS_EXTENSION) {
+if ($env:OCC_OMP_STATUS_EXTENSION) {
     function Global:omp {
-        $orcaUseExtension = -not (__OrcaOmpShouldSkipExtension -Name ([string]($args[0])))
-        $orcaStatus = 0
-        $orcaCommand = Get-Command omp -CommandType Application,ExternalScript -ErrorAction SilentlyContinue | Select-Object -First 1
-        if (-not $orcaCommand) {
+        $occUseExtension = -not (__OCCOmpShouldSkipExtension -Name ([string]($args[0])))
+        $occStatus = 0
+        $occCommand = Get-Command omp -CommandType Application,ExternalScript -ErrorAction SilentlyContinue | Select-Object -First 1
+        if (-not $occCommand) {
             Write-Error "omp executable not found"
-            $orcaStatus = 127
-        } elseif ($orcaUseExtension -and $env:ORCA_OMP_STATUS_EXTENSION -and
-            (Test-Path -LiteralPath $env:ORCA_OMP_STATUS_EXTENSION)) {
+            $occStatus = 127
+        } elseif ($occUseExtension -and $env:OCC_OMP_STATUS_EXTENSION -and
+            (Test-Path -LiteralPath $env:OCC_OMP_STATUS_EXTENSION)) {
             if ($args.Count -gt 0 -and $args[0] -eq "launch") {
-                $orcaLaunchArgs = @($args | Select-Object -Skip 1)
-                & $orcaCommand.Source launch --extension $env:ORCA_OMP_STATUS_EXTENSION @orcaLaunchArgs
+                $occLaunchArgs = @($args | Select-Object -Skip 1)
+                & $occCommand.Source launch --extension $env:OCC_OMP_STATUS_EXTENSION @occLaunchArgs
             } else {
-                & $orcaCommand.Source --extension $env:ORCA_OMP_STATUS_EXTENSION @args
+                & $occCommand.Source --extension $env:OCC_OMP_STATUS_EXTENSION @args
             }
-            $orcaStatus = $LASTEXITCODE
+            $occStatus = $LASTEXITCODE
         } else {
-            & $orcaCommand.Source @args
-            $orcaStatus = $LASTEXITCODE
+            & $occCommand.Source @args
+            $occStatus = $LASTEXITCODE
         }
 
-        $global:LASTEXITCODE = $orcaStatus
+        $global:LASTEXITCODE = $occStatus
     }
 }
 `

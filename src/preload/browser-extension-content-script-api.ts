@@ -24,7 +24,7 @@ type ContentScriptRoot = {
       getManifest?: () => { background?: unknown }
     }
   }
-  __orcaContentScriptApi?: true
+  __occContentScriptApi?: true
 }
 
 function hasServiceWorker(runtime: { getManifest?: () => { background?: unknown } }): boolean {
@@ -43,8 +43,8 @@ function hasServiceWorker(runtime: { getManifest?: () => { background?: unknown 
 
 const root: ContentScriptRoot = globalThis
 // Why the guard: every manifest entry lists this file, and entries share one world per frame.
-if (!root.__orcaContentScriptApi && root.chrome) {
-  root.__orcaContentScriptApi = true
+if (!root.__occContentScriptApi && root.chrome) {
+  root.__occContentScriptApi = true
   installBrowserExtensionInertApis('content-script')
   const runtime = root.chrome.runtime
   const sendMessage = runtime?.sendMessage

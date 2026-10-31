@@ -64,14 +64,14 @@ describe('terminal drop path writer', () => {
       dropTarget: { paneId: pane.id, leafId: pane.leafId, ptyId: 'pty-1', transport } as never,
       manager: manager as never,
       paneTransports: new Map([[pane.id, transport]]) as never,
-      paths: ['/tmp/orca-paste-1-abc.png'],
+      paths: ['/tmp/occ-paste-1-abc.png'],
       targetShell: 'posix'
     })
 
     expect(result).toEqual({ sentAnyPath: true, targetCurrent: true, pathsWritten: 1 })
     // Image attachment detection requires bracketed paste of the path without a trailing space.
     expect(sendInputAccepted).toHaveBeenCalledWith(
-      wrapTerminalBracketedPasteText('/tmp/orca-paste-1-abc.png'),
+      wrapTerminalBracketedPasteText('/tmp/occ-paste-1-abc.png'),
       'driving',
       { signal: expect.any(AbortSignal) }
     )
@@ -267,14 +267,14 @@ describe('terminal drop path writer', () => {
       dropTarget: { paneId: pane.id, leafId: pane.leafId, ptyId: 'pty-1', transport } as never,
       manager: manager as never,
       paneTransports: new Map([[pane.id, transport]]) as never,
-      paths: ['/repo/.orca/drops/download (1).png'],
+      paths: ['/repo/.occ/drops/download (1).png'],
       targetShell: 'posix'
     })
 
     // Unframed escaped download names reach agents as typed text instead of attachments.
     expect(sendInputAccepted).toHaveBeenCalledTimes(1)
     expect(sendInputAccepted).toHaveBeenCalledWith(
-      wrapTerminalBracketedPasteText('/repo/.orca/drops/download\\ \\(1\\).png'),
+      wrapTerminalBracketedPasteText('/repo/.occ/drops/download\\ \\(1\\).png'),
       'driving',
       { signal: expect.any(AbortSignal) }
     )

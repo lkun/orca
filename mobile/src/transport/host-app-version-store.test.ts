@@ -34,17 +34,17 @@ describe('host app version store', () => {
 
     expect(asyncStorageMock.setItem).toHaveBeenCalledTimes(2)
     expect(asyncStorageMock.setItem).toHaveBeenCalledWith(
-      'orca:host-app-version:v1:host-1',
+      'occ:host-app-version:v1:host-1',
       '1.4.191'
     )
     expect(asyncStorageMock.setItem).toHaveBeenCalledWith(
-      'orca:host-app-version:v1:host-2',
+      'occ:host-app-version:v1:host-2',
       '1.4.188'
     )
   })
 
   it('loads a previously observed version without requiring a live host', async () => {
-    asyncStorageMock.values.set('orca:host-app-version:v1:host-1', '1.4.188')
+    asyncStorageMock.values.set('occ:host-app-version:v1:host-1', '1.4.188')
 
     await expect(loadHostAppVersion('host-1')).resolves.toBe('1.4.188')
     await expect(loadHostAppVersion('host-2')).resolves.toBeNull()

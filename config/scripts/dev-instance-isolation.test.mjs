@@ -43,7 +43,7 @@ describe('resolveDevProfile', () => {
     })
   })
 
-  it('lets the flag, ORCA_DEV_PROFILE, and an explicit path override the default', () => {
+  it('lets the flag, OCC_DEV_PROFILE, and an explicit path override the default', () => {
     const repoRoot = checkout('linked')
     expect(resolveDevProfile({ repoRoot, mode: 'shared', env, platform: 'linux' }).kind).toBe(
       'shared'
@@ -51,7 +51,7 @@ describe('resolveDevProfile', () => {
     expect(
       resolveDevProfile({
         repoRoot: checkout('main'),
-        env: { ...env, ORCA_DEV_PROFILE: 'worktree' },
+        env: { ...env, OCC_DEV_PROFILE: 'worktree' },
         platform: 'linux'
       }).kind
     ).toBe('worktree')
@@ -59,38 +59,38 @@ describe('resolveDevProfile', () => {
       resolveDevProfile({
         repoRoot,
         mode: 'shared',
-        env: { ...env, ORCA_DEV_USER_DATA_PATH: '/tmp/custom' },
+        env: { ...env, OCC_DEV_USER_DATA_PATH: '/tmp/custom' },
         platform: 'linux'
       })
     ).toEqual({ kind: 'custom', userDataPath: path.resolve('/tmp/custom') })
     expect(() =>
-      resolveDevProfile({ repoRoot, env: { ...env, ORCA_DEV_PROFILE: 'other' }, platform: 'linux' })
-    ).toThrow('ORCA_DEV_PROFILE')
+      resolveDevProfile({ repoRoot, env: { ...env, OCC_DEV_PROFILE: 'other' }, platform: 'linux' })
+    ).toThrow('OCC_DEV_PROFILE')
   })
 })
 
 describe('dropInheritedDevInstanceEnv', () => {
   it('drops a parent dev instance identity but keeps an explicit profile override', () => {
     const inherited = {
-      ORCA_DEV_REPO_ROOT: '/worktrees/parent',
-      ORCA_DEV_INSTANCE_KEY: '/worktrees/parent',
-      ORCA_DEV_RENDERER_PORT: '15300',
-      ORCA_USER_DATA_PATH: '/profiles/parent',
-      ORCA_DEV_USER_DATA_PATH: '/profiles/parent'
+      OCC_DEV_REPO_ROOT: '/worktrees/parent',
+      OCC_DEV_INSTANCE_KEY: '/worktrees/parent',
+      OCC_DEV_RENDERER_PORT: '15300',
+      OCC_USER_DATA_PATH: '/profiles/parent',
+      OCC_DEV_USER_DATA_PATH: '/profiles/parent'
     }
     const same = { ...inherited }
     dropInheritedDevInstanceEnv(same, '/worktrees/parent')
     expect(same).toEqual(inherited)
 
-    const explicit = { ...inherited, ORCA_DEV_USER_DATA_PATH: '/profiles/mine' }
+    const explicit = { ...inherited, OCC_DEV_USER_DATA_PATH: '/profiles/mine' }
     dropInheritedDevInstanceEnv(explicit, '/worktrees/child')
     expect(explicit).toEqual({
-      ORCA_USER_DATA_PATH: '/profiles/parent',
-      ORCA_DEV_USER_DATA_PATH: '/profiles/mine'
+      OCC_USER_DATA_PATH: '/profiles/parent',
+      OCC_DEV_USER_DATA_PATH: '/profiles/mine'
     })
 
     dropInheritedDevInstanceEnv(inherited, '/worktrees/child')
-    expect(inherited).toEqual({ ORCA_USER_DATA_PATH: '/profiles/parent' })
+    expect(inherited).toEqual({ OCC_USER_DATA_PATH: '/profiles/parent' })
   })
 })
 

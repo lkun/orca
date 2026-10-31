@@ -290,7 +290,7 @@ describe('OrchestrationDb legacy contract storage', () => {
       })
     ).toBeUndefined()
     expect(
-      db!.resolveLegacyCoordinatorCandidate({
+      db!.resolveLegacyCoordinatoccndidate({
         runId: state.adoptedRunId,
         terminalHandle: 'term_legacy_coord',
         paneKey: 'tab_coord:44444444-4444-4444-8444-444444444444'

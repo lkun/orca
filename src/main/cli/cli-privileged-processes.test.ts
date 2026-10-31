@@ -1,10 +1,10 @@
 // A low-spec Windows machine timed out the first user-PATH write at 5 s; a retry then succeeded.
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 
 const { runProcessMock } = vi.hoisted(() => ({ runProcessMock: vi.fn() }))
 
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 
 import { writeWindowsUserPath } from './cli-privileged-processes'
 import { WINDOWS_PATH_WRITE_TIMEOUT_MS } from './cli-install-constants'

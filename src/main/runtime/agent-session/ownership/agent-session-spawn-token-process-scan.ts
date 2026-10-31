@@ -2,7 +2,7 @@
  * An empty result there could release a live reservation and admit a second writer. */
 
 import { readFile, readdir } from 'node:fs/promises'
-import { ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV } from '../../../../shared/agent-session-caller-env'
+import { OCC_AGENT_SESSION_SPAWN_TOKEN_ENV } from '../../../../shared/agent-session-caller-env'
 import { spawnTokenFromEnvironBlock } from './agent-session-spawn-token-readback'
 
 export type AgentSessionSpawnTokenScan = ReadonlyMap<string, readonly number[]>
@@ -10,7 +10,7 @@ export type AgentSessionSpawnTokenScan = ReadonlyMap<string, readonly number[]>
 /** Observed tokens, or null when enumeration is unavailable. */
 export async function scanAgentSessionSpawnTokenProcesses(
   platform: NodeJS.Platform = process.platform,
-  variable: string = ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV
+  variable: string = OCC_AGENT_SESSION_SPAWN_TOKEN_ENV
 ): Promise<AgentSessionSpawnTokenScan | null> {
   if (platform !== 'linux') {
     return null

@@ -21,7 +21,7 @@ vi.mock('../wsl/wsl-host-e2e-fake-connector', () => ({
   createFakeWslHostConnector: () => undefined,
   readFakeWslHostsConfig: () => undefined
 }))
-vi.mock('../orcad/orcad-artifact-materializer', () => ({ hasOrcadTemplate: () => undefined }))
+vi.mock('../occd/occd-artifact-materializer', () => ({ hasOCCdTemplate: () => undefined }))
 vi.mock('./wsl-host-automation-wake-wiring', () => ({
   createWslHostAutomationWake: () => undefined
 }))
@@ -42,14 +42,14 @@ vi.mock('./runtime-environments/runtime-environment-transport-routing', () => ({
 vi.mock('./runtime-environments/runtime-environment-request-connections', () => ({
   isRemoteRuntimeConnectionReady: () => undefined
 }))
-vi.mock('../ssh/orcad-terminal-census-client', () => ({
-  requestOrcadTerminalCensus: () => undefined
+vi.mock('../ssh/occd-terminal-census-client', () => ({
+  requestOCCdTerminalCensus: () => undefined
 }))
-vi.mock('../wsl/wsl-orcad-host-account-push', () => ({
+vi.mock('../wsl/wsl-occd-host-account-push', () => ({
   changesWslHostAccounts: () => undefined,
-  pushWslOrcadHostAccountEnv: () => undefined
+  pushWslOCCdHostAccountEnv: () => undefined
 }))
-vi.mock('../wsl/wsl-orcad-host-environments', () => ({ wslOrcadHostSupports: () => undefined }))
+vi.mock('../wsl/wsl-occd-host-environments', () => ({ wslOCCdHostSupports: () => undefined }))
 vi.mock('../wsl/wsl-host-connection-record', () => ({
   readWslHostRecordsQuietly: () => [
     { environmentId: 'wsl:ubuntu', distro: 'Ubuntu' },

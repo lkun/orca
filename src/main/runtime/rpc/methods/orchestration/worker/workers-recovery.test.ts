@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../../../orca-runtime'
+import { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationDb } from '../../../../orchestration/db'
 import { ORCHESTRATION_METHODS } from '../../orchestration'
 import { eraseRpcMethods } from '../../../core'
@@ -14,11 +14,11 @@ function deferred<T>(): { promise: Promise<T>; resolve: (value: T) => void } {
 
 describe('orchestration worker recovery', () => {
   let db: OrchestrationDb
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
 
   beforeEach(() => {
     db = new OrchestrationDb(':memory:')
-    runtime = new OrcaRuntimeService()
+    runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     vi.spyOn(runtime, 'getTerminalPaneKey').mockReturnValue(
       'tab_worker:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'
@@ -121,7 +121,7 @@ describe('orchestration worker recovery', () => {
 
   it('keeps an in-flight stop fenced during runtime-epoch reconciliation', async () => {
     const { dispatch } = createWorker('previous_runtime')
-    const pendingObservation = deferred<Awaited<ReturnType<OrcaRuntimeService['showTerminal']>>>()
+    const pendingObservation = deferred<Awaited<ReturnType<OCCRuntimeService['showTerminal']>>>()
     vi.mocked(runtime.showTerminal)
       .mockReturnValueOnce(pendingObservation.promise)
       .mockResolvedValue({

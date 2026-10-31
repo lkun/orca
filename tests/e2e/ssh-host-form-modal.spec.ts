@@ -1,7 +1,7 @@
 // STA-3067: keep add/edit fields in a viewport-bound modal even with a long SSH host list.
 
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
 
 test.use({ seedTestRepo: false })
@@ -93,24 +93,24 @@ async function listTargetIdsByLabelPrefix(page: Page, prefix: string): Promise<s
 }
 
 test.describe('SSH host add/edit modal', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
   })
 
-  test.afterEach(async ({ orcaPage }) => {
-    const ids = await listTargetIdsByLabelPrefix(orcaPage, HOST_PREFIX)
+  test.afterEach(async ({ occPage }) => {
+    const ids = await listTargetIdsByLabelPrefix(occPage, HOST_PREFIX)
     if (ids.length > 0) {
-      await removeSshTargets(orcaPage, ids)
+      await removeSshTargets(occPage, ids)
     }
   })
 
   test('opens add/edit form in a viewport-stable dialog over a long host list', async ({
-    orcaPage
+    occPage
   }) => {
-    const seeded = await seedSshTargets(orcaPage, 10)
-    await openSshHostSettings(orcaPage)
+    const seeded = await seedSshTargets(occPage, 10)
+    await openSshHostSettings(occPage)
 
-    const sshSection = orcaPage.locator('[data-settings-section="ssh"]')
+    const sshSection = occPage.locator('[data-settings-section="ssh"]')
     // Why: seed first, then open settings so SshPane's listTargets load includes them.
     for (const label of seeded.labels.slice(0, 3)) {
       await expect(sshSection.getByText(label, { exact: true })).toBeVisible()
@@ -118,7 +118,7 @@ test.describe('SSH host add/edit modal', () => {
 
     await sshSection.getByRole('button', { name: 'Add host' }).click()
 
-    const addDialog = orcaPage.getByRole('dialog', { name: 'Add SSH host' })
+    const addDialog = occPage.getByRole('dialog', { name: 'Add SSH host' })
     await expect(addDialog).toBeVisible()
     await expect(addDialog.getByRole('heading', { name: 'Add SSH host' })).toBeInViewport()
     await expect(
@@ -153,9 +153,9 @@ test.describe('SSH host add/edit modal', () => {
       `[data-ssh-target-card][data-ssh-target-label="${createdLabel}"]`
     )
     await createdCard.getByRole('button', { name: `More actions for ${createdLabel}` }).click()
-    await orcaPage.getByRole('menuitem', { name: 'Edit…' }).click()
+    await occPage.getByRole('menuitem', { name: 'Edit…' }).click()
 
-    const editDialog = orcaPage.getByRole('dialog', { name: 'Edit SSH host' })
+    const editDialog = occPage.getByRole('dialog', { name: 'Edit SSH host' })
     await expect(editDialog).toBeVisible()
     await expect(editDialog.getByRole('heading', { name: 'Edit SSH host' })).toBeInViewport()
     await expect(
@@ -183,7 +183,7 @@ test.describe('SSH host add/edit modal', () => {
 
     // Dirty outside-click must not discard the draft.
     await editDialog.locator('#ssh-target-label').fill(`${createdLabel}-dirty`)
-    await orcaPage.locator('[data-slot="dialog-overlay"]').click({ position: { x: 8, y: 8 } })
+    await occPage.locator('[data-slot="dialog-overlay"]').click({ position: { x: 8, y: 8 } })
     await expect(editDialog).toBeVisible()
     await expect(editDialog.locator('#ssh-target-label')).toHaveValue(`${createdLabel}-dirty`)
 
@@ -192,8 +192,8 @@ test.describe('SSH host add/edit modal', () => {
     await expect(editDialog).toBeHidden()
 
     await createdCard.getByRole('button', { name: `More actions for ${createdLabel}` }).click()
-    await orcaPage.getByRole('menuitem', { name: 'Edit…' }).click()
-    const reopened = orcaPage.getByRole('dialog', { name: 'Edit SSH host' })
+    await occPage.getByRole('menuitem', { name: 'Edit…' }).click()
+    const reopened = occPage.getByRole('dialog', { name: 'Edit SSH host' })
     await expect(reopened).toBeVisible()
     await expect(reopened.locator('#ssh-target-label')).toHaveValue(createdLabel)
     await expect(reopened.getByRole('button', { name: 'Advanced' })).toHaveAttribute(
@@ -203,8 +203,8 @@ test.describe('SSH host add/edit modal', () => {
     await reopened.getByRole('button', { name: 'Cancel' }).click()
   })
 
-  test('add-ssh-host settings intent opens the same modal dialog', async ({ orcaPage }) => {
-    await orcaPage.evaluate(() => {
+  test('add-ssh-host settings intent opens the same modal dialog', async ({ occPage }) => {
+    await occPage.evaluate(() => {
       const state = window.__store?.getState()
       if (!state) {
         throw new Error('store unavailable')
@@ -212,10 +212,10 @@ test.describe('SSH host add/edit modal', () => {
       state.openSettingsTarget({ pane: 'ssh', repoId: null, intent: 'add-ssh-host' })
       state.openSettingsPage()
     })
-    await expect(orcaPage.getByPlaceholder('Search settings')).toBeVisible({ timeout: 10_000 })
-    await dismissTransientAnnouncement(orcaPage)
+    await expect(occPage.getByPlaceholder('Search settings')).toBeVisible({ timeout: 10_000 })
+    await dismissTransientAnnouncement(occPage)
 
-    const dialog = orcaPage.getByRole('dialog', { name: 'Add SSH host' })
+    const dialog = occPage.getByRole('dialog', { name: 'Add SSH host' })
     await expect(dialog).toBeVisible({ timeout: 10_000 })
     await expect(dialog.getByRole('heading', { name: 'Add SSH host' })).toBeInViewport()
     await expect(dialog.locator('#ssh-target-host')).toBeFocused()

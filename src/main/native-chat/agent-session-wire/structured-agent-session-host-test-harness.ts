@@ -137,7 +137,7 @@ async function seedApproval(optionId = 'allow'): Promise<{ itemId: string; revis
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-wire-host-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-wire-host-'))
   resetHostTestOperationIds()
   ordinal = 0
   acquire = vi.fn(async ({ fence }) => ({

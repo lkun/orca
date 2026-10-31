@@ -17,7 +17,7 @@ import { closeStructuredAgentSessionChild } from './agent-session/structured-age
 import { retireSettledStructuredWorkerTab } from './agent-session/structured-agent-session-tab-retirement'
 import type { WorktreePtyHostFence } from './worktree-pty-host-fence'
 import { getRepoIdFromWorktreeId } from '../../shared/worktree/id'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 import type { StructuredAgentId } from '../../shared/agent-session-provider-handle'
 
 export type StructuredSessionInWorkspace = {
@@ -31,7 +31,7 @@ export type UnclosedStructuredSession = StructuredSessionInWorkspace & {
 }
 
 export type StructuredWorktreeSweepRuntime = Pick<
-  OrcaRuntimeService,
+  OCCRuntimeService,
   'forgetStructuredSessionMail' | 'retireStructuredAgentSessionTabFromSnapshot'
 >
 

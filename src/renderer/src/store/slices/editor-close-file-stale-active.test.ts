@@ -8,7 +8,7 @@ import {
   seedStore
 } from './store-test-helpers'
 import { drawTabsFromMain } from './tabs-drawn-from-main.test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
 vi.mock('@/runtime/runtime-rpc-client', async (importOriginal) =>
   (
@@ -76,7 +76,7 @@ function expectValidActiveFile(store: ReturnType<typeof createTestStore>): void 
 }
 
 // Main frames dedupe same-file tabs per group; keep the duplicate only in openFiles for switch-on seeds.
-const duplicateTab: [string, string][] = ORCA_LAYOUT_OWNER_IS_MAIN ? [] : [['t-a2', '/a']]
+const duplicateTab: [string, string][] = OCC_LAYOUT_OWNER_IS_MAIN ? [] : [['t-a2', '/a']]
 
 describe('closeFile when activeFileId is not an open file', () => {
   it('closes an editor tab whose file is gone without throwing', async () => {

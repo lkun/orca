@@ -1,10 +1,10 @@
-import { OrcaRuntimeWithMobileTookFloor } from './mobile-terminal-activity'
+import { OCCRuntimeWithMobileTookFloor } from './mobile-terminal-activity'
 import {
   MOBILE_AUTO_RESTORE_FIT_MAX_MS,
   MOBILE_AUTO_RESTORE_FIT_MIN_MS
-} from '../../orca-runtime-postlude'
+} from '../../occ-runtime-postlude'
 
-export abstract class OrcaRuntimeWithReclaimTerminalForDesktop extends OrcaRuntimeWithMobileTookFloor {
+export abstract class OCCRuntimeWithReclaimTerminalForDesktop extends OCCRuntimeWithMobileTookFloor {
   abstract isMobileSubscriberActive(ptyId: string): boolean
   abstract setMobileDisplayMode(ptyId: string, mode: 'auto' | 'desktop'): void
 

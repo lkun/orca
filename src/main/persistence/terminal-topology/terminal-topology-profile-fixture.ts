@@ -38,7 +38,7 @@ export async function openTopologyStoreWithAuthority(
   }
   const authority = new DelayedAuthority(inner)
   const store = new Store({
-    dataFile: join(directory, 'orca-data.json'),
+    dataFile: join(directory, 'occ-data.json'),
     profileStateAuthority: authority
   })
   await store.flushPendingOrThrowAsync()

@@ -5,18 +5,18 @@ import {
 } from './terminal-launch-result'
 import { revealCreatedTerminal } from './terminal-create-reveal'
 import type { PaneSpawnOperation } from '../../../ipc/pty/pane/pane-spawn-operation'
-import { OrcaRuntimeWithTerminalCreateDeduplication } from './terminal-create-deduplication'
-import * as dependencies from '../../orca-runtime-create-terminal-dependencies'
-import { createDesktopTerminal } from '../../orca-runtime-create-terminal-desktop'
+import { OCCRuntimeWithTerminalCreateDeduplication } from './terminal-create-deduplication'
+import * as dependencies from '../../occ-runtime-create-terminal-dependencies'
+import { createDesktopTerminal } from '../../occ-runtime-create-terminal-desktop'
 import { terminalCreateTeamAllocation } from './terminal-create-team-allocation'
-import { createIdempotentCallback } from '../../orca-runtime-report-pty-spawn-commit'
+import { createIdempotentCallback } from '../../occ-runtime-report-pty-spawn-commit'
 import { recordPtySurface, spawnSurfaceClaimSequence } from '../../pty-recorded-surface-topology'
 import { agentLaunchTokenFor, withAgentLaunchToken } from '../../../agent-launch/agent-launch-token'
 import { seedPtyLaunchTitle } from './pty-launch-title'
 import { migratedPaneRestoreHint } from '../../migrated-pane-restore-cwd'
 import { paneSize, resolvePtyFirstSize } from '../../../ipc/pty/pty-first-size'
 
-export abstract class OrcaRuntimeWithCreateTerminal extends OrcaRuntimeWithTerminalCreateDeduplication {
+export abstract class OCCRuntimeWithCreateTerminal extends OCCRuntimeWithTerminalCreateDeduplication {
   protected abstract paneStartStatusArgs: dependencies.PaneStartArgsOf
 
   async createTerminal(

@@ -1,6 +1,6 @@
 // Main-owned terminal names/props use layout commands for every view; null/false retains legacy routing for other workspaces.
-import type { OrcaRuntimeWithPersistHeadlessTerminalTitle as PersistHeadlessTerminalTitleMethods } from '../workspaces/workspace-file-session-targets'
-import { OrcaRuntimeWithMainLayoutAgentLaunchTabs } from './main-layout-agent-launch-tabs'
+import type { OCCRuntimeWithPersistHeadlessTerminalTitle as PersistHeadlessTerminalTitleMethods } from '../workspaces/workspace-file-session-targets'
+import { OCCRuntimeWithMainLayoutAgentLaunchTabs } from './main-layout-agent-launch-tabs'
 import type {
   RuntimeTerminalRename,
   RuntimeTerminalSetPaneTitle
@@ -27,7 +27,7 @@ export type PaneLayoutEdit = {
   renamedLeafIds?: string[]
 }
 
-export abstract class OrcaRuntimeWithMainLayoutRenames extends OrcaRuntimeWithMainLayoutAgentLaunchTabs {
+export abstract class OCCRuntimeWithMainLayoutRenames extends OCCRuntimeWithMainLayoutAgentLaunchTabs {
   protected abstract persistHeadlessTerminalTitle(
     ...args: Parameters<PersistHeadlessTerminalTitleMethods['persistHeadlessTerminalTitle']>
   ): ReturnType<PersistHeadlessTerminalTitleMethods['persistHeadlessTerminalTitle']>

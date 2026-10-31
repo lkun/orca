@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithCreateManagedWorktree } from './workspace-creation'
+import { OCCRuntimeWithCreateManagedWorktree } from './workspace-creation'
 import type { LocalGitExecOptions } from '../../git/repo-default-base-ref'
 import type { CreateWorktreeResult } from '../../../shared/worktree/create-types'
 import type { RemoteFetchResult, RemoteTrackingBase } from '../runtime-remote-fetch-controller'
@@ -25,7 +25,7 @@ import {
   type RuntimeProvisionedRootRequest
 } from '../runtime-provisioned-root-adoption'
 
-export abstract class OrcaRuntimeWithCreateManagedRemoteWorktree extends OrcaRuntimeWithCreateManagedWorktree {
+export abstract class OCCRuntimeWithCreateManagedRemoteWorktree extends OCCRuntimeWithCreateManagedWorktree {
   async getCanonicalFetchKey(
     repoPath: string,
     remote: string,

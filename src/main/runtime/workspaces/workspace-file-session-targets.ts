@@ -1,7 +1,7 @@
-import type { OrcaRuntimeWithStoredMobileSnapshotHasStalePreservedTab as BrowserOwnership } from '../session-tabs/mobile-session-publication-preservation'
-import type { OrcaRuntimeWithScheduleMobileSessionTabsChanged } from '../session-tabs/session-tabs-change-publication'
-import type { OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree } from '../terminal/launch/terminal-workspace-scope'
-import type { OrcaRuntimeWithTransitionGraphReloadToTerminalState } from '../session-graph/session-graph-authority'
+import type { OCCRuntimeWithStoredMobileSnapshotHasStalePreservedTab as BrowserOwnership } from '../session-tabs/mobile-session-publication-preservation'
+import type { OCCRuntimeWithScheduleMobileSessionTabsChanged } from '../session-tabs/session-tabs-change-publication'
+import type { OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree } from '../terminal/launch/terminal-workspace-scope'
+import type { OCCRuntimeWithTransitionGraphReloadToTerminalState } from '../session-graph/session-graph-authority'
 import { RuntimeHeadlessTabGroups } from '../session-tabs/headless-tab-group-moves'
 import type {
   BrowserTabInfo,
@@ -29,36 +29,36 @@ import {
 import { createMarkdownTabDiskHost } from '../markdown-tab-disk-host'
 import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
 
-export abstract class OrcaRuntimeWithPersistHeadlessTerminalTitle extends RuntimeHeadlessTabGroups {
+export abstract class OCCRuntimeWithPersistHeadlessTerminalTitle extends RuntimeHeadlessTabGroups {
   protected abstract isRendererOwnedMobileBrowserTab(
     ...args: Parameters<BrowserOwnership['isRendererOwnedMobileBrowserTab']>
   ): ReturnType<BrowserOwnership['isRendererOwnedMobileBrowserTab']>
   protected abstract getListedBrowserTabsByPageId(worktreeId: string): Map<string, BrowserTabInfo>
   protected abstract resolveMobileMarkdownWorktreeId(
     ...args: Parameters<
-      OrcaRuntimeWithScheduleMobileSessionTabsChanged['resolveMobileMarkdownWorktreeId']
+      OCCRuntimeWithScheduleMobileSessionTabsChanged['resolveMobileMarkdownWorktreeId']
     >
-  ): ReturnType<OrcaRuntimeWithScheduleMobileSessionTabsChanged['resolveMobileMarkdownWorktreeId']>
+  ): ReturnType<OCCRuntimeWithScheduleMobileSessionTabsChanged['resolveMobileMarkdownWorktreeId']>
   protected abstract floatingWorkspaceToResolvedWorktree(
     ...args: Parameters<
-      OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['floatingWorkspaceToResolvedWorktree']
+      OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['floatingWorkspaceToResolvedWorktree']
     >
   ): ReturnType<
-    OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['floatingWorkspaceToResolvedWorktree']
+    OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['floatingWorkspaceToResolvedWorktree']
   >
   protected abstract resolveFloatingWorkspacePath(
     ...args: Parameters<
-      OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['resolveFloatingWorkspacePath']
+      OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['resolveFloatingWorkspacePath']
     >
   ): ReturnType<
-    OrcaRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['resolveFloatingWorkspacePath']
+    OCCRuntimeWithResolveBrowserNetworkExecutionHostForWorktree['resolveFloatingWorkspacePath']
   >
   protected abstract resolveFolderWorkspaceLaunchScope(
     ...args: Parameters<
-      OrcaRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceLaunchScope']
+      OCCRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceLaunchScope']
     >
   ): ReturnType<
-    OrcaRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceLaunchScope']
+    OCCRuntimeWithTransitionGraphReloadToTerminalState['resolveFolderWorkspaceLaunchScope']
   >
 
   // Persist a manual terminal rename so a headless rebuild keeps the title

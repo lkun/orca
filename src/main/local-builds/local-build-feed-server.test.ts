@@ -7,7 +7,7 @@ import { startLocalBuildFeed } from './local-build-feed-server'
 
 describe('startLocalBuildFeed', () => {
   it('serves only tokenized manifest and validated artifact routes', async () => {
-    const directory = await mkdtemp(join(tmpdir(), 'orca-local-feed-'))
+    const directory = await mkdtemp(join(tmpdir(), 'occ-local-feed-'))
     const artifactPath = join(directory, 'occ-macos-arm64.zip')
     await writeFile(artifactPath, 'zip')
     const artifactFile = await open(artifactPath, 'r')

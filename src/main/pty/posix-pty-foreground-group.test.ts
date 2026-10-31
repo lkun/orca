@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { ProcessResult, ProcessSpec } from '@orca/process-host/process-spec'
+import type { ProcessResult, ProcessSpec } from '@occ/process-host/process-spec'
 import {
   getPosixPtyForegroundGroup,
   resetPosixPtyForegroundGroupOwnRowCache,
@@ -13,7 +13,7 @@ const pidArg = (spec: ProcessSpec): string => {
   const args = spec.args ?? []
   return args[args.indexOf('-p') + 1]
 }
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 
 const psResult = (stdout: string): ProcessResult => ({
   code: 0,

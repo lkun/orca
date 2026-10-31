@@ -75,7 +75,7 @@ export function getPluginFilesState(pluginDir = getPluginDir()): {
     return {
       present: true,
       managed,
-      detail: managed ? null : 'Hermes orca-status plugin exists but is not OCC-managed'
+      detail: managed ? null : 'Hermes occ-status plugin exists but is not OCC-managed'
     }
   } catch (error) {
     return {

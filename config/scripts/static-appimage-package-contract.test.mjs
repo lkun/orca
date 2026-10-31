@@ -71,7 +71,7 @@ describe('static AppImage package contract', () => {
   })
 
   it('rejects artifact names outside the release contract before reading them', () => {
-    expect(() => verifyStaticAppImagePackage('/missing/orca-preview.AppImage')).toThrow(
+    expect(() => verifyStaticAppImagePackage('/missing/occ-preview.AppImage')).toThrow(
       'unsupported artifact name'
     )
   })
@@ -213,7 +213,7 @@ function writeProgramHeader(
 }
 
 async function withFixture(filename, contents, check, { mode = 0o755 } = {}) {
-  const root = await mkdtemp(join(tmpdir(), 'orca-static-appimage-contract-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-static-appimage-contract-'))
   try {
     const path = join(root, filename)
     await writeFile(path, contents)

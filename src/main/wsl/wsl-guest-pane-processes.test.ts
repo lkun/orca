@@ -27,7 +27,7 @@ const {
 
 const KEY = 'tab-1:leaf-1'
 const fenced = (...lines: string[]) =>
-  ['ORCA_PANE_PROCESSES_BEGIN', ...lines, 'ORCA_PANE_PROCESSES_END', ''].join('\n')
+  ['OCC_PANE_PROCESSES_BEGIN', ...lines, 'OCC_PANE_PROCESSES_END', ''].join('\n')
 const row = (pid: number, ppid: number, comm: string, key: string, cwd: string) =>
   [pid, ppid, comm, key, cwd].join('\t')
 
@@ -46,7 +46,7 @@ describe('the guest process table', () => {
       { pid: 10, ppid: 1, comm: 'bash', paneKey: KEY, cwd: '/home/a/deep' }
     ])
     expect(
-      parseWslGuestPaneProcesses(`ORCA_PANE_PROCESSES_BEGIN\n${row(10, 1, 'bash', KEY, '/')}`)
+      parseWslGuestPaneProcesses(`OCC_PANE_PROCESSES_BEGIN\n${row(10, 1, 'bash', KEY, '/')}`)
     ).toBeNull()
   })
 

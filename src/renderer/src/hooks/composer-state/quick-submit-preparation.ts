@@ -7,7 +7,7 @@ import {
   getLinkedWorkItemProvider,
   canUseIssueCommandForLinkedItemProvider
 } from '@/lib/new-workspace'
-import { getDefaultSetupDecision, getSetupConfig } from '../../../../shared/orca-hook-setup-config'
+import { getDefaultSetupDecision, getSetupConfig } from '../../../../shared/occ-hook-setup-config'
 import type { SetupDecision } from '../../../../shared/worktree/create-types'
 import type { WorktreeCreationRequest } from '@/lib/pending-worktree-creation'
 import { resolveComposerBranchNameOverrideForCreate } from '../composer-branch-selection'

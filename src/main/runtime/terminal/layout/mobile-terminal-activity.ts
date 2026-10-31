@@ -1,8 +1,8 @@
-import { OrcaRuntimeWithMarkPtyLivenessUnverifiable } from './terminal-input-floor'
-import type { ApplyLayoutResult, DriverState } from '../../orca-runtime-core'
+import { OCCRuntimeWithMarkPtyLivenessUnverifiable } from './terminal-input-floor'
+import type { ApplyLayoutResult, DriverState } from '../../occ-runtime-core'
 import { clampTerminalViewport } from '../../../../shared/terminal-viewport'
 
-export abstract class OrcaRuntimeWithMobileTookFloor extends OrcaRuntimeWithMarkPtyLivenessUnverifiable {
+export abstract class OCCRuntimeWithMobileTookFloor extends OCCRuntimeWithMarkPtyLivenessUnverifiable {
   abstract applyMobileDisplayMode(ptyId: string): Promise<boolean>
 
   // Mobile gestures reclaim desktop take-back and fit the active viewport; mobile-to-mobile handoffs preserve resize.

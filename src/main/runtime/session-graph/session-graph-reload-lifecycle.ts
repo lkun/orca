@@ -1,12 +1,12 @@
-import type { OrcaRuntimeWithTransitionGraphReloadToTerminalState as TransitionGraphReloadToTerminalStateMethods } from './session-graph-authority'
-import type { OrcaRuntimeWithBindPtyIncarnationHandle as BindPtyIncarnationHandleMethods } from '../terminal/identity/terminal-handle-bindings'
-import type { OrcaRuntimeWithResolveWaiter as ResolveWaiterMethods } from '../orca-runtime-resolve-waiter'
-import { OrcaRuntimeWithStopTerminalsForProject } from '../terminal/stop/project-terminal-stop'
-import type { RuntimeRendererReloadFence } from '../orca-runtime-core'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import type { OCCRuntimeWithTransitionGraphReloadToTerminalState as TransitionGraphReloadToTerminalStateMethods } from './session-graph-authority'
+import type { OCCRuntimeWithBindPtyIncarnationHandle as BindPtyIncarnationHandleMethods } from '../terminal/identity/terminal-handle-bindings'
+import type { OCCRuntimeWithResolveWaiter as ResolveWaiterMethods } from '../occ-runtime-resolve-waiter'
+import { OCCRuntimeWithStopTerminalsForProject } from '../terminal/stop/project-terminal-stop'
+import type { RuntimeRendererReloadFence } from '../occ-runtime-core'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { HEADLESS_RUNTIME_WINDOW_ID } from '../../../shared/runtime-types'
 
-export abstract class OrcaRuntimeWithHasTerminalsForWorktree extends OrcaRuntimeWithStopTerminalsForProject {
+export abstract class OCCRuntimeWithHasTerminalsForWorktree extends OCCRuntimeWithStopTerminalsForProject {
   protected abstract assertStableReadyGraph(
     ...args: Parameters<TransitionGraphReloadToTerminalStateMethods['assertStableReadyGraph']>
   ): ReturnType<TransitionGraphReloadToTerminalStateMethods['assertStableReadyGraph']>
@@ -187,7 +187,7 @@ export abstract class OrcaRuntimeWithHasTerminalsForWorktree extends OrcaRuntime
     }
     this.graphReloadLifecycle.settleActive('cancelled')
     // Closed windows never republish; serve/main-owned layouts must reclaim the graph (#27292).
-    if (ORCA_LAYOUT_OWNER_IS_MAIN || this.servesHeadlessGraph) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN || this.servesHeadlessGraph) {
       this.headlessGraphFallbackAvailable = true
     }
     if (this.shouldRestoreHeadlessGraph(windowId)) {

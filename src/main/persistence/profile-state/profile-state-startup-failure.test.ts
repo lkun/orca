@@ -24,7 +24,7 @@ describe('profile-state startup failure formatting', () => {
   it('prints recovery paths and the offline rollback command', () => {
     const error = new ProfileStateRecoveryRequiredError(
       {
-        dataFile: '/profile/orca-data.json',
+        dataFile: '/profile/occ-data.json',
         databaseFile: '/profile/profile-state.db',
         profileId: 'profile-a'
       },
@@ -32,7 +32,7 @@ describe('profile-state startup failure formatting', () => {
     )
 
     expect(formatProfileStateStartupFailure(error)).toContain(
-      'orca profile state rollback --revision <revision>'
+      'occ profile state rollback --revision <revision>'
     )
     expect(formatProfileStateStartupFailure(error)).toContain('/profile/profile-state.db')
     expect(profileStateStartupFailureClass(error)).toBe('recovery-required')
@@ -47,10 +47,10 @@ describe('profile-state startup failure formatting', () => {
       'OCC cannot safely choose a profile-state authority: both profile stores are present'
     )
     expect(message).toContain('neither is selected automatically')
-    expect(message).toContain('orca profile state rollback --current-json')
+    expect(message).toContain('occ profile state rollback --current-json')
     expect(message).toContain('does not merge')
-    expect(message).toContain('orca profile state exports')
-    expect(message).toContain('orca profile state rollback --backup <id>')
+    expect(message).toContain('occ profile state exports')
+    expect(message).toContain('occ profile state rollback --backup <id>')
     expect(
       profileStateStartupFailureClass(new ProfileStateAuthorityBootstrapError('ambiguous'))
     ).toBe('ambiguous-authority')
@@ -59,7 +59,7 @@ describe('profile-state startup failure formatting', () => {
   it('shows retained SQLite backups and their explicit recovery command without JSON exports', () => {
     const message = formatProfileStateStartupFailure({
       code: 'profile-state-recovery-required',
-      dataFile: '/profile/orca-data.json',
+      dataFile: '/profile/occ-data.json',
       databaseFile: '/profile/profile-state.db',
       exportPaths: [],
       backupPaths: ['/profile/profile-state.db.backup.latest.db']
@@ -67,7 +67,7 @@ describe('profile-state startup failure formatting', () => {
     expect(message).toContain(
       'Retained SQLite backups:\n  /profile/profile-state.db.backup.latest.db'
     )
-    expect(message).toContain('orca profile state rollback --backup <id>')
+    expect(message).toContain('occ profile state rollback --backup <id>')
   })
 
   it('leaves unrelated startup errors on the existing fatal path', () => {

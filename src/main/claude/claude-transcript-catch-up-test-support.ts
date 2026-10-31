@@ -96,7 +96,7 @@ afterEach(async () => {
 })
 
 export async function chat(project = '-work', cwd = '/work') {
-  const root = await mkdtemp(join(tmpdir(), 'orca-claude-catch-up-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-claude-catch-up-'))
   const projects = join(root, 'claude-home', 'projects', project)
   await mkdir(projects, { recursive: true })
   const transcript = join(projects, `${SID}.jsonl`)

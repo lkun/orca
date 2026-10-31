@@ -5,7 +5,7 @@ import { afterEach, expect, it } from 'vitest'
 import { resolveCli } from './runtime-serve-terminal-smoke.mjs'
 import { NODE_RUNTIME_ASSETS } from '../../src/shared/node-runtime-pin.ts'
 import { currentTarget } from './server-build-target.mjs'
-import { ORCAD_CLI_ENTRY_FILENAME } from '../../src/shared/orcad-artifacts.ts'
+import { OCCD_CLI_ENTRY_FILENAME } from '../../src/shared/occd-artifacts.ts'
 
 const roots = []
 afterEach(() => {
@@ -15,7 +15,7 @@ afterEach(() => {
 })
 
 function checkout() {
-  const root = mkdtempSync(join(tmpdir(), 'orca-smoke-cli-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-smoke-cli-'))
   roots.push(root)
   const emitted = join(root, 'out', 'cli', 'index.js')
   mkdirSync(dirname(emitted), { recursive: true })
@@ -23,13 +23,13 @@ function checkout() {
   return root
 }
 
-it('drives Orcad with its packaged CLI and pinned Node even when a desktop CLI exists', () => {
+it('drives OCCd with its packaged CLI and pinned Node even when a desktop CLI exists', () => {
   const root = checkout()
-  const directory = join(root, 'out', 'orcad')
-  const bundled = join(directory, ORCAD_CLI_ENTRY_FILENAME)
+  const directory = join(root, 'out', 'occd')
+  const bundled = join(directory, OCCD_CLI_ENTRY_FILENAME)
   mkdirSync(dirname(bundled), { recursive: true })
   writeFileSync(bundled, '')
-  expect(resolveCli('orcad', root)).toEqual({
+  expect(resolveCli('occd', root)).toEqual({
     command: join(
       root,
       'out',
@@ -42,7 +42,7 @@ it('drives Orcad with its packaged CLI and pinned Node even when a desktop CLI e
 })
 
 it('fails if the packaged CLI is missing instead of using a stale desktop CLI', () => {
-  expect(() => resolveCli('orcad', checkout())).toThrow('Missing packaged Orcad CLI')
+  expect(() => resolveCli('occd', checkout())).toThrow('Missing packaged OCCd CLI')
 })
 
 it('retains the built desktop CLI for the Electron smoke', () => {

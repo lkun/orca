@@ -48,7 +48,7 @@ describe('DeclaredDesktopClients', () => {
       { name: 'Phone', scope: 'mobile' }
     ])
     expect(clients.peers({ connectionId: 'me', clientInstanceId: 'me' }, getDevice)).toEqual({
-      peers: [{ name: 'OrcaDev' }, { name: 'another OCC' }]
+      peers: [{ name: 'OCCDev' }, { name: 'another OCC' }]
     })
   })
 

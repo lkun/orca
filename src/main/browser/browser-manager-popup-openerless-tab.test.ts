@@ -117,7 +117,7 @@ function attachClickedGuest(pageUrl = 'https://app.example.com/'): WindowOpenHan
 
 function routedTabs(): unknown[] {
   return rendererSendMock.mock.calls
-    .filter(([channel]) => channel === 'browser:open-link-in-orca-tab')
+    .filter(([channel]) => channel === 'browser:open-link-in-occ-tab')
     .map(([, payload]) => payload)
 }
 
@@ -172,7 +172,7 @@ describe('tab-shaped OAuth opens without an opener', () => {
     expect(rendererSendMock).toHaveBeenCalledWith('browser:popup', {
       browserPageId: 'browser-1',
       origin: 'https://accounts.example.com',
-      action: 'opened-in-orca'
+      action: 'opened-in-occ'
     })
   })
 

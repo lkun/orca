@@ -1,7 +1,7 @@
 // Validate every holder before any partition writes a renderer-requested detach.
 
 import { randomUUID } from 'node:crypto'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import type { ExecutionHostId } from '../../../shared/execution-host'
 import {
   collectLayoutLeafIdsInOrder,
@@ -73,12 +73,12 @@ export function resolveWindowPaneDetach(
   }
   const home = holders.find((holder) => holder.hostId === holderIds[0])
   // Main owns all shown panes; home determines last-pane status while stray copies move too.
-  if (ORCA_LAYOUT_OWNER_IS_MAIN && home && home.panes < 2) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN && home && home.panes < 2) {
     return { code: 'last_pane' }
   }
   const bound = new Set(holders.flatMap(({ ptyId }) => (ptyId ? [ptyId] : [])))
   // Main's home binding wins when SSH respawn leaves different IDs in duplicate holders.
-  const ptyId = ORCA_LAYOUT_OWNER_IS_MAIN
+  const ptyId = OCC_LAYOUT_OWNER_IS_MAIN
     ? bound.size === 1
       ? [...bound][0]!
       : (home?.ptyId ?? null)

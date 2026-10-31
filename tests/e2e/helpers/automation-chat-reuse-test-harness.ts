@@ -7,7 +7,7 @@ import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { expect, vi, type Mock } from 'vitest'
-import type { OrcaRuntimeService } from '../../../src/main/runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../src/main/runtime/occ-runtime'
 import type { StructuredAgentSessionHost } from '../../../src/main/native-chat/agent-session-wire/structured-agent-session-host'
 import { createRuntimeAutomationService } from '../../../src/main/automations/runtime-automation-service'
 import { createAutomationRunWriter } from '../../../src/main/automations/automation-run-writer'
@@ -47,7 +47,7 @@ export async function exerciseBusyChatReuse(
   vi.spyOn(Date, 'now').mockReturnValue(HOST_TEST_NOW)
   const rig = await createQueuedMessageTestRig({ restartable: true, sessionId })
   controls.setHost(rig.host)
-  const root = mkdtempSync(join(tmpdir(), 'orca-34332-accepted-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-34332-accepted-'))
   testState.dir = root
   const disk = createStore()
   let service: ReturnType<typeof createRuntimeAutomationService> | undefined
@@ -116,7 +116,7 @@ export async function exerciseBusyChatReuse(
       }
     }
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: only the runtime facade is scripted; the real host/store and service/send/receipt/queue/observer/writer execute.
-    const runtime = runtimeFacade as unknown as OrcaRuntimeService
+    const runtime = runtimeFacade as unknown as OCCRuntimeService
     service = createRuntimeAutomationService({ store: disk, runtime, headless: true })
     const dispatched = await service.runNow(saved.id)
     expect(dispatched).toMatchObject({
@@ -229,7 +229,7 @@ export async function exerciseBusyChatReuse(
     )
     expect(disk.listAutomationRuns(saved.id).find((r) => r.id === first.id)).toEqual(firstResult)
     expect(disk.listAutomationRuns(saved.id)).toHaveLength(3)
-    const persisted = JSON.parse(readPersistedStateJson(join(root, 'orca-data.json')))
+    const persisted = JSON.parse(readPersistedStateJson(join(root, 'occ-data.json')))
     expect(
       persisted.automationRuns.find((row: { id: string }) => row.id === current.id)
     ).toMatchObject({

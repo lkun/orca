@@ -8,19 +8,19 @@ const mocks = vi.hoisted(() => ({ listDetectedGitWorktrees: vi.fn(), runProcess:
 
 vi.mock('electron', () => ({
   ipcMain: { handle: vi.fn(), removeHandler: vi.fn() },
-  app: { getPath: () => '/tmp/orca-test' }
+  app: { getPath: () => '/tmp/occ-test' }
 }))
 vi.mock('./detected-worktree-scan-cache', async (importOriginal) => ({
   ...(await importOriginal<object>()),
   listDetectedGitWorktrees: mocks.listDetectedGitWorktrees
 }))
 // Any `wsl --list --running` probe would land here; a deferred re-scan must never make one.
-vi.mock('@orca/process-host', async (importOriginal) => ({
+vi.mock('@occ/process-host', async (importOriginal) => ({
   ...(await importOriginal<object>()),
   runProcess: mocks.runProcess
 }))
 
-const { listDetectedWorktreesForCapturedRepo } = await import('./detected-provider-listing')
+const { listDetectedWorktreesFoccpturedRepo } = await import('./detected-provider-listing')
 const { setWslStoppedWorktreeRescanNotifier } = await import('./wsl-stopped-worktree-listing')
 const { WslDistroStoppedError, WslDistroUnverifiableError } =
   await import('../../../wsl/wsl-unc-access-gate')
@@ -63,7 +63,7 @@ function createStore(repo: Repo, meta: Record<string, Partial<WorktreeMeta>> = {
 }
 
 async function list(store: Store, repo: Repo): Promise<DetectedWorktreeListResult> {
-  const result = await listDetectedWorktreesForCapturedRepo(store, repo, () => true)
+  const result = await listDetectedWorktreesFoccpturedRepo(store, repo, () => true)
   if (!result || 'providerAbortStatus' in result) {
     throw new Error('expected a listing')
   }

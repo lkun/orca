@@ -79,7 +79,7 @@ function createHandlers(
       current: { query: '', caseSensitive: false, regex: false }
     },
     keybindings,
-    terminalShortcutPolicy: 'orca-first',
+    terminalShortcutPolicy: 'occ-first',
     getKeyboardSplitTelemetrySource: () => 'keyboard'
   } as never)
 }

@@ -85,7 +85,7 @@ const journals = createTrackedJournalOpener()
 let root: string
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-codex-turn-lifecycle-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-codex-turn-lifecycle-'))
 })
 
 afterEach(async () => {

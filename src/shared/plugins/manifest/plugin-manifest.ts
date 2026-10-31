@@ -5,7 +5,7 @@ import {
   unsafePluginDisplayTextPaths
 } from './plugin-display-text'
 import { pluginCapabilitySchema } from '../capabilities/plugin-capabilities'
-import { orcaEngineRangeSchema } from './plugin-manifest-engine-range'
+import { occEngineRangeSchema } from './plugin-manifest-engine-range'
 import {
   pluginContributesFields,
   pluginReservedContributesFields
@@ -35,7 +35,7 @@ import {
 } from '../contributions/plugin-execution-profile'
 
 /**
- * Plugin manifest v1 and v2 (`orca-plugin.json` at the plugin root). The
+ * Plugin manifest v1 and v2 (`occ-plugin.json` at the plugin root). The
  * `contributes` key names deliberately mirror common Electron-ecosystem
  * manifest conventions so future adapters stay cheap.
  *
@@ -46,7 +46,7 @@ import {
 const SEMVER_RE =
   /^(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/
 
-export { orcaEngineRangeSchema, satisfiesOrcaEngineRange } from './plugin-manifest-engine-range'
+export { occEngineRangeSchema, satisfiesOCCEngineRange } from './plugin-manifest-engine-range'
 
 const V1 = PLUGIN_SCHEMA_SINCE_V1
 const NEXT = PLUGIN_MANIFEST_V2_SINCE
@@ -63,7 +63,7 @@ const authorFields = {
 }
 const authorDoc = pluginFieldDoc('Who maintains the plugin.', V1)
 const enginesFields = {
-  orca: orcaEngineRangeSchema.meta(
+  occ: occEngineRangeSchema.meta(
     pluginFieldDoc(
       `Oldest OCC release this plugin runs on, as \`>=x.y.z\`. Raise it to the newest "Since" of any field you use; a format 2 manifest needs at least \`>=${NEXT}\`, because older OCC cannot read format 2.`,
       V1,
@@ -88,7 +88,7 @@ const pluginManifestFields = {
   // Why both ids: bare-id global uniqueness is unverifiable without a registry.
   publisher: pluginIdSchema.meta(
     pluginFieldDoc(
-      "Publisher slug, kebab-case. Must be the GitHub or GitLab user or organization that owns the repository (`acme` for `github.com/acme/gleam-syntax`), or the official and community catalogs reject the listing. The reserved names `constructor` and `prototype` are refused. The publishers `stablyai`, `official`, `anthropic`, `openai`, `github` and any starting `orca` (any case), and ids starting `orca-`, install only from OCC's official catalog.",
+      "Publisher slug, kebab-case. Must be the GitHub or GitLab user or organization that owns the repository (`acme` for `github.com/acme/gleam-syntax`), or the official and community catalogs reject the listing. The reserved names `constructor` and `prototype` are refused. The publishers `stablyai`, `official`, `anthropic`, `openai`, `github` and any starting `occ` (any case), and ids starting `occ-`, install only from OCC's official catalog.",
       V1,
       ['acme']
     )
@@ -109,7 +109,7 @@ const pluginManifestFields = {
     .max(2048)
     .optional()
     .meta(
-      pluginFieldDoc('Source repository URL.', V1, ['https://github.com/acme/orca-gleam-syntax'])
+      pluginFieldDoc('Source repository URL.', V1, ['https://github.com/acme/occ-gleam-syntax'])
     ),
   ...pluginManifestDetailFields,
   icon: pluginRelativePathSchema
@@ -175,7 +175,7 @@ export const pluginManifestV2Object = z
     publisher: pluginIdSchema.optional().meta({
       deprecated: true,
       ...pluginFieldDoc(
-        `Deprecated: leave it out. OCC derives the publisher from where the plugin comes from, the way a Go module is named by its repository path: the repository owner for the official and community catalogs and for Git URL installs (\`acme\` for \`github.com/acme/gleam-syntax\`), and \`local\` for a folder. A value here is ignored for catalog and Git installs. Leaving it out needs \`engines.orca\` of at least \`>=${PLUGIN_DERIVED_PUBLISHER_SINCE}\`, because older OCC requires it; if you keep it for older OCC, it must equal the repository owner. Reserved owners (\`stablyai\`, \`official\`, \`anthropic\`, \`openai\`, \`github\` and any starting \`orca\`) and ids starting \`orca-\` install only from OCC's official catalog.`,
+        `Deprecated: leave it out. OCC derives the publisher from where the plugin comes from, the way a Go module is named by its repository path: the repository owner for the official and community catalogs and for Git URL installs (\`acme\` for \`github.com/acme/gleam-syntax\`), and \`local\` for a folder. A value here is ignored for catalog and Git installs. Leaving it out needs \`engines.occ\` of at least \`>=${PLUGIN_DERIVED_PUBLISHER_SINCE}\`, because older OCC requires it; if you keep it for older OCC, it must equal the repository owner. Reserved owners (\`stablyai\`, \`official\`, \`anthropic\`, \`openai\`, \`github\` and any starting \`occ\`) and ids starting \`occ-\` install only from OCC's official catalog.`,
         V1,
         ['acme']
       )
@@ -214,10 +214,10 @@ function buildPluginManifestSchema(enforceEngineFloor: boolean) {
   )
 }
 
-/** Authoring schema: also refuses an engines.orca below the newest field it uses. */
+/** Authoring schema: also refuses an engines.occ below the newest field it uses. */
 export const pluginManifestSchema = buildPluginManifestSchema(true)
 // Why no floor at runtime: the floor only lets older hosts say "requires OCC X"; a host that
-// parses every field and meets engines.orca runs the plugin fine, so refusing it strands installs.
+// parses every field and meets engines.occ runs the plugin fine, so refusing it strands installs.
 const hostPluginManifestSchema = buildPluginManifestSchema(false)
 
 /** The manifest file as written; format 2 may leave `publisher` out. */
@@ -245,7 +245,7 @@ export {
   pluginCommandIdSchema
 } from './plugin-manifest-fields'
 
-export const PLUGIN_MANIFEST_FILENAME = 'orca-plugin.json'
+export const PLUGIN_MANIFEST_FILENAME = 'occ-plugin.json'
 
 /** Canonical install identity: `<publisher>.<id>` (also the install dir name). The publisher
  *  must be the derived one, never the file's own. */
@@ -278,7 +278,7 @@ export function parsePluginManifest(raw: unknown): PluginManifestParseResult {
     : parsed
 }
 
-/** Runtime read for install, discovery and update. Callers must still check engines.orca
+/** Runtime read for install, discovery and update. Callers must still check engines.occ
  *  against the host, which is what actually gates loading. */
 export function parseHostPluginManifest(raw: unknown): PluginManifestParseResult {
   return parseWith(hostPluginManifestSchema, raw)

@@ -141,7 +141,7 @@ export async function verifySkillInstallDiscovery(input: {
     return {
       ...input.result,
       status: 'failed',
-      errorCategory: 'skill-discovery-verification-failed',
+      errocctegory: 'skill-discovery-verification-failed',
       failure: {
         category: 'provider-placement',
         code: 'skill-discovery-verification-failed',
@@ -160,7 +160,7 @@ export async function verifySkillInstallDiscovery(input: {
     return {
       ...placement,
       status: 'failed' as const,
-      errorCategory: 'skill-discovery-placement-missing',
+      errocctegory: 'skill-discovery-placement-missing',
       failure: {
         category: 'provider-placement' as const,
         code: 'skill-discovery-placement-missing',
@@ -174,7 +174,7 @@ export async function verifySkillInstallDiscovery(input: {
       ...input.result,
       status: 'failed',
       placements,
-      errorCategory: 'skill-discovery-canonical-missing',
+      errocctegory: 'skill-discovery-canonical-missing',
       failure: {
         category: 'provider-placement',
         code: 'skill-discovery-canonical-missing',

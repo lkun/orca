@@ -1,5 +1,5 @@
 import { SINGLE_INSTANCE_ALREADY_RUNNING_EXIT_CODE } from '../../shared/single-instance-exit-code'
-import { orcadStaleLockReclaimCommand } from '../../shared/orcad-stale-lock-reclaim'
+import { occdStaleLockReclaimCommand } from '../../shared/occd-stale-lock-reclaim'
 import {
   brakeForBuild,
   clearServeSupervisorBrake,
@@ -272,7 +272,7 @@ export async function superviseServeService(options: SupervisedServeOptions): Pr
           // An occupied profile warrants standby, not a crash-brake failure.
           const delayMs = standbyDelayMs(standbyAttempt++, random)
           log(
-            `[serve] Another OCC serves this profile, or holds it and cannot be shown to have stopped; checking again in ${Math.round(delayMs / 1000)}s.${process.platform === 'linux' ? ` If its message says it may have stopped, \`${orcadStaleLockReclaimCommand(options.userDataPath, null)}\` checks it.` : ''}`
+            `[serve] Another OCC serves this profile, or holds it and cannot be shown to have stopped; checking again in ${Math.round(delayMs / 1000)}s.${process.platform === 'linux' ? ` If its message says it may have stopped, \`${occdStaleLockReclaimCommand(options.userDataPath, null)}\` checks it.` : ''}`
           )
           await sleep(delayMs)
           continue

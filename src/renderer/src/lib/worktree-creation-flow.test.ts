@@ -207,9 +207,9 @@ describe('runBackgroundWorktreeCreation', () => {
         id: 'repo-1',
         connectionId: null,
         gitRemoteIdentity: {
-          canonicalKey: 'github.com/stablyai/orca',
+          canonicalKey: 'github.com/stablyai/occ',
           remoteName: 'origin',
-          remoteUrl: 'git@github.com:stablyai/orca.git'
+          remoteUrl: 'git@github.com:stablyai/occ.git'
         }
       } as never
     ]
@@ -252,7 +252,7 @@ describe('runBackgroundWorktreeCreation', () => {
     expect(prepareEphemeralVmWorkspaceTargetMock).toHaveBeenCalledWith({
       repoId: 'repo-1',
       recipeId: 'cloud-sandbox',
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       workspaceName: 'feature',
       provisionId: 'creation-1',
       setupExistingFolder: store.setupProjectExistingFolder
@@ -299,7 +299,7 @@ describe('runBackgroundWorktreeCreation', () => {
         ephemeralVmRecipe: {
           sourceRepoId: 'repo-1',
           recipeId: 'cloud-sandbox',
-          projectId: 'github:stablyai/orca'
+          projectId: 'github:stablyai/occ'
         },
         baseBranch: 'abc123',
         compareBaseRef: 'refs/remotes/origin/main',
@@ -453,9 +453,9 @@ describe('staged background worktree creation', () => {
       provider: 'jira' as const,
       type: 'issue' as const,
       number: 0,
-      title: 'ORCA-123 Durable Jira link',
-      url: 'https://company.atlassian.net/browse/ORCA-123',
-      jiraIdentifier: 'ORCA-123'
+      title: 'OCC-123 Durable Jira link',
+      url: 'https://company.atlassian.net/browse/OCC-123',
+      jiraIdentifier: 'OCC-123'
     }
     const linkedTaskSourceContext = {
       kind: 'task-source' as const,
@@ -467,7 +467,7 @@ describe('staged background worktree creation', () => {
         provider: 'jira' as const,
         siteId: 'site-1',
         siteUrl: 'https://company.atlassian.net',
-        projectKey: 'ORCA'
+        projectKey: 'OCC'
       },
       accountLabel: 'dev@company.test'
     }
@@ -608,7 +608,7 @@ describe('staged background worktree creation', () => {
   it('opens only the setup tab despite templates when the composer choice is cleared', async () => {
     store.activeView = 'terminal'
     store.activePendingCreationId = 'creation-1'
-    const setup = { runnerScriptPath: '/repo/.orca/setup.sh', envVars: {} }
+    const setup = { runnerScriptPath: '/repo/.occ/setup.sh', envVars: {} }
     store.createWorktree.mockResolvedValueOnce({
       worktree: { id: 'wt-1', repoId: 'repo-1', path: '/repo/wt-1' },
       setup,
@@ -648,7 +648,7 @@ describe('staged background worktree creation', () => {
 
   it('seeds only setup despite templates when the user moved on before completion', async () => {
     store.activeView = 'tasks'
-    const setup = { runnerScriptPath: '/repo/.orca/setup.sh', envVars: {} }
+    const setup = { runnerScriptPath: '/repo/.occ/setup.sh', envVars: {} }
     store.createWorktree.mockResolvedValueOnce({
       worktree: { id: 'wt-1', repoId: 'repo-1', path: '/repo/wt-1' },
       setup,

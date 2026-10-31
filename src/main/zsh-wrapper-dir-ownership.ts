@@ -6,7 +6,7 @@ type EnvLike = Record<string, string | undefined>
 
 const ZSH_STARTUP_FILES = ['.zshenv', '.zshrc', '.zprofile', '.zlogin'] as const
 
-export function isOrcaOwnedZshWrapperDir(dir: string): boolean {
+export function isOCCOwnedZshWrapperDir(dir: string): boolean {
   const normalized = dir.replace(/\/+$/, '')
   if (!normalized) {
     return false
@@ -22,7 +22,7 @@ function usableInheritedZdotdir(value: string | undefined): string | null {
     return null
   }
   const normalized = value.replace(/\/+$/, '')
-  if (!normalized || isOrcaOwnedZshWrapperDir(normalized)) {
+  if (!normalized || isOCCOwnedZshWrapperDir(normalized)) {
     return null
   }
   if (!ZSH_STARTUP_FILES.some((file) => existsSync(`${normalized}/${file}`))) {
@@ -34,10 +34,10 @@ function usableInheritedZdotdir(value: string | undefined): string | null {
 /** Keep absent ZDOTDIR absent: assigning HOME would change the environment inherited by child processes. */
 export function resolveInheritedZdotdir(env: EnvLike): string | null {
   return (
-    usableInheritedZdotdir(env.ZDOTDIR) ?? usableInheritedZdotdir(env.ORCA_ORIG_ZDOTDIR) ?? null
+    usableInheritedZdotdir(env.ZDOTDIR) ?? usableInheritedZdotdir(env.OCC_ORIG_ZDOTDIR) ?? null
   )
 }
 
 export function inheritedZdotdirEnv(inherited: string | null): Record<string, string> {
-  return inherited ? { ORCA_ORIG_ZDOTDIR: inherited } : {}
+  return inherited ? { OCC_ORIG_ZDOTDIR: inherited } : {}
 }

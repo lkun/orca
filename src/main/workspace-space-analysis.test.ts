@@ -72,7 +72,7 @@ describe('analyzeWorkspaceSpace', () => {
   beforeEach(async () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-05-14T12:00:00Z'))
-    tempDir = await mkdtemp(join(tmpdir(), 'orca-space-'))
+    tempDir = await mkdtemp(join(tmpdir(), 'occ-space-'))
     listRepoWorktreesMock.mockReset()
     getLocalProjectWorktreeGitOptionsMock.mockReset().mockReturnValue({})
     workerState.fail = false
@@ -100,7 +100,7 @@ describe('analyzeWorkspaceSpace', () => {
     const repo: Repo = {
       id: 'repo-1',
       path: mainPath,
-      displayName: 'orca',
+      displayName: 'occ',
       badgeColor: '#000',
       addedAt: 0
     }
@@ -149,7 +149,7 @@ describe('analyzeWorkspaceSpace', () => {
     const repo: Repo = {
       id: 'repo-1',
       path: mainPath,
-      displayName: 'orca',
+      displayName: 'occ',
       badgeColor: '#000',
       addedAt: 0
     }
@@ -188,7 +188,7 @@ describe('analyzeWorkspaceSpace', () => {
     const repo: Repo = {
       id: 'repo-1',
       path: repoPath,
-      displayName: 'orca',
+      displayName: 'occ',
       badgeColor: '#000',
       addedAt: 0
     }
@@ -218,7 +218,7 @@ describe('analyzeWorkspaceSpace', () => {
     expect(progress).toContainEqual(
       expect.objectContaining({
         totalWorktreeCount: 1,
-        currentRepoDisplayName: 'orca'
+        currentRepoDisplayName: 'occ'
       })
     )
     expect(progress.at(-1)).toMatchObject({
@@ -243,7 +243,7 @@ describe('analyzeWorkspaceSpace', () => {
     const repo: Repo = {
       id: 'repo-1',
       path: tempDir!,
-      displayName: 'orca',
+      displayName: 'occ',
       badgeColor: '#000',
       addedAt: 0
     }
@@ -306,7 +306,7 @@ describe('analyzeWorkspaceSpace', () => {
     const repo: Repo = {
       id: 'repo-1',
       path: tempDir!,
-      displayName: 'orca',
+      displayName: 'occ',
       badgeColor: '#000',
       addedAt: 0
     }
@@ -330,7 +330,7 @@ describe('analyzeWorkspaceSpace', () => {
     const repo: Repo = {
       id: 'repo-1',
       path: repoPath,
-      displayName: 'orca',
+      displayName: 'occ',
       badgeColor: '#000',
       addedAt: 0
     }
@@ -360,7 +360,7 @@ describe('analyzeWorkspaceSpace', () => {
     const repo: Repo = {
       id: 'repo-1',
       path: repoPath,
-      displayName: 'orca',
+      displayName: 'occ',
       badgeColor: '#000',
       addedAt: 0
     }

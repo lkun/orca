@@ -13,7 +13,7 @@ let dir: string
 const servers = new Set<AgentHookServer>()
 
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), 'orca-ended-process-'))
+  dir = mkdtempSync(join(tmpdir(), 'occ-ended-process-'))
 })
 
 afterEach(() => {

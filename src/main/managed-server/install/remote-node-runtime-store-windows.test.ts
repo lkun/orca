@@ -27,11 +27,11 @@ const conn = unusedSshConnection()
 const host = getRemoteHostPlatform('win32-x64')
 const mockExec = vi.mocked(execCommand)
 const sha = (c: string): string => c.repeat(64)
-const root = 'C:/Users/ada/.orca-remote'
+const root = 'C:/Users/ada/.occ-remote'
 const store = `${root}/runtimes`
 
 const powerShell = [
-  process.env.ORCA_POWERSHELL_EXECUTABLE,
+  process.env.OCC_POWERSHELL_EXECUTABLE,
   ...(process.platform === 'win32' ? ['powershell.exe', 'pwsh.exe'] : ['pwsh'])
 ].find(
   (candidate) =>
@@ -94,10 +94,10 @@ describe('parseRuntimeStoreInventory with Windows output', () => {
         `ENTRY node-${sha('b')}`,
         `VERIFIED node-${sha('b')}`,
         'PROCESS_CHECK cim',
-        `HOLD C:\\Users\\ada\\.orca-remote\\Runtimes\\node-${sha('b').toUpperCase()}\\node.exe`,
-        `HOLD C:\\Users\\ada\\.orca-remote\\runtimes\\.gc-tombstone-node-${sha('c')}.1.2\\node.exe`,
+        `HOLD C:\\Users\\ada\\.occ-remote\\Runtimes\\node-${sha('b').toUpperCase()}\\node.exe`,
+        `HOLD C:\\Users\\ada\\.occ-remote\\runtimes\\.gc-tombstone-node-${sha('c')}.1.2\\node.exe`,
         'HOLD C:\\Program Files\\nodejs\\node.exe',
-        '__ORCA_RUNTIME_STORE__OK'
+        '__OCC_RUNTIME_STORE__OK'
       ].join('\r\n')
     )
     expect(inventory?.processCheckRan).toBe(true)
@@ -133,7 +133,7 @@ describe('gcRemoteNodeRuntimeStore on a Windows host', () => {
           `VERIFIED node-${sha('b')}`,
           `VERIFIED node-${sha('c')}`,
           'PROCESS_CHECK cim',
-          '__ORCA_RUNTIME_STORE__OK'
+          '__OCC_RUNTIME_STORE__OK'
         ].join('\r\n')
       }
       if (script.includes('Move-Item')) {
@@ -167,7 +167,7 @@ describe('gcRemoteNodeRuntimeStore on a Windows host', () => {
         return [
           `ENTRY node-${sha('c')}`,
           `VERIFIED node-${sha('c')}`,
-          '__ORCA_RUNTIME_STORE__OK'
+          '__OCC_RUNTIME_STORE__OK'
         ].join('\n')
       }
       return ''
@@ -187,7 +187,7 @@ describe('gcRemoteNodeRuntimeStore on a Windows host', () => {
 describe.runIf(powerShell)('Windows runtime store commands (real PowerShell)', () => {
   let home: string
   beforeEach(() => {
-    home = mkdtempSync(join(tmpdir(), 'orca-win-store-'))
+    home = mkdtempSync(join(tmpdir(), 'occ-win-store-'))
   })
   afterEach(() => {
     removeTreeSync(home)
@@ -204,7 +204,7 @@ describe.runIf(powerShell)('Windows runtime store commands (real PowerShell)', (
   }
 
   it('inventories refs, entries and verified order', () => {
-    const remote = join(home, '.orca-remote')
+    const remote = join(home, '.occ-remote')
     const relay = join(remote, 'relay-0.1.0+abc')
     mkdirSync(relay, { recursive: true })
     writeFileSync(join(relay, `.runtime-ref-node-${sha('a')}`), `${sha('a')}\n`)
@@ -228,7 +228,7 @@ describe.runIf(powerShell)('Windows runtime store commands (real PowerShell)', (
     'holds a runtime whose node.exe is running, found by its image path',
     { timeout: 120_000 },
     async () => {
-      const remote = join(home, '.orca-remote')
+      const remote = join(home, '.occ-remote')
       const entry = join(remote, 'runtimes', `node-${sha('d')}`)
       mkdirSync(entry, { recursive: true })
       const exe = join(entry, 'node.exe')

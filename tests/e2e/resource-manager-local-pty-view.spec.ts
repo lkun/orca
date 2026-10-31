@@ -1,4 +1,4 @@
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { makeResourceManagerFixtureVisible } from './helpers/resource-manager-visible-fixture'
 import { waitForSessionReady } from './helpers/store'
 
@@ -12,9 +12,9 @@ test.use({ seedTestRepo: false })
 
 test('a real hidden window performs no Resource Manager diagnostics and vetoes forced tagged calls', async ({
   electronApp,
-  orcaPage
+  occPage
 }) => {
-  await waitForSessionReady(orcaPage)
+  await waitForSessionReady(occPage)
   await electronApp.evaluate(({ ipcMain }) => {
     type InvokeHandler = (event: Electron.IpcMainInvokeEvent, ...args: unknown[]) => unknown
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: Electron's private invoke registry is checked before wrapping the real handlers.
@@ -41,10 +41,10 @@ test('a real hidden window performs no Resource Manager diagnostics and vetoes f
       })
     }
   })
-  await orcaPage.getByRole('button', { name: /^Resource Manager,/ }).click()
-  await orcaPage.getByRole('tab', { name: 'PTYs', exact: true }).click()
-  await expect(orcaPage.getByText('Loading terminals…', { exact: true })).toBeVisible()
-  await orcaPage.waitForTimeout(2_100)
+  await occPage.getByRole('button', { name: /^Resource Manager,/ }).click()
+  await occPage.getByRole('tab', { name: 'PTYs', exact: true }).click()
+  await expect(occPage.getByText('Loading terminals…', { exact: true })).toBeVisible()
+  await occPage.waitForTimeout(2_100)
   expect(
     await electronApp.evaluate(() => {
       if (!globalThis.__ptyViewCounts) {
@@ -53,8 +53,8 @@ test('a real hidden window performs no Resource Manager diagnostics and vetoes f
       return globalThis.__ptyViewCounts
     })
   ).toEqual({ listing: 0, metrics: 0 })
-  expect(await orcaPage.evaluate(() => window.api.memory.resourceWindowVisible())).toBe(false)
-  const veto = await orcaPage.evaluate(async () => {
+  expect(await occPage.evaluate(() => window.api.memory.resourceWindowVisible())).toBe(false)
+  const veto = await occPage.evaluate(async () => {
     try {
       await window.api.pty.listSessions({ connectionId: null }, { resourceManagerView: true })
       return 'unexpected success'
@@ -63,7 +63,7 @@ test('a real hidden window performs no Resource Manager diagnostics and vetoes f
     }
   })
   expect(veto).toContain('view_not_visible')
-  await expect(orcaPage.getByText(/Unverifiable: local terminals/)).toHaveCount(0)
+  await expect(occPage.getByText(/Unverifiable: local terminals/)).toHaveCount(0)
 })
 
 for (const { theme, sessionCount, viewportHeight } of [
@@ -74,10 +74,10 @@ for (const { theme, sessionCount, viewportHeight } of [
 ] as const) {
   test(`local PTY review and checked confirmation with ${sessionCount} sessions (${theme}, ${viewportHeight}px)`, async ({
     electronApp,
-    orcaPage
+    occPage
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await orcaPage.setViewportSize({ width: 1200, height: viewportHeight })
+    await waitForSessionReady(occPage)
+    await occPage.setViewportSize({ width: 1200, height: viewportHeight })
     await electronApp.evaluate(({ ipcMain }, sessionCount) => {
       const rows = Array.from({ length: sessionCount }, (_, index) => ({
         id: `local-pty-${String(index).padStart(4, '0')}`,
@@ -119,19 +119,19 @@ for (const { theme, sessionCount, viewportHeight } of [
         return { outcome: 'refused', reason: 'attached' }
       })
     }, sessionCount)
-    await makeResourceManagerFixtureVisible(electronApp, orcaPage)
-    await orcaPage.evaluate(async (theme) => {
+    await makeResourceManagerFixtureVisible(electronApp, occPage)
+    await occPage.evaluate(async (theme) => {
       await window.__store!.getState().updateSettingsOrThrow({ theme })
     }, theme)
-    await orcaPage.getByRole('button', { name: /^Resource Manager,/ }).click()
-    const popover = orcaPage.locator('[data-slot="popover-content"]').filter({
-      has: orcaPage.getByRole('tab', { name: 'Resources', exact: true })
+    await occPage.getByRole('button', { name: /^Resource Manager,/ }).click()
+    const popover = occPage.locator('[data-slot="popover-content"]').filter({
+      has: occPage.getByRole('tab', { name: 'Resources', exact: true })
     })
     const resourcesHeight = await popover.evaluate((element) => element.clientHeight)
     const listStarted = performance.now()
-    await orcaPage.getByRole('tab', { name: 'PTYs', exact: true }).click()
+    await occPage.getByRole('tab', { name: 'PTYs', exact: true }).click()
     await expect(
-      orcaPage.getByText(
+      occPage.getByText(
         `${sessionCount} OCC PTYs on this computer · ${sessionCount} without a tab`,
         { exact: true }
       )
@@ -143,10 +143,10 @@ for (const { theme, sessionCount, viewportHeight } of [
       }
       return globalThis.__ptyViewCounts
     })
-    const panel = orcaPage.getByRole('tabpanel', { name: /^PTYs/ })
+    const panel = occPage.getByRole('tabpanel', { name: /^PTYs/ })
     await expect(panel.getByRole('searchbox')).toHaveCount(0)
     await expect(panel.getByRole('combobox')).toHaveCount(0)
-    const body = orcaPage.locator('[data-resource-pty-body]')
+    const body = occPage.locator('[data-resource-pty-body]')
     await expect
       .poll(() => popover.evaluate((element) => element.clientHeight))
       .toBe(resourcesHeight)
@@ -162,7 +162,7 @@ for (const { theme, sessionCount, viewportHeight } of [
     })
     await expect(unsupportedEnd).toBeDisabled()
     await unsupportedEnd.locator('..').hover()
-    await expect(orcaPage.getByRole('tooltip', { name: /^End is unavailable/ })).toContainText(
+    await expect(occPage.getByRole('tooltip', { name: /^End is unavailable/ })).toContainText(
       'End is unavailable for this terminal. Its host does not support the required safety checks.'
     )
     const details = panel.getByRole('button', {
@@ -170,7 +170,7 @@ for (const { theme, sessionCount, viewportHeight } of [
       exact: true
     })
     await details.focus()
-    await orcaPage.keyboard.press('Enter')
+    await occPage.keyboard.press('Enter')
     await expect(details).toHaveAttribute('aria-expanded', 'true')
     const lastSessionId = `local-pty-${String(sessionCount - 1).padStart(4, '0')}`
     await expect(panel.locator('dl').getByText(lastSessionId, { exact: true })).toBeVisible()
@@ -180,7 +180,7 @@ for (const { theme, sessionCount, viewportHeight } of [
     await expect(panel.locator('dl').getByText('Unavailable', { exact: true })).toHaveCount(2)
     await panel.getByRole('button', { name: 'Copy OCC session ID', exact: true }).click()
     expect(await electronApp.evaluate(({ clipboard }) => clipboard.readText())).toBe(lastSessionId)
-    await orcaPage.screenshot({
+    await occPage.screenshot({
       path: testInfo.outputPath(`local-pty-details-${theme}.png`),
       animations: 'disabled'
     })
@@ -188,14 +188,14 @@ for (const { theme, sessionCount, viewportHeight } of [
       element.scrollTop = 0
     })
     await expect(panel.getByRole('button', { name: 'End Terminal 0', exact: true })).toBeVisible()
-    const firstTerminal = orcaPage.getByRole('button', { name: 'End Terminal 0', exact: true })
+    const firstTerminal = occPage.getByRole('button', { name: 'End Terminal 0', exact: true })
     await expect(firstTerminal).toBeVisible()
-    expect(await orcaPage.getByRole('button', { name: /^End Terminal/ }).count()).toBeLessThan(50)
+    expect(await occPage.getByRole('button', { name: /^End Terminal/ }).count()).toBeLessThan(50)
     await firstTerminal.focus()
     for (let index = 1; index <= Math.min(30, sessionCount - 3); index++) {
-      await orcaPage.keyboard.press('Tab')
-      await orcaPage.keyboard.press('Tab')
-      const terminal = orcaPage.getByRole('button', { name: `End Terminal ${index}`, exact: true })
+      await occPage.keyboard.press('Tab')
+      await occPage.keyboard.press('Tab')
+      const terminal = occPage.getByRole('button', { name: `End Terminal ${index}`, exact: true })
       await expect(terminal).toBeFocused()
       await expect(terminal).toBeInViewport()
     }
@@ -223,10 +223,10 @@ for (const { theme, sessionCount, viewportHeight } of [
     expect(after.metrics).toBe(before.metrics)
     await lastTerminal.click()
     await expect(
-      orcaPage.getByRole('heading', { name: `End Terminal ${sessionCount - 1}?` })
+      occPage.getByRole('heading', { name: `End Terminal ${sessionCount - 1}?` })
     ).toBeVisible()
     await expect(
-      orcaPage
+      occPage
         .getByRole('dialog', { name: `End Terminal ${sessionCount - 1}?` })
         .getByText(`/workspace/folder-${sessionCount - 1}`, { exact: true })
     ).toBeVisible()
@@ -240,9 +240,9 @@ for (const { theme, sessionCount, viewportHeight } of [
         })
       ).kills
     ).toHaveLength(0)
-    await orcaPage.getByRole('button', { name: 'End terminal', exact: true }).click()
+    await occPage.getByRole('button', { name: 'End terminal', exact: true }).click()
     await expect(
-      orcaPage.getByText(
+      occPage.getByText(
         'A client is now attached to this terminal. Refresh before trying again.',
         { exact: true }
       )
@@ -264,7 +264,7 @@ for (const { theme, sessionCount, viewportHeight } of [
         requireUnattached: true
       }
     ])
-    await orcaPage.screenshot({
+    await occPage.screenshot({
       path: testInfo.outputPath(`local-ptys-${theme}.png`),
       animations: 'disabled'
     })

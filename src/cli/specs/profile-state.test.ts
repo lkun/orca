@@ -56,9 +56,9 @@ describe('profile state rollback discovery', () => {
 
     expect(help).toContain('--current-json')
     expect(help).toContain('without merging; both copies are archived')
-    expect(help).toContain('$ orca profile state rollback --current-json')
+    expect(help).toContain('$ occ profile state rollback --current-json')
     expect(help).toContain('--latest-json')
     expect(help).toContain('exports the latest SQLite state')
-    expect(help).toContain('$ orca profile state rollback --latest-json')
+    expect(help).toContain('$ occ profile state rollback --latest-json')
   })
 })

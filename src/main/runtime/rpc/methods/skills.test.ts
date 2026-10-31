@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { eraseRpcMethods, type RpcContext } from '../core'
 
 vi.mock('electron', () => ({
-  app: { getPath: () => '/orca-state', isPackaged: true }
+  app: { getPath: () => '/occ-state', isPackaged: true }
 }))
 
 vi.mock('../../../skills/skill-discovery-target', () => ({
@@ -256,7 +256,7 @@ describe('skills.install RPC', () => {
 
     await expect(
       installMethod().handler(request, { runtime, clientCapabilities: [] } as unknown as RpcContext)
-    ).resolves.toMatchObject({ status: 'failed', errorCategory: 'skill-install-cancelled' })
+    ).resolves.toMatchObject({ status: 'failed', errocctegory: 'skill-install-cancelled' })
     await expect(
       installMethod().handler(request, {
         runtime,

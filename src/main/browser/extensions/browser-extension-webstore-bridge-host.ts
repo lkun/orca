@@ -49,12 +49,12 @@ const requestSchema = z.discriminatedUnion('method', [
 ])
 
 type StoreSenderLookups = {
-  isOrcaBrowserTab: (webContentsId: number) => boolean
+  isOCCBrowserTab: (webContentsId: number) => boolean
   profileIdForSession: (session: Electron.Session) => string | null
 }
 
 const defaultLookups: StoreSenderLookups = {
-  isOrcaBrowserTab: (webContentsId) =>
+  isOCCBrowserTab: (webContentsId) =>
     browserManager.getTabIdForWebContentsId(webContentsId) !== null,
   profileIdForSession: getBrowserExtensionProfileIdForSession
 }
@@ -75,7 +75,7 @@ export function resolveChromeWebStoreFrame(
     return null
   }
   const profileId = lookups.profileIdForSession(sender.session)
-  if (!profileId || !lookups.isOrcaBrowserTab(sender.id)) {
+  if (!profileId || !lookups.isOCCBrowserTab(sender.id)) {
     return null
   }
   return {
@@ -88,7 +88,7 @@ export function resolveChromeWebStoreFrame(
       frame.parent === null &&
       isChromeWebStoreUrl(frame.url) &&
       lookups.profileIdForSession(sender.session) === profileId &&
-      lookups.isOrcaBrowserTab(sender.id)
+      lookups.isOCCBrowserTab(sender.id)
   }
 }
 

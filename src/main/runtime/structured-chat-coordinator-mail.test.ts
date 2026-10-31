@@ -12,7 +12,7 @@ import { AGENT_SESSION_MAX_NEW_OPERATION_AGE_MS } from '../../shared/agent-sessi
 import { refuse } from '../../shared/agent-session-wire-refusals'
 import { localOrchestrationCliCommand } from './orchestration/cli-command'
 import { formatMessagePointer } from './orchestration/formatter'
-import { currentRunCoordinatorOrcaSessionId } from './orchestration/db/runs/run-coordinator-orca-session'
+import { currentRunCoordinatorOCCSessionId } from './orchestration/db/runs/run-coordinator-occ-session'
 import { idOf } from './rpc/orchestration-session-caller-test-fixture'
 import { operationId, providerFaults } from './structured-chat-coordinator-fake-codex-fixture'
 
@@ -621,7 +621,7 @@ describe('a /clear keeps the chat its orchestration address', () => {
       messages: [{ type: 'worker_done' }]
     })
     expect(db.getRunRaw(runId)).toMatchObject({
-      coordinator_orca_session_id: COORDINATOR,
+      coordinator_occ_session_id: COORDINATOR,
       consumer_generation: generation
     })
   })
@@ -660,28 +660,28 @@ describe('a /clear keeps the chat its orchestration address', () => {
       { sessionId: firstClear }
     )
     const runId = idOf(created.run)
-    expect(db.getRunRaw(runId)!.coordinator_orca_session_id).toBe(COORDINATOR)
+    expect(db.getRunRaw(runId)!.coordinator_occ_session_id).toBe(COORDINATOR)
     const cleared = await clearChat(firstClear)
     await startClearedContext(cleared)
 
     await expect(
       call('orchestration.runCurrent', {}, { sessionId: cleared })
     ).resolves.toMatchObject({ run: { id: runId } })
-    expect(db.getRunRaw(runId)!.coordinator_orca_session_id).toBe(COORDINATOR)
+    expect(db.getRunRaw(runId)!.coordinator_occ_session_id).toBe(COORDINATOR)
     await openChat(PEER_CHAT)
     await expect(
       call(
         'orchestration.send',
-        { to: `orca_session_id:${PEER_CHAT}`, subject: 'hi' },
+        { to: `occ_session_id:${PEER_CHAT}`, subject: 'hi' },
         { sessionId: cleared }
       )
-    ).resolves.toMatchObject({ message: { from_handle: `orca_session_id:${COORDINATOR}` } })
+    ).resolves.toMatchObject({ message: { from_handle: `occ_session_id:${COORDINATOR}` } })
   })
 
   it('binds a Run a cleared chat creates or uses to the same conversation at the current generation', async () => {
     const root = COORDINATOR
-    const boundOrcaSessionId = (runId: string): string | null =>
-      currentRunCoordinatorOrcaSessionId(db.getRunRaw(runId)!)
+    const boundOCCSessionId = (runId: string): string | null =>
+      currentRunCoordinatorOCCSessionId(db.getRunRaw(runId)!)
     await openChat(COORDINATOR)
     const firstClear = await clearChat(COORDINATOR)
     await startClearedContext(firstClear)
@@ -689,24 +689,24 @@ describe('a /clear keeps the chat its orchestration address', () => {
       (await call('orchestration.runCreate', { objective: 'first' }, { sessionId: firstClear })).run
     )
     expect(db.getRunRaw(first)).toMatchObject({
-      coordinator_orca_session_id: root,
-      coordinator_orca_session_id_generation: db.getRunRaw(first)!.consumer_generation
+      coordinator_occ_session_id: root,
+      coordinator_occ_session_id_generation: db.getRunRaw(first)!.consumer_generation
     })
-    expect(boundOrcaSessionId(first)).toBe(root)
+    expect(boundOCCSessionId(first)).toBe(root)
     const second = idOf(
       (await call('orchestration.runCreate', { objective: 'second' }, { sessionId: firstClear }))
         .run
     )
     // A later run-create keeps the earlier Run; the run-use below keeps only the one it names.
-    expect(boundOrcaSessionId(first)).toBe(root)
+    expect(boundOCCSessionId(first)).toBe(root)
 
     const cleared = await clearChat(firstClear)
     await startClearedContext(cleared)
     await call('orchestration.runUse', { id: first }, { sessionId: cleared })
     const rebound = db.getRunRaw(first)!
-    expect(rebound.coordinator_orca_session_id).toBe(root)
-    expect(rebound.coordinator_orca_session_id_generation).toBe(rebound.consumer_generation)
-    expect(boundOrcaSessionId(second)).toBeNull()
+    expect(rebound.coordinator_occ_session_id).toBe(root)
+    expect(rebound.coordinator_occ_session_id_generation).toBe(rebound.consumer_generation)
+    expect(boundOCCSessionId(second)).toBeNull()
     await expect(
       call('orchestration.runCurrent', {}, { sessionId: cleared })
     ).resolves.toMatchObject({ run: { id: first } })
@@ -722,10 +722,10 @@ describe('a /clear keeps the chat its orchestration address', () => {
     for (const [index, spelling] of [PEER_CHAT, firstClear, cleared].entries()) {
       const sent = await call('orchestration.send', {
         from: 'term_worker',
-        to: `orca_session_id:${spelling}`,
+        to: `occ_session_id:${spelling}`,
         subject: `ping ${index}`
       })
-      expect(sent).toMatchObject({ message: { to_handle: `orca_session_id:${PEER_CHAT}` } })
+      expect(sent).toMatchObject({ message: { to_handle: `occ_session_id:${PEER_CHAT}` } })
       await vi.waitFor(() => expect(connectionFor(cleared).turns).toHaveLength(index + 1), WAIT)
       await settleTurn(cleared, index)
       // Read each ping before the next is sent, so each check holds exactly one.
@@ -737,19 +737,19 @@ describe('a /clear keeps the chat its orchestration address', () => {
 })
 
 describe('any live session is addressable by its id', () => {
-  it('lands mail sent to `orca_session_id:<id>` as a turn in that chat, which a flagless check reads', async () => {
+  it('lands mail sent to `occ_session_id:<id>` as a turn in that chat, which a flagless check reads', async () => {
     const peer = await openChat(PEER_CHAT)
 
     const sent = await call('orchestration.send', {
       from: 'term_worker',
-      to: `orca_session_id:${PEER_CHAT}`,
+      to: `occ_session_id:${PEER_CHAT}`,
       subject: 'ping'
     })
-    expect(sent).toMatchObject({ message: { to_handle: `orca_session_id:${PEER_CHAT}` } })
+    expect(sent).toMatchObject({ message: { to_handle: `occ_session_id:${PEER_CHAT}` } })
 
     await vi.waitFor(() => expect(peer.turns).toHaveLength(1), WAIT)
     // Direct mail is not in a Run, so the pointer names no `--run`.
-    expect(turnText(peer.turns[0]!)).toBe(ptyPointer(`orca_session_id:${PEER_CHAT}`))
+    expect(turnText(peer.turns[0]!)).toBe(ptyPointer(`occ_session_id:${PEER_CHAT}`))
     await settleTurn(PEER_CHAT, 0)
     const checked = await call('orchestration.check', {}, { sessionId: PEER_CHAT })
     expect(checked).toMatchObject({ count: 1, messages: [{ subject: 'ping' }] })
@@ -761,7 +761,7 @@ describe('any live session is addressable by its id', () => {
     const response = await dispatcher.dispatch(
       request('orchestration.send', {
         from: 'term_worker',
-        to: `orca_session_id:${PEER_CHAT}`,
+        to: `occ_session_id:${PEER_CHAT}`,
         subject: 'ping'
       })
     )

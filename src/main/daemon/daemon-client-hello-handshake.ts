@@ -16,7 +16,7 @@ export type DaemonHelloRequest = {
   requestBinaryStream?: boolean
 }
 
-const REQUEST_BINARY_STREAM_BY_DEFAULT = process.env.ORCA_DAEMON_BINARY_STREAM !== '0'
+const REQUEST_BINARY_STREAM_BY_DEFAULT = process.env.OCC_DAEMON_BINARY_STREAM !== '0'
 
 export type DaemonHelloOutcome = {
   identity: DaemonEndpointIdentity | null

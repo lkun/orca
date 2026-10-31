@@ -3,9 +3,9 @@ import type { SleepingAgentLaunchConfig } from '../../../shared/agent-session-re
 import { measureClipboardTextByteLength } from '../../../shared/clipboard-text'
 import { normalizeExecutionHostId, type ExecutionHostId } from '../../../shared/execution-host'
 
-export const AI_VAULT_SESSION_DRAG_TYPE = 'application/x-orca-ai-vault-session'
-export const AI_VAULT_SESSION_DRAG_START_EVENT = 'orca-ai-vault-session-drag-start'
-export const AI_VAULT_SESSION_DRAG_END_EVENT = 'orca-ai-vault-session-drag-end'
+export const AI_VAULT_SESSION_DRAG_TYPE = 'application/x-occ-ai-vault-session'
+export const AI_VAULT_SESSION_DRAG_START_EVENT = 'occ-ai-vault-session-drag-start'
+export const AI_VAULT_SESSION_DRAG_END_EVENT = 'occ-ai-vault-session-drag-end'
 export const AI_VAULT_SESSION_DRAG_PAYLOAD_MAX_BYTES = 16 * 1024
 
 export type AiVaultSessionDragPayload = {

@@ -1,7 +1,7 @@
 import { bindPtyConnectionTestMocks } from './pty-connection-mocks.spec'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushAsyncTicks } from './pty-connection-test-async'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import {
   bindsPaneInStore,
   expectWindowStartAskedMain,
@@ -109,7 +109,7 @@ export function registerPtyConnectionRestartReplacementTests(): void {
         transport.connect.mock.calls.at(-1)?.[0]?.command
       /** The replacement resumed the agent: the window's own spawn, or, switch on, main's start. */
       const expectResumed = async (): Promise<void> => {
-        if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+        if (!OCC_LAYOUT_OWNER_IS_MAIN) {
           expect(lastCommand()).toContain('sess-1')
           return
         }

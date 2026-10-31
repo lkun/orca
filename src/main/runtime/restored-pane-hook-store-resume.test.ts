@@ -5,14 +5,14 @@ import type { WorkspaceSessionState } from '../../shared/workspace-session-state
 import { partialRuntimeStore } from './runtime-store-partial-fixture'
 
 // Preserve side-effect order: mocks, lifecycle, fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('./orca-runtime-test-fixtures.spec')
+} = await import('./occ-runtime-test-fixtures.spec')
 const { committingSpawn } = await import('./bind-first-pane.test-fixture')
 
 const PANE_KEY = `host-tab:${HEADLESS_LEAF_ID}`
@@ -56,7 +56,7 @@ function makeRuntime(
       id: 'restored-pty'
     })
   )
-  const runtime = new OrcaRuntimeService(partialRuntimeStore(runtimeStore), undefined, {
+  const runtime = new OCCRuntimeService(partialRuntimeStore(runtimeStore), undefined, {
     getAgentProviderSessionSnapshot: () => rows,
     getAgentProviderSessionRowsForPane: (paneKey: string) =>
       rows.filter((row) => row.paneKey === paneKey),
@@ -78,7 +78,7 @@ function expectFreshLaunch(command: string | undefined): void {
   expect(command).toContain('codex')
 }
 
-async function restore(runtime: InstanceType<typeof OrcaRuntimeService>): Promise<void> {
+async function restore(runtime: InstanceType<typeof OCCRuntimeService>): Promise<void> {
   await runtime.activateMobileSessionTab(`id:${TEST_WORKTREE_ID}`, 'host-tab', HEADLESS_LEAF_ID, {
     notifyClients: false,
     navigation: 'caller',

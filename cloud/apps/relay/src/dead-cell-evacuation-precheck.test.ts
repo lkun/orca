@@ -10,7 +10,7 @@ import {
 } from './database.js'
 
 // Both dialects must skip host scans with no actionable cells; stale existing-only rows previously scanned every assignment for nothing.
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const schema = 'relay_dead_cell_precheck_test'
 const HOST_QUERY = 'FROM relay_assignments assignment'
 const CELLS: RelayCellConfig[] = [

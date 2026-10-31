@@ -20,7 +20,7 @@ import {
   openTestJournalHostDatabase,
   liveTestJournalRows,
   insertTestJournalRowJson,
-  SAVED_BY_NEWER_ORCA
+  SAVED_BY_NEWER_OCC
 } from './journal-host-database-test-support'
 import { codexProviderHandle } from '../../../shared/agent-session-provider-handle-encoding'
 
@@ -96,7 +96,7 @@ export function registerJournalStoreSchemaTests(): void {
   }
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-journal-schema-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-journal-schema-'))
     clock = 1_000
   })
 
@@ -116,11 +116,11 @@ export function registerJournalStoreSchemaTests(): void {
       await withDatabase((db) => db.pragma(`user_version = ${JOURNAL_DB_SCHEMA_VERSION + 1}`))
       const before = await digest(journalDatabasePath(root))
 
-      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
+      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
       // New chat IDs must not bypass the database-wide refusal.
       await expect(
         journals.open({ identity: { ...IDENTITY, sessionId: 'session-2' }, stateDirectory: root })
-      ).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
+      ).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
       await journals.closeAll()
       expect(await digest(journalDatabasePath(root))).toBe(before)
     })
@@ -137,7 +137,7 @@ export function registerJournalStoreSchemaTests(): void {
         db.pragma(`user_version = ${JOURNAL_DB_SCHEMA_VERSION + 1}`)
       })
 
-      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
+      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
     })
 
     it('stamps the current user_version on a version-0 file that already has its tables', async () => {
@@ -170,7 +170,7 @@ export function registerJournalStoreSchemaTests(): void {
       await journal.close()
       await appendRawRow(epoch, nextSeq, futureRow(epoch, nextSeq))
 
-      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
+      await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
       await withDatabase((db) => {
         const stored = liveTestJournalRows(db, IDENTITY.sessionId).find(
           (row) => row.seq === nextSeq

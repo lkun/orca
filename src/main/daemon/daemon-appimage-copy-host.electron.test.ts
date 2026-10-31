@@ -16,7 +16,7 @@ import {
 import { createRequire } from 'node:module'
 import { dirname, join } from 'node:path'
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   buildDaemonLauncherDriver,
   closeLauncherWindows,
@@ -32,13 +32,13 @@ import {
 import {
   buildDaemonSessionClient,
   type DaemonSessionClientResult
-} from '../orcad/orcad-daemon-session-client-fixture'
+} from '../occd/occd-daemon-session-client-fixture'
 import {
   killAndAwaitExit,
   killProfileDaemons,
   removeTestRoot
-} from '../orcad/orcad-daemon-teardown-fixture'
-import { locatePinnedNodeForTests } from '../orcad/orcad-node-slot-fixture'
+} from '../occd/occd-daemon-teardown-fixture'
+import { locatePinnedNodeForTests } from '../occd/occd-node-slot-fixture'
 import { resolveAppImageExtractedRoot } from '../cli/appimage-extracted-root'
 
 const ENTRY_IN_APPDIR = 'resources/app.asar.unpacked/out/main/daemon-entry.js'
@@ -55,7 +55,7 @@ const profiles = new Set<string>()
 type AppImageInstall = { appImagePath: string; mountPath: string; cacheHome: string }
 
 function cacheRootOf(install: AppImageInstall): string {
-  return join(install.cacheHome, 'orca', 'appimage')
+  return join(install.cacheHome, 'occ', 'appimage')
 }
 
 async function installAppImage(name: string): Promise<AppImageInstall> {
@@ -91,7 +91,7 @@ function extractCopy(install: AppImageInstall, version: string, withNode = true)
   )
   writeFileSync(
     join(resources, 'app.asar.unpacked', 'out', 'package.json'),
-    JSON.stringify({ name: 'orca-compiled-output', type: 'commonjs', version })
+    JSON.stringify({ name: 'occ-compiled-output', type: 'commonjs', version })
   )
   mkdirSync(join(resources, 'node_modules'))
   symlinkSync(
@@ -164,7 +164,7 @@ describe.runIf(linux)('the AppImage terminal daemon on the extracted copy', () =
     electron = realpathSync(binary)
     node = realpathSync(locatePinnedNodeForTests() ?? process.execPath)
     // Short root: the daemon's socket must fit sun_path.
-    root = realpathSync(mkdtempSync('/tmp/orca-aic-'))
+    root = realpathSync(mkdtempSync('/tmp/occ-aic-'))
     launcher = join(root, 'launcher.cjs')
     client = join(root, 'client.cjs')
     await Promise.all([

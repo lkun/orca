@@ -151,8 +151,8 @@ CREATE TABLE IF NOT EXISTS dispatch_contexts (
   assignee_handle     TEXT,
   assignee_pane_key   TEXT,
   -- Bare OCC session id the agent is addressed by, when it has one (today only structured
-  -- sessions); for a /clear'd chat, its lineage root's. Not its orca_session_id:<id> address.
-  assignee_orca_session_id TEXT,
+  -- sessions); for a /clear'd chat, its lineage root's. Not its occ_session_id:<id> address.
+  assignee_occ_session_id TEXT,
   capability_hash     TEXT,
   process_incarnation TEXT,
   capability_revoked_at TEXT,
@@ -163,8 +163,8 @@ CREATE TABLE IF NOT EXISTS dispatch_contexts (
   -- so it must not count as a nesting parent. Null on rows written before v37 and for OCC's loop.
   creator_handle      TEXT,
   creator_pane_key    TEXT,
-  -- Same form as assignee_orca_session_id: the id the creator is addressed by (a lineage root's).
-  creator_orca_session_id TEXT,
+  -- Same form as assignee_occ_session_id: the id the creator is addressed by (a lineage root's).
+  creator_occ_session_id TEXT,
   host_scope          TEXT,
   status              TEXT NOT NULL DEFAULT 'pending'
     CHECK(status IN ('pending', 'dispatched', 'completed', 'failed', 'circuit_broken')),

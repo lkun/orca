@@ -4,7 +4,7 @@ import {
   type ChromeWebStoreBridgeReply,
   type ChromeWebStoreMainWorldBridge
 } from './browser-extension-web-store-main-world'
-import { adaptChromeWebStoreWordingForOrca } from './browser-extension-web-store-wording'
+import { adaptChromeWebStoreWordingForOCC } from './browser-extension-web-store-wording'
 
 /**
  * Written out here (a test pins them to src/shared/browser-extension-webstore.ts): this module is
@@ -52,5 +52,5 @@ export function installChromeWebStoreBridge(): void {
     func: installChromeWebStoreApis,
     args: [bridge, typeof process !== 'undefined' ? (process.versions.chrome ?? '') : '']
   })
-  contextBridge.executeInMainWorld({ func: adaptChromeWebStoreWordingForOrca })
+  contextBridge.executeInMainWorld({ func: adaptChromeWebStoreWordingForOCC })
 }

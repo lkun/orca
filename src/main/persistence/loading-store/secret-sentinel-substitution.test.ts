@@ -38,7 +38,7 @@ function expectIdenticalToPrevious(
 }
 
 function sentinel(): string {
-  return `orca-secret-slot-${randomUUID()}`
+  return `occ-secret-slot-${randomUUID()}`
 }
 
 describe('complete profile domain serialization', () => {
@@ -140,7 +140,7 @@ describe('applySecretSentinelSubstitutions', () => {
     const state = {
       settings: { opencodeSessionCookie: subs[0].sentinel, httpProxyUrl: subs[1].sentinel },
       ui: { browserKagiSessionLink: subs[2].sentinel },
-      noise: ['orca-secret-slot-', 'a\\b"c\n\t', subs[0].sentinel.slice(0, -1)]
+      noise: ['occ-secret-slot-', 'a\\b"c\n\t', subs[0].sentinel.slice(0, -1)]
     }
     expectIdenticalToPrevious(JSON.stringify(state), subs)
   })

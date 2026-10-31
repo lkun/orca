@@ -5,7 +5,7 @@ import { afterEach, expect, it, vi } from 'vitest'
 import { useAppStore } from '@/store'
 import { resolveNativeChatDraftOwner } from '@/lib/native-chat-draft-owner'
 import type { Tab } from '../../../../shared/tab-types'
-import { testOrcaSessionId } from '../../../../shared/orca-session-address-test-fixture'
+import { testOCCSessionId } from '../../../../shared/occ-session-address-test-fixture'
 import {
   nativeChatFanoutFixture,
   nativeChatFanoutWorkspace as workspace
@@ -64,9 +64,9 @@ function Sender({ index, population: { workspaces } }: SubscriberProps) {
   const name = useAgentMessageSenderLabel(
     {
       party: {
-        address: `orca_session_id:session-${index}`,
+        address: `occ_session_id:session-${index}`,
         terminalHandle: null,
-        orcaSessionId: testOrcaSessionId(`session-${index}`)
+        occSessionId: testOCCSessionId(`session-${index}`)
       },
       name: 'Recorded'
     },

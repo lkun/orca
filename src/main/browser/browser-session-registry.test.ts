@@ -69,12 +69,12 @@ import { installBrowserSessionUserAgentPolicy } from './browser-session-ua'
 import { setBrowserNetworkProxySettingsResolver } from './browser-session-proxy'
 import { handleElectronProxyLogin } from '../network/electron-proxy-credentials'
 import { applyProxySettingsToSession } from '../network/proxy-settings'
-import { ORCA_BROWSER_PARTITION } from '../../shared/constants'
+import { OCC_BROWSER_PARTITION } from '../../shared/constants'
 import {
-  DEFAULT_LOCAL_ORCA_PROFILE_ID,
-  getOrcaProfileBrowserDefaultPartition,
-  getOrcaProfileBrowserSessionPartition
-} from '../../shared/orca-profiles'
+  DEFAULT_LOCAL_OCC_PROFILE_ID,
+  getOCCProfileBrowserDefaultPartition,
+  getOCCProfileBrowserSessionPartition
+} from '../../shared/occ-profiles'
 
 describe('BrowserSessionRegistry', () => {
   beforeEach(() => {
@@ -107,11 +107,11 @@ describe('BrowserSessionRegistry', () => {
     const defaultProfile = browserSessionRegistry.getDefaultProfile()
     expect(defaultProfile.id).toBe('default')
     expect(defaultProfile.scope).toBe('default')
-    expect(defaultProfile.partition).toBe(ORCA_BROWSER_PARTITION)
+    expect(defaultProfile.partition).toBe(OCC_BROWSER_PARTITION)
   })
 
   it('allows the default partition', () => {
-    expect(browserSessionRegistry.isAllowedPartition(ORCA_BROWSER_PARTITION)).toBe(true)
+    expect(browserSessionRegistry.isAllowedPartition(OCC_BROWSER_PARTITION)).toBe(true)
   })
 
   it('rejects unknown partitions', () => {
@@ -122,8 +122,8 @@ describe('BrowserSessionRegistry', () => {
     const profile = await browserSessionRegistry.createProfile('isolated', 'Test Isolated')
     expect(profile).not.toBeNull()
     expect(profile!.scope).toBe('isolated')
-    expect(profile!.partition).toMatch(/^persist:orca-browser-session-/)
-    expect(profile!.partition).not.toBe(ORCA_BROWSER_PARTITION)
+    expect(profile!.partition).toMatch(/^persist:occ-browser-session-/)
+    expect(profile!.partition).not.toBe(OCC_BROWSER_PARTITION)
     expect(profile!.label).toBe('Test Isolated')
     expect(profile!.source).toBeNull()
   })
@@ -239,7 +239,7 @@ describe('BrowserSessionRegistry', () => {
     const profile = await browserSessionRegistry.createProfile('imported', 'My Import')
     expect(profile).not.toBeNull()
     expect(profile!.scope).toBe('imported')
-    expect(profile!.partition).toMatch(/^persist:orca-browser-session-/)
+    expect(profile!.partition).toMatch(/^persist:occ-browser-session-/)
   })
 
   it('resolves partition for a known profile', async () => {
@@ -249,21 +249,21 @@ describe('BrowserSessionRegistry', () => {
   })
 
   it('resolves default partition for null/undefined profileId', () => {
-    expect(browserSessionRegistry.resolvePartition(null)).toBe(ORCA_BROWSER_PARTITION)
-    expect(browserSessionRegistry.resolvePartition(undefined)).toBe(ORCA_BROWSER_PARTITION)
+    expect(browserSessionRegistry.resolvePartition(null)).toBe(OCC_BROWSER_PARTITION)
+    expect(browserSessionRegistry.resolvePartition(undefined)).toBe(OCC_BROWSER_PARTITION)
   })
 
   it('resolves default partition for unknown profileId', () => {
-    expect(browserSessionRegistry.resolvePartition('nonexistent')).toBe(ORCA_BROWSER_PARTITION)
+    expect(browserSessionRegistry.resolvePartition('nonexistent')).toBe(OCC_BROWSER_PARTITION)
   })
 
   it('strictly resolves known profile partitions without downgrading unknown profiles', async () => {
     const profile = await browserSessionRegistry.createProfile('isolated', 'Strict Resolve')
     expect(profile).not.toBeNull()
 
-    expect(browserSessionRegistry.resolveKnownPartition(null)).toBe(ORCA_BROWSER_PARTITION)
-    expect(browserSessionRegistry.resolveKnownPartition(undefined)).toBe(ORCA_BROWSER_PARTITION)
-    expect(browserSessionRegistry.resolveKnownPartition('default')).toBe(ORCA_BROWSER_PARTITION)
+    expect(browserSessionRegistry.resolveKnownPartition(null)).toBe(OCC_BROWSER_PARTITION)
+    expect(browserSessionRegistry.resolveKnownPartition(undefined)).toBe(OCC_BROWSER_PARTITION)
+    expect(browserSessionRegistry.resolveKnownPartition('default')).toBe(OCC_BROWSER_PARTITION)
     expect(browserSessionRegistry.resolveKnownPartition(profile!.id)).toBe(profile!.partition)
     expect(browserSessionRegistry.resolveKnownPartition('missing-profile')).toBeNull()
   })
@@ -298,7 +298,7 @@ describe('BrowserSessionRegistry', () => {
   })
 
   it('deletes a non-default profile and its remembered site answers', async () => {
-    configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'orca-site-permissions-')))
+    configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'occ-site-permissions-')))
     const profile = await browserSessionRegistry.createProfile('isolated', 'Delete Test')
     expect(profile).not.toBeNull()
     expect(browserSessionRegistry.isAllowedPartition(profile!.partition)).toBe(true)
@@ -373,7 +373,7 @@ describe('BrowserSessionRegistry', () => {
 
     expect(concurrent).toBe(first)
     expect(repoProfile.partition).not.toBe(first.partition)
-    expect(isValidPersistedBrowserSessionProfile(first, DEFAULT_LOCAL_ORCA_PROFILE_ID)).toBe(true)
+    expect(isValidPersistedBrowserSessionProfile(first, DEFAULT_LOCAL_OCC_PROFILE_ID)).toBe(true)
 
     expect(await deleteManagedBrowserProfile(owner)).toBe(true)
     expect(browserSessionRegistry.isAllowedPartition(first.partition)).toBe(false)
@@ -421,7 +421,7 @@ describe('BrowserSessionRegistry', () => {
     const fakeProfile = {
       id: '00000000-0000-0000-0000-000000000001',
       scope: 'imported' as const,
-      partition: 'persist:orca-browser-session-00000000-0000-0000-0000-000000000001',
+      partition: 'persist:occ-browser-session-00000000-0000-0000-0000-000000000001',
       label: 'Hydrated',
       source: { browserFamily: 'manual' as const, importedAt: 1000 }
     }
@@ -432,7 +432,7 @@ describe('BrowserSessionRegistry', () => {
 
   it('rejects a persisted profile whose partition belongs to a different profile id', () => {
     const profileId = '00000000-0000-4000-8000-000000000021'
-    const claimedPartition = 'persist:orca-browser-session-00000000-0000-4000-8000-000000000022'
+    const claimedPartition = 'persist:occ-browser-session-00000000-0000-4000-8000-000000000022'
 
     browserSessionRegistry.hydrateFromPersisted([
       {
@@ -450,7 +450,7 @@ describe('BrowserSessionRegistry', () => {
 
   it('applies and clears existing browser-profile policy on an opaque route partition', async () => {
     const partition =
-      'persist:orca-browser-v1-1111111111111111222222222222222233333333333333334444444444444444'
+      'persist:occ-browser-v1-1111111111111111222222222222222233333333333333334444444444444444'
     setBrowserNetworkProxySettingsResolver(() => ({
       httpProxyUrl: 'http://app-proxy.example:8080',
       httpProxyBypassRules: ''
@@ -473,7 +473,7 @@ describe('BrowserSessionRegistry', () => {
 
   it('rejects route partitions for missing browser profiles', () => {
     const partition =
-      'persist:orca-browser-v1-aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbccccccccccccccccdddddddddddddddd'
+      'persist:occ-browser-v1-aaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbccccccccccccccccdddddddddddddddd'
 
     expect(() =>
       browserSessionRegistry.setupRoutePartitionPolicies(partition, 'missing-profile')
@@ -495,7 +495,7 @@ describe('BrowserSessionRegistry', () => {
   })
 
   it('asks macOS for the camera only after the user allowed the site', async () => {
-    configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'orca-site-permissions-')))
+    configureBrowserSitePermissionStore(mkdtempSync(join(tmpdir(), 'occ-site-permissions-')))
     const profile = await browserSessionRegistry.createProfile('isolated', 'Media Test')
     if (!profile) {
       throw new Error('Expected the profile')
@@ -580,25 +580,25 @@ describe('BrowserSessionRegistry', () => {
   })
 
   it('uses profile-owned partitions for non-default OCC profiles', async () => {
-    const orcaProfileId = 'local-work'
-    browserSessionRegistry.configureForOrcaProfile({
-      orcaProfileId,
+    const occProfileId = 'local-work'
+    browserSessionRegistry.configureForOCCProfile({
+      occProfileId,
       profileDirectory: '/profiles/local-work'
     })
 
     expect(browserSessionRegistry.getDefaultProfile().partition).toBe(
-      getOrcaProfileBrowserDefaultPartition(orcaProfileId)
+      getOCCProfileBrowserDefaultPartition(occProfileId)
     )
-    expect(browserSessionRegistry.isAllowedPartition(ORCA_BROWSER_PARTITION)).toBe(false)
+    expect(browserSessionRegistry.isAllowedPartition(OCC_BROWSER_PARTITION)).toBe(false)
 
     const profile = await browserSessionRegistry.createProfile('isolated', 'Work Browser')
     expect(profile).not.toBeNull()
     expect(profile!.partition).toBe(
-      getOrcaProfileBrowserSessionPartition(orcaProfileId, profile!.id)
+      getOCCProfileBrowserSessionPartition(occProfileId, profile!.id)
     )
 
-    browserSessionRegistry.configureForOrcaProfile({
-      orcaProfileId: DEFAULT_LOCAL_ORCA_PROFILE_ID,
+    browserSessionRegistry.configureForOCCProfile({
+      occProfileId: DEFAULT_LOCAL_OCC_PROFILE_ID,
       profileDirectory: '/profiles/local-default'
     })
   })

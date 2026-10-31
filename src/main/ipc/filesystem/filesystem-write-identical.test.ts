@@ -25,7 +25,7 @@ vi.mock('../agent-session-attachment-upload-ipc', () => ({
 
 let root = ''
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-identical-ipc-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-identical-ipc-'))
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: authorization is stubbed, and no other context member is used by this handler.
   registerFilesystemWriteHandlers({ store: {} } as FilesystemHandlerContext)
 })

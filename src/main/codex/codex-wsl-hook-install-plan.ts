@@ -1,4 +1,4 @@
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { posix as pathPosix, win32 as pathWin32 } from 'node:path'
 import { parseWslUncPath } from '../../shared/wsl-paths'
 import { wslExeProcessSpec, wslExeStdout } from '../wsl-exe-process'
@@ -47,7 +47,7 @@ function toDefaultWslLinuxPath(windowsPath: string): string {
 }
 
 const WSL_CANONICALIZE_TIMEOUT_MS = 5000
-const WSL_PATH_MISSING_OUTPUT = '__ORCA_WSL_PATH_MISSING__'
+const WSL_PATH_MISSING_OUTPUT = '__OCC_WSL_PATH_MISSING__'
 export const MAX_WSL_CANONICAL_PATH_CACHE_ENTRIES = 512
 
 // Canonicalize asynchronously and cache results so cold WSL startup cannot block the main thread.
@@ -217,8 +217,8 @@ export function createCodexWslRuntimeHookInstallPlan(
   return {
     configPath: pathWin32.join(runtimeHomePath, 'hooks.json'),
     tomlPath: pathWin32.join(runtimeHomePath, 'config.toml'),
-    scriptPath: pathWin32.join(runtimeHomePath, '.orca', 'agent-hooks', 'codex-hook.sh'),
-    commandScriptPath: pathPosix.join(linuxRuntimeHome, '.orca', 'agent-hooks', 'codex-hook.sh'),
+    scriptPath: pathWin32.join(runtimeHomePath, '.occ', 'agent-hooks', 'codex-hook.sh'),
+    commandScriptPath: pathPosix.join(linuxRuntimeHome, '.occ', 'agent-hooks', 'codex-hook.sh'),
     trustConfigPath: pathPosix.join(linuxRuntimeHome, 'hooks.json'),
     wslDistro: distro,
     linuxRuntimeHome

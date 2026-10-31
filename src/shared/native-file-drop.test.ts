@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   NATIVE_FILE_DROP_MAX_PATH_BYTES,
   NATIVE_FILE_DROP_MAX_PATHS,
-  ORCA_INTERNAL_FILE_DRAG_TYPE,
+  OCC_INTERNAL_FILE_DRAG_TYPE,
   createRejectedNativeFileDropPayload,
   hasNativeFileDragTypes,
   validateNativeFileDropPaths
@@ -14,7 +14,7 @@ describe('hasNativeFileDragTypes', () => {
   })
 
   it('rejects internal OCC file moves and URL/text drags', () => {
-    expect(hasNativeFileDragTypes(['Files', ORCA_INTERNAL_FILE_DRAG_TYPE])).toBe(false)
+    expect(hasNativeFileDragTypes(['Files', OCC_INTERNAL_FILE_DRAG_TYPE])).toBe(false)
     expect(hasNativeFileDragTypes(['text/uri-list'])).toBe(false)
     expect(hasNativeFileDragTypes(['text/plain'])).toBe(false)
   })

@@ -1,7 +1,7 @@
 import { readFile, realpath } from 'node:fs/promises'
 import { posix } from 'node:path'
 import { WslHostWindowsDriveRefusalError } from '../../shared/wsl-host-windows-drive-refusal'
-import { isWslHostOrcadProcess } from '../ipc/wsl-guest-windows-drive-path'
+import { isWslHostOCCdProcess } from '../ipc/wsl-guest-windows-drive-path'
 import { parseWindowsDriveMountInfo, type WindowsDriveMount } from './wsl-guest-drive-mountinfo'
 
 export type WslHostWindowsDriveGuardDeps = {
@@ -11,14 +11,14 @@ export type WslHostWindowsDriveGuardDeps = {
 }
 
 const defaultDeps: WslHostWindowsDriveGuardDeps = {
-  isWslHost: () => isWslHostOrcadProcess(),
-  // Read per check (project adds only), so a drive mounted after orcad started is still caught.
+  isWslHost: () => isWslHostOCCdProcess(),
+  // Read per check (project adds only), so a drive mounted after occd started is still caught.
   readMounts: async () =>
     parseWindowsDriveMountInfo(await readFile('/proc/self/mountinfo', 'utf8').catch(() => '')),
   realpath: (path) => realpath(path)
 }
 
-/** WSL-host orcad only: refuse a project on a Windows drive mount, including through a symlink. SSH hosts never set the WSL-host marker. */
+/** WSL-host occd only: refuse a project on a Windows drive mount, including through a symlink. SSH hosts never set the WSL-host marker. */
 export async function refuseWslHostWindowsDrivePath(
   path: string,
   deps: WslHostWindowsDriveGuardDeps = defaultDeps

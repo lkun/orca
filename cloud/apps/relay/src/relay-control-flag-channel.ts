@@ -148,7 +148,7 @@ export function startControlFlagChannel<Flags>(input: {
         lastLoggedFailure = failure
         console.warn(
           JSON.stringify({
-            event: 'orca_relay_control_flags_unreadable',
+            event: 'occ_relay_control_flags_unreadable',
             object: input.objectName,
             failure,
             generation: applied.generation

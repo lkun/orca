@@ -98,7 +98,7 @@ describe('regional rehome worker', () => {
     expect(fetchImpl).toHaveBeenCalledTimes(1)
     expect(summaries.entries).toEqual([
       {
-        event: 'orca_relay_idle_rehome_dispatch_summary',
+        event: 'occ_relay_idle_rehome_dispatch_summary',
         candidates: 3,
         dispatched: 1,
         stoppedBy: 'concurrency-limit',
@@ -199,7 +199,7 @@ function collectSummaries() {
   console.warn = (line: unknown, ...rest: unknown[]) => {
     try {
       const parsed = JSON.parse(line as string) as Record<string, unknown>
-      if (parsed.event === 'orca_relay_idle_rehome_dispatch_summary') {
+      if (parsed.event === 'occ_relay_idle_rehome_dispatch_summary') {
         entries.push(parsed)
         arrived?.()
         return

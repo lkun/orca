@@ -103,8 +103,8 @@ async function waitFor(description, probe, timeoutMs = 30_000) {
 }
 
 function parseEndpoint(contents) {
-  const port = Number(/ORCA_AGENT_HOOK_PORT=['"]?(\d+)/.exec(contents)?.[1])
-  const token = /ORCA_AGENT_HOOK_TOKEN=['"]?([^'"\r\n]+)/.exec(contents)?.[1]
+  const port = Number(/OCC_AGENT_HOOK_PORT=['"]?(\d+)/.exec(contents)?.[1])
+  const token = /OCC_AGENT_HOOK_TOKEN=['"]?([^'"\r\n]+)/.exec(contents)?.[1]
   return Number.isInteger(port) && port > 0 && token ? { port, token } : null
 }
 
@@ -169,10 +169,10 @@ async function startStallingGuestServer(distro) {
 
 async function writeEndpoint(distro, path, endpoint) {
   const contents = [
-    `ORCA_AGENT_HOOK_PORT=${endpoint.port}`,
-    `ORCA_AGENT_HOOK_TOKEN=${endpoint.token}`,
-    'ORCA_AGENT_HOOK_ENV=benchmark',
-    'ORCA_AGENT_HOOK_VERSION=1',
+    `OCC_AGENT_HOOK_PORT=${endpoint.port}`,
+    `OCC_AGENT_HOOK_TOKEN=${endpoint.token}`,
+    'OCC_AGENT_HOOK_ENV=benchmark',
+    'OCC_AGENT_HOOK_VERSION=1',
     ''
   ].join('\n')
   await run(
@@ -181,7 +181,7 @@ async function writeEndpoint(distro, path, endpoint) {
       '/bin/sh',
       '-c',
       'umask 077; mkdir -p "$(dirname "$1")"; cat > "$1"',
-      'orca-wsl-benchmark',
+      'occ-wsl-benchmark',
       path
     ]),
     { input: contents }
@@ -195,10 +195,10 @@ async function invokeHook(distro, scriptPath, endpointPath) {
     wslArgs(distro, [
       '/usr/bin/env',
       `PATH=${WSL_PATH}`,
-      `ORCA_AGENT_HOOK_ENDPOINT=${endpointPath}`,
-      `ORCA_PANE_KEY=${PANE_KEY}`,
-      'ORCA_TAB_ID=wsl-relay-bench',
-      'ORCA_WORKTREE_ID=wsl-relay-bench',
+      `OCC_AGENT_HOOK_ENDPOINT=${endpointPath}`,
+      `OCC_PANE_KEY=${PANE_KEY}`,
+      'OCC_TAB_ID=wsl-relay-bench',
+      'OCC_WORKTREE_ID=wsl-relay-bench',
       '/bin/sh',
       scriptPath
     ]),
@@ -291,8 +291,8 @@ async function main() {
   let manager = null
   let staller = null
   try {
-    userDataDir = mkdtempSync(join(tmpdir(), 'orca-wsl-relay-bench-'))
-    process.env.ORCA_USER_DATA_PATH = userDataDir
+    userDataDir = mkdtempSync(join(tmpdir(), 'occ-wsl-relay-bench-'))
+    process.env.OCC_USER_DATA_PATH = userDataDir
     const jiti = createJiti(import.meta.url, {
       alias: {
         electron: fileURLToPath(
@@ -337,11 +337,11 @@ async function main() {
       await run('wsl.exe', wslArgs(distro, ['/bin/sh', '-c', 'printf %s "$HOME"']))
     ).stdout.trim()
     const instanceKey = `bench-${process.pid}-${Date.now().toString(36)}`
-    const benchmarkRoot = `${guestHome}/.orca-wsl/benchmarks/${instanceKey}`
-    const scriptPath = `${benchmarkRoot}/.orca/agent-hooks/codex-hook.sh`
-    const endpointPath = `${guestHome}/.orca-wsl/agent-hooks/instance-${instanceKey}/endpoint.env`
-    cleanupPaths = [benchmarkRoot, `${guestHome}/.orca-wsl/agent-hooks/instance-${instanceKey}`]
-    if (cleanupPaths.some((cleanupPath) => !cleanupPath.startsWith(`${guestHome}/.orca-wsl/`))) {
+    const benchmarkRoot = `${guestHome}/.occ-wsl/benchmarks/${instanceKey}`
+    const scriptPath = `${benchmarkRoot}/.occ/agent-hooks/codex-hook.sh`
+    const endpointPath = `${guestHome}/.occ-wsl/agent-hooks/instance-${instanceKey}/endpoint.env`
+    cleanupPaths = [benchmarkRoot, `${guestHome}/.occ-wsl/agent-hooks/instance-${instanceKey}`]
+    if (cleanupPaths.some((cleanupPath) => !cleanupPath.startsWith(`${guestHome}/.occ-wsl/`))) {
       throw new Error('Refusing to use an unexpected guest cleanup path')
     }
     const disabledTuiAgents = MANAGED_AGENT_HOOK_TARGETS.filter(
@@ -373,7 +373,7 @@ async function main() {
     if (typeof ptyController?.spawn !== 'function') {
       throw new Error('registerPtyHandlers did not install a runtime PTY controller')
     }
-    const survivingSessionId = `orca-wsl-relay-bench-${instanceKey}`
+    const survivingSessionId = `occ-wsl-relay-bench-${instanceKey}`
     const spawnSurvivingPty = () =>
       ptyController.spawn({
         cols: TERMINAL_COLS,
@@ -390,10 +390,10 @@ async function main() {
         platform: () => 'win32',
         remoteHooksEnabled: () => true,
         hookCoordsEnv: () => ({
-          ORCA_AGENT_HOOK_PORT: String(preferredPort),
-          ORCA_AGENT_HOOK_TOKEN: token,
-          ORCA_AGENT_HOOK_ENV: 'benchmark',
-          ORCA_AGENT_HOOK_VERSION: '1'
+          OCC_AGENT_HOOK_PORT: String(preferredPort),
+          OCC_AGENT_HOOK_TOKEN: token,
+          OCC_AGENT_HOOK_ENV: 'benchmark',
+          OCC_AGENT_HOOK_VERSION: '1'
         }),
         instanceKey: () => instanceKey,
         resolveBundle: () => ({ jsPath: bundlePath, version: bundleVersion }),

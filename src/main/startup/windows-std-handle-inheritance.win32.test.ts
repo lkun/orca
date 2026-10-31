@@ -4,11 +4,11 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 
 const describeOnWindows = process.platform === 'win32' ? describe : describe.skip
 const ADDON = resolve(__dirname, '..', '..', '..', 'native', 'windows-security', 'index.js')
-const root = mkdtempSync(join(tmpdir(), 'orca-std-handles-'))
+const root = mkdtempSync(join(tmpdir(), 'occ-std-handles-'))
 const entry = join(root, 'main.cjs')
 
 /** Optionally clears, writes through a stdio:'inherit' grandchild, then leaves a detached
@@ -50,7 +50,7 @@ async function runChild(host: 'electron' | 'node', mode: 'clear' | 'keep', holde
   if (typeof electron !== 'string') {
     throw new Error('Electron executable is unavailable')
   }
-  const env: NodeJS.ProcessEnv = { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' }
+  const env: NodeJS.ProcessEnv = { ...process.env, OCC_BACKGROUND_LAUNCH: '1' }
   delete env.ELECTRON_RUN_AS_NODE
   const pidFile = join(root, `${host}-${mode}.pid`)
   const child = spawnProcess({

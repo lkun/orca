@@ -262,7 +262,7 @@ beforeEach(() => {
     failed: []
   })
   mocks.importPaths.mockResolvedValue({
-    results: [{ status: 'imported', destPath: '/owner/workspace/.orca/drops/file.txt' }]
+    results: [{ status: 'imported', destPath: '/owner/workspace/.occ/drops/file.txt' }]
   })
   vi.stubGlobal('api', {
     fs: {
@@ -465,11 +465,11 @@ describe('terminal element file drops', () => {
         expectedExecutionHostId: 'local'
       }),
       ['/client/file.txt'],
-      '/owner/workspace/.orca/drops',
+      '/owner/workspace/.occ/drops',
       { assertCurrent: expect.any(Function), nameExtensionlessImages: true }
     )
     expect(fixture.sends[0]).toHaveBeenCalledExactlyOnceWith(
-      '/owner/workspace/.orca/drops/file.txt ',
+      '/owner/workspace/.occ/drops/file.txt ',
       'driving'
     )
   })

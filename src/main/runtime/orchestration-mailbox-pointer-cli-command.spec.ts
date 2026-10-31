@@ -20,10 +20,10 @@ describe('orchestration mailbox pointer CLI command', () => {
 
   it.each([
     ['dev WSL', { isWsl: true }, 'occ-dev'],
-    ['SSH', { connectionId: 'ssh-target', isWsl: true }, 'orca']
+    ['SSH', { connectionId: 'ssh-target', isWsl: true }, 'occ']
   ])('renders the %s CLI command in a mailbox pointer', async (_name, options, command) => {
     vi.useFakeTimers()
-    const db = createDatabase('orca-mailbox-cli-command-')
+    const db = createDatabase('occ-mailbox-cli-command-')
     const harness = createRuntime(db, options)
     const run = createBoundRun(db, 'CLI command Run')
     insertDirectRunMessage(db, run.id, 'Command-aware pointer')

@@ -41,7 +41,7 @@ export function registerJournalStopAndResumeRowsTests(): void {
   const journals = createTrackedJournalOpener()
 
   beforeEach(async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-stop-event-rows-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-stop-event-rows-'))
   })
 
   afterEach(async () => {

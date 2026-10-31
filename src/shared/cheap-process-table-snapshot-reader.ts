@@ -1,4 +1,4 @@
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   CHEAP_PS_ARGS,
   PS_MAX_BUFFER_BYTES,

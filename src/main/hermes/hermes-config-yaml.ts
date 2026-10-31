@@ -92,18 +92,18 @@ function updatePassthrough(
     : { ...config, terminal: { ...terminal, client_env_passthrough: next } }
 }
 
-function addOrcaPassthrough(config: HermesConfig): HermesConfig {
+function addOCCPassthrough(config: HermesConfig): HermesConfig {
   return updatePassthrough(config, (names) => [
     ...names,
     ...HERMES_CLIENT_ENV_PASSTHROUGH.filter((name) => !names.includes(name))
   ])
 }
 
-export function installOrcaStatusConfig(config: HermesConfig): HermesConfig {
-  return addOrcaPassthrough(enablePlugin(config))
+export function installOCCStatusConfig(config: HermesConfig): HermesConfig {
+  return addOCCPassthrough(enablePlugin(config))
 }
 
-export function removeOrcaStatusConfig(config: HermesConfig): HermesConfig {
+export function removeOCCStatusConfig(config: HermesConfig): HermesConfig {
   return updatePassthrough(disablePlugin(config), (names) =>
     names.filter((name) => !HERMES_CLIENT_ENV_PASSTHROUGH.includes(name))
   )
@@ -134,12 +134,12 @@ function updateWithPluginFallback(
   return next.content === null ? updateConfigContent(content, pluginOnly) : next
 }
 
-export function installOrcaStatusContent(content: string | null) {
-  return updateWithPluginFallback(content, installOrcaStatusConfig, enablePlugin)
+export function installOCCStatusContent(content: string | null) {
+  return updateWithPluginFallback(content, installOCCStatusConfig, enablePlugin)
 }
 
-export function removeOrcaStatusContent(content: string | null) {
-  return updateWithPluginFallback(content, removeOrcaStatusConfig, disablePlugin)
+export function removeOCCStatusContent(content: string | null) {
+  return updateWithPluginFallback(content, removeOCCStatusConfig, disablePlugin)
 }
 
 export function getConfigEnablement(config: HermesConfig): {
@@ -165,8 +165,8 @@ export function getConfigEnablement(config: HermesConfig): {
   }
 }
 
-/** A named profile's passthrough, refreshed only while the user keeps orca-status enabled there; null skips the profile. */
-export function refreshProfileOrcaStatusContent(content: string | null): {
+/** A named profile's passthrough, refreshed only while the user keeps occ-status enabled there; null skips the profile. */
+export function refreshProfileOCCStatusContent(content: string | null): {
   content: string | null
 } {
   const parsed = parseHermesConfig(content)
@@ -174,5 +174,5 @@ export function refreshProfileOrcaStatusContent(content: string | null): {
     return { content: null }
   }
   const { enabled, disabled } = getConfigEnablement(parsed.config)
-  return enabled && !disabled ? updateConfigContent(content, addOrcaPassthrough) : { content: null }
+  return enabled && !disabled ? updateConfigContent(content, addOCCPassthrough) : { content: null }
 }

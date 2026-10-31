@@ -9,7 +9,7 @@ const ARCH_BY_ELECTRON_BUILDER_ENUM = { 1: 'x64', 3: 'arm64' }
 
 // Require correct-arch native hook: missing extraResources only warns and otherwise silently leaves users on slower .cmd form.
 function verifyPackagedWindowsAgentHook(resourcesDir, electronBuilderArch) {
-  const hookPath = join(resourcesDir, 'bin', 'orca-agent-hook.exe')
+  const hookPath = join(resourcesDir, 'bin', 'occ-agent-hook.exe')
   if (!existsSync(hookPath)) {
     throw new Error(
       `Missing packaged agent hook ${hookPath}; run node config/scripts/build-windows-agent-hook.mjs`

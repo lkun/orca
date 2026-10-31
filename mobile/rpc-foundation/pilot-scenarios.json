@@ -1245,7 +1245,7 @@
                     "type": "image",
                     "src": "https://github.com/acme.png?size=64",
                     "source": "github",
-                    "label": "acme/orca"
+                    "label": "acme/occ"
                   },
                   "executionHostId": "ssh:ssh-1"
                 }
@@ -2005,7 +2005,7 @@
               "source": {
                 "identifier": "ORC-1",
                 "title": "Recorded issue",
-                "url": "https://linear.app/orca/issue/ORC-1"
+                "url": "https://linear.app/occ/issue/ORC-1"
               }
             }
           }
@@ -2038,7 +2038,7 @@
             "linkedLinearIssue": "ORC-1",
             "setupDecision": "inherit",
             "activate": true,
-            "startupDraft": "https://linear.app/orca/issue/ORC-1",
+            "startupDraft": "https://linear.app/occ/issue/ORC-1",
             "createdWithAgent": "claude"
           },
           "reply": {
@@ -6299,7 +6299,7 @@
         {
           "complete": "ui.set#1",
           "params": {
-            "trustedOrcaHooks": {
+            "trustedOCCHooks": {
               "repo-1": {
                 "setup": {
                   "contentHash": "hash-1",
@@ -6337,7 +6337,7 @@
         {
           "complete": "ui.set#1",
           "params": {
-            "trustedOrcaHooks": {
+            "trustedOCCHooks": {
               "repo-1": {
                 "all": {
                   "approvedAt": 1767225600000
@@ -7332,7 +7332,7 @@
         {
           "complete": "ui.set#2",
           "params": {
-            "trustedOrcaHooks": {
+            "trustedOCCHooks": {
               "repo-1": {
                 "setup": {
                   "contentHash": "hash-1",
@@ -8228,7 +8228,7 @@
             "ok": true,
             "result": {
               "retiredNamesByRepo": {
-                "repo-1": ["marlin", "orca"]
+                "repo-1": ["marlin", "occ"]
               },
               "retiredNameTiersByRepo": {
                 "repo-1": 2
@@ -8374,8 +8374,8 @@
           "reply": {
             "ok": true,
             "result": {
-              "owner": "orca",
-              "repo": "orca",
+              "owner": "occ",
+              "repo": "occ",
               "host": "github.com"
             }
           }
@@ -9843,8 +9843,8 @@
           "reply": {
             "ok": true,
             "result": {
-              "owner": "orca",
-              "repo": "orca",
+              "owner": "occ",
+              "repo": "occ",
               "host": "github.com"
             }
           }
@@ -15546,7 +15546,7 @@
             "activate": false,
             "clientMutationId": "resume-mutation-1",
             "env": {
-              "ORCA_RESUME": "1"
+              "OCC_RESUME": "1"
             },
             "envToDelete": ["CODEX_HOME"],
             "launchAgent": "codex",
@@ -15604,7 +15604,7 @@
             "activate": false,
             "clientMutationId": "resume-mutation-1",
             "env": {
-              "ORCA_RESUME": "1"
+              "OCC_RESUME": "1"
             },
             "envToDelete": ["CODEX_HOME"],
             "launchAgent": "codex",
@@ -15694,7 +15694,7 @@
             "activate": false,
             "clientMutationId": "resume-mutation-1",
             "env": {
-              "ORCA_RESUME": "1"
+              "OCC_RESUME": "1"
             },
             "envToDelete": ["CODEX_HOME"],
             "launchAgent": "codex",
@@ -19344,7 +19344,7 @@
       "sites": ["mobile/src/components/use-new-workspace-repositories.ts"],
       "schedules": [],
       "deviceStore": {
-        "orca:last-visited-worktree": "{\"hostId\":\"host-1\",\"worktreeId\":\"repo-b::/tmp/repo-b\"}"
+        "occ:last-visited-worktree": "{\"hostId\":\"host-1\",\"worktreeId\":\"repo-b::/tmp/repo-b\"}"
       },
       "steps": [
         {
@@ -19475,7 +19475,7 @@
       "sites": ["mobile/src/notifications/push-dismissal-reconciliation.ts"],
       "schedules": [],
       "deviceStore": {
-        "orca:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"wss://desk.test\",\"publicKeyB64\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=\",\"lastConnected\":1700000000000}]"
+        "occ:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"wss://desk.test\",\"publicKeyB64\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=\",\"lastConnected\":1700000000000}]"
       },
       "deviceState": {
         "notificationTray": [
@@ -19915,8 +19915,8 @@
       "sites": ["mobile/src/settings/notification-display-test.tsx"],
       "schedules": [],
       "deviceStore": {
-        "orca:pushServiceNotificationsEnabled": "true",
-        "orca:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"ws://desk.local:7777\",\"publicKeyB64\":\"AAAA\",\"lastConnected\":1700000000000}]"
+        "occ:pushServiceNotificationsEnabled": "true",
+        "occ:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"ws://desk.local:7777\",\"publicKeyB64\":\"AAAA\",\"lastConnected\":1700000000000}]"
       },
       "deviceState": {
         "notificationPermissions": { "status": "granted", "canAskAgain": true },
@@ -19959,8 +19959,8 @@
       "sites": ["mobile/src/settings/notification-display-test.tsx"],
       "schedules": [],
       "deviceStore": {
-        "orca:pushServiceNotificationsEnabled": "true",
-        "orca:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"ws://desk.local:7777\",\"publicKeyB64\":\"AAAA\",\"lastConnected\":1700000000000}]"
+        "occ:pushServiceNotificationsEnabled": "true",
+        "occ:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"ws://desk.local:7777\",\"publicKeyB64\":\"AAAA\",\"lastConnected\":1700000000000}]"
       },
       "deviceState": {
         "notificationPermissions": { "status": "granted", "canAskAgain": true },
@@ -20004,8 +20004,8 @@
       "sites": ["mobile/src/settings/notification-display-test.tsx"],
       "schedules": [],
       "deviceStore": {
-        "orca:pushServiceNotificationsEnabled": "true",
-        "orca:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"ws://desk.local:7777\",\"publicKeyB64\":\"AAAA\",\"lastConnected\":1700000000000}]"
+        "occ:pushServiceNotificationsEnabled": "true",
+        "occ:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"ws://desk.local:7777\",\"publicKeyB64\":\"AAAA\",\"lastConnected\":1700000000000}]"
       },
       "deviceState": {
         "notificationPermissions": { "status": "granted", "canAskAgain": true },
@@ -20049,8 +20049,8 @@
       "sites": ["mobile/src/settings/notification-display-test.tsx"],
       "schedules": [],
       "deviceStore": {
-        "orca:pushServiceNotificationsEnabled": "true",
-        "orca:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"ws://desk.local:7777\",\"publicKeyB64\":\"AAAA\",\"lastConnected\":1700000000000}]"
+        "occ:pushServiceNotificationsEnabled": "true",
+        "occ:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"ws://desk.local:7777\",\"publicKeyB64\":\"AAAA\",\"lastConnected\":1700000000000}]"
       },
       "deviceState": {
         "notificationPermissions": { "status": "granted", "canAskAgain": true },
@@ -20310,7 +20310,7 @@
               "repos": [
                 {
                   "id": "repo-1",
-                  "name": "orca"
+                  "name": "occ"
                 },
                 {
                   "id": "repo-2",
@@ -20813,7 +20813,7 @@
       "sites": ["mobile/src/notifications/mobile-notifications.ts"],
       "schedules": [],
       "deviceStore": {
-        "orca:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"wss://desk.test\",\"publicKeyB64\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=\",\"lastConnected\":1700000000000}]"
+        "occ:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"wss://desk.test\",\"publicKeyB64\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=\",\"lastConnected\":1700000000000}]"
       },
       "deviceState": {
         "notificationTray": [
@@ -20943,7 +20943,7 @@
       "sites": ["mobile/src/notifications/mobile-notifications.ts"],
       "schedules": [],
       "deviceStore": {
-        "orca:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"wss://desk.test\",\"publicKeyB64\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=\",\"lastConnected\":1700000000000}]"
+        "occ:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"wss://desk.test\",\"publicKeyB64\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=\",\"lastConnected\":1700000000000}]"
       },
       "deviceState": {
         "notificationTray": [
@@ -22623,7 +22623,7 @@
       "sites": ["mobile/src/notifications/mobile-notifications.ts"],
       "schedules": [],
       "deviceStore": {
-        "orca:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"wss://desk.test\",\"publicKeyB64\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=\",\"lastConnected\":1700000000000}]"
+        "occ:hosts": "[{\"id\":\"host-1\",\"name\":\"Desk\",\"endpoint\":\"wss://desk.test\",\"publicKeyB64\":\"AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=\",\"lastConnected\":1700000000000}]"
       },
       "deviceState": {
         "notificationTray": [

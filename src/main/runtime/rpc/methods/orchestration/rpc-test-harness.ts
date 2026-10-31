@@ -2,13 +2,13 @@ import { vi } from 'vitest'
 import { ORCHESTRATION_METHODS } from '../orchestration'
 import { eraseRpcMethods, type RpcContext } from '../../core'
 import { OrchestrationDb } from '../../../orchestration/db'
-import { OrcaRuntimeService } from '../../../orca-runtime'
+import { OCCRuntimeService } from '../../../occ-runtime'
 
 export const COORDINATOR_PANE_KEY = 'tab_coord:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
 
 export type OrchestrationRpcState = {
   db: OrchestrationDb
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   ctx: RpcContext
   activeRunId: string | undefined
 }
@@ -17,18 +17,18 @@ export type OrchestrationRpcState = {
 export function createOrchestrationRpcHarness() {
   let db: OrchestrationDb
   let dbOpen = false
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
   let activeRunId: string | undefined
 
   const coordinatorPaneKey = COORDINATOR_PANE_KEY
 
   function setup(
     withBoundRun = true,
-    store: ConstructorParameters<typeof OrcaRuntimeService>[0] = null
+    store: ConstructorParameters<typeof OCCRuntimeService>[0] = null
   ): OrchestrationRpcState {
     db = new OrchestrationDb(':memory:')
     dbOpen = true
-    runtime = new OrcaRuntimeService(store)
+    runtime = new OCCRuntimeService(store)
     runtime.setOrchestrationDb(db)
     vi.spyOn(runtime, 'getTerminalPaneKey').mockImplementation((handle) =>
       handle === 'term_coord' ? coordinatorPaneKey : null

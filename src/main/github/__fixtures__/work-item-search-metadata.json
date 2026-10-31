@@ -4,7 +4,7 @@
       "number": 19933,
       "title": "[Bug]: Browser element annotations cleared and overlay removed when scrolling the page (no reload)",
       "state": "OPEN",
-      "url": "https://github.com/stablyai/orca/issues/19933",
+      "url": "https://github.com/stablyai/occ/issues/19933",
       "updatedAt": "2026-09-12T01:57:20Z",
       "labels": {
         "nodes": [
@@ -41,7 +41,7 @@
       "number": 19933,
       "title": "[Bug]: Browser element annotations cleared and overlay removed when scrolling the page (no reload)",
       "state": "open",
-      "html_url": "https://github.com/stablyai/orca/issues/19933",
+      "html_url": "https://github.com/stablyai/occ/issues/19933",
       "updated_at": "2026-09-12T01:57:20Z",
       "labels": [
         {
@@ -68,7 +68,7 @@
       "number": 19932,
       "title": "[Bug] Incorrect status after /usage",
       "state": "OPEN",
-      "url": "https://github.com/stablyai/orca/issues/19932",
+      "url": "https://github.com/stablyai/occ/issues/19932",
       "updatedAt": "2026-09-10T21:44:41Z",
       "labels": {
         "nodes": [
@@ -82,7 +82,7 @@
       },
       "author": {
         "__typename": "Bot",
-        "login": "orca-discord-issues",
+        "login": "occ-discord-issues",
         "avatarUrl": "https://avatars.githubusercontent.com/u/127256420?v=4"
       },
       "assignees": {
@@ -97,7 +97,7 @@
       "number": 19932,
       "title": "[Bug] Incorrect status after /usage",
       "state": "open",
-      "html_url": "https://github.com/stablyai/orca/issues/19932",
+      "html_url": "https://github.com/stablyai/occ/issues/19932",
       "updated_at": "2026-09-10T21:44:41Z",
       "labels": [
         {
@@ -105,7 +105,7 @@
         }
       ],
       "user": {
-        "login": "orca-discord-issues[bot]",
+        "login": "occ-discord-issues[bot]",
         "avatar_url": "https://avatars.githubusercontent.com/u/127256420?v=4"
       },
       "assignees": []
@@ -116,7 +116,7 @@
       "number": 19926,
       "title": "[Bug]: Copying assistant response adds visual-wrap line breaks when pasted into Google Chat (macOS)",
       "state": "OPEN",
-      "url": "https://github.com/stablyai/orca/issues/19926",
+      "url": "https://github.com/stablyai/occ/issues/19926",
       "updatedAt": "2026-09-11T17:14:42Z",
       "labels": {
         "nodes": [],
@@ -141,7 +141,7 @@
       "number": 19926,
       "title": "[Bug]: Copying assistant response adds visual-wrap line breaks when pasted into Google Chat (macOS)",
       "state": "open",
-      "html_url": "https://github.com/stablyai/orca/issues/19926",
+      "html_url": "https://github.com/stablyai/occ/issues/19926",
       "updated_at": "2026-09-11T17:14:42Z",
       "labels": [],
       "user": {
@@ -156,7 +156,7 @@
       "number": 19919,
       "title": "[Bug]: v1.4.199 Windows NSIS installer reports success but never installs OCC.exe (partial install)",
       "state": "OPEN",
-      "url": "https://github.com/stablyai/orca/issues/19919",
+      "url": "https://github.com/stablyai/occ/issues/19919",
       "updatedAt": "2026-09-10T20:08:25Z",
       "labels": {
         "nodes": [],
@@ -181,7 +181,7 @@
       "number": 19919,
       "title": "[Bug]: v1.4.199 Windows NSIS installer reports success but never installs OCC.exe (partial install)",
       "state": "open",
-      "html_url": "https://github.com/stablyai/orca/issues/19919",
+      "html_url": "https://github.com/stablyai/occ/issues/19919",
       "updated_at": "2026-09-10T20:08:25Z",
       "labels": [],
       "user": {
@@ -196,7 +196,7 @@
       "number": 19918,
       "title": "[Bug]: Svelte files do not get parsed or highlighted correctly",
       "state": "OPEN",
-      "url": "https://github.com/stablyai/orca/issues/19918",
+      "url": "https://github.com/stablyai/occ/issues/19918",
       "updatedAt": "2026-09-10T20:06:53Z",
       "labels": {
         "nodes": [
@@ -228,7 +228,7 @@
       "number": 19918,
       "title": "[Bug]: Svelte files do not get parsed or highlighted correctly",
       "state": "open",
-      "html_url": "https://github.com/stablyai/orca/issues/19918",
+      "html_url": "https://github.com/stablyai/occ/issues/19918",
       "updated_at": "2026-09-10T20:06:53Z",
       "labels": [
         {

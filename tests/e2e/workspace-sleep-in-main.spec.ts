@@ -4,7 +4,7 @@
  */
 import { randomUUID } from 'node:crypto'
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   ensureTerminalVisible,
   getAllWorktreeIds,
@@ -82,52 +82,52 @@ async function secondWorktree(page: Page): Promise<{ first: string; second: stri
 
 test.describe('Workspace sleep runs in main', () => {
   test('Sleep from the sidebar stops the terminals in main and keeps the tab', async ({
-    orcaPage
+    occPage
   }) => {
-    const { first, second } = await secondWorktree(orcaPage)
-    await liveTerminalIn(orcaPage, second)
-    await switchToWorktree(orcaPage, first)
+    const { first, second } = await secondWorktree(occPage)
+    await liveTerminalIn(occPage, second)
+    await switchToWorktree(occPage, first)
 
-    const row = orcaPage.locator(`[data-worktree-sidebar] [data-worktree-id="${second}"]`).first()
+    const row = occPage.locator(`[data-worktree-sidebar] [data-worktree-id="${second}"]`).first()
     await row.click({ button: 'right' })
-    await orcaPage.getByRole('menuitem', { name: 'Sleep', exact: true }).click()
+    await occPage.getByRole('menuitem', { name: 'Sleep', exact: true }).click()
 
-    await expect.poll(() => readSleepState(orcaPage, second), { timeout: 20_000 }).toEqual(asleep)
-    await expect(orcaPage.getByText('Failed to sleep workspace')).toHaveCount(0)
+    await expect.poll(() => readSleepState(occPage, second), { timeout: 20_000 }).toEqual(asleep)
+    await expect(occPage.getByText('Failed to sleep workspace')).toHaveCount(0)
 
     // Opening it again wakes it: the kept tab gets a live terminal.
-    await switchToWorktree(orcaPage, second)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActivePanePtyId(orcaPage)
+    await switchToWorktree(occPage, second)
+    await ensureTerminalVisible(occPage)
+    await waitForActivePanePtyId(occPage)
     await expect
-      .poll(async () => (await readSleepState(orcaPage, second)).hostLiveTerminals, {
+      .poll(async () => (await readSleepState(occPage, second)).hostLiveTerminals, {
         timeout: 20_000
       })
       .toBeGreaterThan(0)
   })
 
-  test("a phone's sleep runs in main, and the window follows it", async ({ orcaPage }) => {
-    const { first, second } = await secondWorktree(orcaPage)
-    await liveTerminalIn(orcaPage, second)
+  test("a phone's sleep runs in main, and the window follows it", async ({ occPage }) => {
+    const { first, second } = await secondWorktree(occPage)
+    await liveTerminalIn(occPage, second)
     // The window shows it while the phone sleeps it: the window gives up the selection.
-    const reply = await orcaPage.evaluate(
+    const reply = await occPage.evaluate(
       (id) =>
         window.api.runtime.call({ method: 'worktree.sleep', params: { worktree: `id:${id}` } }),
       second
     )
     expect(reply.ok).toBe(true)
-    await expect.poll(() => readSleepState(orcaPage, second), { timeout: 20_000 }).toEqual(asleep)
+    await expect.poll(() => readSleepState(occPage, second), { timeout: 20_000 }).toEqual(asleep)
     await expect
-      .poll(() => orcaPage.evaluate(() => window.__store!.getState().activeWorktreeId))
+      .poll(() => occPage.evaluate(() => window.__store!.getState().activeWorktreeId))
       .not.toBe(second)
-    await switchToWorktree(orcaPage, first)
+    await switchToWorktree(occPage, first)
   })
 
-  test('opening a workspace as soon as its sleep starts ends awake', async ({ orcaPage }) => {
-    const { first, second } = await secondWorktree(orcaPage)
-    await liveTerminalIn(orcaPage, second)
-    await switchToWorktree(orcaPage, first)
-    await orcaPage.evaluate(async (id) => {
+  test('opening a workspace as soon as its sleep starts ends awake', async ({ occPage }) => {
+    const { first, second } = await secondWorktree(occPage)
+    await liveTerminalIn(occPage, second)
+    await switchToWorktree(occPage, first)
+    await occPage.evaluate(async (id) => {
       const store = window.__store!
       const windowPtys = (): number => {
         const state = store.getState()
@@ -150,16 +150,16 @@ test.describe('Workspace sleep runs in main', () => {
       await reply
     }, second)
     await expect
-      .poll(() => readSleepState(orcaPage, second).then((state) => state.hostLiveTerminals > 0), {
+      .poll(() => readSleepState(occPage, second).then((state) => state.hostLiveTerminals > 0), {
         timeout: 30_000
       })
       .toBe(true)
   })
 
-  test('a delete during a sleep waits for it and removes the workspace', async ({ orcaPage }) => {
-    const { first } = await secondWorktree(orcaPage)
+  test('a delete during a sleep waits for it and removes the workspace', async ({ occPage }) => {
+    const { first } = await secondWorktree(occPage)
     // Why its own workspace: the seeded secondary one is shared by every later spec in this run.
-    const second = await orcaPage.evaluate(async (firstId) => {
+    const second = await occPage.evaluate(async (firstId) => {
       const state = window.__store!.getState()
       const repoId = state.getKnownWorktreeById(firstId)?.repoId
       if (!repoId) {
@@ -174,9 +174,9 @@ test.describe('Workspace sleep runs in main', () => {
       await state.fetchWorktrees(repoId)
       return created.worktree.id
     }, first)
-    await liveTerminalIn(orcaPage, second)
-    await switchToWorktree(orcaPage, first)
-    const removed = await orcaPage.evaluate(async (id) => {
+    await liveTerminalIn(occPage, second)
+    await switchToWorktree(occPage, first)
+    const removed = await occPage.evaluate(async (id) => {
       const sleeping = window.api.runtime.call({
         method: 'worktree.sleep',
         params: { worktree: `id:${id}` }
@@ -189,7 +189,7 @@ test.describe('Workspace sleep runs in main', () => {
     }, second)
     expect(removed).toEqual({ sleep: 'fulfilled', removal: 'fulfilled' })
     await expect
-      .poll(async () => (await getAllWorktreeIds(orcaPage)).includes(second), { timeout: 30_000 })
+      .poll(async () => (await getAllWorktreeIds(occPage)).includes(second), { timeout: 30_000 })
       .toBe(false)
   })
 })

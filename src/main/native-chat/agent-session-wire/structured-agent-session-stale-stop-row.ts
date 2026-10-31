@@ -9,7 +9,7 @@ import type {
 import type { AgentSessionDeathEvidence } from '../../../shared/agent-session-record'
 import { readAgentJournalTurn } from '../../../shared/agent-session-turn-record'
 import type { AgentSessionReplacedRuntime } from '../../runtime/agent-session/agent-session-replaced-runtime'
-import { orcaStopRowBody } from './structured-agent-session-orca-stop-row'
+import { occStopRowBody } from './structured-agent-session-occ-stop-row'
 
 export type StaleCut = { by: 'death' } | { by: 'replaced'; fence: number } | null
 
@@ -28,7 +28,7 @@ export function staleStopRow(
   cutBy: (item: AgentJournalRenderItem) => StaleCut
 ): {
   kind: 'item'
-  identity: { provider: 'orca'; clientMessageId: string }
+  identity: { provider: 'occ'; clientMessageId: string }
   body: AgentJournalStatusItem
 } | null {
   const cuts = items.map(cutBy)
@@ -38,10 +38,10 @@ export function staleStopRow(
     return {
       kind: 'item',
       identity: {
-        provider: 'orca',
+        provider: 'occ',
         clientMessageId: `${STALE_SESSION_ROW_PREFIX}${input.sessionId}:death-${evidence.ownerFence ?? 'unowned'}-${evidence.observedAt}`
       },
-      body: orcaStopRowBody(input.failureTextContext, evidence.runtimeEnd)
+      body: occStopRowBody(input.failureTextContext, evidence.runtimeEnd)
     }
   }
   const fences = cuts.flatMap((cut) => (cut?.by === 'replaced' ? [cut.fence] : []))
@@ -53,10 +53,10 @@ export function staleStopRow(
     kind: 'item',
     // Stable owner identity lets later runtimes find the same notice.
     identity: {
-      provider: 'orca',
+      provider: 'occ',
       clientMessageId: `${STALE_SESSION_ROW_PREFIX}${input.sessionId}:replaced-${fence}`
     },
-    body: orcaStopRowBody(
+    body: occStopRowBody(
       input.failureTextContext,
       fence === input.replaced.fence ? input.replaced.runtimeEnd : undefined
     )

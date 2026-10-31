@@ -1,5 +1,5 @@
 // Compare identical benchmark APIs on baseline/candidate; separate instrumented allocation counts from clean timing to avoid patch-induced deoptimization.
-// Run: ORCA_BACKGROUND_LAUNCH=1 pnpm exec vitest run --config config/vitest.agent-status-benchmark.config.ts
+// Run: OCC_BACKGROUND_LAUNCH=1 pnpm exec vitest run --config config/vitest.agent-status-benchmark.config.ts
 // Reported-user scale: 423 worktrees/634 tabs, rather than the 100-worktree fixture.
 import { writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
@@ -299,7 +299,7 @@ describe('agent-status hot path benchmark', () => {
     }
 
     const outputPath =
-      process.env.ORCA_AGENT_STATUS_BENCH_OUTPUT ??
+      process.env.OCC_AGENT_STATUS_BENCH_OUTPUT ??
       join(tmpdir(), 'agent-status-hot-path-benchmark.json')
     writeFileSync(
       outputPath,

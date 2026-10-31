@@ -27,7 +27,7 @@ export function resolveLocalPluginPath(
   command: string
 ): string {
   rejectRemoteSelectionFlags(ctx.flags, `occ plugin ${command}; it works on local files`)
-  if (process.env.ORCA_CLI_CWD) {
+  if (process.env.OCC_CLI_CWD) {
     throw new RuntimeClientError(
       'invalid_environment',
       `occ plugin ${command} works on the files of the machine that runs it, but this shell forwards occ to the OCC host. Write and check the plugin files on this machine directly, or run the command on the OCC host.`

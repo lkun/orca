@@ -1,6 +1,6 @@
 import { constants } from 'node:fs'
 import { access, stat } from 'node:fs/promises'
-import type { ChildProcessHandle } from '@orca/process-host/process-spec'
+import type { ChildProcessHandle } from '@occ/process-host/process-spec'
 
 const RIPGREP_CWD_CHECK_TIMEOUT_MS = 1000
 

@@ -1,5 +1,5 @@
 {
-  "name": "orca-mobile",
+  "name": "occ-mobile",
   "version": "0.0.1",
   "private": true,
   "main": "index.js",
@@ -13,8 +13,8 @@
     "typecheck": "node ../config/scripts/run-typecheck-projects-in-parallel.mjs --project=mobile/tsconfig.json",
     "typecheck:tests": "node ../config/scripts/run-typecheck-projects-in-parallel.mjs --project=mobile/tsconfig.test.json",
     "check:tests-typecheck": "node scripts/check-tests-typecheck-ratchet.mjs",
-    "rpc:record": "tsx --conditions=orca-source scripts/rpc-recording.mts",
-    "rpc:diff": "tsx --conditions=orca-source scripts/rpc-diff.mts",
+    "rpc:record": "tsx --conditions=occ-source scripts/rpc-recording.mts",
+    "rpc:diff": "tsx --conditions=occ-source scripts/rpc-diff.mts",
     "lint": "oxlint",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
@@ -25,7 +25,7 @@
   "dependencies": {
     "@formatjs/intl-pluralrules": "6.3.16",
     "@noble/hashes": "1.8.0",
-    "@orca/expo-two-way-audio": "file:./packages/expo-two-way-audio",
+    "@occ/expo-two-way-audio": "file:./packages/expo-two-way-audio",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@xterm/addon-unicode11": "0.10.0-beta.301",
     "@xterm/addon-webgl": "0.20.0-beta.300",
@@ -78,7 +78,7 @@
     "zod": "~4.6.7"
   },
   "devDependencies": {
-    "@orca/process-host": "link:../src/packages/process-host",
+    "@occ/process-host": "link:../src/packages/process-host",
     "@types/markdown-it": "14.1.2",
     "@types/markdown-it-footnote": "^3.0.4",
     "@types/mdast": "^4.0.4",

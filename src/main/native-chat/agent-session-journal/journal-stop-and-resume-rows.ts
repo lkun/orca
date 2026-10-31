@@ -7,15 +7,15 @@ import type { JournalStopEvent, JournalTombstoneRow } from './journal-row-schema
 
 // Reserve IDs that no real item uses.
 const JOURNAL_STOP_EVENT_ITEM_ID = agentJournalItemKey({
-  provider: 'orca',
+  provider: 'occ',
   clientMessageId: 'stop-event'
 })
 const JOURNAL_QUEUE_RESUME_ITEM_ID = agentJournalItemKey({
-  provider: 'orca',
+  provider: 'occ',
   clientMessageId: 'queue-resume'
 })
 const JOURNAL_QUEUE_REOPEN_ITEM_ID = agentJournalItemKey({
-  provider: 'orca',
+  provider: 'occ',
   clientMessageId: 'queue-reopen'
 })
 
@@ -26,7 +26,7 @@ export function buildJournalQueueClearRow(
 ): JournalTombstoneRow {
   return {
     kind: 'tombstone',
-    itemId: agentJournalItemKey({ provider: 'orca', clientMessageId: 'queue-context-clear' }),
+    itemId: agentJournalItemKey({ provider: 'occ', clientMessageId: 'queue-context-clear' }),
     revision: 1,
     queueClear: input.clear,
     ...journalRowBase(input.state.epoch, input.seq, input.fence, input.ts)

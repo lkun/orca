@@ -6,7 +6,7 @@ import { rekeyFileIdRecord } from '../file-ids/open-file-path-rekey'
 import { rekeyEditorBuffers } from '../buffers/editor-buffer-record'
 import { migrateHydratedEditorTabsAndGroups } from '../file-ids/hydrated-editor-file-ids'
 import { renameEditorFilesThroughLayoutOwner } from '../tabs/editor-file-rename-through-layout-owner'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../../shared/layout-owner-switch'
 import { rekeyEditorBytesDocuments } from '@/components/editor/editor-bytes-document-boxes'
 
 // The store change is pure, so a layout-owner build applies it in the frame that shows main's rename.
@@ -153,7 +153,7 @@ export function createRekeyOpenFilesAction(
         return { ok: true }
       }
       // Switch point: main renames the tabs, and its frame rekeys the content.
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         return renameEditorFilesThroughLayoutOwner(
           set,
           get,

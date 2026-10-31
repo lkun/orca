@@ -8,7 +8,7 @@ import { join, resolve } from 'node:path'
 
 const projectDir = resolve(import.meta.dirname, '../..')
 const entryPath = join(projectDir, 'out', 'main', 'daemon-entry.js')
-const iterations = Number(process.env.ORCA_WINDOWS_DAEMON_CLOSE_ITERATIONS ?? 25)
+const iterations = Number(process.env.OCC_WINDOWS_DAEMON_CLOSE_ITERATIONS ?? 25)
 const requestTimeoutMs = 15_000
 
 function log(message) {
@@ -281,14 +281,14 @@ async function main() {
     return
   }
   if (!Number.isSafeInteger(iterations) || iterations <= 0) {
-    throw new Error('ORCA_WINDOWS_DAEMON_CLOSE_ITERATIONS must be a positive safe integer')
+    throw new Error('OCC_WINDOWS_DAEMON_CLOSE_ITERATIONS must be a positive safe integer')
   }
   if (!existsSync(entryPath)) {
     throw new Error(`Missing ${entryPath}; run pnpm build:electron-vite first`)
   }
 
   const scratch = mkdtempSync(join(tmpdir(), 'occ-windows-daemon-close-'))
-  const socketPath = `\\\\.\\pipe\\orca-daemon-close-${process.pid}-${randomUUID()}`
+  const socketPath = `\\\\.\\pipe\\occ-daemon-close-${process.pid}-${randomUUID()}`
   const tokenPath = join(scratch, 'daemon.token')
   const daemonLogPath = join(scratch, 'daemon.log')
   const child = fork(
@@ -297,7 +297,7 @@ async function main() {
     {
       stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
       windowsHide: true,
-      env: { ...process.env, ORCA_USER_DATA_PATH: scratch }
+      env: { ...process.env, OCC_USER_DATA_PATH: scratch }
     }
   )
   const daemonPid = child.pid

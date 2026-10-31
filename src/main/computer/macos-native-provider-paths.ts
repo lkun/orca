@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import { join, resolve } from 'node:path'
 
 export function resolveMacOSComputerUseAppPath(): string | null {
-  const override = process.env.ORCA_COMPUTER_MACOS_HELPER_APP_PATH
+  const override = process.env.OCC_COMPUTER_MACOS_HELPER_APP_PATH
   if (override && existsSync(override)) {
     return override
   }
@@ -22,6 +22,6 @@ export function resolveMacOSComputerUseExecutablePath(): string | null {
   if (!appPath) {
     return null
   }
-  const executablePath = join(appPath, 'Contents', 'MacOS', 'orca-computer-use-macos')
+  const executablePath = join(appPath, 'Contents', 'MacOS', 'occ-computer-use-macos')
   return existsSync(executablePath) ? executablePath : null
 }

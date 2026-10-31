@@ -2,12 +2,12 @@ import { mkdtempSync, writeFileSync, readFileSync, rmSync, mkdirSync } from 'nod
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import assert from 'node:assert/strict'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { withFreshOmpLaunch } from '../../src/shared/omp-fresh-launch'
 if (process.platform !== 'win32') {
   throw new Error('Run this smoke on a Windows host')
 }
-const root = mkdtempSync(join(tmpdir(), 'orca-fresh-windows-'))
+const root = mkdtempSync(join(tmpdir(), 'occ-fresh-windows-'))
 const config = join(root, 'fresh settings.yml')
 const capture = join(root, 'calls')
 const results: { shell: 'cmd' | 'powershell'; state: string; code: number; passed: boolean }[] = []
@@ -25,12 +25,12 @@ try {
       }
       const env: NodeJS.ProcessEnv = {
         ...process.env,
-        ORCA_BACKGROUND_LAUNCH: '1',
-        ORCA_OMP_FRESH_CONFIG: config,
+        OCC_BACKGROUND_LAUNCH: '1',
+        OCC_OMP_FRESH_CONFIG: config,
         CAPTURE: capture
       }
       if (state === 'unset') {
-        delete env.ORCA_OMP_FRESH_CONFIG
+        delete env.OCC_OMP_FRESH_CONFIG
       }
       const command = withFreshOmpLaunch('omp', shell, ' "task with spaces"')
       // Typed like a pane: a batch file would need the guard's `%!` written as `%%!`.

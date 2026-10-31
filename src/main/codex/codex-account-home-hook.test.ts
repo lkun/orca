@@ -62,12 +62,12 @@ function userApprovalHashes(): string[] {
 }
 
 beforeEach(() => {
-  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'orca-account-home-hook-')))
+  root = realpathSync.native(mkdtempSync(join(tmpdir(), 'occ-account-home-hook-')))
   const home = join(root, 'home')
-  accountHome = join(home, '.local', 'share', 'orca', 'codex-accounts', 'a1', 'home')
+  accountHome = join(home, '.local', 'share', 'occ', 'codex-accounts', 'a1', 'home')
   mkdirSync(accountHome, { recursive: true })
   mkdirSync(join(root, 'user-data'))
-  vi.stubEnv('ORCA_USER_DATA_PATH', join(root, 'user-data'))
+  vi.stubEnv('OCC_USER_DATA_PATH', join(root, 'user-data'))
   vi.stubEnv('CODEX_HOME', '')
   mocks.homedir.mockReturnValue(home)
   mocks.hashes = Object.fromEntries(
@@ -96,10 +96,10 @@ describe('reconcileCodexAccountHomeHook', () => {
   it("adds OCC's entry beside the account's own hook, keeping its approval", async () => {
     await reconcileCodexAccountHomeHook(accountHome, () => true, true)
 
-    const orcaCommand = getCodexManagedHookInstallMaterial().command
+    const occCommand = getCodexManagedHookInstallMaterial().command
     const hooks = readHooks()
-    expect(commandsOf(hooks.Stop)).toEqual(['notify-me.sh', orcaCommand])
-    expect(commandsOf(hooks.SessionStart)).toEqual([orcaCommand])
+    expect(commandsOf(hooks.Stop)).toEqual(['notify-me.sh', occCommand])
+    expect(commandsOf(hooks.SessionStart)).toEqual([occCommand])
     expect(userApprovalHashes()).toEqual(['sha256:user'])
     const approved = [...readHookTrustEntries(tomlPath()).values()].map((s) => s.trustedHash)
     expect(approved).toContain('sha256:codex-stop')

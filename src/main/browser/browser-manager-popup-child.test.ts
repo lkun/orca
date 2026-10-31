@@ -357,7 +357,7 @@ describe('browserManager popup child policies', () => {
     })
 
     expect(popup.downloadURL).not.toHaveBeenCalled()
-    expect(rendererSend).toHaveBeenCalledWith('browser:open-link-in-orca-tab', {
+    expect(rendererSend).toHaveBeenCalledWith('browser:open-link-in-occ-tab', {
       browserPageId: 'browser-1',
       url: 'https://app.example.com/help'
     })

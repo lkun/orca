@@ -38,7 +38,7 @@ async function fixture(
     acpCode?: number
   } = {}
 ) {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-opencode-acp-failure-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-opencode-acp-failure-'))
   const dataHome = join(directory, 'account-data')
   mkdirSync(join(dataHome, 'opencode'), { recursive: true })
   const dbPath = join(dataHome, 'opencode', 'opencode.db')

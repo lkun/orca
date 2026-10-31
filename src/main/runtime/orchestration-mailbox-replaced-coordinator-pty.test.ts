@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { OrchestrationDb } from './orchestration/db'
 import { createRootDispatch } from './orchestration/db/root-dispatch-test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import {
   createRuntime,
   driveToLiveIdle,
@@ -120,7 +120,7 @@ describe('Run and Dispatch mail for a pane whose PTY was replaced', () => {
     await replacePtyWithoutHandle(harness)
     await deliverWhileIdle(harness, db, `dispatch:${dispatch.id}`, run.id)
     // Main's layout keeps the pane's own handle across a replacement, so only window layout waits for adoption.
-    if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (!OCC_LAYOUT_OWNER_IS_MAIN) {
       expect(pointerCount(harness.write)).toBe(0)
     }
 

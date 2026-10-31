@@ -135,7 +135,7 @@ it.each([
     openRoutedHttpLink('http://localhost:5180/', {
       worktreeId: WORKSPACE,
       sourceTabId: 'source',
-      forceDestination: 'orca'
+      forceDestination: 'occ'
     })
     expect(register).toHaveBeenCalledOnce()
     expect(useAppStore.getState().browserPagesByWorkspace).toEqual({})
@@ -155,7 +155,7 @@ it.each([
       useAppStore.setState({ activeWorkspaceExecutionHostId: 'local' })
     }
     const selected = useAppStore.getState()
-    const labeledUrl = 'http://main.orca.localhost:60016/'
+    const labeledUrl = 'http://main.occ.localhost:60016/'
     registration.resolve({ url: labeledUrl })
     const outcome = await completed
 
@@ -202,14 +202,14 @@ it('lets a newer link open normally while an older localhost registration comple
   const options = {
     worktreeId: WORKSPACE,
     sourceTabId: 'source',
-    forceDestination: 'orca' as const
+    forceDestination: 'occ' as const
   }
   openRoutedHttpLink('http://localhost:5180/', options)
   expect(register).toHaveBeenCalledOnce()
   openRoutedHttpLink(URL_TO_OPEN, options)
   const outcome = await completed
   expect(outcome).toMatchObject({ status: 'opened' })
-  registration.resolve({ url: 'http://main.orca.localhost:60016/' })
+  registration.resolve({ url: 'http://main.occ.localhost:60016/' })
   await registration.promise
 
   const state = useAppStore.getState()
@@ -239,7 +239,7 @@ it.each(['workspace', 'view'] as const)(
       useAppStore.getState().setActiveView('skills')
     }
     const selected = useAppStore.getState()
-    const labeledUrl = 'http://main.orca.localhost:60016/'
+    const labeledUrl = 'http://main.occ.localhost:60016/'
     registration.resolve({ url: labeledUrl })
     await completed
 
@@ -538,7 +538,7 @@ it('opens a link from OCC UI in the system browser when the workspace browser ca
   const openUrl = vi.fn(() => Promise.resolve())
   vi.stubGlobal('window', { ...window, api: { ...window.api, shell: { openUrl } } })
   // A paired web client without browser streaming has no in-app browser.
-  vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+  vi.stubGlobal('__OCC_WEB_CLIENT__', true)
 
   openAppHttpLink(URL_TO_OPEN)
 

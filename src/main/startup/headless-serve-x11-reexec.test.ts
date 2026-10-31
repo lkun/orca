@@ -94,7 +94,7 @@ describe('reexecHeadlessServeOnX11IfNeeded', () => {
 
   it('keeps the pid, env and argv order, with the switch ahead of a `--` terminator', () => {
     const execve = vi.fn()
-    const env = { XDG_SESSION_TYPE: 'wayland', HOME: '/home/orca' }
+    const env = { XDG_SESSION_TYPE: 'wayland', HOME: '/home/occ' }
     reexecHeadlessServeOnX11IfNeeded({
       isServeMode: true,
       readResolvedOzonePlatform: () => 'wayland',

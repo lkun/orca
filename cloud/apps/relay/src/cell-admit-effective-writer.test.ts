@@ -95,7 +95,7 @@ describe('CellAdmitEffectiveWriter', () => {
     await settle()
     expect(writes).toEqual(['db', 'db'])
     expect(logs).toHaveLength(1)
-    expect(JSON.parse(logs[0]!)).toMatchObject({ event: 'orca_relay_cell_admit_effective_write_failed', mode: 'db' })
+    expect(JSON.parse(logs[0]!)).toMatchObject({ event: 'occ_relay_cell_admit_effective_write_failed', mode: 'db' })
   })
 
   it('claims a held trip slot in place of its refresh, and permits the trip only once it lands', async () => {

@@ -27,7 +27,7 @@ describe('JcodeHookService', () => {
   let homeDir: string
 
   beforeEach(() => {
-    homeDir = mkdtempSync(join(tmpdir(), 'orca-jcode-home-'))
+    homeDir = mkdtempSync(join(tmpdir(), 'occ-jcode-home-'))
     homedirMock.mockReturnValue(homeDir)
     // Isolate JCODE_HOME as well as homedir so installs cannot escape the temporary home.
     vi.stubEnv('JCODE_HOME', '')
@@ -111,8 +111,8 @@ describe('JcodeHookService', () => {
   })
 
   it.each([
-    '/Users/previous/.orca/agent-hooks/jcode-hook.sh',
-    'C:\\Users\\previous\\.orca\\agent-hooks\\jcode-hook.cmd'
+    '/Users/previous/.occ/agent-hooks/jcode-hook.sh',
+    'C:\\Users\\previous\\.occ\\agent-hooks\\jcode-hook.cmd'
   ])('recognizes a stale managed command %s without a local script', (stalePath) => {
     const service = new JcodeHookService()
     const configPath = getJcodeConfigPath()
@@ -136,7 +136,7 @@ describe('JcodeHookService', () => {
   it('does not report stale managed commands as installed beside the current one', () => {
     const service = new JcodeHookService()
     service.install()
-    const staleCommand = getJcodeManagedCommand('/Users/previous/.orca/agent-hooks/jcode-hook.sh')
+    const staleCommand = getJcodeManagedCommand('/Users/previous/.occ/agent-hooks/jcode-hook.sh')
     writeFileSync(
       getJcodeConfigPath(),
       `[hooks]\n${JCODE_HOOK_EVENTS.map((event) => `${event} = [${tomlQuoteString(staleCommand)}, ${tomlQuoteString(getJcodeManagedCommand(getJcodeManagedScriptPath()))}]`).join('\n')}\n`,

@@ -1,7 +1,7 @@
 import { writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { runProcessSync } from '@orca/process-host'
-import { test, expect } from './helpers/orca-app'
+import { runProcessSync } from '@occ/process-host'
+import { test, expect } from './helpers/occ-app'
 import {
   activateGoldenWorktree,
   cleanupGoldenWorktree,
@@ -19,7 +19,7 @@ function gitInWorktree(worktreePath: string, args: string[]): string {
 }
 
 test('offers Resolve with AI for a paused rebase with no unmerged files', async ({
-  orcaPage,
+  occPage,
   electronApp,
   testRepoPath,
   registerPostElectronShutdownCleanup
@@ -53,15 +53,15 @@ test('offers Resolve with AI for a paused rebase with no unmerged files', async 
   writeFileSync(changedPath, 'export const hello = "resolved"\n')
   gitInWorktree(fixture.worktreePath, ['add', GOLDEN_CHANGED_PATH])
 
-  await waitForSessionReady(orcaPage)
-  await activateGoldenWorktree(orcaPage, testRepoPath, fixture.worktreePath)
-  await orcaPage.evaluate(() => {
+  await waitForSessionReady(occPage)
+  await activateGoldenWorktree(occPage, testRepoPath, fixture.worktreePath)
+  await occPage.evaluate(() => {
     const state = window.__store?.getState()
     state?.setRightSidebarTab('explorer')
     state?.setRightSidebarOpen(true)
   })
-  await orcaPage.getByRole('button', { name: /Source Control/ }).click()
-  await orcaPage.evaluate(() => {
+  await occPage.getByRole('button', { name: /Source Control/ }).click()
+  await occPage.evaluate(() => {
     const store = window.__store
     if (!store) {
       throw new Error('Missing store')
@@ -89,16 +89,16 @@ test('offers Resolve with AI for a paused rebase with no unmerged files', async 
     state.beginRemoteOperation('fetch')
   })
 
-  const resolve = orcaPage.getByRole('button', { name: 'Resolve with AI', exact: true })
-  await expect(orcaPage.getByText('Rebase in progress', { exact: true })).toBeVisible()
+  const resolve = occPage.getByRole('button', { name: 'Resolve with AI', exact: true })
+  await expect(occPage.getByText('Rebase in progress', { exact: true })).toBeVisible()
   await expect(resolve).toBeEnabled()
   await resolve.click()
-  await expect(orcaPage.getByRole('dialog')).toContainText('Resolve Conflicts With AI')
-  await expect(orcaPage.getByRole('dialog')).toHaveCSS('opacity', '1')
-  await orcaPage.screenshot({ path: testInfo.outputPath('rebase-recovery.png') })
-  await orcaPage.getByRole('button', { name: 'Cancel', exact: true }).click()
+  await expect(occPage.getByRole('dialog')).toContainText('Resolve Conflicts With AI')
+  await expect(occPage.getByRole('dialog')).toHaveCSS('opacity', '1')
+  await occPage.screenshot({ path: testInfo.outputPath('rebase-recovery.png') })
+  await occPage.getByRole('button', { name: 'Cancel', exact: true }).click()
 
-  await orcaPage.evaluate(() => {
+  await occPage.evaluate(() => {
     const store = window.__store
     const settings = store?.getState().settings
     if (store && settings?.sourceControlAi) {
@@ -108,7 +108,7 @@ test('offers Resolve with AI for a paused rebase with no unmerged files', async 
     }
   })
   await expect(resolve).toHaveCount(0)
-  await expect(orcaPage.getByRole('button', { name: 'Abort rebase', exact: true })).toBeVisible()
+  await expect(occPage.getByRole('button', { name: 'Abort rebase', exact: true })).toBeVisible()
   expect(
     await electronApp.evaluate(({ BrowserWindow }) =>
       BrowserWindow.getAllWindows().some((window) => window.isVisible())

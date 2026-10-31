@@ -127,7 +127,7 @@ export function OrchestrationPane({
         onBeforeInstall={() => {
           useAppStore.getState().recordFeatureInteraction('agent-orchestration-setup')
         }}
-        // COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+        // COMPAT(wsl-bridge): removed when WSL runs as an occd host.
         actionHint={
           activeSkillRuntime.agentRuntime?.runtime === 'wsl' && !orchestrationSkillDetected ? (
             <button
@@ -168,7 +168,7 @@ export function OrchestrationPane({
         />
       ) : null}
 
-      {/* COMPAT(wsl-bridge): removed when WSL runs as an orcad host. */}
+      {/* COMPAT(wsl-bridge): removed when WSL runs as an occd host. */}
       {activeSkillRuntime.agentRuntime?.runtime === 'wsl' ? (
         <OrchestrationSkillPromptDialog
           command={buildSkillCommandForRuntime(

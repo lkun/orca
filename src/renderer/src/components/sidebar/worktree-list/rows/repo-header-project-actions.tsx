@@ -59,7 +59,7 @@ function getWorktreeVisibilityMenuLabel(
   )
   return visibility === 'show'
     ? translate(
-        'auto.components.sidebar.repoHeaderProjectActions.hideNonOrcaWorktrees',
+        'auto.components.sidebar.repoHeaderProjectActions.hideNonOCCWorktrees',
         'Hide non-OCC worktrees'
       )
     : translate(

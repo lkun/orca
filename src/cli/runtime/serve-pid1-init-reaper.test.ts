@@ -33,7 +33,7 @@ describe('reexecServeUnderInitReaper', () => {
         'bash',
         '-c',
         SERVE_INIT_REAPER_SCRIPT,
-        'orca-serve-init',
+        'occ-serve-init',
         '/opt/occ/occ-ide',
         '/opt/occ/resources/cli/index.js',
         'serve',
@@ -58,31 +58,31 @@ describe('reexecServeUnderInitReaper', () => {
 
   it('runs a mounted AppImage afresh instead of the files its exec would unmount', () => {
     const d = deps({
-      execPath: '/tmp/.mount_orcaX/occ-ide',
-      argv: ['/tmp/.mount_orcaX/occ-ide', '/tmp/.mount_orcaX/resources/cli/index.js', 'serve'],
+      execPath: '/tmp/.mount_occX/occ-ide',
+      argv: ['/tmp/.mount_occX/occ-ide', '/tmp/.mount_occX/resources/cli/index.js', 'serve'],
       env: {
-        APPDIR: '/tmp/.mount_orcaX',
-        APPIMAGE: '/opt/occ/orca.AppImage',
+        APPDIR: '/tmp/.mount_occX',
+        APPIMAGE: '/opt/occ/occ.AppImage',
         ELECTRON_RUN_AS_NODE: '1',
-        ORCA_NODE_OPTIONS: '--max-old-space-size=4096',
-        ORCA_NODE_REPL_EXTERNAL_MODULE: ''
+        OCC_NODE_OPTIONS: '--max-old-space-size=4096',
+        OCC_NODE_REPL_EXTERNAL_MODULE: ''
       },
-      exists: (path) => path === '/bin/bash' || path === '/opt/occ/orca.AppImage'
+      exists: (path) => path === '/bin/bash' || path === '/opt/occ/occ.AppImage'
     })
     expect(reexecServeUnderInitReaper(d)).toBe('reexec')
     const [, args, env] = vi.mocked(d.execve!).mock.calls[0]
-    expect(args.slice(4)).toEqual(['/opt/occ/orca.AppImage', 'serve'])
+    expect(args.slice(4)).toEqual(['/opt/occ/occ.AppImage', 'serve'])
     expect(env).toEqual({
-      APPDIR: '/tmp/.mount_orcaX',
-      APPIMAGE: '/opt/occ/orca.AppImage',
+      APPDIR: '/tmp/.mount_occX',
+      APPIMAGE: '/opt/occ/occ.AppImage',
       NODE_OPTIONS: '--max-old-space-size=4096'
     })
   })
 
   it('warns instead of re-execing a mounted AppImage whose image cannot be found', () => {
     const d = deps({
-      execPath: '/tmp/.mount_orcaX/occ-ide',
-      env: { APPDIR: '/tmp/.mount_orcaX' }
+      execPath: '/tmp/.mount_occX/occ-ide',
+      env: { APPDIR: '/tmp/.mount_occX' }
     })
     expect(reexecServeUnderInitReaper(d)).toBe('unavailable')
     expect(d.execve).not.toHaveBeenCalled()

@@ -325,7 +325,7 @@ describe('sendGroupMessage actually composes structured workers in', () => {
         address: 'term_sender',
         terminalHandle: 'term_sender',
         paneKey: null,
-        orcaSessionId: null
+        occSessionId: null
       },
       senderPaneKey: undefined,
       senderRunId: 'run_1',

@@ -1,16 +1,16 @@
-// Interactive SSH-routing card preview; run electron-headless with ORCA_SSH_CARD_PREVIEW=1 on an isolated display.
-import { expect, test } from './helpers/orca-app'
+// Interactive SSH-routing card preview; run electron-headless with OCC_SSH_CARD_PREVIEW=1 on an isolated display.
+import { expect, test } from './helpers/occ-app'
 
 test.skip(
-  process.env.ORCA_SSH_CARD_PREVIEW !== '1',
-  'Preview only; run with ORCA_SSH_CARD_PREVIEW=1'
+  process.env.OCC_SSH_CARD_PREVIEW !== '1',
+  'Preview only; run with OCC_SSH_CARD_PREVIEW=1'
 )
 
 const HOLD_MINUTES = 20
 
 test('shows the SSH routing error cards and holds for review', async ({
   electronApp,
-  orcaPage,
+  occPage,
   testRepoPath
 }) => {
   test.setTimeout((HOLD_MINUTES + 10) * 60_000)
@@ -26,7 +26,7 @@ test('shows the SSH routing error cards and holds for review', async ({
   await expect
     .poll(
       () =>
-        orcaPage.evaluate(
+        occPage.evaluate(
           (path) =>
             window.__store
               ?.getState()
@@ -37,7 +37,7 @@ test('shows the SSH routing error cards and holds for review', async ({
       { timeout: 60_000, message: 'test repo worktree never appeared' }
     )
     .not.toBeNull()
-  await orcaPage.evaluate((path) => {
+  await occPage.evaluate((path) => {
     const state = window.__store?.getState()
     const worktree = state?.allWorktrees().find((candidate) => candidate.path === path)
     if (!worktree) {
@@ -47,7 +47,7 @@ test('shows the SSH routing error cards and holds for review', async ({
   }, testRepoPath)
 
   // Use a real unreachable registered target so production prepare classifies ssh-unavailable.
-  const targetId = await orcaPage.evaluate(async () => {
+  const targetId = await occPage.evaluate(async () => {
     const added = (await window.api.ssh.addTarget({
       target: {
         label: 'preview-dead-host',
@@ -62,14 +62,14 @@ test('shows the SSH routing error cards and holds for review', async ({
     }
     return id
   })
-  await orcaPage.evaluate((id) => {
+  await occPage.evaluate((id) => {
     // Replace the activation-stamped local host id because it has resolution precedence.
     window.__store?.setState({
       activeWorkspaceExecutionHostId: `ssh:${encodeURIComponent(id)}`
     })
   }, targetId)
 
-  await orcaPage.evaluate(async () => {
+  await occPage.evaluate(async () => {
     const state = window.__store?.getState()
     const worktreeId = state?.activeWorktreeId
     const groupId = worktreeId ? state?.activeGroupIdByWorktree[worktreeId] : null
@@ -79,7 +79,7 @@ test('shows the SSH routing error cards and holds for review', async ({
     await state.openNewBrowserTabInActiveWorkspace(groupId)
   })
 
-  await expect(orcaPage.getByText('SSH connection unavailable')).toBeVisible({
+  await expect(occPage.getByText('SSH connection unavailable')).toBeVisible({
     timeout: 30_000
   })
   console.log(`\n=== SSH ERROR CARD PREVIEW READY — window stays up ${HOLD_MINUTES} minutes ===`)

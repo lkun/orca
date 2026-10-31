@@ -13,7 +13,7 @@ import {
 } from '../../../../shared/new-workspace/worktree-create-collision'
 import { executeAgentLaunch } from '../../../agent-launch/agent-launch-executor'
 import { trackTerminalSpawnDispatch } from '../../../agent-launch/agent-launch-not-started'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { defineMethod, type RpcContext } from '../core'
 import {
   admitAgentLaunchOperation,
@@ -41,7 +41,7 @@ import {
 import {
   agentLaunchCallerNavigationId,
   callerRendersLaunchedChat,
-  selectAgentLaunchTabForCaller
+  selectAgentLaunchTabFoccller
 } from './agent-launch-caller-selection'
 import { agentLaunchWorkspaceFactory } from './agent-launch-worktree-creation'
 import {
@@ -91,7 +91,7 @@ async function runAgentLaunch(
       view.early?.surfacePublished(surface)
       replaySafe?.recordSurface(withPlacement(surface, view))
       if (callerNavigationId !== null && view.presentation !== 'background') {
-        selectAgentLaunchTabForCaller(context.runtime, surface, callerNavigationId)
+        selectAgentLaunchTabFoccller(context.runtime, surface, callerNavigationId)
       }
     }
   })
@@ -133,11 +133,11 @@ type ActiveAgentLaunch = {
 }
 
 const activeAgentLaunchesByRuntime = new WeakMap<
-  OrcaRuntimeService,
+  OCCRuntimeService,
   Map<string, ActiveAgentLaunch>
 >()
 
-function activeAgentLaunchesFor(runtime: OrcaRuntimeService): Map<string, ActiveAgentLaunch> {
+function activeAgentLaunchesFor(runtime: OCCRuntimeService): Map<string, ActiveAgentLaunch> {
   let active = activeAgentLaunchesByRuntime.get(runtime)
   if (!active) {
     active = new Map()

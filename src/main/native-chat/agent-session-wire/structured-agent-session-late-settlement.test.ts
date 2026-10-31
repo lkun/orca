@@ -101,7 +101,7 @@ async function handedOver(clientMessageId: string): Promise<void> {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-wire-late-settle-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-wire-late-settle-'))
   resetHostTestOperationIds()
   dispatch = vi.fn(async () => accepted())
   closeSession = vi.fn(async () => true)

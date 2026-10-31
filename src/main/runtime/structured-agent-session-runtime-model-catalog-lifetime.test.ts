@@ -46,7 +46,7 @@ let root: string
 
 beforeEach(async () => {
   environmentReleases.mockClear()
-  root = await mkdtemp(join(tmpdir(), 'orca-structured-catalog-lifetime-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-structured-catalog-lifetime-'))
 })
 
 afterEach(async () => {

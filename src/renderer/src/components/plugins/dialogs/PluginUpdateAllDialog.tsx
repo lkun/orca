@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import type { PluginMarketplaceHostInstallPreview } from '../../../../../preload/api-types'
-import { satisfiesOrcaEngineRange } from '../../../../../shared/plugins/manifest/plugin-manifest'
+import { satisfiesOCCEngineRange } from '../../../../../shared/plugins/manifest/plugin-manifest'
 import { translate } from '@/i18n/i18n'
 import { Button } from '../../ui/button'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '../../ui/dialog'
@@ -20,12 +20,12 @@ function needsOwnApproval(candidate: UpdateCandidate): boolean {
 }
 
 /** The update's minimum OCC when this OCC can't run it; null when it can or either is unknown. */
-function requiredNewerOrca(
+function requiredNewerOCC(
   preview: PluginMarketplaceHostInstallPreview,
-  orcaVersion: string | null | undefined
+  occVersion: string | null | undefined
 ): string | null {
-  const range = preview.manifest.engines?.orca
-  if (!range || !orcaVersion || satisfiesOrcaEngineRange(orcaVersion, range)) {
+  const range = preview.manifest.engines?.occ
+  if (!range || !occVersion || satisfiesOCCEngineRange(occVersion, range)) {
     return null
   }
   return range.replace(/^>=/, '')
@@ -54,13 +54,13 @@ function failureMessage(failed: readonly string[], updatedCount: number): string
 export function PluginUpdateAllDialog({
   open,
   entries,
-  orcaVersion,
+  occVersion,
   onClose,
   onUpdated
 }: {
   open: boolean
   entries: readonly PluginListEntry[]
-  orcaVersion?: string | null
+  occVersion?: string | null
   onClose: () => void
   onUpdated: (pluginKeys: string[]) => Promise<void>
 }): React.JSX.Element {
@@ -72,9 +72,9 @@ export function PluginUpdateAllDialog({
   const [reviewKey, setReviewKey] = useState<string | null>(null)
   // Why frozen: each update reloads the list mid-run; the rows belong to the set the user opened.
   const [plugins] = useState(entries)
-  const orcaVersionRef = useRef(orcaVersion)
+  const occVersionRef = useRef(occVersion)
   useLayoutEffect(() => {
-    orcaVersionRef.current = orcaVersion
+    occVersionRef.current = occVersion
   })
 
   useEffect(() => {
@@ -92,11 +92,11 @@ export function PluginUpdateAllDialog({
             entry,
             preview,
             error: false,
-            needsOrca: requiredNewerOrca(preview, orcaVersionRef.current)
+            needsOCC: requiredNewerOCC(preview, occVersionRef.current)
           }
         } catch (cause) {
           console.warn('[plugins] update preview failed:', cause)
-          return { entry, preview: null, error: true, needsOrca: null }
+          return { entry, preview: null, error: true, needsOCC: null }
         }
       })
     ).then((next) => {
@@ -118,7 +118,7 @@ export function PluginUpdateAllDialog({
     Boolean(candidate.preview) &&
     !candidate.preview?.blockedByKillList &&
     !isCurrent(candidate.entry, candidate.preview) &&
-    !candidate.needsOrca &&
+    !candidate.needsOCC &&
     !updated.has(candidate.entry.pluginKey)
   const chosen = (candidates ?? []).filter(
     (candidate) =>

@@ -91,7 +91,7 @@ async function createPromptContractHarness(
   const { runtime, handle } = fixture
   runtime.onPtyData('pty-prompt', '\x1b]0;Codex idle\x07', Date.now())
 
-  const temporaryRoot = mkdtempSync(join(tmpdir(), 'orca-worker-prompt-contract-'))
+  const temporaryRoot = mkdtempSync(join(tmpdir(), 'occ-worker-prompt-contract-'))
   temporaryRoots.push(temporaryRoot)
   const dbPath = join(temporaryRoot, 'orchestration.db')
   const db = new OrchestrationDb(dbPath)
@@ -134,7 +134,7 @@ async function createPromptContractHarness(
       state: 'not_configured'
     }
   } as never)
-  vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('orca')
+  vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('occ')
 
   return {
     runtime,

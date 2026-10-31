@@ -126,11 +126,11 @@ describe('a link to this computer printed in a paired-server terminal', () => {
   })
 
   it('reports a file neither the host nor this computer has as not found', async () => {
-    hostDisowns('/etc/orca-missing')
+    hostDisowns('/etc/occ-missing')
     statMock.mockRejectedValueOnce(new Error('ENOENT: no such file'))
     const onOpenFailure = vi.fn()
 
-    openDetectedFilePath('/etc/orca-missing', null, null, {
+    openDetectedFilePath('/etc/occ-missing', null, null, {
       ...serverWorkspace,
       onOpenFailure
     })
@@ -139,7 +139,7 @@ describe('a link to this computer printed in a paired-server terminal', () => {
     expect(openFileMock).not.toHaveBeenCalled()
     expect(onOpenFailure).toHaveBeenCalledWith({
       verdict: 'missing',
-      error: new Error('File not found on its host: /etc/orca-missing')
+      error: new Error('File not found on its host: /etc/occ-missing')
     })
   })
 
@@ -216,7 +216,7 @@ describe('a link to this computer printed in a paired-server terminal', () => {
   })
 
   it('never treats a paired web client filesystem as this computer', async () => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     hostDisowns('/Users/me/notes.md')
     const onOpenFailure = vi.fn()
 

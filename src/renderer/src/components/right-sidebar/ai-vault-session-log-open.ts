@@ -36,7 +36,7 @@ function focusEditorContent(): void {
 }
 
 /** Open a local log read-only via external-file openFile; preserve existing writable authority and never redirect to a remote host. */
-export async function openAiVaultSessionLogInOrca(session: AiVaultLogSession): Promise<void> {
+export async function openAiVaultSessionLogInOCC(session: AiVaultLogSession): Promise<void> {
   const filePath = aiVaultSessionLogFilePath(session)
   // Silently reject unavailable paths; UI gating should already withhold them.
   if (!filePath || !canUseLocalAiVaultSessionPathActions(session.executionHostId)) {

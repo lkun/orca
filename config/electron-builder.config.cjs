@@ -54,12 +54,12 @@ const {
   verifyPackagedWindowsNodePty
 } = require('./scripts/verify-packaged-node-pty-job-ownership.cjs')
 const {
-  assertOrcadTemplateBuilt,
-  finalizePackagedOrcadTemplate,
-  orcadTemplateExtraResource,
-  orcadTemplateNodeModulesExtraResource,
-  orcadTemplateMacSignIgnore
-} = require('./scripts/packaged-orcad-template.cjs')
+  assertOCCdTemplateBuilt,
+  finalizePackagedOCCdTemplate,
+  occdTemplateExtraResource,
+  occdTemplateNodeModulesExtraResource,
+  occdTemplateMacSignIgnore
+} = require('./scripts/packaged-occd-template.cjs')
 const { verifySkillsCliRuntime } = require('./scripts/verify-skills-cli-runtime.cjs')
 const { assertNotDarkBuild } = require('./dark-build-switches.cjs')
 const { verifyStaticAppImagePackage } = require('./scripts/static-appimage-package-contract.cjs')
@@ -72,35 +72,35 @@ const { signWindowsUninstallerViaSignPath } = require('./scripts/windows-uninsta
 const { buildMacShipItScheduling } = require('./scripts/macos-shipit-scheduling.cjs')
 
 // Dev channels need release bundle ID/signature/notarization so Squirrel.Mac accepts updates and macOS retains app identity.
-const isMacHourly = process.env.ORCA_MAC_HOURLY === '1'
-const isMacDaily = process.env.ORCA_MAC_DAILY === '1'
-const isMacAdhoc = process.env.ORCA_MAC_ADHOC === '1'
+const isMacHourly = process.env.OCC_MAC_HOURLY === '1'
+const isMacDaily = process.env.OCC_MAC_DAILY === '1'
+const isMacAdhoc = process.env.OCC_MAC_ADHOC === '1'
 // Keep Windows dev flags separate: mac flags enable hardened runtime/notarization/global signing, which would demand an unavailable Windows cert.
-const isWinHourly = process.env.ORCA_WIN_HOURLY === '1'
-const isWinDaily = process.env.ORCA_WIN_DAILY === '1'
-const isWinAdhoc = process.env.ORCA_WIN_ADHOC === '1'
+const isWinHourly = process.env.OCC_WIN_HOURLY === '1'
+const isWinDaily = process.env.OCC_WIN_DAILY === '1'
+const isWinAdhoc = process.env.OCC_WIN_ADHOC === '1'
 const isWinDevChannel = isWinHourly || isWinDaily || isWinAdhoc
-const isMacRelease = process.env.ORCA_MAC_RELEASE === '1' || isMacHourly || isMacDaily || isMacAdhoc
-const isLinuxArm64Release = process.env.ORCA_LINUX_ARM64_RELEASE === '1'
+const isMacRelease = process.env.OCC_MAC_RELEASE === '1' || isMacHourly || isMacDaily || isMacAdhoc
+const isLinuxArm64Release = process.env.OCC_LINUX_ARM64_RELEASE === '1'
 const localBuildVersion =
-  isMacRelease || isWinDevChannel ? undefined : process.env.ORCA_LOCAL_BUILD_VERSION
+  isMacRelease || isWinDevChannel ? undefined : process.env.OCC_LOCAL_BUILD_VERSION
 const isHourlyChannel = isMacHourly || isWinHourly
 const isDailyChannel = isMacDaily || isWinDaily
 const isAdhocChannel = isMacAdhoc || isWinAdhoc
 const devChannelBuildVersion = isHourlyChannel
-  ? process.env.ORCA_HOURLY_BUILD_VERSION
+  ? process.env.OCC_HOURLY_BUILD_VERSION
   : isDailyChannel
-    ? process.env.ORCA_DAILY_BUILD_VERSION
+    ? process.env.OCC_DAILY_BUILD_VERSION
     : isAdhocChannel
-      ? process.env.ORCA_ADHOC_BUILD_VERSION
+      ? process.env.OCC_ADHOC_BUILD_VERSION
       : undefined
 // Separate dev-channel repos: 24 hourly tags/day would evict stable/RC from the ten-entry release feed; isolate adhoc/daily from hourly subscribers too.
 const devChannelRepo = isHourlyChannel
-  ? 'orca-hourly'
+  ? 'occ-hourly'
   : isDailyChannel
-    ? 'orca-daily'
+    ? 'occ-daily'
     : isAdhocChannel
-      ? 'orca-adhoc'
+      ? 'occ-adhoc'
       : null
 const appId = 'com.lkun.occ'
 const featureWallResources = {
@@ -140,8 +140,8 @@ const emojiShortcodeDatasetResource = {
 }
 const commonExtraResources = [
   relayExtraResource,
-  orcadTemplateExtraResource,
-  orcadTemplateNodeModulesExtraResource,
+  occdTemplateExtraResource,
+  occdTemplateNodeModulesExtraResource,
   ...bundledRipgrepExtraResources,
   bundledPluginResources,
   skillFreshnessResources,
@@ -231,7 +231,7 @@ const macUsageDescriptions = {
   ...MACOS_FOLDER_USAGE_DESCRIPTIONS
 }
 // Developer ID team that signs every release-channel mac build.
-const ORCA_MAC_TEAM_ID = '6CX3WHS9HZ'
+const OCC_MAC_TEAM_ID = '6CX3WHS9HZ'
 
 /** @type {import('electron-builder').Configuration} */
 module.exports = {
@@ -251,11 +251,11 @@ module.exports = {
     '!**/.vscode/*',
     // Repo inputs already bundled/copied through extraResources would bloat app.asar.
     '!src{,/**/*}',
-    '!out/orcad{,/**/*}',
-    // Never in app.asar: the template ships via orcadTemplateExtraResource; prebuilds are build inputs.
-    '!out/orcad-*{,/**/*}',
-    '!out/.orcad-*{,/**/*}',
-    // Why: the pinned Node a local orcad build references (~120 MB) and its download cache.
+    '!out/occd{,/**/*}',
+    // Never in app.asar: the template ships via occdTemplateExtraResource; prebuilds are build inputs.
+    '!out/occd-*{,/**/*}',
+    '!out/.occd-*{,/**/*}',
+    // Why: the pinned Node a local occd build references (~120 MB) and its download cache.
     '!out/runtimes{,/**/*}',
     '!out/node-runtime-cache{,/**/*}',
     '!config{,/**/*}',
@@ -297,7 +297,7 @@ module.exports = {
     // extraResources already ships relay; duplicating it in asar added 14MB and let script-heuristic quarantine gut the whole archive (#20966/#20972).
     '!out/relay{,/**/*}',
     '!electron.vite.config.{js,ts,mjs,cjs}',
-    '!{.oxlintrc.json,.oxfmtrc.json,components.json,opencode.json,orca.yaml,pnpm-workspace.yaml,vite.web.config.ts}',
+    '!{.oxlintrc.json,.oxfmtrc.json,components.json,opencode.json,occ.yaml,pnpm-workspace.yaml,vite.web.config.ts}',
     '!{.eslintcache,eslint.config.mjs,.prettierignore,.prettierrc.yaml,CHANGELOG.md,README.md}',
     '!{.env,.env.*,.npmrc,pnpm-lock.yaml}',
     '!tsconfig.json',
@@ -309,7 +309,7 @@ module.exports = {
     '!resources/plugins/launch/**',
     // Platform extraResources selects speech natives; asar would duplicate it and ship other variants.
     '!node_modules/sherpa-onnx*{,/**/*}',
-    // CLI shim belongs beside resources/bin/orca.exe; unpacking source creates a second .cmd without its executable (#7351).
+    // CLI shim belongs beside resources/bin/occ.exe; unpacking source creates a second .cmd without its executable (#7351).
     '!resources/win32{,/**/*}'
   ],
   // Node-mode CLI/daemon/foreign SQLite reader/serve entries cannot read asar; unpack their shared/main dependencies too.
@@ -332,7 +332,7 @@ module.exports = {
     'out/main/hermes/**',
     'out/main/asar-transparent-fs.js',
     'out/main/macos-tree-clone.js',
-    'out/main/orca-profiles/profile-index-store.js',
+    'out/main/occ-profiles/profile-index-store.js',
     'out/main/persistence/profile-state/**',
     'out/main/plugins/plugin-authoring-checks.js',
     'out/main/skills/bundled-skill-install/cli-entry.js',
@@ -345,8 +345,8 @@ module.exports = {
     'out/main/browser-extension-native-host-supervisor-entry.js',
     'out/main/computer-sidecar.js',
     'out/main/parcel-watcher-process-entry.js',
-    'out/main/orcad/orcad-local-serve-selection-entry.js',
-    'out/main/orcad/orcad-stale-lock-reclaim.js',
+    'out/main/occd/occd-local-serve-selection-entry.js',
+    'out/main/occd/occd-stale-lock-reclaim.js',
     'out/main/chunks/**',
     'out/renderer/**',
     'out/mobile-web/**',
@@ -367,14 +367,14 @@ module.exports = {
     context,
     mobileWebBundleDir = MOBILE_WEB_BUNDLE_DIR,
     ensureWaylandClipboard = ensureBundledWaylandClipboard,
-    orcadTemplateDir = join(__dirname, '..', orcadTemplateExtraResource.from)
+    occdTemplateDir = join(__dirname, '..', occdTemplateExtraResource.from)
   ) => {
     // The template is the server every SSH host gets, so a dark test template must never ship.
-    assertNotDarkBuild([join(__dirname, '..', 'out', 'main'), mobileWebBundleDir, orcadTemplateDir])
+    assertNotDarkBuild([join(__dirname, '..', 'out', 'main'), mobileWebBundleDir, occdTemplateDir])
     assertPackagedNativeVariantsInstalled(context.electronPlatformName, context.arch)
     assertBundledRipgrepInstalled()
     assertProcessHostOutputBuilt()
-    assertOrcadTemplateBuilt()
+    assertOCCdTemplateBuilt()
     assertMobileWebBundleBuilt(mobileWebBundleDir)
     if (context.electronPlatformName === 'linux') {
       ensureWaylandClipboard(context.arch)
@@ -406,7 +406,7 @@ module.exports = {
       const schedulingAddon = buildMacShipItScheduling(resourcesDir, architecture)
       await signMacStandaloneHelper(schedulingAddon, 'ShipIt scheduling', context.packager)
       const version = context.packager.appInfo.version
-      let commit = process.env.ORCA_BUILD_COMMIT || process.env.GITHUB_SHA || 'unknown'
+      let commit = process.env.OCC_BUILD_COMMIT || process.env.GITHUB_SHA || 'unknown'
       if (commit === 'unknown') {
         try {
           commit = execFileSync('git', ['rev-parse', '--short=12', 'HEAD'], {
@@ -472,7 +472,7 @@ module.exports = {
       }
       // Upstream executable bits vary (notably darwin-x64); restore them so packaged execFile works.
       chmodSync(join(resourcesDir, filename), 0o755)
-      // The orcad template hashes this exact file next, so app signing must not rewrite it later.
+      // The occd template hashes this exact file next, so app signing must not rewrite it later.
       if (context.electronPlatformName === 'darwin') {
         await signMacStandaloneHelper(
           join(resourcesDir, filename),
@@ -482,27 +482,27 @@ module.exports = {
         )
       }
     }
-    await finalizePackagedOrcadTemplate(resourcesDir, {
+    await finalizePackagedOCCdTemplate(resourcesDir, {
       platform: context.electronPlatformName,
       signMacBinary: (path) =>
-        signMacStandaloneHelper(path, 'orcad template binary', context.packager)
+        signMacStandaloneHelper(path, 'occd template binary', context.packager)
     })
     chmodUnixCliLaunchers(resourcesDir, context.electronPlatformName)
     if (context.electronPlatformName === 'darwin') {
       await signMacComputerUseHelper(join(resourcesDir, 'OCC Computer Use.app'), context.packager)
       await signMacStandaloneHelper(
-        join(resourcesDir, '..', 'MacOS', 'orca-notification-status'),
-        'orca-notification-status',
+        join(resourcesDir, '..', 'MacOS', 'occ-notification-status'),
+        'occ-notification-status',
         context.packager
       )
       await signMacStandaloneHelper(
-        join(resourcesDir, '..', 'MacOS', 'orca-keyboard-layout'),
-        'orca-keyboard-layout',
+        join(resourcesDir, '..', 'MacOS', 'occ-keyboard-layout'),
+        'occ-keyboard-layout',
         context.packager
       )
       await signMacStandaloneHelper(
-        join(resourcesDir, '..', 'MacOS', 'orca-process-footprint'),
-        'orca-process-footprint',
+        join(resourcesDir, '..', 'MacOS', 'occ-process-footprint'),
+        'occ-process-footprint',
         context.packager
       )
       await packageMacTerminalHost(join(resourcesDir, '..', '..'), context)
@@ -527,18 +527,18 @@ module.exports = {
         to: 'bin/occ.cmd'
       },
       {
-        from: 'native/windows-cli-launcher/.build/orca.exe',
-        to: 'bin/orca.exe'
+        from: 'native/windows-cli-launcher/.build/occ.exe',
+        to: 'bin/occ.exe'
       },
       {
-        from: 'native/windows-cli-launcher/.build/orca-administrator-restart.exe',
-        to: 'bin/orca-administrator-restart.exe'
+        from: 'native/windows-cli-launcher/.build/occ-administrator-restart.exe',
+        to: 'bin/occ-administrator-restart.exe'
       },
       // Why resources/bin: SignPath signs every unsigned PE under win-unpacked, and the hook
-      // installer copies this signed file into ~/.orca/agent-hooks (#20913).
+      // installer copies this signed file into ~/.occ/agent-hooks (#20913).
       {
-        from: 'native/windows-agent-hook/.build/orca-agent-hook.exe',
-        to: 'bin/orca-agent-hook.exe'
+        from: 'native/windows-agent-hook/.build/occ-agent-hook.exe',
+        to: 'bin/occ-agent-hook.exe'
       },
       {
         from: 'node_modules/agent-browser/bin/agent-browser-win32-x64.exe',
@@ -584,8 +584,8 @@ module.exports = {
     ...(isMacRelease ? { sign: resolve(__dirname, 'scripts/sign-mac-app.mjs') } : {}),
     signIgnore: [
       ...bundledRipgrepMacSignIgnore,
-      ...orcadTemplateMacSignIgnore,
-      // afterPack signs it before the orcad template hashes it.
+      ...occdTemplateMacSignIgnore,
+      // afterPack signs it before the occd template hashes it.
       '/Contents/Resources/agent-browser-darwin-[^/]+$',
       ...macTerminalHostSignIgnore
     ],
@@ -615,16 +615,16 @@ module.exports = {
     // macOS 26 UNUserNotificationCenter aborts helpers launched from Resources; execute from Contents/MacOS (#7929).
     extraFiles: [
       {
-        from: 'native/notification-status-macos/.build/release/orca-notification-status',
-        to: 'MacOS/orca-notification-status'
+        from: 'native/notification-status-macos/.build/release/occ-notification-status',
+        to: 'MacOS/occ-notification-status'
       },
       {
-        from: 'native/keyboard-layout-macos/.build/release/orca-keyboard-layout',
-        to: 'MacOS/orca-keyboard-layout'
+        from: 'native/keyboard-layout-macos/.build/release/occ-keyboard-layout',
+        to: 'MacOS/occ-keyboard-layout'
       },
       {
-        from: 'native/process-footprint-macos/.build/release/orca-process-footprint',
-        to: 'MacOS/orca-process-footprint'
+        from: 'native/process-footprint-macos/.build/release/occ-process-footprint',
+        to: 'MacOS/occ-process-footprint'
       }
     ],
     target: [
@@ -648,13 +648,13 @@ module.exports = {
     // shared-mime-info already maps md/markdown: advertise handler only, leaving mimeapps.list defaults intact.
     // Omit mdx because Ubuntu 24.04 maps it to application/x-genesis-32x-rom; claiming it would need a glob override.
     mimeTypes: ['text/markdown', 'text/csv', 'text/tab-separated-values'],
-    // Avoid GNOME's orca screen reader package and /usr/bin/orca names.
+    // Avoid GNOME's occ screen reader package and /usr/bin/occ names.
     executableName: 'occ-ide',
     // Use icns to generate hicolor sizes; some Linux docks ignore a lone 1024px PNG.
     icon: 'resources/build/icon.icns',
     desktop: {
       entry: {
-        // Why: Electron reports WM_CLASS=orca for the visible Linux window;
+        // Why: Electron reports WM_CLASS=occ for the visible Linux window;
         // GNOME docks need an exact match to group it with occ-ide.desktop.
         StartupWMClass: 'occ'
       }
@@ -664,8 +664,8 @@ module.exports = {
       ...createPackagedRuntimeNodeModuleResources('linux'),
       linuxSpeechNativeResource,
       {
-        from: 'native/wayland-clipboard/.build/${arch}/orca-wayland-clipboard',
-        to: 'bin/orca-wayland-clipboard'
+        from: 'native/wayland-clipboard/.build/${arch}/occ-wayland-clipboard',
+        to: 'bin/occ-wayland-clipboard'
       },
       {
         from: 'resources/linux/bin/occ-ide',
@@ -692,7 +692,7 @@ module.exports = {
   deb: {
     packageName: 'occ-ide',
     artifactName: 'occ-ide_${version}_${arch}.${ext}',
-    // Headless Chromium still needs display service; orca serve starts packaged Xvfb when available (ensure-virtual-display.ts).
+    // Headless Chromium still needs display service; occ serve starts packaged Xvfb when available (ensure-virtual-display.ts).
     depends: [
       ...debElectronRuntimeDependencies,
       'python3',
@@ -735,7 +735,7 @@ module.exports = {
   publish: {
     provider: 'github',
     owner: 'stablyai',
-    repo: devChannelRepo ?? 'orca',
+    repo: devChannelRepo ?? 'occ',
     // Keep main-repo releases draft until release-cut verifies all assets; early --publish always would expose missing Windows installers.
     releaseType: devChannelRepo ? 'prerelease' : 'draft'
   }
@@ -777,7 +777,7 @@ async function signMacComputerUseHelper(helperAppPath, packager) {
       ? await packager.codeSigningInfo.value
       : null
   const identity =
-    process.env.ORCA_COMPUTER_MACOS_SIGN_IDENTITY ??
+    process.env.OCC_COMPUTER_MACOS_SIGN_IDENTITY ??
     process.env.CSC_NAME ??
     findInstalledMacSigningIdentity(codeSigningInfo?.keychainFile) ??
     (isMacRelease ? null : '-')
@@ -822,7 +822,7 @@ async function packageMacTerminalHost(appPath, context) {
     appPath,
     arch,
     usageDescriptions: macUsageDescriptions,
-    expectedTeamId: isMacRelease ? ORCA_MAC_TEAM_ID : null
+    expectedTeamId: isMacRelease ? OCC_MAC_TEAM_ID : null
   })
 }
 

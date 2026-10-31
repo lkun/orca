@@ -1,4 +1,4 @@
-import './orca-runtime-test-lifecycle.spec'
+import './occ-runtime-test-lifecycle.spec'
 import { describe, expect, it, vi } from 'vitest'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
@@ -19,19 +19,19 @@ import {
   stopStructuredAgentSessionRuntime
 } from './structured-agent-session-runtime'
 import type { AgentSessionRecordStore } from './agent-session-record-store'
-import { OrcaRuntimeService, electronMocks } from './orca-runtime-test-mocks.spec'
+import { OCCRuntimeService, electronMocks } from './occ-runtime-test-mocks.spec'
 import {
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} from './orca-runtime-test-fixtures.spec'
+} from './occ-runtime-test-fixtures.spec'
 import type { RuntimeNotifier } from './runtime-notifier-contract'
 import { RpcDispatcher } from './rpc/dispatcher'
 import { SESSION_TAB_MUTATION_METHODS } from './rpc/methods/session-tab-mutation-methods'
 
 function fixture(session = makeWorkspaceSessionWithHeadlessTerminal()) {
   const { runtimeStore, getSession } = makeRuntimeStoreWithWorkspaceSession(session)
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   const notifier = {
     worktreesChanged: vi.fn(),
     reposChanged: vi.fn(),
@@ -102,7 +102,7 @@ it.each([' Renamed ', null])(
 )
 
 it('refuses a combined native chat edit before saving its name, while accepting a title alone', async () => {
-  const directory = await mkdtemp(join(tmpdir(), 'orca-native-tab-props-'))
+  const directory = await mkdtemp(join(tmpdir(), 'occ-native-tab-props-'))
   const record = {
     ...agentSessionRecordFixture(
       agentSessionLeaseFixture({

@@ -33,7 +33,7 @@ describe('spurious shell readings on Codex-launched panes', () => {
             id: 'tab-1',
             ptyId,
             worktreeId: 'wt1',
-            title: 'orca-1',
+            title: 'occ-1',
             customTitle: null,
             color: null,
             sortOrder: 0,

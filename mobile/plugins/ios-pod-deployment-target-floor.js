@@ -4,7 +4,7 @@ const { withPodfile } = require('expo/config-plugins')
 // resource-bundle targets) still declare 9.0–13.4, which fails the build. The iOS 27 SDK
 // is what lets the app resize on iPhone Duo, so raise those targets to the app's own.
 const DEPLOYMENT_TARGET_FLOOR = '15.1'
-const MARKER = '# orca: pod deployment target floor'
+const MARKER = '# occ: pod deployment target floor'
 const POST_INSTALL = 'post_install do |installer|'
 
 const FLOOR_SNIPPET = `

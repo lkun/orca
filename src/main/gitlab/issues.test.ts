@@ -95,29 +95,29 @@ describe('gitlab issue operations', () => {
   })
 
   it('gets a single issue from the project ref', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabExecFileAsyncMock.mockResolvedValueOnce({
       stdout: JSON.stringify({
         iid: 923,
         title: 'Use upstream issues',
         state: 'opened',
-        web_url: 'https://gitlab.com/stablyai/orca/-/issues/923',
+        web_url: 'https://gitlab.com/stablyai/occ/-/issues/923',
         labels: []
       })
     })
 
     await expect(getIssue('/repo-root', 923)).resolves.toMatchObject({ number: 923 })
     expect(glabExecFileAsyncMock).toHaveBeenCalledWith(
-      ['api', 'projects/stablyai%2Forca/issues/923'],
+      ['api', 'projects/stablyai%2Focc/issues/923'],
       { cwd: '/repo-root' }
     )
   })
 
   it('routes local WSL issue operations through project resolution and glab execution options', async () => {
     const localGitOptions = { wslDistro: 'Ubuntu' }
-    getIssueProjectRefMock.mockResolvedValue({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValue({ host: 'gitlab.com', path: 'stablyai/occ' })
     resolveIssueSourceMock.mockResolvedValue({
-      source: { host: 'gitlab.com', path: 'stablyai/orca' },
+      source: { host: 'gitlab.com', path: 'stablyai/occ' },
       fellBack: false
     })
     glabExecFileAsyncMock
@@ -126,14 +126,14 @@ describe('gitlab issue operations', () => {
           iid: 923,
           title: 'Use WSL',
           state: 'opened',
-          web_url: 'https://gitlab.com/stablyai/orca/-/issues/923',
+          web_url: 'https://gitlab.com/stablyai/occ/-/issues/923',
           labels: []
         })
       })
       .mockResolvedValueOnce({
         stdout: JSON.stringify({
           iid: 924,
-          web_url: 'https://gitlab.com/stablyai/orca/-/issues/924'
+          web_url: 'https://gitlab.com/stablyai/occ/-/issues/924'
         })
       })
       .mockResolvedValueOnce({ stdout: '{}' })
@@ -195,7 +195,7 @@ describe('gitlab issue operations', () => {
     )
     expect(glabApiWithHeadersMock).toHaveBeenCalledWith(
       [
-        'projects/stablyai%2Forca/issues?page=1&per_page=5&order_by=updated_at&sort=desc&state=opened'
+        'projects/stablyai%2Focc/issues?page=1&per_page=5&order_by=updated_at&sort=desc&state=opened'
       ],
       { cwd: '/repo-root', ...localGitOptions }
     )
@@ -218,7 +218,7 @@ describe('gitlab issue operations', () => {
   })
 
   it('lists issues with state=opened ordering', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabApiWithHeadersMock.mockResolvedValueOnce({
       body: '[]',
       headers: { 'x-total': '123', 'x-total-pages': '25' }
@@ -228,14 +228,14 @@ describe('gitlab issue operations', () => {
 
     expect(glabApiWithHeadersMock).toHaveBeenCalledWith(
       [
-        'projects/stablyai%2Forca/issues?page=1&per_page=5&order_by=updated_at&sort=desc&state=opened'
+        'projects/stablyai%2Focc/issues?page=1&per_page=5&order_by=updated_at&sort=desc&state=opened'
       ],
       { cwd: '/repo-root' }
     )
   })
 
   it('forwards an explicit page into the issues API path after localGitOptions', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabApiWithHeadersMock.mockResolvedValueOnce({ body: '[]', headers: {} })
 
     await expect(
@@ -244,28 +244,28 @@ describe('gitlab issue operations', () => {
 
     expect(glabApiWithHeadersMock).toHaveBeenCalledWith(
       [
-        'projects/stablyai%2Forca/issues?page=3&per_page=50&order_by=updated_at&sort=desc&state=opened'
+        'projects/stablyai%2Focc/issues?page=3&per_page=50&order_by=updated_at&sort=desc&state=opened'
       ],
       { cwd: '/repo-root' }
     )
   })
 
   it('derives total pages from x-total when x-total-pages is unavailable', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabApiWithHeadersMock.mockResolvedValueOnce({ body: '[]', headers: { 'x-total': '11' } })
 
     await expect(listIssues('/repo-root', 5)).resolves.toMatchObject({ totalPages: 3 })
   })
 
   it('keeps a next-page probe when a proxy strips pagination headers', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabApiWithHeadersMock.mockResolvedValueOnce({
       body: JSON.stringify(
         Array.from({ length: 5 }, (_, index) => ({
           iid: index + 1,
           title: `Issue ${index + 1}`,
           state: 'opened',
-          web_url: `https://gitlab.com/stablyai/orca/-/issues/${index + 1}`,
+          web_url: `https://gitlab.com/stablyai/occ/-/issues/${index + 1}`,
           labels: []
         }))
       ),
@@ -276,7 +276,7 @@ describe('gitlab issue operations', () => {
   })
 
   it('surfaces a permission_denied error instead of collapsing to empty', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabApiWithHeadersMock.mockRejectedValueOnce(new Error('HTTP 403 Forbidden'))
 
     const result = await listIssues('/repo-root', 5)
@@ -286,7 +286,7 @@ describe('gitlab issue operations', () => {
   })
 
   it('reports the body instead of ".map is not a function" when the API returns a non-array', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabApiWithHeadersMock.mockResolvedValueOnce({
       body: JSON.stringify({ data: [], total: 0 }),
       headers: {}
@@ -301,7 +301,7 @@ describe('gitlab issue operations', () => {
   })
 
   it('reports a GitLab error envelope by its own message', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabApiWithHeadersMock.mockResolvedValueOnce({
       body: JSON.stringify({ message: '403 Forbidden' }),
       headers: {}
@@ -333,7 +333,7 @@ describe('gitlab issue operations', () => {
   })
 
   it('threads connectionId into getGlabKnownHosts for listIssues', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabApiWithHeadersMock.mockResolvedValueOnce({ body: '[]', headers: {} })
 
     await listIssues('/repo-root', 5, undefined, 'opened', undefined, 'conn-7')
@@ -342,25 +342,25 @@ describe('gitlab issue operations', () => {
   })
 
   it('creates an issue and returns its iid + web_url', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabExecFileAsyncMock.mockResolvedValueOnce({
       stdout: JSON.stringify({
         iid: 924,
-        web_url: 'https://gitlab.com/stablyai/orca/-/issues/924'
+        web_url: 'https://gitlab.com/stablyai/occ/-/issues/924'
       })
     })
 
     await expect(createIssue('/repo-root', 'New issue', 'Body')).resolves.toEqual({
       ok: true,
       number: 924,
-      url: 'https://gitlab.com/stablyai/orca/-/issues/924'
+      url: 'https://gitlab.com/stablyai/occ/-/issues/924'
     })
     expect(glabExecFileAsyncMock).toHaveBeenCalledWith(
       [
         'api',
         '-X',
         'POST',
-        'projects/stablyai%2Forca/issues',
+        'projects/stablyai%2Focc/issues',
         '-f',
         'title=New issue',
         '-f',
@@ -379,19 +379,19 @@ describe('gitlab issue operations', () => {
   })
 
   it('updateIssue closes via `glab issue close` when state=closed', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabExecFileAsyncMock.mockResolvedValueOnce({ stdout: '' })
 
     await expect(updateIssue('/repo-root', 5, { state: 'closed' })).resolves.toEqual({ ok: true })
     expect(glabExecFileAsyncMock).toHaveBeenCalledWith(
-      ['issue', 'close', '5', '-R', 'stablyai/orca'],
+      ['issue', 'close', '5', '-R', 'stablyai/occ'],
       { cwd: '/repo-root' }
     )
   })
 
   // issue update rejects --hostname; pass the instance through GITLAB_HOST.
   it('updateIssue edits fields through GITLAB_HOST on an SSH workspace', async () => {
-    const projectRef = { host: 'gitlab.example.internal', path: 'stablyai/orca' }
+    const projectRef = { host: 'gitlab.example.internal', path: 'stablyai/occ' }
     glabExecFileAsyncMock.mockResolvedValueOnce({ stdout: '' })
 
     await expect(
@@ -405,7 +405,7 @@ describe('gitlab issue operations', () => {
   })
 
   it('updateIssue closes through GITLAB_HOST on an SSH workspace', async () => {
-    const projectRef = { host: 'gitlab.example.internal', path: 'stablyai/orca' }
+    const projectRef = { host: 'gitlab.example.internal', path: 'stablyai/occ' }
     glabExecFileAsyncMock.mockResolvedValueOnce({ stdout: '' })
 
     await expect(
@@ -413,13 +413,13 @@ describe('gitlab issue operations', () => {
     ).resolves.toEqual({ ok: true })
 
     const [args, options] = glabExecFileAsyncMock.mock.calls[0]
-    expect(args).toEqual(['issue', 'close', '5', '-R', 'stablyai/orca'])
+    expect(args).toEqual(['issue', 'close', '5', '-R', 'stablyai/occ'])
     expect(options.env?.GITLAB_HOST).toBe('gitlab.example.internal')
   })
 
   // glab already-closed success exits 0; an already substring must not hide a real rejection.
   it('updateIssue reports a failed close even when its text says "already"', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabExecFileAsyncMock.mockRejectedValueOnce(new Error('Issue is already closed'))
 
     await expect(updateIssue('/repo-root', 5, { state: 'closed' })).resolves.toMatchObject({
@@ -428,7 +428,7 @@ describe('gitlab issue operations', () => {
   })
 
   it('updateIssue applies field edits via `glab issue update`', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabExecFileAsyncMock.mockResolvedValueOnce({ stdout: '' })
 
     await expect(
@@ -447,7 +447,7 @@ describe('gitlab issue operations', () => {
         'update',
         '5',
         '-R',
-        'stablyai/orca',
+        'stablyai/occ',
         '--title',
         'Renamed',
         '--label',
@@ -462,7 +462,7 @@ describe('gitlab issue operations', () => {
   })
 
   it('updateIssue sends assignee edits glab applies as add/remove, never as a replace', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabExecFileAsyncMock.mockResolvedValueOnce({ stdout: '' })
 
     await updateIssue('/repo-root', 5, {
@@ -480,7 +480,7 @@ describe('gitlab issue operations', () => {
   })
 
   it('updateIssue applies body edits via the issue API', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabExecFileAsyncMock.mockResolvedValueOnce({ stdout: '' })
 
     await expect(updateIssue('/repo-root', 5, { body: 'Updated body' })).resolves.toEqual({
@@ -488,31 +488,31 @@ describe('gitlab issue operations', () => {
     })
 
     expect(glabExecFileAsyncMock).toHaveBeenCalledWith(
-      ['api', '-X', 'PUT', 'projects/stablyai%2Forca/issues/5', '-f', 'description=Updated body'],
+      ['api', '-X', 'PUT', 'projects/stablyai%2Focc/issues/5', '-f', 'description=Updated body'],
       { cwd: '/repo-root' }
     )
   })
 
   it('walks label and member pages of glab api -i output on the selected SSH GitLab host', async () => {
     getIssueProjectRefMock
-      .mockResolvedValueOnce({ host: 'git.internal', path: 'stablyai/orca' })
-      .mockResolvedValueOnce({ host: 'git.internal', path: 'stablyai/orca' })
+      .mockResolvedValueOnce({ host: 'git.internal', path: 'stablyai/occ' })
+      .mockResolvedValueOnce({ host: 'git.internal', path: 'stablyai/occ' })
     serveGlabApiPages(
       new Map([
         [
-          'projects/stablyai%2Forca/labels?per_page=100&page=1',
+          'projects/stablyai%2Focc/labels?per_page=100&page=1',
           glabIncludeOutput({ 'X-Next-Page': '2', 'X-Page': '1', 'X-Total-Pages': '2' }, [
             { id: 1, name: 'bug', color: '#d9534f', is_project_label: true }
           ])
         ],
         [
-          'projects/stablyai%2Forca/labels?per_page=100&page=2',
+          'projects/stablyai%2Focc/labels?per_page=100&page=2',
           glabIncludeOutput({ 'X-Next-Page': '', 'X-Page': '2', 'X-Total-Pages': '2' }, [
             { id: 4, name: 'feature', color: '#f0ad4e', is_project_label: false }
           ])
         ],
         [
-          'projects/stablyai%2Forca/members/all?per_page=100&page=1',
+          'projects/stablyai%2Focc/members/all?per_page=100&page=1',
           glabIncludeOutput({ 'X-Next-Page': '', 'X-Page': '1' }, [
             {
               id: 12,
@@ -543,21 +543,21 @@ describe('gitlab issue operations', () => {
     ])
 
     expect(glabApiWithHeadersMock.mock.calls.map(([args]) => args)).toEqual([
-      ['--hostname', 'git.internal', 'projects/stablyai%2Forca/labels?per_page=100&page=1'],
-      ['--hostname', 'git.internal', 'projects/stablyai%2Forca/labels?per_page=100&page=2'],
-      ['--hostname', 'git.internal', 'projects/stablyai%2Forca/members/all?per_page=100&page=1']
+      ['--hostname', 'git.internal', 'projects/stablyai%2Focc/labels?per_page=100&page=1'],
+      ['--hostname', 'git.internal', 'projects/stablyai%2Focc/labels?per_page=100&page=2'],
+      ['--hostname', 'git.internal', 'projects/stablyai%2Focc/members/all?per_page=100&page=1']
     ])
     expect(glabExecFileAsyncMock).not.toHaveBeenCalled()
   })
 
   it('probes past a full label page when a proxy strips the pagination headers', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     const fullPage = Array.from({ length: 100 }, (_, index) => ({ id: index, name: `l${index}` }))
     serveGlabApiPages(
       new Map([
-        ['projects/stablyai%2Forca/labels?per_page=100&page=1', glabIncludeOutput({}, fullPage)],
+        ['projects/stablyai%2Focc/labels?per_page=100&page=1', glabIncludeOutput({}, fullPage)],
         [
-          'projects/stablyai%2Forca/labels?per_page=100&page=2',
+          'projects/stablyai%2Focc/labels?per_page=100&page=2',
           glabIncludeOutput({}, [{ id: 100, name: 'last' }])
         ]
       ])
@@ -572,16 +572,16 @@ describe('gitlab issue operations', () => {
 
   it('stops paging when x-next-page does not advance and returns no members on an error body', async () => {
     getIssueProjectRefMock
-      .mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
-      .mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+      .mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
+      .mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     serveGlabApiPages(
       new Map([
         [
-          'projects/stablyai%2Forca/labels?per_page=100&page=1',
+          'projects/stablyai%2Focc/labels?per_page=100&page=1',
           glabIncludeOutput({ 'X-Next-Page': '1' }, [{ id: 1, name: 'bug' }])
         ],
         [
-          'projects/stablyai%2Forca/members/all?per_page=100&page=1',
+          'projects/stablyai%2Focc/members/all?per_page=100&page=1',
           glabIncludeOutput({}, { message: '403 Forbidden' })
         ]
       ])
@@ -593,7 +593,7 @@ describe('gitlab issue operations', () => {
   })
 
   it('addIssueComment posts to /notes and maps the response', async () => {
-    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/orca' })
+    getIssueProjectRefMock.mockResolvedValueOnce({ host: 'gitlab.com', path: 'stablyai/occ' })
     glabExecFileAsyncMock.mockResolvedValueOnce({
       stdout: JSON.stringify({
         id: 100,
@@ -617,7 +617,7 @@ describe('gitlab issue operations', () => {
       }
     })
     expect(glabExecFileAsyncMock).toHaveBeenCalledWith(
-      ['api', '-X', 'POST', 'projects/stablyai%2Forca/issues/5/notes', '-f', 'body=Hello'],
+      ['api', '-X', 'POST', 'projects/stablyai%2Focc/issues/5/notes', '-f', 'body=Hello'],
       { cwd: '/repo-root' }
     )
   })
@@ -625,7 +625,7 @@ describe('gitlab issue operations', () => {
   it('addIssueComment passes hostname for SSH-backed self-hosted repos', async () => {
     getIssueProjectRefMock.mockResolvedValueOnce({
       host: 'gitlab.example.com',
-      path: 'stablyai/orca'
+      path: 'stablyai/occ'
     })
     glabExecFileAsyncMock.mockResolvedValueOnce({
       stdout: JSON.stringify({ id: 100, body: 'Hello' })
@@ -640,7 +640,7 @@ describe('gitlab issue operations', () => {
         'gitlab.example.com',
         '-X',
         'POST',
-        'projects/stablyai%2Forca/issues/5/notes',
+        'projects/stablyai%2Focc/issues/5/notes',
         '-f',
         'body=Hello'
       ],

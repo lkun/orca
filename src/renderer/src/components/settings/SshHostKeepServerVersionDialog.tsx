@@ -11,11 +11,11 @@ import {
   DialogHeader,
   DialogTitle
 } from '../ui/dialog'
-import { getManagedOrcadApi } from './use-managed-server-catalog'
+import { getManagedOCCdApi } from './use-managed-server-catalog'
 
 /** Offer migration of changes made by an older build or retain the managed server’s version. */
 export function hasSshHostSourceChanged(target: SshTarget): boolean {
-  return Boolean(getManagedOrcadApi() && target.orcadFence?.sourceChangedAt)
+  return Boolean(getManagedOCCdApi() && target.occdFence?.sourceChangedAt)
 }
 
 export function SshHostKeepServerVersionDialog({
@@ -29,7 +29,7 @@ export function SshHostKeepServerVersionDialog({
   onOpenChange: (open: boolean) => void
   onChanged: () => void
 }): React.JSX.Element | null {
-  const api = getManagedOrcadApi()
+  const api = getManagedOCCdApi()
   const mountedRef = useMountedRef()
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -37,7 +37,7 @@ export function SshHostKeepServerVersionDialog({
     setError(null)
     onOpenChange(next)
   }
-  if (!api || !target.orcadFence?.sourceChangedAt) {
+  if (!api || !target.occdFence?.sourceChangedAt) {
     return null
   }
   const keepServerVersion = async (): Promise<void> => {

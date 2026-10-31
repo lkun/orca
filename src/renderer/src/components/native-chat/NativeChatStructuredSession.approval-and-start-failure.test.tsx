@@ -201,7 +201,7 @@ afterEach(() => {
   ): void {
     mocks.submissions = messages.map((message) => message.submission)
     localStorage.setItem(
-      `orca:desktopStructuredAgentSessionOutbox:v1:${encodeURIComponent(SESSION_ID)}`,
+      `occ:desktopStructuredAgentSessionOutbox:v1:${encodeURIComponent(SESSION_ID)}`,
       JSON.stringify(messages.map((message) => message.outbox))
     )
     render(

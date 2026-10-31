@@ -16,7 +16,7 @@ export const PROVIDER_SUPERVISOR_MAX_STOP_MS =
 /** Inline supervisor source kept dependency-free for the spawned Node child. */
 export const POSIX_PROVIDER_SUPERVISOR_SCRIPT = `
 const { spawn } = require('node:child_process')
-const spec = JSON.parse(Buffer.from(process.env.ORCA_PROVIDER_SUPERVISOR_SPEC, 'base64').toString())
+const spec = JSON.parse(Buffer.from(process.env.OCC_PROVIDER_SUPERVISOR_SPEC, 'base64').toString())
 // The provider's own argv, after this script's '--'.
 const [providerCommand, ...providerArgs] = process.argv.slice(1)
 // A detached supervisor is reparented when its owner exits. The new parent may
@@ -27,7 +27,7 @@ for (const signal of ['SIGTERM', 'SIGINT', 'SIGHUP']) process.on(signal, () => s
 // OCC can die before this runs; spawning then would start a provider nothing watches.
 if (ownerGone()) process.exit(1)
 const childEnv = { ...process.env, ...spec.nodeEnv }
-delete childEnv.ORCA_PROVIDER_SUPERVISOR_SPEC
+delete childEnv.OCC_PROVIDER_SUPERVISOR_SPEC
 delete childEnv.ELECTRON_RUN_AS_NODE
 // The owner sees only this pid's exit; this marked last stderr line says the provider never started.
 const exitWithSpawnFailure = (error, thrown) => {
@@ -248,7 +248,7 @@ export function supervisedPosixLaunch(
     env: {
       ...supervisorEnv,
       ELECTRON_RUN_AS_NODE: '1',
-      ORCA_PROVIDER_SUPERVISOR_SPEC: supervisorSpec
+      OCC_PROVIDER_SUPERVISOR_SPEC: supervisorSpec
     }
   }
 }

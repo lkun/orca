@@ -2,7 +2,7 @@
 import { act, cleanup, render } from '@testing-library/react'
 import { useRef, useState } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { ORCA_INTERNAL_FILE_DRAG_TYPE } from '../../../shared/native-file-drop'
+import { OCC_INTERNAL_FILE_DRAG_TYPE } from '../../../shared/native-file-drop'
 import {
   WORKSPACE_FILE_DRAG_SOURCE_MIME,
   WORKSPACE_FILE_PATHS_MIME
@@ -216,7 +216,7 @@ describe('useOsFileDropOwner', () => {
     const view = render(<Owner onDrop={onDrop} />)
     const root = view.getByTestId('owner')
     for (const type of [
-      ORCA_INTERNAL_FILE_DRAG_TYPE,
+      OCC_INTERNAL_FILE_DRAG_TYPE,
       WORKSPACE_FILE_PATHS_MIME,
       WORKSPACE_FILE_DRAG_SOURCE_MIME
     ]) {
@@ -357,8 +357,8 @@ describe('useOsFileDropOwner', () => {
       finishFirst?.()
     })
     expect(onDrop).toHaveBeenCalledTimes(1)
-    expect(takeBrowserAttachmentFile('orca-browser-file:uuid-2/second.txt')).toBeNull()
-    expect(takeBrowserAttachmentFile('orca-browser-file:uuid-1/first.txt')).not.toBeNull()
+    expect(takeBrowserAttachmentFile('occ-browser-file:uuid-2/second.txt')).toBeNull()
+    expect(takeBrowserAttachmentFile('occ-browser-file:uuid-1/first.txt')).not.toBeNull()
   })
 
   it('delivers drops in order within an owner while another owner can finish', async () => {

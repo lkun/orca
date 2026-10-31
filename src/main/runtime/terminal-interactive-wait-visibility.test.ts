@@ -4,13 +4,13 @@ import type {
   RuntimeTerminalAgentStatus
 } from '../../shared/runtime-terminal-contracts'
 import { RuntimeMachineName } from './runtime-machine-name'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { makeTuiIdlePty } from './tui-idle-wait-test-harness'
 import { readFileSync } from 'node:fs'
 import { makeAgentStatusStoreWiring } from './agent-status-store-wiring.test-fixture'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { TERMINAL_INTERACTIVE_WAIT_PROBE_TIMEOUT_MS } from './orca-runtime-core'
+import { TERMINAL_INTERACTIVE_WAIT_PROBE_TIMEOUT_MS } from './occ-runtime-core'
 import {
   createTranscriptPane,
   type TranscriptPaneOptions,
@@ -474,7 +474,7 @@ describe('Screen rule readiness scope', () => {
 })
 
 /** Stands in for a mailbox with work pending, which these timer mechanics take as given. */
-function withPendingDelivery(runtime: OrcaRuntimeService): OrcaRuntimeService {
+function withPendingDelivery(runtime: OCCRuntimeService): OCCRuntimeService {
   runtime['getOrchestrationMailboxTerminal'] = (ptyId) => ({
     ptyId,
     handle: 'term_pending',
@@ -503,7 +503,7 @@ describe('terminal wait ownership', () => {
   }
 
   function interactiveWait(getStatus: (handle: string) => Promise<RuntimeTerminalAgentStatus>) {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     runtime['getTerminalAgentStatusPtyId'] = () => 'pty-1'
     runtime['getTerminalWaitPermissionInputs'] = () => ({
       terminal: {
@@ -570,7 +570,7 @@ describe('terminal wait ownership', () => {
       lastOscTitle: 'Codex'
     })
     const deliver = vi.fn()
-    const runtime = withPendingDelivery(new OrcaRuntimeService())
+    const runtime = withPendingDelivery(new OCCRuntimeService())
     runtime['ptysById'].set(pty.ptyId, pty)
     runtime['deliverPendingMessagesForPty'] = deliver
     expect(runtime['checkDeliverySettledAndArmRecheck'](pty.ptyId)).toBe(false)
@@ -588,8 +588,8 @@ describe('terminal wait ownership', () => {
       lastAgentStatus: 'idle',
       lastOscTitle: 'Codex'
     })
-    const first = withPendingDelivery(new OrcaRuntimeService())
-    const second = withPendingDelivery(new OrcaRuntimeService())
+    const first = withPendingDelivery(new OCCRuntimeService())
+    const second = withPendingDelivery(new OCCRuntimeService())
     first['ptysById'].set(pty.ptyId, pty)
     second['ptysById'].set(pty.ptyId, pty)
     first['checkDeliverySettledAndArmRecheck'](pty.ptyId)
@@ -604,8 +604,8 @@ describe('terminal wait ownership', () => {
   it('clears a pending blocked scan without cancelling another runtime scan', async () => {
     const pty = makeTuiIdlePty({ waitBlockedAt: null })
     const getPty = vi.fn(() => pty)
-    const first = new OrcaRuntimeService()
-    const second = new OrcaRuntimeService()
+    const first = new OCCRuntimeService()
+    const second = new OCCRuntimeService()
     vi.spyOn(first['ptysById'], 'get').mockImplementation(getPty)
     vi.spyOn(second['ptysById'], 'get').mockImplementation(getPty)
     first['scheduleWaitBlockedCheck']('pty-1', 'output', 10_000)
@@ -621,7 +621,7 @@ describe('terminal wait ownership', () => {
   })
 
   it('routes settlement through the current runtime verdict and resolver', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const pending = Promise.withResolvers<RuntimeTerminalWait>()
     const waiter: TerminalWaiter = {
       handle: 'handle-1',
@@ -634,12 +634,12 @@ describe('terminal wait ownership', () => {
       abortCleanup: null
     }
     runtime['terminalWaiters'].add(waiter)
-    const verdict = vi.fn<OrcaRuntimeService['evaluateTuiIdleForPty']>(() => ({
+    const verdict = vi.fn<OCCRuntimeService['evaluateTuiIdleForPty']>(() => ({
       kind: 'ready-strong'
     }))
     runtime['evaluateTuiIdleForPty'] = verdict
     const original = runtime['resolveWaiter']
-    const resolve = vi.fn<OrcaRuntimeService['resolveWaiter']>((...args) =>
+    const resolve = vi.fn<OCCRuntimeService['resolveWaiter']>((...args) =>
       original.call(runtime, ...args)
     )
     runtime['resolveWaiter'] = resolve
@@ -651,18 +651,18 @@ describe('terminal wait ownership', () => {
   })
 
   it('keeps an absent launcher target as a rejected promise', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const result = runtime.resolveOrchestrationAgentLauncherForTarget('custom', {})
     expect(result).toBeInstanceOf(Promise)
     await expect(result).rejects.toThrow()
   })
 
   it('reads the launcher resolver before forwarding an absent target', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const events: string[] = []
     const rejection = new Error('original_resolver_rejection')
-    const resolve = vi.fn<OrcaRuntimeService['resolveTerminalWorkspaceLaunchScope']>(
-      async function (this: OrcaRuntimeService) {
+    const resolve = vi.fn<OCCRuntimeService['resolveTerminalWorkspaceLaunchScope']>(
+      async function (this: OCCRuntimeService) {
         events.push('original-call')
         expect(this).toBe(runtime)
         throw rejection

@@ -158,7 +158,7 @@ export function parseStoredNativeChatComposerDraft(
           /^[0-9a-f-]{36}$/.test(id) &&
           typeof path === 'string' &&
           path !== '' &&
-          text.includes(`[Pasted text](orca-paste:${id})`)
+          text.includes(`[Pasted text](occ-paste:${id})`)
             ? [[id, path]]
             : []
         )
@@ -175,7 +175,7 @@ export function parseStoredNativeChatComposerDraft(
   }
 }
 
-const LEGACY_LOCAL_STORAGE_PREFIX = 'orca:nativeChatComposerDraft:v1:'
+const LEGACY_LOCAL_STORAGE_PREFIX = 'occ:nativeChatComposerDraft:v1:'
 
 /** Remove unreleased legacy localStorage drafts. */
 export function removeLegacyLocalStorageNativeChatComposerDrafts(): void {

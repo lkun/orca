@@ -5,7 +5,7 @@ import {
 // Keep finished local agents from respawning after pane retirement and app restart; retained resume identity must not restate done as working.
 import { existsSync, readFileSync } from 'node:fs'
 import type { ElectronApplication } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { TEST_REPO_PATH_FILE } from './global-setup'
 import {
   execInTerminal,
@@ -16,7 +16,7 @@ import {
   waitForTerminalOutput
 } from './helpers/terminal'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 import { createHostRendererTerminalTab } from './helpers/host-created-terminal-retention-oracle'
 
 const PROVIDER_SESSION_ID = 'e2e-finished-agent-session'

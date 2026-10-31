@@ -34,7 +34,7 @@ import {
 import { writeLegacyOpenCodePluginWithAclRetry } from './legacy-plugin-acl-retry'
 import {
   OPENCODE_OVERLAY_DIR,
-  ORCA_OPENCODE_PLUGIN_FILE,
+  OCC_OPENCODE_PLUGIN_FILE,
   sourceOverlayDirName,
   toSafeDirName
 } from './overlay-dir-names'
@@ -73,13 +73,13 @@ export class OpenCodeHookService {
     const config: OpenCodeHookVariant =
       typeof variant === 'function'
         ? {
-            pluginFileName: ORCA_OPENCODE_PLUGIN_FILE,
+            pluginFileName: OCC_OPENCODE_PLUGIN_FILE,
             legacyHooksDir: OPENCODE_LEGACY_HOOKS_DIR,
             overlayDir: OPENCODE_OVERLAY_DIR,
             pluginSource: variant
           }
         : (variant ?? {
-            pluginFileName: ORCA_OPENCODE_PLUGIN_FILE,
+            pluginFileName: OCC_OPENCODE_PLUGIN_FILE,
             legacyHooksDir: OPENCODE_LEGACY_HOOKS_DIR,
             overlayDir: OPENCODE_OVERLAY_DIR,
             pluginSource: getOpenCodePluginSource,
@@ -321,7 +321,7 @@ export class OpenCodeHookService {
 
 export const openCodeHookService = new OpenCodeHookService()
 export const openCode2HookService = new OpenCodeHookService({
-  pluginFileName: 'orca-opencode2-status.js',
+  pluginFileName: 'occ-opencode2-status.js',
   legacyHooksDir: OPENCODE2_LEGACY_HOOKS_DIR,
   overlayDir: 'opencode2-config-overlays',
   pluginSource: getOpenCode2PluginSource,

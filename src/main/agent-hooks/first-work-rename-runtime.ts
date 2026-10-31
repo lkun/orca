@@ -8,7 +8,7 @@ import { moveWorktree } from '../git/worktree'
 import { isWslMoveFolderWorkspaceBlocked } from '../persistence/moving-wsl-projects/wsl-move-background-backoff'
 import type { Store } from '../persistence'
 import type { RuntimeStore } from '../runtime/runtime-store-contract'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { resolveWorktreeMetaOwner } from '../persistence/host-qualified-worktree-meta'
 
 const ENABLE_FIRST_WORK_FOLDER_RENAME = false
@@ -26,7 +26,7 @@ export function firstWorkRenameDeps(
   > &
     Partial<Pick<Store, 'migrateWorktreeIdentity' | 'getWorktreeIdForTab'>>,
   runtime: Pick<
-    OrcaRuntimeService,
+    OCCRuntimeService,
     | 'getCommitMessageAgentEnvironmentResolvers'
     | 'notifyFolderWorkspaceChanged'
     | 'notifyBranchRenamed'
@@ -62,10 +62,10 @@ export function firstWorkRenameDeps(
             true
         : store.getWorktreeMeta(worktreeId)?.pendingFirstAgentMessageRename === true
     },
-    canRenameOrcaCreatedBranch: (worktreeId) => {
+    canRenameOCCCreatedBranch: (worktreeId) => {
       const meta = store.getWorktreeMeta(worktreeId)
       // A creature-like name alone cannot prove OCC owns the branch.
-      return !!meta?.orcaCreationSource && meta.preserveBranchOnDelete !== true
+      return !!meta?.occCreationSource && meta.preserveBranchOnDelete !== true
     },
     setDisplayName: (worktreeId, displayName) => {
       rememberBranchRenameFailureOutput(worktreeId, null)

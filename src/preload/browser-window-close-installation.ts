@@ -1,5 +1,5 @@
 /** Why written out: the sandboxed preload can't load shared chunks; the test pins it to the shared constant. */
-export const PRELOAD_BROWSER_GUEST_WINDOW_CLOSE_CHANNEL = 'orca:guest-window-close'
+export const PRELOAD_BROWSER_GUEST_WINDOW_CLOSE_CHANNEL = 'occ:guest-window-close'
 
 /**
  * Runs serialized in the page's main world. The native close stays blocked: it destroyed the

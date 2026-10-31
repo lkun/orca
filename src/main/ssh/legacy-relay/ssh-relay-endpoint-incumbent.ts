@@ -1,5 +1,5 @@
 /** Probe this endpoint only: unlinking a refusing live socket strands its relay/PTYs (#8585). Exit requires refused connect, complete no-holder evidence and local storage; shared-home sockets may live on another kernel. Missing tools or ambiguous failures stay unverifiable and never authorize cleanup (docs/reference/ssh-execution-boundary.md). */
-import { RELAY_LSOF_PROBE_JS } from '@orca/process-host/posix-lsof-probe'
+import { RELAY_LSOF_PROBE_JS } from '@occ/process-host/posix-lsof-probe'
 import type { SshConnection } from '../connection/ssh-connection'
 import { quotePosixShell } from '../../../shared/shell-argument-quoting'
 import {
@@ -9,7 +9,7 @@ import {
 } from '../relay-daemon-service-children'
 import { execCommand, isUnconfirmedSshCommandTermination } from '../remote-exec/remote-exec-command'
 import { isWindowsRemoteHost, type RemoteHostPlatform } from '../ssh-remote-platform'
-import { filesystemTypeIsLocalDisk } from '../../orcad/orcad-data-root-locality'
+import { filesystemTypeIsLocalDisk } from '../../occd/occd-data-root-locality'
 
 type RelayEndpointVerdict = 'live' | 'unverifiable' | 'exited'
 
@@ -36,8 +36,8 @@ export type RelayEndpointIncumbent = {
   holdersEnumerable: boolean
 }
 
-const PROBE_BEGIN = 'ORCA-INCUMBENT-BEGIN'
-const PROBE_END = 'ORCA-INCUMBENT-END'
+const PROBE_BEGIN = 'OCC-INCUMBENT-BEGIN'
+const PROBE_END = 'OCC-INCUMBENT-END'
 const CONNECT_PROBE_TIMEOUT_MS = 1000
 
 // Use ES5 for host-provided Node runtimes.

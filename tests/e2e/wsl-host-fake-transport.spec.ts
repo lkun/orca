@@ -1,6 +1,6 @@
 /**
- * WSL-via-orcad C7 with a fake WSL transport: no wsl.exe in CI. The HUB fixture stands in for the
- * distro's orcad; a second desktop, launched with ORCA_E2E_FAKE_WSL_HOSTS, adds that "distro" as a
+ * WSL-via-occd C7 with a fake WSL transport: no wsl.exe in CI. The HUB fixture stands in for the
+ * distro's occd; a second desktop, launched with OCC_E2E_FAKE_WSL_HOSTS, adds that "distro" as a
  * host through the real add-host UI, adds a project on it, and runs a terminal there.
  */
 import { execFileSync } from 'node:child_process'
@@ -8,7 +8,7 @@ import { mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { expect, test, type forwardElectronProcessLogs } from './helpers/orca-app'
+import { expect, test, type forwardElectronProcessLogs } from './helpers/occ-app'
 import { RuntimeClient } from '../../src/cli/runtime/client'
 import { createRuntimeDesktopPairingOffer } from './helpers/paired-electron-client'
 import { encodePairingOffer } from '../../src/shared/pairing'
@@ -59,7 +59,7 @@ async function settleAnimations(page: Page): Promise<void> {
 }
 
 function createGitProject(): string {
-  const dir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-project-'))
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-project-'))
   execFileSync('git', ['init', '-q', '-b', 'main', dir])
   writeFileSync(path.join(dir, 'README.md'), '# wsl host project\n')
   execFileSync('git', ['-C', dir, 'add', '.'])
@@ -87,14 +87,14 @@ async function checkWindowsFolderPicker(
   })
   const pickFolder = async (picked: string): Promise<void> => {
     await app.evaluate(({ dialog }, filePath) => {
-      delete process.env.ORCA_E2E_PICKER_DEFAULT_PATH
+      delete process.env.OCC_E2E_PICKER_DEFAULT_PATH
       dialog.showOpenDialog = async (...args: unknown[]) => {
         const options = args.at(-1)
         const defaultPath =
           typeof options === 'object' && options !== null && 'defaultPath' in options
             ? String(options.defaultPath)
             : 'none'
-        process.env.ORCA_E2E_PICKER_DEFAULT_PATH = defaultPath
+        process.env.OCC_E2E_PICKER_DEFAULT_PATH = defaultPath
         return { canceled: false, filePaths: [filePath] }
       }
     }, picked)
@@ -105,7 +105,7 @@ async function checkWindowsFolderPicker(
     await dialog.getByRole('button', { name: /Browse folder|Browse host/i }).click()
   }
   const pickerDefaultPath = (): Promise<string | null> =>
-    app.evaluate((): string | null => process.env.ORCA_E2E_PICKER_DEFAULT_PATH ?? null)
+    app.evaluate((): string | null => process.env.OCC_E2E_PICKER_DEFAULT_PATH ?? null)
 
   // A pick through the lowercase share name lands as the host's Linux path.
   const uncPick = `\\\\wsl.localhost\\ubuntu${projectPath.replace(/\//g, '\\')}`
@@ -183,14 +183,14 @@ async function checkWindowsFolderPicker(
 }
 
 test('adds a WSL distro as a host, adds a project on it, and runs a terminal there', async ({
-  orcaPage,
+  occPage,
   electronApp
 }, testInfo) => {
   test.setTimeout(240_000)
-  await waitForSessionReady(orcaPage)
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  await waitForSessionReady(occPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   // Starts with only a WSL 1 distro; Ubuntu is "imported" while the add dialog is open.
-  const distrosDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-distros-'))
+  const distrosDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-distros-'))
   const distrosFile = path.join(distrosDir, 'distros.json')
   writeFileSync(distrosFile, JSON.stringify([LEGACY_DISTRO]))
   const connectLogFile = path.join(distrosDir, 'connects.log')
@@ -230,7 +230,7 @@ test('adds a WSL distro as a host, adds a project on it, and runs a terminal the
               window.__store
                 ?.getState()
                 .runtimeEnvironments.find((environment) => environment.id === environmentId)
-                ?.orcadDeployment?.kind ?? null,
+                ?.occdDeployment?.kind ?? null,
             WSL_ENVIRONMENT_ID
           ),
         { timeout: 30_000 }
@@ -310,7 +310,7 @@ test('adds a WSL distro as a host, adds a project on it, and runs a terminal the
 
     await checkWindowsFolderPicker(desktop, projectPath, testInfo)
 
-    // The "distro's orcad" is the HUB, so what it still runs is what a real distro would.
+    // The "distro's occd" is the HUB, so what it still runs is what a real distro would.
     const hubRuntime = new RuntimeClient(
       await electronApp.evaluate(({ app }) => app.getPath('userData'))
     )
@@ -437,11 +437,11 @@ test('adds a WSL distro as a host, adds a project on it, and runs a terminal the
 })
 
 test('a build without the WSL host server files says so instead of failing an add', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(180_000)
-  await waitForSessionReady(orcaPage)
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  await waitForSessionReady(occPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   const desktop = await launchDesktopWithFakeWslPairing(offer.pairingUrl, testInfo, {
     serverFiles: 'missing'
   })
@@ -473,12 +473,12 @@ test('a build without the WSL host server files says so instead of failing an ad
 })
 
 test('with the internal gate closed and no saved WSL work, no WSL host surface shows', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   test.setTimeout(180_000)
-  await waitForSessionReady(orcaPage)
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
-  const logDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-gate-'))
+  await waitForSessionReady(occPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
+  const logDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-gate-'))
   const connectLogFile = path.join(logDir, 'connects.log')
   const desktop = await launchDesktopWithFakeWslPairing(
     offer.pairingUrl,
@@ -530,13 +530,13 @@ test('with the internal gate closed and no saved WSL work, no WSL host surface s
   }
 })
 test('with the internal gate closed, a saved WSL host stays reachable but nothing new is added or moved (serve-only)', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   // Launches a second desktop beside the paired server, like the gate-closed case above.
   test.setTimeout(180_000)
-  await waitForSessionReady(orcaPage)
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
-  const logDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-serve-only-'))
+  await waitForSessionReady(occPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
+  const logDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-serve-only-'))
   const connectLogFile = path.join(logDir, 'connects.log')
   const desktop = await launchDesktopWithFakeWslPairing(
     offer.pairingUrl,

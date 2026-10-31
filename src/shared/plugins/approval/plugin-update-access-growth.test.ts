@@ -10,7 +10,7 @@ function declarative(contributes: Record<string, unknown>): PluginManifest {
     publisher: 'samples',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     capabilities: [],
     contributes

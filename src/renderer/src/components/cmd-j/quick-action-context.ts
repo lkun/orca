@@ -173,7 +173,7 @@ export function buildCmdJQuickActionContext(args: {
   const isLoading =
     args.state.repos.length > 0 && Object.keys(selectWorktreesByRepo(args.state)).length === 0
   const runtimeMode =
-    (globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ &&
+    (globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ &&
     args.state.settings?.activeRuntimeEnvironmentId?.trim()
       ? 'paired-web'
       : 'local-desktop'

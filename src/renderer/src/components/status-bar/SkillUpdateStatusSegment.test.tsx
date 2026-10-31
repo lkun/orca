@@ -67,7 +67,7 @@ async function finish(result: BundledSkillInstallResult): Promise<void> {
   })
 }
 
-function ran(status: 'done' | 'failed', name = 'orca-cli'): BundledSkillInstallResult {
+function ran(status: 'done' | 'failed', name = 'occ-cli'): BundledSkillInstallResult {
   return {
     scope: 'global',
     skills: [
@@ -108,7 +108,7 @@ describe('SkillUpdateStatusSegment', () => {
 
   it('shows a spinner and skill count while the run is in flight', async () => {
     await render()
-    await start(['orca-cli', 'orchestration'])
+    await start(['occ-cli', 'orchestration'])
 
     expect(container?.textContent).toContain('Updating skills')
     expect(container?.querySelector('.animate-spin')).not.toBeNull()
@@ -117,7 +117,7 @@ describe('SkillUpdateStatusSegment', () => {
 
   it('shows a green check on success, then retires itself', async () => {
     await render()
-    await start(['orca-cli'])
+    await start(['occ-cli'])
     await finish(ran('done'))
 
     expect(container?.textContent).toContain('Skills updated')
@@ -131,7 +131,7 @@ describe('SkillUpdateStatusSegment', () => {
 
   it.each([1, 2, 3])('counts completed updates with %i skipped skills', async (skippedCount) => {
     await render()
-    const names = ['orca-cli', 'orchestration', 'orca-linear', 'computer-use'].slice(
+    const names = ['occ-cli', 'orchestration', 'occ-linear', 'computer-use'].slice(
       0,
       skippedCount + 1
     )
@@ -169,7 +169,7 @@ describe('SkillUpdateStatusSegment', () => {
 
   it('counts completed updates when every requested skill changed', async () => {
     await render()
-    await start(['orca-cli', 'orchestration'])
+    await start(['occ-cli', 'orchestration'])
     await finish({
       scope: 'global',
       skills: [...ran('done').skills, ...ran('done', 'orchestration').skills]
@@ -180,7 +180,7 @@ describe('SkillUpdateStatusSegment', () => {
 
   it('keeps a run with problems visible instead of auto-clearing it', async () => {
     await render()
-    await start(['orca-cli'])
+    await start(['occ-cli'])
     await finish(ran('failed'))
 
     await act(async () => {
@@ -199,7 +199,7 @@ describe('SkillUpdateStatusSegment', () => {
     'keeps recovery needing attention visible (mixed run: %s)',
     async (mixed) => {
       await render()
-      await start(mixed ? ['orca-cli', 'orchestration'] : ['orca-cli'])
+      await start(mixed ? ['occ-cli', 'orchestration'] : ['occ-cli'])
       const skills = [...ran('done').skills]
       skills[0].ops[0].kind = 'restore'
       if (mixed) {
@@ -219,7 +219,7 @@ describe('SkillUpdateStatusSegment', () => {
 
   it('reopens the update dialog when clicked', async () => {
     await render()
-    await start(['orca-cli'])
+    await start(['occ-cli'])
     await act(async () => {
       container?.querySelector('button')?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })

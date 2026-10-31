@@ -1,7 +1,7 @@
 // happy-dom exposes adapter-less OffscreenCanvas that xterm prefers; reuse the existing HTML canvas text-metric double.
 
 const OFFSCREEN_CANVAS_COMPATIBILITY_INSTALLED = Symbol.for(
-  'orca.happyDomOffscreenCanvasCompatibility'
+  'occ.happyDomOffscreenCanvasCompatibility'
 )
 
 type PatchableCanvas = {

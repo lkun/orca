@@ -1,6 +1,6 @@
 import { getPtyIpc } from '../pty-host-bindings'
 import type { Store } from '../../../persistence'
-import type { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import { rekeyMovedPaneOwners } from '../../../runtime/moved-pane-owner-rekey'
 import {
   isTerminalLeafMoveRequest,
@@ -12,7 +12,7 @@ import {
 export async function commitLeafMoveAndRekey(
   deps: {
     store?: { moveTerminalLeafToNewTab?: Store['moveTerminalLeafToNewTab'] }
-    runtime?: OrcaRuntimeService
+    runtime?: OCCRuntimeService
   },
   request: TerminalLeafMoveRequest
 ): Promise<TerminalLeafMoveResult> {
@@ -28,7 +28,7 @@ export async function commitLeafMoveAndRekey(
 
 export function installPtyLeafMoveIpcHandler(deps: {
   store?: Store
-  runtime?: OrcaRuntimeService
+  runtime?: OCCRuntimeService
 }): void {
   getPtyIpc().handle('pty:moveLeafToNewTab', async (_event, args: unknown) => {
     if (!isTerminalLeafMoveRequest(args)) {

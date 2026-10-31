@@ -4,17 +4,17 @@ import { toRemoteRuntimePtyId } from '../../shared/remote-runtime/remote-runtime
 import { OrchestrationError } from './orchestration/orchestration-error'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const { store, makeRuntimeStoreWithWorkspaceSession } =
-  await import('./orca-runtime-test-fixtures.spec')
+  await import('./occ-runtime-test-fixtures.spec')
 
 const WORKTREE_ID = 'repo-1::/tmp/worktree-a'
 
 type HostCall = (environmentId: string, method: string, params: unknown) => Promise<unknown>
 
 function pairedHostLeafRuntime(hostCall: HostCall, runtimeStore: typeof store = store) {
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   const localStops: string[] = []
   runtime.setPtyController({
     write: () => true,
@@ -68,7 +68,7 @@ function pairedHostLeafRuntime(hostCall: HostCall, runtimeStore: typeof store = 
   return { runtime, call, closeTerminalTab, localStops }
 }
 
-async function listedHandle(runtime: InstanceType<typeof OrcaRuntimeService>): Promise<string> {
+async function listedHandle(runtime: InstanceType<typeof OCCRuntimeService>): Promise<string> {
   const [terminal] = (await runtime.listTerminals()).terminals
   expect(terminal?.executionHostId).toBe('runtime:env-1')
   return terminal!.handle
@@ -139,7 +139,7 @@ describe('closing a terminal that a paired runtime runs', () => {
 
   it('retires the mirror of a terminal the owning host no longer knows, without claiming a stop', async () => {
     // Exercise a real owner that never issued the handle so its refusal survives RPC error mapping.
-    const owner = new OrcaRuntimeService(store)
+    const owner = new OCCRuntimeService(store)
     owner.syncWindowGraph(1, { tabs: [], leaves: [] })
     const { runtime, closeTerminalTab } = pairedHostLeafRuntime(async (_env, _method, params) => {
       const terminal =

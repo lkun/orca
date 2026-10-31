@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  ORCA_BACKGROUND_LAUNCH: '1'
+  OCC_BACKGROUND_LAUNCH: '1'
   CUA_TAG: cua-driver-rs-v0.38.0
   CUA_DRIVER_RS_TELEMETRY_ENABLED: '0'
   DO_NOT_TRACK: '1'
@@ -53,7 +53,7 @@ jobs:
         target: [fixture, electron]
     env:
       BENCH_TARGET: ${{ matrix.target }}
-      ORCA_COMPUTER_BENCH_ISOLATED: '1'
+      OCC_COMPUTER_BENCH_ISOLATED: '1'
       ACCESSIBILITY_ENABLED: '1'
     steps:
       - uses: actions/checkout@v6
@@ -128,7 +128,7 @@ jobs:
         target: [fixture, electron]
     env:
       BENCH_TARGET: ${{ matrix.target }}
-      ORCA_COMPUTER_BENCH_ISOLATED: '1'
+      OCC_COMPUTER_BENCH_ISOLATED: '1'
     steps:
       - uses: actions/checkout@v6
         with:

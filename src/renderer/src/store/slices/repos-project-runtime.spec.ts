@@ -66,7 +66,7 @@ export function registerReposProjectRuntimeTests(): void {
   function expectInstalledSkillRefreshEvent(): void {
     expect(
       dispatchEventMock.mock.calls.some(([event]) => {
-        return event instanceof CustomEvent && event.type === 'orca:installed-agent-skills-changed'
+        return event instanceof CustomEvent && event.type === 'occ:installed-agent-skills-changed'
       })
     ).toBe(true)
   }
@@ -331,7 +331,7 @@ export function registerReposProjectRuntimeTests(): void {
     // Missing addedAt yields unknown createdAt=0, not epoch; merge must keep real timestamp from another host.
     it('prefers a known createdAt over an unknown 0 when merging the same project id', async () => {
       const project: Project = {
-        id: 'github:stablyai/orca',
+        id: 'github:stablyai/occ',
         displayName: 'OCC',
         badgeColor: '#000',
         sourceRepoIds: ['remote-repo'],
@@ -362,7 +362,7 @@ export function registerReposProjectRuntimeTests(): void {
 
     it('preserves shared project source repos when updating local runtime preferences', async () => {
       const project: Project = {
-        id: 'github:stablyai/orca',
+        id: 'github:stablyai/occ',
         displayName: 'OCC',
         badgeColor: '#000',
         sourceRepoIds: ['local-repo', 'remote-repo'],
@@ -394,7 +394,7 @@ export function registerReposProjectRuntimeTests(): void {
 
     it('clears local runtime preferences without dropping shared project source repos', async () => {
       const project: Project = {
-        id: 'github:stablyai/orca',
+        id: 'github:stablyai/occ',
         displayName: 'OCC',
         badgeColor: '#000',
         sourceRepoIds: ['local-repo', 'remote-repo'],

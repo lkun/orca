@@ -1,7 +1,7 @@
 // Layout-owner commands and rollback advance generations only for changed bindings, excluding moves/removals.
 
 import type { ExecutionHostId } from '../../../shared/execution-host'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { collectLayoutLeafIdsInOrder } from '../../../shared/workspace-layout/terminal-pane-tree'
 import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
 import { bumpPtyBindingGeneration } from '../loading-store/pty-binding-generations'
@@ -38,7 +38,7 @@ export function raisingBindingGenerations<T>(
   getSession: (hostId: ExecutionHostId) => WorkspaceSessionState,
   mutate: () => DurableProfileStateMutation<T>
 ): () => DurableProfileStateMutation<T> {
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     return mutate
   }
   return () => {

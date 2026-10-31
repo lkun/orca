@@ -19,7 +19,7 @@ afterEach(async () => {
 })
 
 async function plugin(): Promise<ValidDiscoveredPlugin> {
-  const rootDir = await mkdtemp(join(tmpdir(), 'orca-plugin-worker-controller-'))
+  const rootDir = await mkdtemp(join(tmpdir(), 'occ-plugin-worker-controller-'))
   roots.push(rootDir)
   await writeFile(join(rootDir, 'main.mjs'), 'export default function activate() {}')
   return {
@@ -31,7 +31,7 @@ async function plugin(): Promise<ValidDiscoveredPlugin> {
       publisher: 'samples',
       name: 'Demo',
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       main: 'main.mjs',
       contributes: {

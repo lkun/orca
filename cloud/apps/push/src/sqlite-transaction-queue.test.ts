@@ -7,7 +7,7 @@ import { expect, it, vi } from 'vitest'
 import { openPushDatabase } from './push-database.js'
 
 it('releases queued work and close after a SQLite transaction cannot acquire its lock', async () => {
-  const dataDir = mkdtempSync(join(tmpdir(), 'orca-push-sqlite-queue-'))
+  const dataDir = mkdtempSync(join(tmpdir(), 'occ-push-sqlite-queue-'))
   let connection: DatabaseSync | undefined
   const prepare = DatabaseSync.prototype.prepare
   // Keep the native handle reachable for cleanup even if a queue regression strands close().
@@ -19,7 +19,7 @@ it('releases queued work and close after a SQLite transaction cannot acquire its
     })
   const database = await openPushDatabase({ dataDir })
   capture.mockRestore()
-  const blocker = new DatabaseSync(join(dataDir, 'orca-push.sqlite'))
+  const blocker = new DatabaseSync(join(dataDir, 'occ-push.sqlite'))
   try {
     await database.query('CREATE TABLE queue_progress (value INTEGER)')
     await database.query('INSERT INTO queue_progress VALUES (0)')
@@ -65,7 +65,7 @@ it('releases queued work and close after a SQLite transaction cannot acquire its
 })
 
 it('does not roll back a transaction when BEGIN failed before taking ownership', async () => {
-  const dataDir = mkdtempSync(join(tmpdir(), 'orca-push-sqlite-owner-'))
+  const dataDir = mkdtempSync(join(tmpdir(), 'occ-push-sqlite-owner-'))
   let connection: DatabaseSync | undefined
   const prepare = DatabaseSync.prototype.prepare
   const capture = vi

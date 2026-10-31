@@ -35,7 +35,7 @@ vi.mock('node:fs', async (importOriginal) => {
 let root: string
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-cli-resolve-async-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-cli-resolve-async-'))
 })
 
 afterEach(() => {

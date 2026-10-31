@@ -1,6 +1,6 @@
 import { resolveEnvironment } from '../../../shared/runtime-environment-store'
 import {
-  getOrcadSshDeployment,
+  getOCCdSshDeployment,
   type KnownRuntimeEnvironment
 } from '../../../shared/runtime-environments'
 import { classifyRuntimeEnvironmentHost } from '../../../shared/runtime-environment-host-kind'
@@ -11,19 +11,19 @@ import type {
 } from '../../../shared/ssh-types'
 import { managedServerUpdateDeps } from '../../ssh/managed-server-update-deps'
 import {
-  ensureOrcadManagedTunnel,
-  rebuildOrcadManagedTunnel
-} from '../../managed-server/lifecycle/orcad-managed-tunnel'
-import { verifyOrcadManagedServing } from '../../managed-server/lifecycle/orcad-managed-serving-verify'
+  ensureOCCdManagedTunnel,
+  rebuildOCCdManagedTunnel
+} from '../../managed-server/lifecycle/occd-managed-tunnel'
+import { verifyOCCdManagedServing } from '../../managed-server/lifecycle/occd-managed-serving-verify'
 import {
-  MANAGED_ORCAD_NOT_ACTIVATED_DETAIL,
-  setManagedOrcadStartListener,
-  type OrcadManagedServing
-} from '../../managed-server/lifecycle/orcad-managed-serving'
+  MANAGED_OCCD_NOT_ACTIVATED_DETAIL,
+  setManagedOCCdStartListener,
+  type OCCdManagedServing
+} from '../../managed-server/lifecycle/occd-managed-serving'
 import {
-  redeployStoppedManagedOrcad,
-  updateManagedOrcadOnRestore
-} from '../../managed-server/lifecycle/orcad-managed-update-on-restore'
+  redeployStoppedManagedOCCd,
+  updateManagedOCCdOnRestore
+} from '../../managed-server/lifecycle/occd-managed-update-on-restore'
 import { getSshHostServerStatus, setSshHostServerStatus } from '../../ssh/ssh-host-server-status'
 import { getSshTargetRegistryStore } from '../../ssh/targets/ssh-target-registry'
 import { connectionManager, getCurrentMainWindow } from '../ssh/ssh-ipc-context'
@@ -47,10 +47,10 @@ export async function resolveManagedRuntimeEnvironment(
   const host = classifyRuntimeEnvironmentHost(environment)
   switch (host.kind) {
     case 'wsl':
-      await prepareWslHostForCall(environment, preparation)
+      await prepareWslHostFoccll(environment, preparation)
       break
     case 'network':
-      await prepareNetworkServerForCall(userDataPath, environment)
+      await prepareNetworkServerFoccll(userDataPath, environment)
       break
   }
   return resolveEnvironment(userDataPath, environment.id)
@@ -65,11 +65,11 @@ export async function requireWslHostWithoutStart(
   const environment = resolveEnvironment(userDataPath, selector)
   if (classifyRuntimeEnvironmentHost(environment).kind === 'wsl') {
     assertWslHostReachable(environment)
-    await prepareWslHostForCall(environment, preparation)
+    await prepareWslHostFoccll(environment, preparation)
   }
 }
 
-async function prepareWslHostForCall(
+async function prepareWslHostFoccll(
   environment: KnownRuntimeEnvironment,
   preparation: ManagedRuntimeCallPreparation | undefined
 ): Promise<void> {
@@ -77,7 +77,7 @@ async function prepareWslHostForCall(
     const gate = getWslHostPhoneGate()
     if (!gate) {
       const distro =
-        environment.orcadDeployment?.kind === 'wsl' ? environment.orcadDeployment.distro : null
+        environment.occdDeployment?.kind === 'wsl' ? environment.occdDeployment.distro : null
       throw wslHostPhoneRefusal('unavailable', distro ?? environment.id)
     }
     await gate.requireRunningWithoutStart(environment.id)
@@ -87,36 +87,36 @@ async function prepareWslHostForCall(
   await getWslHostService()?.ensureForRuntimeCall(environment.id)
 }
 
-async function prepareNetworkServerForCall(
+async function prepareNetworkServerFoccll(
   userDataPath: string,
   environment: KnownRuntimeEnvironment
 ): Promise<void> {
-  await ensureOrcadManagedTunnel(userDataPath, environment.id)
+  await ensureOCCdManagedTunnel(userDataPath, environment.id)
   restoreForwardsOverTunnel(environment)
   // Calls must restart managed servers stopped by idle timeout, kill or host reboot.
-  const serving = await verifyOrcadManagedServing(userDataPath, environment.id)
+  const serving = await verifyOCCdManagedServing(userDataPath, environment.id)
   const createDeps = () => ({
     ...managedServerUpdateDeps(userDataPath),
     target: () => {
-      const targetId = getOrcadSshDeployment(environment)?.sshTargetId
+      const targetId = getOCCdSshDeployment(environment)?.sshTargetId
       return targetId ? (getSshTargetRegistryStore()?.getTarget(targetId) ?? null) : null
     },
     publish: publishRestoreUpdate
   })
   if (isStoppedElsewhere(serving)) {
     // Await redeployment: another desktop can stop the server mid-session.
-    if (await redeployStoppedManagedOrcad(environment.id, createDeps)) {
-      const targetId = getOrcadSshDeployment(environment)?.sshTargetId
+    if (await redeployStoppedManagedOCCd(environment.id, createDeps)) {
+      const targetId = getOCCdSshDeployment(environment)?.sshTargetId
       if (targetId) {
         await forgetLaunchSessionVerdictLazily(targetId)
       }
       // Redeployment may change the server port behind the existing forward.
-      await rebuildOrcadManagedTunnel(userDataPath, environment.id)
+      await rebuildOCCdManagedTunnel(userDataPath, environment.id)
     }
   } else {
     // Auto-restored hosts may never get an SSH connect to trigger their update.
-    const update = updateManagedOrcadOnRestore(environment.id, createDeps)
-    const targetId = getOrcadSshDeployment(environment)?.sshTargetId
+    const update = updateManagedOCCdOnRestore(environment.id, createDeps)
+    const targetId = getOCCdSshDeployment(environment)?.sshTargetId
     if (targetId) {
       // Publish the warning after update status settles; import lazily to break the publishing cycle.
       void Promise.resolve(update)
@@ -131,7 +131,7 @@ async function prepareNetworkServerForCall(
 
 // The tunnel proves the host served even when no update check or start publishes its status (#32484).
 function restoreForwardsOverTunnel(environment: KnownRuntimeEnvironment): void {
-  const targetId = getOrcadSshDeployment(environment)?.sshTargetId
+  const targetId = getOCCdSshDeployment(environment)?.sshTargetId
   if (targetId) {
     void restoreManagedHostPortForwards(targetId, { tunnelUp: true })
   }
@@ -143,8 +143,8 @@ async function forgetLaunchSessionVerdictLazily(targetId: string): Promise<void>
   forgetLaunchSessionVerdict(targetId)
 }
 
-function isStoppedElsewhere(serving: OrcadManagedServing): boolean {
-  return serving.state === 'unverifiable' && serving.detail === MANAGED_ORCAD_NOT_ACTIVATED_DETAIL
+function isStoppedElsewhere(serving: OCCdManagedServing): boolean {
+  return serving.state === 'unverifiable' && serving.detail === MANAGED_OCCD_NOT_ACTIVATED_DETAIL
 }
 
 function publishRestoreUpdate(
@@ -161,8 +161,8 @@ function publishRestoreUpdate(
   )
 }
 
-export function installManagedOrcadStartStatus(): void {
-  setManagedOrcadStartListener({
+export function installManagedOCCdStartStatus(): void {
+  setManagedOCCdStartListener({
     starting: (target) =>
       publishHostServerStatus(target.id, { kind: 'setting-up', phase: 'starting' }),
     settled: (target, environmentId, serving) => {

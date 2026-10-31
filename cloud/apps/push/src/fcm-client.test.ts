@@ -42,7 +42,7 @@ function client(response: FcmResponse) {
   return {
     fake,
     client: new FcmClient({
-      projectId: 'onorca-cloud',
+      projectId: 'onocc-cloud',
       now: () => NOW,
       accessToken: async () => 'access-token',
       transport: fake.transport
@@ -55,7 +55,7 @@ describe('fcm client', () => {
     const { fake, client: fcm } = client({ status: 200, body: '{"name":"projects/x/messages/1"}' })
     await expect(fcm.send(delivery(), { token: TOKEN })).resolves.toEqual({ status: 'sent' })
     const request = fake.requests[0]!
-    expect(request.url).toBe('https://fcm.googleapis.com/v1/projects/onorca-cloud/messages:send')
+    expect(request.url).toBe('https://fcm.googleapis.com/v1/projects/onocc-cloud/messages:send')
     expect(request.accessToken).toBe('access-token')
     expect(JSON.parse(request.body)).toEqual({
       message: {
@@ -65,7 +65,7 @@ describe('fcm client', () => {
           title: 'Agent needs input',
           message: 'Waiting on your answer',
           tag: delivery().collapseId,
-          channelId: 'orca-desktop',
+          channelId: 'occ-desktop',
           hostFingerprint: HOST,
           paneKey: 'tab-b:pane-1',
           worktreeId: 'wt-1',
@@ -164,7 +164,7 @@ describe('fcm client', () => {
       retryAfterMs: 10000
     })
     const broken = new FcmClient({
-      projectId: 'onorca-cloud',
+      projectId: 'onocc-cloud',
       now: () => NOW,
       accessToken: async () => 'access-token',
       transport: async () => {

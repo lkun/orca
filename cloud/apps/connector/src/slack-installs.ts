@@ -1,4 +1,4 @@
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import { openSecret, sealSecret } from './slack-sealing.js'
 
 // appId is null for a workspace installed before apps were rows: only the legacy env-secret route

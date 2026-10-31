@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createStore } from 'zustand/vanilla'
 import {
-  resetStartupActionsSelectorCacheForTest,
+  resetStartupActionsSelectocccheForTest,
   selectStartupActions,
   type StartupActions
 } from './startup-actions-selector'
@@ -17,7 +17,7 @@ function makeActions(): StartupActions {
     fetchAllWorktrees: vi.fn(),
     fetchWorktrees: vi.fn(),
     fetchWorktreeLineage: vi.fn(),
-    fetchOrcaProfiles: vi.fn(),
+    fetchOCCProfiles: vi.fn(),
     fetchSettings: vi.fn(),
     awaitOwnerWorktreeVisibilityDefaultsHydration: vi.fn(),
     fetchKeybindings: vi.fn(),
@@ -41,7 +41,7 @@ function makeActions(): StartupActions {
 
 describe('startup action selector', () => {
   beforeEach(() => {
-    resetStartupActionsSelectorCacheForTest()
+    resetStartupActionsSelectocccheForTest()
   })
 
   it('reuses one action bundle across 1,000 repeated reads', () => {

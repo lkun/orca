@@ -205,7 +205,7 @@ importers:
       '@linear/sdk':
         specifier: ^97.0.0
         version: 97.0.0(graphql@16.14.2)
-      '@orca/process-host':
+      '@occ/process-host':
         specifier: workspace:*
         version: link:src/packages/process-host
       '@parcel/watcher':
@@ -651,10 +651,10 @@ importers:
         specifier: ^5.0.15
         version: 5.0.15(@types/react@19.2.18)(@types/use-sync-external-store@0.0.6)(react@19.2.8)(use-sync-external-store@1.6.0(@types/react@19.2.18)(react@19.2.8))
     optionalDependencies:
-      '@orca/windows-registry':
+      '@occ/windows-registry':
         specifier: workspace:*
         version: link:native/windows-registry
-      '@orca/windows-security':
+      '@occ/windows-security':
         specifier: workspace:*
         version: link:native/windows-security
       '@vscode/windows-process-tree':

@@ -29,8 +29,8 @@ import type {
 } from '../scheduling-automations/automation-owner-projection'
 import type { ProfileStatePersistenceAuthority } from './profile-state-authority'
 import type { AutomationRun } from '../../../shared/automations-types'
-import { resolveNewPaneShellPath } from '../migrating-orcad-catalog/orcad-shell-history-installer'
-import { OrcadTerminalRestoreHintStore } from '../migrating-orcad-catalog/orcad-terminal-restore-hint-store'
+import { resolveNewPaneShellPath } from '../migrating-occd-catalog/occd-shell-history-installer'
+import { OCCdTerminalRestoreHintStore } from '../migrating-occd-catalog/occd-terminal-restore-hint-store'
 
 export type DurableProfileStateMutation<T> = {
   value: T
@@ -58,8 +58,8 @@ export class StoreRuntimeState {
   automationListProjectionCache: AutomationListProjectionCache | null = null
   activeViewPreference!: ActiveViewPreference
   readonly terminalScrollbackSnapshotStorage: TerminalScrollbackSnapshotStorage
-  readonly orcadMigrationBlobRoot: string
-  readonly orcadTerminalRestoreHints: OrcadTerminalRestoreHintStore
+  readonly occdMigrationBlobRoot: string
+  readonly occdTerminalRestoreHints: OCCdTerminalRestoreHintStore
   /** Retain exported scrollback blobs until their in-flight migrations finish reading. */
   readonly retainedScrollbackRefsByMigrationId = new Map<string, ReadonlySet<string>>()
   writeTimer: ReturnType<typeof setTimeout> | null = null
@@ -77,7 +77,7 @@ export class StoreRuntimeState {
   lastWrittenStateHash: string | null = null
   lastDurableWriteGeneration = -1
   /** Required durable generation for locally committed migrations; disk-loaded receipts have no entry. */
-  readonly orcadMigrationCommitWriteGenerations = new Map<string, number>()
+  readonly occdMigrationCommitWriteGenerations = new Map<string, number>()
   firstPendingSaveAt: number | null = null
   /** Null requests complete-document fallback. */
   dirtyProfileStateDomains: Set<string> | null = new Set()
@@ -136,7 +136,7 @@ export class StoreRuntimeState {
       snapshotRoot: profileSnapshotRoot,
       fallbackSnapshotRoot: legacySnapshotRoot === profileSnapshotRoot ? null : legacySnapshotRoot
     }
-    this.orcadMigrationBlobRoot = join(dirname(this.dataFile), 'orcad-migration-blobs')
-    this.orcadTerminalRestoreHints = new OrcadTerminalRestoreHintStore(this.orcadMigrationBlobRoot)
+    this.occdMigrationBlobRoot = join(dirname(this.dataFile), 'occd-migration-blobs')
+    this.occdTerminalRestoreHints = new OCCdTerminalRestoreHintStore(this.occdMigrationBlobRoot)
   }
 }

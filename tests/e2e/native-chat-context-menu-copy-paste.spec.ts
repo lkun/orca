@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   waitForActivePaneHookDescriptor,
@@ -18,21 +18,21 @@ const SECOND = 'Secondparagraph echo foxtrot golf.'
 const PASTED = 'Clipboard text belongs in this composer.'
 
 test('chat right-click offers Copy for selected text and Paste in the composer only', async ({
-  orcaPage,
+  occPage,
   electronApp
 }, testInfo) => {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
-  await waitForActiveTerminalManager(orcaPage, 30_000)
-  const boundPane = await waitForPaneIdentitySnapshot(orcaPage, 1)
-  const ptyId = await waitForActivePanePtyId(orcaPage)
-  await waitForPtyShellEcho(orcaPage, ptyId, 15_000)
-  const descriptor = await waitForActivePaneHookDescriptor(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
+  await waitForActiveTerminalManager(occPage, 30_000)
+  const boundPane = await waitForPaneIdentitySnapshot(occPage, 1)
+  const ptyId = await waitForActivePanePtyId(occPage)
+  await waitForPtyShellEcho(occPage, ptyId, 15_000)
+  const descriptor = await waitForActivePaneHookDescriptor(occPage)
   expect(descriptor.paneKey).toBe(`${boundPane.tabId}:${boundPane.activeLeafId}`)
   const [tabId] = descriptor.paneKey.split(':')
   const sessionId = `e2e-context-menu-${randomUUID()}`
-  const scratchDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-native-chat-menu-'))
+  const scratchDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-native-chat-menu-'))
   const transcriptPath = path.join(scratchDir, `${sessionId}.jsonl`)
   const row = (index: number, role: 'user' | 'assistant', text: string): string =>
     JSON.stringify({
@@ -46,7 +46,7 @@ test('chat right-click offers Copy for selected text and Paste in the composer o
     transcriptPath,
     `${row(0, 'user', 'Question alpha')}\n${row(1, 'assistant', `${FIRST}\n\n${SECOND}`)}\n`
   )
-  const finishLifetime = await observeTranscriptPaneLifetime(orcaPage, {
+  const finishLifetime = await observeTranscriptPaneLifetime(occPage, {
     tabId,
     worktreeId: descriptor.worktreeId,
     paneKey: descriptor.paneKey
@@ -88,7 +88,7 @@ test('chat right-click offers Copy for selected text and Paste in the composer o
     await electronApp.evaluate(({ ipcMain }, pasteText) => {
       ipcMain.removeHandler('clipboard:writeText')
       ipcMain.handle('clipboard:writeText', (_event, text: string) => {
-        process.env.ORCA_E2E_COPIED_TEXT = text
+        process.env.OCC_E2E_COPIED_TEXT = text
       })
       ipcMain.removeHandler('clipboard:readText')
       ipcMain.handle('clipboard:readText', () => pasteText)
@@ -99,11 +99,11 @@ test('chat right-click offers Copy for selected text and Paste in the composer o
     }, PASTED)
     const takeCopiedText = (): Promise<string | null> =>
       electronApp.evaluate(() => {
-        const text = process.env.ORCA_E2E_COPIED_TEXT ?? null
-        delete process.env.ORCA_E2E_COPIED_TEXT
+        const text = process.env.OCC_E2E_COPIED_TEXT ?? null
+        delete process.env.OCC_E2E_COPIED_TEXT
         return text
       })
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       async ({ paneKey, worktreeId, sessionId, transcriptPath, tabId }) => {
         const settings = await window.api.settings.set({
           nativeChatProviders: { claude: true, codex: true }
@@ -132,10 +132,10 @@ test('chat right-click offers Copy for selected text and Paste in the composer o
       },
       { ...descriptor, sessionId, transcriptPath, tabId }
     )
-    const first = orcaPage.getByText(FIRST)
-    const second = orcaPage.getByText(SECOND)
+    const first = occPage.getByText(FIRST)
+    const second = occPage.getByText(SECOND)
     await expect(first).toBeVisible({ timeout: 30_000 })
-    const menu = orcaPage.locator('[data-native-chat-context-menu]')
+    const menu = occPage.locator('[data-native-chat-context-menu]')
     const copy = menu.getByRole('menuitem', { name: /^Copy\s*(⌘C|Ctrl\+C)$/ })
     const paste = menu.getByRole('menuitem', { name: 'Paste', exact: true })
 
@@ -152,7 +152,7 @@ test('chat right-click offers Copy for selected text and Paste in the composer o
     await copy.click()
     await expect.poll(takeCopiedText).toContain(FIRST)
     await expect
-      .poll(() => orcaPage.evaluate(() => window.getSelection()?.toString() ?? ''))
+      .poll(() => occPage.evaluate(() => window.getSelection()?.toString() ?? ''))
       .toContain(FIRST)
 
     if (process.platform === 'darwin') {
@@ -162,7 +162,7 @@ test('chat right-click offers Copy for selected text and Paste in the composer o
       await expect.poll(takeCopiedText).toContain(FIRST)
     }
 
-    const composer = orcaPage.locator('[data-native-chat-root="true"]').getByRole('textbox')
+    const composer = occPage.locator('[data-native-chat-root="true"]').getByRole('textbox')
     await composer.click()
     await expect(composer).toBeFocused()
     await composer.click({ button: 'right' })
@@ -171,11 +171,11 @@ test('chat right-click offers Copy for selected text and Paste in the composer o
       .toContainEqual({ label: 'Paste', enabled: true })
     await nativeMenu.evaluate((menu) => menu.paste())
     await expect(composer).toHaveText(PASTED)
-    const finalPane = await waitForPaneIdentitySnapshot(orcaPage, 1)
+    const finalPane = await waitForPaneIdentitySnapshot(occPage, 1)
     expect(finalPane.tabId).toBe(boundPane.tabId)
     expect(finalPane.activeLeafId).toBe(boundPane.activeLeafId)
     expect(finalPane.ptyIdsByLeafId).toEqual(boundPane.ptyIdsByLeafId)
-    await expect(orcaPage.locator('[data-native-chat-root="true"]')).toBeVisible()
+    await expect(occPage.locator('[data-native-chat-root="true"]')).toBeVisible()
   } finally {
     await nativeMenu.evaluate((menu) => menu.restore())
     await nativeMenu.dispose()

@@ -68,7 +68,7 @@ function renderQuickActions(initialStatuses: Map<string, unknown>, query: string
 
 describe('worktree jump palette quick action availability', () => {
   beforeEach(() => {
-    ;(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ = true
+    ;(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ = true
     mocks.state = {
       activeView: 'terminal',
       activeWorktreeId: WORKTREE_ID,
@@ -81,7 +81,7 @@ describe('worktree jump palette quick action availability', () => {
     }
   })
   afterEach(() => {
-    delete (globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__
+    delete (globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__
   })
 
   it.each([

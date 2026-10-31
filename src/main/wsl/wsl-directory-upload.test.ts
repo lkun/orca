@@ -13,10 +13,10 @@ import {
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { spawnProcess } from '@orca/process-host'
-import type { PipedChildProcess } from '@orca/process-host/process-spec'
+import { spawnProcess } from '@occ/process-host'
+import type { PipedChildProcess } from '@occ/process-host/process-spec'
 import { uploadDirectoryIntoWsl, wslGuestSourcePath } from './wsl-directory-upload'
-import { createWslOrcadHostTransport, type WslOrcadHostTransport } from './wsl-orcad-host-transport'
+import { createWslOCCdHostTransport, type WslOCCdHostTransport } from './wsl-occd-host-transport'
 
 function hasSha256sum(): boolean {
   try {
@@ -34,12 +34,12 @@ describe('wslGuestSourcePath', () => {
   })
 
   it('maps a drive-letter directory onto its /mnt automount', () => {
-    expect(wslGuestSourcePath('C:\\Users\\me\\orcad', 'Ubuntu')).toBe('/mnt/c/Users/me/orcad')
+    expect(wslGuestSourcePath('C:\\Users\\me\\occd', 'Ubuntu')).toBe('/mnt/c/Users/me/occd')
   })
 
   it('leaves a source with no drive letter to the tar stream', () => {
-    expect(wslGuestSourcePath('/opt/orcad', 'Ubuntu')).toBeNull()
-    expect(wslGuestSourcePath('\\\\server\\share\\orcad', 'Ubuntu')).toBeNull()
+    expect(wslGuestSourcePath('/opt/occd', 'Ubuntu')).toBeNull()
+    expect(wslGuestSourcePath('\\\\server\\share\\occd', 'Ubuntu')).toBeNull()
   })
 
   it('reads the same distro directly but not another distro', () => {
@@ -57,10 +57,10 @@ describe.skipIf(process.platform === 'win32' || !hasSha256sum())('uploadDirector
   let source: string
   let dest: string
   let commands: string[]
-  const transports: WslOrcadHostTransport[] = []
+  const transports: WslOCCdHostTransport[] = []
   const children: PipedChildProcess[] = []
 
-  const getTransport = (): WslOrcadHostTransport => {
+  const getTransport = (): WslOCCdHostTransport => {
     const transport = transports.at(-1)
     if (!transport) {
       throw new Error('WSL test transport was not initialized')
@@ -73,7 +73,7 @@ describe.skipIf(process.platform === 'win32' || !hasSha256sum())('uploadDirector
     source = join(root, 'source')
     dest = join(root, 'dest')
     commands = []
-    const transport = createWslOrcadHostTransport({
+    const transport = createWslOCCdHostTransport({
       target: { kind: 'wsl', id: 'env-test', distro: 'test', label: 'test' },
       spawn: (spec) => {
         const args = spec.args ?? []
@@ -110,7 +110,7 @@ describe.skipIf(process.platform === 'win32' || !hasSha256sum())('uploadDirector
     expect(readFileSync(join(dest, "it's here.txt"), 'utf8')).toBe('quoted')
     expect(statSync(join(dest, 'large.bin')).size).toBe(3 * 1024 * 1024 + 7)
     expect(existsSync(join(dest, 'empty'))).toBe(true)
-    expect(readdirSync(dest).filter((name) => name.startsWith('.orca-upload-'))).toEqual([])
+    expect(readdirSync(dest).filter((name) => name.startsWith('.occ-upload-'))).toEqual([])
   }
 
   it('streams a tar when the guest cannot see the source', async () => {
@@ -148,7 +148,7 @@ describe.skipIf(process.platform === 'win32' || !hasSha256sum())('uploadDirector
       /digest check/
     )
     expect(existsSync(join(dest, 'large.bin'))).toBe(false)
-    expect(readdirSync(dest).filter((name) => name.startsWith('.orca-upload-'))).toEqual([])
+    expect(readdirSync(dest).filter((name) => name.startsWith('.occ-upload-'))).toEqual([])
   })
 
   it('writes a file atomically through stdin', async () => {

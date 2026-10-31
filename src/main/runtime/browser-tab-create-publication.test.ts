@@ -38,9 +38,9 @@ vi.mock('../browser/browser-main-window-readiness', () => ({
 
 vi.mock('../browser/browser-session-registry', () => ({
   browserSessionRegistry: {
-    getDefaultProfile: () => ({ id: 'default', partition: 'persist:orca-browser' }),
+    getDefaultProfile: () => ({ id: 'default', partition: 'persist:occ-browser' }),
     getProfile: () => null,
-    resolveKnownPartition: () => 'persist:orca-browser'
+    resolveKnownPartition: () => 'persist:occ-browser'
   }
 }))
 

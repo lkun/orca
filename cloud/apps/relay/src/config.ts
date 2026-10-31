@@ -8,7 +8,7 @@ import {
   relayCellAdmissionBounds,
   type RelayCellConnectionHardCap,
   type RelayRegion
-} from '@orca-cloud/relay-contract'
+} from '@occ-cloud/relay-contract'
 import {
   RELAY_MAX_READINESS_GRACE_MS,
   RELAY_READINESS_JWKS_GRACE_MS,
@@ -45,67 +45,67 @@ const readinessGraceSchema = (defaultMs: number) =>
 
 const EnvSchema = z.object({
   PORT: z.coerce.number().int().positive().default(8080),
-  ORCA_RELAY_PUBLIC_URL: z.string().url(),
-  ORCA_RELAY_CELL_URL: z.string().url(),
-  ORCA_RELAY_AUTH_ISSUER: z.string().url(),
-  ORCA_RELAY_AUTH_AUDIENCE: z.literal('orca-relay').default('orca-relay'),
-  ORCA_RELAY_JWKS_URL: z.string().url(),
-  ORCA_RELAY_ASSIGNMENT_SIGNING_KEY: z.string().min(32),
-  ORCA_RELAY_ROLE: z.enum(['combined', 'director', 'cell']).default('combined'),
-  ORCA_RELAY_CELL_ID: z.string().min(1).max(128).default('combined'),
-  ORCA_RELAY_REGION: RelayRegionSchema.default(RELAY_DEFAULT_REGION),
-  ORCA_RELAY_CELL_CAPACITY: z.coerce
+  OCC_RELAY_PUBLIC_URL: z.string().url(),
+  OCC_RELAY_CELL_URL: z.string().url(),
+  OCC_RELAY_AUTH_ISSUER: z.string().url(),
+  OCC_RELAY_AUTH_AUDIENCE: z.literal('occ-relay').default('occ-relay'),
+  OCC_RELAY_JWKS_URL: z.string().url(),
+  OCC_RELAY_ASSIGNMENT_SIGNING_KEY: z.string().min(32),
+  OCC_RELAY_ROLE: z.enum(['combined', 'director', 'cell']).default('combined'),
+  OCC_RELAY_CELL_ID: z.string().min(1).max(128).default('combined'),
+  OCC_RELAY_REGION: RelayRegionSchema.default(RELAY_DEFAULT_REGION),
+  OCC_RELAY_CELL_CAPACITY: z.coerce
     .number()
     .int()
     .positive()
     .max(RELAY_MAX_CELL_CAPACITY_REQUESTS)
     .default(900),
-  ORCA_RELAY_CELL_CONNECTION_HARD_CAP: z.coerce
+  OCC_RELAY_CELL_CONNECTION_HARD_CAP: z.coerce
     .number()
     .int()
     .pipe(RelayCellConnectionHardCapSchema)
     .optional(),
-  ORCA_RELAY_CELL_CONNECTION_UNOBSERVED_BOUND: z.coerce
+  OCC_RELAY_CELL_CONNECTION_UNOBSERVED_BOUND: z.coerce
     .number()
     .int()
     .nonnegative()
     .max(RELAY_MAX_CELL_CONNECTION_UNOBSERVED_BOUND)
     .optional(),
-  ORCA_RELAY_CELLS_JSON: z.string().default('[]'),
-  ORCA_RELAY_ADMIN_AUDIENCE: z.string().url(),
-  ORCA_RELAY_DEPLOY_SERVICE_ACCOUNT: z.string().email(),
-  ORCA_RELAY_CAPACITY_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
-  ORCA_RELAY_ASIA_PROOF_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
-  ORCA_RELAY_MONITOR_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
-  ORCA_RELAY_FENCE_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
-  ORCA_RELAY_FENCE_BROKER_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
-  ORCA_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
-  ORCA_RELAY_REHOME_AUDIENCE: z.preprocess(
+  OCC_RELAY_CELLS_JSON: z.string().default('[]'),
+  OCC_RELAY_ADMIN_AUDIENCE: z.string().url(),
+  OCC_RELAY_DEPLOY_SERVICE_ACCOUNT: z.string().email(),
+  OCC_RELAY_CAPACITY_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
+  OCC_RELAY_ASIA_PROOF_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
+  OCC_RELAY_MONITOR_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
+  OCC_RELAY_FENCE_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
+  OCC_RELAY_FENCE_BROKER_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
+  OCC_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT: OptionalServiceAccountSchema,
+  OCC_RELAY_REHOME_AUDIENCE: z.preprocess(
     (value) => (value === '' ? undefined : value),
     z.string().url().optional()
   ),
-  ORCA_RELAY_RUNTIME_SERVICE_ACCOUNT: z.string().email().optional(),
-  ORCA_RELAY_DIRECTOR_URL: z.string().url().optional(),
-  ORCA_RELAY_HEARTBEAT_AUDIENCE: z.string().url().optional(),
-  ORCA_RELAY_IMAGE_DIGEST: z
+  OCC_RELAY_RUNTIME_SERVICE_ACCOUNT: z.string().email().optional(),
+  OCC_RELAY_DIRECTOR_URL: z.string().url().optional(),
+  OCC_RELAY_HEARTBEAT_AUDIENCE: z.string().url().optional(),
+  OCC_RELAY_IMAGE_DIGEST: z
     .string()
     .regex(/^sha256:[a-f0-9]{64}$/)
     .optional(),
-  ORCA_RELAY_ADMIN_JWKS_URL: z.string().url().default('https://www.googleapis.com/oauth2/v3/certs'),
-  ORCA_RELAY_DATABASE_POOL_MAX: z.coerce.number().int().positive().max(100).optional(),
-  ORCA_RELAY_READINESS_JWKS_GRACE_MS: readinessGraceSchema(RELAY_READINESS_JWKS_GRACE_MS),
-  ORCA_RELAY_READINESS_SQL_GRACE_MS: readinessGraceSchema(RELAY_READINESS_SQL_GRACE_MS),
-  ORCA_RELAY_PUBLIC_ASSIGNMENTS_ENABLED: EnvironmentBooleanSchema,
-  ORCA_RELAY_REGIONAL_PLACEMENT_ENABLED: EnvironmentBooleanSchema,
-  ORCA_RELAY_REGION_CORRECTION_COHORT_PERCENT: z.coerce.number().int().min(0).max(100).default(0),
+  OCC_RELAY_ADMIN_JWKS_URL: z.string().url().default('https://www.googleapis.com/oauth2/v3/certs'),
+  OCC_RELAY_DATABASE_POOL_MAX: z.coerce.number().int().positive().max(100).optional(),
+  OCC_RELAY_READINESS_JWKS_GRACE_MS: readinessGraceSchema(RELAY_READINESS_JWKS_GRACE_MS),
+  OCC_RELAY_READINESS_SQL_GRACE_MS: readinessGraceSchema(RELAY_READINESS_SQL_GRACE_MS),
+  OCC_RELAY_PUBLIC_ASSIGNMENTS_ENABLED: EnvironmentBooleanSchema,
+  OCC_RELAY_REGIONAL_PLACEMENT_ENABLED: EnvironmentBooleanSchema,
+  OCC_RELAY_REGION_CORRECTION_COHORT_PERCENT: z.coerce.number().int().min(0).max(100).default(0),
   // Step 5 on directors: `off` (default) is today's path; `dry-run` asks the picked cell to
   // check a booking without making it, and logs the answer; `on` places on switched-on cells.
-  ORCA_RELAY_RESERVE_PLACEMENT: z.enum(['off', 'dry-run', 'on']).default('off'),
+  OCC_RELAY_RESERVE_PLACEMENT: z.enum(['off', 'dry-run', 'on']).default('off'),
   // Step 1 C: this share of hosts (by hash) on a reserve cell outside their region is booked
   // in it on reconnect; 0 (default) is off.
-  ORCA_RELAY_RESERVE_REHOME_PERCENT: z.coerce.number().int().min(0).max(100).default(0),
+  OCC_RELAY_RESERVE_REHOME_PERCENT: z.coerce.number().int().min(0).max(100).default(0),
   // Step 3 shadow directory: unset or empty polls no cell; `all` or a comma list of cell ids.
-  ORCA_RELAY_SHADOW_SEAT_FEED_CELLS: z
+  OCC_RELAY_SHADOW_SEAT_FEED_CELLS: z
     .string()
     .default('')
     .transform((value) =>
@@ -116,47 +116,47 @@ const EnvSchema = z.object({
             .map((cellId) => cellId.trim())
             .filter((cellId) => cellId.length > 0)
     ),
-  ORCA_RELAY_PUBLIC_ASSIGNMENT_CONCURRENCY: z.coerce.number().int().positive().max(100).default(2),
-  ORCA_RELAY_PUBLIC_STICKY_CONCURRENCY: z.coerce.number().int().positive().max(100).default(1),
-  ORCA_RELAY_PUBLIC_STICKY_QUEUE_MAX: z.coerce.number().int().positive().max(4_096).default(64),
-  ORCA_RELAY_PUBLIC_STICKY_WAIT_MS: z.coerce.number().int().positive().max(30_000).default(2_000),
-  ORCA_RELAY_PUBLIC_STICKY_RETRY_AFTER_SECONDS: z.coerce
+  OCC_RELAY_PUBLIC_ASSIGNMENT_CONCURRENCY: z.coerce.number().int().positive().max(100).default(2),
+  OCC_RELAY_PUBLIC_STICKY_CONCURRENCY: z.coerce.number().int().positive().max(100).default(1),
+  OCC_RELAY_PUBLIC_STICKY_QUEUE_MAX: z.coerce.number().int().positive().max(4_096).default(64),
+  OCC_RELAY_PUBLIC_STICKY_WAIT_MS: z.coerce.number().int().positive().max(30_000).default(2_000),
+  OCC_RELAY_PUBLIC_STICKY_RETRY_AFTER_SECONDS: z.coerce
     .number()
     .int()
     .positive()
     .max(60)
     .default(2),
   // Borrowed from placement concurrency, which always keeps at least one permit.
-  ORCA_RELAY_DRAIN_RETURN_CONCURRENCY: z.coerce.number().int().positive().max(4).default(1),
-  ORCA_RELAY_DRAIN_RETURN_QUEUE_MAX: z.coerce.number().int().positive().max(64).default(4),
-  ORCA_RELAY_DRAIN_RETURN_WAIT_MS: z.coerce.number().int().positive().max(10_000).default(3_000),
+  OCC_RELAY_DRAIN_RETURN_CONCURRENCY: z.coerce.number().int().positive().max(4).default(1),
+  OCC_RELAY_DRAIN_RETURN_QUEUE_MAX: z.coerce.number().int().positive().max(64).default(4),
+  OCC_RELAY_DRAIN_RETURN_WAIT_MS: z.coerce.number().int().positive().max(10_000).default(3_000),
   // The desktop parser caps a Retry-After at 5 minutes; a larger value is truncated there.
-  ORCA_RELAY_DRAIN_RETURN_MAX_RETRY_AFTER_SECONDS: z.coerce
+  OCC_RELAY_DRAIN_RETURN_MAX_RETRY_AFTER_SECONDS: z.coerce
     .number()
     .int()
     .min(2)
     .max(300)
     .default(300),
-  ORCA_RELAY_PUBLIC_ASSIGNMENT_QUEUE_MAX: z.coerce
+  OCC_RELAY_PUBLIC_ASSIGNMENT_QUEUE_MAX: z.coerce
     .number()
     .int()
     .positive()
     .max(4_096)
     .default(128),
-  ORCA_RELAY_PUBLIC_ASSIGNMENT_WAIT_MS: z.coerce
+  OCC_RELAY_PUBLIC_ASSIGNMENT_WAIT_MS: z.coerce
     .number()
     .int()
     .positive()
     .max(30_000)
     .default(4_000),
-  ORCA_RELAY_PUBLIC_ASSIGNMENT_RETRY_AFTER_SECONDS: z.coerce
+  OCC_RELAY_PUBLIC_ASSIGNMENT_RETRY_AFTER_SECONDS: z.coerce
     .number()
     .int()
     .positive()
     .max(300)
     .default(5),
   DATABASE_URL: z.string().optional(),
-  ORCA_RELAY_DATA_DIR: z.string().default('./data/relay')
+  OCC_RELAY_DATA_DIR: z.string().default('./data/relay')
 })
 
 const RelayCellConfigSchema = z
@@ -206,7 +206,7 @@ export type RelayConfig = {
   publicUrl: string
   cellUrl: string
   authIssuer: string
-  authAudience: 'orca-relay'
+  authAudience: 'occ-relay'
   jwksUrl: string
   assignmentSigningKey: Uint8Array
   role: 'combined' | 'director' | 'cell'
@@ -269,52 +269,52 @@ function canonicalOrigin(value: string, name: string): string {
 export function loadRelayConfig(env: NodeJS.ProcessEnv = process.env): RelayConfig {
   const parsed = EnvSchema.parse(env)
   const adminServiceAccounts = [
-    parsed.ORCA_RELAY_DEPLOY_SERVICE_ACCOUNT,
-    parsed.ORCA_RELAY_CAPACITY_SERVICE_ACCOUNT,
-    parsed.ORCA_RELAY_ASIA_PROOF_SERVICE_ACCOUNT,
-    parsed.ORCA_RELAY_MONITOR_SERVICE_ACCOUNT,
-    parsed.ORCA_RELAY_FENCE_SERVICE_ACCOUNT,
-    parsed.ORCA_RELAY_FENCE_BROKER_SERVICE_ACCOUNT,
-    parsed.ORCA_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT
+    parsed.OCC_RELAY_DEPLOY_SERVICE_ACCOUNT,
+    parsed.OCC_RELAY_CAPACITY_SERVICE_ACCOUNT,
+    parsed.OCC_RELAY_ASIA_PROOF_SERVICE_ACCOUNT,
+    parsed.OCC_RELAY_MONITOR_SERVICE_ACCOUNT,
+    parsed.OCC_RELAY_FENCE_SERVICE_ACCOUNT,
+    parsed.OCC_RELAY_FENCE_BROKER_SERVICE_ACCOUNT,
+    parsed.OCC_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT
   ].filter((value): value is string => value !== undefined)
   if (new Set(adminServiceAccounts).size !== adminServiceAccounts.length) {
     throw new Error('relay admin service accounts must be distinct')
   }
   if (
-    (parsed.ORCA_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT === undefined) !==
-    (parsed.ORCA_RELAY_REHOME_AUDIENCE === undefined)
+    (parsed.OCC_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT === undefined) !==
+    (parsed.OCC_RELAY_REHOME_AUDIENCE === undefined)
   ) {
     throw new Error('relay rehome identity and audience must be configured together')
   }
   if (
-    parsed.ORCA_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT &&
-    parsed.ORCA_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT ===
-      (parsed.ORCA_RELAY_RUNTIME_SERVICE_ACCOUNT ?? parsed.ORCA_RELAY_DEPLOY_SERVICE_ACCOUNT)
+    parsed.OCC_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT &&
+    parsed.OCC_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT ===
+      (parsed.OCC_RELAY_RUNTIME_SERVICE_ACCOUNT ?? parsed.OCC_RELAY_DEPLOY_SERVICE_ACCOUNT)
   ) {
     throw new Error('relay rehome director identity must differ from the cell runtime identity')
   }
   if (
-    parsed.ORCA_RELAY_REHOME_AUDIENCE &&
-    new URL(parsed.ORCA_RELAY_REHOME_AUDIENCE).pathname !== '/v1/admin/host-drain'
+    parsed.OCC_RELAY_REHOME_AUDIENCE &&
+    new URL(parsed.OCC_RELAY_REHOME_AUDIENCE).pathname !== '/v1/admin/host-drain'
   ) {
     throw new Error('relay rehome audience must target the host drain route')
   }
-  const directorUrl = parsed.ORCA_RELAY_DIRECTOR_URL
-    ? canonicalOrigin(parsed.ORCA_RELAY_DIRECTOR_URL, 'ORCA_RELAY_DIRECTOR_URL')
+  const directorUrl = parsed.OCC_RELAY_DIRECTOR_URL
+    ? canonicalOrigin(parsed.OCC_RELAY_DIRECTOR_URL, 'OCC_RELAY_DIRECTOR_URL')
     : undefined
-  const publicUrl = canonicalOrigin(parsed.ORCA_RELAY_PUBLIC_URL, 'ORCA_RELAY_PUBLIC_URL')
+  const publicUrl = canonicalOrigin(parsed.OCC_RELAY_PUBLIC_URL, 'OCC_RELAY_PUBLIC_URL')
   const configuredCells = z
     .array(RelayCellConfigSchema)
     .max(128)
-    .parse(JSON.parse(parsed.ORCA_RELAY_CELLS_JSON) as unknown)
+    .parse(JSON.parse(parsed.OCC_RELAY_CELLS_JSON) as unknown)
     .map((cell) => ({ ...cell, url: canonicalOrigin(cell.url, `cell ${cell.id}`) }))
   const ownCell = {
-    id: parsed.ORCA_RELAY_CELL_ID,
-    region: parsed.ORCA_RELAY_REGION,
-    url: canonicalOrigin(parsed.ORCA_RELAY_CELL_URL, 'ORCA_RELAY_CELL_URL'),
-    capacityRequests: parsed.ORCA_RELAY_CELL_CAPACITY,
-    connectionHardCap: parsed.ORCA_RELAY_CELL_CONNECTION_HARD_CAP,
-    connectionUnobservedBound: parsed.ORCA_RELAY_CELL_CONNECTION_UNOBSERVED_BOUND,
+    id: parsed.OCC_RELAY_CELL_ID,
+    region: parsed.OCC_RELAY_REGION,
+    url: canonicalOrigin(parsed.OCC_RELAY_CELL_URL, 'OCC_RELAY_CELL_URL'),
+    capacityRequests: parsed.OCC_RELAY_CELL_CAPACITY,
+    connectionHardCap: parsed.OCC_RELAY_CELL_CONNECTION_HARD_CAP,
+    connectionUnobservedBound: parsed.OCC_RELAY_CELL_CONNECTION_UNOBSERVED_BOUND,
     initiallyEnabled: true
   }
   if (
@@ -330,25 +330,25 @@ export function loadRelayConfig(env: NodeJS.ProcessEnv = process.env): RelayConf
   ) {
     throw new Error('connection unobserved bound must leave ordinary admission capacity')
   }
-  const cells = parsed.ORCA_RELAY_ROLE === 'director' ? configuredCells : [ownCell]
+  const cells = parsed.OCC_RELAY_ROLE === 'director' ? configuredCells : [ownCell]
   if (cells.length === 0) throw new Error('director requires at least one configured cell')
   if (new Set(cells.map(({ id }) => id)).size !== cells.length) {
     throw new Error('relay cell ids must be unique')
   }
   const databasePoolMax =
-    parsed.ORCA_RELAY_DATABASE_POOL_MAX ??
-    (parsed.ORCA_RELAY_ROLE === 'director'
+    parsed.OCC_RELAY_DATABASE_POOL_MAX ??
+    (parsed.OCC_RELAY_ROLE === 'director'
       ? RELAY_DIRECTOR_DATABASE_POOL_MAX
       : RELAY_DATABASE_POOL_MAX)
   if (
-    parsed.ORCA_RELAY_ROLE !== 'cell' &&
-    parsed.ORCA_RELAY_PUBLIC_ASSIGNMENT_CONCURRENCY >= databasePoolMax
+    parsed.OCC_RELAY_ROLE !== 'cell' &&
+    parsed.OCC_RELAY_PUBLIC_ASSIGNMENT_CONCURRENCY >= databasePoolMax
   ) {
     throw new Error('public relay admission must leave database pool headroom')
   }
   if (
-    parsed.ORCA_RELAY_ROLE !== 'cell' &&
-    parsed.ORCA_RELAY_PUBLIC_ASSIGNMENT_CONCURRENCY + parsed.ORCA_RELAY_PUBLIC_STICKY_CONCURRENCY >
+    parsed.OCC_RELAY_ROLE !== 'cell' &&
+    parsed.OCC_RELAY_PUBLIC_ASSIGNMENT_CONCURRENCY + parsed.OCC_RELAY_PUBLIC_STICKY_CONCURRENCY >
       databasePoolMax
   ) {
     throw new Error('sticky and placement admission together must fit the database pool')
@@ -357,59 +357,59 @@ export function loadRelayConfig(env: NodeJS.ProcessEnv = process.env): RelayConf
     port: parsed.PORT,
     publicUrl,
     cellUrl: ownCell.url,
-    authIssuer: canonicalOrigin(parsed.ORCA_RELAY_AUTH_ISSUER, 'ORCA_RELAY_AUTH_ISSUER'),
-    authAudience: parsed.ORCA_RELAY_AUTH_AUDIENCE,
-    jwksUrl: parsed.ORCA_RELAY_JWKS_URL,
-    assignmentSigningKey: new TextEncoder().encode(parsed.ORCA_RELAY_ASSIGNMENT_SIGNING_KEY),
-    role: parsed.ORCA_RELAY_ROLE,
+    authIssuer: canonicalOrigin(parsed.OCC_RELAY_AUTH_ISSUER, 'OCC_RELAY_AUTH_ISSUER'),
+    authAudience: parsed.OCC_RELAY_AUTH_AUDIENCE,
+    jwksUrl: parsed.OCC_RELAY_JWKS_URL,
+    assignmentSigningKey: new TextEncoder().encode(parsed.OCC_RELAY_ASSIGNMENT_SIGNING_KEY),
+    role: parsed.OCC_RELAY_ROLE,
     cellId: ownCell.id,
     region: ownCell.region,
     cells,
-    adminAudience: parsed.ORCA_RELAY_ADMIN_AUDIENCE,
-    deployServiceAccount: parsed.ORCA_RELAY_DEPLOY_SERVICE_ACCOUNT,
-    capacityServiceAccount: parsed.ORCA_RELAY_CAPACITY_SERVICE_ACCOUNT,
-    asiaProofServiceAccount: parsed.ORCA_RELAY_ASIA_PROOF_SERVICE_ACCOUNT,
-    monitorServiceAccount: parsed.ORCA_RELAY_MONITOR_SERVICE_ACCOUNT,
-    fenceServiceAccount: parsed.ORCA_RELAY_FENCE_SERVICE_ACCOUNT,
-    fenceBrokerServiceAccount: parsed.ORCA_RELAY_FENCE_BROKER_SERVICE_ACCOUNT,
-    rehomeDirectorServiceAccount: parsed.ORCA_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT,
-    rehomeAudience: parsed.ORCA_RELAY_REHOME_AUDIENCE,
-    shadowSeatFeedCells: parsed.ORCA_RELAY_SHADOW_SEAT_FEED_CELLS,
-    reservePlacement: parsed.ORCA_RELAY_RESERVE_PLACEMENT,
-    reserveRehomePercent: parsed.ORCA_RELAY_RESERVE_REHOME_PERCENT,
+    adminAudience: parsed.OCC_RELAY_ADMIN_AUDIENCE,
+    deployServiceAccount: parsed.OCC_RELAY_DEPLOY_SERVICE_ACCOUNT,
+    capacityServiceAccount: parsed.OCC_RELAY_CAPACITY_SERVICE_ACCOUNT,
+    asiaProofServiceAccount: parsed.OCC_RELAY_ASIA_PROOF_SERVICE_ACCOUNT,
+    monitorServiceAccount: parsed.OCC_RELAY_MONITOR_SERVICE_ACCOUNT,
+    fenceServiceAccount: parsed.OCC_RELAY_FENCE_SERVICE_ACCOUNT,
+    fenceBrokerServiceAccount: parsed.OCC_RELAY_FENCE_BROKER_SERVICE_ACCOUNT,
+    rehomeDirectorServiceAccount: parsed.OCC_RELAY_REHOME_DIRECTOR_SERVICE_ACCOUNT,
+    rehomeAudience: parsed.OCC_RELAY_REHOME_AUDIENCE,
+    shadowSeatFeedCells: parsed.OCC_RELAY_SHADOW_SEAT_FEED_CELLS,
+    reservePlacement: parsed.OCC_RELAY_RESERVE_PLACEMENT,
+    reserveRehomePercent: parsed.OCC_RELAY_RESERVE_REHOME_PERCENT,
     runtimeServiceAccount:
-      parsed.ORCA_RELAY_RUNTIME_SERVICE_ACCOUNT ?? parsed.ORCA_RELAY_DEPLOY_SERVICE_ACCOUNT,
+      parsed.OCC_RELAY_RUNTIME_SERVICE_ACCOUNT ?? parsed.OCC_RELAY_DEPLOY_SERVICE_ACCOUNT,
     directorUrl,
     heartbeatAudience:
-      parsed.ORCA_RELAY_HEARTBEAT_AUDIENCE ??
-      (directorUrl || parsed.ORCA_RELAY_ROLE === 'director'
+      parsed.OCC_RELAY_HEARTBEAT_AUDIENCE ??
+      (directorUrl || parsed.OCC_RELAY_ROLE === 'director'
         ? new URL('/v1/admin/cell-heartbeat', directorUrl ?? publicUrl).toString()
         : undefined),
-    imageDigest: parsed.ORCA_RELAY_IMAGE_DIGEST,
+    imageDigest: parsed.OCC_RELAY_IMAGE_DIGEST,
     connectionHardCap: ownCell.connectionHardCap,
     connectionUnobservedBound: ownCell.connectionUnobservedBound,
-    adminJwksUrl: parsed.ORCA_RELAY_ADMIN_JWKS_URL,
+    adminJwksUrl: parsed.OCC_RELAY_ADMIN_JWKS_URL,
     databasePoolMax,
-    readinessJwksGraceMs: parsed.ORCA_RELAY_READINESS_JWKS_GRACE_MS,
-    readinessSqlGraceMs: parsed.ORCA_RELAY_READINESS_SQL_GRACE_MS,
-    publicAssignmentsEnabled: parsed.ORCA_RELAY_PUBLIC_ASSIGNMENTS_ENABLED,
-    regionalPlacementEnabled: parsed.ORCA_RELAY_REGIONAL_PLACEMENT_ENABLED,
-    regionCorrectionCohortPercent: parsed.ORCA_RELAY_REGION_CORRECTION_COHORT_PERCENT,
-    publicAssignmentConcurrency: parsed.ORCA_RELAY_PUBLIC_ASSIGNMENT_CONCURRENCY,
-    publicAssignmentQueueMax: parsed.ORCA_RELAY_PUBLIC_ASSIGNMENT_QUEUE_MAX,
-    publicAssignmentWaitMs: parsed.ORCA_RELAY_PUBLIC_ASSIGNMENT_WAIT_MS,
+    readinessJwksGraceMs: parsed.OCC_RELAY_READINESS_JWKS_GRACE_MS,
+    readinessSqlGraceMs: parsed.OCC_RELAY_READINESS_SQL_GRACE_MS,
+    publicAssignmentsEnabled: parsed.OCC_RELAY_PUBLIC_ASSIGNMENTS_ENABLED,
+    regionalPlacementEnabled: parsed.OCC_RELAY_REGIONAL_PLACEMENT_ENABLED,
+    regionCorrectionCohortPercent: parsed.OCC_RELAY_REGION_CORRECTION_COHORT_PERCENT,
+    publicAssignmentConcurrency: parsed.OCC_RELAY_PUBLIC_ASSIGNMENT_CONCURRENCY,
+    publicAssignmentQueueMax: parsed.OCC_RELAY_PUBLIC_ASSIGNMENT_QUEUE_MAX,
+    publicAssignmentWaitMs: parsed.OCC_RELAY_PUBLIC_ASSIGNMENT_WAIT_MS,
     publicResolveConcurrency: RELAY_PUBLIC_RESOLVE_CONCURRENCY,
     publicResolveWaitMs: RELAY_PUBLIC_RESOLVE_WAIT_MS,
-    publicAssignmentRetryAfterSeconds: parsed.ORCA_RELAY_PUBLIC_ASSIGNMENT_RETRY_AFTER_SECONDS,
-    publicStickyConcurrency: parsed.ORCA_RELAY_PUBLIC_STICKY_CONCURRENCY,
-    publicStickyQueueMax: parsed.ORCA_RELAY_PUBLIC_STICKY_QUEUE_MAX,
-    publicStickyWaitMs: parsed.ORCA_RELAY_PUBLIC_STICKY_WAIT_MS,
-    publicStickyRetryAfterSeconds: parsed.ORCA_RELAY_PUBLIC_STICKY_RETRY_AFTER_SECONDS,
-    drainReturnConcurrency: parsed.ORCA_RELAY_DRAIN_RETURN_CONCURRENCY,
-    drainReturnQueueMax: parsed.ORCA_RELAY_DRAIN_RETURN_QUEUE_MAX,
-    drainReturnWaitMs: parsed.ORCA_RELAY_DRAIN_RETURN_WAIT_MS,
-    drainReturnMaxRetryAfterSeconds: parsed.ORCA_RELAY_DRAIN_RETURN_MAX_RETRY_AFTER_SECONDS,
+    publicAssignmentRetryAfterSeconds: parsed.OCC_RELAY_PUBLIC_ASSIGNMENT_RETRY_AFTER_SECONDS,
+    publicStickyConcurrency: parsed.OCC_RELAY_PUBLIC_STICKY_CONCURRENCY,
+    publicStickyQueueMax: parsed.OCC_RELAY_PUBLIC_STICKY_QUEUE_MAX,
+    publicStickyWaitMs: parsed.OCC_RELAY_PUBLIC_STICKY_WAIT_MS,
+    publicStickyRetryAfterSeconds: parsed.OCC_RELAY_PUBLIC_STICKY_RETRY_AFTER_SECONDS,
+    drainReturnConcurrency: parsed.OCC_RELAY_DRAIN_RETURN_CONCURRENCY,
+    drainReturnQueueMax: parsed.OCC_RELAY_DRAIN_RETURN_QUEUE_MAX,
+    drainReturnWaitMs: parsed.OCC_RELAY_DRAIN_RETURN_WAIT_MS,
+    drainReturnMaxRetryAfterSeconds: parsed.OCC_RELAY_DRAIN_RETURN_MAX_RETRY_AFTER_SECONDS,
     databaseUrl: parsed.DATABASE_URL,
-    dataDir: parsed.ORCA_RELAY_DATA_DIR
+    dataDir: parsed.OCC_RELAY_DATA_DIR
   }
 }

@@ -1,5 +1,5 @@
 import { realpathSync } from 'node:fs'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   PROFILE_STATE_RECOVERY_FLAG,
   PROFILE_STATE_RECOVERY_RESULT_PREFIX,
@@ -10,20 +10,20 @@ import {
 import {
   getExecutableAppArgs,
   resolveAppRoot,
-  resolveForegroundOrcaExecutable,
+  resolveForegroundOCCExecutable,
   stripElectronRunAsNode
-} from './orca-app-executable'
+} from './occ-app-executable'
 import { RuntimeClientError } from './types'
-import { canStartOrcaServer } from './serve-app-launcher'
+import { canStartOCCServer } from './serve-app-launcher'
 
 export function canLaunchProfileStateRecovery(): boolean {
-  return canStartOrcaServer(process.env)
+  return canStartOCCServer(process.env)
 }
 
 export async function launchProfileStateRecovery(
   request: ProfileStateRecoveryRequest
 ): Promise<ProfileStateRollbackResult> {
-  const executable = resolveForegroundOrcaExecutable()
+  const executable = resolveForegroundOCCExecutable()
   const userDataPath = realpathSync(request.userDataPath)
   const response = await runProcess({
     program: executable,
@@ -36,8 +36,8 @@ export async function launchProfileStateRecovery(
     cwd: resolveAppRoot(),
     env: {
       ...stripElectronRunAsNode(process.env),
-      ORCA_BACKGROUND_LAUNCH: '1',
-      ORCA_USER_DATA_PATH: userDataPath
+      OCC_BACKGROUND_LAUNCH: '1',
+      OCC_USER_DATA_PATH: userDataPath
     },
     // Recovery may copy large backups; the lock owner must finish or be explicitly terminated.
     timeoutMs: null

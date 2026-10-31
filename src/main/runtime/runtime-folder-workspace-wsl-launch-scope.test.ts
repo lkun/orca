@@ -8,14 +8,14 @@ vi.mock('node:fs/promises', async (importOriginal) => ({
 }))
 
 // Fragments stay side-effect ordered: mocks, then lifecycle, then fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const {
   createFolderWorkspaceRuntimeStore,
   makeFolderProjectGroup,
   makeFolderWorkspace,
   TEST_FOLDER_WORKSPACE_KEY
-} = await import('./orca-runtime-test-fixtures.spec')
+} = await import('./occ-runtime-test-fixtures.spec')
 const { blockedWslDistroForPath } = await import('../wsl/wsl-unc-access-gate')
 const { isWslUserActFor } = await import('../wsl/wsl-user-act-scope')
 const { wslDistroHoldMessage } = await import('../../shared/wsl-distro-stopped-hold')
@@ -26,8 +26,8 @@ const FOLDER = `${PARENT}\\notes`
 const hostPlatform = process.platform
 const statsInUserAct: boolean[] = []
 
-function makeRuntime(): InstanceType<typeof OrcaRuntimeService> {
-  return new OrcaRuntimeService(
+function makeRuntime(): InstanceType<typeof OCCRuntimeService> {
+  return new OCCRuntimeService(
     createFolderWorkspaceRuntimeStore(
       makeFolderWorkspace({ folderPath: FOLDER }),
       makeFolderProjectGroup({ parentPath: PARENT })

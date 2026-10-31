@@ -34,19 +34,19 @@ function wrapperText(config: { args: string[] | null; env: Record<string, string
 
 describe.skipIf(process.platform === 'win32')('OCC Codex launch shells carry the wrapper', () => {
   let userData: string
-  const original = process.env.ORCA_USER_DATA_PATH
+  const original = process.env.OCC_USER_DATA_PATH
 
   beforeEach(() => {
-    userData = mkdtempSync(join(tmpdir(), 'orca-codex-launch-wrap-'))
-    process.env.ORCA_USER_DATA_PATH = userData
+    userData = mkdtempSync(join(tmpdir(), 'occ-codex-launch-wrap-'))
+    process.env.OCC_USER_DATA_PATH = userData
     vi.resetModules()
   })
 
   afterEach(() => {
     if (original === undefined) {
-      delete process.env.ORCA_USER_DATA_PATH
+      delete process.env.OCC_USER_DATA_PATH
     } else {
-      process.env.ORCA_USER_DATA_PATH = original
+      process.env.OCC_USER_DATA_PATH = original
     }
     rmSync(userData, { recursive: true, force: true })
   })

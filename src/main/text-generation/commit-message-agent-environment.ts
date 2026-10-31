@@ -30,12 +30,12 @@ function cloneProcessEnv(): Record<string, string> {
 }
 
 // System-default routing strips only OCC-marked inherited CODEX_HOME overlays; preserve user overrides.
-function withoutOrcaCodexHomeOverride(base: Record<string, string>): Record<string, string> {
+function withoutOCCCodexHomeOverride(base: Record<string, string>): Record<string, string> {
   const env = { ...base }
-  if (env.ORCA_CODEX_HOME && env.CODEX_HOME === env.ORCA_CODEX_HOME) {
+  if (env.OCC_CODEX_HOME && env.CODEX_HOME === env.OCC_CODEX_HOME) {
     delete env.CODEX_HOME
   }
-  delete env.ORCA_CODEX_HOME
+  delete env.OCC_CODEX_HOME
   return env
 }
 
@@ -71,11 +71,11 @@ function prepareShellConfigDirEnv(
   // Pi/OMP share a binary config var but need distinct source shadows or nested legacy overlays restore the wrong agent directory.
   const sourceVar =
     agentId === 'opencode' || agentId === 'opencode2'
-      ? 'ORCA_OPENCODE_SOURCE_CONFIG_DIR'
+      ? 'OCC_OPENCODE_SOURCE_CONFIG_DIR'
       : agentId === 'pi'
-        ? 'ORCA_PI_SOURCE_AGENT_DIR'
+        ? 'OCC_PI_SOURCE_AGENT_DIR'
         : agentId === 'omp'
-          ? 'ORCA_OMP_SOURCE_AGENT_DIR'
+          ? 'OCC_OMP_SOURCE_AGENT_DIR'
           : undefined
 
   const value = readInheritedOrShellEnvVar(configVar, sourceVar, base)
@@ -129,8 +129,8 @@ export async function prepareLocalCommitMessageAgentEnv(
         return {
           ok: true,
           env: codexHomeForTarget
-            ? { ...withoutOrcaCodexHomeOverride(base), CODEX_HOME: codexHomeForTarget }
-            : withoutOrcaCodexHomeOverride(base)
+            ? { ...withoutOCCCodexHomeOverride(base), CODEX_HOME: codexHomeForTarget }
+            : withoutOCCCodexHomeOverride(base)
         }
       }
       if (codexHomePath && wslCodexHome) {
@@ -141,7 +141,7 @@ export async function prepareLocalCommitMessageAgentEnv(
         ok: true,
         env: codexHomePath
           ? { ...base, CODEX_HOME: codexHomePath }
-          : withoutOrcaCodexHomeOverride(base)
+          : withoutOCCCodexHomeOverride(base)
       }
     }
 

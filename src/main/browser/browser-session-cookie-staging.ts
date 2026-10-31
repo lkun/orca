@@ -64,8 +64,8 @@ function consumeStagedCookieImport(stagedPath: string): void {
 export function applyPendingBrowserCookieImports({
   resolveMetadataPath,
   defaultPartition,
-  activeOrcaProfileId
-}: PendingCookieImportTarget & { activeOrcaProfileId: string }): void {
+  activeOCCProfileId
+}: PendingCookieImportTarget & { activeOCCProfileId: string }): void {
   try {
     const meta = loadBrowserSessionMeta(resolveMetadataPath, defaultPartition)
     const pendingEntries = Object.entries(meta.pendingCookieImports)
@@ -75,7 +75,7 @@ export function applyPendingBrowserCookieImports({
     // Partition-derived write paths must pass the same validation as the webview allowlist.
     const knownPartitions = new Set([defaultPartition])
     for (const profile of meta.profiles) {
-      if (isValidPersistedBrowserSessionProfile(profile, activeOrcaProfileId)) {
+      if (isValidPersistedBrowserSessionProfile(profile, activeOCCProfileId)) {
         knownPartitions.add(profile.partition)
       }
     }

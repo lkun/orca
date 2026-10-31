@@ -1,5 +1,5 @@
 import { fixture } from '../persistence/loading-store/profile-state-delayed-authority-fixture'
-import { OrcaRuntimeService } from '../runtime/orca-runtime'
+import { OCCRuntimeService } from '../runtime/occ-runtime'
 import { adoptStablePane } from '../ipc/pty/pane/adopt-stable'
 import { setLocalPtyProvider } from '../ipc/pty/provider/registry'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -50,7 +50,7 @@ describe('DaemonPtyAdapter replacement exit races', () => {
         client: { request: (type: string, payload?: unknown) => Promise<unknown> }
       }
       const { store } = await fixture()
-      const runtime = new OrcaRuntimeService(store)
+      const runtime = new OCCRuntimeService(store)
       const pane = {
         worktreeId: 'repo-local::/fixture/local',
         tabId: 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa',

@@ -11,7 +11,7 @@ import {
   openTopologyStore
 } from './terminal-topology-profile-fixture'
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('../../telemetry/client', () => ({ track: vi.fn() }))
 vi.mock('../../ssh/config/ssh-config-parser', () => ({
   loadUserSshConfig: () => ({ hosts: [] }),
@@ -31,7 +31,7 @@ afterEach(() => {
 })
 
 async function storeWithLeftovers(): Promise<Store> {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-pane-admission-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-pane-admission-'))
   directories.push(directory)
   const store = await openTopologyStore(directory, emptyTerminalSessionProfile())
   const window = new WindowSession(getDefaultWorkspaceSession())

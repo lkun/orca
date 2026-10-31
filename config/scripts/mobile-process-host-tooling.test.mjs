@@ -11,7 +11,7 @@ import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { afterEach, expect, it } from 'vitest'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { removeTreeSync } from '../../src/shared/windows-transient-lock-removal.ts'
 
 const repository = resolve(import.meta.dirname, '../..')
@@ -27,10 +27,10 @@ afterEach(() => {
 })
 
 function standaloneMobile() {
-  const root = mkdtempSync(join(tmpdir(), 'orca-mobile-process-tooling-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-mobile-process-tooling-'))
   temporary.push(root)
   const mobile = join(root, 'mobile')
-  const dependency = manifest.devDependencies['@orca/process-host']
+  const dependency = manifest.devDependencies['@occ/process-host']
   expect(dependency).toBe('link:../src/packages/process-host')
   const packageDir = resolve(mobile, dependency.slice('link:'.length))
   mkdirSync(packageDir, { recursive: true })
@@ -50,10 +50,10 @@ function standaloneMobile() {
   }
   writeFileSync(join(mobile, 'package.json'), JSON.stringify(manifest))
   mkdirSync(join(mobile, 'rpc-foundation', 'goldens'), { recursive: true })
-  mkdirSync(join(mobile, 'node_modules', '@orca'), { recursive: true })
+  mkdirSync(join(mobile, 'node_modules', '@occ'), { recursive: true })
   symlinkSync(
     packageDir,
-    join(mobile, 'node_modules', '@orca', 'process-host'),
+    join(mobile, 'node_modules', '@occ', 'process-host'),
     process.platform === 'win32' ? 'junction' : 'dir'
   )
   expect(existsSync(join(root, 'node_modules'))).toBe(false)
@@ -67,14 +67,14 @@ function command(cwd, program, args) {
     args,
     cwd,
     timeoutMs: 15_000,
-    env: { ...process.env, NODE_PATH: '', NODE_OPTIONS: '', ORCA_BACKGROUND_LAUNCH: '1' }
+    env: { ...process.env, NODE_PATH: '', NODE_OPTIONS: '', OCC_BACKGROUND_LAUNCH: '1' }
   })
 }
 
 function rpcCommand(mobile, script, args) {
   const [launcher, ...invocation] = manifest.scripts[script].split(' ')
   expect(launcher).toBe('tsx')
-  return command(mobile, process.env.ORCA_TEST_NODE_EXECUTABLE ?? process.execPath, [
+  return command(mobile, process.env.OCC_TEST_NODE_EXECUTABLE ?? process.execPath, [
     tsx,
     ...invocation,
     ...args
@@ -89,7 +89,7 @@ it('runs the RPC diff with a mobile-only dependency link and no compiled host pa
     '-c',
     'user.name=OCC Test',
     '-c',
-    'user.email=orca-test@example.invalid',
+    'user.email=occ-test@example.invalid',
     '-c',
     'commit.gpgsign=false',
     '-c',

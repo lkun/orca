@@ -2,7 +2,7 @@ import { createLocalWorkerStartDispatch } from './local-worker-start-dispatch'
 import { probeWorkerOpenCodeModelLaunchSupport } from './worker-opencode-model-preflight'
 import { resolveWorkerConfiguredAgentParams } from './worker-configured-agent-preflight'
 import { waitForWorkerAgentReady } from '../../../../launched-agent-composer-readiness'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import { describeTerminalWaitBlockedReason } from '../../../../../../shared/terminal-wait-blocked-reason-legacy-alias'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import type { DispatchContextRow, RunRow, TaskRow } from '../../../../orchestration/types'
@@ -40,7 +40,7 @@ import { rebindReusedStructuredWorker } from '../../orchestration-structured-wor
 
 export async function startLocalWorker(args: {
   params: WorkerStartInput
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   /** Called only once effect-free validation passes, so a refused start binds no new Run. */
   bindRun: () => RunRow

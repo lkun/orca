@@ -54,7 +54,7 @@ function settledMeta(overrides: Partial<WorktreeMeta> = {}): WorktreeMeta {
   return {
     ...ownershipMeta,
     instanceId: 'instance-settled',
-    orcaCreatedAt: 1,
+    occCreatedAt: 1,
     lastActivityAt: 5,
     ...overrides
   } as WorktreeMeta

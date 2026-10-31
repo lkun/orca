@@ -66,7 +66,7 @@ vi.mock('../../telemetry/client', () => ({ track: vi.fn() }))
 
 describe('terminal URL click preference persistence', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-terminal-link-preference-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-terminal-link-preference-'))
     writeDataFile({ version: 1, settings: { terminalLinkActionPopoverEnabled: false } })
   })
   afterEach(async () => {

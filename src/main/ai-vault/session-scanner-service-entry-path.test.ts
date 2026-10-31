@@ -38,10 +38,10 @@ describe('resolveAiVaultServiceEntryPath', () => {
   })
 
   it('uses the entry beside the bundle on a packaged host without an asar', () => {
-    const orcadRoot = join('/opt', 'orcad', '1.0.0')
-    const adjacent = join(orcadRoot, 'session-scanner-service-entry.js')
+    const occdRoot = join('/opt', 'occd', '1.0.0')
+    const adjacent = join(occdRoot, 'session-scanner-service-entry.js')
 
-    expect(resolveAiVaultServiceEntryPath(orcadRoot, true, (path) => path === adjacent)).toBe(
+    expect(resolveAiVaultServiceEntryPath(occdRoot, true, (path) => path === adjacent)).toBe(
       adjacent
     )
   })

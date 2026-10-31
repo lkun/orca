@@ -1,6 +1,6 @@
-import { CONNECTOR_LIMITS, ConnectorPollResponseSchema } from '@orca-cloud/connector-contract'
+import { CONNECTOR_LIMITS, ConnectorPollResponseSchema } from '@occ-cloud/connector-contract'
 import { afterEach, describe, expect, it } from 'vitest'
-import type { CloudDatabase } from '@orca-cloud/cloud-database'
+import type { CloudDatabase } from '@occ-cloud/cloud-database'
 import type { DeliveryBody } from './connector-inbox.js'
 import {
   cleanupConnectorHarnesses,
@@ -172,7 +172,7 @@ describe('connector inbox', () => {
   })
 
   // SQLite runs one transaction at a time, so only Postgres can interleave the sweep with a claim.
-  it.skipIf(!process.env.ORCA_CONNECTOR_TEST_DATABASE_URL)(
+  it.skipIf(!process.env.OCC_CONNECTOR_TEST_DATABASE_URL)(
     'keeps an expiry that lands while a resend is being claimed',
     async () => {
       let gate!: ReturnType<typeof pauseBefore>
@@ -243,7 +243,7 @@ describe('connector inbox', () => {
   })
 
   // SQLite runs one transaction at a time, so only Postgres can race an ack with a hello.
-  it.skipIf(!process.env.ORCA_CONNECTOR_TEST_DATABASE_URL)(
+  it.skipIf(!process.env.OCC_CONNECTOR_TEST_DATABASE_URL)(
     'refuses an ack from the old hello that waited on a newer hello; the lease resends it',
     async () => {
       let gate!: ReturnType<typeof pauseBefore>
@@ -276,7 +276,7 @@ describe('connector inbox', () => {
   })
 
   // SQLite runs one transaction at a time, so only Postgres can race two hellos.
-  it.skipIf(!process.env.ORCA_CONNECTOR_TEST_DATABASE_URL)(
+  it.skipIf(!process.env.OCC_CONNECTOR_TEST_DATABASE_URL)(
     'gives racing hellos distinct revisions',
     async () => {
       let gate!: ReturnType<typeof pauseBefore>

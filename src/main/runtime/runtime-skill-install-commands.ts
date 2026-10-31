@@ -77,9 +77,9 @@ export class RuntimeSkillInstallCommands {
     await this.refuseSshDestination(request.destination)
     await this.host.skillTransactionRecovery
     const origins = ['https://storage.googleapis.com']
-    if (!this.host.isPackaged() && process.env.ORCA_SKILL_PACKAGE_DOWNLOAD_ORIGINS) {
+    if (!this.host.isPackaged() && process.env.OCC_SKILL_PACKAGE_DOWNLOAD_ORIGINS) {
       origins.push(
-        ...process.env.ORCA_SKILL_PACKAGE_DOWNLOAD_ORIGINS.split(',')
+        ...process.env.OCC_SKILL_PACKAGE_DOWNLOAD_ORIGINS.split(',')
           .map((value) => value.trim())
           .filter(Boolean)
       )
@@ -145,9 +145,9 @@ export class RuntimeSkillInstallCommands {
       await this.refuseSshDestination(request.destination)
       await this.host.skillTransactionRecovery
       const origins = ['https://storage.googleapis.com']
-      if (!this.host.isPackaged() && process.env.ORCA_SKILL_PACKAGE_DOWNLOAD_ORIGINS) {
+      if (!this.host.isPackaged() && process.env.OCC_SKILL_PACKAGE_DOWNLOAD_ORIGINS) {
         origins.push(
-          ...process.env.ORCA_SKILL_PACKAGE_DOWNLOAD_ORIGINS.split(',')
+          ...process.env.OCC_SKILL_PACKAGE_DOWNLOAD_ORIGINS.split(',')
             .map((value) => value.trim())
             .filter(Boolean)
         )

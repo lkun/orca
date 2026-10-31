@@ -10,10 +10,10 @@ let observer: SpawnObserver | null = null
  * appended here as a JSON line, so a guard can see spawns main's own observer never would.
  * Logs full argv, which can include tokens; tests only (main drops it outside e2e mode).
  */
-export const E2E_SPAWN_LOG_ENV = 'ORCA_E2E_SPAWN_LOG'
+export const E2E_SPAWN_LOG_ENV = 'OCC_E2E_SPAWN_LOG'
 
 /** Set only in e2e mode; a stray log variable alone never writes argv or captures stacks. */
-export const E2E_USER_DATA_DIR_ENV = 'ORCA_E2E_USER_DATA_DIR'
+export const E2E_USER_DATA_DIR_ENV = 'OCC_E2E_USER_DATA_DIR'
 
 function e2eSpawnLog(): string | undefined {
   return (process.env[E2E_USER_DATA_DIR_ENV] && process.env[E2E_SPAWN_LOG_ENV]) || undefined

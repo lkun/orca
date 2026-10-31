@@ -138,7 +138,7 @@ describe('codex item identity', () => {
     expect(ordinals.ordinalFor(THREAD_ID, 'turn-2', 'item-1')).toBe(0)
   })
 
-  it('keys a non-message item and a turnless message in the orca namespace', () => {
+  it('keys a non-message item and a turnless message in the occ namespace', () => {
     const ordinals = new CodexTurnOrdinals()
     const command = codexItemIdentity({
       threadId: THREAD_ID,
@@ -153,8 +153,8 @@ describe('codex item identity', () => {
       ordinals
     })
 
-    expect(command).toEqual({ provider: 'orca', clientMessageId: 'codex-item:thread-abc:item-2' })
-    expect(orphan).toEqual({ provider: 'orca', clientMessageId: 'codex-item:thread-abc:item-1' })
+    expect(command).toEqual({ provider: 'occ', clientMessageId: 'codex-item:thread-abc:item-2' })
+    expect(orphan).toEqual({ provider: 'occ', clientMessageId: 'codex-item:thread-abc:item-1' })
   })
 })
 
@@ -717,8 +717,8 @@ describe('codex item bodies', () => {
       codexItemBody({
         type: 'webSearch',
         id: 'w',
-        query: 'orca release notes',
-        action: { type: 'search', query: 'orca release notes', queries: null },
+        query: 'occ release notes',
+        action: { type: 'search', query: 'occ release notes', queries: null },
         results: null
       })
     ).toEqual({
@@ -726,9 +726,9 @@ describe('codex item bodies', () => {
       name: 'web_search',
       callId: 'w',
       input: {
-        query: 'orca release notes',
+        query: 'occ release notes',
         description: 'search',
-        action: { type: 'search', query: 'orca release notes', queries: null }
+        action: { type: 'search', query: 'occ release notes', queries: null }
       },
       state: 'completed'
     })
@@ -740,8 +740,8 @@ describe('codex item bodies', () => {
       codexItemBody({
         type: 'webSearch',
         id: 'w',
-        query: 'orca release notes',
-        action: { type: 'search', query: 'orca release notes', queries: null },
+        query: 'occ release notes',
+        action: { type: 'search', query: 'occ release notes', queries: null },
         results
       })
     ).toMatchObject({

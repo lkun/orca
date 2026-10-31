@@ -35,7 +35,7 @@ it('reports an already-exited terminal from the idle wait command', async () => 
   }))
   try {
     process.exitCode = undefined
-    vi.stubEnv('ORCA_ENVIRONMENT', '')
+    vi.stubEnv('OCC_ENVIRONMENT', '')
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const cliPath = '../../cli/index'
     const { main }: { main(argv: string[], cwd: string): Promise<void> } = await import(cliPath)

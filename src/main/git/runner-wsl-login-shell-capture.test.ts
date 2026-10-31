@@ -40,13 +40,13 @@ function createMockChild(): EventEmitter & { stdout: EventEmitter; stderr: Event
 /** Stand in for the guest shell: banner first, then the payload inside the command's fence. */
 function respondWithFencedPayload(payload: Buffer | string, error: Error | null = null): void {
   execFileMock.mockImplementation((_command, args, options, callback) => {
-    const nonce = /__ORCA_WSL_CAPTURE_BEGIN_ ([^_]+)__/.exec(String(args.at(-1)))?.[1] ?? ''
+    const nonce = /__OCC_WSL_CAPTURE_BEGIN_ ([^_]+)__/.exec(String(args.at(-1)))?.[1] ?? ''
     const body = typeof payload === 'string' ? Buffer.from(payload, 'utf8') : payload
     const stdout = Buffer.concat([
       Buffer.from(BANNER, 'utf8'),
-      Buffer.from(`__ORCA_WSL_CAPTURE_BEGIN_${nonce}__`, 'utf8'),
+      Buffer.from(`__OCC_WSL_CAPTURE_BEGIN_${nonce}__`, 'utf8'),
       body,
-      Buffer.from(`__ORCA_WSL_CAPTURE_END_${nonce}__`, 'utf8')
+      Buffer.from(`__OCC_WSL_CAPTURE_END_${nonce}__`, 'utf8')
     ])
     const asText = options?.encoding !== 'buffer'
     queueMicrotask(() =>
@@ -120,9 +120,9 @@ describe('WSL login-shell reads are fenced', () => {
   function respondToSshPolicyProbe(configured: string): void {
     execFileMock.mockImplementation((_command, args, _options, callback) => {
       const script = String(args.at(-1))
-      const nonce = /__ORCA_WSL_CAPTURE_BEGIN_ ([^_]+)__/.exec(script)?.[1] ?? ''
+      const nonce = /__OCC_WSL_CAPTURE_BEGIN_ ([^_]+)__/.exec(script)?.[1] ?? ''
       const stdout = script.includes('sshcommand')
-        ? `${BANNER}__ORCA_WSL_CAPTURE_BEGIN_${nonce}__${configured}__ORCA_WSL_CAPTURE_END_${nonce}__`
+        ? `${BANNER}__OCC_WSL_CAPTURE_BEGIN_${nonce}__${configured}__OCC_WSL_CAPTURE_END_${nonce}__`
         : 'ok'
       queueMicrotask(() => callback?.(null, stdout, ''))
       return createMockChild()

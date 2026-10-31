@@ -2,12 +2,12 @@ import { readFileSync, mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 export function writeRelayOmpStatusExtension(homeDir: string, source: string): string | null {
-  const directory = join(homeDir, '.orca-relay', 'omp-managed-status-extension')
+  const directory = join(homeDir, '.occ-relay', 'omp-managed-status-extension')
   try {
     mkdirSync(directory, { recursive: true })
-    const path = join(directory, 'orca-agent-status.ts')
+    const path = join(directory, 'occ-agent-status.ts')
     try {
-      if (!readFileSync(path, 'utf8').includes('@orca-managed-pi-extension')) {
+      if (!readFileSync(path, 'utf8').includes('@occ-managed-pi-extension')) {
         return null
       }
     } catch {

@@ -20,7 +20,7 @@ vi.mock('electron', () => ({
 it.each(['chat', 'terminal'] as const)(
   'durably saves an unsuccessful published %s target without a resend',
   async (kind) => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-34332-failed-target-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-34332-failed-target-'))
     const store = await createStore()
     try {
       store.addRepo({
@@ -84,7 +84,7 @@ const makeRepo = (overrides: Partial<Repo> = {}): Repo => ({
 
 describe('AutomationService', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-automations-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-automations-test-'))
     vi.useFakeTimers()
   })
 

@@ -27,7 +27,7 @@ import { endLayoutFramePositions } from '@/runtime/layout-frame-position'
 import { openWorkspaceLayoutFrameSync } from '@/runtime/workspace-layout-frame-sync'
 import { isTabStripPointerGestureActive } from './tab-strip-pointer-gesture'
 
-vi.mock('../../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 vi.mock('@/runtime/runtime-rpc-client', async (original) =>
   (

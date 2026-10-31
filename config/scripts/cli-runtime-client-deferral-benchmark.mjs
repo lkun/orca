@@ -9,12 +9,12 @@ import { fileURLToPath } from 'node:url'
 
 const REPO = fileURLToPath(new URL('../..', import.meta.url))
 
-const ROUNDS = Number(process.env.ORCA_CLI_DEFER_BENCH_ROUNDS ?? '30')
-const WARMUP = Number(process.env.ORCA_CLI_DEFER_BENCH_WARMUP ?? '3')
+const ROUNDS = Number(process.env.OCC_CLI_DEFER_BENCH_ROUNDS ?? '30')
+const WARMUP = Number(process.env.OCC_CLI_DEFER_BENCH_WARMUP ?? '3')
 
 for (const [name, value] of [
-  ['ORCA_CLI_DEFER_BENCH_ROUNDS', ROUNDS],
-  ['ORCA_CLI_DEFER_BENCH_WARMUP', WARMUP]
+  ['OCC_CLI_DEFER_BENCH_ROUNDS', ROUNDS],
+  ['OCC_CLI_DEFER_BENCH_WARMUP', WARMUP]
 ]) {
   if (!Number.isSafeInteger(value) || value <= 0) {
     throw new Error(`${name} must be a positive integer, received ${value}`)
@@ -22,7 +22,7 @@ for (const [name, value] of [
 }
 if (ROUNDS % 2 !== 0) {
   // Why: arms alternate which one leads; an odd count biases one arm.
-  throw new Error(`ORCA_CLI_DEFER_BENCH_ROUNDS must be even, received ${ROUNDS}`)
+  throw new Error(`OCC_CLI_DEFER_BENCH_ROUNDS must be even, received ${ROUNDS}`)
 }
 
 const TOUCHED = [
@@ -171,17 +171,17 @@ try {
   }
 
   // Use empty user-data dirs for deterministic runtime-dependent cases.
-  const isolated = { ORCA_USER_DATA_PATH: userDataPath }
+  const isolated = { OCC_USER_DATA_PATH: userDataPath }
   /** @type {Array<[string, string[], Record<string, string>]>} */
   const cases = [
-    ['orca --help', ['--help'], {}],
-    ['orca help worktree', ['help', 'worktree'], {}],
-    ['orca (no args)', [], {}],
+    ['occ --help', ['--help'], {}],
+    ['occ help worktree', ['help', 'worktree'], {}],
+    ['occ (no args)', [], {}],
     ['unknown command', ['no-such-command'], {}],
     ['unknown flag', ['worktree', 'list', '--nope'], {}],
-    ['orca agent-context --json', ['agent-context', '--json'], {}],
-    ['orca status --json', ['status', '--json'], isolated],
-    ['orca worktree list --json', ['worktree', 'list', '--json'], isolated]
+    ['occ agent-context --json', ['agent-context', '--json'], {}],
+    ['occ status --json', ['status', '--json'], isolated],
+    ['occ worktree list --json', ['worktree', 'list', '--json'], isolated]
   ]
 
   // Compare output/exit before timing or a broken arm printing nothing appears fastest.

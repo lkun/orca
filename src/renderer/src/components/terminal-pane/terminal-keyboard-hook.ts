@@ -41,7 +41,7 @@ export function useTerminalKeyboardShortcuts({
   macOptionAsAltRef,
   paneKittyKeyboardModesRef,
   keybindings,
-  terminalShortcutPolicy = 'orca-first'
+  terminalShortcutPolicy = 'occ-first'
 }: KeyboardHandlersDeps): void {
   useEffect(() => {
     if (!isActive) {

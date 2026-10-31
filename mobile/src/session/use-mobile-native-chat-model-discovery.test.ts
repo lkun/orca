@@ -38,7 +38,7 @@ function Probe(): null {
   return null
 }
 async function mount(client: Args['client']): Promise<void> {
-  switchCapability = 'orca-model'
+  switchCapability = 'occ-model'
   args = { client, agent: 'omp', enabled: true, hostId: 'host-a', worktreeId: 'folder:one' }
   await act(async () => {
     renderer = create(createElement(Probe))

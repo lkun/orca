@@ -107,7 +107,7 @@ describe('SkillUploadSessionService admission regressions', () => {
   it('does not return a session after disposal starts during pruning', async () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-08-23T00:00:00Z'))
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-admission-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-admission-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const service = new SkillUploadSessionService(uploads, { idleMs: 10 })
@@ -151,7 +151,7 @@ describe('SkillUploadSessionService admission regressions', () => {
   })
 
   it('retries transient failed cleanup before rejecting recovered capacity', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-admission-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-admission-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const service = new SkillUploadSessionService(uploads)
@@ -186,7 +186,7 @@ describe('SkillUploadSessionService admission regressions', () => {
   })
 
   it('reports disposal, not the staging cleanup failure, to a begin racing disposal', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-admission-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-admission-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const gate = initializationGate(uploads)
@@ -204,7 +204,7 @@ describe('SkillUploadSessionService admission regressions', () => {
   })
 
   it('removes disposed staging once when a begin and disposal race the same directory', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-admission-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-admission-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const gate = initializationGate(uploads)
@@ -222,7 +222,7 @@ describe('SkillUploadSessionService admission regressions', () => {
   })
 
   it('removes an unpublished archive when disposal starts during open', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-skill-upload-admission-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-skill-upload-admission-'))
     roots.push(root)
     const uploads = join(root, 'uploads')
     const service = new SkillUploadSessionService(uploads)

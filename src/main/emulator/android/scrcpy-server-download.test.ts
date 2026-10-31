@@ -24,7 +24,7 @@ class DownloadRequest extends EventEmitter {
 
 beforeEach(async () => {
   vi.resetModules()
-  state.root = await mkdtemp(join(tmpdir(), 'orca-scrcpy-download-'))
+  state.root = await mkdtemp(join(tmpdir(), 'occ-scrcpy-download-'))
 })
 
 afterEach(async () => {

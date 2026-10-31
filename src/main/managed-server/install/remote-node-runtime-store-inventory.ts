@@ -1,8 +1,8 @@
 import {
-  ORCAD_NODE_RUNTIME_DIR_PREFIX,
-  ORCAD_NODE_RUNTIME_MARKER_FILENAME,
-  ORCAD_RUNTIMES_DIRNAME
-} from '../../../shared/orcad-artifacts'
+  OCCD_NODE_RUNTIME_DIR_PREFIX,
+  OCCD_NODE_RUNTIME_MARKER_FILENAME,
+  OCCD_RUNTIMES_DIRNAME
+} from '../../../shared/occd-artifacts'
 import { quotePosixShell } from '../../../shared/shell-argument-quoting'
 import { RELAY_REMOTE_DIR } from '../../ssh/remote-exec/remote-frame-protocol'
 import { joinRemotePath, type RemoteHostPlatform } from '../../ssh/ssh-remote-platform'
@@ -10,19 +10,19 @@ import { joinRemotePath, type RemoteHostPlatform } from '../../ssh/ssh-remote-pl
 /** Empty per-version reference files protect runtimes from GC. */
 export const RUNTIME_REF_NODE_PREFIX = '.runtime-ref-node-'
 export const RUNTIME_STORE_TOMBSTONE_PREFIX = '.gc-tombstone-'
-export const INVENTORY_OK = '__ORCA_RUNTIME_STORE__OK'
-export const REFS_ERR = '__ORCA_RUNTIME_STORE__REFS_ERR'
+export const INVENTORY_OK = '__OCC_RUNTIME_STORE__OK'
+export const REFS_ERR = '__OCC_RUNTIME_STORE__REFS_ERR'
 export const MAX_DIRS = 512
 const SHA256 = /^[0-9a-f]{64}$/
 export const RUNTIME_STORE_ENTRY_NAME = new RegExp(
-  `^${ORCAD_NODE_RUNTIME_DIR_PREFIX}([0-9a-f]{64})$`
+  `^${OCCD_NODE_RUNTIME_DIR_PREFIX}([0-9a-f]{64})$`
 )
 export const RUNTIME_STORE_TOMBSTONE_NAME = new RegExp(
-  `^${RUNTIME_STORE_TOMBSTONE_PREFIX.replace(/\./g, '\\.')}${ORCAD_NODE_RUNTIME_DIR_PREFIX}([0-9a-f]{64})\\.[0-9]+\\.([0-9]+)$`
+  `^${RUNTIME_STORE_TOMBSTONE_PREFIX.replace(/\./g, '\\.')}${OCCD_NODE_RUNTIME_DIR_PREFIX}([0-9a-f]{64})\\.[0-9]+\\.([0-9]+)$`
 )
 // Windows process paths use backslashes.
 const HELD_PATH = new RegExp(
-  `[/\\\\]${ORCAD_RUNTIMES_DIRNAME}[/\\\\](?:${RUNTIME_STORE_TOMBSTONE_PREFIX.replace(/\./g, '\\.')})?${ORCAD_NODE_RUNTIME_DIR_PREFIX}([0-9a-f]{64})[./\\\\]`,
+  `[/\\\\]${OCCD_RUNTIMES_DIRNAME}[/\\\\](?:${RUNTIME_STORE_TOMBSTONE_PREFIX.replace(/\./g, '\\.')})?${OCCD_NODE_RUNTIME_DIR_PREFIX}([0-9a-f]{64})[./\\\\]`,
   'i'
 )
 
@@ -42,7 +42,7 @@ export function runtimeStoreInventoryCommand(host: RemoteHostPlatform, remoteHom
   const refPrefix = RUNTIME_REF_NODE_PREFIX
   return [
     `root=${quotePosixShell(root)}`,
-    `rt="$root"/${ORCAD_RUNTIMES_DIRNAME}`,
+    `rt="$root"/${OCCD_RUNTIMES_DIRNAME}`,
     `[ -d "$rt" ] || { printf '%s\\n' ${INVENTORY_OK}; exit 0; }`,
     `[ -r "$root" ] && [ -x "$root" ] || { printf '%s\\n' ${REFS_ERR}; exit 0; }`,
     'n=0',
@@ -50,13 +50,13 @@ export function runtimeStoreInventoryCommand(host: RemoteHostPlatform, remoteHom
     'for d in "$root"/* "$root"/.[!.]*; do',
     '  [ -d "$d" ] || continue',
     '  name=${d##*/}',
-    `  [ "$name" = ${ORCAD_RUNTIMES_DIRNAME} ] && continue`,
+    `  [ "$name" = ${OCCD_RUNTIMES_DIRNAME} ] && continue`,
     `  [ -r "$d" ] && [ -x "$d" ] || { printf '%s\\n' ${REFS_ERR}; exit 0; }`,
     '  n=$((n+1))',
     `  [ "$n" -le ${MAX_DIRS} ] || { printf '%s\\n' ${REFS_ERR}; exit 0; }`,
     `  printf 'DIR %s\\n' "$name"`,
-    `  if [ -e "$d"/${ORCAD_NODE_RUNTIME_MARKER_FILENAME} ]; then`,
-    `    sha=$(cat "$d"/${ORCAD_NODE_RUNTIME_MARKER_FILENAME}) || { printf '%s\\n' ${REFS_ERR}; exit 0; }`,
+    `  if [ -e "$d"/${OCCD_NODE_RUNTIME_MARKER_FILENAME} ]; then`,
+    `    sha=$(cat "$d"/${OCCD_NODE_RUNTIME_MARKER_FILENAME}) || { printf '%s\\n' ${REFS_ERR}; exit 0; }`,
     `    printf 'REF %s\\n' "$sha"`,
     '  fi',
     `  for f in "$d"/${refPrefix}*; do`,
@@ -64,10 +64,10 @@ export function runtimeStoreInventoryCommand(host: RemoteHostPlatform, remoteHom
     `    printf 'REF %s\\n' "\${f##*/${refPrefix}}"`,
     '  done',
     'done',
-    `for e in "$rt"/${ORCAD_NODE_RUNTIME_DIR_PREFIX}* "$rt"/${RUNTIME_STORE_TOMBSTONE_PREFIX}${ORCAD_NODE_RUNTIME_DIR_PREFIX}*; do`,
+    `for e in "$rt"/${OCCD_NODE_RUNTIME_DIR_PREFIX}* "$rt"/${RUNTIME_STORE_TOMBSTONE_PREFIX}${OCCD_NODE_RUNTIME_DIR_PREFIX}*; do`,
     `  [ -d "$e" ] && printf 'ENTRY %s\\n' "\${e##*/}"`,
     'done',
-    `set -- "$rt"/${ORCAD_NODE_RUNTIME_DIR_PREFIX}*/.verified`,
+    `set -- "$rt"/${OCCD_NODE_RUNTIME_DIR_PREFIX}*/.verified`,
     'if [ -e "$1" ]; then',
     `  order=$(ls -1t -- "$@") || { printf '%s\\n' ${REFS_ERR}; exit 0; }`,
     `  printf '%s\\n' "$order" | while IFS= read -r v; do v=\${v%/.verified}; printf 'VERIFIED %s\\n' "\${v##*/}"; done`,
@@ -75,13 +75,13 @@ export function runtimeStoreInventoryCommand(host: RemoteHostPlatform, remoteHom
     // Processes only add holds; match runtime-relative paths to allow alternate symlinked-home spellings.
     'if ps_out=$(ps -e -o args= 2>/dev/null); then',
     "  printf 'PROCESS_CHECK ps\\n'",
-    `  printf '%s\\n' "$ps_out" | grep -F -- /${ORCAD_RUNTIMES_DIRNAME}/ | sed 's/^/HOLD /'`,
+    `  printf '%s\\n' "$ps_out" | grep -F -- /${OCCD_RUNTIMES_DIRNAME}/ | sed 's/^/HOLD /'`,
     'fi',
     'if [ -n "$(readlink /proc/self/exe 2>/dev/null)" ]; then',
     "  printf 'PROCESS_CHECK proc\\n'",
     '  for p in /proc/[0-9]*/exe; do',
     '    t=$(readlink "$p" 2>/dev/null) || continue',
-    `    case "$t" in */${ORCAD_RUNTIMES_DIRNAME}/*) printf 'HOLD %s\\n' "$t";; esac`,
+    `    case "$t" in */${OCCD_RUNTIMES_DIRNAME}/*) printf 'HOLD %s\\n' "$t";; esac`,
     '  done',
     'fi',
     `printf '%s\\n' ${INVENTORY_OK}`

@@ -4,21 +4,21 @@ import { buildAgentNotificationId } from './agent-notification-id'
 describe('buildAgentNotificationId', () => {
   it('builds a stable escaped id for the same agent event metadata', () => {
     const args = {
-      worktreeId: 'repo::/Users/me/orca/workspaces/feature',
+      worktreeId: 'repo::/Users/me/occ/workspaces/feature',
       paneKey: 'tab-1:11111111-1111-4111-8111-111111111111',
       stateStartedAt: 1780000000123
     }
 
     const id = buildAgentNotificationId(args)
     expect(id).toBe(
-      'agent:repo%3A%3A%2FUsers%2Fme%2Forca%2Fworkspaces%2Ffeature:tab-1%3A11111111-1111-4111-8111-111111111111:1780000000123'
+      'agent:repo%3A%3A%2FUsers%2Fme%2Focc%2Fworkspaces%2Ffeature:tab-1%3A11111111-1111-4111-8111-111111111111:1780000000123'
     )
     expect(buildAgentNotificationId(args)).toBe(id)
   })
 
   it('changes when the agent state start time changes', () => {
     const base = {
-      worktreeId: 'repo::/Users/me/orca/workspaces/feature',
+      worktreeId: 'repo::/Users/me/occ/workspaces/feature',
       paneKey: 'tab-1:11111111-1111-4111-8111-111111111111'
     }
 
@@ -36,13 +36,13 @@ describe('buildAgentNotificationId', () => {
     ).toBeNull()
     expect(
       buildAgentNotificationId({
-        worktreeId: 'repo::/Users/me/orca/workspaces/feature',
+        worktreeId: 'repo::/Users/me/occ/workspaces/feature',
         stateStartedAt: 1780000000123
       })
     ).toBeNull()
     expect(
       buildAgentNotificationId({
-        worktreeId: 'repo::/Users/me/orca/workspaces/feature',
+        worktreeId: 'repo::/Users/me/occ/workspaces/feature',
         paneKey: 'tab-1:11111111-1111-4111-8111-111111111111'
       })
     ).toBeNull()

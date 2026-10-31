@@ -59,7 +59,7 @@ export function readCodexHistoryJournalView(
     ) {
       hasLegacy = true
     }
-    if (identity?.provider === 'orca' && body.kind === 'message' && body.role === 'user') {
+    if (identity?.provider === 'occ' && body.kind === 'message' && body.role === 'user') {
       nativePromptKeys.add(itemId)
     }
     const turnId = codexTurnIdOfRow(itemId, body, threadId)

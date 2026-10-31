@@ -1,4 +1,4 @@
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import { captureStructuredAgentCliSource } from '../../native-chat/structured-agent-cli-source'
 import type { OrchestrationSessionCaller } from '../orchestration/orchestration-caller-identity'
 import { isRegistrationFencedUnsubscribe, type RpcContext, type RpcRequest } from './core'
@@ -34,7 +34,7 @@ export type RpcDispatchStreamingOptions = Pick<
 }
 
 export function rpcContextFromTransport(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   request: RpcRequest,
   options: RpcDispatchStreamingOptions | undefined,
   orchestrationCaller: OrchestrationSessionCaller | undefined,

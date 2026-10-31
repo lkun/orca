@@ -35,7 +35,7 @@ function visibleRows(db: SyncDatabase): number {
   ).n
 }
 
-const root = await mkdtemp(join(tmpdir(), 'orca-search-retention-bench-'))
+const root = await mkdtemp(join(tmpdir(), 'occ-search-retention-bench-'))
 try {
   for (const mode of ['whole-file', 'batched', 'batched-pinned-reader']) {
     const path = join(root, `${mode}.sqlite`)

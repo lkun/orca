@@ -9,7 +9,7 @@ const spawned = vi.hoisted(() => {
   return { specs, stdins }
 })
 
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   spawnProcess: (spec: SpawnSpec) => {
     spawned.specs.push(spec)
     const child = Object.assign(new EventEmitter(), {
@@ -106,9 +106,9 @@ describe('runClaudeCommandProcess', () => {
       ['auth', 'login', '--claudeai'],
       { windowsPath: '/data/a/home', linuxPath: null, wslDistro: null },
       1000,
-      { browser: '/data/a/home/.orca-sign-in-browser' }
+      { browser: '/data/a/home/.occ-sign-in-browser' }
     )
-    expect(spawned.specs[0].env?.BROWSER).toBe('/data/a/home/.orca-sign-in-browser')
+    expect(spawned.specs[0].env?.BROWSER).toBe('/data/a/home/.occ-sign-in-browser')
   })
 
   it('makes the BROWSER helper executable inside the distro before a WSL login', async () => {
@@ -121,11 +121,11 @@ describe('runClaudeCommandProcess', () => {
         wslDistro: 'Ubuntu'
       },
       1000,
-      { browser: '/home/u/a/.orca-sign-in-browser' }
+      { browser: '/home/u/a/.occ-sign-in-browser' }
     )
     expect(spawned.specs[0].args?.[5]).toBe(
       buildWslLoginShellCommand(
-        `chmod 700 '/home/u/a/.orca-sign-in-browser'; exec env CLAUDE_CONFIG_DIR='/home/u/a' BROWSER='/home/u/a/.orca-sign-in-browser' claude 'auth' 'login' '--claudeai'`
+        `chmod 700 '/home/u/a/.occ-sign-in-browser'; exec env CLAUDE_CONFIG_DIR='/home/u/a' BROWSER='/home/u/a/.occ-sign-in-browser' claude 'auth' 'login' '--claudeai'`
       )
     )
   })

@@ -37,12 +37,12 @@ describe('CommentMarkdown', () => {
     const markup = renderToStaticMarkup(
       <CommentMarkdown
         variant="document"
-        githubRepo={{ owner: 'stablyai', repo: 'orca' }}
+        githubRepo={{ owner: 'stablyai', repo: 'occ' }}
         content="Automated fix-PR from pr-bug-scan for parent **#2316**."
       />
     )
 
-    expect(markup).toContain('href="https://github.com/stablyai/orca/issues/2316"')
+    expect(markup).toContain('href="https://github.com/stablyai/occ/issues/2316"')
     expect(markup).toContain('<strong><a')
   })
 
@@ -50,7 +50,7 @@ describe('CommentMarkdown', () => {
     const markup = renderToStaticMarkup(
       <CommentMarkdown
         variant="document"
-        githubRepo={{ owner: 'stablyai', repo: 'orca' }}
+        githubRepo={{ owner: 'stablyai', repo: 'occ' }}
         content="See another-org/other-repo#42."
       />
     )
@@ -64,11 +64,11 @@ describe('CommentMarkdown', () => {
         ...renderToStaticMarkup(<CommentMarkdown content={content} />).matchAll(/href="([^"]*)"/g)
       ].map((match) => match[1]!)
 
-    expect(hrefsIn('投稿はお願いします (https://github.com/stablyai/orca/pull/1078)。')).toEqual([
-      'https://github.com/stablyai/orca/pull/1078'
+    expect(hrefsIn('投稿はお願いします (https://github.com/stablyai/occ/pull/1078)。')).toEqual([
+      'https://github.com/stablyai/occ/pull/1078'
     ])
-    expect(hrefsIn('投稿（https://github.com/stablyai/orca/pull/1078）。')).toEqual([
-      'https://github.com/stablyai/orca/pull/1078'
+    expect(hrefsIn('投稿（https://github.com/stablyai/occ/pull/1078）。')).toEqual([
+      'https://github.com/stablyai/occ/pull/1078'
     ])
     expect(hrefsIn('「https://example.com/a」、https://example.com/b。')).toEqual([
       'https://example.com/a',
@@ -86,14 +86,14 @@ describe('CommentMarkdown', () => {
     const markup = renderToStaticMarkup(
       <CommentMarkdown
         variant="document"
-        githubRepo={{ owner: 'stablyai', repo: 'orca' }}
+        githubRepo={{ owner: 'stablyai', repo: 'occ' }}
         content="[`#2316`](https://example.com/already-linked) and `#2317`"
       />
     )
 
     expect(markup).toContain('href="https://example.com/already-linked"')
-    expect(markup).not.toContain('href="https://github.com/stablyai/orca/issues/2316"')
-    expect(markup).not.toContain('href="https://github.com/stablyai/orca/issues/2317"')
+    expect(markup).not.toContain('href="https://github.com/stablyai/occ/issues/2316"')
+    expect(markup).not.toContain('href="https://github.com/stablyai/occ/issues/2317"')
   })
 
   it('keeps remote compact markdown images as links', () => {
@@ -150,7 +150,7 @@ describe('CommentMarkdown', () => {
   })
 
   it('keeps non-attachment document links as links', () => {
-    const url = 'https://github.com/stablyai/orca/pull/5265'
+    const url = 'https://github.com/stablyai/occ/pull/5265'
     const markup = renderToStaticMarkup(<CommentMarkdown variant="document" content={url} />)
 
     expect(markup).not.toContain('<video')
@@ -174,13 +174,13 @@ describe('CommentMarkdown', () => {
       ]
     }
 
-    const transform = remarkGitHubReferences({ owner: 'stablyai', repo: 'orca' })()
+    const transform = remarkGitHubReferences({ owner: 'stablyai', repo: 'occ' })()
 
     expect(() => transform(tree)).not.toThrow()
     expect(tree.children[0]?.children).toHaveLength(referenceCount * 2 - 1)
     expect(tree.children[0]?.children[0]).toMatchObject({
       type: 'link',
-      url: 'https://github.com/stablyai/orca/issues/1'
+      url: 'https://github.com/stablyai/occ/issues/1'
     })
   })
 

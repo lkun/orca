@@ -34,7 +34,7 @@ describe('Pi hook normalization', () => {
         hook_event_name: 'before_agent_start',
         prompt: 'status for omp',
         model: 'deepseek/deepseek-v4-pro',
-        model_switch_command: 'orca-model'
+        model_switch_command: 'occ-model'
       }),
       'production'
     )
@@ -42,7 +42,7 @@ describe('Pi hook normalization', () => {
       state: 'working',
       agentType: 'omp',
       model: 'deepseek/deepseek-v4-pro',
-      modelSwitchCommand: 'orca-model'
+      modelSwitchCommand: 'occ-model'
     })
 
     const pi = _internals.normalizeHookPayload(

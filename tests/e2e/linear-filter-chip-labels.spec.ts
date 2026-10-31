@@ -1,5 +1,5 @@
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { getStoreState, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
 const FIXTURE = {
@@ -78,28 +78,28 @@ async function openLinearTasks(page: Page): Promise<void> {
 
 test('Linear filter chips keep readable names after the dropdown closes', async ({
   electronApp,
-  orcaPage
+  occPage
 }) => {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
   await installLinearFilterBackend(electronApp)
-  await openLinearTasks(orcaPage)
+  await openLinearTasks(occPage)
 
   await expect
-    .poll(() => getStoreState<string>(orcaPage, 'activeView'), { timeout: 5_000 })
+    .poll(() => getStoreState<string>(occPage, 'activeView'), { timeout: 5_000 })
     .toBe('tasks')
-  const filtersButton = orcaPage.getByRole('button', { name: 'Filters', exact: true })
+  const filtersButton = occPage.getByRole('button', { name: 'Filters', exact: true })
   await expect(filtersButton).toBeVisible()
-  await expect(orcaPage.getByText(FIXTURE.issue.title, { exact: true })).toBeVisible()
+  await expect(occPage.getByText(FIXTURE.issue.title, { exact: true })).toBeVisible()
 
   await filtersButton.click()
-  const popover = orcaPage.locator('[data-slot="popover-content"]')
+  const popover = occPage.locator('[data-slot="popover-content"]')
   await popover.getByRole('button', { name: 'Status', exact: true }).click()
   await popover.getByText(FIXTURE.state.name, { exact: true }).click()
   await filtersButton.click()
   await expect(popover).toHaveCount(0)
 
-  const statusChip = orcaPage.getByRole('button', { name: 'Remove Status filter' }).locator('..')
+  const statusChip = occPage.getByRole('button', { name: 'Remove Status filter' }).locator('..')
   await expect(statusChip).toContainText(FIXTURE.state.name)
   await expect(statusChip).not.toContainText(FIXTURE.state.id)
 })

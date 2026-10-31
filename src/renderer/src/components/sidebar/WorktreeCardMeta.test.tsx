@@ -39,7 +39,7 @@ describe('WorktreeCardDetailsHover', () => {
           number: 456,
           title: 'Fix stale GH PR',
           state: 'open',
-          url: 'https://github.com/acme/orca/pull/456',
+          url: 'https://github.com/acme/occ/pull/456',
           status: 'success',
           updatedAt: '2026-05-17T00:00:00.000Z',
           mergeable: 'MERGEABLE'
@@ -67,7 +67,7 @@ describe('WorktreeCardDetailsHover', () => {
           number: 456,
           title: 'Fix stale GH PR',
           state: 'open',
-          url: 'https://github.com/acme/orca/pull/456',
+          url: 'https://github.com/acme/occ/pull/456',
           status: 'success',
           updatedAt: '2026-05-17T00:00:00.000Z',
           mergeable: 'MERGEABLE'
@@ -75,7 +75,7 @@ describe('WorktreeCardDetailsHover', () => {
         comment={null}
         onEditIssue={vi.fn()}
         onEditComment={vi.fn()}
-        onOpenReviewInOrca={vi.fn()}
+        onOpenReviewInOCC={vi.fn()}
         onOpenReviewInBrowser={vi.fn()}
         onUnlinkReview={vi.fn()}
         onManageLinks={vi.fn()}
@@ -96,7 +96,7 @@ describe('WorktreeCardDetailsHover', () => {
     expect(markup).not.toContain('· GitHub')
     expect(markup).toContain('aria-label="Add reference"')
     expect(markup).not.toContain('Manage links…')
-    expect(markup).toContain('href="https://github.com/acme/orca/pull/456"')
+    expect(markup).toContain('href="https://github.com/acme/occ/pull/456"')
     expect(markup).toContain('Open in OCC')
     expect(markup).toContain('Unlink PR from workspace')
     expect(markup).toContain(
@@ -114,7 +114,7 @@ describe('WorktreeCardDetailsHover', () => {
           number: 5518,
           title: 'Agent monitor lists ephemeral headless subprocesses',
           state: 'closed',
-          url: 'https://github.com/acme/orca/issues/5518',
+          url: 'https://github.com/acme/occ/issues/5518',
           labels: []
         }}
         linearIssue={null}
@@ -122,7 +122,7 @@ describe('WorktreeCardDetailsHover', () => {
         comment={null}
         onEditIssue={vi.fn()}
         onEditComment={vi.fn()}
-        onOpenGitHubIssueInOrca={vi.fn()}
+        onOpenGitHubIssueInOCC={vi.fn()}
         onOpenIssueInBrowser={vi.fn()}
       >
         <span>Linked issue</span>
@@ -132,7 +132,7 @@ describe('WorktreeCardDetailsHover', () => {
     const moreActionsIndex = markup.indexOf('aria-label="More issue actions"')
     const copyLinkIndex = markup.indexOf('Copy link')
     const editIssueIndex = markup.indexOf('aria-label="Edit issue"')
-    const openInOrcaIndex = markup.indexOf('aria-label="Open in OCC"')
+    const openInOCCIndex = markup.indexOf('aria-label="Open in OCC"')
     const viewOnGitHubIndex = markup.indexOf('aria-label="View on GitHub"')
 
     expect(moreActionsIndex).toBeGreaterThan(-1)
@@ -142,8 +142,8 @@ describe('WorktreeCardDetailsHover', () => {
     expect(editIssueIndex).toBeGreaterThan(-1)
     expect(moreActionsIndex).toBeLessThan(editIssueIndex)
     expect(copyLinkIndex).toBeLessThan(editIssueIndex)
-    expect(editIssueIndex).toBeLessThan(openInOrcaIndex)
-    expect(openInOrcaIndex).toBeLessThan(viewOnGitHubIndex)
+    expect(editIssueIndex).toBeLessThan(openInOCCIndex)
+    expect(openInOCCIndex).toBeLessThan(viewOnGitHubIndex)
   })
 
   it('labels GitLab unlink actions with MR terminology', () => {
@@ -156,7 +156,7 @@ describe('WorktreeCardDetailsHover', () => {
           number: 77,
           title: 'Fix GitLab MR display',
           state: 'open',
-          url: 'https://gitlab.com/acme/orca/-/merge_requests/77',
+          url: 'https://gitlab.com/acme/occ/-/merge_requests/77',
           status: 'success'
         }}
         comment={null}
@@ -174,7 +174,7 @@ describe('WorktreeCardDetailsHover', () => {
     expect(markup).toContain(
       'OCC will hide MR !77 details for this workspace. The MR and branch on GitLab won’t be changed.'
     )
-    expect(markup).toContain('href="https://gitlab.com/acme/orca/-/merge_requests/77"')
+    expect(markup).toContain('href="https://gitlab.com/acme/occ/-/merge_requests/77"')
     expect(markup).not.toContain('Open in OCC browser')
   })
 
@@ -239,7 +239,7 @@ describe('WorktreeCardDetailsHover', () => {
         comment={null}
         onEditIssue={vi.fn()}
         onEditComment={vi.fn()}
-        onOpenLinearIssueInOrca={vi.fn()}
+        onOpenLinearIssueInOCC={vi.fn()}
       >
         <span>ENG-123</span>
       </WorktreeCardDetailsHover>

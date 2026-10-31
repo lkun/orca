@@ -38,8 +38,8 @@ describe('browser client host id argument', () => {
   it.each([
     ['an argv with no such argument', ['--type=renderer', '--enable-sandbox']],
     ['an empty argv', []],
-    ['a flag whose value is empty', ['--orca-browser-client-host-id=']],
-    ['a different flag that starts the same way', ['--orca-browser-client-host-idle=1']]
+    ['a flag whose value is empty', ['--occ-browser-client-host-id=']],
+    ['a different flag that starts the same way', ['--occ-browser-client-host-idle=1']]
   ])('reports no id for %s', (_label, argv) => {
     expect(readBrowserClientHostIdArgument(argv)).toBeNull()
   })
@@ -47,7 +47,7 @@ describe('browser client host id argument', () => {
   // Pin the shared main/preload literal; one-sided renames look like a non-hosting client.
   it('formats the argument main and the preload have to agree on', () => {
     expect(formatBrowserClientHostIdArgument(HOST_ID)).toBe(
-      `--orca-browser-client-host-id=${HOST_ID}`
+      `--occ-browser-client-host-id=${HOST_ID}`
     )
   })
 })

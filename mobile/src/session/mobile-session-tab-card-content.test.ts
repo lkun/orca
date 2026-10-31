@@ -61,12 +61,12 @@ it('hides unconfirmed and stale status and handles redacted and blank browser UR
     type: 'browser',
     id: 'b',
     title: 'Search results',
-    url: 'https://kagi.com/search?token=private&q=orca',
+    url: 'https://kagi.com/search?token=private&q=occ',
     isActive: true
   }
   expect(content(browser)).toMatchObject({
     title: 'Search results',
-    programName: 'kagi.com/search?q=orca',
+    programName: 'kagi.com/search?q=occ',
     agentId: null
   })
   expect(content({ ...browser, title: '', url: 'about:blank' })).toMatchObject({

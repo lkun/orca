@@ -61,7 +61,7 @@ afterEach(async () => {
 function grokProbe() {
   return createAcpModelCatalogProbe(GROK, {
     resolveEnvironment: async () => ({ PATH: '/usr/bin' }),
-    dataDirectory: '/orca-data',
+    dataDirectory: '/occ-data',
     resolveCommand: () => '/opt/grok/bin/grok',
     homePath: '/home/user',
     connect: () => {

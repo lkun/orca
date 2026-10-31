@@ -1,7 +1,7 @@
 import { chmodSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { probeRecentClaudeCliVersion } from '../claude/claude-hook-event-versions'
 import { resolveGuestNativeAgentCommand, WINDOWS_ONLY_AGENT_CLI_DIR } from './command'
@@ -19,7 +19,7 @@ function install(dir: string, name: string): string {
 }
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-agent-cli-guest-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-agent-cli-guest-'))
   native = join(root, 'home', '.local', 'bin')
   // Stands in for a Windows drive mount such as /mnt/c.
   drive = join(root, 'c')

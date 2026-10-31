@@ -1,5 +1,5 @@
 import { NativeModules } from 'react-native'
-import { OrcaGzipUtf8Codec } from '../../modules/orca-gzip-utf8-codec/src'
+import { OCCGzipUtf8Codec } from '../../modules/occ-gzip-utf8-codec/src'
 import type { LibsodiumBindings, PairedE2EENativeBindings } from './paired-e2ee-native-codec'
 
 declare global {
@@ -11,7 +11,7 @@ declare global {
 // Load only from app entry; shared/desktop/e2e transport imports must not load native types.
 export function loadPairedE2EENativeBindings(): PairedE2EENativeBindings | null {
   const sodium = installLibsodium()
-  return sodium && OrcaGzipUtf8Codec ? { codec: OrcaGzipUtf8Codec, sodium } : null
+  return sodium && OCCGzipUtf8Codec ? { codec: OCCGzipUtf8Codec, sodium } : null
 }
 
 // Install JSI directly without the library entry’s logging/per-call wrappers; only two functions are needed.

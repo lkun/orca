@@ -1,53 +1,53 @@
-import { WslOrcadBridgeActivity, wslHostBridgeEvents } from './wsl-orcad-bridge-activity'
-import { listenWslOrcadStdioBridge } from './wsl-orcad-stdio-bridge'
-import { createWslOrcadPairingRecovery } from './wsl-orcad-pairing-repair'
+import { WslOCCdBridgeActivity, wslHostBridgeEvents } from './wsl-occd-bridge-activity'
+import { listenWslOCCdStdioBridge } from './wsl-occd-stdio-bridge'
+import { createWslOCCdPairingRecovery } from './wsl-occd-pairing-repair'
 import {
   readSettledConfirmedRunningWslDistros,
   wasWslDistroLastSeenRunningSettled
 } from '../wsl-background-distro-gate'
 import { parsePairingCode } from '../../shared/pairing'
 import { pairedRuntimeConnectionFromOffer } from '../../shared/paired-runtime-connection'
-import { verifyOrcadPairingIdentity } from '../managed-server/lifecycle/orcad-managed-tunnel-identity'
+import { verifyOCCdPairingIdentity } from '../managed-server/lifecycle/occd-managed-tunnel-identity'
 import { resolveEnvironmentPairingOffer } from '../../shared/runtime-environment-store'
 import { findWslHostDeployment } from '../../shared/runtime-environment-wsl-host-store'
 import { createWslDistroHolder, type WslDistroHolder } from './wsl-distro-holder'
 import { listWslHostDistros } from './wsl-host-distro-list'
 import { resolveWslDistroName } from './wsl-distro-registry-id'
 import type { WslHostConnector, WslHostReachability } from './wsl-host-service'
-import { readWslDistroOrcadPublicKey } from './wsl-host-ssh-orcad-conflict'
+import { readWslDistroOCCdPublicKey } from './wsl-host-ssh-occd-conflict'
 import {
-  WslOrcadConnectionManager,
-  type WslOrcadConnection,
-  type WslOrcadConnectionDependencies
-} from './wsl-orcad-connection'
-import { defaultWslOrcadEnvironmentId, deployAndLaunchWslOrcad } from './wsl-orcad-deploy'
-import { createWslOrcadHostTransport } from './wsl-orcad-host-transport'
-import type { WslOrcadHostTarget } from './wsl-orcad-host-target'
+  WslOCCdConnectionManager,
+  type WslOCCdConnection,
+  type WslOCCdConnectionDependencies
+} from './wsl-occd-connection'
+import { defaultWslOCCdEnvironmentId, deployAndLaunchWslOCCd } from './wsl-occd-deploy'
+import { createWslOCCdHostTransport } from './wsl-occd-host-transport'
+import type { WslOCCdHostTarget } from './wsl-occd-host-target'
 import {
-  decommissionWslHostOrcad,
+  decommissionWslHostOCCd,
   stopWslHostServer,
   wslHostRuntimeStopSteps,
   type WslHostRuntimeAccess
 } from './wsl-host-server-stop'
-import { createWslOrcadLivenessSupervisor } from './wsl-orcad-liveness-wiring'
-import type { WslOrcadLivenessSupervisor } from './wsl-orcad-liveness-supervisor'
-import { confirmsRunning } from './wsl-orcad-liveness-evidence'
+import { createWslOCCdLivenessSupervisor } from './wsl-occd-liveness-wiring'
+import type { WslOCCdLivenessSupervisor } from './wsl-occd-liveness-supervisor'
+import { confirmsRunning } from './wsl-occd-liveness-evidence'
 import { wslDistroHolderKey } from './wsl-distro-holder-record'
 import { wslHostServerStopReason } from '../../shared/wsl-host-failure-copy'
 
-function targetFor(distro: string): WslOrcadHostTarget {
-  return { kind: 'wsl', id: defaultWslOrcadEnvironmentId(distro), distro, label: distro }
+function targetFor(distro: string): WslOCCdHostTarget {
+  return { kind: 'wsl', id: defaultWslOCCdEnvironmentId(distro), distro, label: distro }
 }
 
 function transportFor(distro: string) {
-  return createWslOrcadHostTransport({ target: targetFor(distro) })
+  return createWslOCCdHostTransport({ target: targetFor(distro) })
 }
 
 type Reachability = WslHostReachability
 
 export function createWslHostConnector(options: {
   userDataPath: string
-  onChange: NonNullable<WslOrcadConnectionDependencies['onChange']>
+  onChange: NonNullable<WslOCCdConnectionDependencies['onChange']>
   hasUserVisibleWork: (distro: string) => boolean
   /** False once a distro's host is gone: nothing may be spawned for it again. */
   isKnownDistro: (distro: string) => boolean
@@ -56,7 +56,7 @@ export function createWslHostConnector(options: {
   const refuseUnknown = (distro: string): Error =>
     new Error(`${distro} is no longer a WSL host; OCC will not start anything for it.`)
   // Assigned below; a holder exit cannot arrive before the first ensure.
-  let supervisor: WslOrcadLivenessSupervisor | null = null
+  let supervisor: WslOCCdLivenessSupervisor | null = null
   const unguardedHolder = createWslDistroHolder({
     userDataPath: options.userDataPath,
     onHolderExit: (distro, exit) => supervisor?.noteHolderExit(distro, exit)
@@ -69,13 +69,13 @@ export function createWslHostConnector(options: {
         ? unguardedHolder.ensureHeld(distro, ensureOptions)
         : Promise.reject(refuseUnknown(distro))
   }
-  const pairingRecovery = createWslOrcadPairingRecovery(options.userDataPath)
+  const pairingRecovery = createWslOCCdPairingRecovery(options.userDataPath)
   // The desktop's own bridged sockets double as the liveness watch; no bridge is held for it.
-  const bridgeActivity = new WslOrcadBridgeActivity()
-  const manager = new WslOrcadConnectionManager({
+  const bridgeActivity = new WslOCCdBridgeActivity()
+  const manager = new WslOCCdConnectionManager({
     holder,
     listen: (transport, listenOptions) =>
-      listenWslOrcadStdioBridge(transport, {
+      listenWslOCCdStdioBridge(transport, {
         ...listenOptions,
         events: wslHostBridgeEvents(bridgeActivity, listenOptions)
       }),
@@ -89,10 +89,10 @@ export function createWslHostConnector(options: {
     onChange: options.onChange,
     deployAndLaunch: (distro, deployOptions) =>
       options.isKnownDistro(distro)
-        ? deployAndLaunchWslOrcad(distro, deployOptions)
+        ? deployAndLaunchWslOCCd(distro, deployOptions)
         : Promise.reject(refuseUnknown(distro))
   })
-  const liveness = createWslOrcadLivenessSupervisor({
+  const liveness = createWslOCCdLivenessSupervisor({
     manager,
     bridgeActivity,
     holder,
@@ -102,7 +102,7 @@ export function createWslHostConnector(options: {
   // Liveness connects in flight, per distro; a plain connect meanwhile joins rather than re-arms.
   const livenessConnects = new Map<
     string,
-    { promise: Promise<WslOrcadConnection>; noBoot: boolean; intent: boolean }
+    { promise: Promise<WslOCCdConnection>; noBoot: boolean; intent: boolean }
   >()
   // Read right before a no-boot reconnect spawns anything in the distro (E9); settled, since a
   // list taken while the distro stops still names it.
@@ -115,7 +115,7 @@ export function createWslHostConnector(options: {
   const coldProbes = new Map<
     string,
     {
-      connection: WslOrcadConnection | null
+      connection: WslOCCdConnection | null
       pairingOffer: string | undefined
       result: Promise<Reachability>
     }
@@ -123,7 +123,7 @@ export function createWslHostConnector(options: {
   const probe = async (
     distro: string,
     environmentId: string,
-    connection: WslOrcadConnection | null
+    connection: WslOCCdConnection | null
   ): Promise<Reachability> => {
     // Bridge dialing spawns wsl.exe; passive checks must first prove the distro runs.
     const running = await readSettledConfirmedRunningWslDistros(distro)
@@ -146,7 +146,7 @@ export function createWslHostConnector(options: {
     if (!offer) {
       return 'unreachable'
     }
-    const identity = await verifyOrcadPairingIdentity(pairedRuntimeConnectionFromOffer(offer), {
+    const identity = await verifyOCCdPairingIdentity(pairedRuntimeConnectionFromOffer(offer), {
       runtimeId: null
     })
     return identity.verdict === 'verified' && manager.get(distro) === connection
@@ -171,7 +171,7 @@ export function createWslHostConnector(options: {
   }
   return {
     listDistros: () => listWslHostDistros(),
-    readOrcadPublicKey: (distro) => readWslDistroOrcadPublicKey(transportFor(distro)),
+    readOCCdPublicKey: (distro) => readWslDistroOCCdPublicKey(transportFor(distro)),
     connect: (distro, { noBoot, ...connectOptions } = {}) => {
       const options = noBoot ? { ...connectOptions, requireRunning } : connectOptions
       const key = wslDistroHolderKey(distro)
@@ -228,7 +228,7 @@ export function createWslHostConnector(options: {
       return stopWslHostServer({
         ...wslHostRuntimeStopSteps(options.runtime, environmentId),
         closeBridge: () => liveness.stop(distro),
-        decommission: decommissionWslHostOrcad(target, createWslOrcadHostTransport({ target }))
+        decommission: decommissionWslHostOCCd(target, createWslOCCdHostTransport({ target }))
       })
     },
     resolveDistroName: (distro, distroId) => resolveWslDistroName(distro, distroId),

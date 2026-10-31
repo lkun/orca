@@ -36,7 +36,7 @@ describeOnWindows('host job reaps the tree when the host dies', () => {
   let dir: string
 
   beforeAll(() => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-host-job-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-host-job-'))
   })
 
   afterAll(() => {

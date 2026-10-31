@@ -111,7 +111,7 @@ describe("force: 'all'", () => {
       [home.cursor, 'replace', undefined]
     ])
     expect(await snapshot(home.shared)).toBe(`dir[SKILL.md]:${NEW_TEXT}`)
-    const backups = join(home.home, '.agents', '.orca-skill-backups')
+    const backups = join(home.home, '.agents', '.occ-skill-backups')
     const kept = await Promise.all(
       (await readdir(backups)).map((entry) => readFile(join(backups, entry, 'SKILL.md'), 'utf8'))
     )

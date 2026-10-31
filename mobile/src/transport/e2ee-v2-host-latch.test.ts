@@ -71,7 +71,7 @@ describe('E2EE v2 host latch', () => {
     expect(isHostLatchedToE2EEV2('host-key')).toBe(true)
     await hydrateE2EEV2HostLatch()
     await written
-    expect(stored.get('orca:e2ee-v2-hosts')).toBe('["host-key"]')
+    expect(stored.get('occ:e2ee-v2-hosts')).toBe('["host-key"]')
     resetE2EEV2HostLatchForTests()
     expect(isHostLatchedToE2EEV2('host-key')).toBeNull()
     await hydrateE2EEV2HostLatch()
@@ -105,14 +105,14 @@ describe('E2EE v2 host latch', () => {
     expect(isHostLatchedToE2EEV2('null')).toBe(false)
     latchHostToE2EEV2('b')
     await Promise.resolve()
-    expect(stored.get('orca:e2ee-v2-hosts')).toBe('["a","b"]')
+    expect(stored.get('occ:e2ee-v2-hosts')).toBe('["a","b"]')
   })
 
   it('latches the host when its relay channel reports authentication', async () => {
     await hydrateE2EEV2HostLatch()
     const onAuthenticated = vi.fn()
     const link = new MobileRelayE2eeLink({
-      endpoint: { cellUrl: 'https://relay-c1.onorca.dev', relayHostId: 'AbCdEf0123_-xyZ9' },
+      endpoint: { cellUrl: 'https://relay-c1.onocc.dev', relayHostId: 'AbCdEf0123_-xyZ9' },
       credential: 'credential',
       expectedCredentialKind: 'resume',
       deviceToken: 'device-token',

@@ -2,7 +2,7 @@ import {
   AGENT_PROMPT_EFFECT_TIMEOUT_MS,
   ORCHESTRATION_WORKER_START_CLIENT_GRACE_MS
 } from '../../../../../../shared/orchestration-timing-budgets'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import type { RunRow, TaskRow } from '../../../../orchestration/types'
 import type { WorkerStartModeReceipt } from '../../orchestration-worker-start-mode'
@@ -24,7 +24,7 @@ import {
 
 /** Claim ready only for proven turn start or unsupported observation; supported-but-unobserved starts remain start_unknown. */
 export async function deliverAndSettleWorkerStartReadiness(args: {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   run: RunRow
   task: TaskRow
@@ -135,12 +135,12 @@ export async function deliverAndSettleWorkerStartReadiness(args: {
       ...(deliveredPrompt ? { prompt: deliveredPrompt } : {}),
       residualResources: JSON.parse(worker.residual_resources) as unknown[],
       nextCommands: [
-        `orca orchestration worker-show --dispatch ${args.dispatchId} --json`,
+        `occ orchestration worker-show --dispatch ${args.dispatchId} --json`,
         // A structured worker or a chat has no screen to read.
         ...(structuredSession || chatAssigneeSessionId(terminalHandle)
           ? []
           : [`occ terminal read --terminal ${terminalHandle} --screen`]),
-        `orca orchestration worker-abandon --dispatch ${args.dispatchId} --json`
+        `occ orchestration worker-abandon --dispatch ${args.dispatchId} --json`
       ],
       ...(args.terminalRevealWarning ? { warning: args.terminalRevealWarning } : {})
     }

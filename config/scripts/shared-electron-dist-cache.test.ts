@@ -34,7 +34,7 @@ afterEach(() => {
 })
 
 function makeRoot(): string {
-  const root = mkdtempSync(path.join(tmpdir(), 'orca-shared-electron-'))
+  const root = mkdtempSync(path.join(tmpdir(), 'occ-shared-electron-'))
   roots.push(root)
   return root
 }
@@ -51,7 +51,7 @@ function makeEntry(root: string, entryName = `${VERSION}-darwin-arm64`) {
   return {
     cacheRoot,
     entryPath: path.join(cacheRoot, entryName),
-    markerPath: path.join(root, '.orca-shared-dist')
+    markerPath: path.join(root, '.occ-shared-dist')
   }
 }
 
@@ -68,18 +68,18 @@ const baseOptions = {
 describe('resolveSharedElectronDistEntry', () => {
   it('keys the entry by version, platform, and arch under the git common dir', () => {
     const entry = resolveSharedElectronDistEntry(baseOptions)
-    expect(entry?.cacheRoot).toBe(path.join('/repo/.git', 'orca-cache', 'electron'))
+    expect(entry?.cacheRoot).toBe(path.join('/repo/.git', 'occ-cache', 'electron'))
     expect(entry?.entryPath).toBe(
-      path.join('/repo/.git', 'orca-cache', 'electron', '43.4.1-darwin-arm64')
+      path.join('/repo/.git', 'occ-cache', 'electron', '43.4.1-darwin-arm64')
     )
-    expect(entry?.markerPath).toBe(path.join('/repo/node_modules/electron', '.orca-shared-dist'))
+    expect(entry?.markerPath).toBe(path.join('/repo/node_modules/electron', '.occ-shared-dist'))
   })
 
   it('offers an entry on every platform a worktree is developed on', () => {
     for (const targetPlatform of ['darwin', 'linux', 'win32']) {
       const entry = resolveSharedElectronDistEntry({ ...baseOptions, targetPlatform })
       expect(entry?.entryPath).toBe(
-        path.join('/repo/.git', 'orca-cache', 'electron', `${VERSION}-${targetPlatform}-arm64`)
+        path.join('/repo/.git', 'occ-cache', 'electron', `${VERSION}-${targetPlatform}-arm64`)
       )
     }
   })

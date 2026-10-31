@@ -39,7 +39,7 @@ function composerHosts(sshState?: Pick<SshConnectionState, 'status' | 'managedSe
     sshConnectionStates: sshState
       ? new Map([['tgt', { targetId: 'tgt', error: null, reconnectAttempt: 0, ...sshState }]])
       : undefined,
-    runtimeEnvironments: [{ id: 'env1', name: 'Omarchy', orcadDeployment: { sshTargetId: 'tgt' } }]
+    runtimeEnvironments: [{ id: 'env1', name: 'Omarchy', occdDeployment: { sshTargetId: 'tgt' } }]
   })
 }
 

@@ -20,13 +20,13 @@ describe('delete/modify merge resolved through resolveConflict and completeMerge
     repoPath: string
     git: (...args: string[]) => string
   } {
-    const repoPath = mkdtempSync(join(tmpdir(), 'orca-complete-merge-'))
+    const repoPath = mkdtempSync(join(tmpdir(), 'occ-complete-merge-'))
     tempPaths.push(repoPath)
     const git = (...args: string[]): string =>
       execFileSync('git', args, { cwd: repoPath, encoding: 'utf8' })
     git('init', '--quiet', '-b', 'main')
     git('config', 'user.name', 'OCC Test')
-    git('config', 'user.email', 'orca@example.test')
+    git('config', 'user.email', 'occ@example.test')
     git('config', 'commit.gpgSign', 'false')
     git('config', 'core.hooksPath', '.git/no-hooks')
     writeFileSync(join(repoPath, 'gone.txt'), 'base\n')

@@ -478,7 +478,7 @@ describe('ensureAgentStartupInTerminal prompt delivery', () => {
         expectedProcess: 'codex',
         followupPrompt: null,
         launchConfig: { agentArgs: '', agentEnv: {} },
-        draftPrompt: 'https://github.com/stablyai/orca/pull/2051'
+        draftPrompt: 'https://github.com/stablyai/occ/pull/2051'
       }
     })
 
@@ -511,7 +511,7 @@ describe('ensureAgentStartupInTerminal prompt delivery', () => {
     expect(mockPasteDraftToAgentPtyWhenReady).toHaveBeenCalledTimes(1)
     expect(mockPasteDraftToAgentPtyWhenReady).toHaveBeenCalledWith({
       ptyId: 'pty-delayed',
-      content: 'https://github.com/stablyai/orca/pull/2051',
+      content: 'https://github.com/stablyai/occ/pull/2051',
       agent: 'codex',
       forcePaste: true,
       onTimeout: expect.any(Function)

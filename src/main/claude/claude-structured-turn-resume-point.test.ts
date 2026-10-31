@@ -68,7 +68,7 @@ async function liveOwner(
     resumesTranscript?: boolean
   } = {}
 ) {
-  const root = await mkdtemp(join(tmpdir(), 'orca-claude-leaf-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-claude-leaf-'))
   const claudeConfigDir = join(root, 'claude-home')
   const projects = join(claudeConfigDir, 'projects', '-work-repo')
   await mkdir(projects, { recursive: true })

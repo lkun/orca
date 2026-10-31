@@ -54,7 +54,7 @@ describe('mailbox delivery into a pane awaiting the user', () => {
     'holds the pointer under a rest title while a question shows; %s',
     async (_label, rowAfter, screenAfter, expectedWrites) => {
       vi.useFakeTimers()
-      const db = createDatabase('orca-open-dialog-delivery-hold-')
+      const db = createDatabase('occ-open-dialog-delivery-hold-')
       let hook = claudeHookRow('waiting')
       const { runtime, write } = createRuntime(db, {
         getAgentStatusSnapshot: () => [hook],
@@ -94,7 +94,7 @@ describe('mailbox delivery into a pane awaiting the user', () => {
     'holds the pointer while the composer has an unsent draft; %s',
     async (_label, inputKind, screenAfter, waitAfterMs) => {
       vi.useFakeTimers()
-      const db = createDatabase('orca-composer-draft-delivery-hold-')
+      const db = createDatabase('occ-composer-draft-delivery-hold-')
       const { runtime, write } = createRuntime(db, {
         getAgentStatusSnapshot: () => [claudeHookRow('done')],
         checkHookAgentPresence: async () => 'live',

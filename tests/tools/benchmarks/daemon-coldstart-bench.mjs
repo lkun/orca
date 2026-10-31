@@ -172,15 +172,15 @@ function runIteration({ exe, fixtureDir, timeoutMs, lingerMs }) {
     mkdirSync(isolatedHome, { recursive: true })
     const env = {
       ...process.env,
-      ORCA_STARTUP_DIAGNOSTICS: '1',
-      ORCA_E2E_USER_DATA_DIR: fixtureDir,
+      OCC_STARTUP_DIAGNOSTICS: '1',
+      OCC_E2E_USER_DATA_DIR: fixtureDir,
       HOME: isolatedHome,
       USERPROFILE: isolatedHome,
-      ORCA_E2E_HOME_DIR: isolatedHome,
-      ORCA_E2E_HEADLESS: '1'
+      OCC_E2E_HOME_DIR: isolatedHome,
+      OCC_E2E_HEADLESS: '1'
     }
     delete env.CODEX_HOME
-    delete env.ORCA_CODEX_HOME
+    delete env.OCC_CODEX_HOME
     const child = spawn(command, commandArgs, {
       env,
       stdio: ['ignore', 'ignore', 'pipe']
@@ -299,7 +299,7 @@ function formatMs(value) {
 
 async function main() {
   const args = parseArgs(process.argv)
-  const fixtureDir = resolve(join(os.tmpdir(), 'orca-daemon-bench', 'userdata'))
+  const fixtureDir = resolve(join(os.tmpdir(), 'occ-daemon-bench', 'userdata'))
   ensureFixture(fixtureDir)
 
   if (!args.exe && !existsSync(join(repoRoot, 'out', 'main', 'index.js'))) {

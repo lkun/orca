@@ -1,11 +1,11 @@
 // Send/wait/read on an unstarted restored pane shares main's starter, then acts on its terminal.
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
-import { OrcaRuntimeWithGetTerminalInteractiveWait } from '../wait/terminal-interactive-wait'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCCRuntimeWithGetTerminalInteractiveWait } from '../wait/terminal-interactive-wait'
 import { startedMainTerminalSurfaces } from './main-terminal-surfaces'
-import { MOBILE_TERMINAL_SURFACE_TIMEOUT_MS } from '../../orca-runtime-core'
+import { MOBILE_TERMINAL_SURFACE_TIMEOUT_MS } from '../../occ-runtime-core'
 import type { RestoredPane } from '../recovery/restored-pane-start'
 
-export abstract class OrcaRuntimeWithRestoredHandlePaneStart extends OrcaRuntimeWithGetTerminalInteractiveWait {
+export abstract class OCCRuntimeWithRestoredHandlePaneStart extends OCCRuntimeWithGetTerminalInteractiveWait {
   /** Return null synchronously unless main must start this saved pane; use the started terminal's handle until binding/adoption catches up. */
   startRestoredHandlePane(
     handle: string,
@@ -28,7 +28,7 @@ export abstract class OrcaRuntimeWithRestoredHandlePaneStart extends OrcaRuntime
   }
 
   private restoredPaneToStart(handle: string): RestoredPane | null {
-    if (!ORCA_LAYOUT_OWNER_IS_MAIN || this.getLivePtyForHandle(handle)) {
+    if (!OCC_LAYOUT_OWNER_IS_MAIN || this.getLivePtyForHandle(handle)) {
       return null
     }
     let leaf

@@ -50,7 +50,7 @@ export type NativeChatPickerState = {
   completeItem: (item: NativeChatPickerItem) => void
   completeMention: (path: string) => void
   dismiss: (triggerKey: string) => void
-  handleDraftOrCaretChange: (value: string, caret: number) => void
+  handleDraftoccretChange: (value: string, caret: number) => void
 }
 
 export function useNativeChatPickerState(args: {
@@ -215,7 +215,7 @@ export function useNativeChatPickerState(args: {
     [autocomplete, commitCompletion, liveDraft]
   )
 
-  const handleDraftOrCaretChange = useCallback(
+  const handleDraftoccretChange = useCallback(
     (value: string, nextCaret: number) => {
       const firstToken = value.split(/\s/, 1)[0] ?? ''
       if (skillOriginRef.current && firstToken !== skillOriginRef.current) {
@@ -291,6 +291,6 @@ export function useNativeChatPickerState(args: {
     completeItem,
     completeMention,
     dismiss,
-    handleDraftOrCaretChange
+    handleDraftoccretChange
   }
 }

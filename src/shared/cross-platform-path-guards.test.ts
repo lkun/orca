@@ -59,7 +59,7 @@ function countReplaceCalls(run: () => void): number {
 }
 
 const CLEAN_POSIX_PATH =
-  '/Users/nwparker/orca/workspaces/orca/perf/src/renderer/src/components/x.ts'
+  '/Users/nwparker/occ/workspaces/occ/perf/src/renderer/src/components/x.ts'
 
 describe('no-op regex passes stay skipped', () => {
   it('runs zero replaces for a path with no doubled slash, trailing slash, or backslash', () => {

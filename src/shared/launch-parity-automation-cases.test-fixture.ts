@@ -107,10 +107,10 @@ export function automationSpawnRequest(c: AutomationLaunchCase): Record<string, 
     ...(c.agent === 'codex' ? { startupCommandDelivery: 'shell-ready' } : {}),
     env: {
       ...(c.agent === 'claude' ? { DISABLE_AUTOUPDATER: '1' } : {}),
-      ORCA_PANE_KEY: `${LAUNCH_TAB_ID}:${LAUNCH_LEAF_ID}`,
-      ORCA_TAB_ID: LAUNCH_TAB_ID,
-      ORCA_WORKTREE_ID: worktreeId,
-      ORCA_AGENT_LAUNCH_TOKEN: LAUNCH_TOKEN
+      OCC_PANE_KEY: `${LAUNCH_TAB_ID}:${LAUNCH_LEAF_ID}`,
+      OCC_TAB_ID: LAUNCH_TAB_ID,
+      OCC_WORKTREE_ID: worktreeId,
+      OCC_AGENT_LAUNCH_TOKEN: LAUNCH_TOKEN
     },
     launchConfig: {
       agentCommand: c.request.agentCommand,

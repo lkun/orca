@@ -36,8 +36,8 @@ function worker(): PluginWorkerHandle & { exit: () => void } {
 }
 
 async function harness() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-refresh-admission-'))
-  const userDataPath = await mkdtemp(join(tmpdir(), 'orca-plugin-refresh-user-data-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-refresh-admission-'))
+  const userDataPath = await mkdtemp(join(tmpdir(), 'occ-plugin-refresh-user-data-'))
   roots.push(root, userDataPath)
   const manifest = pluginManifestSchema.parse({
     manifestVersion: 1,
@@ -45,7 +45,7 @@ async function harness() {
     publisher: 'samples',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     main: 'main.mjs',
     contributes: {
@@ -54,7 +54,7 @@ async function harness() {
     },
     capabilities: []
   })
-  await writeFile(join(root, 'orca-plugin.json'), JSON.stringify(manifest))
+  await writeFile(join(root, 'occ-plugin.json'), JSON.stringify(manifest))
   await writeFile(join(root, 'main.mjs'), 'export default () => {}')
   const hash = await hashPluginTree(root)
   if (!hash.ok) {
@@ -153,7 +153,7 @@ it.each(['revoke', 'disable', 'remove', 'changed spec', 'changed content'] as co
     }
     if (change === 'changed spec') {
       await writeFile(
-        join(root, 'orca-plugin.json'),
+        join(root, 'occ-plugin.json'),
         JSON.stringify({ ...manifest, version: '2.0.0' })
       )
     }

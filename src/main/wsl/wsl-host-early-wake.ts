@@ -6,7 +6,7 @@
 import { rmSync } from 'node:fs'
 import { join } from 'node:path'
 import { z } from 'zod'
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { writeSecureJsonFileWithinLimit } from '../../shared/bounded-secure-json-file'
 import { readNodeFileSyncWithinLimit } from '../../shared/node-bounded-file-reader'
 import { readWslHostDeployments } from '../../shared/wsl-host-deployment-store'
@@ -16,7 +16,7 @@ import { resolveWslInteropSpawnCwd } from '../wsl-interop-spawn-directory'
 import { wslDistroHolderKey } from './wsl-distro-holder-record'
 import { resolveWslExecutablePath } from './wsl-executable-path'
 
-const WAKE_FILE = 'orca-wsl-host-wake.json'
+const WAKE_FILE = 'occ-wsl-host-wake.json'
 const MAX_WAKE_FILE_BYTES = 16 * 1024
 
 const WakeListSchema = z.object({ version: z.literal(1), distros: z.array(WslDistroNameSchema) })

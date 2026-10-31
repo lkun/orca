@@ -101,7 +101,7 @@ export async function spawnAndPublishSession(
     sessionId: opts.sessionId,
     cols: size.cols,
     rows: size.rows,
-    terminalHandle: opts.env?.ORCA_TERMINAL_HANDLE,
+    terminalHandle: opts.env?.OCC_TERMINAL_HANDLE,
     launchAgent: opts.launchAgent,
     subprocess,
     ownerBackend: resolvePtyOwnerBackend({
@@ -137,7 +137,7 @@ export async function spawnAndPublishSession(
     session.dispose()
     throw error
   }
-  recordSessionSpawnPaneKey(session, opts.env?.ORCA_PANE_KEY)
+  recordSessionSpawnPaneKey(session, opts.env?.OCC_PANE_KEY)
 
   try {
     trackSessionInput(session, subprocess, deps.reportReadinessEvent)
@@ -186,7 +186,7 @@ export async function spawnAndPublishSession(
     staging.current = stageStartupCommand({
       command: opts.command,
       shellPath: subprocess.shellPath,
-      orcaBuiltLine: opts.launchAgent !== undefined
+      occBuiltLine: opts.launchAgent !== undefined
     })
     const notice = startupStagingFailureNotice(staging.current)
     if (notice) {

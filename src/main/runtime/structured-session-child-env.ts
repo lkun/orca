@@ -6,27 +6,27 @@
 
 import { getAppEnvironment, hasAppEnvironment } from '../../shared/app-environment'
 import {
-  ORCA_AGENT_SESSION_ID_ENV,
-  ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV
+  OCC_AGENT_SESSION_ID_ENV,
+  OCC_AGENT_SESSION_SPAWN_TOKEN_ENV
 } from '../../shared/agent-session-caller-env'
 import {
-  ORCA_SCRUB_SAFE_LAUNCH_ENV,
-  ORCA_SCRUB_SAFE_PANE_ENV
+  OCC_SCRUB_SAFE_LAUNCH_ENV,
+  OCC_SCRUB_SAFE_PANE_ENV
 } from '../../shared/agent-hook-scrub-safe-env'
-import { ORCA_STRUCTURED_SESSION_ENV } from '../../shared/structured-session-marker'
+import { OCC_STRUCTURED_SESSION_ENV } from '../../shared/structured-session-marker'
 import { withCliRuntimeOnPath } from '../../shared/node-cli-command-resolution'
-import { prependOrcaCliDirToChildPath } from '../cli/orca-cli-child-path'
+import { prependOCCCliDirToChildPath } from '../cli/occ-cli-child-path'
 import { AGENT_HOOK_RUNTIME_ENV_KEYS } from '../ipc/pty/host-env/spawn-env-keys'
 import { resolveStructuredWorkerIdentityForSession } from './structured-worker-authority'
 
 /** Remove inherited pane identity so hook status cannot compete with the structured-session producer. */
 export const STRUCTURED_CHILD_ENV_TO_DELETE: readonly string[] = [
-  'ORCA_PANE_KEY',
-  'ORCA_TAB_ID',
-  'ORCA_WORKTREE_ID',
-  'ORCA_AGENT_LAUNCH_TOKEN',
-  ORCA_SCRUB_SAFE_PANE_ENV,
-  ORCA_SCRUB_SAFE_LAUNCH_ENV,
+  'OCC_PANE_KEY',
+  'OCC_TAB_ID',
+  'OCC_WORKTREE_ID',
+  'OCC_AGENT_LAUNCH_TOKEN',
+  OCC_SCRUB_SAFE_PANE_ENV,
+  OCC_SCRUB_SAFE_LAUNCH_ENV,
   ...AGENT_HOOK_RUNTIME_ENV_KEYS
 ]
 
@@ -46,14 +46,14 @@ export function sealStructuredSessionChild(input: {
   inheritedEnvToDelete: readonly string[]
   cliRuntimeCommand?: string
 }): SealedStructuredSessionChild {
-  // Why: pair before naming the child so this app's CLI dir stays ahead of a runtime dir holding another `orca`.
+  // Why: pair before naming the child so this app's CLI dir stays ahead of a runtime dir holding another `occ`.
   const paired = input.cliRuntimeCommand
     ? withCliRuntimeOnPath(input.cliRuntimeCommand, input.env, { platform: process.platform })
     : input.env
   const identity = childIdentity(input.sessionId, paired)
-  const named = new Set([...Object.keys(identity.commandEnv), ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV])
+  const named = new Set([...Object.keys(identity.commandEnv), OCC_AGENT_SESSION_SPAWN_TOKEN_ENV])
   return {
-    env: { ...identity.env, [ORCA_AGENT_SESSION_SPAWN_TOKEN_ENV]: input.spawnToken },
+    env: { ...identity.env, [OCC_AGENT_SESSION_SPAWN_TOKEN_ENV]: input.spawnToken },
     envToDelete: input.inheritedEnvToDelete.filter((key) => !named.has(key)),
     commandEnv: identity.commandEnv
   }
@@ -65,45 +65,45 @@ function childIdentity(
 ): { env: Record<string, string>; commandEnv: Record<string, string> } {
   const identity = resolveStructuredWorkerIdentityForSession(sessionId, null)
   const named: Record<string, string> = {
-    ...(identity ? { ORCA_TERMINAL_HANDLE: identity.handle } : {}),
-    [ORCA_AGENT_SESSION_ID_ENV]: sessionId,
-    [ORCA_STRUCTURED_SESSION_ENV]: '1'
+    ...(identity ? { OCC_TERMINAL_HANDLE: identity.handle } : {}),
+    [OCC_AGENT_SESSION_ID_ENV]: sessionId,
+    [OCC_STRUCTURED_SESSION_ENV]: '1'
   }
   const env = { ...childEnv, ...named }
   return { env, commandEnv: { ...named, ...applyThisAppCli(env) } }
 }
 
 const REMOTE_RUNTIME_SELECTOR_ENV_KEYS = [
-  'ORCA_ENVIRONMENT',
-  'ORCA_PAIRING_CODE',
-  'ORCA_REMOTE_PAIRING'
+  'OCC_ENVIRONMENT',
+  'OCC_PAIRING_CODE',
+  'OCC_REMOTE_PAIRING'
 ] as const
 
 /** Without an installed app environment, no user-data root is known; inventing one would write the CLI shim into the wrong directory. */
 function applyThisAppCli(env: Record<string, string>): Record<string, string> {
-  delete env.ORCA_CLI_COMMAND
+  delete env.OCC_CLI_COMMAND
   if (!hasAppEnvironment()) {
     return {}
   }
   const app = getAppEnvironment()
   const userDataPath = app.getPath('userData')
   const isPackaged = app.isPackaged()
-  const set: Record<string, string> = { ORCA_USER_DATA_PATH: userDataPath }
+  const set: Record<string, string> = { OCC_USER_DATA_PATH: userDataPath }
   for (const key of REMOTE_RUNTIME_SELECTOR_ENV_KEYS) {
     set[key] = ''
   }
   Object.assign(env, set)
-  const launcher = prependOrcaCliDirToChildPath(env, {
+  const launcher = prependOCCCliDirToChildPath(env, {
     isPackaged,
     userDataPath,
     resourcesPath: process.resourcesPath ?? null
   })
   if (launcher) {
-    set.ORCA_CLI_COMMAND = launcher
-    env.ORCA_CLI_COMMAND = launcher
+    set.OCC_CLI_COMMAND = launcher
+    env.OCC_CLI_COMMAND = launcher
   } else {
     console.warn(
-      "[structured-session] This app's CLI launcher did not resolve; the session's child has no ORCA_CLI_COMMAND."
+      "[structured-session] This app's CLI launcher did not resolve; the session's child has no OCC_CLI_COMMAND."
     )
   }
   return set

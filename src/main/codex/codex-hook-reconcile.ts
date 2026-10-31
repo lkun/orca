@@ -45,7 +45,7 @@ export function startCodexHooks({
   ...appConfig
 }: ReconcileConfig & {
   pathReady: Promise<unknown>
-  /** orcad passes its readiness so this PATH scan stays off it; launches never wait on it. */
+  /** occd passes its readiness so this PATH scan stays off it; launches never wait on it. */
   startAfter?: Promise<unknown>
 }): void {
   const pathReady = hydrating.catch(() => {})

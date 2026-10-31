@@ -30,7 +30,7 @@ export async function probeAntigravityAcpServer(
   signal: AbortSignal
 ): Promise<void> {
   // Keep the server’s home and extracted runtime together for cleanup.
-  const home = await mkdtemp(join(tmpdir(), 'orca-antigravity-probe-'))
+  const home = await mkdtemp(join(tmpdir(), 'occ-antigravity-probe-'))
   const probe: { connection?: AcpAgentConnection } = {}
   let answer: unknown = null
   try {

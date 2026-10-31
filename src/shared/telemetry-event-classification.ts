@@ -36,7 +36,7 @@ const COHORT_EXTENDED_SET = eventsDeclaringKey('nth_repo_added')
 
 type _CohortExtendedRoster =
   | 'app_opened'
-  | 'app_starred_orca'
+  | 'app_starred_occ'
   | 'star_nag_outcome'
   | 'feature_interaction_usage_bucket_reached'
   | 'repo_added'
@@ -53,9 +53,9 @@ type _CohortExtendedRoster =
   | 'agent_started'
   | 'agent_prompt_sent'
   | 'agent_error'
-  | 'orca_cli_feature_tip_shown'
-  | 'orca_cli_feature_tip_setup_clicked'
-  | 'orca_cli_feature_tip_setup_result'
+  | 'occ_cli_feature_tip_shown'
+  | 'occ_cli_feature_tip_setup_clicked'
+  | 'occ_cli_feature_tip_setup_result'
   | 'cmd_j_palette_feature_tip_shown'
   | 'cmd_j_palette_feature_tip_acknowledged'
   | 'chat_ui_feature_tip_shown'
@@ -127,7 +127,7 @@ export const commonPropsSchema = z
     // Empty IDs merge unrelated users/sessions in analytics.
     install_id: z.string().min(1).max(64),
     session_id: z.string().min(1).max(64),
-    orca_channel: z.enum(['stable', 'rc']),
+    occ_channel: z.enum(['stable', 'rc']),
     onboarding_language_v1: z.enum(['control', 'treatment']).optional()
   })
   .strict()

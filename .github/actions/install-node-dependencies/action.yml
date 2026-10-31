@@ -83,9 +83,9 @@ runs:
         PYTHON
         fixture_home="$(mktemp -d)"
         trap 'rm -rf "$fixture_home"' EXIT
-        printf 'export ORCA_CI_PROFILE_LOADED=1\n' > "$fixture_home/.bash_profile"
-        HOME="$fixture_home" ORCA_CI_FIXTURE_HOME="$fixture_home" /bin/bash -lc '
-          test "$HOME" = "$ORCA_CI_FIXTURE_HOME" && test "$ORCA_CI_PROFILE_LOADED" = 1
+        printf 'export OCC_CI_PROFILE_LOADED=1\n' > "$fixture_home/.bash_profile"
+        HOME="$fixture_home" OCC_CI_FIXTURE_HOME="$fixture_home" /bin/bash -lc '
+          test "$HOME" = "$OCC_CI_FIXTURE_HOME" && test "$OCC_CI_PROFILE_LOADED" = 1
         ' || {
           echo '::error::Runner login profile overrides fixture HOME'
           grep -nH 'HOME' /etc/profile /etc/profile.d/*.sh || true
@@ -166,7 +166,7 @@ runs:
         printf 'path=%s\n' "$cache_path" >> "$GITHUB_OUTPUT"
         printf 'arch=%s\n' "$(node -p 'require("node:os").arch()')" >> "$GITHUB_OUTPUT"
         if [ "$STORE_LOOKUP_ONLY" = 'true' ]; then
-          printf 'ORCA_PNPM_STORE_CACHE_PATH=%s\n' "$cache_path" >> "$GITHUB_ENV"
+          printf 'OCC_PNPM_STORE_CACHE_PATH=%s\n' "$cache_path" >> "$GITHUB_ENV"
         fi
 
     # Match setup-node's key and path so existing default-branch stores remain reusable.
@@ -192,7 +192,7 @@ runs:
       uses: actions/cache@v5
       with:
         # Twice-nested composite cleanup loses internal step outputs.
-        path: ${{ env.ORCA_PNPM_STORE_CACHE_PATH }}
+        path: ${{ env.OCC_PNPM_STORE_CACHE_PATH }}
         key: node-cache-${{ runner.os }}-${{ steps.pnpm-store.outputs.arch }}-pnpm-${{ hashFiles(inputs.cache-dependency-path) }}
         lookup-only: true
 

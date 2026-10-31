@@ -14,9 +14,9 @@ import { i18n } from '@/i18n/i18n'
 import { agentSessionFailureWords } from '../../../../shared/agent-session-failure-words'
 import { agentSessionFailureFact } from '../../../../shared/agent-session-failure'
 import {
-  NativeChatOrcaStopContext,
-  type NativeChatOrcaStopView
-} from './native-chat-orca-stop-context'
+  NativeChatOCCStopContext,
+  type NativeChatOCCStopView
+} from './native-chat-occ-stop-context'
 
 afterEach(async () => {
   cleanup()
@@ -34,15 +34,15 @@ it('keeps a skipped compaction warning truthful instead of showing the success s
   expect(screen.queryByText('Context compacted')).toBeNull()
 })
 
-type ContinueOffer = Pick<NativeChatOrcaStopView, 'offeredTurnItemId' | 'continueNow'> &
-  Partial<Pick<NativeChatOrcaStopView, 'usageLimitTurnItemId' | 'continueUsageLimit'>>
+type ContinueOffer = Pick<NativeChatOCCStopView, 'offeredTurnItemId' | 'continueNow'> &
+  Partial<Pick<NativeChatOCCStopView, 'usageLimitTurnItemId' | 'continueUsageLimit'>>
 
-function orcaStopView(
+function occStopView(
   hostLabel: string | null,
   continueAvailable: boolean,
   remoteHost: boolean,
   offer: ContinueOffer
-): NativeChatOrcaStopView {
+): NativeChatOCCStopView {
   return {
     hostLabel,
     remoteHost,
@@ -73,17 +73,17 @@ function renderStatus(
       turnScope: { kind: 'turn', turnItemId: 'cut-turn' }
     }
   ])
-  const view = orcaStopView(hostLabel, continueAvailable, remoteHost, offer)
+  const view = occStopView(hostLabel, continueAvailable, remoteHost, offer)
   return render(
     <TooltipProvider>
-      <NativeChatOrcaStopContext.Provider value={view}>
+      <NativeChatOCCStopContext.Provider value={view}>
         <MessageRow
           message={message!}
           agentName={agentName}
           expandSignal={false}
           onScrollMessageToTop={vi.fn()}
         />
-      </NativeChatOrcaStopContext.Provider>
+      </NativeChatOCCStopContext.Provider>
     </TooltipProvider>
   )
 }
@@ -91,13 +91,13 @@ function renderStatus(
 const LEGACY_TEXT =
   'Codex stopped while this response was in progress. You can continue in this conversation.'
 
-function orcaStopRow(cause: string): AgentJournalStatusItem {
+function occStopRow(cause: string): AgentJournalStatusItem {
   return {
     kind: 'status',
     text: LEGACY_TEXT,
     tone: 'error',
-    presentation: 'orca-stop',
-    orcaStop: { cause }
+    presentation: 'occ-stop',
+    occStop: { cause }
   }
 }
 
@@ -107,14 +107,14 @@ describe('the row an OCC stop leaves', () => {
     ['quit', 'OCC on studio-mac was closed while this response was in progress.'],
     ['crash', 'OCC on studio-mac stopped unexpectedly while this response was in progress.']
   ])('names a %s and the machine, muted', (cause, sentence) => {
-    renderStatus(orcaStopRow(cause), 'studio-mac')
+    renderStatus(occStopRow(cause), 'studio-mac')
     const row = screen.getByText(`${sentence} You can continue in this conversation.`)
     expect(row.parentElement?.parentElement).toHaveClass('text-chat-foreground-faint')
     expect(screen.queryByText(LEGACY_TEXT)).toBeNull()
   })
 
   it('leaves the way on to Continue wherever its host can continue a cut', () => {
-    renderStatus(orcaStopRow('update'), 'studio-mac', true)
+    renderStatus(occStopRow('update'), 'studio-mac', true)
     expect(
       screen.getByText(
         'OCC on studio-mac restarted for an update while this response was in progress.'
@@ -124,7 +124,7 @@ describe('the row an OCC stop leaves', () => {
 
   it('carries Continue on the cut it is offered for, and only there', () => {
     const continueNow = vi.fn()
-    renderStatus(orcaStopRow('quit'), 'studio-mac', true, false, undefined, {
+    renderStatus(occStopRow('quit'), 'studio-mac', true, false, undefined, {
       offeredTurnItemId: 'cut-turn',
       continueNow
     })
@@ -137,7 +137,7 @@ describe('the row an OCC stop leaves', () => {
     expect(continueNow).toHaveBeenCalledOnce()
     cleanup()
 
-    renderStatus(orcaStopRow('quit'), 'studio-mac', true, false, undefined, {
+    renderStatus(occStopRow('quit'), 'studio-mac', true, false, undefined, {
       offeredTurnItemId: 'another-turn',
       continueNow
     })
@@ -145,7 +145,7 @@ describe('the row an OCC stop leaves', () => {
   })
 
   it("says a remote host's OCC stopped, not that it was closed", () => {
-    renderStatus(orcaStopRow('quit'), 'QA SSH', true, true)
+    renderStatus(occStopRow('quit'), 'QA SSH', true, true)
     expect(
       screen.getByText('OCC on QA SSH stopped while this response was in progress.').parentElement
         ?.parentElement
@@ -154,7 +154,7 @@ describe('the row an OCC stop leaves', () => {
   })
 
   it("keeps this desktop's quit as closed", () => {
-    renderStatus(orcaStopRow('quit'), 'studio-mac', true, false)
+    renderStatus(occStopRow('quit'), 'studio-mac', true, false)
     expect(
       screen.getByText('OCC on studio-mac was closed while this response was in progress.')
     ).toBeInTheDocument()
@@ -164,7 +164,7 @@ describe('the row an OCC stop leaves', () => {
     ['update', 'OCC on QA SSH restarted for an update while this response was in progress.'],
     ['crash', 'OCC on QA SSH stopped unexpectedly while this response was in progress.']
   ])("keeps a remote host's %s words", (cause, sentence) => {
-    renderStatus(orcaStopRow(cause), 'QA SSH', true, true)
+    renderStatus(occStopRow(cause), 'QA SSH', true, true)
     expect(screen.getByText(sentence)).toBeInTheDocument()
   })
 
@@ -173,8 +173,8 @@ describe('the row an OCC stop leaves', () => {
       kind: 'status',
       text: 'This response was interrupted. You can continue in this conversation.',
       tone: 'notice',
-      presentation: 'orca-stop',
-      orcaStop: { cause: 'crash' }
+      presentation: 'occ-stop',
+      occStop: { cause: 'crash' }
     }
     renderStatus(represented, 'studio-mac', true)
     expect(
@@ -191,19 +191,19 @@ describe('the row an OCC stop leaves', () => {
   })
 
   it('keeps the host words for a cause this build does not know', () => {
-    renderStatus(orcaStopRow('power-loss'), 'studio-mac')
+    renderStatus(occStopRow('power-loss'), 'studio-mac')
     expect(screen.getByText(LEGACY_TEXT)).toBeInTheDocument()
   })
 
   it('keeps the host words when the chat has no machine to name, muted all the same', () => {
-    renderStatus(orcaStopRow('update'), null)
+    renderStatus(occStopRow('update'), null)
     expect(screen.getByText(LEGACY_TEXT).parentElement?.parentElement).toHaveClass(
       'text-chat-foreground-faint'
     )
   })
 
   it('calls a paired server with no name the remote server, so its words match the button', () => {
-    renderStatus(orcaStopRow('update'), null, true, true)
+    renderStatus(occStopRow('update'), null, true, true)
     expect(
       screen.getByText(
         'OCC on the remote server restarted for an update while this response was in progress.'
@@ -213,7 +213,7 @@ describe('the row an OCC stop leaves', () => {
   })
 
   it('keeps the host words for a stop OCC did not cause', () => {
-    const { orcaStop: _orcaStop, presentation: _presentation, ...agentExit } = orcaStopRow('update')
+    const { occStop: _occStop, presentation: _presentation, ...agentExit } = occStopRow('update')
     renderStatus(agentExit, 'studio-mac')
     expect(screen.getByText(LEGACY_TEXT).parentElement?.parentElement).toHaveClass(
       'text-destructive'

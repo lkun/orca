@@ -13,7 +13,7 @@ afterEach(() => {
   rmSync(root, { recursive: true, force: true })
 })
 const promptPath = (config: string) =>
-  join(config, 'plugins', 'orca-opencode-startup-prompt', 'tui.js')
+  join(config, 'plugins', 'occ-opencode-startup-prompt', 'tui.js')
 describe('execution-host startup prompt installation', () => {
   it('caches prompt source independently and revokes future installs with an empty source', () => {
     const manager = new PluginOverlayManager({ homeDir: root })
@@ -31,7 +31,7 @@ describe('execution-host startup prompt installation', () => {
   it('materializes a prompt-only overlay without overwriting a same-named user plugin', () => {
     const manager = new PluginOverlayManager({ homeDir: root })
     const config = join(root, 'custom')
-    mkdirSync(join(config, 'plugins', 'orca-opencode-startup-prompt'), { recursive: true })
+    mkdirSync(join(config, 'plugins', 'occ-opencode-startup-prompt'), { recursive: true })
     writeFileSync(promptPath(config), 'user collision')
     writeFileSync(join(config, 'opencode.json'), '{"model":"user/model"}')
     manager.setSources({ opencodeStartupPromptSource: 'prompt source' })
@@ -42,7 +42,7 @@ describe('execution-host startup prompt installation', () => {
     expect(readFileSync(promptPath(overlay), 'utf8')).toBe('prompt source')
     expect(readFileSync(promptPath(config), 'utf8')).toBe('user collision')
     expect(readFileSync(join(overlay, 'opencode.json'), 'utf8')).toContain('user/model')
-    expect(existsSync(join(overlay, 'plugins', 'orca-opencode-status.js'))).toBe(false)
+    expect(existsSync(join(overlay, 'plugins', 'occ-opencode-status.js'))).toBe(false)
   })
   it('installs through WSL with both status sources disabled and preserves explicit config', () => {
     const config = join(root, 'custom')

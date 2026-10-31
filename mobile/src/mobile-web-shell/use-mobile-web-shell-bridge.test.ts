@@ -7,7 +7,7 @@ import {
 } from 'react'
 import { act, create, type ReactTestRenderer } from 'react-test-renderer'
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
-import type { OrcaMobileWebShellViewHandle } from '../../modules/orca-mobile-web-shell/src'
+import type { OCCMobileWebShellViewHandle } from '../../modules/occ-mobile-web-shell/src'
 import { BRIDGE_NATIVE_VERB_NAMES } from './bridge/bridge-native-verbs'
 import {
   BRIDGE_HAPTICS_GRANT,
@@ -23,7 +23,7 @@ import {
   readBridgeHostMessage,
   type BridgeHostMessage
 } from './bridge/bridge-envelope'
-import type { BridgeErrorCapture } from './bridge/bridge-error-capture'
+import type { BridgeErroccpture } from './bridge/bridge-error-capture'
 import type { MobileWebShellSessionState } from './mobile-web-shell-session-contract'
 import type { FakeRpcClient } from './bridge-host-test-fakes'
 
@@ -68,7 +68,7 @@ const SNAPSHOT = {
   host: { id: 'host-1', name: 'Host One', endpoint: 'ws://host-1', lastConnected: 7 }
 }
 
-const STORAGE = { 'orca:pins:host-1': '["wt-1"]' }
+const STORAGE = { 'occ:pins:host-1': '["wt-1"]' }
 
 function fakeClient(): FakeRpcClient {
   const client = doubles.client
@@ -80,7 +80,7 @@ function fakeClient(): FakeRpcClient {
 
 function FakeShellView(props: {
   sessionId: string
-  viewRef: (handle: OrcaMobileWebShellViewHandle | null) => void
+  viewRef: (handle: OCCMobileWebShellViewHandle | null) => void
   posted: PostedFrame[]
 }): null {
   useImperativeHandle(
@@ -101,7 +101,7 @@ function DeliverDuringCommit(props: {
   deliver: readonly string[]
   posted: PostedFrame[]
   probe: Probe
-  faults: BridgeErrorCapture[]
+  faults: BridgeErroccpture[]
   readies: string[]
 }): ReactElement {
   const { deliver, probe } = props
@@ -124,7 +124,7 @@ function Harness(props: {
   sessionEstablished?: boolean
   posted: PostedFrame[]
   probe: Probe
-  faults: BridgeErrorCapture[]
+  faults: BridgeErroccpture[]
   readies: string[]
 }): ReactElement | null {
   const [handshook, setHandshook] = useState<string | null>(null)
@@ -204,7 +204,7 @@ type Mounted = {
   tree: ReactTestRenderer
   posted: PostedFrame[]
   probe: Probe
-  faults: BridgeErrorCapture[]
+  faults: BridgeErroccpture[]
   readies: string[]
   update: (session: MobileWebShellSessionState) => Promise<void>
   deliver: (json: string) => Promise<void>
@@ -246,7 +246,7 @@ async function mount(
     backClaims: [],
     storageWrites: []
   }
-  const faults: BridgeErrorCapture[] = []
+  const faults: BridgeErroccpture[] = []
   const readies: string[] = []
   const rendered: { tree: ReactTestRenderer | null } = { tree: null }
   const render = (next: MobileWebShellSessionState): ReactElement =>
@@ -706,11 +706,11 @@ describe('the props one render passed', () => {
     const posted: PostedFrame[] = []
     const first = newProbe()
     const second = newProbe()
-    const firstFaults: BridgeErrorCapture[] = []
-    const secondFaults: BridgeErrorCapture[] = []
+    const firstFaults: BridgeErroccpture[] = []
+    const secondFaults: BridgeErroccpture[] = []
     const firstReadies: string[] = []
     const secondReadies: string[] = []
-    const render = (probe: Probe, faults: BridgeErrorCapture[], readies: string[]): ReactElement =>
+    const render = (probe: Probe, faults: BridgeErroccpture[], readies: string[]): ReactElement =>
       createElement(Harness, { session: readyState('session-one'), posted, probe, faults, readies })
     const rendered: { tree: ReactTestRenderer | null } = { tree: null }
     await act(async () => {
@@ -732,7 +732,7 @@ describe('the props one render passed', () => {
       clientFrame({ type: 'notify', name: 'externalLink', url: 'https://example.com/y' }),
       clientFrame({ type: 'notify', name: BRIDGE_HAPTICS_NOTIFY, kind: 'selection' }),
       clientFrame({ type: 'notify', name: BRIDGE_NAVIGATE_BACK_NOTIFY }),
-      clientFrame({ type: 'notify', name: 'storage', key: 'orca:pins:host-1', value: '["wt-2"]' }),
+      clientFrame({ type: 'notify', name: 'storage', key: 'occ:pins:host-1', value: '["wt-2"]' }),
       clientFrame({
         type: 'notify',
         name: BRIDGE_FAULT_GRANT,
@@ -772,7 +772,7 @@ describe('the props one render passed', () => {
       externalLinks: ['https://example.com/y'],
       haptics: ['selection'],
       backPops: 1,
-      storageWrites: [{ key: 'orca:pins:host-1', value: '["wt-2"]' }],
+      storageWrites: [{ key: 'occ:pins:host-1', value: '["wt-2"]' }],
       faults: [{ category: 'Error', message: 'the route threw', isRpcDeliveryUnknown: false }],
       readies: ['session-one']
     })

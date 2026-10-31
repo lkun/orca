@@ -1,4 +1,4 @@
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { getFirstWslDistro, useWslRuntimeForActiveProject } from './helpers/wsl-golden-stub-agent'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
@@ -9,31 +9,31 @@ import {
 } from './helpers/terminal'
 
 test.describe('Windows terminal env and shell identity', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
   })
 
-  test('dev terminal preserves parent PATH so PATH commands resolve', async ({ orcaPage }) => {
-    await waitForActiveTerminalManager(orcaPage)
+  test('dev terminal preserves parent PATH so PATH commands resolve', async ({ occPage }) => {
+    await waitForActiveTerminalManager(occPage)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
-    const marker = `__ORCA_E2E_NODE_PATH_${Date.now()}__`
+    const ptyId = await waitForActivePanePtyId(occPage)
+    const marker = `__OCC_E2E_NODE_PATH_${Date.now()}__`
 
     // Why: before the dev PATH fallback, daemon-spawned PTYs could get PATH set
     // to only OCC's dev CLI bin. A real terminal command catches that failure.
-    await execInTerminal(orcaPage, ptyId, `node -e "console.log('${marker}')"`)
+    await execInTerminal(occPage, ptyId, `node -e "console.log('${marker}')"`)
 
-    await waitForTerminalOutput(orcaPage, marker, 15_000)
+    await waitForTerminalOutput(occPage, marker, 15_000)
   })
 
   test('native Windows tab icons stay pinned to the effective shell at tab creation', async ({
-    orcaPage
+    occPage
   }) => {
     test.skip(process.platform !== 'win32', 'Windows shell icons only render on Windows')
 
-    const tabIds = await orcaPage.evaluate(() => {
+    const tabIds = await occPage.evaluate(() => {
       const store = window.__store
       if (!store) {
         throw new Error('Store unavailable')
@@ -62,7 +62,7 @@ test.describe('Windows terminal env and shell identity', () => {
       return { fallbackTabId: fallbackTab.id, cmdTabId: cmdTab.id }
     })
 
-    const tabSnapshot = await orcaPage.evaluate(({ fallbackTabId, cmdTabId }) => {
+    const tabSnapshot = await occPage.evaluate(({ fallbackTabId, cmdTabId }) => {
       const state = window.__store!.getState()
       const tabs = Object.values(state.tabsByWorktree).flat()
       return {
@@ -76,10 +76,10 @@ test.describe('Windows terminal env and shell identity', () => {
       cmdShell: 'cmd.exe'
     })
 
-    const fallbackTab = orcaPage.locator(
+    const fallbackTab = occPage.locator(
       `[data-testid="sortable-tab"][data-tab-id="${tabIds.fallbackTabId}"]`
     )
-    const cmdTab = orcaPage.locator(
+    const cmdTab = occPage.locator(
       `[data-testid="sortable-tab"][data-tab-id="${tabIds.cmdTabId}"]`
     )
     await expect(fallbackTab).toBeVisible()
@@ -93,14 +93,14 @@ test.describe('Windows terminal env and shell identity', () => {
   })
 
   test('WSL project tab icons retain runtime ownership across global shell changes', async ({
-    orcaPage
+    occPage
   }) => {
     test.skip(process.platform !== 'win32', 'WSL shell icons require Windows')
-    const distro = await getFirstWslDistro(orcaPage)
+    const distro = await getFirstWslDistro(occPage)
     test.skip(!distro, 'WSL icon coverage requires an installed distro')
-    await useWslRuntimeForActiveProject(orcaPage, distro!)
+    await useWslRuntimeForActiveProject(occPage, distro!)
 
-    const tabIds = await orcaPage.evaluate(async () => {
+    const tabIds = await occPage.evaluate(async () => {
       const store = window.__store!
       const worktreeId = store.getState().activeWorktreeId!
       const ids: string[] = []
@@ -112,13 +112,13 @@ test.describe('Windows terminal env and shell identity', () => {
       }
       return ids
     })
-    const shells = await orcaPage.evaluate((ids) => {
+    const shells = await occPage.evaluate((ids) => {
       const tabs = Object.values(window.__store!.getState().tabsByWorktree).flat()
       return ids.map((id) => tabs.find((tab) => tab.id === id)?.shellOverride)
     }, tabIds)
     expect(shells).toEqual(['wsl.exe', 'wsl.exe'])
     for (const id of tabIds) {
-      const tab = orcaPage.locator(`[data-testid="sortable-tab"][data-tab-id="${id}"]`)
+      const tab = occPage.locator(`[data-testid="sortable-tab"][data-tab-id="${id}"]`)
       await expect(tab).toBeVisible()
       await expect(tab.locator('[data-shell-icon]')).toHaveAttribute('data-shell-icon', 'wsl.exe')
     }

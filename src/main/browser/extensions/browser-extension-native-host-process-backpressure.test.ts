@@ -1,8 +1,8 @@
 import { once } from 'node:events'
 import { endianness } from 'node:os'
 import { PassThrough, Writable } from 'node:stream'
-import { spawnProcess } from '@orca/process-host'
-import type { PipedChildProcess } from '@orca/process-host/process-spec'
+import { spawnProcess } from '@occ/process-host'
+import type { PipedChildProcess } from '@occ/process-host/process-spec'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { NATIVE_HOST_ERRORS } from './browser-extension-native-host-errors'
 import {

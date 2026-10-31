@@ -6,7 +6,7 @@ const { runProcessMock, runProcessSyncMock } = vi.hoisted(() => ({
 }))
 
 // Process-host normalizes timeout outcomes; test availability policy independently of spawning.
-vi.mock('@orca/process-host', () => ({
+vi.mock('@occ/process-host', () => ({
   runProcess: runProcessMock,
   runProcessSync: runProcessSyncMock
 }))

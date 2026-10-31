@@ -3,7 +3,7 @@
 import { act, type ReactNode } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { OrcadManagedStaleLockReclaimResult } from '../../../../shared/orcad-managed-runtime'
+import type { OCCdManagedStaleLockReclaimResult } from '../../../../shared/occd-managed-runtime'
 import type { SshManagedServerStatus } from '../../../../shared/ssh-types'
 import {
   canRecoverSshHostServer,
@@ -21,17 +21,17 @@ vi.mock('../ui/dialog', () => ({
   DialogTitle: ({ children }: { children: ReactNode }) => <div>{children}</div>
 }))
 
-const COMMAND = '/opt/bun /slot/orcad.js --reclaim-stale-lock --data-root /home/dev/.orca'
-const DETAIL = `orcad holds the data root. If it is not running anywhere, run \`${COMMAND}\` on the machine it ran on.`
+const COMMAND = '/opt/bun /slot/occd.js --reclaim-stale-lock --data-root /home/dev/.occ'
+const DETAIL = `occd holds the data root. If it is not running anywhere, run \`${COMMAND}\` on the machine it ran on.`
 const refusedStart: SshManagedServerStatus = {
   kind: 'managed',
   environmentId: 'env-1',
   serving: { state: 'unverifiable', detail: DETAIL }
 }
 
-const eligible: OrcadManagedStaleLockReclaimResult = {
+const eligible: OCCdManagedStaleLockReclaimResult = {
   status: 'eligible',
-  lockPath: '/home/dev/.orca/orcad.lock',
+  lockPath: '/home/dev/.occ/occd.lock',
   message: 'eligible',
   evidence: {
     pid: 41,
@@ -43,7 +43,7 @@ const eligible: OrcadManagedStaleLockReclaimResult = {
   }
 }
 const reclaimStaleLock = vi.fn(
-  async (args: { yes: boolean }): Promise<OrcadManagedStaleLockReclaimResult> =>
+  async (args: { yes: boolean }): Promise<OCCdManagedStaleLockReclaimResult> =>
     args.yes
       ? { status: 'reclaimed', environmentId: 'env-1', message: 'cleared', lockPath: '/l' }
       : eligible
@@ -51,7 +51,7 @@ const reclaimStaleLock = vi.fn(
 const roots: Root[] = []
 beforeEach(() => {
   reclaimStaleLock.mockClear()
-  Object.assign(window, { api: { runtimeEnvironments: { managedOrcad: { reclaimStaleLock } } } })
+  Object.assign(window, { api: { runtimeEnvironments: { managedOCCd: { reclaimStaleLock } } } })
 })
 afterEach(() => {
   for (const root of roots.splice(0)) {
@@ -91,7 +91,7 @@ describe('Recover server', () => {
       canRecoverSshHostServer({
         kind: 'managed',
         environmentId: 'env-1',
-        serving: { state: 'unverifiable', detail: 'orcad holds the data root.' }
+        serving: { state: 'unverifiable', detail: 'occd holds the data root.' }
       })
     ).toBe(false)
   })
@@ -154,11 +154,11 @@ describe('Recover server', () => {
     reclaimStaleLock.mockResolvedValueOnce({
       status: 'unsupported',
       message: 'no answer',
-      lockPath: '/home/dev/.orca/orcad.lock'
+      lockPath: '/home/dev/.occ/occd.lock'
     })
     const container = await render()
     expect(container.textContent).toContain('no answer')
-    expect(container.textContent).toContain('rm /home/dev/.orca/orcad.lock')
+    expect(container.textContent).toContain('rm /home/dev/.occ/occd.lock')
     expect(container.textContent).not.toContain('--reclaim-stale-lock')
     expect(button(container, 'Clear lock and restart')).toBeUndefined()
   })
@@ -167,7 +167,7 @@ describe('Recover server', () => {
     {
       status: 'refused',
       message: 'still running',
-      lockPath: '/home/dev/.orca/orcad.lock'
+      lockPath: '/home/dev/.occ/occd.lock'
     } as const,
     { status: 'no-answer', message: 'no answer understood' } as const,
     { status: 'unsupported', message: 'too old to pin', reclaimWithoutPin: true } as const

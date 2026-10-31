@@ -168,8 +168,8 @@ async function createStatsCollector(dir: string): Promise<TestStatsCollector> {
   return stats
 }
 
-const dataFile = (dir: string): string => join(dir, 'orca-data.json')
-const statsFile = (dir: string): string => join(dir, 'orca-stats.json')
+const dataFile = (dir: string): string => join(dir, 'occ-data.json')
+const statsFile = (dir: string): string => join(dir, 'occ-stats.json')
 const activeViewFile = (dir: string): string => join(dir, 'active-view.json')
 
 function eventLoopTurned(): Promise<boolean> {
@@ -180,7 +180,7 @@ describe('quit-path durable writes never park the main thread', () => {
   const dirs: string[] = []
 
   function makeDir(): string {
-    const dir = mkdtempSync(join(tmpdir(), 'orca-quit-path-'))
+    const dir = mkdtempSync(join(tmpdir(), 'occ-quit-path-'))
     dirs.push(dir)
     return dir
   }
@@ -270,7 +270,7 @@ describe('quit-path durable writes never park the main thread', () => {
 
   it('store.flushAsync() also moves the active-view and github-cache sidecars off the thread', async () => {
     const dir = makeDir()
-    const staleCacheTemp = join(dir, 'orca-github-cache.json.999999.1.orphan.tmp')
+    const staleCacheTemp = join(dir, 'occ-github-cache.json.999999.1.orphan.tmp')
     writeFileSync(staleCacheTemp, 'stale', 'utf-8')
     const staleSeconds = (Date.now() - 25 * 60 * 60 * 1000) / 1000
     utimesSync(staleCacheTemp, staleSeconds, staleSeconds)
@@ -285,7 +285,7 @@ describe('quit-path durable writes never park the main thread', () => {
 
     expect(fsCalls.syncCalls).toEqual([])
     expect(JSON.parse(readFileSync(activeViewFile(dir), 'utf-8')).activeView).toBe('activity')
-    expect(existsSync(join(dir, 'orca-github-cache.json'))).toBe(true)
+    expect(existsSync(join(dir, 'occ-github-cache.json'))).toBe(true)
     expect(existsSync(staleCacheTemp)).toBe(false)
   })
 
@@ -310,7 +310,7 @@ describe('quit-path durable writes never park the main thread', () => {
     const { GrokHookService } = await import('./grok/hook-service')
     const service = new GrokHookService()
     try {
-      const configPath = join(dir, 'hooks', 'orca-status.json')
+      const configPath = join(dir, 'hooks', 'occ-status.json')
       const configDir = join(dir, 'hooks')
       const { mkdirSync } = await import('node:fs')
       mkdirSync(configDir, { recursive: true })
@@ -319,7 +319,7 @@ describe('quit-path durable writes never park the main thread', () => {
         `${JSON.stringify({
           hooks: {
             SessionStart: [
-              { hooks: [{ type: 'command', command: '/home/test/.orca/agent-hooks/grok-hook.sh' }] }
+              { hooks: [{ type: 'command', command: '/home/test/.occ/agent-hooks/grok-hook.sh' }] }
             ]
           }
         })}\n`
@@ -441,7 +441,7 @@ describe('quit-path durable writes never park the main thread', () => {
     fsCalls.dirPrefix = dir
     fsCalls.recording = true
     fsCalls.waitAsync = (fn, target) => {
-      if (held || fn !== 'writeFile' || !target.includes('orca-github-cache.json')) {
+      if (held || fn !== 'writeFile' || !target.includes('occ-github-cache.json')) {
         return null
       }
       held = true
@@ -458,7 +458,7 @@ describe('quit-path durable writes never park the main thread', () => {
     await finalFlush
     fsCalls.recording = false
 
-    expect(JSON.parse(readFileSync(join(dir, 'orca-github-cache.json'), 'utf-8'))).toEqual({
+    expect(JSON.parse(readFileSync(join(dir, 'occ-github-cache.json'), 'utf-8'))).toEqual({
       pr: { test: { data: null, fetchedAt: 2 } },
       issue: {}
     })

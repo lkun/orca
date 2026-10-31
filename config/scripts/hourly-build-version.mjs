@@ -81,7 +81,7 @@ if (process.argv[1] && resolve(process.argv[1]) === resolve(import.meta.filename
     publishedVersions: readPublishedVersionsFromEnv(),
     // Titles are newline separated and contain spaces, so this cannot reuse the
     // whitespace split the version list gets.
-    releaseNames: (process.env.ORCA_HOURLY_RELEASE_NAMES ?? '').split('\n').filter(Boolean)
+    releaseNames: (process.env.OCC_HOURLY_RELEASE_NAMES ?? '').split('\n').filter(Boolean)
   })
   process.stdout.write(
     `version=${identity.version}\ncommit=${identity.commit}\nbuild_number=${identity.buildNumber}\nname=${identity.name}\n`

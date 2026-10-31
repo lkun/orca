@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path'
 
 // Mark fallback copies so sync can refresh/remove them without touching user-created resources.
 function getResourceCopyMarkerPath(managedHomePath: string, entryName: string): string {
-  return join(managedHomePath, '.orca-resource-copies', `${entryName}.json`)
+  return join(managedHomePath, '.occ-resource-copies', `${entryName}.json`)
 }
 
 export function markCopiedResource(

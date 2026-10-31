@@ -7,12 +7,12 @@ import { ORCHESTRATION_CONTRACT_VERSION } from '../../shared/protocol-version'
 import type { AgentStatusIpcPayload } from '../../shared/agent-status-types'
 import type { TuiAgent } from '../../shared/tui-agent'
 import type Database from '../sqlite/sync-database'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { OrchestrationDb } from './orchestration/db'
 import { RpcDispatcher } from './rpc/dispatcher'
 import { ORCHESTRATION_METHODS } from './rpc/methods/orchestration'
 import type { RuntimeStore } from './runtime-store-contract'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { bindPaneFirst, registerBoundPty } from './bind-first-pane.test-fixture'
 import { publishHeadlessRuntimeGraph } from './headless-runtime-graph'
 
@@ -76,7 +76,7 @@ export function insertDirectRunMessage(db: OrchestrationDb, runId: string, subje
   return db.getMessageById(message.id)!
 }
 
-class MailboxRuntime extends OrcaRuntimeService {
+class MailboxRuntime extends OCCRuntimeService {
   get idleEvidenceSource() {
     return this.tuiIdleEvidenceSource
   }
@@ -141,7 +141,7 @@ export function createRuntime(
   } = {}
 ): MailboxNotificationHarness {
   const runtime = new MailboxRuntime(
-    ORCA_LAYOUT_OWNER_IS_MAIN ? mailboxLayoutStore() : null,
+    OCC_LAYOUT_OWNER_IS_MAIN ? mailboxLayoutStore() : null,
     undefined,
     {
       getAgentStatusSnapshot: options.getAgentStatusSnapshot,
@@ -210,7 +210,7 @@ export function createRuntime(
 }
 
 export function registerSecondPane(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   leafId = SECOND_LEAF_ID,
   includeFirstPane = true
 ): void {
@@ -265,7 +265,7 @@ export function registerSecondPane(
   })
 }
 
-export async function driveToLiveIdle(runtime: OrcaRuntimeService): Promise<void> {
+export async function driveToLiveIdle(runtime: OCCRuntimeService): Promise<void> {
   await runtime.listTerminals()
   runtime.onPtyData(PTY_ID, '\x1b]0;Codex done\x07', 1)
   // Await the model's write chain so the chunk is parsed.
@@ -281,7 +281,7 @@ export function isMailboxPointer(payload: unknown): boolean {
 }
 
 export async function checkBoundMailbox(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   options: MailboxCheckOptions = {}
 ): Promise<MailboxCheckResult> {
   const response = await dispatchMailboxCheck(runtime, options)
@@ -293,7 +293,7 @@ export async function checkBoundMailbox(
 }
 
 export async function dispatchMailboxCheck(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   options: MailboxCheckOptions = {}
 ) {
   const terminal = options.terminal ?? TERMINAL_HANDLE

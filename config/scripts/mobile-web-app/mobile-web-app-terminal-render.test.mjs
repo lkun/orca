@@ -43,7 +43,7 @@ afterAll(async () => {
 
 // Subtract control CSP violations to attribute terminal’s own effects.
 async function terminalCspViolations(page) {
-  const seen = await page.evaluate(() => globalThis.__orcaCspViolations)
+  const seen = await page.evaluate(() => globalThis.__occCspViolations)
   const shared = new Set(controlCspViolations.map(stripAssetPath))
   return seen.map(stripAssetPath).filter((entry) => !shared.has(entry))
 }
@@ -59,11 +59,11 @@ describeRender(
     it('records what the page refuses before any terminal is on it', async () => {
       // Run control first and require marker paint before subtracting it; unmounted control cannot validate zero terminal violations.
       const { page } = await openPage(CONTROL_ROUTE)
-      await page.waitForFunction(() => globalThis.__orcaTerminalControlMounted === true, {
+      await page.waitForFunction(() => globalThis.__occTerminalControlMounted === true, {
         timeout: 60_000,
         polling: 100
       })
-      controlCspViolations = await page.evaluate(() => globalThis.__orcaCspViolations)
+      controlCspViolations = await page.evaluate(() => globalThis.__occCspViolations)
       console.log('[c7.5][csp-control]', JSON.stringify(controlCspViolations.map(stripAssetPath)))
       // Control is now clean after jitless banner stopped Zod’s swallowed new Function probe; keep subtraction for terminal-specific attribution.
       expect(controlCspViolations.map(stripAssetPath)).toEqual([])
@@ -101,23 +101,23 @@ describeRender(
         )
       ).toBe('loaded')
       const applied = await page.evaluate((data) => {
-        globalThis.__orcaTerminalProbe.write(data)
+        globalThis.__occTerminalProbe.write(data)
         return data.length
       }, stream)
       expect(applied).toBeGreaterThanOrEqual(MIN_STREAM_BYTES)
 
       // Read through real select-all/Copy overlay into onSelectionCopy, not private xterm state.
-      await page.evaluate(() => globalThis.__orcaTerminalProbe.selectAll())
+      await page.evaluate(() => globalThis.__occTerminalProbe.selectAll())
       await page.waitForFunction(
         () => document.getElementById('selection-overlay')?.classList.contains('active') === true,
         { timeout: 30_000, polling: 100 }
       )
       await page.evaluate(() => document.getElementById('sel-menu-copy').click())
-      await page.waitForFunction(() => typeof globalThis.__orcaTerminalCopied === 'string', {
+      await page.waitForFunction(() => typeof globalThis.__occTerminalCopied === 'string', {
         timeout: 30_000,
         polling: 100
       })
-      const copied = await page.evaluate(() => globalThis.__orcaTerminalCopied)
+      const copied = await page.evaluate(() => globalThis.__occTerminalCopied)
       console.log(
         '[c7.5][stream]',
         JSON.stringify({ appliedBytes: applied, readBackChars: copied.length })
@@ -129,7 +129,7 @@ describeRender(
       expect(copied).not.toContain('[31;1m')
 
       expect(await terminalCspViolations(page)).toEqual([])
-      expect(await page.evaluate(() => globalThis.__orcaTerminalEngineErrors)).toEqual([])
+      expect(await page.evaluate(() => globalThis.__occTerminalEngineErrors)).toEqual([])
       expect(errors).toEqual([])
       await page.close()
     }, 300_000)
@@ -137,46 +137,46 @@ describeRender(
     it('leaves the page its own window.onerror across mount and dispose', async () => {
       // Preserve preexisting page error-handler identity through mount/dispose; non-null/same-shape checks would miss replacement.
       const { page } = await openTerminal({ errorSentinel: true })
-      expect(await page.evaluate(() => window.onerror === globalThis.__orcaSentinel)).toBe(true)
+      expect(await page.evaluate(() => window.onerror === globalThis.__occSentinel)).toBe(true)
       await openProbeTerminal(page)
-      expect(await page.evaluate(() => window.onerror === globalThis.__orcaSentinel)).toBe(true)
+      expect(await page.evaluate(() => window.onerror === globalThis.__occSentinel)).toBe(true)
 
       // Require both page and terminal error reporters work; preserved page handler alone could hide broken terminal reporting.
       await page.evaluate(() => {
         setTimeout(() => {
-          throw new Error('orca-terminal-render-uncaught')
+          throw new Error('occ-terminal-render-uncaught')
         }, 0)
       })
       const sawIt = (entries) =>
-        entries.some((entry) => entry.includes('orca-terminal-render-uncaught'))
+        entries.some((entry) => entry.includes('occ-terminal-render-uncaught'))
       await page.waitForFunction(
         () =>
-          globalThis.__orcaTerminalEngineErrors.some((entry) =>
-            entry.includes('orca-terminal-render-uncaught')
+          globalThis.__occTerminalEngineErrors.some((entry) =>
+            entry.includes('occ-terminal-render-uncaught')
           ),
         { timeout: 30_000, polling: 100 }
       )
-      expect(sawIt(await page.evaluate(() => globalThis.__orcaSentinelCalls))).toBe(true)
+      expect(sawIt(await page.evaluate(() => globalThis.__occSentinelCalls))).toBe(true)
 
       // Dispose removes terminal listener while retaining page handler.
-      await page.evaluate(() => globalThis.__orcaTerminalProbe.setMounted(false))
+      await page.evaluate(() => globalThis.__occTerminalProbe.setMounted(false))
       await page.locator('#terminal-container').waitFor({ state: 'detached', timeout: 30_000 })
-      expect(await page.evaluate(() => window.onerror === globalThis.__orcaSentinel)).toBe(true)
+      expect(await page.evaluate(() => window.onerror === globalThis.__occSentinel)).toBe(true)
       const before = await page.evaluate(() => {
         setTimeout(() => {
-          throw new Error('orca-terminal-render-after-dispose')
+          throw new Error('occ-terminal-render-after-dispose')
         }, 0)
-        return globalThis.__orcaTerminalEngineErrors.length
+        return globalThis.__occTerminalEngineErrors.length
       })
       await page.waitForFunction(
         () =>
-          globalThis.__orcaSentinelCalls.some((entry) =>
-            entry.includes('orca-terminal-render-after-dispose')
+          globalThis.__occSentinelCalls.some((entry) =>
+            entry.includes('occ-terminal-render-after-dispose')
           ),
         { timeout: 30_000, polling: 100 }
       )
       // Page must receive error after terminal reporter is disposed.
-      expect(await page.evaluate(() => globalThis.__orcaTerminalEngineErrors.length)).toBe(before)
+      expect(await page.evaluate(() => globalThis.__occTerminalEngineErrors.length)).toBe(before)
       await page.close()
     }, 300_000)
 
@@ -186,7 +186,7 @@ describeRender(
       expect(await page.evaluate(() => window.onerror)).toBe(null)
       await openProbeTerminal(page)
       expect(await page.evaluate(() => window.onerror)).toBe(null)
-      await page.evaluate(() => globalThis.__orcaTerminalProbe.setMounted(false))
+      await page.evaluate(() => globalThis.__occTerminalProbe.setMounted(false))
       await page.locator('#terminal-container').waitFor({ state: 'detached', timeout: 30_000 })
       expect(await page.evaluate(() => window.onerror)).toBe(null)
       await page.close()
@@ -196,9 +196,9 @@ describeRender(
     // Read live behavior: component readiness handshake alone does not prove engine uses current nodes.
     /** The listeners the page holds with no terminal on it, which is what two mounts can differ by. */
     async function listenersWithNoTerminal(page) {
-      await page.evaluate(() => globalThis.__orcaTerminalProbe.setMounted(false))
+      await page.evaluate(() => globalThis.__occTerminalProbe.setMounted(false))
       await page.locator('#terminal-container').waitFor({ state: 'detached', timeout: 30_000 })
-      return page.evaluate(() => globalThis.__orcaListeners.snapshot())
+      return page.evaluate(() => globalThis.__occListeners.snapshot())
     }
 
     async function assertLiveTerminal(page, label) {
@@ -209,22 +209,22 @@ describeRender(
       ).toBeGreaterThan(0)
 
       // Overlay through handle proves message path targets current mounted elements.
-      await page.evaluate(() => globalThis.__orcaTerminalProbe.selectAll())
+      await page.evaluate(() => globalThis.__occTerminalProbe.selectAll())
       await page.waitForFunction(
         () => document.getElementById('selection-overlay')?.classList.contains('active') === true,
         { timeout: 30_000, polling: 100 }
       )
 
       // Error reporter must reinstall per mount.
-      const marker = `orca-remount-${label}`
+      const marker = `occ-remount-${label}`
       await page.evaluate((thrown) => {
-        globalThis.__orcaTerminalEngineErrors = []
+        globalThis.__occTerminalEngineErrors = []
         setTimeout(() => {
           throw new Error(thrown)
         }, 0)
       }, marker)
       await page.waitForFunction(
-        (thrown) => globalThis.__orcaTerminalEngineErrors.some((entry) => entry.includes(thrown)),
+        (thrown) => globalThis.__occTerminalEngineErrors.some((entry) => entry.includes(thrown)),
         marker,
         { timeout: 30_000, polling: 100 }
       )
@@ -235,13 +235,13 @@ describeRender(
       await openProbeTerminal(page)
       await assertLiveTerminal(page, 'first-mount')
 
-      await page.evaluate(() => globalThis.__orcaTerminalProbe.setMounted(false))
+      await page.evaluate(() => globalThis.__occTerminalProbe.setMounted(false))
       await page.locator('#terminal-container').waitFor({ state: 'detached', timeout: 30_000 })
       await page.evaluate(() => {
-        globalThis.__orcaTerminalReady = false
-        globalThis.__orcaTerminalProbe.setMounted(true)
+        globalThis.__occTerminalReady = false
+        globalThis.__occTerminalProbe.setMounted(true)
       })
-      await page.waitForFunction(() => globalThis.__orcaTerminalReady === true, {
+      await page.waitForFunction(() => globalThis.__occTerminalReady === true, {
         timeout: 60_000,
         polling: 100
       })
@@ -256,17 +256,17 @@ describeRender(
       await page.locator('#terminal-container').waitFor({ state: 'attached', timeout: 30_000 })
       await page.evaluate(() => {
         setTimeout(() => {
-          throw new Error('orca-terminal-render-fatal')
+          throw new Error('occ-terminal-render-fatal')
         }, 0)
       })
       const reload = page.getByText('Reload')
       await reload.waitFor({ timeout: 30_000 })
 
       await page.evaluate(() => {
-        globalThis.__orcaTerminalReady = false
+        globalThis.__occTerminalReady = false
       })
       await reload.click()
-      await page.waitForFunction(() => globalThis.__orcaTerminalReady === true, {
+      await page.waitForFunction(() => globalThis.__occTerminalReady === true, {
         timeout: 60_000,
         polling: 100
       })
@@ -282,15 +282,15 @@ describeRender(
       await openProbeTerminal(page)
       const before = await listenersWithNoTerminal(page)
       await page.evaluate(() => {
-        globalThis.__orcaTerminalReady = false
-        globalThis.__orcaTerminalProbe.setMounted(true)
+        globalThis.__occTerminalReady = false
+        globalThis.__occTerminalProbe.setMounted(true)
       })
-      await page.waitForFunction(() => globalThis.__orcaTerminalReady === true, {
+      await page.waitForFunction(() => globalThis.__occTerminalReady === true, {
         timeout: 60_000,
         polling: 100
       })
       await openProbeTerminal(page)
-      const whileLive = await page.evaluate(() => globalThis.__orcaListeners.snapshot())
+      const whileLive = await page.evaluate(() => globalThis.__occListeners.snapshot())
       const after = await listenersWithNoTerminal(page)
 
       // Require recorder observed listener installs or empty baseline could pass leak equality.
@@ -308,40 +308,40 @@ describeRender(
       await page.evaluate(() => {
         for (let index = 0; index < 6; index++) {
           setTimeout(() => {
-            throw new Error(`orca-budget-burn-${String(index)}`)
+            throw new Error(`occ-budget-burn-${String(index)}`)
           }, 0)
         }
       })
       await page.waitForFunction(
         () =>
-          globalThis.__orcaTerminalEngineErrors.filter((entry) =>
-            entry.includes('orca-budget-burn')
+          globalThis.__occTerminalEngineErrors.filter((entry) =>
+            entry.includes('occ-budget-burn')
           ).length >= 5,
         { timeout: 30_000, polling: 100 }
       )
 
-      await page.evaluate(() => globalThis.__orcaTerminalProbe.setMounted(false))
+      await page.evaluate(() => globalThis.__occTerminalProbe.setMounted(false))
       await page.locator('#terminal-container').waitFor({ state: 'detached', timeout: 30_000 })
       await page.evaluate(() => {
-        globalThis.__orcaTerminalReady = false
-        globalThis.__orcaTerminalProbe.setMounted(true)
+        globalThis.__occTerminalReady = false
+        globalThis.__occTerminalProbe.setMounted(true)
       })
-      await page.waitForFunction(() => globalThis.__orcaTerminalReady === true, {
+      await page.waitForFunction(() => globalThis.__occTerminalReady === true, {
         timeout: 60_000,
         polling: 100
       })
       await openProbeTerminal(page)
 
       await page.evaluate(() => {
-        globalThis.__orcaTerminalEngineErrors = []
+        globalThis.__occTerminalEngineErrors = []
         setTimeout(() => {
-          throw new Error('orca-second-mount-error')
+          throw new Error('occ-second-mount-error')
         }, 0)
       })
       await page.waitForFunction(
         () =>
-          globalThis.__orcaTerminalEngineErrors.some((entry) =>
-            entry.includes('orca-second-mount-error')
+          globalThis.__occTerminalEngineErrors.some((entry) =>
+            entry.includes('occ-second-mount-error')
           ),
         { timeout: 30_000, polling: 100 }
       )
@@ -365,7 +365,7 @@ describeRender(
           })
         }
       })
-      await page.waitForFunction(() => globalThis.__orcaTerminalReady === true, {
+      await page.waitForFunction(() => globalThis.__occTerminalReady === true, {
         timeout: 60_000,
         polling: 100
       })
@@ -374,7 +374,7 @@ describeRender(
       // Arm document’s 550ms scroll-indicator timer, smooth-scroll frame and 500ms long-press in disposal task.
       // Long-press needs no engine paint; precondition proves provocation landed without racing renderer.
       await page.evaluate(() => {
-        globalThis.__orcaScheduler.watching = true
+        globalThis.__occScheduler.watching = true
         const surface = document.getElementById('terminal-surface')
         surface.dispatchEvent(
           new TouchEvent('touchstart', {
@@ -386,21 +386,21 @@ describeRender(
             ]
           })
         )
-        globalThis.__orcaTerminalProbe.setMounted(false)
+        globalThis.__occTerminalProbe.setMounted(false)
       })
       await page.locator('#terminal-container').waitFor({ state: 'detached', timeout: 30_000 })
       await page.evaluate(() => {
-        globalThis.__orcaTerminalReady = false
-        globalThis.__orcaTerminalProbe.setMounted(true)
+        globalThis.__occTerminalReady = false
+        globalThis.__occTerminalProbe.setMounted(true)
       })
-      await page.waitForFunction(() => globalThis.__orcaTerminalReady === true, {
+      await page.waitForFunction(() => globalThis.__occTerminalReady === true, {
         timeout: 60_000,
         polling: 100
       })
       await openProbeTerminal(page)
       // Wait beyond longest first-mount timer so surviving work would execute.
       await page.evaluate(() => new Promise((resolve) => globalThis.setTimeout(resolve, 3000)))
-      const scheduler = await page.evaluate(() => globalThis.__orcaScheduler)
+      const scheduler = await page.evaluate(() => globalThis.__occScheduler)
       // Require pending work existed or empty leak list proves nothing.
       expect(
         scheduler.scheduled.filter(
@@ -438,7 +438,7 @@ describeRender(
           }
         })
         try {
-          await page.waitForFunction(() => globalThis.__orcaTerminalReady === true, {
+          await page.waitForFunction(() => globalThis.__occTerminalReady === true, {
             timeout: 60_000,
             polling: 100
           })
@@ -451,16 +451,16 @@ describeRender(
           )
 
           await page.evaluate((chunk) => {
-            const state = globalThis.__orcaScheduler
+            const state = globalThis.__occScheduler
             state.disposed = null
             state.watching = true
             state.holdFramesFrom = chunk
-            const host = document.querySelector('.orca-terminal-document-host')
+            const host = document.querySelector('.occ-terminal-document-host')
             // Dispose removes class after cancelling frames; DOM detachment occurs before cleanup.
             const observer = new MutationObserver(() => {
               if (
                 state.disposed !== null ||
-                host.classList.contains('orca-terminal-document-host')
+                host.classList.contains('occ-terminal-document-host')
               ) {
                 return
               }
@@ -475,26 +475,26 @@ describeRender(
             observer.observe(host, { attributes: true, attributeFilter: ['class'] })
             host.style.width = '80%'
           }, documentChunk)
-          await page.waitForFunction(() => globalThis.__orcaScheduler.heldFrames > 0, undefined, {
+          await page.waitForFunction(() => globalThis.__occScheduler.heldFrames > 0, undefined, {
             timeout: 30_000
           })
           await page.evaluate((cancelFrames) => {
-            globalThis.__orcaRestoreFrameCancellation = globalThis.cancelAnimationFrame
+            globalThis.__occRestoreFrameCancellation = globalThis.cancelAnimationFrame
             if (!cancelFrames) {
               // Negative control must expose held callbacks after real document disposal.
               globalThis.cancelAnimationFrame = () => {}
             }
-            globalThis.__orcaTerminalProbe.setMounted(false)
+            globalThis.__occTerminalProbe.setMounted(false)
           }, cancelFrames)
           await page.locator('#terminal-container').waitFor({ state: 'detached', timeout: 30_000 })
-          await page.waitForFunction(() => globalThis.__orcaScheduler.disposed !== null)
+          await page.waitForFunction(() => globalThis.__occScheduler.disposed !== null)
           await page.evaluate(() => {
-            globalThis.cancelAnimationFrame = globalThis.__orcaRestoreFrameCancellation
-            globalThis.__orcaScheduler.holdFramesFrom = null
-            globalThis.__orcaTerminalReady = false
-            globalThis.__orcaTerminalProbe.setMounted(true)
+            globalThis.cancelAnimationFrame = globalThis.__occRestoreFrameCancellation
+            globalThis.__occScheduler.holdFramesFrom = null
+            globalThis.__occTerminalReady = false
+            globalThis.__occTerminalProbe.setMounted(true)
           })
-          await page.waitForFunction(() => globalThis.__orcaTerminalReady === true, {
+          await page.waitForFunction(() => globalThis.__occTerminalReady === true, {
             timeout: 60_000,
             polling: 100
           })
@@ -503,12 +503,12 @@ describeRender(
           await page.evaluate(
             () =>
               new Promise((resolve) => {
-                globalThis.__orcaReleaseFrames()
+                globalThis.__occReleaseFrames()
                 requestAnimationFrame(() => requestAnimationFrame(resolve))
               })
           )
 
-          const scheduler = await page.evaluate(() => globalThis.__orcaScheduler)
+          const scheduler = await page.evaluate(() => globalThis.__occScheduler)
           expect(
             scheduler.disposed?.owed,
             'the document owed a frame at the moment dispose returned'
@@ -553,7 +553,7 @@ describeRender(
       // Positive control reads live xterm/document styles; sheet matching nothing would satisfy all isolation checks.
       expect(
         await page.evaluate(() => {
-          const host = document.querySelector('.orca-terminal-document-host')
+          const host = document.querySelector('.occ-terminal-document-host')
           const xterm = host.querySelector('.xterm')
           const viewport = host.querySelector('.xterm-viewport')
           const overlay = host.querySelector('#selection-overlay')
@@ -573,7 +573,7 @@ describeRender(
         overlayPosition: 'absolute'
       })
 
-      await page.evaluate(() => globalThis.__orcaTerminalProbe.setMounted(false))
+      await page.evaluate(() => globalThis.__occTerminalProbe.setMounted(false))
       await page.locator('#terminal-container').waitFor({ state: 'detached', timeout: 30_000 })
       expect(await readRootComputedStyles(page), 'roots after dispose').toEqual(expected)
       // Retain stylesheet across mounts; without host it must match nothing.
@@ -588,7 +588,7 @@ describeRender(
       await openProbeTerminal(page)
 
       // Fit uses actual cell box from web-ready and RN frame; null means missing/too-small measurable grid.
-      const fit = await page.evaluate(() => globalThis.__orcaTerminalProbe.fit())
+      const fit = await page.evaluate(() => globalThis.__occTerminalProbe.fit())
       expect(fit).not.toBeNull()
       expect(fit.cols).toBeGreaterThanOrEqual(20)
       expect(fit.rows).toBeGreaterThanOrEqual(8)
@@ -609,11 +609,11 @@ describeRender(
       // Browser covers ordinary text entry; real composing soft-keyboard behavior remains device proof.
       await page.getByTestId('terminal-live-input').focus()
       await page.keyboard.type('ab')
-      await page.waitForFunction(() => globalThis.__orcaTerminalBeforeInput.length >= 2, {
+      await page.waitForFunction(() => globalThis.__occTerminalBeforeInput.length >= 2, {
         timeout: 30_000,
         polling: 100
       })
-      const beforeInput = await page.evaluate(() => globalThis.__orcaTerminalBeforeInput)
+      const beforeInput = await page.evaluate(() => globalThis.__occTerminalBeforeInput)
       console.log('[c7.5][beforeinput]', JSON.stringify(beforeInput.slice(0, 4)))
       expect(beforeInput.map((entry) => entry.inputType)).toContain('insertText')
       expect(beforeInput.map((entry) => entry.data)).toContain('a')

@@ -9,7 +9,7 @@ import { argvRequestsServeMode, normalizeServeModeArgv } from './serve-mode-argv
 import {
   configureDevUserDataPath,
   configureElectronNetworkCompatibility,
-  configureOrcaUserDataPathEnv,
+  configureOCCUserDataPathEnv,
   disableUnsupportedChromiumFeatures,
   enableMainProcessGpuFeatures,
   installDevParentDisconnectQuit,
@@ -43,7 +43,7 @@ import {
   recordSubprocessSpawn,
   startMainThreadChurnProbe
 } from '../diagnostics/main-thread-churn-probe'
-import { setSpawnObserver } from '@orca/process-host/spawn-observer'
+import { setSpawnObserver } from '@occ/process-host/spawn-observer'
 import { settledDiffCache } from '../git/source-control/git-read-cache-invalidation'
 import { reserveServeStdoutForReadiness } from '../server/serve-stdout-boundary'
 import { createServeDesktopActivationGate } from './serve-desktop-activation'
@@ -75,9 +75,9 @@ import { setDefaultProxySessionResolver } from '../network/proxy-settings'
 import { initDataPath, getCanonicalUserDataPath } from '../persistence'
 import { applyMacPressAndHoldDefaultAtStartup } from '../macos-press-and-hold-default'
 import { configureSessionParseCachePersistence } from '../ai-vault/session-parse-cache-persistence'
-import { initOrcaProfilePaths } from '../orca-profiles/profile-index-store'
-import { getProfileUserDataPath } from '../orca-profiles/profile-storage-paths'
-import { recoverPendingProfileProjectMoves } from '../orca-profiles/profile-project-move-intent'
+import { initOCCProfilePaths } from '../occ-profiles/profile-index-store'
+import { getProfileUserDataPath } from '../occ-profiles/profile-storage-paths'
+import { recoverPendingProfileProjectMoves } from '../occ-profiles/profile-project-move-intent'
 import { initStatsPath } from '../stats/collector'
 import { initClaudeUsagePath } from '../claude-usage/store'
 import { initCodexUsagePath } from '../codex-usage/store'
@@ -174,7 +174,7 @@ function initializeMainProcessPreflight(options: MainProcessPreflightOptions): b
   // #9441: log background rejections so restore failure cannot silently kill main.
   installUnhandledRejectionLogging()
   // Expose version without Electron imports for main/daemon TERM_PROGRAM_VERSION.
-  process.env.ORCA_APP_VERSION = app.getVersion()
+  process.env.OCC_APP_VERSION = app.getVersion()
   configureRemoteServerUpdater({
     getSnapshot: getRemoteServerUpdaterSnapshot,
     check: checkForRemoteServerUpdate,
@@ -198,7 +198,7 @@ function initializeMainProcessPreflight(options: MainProcessPreflightOptions): b
   // Register before spawning so CLI/relay-shared tree killing can reach main's gate and breadcrumbs.
   installMainProcessTreeKillGate()
   configureDevUserDataPath(isDev)
-  configureOrcaUserDataPathEnv()
+  configureOCCUserDataPathEnv()
   // #16761: install the lazy environment accessor immediately after userData selection or early resolves can throw/memoize the wrong profile.
   setAppEnvironment(new ElectronAppEnvironment())
   // Capture after overrides, before ready-time app naming can change userData on case-sensitive filesystems.
@@ -220,7 +220,7 @@ function initializeMainProcessPreflight(options: MainProcessPreflightOptions): b
       platform: process.platform,
       osRelease: os.release(),
       userData: app.getPath('userData'),
-      e2eUserData: Boolean(process.env.ORCA_E2E_USER_DATA_DIR)
+      e2eUserData: Boolean(process.env.OCC_E2E_USER_DATA_DIR)
     })
     startEventLoopStallProbe()
   }
@@ -255,7 +255,7 @@ function initializeMainProcessPreflight(options: MainProcessPreflightOptions): b
     app.exit(SINGLE_INSTANCE_ALREADY_RUNNING_EXIT_CODE)
     return false
   }
-  // Electron's lock fences desktops; the shared profile lock also fences orcad serve.
+  // Electron's lock fences desktops; the shared profile lock also fences occd serve.
   if (!skip && !bypass && !acquireDesktopProfileLockOrExplain(getCanonicalUserDataPath())) {
     return false
   }
@@ -294,7 +294,7 @@ function initializeMainProcessPreflight(options: MainProcessPreflightOptions): b
     filePath: join(getCanonicalUserDataPath(), 'ai-vault', 'session-parse-cache.json'),
     appVersion: app.getVersion()
   })
-  initOrcaProfilePaths()
+  initOCCProfilePaths()
   // Recover cross-profile moves before Store opens either profile so no reader sees half-committed ownership.
   const profileUserDataPath = getProfileUserDataPath()
   recoverPendingProfileProjectMoves(

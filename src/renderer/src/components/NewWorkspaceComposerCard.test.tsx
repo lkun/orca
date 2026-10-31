@@ -153,7 +153,7 @@ const localReadyHostOption: ProjectHostSetupOption = {
   repoId: 'repo-a',
   label: 'Local Mac',
   detail: 'OCC',
-  path: '/Users/alice/orca'
+  path: '/Users/alice/occ'
 }
 
 const devboxNeedsSetupHostOption: ProjectHostSetupOption = {
@@ -202,7 +202,7 @@ const vmRecipeHostOptions: ProjectHostSetupOption[] = [
     repoId: 'repo-a',
     label: 'Builder',
     detail: 'OCC',
-    path: '/workspace/orca'
+    path: '/workspace/occ'
   }
 ]
 
@@ -821,8 +821,8 @@ describe('NewWorkspaceComposerCard folder task source mode', () => {
         {
           id: 'vercel',
           name: 'Vercel Sandbox',
-          create: './scripts/orca-vm/vercel.start.sh',
-          destroy: './scripts/orca-vm/vercel.cleanup.sh',
+          create: './scripts/occ-vm/vercel.start.sh',
+          destroy: './scripts/occ-vm/vercel.cleanup.sh',
           destroyDisabled: false
         }
       ] as never,
@@ -862,7 +862,7 @@ describe('NewWorkspaceComposerCard folder task source mode', () => {
         {
           id: 'vercel',
           name: 'Vercel Sandbox',
-          create: './scripts/orca-vm/vercel.start.sh',
+          create: './scripts/occ-vm/vercel.start.sh',
           destroyDisabled: true
         }
       ] as never,

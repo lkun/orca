@@ -177,9 +177,9 @@ describe('browser address bar suggestions', () => {
             visitCount: 1
           }),
           historyEntry({
-            url: 'https://github.com/acme/orca',
-            normalizedUrl: 'https://github.com/acme/orca',
-            title: 'acme/orca',
+            url: 'https://github.com/acme/occ',
+            normalizedUrl: 'https://github.com/acme/occ',
+            title: 'acme/occ',
             lastVisitedAt: hoursAgo(20),
             visitCount: 1
           })
@@ -187,7 +187,7 @@ describe('browser address bar suggestions', () => {
       })
 
       expect(historyUrls(suggestions)).toEqual([
-        'https://github.com/acme/orca',
+        'https://github.com/acme/occ',
         'https://docs.github.com/actions',
         'https://example.com/setup'
       ])
@@ -400,15 +400,15 @@ describe('browser address bar suggestions', () => {
         searchEngine: 'duckduckgo',
         browserUrlHistory: [
           historyEntry({
-            url: 'https://github.com/stablyai/orca/pulls',
-            normalizedUrl: 'https://github.com/stablyai/orca/pulls',
+            url: 'https://github.com/stablyai/occ/pulls',
+            normalizedUrl: 'https://github.com/stablyai/occ/pulls',
             title: 'Pull requests',
             lastVisitedAt: now,
             visitCount: 9
           }),
           historyEntry({
-            url: 'https://github.com/stablyai/orca',
-            normalizedUrl: 'https://github.com/stablyai/orca',
+            url: 'https://github.com/stablyai/occ',
+            normalizedUrl: 'https://github.com/stablyai/occ',
             title: 'OCC',
             lastVisitedAt: now,
             visitCount: 2
@@ -418,8 +418,8 @@ describe('browser address bar suggestions', () => {
 
       expect(suggestions.map((suggestion) => suggestion.url)).toEqual([
         'https://github.com/',
-        'https://github.com/stablyai/orca/pulls',
-        'https://github.com/stablyai/orca',
+        'https://github.com/stablyai/occ/pulls',
+        'https://github.com/stablyai/occ',
         'https://duckduckgo.com/?q=git'
       ])
       expect(suggestions[0]?.normalizedUrl).toBeUndefined()
@@ -510,7 +510,7 @@ describe('suggestion favicons', () => {
 
 describe('getBrowserAddressBarInlineCompletion', () => {
   it.each([
-    ['git', 'https://github.com/stablyai/orca', 'github.com', 'https://github.com/'],
+    ['git', 'https://github.com/stablyai/occ', 'github.com', 'https://github.com/'],
     // A fully typed host must never complete to a deeper page of that site.
     [
       'localhost:3000',
@@ -523,16 +523,16 @@ describe('getBrowserAddressBarInlineCompletion', () => {
     ['https://gi', 'https://github.com/x', 'https://github.com', 'https://github.com/'],
     [
       'GitHub.com/st',
-      'https://github.com/stablyai/orca',
-      'GitHub.com/stablyai/orca',
-      'https://github.com/stablyai/orca'
+      'https://github.com/stablyai/occ',
+      'GitHub.com/stablyai/occ',
+      'https://github.com/stablyai/occ'
     ]
   ])('completes %s against %s', (typed, url, text, target) => {
     expect(getBrowserAddressBarInlineCompletion(typed, url)).toEqual({ text, url: target })
   })
 
   it.each([
-    ['orca', 'https://github.com/stablyai/orca'],
+    ['occ', 'https://github.com/stablyai/occ'],
     ['git hub', 'https://github.com/'],
     ['fi', 'file:///Users/me/report.html'],
     // A UNC path's host is a file server, not a site.
@@ -579,7 +579,7 @@ describe('workspace document suggestions', () => {
     expect(rows[0]?.docLocation).toEqual(DOC_ENTRY.docLocation)
     // The row's selection identity is the document's path, never a preview URL.
     expect(rows[0]?.url).toBe('/repo/docs/report.html')
-    expect(JSON.stringify(rows)).not.toContain('orca-preview://')
+    expect(JSON.stringify(rows)).not.toContain('occ-preview://')
   })
 
   it('matches typed queries against the document title and path', () => {

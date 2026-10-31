@@ -31,7 +31,7 @@ let root: string
 let journal: AgentSessionJournal
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-dead-generation-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-dead-generation-'))
   journal = await openAgentSessionJournal({
     identity: {
       sessionId: SESSION,
@@ -178,7 +178,7 @@ describe('dead structured-session generation settlement', () => {
     const content = 'x'.repeat(MAX_JOURNAL_LIFECYCLE_BATCH_BYTES)
     for (const state of ['running', 'completed'] as const) {
       await journal.appendItem(
-        { provider: 'orca', clientMessageId: `large-${state}` },
+        { provider: 'occ', clientMessageId: `large-${state}` },
         { kind: 'tool-call', name: 'Write', input: { content }, state },
         { fence: 7, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
       )

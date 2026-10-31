@@ -8,22 +8,22 @@ import { NEGOTIATED_PAGE_STORAGE_KEYS, PAGE_STORAGE_EXACT_KEYS } from './page-st
 
 /** The exact keys every page shipped before `storageKeys` refines `init` storage against. */
 const LEGACY_EXACT_KEYS = [
-  'orca:last-visited-worktree',
-  'orca:hostSidebarWidth',
-  'orca:hostDockWidth',
-  'orca:terminal-accessory-layout',
-  'orca:custom-accessory-keys',
-  'orca:defaultSessionView',
-  'orca:mobileStructuredSendOperations:v1',
-  'orca:terminalTextScale',
-  'orca:terminalAutocompleteEnabled',
-  'orca:terminalLinkOpenMode'
+  'occ:last-visited-worktree',
+  'occ:hostSidebarWidth',
+  'occ:hostDockWidth',
+  'occ:terminal-accessory-layout',
+  'occ:custom-accessory-keys',
+  'occ:defaultSessionView',
+  'occ:mobileStructuredSendOperations:v1',
+  'occ:terminalTextScale',
+  'occ:terminalAutocompleteEnabled',
+  'occ:terminalLinkOpenMode'
 ]
 const LEGACY_PREFIXES = [
-  'orca:pins:',
-  'orca:nativeChatTabs:',
-  'orca:terminalLiveInputDisabled:',
-  'orca:terminalDrafts:'
+  'occ:pins:',
+  'occ:nativeChatTabs:',
+  'occ:terminalLiveInputDisabled:',
+  'occ:terminalDrafts:'
 ]
 const legacyIsPageStorageKey = (key: string): boolean =>
   key.length <= 256 &&
@@ -40,8 +40,8 @@ const LegacyInitStorageSchema = z.object({
 // The `ready` reader every shell shipped before `storageKeys`.
 const LegacyReadySchema = z.object({ v: versionSchema, type: z.literal('ready') })
 
-const SPLIT_KEY = 'orca:terminalSplitLayout'
-const STORAGE = { [SPLIT_KEY]: 'stacked', 'orca:pins:host-a': '["wt-1"]' }
+const SPLIT_KEY = 'occ:terminalSplitLayout'
+const STORAGE = { [SPLIT_KEY]: 'stacked', 'occ:pins:host-a': '["wt-1"]' }
 
 function lastInit(posted: readonly string[]): Record<string, unknown> {
   const init = posted
@@ -69,7 +69,7 @@ describe('negotiated page storage keys across page and shell versions', () => {
 
     const init = lastInit(bridge.posted)
     expect(LegacyInitStorageSchema.safeParse(init).success).toBe(true)
-    expect(init.storage).toEqual({ 'orca:pins:host-a': '["wt-1"]' })
+    expect(init.storage).toEqual({ 'occ:pins:host-a': '["wt-1"]' })
   })
 
   it('keeps an oversize split layout out of an older page init too', () => {
@@ -99,7 +99,7 @@ describe('negotiated page storage keys across page and shell versions', () => {
     bridge.host.receive(clientFrame({ type: 'ready', storageKeys: [SPLIT_KEY, 7] }))
 
     expect(bridge.pageReadyCount()).toBe(1)
-    expect(lastInit(bridge.posted).storage).toEqual({ 'orca:pins:host-a': '["wt-1"]' })
+    expect(lastInit(bridge.posted).storage).toEqual({ 'occ:pins:host-a': '["wt-1"]' })
   })
 
   it('keeps what the page declared across a host rebuild under the same document', () => {
@@ -118,7 +118,7 @@ describe('negotiated page storage keys across page and shell versions', () => {
     bridge.host.receive(clientFrame({ type: 'close' }))
     bridge.host.receive(clientFrame({ type: 'ready' }))
 
-    expect(lastInit(bridge.posted).storage).toEqual({ 'orca:pins:host-a': '["wt-1"]' })
+    expect(lastInit(bridge.posted).storage).toEqual({ 'occ:pins:host-a': '["wt-1"]' })
     expect(bridge.host.readSessionBack()).toEqual({ claimed: false })
   })
 })

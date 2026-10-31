@@ -191,7 +191,7 @@ describe('plan digest', () => {
     const first = await buildBundledSkillPlan(input)
     const second = await buildBundledSkillPlan(input)
     expect(second.plan).toEqual(first.plan)
-    expect(JSON.stringify(first.plan)).not.toMatch(/orca-(?:stage|old)-|\d{4}-\d{2}-\d{2}T/u)
+    expect(JSON.stringify(first.plan)).not.toMatch(/occ-(?:stage|old)-|\d{4}-\d{2}-\d{2}T/u)
 
     await writeFile(join(home.shared, 'SKILL.md'), NEW_TEXT)
     expect((await buildBundledSkillPlan(input)).plan.planDigest).not.toBe(first.plan.planDigest)
@@ -211,12 +211,12 @@ describe('plan digest', () => {
 
 describe('swap sibling names', () => {
   it('are hidden from discovery and recognised per skill', () => {
-    for (const name of [`.${NAME}.orca-stage-1`, `.${NAME}.orca-old-1`]) {
+    for (const name of [`.${NAME}.occ-stage-1`, `.${NAME}.occ-old-1`]) {
       expect(isSkillStagingEntryName(name)).toBe(true)
     }
-    expect(bundledSkillSiblingKind(NAME, `.${NAME}.orca-stage-1`)).toBe('stage')
-    expect(bundledSkillSiblingKind(NAME, `.${NAME}.orca-old-1`)).toBe('old')
-    expect(bundledSkillSiblingKind(NAME, `.${NAME}.orca-placement-staging-1`)).toBeNull()
-    expect(bundledSkillSiblingKind('other', `.${NAME}.orca-old-1`)).toBeNull()
+    expect(bundledSkillSiblingKind(NAME, `.${NAME}.occ-stage-1`)).toBe('stage')
+    expect(bundledSkillSiblingKind(NAME, `.${NAME}.occ-old-1`)).toBe('old')
+    expect(bundledSkillSiblingKind(NAME, `.${NAME}.occ-placement-staging-1`)).toBeNull()
+    expect(bundledSkillSiblingKind('other', `.${NAME}.occ-old-1`)).toBeNull()
   })
 })

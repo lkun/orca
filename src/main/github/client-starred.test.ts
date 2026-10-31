@@ -25,7 +25,7 @@ vi.mock('./github-api-repository', async (importOriginal) =>
   )
 )
 
-import { __resetOrcaStarCheckForTests, checkOrcaStarred, starOrca } from './client/fetch/orca-star'
+import { __resetOCCStarCheckForTests, checkOCCStarred, starOCC } from './client/fetch/occ-star'
 import { resetOriginRepositoryCache } from './client-test-harness'
 
 const { execFileAsyncMock, ghExecFileAsyncMock, acquireMock, releaseMock } = clientMocks
@@ -36,7 +36,7 @@ async function flushMicrotasks(): Promise<void> {
   }
 }
 
-describe('checkOrcaStarred', () => {
+describe('checkOCCStarred', () => {
   beforeEach(async () => {
     resetOriginRepositoryCache()
     execFileAsyncMock.mockReset()
@@ -44,16 +44,16 @@ describe('checkOrcaStarred', () => {
     acquireMock.mockReset()
     releaseMock.mockReset()
     acquireMock.mockResolvedValue(undefined)
-    __resetOrcaStarCheckForTests()
+    __resetOCCStarCheckForTests()
   })
 
   it('returns true only for an included successful GitHub response', async () => {
     ghExecFileAsyncMock.mockResolvedValueOnce({ stdout: 'HTTP/2.0 204 No Content\r\n', stderr: '' })
 
-    await expect(checkOrcaStarred()).resolves.toBe(true)
+    await expect(checkOCCStarred()).resolves.toBe(true)
 
     expect(ghExecFileAsyncMock).toHaveBeenCalledWith(
-      ['api', '--include', 'user/starred/stablyai/orca'],
+      ['api', '--include', 'user/starred/stablyai/occ'],
       expect.objectContaining({ encoding: 'utf-8' })
     )
   })
@@ -61,25 +61,25 @@ describe('checkOrcaStarred', () => {
   it('returns true for an HTTP 200 starred response', async () => {
     ghExecFileAsyncMock.mockResolvedValueOnce({ stdout: 'HTTP/2.0 200 OK\r\n', stderr: '' })
 
-    await expect(checkOrcaStarred()).resolves.toBe(true)
+    await expect(checkOCCStarred()).resolves.toBe(true)
   })
 
   it('returns false for GitHub 404 not starred responses', async () => {
     ghExecFileAsyncMock.mockRejectedValueOnce(new Error('HTTP 404: Not Found'))
 
-    await expect(checkOrcaStarred()).resolves.toBe(false)
+    await expect(checkOCCStarred()).resolves.toBe(false)
   })
 
   it('returns null when gh exits successfully without response headers', async () => {
     ghExecFileAsyncMock.mockResolvedValueOnce({ stdout: '', stderr: '' })
 
-    await expect(checkOrcaStarred()).resolves.toBe(null)
+    await expect(checkOCCStarred()).resolves.toBe(null)
   })
 
   it('never spawns gh directly, so the spawn carries a deadline and a tree kill', async () => {
     ghExecFileAsyncMock.mockResolvedValueOnce({ stdout: 'HTTP/2.0 204 No Content\r\n', stderr: '' })
 
-    await checkOrcaStarred()
+    await checkOCCStarred()
 
     expect(execFileAsyncMock).not.toHaveBeenCalled()
     const [, options] = ghExecFileAsyncMock.mock.calls[0]
@@ -96,9 +96,9 @@ describe('checkOrcaStarred', () => {
       })
     )
 
-    const first = checkOrcaStarred()
-    const second = checkOrcaStarred()
-    const third = checkOrcaStarred()
+    const first = checkOCCStarred()
+    const second = checkOCCStarred()
+    const third = checkOCCStarred()
     await flushMicrotasks()
 
     expect(ghExecFileAsyncMock).toHaveBeenCalledTimes(1)
@@ -113,22 +113,22 @@ describe('checkOrcaStarred', () => {
       .mockResolvedValueOnce({ stdout: 'HTTP/2.0 404 Not Found\r\n', stderr: '' })
       .mockResolvedValueOnce({ stdout: 'HTTP/2.0 204 No Content\r\n', stderr: '' })
 
-    await checkOrcaStarred()
-    await expect(checkOrcaStarred()).resolves.toBe(true)
+    await checkOCCStarred()
+    await expect(checkOCCStarred()).resolves.toBe(true)
     expect(ghExecFileAsyncMock).toHaveBeenCalledTimes(2)
   })
 
   it('releases its GitHub concurrency slot when gh fails or times out', async () => {
     ghExecFileAsyncMock.mockRejectedValueOnce(new Error('gh timed out.'))
 
-    await expect(checkOrcaStarred()).resolves.toBe(null)
+    await expect(checkOCCStarred()).resolves.toBe(null)
 
     expect(releaseMock).toHaveBeenCalledTimes(1)
     expect(acquireMock).toHaveBeenCalledTimes(1)
   })
 })
 
-describe('starOrca', () => {
+describe('starOCC', () => {
   beforeEach(async () => {
     resetOriginRepositoryCache()
     execFileAsyncMock.mockReset()
@@ -136,17 +136,17 @@ describe('starOrca', () => {
     acquireMock.mockReset()
     releaseMock.mockReset()
     acquireMock.mockResolvedValue(undefined)
-    __resetOrcaStarCheckForTests()
+    __resetOCCStarCheckForTests()
   })
 
   it('stars through the bounded gh runner and releases its slot', async () => {
     ghExecFileAsyncMock.mockResolvedValueOnce({ stdout: '', stderr: '' })
 
-    await expect(starOrca()).resolves.toBe(true)
+    await expect(starOCC()).resolves.toBe(true)
 
     expect(execFileAsyncMock).not.toHaveBeenCalled()
     const [args, options] = ghExecFileAsyncMock.mock.calls[0]
-    expect(args).toEqual(['api', '-X', 'PUT', 'user/starred/stablyai/orca'])
+    expect(args).toEqual(['api', '-X', 'PUT', 'user/starred/stablyai/occ'])
     expect(options.timeout).toBeGreaterThan(0)
     expect(releaseMock).toHaveBeenCalledTimes(1)
   })
@@ -154,7 +154,7 @@ describe('starOrca', () => {
   it('reports failure and still releases its slot when gh times out', async () => {
     ghExecFileAsyncMock.mockRejectedValueOnce(new Error('gh timed out.'))
 
-    await expect(starOrca()).resolves.toBe(false)
+    await expect(starOCC()).resolves.toBe(false)
     expect(releaseMock).toHaveBeenCalledTimes(1)
   })
 })

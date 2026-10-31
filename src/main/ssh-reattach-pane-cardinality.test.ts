@@ -86,7 +86,7 @@ function tabIds(store: ReturnType<typeof createStore>): string[] {
 
 describe('STA-3077: an SSH reattach binds panes without grafting them back', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
   })
   afterEach(() => {
     rmSync(testState.dir, { recursive: true, force: true })

@@ -32,9 +32,9 @@ import { loadWorktreeRemovalRecordsForStore } from './worktree-removal-records-l
 import { runAfterFirstWindowShown } from './first-window-deferral'
 import { logStartupMilestone } from './startup-diagnostics'
 import { refreshInstalledOpenCodeStatusPlugins } from '../opencode/opencode-status-plugin-startup-refresh'
-import { pruneDesktopOrcadArtifactCache } from '../orcad/orcad-artifact-cache-retention'
+import { pruneDesktopOCCdArtifactCache } from '../occd/occd-artifact-cache-retention'
 import { runGatedWslMoveDesktopRewritePass } from '../persistence/moving-wsl-projects/wsl-move-desktop-rewrite'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { repairDuplicatePtyPanesOnStart } from '../runtime/moved-pane-owner-rekey'
 import { WslUsageReporter } from '../telemetry/wsl-usage-reporter'
 
@@ -100,8 +100,8 @@ export async function initializeReadyRuntimeServices(): Promise<void> {
     new WslUsageReporter(store, app.getPath('userData')).start()
   }, WORKTREE_TRASH_SWEEP_FALLBACK_MS)
   runAfterFirstWindowShown(() => {
-    void pruneDesktopOrcadArtifactCache(app.getPath('userData')).catch((error) => {
-      console.warn('[orcad-artifacts] Failed to bound the slot cache:', error)
+    void pruneDesktopOCCdArtifactCache(app.getPath('userData')).catch((error) => {
+      console.warn('[occd-artifacts] Failed to bound the slot cache:', error)
     })
   }, WORKTREE_TRASH_SWEEP_FALLBACK_MS)
   // The startup pass ran before browser sessions and any window existed, so `browser-cookies` paused.
@@ -148,7 +148,7 @@ export async function initializeReadyRuntimeServices(): Promise<void> {
     }
   })
   // Await duplicate-pane repair behind queued writes; all later phases must read the repaired tree.
-  if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (OCC_LAYOUT_OWNER_IS_MAIN) {
     await repairDuplicatePtyPanesOnStart(store, runtime)
   }
   logStartupMilestone('services-initialized')

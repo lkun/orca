@@ -40,7 +40,7 @@ afterEach(async () => {
 
 describe('a listed background Stop', () => {
   it('omits an earlier listed Stop when its same-ID lifetime restarts during acceptance', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-background-stop-lifetime-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-background-stop-lifetime-'))
     const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
     const owner = new StructuredAgentSessionStatusOwnership(() => undefined)
     const live = (restart = false): AgentChildWorkEvidence => ({
@@ -103,7 +103,7 @@ describe('a listed background Stop', () => {
   })
 
   it('does not close the agent when a refused helper appears during a listed Stop all', async () => {
-    root = await mkdtemp(join(tmpdir(), 'orca-background-stop-refused-'))
+    root = await mkdtemp(join(tmpdir(), 'occ-background-stop-refused-'))
     const journal = await journals.open({ identity: IDENTITY, stateDirectory: root })
     const server = new AgentHookServer()
     let refuse = false

@@ -1,23 +1,23 @@
 import { appendFileSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { collectUnitDependencyGraph } from './ci-unit-dependency-graph.mjs'
 import { discoverUnitFiles } from './ci-unit-files.mjs'
 import { FULL_SHARD_COUNT, planUnitSelection } from './ci-unit-selection.mjs'
 import { readTimingBaseline, writeAssignment } from './ci-shard-assignment.mjs'
 
 export function prepareUnitPlan(env = process.env) {
-  const requestedCount = env.ORCA_UNIT_FULL_SHARD_COUNT ?? String(FULL_SHARD_COUNT)
+  const requestedCount = env.OCC_UNIT_FULL_SHARD_COUNT ?? String(FULL_SHARD_COUNT)
   // Every consumer reads the count from the plan; sixteen bounds runner-slot use.
   if (!/^([2-9]|1[0-6])$/.test(requestedCount)) {
-    throw new Error('ORCA_UNIT_FULL_SHARD_COUNT must be an integer from 2 to 16')
+    throw new Error('OCC_UNIT_FULL_SHARD_COUNT must be an integer from 2 to 16')
   }
   const fullShardCount = Number(requestedCount)
   const files = discoverUnitFiles()
   let plan
   try {
     // From the workflow, not the payload file: background steps can read it mid-rewrite.
-    const event = { pull_request: { draft: env.ORCA_PULL_REQUEST_DRAFT === 'true' } }
+    const event = { pull_request: { draft: env.OCC_PULL_REQUEST_DRAFT === 'true' } }
     if (env.GITHUB_EVENT_NAME !== 'pull_request') {
       throw new Error('Full reference run')
     }
@@ -35,7 +35,7 @@ export function prepareUnitPlan(env = process.env) {
       graph: collectUnitDependencyGraph,
       timings: readTimingBaseline('unit').timings,
       event,
-      mode: env.ORCA_UNIT_SELECTION_MODE,
+      mode: env.OCC_UNIT_SELECTION_MODE,
       fullShardCount
     })
   } catch (error) {

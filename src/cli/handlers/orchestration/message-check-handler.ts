@@ -45,7 +45,7 @@ export const ORCHESTRATION_CHECK_HANDLER: Record<string, CommandHandler> = {
     const terminal = await resolveOrchestrationTerminalHandle(flags, cwd, client, 'terminal')
     // Sessions use their injected id; inherited pane keys belong to a different caller.
     const paneKey =
-      explicitTerminal || terminal === undefined ? undefined : process.env.ORCA_PANE_KEY
+      explicitTerminal || terminal === undefined ? undefined : process.env.OCC_PANE_KEY
     const callerLabel = orchestrationCallerLabel(terminal)
     const stopKeepalive = wait ? startCheckKeepalive(timeoutMs) : null
     let result: Awaited<ReturnType<typeof client.call<CheckResult>>>

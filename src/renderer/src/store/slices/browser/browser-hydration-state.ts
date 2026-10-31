@@ -1,7 +1,7 @@
 import type { BrowserPage, BrowserWorkspace } from '../../../../../shared/browser-workspace-types'
 import { createBrowserUuid } from '@/lib/browser-uuid'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
-import { ORCA_BROWSER_BLANK_URL } from '../../../../../shared/constants'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../../shared/layout-owner-switch'
+import { OCC_BROWSER_BLANK_URL } from '../../../../../shared/constants'
 import type { WorkspaceSessionState } from '../../../../../shared/workspace-session-state-types'
 import { normalizeBrowserHistoryEntries } from '../../../../../shared/workspace-session-browser-history'
 import { normalizeWorkspaceDocHistoryEntries } from '../../../../../shared/workspace-doc-history'
@@ -48,7 +48,7 @@ export function projectHydratedBrowserSession(
             {
               // Switch point: a frame names the page before its record lands; keep that id stable.
               id:
-                (ORCA_LAYOUT_OWNER_IS_MAIN ? (tab.activePageId ?? tab.pageIds?.[0]) : undefined) ??
+                (OCC_LAYOUT_OWNER_IS_MAIN ? (tab.activePageId ?? tab.pageIds?.[0]) : undefined) ??
                 createBrowserUuid(),
               workspaceId: tab.id,
               worktreeId,
@@ -75,7 +75,7 @@ export function projectHydratedBrowserSession(
           workspaceId: tab.id,
           worktreeId,
           // Reassert creation’s URL fence for old/handwritten sessions; persisted grants died with their originating process.
-          url: page.docLocation ? ORCA_BROWSER_BLANK_URL : normalizeUrl(page.url),
+          url: page.docLocation ? OCC_BROWSER_BLANK_URL : normalizeUrl(page.url),
           loading: false,
           loadError: page.loadError ?? null
         }

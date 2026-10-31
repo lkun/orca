@@ -50,20 +50,20 @@ export function searchSshConfigHosts(
       continue
     }
     seenAliases.add(normalizedAlias)
-    const aliasInOrca = existingAliases.has(normalizedAlias)
-    const alreadyInOrca = aliasInOrca || routeDuplicateAliases.has(normalizedAlias)
+    const aliasInOCC = existingAliases.has(normalizedAlias)
+    const alreadyInOCC = aliasInOCC || routeDuplicateAliases.has(normalizedAlias)
     // Tombstones suppress bulk import, not picker visibility, so deleting a target cannot make config look empty.
     // Alias-only, because Restore re-adopts by alias.
-    const previouslyRemoved = !aliasInOrca && suppressedAliasSet.has(normalizedAlias)
+    const previouslyRemoved = !aliasInOCC && suppressedAliasSet.has(normalizedAlias)
     totalHostCount += 1
     // Match passive import: Add all preserves tombstones.
-    newHostCount += alreadyInOrca || suppressedAliasSet.has(normalizedAlias) ? 0 : 1
+    newHostCount += alreadyInOCC || suppressedAliasSet.has(normalizedAlias) ? 0 : 1
     if (!matchesQuery(entry, normalizedQuery)) {
       continue
     }
     matchCount += 1
     if (summaries.length < SSH_CONFIG_HOST_RESULT_LIMIT) {
-      summaries.push(toSummary(entry, alreadyInOrca, previouslyRemoved))
+      summaries.push(toSummary(entry, alreadyInOCC, previouslyRemoved))
     }
   }
 
@@ -139,7 +139,7 @@ function matchesAlias(entry: SshConfigHost, normalizedAlias: string): boolean {
 
 function toSummary(
   entry: SshConfigHost,
-  alreadyInOrca: boolean,
+  alreadyInOCC: boolean,
   previouslyRemoved = false
 ): SshConfigHostSummary {
   return {
@@ -150,7 +150,7 @@ function toSummary(
     ...(entry.identityFile ? { identityFile: entry.identityFile } : {}),
     ...(entry.proxyCommand ? { proxyCommand: entry.proxyCommand } : {}),
     ...(entry.proxyJump ? { jumpHost: entry.proxyJump } : {}),
-    alreadyInOrca,
+    alreadyInOCC,
     ...(previouslyRemoved ? { previouslyRemoved: true } : {})
   }
 }

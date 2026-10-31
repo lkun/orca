@@ -141,7 +141,7 @@ describe('host model catalog snapshots sync', () => {
     resetHostModelCatalogSnapshotsForTests()
     useAppStore.setState({
       settings: {
-        ...getDefaultSettings('/tmp/orca-workspaces'),
+        ...getDefaultSettings('/tmp/occ-workspaces'),
         agentDefaultSurface: 'chat',
         nativeChatSessionOptions: { claude: { model: 'opus[1m]' }, codex: {} }
       },
@@ -156,7 +156,7 @@ describe('host model catalog snapshots sync', () => {
       mocks.capabilities = [SAVED_ONLY]
       useAppStore.setState({
         settings: {
-          ...getDefaultSettings('/tmp/orca-workspaces'),
+          ...getDefaultSettings('/tmp/occ-workspaces'),
           agentDefaultSurface: surface,
           nativeChatProviders: {},
           nativeChatSessionOptions: {}

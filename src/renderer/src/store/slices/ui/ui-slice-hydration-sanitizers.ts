@@ -1,6 +1,6 @@
 import { normalizeExplorerDisplayRootByWorktree } from '../../../../../shared/file-explorer-display-root'
 import type { AppState } from '../../types'
-import type { PersistedTrustedOrcaHooks } from '../../../../../shared/orca-yaml-hook-types'
+import type { PersistedTrustedOCCHooks } from '../../../../../shared/occ-yaml-hook-types'
 import type { PersistedUIState } from '../../../../../shared/persisted-ui-state-types'
 import type {
   TaskViewPresetId,
@@ -46,29 +46,29 @@ export function sanitizePersistedRepoIds(value: unknown): string[] {
   return value.filter((repoId): repoId is string => typeof repoId === 'string')
 }
 
-export function sanitizeTrustedOrcaHooks(trust: unknown): PersistedTrustedOrcaHooks {
+export function sanitizeTrustedOCCHooks(trust: unknown): PersistedTrustedOCCHooks {
   if (!isPlainPersistedRecord(trust)) {
     return {}
   }
-  const next: PersistedTrustedOrcaHooks = {}
+  const next: PersistedTrustedOCCHooks = {}
   for (const [repoId, entry] of Object.entries(trust)) {
     if (!isSafePersistedRecordKey(repoId) || !isPlainPersistedRecord(entry)) {
       continue
     }
-    next[repoId] = entry as PersistedTrustedOrcaHooks[string]
+    next[repoId] = entry as PersistedTrustedOCCHooks[string]
   }
   return next
 }
 
-export function hydrateTrustedOrcaHooks(
+export function hydrateTrustedOCCHooks(
   trust: unknown,
   validRepoIds: Set<string>
-): PersistedTrustedOrcaHooks {
-  const sanitized = sanitizeTrustedOrcaHooks(trust)
+): PersistedTrustedOCCHooks {
+  const sanitized = sanitizeTrustedOCCHooks(trust)
   if (validRepoIds.size === 0) {
     return sanitized
   }
-  const next: PersistedTrustedOrcaHooks = {}
+  const next: PersistedTrustedOCCHooks = {}
   for (const [repoId, entry] of Object.entries(sanitized)) {
     if (validRepoIds.has(repoId)) {
       next[repoId] = entry

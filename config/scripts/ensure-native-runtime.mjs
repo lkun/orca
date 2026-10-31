@@ -12,7 +12,7 @@ import {
   stageWindowsProcessTreeNodeAddonApiHeaders,
   windowsProcessTreeAddonPath
 } from './windows-process-tree-gyp-rebuild.mjs'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { describeProcessFailure } from './process-failure-message.mjs'
 import {
   isSharedNativePackage,
@@ -39,7 +39,7 @@ const forceRebuild = process.argv.includes('--force')
 const NATIVE_MODULES = [
   'node-pty',
   ...(process.platform === 'win32'
-    ? ['@orca/windows-registry', '@orca/windows-security', '@vscode/windows-process-tree']
+    ? ['@occ/windows-registry', '@occ/windows-security', '@vscode/windows-process-tree']
     : [])
 ]
 const NODE_PTY_CONPTY_RUNTIME_FILES = ['conpty.dll', 'OpenConsole.exe']
@@ -288,13 +288,13 @@ function loadNativeModule(moduleName) {
     }
     return
   }
-  if (moduleName === '@orca/windows-registry') {
+  if (moduleName === '@occ/windows-registry') {
     const registry = require(moduleName)
     // Why: the package defers loading its .node addon until the first registry call.
     registry.getRegistryKey(registry.HK.CU, 'Environment')
     return
   }
-  if (moduleName === '@orca/windows-security') {
+  if (moduleName === '@occ/windows-security') {
     const security = require(moduleName)
     // currentUserSid loads the addon; a stale build that still loads lacks the newest export.
     if (!security.currentUserSid() || !security.hasNativeExport('isolatedSpawnBreaksAwayFromJob')) {

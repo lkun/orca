@@ -39,25 +39,25 @@ async function flush(): Promise<void> {
 describe('the lock a microphone holds', () => {
   it('takes the tag once and gives it back once', async () => {
     const { device, calls } = createTestDevice()
-    const lock = createMicrophoneScreenLock(device, 'orca-mic')
+    const lock = createMicrophoneScreenLock(device, 'occ-mic')
     lock.hold()
     lock.release()
     await flush()
-    expect(calls).toEqual(['+orca-mic', '-orca-mic'])
+    expect(calls).toEqual(['+occ-mic', '-occ-mic'])
   })
 
   it('asks the device nothing for a hold it already has', async () => {
     const { device, calls } = createTestDevice()
-    const lock = createMicrophoneScreenLock(device, 'orca-mic')
+    const lock = createMicrophoneScreenLock(device, 'occ-mic')
     lock.hold()
     lock.hold()
     await flush()
-    expect(calls).toEqual(['+orca-mic'])
+    expect(calls).toEqual(['+occ-mic'])
   })
 
   it('asks the device nothing for a release of a tag it never took', async () => {
     const { device, calls } = createTestDevice()
-    const lock = createMicrophoneScreenLock(device, 'orca-mic')
+    const lock = createMicrophoneScreenLock(device, 'occ-mic')
     lock.release()
     await flush()
     expect(calls).toEqual([])
@@ -65,22 +65,22 @@ describe('the lock a microphone holds', () => {
     lock.release()
     lock.release()
     await flush()
-    expect(calls).toEqual(['+orca-mic', '-orca-mic'])
+    expect(calls).toEqual(['+occ-mic', '-occ-mic'])
   })
 
   it('never lets a slow activate land after the release that followed it', async () => {
     const { device, calls, holdCallsOpen, settleAll } = createTestDevice()
-    const lock = createMicrophoneScreenLock(device, 'orca-mic')
+    const lock = createMicrophoneScreenLock(device, 'occ-mic')
     holdCallsOpen()
     lock.hold()
     await flush()
     // Release before activation settles must still deactivate last.
     lock.release()
     await flush()
-    expect(calls).toEqual(['+orca-mic'])
+    expect(calls).toEqual(['+occ-mic'])
     settleAll()
     await flush()
-    expect(calls).toEqual(['+orca-mic', '-orca-mic'])
+    expect(calls).toEqual(['+occ-mic', '-occ-mic'])
   })
 
   it('keeps working after a call the device refused', async () => {
@@ -95,14 +95,14 @@ describe('the lock a microphone holds', () => {
         return Promise.resolve()
       }
     }
-    const lock = createMicrophoneScreenLock(device, 'orca-mic')
+    const lock = createMicrophoneScreenLock(device, 'occ-mic')
     lock.hold()
     lock.release()
     await flush()
     // Failed wake locks must neither fail dictation nor block queued cleanup.
-    expect(calls).toEqual(['+orca-mic', '-orca-mic'])
+    expect(calls).toEqual(['+occ-mic', '-occ-mic'])
     lock.hold()
     await flush()
-    expect(calls).toEqual(['+orca-mic', '-orca-mic', '+orca-mic'])
+    expect(calls).toEqual(['+occ-mic', '-occ-mic', '+occ-mic'])
   })
 })

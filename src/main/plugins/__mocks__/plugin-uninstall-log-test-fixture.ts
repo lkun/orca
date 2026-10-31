@@ -55,7 +55,7 @@ export async function resetUninstallFixtures(): Promise<void> {
 }
 
 export async function createUninstallFixture() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-uninstall-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-uninstall-'))
   roots.push(root)
   let settings: {
     pluginConsents: Record<string, string>
@@ -109,13 +109,13 @@ export async function createUninstallFixture() {
       publisher: official ? 'stablyai' : 'memory-audit',
       name: id,
       version: '1.0.0',
-      engines: { orca: '>=1.0.0' },
+      engines: { occ: '>=1.0.0' },
       pluginApi: 1,
       main: 'worker.js',
       contributes: { commands: [{ id: 'run', title: 'Run' }], ...contributes },
       capabilities: contributes.events ? [{ kind: 'workspace:read' }, { kind: 'agent:read' }] : []
     }
-    await writeFile(join(sourcePath, 'orca-plugin.json'), JSON.stringify(manifest))
+    await writeFile(join(sourcePath, 'occ-plugin.json'), JSON.stringify(manifest))
     await writeFile(join(sourcePath, 'worker.js'), 'export default function () {}')
     if (contributes.panels) {
       await writeFile(join(sourcePath, 'panel.html'), '<p>Fixture panel</p>')
@@ -128,7 +128,7 @@ export async function createUninstallFixture() {
           source: {
             kind: 'marketplace',
             marketplace: {
-              url: 'https://github.com/stablyai/orca-plugins.git',
+              url: 'https://github.com/stablyai/occ-plugins.git',
               ref: 'main',
               resolvedCommit: '2'.repeat(40)
             },

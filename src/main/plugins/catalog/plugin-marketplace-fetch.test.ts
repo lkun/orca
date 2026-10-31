@@ -13,7 +13,7 @@ const release = {
   commit: 'c'.repeat(40),
   contentHash: 'f'.repeat(64),
   execution: 'data',
-  minimumOrca: '1.4.0',
+  minimumOCC: '1.4.0',
   types: ['interface-language']
 }
 
@@ -50,7 +50,7 @@ describe('parsePluginMarketplaceIndex', () => {
         owner: 'samples',
         plugins: []
       })
-    ).toThrow('orca-catalog.json uses catalog format 3; update OCC to browse this catalog')
+    ).toThrow('occ-catalog.json uses catalog format 3; update OCC to browse this catalog')
   })
 
   it('keeps release entries out of the frozen v1 file', () => {

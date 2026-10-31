@@ -171,14 +171,14 @@ function isBranchConfigSeparator(code: number): boolean {
 }
 
 // Deferred materialization may omit store flags; read the repo-local OCC-created marker too.
-async function remoteHasOrcaProvenance(
+async function remoteHasOCCProvenance(
   execGit: GitRemoteExec,
   repoPath: string,
   remoteName: string
 ): Promise<boolean> {
   try {
     const { stdout } = await execGit(
-      ['config', '--get', `remote.${remoteName}.orca-created`],
+      ['config', '--get', `remote.${remoteName}.occ-created`],
       repoPath
     )
     return stdout.trim() === 'true'
@@ -199,7 +199,7 @@ export async function cleanupUnusedWorktreePushTargetRemoteWithExec(
   }
   if (
     !target.remoteCreated &&
-    !(await remoteHasOrcaProvenance(execGit, repoPath, target.remoteName))
+    !(await remoteHasOCCProvenance(execGit, repoPath, target.remoteName))
   ) {
     return
   }

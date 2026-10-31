@@ -8,14 +8,14 @@ live in the generated references: [manifest](plugin-manifest.md), [catalog](plug
 
 ## 1. Write
 
-A plugin is a folder (in practice its own Git repository) with `orca-plugin.json` at the root.
-Start from `examples/plugins/orca-gleam-syntax`, which carries the JSON Schema for editor
+A plugin is a folder (in practice its own Git repository) with `occ-plugin.json` at the root.
+Start from `examples/plugins/occ-gleam-syntax`, which carries the JSON Schema for editor
 completion, or from one of:
 
 | Example                              | Execution        | Shows                                |
 | ------------------------------------ | ---------------- | ------------------------------------ |
-| `examples/plugins/orca-gleam-syntax` | `data`           | A syntax, no code                    |
-| `examples/plugins/hello-orca`        | `trusted-worker` | A panel, a worker command and events |
+| `examples/plugins/occ-gleam-syntax` | `data`           | A syntax, no code                    |
+| `examples/plugins/hello-occ`        | `trusted-worker` | A panel, a worker command and events |
 
 Leave `publisher` out. OCC names the publisher after where the plugin comes from, the way a
 [Go module path](https://go.dev/ref/mod#module-path) is its repository path: the owner of the
@@ -30,15 +30,15 @@ repository, lowercased (`acme` for `github.com/Acme/gleam-syntax`), so the plugi
 | A local or development folder     | `local`                                                      |
 
 `publisher` is deprecated: OCC ignores it for catalog and Git installs. Leaving it out needs
-`engines.orca` of at least `>=1.4.246`, because older OCC requires the field and refuses a
+`engines.occ` of at least `>=1.4.246`, because older OCC requires the field and refuses a
 value that differs from the catalog's. To keep supporting older OCC, keep `publisher` and set it
 to the repository owner; `validate:plugin` warns about it either way. An install made before
 1.4.246 keeps its key, approvals and data. A local or development folder that still declares
 `publisher` keeps using it until you remove it.
 
-When copying the Gleam example, also drop its `stablyai` publisher and `orca-` id prefix: both are
+When copying the Gleam example, also drop its `stablyai` publisher and `occ-` id prefix: both are
 reserved for OCC's own plugins, as are owners named `official`, `anthropic`, `openai`, `github`
-or starting with `orca`.
+or starting with `occ`.
 
 Pick the lowest `execution` profile that covers what you contribute; it decides what the user is
 asked to approve:
@@ -47,46 +47,46 @@ asked to approve:
 - `declarative`: commands that run OCC actions, shortcuts, VM recipes. Reviewed before they
   are enabled.
 - `sandboxed-ui`: panels and custom editors, in a sandboxed frame that talks to OCC only
-  through `window.orca` (see [Frames](#frames-windoworca)) and can call only the host methods
+  through `window.occ` (see [Frames](#frames-windowocc)) and can call only the host methods
   whose surfaces list `panel` or `editor`.
-  OCC's colors reach frame CSS as `--orca-background`, `--orca-foreground`, `--orca-primary`
+  OCC's colors reach frame CSS as `--occ-background`, `--occ-foreground`, `--occ-primary`
   and the rest of its panel token set, so they never collide with a frame's own variables.
 - `trusted-worker`: `main` runs in a separate Node process and can call every host method its
   `capabilities` allow. There is no global switch for these full-access plugins: each one runs
   only after the user approves it on install. An enterprise policy to block full-access plugins
   may come later.
 
-Set `engines.orca` to the newest `Since` of any field you use, and `pluginApi` (currently `1`)
+Set `engines.occ` to the newest `Since` of any field you use, and `pluginApi` (currently `1`)
 only when a panel or worker calls the host API.
 
-### Frames: `window.orca`
+### Frames: `window.occ`
 
-Before any plugin code runs, the frame shell defines a frozen `window.orca`. It is the only
+Before any plugin code runs, the frame shell defines a frozen `window.occ`. It is the only
 supported way to talk to OCC; the messages underneath are internal and change without notice.
 
 ```js
-orca.api // { major: 1, minor: 0 }: the host API this OCC implements
-if (orca.host.has('workspace.readContext')) {
+occ.api // { major: 1, minor: 0 }: the host API this OCC implements
+if (occ.host.has('workspace.readContext')) {
   // Synchronous: is the method offered to this surface by this OCC?
   const controller = new AbortController()
   try {
-    const context = await orca.host.call('workspace.readContext', {}, { signal: controller.signal })
+    const context = await occ.host.call('workspace.readContext', {}, { signal: controller.signal })
   } catch (error) {
     // error.code, error.message, error.retryable, error.retryAfterMs (rate_limited only)
   }
 }
-const subscription = orca.on('theme', ({ colorScheme }) => {})
+const subscription = occ.on('theme', ({ colorScheme }) => {})
 subscription.dispose()
 ```
 
 Methods, their surfaces and their errors are in the [host API reference](plugin-host-api.md).
 Aborting the `signal` rejects the call with `cancelled`. Treat an error `code` you do not know as
 `action_failed`. Params are strict: a field the running OCC does not know is refused with
-`invalid_params`, so check `orca.host.has` or `orca.api.minor` before using a newer one.
+`invalid_params`, so check `occ.host.has` or `occ.api.minor` before using a newer one.
 
-Workers get the same calls on the `orca` object passed to `activate(orca)`:
-`orca.api`, `orca.host.call(method, params, { signal })`, `orca.host.has(method)`, plus
-`orca.commands.register(id, (args, { signal }) => …)` and `orca.events.on(event, handler)`, which
+Workers get the same calls on the `occ` object passed to `activate(occ)`:
+`occ.api`, `occ.host.call(method, params, { signal })`, `occ.host.has(method)`, plus
+`occ.commands.register(id, (args, { signal }) => …)` and `occ.events.on(event, handler)`, which
 both return `{ dispose() }`. A command's `signal` aborts when OCC stops waiting for it. In
 `agent.status.changed`, `state` and `mainAgent.state` are one of `working`, `blocked`, `waiting`
 and `done`.
@@ -100,14 +100,14 @@ the buffer, dirty state, saving, the external-change banner, read-only tabs and 
 paired host) files; the frame only gets the document, never a path. Editor and panel plugins are
 trusted code, and an editor can read every file it opens, so install ones you trust.
 
-An editor's `window.orca` adds `document`:
+An editor's `window.occ` adds `document`:
 
 ```js
-const doc = await orca.document.get() // { version, readOnly, content, fileType? }
+const doc = await occ.document.get() // { version, readOnly, content, fileType? }
 // The current document right away, then each one OCC sends when the file changes outside the editor.
-orca.document.onDidChange((doc) => render(doc))
-await orca.document.applyEdit({ baseVersion: doc.version, content: { kind: 'text', text } })
-orca.on('editor.flush', () => sendPendingEdit()) // before a save; OCC waits for the promise
+occ.document.onDidChange((doc) => render(doc))
+await occ.document.applyEdit({ baseVersion: doc.version, content: { kind: 'text', text } })
+occ.on('editor.flush', () => sendPendingEdit()) // before a save; OCC waits for the promise
 ```
 
 `content` is `{ kind: 'text', text }` for a text editor (the default `contentKind`). An edit is
@@ -132,9 +132,9 @@ hosts): a larger file shows "too large to open", and a larger edit is rejected w
 Past 16 MiB the tab notes that the file may take a moment. OCC saves on its own save shortcut pressed
 inside the frame, never on a call alone.
 
-Theme changes do not reload the frame: the shell updates the `--orca-*` variables and the
+Theme changes do not reload the frame: the shell updates the `--occ-*` variables and the
 `light`/`dark` class on `<html>` in place and emits `theme`. Restyle from the variables, or
-listen with `orca.on('theme', …)`, to follow it.
+listen with `occ.on('theme', …)`, to follow it.
 
 ## 2. Load it while you work
 
@@ -144,10 +144,10 @@ listen with `orca.on('theme', …)`, to follow it.
    the same key.
 3. Review and enable it. Nothing runs before that.
 
-From a terminal (or a coding agent), `orca plugin dev load <dir>` does the same. A content-only
+From a terminal (or a coding agent), `occ plugin dev load <dir>` does the same. A content-only
 plugin loads at once; anything that runs code fails with `approval_required`, which lists what it
-would be granted and the command to re-run with `--approve <fingerprint>`. `orca plugin logs
-<publisher.id>` prints its logs and `orca plugin dev unload <dir>` removes it.
+would be granted and the command to re-run with `--approve <fingerprint>`. `occ plugin logs
+<publisher.id>` prints its logs and `occ plugin dev unload <dir>` removes it.
 
 OCC watches development folders and reloads the plugin when its manifest or files change.
 Theme, syntax and translation edits show up as you save. Panels and workers are not bound to
@@ -161,31 +161,31 @@ worker, and the plugin's logs to see what it printed.
 ```sh
 pnpm validate:plugin path/to/plugin
 # or, without an OCC checkout:
-orca plugin validate path/to/plugin
+occ plugin validate path/to/plugin
 ```
 
-`orca plugin create <dir> --template <theme|terminal-theme|icon-theme|syntax|language-pack|editor|panel>`
-scaffolds a plugin that passes these checks, and `orca plugin inspect <dir>` shows what it would be
+`occ plugin create <dir> --template <theme|terminal-theme|icon-theme|syntax|language-pack|editor|panel>`
+scaffolds a plugin that passes these checks, and `occ plugin inspect <dir>` shows what it would be
 allowed to do and its content hash.
 
 This runs the manifest checks OCC runs, strictly: unknown keys, limits, contributions beyond the
-execution profile, and an `engines.orca` too low for the fields used. On a catalog it also
+execution profile, and an `engines.occ` too low for the fields used. On a catalog it also
 checks that listed images exist and fit. It warns when the manifest still declares the deprecated
 `publisher`, and, in a Git repository, when that value is not the owner of the `origin` remote.
 Warnings do not fail the check. Run it in CI for the plugin and catalog repositories.
 
 ## 4. List it in the OCC plugin directory
 
-1. `orca plugin validate .` passes, and the plugin is committed and pushed to the GitHub
+1. `occ plugin validate .` passes, and the plugin is committed and pushed to the GitHub
    repository whose owner matches `publisher`.
-2. Commit the new `version` in `orca-plugin.json`, then tag that commit and push the tag:
+2. Commit the new `version` in `occ-plugin.json`, then tag that commit and push the tag:
    `git tag -a v1.2.0 -m v1.2.0 && git push origin v1.2.0`.
-3. Add the `orca-plugin` topic to the repository: `gh repo edit <owner>/<repo> --add-topic orca-plugin`.
-4. Check its listing at `https://www.onorca.dev/plugins/<owner>/<repo>`.
+3. Add the `occ-plugin` topic to the repository: `gh repo edit <owner>/<repo> --add-topic occ-plugin`.
+4. Check its listing at `https://www.onocc.dev/plugins/<owner>/<repo>`.
 
 ## 5. Publish to a catalog
 
-A catalog is a Git repository with `orca-catalog.json` at its root that lists plugins and pins
+A catalog is a Git repository with `occ-catalog.json` at its root that lists plugins and pins
 each release to an exact commit and file hash, so OCC refuses bytes the catalog did not vouch
 for. Plugins in OCC's official and community catalogs must follow the
 [plugin listing policy](plugin-listing-policy.md), starting with being free to install and use.
@@ -194,14 +194,14 @@ for. Plugins in OCC's official and community catalogs must follow the
    release entry for `HEAD`: version, full commit SHA, `contentHash`, execution profile, minimum
    OCC, contribution summary, capabilities and file types. Every field must match
    what OCC finds at install, so paste it rather than writing it by hand.
-2. Add or update the plugin's entry in the catalog's `orca-catalog.json`, newest release first:
+2. Add or update the plugin's entry in the catalog's `occ-catalog.json`, newest release first:
 
    ```json
    {
      "id": "acme.gleam-syntax",
      "source": {
        "kind": "git",
-       "url": "https://github.com/acme/orca-gleam-syntax.git",
+       "url": "https://github.com/acme/occ-gleam-syntax.git",
        "ref": "main"
      },
      "categories": ["languages"],
@@ -213,17 +213,17 @@ for. Plugins in OCC's official and community catalogs must follow the
    repository owner, as the official and community catalogs do.
 
    `commit` must be a full 40-character SHA. A tag or branch name is refused by validation and
-   skipped by OCC. Keep the previous release listed when you raise `engines.orca`, so older
+   skipped by OCC. Keep the previous release listed when you raise `engines.occ`, so older
    OCC still has something to install.
 
    **One repository can hold many plugins.** Put each in its own directory, such as
-   `plugins/gleam-syntax/orca-plugin.json`, and add `"path": "plugins/gleam-syntax"` to its
+   `plugins/gleam-syntax/occ-plugin.json`, and add `"path": "plugins/gleam-syntax"` to its
    `source`; validating that directory prints the `path` to use. OCC installs only that
    directory, and its `contentHash` covers only its files, so commits to sibling plugins never
    change it. Moving a plugin to another directory counts as a different repository.
 
 3. Run `pnpm validate:plugin path/to/catalog` and regenerate the older
-   `orca-marketplace.json` as described in the [catalog reference](plugin-catalog.md#clients-before-format-2).
+   `occ-marketplace.json` as described in the [catalog reference](plugin-catalog.md#clients-before-format-2).
 4. Users add the catalog under Settings → Plugins → ⋯ → **Catalog sources…** with its Git URL and ref.
 
 Users approve a plugin once per level of access. An update from the same repository that asks
@@ -270,17 +270,17 @@ listed as experimental may change. These parts are stable and change only additi
 
 - manifest format 2, capability names and execution profiles;
 - host API 1 (`"pluginApi": 1`): method names, params, results, surfaces and error codes;
-- the frame API `window.orca` (`api`, `host.call`, `host.has`, `on`, and `document` in custom
+- the frame API `window.occ` (`api`, `host.call`, `host.has`, `on`, and `document` in custom
   editors) and the document `version`/`content` shape;
 - theme token names, and theme ids once published (users' settings store them);
-- catalog format 2 (`orca-catalog.json`).
+- catalog format 2 (`occ-catalog.json`).
 
 Experimental; these may still change without a new format:
 
 - the `agent.status.changed` payload: `paneKey` is not yet a terminal id `terminal.sendText`
   accepts;
 - the worker process model: Node version, lifecycle and the channel to OCC. Only
-  `activate(orca)` and `orca.api`, `orca.host`, `orca.commands`, `orca.events` and `orca.log` are
+  `activate(occ)` and `occ.api`, `occ.host`, `occ.commands`, `occ.events` and `occ.log` are
   promised,
   and workers may be stopped at any time;
 - language-pack keys, which change when OCC's source moves or its English copy changes; packs
@@ -290,5 +290,5 @@ Experimental; these may still change without a new format:
 - `settings:own`, which stores untyped values until plugins can declare settings;
 - manifest format 1, which is deprecated. Catalogs need format 2.
 
-Data folders, `orca-plugin-image://` URLs, tab keys and the `pluginRoot` a worker receives are
+Data folders, `occ-plugin-image://` URLs, tab keys and the `pluginRoot` a worker receives are
 internal.

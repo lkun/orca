@@ -22,7 +22,7 @@ async function git(cwd: string, ...argv: string[]): Promise<string> {
 }
 
 async function fixture(remote = 'origin') {
-  const root = await realpath(await mkdtemp(join(tmpdir(), 'orca-branch-reuse-')))
+  const root = await realpath(await mkdtemp(join(tmpdir(), 'occ-branch-reuse-')))
   roots.push(root)
   await git(root, 'init', '--quiet', 'repo')
   const repoPath = join(root, 'repo')

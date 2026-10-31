@@ -5,7 +5,7 @@ import type { Mock } from 'vitest'
 import { registerPtyHandlers } from './register-handlers'
 import { existsSyncMock, statSyncMock } from './pty-ipc-mock-registry'
 import type { PtyIpcSuiteFixtures } from './pty-ipc-test-harness'
-import { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import { OCCRuntimeService } from '../../runtime/occ-runtime'
 import type { TerminalWorkspaceLaunchScope } from '../../runtime/runtime-legacy-worker-terminal-recovery-types'
 import {
   IDENTITY_ENV_KEYS,
@@ -131,7 +131,7 @@ type ScopeResolver = {
 
 export type ParityLanes = {
   store: ReturnType<typeof createPaneBindingStore>
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   provider: Mock
   persistPtyBinding: Mock
   reveal: Mock
@@ -178,7 +178,7 @@ export function startParityLanes(
       storeProjectGroup({ id: 'pg-1', name: 'group', parentPath: null, connectionId: null })
     ]
   }
-  const runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+  const runtime = new OCCRuntimeService(partialRuntimeStore(store))
   const provider = vi.fn(async (options: { sessionId?: string }) => {
     if (args.spawnError) {
       throw args.spawnError
@@ -252,7 +252,7 @@ export async function providerFacts(provider: Mock): Promise<Record<string, unkn
     ...Object.fromEntries(
       PROVIDER_FACT_KEYS.filter((k) => k in options).map((k) => [k, options[k]])
     ),
-    orcaEnv: IDENTITY_ENV_KEYS.filter((key) => key in env),
+    occEnv: IDENTITY_ENV_KEYS.filter((key) => key in env),
     env: Object.fromEntries(CASE_ENV_KEYS.filter((key) => key in env).map((k) => [k, env[k]])),
     hidden: isHiddenRendererPty(String(spawned.id))
   }

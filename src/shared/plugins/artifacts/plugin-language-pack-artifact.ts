@@ -60,7 +60,7 @@ export function pluginLanguageResourceId(id: `plugin:${string}`): string {
   ).join('')
   const subtags = encoded.match(/.{1,8}/g) ?? []
   // The real base locale lets Intl and i18next pick the pack's plural rules natively.
-  return `${pluginPackBaseLocale(id.slice(id.lastIndexOf('/') + 1))}-x-orcapk-${subtags.join('-')}`
+  return `${pluginPackBaseLocale(id.slice(id.lastIndexOf('/') + 1))}-x-occpk-${subtags.join('-')}`
 }
 
 function pluginPackBaseLocale(locale: string): string {

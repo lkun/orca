@@ -55,11 +55,11 @@ describe('fetchPrHeadTrackingRef', () => {
     )
 
     expect(gitExecFileAsyncMock).toHaveBeenCalledWith(
-      ['fetch', '--no-tags', 'origin', `+refs/pull/42/head:refs/orca/pull/${ORIGIN_COMPONENT}/42`],
+      ['fetch', '--no-tags', 'origin', `+refs/pull/42/head:refs/occ/pull/${ORIGIN_COMPONENT}/42`],
       { cwd: '/repo', timeout: REVIEW_HEAD_FETCH_TIMEOUT_MS }
     )
     expect(localRef).toBe(githubPullRequestHeadLocalRef(ORIGIN_COMPONENT, 42))
-    expect(localRef).toBe(`refs/orca/pull/${ORIGIN_COMPONENT}/42`)
+    expect(localRef).toBe(`refs/occ/pull/${ORIGIN_COMPONENT}/42`)
   })
 
   it('fails the pull-head fetch when the remote is not configured', async () => {
@@ -89,7 +89,7 @@ describe('fetchPrHeadTrackingRef', () => {
       wslDistro: 'Ubuntu'
     })
     expect(gitExecFileAsyncMock).toHaveBeenCalledWith(
-      ['fetch', '--no-tags', 'origin', `+refs/pull/42/head:refs/orca/pull/${ORIGIN_COMPONENT}/42`],
+      ['fetch', '--no-tags', 'origin', `+refs/pull/42/head:refs/occ/pull/${ORIGIN_COMPONENT}/42`],
       { cwd: '/repo', wslDistro: 'Ubuntu', timeout: REVIEW_HEAD_FETCH_TIMEOUT_MS }
     )
   })

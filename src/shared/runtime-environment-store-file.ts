@@ -125,7 +125,7 @@ export function writeEnvironmentStore(userDataPath: string, store: RuntimeEnviro
   const unreadableIds = new Set(onDisk.unreadable.map((record) => record.id))
   // A new readable record must not shadow one a newer build owns under the same id.
   if (environments.some(({ id }) => unreadableIds.has(id) && !readableIds.has(id))) {
-    throw remoteServerPairingStoreError('idNeedsNewerOrca')
+    throw remoteServerPairingStoreError('idNeedsNewerOCC')
   }
   let serialized: string
   try {

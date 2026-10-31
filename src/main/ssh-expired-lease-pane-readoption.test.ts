@@ -64,7 +64,7 @@ function storeWithBoundRemotePane(
 // An expired lease does not prove the remote shell died; retain its owner for re-adoption.
 describe('a pane whose SSH lease expired can still be re-adopted', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
   })
 
   afterEach(() => {
@@ -105,7 +105,7 @@ describe('recovery through createTerminal on an SSH host this process cannot rea
   }
 
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
   })
 
   afterEach(() => {

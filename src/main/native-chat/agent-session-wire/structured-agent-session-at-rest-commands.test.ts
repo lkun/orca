@@ -59,7 +59,7 @@ describe("a Claude chat whose Claude isn't running lists Claude's own `/` comman
       type: 'control_response',
       response: {
         subtype: 'success',
-        request_id: 'orca-command-discovery',
+        request_id: 'occ-command-discovery',
         response: {
           commands: [
             { name: 'goal', description: 'Set a goal', argumentHint: '', builtin: true },
@@ -119,7 +119,7 @@ describe("a Claude chat whose Claude isn't running lists Claude's own `/` comman
         cwd: workspace
       })
       expect(asked[0]?.[0].args.slice(0, 3)).toEqual(['run', '--', 'claude'])
-      expect(asked[0]?.[0].stdin).toContain('orca-command-discovery')
+      expect(asked[0]?.[0].stdin).toContain('occ-command-discovery')
       expect(asked[0]?.[1].inheritedEnv?.CLAUDE_CONFIG_DIR).toBe(account)
       // Failed refresh must retain the provider list over folder fallback.
       answer = failed
@@ -145,7 +145,7 @@ describe("a Claude chat whose Claude isn't running lists Claude's own `/` comman
         type: 'control_response',
         response: {
           subtype: 'success',
-          request_id: 'orca-command-discovery',
+          request_id: 'occ-command-discovery',
           response: { commands: [{ name, description: name, argumentHint: '', builtin: true }] }
         }
       })}\n`

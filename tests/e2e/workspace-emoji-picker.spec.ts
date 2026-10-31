@@ -1,9 +1,9 @@
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
 async function captureProof(page: Page, testInfo: TestInfo, name: string): Promise<void> {
-  if (process.env.ORCA_E2E_RECORD_VIDEO === '1') {
+  if (process.env.OCC_E2E_RECORD_VIDEO === '1') {
     return
   }
   const screenshotPath = testInfo.outputPath(name)
@@ -12,34 +12,34 @@ async function captureProof(page: Page, testInfo: TestInfo, name: string): Promi
 }
 
 test.describe('Workspace emoji picker', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await orcaPage.waitForTimeout(750)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await occPage.waitForTimeout(750)
   })
 
   test('inserts emoji in sidebar rename, worktree details, and Cmd+J', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    const title = orcaPage.locator('[data-worktree-title-inline-rename=""]').first()
+    const title = occPage.locator('[data-worktree-title-inline-rename=""]').first()
     await expect(title).toBeVisible()
     await title.dblclick()
 
-    const inlineInput = orcaPage.locator('[data-worktree-title-rename-input="true"]')
+    const inlineInput = occPage.locator('[data-worktree-title-rename-input="true"]')
     await expect(inlineInput).toBeVisible()
     await inlineInput.fill('Sidebar proof')
-    await captureProof(orcaPage, testInfo, 'sidebar-rename-before.png')
+    await captureProof(occPage, testInfo, 'sidebar-rename-before.png')
     await inlineInput.pressSequentially(' :wink', { delay: 60 })
-    const inlineSuggestions = orcaPage.locator('[data-workspace-emoji-suggestions="true"]')
+    const inlineSuggestions = occPage.locator('[data-workspace-emoji-suggestions="true"]')
     await expect(inlineSuggestions.getByRole('option', { name: ':wink:' })).toBeVisible()
-    await captureProof(orcaPage, testInfo, 'sidebar-rename-picker.png')
+    await captureProof(occPage, testInfo, 'sidebar-rename-picker.png')
     await inlineInput.press('Enter')
     await expect(inlineInput).toHaveValue('Sidebar proof 😉 ')
     await inlineInput.press('Enter')
-    await expect(orcaPage.getByText('Sidebar proof 😉', { exact: true }).first()).toBeVisible()
+    await expect(occPage.getByText('Sidebar proof 😉', { exact: true }).first()).toBeVisible()
 
-    await orcaPage.evaluate(() => {
+    await occPage.evaluate(() => {
       const state = window.__store!.getState()
       const worktree = Object.values(state.worktreesByRepo)
         .flat()
@@ -56,33 +56,33 @@ test.describe('Workspace emoji picker', () => {
       })
     })
 
-    const detailsDialog = orcaPage.getByRole('dialog', { name: 'Workspace details' })
+    const detailsDialog = occPage.getByRole('dialog', { name: 'Workspace details' })
     const displayNameInput = detailsDialog.getByPlaceholder('Custom display name...')
     await expect(displayNameInput).toBeFocused()
     await displayNameInput.fill('Details proof')
-    await captureProof(orcaPage, testInfo, 'worktree-details-before.png')
+    await captureProof(occPage, testInfo, 'worktree-details-before.png')
     await displayNameInput.pressSequentially(' :wink', { delay: 60 })
     const detailsSuggestions = detailsDialog.locator('[data-workspace-emoji-suggestions="true"]')
     await expect(detailsSuggestions.getByRole('option', { name: ':wink:' })).toBeVisible()
-    await captureProof(orcaPage, testInfo, 'worktree-details-picker.png')
+    await captureProof(occPage, testInfo, 'worktree-details-picker.png')
     await displayNameInput.press('Enter')
     await expect(displayNameInput).toHaveValue('Details proof 😉 ')
     await detailsDialog.getByRole('button', { name: 'Cancel' }).click()
 
-    await orcaPage.evaluate(() => window.__store!.getState().openModal('worktree-palette'))
-    const palette = orcaPage.getByRole('dialog', { name: 'Jump to...' })
+    await occPage.evaluate(() => window.__store!.getState().openModal('worktree-palette'))
+    const palette = occPage.getByRole('dialog', { name: 'Jump to...' })
     const paletteInput = palette.getByPlaceholder(
       'Search chats, terminals, workspaces, tasks, settings, and actions...'
     )
     await expect(paletteInput).toBeFocused()
-    await captureProof(orcaPage, testInfo, 'cmd-j-before.png')
+    await captureProof(occPage, testInfo, 'cmd-j-before.png')
     await paletteInput.pressSequentially(':wink', { delay: 60 })
     const paletteSuggestions = palette.locator('[data-workspace-emoji-suggestions="true"]')
     await expect(paletteSuggestions.getByRole('option', { name: ':wink:' })).toBeVisible()
-    await captureProof(orcaPage, testInfo, 'cmd-j-picker.png')
+    await captureProof(occPage, testInfo, 'cmd-j-picker.png')
     await paletteInput.press('Enter')
     await expect(paletteInput).toHaveValue('😉 ')
     await expect(palette.getByText('Sidebar proof 😉', { exact: true }).first()).toBeVisible()
-    await orcaPage.waitForTimeout(750)
+    await occPage.waitForTimeout(750)
   })
 })

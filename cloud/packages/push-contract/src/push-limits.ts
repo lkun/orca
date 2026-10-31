@@ -20,7 +20,7 @@ export const PUSH_LIMITS = {
 
 export const PUSH_DEFAULTS = {
   apnsTopic: 'com.lkun.occ.mobile',
-  androidChannelId: 'orca-desktop'
+  androidChannelId: 'occ-desktop'
 } as const
 
 export const PUSH_HOST_FINGERPRINT_LENGTH = 16

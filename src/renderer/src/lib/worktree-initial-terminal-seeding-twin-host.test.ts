@@ -36,7 +36,7 @@ const defaultTabs = {
   runCommands: true
 }
 const issueCommand = { command: 'echo issue' }
-const setup = { runnerScriptPath: `${PATH}/.orca/setup.sh`, envVars: {} }
+const setup = { runnerScriptPath: `${PATH}/.occ/setup.sh`, envVars: {} }
 
 function repo(executionHostId?: ExecutionHostId): Repo {
   return {

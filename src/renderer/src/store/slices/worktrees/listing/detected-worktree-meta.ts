@@ -9,7 +9,7 @@ import {
   getRepoExecutionHostId
 } from '../../../../../../shared/execution-host'
 import { parseWorkspaceKey } from '../../../../../../shared/workspace-scope'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../../../../../shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../../../../shared/sidebar-inputs-switch'
 import { folderWorkspaceToWorktree } from '../../../../../../shared/folder-workspace-worktree'
 import {
   floatingWorkspaceToWorktree,
@@ -180,7 +180,7 @@ export function getFolderWorkspaceMetaUpdates(
   if (
     updates.comment !== undefined &&
     updates.lastActivityAt === undefined &&
-    !ORCA_SIDEBAR_INPUTS_IS_MAIN
+    !OCC_SIDEBAR_INPUTS_IS_MAIN
   ) {
     next.lastActivityAt = Date.now()
   }

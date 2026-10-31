@@ -75,7 +75,7 @@ describe('scoped pending browser cookie imports', () => {
   let lifecycle: string[]
 
   beforeEach(() => {
-    tmpDir = mkdtempSync(join(tmpdir(), 'orca-scoped-cookie-replay-'))
+    tmpDir = mkdtempSync(join(tmpdir(), 'occ-scoped-cookie-replay-'))
     livePath = join(tmpDir, 'Partitions', 'test', 'Network', 'Cookies')
     metaPath = join(tmpDir, 'browser-session-meta.json')
     stagedPath = join(tmpDir, 'staged-cookies')
@@ -133,7 +133,7 @@ describe('scoped pending browser cookie imports', () => {
     applyPendingBrowserCookieImports({
       resolveMetadataPath: () => metaPath,
       defaultPartition: PARTITION,
-      activeOrcaProfileId: 'test-profile'
+      activeOCCProfileId: 'test-profile'
     })
   }
 
@@ -143,8 +143,8 @@ describe('scoped pending browser cookie imports', () => {
     try {
       // Shipped scoped-v1 image: retain this fixture independently of the removed importer writer.
       staged.exec(`
-        CREATE TABLE orca_cookie_import_scope (domain TEXT PRIMARY KEY, format_version INTEGER NOT NULL);
-        INSERT INTO orca_cookie_import_scope VALUES ('a.example.com', 1);
+        CREATE TABLE occ_cookie_import_scope (domain TEXT PRIMARY KEY, format_version INTEGER NOT NULL);
+        INSERT INTO occ_cookie_import_scope VALUES ('a.example.com', 1);
         DELETE FROM cookies WHERE host_key IN ('.example.com', '.a.example.com', 'child.a.example.com');
       `)
       insertCookie(staged, '.a.example.com', 'new-a', 'imported')
@@ -383,7 +383,7 @@ describe('scoped pending browser cookie imports', () => {
     applyPendingBrowserCookieImports({
       resolveMetadataPath: () => join(tmpDir, 'other-profile-meta.json'),
       defaultPartition: 'persist:other',
-      activeOrcaProfileId: 'other-profile'
+      activeOCCProfileId: 'other-profile'
     })
     expect(existsSync(stagedPath)).toBe(true)
     applyPending()
@@ -426,7 +426,7 @@ describe('scoped pending browser cookie imports', () => {
     const replayed = new DatabaseSync(replayedPath, { readOnly: true })
     expect(
       replayed
-        .prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name LIKE 'orca_%'")
+        .prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name LIKE 'occ_%'")
         .all()
     ).toEqual([])
     replayed.close()
@@ -485,7 +485,7 @@ describe('scoped pending browser cookie imports', () => {
     ]).close()
     createScopedStage()
     const invalidStage = new DatabaseSync(stagedPath)
-    invalidStage.exec('UPDATE orca_cookie_import_scope SET format_version = 999')
+    invalidStage.exec('UPDATE occ_cookie_import_scope SET format_version = 999')
     invalidStage.close()
     markPending()
 

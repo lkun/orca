@@ -11,7 +11,7 @@ stable desktop release. There is no daily schedule. The release check scans the
 exact release tag in parallel with builds; RC releases skip it. Audit findings are
 advisory in CI, and release publishing proceeds independently of the scans.
 Findings that fail the audit command, or scans that cannot complete, send a review
-notice with the Actions reports link to `orca-releases` through the existing
+notice with the Actions reports link to `occ-releases` through the existing
 `SLACK_WEBHOOK_URL`. Fork PRs without access to that secret retain their reports
 in Actions. Notification delivery is also advisory. Stable releases audit the
 desktop and embedded mobile-web lockfiles plus native Rust. Cloud, docs, and isolated audit tooling

@@ -6,7 +6,7 @@ import { PROTOCOL_VERSION } from './daemon-protocol-version'
 
 // Rate-limit identical observations so audit heartbeats cannot consume the shared telemetry budget.
 const REPEATED_OBSERVATION_INTERVAL_MS = 5 * 60_000
-const INCARNATION_CORRELATION_DOMAIN = 'orca:daemon-audit-eligibility:incarnation:v1'
+const INCARNATION_CORRELATION_DOMAIN = 'occ:daemon-audit-eligibility:incarnation:v1'
 type AuditEligibilityCommonProperties = Omit<
   Extract<EventProps<'daemon_audit_eligibility'>, { exact_incarnation: 'unavailable' }>,
   'exact_incarnation'

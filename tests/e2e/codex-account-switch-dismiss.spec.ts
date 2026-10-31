@@ -1,4 +1,4 @@
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   configureGoldenStubAgent,
   getGoldenStubAgentLaunchEnv,
@@ -10,17 +10,17 @@ import { waitForActivePanePtyId, waitForTerminalOutput } from './helpers/termina
 test.use({ launchEnv: getGoldenStubAgentLaunchEnv() })
 
 test('account switch actions return keyboard input to the terminal', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
-  await ensureTerminalVisible(orcaPage)
-  await configureGoldenStubAgent(orcaPage)
-  await launchGoldenStubAgentFromNewTab(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
+  await ensureTerminalVisible(occPage)
+  await configureGoldenStubAgent(occPage)
+  await launchGoldenStubAgentFromNewTab(occPage)
 
   for (const action of ['outside', 'keep', 'escape', 'restart'] as const) {
-    const ptyId = await waitForActivePanePtyId(orcaPage)
-    await orcaPage.evaluate(
+    const ptyId = await waitForActivePanePtyId(occPage)
+    await occPage.evaluate(
       ({ ptyId, action }) => {
         const store = window.__store
         if (!store) {
@@ -36,7 +36,7 @@ test('account switch actions return keyboard input to the terminal', async ({
       },
       { ptyId, action }
     )
-    const dialog = orcaPage.getByRole('dialog').filter({ hasText: 'Account switched' })
+    const dialog = occPage.getByRole('dialog').filter({ hasText: 'Account switched' })
     await expect(dialog).toBeVisible()
     await expect(dialog).toBeFocused()
     if (action === 'outside') {
@@ -45,15 +45,15 @@ test('account switch actions return keyboard input to the terminal', async ({
       if (!cardText || !backdrop) {
         throw new Error('Account prompt has no rendered bounds')
       }
-      await orcaPage.mouse.move(cardText.x + 8, cardText.y + 8)
-      await orcaPage.mouse.down()
-      await orcaPage.mouse.move(backdrop.x + 8, backdrop.y + 8)
-      await orcaPage.mouse.up()
+      await occPage.mouse.move(cardText.x + 8, cardText.y + 8)
+      await occPage.mouse.down()
+      await occPage.mouse.move(backdrop.x + 8, backdrop.y + 8)
+      await occPage.mouse.up()
       await expect(dialog).toBeVisible()
-      await orcaPage.screenshot({ path: testInfo.outputPath('account-switched.png') })
+      await occPage.screenshot({ path: testInfo.outputPath('account-switched.png') })
       await dialog.click({ position: { x: 8, y: 8 } })
     } else if (action === 'escape') {
-      await orcaPage.keyboard.press('Escape')
+      await occPage.keyboard.press('Escape')
     } else {
       await dialog
         .getByRole('button', {
@@ -63,7 +63,7 @@ test('account switch actions return keyboard input to the terminal', async ({
         .click()
     }
     await expect(dialog).toHaveCount(0)
-    const input = orcaPage.locator('.xterm-helper-textarea:focus')
+    const input = occPage.locator('.xterm-helper-textarea:focus')
     await expect(input).toHaveCount(1)
     if (action === 'restart') {
       // This check covers the focus handoff; process replacement is a separate contract.
@@ -71,10 +71,10 @@ test('account switch actions return keyboard input to the terminal', async ({
     }
     // A printed reply proves input reached the process without an extra terminal click.
     const marker = `ACCOUNT_SWITCH_${action.toUpperCase()}`
-    await orcaPage.keyboard.type(marker)
-    await orcaPage.keyboard.press('Enter')
-    await waitForTerminalOutput(orcaPage, `[GOLDEN_STUB_AGENT_SUBMITTED] ${marker}`, 20_000)
+    await occPage.keyboard.type(marker)
+    await occPage.keyboard.press('Enter')
+    await waitForTerminalOutput(occPage, `[GOLDEN_STUB_AGENT_SUBMITTED] ${marker}`, 20_000)
     await expect(input).toHaveCount(1)
-    await orcaPage.screenshot({ path: testInfo.outputPath(`after-${action}.png`) })
+    await occPage.screenshot({ path: testInfo.outputPath(`after-${action}.png`) })
   }
 })

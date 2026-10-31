@@ -28,29 +28,29 @@ import {
   writeOpenCodeTuiPlugin
 } from '../shared/opencode-tui-plugin-install'
 type LegacyOverlayAgentKind = Exclude<PiAgentKind, 'prime-agent'>
-const RELAY_HOOKS_DIR = '.orca-relay'
+const RELAY_HOOKS_DIR = '.occ-relay'
 const OPENCODE_OVERLAY_SUBDIR = 'opencode-overlays'
 const OPENCODE2_OVERLAY_SUBDIR = 'opencode2-overlays'
 const PI_OVERLAY_SUBDIR_BY_KIND: Record<LegacyOverlayAgentKind, string> = {
   pi: 'pi-overlays',
   omp: 'omp-overlays'
 }
-const OPENCODE_PLUGIN_FILE = 'orca-opencode-status.js'
-const OPENCODE2_PLUGIN_FILE = 'orca-opencode2-status.js'
+const OPENCODE_PLUGIN_FILE = 'occ-opencode-status.js'
+const OPENCODE2_PLUGIN_FILE = 'occ-opencode2-status.js'
 // OCC's own entries (either major, file and TUI copy) are never mirrored from user config.
-const ORCA_OPENCODE_PLUGIN_ENTRIES = new Set([
+const OCC_OPENCODE_PLUGIN_ENTRIES = new Set([
   OPENCODE_STARTUP_PROMPT_PLUGIN_DIRECTORY,
   ...[OPENCODE_PLUGIN_FILE, OPENCODE2_PLUGIN_FILE].flatMap((f) => [f, openCodeTuiPluginDirName(f)])
 ])
-const PI_EXTENSION_FILE = 'orca-agent-status.ts'
+const PI_EXTENSION_FILE = 'occ-agent-status.ts'
 const PI_AGENT_SUBDIR = 'agent'
 const OMP_MANAGED_STATUS_EXTENSION_DIR = 'omp-managed-status-extension'
 // Bare OMP uses relay-managed status without creating ~/.omp; match the local installer.
-const ORCA_MANAGED_EXTENSION_MARKER = '@orca-managed-pi-extension'
-function withOrcaManagedPiExtensionMarker(source: string): string {
-  return source.includes(ORCA_MANAGED_EXTENSION_MARKER)
+const OCC_MANAGED_EXTENSION_MARKER = '@occ-managed-pi-extension'
+function withOCCManagedPiExtensionMarker(source: string): string {
+  return source.includes(OCC_MANAGED_EXTENSION_MARKER)
     ? source
-    : `// ${ORCA_MANAGED_EXTENSION_MARKER}\n${source}`
+    : `// ${OCC_MANAGED_EXTENSION_MARKER}\n${source}`
 }
 // Select source by launching agent, never disk presence; Pi and OMP share an env key but use different homes.
 const PI_AGENT_HOME_DIR_NAME: Record<PiAgentKind, string> = {
@@ -114,13 +114,13 @@ export class PluginOverlayManager {
       this.opencode2PluginSource = sources.opencode2PluginSource
     }
     if (typeof sources.piExtensionSource === 'string') {
-      this.piExtensionSources.pi = withOrcaManagedPiExtensionMarker(sources.piExtensionSource)
+      this.piExtensionSources.pi = withOCCManagedPiExtensionMarker(sources.piExtensionSource)
     }
     if (typeof sources.ompExtensionSource === 'string') {
-      this.piExtensionSources.omp = withOrcaManagedPiExtensionMarker(sources.ompExtensionSource)
+      this.piExtensionSources.omp = withOCCManagedPiExtensionMarker(sources.ompExtensionSource)
     }
     if (typeof sources.primeAgentExtensionSource === 'string') {
-      this.piExtensionSources['prime-agent'] = withOrcaManagedPiExtensionMarker(
+      this.piExtensionSources['prime-agent'] = withOCCManagedPiExtensionMarker(
         sources.primeAgentExtensionSource
       )
     }
@@ -167,7 +167,7 @@ export class PluginOverlayManager {
           return null
         }
         // Mirror the remote user config before adding OCC: replacing OpenCode’s single config root must not hide auth/models/keybinds/plugins.
-        mirrorOpenCodeConfig(existingConfigDir, dir, ORCA_OPENCODE_PLUGIN_ENTRIES)
+        mirrorOpenCodeConfig(existingConfigDir, dir, OCC_OPENCODE_PLUGIN_ENTRIES)
       }
       if (source) {
         this.writeOpenCodePlugin(dir, pluginFileName, source)
@@ -238,7 +238,7 @@ export class PluginOverlayManager {
 
   private canOverwritePiExtension(path: string): boolean {
     try {
-      return readFileSync(path, 'utf8').includes(ORCA_MANAGED_EXTENSION_MARKER)
+      return readFileSync(path, 'utf8').includes(OCC_MANAGED_EXTENSION_MARKER)
     } catch {
       return true
     }

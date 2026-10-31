@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { getAppEnvironment, hasAppEnvironment } from '../../shared/app-environment'
 
 const PLUGIN_DIR_NAME = 'native-chat-visuals'
-export const NATIVE_CHAT_VISUALS_SKILL_NAME = 'orca-chat-visuals'
+export const NATIVE_CHAT_VISUALS_SKILL_NAME = 'occ-chat-visuals'
 
 export type NativeChatVisualsSkillLocation = {
   /** Contains .claude-plugin/plugin.json and skills/<name>/SKILL.md. */
@@ -21,7 +21,7 @@ function candidatePluginDirs(): string[] {
   }
   const packaged = hasAppEnvironment() && getAppEnvironment().isPackaged()
   if (packaged) {
-    // Plain-Node orcad uses its app root; packaged installs must never fall back to launch-directory checkouts.
+    // Plain-Node occd uses its app root; packaged installs must never fall back to launch-directory checkouts.
     candidates.push(join(getAppEnvironment().getAppPath(), PLUGIN_DIR_NAME))
     return candidates
   }

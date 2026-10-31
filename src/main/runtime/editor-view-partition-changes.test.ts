@@ -15,9 +15,9 @@ import {
   FIXTURE_GIT_WORKTREE_ID as WT,
   openTopologyStoreWithAuthority
 } from '../persistence/terminal-topology/terminal-topology-profile-fixture'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('../telemetry/client', () => ({ track: vi.fn() }))
 vi.mock('../ssh/config/ssh-config-parser', () => ({
   loadUserSshConfig: () => ({ hosts: [] }),
@@ -44,7 +44,7 @@ afterEach(async () => {
 })
 
 async function harness() {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-editor-view-partition-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-editor-view-partition-'))
   directories.push(directory)
   const { store, authority } = await openTopologyStoreWithAuthority(
     directory,
@@ -56,7 +56,7 @@ async function harness() {
   window.addTab(FOLDER, 'term-2', '22222222-2222-4222-8222-222222222222')
   store.setWorkspaceSession(window.snapshot())
   await store.flushPendingOrThrowAsync()
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   const subscription = runtime.subscribeWorkspaceLayouts(() => {})
   return { store, authority, runtime, subscription }
 }
@@ -73,7 +73,7 @@ function openDiff(workspace: string, tabId: string) {
   } as const
 }
 
-function publishedTab(runtime: OrcaRuntimeService, workspace: string, tabId: string) {
+function publishedTab(runtime: OCCRuntimeService, workspace: string, tabId: string) {
   const reader = runtime.subscribeWorkspaceLayouts(() => {})
   reader.unsubscribe()
   const layout = reader.snapshot.find(({ key }) => key === workspace)?.layout

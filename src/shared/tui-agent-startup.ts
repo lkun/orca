@@ -46,7 +46,7 @@ export function buildAgentStartupPlan(args: {
   agentEnv?: Record<string, string> | null
   sessionOptions?: Record<string, SessionOptionValue>
   sessionOptionsOverrideAgentArgs?: boolean
-  /** Remote Linux deploys orca, so skip the local-only occ-ide rename. */
+  /** Remote Linux deploys occ, so skip the local-only occ-ide rename. */
   isRemote?: boolean
   /** OCC types into this launch after start, so a startup update prompt would take that input. */
   suppressStartupUpdatePrompt?: boolean

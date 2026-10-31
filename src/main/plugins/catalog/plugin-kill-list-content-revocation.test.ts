@@ -25,7 +25,7 @@ function contentManifest(): PluginManifest {
     publisher: 'samples',
     name: 'Recipes',
     version: '1.0.0',
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     contributes: {
       languagePacks: [{ locale: 'es', path: 'locales/es.json' }],
@@ -36,11 +36,11 @@ function contentManifest(): PluginManifest {
 }
 
 async function pluginRoot(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-kill-content-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-kill-content-'))
   roots.push(root)
   await Promise.all([mkdir(join(root, 'locales')), mkdir(join(root, 'recipes'))])
   await Promise.all([
-    writeFile(join(root, 'orca-plugin.json'), JSON.stringify(contentManifest())),
+    writeFile(join(root, 'occ-plugin.json'), JSON.stringify(contentManifest())),
     writeFile(join(root, 'locales', 'es.json'), JSON.stringify({ settings: 'Ajustes' })),
     writeFile(
       join(root, 'recipes', 'vm.json'),

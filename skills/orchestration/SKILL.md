@@ -9,7 +9,7 @@ description: >-
   that agent, even when you have your own model subagents.
   Also use when you are a dispatched worker (a prompt with Task and Dispatch
   IDs: ask, worker_done). Otherwise prefer your own subagents,
-  including for long or parallel work. Use `orca-cli` to hand work off with
+  including for long or parallel work. Use `occ-cli` to hand work off with
   nothing expected back ("hand off", "handover", "give this to another agent",
   "another worktree"), and for terminal control, shell commands, worktree
   management, and reading or waiting on terminals.
@@ -18,7 +18,7 @@ description: >-
 # OCC Orchestration
 
 This file is a discovery stub, not the usage guide. The full, version-matched OCC
-orchestration reference is served by the `orca` binary itself — kept out of this file on
+orchestration reference is served by the `occ` binary itself — kept out of this file on
 purpose so it can never drift from the binary that will actually run your commands.
 
 Use OCC orchestration to run work in separate OCC worker agents and get their results
@@ -27,7 +27,7 @@ decision gates), or when the work needs something your own subagents cannot give
 different agent or its own OCC workspace. "Have Codex (or Claude) review this and report
 back" means an OCC worker of that agent, even when you have your own model subagents. Use
 it as well when you are a dispatched worker sending `ask` questions or `worker_done`. Otherwise prefer your own subagents,
-including for long or parallel work. Use the orca-cli skill instead to hand work off with
+including for long or parallel work. Use the occ-cli skill instead to hand work off with
 nothing expected back ("hand off", "handoff", "handover", "give this to another agent",
 "another worktree"), and for ordinary terminal control, shell commands, worktree management,
 and the built-in browser. Coordination requires real OCC runtime state; never substitute a
@@ -37,16 +37,16 @@ non-OCC subagent tool when the user asked for OCC orchestration.
 
 Choose the executable once and reuse it for every later command:
 
-- If the `ORCA_CLI_COMMAND` environment variable is set, use its value. OCC exports this
+- If the `OCC_CLI_COMMAND` environment variable is set, use its value. OCC exports this
   for managed WSL sessions.
-- Otherwise, in a dev checkout whose session exposes `ORCA_DEV_REPO_ROOT`, use `occ-dev`.
+- Otherwise, in a dev checkout whose session exposes `OCC_DEV_REPO_ROOT`, use `occ-dev`.
 - Otherwise, on Linux outside an OCC-managed terminal, use `occ-ide`. Never run bare
-  `orca` there — outside OCC's terminals it normally resolves to the
+  `occ` there — outside OCC's terminals it normally resolves to the
   GNOME OCC screen reader (`/usr/bin/occ`) and starts speech on the user's machine.
-- Otherwise, use `orca`.
+- Otherwise, use `occ`.
 
-Below, `ORCA` is a placeholder for the executable you resolved. Substitute it before
-running anything; do not create a shell variable or run `ORCA` literally. This works the
+Below, `OCC` is a placeholder for the executable you resolved. Substitute it before
+running anything; do not create a shell variable or run `OCC` literally. This works the
 same way in POSIX shells, PowerShell, and cmd.exe.
 
 If the selected executable cannot run, report its exact error and stop. Do not fall through
@@ -55,20 +55,20 @@ to another executable, which could silently target a different OCC build.
 ## Load the version-matched guide before running OCC commands
 
 ```text
-ORCA skills get orchestration
+OCC skills get orchestration
 ```
 
 That prints the compact, version-matched guide for the exact binary that will handle your
 next commands. It covers the normal local coordinator loop and dispatched-worker
 obligations. For a conditional action gate such as remote placement, uncertain release
 recovery, or expanded DAG work, load only the reference that gate names with
-`ORCA skills get orchestration --reference references/<file>.md`
+`OCC skills get orchestration --reference references/<file>.md`
 (`--references` lists the names). If that binary rejects `--reference`, run
-`ORCA skills get orchestration --full` and read the named bundled reference before acting.
+`OCC skills get orchestration --full` and read the named bundled reference before acting.
 
 Prefer `--json`. Use the selected executable's `--help` for commands or flags the guide does
-not cover. If a command reports that OCC is not running, start it with `ORCA open --json`
+not cover. If a command reports that OCC is not running, start it with `OCC open --json`
 and retry. If it fails with `runtime_access_denied`, your sandbox blocked the connection:
-re-run it with escalated permissions, and do not run `ORCA open` or restart OCC. If
+re-run it with escalated permissions, and do not run `OCC open` or restart OCC. If
 `skills get` is unknown, explain that updating OCC restores the guide; use `--help` for
 read-only discovery and do not guess unsupported commands.

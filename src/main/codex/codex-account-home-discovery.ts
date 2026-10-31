@@ -1,11 +1,11 @@
 import { lstatSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
-import { getOrcaUserDataPath, getSystemCodexHomePath } from './codex-home-paths'
+import { getOCCUserDataPath, getSystemCodexHomePath } from './codex-home-paths'
 import { assertOwnedHostCodexManagedHomePath } from '../codex-accounts/host-codex-managed-home-ownership'
 
 // Enumerate disk to include retired accounts without a settings store; WSL scans its own homes.
 export function getCodexAccountHomeSessionDirectories(): string[] {
-  const accountsRoot = join(getOrcaUserDataPath(), 'codex-accounts')
+  const accountsRoot = join(getOCCUserDataPath(), 'codex-accounts')
   try {
     return readdirSync(accountsRoot, { withFileTypes: true })
       .filter((entry) => entry.isDirectory())

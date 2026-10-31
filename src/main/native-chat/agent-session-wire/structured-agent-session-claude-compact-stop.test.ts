@@ -54,7 +54,7 @@ let claude: ReturnType<typeof fakeClaude>
 let adapterNow = NOW
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-claude-compact-stop-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-claude-compact-stop-'))
   resetHostTestOperationIds()
   adapterNow = NOW + 7
   claude = fakeClaude({ replayUuid: null })

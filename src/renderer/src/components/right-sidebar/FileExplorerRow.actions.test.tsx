@@ -43,7 +43,7 @@ function setDownloadPlatform(platform: NodeJS.Platform): void {
 beforeEach(() => {
   toastErrorMock.mockReset()
   toastSuccessMock.mockReset()
-  delete (globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__
+  delete (globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__
 })
 
 describe('FileExplorerRow collapse folder action', () => {
@@ -105,14 +105,14 @@ describe('FileExplorerRow collapse folder action', () => {
     expect(shouldShowRemoteDownloadAction(fileNode, 'ssh-1', null, false)).toBe(true)
     expect(shouldShowRemoteDownloadAction(directoryNode, null, runtimeContext)).toBe(false)
 
-    ;(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ = true
+    ;(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ = true
 
     expect(shouldShowRemoteDownloadAction(fileNode, 'ssh-1')).toBe(false)
     expect(shouldShowRemoteDownloadAction(fileNode, null, runtimeContext)).toBe(false)
   })
 
   it('shows OS file copy for single local rows and SSH file rows on desktop', () => {
-    const previous = (globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__
+    const previous = (globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__
     try {
       expect(shouldShowCopyFileAction(fileNode, null, 1)).toBe(true)
       expect(shouldShowCopyFileAction(directoryNode, null, 1)).toBe(true)
@@ -120,11 +120,11 @@ describe('FileExplorerRow collapse folder action', () => {
       expect(shouldShowCopyFileAction(fileNode, 'ssh-1', 1)).toBe(true)
       expect(shouldShowCopyFileAction(directoryNode, 'ssh-1', 1)).toBe(false)
 
-      ;(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ = true
+      ;(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ = true
 
       expect(shouldShowCopyFileAction(fileNode, null, 1)).toBe(false)
     } finally {
-      ;(globalThis as { __ORCA_WEB_CLIENT__?: boolean }).__ORCA_WEB_CLIENT__ = previous
+      ;(globalThis as { __OCC_WEB_CLIENT__?: boolean }).__OCC_WEB_CLIENT__ = previous
     }
   })
 

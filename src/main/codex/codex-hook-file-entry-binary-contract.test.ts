@@ -47,8 +47,8 @@ import {
 
 vi.mock('../codex-cli/command', async (importOriginal) => ({
   ...(await importOriginal<typeof CodexCommand>()),
-  resolveCodexCommand: () => process.env.ORCA_CODEX_HOOK_CONTRACT_BINARY ?? 'codex',
-  resolveCodexCommandForSpawn: async () => process.env.ORCA_CODEX_HOOK_CONTRACT_BINARY ?? 'codex'
+  resolveCodexCommand: () => process.env.OCC_CODEX_HOOK_CONTRACT_BINARY ?? 'codex',
+  resolveCodexCommandForSpawn: async () => process.env.OCC_CODEX_HOOK_CONTRACT_BINARY ?? 'codex'
 }))
 vi.mock('electron', () => ({
   app: {
@@ -63,15 +63,15 @@ import { CodexHookService } from './hook-service'
 // Real binaries must confirm portable hashes, trusted listings and hook delivery without review.
 
 const execFileAsync = promisify(execFile)
-const binary = process.env.ORCA_CODEX_HOOK_CONTRACT_BINARY
-const expectedVersion = process.env.ORCA_CODEX_HOOK_CONTRACT_VERSION
+const binary = process.env.OCC_CODEX_HOOK_CONTRACT_BINARY
+const expectedVersion = process.env.OCC_CODEX_HOOK_CONTRACT_VERSION
 const TIMEOUT_MS = 60_000
 
-describe.runIf(process.env.ORCA_CODEX_HOOK_CONTRACT_REQUIRED === '1' && !binary)(
+describe.runIf(process.env.OCC_CODEX_HOOK_CONTRACT_REQUIRED === '1' && !binary)(
   'codex hook file-entry contract prerequisites',
   () => {
     it('was given a Codex binary to run against', () => {
-      expect.fail('ORCA_CODEX_HOOK_CONTRACT_REQUIRED=1 but no binary was given')
+      expect.fail('OCC_CODEX_HOOK_CONTRACT_REQUIRED=1 but no binary was given')
     })
   }
 )
@@ -84,7 +84,7 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
 
   beforeAll(async () => {
     // Isolate all probes from the user's ~/.codex.
-    root = realpathSync(mkdtempSync(join(tmpdir(), 'orca-codex-hook-contract-')))
+    root = realpathSync(mkdtempSync(join(tmpdir(), 'occ-codex-hook-contract-')))
     const version = await execFileAsync(binary!, ['--version'], {
       timeout: TIMEOUT_MS,
       env: { ...process.env, HOME: join(root, 'version-home'), CODEX_HOME: join(root, 'v') }
@@ -103,7 +103,7 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
     vi.stubEnv('HOME', home)
     vi.stubEnv('USERPROFILE', home)
     vi.stubEnv('CODEX_HOME', join(root, 'never-used-codex-home'))
-    vi.stubEnv('ORCA_USER_DATA_PATH', join(home, 'user-data'))
+    vi.stubEnv('OCC_USER_DATA_PATH', join(home, 'user-data'))
     // Match the app's existing userData directory for memo writes.
     mkdirSync(join(home, 'user-data'))
     const codexVersion = await probeCodexVersion(binary!)
@@ -132,7 +132,7 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
     expect((await new CodexHookService().install(accountHome())).state).toBe('installed')
   }
 
-  async function orcaListings(codexHome: string): Promise<CodexListedHook[]> {
+  async function occListings(codexHome: string): Promise<CodexListedHook[]> {
     // Keep project hooks out of the listing.
     const cwd = mkdtempSync(join(root, 'cwd-'))
     return (await listCodexHooks(binary!, codexHome, cwd)).filter(
@@ -180,7 +180,7 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
     const files = ['hooks.json', 'config.toml'].map((name) => join(accountHome(), name))
     const before = files.map((file) => readFileSync(file, 'utf-8'))
 
-    const listings = await orcaListings(accountHome())
+    const listings = await occListings(accountHome())
 
     expect(listings.map((listing) => listing.key.split(':').at(-3)).sort()).toEqual(
       Object.keys(hashes).sort()
@@ -219,7 +219,7 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
             '-c',
             'model_provider=mock',
             '-c',
-            `model_providers.mock={name="mock",base_url="http://127.0.0.1:${port(model)}/v1",wire_api="responses",env_key="ORCA_CONTRACT_MOCK_KEY"}`,
+            `model_providers.mock={name="mock",base_url="http://127.0.0.1:${port(model)}/v1",wire_api="responses",env_key="OCC_CONTRACT_MOCK_KEY"}`,
             'exec',
             '--skip-git-repo-check',
             'say hi'
@@ -231,10 +231,10 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
               PATH: process.env.PATH,
               HOME: home,
               CODEX_HOME: accountHome(),
-              ORCA_CONTRACT_MOCK_KEY: 'x',
-              ORCA_PANE_KEY: 'contract-pane',
-              ORCA_AGENT_HOOK_PORT: String(port(receiver)),
-              ORCA_AGENT_HOOK_TOKEN: 'contract-token'
+              OCC_CONTRACT_MOCK_KEY: 'x',
+              OCC_PANE_KEY: 'contract-pane',
+              OCC_AGENT_HOOK_PORT: String(port(receiver)),
+              OCC_AGENT_HOOK_TOKEN: 'contract-token'
             }
           }
         )
@@ -290,7 +290,7 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
       vi.stubEnv('HOME', home)
       vi.stubEnv('USERPROFILE', home)
       vi.stubEnv('CODEX_HOME', '')
-      vi.stubEnv('ORCA_USER_DATA_PATH', join(home, 'user-data'))
+      vi.stubEnv('OCC_USER_DATA_PATH', join(home, 'user-data'))
       mkdirSync(join(home, 'user-data'))
       await reconcileRealHome()
     }
@@ -434,7 +434,7 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
           '-c',
           'model_provider=mock',
           '-c',
-          `model_providers.mock={name="mock",base_url="http://127.0.0.1:${port(model)}/v1",wire_api="responses",env_key="ORCA_CONTRACT_MOCK_KEY"}`,
+          `model_providers.mock={name="mock",base_url="http://127.0.0.1:${port(model)}/v1",wire_api="responses",env_key="OCC_CONTRACT_MOCK_KEY"}`,
           '-c',
           'check_for_update_on_startup=false',
           '-c',
@@ -448,10 +448,10 @@ describe.runIf(binary)('codex hook file-entry binary contract', { timeout: 180_0
             HOME: home,
             ...codexHomeEnv,
             TERM: 'xterm-256color',
-            ORCA_CONTRACT_MOCK_KEY: 'x',
-            ORCA_PANE_KEY: 'contract-pane',
-            ORCA_AGENT_HOOK_PORT: String(port(receiver)),
-            ORCA_AGENT_HOOK_TOKEN: 'contract-token'
+            OCC_CONTRACT_MOCK_KEY: 'x',
+            OCC_PANE_KEY: 'contract-pane',
+            OCC_AGENT_HOOK_PORT: String(port(receiver)),
+            OCC_AGENT_HOOK_TOKEN: 'contract-token'
           }
         }
       )

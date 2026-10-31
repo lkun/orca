@@ -52,7 +52,7 @@ async function measuredDimensions(base64) {
   return { width: image.naturalWidth, height: image.naturalHeight }
 }
 
-globalThis.__orcaResizeCheck = async ({ width, height, maxBase64Length }) => {
+globalThis.__occResizeCheck = async ({ width, height, maxBase64Length }) => {
   const source = noisePng(width, height)
   const resizes = []
   const data = await prepareMobileClipboardImageBase64(
@@ -72,7 +72,7 @@ globalThis.__orcaResizeCheck = async ({ width, height, maxBase64Length }) => {
   }
 }
 
-globalThis.__orcaResizeRefusal = async (source) => {
+globalThis.__occResizeRefusal = async (source) => {
   try {
     await resizeMobileClipboardImage(source, { width: 8, height: 8 })
     return null
@@ -130,7 +130,7 @@ beforeAll(async () => {
   const served = await createBundleServer({ outDir, cspHeader })
   server = served.server
   origin = served.origin
-  const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+  const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
   browser = await chromium.launch({
     headless: true,
     ...(executablePath ? { executablePath } : {})
@@ -157,9 +157,9 @@ async function openPage() {
   })
   page.on('pageerror', (error) => consoleErrors.push(error.message))
   await page.addInitScript(() => {
-    globalThis.__orcaCspViolations = []
+    globalThis.__occCspViolations = []
     document.addEventListener('securitypolicyviolation', (event) => {
-      globalThis.__orcaCspViolations.push(event.violatedDirective)
+      globalThis.__occCspViolations.push(event.violatedDirective)
     })
   })
   await page.goto(`${origin}/`, { waitUntil: 'domcontentloaded' })
@@ -174,7 +174,7 @@ describeResize(
     it('brings a noise PNG under the upload chunk, and says what it weighed', async () => {
       const { page, context, consoleErrors } = await openPage()
       try {
-        const measured = await page.evaluate((args) => globalThis.__orcaResizeCheck(args), {
+        const measured = await page.evaluate((args) => globalThis.__occResizeCheck(args), {
           ...FIXTURE,
           maxBase64Length: uploadChunkBase64Chars
         })
@@ -190,7 +190,7 @@ describeResize(
         expect(last.answered).toEqual(last.asked)
         expect(measured.decoded.width).toBeLessThan(FIXTURE.width)
         // Assert CSP explicitly: some browsers resolve decode() despite a policy violation; data: admission is required.
-        expect(await page.evaluate(() => globalThis.__orcaCspViolations)).toEqual([])
+        expect(await page.evaluate(() => globalThis.__occCspViolations)).toEqual([])
         expect(consoleErrors).toEqual([])
       } finally {
         await context.close()
@@ -202,7 +202,7 @@ describeResize(
       try {
         // decode() rejects invalid images for paste’s catch; onload never fires here.
         const message = await page.evaluate(
-          (source) => globalThis.__orcaResizeRefusal(source),
+          (source) => globalThis.__occResizeRefusal(source),
           'bm90LWFuLWltYWdl'
         )
         expect(message).toMatch(/decode/i)

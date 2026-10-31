@@ -7,7 +7,7 @@ import { agentSessionConversationView } from '../../../../shared/agent-session-c
 /** Both worker modes receive identical orchestration instructions after identity/surface normalization, and structured workers can dispatch sub-workers through session authority. */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import { OrchestrationDb } from '../../orchestration/db'
 import {
   mintStructuredWorkerPaneKey,
@@ -25,7 +25,7 @@ import { inspectWorkerTerminal } from './orchestration/worker/worker-observation
 const WORKTREE = 'repo::wt'
 const STRUCTURED_HANDLE = 'structworker_worker'
 const TERMINAL_HANDLE = 'term_worker'
-const STRUCTURED_ORCA_SESSION_ID = 'orca_session_id:sess_worker'
+const STRUCTURED_OCC_SESSION_ID = 'occ_session_id:sess_worker'
 
 const structuredPreambles: string[] = []
 // The session host the code under test reads; a structural fake, so no host type is claimed.
@@ -108,13 +108,13 @@ function normalizePreamble(preamble: string, handle: string, dispatchId: string)
 describe('a worker cannot tell which mode it is running in', () => {
   const coordinatorPaneKey = 'tab_coord:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
   let db: OrchestrationDb
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
 
   beforeEach(() => {
     structuredPreambles.length = 0
     structuredWorkerIdentities.clear()
     db = new OrchestrationDb(':memory:')
-    runtime = new OrcaRuntimeService()
+    runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     // Use real structured-handle getters to test registry resolution; stub only PTYs lacking runtime state.
     const realPaneKey = runtime.getTerminalPaneKey.bind(runtime)
@@ -142,7 +142,7 @@ describe('a worker cannot tell which mode it is running in', () => {
       status: 'running',
       exitCode: null
     })
-    vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('orca')
+    vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('occ')
     vi.spyOn(runtime, 'sendTerminalAgentPrompt').mockResolvedValue({
       handle: TERMINAL_HANDLE,
       accepted: true,
@@ -207,11 +207,11 @@ describe('a worker cannot tell which mode it is running in', () => {
     expect(terminal.mode.mode).toBe('terminal')
     const structuredPreamble = structuredPreambles[0] as string
     const terminalPreamble = vi.mocked(runtime.sendTerminalAgentPrompt).mock.calls[0]?.[1] as string
-    const selfLine = `\nYour OCC session ID is: ${STRUCTURED_ORCA_SESSION_ID}`
+    const selfLine = `\nYour OCC session ID is: ${STRUCTURED_OCC_SESSION_ID}`
     expect(
       normalizePreamble(
         structuredPreamble.replace(selfLine, ''),
-        STRUCTURED_ORCA_SESSION_ID,
+        STRUCTURED_OCC_SESSION_ID,
         structured.dispatchId
       )
     ).toBe(normalizePreamble(terminalPreamble, TERMINAL_HANDLE, terminal.dispatchId))
@@ -244,7 +244,7 @@ describe('a worker cannot tell which mode it is running in', () => {
     expect(showTerminal).not.toHaveBeenCalled()
     // Its sub-worker is told the coordinator's OCC session ID, not the handle it was minted.
     expect(vi.mocked(runtime.sendTerminalAgentPrompt).mock.calls[0]?.[1]).toContain(
-      "Your coordinator's OCC session ID is: orca_session_id:sess_coord\n"
+      "Your coordinator's OCC session ID is: occ_session_id:sess_coord\n"
     )
     expect(vi.mocked(runtime.sendTerminalAgentPrompt).mock.calls[0]?.[1]).toContain(
       '=== SUB-DISPATCH ==='

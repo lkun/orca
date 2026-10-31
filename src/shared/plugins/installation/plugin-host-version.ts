@@ -1,4 +1,4 @@
-import { satisfiesOrcaEngineRange } from '../manifest/plugin-manifest-engine-range'
+import { satisfiesOCCEngineRange } from '../manifest/plugin-manifest-engine-range'
 import {
   PLUGIN_DERIVED_PUBLISHER_SINCE,
   PLUGIN_MANIFEST_V2_SINCE,
@@ -10,7 +10,7 @@ export const PLUGIN_SCHEMA_NEWEST_SINCE = [
   PLUGIN_SCHEMA_SINCE_V1,
   PLUGIN_MANIFEST_V2_SINCE,
   PLUGIN_DERIVED_PUBLISHER_SINCE
-].reduce((newest, version) => (satisfiesOrcaEngineRange(version, `>=${newest}`) ? version : newest))
+].reduce((newest, version) => (satisfiesOCCEngineRange(version, `>=${newest}`) ? version : newest))
 
 /**
  * The version plugins are gated against. Why not the app version alone: development and local
@@ -20,7 +20,7 @@ export const PLUGIN_SCHEMA_NEWEST_SINCE = [
  * nothing for them.
  */
 export function pluginHostVersion(appVersion: string): string {
-  return satisfiesOrcaEngineRange(appVersion, `>=${PLUGIN_SCHEMA_NEWEST_SINCE}`)
+  return satisfiesOCCEngineRange(appVersion, `>=${PLUGIN_SCHEMA_NEWEST_SINCE}`)
     ? appVersion
     : PLUGIN_SCHEMA_NEWEST_SINCE
 }

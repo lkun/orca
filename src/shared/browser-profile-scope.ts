@@ -34,5 +34,5 @@ export function isManagedBrowserProfileOf(
 
 /** A partition main never admits, so a tab whose profile main has not made, or has deleted, loads nowhere. */
 export function unadmittedBrowserPartition(profileId: string): string {
-  return `persist:orca-browser-unminted-${profileId}`
+  return `persist:occ-browser-unminted-${profileId}`
 }

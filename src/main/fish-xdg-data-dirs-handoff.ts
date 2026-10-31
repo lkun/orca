@@ -5,7 +5,7 @@ import { MANAGED_DATA_ACCOUNT_FISH_RESTORE } from '../shared/managed-data-accoun
 import type { ShellWrapperFile } from './shell-wrapper-file-writer'
 
 /** Exactly what OCC prepended, so the snippet can remove that and nothing else. */
-export const FISH_XDG_DATA_DIRS_PREFIX_ENV = 'ORCA_FISH_XDG_DATA_DIRS_PREFIX'
+export const FISH_XDG_DATA_DIRS_PREFIX_ENV = 'OCC_FISH_XDG_DATA_DIRS_PREFIX'
 
 // XDG defaults also apply when fish 4.7+ sees an unset or empty XDG_DATA_DIRS.
 const XDG_DATA_DIRS_DEFAULT = '/usr/local/share:/usr/share'
@@ -15,7 +15,7 @@ export function getFishXdgDataDir(wrapperRoot: string): string {
 }
 
 export function getFishVendorConfSnippetPath(wrapperRoot: string): string {
-  return `${getFishXdgDataDir(wrapperRoot)}/fish/vendor_conf.d/orca-shell-integration.fish`
+  return `${getFishXdgDataDir(wrapperRoot)}/fish/vendor_conf.d/occ-shell-integration.fish`
 }
 
 // No-config flags prevent vendor_conf.d from restoring the handoff environment.
@@ -48,7 +48,7 @@ export function getFishXdgDataDirsLaunchEnv(
 export function getFishVendorConfSnippet(): string {
   return `# OCC-generated. Loaded only because OCC put this directory on
 # XDG_DATA_DIRS for one fish launch; the first thing it does is take it off.
-function __orca_fish_xdg_handoff
+function __occ_fish_xdg_handoff
     set -q ${FISH_XDG_DATA_DIRS_PREFIX_ENV}; or return 0
     set -l prefix "$${FISH_XDG_DATA_DIRS_PREFIX_ENV}"
     set -e -g ${FISH_XDG_DATA_DIRS_PREFIX_ENV}
@@ -62,14 +62,14 @@ function __orca_fish_xdg_handoff
 
 
     status is-interactive; or return 0
-    function __orca_define_codex --on-event fish_prompt
-        functions -e __orca_define_codex
+    function __occ_define_codex --on-event fish_prompt
+        functions -e __occ_define_codex
 ${MANAGED_DATA_ACCOUNT_FISH_RESTORE}
 ${getFishCodexShellLaunchPreflight()}${getFishClaudeShellFunction()}
     end
 end
-__orca_fish_xdg_handoff
-functions -e __orca_fish_xdg_handoff
+__occ_fish_xdg_handoff
+functions -e __occ_fish_xdg_handoff
 `
 }
 

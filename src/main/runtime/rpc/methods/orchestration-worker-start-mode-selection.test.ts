@@ -4,13 +4,13 @@ import { createRequire } from 'node:module'
 import { createServer } from 'node:net'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { z } from 'zod'
 import { ORCHESTRATION_CONTRACT_RUNTIME_CAPABILITY } from '../../../../shared/protocol-version'
 /** workerStart follows the user's launch preference without a mode flag; unsupported structured mode falls back rather than refusing routine dispatch. */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import { OrchestrationDb } from '../../orchestration/db'
 import { ORCHESTRATION_METHODS } from './orchestration'
 import { OrchestrationError } from '../../orchestration/orchestration-error'
@@ -59,7 +59,7 @@ const STRUCTURED_DEFAULT = {
 describe('worker-start honours the settings default', () => {
   const coordinatorPaneKey = 'tab_coord:aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
   let db: OrchestrationDb
-  let runtime: OrcaRuntimeService
+  let runtime: OCCRuntimeService
   let runId: string
 
   beforeEach(() => {
@@ -67,7 +67,7 @@ describe('worker-start honours the settings default', () => {
     createExistingWorktreeWorkerTerminal.mockClear()
     sendStructuredWorkerPreamble.mockClear()
     db = new OrchestrationDb(':memory:')
-    runtime = new OrcaRuntimeService()
+    runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     runId = db.createRun({
       objective: 'Settings-driven worker mode',
@@ -98,7 +98,7 @@ describe('worker-start honours the settings default', () => {
       status: 'running',
       exitCode: null
     })
-    vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('orca')
+    vi.spyOn(runtime, 'getTerminalOrchestrationCliCommand').mockReturnValue('occ')
     vi.spyOn(runtime, 'sendTerminalAgentPrompt').mockResolvedValue({
       handle: TERMINAL_HANDLE,
       accepted: true,
@@ -222,7 +222,7 @@ describe('worker-start honours the settings default', () => {
     expect(createStructuredWorkerSessionForWorktree).toHaveBeenCalledTimes(1)
     expect(createExistingWorktreeWorkerTerminal).not.toHaveBeenCalled()
     const preamble = sendStructuredWorkerPreamble.mock.calls[0]![0].preamble
-    expect(preamble).toContain(`Your OCC session ID is: orca_session_id:${STRUCTURED_SESSION_ID}`)
+    expect(preamble).toContain(`Your OCC session ID is: occ_session_id:${STRUCTURED_SESSION_ID}`)
     expect(preamble).toContain('The coordinator cannot see this chat')
     expect(preamble).toContain('More supervised work arrives in this chat')
     expect(preamble).not.toContain('this terminal')
@@ -236,7 +236,7 @@ describe('worker-start honours the settings default', () => {
     const { bin } = z
       .object({ bin: z.object({ bun: z.string() }) })
       .parse(JSON.parse(readFileSync(manifest, 'utf8')))
-    const root = mkdtempSync(join(tmpdir(), 'orca-worker-cli-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-worker-cli-'))
     const endpoint =
       process.platform === 'win32' ? `\\\\.\\pipe\\worker-${randomUUID()}` : join(root, 'rpc')
     let settings: Record<string, unknown> = {}
@@ -293,7 +293,7 @@ describe('worker-start honours the settings default', () => {
     try {
       await new Promise<void>((ready) => server.listen(endpoint, ready))
       writeFileSync(
-        join(root, 'orca-runtime.json'),
+        join(root, 'occ-runtime.json'),
         JSON.stringify({
           runtimeId: 'fixture-host',
           pid: process.pid,
@@ -304,14 +304,14 @@ describe('worker-start honours the settings default', () => {
       )
       const env = {
         ...Object.fromEntries(
-          'HOME USERPROFILE APPDATA LOCALAPPDATA XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME ORCA_E2E_HOME_DIR ORCA_E2E_USER_DATA_DIR ORCA_USER_DATA_PATH TEMP TMP TMPDIR'
+          'HOME USERPROFILE APPDATA LOCALAPPDATA XDG_CONFIG_HOME XDG_CACHE_HOME XDG_DATA_HOME XDG_STATE_HOME OCC_E2E_HOME_DIR OCC_E2E_USER_DATA_DIR OCC_USER_DATA_PATH TEMP TMP TMPDIR'
             .split(' ')
             .map((key) => [key, root])
         ),
         CODEX_HOME: join(root, 'codex'),
         CLAUDE_CONFIG_DIR: join(root, 'claude'),
-        ORCA_BACKGROUND_LAUNCH: '1',
-        ORCA_DISABLE_MACOS_LOGIN_SHELL: '1',
+        OCC_BACKGROUND_LAUNCH: '1',
+        OCC_DISABLE_MACOS_LOGIN_SHELL: '1',
         PATH: process.env.PATH,
         SystemRoot: process.env.SystemRoot,
         ComSpec: process.env.ComSpec

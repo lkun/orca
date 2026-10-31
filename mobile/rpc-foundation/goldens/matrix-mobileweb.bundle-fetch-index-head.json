@@ -137,8 +137,8 @@
     },
     "573943fdb37d": {
       "assets": {
-        "assets/app.js": "orca.boot()",
-        "index.html": "<!doctype html><p>orca</p>"
+        "assets/app.js": "occ.boot()",
+        "index.html": "<!doctype html><p>occ</p>"
       },
       "outcome": {
         "assetCount": 2,

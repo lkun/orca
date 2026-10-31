@@ -148,7 +148,7 @@ describe('Use a Node.js mirror', () => {
   })
 
   it('offers nothing in a paired browser, whose settings are not this computer’s', () => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     try {
       render(<Host status={blocked} />)
       expect(screen.queryByRole('button')).toBeNull()

@@ -1,4 +1,4 @@
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 
 // Mirror FLOATING_TERMINAL_WORKTREE_ID without loading renderer/shared modules into Playwright.
@@ -8,12 +8,12 @@ const OPEN_PANEL_SELECTOR = '[data-floating-terminal-panel][aria-hidden="false"]
 // Switching must reveal the floating panel without selecting its workspace in the main window.
 test('switching to a floating terminal opens the panel and keeps the main workspace', async ({
   electronApp,
-  orcaPage
+  occPage
 }) => {
-  await waitForSessionReady(orcaPage)
-  const mainWorktreeId = await waitForActiveWorktree(orcaPage)
+  await waitForSessionReady(occPage)
+  const mainWorktreeId = await waitForActiveWorktree(occPage)
 
-  const tabId = await orcaPage.evaluate(async (worktreeId) => {
+  const tabId = await occPage.evaluate(async (worktreeId) => {
     const store = window.__store
     if (!store) {
       throw new Error('Store unavailable')
@@ -22,7 +22,7 @@ test('switching to a floating terminal opens the panel and keeps the main worksp
     store.setState({ floatingWorkspacePanelOpen: false })
     return store.getState().createTab(worktreeId, undefined, undefined, { activate: false }).id
   }, FLOATING_WORKTREE_ID)
-  await expect(orcaPage.locator(OPEN_PANEL_SELECTOR)).toHaveCount(0)
+  await expect(occPage.locator(OPEN_PANEL_SELECTOR)).toHaveCount(0)
 
   await electronApp.evaluate(
     ({ BrowserWindow }, payload) => {
@@ -31,8 +31,8 @@ test('switching to a floating terminal opens the panel and keeps the main worksp
     { tabId, worktreeId: FLOATING_WORKTREE_ID }
   )
 
-  await expect(orcaPage.locator(OPEN_PANEL_SELECTOR)).toBeVisible()
-  const selection = await orcaPage.evaluate((worktreeId) => {
+  await expect(occPage.locator(OPEN_PANEL_SELECTOR)).toBeVisible()
+  const selection = await occPage.evaluate((worktreeId) => {
     const state = window.__store?.getState()
     return {
       active: state?.activeWorktreeId,

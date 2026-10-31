@@ -15,7 +15,7 @@ type CliHandler = (ctx: {
   json: boolean
 }) => Promise<void>
 
-const originalTerminalHandle = process.env.ORCA_TERMINAL_HANDLE
+const originalTerminalHandle = process.env.OCC_TERMINAL_HANDLE
 
 describe('orchestration CLI/runtime boundary', () => {
   const h = createOrchestrationRpcHarness()
@@ -57,7 +57,7 @@ describe('orchestration CLI/runtime boundary', () => {
 
   it('creates and gates a PowerShell-stripped dependency through CLI and runtime', async () => {
     ;({ db, ctx } = h.setup())
-    process.env.ORCA_TERMINAL_HANDLE = 'term_coord'
+    process.env.OCC_TERMINAL_HANDLE = 'term_coord'
     const handlers = await loadOrchestrationHandlers()
     const runtimeClient = client()
 
@@ -96,10 +96,10 @@ describe('orchestration CLI/runtime boundary', () => {
   it('CLI argv preserves worker commands', async () => {
     ;({ db, ctx } = h.setup())
     const { runtime } = ctx
-    process.env.ORCA_TERMINAL_HANDLE = 'term_coord'
-    vi.stubEnv('ORCA_PAIRING_CODE', '')
-    vi.stubEnv('ORCA_ENVIRONMENT', '')
-    vi.stubEnv('ORCA_AGENT_SESSION_ID', '')
+    process.env.OCC_TERMINAL_HANDLE = 'term_coord'
+    vi.stubEnv('OCC_PAIRING_CODE', '')
+    vi.stubEnv('OCC_ENVIRONMENT', '')
+    vi.stubEnv('OCC_AGENT_SESSION_ID', '')
     vi.doMock('../../../../../cli/runtime-client', async (importOriginal) => ({
       ...(await importOriginal<Record<string, unknown>>()),
       RuntimeClient: client
@@ -198,8 +198,8 @@ function objectParams(params: unknown): Record<string, unknown> {
 /** Restores the caller terminal environment so later CLI tests do not inherit this fixture. */
 function restoreTerminalHandle(): void {
   if (originalTerminalHandle === undefined) {
-    delete process.env.ORCA_TERMINAL_HANDLE
+    delete process.env.OCC_TERMINAL_HANDLE
   } else {
-    process.env.ORCA_TERMINAL_HANDLE = originalTerminalHandle
+    process.env.OCC_TERMINAL_HANDLE = originalTerminalHandle
   }
 }

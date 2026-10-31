@@ -144,7 +144,7 @@ function createSingleSignalScanner(readySignal: SingleSignal): {
 } {
   let recent = ''
   let postAnchorRecent = ''
-  let anchorCarry = ''
+  let anchoccrry = ''
   let sawMarkerAnchor = false
   let sawQuietAnchor = false
 
@@ -203,9 +203,9 @@ function createSingleSignalScanner(readySignal: SingleSignal): {
       if (signalMarker !== null && markerAnchor !== null) {
         if (markerAnchorEnd !== null) {
           // Carry only split-anchor bytes so prior output cannot create a second enter/leave transition.
-          const carriedLength = anchorCarry.length
-          const window = anchorCarry + data
-          anchorCarry = window.slice(-ANCHOR_CARRY_CHARS)
+          const carriedLength = anchoccrry.length
+          const window = anchoccrry + data
+          anchoccrry = window.slice(-ANCHOR_CARRY_CHARS)
           if (scanRevocableAnchorSegments(window, carriedLength, markerAnchor, markerAnchorEnd)) {
             return { ready: true, armQuietTimer: false }
           }

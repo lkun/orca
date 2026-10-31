@@ -13,7 +13,7 @@ function repo(
 ): ServedRepo {
   return {
     id,
-    displayName: 'orca',
+    displayName: 'occ',
     path: `/repos/${id}`,
     badgeColor: undefined,
     addedAt: undefined,

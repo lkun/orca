@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import type { FolderWorkspace } from '../../../shared/folder-workspace-types'
 import type { Repo } from '../../../shared/repo-types'
-import { computeOrcadMigrationManifestSha256 } from '../../orcad/orcad-migration-manifest-digest'
+import { computeOCCdMigrationManifestSha256 } from '../../occd/occd-migration-manifest-digest'
 import { wslMoveCutoverFixture } from '../__fixtures__/wsl-mover/wsl-move-cutover-fixture'
 import { seedWslMoveCutover } from '../__fixtures__/wsl-mover/wsl-move-journal-seeding'
 import { listWslMoveCutoverChain, removeWslMoveCutover } from './wsl-move-cutover-journal'
@@ -42,7 +42,7 @@ function moveFor(migrationId: string, plan: Pick<WslMovePlan, 'repoIds' | 'gener
     ...unsigned,
     source: { ...unsigned.source, generation: plan.generation }
   }
-  return { ...resigned, manifestSha256: computeOrcadMigrationManifestSha256(resigned) }
+  return { ...resigned, manifestSha256: computeOCCdMigrationManifestSha256(resigned) }
 }
 
 /** A finished move of `repoIds`, as a journal record. */

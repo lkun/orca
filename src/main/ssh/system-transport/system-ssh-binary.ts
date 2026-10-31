@@ -38,8 +38,8 @@ function findSshOnPath(platform: NodeJS.Platform): string | null {
 }
 
 export function findSystemSsh(): string | null {
-  if (process.env.ORCA_SYSTEM_SSH_PATH) {
-    return process.env.ORCA_SYSTEM_SSH_PATH
+  if (process.env.OCC_SYSTEM_SSH_PATH) {
+    return process.env.OCC_SYSTEM_SSH_PATH
   }
   for (const candidate of systemSshPaths(process.platform)) {
     if (existsSync(candidate)) {

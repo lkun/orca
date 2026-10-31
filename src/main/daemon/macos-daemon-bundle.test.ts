@@ -12,13 +12,13 @@ import {
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, expect, it, vi } from 'vitest'
-import type { ProcessResult, ProcessSpec } from '@orca/process-host/process-spec'
+import type { ProcessResult, ProcessSpec } from '@occ/process-host/process-spec'
 
 const { runProcessMock, inspectMock } = vi.hoisted(() => ({
   runProcessMock: vi.fn<(spec: ProcessSpec) => Promise<ProcessResult>>(),
   inspectMock: vi.fn()
 }))
-vi.mock('@orca/process-host', () => ({ runProcess: runProcessMock }))
+vi.mock('@occ/process-host', () => ({ runProcess: runProcessMock }))
 vi.mock('./daemon-mac-code-identity', () => ({ inspectMacProcessCodeIdentity: inspectMock }))
 
 import { materializeMacDaemonBundle } from './macos-daemon-bundle'
@@ -35,10 +35,10 @@ let verifyCode: number
 let onCopy: (() => Promise<void>) | null
 
 const signal = (): AbortSignal => new AbortController().signal
-const helperExecutable = (): string => join(helper, 'Contents', 'MacOS', 'orca-terminal-host')
+const helperExecutable = (): string => join(helper, 'Contents', 'MacOS', 'occ-terminal-host')
 
 beforeEach(async () => {
-  root = await realpath(await mkdtemp(join(tmpdir(), 'orca-mac-runtime-')))
+  root = await realpath(await mkdtemp(join(tmpdir(), 'occ-mac-runtime-')))
   // Model an update that moved the running bundle and replaced its original path.
   source = join(root, 'com.lkun.occ.ShipIt.old', 'OCC.app')
   helper = join(source, 'Contents', 'Helpers', 'OCC Terminal Host.app')
@@ -110,7 +110,7 @@ it('publishes one verified copy per helper build, from the running app rather th
       'OCC Terminal Host.app',
       'Contents',
       'MacOS',
-      'orca-terminal-host'
+      'occ-terminal-host'
     )
   )
   expect(await readFile(copy.execPath, 'utf8')).toBe('signed-node')
@@ -151,7 +151,7 @@ it('keeps the winning copy when a concurrent publisher renames first', async () 
     onCopy = null
     const winner = join(copies, `terminal-host-${cdhash}`, 'app.noindex', 'OCC Terminal Host.app')
     await cp(helper, winner, { recursive: true })
-    await writeFile(join(winner, 'Contents', 'MacOS', 'orca-terminal-host'), 'winner')
+    await writeFile(join(winner, 'Contents', 'MacOS', 'occ-terminal-host'), 'winner')
   }
   const copy = await materializeMacDaemonBundle(copies, signal())
   expect(await readFile(copy.execPath, 'utf8')).toBe('winner')

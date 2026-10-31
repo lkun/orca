@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { runInNewContext } from 'node:vm'
 import { expect, it, vi } from 'vitest'
 import { parse } from 'yaml'
@@ -80,7 +80,7 @@ it('keeps audit outcomes for notifications while allowing findings to pass CI', 
           expect(
             runInNewContext(notify.if, {
               needs,
-              github: { repository: 'stablyai/orca' },
+              github: { repository: 'stablyai/occ' },
               cancelled: () => cancelled
             })
           ).toBe(!cancelled && (status === 'failure' || outcome === 'failure'))
@@ -103,7 +103,7 @@ async function sendNotification({
         SLACK_WEBHOOK_URL: webhook,
         RELEASE_REF: ref,
         GITHUB_SERVER_URL: 'https://github.com',
-        GITHUB_REPOSITORY: 'stablyai/orca',
+        GITHUB_REPOSITORY: 'stablyai/occ',
         GITHUB_RUN_ID: '123',
         AUDIT_RESULTS: JSON.stringify({
           javascript: { result: 'success', outputs: { audit_result: 'failure' } },
@@ -130,7 +130,7 @@ it.each([
   const payload = JSON.parse(request.body)
   expect(payload.text).toContain(`OCC dependency review for ${options.target}`)
   expect(payload.text).toContain('JavaScript: review suggested · Rust: passed')
-  expect(payload.text).toContain('https://github.com/stablyai/orca/actions/runs/123')
+  expect(payload.text).toContain('https://github.com/stablyai/occ/actions/runs/123')
   expect(payload.mrkdwn).toBe(false)
 })
 

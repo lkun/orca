@@ -40,12 +40,12 @@ const STOPPED = { distro: 'Ubuntu', state: 'stopped' }
 let root: string
 
 function plan() {
-  const linuxHome = '/home/alice/.local/share/orca/codex-runtime-home/home'
+  const linuxHome = '/home/alice/.local/share/occ/codex-runtime-home/home'
   return {
     configPath: join(root, 'hooks.json'),
     tomlPath: join(root, 'config.toml'),
-    scriptPath: join(root, '.orca', 'agent-hooks', 'codex-hook.sh'),
-    commandScriptPath: `${linuxHome}/.orca/agent-hooks/codex-hook.sh`,
+    scriptPath: join(root, '.occ', 'agent-hooks', 'codex-hook.sh'),
+    commandScriptPath: `${linuxHome}/.occ/agent-hooks/codex-hook.sh`,
     trustConfigPath: `${linuxHome}/hooks.json`,
     wslDistro: 'Ubuntu',
     linuxRuntimeHome: linuxHome
@@ -53,8 +53,8 @@ function plan() {
 }
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-codex-wsl-stopped-'))
-  vi.stubEnv('ORCA_USER_DATA_PATH', root)
+  root = mkdtempSync(join(tmpdir(), 'occ-codex-wsl-stopped-'))
+  vi.stubEnv('OCC_USER_DATA_PATH', root)
   writeFileSync(join(root, 'hooks.json'), '{"hooks":{}}\n', 'utf-8')
   writeFileSync(join(root, 'config.toml'), '', 'utf-8')
   mocks.blocked.mockReset().mockResolvedValue(null)

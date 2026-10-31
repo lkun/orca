@@ -18,7 +18,7 @@ export type TerminateRetryState = {
   spawnsSinceTerminate: readonly DiagnosticRecord[]
 }
 
-export function orcaWslLaunches(spawns: readonly DiagnosticRecord[]): DiagnosticRecord[] {
+export function occWslLaunches(spawns: readonly DiagnosticRecord[]): DiagnosticRecord[] {
   return spawns.filter(
     (spawn) => WSL_EXE.test(spawn.file) || spawn.file === UNC_TOUCH || spawn.file === PTY_SPAWN
   )
@@ -30,6 +30,6 @@ export function shouldRetryTerminate(state: TerminateRetryState): boolean {
     !state.retried &&
     !state.confirmedStopped &&
     state.msSinceTerminate >= TERMINATE_RETRY_AFTER_MS &&
-    orcaWslLaunches(state.spawnsSinceTerminate).length === 0
+    occWslLaunches(state.spawnsSinceTerminate).length === 0
   )
 }

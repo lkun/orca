@@ -1,7 +1,7 @@
 import { bindPtyConnectionTestMocks } from './pty-connection-mocks.spec'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { makePaneKey } from '../../../../shared/stable-pane-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import {
   bindsPaneInStore,
   expectWindowStartAskedMain,
@@ -110,7 +110,7 @@ export function registerPtyConnectionSleepingResumeBannerTests(): void {
         restoredLeafId: LEAF_2,
         restoredPtyIdByLeafId: {}
       })
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await mainStartsPaneAs({
           ptyId: 'pty-main',
           bind: bindsPaneInStore(() => mockStoreState, 'tab-1', LEAF_2),
@@ -121,7 +121,7 @@ export function registerPtyConnectionSleepingResumeBannerTests(): void {
       connectPanePty(pane as never, manager as never, deps as never)
       await flushAsyncTicks(4)
 
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         // Main owns resume and record consumption; attach must not show a window-owned restored banner.
         await expectWindowStartAskedMain(transport, paneKey, mockStoreState)
         await flushAsyncTicks(10)
@@ -140,11 +140,11 @@ export function registerPtyConnectionSleepingResumeBannerTests(): void {
           command: "codex '-c' 'disable_paste_burst=true' 'resume' 'codex-session-1'",
           launchAgent: 'codex',
           env: expect.objectContaining({
-            ORCA_PANE_KEY: paneKey,
-            ORCA_TAB_ID: 'tab-1',
-            ORCA_WORKTREE_ID: 'wt-1',
-            ORCA_WORKSPACE_ID: 'wt-1',
-            ORCA_AGENT_LAUNCH_TOKEN: expect.stringMatching(new RegExp(`^${UUID_RE}$`))
+            OCC_PANE_KEY: paneKey,
+            OCC_TAB_ID: 'tab-1',
+            OCC_WORKTREE_ID: 'wt-1',
+            OCC_WORKSPACE_ID: 'wt-1',
+            OCC_AGENT_LAUNCH_TOKEN: expect.stringMatching(new RegExp(`^${UUID_RE}$`))
           })
         })
       )
@@ -234,7 +234,7 @@ export function registerPtyConnectionSleepingResumeBannerTests(): void {
         restoredLeafId: LEAF_2,
         restoredPtyIdByLeafId: {}
       })
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await mainStartsPaneAs({
           ptyId: 'pty-main',
           bind: (ptyId) => {
@@ -252,7 +252,7 @@ export function registerPtyConnectionSleepingResumeBannerTests(): void {
       connectPanePty(pane as never, manager as never, deps as never)
       await flushAsyncTicks(4)
 
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         // Main starts the pane and declines its resume; the window attaches and says so.
         await expectWindowStartAskedMain(transport, paneKey, mockStoreState)
         await flushAsyncTicks(10)
@@ -329,7 +329,7 @@ export function registerPtyConnectionSleepingResumeBannerTests(): void {
         isVisibleRef
       })
 
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         await mainStartsPaneAs({
           ptyId: 'pty-main',
           bind: (ptyId) => {
@@ -344,7 +344,7 @@ export function registerPtyConnectionSleepingResumeBannerTests(): void {
       }
       await flushAsyncTicks(10)
 
-      if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+      if (OCC_LAYOUT_OWNER_IS_MAIN) {
         // Main starts and resumes the pane; the window attaches and shows main's outcome once.
         await expectWindowStartAskedMain(transport, paneKey, mockStoreState)
         expect(deps.onShowSessionRestoredBanner).toHaveBeenCalledTimes(1)

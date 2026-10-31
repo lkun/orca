@@ -21,7 +21,7 @@ RUN set -eu \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && ldd /usr/local/bin/node "$ptyModule" > /tmp/daemon-runtime-libraries \
   && ! grep -q 'not found' /tmp/daemon-runtime-libraries \
-  && ORCA_BACKGROUND_LAUNCH=1 node -e "const pty = require('node-pty'); const terminal = pty.spawn('/bin/sh', ['-c', 'exit 0'], { cwd: '/tmp', env: process.env }); const timer = setTimeout(() => process.exit(1), 5000); terminal.onExit(({ exitCode }) => { clearTimeout(timer); process.exit(exitCode); });" \
+  && OCC_BACKGROUND_LAUNCH=1 node -e "const pty = require('node-pty'); const terminal = pty.spawn('/bin/sh', ['-c', 'exit 0'], { cwd: '/tmp', env: process.env }); const timer = setTimeout(() => process.exit(1), 5000); terminal.onExit(({ exitCode }) => { clearTimeout(timer); process.exit(exitCode); });" \
   && rm -rf /root/.npm /root/.cache/node-gyp /var/lib/apt/lists/* /tmp/daemon-runtime-libraries /tmp/daemon-runtime-library-paths /tmp/daemon-runtime-packages
 
 COPY run-case.sh /usr/local/bin/run-daemon-shutdown-descendants

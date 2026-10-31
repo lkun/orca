@@ -15,8 +15,8 @@ import { moduleCacheResolutionKey } from './scripts/vitest-module-cache-resoluti
 const nodeRuntimeInclude = process.versions.bun
   ? getNodeRuntimeInclude({ filters: readRunFilters() })
   : []
-const balancedShards = process.env.ORCA_BALANCE_UNIT_SHARDS === '1'
-const moduleCachePath = process.env.ORCA_UNIT_MODULE_CACHE_PATH
+const balancedShards = process.env.OCC_BALANCE_UNIT_SHARDS === '1'
+const moduleCachePath = process.env.OCC_UNIT_MODULE_CACHE_PATH
 const measurementFile = 'src/main/foreign-sqlite-readers/foreign-sqlite-reader-event-loop.test.ts'
 const paletteMeasurementFile =
   'src/renderer/src/lib/palette-match/palette-match-performance.test.ts'
@@ -56,16 +56,16 @@ const transforms = {
     }
   ],
   define: {
-    ORCA_FEATURE_WALL_ENABLED: 'true',
+    OCC_FEATURE_WALL_ENABLED: 'true',
     // Why: tests only interpolate it; they must not depend on the checkout's HEAD.
-    ORCA_BUILD_COMMIT: JSON.stringify('0'.repeat(40)),
-    // A dark switch set to 'main' in the env (`ORCA_LAYOUT_OWNER=main pnpm vitest`) is on in tests.
+    OCC_BUILD_COMMIT: JSON.stringify('0'.repeat(40)),
+    // A dark switch set to 'main' in the env (`OCC_LAYOUT_OWNER=main pnpm vitest`) is on in tests.
     ...createRequire(import.meta.url)('./dark-build-switches.cjs').turnedOnDarkBuildDefines()
   },
   resolve: {
     alias: [
-      ...(process.env.ORCA_UNIT_ZOD_BUNDLE
-        ? [{ find: /^zod$/, replacement: process.env.ORCA_UNIT_ZOD_BUNDLE }]
+      ...(process.env.OCC_UNIT_ZOD_BUNDLE
+        ? [{ find: /^zod$/, replacement: process.env.OCC_UNIT_ZOD_BUNDLE }]
         : []),
       ...createWorkspaceSourceResolver().aliases,
       { find: '@renderer', replacement: resolve('src/renderer/src') },
@@ -83,7 +83,7 @@ const testOptions = {
   // Keyed by ci-unit-module-cache.mjs in CI and vitest-local-module-cache.mjs locally.
   fsModuleCache: Boolean(moduleCachePath),
   ...(moduleCachePath ? { fsModuleCachePath: moduleCachePath } : {}),
-  env: { ORCA_VITEST_RUNTIME: 'node' },
+  env: { OCC_VITEST_RUNTIME: 'node' },
   server: { deps: { inline: ['zod'] } },
   // Node's storage globals and V8 retention checks require the existing child flags.
   execArgv: ['--no-experimental-webstorage', '--expose-gc'],
@@ -99,7 +99,7 @@ const nodeProject = {
   test: {
     ...testOptions,
     name: process.versions.bun ? 'node-runtime' : 'node',
-    env: { ORCA_VITEST_RUNTIME: process.versions.bun ? 'node-runtime' : 'node' },
+    env: { OCC_VITEST_RUNTIME: process.versions.bun ? 'node-runtime' : 'node' },
     include: process.versions.bun ? nodeRuntimeInclude : UNIT_INCLUDE,
     exclude: [...testOptions.exclude, ...measurementFiles],
     sequence: { groupOrder: 1 },
@@ -114,7 +114,7 @@ const bunProject = {
   test: {
     ...testOptions,
     name: 'bun',
-    env: { ORCA_VITEST_RUNTIME: 'bun' },
+    env: { OCC_VITEST_RUNTIME: 'bun' },
     pool: 'forks',
     exclude: [...testOptions.exclude, ...nodeRuntimeInclude, ...measurementFiles],
     sequence: { groupOrder: 1 }

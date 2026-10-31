@@ -25,7 +25,7 @@ beforeEach(() => {
   spawnSync.mockReset().mockReturnValue(succeeded)
   vi.spyOn(console, 'log').mockImplementation(() => {})
   vi.spyOn(console, 'error').mockImplementation(() => {})
-  directory = mkdtempSync(join(tmpdir(), 'orca-shutdown-matrix-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-shutdown-matrix-'))
   artifact = join(directory, 'original.AppImage')
   writeFileSync(artifact, 'original package bytes')
   originalArgv = process.argv
@@ -47,7 +47,7 @@ describe('packaged shutdown matrix', () => {
       args.includes('/usr/local/bin/run-appimage-desktop-startup-case')
     )
     const extraction = commands().filter((args) =>
-      args.some((arg) => arg.includes('120s /input/orca.AppImage --appimage-extract'))
+      args.some((arg) => arg.includes('120s /input/occ.AppImage --appimage-extract'))
     )
     expect(startup).toHaveLength(1)
     expect(startup[0][startup[0].indexOf('--user') + 1]).toBe('0')
@@ -58,15 +58,15 @@ describe('packaged shutdown matrix', () => {
     const names = new Set()
     for (const [index, args] of signalRuns().entries()) {
       const entrypoint = ['app', 'launcher', 'appimage'][Math.floor(index / 2)]
-      expect(args).toContain(`ORCA_TEST_ENTRYPOINT=${entrypoint}`)
+      expect(args).toContain(`OCC_TEST_ENTRYPOINT=${entrypoint}`)
       expect(args).toContain(
-        `ORCA_SIGNAL_TARGET=${entrypoint === 'appimage' ? 'serving-electron' : 'app'}`
+        `OCC_SIGNAL_TARGET=${entrypoint === 'appimage' ? 'serving-electron' : 'app'}`
       )
       expect(args).toContain(
-        `ORCA_INT_DELIVERY=${entrypoint === 'appimage' ? 'pid' : 'foreground-process-group'}`
+        `OCC_INT_DELIVERY=${entrypoint === 'appimage' ? 'pid' : 'foreground-process-group'}`
       )
       expect(args.at(-1)).toBe(index % 2 === 0 ? 'INT' : 'TERM')
-      expect(args).toContain(`${artifact}:/input/orca.AppImage:ro`)
+      expect(args).toContain(`${artifact}:/input/occ.AppImage:ro`)
       expect(args.some((arg) => arg.endsWith(':/artifacts:ro'))).toBe(true)
       expect(args).toContain('--rm')
       names.add(args[args.indexOf('--name') + 1])
@@ -138,11 +138,11 @@ describe('packaged shutdown matrix', () => {
       )
       const retries = scenario === 'mount-denied' || scenario === 'extract-assertion-failed'
       expect(startup).toHaveLength(retries ? 2 : 1)
-      expect(startup[0]).not.toContain('ORCA_STARTUP_APPIMAGE_EXTRACT_AND_RUN=1')
+      expect(startup[0]).not.toContain('OCC_STARTUP_APPIMAGE_EXTRACT_AND_RUN=1')
       if (retries) {
-        expect(startup[1]).toContain('ORCA_STARTUP_APPIMAGE_EXTRACT_AND_RUN=1')
+        expect(startup[1]).toContain('OCC_STARTUP_APPIMAGE_EXTRACT_AND_RUN=1')
         expect(startup.every((args) => args.includes('--rm'))).toBe(true)
-        expect(startup.every((args) => args.includes(`${artifact}:/input/orca.AppImage:ro`))).toBe(
+        expect(startup.every((args) => args.includes(`${artifact}:/input/occ.AppImage:ro`))).toBe(
           true
         )
       }
@@ -164,7 +164,7 @@ describe('packaged shutdown matrix', () => {
 
   it('cleans setup resources without running cases after failed extraction', async () => {
     spawnSync.mockImplementation((_, args) =>
-      args.some((arg) => arg.includes('120s /input/orca.AppImage --appimage-extract'))
+      args.some((arg) => arg.includes('120s /input/occ.AppImage --appimage-extract'))
         ? { ...succeeded, status: 9 }
         : succeeded
     )
@@ -183,7 +183,7 @@ describe('packaged shutdown matrix', () => {
   it('preserves individual launcher overlay invocations', async () => {
     await run('--entrypoint', 'launcher', '--launcher-exec-overlay')
     expect(signalRuns()).toHaveLength(2)
-    expect(signalRuns().every((args) => args.includes('ORCA_TEST_ENTRYPOINT=launcher'))).toBe(true)
+    expect(signalRuns().every((args) => args.includes('OCC_TEST_ENTRYPOINT=launcher'))).toBe(true)
     expect(
       commands().some((args) =>
         args.some((arg) => arg.includes("sed -i 's/^ELECTRON_RUN_AS_NODE=1"))
@@ -192,7 +192,7 @@ describe('packaged shutdown matrix', () => {
   })
 
   it('uses a restored image only as a build cache and still runs every oracle', async () => {
-    vi.stubEnv('ORCA_SHUTDOWN_FIXTURE_CACHE_IMAGE', 'sha256:restored-fixture')
+    vi.stubEnv('OCC_SHUTDOWN_FIXTURE_CACHE_IMAGE', 'sha256:restored-fixture')
     try {
       await run('--all-entrypoints')
       const builds = commands().filter((args) => args[0] === 'build')

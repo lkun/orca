@@ -16,7 +16,7 @@ vi.mock('../native-chat/session-file-resolver', () => ({
 const FORKS = { agentCapabilities: { loadSession: true, sessionCapabilities: { fork: {} } } }
 const input = {
   identity: {
-    sessionId: 'orca-chat-1',
+    sessionId: 'occ-chat-1',
     workspaceId: 'workspace-1',
     hostId: 'local',
     agent: 'omp',
@@ -124,7 +124,7 @@ describe('copying a chat conversation for the CLI', () => {
     const copying = copyAcpConversation(
       {
         spec,
-        dataDirectory: '/orca-data',
+        dataDirectory: '/occ-data',
         readLaunch: async () => ({
           spec,
           command: 'fake',
@@ -199,7 +199,7 @@ describe('copying a chat conversation for the CLI', () => {
           copyAcpConversation(
             {
               spec,
-              dataDirectory: '/orca-data',
+              dataDirectory: '/occ-data',
               resolveLaunchArgs: () => [...args],
               readLaunch,
               connect

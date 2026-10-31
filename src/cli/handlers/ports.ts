@@ -13,7 +13,7 @@ import {
   RuntimeRpcFailureError,
   type RuntimeRpcSuccess
 } from '../runtime-client'
-import { normalizeWorktreeSelectorForCaller } from '../selectors'
+import { normalizeWorktreeSelectorFoccller } from '../selectors'
 
 type PortsTarget = { selector: string; worktreePath: string | null }
 
@@ -95,7 +95,7 @@ async function resolvePortsTarget(
     !explicit || explicit === 'active' || explicit === 'current'
       ? await resolveCurrentAgentWorkspaceSelector(cwd, client)
       : await resolveNativeFolderPathSelector(
-          await normalizeWorktreeSelectorForCaller(explicit, cwd, client),
+          await normalizeWorktreeSelectorFoccller(explicit, cwd, client),
           client
         )
   if (!options.needsWorktreePath) {

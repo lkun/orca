@@ -4,7 +4,7 @@ import { join } from 'node:path'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type {
   KnownRuntimeEnvironment,
-  OrcadDeploymentLink
+  OCCdDeploymentLink
 } from '../../shared/runtime-environments'
 
 vi.mock('electron', () => ({
@@ -49,19 +49,19 @@ import { deriveBrowserRoutePartition } from './browser-route-identity'
 import { BrowserRoutePartitionBindingStore } from './browser-route-partition-binding-store'
 import { resolveBrowserRoutePartitionBinding } from './browser-route-partition-migration'
 import {
-  configurePairedRuntimeBrowserClientHostsForOrcaProfile,
+  configurePairedRuntimeBrowserClientHostsForOCCProfile,
   getPairedRuntimeBrowserClientRouteIdentity,
   startPairedRuntimeBrowserClientHost,
   type ClientHostRouteIdentity
 } from './paired-runtime-browser-client-host-runtime'
 
-const SSH_DEPLOYMENT: OrcadDeploymentLink = {
+const SSH_DEPLOYMENT: OCCdDeploymentLink = {
   sshTargetId: 'target-a',
   sshTargetGeneration: 1,
   localPort: 9999,
   remotePort: 7777
 }
-const WSL_DEPLOYMENT: OrcadDeploymentLink = {
+const WSL_DEPLOYMENT: OCCdDeploymentLink = {
   kind: 'wsl',
   distro: 'Ubuntu',
   localPort: 9999,
@@ -75,7 +75,7 @@ function pairedEnvironment(
     publicKeyB64?: string
     pairedDeviceId?: string
     deviceToken?: string
-    orcadDeployment?: OrcadDeploymentLink
+    occdDeployment?: OCCdDeploymentLink
   } = {}
 ): KnownRuntimeEnvironment {
   return {
@@ -89,9 +89,9 @@ function pairedEnvironment(
       ? {}
       : { pairingRevision: overrides.pairingRevision }),
     ...(overrides.pairedDeviceId === undefined ? {} : { pairedDeviceId: overrides.pairedDeviceId }),
-    ...(overrides.orcadDeployment === undefined
+    ...(overrides.occdDeployment === undefined
       ? {}
-      : { orcadDeployment: overrides.orcadDeployment }),
+      : { occdDeployment: overrides.occdDeployment }),
     preferredEndpointId: 'endpoint-a',
     endpoints: [
       {
@@ -136,7 +136,7 @@ function pageIdentity(
   executionHostIdentity: string
 ) {
   return {
-    orcaProfileId: identity.orcaProfileId,
+    occProfileId: identity.occProfileId,
     browserProfileId: 'default',
     authorityConnectionIdentity,
     executionHostIdentity
@@ -239,7 +239,7 @@ function seedOlderBuildJar(filePath: string, identity: ClientHostRouteIdentity):
 
 function bindingStorePath(): string {
   return join(
-    realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'orca-re-pair-partition-'))),
+    realpathSync(mkdtempSync(join(realpathSync(tmpdir()), 'occ-re-pair-partition-'))),
     'bindings.json'
   )
 }
@@ -250,7 +250,7 @@ beforeEach(() => {
 
 describe('client host authority connection identity', () => {
   it('survives the remote restarting, and keeps the pre-migration identity distinct', async () => {
-    configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: 'profile-a' })
+    configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: 'profile-a' })
     const environment = pairedEnvironment('environment-restart')
 
     const before = await connectionIdentity(environment, 'runtime-a')
@@ -262,7 +262,7 @@ describe('client host authority connection identity', () => {
   })
 
   it('separates environments, pairing revisions, and server keys', async () => {
-    configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: 'profile-a' })
+    configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: 'profile-a' })
     const identities = [
       await connectionIdentity(pairedEnvironment('environment-a'), 'runtime-a'),
       await connectionIdentity(pairedEnvironment('environment-b'), 'runtime-a'),
@@ -285,15 +285,15 @@ describe('client host identity for a server OCC re-pairs in place', () => {
     ['managed SSH', SSH_DEPLOYMENT],
     ['WSL', WSL_DEPLOYMENT]
   ])('%s keeps one identity across re-pairs and still separates keys', async (_, deployment) => {
-    configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: 'profile-a' })
+    configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: 'profile-a' })
     const id = `environment-${deployment.kind ?? 'ssh'}`
     const before = await connectionIdentity(
-      pairedEnvironment(id, { orcadDeployment: deployment, pairedDeviceId: 'device-a' }),
+      pairedEnvironment(id, { occdDeployment: deployment, pairedDeviceId: 'device-a' }),
       'runtime-a'
     )
     const rePaired = await connectionIdentity(
       pairedEnvironment(id, {
-        orcadDeployment: deployment,
+        occdDeployment: deployment,
         pairingRevision: 5,
         pairedDeviceId: 'device-b',
         deviceToken: 'token-b'
@@ -301,11 +301,11 @@ describe('client host identity for a server OCC re-pairs in place', () => {
       'runtime-b'
     )
     const otherKey = await connectionIdentity(
-      pairedEnvironment(id, { orcadDeployment: deployment, publicKeyB64: 'key-b' }),
+      pairedEnvironment(id, { occdDeployment: deployment, publicKeyB64: 'key-b' }),
       'runtime-a'
     )
     const otherEnvironment = await connectionIdentity(
-      pairedEnvironment(`${id}-other`, { orcadDeployment: deployment }),
+      pairedEnvironment(`${id}-other`, { occdDeployment: deployment }),
       'runtime-a'
     )
 
@@ -316,7 +316,7 @@ describe('client host identity for a server OCC re-pairs in place', () => {
   })
 
   it('leaves a manually paired server on its pairing identity', async () => {
-    configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: 'profile-a' })
+    configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: 'profile-a' })
     const identity = await connectionIdentity(pairedEnvironment('environment-manual'), 'runtime-a')
 
     expect(identity.current).toBe(identity.pairing)
@@ -328,16 +328,16 @@ describe('client host identity for a server OCC re-pairs in place', () => {
   ])(
     '%s keeps the jar an older build filled through re-pairs and a downgrade',
     async (_, deployment) => {
-      configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: 'profile-a' })
+      configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: 'profile-a' })
       const filePath = bindingStorePath()
       const id = `environment-jar-${deployment.kind ?? 'ssh'}`
       const atRevisionOne = await routeIdentity(
-        pairedEnvironment(id, { orcadDeployment: deployment, pairedDeviceId: 'device-a' }),
+        pairedEnvironment(id, { occdDeployment: deployment, pairedDeviceId: 'device-a' }),
         'runtime-a'
       )
       const atRevisionTwo = await routeIdentity(
         pairedEnvironment(id, {
-          orcadDeployment: deployment,
+          occdDeployment: deployment,
           pairingRevision: 2,
           pairedDeviceId: 'device-b',
           deviceToken: 'token-b'
@@ -346,7 +346,7 @@ describe('client host identity for a server OCC re-pairs in place', () => {
       )
       const withNewKey = await routeIdentity(
         pairedEnvironment(id, {
-          orcadDeployment: deployment,
+          occdDeployment: deployment,
           pairingRevision: 3,
           publicKeyB64: 'key-b'
         }),
@@ -365,16 +365,16 @@ describe('client host identity for a server OCC re-pairs in place', () => {
   )
 
   it('mints a fresh jar an older build can open at every pairing', async () => {
-    configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: 'profile-a' })
+    configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: 'profile-a' })
     const filePath = bindingStorePath()
     const id = 'environment-fresh'
     const atRevisionOne = await routeIdentity(
-      pairedEnvironment(id, { orcadDeployment: SSH_DEPLOYMENT, pairedDeviceId: 'device-a' }),
+      pairedEnvironment(id, { occdDeployment: SSH_DEPLOYMENT, pairedDeviceId: 'device-a' }),
       'runtime-a'
     )
     const atRevisionTwo = await routeIdentity(
       pairedEnvironment(id, {
-        orcadDeployment: SSH_DEPLOYMENT,
+        occdDeployment: SSH_DEPLOYMENT,
         pairingRevision: 2,
         pairedDeviceId: 'device-b'
       }),
@@ -391,10 +391,10 @@ describe('client host identity for a server OCC re-pairs in place', () => {
   })
 
   it('adopts a per-process jar under the fingerprint an older build reads', async () => {
-    configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: 'profile-a' })
+    configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: 'profile-a' })
     const filePath = bindingStorePath()
     const identity = await routeIdentity(
-      pairedEnvironment('environment-runtime-era', { orcadDeployment: SSH_DEPLOYMENT }),
+      pairedEnvironment('environment-runtime-era', { occdDeployment: SSH_DEPLOYMENT }),
       'runtime-a'
     )
     const legacy = deriveBrowserRoutePartition(
@@ -417,7 +417,7 @@ describe('client host identity for a server OCC re-pairs in place', () => {
 
 describe('client host route identity lifetime', () => {
   it('stops answering with a route identity once the host is retired by its own error', async () => {
-    configurePairedRuntimeBrowserClientHostsForOrcaProfile({ orcaProfileId: 'profile-a' })
+    configurePairedRuntimeBrowserClientHostsForOCCProfile({ occProfileId: 'profile-a' })
     const environment = pairedEnvironment('environment-retired')
     await startPairedRuntimeBrowserClientHost({
       environment,

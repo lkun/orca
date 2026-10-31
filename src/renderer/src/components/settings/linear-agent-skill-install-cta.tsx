@@ -15,7 +15,7 @@ import {
   bundledSkillInstallNeedsAttention,
   useBundledSkillInstall
 } from '@/hooks/use-bundled-skill-install'
-import { LINEAR_AGENT_SKILL_NAMES, ORCA_LINEAR_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { LINEAR_AGENT_SKILL_NAMES, OCC_LINEAR_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import { getLinearAgentSkillUpdateTarget } from '@/lib/linear-agent-skill-update-target'
 import { cn } from '@/lib/utils'
 import { getLinearAgentSkillSetupInlineRuntimeCopy } from '../sidebar/linear-agent-skill-setup-copy'
@@ -79,7 +79,7 @@ function BundledLinearAgentSkillInstallCta({
             'auto.components.settings.linear.agent.skill.install.cta.skillLabel',
             'Agent skill:'
           )}{' '}
-          <span className="font-mono text-[11px]">{ORCA_LINEAR_SKILL_NAME}</span>
+          <span className="font-mono text-[11px]">{OCC_LINEAR_SKILL_NAME}</span>
         </p>
         {unsupported ? (
           <SkillUnsupportedStatusPill reason={unsupported} />
@@ -155,7 +155,7 @@ function BundledLinearAgentSkillInstallCta({
                   )
                 : replacePaths
                   ? translate(
-                      'auto.components.settings.AgentSkillSetupPanel.replaceWithOrcaCopy',
+                      'auto.components.settings.AgentSkillSetupPanel.replaceWithOCCCopy',
                       "Replace with OCC's copy"
                     )
                   : action.kind === 'run' && action.changes
@@ -196,7 +196,7 @@ export function LinearAgentSkillInstallCta(
   props: LinearAgentSkillInstallCtaProps
 ): React.JSX.Element {
   const activeRuntime = useActiveProjectSkillRuntime()
-  // COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+  // COMPAT(wsl-bridge): removed when WSL runs as an occd host.
   if (activeRuntime.agentRuntime?.runtime === 'wsl') {
     return <WslLinearAgentSkillInstallCta {...props} runtime={activeRuntime.agentRuntime} />
   }

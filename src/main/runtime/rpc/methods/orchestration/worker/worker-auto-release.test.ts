@@ -250,7 +250,7 @@ describe('orchestration worker automatic release', () => {
     let userDataDir: string
 
     beforeEach(() => {
-      userDataDir = mkdtempSync(join(tmpdir(), 'orca-auto-release-restart-'))
+      userDataDir = mkdtempSync(join(tmpdir(), 'occ-auto-release-restart-'))
     })
     afterEach(() => rmSync(userDataDir, { recursive: true, force: true }))
 

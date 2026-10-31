@@ -1,6 +1,6 @@
 import type { Locator, Page } from '@stablyai/playwright-test'
 
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import {
   ensureTerminalVisible,
   getActiveWorktreeId,
@@ -125,22 +125,22 @@ async function reloadBrowserGuest(page: Page, browserTabId: string): Promise<voi
 }
 
 test.describe('local HTTPS certificate trust', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
   })
 
   test('approves one exact local certificate endpoint without trusting sibling tabs or ports', async ({
-    orcaPage
+    occPage
   }) => {
     const firstServer = await startLocalHttpsServer()
     const secondPortServer = await startLocalHttpsServer()
     const siblingProbeServer = await startLocalHttpProbeServer(firstServer)
     try {
-      const worktreeId = (await getActiveWorktreeId(orcaPage))!
-      const firstTab = await createBrowserTab(orcaPage, worktreeId, firstServer.secureUrl)
-      const firstSlot = browserSlot(orcaPage, firstTab.id)
+      const worktreeId = (await getActiveWorktreeId(occPage))!
+      const firstTab = await createBrowserTab(occPage, worktreeId, firstServer.secureUrl)
+      const firstSlot = browserSlot(occPage, firstTab.id)
 
       await expect(
         firstSlot.getByRole('heading', { name: "Connection isn't secure" })
@@ -150,16 +150,16 @@ test.describe('local HTTPS certificate trust', () => {
       await expect(firstSlot.getByText(/nothing is running/i)).toHaveCount(0)
       await firstSlot.getByRole('button', { name: 'Proceed Anyway (Unsafe)' }).click()
       await expect
-        .poll(() => readBrowserHeading(orcaPage, firstTab.id), { timeout: 10_000 })
+        .poll(() => readBrowserHeading(occPage, firstTab.id), { timeout: 10_000 })
         .toBe('Local HTTPS request 1')
       await expect
-        .poll(() => readBrowserState(orcaPage, firstTab.id, '__localTlsState'))
+        .poll(() => readBrowserState(occPage, firstTab.id, '__localTlsState'))
         .toEqual({ asset: true, webSocket: true })
       expect(firstServer.assetRequestCount()).toBe(1)
       expect(firstServer.webSocketConnectionCount()).toBe(1)
 
-      const secondTab = await createBrowserTab(orcaPage, worktreeId, firstServer.secureUrl)
-      const secondSlot = browserSlot(orcaPage, secondTab.id)
+      const secondTab = await createBrowserTab(occPage, worktreeId, firstServer.secureUrl)
+      const secondSlot = browserSlot(occPage, secondTab.id)
       await expect(
         secondSlot.getByRole('heading', { name: "Connection isn't secure" })
       ).toBeVisible()
@@ -169,23 +169,23 @@ test.describe('local HTTPS certificate trust', () => {
         secondSlot.getByRole('button', { name: 'Proceed Anyway (Unsafe)' })
       ).toBeVisible()
 
-      const probeTab = await createBrowserTab(orcaPage, worktreeId, siblingProbeServer.url)
+      const probeTab = await createBrowserTab(occPage, worktreeId, siblingProbeServer.url)
       await expect
-        .poll(() => readBrowserState(orcaPage, probeTab.id, '__siblingTlsProbe'))
+        .poll(() => readBrowserState(occPage, probeTab.id, '__siblingTlsProbe'))
         .toEqual({ asset: 'blocked', webSocket: 'blocked' })
       expect(firstServer.assetRequestCount()).toBe(1)
       expect(firstServer.webSocketConnectionCount()).toBe(1)
 
-      await switchToBrowserTab(orcaPage, worktreeId, firstTab.id)
-      await reloadBrowserGuest(orcaPage, firstTab.id)
+      await switchToBrowserTab(occPage, worktreeId, firstTab.id)
+      await reloadBrowserGuest(occPage, firstTab.id)
       await expect.poll(firstServer.documentRequestCount, { timeout: 10_000 }).toBe(2)
       await expect
-        .poll(() => readBrowserHeading(orcaPage, firstTab.id), { timeout: 10_000 })
+        .poll(() => readBrowserHeading(occPage, firstTab.id), { timeout: 10_000 })
         .toBe('Local HTTPS request 2')
       await expect.poll(firstServer.assetRequestCount).toBe(2)
       await expect.poll(firstServer.webSocketConnectionCount).toBe(2)
 
-      const firstAddressBar = firstSlot.locator('[data-orca-browser-address-bar="true"]')
+      const firstAddressBar = firstSlot.locator('[data-occ-browser-address-bar="true"]')
       await firstAddressBar.fill(secondPortServer.secureUrl)
       await firstAddressBar.press('Enter')
       await expect(

@@ -3,7 +3,7 @@ import { app } from 'electron'
 import { recordCrashBreadcrumb } from '../crash-reporting/crash-breadcrumb-store'
 
 const DEV_SHM_PATH = '/dev/shm'
-const DEV_SHM_OVERRIDE_ENV_VAR = 'ORCA_DEV_SHM'
+const DEV_SHM_OVERRIDE_ENV_VAR = 'OCC_DEV_SHM'
 // Docker/Codespaces often provide only 64MiB; Chromium ring buffers/textures can exhaust it and crash every reload.
 const MIN_DEV_SHM_TOTAL_MIB = 512
 const MIB = 1024 * 1024

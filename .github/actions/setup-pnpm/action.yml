@@ -33,7 +33,7 @@ runs:
         PNPM_MANIFEST: ${{ inputs.package-json-file }}
       run: |
         set -euo pipefail
-        bootstrap_dir="$(mktemp -d "$RUNNER_TEMP/orca-pnpm.XXXXXX")"
+        bootstrap_dir="$(mktemp -d "$RUNNER_TEMP/occ-pnpm.XXXXXX")"
         pnpm_version="$(node -p 'const p = require(require("node:path").resolve(process.env.GITHUB_WORKSPACE, process.env.PNPM_MANIFEST)); const match = /^pnpm@(\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?)(?:\+sha\d+\.[0-9a-f]+)?$/.exec(p.packageManager); if (!match) throw new Error("packageManager must pin an exact pnpm version"); match[1]')"
         npm install --prefix "$bootstrap_dir" --ignore-scripts --no-audit --no-fund --save-exact --package-lock=true --registry=https://registry.npmjs.org "pnpm@$pnpm_version"
         npm audit signatures --prefix "$bootstrap_dir" --registry=https://registry.npmjs.org

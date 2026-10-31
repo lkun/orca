@@ -2,25 +2,25 @@
  * Unbound mail belongs to the root mailbox and points at the live session. Released leases may restart; closed/foreign/unknown chats refuse before storage. */
 
 import {
-  ORCA_SESSION_ADDRESS_PREFIX,
-  formatOrcaSessionAddress,
-  isOrcaSessionId,
-  parseOrcaSessionAddress,
-  type OrcaSessionAddress,
-  type OrcaSessionId
-} from '../../../../../../shared/orca-session-address'
+  OCC_SESSION_ADDRESS_PREFIX,
+  formatOCCSessionAddress,
+  isOCCSessionId,
+  parseOCCSessionAddress,
+  type OCCSessionAddress,
+  type OCCSessionId
+} from '../../../../../../shared/occ-session-address'
 // The caller codes, reused: each names the same fact about a session, whichever side of the mail it is on.
 import { ORCHESTRATION_SESSION_CALLER_ERROR_CODES as CODES } from '../../../../../../shared/orchestration-session-caller-codes'
 import {
-  lookupOrcaAgentSession,
+  lookupOCCAgentSession,
   structuredSessionMailReach
 } from '../../../../orchestration/structured-session-mail-address'
 import type { AgentSessionRecordReader } from '../../../../orchestration/structured-session-lineage'
 import type { OrchestrationDb } from '../../../../orchestration/db'
-import { canonicalOrcaSessionId } from '../../../../orchestration/canonical-orca-session-id'
+import { canonicalOCCSessionId } from '../../../../orchestration/canonical-occ-session-id'
 
 /** `address` is the named session's own spelling; the mailbox mail lands in is its identity address. */
-export type SessionRecipient = { sessionId: OrcaSessionId; address: OrcaSessionAddress }
+export type SessionRecipient = { sessionId: OCCSessionId; address: OCCSessionAddress }
 
 export type SessionRecipientRefusal = {
   code: (typeof CODES)[keyof typeof CODES]
@@ -29,7 +29,7 @@ export type SessionRecipientRefusal = {
 
 /** Whether a recipient may name a session, so the caller can install the session host first. */
 export function mayNameSession(recipient: string): boolean {
-  return recipient.startsWith(ORCA_SESSION_ADDRESS_PREFIX) || isOrcaSessionId(recipient)
+  return recipient.startsWith(OCC_SESSION_ADDRESS_PREFIX) || isOCCSessionId(recipient)
 }
 
 /** Recognize bare ids as sessions only when a local record exists; preserve terminal-handle interpretation otherwise. */
@@ -37,22 +37,22 @@ export function readSessionRecipient(
   recipient: string,
   store: AgentSessionRecordReader | null
 ): SessionRecipient | SessionRecipientRefusal | null {
-  if (recipient.startsWith(ORCA_SESSION_ADDRESS_PREFIX)) {
-    const sessionId = parseOrcaSessionAddress(recipient)
+  if (recipient.startsWith(OCC_SESSION_ADDRESS_PREFIX)) {
+    const sessionId = parseOCCSessionAddress(recipient)
     return sessionId
-      ? { sessionId, address: formatOrcaSessionAddress(sessionId) }
+      ? { sessionId, address: formatOCCSessionAddress(sessionId) }
       : {
           code: CODES.unknown,
           message: `${recipient} does not name an OCC session ID. No message was sent.`
         }
   }
-  const sessionId = isOrcaSessionId(recipient) ? recipient : null
-  const found = sessionId && store ? lookupOrcaAgentSession(store, sessionId) : null
+  const sessionId = isOCCSessionId(recipient) ? recipient : null
+  const found = sessionId && store ? lookupOCCAgentSession(store, sessionId) : null
   if (found?.kind === 'provider-id') {
-    return providerIdRefusal(recipient, found.orcaSessionId, store)
+    return providerIdRefusal(recipient, found.occSessionId, store)
   }
   return sessionId && found?.kind === 'found'
-    ? { sessionId, address: formatOrcaSessionAddress(sessionId) }
+    ? { sessionId, address: formatOCCSessionAddress(sessionId) }
     : null
 }
 
@@ -70,9 +70,9 @@ export function refuseUndeliverableSessionRecipient(
       message: `Agent session ${sessionId} cannot be verified: this OCC is not running its agent-session host. ${noEffect}`
     }
   }
-  const found = lookupOrcaAgentSession(store, sessionId)
+  const found = lookupOCCAgentSession(store, sessionId)
   if (found.kind === 'provider-id') {
-    return providerIdRefusal(sessionId, found.orcaSessionId, store, noEffect)
+    return providerIdRefusal(sessionId, found.occSessionId, store, noEffect)
   }
   if (found.kind === 'unknown') {
     return {
@@ -107,15 +107,15 @@ export function refuseUndeliverableSessionRecipient(
 
 function providerIdRefusal(
   id: string,
-  orcaSessionId: string,
+  occSessionId: string,
   store: AgentSessionRecordReader | null,
   noEffect = 'No message was sent.'
 ): SessionRecipientRefusal {
   // The conversation's OCC session ID, which a `/clear`ed session keeps; not the live session's.
-  const root = isOrcaSessionId(orcaSessionId)
-    ? canonicalOrcaSessionId(orcaSessionId, store)
-    : orcaSessionId
-  const address = `${ORCA_SESSION_ADDRESS_PREFIX}${root}`
+  const root = isOCCSessionId(occSessionId)
+    ? canonicalOCCSessionId(occSessionId, store)
+    : occSessionId
+  const address = `${OCC_SESSION_ADDRESS_PREFIX}${root}`
   return {
     code: CODES.providerId,
     message: `${id} is the provider's own session id, which changes on /clear. This session's OCC session ID is ${address}; address it by that instead. ${noEffect}`

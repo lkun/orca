@@ -134,12 +134,12 @@ it('suppresses presentation when dismissal completes during the handler sound re
   const foregroundAlert = {
     identifier: 'foreground-alert',
     trigger: null,
-    content: { title: null, subtitle: null, body: null, sound: null, data: { orca: payload } }
+    content: { title: null, subtitle: null, body: null, sound: null, data: { occ: payload } }
   }
   const pending = foregroundNotificationBehavior({ request: foregroundAlert })
   await vi.waitFor(() => expect(finish).toBeDefined())
   await foregroundNotificationBehavior({
-    request: { content: { data: { orca: { ...fence, kind: 'dismiss' } } } }
+    request: { content: { data: { occ: { ...fence, kind: 'dismiss' } } } }
   })
   expect(await wasPushDismissed(payload)).toBe(true)
   finish()

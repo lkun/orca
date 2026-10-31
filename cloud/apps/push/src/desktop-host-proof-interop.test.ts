@@ -18,7 +18,7 @@ describe('desktop host proof interop', () => {
       now: () => vector.issuedAt + 1_000
     })
     const expected = createHmac('sha256', Buffer.from(vector.challengeSecretB64, 'base64'))
-      .update(Buffer.from('orca-push-host-proof/v1\0ack\0'))
+      .update(Buffer.from('occ-push-host-proof/v1\0ack\0'))
       .update(Buffer.from(vector.transcriptB64, 'base64'))
       .digest('base64')
     expect(proof).toBe(expected)

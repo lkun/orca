@@ -33,7 +33,7 @@ describe('transient lock removal options', () => {
     })
     rmSyncMock.mockImplementationOnce(() => undefined)
 
-    expect(() => removeTreeSync('C:\\temp\\orca-host-job')).not.toThrow()
+    expect(() => removeTreeSync('C:\\temp\\occ-host-job')).not.toThrow()
     expect(rmSyncMock).toHaveBeenCalledTimes(2)
     expect(rmSyncMock.mock.calls[0]?.[1]).toEqual(
       expect.objectContaining({ recursive: true, force: true, maxRetries: WINDOWS_RM_MAX_RETRIES })
@@ -46,7 +46,7 @@ describe('transient lock removal options', () => {
       throw Object.assign(new Error('EIO: i/o error'), { code: 'EIO' })
     })
 
-    expect(() => removeTreeSync('C:\\temp\\orca-host-job')).toThrow('EIO')
+    expect(() => removeTreeSync('C:\\temp\\occ-host-job')).toThrow('EIO')
     expect(rmSyncMock).toHaveBeenCalledTimes(1)
   })
 })

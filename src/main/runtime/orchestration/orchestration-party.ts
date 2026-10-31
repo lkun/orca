@@ -1,16 +1,16 @@
 import {
-  formatOrcaSessionAddress,
-  isOrcaSessionId,
-  parseOrcaSessionAddress,
-  type OrcaSessionId
-} from '../../../shared/orca-session-address'
+  formatOCCSessionAddress,
+  isOCCSessionId,
+  parseOCCSessionAddress,
+  type OCCSessionId
+} from '../../../shared/occ-session-address'
 import { ORCHESTRATION_SESSION_CALLER_ERROR_CODES as CODES } from '../../../shared/orchestration-session-caller-codes'
 import {
   isRecordedStructuredWorkerSession,
   resolveStructuredWorkerIdentity,
   resolveStructuredWorkerIdentityForRoot
 } from '../structured-worker-authority'
-import { canonicalOrcaSessionId } from './canonical-orca-session-id'
+import { canonicalOCCSessionId } from './canonical-occ-session-id'
 import type { AgentSessionRecordReader } from './structured-session-lineage'
 import type { OrchestrationDb } from './db'
 import { mailboxAddressOf, type OrchestrationCallerIdentity } from './orchestration-caller-identity'
@@ -21,7 +21,7 @@ export type OrchestrationParty = OrchestrationCallerIdentity
 
 /** A party named by an OCC session id: a structured worker, or a chat. */
 export type OrchestrationSessionParty = OrchestrationParty &
-  Readonly<{ orcaSessionId: OrcaSessionId }>
+  Readonly<{ occSessionId: OCCSessionId }>
 
 const NO_EFFECTS = { effectsApplied: false } as const
 
@@ -39,12 +39,12 @@ export const ORCHESTRATION_TARGET_PARAM: Readonly<
 }
 
 /** The party an OCC session id names. Throws when it is a worker this host lost the identity of. */
-export function resolveOrcaSessionParty(
-  orcaSessionId: OrcaSessionId,
+export function resolveOCCSessionParty(
+  occSessionId: OCCSessionId,
   db: OrchestrationDb | null | undefined,
   store?: Pick<AgentSessionRecordReader, 'listRecords'> | null
 ): OrchestrationSessionParty {
-  const id = canonicalOrcaSessionId(orcaSessionId, store)
+  const id = canonicalOCCSessionId(occSessionId, store)
   const worker = resolveStructuredWorkerIdentityForRoot(id, db)
   if (!worker && db && isRecordedStructuredWorkerSession(id, db)) {
     // Without its handle, one worker would split into two parties and bind as a chat.
@@ -54,10 +54,10 @@ export function resolveOrcaSessionParty(
       NO_EFFECTS
     )
   }
-  const key = { terminalHandle: worker?.handle ?? null, orcaSessionId: id }
+  const key = { terminalHandle: worker?.handle ?? null, occSessionId: id }
   return {
     ...key,
-    address: mailboxAddressOf(key) ?? formatOrcaSessionAddress(id),
+    address: mailboxAddressOf(key) ?? formatOCCSessionAddress(id),
     paneKey: worker?.paneKey ?? null
   }
 }
@@ -67,27 +67,27 @@ export function resolveOrchestrationParty(
   address: string,
   db: OrchestrationDb | null | undefined
 ): OrchestrationParty {
-  const orcaSessionId = parseOrcaSessionAddress(address)
-  if (orcaSessionId) {
-    return resolveOrcaSessionParty(orcaSessionId, db)
+  const occSessionId = parseOCCSessionAddress(address)
+  if (occSessionId) {
+    return resolveOCCSessionParty(occSessionId, db)
   }
   const worker = resolveStructuredWorkerIdentity(address, db)
   return {
     address,
     terminalHandle: address,
     paneKey: worker?.paneKey ?? null,
-    orcaSessionId:
-      worker && isOrcaSessionId(worker.sessionId) ? canonicalOrcaSessionId(worker.sessionId) : null
+    occSessionId:
+      worker && isOCCSessionId(worker.sessionId) ? canonicalOCCSessionId(worker.sessionId) : null
   }
 }
 
 /** How a preamble names a party: a session by its OCC session ID (its `/clear` root), else its handle. */
-export function orcaSessionIdOrHandle(
+export function occSessionIdOrHandle(
   address: string,
   db: OrchestrationDb | null | undefined
 ): string {
-  const { orcaSessionId } = resolveOrchestrationParty(address, db)
-  return orcaSessionId === null ? address : formatOrcaSessionAddress(orcaSessionId)
+  const { occSessionId } = resolveOrchestrationParty(address, db)
+  return occSessionId === null ? address : formatOCCSessionAddress(occSessionId)
 }
 
 /** A caller named by a param: naming a chat's address proves nothing, unlike its own session id. */
@@ -99,7 +99,7 @@ export function resolveDeclaredCallerParty(
   if (party.terminalHandle === null) {
     throw new OrchestrationError(
       CODES.chatNotDeclarable,
-      `Agent session ${party.orcaSessionId} is a chat, and a chat is identified only by the OCC session ID its own environment sends, never by naming it. No effects were applied.`,
+      `Agent session ${party.occSessionId} is a chat, and a chat is identified only by the OCC session ID its own environment sends, never by naming it. No effects were applied.`,
       NO_EFFECTS
     )
   }

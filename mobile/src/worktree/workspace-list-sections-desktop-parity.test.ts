@@ -80,11 +80,11 @@ describe('Project grouping on the phone', () => {
     )
 
     expect(headers(buildProjectSectionCatalog(null, desktopRepos, null, 'manual'))).toEqual([
-      { key: 'repo:m4-orca-two', label: 'orca' },
-      { key: 'repo:win-orca', label: 'orca' },
-      { key: 'repo:local-workspace', label: 'orca/orca' },
-      { key: 'repo:local-stably', label: 'stably/orca' },
-      { key: 'repo:m4-orca', label: 'orca' },
+      { key: 'repo:m4-occ-two', label: 'occ' },
+      { key: 'repo:win-occ', label: 'occ' },
+      { key: 'repo:local-workspace', label: 'occ/occ' },
+      { key: 'repo:local-stably', label: 'stably/occ' },
+      { key: 'repo:m4-occ', label: 'occ' },
       { key: 'repo:local-assets', label: 'design-assets' }
     ])
   })

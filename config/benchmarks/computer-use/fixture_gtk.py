@@ -4,7 +4,7 @@ import json
 import os
 import sys
 
-if os.environ.get("ORCA_COMPUTER_BENCH_ISOLATED") != "1" or os.environ.get("GITHUB_ACTIONS") != "true":
+if os.environ.get("OCC_COMPUTER_BENCH_ISOLATED") != "1" or os.environ.get("GITHUB_ACTIONS") != "true":
     raise SystemExit("fixture requires isolated CI desktop")
 
 import gi

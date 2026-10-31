@@ -9,7 +9,7 @@ import {
 } from './config-toml-trust'
 import { _internals as grantInternals } from './codex-hook-trust-grant'
 import { _internals as lookupInternals } from './codex-hook-hash-lookup'
-import { computeOrcaCodexHookHashes } from './codex-hook-definition'
+import { computeOCCCodexHookHashes } from './codex-hook-definition'
 import type { CodexHookAnswer } from './codex-hook-trust-derivation'
 import { CODEX_VERSION_FOR_TESTS } from './codex-hook-trust-derivation.test-fixture'
 
@@ -27,7 +27,7 @@ export function codexHookAnswerForTests(): CodexHookAnswer {
   return {
     kind: 'hashes',
     codexVersion: CODEX_VERSION_FOR_TESTS,
-    hashes: computeOrcaCodexHookHashes()
+    hashes: computeOCCCodexHookHashes()
   }
 }
 
@@ -49,10 +49,10 @@ export function setupCodexHookHomes(
   let previousUserDataPath: string | undefined
 
   beforeEach(() => {
-    homes.tmpHome = mkdtempSync(join(tmpdir(), 'orca-codex-home-'))
-    homes.userDataDir = mkdtempSync(join(tmpdir(), 'orca-codex-user-data-'))
-    previousUserDataPath = process.env.ORCA_USER_DATA_PATH
-    process.env.ORCA_USER_DATA_PATH = homes.userDataDir
+    homes.tmpHome = mkdtempSync(join(tmpdir(), 'occ-codex-home-'))
+    homes.userDataDir = mkdtempSync(join(tmpdir(), 'occ-codex-user-data-'))
+    previousUserDataPath = process.env.OCC_USER_DATA_PATH
+    process.env.OCC_USER_DATA_PATH = homes.userDataDir
     homedirMock.mockReturnValue(homes.tmpHome)
     stubCodexTrustSessionsForTests()
     getPathMock.mockImplementation((name: string) => {
@@ -68,9 +68,9 @@ export function setupCodexHookHomes(
     rmSync(homes.tmpHome, { recursive: true, force: true })
     rmSync(homes.userDataDir, { recursive: true, force: true })
     if (previousUserDataPath === undefined) {
-      delete process.env.ORCA_USER_DATA_PATH
+      delete process.env.OCC_USER_DATA_PATH
     } else {
-      process.env.ORCA_USER_DATA_PATH = previousUserDataPath
+      process.env.OCC_USER_DATA_PATH = previousUserDataPath
     }
     vi.clearAllMocks()
   })

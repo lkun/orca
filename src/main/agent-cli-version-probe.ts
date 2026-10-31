@@ -1,6 +1,6 @@
 import { compareAppVersions, parseCliVersion } from '../shared/app-version'
-import { runProcess } from '@orca/process-host'
-import type { ProcessSpec } from '@orca/process-host/process-spec'
+import { runProcess } from '@occ/process-host'
+import type { ProcessSpec } from '@occ/process-host/process-spec'
 
 function warnRefused(program: string, why: string, output = ''): void {
   const said = output.trim().replace(/\s+/g, ' ').slice(0, 200)

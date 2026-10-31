@@ -1,15 +1,15 @@
 // P3 baseline: pinned released desktop/CLI split and close server panes, then reconnect to current serve after restart.
-// Requires ORCA_CROSS_VERSION_PACKAGED_EXECUTABLE (packaged-browser-e2e.yml layout-compat).
+// Requires OCC_CROSS_VERSION_PACKAGED_EXECUTABLE (packaged-browser-e2e.yml layout-compat).
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import {
   launchPackagedPairedClient,
   packagedExecutable,
   packagedExecutableMissing,
   PACKAGED_EXECUTABLE_ENV,
-  runPackagedOrcaCli
-} from './helpers/packaged-old-orca'
+  runPackagedOCCCli
+} from './helpers/packaged-old-occ'
 import {
   expectLayoutCompatBaseline,
   expectReconnectedPaneEcho,
@@ -115,7 +115,7 @@ test.describe('layout compat: released desktop and CLI on the current server', (
           leafId: firstLeaf!,
           host: host.client,
           worktree,
-          // The packaged client draws with the DOM renderer (packaged-old-orca.ts), so rows are text.
+          // The packaged client draws with the DOM renderer (packaged-old-occ.ts), so rows are text.
           readDrawn: () =>
             client.page.locator(`${PANE}[data-leaf-id="${firstLeaf}"] .xterm-rows`).textContent()
         })
@@ -141,7 +141,7 @@ test.describe('layout compat: released desktop and CLI on the current server', (
     const host = await launchHeadlessPairedRuntimeHost()
     try {
       await host.client.call('repo.add', { path: testRepoPath, kind: 'git' })
-      const run = await runPackagedOrcaCli(packagedExecutable!, host.userDataDir, [
+      const run = await runPackagedOCCCli(packagedExecutable!, host.userDataDir, [
         'terminal',
         'create',
         '--worktree',

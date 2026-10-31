@@ -5,7 +5,7 @@ import { createEditorTabsStore } from './editor-slice-test-harness'
 import type { AppState } from '../types'
 import { drawTabsFromMain } from './tabs-drawn-from-main.test-fixture'
 import { layoutApplyTestTransport } from '@/runtime/layout-apply-test-transport.test-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 
 // Main's answer to the window's layout commands, as a switch-on build sends them.
 vi.mock('@/runtime/runtime-rpc-client', async (importOriginal) =>
@@ -492,10 +492,10 @@ describe('createEditorSlice conflict status reconciliation', () => {
         entityId: 'wt-1::check-details::check-run:42',
         contentType: 'check-details',
         // Main's frame carries no label for a tab the window never drew.
-        ...(ORCA_LAYOUT_OWNER_IS_MAIN ? {} : { label: 'verify' })
+        ...(OCC_LAYOUT_OWNER_IS_MAIN ? {} : { label: 'verify' })
       })
     )
-    if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN) {
       expect(layoutApplyTestTransport.sentOfType('openEditorTab')).toEqual([
         expect.objectContaining({
           contentType: 'check-details',

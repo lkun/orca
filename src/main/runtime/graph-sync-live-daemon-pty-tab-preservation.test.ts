@@ -8,7 +8,7 @@ import type {
   RuntimeMobileSessionTabsRemovedResult,
   RuntimeMobileSessionTabsResult
 } from '../../shared/runtime-types'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { committingSpawn } from './bind-first-pane.test-fixture'
 
 vi.mock('electron', () => ({
@@ -58,7 +58,7 @@ function createHarness() {
     },
     flushOrThrow: () => {}
   })
-  const runtime = new OrcaRuntimeService(store as never)
+  const runtime = new OCCRuntimeService(store as never)
   runtime.setNotifier({
     closeTerminal: vi.fn(),
     closeTerminalTab: vi.fn(),

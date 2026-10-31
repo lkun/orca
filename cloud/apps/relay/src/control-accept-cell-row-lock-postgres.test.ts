@@ -5,7 +5,7 @@ import type { RelayConfig } from './config.js'
 import { openRelayDatabase, type RelayDatabase } from './database.js'
 import { createRelayServer } from './relay-server.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 
 const cell = {
@@ -236,7 +236,7 @@ function cellConfig(): RelayConfig {
     publicUrl: cell.url,
     cellUrl: cell.url,
     authIssuer: 'https://auth.example.test',
-    authAudience: 'orca-relay',
+    authAudience: 'occ-relay',
     jwksUrl: 'https://auth.example.test/jwks',
     assignmentSigningKey: new Uint8Array(32),
     role: 'cell',

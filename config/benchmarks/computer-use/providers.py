@@ -49,7 +49,7 @@ class Cua:
         self.nid = 0
         threading.Thread(target=self._reader, daemon=True).start()
         init = self.rpc("initialize", {"protocolVersion": "2025-06-18", "capabilities": {},
-                                       "clientInfo": {"name": "orca-bench", "version": "0"}}, timeout=60)
+                                       "clientInfo": {"name": "occ-bench", "version": "0"}}, timeout=60)
         self._send({"jsonrpc": "2.0", "method": "notifications/initialized"})
         self.startup_ms = round(now() - t0, 1)
         self.server_info = (init or {}).get("serverInfo")
@@ -107,7 +107,7 @@ def cua_sc(r):
     return r.get("structuredContent") or {}
 
 
-class OrcaWin:
+class OCCWin:
     """runtime.ps1 -Serve over NDJSON, as DesktopScriptRuntimeHost runs it."""
 
     def __init__(self, root, logf, processes):
@@ -147,7 +147,7 @@ class OrcaWin:
 
 
 
-class OrcaLinux:
+class OCCLinux:
     """One subprocess per operation, matching the Linux production transport."""
 
     def __init__(self, root, logf, processes):
@@ -225,8 +225,8 @@ class CuaEngine:
 
 
 
-class OrcaEngine:
-    name = "orca"
+class OCCEngine:
+    name = "occ"
 
     def __init__(self, o, pid):
         self.o, self.app = o, f"pid:{pid}"
@@ -236,7 +236,7 @@ class OrcaEngine:
     def snapshot(self):
         r, ms, n = self.o.op({"tool": "get_app_state", "app": self.app, "noScreenshot": True})
         if not r.get("ok"):
-            raise RuntimeError("orca get_app_state: " + str(r.get("error"))[:300])
+            raise RuntimeError("occ get_app_state: " + str(r.get("error"))[:300])
         snap = r["snapshot"]
         self.elements = snap.get("elements") or []
         # Mirror desktopActionWindowTarget: Windows targets by id, Linux by index.

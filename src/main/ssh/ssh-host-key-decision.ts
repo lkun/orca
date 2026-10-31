@@ -1,5 +1,5 @@
 /** Keep host-key policy independent of handshake wiring and inject trust evidence for deterministic decisions. */
-import { isEphemeralRuntimeSshOwner } from '../../shared/managed-orcad-ssh-owner'
+import { isEphemeralRuntimeSshOwner } from '../../shared/managed-occd-ssh-owner'
 import type { SshTargetOwner } from '../../shared/ssh-types'
 import type { KnownHostsOutcome } from './config/ssh-known-hosts'
 
@@ -10,7 +10,7 @@ export type HostKeyDecision = {
   action: HostKeyAction
   outcome: KnownHostsOutcome
   /** Name the disagreeing source so guidance points to a remedy that can work. */
-  disagreeingSource?: 'orca-store' | 'known-hosts'
+  disagreeingSource?: 'occ-store' | 'known-hosts'
   reason?: string
 }
 
@@ -121,7 +121,7 @@ export function decideHostKey(input: HostKeyDecisionInput): HostKeyDecision {
     return {
       action: 'reject',
       outcome: 'mismatch',
-      disagreeingSource: 'orca-store',
+      disagreeingSource: 'occ-store',
       reason: rejection(
         displayHost,
         `The key changed since you last connected. ${changedKeyHint(hostKeyStoreFile)}`
@@ -142,7 +142,7 @@ export function decideHostKey(input: HostKeyDecisionInput): HostKeyDecision {
     return {
       action: 'reject',
       outcome: 'unknown-type-known-host',
-      disagreeingSource: fromKnownHosts ? 'known-hosts' : 'orca-store',
+      disagreeingSource: fromKnownHosts ? 'known-hosts' : 'occ-store',
       reason: rejection(
         displayHost,
         // OpenSSH also refuses known hosts offering a different key type; ssh-keygen -R unblocks both.

@@ -47,8 +47,8 @@ installAutomationsPageHarness()
 function addCollidingRuntimeProject(): void {
   const repo: Repo = {
     id: REPO_ID,
-    displayName: 'orca on m4-air',
-    path: '/repos/orca',
+    displayName: 'occ on m4-air',
+    path: '/repos/occ',
     badgeColor: '#111111',
     addedAt: 1,
     worktreeBaseRef: 'main',
@@ -62,8 +62,8 @@ function addCollidingRuntimeProject(): void {
       projectId: 'project-runtime-collision',
       hostId: `runtime:${RUNTIME_ID}`,
       repoId: REPO_ID,
-      path: '/repos/orca',
-      displayName: 'orca on m4-air',
+      path: '/repos/occ',
+      displayName: 'occ on m4-air',
       setupState: 'ready',
       setupMethod: 'legacy-repo',
       createdAt: 1,

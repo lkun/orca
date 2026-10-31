@@ -97,7 +97,7 @@ it('reports nothing for a blank draft', () => {
 })
 
 it('rejects reserved unavailable identities while ordinary large terminal text stays inline', () => {
-  send('claude', 'chat', '[Pasted text](orca-paste:00000000-0000-4000-8000-000000000000)')
+  send('claude', 'chat', '[Pasted text](occ-paste:00000000-0000-4000-8000-000000000000)')
   expect(sendNativeChatMessage).not.toHaveBeenCalled()
   const text = 'x'.repeat(300000)
   send('codex', 'chat', text)

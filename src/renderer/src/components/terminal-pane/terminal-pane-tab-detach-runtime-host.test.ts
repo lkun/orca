@@ -7,7 +7,7 @@ import {
   TARGET_GROUP_ID,
   WORKTREE_ID
 } from './terminal-pane-tab-detach-fixture'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import {
   isWebTerminalSurfaceTabId,
   toHostSessionTabId,
@@ -29,7 +29,7 @@ vi.mock('@/runtime/web-runtime-session-tab-move', () => ({
 }))
 const MIRRORED_SOURCE = toWebTerminalSurfaceTabId('host-source')
 const HOST_PLACEMENT = { targetGroupId: 'host-group', index: 0 }
-const itSwitchOff = it.skipIf(ORCA_LAYOUT_OWNER_IS_MAIN)
+const itSwitchOff = it.skipIf(OCC_LAYOUT_OWNER_IS_MAIN)
 function mirroredStore(layoutOf = SOURCE_TAB_ID) {
   const store = createStore()
   store.terminalLayoutsByTabId[MIRRORED_SOURCE] = store.terminalLayoutsByTabId[layoutOf]!

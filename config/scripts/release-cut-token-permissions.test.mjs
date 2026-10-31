@@ -11,9 +11,9 @@ const EXPECTED_MATRIX = {
   '.github/workflows/e2e.yml#build': { contents: 'read' },
   '.github/workflows/e2e.yml#changed-e2e': { contents: 'read' },
   '.github/workflows/e2e.yml#e2e': { contents: 'read' },
-  '.github/workflows/e2e.yml#orcad-serve-mode-switch': { contents: 'read' },
-  '.github/workflows/e2e.yml#orcad-serve-mode-switch-windows': { contents: 'read' },
-  '.github/workflows/e2e.yml#orcad-ssh-docker': { contents: 'read' },
+  '.github/workflows/e2e.yml#occd-serve-mode-switch': { contents: 'read' },
+  '.github/workflows/e2e.yml#occd-serve-mode-switch-windows': { contents: 'read' },
+  '.github/workflows/e2e.yml#occd-ssh-docker': { contents: 'read' },
   '.github/workflows/e2e.yml#ssh-browser-network-route': { contents: 'read' },
   '.github/workflows/homebrew-bump.yml#bump-cask': { contents: 'read' },
   '.github/workflows/release-mac-build.yml#build-mac': { actions: 'read', contents: 'write' },
@@ -31,17 +31,17 @@ const EXPECTED_MATRIX = {
       'mobile_web_bundle',
       'persistence'
     ].map((job) => [
-      `.github/workflows/release-mac-build.yml#qualification-template -> .github/workflows/qualified-orcad-template.yml#qualify -> .github/workflows/node-server-tests.yml#${job}`,
+      `.github/workflows/release-mac-build.yml#qualification-template -> .github/workflows/qualified-occd-template.yml#qualify -> .github/workflows/node-server-tests.yml#${job}`,
       job === 'desktop_template' ? { actions: 'read', contents: 'read' } : { contents: 'read' }
     ])
   ),
   ...Object.fromEntries(
     [
       '.github/workflows/release-mac-build.yml#qualification-template',
-      `${RELEASE_WORKFLOW}#orcad-template`
+      `${RELEASE_WORKFLOW}#occd-template`
     ].flatMap((caller) =>
       ['cache', 'qualify', 'save'].map((job) => [
-        `${caller} -> .github/workflows/qualified-orcad-template.yml#${job}`,
+        `${caller} -> .github/workflows/qualified-occd-template.yml#${job}`,
         job === 'qualify' ? { actions: 'read', contents: 'read' } : { contents: 'read' }
       ])
     )
@@ -70,33 +70,33 @@ const EXPECTED_MATRIX = {
     {
       contents: 'read'
     },
-  [`${RELEASE_WORKFLOW}#orcad-template`]: { actions: 'read', contents: 'read' },
-  [`${RELEASE_WORKFLOW}#orcad-template -> .github/workflows/qualified-orcad-template.yml#qualify -> .github/workflows/node-server-tests.yml#changes`]:
+  [`${RELEASE_WORKFLOW}#occd-template`]: { actions: 'read', contents: 'read' },
+  [`${RELEASE_WORKFLOW}#occd-template -> .github/workflows/qualified-occd-template.yml#qualify -> .github/workflows/node-server-tests.yml#changes`]:
     {
       contents: 'read'
     },
-  [`${RELEASE_WORKFLOW}#orcad-template -> .github/workflows/qualified-orcad-template.yml#qualify -> .github/workflows/node-server-tests.yml#desktop_template`]:
+  [`${RELEASE_WORKFLOW}#occd-template -> .github/workflows/qualified-occd-template.yml#qualify -> .github/workflows/node-server-tests.yml#desktop_template`]:
     {
       actions: 'read',
       contents: 'read'
     },
-  [`${RELEASE_WORKFLOW}#orcad-template -> .github/workflows/qualified-orcad-template.yml#qualify -> .github/workflows/node-server-tests.yml#linux_glibc217_compat`]:
+  [`${RELEASE_WORKFLOW}#occd-template -> .github/workflows/qualified-occd-template.yml#qualify -> .github/workflows/node-server-tests.yml#linux_glibc217_compat`]:
     {
       contents: 'read'
     },
-  [`${RELEASE_WORKFLOW}#orcad-template -> .github/workflows/qualified-orcad-template.yml#qualify -> .github/workflows/node-server-tests.yml#linux_glibc_floor`]:
+  [`${RELEASE_WORKFLOW}#occd-template -> .github/workflows/qualified-occd-template.yml#qualify -> .github/workflows/node-server-tests.yml#linux_glibc_floor`]:
     {
       contents: 'read'
     },
-  [`${RELEASE_WORKFLOW}#orcad-template -> .github/workflows/qualified-orcad-template.yml#qualify -> .github/workflows/node-server-tests.yml#linux_musl`]:
+  [`${RELEASE_WORKFLOW}#occd-template -> .github/workflows/qualified-occd-template.yml#qualify -> .github/workflows/node-server-tests.yml#linux_musl`]:
     {
       contents: 'read'
     },
-  [`${RELEASE_WORKFLOW}#orcad-template -> .github/workflows/qualified-orcad-template.yml#qualify -> .github/workflows/node-server-tests.yml#mobile_web_bundle`]:
+  [`${RELEASE_WORKFLOW}#occd-template -> .github/workflows/qualified-occd-template.yml#qualify -> .github/workflows/node-server-tests.yml#mobile_web_bundle`]:
     {
       contents: 'read'
     },
-  [`${RELEASE_WORKFLOW}#orcad-template -> .github/workflows/qualified-orcad-template.yml#qualify -> .github/workflows/node-server-tests.yml#persistence`]:
+  [`${RELEASE_WORKFLOW}#occd-template -> .github/workflows/qualified-occd-template.yml#qualify -> .github/workflows/node-server-tests.yml#persistence`]:
     {
       contents: 'read'
     },
@@ -269,7 +269,7 @@ describe('release-cut token permissions', () => {
     for (const [jobName] of tagJobs) {
       if (!PUBLISH_TAG_JOBS.has(jobName)) {
         expect(matrix[`${RELEASE_WORKFLOW}#${jobName}`]).toEqual(
-          jobName === 'orcad-template'
+          jobName === 'occd-template'
             ? { actions: 'read', contents: 'read' }
             : { contents: 'read' }
         )
@@ -278,7 +278,7 @@ describe('release-cut token permissions', () => {
   })
 
   it('keeps fork, tag, and reusable-workflow boundaries explicit', () => {
-    expect(workflow.jobs.cut.if).toBe("github.repository == 'stablyai/orca'")
+    expect(workflow.jobs.cut.if).toBe("github.repository == 'stablyai/occ'")
     expect(checkoutRef(workflow.jobs.cut)).toBe(
       "${{ github.event_name == 'schedule' && 'main' || inputs.ref }}"
     )
@@ -296,7 +296,7 @@ describe('release-cut token permissions', () => {
 
     const macWorkflow = readWorkflow('.github/workflows/release-mac-build.yml')
     expect(macWorkflow.jobs['build-mac'].if).toBe(
-      "${{ !cancelled() && (!inputs.qualification_only || needs.qualification-template.result == 'success') && github.repository == 'stablyai/orca' }}"
+      "${{ !cancelled() && (!inputs.qualification_only || needs.qualification-template.result == 'success') && github.repository == 'stablyai/occ' }}"
     )
     expect(checkoutRef(macWorkflow.jobs['build-mac'])).toBe(
       "${{ inputs.qualification_only && github.sha || format('refs/tags/{0}', inputs.tag) }}"

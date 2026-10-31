@@ -1,9 +1,9 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { relayBundleCandidates } from '../ssh/relay-bundle-paths'
 import { withWslGuestLauncherRevision } from '../wsl/wsl-guest-launcher-revision'
-import { orcadPosixNodeRuntimeGlobs } from '../managed-server/install/orcad-node-runtime-globs'
+import { occdPosixNodeRuntimeGlobs } from '../managed-server/install/occd-node-runtime-globs'
 import {
   WSL_BROWSER_NETWORK_RELAY_BUNDLE_NAME,
   WSL_BROWSER_NETWORK_RELAY_DIR,
@@ -53,15 +53,15 @@ function guestRelayDir(version: string): string {
 
 export function buildWslBrowserNetworkGuestLaunchScript(version: string): string {
   const dir = guestRelayDir(version)
-  // A WSL host distro may have no system node but usually has orcad's pinned runtime.
-  const [orcadRuntime, orcadMachineRuntimes] = orcadPosixNodeRuntimeGlobs()
+  // A WSL host distro may have no system node but usually has occd's pinned runtime.
+  const [occdRuntime, occdMachineRuntimes] = occdPosixNodeRuntimeGlobs()
   return [
     '#!/bin/sh',
     `d="${dir}"`,
     `v="$(cat "$d/${WSL_BROWSER_NETWORK_RELAY_VERSION_FILE}" 2>/dev/null || true)"`,
     `[ "$v" = '${version}' ] || exit ${WSL_BROWSER_NETWORK_RELAY_STALE_EXIT_CODE}`,
     'n=""',
-    `for c in "$(command -v node 2>/dev/null || true)" "$HOME/.nvm/versions/node"/*/bin/node /usr/local/bin/node /usr/bin/node "$HOME/.local/bin/node" ${orcadRuntime} ${orcadMachineRuntimes}; do`,
+    `for c in "$(command -v node 2>/dev/null || true)" "$HOME/.nvm/versions/node"/*/bin/node /usr/local/bin/node /usr/bin/node "$HOME/.local/bin/node" ${occdRuntime} ${occdMachineRuntimes}; do`,
     '  [ -n "$c" ] && [ -x "$c" ] || continue',
     `  if "$c" -e 'process.exit(Number(process.versions.node.split(".")[0])>=18?0:1)' 2>/dev/null; then`,
     '    n="$c"',
@@ -84,13 +84,13 @@ export function buildWslBrowserNetworkGuestInstallScript(bundle: Buffer, version
     'umask 077',
     `d="${guestRelayDir(version)}"`,
     'mkdir -p "$d"',
-    'base64 -d > "$d/bundle.$$.tmp" << \'ORCA_EOF_BUNDLE\'',
+    'base64 -d > "$d/bundle.$$.tmp" << \'OCC_EOF_BUNDLE\'',
     encoded,
-    'ORCA_EOF_BUNDLE',
+    'OCC_EOF_BUNDLE',
     `mv "$d/bundle.$$.tmp" "$d/${WSL_BROWSER_NETWORK_RELAY_BUNDLE_NAME}"`,
-    'cat > "$d/launch.$$.tmp" << \'ORCA_EOF_LAUNCH\'',
+    'cat > "$d/launch.$$.tmp" << \'OCC_EOF_LAUNCH\'',
     buildWslBrowserNetworkGuestLaunchScript(version).trimEnd(),
-    'ORCA_EOF_LAUNCH',
+    'OCC_EOF_LAUNCH',
     'mv "$d/launch.$$.tmp" "$d/launch.sh"',
     'chmod 700 "$d/launch.sh"',
     `printf '%s' '${version}' > "$d/${WSL_BROWSER_NETWORK_RELAY_VERSION_FILE}"`,

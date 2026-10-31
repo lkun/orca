@@ -23,7 +23,7 @@ import {
   noteWslDistrosRunning,
   WSL_STOP_SETTLE_MS
 } from '../wsl-background-distro-gate'
-import { EXIT_SETTLE_MS } from './wsl-orcad-liveness-evidence'
+import { EXIT_SETTLE_MS } from './wsl-occd-liveness-evidence'
 import { isWslUserActFor } from './wsl-user-act-scope'
 import { isWslDistroNotRunningRefusal } from '../../shared/wsl-distro-not-running-refusal'
 import {
@@ -240,7 +240,7 @@ describe('explicit acts that start a distro', () => {
     expect(probe).toHaveBeenCalledOnce()
   })
 
-  it('settles for as long as the orcad liveness exit window', () => {
+  it('settles for as long as the occd liveness exit window', () => {
     expect(WSL_STOP_SETTLE_MS).toBe(EXIT_SETTLE_MS)
   })
 })

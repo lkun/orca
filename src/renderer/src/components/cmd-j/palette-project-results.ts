@@ -146,7 +146,7 @@ export function hasCmdJProjectSearchCandidates({
   )
 }
 
-function projectRankingForCandidate(
+function projectRankingFoccndidate(
   query: string,
   queryTokens: readonly string[],
   candidate: CmdJProjectSearchResult
@@ -214,7 +214,7 @@ export function searchCmdJProjectResults({
     projectHostSetups,
     renderableRepoIds
   })
-    .map((candidate) => projectRankingForCandidate(normalizedQuery, queryTokens, candidate))
+    .map((candidate) => projectRankingFoccndidate(normalizedQuery, queryTokens, candidate))
     .filter((entry): entry is RankedProjectResult => entry !== null)
     .sort(compareProjectRanked)
     .map((entry) => ({ ...entry.result, qualityClass: projectRuleQualityClass(entry.rule) }))

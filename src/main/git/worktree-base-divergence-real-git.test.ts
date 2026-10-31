@@ -21,7 +21,7 @@ function git(cwd: string, args: string[]): string {
 }
 
 async function createRepo(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-base-divergence-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-base-divergence-'))
   tempRoots.push(root)
   const repoPath = join(root, 'repo')
   execFileSync('git', ['init', '--quiet', repoPath])

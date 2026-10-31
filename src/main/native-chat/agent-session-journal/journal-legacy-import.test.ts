@@ -205,7 +205,7 @@ const CODEX_LINES = [
 ]
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-journal-import-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-journal-import-'))
   clock = 1_000
 })
 

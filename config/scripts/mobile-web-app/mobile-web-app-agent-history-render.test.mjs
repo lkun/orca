@@ -97,13 +97,13 @@ beforeAll(async () => {
   bridgeVersion = await readBridgeProtocolVersion()
   faultGrant = await readBridgeFaultGrant()
   paintName = await readBridgePagePainted()
-  scratch = await mkdtemp(join(tmpdir(), 'orca-mobile-web-app-agent-history-'))
+  scratch = await mkdtemp(join(tmpdir(), 'occ-mobile-web-app-agent-history-'))
   const built = await buildMobileWebAppBundle({ outDir: join(scratch, 'bundle') })
   routeChunks = built.routeChunks
   const served = await createBundleServer({ outDir: built.outDir, cspHeader })
   server = served.server
   origin = served.origin
-  const executablePath = process.env.ORCA_MOBILE_WEB_RENDER_BROWSER
+  const executablePath = process.env.OCC_MOBILE_WEB_RENDER_BROWSER
   browser = await chromium.launch({ headless: true, ...(executablePath ? { executablePath } : {}) })
 }, 180_000)
 
@@ -169,14 +169,14 @@ async function waitForRoute({ page, errors, uncaught }, route, awaitText) {
       uncaught
     ])
   const cause = await race(
-    page.waitForFunction(() => document.documentElement.dataset.orcaWebEntry === 'mounted', {
+    page.waitForFunction(() => document.documentElement.dataset.occWebEntry === 'mounted', {
       timeout: 30_000,
       polling: 250
     })
   )
   if (cause) {
     const state = await page.evaluate(
-      () => document.documentElement.dataset.orcaWebEntry ?? 'absent'
+      () => document.documentElement.dataset.occWebEntry ?? 'absent'
     )
     throw named(cause, `never mounted (entry ${state})`)
   }
@@ -189,7 +189,7 @@ async function waitForRoute({ page, errors, uncaught }, route, awaitText) {
   if (paintCause) {
     throw named(paintCause, `mounted but never painted ${JSON.stringify(awaitText)}`)
   }
-  for (const fault of await page.evaluate(() => globalThis.__orcaRenderCheckFaults ?? [])) {
+  for (const fault of await page.evaluate(() => globalThis.__occRenderCheckFaults ?? [])) {
     errors.push(`page fault: ${fault}`)
   }
 }
@@ -205,7 +205,7 @@ async function openRoute(route, awaitText, options = {}) {
 /** Every grant-gated notify the page posted, whole and in order, as the shell received them. The
  *  paint report is not one: every page posts it once its route screen has a frame. */
 async function readNotifies(page) {
-  const notifies = await page.evaluate(() => globalThis.__orcaRenderCheckNotifies ?? [])
+  const notifies = await page.evaluate(() => globalThis.__occRenderCheckNotifies ?? [])
   return notifies.filter((frame) => frame.name !== paintName)
 }
 
@@ -220,7 +220,7 @@ describeRender('the agent-history route in a real browser', () => {
     const text = await opened.page.evaluate(() => document.body.innerText)
     const url = await opened.page.evaluate(() => location.pathname + location.search)
     const session = await opened.page.evaluate(
-      () => document.documentElement.dataset.orcaWebSessionId ?? null
+      () => document.documentElement.dataset.occWebSessionId ?? null
     )
     expect(opened.errors.filter((entry) => entry.includes('Content Security Policy'))).toEqual([])
     expect(opened.errors).toEqual([])

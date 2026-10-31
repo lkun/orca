@@ -8,7 +8,7 @@ const release = {
   commit: 'c'.repeat(40),
   contentHash: 'f'.repeat(64),
   execution: 'data',
-  minimumOrca: '1.4.0',
+  minimumOCC: '1.4.0',
   types: ['interface-language']
 }
 
@@ -20,7 +20,7 @@ function v2Manifest(overrides: Record<string, unknown>): Record<string, unknown>
     publisher: 'acme',
     name: 'Demo',
     version: '1.0.0',
-    engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+    engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
     ...overrides
   }
 }

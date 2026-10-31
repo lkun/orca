@@ -7,9 +7,9 @@ import { parsePluginManifest } from '../../../src/shared/plugins/manifest/plugin
 import { PLUGIN_MANIFEST_V2_SINCE } from '../../../src/shared/plugins/manifest/plugin-schema-field-docs'
 import { commitRepository, configureFixtureGit, headCommit } from './plugin-git-fixture'
 
-const PLUGIN = 'orca-gleam-syntax'
+const PLUGIN = 'occ-gleam-syntax'
 export const GLEAM_PLUGIN_KEY = `stablyai.${PLUGIN}`
-const EDITOR = 'orca-excalidraw'
+const EDITOR = 'occ-excalidraw'
 export const EXCALIDRAW_PLUGIN_KEY = `stablyai.${EDITOR}`
 export const EXCALIDRAW_TEMPLATE = '{"type":"excalidraw","elements":[]}\n'
 
@@ -27,7 +27,7 @@ async function createEditorPlugin(dir: string) {
     name: 'Excalidraw',
     version: '1.0.0',
     license: 'MIT',
-    engines: { orca: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
+    engines: { occ: `>=${PLUGIN_MANIFEST_V2_SINCE}` },
     contributes: {
       customEditors: [
         {
@@ -47,7 +47,7 @@ async function createEditorPlugin(dir: string) {
       ]
     }
   }
-  await writeFile(join(dir, 'orca-plugin.json'), JSON.stringify(manifest))
+  await writeFile(join(dir, 'occ-plugin.json'), JSON.stringify(manifest))
   const parsed = parsePluginManifest(manifest)
   if (!parsed.ok) {
     throw new Error(parsed.error)
@@ -62,7 +62,7 @@ export async function createGleamCatalogFixture(root: string) {
   const home = join(root, 'home')
   await mkdir(home, { recursive: true })
   const gitEnvironment = await configureFixtureGit(home, repositories, [
-    'orca-plugins',
+    'occ-plugins',
     PLUGIN,
     EDITOR
   ])
@@ -84,10 +84,10 @@ export async function createGleamCatalogFixture(root: string) {
   }
   await commitRepository(editor, gitEnvironment)
 
-  const catalog = join(repositories, 'orca-plugins.git')
+  const catalog = join(repositories, 'occ-plugins.git')
   await mkdir(catalog, { recursive: true })
   await writeFile(
-    join(catalog, 'orca-catalog.json'),
+    join(catalog, 'occ-catalog.json'),
     JSON.stringify({
       catalogVersion: 2,
       name: 'OCC Plugins',
@@ -102,7 +102,7 @@ export async function createGleamCatalogFixture(root: string) {
               commit: await headCommit(plugin, gitEnvironment),
               contentHash: hashed.hash,
               execution: 'data',
-              minimumOrca: PLUGIN_MANIFEST_V2_SINCE,
+              minimumOCC: PLUGIN_MANIFEST_V2_SINCE,
               name: 'Gleam',
               types: ['syntax'],
               fileTypes: ['gleam']
@@ -118,7 +118,7 @@ export async function createGleamCatalogFixture(root: string) {
               commit: await headCommit(editor, gitEnvironment),
               contentHash: editorHash.hash,
               execution: 'sandboxed-ui',
-              minimumOrca: PLUGIN_MANIFEST_V2_SINCE,
+              minimumOCC: PLUGIN_MANIFEST_V2_SINCE,
               name: 'Excalidraw',
               contributes: pluginContributionSummary(editorManifest),
               fileTypes: pluginEditorFileTypes(editorManifest.contributes),

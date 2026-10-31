@@ -12,7 +12,7 @@ const COLS = 157
 const ROWS = 59
 const INDENT = ''
 const FULL_URL = [
-  'http://127.0.0.1:8765/orca-double-open-repro-wrapped/',
+  'http://127.0.0.1:8765/occ-double-open-repro-wrapped/',
   Array.from({ length: 79 }, (_value, index) => `seg${String(index + 1).padStart(4, '0')}`).join(
     '/'
   ),
@@ -393,7 +393,7 @@ describe('hard-wrapped terminal HTTP clicks', () => {
   it('does not glue the next logical line onto a URL that ends mid-row (#8832)', () => {
     const { terminal, registrations } = makeTerminal({
       cols: 80,
-      urlRows: ['Repo: https://github.com/stablyai/orca/', 'Description: 123'],
+      urlRows: ['Repo: https://github.com/stablyai/occ/', 'Description: 123'],
       softWrapped: false
     })
     const disposable = installHttpLinkClickFallback(terminal, { worktreeId: 'wt-1' })
@@ -404,7 +404,7 @@ describe('hard-wrapped terminal HTTP clicks', () => {
     fallback!(mouseEventForRow(0))
 
     expect(openUrlMock).toHaveBeenCalledOnce()
-    expect(openUrlMock).toHaveBeenCalledWith('https://github.com/stablyai/orca/')
+    expect(openUrlMock).toHaveBeenCalledWith('https://github.com/stablyai/occ/')
     disposable.dispose()
   })
 

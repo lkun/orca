@@ -5,7 +5,7 @@ import { formatCliError } from '../cli-error'
 import { main } from '../index'
 import recordedCodexDenial from './fixtures/codex-0.165.0-linux-connect-denied.json'
 import { RuntimeClient } from './client'
-import { launchOrcaApp } from './launch'
+import { launchOCCApp } from './launch'
 import { getCliStatus, getOfflineRuntimeAdmission } from './status'
 import { preflightElectronServe } from './serve-electron-preflight'
 import { sendRequest } from './transport'
@@ -20,7 +20,7 @@ vi.mock('./metadata', () => ({
   readMetadata: tryReadMetadata,
   getDefaultUserDataPath: () => '/test'
 }))
-vi.mock('./launch', () => ({ launchOrcaApp: vi.fn() }))
+vi.mock('./launch', () => ({ launchOCCApp: vi.fn() }))
 vi.mock('./runtime-remote-pairing', () => ({ resolveRemoteConnection: () => null }))
 
 const metadata: RuntimeMetadata = {
@@ -39,7 +39,7 @@ class TestSocket extends EventEmitter {
 }
 
 const RESTART_OR_ABSENT_ADVICE =
-  /Restart OCC and try again|OCC is not running|Run 'orca open' first/
+  /Restart OCC and try again|OCC is not running|Run 'occ open' first/
 
 let socket: TestSocket
 
@@ -88,7 +88,7 @@ describe('runtime access denied', () => {
     expect(human).toContain(
       `Permission denied connecting to OCC (${code}). OCC may be running normally`
     )
-    expect(human).toContain("Next step: Do not restart OCC or run 'orca open'")
+    expect(human).toContain("Next step: Do not restart OCC or run 'occ open'")
     expect(human).not.toMatch(RESTART_OR_ABSENT_ADVICE)
     expect(human).not.toContain('private-runtime')
   })
@@ -114,19 +114,19 @@ describe('runtime access denied', () => {
       failConnect(code)
       await expect(status).rejects.toMatchObject({ code: 'runtime_access_denied' })
 
-      const open = new RuntimeClient('/test', 1000, null, null).openOrca()
+      const open = new RuntimeClient('/test', 1000, null, null).openOCC()
       failConnect(code)
       await expect(open).rejects.toMatchObject({ code: 'runtime_access_denied' })
-      expect(launchOrcaApp).not.toHaveBeenCalled()
+      expect(launchOCCApp).not.toHaveBeenCalled()
       expect(connect).toHaveBeenCalledTimes(2)
       expect(process.kill).not.toHaveBeenCalled()
     }
   )
 
   it('preserves recorded Codex Linux denial and recovery advice through status --json', async () => {
-    vi.stubEnv('ORCA_PAIRING_CODE', '')
-    vi.stubEnv('ORCA_ENVIRONMENT', '')
-    vi.stubEnv('ORCA_REMOTE_PAIRING', '')
+    vi.stubEnv('OCC_PAIRING_CODE', '')
+    vi.stubEnv('OCC_ENVIRONMENT', '')
+    vi.stubEnv('OCC_REMOTE_PAIRING', '')
     mockKill(recordedCodexDenial.provenance.publishedPidProbeSystemCode)
     const log = vi.spyOn(console, 'log').mockImplementation(() => {})
     const priorExitCode = process.exitCode
@@ -139,7 +139,7 @@ describe('runtime access denied', () => {
       expect(JSON.parse(String(log.mock.calls[0]?.[0]))).toEqual(recordedCodexDenial.response)
       expect(process.exitCode).toBe(recordedCodexDenial.exitCode)
       expect(process.kill).not.toHaveBeenCalled()
-      expect(launchOrcaApp).not.toHaveBeenCalled()
+      expect(launchOCCApp).not.toHaveBeenCalled()
     } finally {
       process.exitCode = priorExitCode
     }

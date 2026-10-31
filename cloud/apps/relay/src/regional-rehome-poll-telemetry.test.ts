@@ -22,7 +22,7 @@ describe('regional rehome poll telemetry', () => {
     })
     expect(lines).toHaveLength(1)
     expect(JSON.parse(lines[0]!)).toMatchObject({
-      event: 'orca_relay_regional_rehome_poll_summary',
+      event: 'occ_relay_regional_rehome_poll_summary',
       polls: 5,
       'budget-closed': 3,
       open: 2,

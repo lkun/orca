@@ -47,7 +47,7 @@ let root: string
 
 beforeEach(async () => {
   vi.resetAllMocks()
-  root = await mkdtemp(join(tmpdir(), 'orca-cursor-body-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-cursor-body-'))
 })
 afterEach(async () => {
   resetStructuredAgentSessionReadOwnersForTests()
@@ -68,7 +68,7 @@ async function fixture() {
   })
   async function appendOutput(index: number) {
     await journal.appendItem(
-      { provider: 'orca', clientMessageId: `output-${index}` },
+      { provider: 'occ', clientMessageId: `output-${index}` },
       { kind: 'status', text: `Tool output ${index}` },
       { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
     )
@@ -235,7 +235,7 @@ describe('structured session cursor/body regression', () => {
       }
 
       await journal.appendItem(
-        { provider: 'orca', clientMessageId: 'completed-turn' },
+        { provider: 'occ', clientMessageId: 'completed-turn' },
         { kind: 'turn', turnId: 'turn-1', state: 'completed' },
         { fence: 1, turnScope: AGENT_JOURNAL_THREAD_SCOPE }
       )

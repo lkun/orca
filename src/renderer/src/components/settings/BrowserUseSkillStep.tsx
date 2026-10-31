@@ -1,4 +1,4 @@
-import { ORCA_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { OCC_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import { AgentSkillSetupPanel } from './AgentSkillSetupPanel'
 import { StepBadge } from './SetupStepBadge'
 import { translate } from '@/i18n/i18n'
@@ -35,7 +35,7 @@ export function BrowserUseSkillStep({
         'auto.components.settings.BrowserUseSkillStep.0871b6998d',
         "Enables agents to navigate and verify pages in OCC's browser."
       )}
-      skillNames={[ORCA_CLI_SKILL_NAME]}
+      skillNames={[OCC_CLI_SKILL_NAME]}
       installed={skillDetected}
       loading={skillLoading}
       error={skillError}

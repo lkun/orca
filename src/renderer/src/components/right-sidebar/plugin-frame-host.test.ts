@@ -8,7 +8,7 @@ import {
 import { createPluginFrameMessageHandler, type PluginFrameHostOptions } from './plugin-frame-host'
 
 vi.mock('./plugin-panel-design-token-css', () => ({
-  currentPluginFrameTheme: () => ({ colorScheme: 'dark', tokens: '--orca-background:#000' })
+  currentPluginFrameTheme: () => ({ colorScheme: 'dark', tokens: '--occ-background:#000' })
 }))
 
 type FakeFrameWindow = Window & { postMessage: ReturnType<typeof vi.fn> }
@@ -26,14 +26,14 @@ function messageEvent(data: unknown, source: unknown): MessageEvent {
 const flush = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 0))
 
 const req = (id: number, method = 'notifications.show', params: unknown = { title: 'hi' }) => ({
-  orca: 1,
+  occ: 1,
   kind: 'req',
   id,
   method,
   params
 })
 const pong = (payload: unknown, extra: Record<string, unknown> = {}) => ({
-  orca: 1,
+  occ: 1,
   kind: 'evt',
   event: 'pong',
   payload,
@@ -72,7 +72,7 @@ describe('createPluginFrameMessageHandler', () => {
       params: { title: 'hi' }
     })
     expect(frame.postMessage).toHaveBeenCalledWith(
-      { orca: 1, kind: 'res', id: 1, result: { delivered: true } },
+      { occ: 1, kind: 'res', id: 1, result: { delivered: true } },
       '*'
     )
   })
@@ -83,18 +83,18 @@ describe('createPluginFrameMessageHandler', () => {
     const editor = { claim: () => false, onReady, onEvent: vi.fn(), onResponse: vi.fn() }
     const { handler } = createHandler(frame, { surface: 'editor', editor })
 
-    handler(messageEvent({ orca: 1, kind: 'evt', event: 'ready', payload: { protocol: 1 } }, frame))
+    handler(messageEvent({ occ: 1, kind: 'evt', event: 'ready', payload: { protocol: 1 } }, frame))
 
     const [hello] = frame.postMessage.mock.calls[0]!
     expect(hello).toMatchObject({
-      orca: 1,
+      occ: 1,
       kind: 'evt',
       event: 'hello',
       payload: {
         protocol: 1,
         surface: 'editor',
         api: { major: 1, minor: 0 },
-        theme: { colorScheme: 'dark', tokens: '--orca-background:#000' }
+        theme: { colorScheme: 'dark', tokens: '--occ-background:#000' }
       }
     })
     expect(hello.payload.methods).toContain('notifications.show')
@@ -109,7 +109,7 @@ describe('createPluginFrameMessageHandler', () => {
     handler(messageEvent(req(1), createFakeFrameWindow()))
     handler(messageEvent(req(1), null))
     handler(messageEvent({ type: 'react-devtools-bridge' }, frame))
-    handler(messageEvent({ type: 'orca-panel-action', requestId: 'a', action: 'x' }, frame))
+    handler(messageEvent({ type: 'occ-panel-action', requestId: 'a', action: 'x' }, frame))
     await flush()
 
     expect(callHostMethod).not.toHaveBeenCalled()
@@ -171,7 +171,7 @@ describe('createPluginFrameMessageHandler', () => {
     expect(callHostMethod).not.toHaveBeenCalled()
     expect(frame.postMessage).toHaveBeenCalledWith(
       {
-        orca: 1,
+        occ: 1,
         kind: 'res',
         id: 5,
         error: {
@@ -194,7 +194,7 @@ describe('createPluginFrameMessageHandler', () => {
     await flush()
     expect(frame.postMessage).toHaveBeenCalledWith(
       {
-        orca: 1,
+        occ: 1,
         kind: 'res',
         id: 6,
         error: { code: 'capability_denied', message: 'no notifications:show', retryable: false }
@@ -255,7 +255,7 @@ describe('createPluginFrameMessageHandler', () => {
     })
 
     handler(messageEvent(req(10), frame))
-    handler(messageEvent({ orca: 1, kind: 'cancel', id: 10 }, frame))
+    handler(messageEvent({ occ: 1, kind: 'cancel', id: 10 }, frame))
     resolveCall({ ok: true, value: { delivered: true } })
     await flush()
 
@@ -327,8 +327,8 @@ describe('createPluginFrameMessageHandler', () => {
     })
 
     handler(messageEvent(req(1, 'editor.applyEdit', {}), frame))
-    handler(messageEvent({ orca: 1, kind: 'evt', event: 'editor.keydown', payload: {} }, frame))
-    handler(messageEvent({ orca: 1, kind: 'res', id: 0, result: null }, frame))
+    handler(messageEvent({ occ: 1, kind: 'evt', event: 'editor.keydown', payload: {} }, frame))
+    handler(messageEvent({ occ: 1, kind: 'res', id: 0, result: null }, frame))
 
     expect(admit).toHaveBeenCalledTimes(2)
     expect(callHostMethod).not.toHaveBeenCalled()

@@ -38,7 +38,7 @@ type AccumulatedStatusTrafficRun = {
 
 /** The Electron main-process global the traffic generator parks its controller on. */
 type StatusTrafficHost = typeof globalThis & {
-  __orcaAccumulatedStatusTrafficController?: { stop: () => AccumulatedStatusTrafficRun }
+  __occAccumulatedStatusTrafficController?: { stop: () => AccumulatedStatusTrafficRun }
 }
 
 type StatusTrafficWindow = Window & {
@@ -186,7 +186,7 @@ export async function startAccumulatedStatusTraffic(
         throw new Error('OCC BrowserWindow is unavailable')
       }
       const host: StatusTrafficHost = globalThis
-      if (host.__orcaAccumulatedStatusTrafficController) {
+      if (host.__occAccumulatedStatusTrafficController) {
         throw new Error('accumulated status traffic is already running')
       }
       let completedRounds = 0
@@ -210,10 +210,10 @@ export async function startAccumulatedStatusTraffic(
         },
         Math.max(10, Math.floor(intervalMs))
       )
-      host.__orcaAccumulatedStatusTrafficController = {
+      host.__occAccumulatedStatusTrafficController = {
         stop: () => {
           clearInterval(timer)
-          delete host.__orcaAccumulatedStatusTrafficController
+          delete host.__occAccumulatedStatusTrafficController
           return { completedRounds, generatedUpdates, lastReceivedAtByPaneKey }
         }
       }
@@ -229,7 +229,7 @@ export async function stopAccumulatedStatusTraffic(
 ): Promise<AccumulatedStatusTrafficStats> {
   const mainStats = await electronApp.evaluate((): AccumulatedStatusTrafficRun | null => {
     const host: StatusTrafficHost = globalThis
-    return host.__orcaAccumulatedStatusTrafficController?.stop() ?? null
+    return host.__occAccumulatedStatusTrafficController?.stop() ?? null
   })
   if (!mainStats) {
     await page.evaluate(() => {

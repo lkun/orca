@@ -10,8 +10,8 @@ import { createSqliteTestStore, closeTestStores } from '../persistence/persisten
 import { hostWorktreeTarget } from '../../shared/worktree/host-qualified-identity'
 import { parseWorkspaceReferenceUrl } from '../../shared/workspace-reference-identity'
 import { structuredAgentSessionTabId } from '../../shared/structured-agent-session-projection'
-import { formatOrcaSessionAddress } from '../../shared/orca-session-address'
-import { testOrcaSessionId } from '../../shared/orca-session-address-test-fixture'
+import { formatOCCSessionAddress } from '../../shared/occ-session-address'
+import { testOCCSessionId } from '../../shared/occ-session-address-test-fixture'
 import { isOrchestrationRetryRequestId } from '../../shared/orchestration-retry-request-id'
 import {
   CALLER,
@@ -42,7 +42,7 @@ const describeIfBuilt = existsSync(CLI_PATH) ? describe : describe.skip
 
 function loadRuntimeModules() {
   return Promise.all([
-    import('./orca-runtime'),
+    import('./occ-runtime'),
     import('./orchestration/db'),
     import('./runtime-rpc')
   ])
@@ -56,8 +56,8 @@ async function runBuiltCli(
   const child = spawn(process.execPath, [CLI_PATH, ...args], {
     env: {
       ...process.env,
-      ORCA_USER_DATA_PATH: userDataPath,
-      ORCA_TERMINAL_HANDLE: 'term_cli',
+      OCC_USER_DATA_PATH: userDataPath,
+      OCC_TERMINAL_HANDLE: 'term_cli',
       ...extraEnv
     },
     stdio: ['ignore', 'pipe', 'pipe']
@@ -82,12 +82,12 @@ async function runBuiltCli(
   }
 }
 
-describeIfBuilt('orca orchestration check --wait subprocess (§3.4)', () => {
+describeIfBuilt('occ orchestration check --wait subprocess (§3.4)', () => {
   it('emits newline-flushed JSON keepalives to stderr while waiting', async () => {
-    const [{ OrcaRuntimeService }, { OrchestrationDb }, { OrcaRuntimeRpcServer }] =
+    const [{ OCCRuntimeService }, { OrchestrationDb }, { OCCRuntimeRpcServer }] =
       await loadRuntimeModules()
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-cli-sub-'))
-    const runtime = new OrcaRuntimeService()
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-cli-sub-'))
+    const runtime = new OCCRuntimeService()
     const db = new OrchestrationDb(':memory:')
     runtime.setOrchestrationDb(db)
     // A consuming inbox check requires a live pane, even when no messages exist.
@@ -98,7 +98,7 @@ describeIfBuilt('orca orchestration check --wait subprocess (§3.4)', () => {
     vi.spyOn(runtime, 'getLiveTerminalPaneKey').mockImplementation((handle) =>
       runtime.getTerminalPaneKey(handle)
     )
-    const server = new OrcaRuntimeRpcServer({ runtime, userDataPath })
+    const server = new OCCRuntimeRpcServer({ runtime, userDataPath })
     await server.start()
 
     try {
@@ -120,9 +120,9 @@ describeIfBuilt('orca orchestration check --wait subprocess (§3.4)', () => {
         {
           env: {
             ...process.env,
-            ORCA_USER_DATA_PATH: userDataPath,
-            ORCA_TERMINAL_HANDLE: 'term_nobody',
-            ORCA_KEEPALIVE_INTERVAL_MS: String(keepaliveMs)
+            OCC_USER_DATA_PATH: userDataPath,
+            OCC_TERMINAL_HANDLE: 'term_nobody',
+            OCC_KEEPALIVE_INTERVAL_MS: String(keepaliveMs)
           },
           stdio: ['ignore', 'pipe', 'pipe']
         }
@@ -197,12 +197,12 @@ describeIfBuilt('orca orchestration check --wait subprocess (§3.4)', () => {
   }, 30_000)
 })
 
-describeIfBuilt('orca orchestration reset subprocess', () => {
+describeIfBuilt('occ orchestration reset subprocess', () => {
   it('validates reset scopes against an isolated runtime through the built CLI', async () => {
-    const [{ OrcaRuntimeService }, { OrchestrationDb }, { OrcaRuntimeRpcServer }] =
+    const [{ OCCRuntimeService }, { OrchestrationDb }, { OCCRuntimeRpcServer }] =
       await loadRuntimeModules()
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-cli-reset-'))
-    const runtime = new OrcaRuntimeService()
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-cli-reset-'))
+    const runtime = new OCCRuntimeService()
     const db = new OrchestrationDb(':memory:')
     runtime.setOrchestrationDb(db)
     const coordinatorPaneKey = 'tab_cli:11111111-1111-4111-8111-111111111111'
@@ -221,7 +221,7 @@ describeIfBuilt('orca orchestration reset subprocess', () => {
       coordinatorHandle: 'term_cli',
       coordinatorPaneKey
     })
-    const server = new OrcaRuntimeRpcServer({ runtime, userDataPath })
+    const server = new OCCRuntimeRpcServer({ runtime, userDataPath })
     await server.start()
 
     try {
@@ -324,13 +324,13 @@ describeIfBuilt('orca orchestration reset subprocess', () => {
   }, 30_000)
 })
 
-describeIfBuilt('orca orchestration task readiness subprocess', () => {
+describeIfBuilt('occ orchestration task readiness subprocess', () => {
   it('creates a late dependent as ready through the built CLI and runtime', async () => {
-    const [{ OrcaRuntimeService }, { OrchestrationDb }, { OrcaRuntimeRpcServer }] =
+    const [{ OCCRuntimeService }, { OrchestrationDb }, { OCCRuntimeRpcServer }] =
       await loadRuntimeModules()
-    const userDataPath = mkdtempSync(join(tmpdir(), 'orca-cli-task-readiness-'))
+    const userDataPath = mkdtempSync(join(tmpdir(), 'occ-cli-task-readiness-'))
     const dbPath = join(userDataPath, 'orchestration.db')
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const db = new OrchestrationDb(dbPath)
     runtime.setOrchestrationDb(db)
     const coordinatorPaneKey = 'tab_cli:22222222-2222-4222-8222-222222222222'
@@ -342,7 +342,7 @@ describeIfBuilt('orca orchestration task readiness subprocess', () => {
       coordinatorHandle: 'term_cli',
       coordinatorPaneKey
     })
-    const server = new OrcaRuntimeRpcServer({ runtime, userDataPath })
+    const server = new OCCRuntimeRpcServer({ runtime, userDataPath })
     await server.start()
 
     try {
@@ -424,12 +424,12 @@ describeIfBuilt('orca orchestration task readiness subprocess', () => {
 describeIfBuilt('native caller subprocess over durable records', () => {
   // Real CLI subprocess round trips include store reopen, retry/refusal checks and IPC cleanup.
   it('saves and replays the native caller result, then separates damaged admission from reference reads', async () => {
-    const [{ OrcaRuntimeService }, { OrchestrationDb }, { OrcaRuntimeRpcServer }] =
+    const [{ OCCRuntimeService }, { OrchestrationDb }, { OCCRuntimeRpcServer }] =
       await loadRuntimeModules()
     const rig = hostTestState()
-    const sessionId = testOrcaSessionId('4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37')
-    const invalidId = testOrcaSessionId('7e3b9d15-2c4a-4f86-a0b1-5c9e2d7f3b64')
-    const absentId = testOrcaSessionId('11111111-2222-4333-8444-555555555555')
+    const sessionId = testOCCSessionId('4a1f6c2e-8b3d-4e7a-9c15-0d2b6e8f1a37')
+    const invalidId = testOCCSessionId('7e3b9d15-2c4a-4f86-a0b1-5c9e2d7f3b64')
+    const absentId = testOCCSessionId('11111111-2222-4333-8444-555555555555')
     const repoPath = join(rig.root, 'workspace')
     const workspaceId = `cli_repo::${repoPath}`
     const profile = createSqliteTestStore(Store, { dataFile: join(rig.root, 'cli-data.json') })
@@ -457,7 +457,7 @@ describeIfBuilt('native caller subprocess over durable records', () => {
         }
       ]
     })
-    const runtime = new OrcaRuntimeService(profile)
+    const runtime = new OCCRuntimeService(profile)
     const db = new OrchestrationDb(join(rig.root, 'orchestration.db'))
     runtime.setOrchestrationDb(db)
     let host = rig.host
@@ -467,12 +467,12 @@ describeIfBuilt('native caller subprocess over durable records', () => {
     vi.spyOn(runtime, 'ensureStructuredAgentSessionHost').mockResolvedValue()
     vi.spyOn(runtime, 'openAgentSessionRecordStore').mockImplementation(async () => store)
     const terminalLookup = vi.spyOn(runtime, 'getTerminalPaneKey')
-    const server = new OrcaRuntimeRpcServer({ runtime, userDataPath: rig.root })
+    const server = new OCCRuntimeRpcServer({ runtime, userDataPath: rig.root })
     const nativeEnv = {
-      ORCA_AGENT_SESSION_ID: sessionId,
-      ORCA_TERMINAL_HANDLE: 'term_stale_cli',
-      ORCA_PANE_KEY: 'tab_stale:11111111-1111-4111-8111-111111111111',
-      ORCA_ORCHESTRATION_COMPATIBILITY_HOST_KIND: ''
+      OCC_AGENT_SESSION_ID: sessionId,
+      OCC_TERMINAL_HANDLE: 'term_stale_cli',
+      OCC_PANE_KEY: 'tab_stale:11111111-1111-4111-8111-111111111111',
+      OCC_ORCHESTRATION_COMPATIBILITY_HOST_KIND: ''
     }
     const command = [
       'orchestration',
@@ -523,13 +523,13 @@ describeIfBuilt('native caller subprocess over durable records', () => {
       expect(result.mutation).toMatchObject({ replayed: false })
       expect(db.getRun(runId)).toMatchObject({
         objective: 'native CLI saved result',
-        coordinator_orca_session_id: sessionId,
+        coordinator_occ_session_id: sessionId,
         coordinator_handle: null,
         coordinator_pane_key: null
       })
       expect(
         terminalLookup.mock.calls.every(
-          ([handle]) => handle === formatOrcaSessionAddress(sessionId)
+          ([handle]) => handle === formatOCCSessionAddress(sessionId)
         )
       ).toBe(true)
       expect(
@@ -557,7 +557,7 @@ describeIfBuilt('native caller subprocess over durable records', () => {
       expect(state()).toEqual(saved)
       const wrong = await runBuiltCli(
         rig.root,
-        [...command, '--from', formatOrcaSessionAddress(invalidId)],
+        [...command, '--from', formatOCCSessionAddress(invalidId)],
         nativeEnv
       )
       expect(wrong.exitCode).toBe(1)
@@ -688,7 +688,7 @@ describeIfBuilt('native caller subprocess over durable records', () => {
       })
       const absent = await runBuiltCli(rig.root, command, {
         ...nativeEnv,
-        ORCA_AGENT_SESSION_ID: absentId
+        OCC_AGENT_SESSION_ID: absentId
       })
       expect(absent.exitCode).toBe(1)
       expect(JSON.parse(absent.stdout)).toMatchObject({
@@ -698,7 +698,7 @@ describeIfBuilt('native caller subprocess over durable records', () => {
       const found = await runBuiltCli(
         rig.root,
         ['reference', 'find', '--query', 'STA-1234', '--json'],
-        { ...nativeEnv, ORCA_AGENT_SESSION_ID: '', ORCA_TERMINAL_HANDLE: '', ORCA_PANE_KEY: '' }
+        { ...nativeEnv, OCC_AGENT_SESSION_ID: '', OCC_TERMINAL_HANDLE: '', OCC_PANE_KEY: '' }
       )
       expect(found.exitCode, found.stderr).toBe(0)
       const references = resultOf(JSON.parse(found.stdout))
@@ -714,7 +714,7 @@ describeIfBuilt('native caller subprocess over durable records', () => {
             agent: 'codex',
             liveness: 'unverifiable',
             linked: true,
-            mailbox: formatOrcaSessionAddress(sessionId)
+            mailbox: formatOCCSessionAddress(sessionId)
           }
         ]
       })
@@ -724,7 +724,7 @@ describeIfBuilt('native caller subprocess over durable records', () => {
       expect(rig.dispatch).toHaveBeenCalledTimes(dispatches)
       expect(
         terminalLookup.mock.calls.every(
-          ([handle]) => handle === formatOrcaSessionAddress(sessionId)
+          ([handle]) => handle === formatOCCSessionAddress(sessionId)
         )
       ).toBe(true)
       expect(

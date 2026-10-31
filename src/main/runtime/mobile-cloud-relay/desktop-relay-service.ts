@@ -1,6 +1,6 @@
-import type { OrcaCloudAuthConfig } from '../../orca-profiles/profile-cloud-auth-config'
+import type { OCCCloudAuthConfig } from '../../occ-profiles/profile-cloud-auth-config'
 import type { MobilePairingConnectionContext } from '../runtime-rpc/runtime-rpc-pairing-types'
-import type { OrcaRuntimeRpcServer } from '../runtime-rpc'
+import type { OCCRuntimeRpcServer } from '../runtime-rpc'
 import type {
   DeviceCredentialInstalled,
   PairingGetEndpointsParams,
@@ -26,10 +26,10 @@ import { RelayDemandLedger } from './relay-demand-ledger'
 import { createRelayRegionPreferenceReader } from './relay-region-preference-reader'
 
 type DesktopRelayServiceOptions = {
-  authConfig: OrcaCloudAuthConfig
+  authConfig: OCCCloudAuthConfig
   userDataPath: string
   appVersion: string
-  runtimeRpc: OrcaRuntimeRpcServer
+  runtimeRpc: OCCRuntimeRpcServer
   onStatus: MobileRelayStatusPublisher
 }
 
@@ -42,7 +42,7 @@ const PHONE_REQUEST_READINESS_WAIT_MS = 10_000
 export class DesktopRelayService {
   private readonly coordinator: RelayAuthCoordinator
   private readonly revokeOutbox: RelayRevokeOutbox
-  private readonly runtimeRpc: OrcaRuntimeRpcServer
+  private readonly runtimeRpc: OCCRuntimeRpcServer
   private readonly demandLedger: RelayDemandLedger
   private demandExpiryTimer: ReturnType<typeof setTimeout> | null = null
   private livenessTimer: ReturnType<typeof setInterval> | null = null

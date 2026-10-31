@@ -46,23 +46,23 @@ export function stampPtySpawnPaneEnv(
   const { pane } = args
   if (!pane) {
     // Shell/hook identity must name this spawn's own pane, never an unproved renderer key.
-    delete env.ORCA_PANE_KEY
-    delete env.ORCA_TAB_ID
-    delete env.ORCA_WORKTREE_ID
-    delete env.ORCA_AGENT_LAUNCH_TOKEN
+    delete env.OCC_PANE_KEY
+    delete env.OCC_TAB_ID
+    delete env.OCC_WORKTREE_ID
+    delete env.OCC_AGENT_LAUNCH_TOKEN
     applyScrubSafeAgentEnvAliases(env)
     return
   }
-  env.ORCA_PANE_KEY = pane.paneKey
+  env.OCC_PANE_KEY = pane.paneKey
   if (pane.tabId !== undefined) {
-    env.ORCA_TAB_ID = pane.tabId
+    env.OCC_TAB_ID = pane.tabId
   } else {
-    delete env.ORCA_TAB_ID
+    delete env.OCC_TAB_ID
   }
   if (pane.worktreeId !== undefined) {
-    env.ORCA_WORKTREE_ID = pane.worktreeId
+    env.OCC_WORKTREE_ID = pane.worktreeId
   } else {
-    delete env.ORCA_WORKTREE_ID
+    delete env.OCC_WORKTREE_ID
   }
   // A failed managed-dir preparation must leave a working caller directory intact.
   if (args.jcodeRuntimeDir !== undefined) {

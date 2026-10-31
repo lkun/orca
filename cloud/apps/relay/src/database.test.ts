@@ -14,7 +14,7 @@ afterEach(() => {
 
 describe('relay database', () => {
   it('upgrades an existing SQLite relay without treating legacy controls as idle-capable', async () => {
-    const dataDir = mkdtempSync(join(tmpdir(), 'orca-idle-schema-'))
+    const dataDir = mkdtempSync(join(tmpdir(), 'occ-idle-schema-'))
     temporaryDirectories.push(dataDir)
     const legacy = await openRelayDatabase({ dataDir })
     await legacy.query('ALTER TABLE relay_control_capabilities DROP COLUMN idle_regional_rehome')
@@ -82,7 +82,7 @@ describe('relay database', () => {
   })
 
   it('persists SQLite state across process-style reopen', async () => {
-    const dataDir = mkdtempSync(join(tmpdir(), 'orca-relay-db-'))
+    const dataDir = mkdtempSync(join(tmpdir(), 'occ-relay-db-'))
     temporaryDirectories.push(dataDir)
     const first = await openRelayDatabase({ dataDir })
     await first.query(
@@ -98,7 +98,7 @@ describe('relay database', () => {
   })
 
   it('defaults cells created by an older schema user to the US on reopen', async () => {
-    const dataDir = mkdtempSync(join(tmpdir(), 'orca-relay-region-db-'))
+    const dataDir = mkdtempSync(join(tmpdir(), 'occ-relay-region-db-'))
     temporaryDirectories.push(dataDir)
     const first = await openRelayDatabase({ dataDir })
     await first.query(

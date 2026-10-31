@@ -1,6 +1,6 @@
 import { useBundledSkillInstallAction } from '@/hooks/use-bundled-skill-install-action'
 import { bundledSkillSetupActionLabel } from '../settings/bundled-skill-setup-copy'
-import { ORCA_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { OCC_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import { useActiveProjectSkillRuntime } from '@/hooks/useActiveProjectSkillRuntime'
 import { FeatureSetupInlineTerminal } from '../onboarding/FeatureSetupInlineTerminal'
 import { buildAgentFeatureSkillInstallCommand } from '@/lib/agent-feature-install-commands'
@@ -110,7 +110,7 @@ function BrowserSkillInstallButton(): React.JSX.Element {
   const legacyWsl = activeRuntime.agentRuntime?.runtime === 'wsl'
   const skillInstall = useBundledSkillInstall()
   const installSkills = skillInstall.install
-  const installAction = useBundledSkillInstallAction([ORCA_CLI_SKILL_NAME], {
+  const installAction = useBundledSkillInstallAction([OCC_CLI_SKILL_NAME], {
     enabled: !legacyWsl,
     refreshKey: skillInstall.state.kind
   })
@@ -123,7 +123,7 @@ function BrowserSkillInstallButton(): React.JSX.Element {
     try {
       const result = await runOnboardingFeatureSetup(BROWSER_ONLY_FEATURE_SETUP)
       recordFeatureInteraction('agent-browser-setup')
-      // COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+      // COMPAT(wsl-bridge): removed when WSL runs as an occd host.
       if (legacyWsl) {
         const command = buildAgentFeatureSkillInstallCommand(result.skillNames)
         await window.api.ui.writeClipboardText(
@@ -184,7 +184,7 @@ function BrowserSkillInstallButton(): React.JSX.Element {
     }
   }, [activeRuntime, busy, installAction, installSkills, legacyWsl, recordFeatureInteraction])
 
-  // COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+  // COMPAT(wsl-bridge): removed when WSL runs as an occd host.
   if (wslSetup) {
     return (
       <FeatureSetupInlineTerminal
@@ -246,7 +246,7 @@ function BrowserSkillInstallButton(): React.JSX.Element {
             )
           : installAction.kind === 'replace'
             ? translate(
-                'auto.components.settings.AgentSkillSetupPanel.replaceWithOrcaCopy',
+                'auto.components.settings.AgentSkillSetupPanel.replaceWithOCCCopy',
                 "Replace with OCC's copy"
               )
             : installAction.kind === 'run' && installAction.changes

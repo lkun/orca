@@ -4,7 +4,7 @@ import type { EphemeralVmRecipeDoctorResult } from '../../shared/ephemeral-vm-re
 import { listEphemeralVmRuntimes } from '../../shared/ephemeral-vm-runtime-store'
 import type { EphemeralVmRuntimeRecord } from '../../shared/ephemeral-vm-runtimes'
 import { isFolderRepo, isGitRepoKind } from '../../shared/repo-kind'
-import type { OrcaVmRecipe } from '../../shared/orca-yaml-hook-types'
+import type { OCCVmRecipe } from '../../shared/occ-yaml-hook-types'
 import {
   EphemeralVmFailureError,
   ephemeralVmFailure,
@@ -14,7 +14,7 @@ import {
 export type EphemeralVmRecipeListResult = {
   status: 'ok' | 'error'
   repoPath: string | null
-  recipes: OrcaVmRecipe[]
+  recipes: OCCVmRecipe[]
   diagnostics: NonNullable<ReturnType<typeof loadHooks>>['environmentRecipeDiagnostics']
   message?: string
   messageCode?: string
@@ -25,7 +25,7 @@ export type EphemeralVmRecipeCatalogEntry = {
   repoId: string
   repoName: string
   repoPath: string
-  recipes: OrcaVmRecipe[]
+  recipes: OCCVmRecipe[]
   diagnostics: NonNullable<ReturnType<typeof loadHooks>>['environmentRecipeDiagnostics']
 }
 
@@ -41,7 +41,7 @@ export type RecipeRepoResult =
 export function listRecipes(
   store: Store,
   repoId: string,
-  pluginRecipes: readonly OrcaVmRecipe[] = []
+  pluginRecipes: readonly OCCVmRecipe[] = []
 ): EphemeralVmRecipeListResult {
   const repo = store.getRepo(repoId)
   if (!repo || isFolderRepo(repo)) {
@@ -61,7 +61,7 @@ export function listRecipes(
 
 export function listRecipeCatalog(
   store: Store,
-  pluginRecipes: readonly OrcaVmRecipe[] = []
+  pluginRecipes: readonly OCCVmRecipe[] = []
 ): EphemeralVmRecipeCatalogEntry[] {
   return store
     .getRepos()
@@ -97,7 +97,7 @@ export function getRuntimeRecipeContext(
 ): {
   runtime: EphemeralVmRuntimeRecord
   repo: Extract<RecipeRepoResult, { ok: true }>
-  recipe: OrcaVmRecipe
+  recipe: OCCVmRecipe
 } {
   const runtime = listEphemeralVmRuntimes(userDataPath).find((entry) => entry.id === runtimeId)
   if (!runtime) {
@@ -127,8 +127,8 @@ export function getRuntimeRecipeContext(
 export function resolveRecipeForRepo(
   repoPath: string,
   recipeId: string,
-  pluginRecipes: readonly OrcaVmRecipe[] = []
-): OrcaVmRecipe | null {
+  pluginRecipes: readonly OCCVmRecipe[] = []
+): OCCVmRecipe | null {
   return (
     combineEphemeralVmRecipes(loadHooks(repoPath)?.environmentRecipes ?? [], pluginRecipes).find(
       (recipe) => recipe.id === recipeId
@@ -139,9 +139,9 @@ export function resolveRecipeForRepo(
 /** Project-owned recipes are authoritative for their repository and shadow
  * same-id global plugin recipes without disabling the rest of the pack. */
 export function combineEphemeralVmRecipes(
-  repoRecipes: readonly OrcaVmRecipe[],
-  pluginRecipes: readonly OrcaVmRecipe[]
-): OrcaVmRecipe[] {
+  repoRecipes: readonly OCCVmRecipe[],
+  pluginRecipes: readonly OCCVmRecipe[]
+): OCCVmRecipe[] {
   const repoIds = new Set(repoRecipes.map((recipe) => recipe.id))
   return [...repoRecipes, ...pluginRecipes.filter((recipe) => !repoIds.has(recipe.id))]
 }

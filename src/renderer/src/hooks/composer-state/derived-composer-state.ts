@@ -15,8 +15,8 @@ import {
   DEFAULT_ISSUE_COMMAND_TEMPLATE,
   renderIssueCommandTemplate
 } from '@/lib/new-workspace'
-import type { SetupRunPolicy } from '../../../../shared/orca-yaml-hook-types'
-import { getDefaultSetupDecision, getSetupConfig } from '../../../../shared/orca-hook-setup-config'
+import type { SetupRunPolicy } from '../../../../shared/occ-yaml-hook-types'
+import { getDefaultSetupDecision, getSetupConfig } from '../../../../shared/occ-hook-setup-config'
 import type { SparsePreset } from '../../../../shared/worktree/create-types'
 import { useRetiredWorktreeNames } from '@/hooks/useRetiredWorktreeNames'
 import { getSuggestedCreatureName } from '@/components/sidebar/worktree-name-suggestions'

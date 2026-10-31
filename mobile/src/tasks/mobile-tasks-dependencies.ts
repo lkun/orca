@@ -153,7 +153,7 @@ export type {
   GitHubOwnerRepo,
   ProviderCheckSummary
 } from '../../../src/shared/github/pull-request-types'
-export type { PersistedTrustedOrcaHooks } from '../../../src/shared/orca-yaml-hook-types'
+export type { PersistedTrustedOCCHooks } from '../../../src/shared/occ-yaml-hook-types'
 export type { SparsePreset } from '../../../src/shared/worktree/create-types'
 export type { TuiAgent } from '../../../src/shared/tui-agent'
 export type { SshConnectionState } from '../../../src/shared/ssh-types'

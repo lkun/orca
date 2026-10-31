@@ -1,9 +1,9 @@
 // Connector tokens for the desktop's signed-in OCC account, fetched the way relay tokens are.
 import { z } from 'zod'
-import type { OrcaCloudAuthConfig } from '../orca-profiles/profile-cloud-auth-config'
-import { OrcaCloudRequestError } from '../orca-profiles/profile-cloud-client'
-import { runWithFreshOrcaCloudSession } from '../orca-profiles/profile-cloud-session-refresh'
-import { ensureActiveOrcaProfile } from '../orca-profiles/profile-index-store'
+import type { OCCCloudAuthConfig } from '../occ-profiles/profile-cloud-auth-config'
+import { OCCCloudRequestError } from '../occ-profiles/profile-cloud-client'
+import { runWithFreshOCCCloudSession } from '../occ-profiles/profile-cloud-session-refresh'
+import { ensureActiveOCCProfile } from '../occ-profiles/profile-index-store'
 import { loadOrCreateHostInstallationId } from '../runtime/host-descriptor'
 import { requestConnector, type ConnectorFailure } from './connector-cloud-request'
 import type { ConnectorTokenMint } from './connector-transport'
@@ -25,12 +25,12 @@ const SIGNED_OUT: ConnectorFailure = {
 
 /** The account the connector serves, read like the relay's: the active profile's cloud user. */
 export function connectorAccount(userDataPath: string): string | null {
-  return ensureActiveOrcaProfile(userDataPath).profile.cloud?.userId ?? null
+  return ensureActiveOCCProfile(userDataPath).profile.cloud?.userId ?? null
 }
 
 /** Mints only for `account`; after a switch or sign-out the old client gets no token for the new one. */
 export function desktopConnectorTokenMint(
-  authConfig: OrcaCloudAuthConfig,
+  authConfig: OCCCloudAuthConfig,
   userDataPath: string,
   account: string,
   fetchImpl: typeof globalThis.fetch = globalThis.fetch
@@ -39,11 +39,11 @@ export function desktopConnectorTokenMint(
     if (connectorAccount(userDataPath) !== account) {
       return SIGNED_OUT
     }
-    const active = ensureActiveOrcaProfile(userDataPath)
+    const active = ensureActiveOCCProfile(userDataPath)
     try {
       // The per-install id the host descriptor already keeps; the cloud keys this machine on it.
       const machineId = await loadOrCreateHostInstallationId(userDataPath)
-      const minted = await runWithFreshOrcaCloudSession(
+      const minted = await runWithFreshOCCCloudSession(
         authConfig,
         active,
         userDataPath,
@@ -59,7 +59,7 @@ export function desktopConnectorTokenMint(
           )
           // Refreshes the OCC session once, as every desktop cloud call does.
           if (!answer.ok && (answer.status === 401 || answer.status === 403)) {
-            throw new OrcaCloudRequestError(answer.status, answer.error ?? undefined)
+            throw new OCCCloudRequestError(answer.status, answer.error ?? undefined)
           }
           return answer
         }
@@ -70,7 +70,7 @@ export function desktopConnectorTokenMint(
     } catch (error) {
       return {
         ok: false,
-        status: error instanceof OrcaCloudRequestError ? error.statusCode : null,
+        status: error instanceof OCCCloudRequestError ? error.statusCode : null,
         error: null,
         retryAfterMs: null
       }

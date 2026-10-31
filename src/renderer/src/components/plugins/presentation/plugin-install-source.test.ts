@@ -3,18 +3,18 @@ import { parsePluginInstallSource } from './plugin-install-source'
 
 describe('parsePluginInstallSource', () => {
   it('leaves the version to main when the git input names none', () => {
-    expect(parsePluginInstallSource('git', 'kolebayev/orca-md-layout')).toEqual({
+    expect(parsePluginInstallSource('git', 'kolebayev/occ-md-layout')).toEqual({
       ok: true,
-      source: { kind: 'git', url: 'https://github.com/kolebayev/orca-md-layout', ref: '' }
+      source: { kind: 'git', url: 'https://github.com/kolebayev/occ-md-layout', ref: '' }
     })
     expect(
       parsePluginInstallSource(
         'git',
-        'https://github.com/kolebayev/orca-md-layout/releases/tag/v0.1.0'
+        'https://github.com/kolebayev/occ-md-layout/releases/tag/v0.1.0'
       )
     ).toEqual({
       ok: true,
-      source: { kind: 'git', url: 'https://github.com/kolebayev/orca-md-layout', ref: 'v0.1.0' }
+      source: { kind: 'git', url: 'https://github.com/kolebayev/occ-md-layout', ref: 'v0.1.0' }
     })
   })
 

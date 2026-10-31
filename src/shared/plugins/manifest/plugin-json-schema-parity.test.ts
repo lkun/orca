@@ -42,7 +42,7 @@ describe('published schema and runtime agree on rejection', () => {
     ],
     ['a wrong-typed name', { name: 5 }],
     ['a wrong-typed contributes', { contributes: [] }],
-    ['a range OCC cannot gate on', { engines: { orca: '^1.4.0' } }],
+    ['a range OCC cannot gate on', { engines: { occ: '^1.4.0' } }],
     ['an unknown execution profile', { execution: 'root' }],
     ['an unknown contribution point', { contributes: { widgets: [] } }],
     ['an http homepage', { homepage: 'http://example.com' }]
@@ -215,7 +215,7 @@ describe('unknown-key policy', () => {
       'a contribution',
       manifest({ contributes: { themes: [{ id: 'a', title: 'A', path: 'a.json', future: 1 }] } })
     ],
-    ['engines', manifest({ engines: { orca: '>=9.0.0', node: '>=20' } })]
+    ['engines', manifest({ engines: { occ: '>=9.0.0', node: '>=20' } })]
   ])('manifests reject an unknown key in %s', (_where, raw) => {
     expect(runtimeAcceptsManifest(raw)).toBe(false)
   })

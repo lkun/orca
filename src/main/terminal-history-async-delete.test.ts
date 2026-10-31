@@ -14,7 +14,7 @@ import {
 
 describe('deleteWorktreeHistoryDir main-thread safety', () => {
   beforeEach(() => {
-    userDataDir = mkdtempSync(join(tmpdir(), 'orca-history-async-'))
+    userDataDir = mkdtempSync(join(tmpdir(), 'occ-history-async-'))
     installFakeAppEnvironment({ getPath: () => userDataDir })
   })
 

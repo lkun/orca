@@ -85,7 +85,7 @@ export abstract class AgentBrowserBridgePointerCommands extends AgentBrowserBrid
     await waitForGuestFirstPaint(
       wc,
       (method, params, sessionId) => sendGuestCdpCommand(wc, method, params, sessionId),
-      () => this.browserManager.holdPaintForCapture(webContentsId)
+      () => this.browserManager.holdPaintFoccpture(webContentsId)
     )
   }
 

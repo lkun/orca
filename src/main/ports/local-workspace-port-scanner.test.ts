@@ -237,7 +237,7 @@ describe('scanWorkspacePorts attribution work', () => {
   })
 
   it.each([10, 100])('bounds %i roots, preserving URLs and fresh Stop', async (count) => {
-    const root = await realpath(await mkdtemp(path.join(tmpdir(), 'orca-port-alias-')))
+    const root = await realpath(await mkdtemp(path.join(tmpdir(), 'occ-port-alias-')))
     const target = path.join(root, 'project'),
       alias = path.join(root, 'linked')
     const probe = { ...worktrees[0], path: alias }

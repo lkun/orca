@@ -2,11 +2,11 @@ export function resolveOrchestrationCliExecutable(
   env: NodeJS.ProcessEnv = process.env,
   platform: NodeJS.Platform = process.platform
 ): string {
-  const configured = env.ORCA_CLI_COMMAND?.trim()
+  const configured = env.OCC_CLI_COMMAND?.trim()
   if (configured) {
     return configured
   }
-  if (env.ORCA_DEV_REPO_ROOT) {
+  if (env.OCC_DEV_REPO_ROOT) {
     return 'occ-dev'
   }
   return platform === 'linux' ? 'occ-ide' : 'occ'

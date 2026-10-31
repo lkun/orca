@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -11,8 +11,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -23,7 +23,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -68,10 +68,10 @@ function launchCalls(): unknown[][] {
   )
 }
 
-describe('orca cli agent launch', () => {
+describe('occ cli agent launch', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -250,7 +250,7 @@ describe('orca cli agent launch', () => {
   })
 
   it('uses the caller folder identity after validating its native host and enclosing path', async () => {
-    process.env.ORCA_WORKSPACE_ID = 'folder:caller'
+    process.env.OCC_WORKSPACE_ID = 'folder:caller'
     queueFixtures(
       callMock,
       okFixture('folders', {
@@ -275,7 +275,7 @@ describe('orca cli agent launch', () => {
   })
 
   it('ignores an inherited remote folder identity and uses the local Git fallback', async () => {
-    process.env.ORCA_WORKSPACE_ID = 'folder:remote'
+    process.env.OCC_WORKSPACE_ID = 'folder:remote'
     queueFixtures(
       callMock,
       okFixture('folders', {

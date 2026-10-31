@@ -12,7 +12,7 @@ import { tmpdir } from 'node:os'
 import { basename, dirname, join, relative } from 'node:path'
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { setSecretStore } from '../../../shared/secret-store'
-import { profileStateStorage } from '../../orca-profiles/profile-project-state-file'
+import { profileStateStorage } from '../../occ-profiles/profile-project-state-file'
 import {
   acquireProfileStateMaintenance,
   acquireProfileStateRuntimeAdmission
@@ -59,7 +59,7 @@ vi.mock('../../ssh/config/ssh-config-parser', () => ({
   sshConfigHostsToTargets: () => []
 }))
 
-const suiteRoot = mkdtempSync(join(tmpdir(), 'orca-recovery-crash-boundaries-'))
+const suiteRoot = mkdtempSync(join(tmpdir(), 'occ-recovery-crash-boundaries-'))
 const fixtureRoots: string[] = []
 let bundle: string
 const profileId = 'crash-recovery'
@@ -131,10 +131,10 @@ async function seedFixture(kind: 'json' | 'sqlite', accepted: boolean): Promise<
   const directory = join(root, 'profiles', profileId)
   mkdirSync(directory, { recursive: true })
   writeFileSync(
-    join(root, 'orca-profile-index.json'),
+    join(root, 'occ-profile-index.json'),
     JSON.stringify({ activeProfileId: profileId, profiles: [{ id: profileId }] })
   )
-  const dataFile = join(directory, 'orca-data.json')
+  const dataFile = join(directory, 'occ-data.json')
   const databasePath = join(directory, 'profile-state.db')
   const exportPath = profileStateJsonExportPath(dataFile, 3)
   const backupPath = profileStateDatabaseBackupPath(

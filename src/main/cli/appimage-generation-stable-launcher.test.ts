@@ -21,9 +21,9 @@ afterEach(async () => {
 })
 
 async function makeGeneration() {
-  const root = await mkdtemp(join(tmpdir(), 'orca-generation-launcher-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-generation-launcher-'))
   created.push(root)
-  const cacheRootPath = join(root, 'cache', 'orca', 'appimage')
+  const cacheRootPath = join(root, 'cache', 'occ', 'appimage')
   const generationRoot = join(cacheRootPath, 'a'.repeat(24), 'b'.repeat(24))
   const resourcesPath = join(generationRoot, 'resources')
   await mkdir(join(resourcesPath, 'bin'), { recursive: true })

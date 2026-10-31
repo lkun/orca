@@ -34,7 +34,7 @@ describe('ReserveDeadMan', () => {
     clock.value += WINDOW_MS + 1
     expect(deadMan.mode(reserve(1))).toBe('db')
     expect(deadMan.pendingTrip()).toBeNull()
-    expect(events('orca_relay_cell_reserve_dead_man_tripped')).toHaveLength(1)
+    expect(events('occ_relay_cell_reserve_dead_man_tripped')).toHaveLength(1)
   })
 
   it('with deadManTripSlots, holds reserve until its slot claim lands, then trips and latches', () => {
@@ -47,15 +47,15 @@ describe('ReserveDeadMan', () => {
     // Held for ten minutes: still reserve, and the held line is written once.
     clock.value += 10 * WINDOW_MS
     expect(deadMan.mode(applied)).toBe('reserve')
-    expect(events('orca_relay_cell_reserve_dead_man_held')).toEqual([
+    expect(events('occ_relay_cell_reserve_dead_man_held')).toEqual([
       expect.objectContaining({ cellId: 'production-gce-c30', generation: 1, slots: 2 })
     ])
-    expect(events('orca_relay_cell_reserve_dead_man_tripped')).toEqual([])
+    expect(events('occ_relay_cell_reserve_dead_man_tripped')).toEqual([])
 
     deadMan.permit(1)
     expect(deadMan.mode(applied)).toBe('db')
     expect(deadMan.pendingTrip()).toBeNull()
-    expect(events('orca_relay_cell_reserve_dead_man_tripped')).toHaveLength(1)
+    expect(events('occ_relay_cell_reserve_dead_man_tripped')).toHaveLength(1)
     // Latched for this generation, as an unlimited trip is.
     deadMan.contact()
     expect(deadMan.mode(applied)).toBe('db')
@@ -68,7 +68,7 @@ describe('ReserveDeadMan', () => {
     deadMan.mode(applied)
     clock.value += 24 * 60 * WINDOW_MS
     expect(deadMan.mode(applied)).toBe('reserve')
-    expect(events('orca_relay_cell_reserve_dead_man_tripped')).toEqual([])
+    expect(events('occ_relay_cell_reserve_dead_man_tripped')).toEqual([])
   })
 
   // A claim answered after the director came back must not trip the cell later without a slot.
@@ -87,8 +87,8 @@ describe('ReserveDeadMan', () => {
     clock.value += WINDOW_MS + 1
     expect(deadMan.mode(applied)).toBe('reserve')
     expect(deadMan.pendingTrip()).toEqual({ generation: 1, slots: 1 })
-    expect(events('orca_relay_cell_reserve_dead_man_held')).toHaveLength(2)
-    expect(events('orca_relay_cell_reserve_dead_man_tripped')).toEqual([])
+    expect(events('occ_relay_cell_reserve_dead_man_held')).toHaveLength(2)
+    expect(events('occ_relay_cell_reserve_dead_man_tripped')).toEqual([])
   })
 
   it('drops a permit for an earlier switch generation', () => {

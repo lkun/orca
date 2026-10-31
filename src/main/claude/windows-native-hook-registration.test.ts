@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { spawnProcess } from '@orca/process-host'
-import type { PipedChildProcess } from '@orca/process-host/process-spec'
+import { spawnProcess } from '@occ/process-host'
+import type { PipedChildProcess } from '@occ/process-host/process-spec'
 import { once } from 'node:events'
 import {
   existsSync,
@@ -46,10 +46,10 @@ import {
 } from './hook-settings'
 
 const CURRENT_CLAUDE = { claudeVersion: '2.1.261 (Claude Code)' }
-const EXE = 'orca-agent-hook.exe'
-const SCRIPT_PATH = 'C:\\Users\\alice\\.orca\\agent-hooks\\claude-hook.cmd'
-const EXE_PATH = `C:\\Users\\alice\\.orca\\agent-hooks\\${EXE}`
-const SPACED_EXE_PATH = `C:\\Users\\Bob Smith\\.orca\\agent-hooks\\${EXE}`
+const EXE = 'occ-agent-hook.exe'
+const SCRIPT_PATH = 'C:\\Users\\alice\\.occ\\agent-hooks\\claude-hook.cmd'
+const EXE_PATH = `C:\\Users\\alice\\.occ\\agent-hooks\\${EXE}`
+const SPACED_EXE_PATH = `C:\\Users\\Bob Smith\\.occ\\agent-hooks\\${EXE}`
 
 function withWin32<T>(run: () => T): T {
   const original = Object.getOwnPropertyDescriptor(process, 'platform')
@@ -70,13 +70,13 @@ describe('getManagedLifecycleHook native executable gate', () => {
     )
     expect(hook).toEqual({
       type: 'command',
-      command: `C:/Users/alice/.orca/agent-hooks/${EXE} claude`,
+      command: `C:/Users/alice/.occ/agent-hooks/${EXE} claude`,
       timeout: 10
     })
   })
 
   it('owns the `<exe> claude` command, and no other agent does', () => {
-    const command = `C:/Users/alice/.orca/agent-hooks/${EXE} claude`
+    const command = `C:/Users/alice/.occ/agent-hooks/${EXE} claude`
     expect(createManagedCommandMatcher('claude-hook.cmd')(command)).toBe(true)
     for (const other of ['openclaude-hook.cmd', 'codebuddy-hook.cmd']) {
       expect(createManagedCommandMatcher(other)(command), other).toBe(false)
@@ -132,7 +132,7 @@ describe.skipIf(process.platform !== 'win32')('ClaudeHookService native hook ins
     }
   })
 
-  function useTempHome(prefix = 'orca-claude-native-hook-'): {
+  function useTempHome(prefix = 'occ-claude-native-hook-'): {
     hooksDir: string
     settingsPath: string
     bundle: string
@@ -143,7 +143,7 @@ describe.skipIf(process.platform !== 'win32')('ClaudeHookService native hook ins
     const bundle = join(home, 'bundled-agent-hook.exe')
     writeFileSync(bundle, 'MZ stand-in for the signed bundle')
     return {
-      hooksDir: join(home, '.orca', 'agent-hooks'),
+      hooksDir: join(home, '.occ', 'agent-hooks'),
       settingsPath: join(home, '.claude', 'settings.json'),
       bundle
     }
@@ -172,9 +172,9 @@ describe.skipIf(process.platform !== 'win32')('ClaudeHookService native hook ins
       args: ['claude'],
       env: {
         SystemRoot: process.env.SystemRoot,
-        ORCA_AGENT_HOOK_PORT: '1',
-        ORCA_AGENT_HOOK_TOKEN: 'token',
-        ORCA_PANE_KEY: 'tab:leaf'
+        OCC_AGENT_HOOK_PORT: '1',
+        OCC_AGENT_HOOK_TOKEN: 'token',
+        OCC_PANE_KEY: 'tab:leaf'
       },
       stdio: ['pipe', 'pipe', 'pipe']
     })
@@ -192,7 +192,7 @@ describe.skipIf(process.platform !== 'win32')('ClaudeHookService native hook ins
   })
 
   it('registers a spaced profile exe in exec form only for CLIs that accept it', () => {
-    const { hooksDir, settingsPath, bundle } = useTempHome('orca claude native hook ')
+    const { hooksDir, settingsPath, bundle } = useTempHome('occ claude native hook ')
     bundledHook.path = bundle
     const service = new ClaudeHookService()
 

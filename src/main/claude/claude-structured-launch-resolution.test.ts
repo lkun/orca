@@ -12,7 +12,7 @@ import {
   CLAUDE_SESSION_STATE_EVENTS_ENV,
   CLAUDE_STRUCTURED_BASE_OPTIONS
 } from './claude-structured-launch-resolution'
-import { claudeSessionIdForOrcaSession } from './structured/claude-structured-session-id'
+import { claudeSessionIdForOCCSession } from './structured/claude-structured-session-id'
 import {
   CLAUDE_APPLY_FLAG_SETTINGS_CONTROL,
   CLAUDE_EFFORT_FLAG,
@@ -22,7 +22,7 @@ import {
 } from './claude-cli-flag-support'
 import { claudeProviderHandle } from '../../shared/agent-session-provider-handle-encoding'
 
-const SESSION_ID = 'orca-session-1'
+const SESSION_ID = 'occ-session-1'
 const IDENTITY = { sessionId: SESSION_ID } as Parameters<
   ReturnType<typeof createClaudeStructuredLaunchResolver>
 >[0]['identity']
@@ -87,7 +87,7 @@ const RESUMABLE = record({
 
 describe('claude structured launch resolution', () => {
   it('resumes a floating session in its pinned folder, not the current floating setting', async () => {
-    const pinned = mkdtempSync(join(tmpdir(), 'orca-claude-floating-'))
+    const pinned = mkdtempSync(join(tmpdir(), 'occ-claude-floating-'))
     const floating = record({
       location: { ...record().location, workspaceId: FLOATING_TERMINAL_WORKTREE_ID },
       launchDirectory: pinned
@@ -102,7 +102,7 @@ describe('claude structured launch resolution', () => {
     const first = await resolverFor(record())({ identity: IDENTITY })
     const second = await resolverFor(record())({ identity: IDENTITY })
 
-    expect(first.providerSessionId).toBe(claudeSessionIdForOrcaSession(SESSION_ID))
+    expect(first.providerSessionId).toBe(claudeSessionIdForOCCSession(SESSION_ID))
     expect(second.providerSessionId).toBe(first.providerSessionId)
     expect(first).toMatchObject({
       pathToClaudeCodeExecutable: '/usr/local/bin/claude',
@@ -141,9 +141,9 @@ describe('claude structured launch resolution', () => {
         'system',
         hasTranscript
       )({ identity: identityAt('old-leaf') })
-      const expected = claudeSessionIdForOrcaSession(SESSION_ID, boundary.operationId)
+      const expected = claudeSessionIdForOCCSession(SESSION_ID, boundary.operationId)
       expect(launch.providerSessionId).toBe(expected)
-      expect(expected).not.toBe(claudeSessionIdForOrcaSession(SESSION_ID))
+      expect(expected).not.toBe(claudeSessionIdForOCCSession(SESSION_ID))
       expect(launch.continuesChain).toBe(false)
       expect(launch.resumeLeafUuid).toBeNull()
       expect(launch.resumesTranscript).toBe(saved)
@@ -195,14 +195,14 @@ describe('claude structured launch resolution', () => {
 
   it('names the child by the OCC session id, over any id the configured overlay carries', async () => {
     const launch = await resolverFor(record(), () => ({
-      ORCA_AGENT_SESSION_ID: 'a0b1c2d3-0000-4000-8000-00000000abcd'
+      OCC_AGENT_SESSION_ID: 'a0b1c2d3-0000-4000-8000-00000000abcd'
     }))({ identity: IDENTITY })
 
     expect(launch.env).toMatchObject({
-      ORCA_AGENT_SESSION_ID: SESSION_ID,
-      ORCA_CLI_COMMAND: expect.stringMatching(/^[^:;]*[\\/]cli[\\/]bin[\\/]occ-dev$/)
+      OCC_AGENT_SESSION_ID: SESSION_ID,
+      OCC_CLI_COMMAND: expect.stringMatching(/^[^:;]*[\\/]cli[\\/]bin[\\/]occ-dev$/)
     })
-    expect(launch.env?.ORCA_AGENT_SESSION_ID).not.toBe(launch.providerSessionId)
+    expect(launch.env?.OCC_AGENT_SESSION_ID).not.toBe(launch.providerSessionId)
   })
 
   it('forces session-state events on when the inherited overlay disables them', async () => {
@@ -512,7 +512,7 @@ describe('claude structured launch resolution', () => {
   })
 
   it('pairs a resolved Claude CLI with its sibling Node runtime', async () => {
-    const root = mkdtempSync(join(tmpdir(), 'orca-claude-launch-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-claude-launch-'))
     const binDir = join(root, 'bin')
     const claudeCommand = join(binDir, process.platform === 'win32' ? 'claude.cmd' : 'claude')
     const nodeCommand = join(binDir, process.platform === 'win32' ? 'node.cmd' : 'node')
@@ -531,7 +531,7 @@ describe('claude structured launch resolution', () => {
       })
     })({ identity: IDENTITY })
 
-    // Right behind this app's CLI, so a runtime dir holding another `orca` cannot shadow it.
+    // Right behind this app's CLI, so a runtime dir holding another `occ` cannot shadow it.
     expect((launch.env?.PATH ?? launch.env?.Path)?.split(delimiter).slice(1)).toEqual([
       binDir,
       '/usr/bin'
@@ -592,7 +592,7 @@ describe('readable Claude thinking', () => {
           _launch: { command: string; cwd: string; env: Record<string, string> }
         ) => 'supported' as const
       )
-      const binDir = join(mkdtempSync(join(tmpdir(), 'orca-claude-probe-')), 'bin')
+      const binDir = join(mkdtempSync(join(tmpdir(), 'occ-claude-probe-')), 'bin')
       const command = join(binDir, process.platform === 'win32' ? 'claude.cmd' : 'claude')
       makeExecutable(command)
       if (sibling) {
@@ -604,8 +604,8 @@ describe('readable Claude thinking', () => {
       const segments = (env: Record<string, string> | undefined) =>
         (env?.PATH ?? env?.Path ?? '').split(delimiter)
       // OCC's CLI directory is the only PATH difference between probe and launch.
-      const orcaCliDir = launch.env?.ORCA_CLI_COMMAND ? dirname(launch.env.ORCA_CLI_COMMAND) : null
-      expect(segments(launch.env).filter((dir) => dir !== orcaCliDir)).toEqual(segments(asked?.env))
+      const occCliDir = launch.env?.OCC_CLI_COMMAND ? dirname(launch.env.OCC_CLI_COMMAND) : null
+      expect(segments(launch.env).filter((dir) => dir !== occCliDir)).toEqual(segments(asked?.env))
       expect(segments(asked?.env)[0] === binDir).toBe(sibling)
       expect(asked?.env).toMatchObject({ PROJECT_SHIM: '1' })
       expect(asked?.env).not.toHaveProperty('ANTHROPIC_API_KEY')

@@ -121,7 +121,7 @@ describe('the NSIS uninstaller', () => {
     )
     expect(launch).toBeGreaterThan(-1)
     // Killed first, so a running OCC cannot reinstall the hooks behind the removal.
-    expect(launch).toBeGreaterThan(branch.indexOf('orca-terminal-daemon.exe'))
+    expect(launch).toBeGreaterThan(branch.indexOf('occ-terminal-daemon.exe'))
     // The exit code is popped and never checked.
     expect(branch.slice(launch).split('\n')[1].trim()).toBe('Pop $0')
     expect(nsis('occ-installer-hooks.nsh').split(AGENT_HOOKS_UNINSTALL_FLAG)).toHaveLength(2)
@@ -130,7 +130,7 @@ describe('the NSIS uninstaller', () => {
   it('keeps the hooks while another OCC install for this user still uses them', () => {
     const branch = realUninstallBranch()
     const launch = branch.indexOf(AGENT_HOOKS_UNINSTALL_FLAG)
-    const check = branch.indexOf('!insertmacro ORCA_OTHER_INSTALL_STATE $1')
+    const check = branch.indexOf('!insertmacro OCC_OTHER_INSTALL_STATE $1')
     expect(check).toBeGreaterThan(-1)
     // Only a definite "no other install" runs the removal; "other" and "unknown" skip it.
     const gate = branch.lastIndexOf('${if} $1 == "none"', launch)
@@ -143,10 +143,10 @@ describe('the NSIS uninstaller', () => {
     const detect = nsis('occ-other-install-check.nsh')
     // Both registrations a second install can have, by the key the installer writes.
     expect(detect).toContain(
-      '!insertmacro ORCA_CHECK_ONE_REGISTRATION ${ORCA_OTHER_INSTALL_HKCU} HKCU ${OUT}'
+      '!insertmacro OCC_CHECK_ONE_REGISTRATION ${OCC_OTHER_INSTALL_HKCU} HKCU ${OUT}'
     )
     expect(detect).toContain(
-      '!insertmacro ORCA_CHECK_ONE_REGISTRATION ${ORCA_OTHER_INSTALL_HKLM} HKLM ${OUT}'
+      '!insertmacro OCC_CHECK_ONE_REGISTRATION ${OCC_OTHER_INSTALL_HKLM} HKLM ${OUT}'
     )
     expect(detect).toContain('ReadRegStr $R5 ${HIVE} "${INSTALL_REGISTRY_KEY}" InstallLocation')
     // Our own registration is excluded, and the other one must still have the app.
@@ -154,7 +154,7 @@ describe('the NSIS uninstaller', () => {
     expect(detect).toContain('${andIf} ${FileExists} "$R5\\${APP_EXECUTABLE_FILENAME}"')
     // A read failure other than "no such key" reports unknown, which skips the removal.
     expect(detect).toMatch(
-      /\$\{elseIf\} \$R7 != \$\{ORCA_ERROR_FILE_NOT_FOUND\}\s+StrCpy \$\{OUT\} "unknown"/
+      /\$\{elseIf\} \$R7 != \$\{OCC_ERROR_FILE_NOT_FOUND\}\s+StrCpy \$\{OUT\} "unknown"/
     )
     expect(detect).not.toMatch(/nsExec|ExecWait|powershell/i)
   })
@@ -167,10 +167,10 @@ describe('the NSIS uninstaller', () => {
     )
   })
 
-  it("removes the `orca` command's PATH entry on a real uninstall only", () => {
+  it("removes the `occ` command's PATH entry on a real uninstall only", () => {
     const hooksFile = nsis('occ-installer-hooks.nsh')
     expect(hooksFile).toContain('!include "${__FILEDIR__}\\occ-user-path-cleanup.nsh"')
-    const call = '!insertmacro ORCA_REMOVE_USER_PATH_ENTRY "$INSTDIR\\resources\\bin"'
+    const call = '!insertmacro OCC_REMOVE_USER_PATH_ENTRY "$INSTDIR\\resources\\bin"'
     expect(realUninstallBranch()).toContain(call)
     expect(hooksFile.split(call)).toHaveLength(2)
     // The directory the app registers: the packaged launcher's folder.
@@ -198,7 +198,7 @@ describe('the NSIS uninstaller', () => {
     expect(cleanup.indexOf('${if} $R7 == 1')).toBeLessThan(cleanup.indexOf('WriteRegExpandStr'))
     expect(cleanup).toContain('StrCpy $R8 ""')
     expect(cleanup).toMatch(/\$\{if\} \$R7 == 0\s+StrCpy \$R8 \$R4/)
-    expect(cleanup).toContain('${elseIf} $R8 == ${ORCA_REG_SZ}')
+    expect(cleanup).toContain('${elseIf} $R8 == ${OCC_REG_SZ}')
     expect(cleanup).not.toMatch(/\$\{else\}\s+WriteRegStr/)
   })
 })

@@ -83,7 +83,7 @@ async function appendItems(count: number): Promise<void> {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-wire-history-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-wire-history-'))
   clock = 1_000
   epochs = 0
   journal = await journals.open({
@@ -760,7 +760,7 @@ describe('identity bounding at admission', () => {
       turnScope: AGENT_JOURNAL_THREAD_SCOPE
     })
     expect(appended.itemId.length).toBeLessThan(2048)
-    expect(appended.itemId).toContain('~orca-oversized~')
+    expect(appended.itemId).toContain('~occ-oversized~')
 
     const beforeTombstone = journal.cursor()
     await journal.appendTombstone(oversized, { fence: 1 })

@@ -20,9 +20,9 @@ import type { RuntimeEnvironmentSource } from './runtime-environments'
 import type { GlobalSettings } from './global-settings-types'
 import type { Repo } from './repo-types'
 import {
-  annotateManagedOrcadExecutionHosts,
-  type ManagedOrcadDeploymentSummary
-} from './managed-orcad-execution-host'
+  annotateManagedOCCdExecutionHosts,
+  type ManagedOCCdDeploymentSummary
+} from './managed-occd-execution-host'
 import { getSshConnectionHealth, type ExecutionHostHealth } from './execution-host-health'
 
 export type { ExecutionHostHealth } from './execution-host-health'
@@ -44,7 +44,7 @@ export type ExecutionHostRegistryEntry = {
   platform?: NodeJS.Platform | null
   remoteControlState?: RuntimeStatus['remoteControl']
   source?: RuntimeEnvironmentSource
-  /** See managed-orcad-execution-host: pairs an SSH host with its managed server. */
+  /** See managed-occd-execution-host: pairs an SSH host with its managed server. */
   aliasHostIds?: readonly ExecutionHostId[]
   mergedIntoHostId?: ExecutionHostId
 }
@@ -53,7 +53,7 @@ type RuntimeEnvironmentSummary = {
   id: string
   name?: string | null
   source?: RuntimeEnvironmentSource
-  orcadDeployment?: ManagedOrcadDeploymentSummary | null
+  occdDeployment?: ManagedOCCdDeploymentSummary | null
 }
 
 type RuntimeStatusByEnvironmentId = ReadonlyMap<string, RuntimeEnvironmentStatus>
@@ -284,7 +284,7 @@ export function buildExecutionHostRegistry(args: {
     })
   }
 
-  annotateManagedOrcadExecutionHosts({
+  annotateManagedOCCdExecutionHosts({
     hosts,
     runtimeEnvironments: args.runtimeEnvironments ?? [],
     sshConnectionStates: args.sshConnectionStates

@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs'
 import { posix, resolve, win32 } from 'node:path'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { CLI_BOOLEAN_FLAGS, findCliCommandIndex } from '../../shared/cli-argument-boundary'
 import { ELECTRON_NO_SANDBOX_REQUEST_ENV } from '../../shared/electron-no-sandbox-request'
 import { CLI_COMMAND_NAMES } from './cli-command-names'
@@ -31,7 +31,7 @@ const DESKTOP_VALUE_FLAGS = new Set(['--disable-features'])
 const CLI_LAUNCH_VALUE_FLAG_NAMES = [...VALUE_TAKING_FLAGS].map((flag) => flag.slice(2))
 
 // Fence recursion if a wrapper drops ELECTRON_RUN_AS_NODE again.
-const REDIRECT_ATTEMPT_ENV = 'ORCA_CLI_LAUNCH_REDIRECTED'
+const REDIRECT_ATTEMPT_ENV = 'OCC_CLI_LAUNCH_REDIRECTED'
 
 export function maybeRedirectCliLaunch(
   options: CliLaunchRedirectOptions = {}
@@ -113,7 +113,7 @@ export function getDirectServeLaunch(
   if (commandIndex === -1 || args[commandIndex] !== 'serve') {
     return null
   }
-  // The CLI reads profile identity from ORCA_USER_DATA_PATH, not --user-data-dir.
+  // The CLI reads profile identity from OCC_USER_DATA_PATH, not --user-data-dir.
   let userDataPath: string | null = null
   const leading: string[] = []
   for (let index = 0; index < commandIndex; index += 1) {
@@ -146,7 +146,7 @@ function execDirectServe(
   // Do not fence server terminals with the redirect marker; exec sets ELECTRON_RUN_AS_NODE itself.
   delete childEnv[REDIRECT_ATTEMPT_ENV]
   if (serve.userDataPath) {
-    childEnv.ORCA_USER_DATA_PATH = serve.userDataPath
+    childEnv.OCC_USER_DATA_PATH = serve.userDataPath
   }
   if (serve.noSandbox) {
     childEnv[ELECTRON_NO_SANDBOX_REQUEST_ENV] = '1'
@@ -324,8 +324,8 @@ function getPathApi(platform: NodeJS.Platform): typeof win32 | typeof posix {
 function buildElectronRunAsNodeEnv(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
   const childEnv = { ...env }
   // Preserve user Node options while hiding them from Electron bootstrap.
-  childEnv.ORCA_NODE_OPTIONS = env.NODE_OPTIONS ?? ''
-  childEnv.ORCA_NODE_REPL_EXTERNAL_MODULE = env.NODE_REPL_EXTERNAL_MODULE ?? ''
+  childEnv.OCC_NODE_OPTIONS = env.NODE_OPTIONS ?? ''
+  childEnv.OCC_NODE_REPL_EXTERNAL_MODULE = env.NODE_REPL_EXTERNAL_MODULE ?? ''
   childEnv.ELECTRON_RUN_AS_NODE = '1'
   childEnv[REDIRECT_ATTEMPT_ENV] = '1'
   delete childEnv.NODE_OPTIONS

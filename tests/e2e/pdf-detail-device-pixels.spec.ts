@@ -1,21 +1,21 @@
 import { rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { createPdfFindFixture } from './helpers/pdf-find-fixture'
 import {
   buildPdfScalePreferenceKey,
   PDF_SCALE_PREFERENCES_STORAGE_KEY
 } from '../../src/renderer/src/components/editor/pdf-scale-preference-storage'
 
-test.use({ orcaAppExtraArgs: ['--force-device-scale-factor=1'] })
+test.use({ occAppExtraArgs: ['--force-device-scale-factor=1'] })
 
 test('PDF detail tiles keep device resolution after consecutive capped zooms and scrolling', async ({
-  orcaPage,
+  occPage,
   seededRepoPath,
   registerPostElectronShutdownCleanup
 }, testInfo) => {
   // The canvas cap is screen-relative; keep its trigger independent of the host display.
-  const cdp = await orcaPage.context().newCDPSession(orcaPage)
+  const cdp = await occPage.context().newCDPSession(occPage)
   await cdp.send('Emulation.setDeviceMetricsOverride', {
     width: 1280,
     height: 900,
@@ -27,12 +27,12 @@ test('PDF detail tiles keep device resolution after consecutive capped zooms and
   const filePath = path.join(seededRepoPath, 'pdf-detail-device-pixels.pdf')
   writeFileSync(filePath, createPdfFindFixture())
   registerPostElectronShutdownCleanup(async () => rmSync(filePath, { force: true }))
-  const worktreeId = await orcaPage.evaluate(() => window.__store?.getState().activeWorktreeId)
+  const worktreeId = await occPage.evaluate(() => window.__store?.getState().activeWorktreeId)
   if (!worktreeId) {
     throw new Error('Missing fixture worktree')
   }
   const preferenceKey = buildPdfScalePreferenceKey({ worktreeId, filePath })
-  await orcaPage.evaluate(
+  await occPage.evaluate(
     ({ filePath, worktreeId, preferenceKey, storageKey }) => {
       localStorage.setItem(storageKey, JSON.stringify({ [preferenceKey]: 1 }))
       window.__store?.getState().openFile({
@@ -45,10 +45,10 @@ test('PDF detail tiles keep device resolution after consecutive capped zooms and
     },
     { filePath, worktreeId, preferenceKey, storageKey: PDF_SCALE_PREFERENCES_STORAGE_KEY }
   )
-  const page = orcaPage.locator('.pdfViewer .page').first()
+  const page = occPage.locator('.pdfViewer .page').first()
   const canvas = page.locator('.canvasWrapper > canvas').last()
   await expect(page.locator('.textLayer')).toContainText('needle result 1')
-  expect(await orcaPage.evaluate(() => devicePixelRatio)).toBe(1)
+  expect(await occPage.evaluate(() => devicePixelRatio)).toBe(1)
 
   // Each completed capped step preserves the earlier page rounding before the next zoom.
   for (let step = 0; step < 6; step += 1) {
@@ -56,12 +56,12 @@ test('PDF detail tiles keep device resolution after consecutive capped zooms and
     if (!previous) {
       throw new Error('Missing rendered canvas')
     }
-    await orcaPage.getByTitle('Zoom in', { exact: true }).click()
+    await occPage.getByTitle('Zoom in', { exact: true }).click()
     await expect.poll(() => canvas.evaluate((current, old) => current !== old, previous)).toBe(true)
     await expect(page).not.toHaveClass(/loadingIcon/)
     await previous.dispose()
   }
-  await expect(orcaPage.getByText('381%', { exact: true })).toBeVisible()
+  await expect(occPage.getByText('381%', { exact: true })).toBeVisible()
   await expect(page.locator('.canvasWrapper > canvas')).toHaveCount(2)
 
   const observations: object[] = []

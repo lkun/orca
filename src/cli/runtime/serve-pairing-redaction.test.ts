@@ -37,7 +37,7 @@ describe('supervised pairing redaction', () => {
 
   it('blanks the pairing offer in the JSON readiness line', () => {
     const line = JSON.stringify({
-      type: 'orca_server_ready',
+      type: 'occ_server_ready',
       endpoint: 'ws://x',
       pairing: { available: true, url: 'occ://pair?code=secret' }
     })
@@ -65,9 +65,9 @@ describe('supervised pairing redaction', () => {
       written.push(String(chunk))
       return true
     })
-    redactingSpawn(spawn)({ program: 'orca', stdio: ['inherit', 'inherit', 'inherit', 'ipc'] })
+    redactingSpawn(spawn)({ program: 'occ', stdio: ['inherit', 'inherit', 'inherit', 'ipc'] })
     expect(spawn).toHaveBeenCalledWith({
-      program: 'orca',
+      program: 'occ',
       stdio: ['inherit', 'pipe', 'inherit', 'ipc']
     })
     const drained = once(stdout, 'end')

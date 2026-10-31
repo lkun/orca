@@ -18,7 +18,7 @@ vi.mock('electron', () => ({
   },
   clipboard: { writeText: mocks.writeText, readText: mocks.readText, clear: mocks.clear }
 }))
-vi.mock('@orca/process-host', () => ({ runProcess: mocks.runProcess }))
+vi.mock('@occ/process-host', () => ({ runProcess: mocks.runProcess }))
 vi.mock('./clipboard-publisher-executable', () => ({ stageClipboardPublisher: mocks.stage }))
 
 import { publishClipboardText } from './clipboard-text-publisher'
@@ -28,7 +28,7 @@ beforeEach(() => {
   vi.stubEnv('WAYLAND_DISPLAY', 'wayland-1')
   vi.stubEnv('XDG_SESSION_TYPE', 'wayland')
   vi.stubEnv('APPIMAGE', '/tmp/OCC.AppImage')
-  vi.stubEnv('APPDIR', '/tmp/.mount_Orca')
+  vi.stubEnv('APPDIR', '/tmp/.mount_OCC')
   let contents = ''
   mocks.writeText.mockImplementation((text: string) => {
     contents = text

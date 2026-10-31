@@ -28,12 +28,12 @@ type PluginModule = {
 }
 
 const ENV_KEYS = [
-  'ORCA_PANE_KEY',
-  'ORCA_OPENCODE_AGENT',
-  'ORCA_OPENCODE_PLUGIN_API',
-  'ORCA_AGENT_HOOK_ENDPOINT',
-  'ORCA_AGENT_HOOK_PORT',
-  'ORCA_AGENT_HOOK_TOKEN'
+  'OCC_PANE_KEY',
+  'OCC_OPENCODE_AGENT',
+  'OCC_OPENCODE_PLUGIN_API',
+  'OCC_AGENT_HOOK_ENDPOINT',
+  'OCC_AGENT_HOOK_PORT',
+  'OCC_AGENT_HOOK_TOKEN'
 ] as const
 
 function createEventBus(): {
@@ -70,17 +70,17 @@ describe.each(['opencode', 'opencode2'] as const)('%s plugin disposal by host', 
   let names: string[]
 
   beforeEach(() => {
-    tempDir = mkdtempSync(join(tmpdir(), 'orca-opencode-dispose-host-'))
+    tempDir = mkdtempSync(join(tmpdir(), 'occ-opencode-dispose-host-'))
     savedEnv = {}
     for (const key of ENV_KEYS) {
       savedEnv[key] = process.env[key]
     }
-    process.env.ORCA_PANE_KEY = 'tab-1:leaf-1'
-    process.env.ORCA_OPENCODE_AGENT = agent
-    process.env.ORCA_OPENCODE_PLUGIN_API = 'v2'
-    delete process.env.ORCA_AGENT_HOOK_ENDPOINT
-    process.env.ORCA_AGENT_HOOK_PORT = '59999'
-    process.env.ORCA_AGENT_HOOK_TOKEN = 'test-token'
+    process.env.OCC_PANE_KEY = 'tab-1:leaf-1'
+    process.env.OCC_OPENCODE_AGENT = agent
+    process.env.OCC_OPENCODE_PLUGIN_API = 'v2'
+    delete process.env.OCC_AGENT_HOOK_ENDPOINT
+    process.env.OCC_AGENT_HOOK_PORT = '59999'
+    process.env.OCC_AGENT_HOOK_TOKEN = 'test-token'
     names = []
     vi.stubGlobal(
       'fetch',
@@ -104,7 +104,7 @@ describe.each(['opencode', 'opencode2'] as const)('%s plugin disposal by host', 
   })
 
   async function loadPluginModule(): Promise<PluginModule> {
-    const pluginPath = join(tempDir, `orca-${agent}-status.mjs`)
+    const pluginPath = join(tempDir, `occ-${agent}-status.mjs`)
     writeFileSync(
       pluginPath,
       agent === 'opencode2'

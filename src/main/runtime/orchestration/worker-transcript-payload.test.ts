@@ -271,7 +271,7 @@ describe('worker transcript wire bounds', () => {
             type: 'tool-call',
             name: 'exec_command',
             input: {
-              cmd: `orca orchestration send --dispatch-capability ${capability}`,
+              cmd: `occ orchestration send --dispatch-capability ${capability}`,
               [capability]: 'secret key'
             }
           },

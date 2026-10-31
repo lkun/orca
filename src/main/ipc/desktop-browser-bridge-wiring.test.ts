@@ -14,16 +14,16 @@ vi.mock('../runtime/rpc/methods', () => ({ ALL_RPC_METHODS: [] }))
 vi.mock('./ssh/ssh-ipc-context', () => ({
   persistedStore: { getSettings: () => settings.current }
 }))
-vi.mock('../managed-server/lifecycle/orcad-managed-tunnel', () => ({
-  ensureOrcadManagedTunnel: vi.fn()
+vi.mock('../managed-server/lifecycle/occd-managed-tunnel', () => ({
+  ensureOCCdManagedTunnel: vi.fn()
 }))
 vi.mock('../ssh/targets/ssh-target-registry', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   getSshTargetRegistryStore: () => ({ listTargets: () => targets })
 }))
-vi.mock('../../shared/managed-orcad-ssh-owner', async (importOriginal) => ({
+vi.mock('../../shared/managed-occd-ssh-owner', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  getManagedOrcadFenceEnvironmentId: (target: SshTarget) => `env-${target.id}`
+  getManagedOCCdFenceEnvironmentId: (target: SshTarget) => `env-${target.id}`
 }))
 vi.mock('./runtime-environments/runtime-environment-connectivity-handlers', () => ({
   isRuntimeEnvironmentManuallyDisconnected: () => false
@@ -34,7 +34,7 @@ vi.mock('../../shared/runtime-environment-store', async (importOriginal) => ({
 }))
 vi.mock('../../shared/runtime-environments', async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  getOrcadSshDeployment: ({ environmentId }: { environmentId: string }) => ({
+  getOCCdSshDeployment: ({ environmentId }: { environmentId: string }) => ({
     sshTargetId: environmentId.slice('env-'.length)
   })
 }))

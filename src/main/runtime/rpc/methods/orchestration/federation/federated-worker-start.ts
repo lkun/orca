@@ -11,7 +11,7 @@ import {
   ORCHESTRATION_WORKER_TURN_STOP_REPORTS_RUNTIME_CAPABILITY
 } from '../../../../../../shared/protocol-version'
 import { orchestrationMigrationData } from '../../../../../../shared/orchestration-rpc-contract'
-import type { OrcaRuntimeService } from '../../../../orca-runtime'
+import type { OCCRuntimeService } from '../../../../occ-runtime'
 import type { OrchestrationDb } from '../../../../orchestration/db'
 import { OrchestrationError } from '../../../../orchestration/orchestration-error'
 import type { WorkerStartInput } from '../worker/worker-start-schema'
@@ -40,7 +40,7 @@ import { prepareWorkerStartCard } from '../../../../orchestration/worker-start-c
 
 export async function startFederatedWorker(args: {
   params: WorkerStartInput
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   db: OrchestrationDb
   /** Called only once preflight passes, so a refused start binds no new Run. */
   bindRunId: () => string

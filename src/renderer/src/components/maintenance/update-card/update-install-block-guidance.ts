@@ -33,7 +33,7 @@ export function getUpdateInstallBlockGuidance(block: UpdateInstallBlock): {
     }
   }
   if (block.instances.length > 0 && block.instances.every(({ kind }) => kind === 'browser')) {
-    // A helper an older orcad runs never pauses for installs; ending it leaves orcad and terminals up.
+    // A helper an older occd runs never pauses for installs; ending it leaves occd and terminals up.
     return {
       title: translate('updates.installBlock.readyTitle', 'Your update is ready'),
       summary: translate(

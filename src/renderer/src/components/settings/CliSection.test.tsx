@@ -85,15 +85,15 @@ describe('CliSection project runtime defaults', () => {
   it('renders an inline unknown PATH state without offering a mutation', async () => {
     const getInstallStatus = vi.fn().mockResolvedValue({
       platform: 'win32',
-      commandName: 'orca',
-      commandPath: 'C:\\Program Files\\OCC\\resources\\bin\\orca.exe',
+      commandName: 'occ',
+      commandPath: 'C:\\Program Files\\OCC\\resources\\bin\\occ.exe',
       pathDirectory: 'C:\\Program Files\\OCC\\resources\\bin',
       pathConfigured: null,
-      launcherPath: 'C:\\Program Files\\OCC\\resources\\bin\\orca.exe',
+      launcherPath: 'C:\\Program Files\\OCC\\resources\\bin\\occ.exe',
       installMethod: 'wrapper',
       supported: true,
       state: 'installed',
-      currentTarget: 'C:\\Program Files\\OCC\\resources\\bin\\orca.exe',
+      currentTarget: 'C:\\Program Files\\OCC\\resources\\bin\\occ.exe',
       unsupportedReason: null,
       detail: 'OCC could not read the Windows user PATH registry value.'
     })

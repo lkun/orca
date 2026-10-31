@@ -4,7 +4,7 @@ const TAILSCALE_DOWNLOAD_URL = 'https://tailscale.com/download'
 
 // Only unreachable-runtime errors have a Tailscale remedy; preserve auth/protocol errors.
 const REMOTE_RUNTIME_UNREACHABLE_RE =
-  /could not connect to the remote orca runtime|remote orca runtime closed the connection|timed out (?:waiting for|while connecting to) the remote orca runtime/i
+  /could not connect to the remote occ runtime|remote occ runtime closed the connection|timed out (?:waiting for|while connecting to) the remote occ runtime/i
 
 const TAILSCALE_MAGIC_DNS_SUFFIX_RE = /(?:^|\.)ts\.net$/i
 // Require an IPv4 literal so CGNAT-shaped DNS names do not qualify.

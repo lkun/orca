@@ -89,7 +89,7 @@ function createObserver(
 
 describe('authority-owned automation run completion', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-automation-completion-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-automation-completion-'))
     ipcHandlers.clear()
   })
 
@@ -322,7 +322,7 @@ describe('authority-owned automation run completion', () => {
 
 describe('automationsChanged publication', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-automation-events-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-automation-events-'))
     ipcHandlers.clear()
   })
 

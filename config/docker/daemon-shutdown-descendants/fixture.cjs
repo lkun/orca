@@ -13,7 +13,7 @@ async function main() {
   })
   canary.unref()
   const childScript =
-    'setsid /bin/sh -c \'trap "" TERM; while :; do sleep 1; done\' & echo ORCA_DESCENDANT:$!; while :; do sleep 1; done'
+    'setsid /bin/sh -c \'trap "" TERM; while :; do sleep 1; done\' & echo OCC_DESCENDANT:$!; while :; do sleep 1; done'
   const native = pty.spawn('/bin/sh', ['-c', childScript], {
     cols: 80,
     rows: 24,
@@ -41,7 +41,7 @@ async function main() {
     const deadline = Date.now() + 5_000
     let childPid = null
     while (Date.now() < deadline) {
-      const match = output.match(/ORCA_DESCENDANT:(\d+)/)
+      const match = output.match(/OCC_DESCENDANT:(\d+)/)
       if (match) {
         childPid = Number(match[1])
         break

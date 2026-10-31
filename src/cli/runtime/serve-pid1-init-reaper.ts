@@ -54,8 +54,8 @@ function servedCommand(deps: ServeInitReaperDeps): ServedCommand | null {
     delete env.ELECTRON_RUN_AS_NODE
     // Restore user options before the AppImage launcher moves them aside again.
     for (const name of ['NODE_OPTIONS', 'NODE_REPL_EXTERNAL_MODULE']) {
-      const saved = env[`ORCA_${name}`]
-      delete env[`ORCA_${name}`]
+      const saved = env[`OCC_${name}`]
+      delete env[`OCC_${name}`]
       if (saved) {
         env[name] = saved
       }
@@ -80,7 +80,7 @@ export function reexecServeUnderInitReaper(deps: ServeInitReaperDeps): ServeInit
   try {
     deps.execve(
       bash,
-      ['bash', '-c', SERVE_INIT_REAPER_SCRIPT, 'orca-serve-init', ...command.args],
+      ['bash', '-c', SERVE_INIT_REAPER_SCRIPT, 'occ-serve-init', ...command.args],
       command.env
     )
   } catch (error) {

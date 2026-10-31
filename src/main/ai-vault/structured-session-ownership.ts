@@ -3,7 +3,7 @@ import { homedir } from 'node:os'
 import { join } from 'node:path'
 import { isLegacyAgentSessionAccountHome } from '../../shared/agent-session-account-home'
 import { normalizeRuntimePathForComparison } from '../../shared/cross-platform-path'
-import { resolveOrcaManagedCodexHomePath } from '../codex/codex-home-paths'
+import { resolveOCCManagedCodexHomePath } from '../codex/codex-home-paths'
 import { agentSessionOwnerObservationIsLive } from '../../shared/agent-session-lease-adjudication'
 import { defaultAgentChatLabel } from '../../shared/agent-session/agent-session-chat-label'
 import type { AiVaultListResult } from '../../shared/ai-vault-types'
@@ -140,7 +140,7 @@ function projectedAccountHome(ownership: StructuredProviderSessionOwnership) {
     ownership.provider === 'codex' &&
     !ownership.wslDistro &&
     normalizeRuntimePathForComparison(home.path) ===
-      normalizeRuntimePathForComparison(resolveOrcaManagedCodexHomePath())
+      normalizeRuntimePathForComparison(resolveOCCManagedCodexHomePath())
   ) {
     return undefined
   }

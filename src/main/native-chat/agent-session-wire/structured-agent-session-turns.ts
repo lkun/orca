@@ -21,7 +21,7 @@ import type { JournalOperationReceipt } from '../agent-session-journal/journal-r
 import type { StructuredAgentSessionAdapter } from './structured-agent-session-adapter'
 import {
   classifyJournalOpenFailure,
-  isJournalWrittenByNewerOrca,
+  isJournalWrittenByNewerOCC,
   journalOpenRefusal
 } from '../agent-session-journal/journal-open-failure'
 import type { StructuredAgentSessionLogger } from './structured-agent-session-logger'
@@ -137,7 +137,7 @@ export async function performSend(
     if (
       isAgentSessionRefusalError(error) ||
       classifyJournalOpenFailure(error) === 'journalCorrupt' ||
-      isJournalWrittenByNewerOrca(error)
+      isJournalWrittenByNewerOCC(error)
     ) {
       return { ok: false, refusal: journalOpenRefusal(error) }
     }

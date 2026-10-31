@@ -3,7 +3,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { syncSystemConfigIntoManagedCodexHome } from './codex-config-mirror'
 import { findDuplicateTomlDeclarations } from './config-toml-duplicate-declarations-test-fixture'
-import { repairOrcaDuplicateTrustTables } from './config-toml-project-duplicate-repair'
+import { repairOCCDuplicateTrustTables } from './config-toml-project-duplicate-repair'
 import {
   upsertHookTrustEntriesInContent,
   upsertProjectTrustLevel,
@@ -20,7 +20,7 @@ const hookEntry: CodexTrustEntry = {
   eventLabel: 'stop',
   groupIndex: 0,
   handlerIndex: 0,
-  command: 'orca-hook',
+  command: 'occ-hook',
   trustedHash: 'sha256:new'
 }
 
@@ -118,7 +118,7 @@ describe('repairing OCC hooks.state duplicates', () => {
       '',
       `[hooks.state."${HOOK_KEY}"]`,
       'enabled = true',
-      'trusted_hash = "sha256:orca"',
+      'trusted_hash = "sha256:occ"',
       ''
     ].join('\n')
     writeFileSync(configPath, broken)
@@ -148,14 +148,14 @@ describe('repairing OCC hooks.state duplicates', () => {
 
   it('removes the OCC-shaped copy when it comes before the user table', () => {
     const broken = [
-      '[projects."/orca-first"]',
+      '[projects."/occ-first"]',
       'trust_level = "trusted"',
       '',
       `[hooks.state.'C:\\Users\\me\\.codex\\hooks.json:stop:0:0']`,
       'enabled = true',
-      'trusted_hash = "sha256:orca"',
+      'trusted_hash = "sha256:occ"',
       '',
-      '["projects"."/orca-first"]',
+      '["projects"."/occ-first"]',
       'trust_level = "untrusted"',
       '',
       '["hooks"."state"."C:\\\\Users\\\\me\\\\.codex\\\\hooks.json:stop:0:0"]',
@@ -164,9 +164,9 @@ describe('repairing OCC hooks.state duplicates', () => {
       ''
     ].join('\n')
 
-    expect(repairOrcaDuplicateTrustTables(broken)).toBe(
+    expect(repairOCCDuplicateTrustTables(broken)).toBe(
       [
-        '["projects"."/orca-first"]',
+        '["projects"."/occ-first"]',
         'trust_level = "untrusted"',
         '',
         '["hooks"."state"."C:\\\\Users\\\\me\\\\.codex\\\\hooks.json:stop:0:0"]',
@@ -189,8 +189,8 @@ describe('repairing OCC hooks.state duplicates', () => {
       ''
     ].join('\n')
 
-    expect(repairOrcaDuplicateTrustTables(broken)).toBe(broken)
-    expect(repairOrcaDuplicateTrustTables(broken)).toBe(broken)
+    expect(repairOCCDuplicateTrustTables(broken)).toBe(broken)
+    expect(repairOCCDuplicateTrustTables(broken)).toBe(broken)
     expect(warn).toHaveBeenCalledTimes(1)
   })
 })

@@ -1,6 +1,6 @@
 import { chmod, lstat, readdir, realpath, rm } from 'node:fs/promises'
 import { isAbsolute, join, relative, resolve, sep } from 'node:path'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { localRepositoryWorktrees } from './local-repository-worktrees.mjs'
 import { parseReclaimArguments } from './reclaim-worktree-command.mjs'
 

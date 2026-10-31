@@ -1,4 +1,4 @@
-/** Opt-in ORCA_REAL_OPENSSH_TEST=1 isolates keys/config/ControlPath from ~/.ssh and supplies a user-style ControlMaster. */
+/** Opt-in OCC_REAL_OPENSSH_TEST=1 isolates keys/config/ControlPath from ~/.ssh and supplies a user-style ControlMaster. */
 import { execFileSync, spawn, type ChildProcess } from 'node:child_process'
 import {
   chmodSync,
@@ -17,7 +17,7 @@ import type { SystemSshBuildArgsOptions } from './system-ssh-args'
 
 const SSHD = '/usr/sbin/sshd'
 export const REAL_OPENSSH_TEST_ENABLED =
-  process.env.ORCA_REAL_OPENSSH_TEST === '1' && process.platform !== 'win32' && existsSync(SSHD)
+  process.env.OCC_REAL_OPENSSH_TEST === '1' && process.platform !== 'win32' && existsSync(SSHD)
 
 export function freePort(): Promise<number> {
   return new Promise((resolve, reject) => {
@@ -70,7 +70,7 @@ export async function startRealOpenSshFixture(
   extra: { sshd?: readonly string[]; client?: readonly string[] } = {}
 ): Promise<RealOpenSshFixture> {
   // macOS TMPDIR can overflow the ControlPath Unix socket limit; use /tmp there.
-  const dir = mkdtempSync(join(process.platform === 'darwin' ? '/tmp' : tmpdir(), 'orca-ros-'))
+  const dir = mkdtempSync(join(process.platform === 'darwin' ? '/tmp' : tmpdir(), 'occ-ros-'))
   execFileSync('ssh-keygen', ['-q', '-t', 'ed25519', '-N', '', '-f', join(dir, 'hostkey')])
   execFileSync('ssh-keygen', ['-q', '-t', 'ed25519', '-N', '', '-f', join(dir, 'clientkey')])
   const authorizedKeys = join(dir, 'authorized_keys')
@@ -102,13 +102,13 @@ export async function startRealOpenSshFixture(
   const target: SshTarget = {
     id: 'real-openssh',
     label: 'real-openssh',
-    configHost: 'orca-real-openssh',
-    host: 'orca-real-openssh',
+    configHost: 'occ-real-openssh',
+    host: 'occ-real-openssh',
     port: 22,
     username: '',
     source: 'ssh-config'
   }
-  const alias = 'orca-real-openssh'
+  const alias = 'occ-real-openssh'
   writeFileSync(
     configFile,
     [

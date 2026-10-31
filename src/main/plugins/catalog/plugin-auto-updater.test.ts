@@ -24,7 +24,7 @@ function release(version: string) {
     commit: COMMIT,
     contentHash: 'sha-new',
     execution: 'trusted-worker' as const,
-    minimumOrca: '1.0.0'
+    minimumOCC: '1.0.0'
   }
 }
 
@@ -35,7 +35,7 @@ function manifest(version: string, overrides: Partial<PluginManifest> = {}): Plu
     publisher: 'samples',
     name: 'Demo',
     version,
-    engines: { orca: '>=1.0.0' },
+    engines: { occ: '>=1.0.0' },
     pluginApi: 1,
     main: 'worker.js',
     capabilities: [{ kind: 'notifications:show' }],

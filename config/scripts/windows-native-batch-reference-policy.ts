@@ -16,7 +16,7 @@ const references = new Map([
     'config/scripts/capture-windows-native-environment.cmd'
   ],
   [
-    'config/scripts/orcad-windows-prebuild-cache.mjs',
+    'config/scripts/occd-windows-prebuild-cache.mjs',
     'config/scripts/capture-windows-native-environment.cmd'
   ],
   [
@@ -80,7 +80,7 @@ function isDeveloperCommandUse(node: ts.Identifier): boolean {
     (ts.isPropertyAssignment(parent) &&
       parent.initializer === node &&
       ts.isIdentifier(parent.name) &&
-      parent.name.text === 'ORCA_WINDOWS_VSDEVCMD')
+      parent.name.text === 'OCC_WINDOWS_VSDEVCMD')
   )
 }
 
@@ -136,10 +136,10 @@ export function hasWindowsNativeBatchReferenceViolation(
     return true
   }
   const expectedMethod = executors.get(relativePath)
-  if ((expectedMethod || relativePath === observer) && !modules.includes('@orca/process-host')) {
+  if ((expectedMethod || relativePath === observer) && !modules.includes('@occ/process-host')) {
     return true
   }
-  if (!expectedMethod && relativePath !== observer && modules.includes('@orca/process-host')) {
+  if (!expectedMethod && relativePath !== observer && modules.includes('@occ/process-host')) {
     return true
   }
   const source = ts.createSourceFile(relativePath, contents, ts.ScriptTarget.Latest, true)
@@ -153,7 +153,7 @@ export function hasWindowsNativeBatchReferenceViolation(
     if (
       ts.isImportDeclaration(node) &&
       ts.isStringLiteral(node.moduleSpecifier) &&
-      node.moduleSpecifier.text === '@orca/process-host'
+      node.moduleSpecifier.text === '@occ/process-host'
     ) {
       const bindings = node.importClause?.namedBindings
       if (bindings && ts.isNamedImports(bindings)) {

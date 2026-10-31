@@ -433,7 +433,7 @@ describe('structured agent-session read transport unattached refusals', () => {
     }
   })
 
-  it.each(['journalCorrupt', 'journalWrittenByNewerOrca'])(
+  it.each(['journalCorrupt', 'journalWrittenByNewerOCC'])(
     'hands the pane the refusal a read met, and stops reconnecting only past %s',
     async (final) => {
       vi.useFakeTimers()

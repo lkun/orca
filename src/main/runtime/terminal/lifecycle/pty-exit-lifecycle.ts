@@ -1,4 +1,4 @@
-import { OrcaRuntimeWithOnClientDisconnected } from '../layout/terminal-client-disconnect'
+import { OCCRuntimeWithOnClientDisconnected } from '../layout/terminal-client-disconnect'
 import type { PtyIncarnationId } from '../../../../shared/pty-incarnation'
 import type { TerminalExitCause } from '../../../../shared/terminal-exit-cause'
 import {
@@ -10,12 +10,12 @@ import type { RetiredTerminalSurface } from '../../mobile-session-terminal-retir
 import { parsePaneKey } from '../../../../shared/stable-pane-id'
 import { advertisedUrlWatcher } from '../../../ports/advertised-url-watcher'
 import type { PtyLivenessVerdict } from '../../../../shared/pty-liveness-verdict'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { exitedSplitPaneFacts } from './exited-split-pane-rule'
 import { closedPaneOfExitedPty, type ClosedPaneOfExit } from './closed-pane-of-exited-pty'
 import type { RuntimePtyWorktreeRecord } from '../../runtime-terminal-state-records'
 
-export abstract class OrcaRuntimeWithOnPtyExit extends OrcaRuntimeWithOnClientDisconnected {
+export abstract class OCCRuntimeWithOnPtyExit extends OCCRuntimeWithOnClientDisconnected {
   protected abstract pruneDisconnectedPtyRecords(): void
 
   protected abstract failActiveDispatchOnExit(
@@ -38,7 +38,7 @@ export abstract class OrcaRuntimeWithOnPtyExit extends OrcaRuntimeWithOnClientDi
     pty: RuntimePtyWorktreeRecord | undefined,
     exitIncarnationId: PtyIncarnationId | undefined
   ): ClosedPaneOfExit | null {
-    if (!ORCA_LAYOUT_OWNER_IS_MAIN || !pty || this.paneOfPty(pty).paneKey) {
+    if (!OCC_LAYOUT_OWNER_IS_MAIN || !pty || this.paneOfPty(pty).paneKey) {
       return null
     }
     return closedPaneOfExitedPty(
@@ -260,7 +260,7 @@ export abstract class OrcaRuntimeWithOnPtyExit extends OrcaRuntimeWithOnClientDi
             incarnationId,
             exactSurfaces,
             // Switch point: main decides an exited split pane's close.
-            ORCA_LAYOUT_OWNER_IS_MAIN
+            OCC_LAYOUT_OWNER_IS_MAIN
               ? exitedSplitPaneFacts(this.terminalRunFacts, pty, ptyId, exitCode, options)
               : undefined,
             closedPane ?? undefined

@@ -3,7 +3,7 @@ import { OrchestrationError } from '../../orchestration-error'
 import { LEGACY_CONTRACT_VERSION } from '../contract-constants'
 import { isEquivalentPaneKey } from '../pane-key-match'
 import type { OrchestrationDb } from '../orchestration-db'
-import type { OrcaSessionId } from '../../../../../shared/orca-session-address'
+import type { OCCSessionId } from '../../../../../shared/occ-session-address'
 import { findCallerWorkerDispatches, workerRunBindingRefusal } from './worker-run-binding'
 import {
   mailboxAddressOf,
@@ -17,8 +17,8 @@ export function bindRun(
     runId: string
     coordinatorHandle: string | null
     coordinatorPaneKey: string | null
-    /** The coordinator's bare OCC session id when it is a structured session; see orca-session-address. */
-    coordinatorOrcaSessionId?: OrcaSessionId | null
+    /** The coordinator's bare OCC session id when it is a structured session; see occ-session-address. */
+    coordinatorOCCSessionId?: OCCSessionId | null
     takeoverLegacy?: boolean
     legacyCoordinatorAuthority?: {
       runId: string
@@ -32,7 +32,7 @@ export function bindRun(
   const coordinator = {
     terminalHandle: params.coordinatorHandle,
     paneKey: params.coordinatorPaneKey,
-    orcaSessionId: params.coordinatorOrcaSessionId ?? null
+    occSessionId: params.coordinatorOCCSessionId ?? null
   }
   this.db.exec('BEGIN IMMEDIATE')
   try {
@@ -135,7 +135,7 @@ export function bindRun(
         'This adopted Run still has live legacy work. Its attested coordinator may rebind it, or a current coordinator may explicitly use run-use --takeover-legacy.',
         {
           effectsApplied: false,
-          recoveryCommand: `orca orchestration run-use --id ${params.runId} --takeover-legacy`
+          recoveryCommand: `occ orchestration run-use --id ${params.runId} --takeover-legacy`
         }
       )
     }
@@ -169,8 +169,8 @@ export function bindRun(
       this.db
         .prepare(
           `UPDATE runs
-           SET coordinator_handle = ?, coordinator_pane_key = ?, coordinator_orca_session_id = ?,
-               coordinator_orca_session_id_generation = consumer_generation + 1,
+           SET coordinator_handle = ?, coordinator_pane_key = ?, coordinator_occ_session_id = ?,
+               coordinator_occ_session_id_generation = consumer_generation + 1,
                consumer_generation = consumer_generation + 1,
                updated_at = datetime('now')
            WHERE id = ?`
@@ -178,22 +178,22 @@ export function bindRun(
         .run(
           coordinator.terminalHandle,
           coordinator.paneKey,
-          coordinator.orcaSessionId,
+          coordinator.occSessionId,
           params.runId
         )
       this.fenceUnacknowledgedMailboxDeliveries(`run:${params.runId}`)
       if (params.takeoverLegacy || replacesLegacyCoordinator) {
         this.promoteLegacyCoordinatorMailForTakeover(params.runId, retainedCoordinatorHandle)
       }
-    } else if (runCoordinatorKey(run).orcaSessionId !== coordinator.orcaSessionId) {
+    } else if (runCoordinatorKey(run).occSessionId !== coordinator.occSessionId) {
       // Same consumer: backfill the session id omitted by an older writer.
       this.db
         .prepare(
-          `UPDATE runs SET coordinator_orca_session_id = ?,
-             coordinator_orca_session_id_generation = consumer_generation
+          `UPDATE runs SET coordinator_occ_session_id = ?,
+             coordinator_occ_session_id_generation = consumer_generation
            WHERE id = ?`
         )
-        .run(coordinator.orcaSessionId, params.runId)
+        .run(coordinator.occSessionId, params.runId)
     }
     this.db.exec('COMMIT')
   } catch (error) {

@@ -37,7 +37,7 @@ vi.mock('../../telemetry/client', () =>
 vi.mock('../../telemetry/classify-error', () =>
   import('./pty-ipc-mock-registry').then((m) => m.classifyErrorModuleMock())
 )
-vi.mock('../../cli/linux-terminal-orca-cli-shim', () =>
+vi.mock('../../cli/linux-terminal-occ-cli-shim', () =>
   import('./pty-ipc-mock-registry').then((m) => m.linuxCliShimModuleMock())
 )
 vi.mock('../../memory/pty-registry', () =>
@@ -284,11 +284,11 @@ describe('registerPtyHandlers', () => {
         registerWithTrustedHomes([OTHER_HOME], OTHER_HOME)
 
         await spawnCodexResume(ORIGIN_ROLLOUT, {
-          env: { ORCA_SEQUENCED_STARTUP_COMMAND: `codex 'resume' '${RESUME_SESSION_ID}'` }
+          env: { OCC_SEQUENCED_STARTUP_COMMAND: `codex 'resume' '${RESUME_SESSION_ID}'` }
         })
 
         const spawnOptions = daemonSpawn.mock.calls.at(-1)![0]
-        expect(spawnOptions.env.ORCA_SEQUENCED_STARTUP_COMMAND).toBe('codex')
+        expect(spawnOptions.env.OCC_SEQUENCED_STARTUP_COMMAND).toBe('codex')
         expect(spawnOptions.command).toBe('codex')
       })
       it('leaves the sequenced startup command alone when provenance is verified', async () => {
@@ -297,10 +297,10 @@ describe('registerPtyHandlers', () => {
         const sequenced = `codex 'resume' '${RESUME_SESSION_ID}'`
 
         await spawnCodexResume(ORIGIN_ROLLOUT, {
-          env: { ORCA_SEQUENCED_STARTUP_COMMAND: sequenced }
+          env: { OCC_SEQUENCED_STARTUP_COMMAND: sequenced }
         })
 
-        expect(daemonSpawn.mock.calls.at(-1)![0].env.ORCA_SEQUENCED_STARTUP_COMMAND).toBe(sequenced)
+        expect(daemonSpawn.mock.calls.at(-1)![0].env.OCC_SEQUENCED_STARTUP_COMMAND).toBe(sequenced)
       })
       posixOnlyIt(
         'strips the sequenced startup command on the local-provider spawn path too',
@@ -311,11 +311,11 @@ describe('registerPtyHandlers', () => {
           registerWithTrustedHomes([OTHER_HOME], OTHER_HOME)
 
           await spawnCodexResume(ORIGIN_ROLLOUT, {
-            env: { ORCA_SEQUENCED_STARTUP_COMMAND: `codex 'resume' '${RESUME_SESSION_ID}'` }
+            env: { OCC_SEQUENCED_STARTUP_COMMAND: `codex 'resume' '${RESUME_SESSION_ID}'` }
           })
 
           const env = spawnMock.mock.calls.at(-1)![2].env as Record<string, string>
-          expect(env.ORCA_SEQUENCED_STARTUP_COMMAND).toBe('codex')
+          expect(env.OCC_SEQUENCED_STARTUP_COMMAND).toBe('codex')
         }
       )
       posixOnlyIt(
@@ -327,11 +327,11 @@ describe('registerPtyHandlers', () => {
           const sequenced = `codex 'resume' '${RESUME_SESSION_ID}'`
 
           await spawnCodexResume(ORIGIN_ROLLOUT, {
-            env: { ORCA_SEQUENCED_STARTUP_COMMAND: sequenced }
+            env: { OCC_SEQUENCED_STARTUP_COMMAND: sequenced }
           })
 
           const env = spawnMock.mock.calls.at(-1)![2].env as Record<string, string>
-          expect(env.ORCA_SEQUENCED_STARTUP_COMMAND).toBe(sequenced)
+          expect(env.OCC_SEQUENCED_STARTUP_COMMAND).toBe(sequenced)
         }
       )
       it('omits the notice on a reattach that never ran this launch command', async () => {
@@ -372,7 +372,7 @@ describe('registerPtyHandlers', () => {
           cols: 80,
           rows: 24,
           command: `codex 'resume' '${RESUME_SESSION_ID}'`,
-          env: { ORCA_SEQUENCED_STARTUP_COMMAND: `codex 'resume' '${RESUME_SESSION_ID}'` },
+          env: { OCC_SEQUENCED_STARTUP_COMMAND: `codex 'resume' '${RESUME_SESSION_ID}'` },
           launchAgent: 'codex',
           resumeProviderSession: {
             key: 'session_id',
@@ -383,7 +383,7 @@ describe('registerPtyHandlers', () => {
 
         const spawnOptions = daemonSpawn.mock.calls.at(-1)![0]
         expect(spawnOptions.command).toBe('codex')
-        expect(spawnOptions.env.ORCA_SEQUENCED_STARTUP_COMMAND).toBe('codex')
+        expect(spawnOptions.env.OCC_SEQUENCED_STARTUP_COMMAND).toBe('codex')
         expect(runtime.noteTerminalSpawnCommand).toHaveBeenCalledWith(expect.any(String), 'codex')
       })
     })

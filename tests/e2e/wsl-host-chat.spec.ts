@@ -1,5 +1,5 @@
 /**
- * Native chat on a WSL host with a fake WSL transport: the HUB stands in for the distro's orcad and
+ * Native chat on a WSL host with a fake WSL transport: the HUB stands in for the distro's occd and
  * runs the Claude stub. A second desktop adds the "distro" as a host, opens a chat on a project
  * there, then sees the distro stop: chat calls refuse without booting it (E9) and switching back
  * to the workspace boots it so the chat continues.
@@ -7,7 +7,7 @@
 import { mkdtempSync, rmSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { expect } from './helpers/orca-app'
+import { expect } from './helpers/occ-app'
 import { createRuntimeDesktopPairingOffer } from './helpers/paired-electron-client'
 import { callEnvironment } from './helpers/paired-host-terminal'
 import { buildFakeAgentCommandOverride } from './helpers/fake-agent-command-override'
@@ -29,13 +29,13 @@ test.describe('native chat on a WSL host', () => {
   test.skip(!SUPPORTED, 'the Claude stub wrapper is POSIX-only')
 
   test('admits, streams, offers Start for a stopped distro, and continues after Start or a focus boot', async ({
-    orcaPage: hub,
+    occPage: hub,
     claudeStub
   }, testInfo) => {
     // Two Electron apps, a host add and two chat turns.
     test.setTimeout(300_000)
     await waitForSessionReady(hub)
-    // The HUB is the distro's orcad: its settings are the host's, so the chat runs its stub.
+    // The HUB is the distro's occd: its settings are the host's, so the chat runs its stub.
     await hub.evaluate(async (command) => {
       await window.__store?.getState().updateSettings({
         nativeChatProviders: { claude: true, codex: true },
@@ -43,7 +43,7 @@ test.describe('native chat on a WSL host', () => {
       })
     }, buildFakeAgentCommandOverride(claudeStub.command))
     const offer = await createRuntimeDesktopPairingOffer(hub)
-    const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-chat-fake-'))
+    const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-chat-fake-'))
     const distrosFile = path.join(fakeDir, 'distros.json')
     const connectLogFile = path.join(fakeDir, 'connects.log')
     writeDistros(distrosFile, RUNNING)
@@ -169,7 +169,7 @@ test.describe('native chat on a WSL host', () => {
   })
 
   test('names the distro when the agent is no longer installed there', async ({
-    orcaPage: hub,
+    occPage: hub,
     claudeStub
   }, testInfo) => {
     // Two Electron apps, one chat turn and one failed restart.
@@ -182,7 +182,7 @@ test.describe('native chat on a WSL host', () => {
       })
     }, buildFakeAgentCommandOverride(claudeStub.command))
     const offer = await createRuntimeDesktopPairingOffer(hub)
-    const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-chat-missing-'))
+    const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-chat-missing-'))
     const distrosFile = path.join(fakeDir, 'distros.json')
     writeDistros(distrosFile, RUNNING)
     const desktop = await launchDesktopWithFakeWsl(
@@ -299,7 +299,7 @@ test.describe('native chat on a WSL host', () => {
   })
 
   test('holds Send and offers Start when a runtime call, not liveness, finds the distro stopped', async ({
-    orcaPage: hub,
+    occPage: hub,
     claudeStub
   }, testInfo) => {
     // Two Electron apps and two chat turns around one stop.
@@ -312,7 +312,7 @@ test.describe('native chat on a WSL host', () => {
       })
     }, buildFakeAgentCommandOverride(claudeStub.command))
     const offer = await createRuntimeDesktopPairingOffer(hub)
-    const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-wsl-chat-parked-'))
+    const fakeDir = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-wsl-chat-parked-'))
     const distrosFile = path.join(fakeDir, 'distros.json')
     const connectLogFile = path.join(fakeDir, 'connects.log')
     writeDistros(distrosFile, RUNNING)

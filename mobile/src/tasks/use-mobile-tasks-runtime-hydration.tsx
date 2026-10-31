@@ -11,7 +11,7 @@ import {
 } from './mobile-task-runtime-operations'
 import {
   MOBILE_TASKS_CAPABILITY,
-  type PersistedTrustedOrcaHooks,
+  type PersistedTrustedOCCHooks,
   filterAvailableTaskProviders,
   normalizeVisibleTaskProviders,
   resolveVisibleTaskProvider,
@@ -54,12 +54,12 @@ export function useMobileTasksRuntimeHydration(model: ClientSettingsActionsModel
     setLinearWorkspaces,
     setMergeMethodProjectRow,
     setMergeMethodTaskItem,
-    setOrcaYamlTrustPrompt,
+    setOCCYamlTrustPrompt,
     setPendingGitHubProjectViewSelection,
     setPendingHostedMerge,
     setPendingHostedStateChange,
     setPendingProjectGitHubMerge,
-    setProjectRepoNotInOrca,
+    setProjectRepoNotInOCC,
     setProjectRowDetail,
     setProjectRowItem,
     setProvider,
@@ -93,7 +93,7 @@ export function useMobileTasksRuntimeHydration(model: ClientSettingsActionsModel
     setShowSortPicker,
     setTaskStateHydrated,
     setTasksSupportState,
-    setTrustedOrcaHooks,
+    setTrustedOCCHooks,
     setVisibleProviders,
     taskResumeRef,
     visibleProviders
@@ -102,8 +102,8 @@ export function useMobileTasksRuntimeHydration(model: ClientSettingsActionsModel
     if (!client || connState !== 'connected') {
       taskResumeRef.current = {}
       setRuntimeTaskSettings({})
-      setTrustedOrcaHooks({})
-      setOrcaYamlTrustPrompt(null)
+      setTrustedOCCHooks({})
+      setOCCYamlTrustPrompt(null)
       setGithubProjectHiddenFieldIdsByView({})
       setTaskStateHydrated(false)
       setTasksSupportState({ kind: 'unknown', client: null })
@@ -131,7 +131,7 @@ export function useMobileTasksRuntimeHydration(model: ClientSettingsActionsModel
       setPendingGitHubProjectViewSelection(null)
       setActionItem(null)
       setProjectRowItem(null)
-      setProjectRepoNotInOrca(null)
+      setProjectRepoNotInOCC(null)
       setDetailPayload(null)
       setProjectRowDetail(null)
       setShowCreateTask(false)
@@ -173,7 +173,7 @@ export function useMobileTasksRuntimeHydration(model: ClientSettingsActionsModel
     setPendingGitHubProjectViewSelection(null)
     setActionItem(null)
     setProjectRowItem(null)
-    setProjectRepoNotInOrca(null)
+    setProjectRepoNotInOCC(null)
     setDetailPayload(null)
     setProjectRowDetail(null)
     setShowCreateTask(false)
@@ -223,7 +223,7 @@ export function useMobileTasksRuntimeHydration(model: ClientSettingsActionsModel
         setPendingGitHubProjectViewSelection(null)
         setActionItem(null)
         setProjectRowItem(null)
-        setProjectRepoNotInOrca(null)
+        setProjectRepoNotInOCC(null)
         setDetailPayload(null)
         setProjectRowDetail(null)
         setShowCreateTask(false)
@@ -274,11 +274,11 @@ export function useMobileTasksRuntimeHydration(model: ClientSettingsActionsModel
           (uiRead.value as
             | {
                 taskResumeState?: TaskResumeState
-                trustedOrcaHooks?: PersistedTrustedOrcaHooks
+                trustedOCCHooks?: PersistedTrustedOCCHooks
               }
             | undefined)
         : null
-      setTrustedOrcaHooks(uiState?.trustedOrcaHooks ?? {})
+      setTrustedOCCHooks(uiState?.trustedOCCHooks ?? {})
       const resume = uiState?.taskResumeState ?? {}
       taskResumeRef.current = resume
       setGithubProjectHiddenFieldIdsByView(resume.githubProjectHiddenFieldIdsByView ?? {})

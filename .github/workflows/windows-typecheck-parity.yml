@@ -31,7 +31,7 @@ jobs:
     runs-on: windows-2025
     timeout-minutes: 40
     env:
-      ORCA_BACKGROUND_LAUNCH: '1'
+      OCC_BACKGROUND_LAUNCH: '1'
       NODE_OPTIONS: --max-old-space-size=4096
     steps:
       - uses: actions/checkout@v6

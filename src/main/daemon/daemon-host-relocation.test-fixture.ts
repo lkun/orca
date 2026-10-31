@@ -4,13 +4,13 @@ import { join } from 'node:path'
 export function buildInstallFixture(root: string): void {
   mkdirSync(root, { recursive: true })
   writeFileSync(join(root, 'OCC.exe'), 'exe-bytes')
-  const processHostDir = join(root, 'resources', 'node_modules', '@orca', 'process-host')
+  const processHostDir = join(root, 'resources', 'node_modules', '@occ', 'process-host')
   mkdirSync(join(processHostDir, 'dist'), { recursive: true })
   mkdirSync(join(processHostDir, 'src'), { recursive: true })
   writeFileSync(
     join(processHostDir, 'package.json'),
     JSON.stringify({
-      name: '@orca/process-host',
+      name: '@occ/process-host',
       type: 'commonjs',
       exports: {
         '.': { default: './dist/run-process.js' },
@@ -47,14 +47,14 @@ export function buildInstallFixture(root: string): void {
     mkdirSync(join(prebuildsRoot, arch), { recursive: true })
     writeFileSync(join(prebuildsRoot, arch, 'pty.node'), `${arch}-prebuild`)
   }
-  const registryDir = join(root, 'resources', 'node_modules', '@orca', 'windows-registry')
+  const registryDir = join(root, 'resources', 'node_modules', '@occ', 'windows-registry')
   mkdirSync(join(registryDir, 'build', 'Release', 'obj'), { recursive: true })
   const actualRegistryDir = join(import.meta.dirname, '../../../native/windows-registry')
   for (const name of ['package.json', 'index.js']) {
     cpSync(join(actualRegistryDir, name), join(registryDir, name))
   }
-  writeFileSync(join(registryDir, 'build', 'Release', 'orca_windows_registry.node'), 'native')
-  writeFileSync(join(registryDir, 'build', 'Release', 'orca_windows_registry.pdb'), 'symbols')
+  writeFileSync(join(registryDir, 'build', 'Release', 'occ_windows_registry.node'), 'native')
+  writeFileSync(join(registryDir, 'build', 'Release', 'occ_windows_registry.pdb'), 'symbols')
   writeFileSync(join(registryDir, 'build', 'Release', 'obj', 'addon.obj'), 'intermediate')
   const processTreeDir = join(root, 'resources', 'node_modules', '@vscode', 'windows-process-tree')
   mkdirSync(join(processTreeDir, 'build', 'Release'), { recursive: true })

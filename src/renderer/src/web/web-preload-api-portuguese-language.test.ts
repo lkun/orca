@@ -15,13 +15,13 @@ describe('web Portuguese language migration', () => {
     vi.unstubAllGlobals()
   })
 
-  it.each(['plugin:stablyai.orca-portuguese/pt-BR', 'en'] as const)(
+  it.each(['plugin:stablyai.occ-portuguese/pt-BR', 'en'] as const)(
     'persists the Portuguese receipt and later plugin reselection for %s',
     async (language) => {
-      const plugin = 'plugin:stablyai.orca-portuguese/pt-BR'
+      const plugin = 'plugin:stablyai.occ-portuguese/pt-BR'
       const globals = installBrowserGlobals('Linux')
       globals.storage.setItem(
-        'orca.web.settings.v1',
+        'occ.web.settings.v1',
         JSON.stringify({
           uiLanguage: language,
           terminalFontSize: 19,
@@ -36,7 +36,7 @@ describe('web Portuguese language migration', () => {
         uiLanguagePortugueseMigrationApplied: true
       })
       expect(await globals.window.api.settings.get()).toMatchObject({ uiLanguage: expected })
-      expect(JSON.parse(globals.storage.getItem('orca.web.settings.v1') ?? '{}')).toMatchObject({
+      expect(JSON.parse(globals.storage.getItem('occ.web.settings.v1') ?? '{}')).toMatchObject({
         uiLanguage: expected,
         uiLanguagePortugueseMigrationApplied: true,
         terminalFontSize: 19,
@@ -61,10 +61,10 @@ describe('web Portuguese language migration', () => {
       uiLanguage: 'system',
       uiLanguagePortugueseMigrationApplied: true
     })
-    expect(storage.getItem('orca.web.settings.v1')).toBeNull()
-    await api.settings.set({ uiLanguage: 'plugin:stablyai.orca-portuguese/pt-BR' })
+    expect(storage.getItem('occ.web.settings.v1')).toBeNull()
+    await api.settings.set({ uiLanguage: 'plugin:stablyai.occ-portuguese/pt-BR' })
     expect(await api.settings.get()).toMatchObject({
-      uiLanguage: 'plugin:stablyai.orca-portuguese/pt-BR',
+      uiLanguage: 'plugin:stablyai.occ-portuguese/pt-BR',
       uiLanguagePortugueseMigrationApplied: true
     })
   })
@@ -73,14 +73,14 @@ describe('web Portuguese language migration', () => {
     'keeps malformed raw storage untouched: %s',
     async (raw) => {
       const globals = installBrowserGlobals('Linux')
-      globals.storage.setItem('orca.web.settings.v1', raw)
+      globals.storage.setItem('occ.web.settings.v1', raw)
       const { installWebPreloadApi } = await import('./web-preload-api')
       installWebPreloadApi()
       expect(globals.window.api.settings.getSync()?.uiLanguagePortugueseMigrationApplied).toBe(true)
       expect((await globals.window.api.settings.get()).uiLanguagePortugueseMigrationApplied).toBe(
         true
       )
-      expect(globals.storage.getItem('orca.web.settings.v1')).toBe(raw)
+      expect(globals.storage.getItem('occ.web.settings.v1')).toBe(raw)
     }
   )
 
@@ -108,18 +108,18 @@ describe('web Portuguese language migration', () => {
       const globals = installBrowserGlobals('Linux')
       writeStoredRuntimeEnvironment(globals.storage)
       globals.storage.setItem(
-        'orca.web.settings.v1',
+        'occ.web.settings.v1',
         JSON.stringify({
-          uiLanguage: 'plugin:stablyai.orca-portuguese/pt-BR'
+          uiLanguage: 'plugin:stablyai.occ-portuguese/pt-BR'
         })
       )
       const { installWebPreloadApi } = await import('./web-preload-api')
       installWebPreloadApi()
       expect((await globals.window.api.settings.get()).uiLanguage).toBe('pt')
-      await globals.window.api.settings.set({ uiLanguage: 'plugin:stablyai.orca-portuguese/pt-BR' })
+      await globals.window.api.settings.set({ uiLanguage: 'plugin:stablyai.occ-portuguese/pt-BR' })
       await globals.window.api.settings.set({ compactWorktreeCards: true })
       expect((await globals.window.api.settings.get()).uiLanguage).toBe(
-        'plugin:stablyai.orca-portuguese/pt-BR'
+        'plugin:stablyai.occ-portuguese/pt-BR'
       )
       expect(runtimeCalls.filter((call) => call.method === 'settings.update')).toEqual([
         { method: 'settings.update', params: { compactWorktreeCards: true } }

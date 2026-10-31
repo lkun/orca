@@ -20,7 +20,7 @@ function fixture({ exports = {}, patterns = ['src/packages/*'], extra = {} } = {
   const files = {
     'pnpm-workspace.yaml': `packages:\n${patterns.map((pattern) => `  - '${pattern}'`).join('\n')}\n`,
     'src/packages/process-host/package.json': JSON.stringify({
-      name: '@orca/process-host',
+      name: '@occ/process-host',
       exports
     }),
     'src/packages/process-host/src/run-process.ts': 'export const value = 1',
@@ -38,12 +38,12 @@ function fixture({ exports = {}, patterns = ['src/packages/*'], extra = {} } = {
 
 const publicExports = {
   '.': {
-    'orca-source': './src/run-process.ts',
+    'occ-source': './src/run-process.ts',
     types: './dist/run-process.d.ts',
     default: './dist/run-process.js'
   },
   './process-spec': {
-    'orca-source': './src/process-spec.ts',
+    'occ-source': './src/process-spec.ts',
     types: './dist/process-spec.d.ts',
     default: './dist/process-spec.js'
   }
@@ -53,8 +53,8 @@ it('inventories every declared package manifest without requiring built or sourc
   const root = fixture({
     patterns: ['src/packages/*', 'native/windows-registry'],
     extra: {
-      'native/windows-registry/package.json': JSON.stringify({ name: '@orca/windows-registry' }),
-      'mobile/packages/model/package.json': JSON.stringify({ name: '@orca/mobile-model' })
+      'native/windows-registry/package.json': JSON.stringify({ name: '@occ/windows-registry' }),
+      'mobile/packages/model/package.json': JSON.stringify({ name: '@occ/mobile-model' })
     }
   })
   expect(workspacePackageManifests(root)).toEqual([
@@ -65,35 +65,35 @@ it('inventories every declared package manifest without requiring built or sourc
 
 it('maps only explicit public source exports with exact aliases independent of compiled output', () => {
   const resolver = createWorkspaceSourceResolver(fixture({ exports: publicExports }))
-  expect(resolver.resolve('@orca/process-host')).toMatchObject({
+  expect(resolver.resolve('@occ/process-host')).toMatchObject({
     file: 'src/packages/process-host/src/run-process.ts',
     manifest: 'src/packages/process-host/package.json'
   })
-  expect(resolver.resolve('@orca/process-host/process-spec').file).toBe(
+  expect(resolver.resolve('@occ/process-host/process-spec').file).toBe(
     'src/packages/process-host/src/process-spec.ts'
   )
-  expect(resolver.aliases.map((alias) => alias.find.test('@orca/process-host'))).toEqual([
+  expect(resolver.aliases.map((alias) => alias.find.test('@occ/process-host'))).toEqual([
     true,
     false
   ])
-  expect(resolver.aliases.map((alias) => alias.find.test('@orca/process-host/private'))).toEqual([
+  expect(resolver.aliases.map((alias) => alias.find.test('@occ/process-host/private'))).toEqual([
     false,
     false
   ])
   expect(resolver.aliases.every((alias) => !alias.replacement.includes('/dist/'))).toBe(true)
   expect(resolver.esbuildAliases).toEqual({
-    '@orca/process-host': resolver.resolve('@orca/process-host').path,
-    '@orca/process-host/process-spec': resolver.resolve('@orca/process-host/process-spec').path
+    '@occ/process-host': resolver.resolve('@occ/process-host').path,
+    '@occ/process-host/process-spec': resolver.resolve('@occ/process-host/process-spec').path
   })
   expect(resolver.resolve('node:child_process')).toBeNull()
   expect(resolver.resolve('zod')).toBeNull()
 })
 
-it.each(['@orca/unknown', '@orca/process-host/private', '@orca/process-host/src/run-process'])(
+it.each(['@occ/unknown', '@occ/process-host/private', '@occ/process-host/src/run-process'])(
   'rejects unknown and private internal imports: %s',
   (specifier) => {
     const resolver = createWorkspaceSourceResolver(fixture({ exports: publicExports }))
-    expect(() => resolver.resolve(specifier)).toThrow('No public orca-source export')
+    expect(() => resolver.resolve(specifier)).toThrow('No public occ-source export')
   }
 )
 
@@ -101,7 +101,7 @@ it('requires source metadata instead of trusting a public built export', () => {
   const resolver = createWorkspaceSourceResolver(
     fixture({ exports: { '.': './dist/run-process.js' } })
   )
-  expect(() => resolver.resolve('@orca/process-host')).toThrow('No public orca-source export')
+  expect(() => resolver.resolve('@occ/process-host')).toThrow('No public occ-source export')
 })
 
 it('respects excluded workspace packages and independent workspaces', () => {
@@ -110,15 +110,15 @@ it('respects excluded workspace packages and independent workspaces', () => {
     patterns: ['src/packages/*', '!src/packages/process-host'],
     extra: {
       'mobile/packages/model/package.json': JSON.stringify({
-        name: '@orca/mobile-model',
+        name: '@occ/mobile-model',
         exports: publicExports
       })
     }
   })
   const resolver = createWorkspaceSourceResolver(root)
   expect(resolver.aliases).toEqual([])
-  expect(() => resolver.resolve('@orca/process-host')).toThrow('No public orca-source export')
-  expect(() => resolver.resolve('@orca/mobile-model')).toThrow('No public orca-source export')
+  expect(() => resolver.resolve('@occ/process-host')).toThrow('No public occ-source export')
+  expect(() => resolver.resolve('@occ/mobile-model')).toThrow('No public occ-source export')
 })
 
 it('retains deliberately external native workspace packages', () => {
@@ -126,12 +126,12 @@ it('retains deliberately external native workspace packages', () => {
     patterns: ['native/windows-registry'],
     extra: {
       'native/windows-registry/package.json': JSON.stringify({
-        name: '@orca/windows-registry',
+        name: '@occ/windows-registry',
         main: 'index.js'
       })
     }
   })
-  expect(createWorkspaceSourceResolver(root).resolve('@orca/windows-registry')).toBeNull()
+  expect(createWorkspaceSourceResolver(root).resolve('@occ/windows-registry')).toBeNull()
 })
 
 it.each([
@@ -141,19 +141,19 @@ it.each([
   './src/../src/run-process.ts',
   './src/run-process.d.ts'
 ])('rejects unsafe, stale or missing source targets: %s', (target) => {
-  const root = fixture({ exports: { '.': { 'orca-source': target } } })
+  const root = fixture({ exports: { '.': { 'occ-source': target } } })
   expect(() => createWorkspaceSourceResolver(root)).toThrow()
 })
 
 it('rejects wildcard source exports and duplicate workspace identities', () => {
   expect(() =>
     createWorkspaceSourceResolver(
-      fixture({ exports: { './*': { 'orca-source': './src/run-process.ts' } } })
+      fixture({ exports: { './*': { 'occ-source': './src/run-process.ts' } } })
     )
   ).toThrow('must name public entry points')
   const root = fixture({
     exports: publicExports,
-    extra: { 'src/packages/duplicate/package.json': JSON.stringify({ name: '@orca/process-host' }) }
+    extra: { 'src/packages/duplicate/package.json': JSON.stringify({ name: '@occ/process-host' }) }
   })
   expect(() => createWorkspaceSourceResolver(root)).toThrow('duplicate workspace package name')
 })

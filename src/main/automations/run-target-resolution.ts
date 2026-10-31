@@ -18,7 +18,7 @@ import {
   type AutomationRunFailure
 } from '../../shared/automation-run-failure-copy'
 import { AutomationDispatchCancelledError } from './automation-dispatch-cancelled-error'
-import { isOrcadFencedAutomation, ORCAD_FENCED_AUTOMATION } from './orcad-fenced-automation'
+import { isOCCdFencedAutomation, OCCD_FENCED_AUTOMATION } from './occd-fenced-automation'
 
 export type AutomationRunTargetResult =
   | { ok: true; cwd: string; repo: Repo; setup?: ProjectHostSetup }
@@ -123,8 +123,8 @@ export function captureLegacyRunTarget(
   allowRemoteHostScheduling: boolean
 ): Automation {
   // The scheduler's first write; a fenced row must stay as the move exported it.
-  if (isOrcadFencedAutomation(store, automation)) {
-    throw new AutomationDispatchCancelledError(ORCAD_FENCED_AUTOMATION)
+  if (isOCCdFencedAutomation(store, automation)) {
+    throw new AutomationDispatchCancelledError(OCCD_FENCED_AUTOMATION)
   }
   const runContext = findLegacyAutomationRunContextStamp(store, automation, {
     allowRemoteHostScheduling

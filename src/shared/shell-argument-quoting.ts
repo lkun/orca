@@ -1,5 +1,5 @@
 // Quoting spellings are byte contracts consumed by parsers/comparisons; keep variants separate.
-// PowerShell lives in powershell-native-argument.ts; CommandLineToArgvW in @orca/process-host.
+// PowerShell lives in powershell-native-argument.ts; CommandLineToArgvW in @occ/process-host.
 
 /** POSIX sh single-quoting: each `'` closes the quote, is escaped, and reopens it (`'\''`). */
 export function quotePosixShell(value: string): string {

@@ -3,12 +3,12 @@
 import { existsSync } from 'node:fs'
 import path from 'node:path'
 import type { ElectronApplication, Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
-import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/orca-restart'
+import { expect, test } from './helpers/occ-app'
+import { attachRepoAndOpenTerminal, createRestartSession } from './helpers/occ-restart'
 import { waitForSessionReady } from './helpers/store'
 
 const LAYOUT_OWNER_BUILD = existsSync(
-  path.join(process.cwd(), 'out', 'main', 'ORCA_LAYOUT_OWNER_MAIN')
+  path.join(process.cwd(), 'out', 'main', 'OCC_LAYOUT_OWNER_MAIN')
 )
 const TEMPLATES = [{ title: 'p6-default-a' }, { title: 'p6-default-b' }]
 const TITLES = TEMPLATES.map((template) => template.title)

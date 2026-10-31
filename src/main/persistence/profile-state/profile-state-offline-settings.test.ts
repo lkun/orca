@@ -24,11 +24,11 @@ afterEach(() => {
 })
 
 function createLocation() {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-offline-settings-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-offline-settings-'))
   directories.push(directory)
   return {
-    dataFile: join(directory, 'orca-data.json'),
-    databaseFile: join(directory, 'orca-state.db'),
+    dataFile: join(directory, 'occ-data.json'),
+    databaseFile: join(directory, 'occ-state.db'),
     profileId: 'profile-offline'
   }
 }
@@ -38,7 +38,7 @@ describe.each(['json', 'sqlite'] as const)('offline settings %s updates', (backe
     'preserves raw Portuguese marker %j before normal load',
     async (marker) => {
       const location = createLocation()
-      const plugin = 'plugin:stablyai.orca-portuguese/pt-BR'
+      const plugin = 'plugin:stablyai.occ-portuguese/pt-BR'
       const original = {
         settings: {
           uiLanguage: plugin,

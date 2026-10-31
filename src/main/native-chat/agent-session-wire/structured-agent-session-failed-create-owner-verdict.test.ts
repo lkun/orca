@@ -41,7 +41,7 @@ let host: StructuredAgentSessionHost
 let acquire: Mock<StructuredAgentSessionAdapter['acquire']>
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-failed-create-verdict-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-failed-create-verdict-'))
   resetHostTestOperationIds()
   acquire = vi.fn(async ({ fence, spawnToken }) => ({
     acquisitionGeneration: globalThis.crypto.randomUUID(),

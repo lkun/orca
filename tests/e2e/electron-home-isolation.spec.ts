@@ -1,7 +1,7 @@
 import type { ElectronApplication } from '@stablyai/playwright-test'
 import { realpathSync } from 'node:fs'
 import path from 'node:path'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 
 test.use({ seedTestRepo: false })
 
@@ -11,11 +11,11 @@ async function readElectronHomeState(electronApp: ElectronApplication) {
     return {
       appHome: app.getPath('home'),
       nodeHome: nodeOs.homedir(),
-      userDataDir: process.env.ORCA_E2E_USER_DATA_DIR,
+      userDataDir: process.env.OCC_E2E_USER_DATA_DIR,
       home: process.env.HOME,
       userProfile: process.env.USERPROFILE,
       codexHome: process.env.CODEX_HOME,
-      orcaCodexHome: process.env.ORCA_CODEX_HOME
+      occCodexHome: process.env.OCC_CODEX_HOME
     }
   })
 }
@@ -30,5 +30,5 @@ test('isolates Electron and Codex from the developer home by default', async ({ 
   expect(state.home).toBe(expectedHome)
   expect(state.userProfile).toBe(expectedHome)
   expect(state.codexHome).toBeUndefined()
-  expect(state.orcaCodexHome).toBeUndefined()
+  expect(state.occCodexHome).toBeUndefined()
 })

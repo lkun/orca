@@ -16,7 +16,7 @@ export const PREVIEW_RANGE_READ_MAX_BYTES = 4 * 1024 * 1024
 
 /**
  * A PDF grant's bytes for the renderer that minted it. pdf.js reads ranges here instead of over
- * fetch, so orca-media needs no fetch or CORS privileges and no other page or frame can read them.
+ * fetch, so occ-media needs no fetch or CORS privileges and no other page or frame can read them.
  */
 export async function readPreviewGrantRange(
   sender: PreviewSender,

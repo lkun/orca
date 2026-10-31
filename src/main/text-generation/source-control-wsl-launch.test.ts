@@ -1,4 +1,4 @@
-import { spawnProcess } from '@orca/process-host'
+import { spawnProcess } from '@occ/process-host'
 import type * as ChildProcess from 'node:child_process'
 import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, realpathSync } from 'node:fs'
 import { rm } from 'node:fs/promises'
@@ -78,7 +78,7 @@ it.each([undefined, 'Wrong', 'Actual'])(
       })
     )
     expect(await result).toMatchObject({ success: true })
-    expect(guestPath).toContain('@/tmp/orca-generation-')
+    expect(guestPath).toContain('@/tmp/occ-generation-')
   }
 )
 
@@ -140,7 +140,7 @@ it('launches the original resolved wrapper once, preserving prefix, recipe, tran
       '/bin/sh',
       '-c',
       request.preparation.script,
-      'orca-generation'
+      'occ-generation'
     ])
     expect(args.slice(9)).toEqual(original.args.slice(3))
     expect(original.args.at(-1)).toContain('/home/dev/repo')
@@ -180,7 +180,7 @@ it('checks the exact composed Windows argv at the inclusive boundary before spaw
 it.each([false, true])(
   'prepares before hostile profiles and preserves login invocation/cwd/env (assigned=%s)',
   async (assigned) => {
-    const directory = realpathSync(mkdtempSync(join(tmpdir(), 'orca-c3-profiles-')))
+    const directory = realpathSync(mkdtempSync(join(tmpdir(), 'occ-c3-profiles-')))
     const repoPath = join(directory, 'repo')
     const startup = join(directory, 'startup')
     const changed = join(directory, 'profile-cwd')
@@ -290,7 +290,7 @@ fs.writeFileSync(process.env.REPORT, JSON.stringify({startup:process.env.STARTUP
       expect(receipt.mask).toBe(process.umask())
     } finally {
       stop.abort()
-      await rm(`/tmp/orca-generation-${request.preparation.args[0]}`, {
+      await rm(`/tmp/occ-generation-${request.preparation.args[0]}`, {
         recursive: true,
         force: true
       })

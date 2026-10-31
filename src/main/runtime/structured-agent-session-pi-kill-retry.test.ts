@@ -44,7 +44,7 @@ afterEach(async () => {
 
 it('settles a production failed Pi start after background kill, then delivers on the next user wake', async () => {
   vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout'] })
-  directory = await mkdtemp(join(tmpdir(), 'orca-pi-kill-retry-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-pi-kill-retry-'))
   const permitIdentity = Promise.withResolvers<void>()
   const connections: JsonlRpcAgentConnection[] = []
   const prompts: string[] = []

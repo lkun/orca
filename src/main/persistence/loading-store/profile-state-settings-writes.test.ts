@@ -73,10 +73,10 @@ afterEach(async () => {
 })
 
 function fixture() {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-settings-domain-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-settings-domain-'))
   directories.push(directory)
   const databasePath = join(directory, 'profile-state.db')
-  const dataFile = join(directory, 'orca-data.json')
+  const dataFile = join(directory, 'occ-data.json')
   const profileId = 'settings-domain'
   const authority = new ProfileStateSqliteAuthority(databasePath, profileId)
   const fixtureState = buildProfileStateCutoverFixture(directory)

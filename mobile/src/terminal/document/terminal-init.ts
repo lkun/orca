@@ -31,7 +31,7 @@ import { applyTerminalTheme } from './terminal-theme'
 import { attachWebglAddon, cancelWebglContextRecovery } from './webgl-recovery'
 import { afterWritesDrained, enqueueWrite, pumpWrites, resetWriteQueue } from './write-queue'
 import { DESKTOP_TERMINAL_SCROLLBACK_ROWS_DEFAULT } from '../../../../src/shared/terminal-scrollback-policy'
-import { activateOrcaTerminalUnicodeProvider } from '../../../../src/shared/terminal-unicode-provider'
+import { activateOCCTerminalUnicodeProvider } from '../../../../src/shared/terminal-unicode-provider'
 
 function openTerminal(scope: TerminalDocumentScope, cols: number, rows: number) {
   const term = scope.createTerminal({
@@ -62,7 +62,7 @@ function openTerminal(scope: TerminalDocumentScope, cols: number, rows: number) 
     const unicodeAddon = scope.createUnicode11Addon()
     if (unicodeAddon) {
       term.loadAddon(unicodeAddon)
-      activateOrcaTerminalUnicodeProvider(term)
+      activateOCCTerminalUnicodeProvider(term)
     }
   } catch {}
   return term

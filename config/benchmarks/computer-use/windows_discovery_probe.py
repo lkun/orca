@@ -8,8 +8,8 @@ import sys
 
 def main():
     if (sys.platform != "win32" or os.environ.get("GITHUB_ACTIONS") != "true"
-            or os.environ.get("ORCA_COMPUTER_BENCH_ISOLATED") != "1"
-            or os.environ.get("ORCA_BACKGROUND_LAUNCH") != "1"):
+            or os.environ.get("OCC_COMPUTER_BENCH_ISOLATED") != "1"
+            or os.environ.get("OCC_BACKGROUND_LAUNCH") != "1"):
         raise SystemExit("discovery probe requires isolated Windows CI")
     import bench
     import obs_win as obs

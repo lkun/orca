@@ -4,7 +4,7 @@ import type { WorktreeMeta } from '../../shared/worktree/meta-types'
 import { worktreeWorkspaceKey } from '../../shared/workspace-scope'
 import { splitWorktreeId } from '../../shared/worktree/id'
 import type { WorktreeSortOrderUpdate } from '../../shared/worktree/sort-order-update'
-import { stripOrcaProvenanceMetaUpdates } from '../worktree-removal-safety'
+import { stripOCCProvenanceMetaUpdates } from '../worktree-removal-safety'
 import { isRemovedFolderWorkspaceInstance } from '../folder-workspace-meta-presence'
 import { worktreeRowTarget } from '../persistence/host-qualified-worktree-meta'
 import {
@@ -127,7 +127,7 @@ export async function updateRuntimeManagedWorktreeMetadata(args: {
       createdAt
     })
   }
-  const metadataUpdates = stripOrcaProvenanceMetaUpdates(persisted)
+  const metadataUpdates = stripOCCProvenanceMetaUpdates(persisted)
   // Recheck removal: an earlier resolution snapshot may still contain this workspace (#22712).
   if (isRemovedFolderWorkspaceInstance(args.store, worktree.id, executionHostId)) {
     throw new Error('selector_not_found')

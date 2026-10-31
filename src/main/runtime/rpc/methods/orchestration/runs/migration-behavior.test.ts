@@ -5,7 +5,7 @@ import {
   ORCHESTRATION_CONTRACT_RUNTIME_CAPABILITY,
   ORCHESTRATION_FEDERATION_RUNTIME_CAPABILITY
 } from '../../../../../../shared/protocol-version'
-import { OrcaRuntimeService } from '../../../../orca-runtime'
+import { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationDb } from '../../../../orchestration/db'
 import type { OrchestrationEnvironmentTransport } from '../../../../orchestration/environment-transport'
 import { RpcDispatcher } from '../../../dispatcher'
@@ -22,9 +22,9 @@ describe('orchestration migration behavior', () => {
     }
   })
 
-  function createRuntime(): { db: OrchestrationDb; runtime: OrcaRuntimeService } {
+  function createRuntime(): { db: OrchestrationDb; runtime: OCCRuntimeService } {
     const db = new OrchestrationDb(':memory:')
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     databases.push(db)
     return { db, runtime }
@@ -268,7 +268,7 @@ describe('orchestration migration behavior', () => {
     databases.push(db)
 
     const calls: { method: string; params: unknown }[] = []
-    const runtime = new OrcaRuntimeService(null, undefined, {
+    const runtime = new OCCRuntimeService(null, undefined, {
       orchestrationEnvironmentTransport: {
         resolve: () => ({
           environmentId: 'environment_windows',

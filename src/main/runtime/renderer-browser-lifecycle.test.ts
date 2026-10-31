@@ -1,11 +1,11 @@
-import './orca-runtime-test-lifecycle.spec'
+import './occ-runtime-test-lifecycle.spec'
 import { expect, it, vi } from 'vitest'
-import { OrcaRuntimeService, electronMocks } from './orca-runtime-test-mocks.spec'
+import { OCCRuntimeService, electronMocks } from './occ-runtime-test-mocks.spec'
 import {
   TEST_WORKTREE_ID,
   makeRuntimeStoreWithWorkspaceSession,
   store
-} from './orca-runtime-test-fixtures.spec'
+} from './occ-runtime-test-fixtures.spec'
 import { getDefaultWorkspaceSession } from '../../shared/constants'
 import type {
   BrowserTabInfo,
@@ -43,7 +43,7 @@ function publication(epoch = 'renderer-1', version = 1): RuntimeMobileSessionTab
 function browserRuntime(closeTab = vi.fn(async (_pageId: string) => {}), runtimeStore = store) {
   const livePages = new Map<string, BrowserTabInfo>()
   const desktopPageIds = new Set<string>()
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   runtime.setOffscreenBrowserBackend({
     createTab: vi.fn(),
     closeTab,
@@ -327,7 +327,7 @@ it('finishes a pending runtime close after renderer detach without losing other 
 it('keeps the headless publication epoch while serve browser pages change', async () => {
   const { runtimeStore } = makeRuntimeStoreWithWorkspaceSession(getDefaultWorkspaceSession())
   const pages: BrowserTabInfo[] = []
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   runtime.setOffscreenBrowserBackend({ createTab: vi.fn(), closeTab: vi.fn(), ownsTab: () => true })
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: Only the bridge inventory is used by this lifecycle test.
   runtime.setAgentBrowserBridge({ tabList: () => ({ tabs: [...pages] }) } as never)

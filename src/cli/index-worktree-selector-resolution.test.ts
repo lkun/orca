@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 const {
   callMock,
   runtimeClientConstructorMock,
-  serveOrcaAppMock,
+  serveOCCAppMock,
   getDefaultUserDataPathMock,
   addEnvironmentFromPairingCodeMock,
   listEnvironmentsMock,
@@ -12,8 +12,8 @@ const {
 } = vi.hoisted(() => ({
   callMock: vi.fn(),
   runtimeClientConstructorMock: vi.fn(),
-  serveOrcaAppMock: vi.fn(),
-  getDefaultUserDataPathMock: vi.fn(() => '/tmp/orca-user-data'),
+  serveOCCAppMock: vi.fn(),
+  getDefaultUserDataPathMock: vi.fn(() => '/tmp/occ-user-data'),
   addEnvironmentFromPairingCodeMock: vi.fn(),
   listEnvironmentsMock: vi.fn(),
   spawnMock: vi.fn()
@@ -24,7 +24,7 @@ vi.mock('./runtime-client', async () => {
   return createRuntimeClientModuleMock({
     callMock,
     runtimeClientConstructorMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock
   })
 })
@@ -45,10 +45,10 @@ import { main, normalizeWorktreeSelector } from './index'
 import { buildWorktree, okFixture, queueFixtures, worktreeListFixture } from './test-fixtures'
 import { useWorktreeAwarenessEnvironment } from './index-test-harness'
 
-describe('orca cli worktree awareness', () => {
+describe('occ cli worktree awareness', () => {
   useWorktreeAwarenessEnvironment({
     callMock,
-    serveOrcaAppMock,
+    serveOCCAppMock,
     getDefaultUserDataPathMock,
     addEnvironmentFromPairingCodeMock,
     listEnvironmentsMock,
@@ -105,9 +105,9 @@ describe('orca cli worktree awareness', () => {
     )
   })
 
-  it('resolves the invocation cwd from ORCA_CLI_CWD when no cwd is passed', async () => {
-    // ORCA_CLI_CWD carries the remote shell's cwd when the bridge executes the CLI on the host.
-    process.env.ORCA_CLI_CWD = '/tmp/repo/feature/src'
+  it('resolves the invocation cwd from OCC_CLI_CWD when no cwd is passed', async () => {
+    // OCC_CLI_CWD carries the remote shell's cwd when the bridge executes the CLI on the host.
+    process.env.OCC_CLI_CWD = '/tmp/repo/feature/src'
     try {
       queueFixtures(
         callMock,
@@ -131,14 +131,14 @@ describe('orca cli worktree awareness', () => {
         worktree: 'id:repo::/tmp/repo/feature'
       })
     } finally {
-      delete process.env.ORCA_CLI_CWD
+      delete process.env.OCC_CLI_CWD
     }
   })
 
   it.skipIf(process.platform === 'win32')(
     'prepares and starts Claude Agent Teams in the current OCC terminal',
     async () => {
-      process.env.ORCA_PANE_KEY = 'tab-1:11111111-1111-4111-8111-111111111111'
+      process.env.OCC_PANE_KEY = 'tab-1:11111111-1111-4111-8111-111111111111'
       vi.stubEnv('ELECTRON_RUN_AS_NODE', '1')
       vi.stubEnv('TMUX_PANE', '%99')
       try {
@@ -148,9 +148,9 @@ describe('orca cli worktree awareness', () => {
             launch: {
               env: {
                 CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: '1',
-                TMUX: '/tmp/orca-claude-agent-teams/team-1,0,1',
+                TMUX: '/tmp/occ-claude-agent-teams/team-1,0,1',
                 TMUX_PANE: '%1',
-                PATH: '/tmp/orca-shim:/usr/bin'
+                PATH: '/tmp/occ-shim:/usr/bin'
               }
             }
           })
@@ -162,17 +162,17 @@ describe('orca cli worktree awareness', () => {
           paneKey: 'tab-1:11111111-1111-4111-8111-111111111111',
           prepareAuth: true,
           env: expect.objectContaining({
-            ORCA_PANE_KEY: 'tab-1:11111111-1111-4111-8111-111111111111'
+            OCC_PANE_KEY: 'tab-1:11111111-1111-4111-8111-111111111111'
           })
         })
         expect(spawnMock).toHaveBeenCalledWith('claude', ['--teammate-mode', 'auto'], {
           stdio: 'inherit',
           env: expect.objectContaining({
             CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: '1',
-            TMUX: '/tmp/orca-claude-agent-teams/team-1,0,1',
+            TMUX: '/tmp/occ-claude-agent-teams/team-1,0,1',
             TMUX_PANE: '%1',
-            PATH: '/tmp/orca-shim:/usr/bin',
-            ORCA_PANE_KEY: 'tab-1:11111111-1111-4111-8111-111111111111'
+            PATH: '/tmp/occ-shim:/usr/bin',
+            OCC_PANE_KEY: 'tab-1:11111111-1111-4111-8111-111111111111'
           })
         })
         expect(callMock.mock.calls[0][1].env).not.toHaveProperty('ELECTRON_RUN_AS_NODE')
@@ -186,16 +186,16 @@ describe('orca cli worktree awareness', () => {
   it.skipIf(process.platform === 'win32')(
     'passes Claude Agent Teams arguments through to Claude Code',
     async () => {
-      process.env.ORCA_PANE_KEY = 'tab-1:11111111-1111-4111-8111-111111111111'
+      process.env.OCC_PANE_KEY = 'tab-1:11111111-1111-4111-8111-111111111111'
       queueFixtures(
         callMock,
         okFixture('req_agent_teams_prepare', {
           launch: {
             env: {
               CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: '1',
-              TMUX: '/tmp/orca-claude-agent-teams/team-1,0,1',
+              TMUX: '/tmp/occ-claude-agent-teams/team-1,0,1',
               TMUX_PANE: '%1',
-              PATH: '/tmp/orca-shim:/usr/bin'
+              PATH: '/tmp/occ-shim:/usr/bin'
             }
           }
         })
@@ -223,16 +223,16 @@ describe('orca cli worktree awareness', () => {
   it.skipIf(process.platform === 'win32')(
     'does not duplicate an explicit Claude teammate mode',
     async () => {
-      process.env.ORCA_PANE_KEY = 'tab-1:11111111-1111-4111-8111-111111111111'
+      process.env.OCC_PANE_KEY = 'tab-1:11111111-1111-4111-8111-111111111111'
       queueFixtures(
         callMock,
         okFixture('req_agent_teams_prepare', {
           launch: {
             env: {
               CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS: '1',
-              TMUX: '/tmp/orca-claude-agent-teams/team-1,0,1',
+              TMUX: '/tmp/occ-claude-agent-teams/team-1,0,1',
               TMUX_PANE: '%1',
-              PATH: '/tmp/orca-shim:/usr/bin'
+              PATH: '/tmp/occ-shim:/usr/bin'
             }
           }
         })

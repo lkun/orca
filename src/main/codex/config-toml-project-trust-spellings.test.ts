@@ -113,7 +113,7 @@ describe('the config mirror treats every spelling as one project table', () => {
     let systemHomePath: string
 
     beforeEach(() => {
-      root = mkdtempSync(join(tmpdir(), 'orca-project-spellings-'))
+      root = mkdtempSync(join(tmpdir(), 'occ-project-spellings-'))
       runtimeHomePath = join(root, 'runtime')
       systemHomePath = join(root, 'system')
       mkdirSync(runtimeHomePath)

@@ -46,7 +46,7 @@ describe('OsOpenedDocumentState', () => {
 
     state.captureFilePaths([filePath])
     state.captureFilePaths([filePath])
-    state.capture(['orca', filePath])
+    state.capture(['occ', filePath])
 
     expect(state.consume()).toEqual([filePath])
   })

@@ -43,11 +43,11 @@ describe('deciding what to do with a presented host key', () => {
   it('names the store file in a changed-key rejection so the user can act on it', () => {
     // Store-only trust has no ssh-keygen remedy; changed-key guidance must name the actual store file.
     const decision = decideHostKey(
-      input({ storeOutcome: 'mismatch', hostKeyStoreFile: '/data/orca/ssh-host-keys.json' })
+      input({ storeOutcome: 'mismatch', hostKeyStoreFile: '/data/occ/ssh-host-keys.json' })
     )
 
     expect(decision.action).toBe('reject')
-    expect(decision.reason).toContain('/data/orca/ssh-host-keys.json')
+    expect(decision.reason).toContain('/data/occ/ssh-host-keys.json')
   })
 
   it('falls back to the generic hint when the store path is unknown', () => {
@@ -137,7 +137,7 @@ describe('deciding what to do with a presented host key', () => {
 
     it('does not tell the user to edit known_hosts when our own record disagrees', () => {
       const decision = decideHostKey(input({ storeOutcome: 'mismatch' }))
-      expect(decision.disagreeingSource).toBe('orca-store')
+      expect(decision.disagreeingSource).toBe('occ-store')
       expect(decision.reason).not.toContain('ssh-keygen -R')
     })
 
@@ -151,7 +151,7 @@ describe('deciding what to do with a presented host key', () => {
     // Our own record is not in known_hosts, so ssh-keygen -R would remove nothing.
     it('does not name ssh-keygen for an unfamiliar key type only we know about', () => {
       const decision = decideHostKey(input({ storeOutcome: 'unknown-type-known-host' }))
-      expect(decision.disagreeingSource).toBe('orca-store')
+      expect(decision.disagreeingSource).toBe('occ-store')
       expect(decision.reason).not.toContain('ssh-keygen -R')
       expect(decision.reason).toContain('rebuilt')
     })
@@ -364,7 +364,7 @@ describe('hostKeyPolicyForOwner', () => {
       kind: 'ephemeral'
     })
     expect(
-      hostKeyPolicyForOwner({ type: 'on-demand-runtime', runtimeId: 'managed-orcad:env-1' })
+      hostKeyPolicyForOwner({ type: 'on-demand-runtime', runtimeId: 'managed-occd:env-1' })
     ).toEqual({ kind: 'standard' })
     expect(hostKeyPolicyForOwner(undefined)).toEqual({ kind: 'standard' })
   })

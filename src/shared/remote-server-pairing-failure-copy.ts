@@ -27,7 +27,7 @@ export const REMOTE_SERVER_PAIRING_FAILURE_COPY = {
   alreadyPairedUnreadable:
     'This server is already paired as "{{name}}", whose saved settings this version of OCC cannot read.',
   nameTaken: 'A server named "{{name}}" already exists.',
-  idNeedsNewerOrca:
+  idNeedsNewerOCC:
     'A server with this id already exists in a format that needs a newer version of OCC.',
   hostSaveFailed:
     'OCC verified the host but could not save it. Check local settings storage and try again.',

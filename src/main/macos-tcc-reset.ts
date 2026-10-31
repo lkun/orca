@@ -1,6 +1,6 @@
 import { join } from 'node:path'
-import { runProcess } from '@orca/process-host'
-import type { ProcessResult } from '@orca/process-host/process-spec'
+import { runProcess } from '@occ/process-host'
+import type { ProcessResult } from '@occ/process-host/process-spec'
 
 const TCC_COMMAND_TIMEOUT_MS = 10_000
 

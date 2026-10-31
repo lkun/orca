@@ -65,8 +65,8 @@ declare global {
     Terminal?: unknown
     // Native shell capture starts before engine loading, so it can report failures that precede document startup.
     __engineErrors?: string[]
-    __orcaTerminalTextScale?: unknown
-    __orcaTerminalShown?: unknown
+    __occTerminalTextScale?: unknown
+    __occTerminalShown?: unknown
   }
   const Terminal: new (options: Record<string, unknown>) => TerminalDocumentTerminal
 }
@@ -131,10 +131,10 @@ export function windowHasEngine() {
 }
 
 export function windowStart(): TerminalDocumentStart {
-  const scale = window.__orcaTerminalTextScale
+  const scale = window.__occTerminalTextScale
   return {
     textScale: typeof scale === 'number' && scale > 0 ? scale : 1,
-    shown: window.__orcaTerminalShown !== false
+    shown: window.__occTerminalShown !== false
   }
 }
 

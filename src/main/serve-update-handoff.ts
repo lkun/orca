@@ -64,7 +64,7 @@ export function notifyServeSupervisorReady(runtimeId: string): void {
     return
   }
   const message: ServeSupervisorMessage = {
-    type: 'orca:serve-ready',
+    type: 'occ:serve-ready',
     version: app.getVersion(),
     runtimeId
   }

@@ -50,7 +50,7 @@ type SshPane = {
 
 function createRelay(forwardTo: () => AgentHookServer): RelayAgentHookServer {
   return new RelayAgentHookServer({
-    endpointDir: temporaryDir('orca-relayed-cancel-'),
+    endpointDir: temporaryDir('occ-relayed-cancel-'),
     token: 'relayed-cancel-token',
     forward: (envelope) => forwardTo().ingestRemote(envelope, 'conn-1')
   })
@@ -241,7 +241,7 @@ describe('a relayed Claude cancel with a live subagent (captured)', () => {
   })
 
   it('does not read a restart-seeded local roster for a relayed pane', async () => {
-    const userDataPath = temporaryDir('orca-relayed-cancel-restart-')
+    const userDataPath = temporaryDir('occ-relayed-cancel-restart-')
     const firstDesktop = new AgentHookServer()
     await firstDesktop.start({ env: 'production', userDataPath })
     const pane = await startSshPane(firstDesktop)

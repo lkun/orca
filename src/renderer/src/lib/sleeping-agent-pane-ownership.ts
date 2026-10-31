@@ -10,7 +10,7 @@ import { parseAppSshPtyId } from '../../../shared/ssh-pty-id'
 import { parseLegacyNumericPaneKey, parsePaneKey } from '../../../shared/stable-pane-id'
 import { getProviderSessionClaimKey } from '../../../shared/sleeping-record-legacy-pane-key'
 import { isWebTerminalSurfaceTabId } from '../../../shared/terminal-surface-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { isWorkspaceSleepRecord } from '../../../shared/workspace-sleep'
 import { isPaneResumingInPlace, isPaneSpawnDeferred } from './pane-spawn-deferral-registry'
 
@@ -199,7 +199,7 @@ export function recordPaneIsOwnedByPreservedPane(
       return true
     }
     // Main clears gone bindings during in-place resume; the active start, not the binding, proves ownership.
-    if (ORCA_LAYOUT_OWNER_IS_MAIN && isPaneResumingInPlace(record.paneKey)) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN && isPaneResumingInPlace(record.paneKey)) {
       return true
     }
     // Scrollback-only leaves without PTY/session IDs can repaint but cannot cold-resume active sessions.

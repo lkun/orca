@@ -54,9 +54,9 @@ const job = (name, conclusion) => ({
 })
 
 it('starts paid Mac packaging only after template qualification succeeds', () => {
-  expect(macBuild.needs).toContain('orcad-template')
-  expect(macBuild.if).toContain("needs.orcad-template.result == 'success'")
-  expect(macBuild.steps.some((step) => step.name === 'Wait for the qualified orcad template')).toBe(
+  expect(macBuild.needs).toContain('occd-template')
+  expect(macBuild.if).toContain("needs.occd-template.result == 'success'")
+  expect(macBuild.steps.some((step) => step.name === 'Wait for the qualified occd template')).toBe(
     false
   )
 })
@@ -65,14 +65,14 @@ describe.each([['Windows', windows.jobs['build-win'].steps]])(
   '%s release waits retain qualification and publication gates',
   (_platform, buildSteps) => {
     const templateWait = buildSteps.find(
-      (step) => step.name === 'Wait for the qualified orcad template'
+      (step) => step.name === 'Wait for the qualified occd template'
     )
     it('allows desktop setup first, but waits for a qualified artifact from this run', async () => {
       const { result, calls } = execute(templateWait, [
-        { jobs: [job('orcad-template / cache', 'success')] },
-        { jobs: [job('orcad-template / qualify / persistence (windows-11-arm)')] },
-        { artifacts: [{ name: 'orcad-template', expired: true }] },
-        { artifacts: [{ name: 'orcad-template', expired: false }] }
+        { jobs: [job('occd-template / cache', 'success')] },
+        { jobs: [job('occd-template / qualify / persistence (windows-11-arm)')] },
+        { artifacts: [{ name: 'occd-template', expired: true }] },
+        { artifacts: [{ name: 'occd-template', expired: false }] }
       ])
       await result
       expect(calls.filter((call) => call.endpoint === 'artifacts')).toHaveLength(4)
@@ -81,7 +81,7 @@ describe.each([['Windows', windows.jobs['build-win'].steps]])(
         buildSteps.findIndex((step) => step.name === 'Build app')
       )
       expect(buildSteps.indexOf(templateWait)).toBeLessThan(
-        buildSteps.findIndex((step) => step.name === 'Download the orcad deployment template')
+        buildSteps.findIndex((step) => step.name === 'Download the occd deployment template')
       )
     })
 
@@ -91,8 +91,8 @@ describe.each([['Windows', windows.jobs['build-win'].steps]])(
         await expect(
           execute(templateWait, [
             {
-              jobs: [job('orcad-template / qualify / persistence (windows-11-arm)', conclusion)],
-              artifacts: [{ name: 'orcad-template', expired: false }]
+              jobs: [job('occd-template / qualify / persistence (windows-11-arm)', conclusion)],
+              artifacts: [{ name: 'occd-template', expired: false }]
             }
           ]).result
         ).rejects.toThrow('Template qualification failed')
@@ -109,10 +109,10 @@ it('keeps the release a draft until qualification and its cleanup finish', async
   const final = finalSteps.find(
     (step) => step.name === 'Confirm final template qualification before publication'
   )
-  const artifact = [{ name: 'orcad-template', expired: false }]
+  const artifact = [{ name: 'occd-template', expired: false }]
   const { result, calls } = execute(final, [
-    { artifacts: artifact, jobs: [job('orcad-template / qualify / desktop_template')] },
-    { artifacts: artifact, jobs: [job('orcad-template / qualify / desktop_template', 'success')] }
+    { artifacts: artifact, jobs: [job('occd-template / qualify / desktop_template')] },
+    { artifacts: artifact, jobs: [job('occd-template / qualify / desktop_template', 'success')] }
   ])
   await result
   expect(calls.filter((call) => call.endpoint === 'artifacts')).toHaveLength(2)

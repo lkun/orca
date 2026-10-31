@@ -266,7 +266,7 @@ export function markEnvironmentUsed(
   }
   if (runtimeIdChanged || pairedDeviceIdChanged) {
     const current = resolveEnvironmentFromStore(readEnvironmentStore(userDataPath), environment.id)
-    // orcad mints a runtimeId per start; only a pending link must keep the runtime it verifies.
+    // occd mints a runtimeId per start; only a pending link must keep the runtime it verifies.
     const intent = current.pendingSshAccessOperation
     if (intent?.operation === 'link' || (pairedDeviceIdChanged && (current.sshAccess || intent))) {
       throw new RuntimeEnvironmentStoreError(

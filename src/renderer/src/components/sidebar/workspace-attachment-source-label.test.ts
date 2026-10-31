@@ -103,9 +103,9 @@ const cases: { name: string; item: Partial<WorkspaceAttachment>; expected: strin
   {
     name: 'legacy GitHub identity without URL',
     item: {
-      taskSourceContext: source('github', { provider: 'github', owner: 'acme', repo: 'orca' })
+      taskSourceContext: source('github', { provider: 'github', owner: 'acme', repo: 'occ' })
     },
-    expected: 'acme/orca'
+    expected: 'acme/occ'
   },
   {
     name: 'legacy GitLab identity without URL',
@@ -115,10 +115,10 @@ const cases: { name: string; item: Partial<WorkspaceAttachment>; expected: strin
       taskSourceContext: source('gitlab', {
         provider: 'gitlab',
         namespace: 'acme/team',
-        project: 'orca'
+        project: 'occ'
       })
     },
-    expected: 'acme/team/orca'
+    expected: 'acme/team/occ'
   },
   {
     name: 'GitHub URL takes precedence over stale identity',

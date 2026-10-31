@@ -1,5 +1,5 @@
 // In a narrow sidebar, place the Source Control AI settings link below the wrapping intent sentence to prevent one-word lines.
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   createStagedCommitMessageChange,
@@ -10,15 +10,15 @@ import { RIGHT_SIDEBAR_MIN_WIDTH } from '../../src/renderer/src/components/right
 
 test.describe('Source Control Create PR intent notice layout', () => {
   test('keeps the settings link off the message row at the minimum sidebar width', async ({
-    orcaPage
+    occPage
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    const { prWorktreeId, prWorktreePath, primaryBranch } = await seedCreatePrComposer(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    const { prWorktreeId, prWorktreePath, primaryBranch } = await seedCreatePrComposer(occPage)
     // Stage a real change without a commit draft to reach the configure-AI intent notice.
     createStagedCommitMessageChange(prWorktreePath)
 
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ prWorktreeId, primaryBranch }) => {
         const store = window.__store
         if (!store) {
@@ -55,23 +55,23 @@ test.describe('Source Control Create PR intent notice layout', () => {
       { prWorktreeId, primaryBranch }
     )
 
-    await openSourceControl(orcaPage, prWorktreeId)
-    await orcaPage.evaluate((minWidth) => {
+    await openSourceControl(occPage, prWorktreeId)
+    await occPage.evaluate((minWidth) => {
       window.__store?.getState().setRightSidebarWidth(minWidth)
     }, RIGHT_SIDEBAR_MIN_WIDTH)
 
-    const createPr = orcaPage.getByRole('button', { name: 'Create PR' }).first()
+    const createPr = occPage.getByRole('button', { name: 'Create PR' }).first()
     await expect(createPr).toBeVisible({ timeout: 10_000 })
     await expect(createPr).toBeEnabled()
     await createPr.click()
 
-    const notice = orcaPage.locator('#commit-area-create-pr-intent')
+    const notice = occPage.locator('#commit-area-create-pr-intent')
     const settingsLink = notice.getByRole('button', { name: 'Source Control AI settings' })
     await expect(settingsLink).toBeVisible({ timeout: 20_000 })
 
-    if (process.env.ORCA_PR_INTENT_NOTICE_SCREENSHOT_PATH) {
-      await orcaPage.evaluate(() => document.documentElement.classList.add('dark'))
-      await notice.screenshot({ path: process.env.ORCA_PR_INTENT_NOTICE_SCREENSHOT_PATH })
+    if (process.env.OCC_PR_INTENT_NOTICE_SCREENSHOT_PATH) {
+      await occPage.evaluate(() => document.documentElement.classList.add('dark'))
+      await notice.screenshot({ path: process.env.OCC_PR_INTENT_NOTICE_SCREENSHOT_PATH })
     }
 
     const messageBox = await notice.locator('span').first().boundingBox()

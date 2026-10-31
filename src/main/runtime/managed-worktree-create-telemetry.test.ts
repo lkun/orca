@@ -42,7 +42,7 @@ vi.mock('../ipc/registered-worktree-roots-scoped-invalidation', () => ({
   invalidateAuthorizedRootsCacheForRepo: vi.fn()
 }))
 
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import type { WorktreeCreateTimingRecorder } from '../worktree-create-timing'
 import type { PreparationRearmHolder } from '../worktree-create-preparation'
 import {
@@ -73,8 +73,8 @@ type RuntimeInternals = {
   emitWorktreeLifecycle: (event: unknown) => void
 }
 
-function makeRuntime(repo: Record<string, unknown> = gitRepo): OrcaRuntimeService {
-  const runtime = new OrcaRuntimeService(
+function makeRuntime(repo: Record<string, unknown> = gitRepo): OCCRuntimeService {
+  const runtime = new OCCRuntimeService(
     partialRuntimeStore({
       getSettings: () => ({ disabledTuiAgents: ['codex'], workspaceDir: '/worktrees' }),
       getProjectHostSetups: () => []

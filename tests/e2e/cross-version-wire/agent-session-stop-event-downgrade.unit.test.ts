@@ -18,7 +18,7 @@ import {
   insertTestJournalRowJson,
   liveTestJournalRows,
   openTestJournalHostDatabase,
-  SAVED_BY_NEWER_ORCA
+  SAVED_BY_NEWER_OCC
 } from '../../../src/main/native-chat/agent-session-journal/journal-host-database-test-support'
 import type { JournalRow } from '../../../src/main/native-chat/agent-session-journal/journal-row-schema'
 import {
@@ -62,12 +62,12 @@ const OLDER_IDENTITY: OlderJournalIdentity = {
 test.each(['v1.4.219', 'v1.4.220', WRITABLE_BASELINE_REF])(
   '%s replays current raw rows with the unconfirmed failure intact',
   async (ref) => {
-    const directory = mkdtempSync(join(tmpdir(), 'orca-stop-note-raw-skew-'))
+    const directory = mkdtempSync(join(tmpdir(), 'occ-stop-note-raw-skew-'))
     const journals = createTrackedJournalOpener()
     try {
       const journal = await journals.open({ identity: IDENTITY, stateDirectory: directory })
-      const turn = { provider: 'orca', clientMessageId: 'turn-raw-skew' } as const
-      const note = { provider: 'orca', clientMessageId: 'stop:turn-raw-skew' } as const
+      const turn = { provider: 'occ', clientMessageId: 'turn-raw-skew' } as const
+      const note = { provider: 'occ', clientMessageId: 'stop:turn-raw-skew' } as const
       const unconfirmed = {
         kind: 'status' as const,
         ...agentSessionFailureWords(agentSessionFailureFact('cancelUnconfirmed'), {
@@ -136,7 +136,7 @@ type OldReplay = {
 
 // Both downgrade probes load real old builds, including cold extraction and transforms.
 test("an older build keeps every row around a Stop's event, a Resume and a reopen mark, and folds the rows after them", async () => {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-stop-event-downgrade-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-stop-event-downgrade-'))
   const journals = createTrackedJournalOpener()
   try {
     // This build: history, a person's Stop, a Resume, then more history.
@@ -252,7 +252,7 @@ function storedRows(directory: string): string[] {
 }
 
 test("an older build opens this build's journal writable and appends to it; the pause survives the round trip", async () => {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-stop-event-writable-downgrade-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-stop-event-writable-downgrade-'))
   const journals = createTrackedJournalOpener()
   const itemIds = (journal: Pick<OlderJournal, 'snapshot'>) =>
     journal.snapshot().items.map((entry) => entry.itemId)
@@ -300,7 +300,7 @@ test("an older build opens this build's journal writable and appends to it; the 
 // Write a new Stop row kind only after supported readers know it, or bump v; earlier hosts truncate unknown kinds.
 // Move the pinned baseline once a released reader preserves them.
 test("this build keeps a newer build's row kind and refuses the load; a build before it deletes it", async () => {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-newer-kind-downgrade-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-newer-kind-downgrade-'))
   const journals = createTrackedJournalOpener()
   const newerKinds = () => storedRows(directory).filter((row) => row.includes('"future-mark"'))
   try {
@@ -330,7 +330,7 @@ test("this build keeps a newer build's row kind and refuses the load; a build be
 
     await expect(
       journals.open({ identity: IDENTITY, stateDirectory: directory })
-    ).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
+    ).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
     await journals.closeAll()
     expect(storedRows(directory)).toEqual(rowsBefore)
     expect(newerKinds()).toEqual([newer])

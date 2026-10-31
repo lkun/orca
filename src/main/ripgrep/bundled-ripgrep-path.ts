@@ -30,7 +30,7 @@ function candidatePaths(platform: string): string[] {
   }
   // Packaged apps must never execute checkout-provided binaries.
   if (isPackagedApp()) {
-    // Plain Node orcad lacks resourcesPath; its build places rg under the install root.
+    // Plain Node occd lacks resourcesPath; its build places rg under the install root.
     candidates.push(
       join(getAppEnvironment().getAppPath(), BUNDLED_RIPGREP_RESOURCE_DIR, platform, binaryName)
     )
@@ -99,7 +99,7 @@ export function bundledRipgrepWslSpawnOptions(command: string): { wslShellComman
     return {}
   }
   return {
-    wslShellCommand: `"$(d=$(wslpath -u ${quotePosixShell(ripgrepRoot)} 2>/dev/null); case "$(uname -m)" in aarch64|arm64) a=linux-arm64;; *) a=linux-x64;; esac; if [ -n "$d" ]; then printf %s "$d/$a/rg"; else printf /dev/null/orca-ripgrep-unavailable; fi)"`
+    wslShellCommand: `"$(d=$(wslpath -u ${quotePosixShell(ripgrepRoot)} 2>/dev/null); case "$(uname -m)" in aarch64|arm64) a=linux-arm64;; *) a=linux-x64;; esac; if [ -n "$d" ]; then printf %s "$d/$a/rg"; else printf /dev/null/occ-ripgrep-unavailable; fi)"`
   }
 }
 

@@ -23,7 +23,7 @@ import {
   hostTestAttachParams,
   hostTestOperationId
 } from '../../../../native-chat/agent-session-wire/structured-agent-session-host-test-data'
-import { testOrcaSessionId } from '../../../../../shared/orca-session-address-test-fixture'
+import { testOCCSessionId } from '../../../../../shared/occ-session-address-test-fixture'
 import { agentMessageDisplayText } from '../../../../../shared/agent-session/agent-message-display-text'
 import { readAgentMessageSource } from '../../../../../shared/agent-session/agent-session-message-source'
 import { nativeChatMessageCopyText } from '../../../../../shared/native-chat-message-copy-text'
@@ -33,15 +33,15 @@ import {
 } from '../../../../../shared/structured-agent-session-queued-cards'
 import { projectStructuredAgentSessionStatusSummary } from '../../../../../shared/structured-agent-session-projection'
 import { latestStructuredAgentSessionPrompt } from '../../../../../shared/structured-agent-session-latest-request'
-import { isOrcaDispatchPrompt } from '../../../../../shared/agent-row-primary-text'
+import { isOCCDispatchPrompt } from '../../../../../shared/agent-row-primary-text'
 import * as placement from './worker/worker-start-agent-placement'
 import * as topology from './worker/worker-topology'
 
 const h = createOrchestrationRpcHarness()
 let rig: QueuedMessageTestRig | undefined
 let transport: UnixSocketTransport | undefined
-const COORD = testOrcaSessionId('command-coordinator')
-const WORKER = testOrcaSessionId('command-worker')
+const COORD = testOCCSessionId('command-coordinator')
+const WORKER = testOCCSessionId('command-worker')
 afterEach(async () => {
   setStructuredAgentSessionHost(null)
   await transport?.stop()
@@ -128,20 +128,20 @@ it.each(['worker-start', 'saved-task', 'dispatch'] as const)(
       objective: 'cards',
       coordinatorHandle: null,
       coordinatorPaneKey: null,
-      coordinatorOrcaSessionId: COORD
+      coordinatorOCCSessionId: COORD
     })
-    vi.stubEnv('ORCA_AGENT_SESSION_ID', COORD)
-    vi.stubEnv('ORCA_TERMINAL_HANDLE', '')
-    vi.stubEnv('ORCA_PAIRING_CODE', '')
-    vi.stubEnv('ORCA_ENVIRONMENT', '')
+    vi.stubEnv('OCC_AGENT_SESSION_ID', COORD)
+    vi.stubEnv('OCC_TERMINAL_HANDLE', '')
+    vi.stubEnv('OCC_PAIRING_CODE', '')
+    vi.stubEnv('OCC_ENVIRONMENT', '')
     const requests: string[] = []
     const requestBytes: number[] = []
     let rejectedFrames = 0
     const kind = process.platform === 'win32' ? 'named-pipe' : 'unix'
     const endpoint =
       kind === 'named-pipe'
-        ? `\\\\.\\pipe\\orca-start-${randomUUID()}`
-        : join(tmpdir(), `orca-start-${randomUUID()}.sock`)
+        ? `\\\\.\\pipe\\occ-start-${randomUUID()}`
+        : join(tmpdir(), `occ-start-${randomUUID()}.sock`)
     transport = new UnixSocketTransport({ kind, endpoint })
     const executor = new OrchestrationMutationExecutor(runtime)
     const requestSchema = z.object({
@@ -265,7 +265,7 @@ it.each(['worker-start', 'saved-task', 'dispatch'] as const)(
         '--task',
         created.id,
         '--to',
-        `orca_session_id:${WORKER}`,
+        `occ_session_id:${WORKER}`,
         '--inject',
         '--return-preamble',
         '--json'
@@ -396,7 +396,7 @@ it.each(['worker-start', 'saved-task', 'dispatch'] as const)(
     if (command !== 'dispatch') {
       expect(db.listTasks({ runId: run.id }).filter((entry) => entry.spec === task)).toHaveLength(1)
     }
-    expect(from?.senders[0].party.orcaSessionId).toBe(COORD)
+    expect(from?.senders[0].party.occSessionId).toBe(COORD)
     expect(from?.senders[0].relation).toBe('coordinator')
     expect(agentMessageDisplayText(body.blocks, from)).toBe(task)
     const raw = nativeChatMessageCopyText(body)
@@ -405,7 +405,7 @@ it.each(['worker-start', 'saved-task', 'dispatch'] as const)(
     const items = [{ itemId: 'task', sequence: 1, revision: 1, observedAt: 1, body }]
     expect(latestStructuredAgentSessionPrompt(items)).toBe(raw)
     const prompt = projectStructuredAgentSessionStatusSummary(items).latestPrompt
-    expect(isOrcaDispatchPrompt(prompt)).toBe(true)
+    expect(isOCCDispatchPrompt(prompt)).toBe(true)
     expect(prompt).toContain('Current task')
     if (from?.orchestration?.message !== 'task') {
       throw new Error('task identity missing')

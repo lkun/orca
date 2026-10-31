@@ -12,8 +12,8 @@ import {
   type ExecutionHostId
 } from '../../../../../shared/execution-host'
 
-const LAUNCH_STORAGE_KEY = 'orca:structuredAgentLaunches:v1'
-const TOMBSTONE_STORAGE_KEY = 'orca:structuredAgentLaunchCancelledSessions:v1'
+const LAUNCH_STORAGE_KEY = 'occ:structuredAgentLaunches:v1'
+const TOMBSTONE_STORAGE_KEY = 'occ:structuredAgentLaunchCancelledSessions:v1'
 const records = new Map<string, StructuredAgentLaunchPersistedRecord>()
 const tombstones = new Map<string, ExecutionHostId>()
 /** When each paired-host tombstone was written, so one whose host never answers again expires. */

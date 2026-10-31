@@ -1,11 +1,11 @@
 {
-  "name": "orca-agent-plugins",
+  "name": "occ-agent-plugins",
   "owner": { "name": "OCC" },
   "description": "Repository-local plugins for coding agents working in OCC",
   "plugins": [
     {
-      "name": "orca-typescript",
-      "source": "./orca-typescript",
+      "name": "occ-typescript",
+      "source": "./occ-typescript",
       "description": "TypeScript 7 diagnostics and code navigation from the repo's own compiler"
     }
   ]

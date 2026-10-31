@@ -1,8 +1,8 @@
 {
-  "name": "@orca/docs",
+  "name": "@occ/docs",
   "version": "0.1.0",
   "private": true,
-  "description": "Open-source OCC product documentation site (https://www.onorca.dev/docs)",
+  "description": "Open-source OCC product documentation site (https://www.onocc.dev/docs)",
   "scripts": {
     "dev": "next dev --port 3004",
     "build": "next build",

@@ -2,7 +2,7 @@ import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { wrapRuntimeHomeHookCommand } from './runtime-home-hook-command'
 import { buildHookProcessCapture } from './hook-process-capture'
 import { readAgentProcessIdentity } from '../../shared/agent-process-presence'
@@ -12,13 +12,13 @@ describe('Claude outer hook process capture', () => {
   it.skipIf(process.platform === 'win32').each([undefined, 'Asia/Tokyo'])(
     'captures the parent before the managed script shell, under an empty environment (TZ=%s)',
     async (timeZone) => {
-      const home = await mkdtemp(join(tmpdir(), 'orca-presence-hook-'))
+      const home = await mkdtemp(join(tmpdir(), 'occ-presence-hook-'))
       try {
-        const dir = join(home, '.orca', 'agent-hooks')
+        const dir = join(home, '.occ', 'agent-hooks')
         await mkdir(dir, { recursive: true })
         await writeFile(
           join(dir, 'claude-hook.sh'),
-          ['#!/bin/sh', ...buildHookProcessCapture(), 'printf "%s" "$orca_agent_process"'].join(
+          ['#!/bin/sh', ...buildHookProcessCapture(), 'printf "%s" "$occ_agent_process"'].join(
             '\n'
           ),
           { mode: 0o700 }
@@ -29,7 +29,7 @@ describe('Claude outer hook process capture', () => {
             '-i',
             `HOME=${home}`,
             'PATH=/usr/bin:/bin',
-            'ORCA_PANE_KEY=presence-test-pane',
+            'OCC_PANE_KEY=presence-test-pane',
             // Agent timezone differences must not change process identity.
             ...(timeZone ? [`TZ=${timeZone}`] : []),
             '/bin/sh',

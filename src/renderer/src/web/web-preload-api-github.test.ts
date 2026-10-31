@@ -90,12 +90,12 @@ describe('web GitHub preload API', () => {
       },
       {
         key: 'workItemByOwnerRepo',
-        args: { repoPath, owner: 'acme', repo: 'orca', number: 7, type: 'pr' },
+        args: { repoPath, owner: 'acme', repo: 'occ', number: 7, type: 'pr' },
         expectedMethod: 'github.workItemByOwnerRepo',
         expectedParams: withRepo({
           repoPath,
           owner: 'acme',
-          ownerRepo: 'orca',
+          ownerRepo: 'occ',
           number: 7,
           type: 'pr'
         })
@@ -339,9 +339,9 @@ describe('web GitHub preload API', () => {
       },
       {
         key: 'projectWorkItemDetailsBySlug',
-        args: { owner: 'acme', repo: 'orca', number: 7, type: 'issue' },
+        args: { owner: 'acme', repo: 'occ', number: 7, type: 'issue' },
         expectedMethod: 'github.project.workItemDetailsBySlug',
-        expectedParams: { owner: 'acme', repo: 'orca', number: 7, type: 'issue' }
+        expectedParams: { owner: 'acme', repo: 'occ', number: 7, type: 'issue' }
       },
       {
         key: 'updateProjectItemField',
@@ -357,57 +357,57 @@ describe('web GitHub preload API', () => {
       },
       {
         key: 'updateIssueBySlug',
-        args: { owner: 'acme', repo: 'orca', number: 7, updates: { title: 'New' } },
+        args: { owner: 'acme', repo: 'occ', number: 7, updates: { title: 'New' } },
         expectedMethod: 'github.project.updateIssueBySlug',
-        expectedParams: { owner: 'acme', repo: 'orca', number: 7, updates: { title: 'New' } }
+        expectedParams: { owner: 'acme', repo: 'occ', number: 7, updates: { title: 'New' } }
       },
       {
         key: 'updatePullRequestBySlug',
-        args: { owner: 'acme', repo: 'orca', number: 7, updates: { title: 'New' } },
+        args: { owner: 'acme', repo: 'occ', number: 7, updates: { title: 'New' } },
         expectedMethod: 'github.project.updatePullRequestBySlug',
-        expectedParams: { owner: 'acme', repo: 'orca', number: 7, updates: { title: 'New' } }
+        expectedParams: { owner: 'acme', repo: 'occ', number: 7, updates: { title: 'New' } }
       },
       {
         key: 'addIssueCommentBySlug',
-        args: { owner: 'acme', repo: 'orca', number: 7, body: 'Fixed' },
+        args: { owner: 'acme', repo: 'occ', number: 7, body: 'Fixed' },
         expectedMethod: 'github.project.addIssueCommentBySlug',
-        expectedParams: { owner: 'acme', repo: 'orca', number: 7, body: 'Fixed' }
+        expectedParams: { owner: 'acme', repo: 'occ', number: 7, body: 'Fixed' }
       },
       {
         key: 'updateIssueCommentBySlug',
-        args: { owner: 'acme', repo: 'orca', commentId: 9, body: 'Edited' },
+        args: { owner: 'acme', repo: 'occ', commentId: 9, body: 'Edited' },
         expectedMethod: 'github.project.updateIssueCommentBySlug',
-        expectedParams: { owner: 'acme', repo: 'orca', commentId: 9, body: 'Edited' }
+        expectedParams: { owner: 'acme', repo: 'occ', commentId: 9, body: 'Edited' }
       },
       {
         key: 'deleteIssueCommentBySlug',
-        args: { owner: 'acme', repo: 'orca', commentId: 9 },
+        args: { owner: 'acme', repo: 'occ', commentId: 9 },
         expectedMethod: 'github.project.deleteIssueCommentBySlug',
-        expectedParams: { owner: 'acme', repo: 'orca', commentId: 9 }
+        expectedParams: { owner: 'acme', repo: 'occ', commentId: 9 }
       },
       {
         key: 'listLabelsBySlug',
-        args: { owner: 'acme', repo: 'orca' },
+        args: { owner: 'acme', repo: 'occ' },
         expectedMethod: 'github.project.listLabelsBySlug',
-        expectedParams: { owner: 'acme', repo: 'orca' }
+        expectedParams: { owner: 'acme', repo: 'occ' }
       },
       {
         key: 'listAssignableUsersBySlug',
-        args: { owner: 'acme', repo: 'orca', seedLogins: ['alice'] },
+        args: { owner: 'acme', repo: 'occ', seedLogins: ['alice'] },
         expectedMethod: 'github.project.listAssignableUsersBySlug',
-        expectedParams: { owner: 'acme', repo: 'orca', seedLogins: ['alice'] }
+        expectedParams: { owner: 'acme', repo: 'occ', seedLogins: ['alice'] }
       },
       {
         key: 'listIssueTypesBySlug',
-        args: { owner: 'acme', repo: 'orca' },
+        args: { owner: 'acme', repo: 'occ' },
         expectedMethod: 'github.project.listIssueTypesBySlug',
-        expectedParams: { owner: 'acme', repo: 'orca' }
+        expectedParams: { owner: 'acme', repo: 'occ' }
       },
       {
         key: 'updateIssueTypeBySlug',
-        args: { owner: 'acme', repo: 'orca', number: 7, issueTypeId: 'it-1' },
+        args: { owner: 'acme', repo: 'occ', number: 7, issueTypeId: 'it-1' },
         expectedMethod: 'github.project.updateIssueTypeBySlug',
-        expectedParams: { owner: 'acme', repo: 'orca', number: 7, issueTypeId: 'it-1' }
+        expectedParams: { owner: 'acme', repo: 'occ', number: 7, issueTypeId: 'it-1' }
       }
     ]
 

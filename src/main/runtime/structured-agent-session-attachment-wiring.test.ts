@@ -17,7 +17,7 @@ import {
 let stateDirectory: string
 
 beforeEach(async () => {
-  stateDirectory = await mkdtemp(join(tmpdir(), 'orca-attachment-wiring-'))
+  stateDirectory = await mkdtemp(join(tmpdir(), 'occ-attachment-wiring-'))
 })
 
 afterEach(async () => {

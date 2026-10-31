@@ -8,16 +8,16 @@ import {
 } from './kimi-hook-config-toml'
 
 const COMMAND =
-  "if [ -x '/home/u/.orca/agent-hooks/kimi-hook.sh' ]; then /bin/sh '/home/u/.orca/agent-hooks/kimi-hook.sh'; fi"
+  "if [ -x '/home/u/.occ/agent-hooks/kimi-hook.sh' ]; then /bin/sh '/home/u/.occ/agent-hooks/kimi-hook.sh'; fi"
 const isManaged = (command: string | undefined): boolean =>
   typeof command === 'string' && command.includes('agent-hooks/kimi-hook.sh')
 
-const END_MARKER_LINE = '# <<< orca-managed-kimi-hooks <<<'
-const START_MARKER = '# >>> orca-managed-kimi-hooks (managed by OCC; do not edit) >>>'
+const END_MARKER_LINE = '# <<< occ-managed-kimi-hooks <<<'
+const START_MARKER = '# >>> occ-managed-kimi-hooks (managed by OCC; do not edit) >>>'
 
 /** Drops only the `# <<< ... <<<` line, the hand-edit that orphans the block. */
 function deleteEndMarker(text: string): string {
-  return text.replace(/\r?\n# <<< orca-managed-kimi-hooks <<<(?=\r?\n|$)/, '')
+  return text.replace(/\r?\n# <<< occ-managed-kimi-hooks <<<(?=\r?\n|$)/, '')
 }
 
 describe('kimi managed hooks TOML block', () => {
@@ -61,7 +61,7 @@ describe('kimi managed hooks TOML block', () => {
     const once = applyManagedKimiHooks('default_model = "x"\n', COMMAND, isManaged)
     const twice = applyManagedKimiHooks(once, COMMAND, isManaged)
     expect(twice).toBe(once)
-    const markerCount = (twice.match(/orca-managed-kimi-hooks \(/g) ?? []).length
+    const markerCount = (twice.match(/occ-managed-kimi-hooks \(/g) ?? []).length
     expect(markerCount).toBe(1)
   })
 
@@ -101,7 +101,7 @@ describe('kimi managed hooks TOML block', () => {
       changed: true
     })
     const reinstalled = applyManagedKimiHooks(orphaned, COMMAND, isManaged)
-    expect((reinstalled.match(/orca-managed-kimi-hooks \(/g) ?? []).length).toBe(1)
+    expect((reinstalled.match(/occ-managed-kimi-hooks \(/g) ?? []).length).toBe(1)
   })
 
   it('treats stale managed entries pointing at a moved script path as managed', () => {
@@ -143,7 +143,7 @@ describe('orphaned managed block ownership (#18861)', () => {
     const reinstalled = applyManagedKimiHooks(orphanedWithUserTail(), COMMAND, isManaged)
     expect(reinstalled).toContain('api_key = "sk-secret"')
     expect(reinstalled).toContain('command = "node my-own-hook.mjs"')
-    expect((reinstalled.match(/orca-managed-kimi-hooks \(/g) ?? []).length).toBe(1)
+    expect((reinstalled.match(/occ-managed-kimi-hooks \(/g) ?? []).length).toBe(1)
     expect(reinstalled.indexOf('sk-secret')).toBeLessThan(reinstalled.indexOf(START_MARKER))
     expect(readManagedKimiHookEvents(reinstalled, isManaged)).toEqual(new Set(KIMI_HOOK_EVENTS))
     expect(applyManagedKimiHooks(reinstalled, COMMAND, isManaged)).toBe(reinstalled)

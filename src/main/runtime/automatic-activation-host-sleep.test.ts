@@ -4,21 +4,21 @@ import { spawnWorktreeTarget } from '../../shared/worktree/host-qualified-identi
 import type { RuntimeClientEvent } from '../../shared/runtime-client-events'
 
 // Preserve side-effect order: mocks, lifecycle, fixtures.
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const {
   HEADLESS_LEAF_ID,
   TEST_WORKTREE_ID,
   deferred,
   makeRuntimeStoreWithWorkspaceSession,
   makeWorkspaceSessionWithHeadlessTerminal
-} = await import('./orca-runtime-test-fixtures.spec')
+} = await import('./occ-runtime-test-fixtures.spec')
 
 function makeRuntime(listProcesses: () => Promise<never[]> = async () => []) {
   const { runtimeStore } = makeRuntimeStoreWithWorkspaceSession(
     makeWorkspaceSessionWithHeadlessTerminal()
   )
-  const runtime = new OrcaRuntimeService(runtimeStore)
+  const runtime = new OCCRuntimeService(runtimeStore)
   const spawn = vi.fn().mockResolvedValue({ id: 'persisted-pty' })
   runtime.setPtyController({
     spawn,
@@ -36,7 +36,7 @@ function makeRuntime(listProcesses: () => Promise<never[]> = async () => []) {
   return { runtime, spawn, sleepPhases }
 }
 
-function activate(runtime: InstanceType<typeof OrcaRuntimeService>, intent: 'user' | 'automatic') {
+function activate(runtime: InstanceType<typeof OCCRuntimeService>, intent: 'user' | 'automatic') {
   return runtime.activateMobileSessionTab(`id:${TEST_WORKTREE_ID}`, 'host-tab', HEADLESS_LEAF_ID, {
     notifyClients: false,
     navigation: 'caller',

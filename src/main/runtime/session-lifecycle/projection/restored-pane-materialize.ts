@@ -1,13 +1,13 @@
 // Restore terminal-less saved panes for pending-row activation and workspace wakes; main-owned layouts also handle triggers outside desktop restore.
 
-import type { OrcaRuntimeWithAgentSessionResumeOwnership as AgentSessionResume } from './agent-session-resume-ownership'
+import type { OCCRuntimeWithAgentSessionResumeOwnership as AgentSessionResume } from './agent-session-resume-ownership'
 import type {
   MobileTerminalCommand,
   MobileTerminalResumeCommand
 } from '../../terminal/launch/mobile-terminal-startup'
-import { OrcaRuntimeWithBuildHeadlessMobileSessionBrowserTabs } from './build-headless-mobile-session-browser-tabs'
+import { OCCRuntimeWithBuildHeadlessMobileSessionBrowserTabs } from './build-headless-mobile-session-browser-tabs'
 import { parseAppSshPtyId } from '../../../../shared/ssh-pty-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { isUnclaimedRunningSleepRecord, markResumedRecordLive } from './sleep-record-pane-claim'
 import { isWorktreeTerminalsSleepingError } from '../../worktree-terminals-sleeping-error'
 import type { TerminalWorkspaceLaunchScope } from '../../runtime-legacy-worker-terminal-recovery-types'
@@ -29,13 +29,13 @@ import type { NewerDaemonReopenResult } from '../../../../shared/newer-daemon-ho
 import type { WorkspaceLayoutStream } from '../../workspace-layout-stream'
 import { getDaemonHistoryDir } from '../../../daemon/daemon-launch-paths'
 import { HistoryReader } from '../../../daemon/history-reader'
-import { servesWslMovedPaneHistory } from '../../../orcad/orcad-migration-wsl-destination'
-import { movedPaneHistorySessionId } from '../../../persistence/migrating-orcad-catalog/orcad-terminal-history-installer'
+import { servesWslMovedPaneHistory } from '../../../occd/occd-migration-wsl-destination'
+import { movedPaneHistorySessionId } from '../../../persistence/migrating-occd-catalog/occd-terminal-history-installer'
 import { makePaneKey, parsePaneKey } from '../../../../shared/stable-pane-id'
 import { agentProviderSessionsEqual } from '../../../../shared/agent-session-resume'
 import { worktreeIdsEqual } from '../../../../shared/worktree/id'
 
-export abstract class OrcaRuntimeWithRestoredPaneStart extends OrcaRuntimeWithBuildHeadlessMobileSessionBrowserTabs {
+export abstract class OCCRuntimeWithRestoredPaneStart extends OCCRuntimeWithBuildHeadlessMobileSessionBrowserTabs {
   protected abstract resolveAgentLaunchRuntime(
     scope: TerminalWorkspaceLaunchScope,
     agent: TuiAgent | undefined
@@ -216,7 +216,7 @@ export abstract class OrcaRuntimeWithRestoredPaneStart extends OrcaRuntimeWithBu
     // After a claimed-record resume starts, mark that record live.
     const paneKey = `${tab.parentTabId}:${tab.leafId}`
     const resumedRecord =
-      ORCA_LAYOUT_OWNER_IS_MAIN && resumeStartup && 'resumeProviderSession' in resumeStartup
+      OCC_LAYOUT_OWNER_IS_MAIN && resumeStartup && 'resumeProviderSession' in resumeStartup
         ? this.getWorkspaceSessionForWorktree(worktreeId)?.sleepingAgentSessionsByPaneKey?.[paneKey]
         : undefined
     let agentStartup: MobileTerminalCommand | MobileTerminalResumeCommand = resumeStartup ?? {}

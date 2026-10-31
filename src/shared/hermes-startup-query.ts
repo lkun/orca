@@ -8,13 +8,13 @@ import {
 } from './tui-agent-startup-shell'
 
 const QUERY_ENV_LIMIT = 24_000
-const QUERY_PLACEHOLDER = '__ORCA_HERMES_STARTUP_QUERY__'
+const QUERY_PLACEHOLDER = '__OCC_HERMES_STARTUP_QUERY__'
 const QUERY_ARG_PLACEHOLDER = `--query=${QUERY_PLACEHOLDER}`
-const POSIX_QUERY_VARIABLE = '__orca_hermes_startup_query'
-const POWERSHELL_QUERY_VARIABLE = 'orcaHermesStartupQuery'
-const POWERSHELL_NATIVE_QUERY_VARIABLE = 'orcaHermesNativeQuery'
+const POSIX_QUERY_VARIABLE = '__occ_hermes_startup_query'
+const POWERSHELL_QUERY_VARIABLE = 'occHermesStartupQuery'
+const POWERSHELL_NATIVE_QUERY_VARIABLE = 'occHermesNativeQuery'
 
-export const ORCA_HERMES_STARTUP_QUERY_ENV = 'ORCA_HERMES_STARTUP_QUERY'
+export const OCC_HERMES_STARTUP_QUERY_ENV = 'OCC_HERMES_STARTUP_QUERY'
 
 function encodePosixEvalScript(command: string): string {
   return Array.from(
@@ -65,7 +65,7 @@ function findChatSubcommand(args: readonly string[]): number {
   return -1
 }
 
-function stripOrcaOwnedHermesArgs(args: readonly string[]): string[] {
+function stripOCCOwnedHermesArgs(args: readonly string[]): string[] {
   const normalized: string[] = []
   for (let index = 0; index < args.length; index += 1) {
     const token = args[index]
@@ -133,8 +133,8 @@ function normalizeHermesArgv(
     ...commandPrefix,
     'chat',
     QUERY_ARG_PLACEHOLDER,
-    ...stripOrcaOwnedHermesArgs(baseArgsWithoutChat),
-    ...stripOrcaOwnedHermesArgs(configuredArgsWithoutChat),
+    ...stripOCCOwnedHermesArgs(baseArgsWithoutChat),
+    ...stripOCCOwnedHermesArgs(configuredArgsWithoutChat),
     '--tui'
   ]
 }
@@ -147,7 +147,7 @@ function buildQueryCommand(argv: string[], shell: AgentStartupShell): string {
     )
     // Remove startup prompts from child-tool env; the long-lived parent retains transport env for compatibility.
     // PowerShell 5 requires native-Windows quote escaping before constructing argv.
-    const script = `$${POWERSHELL_QUERY_VARIABLE} = $env:${ORCA_HERMES_STARTUP_QUERY_ENV}; $${POWERSHELL_NATIVE_QUERY_VARIABLE} = $${POWERSHELL_QUERY_VARIABLE} -replace '(\\\\*)"', '$1$1\\"'; Remove-Item Env:${ORCA_HERMES_STARTUP_QUERY_ENV} -ErrorAction SilentlyContinue; ${invocation}`
+    const script = `$${POWERSHELL_QUERY_VARIABLE} = $env:${OCC_HERMES_STARTUP_QUERY_ENV}; $${POWERSHELL_NATIVE_QUERY_VARIABLE} = $${POWERSHELL_QUERY_VARIABLE} -replace '(\\\\*)"', '$1$1\\"'; Remove-Item Env:${OCC_HERMES_STARTUP_QUERY_ENV} -ErrorAction SilentlyContinue; ${invocation}`
     return `powershell.exe -NoProfile -EncodedCommand ${encodePowerShellCommand(script)}`
   }
   const invocation = buildShellCommandFromArgv(argv, 'posix').replace(
@@ -156,7 +156,7 @@ function buildQueryCommand(argv: string[], shell: AgentStartupShell): string {
   )
   const encodedInvocation = encodePosixEvalScript(invocation)
   // Keep the wrapper single-quote-safe for POSIX/pwsh; decode dynamic argv only inside known sh grammar.
-  const script = `${POSIX_QUERY_VARIABLE}="\${${ORCA_HERMES_STARTUP_QUERY_ENV}}"; unset ${ORCA_HERMES_STARTUP_QUERY_ENV}; eval "$(printf %b "${encodedInvocation}")"`
+  const script = `${POSIX_QUERY_VARIABLE}="\${${OCC_HERMES_STARTUP_QUERY_ENV}}"; unset ${OCC_HERMES_STARTUP_QUERY_ENV}; eval "$(printf %b "${encodedInvocation}")"`
   // Outer quoting is parsed by the typing shell, even though the body uses sh; octal payload escapes only happen to survive POSIX quoting in fish.
   return `sh -c ${quoteStartupArg(script, shell)}`
 }
@@ -182,7 +182,7 @@ export function planHermesStartupQuery(args: {
   const command = buildQueryCommand(argv, args.shell)
   const env = {
     ...args.agentEnv,
-    [ORCA_HERMES_STARTUP_QUERY_ENV]: args.prompt
+    [OCC_HERMES_STARTUP_QUERY_ENV]: args.prompt
   }
   const envSize = Object.entries(env).reduce((total, [key, value]) => {
     if (args.platform === 'win32') {

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { Repo } from '../../shared/repo-types'
 import * as client from '../github/client'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { repoTarget } from '../persistence/repo-host-target-matcher.test-fixture'
 
 vi.mock('../github/client', async (importOriginal) => ({
@@ -33,7 +33,7 @@ function makeRepo(overrides: Partial<Repo> = {}): Repo {
   }
 }
 
-function attachStore(runtime: OrcaRuntimeService, repos: Repo[]) {
+function attachStore(runtime: OCCRuntimeService, repos: Repo[]) {
   const updateRepo = vi.fn((target: Pick<Repo, 'id'>, updates: Partial<Repo>) => {
     const index = repos.findIndex((repo) => repo.id === target.id)
     repos[index] = { ...repos[index], ...updates }
@@ -48,7 +48,7 @@ afterEach(() => {
 
 describe('startup fork-upstream backfill', () => {
   it('keeps a renamed fork own owner avatar while recording the upstream', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const updateRepo = attachStore(runtime, [makeRepo()])
     getRepoUpstream.mockResolvedValue({ owner: 'upstream-org', repo: 'rocket' })
     getRepoSlug.mockResolvedValue({ owner: 'acme', repo: 'rocket-pro' })
@@ -67,7 +67,7 @@ describe('startup fork-upstream backfill', () => {
   })
 
   it('migrates a same-name fork to the upstream owner avatar', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const updateRepo = attachStore(runtime, [
       makeRepo({
         path: '/workspace/rocket',
@@ -97,7 +97,7 @@ describe('startup fork-upstream backfill', () => {
 
   it('skips every row whose files sit on an SSH host', async () => {
     // Unified remote ownership, including nested runtime targets, must not read this client's same-path files.
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const updateRepo = attachStore(runtime, [
       makeRepo({ id: 'repo-ssh', executionHostId: 'ssh:builder' }),
       makeRepo({ id: 'repo-openclaw', executionHostId: 'ssh:openclaw' }),
@@ -112,7 +112,7 @@ describe('startup fork-upstream backfill', () => {
   })
 
   it('keeps an icon chosen while avatar detection is pending', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const repo = makeRepo()
     const repos = [repo]
     const updateRepo = attachStore(runtime, repos)

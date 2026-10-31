@@ -103,7 +103,7 @@ describe('createHostedReview with shared symlinks', () => {
     )
 
   beforeEach(() => {
-    worktree = mkdtempSync(join(tmpdir(), 'orca-hosted-shared-'))
+    worktree = mkdtempSync(join(tmpdir(), 'occ-hosted-shared-'))
     mkdirSync(join(worktree, 'primary-node-modules'))
     symlinkSync(join(worktree, 'primary-node-modules'), join(worktree, 'node_modules'), 'dir')
     statusOutput = '?? node_modules\0'
@@ -126,7 +126,7 @@ describe('createHostedReview with shared symlinks', () => {
     }
 
     getProjectSlugMock.mockResolvedValue(null)
-    getRepoSlugMock.mockResolvedValue({ owner: 'acme', repo: 'orca' })
+    getRepoSlugMock.mockResolvedValue({ owner: 'acme', repo: 'occ' })
     getBitbucketRepoSlugMock.mockResolvedValue(null)
     getAzureDevOpsRepoSlugMock.mockResolvedValue(null)
     getGiteaRepoSlugMock.mockResolvedValue(null)
@@ -143,7 +143,7 @@ describe('createHostedReview with shared symlinks', () => {
     createGitHubPullRequestMock.mockResolvedValue({
       ok: true,
       number: 12,
-      url: 'https://github.com/acme/orca/pull/12'
+      url: 'https://github.com/acme/occ/pull/12'
     })
     gitExecFileAsyncMock.mockImplementation(async (args: string[]) => {
       if (args[0] === 'rev-parse') {
@@ -177,7 +177,7 @@ describe('createHostedReview with shared symlinks', () => {
     await expect(createPr(['node_modules'])).resolves.toEqual({
       ok: true,
       number: 12,
-      url: 'https://github.com/acme/orca/pull/12'
+      url: 'https://github.com/acme/occ/pull/12'
     })
     expect(createGitHubPullRequestMock).toHaveBeenCalledOnce()
   })

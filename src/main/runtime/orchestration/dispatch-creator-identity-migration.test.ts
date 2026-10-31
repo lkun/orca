@@ -27,7 +27,7 @@ describe('OrchestrationDb v36 to v37 migration', () => {
   })
 
   function createV36Database(): { path: string; dispatchId: string } {
-    tempDir = mkdtempSync(join(tmpdir(), 'orca-db-v37-'))
+    tempDir = mkdtempSync(join(tmpdir(), 'occ-db-v37-'))
     const dbPath = join(tempDir, 'orchestration.db')
     const seed = new OrchestrationDb(dbPath)
     const run = seed.createRun({

@@ -104,7 +104,7 @@ describe('reconcileDriveCheckoutSuspects', () => {
   let root: WatchedRoot
 
   beforeEach(async () => {
-    repo = await mkdtemp(path.join(tmpdir(), 'orca-suspects-'))
+    repo = await mkdtemp(path.join(tmpdir(), 'occ-suspects-'))
     root = watchRoot(repo)
     mocks.appliesTo = new Set([repo])
     mocks.coveringRoot = root

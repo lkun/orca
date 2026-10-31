@@ -85,7 +85,7 @@ describe('catalog prune with a moved project', () => {
   const seeded = {
     filterRepoIds: ['moved-repo', 'stale-repo'],
     setupScriptPromptDismissedRepoIds: [hostDismissal, staleDismissal],
-    trustedOrcaHooks: { 'moved-repo': trust(1), 'stale-repo': trust(2) }
+    trustedOCCHooks: { 'moved-repo': trust(1), 'stale-repo': trust(2) }
   }
 
   it('keeps the moved repo filter, trust and dismissals when its host is absent', async () => {
@@ -94,7 +94,7 @@ describe('catalog prune with a moved project', () => {
     await store.getState().fetchReposForAllHosts()
     expect(store.getState().filterRepoIds).toEqual(['moved-repo'])
     expect(store.getState().setupScriptPromptDismissedRepoIds).toEqual([hostDismissal])
-    expect(store.getState().trustedOrcaHooks).toEqual({ 'moved-repo': trust(1) })
+    expect(store.getState().trustedOCCHooks).toEqual({ 'moved-repo': trust(1) })
   })
 
   it('keeps them when the moved repo was the only one listed', async () => {
@@ -103,7 +103,7 @@ describe('catalog prune with a moved project', () => {
     store.setState({ ...seeded, wslMovedProjects: [moved] })
     await store.getState().fetchReposForAllHosts()
     expect(store.getState().filterRepoIds).toEqual(['moved-repo'])
-    expect(store.getState().trustedOrcaHooks).toEqual({ 'moved-repo': trust(1) })
+    expect(store.getState().trustedOCCHooks).toEqual({ 'moved-repo': trust(1) })
   })
 
   it('keeps the moved repo filter and dismissals through a local-only refresh', async () => {
@@ -120,7 +120,7 @@ describe('catalog prune with a moved project', () => {
     await store.getState().fetchReposForAllHosts()
     expect(store.getState().filterRepoIds).toEqual([])
     expect(store.getState().setupScriptPromptDismissedRepoIds).toEqual([])
-    expect(store.getState().trustedOrcaHooks).toEqual({})
+    expect(store.getState().trustedOCCHooks).toEqual({})
   })
 
   it('keeps them through a UI re-hydration too, and only for the moved repo', () => {
@@ -133,7 +133,7 @@ describe('catalog prune with a moved project', () => {
     withMove.getState().hydratePersistedUI(ui)
     expect(withMove.getState().filterRepoIds).toEqual(['moved-repo'])
     expect(withMove.getState().agentsFilterRepoIds).toEqual(['moved-repo'])
-    expect(withMove.getState().trustedOrcaHooks).toEqual({ 'moved-repo': trust(1) })
+    expect(withMove.getState().trustedOCCHooks).toEqual({ 'moved-repo': trust(1) })
     expect(withMove.getState().setupScriptPromptDismissedRepoIds).toEqual([hostDismissal])
 
     const without = createUIStore()
@@ -141,7 +141,7 @@ describe('catalog prune with a moved project', () => {
     without.getState().hydratePersistedUI(ui)
     expect(without.getState().filterRepoIds).toEqual([])
     expect(without.getState().agentsFilterRepoIds).toEqual([])
-    expect(without.getState().trustedOrcaHooks).toEqual({})
+    expect(without.getState().trustedOCCHooks).toEqual({})
     expect(without.getState().setupScriptPromptDismissedRepoIds).toEqual([])
   })
 })

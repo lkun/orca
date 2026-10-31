@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { pluginSyntaxSample } from './plugin-syntax-samples'
 
-// First extension each official syntax plugin lists in orca-catalog.json.
+// First extension each official syntax plugin lists in occ-catalog.json.
 const OFFICIAL_SYNTAX_EXTENSIONS = [
   '.gleam',
   '.prisma',

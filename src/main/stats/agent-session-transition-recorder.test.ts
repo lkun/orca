@@ -25,7 +25,7 @@ const T = 1_700_000_000_000
 const PANE = 'tab-1:pane-1'
 
 beforeEach(() => {
-  userDataDir = mkdtempSync(join(tmpdir(), 'orca-stats-recorder-'))
+  userDataDir = mkdtempSync(join(tmpdir(), 'occ-stats-recorder-'))
   vi.useFakeTimers({ now: T })
 })
 
@@ -473,7 +473,7 @@ describe('AgentSessionTransitionRecorder fed by the status store', () => {
     // OSC repeats lack main-agent evidence and retain persisted state-start time.
     vi.useRealTimers()
     _internals.resetCachesForTests()
-    const hookDataDir = mkdtempSync(join(tmpdir(), 'orca-stats-recorder-hooks-'))
+    const hookDataDir = mkdtempSync(join(tmpdir(), 'occ-stats-recorder-hooks-'))
     const osc = {
       paneKey: STORE_PANE,
       tabId: 'tab-1',

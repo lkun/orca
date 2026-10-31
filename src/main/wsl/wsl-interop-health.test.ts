@@ -16,8 +16,8 @@ import {
 } from './wsl-interop-health'
 import { WSL_INTEROP_PROBE_SCRIPT, WSL_INTEROP_REPAIR_SCRIPT } from './wsl-interop-registration'
 
-const PRESENT = 'orca-wsl-interop:present\n'
-const MISSING = 'orca-wsl-interop:missing\norca-wsl-interop:conf\n'
+const PRESENT = 'occ-wsl-interop:present\n'
+const MISSING = 'occ-wsl-interop:missing\nocc-wsl-interop:conf\n'
 const MISSING_DISABLED = `${MISSING}[interop]\nenabled=false\n`
 
 function harness(overrides: Partial<WslInteropHealthDeps> = {}) {
@@ -73,7 +73,7 @@ describe('WslInteropHealthMonitor.check', () => {
     const runScript = vi
       .fn()
       .mockResolvedValueOnce({ code: 0, stdout: MISSING })
-      .mockResolvedValueOnce({ code: 0, stdout: 'orca-wsl-interop:repaired\n' })
+      .mockResolvedValueOnce({ code: 0, stdout: 'occ-wsl-interop:repaired\n' })
     const h = harness({ runScript })
     await expect(h.monitor.check('Ubuntu')).resolves.toBe('repaired')
     expect(runScript).toHaveBeenLastCalledWith('Ubuntu', WSL_INTEROP_REPAIR_SCRIPT, 'root')

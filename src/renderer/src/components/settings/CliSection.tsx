@@ -4,7 +4,7 @@ import { FolderOpen, RefreshCw } from 'lucide-react'
 import { toast } from 'sonner'
 import type { CliInstallStatus } from '../../../../shared/cli-install-types'
 import type { GlobalSettings } from '../../../../shared/global-settings-types'
-import { ORCA_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
+import { OCC_CLI_SKILL_NAME } from '@/lib/agent-feature-skill-names'
 import {
   GLOBAL_AGENT_SKILL_SOURCE_KINDS,
   useInstalledAgentSkill
@@ -42,19 +42,19 @@ function getRevealLabel(platform: string): string {
 
 function getInstallDescription(platform: string): string {
   if (platform === 'darwin') {
-    return 'Register `orca` in /usr/local/bin.'
+    return 'Register `occ` in /usr/local/bin.'
   }
   if (platform === 'linux') {
     return 'Register `occ-ide` in ~/.local/bin.'
   }
   if (platform === 'win32') {
-    return 'Register `orca` in your user PATH.'
+    return 'Register `occ` in your user PATH.'
   }
   return 'CLI registration is not yet available on this platform.'
 }
 
 function getFallbackCommandName(platform: string): string {
-  return platform === 'linux' ? 'occ-ide' : 'orca'
+  return platform === 'linux' ? 'occ-ide' : 'occ'
 }
 
 export function CliSection({
@@ -87,7 +87,7 @@ export function CliSection({
     loading: cliSkillLoading,
     error: cliSkillError,
     refresh: refreshCliSkill
-  } = useInstalledAgentSkill(ORCA_CLI_SKILL_NAME, {
+  } = useInstalledAgentSkill(OCC_CLI_SKILL_NAME, {
     discoveryTarget: skillRuntime.discoveryTarget,
     runtimeTarget: skillRuntime.discoveryRuntimeTarget,
     sourceKinds: GLOBAL_AGENT_SKILL_SOURCE_KINDS
@@ -154,8 +154,8 @@ export function CliSection({
         </h2>
         <p className="text-xs text-muted-foreground">
           {translate(
-            'auto.components.settings.CliSection.outsideOrcaDescription',
-            'OCC terminals already have `orca`. Turn this on to use `orca` from other terminals outside OCC.'
+            'auto.components.settings.CliSection.outsideOCCDescription',
+            'OCC terminals already have `occ`. Turn this on to use `occ` from other terminals outside OCC.'
           )}
         </p>
       </div>
@@ -313,9 +313,9 @@ export function CliSection({
                 'auto.components.settings.CliSection.e8012c03a1',
                 'Enables agents to use OCC workspace, terminal, and progress commands.'
               )}
-              skillNames={[ORCA_CLI_SKILL_NAME]}
+              skillNames={[OCC_CLI_SKILL_NAME]}
               target={skillRuntime.bundledSkillTarget}
-              // COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
+              // COMPAT(wsl-bridge): removed when WSL runs as an occd host.
               terminalRuntime={agentRuntime}
               installed={cliSkillDetected}
               loading={cliSkillLoading}

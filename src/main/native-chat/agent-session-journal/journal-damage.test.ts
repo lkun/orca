@@ -18,7 +18,7 @@ import {
   liveTestJournalRows,
   updateTestJournalRowJson,
   deleteTestJournalRow,
-  SAVED_BY_NEWER_ORCA
+  SAVED_BY_NEWER_OCC
 } from './journal-host-database-test-support'
 
 const IDENTITY: AgentSessionJournalIdentity = {
@@ -80,7 +80,7 @@ async function writeChat(): Promise<void> {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-journal-damage-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-journal-damage-'))
   clock = 1_000
 })
 
@@ -150,7 +150,7 @@ describe('a damaged chat', () => {
     })
     const before = await storedRows()
 
-    await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_ORCA)
+    await expect(open()).rejects.toMatchObject(SAVED_BY_NEWER_OCC)
     expect(await storedRows()).toEqual(before)
   })
 })

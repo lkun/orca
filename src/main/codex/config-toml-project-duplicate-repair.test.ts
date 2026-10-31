@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { readFileSync, writeFileSync } from 'node:fs'
 import { findDuplicateTomlDeclarations } from './config-toml-duplicate-declarations-test-fixture'
-import { repairOrcaDuplicateTrustTables } from './config-toml-project-duplicate-repair'
+import { repairOCCDuplicateTrustTables } from './config-toml-project-duplicate-repair'
 import { upsertProjectTrustLevel, upsertProjectTrustLevelInContent } from './config-toml-trust'
 import {
   createTrustConfigFixture,
@@ -94,7 +94,7 @@ describe('repairing configs broken by #22592', () => {
       ''
     ].join('\r\n')
 
-    const repaired = repairOrcaDuplicateTrustTables(broken)
+    const repaired = repairOCCDuplicateTrustTables(broken)
 
     expect(repaired).toBe(['["projects"."/repo-c"]', '"trust_level" = "trusted"', ''].join('\r\n'))
   })
@@ -109,7 +109,7 @@ describe('repairing configs broken by #22592', () => {
       ''
     ].join('\n')
 
-    const repaired = repairOrcaDuplicateTrustTables(broken)
+    const repaired = repairOCCDuplicateTrustTables(broken)
 
     expect(repaired).toBe(
       ["['projects'.'C:\\Users\\me\\repo']", "trust_level = 'trusted'", ''].join('\n')
@@ -126,7 +126,7 @@ describe('repairing configs broken by #22592', () => {
       ''
     ].join('\n')
 
-    expect(repairOrcaDuplicateTrustTables(config)).toBe(config)
+    expect(repairOCCDuplicateTrustTables(config)).toBe(config)
     expect(warn).not.toHaveBeenCalled()
   })
 
@@ -169,14 +169,14 @@ describe('repairing configs broken by #22592', () => {
       ''
     ].join('\n')
 
-    expect(repairOrcaDuplicateTrustTables(broken)).toBe(broken)
+    expect(repairOCCDuplicateTrustTables(broken)).toBe(broken)
     expect(warn).toHaveBeenCalledTimes(1)
   })
 
   it('does not touch a valid config', () => {
     const config = ['["projects"."/repo-f"]', '"trust_level" = "trusted"', ''].join('\n')
 
-    expect(repairOrcaDuplicateTrustTables(config)).toBe(config)
+    expect(repairOCCDuplicateTrustTables(config)).toBe(config)
     expect(warn).not.toHaveBeenCalled()
   })
 })

@@ -20,14 +20,14 @@ let root: Root
 const repo: Repo = {
   id: 'remote-repo',
   displayName: 'OCC',
-  path: '/srv/orca',
+  path: '/srv/occ',
   badgeColor: '#737373',
   addedAt: 100,
   kind: 'git',
   executionHostId: 'runtime:hub'
 }
 const project: Project = {
-  id: 'github:stablyai/orca',
+  id: 'github:stablyai/occ',
   displayName: 'OCC',
   badgeColor: '#737373',
   sourceRepoIds: [repo.id],

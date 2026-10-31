@@ -1,7 +1,7 @@
 import { terminalCreateFeatureRequirement } from '../../agent-launch-feature-requirement'
 import { terminalImageViewerSupported } from '../../../terminal-image-viewer-env'
 import { TERMINAL_WORKSPACE_STOP_METHODS } from './terminal-workspace-stop-methods'
-import { ORCA_SIDEBAR_INPUTS_IS_MAIN } from '../../../../../shared/sidebar-inputs-switch'
+import { OCC_SIDEBAR_INPUTS_IS_MAIN } from '../../../../../shared/sidebar-inputs-switch'
 import { defineMethod } from '../../core'
 import {
   navigationTargetsHost,
@@ -123,7 +123,7 @@ export const TERMINAL_LIFECYCLE_METHODS = [
       )
       // Switch point. A CLI start is work in the workspace; a window or phone tab is a person opening one.
       if (
-        ORCA_SIDEBAR_INPUTS_IS_MAIN &&
+        OCC_SIDEBAR_INPUTS_IS_MAIN &&
         context.caller?.kind === 'local-cli' &&
         !terminal.isReattach
       ) {

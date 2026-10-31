@@ -5,7 +5,7 @@
  */
 import { ORCHESTRATION_ASK_MAX_TIMEOUT_MS } from '../../../shared/orchestration-ask-timeout'
 import { isDurableMutation } from '../../../shared/orchestration-rpc-contract'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { ALL_RPC_METHODS } from '../../runtime/rpc/methods'
 import {
   hashCanonical,
@@ -37,7 +37,7 @@ export function cappedInboxLimit(limit: number | undefined): number | undefined 
 }
 
 export const LEGACY_RELAY_CLI_BUSY =
-  'This host already has too many older-terminal orca commands waiting on this desktop. ' +
+  'This host already has too many older-terminal occ commands waiting on this desktop. ' +
   'Let some finish, then try again.'
 
 /** Bound calls per host and abort on disconnect or switch-off; polling covers every settings writer. */
@@ -79,7 +79,7 @@ export async function runLegacyRelayCliCall<T>(
 
 /** Exact method/principal/payload receipts may replay. Check while caller identity is registered because hashing reads its pane. */
 export function isExactLegacyRelayCliReplay(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   fingerprint: string,
   requestId: string,
   call: LegacyRelayCliCall

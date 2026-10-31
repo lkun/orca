@@ -19,8 +19,8 @@ import {
   type ServeSupervisorBrake
 } from './serve-supervisor-brake'
 import type { ServeInstallEvidence } from './serve-install-hold'
-import { resolveOrcadExitCode } from '../../main/orcad/orcad-exit-code'
-import { OrcadInstanceLockError } from '../../main/orcad/orcad-data-root-privacy'
+import { resolveOCCdExitCode } from '../../main/occd/occd-exit-code'
+import { OCCdInstanceLockError } from '../../main/occd/occd-data-root-privacy'
 
 /** Virtual clock: timers fire in order as soon as the loop awaits them. */
 function harness(overrides: Partial<SupervisedServeOptions> & { userDataPath: string }) {
@@ -29,7 +29,7 @@ function harness(overrides: Partial<SupervisedServeOptions> & { userDataPath: st
   const logs: string[] = []
   let stopListener: (() => void) | null = null
   const options: SupervisedServeOptions = {
-    executable: '/opt/occ/orca',
+    executable: '/opt/occ/occ',
     force: false,
     runOnce: async () => 1,
     readInstallEvidence: async () => ({ kind: 'clear' }),
@@ -66,7 +66,7 @@ describe('superviseServeService', () => {
   let userDataPath: string
 
   beforeEach(async () => {
-    userDataPath = await mkdtemp(join(tmpdir(), 'orca-supervise-'))
+    userDataPath = await mkdtemp(join(tmpdir(), 'occ-supervise-'))
   })
 
   afterEach(async () => {
@@ -219,8 +219,8 @@ describe('superviseServeService', () => {
 
   // #32177: a lock this machine cannot judge (a shared home) is a peer, not a fault to give up on.
   it('waits on a lock holder it cannot judge, without giving up', async () => {
-    const holderUnverifiable = resolveOrcadExitCode(
-      new OrcadInstanceLockError('orcad_instance_lock_holder_unverifiable', 'shared home')
+    const holderUnverifiable = resolveOCCdExitCode(
+      new OCCdInstanceLockError('occd_instance_lock_holder_unverifiable', 'shared home')
     )
     let runs = 0
     const h = harness({

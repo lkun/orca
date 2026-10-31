@@ -38,7 +38,7 @@ import {
 import { resettleOpenStructuredAgentSessionConversation } from './structured-agent-session-conversation-open'
 import { StructuredAgentSessionHost } from './structured-agent-session-host'
 import { withNativeChatCutTurnNotices } from '../../../shared/native-chat/transcript/native-chat-cut-turn-notice'
-import { latestNativeChatOrcaStopCut } from '../../../shared/native-chat/native-chat-orca-stop-cut'
+import { latestNativeChatOCCStopCut } from '../../../shared/native-chat/native-chat-occ-stop-cut'
 import { beginAgentSessionRuntimeRecord } from '../../runtime/agent-session-runtime-end-record'
 import { STRUCTURED_AGENT_SESSION_IDLE_MS } from './structured-agent-session-idle-sweep'
 import type { StructuredAgentSessionHostDeps } from './structured-agent-session-host-types'
@@ -187,7 +187,7 @@ async function settledTurn() {
 }
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'orca-crash-turn-end-'))
+  root = await mkdtemp(join(tmpdir(), 'occ-crash-turn-end-'))
   await seedCrashedStore()
   await seedClaudeToolTurn()
 })
@@ -376,7 +376,7 @@ describe('a turn a read reached before the reconcile proved its owner dead', () 
     expect(items.flatMap((item) => (item.body.kind === 'status' ? [item.turnScope] : []))).toEqual([
       { kind: 'turn', turnItemId }
     ])
-    expect(latestNativeChatOrcaStopCut(items, [])).toEqual({ turnItemId, cause: 'crash' })
+    expect(latestNativeChatOCCStopCut(items, [])).toEqual({ turnItemId, cause: 'crash' })
     const readerRows = withNativeChatCutTurnNotices(items, { agentName: 'Claude' }).filter(
       (item) => item.body.kind === 'status'
     )

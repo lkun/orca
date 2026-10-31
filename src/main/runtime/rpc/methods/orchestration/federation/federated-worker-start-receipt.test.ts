@@ -4,7 +4,7 @@ import {
   ORCHESTRATION_FEDERATION_RUNTIME_CAPABILITY,
   ORCHESTRATION_WORKER_TURN_STOP_REPORTS_RUNTIME_CAPABILITY
 } from '../../../../../../shared/protocol-version'
-import { OrcaRuntimeService } from '../../../../orca-runtime'
+import { OCCRuntimeService } from '../../../../occ-runtime'
 import { OrchestrationDb } from '../../../../orchestration/db'
 import { startFederatedWorker } from './federated-worker-start'
 
@@ -19,7 +19,7 @@ describe('federated worker start receipt validation', () => {
 
   it('marks a malformed ready receipt outcome unknown without persisting resources', async () => {
     const db = new OrchestrationDb(':memory:')
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     databases.push(db)
     const run = db.createRun({
@@ -97,7 +97,7 @@ describe('federated worker start receipt validation', () => {
     { host: 'a host that reports turn stops', reportsTurnStops: true }
   ])('tells the coordinator how to look when $host is ready', async ({ reportsTurnStops }) => {
     const db = new OrchestrationDb(':memory:')
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     runtime.setOrchestrationDb(db)
     databases.push(db)
     const run = db.createRun({
@@ -160,7 +160,7 @@ describe('federated worker start receipt validation', () => {
     expect(result.next).toBe(
       reportsTurnStops
         ? "OCC wakes you when workers report; end your turn when you're done."
-        : `OCC wakes you when workers report; end your turn when you're done. remote cannot report a worker that stops without worker_done, so if no report arrives, run \`orca orchestration worker-show --dispatch ${result.dispatchId}\`.`
+        : `OCC wakes you when workers report; end your turn when you're done. remote cannot report a worker that stops without worker_done, so if no report arrives, run \`occ orchestration worker-show --dispatch ${result.dispatchId}\`.`
     )
   })
 })

@@ -1,9 +1,9 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { openRelayDatabase, type RelayDatabase } from './database.js'
 
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
-const applicationName = 'orca-relay/statement-timeout-postgres'
+const applicationName = 'occ-relay/statement-timeout-postgres'
 
 describePostgres('PostgreSQL statement deadline', () => {
   const databases: RelayDatabase[] = []

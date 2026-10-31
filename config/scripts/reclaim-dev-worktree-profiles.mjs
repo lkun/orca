@@ -43,7 +43,7 @@ async function profileOwnerPids(userDataPath) {
     }
   } catch {}
   try {
-    const runtime = JSON.parse(await readFile(path.join(userDataPath, 'orca-runtime.json'), 'utf8'))
+    const runtime = JSON.parse(await readFile(path.join(userDataPath, 'occ-runtime.json'), 'utf8'))
     if (Number.isInteger(runtime?.pid)) {
       pids.push(runtime.pid)
     }

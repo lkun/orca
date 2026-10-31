@@ -382,7 +382,7 @@ describe('bundled skill install edges', () => {
     await npxShared(home, EDITED_TEXT)
     const { result } = await previewAndInstall(serviceInput(home, { force: [home.shared] }))
     const backup = result.skills[0].ops[0].backupPath ?? ''
-    expect(backup.startsWith(join(home.home, '.agents', '.orca-skill-backups', `${NAME}-`))).toBe(
+    expect(backup.startsWith(join(home.home, '.agents', '.occ-skill-backups', `${NAME}-`))).toBe(
       true
     )
     expect(await readFile(join(backup, 'SKILL.md'), 'utf8')).toBe(EDITED_TEXT)
@@ -396,11 +396,11 @@ describe('bundled skill install edges', () => {
     const input = serviceInput(home, { workspaceDirectory: project, force: [projectShared] })
     const { result } = await previewAndInstall(input)
     const backup = result.skills[0].ops[0].backupPath ?? ''
-    expect(backup.startsWith(join(home.home, '.agents', '.orca-skill-backups', `${NAME}-`))).toBe(
+    expect(backup.startsWith(join(home.home, '.agents', '.occ-skill-backups', `${NAME}-`))).toBe(
       true
     )
     expect(await readFile(join(backup, 'SKILL.md'), 'utf8')).toBe(EDITED_TEXT)
-    expect(await snapshot(join(project, '.agents', '.orca-skill-backups'))).toBe('missing')
+    expect(await snapshot(join(project, '.agents', '.occ-skill-backups'))).toBe('missing')
   })
 
   // This test needs file symlinks (Developer Mode on Windows); product installs use directory links.

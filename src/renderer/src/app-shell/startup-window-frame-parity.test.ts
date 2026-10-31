@@ -48,7 +48,7 @@ import {
 // Compare layout-owner main/frame application against legacy window restore.
 const layoutOwner = vi.hoisted(() => ({ isMain: true }))
 vi.mock('../../../shared/layout-owner-switch', () => ({
-  get ORCA_LAYOUT_OWNER_IS_MAIN() {
+  get OCC_LAYOUT_OWNER_IS_MAIN() {
     return layoutOwner.isMain
   }
 }))
@@ -128,7 +128,7 @@ function groupsWithoutSelection(): WorkspaceSessionState {
 
 /** An editor tab OCC moved to the workspace owning its file: saved under the file's owned id. */
 function movedEditorTab(): WorkspaceSessionState {
-  const filePath = '/Users/dev/orca/docs/readme.md'
+  const filePath = '/Users/dev/occ/docs/readme.md'
   const session = addWorkspace(emptySession(), GIT_KEY, [
     {
       id: 'group-m',

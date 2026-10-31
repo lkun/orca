@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto'
 import { decodeProtectedHeader, errors, jwtVerify } from 'jose'
 import { z } from 'zod'
 
-export const ASSIGNMENT_LEASE_AUDIENCE = 'orca-relay-cell'
+export const ASSIGNMENT_LEASE_AUDIENCE = 'occ-relay-cell'
 const MAX_LEASE_LENGTH = 4 * 1024
 
 // Names the signing key so a later rotation can verify both keys by id. Not a secret: it is a

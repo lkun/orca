@@ -46,7 +46,7 @@ let directory: string
 let fileWatch: RebindingFileWatch | null
 
 beforeEach(() => {
-  directory = mkdtempSync(join(tmpdir(), 'orca-rebinding-noise-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-rebinding-noise-'))
   nativeEvents.length = 0
   nativeFailures.length = 0
   fileWatch = null

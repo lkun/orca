@@ -1,9 +1,9 @@
 // Image chip tokens retain attachment identity; thumbnail order supplies numbers only at send.
 
-const IMAGE_REFERENCES = /\[Image\]\(orca-image:([A-Za-z0-9._:-]{1,200})\)/g
+const IMAGE_REFERENCES = /\[Image\]\(occ-image:([A-Za-z0-9._:-]{1,200})\)/g
 
 export function imageReferenceToken(attachmentId: string): string {
-  return `[Image](orca-image:${attachmentId})`
+  return `[Image](occ-image:${attachmentId})`
 }
 
 /** Each chip goes with the space inserted after it, as the editor deletes it. */

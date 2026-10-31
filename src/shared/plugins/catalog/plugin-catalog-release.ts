@@ -67,12 +67,12 @@ export const pluginCatalogReleaseSchema = z
     execution: pluginExecutionProfileSchema.meta(
       pluginFieldDoc("The manifest's `execution` profile.", NEXT, ['data'])
     ),
-    minimumOrca: z
+    minimumOCC: z
       .string()
       .regex(/^\d+\.\d+\.\d+$/, 'must be an x.y.z version')
       .meta(
         pluginFieldDoc(
-          "The manifest's `engines.orca` without `>=`. Older OCC lists the plugin but will not install it.",
+          "The manifest's `engines.occ` without `>=`. Older OCC lists the plugin but will not install it.",
           NEXT,
           [NEXT]
         )
@@ -223,7 +223,7 @@ export function pluginCatalogReleaseEntry(
     commit: pinned.commit,
     contentHash: pinned.contentHash,
     execution: manifest.execution,
-    minimumOrca: manifest.engines.orca.replace(/^>=/, ''),
+    minimumOCC: manifest.engines.occ.replace(/^>=/, ''),
     name: manifest.name,
     contributes: pluginContributionSummary(manifest),
     ...(capabilities.length > 0 ? { capabilities } : {}),
@@ -255,7 +255,7 @@ export function pluginCatalogReleaseError(input: {
   if (manifest.execution !== release.execution) {
     return 'execution profile does not match the catalog release'
   }
-  if (manifest.engines.orca !== `>=${release.minimumOrca}`) {
+  if (manifest.engines.occ !== `>=${release.minimumOCC}`) {
     return 'OCC compatibility does not match the catalog release'
   }
   if (

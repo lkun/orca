@@ -100,8 +100,8 @@ describe('recorded command rejection wrappers at the startup classifier', () => 
           modelId: capture.request.modelId
         })
         .catch((caught: unknown) => caught)
-      // Only correlation changes: the peer allocates orca-1 instead of the capture harness id.
-      input.write(`${JSON.stringify({ ...capture.response, id: 'orca-1' })}\n`)
+      // Only correlation changes: the peer allocates occ-1 instead of the capture harness id.
+      input.write(`${JSON.stringify({ ...capture.response, id: 'occ-1' })}\n`)
       const error = await failed
       expect(error).toBeInstanceOf(JsonlRpcResponseError)
       expect(error).toMatchObject({

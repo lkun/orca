@@ -1,5 +1,5 @@
 import { renameStructuredSessionTab, type SessionTabProps } from './structured-session-tab-rename'
-import { OrcaRuntimeWithHeadlessPaneMoveToNewTab } from './headless-pane-move-to-new-tab'
+import { OCCRuntimeWithHeadlessPaneMoveToNewTab } from './headless-pane-move-to-new-tab'
 import type { WorkspaceSessionState } from '../../../shared/workspace-session-state-types'
 import type { RuntimeMobileSessionTabsSnapshot } from '../../../shared/runtime-session-contracts'
 import type { RuntimeMobileSessionSnapshotTab } from '../../../shared/runtime-mobile-session-tab-contracts'
@@ -7,7 +7,7 @@ import type {
   TerminalLayoutSnapshot,
   TerminalPaneLayoutNode
 } from '../../../shared/terminal-tab-types'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { cloneTerminalLayoutSnapshot } from '../mobile-session-layout-projection'
 import { sameStringRecord, terminalLayoutNodeEqual } from '../../../shared/terminal-layout-equality'
 
@@ -32,7 +32,7 @@ function paneLayoutEditIsNoOp(
   )
 }
 
-export abstract class RuntimeHeadlessTabProperties extends OrcaRuntimeWithHeadlessPaneMoveToNewTab {
+export abstract class RuntimeHeadlessTabProperties extends OCCRuntimeWithHeadlessPaneMoveToNewTab {
   // Remote tab color/pin need persistence and live publication or the next snapshot reverts them.
   async setMobileSessionTabProps(
     worktreeSelector: string,
@@ -47,7 +47,7 @@ export abstract class RuntimeHeadlessTabProperties extends OrcaRuntimeWithHeadle
     const hostTabId = snapshot
       ? (this.resolveMobileSessionHostTabId(snapshot, args.tabId) ?? args.tabId)
       : args.tabId
-    if (ORCA_LAYOUT_OWNER_IS_MAIN && (await this.setMainTabProps(worktreeId, hostTabId, args))) {
+    if (OCC_LAYOUT_OWNER_IS_MAIN && (await this.setMainTabProps(worktreeId, hostTabId, args))) {
       return { updated: true }
     }
     const authoritativeWindow = this.getAvailableAuthoritativeWindow()

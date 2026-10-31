@@ -2,7 +2,7 @@ import '../unused-default-rpc-methods.test-fixture'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AI_VAULT_AGENTS } from '../../../../shared/ai-vault-types'
 import { RpcDispatcher } from '../dispatcher'
-import { OrcaRuntimeService } from '../../orca-runtime'
+import { OCCRuntimeService } from '../../occ-runtime'
 import { AI_VAULT_METHODS } from './ai-vault'
 import { fakeSearchService } from '../../../../shared/ai-vault-search-test-fixture'
 import { createSessionSearchClient } from '../../../../shared/ai-vault-search-client'
@@ -12,7 +12,7 @@ afterEach(() => setSessionSearchService(null))
 
 function dispatcher(legacy = false) {
   return new RpcDispatcher({
-    runtime: new OrcaRuntimeService(),
+    runtime: new OCCRuntimeService(),
     methods: legacy ? [] : AI_VAULT_METHODS
   })
 }
@@ -123,7 +123,7 @@ describe('session search runtime RPC', () => {
       const service = fakeSearchService()
       setSessionSearchService(service)
       const rpc = new RpcDispatcher({
-        runtime: new OrcaRuntimeService(),
+        runtime: new OCCRuntimeService(),
         methods: AI_VAULT_METHODS.filter((method) => method.name !== 'aiVault.searchStatus')
       })
       const replies: unknown[] = []
@@ -177,7 +177,7 @@ describe('session search consent over the runtime RPC', () => {
     params
   })
 
-  function consentDispatcher(runtime = new OrcaRuntimeService()) {
+  function consentDispatcher(runtime = new OCCRuntimeService()) {
     const setSessionSearchEnabled = vi.fn(async () => {})
     Object.assign(runtime, { setSessionSearchEnabled })
     const dispatcher = new RpcDispatcher({ runtime, methods: AI_VAULT_METHODS })
@@ -245,7 +245,7 @@ describe('session search consent over the runtime RPC', () => {
   })
 
   it('reports the host refusal when this runtime has no settings store', async () => {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const dispatcher = new RpcDispatcher({ runtime, methods: AI_VAULT_METHODS })
     let raw = ''
     await dispatcher.dispatchStreaming(

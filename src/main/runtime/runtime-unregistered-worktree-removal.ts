@@ -16,7 +16,7 @@ import {
 import { cleanupUnusedWorktreePushTargetRemote } from '../ipc/worktree-remote'
 import {
   assertWorktreeDoesNotContainRegisteredWorktree,
-  canCleanupUnregisteredOrcaWorktreeDirectory,
+  canCleanupUnregisteredOCCWorktreeDirectory,
   canSafelyRemoveOrphanedWorktreeDirectory,
   isDangerousWorktreeRemovalPath,
   ORPHANED_WORKTREE_DIRECTORY_MESSAGE,
@@ -47,7 +47,7 @@ export async function removeRuntimeUnregisteredWorktree(args: {
   const { repo, target, registeredWorktrees, removedMeta, route } = args
   const removalHome = resolveWorktreeRemovalHome(route)
   let canCleanOrphanedDirectory = false
-  if (canCleanupUnregisteredOrcaWorktreeDirectory({ meta: removedMeta })) {
+  if (canCleanupUnregisteredOCCWorktreeDirectory({ meta: removedMeta })) {
     const access = getLocalWorktreePathAccess(args.localOptions)
     canCleanOrphanedDirectory =
       !isDangerousWorktreeRemovalPath(target.path, repo.path, removalHome) &&

@@ -4,8 +4,8 @@ import { RuntimeClientError } from './types'
 import { resolveLaunchUserDataPath } from './launch-user-data-path'
 
 /** A remote server’s Node-based CLI cannot start a local app server. */
-export function canStartOrcaServer(env: NodeJS.ProcessEnv): boolean {
-  const override = env.ORCA_APP_EXECUTABLE
+export function canStartOCCServer(env: NodeJS.ProcessEnv): boolean {
+  const override = env.OCC_APP_EXECUTABLE
   return (
     (typeof override === 'string' && override.trim().length > 0) || env.ELECTRON_RUN_AS_NODE === '1'
   )
@@ -20,7 +20,7 @@ const NOT_AN_APP_CLI =
   "This `occ` command isn't running from an installed OCC app. On a host OCC reaches over SSH, it belongs to that connection's server and can't start one of its own."
 
 export function serverOnlyServeMessage(platform: NodeJS.Platform): string {
-  return `${NOT_AN_APP_CLI} Install the OCC app on this machine and run \`${appCliName(platform)} serve\` from a plain login shell, or set ORCA_APP_EXECUTABLE to the OCC app executable.`
+  return `${NOT_AN_APP_CLI} Install the OCC app on this machine and run \`${appCliName(platform)} serve\` from a plain login shell, or set OCC_APP_EXECUTABLE to the OCC app executable.`
 }
 
 function serverOnlyServiceInstallMessage(platform: NodeJS.Platform): string {
@@ -33,7 +33,7 @@ function isVersionScopedDir(dir: string, userData: string): boolean {
   return (
     inside === '' ||
     (!inside.startsWith('..') && !isAbsolute(inside)) ||
-    dir.includes('orcad-artifacts') ||
+    dir.includes('occd-artifacts') ||
     dir.includes('/.mount_')
   )
 }
@@ -76,7 +76,7 @@ export function resolveServiceCommand(
   }
   throw new RuntimeClientError(
     'cli_not_found',
-    canStartOrcaServer(deps.env)
+    canStartOCCServer(deps.env)
       ? `Could not find the \`${name}\` command on PATH. Install it from OCC Settings, or pass --command <absolute path>.`
       : serverOnlyServiceInstallMessage(deps.platform)
   )

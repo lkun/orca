@@ -335,7 +335,7 @@ describe('useNativeChatNewRowsMarker', () => {
             kind: 'agent',
             senders: [
               {
-                party: { address: 'term_peer', terminalHandle: 'term_peer', orcaSessionId: null },
+                party: { address: 'term_peer', terminalHandle: 'term_peer', occSessionId: null },
                 name: 'Claude'
               }
             ],

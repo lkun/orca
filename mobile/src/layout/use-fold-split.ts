@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { useSafeAreaFrame } from 'react-native-safe-area-context'
-import { OrcaReservedRegions } from '../../modules/orca-reserved-regions/src'
+import { OCCReservedRegions } from '../../modules/occ-reserved-regions/src'
 import { getFoldSplit, type FoldSplit } from './fold-division'
 import { useReservedRegions } from './reserved-regions'
 
@@ -17,4 +17,4 @@ const noFoldSplit = (): FoldSplit | null => null
  * The fold splitting the area `SideSafeArea` lays screens out in, in that area's coordinates.
  * Chosen once: a platform without the module never reports a fold, so it measures nothing.
  */
-export const useFoldSplit = OrcaReservedRegions ? useMeasuredFoldSplit : noFoldSplit
+export const useFoldSplit = OCCReservedRegions ? useMeasuredFoldSplit : noFoldSplit

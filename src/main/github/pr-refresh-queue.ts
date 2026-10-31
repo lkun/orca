@@ -11,7 +11,7 @@ import {
   POST_PUSH_DELAY_MS,
   refreshKey,
   sameAliasRequestIdentity,
-  refreshIntervalForCandidate,
+  refreshIntervalFoccndidate,
   shouldSkipFresh
 } from './pr-refresh-candidate-policy'
 
@@ -174,7 +174,7 @@ export class PRRefreshQueue {
     const key = refreshKey(candidate)
     const existing = this.entries.get(key)
     const freshDueAt = shouldSkipFresh(candidate, reason) ? freshRetryAt(candidate) : null
-    const stopped = !Number.isFinite(refreshIntervalForCandidate(candidate))
+    const stopped = !Number.isFinite(refreshIntervalFoccndidate(candidate))
     const exposureDueAt =
       reexposed &&
       stopped &&

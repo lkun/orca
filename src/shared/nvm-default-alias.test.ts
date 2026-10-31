@@ -11,7 +11,7 @@ function makeNvmHome(options: {
   aliases?: Record<string, string>
   cliIn?: string
 }): string {
-  const home = mkdtempSync(join(tmpdir(), 'orca-nvm-'))
+  const home = mkdtempSync(join(tmpdir(), 'occ-nvm-'))
   for (const version of options.versions) {
     const bin = join(home, '.nvm', 'versions', 'node', version, 'bin')
     mkdirSync(bin, { recursive: true })

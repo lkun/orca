@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   cleanupMarkdownFixture,
@@ -18,7 +18,7 @@ const TABLE_MARKDOWN = `| Name | Value |
 `
 
 const SCRATCH_DIR =
-  process.env.ORCA_TABLE_ROW_BACKSPACE_SCREENSHOT_DIR ??
+  process.env.OCC_TABLE_ROW_BACKSPACE_SCREENSHOT_DIR ??
   path.join(process.cwd(), 'test-results', 'table-row-backspace')
 
 async function selectionCellText(page: {
@@ -52,15 +52,15 @@ async function tableRowCount(page: {
 }
 
 test.describe('Markdown table keyboard', () => {
-  test.beforeEach(async ({ orcaPage }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
+  test.beforeEach(async ({ occPage }) => {
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
   })
 
   test('Tab/Shift-Tab move between cells and empty-row Backspace deletes the row', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
-    const context = await getActiveWorktreeContext(orcaPage)
+    const context = await getActiveWorktreeContext(occPage)
     let filePath: string | null = null
 
     try {
@@ -70,8 +70,8 @@ test.describe('Markdown table keyboard', () => {
         testInfo.workerIndex,
         TABLE_MARKDOWN
       )
-      await openMarkdownFixture(orcaPage, context, filePath)
-      const editor = await waitForRichMarkdownEditor(orcaPage)
+      await openMarkdownFixture(occPage, context, filePath)
+      const editor = await waitForRichMarkdownEditor(occPage)
 
       await expect(editor.locator('tr')).toHaveCount(4, { timeout: 10_000 })
       await expect(editor.getByText('keep')).toBeVisible()
@@ -79,33 +79,33 @@ test.describe('Markdown table keyboard', () => {
 
       await editor.getByText('keep').click()
 
-      await orcaPage.keyboard.press('Tab')
+      await occPage.keyboard.press('Tab')
       await expect
-        .poll(async () => selectionCellText(orcaPage), {
+        .poll(async () => selectionCellText(occPage), {
           timeout: 5_000,
           message: 'Tab should move from keep → a'
         })
         .toBe('a')
 
-      await orcaPage.keyboard.press('Tab')
+      await occPage.keyboard.press('Tab')
       await expect
-        .poll(async () => selectionCellText(orcaPage), {
+        .poll(async () => selectionCellText(occPage), {
           timeout: 5_000,
           message: 'Tab should wrap into the empty body row'
         })
         .toBe('')
 
-      await orcaPage.keyboard.press('Shift+Tab')
+      await occPage.keyboard.press('Shift+Tab')
       await expect
-        .poll(async () => selectionCellText(orcaPage), {
+        .poll(async () => selectionCellText(occPage), {
           timeout: 5_000,
           message: 'Shift-Tab should return to previous cell (a)'
         })
         .toBe('a')
 
-      await orcaPage.keyboard.press('Enter')
+      await occPage.keyboard.press('Enter')
       await expect
-        .poll(async () => selectionCellText(orcaPage), {
+        .poll(async () => selectionCellText(occPage), {
           timeout: 5_000,
           message: 'Enter should move down into the empty body row'
         })
@@ -114,14 +114,14 @@ test.describe('Markdown table keyboard', () => {
       await editor.screenshot({
         path: path.join(SCRATCH_DIR, 'electron-table-row-backspace-before.png')
       })
-      await orcaPage.screenshot({
+      await occPage.screenshot({
         path: path.join(SCRATCH_DIR, 'electron-table-row-backspace-before-window.png')
       })
 
-      await orcaPage.keyboard.press('Backspace')
+      await occPage.keyboard.press('Backspace')
 
       await expect
-        .poll(async () => tableRowCount(orcaPage), {
+        .poll(async () => tableRowCount(occPage), {
           timeout: 5_000,
           message: 'Empty body row should be removed after Backspace'
         })
@@ -133,12 +133,12 @@ test.describe('Markdown table keyboard', () => {
       await editor.screenshot({
         path: path.join(SCRATCH_DIR, 'electron-table-row-backspace-after.png')
       })
-      await orcaPage.screenshot({
+      await occPage.screenshot({
         path: path.join(SCRATCH_DIR, 'electron-table-row-backspace-after-window.png')
       })
 
       // Hold a beat so the video recording captures the final table state.
-      await orcaPage.waitForTimeout(800)
+      await occPage.waitForTimeout(800)
     } finally {
       await cleanupMarkdownFixture(filePath)
     }

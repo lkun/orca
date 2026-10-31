@@ -19,7 +19,7 @@ function names(repo: string, args: string[]): string[] {
 }
 
 async function createRepo(): Promise<string> {
-  const repo = await mkdtemp(path.join(tmpdir(), 'orca-stage-worktree-'))
+  const repo = await mkdtemp(path.join(tmpdir(), 'occ-stage-worktree-'))
   tempRoots.push(repo)
   git(repo, ['init', '-q', '-b', 'main'])
   git(repo, ['config', 'user.email', 'test@example.com'])
@@ -143,7 +143,7 @@ describe('stageWorktreeChanges', () => {
   describe('OCC shared symlinks', () => {
     async function createSharedLinkWorktree(): Promise<{ repo: string; owner: string }> {
       const repo = await createRepo()
-      const owner = await mkdtemp(path.join(tmpdir(), 'orca-stage-owner-'))
+      const owner = await mkdtemp(path.join(tmpdir(), 'occ-stage-owner-'))
       tempRoots.push(owner)
       await mkdir(path.join(owner, 'node_modules'))
       // Directory-only ignore rules do not match the worktree's symlink.
@@ -167,7 +167,7 @@ describe('stageWorktreeChanges', () => {
 
     it('never stages the shared link while a conflict is unresolved', async () => {
       const repo = await createConflictRepo()
-      const owner = await mkdtemp(path.join(tmpdir(), 'orca-stage-owner-'))
+      const owner = await mkdtemp(path.join(tmpdir(), 'occ-stage-owner-'))
       tempRoots.push(owner)
       await symlink(owner, path.join(repo, 'node_modules'))
 
@@ -190,7 +190,7 @@ describe('stageWorktreeChanges', () => {
 
       it('never stages the shared link while a conflict is unresolved', async () => {
         const repo = await createConflictRepo()
-        const owner = await mkdtemp(path.join(tmpdir(), 'orca-stage-owner-'))
+        const owner = await mkdtemp(path.join(tmpdir(), 'occ-stage-owner-'))
         tempRoots.push(owner)
         await symlink(owner, path.join(repo, 'node_modules'))
 
@@ -203,7 +203,7 @@ describe('stageWorktreeChanges', () => {
 
       it('never stages the shared link from an over-cap listing with a conflict', async () => {
         const repo = await createConflictRepo()
-        const owner = await mkdtemp(path.join(tmpdir(), 'orca-stage-owner-'))
+        const owner = await mkdtemp(path.join(tmpdir(), 'occ-stage-owner-'))
         tempRoots.push(owner)
         await mkdir(path.join(owner, 'node_modules'))
         await writeFile(path.join(repo, '.gitignore'), 'node_modules/\n')

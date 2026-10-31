@@ -58,7 +58,7 @@ function resumeOf(path: string) {
 }
 
 it('keeps a byte-exact resume cursor across a skipped record', async () => {
-  const root = await tempRoot('orca-record-budget-')
+  const root = await tempRoot('occ-record-budget-')
   const path = join(root, SESSION_FILE)
   const first = record('first')
   const second = record('second')
@@ -95,7 +95,7 @@ it('keeps a byte-exact resume cursor across a skipped record', async () => {
 })
 
 it('folds a cold read around a mid-file oversized record', async () => {
-  const root = await tempRoot('orca-record-budget-cold-')
+  const root = await tempRoot('occ-record-budget-cold-')
   const path = join(root, SESSION_FILE)
   const first = record('first')
   const second = record('second')
@@ -109,7 +109,7 @@ it('folds a cold read around a mid-file oversized record', async () => {
 })
 
 it('still lists a session with an oversized record and reports the loss', async () => {
-  const root = await tempRoot('orca-record-budget-scan-')
+  const root = await tempRoot('occ-record-budget-scan-')
   const roots = isolatedScanRoots(root)
   const dir = join(roots.claudeProjectsDir, 'project')
   const path = join(dir, SESSION_FILE)

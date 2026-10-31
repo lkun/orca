@@ -8,7 +8,7 @@ import {
   orchestrationMigrationData
 } from '../../shared/orchestration-rpc-contract'
 import type { PairedRuntimeConnection } from '../../shared/paired-runtime-connection'
-import { openLocalOrca } from './open-local-orca'
+import { openLocalOCC } from './open-local-occ'
 import { getDefaultUserDataPath, readMetadata } from './metadata'
 import {
   getCliStatus,
@@ -71,8 +71,8 @@ export class RuntimeClient {
   constructor(
     userDataPath = getDefaultUserDataPath(),
     private readonly requestTimeoutMs = 60_000,
-    remotePairingCode = process.env.ORCA_PAIRING_CODE ?? process.env.ORCA_REMOTE_PAIRING ?? null,
-    environmentSelector = process.env.ORCA_ENVIRONMENT ?? null,
+    remotePairingCode = process.env.OCC_PAIRING_CODE ?? process.env.OCC_REMOTE_PAIRING ?? null,
+    environmentSelector = process.env.OCC_ENVIRONMENT ?? null,
     cliExecutable = resolveOrchestrationCliExecutable(),
     originalArgs?: readonly string[]
   ) {
@@ -293,7 +293,7 @@ export class RuntimeClient {
     }
   }
 
-  async openOrca(timeoutMs = 15_000): Promise<RuntimeRpcSuccess<CliStatusResult>> {
-    return this.remote ? this.getCliStatus() : openLocalOrca(() => this.getCliStatus(), timeoutMs)
+  async openOCC(timeoutMs = 15_000): Promise<RuntimeRpcSuccess<CliStatusResult>> {
+    return this.remote ? this.getCliStatus() : openLocalOCC(() => this.getCliStatus(), timeoutMs)
   }
 }

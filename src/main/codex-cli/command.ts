@@ -15,7 +15,7 @@ export { WINDOWS_ONLY_AGENT_CLI_DIR } from './windows-only-agent-cli'
 type ResolveCommandOptions = NonNullable<Parameters<typeof resolveCliCommand>[1]>
 
 /**
- * On a WSL-host orcad, a Windows-only copy reads as not installed: a path every spawn (ENOENT) and
+ * On a WSL-host occd, a Windows-only copy reads as not installed: a path every spawn (ENOENT) and
  * stat reports missing, never a bare name the spawn's own PATH search would take to the Windows
  * shim. Unchanged wherever there are no Windows drive mounts.
  */

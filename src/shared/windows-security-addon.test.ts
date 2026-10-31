@@ -9,7 +9,7 @@ describe('trustedPackagePath', () => {
   afterEach(() => roots.splice(0).forEach((root) => rmSync(root, { recursive: true, force: true })))
 
   function layout(): { app: string; inside: string; beside: string; above: string } {
-    const root = mkdtempSync(join(tmpdir(), 'orca-addon-trust-'))
+    const root = mkdtempSync(join(tmpdir(), 'occ-addon-trust-'))
     roots.push(root)
     const file = (path: string) => {
       mkdirSync(join(path, '..'), { recursive: true })
@@ -18,11 +18,11 @@ describe('trustedPackagePath', () => {
     }
     return {
       app: join(root, 'app'),
-      inside: file(join(root, 'app', 'node_modules', '@orca', 'windows-security', 'index.js')),
+      inside: file(join(root, 'app', 'node_modules', '@occ', 'windows-security', 'index.js')),
       // A sibling whose name merely starts with the app's must not count as inside it.
-      beside: file(join(root, 'app-evil', 'node_modules', '@orca', 'windows-security', 'index.js')),
+      beside: file(join(root, 'app-evil', 'node_modules', '@occ', 'windows-security', 'index.js')),
       // What a bare specifier finds by walking past the app, e.g. C:\node_modules on a shared host.
-      above: file(join(root, 'node_modules', '@orca', 'windows-security', 'index.js'))
+      above: file(join(root, 'node_modules', '@occ', 'windows-security', 'index.js'))
     }
   }
 

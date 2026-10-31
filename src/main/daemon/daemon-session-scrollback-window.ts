@@ -1,5 +1,5 @@
 import { DAEMON_RESTORE_SCROLLBACK_ROWS } from './daemon-restore-scrollback-depth'
-const DAEMON_SESSION_SCROLLBACK_ENV_VAR = 'ORCA_DAEMON_SESSION_SCROLLBACK_ROWS'
+const DAEMON_SESSION_SCROLLBACK_ENV_VAR = 'OCC_DAEMON_SESSION_SCROLLBACK_ROWS'
 
 // Bound live grid memory across many terminals; durable history supplies the deeper restore window.
 export const DAEMON_SESSION_SCROLLBACK_ROWS = 1000

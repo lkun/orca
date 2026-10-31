@@ -11,7 +11,7 @@ import {
   legacyStructuredChatRenameOwner,
   executionHostIdForStructuredTarget
 } from './structured-agent-session-owner'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../shared/layout-owner-switch'
 import { sendTabChangeToLayoutOwner } from '@/store/terminals/tab-change-through-layout-owner'
 import { captureStructuredChatRename } from './structured-chat-rename-action'
 
@@ -166,7 +166,7 @@ async function dropLegacyAlias(
       get().setTabCustomLabel(tab.id, null, { recordInteraction: false })
     }
   }
-  if (!ORCA_LAYOUT_OWNER_IS_MAIN) {
+  if (!OCC_LAYOUT_OWNER_IS_MAIN) {
     clear()
     return true
   }

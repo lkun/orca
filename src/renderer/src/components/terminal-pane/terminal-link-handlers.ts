@@ -15,7 +15,7 @@ import {
 } from '../../../../shared/wrapped-terminal-link-ranges'
 import {
   getTerminalHtmlFileOpenHint,
-  getTerminalOrcaFileOpenHint,
+  getTerminalOCCFileOpenHint,
   getTerminalWorktreePathOpenHint,
   getTerminalFileOpenHint,
   getTerminalUrlOpenHint
@@ -173,7 +173,7 @@ export function createFilePathLinkProvider(
                       : showActions
                         ? openLinkHint
                         : getTerminalFileOpenHint(false)
-                    : getTerminalOrcaFileOpenHint(showActions)
+                    : getTerminalOCCFileOpenHint(showActions)
                 linkTooltip.textContent = `${mappedPath} (${hint})`
                 linkTooltip.style.display = ''
               },

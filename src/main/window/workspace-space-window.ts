@@ -59,7 +59,7 @@ export function createOrFocusWorkspaceSpaceWindow(store: Store): BrowserWindow {
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
-      partition: 'orca-workspace-space-window',
+      partition: 'occ-workspace-space-window',
       webviewTag: false,
       ...(wslArguments.length > 0 ? { additionalArguments: wslArguments } : {})
     }

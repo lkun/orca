@@ -89,7 +89,7 @@ describe('WorkspaceKanbanSearchField', () => {
     renderField({ query: '' })
     expect(clearButton()).toBeNull()
 
-    renderField({ query: 'orca', matchCount: 3, totalCount: 12 })
+    renderField({ query: 'occ', matchCount: 3, totalCount: 12 })
     act(() => {
       clearButton()?.click()
     })
@@ -98,7 +98,7 @@ describe('WorkspaceKanbanSearchField', () => {
   })
 
   it('hides the visual match count from assistive tech but keeps the clear button named', () => {
-    renderField({ query: 'orca', matchCount: 3, totalCount: 12 })
+    renderField({ query: 'occ', matchCount: 3, totalCount: 12 })
 
     const count = container.querySelector('span[aria-hidden="true"]')
     expect(count?.textContent).toBe('3 / 12')
@@ -119,7 +119,7 @@ describe('WorkspaceKanbanSearchField', () => {
   })
 
   it('announces match counts only after the query settles', () => {
-    renderField({ query: 'orca', matchCount: 3, totalCount: 12 })
+    renderField({ query: 'occ', matchCount: 3, totalCount: 12 })
     expect(liveRegion().textContent).toBe('')
 
     act(() => {
@@ -139,7 +139,7 @@ describe('WorkspaceKanbanSearchField', () => {
 
   it('clears a non-empty query on Escape and closes the board on an empty one', () => {
     // The panel capture listener defers Escape to text fields, so this field must handle clearing and closing.
-    renderField({ query: 'orca', matchCount: 3, totalCount: 12 })
+    renderField({ query: 'occ', matchCount: 3, totalCount: 12 })
 
     act(() => {
       input().dispatchEvent(
@@ -166,7 +166,7 @@ describe('WorkspaceKanbanSearchField', () => {
     expect(input().getAttribute('aria-invalid')).toBe('true')
     expect(liveRegion().textContent).toContain('too long')
 
-    renderField({ query: 'orca', matchCount: 3, totalCount: 12 })
+    renderField({ query: 'occ', matchCount: 3, totalCount: 12 })
     expect(container.textContent).not.toContain('Too long')
     expect(input().getAttribute('aria-invalid')).toBeNull()
   })
@@ -190,7 +190,7 @@ describe('WorkspaceKanbanSearchField', () => {
   })
 
   it('keeps focus in the field after the clear button unmounts itself', () => {
-    renderField({ query: 'orca', matchCount: 3, totalCount: 12 })
+    renderField({ query: 'occ', matchCount: 3, totalCount: 12 })
     act(() => {
       input().focus()
       clearButton()?.click()

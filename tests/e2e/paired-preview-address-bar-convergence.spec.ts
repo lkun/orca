@@ -1,7 +1,7 @@
 import { writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { Page, TestInfo } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { openFileExplorer } from './helpers/file-explorer'
 import {
   createRuntimeDesktopPairingOffer,
@@ -103,7 +103,7 @@ async function openPreviewFromExplorer(page: Page, fixtureName: string): Promise
 // STA-5681: drive preview chip → URL conversion → Back/Forward → document conversion and document-name suggestions.
 // Converted tabs retain client-local ownership, so host session snapshots stay empty.
 test('converts a preview to a web tab and back from the address bar', async ({
-  orcaPage,
+  occPage,
   testRepoPath
 }, testInfo) => {
   test.setTimeout(300_000)
@@ -112,10 +112,10 @@ test('converts a preview to a web tab and back from the address bar', async ({
     `<!doctype html><html><head><title>${FIXTURE_TITLE}</title></head>` +
       `<body><h1>${FIXTURE_HEADING}</h1></body></html>\n`
   )
-  await waitForSessionReady(orcaPage)
-  await waitForActiveWorktree(orcaPage)
+  await waitForSessionReady(occPage)
+  await waitForActiveWorktree(occPage)
 
-  const offer = await createRuntimeDesktopPairingOffer(orcaPage)
+  const offer = await createRuntimeDesktopPairingOffer(occPage)
   const marker = await startClientHostedMarkerFixture()
   let prepared: PreparedPairedClient | null = null
   try {
@@ -204,7 +204,7 @@ test('converts a preview to a web tab and back from the address bar', async ({
     await expect
       .poll(() => readDocPreviewRenderedText(page, 'h1'), { timeout: 60_000 })
       .toContain(FIXTURE_HEADING)
-    await expect.poll(() => readDocPreviewGuestUrl(page)).toMatch(/^orca-preview:\/\//)
+    await expect.poll(() => readDocPreviewGuestUrl(page)).toMatch(/^occ-preview:\/\//)
 
     // Forward rebuilds the consumed client-local web target; runtime-owned origins remain unsupported because conversion closed their remote page (STA-5872).
     await page.getByRole('button', { name: 'Forward', exact: true }).click()

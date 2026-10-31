@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 env:
-  ORCA_BACKGROUND_LAUNCH: '1'
+  OCC_BACKGROUND_LAUNCH: '1'
 
 jobs:
   linux-x11:
@@ -56,7 +56,7 @@ jobs:
       - name: Run deterministic terminal IME boundary tests
         run: >-
           xvfb-run --auto-servernum
-          env SKIP_BUILD=1 ORCA_E2E_FORWARD_APP_LOGS=1
+          env SKIP_BUILD=1 OCC_E2E_FORWARD_APP_LOGS=1
           pnpm run test:e2e
           tests/e2e/terminal-ime-exact-byte.spec.ts
           --workers=1
@@ -104,7 +104,7 @@ jobs:
       - name: Run native Wayland Hangul terminating digit
         env:
           SKIP_BUILD: '1'
-          ORCA_E2E_WAYLAND_INPUT_DIAGNOSTICS: ${{ inputs.diagnose_wayland_input && '1' || '' }}
+          OCC_E2E_WAYLAND_INPUT_DIAGNOSTICS: ${{ inputs.diagnose_wayland_input && '1' || '' }}
         run: node config/scripts/run-terminal-ibus-hangul-e2e.mjs --nested-wayland
       - name: Upload Wayland terminal IME evidence
         if: always()

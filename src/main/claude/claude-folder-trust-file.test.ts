@@ -29,7 +29,7 @@ import type { ClaudeRuntimeAuthPreparation } from '../claude-accounts/runtime-au
 let root: string
 
 beforeEach(() => {
-  root = realpathSync(mkdtempSync(join(tmpdir(), 'orca-claude-trust-')))
+  root = realpathSync(mkdtempSync(join(tmpdir(), 'occ-claude-trust-')))
 })
 
 afterEach(() => {

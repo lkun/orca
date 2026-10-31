@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from '../../src/main/runtime/orca-runtime'
+import { OCCRuntimeService } from '../../src/main/runtime/occ-runtime'
 import { makeAgentStatusStoreWiring } from '../../src/main/runtime/agent-status-store-wiring.test-fixture'
 import type {
   RuntimeMobileSessionTabsResult,
@@ -22,14 +22,14 @@ type RuntimeInternals = {
 type Harness = {
   internals: RuntimeInternals
   publications: RuntimeMobileSessionTabsResult[]
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   tab: TerminalTab
   unsubscribe: () => void
 }
 
 function createHarness(): Harness {
   const statusWiring = makeAgentStatusStoreWiring()
-  const runtime = new OrcaRuntimeService(null, undefined, statusWiring.deps)
+  const runtime = new OCCRuntimeService(null, undefined, statusWiring.deps)
   const uninstallStatusRepublish = statusWiring.attach(runtime)
   runtime.registerPty(PTY_ID, WORKTREE_ID)
   const tab: TerminalTab = {

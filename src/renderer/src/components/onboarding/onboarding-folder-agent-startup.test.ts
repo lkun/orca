@@ -13,7 +13,7 @@ const buildStartup = (settings: Parameters<typeof buildOnboardingFolderAgentStar
 describe('buildOnboardingFolderAgentStartup', () => {
   it('queues the persisted default agent with onboarding telemetry', () => {
     const startup = buildStartup({
-      ...getDefaultSettings('/tmp/orca-workspaces'),
+      ...getDefaultSettings('/tmp/occ-workspaces'),
       defaultTuiAgent: 'codex'
     })
 
@@ -37,7 +37,7 @@ describe('buildOnboardingFolderAgentStartup', () => {
 
   it('respects the blank terminal preference', () => {
     const startup = buildStartup({
-      ...getDefaultSettings('/tmp/orca-workspaces'),
+      ...getDefaultSettings('/tmp/occ-workspaces'),
       defaultTuiAgent: 'blank'
     })
 
@@ -48,7 +48,7 @@ describe('buildOnboardingFolderAgentStartup', () => {
     'keeps Chat UI model preferences out of the terminal folder launch (Chat UI %s)',
     (chat) => {
       const startup = buildStartup({
-        ...getDefaultSettings('/tmp/orca-workspaces'),
+        ...getDefaultSettings('/tmp/occ-workspaces'),
         defaultTuiAgent: 'codex',
         nativeChatProviders: chat ? { claude: true, codex: true } : {},
         nativeChatSessionOptions: {
@@ -67,7 +67,7 @@ describe('buildOnboardingFolderAgentStartup', () => {
 
   it('does not infer an agent from auto mode', () => {
     const startup = buildStartup({
-      ...getDefaultSettings('/tmp/orca-workspaces'),
+      ...getDefaultSettings('/tmp/occ-workspaces'),
       defaultTuiAgent: null
     })
 

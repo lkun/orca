@@ -1,6 +1,6 @@
-import { OrcaRuntimeWithHandleMobileUnsubscribe } from './mobile-terminal-unsubscribe'
+import { OCCRuntimeWithHandleMobileUnsubscribe } from './mobile-terminal-unsubscribe'
 
-export abstract class OrcaRuntimeWithApplyMobileDisplayMode extends OrcaRuntimeWithHandleMobileUnsubscribe {
+export abstract class OCCRuntimeWithApplyMobileDisplayMode extends OCCRuntimeWithHandleMobileUnsubscribe {
   // Apply the most recent actor's viewport and earliest valid restore baseline; return whether no fit override remains, including failed-restore rollback (#7588).
   async applyMobileDisplayMode(ptyId: string): Promise<boolean> {
     const mode = this.getMobileDisplayMode(ptyId)

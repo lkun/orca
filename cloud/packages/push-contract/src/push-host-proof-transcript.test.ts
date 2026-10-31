@@ -6,7 +6,7 @@ import {
 } from './push-host-proof-transcript.js'
 
 const transcriptInput = {
-  gatewayOrigin: 'https://push.onorca.dev',
+  gatewayOrigin: 'https://push.onocc.dev',
   gatewayEphemeralPublicKey: new Uint8Array(32).fill(7),
   challengeNonce: new Uint8Array(24).fill(9),
   challengeId: 'challenge-1',
@@ -44,9 +44,9 @@ describe('push host proof transcript', () => {
       offset += valueLength
     }
     expect(fields).toEqual([
-      ['protocol', Buffer.from('orca-push-host-proof/v1')],
+      ['protocol', Buffer.from('occ-push-host-proof/v1')],
       ['version', Buffer.from([1])],
-      ['gatewayOrigin', Buffer.from('https://push.onorca.dev')],
+      ['gatewayOrigin', Buffer.from('https://push.onocc.dev')],
       ['gatewayEphemeralPublicKey', Buffer.alloc(32, 7)],
       ['challengeNonce', Buffer.alloc(24, 9)],
       ['challengeId', Buffer.from('challenge-1')],
@@ -84,7 +84,7 @@ describe('push host proof transcript', () => {
     length.writeUInt32BE(transcript.byteLength)
     expect(Buffer.from(plaintext)).toEqual(
       Buffer.concat([
-        Buffer.from('orca-push-host-challenge/v1\0'),
+        Buffer.from('occ-push-host-challenge/v1\0'),
         length,
         Buffer.from(transcript),
         Buffer.alloc(32, 11)
@@ -99,7 +99,7 @@ describe('push host proof transcript', () => {
     const transcript = buildPushHostProofTranscript(transcriptInput)
     const macInput = buildPushHostProofMacInput(transcript)
     expect(Buffer.from(macInput)).toEqual(
-      Buffer.concat([Buffer.from('orca-push-host-proof/v1\0ack\0'), Buffer.from(transcript)])
+      Buffer.concat([Buffer.from('occ-push-host-proof/v1\0ack\0'), Buffer.from(transcript)])
     )
   })
 })

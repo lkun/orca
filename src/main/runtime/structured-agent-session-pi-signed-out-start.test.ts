@@ -31,7 +31,7 @@ afterEach(async () => {
 })
 
 it('settles the held message once, closes Pi, and starts afresh for a later send after sign-in', async () => {
-  directory = await mkdtemp(join(tmpdir(), 'orca-pi-signed-out-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-pi-signed-out-'))
   const root = directory
   const script = piScriptedChild({ signedOut: true })
   const host = await ensureStructuredAgentSessionHost({

@@ -77,7 +77,7 @@ describe('SSH IPC handlers', () => {
   it('fails a host the managed server does not serve, with no fallback', async () => {
     const decision = {
       route: 'unserved' as const,
-      reason: 'orcad_unavailable' as const,
+      reason: 'occd_unavailable' as const,
       detail: 'unsupported_host'
     }
     const opened = { id: 'decision-transport' }
@@ -150,7 +150,7 @@ describe('SSH IPC handlers', () => {
   // Tunnel startup can serve a host without an SSH connect, so connect-only restoration left saved forwards off (#32484).
   it.each([
     { kind: 'managed', environmentId: 'env-test' } as const,
-    { kind: 'relay', reason: 'orcad_unavailable', bridged: true } as const
+    { kind: 'relay', reason: 'occd_unavailable', bridged: true } as const
   ])('restores saved forwards whenever a $kind status is published', async (status) => {
     const conn = { id: 'conn-1', getConnectGeneration: () => 1 }
     mockSshStore.getTarget.mockReturnValue({
@@ -187,7 +187,7 @@ describe('SSH IPC handlers', () => {
     })
     try {
       setSshHostServerStatus('ssh-1', { kind: 'setting-up', phase: 'deploying' })
-      setSshHostServerStatus('ssh-1', { kind: 'relay', reason: 'orcad_unavailable' })
+      setSshHostServerStatus('ssh-1', { kind: 'relay', reason: 'occd_unavailable' })
       await new Promise((resolve) => setTimeout(resolve, 0))
       expect(mocks.mockPortForwardManager.addForward).not.toHaveBeenCalled()
     } finally {

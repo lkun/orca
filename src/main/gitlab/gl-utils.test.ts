@@ -91,12 +91,12 @@ describe('gitlab project ref resolution', () => {
 
   it('keeps getProjectRef origin-based', async () => {
     gitExecFileAsyncMock.mockResolvedValueOnce({
-      stdout: 'git@gitlab.com:fork/orca.git\n'
+      stdout: 'git@gitlab.com:fork/occ.git\n'
     })
 
     await expect(getProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'fork/orca'
+      path: 'fork/occ'
     })
     expect(gitExecFileAsyncMock).toHaveBeenCalledWith(['remote', 'get-url', 'origin'], {
       cwd: '/repo',
@@ -170,8 +170,8 @@ describe('gitlab project ref resolution', () => {
 
   it('returns upstream before a slow origin, retaining the late origin cache fill', async () => {
     mockGitRemoteCommands({
-      origin: 'git@gitlab.com:fork/orca.git\n',
-      upstream: 'git@gitlab.com:stablyai/orca.git\n'
+      origin: 'git@gitlab.com:fork/occ.git\n',
+      upstream: 'git@gitlab.com:stablyai/occ.git\n'
     })
 
     const origin = Promise.withResolvers<{ stdout: string }>()
@@ -181,24 +181,24 @@ describe('gitlab project ref resolution', () => {
     )
     await expect(getIssueProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'stablyai/orca'
+      path: 'stablyai/occ'
     })
     expect(gitRemoteGetUrlCalls('upstream')).toHaveLength(1)
-    origin.resolve({ stdout: 'git@gitlab.com:fork/orca.git' })
-    expect((await getProjectRef('/repo'))?.path).toBe('fork/orca')
+    origin.resolve({ stdout: 'git@gitlab.com:fork/occ.git' })
+    expect((await getProjectRef('/repo'))?.path).toBe('fork/occ')
     expect(gitRemoteGetUrlCalls('origin')).toHaveLength(1)
   })
 
   it('does not spawn git remote get-url upstream on an origin-only clone', async () => {
-    mockGitRemoteCommands({ origin: 'git@gitlab.com:fork/orca.git\n' })
+    mockGitRemoteCommands({ origin: 'git@gitlab.com:fork/occ.git\n' })
 
     await expect(getIssueProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'fork/orca'
+      path: 'fork/occ'
     })
     await expect(getIssueProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'fork/orca'
+      path: 'fork/occ'
     })
     expect(gitRemoteListCalls()).toHaveLength(1)
     expect(gitRemoteGetUrlCalls('upstream')).toHaveLength(0)
@@ -207,8 +207,8 @@ describe('gitlab project ref resolution', () => {
 
   it('falls back on an upstream timeout and retries upstream on the next attempt', async () => {
     mockGitRemoteCommands({
-      origin: 'git@gitlab.com:fork/orca.git\n',
-      upstream: 'git@example.com:stablyai/orca.git\n'
+      origin: 'git@gitlab.com:fork/occ.git\n',
+      upstream: 'git@example.com:stablyai/occ.git\n'
     })
 
     const serve = gitExecFileAsyncMock.getMockImplementation()
@@ -217,7 +217,7 @@ describe('gitlab project ref resolution', () => {
     )
     await expect(getIssueProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'fork/orca'
+      path: 'fork/occ'
     })
     expect(gitRemoteGetUrlCalls('upstream')).toHaveLength(1)
     expect(gitRemoteGetUrlCalls('origin')).toHaveLength(1)
@@ -228,21 +228,21 @@ describe('gitlab project ref resolution', () => {
 
   it('finds the GitLab project on other remotes, preferring one named gitlab like glab', async () => {
     mockGitRemoteCommands({
-      origin: 'git@github.com:stablyai/orca.git\n',
-      'a-fork': 'git@gitlab.com:someone/orca.git\n',
-      gitlab: 'git@gitlab.com:stablyai/orca.git\n'
+      origin: 'git@github.com:stablyai/occ.git\n',
+      'a-fork': 'git@gitlab.com:someone/occ.git\n',
+      gitlab: 'git@gitlab.com:stablyai/occ.git\n'
     })
 
     await expect(getIssueProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'stablyai/orca'
+      path: 'stablyai/occ'
     })
   })
 
   it('adds no glab probe for extra remotes on a GitHub-only repo', async () => {
     mockGitRemoteCommands({
-      origin: 'git@github.com:stablyai/orca.git\n',
-      fork: 'git@github.com:someone/orca.git\n'
+      origin: 'git@github.com:stablyai/occ.git\n',
+      fork: 'git@github.com:someone/occ.git\n'
     })
 
     await expect(getIssueProjectRef('/repo')).resolves.toBeNull()
@@ -251,39 +251,39 @@ describe('gitlab project ref resolution', () => {
 
   it('does not mix origin and upstream cache entries for the same repo path', async () => {
     mockGitRemoteCommands({
-      origin: 'git@gitlab.com:fork/orca.git\n',
-      upstream: 'git@gitlab.com:stablyai/orca.git\n'
+      origin: 'git@gitlab.com:fork/occ.git\n',
+      upstream: 'git@gitlab.com:stablyai/occ.git\n'
     })
 
     await expect(getProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'fork/orca'
+      path: 'fork/occ'
     })
     await expect(getIssueProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'stablyai/orca'
+      path: 'stablyai/occ'
     })
   })
 
   it('keeps local host and local WSL project-ref cache entries separate for the same path', async () => {
     gitExecFileAsyncMock
-      .mockResolvedValueOnce({ stdout: 'git@gitlab.com:host/orca.git\n' })
-      .mockResolvedValue({ stdout: 'git@gitlab.com:wsl/orca.git\n' })
+      .mockResolvedValueOnce({ stdout: 'git@gitlab.com:host/occ.git\n' })
+      .mockResolvedValue({ stdout: 'git@gitlab.com:wsl/occ.git\n' })
 
     await expect(getProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'host/orca'
+      path: 'host/occ'
     })
     await expect(getProjectRef('/repo', undefined, null, { wslDistro: 'Ubuntu' })).resolves.toEqual(
       {
         host: 'gitlab.com',
-        path: 'wsl/orca'
+        path: 'wsl/occ'
       }
     )
     await expect(getProjectRef('/repo', undefined, null, { wslDistro: 'Ubuntu' })).resolves.toEqual(
       {
         host: 'gitlab.com',
-        path: 'wsl/orca'
+        path: 'wsl/occ'
       }
     )
 
@@ -326,7 +326,7 @@ describe('gitlab project ref resolution', () => {
 
   it('bounds cached project refs for distinct repo paths', async () => {
     gitExecFileAsyncMock.mockResolvedValue({
-      stdout: 'git@gitlab.com:stablyai/orca.git\n',
+      stdout: 'git@gitlab.com:stablyai/occ.git\n',
       stderr: ''
     })
 
@@ -340,12 +340,12 @@ describe('gitlab project ref resolution', () => {
   it('does not cache a local probe killed on its deadline as a definitive miss', async () => {
     gitExecFileAsyncMock
       .mockRejectedValueOnce(new Error('git timed out.'))
-      .mockResolvedValueOnce({ stdout: 'git@gitlab.com:fork/orca.git\n' })
+      .mockResolvedValueOnce({ stdout: 'git@gitlab.com:fork/occ.git\n' })
 
     await expect(getProjectRef('/repo')).resolves.toBeNull()
     await expect(getProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'fork/orca'
+      path: 'fork/occ'
     })
     expect(gitExecFileAsyncMock).toHaveBeenCalledTimes(2)
   })
@@ -360,12 +360,12 @@ describe('gitlab project ref resolution', () => {
     expect(gitExecFileAsyncMock).toHaveBeenCalledTimes(1)
 
     // Negative expiry reveals newly configured remotes without requiring local config watchers.
-    gitExecFileAsyncMock.mockResolvedValue({ stdout: 'git@gitlab.com:fork/orca.git\n' })
+    gitExecFileAsyncMock.mockResolvedValue({ stdout: 'git@gitlab.com:fork/occ.git\n' })
     vi.setSystemTime(1_000_000 + NEGATIVE_ENTRY_TTL_MS + 1)
 
     await expect(getProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'fork/orca'
+      path: 'fork/occ'
     })
     expect(gitExecFileAsyncMock).toHaveBeenCalledTimes(2)
   })
@@ -373,35 +373,35 @@ describe('gitlab project ref resolution', () => {
   it('periodically revalidates a signed project ref for external configuration changes', async () => {
     vi.useFakeTimers()
     vi.setSystemTime(1_000_000)
-    gitExecFileAsyncMock.mockResolvedValue({ stdout: 'git@gitlab.com:fork/orca.git\n' })
+    gitExecFileAsyncMock.mockResolvedValue({ stdout: 'git@gitlab.com:fork/occ.git\n' })
 
     await expect(getProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'fork/orca'
+      path: 'fork/occ'
     })
     vi.setSystemTime(1_000_000 + NEGATIVE_ENTRY_TTL_MS * 10)
     await expect(getProjectRef('/repo')).resolves.toEqual({
       host: 'gitlab.com',
-      path: 'fork/orca'
+      path: 'fork/occ'
     })
 
     expect(gitExecFileAsyncMock).toHaveBeenCalledTimes(2)
   })
 
   it('re-resolves a self-hosted remote once glab auth knows its host', async () => {
-    gitExecFileAsyncMock.mockResolvedValue({ stdout: 'git@gitlab.internal:team/orca.git\n' })
+    gitExecFileAsyncMock.mockResolvedValue({ stdout: 'git@gitlab.internal:team/occ.git\n' })
     glabExecFileAsyncMock.mockRejectedValue(new Error('not authenticated'))
 
     await expect(getProjectRefForRemote('/repo', 'origin', ['gitlab.com'])).resolves.toBeNull()
     await expect(
       getProjectRefForRemote('/repo', 'origin', ['gitlab.com', 'gitlab.internal'])
-    ).resolves.toEqual({ host: 'gitlab.internal', path: 'team/orca' })
+    ).resolves.toEqual({ host: 'gitlab.internal', path: 'team/occ' })
   })
 
   it('asks glab about an unauthenticated host once per interval, not once per repo', async () => {
     vi.useFakeTimers()
     vi.setSystemTime(1_000_000)
-    gitExecFileAsyncMock.mockResolvedValue({ stdout: 'git@github.com:team/orca.git\n' })
+    gitExecFileAsyncMock.mockResolvedValue({ stdout: 'git@github.com:team/occ.git\n' })
     glabExecFileAsyncMock.mockRejectedValue(new Error('not authenticated'))
 
     // Per-repo identity expiry must still share one negative auth probe per host.
@@ -451,12 +451,12 @@ describe('resolveIssueSource', () => {
 
   it("'auto' + upstream exists → upstream, fellBack=false", async () => {
     mockGitRemoteCommands({
-      origin: 'git@gitlab.com:fork/orca.git\n',
-      upstream: 'git@gitlab.com:stablyai/orca.git\n'
+      origin: 'git@gitlab.com:fork/occ.git\n',
+      upstream: 'git@gitlab.com:stablyai/occ.git\n'
     })
 
     await expect(resolveIssueSource('/repo', 'auto')).resolves.toEqual({
-      source: { host: 'gitlab.com', path: 'stablyai/orca' },
+      source: { host: 'gitlab.com', path: 'stablyai/occ' },
       fellBack: false
     })
     expect(gitRemoteGetUrlCalls('upstream')).toHaveLength(1)
@@ -464,12 +464,12 @@ describe('resolveIssueSource', () => {
 
   it("'auto' + no gitlab upstream → origin, fellBack=false", async () => {
     mockGitRemoteCommands({
-      origin: 'git@gitlab.com:solo/orca.git\n',
-      upstream: 'git@example.com:stablyai/orca.git\n'
+      origin: 'git@gitlab.com:solo/occ.git\n',
+      upstream: 'git@example.com:stablyai/occ.git\n'
     })
 
     await expect(resolveIssueSource('/repo', 'auto')).resolves.toEqual({
-      source: { host: 'gitlab.com', path: 'solo/orca' },
+      source: { host: 'gitlab.com', path: 'solo/occ' },
       fellBack: false
     })
   })
@@ -477,21 +477,21 @@ describe('resolveIssueSource', () => {
   it("'upstream' + no upstream remote → origin, fellBack=true", async () => {
     gitExecFileAsyncMock
       .mockRejectedValueOnce(new Error('fatal: No such remote'))
-      .mockResolvedValueOnce({ stdout: 'git@gitlab.com:solo/orca.git\n' })
+      .mockResolvedValueOnce({ stdout: 'git@gitlab.com:solo/occ.git\n' })
 
     await expect(resolveIssueSource('/repo', 'upstream')).resolves.toEqual({
-      source: { host: 'gitlab.com', path: 'solo/orca' },
+      source: { host: 'gitlab.com', path: 'solo/occ' },
       fellBack: true
     })
   })
 
   it("'origin' + upstream exists → origin (ignores upstream), fellBack=false", async () => {
     gitExecFileAsyncMock.mockResolvedValueOnce({
-      stdout: 'git@gitlab.com:fork/orca.git\n'
+      stdout: 'git@gitlab.com:fork/occ.git\n'
     })
 
     await expect(resolveIssueSource('/repo', 'origin')).resolves.toEqual({
-      source: { host: 'gitlab.com', path: 'fork/orca' },
+      source: { host: 'gitlab.com', path: 'fork/occ' },
       fellBack: false
     })
     expect(gitExecFileAsyncMock).toHaveBeenCalledTimes(1)
@@ -503,12 +503,12 @@ describe('resolveIssueSource', () => {
 
   it('undefined preference is treated identically to auto', async () => {
     mockGitRemoteCommands({
-      origin: 'git@gitlab.com:fork/orca.git\n',
-      upstream: 'git@gitlab.com:stablyai/orca.git\n'
+      origin: 'git@gitlab.com:fork/occ.git\n',
+      upstream: 'git@gitlab.com:stablyai/occ.git\n'
     })
 
     await expect(resolveIssueSource('/repo', undefined)).resolves.toEqual({
-      source: { host: 'gitlab.com', path: 'stablyai/orca' },
+      source: { host: 'gitlab.com', path: 'stablyai/occ' },
       fellBack: false
     })
   })

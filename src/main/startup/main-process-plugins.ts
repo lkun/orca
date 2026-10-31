@@ -31,13 +31,13 @@ import { logStartupMilestone } from './startup-diagnostics'
 import { agentHookServer } from '../agent-hooks/server'
 import { emitPluginWorktreeLifecycle } from './main-process-pty-startup'
 import { mainProcessState as state } from './main-process-state'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 
 const PLUGIN_AUTO_UPDATE_STARTUP_DELAY_MS = 60_000
 // Why: the official catalog fetch must not compete with first paint; opening the marketplace seeds sooner.
 const PLUGIN_MARKETPLACE_SEED_STARTUP_DELAY_MS = 15_000
 
-export async function initializeMainProcessPlugins(runtime: OrcaRuntimeService): Promise<void> {
+export async function initializeMainProcessPlugins(runtime: OCCRuntimeService): Promise<void> {
   const store = state.store
   const keybindings = state.keybindings
   if (!store || !keybindings) {
@@ -130,7 +130,7 @@ export async function initializeMainProcessPlugins(runtime: OrcaRuntimeService):
     isKillListed: (pluginKey) => Boolean(state.pluginKillListService?.find(pluginKey))
   })
   // Why packaged only (like the safety list): dev and e2e runs must not update fixtures unasked.
-  const autoUpdateScheduled = app.isPackaged || process.env.ORCA_PLUGIN_AUTO_UPDATE === '1'
+  const autoUpdateScheduled = app.isPackaged || process.env.OCC_PLUGIN_AUTO_UPDATE === '1'
   const syncPluginAutoUpdate = (runNow: boolean): void => {
     if (!autoUpdateScheduled) {
       return

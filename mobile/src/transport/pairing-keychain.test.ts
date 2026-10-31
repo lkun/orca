@@ -28,9 +28,9 @@ import {
   writePairingKeychainItem
 } from './pairing-keychain'
 
-const GENERATION_KEY = 'orca:pairing-keychain-generation'
-const TOKEN_KEY = 'orca.host-token.host-1782629088232'
-const TOKEN_PRESENCE_KEY = `orca:pairing-keychain-presence:${TOKEN_KEY}`
+const GENERATION_KEY = 'occ:pairing-keychain-generation'
+const TOKEN_KEY = 'occ.host-token.host-1782629088232'
+const TOKEN_PRESENCE_KEY = `occ:pairing-keychain-presence:${TOKEN_KEY}`
 
 // Preserve Expo’s null-message Android GeneralSecurityException shape from #6600.
 const ENCRYPT_REJECTION = new Error(
@@ -89,7 +89,7 @@ describe('pairing keychain', () => {
     await writePairingKeychainItem(TOKEN_KEY, 'token')
 
     const rotated = secureStoreMock.setItemAsync.mock.calls.at(-1)!
-    expect(serviceOf(rotated[2] as Options)).toBe('orca.pairing.v1')
+    expect(serviceOf(rotated[2] as Options)).toBe('occ.pairing.v1')
     expect(rotated[0]).toBe(TOKEN_KEY)
     expect(rotated[1]).toBe('token')
     expect(generationRecord).toBe('1')
@@ -112,7 +112,7 @@ describe('pairing keychain', () => {
     expect(generationRecord).toBe('1:pending')
     expect(secureStoreMock.setItemAsync).toHaveBeenCalledTimes(1)
     expect(serviceOf(secureStoreMock.setItemAsync.mock.calls[0]![2] as Options)).toBe(
-      'orca.pairing.v1'
+      'occ.pairing.v1'
     )
   })
 
@@ -124,7 +124,7 @@ describe('pairing keychain', () => {
     expect(generationRecord).toBe('1')
     expect(secureStoreMock.setItemAsync).toHaveBeenCalledTimes(1)
     expect(serviceOf(secureStoreMock.setItemAsync.mock.calls[0]![2] as Options)).toBe(
-      'orca.pairing.v1'
+      'occ.pairing.v1'
     )
   })
 
@@ -182,7 +182,7 @@ describe('pairing keychain', () => {
 
     await writePairingKeychainItem(TOKEN_KEY, 'token')
 
-    expect(order).toEqual(['record:1:pending', 'store:orca.pairing.v1', 'record:1'])
+    expect(order).toEqual(['record:1:pending', 'store:occ.pairing.v1', 'record:1'])
   })
 
   it('keeps a successful rotated write reachable when confirmation storage fails', async () => {
@@ -207,7 +207,7 @@ describe('pairing keychain', () => {
 
     expect(generationRecord).toBe('1:pending')
     secureStoreMock.getItemAsync.mockImplementation(async (_k: string, options: Options) =>
-      serviceOf(options) === 'orca.pairing.v1' ? 'token' : null
+      serviceOf(options) === 'occ.pairing.v1' ? 'token' : null
     )
     await expect(readPairingKeychainItem(TOKEN_KEY)).resolves.toBe('token')
     expect(secureStoreMock.getItemAsync).toHaveBeenLastCalledWith(TOKEN_KEY, expect.any(Object))
@@ -216,7 +216,7 @@ describe('pairing keychain', () => {
   it('reads through the rotated service once a rotation has been committed', async () => {
     generationRecord = '1'
     secureStoreMock.getItemAsync.mockImplementation(async (_k: string, options: Options) =>
-      serviceOf(options) === 'orca.pairing.v1' ? 'rotated-token' : null
+      serviceOf(options) === 'occ.pairing.v1' ? 'rotated-token' : null
     )
 
     await expect(readPairingKeychainItem(TOKEN_KEY)).resolves.toBe('rotated-token')
@@ -238,7 +238,7 @@ describe('pairing keychain', () => {
     generationRecord = '1'
     const currentError = new Error('Could not decrypt the value')
     secureStoreMock.getItemAsync.mockImplementation(async (_k: string, options: Options) => {
-      if (serviceOf(options) === 'orca.pairing.v1') {
+      if (serviceOf(options) === 'occ.pairing.v1') {
         throw currentError
       }
       return 'legacy-token'
@@ -313,7 +313,7 @@ describe('pairing keychain', () => {
       return null
     })
     secureStoreMock.getItemAsync.mockImplementation(async (_k: string, options: Options) =>
-      serviceOf(options) === 'orca.pairing.v2' ? 'rotated-token' : null
+      serviceOf(options) === 'occ.pairing.v2' ? 'rotated-token' : null
     )
 
     await expect(readPairingKeychainItem(TOKEN_KEY)).resolves.toBe('rotated-token')
@@ -340,8 +340,8 @@ describe('pairing keychain', () => {
     expect(
       secureStoreMock.deleteItemAsync.mock.calls.map(([key, options]) => [key, serviceOf(options)])
     ).toEqual([
-      [TOKEN_KEY, 'orca.pairing.v2'],
-      [TOKEN_KEY, 'orca.pairing.v1'],
+      [TOKEN_KEY, 'occ.pairing.v2'],
+      [TOKEN_KEY, 'occ.pairing.v1'],
       [TOKEN_KEY, undefined]
     ])
     expect(asyncStorageMock.removeItem).toHaveBeenCalledWith(TOKEN_PRESENCE_KEY)
@@ -351,7 +351,7 @@ describe('pairing keychain', () => {
     generationRecord = '2'
     const deleteError = new Error('delete failed')
     secureStoreMock.deleteItemAsync.mockImplementation(async (_k: string, options: Options) => {
-      if (serviceOf(options) === 'orca.pairing.v2') {
+      if (serviceOf(options) === 'occ.pairing.v2') {
         throw deleteError
       }
     })
@@ -360,8 +360,8 @@ describe('pairing keychain', () => {
     expect(
       secureStoreMock.deleteItemAsync.mock.calls.map(([key, options]) => [key, serviceOf(options)])
     ).toEqual([
-      [TOKEN_KEY, 'orca.pairing.v2'],
-      [TOKEN_KEY, 'orca.pairing.v1'],
+      [TOKEN_KEY, 'occ.pairing.v2'],
+      [TOKEN_KEY, 'occ.pairing.v1'],
       [TOKEN_KEY, undefined]
     ])
     expect(asyncStorageMock.removeItem).not.toHaveBeenCalled()
@@ -407,7 +407,7 @@ describe('pairing keychain', () => {
     async (raw) => {
       generationRecord = raw
       secureStoreMock.getItemAsync.mockImplementation(async (_k: string, options: Options) =>
-        serviceOf(options) === 'orca.pairing.v2' ? 'rotated-token' : null
+        serviceOf(options) === 'occ.pairing.v2' ? 'rotated-token' : null
       )
 
       await expect(readPairingKeychainItem(TOKEN_KEY)).resolves.toBe('rotated-token')
@@ -440,14 +440,14 @@ describe('pairing keychain', () => {
           serviceOf(options)
         ])
       ).toEqual([
-        [TOKEN_KEY, 'orca.pairing.v8'],
-        [TOKEN_KEY, 'orca.pairing.v7'],
-        [TOKEN_KEY, 'orca.pairing.v6'],
-        [TOKEN_KEY, 'orca.pairing.v5'],
-        [TOKEN_KEY, 'orca.pairing.v4'],
-        [TOKEN_KEY, 'orca.pairing.v3'],
-        [TOKEN_KEY, 'orca.pairing.v2'],
-        [TOKEN_KEY, 'orca.pairing.v1'],
+        [TOKEN_KEY, 'occ.pairing.v8'],
+        [TOKEN_KEY, 'occ.pairing.v7'],
+        [TOKEN_KEY, 'occ.pairing.v6'],
+        [TOKEN_KEY, 'occ.pairing.v5'],
+        [TOKEN_KEY, 'occ.pairing.v4'],
+        [TOKEN_KEY, 'occ.pairing.v3'],
+        [TOKEN_KEY, 'occ.pairing.v2'],
+        [TOKEN_KEY, 'occ.pairing.v1'],
         [TOKEN_KEY, undefined]
       ])
     }

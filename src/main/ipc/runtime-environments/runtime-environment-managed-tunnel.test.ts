@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type * as ServingModule from '../../managed-server/lifecycle/orcad-managed-serving'
-import type { ManagedOrcadStartListener } from '../../managed-server/lifecycle/orcad-managed-serving'
+import type * as ServingModule from '../../managed-server/lifecycle/occd-managed-serving'
+import type { ManagedOCCdStartListener } from '../../managed-server/lifecycle/occd-managed-serving'
 import type { SshTarget } from '../../../shared/ssh-types'
 
 const mocks = vi.hoisted(() => {
-  const startListener: { current: ManagedOrcadStartListener | null } = { current: null }
+  const startListener: { current: ManagedOCCdStartListener | null } = { current: null }
   const environments: Record<string, Record<string, unknown>> = {}
   const reads: Record<string, number> = {}
   return {
@@ -28,7 +28,7 @@ vi.mock('../../../shared/runtime-environment-store', () => ({
   resolveEnvironment: (_userData: string, id: string) => {
     const environment = mocks.environments[id]
     if (!environment) {
-      return { id, orcadDeployment: { sshTargetId: 'ssh-1' } }
+      return { id, occdDeployment: { sshTargetId: 'ssh-1' } }
     }
     mocks.reads[id] = (mocks.reads[id] ?? 0) + 1
     // Fresh records distinguish the post-bring-up read from the initial lookup.
@@ -42,16 +42,16 @@ vi.mock('../../wsl/wsl-host-service-instance', () => ({
     mocks.hasWslService ? { requireRunningWithoutStart: mocks.requireRunningWithoutStart } : null
 }))
 vi.mock('../../ssh/managed-server-update-deps', () => ({ managedServerUpdateDeps: () => ({}) }))
-vi.mock('../../managed-server/lifecycle/orcad-managed-tunnel', () => ({
-  ensureOrcadManagedTunnel: mocks.ensureTunnel,
-  rebuildOrcadManagedTunnel: mocks.rebuildTunnel
+vi.mock('../../managed-server/lifecycle/occd-managed-tunnel', () => ({
+  ensureOCCdManagedTunnel: mocks.ensureTunnel,
+  rebuildOCCdManagedTunnel: mocks.rebuildTunnel
 }))
-vi.mock('../../managed-server/lifecycle/orcad-managed-serving-verify', () => ({
-  verifyOrcadManagedServing: mocks.verify
+vi.mock('../../managed-server/lifecycle/occd-managed-serving-verify', () => ({
+  verifyOCCdManagedServing: mocks.verify
 }))
-vi.mock('../../managed-server/lifecycle/orcad-managed-update-on-restore', () => ({
-  updateManagedOrcadOnRestore: mocks.restoreUpdate,
-  redeployStoppedManagedOrcad: mocks.redeploy
+vi.mock('../../managed-server/lifecycle/occd-managed-update-on-restore', () => ({
+  updateManagedOCCdOnRestore: mocks.restoreUpdate,
+  redeployStoppedManagedOCCd: mocks.redeploy
 }))
 vi.mock('../../ssh/ssh-host-server-status', () => ({ setSshHostServerStatus: vi.fn() }))
 vi.mock('../../ssh/targets/ssh-target-registry', () => ({ getSshTargetRegistryStore: () => null }))
@@ -66,16 +66,16 @@ vi.mock('../ssh/ssh-managed-port-forward-restore', () => ({
 vi.mock('../ssh/ssh-host-launch-session-note', () => ({
   forgetLaunchSessionVerdict: mocks.forgetVerdict
 }))
-vi.mock('../../managed-server/lifecycle/orcad-managed-serving', async (importOriginal) => ({
+vi.mock('../../managed-server/lifecycle/occd-managed-serving', async (importOriginal) => ({
   ...(await importOriginal<typeof ServingModule>()),
-  setManagedOrcadStartListener: (listener: ManagedOrcadStartListener | null) => {
+  setManagedOCCdStartListener: (listener: ManagedOCCdStartListener | null) => {
     mocks.startListener.current = listener
   }
 }))
 
-import { MANAGED_ORCAD_NOT_ACTIVATED_DETAIL } from '../../managed-server/lifecycle/orcad-managed-serving'
+import { MANAGED_OCCD_NOT_ACTIVATED_DETAIL } from '../../managed-server/lifecycle/occd-managed-serving'
 import {
-  installManagedOrcadStartStatus,
+  installManagedOCCdStartStatus,
   requireWslHostWithoutStart,
   resolveManagedRuntimeEnvironment
 } from './runtime-environment-managed-tunnel'
@@ -88,7 +88,7 @@ describe('resolving a managed runtime for a call', () => {
   it('redeploys, before the call, a server another desktop stopped mid-session', async () => {
     mocks.verify.mockResolvedValue({
       state: 'unverifiable',
-      detail: MANAGED_ORCAD_NOT_ACTIVATED_DETAIL
+      detail: MANAGED_OCCD_NOT_ACTIVATED_DETAIL
     })
     await resolveManagedRuntimeEnvironment('/u', 'env-1')
     expect(mocks.redeploy).toHaveBeenCalledWith('env-1', expect.any(Function))
@@ -100,7 +100,7 @@ describe('resolving a managed runtime for a call', () => {
   it('forgets a cached ended launch session once this client redeployed the server', async () => {
     mocks.verify.mockResolvedValue({
       state: 'unverifiable',
-      detail: MANAGED_ORCAD_NOT_ACTIVATED_DETAIL
+      detail: MANAGED_OCCD_NOT_ACTIVATED_DETAIL
     })
     await resolveManagedRuntimeEnvironment('/u', 'env-1')
     expect(mocks.forgetVerdict).toHaveBeenCalledWith('ssh-1')
@@ -112,7 +112,7 @@ describe('resolving a managed runtime for a call', () => {
   it('keeps the verdict when the redeploy did not start a server', async () => {
     mocks.verify.mockResolvedValue({
       state: 'unverifiable',
-      detail: MANAGED_ORCAD_NOT_ACTIVATED_DETAIL
+      detail: MANAGED_OCCD_NOT_ACTIVATED_DETAIL
     })
     mocks.redeploy.mockResolvedValueOnce(false)
     await resolveManagedRuntimeEnvironment('/u', 'env-1')
@@ -124,7 +124,7 @@ describe('resolving a managed runtime for a call', () => {
     ['a serving server', { state: 'serving' }, true],
     [
       'a server whose redeploy failed',
-      { state: 'unverifiable', detail: MANAGED_ORCAD_NOT_ACTIVATED_DETAIL },
+      { state: 'unverifiable', detail: MANAGED_OCCD_NOT_ACTIVATED_DETAIL },
       false
     ]
   ] as const)(
@@ -151,7 +151,7 @@ describe('resolving a managed runtime for a call', () => {
 describe('resolving a runtime for a call, by host kind', () => {
   const wsl = {
     id: 'wsl:ubuntu',
-    orcadDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
+    occdDeployment: { kind: 'wsl', distro: 'Ubuntu', localPort: 42000, remotePort: 6768 }
   }
   beforeEach(() => {
     vi.clearAllMocks()
@@ -247,7 +247,7 @@ describe('a managed server start shown on the status line', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    installManagedOrcadStartStatus()
+    installManagedOCCdStartStatus()
   })
 
   it('forgets a cached ended launch session once this client started the server', async () => {

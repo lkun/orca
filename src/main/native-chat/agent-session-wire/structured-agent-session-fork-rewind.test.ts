@@ -76,7 +76,7 @@ beforeEach(async () => {
         .nativeId
     }
   }))
-  directory = await mkdtemp(join(tmpdir(), 'orca-fork-rewind-'))
+  directory = await mkdtemp(join(tmpdir(), 'occ-fork-rewind-'))
   store = await openTestAgentSessionRecordStore(directory)
   const adapter = startsWhenPublished(
     {

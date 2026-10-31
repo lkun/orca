@@ -7,14 +7,14 @@ import type {
   RpcStreamingMethod
 } from './core'
 import { errorResponse } from './errors'
-import type { OrcaRuntimeService } from '../orca-runtime'
+import type { OCCRuntimeService } from '../occ-runtime'
 import { orchestrationMigrationFence } from './orchestration-contract-fence'
 import { runtimeSourceFence } from './runtime-source-admission'
 import type { RpcDispatchStreamingOptions } from './dispatcher-stream-options'
 import { mapDispatcherError } from './dispatcher-error-response'
 import { parseRpcRequestParams } from './dispatcher-request-parsing'
 import {
-  denyRpcMethodForCaller,
+  denyRpcMethodFoccller,
   OWNER_RPC_CALLER_SCOPE,
   type RpcCallerScope
 } from './rpc-caller-scope'
@@ -25,7 +25,7 @@ import {
 } from './orchestration-session-caller'
 
 type RpcRequestAdmissionDeps = {
-  runtime: OrcaRuntimeService
+  runtime: OCCRuntimeService
   registry: RpcRegistry
   meta: RpcEnvelopeMeta
   pinnedCallerScope?: RpcCallerScope
@@ -41,7 +41,7 @@ export function admitRpcRequest<M extends RpcMethod | RpcStreamingMethod>(
   const reject = (rejected: RpcResponse) => ({ rejected })
   const method = registry.get(rawRequest.method)
   const callerScope = pinnedCallerScope ?? options?.callerScope ?? OWNER_RPC_CALLER_SCOPE
-  const denial = denyRpcMethodForCaller(callerScope, rawRequest.method, method?.permission)
+  const denial = denyRpcMethodFoccller(callerScope, rawRequest.method, method?.permission)
   if (denial) {
     return reject(errorResponse(rawRequest.id, meta, 'forbidden', denial))
   }

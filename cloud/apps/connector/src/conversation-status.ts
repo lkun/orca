@@ -1,5 +1,5 @@
-import type { SqlRow } from '@orca-cloud/cloud-database'
-import { ConnectorDeliveryResultSchema } from '@orca-cloud/connector-contract'
+import type { SqlRow } from '@occ-cloud/cloud-database'
+import { ConnectorDeliveryResultSchema } from '@occ-cloud/connector-contract'
 import type { ConversationStatus } from './connector-adapter.js'
 import type { OwnerActionState } from './owner-controls.js'
 

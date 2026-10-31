@@ -48,7 +48,7 @@ function readPackedHookMetadata(
   headers: IncomingHttpHeaders,
   encoding: 'base64' | undefined
 ): HookMetadata | null {
-  const encoded = readHookHeader(headers, 'x-orca-agent-hook-meta')
+  const encoded = readHookHeader(headers, 'x-occ-agent-hook-meta')
   if (encoded === undefined || encoding !== 'base64') {
     return null
   }
@@ -68,23 +68,23 @@ function readPackedHookMetadata(
 /** Rebuilds the canonical envelope for POSIX hooks that carry raw JSON bodies. */
 export function mergeAgentHookRequestHeaders(body: unknown, headers: IncomingHttpHeaders): unknown {
   const metadataEncoding =
-    readHookHeader(headers, 'x-orca-agent-hook-meta-encoding')?.trim().toLowerCase() === 'base64'
+    readHookHeader(headers, 'x-occ-agent-hook-meta-encoding')?.trim().toLowerCase() === 'base64'
       ? 'base64'
       : undefined
   const metadata = readPackedHookMetadata(headers, metadataEncoding) ?? {
-    paneKey: readHookMetadataHeader(headers, 'x-orca-pane-key', metadataEncoding) ?? '',
-    tabId: readHookMetadataHeader(headers, 'x-orca-tab-id', metadataEncoding),
-    launchToken: readHookMetadataHeader(headers, 'x-orca-launch-token', metadataEncoding),
-    worktreeId: readHookMetadataHeader(headers, 'x-orca-worktree-id', metadataEncoding),
-    env: readHookMetadataHeader(headers, 'x-orca-agent-hook-env', metadataEncoding),
-    version: readHookMetadataHeader(headers, 'x-orca-agent-hook-version', metadataEncoding)
+    paneKey: readHookMetadataHeader(headers, 'x-occ-pane-key', metadataEncoding) ?? '',
+    tabId: readHookMetadataHeader(headers, 'x-occ-tab-id', metadataEncoding),
+    launchToken: readHookMetadataHeader(headers, 'x-occ-launch-token', metadataEncoding),
+    worktreeId: readHookMetadataHeader(headers, 'x-occ-worktree-id', metadataEncoding),
+    env: readHookMetadataHeader(headers, 'x-occ-agent-hook-env', metadataEncoding),
+    version: readHookMetadataHeader(headers, 'x-occ-agent-hook-version', metadataEncoding)
   }
   if (!metadata.paneKey) {
     return body
   }
   return {
     ...metadata,
-    agentProcess: readHookHeader(headers, 'x-orca-agent-process'),
+    agentProcess: readHookHeader(headers, 'x-occ-agent-process'),
     payload: body
   }
 }

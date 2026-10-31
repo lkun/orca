@@ -8,8 +8,8 @@ import { userInfo } from 'node:os'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
-expect(process.env.ORCA_BACKGROUND_LAUNCH).toBe('1')
-expect(process.env.ORCA_DISABLE_MACOS_LOGIN_SHELL).toBe('1')
+expect(process.env.OCC_BACKGROUND_LAUNCH).toBe('1')
+expect(process.env.OCC_DISABLE_MACOS_LOGIN_SHELL).toBe('1')
 const home = realpathSync(process.env.HOME)
 const realHome = userInfo().homedir
 expect(realHome === home || realHome.startsWith(home + path.sep)).toBe(false)
@@ -24,8 +24,8 @@ for (const name of [
   'LOCALAPPDATA',
   'CLAUDE_CONFIG_DIR',
   'CODEX_HOME',
-  'ORCA_E2E_USER_DATA_DIR',
-  'ORCA_E2E_HOME_DIR'
+  'OCC_E2E_USER_DATA_DIR',
+  'OCC_E2E_HOME_DIR'
 ]) {
   const directory = realpathSync(process.env[name])
   expect(directory === home || directory.startsWith(home + path.sep), name).toBe(true)

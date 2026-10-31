@@ -1,6 +1,6 @@
 import { storageCapacityErrorCode } from './storage-capacity-error'
 
-export const TERMINAL_SESSION_STATE_SAVE_FAILED_CODE = 'ORCA_TERMINAL_SESSION_STATE_SAVE_FAILED'
+export const TERMINAL_SESSION_STATE_SAVE_FAILED_CODE = 'OCC_TERMINAL_SESSION_STATE_SAVE_FAILED'
 
 export const TERMINAL_SESSION_STATE_SAVE_FAILED_MESSAGE =
   'OCC could not save this terminal session.'

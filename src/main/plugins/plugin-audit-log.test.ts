@@ -12,7 +12,7 @@ afterEach(async () => {
 
 describe('PluginAuditLog retention', () => {
   it('rotates bounded segments while preserving recent entries across the boundary', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'orca-plugin-audit-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-plugin-audit-'))
     roots.push(root)
     const audit = new PluginAuditLog(root, { maxBytes: 240 })
 

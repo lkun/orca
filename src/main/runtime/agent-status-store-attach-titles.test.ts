@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { setupMainOwnedWorkspace } from './main-owned-workspace-runtime-fixture'
 
-vi.mock('../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 
 function hookStore() {
   const unsubscribe = vi.fn()

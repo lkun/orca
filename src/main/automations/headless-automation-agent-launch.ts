@@ -8,7 +8,7 @@ import { executeAgentLaunch } from '../agent-launch/agent-launch-executor'
 import type { RuntimeTerminalCreate } from '../../shared/runtime-terminal-create-contract'
 import type { Automation, AutomationRun } from '../../shared/automations-types'
 import { findReusableAutomationRun } from '../../shared/automation-session-reuse'
-import type { OrcaRuntimeService } from '../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../runtime/occ-runtime'
 import { deliverTerminalAgentLaunchPrompt } from '../runtime/rpc/methods/agent-launch-terminal-prompt'
 import type { HeadlessAutomationDispatchLaunch } from './headless-dispatch'
 import { buildHeadlessAutomationWorktreeCreateArgs } from './headless-workspace-create'
@@ -28,7 +28,7 @@ export type HeadlessAutomationAgentLaunch = Omit<HeadlessAutomationDispatchLaunc
 }
 
 export async function launchHeadlessAutomationAgent(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   request: {
     automation: Automation
     run: Pick<AutomationRun, 'id' | 'title' | 'scheduledFor' | 'trigger'>
@@ -142,7 +142,7 @@ export async function launchHeadlessAutomationAgent(
 }
 
 async function sendToReusableSession(
-  runtime: OrcaRuntimeService,
+  runtime: OCCRuntimeService,
   request: {
     automation: Automation
     run: Pick<AutomationRun, 'id'>
@@ -195,7 +195,7 @@ async function sendToReusableSession(
 
 /** Reject reused pane handles whose PTY no longer belongs to this run. */
 export function runOwnHandle(
-  runtime: Pick<OrcaRuntimeService, 'getTerminalHandleForPaneKey' | 'getTerminalPtyIdForHandle'>,
+  runtime: Pick<OCCRuntimeService, 'getTerminalHandleForPaneKey' | 'getTerminalPtyIdForHandle'>,
   run: AutomationRun
 ): string | null {
   const handle = run.terminalPaneKey

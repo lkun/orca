@@ -1,6 +1,6 @@
 import { writeStartupDiagnosticLine } from '../startup/startup-diagnostics'
 
-export const MAIN_THREAD_DIAGNOSTICS_ENV = 'ORCA_MAIN_THREAD_DIAGNOSTICS'
+export const MAIN_THREAD_DIAGNOSTICS_ENV = 'OCC_MAIN_THREAD_DIAGNOSTICS'
 
 // Match the startup probe's 25ms sampling interval for comparable stall windows.
 const TICK_MS = 25

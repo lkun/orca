@@ -4,7 +4,7 @@ import { useAppStore } from '@/store'
 import { activateAndRevealWorktree } from './worktree-activation'
 import { getWorktreeVisitKey } from './worktree-visit-recency'
 
-vi.mock('../../../shared/sidebar-inputs-switch', () => ({ ORCA_SIDEBAR_INPUTS_IS_MAIN: true }))
+vi.mock('../../../shared/sidebar-inputs-switch', () => ({ OCC_SIDEBAR_INPUTS_IS_MAIN: true }))
 
 const initialAppStoreState = useAppStore.getState()
 

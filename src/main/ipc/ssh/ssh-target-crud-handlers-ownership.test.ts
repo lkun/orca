@@ -26,8 +26,8 @@ vi.mock('../../ssh/targets/ssh-target-registry', () => ({
   setSshTargetMutations: mocks.setMutations
 }))
 vi.mock('./ssh-session-teardown', () => ({ removeRegisteredSshTarget: mocks.remove }))
-vi.mock('../../managed-server/lifecycle/orcad-managed-tunnel', () => ({
-  closeOrcadManagedTunnel: mocks.closeTunnel
+vi.mock('../../managed-server/lifecycle/occd-managed-tunnel', () => ({
+  closeOCCdManagedTunnel: mocks.closeTunnel
 }))
 vi.mock('./ssh-ipc-context', () => ({
   getCurrentMainWindow: () => null,
@@ -46,10 +46,10 @@ function handler(channel: string): (_event: unknown, args: unknown) => unknown {
 
 const target: SshTarget = { id: 'ssh-1', label: 'host', host: 'host', port: 22, username: 'dev' }
 
-describe('SSH target CRUD against managed orcad targets', () => {
+describe('SSH target CRUD against managed occd targets', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mocks.state.target = { ...target, orcadFence: { environmentId: 'environment-1' } }
+    mocks.state.target = { ...target, occdFence: { environmentId: 'environment-1' } }
     registerSshTargetCrudHandlers()
   })
 
@@ -57,7 +57,7 @@ describe('SSH target CRUD against managed orcad targets', () => {
     mocks.updateTarget.mockReturnValue({ ...mocks.state.target, host: 'elsewhere' })
     handler('ssh:updateTarget')(null, {
       id: 'ssh-1',
-      updates: { host: 'elsewhere', orcadFence: undefined, generation: 9 }
+      updates: { host: 'elsewhere', occdFence: undefined, generation: 9 }
     })
     expect(mocks.updateTarget).toHaveBeenCalledWith('ssh-1', { host: 'elsewhere' })
     await vi.waitFor(() => expect(mocks.disconnect).toHaveBeenCalledWith('ssh-1'))
@@ -67,7 +67,7 @@ describe('SSH target CRUD against managed orcad targets', () => {
   it('leaves the relay session of a host an older build changed alone when its connection is edited', async () => {
     mocks.state.target = {
       ...target,
-      orcadFence: { environmentId: 'environment-1', sourceChangedAt: '2026-10-01T00:00:00.000Z' }
+      occdFence: { environmentId: 'environment-1', sourceChangedAt: '2026-10-01T00:00:00.000Z' }
     }
     mocks.updateTarget.mockReturnValue({ ...mocks.state.target, port: 2222 })
     handler('ssh:updateTarget')(null, { id: 'ssh-1', updates: { port: 2222 } })
@@ -88,7 +88,7 @@ describe('SSH target CRUD against managed orcad targets', () => {
     )
     mocks.state.target = {
       ...target,
-      orcadProvisioning: { requestId: 'request-1', name: 'Managed' }
+      occdProvisioning: { requestId: 'request-1', name: 'Managed' }
     }
     await expect(handler('ssh:removeTarget')(null, { id: 'ssh-1' })).rejects.toThrow(
       'OCC runs on this host'
@@ -108,12 +108,12 @@ describe('SSH target CRUD against managed orcad targets', () => {
     mocks.state.target = target
     handler('ssh:updateTarget')(null, {
       id: 'ssh-1',
-      updates: { label: 'renamed', orcadProvisioning: { requestId: 'x', name: 'y' } }
+      updates: { label: 'renamed', occdProvisioning: { requestId: 'x', name: 'y' } }
     })
     handler('ssh:addTarget')(null, {
-      target: { ...target, orcadProvisioning: { requestId: 'x', name: 'y' } }
+      target: { ...target, occdProvisioning: { requestId: 'x', name: 'y' } }
     })
     expect(mocks.updateTarget).toHaveBeenCalledWith('ssh-1', { label: 'renamed' })
-    expect(mocks.addTarget.mock.calls[0]?.[0]).not.toHaveProperty('orcadProvisioning')
+    expect(mocks.addTarget.mock.calls[0]?.[0]).not.toHaveProperty('occdProvisioning')
   })
 })

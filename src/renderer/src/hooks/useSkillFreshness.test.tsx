@@ -113,14 +113,14 @@ describe('useSkillFreshness', () => {
     installBundledPlan(bundledPlan)
 
     await act(async () => root?.render(<Probe enabled={false} />))
-    await act(async () => window.dispatchEvent(new Event('orca:installed-agent-skills-changed')))
+    await act(async () => window.dispatchEvent(new Event('occ:installed-agent-skills-changed')))
     await act(async () => state?.refresh())
 
     expect(bundledPlan).not.toHaveBeenCalled()
     expect(state).toMatchObject({ plan: null, loading: false, error: null })
     expect(
       addEventListener.mock.calls.filter(
-        ([name]) => name === 'focus' || name === 'orca:installed-agent-skills-changed'
+        ([name]) => name === 'focus' || name === 'occ:installed-agent-skills-changed'
       )
     ).toHaveLength(0)
   })
@@ -129,7 +129,7 @@ describe('useSkillFreshness', () => {
     const second = deferred<BundledSkillPlan>()
     const bundledPlan = vi
       .fn()
-      .mockResolvedValueOnce(plan(1, ['orca-cli']))
+      .mockResolvedValueOnce(plan(1, ['occ-cli']))
       .mockReturnValueOnce(second.promise)
     installBundledPlan(bundledPlan)
     const renderProbes = (enabled: boolean): void => {
@@ -143,13 +143,13 @@ describe('useSkillFreshness', () => {
 
     await act(async () => renderProbes(true))
     expect(bundledPlan).toHaveBeenCalledTimes(1)
-    expect(state?.plan?.skills.map((skill) => skill.name)).toEqual(['orca-cli'])
+    expect(state?.plan?.skills.map((skill) => skill.name)).toEqual(['occ-cli'])
 
     await act(async () => renderProbes(true))
     expect(bundledPlan).toHaveBeenCalledTimes(1)
 
     await act(async () => renderProbes(false))
-    await act(async () => window.dispatchEvent(new Event('orca:installed-agent-skills-changed')))
+    await act(async () => window.dispatchEvent(new Event('occ:installed-agent-skills-changed')))
     expect(bundledPlan).toHaveBeenCalledTimes(1)
     expect(state).toMatchObject({ plan: null, loading: false })
 
@@ -180,7 +180,7 @@ describe('useSkillFreshness', () => {
     await act(async () => window.dispatchEvent(new Event('focus')))
     expect(bundledPlan).toHaveBeenCalledTimes(1)
 
-    await act(async () => window.dispatchEvent(new Event('orca:installed-agent-skills-changed')))
+    await act(async () => window.dispatchEvent(new Event('occ:installed-agent-skills-changed')))
     await act(async () => second.resolve(plan(2)))
     expect(bundledPlan).toHaveBeenCalledTimes(2)
     expect(state?.plan?.planDigest).toBe(digest(2))
@@ -192,12 +192,12 @@ describe('useSkillFreshness', () => {
     const second = deferred<BundledSkillPlan>()
     const bundledPlan = vi
       .fn()
-      .mockResolvedValueOnce(plan(1, ['orca-cli']))
+      .mockResolvedValueOnce(plan(1, ['occ-cli']))
       .mockReturnValueOnce(second.promise)
     installBundledPlan(bundledPlan)
 
     await act(async () => root?.render(<Probe />))
-    expect(state?.plan?.skills.map((skill) => skill.name)).toEqual(['orca-cli'])
+    expect(state?.plan?.skills.map((skill) => skill.name)).toEqual(['occ-cli'])
 
     await act(async () => window.dispatchEvent(new Event('focus')))
     expect(bundledPlan).toHaveBeenCalledTimes(1)
@@ -227,7 +227,7 @@ describe('useSkillFreshness', () => {
     await act(async () => first.resolve(plan(1)))
     expect(bundledPlan).toHaveBeenCalledTimes(1)
 
-    await act(async () => window.dispatchEvent(new Event('orca:installed-agent-skills-changed')))
+    await act(async () => window.dispatchEvent(new Event('occ:installed-agent-skills-changed')))
     await act(async () => second.resolve(plan(2)))
     expect(bundledPlan).toHaveBeenCalledTimes(2)
   })
@@ -271,7 +271,7 @@ describe('useSkillFreshness', () => {
     await act(async () => root?.render(<Probe />))
     expect(state?.plan?.planDigest).toBe(digest(1))
 
-    await act(async () => window.dispatchEvent(new Event('orca:installed-agent-skills-changed')))
+    await act(async () => window.dispatchEvent(new Event('occ:installed-agent-skills-changed')))
     expect(state?.plan).toBeNull()
     expect(state?.loading).toBe(true)
 
@@ -297,7 +297,7 @@ describe('useSkillFreshness', () => {
 
     expect(addEventListener.mock.calls.filter(([name]) => name === 'focus')).toHaveLength(1)
     expect(
-      addEventListener.mock.calls.filter(([name]) => name === 'orca:installed-agent-skills-changed')
+      addEventListener.mock.calls.filter(([name]) => name === 'occ:installed-agent-skills-changed')
     ).toHaveLength(1)
 
     await act(async () => root?.unmount())
@@ -305,13 +305,13 @@ describe('useSkillFreshness', () => {
     expect(removeEventListener.mock.calls.filter(([name]) => name === 'focus')).toHaveLength(1)
     expect(
       removeEventListener.mock.calls.filter(
-        ([name]) => name === 'orca:installed-agent-skills-changed'
+        ([name]) => name === 'occ:installed-agent-skills-changed'
       )
     ).toHaveLength(1)
   })
 
   it('re-plans a new host without ever showing the previous host’s plan', async () => {
-    const bundledPlan = vi.fn().mockResolvedValueOnce(plan(1, ['orca-cli']))
+    const bundledPlan = vi.fn().mockResolvedValueOnce(plan(1, ['occ-cli']))
     installBundledPlan(bundledPlan)
 
     await act(async () => root?.render(<Probe />))

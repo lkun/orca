@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { agentHookServer } from '../../agent-hooks/server'
-import type { OrcaRuntimeService } from '../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../runtime/occ-runtime'
 import { repairDuplicatePtyPanesOnStart } from '../../runtime/moved-pane-owner-rekey'
 import { getDefaultWorkspaceSession } from '../../../shared/constants'
 import type { PersistedState } from '../../../shared/persisted-state-types'
@@ -59,7 +59,7 @@ function duplicateSession(): WorkspaceSessionState {
 function seededDirectory(
   extend: (state: Record<string, unknown>, session: WorkspaceSessionState) => void = () => {}
 ): string {
-  const directory = mkdtempSync(join(tmpdir(), 'orca-duplicate-pty-repair-'))
+  const directory = mkdtempSync(join(tmpdir(), 'occ-duplicate-pty-repair-'))
   directories.push(directory)
   const inner = new ProfileStateSqliteAuthority(join(directory, 'profile-state.db'), 'topology')
   const state = {
@@ -127,7 +127,7 @@ async function load(directory: string): Promise<{ store: Store; authority: Delay
     new ProfileStateSqliteAuthority(join(directory, 'profile-state.db'), 'topology')
   )
   const store = new Store({
-    dataFile: join(directory, 'orca-data.json'),
+    dataFile: join(directory, 'occ-data.json'),
     profileStateAuthority: authority
   })
   stores.push(store)
@@ -154,7 +154,7 @@ function fakeRuntime() {
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the repair reads only the orchestration DB accessor.
   const runtime = {
     getExistingOrchestrationDb: () => ({ rekeyWorkerTerminalResourcePaneKey })
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
   return { runtime, rekeyWorkerTerminalResourcePaneKey }
 }
 
@@ -328,7 +328,7 @@ describe('duplicate-terminal pane repair at load (layout-owner builds)', () => {
           throw new Error('database is locked')
         }
       })
-    } as unknown as OrcaRuntimeService
+    } as unknown as OCCRuntimeService
 
     await repairDuplicatePtyPanesOnStart(store, runtime)
     await quit(store)

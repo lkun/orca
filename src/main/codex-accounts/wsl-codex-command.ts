@@ -58,7 +58,7 @@ export function buildWslCodexAppServerArgs(
 export function buildWslCodexLoginArgs(
   distro: string,
   linuxHomePath: string,
-  options: { orcaOpensSignInLink?: boolean } = {}
+  options: { occOpensSignInLink?: boolean } = {}
 ): string[] {
   const command = [
     buildCodexPathLookup(),
@@ -68,7 +68,7 @@ export function buildWslCodexLoginArgs(
     'fi',
     `export CODEX_HOME=${quotePosixShell(linuxHomePath)}`,
     // Avoid a second tab when OCC opens the link.
-    ...(options.orcaOpensSignInLink ? ['export BROWSER=true'] : []),
+    ...(options.occOpensSignInLink ? ['export BROWSER=true'] : []),
     'exec "$resolved" login'
   ].join('\n')
   return buildWslCodexShellArgs(distro, command)

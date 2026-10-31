@@ -12,7 +12,7 @@ const {
 // lifecycle (TN3187), and Expo SDK 55's AppDelegate template still creates the window itself.
 // The iOS 27 SDK is what lets the app resize on iPhone Duo, so the window moves into a scene
 // delegate here. Drop this plugin once Expo's template adopts scenes (SDK 58).
-const MARKER = 'orca: UIScene lifecycle'
+const MARKER = 'occ: UIScene lifecycle'
 
 const SCENE_MANIFEST = {
   UIApplicationSupportsMultipleScenes: false,

@@ -8,7 +8,7 @@ import {
   type GitHubProjectSettings,
   type GitHubProjectSummary,
   type GitHubProjectViewSummary,
-  type PersistedTrustedOrcaHooks,
+  type PersistedTrustedOCCHooks,
   type SparsePreset,
   type WorkspaceAgentChoice,
   useState
@@ -21,8 +21,8 @@ import {
   type GitHubProjectRow,
   type GitHubProjectTable,
   type LinearState,
-  type OrcaYamlTrustPrompt,
-  type ProjectRepoNotInOrcaPrompt,
+  type OCCYamlTrustPrompt,
+  type ProjectRepoNotInOCCPrompt,
   type ProjectSortOverride,
   type RuntimeTaskSettings,
   type SetupPrompt,
@@ -88,8 +88,8 @@ export function useMobileTasksWorkspaceAndProjectState(model: RouteAndItemStateM
   const [linearSubIssueTitle, setLinearSubIssueTitle] = useState('')
   const [taskStateHydrated, setTaskStateHydrated] = useState(false)
   const [runtimeTaskSettings, setRuntimeTaskSettings] = useState<RuntimeTaskSettings>({})
-  const [trustedOrcaHooks, setTrustedOrcaHooks] = useState<PersistedTrustedOrcaHooks>({})
-  const [orcaYamlTrustPrompt, setOrcaYamlTrustPrompt] = useState<OrcaYamlTrustPrompt | null>(null)
+  const [trustedOCCHooks, setTrustedOCCHooks] = useState<PersistedTrustedOCCHooks>({})
+  const [occYamlTrustPrompt, setOCCYamlTrustPrompt] = useState<OCCYamlTrustPrompt | null>(null)
   const [githubProjectSettings, setGithubProjectSettings] = useState<GitHubProjectSettings>(
     EMPTY_GITHUB_PROJECT_SETTINGS
   )
@@ -145,8 +145,8 @@ export function useMobileTasksWorkspaceAndProjectState(model: RouteAndItemStateM
   const [projectIssueTypesLoading, setProjectIssueTypesLoading] = useState(false)
   const [projectIssueTypesError, setProjectIssueTypesError] = useState('')
   const [projectMutating, setProjectMutating] = useState(false)
-  const [projectRepoNotInOrca, setProjectRepoNotInOrca] =
-    useState<ProjectRepoNotInOrcaPrompt | null>(null)
+  const [projectRepoNotInOCC, setProjectRepoNotInOCC] =
+    useState<ProjectRepoNotInOCCPrompt | null>(null)
   const taskDetailHandoff = useBottomDrawerFollowUp(() => model.setActionItem(null))
   const projectRowHandoff = useBottomDrawerFollowUp(() => setProjectRowItem(null))
   const repoPickerHandoff = useBottomDrawerFollowUp(() => setWorkspaceRepoPickerItem(null))
@@ -233,10 +233,10 @@ export function useMobileTasksWorkspaceAndProjectState(model: RouteAndItemStateM
     setTaskStateHydrated,
     runtimeTaskSettings,
     setRuntimeTaskSettings,
-    trustedOrcaHooks,
-    setTrustedOrcaHooks,
-    orcaYamlTrustPrompt,
-    setOrcaYamlTrustPrompt,
+    trustedOCCHooks,
+    setTrustedOCCHooks,
+    occYamlTrustPrompt,
+    setOCCYamlTrustPrompt,
     githubProjectSettings,
     setGithubProjectSettings,
     githubProjects,
@@ -323,8 +323,8 @@ export function useMobileTasksWorkspaceAndProjectState(model: RouteAndItemStateM
     setProjectIssueTypesError,
     projectMutating,
     setProjectMutating,
-    projectRepoNotInOrca,
-    setProjectRepoNotInOrca
+    projectRepoNotInOCC,
+    setProjectRepoNotInOCC
   })
 }
 

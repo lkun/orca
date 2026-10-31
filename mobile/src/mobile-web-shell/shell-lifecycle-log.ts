@@ -1,4 +1,4 @@
-import type { BridgeErrorCapture } from './bridge/bridge-error-capture'
+import type { BridgeErroccpture } from './bridge/bridge-error-capture'
 import { gateVerdict } from './mobile-web-shell-gates'
 import type {
   MobileWebShellSession,
@@ -127,7 +127,7 @@ export function shellStallLine(
   }
 }
 
-export function pageFaultLine(error: BridgeErrorCapture): ShellLifecycleLine {
+export function pageFaultLine(error: BridgeErroccpture): ShellLifecycleLine {
   const firstLine = error.message.split(/\r?\n/, 1)[0] ?? ''
   return pageLine(
     'warn',

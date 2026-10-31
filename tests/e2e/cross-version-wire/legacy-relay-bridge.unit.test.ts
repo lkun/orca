@@ -65,7 +65,7 @@ describe.skipIf(process.platform === 'win32')(
     beforeAll(async () => {
       const checkout = await materializeReleaseCheckout(PREVIOUS_RELAY_REF)
       // Why /tmp: macOS's per-user tmpdir pushes a socket path past sun_path.
-      root = await mkdtemp('/tmp/orca-xv-bridge-')
+      root = await mkdtemp('/tmp/occ-xv-bridge-')
       install = await installReleasedRelay(checkout, root)
       sockPath = join(install.dir, 'relay-target.sock')
       daemon = await startReleasedRelayDaemon(install, sockPath, { SHELL: '/bin/sh' })

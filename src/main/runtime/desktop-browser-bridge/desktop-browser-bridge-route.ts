@@ -1,4 +1,4 @@
-/** Only orcad-local CLI browser calls forward to desktops; paired clients must never bounce back. */
+/** Only occd-local CLI browser calls forward to desktops; paired clients must never bounce back. */
 import { BrowserError } from '../../browser/browser-error'
 import {
   DESKTOP_BROWSER_BRIDGE_NOT_FORWARDED_CODE,
@@ -60,7 +60,7 @@ export async function routeDesktopBrowserBridgeRpc(options: {
     assertClientOpenableUrl(String(params.url))
   }
   let workspaceId: string | undefined
-  // Only orcad can resolve its host's path/branch/active selectors.
+  // Only occd can resolve its host's path/branch/active selectors.
   if (typeof params.worktree === 'string' && params.worktree.length > 0) {
     workspaceId = (await options.resolveWorkspace(params.worktree)).id
     params.worktree = `id:${workspaceId}`

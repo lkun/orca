@@ -6,8 +6,8 @@ import os from 'node:os'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
 import { RuntimeClient } from '../../src/cli/runtime/client'
-import { expect, test } from './helpers/orca-app'
-import { createRestartSession } from './helpers/orca-restart'
+import { expect, test } from './helpers/occ-app'
+import { createRestartSession } from './helpers/occ-restart'
 import { createRuntimeDesktopPairingOffer } from './helpers/paired-electron-client'
 
 async function pairAndSelect(page: Page, pairingUrl: string, name: string): Promise<string> {
@@ -98,11 +98,11 @@ function browserPageHost(page: Page, pageId: string) {
 }
 
 test('a desktop gets no tab back for its own workspace from a server it serves', async ({
-  orcaPage
+  occPage
 }, testInfo) => {
   // Two desktops launch and pair to each other.
   test.setTimeout(240_000)
-  const desktopBFolder = mkdtempSync(path.join(os.tmpdir(), 'orca-e2e-desktop-b-'))
+  const desktopBFolder = mkdtempSync(path.join(os.tmpdir(), 'occ-e2e-desktop-b-'))
   writeFileSync(path.join(desktopBFolder, 'note.md'), '# desktop B\n')
   const hubBSession = createRestartSession(testInfo)
   const hubB = await hubBSession.launch()
@@ -112,23 +112,23 @@ test('a desktop gets no tab back for its own workspace from a server it serves',
       null,
       { timeout: 60_000 }
     )
-    const worktree = await orcaPage.evaluate(() => {
+    const worktree = await occPage.evaluate(() => {
       const listed = window.__store!.getState().allWorktrees()[0]
       return listed ? { id: listed.id, path: listed.path } : null
     })
     expect(worktree).not.toBeNull()
     const { id: worktreeId, path: worktreePath } = worktree!
     const desktopBWorktreeId = await addLocalFolder(hubB.page, desktopBFolder)
-    const desktopATabIds = await tabIdsIn(orcaPage, worktreeId)
+    const desktopATabIds = await tabIdsIn(occPage, worktreeId)
 
     const desktopBOnA = await pairAndSelect(
-      orcaPage,
+      occPage,
       (await createRuntimeDesktopPairingOffer(hubB.page)).pairingUrl,
       'Desktop B'
     )
     const desktopAOnB = await pairAndSelect(
       hubB.page,
-      (await createRuntimeDesktopPairingOffer(orcaPage)).pairingUrl,
+      (await createRuntimeDesktopPairingOffer(occPage)).pairingUrl,
       'Desktop A'
     )
     await expect
@@ -187,7 +187,7 @@ test('a desktop gets no tab back for its own workspace from a server it serves',
       )
       .toBe(true)
     // #36386: B mirrors A's browser tab; its copy must not come back and take over A's page.
-    const { browserPageId, browserTabId } = await orcaPage.evaluate((id) => {
+    const { browserPageId, browserTabId } = await occPage.evaluate((id) => {
       const store = window.__store!
       const workspace = store
         .getState()
@@ -217,14 +217,14 @@ test('a desktop gets no tab back for its own workspace from a server it serves',
       { worktreeId: desktopBWorktreeId, filePath: path.join(desktopBFolder, 'note.md') }
     )
     await expect
-      .poll(() => openFilesIn(orcaPage, desktopBWorktreeId), {
+      .poll(() => openFilesIn(occPage, desktopBWorktreeId), {
         timeout: 30_000,
         message: 'Desktop A never mirrored a tab in desktop B’s own workspace'
       })
       .toEqual([{ relativePath: 'note.md', env: desktopBOnA }])
-    expect(await openFilesIn(orcaPage, worktreeId)).toEqual([])
-    expect(await tabIdsIn(orcaPage, worktreeId)).toEqual([...desktopATabIds, browserTabId])
-    expect(await browserPageHost(orcaPage, browserPageId)).toBe('local')
+    expect(await openFilesIn(occPage, worktreeId)).toEqual([])
+    expect(await tabIdsIn(occPage, worktreeId)).toEqual([...desktopATabIds, browserTabId])
+    expect(await browserPageHost(occPage, browserPageId)).toBe('local')
     expect(await openFilesIn(hubB.page, worktreeId)).toEqual([
       { relativePath: 'README.md', env: desktopAOnB }
     ])

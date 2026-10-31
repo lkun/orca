@@ -1,7 +1,7 @@
 import { observeLinearIssueRead } from '@/store/slices/linear/linear-issue-publication'
 import { linearIssueReadError } from '@/lib/linear-read-error'
 import { taskProviderErrorText } from '@/lib/task-provider-error-copy'
-import type { TaskPageLinearInOrcaEffectsModel } from './use-task-page-linear-in-orca-effects'
+import type { TaskPageLinearInOCCEffectsModel } from './use-task-page-linear-in-occ-effects'
 import { useEffect } from 'react'
 import {
   LINEAR_CUSTOM_VIEW_MODELS,
@@ -11,7 +11,7 @@ import { LINEAR_ITEM_LIMIT } from '../task-page-source-context'
 import type { LinearCollectionResult } from '../../../../../shared/linear/workspace-types'
 import type { LinearCustomViewSummary } from '../../../../../shared/linear/project-types'
 import { clampLinearIssueListLimit } from '../../../../../shared/linear/issue-read-limits'
-export function useTaskPageLinearCustomViewEffects(model: TaskPageLinearInOrcaEffectsModel) {
+export function useTaskPageLinearCustomViewEffects(model: TaskPageLinearInOCCEffectsModel) {
   const {
     getCachedLinearCustomViews,
     listLinearCustomViews,

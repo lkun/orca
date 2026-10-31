@@ -53,7 +53,7 @@ vi.mock('./browser-route-guest-guard', () => ({ closeRouteGuest: mocks.closeGues
 vi.mock('./browser-route-partition-binding-runtime', () => {
   const fingerprints = new Map<string, string>()
   return {
-    activeBrowserRoutePartitionOrcaProfileId: () => 'orca-profile-1',
+    activeBrowserRoutePartitionOCCProfileId: () => 'occ-profile-1',
     currentBrowserRoutePartitionBindingStore: () => ({
       get: (partition: string) => fingerprints.get(partition) ?? null,
       set: (partition: string, fingerprint: string) => {
@@ -111,8 +111,8 @@ vi.mock('../ssh/legacy-relay/legacy-relay-bridge-registry', () => ({
   forgetLegacyRelayTarget: vi.fn(),
   stopLegacyRelayBridge: vi.fn()
 }))
-vi.mock('../managed-server/lifecycle/orcad-managed-tunnel', () => ({
-  closeOrcadManagedTunnelsForTarget: vi.fn(async () => {})
+vi.mock('../managed-server/lifecycle/occd-managed-tunnel', () => ({
+  closeOCCdManagedTunnelsForTarget: vi.fn(async () => {})
 }))
 vi.mock('./browser-route-partition-storage-runtime', () => ({
   clearBrowserRoutePartitionStorageForLocalSshTarget: mocks.clearStorage
@@ -161,7 +161,7 @@ describe('prepareLocalSshBrowserPartition probe caching', () => {
       browserProfileId: 'default',
       skipProbe: true
     })
-    expect(skipped.partition).toMatch(/^persist:orca-browser-v1-/)
+    expect(skipped.partition).toMatch(/^persist:occ-browser-v1-/)
     expect(mocks.probe).not.toHaveBeenCalled()
 
     await expect(

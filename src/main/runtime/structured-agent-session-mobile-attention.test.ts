@@ -76,7 +76,7 @@ function harness(overrides: Partial<StructuredAttentionMobileDeliveryDeps> = {})
   const reconciled: StructuredAttentionState[] = []
   const delivery = createStructuredAttentionMobileDelivery({
     readNotificationSettings: () => settings(),
-    readWorkspaceLabels: () => ({ repoLabel: 'orca', worktreeLabel: 'feature' }),
+    readWorkspaceLabels: () => ({ repoLabel: 'occ', worktreeLabel: 'feature' }),
     isWorkspaceMuted: () => false,
     dispatch: (event) => sent.push(event),
     reconcile: (state) => reconciled.push(state),
@@ -96,7 +96,7 @@ describe('structured attention mobile delivery', () => {
         type: 'notification',
         emittedAt: 42,
         source: 'agent-task-complete',
-        title: 'orca / feature - Claude needs input',
+        title: 'occ / feature - Claude needs input',
         body: 'May I run the migration?',
         worktreeId: SCOPE.workspaceId,
         paneKey: structuredAgentSessionPaneKey(
@@ -116,9 +116,9 @@ describe('structured attention mobile delivery', () => {
     h.delivery.deliver(completion('success', true), SUMMARY)
     h.delivery.deliver(completion('failure', true), SUMMARY)
     expect(h.sent.map((event) => [event.agentState, event.title])).toEqual([
-      ['done', 'orca / feature - Claude finished'],
-      ['blocked', 'orca / feature - Claude needs input'],
-      ['done', 'orca / feature - Claude failed']
+      ['done', 'occ / feature - Claude finished'],
+      ['blocked', 'occ / feature - Claude needs input'],
+      ['done', 'occ / feature - Claude failed']
     ])
   })
 
@@ -171,7 +171,7 @@ describe('structured attention mobile delivery', () => {
 
 describe('readStructuredAttentionWorkspaceLabels', () => {
   const store = {
-    getRepo: vi.fn((id: string) => (id === 'repo-1' ? { displayName: 'orca' } : undefined)),
+    getRepo: vi.fn((id: string) => (id === 'repo-1' ? { displayName: 'occ' } : undefined)),
     getWorktreeMeta: vi.fn((id: string) =>
       id === SCOPE.workspaceId ? { displayName: 'feature' } : undefined
     ),
@@ -181,7 +181,7 @@ describe('readStructuredAttentionWorkspaceLabels', () => {
   it('reads a worktree and its repo from persisted metadata', () => {
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: only the read fields are stubbed.
     const labels = readStructuredAttentionWorkspaceLabels(store as never, SCOPE)
-    expect(labels).toEqual({ repoLabel: 'orca', worktreeLabel: 'feature' })
+    expect(labels).toEqual({ repoLabel: 'occ', worktreeLabel: 'feature' })
   })
 
   it('reads a folder workspace from the folder key a chat scope carries', () => {

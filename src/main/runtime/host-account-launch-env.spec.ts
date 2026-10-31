@@ -3,20 +3,20 @@ import { HostAccountLaunchEnvParams } from '../../shared/host-account-launch-env
 import { prepareLocalCommitMessageAgentEnv } from '../text-generation/commit-message-agent-environment'
 import { RuntimeAccountController, type RuntimeAccountServices } from './runtime-account-controller'
 import { withHostAccountLaunchEnv } from './runtime-agent-terminal-startup'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { partialRuntimeStore } from './runtime-store-partial-fixture'
 
 export function registerHostAccountLaunchEnvTests(): void {
   const LAUNCH_ENV = HostAccountLaunchEnvParams.parse({
     wslDistro: 'Ubuntu',
     claude: {
-      CLAUDE_CONFIG_DIR: '/home/u/.orca/claude/a',
-      ORCA_CLAUDE_INJECTED_CONFIG_DIR: '/home/u/.orca/claude/a',
-      CODEX_HOME: '/home/u/.orca/codex/b'
+      CLAUDE_CONFIG_DIR: '/home/u/.occ/claude/a',
+      OCC_CLAUDE_INJECTED_CONFIG_DIR: '/home/u/.occ/claude/a',
+      CODEX_HOME: '/home/u/.occ/codex/b'
     },
     terminal: {
-      ORCA_CLAUDE_PROFILE_POINTER: '~/.orca/claude-pointer',
-      CODEX_HOME: '/home/u/.orca/codex/b'
+      OCC_CLAUDE_PROFILE_POINTER: '~/.occ/claude-pointer',
+      CODEX_HOME: '/home/u/.occ/codex/b'
     }
   })
 
@@ -50,8 +50,8 @@ export function registerHostAccountLaunchEnvTests(): void {
       const resolvers = accounts.getCommitMessageAgentEnvironment()
       const codex = await prepareLocalCommitMessageAgentEnv('codex', resolvers)
       const claude = await prepareLocalCommitMessageAgentEnv('claude', resolvers)
-      expect(codex.ok && codex.env?.CODEX_HOME).toBe('/home/u/.orca/codex/b')
-      expect(claude.ok && claude.env?.CLAUDE_CONFIG_DIR).toBe('/home/u/.orca/claude/a')
+      expect(codex.ok && codex.env?.CODEX_HOME).toBe('/home/u/.occ/codex/b')
+      expect(claude.ok && claude.env?.CLAUDE_CONFIG_DIR).toBe('/home/u/.occ/claude/a')
     })
   })
 
@@ -90,7 +90,7 @@ export function registerHostAccountLaunchEnvTests(): void {
     /** `null`: a fresh WSL host that has not had its first push yet. */
     function runtimeWithHostAccounts(
       launchEnv: typeof LAUNCH_ENV | null = LAUNCH_ENV
-    ): OrcaRuntimeService {
+    ): OCCRuntimeService {
       const store = {
         getSettings: () => ({
           disabledTuiAgents: [],
@@ -101,7 +101,7 @@ export function registerHostAccountLaunchEnvTests(): void {
           }
         })
       }
-      const runtime = new OrcaRuntimeService(partialRuntimeStore(store))
+      const runtime = new OCCRuntimeService(partialRuntimeStore(store))
       if (launchEnv) {
         runtime.setHostAccountLaunchEnv(launchEnv)
       } else {

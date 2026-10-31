@@ -2,7 +2,7 @@
 import { Terminal } from '@xterm/headless'
 import { describe, expect, it, vi } from 'vitest'
 import type { PtySpawnResult } from '../../../providers/pty-provider-contract'
-import type { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import { seedHeadlessTerminalFromSpawnResult } from './terminal-spawn-restore'
 
 async function rowsAfter(seed: string, liveOutput: string, rows: number): Promise<string[]> {
@@ -20,7 +20,7 @@ describe('seeding the host copy from a cold restore', () => {
   it('parks the cursor below the restored history, so the new shell’s prompt has its own row', async () => {
     const seedHeadlessTerminal = vi.fn()
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the seed reads only seedHeadlessTerminal from the runtime.
-    const runtime = { seedHeadlessTerminal } as unknown as OrcaRuntimeService
+    const runtime = { seedHeadlessTerminal } as unknown as OCCRuntimeService
     const result: PtySpawnResult = {
       id: 'host-pty',
       coldRestore: {

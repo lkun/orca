@@ -65,11 +65,11 @@ async function createStore() {
   // Reopened stores must use this fixture’s userData directory.
   installFakeAppEnvironment({ getPath: () => testState.dir })
   initDataPath()
-  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
 }
 
 function dataFile(): string {
-  return join(testState.dir, 'orca-data.json')
+  return join(testState.dir, 'occ-data.json')
 }
 
 type ProtectedState = {
@@ -156,7 +156,7 @@ async function settleSave(store: Awaited<ReturnType<typeof createStore>>): Promi
 
 describe('protected persistence when safeStorage fails', () => {
   beforeEach(() => {
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-safe-storage-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-safe-storage-test-'))
     cipherState.availability = 'available'
     cipherState.encryptionThrows = false
     cipherState.decryptionThrows = false

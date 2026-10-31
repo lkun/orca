@@ -19,7 +19,7 @@ export class RuntimeLinearSaveFieldCommands extends RuntimeLinearTaskFieldComman
     if (fields.description === undefined || description === fields.description) {
       return true
     }
-    // Why dynamic: keeps the Markdown parser off startup while every bundle (Electron, orcad) inlines it.
+    // Why dynamic: keeps the Markdown parser off startup while every bundle (Electron, occd) inlines it.
     const { linearIssueDescriptionComparisonKey } =
       await import('./linear-issue-description-comparison')
     return (

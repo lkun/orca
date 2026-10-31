@@ -1,7 +1,7 @@
 # Accumulated-workspace typing benchmark
 
 Use this opt-in Electron benchmark to reproduce typing contention from background
-terminal activity. The launcher sets `ORCA_BACKGROUND_LAUNCH=1`; tests never need to
+terminal activity. The launcher sets `OCC_BACKGROUND_LAUNCH=1`; tests never need to
 reveal or activate the app window.
 
 ## Notification-transition reproduction
@@ -43,7 +43,7 @@ fewer than an accumulated real profile, so it does not reproduce long renderer t
 from hidden chat or sidebar surfaces by itself. Use `--cadence-ms 600` to make every
 key the first after a pause.
 
-`--in-app-diagnostic 1` runs the shipped `__orcaTypingDiagnostic` beside the sidecar
+`--in-app-diagnostic 1` runs the shipped `__occTypingDiagnostic` beside the sidecar
 and stores its report as `inAppDiagnostic`. Its exact samples split renderer input
 queueing (trusted DOM event → handler), handler → `onData`, `onData` → first PTY
 output handed to the output scheduler, scheduler queueing, xterm parse, and parse →
@@ -79,10 +79,10 @@ the command above uses neither.
 
 `terminal-typing-measurement-control.spec.ts` injects known renderer stalls and
 requires the harness to detect input and scheduled-dispatch backlog. Run it with
-`ORCA_BACKGROUND_LAUNCH=1` in the environment:
+`OCC_BACKGROUND_LAUNCH=1` in the environment:
 
 ```sh
-ORCA_TYPING_BENCH=1 ORCA_BACKGROUND_LAUNCH=1 pnpm exec playwright test tests/e2e/terminal-typing-measurement-control.spec.ts --config tests/playwright.config.ts --project electron-headless --workers=1
+OCC_TYPING_BENCH=1 OCC_BACKGROUND_LAUNCH=1 pnpm exec playwright test tests/e2e/terminal-typing-measurement-control.spec.ts --config tests/playwright.config.ts --project electron-headless --workers=1
 pnpm test tests/e2e/paced-terminal-typing.unit.test.ts tests/e2e/accumulated-workspace-state-builder.unit.test.ts tests/e2e/sustained-agent-typing-load-scripts.unit.test.ts
 ```
 

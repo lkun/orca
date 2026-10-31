@@ -75,7 +75,7 @@ describe('useStructuredAgentTurnTiming', () => {
     vi.setSystemTime(CLIENT_NOW)
     const running = [
       // Resolve the acknowledged send via its submission key, not the provider key.
-      user('orca:first', 1),
+      user('occ:first', 1),
       lifecycle(
         't1',
         2,
@@ -109,7 +109,7 @@ describe('useStructuredAgentTurnTiming', () => {
     expect(result.current.workingStartedAt).toBe(CLIENT_NOW - 2_500)
     // The row's provider key resolves through the submission alias, not journal order.
     expect([...result.current.settledTurns]).toEqual([
-      ['orca:first', { startedAt: HOST_START, workedSeconds: 197 }],
+      ['occ:first', { startedAt: HOST_START, workedSeconds: 197 }],
       ['u2', null]
     ])
 

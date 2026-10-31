@@ -30,7 +30,7 @@ const popoutsByWindowId = new Map<number, PopoutState>()
 const watchedWindows = new WeakSet<BrowserWindow>()
 const BOUNDS_EVENT_DELAY_MS = 150
 
-function isOrcaWindowFocused(): boolean {
+function isOCCWindowFocused(): boolean {
   return (
     Boolean(mainWindow?.isFocused()) ||
     [...popoutsByWindowId.values()].some((p) => p.window.isFocused())
@@ -67,7 +67,7 @@ function watchWindowEvents(
   })
   window.on('blur', () => {
     setImmediate(() => {
-      if (!isOrcaWindowFocused()) {
+      if (!isOCCWindowFocused()) {
         emitBrowserExtensionEvent({}, 'windows', 'onFocusChanged', [WINDOW_ID_NONE])
       }
     })

@@ -1,5 +1,5 @@
-// COMPAT(wsl-bridge): removed when WSL runs as an orcad host.
-export const ORCA_SKILLS_REPOSITORY_URL = 'https://github.com/stablyai/orca'
+// COMPAT(wsl-bridge): removed when WSL runs as an occd host.
+export const OCC_SKILLS_REPOSITORY_URL = 'https://github.com/stablyai/occ'
 
 // Pin one CLI across install rails: 1.5.x lacks commit fetch and bare npx may reuse stale/wrong binaries (#18687).
 export const SKILLS_CLI_VERSION = '1.7.2'
@@ -24,7 +24,7 @@ export function buildAgentFeatureSkillInstallArgs(
     `skills@${SKILLS_CLI_VERSION}`,
     'add',
     // Use the build commit for manifest freshness on every channel, including untagged hourly builds; add re-copies for updates.
-    `${ORCA_SKILLS_REPOSITORY_URL}/tree/${options.sourceCommit}`,
+    `${OCC_SKILLS_REPOSITORY_URL}/tree/${options.sourceCommit}`,
     ...skillArgs,
     ...(global ? ['--global'] : [])
   ]

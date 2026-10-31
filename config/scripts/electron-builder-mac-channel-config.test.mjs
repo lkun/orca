@@ -5,14 +5,14 @@ const require = createRequire(import.meta.url)
 const electronBuilderConfig = require('../electron-builder.config.cjs')
 
 const MUTABLE_BUILD_ENV = [
-  'ORCA_MAC_HOURLY',
-  'ORCA_MAC_DAILY',
-  'ORCA_MAC_ADHOC',
-  'ORCA_MAC_RELEASE',
-  'ORCA_HOURLY_BUILD_VERSION',
-  'ORCA_DAILY_BUILD_VERSION',
-  'ORCA_ADHOC_BUILD_VERSION',
-  'ORCA_LOCAL_BUILD_VERSION'
+  'OCC_MAC_HOURLY',
+  'OCC_MAC_DAILY',
+  'OCC_MAC_ADHOC',
+  'OCC_MAC_RELEASE',
+  'OCC_HOURLY_BUILD_VERSION',
+  'OCC_DAILY_BUILD_VERSION',
+  'OCC_ADHOC_BUILD_VERSION',
+  'OCC_LOCAL_BUILD_VERSION'
 ]
 
 /** Re-requires the config under a temporary env, then restores env and module cache. */
@@ -39,9 +39,9 @@ function withEnv(env, assert) {
   }
 }
 
-const withHourlyEnv = (assert) => withEnv({ ORCA_MAC_HOURLY: '1' }, assert)
-const withDailyEnv = (assert) => withEnv({ ORCA_MAC_DAILY: '1' }, assert)
-const withAdhocEnv = (assert) => withEnv({ ORCA_MAC_ADHOC: '1' }, assert)
+const withHourlyEnv = (assert) => withEnv({ OCC_MAC_HOURLY: '1' }, assert)
+const withDailyEnv = (assert) => withEnv({ OCC_MAC_DAILY: '1' }, assert)
+const withAdhocEnv = (assert) => withEnv({ OCC_MAC_ADHOC: '1' }, assert)
 
 describe('electron-builder mac channel config', () => {
   // Squirrel.Mac requires release bundle ID and Developer ID signature; local ad-hoc hourly identity cannot update real OCC.
@@ -59,7 +59,7 @@ describe('electron-builder mac channel config', () => {
     withHourlyEnv((config) => {
       expect(config.mac.notarize).toBe(true)
     })
-    withEnv({ ORCA_MAC_RELEASE: '1' }, (config) => {
+    withEnv({ OCC_MAC_RELEASE: '1' }, (config) => {
       expect(config.mac.notarize).toBe(true)
     })
     expect(electronBuilderConfig.mac.notarize).toBe(false)
@@ -68,17 +68,17 @@ describe('electron-builder mac channel config', () => {
   // Twenty-four hourly releases would evict stable/RC from main repo’s ten-entry feed.
   it('publishes hourly builds to the separate hourly repo', () => {
     withHourlyEnv((config) => {
-      expect(config.publish).toMatchObject({ repo: 'orca-hourly', releaseType: 'prerelease' })
+      expect(config.publish).toMatchObject({ repo: 'occ-hourly', releaseType: 'prerelease' })
     })
     expect(electronBuilderConfig.publish).toMatchObject({
-      repo: 'orca',
+      repo: 'occ',
       releaseType: 'draft'
     })
   })
 
   it('stamps hourly packages with the hourly version', () => {
     withEnv(
-      { ORCA_MAC_HOURLY: '1', ORCA_HOURLY_BUILD_VERSION: '1.4.160-hourly.202607281400' },
+      { OCC_MAC_HOURLY: '1', OCC_HOURLY_BUILD_VERSION: '1.4.160-hourly.202607281400' },
       (config) => {
         expect(config.extraMetadata).toEqual({ version: '1.4.160-hourly.202607281400' })
       }
@@ -92,13 +92,13 @@ describe('electron-builder mac channel config', () => {
       expect(config.mac.hardenedRuntime).toBe(true)
       expect(config.mac.notarize).toBe(true)
       expect(config.forceCodeSigning).toBe(true)
-      expect(config.publish).toMatchObject({ repo: 'orca-adhoc', releaseType: 'prerelease' })
+      expect(config.publish).toMatchObject({ repo: 'occ-adhoc', releaseType: 'prerelease' })
     })
   })
 
   it('stamps adhoc packages with the adhoc version', () => {
     withEnv(
-      { ORCA_MAC_ADHOC: '1', ORCA_ADHOC_BUILD_VERSION: '1.4.160-adhoc.20260728140533' },
+      { OCC_MAC_ADHOC: '1', OCC_ADHOC_BUILD_VERSION: '1.4.160-adhoc.20260728140533' },
       (config) => {
         expect(config.extraMetadata).toEqual({ version: '1.4.160-adhoc.20260728140533' })
       }
@@ -111,13 +111,13 @@ describe('electron-builder mac channel config', () => {
       expect(config.mac.hardenedRuntime).toBe(true)
       expect(config.mac.notarize).toBe(true)
       expect(config.forceCodeSigning).toBe(true)
-      expect(config.publish).toMatchObject({ repo: 'orca-daily', releaseType: 'prerelease' })
+      expect(config.publish).toMatchObject({ repo: 'occ-daily', releaseType: 'prerelease' })
     })
   })
 
   it('stamps daily packages with the daily version', () => {
     withEnv(
-      { ORCA_MAC_DAILY: '1', ORCA_DAILY_BUILD_VERSION: '1.4.160-daily.202607281300' },
+      { OCC_MAC_DAILY: '1', OCC_DAILY_BUILD_VERSION: '1.4.160-daily.202607281300' },
       (config) => {
         expect(config.extraMetadata).toEqual({ version: '1.4.160-daily.202607281300' })
       }

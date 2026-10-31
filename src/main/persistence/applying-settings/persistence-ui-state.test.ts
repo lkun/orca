@@ -65,7 +65,7 @@ async function createStore() {
   // Reinstall this test’s userData path after resetModules before initializing Store.
   installFakeAppEnvironment({ getPath: () => testState.dir })
   initDataPath()
-  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'orca-data.json') })
+  return createSqliteTestStore(Store, { dataFile: join(testState.dir, 'occ-data.json') })
 }
 
 vi.mock('../../telemetry/client', () => ({
@@ -79,7 +79,7 @@ vi.mock('../../telemetry/cohort-classifier', () => ({
 describe('Store', () => {
   beforeEach(() => {
     hasCreatedStoreInCase = false
-    testState.dir = mkdtempSync(join(tmpdir(), 'orca-test-'))
+    testState.dir = mkdtempSync(join(tmpdir(), 'occ-test-'))
     trackMock.mockReset()
     getCohortAtEmitMock.mockReset()
     getCohortAtEmitMock.mockReturnValue({ nth_repo_added: 2 })
@@ -838,7 +838,7 @@ describe('Store', () => {
     writeDataFile({
       ...getDefaultPersistedState(testState.dir),
       sshTargets: [
-        { id: 'ssh-1', label: 'SSH 1', host: 'example.test', port: 22, username: 'orca' }
+        { id: 'ssh-1', label: 'SSH 1', host: 'example.test', port: 22, username: 'occ' }
       ],
       sshPtyConsumerRecoveries: [
         { ...legacyRecovery, ownerLease: sealedOwnerLease(legacyRecovery.ownerLease) }

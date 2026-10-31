@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 // Stub Electron at import time without loading the full Store fixture.
 vi.mock('electron', () => ({
   app: {
-    getPath: () => '/tmp/orca-persistence-right-sidebar-tab-test'
+    getPath: () => '/tmp/occ-persistence-right-sidebar-tab-test'
   },
   safeStorage: {
     isEncryptionAvailable: () => false,

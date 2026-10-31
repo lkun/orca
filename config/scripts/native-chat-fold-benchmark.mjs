@@ -6,7 +6,7 @@ import { performance } from 'node:perf_hooks'
 import { build } from 'esbuild'
 import { buildCounterbalancedSchedule } from './counterbalanced-benchmark-schedule.mjs'
 import { summarizeBenchmarkSamples } from './benchmark-sample-summary.mjs'
-import { runProcessSync } from '@orca/process-host'
+import { runProcessSync } from '@occ/process-host'
 import { describeProcessFailure } from './process-failure-message.mjs'
 import {
   assertFoldConservesEvidence,
@@ -15,7 +15,7 @@ import {
   summarizeFoldOutput
 } from './native-chat-fold-benchmark-workloads.mjs'
 
-// ORCA_BACKGROUND_LAUNCH=1 node --expose-gc config/scripts/native-chat-fold-benchmark.mjs > full-fold.json
+// OCC_BACKGROUND_LAUNCH=1 node --expose-gc config/scripts/native-chat-fold-benchmark.mjs > full-fold.json
 const root = path.resolve(import.meta.dirname, '../..')
 const refs = {
   original: '51e7181850b022bae2d41091fe1229accef4bd50',
@@ -80,7 +80,7 @@ async function load(ref) {
       program: 'git',
       args: ['ls-tree', '-r', '--name-only', ref, '--', 'src'],
       cwd: root,
-      env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' },
+      env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' },
       timeoutMs: 30_000,
       maxOutputBytes: 2 * 1024 * 1024
     })
@@ -142,7 +142,7 @@ async function load(ref) {
                 program: 'git',
                 args: ['show', `${ref}:${relative}`],
                 cwd: root,
-                env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' },
+                env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' },
                 timeoutMs: 30_000,
                 maxOutputBytes: 2 * 1024 * 1024
               })

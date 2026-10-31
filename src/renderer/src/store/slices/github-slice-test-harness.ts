@@ -216,10 +216,10 @@ export function githubSourceContext(
   return {
     kind: 'task-source',
     provider: 'github',
-    projectId: 'github:stablyai/orca',
+    projectId: 'github:stablyai/occ',
     hostId,
     projectHostSetupId: 'setup-1',
     repoId,
-    providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' }
+    providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' }
   }
 }

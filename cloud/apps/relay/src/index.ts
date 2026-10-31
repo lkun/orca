@@ -50,7 +50,7 @@ const database = await openRelayDatabaseAtBoot({
   databaseUrl: config.databaseUrl,
   dataDir: config.dataDir,
   poolMax: config.databasePoolMax,
-  applicationName: `orca-relay/${config.role}/${config.cellId}`,
+  applicationName: `occ-relay/${config.role}/${config.cellId}`,
   appliesPostgresSchema: config.role !== 'cell',
   retiresSlowConnections: config.role !== 'cell',
   readTimeoutMarginOverrideMs: () => cellFlagsApplied?.().readTimeoutMarginMs
@@ -90,7 +90,7 @@ const cleanupTimer = roleOwnsAssignmentMaintenance(config.role)
       () =>
         void runRelayBackgroundOperation(
           () => store.cleanup(),
-          '[orca-relay] credential cleanup failed'
+          '[occ-relay] credential cleanup failed'
         ),
       jitteredSweepIntervalMs(30_000)
     )
@@ -105,7 +105,7 @@ const inventorySnapshotTimer = roleOwnsAssignmentMaintenance(config.role)
       void runRelayBackgroundOperation(async () => {
         const snapshot = await readAssignmentInventorySnapshot(database, Date.now())
         for (const line of formatAssignmentInventorySnapshot(snapshot)) console.warn(line)
-      }, '[orca-relay] inventory snapshot failed')
+      }, '[occ-relay] inventory snapshot failed')
     }, 60_000)
   : null
 const migrationInventoryTimer = roleOwnsAssignmentMaintenance(config.role)
@@ -115,12 +115,12 @@ const migrationInventoryTimer = roleOwnsAssignmentMaintenance(config.role)
         for (const line of formatRegisteredMigrationInventory(inventory)) console.warn(line)
         console.log(
           JSON.stringify({
-            event: 'orca_relay_region_correction_outcomes',
+            event: 'occ_relay_region_correction_outcomes',
             observedAt: Date.now(),
             outcomes: await readRegionCorrectionOutcomes(database, Date.now())
           })
         )
-      }, '[orca-relay] migration inventory failed')
+      }, '[occ-relay] migration inventory failed')
     }, 5 * 60_000)
   : null
 // Directors only: one role's view covers every backend, and cells roll separately.
@@ -132,7 +132,7 @@ const lockWaitSampleTimer = roleOwnsAssignmentMaintenance(config.role)
       lockWaitSampling = true
       void runRelayBackgroundOperation(async () => {
         observability.recordDatabaseLockWaitSample(await readPostgresLockWaitSample(database))
-      }, '[orca-relay] lock wait sample failed').finally(() => {
+      }, '[occ-relay] lock wait sample failed').finally(() => {
         lockWaitSampling = false
       })
     }, 5_000)
@@ -180,7 +180,7 @@ const heartbeat = startCellHeartbeat(config, {
 })
 
 server.listen(config.port, () => {
-  console.log(`[orca-relay] listening on ${config.publicUrl} (port ${config.port})`)
+  console.log(`[occ-relay] listening on ${config.publicUrl} (port ${config.port})`)
 })
 
 const shutdown = (): void => {

@@ -1,18 +1,18 @@
 import type { PtySpawnResult } from '../../../providers/pty-provider-contract'
-import type { OrcaRuntimeService } from '../../../runtime/orca-runtime'
+import type { OCCRuntimeService } from '../../../runtime/occ-runtime'
 import { pendingByPaneKey, rendererSerializerReadiness } from './serializer-state'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import { buildFreshShellViewportBlankingSequence } from '../../../../shared/terminal-fresh-shell-viewport'
 
 export function seedHeadlessTerminalFromSpawnResult(
-  runtime: OrcaRuntimeService | undefined,
+  runtime: OCCRuntimeService | undefined,
   result: PtySpawnResult,
   paneKey: string | null
 ): void {
   // Renderer-owned layout prefers its richer history; main-owned layout must seed the host copy every view restores.
   if (
     !runtime ||
-    (!ORCA_LAYOUT_OWNER_IS_MAIN && paneKey && pendingByPaneKey.has(paneKey)) ||
+    (!OCC_LAYOUT_OWNER_IS_MAIN && paneKey && pendingByPaneKey.has(paneKey)) ||
     (result.isReattach === true && rendererSerializerReadiness.has(result.id))
   ) {
     return

@@ -51,7 +51,7 @@ function fakeHolder() {
 }
 
 beforeEach(() => {
-  userDataPath = mkdtempSync(join(tmpdir(), 'orca-wsl-orphan-holders-'))
+  userDataPath = mkdtempSync(join(tmpdir(), 'occ-wsl-orphan-holders-'))
   vi.spyOn(console, 'warn').mockImplementation(() => {})
 })
 afterEach(() => {

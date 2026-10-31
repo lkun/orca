@@ -125,31 +125,31 @@ describe('RepositoryHostSetupsSection', () => {
     const localRepo = makeRepo({
       id: 'local-repo',
       displayName: 'OCC',
-      path: '/Users/alice/orca'
+      path: '/Users/alice/occ'
     })
     const remoteRepo = makeRepo({
       id: 'remote-repo',
       displayName: 'OCC',
-      path: '/home/alice/orca',
+      path: '/home/alice/occ',
       connectionId: 'openclaw 2'
     })
     useAppStore.setState({
       repos: [localRepo, remoteRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca' })],
+      projects: [makeProject({ id: 'github:stablyai/occ' })],
       projectHostSetups: [
         makeSetup({
           id: 'local-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'local-repo',
           hostId: 'local',
-          path: '/Users/alice/orca'
+          path: '/Users/alice/occ'
         }),
         makeSetup({
           id: 'remote-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'remote-repo',
           hostId: toSshExecutionHostId('openclaw 2'),
-          path: '/home/alice/orca'
+          path: '/home/alice/occ'
         })
       ],
       sshTargetLabels: new Map([['openclaw 2', 'openclaw 2']])
@@ -168,31 +168,31 @@ describe('RepositoryHostSetupsSection', () => {
     const localRepo = makeRepo({
       id: 'local-repo',
       displayName: 'OCC',
-      path: '/Users/alice/orca'
+      path: '/Users/alice/occ'
     })
     const remoteRepo = makeRepo({
       id: 'remote-repo',
       displayName: 'OCC',
-      path: '/home/alice/orca',
+      path: '/home/alice/occ',
       connectionId: 'openclaw 2'
     })
     useAppStore.setState({
       repos: [localRepo, remoteRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca' })],
+      projects: [makeProject({ id: 'github:stablyai/occ' })],
       projectHostSetups: [
         makeSetup({
           id: 'local-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'local-repo',
           hostId: 'local',
-          path: '/Users/alice/orca'
+          path: '/Users/alice/occ'
         }),
         makeSetup({
           id: 'remote-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'remote-repo',
           hostId: toSshExecutionHostId('openclaw 2'),
-          path: '/home/alice/orca'
+          path: '/home/alice/occ'
         })
       ],
       openSettingsPage,
@@ -213,7 +213,7 @@ describe('RepositoryHostSetupsSection', () => {
     })
 
     expect(setSettingsProjectHostSelection).toHaveBeenCalledWith(
-      'github:stablyai/orca',
+      'github:stablyai/occ',
       toSshExecutionHostId('openclaw 2'),
       'remote-repo'
     )
@@ -225,30 +225,30 @@ describe('RepositoryHostSetupsSection', () => {
     const remoteRepo = makeRepo({
       id: 'remote-repo',
       displayName: 'OCC',
-      path: '/srv/orca',
+      path: '/srv/occ',
       executionHostId: 'runtime:hub'
     })
     useAppStore.setState({
       repos: [remoteRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca', sourceRepoIds: ['remote-repo'] })],
+      projects: [makeProject({ id: 'github:stablyai/occ', sourceRepoIds: ['remote-repo'] })],
       projectHostSetups: [
         makeSetup({
           id: 'direct-setup',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'remote-repo',
           hostId: 'runtime:hub',
           executionHostId: 'ssh:direct',
           runtimeOwnerEnvironmentId: 'hub',
-          path: '/srv/orca'
+          path: '/srv/occ'
         }),
         makeSetup({
           id: 'jump-setup',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'remote-repo',
           hostId: 'runtime:hub',
           executionHostId: 'ssh:jump',
           runtimeOwnerEnvironmentId: 'hub',
-          path: '/srv/orca'
+          path: '/srv/occ'
         })
       ],
       runtimeStatusByEnvironmentId: new Map([
@@ -325,21 +325,21 @@ describe('RepositoryHostSetupsSection', () => {
     const remoteRepo = makeRepo({
       id: 'remote-repo',
       displayName: 'OCC',
-      path: '/srv/orca',
+      path: '/srv/occ',
       executionHostId: 'runtime:hub'
     })
     useAppStore.setState({
       repos: [remoteRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca', sourceRepoIds: ['remote-repo'] })],
+      projects: [makeProject({ id: 'github:stablyai/occ', sourceRepoIds: ['remote-repo'] })],
       projectHostSetups: [
         makeSetup({
           id: 'hub-local-setup',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'remote-repo',
           hostId: 'runtime:hub',
           executionHostId: 'local',
           runtimeOwnerEnvironmentId: 'hub',
-          path: '/srv/orca'
+          path: '/srv/occ'
         })
       ],
       runtimeStatusByEnvironmentId: new Map([['hub', { checkedAt: 1, status: null }]])
@@ -353,10 +353,10 @@ describe('RepositoryHostSetupsSection', () => {
 
   it('removes independent setup metadata instead of opening an empty repo target', async () => {
     const deleteProjectHostSetup = vi.fn().mockResolvedValue({
-      project: makeProject({ id: 'github:stablyai/orca' }),
+      project: makeProject({ id: 'github:stablyai/occ' }),
       setup: makeSetup({
         id: 'gpu-setup',
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         repoId: '',
         hostId: 'runtime:gpu',
         path: ''
@@ -367,22 +367,22 @@ describe('RepositoryHostSetupsSection', () => {
     const localRepo = makeRepo({
       id: 'local-repo',
       displayName: 'OCC',
-      path: '/Users/alice/orca'
+      path: '/Users/alice/occ'
     })
     useAppStore.setState({
       repos: [localRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca' })],
+      projects: [makeProject({ id: 'github:stablyai/occ' })],
       projectHostSetups: [
         makeSetup({
           id: 'local-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'local-repo',
           hostId: 'local',
-          path: '/Users/alice/orca'
+          path: '/Users/alice/occ'
         }),
         makeSetup({
           id: 'gpu-setup',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: '',
           hostId: 'runtime:gpu',
           path: '',
@@ -420,36 +420,36 @@ describe('RepositoryHostSetupsSection', () => {
     const openSettingsTarget = vi.fn()
     const setSettingsProjectHostSelection = vi.fn()
     const setupProjectExistingFolder = vi.fn().mockResolvedValue({
-      project: makeProject({ id: 'github:stablyai/orca' }),
+      project: makeProject({ id: 'github:stablyai/occ' }),
       setup: makeSetup({
         id: 'remote-repo',
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         repoId: 'remote-repo',
         hostId: toSshExecutionHostId('openclaw 2'),
-        path: '/home/alice/orca'
+        path: '/home/alice/occ'
       }),
       repo: makeRepo({
         id: 'remote-repo',
         displayName: 'OCC',
-        path: '/home/alice/orca',
+        path: '/home/alice/occ',
         connectionId: 'openclaw 2'
       })
     })
     const localRepo = makeRepo({
       id: 'local-repo',
       displayName: 'OCC',
-      path: '/Users/alice/orca'
+      path: '/Users/alice/occ'
     })
     useAppStore.setState({
       repos: [localRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca' })],
+      projects: [makeProject({ id: 'github:stablyai/occ' })],
       projectHostSetups: [
         makeSetup({
           id: 'local-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'local-repo',
           hostId: 'local',
-          path: '/Users/alice/orca'
+          path: '/Users/alice/occ'
         })
       ],
       sshTargetLabels: new Map([['openclaw 2', 'openclaw 2']]),
@@ -468,7 +468,7 @@ describe('RepositoryHostSetupsSection', () => {
       'input[placeholder="/path/to/project/on/host"]'
     )
     expect(pathInput).toBeTruthy()
-    typeIntoInput(pathInput!, '/home/alice/orca')
+    typeIntoInput(pathInput!, '/home/alice/occ')
 
     const addProjectButton = findButton('Add project')
     expect(addProjectButton).toBeTruthy()
@@ -478,14 +478,14 @@ describe('RepositoryHostSetupsSection', () => {
     })
 
     expect(setupProjectExistingFolder).toHaveBeenCalledWith({
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: 'ssh:openclaw%202',
-      path: '/home/alice/orca',
+      path: '/home/alice/occ',
       kind: 'git',
       displayName: 'OCC'
     })
     expect(setSettingsProjectHostSelection).toHaveBeenCalledWith(
-      'github:stablyai/orca',
+      'github:stablyai/occ',
       'ssh:openclaw%202'
     )
     expect(openSettingsPage).not.toHaveBeenCalled()
@@ -497,36 +497,36 @@ describe('RepositoryHostSetupsSection', () => {
     const openSettingsTarget = vi.fn()
     const setSettingsProjectHostSelection = vi.fn()
     const setupProjectClone = vi.fn().mockResolvedValue({
-      project: makeProject({ id: 'github:stablyai/orca' }),
+      project: makeProject({ id: 'github:stablyai/occ' }),
       setup: makeSetup({
         id: 'remote-repo',
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         repoId: 'remote-repo',
         hostId: toSshExecutionHostId('openclaw 2'),
-        path: '/home/alice/orca'
+        path: '/home/alice/occ'
       }),
       repo: makeRepo({
         id: 'remote-repo',
         displayName: 'OCC',
-        path: '/home/alice/orca',
+        path: '/home/alice/occ',
         connectionId: 'openclaw 2'
       })
     })
     const localRepo = makeRepo({
       id: 'local-repo',
       displayName: 'OCC',
-      path: '/Users/alice/orca'
+      path: '/Users/alice/occ'
     })
     useAppStore.setState({
       repos: [localRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca' })],
+      projects: [makeProject({ id: 'github:stablyai/occ' })],
       projectHostSetups: [
         makeSetup({
           id: 'local-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'local-repo',
           hostId: 'local',
-          path: '/Users/alice/orca'
+          path: '/Users/alice/occ'
         })
       ],
       sshTargetLabels: new Map([['openclaw 2', 'openclaw 2']]),
@@ -549,7 +549,7 @@ describe('RepositoryHostSetupsSection', () => {
     )
     expect(urlInput).toBeTruthy()
     expect(destinationInput).toBeTruthy()
-    typeIntoInput(urlInput!, 'https://github.com/stablyai/orca.git')
+    typeIntoInput(urlInput!, 'https://github.com/stablyai/occ.git')
     typeIntoInput(destinationInput!, '/home/alice')
 
     const cloneButton = findButton('Clone')
@@ -560,14 +560,14 @@ describe('RepositoryHostSetupsSection', () => {
     })
 
     expect(setupProjectClone).toHaveBeenCalledWith({
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: 'ssh:openclaw%202',
-      url: 'https://github.com/stablyai/orca.git',
+      url: 'https://github.com/stablyai/occ.git',
       destination: '/home/alice',
       displayName: 'OCC'
     })
     expect(setSettingsProjectHostSelection).toHaveBeenCalledWith(
-      'github:stablyai/orca',
+      'github:stablyai/occ',
       'ssh:openclaw%202'
     )
     expect(openSettingsPage).not.toHaveBeenCalled()
@@ -578,18 +578,18 @@ describe('RepositoryHostSetupsSection', () => {
     const localRepo = makeRepo({
       id: 'local-repo',
       displayName: 'OCC',
-      path: '/Users/alice/orca'
+      path: '/Users/alice/occ'
     })
     useAppStore.setState({
       repos: [localRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca' })],
+      projects: [makeProject({ id: 'github:stablyai/occ' })],
       projectHostSetups: [
         makeSetup({
           id: 'local-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'local-repo',
           hostId: 'local',
-          path: '/Users/alice/orca'
+          path: '/Users/alice/occ'
         })
       ],
       sshTargetLabels: new Map([['openclaw 2', 'openclaw 2']])
@@ -615,10 +615,10 @@ describe('RepositoryHostSetupsSection', () => {
 
   it('creates pending setup metadata for a known host without requiring a path', async () => {
     const createProjectHostSetup = vi.fn().mockResolvedValue({
-      project: makeProject({ id: 'github:stablyai/orca' }),
+      project: makeProject({ id: 'github:stablyai/occ' }),
       setup: makeSetup({
         id: 'gpu-setup',
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         repoId: '',
         hostId: 'runtime:gpu',
         path: '',
@@ -629,18 +629,18 @@ describe('RepositoryHostSetupsSection', () => {
     const localRepo = makeRepo({
       id: 'local-repo',
       displayName: 'OCC',
-      path: '/Users/alice/orca'
+      path: '/Users/alice/occ'
     })
     useAppStore.setState({
       repos: [localRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca' })],
+      projects: [makeProject({ id: 'github:stablyai/occ' })],
       projectHostSetups: [
         makeSetup({
           id: 'local-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'local-repo',
           hostId: 'local',
-          path: '/Users/alice/orca'
+          path: '/Users/alice/occ'
         })
       ],
       settings: { activeRuntimeEnvironmentId: 'gpu' } as never,
@@ -683,7 +683,7 @@ describe('RepositoryHostSetupsSection', () => {
     })
 
     expect(createProjectHostSetup).toHaveBeenCalledWith({
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: 'runtime:gpu',
       displayName: 'OCC',
       setupState: 'not-set-up',
@@ -698,18 +698,18 @@ describe('RepositoryHostSetupsSection', () => {
     const localRepo = makeRepo({
       id: 'local-repo',
       displayName: 'OCC',
-      path: '/Users/alice/orca'
+      path: '/Users/alice/occ'
     })
     useAppStore.setState({
       repos: [localRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca' })],
+      projects: [makeProject({ id: 'github:stablyai/occ' })],
       projectHostSetups: [
         makeSetup({
           id: 'local-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'local-repo',
           hostId: 'local',
-          path: '/Users/alice/orca'
+          path: '/Users/alice/occ'
         })
       ],
       settings: { activeRuntimeEnvironmentId: null } as never,
@@ -758,10 +758,10 @@ describe('RepositoryHostSetupsSection', () => {
 
   it('offers inactive runtime hosts discovered from hydrated runtime status', async () => {
     const createProjectHostSetup = vi.fn().mockResolvedValue({
-      project: makeProject({ id: 'github:stablyai/orca' }),
+      project: makeProject({ id: 'github:stablyai/occ' }),
       setup: makeSetup({
         id: 'gpu-setup',
-        projectId: 'github:stablyai/orca',
+        projectId: 'github:stablyai/occ',
         repoId: '',
         hostId: 'runtime:gpu',
         path: '',
@@ -772,18 +772,18 @@ describe('RepositoryHostSetupsSection', () => {
     const localRepo = makeRepo({
       id: 'local-repo',
       displayName: 'OCC',
-      path: '/Users/alice/orca'
+      path: '/Users/alice/occ'
     })
     useAppStore.setState({
       repos: [localRepo],
-      projects: [makeProject({ id: 'github:stablyai/orca' })],
+      projects: [makeProject({ id: 'github:stablyai/occ' })],
       projectHostSetups: [
         makeSetup({
           id: 'local-repo',
-          projectId: 'github:stablyai/orca',
+          projectId: 'github:stablyai/occ',
           repoId: 'local-repo',
           hostId: 'local',
-          path: '/Users/alice/orca'
+          path: '/Users/alice/occ'
         })
       ],
       settings: { activeRuntimeEnvironmentId: null } as never,
@@ -825,7 +825,7 @@ describe('RepositoryHostSetupsSection', () => {
     })
 
     expect(createProjectHostSetup).toHaveBeenCalledWith({
-      projectId: 'github:stablyai/orca',
+      projectId: 'github:stablyai/occ',
       hostId: 'runtime:gpu',
       displayName: 'OCC',
       setupState: 'not-set-up',

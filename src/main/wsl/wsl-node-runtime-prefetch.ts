@@ -37,8 +37,8 @@ export function prefetchWslNodeRuntime(options: WslNodeRuntimePrefetchOptions): 
 
 async function runPrefetch(options: WslNodeRuntimePrefetchOptions): Promise<void> {
   const target = wslNodeRuntimePrefetchTarget(options.arch)
-  // Must match deployOrcad's default runtimeCacheRoot.
-  const cacheRoot = join(options.userDataPath, 'orcad-artifacts')
+  // Must match deployOCCd's default runtimeCacheRoot.
+  const cacheRoot = join(options.userDataPath, 'occd-artifacts')
   // Present is enough here: the deploy re-hashes on use, so skip a 55 MB hash on every launch.
   if (existsSync(nodeRuntimeArchiveCachePath(target, cacheRoot))) {
     return

@@ -11,7 +11,7 @@ vi.mock('../runtime-client', async () => {
     readonly isRemote: boolean
     call = callMock
     getCliStatus = vi.fn()
-    openOrca = vi.fn()
+    openOCC = vi.fn()
 
     constructor() {
       this.isRemote = remoteMock()
@@ -26,9 +26,9 @@ vi.mock('../runtime-client', async () => {
 import { main } from '../index'
 import { okFixture, queueFixtures } from '../test-fixtures'
 
-describe('orca emulator CLI handlers', () => {
-  const originalWorkspaceId = process.env.ORCA_WORKSPACE_ID
-  const originalWorktreeId = process.env.ORCA_WORKTREE_ID
+describe('occ emulator CLI handlers', () => {
+  const originalWorkspaceId = process.env.OCC_WORKSPACE_ID
+  const originalWorktreeId = process.env.OCC_WORKTREE_ID
 
   beforeEach(() => {
     vi.restoreAllMocks()
@@ -41,14 +41,14 @@ describe('orca emulator CLI handlers', () => {
 
   afterEach(() => {
     if (originalWorkspaceId === undefined) {
-      delete process.env.ORCA_WORKSPACE_ID
+      delete process.env.OCC_WORKSPACE_ID
     } else {
-      process.env.ORCA_WORKSPACE_ID = originalWorkspaceId
+      process.env.OCC_WORKSPACE_ID = originalWorkspaceId
     }
     if (originalWorktreeId === undefined) {
-      delete process.env.ORCA_WORKTREE_ID
+      delete process.env.OCC_WORKTREE_ID
     } else {
-      process.env.ORCA_WORKTREE_ID = originalWorktreeId
+      process.env.OCC_WORKTREE_ID = originalWorktreeId
     }
   })
 
@@ -88,8 +88,8 @@ describe('orca emulator CLI handlers', () => {
   })
 
   it('uses the folder workspace exported by the current OCC terminal', async () => {
-    process.env.ORCA_WORKSPACE_ID = 'folder:folder-1'
-    delete process.env.ORCA_WORKTREE_ID
+    process.env.OCC_WORKSPACE_ID = 'folder:folder-1'
+    delete process.env.OCC_WORKTREE_ID
     callMock.mockResolvedValue(
       okFixture('req_attach', {
         attached: true,
@@ -108,8 +108,8 @@ describe('orca emulator CLI handlers', () => {
   })
 
   it('uses the current git worktree exported by the OCC terminal', async () => {
-    process.env.ORCA_WORKSPACE_ID = 'folder:stale-parent'
-    process.env.ORCA_WORKTREE_ID = 'repo-1::/repo/project '
+    process.env.OCC_WORKSPACE_ID = 'folder:stale-parent'
+    process.env.OCC_WORKTREE_ID = 'repo-1::/repo/project '
     callMock.mockResolvedValue(
       okFixture('req_attach', {
         attached: true,

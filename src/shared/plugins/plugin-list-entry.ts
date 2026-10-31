@@ -31,7 +31,7 @@ export type PluginHostCustomEditor = {
   priority: 'default' | 'option'
   /** Absent on hosts that predate byte editors: text. */
   contentKind?: 'text' | 'bytes'
-  /** orca-plugin-image URL of the editor's tab icon; absent when it declares none. */
+  /** occ-plugin-image URL of the editor's tab icon; absent when it declares none. */
   icon?: string
 }
 
@@ -40,7 +40,7 @@ export type PluginHostNewFile = {
   title: string
   /** Suffix, with the dot, of the untitled file it creates. */
   extension: string
-  /** orca-plugin-image URL; absent when it declares none. */
+  /** occ-plugin-image URL; absent when it declares none. */
   icon?: string
 }
 
@@ -56,7 +56,7 @@ export type PluginHostListEntry = {
   execution?: PluginExecutionProfile
   /** What the installed manifest contributes; absent on hosts that predate it. */
   types?: readonly PluginCatalogType[]
-  /** Declared images (format 2 manifests), as orca-plugin-image URLs main serves. */
+  /** Declared images (format 2 manifests), as occ-plugin-image URLs main serves. */
   images?: PluginHostImages
   /** SPDX license expression from the manifest. */
   license?: string

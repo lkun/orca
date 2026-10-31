@@ -28,7 +28,7 @@ function nodeCommand(code: string): string {
 }
 
 async function fixture(initArgs: string[] = []) {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-git-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-git-'))
   roots.push(root)
   const repository = join(root, 'source')
   const destination = join(root, 'download')

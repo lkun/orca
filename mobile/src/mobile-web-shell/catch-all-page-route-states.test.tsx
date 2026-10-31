@@ -2,7 +2,7 @@
 import { createElement } from 'react'
 import { act, create, type ReactTestInstance, type ReactTestRenderer } from 'react-test-renderer'
 import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest'
-import type { OrcaMobileWebShellViewProps } from '../../modules/orca-mobile-web-shell/src'
+import type { OCCMobileWebShellViewProps } from '../../modules/occ-mobile-web-shell/src'
 import type { MobileWebShellSessionState } from './mobile-web-shell-session-contract'
 
 type Dependencies = {
@@ -51,7 +51,7 @@ vi.mock('expo-haptics', () => ({
 }))
 vi.mock('expo-document-picker', () => ({ getDocumentAsync: () => Promise.resolve(null) }))
 // Mock Expo audio imports; verb behavior is covered by bridge-audio-verbs.test.ts.
-vi.mock('@orca/expo-two-way-audio', () => ({
+vi.mock('@occ/expo-two-way-audio', () => ({
   addExpoTwoWayAudioEventListener: () => ({ remove: () => {} }),
   initialize: () => Promise.resolve(true),
   requestMicrophonePermissionsAsync: () =>
@@ -95,11 +95,11 @@ vi.mock('expo-router', () => ({
   useNavigationContainerRef: () => ({ getRootState: () => undefined }),
   useFocusEffect: () => {}
 }))
-vi.mock('../../modules/orca-mobile-web-shell/src', async () => {
+vi.mock('../../modules/occ-mobile-web-shell/src', async () => {
   const React = await import('react')
-  const loadState = await import('../../modules/orca-mobile-web-shell/src/load-state')
+  const loadState = await import('../../modules/occ-mobile-web-shell/src/load-state')
   return {
-    OrcaMobileWebShellView: (props: OrcaMobileWebShellViewProps) =>
+    OCCMobileWebShellView: (props: OCCMobileWebShellViewProps) =>
       React.createElement('ShellViewProbe', props),
     parseMobileWebShellLoadState: loadState.parseMobileWebShellLoadState
   }

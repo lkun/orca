@@ -5,7 +5,7 @@ export function useNativeChatDraftEvents({
   setDraft,
   setCaret,
   setActiveSuggestion,
-  handleDraftOrCaretChange,
+  handleDraftoccretChange,
   flushDraftAppends,
   flushPendingAttachments,
   draft
@@ -14,7 +14,7 @@ export function useNativeChatDraftEvents({
   setDraft: (text: string) => void
   setCaret: (caret: number) => void
   setActiveSuggestion: (index: number) => void
-  handleDraftOrCaretChange: (text: string, caret: number) => void
+  handleDraftoccretChange: (text: string, caret: number) => void
   flushDraftAppends: () => void
   flushPendingAttachments: () => void
 }) {
@@ -23,17 +23,17 @@ export function useNativeChatDraftEvents({
       const caret = element.selectionStart ?? value.length
       setDraft(value)
       setCaret(caret)
-      handleDraftOrCaretChange(value, caret)
+      handleDraftoccretChange(value, caret)
       setActiveSuggestion(0)
     },
-    [setDraft, setCaret, handleDraftOrCaretChange, setActiveSuggestion]
+    [setDraft, setCaret, handleDraftoccretChange, setActiveSuggestion]
   )
   return {
     onDraftChange,
     onTextareaSelect: (element: NativeChatComposerInput) => {
       const caret = element.selectionStart ?? element.value.length
       setCaret(caret)
-      handleDraftOrCaretChange(element.value, caret)
+      handleDraftoccretChange(element.value, caret)
       setActiveSuggestion(0)
     },
     onImeSettled: (element: NativeChatComposerInput) => {

@@ -5,8 +5,8 @@ case "$FIXTURE" in
   headless-serve-shutdown|cli-launch-contract|daemon-shutdown-descendants) ;;
   *) echo "Unsupported package fixture: $FIXTURE" >&2; exit 1 ;;
 esac
-archive="$RUNNER_TEMP/orca-package-fixtures/$FIXTURE.tar"
-image="orca-package-fixture-$FIXTURE:cache"
+archive="$RUNNER_TEMP/occ-package-fixtures/$FIXTURE.tar"
+image="occ-package-fixture-$FIXTURE:cache"
 if [[ "${CACHE_HIT:-}" == true ]] && docker load --input "$archive"; then
   if docker image inspect "$image" > /dev/null; then
     echo "image=$image" >> "$GITHUB_OUTPUT"

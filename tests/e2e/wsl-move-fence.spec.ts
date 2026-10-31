@@ -9,9 +9,9 @@ import { mkdirSync, mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { waitForSessionReady } from './helpers/store'
-import { createRestartSession } from './helpers/orca-restart'
+import { createRestartSession } from './helpers/occ-restart'
 import { wslMoveCutoverFixture } from '../../src/main/persistence/__fixtures__/wsl-mover/wsl-move-cutover-fixture'
 import { writeWslMoveCutover } from '../../src/main/persistence/moving-wsl-projects/wsl-move-cutover-journal'
 import {
@@ -123,7 +123,7 @@ async function listed(page: Page) {
 
 test('a WSL move journal fences the moving project, then hides it once the host owns it', async (// oxlint-disable-next-line no-empty-pattern -- Playwright requires destructuring to request no fixtures.
 {}, testInfo) => {
-  const root = mkdtempSync(join(tmpdir(), 'orca-wsl-move-fence-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-wsl-move-fence-'))
   const folders = ['Moving notes', 'Staying notes'].map((name) => {
     const folderPath = join(root, name)
     mkdirSync(folderPath)

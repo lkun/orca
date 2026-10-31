@@ -15,7 +15,7 @@ afterEach(async () => {
 describe('scanAiVaultSessions — Claude cwd drift', () => {
   it('resumes a Claude session from its start directory even after the cwd drifts', async () => {
     // Claude resumes by the starting project directory; a later cwd yields "No conversation found" (#9361).
-    const root = await mkdtemp(join(tmpdir(), 'orca-ai-vault-cwd-drift-'))
+    const root = await mkdtemp(join(tmpdir(), 'occ-ai-vault-cwd-drift-'))
     tempRoots.push(root)
     const roots = isolatedScanRoots(root)
     await mkdir(join(roots.claudeProjectsDir, 'project'), { recursive: true })

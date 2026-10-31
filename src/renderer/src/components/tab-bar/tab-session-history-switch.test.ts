@@ -114,7 +114,7 @@ const liveClaudeEntry = {
 
 const chatSubject: TabSessionHistorySubject = {
   kind: 'chat',
-  sessionId: 'orca-chat-1',
+  sessionId: 'occ-chat-1',
   workspaceId: WORKTREE_ID,
   request: PANEL_REQUEST
 }
@@ -278,7 +278,7 @@ describe('resolveTabSessionHistorySubject', () => {
     expect(
       resolveTabSessionHistorySubject(makeState(), {
         tab: { id: 'unified-1', worktreeId: WORKTREE_ID },
-        nativeChat: { sessionId: 'orca-chat-1', agent: 'codex' }
+        nativeChat: { sessionId: 'occ-chat-1', agent: 'codex' }
       })
     ).toEqual({ ...chatSubject })
   })
@@ -289,7 +289,7 @@ describe('resolveTabSessionHistorySubject', () => {
       expect(
         resolveTabSessionHistorySubject(makeState(), {
           tab: { id: 'unified-1', worktreeId: WORKTREE_ID },
-          nativeChat: { sessionId: 'orca-chat-1', agent }
+          nativeChat: { sessionId: 'occ-chat-1', agent }
         })
       ).toEqual({ ...chatSubject })
     }
@@ -415,7 +415,7 @@ describe('resolveTabSessionHistorySubject', () => {
     expect(
       resolveTabSessionHistorySubject(state, {
         tab: { id: 'unified-1', worktreeId: WORKTREE_ID },
-        nativeChat: { sessionId: 'orca-chat-1', agent: 'claude' }
+        nativeChat: { sessionId: 'occ-chat-1', agent: 'claude' }
       })
     ).toBeNull()
   })
@@ -427,7 +427,7 @@ describe('resolveTabSessionHistorySubject', () => {
     expect(
       resolveTabSessionHistorySubject(state, {
         tab: { id: 'unified-1', worktreeId: WORKTREE_ID },
-        nativeChat: { sessionId: 'orca-chat-1', agent: 'claude' }
+        nativeChat: { sessionId: 'occ-chat-1', agent: 'claude' }
       })
     ).toMatchObject({
       kind: 'chat',
@@ -629,7 +629,7 @@ describe('one pane of a terminal tab', () => {
 describe('findTabSessionHistoryRow', () => {
   const chatRow = row({
     id: 'chat-row',
-    structuredSession: { sessionId: 'orca-chat-1', workspaceId: WORKTREE_ID }
+    structuredSession: { sessionId: 'occ-chat-1', workspaceId: WORKTREE_ID }
   })
   const cliRow = row({ id: 'cli-row' })
 
@@ -642,7 +642,7 @@ describe('findTabSessionHistoryRow', () => {
     // A chat that resumed the conversation owns its row; the move's gate refuses it from there.
     const ownedRow = row({
       id: 'owned-row',
-      structuredSession: { sessionId: 'orca-chat-1', workspaceId: WORKTREE_ID }
+      structuredSession: { sessionId: 'occ-chat-1', workspaceId: WORKTREE_ID }
     })
     expect(findTabSessionHistoryRow([ownedRow], cliSubject)?.id).toBe('owned-row')
     expect(findTabSessionHistoryRow([row({ agent: 'codex' })], cliSubject)).toBeNull()
@@ -676,7 +676,7 @@ describe('findTabSessionHistoryRow', () => {
 
 describe('resolveTabSessionSwitch', () => {
   const chatRow = row({
-    structuredSession: { sessionId: 'orca-chat-1', workspaceId: WORKTREE_ID }
+    structuredSession: { sessionId: 'occ-chat-1', workspaceId: WORKTREE_ID }
   })
 
   it('offers Switch to Terminal on a chat tab whose row can fork', () => {
@@ -810,11 +810,11 @@ describe('lookupTabSessionHistoryRow', () => {
   })
 
   it('finds a chat-owned row without spending a forced rescan', async () => {
-    const owned = row({ structuredSession: { sessionId: 'orca-chat-1', workspaceId: WORKTREE_ID } })
+    const owned = row({ structuredSession: { sessionId: 'occ-chat-1', workspaceId: WORKTREE_ID } })
     const listSessions = vi.fn(async (_args: AiVaultListArgs) => listResult([owned]))
     await expect(
       lookupTabSessionHistoryRow(cliSubject, listSessions, lookupOptions)
-    ).resolves.toMatchObject({ structuredSession: { sessionId: 'orca-chat-1' } })
+    ).resolves.toMatchObject({ structuredSession: { sessionId: 'occ-chat-1' } })
     expect(listSessions).toHaveBeenCalledTimes(1)
     expect(claimAiVaultForcedRescan()).toBe(true)
   })

@@ -19,7 +19,7 @@ import { countRelayEndpointPtys, relayBridgeConnectCommand } from './ssh-relay-e
 
 const exec = vi.fn(async () => ({}))
 const conn: SshConnection = Object.assign(Object.create(null), { exec })
-const SOCK = '/home/dev/.orca-remote/relay-1.4.0/relay-abc.sock'
+const SOCK = '/home/dev/.occ-remote/relay-1.4.0/relay-abc.sock'
 
 describe('asking a relay how many PTYs it runs', () => {
   beforeEach(() => {
@@ -54,7 +54,7 @@ describe('asking a relay how many PTYs it runs', () => {
 
   it('never guesses a relay whose socket was relocated outside its version directory', async () => {
     await expect(
-      countRelayEndpointPtys(conn, '/usr/bin/node', '/tmp/.orca-relay-1000/relay-x/relay-abc.sock')
+      countRelayEndpointPtys(conn, '/usr/bin/node', '/tmp/.occ-relay-1000/relay-x/relay-abc.sock')
     ).resolves.toBeNull()
     expect(exec).not.toHaveBeenCalled()
   })
@@ -65,21 +65,21 @@ describe('relayBridgeConnectCommand', () => {
     expect(
       relayBridgeConnectCommand(
         '/usr/bin/node',
-        '/home/dev/.orca-remote/relay-0.1.0+f6e4b640b122/relay-92ff.sock'
+        '/home/dev/.occ-remote/relay-0.1.0+f6e4b640b122/relay-92ff.sock'
       )
     ).toBe(
-      "cd '/home/dev/.orca-remote/relay-0.1.0+f6e4b640b122' && '/usr/bin/node' relay.js --connect " +
-        "--sock-path '/home/dev/.orca-remote/relay-0.1.0+f6e4b640b122/relay-92ff.sock' " +
-        "--credential-file '/home/dev/.orca-remote/relay-0.1.0+f6e4b640b122/relay-92ff.sock.credential'"
+      "cd '/home/dev/.occ-remote/relay-0.1.0+f6e4b640b122' && '/usr/bin/node' relay.js --connect " +
+        "--sock-path '/home/dev/.occ-remote/relay-0.1.0+f6e4b640b122/relay-92ff.sock' " +
+        "--credential-file '/home/dev/.occ-remote/relay-0.1.0+f6e4b640b122/relay-92ff.sock.credential'"
     )
   })
 
   it('declines an endpoint that does not sit in its own version directory', () => {
     expect(
-      relayBridgeConnectCommand('/usr/bin/node', '/tmp/.orca-relay-1000/relay-1a2b/relay-92ff.sock')
+      relayBridgeConnectCommand('/usr/bin/node', '/tmp/.occ-relay-1000/relay-1a2b/relay-92ff.sock')
     ).toBeNull()
     expect(
-      relayBridgeConnectCommand('/usr/bin/node', '/home/dev/.orca-remote/relay-92ff.sock')
+      relayBridgeConnectCommand('/usr/bin/node', '/home/dev/.occ-remote/relay-92ff.sock')
     ).toBeNull()
   })
 })

@@ -8,12 +8,12 @@ import {
   persistBrowserSessionMeta
 } from './browser-session-meta-store'
 
-const DEFAULT_PARTITION = 'persist:orca-browser'
+const DEFAULT_PARTITION = 'persist:occ-browser'
 let root: string
 const metaPath = (): string => join(root, 'browser-session-meta.json')
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-browser-meta-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-browser-meta-'))
 })
 afterEach(() => {
   rmSync(root, { recursive: true, force: true })

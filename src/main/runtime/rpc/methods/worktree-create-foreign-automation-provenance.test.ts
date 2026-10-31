@@ -1,7 +1,7 @@
 import '../unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
 import { RpcDispatcher } from '../dispatcher'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import { WORKTREE_METHODS } from './worktree'
 
 const CLIENT_PROVENANCE = {
@@ -39,7 +39,7 @@ function createOnHost(
     createManagedWorktree
   }
   // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: the fixture implements every runtime method worktree.create reaches, plus the id the dispatcher stamps on replies.
-  const runtime = fixture as unknown as OrcaRuntimeService
+  const runtime = fixture as unknown as OCCRuntimeService
   const response = new RpcDispatcher({ runtime, methods }).dispatch({
     id: 'req-1',
     authToken: 'tok',

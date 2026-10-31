@@ -1,7 +1,7 @@
 import { BROWSER_GRAB_SELECTED_ATTRIBUTE } from '../../shared/browser-annotation-viewport-bridge'
 
 export const GRAB_GUEST_OVERLAY_SCRIPT = `  var host = document.createElement('div');
-  host.id = '__orca-grab-host';
+  host.id = '__occ-grab-host';
   host.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:2147483647;pointer-events:all;cursor:crosshair;';
   document.documentElement.appendChild(host);
 
@@ -153,7 +153,7 @@ export const GRAB_GUEST_OVERLAY_SCRIPT = `  var host = document.createElement('d
     previousSelectedValue = null;
   }
 
-  var grab = window.__orcaGrab = {
+  var grab = window.__occGrab = {
     host: host,
     extractPayload: extractPayload,
     getCurrentElement: function() { return currentEl; },
@@ -193,7 +193,7 @@ export const GRAB_GUEST_OVERLAY_SCRIPT = `  var host = document.createElement('d
       window.removeEventListener('fullscreenchange', raiseOverlay, true);
       stopTrackingSelection();
       try { host.remove(); } catch(e) {}
-      delete window.__orcaGrab;
+      delete window.__occGrab;
     }
   };
 

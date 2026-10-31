@@ -5,14 +5,14 @@ import {
   RELAY_VERSION_FILENAME
 } from '../../ssh/relay-install-artifacts'
 import {
-  orcadArtifactFilenames,
-  ORCAD_INSTALL_COMPLETE_FILENAME,
-  ORCAD_RUNTIMES_DIRNAME,
-  ORCAD_VERSION_FILENAME
-} from '../../../shared/orcad-artifacts'
+  occdArtifactFilenames,
+  OCCD_INSTALL_COMPLETE_FILENAME,
+  OCCD_RUNTIMES_DIRNAME,
+  OCCD_VERSION_FILENAME
+} from '../../../shared/occd-artifacts'
 import { isWindowsRemoteHost, type RemoteHostPlatform } from '../../ssh/ssh-remote-platform'
 
-type RemoteInstallModelId = 'relay' | 'orcad'
+type RemoteInstallModelId = 'relay' | 'occd'
 
 export type RemoteInstallModel = {
   readonly id: RemoteInstallModelId
@@ -29,25 +29,25 @@ export type RemoteInstallModel = {
 export const RELAY_INSTALL_MODEL: RemoteInstallModel = {
   id: 'relay',
   dirPrefix: 'relay',
-  nativeDepsPackageName: 'orca-relay',
+  nativeDepsPackageName: 'occ-relay',
   versionFilename: RELAY_VERSION_FILENAME,
   installCompleteFilename: RELAY_INSTALL_COMPLETE_FILENAME,
   requiredArtifacts: (host) => relayArtifactFilenames(isWindowsRemoteHost(host))
 }
 
-export const ORCAD_INSTALL_MODEL: RemoteInstallModel = {
-  id: 'orcad',
-  dirPrefix: 'orcad',
-  nativeDepsPackageName: 'orca-orcad',
-  versionFilename: ORCAD_VERSION_FILENAME,
-  installCompleteFilename: ORCAD_INSTALL_COMPLETE_FILENAME,
+export const OCCD_INSTALL_MODEL: RemoteInstallModel = {
+  id: 'occd',
+  dirPrefix: 'occd',
+  nativeDepsPackageName: 'occ-occd',
+  versionFilename: OCCD_VERSION_FILENAME,
+  installCompleteFilename: OCCD_INSTALL_COMPLETE_FILENAME,
   // libc does not change slot filenames; require the manifest for hashed page assets.
-  requiredArtifacts: (host) => orcadArtifactFilenames(`${host.os}-${host.arch}`, [])
+  requiredArtifacts: (host) => occdArtifactFilenames(`${host.os}-${host.arch}`, [])
 }
 
 export const REMOTE_INSTALL_MODELS: readonly RemoteInstallModel[] = [
   RELAY_INSTALL_MODEL,
-  ORCAD_INSTALL_MODEL
+  OCCD_INSTALL_MODEL
 ]
 
 // This pattern also runs in awk ERE and PowerShell; use their shared [0-9] syntax.
@@ -84,7 +84,7 @@ export function remoteInstallListingRegexSource(model: RemoteInstallModel): stri
 }
 
 export function remoteInstallDirOwner(dirName: string): RemoteInstallDirOwner | null {
-  if (dirName === ORCAD_RUNTIMES_DIRNAME) {
+  if (dirName === OCCD_RUNTIMES_DIRNAME) {
     return 'runtimes'
   }
   for (const model of REMOTE_INSTALL_MODELS) {
@@ -105,7 +105,7 @@ type RemoteInstallDirOwner = RemoteInstallModelId | 'runtimes'
 type RemoteInstallInventory = Record<RemoteInstallDirOwner | 'unknown', string[]>
 
 export function inventoryRemoteInstallDirs(dirNames: readonly string[]): RemoteInstallInventory {
-  const inventory: RemoteInstallInventory = { relay: [], orcad: [], runtimes: [], unknown: [] }
+  const inventory: RemoteInstallInventory = { relay: [], occd: [], runtimes: [], unknown: [] }
   for (const name of dirNames) {
     const owner = remoteInstallDirOwner(name)
     if (owner) {

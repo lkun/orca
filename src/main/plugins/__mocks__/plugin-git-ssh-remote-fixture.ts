@@ -18,5 +18,5 @@ export async function serveRepositoriesOverTestSsh(
   const node = process.execPath.replaceAll('\\', '/')
   vi.stubEnv('GIT_SSH_COMMAND', `"${node}" "${shim.replaceAll('\\', '/')}"`)
   vi.stubEnv('GIT_SSH_VARIANT', 'ssh')
-  vi.stubEnv('ORCA_TEST_SSH_REPOSITORIES', JSON.stringify(repositories))
+  vi.stubEnv('OCC_TEST_SSH_REPOSITORIES', JSON.stringify(repositories))
 }

@@ -1,14 +1,14 @@
 // #23753: a terminal that survives a restart into a newly minted tab keeps posting hooks under the
-// ORCA_PANE_KEY its env exported, so that key's agent status must follow it to the new pane.
+// OCC_PANE_KEY its env exported, so that key's agent status must follow it to the new pane.
 import { randomUUID } from 'node:crypto'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { agentHookServer } from '../agent-hooks/server'
 import type { PtyProcessInfo } from '../providers/pty-process-info'
 
-const { OrcaRuntimeService } = await import('./orca-runtime-test-mocks.spec')
-await import('./orca-runtime-test-lifecycle.spec')
+const { OCCRuntimeService } = await import('./occ-runtime-test-mocks.spec')
+await import('./occ-runtime-test-lifecycle.spec')
 const { TEST_WORKTREE_ID, TEST_WORKTREE_PATH, store } =
-  await import('./orca-runtime-test-fixtures.spec')
+  await import('./occ-runtime-test-fixtures.spec')
 
 // Fresh per test: the hook server is a process singleton.
 let OLD_TAB = ''
@@ -37,7 +37,7 @@ function statesOn(paneKey: string): string[] {
 }
 
 async function relaunch(listed: PtyProcessInfo[]) {
-  const runtime = new OrcaRuntimeService(store)
+  const runtime = new OCCRuntimeService(store)
   runtime.setPtyController({
     write: () => true,
     kill: () => false,
@@ -51,7 +51,7 @@ async function relaunch(listed: PtyProcessInfo[]) {
 }
 
 function showSurvivorIn(
-  runtime: InstanceType<typeof OrcaRuntimeService>,
+  runtime: InstanceType<typeof OCCRuntimeService>,
   tabId: string,
   leafId: string
 ): void {
@@ -63,7 +63,7 @@ function showSurvivorIn(
   })
 }
 
-function showSurvivorInNewTab(runtime: InstanceType<typeof OrcaRuntimeService>): void {
+function showSurvivorInNewTab(runtime: InstanceType<typeof OCCRuntimeService>): void {
   showSurvivorIn(runtime, NEW_TAB, NEW_LEAF)
 }
 

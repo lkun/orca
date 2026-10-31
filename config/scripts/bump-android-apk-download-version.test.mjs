@@ -6,7 +6,7 @@ const source = (version) =>
     'import { getDownloadPlatforms } from "./downloadPlatforms";',
     '',
     `export const ANDROID_RELEASE_VERSION = "${version}";`,
-    'export const ANDROID_DOWNLOAD_URL = `https://github.com/stablyai/orca/releases/download/mobile-android-v${ANDROID_RELEASE_VERSION}/app-release.apk`;',
+    'export const ANDROID_DOWNLOAD_URL = `https://github.com/stablyai/occ/releases/download/mobile-android-v${ANDROID_RELEASE_VERSION}/app-release.apk`;',
     ''
   ].join('\n')
 

@@ -8,7 +8,7 @@ import {
 import { track } from '../telemetry/client'
 import type { HostServerConnectEvent } from './ssh-host-server-connect-events'
 import type { SshHostPlatformFacts } from './ssh-host-platform-memo'
-import type { OrcadTunnelTransport } from './orcad-tunnel-transport-memo'
+import type { OCCdTunnelTransport } from './occd-tunnel-transport-memo'
 
 type HostProps = Pick<EventProps<'ssh_host_server_decided'>, 'host_os' | 'host_arch' | 'host_libc'>
 type FailureCode = (typeof SSH_HOST_SERVER_FAILURE_VALUES)[number]
@@ -37,13 +37,13 @@ export function hostProps(facts: SshHostPlatformFacts | null): HostProps {
 
 export function hostServerRefusal(code: string | null): RefusalCode {
   return code
-    ? pick(SSH_HOST_SERVER_REFUSAL_VALUES, code.replace(/^orcad_migration_/u, ''), 'other')
+    ? pick(SSH_HOST_SERVER_REFUSAL_VALUES, code.replace(/^occd_migration_/u, ''), 'other')
     : 'none'
 }
 
 export function hostServerFailure(code: string | null): FailureCode {
   return code
-    ? pick(SSH_HOST_SERVER_FAILURE_VALUES, code.replace(/^orcad_/u, ''), 'other')
+    ? pick(SSH_HOST_SERVER_FAILURE_VALUES, code.replace(/^occd_/u, ''), 'other')
     : 'other'
 }
 
@@ -63,7 +63,7 @@ export function trackSshHostServerMove(
 export function trackSshHostServerEvent(
   event: HostServerConnectEvent,
   facts: SshHostPlatformFacts | null,
-  transport: OrcadTunnelTransport | null = null
+  transport: OCCdTunnelTransport | null = null
 ): void {
   const host = hostProps(facts)
   try {

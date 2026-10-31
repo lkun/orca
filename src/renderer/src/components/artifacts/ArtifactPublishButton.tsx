@@ -10,7 +10,7 @@ import { useAppStore } from '@/store'
 import { ArtifactPublishedLinkPanel } from './ArtifactPublishedLinkPanel'
 import { getPublishedArtifactLink } from './artifact-published-link-client'
 import { publishArtifactFromSurface } from './artifact-publish-flow'
-import { OrcaSignInButton, OrcaSignInWaitNotice } from '../OrcaSignInProgress'
+import { OCCSignInButton, OCCSignInWaitNotice } from '../OCCSignInProgress'
 
 type PublishedLinkLookup = {
   key: string
@@ -52,7 +52,7 @@ export function ArtifactPublishButton({
   const [linkLookup, setLinkLookup] = useState<PublishedLinkLookup | null>(null)
   const lookupSequence = useRef(0)
   const popoverContentRef = useRef<HTMLDivElement>(null)
-  const authStatus = useAppStore((state) => state.orcaProfileAuthStatus)
+  const authStatus = useAppStore((state) => state.occProfileAuthStatus)
   const openSettingsPage = useAppStore((state) => state.openSettingsPage)
   const openSettingsTarget = useAppStore((state) => state.openSettingsTarget)
   const settings = useAppStore((state) => state.settings)
@@ -210,7 +210,7 @@ export function ArtifactPublishButton({
                   )}
                 </p>
               </div>
-              <OrcaSignInButton
+              <OCCSignInButton
                 variant="outline"
                 size="xs"
                 disabled={authStatus?.configured !== true}
@@ -221,10 +221,10 @@ export function ArtifactPublishButton({
                       'Sign in again'
                     )
                   : translate('auto.components.artifacts.ArtifactPublishButton.signIn', 'Sign in')}
-              </OrcaSignInButton>
+              </OCCSignInButton>
             </div>
           ) : null}
-          {!signedIn ? <OrcaSignInWaitNotice /> : null}
+          {!signedIn ? <OCCSignInWaitNotice /> : null}
 
           {!sharingEnabled ? (
             <div className={cn('space-y-2', !signedIn && 'border-t border-border/60 pt-3')}>

@@ -25,16 +25,16 @@ const NATIVE_IME_PRODUCT_SOURCE =
 const NATIVE_IME_HARNESS =
   /^(?:config\/scripts\/focus-nested-wayland-terminal\.sh$|config\/scripts\/(?:run-terminal-ibus-hangul-e2e|terminal-ime-engagement-receipt)\.mjs$|tests\/e2e\/terminal-ime-(?:boundary-probe|byte-reader|engagement-receipt)\.ts$|tests\/e2e\/terminal-(?:ibus-hangul|hangul-terminating-digit|macos-2set-korean)-native\.spec\.ts$)/
 
-// This spec requires ORCA_SIDEBAR_INPUTS=main; ordinary PR builds can only skip it.
-export const MANUAL_ONLY_E2E_SPECS = ['tests/e2e/ssh-orcad-phone-feed-list.spec.ts']
+// This spec requires OCC_SIDEBAR_INPUTS=main; ordinary PR builds can only skip it.
+export const MANUAL_ONLY_E2E_SPECS = ['tests/e2e/ssh-occd-phone-feed-list.spec.ts']
 
 // Shared fixtures and workflow changes must exercise every managed-SSH consumer.
 const MANAGED_SSH_HARNESS =
-  /^tests\/e2e\/helpers\/(?:orcad-managed-workspace|orcad-convert-(?:flow|host|teardown)|orcad-template-variant|orcad-upgrade-(?:profile|retained-state)|docker-ssh-host-target|reserve-local-port|ssh-remote-only-browser-fixture|windows-host-orcad-processes)\.ts$/
+  /^tests\/e2e\/helpers\/(?:occd-managed-workspace|occd-convert-(?:flow|host|teardown)|occd-template-variant|occd-upgrade-(?:profile|retained-state)|docker-ssh-host-target|reserve-local-port|ssh-remote-only-browser-fixture|windows-host-occd-processes)\.ts$/
 
 // An enabled SSH automation moves with its host and is re-enabled on the server (#29083).
 const ENABLED_AUTOMATION_MOVE =
-  /^src\/(?:main\/(?:persistence\/(?:migrating-orcad-catalog\/orcad-(?:source-automation-state|source-dormant-state|source-dependency-census|destination-automation-state)|scheduling-automations\/automation-schedule-operations)|automations\/(?:run-target-resolution|automation-dispatch-request|orcad-fenced-automation)|ssh\/orcad-migration-(?:moved-automations|source-retention))|shared\/orcad-migration\/orcad-migration-(?:dormant-automation-validation|source-cutover))\.ts$/
+  /^src\/(?:main\/(?:persistence\/(?:migrating-occd-catalog\/occd-(?:source-automation-state|source-dormant-state|source-dependency-census|destination-automation-state)|scheduling-automations\/automation-schedule-operations)|automations\/(?:run-target-resolution|automation-dispatch-request|occd-fenced-automation)|ssh\/occd-migration-(?:moved-automations|source-retention))|shared\/occd-migration\/occd-migration-(?:dormant-automation-validation|source-cutover))\.ts$/
 
 export const PR_E2E_SOURCE_ROUTES = [
   ...PR_BROWSER_E2E_SOURCE_ROUTES,
@@ -42,8 +42,8 @@ export const PR_E2E_SOURCE_ROUTES = [
   ...PR_PLUGIN_E2E_SOURCE_ROUTES,
   ...PR_WSL_E2E_SOURCE_ROUTES,
   {
-    id: 'ssh.orcad-editor-ownership',
-    specs: ['tests/e2e/ssh-orcad-editor-ownership.spec.ts'],
+    id: 'ssh.occd-editor-ownership',
+    specs: ['tests/e2e/ssh-occd-editor-ownership.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       /^src\/renderer\/src\/runtime\/(?:web-session-existing-tab-index|web-session-tabs-sync\/(?:mirrored-editor-file-identity|tab-builders|apply-preparation-browser|state-equality-files|terminal-surfaces))\.ts$/.test(
@@ -51,8 +51,8 @@ export const PR_E2E_SOURCE_ROUTES = [
       )
   },
   {
-    id: 'ssh.orcad-markdown-conversion',
-    specs: ['tests/e2e/ssh-orcad-markdown-conversion.spec.ts'],
+    id: 'ssh.occd-markdown-conversion',
+    specs: ['tests/e2e/ssh-occd-markdown-conversion.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       /^src\/renderer\/src\/components\/editor\/(?:useMarkdownDocuments|restored-editor-workspace-runtime-owner|migrate-restored-editor-file-owner)\.ts$/.test(
@@ -60,8 +60,8 @@ export const PR_E2E_SOURCE_ROUTES = [
       )
   },
   {
-    id: 'ssh.orcad-markdown-link-refresh',
-    specs: ['tests/e2e/ssh-orcad-markdown-link-refresh.spec.ts'],
+    id: 'ssh.occd-markdown-link-refresh',
+    specs: ['tests/e2e/ssh-occd-markdown-link-refresh.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       /^src\/renderer\/src\/components\/editor\/(?:rich-markdown-doc-link|useRichMarkdownProgrammaticSync)\.ts$/.test(
@@ -69,8 +69,8 @@ export const PR_E2E_SOURCE_ROUTES = [
       )
   },
   {
-    id: 'ssh.orcad-markdown-live-documents',
-    specs: ['tests/e2e/ssh-orcad-markdown-live-documents.spec.ts'],
+    id: 'ssh.occd-markdown-live-documents',
+    specs: ['tests/e2e/ssh-occd-markdown-live-documents.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       /^src\/renderer\/src\/components\/editor\/(?:useMarkdownDocuments|use-markdown-document-watch-refresh|markdown-document-list-request)\.ts$/.test(
@@ -78,16 +78,16 @@ export const PR_E2E_SOURCE_ROUTES = [
       )
   },
   {
-    id: 'ssh.orcad-explorer-watch-recovery',
-    specs: ['tests/e2e/ssh-orcad-explorer-watch-recovery.spec.ts'],
+    id: 'ssh.occd-explorer-watch-recovery',
+    specs: ['tests/e2e/ssh-occd-explorer-watch-recovery.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       (file === 'src/renderer/src/components/right-sidebar/useFileExplorerWatch.ts' ||
         file === 'src/renderer/src/hooks/worktree-file-change-event.ts')
   },
   {
-    id: 'ssh.orcad-editor-watch-recovery',
-    specs: ['tests/e2e/ssh-orcad-editor-watch-recovery.spec.ts'],
+    id: 'ssh.occd-editor-watch-recovery',
+    specs: ['tests/e2e/ssh-occd-editor-watch-recovery.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       /^src\/renderer\/src\/hooks\/(?:useEditorExternalWatch|editor-runtime-file-watch)\.ts$/.test(
@@ -95,8 +95,8 @@ export const PR_E2E_SOURCE_ROUTES = [
       )
   },
   {
-    id: 'ssh.orcad-explorer-selected-host',
-    specs: ['tests/e2e/ssh-orcad-explorer-selected-host.spec.ts'],
+    id: 'ssh.occd-explorer-selected-host',
+    specs: ['tests/e2e/ssh-occd-explorer-selected-host.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       (file === 'src/renderer/src/components/right-sidebar/useFileExplorerWatch.ts' ||
@@ -118,14 +118,14 @@ export const PR_E2E_SOURCE_ROUTES = [
         ))
   },
   {
-    id: 'serve.orcad-mode-switch',
-    specs: ['tests/e2e/orcad-serve-mode-switch.spec.ts'],
+    id: 'serve.occd-mode-switch',
+    specs: ['tests/e2e/occd-serve-mode-switch.spec.ts'],
     matches: (file) =>
-      /^tests\/e2e\/helpers\/(?:orca-serve-cli-host|headless-paired-runtime-host)\.ts$/.test(
+      /^tests\/e2e\/helpers\/(?:occ-serve-cli-host|headless-paired-runtime-host)\.ts$/.test(
         file
       ) ||
       (isProductSource(file) &&
-        /^src\/(?:cli\/runtime\/(?:launch|serve-)|main\/orcad\/(?:main|orcad-entry|orcad-instance-lock|orcad-command-arguments|orcad-lifecycle)\.ts$|main\/startup\/desktop-profile-instance-lock\.ts$|main\/daemon\/daemon-(?:spawner|endpoint-adoption|init)|main\/server\/serve-)/.test(
+        /^src\/(?:cli\/runtime\/(?:launch|serve-)|main\/occd\/(?:main|occd-entry|occd-instance-lock|occd-command-arguments|occd-lifecycle)\.ts$|main\/startup\/desktop-profile-instance-lock\.ts$|main\/daemon\/daemon-(?:spawner|endpoint-adoption|init)|main\/server\/serve-)/.test(
           file
         ))
   },
@@ -133,7 +133,7 @@ export const PR_E2E_SOURCE_ROUTES = [
     id: 'startup.windows-missing-appdata',
     specs: ['tests/e2e/windows-missing-appdata-startup.spec.ts'],
     matches: (file) =>
-      file === 'tests/e2e/helpers/orca-serve-cli-host.ts' ||
+      file === 'tests/e2e/helpers/occ-serve-cli-host.ts' ||
       (isProductSource(file) &&
         /^src\/main\/startup\/(?:windows-app-data-path|main-process-preflight)\.ts$/.test(file))
   },
@@ -147,33 +147,33 @@ export const PR_E2E_SOURCE_ROUTES = [
       )
   },
   {
-    id: 'ssh.orcad-auto-convert',
-    specs: ['tests/e2e/ssh-orcad-auto-convert.spec.ts'],
+    id: 'ssh.occd-auto-convert',
+    specs: ['tests/e2e/ssh-occd-auto-convert.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       (isProductSource(file) &&
-        /^src\/main\/(?:ipc\/(?:ssh\/)?ssh-host-server-|(?:ssh|managed-server\/[a-z-]+)\/(?:ssh-host-server-|orcad-runtime-conversion|orcad-migration-|orcad-retained-source|orcad-runtime-deployment))/.test(
+        /^src\/main\/(?:ipc\/(?:ssh\/)?ssh-host-server-|(?:ssh|managed-server\/[a-z-]+)\/(?:ssh-host-server-|occd-runtime-conversion|occd-migration-|occd-retained-source|occd-runtime-deployment))/.test(
           file
         ))
   },
   {
-    id: 'ssh.orcad-connect-failure',
+    id: 'ssh.occd-connect-failure',
     specs: [
-      'tests/e2e/ssh-orcad-ssh-failure-reason.spec.ts',
-      'tests/e2e/ssh-orcad-move-anyway-inline.spec.ts',
-      'tests/e2e/ssh-orcad-enabled-automation-move.spec.ts'
+      'tests/e2e/ssh-occd-ssh-failure-reason.spec.ts',
+      'tests/e2e/ssh-occd-move-anyway-inline.spec.ts',
+      'tests/e2e/ssh-occd-enabled-automation-move.spec.ts'
     ],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       ENABLED_AUTOMATION_MOVE.test(file) ||
       (isProductSource(file) &&
-        /^src\/(?:main\/(?:ipc\/ssh\/(?:ssh-connect-flow|ssh-host-server-)|ssh\/(?:ssh-session-start-failure|ssh-host-server-|connection\/ssh-connection-manager|orcad-migration-refusal-reason|targets\/ssh-target-orcad-preflight)|managed-server\/lifecycle\/orcad-runtime-conversion|persistence\/migrating-orcad-catalog\/orcad-source-(?:automation-state|leave-behind-view))|renderer\/src\/(?:ssh\/(?:ssh-host-server-status-copy|ssh-connect-failure-toast)|components\/settings\/(?:SshTargetServerStatus|SshHostMoveAnywayAction|SshTargetCard)))/.test(
+        /^src\/(?:main\/(?:ipc\/ssh\/(?:ssh-connect-flow|ssh-host-server-)|ssh\/(?:ssh-session-start-failure|ssh-host-server-|connection\/ssh-connection-manager|occd-migration-refusal-reason|targets\/ssh-target-occd-preflight)|managed-server\/lifecycle\/occd-runtime-conversion|persistence\/migrating-occd-catalog\/occd-source-(?:automation-state|leave-behind-view))|renderer\/src\/(?:ssh\/(?:ssh-host-server-status-copy|ssh-connect-failure-toast)|components\/settings\/(?:SshTargetServerStatus|SshHostMoveAnywayAction|SshTargetCard)))/.test(
           file
         ))
   },
   {
-    id: 'ssh.orcad-identity-file-tokens',
-    specs: ['tests/e2e/ssh-orcad-identity-file-tokens.spec.ts'],
+    id: 'ssh.occd-identity-file-tokens',
+    specs: ['tests/e2e/ssh-occd-identity-file-tokens.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       /^tests\/e2e\/helpers\/ssh-config-host-picker\.ts$/.test(file) ||
@@ -183,21 +183,21 @@ export const PR_E2E_SOURCE_ROUTES = [
         ))
   },
   {
-    id: 'ssh.orcad-update-anyway',
-    specs: ['tests/e2e/ssh-orcad-update-anyway.spec.ts'],
+    id: 'ssh.occd-update-anyway',
+    specs: ['tests/e2e/ssh-occd-update-anyway.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       (isProductSource(file) &&
-        /^src\/(?:main\/(?:ssh\/orcad-(?:update-plan|runtime-maintenance|installed-activation|remote-deploy)|managed-server\/lifecycle\/orcad-(?:managed-update-|managed-auto-update|runtime-status))|renderer\/src\/components\/settings\/(?:managed-server-|use-managed-server-lifecycle))/.test(
+        /^src\/(?:main\/(?:ssh\/occd-(?:update-plan|runtime-maintenance|installed-activation|remote-deploy)|managed-server\/lifecycle\/occd-(?:managed-update-|managed-auto-update|runtime-status))|renderer\/src\/components\/settings\/(?:managed-server-|use-managed-server-lifecycle))/.test(
           file
         ))
   },
   // COMPAT(legacy-relay-bridge): revisit 2027-01-15 with src/main/ssh/legacy-relay/.
   {
-    id: 'ssh.orcad-legacy-relay-bridge',
+    id: 'ssh.occd-legacy-relay-bridge',
     specs: [
-      'tests/e2e/ssh-orcad-legacy-relay-bridge.spec.ts',
-      'tests/e2e/ssh-orcad-relay-tab-only-shell.spec.ts'
+      'tests/e2e/ssh-occd-legacy-relay-bridge.spec.ts',
+      'tests/e2e/ssh-occd-relay-tab-only-shell.spec.ts'
     ],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
@@ -205,22 +205,22 @@ export const PR_E2E_SOURCE_ROUTES = [
         file
       ) ||
       (isProductSource(file) &&
-        /(?:legacy-relay(?:-bridge|\/)|orcad-migration-terminal-gate|ssh-host-relay-terminals-on-connect|orcad-source-dependency-census)/.test(
+        /(?:legacy-relay(?:-bridge|\/)|occd-migration-terminal-gate|ssh-host-relay-terminals-on-connect|occd-source-dependency-census)/.test(
           file
         ))
   },
   {
-    id: 'ssh.orcad-browser-capabilities',
-    specs: ['tests/e2e/ssh-orcad-browser-capabilities.spec.ts'],
+    id: 'ssh.occd-browser-capabilities',
+    specs: ['tests/e2e/ssh-occd-browser-capabilities.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
-      /^src\/main\/(?:runtime\/(?:runtime-browser-commands-factory|orca-runtime-get-status|browser\/browser-client-page-opening)|host\/electron-browser-commands|orcad\/orcad-browser-)/.test(
+      /^src\/main\/(?:runtime\/(?:runtime-browser-commands-factory|occ-runtime-get-status|browser\/browser-client-page-opening)|host\/electron-browser-commands|occd\/occd-browser-)/.test(
         file
       )
   },
   {
-    id: 'browser.orcad-service-status',
-    specs: ['tests/e2e/ssh-orcad-browser-service-status.spec.ts'],
+    id: 'browser.occd-service-status',
+    specs: ['tests/e2e/ssh-occd-browser-service-status.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       /^src\/renderer\/src\/components\/browser-pane\/stream-remote\/remote-browser-stream-(?:errors|status|lifecycle|restart-attempt)\.ts$/.test(
@@ -228,8 +228,8 @@ export const PR_E2E_SOURCE_ROUTES = [
       )
   },
   {
-    id: 'ssh.orcad-browser-routing',
-    specs: ['tests/e2e/ssh-orcad-browser-routing.spec.ts'],
+    id: 'ssh.occd-browser-routing',
+    specs: ['tests/e2e/ssh-occd-browser-routing.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       /^src\/(?:main\/browser\/local-ssh-browser|main\/ipc\/browser\.ts$|renderer\/src\/(?:lib\/(?:ssh-workspace-browser-route-eligibility|worktree-host-connection-phase)|components\/browser-pane\/use-ssh-workspace-browser-route|store\/repos\/converted-ssh-browser-pages|store\/slices\/browser\/browser-tab-actions|hooks\/ipc-events\/ssh-managed-server-state-effects))/.test(
@@ -237,8 +237,8 @@ export const PR_E2E_SOURCE_ROUTES = [
       )
   },
   {
-    id: 'ssh.orcad-terminal-browser-link',
-    specs: ['tests/e2e/ssh-orcad-terminal-browser-link.spec.ts'],
+    id: 'ssh.occd-terminal-browser-link',
+    specs: ['tests/e2e/ssh-occd-terminal-browser-link.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       /^src\/renderer\/src\/(?:lib\/(?:workspace-browser-tab-open|http-link-(?:destinations|routing)|ssh-workspace-browser-route-eligibility)|components\/terminal-pane\/terminal-http-link-source-owner)\.ts$/.test(
@@ -246,8 +246,8 @@ export const PR_E2E_SOURCE_ROUTES = [
       )
   },
   {
-    id: 'ssh.orcad-desktop-browser-bridge',
-    specs: ['tests/e2e/ssh-orcad-desktop-browser-bridge.spec.ts'],
+    id: 'ssh.occd-desktop-browser-bridge',
+    specs: ['tests/e2e/ssh-occd-desktop-browser-bridge.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
       /^src\/(?:shared\/desktop-browser-bridge-protocol\.ts$|main\/(?:runtime\/desktop-browser-bridge\/|browser\/desktop-browser-bridge\/|ipc\/desktop-browser-bridge-|runtime\/rpc\/methods\/desktop-browser-bridge\.ts$))/.test(
@@ -255,8 +255,8 @@ export const PR_E2E_SOURCE_ROUTES = [
       )
   },
   {
-    id: 'ssh.orcad-browser-drop-owner',
-    specs: ['tests/e2e/ssh-orcad-browser-drop-owner.spec.ts'],
+    id: 'ssh.occd-browser-drop-owner',
+    specs: ['tests/e2e/ssh-occd-browser-drop-owner.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       /^tests\/e2e\/helpers\/browser-split-(?:guest-probes|page-server)\.ts$/.test(file) ||
@@ -266,8 +266,8 @@ export const PR_E2E_SOURCE_ROUTES = [
         ))
   },
   {
-    id: 'ssh.orcad-open-in-owner',
-    specs: ['tests/e2e/ssh-orcad-open-in-owner.spec.ts'],
+    id: 'ssh.occd-open-in-owner',
+    specs: ['tests/e2e/ssh-occd-open-in-owner.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       (isProductSource(file) &&
@@ -276,8 +276,8 @@ export const PR_E2E_SOURCE_ROUTES = [
         ))
   },
   {
-    id: 'ssh.orcad-terminal-root-owner',
-    specs: ['tests/e2e/ssh-orcad-terminal-root-owner.spec.ts'],
+    id: 'ssh.occd-terminal-root-owner',
+    specs: ['tests/e2e/ssh-occd-terminal-root-owner.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       file === 'tests/e2e/helpers/terminal-workspace-root-link.ts' ||
@@ -287,8 +287,8 @@ export const PR_E2E_SOURCE_ROUTES = [
         ))
   },
   {
-    id: 'ssh.orcad-sleep-disconnected',
-    specs: ['tests/e2e/ssh-orcad-sleep-disconnected.spec.ts'],
+    id: 'ssh.occd-sleep-disconnected',
+    specs: ['tests/e2e/ssh-occd-sleep-disconnected.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       (isProductSource(file) &&
@@ -297,22 +297,22 @@ export const PR_E2E_SOURCE_ROUTES = [
         ))
   },
   {
-    id: 'ssh.orcad-idle-exit',
-    specs: ['tests/e2e/ssh-orcad-idle-exit.spec.ts'],
+    id: 'ssh.occd-idle-exit',
+    specs: ['tests/e2e/ssh-occd-idle-exit.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       (isProductSource(file) &&
-        /^src\/(?:main\/(?:orcad\/orcad-(?:idle-|managed-idle-)|(?:ssh|managed-server\/[a-z-]+)\/orcad-(?:already-active-wake|runtime-deployment|managed-serving|managed-wake|managed-tunnel|recovery-slot|remote-launch|remote-runtime-control))|shared\/orcad-idle-exit)/.test(
+        /^src\/(?:main\/(?:occd\/occd-(?:idle-|managed-idle-)|(?:ssh|managed-server\/[a-z-]+)\/occd-(?:already-active-wake|runtime-deployment|managed-serving|managed-wake|managed-tunnel|recovery-slot|remote-launch|remote-runtime-control))|shared\/occd-idle-exit)/.test(
           file
         ))
   },
   {
     // Managed SSH is the only SSH path; include Connect/Disconnect so journeys exercise reconnect (#30130).
-    id: 'ssh.orcad-journeys',
+    id: 'ssh.occd-journeys',
     specs: [
-      'tests/e2e/ssh-orcad-terminal-journeys.spec.ts',
-      'tests/e2e/ssh-orcad-workspace-tools.spec.ts',
-      'tests/e2e/ssh-orcad-vm-provisioned-root.spec.ts'
+      'tests/e2e/ssh-occd-terminal-journeys.spec.ts',
+      'tests/e2e/ssh-occd-workspace-tools.spec.ts',
+      'tests/e2e/ssh-occd-vm-provisioned-root.spec.ts'
     ],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
@@ -320,14 +320,14 @@ export const PR_E2E_SOURCE_ROUTES = [
         file
       ) ||
       (isProductSource(file) &&
-        /^src\/(?:main\/(?:ssh|managed-server\/[a-z-]+)\/orcad-managed-|main\/ipc\/(?:ssh\/)?ssh-port-forward|main\/(?:ipc\/(?:(?:ssh\/)?ssh-(?:connect-flow|connection-handlers|host-user-disconnect|session-teardown)|(?:runtime-environments\/)?runtime-environment-(?:connectivity-handlers|manual-disconnect))|ssh\/(?:connection\/ssh-connection-manager|ssh-user-disconnect))\.ts$|renderer\/src\/startup\/(?:ssh-startup-reconnect|startup-ssh-connection-restore)\.ts$|renderer\/src\/runtime\/(?:web-runtime-session|web-session-close-|runtime-terminal-artifact-read\.ts$)|renderer\/src\/components\/terminal-pane\/(?:remote-runtime-|terminal-host-(?:workspace-file|file-link-existence)\.ts$))/.test(
+        /^src\/(?:main\/(?:ssh|managed-server\/[a-z-]+)\/occd-managed-|main\/ipc\/(?:ssh\/)?ssh-port-forward|main\/(?:ipc\/(?:(?:ssh\/)?ssh-(?:connect-flow|connection-handlers|host-user-disconnect|session-teardown)|(?:runtime-environments\/)?runtime-environment-(?:connectivity-handlers|manual-disconnect))|ssh\/(?:connection\/ssh-connection-manager|ssh-user-disconnect))\.ts$|renderer\/src\/startup\/(?:ssh-startup-reconnect|startup-ssh-connection-restore)\.ts$|renderer\/src\/runtime\/(?:web-runtime-session|web-session-close-|runtime-terminal-artifact-read\.ts$)|renderer\/src\/components\/terminal-pane\/(?:remote-runtime-|terminal-host-(?:workspace-file|file-link-existence)\.ts$))/.test(
           file
         ))
   },
   {
     // A Claude chat a managed host's CLI refuses to start names why (#33768).
-    id: 'ssh.orcad-claude-chat-start-failure',
-    specs: ['tests/e2e/ssh-orcad-claude-chat-start-failure.spec.ts'],
+    id: 'ssh.occd-claude-chat-start-failure',
+    specs: ['tests/e2e/ssh-occd-claude-chat-start-failure.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       file === 'tests/e2e/fixtures/structured-claude-stub.cjs' ||
@@ -338,8 +338,8 @@ export const PR_E2E_SOURCE_ROUTES = [
   },
   {
     // A reconnect the host cannot image must still bring an idle full-screen program up to date (#26887).
-    id: 'ssh.orcad-reconnect-idle-frame',
-    specs: ['tests/e2e/ssh-orcad-terminal-reconnect-idle-frame.spec.ts'],
+    id: 'ssh.occd-reconnect-idle-frame',
+    specs: ['tests/e2e/ssh-occd-terminal-reconnect-idle-frame.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       (isProductSource(file) &&
@@ -349,41 +349,41 @@ export const PR_E2E_SOURCE_ROUTES = [
   },
   {
     // Unsaved drafts stay on the desktop and are renamed to the server when a move commits.
-    id: 'ssh.orcad-editor-drafts-migration',
-    specs: ['tests/e2e/ssh-orcad-editor-drafts-migration.spec.ts'],
+    id: 'ssh.occd-editor-drafts-migration',
+    specs: ['tests/e2e/ssh-occd-editor-drafts-migration.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       (isProductSource(file) &&
-        /^src\/main\/(?:persistence\/migrating-orcad-catalog\/orcad-source-(?:draft-rename|workspace-session|session-copy-resolution|export)|ssh\/orcad-migration-source-retention|ipc\/ssh\/ssh)\.ts$/.test(
+        /^src\/main\/(?:persistence\/migrating-occd-catalog\/occd-source-(?:draft-rename|workspace-session|session-copy-resolution|export)|ssh\/occd-migration-source-retention|ipc\/ssh\/ssh)\.ts$/.test(
           file
         ))
   },
   {
     // A saved managed tunnel port that can no longer be bound moves to a free one (#33182).
-    id: 'ssh.orcad-unbindable-tunnel-port',
-    specs: ['tests/e2e/ssh-orcad-unbindable-tunnel-port.spec.ts'],
+    id: 'ssh.occd-unbindable-tunnel-port',
+    specs: ['tests/e2e/ssh-occd-unbindable-tunnel-port.spec.ts'],
     matches: (file) =>
       MANAGED_SSH_HARNESS.test(file) ||
       (isProductSource(file) &&
-        /^src\/(?:main\/managed-server\/lifecycle\/orcad-managed-tunnel|main\/ssh\/system-transport\/system-ssh-forward-port-reservation|shared\/runtime-environment-(?:sidecar|managed-orcad-store))/.test(
+        /^src\/(?:main\/managed-server\/lifecycle\/occd-managed-tunnel|main\/ssh\/system-transport\/system-ssh-forward-port-reservation|shared\/runtime-environment-(?:sidecar|managed-occd-store))/.test(
           file
         ))
   },
   {
     // Why: hand-kept routes missed #30130 and #30120; scoped to managed-host code to bound lane cost.
-    id: 'ssh.orcad-remote-sources',
+    id: 'ssh.occd-remote-sources',
     specs: [
-      'tests/e2e/ssh-orcad-paired-phone-projects.spec.ts',
-      'tests/e2e/ssh-orcad-pairing-repair.spec.ts',
-      'tests/e2e/ssh-orcad-retained-upgrade-state.spec.ts',
-      'tests/e2e/ssh-orcad-shared-home-machines.spec.ts',
-      'tests/e2e/ssh-orcad-shared-login-migration.spec.ts',
-      'tests/e2e/ssh-orcad-terminal-network-outage.spec.ts',
-      'tests/e2e/ssh-orcad-windows-cli-matrix.spec.ts'
+      'tests/e2e/ssh-occd-paired-phone-projects.spec.ts',
+      'tests/e2e/ssh-occd-pairing-repair.spec.ts',
+      'tests/e2e/ssh-occd-retained-upgrade-state.spec.ts',
+      'tests/e2e/ssh-occd-shared-home-machines.spec.ts',
+      'tests/e2e/ssh-occd-shared-login-migration.spec.ts',
+      'tests/e2e/ssh-occd-terminal-network-outage.spec.ts',
+      'tests/e2e/ssh-occd-windows-cli-matrix.spec.ts'
     ],
     matches: (file) =>
       isProductSource(file) &&
-      /^src\/(?:main\/(?:ssh|orcad|managed-server)\/|main\/ipc\/(?:ssh|runtime-environment|orcad-)|cli\/runtime\/(?:launch-)?serve|shared\/(?:remote-runtime|orcad-|protocol-version\.ts$|runtime-capability)|renderer\/src\/store\/repos\/(?:repo-removal|runtime-project-terminal-stop)|renderer\/src\/components\/sidebar\/(?:sleep-|SleepTwin|WorkspaceSleep|use-worktree-sleep|ssh-host-remove|host-rename-remove|HostRemove)|renderer\/src\/components\/terminal-pane\/(?:TerminalRemoteRuntimeReconnectBanner|use-managed-pairing-refused|TerminalPaneRuntimePortals))/.test(
+      /^src\/(?:main\/(?:ssh|occd|managed-server)\/|main\/ipc\/(?:ssh|runtime-environment|occd-)|cli\/runtime\/(?:launch-)?serve|shared\/(?:remote-runtime|occd-|protocol-version\.ts$|runtime-capability)|renderer\/src\/store\/repos\/(?:repo-removal|runtime-project-terminal-stop)|renderer\/src\/components\/sidebar\/(?:sleep-|SleepTwin|WorkspaceSleep|use-worktree-sleep|ssh-host-remove|host-rename-remove|HostRemove)|renderer\/src\/components\/terminal-pane\/(?:TerminalRemoteRuntimeReconnectBanner|use-managed-pairing-refused|TerminalPaneRuntimePortals))/.test(
         file
       )
   },
@@ -439,7 +439,7 @@ export const PR_E2E_SOURCE_ROUTES = [
     specs: ['tests/e2e/paired-quick-open-large-tree.spec.ts'],
     matches: (file) =>
       isProductSource(file) &&
-      /^(?:src\/main\/ipc\/filesystem-(?:list-files|search-file-paths)\.ts|src\/main\/ripgrep\/bundled-ripgrep-path\.ts|src\/main\/providers\/(?:filesystem-provider-contract|ssh-filesystem-provider(?:-capabilities)?)\.ts|src\/main\/runtime\/(?:orca-runtime-files|rpc\/methods\/files)\.ts|src\/renderer\/src\/(?:components\/(?:QuickOpen|quick-open-file-list|quick-open-search)\.tsx?|runtime\/(?:runtime-file-search-client|runtime-legacy-quick-open-inventory)\.ts)|src\/shared\/(?:quick-open-(?:install-rg|path-search|transport-budget)|ripgrep-process-availability|bundled-ripgrep)\.ts)$/.test(
+      /^(?:src\/main\/ipc\/filesystem-(?:list-files|search-file-paths)\.ts|src\/main\/ripgrep\/bundled-ripgrep-path\.ts|src\/main\/providers\/(?:filesystem-provider-contract|ssh-filesystem-provider(?:-capabilities)?)\.ts|src\/main\/runtime\/(?:occ-runtime-files|rpc\/methods\/files)\.ts|src\/renderer\/src\/(?:components\/(?:QuickOpen|quick-open-file-list|quick-open-search)\.tsx?|runtime\/(?:runtime-file-search-client|runtime-legacy-quick-open-inventory)\.ts)|src\/shared\/(?:quick-open-(?:install-rg|path-search|transport-budget)|ripgrep-process-availability|bundled-ripgrep)\.ts)$/.test(
         file
       )
   },

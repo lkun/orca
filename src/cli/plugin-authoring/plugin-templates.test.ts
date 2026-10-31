@@ -9,7 +9,7 @@ import { PLUGIN_TEMPLATE_NAMES } from './plugin-template-names'
 const roots: string[] = []
 
 async function tempRoot(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'orca-plugin-create-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-plugin-create-'))
   roots.push(root)
   return root
 }
@@ -18,7 +18,7 @@ afterEach(async () => {
   await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true })))
 })
 
-describe('orca plugin create templates', () => {
+describe('occ plugin create templates', () => {
   it.each(PLUGIN_TEMPLATE_NAMES)('%s scaffolds a plugin that validates as-is', async (template) => {
     const dir = join(await tempRoot(), `my-${template}`)
     const created = await createPluginFromTemplate({ dir, template, publisher: 'acme' })
@@ -51,7 +51,7 @@ describe('orca plugin create templates', () => {
   })
 })
 
-describe('orca plugin validate', () => {
+describe('occ plugin validate', () => {
   it('reports artifact errors OCC would otherwise skip silently', async () => {
     const dir = join(await tempRoot(), 'broken')
     await createPluginFromTemplate({ dir, template: 'theme', publisher: 'acme' })
@@ -67,10 +67,10 @@ describe('orca plugin validate', () => {
   it('names a folder without a publisher the way OCC loads it', async () => {
     const dir = join(await tempRoot(), 'nopub')
     await createPluginFromTemplate({ dir, template: 'theme', publisher: 'acme' })
-    const manifestPath = join(dir, 'orca-plugin.json')
+    const manifestPath = join(dir, 'occ-plugin.json')
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
     delete manifest.publisher
-    manifest.engines.orca = '>=1.4.246'
+    manifest.engines.occ = '>=1.4.246'
     await writeFile(manifestPath, JSON.stringify(manifest))
     const report = await validatePluginTarget(dir)
     expect(report.errors).toEqual([])

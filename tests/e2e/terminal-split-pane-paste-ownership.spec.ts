@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   focusActiveTerminalInput,
@@ -55,20 +55,20 @@ function countOccurrences(value: string, needle: string): number {
 test.describe('split terminal pane paste ownership', () => {
   test('keyboard paste writes only to the active split pane PTY', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
     await installTerminalPtyWriteSpy(electronApp)
 
-    await splitActiveTerminalPane(orcaPage, 'vertical')
-    await waitForPaneCount(orcaPage, 2)
-    await focusLastTerminalPane(orcaPage)
+    await splitActiveTerminalPane(occPage, 'vertical')
+    await waitForPaneCount(occPage, 2)
+    await focusLastTerminalPane(occPage)
 
-    const snapshot = await waitForPaneIdentitySnapshot(orcaPage, 2)
+    const snapshot = await waitForPaneIdentitySnapshot(occPage, 2)
     const activePane = snapshot.panes.find((pane) => pane.leafId === snapshot.activeLeafId)
     const inactivePane = snapshot.panes.find((pane) => pane.leafId !== snapshot.activeLeafId)
     if (!activePane?.ptyId || !inactivePane?.ptyId) {
@@ -76,23 +76,23 @@ test.describe('split terminal pane paste ownership', () => {
     }
 
     const runId = randomUUID()
-    const scriptPath = path.join(testRepoPath, `.orca-split-paste-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-split-paste-${runId}.mjs`)
     writeFileSync(scriptPath, pasteEchoScript(runId))
     let scriptStarted = false
 
     try {
-      await sendToTerminal(orcaPage, activePane.ptyId, `node ${JSON.stringify(scriptPath)}\r`)
+      await sendToTerminal(occPage, activePane.ptyId, `node ${JSON.stringify(scriptPath)}\r`)
       scriptStarted = true
-      await waitForTerminalOutput(orcaPage, `SPLIT_PASTE_READY_${runId}`, 10_000)
+      await waitForTerminalOutput(occPage, `SPLIT_PASTE_READY_${runId}`, 10_000)
 
-      const payload = `ORCA_E2E_SPLIT_PASTE_${runId}`
+      const payload = `OCC_E2E_SPLIT_PASTE_${runId}`
       const encodedPayload = Buffer.from(payload, 'utf8').toString('base64')
-      await orcaPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
+      await occPage.evaluate((text) => window.api.ui.writeClipboardText(text), payload)
       await clearTerminalPtyWriteLog(electronApp)
-      await focusActiveTerminalInput(orcaPage)
+      await focusActiveTerminalInput(occPage)
 
-      await orcaPage.keyboard.press(keyboardPasteChord())
-      await waitForTerminalOutput(orcaPage, encodedPayload, 10_000, 12_000)
+      await occPage.keyboard.press(keyboardPasteChord())
+      await waitForTerminalOutput(occPage, encodedPayload, 10_000, 12_000)
 
       const writes = await readTerminalPtyWriteEntries(electronApp)
       const activeWrites = writes
@@ -107,7 +107,7 @@ test.describe('split terminal pane paste ownership', () => {
       expect(inactiveWrites).not.toContain(payload)
     } finally {
       if (scriptStarted) {
-        await sendToTerminal(orcaPage, activePane.ptyId, '\x03').catch(() => undefined)
+        await sendToTerminal(occPage, activePane.ptyId, '\x03').catch(() => undefined)
       }
       rmSync(scriptPath, { force: true })
     }
@@ -115,20 +115,20 @@ test.describe('split terminal pane paste ownership', () => {
 
   test('internal file drop writes only to the pane under the drop target', async ({
     electronApp,
-    orcaPage,
+    occPage,
     testRepoPath
   }) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
     await installTerminalPtyWriteSpy(electronApp)
 
-    await splitActiveTerminalPane(orcaPage, 'vertical')
-    await waitForPaneCount(orcaPage, 2)
-    await focusLastTerminalPane(orcaPage)
+    await splitActiveTerminalPane(occPage, 'vertical')
+    await waitForPaneCount(occPage, 2)
+    await focusLastTerminalPane(occPage)
 
-    const snapshot = await waitForPaneIdentitySnapshot(orcaPage, 2)
+    const snapshot = await waitForPaneIdentitySnapshot(occPage, 2)
     const activePane = snapshot.panes.find((pane) => pane.leafId === snapshot.activeLeafId)
     const dropPane = snapshot.panes.find((pane) => pane.leafId !== snapshot.activeLeafId)
     if (!activePane?.ptyId || !dropPane?.ptyId) {
@@ -140,7 +140,7 @@ test.describe('split terminal pane paste ownership', () => {
     const dropMarker = path.basename(dropPath)
 
     await clearTerminalPtyWriteLog(electronApp)
-    await orcaPage.evaluate(
+    await occPage.evaluate(
       ({ leafId, pathValue }) => {
         const state = window.__store?.getState()
         const tabId =
@@ -155,10 +155,10 @@ test.describe('split terminal pane paste ownership', () => {
           throw new Error('Drop target pane not found')
         }
         const dataTransfer = new DataTransfer()
-        dataTransfer.setData('text/x-orca-file-path', pathValue)
+        dataTransfer.setData('text/x-occ-file-path', pathValue)
         // Internal drops are refused without the source owner an Explorer drag records.
         dataTransfer.setData(
-          'application/x-orca-workspace-file-source',
+          'application/x-occ-workspace-file-source',
           JSON.stringify({
             executionHostId: 'local',
             workspaceId: state?.activeWorktreeId,

@@ -6,7 +6,7 @@
 
 /* Shared tooltip geometry for every terminal link provider. */
 :root {
-  --orca-terminal-link-tooltip-height: 25px;
+  --occ-terminal-link-tooltip-height: 25px;
 }
 
 .pane-manager-root {
@@ -53,7 +53,7 @@
   caret-color: transparent;
 }
 
-.xterm.orca-ime-composer-placeholder .xterm-composition-remainder {
+.xterm.occ-ime-composer-placeholder .xterm-composition-remainder {
   visibility: hidden;
 }
 
@@ -69,7 +69,7 @@
   content: '';
   position: absolute;
   border-radius: 1px;
-  background: var(--orca-terminal-divider-color, transparent);
+  background: var(--occ-terminal-divider-color, transparent);
   transition: background 100ms ease;
 }
 
@@ -96,8 +96,8 @@
 .pane-divider.is-horizontal:hover::after,
 .pane-divider.is-horizontal.is-dragging::after {
   background: var(
-    --orca-terminal-divider-color-strong,
-    var(--orca-terminal-divider-color, transparent)
+    --occ-terminal-divider-color-strong,
+    var(--occ-terminal-divider-color, transparent)
   );
 }
 
@@ -220,24 +220,24 @@
 }
 
 :root {
-  --orca-pane-title-height: 24px;
-  --orca-pane-title-fg: var(--terminal-pane-title-on-dark-fg);
-  --orca-pane-title-input-fg: var(--terminal-pane-title-on-dark-input-fg);
-  --orca-pane-title-placeholder: var(--terminal-pane-title-on-dark-placeholder);
-  --orca-pane-title-button-fg: var(--terminal-pane-title-on-dark-button-fg);
-  --orca-pane-title-button-hover-fg: var(--terminal-pane-title-on-dark-button-hover-fg);
-  --orca-pane-title-input-bg: var(--terminal-pane-title-on-dark-input-bg);
-  --orca-pane-title-separator: var(--terminal-pane-title-on-dark-separator);
+  --occ-pane-title-height: 24px;
+  --occ-pane-title-fg: var(--terminal-pane-title-on-dark-fg);
+  --occ-pane-title-input-fg: var(--terminal-pane-title-on-dark-input-fg);
+  --occ-pane-title-placeholder: var(--terminal-pane-title-on-dark-placeholder);
+  --occ-pane-title-button-fg: var(--terminal-pane-title-on-dark-button-fg);
+  --occ-pane-title-button-hover-fg: var(--terminal-pane-title-on-dark-button-hover-fg);
+  --occ-pane-title-input-bg: var(--terminal-pane-title-on-dark-input-bg);
+  --occ-pane-title-separator: var(--terminal-pane-title-on-dark-separator);
 }
 
 [data-pane-title-surface='light'] {
-  --orca-pane-title-fg: var(--terminal-pane-title-on-light-fg);
-  --orca-pane-title-input-fg: var(--terminal-pane-title-on-light-input-fg);
-  --orca-pane-title-placeholder: var(--terminal-pane-title-on-light-placeholder);
-  --orca-pane-title-button-fg: var(--terminal-pane-title-on-light-button-fg);
-  --orca-pane-title-button-hover-fg: var(--terminal-pane-title-on-light-button-hover-fg);
-  --orca-pane-title-input-bg: var(--terminal-pane-title-on-light-input-bg);
-  --orca-pane-title-separator: var(--terminal-pane-title-on-light-separator);
+  --occ-pane-title-fg: var(--terminal-pane-title-on-light-fg);
+  --occ-pane-title-input-fg: var(--terminal-pane-title-on-light-input-fg);
+  --occ-pane-title-placeholder: var(--terminal-pane-title-on-light-placeholder);
+  --occ-pane-title-button-fg: var(--terminal-pane-title-on-light-button-fg);
+  --occ-pane-title-button-hover-fg: var(--terminal-pane-title-on-light-button-hover-fg);
+  --occ-pane-title-input-bg: var(--terminal-pane-title-on-light-input-bg);
+  --occ-pane-title-separator: var(--terminal-pane-title-on-light-separator);
 }
 
 /* Reserve title-strip height so the terminal’s first row remains visible. */
@@ -253,16 +253,16 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--orca-pane-title-height);
+  height: var(--occ-pane-title-height);
   box-sizing: border-box;
   display: flex;
   align-items: center;
   padding: 0 8px;
   font-size: 13px;
   font-family: var(--font-mono);
-  color: var(--orca-pane-title-fg, rgb(255 255 255 / 0.52));
-  background: var(--orca-pane-title-bg, #000);
-  border-bottom: 1px solid var(--orca-pane-title-separator, rgb(255 255 255 / 0.06));
+  color: var(--occ-pane-title-fg, rgb(255 255 255 / 0.52));
+  background: var(--occ-pane-title-bg, #000);
+  border-bottom: 1px solid var(--occ-pane-title-separator, rgb(255 255 255 / 0.06));
   pointer-events: auto;
   user-select: none;
 }
@@ -272,14 +272,14 @@
   top: 0;
   left: 50%;
   width: 32px;
-  height: var(--orca-pane-title-height);
+  height: var(--occ-pane-title-height);
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: grab;
   opacity: 0;
-  background: color-mix(in srgb, var(--orca-pane-title-fg) 36%, transparent);
+  background: color-mix(in srgb, var(--occ-pane-title-fg) 36%, transparent);
   transform: translateX(-50%);
   transition: opacity 150ms ease;
 }
@@ -289,7 +289,7 @@
   font-size: 10px;
   line-height: 1;
   letter-spacing: 0;
-  color: var(--orca-pane-title-button-hover-fg);
+  color: var(--occ-pane-title-button-hover-fg);
 }
 
 .pane-title-drag-handle:hover {
@@ -305,18 +305,18 @@
   top: 0;
   left: 8px;
   z-index: 5;
-  height: var(--orca-pane-title-height);
+  height: var(--occ-pane-title-height);
   /* Why: block + line-height (not flex) so the single line can ellipsize like
      .pane-title-text — an overflowing banner would wrap onto the terminal grid. */
   display: block;
-  line-height: var(--orca-pane-title-height);
+  line-height: var(--occ-pane-title-height);
   max-width: calc(100% - 16px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--orca-pane-title-fg);
+  color: var(--occ-pane-title-fg);
   background: transparent;
   user-select: none;
   pointer-events: none;
@@ -338,7 +338,7 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
-  line-height: var(--orca-pane-title-height);
+  line-height: var(--occ-pane-title-height);
 }
 
 .pane-title-text:focus-visible {
@@ -362,7 +362,7 @@
   position: relative;
   width: 18px;
   min-width: 18px;
-  height: var(--orca-pane-title-height);
+  height: var(--occ-pane-title-height);
   padding: 0;
 }
 
@@ -380,8 +380,8 @@
   height: 23px;
   background: radial-gradient(
     circle,
-    var(--orca-pane-title-bg, var(--background)) 0 44%,
-    color-mix(in srgb, var(--orca-pane-title-bg, var(--background)) 74%, transparent) 62%,
+    var(--occ-pane-title-bg, var(--background)) 0 44%,
+    color-mix(in srgb, var(--occ-pane-title-bg, var(--background)) 74%, transparent) 62%,
     transparent 100%
   );
   border-radius: 9999px;
@@ -391,7 +391,7 @@
 .pane-title-close {
   flex-shrink: 0;
   margin-left: auto;
-  color: var(--orca-pane-title-button-fg, rgb(255 255 255 / 0.3));
+  color: var(--occ-pane-title-button-fg, rgb(255 255 255 / 0.3));
   background: transparent;
   opacity: 0;
   transition:
@@ -405,7 +405,7 @@
 }
 
 .pane-title-split-trigger {
-  color: var(--orca-pane-title-button-fg, rgb(255 255 255 / 0.3));
+  color: var(--occ-pane-title-button-fg, rgb(255 255 255 / 0.3));
   opacity: 0;
   transition: opacity 120ms ease;
 }
@@ -447,11 +447,11 @@
 .pane-title-split-trigger[data-state='delayed-open'],
 .pane-title-split-trigger[data-state='instant-open'] {
   background: transparent;
-  color: var(--orca-pane-title-button-hover-fg, rgb(255 255 255 / 0.8));
+  color: var(--occ-pane-title-button-hover-fg, rgb(255 255 255 / 0.8));
 }
 
 .pane-title-split-trigger:disabled:hover {
-  color: var(--orca-pane-title-button-fg, rgb(255 255 255 / 0.3));
+  color: var(--occ-pane-title-button-fg, rgb(255 255 255 / 0.3));
 }
 
 /* Match title text while editing to prevent layout shift. */
@@ -464,23 +464,23 @@
   flex: 1;
   min-width: 0;
   width: 100%;
-  height: var(--orca-pane-title-height);
+  height: var(--occ-pane-title-height);
   box-sizing: border-box;
   padding: 0 8px;
   margin: 0;
   border: 1px solid transparent;
   border-radius: 0;
-  background: var(--orca-pane-title-input-bg, rgb(255 255 255 / 0.04));
+  background: var(--occ-pane-title-input-bg, rgb(255 255 255 / 0.04));
   outline: none;
   font-size: 13px;
   line-height: 20px;
   font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-  color: var(--orca-pane-title-input-fg, rgb(255 255 255 / 0.7));
-  caret-color: var(--orca-pane-title-input-fg, rgb(255 255 255 / 0.7));
+  color: var(--occ-pane-title-input-fg, rgb(255 255 255 / 0.7));
+  caret-color: var(--occ-pane-title-input-fg, rgb(255 255 255 / 0.7));
 }
 
 .pane-title-input::placeholder {
-  color: var(--orca-pane-title-placeholder, rgb(255 255 255 / 0.38));
+  color: var(--occ-pane-title-placeholder, rgb(255 255 255 / 0.38));
 }
 
 .pane-title-input:focus-visible {
@@ -503,31 +503,31 @@
 
 /* Offset titled terminals and subtract the same height to prevent clipping. */
 .pane[data-has-title] .xterm-container {
-  margin-top: var(--orca-pane-title-height);
-  height: calc(100% - var(--orca-pane-title-height)); /* match margin-top */
+  margin-top: var(--occ-pane-title-height);
+  height: calc(100% - var(--occ-pane-title-height)); /* match margin-top */
 }
 
 /* A pane-top banner takes real height: the terminal starts below it and refits. */
 .pane-top-banner {
   position: absolute;
-  top: var(--orca-pane-top-banner-offset, 0px);
+  top: var(--occ-pane-top-banner-offset, 0px);
   left: 0;
   right: 0;
   z-index: 5;
 }
 
 .pane[data-has-title] .pane-top-banner {
-  top: calc(var(--orca-pane-title-height) + var(--orca-pane-top-banner-offset, 0px));
+  top: calc(var(--occ-pane-title-height) + var(--occ-pane-top-banner-offset, 0px));
 }
 
 .pane:has(> .pane-top-banner) .xterm-container {
-  margin-top: calc(var(--pane-padding-y, 4px) + var(--orca-pane-top-banner-height, 0px));
-  height: calc(100% - var(--pane-padding-y, 4px) - var(--orca-pane-top-banner-height, 0px));
+  margin-top: calc(var(--pane-padding-y, 4px) + var(--occ-pane-top-banner-height, 0px));
+  height: calc(100% - var(--pane-padding-y, 4px) - var(--occ-pane-top-banner-height, 0px));
 }
 
 .pane[data-has-title]:has(> .pane-top-banner) .xterm-container {
-  margin-top: calc(var(--orca-pane-title-height) + var(--orca-pane-top-banner-height, 0px));
-  height: calc(100% - var(--orca-pane-title-height) - var(--orca-pane-top-banner-height, 0px));
+  margin-top: calc(var(--occ-pane-title-height) + var(--occ-pane-top-banner-height, 0px));
+  height: calc(100% - var(--occ-pane-title-height) - var(--occ-pane-top-banner-height, 0px));
 }
 
 /* Ghostty-style URL hover: glued to the pane's true bottom-left corner. */
@@ -544,7 +544,7 @@
   border-bottom: none;
   border-left: none;
   padding: 4px 8px;
-  height: var(--orca-terminal-link-tooltip-height);
+  height: var(--occ-terminal-link-tooltip-height);
   line-height: 15px;
   max-width: 80%;
   overflow: hidden;

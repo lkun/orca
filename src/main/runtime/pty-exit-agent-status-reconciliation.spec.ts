@@ -1,8 +1,8 @@
 /** Reconcile orphaned hook rows on observed PTY death when spawn-time pane lookup cannot clear them (STA-4612). */
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { makePaneKey } from '../../shared/stable-pane-id'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../shared/layout-owner-switch'
 import { bindPaneFirst } from './bind-first-pane.test-fixture'
 
 export function registerPtyExitAgentStatusReconciliationTests(): void {
@@ -17,11 +17,11 @@ export function registerPtyExitAgentStatusReconciliationTests(): void {
   function runtimeWithBoundPane(
     reconcile: (paneKeys: Iterable<string>) => void,
     options: { connectionId?: string } = {}
-  ): OrcaRuntimeService {
+  ): OCCRuntimeService {
     // Main-owned bindings require a session-backed fixture store.
-    const runtime = new OrcaRuntimeService(
+    const runtime = new OCCRuntimeService(
       // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: bindPaneFirst fills in the session accessors main's layout reads.
-      ORCA_LAYOUT_OWNER_IS_MAIN ? ({} as never) : null,
+      OCC_LAYOUT_OWNER_IS_MAIN ? ({} as never) : null,
       undefined,
       {
         reconcileAgentStatusForEndedProcess: reconcile

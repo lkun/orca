@@ -3,7 +3,7 @@ import { RUNTIME_CLIENT_CAPABILITY_METHODS } from './runtime-client-capabilities
 import { visibleSnapshot } from './session-tabs-snapshot.test-fixture'
 import '../unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import {
   SESSION_TABS_RETIREMENT_PROOF_DELTA_RUNTIME_CAPABILITY,
   SESSION_TABS_TAB_DELTA_RUNTIME_CAPABILITY
@@ -107,7 +107,7 @@ async function runStream(
       listener = next
       return () => {}
     })
-  } as unknown as OrcaRuntimeService
+  } as unknown as OCCRuntimeService
   const dispatcher = new RpcDispatcher({ runtime, methods: SESSION_TAB_METHODS })
   const messages: string[] = []
   await dispatcher.dispatchStreaming(
@@ -233,7 +233,7 @@ describe.each(['session.tabs.subscribe', 'session.tabs.subscribeAll'] as const)(
             listener = callback
             return () => {}
           }
-        } as unknown as OrcaRuntimeService
+        } as unknown as OCCRuntimeService
         const dispatcher = new RpcDispatcher({
           runtime,
           methods: [...SESSION_TAB_METHODS, ...RUNTIME_CLIENT_CAPABILITY_METHODS]

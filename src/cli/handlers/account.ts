@@ -1,12 +1,12 @@
 import { spawn } from 'node:child_process'
-import { assertWslDistroAllowed } from '@orca/process-host/wsl-distro-allowlist'
+import { assertWslDistroAllowed } from '@occ/process-host/wsl-distro-allowlist'
 import { mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { delimiter, join } from 'node:path'
 import type { CommandHandler, HandlerContext } from '../dispatch'
 import { printResult } from '../format'
 import { RuntimeClientError } from '../runtime-client'
-import { stripElectronRunAsNode } from '../runtime/orca-app-executable'
+import { stripElectronRunAsNode } from '../runtime/occ-app-executable'
 import { rejectRemoteSelectionFlags } from '../remote-selection-flag-rejection'
 import { buildWslExecArgs, buildWslLoginShellCommand } from '../../shared/wsl-login-shell-command'
 import { quotePosixShell } from '../../shared/shell-argument-quoting'
@@ -198,7 +198,7 @@ async function addClaudeAccount({ client, cwd, json }: HandlerContext): Promise<
 }
 
 async function addCodexAccount({ client, cwd, json }: HandlerContext): Promise<void> {
-  const codexHome = mkdtempSync(join(tmpdir(), 'orca-account-add-codex-'))
+  const codexHome = mkdtempSync(join(tmpdir(), 'occ-account-add-codex-'))
   const session: InteractiveLoginSession = {
     child: null,
     registering: false,

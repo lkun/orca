@@ -6,19 +6,19 @@ function errorText(cause: unknown): string {
 
 export function pluginInstallErrorMessage(cause: unknown): string {
   const detail = errorText(cause)
-  if (detail.includes('orca-plugin.json') && /(missing|unreadable|no )/.test(detail)) {
+  if (detail.includes('occ-plugin.json') && /(missing|unreadable|no )/.test(detail)) {
     return translate(
       'auto.components.settings.pluginError.installManifestMissing',
-      "No readable orca-plugin.json was found. Choose the plugin's root folder."
+      "No readable occ-plugin.json was found. Choose the plugin's root folder."
     )
   }
   if (detail.includes('invalid manifest')) {
     return translate(
       'auto.components.settings.pluginError.installManifestInvalid',
-      'orca-plugin.json is invalid. Ask the plugin author to fix the manifest.'
+      'occ-plugin.json is invalid. Ask the plugin author to fix the manifest.'
     )
   }
-  if (detail.includes('requires orca')) {
+  if (detail.includes('requires occ')) {
     return translate(
       'auto.components.settings.pluginError.incompatible',
       'This plugin requires a different OCC version.'
@@ -58,22 +58,22 @@ export function pluginInstallErrorMessage(cause: unknown): string {
 export function invalidPluginErrorMessage(detailValue: string, installed = false): string {
   const detail = detailValue.toLowerCase()
   // Why everything but a version gap: the user of an installed copy can't fix its files.
-  if (installed && !detail.includes('requires orca')) {
+  if (installed && !detail.includes('requires occ')) {
     return translate(
       'auto.components.settings.pluginError.installedManifestUnloadable',
       "This version can't load in this OCC. Update or reinstall it."
     )
   }
-  if (detail.includes('missing orca-plugin.json')) {
+  if (detail.includes('missing occ-plugin.json')) {
     return translate(
       'auto.components.settings.pluginError.invalidManifestMissing',
-      'The plugin root is missing orca-plugin.json. Add it, then refresh plugins.'
+      'The plugin root is missing occ-plugin.json. Add it, then refresh plugins.'
     )
   }
   if (detail.includes('invalid manifest')) {
     return translate(
       'auto.components.settings.pluginError.invalidManifest',
-      'orca-plugin.json is invalid. Fix it, then refresh plugins.'
+      'occ-plugin.json is invalid. Fix it, then refresh plugins.'
     )
   }
   if (detail.includes('artifact')) {
@@ -82,7 +82,7 @@ export function invalidPluginErrorMessage(detailValue: string, installed = false
       'A worker or panel file is missing or unsafe. Fix it, then refresh.'
     )
   }
-  if (detail.includes('requires orca')) {
+  if (detail.includes('requires occ')) {
     return translate(
       'auto.components.settings.pluginError.incompatible',
       'This plugin requires a different OCC version.'

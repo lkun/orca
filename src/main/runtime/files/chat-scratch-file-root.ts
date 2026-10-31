@@ -7,7 +7,7 @@ import {
 } from '../../ipc/filesystem/filesystem-auth'
 import { isENOENT } from '../../ipc/filesystem/filesystem-path-containment'
 import { nativeChatScratchRootFor } from '../../native-chat/native-chat-scratch-folder'
-import { getProfileUserDataPath } from '../../orca-profiles/profile-storage-paths'
+import { getProfileUserDataPath } from '../../occ-profiles/profile-storage-paths'
 
 const PATH_SELECTOR_PREFIX = 'path:'
 const SCRATCH_FOLDER_NAME = /^[0-9a-f]{32}$/

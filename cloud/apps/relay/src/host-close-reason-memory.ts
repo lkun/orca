@@ -2,7 +2,7 @@ import {
   ASSIGNMENT_LIMITS,
   relayHostCloseReasonFrom,
   type RelayHostCloseReason
-} from '@orca-cloud/relay-contract'
+} from '@occ-cloud/relay-contract'
 
 // Retention matches the dormant assignment TTL: past it the host may have been
 // rebalanced onto another cell, so this cell is no longer the one a phone asks.

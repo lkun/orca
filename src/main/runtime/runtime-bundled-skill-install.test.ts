@@ -39,7 +39,7 @@ afterEach(async () => {
 })
 
 async function homeWithClaudeCopy(claudeDir: (home: string) => string) {
-  const root = await realpath(await mkdtemp(join(tmpdir(), 'orca-bundled-app-cli-')))
+  const root = await realpath(await mkdtemp(join(tmpdir(), 'occ-bundled-app-cli-')))
   roots.push(root)
   const home = join(root, 'home')
   const copy = join(claudeDir(home), 'skills', NAME)
@@ -89,7 +89,7 @@ describe('app and CLI plan the same targets for one machine', () => {
 
 describe('named installs from setup screens', () => {
   it('plans an uninstalled skill only when the request names it', async () => {
-    const root = await realpath(await mkdtemp(join(tmpdir(), 'orca-bundled-app-named-')))
+    const root = await realpath(await mkdtemp(join(tmpdir(), 'occ-bundled-app-named-')))
     roots.push(root)
     const home = join(root, 'home')
     await mkdir(join(home, '.claude'), { recursive: true })

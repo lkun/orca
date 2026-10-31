@@ -8,7 +8,7 @@ import type {
 } from '../../../shared/runtime-session-contracts'
 import type { RuntimeMobileSessionSnapshotTab } from '../../../shared/runtime-mobile-session-tab-contracts'
 import type { TabGroupLayoutNode } from '../../../shared/tab-types'
-import { OrcaRuntimeService } from '../orca-runtime'
+import { OCCRuntimeService } from '../occ-runtime'
 import { setStructuredAgentSessionHost } from '../../native-chat/agent-session-wire/structured-agent-session-registry'
 import type { ResolvedWorktree } from '../runtime-worktree-path-identity'
 
@@ -34,7 +34,7 @@ function snapshot(): RuntimeMobileSessionTabsSnapshot {
   }
 }
 
-class SessionTabRuntime extends OrcaRuntimeService {
+class SessionTabRuntime extends OCCRuntimeService {
   move(
     model: RuntimeMobileSessionTabsSnapshot,
     move: RuntimeMobileSessionTabMove
@@ -243,7 +243,7 @@ describe('original session tab runtime prototypes', () => {
   })
 })
 
-class SessionRuntime extends OrcaRuntimeService {
+class SessionRuntime extends OCCRuntimeService {
   readonly refreshArgumentCounts: number[] = []
   readonly reloadRequests: number[] = []
   restoreRequests = 0
@@ -279,7 +279,7 @@ class SessionRuntime extends OrcaRuntimeService {
   }
 
   protected override refreshMobileSessionPtyRecords(
-    ...args: Parameters<OrcaRuntimeService['refreshMobileSessionPtyRecords']>
+    ...args: Parameters<OCCRuntimeService['refreshMobileSessionPtyRecords']>
   ): Promise<Set<string> | null> {
     this.refreshArgumentCounts.push(args.length)
     return Promise.resolve(null)
@@ -353,7 +353,7 @@ describe('session runtime reentry', () => {
       sessionId: 'session',
       agent: 'claude',
       activate: false
-    } satisfies Parameters<OrcaRuntimeService['publishStructuredAgentSessionTab']>[0]
+    } satisfies Parameters<OCCRuntimeService['publishStructuredAgentSessionTab']>[0]
 
     await expect(runtime.listAllMobileSessionTabs('client')).resolves.toEqual([])
     await runtime.publishStructuredAgentSessionTab(input)
@@ -398,7 +398,7 @@ describe('session runtime reentry', () => {
     }
     runtime.seedHeadlessSnapshot(snapshot)
     const first = vi.fn(function (
-      this: OrcaRuntimeService,
+      this: OCCRuntimeService,
       received: RuntimeMobileSessionTabsSnapshot,
       tabId: string
     ) {
@@ -409,7 +409,7 @@ describe('session runtime reentry', () => {
       return null
     })
     const replacement = vi.fn(function (
-      this: OrcaRuntimeService,
+      this: OCCRuntimeService,
       received: RuntimeMobileSessionTabsSnapshot,
       tabId: string
     ) {
@@ -447,7 +447,7 @@ describe('session runtime reentry', () => {
 
   it('captures the runtime callee before a tab getter replaces it', async () => {
     const runtime = new SessionRuntime()
-    const first = vi.fn(function (this: OrcaRuntimeService, sessionId: string) {
+    const first = vi.fn(function (this: OCCRuntimeService, sessionId: string) {
       expect(this).toBe(runtime)
       expect(sessionId).toBe('session')
       return false
@@ -475,7 +475,7 @@ describe('session runtime reentry', () => {
   })
 })
 
-class GraphRuntime extends OrcaRuntimeService {
+class GraphRuntime extends OCCRuntimeService {
   get graphTabs() {
     return this.tabs
   }

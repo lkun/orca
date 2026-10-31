@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { BUNDLED_ORCA_SKILL_CAPABILITY } from '../../../shared/skill-install-capability'
+import { BUNDLED_OCC_SKILL_CAPABILITY } from '../../../shared/skill-install-capability'
 
 const callRuntimeRpc = vi.fn()
 const runtimeEnvironmentSupportsCapability = vi.fn()
@@ -35,11 +35,11 @@ describe('planBundledSkillsOnTarget', () => {
     })
     expect(runtimeEnvironmentSupportsCapability).toHaveBeenCalledWith(
       'env-1',
-      BUNDLED_ORCA_SKILL_CAPABILITY
+      BUNDLED_OCC_SKILL_CAPABILITY
     )
     expect(callRuntimeRpc).toHaveBeenCalledWith(
       SERVER,
-      'skills.planBundledOrca',
+      'skills.planBundledOCC',
       { force: ['/x'] },
       expect.anything()
     )
@@ -94,7 +94,7 @@ describe('executeBundledSkillsOnTarget', () => {
 
     expect(callRuntimeRpc).toHaveBeenCalledWith(
       SERVER,
-      'skills.executeBundledOrca',
+      'skills.executeBundledOCC',
       { planDigest: 'd'.repeat(64), request: { force: ['/x'] } },
       expect.anything()
     )

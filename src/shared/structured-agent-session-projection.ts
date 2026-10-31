@@ -41,7 +41,7 @@ import { structuredAgentSessionStatusStartedAt } from './structured-agent-sessio
 import { owesStructuredAgentSessionWork } from './structured-agent-session-owed-work'
 import type { StructuredAgentSessionWorkScope } from './structured-agent-session-main-agent-working'
 import { agentSessionCurrentContextRows } from './agent-session-context-clear'
-import { nativeChatStatusTurnOutcome } from './native-chat/native-chat-orca-stop-cut'
+import { nativeChatStatusTurnOutcome } from './native-chat/native-chat-occ-stop-cut'
 
 // Keep existing live-turn/unanswered-send consumers on one import path.
 export {

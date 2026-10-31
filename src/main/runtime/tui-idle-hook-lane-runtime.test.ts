@@ -11,7 +11,7 @@ import { normalizeHermesEvent } from '../../shared/agent-hook-listener/providers
 import type { AgentStatusIpcPayload } from '../../shared/agent-status-types'
 import { makePaneKey } from '../../shared/stable-pane-id'
 import type { TuiAgent } from '../../shared/tui-agent'
-import type { OrcaRuntimeService } from './orca-runtime'
+import type { OCCRuntimeService } from './occ-runtime'
 
 vi.mock('electron', () => ({
   BrowserWindow: { fromId: vi.fn(() => null) },
@@ -258,7 +258,7 @@ describe('Canonical hook status readiness', () => {
     rows: (handle: string) => AgentStatusIpcPayload[]
     launchAgent?: TuiAgent
     data?: string
-    afterCreate?: (runtime: OrcaRuntimeService, handle: string) => unknown
+    afterCreate?: (runtime: OCCRuntimeService, handle: string) => unknown
   }): Promise<string> {
     let handle = ''
     const pane = await createTranscriptPane(
@@ -335,7 +335,7 @@ describe('Canonical hook status readiness', () => {
       const rows = (): AgentStatusIpcPayload[] => [
         row({ receivedAt: before, stateStartedAt: before })
       ]
-      const typeAt = (at: number) => (runtime: OrcaRuntimeService) => {
+      const typeAt = (at: number) => (runtime: OCCRuntimeService) => {
         runtime.terminalRunFacts.recordInput(TRANSCRIPT_PANE_PTY_ID, 'driving', input, at)
       }
       expect(await waitOutcome({ rows, afterCreate: typeAt(before - 1) })).toBe('ready')

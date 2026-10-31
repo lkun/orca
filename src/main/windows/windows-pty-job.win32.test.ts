@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { IPty } from 'node-pty'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import {
   isPtyJobOwnershipAvailable,
   killConptyNow,
@@ -67,7 +67,7 @@ describeOnWindows('ConPTY job ownership', () => {
     proc.onData((chunk) => {
       // ConPTY may split the marker across chunks; a trailing non-digit proves the pid is whole.
       output += chunk
-      const match = /ORCA_GC=(\d+)\D/.exec(output)
+      const match = /OCC_GC=(\d+)\D/.exec(output)
       if (match && grandchildPid === null) {
         grandchildPid = Number(match[1])
       }
@@ -77,7 +77,7 @@ describeOnWindows('ConPTY job ownership', () => {
       "const{spawn}=require('child_process');",
       "const c=spawn(process.execPath,['-e','setInterval(()=>{},1000)'],",
       "{detached:true,windowsHide:true,stdio:'ignore'});",
-      "c.unref();console.log('ORCA_GC='+c.pid);"
+      "c.unref();console.log('OCC_GC='+c.pid);"
     ].join('')
     proc.write(`node -e "${script}"\r`)
 
@@ -134,7 +134,7 @@ describeOnWindows('ConPTY job ownership', () => {
     const result = await runProcess({
       program: process.execPath,
       args: [join(process.cwd(), 'config', 'scripts', 'windows-pty-table-stress.cjs')],
-      env: { ...process.env, ORCA_BACKGROUND_LAUNCH: '1' },
+      env: { ...process.env, OCC_BACKGROUND_LAUNCH: '1' },
       timeoutMs: 90_000
     })
     const status = result.code === null ? 'null' : `0x${(result.code >>> 0).toString(16)}`
@@ -189,7 +189,7 @@ describeOnWindows('ConPTY job ownership', () => {
   it('still starts a backgrounded child from inside the job', async () => {
     // start /b proves ordinary backgrounding, not CREATE_BREAKAWAY_FROM_JOB rejection; that flag needs a dedicated native helper.
     const nodePty = await import('node-pty')
-    const marker = join(mkdtempSync(join(tmpdir(), 'orca-breakaway-')), 'marker.txt')
+    const marker = join(mkdtempSync(join(tmpdir(), 'occ-breakaway-')), 'marker.txt')
     const proc = nodePty.spawn('cmd.exe', [], {
       name: 'xterm-256color',
       cols: 100,
@@ -203,7 +203,7 @@ describeOnWindows('ConPTY job ownership', () => {
     proc.onData((chunk) => {
       output += chunk
     })
-    proc.write(`start /b cmd /c "echo ORCA_BREAKAWAY> ${marker}"\r`)
+    proc.write(`start /b cmd /c "echo OCC_BREAKAWAY> ${marker}"\r`)
 
     await vi.waitFor(() => expect(existsSync(marker)).toBe(true), { timeout: 15_000 })
     expect(output).not.toMatch(/Access is denied/i)

@@ -161,7 +161,7 @@ describe('the offenders in a closure', () => {
 
 describe('the order a red list is read in', () => {
   // Synthetic sites at lines 2/10 distinguish numeric from lexical ordering without constraining real source layout.
-  const root = mkdtempSync(join(tmpdir(), 'orca-seam-census-'))
+  const root = mkdtempSync(join(tmpdir(), 'occ-seam-census-'))
   const lines = ["import * as RN from 'react-native'", 'RN.Linking.openURL(a)']
   while (lines.length < 9) {
     lines.push('')

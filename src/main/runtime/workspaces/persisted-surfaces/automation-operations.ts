@@ -1,7 +1,7 @@
 import type { AutomationsChangedPayload } from '../../../../shared/runtime-client-events'
 import { getWorkerTerminalAutoReleaseScheduler } from '../../orchestration/worker-terminal-auto-release-scheduler'
 import type { ResolvedWorktree } from '../../runtime-worktree-path-identity'
-import { OrcaRuntimeWithPtyForegroundProcessReads } from '../../client/runtime-client-state'
+import { OCCRuntimeWithPtyForegroundProcessReads } from '../../client/runtime-client-state'
 import type {
   AutomationOwnerPrecondition,
   AutomationDestination
@@ -32,7 +32,7 @@ import { worktreeIdsEqual } from '../../../../shared/worktree/id'
 // Keyed by runtime, not a field: the database can open while the runtime is still constructing.
 const runtimesWatchingAutoReleaseSetting = new WeakSet<object>()
 
-export abstract class OrcaRuntimeWithAutomationOperations extends OrcaRuntimeWithPtyForegroundProcessReads {
+export abstract class OCCRuntimeWithAutomationOperations extends OCCRuntimeWithPtyForegroundProcessReads {
   abstract notifyAutomationsChanged(payload?: AutomationsChangedPayload): void
   abstract ensureOrchestrationFederationRelay(runId?: string): void
   protected abstract scheduleRestoredMessageRepoints(): void

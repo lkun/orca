@@ -14,17 +14,17 @@ function repo(id: string, overrides: Partial<Repo> = {}): Repo {
     displayName: id,
     badgeColor: '#111111',
     addedAt: 1,
-    upstream: { owner: 'stablyai', repo: 'orca' },
+    upstream: { owner: 'stablyai', repo: 'occ' },
     ...overrides
   }
 }
 
 function project(overrides: Partial<Project> = {}): Project {
   return {
-    id: 'github:stablyai/orca',
-    displayName: 'orca',
+    id: 'github:stablyai/occ',
+    displayName: 'occ',
     badgeColor: '#111111',
-    providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'orca' },
+    providerIdentity: { provider: 'github', owner: 'stablyai', repo: 'occ' },
     sourceRepoIds: ['local-repo', 'ssh-repo'],
     createdAt: 1,
     updatedAt: 1,
@@ -35,11 +35,11 @@ function project(overrides: Partial<Project> = {}): Project {
 function setup(overrides: Partial<ProjectHostSetup>): ProjectHostSetup {
   return {
     id: overrides.id ?? 'local-setup',
-    projectId: overrides.projectId ?? 'github:stablyai/orca',
+    projectId: overrides.projectId ?? 'github:stablyai/occ',
     hostId: overrides.hostId ?? 'local',
     repoId: overrides.repoId ?? 'local-repo',
-    path: overrides.path ?? '/tmp/orca',
-    displayName: overrides.displayName ?? 'orca',
+    path: overrides.path ?? '/tmp/occ',
+    displayName: overrides.displayName ?? 'occ',
     setupState: overrides.setupState ?? 'ready',
     setupMethod: overrides.setupMethod ?? 'legacy-repo',
     createdAt: 1,
@@ -77,12 +77,12 @@ describe('buildNewWorkspaceProjectOptions', () => {
 
     expect(options).toEqual([
       {
-        id: 'github:stablyai/orca',
+        id: 'github:stablyai/occ',
         kind: 'project',
-        projectId: 'github:stablyai/orca',
-        displayName: 'orca',
+        projectId: 'github:stablyai/occ',
+        displayName: 'occ',
         badgeColor: '#111111',
-        detail: 'stablyai/orca'
+        detail: 'stablyai/occ'
       }
     ])
   })
@@ -102,7 +102,7 @@ describe('buildNewWorkspaceProjectOptions', () => {
       eligibleRepos: [repo('local-repo'), repo('other-repo')]
     })
 
-    expect(options.map((option) => option.id)).toEqual(['github:stablyai/orca'])
+    expect(options.map((option) => option.id)).toEqual(['github:stablyai/occ'])
   })
 
   it('excludes projects configured only on removed hosts', () => {
@@ -130,7 +130,7 @@ describe('buildNewWorkspaceProjectOptions', () => {
     })
 
     expect(options).toEqual([
-      expect.objectContaining({ id: 'github:stablyai/orca', detail: 'stablyai/orca' })
+      expect.objectContaining({ id: 'github:stablyai/occ', detail: 'stablyai/occ' })
     ])
   })
 
@@ -407,7 +407,7 @@ describe('buildNewWorkspaceCreateTargetOptions', () => {
     })
 
     expect(options.map((option) => option.id).sort()).toEqual([
-      'github:stablyai/orca',
+      'github:stablyai/occ',
       'project-group:folder-group'
     ])
     expect(options.find((option) => option.id === 'project-group:folder-group')).toMatchObject({

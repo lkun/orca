@@ -100,7 +100,7 @@ export const AgentLaunchFields = z.object({
       value === 'focused' || value === 'background' ? value : undefined
     )
     .optional(),
-  /** Desktop-prepared Claude/Codex home for WSL orcad without account services. Terminal-only; chat warns and
+  /** Desktop-prepared Claude/Codex home for WSL occd without account services. Terminal-only; chat warns and
    * keeps its host home. Optional forever, outside replay identity; old hosts strip it and use their default. */
   accountEnv: AgentLaunchAccountEnv.optional(),
   /** Forward the launching user’s chat default when host settings belong to someone else (e.g. relayed phone).

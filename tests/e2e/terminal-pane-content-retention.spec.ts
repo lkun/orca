@@ -1,6 +1,6 @@
 // Require scrollback retention across tab, pane and worktree changes.
 
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import {
   discoverActivePtyId,
   execInTerminal,
@@ -29,80 +29,80 @@ test.describe.configure({ mode: 'serial' })
 test.describe('Terminal Panes', () => {
   registerTerminalPaneMountReadiness()
 
-  test('terminal pane retains content when switching tabs and back', async ({ orcaPage }) => {
-    const ptyId = await discoverActivePtyId(orcaPage)
+  test('terminal pane retains content when switching tabs and back', async ({ occPage }) => {
+    const ptyId = await discoverActivePtyId(occPage)
     const marker = `RETAIN_TEST_${Date.now()}`
-    await execInTerminal(orcaPage, ptyId, `echo ${marker}`)
-    await waitForTerminalOutput(orcaPage, marker)
+    await execInTerminal(occPage, ptyId, `echo ${marker}`)
+    await waitForTerminalOutput(occPage, marker)
 
-    const worktreeId = (await getActiveWorktreeId(orcaPage))!
-    await pressShortcut(orcaPage, 't')
+    const worktreeId = (await getActiveWorktreeId(occPage))!
+    await pressShortcut(occPage, 't')
 
     await expect
-      .poll(async () => (await getWorktreeTabs(orcaPage, worktreeId)).length, { timeout: 5_000 })
+      .poll(async () => (await getWorktreeTabs(occPage, worktreeId)).length, { timeout: 5_000 })
       .toBeGreaterThanOrEqual(2)
 
-    const activeType = await getActiveTabType(orcaPage)
+    const activeType = await getActiveTabType(occPage)
     expect(activeType).toBe('terminal')
 
-    await pressShortcut(orcaPage, 'BracketLeft', { shift: true })
+    await pressShortcut(occPage, 'BracketLeft', { shift: true })
 
     await expect
-      .poll(async () => (await getTerminalContent(orcaPage)).includes(marker), { timeout: 5_000 })
+      .poll(async () => (await getTerminalContent(occPage)).includes(marker), { timeout: 5_000 })
       .toBe(true)
 
-    await pressShortcut(orcaPage, 'BracketRight', { shift: true })
-    await pressShortcut(orcaPage, 'w')
+    await pressShortcut(occPage, 'BracketRight', { shift: true })
+    await pressShortcut(occPage, 'w')
   })
 
-  test('terminal pane retains content when splitting and closing a pane', async ({ orcaPage }) => {
-    const ptyId = await discoverActivePtyId(orcaPage)
+  test('terminal pane retains content when splitting and closing a pane', async ({ occPage }) => {
+    const ptyId = await discoverActivePtyId(occPage)
     const marker = `SPLIT_RETAIN_${Date.now()}`
-    await execInTerminal(orcaPage, ptyId, `echo ${marker}`)
-    await waitForTerminalOutput(orcaPage, marker)
+    await execInTerminal(occPage, ptyId, `echo ${marker}`)
+    await waitForTerminalOutput(occPage, marker)
 
-    const panesBefore = await countVisibleTerminalPanes(orcaPage)
+    const panesBefore = await countVisibleTerminalPanes(occPage)
 
-    await splitActiveTerminalPane(orcaPage, 'vertical')
-    await waitForPaneCount(orcaPage, panesBefore + 1)
+    await splitActiveTerminalPane(occPage, 'vertical')
+    await waitForPaneCount(occPage, panesBefore + 1)
 
-    await focusLastTerminalPane(orcaPage)
-    await closeActiveTerminalPane(orcaPage)
-    await waitForPaneCount(orcaPage, panesBefore)
+    await focusLastTerminalPane(occPage)
+    await closeActiveTerminalPane(occPage)
+    await waitForPaneCount(occPage, panesBefore)
 
     await expect
-      .poll(async () => (await getTerminalContent(orcaPage)).includes(marker), { timeout: 5_000 })
+      .poll(async () => (await getTerminalContent(occPage)).includes(marker), { timeout: 5_000 })
       .toBe(true)
   })
 
-  test('terminal pane retains content when switching worktrees and back', async ({ orcaPage }) => {
-    const allWorktreeIds = await getAllWorktreeIds(orcaPage)
+  test('terminal pane retains content when switching worktrees and back', async ({ occPage }) => {
+    const allWorktreeIds = await getAllWorktreeIds(occPage)
     if (allWorktreeIds.length < 2) {
       test.skip(true, 'Need at least 2 worktrees to test worktree switching')
       return
     }
 
-    const worktreeId = (await getActiveWorktreeId(orcaPage))!
+    const worktreeId = (await getActiveWorktreeId(occPage))!
 
-    const ptyId = await discoverActivePtyId(orcaPage)
+    const ptyId = await discoverActivePtyId(occPage)
     const marker = `WT_RETAIN_${Date.now()}`
-    await execInTerminal(orcaPage, ptyId, `echo ${marker}`)
-    await waitForTerminalOutput(orcaPage, marker)
+    await execInTerminal(occPage, ptyId, `echo ${marker}`)
+    await waitForTerminalOutput(occPage, marker)
 
-    const otherId = await switchToOtherWorktree(orcaPage, worktreeId)
+    const otherId = await switchToOtherWorktree(occPage, worktreeId)
     expect(otherId).not.toBeNull()
-    await expect.poll(async () => getActiveWorktreeId(orcaPage), { timeout: 5_000 }).toBe(otherId)
+    await expect.poll(async () => getActiveWorktreeId(occPage), { timeout: 5_000 }).toBe(otherId)
 
-    await switchToWorktree(orcaPage, worktreeId)
+    await switchToWorktree(occPage, worktreeId)
     await expect
-      .poll(async () => getActiveWorktreeId(orcaPage), { timeout: 5_000 })
+      .poll(async () => getActiveWorktreeId(occPage), { timeout: 5_000 })
       .toBe(worktreeId)
 
     // Poll the retained marker after worktree return: serialize-addon rebind can lag the activation cascade, so avoid an earlier manager-timing assertion.
-    await ensureTerminalVisible(orcaPage)
+    await ensureTerminalVisible(occPage)
 
     await expect
-      .poll(async () => (await getTerminalContent(orcaPage)).includes(marker), { timeout: 20_000 })
+      .poll(async () => (await getTerminalContent(occPage)).includes(marker), { timeout: 20_000 })
       .toBe(true)
   })
 })

@@ -57,24 +57,24 @@ describe('WslSkillInstallFilesystem', () => {
         { path: 'scripts/run.sh', executable: true }
       ]
     } as SkillPackageManifestV1
-    await filesystem.prepareExtractedSkill(`${WSL_ROOT}\\.orca-skill-extract-1\\skill`, manifest)
+    await filesystem.prepareExtractedSkill(`${WSL_ROOT}\\.occ-skill-extract-1\\skill`, manifest)
 
     expect(runWslProcessMock).toHaveBeenCalledTimes(2)
     const calls = runWslProcessMock.mock.calls.map(([spec]) => spec.args as string[])
     expect(calls[0]).toEqual(
       expect.arrayContaining([
         '600',
-        '/home/jin/.agents/skills/.orca-skill-extract-1/skill/SKILL.md',
+        '/home/jin/.agents/skills/.occ-skill-extract-1/skill/SKILL.md',
         '700',
-        '/home/jin/.agents/skills/.orca-skill-extract-1/skill/scripts/run.sh'
+        '/home/jin/.agents/skills/.occ-skill-extract-1/skill/scripts/run.sh'
       ])
     )
     expect(calls[1]).toEqual(
       expect.arrayContaining([
         '600',
-        '/home/jin/.agents/skills/.orca-skill-extract-1/skill/SKILL.md',
+        '/home/jin/.agents/skills/.occ-skill-extract-1/skill/SKILL.md',
         '700',
-        '/home/jin/.agents/skills/.orca-skill-extract-1/skill/scripts/run.sh'
+        '/home/jin/.agents/skills/.occ-skill-extract-1/skill/scripts/run.sh'
       ])
     )
   })
@@ -84,12 +84,12 @@ describe('WslSkillInstallFilesystem', () => {
       'C:\\Users\\jin\\repo\\.agents\\skills'
     ])
     await filesystem.rename(
-      'C:\\Users\\jin\\repo\\.agents\\skills\\.skill.orca-staging-1',
+      'C:\\Users\\jin\\repo\\.agents\\skills\\.skill.occ-staging-1',
       'C:\\Users\\jin\\repo\\.agents\\skills\\skill'
     )
     expect(runWslProcessMock.mock.calls[0]?.[0].args).toEqual(
       expect.arrayContaining([
-        '/mnt/c/Users/jin/repo/.agents/skills/.skill.orca-staging-1',
+        '/mnt/c/Users/jin/repo/.agents/skills/.skill.occ-staging-1',
         '/mnt/c/Users/jin/repo/.agents/skills/skill'
       ])
     )
@@ -111,7 +111,7 @@ describe('WslSkillInstallFilesystem', () => {
     } as SkillPackageManifestV1
 
     await filesystem.prepareExtractedSkill(
-      'C:\\Users\\jin\\repo\\.agents\\skills\\.orca-skill-extract-1\\skill',
+      'C:\\Users\\jin\\repo\\.agents\\skills\\.occ-skill-extract-1\\skill',
       manifest
     )
 
@@ -129,7 +129,7 @@ describe('WslSkillInstallFilesystem', () => {
   it('authorizes a historical provider root before update or removal', async () => {
     const filesystem = new WslSkillInstallFilesystem('Ubuntu-24.04', [WSL_ROOT])
     const historicalRoot =
-      '\\\\wsl.localhost\\Ubuntu-24.04\\home\\jin\\.local\\share\\orca\\claude-accounts\\old\\auth\\skills'
+      '\\\\wsl.localhost\\Ubuntu-24.04\\home\\jin\\.local\\share\\occ\\claude-accounts\\old\\auth\\skills'
     filesystem.authorizeRoots([historicalRoot])
 
     await filesystem.remove(`${historicalRoot}\\private-skill`)
@@ -137,7 +137,7 @@ describe('WslSkillInstallFilesystem', () => {
     expect(runWslProcessMock).toHaveBeenCalledOnce()
     expect(runWslProcessMock.mock.calls[0]?.[0].args).toEqual(
       expect.arrayContaining([
-        '/home/jin/.local/share/orca/claude-accounts/old/auth/skills/private-skill'
+        '/home/jin/.local/share/occ/claude-accounts/old/auth/skills/private-skill'
       ])
     )
   })

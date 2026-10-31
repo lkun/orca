@@ -1,6 +1,6 @@
 /** STA-1840 regression: known blank-terminal handles request a bounded renderer mount. */
 import { describe, expect, it, vi } from 'vitest'
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 
 export function registerTerminalMobileSubscribeTabMountTests(): void {
   type HandleSeed = {
@@ -28,10 +28,10 @@ export function registerTerminalMobileSubscribeTabMountTests(): void {
   }
 
   function seedRuntime(seeds: HandleSeed[]): {
-    runtime: OrcaRuntimeService
+    runtime: OCCRuntimeService
     send: ReturnType<typeof vi.fn>
   } {
-    const runtime = new OrcaRuntimeService()
+    const runtime = new OCCRuntimeService()
     const internals = runtime as unknown as RuntimeInternals
     for (const seed of seeds) {
       internals.handles.set(seed.handle, {
@@ -49,7 +49,7 @@ export function registerTerminalMobileSubscribeTabMountTests(): void {
 
   describe('mobile terminal subscribe tab mount', () => {
     it('keeps a waiting real-tab handle usable when the mount binds its first PTY', async () => {
-      const runtime = new OrcaRuntimeService()
+      const runtime = new OCCRuntimeService()
       const syncGraph = (ptyId: string | null): void => {
         runtime.syncWindowGraph(1, {
           tabs: [

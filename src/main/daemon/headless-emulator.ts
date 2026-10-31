@@ -2,7 +2,7 @@ import './xterm-env-polyfill'
 import { Terminal, type ITerminalOptions } from '@xterm/headless'
 import { SerializeAddon } from '@xterm/addon-serialize'
 import { Unicode11Addon } from '@xterm/addon-unicode11'
-import { activateOrcaTerminalUnicodeProvider } from '../../shared/terminal-unicode-provider'
+import { activateOCCTerminalUnicodeProvider } from '../../shared/terminal-unicode-provider'
 import {
   readSavedCursorRegister,
   serializeWithAbsoluteCursor
@@ -100,7 +100,7 @@ export class HeadlessEmulator {
 
     // Match renderer cell widths to prevent shifted snapshot rows.
     this.terminal.loadAddon(new Unicode11Addon())
-    activateOrcaTerminalUnicodeProvider(this.terminal)
+    activateOCCTerminalUnicodeProvider(this.terminal)
 
     // Unsolicited emulator replies could race the renderer into shell input.
     this.onQueryReply = opts.onQueryReply ?? null

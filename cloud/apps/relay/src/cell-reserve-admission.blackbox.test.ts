@@ -1,7 +1,7 @@
 import { createHash, createHmac } from 'node:crypto'
 import { createServer, type Server } from 'node:http'
 import { createServer as createNetServer } from 'node:net'
-import { buildHostProofMacInput, HOST_CHALLENGE_PLAINTEXT_DOMAIN } from '@orca-cloud/relay-contract'
+import { buildHostProofMacInput, HOST_CHALLENGE_PLAINTEXT_DOMAIN } from '@occ-cloud/relay-contract'
 import { exportJWK, generateKeyPair, SignJWT } from 'jose'
 import nacl from 'tweetnacl'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -49,7 +49,7 @@ function cellConfig(port: number, issuer: string): RelayConfig {
     publicUrl: relayUrl,
     cellUrl: relayUrl,
     authIssuer: issuer,
-    authAudience: 'orca-relay',
+    authAudience: 'occ-relay',
     jwksUrl: issuer,
     assignmentSigningKey: new Uint8Array(32),
     role: 'cell',
@@ -157,7 +157,7 @@ describe('a reserve-mode cell admits from memory with its database wedged', () =
       })
         .setProtectedHeader({ alg: 'ES256', kid: 'test-key' })
         .setIssuer(issuer)
-        .setAudience('orca-relay')
+        .setAudience('occ-relay')
         .setSubject('user-1')
         .setIssuedAt()
         .setExpirationTime('5m')
@@ -375,10 +375,10 @@ describe('a reserve-mode cell admits from memory with its database wedged', () =
         ]
       })
       expect(seatEpochs(cell)).toEqual([9])
-      expect(warned('orca_relay_cell_seat_log_drift')).toMatchObject([
+      expect(warned('occ_relay_cell_seat_log_drift')).toMatchObject([
         { kind: 'unbacked-seat', via: 'demote', reason: 'epoch', seatEpoch: 8, sessionEpoch: 9, relisted: true }
       ])
-      expect(JSON.stringify(warned('orca_relay_cell_seat_log_drift'))).not.toContain(identity.hostId)
+      expect(JSON.stringify(warned('occ_relay_cell_seat_log_drift'))).not.toContain(identity.hostId)
       // Asked again, there is nothing left to repair.
       expect(cell.relay.sessions.demote(seat)).toBe('not-seated')
       expect(cell.relay.sessions.seatFeed(seq + 2)).toMatchObject({ changes: [] })
@@ -398,7 +398,7 @@ describe('a reserve-mode cell admits from memory with its database wedged', () =
       expect(seatEpochs(cell)).toEqual([10])
       cell.advance(CELL_SEAT_DRIFT_SWEEP_MS)
       expect(seatEpochs(cell)).toEqual([])
-      expect(warned('orca_relay_cell_seat_log_drift')).toMatchObject([
+      expect(warned('occ_relay_cell_seat_log_drift')).toMatchObject([
         { kind: 'unbacked-seat', via: 'sweep', reason: 'no-session', seatEpoch: 10, seatGeneration: 3, relisted: false }
       ])
       // Left as moved: the cell will not seat it again at 10 from memory.
@@ -421,7 +421,7 @@ describe('a reserve-mode cell admits from memory with its database wedged', () =
       expect(seatEpochs(cell)).toEqual([])
       cell.advance(CELL_SEAT_DRIFT_SWEEP_MS)
       expect(seatEpochs(cell)).toEqual([9])
-      expect(warned('orca_relay_cell_seat_log_drift')).toMatchObject([{ kind: 'unlisted-session', sessionEpoch: 9 }])
+      expect(warned('occ_relay_cell_seat_log_drift')).toMatchObject([{ kind: 'unlisted-session', sessionEpoch: 9 }])
     })
 
     // A drained session's seat stays listed, with no session, until its socket's close lands.
@@ -444,7 +444,7 @@ describe('a reserve-mode cell admits from memory with its database wedged', () =
       await new Promise((resolve) => setTimeout(resolve, RELAY_WEBSOCKET_FORCE_CLOSE_MS + 300))
       cell.advance(CELL_SEAT_DRIFT_SWEEP_MS)
       expect(seatEpochs(cell)).toEqual([])
-      expect(warned('orca_relay_cell_seat_log_drift')).toEqual([])
+      expect(warned('occ_relay_cell_seat_log_drift')).toEqual([])
     }, 10_000)
 
     // Drained sockets can close seconds after map removal; reusing their generation let late leaves erase reconnected live seats.
@@ -485,7 +485,7 @@ describe('a reserve-mode cell admits from memory with its database wedged', () =
         cell.advance(CELL_SEAT_DRIFT_SWEEP_MS)
       }
       expect(seatEpochs(cell)).toEqual([11])
-      expect(warned('orca_relay_cell_seat_log_drift')).toEqual([])
+      expect(warned('occ_relay_cell_seat_log_drift')).toEqual([])
     })
   })
 

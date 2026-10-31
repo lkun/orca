@@ -76,7 +76,7 @@ describe.skipIf(process.platform === 'win32')('a WSL bridge sh pane reports its 
       `#!/bin/sh\nprintf '%s\\n' "user:x:1000:1000::${home}:${shell}"\n`
     )
     chmodSync(path.join(bin, 'getent'), 0o755)
-    return { PATH: `${bin}:/usr/bin:/bin`, HOME: home, ORCA_SHELL_READY_ROOT: root }
+    return { PATH: `${bin}:/usr/bin:/bin`, HOME: home, OCC_SHELL_READY_ROOT: root }
   }
 
   async function runBridge(shell: string, env: Record<string, string>): Promise<string> {
@@ -166,13 +166,13 @@ describe.skipIf(process.platform === 'win32')('the WSL bridge sh ENV file', () =
   it('is never read by a non-interactive sh -c', () => {
     const out = execFileSync(
       '/bin/sh',
-      ['-c', 'command -v __orca_wsl_cwd_report >/dev/null && echo HOOKED || echo PLAIN'],
+      ['-c', 'command -v __occ_wsl_cwd_report >/dev/null && echo HOOKED || echo PLAIN'],
       {
         encoding: 'utf8',
         env: {
           PATH: '/usr/bin:/bin',
           ENV: path.join(home, 'env'),
-          ORCA_WSL_USER_ENV: path.join(home, 'user-env'),
+          OCC_WSL_USER_ENV: path.join(home, 'user-env'),
           WSL_DISTRO_NAME: 'Ubuntu'
         }
       }
@@ -201,7 +201,7 @@ describe.skipIf(process.platform === 'win32')('the WSL bridge launch for sh', ()
       const stub = path.join(home, 'dash')
       writeFileSync(
         stub,
-        '#!/bin/sh\nprintf "ENV=[%s] USER=[%s]\\n" "${ENV-unset}" "${ORCA_WSL_USER_ENV-unset}"\n'
+        '#!/bin/sh\nprintf "ENV=[%s] USER=[%s]\\n" "${ENV-unset}" "${OCC_WSL_USER_ENV-unset}"\n'
       )
       chmodSync(stub, 0o755)
       writeFileSync(path.join(home, 'getent'), `#!/bin/sh\nprintf '%s\\n' "u:x:1:1::/:${stub}"\n`)
@@ -210,7 +210,7 @@ describe.skipIf(process.platform === 'win32')('the WSL bridge launch for sh', ()
       writeFileSync(path.join(root, 'sh', 'env'), SH_WSL_ENV_FILE)
       return execFileSync('/bin/sh', ['-c', buildWslInteractiveLoginShellCommand()], {
         encoding: 'utf8',
-        env: { PATH: `${home}:/usr/bin:/bin`, ORCA_SHELL_READY_ROOT: root, ...inherited }
+        env: { PATH: `${home}:/usr/bin:/bin`, OCC_SHELL_READY_ROOT: root, ...inherited }
       }).trim()
     } finally {
       rmSync(home, { recursive: true, force: true })

@@ -17,7 +17,7 @@ const UI_ONLY_SELECTORS = [
   '[class*="rich-markdown-search"]',
   // Keep the explicit class fallback if export-hide attributes are stripped.
   '.markdown-annotation-controls',
-  '[data-orca-export-hide]'
+  '[data-occ-export-hide]'
 ]
 
 function basenameWithoutExt(filePath: string): string {

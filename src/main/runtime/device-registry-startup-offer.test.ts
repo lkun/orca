@@ -13,9 +13,9 @@ afterEach(() => {
 })
 
 // SSH/WSL re-pair from enrolled grants because startup offers rotate after use.
-describe("orcad's startup pairing offer", () => {
+describe("occd's startup pairing offer", () => {
   it('repeats while unused, and names a new device once a client has paired with it', () => {
-    dir = mkdtempSync(join(tmpdir(), 'orca-startup-offer-'))
+    dir = mkdtempSync(join(tmpdir(), 'occ-startup-offer-'))
     const registry = new DeviceRegistry(dir)
     const first = registry.getOrCreatePendingDevice('CLI', 'runtime')
     expect(new DeviceRegistry(dir).getOrCreatePendingDevice('CLI', 'runtime').deviceId).toBe(

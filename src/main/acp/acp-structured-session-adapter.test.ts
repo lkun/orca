@@ -83,19 +83,19 @@ describe('ACP structured session adapter: acquire', () => {
           resolveWorkspacePath: async () => '/workspace/project',
           resolveEnvironment: async () => ({
             PATH: '/usr/bin',
-            ORCA_PANE_KEY: 'tab-1:pane-1',
-            ORCA_TAB_ID: 'tab-1',
-            ORCA_WORKTREE_ID: 'worktree-1',
-            ORCA_AGENT_LAUNCH_TOKEN: 'launch-1',
-            ORCA_AGENT_PANE: 'tab-1:pane-1',
-            ORCA_AGENT_LAUNCH: 'launch-1',
-            ORCA_AGENT_HOOK_PORT: '1234',
-            ORCA_AGENT_HOOK_TOKEN: 'hook-token',
-            ORCA_AGENT_HOOK_ENV: 'test',
-            ORCA_AGENT_HOOK_VERSION: '1',
-            ORCA_AGENT_HOOK_TRANSPORT: 'http',
-            ORCA_AGENT_HOOK_ENDPOINT: '/hook',
-            ORCA_CLAUDE_AGENT_STATUS_SETTINGS: '{}'
+            OCC_PANE_KEY: 'tab-1:pane-1',
+            OCC_TAB_ID: 'tab-1',
+            OCC_WORKTREE_ID: 'worktree-1',
+            OCC_AGENT_LAUNCH_TOKEN: 'launch-1',
+            OCC_AGENT_PANE: 'tab-1:pane-1',
+            OCC_AGENT_LAUNCH: 'launch-1',
+            OCC_AGENT_HOOK_PORT: '1234',
+            OCC_AGENT_HOOK_TOKEN: 'hook-token',
+            OCC_AGENT_HOOK_ENV: 'test',
+            OCC_AGENT_HOOK_VERSION: '1',
+            OCC_AGENT_HOOK_TRANSPORT: 'http',
+            OCC_AGENT_HOOK_ENDPOINT: '/hook',
+            OCC_CLAUDE_AGENT_STATUS_SETTINGS: '{}'
           }),
           resolveCommand: () => '/opt/bin/grok',
           readJournal: () => null
@@ -106,24 +106,24 @@ describe('ACP structured session adapter: acquire', () => {
     const launch = rig.child().launch
     expect(launch.envToDelete).toEqual(
       expect.arrayContaining([
-        'ORCA_PANE_KEY',
-        'ORCA_TAB_ID',
-        'ORCA_WORKTREE_ID',
-        'ORCA_AGENT_LAUNCH_TOKEN',
-        'ORCA_AGENT_PANE',
-        'ORCA_AGENT_LAUNCH',
-        'ORCA_AGENT_HOOK_PORT',
-        'ORCA_AGENT_HOOK_TOKEN',
-        'ORCA_AGENT_HOOK_ENV',
-        'ORCA_AGENT_HOOK_VERSION',
-        'ORCA_AGENT_HOOK_TRANSPORT',
-        'ORCA_AGENT_HOOK_ENDPOINT',
-        'ORCA_CLAUDE_AGENT_STATUS_SETTINGS'
+        'OCC_PANE_KEY',
+        'OCC_TAB_ID',
+        'OCC_WORKTREE_ID',
+        'OCC_AGENT_LAUNCH_TOKEN',
+        'OCC_AGENT_PANE',
+        'OCC_AGENT_LAUNCH',
+        'OCC_AGENT_HOOK_PORT',
+        'OCC_AGENT_HOOK_TOKEN',
+        'OCC_AGENT_HOOK_ENV',
+        'OCC_AGENT_HOOK_VERSION',
+        'OCC_AGENT_HOOK_TRANSPORT',
+        'OCC_AGENT_HOOK_ENDPOINT',
+        'OCC_CLAUDE_AGENT_STATUS_SETTINGS'
       ])
     )
     expect(launch.env).toMatchObject({
-      ORCA_AGENT_SESSION_ID: SESSION,
-      ORCA_AGENT_SESSION_SPAWN_TOKEN: 'spawn-1'
+      OCC_AGENT_SESSION_ID: SESSION,
+      OCC_AGENT_SESSION_SPAWN_TOKEN: 'spawn-1'
     })
   })
 
@@ -506,7 +506,7 @@ describe('ACP structured session adapter: turns', () => {
         {
           sessionId: SESSION,
           clientMessageId: 'send-1',
-          providerIdentity: { provider: 'orca', clientMessageId: 'send-1' }
+          providerIdentity: { provider: 'occ', clientMessageId: 'send-1' }
         }
       ])
     )
@@ -803,11 +803,11 @@ describe('Grok launch spec', () => {
       '--always-approve',
       'stdio'
     ])
-    expect(GROK.args({ fullAccess: true, pluginDir: '/orca/visuals' })).toEqual([
+    expect(GROK.args({ fullAccess: true, pluginDir: '/occ/visuals' })).toEqual([
       'agent',
       '--always-approve',
       '--plugin-dir',
-      '/orca/visuals',
+      '/occ/visuals',
       'stdio'
     ])
   })

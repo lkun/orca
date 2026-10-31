@@ -43,7 +43,7 @@ const localRepo: Repo = {
   displayName: 'OCC',
   badgeColor: '',
   addedAt: 0,
-  upstream: { owner: 'stablyai', repo: 'orca' }
+  upstream: { owner: 'stablyai', repo: 'occ' }
 }
 const runtimeRepo: Repo = {
   ...localRepo,
@@ -154,7 +154,7 @@ describe('set-location host identity', () => {
           option={option}
           projectName="OCC"
           projectKind="git"
-          defaultCloneUrl="https://github.com/stablyai/orca.git"
+          defaultCloneUrl="https://github.com/stablyai/occ.git"
           onClose={vi.fn()}
           onReady={(selection) => result.current.handleProjectHostSetupChange(selection)}
         />

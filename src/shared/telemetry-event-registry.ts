@@ -14,7 +14,7 @@ import {
   agentPromptSentSchema,
   agentStartedSchema,
   appOpenedSchema,
-  appStarredOrcaSchema,
+  appStarredOCCSchema,
   featureInteractionUsageBucketReachedSchema,
   repoAddedSchema,
   starNagOutcomeEventSchema,
@@ -66,9 +66,9 @@ import {
   nativeChatSendClassifiedSchema,
   nativeChatSkillDiscoverySchema,
   nativeChatToggledSchema,
-  orcaCliFeatureTipSetupClickedSchema,
-  orcaCliFeatureTipSetupResultSchema,
-  orcaCliFeatureTipShownSchema,
+  occCliFeatureTipSetupClickedSchema,
+  occCliFeatureTipSetupResultSchema,
+  occCliFeatureTipShownSchema,
   telemetryOptedInSchema,
   telemetryOptedOutSchema
 } from './telemetry-native-feature-event-schemas'
@@ -127,7 +127,7 @@ export const eventSchemas = {
   agent_dashboard_enabled: agentDashboardEnabledSchema,
   agent_dashboard_opened: agentDashboardOpenedSchema,
   app_opened: appOpenedSchema,
-  app_starred_orca: appStarredOrcaSchema,
+  app_starred_occ: appStarredOCCSchema,
   star_nag_outcome: starNagOutcomeEventSchema,
   feature_interaction_usage_bucket_reached: featureInteractionUsageBucketReachedSchema,
 
@@ -178,9 +178,9 @@ export const eventSchemas = {
   telemetry_opted_in: telemetryOptedInSchema,
   telemetry_opted_out: telemetryOptedOutSchema,
 
-  orca_cli_feature_tip_shown: orcaCliFeatureTipShownSchema,
-  orca_cli_feature_tip_setup_clicked: orcaCliFeatureTipSetupClickedSchema,
-  orca_cli_feature_tip_setup_result: orcaCliFeatureTipSetupResultSchema,
+  occ_cli_feature_tip_shown: occCliFeatureTipShownSchema,
+  occ_cli_feature_tip_setup_clicked: occCliFeatureTipSetupClickedSchema,
+  occ_cli_feature_tip_setup_result: occCliFeatureTipSetupResultSchema,
   cmd_j_palette_feature_tip_shown: cmdJPaletteFeatureTipShownSchema,
   cmd_j_palette_feature_tip_acknowledged: cmdJPaletteFeatureTipAcknowledgedSchema,
   chat_ui_feature_tip_shown: chatUiFeatureTipShownSchema,

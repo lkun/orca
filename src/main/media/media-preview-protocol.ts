@@ -53,7 +53,7 @@ export const MEDIA_PREVIEW_CUSTOM_SCHEME: Electron.CustomScheme = {
 }
 
 /**
- * A local file as an `orca-media://` URL its viewer reads by range: audio and video always,
+ * A local file as an `occ-media://` URL its viewer reads by range: audio and video always,
  * images and PDFs only for a viewer that asks (`documents`); other callers keep base64.
  */
 export async function readLocalFilePreview(
@@ -98,7 +98,7 @@ export async function readLocalFilePreview(
   return mintPreviewUrl(event.sender, target, store, preview, undefined, size)
 }
 
-/** A paired runtime's file as an `orca-media://` URL, streamed by range over files.stat/readChunk. */
+/** A paired runtime's file as an `occ-media://` URL, streamed by range over files.stat/readChunk. */
 export async function grantRemoteFilePreview(
   event: { sender: PreviewSender },
   address: RemoteFilePreviewAddress,

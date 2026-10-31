@@ -49,7 +49,7 @@ async function idFor(store: AnalyticsSessionIdStore, key: string) {
   return id
 }
 beforeEach(() => {
-  directory = mkdtempSync(join(tmpdir(), 'orca-analytics-session-id-'))
+  directory = mkdtempSync(join(tmpdir(), 'occ-analytics-session-id-'))
   file = join(directory, 'identities.json')
   stores = []
   writeGate.entered = null

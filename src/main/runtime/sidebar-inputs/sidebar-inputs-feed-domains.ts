@@ -8,7 +8,7 @@ import type { DesktopSidebarFacts } from '../../../shared/sidebar-list/desktop-s
 import type { RuntimeStore } from '../runtime-store-contract'
 import { WORKTREE_METADATA_DOMAINS } from '../../persistence/loading-store/worktree-identity-metadata'
 import type { PersistedUIState } from '../../../shared/persisted-ui-state-types'
-import type { OrcaRuntimeWithSidebarTemporal } from './orca-runtime-sidebar-temporal'
+import type { OCCRuntimeWithSidebarTemporal } from './occ-runtime-sidebar-temporal'
 import type { PairedServerRowsProducer } from './paired-server-rows-producer'
 import type { WorkspaceLifecycleQueue } from '../workspaces/workspace-lifecycle-queue'
 import type { WorkspaceRowsProducer } from './workspace-rows-producer'
@@ -66,7 +66,7 @@ const SIDEBAR_VIEW_UI_FIELDS = [
 const DESKTOP_WRITE_DOMAINS = [...WORKTREE_METADATA_DOMAINS, 'settings', 'ui']
 
 export type SidebarInputsFeedSources = {
-  facts: OrcaRuntimeWithSidebarTemporal
+  facts: OCCRuntimeWithSidebarTemporal
   pairedServerRows: PairedServerRowsProducer
   workspaceLifecycle: WorkspaceLifecycleQueue
   workspaceRows: WorkspaceRowsProducer

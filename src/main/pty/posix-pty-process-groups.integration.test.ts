@@ -76,7 +76,7 @@ function readProcessGroup(pid: number): number {
 itOnPosix(
   'reaps a foreground job that ignores terminal shutdown signals',
   async () => {
-    const token = `ORCA_PTY_GROUP_TEST_${process.pid}_${Date.now()}`
+    const token = `OCC_PTY_GROUP_TEST_${process.pid}_${Date.now()}`
     const proc = pty.spawn('/bin/sh', [], {
       name: 'xterm-256color',
       cols: 80,

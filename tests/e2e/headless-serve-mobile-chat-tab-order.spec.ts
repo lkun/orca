@@ -1,6 +1,6 @@
 // Keep a phone-created Claude tab in place while surrounding headless-host terminals close and reopen (#29968).
 import { randomUUID } from 'node:crypto'
-import { expect, test } from './helpers/orca-app'
+import { expect, test } from './helpers/occ-app'
 import { launchHeadlessPairedRuntimeHost } from './helpers/headless-paired-runtime-host'
 import { pairMobileClient } from './helpers/paired-mobile-client'
 import {

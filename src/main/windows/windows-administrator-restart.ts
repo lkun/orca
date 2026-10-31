@@ -1,11 +1,11 @@
 import { existsSync } from 'node:fs'
 import { win32 } from 'node:path'
 import { app } from 'electron'
-import { quoteWindowsArgument } from '@orca/process-host/windows-command-line'
+import { quoteWindowsArgument } from '@occ/process-host/windows-command-line'
 import { getBundledLauncherPath } from '../cli/bundled-cli-launcher-path'
 import { getWindowsAdministratorStatus } from './windows-administrator-status'
 
-const RESTART_LOCAL_TERMINALS_ARG = '--orca-restart-local-terminals-as-administrator'
+const RESTART_LOCAL_TERMINALS_ARG = '--occ-restart-local-terminals-as-administrator'
 
 export function getWindowsAdministratorRelaunchOptions(): Electron.RelaunchOptions | undefined {
   if (
@@ -24,7 +24,7 @@ export function prepareWindowsAdministratorRestart(): Electron.RelaunchOptions {
   }
   const cliLauncher = getBundledLauncherPath('win32', process.resourcesPath)
   const launcher =
-    cliLauncher && win32.join(win32.dirname(cliLauncher), 'orca-administrator-restart.exe')
+    cliLauncher && win32.join(win32.dirname(cliLauncher), 'occ-administrator-restart.exe')
   if (!launcher || !existsSync(launcher)) {
     throw new Error('The Windows administrator launcher is unavailable.')
   }
@@ -32,7 +32,7 @@ export function prepareWindowsAdministratorRestart(): Electron.RelaunchOptions {
   return {
     execPath: launcher,
     args: [
-      '--orca-restart-as-administrator',
+      '--occ-restart-as-administrator',
       process.execPath,
       [...args, RESTART_LOCAL_TERMINALS_ARG].map(quoteWindowsArgument).join(' '),
       args.map(quoteWindowsArgument).join(' ')

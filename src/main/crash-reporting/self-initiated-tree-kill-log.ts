@@ -1,5 +1,5 @@
 import type { CrashReportDetailValue } from '../../shared/crash-reporting'
-import type { ProcessTreeKillScope } from '@orca/process-host/process-tree-kill-gate'
+import type { ProcessTreeKillScope } from '@occ/process-host/process-tree-kill-gate'
 import { recordCoalescedDurableCrashBreadcrumb } from './durable-crash-breadcrumb'
 
 // Reports see only kills recorded in Electron main; remote-host rings and uninstrumented paths are absent.

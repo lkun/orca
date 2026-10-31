@@ -13,7 +13,7 @@ export function resolveWorkerThreadEntryPath(
   layout: WorkerEntryLayout,
   entryFileName: string
 ): string {
-  // Plain-Node orcad can be packaged without Electron resources; its workers live beside the module.
+  // Plain-Node occd can be packaged without Electron resources; its workers live beside the module.
   if (layout.isPackaged && layout.resourcesPath) {
     return join(layout.resourcesPath, 'app.asar', 'out', 'main', entryFileName)
   }

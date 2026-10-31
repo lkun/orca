@@ -16,14 +16,14 @@ describe('skill bundle observability summary', () => {
         digest: 'b'.repeat(64),
         status: 'failed' as const,
         placements: [],
-        errorCategory: `skill-error-${index}`
+        errocctegory: `skill-error-${index}`
       }))
     }
 
     const summary = summarizeSkillBundleObservation(result)
 
-    expect(summary.errorCategories.size).toBe(32)
-    expect([...summary.errorCategories.values()].reduce((total, count) => total + count, 0)).toBe(
+    expect(summary.errocctegories.size).toBe(32)
+    expect([...summary.errocctegories.values()].reduce((total, count) => total + count, 0)).toBe(
       40
     )
   })

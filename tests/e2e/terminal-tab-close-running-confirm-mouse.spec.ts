@@ -1,5 +1,5 @@
 // #10142: require middle-click confirmation, actual close on confirm, and one Cmd+W dialog across last-pane→tab delegation.
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import type { Page } from '@stablyai/playwright-test'
 import {
   waitForSessionReady,
@@ -49,47 +49,47 @@ async function startBusyTerminal(page: Page): Promise<string> {
 
 test.describe.configure({ mode: 'serial' })
 
-test('middle-clicking a busy tab prompts, and cancelling keeps the tab', async ({ orcaPage }) => {
+test('middle-clicking a busy tab prompts, and cancelling keeps the tab', async ({ occPage }) => {
   test.setTimeout(120_000)
-  const busyTabId = await startBusyTerminal(orcaPage)
-  const busyTab = orcaPage.locator(`${SORTABLE_TAB}[data-tab-id="${busyTabId}"]`).first()
-  const tabsBefore = await orcaPage.locator(SORTABLE_TAB).count()
+  const busyTabId = await startBusyTerminal(occPage)
+  const busyTab = occPage.locator(`${SORTABLE_TAB}[data-tab-id="${busyTabId}"]`).first()
+  const tabsBefore = await occPage.locator(SORTABLE_TAB).count()
 
   await busyTab.click({ button: 'middle' })
 
-  await expect(closeDialogTitle(orcaPage)).toBeVisible({ timeout: 15_000 })
-  await orcaPage.getByRole('button', { name: /^Cancel$/ }).click()
-  await expect(closeDialogTitle(orcaPage)).toBeHidden()
+  await expect(closeDialogTitle(occPage)).toBeVisible({ timeout: 15_000 })
+  await occPage.getByRole('button', { name: /^Cancel$/ }).click()
+  await expect(closeDialogTitle(occPage)).toBeHidden()
   await expect(busyTab).toBeVisible()
-  expect(await orcaPage.locator(SORTABLE_TAB).count()).toBe(tabsBefore)
+  expect(await occPage.locator(SORTABLE_TAB).count()).toBe(tabsBefore)
 })
 
-test('confirming the X-button prompt closes the busy tab', async ({ orcaPage }) => {
+test('confirming the X-button prompt closes the busy tab', async ({ occPage }) => {
   test.setTimeout(120_000)
-  const busyTabId = await startBusyTerminal(orcaPage)
-  const busyTab = orcaPage.locator(`${SORTABLE_TAB}[data-tab-id="${busyTabId}"]`).first()
+  const busyTabId = await startBusyTerminal(occPage)
+  const busyTab = occPage.locator(`${SORTABLE_TAB}[data-tab-id="${busyTabId}"]`).first()
 
   await busyTab.hover()
   await busyTab.getByRole('button', { name: /^Close tab /i }).click()
-  await expect(closeDialogTitle(orcaPage)).toBeVisible({ timeout: 15_000 })
-  await orcaPage.getByRole('button', { name: /^Stop and Close$/ }).click()
+  await expect(closeDialogTitle(occPage)).toBeVisible({ timeout: 15_000 })
+  await occPage.getByRole('button', { name: /^Stop and Close$/ }).click()
 
   await expect(busyTab).toHaveCount(0, { timeout: 15_000 })
-  await expect(closeDialogTitle(orcaPage)).toBeHidden()
+  await expect(closeDialogTitle(occPage)).toBeHidden()
 })
 
-test('Cmd+W on a busy single-pane tab raises exactly one dialog', async ({ orcaPage }) => {
+test('Cmd+W on a busy single-pane tab raises exactly one dialog', async ({ occPage }) => {
   test.setTimeout(120_000)
-  const busyTabId = await startBusyTerminal(orcaPage)
-  const busyTab = orcaPage.locator(`${SORTABLE_TAB}[data-tab-id="${busyTabId}"]`).first()
+  const busyTabId = await startBusyTerminal(occPage)
+  const busyTab = occPage.locator(`${SORTABLE_TAB}[data-tab-id="${busyTabId}"]`).first()
 
-  await focusActiveTerminalInput(orcaPage)
-  await orcaPage.keyboard.press(process.platform === 'darwin' ? 'Meta+w' : 'Control+w')
-  await expect(closeDialogTitle(orcaPage)).toBeVisible({ timeout: 15_000 })
-  await orcaPage.getByRole('button', { name: /^Stop and Close$/ }).click()
+  await focusActiveTerminalInput(occPage)
+  await occPage.keyboard.press(process.platform === 'darwin' ? 'Meta+w' : 'Control+w')
+  await expect(closeDialogTitle(occPage)).toBeVisible({ timeout: 15_000 })
+  await occPage.getByRole('button', { name: /^Stop and Close$/ }).click()
 
   await expect(busyTab).toHaveCount(0, { timeout: 15_000 })
   // Reject duplicate pane and delegated closeTerminalTab confirmations.
-  await orcaPage.waitForTimeout(1_500)
-  await expect(closeDialogTitle(orcaPage)).toBeHidden()
+  await occPage.waitForTimeout(1_500)
+  await expect(closeDialogTitle(occPage)).toBeHidden()
 })

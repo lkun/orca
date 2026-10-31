@@ -17,14 +17,14 @@ function builderFor(marker: string): ShellWrapperFileBuilder {
 }
 
 function makeBase(): string {
-  return mkdtempSync(join(tmpdir(), 'orca-wrapper-address-'))
+  return mkdtempSync(join(tmpdir(), 'occ-wrapper-address-'))
 }
 
 describe('resolveShellWrapperRoot', () => {
   it('gives builds with different wrapper contents different trees', () => {
     const base = makeBase()
-    expect(resolveShellWrapperRoot(base, builderFor('ORCA_SHELL_READY_MARKER'))).not.toEqual(
-      resolveShellWrapperRoot(base, builderFor('ORCA_SHELL_FEATURES'))
+    expect(resolveShellWrapperRoot(base, builderFor('OCC_SHELL_READY_MARKER'))).not.toEqual(
+      resolveShellWrapperRoot(base, builderFor('OCC_SHELL_FEATURES'))
     )
   })
 

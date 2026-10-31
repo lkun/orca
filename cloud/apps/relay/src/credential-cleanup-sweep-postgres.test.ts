@@ -9,7 +9,7 @@ import {
 import { openRelayDatabase, type RelayDatabase } from './database.js'
 
 // Real planner/ctid coverage: 23 cells’ 30s invite sweeps once scanned the whole table; partial indexes must remove those scans.
-const databaseUrl = process.env.ORCA_RELAY_TEST_POSTGRES_URL
+const databaseUrl = process.env.OCC_RELAY_TEST_POSTGRES_URL
 const describePostgres = databaseUrl ? describe : describe.skip
 const schema = 'relay_credential_sweep_test'
 

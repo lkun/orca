@@ -1,7 +1,7 @@
 import '../unused-default-rpc-methods.test-fixture'
 import { describe, expect, it, vi } from 'vitest'
 import { RpcDispatcher } from '../dispatcher'
-import type { OrcaRuntimeService } from '../../orca-runtime'
+import type { OCCRuntimeService } from '../../occ-runtime'
 import type { DirEntry } from '../../../../shared/filesystem-entry-types'
 import type { DirEntryCursor } from '../../../../shared/file-dir-page'
 import { FILE_METHODS } from './files'
@@ -247,15 +247,15 @@ describe('DirListingPageCache', () => {
 
 function dispatcherWithListing(entries: DirEntry[]) {
   const readFileExplorerDir = vi
-    .fn<OrcaRuntimeService['readFileExplorerDir']>()
+    .fn<OCCRuntimeService['readFileExplorerDir']>()
     .mockResolvedValue(entries)
-  const runtime: Pick<OrcaRuntimeService, 'getRuntimeId' | 'readFileExplorerDir'> = {
+  const runtime: Pick<OCCRuntimeService, 'getRuntimeId' | 'readFileExplorerDir'> = {
     getRuntimeId: () => 'test-runtime',
     readFileExplorerDir
   }
   const dispatcher = new RpcDispatcher({
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: files.readDir uses readFileExplorerDir; its response envelope reads only getRuntimeId.
-    runtime: runtime as OrcaRuntimeService,
+    runtime: runtime as OCCRuntimeService,
     methods: FILE_METHODS
   })
   return { dispatcher, readFileExplorerDir }
@@ -334,7 +334,7 @@ describe('files.readDir pages', () => {
       registerSubscriptionCleanup: vi.fn()
     }
     // oxlint-disable-next-line typescript/consistent-type-assertions -- SAFETY: files.readDir and files.watch only touch these runtime members.
-    const runtime = fakeRuntime as unknown as OrcaRuntimeService
+    const runtime = fakeRuntime as unknown as OCCRuntimeService
     const dispatcher = new RpcDispatcher({ runtime, methods: FILE_METHODS })
     void dispatcher.dispatchStreaming(
       { id: 'watch', authToken: 'tok', method: 'files.watch', params: { worktree: 'id:wt-1' } },

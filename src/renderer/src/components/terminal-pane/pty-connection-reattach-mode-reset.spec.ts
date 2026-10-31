@@ -12,7 +12,7 @@ import {
 import { replayEpilogue } from './pty-connection-test-replay-epilogue'
 import { STARTUP_CWD_FALLBACK_NOTICE } from '../../../../shared/startup-cwd-fallback'
 import { flushAsyncTicks } from './pty-connection-test-async'
-import { ORCA_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
+import { OCC_LAYOUT_OWNER_IS_MAIN } from '../../../../shared/layout-owner-switch'
 import {
   bindsPaneInStore,
   expectWindowStartAskedMain,
@@ -443,7 +443,7 @@ export function registerPtyConnectionReattachModeResetTests(): void {
           restoredLeafId: LEAF_1,
           restoredPtyIdByLeafId: { [LEAF_1]: 'tab-pty' }
         })
-        if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+        if (OCC_LAYOUT_OWNER_IS_MAIN) {
           await mainStartsPaneAs({
             ptyId: 'adopted-pty',
             bind: bindsPaneInStore(() => mockStoreState, 'tab-1', LEAF_1)
@@ -455,7 +455,7 @@ export function registerPtyConnectionReattachModeResetTests(): void {
 
         expect(transport.connect).toHaveBeenCalledTimes(2)
         expect(transport.connect.mock.calls[0]?.[0]?.sessionId).toBe('tab-pty')
-        if (ORCA_LAYOUT_OWNER_IS_MAIN) {
+        if (OCC_LAYOUT_OWNER_IS_MAIN) {
           // The gone session asks main to start the pane; the attach to it meets the payload.
           await expectWindowStartAskedMain(transport, `tab-1:${LEAF_1}`)
           expect(transport.connect.mock.calls[1]?.[0]).toMatchObject({

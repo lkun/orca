@@ -68,7 +68,7 @@ afterEach(() => {
 })
 
 it('removes the hidden SSH target when provider cleanup cannot start', async () => {
-  const userDataPath = mkdtempSync(join(tmpdir(), 'orca-vm-runtime-handler-'))
+  const userDataPath = mkdtempSync(join(tmpdir(), 'occ-vm-runtime-handler-'))
   tempDirs.push(userDataPath)
   getPathMock.mockReturnValue(userDataPath)
   upsertEphemeralVmRuntime(userDataPath, {
@@ -86,7 +86,7 @@ it('removes the hidden SSH target when provider cleanup cannot start', async () 
       connection: {
         type: 'ssh',
         projectRoot: '/workspace/repo',
-        target: { label: 'VM', host: 'host', port: 22, username: 'orca' }
+        target: { label: 'VM', host: 'host', port: 22, username: 'occ' }
       }
     }
   })
@@ -106,8 +106,8 @@ it('removes the hidden SSH target when provider cleanup cannot start', async () 
 })
 
 it('stops in-flight cleanup and retains the runtime for retry', async () => {
-  const userDataPath = mkdtempSync(join(tmpdir(), 'orca-vm-runtime-handler-'))
-  const repoPath = mkdtempSync(join(tmpdir(), 'orca-vm-runtime-repo-'))
+  const userDataPath = mkdtempSync(join(tmpdir(), 'occ-vm-runtime-handler-'))
+  const repoPath = mkdtempSync(join(tmpdir(), 'occ-vm-runtime-repo-'))
   tempDirs.push(userDataPath, repoPath)
   getPathMock.mockReturnValue(userDataPath)
   const destroyPath = join(repoPath, 'destroy.js')
@@ -135,7 +135,7 @@ it('stops in-flight cleanup and retains the runtime for retry', async () => {
       connection: {
         type: 'ssh',
         projectRoot: '/workspace/repo',
-        target: { label: 'VM', host: 'host', port: 22, username: 'orca' }
+        target: { label: 'VM', host: 'host', port: 22, username: 'occ' }
       }
     }
   })
@@ -166,8 +166,8 @@ it('stops in-flight cleanup and retains the runtime for retry', async () => {
 })
 
 it("retires a recipe server's session partition once its VM is destroyed (#33805)", async () => {
-  const userDataPath = mkdtempSync(join(tmpdir(), 'orca-vm-runtime-handler-'))
-  const repoPath = mkdtempSync(join(tmpdir(), 'orca-vm-runtime-repo-'))
+  const userDataPath = mkdtempSync(join(tmpdir(), 'occ-vm-runtime-handler-'))
+  const repoPath = mkdtempSync(join(tmpdir(), 'occ-vm-runtime-repo-'))
   tempDirs.push(userDataPath, repoPath)
   getPathMock.mockReturnValue(userDataPath)
   const destroyPath = join(repoPath, 'destroy.js')
@@ -191,7 +191,7 @@ it("retires a recipe server's session partition once its VM is destroyed (#33805
     updatedAt: 1,
     recipeResult: {
       schemaVersion: 1,
-      connection: { type: 'orca-server', pairingCode: 'unused', projectRoot: '/workspace/repo' }
+      connection: { type: 'occ-server', pairingCode: 'unused', projectRoot: '/workspace/repo' }
     }
   })
   const removeWorkspaceSessionHost = vi.fn()

@@ -1,6 +1,6 @@
-import { OrcaRuntimeWithApplyLayout } from './terminal-layout-application'
+import { OCCRuntimeWithApplyLayout } from './terminal-layout-application'
 
-export abstract class OrcaRuntimeWithHandleMobileSubscribe extends OrcaRuntimeWithApplyLayout {
+export abstract class OCCRuntimeWithHandleMobileSubscribe extends OCCRuntimeWithApplyLayout {
   protected abstract handleMobileSubscribeInternal(
     ptyId: string,
     clientId: string,

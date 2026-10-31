@@ -2,7 +2,7 @@ import { mkdtempSync, readFileSync, realpathSync, rmSync, writeFileSync } from '
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { runInNewContext } from 'node:vm'
-import { runProcess } from '@orca/process-host'
+import { runProcess } from '@occ/process-host'
 import { describe, expect, it } from 'vitest'
 import { parse } from 'yaml'
 
@@ -46,7 +46,7 @@ describe('Windows release signing waits for macOS success', () => {
       /^node config\/scripts\/ensure-native-runtime\.mjs --runtime=electron; if \(\$LASTEXITCODE -ne 0\) \{ exit \$LASTEXITCODE \}; pnpm exec electron-builder /
     )
     const packaging = steps.findIndex((step) => step.name === 'Build Windows release artifacts')
-    expect(steps[packaging].env.ORCA_REUSE_PREPARED_NATIVE_RUNTIME).toBe('1')
+    expect(steps[packaging].env.OCC_REUSE_PREPARED_NATIVE_RUNTIME).toBe('1')
     const gateIndex = steps.indexOf(gate)
     expect(packaging).toBeGreaterThanOrEqual(0)
     expect(gateIndex).toBeGreaterThan(packaging)
@@ -110,7 +110,7 @@ describe('Windows release signing waits for macOS success', () => {
   })
 
   it('runs the verifier CLI from paths requiring URL encoding, as Windows paths do', async () => {
-    const directory = realpathSync(mkdtempSync(join(tmpdir(), 'orca signing gate # % ')))
+    const directory = realpathSync(mkdtempSync(join(tmpdir(), 'occ signing gate # % ')))
     const script = join(directory, 'mac verifier.mjs')
     writeFileSync(script, readFileSync('config/scripts/run-release-mac-build-workflow.mjs'))
     try {
@@ -119,9 +119,9 @@ describe('Windows release signing waits for macOS success', () => {
         args: [script, 'wait'],
         env: {
           ...process.env,
-          ORCA_BACKGROUND_LAUNCH: '1',
+          OCC_BACKGROUND_LAUNCH: '1',
           RELEASE_MAC_BUILD_REF: 'main',
-          GITHUB_REPOSITORY: 'stablyai/orca',
+          GITHUB_REPOSITORY: 'stablyai/occ',
           GITHUB_RUN_ID: '777',
           GITHUB_TOKEN: 'test-token',
           RELEASE_MAC_BUILD_TAG: 'v1.2.3',

@@ -35,7 +35,7 @@ const SCALE_BOUNDS = { min: MIN_SCALE, max: MAX_SCALE, step: SCALE_STEP }
 type PdfViewerProps = {
   /** Base64 bytes, for git blobs, diffs and the web client. */
   content: string
-  /** An orca-media URL pdf.js reads by range; wins over `content`. */
+  /** An occ-media URL pdf.js reads by range; wins over `content`. */
   src?: string
   /** The file's size, which pdf.js needs to read `src` by range. */
   byteSize?: number

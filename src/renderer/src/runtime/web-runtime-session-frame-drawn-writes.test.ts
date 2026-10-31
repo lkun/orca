@@ -37,7 +37,7 @@ const mocks = vi.hoisted(() => ({
   redraw: vi.fn((_environmentId: string, _worktreeId: string) => true)
 }))
 
-vi.mock('../../../shared/layout-owner-switch', () => ({ ORCA_LAYOUT_OWNER_IS_MAIN: true }))
+vi.mock('../../../shared/layout-owner-switch', () => ({ OCC_LAYOUT_OWNER_IS_MAIN: true }))
 vi.mock('../store', () => ({
   useAppStore: { getState: mocks.getState, setState: mocks.setState, subscribe: mocks.subscribe }
 }))

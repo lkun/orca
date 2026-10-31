@@ -47,7 +47,7 @@ function remoteSpec(
 const HIDDEN_FIELDS = { detached: true, stdio: 'ignore', windowsHide: true, shell: false }
 const HIDDEN = expect.objectContaining(HIDDEN_FIELDS)
 
-describe('VS Code Remote-SSH launch through @orca/process-host', () => {
+describe('VS Code Remote-SSH launch through @occ/process-host', () => {
   beforeEach(() => {
     spawnMock.mockReset()
     spawnMock.mockImplementation(spawnedChild)
@@ -119,9 +119,9 @@ describe('external editor launch environment', () => {
   beforeEach(() => {
     spawnMock.mockReset()
     spawnMock.mockImplementation(spawnedChild)
-    vi.stubEnv('APPDIR', '/tmp/.mount_orca123')
-    vi.stubEnv('ARGV0', '/data/apps/orca.appimage')
-    vi.stubEnv('ORCA_EDITOR_ENV_PROBE', 'kept')
+    vi.stubEnv('APPDIR', '/tmp/.mount_occ123')
+    vi.stubEnv('ARGV0', '/data/apps/occ.appimage')
+    vi.stubEnv('OCC_EDITOR_ENV_PROBE', 'kept')
   })
 
   afterEach(() => {
@@ -147,7 +147,7 @@ describe('external editor launch environment', () => {
     await launchExternalEditor(spec())
     const options: { env?: NodeJS.ProcessEnv } | undefined = spawnMock.mock.calls[0]?.[2]
     expect(options?.env).not.toHaveProperty('ARGV0')
-    expect(options?.env).toMatchObject({ ORCA_EDITOR_ENV_PROBE: 'kept' })
-    expect(process.env.ARGV0).toBe('/data/apps/orca.appimage')
+    expect(options?.env).toMatchObject({ OCC_EDITOR_ENV_PROBE: 'kept' })
+    expect(process.env.ARGV0).toBe('/data/apps/occ.appimage')
   })
 })

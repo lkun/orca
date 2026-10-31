@@ -56,7 +56,7 @@ describe('createBrowserSlice runtime guard', () => {
   })
 
   it('rejects direct client-local materialization in the web client', async () => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     const { store } = await createTestStoreDrawnFromMain()
 
     expect(() => store.getState().createBrowserTab('wt-1', 'about:blank')).toThrow(
@@ -67,7 +67,7 @@ describe('createBrowserSlice runtime guard', () => {
   })
 
   it('rejects direct remote materialization without the provider capability', async () => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     const { store } = await createTestStoreDrawnFromMain({
       runtimeStatusByEnvironmentId: runtimeStatuses([])
     })
@@ -280,7 +280,7 @@ describe('createBrowserSlice runtime guard', () => {
   })
 
   it('rejects a paired-web sign-in tab when the remote host cannot stream browsers', async () => {
-    vi.stubGlobal('__ORCA_WEB_CLIENT__', true)
+    vi.stubGlobal('__OCC_WEB_CLIENT__', true)
     const { store, main } = await createTestStoreDrawnFromMain({
       ...onePaneGroup('wt-remote'),
       activeWorktreeId: 'wt-remote',

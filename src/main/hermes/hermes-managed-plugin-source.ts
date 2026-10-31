@@ -1,9 +1,9 @@
 import {
-  ORCA_SCRUB_SAFE_LAUNCH_ENV,
-  ORCA_SCRUB_SAFE_PANE_ENV
+  OCC_SCRUB_SAFE_LAUNCH_ENV,
+  OCC_SCRUB_SAFE_PANE_ENV
 } from '../../shared/agent-hook-scrub-safe-env'
 
-export const HERMES_PLUGIN_NAME = 'orca-status'
+export const HERMES_PLUGIN_NAME = 'occ-status'
 export const HERMES_PLUGIN_MARKER = 'Managed by OCC. Do not edit; changes may be overwritten.'
 
 export const HERMES_EVENTS = [
@@ -21,13 +21,13 @@ export const HERMES_EVENTS = [
 
 // Hermes' shared gateway binds only these client env names to a session; KEY/TOKEN names never travel.
 export const HERMES_CLIENT_ENV_PASSTHROUGH: readonly string[] = [
-  ORCA_SCRUB_SAFE_PANE_ENV,
-  ORCA_SCRUB_SAFE_LAUNCH_ENV,
-  'ORCA_TAB_ID',
-  'ORCA_WORKTREE_ID',
-  'ORCA_AGENT_HOOK_ENDPOINT',
-  'ORCA_AGENT_HOOK_ENV',
-  'ORCA_AGENT_HOOK_VERSION'
+  OCC_SCRUB_SAFE_PANE_ENV,
+  OCC_SCRUB_SAFE_LAUNCH_ENV,
+  'OCC_TAB_ID',
+  'OCC_WORKTREE_ID',
+  'OCC_AGENT_HOOK_ENDPOINT',
+  'OCC_AGENT_HOOK_ENV',
+  'OCC_AGENT_HOOK_VERSION'
 ]
 
 export function getPluginManifest(): string {
@@ -127,13 +127,13 @@ def _pane_env() -> Optional[dict[str, str]]:
     if client_env is None:
         return None
     env = dict(client_env)
-    env.setdefault("ORCA_PANE_KEY", env.get("${ORCA_SCRUB_SAFE_PANE_ENV}", ""))
-    env.setdefault("ORCA_AGENT_LAUNCH_TOKEN", env.get("${ORCA_SCRUB_SAFE_LAUNCH_ENV}", ""))
+    env.setdefault("OCC_PANE_KEY", env.get("${OCC_SCRUB_SAFE_PANE_ENV}", ""))
+    env.setdefault("OCC_AGENT_LAUNCH_TOKEN", env.get("${OCC_SCRUB_SAFE_LAUNCH_ENV}", ""))
     return env
 
 
 def _endpoint_env(env: dict[str, str]) -> dict[str, str]:
-    endpoint = env.get("ORCA_AGENT_HOOK_ENDPOINT", "")
+    endpoint = env.get("OCC_AGENT_HOOK_ENDPOINT", "")
     if endpoint and os.path.isfile(endpoint):
         try:
             with open(endpoint, "r", encoding="utf-8") as f:
@@ -151,23 +151,23 @@ def _endpoint_env(env: dict[str, str]) -> dict[str, str]:
     return env
 
 
-def _post_to_orca(payload: dict[str, Any]) -> None:
+def _post_to_occ(payload: dict[str, Any]) -> None:
     pane_env = _pane_env()
     if pane_env is None:
         return
     env = _endpoint_env(pane_env)
-    port = env.get("ORCA_AGENT_HOOK_PORT", "")
-    token = env.get("ORCA_AGENT_HOOK_TOKEN", "")
-    pane_key = env.get("ORCA_PANE_KEY", "")
+    port = env.get("OCC_AGENT_HOOK_PORT", "")
+    token = env.get("OCC_AGENT_HOOK_TOKEN", "")
+    pane_key = env.get("OCC_PANE_KEY", "")
     if not port or not token or not pane_key:
         return
     body = {
         "paneKey": pane_key,
-        "launchToken": env.get("ORCA_AGENT_LAUNCH_TOKEN", ""),
-        "tabId": env.get("ORCA_TAB_ID", ""),
-        "worktreeId": env.get("ORCA_WORKTREE_ID", ""),
-        "env": env.get("ORCA_AGENT_HOOK_ENV", ""),
-        "version": env.get("ORCA_AGENT_HOOK_VERSION", ""),
+        "launchToken": env.get("OCC_AGENT_LAUNCH_TOKEN", ""),
+        "tabId": env.get("OCC_TAB_ID", ""),
+        "worktreeId": env.get("OCC_WORKTREE_ID", ""),
+        "env": env.get("OCC_AGENT_HOOK_ENV", ""),
+        "version": env.get("OCC_AGENT_HOOK_VERSION", ""),
         "payload": payload,
     }
     data = json.dumps(body, separators=(",", ":")).encode("utf-8")
@@ -209,7 +209,7 @@ def _payload_for_event(event_name: str, kwargs: dict[str, Any]) -> dict[str, Any
 
 def _make_hook(event_name: str) -> Callable[..., None]:
     def _hook(**kwargs: Any) -> None:
-        _post_to_orca(_payload_for_event(event_name, kwargs))
+        _post_to_occ(_payload_for_event(event_name, kwargs))
 
     return _hook
 

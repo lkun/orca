@@ -2,7 +2,7 @@ import { mkdir, mkdtemp, rm } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { expect, test, type Page } from '@stablyai/playwright-test'
-import { createRestartSession } from './helpers/orca-restart'
+import { createRestartSession } from './helpers/occ-restart'
 import { commitRepository, configureFixtureGit } from './helpers/plugin-git-fixture'
 import {
   commitFixtureChange,
@@ -42,18 +42,18 @@ function openPluginsSettings(page: Page): Promise<void> {
 test('tells once per version when an automatic update waits for review, and Review never approves', async ({}, testInfo) => {
   // Why: two launches, two Git-backed installs and four update passes against local git.
   test.setTimeout(300_000)
-  const root = await mkdtemp(join(tmpdir(), 'orca-update-review-toast-'))
+  const root = await mkdtemp(join(tmpdir(), 'occ-update-review-toast-'))
   const repositories = join(root, 'repositories')
   const home = join(root, 'home')
   await mkdir(repositories, { recursive: true })
   await mkdir(home, { recursive: true })
-  const gitEnvironment = await configureFixtureGit(home, repositories, ['orca-plugins', ...PLUGINS])
+  const gitEnvironment = await configureFixtureGit(home, repositories, ['occ-plugins', ...PLUGINS])
   for (const id of PLUGINS) {
     const repository = join(repositories, `${id}.git`)
     await writePlugin(repository, id, '1.0.0')
     await commitRepository(repository, gitEnvironment)
   }
-  const marketplace = join(repositories, 'orca-plugins.git')
+  const marketplace = join(repositories, 'occ-plugins.git')
   await mkdir(marketplace, { recursive: true })
   await publishCatalog(repositories, gitEnvironment, '1.0.0')
   await commitRepository(marketplace, gitEnvironment)
@@ -68,8 +68,8 @@ test('tells once per version when an automatic update waits for review, and Revi
   }
   const session = createRestartSession(testInfo, {
     ...gitEnvironment,
-    ORCA_BACKGROUND_LAUNCH: '1',
-    ORCA_PLUGIN_AUTO_UPDATE: '1'
+    OCC_BACKGROUND_LAUNCH: '1',
+    OCC_PLUGIN_AUTO_UPDATE: '1'
   })
   let launched: Awaited<ReturnType<typeof session.launch>> | null = null
   try {

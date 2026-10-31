@@ -2,7 +2,7 @@ import { worktreeCreateGit } from '../git/worktree-create-git-executor'
 import { resolveGitAdmissionTier } from '../git/command-runner/git-operation-executor'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-// Isolate fetch mocks from orca-runtime.test.ts; pin §3.3 eviction, freshness and concurrent-call sharing.
+// Isolate fetch mocks from occ-runtime.test.ts; pin §3.3 eviction, freshness and concurrent-call sharing.
 
 const gitExecFileAsyncMock = vi.hoisted(() => vi.fn())
 
@@ -14,7 +14,7 @@ vi.mock('../git/runner', async (importOriginal) => {
   }
 })
 
-import { OrcaRuntimeService } from './orca-runtime'
+import { OCCRuntimeService } from './occ-runtime'
 import { RuntimeRemoteFetchController } from './runtime-remote-fetch-controller'
 import { _resetCanonicalRepoKeyCacheForTests } from '../git/canonical-repo-key'
 
@@ -72,7 +72,7 @@ function mockFetchResults(results: unknown[]): void {
   })
 }
 
-describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
+describe('OCCRuntimeService.fetchRemoteWithCache', () => {
   const base = {
     remote: 'origin',
     branch: 'main',
@@ -91,7 +91,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
             stderr: ''
           }
         })
-        const runtime = new OrcaRuntimeService()
+        const runtime = new OCCRuntimeService()
         const options = wslDistro ? { wslDistro } : {}
         const base = await runtime.resolveRemoteTrackingBase(
           '/priority-repo',
@@ -127,7 +127,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
   it('evicts the in-flight Map entry on rejection so the next caller re-fetches', async () => {
     mockFetchResults([Promise.reject(new Error('network down')), { stdout: '', stderr: '' }])
 
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
 
     await runtime.fetchRemoteWithCache('/repo/a', 'origin')
     await runtime.fetchRemoteWithCache('/repo/a', 'origin')
@@ -142,7 +142,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
     })
     mockFetchResults([pending])
 
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
 
     const first = runtime.fetchRemoteWithCache('/repo/c', 'origin')
     const second = runtime.fetchRemoteWithCache('/repo/c', 'origin')
@@ -162,7 +162,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
   it('skips the fetch inside the 30s freshness window after a successful fetch', async () => {
     mockFetchResults([{ stdout: '', stderr: '' }])
 
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
 
     await runtime.fetchRemoteWithCache('/repo/d', 'origin')
     await runtime.fetchRemoteWithCache('/repo/d', 'origin')
@@ -223,7 +223,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
   ])(
     'does not launch Git for a base without both remote and branch components: %s',
     async (base) => {
-      const runtime = new OrcaRuntimeService(null)
+      const runtime = new OCCRuntimeService(null)
       await expect(runtime.resolveRemoteTrackingBase('/repo/e', base)).resolves.toBeNull()
       await expect(
         runtime.resolveRemoteTrackingBase('/repo/e', base, { wslDistro: 'Ubuntu' })
@@ -234,7 +234,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
 
   it('resolves remote-tracking bases with longest configured remote matching', async () => {
     gitExecFileAsyncMock.mockResolvedValue({ stdout: 'foo\nfoo/bar\norigin\n', stderr: '' })
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
 
     await expect(runtime.resolveRemoteTrackingBase('/repo/e', 'foo/bar/main')).resolves.toEqual({
       remote: 'foo/bar',
@@ -248,7 +248,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
     'does not reinterpret a qualified nonremote ref through a remote named refs: %s',
     async (base) => {
       gitExecFileAsyncMock.mockResolvedValue({ stdout: 'refs\n', stderr: '' })
-      const runtime = new OrcaRuntimeService(null)
+      const runtime = new OCCRuntimeService(null)
       for (const options of [{}, { wslDistro: 'Ubuntu' }]) {
         await expect(
           runtime.resolveRemoteTrackingBase('/repo/e', base, options)
@@ -260,7 +260,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
 
   it('preserves a qualified remote whose name begins with refs', async () => {
     gitExecFileAsyncMock.mockResolvedValue({ stdout: 'refs/heads\n', stderr: '' })
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     await expect(
       runtime.resolveRemoteTrackingBase('/repo/e', 'refs/remotes/refs/heads/feature/加')
     ).resolves.toEqual({
@@ -273,7 +273,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
 
   it('resolves full remote-tracking refs with longest configured remote matching', async () => {
     gitExecFileAsyncMock.mockResolvedValue({ stdout: 'foo\nfoo/bar\norigin\n', stderr: '' })
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
 
     await expect(
       runtime.resolveRemoteTrackingBase('/repo/e', 'refs/remotes/foo/bar/main')
@@ -287,7 +287,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
 
   it('refreshes a remote-tracking base with an exact no-tags refspec', async () => {
     mockFetchResults([{ stdout: '', stderr: '' }])
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
 
     await runtime.getOrStartRemoteTrackingBaseRefresh('/repo/f', {
       remote: 'origin',
@@ -304,7 +304,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
 
   it('keeps automatic maintenance enabled for ordinary full remote fetches', async () => {
     mockFetchResults([{ stdout: '', stderr: '' }])
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
 
     await runtime.getOrStartRemoteFetch('/repo/full-maintenance', 'origin')
 
@@ -320,7 +320,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
       resolveFetch = () => resolve({ stdout: '', stderr: '' })
     })
     mockFetchResults([pending, { stdout: '', stderr: '' }])
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
 
     const first = runtime.getOrStartRemoteTrackingBaseRefresh('/repo/g', base)
     const second = runtime.getOrStartRemoteTrackingBaseRefresh('/repo/g', base)
@@ -402,7 +402,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
 
   it('does not advance exact-base freshness when a remote-tracking refresh fails', async () => {
     mockFetchResults([Promise.reject(new Error('network down')), { stdout: '', stderr: '' }])
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     const base = {
       remote: 'origin',
       branch: 'main',
@@ -428,7 +428,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
       { stdout: '', stderr: '' },
       { stdout: '', stderr: '' }
     ])
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     const base = {
       remote: 'origin',
       branch: 'main',
@@ -454,7 +454,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
       resolveFullFetch = () => resolve({ stdout: '', stderr: '' })
     })
     mockFetchResults([pendingBaseFetch, pendingFullFetch])
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     const base = {
       remote: 'origin',
       branch: 'main',
@@ -495,7 +495,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
       resolveBaseFetch = () => resolve({ stdout: '', stderr: '' })
     })
     mockFetchResults([pendingFullFetch, pendingBaseFetch])
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     const base = {
       remote: 'origin',
       branch: 'main',
@@ -536,7 +536,7 @@ describe('OrcaRuntimeService.fetchRemoteWithCache', () => {
       resolveBaseFetch = () => resolve({ stdout: '', stderr: '' })
     })
     mockFetchResults([pendingFullFetch, pendingBaseFetch])
-    const runtime = new OrcaRuntimeService(null)
+    const runtime = new OCCRuntimeService(null)
     const base = {
       remote: 'origin',
       branch: 'main',

@@ -15,7 +15,7 @@ const prLinuxConfig = require('../electron-builder-pr-linux.config.cjs')
 let root = ''
 
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'orca-appimage-node-pack-'))
+  root = mkdtempSync(join(tmpdir(), 'occ-appimage-node-pack-'))
 })
 
 afterEach(() => {

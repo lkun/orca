@@ -2,9 +2,9 @@ import { getDefaultRepoHookSettings } from '../shared/constants'
 import { resolveHookCommandSourcePolicy } from '../shared/hook-command-source-policy'
 import type {
   HookCommandSourcePolicy,
-  OrcaHooks,
+  OCCHooks,
   SetupRunPolicy
-} from '../shared/orca-yaml-hook-types'
+} from '../shared/occ-yaml-hook-types'
 import type { Repo } from '../shared/repo-types'
 import type { SetupDecision } from '../shared/worktree/create-types'
 import type { WorktreeDefaultTabsLaunch } from '../shared/worktree/launch-types'
@@ -30,8 +30,8 @@ function getEffectiveHookScript(
 
 export function getEffectiveHooksFromConfig(
   repo: Repo,
-  yamlHooks: OrcaHooks | null
-): OrcaHooks | null {
+  yamlHooks: OCCHooks | null
+): OCCHooks | null {
   const localSetup = repo.hookSettings?.scripts.setup
   const localArchive = repo.hookSettings?.scripts.archive
   const rawPolicy = repo.hookSettings?.commandSourcePolicy
@@ -48,7 +48,7 @@ export function getEffectiveHooksFromConfig(
     return null
   }
 
-  // The source policy arbitrates between committed orca.yaml and local Settings.
+  // The source policy arbitrates between committed occ.yaml and local Settings.
   return {
     scripts: {
       ...(setup ? { setup } : {}),
@@ -78,7 +78,7 @@ export function shouldRunSetupForCreate(repo: Repo, decision: SetupDecision = 'i
 }
 
 export function getDefaultTabsLaunch(
-  hooks: OrcaHooks | null,
+  hooks: OCCHooks | null,
   repo: Repo,
   decision: SetupDecision = 'inherit'
 ): WorktreeDefaultTabsLaunch | undefined {

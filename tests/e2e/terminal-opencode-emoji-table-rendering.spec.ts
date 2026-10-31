@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto'
 import { rmSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
 import type { Page } from '@stablyai/playwright-test'
-import { test, expect } from './helpers/orca-app'
+import { test, expect } from './helpers/occ-app'
 import { ensureTerminalVisible, waitForActiveWorktree, waitForSessionReady } from './helpers/store'
 import {
   sendToTerminal,
@@ -39,7 +39,7 @@ type CursorBlinkSample = {
   paintedCursorCellCount: number
 }
 
-const EMOJI_TABLE_MARKER = 'ORCA_EMOJI_TABLE_RENDER_DONE'
+const EMOJI_TABLE_MARKER = 'OCC_EMOJI_TABLE_RENDER_DONE'
 
 function emojiTableScript(marker: string): string {
   const table = [
@@ -258,30 +258,30 @@ async function enableRiskyTerminalRendererPath(page: Page): Promise<void> {
 
 test.describe('OpenCode emoji table terminal rendering', () => {
   test('keeps emoji table output visually sane and restores the cursor', async ({
-    orcaPage,
+    occPage,
     testRepoPath
   }, testInfo) => {
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
-    await enableRiskyTerminalRendererPath(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
+    await enableRiskyTerminalRendererPath(occPage)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
-    await waitForPtyShellEcho(orcaPage, ptyId, 20_000)
+    const ptyId = await waitForActivePanePtyId(occPage)
+    await waitForPtyShellEcho(occPage, ptyId, 20_000)
     const runId = randomUUID()
     const marker = `${EMOJI_TABLE_MARKER}_${runId}`
-    const scriptPath = path.join(testRepoPath, `.orca-opencode-emoji-table-${runId}.mjs`)
+    const scriptPath = path.join(testRepoPath, `.occ-opencode-emoji-table-${runId}.mjs`)
     writeFileSync(scriptPath, emojiTableScript(marker))
     try {
-      await sendToTerminal(orcaPage, ptyId, `${nodeTerminalCommand([scriptPath])}\r`)
-      await waitForTerminalOutput(orcaPage, marker, 10_000)
-      await orcaPage.waitForTimeout(250)
-      await forceCursorProbeTheme(orcaPage)
-      await orcaPage.waitForTimeout(50)
+      await sendToTerminal(occPage, ptyId, `${nodeTerminalCommand([scriptPath])}\r`)
+      await waitForTerminalOutput(occPage, marker, 10_000)
+      await occPage.waitForTimeout(250)
+      await forceCursorProbeTheme(occPage)
+      await occPage.waitForTimeout(50)
 
-      const renderState = await readActiveTerminalRenderState(orcaPage)
-      const blinkSamples = await sampleCursorBlink(orcaPage)
+      const renderState = await readActiveTerminalRenderState(occPage)
+      const blinkSamples = await sampleCursorBlink(occPage)
 
       testInfo.annotations.push({
         type: 'opencode-emoji-table-rendering',
@@ -304,37 +304,37 @@ test.describe('OpenCode emoji table terminal rendering', () => {
   })
 
   test('local real OpenCode demo keeps table rendering and cursor visible', async ({
-    orcaPage
+    occPage
   }, testInfo) => {
     test.skip(
-      process.env.ORCA_E2E_REAL_OPENCODE !== '1',
-      'Set ORCA_E2E_REAL_OPENCODE=1 to exercise the locally installed OpenCode TUI'
+      process.env.OCC_E2E_REAL_OPENCODE !== '1',
+      'Set OCC_E2E_REAL_OPENCODE=1 to exercise the locally installed OpenCode TUI'
     )
 
-    await waitForSessionReady(orcaPage)
-    await waitForActiveWorktree(orcaPage)
-    await ensureTerminalVisible(orcaPage)
-    await waitForActiveTerminalManager(orcaPage, 30_000)
-    await enableRiskyTerminalRendererPath(orcaPage)
+    await waitForSessionReady(occPage)
+    await waitForActiveWorktree(occPage)
+    await ensureTerminalVisible(occPage)
+    await waitForActiveTerminalManager(occPage, 30_000)
+    await enableRiskyTerminalRendererPath(occPage)
 
-    const ptyId = await waitForActivePanePtyId(orcaPage)
+    const ptyId = await waitForActivePanePtyId(occPage)
     await sendToTerminal(
-      orcaPage,
+      occPage,
       ptyId,
       'opencode run --demo --interactive "Give me markdown table dummy data a long table with emojis in it"\r'
     )
     try {
-      await waitForTerminalOutput(orcaPage, 'Give me markdown table', 15_000)
-      await waitForTerminalOutput(orcaPage, 'Emoji', 60_000)
-      await waitForTerminalOutput(orcaPage, 'Alice', 60_000)
-      await orcaPage.waitForTimeout(1_500)
+      await waitForTerminalOutput(occPage, 'Give me markdown table', 15_000)
+      await waitForTerminalOutput(occPage, 'Emoji', 60_000)
+      await waitForTerminalOutput(occPage, 'Alice', 60_000)
+      await occPage.waitForTimeout(1_500)
 
       await testInfo.attach('real-opencode-demo-table', {
-        body: await orcaPage.screenshot({ fullPage: true }),
+        body: await occPage.screenshot({ fullPage: true }),
         contentType: 'image/png'
       })
 
-      const renderState = await readActiveTerminalRenderState(orcaPage)
+      const renderState = await readActiveTerminalRenderState(occPage)
       testInfo.annotations.push({
         type: 'real-opencode-demo-rendering',
         description: JSON.stringify(renderState)
@@ -342,7 +342,7 @@ test.describe('OpenCode emoji table terminal rendering', () => {
       expect(renderState.coreCursorHidden).toBe(false)
       expect(renderState.cursorVisibleElementCount).toBeGreaterThan(0)
     } finally {
-      await sendToTerminal(orcaPage, ptyId, '\x03').catch(() => undefined)
+      await sendToTerminal(occPage, ptyId, '\x03').catch(() => undefined)
     }
   })
 })

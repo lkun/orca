@@ -174,7 +174,7 @@ describe('resolveAgentForegroundProcess', () => {
         pid: 102,
         ppid: 101,
         name: 'pi.exe',
-        commandLine: 'pi.exe --cwd C:\\repo\\orca'
+        commandLine: 'pi.exe --cwd C:\\repo\\occ'
       },
       {
         pid: 103,
@@ -185,7 +185,7 @@ describe('resolveAgentForegroundProcess', () => {
     ])
 
     await expect(
-      resolveAgentForegroundProcess(100, 'pi.exe', { contextPaths: ['C:\\repo\\orca'] })
+      resolveAgentForegroundProcess(100, 'pi.exe', { contextPaths: ['C:\\repo\\occ'] })
     ).resolves.toBe('omp')
   })
 
@@ -733,7 +733,7 @@ describe('resolveAgentForegroundProcess', () => {
         ppid: 100,
         name: 'node.exe',
         commandLine:
-          'node C:\\Users\\dev\\AppData\\Roaming\\npm\\node_modules\\@openai\\codex\\bin\\codex.js --cwd C:\\repo\\orca'
+          'node C:\\Users\\dev\\AppData\\Roaming\\npm\\node_modules\\@openai\\codex\\bin\\codex.js --cwd C:\\repo\\occ'
       },
       {
         pid: 102,
@@ -746,7 +746,7 @@ describe('resolveAgentForegroundProcess', () => {
 
     await expect(
       resolveAgentForegroundProcess(100, 'powershell.exe', {
-        contextPaths: ['C:\\repo\\orca']
+        contextPaths: ['C:\\repo\\occ']
       })
     ).resolves.toBe('codex')
   })
@@ -764,19 +764,19 @@ describe('resolveAgentForegroundProcess', () => {
         pid: 101,
         ppid: 100,
         name: 'codex.exe',
-        commandLine: 'codex --cwd C:\\repo\\orca'
+        commandLine: 'codex --cwd C:\\repo\\occ'
       },
       {
         pid: 102,
         ppid: 101,
         name: 'gemini.exe',
-        commandLine: 'gemini --cwd C:\\repo\\orca'
+        commandLine: 'gemini --cwd C:\\repo\\occ'
       }
     ])
 
     await expect(
       resolveAgentForegroundProcess(100, 'powershell.exe', {
-        contextPaths: ['C:\\repo\\orca']
+        contextPaths: ['C:\\repo\\occ']
       })
     ).resolves.toBe('gemini')
   })
@@ -794,19 +794,19 @@ describe('resolveAgentForegroundProcess', () => {
         pid: 101,
         ppid: 100,
         name: 'codex.exe',
-        commandLine: 'codex --cwd C:\\repo\\orca'
+        commandLine: 'codex --cwd C:\\repo\\occ'
       },
       {
         pid: 102,
         ppid: 100,
         name: 'gemini.exe',
-        commandLine: 'gemini --cwd C:\\repo\\orca'
+        commandLine: 'gemini --cwd C:\\repo\\occ'
       }
     ])
 
     await expect(
       resolveAgentForegroundProcess(100, 'powershell.exe', {
-        contextPaths: ['C:\\repo\\orca']
+        contextPaths: ['C:\\repo\\occ']
       })
     ).resolves.toBe('powershell.exe')
   })

@@ -4,13 +4,13 @@ import type { SleepingAgentSessionRecord } from '../../../shared/agent-session-r
 import type { PersistedState } from '../../../shared/persisted-state-types'
 import type { Repo } from '../../../shared/repo-types'
 import type { TerminalTab } from '../../../shared/terminal-tab-types'
-import { assertOrcadMigrationManifestDigest } from '../../orcad/orcad-migration-manifest-digest'
+import { assertOCCdMigrationManifestDigest } from '../../occd/occd-migration-manifest-digest'
 import {
   DORMANT_AUTOMATION,
   DORMANT_AUTOMATION_RUN
-} from '../migrating-orcad-catalog/persistence-orcad-migration-catalog-fixture'
-import { createOrcadMigrationSourceScope } from '../migrating-orcad-catalog/orcad-source-scope'
-import { collectOrcadMigrationSourceDormantState } from '../migrating-orcad-catalog/orcad-source-dormant-state'
+} from '../migrating-occd-catalog/persistence-occd-migration-catalog-fixture'
+import { createOCCdMigrationSourceScope } from '../migrating-occd-catalog/occd-source-scope'
+import { collectOCCdMigrationSourceDormantState } from '../migrating-occd-catalog/occd-source-dormant-state'
 import {
   exportWslMoveManifest,
   WslMoveScopeChangedError,
@@ -117,8 +117,8 @@ function storeFor(state: PersistedState): WslMoveManifestExportStore {
     getRepos: () => state.repos,
     getFolderWorkspaces: () => state.folderWorkspaces,
     getProjectGroups: () => state.projectGroups,
-    inspectOrcadMigrationSourceDormantState: (source, catalog, destination) =>
-      collectOrcadMigrationSourceDormantState(state, source, catalog, undefined, destination)
+    inspectOCCdMigrationSourceDormantState: (source, catalog, destination) =>
+      collectOCCdMigrationSourceDormantState(state, source, catalog, undefined, destination)
   }
 }
 
@@ -147,7 +147,7 @@ describe('exportWslMoveManifest', () => {
     })
     expect(result.manifest.destinationEnvironmentId).toBe('wsl:Ubuntu')
     expect(result.manifest.payload.repositories.map((row) => row.path)).toEqual(['/home/me/app'])
-    expect(() => assertOrcadMigrationManifestDigest(result.manifest)).not.toThrow()
+    expect(() => assertOCCdMigrationManifestDigest(result.manifest)).not.toThrow()
   })
 
   it('is deterministic for one state and request', () => {
@@ -199,13 +199,13 @@ describe('exportWslMoveManifest', () => {
     const state = sourceState()
     const mark = { migrationId: 'move-0', environmentId: 'wsl:Ubuntu' }
     state.repos = state.repos.map((row) =>
-      row.id === 'app' ? { ...row, orcadRetained: mark } : row
+      row.id === 'app' ? { ...row, occdRetained: mark } : row
     )
     const store = storeFor(state)
     const { manifest } = exportWslMoveManifest(store, REQUEST)
-    expect(manifest.payload.repositories.map((row) => row.orcadRetained)).toEqual([undefined])
+    expect(manifest.payload.repositories.map((row) => row.occdRetained)).toEqual([undefined])
     // The stored row keeps its mark.
-    expect(store.getRepos().find((row) => row.id === 'app')?.orcadRetained).toEqual(mark)
+    expect(store.getRepos().find((row) => row.id === 'app')?.occdRetained).toEqual(mark)
   })
 
   it('refuses with a reason instead of dropping state the move cannot carry', () => {
@@ -320,7 +320,7 @@ describe('exportWslMoveManifest', () => {
     )
     const { manifest } = exportWslMoveManifest(storeFor(state), REQUEST)
     expect(() =>
-      assertOrcadMigrationManifestDigest(JSON.parse(JSON.stringify(manifest)))
+      assertOCCdMigrationManifestDigest(JSON.parse(JSON.stringify(manifest)))
     ).not.toThrow()
   })
 
@@ -334,7 +334,7 @@ describe('exportWslMoveManifest', () => {
       }
     }
     expect(() =>
-      assertOrcadMigrationManifestDigest(JSON.parse(JSON.stringify(manifest)))
+      assertOCCdMigrationManifestDigest(JSON.parse(JSON.stringify(manifest)))
     ).not.toThrow()
   })
 
@@ -432,7 +432,7 @@ describe('exportWslMoveManifest', () => {
     state.workspaceSession.tabsByWorktree[WORKTREE] = [sleptTab as unknown as TerminalTab]
     const { manifest } = exportWslMoveManifest(storeFor(state), REQUEST)
     expect(() =>
-      assertOrcadMigrationManifestDigest(JSON.parse(JSON.stringify(manifest)))
+      assertOCCdMigrationManifestDigest(JSON.parse(JSON.stringify(manifest)))
     ).not.toThrow()
   })
 
@@ -487,11 +487,11 @@ describe('exportWslMoveManifest', () => {
   it('still keeps the SSH conversion steps from accepting a WSL manifest', () => {
     const { manifest } = exportWslMoveManifest(storeFor(sourceState()), REQUEST)
     expect(() =>
-      createOrcadMigrationSourceScope({
+      createOCCdMigrationSourceScope({
         source: manifest.source,
         catalog: manifest.payload,
         repos: []
       })
-    ).toThrow('orcad_migration_source_not_ssh')
+    ).toThrow('occd_migration_source_not_ssh')
   })
 })
